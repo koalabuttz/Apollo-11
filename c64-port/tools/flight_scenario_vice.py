@@ -82,6 +82,12 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
 # (tools/flight_host_run.c rp_end, platform/c64/dap_pass_check.c replay_end).
 END_CHANNELS = ['channel 5', 'channel 6', 'channel 11', 'channel 12', 'channel 13', 'channel 14', 'channel 34',
                 'channel 35', 'superbank']
+# After them, words a replay window does not compare: channel 10, the last
+# relay word DSPOUT wrote (a strobe that hangs on where T4RUPT's relay cycle
+# stands, where DSPTAB, in the erasable, is the display; docs/FLIGHT-STORE.md).
+# The DSKY sweep, whose cases end just after a display update, compares it
+# (tools/dsky_sweep_vice.py).
+END_EXTRA = ['channel 10']
 # tools/flight_host_run.c rp_row: centiseconds, kind, where (bit 0; bits
 # 1-2 the work clock's step in the centisecond), address, value, work.
 ROW = struct.Struct('<HBBHHH')
@@ -112,7 +118,7 @@ def replay_place(manifest, m, image, size):
     return at
 
 
-STATE = 2 * (1 + 2048 + len(END_CHANNELS))
+STATE = 2 * (1 + 2048 + len(END_CHANNELS) + len(END_EXTRA))
 # The C64's devices (platform/c64/resident_flight.h): rk_hardware
 # (agc_hardware, include/agc_transfer.h) at RK_HARDWARE and rk_flight
 # (flight_io, include/flight_io.h) at RK_FLIGHT_IO, byte offsets by field;
@@ -163,7 +169,7 @@ def c64_rows(rows, m, device, pending):
 
 def c64_states(data, n, m):
     """The C64's states (dap_pass_check.c replay_state) in the host's
-    layout: (centiseconds, words and END_CHANNELS)."""
+    layout: (centiseconds, words, END_CHANNELS and END_EXTRA)."""
     out = []
     for i in range(n):
         b = data[i * C64_STATE:(i + 1) * C64_STATE]
@@ -176,6 +182,7 @@ def c64_states(data, n, m):
         ch = [word(dev + DEVICE[m][c]) if c in DEVICE[m] else word(io + HW[c]) for c in (0o5, 0o6, 0o11, 0o12, 0o13, 0o14)]
         ch += [word(io + RK_FLIGHT_IO - RK_HARDWARE + FLIGHT[c]) for c in (0o34, 0o35)]
         ch.append(word(dev + DEVICE[m]['superbank']))
+        ch.append(word(io + HW[0o10]))  # END_EXTRA
         out.append((cs, (*words, *ch)))
     return out
 
@@ -314,11 +321,12 @@ def host_window_cs(header):
 
 def snap_state(header):
     """A snapshot header's state in the end-state layout (words, then
-    END_CHANNELS; tools/flight_host_run.c snapshot)."""
+    END_CHANNELS and END_EXTRA; tools/flight_host_run.c snapshot)."""
     text = pathlib.Path(header).read_text()
     words = [int(v) for v in re.search(r'snap_words\[2048\][^{]*\{([^}]*)\}', text)[1].replace('u', '').split(',')]
     field = lambda name: int(re.search(r'\(\w\)\.' + name + r'=(\d+)u', text)[1])  # noqa: E731
-    return (*words, *[field(f'channel{c}') for c in (5, 6, 11, 12, 13, 14, 34, 35)], field('superbank'))
+    return (*words, *[field(f'channel{c}') for c in (5, 6, 11, 12, 13, 14, 34, 35)], field('superbank'),
+            field('channel10'))
 
 
 def steal_defines(name, start, snap_at):
