@@ -127,6 +127,22 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertIn('| 4 | 2 | 1 | 0 | 1 | 2 of 2 | 2 of 2 |', text)
         self.assertIn('lm-a 0: matches host', text)
 
+    def test_runs_what_is_missing(self):
+        self.assertEqual(pa.window_cmd(['lm-a', 100, 600])[1:],
+                         ['tools/flight_scenario_vice.py', '--scenario', 'lm-a', '--snap-cs', '100', '--cs', '600',
+                          '--replay', '--replay-every', '100'])
+        self.assertEqual(pa.window_cmd(['lm-a', 100, 600, 3, 50])[-4:], ['--replay-every', '50', '--chain', '3'])
+        calls = []
+        real, pa.subprocess.run = pa.subprocess.run, lambda cmd, **kw: calls.append(cmd[1])
+        try:
+            host = {'lm-a': host_row('lm-a'), 'lm-b': host_row('lm-b')}
+            self.assertFalse(pa.run_missing('lm', ROWS, [['lm-a', 0, 100]], host, {'lm-a': [replay('lm-a', 0)]}))
+            self.assertTrue(pa.run_missing('lm', ROWS, [['lm-a', 0, 100], ['lm-a', 500, 100]], {}, {}))
+        finally:
+            pa.subprocess.run = real
+        self.assertEqual(calls, ['tools/flight_host_differential.py', 'tools/flight_scenario_vice.py',
+                                 'tools/flight_scenario_vice.py'])
+
     def test_real_map_names_real_scenarios(self):
         import flight_host_differential as fhd
         names = {n for n, *_ in fhd.FLIGHT}

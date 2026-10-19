@@ -137,6 +137,16 @@
    "lm-p42-nassp",
    48800,
    1000
+  ],
+  [
+   "lm-p52-realign",
+   4000,
+   600
+  ],
+  [
+   "lm-uplink-reject",
+   1900,
+   1000
   ]
  ],
  "rows": [
@@ -771,10 +781,18 @@
    "row": "P27",
    "section": "LM P00 and auto-started / non-V37 modes",
    "entry": "UPDATE_PROGRAM.agc:218 (NEWMODEX DEC 27, via V70-V73)",
-   "status": "TBD",
-   "scenarios": [],
-   "note": "TBD (A2?). The uplink update program",
-   "owner": "A2?"
+   "status": "mapped",
+   "scenarios": [
+    "lm-uplink-reject"
+   ],
+   "note": "lm-uplink-reject: the uplinked V71 starts P27 (V21N01), the count over OHWELL1's limit and the garbled word are rejected, V34 ends P27. The accepted path (V70-V73 verified with V33) comes with lm-uplink-accept in Lane F's next PR",
+   "owner": "F",
+   "windows": [
+    [
+     "lm-uplink-reject",
+     1900
+    ]
+   ]
   },
   {
    "row": "R04 (V63)",
@@ -1182,10 +1200,18 @@
    "row": "V52 please mark X reticle",
    "section": "LM extended verbs",
    "entry": "GOLOADLV EV:508",
-   "status": "TBD",
-   "scenarios": [],
-   "note": "TBD (D1?). Not flashed in P57's technique 2 run",
-   "owner": "D1?"
+   "status": "mapped",
+   "scenarios": [
+    "lm-p52-realign"
+   ],
+   "note": "lm-p52-realign: after the first star's Y mark AOTMARK's CHANGEVB pastes V52N71 (4308 cs), then the X mark (Lane F host check, 10-19)",
+   "owner": "F",
+   "windows": [
+    [
+     "lm-p52-realign",
+     4000
+    ]
+   ]
   },
   {
    "row": "V53 please mark Y reticle",
@@ -1380,9 +1406,9 @@
    "row": "V69 force hardware restart",
    "section": "LM extended verbs",
    "entry": "VERB69 EV:81",
-   "status": "TBD",
+   "status": "not exercised",
    "scenarios": [],
-   "note": "TBD (A2). Restarts use the FLIGHT_GOJAM harness, not V69",
+   "note": "VERB69 is TC VERB69 (EXTENDED_VERBS.agc:81): the restart comes from the AGC's TC trap, which yaAGC does not model, so neither side restarts (Lane F host check, 10-19). Hardware restarts are covered by FLIGHT_GOJAM in the recovery_and_restart rows (A2).",
    "owner": "A2"
   },
   {
@@ -1398,10 +1424,18 @@
    "row": "V71 universal update, block",
    "section": "LM extended verbs",
    "entry": "V71UPDAT UPDATE_PROGRAM.agc:159",
-   "status": "TBD",
-   "scenarios": [],
-   "note": "TBD (A2?)",
-   "owner": "A2?"
+   "status": "mapped",
+   "scenarios": [
+    "lm-uplink-reject"
+   ],
+   "note": "lm-uplink-reject: V71 by uplink, rejected by its count check (V21N01 again). The accepted block load comes with lm-uplink-accept in Lane F's next PR",
+   "owner": "F",
+   "windows": [
+    [
+     "lm-uplink-reject",
+     1900
+    ]
+   ]
   },
   {
    "row": "V72 universal update, single",
