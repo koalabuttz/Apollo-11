@@ -393,8 +393,9 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  * centiseconds since the snapshot, kind, where, address, value, work):
  * where bit 0 is 0 at a sample point, 1 at any routine boundary (the
  * engine lag's PIPA counts and CDUs, the radar model's reads); bits 1-2
- * the work clock's step in the centisecond (1 the TIME1/TIME3 step's,
- * then 2 and 3) and work the MCT since that step, so the C64 applies a
+ * a boundary row's work-clock step in the centisecond (1 the TIME1/TIME3
+ * step's, then 2 and 3; 0 on a sample-point row, which goes in at its
+ * sample point as before) and work the MCT since that step, so the C64 applies a
  * boundary row at the same point of the centisecond (a DAP pass reads
  * the CDUs on the same side of the row). Kinds: 0 an erasable word set, 1 a
  * counter (PIPA) word moved by a signed count, 2 an input channel set
@@ -427,7 +428,7 @@ static void rp_row(unsigned long t,unsigned kind,unsigned where,unsigned a,unsig
   * step's is 2 mod 3, consumed counting from the window's start) and the
   * MCT since it, as the C64's rk_tick_phase and rk_work. */
  double since=wall-(consumed?step_at(consumed-1ul):0.0);unsigned work=since<0.0?0u:since>65535.0?65535u:(unsigned)since;
- where|=(unsigned)((consumed+1ul)%3ul+1ul)<<1;
+ if(where&1u)where|=(unsigned)((consumed+1ul)%3ul+1ul)<<1;
  if(d>0xffffu){fprintf(stderr,"FLIGHT_REPLAY: window longer than 65535 cs\n");exit(2);}
  b[0]=(unsigned char)d;b[1]=(unsigned char)(d>>8);b[2]=(unsigned char)kind;b[3]=(unsigned char)where;
  b[4]=(unsigned char)a;b[5]=(unsigned char)(a>>8);b[6]=(unsigned char)v;b[7]=(unsigned char)(v>>8);
