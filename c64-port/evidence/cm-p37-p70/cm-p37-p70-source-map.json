@@ -3,7 +3,7 @@
   "native_file": "src/cm_p37_p70.c",
   "words": 1368,
   "untranslated_words": 0,
-  "routines": 595,
+  "routines": 596,
   "map": [
    {
     "address": "36,2466",
@@ -107,29 +107,29 @@
     "address": "36,2504",
     "word": "33252",
     "source": " CAF V6N60RTE",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,2505",
     "word": "03211",
     "source": " TCR P37GFRB1",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,2506",
     "word": "12504",
     "source": " TCF -2",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,2507",
     "word": "06006",
     "source": "RTE299 TC INTPRET",
-    "routine": "36,2507",
-    "function": "r74507"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,2510",
@@ -1500,8 +1500,8 @@
     "address": "36,3013",
     "word": "12466",
     "source": " TCF P37",
-    "routine": "36,3013",
-    "function": "r75013"
+    "routine": "36,3006",
+    "function": "r75006"
    },
    {
     "address": "36,3014",
@@ -1549,29 +1549,29 @@
     "address": "36,3022",
     "word": "33253",
     "source": " CAF V6N81RTE",
-    "routine": "36,3022",
-    "function": "r75022"
+    "routine": "36,3006",
+    "function": "r75006"
    },
    {
     "address": "36,3023",
     "word": "03235",
     "source": " TCR P370GOF",
-    "routine": "36,3022",
-    "function": "r75022"
+    "routine": "36,3006",
+    "function": "r75006"
    },
    {
     "address": "36,3024",
     "word": "12466",
     "source": " TCF P37",
-    "routine": "36,3022",
-    "function": "r75022"
+    "routine": "36,3006",
+    "function": "r75006"
    },
    {
     "address": "36,3025",
     "word": "06006",
     "source": " TCR INTPRET",
-    "routine": "36,3025",
-    "function": "r75025"
+    "routine": "36,3006",
+    "function": "r75006"
    },
    {
     "address": "36,3026",
@@ -1661,8 +1661,8 @@
     "address": "36,3042",
     "word": "06006",
     "source": " TC INTPRET",
-    "routine": "36,3042",
-    "function": "r75042"
+    "routine": "36,3033",
+    "function": "r75033"
    },
    {
     "address": "36,3043",
@@ -1990,29 +1990,29 @@
     "address": "36,3121",
     "word": "35021",
     "source": " CAF ZERO",
-    "routine": "36,3121",
-    "function": "r75121"
+    "routine": "36,3116",
+    "function": "r75116"
    },
    {
     "address": "36,3122",
     "word": "55125",
     "source": " TS VHFCNT",
-    "routine": "36,3121",
-    "function": "r75121"
+    "routine": "36,3116",
+    "function": "r75116"
    },
    {
     "address": "36,3123",
     "word": "55126",
     "source": " TS TRKMKCNT",
-    "routine": "36,3121",
-    "function": "r75121"
+    "routine": "36,3116",
+    "function": "r75116"
    },
    {
     "address": "36,3124",
     "word": "06006",
     "source": " TC INTPRET",
-    "routine": "36,3121",
-    "function": "r75121"
+    "routine": "36,3116",
+    "function": "r75116"
    },
    {
     "address": "36,3125",
@@ -2382,50 +2382,50 @@
     "address": "36,3211",
     "word": "00006",
     "source": "P37GFRB1 EXTEND ",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3212",
     "word": "23762",
     "source": " QXCH SPRTEX",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3213",
     "word": "03221",
     "source": " TCR P370GOFR",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3214",
     "word": "35017",
     "source": "37BLANK CAF ONE",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3215",
     "word": "05526",
     "source": " TCR BLANKET",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3216",
     "word": "15217",
     "source": " TCF ENDOFJOB",
-    "routine": "36,3216",
-    "function": "r75216"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3217",
     "word": "01762",
     "source": " TC SPRTEX",
-    "routine": "36,3217",
-    "function": "r75217"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3220",
@@ -2438,29 +2438,29 @@
     "address": "36,3221",
     "word": "00006",
     "source": "P370GOFR EXTEND ",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3222",
     "word": "23733",
     "source": " QXCH RTENCKEX",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3223",
     "word": "04662",
     "source": " TCR BANKCALL",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3224",
     "word": "21057",
     "source": " CADR GOFLASHR",
-    "routine": "36,2504",
-    "function": "r74504"
+    "routine": "36,2501",
+    "function": "r74501"
    },
    {
     "address": "36,3225",
@@ -9156,37 +9156,37 @@
     "address": "35,3547",
     "word": "00000",
     "source": "30480RTE 2DEC 30480.     B-29",
-    "constant": "K73547"
+    "constant": "K73543"
    },
    {
     "address": "35,3550",
     "word": "35610",
     "source": "(+1)",
-    "constant": "K73547"
+    "constant": "K73543"
    },
    {
     "address": "35,3551",
     "word": "37405",
     "source": "VCSPS 2DEC 31.510396  B-5",
-    "constant": "K73547"
+    "constant": "K73545"
    },
    {
     "address": "35,3552",
     "word": "12250",
     "source": "(+1)",
-    "constant": "K73547"
+    "constant": "K73545"
    },
    {
     "address": "35,3553",
     "word": "33041",
     "source": "VCRCS 2DEC 27.0664    B-5",
-    "constant": "K73547"
+    "constant": "K73551"
    },
    {
     "address": "35,3554",
     "word": "37714",
     "source": "(+1)",
-    "constant": "K73547"
+    "constant": "K73551"
    },
    {
     "address": "35,3555",
@@ -9288,37 +9288,37 @@
     "address": "35,3575",
     "word": "17775",
     "source": "EPC1RTE 2DEC .99966     B-1",
-    "constant": "K73575"
+    "constant": "K73571"
    },
    {
     "address": "35,3576",
     "word": "06676",
     "source": "(+1)",
-    "constant": "K73575"
+    "constant": "K73571"
    },
    {
     "address": "35,3577",
     "word": "00000",
     "source": "EPC2RTE 2DEC 100.       B-29",
-    "constant": "K73575"
+    "constant": "K73577"
    },
    {
     "address": "35,3600",
     "word": "00062",
     "source": "(+1)",
-    "constant": "K73575"
+    "constant": "K73577"
    },
    {
     "address": "35,3601",
     "word": "00020",
     "source": "EPC3RTE 2DEC .001",
-    "constant": "K73575"
+    "constant": "K73577"
    },
    {
     "address": "35,3602",
     "word": "14223",
     "source": "(+1)",
-    "constant": "K73575"
+    "constant": "K73577"
    },
    {
     "address": "35,3603",

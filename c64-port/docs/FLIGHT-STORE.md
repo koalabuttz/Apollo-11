@@ -795,6 +795,25 @@ port) runs one mission:
    refuses THROTUP's WOR CHAN14. On the host every native routine matches
    yaAGC in both; the unregistered points are the 3 self-check ones and
    Pinball's VBPROC+3 to +5 (40,3445-3447, 2 arrivals) and RELDSP1.
+   `lm-p63-overload` and `cm-entry-overload`: the Executive overload
+   path, the 1201/1202 alarms of Apollo 11's landing. The flight's cause
+   was the RR CDU counts: counter cycles the LGC lost, about 13% of it in
+   P63. `FLIGHT_STEAL=T0-T1:N[,...]` models that. From the first clock
+   period at or after T0 to the last before T1, each period (each
+   work-clock T5 step) also spends N MCT that no routine runs in. The
+   counted cells are left alone. `lm-p63-overload` is
+   `lm-p63-descent-thrust` with V16N68 at 180 s and 420 MCT a centisecond
+   stolen from 185 s to 240 s. This synthetic P63 runs lighter than the
+   flight's (no landing radar reads), so it takes more than 13% to
+   overload it. SERVICER falls behind: FINDVAC finds no VAC area (alarm
+   1201, 196 s), then NOVAC no core set (1202, 210 s). Each is a BAILOUT
+   that restarts through the phase tables. V06N63 comes back after each
+   one, and the V16N68 monitor does not, as in the flight. Once the steal
+   ends, N63 updates every 2 s again and P63 flies on. `cm-entry-overload`
+   is `cm-entry` with 600 MCT a centisecond stolen from 210 s to 270 s,
+   over P64 and P67: alarm 1201 three times, and the entry still reaches
+   P67. `FLIGHT_WATCH=0375,0376,0377` prints FAILREG as it changes. On the
+   host every native routine matches yaAGC in both.
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
@@ -1020,6 +1039,19 @@ port) runs one mission:
    V16N44 9999.9 x 60.0 nmi, then V34E. On the host every native routine
    matches yaAGC; the unregistered points are Pinball's VBPROC +3 to +5 and
    RELDSP1.
+   `cm-p37`: return to earth targeting on the transearth coast, about
+   150 h GET, as the crew ran P37 for midcourse and abort pads. cm_p37.py
+   loads the CSM inbound 240,000 km from the earth on an ellipse from the
+   moon's distance with a natural -6.5 degree entry (outside the moon's
+   sphere, so CMOONFLG clear), the platform in local vertical axes.
+   V37E37E: V25 on V06N33 (TIG 1 h on the CMC clock), V22 and V23 on
+   V06N60 (100 ft/s, -6.50 degrees; with zeros the conic iteration stops
+   on alarm 00605), proceed. The conic solution shows V06N61 (20.52 N,
+   36.79 W), N39 (31:07:43), N60 (36,054 ft/s, -6.50) and N81; the
+   precision solution (about 170 s) shows 20.57 N, 37.51 W, 31:11:05 and
+   36,060 ft/s, then V04N06 (SPS), the biased V06N33 and V16N45. V37E00E;
+   V82 shows V16N44 9999.9 x 22.4 nmi, then V34E. On the host every native
+   routine matches yaAGC.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
@@ -1061,9 +1093,7 @@ port) runs one mission:
    `--replay` replays everything instead and checks the result: the host
    run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
    snapshot through the window on the C64's work clock, charging each
-   table the weight the C64 store charges it (FLIGHT_REPLAY_MCT: the weight
-   of the module that runs it, the interpreter's per routine for the tables
-   left to it), and writes every input its models and schedules give the
+   table the weight the C64 store charges it (host.inc's, #650), and writes every input its models and schedules give the
    AGC there (the engine, SPS and aero models' PIPA counts, keys,
    FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go at the
    top of the zeros between the store and the Pinball trampoline save
@@ -1090,6 +1120,48 @@ port) runs one mission:
    #650, RK #663), both missions skip a TIME5 one count apart when TIME1
    agrees: the two sides sampled in different thirds of the centisecond
    (`TIME5_PHASE`, printed when used). LM windows skip nothing else.
+
+   **What "matches host" means** (whole-program acceptance, bar item 3).
+   It is a chain of two checks on the same inputs:
+   - *Host = yaAGC.* The scenario's host run (native C on the PC,
+     `tools/flight_host_differential.py`) and yaAGC run the same rope,
+     load, keys, channels and device models. At every sample point the
+     erasable words are compared, all 2048 but three groups. The central
+     registers and the interrupt save registers ARUPT-BRUPT (0-017) hold
+     the interrupted step's working values. The
+     clock counters (024-031) are left out because the two clocks are
+     driven differently (FLIGHT_TIMERS compares them). RUPTREG1-4
+     (070-073) hold only what the last interrupt left. A scoreboard row
+     is "host clean" when this finds 0 mismatches over the whole scenario.
+   - *C64 = host (`--replay`).* The C64 window starts from the host's
+     snapshot and gets the host's inputs as rows. At the window's end, and
+     every `--replay-every` cs, it is compared with the host on a wider
+     scope than the first check: the same erasable set, plus the timers
+     TIME1-TIME6 (both sides run one work clock here), plus output channels
+     5, 6, 11-14, 34 and 35 and the superbank. A PIPA's -0 and +0 count as
+     equal. Anything else is a difference, apart from the temporary skips
+     above, which are named in every result that uses them. Output channel
+     10 (the DSKY relay words) is not compared: it is a strobe the AGC
+     writes once per relay word, not a latch, so the display is checked
+     through DSPTAB in erasable instead.
+   So the chain gives C64 = yaAGC only on the first check's scope. The
+   timers and the output channels are checked C64 = host only.
+   A window "matches host" when its `--replay` log has no FAIL line. It
+   "matches exactly" when the log also has no `skipped` line.
+
+   **Seams (`--chain K`, bar item 4).** One replay window is limited to
+   16,383 cs, so a whole phase runs as K windows back to back. The host
+   run goes on through all K windows. A window ends at the first sample
+   point `--cs` or more in that has no interrupt pending. At that point
+   the host writes the next window's snapshot (`-snap.h-1`, `-snap.h-2`,
+   ...), taken after that point's inputs, which it also writes as `.seam`
+   rows. It then starts the next window's work clock the way a C64 window
+   starts its own. Each window runs on the C64 as above. Before window n
+   runs, the C64's end state of window n-1, plus the seam rows, is
+   compared with window n's snapshot on the `--replay` scope. So the run
+   fails unless every window matches the host and every seam is
+   continuous. A key or an interrupt request at a seam point fails the
+   host run (exit 4); move the seam by changing `--cs`.
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under

@@ -199,8 +199,11 @@ as it was.
 
 The test disk checks a real C64 and REU against VICE in about 7 minutes,
 with one screen to photograph at the end. `make flight-disk` writes it
-as `build/flight-disk/test-1.d81` beside the mission disks. With the REU in
-and the 1581 on device 8:
+as `build/flight-disk/test-1.d81` beside the mission disks. Without a
+build, take the images CI booted: each port-ci run that runs
+`flight-disk-vice` keeps `test-1.d81`, `lm-1.d81` and `cm-1.d81` in its
+`c64…-logs` artifact (on the run's GitHub Actions page), once they pass
+in VICE. With the REU in and the 1581 on device 8:
 
 ```text
 LOAD"APOLLO TEST",8
@@ -211,7 +214,8 @@ It loads like the LM disk (the same 1.9 MB store, about 4.4 minutes on a
 1581) and verifies the store. Then, at the stock 1 MHz:
 
 1. it measures the video standard (from the raster line count), the
-   REU's size, and the REU's DMA speed both ways (32 KB each way);
+   REU's size (up to "2048 KB OR MORE"), and the REU's DMA speed both
+   ways (32 KB each way);
 2. it runs one fixed piece of flight: the LM's P63 powered descent for
    200 cs (2 s of AGC time) from a snapshot of the host run at 17,513 cs,
    with the host run's inputs (engine, PIPAs, keys) fed at the same AGC
@@ -227,7 +231,7 @@ runs it in `make flight-disk-vice`):
 APOLLO 11 ON THE C64: HARDWARE CHECK
 
 VIDEO: PAL, 985248 HZ
-REU: 2048 KB
+REU: 2048 KB OR MORE
 REU DMA, BYTES/S: C64>REU 923472
                  REU>C64 928145
 
@@ -257,6 +261,10 @@ fault of the C64.
 
 The test disk only checks: when the report is up, the program stops there.
 Switch off or reset to load a mission disk.
+
+From a real machine, the useful numbers are the whole screen: the video
+line, the REU size and both DMA speeds, the C64 time and x real time, the
+CRC and PASS or FAIL. A photograph of the screen carries all of them.
 
 ## The C64 Ultimate (unverified)
 

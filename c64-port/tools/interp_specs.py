@@ -4418,6 +4418,11 @@ SPECS = {
         'max_steps': 40000,
         # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
         'index_returns': True,
+        # Those returns land past the call: P370GOF and P37GFRB1 proceed to
+        # the call +2 (TC SPRTEX recycles to +1), P370GOFR recycles to +3
+        # and proceeds to +4 (TC RTENCKEX is +1). Keys of their own, as
+        # RTEVN's CAF V6N60RTE after the N39 display (36,3017).
+        'in_file_returns': {'P370GOF': [1], 'P37GFRB1': [1], 'P370GOFR': [2, 3]},
         # EBANK= RTEDVD: the RTE temporaries are E7 words.
         'ebank': 7,
         # NN2 (E7,1731), GAMDV's pass count, from -144 up to 0: small
@@ -4444,6 +4449,18 @@ SPECS = {
                    'V2T150+2': {'03632': [0], '03633': [0]},
                    'GAMDV35': {'vac+025': [0], 'vac+026': [0, 1]},
                    'RTE360+2': {'0154': [0], '0155': [0]}},
+        # Flight arms no random case reached (issue #661), each in half of
+        # its routine's cases (the CHANG2 resumes after it flow from them):
+        # RTE373's conic convergence, GETERAD's radius (MPAC) plus E3RTE
+        # within EPC2RTE of RCON, so BMN RTE374; PREC175's first precision
+        # pass, NN1A = 10RTE, so BZE PREC207; and the crew's RCS option on
+        # V04N06, OPTION2 = 2, so BZE P37Q. RTE375 keeps the conic
+        # iteration's first pass (NN1A = M9RTEB28, so RTE380's BZE RTE385),
+        # which those cases otherwise leave to chance.
+        'joint_states': {'RTE373+6': [{'MPAC': 0, 'MPAC+1': 0, 'RCON': 3, 'RCON+1': 0o27040}, {}],
+                         'RTE375': [{'NN1A': 0o77777, 'NN1A+1': 0o77766}, {}],
+                         'PREC175': [{'NN1A': 0, 'NN1A+1': 0o12}, {}],
+                         'P37N+8': [{'OPTION2': 2}, {}]},
         'target': 'tests/cm_p37_p70_target.c',
         'edge_cases': True,
         'resume_keys': True,
