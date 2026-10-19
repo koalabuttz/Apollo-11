@@ -344,7 +344,8 @@ uint8_t rk_gojam(void);
 static inline uint8_t rk_tc_trap(void)
 {
     const agc_word *w = ((const apollo_overlay_state *)APOLLO_SHARED_ADDRESS)->words;
-    return w[5] == 02037u && w[4] == 066000u && (rk_device.superbank & 0100u) && !rk_hardware.in_interrupt;
+    return w[5] == 02037u && w[4] == 066000u && (rk_device.superbank & 0100u) &&
+           !rk_hardware.in_interrupt;
 }
 /* One run of a loaded module's routine at the current point, straight from
  * its slot (EXEC_UNMAPPED: no loaded module holds it). */
