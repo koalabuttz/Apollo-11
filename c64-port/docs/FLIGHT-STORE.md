@@ -1249,10 +1249,12 @@ port) runs one mission:
    good high (not good) over those centiseconds whatever the tracker
    does (tools/flight_radar.h: channel 33 bit 4 on the LM, bit 2 on the
    CM); the reads still answer. `lm-rendezvous-rr-dropout` drops it from
-   195 s to 210 s, over R22's third mark: the read fails (alarm 521,
+   180 s to 210 s, over R22's third mark on every clock (200 s scaled,
+   186 s on the reference clock): the read fails (alarm 521,
    RADMODES data fail), R22 drops the lock and R21 flashes V50N72 again;
    proceed at 215 s, the RR locks on and the marks go on, one fewer, and
-   P34 ends on N59 as before. `cm-p20-vhf-dropout` drops VHF ranging
+   P34 ends on N59 as before (its PROs at 304 s and 307 s leave room for
+   P34 coming up late on the reference clock). `cm-p20-vhf-dropout` drops VHF ranging
    from 180 s to 190 s, over R22's second range: VHFREAD takes BADEND,
    so no N49 and no mark (VHFCNT 3 by 320 s, not 4), and the next ranges
    incorporate on their own. Five more repeat a P52 with an IMU input
@@ -1284,6 +1286,9 @@ port) runs one mission:
    RCS midcourse correction keyed through P30 (V25 on N33 and N81) from
    cm-p23's load, then P41 to TIG and V16N85; with no CM RCS translation
    model VG holds at 5.0 ft/s. Both match yaAGC.
+   `cm-v48-dap` keys V48 (R03) from cm-p40's load: the crew loads the
+   wide deadband on V04N46 (21112), proceeds on N47 and N48, and S41.2
+   sets ADB and RATEINDX; then V46 (STABLISH). It matches yaAGC.
    `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus

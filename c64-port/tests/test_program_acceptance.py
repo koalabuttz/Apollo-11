@@ -146,7 +146,7 @@ class ProgramAcceptance(unittest.TestCase):
     def test_real_map_names_real_scenarios(self):
         import flight_host_differential as fhd
         names = {n for n, *_ in fhd.FLIGHT}
-        for program in ('Luminary099',):
+        for program in ('Luminary099', 'Comanche055'):
             plan = json.loads((ROOT / f'docs/acceptance/{program}-program-map.json').read_text())
             rows, windows = plan['rows'], plan['replay_windows']
             self.assertLessEqual({s for row in rows for s in row['scenarios']}, {w[0] for w in windows})
