@@ -3556,8 +3556,8 @@
             "sha256": "b75d35bfc6817774de06ce8f727a5406140e0f95c8afc4e0673314cdbf5e0e71"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-p34-p35.md",
-            "sha256": "902029c84f6a9cd8dc44702e04ad1884187402f3e92a4cdc9264e1a1071b1ad5"
+            "path": "docs/audits/rev2-cm-p34-p35-716.md",
+            "sha256": "0ecd42125ba1e5a082f62e56a7d3697ea5e8bc51a235c4b87a7eae02b16fef03"
           }
         }
       }
