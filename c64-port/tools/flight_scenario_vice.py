@@ -459,7 +459,8 @@ def main():
                 sys.exit(f'FAIL: {a.scenario}: the host ran a window {host_window_cs(h)} cs long from {a.snap_cs} cs; '
                          f'the C64 counts at most {WINDOW_MAX} cs')
     # The most states a C64 window writes: one at the first sample point at
-    # or after each `every` mark before --cs, and the end. The C64 has its
+    # or after each of the host's checkpoints (at most one per `every` mark
+    # before --cs), and the end. The C64 has its
     # own sample points, so it can write a state at a mark the host had none
     # for; its area holds them all and replay_state stops at its end.
     max_states = a.cs // every + 1
@@ -474,7 +475,7 @@ def main():
                   f'FAIL: the C64 end of window {n - 1} is not the start of window {n}: {len(seam)} differences, first '
                   + ', '.join(f'{x} {shown(x, h)}/{shown(x, c)}' for x, h, c in seam[:6]) + ' (start/C64 end)'))
             if seam:
-                results.append(dict(ok=False, seam=n))
+                results.append(dict(ok=False, seam=n, error=f'seam {n}: {len(seam)} differences'))
                 break
         keys, defines, patch, end_at = None, [], [], None
         if a.replay:
@@ -484,16 +485,26 @@ def main():
             if n_states > max_states:
                 sys.exit(f'FAIL: {a.scenario}: the host wrote {n_states} states, more than the {max_states} reserved')
             end_bytes = max_states * C64_STATE
+            # The C64 writes its checkpoints and ends where the host did: at
+            # its first sample point at or after each of the host's states'
+            # centiseconds (a first sample point at or after the asked cs
+            # can come a tick before the host's). The checkpoints after the
+            # first go in a 2-byte table after the state area, ended by 0xFFFF.
+            host_cs = [x[0] for x in states(host_end, n_states)]
+            cs, marks = host_cs[-1], host_cs[:-1]
+            table = struct.pack(f'<{len(marks[1:]) + 1}H', *marks[1:], 0xffff)
             # CM channel rows can take two C64 rows each.
-            at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + 256)
+            at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + len(table) + 256)
             end_at = (at + 2 * len(rows) + 0xff) & ~0xff
+            table_at = end_at + end_bytes
             busy = fhd.scenario(a.scenario)[4].get('FLIGHT_BUSY_SAMPLE')
             # The window ends at the C64's first sample point cs in; DP_CS
             # stops it later if none comes.
             # The C64's rows (their count does not depend on rk_device's address).
             n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
             defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u',
-                       f'-DDP_REPLAY_CS={cs}u', f'-DDP_EVERY={every}u', f'-DDP_EVERY_UNTIL={a.cs}u', f'-DDP_END=0x{end_at:x}ul',
+                       f'-DDP_REPLAY_CS={cs}u', f'-DDP_STATE_FIRST={marks[0] if marks else 0xffff}u',
+                       f'-DDP_STATE_TABLE=0x{table_at:x}ul', f'-DDP_END=0x{end_at:x}ul',
                        f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
                        *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at)]
             kinds = {}
@@ -510,7 +521,7 @@ def main():
                       m, a.profile, keys, [w for w in a.watch.split(',') if w][:5], defines)
         if a.replay:
             # rk_device's address comes from the link.
-            patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending')))]
+            patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending'))), (table_at, table)]
         # The run's declared REU regions (tools/reu_layout.py): VICE logs every
         # DMA, read or write, that is not inside one of them, and afterwards every
         # changed byte must lie in a writable one (not the store, the rope or the
@@ -590,7 +601,9 @@ def main():
         if a.profile:
             r['profile'] = dp.profile(tag)
         r.update(scenario=a.scenario, snap_cs=a.snap_cs, snap_at=snap_at, snap_slid=slid > SLIDE_CS, requested_cs=cs,
-                 host_holes=holes)
+                 host_holes=holes, commit=flight_holes.source_commit())
+        if a.chain > 1:
+            r.update(chain=a.chain, chain_window=n)
         # Status 0 means no step refused; it does not mean the window ran to its
         # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
         # reports status 0). A window that stops short of --cs without a refusal
@@ -627,6 +640,17 @@ def main():
             break
     if a.chain > 1:
         ok = len(results) == a.chain and all(x.get('ok') for x in results)
+        # One result for the whole chain (tools/program_acceptance.py): each
+        # window's verdict, and the seam that failed if one did.
+        first = results[0] if results else {}
+        (dp.WORK / f'{a.scenario}-{a.snap_cs}-chain{a.chain}.json').write_text(json.dumps(dict(
+            scenario=a.scenario, snap_cs=a.snap_cs, snap_at=first.get('snap_at'), requested_cs=a.cs, chain=a.chain,
+            ok=ok, status=next((x.get('status') for x in results if x.get('status')), 0), replay_rows=sum(x.get('replay_rows', 0) for x in results),
+            replay_ended=ok, replay_differences=0 if ok else None, commit=flight_holes.source_commit(),
+            reu_bounds=dict(ok=all((x.get('reu_bounds') or {}).get('ok', True) for x in results)),
+            windows=[{k: x.get(k) for k in ('ok', 'status', 'at', 'seam', 'error', 'replay_differences',
+                                             'replay_differ_at_cs', 'replay_first', 'replay_matched_cs',
+                                             'requested_cs', 'wall_per_agc')} for x in results]), indent=1) + '\n')
         print(f"{a.scenario}: chain of {a.chain} windows from {a.snap_cs} cs: " + ('every window matches the host and every seam holds' if ok else f'FAIL at window {len(results) - 1}'))
     return 0 if all(x.get('ok') for x in results) and len(results) == a.chain else 1
 

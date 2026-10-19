@@ -1,0 +1,28 @@
+{
+ "scenario": "lm-abort-p70-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 180000,
+ "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036733",
+  "FLIGHT_LR_POS2": "500",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_ENGINE_LAG": "0.2",
+  "FLIGHT_CHAN": "115000:030=036350"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "b9a2bcb2256e",
+ "cia_interrupts": 188107,
+ "periods_taken": 180001,
+ "periods_dropped": 8106,
+ "agc_centiseconds": 180001,
+ "native_routines": 7512906,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "983ff74821e4a92f025f281af557923dd0bb218c0d5f8a89b31a9d650554801d"
+}

@@ -1,0 +1,73 @@
+{
+ "scenario": "lm-p52-realign",
+ "ok": false,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 48235061,
+ "agc_cs": 600,
+ "dropped_ticks": 0,
+ "steps": 2734,
+ "wall_per_agc": 8.16,
+ "lost": false,
+ "mission": "lm",
+ "snap_cs": 2000,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 17
+ },
+ "replay_rows": 3,
+ "replay_applied": 3,
+ "replay_end_cs": 600,
+ "replay_ended": true,
+ "replay_matched_cs": [
+  100
+ ],
+ "replay_differences": 5,
+ "replay_differ_at_cs": 204,
+ "replay_skipped": [],
+ "replay_first": [
+  {
+   "at": "centiseconds",
+   "host": "00314",
+   "c64": "00313"
+  },
+  {
+   "at": "TIME1",
+   "host": "32012",
+   "c64": "32011"
+  },
+  {
+   "at": "TIME3",
+   "host": "22454",
+   "c64": "22453"
+  },
+  {
+   "at": "TIME4",
+   "host": "37774",
+   "c64": "37773"
+  },
+  {
+   "at": "TIME5",
+   "host": "37774",
+   "c64": "37772"
+  }
+ ],
+ "snap_at": 2002,
+ "snap_slid": false,
+ "requested_cs": 600,
+ "host_holes": [],
+ "commit": "c76e489507c0"
+}

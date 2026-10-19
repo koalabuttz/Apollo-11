@@ -250,6 +250,21 @@ extern agc_hardware rk_hardware;
  * leaves, so they lag a base-table write. A snapshot (tools/flight_host_run.c
  * FLIGHT_SNAPSHOT) sets the canonical record, rk_hardware and rk_flight:
  * a boot that loads one writes rk_device's copies from it with this. */
+#if RK_CM
+/* Channels 11-14 as both copies held them after the last step
+ * (resident_flight.c rk_channels_merge). */
+extern agc_word rk_ch_last[4];
+/* A start that writes both copies (a snapshot, a test row) seeds the merge
+ * from rk_device, so at the first merge a copy that differs from the record
+ * is rk_hardware's, and it stands. */
+static inline void rk_channels_seed(void)
+{
+    rk_ch_last[0] = rk_device.channel11;
+    rk_ch_last[1] = rk_device.channel12;
+    rk_ch_last[2] = rk_device.channel13;
+    rk_ch_last[3] = rk_device.channel14;
+}
+#endif
 static inline void rk_device_from_canonical(void)
 {
 #if RK_CM
@@ -264,6 +279,7 @@ static inline void rk_device_from_canonical(void)
     rk_device.trap32 = rk_flight.trap32;
     rk_device.executive_alarm = rk_flight.executive_alarm;
     rk_device.waitlist_alarm = rk_flight.waitlist_alarm;
+    rk_channels_seed();
 #endif
 }
 /* The channel 13 the timers read (src/resident_rupt.c CH13): on the CM
