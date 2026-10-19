@@ -527,6 +527,20 @@
    1000,
    1,
    100
+  ],
+  [
+   "cm-v48-dap",
+   2450,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-v48-dap",
+   7450,
+   300,
+   1,
+   50
   ]
  ],
  "rows": [
@@ -1238,10 +1252,18 @@
    "row": "R03 (V48)",
    "section": "R routines",
    "entry": "DAPDISP",
-   "status": "TBD",
-   "scenarios": [],
-   "note": "mapped (pending merge): V48 from cm-p40's load, crew loads N46 21112 (wide deadband), proceeds on N46/N47/N48; S41.2 sets ADB 455, RATEINDX 4; host matches yaAGC",
-   "owner": "D1b"
+   "status": "mapped",
+   "scenarios": [
+    "cm-v48-dap"
+   ],
+   "note": "mapped (#745, 2d1b2e64): V48 from cm-p40's load, crew loads N46 21112 (wide deadband), proceeds on N46/N47/N48; S41.2 sets ADB 455, RATEINDX 4; host matches yaAGC",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-v48-dap",
+     2450
+    ]
+   ]
   },
   {
    "row": "R05 (V64)",
@@ -1697,10 +1719,18 @@
    "row": "V46 establish G&C control (DAP)",
    "section": "extended verbs",
    "entry": "STABLISH",
-   "status": "TBD",
-   "scenarios": [],
-   "note": "mapped (pending merge): V46 after the V48 load establishes the RCS DAP; host matches yaAGC",
-   "owner": "D1b"
+   "status": "mapped",
+   "scenarios": [
+    "cm-v48-dap"
+   ],
+   "note": "mapped (#745, 2d1b2e64): V46 after the V48 load establishes the RCS DAP; host matches yaAGC",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-v48-dap",
+     7450
+    ]
+   ]
   },
   {
    "row": "V47 move LM state vector into CM",
@@ -1715,10 +1745,18 @@
    "row": "V48 load DAP data (R03)",
    "section": "extended verbs",
    "entry": "DAPDISP",
-   "status": "TBD",
-   "scenarios": [],
-   "note": "mapped (pending merge): V48 from cm-p40's load, crew loads N46 21112 (wide deadband), proceeds on N46/N47/N48; S41.2 sets ADB 455, RATEINDX 4; host matches yaAGC",
-   "owner": "D1b"
+   "status": "mapped",
+   "scenarios": [
+    "cm-v48-dap"
+   ],
+   "note": "mapped (#745, 2d1b2e64): V48 from cm-p40's load, crew loads N46 21112 (wide deadband), proceeds on N46/N47/N48; S41.2 sets ADB 455, RATEINDX 4; host matches yaAGC",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-v48-dap",
+     2450
+    ]
+   ]
   },
   {
    "row": "V49 crew-defined maneuver (R62)",
