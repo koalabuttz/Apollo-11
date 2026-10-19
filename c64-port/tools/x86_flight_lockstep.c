@@ -16,12 +16,16 @@
  * fails the run (the x86 program has no bridge); interpretive points the
  * core ran are listed.
  *   x86-flight-lockstep-<m> ROPE.bin [CS [KEYS]]   (FLIGHT_CH30, FLIGHT_CH31,
- *   FLIGHT_POKE as the x86 program) */
+ *   FLIGHT_POKE as the x86 program)
+ * X86_TYPED=chars sends chars through the live DSKY's typed-key path
+ * (platform/x86/terminal_dsky.h: 20 cs apart, p holds PRO), as if typed at
+ * X86_DSKY=1 from the start. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "agc_engine.h"
 #include "flight_scenario.h"
+#include "terminal_dsky.h"
 #ifndef X86_INTERP_MODE
 #define X86_INTERP_MODE FD_INTERP_COMPILED
 #endif
@@ -64,10 +68,19 @@ static void load(const fd_state *st){unsigned i;agc_hardware hw=st->hw;
 static void view(fd_state *v){unsigned i;
  for(i=0;i<2048u;++i)v->s.words[i]=mword(i);
  v->io.superbank=(agc_word)(m.OutputChannel7&0160);}
-/* Where the two differ, at most n words: erasable (Z aside), channels,
- * interrupt state. */
+/* Q as both sides hold it: native routines do not sign-extend Q into its
+ * 16th bit where yaAGC does (LM P63's landing displays, LLGE, integration
+ * init, CM P11 and P22), and nothing reads that bit back except as a
+ * return address; the host differential compares no central register.
+ * So the one difference let through is native bit 16 clear where yaAGC's
+ * bit 16 copies its bit 15; any other bit-16 difference is a miss. */
+static int q_same(agc_word native){agc_word y=(agc_word)((uint16_t)*cell(2));
+ if(native==y)return 1;
+ return !(native&0100000u)&&(native&077777u)==(y&077777u)&&((y>>15)&1u)==((y>>14)&1u);}
+/* Where the two differ, at most n words: erasable (Z aside, Q as q_same),
+ * channels, interrupt state. */
 static unsigned differs(const fd_state *st,char *why,size_t len){unsigned i,d=0;size_t o=0;agc_hardware hw=st->hw;
- for(i=0;i<2048u;++i)if(i!=5u&&mword(i)!=st->s.words[i]){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," %04o %05o/%05o",i,(unsigned)st->s.words[i],(unsigned)mword(i));}
+ for(i=0;i<2048u;++i)if(i!=5u&&(i==2u?!q_same(st->s.words[2]):mword(i)!=st->s.words[i])){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," %04o %05o/%05o",i,(unsigned)st->s.words[i],(unsigned)mword(i));}
  for(i=0;i<CHANNELS;++i)if(ch[i]!=3u&&ch[i]!=4u&&((agc_word)(m.InputChannel[ch[i]]&077777))!=*hwc(&hw,i)){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," ch%02o %05o/%05o",ch[i],(unsigned)*hwc(&hw,i),(unsigned)(m.InputChannel[ch[i]]&077777));}
  /* The downlink words (FLIGHT_DOWNRUPT). */
  if((agc_word)(m.InputChannel[034]&077777)!=st->io.channel34||(agc_word)(m.InputChannel[035]&077777)!=st->io.channel35){
@@ -105,11 +118,14 @@ static long lockstep(const fd_state *before,const fd_state *after,char *why,size
   for(k=0;k<24u;++k){static fd_state vv;int in2;view(&vv);printf("  yaAGC Z %05o FB %05o A %06o isr %d quiet %d pend %d xd %d iv %d xc %d sub %d point %u/%u\n",(unsigned)mword(5),(unsigned)mword(4),(unsigned)mword(0),m.InIsr,quiet(),m.PendFlag,m.ExtraDelay,m.IndexValue,m.ExtraCode,m.SubstituteInstruction,fd_point(&vv,&in2),fd_point(after,&in2));if(agc_engine(&m))break;}}}
  return -1;}
 
-int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;fd_ran ran;unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,checked=0,instructions=0;
+int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;static terminal_dsky typed;fd_ran ran;
+ const char *keys=getenv("X86_TYPED");unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,checked=0,instructions=0;
  char why[160];unsigned i;
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: x86-flight-lockstep ROPE.bin [CS [KEYS]]\n");return 2;}
  AgcFrozenClock=1;InhibitAlarms=1;m=loaded;
  if(!fs_parse(&in,argc>3?argv[3]:""))return 2;
+ td_init(&typed);
+ for(;keys&&*keys;++keys)td_type(&typed,(unsigned char)*keys);
  fs_start(&st,X86_INTERP_MODE);
  while(fd_centiseconds(&st)<cs){long n;
   /* An interrupt taken at a RESUME point saves the word at Z as BRUPT:
@@ -117,13 +133,14 @@ int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;fd_
   if(fd_boundary(&st))substitute=0;
   if(fs_at_idle_advan(&st)){int k=fs_inputs_due(&in,&st);
    if(k==FS_GOJAM){printf("GOJAM at %lu cs\n",fd_centiseconds(&st));substitute=0;}
-   if(k)continue;}
+   if(k||td_inputs_due(&typed,&st))continue;}
   before=st;
   if(fd_run(&st,&ran)==EXEC_UNMAPPED){printf("no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",ran.key/1024u,ran.key%1024u+02000u,
    (unsigned)st.s.words[5],(unsigned)st.s.words[4],fd_centiseconds(&st));break;}
   if(ran.status!=EXEC_OK){printf("%s refused at %02o,%04o at %lu cs\n",ran.table?ran.table->name:"interpreter core",ran.key/1024u,ran.key%1024u+02000u,fd_centiseconds(&st));break;}
   ++checked;
-  if((n=lockstep(&before,&st,why,sizeof why))<0)miss(&ran,why);else instructions+=(unsigned long)n;}
+  if((n=lockstep(&before,&st,why,sizeof why))<0)miss(&ran,why);else instructions+=(unsigned long)n;
+  fs_after_routine(&in,&st);}
  printf("%s x86 lockstep (%s): %lu cs, %lu routines and core slots checked (%lu yaAGC instructions), %u points yaAGC did not match, "
   "%lu clock periods; major mode %02o, FAILREG %05o\n",MISSION?"CM":"LM",X86_INTERP_MODE==FD_INTERP_CORE?"interpreter core":"compiled",
   fd_centiseconds(&st),checked,instructions,nmisses,st.periods,(unsigned)st.s.words[01011],(unsigned)st.s.words[0375]);

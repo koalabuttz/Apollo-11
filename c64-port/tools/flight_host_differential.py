@@ -548,6 +548,30 @@ CM_P52_IMU_CAGE = {**P52, 'FLIGHT_CHAN': '4000:033=077757,6000:030=035377,6500:0
 # platform (channel 12 bit 6 with the CDU drives), and NO ATT lights with
 # GIMBAL LOCK.
 CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,19000:034=017200'}
+# Crew verbs the other CM scenarios do not key (the Comanche055 coverage
+# map, /mnt/project-files/acceptance/comanche055-coverage-map.md).
+# cm-p20-crew-verbs: cm-p20 to 200 s, then V90 (R36, out-of-plane): V04N12
+# (option 2), proceed, V06N16 (event time 0: now), proceed, V06N90 (Y and
+# Y-dot 0: the two orbits are coplanar, PSI 180 degrees), proceed. V44
+# (surface flag set): R61 recomputes the tracking attitude for an LM on
+# the surface, stores alarm 00407 through R52's path and asks for a
+# maneuver (V50N18); V45 (reset), V88 (VHF ranging off) and V58 (auto
+# maneuver enabled) go in under the flashing V50N18, then V93 (RENDWFLG cleared: the W matrix is no longer valid).
+CM_P20_CREW_KEYS = CM_P20_KEYS + '@21000V90E@22000V33E@23000V33E@24000V33E@25000V33E@26000V44E@27000V45E@28000V88E@29000V58E@30000V93E'
+# cm-p23-attached: cm-p23 to P00, then V66 (vehicles attached): ATTACHIT
+# copies the CSM's state vector into the LM's, as after docking.
+P23_ATTACHED_KEYS = P23_KEYS + '@28500V66E'
+# cm-v49-maneuver: cm-p40's start (the docked stack before LOI), V76
+# (preferred attitude flag set), then V49 (R62): V06N22 loaded with V25 to roll 180 degrees, proceed, R60's
+# V50N18, proceed: KALCMANU steers toward the new attitude and R60 shows
+# V06N18. The harness has no CM attitude dynamics, so the CDUs stay put
+# and the steering runs to the end of the run.
+V49_KEYS = '@2000V76E@3000V49E@4000V25E+18000E+00000E+00000E@5500V33E@6500V33E'
+# cm-p21: cm-p52 to P00, then V37E21E (P21, ground track): V04N06 option 2
+# (this vehicle), proceed; V06N34 (the GET of interest: now, 00:33:00.81),
+# proceed; V06N43 shows the latitude, longitude and altitude there
+# (-7.40, +111.70 degrees, 97.1 nmi).
+P21_KEYS = P52_KEYS + '@19500V37E21E@20500V33E@21500V33E@22500V33E@23500V33E'
 # lm-p63-lr-dropout: lm-p63-nassp with the landing radar from 600 s
 # (FLIGHT_LR, tools/flight_lr.h: range and velocity beams from the true
 # trajectory, data good below 50,000 ft of slant range) and its data good
@@ -563,6 +587,22 @@ LR_DROP = {**NASSP, 'FLIGHT_LR': '60000', 'FLIGHT_LR_DROP': '88000-95000'}
 # out, FLAGWRD7 bit 4), so V37E at 55 s is ignored; ERROR RESET at 65 s
 # unlocks it and V37E00E takes P00.
 UPLINK = {'FLIGHT_SWAP_MCT': '0', 'FLIGHT_UPLINK': '2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E'}
+# lm-uplink-accept / cm-uplink-accept: accepted P27 loads in P00, one per
+# uplink verb. V71 (contiguous block): 4 components (II, the ECADR of
+# TTPI, its two words), each a flashing V21N01; V21N02 then asks for the
+# verify and V33 stores them (UPEND71). V72 (scatter): II 3, then one
+# ECADR and its word: TTPI's high word 1. V73 (clock increment) and V70
+# (liftoff time increment): 0 and 144 octal, V33 (100 cs each). V06N37
+# shows TTPI, 1 x 2^14 + 5120 cs: 00 03 35.04. V74 at 120 s starts the
+# erasable dump on the downlink (DNEDUMP; list 01776 LM, 01777 CM), so
+# DOWNRUPT runs and both sides' downlink words are compared.
+# cm-uplink-reject: lm-uplink-reject's keys on the CMC.
+def uplink_accept(ecadr):
+    return {'FLIGHT_SWAP_MCT': '0', 'FLIGHT_DOWNRUPT': '1', 'FLIGHT_UPLINK': '2000:V71E;2400:4E;2800:%sE;3200:0E;3600:12000E;4200:V33E;'
+            '5000:V72E;5400:3E;5800:%sE;6200:1E;6600:V33E;7200:V73E;7600:0E;8000:144E;8400:V33E;'
+            '9200:V70E;9600:0E;10000:144E;10400:V33E;11200:V06N37E;12000:V74E' % (ecadr, ecadr)}
+UPLINK_ACCEPT_LM = uplink_accept('3635')   # TTPI E7,1635
+UPLINK_ACCEPT_CM = uplink_accept('3662')   # TTPI E7,1662
 # Executive overload (the 1201/1202 alarms). Apollo 11's RR CDU counts
 # stole counter cycles from the LGC in P63; FLIGHT_STEAL spends N MCT a
 # centisecond that no routine runs in, so the jobs get less time.
@@ -615,6 +655,9 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-lr-v58', 'lm', 96000, LR_V58_KEYS, LR_UPDATE),
           ('lm-p63-v60-nassp', 'lm', 115000, NASSP_KEYS + '@100000V60E', V60),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
+          ('lm-uplink-accept', 'lm', 14000, '', UPLINK_ACCEPT_LM),
+          ('cm-uplink-accept', 'cm', 14000, '', UPLINK_ACCEPT_CM),
+          ('cm-uplink-reject', 'cm', 9000, '', UPLINK),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-p52-imu-fail', 'lm', 10000, LM_P52_KEYS, LM_P52_IMU_FAIL),
@@ -622,6 +665,10 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p52-imu-fail', 'cm', 20000, P52_KEYS, CM_P52_IMU_FAIL),
           ('cm-p52-imu-cage', 'cm', 20000, P52_KEYS, CM_P52_IMU_CAGE),
           ('cm-p52-gimbal-lock', 'cm', 21000, P52_KEYS, CM_P52_GIMBAL_LOCK),
+          ('cm-p20-crew-verbs', 'cm', 32000, CM_P20_CREW_KEYS, CM_P20),
+          ('cm-p23-attached', 'cm', 30000, P23_ATTACHED_KEYS, P23),
+          ('cm-v49-maneuver', 'cm', 15000, V49_KEYS, P40),
+          ('cm-p21', 'cm', 25000, P21_KEYS, P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),

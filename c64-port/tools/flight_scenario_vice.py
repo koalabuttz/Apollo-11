@@ -93,6 +93,11 @@ def compared(i):
     return i >= 0o20 and not 0o70 <= i <= 0o73 and not 0o24 <= i <= 0o31
 
 
+def shown(x, v):
+    """A compared value as printed: centiseconds in decimal, words in octal."""
+    return f'{v} cs' if x == 'centiseconds' else f'{v:05o}'
+
+
 def replay_place(manifest, m, image, size):
     """An REU address for size bytes of replay rows and end state: the top
     of the zeros between the store and the next declared region (the
@@ -173,6 +178,34 @@ def c64_states(data, n, m):
     return out
 
 
+# The C64's window clock is TIME1's low 14 bits (dap_pass_check.c replay_cs).
+WINDOW_MAX = 0o37777
+
+
+def pair_states(host_s, c64_s, ended):
+    """Host and C64 states to compare, paired by their centiseconds: each
+    side writes a state at its own first sample point at or after a mark,
+    so one side can have a state the other has none for. Checkpoints pair
+    at the same centisecond; the two ends (the host's last
+    state, and the C64's last when it reached the end) always pair. Returns
+    (pairs, unpaired), unpaired as dict(side, cs)."""
+    h, c = list(host_s), list(c64_s)
+    ends = [(h.pop(), c.pop())] if h and c and ended else []
+    pairs, unpaired, i, j = [], [], 0, 0
+    while i < len(h) and j < len(c):
+        if h[i][0] == c[j][0]:
+            pairs.append((h[i], c[j]))
+            i, j = i + 1, j + 1
+        elif h[i][0] < c[j][0]:
+            unpaired.append(dict(side='host', cs=h[i][0]))
+            i += 1
+        else:
+            unpaired.append(dict(side='C64', cs=c[j][0]))
+            j += 1
+    unpaired += [dict(side='host', cs=x[0]) for x in h[i:]] + [dict(side='C64', cs=x[0]) for x in c[j:]]
+    return pairs + ends, unpaired
+
+
 def states(data, n):
     """The first n states of an end-state file: (centiseconds, words)."""
     k = STATE // 2 - 1
@@ -184,11 +217,9 @@ def states(data, n):
 # (the rest of the period), so the C64's schedule can sit a tick off the
 # host's (RK: FS_IDLE honouring on the CM idle+interbank set). Until that
 # lands, CM windows skip what a tick moves: DSPCNT and DSRUPTSW (T4RUPT's
-# display cycle), DSPTAB's sent bit (a word and its complement are the same
-# digits, sent or not) and a checkpoint one centisecond off (not compared
-# at all when its words differ, unless it ends the window). Every result
-# that skips anything says so. Remove with the RK fix.
-SCHEDULE_SKIP = {'cm': dict(words={0o776: 'DSPCNT', 0o1302: 'DSRUPTSW'}, sent=range(0o1023, 0o1037), cs=1)}
+# display cycle) and DSPTAB's sent bit (a word and its complement are the
+# same digits, sent or not). Every result that skips anything says so.
+SCHEDULE_SKIP = {'cm': dict(words={0o776: 'DSPCNT', 0o1302: 'DSRUPTSW'}, sent=range(0o1023, 0o1037))}
 
 
 TIMERS = {0o24: 'TIME2', 0o25: 'TIME1', 0o26: 'TIME3', 0o27: 'TIME4', 0o30: 'TIME5', 0o31: 'TIME6'}
@@ -201,14 +232,13 @@ TIMERS = {0o24: 'TIME2', 0o25: 'TIME1', 0o26: 'TIME3', 0o27: 'TIME4', 0o30: 'TIM
 TIME5_PHASE = 'TIME5 a count apart (a third of a centisecond)'
 
 
-def replay_compare(h, c, skip=None, skipped=None, apart=False):
+def replay_compare(h, c, skip=None, skipped=None):
     """The differences between a host state and the C64's: (name, host,
     C64) for each compared erasable word, the timers, then each output
-    channel. apart: the states are a skipped centisecond apart, so the
-    timers are not compared."""
+    channel."""
     out = []
     for i, name in TIMERS.items():
-        if apart or h[i] == c[i]:
+        if h[i] == c[i]:
             continue
         if i == 0o30 and h[0o25] == c[0o25] and (h[i] - c[i]) % 0o40000 in (1, 0o37777):
             skipped.add(TIME5_PHASE)
@@ -407,13 +437,28 @@ def main():
         windows.append((pathlib.Path(f'{header}-{n}'), f'{tag}-{n}', a.cs))
     if a.chain > 1:
         windows = [(h, t, host_window_cs(h)) for h, t, _ in windows]
+    # The C64 counts a window on TIME1's 14 bits (dap_pass_check.c
+    # replay_cs): a longer one wraps, and its states land on the store.
+    if a.replay:
+        for h, _, _ in windows:
+            if host_window_cs(h) > WINDOW_MAX:
+                sys.exit(f'FAIL: {a.scenario}: the host ran a window {host_window_cs(h)} cs long from {a.snap_cs} cs; '
+                         f'the C64 counts at most {WINDOW_MAX} cs')
+    # The most states a C64 window writes: one at the first sample point at
+    # or after each `every` mark before --cs, and the end. The C64 has its
+    # own sample points, so it can write a state at a mark the host had none
+    # for; its area holds them all and replay_state stops at its end.
+    max_states = a.cs // every + 1
+    if max_states > 255:
+        sys.exit(f'FAIL: {a.scenario}: {max_states} states in a window; the C64 counts at most 255 '
+                 '(raise --replay-every)')
     results, c64_end = [], None
     for n, (header, tag, cs) in enumerate(windows):
         if n:
             seam = seam_check(header, c64_end, m)
             print(f'{a.scenario}: seam {n}: ' + (f'the C64 end of window {n - 1} is the start of window {n}' if not seam else
                   f'FAIL: the C64 end of window {n - 1} is not the start of window {n}: {len(seam)} differences, first '
-                  + ', '.join(f'{x} {h:05o}/{c:05o}' for x, h, c in seam[:6]) + ' (start/C64 end)'))
+                  + ', '.join(f'{x} {shown(x, h)}/{shown(x, c)}' for x, h, c in seam[:6]) + ' (start/C64 end)'))
             if seam:
                 results.append(dict(ok=False, seam=n))
                 break
@@ -422,7 +467,9 @@ def main():
             rows = pathlib.Path(f'{header}.replay').read_bytes()
             host_end = pathlib.Path(f'{header}.end').read_bytes()
             n_states = len(host_end) // STATE
-            end_bytes = n_states * C64_STATE
+            if n_states > max_states:
+                sys.exit(f'FAIL: {a.scenario}: the host wrote {n_states} states, more than the {max_states} reserved')
+            end_bytes = max_states * C64_STATE
             # CM channel rows can take two C64 rows each.
             at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + 256)
             end_at = (at + 2 * len(rows) + 0xff) & ~0xff
@@ -432,7 +479,8 @@ def main():
             # The C64's rows (their count does not depend on rk_device's address).
             n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
             defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u',
-                       f'-DDP_REPLAY_CS={cs}u', f'-DDP_EVERY={every}u', f'-DDP_EVERY_UNTIL={a.cs}u', f'-DDP_END=0x{end_at:x}ul', *([f'-DDP_BUSY={int(busy)}u'] if busy else [])]
+                       f'-DDP_REPLAY_CS={cs}u', f'-DDP_EVERY={every}u', f'-DDP_EVERY_UNTIL={a.cs}u', f'-DDP_END=0x{end_at:x}ul',
+                       f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else [])]
             kinds = {}
             for row in ROW.iter_unpack(rows):
                 kinds[row[1]] = kinds.get(row[1], 0) + 1
@@ -487,22 +535,18 @@ def main():
             r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended))
             # Every state the C64 wrote against the host's at the same point.
             image = (dp.WORK / f'vice-{tag}' / 'image.reu').read_bytes()
-            host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, n_states), m)
+            host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, max_states), m)
             c64_end = c64_s[-1][1] if c64_s else None
             diff, at_cs, matched, skipped = [], None, [], set()
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            pairs = list(zip(host_s, c64_s))
-            for k, ((hc, hw), (cc, cw)) in enumerate(pairs):
-                apart = hc != cc and skip and abs(hc - cc) <= skip['cs']
-                diff = replay_compare(hw, cw, skip, skipped, apart)
-                if apart:
-                    # A tick apart, an interrupt's temporaries can differ
-                    # too; such a checkpoint is skipped, the window's end is not.
-                    if diff and k < len(pairs) - 1:
-                        skipped.add(f'checkpoint at {hc} cs a centisecond apart ({len(diff)} words)')
-                        continue
-                    skipped.add('checkpoints a centisecond apart')
-                elif hc != cc:
+            pairs, unpaired = pair_states(host_s, c64_s, bool(ended))
+            r.update(replay_unpaired=unpaired)
+            if unpaired:
+                print(f'{a.scenario}: states with no partner, not compared: '
+                      + ', '.join(f"{u['side']} {u['cs']} cs" for u in unpaired))
+            for (hc, hw), (cc, cw) in pairs:
+                diff = replay_compare(hw, cw, skip, skipped)
+                if hc != cc:
                     diff.insert(0, ('centiseconds', hc, cc))
                 if diff:
                     at_cs = hc
@@ -512,16 +556,16 @@ def main():
                 print(f"{a.scenario}: skipped (temporary, SCHEDULE_SKIP / TIME5_PHASE): {', '.join(sorted(skipped))}")
             r.update(replay_matched_cs=matched, replay_differences=len(diff), replay_differ_at_cs=at_cs,
                      replay_skipped=sorted(skipped),
-                     replay_first=[dict(at=x, host=f'{h:05o}', c64=f'{c:05o}') for x, h, c in diff[:32]])
+                     replay_first=[dict(at=x, host=shown(x, h), c64=shown(x, c)) for x, h, c in diff[:32]])
             seen = (f"matches the host{' (with skips)' if skipped else ''} at {', '.join(map(str, matched))} cs" if matched
                     else 'matches the host at no point')
             if diff:
                 r['ok'] = False
                 print(f'FAIL: {a.scenario}: the C64 {seen}, then leaves it by {at_cs} cs into the window '
                       f'({applied} of {n_c64} input rows applied): {len(diff)} differences; '
-                      f'first at {diff[0][0]} host {diff[0][1]:05o} C64 {diff[0][2]:05o}')
+                      f'first at {diff[0][0]} host {shown(*diff[0][:2])} C64 {shown(diff[0][0], diff[0][2])}')
                 for x, h, c in diff[1:12]:
-                    print(f'  {x} host {h:05o} C64 {c:05o}')
+                    print(f'  {x} host {shown(x, h)} C64 {shown(x, c)}')
             elif not ended:
                 r['ok'] = False
                 print(f'FAIL: {a.scenario}: the C64 {seen}, then did not reach a sample point {cs} cs in '
