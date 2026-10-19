@@ -206,25 +206,16 @@ ARMS = {
         ],
     },
     'cm-p34-p35': {
-        'cases': 262656, 'cases_sha256': 'fb0f6f29eec0c4335b20e299b249f7bbddc6c77bcb1f1b7818d105442e94b1e5',
+        'cases': 262656, 'cases_sha256': 'b59edc2986835fd48ee086602d259f2b03fa79401ae0f99643b3c6dddf95fc83',
         'sources_sha256': {'src/cm_p34_p35.c': '31f6f1d1973a741dd49d9972067ce27ab6e5b5f5c66b9fe747e4c207d3dccccd'},
         'arms': [
-            {'src': 'src/cm_p34_p35.c', 'line': 1199, 'agc': '11,2123', 'op': 'BHIZ VLOAD', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': "X1 = RTX1+2 (if 18D>=0) or RTX1+10 (if 18D<0), so it is 0 for Earth with z of -N >= 0 or Moon with z of -N < 0. This depends on the orbit sense and on whether the transfer angle is over 180 deg, all legitimate geometry; cases never pair a valid RTX1 with that sign. (Low priority: in Apollo's own Earth-prograde / lunar-retrograde orbits it needs a transfer angle >180 deg.)"},
-            {'src': 'src/cm_p34_p35.c', 'line': 1530, 'agc': '11,2205', 'op': 'SLOAD BHIZ', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'X2 = ITCTR - VTARGTAG(=NUMIT) reaches 0 when the precision-offset Lambert/Encke iterations are done; every INITVEL call with NUMIT>0 (P34/P35 with NN offsets, TPI search) leaves the loop here.'},
-            {'src': 'src/cm_p34_p35.c', 'line': 2035, 'agc': '22,3206', 'op': 'SLOAD BHIZ', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'X2 = X1+2 is 0 for Earth (X1=-2): PERIAPO/PERIAPO1 (P30/P31/R30 apsides) in Earth orbit uses RPAD; cases evidently always have a lunar or non-standard X1.'},
-            {'src': 'src/cm_p34_p35.c', 'line': 6680, 'agc': '41,3743', 'op': 'BZF LREGCHK', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'R36 preloads DSPTEMX=0 for V06N16; a crew PRO without keying a time leaves both A and L zero, which takes both BZFs and uses present time (LOADTIME), the documented normal use.'},
-            {'src': 'src/cm_p34_p35.c', 'line': 6693, 'agc': '41,3766', 'op': 'BZF ENTTIM2', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'R36 preloads DSPTEMX=0 for V06N16; a crew PRO without keying a time leaves both A and L zero, which takes both BZFs and uses present time (LOADTIME), the documented normal use.'},
-            {'src': 'src/cm_p34_p35.c', 'line': 6701, 'agc': '41,3771', 'op': 'TC INTPRET', 'what': 'never executed', 'class': 'FLIGHT', 'why': 'R36 preloads DSPTEMX=0 for V06N16; a crew PRO without keying a time leaves both A and L zero, which takes both BZFs and uses present time (LOADTIME), the documented normal use.'},
         ],
     },
     'cm-p37-p70': {
-        'cases': 304640, 'cases_sha256': '16d6ec0aad03c2431c097858cc028b689a46c083e399cc79e4abb058a228e14a',
-        'sources_sha256': {'src/cm_p37_p70.c': 'c0334b3c25758913872c557d0c1e1cf894fab1f6f347f669a1a7d44fc87061de'},
+        'cases': 305152, 'cases_sha256': '07275d45374813e8b512543a095f6282bd26010918f59ee771ca68443c62ce93',
+        'sources_sha256': {'src/cm_p37_p70.c': 'e6d58bb36af885e5a8bb52f735027884980d2388fd0ea43e0588895d05e86ec4'},
         'arms': [
             {'src': 'src/cm_p37_p70.c', 'line': 1959, 'agc': '32,2601', 'op': 'DLOAD BMN', 'what': 'never falls through', 'class': 'OFFNOM', 'why': 'NN2 counts up from -15 (M15RTE); falling through means too many iterations, which gives alarm 605.'},
-            {'src': 'src/cm_p37_p70.c', 'line': 2765, 'agc': '32,3002', 'op': 'DSU BZE', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'PREC100 sets NN1A=10RTE and PREC210 decrements it, so NN1A=10 means the first precision pass; the first time the desired radius is missed (practically every precision solution) it goes to PREC207.'},
-            {'src': 'src/cm_p37_p70.c', 'line': 6741, 'agc': '36,2673', 'op': 'BMN GOTO', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'Taken when the conic RCON error falls under EPC2RTE, the normal convergence exit toward P37E; cases never converge.'},
-            {'src': 'src/cm_p37_p70.c', 'line': 7545, 'agc': '36,3046', 'op': 'DSU BZE', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'OPTION2 is preset 1 (SPS); a crew entry of 2 picks the RCS option, which goes to P37Q. This is an ordinary crew choice.'},
         ],
     },
     'cm-p40-p47': {
