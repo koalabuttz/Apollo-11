@@ -10,8 +10,14 @@
 # tools/flight_downlink_reference.c). Like flight-restart-check they need the
 # listings and the yaAGC objects, and flight-downlink-vice the whole store;
 # neither gates `test`.
-.PHONY: flight-downlink-check flight-downlink-vice
+# flight-downlink-live-vice: the flight program's own downlink (RK_DOWNRUPT,
+# as on its disk): a CM P22 window replayed with DOWNRUPT on both sides, a
+# checkpoint at each DOWNRUPT (every 2 cs), channels 34/35 and all erasable
+# equal to the host's (tools/flight_scenario_vice.py --downrupt).
+.PHONY: flight-downlink-check flight-downlink-vice flight-downlink-live-vice
 flight-downlink-check: build/agc_engine_hardware_dv.o | build
 	python3 tools/flight_downlink_check.py
 flight-downlink-vice: flight-store build/agc_engine_hardware_dv.o
 	python3 tools/flight_downlink_check.py --vice --c64-only
+flight-downlink-live-vice: flight-store
+	python3 tools/flight_scenario_vice.py --scenario cm-p22 --snap-cs 14000 --cs 40 --replay --replay-every 2 --downrupt

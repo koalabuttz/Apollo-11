@@ -1137,11 +1137,15 @@ port) runs one mission:
    (and with `--replay-every N` at the first one at or after every N cs
    before), both sides write their erasable words and output channels (5,
    6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
-   the base tables run on). Each side writes at its own sample points, so
-   the states are paired by their centiseconds, not by order: two ends
-   always pair, and a checkpoint with no state at the same centisecond on
-   the other side (a mark the host was busy through, for one) is listed
-   as unpaired and not compared. The C64's state area holds `--cs` /
+   the base tables run on). The C64 takes its states at the host's: at
+   its first sample point at or after each centisecond the host wrote a
+   state at, the end included (the first sample point at or after the
+   asked centisecond can come a tick before the host's, and every timer
+   then reads one count off). The states are paired by their
+   centiseconds, not by order: the two ends always pair, and a checkpoint
+   with no state at the same centisecond on the other side (the C64 still
+   busy at the host's point, for one) is listed as unpaired and not
+   compared. The C64's state area holds `--cs` /
    `--replay-every` + 1 states and the C64 writes no more, and a window
    the host ran past 16,383 cs (the C64's 14-bit window clock) fails before
    VICE starts;
@@ -1245,10 +1249,12 @@ port) runs one mission:
    good high (not good) over those centiseconds whatever the tracker
    does (tools/flight_radar.h: channel 33 bit 4 on the LM, bit 2 on the
    CM); the reads still answer. `lm-rendezvous-rr-dropout` drops it from
-   195 s to 210 s, over R22's third mark: the read fails (alarm 521,
+   180 s to 210 s, over R22's third mark on every clock (200 s scaled,
+   186 s on the reference clock): the read fails (alarm 521,
    RADMODES data fail), R22 drops the lock and R21 flashes V50N72 again;
    proceed at 215 s, the RR locks on and the marks go on, one fewer, and
-   P34 ends on N59 as before. `cm-p20-vhf-dropout` drops VHF ranging
+   P34 ends on N59 as before (its PROs at 304 s and 307 s leave room for
+   P34 coming up late on the reference clock). `cm-p20-vhf-dropout` drops VHF ranging
    from 180 s to 190 s, over R22's second range: VHFREAD takes BADEND,
    so no N49 and no mark (VHFCNT 3 by 320 s, not 4), and the next ranges
    incorporate on their own. Five more repeat a P52 with an IMU input
@@ -1280,6 +1286,9 @@ port) runs one mission:
    RCS midcourse correction keyed through P30 (V25 on N33 and N81) from
    cm-p23's load, then P41 to TIG and V16N85; with no CM RCS translation
    model VG holds at 5.0 ft/s. Both match yaAGC.
+   `cm-v48-dap` keys V48 (R03) from cm-p40's load: the crew loads the
+   wide deadband on V04N46 (21112), proceeds on N47 and N48, and S41.2
+   sets ADB and RATEINDX; then V46 (STABLISH). It matches yaAGC.
    `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus
@@ -1341,6 +1350,19 @@ port) runs one mission:
    the host does not model, so the CMC's VERB69 loops until the run ends. A V16
    monitor in place of V06 bridges PASTEVB (02,2124 LM, 02,2140 CM):
    the Pinball suite refuses it when ENTRET re-enters it each second.
+   Six LM scenarios cover the rows of the Luminary099 program map
+   (docs/acceptance/Luminary099-program-map.json) that no flight reached.
+   Four start from lm-rendezvous's load. `lm-coast-verbs` keys the coast
+   verbs one after another, each ended by the crew (V61-V67, V74-V77,
+   V80/V81, V89/R63, V90, V93/V95, V47/R47, V43/V44, V49/R62, V42 fine
+   align, V41 coarse align, V40 CDU zero, V96). `lm-coast-v55` loads
+   V21N24 (the N24 load bridges Pinball's HMSIN at 42,3452). `lm-coast-r04`
+   runs V63's radar self test on the RR (one bridge, RDRUSECK's TC Q at
+   50,2002). `lm-coast-programs` selects P21, P31, P25 and P06 with V37.
+   `lm-p51` runs P51 from lm-p52-realign's core, marking Regulus and
+   Gienah (V53 after each X mark). `lm-p22-surface` runs P22 from
+   lm-p57's load: the CSM is beyond the RR's 400 nm, so R21 flashes alarm
+   526 until V34. Every native routine they run matches yaAGC.
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map

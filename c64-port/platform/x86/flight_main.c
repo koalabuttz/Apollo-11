@@ -91,7 +91,7 @@ int main(int argc, char **argv)
                 nanosleep(&d, 0);
             }
         }
-        if (fs_at_idle_advan(&st)) {
+        if (fs_sample_point(&in, &st)) {
             unsigned long t = fd_centiseconds(&st);
             for (; next <= cs && t >= next; ++next)
                 if (samples && next >= from) {

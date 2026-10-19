@@ -383,7 +383,10 @@ def run(target, log_dir, make_args, attempts, stack=()):
                                   env=dict(os.environ, ASAN_OPTIONS='detect_leaks=0'))
         log.write_text(proc.stdout)
         if proc.returncode == 0:
-            return target, True, time.monotonic() - start, ''
+            # A passing target's `summary:` lines (its per-case counts) go
+            # into the CI log under its PASS line.
+            return target, True, time.monotonic() - start, '\n'.join(
+                '  ' + line for line in proc.stdout.splitlines() if line.startswith('summary: '))
         built = sorted(missing_build(proc.stdout) - tried)
         if built:
             tried.update(built)
@@ -530,7 +533,7 @@ def main():
             target, ok, seconds, tail = future.result()
             results.append({'target': target, 'ok': ok, 'seconds': round(seconds, 1)})
             print(f"{'PASS' if ok else 'FAIL'} {target} ({seconds:.0f}s)", flush=True)
-            if not ok:
+            if tail:
                 print(tail, flush=True)
     failed = sorted(r['target'] for r in results if not r['ok'])
     # Separate make processes can race on a shared intermediate; a real
