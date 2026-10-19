@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-acceptance-memory",
+  "release": "evidence-cm-acceptance-memory",
+  "files": {
+    "cm-entry-29000-replay.json": {
+      "sha256": "c31bfe41c7c1043a13689d8aa08be2bcba9ae96bd0b3b9a1e580a3dbb2393fd7",
+      "bytes": 36345,
+      "store": "tree"
+    },
+    "cm-p52-5400-replay.json": {
+      "sha256": "baf75e7c69fc96dcdb7c9b61b71368539106ba39825bfc78ec0932633920070e",
+      "bytes": 11464,
+      "store": "tree"
+    },
+    "cm-tli-31000-replay.json": {
+      "sha256": "a508110272a2ef023409e34074cc89203967bf28f23951c22c51a97300799c6d",
+      "bytes": 12714,
+      "store": "tree"
+    }
+  }
+}

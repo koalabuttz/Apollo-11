@@ -395,6 +395,50 @@ LM_TPM_KEYS = ('@2200V37E20E@3000V33E@4700E@6100V33E@12000V85E@14000V34E@20000V8
 # lm: the same with the LM active, P38 and P39.
 LM_SO_KEYS = ('@2200V37E20E@3000V33E@4700E@6100V33E@8000V37E78E@9500V25E+00000E+00010E+00000E@11000V33E'
               '@14500V33E@16500V33E@19500V33E@21500V33E@23000V33E@46000V33E@47000V33E@48000V37E79E@50000V33E')
+# The CSM's side of the same programs (Comanche: P32-P35 and P38/P39
+# with the CSM active, P72-P79 with the LM active, the CMC solving for
+# it). cm-csi, cm-cdh and cm-cdh-csm: lm_coelliptic.py CM, the moments of
+# lm-csi, lm-cdh and lm-cdh-csm, keyed as those with the program numbers
+# swapped (P72 for P32 and back), so each solution is the LM side's: CM
+# P72 is LM P32 (DH 16.5 nmi, 48.4 ft/s), CM P32 is LM P72 (49.9 ft/s
+# back, ELEV 206.6), CM P73 after the LM's CSI, CM P33 after the CSM's.
+CM_CSI = {**{k: v for k, v in CM_P20.items() if k != 'FLIGHT_CHAN'},
+          'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-csi.load', 'FLIGHT_RR': LM_CSI['FLIGHT_RR']}
+CM_CSI_KEYS = ('@2200V37E72E@3000V25E+00000E+00010E+02010E@4200V33E@4800V25E+00001E+02660E+00000E@5800V33E'
+               '@6400V33E@7000V33E@10500V33E@11300V33E@12100V33E@13000V37E32E@13800V25E+00000E+00010E+02010E'
+               '@15000V33E@15600V25E+00001E+20660E+00000E@16600V33E@17200V33E@17800V33E@21300V33E@22100V33E@22900V33E')
+CM_CDH = {**CM_CSI, 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-cdh.load', 'FLIGHT_RR': LM_CDH['FLIGHT_RR']}
+CM_CDH_KEYS = '@2200V37E73E@3000V25E+00001E+00008E+02310E@4200V33E@5000V33E@18000V33E@18800V33E@19600V33E'
+CM_CDH_CSM = {**CM_CSI, 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-cdh-csm.load', 'FLIGHT_RR': LM_CDH_CSM['FLIGHT_RR']}
+CM_CDH_CSM_KEYS = CM_CDH_KEYS.replace('V37E73E', 'V37E33E')
+# cm-rendezvous-tpm: cm-p20, then V83 at 210 s (V16N54: 35.7 nmi, -107.9
+# ft/s), V34; V85 (V16N53, R32's range, rate and angle), V34; V37E34E
+# (P34, the CSM active): TTPI 0:06:31, ELEV left 0, so P34 solves it
+# (208.3), N58, N81, N59; V37E35E (P35): N81, N59, N45; V37E74E (P74,
+# the LM active): TTPI 0:12:00 with ELEV 26.6, so P74 solves the TIG
+# (0:06:26.03, N81 21.9 ft/s, as the LM's own P34); V37E75E (P75): N81,
+# N59, N45; V37E76E (P76): 10 ft/s on the LM's state; V56. (V83's R31
+# display loop, 31,2000-2007, is still refused by cm_r31_basic: Lane E's.)
+CM_TPM_KEYS = CM_P20_KEYS + ('@21000V83E@23000V34E@23500V85E@25000V34E@26000V37E34E@26700V25E+00000E+00006E+03100E'
+                             '@28000V33E@29000V33E@32000V33E@36000V33E@38000V33E@40000V33E@41000V33E@42000V37E35E'
+                             '@43000V33E@44000V33E@45000V33E@46000V33E@47000V33E@48000V33E@50000V37E74E'
+                             '@51000V25E+00000E+00012E+00000E@52500V33E@52800V25E+00000E+02660E+13000E@54200V33E'
+                             '@55000V33E@56000V33E@57000V33E@58000V33E@59000V33E@60000V33E@61000V33E@62000V33E'
+                             '@64000V37E75E@65000V33E@66000V33E@67000V33E@68000V33E@69000V33E@70000V33E@72000V37E76E'
+                             '@73000V25E+00010E+00000E+00000E@74000V33E@75000V33E@76000V33E@77000V56E')
+# cm-stable-orbit: cm-p20, then V37E38E (P38, the CSM active) at 210 s:
+# TIG 0:12:00 on V06N33, CENTANG 130 (V23 on N55: the CMC keeps 0),
+# option 1, DR 0, PRO on N34 and N45; the Lambert solution after 160 s
+# (N58, N81 20.3 ft/s back), then V37E39E (P39): N81 (P39's 04,3204 is
+# native from #711). cm-stable-orbit-lm:
+# P78 and P79, the LM active. cm-tpi-search: P17 (the CSM active) and P77
+# (the LM), each TTPI 0:10:00: N72 (phase angle, height difference), N58,
+# N55.
+CM_SO_KEYS = CM_P20_KEYS + ('@21000V37E38E@22500V25E+00000E+00012E+00000E@24000V33E@24300V23E+13000E@25300V33E'
+                            '@27000V33E@30000V33E@31000V33E@33000V33E@55000V33E@56000V33E@57000V37E39E@59000V33E')
+CM_TPI_SEARCH_KEYS = CM_P20_KEYS + ('@21000V37E17E@22000V25E+00000E+00010E+00000E@23400V33E@26000V33E@29000V33E'
+                                    '@31000V33E@32000V37E77E@33000V25E+00000E+00010E+00000E@34400V33E@37000V33E'
+                                    '@40000V33E@42000V33E')
 # cm-tli: Apollo 11's translunar injection (02:44:16 GET), the load at
 # 20 s (tools/flight_scenarios/cm_tli.py: the CSM in the 100 nmi parking
 # orbit, the launch REFSMMAT, body X along the burn, TEPHEM, the sun and
@@ -525,6 +569,13 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-rendezvous-tpm', 'lm', 71000, LM_TPM_KEYS, LM_RDZ),
           ('lm-stable-orbit', 'lm', 67000, LM_SO_KEYS, LM_RDZ),
           ('lm-stable-orbit-lm', 'lm', 67000, LM_SO_KEYS.replace('V37E78E', 'V37E38E').replace('V37E79E', 'V37E39E'), LM_RDZ),
+          ('cm-csi', 'cm', 24000, CM_CSI_KEYS, CM_CSI),
+          ('cm-cdh', 'cm', 20500, CM_CDH_KEYS, CM_CDH),
+          ('cm-cdh-csm', 'cm', 20500, CM_CDH_CSM_KEYS, CM_CDH_CSM),
+          ('cm-rendezvous-tpm', 'cm', 79000, CM_TPM_KEYS, CM_P20),
+          ('cm-stable-orbit', 'cm', 74000, CM_SO_KEYS, CM_P20),
+          ('cm-stable-orbit-lm', 'cm', 74000, CM_SO_KEYS.replace('V37E38E', 'V37E78E').replace('V37E39E', 'V37E79E'), CM_P20),
+          ('cm-tpi-search', 'cm', 44000, CM_TPI_SEARCH_KEYS, CM_P20),
           ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
           ('lm-p63-lr-update', 'lm', 96000, LR_UPDATE_KEYS, LR_UPDATE),
@@ -547,6 +598,34 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'}),
           ('lm-p63-overload', 'lm', 27000, P63_KEYS + '@18000V16N68E', OVERLOAD_LM),
           ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM)]
+# Restarts for the whole-program acceptance (recovery_and_restart_tests,
+# one per phase group): a FLIGHT scenario with a hardware restart
+# (FLIGHT_GOJAM) at a centisecond in that phase, run to an end centisecond.
+# tools/flight_restart_check.py checks each on the host and the C64;
+# tools/flight_scenario_vice.py --replay --snap-cs <GOJAM cs> replays the
+# recovery on the C64 (the GOJAM comes before the snapshot at the same
+# sample point). The host differential does not run these.
+RESTART_POINTS = [  # (name, scenario, GOJAM cs, end cs, phase)
+    ('lm-p00-doi-restart', 'lm-doi-nassp', 64000, 65000, 'P00 after the DOI burn and V82 (V34E at 630 s)'),
+    ('lm-doi-burn-restart', 'lm-doi-nassp', 52000, 57000, 'DOI P40 burn, about 30 s after ignition'),
+    ('lm-p12-restart', 'lm-landing-ascent-nassp', 185000, 190000, 'P12 ascent burn, mid-burn'),
+    ('lm-rendezvous-restart', 'lm-rendezvous', 20000, 25000, 'P20 radar tracking'),
+    ('cm-p00-p40-restart', 'cm-p40', 73000, 74000, 'P00 after the LOI-1 burn (V37E00E at 720 s)'),
+    ('cm-p40-burn-restart', 'cm-p40', 50000, 55000, 'P40 SPS burn, TVC DAP running, mid-burn'),
+    ('cm-entry-restart', 'cm-entry', 25000, 32000, 'P64 entry, groups 1, 5 and 6 active'),
+    ('cm-p20-restart', 'cm-p20', 22000, 25000, 'P20 rendezvous navigation, R22 running'),
+    ('cm-p22-restart', 'cm-p22', 14000, 23000, 'P22 orbital navigation, between the marks'),
+]
+RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(at)})
+                  for name, scen, at, end, _ in RESTART_POINTS
+                  for base in [next(x for x in FLIGHT if x[0] == scen)]]
+
+
+def scenario(name):
+    """A FLIGHT or RESTART_FLIGHT row by name."""
+    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT}[name]
+
+
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
 # name). x1: the C64 as fast as the AGC; x0.5: the half-speed build
 # (RK_TIME_DIVISOR=2) on a C64 1.7 times slower than the AGC (the measured

@@ -13,10 +13,10 @@
   "src/rtb_angles.c",
   "src/rtb_modes.c"
  ],
- "host_edges": 6159,
- "host_vector_edges": 6159,
- "c64_edges": 6159,
+ "host_edges": 6165,
+ "host_vector_edges": 6165,
+ "c64_edges": 6165,
  "host_branches_missing_on_c64": [],
- "c64_rows": 1462,
- "c64_segment_rows": 49
+ "c64_rows": 1460,
+ "c64_segment_rows": 51
 }

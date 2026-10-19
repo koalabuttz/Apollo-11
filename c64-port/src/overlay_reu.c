@@ -18,8 +18,11 @@ uint8_t apollo_reu_transfer(uint8_t command,void *c64,uint32_t reu,uint16_t leng
 static uint16_t le16(const uint8_t *bytes) {
     return (uint16_t)((uint16_t)bytes[0] | ((uint16_t)bytes[1]<<8));
 }
+/* A page's REU address. The store opens only on a page boundary below
+ * 16 MB (the REU's 24-bit address), so the page number fits 16 bits and the
+ * add is a 16-bit one. */
 static uint32_t page_address(const apollo_reu_store *s,uint16_t page) {
-    return s->base+((uint32_t)page<<8);
+    return (uint32_t)(uint16_t)((uint16_t)(s->base >> 8) + page) << 8;
 }
 static uint8_t read_bytes(uint32_t reu,uint8_t *dest,uint16_t count) {
     return (uint8_t)((apollo_reu_transfer(APOLLO_REU_FETCH,dest,reu,count) &
@@ -44,9 +47,13 @@ static uint8_t cache[APOLLO_REU_RESOLVE_CACHE * APOLLO_REU_RESOLVER_RECORD];
  * only its own bank's records. */
 #define APOLLO_REU_FENCES 32u
 static uint16_t fence[APOLLO_REU_FENCES + 2u];
+/* The resolver's REU address, set when the store opens (one open store at a
+ * time, as the cache and the fences). */
+static uint32_t resolver_base;
 uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
     uint16_t services,uint8_t *record) {
     uint8_t *h=record,i;
+    if (base & 0xFF0000FFu) return 0;
     s->base=base; s->record=record;
     for (i = 0; i < APOLLO_REU_RESOLVE_CACHE; ++i)
         cache[i * APOLLO_REU_RESOLVER_RECORD] = cache[i * APOLLO_REU_RESOLVER_RECORD + 1u] = 0xFFu;
@@ -72,7 +79,7 @@ uint8_t apollo_reu_store_open(apollo_reu_store *s,uint32_t base,uint8_t mission,
         return 0;
     s->index_blocks=(uint8_t)((s->resolver_page-s->index_page)>>4);
     {
-        uint32_t r = page_address(s, s->resolver_page);
+        uint32_t r = resolver_base = page_address(s, s->resolver_page);
         uint16_t low = 0;
         for (i = 0; i <= APOLLO_REU_FENCES; ++i) {
             uint16_t high = s->resolver_count;
@@ -139,17 +146,15 @@ static uint8_t fetch(void *user,const apollo_ov2_dirent *d,uint16_t offset,uint8
 }
 /* resolve's search state. Static: absolute addressing is smaller than the
  * soft stack. */
-static uint32_t probe_base;
 static uint16_t probe_low, probe_high;
 static uint8_t resolve(void *user,uint16_t bank,uint16_t loc,apollo_ov2_cont *out) {
-    apollo_reu_store *s=(apollo_reu_store *)user;
     uint8_t *e = cache + (uint8_t)(((uint8_t)loc ^ (uint8_t)(loc >> 4) ^ (uint8_t)(bank >> 10)) &
                                    (APOLLO_REU_RESOLVE_CACHE - 1u)) *
                              APOLLO_REU_RESOLVER_RECORD;
+    (void)user;
     if (le16(e) != bank || le16(e + 2) != loc) {
         /* Records are sorted by (bank, loc), 8 bytes each, fewer than 8192,
          * so a record's offset in the resolver fits 16 bits. */
-        probe_base = page_address(s, s->resolver_page);
         uint8_t f = (uint8_t)(bank >> 8);
         const uint16_t *g = fence + (f & 0x80u ? APOLLO_REU_FENCES : (uint8_t)(f >> 2));
         probe_low = g[0];
@@ -157,7 +162,7 @@ static uint8_t resolve(void *user,uint16_t bank,uint16_t loc,apollo_ov2_cont *ou
         for (;;) {
             uint16_t middle = (uint16_t)(probe_low + (uint16_t)((probe_high - probe_low) >> 1)), b;
             if (probe_low >= probe_high ||
-                !read_bytes(probe_base + (uint16_t)(middle * APOLLO_REU_RESOLVER_RECORD), e,
+                !read_bytes(resolver_base + (uint16_t)(middle * APOLLO_REU_RESOLVER_RECORD), e,
                             APOLLO_REU_RESOLVER_RECORD))
                 return 0;
             b = le16(e);

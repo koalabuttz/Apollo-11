@@ -19,7 +19,7 @@ sanitize-p51-p53: | build
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-p51-p53-sanitize
 # Host-only oracle comparison (needs deps/virtualagc and both listing builds).
 p51-p53-differential:
-	python3 tools/interp_routine_differential.py p51-p53 --cases 256 --freeze
+	python3 tools/interp_routine_differential.py p51-p53 --cases 512 --freeze
 	git diff --exit-code -- tests/p51_p53_vectors.h tests/p51_p53_c64_vectors.h tools/mk/p51-p53.groups
 # The C64 diagnostic is one program per group of routines (generated with
 # the vectors; each fits below the $c000 mailbox).
