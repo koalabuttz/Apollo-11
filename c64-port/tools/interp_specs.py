@@ -1894,6 +1894,10 @@ SPECS = {
         'base': {'cm': 'cm_stable_orbit'},
         'symbol': {'cm': 'cm_stable_orbit'},
         'basic': 'full',
+        # P39/P79B's RTB LOADTIME has DAD KT on its right: LOADTIME's TC
+        # DANZIG comes back with DAD in EDOP and LOC at its operand word
+        # (04,3204), a routine of its own.
+        'pending_danzig': True,
         'entries': ['@external'],
         # DSPLY81 (in the file) goes on in interpretive code after its
         # displays; TC DSPLY81 never returns.
