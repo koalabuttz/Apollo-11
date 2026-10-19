@@ -655,7 +655,7 @@ def main():
             reu_bounds=dict(ok=all((x.get('reu_bounds') or {}).get('ok', True) for x in results)),
             windows=[{k: x.get(k) for k in ('ok', 'status', 'at', 'seam', 'error', 'replay_differences',
                                              'replay_differ_at_cs', 'replay_first', 'replay_matched_cs',
-                                             'requested_cs', 'wall_per_agc')} for x in results]), indent=1) + '\n')
+                                             'requested_cs', 'wall_per_agc', 'replay_skipped')} for x in results]), indent=1) + '\n')
         print(f"{a.scenario}: chain of {a.chain} windows from {a.snap_cs} cs: " + ('every window matches the host and every seam holds' if ok else f'FAIL at window {len(results) - 1}'))
     return 0 if all(x.get('ok') for x in results) and len(results) == a.chain else 1
 

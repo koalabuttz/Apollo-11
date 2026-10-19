@@ -104,11 +104,14 @@ def replay_result(r):
     (a window, or a --chain run's summary)."""
     if r.get('windows') is not None:
         k = r.get('chain', len(r['windows']))
-        if r.get('ok') and len(r['windows']) == k and all(w.get('replay_matched_cs') for w in r['windows']):
+        if r.get('ok') and len(r['windows']) == k and all(w.get('replay_matched_cs') and not w.get('replay_skipped')
+                                                           for w in r['windows']):
             return True, f'matches host (chain of {k} windows, every seam holds)'
         for n, w in enumerate(r['windows']):
             if w.get('seam'):
                 return False, f"chain of {k}: seam {w['seam']} fails"
+            if w.get('replay_skipped'):   # words left out of the compare (SCHEDULE_SKIP): not a full match
+                return False, f"chain of {k}: window {n} matches host except skipped {', '.join(w['replay_skipped'])}"
             ok, text = replay_result(w)
             if not ok:
                 return False, f'chain of {k}: window {n} {text}'

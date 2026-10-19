@@ -55,6 +55,9 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertFalse(pa.replay_result(dict(replay('lm-a', 0), ok=False, error='seam'))[0])
         self.assertEqual(pa.replay_result(dict(replay('lm-a', 0), replay_skipped=['DSPCNT'])),
                          (False, 'matches host except skipped DSPCNT'))
+        chain = dict(replay('cm-a', 0), chain=2, ok=True,
+                     windows=[replay('cm-a', 0), dict(replay('cm-a', 0), replay_skipped=['TIME3'])])
+        self.assertEqual(pa.replay_result(chain), (False, 'chain of 2: window 1 matches host except skipped TIME3'))
 
     def test_chain_verdicts(self):
         w = replay('lm-a', 0)
