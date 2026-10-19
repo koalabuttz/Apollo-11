@@ -587,6 +587,22 @@ LR_DROP = {**NASSP, 'FLIGHT_LR': '60000', 'FLIGHT_LR_DROP': '88000-95000'}
 # out, FLAGWRD7 bit 4), so V37E at 55 s is ignored; ERROR RESET at 65 s
 # unlocks it and V37E00E takes P00.
 UPLINK = {'FLIGHT_SWAP_MCT': '0', 'FLIGHT_UPLINK': '2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E'}
+# lm-uplink-accept / cm-uplink-accept: accepted P27 loads in P00, one per
+# uplink verb. V71 (contiguous block): 4 components (II, the ECADR of
+# TTPI, its two words), each a flashing V21N01; V21N02 then asks for the
+# verify and V33 stores them (UPEND71). V72 (scatter): II 3, then one
+# ECADR and its word: TTPI's high word 1. V73 (clock increment) and V70
+# (liftoff time increment): 0 and 144 octal, V33 (100 cs each). V06N37
+# shows TTPI, 1 x 2^14 + 5120 cs: 00 03 35.04. V74 at 120 s starts the
+# erasable dump on the downlink (DNEDUMP; list 01776 LM, 01777 CM), so
+# DOWNRUPT runs and both sides' downlink words are compared.
+# cm-uplink-reject: lm-uplink-reject's keys on the CMC.
+def uplink_accept(ecadr):
+    return {'FLIGHT_SWAP_MCT': '0', 'FLIGHT_DOWNRUPT': '1', 'FLIGHT_UPLINK': '2000:V71E;2400:4E;2800:%sE;3200:0E;3600:12000E;4200:V33E;'
+            '5000:V72E;5400:3E;5800:%sE;6200:1E;6600:V33E;7200:V73E;7600:0E;8000:144E;8400:V33E;'
+            '9200:V70E;9600:0E;10000:144E;10400:V33E;11200:V06N37E;12000:V74E' % (ecadr, ecadr)}
+UPLINK_ACCEPT_LM = uplink_accept('3635')   # TTPI E7,1635
+UPLINK_ACCEPT_CM = uplink_accept('3662')   # TTPI E7,1662
 # Executive overload (the 1201/1202 alarms). Apollo 11's RR CDU counts
 # stole counter cycles from the LGC in P63; FLIGHT_STEAL spends N MCT a
 # centisecond that no routine runs in, so the jobs get less time.
@@ -639,6 +655,9 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-lr-v58', 'lm', 96000, LR_V58_KEYS, LR_UPDATE),
           ('lm-p63-v60-nassp', 'lm', 115000, NASSP_KEYS + '@100000V60E', V60),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
+          ('lm-uplink-accept', 'lm', 14000, '', UPLINK_ACCEPT_LM),
+          ('cm-uplink-accept', 'cm', 14000, '', UPLINK_ACCEPT_CM),
+          ('cm-uplink-reject', 'cm', 9000, '', UPLINK),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-p52-imu-fail', 'lm', 10000, LM_P52_KEYS, LM_P52_IMU_FAIL),

@@ -1320,7 +1320,20 @@ port) runs one mission:
    again), V34 (P27 ends); a garbled word (#00001) at 50 s locks the
    uplink out (FLAGWRD7 bit 4), so V37E at 55 s is ignored; ERROR RESET
    at 65 s unlocks it and V37E00E takes P00. On the host every native
-   routine of the four matches yaAGC.
+   routine of the four matches yaAGC. `cm-uplink-reject` sends the same
+   keys to the CMC. `lm-uplink-accept` and `cm-uplink-accept` are
+   accepted loads in P00, one per uplink verb: V71 with 4 components
+   (the count, TTPI's ECADR, its two words; LM E7,1635 is 3635, CM
+   E7,1662 is 3662), then V33 at V21N02 stores TTPI (UPEND71); V72 with
+   II 3 loads TTPI's high word; V73 and V70 each add 0,144 octal (100 cs),
+   V33 after each. V06N37 then shows TTPI 00 03 35.04 (1 x 2^14 + 5120 cs)
+   on both. V74 then starts the erasable dump (with FLIGHT_DOWNRUPT;
+   list 01776 LM, 01777 CM), and its downlink words match yaAGC. All
+   three run with no bridges on the host. V69 (forced restart) is not
+   keyed: it is a TC to itself that waits for the hardware TC trap, which
+   the host does not model, so the CMC's VERB69 loops until the run ends. A V16
+   monitor in place of V06 bridges PASTEVB (02,2124 LM, 02,2140 CM):
+   the Pinball suite refuses it when ENTRET re-enters it each second.
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
