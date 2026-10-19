@@ -77,6 +77,18 @@ class NativeOutputAcceptance(unittest.TestCase):
         self.assertIn('waits on D1', out[0]['text'])
         self.assertEqual((counts['not_exercised'], counts['unexplained'], counts['ok']), (2, 1, False))
 
+    def test_doc_names_the_store(self):
+        # Acceptance contract rules 3 and 9: one header commit, the store's
+        # full sha256 on one line.
+        import re
+        counts = dict(ok=True, rows=0, passed=0, not_exercised=0, waiting=0, unexplained=0)
+        with tempfile.TemporaryDirectory() as d:
+            out = pathlib.Path(d) / 'doc.md'
+            no.write_doc('lm', [], counts, [], None, {}, HEAD, out, store_sha='ab' * 32)
+            text = out.read_text()
+        self.assertRegex(text, r'flight-store/lm\.reu\b[^\n]*\b' + 'ab' * 32)
+        self.assertEqual(len(re.findall(r'commit `', text)), 1)
+
     def test_committed_maps(self):
         for p in ('Luminary099', 'Comanche055'):
             plan = json.loads((ROOT / f'docs/acceptance/{p}-native-output-map.json').read_text())
