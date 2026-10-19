@@ -503,12 +503,17 @@ P37_KEYS = ('@4500V37E37E@5000V25E+00001E+00000E+00000E@6400V33E@7000V22E+00100E
 # Off-nominal radar and uplink inputs (docs/FLIGHT-STORE.md, Flight
 # scenarios), each a nominal scenario with one input gone wrong.
 # lm-rendezvous-rr-dropout: lm-rendezvous with the RR data good lost from
-# 195 s to 210 s (FLIGHT_RR_DROP), over R22's third mark: the read fails
-# (alarm 521, RADMODES data fail), R22 drops the lock and R21 flashes
-# V50N72 again at 212 s; PRO at 215 s, the RR locks on and the marks go
-# on (4 by 340 s, one fewer); P34 solves TPI and ends on N59 as before.
-LM_RDZ_RR_DROP = {**LM_RDZ, 'FLIGHT_RR_DROP': '19500-21000'}
-LM_RDZ_RR_DROP_KEYS = LM_RDZ_KEYS.replace('@29000', '@21500V33E@29000')
+# 180 s to 210 s (FLIGHT_RR_DROP), over R22's third mark on every clock
+# (the scaled run reaches it at 200 s, the reference clock (W) at
+# 186 s): the read fails (alarm 521, RADMODES data fail), R22 drops the
+# lock and R21 flashes V50N72 again at 211 s; PRO at 215 s, the RR locks
+# on and the marks go on (one fewer); P34 solves TPI and ends on N59 as
+# before. P34's two PROs come at 304 s and 307 s, not 294 s and 297 s:
+# on the reference clock P34 comes up 5 s late after the dropout.
+LM_RDZ_RR_DROP = {**LM_RDZ, 'FLIGHT_RR_DROP': '18000-21000'}
+LM_RDZ_RR_DROP_KEYS = (LM_RDZ_KEYS.replace('@29000', '@21500V33E@29000')
+                       .replace('@29400V33E@29700V33E', '@30400V33E@30700V33E'))
+assert LM_RDZ_RR_DROP_KEYS.count('@30400V33E@30700V33E') == 1
 # cm-p20-vhf-dropout: cm-p20 with the VHF data good lost from 180 s to
 # 190 s, over R22's second range: VHFREAD takes BADEND, so no N49 and no
 # mark (VHFCNT 3 by 320 s, one fewer); the next ranges incorporate on
@@ -658,6 +663,56 @@ UPLINK_ACCEPT_CM = uplink_accept('3662')   # TTPI E7,1662
 # entry still reaches P67.
 OVERLOAD_LM = {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_STEAL': '18500-24000:420', 'FLIGHT_BUSY_SAMPLE': '50'}
 OVERLOAD_CM = {**ENTRY, 'FLIGHT_STEAL': '21000-27000:600', 'FLIGHT_BUSY_SAMPLE': '50'}
+# Coverage scenarios for the Luminary099 program map (docs/acceptance/
+# Luminary099-program-map.json): the extended verbs and V37 programs no
+# flight scenario reached. Each starts from lm-rendezvous's load (the LM
+# and the CSM in lunar orbit, tools/flight_scenarios/lm-rendezvous.load)
+# or, for the AOT and surface rows, from lm-p52-realign's core and
+# lm-p57's load.
+# lm-coast-verbs: the coast verbs one after another, each ended by the
+# crew: V64E (V06N51 S-band angles, V34E), V66E (vehicles attached), V61E
+# and V62E (the attitude error needles' source), V75E and V65E (U,V jets),
+# V76E and V77E (minimum impulse, rate command), V93E (RENDWFLG cleared),
+# V95E (no state vector update), V67E (V06N99, the W-matrix errors, PRO),
+# V90E (V06N16 time, PRO; V06N90 out-of-plane, PRO), V47E (R47: V06N16,
+# PRO; the AGS downlist for 20 s and the IMU zero, then V50N16, PRO), V44E (RR designate ended), V80E and
+# V81E (LM and CSM state vector updates), V43E (V50N16, V34E), V49E (R62:
+# V06N22, PRO; R60's V50N18, PRO; V34E), V89E (R63: V04N12 option 3, PRO;
+# V06N18, V34E), V74E (erasable dump on the downlink), V42E (V21N93 fine
+# align torquing, +0.010, 0, -0.010 degrees), V41N20E (V21N22 coarse
+# align to +1.00, 0, 0 degrees), V40N20E (CDUs zeroed) and V96E
+# (integration stopped, P00).
+COAST_VERBS_KEYS = ('@2600V64E@3500V34E@4000V66E@4500V61E@5000V34E@5500V62E@6000V34E@6500V75E@7000V65E@7500V76E'
+                    '@8000V77E@8500V93E@9000V95E@9500V67E@10500V33E@11000V90E@12000V33E@12800V33E@13500V34E@14000V47E'
+                    '@15000V33E@18500V33E@19000V44E@19500V80E@20000V81E@20500V43E@21500V34E@22000V49E@23000V33E'
+                    '@24000V33E@25000V34E@25500V89E@26500V33E@27500V34E@28000V74E@29000V42E'
+                    '@29500+00010E+00000E-00010E@31000V41N20E@31500+00100E+00000E+00000E@34000V40N20E@35500V96E')
+# lm-coast-v55: V55E (V21N24, the AGC clock's correction, loaded as 0 h,
+# 0 min, 0.00 s). The N24 load goes through Pinball's HMSIN.
+COAST_V55_KEYS = '@2500V55E@3000+00000E+00000E+00000E'
+# lm-coast-r04: V63E (R04, the radar self test): V04N12 option 4 (the
+# RR), PRO; V16N72 shows the RR angles while the test drives them; V34E.
+COAST_R04_KEYS = '@2500V63E@4000V33E@6000V34E'
+# lm-coast-programs: V37E21E (P21: V04N06 option, PRO; V06N34 time 0,
+# PRO; V06N43 the LM's latitude, longitude and altitude, PRO); V37E31E
+# (P31, the Lambert aimpoint: V06N33 TIG, PRO; V06N81, V06N42 and V06N45,
+# PRO each); V37E25E (P25: R60's V50N18 maneuver to the tracking
+# attitude, PRO); V37E06E (P06: V50N25 00062, PGNCS power down, PRO).
+COAST_PROGRAMS_KEYS = ('@2500V37E21E@4000V33E@5500V33E@7000V33E@8500V37E31E@10000V33E@11500V33E@13000V33E'
+                       '@14500V33E@16000V33E@17000V37E25E@18500V33E@20000V37E06E@21500V33E')
+# lm-p51: P51 in flight from lm-p52-realign's core (its FLIGHT_POKE puts
+# each star on the forward detent's axis): V37E51E, proceed on V50N25
+# 00015; for each star (Regulus 22, then Gienah 24) its code loaded on
+# V01N71, PRO, an X then a Y mark (V53 after the X mark; channel 16,
+# KEYRUPT2), PRO on V54N71; PRO on V06N05 (star angle difference 0.00);
+# P51 ends in V37.
+LM_P51_KEYS = ('@200V37E51E@1000V33E@1300V21E00222E@2000V33E@3500x@3600y@4000V33E@4300V21E00224E@5000V33E'
+               '@6000x@6100y@6500V33E@7100V33E')
+# lm-p22-surface: P22 on the lunar surface from lm-p57's load: V37E22E,
+# PRO on V04N06; the CSM is beyond the RR's 400 nm, so R21 flashes alarm
+# 526 on V05N09 until V34E. (There is no surface RR model, so tracking is
+# not reached.)
+LM_P22_KEYS = '@3000V37E22E@4000V33E@5000V33E@6000V33E@7000V34E'
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -722,7 +777,13 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'}),
           ('lm-p63-overload', 'lm', 27000, P63_KEYS + '@18000V16N68E', OVERLOAD_LM),
-          ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM)]
+          ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM),
+          ('lm-coast-verbs', 'lm', 36500, COAST_VERBS_KEYS, LM_RDZ),
+          ('lm-coast-v55', 'lm', 5000, COAST_V55_KEYS, LM_RDZ),
+          ('lm-coast-r04', 'lm', 7000, COAST_R04_KEYS, LM_RDZ),
+          ('lm-coast-programs', 'lm', 23000, COAST_PROGRAMS_KEYS, LM_RDZ),
+          ('lm-p51', 'lm', 8000, LM_P51_KEYS, LM_P52),
+          ('lm-p22-surface', 'lm', 8000, LM_P22_KEYS, P57)]
 # Restarts for the whole-program acceptance (recovery_and_restart_tests,
 # one per phase group): a FLIGHT scenario with a hardware restart
 # (FLIGHT_GOJAM) at a centisecond in that phase, run to an end centisecond.
