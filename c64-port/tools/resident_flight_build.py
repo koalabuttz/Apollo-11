@@ -106,9 +106,8 @@ def mct_weight(m, tables, interp=False):
     over the calibration (docs/flight-routine-mct.json), of
     their basic keys (interp: their interpretive keys). Tables with no
     calibrated run take the mission's mean; no calibration at all, 24.
-    Interpretive routines are one word each, and the interpreter's own
-    weight (tables None, interp: RK_INTERP_MCT, per word it runs) and an
-    interpretive table with no calibrated run take the mean per word
+    Interpretive routines are one word each: with tables None (interp), and
+    for an interpretive table with no calibrated run, the mean per word
     (docs/flight-interp-mct.json) where it is measured: the routine
     calibration's scenarios run few interpretive words, and the mission's
     mean is the basic routines'. Between 4 and 255 (rk_module_tables.mct is a byte; rk_module_limit).
@@ -129,6 +128,18 @@ def mct_weight(m, tables, interp=False):
     return min(255, max(4, round(sum(v["sum"] for v in pool) / n))) if n else 24
 
 
+# A table left to the interpreter module has no weight per routine: the
+# compact interpreter charges each word it runs (include/interp_word_mct.h),
+# and the host's work clock does the same for a table with this weight
+# (tools/flight_host_run.c FLIGHT_PER_WORD).
+INTERP_PER_WORD = 0xFFFF
+# A FLIGHT_INTERP_STOP file's basic tables (tools/flight_store_build.py):
+# their C64 modules stop where the code reaches interpretive code, and the
+# interpreter module runs and charges those words, while the host's
+# routines run on through them. The host charges a routine of such a table
+# its weight (the low bits) plus the words it ran.
+INTERP_PLUS_WORDS = 0x8000
+
 # The work clock's weights (resident_flight.h): the trampoline's tables',
 # but for the Executive's idle loop (*_kernel_idle_routines, 16 MCT a run
 # against 59-83 for the others): its runs outnumber the rest 100 to 1 in the
@@ -138,11 +149,10 @@ KERNEL_TABLES = {'lm': ['lm_kernel_routines', 'lm_kernel_job_routines', 'lm_kern
                  'cm': ['cm_kernel_routines', 'cm_kernel_job_routines', 'cm_sp_routines']}
 for _m in MISSION:
     MISSION[_m] += [f'-DRK_RESIDENT_MCT={mct_weight(_m, KERNEL_TABLES[_m])}u',
-                    # 0x01E1-0x01E4 (WRAPPED, below), and the interpreter's per slot.
+                    # 0x01E1-0x01E4 (WRAPPED, below).
                     '-DRK_WRAP_MCT_LIST=' + ','.join(
                         f'{mct_weight(_m, [f"{_m}_{t}"])}u' for t in ('lead_in_routines', 't4rupt_core_routines',
-                                                                      'keyrupt_routines', 't6rupt_routines')),
-                    f'-DRK_INTERP_MCT={mct_weight(_m, None, interp=True)}u']
+                                                                      'keyrupt_routines', 't6rupt_routines'))]
 
 # The resident's sources, by component (the size report's classes).
 COMPONENTS = {

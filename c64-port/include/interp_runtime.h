@@ -25,4 +25,7 @@ extern const agc_routine_table lm_interp_runtime_basic, cm_interp_runtime_basic;
  * canonical image at APOLLO_SHARED_ADDRESS. */
 extern const agc_routine lm_interp_core, cm_interp_core;
 extern const agc_routine_table lm_interp_core_basic, cm_interp_core_basic;
+/* The C64 flight build's work clock: the MCT of the words the core has
+ * fetched since the module zeroed it (include/interp_word_mct.h). */
+extern uint16_t lm_interp_core_mct, cm_interp_core_mct;
 #endif

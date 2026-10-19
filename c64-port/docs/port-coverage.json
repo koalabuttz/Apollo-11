@@ -489,22 +489,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "34d128d3fdd67aa71f5158b01dd67a838cdb0b3eb11c2e89e2703fe67c465a9d"
+            "sha256": "5b12d4f30284958badb396700cbb41f9acd058410a85ee9fa96a5e8c9c2e1e44"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-host.log",
-            "sha256": "a26a9c41ff33eb9bfaf410b97943f3ab7be94f335fb0640a4cf949def0d27c94"
+            "sha256": "bb35edc57f2bc79f3414004b2f542af1610a1e3e0ba1ab82ddac04055f6935b5"
           },
           "c64_execution_results": {
             "path": "evidence/cm-auto-man/cm-auto-man-vice.log",
-            "sha256": "1155eecacb7b46ea16847bafe5edc06a25a72b875417bdb4da0e2bd3ec867071",
+            "sha256": "b5cc84e41e593a0eabe028adf249bd12c36ada0a6f5974a8d2caf8c9592b3ac5",
             "vice_targets": {
-              "vice-cm-auto-man": 30
+              "vice-cm-auto-man": 38
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-auto-man/cm-auto-man-proof.json",
-            "sha256": "34d128d3fdd67aa71f5158b01dd67a838cdb0b3eb11c2e89e2703fe67c465a9d"
+            "sha256": "5b12d4f30284958badb396700cbb41f9acd058410a85ee9fa96a5e8c9c2e1e44"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
@@ -2664,22 +2664,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "87d99c865f7e8e77889b2bae38d6fab3a0c8f264a59c669905a904224f39f8fe"
+            "sha256": "9b3dacec780046f7ef2bd42157c9bf2a75eab0193f834de496ec68e1f043798c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-host.log",
-            "sha256": "0c8d5f21137de0bd7bcee19d074cbf2087ee3e608dc210b0fa64ce856dc7945f"
+            "sha256": "86d5131843762525364dd3f4442614cd07cc65a647b5fd9421f1ffd18c80e64c"
           },
           "c64_execution_results": {
             "path": "evidence/cm-jet-select/cm-jet-select-vice.log",
-            "sha256": "a91315fd947ce32025deaba5ffa440719b4858bfc74f8f5663b54faeb096606c",
+            "sha256": "28a7a50d254ec42f3e2267d2c5c339498a62d494a5ce611978c3aa02fe1f85a5",
             "vice_targets": {
               "vice-cm-jet-select": 27
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-jet-select/cm-jet-select-proof.json",
-            "sha256": "87d99c865f7e8e77889b2bae38d6fab3a0c8f264a59c669905a904224f39f8fe"
+            "sha256": "9b3dacec780046f7ef2bd42157c9bf2a75eab0193f834de496ec68e1f043798c"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
@@ -3626,8 +3626,8 @@
             "sha256": "6877433109d359ceb0f4f7229fa24ace0237b3cd911a40de68360cd9a703d6d0"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-e465.md",
-            "sha256": "549d1c322174770cdfc96ffa92a463ce6ab071affe89fa8e7ffb5cb053635b29"
+            "path": "docs/audits/rev2-cm-p37-p70-654.md",
+            "sha256": "7c6a7620ba11ed3747a130fb18f8880b94cec03a7d8b5da0f747df6674b0467c"
           }
         }
       }
