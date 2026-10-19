@@ -1219,6 +1219,11 @@ port) runs one mission:
    still running, HMEAS 0 is stored and the update moves HCALC about
    1,200 m. That is a timing question for the interpretive charge, not
    the radar (replay-mismatches.md).
+   `lm-p63-lr-v58` adds V58E at 880 s: the updates (HCALC from about
+   187 m above the true height to about 96 m by 873 s) stop as LRINH
+   clears. `lm-p63-v60-nassp` is lm-p63-nassp with the radar (no V57) and
+   V60E at 1,000 s: LRPOS2K commands position 2, the antenna gets there
+   5 s later with no alarm 523, and R12 reads on in position 2.
    `FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...]` is the ground's uplink: each
    key, 20 cs apart from CS, reaches INLINK as UPRUPT's triple-redundant
    word with an UPRUPT request; `#OCTAL` sends a raw word, and `R` is
