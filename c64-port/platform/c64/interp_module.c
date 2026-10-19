@@ -42,11 +42,14 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  static uint8_t im_n;
  im_e = e;
  im_n = 0;
- IM_MCT = 0;
+ /* Bit 15 sets once the words run reach the budget (at least 1: the step
+  * runs only before its tick is due), and the core then stops before the
+  * next word, so the first word always runs. */
+ IM_MCT = 0x8000u - im_e->budget;
  do status = IM_CORE(0, (apollo_overlay_state *)APOLLO_SHARED_ADDRESS, im_e->io);
- while (status == EXEC_OK && ++im_n < IM_SLOTS && IM_MCT < im_e->budget);
+ while (status == EXEC_OK && ++im_n < IM_SLOTS && (int16_t)IM_MCT >= 0);
  if (status == EXEC_UNMAPPED && im_n) status = EXEC_OK;
- im_e->work = IM_MCT;
+ im_e->work = (IM_MCT ^ 0x8000u) + im_e->budget;
  im_e->status = status;
  return APOLLO_OV2_DONE;
 #elif defined(RK_IRQ_COUNT)
