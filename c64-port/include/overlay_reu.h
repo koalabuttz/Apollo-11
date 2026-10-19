@@ -52,7 +52,8 @@ typedef struct {
 
 /* Read and check the store header at REU offset base. record is a resident
  * 16-byte DMA buffer (C64 RAM, not I/O). Returns 0 unless the magic, format,
- * mission and service-table version all match and every region fits. */
+ * mission and service-table version all match and every region fits; base
+ * must be a page boundary below 16 MB. One store is open at a time. */
 uint8_t apollo_reu_store_open(apollo_reu_store *,uint32_t base,uint8_t mission,
     uint16_t services,uint8_t *record);
 /* Boot-time integrity pass: every present module's header and CRC, and the

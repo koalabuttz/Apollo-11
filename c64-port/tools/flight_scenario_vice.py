@@ -455,16 +455,24 @@ def main():
             m, manifest, (at, end_at, reu_layout.free_top(m, manifest)) if a.replay else None)
             if x[0] != a.reu_check_drop]
         r = dp.vice(a, tag, prg, pinned, m, patch, [reu_layout.dma_trace(regions)])
+        r.update(mission=m, snap_cs=a.snap_cs, replay=bool(a.replay))
         after = dp.WORK / f'vice-{tag}' / 'image.reu'
         if r.get('status') is not None and after.exists():
             before = bytearray(reu)
             for at_, data in patch:
                 before[at_:at_ + len(data)] = data
             bounds = reu_layout.report(m, regions, before, after.read_bytes(), a.scenario)
-            bounds['dma_outside'] = reu_layout.dma_misses((dp.WORK / f'vice-{tag}' / 'monitor.log').read_text())
+            log = (dp.WORK / f'vice-{tag}' / 'monitor.log').read_text()
+            bounds['dma_outside'] = reu_layout.dma_misses(log)
+            bounds['dma_hits'] = reu_layout.dma_hits(log)[:16]
+            bounds['dma_unchecked'] = reu_layout.dma_misses(log, (4,))
+            if bounds['dma_unchecked']:
+                print(f"{a.scenario}: {bounds['dma_unchecked']} DMAs seen only after they ran (last byte checked)")
             if bounds['dma_outside']:
                 bounds['ok'] = False
                 print(f"FAIL: {a.scenario}: {bounds['dma_outside']} DMAs outside the {m} REU layout")
+                for h in bounds['dma_hits']:
+                    print(f"  PC {h['pc']} command {h['command']} C64 {h['c64']} REU {h['start']}-{h['end']}")
             else:
                 print(f'{a.scenario}: every DMA inside the {m} REU layout')
             r['reu_bounds'] = bounds

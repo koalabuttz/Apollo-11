@@ -1112,7 +1112,13 @@ port) runs one mission:
    ($DF01, `trace`, so it logs without stopping) computes each DMA's REU
    range from the controller's registers and logs it when it is not inside
    one span of declared regions; any logged DMA fails the run
-   (`dma_outside`). VICE evaluates the condition itself, so an in-bounds
+   (`dma_outside`), and VICE prints the controller's registers beside it
+   (`dma_hits`: PC, command, C64 and REU range). Now and then VICE
+   evaluates the checkpoint only after the DMA ran (the command's execute
+   bit is clear, the address is the end and the length 1); such a DMA is
+   counted as `dma_unchecked` and only its last byte is range-checked
+   (the address registers then hold the byte after it); its writes are
+   still in the byte diff. VICE evaluates the condition itself, so an in-bounds
    run costs nothing. `--reu-check-drop REGION` leaves a region out, as a
    test of the check: with the scratch left out, an LM P63 window logs 48
    DMAs (the step records) and fails; with every region, it logs none.
