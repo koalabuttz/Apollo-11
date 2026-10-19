@@ -7,7 +7,8 @@
  * CADRSTOR with +0, -0 or another full value, so all four CCS branches and
  * the KEY REL light run for every key. Every eighth pair of the number
  * sources keys an 8 or 9, half of them in an octal load (89TEST's OPR ERR)
- * and some with DSPCOUNT negative or -0 (the load is blocked). */
+ * and some with DSPCOUNT negative or -0 (the load is blocked); in the second
+ * half of the label cases 89TEST is entered with another Q. */
 #include <string.h>
 #include "lanec_pw.h"
 #include "lanec_pin_keys.h"
@@ -35,10 +36,11 @@ static void make_case(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_m
     { enum lanec_mission mission = m->mission; memset(m, 0, sizeof *m); m->mission = mission; }
     if ((n / 2u) % SOURCES == SOURCES - 1u)     /* the alarm codes 12-17, 23-30, 35 */
         w[LANEC_LM_MPAC] = (uint16_t)(pair % 3u == 0u ? 012u + pair % 6u : pair % 3u == 1u ? 023u + pair % 6u : 035u);
-    if (((n / 2u) % SOURCES == 2u || (n / 2u) % SOURCES == 7u) && pair % 8u == 7u) {   /* 8 or 9 at 89TEST */
+    bool at89 = ((n / 2u) % SOURCES == 2u || (n / 2u) % SOURCES == 7u) && pair % 8u == 7u;
+    if (at89) {   /* 8 or 9 at 89TEST */
         w[LANEC_LM_MPAC] = (uint16_t)(010u + (pair / 8u) % 2u);
         if ((pair / 16u) % 2u == 0u) w[LANEC_LM_DECBRNCH] &= (uint16_t)~3u;   /* an octal load: OPR ERR */
-        if ((pair / 32u) % 4u == 3u) w[LANEC_LM_DSPCOUNT] = (uint16_t)(077776u + (pair / 64u) % 2u);   /* blocked */
+        if ((pair / 32u) % 4u == 3u) w[LANEC_LM_DSPCOUNT] = (uint16_t)(077776u + (pair / 8u) % 2u);   /* blocked */
     }
     switch (pair % 8u) {
     case 1: w[LANEC_LM_CADRSTOR] = 0u; break;
@@ -46,7 +48,13 @@ static void make_case(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_m
     case 5: w[LANEC_LM_CADRSTOR] = (uint16_t)(1u + lanec_rand(&r) % 077776u); break;
     default: break;
     }
-    if (n & 1u) (void)lanec_pin_keys_charin(s, io, m->mission);
+    if (n & 1u) {
+        (void)lanec_pin_keys_charin(s, io, m->mission);
+        /* 89TEST entered with a Q CHARIN's dispatch does not leave: CHARIN's
+         * run does not take it, so 89TEST's own ENDOFJOB, NUM and CHARALRM
+         * arms do (the TC overwrites Q) */
+        if (at89 && pair >= 128u) w[LANEC_Q] = (uint16_t)(w[LANEC_Q] + 1u);
+    }
     lanec_pw_exit_stop(m, s, io, lanec_pin_keys_dispatch);
     if (m->stops == 0u) m->ranges = 0u;   /* refused: the oracle stops at once */
 }
