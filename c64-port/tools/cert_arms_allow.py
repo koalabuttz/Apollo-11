@@ -223,13 +223,10 @@ ARMS = {
         ],
     },
     'cm-p37-p70': {
-        'cases': 304640, 'cases_sha256': '16d6ec0aad03c2431c097858cc028b689a46c083e399cc79e4abb058a228e14a',
-        'sources_sha256': {'src/cm_p37_p70.c': 'c0334b3c25758913872c557d0c1e1cf894fab1f6f347f669a1a7d44fc87061de'},
+        'cases': 305152, 'cases_sha256': '07275d45374813e8b512543a095f6282bd26010918f59ee771ca68443c62ce93',
+        'sources_sha256': {'src/cm_p37_p70.c': 'e6d58bb36af885e5a8bb52f735027884980d2388fd0ea43e0588895d05e86ec4'},
         'arms': [
             {'src': 'src/cm_p37_p70.c', 'line': 1959, 'agc': '32,2601', 'op': 'DLOAD BMN', 'what': 'never falls through', 'class': 'OFFNOM', 'why': 'NN2 counts up from -15 (M15RTE); falling through means too many iterations, which gives alarm 605.'},
-            {'src': 'src/cm_p37_p70.c', 'line': 2765, 'agc': '32,3002', 'op': 'DSU BZE', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'PREC100 sets NN1A=10RTE and PREC210 decrements it, so NN1A=10 means the first precision pass; the first time the desired radius is missed (practically every precision solution) it goes to PREC207.'},
-            {'src': 'src/cm_p37_p70.c', 'line': 6741, 'agc': '36,2673', 'op': 'BMN GOTO', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'Taken when the conic RCON error falls under EPC2RTE, the normal convergence exit toward P37E; cases never converge.'},
-            {'src': 'src/cm_p37_p70.c', 'line': 7545, 'agc': '36,3046', 'op': 'DSU BZE', 'what': 'branch never taken', 'class': 'FLIGHT', 'why': 'OPTION2 is preset 1 (SPS); a crew entry of 2 picks the RCS option, which goes to P37Q. This is an ordinary crew choice.'},
         ],
     },
     'cm-p40-p47': {
