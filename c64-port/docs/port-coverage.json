@@ -3626,8 +3626,8 @@
             "sha256": "6877433109d359ceb0f4f7229fa24ace0237b3cd911a40de68360cd9a703d6d0"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-e465.md",
-            "sha256": "549d1c322174770cdfc96ffa92a463ce6ab071affe89fa8e7ffb5cb053635b29"
+            "path": "docs/audits/rev2-cm-p37-p70-654.md",
+            "sha256": "7c6a7620ba11ed3747a130fb18f8880b94cec03a7d8b5da0f747df6674b0467c"
           }
         }
       }
