@@ -27,10 +27,13 @@ flight-host-differential: build/agc_engine_hardware_dv.o | build
 flight-store-vice: flight-store
 	python3 tools/flight_vice_load.py
 # flight-disk: the 1581 disk sets that boot each store on a stock C64 with
-# a 2 MB REU (docs/RUN-ON-C64.md), in build/flight-disk/. flight-disk-vice
+# a 2 MB REU, and the hardware check disk (docs/RUN-ON-C64.md), in
+# build/flight-disk/; the check runs the host flight run. flight-disk-vice
 # boots them in VICE from the disks alone (true drive emulation, the REU
-# starting zero) and times the load (build/flight-disk/vice.json).
-flight-disk: flight-store
+# starting zero), times the load (build/flight-disk/vice.json), types RSET
+# V37E00E and requires P00 on each mission, with the commit and the SHA-256
+# of the disks, PRGs and VICE log in build/flight-disk/boot-<m>.json.
+flight-disk: flight-store build/agc_engine_hardware_dv.o
 	python3 tools/flight_disk.py
-flight-disk-vice: flight-store
-	python3 tools/flight_disk.py --vice
+flight-disk-vice: flight-store build/agc_engine_hardware_dv.o
+	python3 tools/flight_disk.py --vice --p00

@@ -10,8 +10,10 @@
 #include "interp_runtime.h"
 #if RK_LM
 #define IM_CORE lm_interp_core
+#define IM_MCT  lm_interp_core_mct
 #else
 #define IM_CORE cm_interp_core
+#define IM_MCT  cm_interp_core_mct
 #endif
 #define IM_SLOTS 64u
 #ifdef RK_IRQ_COUNT
@@ -25,21 +27,28 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  uint8_t n=0;
  (void)selector;
 #ifdef RK_WORK_CLOCK
- /* Work clock: back to the step once the slots run reach the next AGC
-  * tick, so the step takes it at the next boundary (RK_INTERP_MCT per
-  * slot). */
- uint16_t w=0;
- for (;;) {
-     status = IM_CORE(e->program, f->state, e->io);
-     /* A call that ends anything but OK ran no interpretive word: the
-      * point is outside the interpreter (after EXIT, RTB or CHANG2), or
-      * the core refused it and another holder runs it. Only words run are
-      * charged. */
-     if (status != EXEC_OK) break;
-     w += RK_INTERP_MCT;
-     if (++n >= IM_SLOTS || w >= e->budget) break;
- }
- e->work=w;
+ /* Work clock: back to the step once the words run reach the next AGC
+  * tick, so the step takes it at the next boundary. The core adds each
+  * word's yaAGC MCT to IM_MCT as NEWOPS fetches its code word
+  * (include/interp_word_mct.h); the first word always runs. A call that
+  * ends anything but OK runs no word past the ones it charged: the point
+  * is outside the interpreter (after EXIT, RTB or CHANG2), or the core
+  * refused it and another holder runs it. The core binds only the image
+  * at APOLLO_SHARED_ADDRESS and takes no program. */
+ /* In statics, not locals: nothing then has to survive the core call in
+  * the zero page the callee may clobber (as locals they cost 75 bytes of
+  * saves and reloads). */
+ static rk_module_env *im_e;
+ static uint8_t im_n;
+ im_e = e;
+ im_n = 0;
+ IM_MCT = 0;
+ do status = IM_CORE(0, (apollo_overlay_state *)APOLLO_SHARED_ADDRESS, im_e->io);
+ while (status == EXEC_OK && ++im_n < IM_SLOTS && IM_MCT < im_e->budget);
+ if (status == EXEC_UNMAPPED && im_n) status = EXEC_OK;
+ im_e->work = IM_MCT;
+ im_e->status = status;
+ return APOLLO_OV2_DONE;
 #elif defined(RK_IRQ_COUNT)
  /* Back to the step once an IRQ tick lands, so the resident takes the
   * AGC interrupt at the next boundary (read twice: no torn count). */
