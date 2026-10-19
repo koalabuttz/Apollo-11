@@ -290,39 +290,75 @@ def run(cmd, **kw):
     return subprocess.run([str(c) for c in cmd], cwd=ROOT, check=True, **kw)
 
 
+def host_flags(stem):
+    """Extra cc flags for one src/*.c host object.
+
+    The compact interpreter charges each word as on the C64
+    (include/interp_word_mct.h): the host flight run runs the points the C64
+    leaves to the interpreter module with it (tools/flight_host_run.c
+    core_run). A FLIGHT_INTERP_STOP file's host object is its flight build
+    too: its chains stop at NEWOPS, as its C64 module does, and the
+    interpreter takes every hand-off."""
+    return (['-DINTERP_WORD_CHARGE=1'] if stem in ('lm_interp_core', 'cm_interp_core') else
+            ['-DAGC_FLIGHT_INTERPRETER'] if any(stem in s for s in FLIGHT_INTERP_STOP.values()) else [])
+
+
+def host_inputs_hash(stem, dep):
+    """sha256 of a host object's flags and every input its -MMD .d file
+    lists (its source, headers and .inc files), by content: an object copied
+    in, or built in another checkout, with a newer mtime than its source
+    still rebuilds when the text differs. None when an input is missing."""
+    words = dep.read_text().replace('\\\n', ' ').split()[1:]
+    h = hashlib.sha256(' '.join(host_flags(stem)).encode() + b'\0')
+    for w in words:
+        f = ROOT / w
+        if not f.exists():
+            return None
+        h.update(w.encode() + b'\0' + f.read_bytes())
+    return h.hexdigest()
+
+
+def stale_host_objects():
+    """The host/*.o under OUT that host_index would rebuild or delete: no
+    stamp, a stamp that no longer matches its flags and inputs, or no
+    source."""
+    objs = ROOT / OUT / 'host'
+    keep = {s.stem for s in (ROOT / 'src').glob('*.c')}
+    bad = []
+    for o in sorted(objs.glob('*.o')):
+        dep, stamp = o.with_suffix('.d'), o.with_suffix('.sha')
+        if (o.stem not in keep or not dep.exists() or not stamp.exists()
+                or host_inputs_hash(o.stem, dep) != stamp.read_text().strip()):
+            bad.append(o.name)
+    return bad
+
+
 def host_index(cc, jobs):
     """{object: (defined symbols by kind, needed symbols)} for every src/*.c."""
     objs = ROOT / OUT / 'host'
     objs.mkdir(parents=True, exist_ok=True)
     sources = sorted((ROOT / 'src').glob('*.c'))
 
-    def stale(obj, dep):
-        # The object and the headers and .inc files it includes (-MMD), so an
-        # edit to a shared body (src/self_check_body.inc) rebuilds its includers.
-        if not obj.exists() or not dep.exists():
-            return True
-        made = obj.stat().st_mtime
-        words = dep.read_text().replace('\\\n', ' ').split()[1:]
-        return any(not (ROOT / w).exists() or (ROOT / w).stat().st_mtime > made for w in words)
-
     def build(src):
         obj = objs / (src.stem + '.o')
         dep = objs / (src.stem + '.d')
-        # The compact interpreter charges each word as on the C64
-        # (include/interp_word_mct.h): the host flight run runs the points
-        # the C64 leaves to the interpreter module with it
-        # (tools/flight_host_run.c core_run). The flags are in the
-        # dependency check: a change of build rebuilds the object.
-        # A FLIGHT_INTERP_STOP file's host object is its flight build too:
-        # its chains stop at NEWOPS, as its C64 module does, and the
-        # interpreter takes every hand-off.
-        flags = (['-DINTERP_WORD_CHARGE=1'] if src.stem in ('lm_interp_core', 'cm_interp_core') else
-                 ['-DAGC_FLIGHT_INTERPRETER'] if any(src.stem in s for s in FLIGHT_INTERP_STOP.values()) else [])
-        made = objs / (src.stem + '.flags')
-        if stale(obj, dep) or (made.read_text() if made.exists() else '') != ' '.join(flags):
-            run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', *flags, '-MMD', '-MF', dep, '-c', src, '-o', obj])
-            made.write_text(' '.join(flags))
+        stamp = objs / (src.stem + '.sha')
+        # Rebuilt when the flags or any input's text changed (the stamp),
+        # so an edit to a shared body (src/self_check_body.inc) rebuilds
+        # its includers.
+        if (not obj.exists() or not dep.exists() or not stamp.exists()
+                or host_inputs_hash(src.stem, dep) != stamp.read_text().strip()):
+            run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', *host_flags(src.stem),
+                 '-MMD', '-MF', dep, '-c', src, '-o', obj])
+            stamp.write_text((host_inputs_hash(src.stem, dep) or '') + '\n')
         return src.stem, obj
+    # An object whose source was removed or renamed would still be linked by
+    # tools/flight_host_differential.py (it links every host/*.o).
+    keep = {s.stem for s in sources}
+    for o in objs.glob('*.o'):
+        if o.stem not in keep:
+            for x in (o, o.with_suffix('.d'), o.with_suffix('.sha'), o.with_suffix('.flags')):
+                x.unlink(missing_ok=True)
     with ThreadPoolExecutor(jobs) as pool:
         built = list(pool.map(build, sources))
     index = {}
