@@ -1,0 +1,60 @@
+{
+ "scenario": "lm-p47-nassp",
+ "ok": false,
+ "status": 1,
+ "z": "03321",
+ "fb": "62000",
+ "superbank": "0100",
+ "bank": "41",
+ "at": "41,3321",
+ "wall_cycles": 22409324,
+ "agc_cs": 173,
+ "dropped_ticks": 0,
+ "steps": 850,
+ "wall_per_agc": 13.147,
+ "lost": false,
+ "mission": "lm",
+ "snap_cs": 2950,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch",
+   "undo"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 5
+ },
+ "replay_rows": 86,
+ "replay_applied": 13,
+ "replay_end_cs": 173,
+ "replay_ended": false,
+ "replay_matched_cs": [
+  100
+ ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 2950,
+ "snap_slid": false,
+ "requested_cs": 1000,
+ "host_holes": [
+  {
+   "kind": "basic",
+   "point": "41,3321",
+   "label": "MONDO",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 6,
+   "instructions": 60,
+   "refused_by": "lanec_pin_lm_routines",
+   "core_start": false
+  }
+ ],
+ "commit": "c76e489507c0"
+}

@@ -1,0 +1,64 @@
+{
+ "scenario": "lm-p65-autoland-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 140000,
+ "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E@134000V37E68E@139000V37E00E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036733",
+  "FLIGHT_LR_POS2": "500",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_ENGINE_LAG": "0.2",
+  "FLIGHT_TOUCHDOWN": "132480",
+  "FLIGHT_LR": "60000",
+  "FLIGHT_CHAN": "137800:032=057777,137900:032=077777"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "b9a2bcb2256e",
+ "cia_interrupts": 145228,
+ "periods_taken": 140001,
+ "periods_dropped": 5227,
+ "agc_centiseconds": 140001,
+ "native_routines": 5716211,
+ "bridged_instructions": 264,
+ "routine_mismatches": [],
+ "unregistered": [
+  {
+   "kind": "basic",
+   "point": "40,2732",
+   "label": "2INTOUT",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 12,
+   "instructions": 12,
+   "refused_by": "lanec_pin_lm_routines",
+   "core_start": false
+  },
+  {
+   "kind": "basic",
+   "point": "40,2734",
+   "label": "2INTOUT+2",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 12,
+   "instructions": 36,
+   "refused_by": "lanec_pin_lm_routines",
+   "core_start": false
+  },
+  {
+   "kind": "basic",
+   "point": "40,3306",
+   "label": "DSPDECVN",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 12,
+   "instructions": 216,
+   "refused_by": "lanec_pin_lm_routines",
+   "core_start": false
+  }
+ ],
+ "log_sha256": "d3b1893ba0bb714bd656a3901c35a2ede3a8abb56b265ecefa8e934acdd39f35"
+}

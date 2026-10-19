@@ -1,0 +1,25 @@
+{
+ "scenario": "lm-p52-realign-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 10000,
+ "keys": "@200V37E52E@1000V22E3E@1500V33E@2200E@2600V33E@3400E@3800V33E@4300y@4400x@4800V33E@5300V33E@5900E@6300V33E@6800y@6900x@7300V33E@7900V33E@8500V33E@9100E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036673",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_POKE": "3300:032=01062,3300:033=33476,3300:034=01144,5800:032=03521,5800:033=42475,5800:034=77717"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "b9a2bcb2256e",
+ "cia_interrupts": 10005,
+ "periods_taken": 10002,
+ "periods_dropped": 3,
+ "agc_centiseconds": 10002,
+ "native_routines": 528139,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "adda0666815236609c04c4d2581021e30f0eb81dd6da383bc9acce57d3d77279"
+}

@@ -840,6 +840,7 @@ def main():
     words = {m: flight_holes.listing(flight_holes.MISSION[m]) for m in exe}
     lanes = flight_holes.lanes()
     summary, failed = [], 0
+    commit = flight_holes.source_commit()
     for m, cs, keys in SCENARIOS:
         name, env = f'{m}-{keys or "p00-idle"}', {}
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
@@ -857,7 +858,7 @@ def main():
                              label=flight_holes.label(words[m], x[3]), count=int(x[4]))
                         for x in re.findall(r'^  load (\S+) slot (\d) (basic |interp) (\d\d,\d{4}): (\d+)$', text, re.M)),
                        key=lambda d: -d['count'])
-        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, exit=r.returncode,
+        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, exit=r.returncode, commit=commit,
                    samples=int(s[1]) if s else 0, equal=int(s[2]) if s else 0, differ=int(s[3]) if s else None,
                    major_mode=dict(native=mode[1], yaagc=mode[2]) if mode else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
@@ -883,11 +884,13 @@ def main():
         t = re.search(r'(\d+) CIA interrupts, (\d+) clock periods taken, (\d+) dropped \(rk_dilation\); AGC time (\d+) cs', text)
         n = re.search(r'(\d+) native routines \((\d+) yaAGC instructions of time\), (\d+) bridged', text)
         misses = re.findall(r'^  (?:basic |interp) (\d\d,\d{4}) (\S+): (\d+) times; (.*)$', text, re.M)
+        holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, exit=r.returncode,
-                   cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
+                   commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
                    periods_dropped=int(t[3]) if t else None, agc_centiseconds=int(t[4]) if t else None,
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
-                   routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses])
+                   routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
+                   unregistered=holes)
         summary.append(row)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "

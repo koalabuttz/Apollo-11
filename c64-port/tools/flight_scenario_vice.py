@@ -458,7 +458,7 @@ def main():
                   f'FAIL: the C64 end of window {n - 1} is not the start of window {n}: {len(seam)} differences, first '
                   + ', '.join(f'{x} {shown(x, h)}/{shown(x, c)}' for x, h, c in seam[:6]) + ' (start/C64 end)'))
             if seam:
-                results.append(dict(ok=False, seam=n))
+                results.append(dict(ok=False, seam=n, error=f'seam {n}: {len(seam)} differences'))
                 break
         keys, defines, patch, end_at = None, [], [], None
         if a.replay:
@@ -573,7 +573,9 @@ def main():
         if a.profile:
             r['profile'] = dp.profile(tag)
         r.update(scenario=a.scenario, snap_cs=a.snap_cs, snap_at=snap_at, snap_slid=slid > SLIDE_CS, requested_cs=cs,
-                 host_holes=holes)
+                 host_holes=holes, commit=flight_holes.source_commit())
+        if a.chain > 1:
+            r.update(chain=a.chain, chain_window=n)
         # Status 0 means no step refused; it does not mean the window ran to its
         # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
         # reports status 0). A window that stops short of --cs without a refusal
@@ -610,6 +612,17 @@ def main():
             break
     if a.chain > 1:
         ok = len(results) == a.chain and all(x.get('ok') for x in results)
+        # One result for the whole chain (tools/program_acceptance.py): each
+        # window's verdict, and the seam that failed if one did.
+        first = results[0] if results else {}
+        (dp.WORK / f'{a.scenario}-{a.snap_cs}-chain{a.chain}.json').write_text(json.dumps(dict(
+            scenario=a.scenario, snap_cs=a.snap_cs, snap_at=first.get('snap_at'), requested_cs=a.cs, chain=a.chain,
+            ok=ok, status=next((x.get('status') for x in results if x.get('status')), 0), replay_rows=sum(x.get('replay_rows', 0) for x in results),
+            replay_ended=ok, replay_differences=0 if ok else None, commit=flight_holes.source_commit(),
+            reu_bounds=dict(ok=all((x.get('reu_bounds') or {}).get('ok', True) for x in results)),
+            windows=[{k: x.get(k) for k in ('ok', 'status', 'at', 'seam', 'error', 'replay_differences',
+                                             'replay_differ_at_cs', 'replay_first', 'replay_matched_cs',
+                                             'requested_cs', 'wall_per_agc')} for x in results]), indent=1) + '\n')
         print(f"{a.scenario}: chain of {a.chain} windows from {a.snap_cs} cs: " + ('every window matches the host and every seam holds' if ok else f'FAIL at window {len(results) - 1}'))
     return 0 if all(x.get('ok') for x in results) and len(results) == a.chain else 1
 
