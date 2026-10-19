@@ -46,7 +46,7 @@ ARMS = {
         ],
     },
     'cm-conics': {
-        'cases': 114944, 'cases_sha256': 'df691df00551109ad16f02edc82b1fb82d655eaa76430ebb4746744b2429a179',
+        'cases': 114944, 'cases_sha256': 'a3a52853845005bbe6a292b5d20d04b4336186dd8c3b00c63a89286f769116d1',
         'sources_sha256': {'src/cm_conics.c': '1eb02a4d9260e75ab439d635f7fe383014562369761f5bf43ca94bf5c357bbdb'},
         'arms': [
             {'src': 'src/cm_conics.c', 'line': 1147, 'agc': '12,2147', 'op': 'SIGN BZE', 'what': 'branch never taken', 'class': 'UNSURE', 'why': 'Needs the guess XKEPNEW = 0, which KEPPREP produces only for TAU.=0 after RECTIFY (XKEP=0); settled by whether a caller ever asks for a zero-length conic (e.g. RVCON with TDEC=TET, or CSMCONIC/LEMCONIC with zero interval).'},
@@ -244,7 +244,7 @@ ARMS = {
         ],
     },
     'cm-powered-subs': {
-        'cases': 25600, 'cases_sha256': 'd5bdcc5f29b002d42315e580d41c2c69f4324586be574d8c5f56a4b20688eafe',
+        'cases': 25600, 'cases_sha256': '205934fc5286001c94125a0cd012e48bf05c521b337f3151029322215d673262',
         'sources_sha256': {'src/cm_powered_subs.c': '59caaef2e7df61438c16eabcb8f4def6a5eca67cb7664acd9e10d3112071870b'},
         'arms': [
             {'src': 'src/cm_powered_subs.c', 'line': 372, 'agc': '23,3552', 'op': 'CCS TEM3', 'what': 'CCS never <0/-0', 'class': 'IMPOSSIBLE', 'why': 'TEM3 = A MASK SIX (4,2,0), never negative.'},
