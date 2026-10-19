@@ -554,9 +554,9 @@ CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,1900
 # (option 2), proceed, V06N16 (event time 0: now), proceed, V06N90 (Y and
 # Y-dot 0: the two orbits are coplanar, PSI 180 degrees), proceed. V44
 # (surface flag set): R61 recomputes the tracking attitude for an LM on
-# the surface and asks for a maneuver (V50N18); V45 (reset), V88 (VHF
-# ranging off) and V58 (auto maneuver enabled) go in under the flashing
-# V50N18, then V93 (RENDWFLG cleared: the W matrix is no longer valid).
+# the surface, stores alarm 00407 through R52's path and asks for a
+# maneuver (V50N18); V45 (reset), V88 (VHF ranging off) and V58 (auto
+# maneuver enabled) go in under the flashing V50N18, then V93 (RENDWFLG cleared: the W matrix is no longer valid).
 CM_P20_CREW_KEYS = CM_P20_KEYS + '@21000V90E@22000V33E@23000V33E@24000V33E@25000V33E@26000V44E@27000V45E@28000V88E@29000V58E@30000V93E'
 # cm-p23-attached: cm-p23 to P00, then V66 (vehicles attached): ATTACHIT
 # copies the CSM's state vector into the LM's, as after docking.
