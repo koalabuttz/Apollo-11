@@ -1127,7 +1127,7 @@ port) runs one mission:
    snapshot through the window on the C64's work clock, charging each
    table the weight the C64 store charges it (host.inc's, #650; where two tables hold the routine, the one the C64
    step runs it from: the last routine's module while that module holds it and no timer step or request came
-   between, else the kernel's tables, then the pinned sets, then host.inc's order, flight_host_run.c `charged`), and writes every input its models and schedules give the
+   between, else the kernel's tables, then the pinned sets, then host.inc's order, flight_host_run.c `charged`; on the LM a weight-0 table idles only where the C64's idle module does, in the idle loop outside an interrupt with NEWJOB -0, costs nothing for the rest of an idle pass with a job waiting, and costs its first weighted holder's weight anywhere else, `idle_weight`), and writes every input its models and schedules give the
    AGC there (the engine, SPS and aero models' PIPA counts, keys,
    FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go at the
    top of the zeros between the store and the Pinball trampoline save
