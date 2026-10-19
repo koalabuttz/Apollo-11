@@ -145,27 +145,34 @@ def dma_trace(regions):
             spans[-1][1] = hi        # adjacent regions: one span (a read may cross)
         else:
             spans.append([lo, hi])
-    terms = [f'(({_S} < ${lo:x}) || ({_E} >= ${hi:x}))' for lo, hi in spans]
-    outside = terms[0]
-    for t in terms[1:]:
-        outside = f'({outside} && {t})'
+    def outside(first, last):
+        terms = [f'(({first} < ${lo:x}) || ({last} >= ${hi:x}))' for lo, hi in spans]
+        out = terms[0]
+        for t in terms[1:]:
+            out = f'({out} && {t})'
+        return out
     # VICE nearly always evaluates the condition before the command runs
-    # (the command register still has its execute bit, $80). Now and then it
-    # evaluates it after the DMA, when the registers hold the end address and
-    # a length of 1: that DMA is not checked here (the byte diff still sees
-    # its writes) and checkpoint 3 counts it (dma_unchecked).
-    # On each hit VICE also prints the controller's registers (io $df00),
-    # so the log names the DMA: dma_hits() reads them back.
-    return (f'trace store df01 if ((@io:$df01 >= $80) && {outside})\ncommand 2 "io $df00"\n'
+    # (the command register still has its execute bit, $80): checkpoint 2
+    # checks the whole range. Now and then it evaluates it after the DMA,
+    # when the address registers hold the byte after the last one and the
+    # length reads 1: checkpoint 3 checks that last byte, and checkpoint 4
+    # counts such DMAs (dma_unchecked: their first byte is not checked; the
+    # byte diff still sees their writes). On a hit VICE also prints the
+    # controller's registers (io $df00), which dma_hits() reads back.
+    last = f'({_S} - 1)'
+    return (f'trace store df01 if ((@io:$df01 >= $80) && {outside(_S, _E)})\ncommand 2 "io $df00"\n'
+            f'trace store df01 if ((@io:$df01 < $80) && {outside(last, last)})\ncommand 3 "io $df00"\n'
             'trace store df01 if (@io:$df01 < $80)')
 
 
-def dma_misses(monitor_log, checkpoint=2):
-    """DMAs the trace logged (tools/dap_pass_vice.py's monitor.log)."""
-    return len(re.findall(rf'^#{checkpoint} \(Trace store df01\)', monitor_log, re.M))
+def dma_misses(monitor_log, checkpoints=(2, 3)):
+    """DMAs the trace logged outside the layout (checkpoints 2 and 3 of
+    dma_trace) in tools/dap_pass_vice.py's monitor.log; checkpoints=(4,)
+    counts the DMAs seen only after they ran."""
+    return sum(len(re.findall(rf'^#{c} \(Trace store df01\)', monitor_log, re.M)) for c in checkpoints)
 
 
-def dma_hits(monitor_log, checkpoint=2):
+def dma_hits(monitor_log, checkpoint='[23]'):
     """[dict(pc, command, c64, start, end)] of each DMA the trace logged,
     from the registers VICE printed after the hit."""
     out = []
