@@ -30,6 +30,7 @@ It runs Luminary099 from GOJAM for CS centiseconds of AGC time (default 1000), p
 | `X86_REPORT` | A JSON report: the points the interpreter core ran and why (no table, or the table refused), basic points no routine holds, the tables used with their certification, and the clock. |
 | `X86_SAMPLES` | Erasable memory at the first idle pass through ADVAN in each centisecond. |
 | `X86_SAMPLES_FROM` | The first centisecond `X86_SAMPLES` writes (default 1). |
+| `X86_DSKY` | `1`: a live DSKY in the terminal (below). With no CS argument the run goes on until `q`. |
 
 ## What links
 
@@ -114,11 +115,27 @@ CM P11 is outside its limits (Gaps). The tool lists it as known, with an envelop
 
 The rest need models the x86 program does not have yet: the rendezvous radar and VHF (`FLIGHT_RR`), the landing radar (`FLIGHT_LR`, `FLIGHT_LR_POS2`), the NASSP P63 core (`FLIGHT_CORE`), uplink and stolen time. So no scenario compared here flies the LM RCS (`FLIGHT_RCS`), the throttle lag, touchdown, the P66 crew, the ascent or the abort stage. Those run only in the NASSP scenarios, and the unit checks in `test_vehicle_models.c` are their only x86 test so far.
 
+## Live DSKY
+
+`X86_DSKY=1 build/x86-flight/x86-flight-lm ROPE.bin` flies the LM in real time with a DSKY in the terminal (`platform/x86/terminal_dsky.h`, MIT). The display is the port's own DSKY device adapter (`src/dsky_display.c`, the one the C64 draws with): the relay words the program writes to channel 10 and the lamps of channel 11, drawn with ANSI escapes. Lit lamps show in bold yellow.
+
+| Key | DSKY |
+|---|---|
+| `0`-`9`, `+`, `-` | digits and signs |
+| `v`, `n`, `e` or Enter | VERB, NOUN, ENTER |
+| `c`, `r`, `k` | CLR, RSET, KEY REL |
+| `p` | PRO (channel 32 bit 14 held low for half a second) |
+| `m`, `j` | the CM's MARK and MARK REJECT |
+| `q` or Ctrl-C | quit |
+
+Typed keys go in at idle sample points at least 0.2 s of AGC time apart, as scenario keys do, so keys piped in (`printf v35e | X86_DSKY=1 X86_SPEED=0 ...`) work too. KEYS and the `FLIGHT_*` inputs still apply. The lamp test (`V35E`), `V37E` program changes and octal displays (`V01N01E`, `V05N09E`) run on both programs. Decimal noun displays don't yet (Gaps).
+
 ## Gaps
 
 On base f499d7ee:
 
 - **CM P11 boost:** at 89,001 cs the x86 run is 449 m and 0.73 m/s from the harness, against a spread of 80 m and 0.06 m/s between the harness's own two clocks. The cause is when the AGC sees liftoff. The gyrocompass loop polls the liftoff discrete (channel 30 bit 5), and P11 zeroes its clock and navigates from the time it saw it. With `FLIGHT_SATURN` lifting off at 10,000 cs, TLIFTOFF is 10,005 on the harness's work clock, 10,022 on its other clock, and 10,038 on the x86 program's clock. So the state vector carries that offset from liftoff on (149 m at 10,051 cs against a spread of 74 m), and it grows to orbit. This comes from the clock schedule, not from a routine computing differently. Comparing at equal time since liftoff, or making the x86 schedule closer to yaAGC's, would bring P11 inside the limits.
 - **CM channels 11-14:** every CM table runs with `FLIGHT_IO_CM_NATIVE`. Its copy back into the hardware channels undoes the channel writes that routines make straight to the hardware: `src/cm_t4rupt_imu.c` (zero ICDU, cage, DSALMOUT) and `src/keyrupt_uprupt.c`. The x86 lockstep shows this as the one channel 12 miss above. The scenario comparison can't see it, because the harness behaves the same way and compares no channels. The cause is in shared code (`src/flight_io.c`), and D1 is fixing it, together with a channel compare in the harness lockstep.
+- **Decimal noun displays** (`V06N36E`, `V16N36E`, `V16N65E`) stop at Pinball's basic point 42,3230 (LM) or 42,3143 (CM) in the live DSKY. The not yet certified `lanec_pin_lm_routines` and `lanec_pin_cm_routines` refuse them. Lane C's Pinball LM and CM certificate covers them.
 - **Missing models:** the radar, NASSP core, uplink and stolen-time scenarios above.
 - The uncompiled interpretive code by file is listed in the design note.
