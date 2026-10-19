@@ -46,7 +46,7 @@ ARMS = {
         ],
     },
     'cm-conics': {
-        'cases': 114944, 'cases_sha256': '3c5465352653c83e46849fd3207535e89884b62ec8eeb1d6e88a00c9aa10df62',
+        'cases': 114944, 'cases_sha256': 'df691df00551109ad16f02edc82b1fb82d655eaa76430ebb4746744b2429a179',
         'sources_sha256': {'src/cm_conics.c': '1eb02a4d9260e75ab439d635f7fe383014562369761f5bf43ca94bf5c357bbdb'},
         'arms': [
             {'src': 'src/cm_conics.c', 'line': 1147, 'agc': '12,2147', 'op': 'SIGN BZE', 'what': 'branch never taken', 'class': 'UNSURE', 'why': 'Needs the guess XKEPNEW = 0, which KEPPREP produces only for TAU.=0 after RECTIFY (XKEP=0); settled by whether a caller ever asks for a zero-length conic (e.g. RVCON with TDEC=TET, or CSMCONIC/LEMCONIC with zero interval).'},

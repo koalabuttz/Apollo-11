@@ -1991,6 +1991,9 @@ SPECS = {
         # (vector after VLOAD*, UNIT, VSQ's operand load, DP otherwise).
         # 04,3650 (GEOM's return) is in DP mode.
         'states': {
+            # TIMERAD's VXSC VSU after its PDDL (PL AT 6), for the joint
+            # state there.
+            '12,3605': {'0166': ['vac+6']},
             **{'12,%o' % a: {'0166': ['vac+2' if a in (0o2122, 0o2124) or a >= 0o2133 else 'vac+0'],
                              '02311': [0, 0o77777], '02312': [1, 0o40, 0o77, 0o77700, 0o77776],
                              '0163': [0o77776 if a in (0o2047, 0o2051, 0o2054, 0o2060, 0o2066) else 0],
@@ -2092,18 +2095,20 @@ SPECS = {
                         # TARGETV is taken as for a caller that asks for
                         # the target velocity.
                         'TARGETV-5': [{}] * 3 + [{'VTARGTAG': 0}],
-                        # 12,3605's VXSC VSU (a CHANG2 resume in LAMBERT,
-                        # PL at 6): MPAC's scalar near +1 times UR1 with each
+                        # 12,3605's VXSC VSU (a CHANG2 resume in TIMERAD,
+                        # PL at 6, 'states' above): MPAC's scalar near +1
+                        # times UR1 (E5, the operand's own bank) with each
                         # component 1/2 + 1/2^15, less a push-down vector of
                         # -1/2 + 1/2^15 (a negative major word and positive
-                        # minor word). Each component's double add carries
+                        # minor word). Not a flight state: an edge state for
+                        # the shared interpreter. Each component's double add carries
                         # its major word to exactly 1, with a negative minor
                         # word, which the interpreter's OVERFLOW can absorb
                         # (major 037777) and return without OVFIND. #659's
                         # TARGETV-5 state reshuffled the random case that
                         # took this.
                         '12,3605': [{}] * 3 + [{'0154': 0o37777, '0155': 0o37777, '0163': 0,
-                                                **{'E:%o' % (0o1724 + i): (0o20000, 0o20000)[i % 2] for i in range(6)},
+                                                **{'UR1+%d' % i: (0o20000, 0o20000)[i % 2] for i in range(6)},
                                                 **{'vac+%o' % i: (0o57777, 0o20000)[i % 2] for i in range(6)}}]},
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
         # drops every case whose run reaches at least its routines.
