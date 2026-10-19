@@ -46,8 +46,14 @@ OUT = xb.OUT / 'scenarios'
 SPREAD_K, RN_FLOOR, VN_FLOOR = 4.0, 50.0, 0.15
 WORDS_K, WORDS_PLUS = 1.5, 10
 WORDS = range(0o61, 0o4000)
-KNOWN = {'cm-p11': 'P11 boost ends about 450 m and 0.7 m/s off, against a harness spread of 80 m and 0.06 m/s '
-                   '(mostly cross track); open in docs/X86-FLIGHT.md Gaps'}
+# The gyrocompass loop polls the liftoff discrete, so when the AGC sees
+# liftoff depends on its clock schedule: TLIFTOFF is 10,005 cs on the
+# harness's work clock, 10,022 on its other clock and 10,038 on the x86
+# program's (FLIGHT_SATURN lifts off at 10,000). P11 navigates from the
+# time it saw, so the offset is in the state vector from liftoff on
+# (149 m at 10,051 cs against a spread of 74 m) and grows to orbit.
+KNOWN = {'cm-p11': 'the x86 program sees liftoff 33 cs after the harness (TLIFTOFF 10038 against 10005; the '
+                   "harness's other clock: 10022), and P11 navigates from that time"}
 UNSUPPORTED = ('FLIGHT_CORE', 'FLIGHT_RR', 'FLIGHT_LR', 'FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7).
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
