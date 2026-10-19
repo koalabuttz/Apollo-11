@@ -51,21 +51,20 @@ NAMES = {'lm': {0o77777: 'coast and align', 0o77776: 'AGS initialization and upd
 # later 20 ms frame than on the free-running reference. Words whose frame
 # alone differs are counted apart and allowed up to this many.
 REF_SLACK = 0
-# C64 windows: (tag, scenario, snapshot centisecond, with the scenario's
-# GOJAM). lm-p63-descent: the descent and ascent list in the braking phase,
-# before the GOJAM; -after-gojam: the list STARTSUB restarted, 9 cs after the
-# GOJAM; lm-p00: the coast and align list in P00.
-# (tag, restart row, snapshot cs, GOJAM applied before the snapshot). The
-# acceptance windows (LM rendezvous, CM P00, P40 burn, entry) start mid-phase
-# from the restart rows' own scenarios, without their GOJAM, so the lists
-# carry that phase's live state.
-VICE_WINDOWS = [('lm-p63-descent', 'lm-p63-descent-restart', 19950, False),
-                ('lm-p63-descent-after-gojam', 'lm-p63-descent-restart', 20010, True),
-                ('lm-p00', 'lm-p00-restart', 2400, False),
-                ('lm-rendezvous', 'lm-rendezvous-restart', 19990, False),
-                ('cm-p00', 'cm-p00-p40-restart', 72990, False),
-                ('cm-p40-burn', 'cm-p40-burn-restart', 49990, False),
-                ('cm-entry', 'cm-entry-restart', 24990, False)]
+# C64 windows: (tag, restart row, snapshot cs, GOJAM applied before the
+# snapshot, the list ID the window must start). lm-p63-descent: the descent
+# and ascent list in the braking phase, before the GOJAM; -after-gojam: the
+# list STARTSUB restarted, 9 cs after the GOJAM; lm-p00: the coast and align
+# list in P00. The acceptance windows (LM rendezvous, CM P00, P40 burn,
+# entry) start mid-phase from the restart rows' own scenarios, without their
+# GOJAM, so the lists carry that phase's live state.
+VICE_WINDOWS = [('lm-p63-descent', 'lm-p63-descent-restart', 19950, False, 0o77773),
+                ('lm-p63-descent-after-gojam', 'lm-p63-descent-restart', 20010, True, 0o77773),
+                ('lm-p00', 'lm-p00-restart', 2400, False, 0o77777),
+                ('lm-rendezvous', 'lm-rendezvous-restart', 19990, False, 0o77775),
+                ('cm-p00', 'cm-p00-p40-restart', 72990, False, 0o77777),
+                ('cm-p40-burn', 'cm-p40-burn-restart', 49990, False, 0o77774),
+                ('cm-entry', 'cm-entry-restart', 24990, False, 0o77776)]
 
 
 def stream(path):
@@ -156,7 +155,7 @@ def check(exe, scenario):
 
 def c64_window(a, exe, window, scratch, pinned):
     from resident_flight_build import COMMON, MISSION, resident_sources
-    tag, scenario, at, jam = window
+    tag, scenario, at, jam, list_id = window
     name, m, cs, keys, env, gojam, sched, _ = next(x for x in frc.RESTARTS if x[0] == scenario)
     env = {**env, **({'FLIGHT_SCALED': sched} if sched else {}), **({'FLIGHT_GOJAM': str(gojam)} if jam else {}),
            'FLIGHT_DOWNRUPT': '1'}
@@ -199,6 +198,8 @@ def c64_window(a, exe, window, scratch, pinned):
                    f'reference exit {r.returncode} {r.stderr.strip()}')
     if row['records_differ']:
         bad.append(f"{row['records_differ']} DOWNRUPTs' words differ from yaAGC's")
+    if not any(words[k][0] == list_id for k in starts):
+        bad.append(f'no {list_id:05o} {NAMES[m].get(list_id, "?")} list started')
     row.update(ok=not bad, failures=bad)
     return row
 
@@ -254,7 +255,13 @@ def main():
     exe = {m: fhd.build(a.host_cc, m, engine) for m in ('lm', 'cm')}
     OUT.mkdir(parents=True, exist_ok=True)
     frc.OUT = OUT   # frc.run writes its logs here
-    only = set(a.only.split(',')) if a.only else None
+    only = {x for x in a.only.split(',') if x} if a.only is not None else None
+    if a.downrupts < 1:
+        sys.exit('FAIL: --downrupts must be at least 1')
+    if only is not None:
+        known = {x[0] for x in frc.RESTARTS} | ({w[0] for w in VICE_WINDOWS} if a.run_vice else set())
+        if not only or only - known:
+            sys.exit(f'FAIL: --only names nothing to run: {sorted(only - known) or "(empty)"}')
     # A restart that starts from a NASSP core (FLIGHT_CORE) runs on scaled
     # time, where flight_host_run.c has no DOWNRUPT: those rows stay out.
     todo = [x for x in frc.RESTARTS if (not only or x[0] in only) and 'FLIGHT_CORE' not in x[4]

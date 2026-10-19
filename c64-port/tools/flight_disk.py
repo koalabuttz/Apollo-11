@@ -96,7 +96,7 @@ def drive_code(cc):
 def link_resident(cc, m):
     out = OUT / f'{m}-resident.prg'
     run([cc, *COMMON, *MISSION[m], '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
-         '-DRK_DSKY=1', *FLIGHT_MAIN, *resident_sources(m), STORE / 'overlay_v2_services.S', '-o', out])
+         '-DRK_DSKY=1', '-DRK_DOWNRUPT=1', *FLIGHT_MAIN, *resident_sources(m), STORE / 'overlay_v2_services.S', '-o', out])
     prg = out.read_bytes()
     sys_at = re.search(rb'\x9e\s*(\d+)\x00', prg[:32])
     assert prg[:2] == b'\x01\x08' and sys_at, out
