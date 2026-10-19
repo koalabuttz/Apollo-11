@@ -738,8 +738,9 @@ RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(
 
 
 # TC trap restarts: P00 idle, then V69E at 23.5 s. VERB69 is a TC to
-# itself, so the TC trap restarts the computer (tc_trap in
-# tools/flight_host_run.c, rk_tc_trap on the C64; docs/FLIGHT-RESTART.md):
+# itself, so the TC trap restarts the computer (yaAGC's own trap unscaled,
+# yaagc_trap in tools/flight_host_run.c; the spin at VERB69 under the work
+# clock there and in the C64's rk_resident_step; docs/FLIGHT-RESTART.md):
 # GOPROG with no group active, back to P00. tools/flight_restart_check.py
 # checks them on the host (lm-v69-restart, cm-v69-restart);
 # tools/flight_scenario_vice.py --scenario lm-v69 --snap-cs 2300 --replay on

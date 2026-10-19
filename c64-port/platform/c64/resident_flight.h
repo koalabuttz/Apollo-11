@@ -336,17 +336,10 @@ enum exec_status rk_resident_step(uint16_t stop_physical);
  * takes it where the AGC's TC trap would). 0, or nonzero when the GOJAM
  * module did not run. */
 uint8_t rk_gojam(void);
-/* Where the AGC's TC trap would restart it: Z at VERB69 (43,2037 in both
- * ropes, V69's TC VERB69, the one TC to itself in either; bank 043 is FB 033
- * with the superbank's bit 0100) outside an interrupt, before the step that
- * would spin there. tools/flight_host_run.c tc_trap takes it at the same
- * point. */
-static inline uint8_t rk_tc_trap(void)
-{
-    const agc_word *w = ((const apollo_overlay_state *)APOLLO_SHARED_ADDRESS)->words;
-    return w[5] == 02037u && w[4] == 066000u && (rk_device.superbank & 0100u) &&
-           !rk_hardware.in_interrupt;
-}
+/* Spinning at VERB69, where the AGC's TC trap restarts it (rk_resident_step,
+ * docs/FLIGHT-RESTART.md): nonzero, with bit 1 set when the period's T3 step
+ * is still ahead. */
+extern uint8_t rk_spin;
 /* One run of a loaded module's routine at the current point, straight from
  * its slot (EXEC_UNMAPPED: no loaded module holds it). */
 enum exec_status rk_direct(uint16_t stop_physical, uint16_t point);

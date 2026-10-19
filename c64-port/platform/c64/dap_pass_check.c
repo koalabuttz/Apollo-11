@@ -677,9 +677,7 @@ int main(void){
 #ifdef RK_STEP_PROFILE
   prof_last=now();
 #endif
-  /* The TC trap (V69), as resident_flight_main.c takes it. */
-  st = rk_tc_trap() ? (rk_gojam() ? EXEC_OUT_OF_SCOPE : EXEC_OK)
-                    : rk_resident_step(AGC_TRANSFER_NONE);
+  st=rk_resident_step(AGC_TRANSFER_NONE);
 #ifdef RK_STEP_PROFILE
   rk_prof(10);
 #endif
