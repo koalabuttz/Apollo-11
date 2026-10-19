@@ -1,0 +1,237 @@
+{
+ "scenario": "lm-p63-nassp",
+ "ok": false,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 144885420,
+ "agc_cs": 600,
+ "dropped_ticks": 0,
+ "steps": 3761,
+ "wall_per_agc": 24.509,
+ "lost": false,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch",
+   "undo"
+  ],
+  "outside": [],
+  "dma_outside": 0
+ },
+ "replay_rows": 566,
+ "replay_applied": 566,
+ "replay_end_cs": 600,
+ "replay_ended": true,
+ "replay_matched_cs": [],
+ "replay_differences": 366,
+ "replay_differ_at_cs": 167,
+ "replay_skipped": [],
+ "replay_first": [
+  {
+   "at": "centiseconds",
+   "host": "00247",
+   "c64": "00144"
+  },
+  {
+   "at": "TIME1",
+   "host": "20624",
+   "c64": "20521"
+  },
+  {
+   "at": "TIME3",
+   "host": "37773",
+   "c64": "37777"
+  },
+  {
+   "at": "TIME4",
+   "host": "37767",
+   "c64": "37764"
+  },
+  {
+   "at": "TIME5",
+   "host": "37777",
+   "c64": "37770"
+  },
+  {
+   "at": "TIME6",
+   "host": "37777",
+   "c64": "00256"
+  },
+  {
+   "at": "0037",
+   "host": "77777",
+   "c64": "00752"
+  },
+  {
+   "at": "0040",
+   "host": "77777",
+   "c64": "00010"
+  },
+  {
+   "at": "0041",
+   "host": "77777",
+   "c64": "76505"
+  },
+  {
+   "at": "0051",
+   "host": "77754",
+   "c64": "77743"
+  },
+  {
+   "at": "0055",
+   "host": "74507",
+   "c64": "03215"
+  },
+  {
+   "at": "0061",
+   "host": "00004",
+   "c64": "00000"
+  },
+  {
+   "at": "0062",
+   "host": "00010",
+   "c64": "04063"
+  },
+  {
+   "at": "0063",
+   "host": "10000",
+   "c64": "00000"
+  },
+  {
+   "at": "0064",
+   "host": "00030",
+   "c64": "05155"
+  },
+  {
+   "at": "0065",
+   "host": "00027",
+   "c64": "00000"
+  },
+  {
+   "at": "0066",
+   "host": "00000",
+   "c64": "00400"
+  },
+  {
+   "at": "0124",
+   "host": "00035",
+   "c64": "00017"
+  },
+  {
+   "at": "0126",
+   "host": "66535",
+   "c64": "61617"
+  },
+  {
+   "at": "0127",
+   "host": "06462",
+   "c64": "11233"
+  },
+  {
+   "at": "0130",
+   "host": "03126",
+   "c64": "00000"
+  },
+  {
+   "at": "0132",
+   "host": "33530",
+   "c64": "20530"
+  },
+  {
+   "at": "0142",
+   "host": "05600",
+   "c64": "05140"
+  },
+  {
+   "at": "0164",
+   "host": "00000",
+   "c64": "21301"
+  },
+  {
+   "at": "0167",
+   "host": "77777",
+   "c64": "44246"
+  },
+  {
+   "at": "0204",
+   "host": "02100",
+   "c64": "00034"
+  },
+  {
+   "at": "0205",
+   "host": "00000",
+   "c64": "01500"
+  },
+  {
+   "at": "0207",
+   "host": "00002",
+   "c64": "63511"
+  },
+  {
+   "at": "0211",
+   "host": "00052",
+   "c64": "00030"
+  },
+  {
+   "at": "0212",
+   "host": "11254",
+   "c64": "36722"
+  },
+  {
+   "at": "0213",
+   "host": "20000",
+   "c64": "00000"
+  },
+  {
+   "at": "0214",
+   "host": "21301",
+   "c64": "03457"
+  }
+ ],
+ "snap_cs": 112000,
+ "snap_at": 112001,
+ "snap_slid": false,
+ "requested_cs": 600,
+ "host_holes": [
+  {
+   "kind": "basic",
+   "point": "43,3303",
+   "label": "SMODECHK+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3332",
+   "label": "CHECKNJ",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 3,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3334",
+   "label": "CHECKNJ+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  }
+ ],
+ "commit": "469af19e2a55"
+}

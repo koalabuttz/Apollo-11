@@ -1,0 +1,67 @@
+{
+ "scenario": "lm-p57",
+ "ok": false,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 56510938,
+ "agc_cs": 600,
+ "dropped_ticks": 0,
+ "steps": 3030,
+ "wall_per_agc": 9.56,
+ "lost": false,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0
+ },
+ "replay_rows": 16,
+ "replay_applied": 16,
+ "replay_end_cs": 600,
+ "replay_ended": true,
+ "replay_matched_cs": [],
+ "replay_differences": 5,
+ "replay_differ_at_cs": 101,
+ "replay_skipped": [],
+ "replay_first": [
+  {
+   "at": "centiseconds",
+   "host": "00145",
+   "c64": "00144"
+  },
+  {
+   "at": "TIME1",
+   "host": "27505",
+   "c64": "27504"
+  },
+  {
+   "at": "TIME3",
+   "host": "27502",
+   "c64": "27501"
+  },
+  {
+   "at": "TIME4",
+   "host": "37777",
+   "c64": "37776"
+  },
+  {
+   "at": "TIME5",
+   "host": "37775",
+   "c64": "37774"
+  }
+ ],
+ "snap_cs": 12000,
+ "snap_at": 12000,
+ "snap_slid": false,
+ "requested_cs": 600,
+ "host_holes": [],
+ "commit": "469af19e2a55"
+}

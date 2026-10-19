@@ -1,0 +1,64 @@
+{
+ "scenario": "lm-p41-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 57500,
+ "keys": "@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00050E+00000E+00000E@3600V33E@4400V33E@6000V37E41E@7200E@53500V33E@54500V37E00E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036673",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_ENGINE_LAG": "0.2",
+  "FLIGHT_LOAD": "100:tools/flight_scenarios/lm-doi.load",
+  "FLIGHT_POKE": "7000:032=77776,7000:033=56420,7000:034=74217,7000:3235=77776,7000:3236=56420,7000:3237=74217",
+  "FLIGHT_RCS": "15100",
+  "FLIGHT_CHAN": "49000:031=057677,51350:031=057777,51400:031=057377,52330:031=057777,52400:031=053777,52810:031=057777"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "9efb1bfd8187",
+ "cia_interrupts": 57730,
+ "periods_taken": 57500,
+ "periods_dropped": 230,
+ "agc_centiseconds": 57500,
+ "native_routines": 2616369,
+ "bridged_instructions": 5,
+ "routine_mismatches": [],
+ "unregistered": [
+  {
+   "kind": "basic",
+   "point": "43,3303",
+   "label": "SMODECHK+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3332",
+   "label": "CHECKNJ",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 3,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3334",
+   "label": "CHECKNJ+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  }
+ ],
+ "log_sha256": "0535b7dc15bfae1fd8670480df1ce8cca37cd5291c7524ad469714f120f511af"
+}

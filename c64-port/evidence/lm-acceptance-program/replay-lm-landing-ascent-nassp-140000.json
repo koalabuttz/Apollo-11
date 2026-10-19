@@ -1,0 +1,108 @@
+{
+ "scenario": "lm-landing-ascent-nassp",
+ "ok": false,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 71307298,
+ "agc_cs": 1000,
+ "dropped_ticks": 0,
+ "steps": 4260,
+ "wall_per_agc": 7.237,
+ "lost": false,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "replay states",
+   "scratch",
+   "undo"
+  ],
+  "outside": [],
+  "dma_outside": 0
+ },
+ "replay_rows": 1013,
+ "replay_applied": 1012,
+ "replay_end_cs": 1000,
+ "replay_ended": true,
+ "replay_matched_cs": [
+  100
+ ],
+ "replay_differences": 6,
+ "replay_differ_at_cs": 201,
+ "replay_skipped": [],
+ "replay_first": [
+  {
+   "at": "centiseconds",
+   "host": "00311",
+   "c64": "00310"
+  },
+  {
+   "at": "TIME1",
+   "host": "07426",
+   "c64": "07425"
+  },
+  {
+   "at": "TIME3",
+   "host": "20047",
+   "c64": "20046"
+  },
+  {
+   "at": "TIME4",
+   "host": "37776",
+   "c64": "37775"
+  },
+  {
+   "at": "TIME5",
+   "host": "37771",
+   "c64": "37770"
+  },
+  {
+   "at": "0037",
+   "host": "00101",
+   "c64": "00077"
+  }
+ ],
+ "snap_cs": 140000,
+ "snap_at": 140001,
+ "snap_slid": false,
+ "requested_cs": 1000,
+ "host_holes": [
+  {
+   "kind": "basic",
+   "point": "43,3303",
+   "label": "SMODECHK+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3332",
+   "label": "CHECKNJ",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 3,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3334",
+   "label": "CHECKNJ+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  }
+ ],
+ "commit": "469af19e2a55"
+}

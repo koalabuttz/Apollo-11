@@ -1,0 +1,62 @@
+{
+ "scenario": "lm-abort-p70-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 180000,
+ "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036733",
+  "FLIGHT_LR_POS2": "500",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_ENGINE_LAG": "0.2",
+  "FLIGHT_CHAN": "115000:030=036350"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "9efb1bfd8187",
+ "cia_interrupts": 188107,
+ "periods_taken": 180001,
+ "periods_dropped": 8106,
+ "agc_centiseconds": 180001,
+ "native_routines": 7512908,
+ "bridged_instructions": 5,
+ "routine_mismatches": [],
+ "unregistered": [
+  {
+   "kind": "basic",
+   "point": "43,3303",
+   "label": "SMODECHK+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3332",
+   "label": "CHECKNJ",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 3,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3334",
+   "label": "CHECKNJ+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  }
+ ],
+ "log_sha256": "a4453edcb41d677ece97663aa6295e9093d6dc4b6dcc1bcfea6cd8ab5dc9ccef"
+}

@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-acceptance-program",
+  "release": "evidence-lm-acceptance-program",
+  "files": {
+    "host-lm-abort-p70-nassp.json": {
+      "sha256": "2a97d041c483cac7061ab31e391ae28786beed773a8c6431cbb73fbbde2452ef",
+      "bytes": 1463,
+      "store": "tree"
+    },
+    "host-lm-abort-p71-nassp.json": {
+      "sha256": "e3814532715fd7a12dedaba75c61a4a4914dfee891e060768ef5d77db83837fc",
+      "bytes": 1518,
+      "store": "tree"
+    },
+    "host-lm-cdh-csm.json": {
+      "sha256": "e68191794386d6e3f09b8876909af849cd2461f761217076ef424f5548cda951",
+      "bytes": 1599,
+      "store": "tree"
+    },
+    "host-lm-cdh.json": {
+      "sha256": "ce7089a92ee3cba3d5eeceffcbe4764d4c140525b606da52f06918d50ec312d7",
+      "bytes": 1591,
+      "store": "tree"
+    },
+    "host-lm-csi.json": {
+      "sha256": "0cacc64bbc99479a335adff2d3074821c3e04da2ffa0095319991aa5239e65be",
+      "bytes": 1057,
+      "store": "tree"
+    },
+    "host-lm-doi-nassp.json": {
+      "sha256": "14908fbcad0c3e786c7e29041f26558dbef83c1ba402ed6305b204457f3151ff",
+      "bytes": 1694,
+      "store": "tree"
+    },
+    "host-lm-landing-ascent-nassp.json": {
+      "sha256": "d576ff3b61bb8f34c3306cde854dc5e19b24e31e4e237a268a5ae33a7005bbe1",
+      "bytes": 1743,
+      "store": "tree"
+    },
+    "host-lm-p41-nassp.json": {
+      "sha256": "5fa7de1602b4b45e3dcf82c4daf8c998df775bd72fb82120437d3fb808f8e7dd",
+      "bytes": 1791,
+      "store": "tree"
+    },
+    "host-lm-p42-nassp.json": {
+      "sha256": "eb6b676dc6653a2be9303146df61b54d2856b74c8c3137cef0649717bd592b65",
+      "bytes": 1780,
+      "store": "tree"
+    },
+    "host-lm-p47-nassp.json": {
+      "sha256": "7736be8f759e283daca1dcb5dfced42073f79c03b0e9f75405848d15fc8d0669",
+      "bytes": 1741,
+      "store": "tree"
+    },
+    "host-lm-p52-realign.json": {
+      "sha256": "78bf1413e92cde2381b8a2d8dffca9763e58d9a5c18f43e73ba59f8a658f8cd3",
+      "bytes": 1535,
+      "store": "tree"
+    },
+    "host-lm-p57.json": {
+      "sha256": "60d85015792e15b270fc0c3f457659c03b7890d2e18c059f176fa132a878fd0a",
+      "bytes": 1004,
+      "store": "tree"
+    },
+    "host-lm-p63-descent-restart.json": {
+      "sha256": "e45cc680cb9154f2b4c493a8071718a24a15ff08ea22b8e5cfcd94e6e718f85e",
+      "bytes": 751,
+      "store": "tree"
+    },
+    "host-lm-p63-descent-thrust.json": {
+      "sha256": "0c47a727cd3b69f39257dd912af4984c0cc4121a91d0e4e49ac826c1222c0fd6",
+      "bytes": 723,
+      "store": "tree"
+    },
+    "host-lm-p63-descent.json": {
+      "sha256": "00c20221cae314861c8007488a64dfac4fa37f9ca510bef12315ff3e84b9a446",
+      "bytes": 687,
+      "store": "tree"
+    },
+    "host-lm-p63-lr-update.json": {
+      "sha256": "1710851f9d4e783c6d3c96b04154af2654f7f4033df1d5d196e79b9a344c9e94",
+      "bytes": 1427,
+      "store": "tree"
+    },
+    "host-lm-p63-lr-v58.json": {
+      "sha256": "adc00035315b1e69a6bbfb27fd0cfcaf0f5b227c4d6f0a6204cd6876a73e6d60",
+      "bytes": 1434,
+      "store": "tree"
+    },
+    "host-lm-p63-nassp.json": {
+      "sha256": "0596f3d85faebc3df5baccf3014f7166ca1c3e24bebbd7e18f292b83f645ced4",
+      "bytes": 1389,
+      "store": "tree"
+    },
+    "host-lm-p63-v60-nassp.json": {
+      "sha256": "ec60e1778ea0ced747ff3dfc3bb9352cc9f60b1970a9582b5c4692616b90ee71",
+      "bytes": 1615,
+      "store": "tree"
+    },
+    "host-lm-p65-autoland-nassp.json": {
+      "sha256": "3c81e647695c0d309c6bee42e561e4b1ac9652c567b7f5348fadde435c84819c",
+      "bytes": 2318,
+      "store": "tree"
+    },
+    "host-lm-p67-nassp.json": {
+      "sha256": "f99275343f215b954624dba427cd28af7efd7476fff11a64836530bb0dcf1de1",
+      "bytes": 1689,
+      "store": "tree"
+    },
+    "host-lm-rendezvous-tpm.json": {
+      "sha256": "37f561cc312ec48eefaf4d523defec1b95ed2d21f28cb0ef28fd9ddbd3c20792",
+      "bytes": 1790,
+      "store": "tree"
+    },
+    "host-lm-rendezvous.json": {
+      "sha256": "1548dd82e1c03cd6709592ba5265a88d5a2cf2e6bb675708067f7492c7fc7d42",
+      "bytes": 923,
+      "store": "tree"
+    },
+    "host-lm-stable-orbit-lm.json": {
+      "sha256": "c23f5a478620055a93943ce4666746bbdd194a650d85b2d98a0b557ffc4d4176",
+      "bytes": 1000,
+      "store": "tree"
+    },
+    "host-lm-stable-orbit.json": {
+      "sha256": "771a003f2b73bc7e767535ef9e5f7a89b56bdf3209e7acb210a68f348aa5b84b",
+      "bytes": 997,
+      "store": "tree"
+    },
+    "replay-lm-abort-p70-nassp-115000.json": {
+      "sha256": "13e1a02c96d53672dee4b87ab514ffcea00c072cbd3e319fb8338a0244ba1927",
+      "bytes": 3500,
+      "store": "tree"
+    },
+    "replay-lm-abort-p71-nassp-115000.json": {
+      "sha256": "293d8692fadfb33aac2195241e51a2abb6c3129660ff0b2182ef72a0eccd2f92",
+      "bytes": 3500,
+      "store": "tree"
+    },
+    "replay-lm-doi-nassp-48800.json": {
+      "sha256": "03d2dc2bad3203fa892c4c21fb442266d3194a3c0d395da8d8d33d9e71694c5f",
+      "bytes": 2276,
+      "store": "tree"
+    },
+    "replay-lm-landing-ascent-nassp-140000.json": {
+      "sha256": "0014ec0eb228cb77a5b8011bcbe710a5924d6d73e640a2389924f317be59fbdd",
+      "bytes": 1829,
+      "store": "tree"
+    },
+    "replay-lm-landing-ascent-nassp-156000.json": {
+      "sha256": "e90ab5723fcce40334ab8943fba7d9c16a9f4e105481b799a3b69e73d080841e",
+      "bytes": 1920,
+      "store": "tree"
+    },
+    "replay-lm-p52-realign-2000.json": {
+      "sha256": "fbd8ae9cbbe39ef481ba05b0bca2b0db30fc99866f35a233554377e8523e3bdc",
+      "bytes": 1751,
+      "store": "tree"
+    },
+    "replay-lm-p57-12000.json": {
+      "sha256": "947b9efdb96fdd8deafb93e1e1d2657e5cd80fd920f76c9e961788e32ae61bb1",
+      "bytes": 1075,
+      "store": "tree"
+    },
+    "replay-lm-p63-descent-17500.json": {
+      "sha256": "1f684d588a69fd4a5e1a95940090c33bd34c43bdfaffffb1728a54a228fbc9a5",
+      "bytes": 1158,
+      "store": "tree"
+    },
+    "replay-lm-p63-descent-restart-20000.json": {
+      "sha256": "d5e40910e11376c1e96e703705a6a083e05b06634cb3af8d75506027186b5b74",
+      "bytes": 2835,
+      "store": "tree"
+    },
+    "replay-lm-p63-descent-thrust-17500.json": {
+      "sha256": "9a6b14156a17ca7d35b74da7aa5d135a5ad0d4aec0812d7e0b421410e34d20dd",
+      "bytes": 753,
+      "store": "tree"
+    },
+    "replay-lm-p63-lr-update-90000.json": {
+      "sha256": "3f0c5c3eb9638e3ee53741ba317f0bc352adac912f34468b6247911be426e869",
+      "bytes": 3546,
+      "store": "tree"
+    },
+    "replay-lm-p63-lr-v58-87500.json": {
+      "sha256": "809422bde34ccba0264fecf0196a7ad05379be54d06fe393a908e4b6dfef38be",
+      "bytes": 2911,
+      "store": "tree"
+    },
+    "replay-lm-p63-nassp-112000.json": {
+      "sha256": "5561e0cdfb4f70bcf4d0e00fcc5bc9fe5c0a8fb2021b596f689e44718896757b",
+      "bytes": 3493,
+      "store": "tree"
+    }
+  }
+}

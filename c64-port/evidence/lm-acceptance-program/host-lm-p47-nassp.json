@@ -1,0 +1,74 @@
+{
+ "scenario": "lm-p47-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 7500,
+ "keys": "@200V37E47E@5000V33E@5500V37E00E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036673",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_ENGINE_LAG": "0.2",
+  "FLIGHT_LOAD": "100:tools/flight_scenarios/lm-doi.load",
+  "FLIGHT_RCS": "15100",
+  "FLIGHT_CHAN": "3000:031=057677,4000:031=057777"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "9efb1bfd8187",
+ "cia_interrupts": 7589,
+ "periods_taken": 7500,
+ "periods_dropped": 89,
+ "agc_centiseconds": 7500,
+ "native_routines": 309189,
+ "bridged_instructions": 85,
+ "routine_mismatches": [],
+ "unregistered": [
+  {
+   "kind": "basic",
+   "point": "43,3303",
+   "label": "SMODECHK+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3332",
+   "label": "CHECKNJ",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 3,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3334",
+   "label": "CHECKNJ+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "41,3321",
+   "label": "MONDO",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 8,
+   "instructions": 80,
+   "refused_by": "lanec_pin_lm_routines",
+   "core_start": false
+  }
+ ],
+ "log_sha256": "010e7eeb86f47142861ab93d825d5e23d41b25488ae6dc321d2397b7bb42b378"
+}

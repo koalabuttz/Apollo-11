@@ -1,0 +1,27 @@
+{
+ "scenario": "lm-stable-orbit-lm-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 67000,
+ "keys": "@2200V37E20E@3000V33E@4700E@6100V33E@8000V37E38E@9500V25E+00000E+00010E+00000E@11000V33E@14500V33E@16500V33E@19500V33E@21500V33E@23000V33E@46000V33E@47000V33E@48000V37E39E@50000V33E",
+ "inputs": {
+  "FLIGHT_CH30": "036377",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077775",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-rendezvous.load",
+  "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+  "FLIGHT_BUSY_SAMPLE": "50"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "9efb1bfd8187",
+ "cia_interrupts": 67020,
+ "periods_taken": 67020,
+ "periods_dropped": 0,
+ "agc_centiseconds": 67020,
+ "native_routines": 1395862,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "158c181e1777fda1ec761680847fe35a4d64d1621c3218616d4841218aecc0ac"
+}

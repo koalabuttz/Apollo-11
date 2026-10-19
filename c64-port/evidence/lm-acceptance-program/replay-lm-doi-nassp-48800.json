@@ -1,0 +1,142 @@
+{
+ "scenario": "lm-doi-nassp",
+ "ok": false,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 169820734,
+ "agc_cs": 1001,
+ "dropped_ticks": 0,
+ "steps": 5530,
+ "wall_per_agc": 17.219,
+ "lost": false,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch",
+   "undo"
+  ],
+  "outside": [],
+  "dma_outside": 0
+ },
+ "replay_rows": 407,
+ "replay_applied": 407,
+ "replay_end_cs": 1001,
+ "replay_ended": true,
+ "replay_matched_cs": [],
+ "replay_differences": 13,
+ "replay_differ_at_cs": 109,
+ "replay_skipped": [],
+ "replay_first": [
+  {
+   "at": "centiseconds",
+   "host": "00155",
+   "c64": "00160"
+  },
+  {
+   "at": "TIME1",
+   "host": "25171",
+   "c64": "25174"
+  },
+  {
+   "at": "TIME3",
+   "host": "37747",
+   "c64": "37752"
+  },
+  {
+   "at": "TIME4",
+   "host": "37765",
+   "c64": "37776"
+  },
+  {
+   "at": "TIME5",
+   "host": "37777",
+   "c64": "37770"
+  },
+  {
+   "at": "0040",
+   "host": "77776",
+   "c64": "77775"
+  },
+  {
+   "at": "0041",
+   "host": "00005",
+   "c64": "00006"
+  },
+  {
+   "at": "0063",
+   "host": "02217",
+   "c64": "00000"
+  },
+  {
+   "at": "1273",
+   "host": "14000",
+   "c64": "14010"
+  },
+  {
+   "at": "3033",
+   "host": "10107",
+   "c64": "10110"
+  },
+  {
+   "at": "3034",
+   "host": "10107",
+   "c64": "10110"
+  },
+  {
+   "at": "3035",
+   "host": "10107",
+   "c64": "10110"
+  },
+  {
+   "at": "3340",
+   "host": "77777",
+   "c64": "63377"
+  }
+ ],
+ "snap_cs": 48800,
+ "snap_at": 48800,
+ "snap_slid": false,
+ "requested_cs": 1000,
+ "host_holes": [
+  {
+   "kind": "basic",
+   "point": "43,3303",
+   "label": "SMODECHK+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3332",
+   "label": "CHECKNJ",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 3,
+   "refused_by": null,
+   "core_start": true
+  },
+  {
+   "kind": "basic",
+   "point": "43,3334",
+   "label": "CHECKNJ+2",
+   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
+   "lane": "A",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": true
+  }
+ ],
+ "commit": "469af19e2a55"
+}

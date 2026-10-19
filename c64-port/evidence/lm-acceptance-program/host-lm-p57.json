@@ -1,0 +1,25 @@
+{
+ "scenario": "lm-p57-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 56000,
+ "keys": "@3000V37E57E@4000V33E@5000V22E2E@6000V33E@12000V21E00012E@13000V33E@14000V33E@15000V33E@16000x@17000V21E+08608E@18000V22E+12128E@19000V33E@26000V21E00003E@27000V33E@28000V33E@29000V33E@30000x@31000V21E+01538E@32000V22E+13554E@33000V33E@40000V33E@42000V33E@48000E@50000V34E@52000V37E00E",
+ "inputs": {
+  "FLIGHT_CH30": "036357",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077737",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p57.load,15900:tools/flight_scenarios/lm-p57-star1.load,29900:tools/flight_scenarios/lm-p57-star2.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "9efb1bfd8187",
+ "cia_interrupts": 56002,
+ "periods_taken": 56000,
+ "periods_dropped": 2,
+ "agc_centiseconds": 56000,
+ "native_routines": 3034412,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "cb69a106dfcc651bab605b07548483f2a5f5c72ea84591067f204815afdf5ae7"
+}

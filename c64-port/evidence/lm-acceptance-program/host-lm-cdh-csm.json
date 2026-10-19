@@ -1,0 +1,61 @@
+{
+ "scenario": "lm-cdh-csm-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 23500,
+ "keys": "@2200V37E73E@3000V25E+00001E+00008E+02310E@4200V33E@5000V33E@21000V33E@21800V33E@22600V33E",
+ "inputs": {
+  "FLIGHT_CH30": "036377",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077775",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-cdh-csm.load",
+  "FLIGHT_RR": "2000:-259681.119,1759068.734,371336.732,1576.461,307.349,-276.315:42138.296,1816290.127,318143.276,1583.547,36.018,-326.656",
+  "FLIGHT_BUSY_SAMPLE": "50"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "9efb1bfd8187",
+ "cia_interrupts": 23500,
+ "periods_taken": 23500,
+ "periods_dropped": 0,
+ "agc_centiseconds": 23500,
+ "native_routines": 523091,
+ "bridged_instructions": 100,
+ "routine_mismatches": [],
+ "unregistered": [
+  {
+   "kind": "basic",
+   "point": "41,2523",
+   "label": "DECDSP",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 2,
+   "instructions": 2,
+   "refused_by": "lanec_pin_lm_routines",
+   "core_start": false
+  },
+  {
+   "kind": "basic",
+   "point": "41,2524",
+   "label": "DECDSP+1",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 2,
+   "instructions": 2,
+   "refused_by": null,
+   "core_start": false
+  },
+  {
+   "kind": "basic",
+   "point": "41,2525",
+   "label": "DECDSP+2",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 2,
+   "instructions": 96,
+   "refused_by": null,
+   "core_start": false
+  }
+ ],
+ "log_sha256": "47f19cddb1e8d63df1b31053beb172e497f876e32ccf1e542016f30b61c3355f"
+}

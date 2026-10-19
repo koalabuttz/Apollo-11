@@ -1,0 +1,43 @@
+{
+ "scenario": "lm-p63-descent-thrust",
+ "ok": true,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 10312507,
+ "agc_cs": 120,
+ "dropped_ticks": 0,
+ "steps": 575,
+ "wall_per_agc": 8.722,
+ "lost": false,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0
+ },
+ "replay_rows": 99,
+ "replay_applied": 99,
+ "replay_end_cs": 120,
+ "replay_ended": true,
+ "replay_matched_cs": [
+  100,
+  120
+ ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_cs": 17500,
+ "snap_at": 17513,
+ "snap_slid": false,
+ "requested_cs": 120,
+ "host_holes": [],
+ "commit": "9efb1bfd8187"
+}
