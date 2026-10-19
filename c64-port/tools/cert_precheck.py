@@ -911,6 +911,14 @@ def check_dsky_sweep(report, label, mission, name, accepted):
                    f"{', '.join(sweep.get('missions', []))}, not the full sweep of {m}",
                    'rerun it with --cases all on both missions')
         return
+    store = sweep.get('stores', {}).get(m, {})
+    rope = ROOT / 'evidence' / f'fixed-data-{m}-original.rope.bin'
+    reu = ROOT / 'build' / 'flight-store' / f'{m}.reu'
+    stale = [what for what, path, key in (('rope', rope, 'rope_sha256'), ('store', reu, 'reu_sha256'))
+             if path.exists() and store.get(key) != hashlib.sha256(path.read_bytes()).hexdigest()]
+    if stale:
+        report.add(level, label, f"evidence/dsky-sweep/dsky-sweep.json's {m} {' and '.join(stale)} hash is not "
+                   'the current one (the full sweep ran on another build)', 'rerun the full sweep and commit it')
     failed = [r for r in sweep.get('results', []) if r['m'] == m and not r['ok']]
     bad = [r for r in failed if r.get('class') != 'clock']
     if bad:

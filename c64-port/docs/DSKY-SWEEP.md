@@ -32,7 +32,9 @@ A case is a mission and a key string in `tools/flight_host_run.c` syntax:
 `V`, `N`, digits, `E`, `C` (CLR), `K` (KEY REL), `R` (RSET), plus `Q` for
 PRO. PRO is no key code: it is channel 32 bit 14, so the sweep gives the
 host a `FLIGHT_CHAN` press (the bit down for 30 cs) in that key's slot, and
-the C64 gets it with the host's input rows. Every case starts from one host
+the C64 gets it with the host's input rows. A case can also carry its own
+channel inputs after a `|` (`KEYS|CS:CH=VALUE,...`, Lane C's `pro_cases`,
+timed as a run whose keys start at 200 cs), moved to the sweep's key time. Every case starts from one host
 snapshot of a fresh start at 1000 cs. The keys go in from 1100 cs, and the
 case ends 150 cs after its last key.
 
@@ -58,7 +60,7 @@ differs or where it stops). Nobody writes them by hand.
 
 | Class | Meaning |
 |---|---|
-| clock | Only the centiseconds and TIME1-TIME6 differ, each by one count. |
+| clock | Only the centiseconds and TIME1-TIME6 differ, each by one count and all the same way (TIME2 only with TIME1). |
 | difference | Any other erasable word, timer or channel differs. |
 | stop | The host run bridges a point after the snapshot. |
 | host-miss | The host run has a native routine yaAGC did not match after the snapshot. |
@@ -101,6 +103,8 @@ accepted complete) when:
 - `evidence/dsky-sweep/dsky-sweep.json` is missing or is not a `--cases all`
   run of the mission;
 - that run has a failure of the mission that is not the clock class.
+- its rope hash, or its store hash when the store is built, is not the
+  current one (the evidence is of another build).
 
 Clock-class cases get a WARN. They belong to the resident clock
 (`flight-scenarios/replay-mismatches.md`), not to Pinball.

@@ -68,8 +68,8 @@
   "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V37E00E": {
-  "signature": "difference: 0064, 1136, 1400, 1401, TIME1, TIME3, TIME4, TIME5, centiseconds",
-  "why": "C64 one cs ahead at the end plus waitlist words 0064, 1136, 1400, 1401: clock/charge class (owner Certificate fixes from RK, replay-mismatches.md)"
+  "signature": "difference: 1136",
+  "why": "waitlist word 1136 one count apart at the end (the charge class; the clock offset cleared on base 2d8158f0) (owner Certificate fixes from RK, replay-mismatches.md)"
  },
  "lm V01N36E": {
   "signature": "stop: basic 41,2365 refused by lanec_pin_lm_routines",
@@ -133,7 +133,7 @@
  },
  "lm V16N36EV32E": {
   "signature": "run: the C64 stopped (status 1) before a sample point 800 cs in (rows)",
-  "why": "C64 step returns EXEC_OUT_OF_SCOPE after V32E during the V16N36 monitor (14 of 22 rows); the host is clean (owner Certificate fixes, tracing)"
+  "why": "the C64 stops at 42,3230 (a Pinball point refused in the #674 domain, EXEC_OUT_OF_SCOPE) about 380 cs after the snapshot, a point the host run of this case never reaches (the host stops the monitor first): a C64/host path difference, traced again once #674 lands (owner Certificate fixes)"
  },
  "lm V16N65E": {
   "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3425, basic 42,3427, basic 42,3430",

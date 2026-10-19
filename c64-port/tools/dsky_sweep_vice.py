@@ -32,7 +32,8 @@ yaAGC there) or has a native routine yaAGC did not match after the snapshot
 (the host itself is wrong there), naming the point or the routine.
 
 Each failure gets a class and a signature from the tool, not by hand:
-clock (only the centiseconds and TIME1-TIME6 differ, each by one count),
+clock (only the centiseconds and TIME1-TIME6 differ, each by one count the
+same way, TIME2 only with TIME1),
 difference (any other word or channel), stop, host-miss or run. --known
 FILE lists the failures not fixed yet with their signatures; the run fails
 on a failure not listed, a listed one that now matches, one whose signature
@@ -121,7 +122,18 @@ def all_cases():
         import dsky_sweep_cases
     except ImportError:
         sys.exit('FAIL: --cases all needs tools/dsky_sweep_cases.py (Lane C, #674)')
-    return [(m, k) for m, k, _ in dsky_sweep_cases.cases()]
+    full = getattr(dsky_sweep_cases, 'all_cases', None)
+    return [(c[0], c[1] + (f'|{c[3]}' if len(c) > 3 and c[3] else '')) for c in (full or dsky_sweep_cases.cases)()]
+
+
+def case_chan(chan, key_cs):
+    """A case's own FLIGHT_CHAN (Lane C's pro_cases: CS:CH=VALUE, timed as
+    a run whose keys start at fsv.KEY_AT) moved to the sweep's key time."""
+    out = []
+    for x in filter(None, chan.split(',')):
+        t, rest = x.split(':', 1)
+        out.append((int(t) - fsv.KEY_AT + key_cs, rest))
+    return out
 
 
 def bridged(text):
@@ -159,15 +171,22 @@ def host_holes(exe, m, cs, keys, chan=''):
     return r.stdout
 
 
-def host_case(exe, m, i, keys, a, start, channel32):
+def host_case(exe, m, i, case, a, start, channel32):
     """The host run of one case: its snapshot, rows and end state, the
     points it bridges in the window (flight_holes), each a stop on the C64,
     and the routines yaAGC did not match in the window."""
     header = WORK / f'{m}-{i}-snap.h'
     for x in ('', '.replay', '.end'):
         pathlib.Path(f'{header}{x}').unlink(missing_ok=True)
-    window = a.key_cs - a.snap_cs + fsv.KEY_GAP * len(keys) + a.settle_cs
+    keys, _, own = case.partition('|')
+    own = case_chan(own, a.key_cs)
+    last = max([a.key_cs + fsv.KEY_GAP * len(keys)] + [t for t, _ in own])
+    window = last - a.snap_cs + a.settle_cs
     hkeys, chan = host_keys(keys, a.key_cs, channel32)
+    if own:
+        # One FLIGHT_CHAN in time order: the Q presses and the case's own.
+        both = [(int(x.split(':', 1)[0]), x.split(':', 1)[1]) for x in filter(None, chan.split(','))] + own
+        chan = ','.join(f'{t}:{v}' for t, v in sorted(both, key=lambda x: x[0]))
     env = {**os.environ, 'FLIGHT_SCALED': '1,1,2',
            'FLIGHT_SNAPSHOT': f'{a.snap_cs},{header}', 'FLIGHT_REPLAY': f'{window},0,{window},1',
            **({'FLIGHT_CHAN': chan} if chan else {})}
@@ -179,18 +198,29 @@ def host_case(exe, m, i, keys, a, start, channel32):
     yaagc = [f'{x} ({n - start[1].get(x, 0)} times)' for x, n in missed.items() if n > start[1].get(x, 0)]
     end = pathlib.Path(f'{header}.end')
     if r.returncode or not end.exists():
-        return dict(m=m, keys=keys, ok=False, error=f'the host run did not end its window (exit {r.returncode})',
+        return dict(m=m, keys=case, ok=False, error=f'the host run did not end its window (exit {r.returncode})',
                     log=(r.stdout + r.stderr)[-2000:])
     data = end.read_bytes()
     host_end = fsv.states(data, len(data) // fsv.STATE)[-1]
-    return dict(m=m, keys=keys, header=str(header), window=window, holes=holes, misses=yaagc,
+    return dict(m=m, keys=case, header=str(header), window=window, holes=holes, misses=yaagc,
                 rows=pathlib.Path(f'{header}.replay').read_bytes(), host_end=host_end, ok=True)
 
 
 def counts_apart(name, h, c):
-    """A clock word one count apart: the centiseconds, or a timer (a 15-bit
-    counter word, so 0 and 077777 are one apart too)."""
-    return abs(h - c) == 1 if name == 'centiseconds' else (h - c) % 0o100000 in (1, 0o77777)
+    """The C64's lead over the host in a clock word one count apart (+1 or
+    -1; 0 when not): the centiseconds, or a timer (a 15-bit counter word, so
+    0 and 077777 are one apart too)."""
+    d = c - h if name == 'centiseconds' else {1: 1, 0o77777: -1}.get((c - h) % 0o100000, 0)
+    return d if d in (1, -1) else 0
+
+
+def clock_only(diff):
+    """Only the clock one count apart, all one way: the centiseconds and
+    timers, each a count ahead (or each behind), TIME2 only with TIME1 (it
+    is TIME1's carry)."""
+    names = {x[0] for x in diff}
+    ways = {counts_apart(*x) if x[0] in TIMER_NAMES else 0 for x in diff}
+    return bool(diff) and len(ways) == 1 and 0 not in ways and ('TIME2' not in names or 'TIME1' in names)
 
 
 def classify(res):
@@ -202,7 +232,7 @@ def classify(res):
     if 'diff' not in res:
         return 'run', 'run: ' + re.sub(r'\d+ of \d+ rows applied', 'rows', res.get('error', 'no result'))
     names = sorted(x[0] for x in res['diff'])
-    if all(x[0] in TIMER_NAMES and counts_apart(*x) for x in res['diff']):
+    if clock_only(res['diff']):
         return 'clock', 'clock: ' + ', '.join(names)
     return 'difference', 'difference: ' + ', '.join(names)
 
