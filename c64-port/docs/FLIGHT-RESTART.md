@@ -40,6 +40,65 @@ run on its own clock, and `InhibitAlarms` (which the harness needs) turns
 them off. A TC to 04000 (a poke of Z) would skip the hardware part. So both
 sides apply the GOJAM at the same clean point.
 
+## The TC trap (V69)
+
+V69 (VERB69, 43,2037 in both ropes) is `TC VERB69`, a TC to itself. On the
+AGC the hardware TC trap watches each 5 ms from scaler phase 020 to phase
+000 of the 10 ms cycle: if only TCs (or TCFs) ran in it, the trap restarts
+the computer at phase 000. Any other instruction, such as an interrupt
+routine's, clears the watch. yaAGC models it (`agc_engine.c` TCTrap and
+NoTC); with `InhibitAlarms` on here it sets channel 77 bit 3
+(`CH77_TC_TRAP`) without the GOJAM.
+
+Unscaled (`tools/flight_host_run.c` `yaagc_trap`), the host lets yaAGC's
+own trap decide, on both sides:
+
+- The free-running yaAGC reference takes the GOJAM (`gojam_yaagc`) after
+  the instruction that set the bit.
+- On the native side VERB69 is never a native step: yaAGC bridges it
+  (whatever table holds the point), interrupts go to their native routines
+  as usual, and when yaAGC's trap fires in the bridge the native side takes
+  the GOJAM (`gojam_native`). So the restart comes at yaAGC's time on both
+  sides, and the sample compare checks the restart against yaAGC's.
+- The trap anywhere but VERB69, or the no-TC alarm the same bit reports,
+  stops the run (exit 3): the C64 does not model it.
+
+The C64 has no instruction stream to watch. Its resident step
+(`rk_resident_step`, `platform/c64/resident_flight.c`) does the same on its
+work clock: at VERB69 outside an interrupt it sets Q (TC VERB69's) and spins
+as the idle loop does, to the end of the 10 ms period (`rk_spin`). If the
+spin was there for the period's T3 step (TIME1/TIME3, scaler phase 020) and
+no interrupt came before its T5 step (TIME5, phase 000), it takes the GOJAM
+there (`rk_gojam`); an interrupt ends the spin, and its routine runs. Under
+scaled time the host's native side spins the same way (`spin`), and its
+bridge stops at VERB69 for it, so a C64 replay checks the C64's restart
+against the host's. A TC or TCF to itself anywhere else stops the run on
+both: the host's bridge under scaled time, and on the C64 the compiled
+routines refuse one (`resident_flight_main.c`).
+
+`lm-v69` and `cm-v69` (`V69_FLIGHT` in `tools/flight_host_differential.py`)
+key V69E at 23.5 s in P00. The restart runs GOPROG with no group active,
+back to P00:
+
+- Host: `lm-v69-restart` and `cm-v69-restart` in `make flight-restart-check`
+  (table below). yaAGC's trap fires at 25.01 s on both missions, and the
+  native side restarts with it: LM 4,000 of 4,000 samples equal and CM
+  3,998 of 4,000, each the same as its run without the restart.
+- C64, from the trap's snapshots: both rows are in `make flight-restart-vice`
+  (the burst from just after the GOJAM against yaAGC) and `make
+  flight-gojam-vice` (the GOJAM module from just before it).
+- C64, the spin itself: `tools/flight_scenario_vice.py --scenario cm-v69
+  --snap-cs 2300 --cs 400 --replay --replay-every 50` matches the host at
+  all 8 checkpoints: the trap at 203 cs into the window (the host's work
+  clock) and the restart, to the end of the window. `lm-v69` matches at
+  51-200 cs, up to its trap at 201 cs. At 250 cs it differs at TIME4 (host
+  37776, C64 37777) and DSRUPTSW, the LM's T4RUPT phase after a restart
+  (the `lm-p00-restart` class below), logged in
+  `/mnt/project-files/flight-scenarios/replay-mismatches.md`.
+
+The x86 program has no TC trap yet, so `V69_FLIGHT`, like the restart
+rows, is not in its scenario list.
+
 ## Scenarios (`make flight-restart-check`)
 
 `tools/flight_restart_check.py` runs each scenario twice, once without the
@@ -67,6 +126,8 @@ Results on base b3a56a5a with this change. `lm-p63-descent-restart` is also regi
 | `cm-entry-restart` (cm-entry, scaled x1) | 250.69 s, P64 | 1 (phase 3), 5 (phase 3), 6 (phase 11) | 1,431,996 (1, 0 new) | P67 at the end (320 s), as without the restart. |
 | `lm-p00-restart` (unscaled) | 25 s | none | 256,955 (0) | 3,872 of 4,000 samples equal (4,000 without the restart). |
 | `cm-p00-restart` (unscaled) | 25 s | none | 259,971 (0) | 3,998 of 4,000 samples equal, the same as without the restart. |
+| `lm-v69-restart` (unscaled, V69E at 23.5 s) | yaAGC's TC trap at 25.01 s, Z at VERB69 | none | 256,682 (0) | P00. 4,000 of 4,000 samples equal, the same as without the restart. |
+| `cm-v69-restart` (unscaled, V69E at 23.5 s) | yaAGC's TC trap at 25.01 s, Z at VERB69 | none | 259,716 (0) | P00. 3,998 of 4,000 samples equal, the same as without the restart. |
 
 The 8 LM and 1 CM unmatched points are the same ones the scenarios have
 without the restart. They are the compiled interpretive Q sign extension
@@ -255,20 +316,20 @@ restart.
   after 409 steps. The step counts above are from base 3384c02b; the whole
   LM P63 restart window (`--scenario lm-p63-descent-restart --snap-cs 19950
   --cs 1050`) runs to its end there with no stop (20.7x real time).
-- **The TC trap is the C64's one GOJAM source.** The resident's main
-  (`platform/c64/resident_flight_main.c`) follows the entry contract
-  (`rk_gojam`, `platform/c64/resident_flight.c`) after a step that ends
-  where the TC trap would fire: a TC to itself, a step that leaves Z and FB
-  as they were with Q = Z + 1 (V69's `TC VERB69`). A refusal
+- **The TC trap is the C64's one GOJAM source.** The resident step spins
+  at VERB69 until the trap fires and then follows the entry contract
+  (`rk_gojam`, `platform/c64/resident_flight.c`; see The TC trap (V69)
+  above). The resident's main (`platform/c64/resident_flight_main.c`) used
+  to take a GOJAM after any step that left Z and FB as they were with Q =
+  Z + 1; it now just steps, since no other step spins. A refusal
   (`EXEC_INVALID_ACTION`) stops the run instead (#607). Compiled routines
   refuse for points they do not cover, and that must stop, not restart.
-  The one compiled TCF to itself (`tools/basic_compile.py` TCF +0:
-  Comanche055 TVCEXECUTIVE 16,2763, marked NOT USED) refuses from its
+  The compiled TCs and TCFs to themselves refuse: LM T6JOBCHK +3 (17,2032)
+  with TIME6 negative (`src/lm_t6rupt.c`), and Comanche055 TVCEXECUTIVE
+  16,2763 (`tools/basic_compile.py` TCF +0, marked NOT USED) from its
   routine's entry, with Z not at the trap and the routine's earlier writes
-  kept, so a GOJAM there would save the wrong Q in RSBBQ. If a reachable one
-  appears, the compiler should leave Z at the trap and return a status of
-  its own. The AGC traps after a few ms of TC-only execution; the
-  resident restarts after one such step. The night watchman (NEWJOB not
+  kept. If a reachable one appears, the compiler should leave Z at the trap
+  and the resident should spin there as at VERB69. The night watchman (NEWJOB not
   tested for 0.64 s) and the rupt lock (an interrupt held too long) are not
   modelled yet. The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
   so a stack overflow is never taken for a TC trap. `rk_gojam` also lights

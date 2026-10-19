@@ -1349,9 +1349,9 @@ port) runs one mission:
    V33 after each. V06N37 then shows TTPI 00 03 35.04 (1 x 2^14 + 5120 cs)
    on both. V74 then starts the erasable dump (with FLIGHT_DOWNRUPT;
    list 01776 LM, 01777 CM), and its downlink words match yaAGC. All
-   three run with no bridges on the host. V69 (forced restart) is not
-   keyed: it is a TC to itself that waits for the hardware TC trap, which
-   the host does not model, so the CMC's VERB69 loops until the run ends. A V16
+   three run with no bridges on the host. V69 (forced restart) is
+   keyed in its own scenarios, `lm-v69` and `cm-v69`: the TC trap restarts
+   the computer at VERB69 (docs/FLIGHT-RESTART.md, The TC trap). A V16
    monitor in place of V06 bridges PASTEVB (02,2124 LM, 02,2140 CM):
    the Pinball suite refuses it when ENTRET re-enters it each second.
    Six LM scenarios cover the rows of the Luminary099 program map

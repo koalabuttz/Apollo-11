@@ -818,9 +818,22 @@ RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(
                   for base in [next(x for x in FLIGHT if x[0] == scen)]]
 
 
+# TC trap restarts: P00 idle, then V69E at 23.5 s. VERB69 is a TC to
+# itself, so the TC trap restarts the computer (yaAGC's own trap unscaled,
+# yaagc_trap in tools/flight_host_run.c; the spin at VERB69 under the work
+# clock there and in the C64's rk_resident_step; docs/FLIGHT-RESTART.md):
+# GOPROG with no group active, back to P00. tools/flight_restart_check.py
+# checks them on the host (lm-v69-restart, cm-v69-restart);
+# tools/flight_scenario_vice.py --scenario lm-v69 --snap-cs 2300 --replay on
+# the C64. Like RESTART_FLIGHT, the host differential (and the x86
+# program, which has no TC trap yet) does not run them.
+V69_FLIGHT = [('lm-v69', 'lm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'}),
+              ('cm-v69', 'cm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'})]
+
+
 def scenario(name):
-    """A FLIGHT or RESTART_FLIGHT row by name."""
-    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT}[name]
+    """A FLIGHT, RESTART_FLIGHT or V69_FLIGHT row by name."""
+    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT + V69_FLIGHT}[name]
 
 
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
