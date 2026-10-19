@@ -12,7 +12,7 @@ extern const agc_routine_table cm_stable_orbit_interpretive,cm_stable_orbit_basi
  * words its GOTOs and CALLs read a CADR from (work-area offsets below
  * 045), and the outside basic addresses it transfers to. */
 typedef struct {uint16_t physical;uint8_t interpretive;} cm_stable_orbit_point;
-#define CM_STABLE_ORBIT_POINTS 103u
+#define CM_STABLE_ORBIT_POINTS 104u
 #define CM_STABLE_ORBIT_CADR_WORDS 1u
 #define CM_STABLE_ORBIT_EXTERNALS 9u
 #define CM_STABLE_ORBIT_FIRST 4578u

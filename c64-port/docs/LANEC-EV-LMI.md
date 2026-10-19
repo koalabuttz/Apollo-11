@@ -40,7 +40,9 @@ the literal argument those paths take for the interpreter's bookkeeping.
 
 Domain, the interpreter's own contract: NEWJOB is not negative (+0, or
 a positive job change pending, which DANZIG hands to CHANG2), FIXLOC names a VAC area in unswitched erasable above the
-interpreter's work area (0200 up to 01400 less a VAC area), and at NEWOPS
+interpreter's work area (0200 up to 01400 less a VAC area) or is NOVAC's 0110
+in bank 42 (TRMTRAK1, V56, which runs in Pinball's NOVAC job: NOVAC's
+`AD FAKEPRET` gives MPAC - 36D = 0110), and at NEWOPS
 EDOP is +0, BANKSET names the current banks and INTBIT15 holds BANKSET's
 bit 15, as INTPRET leaves them. States outside it are out of
 scope. Every entry is an interpretive point of the transfer ABI, keyed by
@@ -78,11 +80,14 @@ Hashes: `evidence/lanec-ev-lmi/SHA256.json`.
 - Independent assembly comparison: `lanec-ev-lmi-diff.json` (1,856 cases:
   all 29 entries, 64 variants each, a pending NEWJOB in every fourth, lines of sight along Y for UNIT's alarm
   and with only a low-order Z for its small-vector path, random erasable with the
-  MOONTHIS/MOONOTH bits, a random VAC area in FIXLOC and random registers) and `lanec-ev-lmi-oracle.crc`. gcov: every line and every
-  branch outcome of the compiled words is taken; the only untaken
-  outcomes are the out-of-scope returns.
+  MOONTHIS/MOONOTH bits, a random VAC area in FIXLOC (NOVAC's 0110 in every
+odd TRMTRAK1 variant) and random registers) and `lanec-ev-lmi-oracle.crc`. gcov: every line and every
+  branch outcome of the compiled words is taken except the out-of-scope
+  returns (taken by ev-refuse) and two arms no flight path reaches: next()
+  entered while parked (`if (parked) return;`) and `lmi_unit` returning 1,
+  which it does only when sqrtsub parks.
 - Host and sanitizer results: `make test-lanec-ev-lmi sanitize-lanec-ev-lmi`
   (`lanec-ev-lmi-sanitize.txt`).
-- C64 execution results: `make vice-lanec-ev-lmi`, 40 frozen cases on a
+- C64 execution results: `make vice-lanec-ev-lmi`, 41 frozen cases on a
   VICE PAL C64, picked by `tools/lanec/cover.py` so that together they take
   every branch arc the 1,856 host cases take (`lanec-ev-lmi-vice.txt`).

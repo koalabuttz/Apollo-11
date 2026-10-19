@@ -3,7 +3,7 @@
   "native_file": "src/cm_stable_orbit.c",
   "words": 225,
   "untranslated_words": 0,
-  "routines": 103,
+  "routines": 104,
   "map": [
    {
     "address": "04,2742",
@@ -1150,8 +1150,8 @@
     "address": "04,3205",
     "word": "02364",
     "source": "  KT",
-    "routine": "04,3203",
-    "function": "r11203"
+    "routine": "04,3204",
+    "function": "r11204"
    },
    {
     "address": "04,3206",

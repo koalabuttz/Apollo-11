@@ -89,6 +89,7 @@ Lane G (CM flight). Milestone `cm-stable-orbit`. How the routines are made and c
 | 04,3177  | basic | return from P20FLGON |
 | 04,3200  | interpretive | after TC INTPRET |
 | 04,3203 P39/P79B | interpretive | switch branch target |
+| 04,3204  | interpretive | pending DANZIG after RTB LOADTIME (DAD KT on its right; entered at DANZIG with LOC at the operand word, through the CM DANZIG marker) |
 | 04,3206  | interpretive | after RTB LOADTIME |
 | 04,3207  | interpretive | CHANG2 resume |
 | 04,3211  | interpretive | STCALL return |
@@ -126,9 +127,9 @@ Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the
 Hashes: `evidence/cm-stable-orbit/SHA256.json`; all files are in the tree.
 
 - **Source map.** `cm-stable-orbit-source-map.json` lists all 225 words of the file with the routine that compiles each (or why a constant is never run as code); 0 are untranslated.
-- **Independent assembly comparison.** `make cm-stable-orbit-differential` runs 256 states per routine (26,368 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-stable-orbit-proof.json` (`cm-stable-orbit-differential.log` is the run). One case in 128 is frozen in `tests/cm_stable_orbit_vectors.h`.
-- **Host and sanitizer results.** `make test-cm-stable-orbit sanitize-cm-stable-orbit` runs the 206 frozen cases (`cm-stable-orbit-host.log`).
-- **C64 execution results.** `make vice-cm-stable-orbit` runs 3 diagnostic programs with 139 cases (`cm-stable-orbit-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 26,368 differential cases take: 1705 of 1705 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 64 of 64 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 864 of the 864 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
+- **Independent assembly comparison.** `make cm-stable-orbit-differential` runs 256 states per routine (26,624 cases) through the original Comanche055 rope in yaAGC (pinned yaAGC, its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)) and the native routines; all are equal in Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state. The cases and the stops reached per routine are in `cm-stable-orbit-proof.json` (`cm-stable-orbit-differential.log` is the run). One case in 128 is frozen in `tests/cm_stable_orbit_vectors.h`.
+- **Host and sanitizer results.** `make test-cm-stable-orbit sanitize-cm-stable-orbit` runs the 208 frozen cases (`cm-stable-orbit-host.log`).
+- **C64 execution results.** `make vice-cm-stable-orbit` runs 3 diagnostic programs with 140 cases (`cm-stable-orbit-vice.log`, which starts with each PRG's SHA-256). The cases are chosen so the C64 runs take every control-flow edge (both outcomes of each branch) of every linked source that the 26,624 differential cases take: 1733 of 1733 edges and comparison outcomes (clang -O0 trace-pc-guard,trace-cmp) and 64 of 64 compiled labels. Checked again with gcov -b over gcc -O0 `--coverage` builds of the same sources: the C64 cases take 881 of the 881 branch outcomes all the cases take (`c64_gcov_branches` in the proof).
 
 ## Flight build
 
