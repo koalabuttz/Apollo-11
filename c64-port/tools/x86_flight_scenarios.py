@@ -228,14 +228,18 @@ def vector(w, a, scale, k):
     return [(ones(w[a + 2 * i]) * 16384 + ones(w[a + 2 * i + 1])) * 2.0 ** (scale - 28) * k for i in range(3)]
 
 
-def harness_state(m, cs, keys, env, at, clock='W'):
+def harness_state(m, cs, keys, env, at, clock='W', out=None):
     """The harness's native erasable image at the first sample point at or
     after centisecond at, on the given clock (FLIGHT_SCALED): (centisecond,
-    2048 words), or None when it wrote no snapshot."""
+    2048 words), or None when it wrote no snapshot. With a list out, the run
+    also watches the landing radar's words (LR_ENV) and appends its output."""
     snap = OUT / f'snap-{os.getpid()}.h'
-    subprocess.run([str(fhd.OUT / f'flight-host-run-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
-                   env={**os.environ, **env, 'FLIGHT_SCALED': clock, 'FLIGHT_SNAPSHOT': f'{at},{snap}'},
-                   capture_output=True, check=False)
+    p = subprocess.run([str(fhd.OUT / f'flight-host-run-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []),
+                       cwd=ROOT, env={**os.environ, **env, **(LR_ENV if out is not None else {}),
+                                      'FLIGHT_SCALED': clock, 'FLIGHT_SNAPSHOT': f'{at},{snap}'},
+                       capture_output=True, text=True, check=False)
+    if out is not None:
+        out.append(p.stdout)
     if not snap.exists():
         return None
     text = snap.read_text()
@@ -258,12 +262,14 @@ def with_start(m, cs, keys, env, at=0):
     return {**env, 'X86_START': str(start)}
 
 
-def x86_state(m, keys, env, at):
+def x86_state(m, keys, env, at, lr=False):
     """The x86 program's erasable image at its first sample point at or after centisecond at:
-    (run, centisecond, 2048 words), centisecond None when it wrote none."""
+    (run, centisecond, 2048 words), centisecond None when it wrote none. lr:
+    the run also watches the landing radar's words (LR_ENV, X86_WATCH)."""
     samples = OUT / f'samples-{os.getpid()}.txt'
+    watch = {'X86_WATCH': LR_ENV['FLIGHT_WATCH'], 'FLIGHT_LR_TRACE': '1'} if lr else {}
     r = subprocess.run([str(xb.OUT / f'x86-flight-{m}'), fhd.ROPE[m], str(at + 1000)] + ([keys] if keys else []), cwd=ROOT,
-                       env={**os.environ, **env, 'X86_SPEED': '0', 'X86_SAMPLES': str(samples),
+                       env={**os.environ, **env, **watch, 'X86_SPEED': '0', 'X86_SAMPLES': str(samples),
                             'X86_SAMPLES_FROM': str(at)}, capture_output=True, text=True)
     line = samples.read_text().split('\n', 1)[0].split() if samples.exists() else []
     if samples.exists():
@@ -277,16 +283,129 @@ def distance(a, b):
     return sum((x - y) ** 2 for x, y in zip(a, b)) ** 0.5
 
 
+# The landing radar (FLIGHT_LR rows). Both programs watch what the AGC
+# takes from the radar: HMEAS (03654, each altitude reading), VMEAS
+# (03652, each velocity reading), DELTAH (03664, the altitude update the
+# reading gives) and FLGWRD12's LRALTFLG (0110 bit 5: no LR altitude data,
+# which follows the range data-good bit), and print the radar model's
+# readings with the true height and HCALC (FLIGHT_LR_TRACE).
+LR_ENV = {'FLIGHT_WATCH': '110,3652,3653,3654,3655,3664,3665', 'FLIGHT_WATCH_STEP': '1', 'FLIGHT_LR_TRACE': '1'}
+# Each word's readings: (high, low) addresses, and whether its differences
+# are relative (to the larger of the value and 1,000 counts) or in counts;
+# the floors added to 4 times the harness's own median and 90th percentile.
+LR_READINGS = {'HMEAS': (0o3654, 0o3655, True, 0.002, 0.005), 'VMEAS': (0o3652, 0o3653, True, 0.002, 0.005),
+               'DELTAH': (0o3664, 0o3665, False, 10, 20)}
+LR_MATCH = 100   # a reading matches the other run's nearest within this many cs
+LR_UNMATCHED = 4  # unmatched readings allowed beyond the harness's own (one cycle early or late per change)
+LR_FLAG_CS = 250  # a flag change may come this much later or earlier, beyond twice the harness's own
+LR_HCALC_M = 10.0  # HCALC's error from the true height: metres beyond 4 times the harness's own
+
+
+def lr_history(text, at):
+    """A run's landing radar history up to centisecond at: each word's
+    readings [(cs, value)], LRALTFLG's changes, and HCALC minus the true
+    height at each altitude reading [(cs, metres)]. The values at the start
+    are not readings."""
+    words, last, readings, flag = {}, {}, {k: [] for k in LR_READINGS}, []
+    errors = []
+    for ln in text.splitlines():
+        f = ln.split()
+        if ln.startswith('watch ') and int(f[1]) <= at:
+            t, a, v = int(f[1]), int(f[3], 8), int(f[4], 8)
+            first = a not in words
+            words[a] = v
+            if a == 0o110:
+                if not first and (v & 0o20) != (last.get(a, v) & 0o20):
+                    flag.append((t, (v >> 4) & 1))
+                last[a] = v
+            for k, (hi, lo, _, _, _) in LR_READINGS.items():
+                if a in (hi, lo) and hi in words and lo in words:
+                    dv = ones(words[hi]) * 16384 + ones(words[lo])
+                    if k in last and last[k] != dv:
+                        if readings[k] and readings[k][-1][0] == t:
+                            readings[k][-1] = (t, dv)   # the other half of the same store
+                        else:
+                            readings[k].append((t, dv))
+                    last[k] = dv
+        elif ln.startswith('LR ') and f[1].isdigit() and int(f[1]) <= at and ' range ' in ln:
+            errors.append((int(f[1]), float(f[12]) - float(f[7])))
+    return readings, flag, errors
+
+
+def lr_pairs(a, b):
+    """Readings a and b matched by time (each b reading at most once): the
+    pairs [(a value, b value)] and how many on either side matched none."""
+    pairs, used = [], set()
+    for t, v in a:
+        near = min((k for k in range(len(b)) if k not in used and abs(b[k][0] - t) <= LR_MATCH),
+                   key=lambda k: abs(b[k][0] - t), default=None)
+        if near is not None:
+            used.add(near)
+            pairs.append((v, b[near][1]))
+    return pairs, len(a) + len(b) - 2 * len(pairs)
+
+
+def lr_quantiles(pairs, rel):
+    d = sorted(abs(x - w) / (max(abs(w), 1000) if rel else 1) for w, x in pairs)
+    return (d[len(d) // 2], d[min(len(d) - 1, int(0.9 * len(d)))]) if d else (0, 0)
+
+
+def lr_compare(ref, other, x86, at):
+    """The landing radar check: (block, passed, line). Every reading the
+    harness took has an x86 reading within LR_MATCH cs (and the reverse),
+    with no more unmatched ones than the harness's two clocks have plus
+    LR_UNMATCHED; the readings' differences (median and 90th percentile)
+    within 4 times the harness's own plus a floor; LRALTFLG changes as often
+    and at about the same times; HCALC as far from the true height."""
+    h, o, x = (lr_history(t, at) for t in (ref, other, x86))
+    block, ok, parts = {}, True, []
+    for k, (_, _, rel, f50, f90) in LR_READINGS.items():
+        hp, h_un = lr_pairs(h[0][k], o[0][k])
+        xp, x_un = lr_pairs(h[0][k], x[0][k])
+        (h50, h90), (x50, x90) = lr_quantiles(hp, rel), lr_quantiles(xp, rel)
+        lim = (SPREAD_K * h50 + f50, SPREAD_K * h90 + f90, h_un + LR_UNMATCHED)
+        good = x_un <= lim[2] and x50 <= lim[0] and x90 <= lim[1]
+        ok = ok and good
+        block[k] = dict(readings=dict(harness=len(h[0][k]), other_clock=len(o[0][k]), x86=len(x[0][k])),
+                        unmatched=dict(other_clock=h_un, x86=x_un, limit=lim[2]),
+                        median=dict(other_clock=round(h50, 4), x86=round(x50, 4), limit=round(lim[0], 4)),
+                        p90=dict(other_clock=round(h90, 4), x86=round(x90, 4), limit=round(lim[1], 4)))
+        unit = (lambda v: f'{100 * v:.2f}%') if rel else (lambda v: f'{v:.0f}')
+        parts.append(f"{k} {len(x[0][k])} readings ({x_un} unmatched, limit {lim[2]}; median {unit(x50)}, "
+                     f"limit {unit(lim[0])}; 90% {unit(x90)}, limit {unit(lim[1])})" + ('' if good else ' FAILED'))
+    hf, of, xf = h[1], o[1], x[1]
+    lim = [2 * abs(a[0] - b[0]) + LR_FLAG_CS if len(of) == len(hf) else 2 * LR_FLAG_CS for a, b in zip(hf, of)] \
+        if len(of) == len(hf) else [2 * LR_FLAG_CS] * len(hf)
+    good = [v for _, v in xf] == [v for _, v in hf] and all(abs(a[0] - b[0]) <= c for a, b, c in zip(hf, xf, lim))
+    ok = ok and good
+    block['LRALTFLG'] = dict(harness=hf, other_clock=of, x86=xf)
+    parts.append(f"LRALTFLG changes at {', '.join(str(t) for t, _ in xf) or 'none'} cs (the harness's "
+                 f"{', '.join(str(t) for t, _ in hf) or 'none'})" + ('' if good else ' FAILED'))
+    hp, h_un = lr_pairs(h[2], o[2])
+    xp, x_un = lr_pairs(h[2], x[2])
+    h_d, x_d = max((abs(a - b) for a, b in hp), default=0.0), max((abs(a - b) for a, b in xp), default=0.0)
+    lim = SPREAD_K * h_d + LR_HCALC_M
+    good = x_un <= h_un + LR_UNMATCHED and x_d <= lim
+    ok = ok and good
+    block['hcalc_error_m'] = dict(readings=len(x[2]), unmatched=x_un, other_clock=round(h_d, 1), x86=round(x_d, 1),
+                                  limit=round(lim, 1))
+    parts.append(f"HCALC from the true height within {x_d:.1f} m of the harness's at each altitude reading "
+                 f"(limit {lim:.1f}; {x_un} unmatched)" + ('' if good else ' FAILED'))
+    return block, ok, 'landing radar: ' + ', '.join(parts)
+
+
 def compare(name, m, cs, keys, env, drop='', resume=0):
     """One scenario: (summary row, passed). drop: key letters left out of
     the x86 run only (a check that the comparison sees them)."""
     modreg, rn, vn = STATE[m]
-    ref = harness_state(m, cs, keys, env, cs - 1000)
+    lr = [] if 'FLIGHT_LR' in env else None
+    ref = harness_state(m, cs, keys, env, cs - 1000, out=lr)
     if ref is None:
         return dict(scenario=name, mission=m, line=f'{name}: the harness wrote no snapshot'), False
     at, hw = ref
-    other = harness_state(m, cs, keys, env, at, '1,1,2')
-    r, xcs, xw = x86_state(m, ''.join(c for c in keys if c not in drop), with_start(m, cs, keys, env, resume), at)
+    other = harness_state(m, cs, keys, env, at, '1,1,2', out=lr)
+    r, xcs, xw = x86_state(m, ''.join(c for c in keys if c not in drop), with_start(m, cs, keys, env, resume), at,
+                           lr is not None)
     if other is None or xcs != at:
         why = 'the harness on its other clock wrote no snapshot' if other is None else \
             f'the x86 program stopped before {at} cs (exit {r.returncode}): {r.stderr.strip()[:200]}'
@@ -344,6 +463,11 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     line += block_line
     if alarms:
         line += '; alarm codes differ: ' + ', '.join(f'{a:04o} {hw[a]:05o}/{xw[a]:05o}' for a in alarms)
+    radar = None
+    if lr is not None:
+        radar, lr_ok, lr_line = lr_compare(lr[0], lr[1], r.stdout, at)
+        ok = ok and lr_ok
+        line += '; ' + lr_line
     return dict(scenario=name, mission=m, centisecond=at, x86_exit=r.returncode,
                 major_mode=dict(harness=f'{hw[modreg]:02o}', x86=f'{xw[modreg]:02o}'),
                 rn_metres=dict(harness=[round(v, 1) for v in state['rn'][0]], x86=[round(v, 1) for v in state['rn'][2]],
@@ -352,7 +476,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
                             difference=round(d_vn, 3), spread=round(s_vn, 3), limit=round(vn_tol, 3)),
                 words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, state_blocks=blocks,
                 alarms=dict(harness=[f'{hw[a]:05o}' for a in FAILREG], x86=[f'{xw[a]:05o}' for a in FAILREG],
-                            differ=[f'{a:04o}' for a in alarms]), inputs=env,
+                            differ=[f'{a:04o}' for a in alarms]), landing_radar=radar, inputs=env,
                 line=line), ok
 
 
@@ -421,22 +545,24 @@ def main():
             xb.build(a.host_cc, m, 'compiled')
     OUT.mkdir(parents=True, exist_ok=True)
     summary, failed = [], 0
-    for name, m, cs, keys, env in rows:
-        if name in GAPS:
-            row, ok = fly_gap(name, m, cs, keys, env)
-            failed += not ok
+    try:
+        for name, m, cs, keys, env in rows:
+            if name in GAPS:
+                row, ok = fly_gap(name, m, cs, keys, env)
+                failed += not ok
+                summary.append(row)
+                print(row['line'] + ('' if ok else ' FAILED'), flush=True)
+                continue
+            row, ok = compare(name, m, cs, keys, env, a.drop_keys)
+            known = None if ok else within_known(name, row)
+            failed += not ok and not known
+            row.update(ok=ok, known=known)
             summary.append(row)
-            print(row['line'] + ('' if ok else ' FAILED'), flush=True)
-            continue
-        row, ok = compare(name, m, cs, keys, env, a.drop_keys)
-        known = None if ok else within_known(name, row)
-        failed += not ok and not known
-        row.update(ok=ok, known=known)
-        summary.append(row)
-        print(row['line'] + ('' if ok else f' KNOWN: {known}' if known else ' FAILED'), flush=True)
-    (OUT / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
-    for start in OUT.glob(f'start-*-{os.getpid()}.h'):   # the core dump's state is not kept
-        start.unlink()
+            print(row['line'] + ('' if ok else f' KNOWN: {known}' if known else ' FAILED'), flush=True)
+        (OUT / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
+    finally:
+        for start in OUT.glob(f'start-*-{os.getpid()}.h'):   # the core dump's state is not kept
+            start.unlink()
     return 1 if failed else 0
 
 
