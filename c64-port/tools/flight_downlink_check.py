@@ -238,7 +238,10 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     frc.OUT = OUT   # frc.run writes its logs here
     only = set(a.only.split(',')) if a.only else None
-    todo = [x for x in frc.RESTARTS if (not only or x[0] in only) and not (a.run_vice and a.c64_only)]
+    # A restart that starts from a NASSP core (FLIGHT_CORE) runs on scaled
+    # time, where flight_host_run.c has no DOWNRUPT: those rows stay out.
+    todo = [x for x in frc.RESTARTS if (not only or x[0] in only) and 'FLIGHT_CORE' not in x[4]
+            and not (a.run_vice and a.c64_only)]
     with ThreadPoolExecutor(max(1, a.jobs)) as pool:
         rows = list(pool.map(lambda x: check(exe, x), todo))
     for row in rows:

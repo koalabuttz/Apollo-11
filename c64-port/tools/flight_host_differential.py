@@ -547,6 +547,34 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'}),
           ('lm-p63-overload', 'lm', 27000, P63_KEYS + '@18000V16N68E', OVERLOAD_LM),
           ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM)]
+# Restarts for the whole-program acceptance (recovery_and_restart_tests,
+# one per phase group): a FLIGHT scenario with a hardware restart
+# (FLIGHT_GOJAM) at a centisecond in that phase, run to an end centisecond.
+# tools/flight_restart_check.py checks each on the host and the C64;
+# tools/flight_scenario_vice.py --replay --snap-cs <GOJAM cs> replays the
+# recovery on the C64 (the GOJAM comes before the snapshot at the same
+# sample point). The host differential does not run these.
+RESTART_POINTS = [  # (name, scenario, GOJAM cs, end cs, phase)
+    ('lm-p00-doi-restart', 'lm-doi-nassp', 64000, 65000, 'P00 after the DOI burn and V82 (V34E at 630 s)'),
+    ('lm-doi-burn-restart', 'lm-doi-nassp', 52000, 57000, 'DOI P40 burn, about 30 s after ignition'),
+    ('lm-p12-restart', 'lm-landing-ascent-nassp', 185000, 190000, 'P12 ascent burn, mid-burn'),
+    ('lm-rendezvous-restart', 'lm-rendezvous', 20000, 25000, 'P20 radar tracking'),
+    ('cm-p00-p40-restart', 'cm-p40', 73000, 74000, 'P00 after the LOI-1 burn (V37E00E at 720 s)'),
+    ('cm-p40-burn-restart', 'cm-p40', 50000, 55000, 'P40 SPS burn, TVC DAP running, mid-burn'),
+    ('cm-entry-restart', 'cm-entry', 25000, 32000, 'P64 entry, groups 1, 5 and 6 active'),
+    ('cm-p20-restart', 'cm-p20', 22000, 25000, 'P20 rendezvous navigation, R22 running'),
+    ('cm-p22-restart', 'cm-p22', 14000, 23000, 'P22 orbital navigation, between the marks'),
+]
+RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(at)})
+                  for name, scen, at, end, _ in RESTART_POINTS
+                  for base in [next(x for x in FLIGHT if x[0] == scen)]]
+
+
+def scenario(name):
+    """A FLIGHT or RESTART_FLIGHT row by name."""
+    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT}[name]
+
+
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
 # name). x1: the C64 as fast as the AGC; x0.5: the half-speed build
 # (RK_TIME_DIVISOR=2) on a C64 1.7 times slower than the AGC (the measured
