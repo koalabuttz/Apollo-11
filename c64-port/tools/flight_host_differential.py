@@ -590,6 +590,16 @@ CM_P41_KEYS = ('@4500V37E30E@5500V25E+00000E+00008E+00000E@6800V33E@7200V25E+000
 # (trims 0); S41.2 sets ADB 455 (wide) and RATEINDX 4 (0.5 degree/s);
 # V46 (STABLISH) establishes the RCS DAP with the new data.
 CM_V48_KEYS = '@2500V48E@3500V21E21112E@4500V33E@5500V33E@6500V33E@7500V46E'
+# cm-p40-sps-fail: cm-p40 with the SPS failing to light (the Comanche055
+# coverage map, off-nominal; no FLIGHT_SPS: no thrust, and with the
+# R60 maneuver nil no attitude model is needed). The same keys to the
+# V99N40 at TIG-5; at TIG the engine is commanded on but the PIPAs see
+# nothing, so R40 (LOTHRUST) finds the thrust low and FAILDSP flashes
+# V97N40 (SPS thrust fail) at TIG+3 s; the crew terminates (V34):
+# V97T turns the engine off and hands back to the RCS DAP; then P00.
+P40_SPS_FAIL = {k: v for k, v in P40.items() if k != 'FLIGHT_SPS'}
+P40_SPS_FAIL_KEYS = ('@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E'
+                     '@29600V33E@32000V34E@34000V37E00E')
 # Crew verbs the other CM scenarios do not key (the Comanche055 coverage
 # map, /mnt/project-files/acceptance/comanche055-coverage-map.md).
 # cm-p20-crew-verbs: cm-p20 to 200 s, then V90 (R36, out-of-plane): V04N12
@@ -764,6 +774,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
           ('cm-p41', 'cm', 53000, CM_P41_KEYS, CM_P41),
           ('cm-v48-dap', 'cm', 12000, CM_V48_KEYS, P40),
+          ('cm-p40-sps-fail', 'cm', 37000, P40_SPS_FAIL_KEYS, P40_SPS_FAIL),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
