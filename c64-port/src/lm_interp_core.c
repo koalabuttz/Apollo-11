@@ -2318,14 +2318,19 @@ static NI void work(uint8_t at)
 }
 #define WORK_STORE(code)      work(INTERP_WORD_STORE_KIND(code))
 #define WORK_PAIR(left, edop) (work(INTERP_WORD_BASE_AT), work((uint8_t)((left) + 1u)), work(edop))
+/* The module starts the clock at 0x8000 less the step's budget, so bit 15
+ * sets once the words run reach it: then the search skips NEWOPS and the
+ * slot hands back before the next word, where a due interrupt lands. */
+#define WORK_DUE ((uint8_t)((uint8_t)(lm_interp_core_mct >> 8) >> 7))
 #else
 #define WORK_STORE(code)      ((void)0)
 #define WORK_PAIR(left, edop) ((void)(left), (void)(edop))
+#define WORK_DUE              0u
 #endif
 static uint8_t point(void)
 {
     uint8_t k;
-    for (k = 0; k < P_RTB_RETURN && points[k] != W[5]; ++k) {
+    for (k = WORK_DUE; k < P_RTB_RETURN && points[k] != W[5]; ++k) {
     }
     if (k == P_RTB_RETURN && (W[5] != RTB_RETURN || ((uint8_t)(W[4] >> 8) & 0174u) != 04u))
         k = P_OUTSIDE;
