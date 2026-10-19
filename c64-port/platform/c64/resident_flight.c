@@ -339,6 +339,16 @@ static inline void rk_realtime_cap(void)
 void rk_rupts(void);
 __attribute__((noinline, used)) void rk_rupts_due(void) {
     uint8_t got;
+#ifdef RK_STEAL
+    /* A --replay window of a FLIGHT_STEAL scenario (tools/flight_host_run.c
+     * steal): from RK_STEAL_FROM to RK_STEAL_TO (TIME2:TIME1, centiseconds)
+     * each T5 step also spends RK_STEAL MCT that no routine runs in, the
+     * counter cycles Apollo 11's RR CDU counts took. The time as the step
+     * starts, where the host reads it. Replay builds only. */
+    const uint32_t cs =
+        ((uint32_t)(IMAGE->words[024] & 037777u) << 14) | (IMAGE->words[025] & 037777u);
+    const uint8_t steal = cs >= RK_STEAL_FROM && cs < RK_STEAL_TO;
+#endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
         got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
@@ -348,6 +358,9 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
+#ifdef RK_STEAL
+        if (t == RK_PHASE_T5 && steal) rk_work += RK_STEAL;
+#endif
     }
     if (got && rk_idle) rk_work = 0;
     rk_idle = 0;

@@ -321,6 +321,22 @@ def snap_state(header):
     return (*words, *[field(f'channel{c}') for c in (5, 6, 11, 12, 13, 14, 34, 35)], field('superbank'))
 
 
+def steal_defines(name, start, snap_at):
+    """A FLIGHT_STEAL scenario's stolen cycles on the C64 (resident_flight.c
+    RK_STEAL): its one T0-T1:N window as TIME2:TIME1 centiseconds. The host
+    counts T0 and T1 from its run's start (flight_host_run.c now()); the
+    first snapshot, snap_at cs into that run, gives the clock there."""
+    spec = fhd.scenario(name)[4].get('FLIGHT_STEAL')
+    if not spec:
+        return []
+    m = re.fullmatch(r'(\d+)-(\d+):(\d+)', spec)
+    if not m:
+        sys.exit(f'FAIL: {name}: FLIGHT_STEAL={spec}: the C64 replay models one T0-T1:N window')
+    t0 = ((start[0o24] & 0o37777) << 14 | (start[0o25] & 0o37777)) - snap_at
+    lo, hi, n = (int(x) for x in m.groups())
+    return [f'-DRK_STEAL={n}u', f'-DRK_STEAL_FROM={t0 + lo}ul', f'-DRK_STEAL_TO={t0 + hi}ul']
+
+
 def ones_add(w, d):
     """A 15-bit ones'-complement counter word moved by a signed count."""
     v = (w - 0o77777 if w & 0o40000 else w) + (d - 0x10000 if d & 0x8000 else d)
@@ -493,7 +509,8 @@ def main():
             defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u',
                        f'-DDP_REPLAY_CS={cs}u', f'-DDP_STATE_FIRST={marks[0] if marks else 0xffff}u',
                        f'-DDP_STATE_TABLE=0x{table_at:x}ul', f'-DDP_END=0x{end_at:x}ul',
-                       f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else [])]
+                       f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
+                       *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at)]
             kinds = {}
             for row in ROW.iter_unpack(rows):
                 kinds[row[1]] = kinds.get(row[1], 0) + 1
