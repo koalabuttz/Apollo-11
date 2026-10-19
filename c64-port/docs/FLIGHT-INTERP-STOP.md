@@ -50,7 +50,7 @@ a `-DAGC_FLIGHT_INTERPRETER` build (`flight_keys`).
 | `lm_ags_init` | 2 | yes (2 added, flight only) |
 | `lm_lunar_landing` | 4 | yes (4 added, flight only) |
 | `lm_imu_performance` | 8 (1 already a key) | yes (7 added, flight only) |
-| `lm_burn_baby` | 0 | nothing to key |
+| `lm_burn_baby` | 1 | yes (1 added, flight only) |
 
 ## Evidence
 
