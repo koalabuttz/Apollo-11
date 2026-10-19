@@ -49,13 +49,26 @@ static void cell_return(apollo_overlay_state *s)
     }
 }
 
+/* The discrete inputs 030-033 the device record carries (LRPOSOUT reads
+ * channel 33), latched for the run. */
+static agc_word inputs[4];
+static void latch(agc_word c30, agc_word c31, agc_word c32, agc_word c33)
+{
+    uint16_t c;
+    inputs[0] = c30; inputs[1] = c31; inputs[2] = c32; inputs[3] = c33;
+    for (c = 0; c < 4u; ++c) io.channel[030u + c] = inputs[c];
+}
+
 /* A channel the device record does not carry was written (CHANLOAD's
- * WRITE to any channel): the routine cannot give that result. */
+ * WRITE to any channel), or an input was: the routine cannot give that
+ * result. */
 static int unrepresented(uint16_t last)
 {
     uint16_t c;
-    for (c = 0; c < LANEC_CHANNELS; ++c)
+    for (c = 0; c < LANEC_CHANNELS; ++c) {
+        if (c >= 030u && c <= 033u) { if (io.channel[c] != inputs[c - 030u]) return 1; continue; }
         if (io.channel[c] && c != 1u && c != 2u && c != 7u && (c < 011u || c > last)) return 1;
+    }
     return 0;
 }
 
@@ -84,6 +97,7 @@ enum exec_status lanec_pin_run_lm(const agc_native_program *p, apollo_overlay_st
         io.superbank = x->control.superbank; io.interrupt_enabled = x->control.interrupt_enabled;
         io.channel[011] = p->hardware->channel11;
         io.channel[012] = x->channel12; io.channel[013] = x->channel13; io.channel[014] = x->channel14;
+        latch(x->channel30, x->channel31, x->channel32, x->channel33);
         if ((*f)(s, &io, LANEC_LM) == LANEC_OK && !unrepresented(014u)) {
             x->control.superbank = io.superbank; x->control.interrupt_enabled = io.interrupt_enabled;
             p->hardware->channel11 = x->channel11 = io.channel[011];
@@ -111,6 +125,7 @@ enum exec_status lanec_pin_run_cm(const agc_native_program *p, apollo_overlay_st
         io.channel[011] = x->io.channel11; io.channel[012] = x->io.channel12;
         io.channel[013] = x->io.channel13; io.channel[014] = x->io.channel14;
         io.channel[015] = x->io.main_keys; io.channel[016] = x->io.navigation_keys;
+        latch(x->channel30, x->channel31, x->channel32, x->channel33);
         if ((*f)(s, &io, LANEC_CM) == LANEC_OK && !unrepresented(016u)) {
             x->io.superbank = io.superbank; x->io.interrupt_enabled = io.interrupt_enabled;
             x->io.channel11 = io.channel[011]; x->io.channel12 = io.channel[012];

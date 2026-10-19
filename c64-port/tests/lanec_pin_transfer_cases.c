@@ -276,6 +276,7 @@ enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum
         memset(&lm, 0, sizeof lm);
         lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
         lm.channel12 = io->channel[012]; lm.channel13 = io->channel[013]; lm.channel14 = io->channel[014];
+        lm.channel30 = io->channel[030]; lm.channel31 = io->channel[031]; lm.channel32 = io->channel[032]; lm.channel33 = io->channel[033];
         status = chain(&program, s, &lm, &lm.control.superbank, stop, max_steps, steps);
         io->superbank = lm.control.superbank; io->interrupt_enabled = lm.control.interrupt_enabled;
         io->channel[011] = hardware.channel11;
@@ -292,6 +293,7 @@ enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum
         cm.io.channel11 = io->channel[011]; cm.io.channel12 = io->channel[012];
         cm.io.channel13 = io->channel[013]; cm.io.channel14 = io->channel[014];
         cm.io.main_keys = io->channel[015]; cm.io.navigation_keys = io->channel[016];
+        cm.channel30 = io->channel[030]; cm.channel31 = io->channel[031]; cm.channel32 = io->channel[032]; cm.channel33 = io->channel[033];
         status = chain(&program, s, &cm, &cm.io.superbank, stop, max_steps, steps);
         io->superbank = cm.io.superbank; io->interrupt_enabled = cm.io.interrupt_enabled;
         io->channel[011] = cm.io.channel11; io->channel[012] = cm.io.channel12;
@@ -479,6 +481,7 @@ static enum lanec_status run_c64(apollo_overlay_state *s, lanec_io *io, enum lan
         memset(&lm, 0, sizeof lm);
         lm.control.superbank = io->superbank; lm.control.interrupt_enabled = io->interrupt_enabled;
         lm.channel12 = io->channel[012]; lm.channel13 = io->channel[013]; lm.channel14 = io->channel[014];
+        lm.channel30 = io->channel[030]; lm.channel31 = io->channel[031]; lm.channel32 = io->channel[032]; lm.channel33 = io->channel[033];
         status = agc_transfer_run(&program, s, &lm, &lm.control.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
         io->superbank = lm.control.superbank; io->interrupt_enabled = lm.control.interrupt_enabled;
         io->channel[011] = hardware.channel11;
@@ -495,6 +498,7 @@ static enum lanec_status run_c64(apollo_overlay_state *s, lanec_io *io, enum lan
         cm.io.channel11 = io->channel[011]; cm.io.channel12 = io->channel[012];
         cm.io.channel13 = io->channel[013]; cm.io.channel14 = io->channel[014];
         cm.io.main_keys = io->channel[015]; cm.io.navigation_keys = io->channel[016];
+        cm.channel30 = io->channel[030]; cm.channel31 = io->channel[031]; cm.channel32 = io->channel[032]; cm.channel33 = io->channel[033];
         status = agc_transfer_run(&program, s, &cm, &cm.io.superbank, (uint16_t)(AGC_TRANSFER_NONE - 1u), 64u, &steps);
         io->superbank = cm.io.superbank; io->interrupt_enabled = cm.io.interrupt_enabled;
         io->channel[011] = cm.io.channel11; io->channel[012] = cm.io.channel12;
