@@ -119,9 +119,9 @@ int main(void)
             (void)apollo_reu_transfer(APOLLO_REU_STASH, &pairs[1 + 2 * i + 1], ROPE_BASE + 2u * (uint32_t)pairs[1 + 2 * i], 2u);
         (void)apollo_reu_transfer(APOLLO_REU_FETCH, IMG->words, at, 4096u);
 #ifdef INTERP_VICE_CM
-        { cm_native_io io = { 0 }; io.interrupt_enabled = 1; st = cm_interp_core(0, (apollo_overlay_state *)IMG, &io); }
+        { cm_native_io io = { 0 }; io.interrupt_enabled = 1; cm_interp_core_mct = 0; st = cm_interp_core(0, (apollo_overlay_state *)IMG, &io); }
 #else
-        { p66_bias_io io = { 0 }; io.interrupt_enabled = 1; st = lm_interp_core(0, (apollo_overlay_state *)IMG, &io); }
+        { p66_bias_io io = { 0 }; io.interrupt_enabled = 1; lm_interp_core_mct = 0; st = lm_interp_core(0, (apollo_overlay_state *)IMG, &io); }
 #endif
         for (i = 0; i < 2048u && !bad; i += 128u) {
             (void)apollo_reu_transfer(APOLLO_REU_FETCH, want, at + 4096u + 2u * i, 256u);
