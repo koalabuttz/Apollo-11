@@ -1391,7 +1391,11 @@ def main():
         flow_seed(missions, cases, rng, ref, path, spec)
     write_cases(path, missions, cases)
     if a.cover_check is not None:
-        cases = frozen_only(missions, cases, ref, nat, path, a.spec)
+        record = {}
+        cases = frozen_only(missions, cases, ref, nat, path, a.spec, record)
+        bad = loops_mismatch(record, json.load(open(proof)) if os.path.exists(proof) else {})
+        if bad:
+            sys.exit('%s: %s' % (a.spec, bad))
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
     if a.stops_only:
         inside = in_file_stops(missions, cases, run([nat, path]), nat, path)
@@ -1577,11 +1581,17 @@ def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
             mi = missions[cases[i]['cm']]
             nat = {}
             for k, (lp, dp) in side.items():
-                l, d = lp[j], dp[j]
+                l, d = (lp[j], dp[j]) if j < len(lp) and j < len(dp) else ([], [])
+                if len(l) < 6 or l[1] != '2':
+                    # (a run that ended any other way, or a runner that
+                    # exited mid-file: not a loop)
+                    nat[k] = {'kind': l[1] if len(l) > 1 else '?', 'steps': 0, 'capped': False, 'image': None,
+                              'visits': []}
+                    continue
                 # (image: the dump's words, and the digest for the channels it adds)
                 nat[k] = {'kind': l[1], 'steps': int(l[4][1:]), 'capped': l[5] == 'k1', 'image': [l[2], l[3]] + d[4:],
                           'visits': [int(t[1:]) for t in l[6:]]}
-            r4 = rr[j]
+            r4 = rr[j] if j < len(rr) else ['', '?']
             recs.append({'n1': nat['1'], 'n4': nat['4'],
                          'r4': {'kind': r4[1], 'loc': mi.cp.where(int(r4[4])) if r4[1] == '9' and len(r4) > 4 else None},
                          'visited': {mi.cp.where(v) for v in nat['4']['visits']},
@@ -1608,6 +1618,17 @@ def loops_record(missions, cases, cycle, capped):
     return out
 
 
+def loops_mismatch(record, proof):
+    """'' when the loop cases a rerun leaves out (frozen_only's record) are
+    the ones the proof names (no 'loops' key: none), else what differs: a
+    frozen set that leaves out cases the evidence does not show (#746)."""
+    want = proof.get('loops') or {}
+    if record == want:
+        return ''
+    return 'the frozen set leaves out loop cases the proof does not record: rerun %s, proof %s (refreeze)' % (
+        json.dumps(record, sort_keys=True), json.dumps(want, sort_keys=True))
+
+
 def report_loops(record):
     for k, title in (('erasable_cadr_cycle', 'both sides loop (erasable CADR cycle)'),
                      ('step_cap', 'both sides loop (native step cap with the same image at 4x the steps, '
@@ -1619,11 +1640,12 @@ def report_loops(record):
             print('%s: %d cases (%s)' % (title, sum(by.values()), ', '.join('%s x%d' % kv for kv in by.items())))
 
 
-def frozen_only(missions, cases, ref, nat, path, spec_id=None):
+def frozen_only(missions, cases, ref, nat, path, spec_id=None, record=None):
     """The cases the freeze kept: the main run's loop and refusal filters,
     with the oracle run only on the cases the native runner loops on or
     stops in failing (the step-cap loop candidates). Writes the kept cases
-    to path and returns them."""
+    to path and returns them. A dict record gets the loop cases left out, as
+    the freeze writes them to the proof (loops_record)."""
     if spec_id is None:
         spec_id = os.path.basename(nat).rsplit('-native', 1)[0]
     spec = interp_specs.SPECS[spec_id]
@@ -1638,8 +1660,11 @@ def frozen_only(missions, cases, ref, nat, path, spec_id=None):
         rr = dict(zip(ii, run([ref, *ROPES, sub])))
         os.remove(sub)
         loops = {i for i in nine if rr[i][1] == '9'}
-        loops |= set(step_cap_loops([i for i in two if rr[i][1] == '9'], spec.get('max_steps', 200),
-                                    step_cap_probe(spec_id, spec, missions, cases, path, ref, nat)))
+        capped = step_cap_loops([i for i in two if rr[i][1] == '9'], spec.get('max_steps', 200),
+                                step_cap_probe(spec_id, spec, missions, cases, path, ref, nat))
+        if record is not None:
+            record.update(loops_record(missions, cases, loops, capped))
+        loops |= set(capped)
     if loops:
         cases, rows_n = [c for i, c in enumerate(cases) if i not in loops], [r for i, r in enumerate(rows_n) if i not in loops]
         write_cases(path, missions, cases)

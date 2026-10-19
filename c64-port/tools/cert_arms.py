@@ -168,7 +168,11 @@ def measure_spec(sid):
     if spec.get('resume_flow'):
         D.flow_seed(missions, cases, rng, ref, path, spec)
     D.write_cases(path, missions, cases)
-    cases = D.frozen_only(missions, cases, ref, nat, path, sid)
+    record = {}
+    cases = D.frozen_only(missions, cases, ref, nat, path, sid, record)
+    bad = D.loops_mismatch(record, proof)
+    if bad:
+        raise SystemExit('%s: %s' % (sid, bad))
     cases_sha = hashlib.sha256(open(path, 'rb').read()).hexdigest()
     if cases_sha != proof.get('cases_sha256'):
         raise SystemExit('%s: the regenerated cases are not the frozen ones (refreeze first)' % sid)

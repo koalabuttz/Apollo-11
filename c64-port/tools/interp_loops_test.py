@@ -78,9 +78,12 @@ assert got == {0: 'cm 12,2074'} and asked == [[0]], (got, asked)
 # frozen_only (cover-check, cert_arms): the same rule on the frozen cases.
 # Case 0 loops in an erasable-CADR cycle (9/9), case 1 is a step-cap loop,
 # case 2 a refusal paired with an oracle timeout, case 3 a kind 2 the oracle
-# ends, case 4 a stop. Only 0 and 1 leave; only 1 and 2 are probed.
+# ends, case 4 a stop. Only 0 and 1 leave, both in its loop record; only 1
+# and 2 are probed.
 native = [['0', '9', '1', '0'], ['1', '2', '2', '5'], ['2', '2', '3', '6'], ['3', '2', '4', '7'], ['4', '0', '5', '8']]
 oracle = {0: ['0', '9', '1', '0'], 1: ['1', '9', '2', '0'], 2: ['2', '9', '3', '0'], 3: ['3', '0', '4', '7']}
+mi = types.SimpleNamespace(m='cm', cp=types.SimpleNamespace(where=lambda p: '12,%04o' % p))
+FCASES = [{'cm': 1, 'point': 0o2074 + k, 'seed': k} for k in range(5)]
 probed = []
 saved = {k: getattr(D, k) for k in ('run', 'write_cases', 'operand_stops', 'step_cap_probe')}
 tmp = None
@@ -88,7 +91,7 @@ try:
     files = {}
 
     def write_cases(path, missions, cases):
-        files[path] = list(cases)
+        files[path] = [c['seed'] for c in cases]
         open(path, 'w').close()
 
     def run(cmd):
@@ -103,24 +106,35 @@ try:
 
         def probe(idx):
             probed.append(list(idx))
-            return [rec() if cases[i] == 1 else NEAR[0] for i in idx]
+            return [rec() if cases[i]['seed'] == 1 else NEAR[0] for i in idx]
         return probe
     D.run, D.write_cases, D.step_cap_probe = run, write_cases, step_cap_probe
     D.operand_stops = lambda missions, cases, rows_n, fbrows: set()
     tmp = tempfile.mkdtemp()
     path = os.path.join(tmp, 'cases.bin')
-    write_cases(path, None, [0, 1, 2, 3, 4])
-    kept = D.frozen_only(None, [0, 1, 2, 3, 4], 'ref', 'nat', path, 'cm-conics')
+    write_cases(path, None, FCASES)
+    record = {}
+    kept = D.frozen_only([None, mi], FCASES, 'ref', 'nat', path, 'cm-conics', record)
 finally:
     if tmp:
         shutil.rmtree(tmp, ignore_errors=True)
     for k, v in saved.items():
         setattr(D, k, v)
-assert kept == [2, 3, 4] and probed == [[1, 2]], (kept, probed)
+assert [c['seed'] for c in kept] == [2, 3, 4] and probed == [[1, 2]], (kept, probed)
+assert record == {'erasable_cadr_cycle': {'cm 12,2074': 1},
+                  'step_cap': {'routines': {'cm 12,2074': 1},
+                               'cases': [{'case': 1, 'seed': 1, 'start': 'cm 12,2075', 'point': 0o2075}]}}, record
+
+# cover-check and cert_arms measure fail when the cases a rerun leaves out
+# are not the ones the proof records (a proof with no 'loops' key: none).
+assert D.loops_mismatch(record, {'loops': record}) == ''
+assert D.loops_mismatch({}, {}) == ''
+assert D.loops_mismatch(record, {}) != ''
+assert D.loops_mismatch({}, {'loops': record}) != ''
+assert D.loops_mismatch(record, {'loops': {'erasable_cadr_cycle': {'cm 12,2074': 1}}}) != ''
 
 # The proof's record: every left-out case by routine, the step-cap ones also
 # by case.
-mi = types.SimpleNamespace(m='cm', cp=types.SimpleNamespace(where=lambda p: '12,%04o' % p))
 cases = [{'cm': 1, 'point': 0o2074, 'seed': 7}, {'cm': 1, 'point': 0o2074, 'seed': 8},
          {'cm': 1, 'point': 0o2200, 'seed': 9}]
 got = D.loops_record([None, mi], cases, {2}, {0: 'cm 12,2074', 1: 'cm 12,2074'})
@@ -163,4 +177,4 @@ if '--real' in sys.argv[1:]:
           'yaAGC still running at 4x its cycles with LOC in %s)' % (n1['steps'], n4['steps'], record['r4']['loc']))
 
 print('interp_loops_test: step-cap loops OK (the loop; %d near-misses stay mismatches; the 16-bit clamp; '
-      'frozen_only; the proof record)' % len(NEAR))
+      'frozen_only and its loop record; the proof record and its check)' % len(NEAR))
