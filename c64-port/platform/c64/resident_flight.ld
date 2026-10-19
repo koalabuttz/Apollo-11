@@ -68,6 +68,14 @@ SECTIONS {
     INCLUDE bss-symbols.ld
     .noinit (NOLOAD) : { INCLUDE noinit-sections.ld } >ram
     __rk_resident_end = .;
+    /* Zeroed state of the measurement harnesses (dap_pass_check.c
+     * CASSETTE) in the cassette buffer, above the step profile ($033C-
+     * $0381) and below the replay row ($03F4). Flight builds have none. */
+    .cassette 0x0384 (NOLOAD) : {
+        __dp_cassette_start = .;
+        *(.cassette .cassette.*)
+        __dp_cassette_end = .;
+    }
     .apollo_services 0x6f00 : { KEEP(*(.apollo_services)) } >services
     __rk_services_end = .;
     /* rk_hardware at RK_HARDWARE and rk_flight at RK_FLIGHT_IO
@@ -84,4 +92,5 @@ ASSERT(rk_flight==0x6fdd && SIZEOF(.rk_flight)<=0x18,"rk_flight is not at RK_FLI
 ASSERT(rk_restart_lamp==0x6ff5 && SIZEOF(.rk_restart_lamp)==1,"rk_restart_lamp is not at RK_RESTART_LAMP")
 __stack = 0xd000;
 ASSERT(__rk_resident_end<=0x6f00,"resident overlaps the ABI 2 service table")
+ASSERT(__dp_cassette_end<=0x03f4,"harness state overlaps the replay row at $03F4")
 OUTPUT_FORMAT { SHORT(0x0801) FULL(ram) FULL(services) FULL(image) TRIM(boot) }

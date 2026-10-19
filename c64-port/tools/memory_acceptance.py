@@ -3,7 +3,10 @@
 """Write one program's memory_and_overlay_validation evidence
 (docs/PORT_SCOPE.md, integrated_applications).
 
-  memory_acceptance.py lm|cm --run RUN.json [--run ...]
+  memory_acceptance.py lm|cm [--run RUN.json ...]
+
+With no --run it runs the program's DEFAULT_RUNS windows itself
+(tools/flight_scenario_vice.py, about 15 min each program in VICE).
 
 Reads the built store (make flight-store), the resident sizes
 (tools/resident_flight_build.py) and one or more flight_scenario_vice.py
@@ -33,6 +36,14 @@ import reu_layout  # noqa: E402
 PROGRAM = {'lm': 'Luminary099', 'cm': 'Comanche055'}
 RESIDENT_FLOOR = 2048        # /mnt/project-files/pin-split/resident-recovery.md rule
 STORE = ROOT / 'build/flight-store'
+# The windows each program's doc checks when no --run is given: a powered
+# phase, a DSKY/uplink window and a long landing or entry window, each with
+# --replay so the replay rows and states are in the REU too.
+DEFAULT_RUNS = {
+    'lm': [('lm-p63-descent-thrust', 20010, 200, 50), ('lm-uplink-reject', 1900, 800, 50),
+           ('lm-landing-ascent-nassp', 140000, 2000, 200), ('lm-landing-ascent-nassp', 128000, 2000, 200)],
+    'cm': [('cm-entry', 29000, 400, 50), ('cm-tli', 31000, 300, 50), ('cm-p52', 5400, 300, 50)],
+}
 SIZES = ROOT / 'build/resident-flight/sizes.json'
 
 
@@ -72,6 +83,27 @@ def build_checks(m):
     out.append((f'resident free bytes at least {RESIDENT_FLOOR}', sizes['free_bytes'] >= RESIDENT_FLOOR,
                 f"resident {sizes['resident_bytes']} of {sizes['resident_capacity']} bytes, {sizes['free_bytes']} free"))
     return out, manifest, regions, sizes
+
+
+def default_runs(m, dest):
+    """Run DEFAULT_RUNS[m] and return their result JSONs. A window that
+    leaves the host is still a valid bound-check run; only a run that wrote
+    no result fails here."""
+    dest.mkdir(parents=True, exist_ok=True)
+    out = STORE / 'flight-scenario-vice.json'
+    paths = []
+    for scenario, snap, cs, every in DEFAULT_RUNS[m]:
+        out.unlink(missing_ok=True)
+        print(f'{m}: running {scenario} {snap}+{cs} (--replay-every {every})', flush=True)
+        subprocess.run([sys.executable, 'tools/flight_scenario_vice.py', '--scenario', scenario, '--snap-cs', str(snap),
+                        '--cs', str(cs), '--replay', '--replay-every', str(every)], cwd=ROOT,
+                       stdout=subprocess.DEVNULL)
+        if not out.exists():
+            raise SystemExit(f'FAIL: {scenario} {snap}+{cs} wrote no result')
+        path = dest / f'{scenario}-{snap}.json'
+        path.write_bytes(out.read_bytes())
+        paths.append(path)
+    return paths
 
 
 def runtime_checks(m, runs, dest):
@@ -150,8 +182,7 @@ def write_doc(m, checks, manifest, regions, sizes, rows, commit, built_at=''):
               '(`--reu-check-drop scratch`) logs 48 DMAs outside and fails; with the full layout it logs 0 '
               '(docs/FLIGHT-STORE.md).', '',
               '## Reproduce', '', '```sh', 'make flight-store', 'python3 tools/resident_flight_build.py',
-              f'python3 tools/flight_scenario_vice.py --scenario <scenario> --snap-cs <cs> --cs <n> [--replay]',
-              f'python3 tools/memory_acceptance.py {m} --run build/flight-store/flight-scenario-vice.json ...',
+              f'python3 tools/memory_acceptance.py {m}   # runs its default windows; or --run RESULT.json ...',
               '```', '']
     path = ROOT / 'docs/acceptance' / f'{p}-memory_and_overlay_validation.md'
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -162,12 +193,14 @@ def write_doc(m, checks, manifest, regions, sizes, rows, commit, built_at=''):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('mission', choices=sorted(PROGRAM))
-    ap.add_argument('--run', action='append', default=[], help='a flight_scenario_vice.py result JSON')
+    ap.add_argument('--run', action='append', default=[],
+                    help='a flight_scenario_vice.py result JSON (default: run DEFAULT_RUNS)')
     ap.add_argument('--built-at', default='', help='the commit the store and runs were built at, when not HEAD')
     a = ap.parse_args(argv)
     commit = git('rev-parse', '--short=12', 'HEAD') + (' (dirty)' if git('status', '--porcelain', '--', 'src', 'include', 'platform', 'tools') else '')
     checks, manifest, regions, sizes = build_checks(a.mission)
-    rows = runtime_checks(a.mission, a.run, ROOT / 'build/memory-acceptance' / a.mission)
+    runs = a.run or default_runs(a.mission, ROOT / 'build/memory-acceptance' / a.mission / 'runs')
+    rows = runtime_checks(a.mission, runs, ROOT / 'build/memory-acceptance' / a.mission)
     path, ok = write_doc(a.mission, checks, manifest, regions, sizes, rows, commit, a.built_at)
     print(f"{path.relative_to(ROOT)}: {'PASS' if ok else 'FAIL'} (sha256 {sha(path)})")
     for name, good, detail in checks:

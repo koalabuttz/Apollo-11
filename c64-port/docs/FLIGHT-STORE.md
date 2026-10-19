@@ -1137,15 +1137,20 @@ port) runs one mission:
    (and with `--replay-every N` at the first one at or after every N cs
    before), both sides write their erasable words and output channels (5,
    6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
-   the base tables run on);
+   the base tables run on). Each side writes at its own sample points, so
+   the states are paired by their centiseconds, not by order: two ends
+   always pair, and a checkpoint with no state at the same centisecond on
+   the other side (a mark the host was busy through, for one) is listed
+   as unpaired and not compared. The C64's state area holds `--cs` /
+   `--replay-every` + 1 states and the C64 writes no more, and a window
+   the host ran past 16,383 cs (the C64's 14-bit window clock) fails before
+   VICE starts;
    the run fails on any difference, printing the first one, skipping what
    the host differential skips (the central registers and RUPTREG1-4;
    unlike it, the timers are compared). So a window that ran with no stops also has to match
    the host. Until the CM idle pass is charged as idle on the C64 (it is
    module work there when a job ends into it, idle on the host), CM windows
-   skip what that tick moves: DSPCNT, DSRUPTSW, DSPTAB's sent bit and
-   the clock of checkpoints a centisecond apart, and the whole of such a
-   checkpoint when other words differ too, unless it ends the window
+   skip what that tick moves: DSPCNT, DSRUPTSW and DSPTAB's sent bit
    (`SCHEDULE_SKIP`; the run prints
    `skipped:` when it uses it; `--replay-exact` turns it off). The timers
    TIME1-TIME6 are compared too. Until the work charges agree (Interpreter
@@ -1258,7 +1263,17 @@ port) runs one mission:
    `cm-p52-gimbal-lock` puts CDUZ at 72 degrees for 6 s (GIMBAL LOCK
    lights, then goes out; P52 runs as before) and, after P00, at 86
    degrees: GLOCKMON coarse aligns the platform and lights NO ATT. All
-   five match yaAGC. `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
+   five match yaAGC. Four more key crew verbs no other CM scenario
+   keys (the Comanche055 coverage map): `cm-p20-crew-verbs` adds V90
+   (R36's out-of-plane display, V06N90), V44 (R61 asks for a new tracking
+   attitude for an LM on the surface), V45, V88, V58 and V93 to cm-p20;
+   `cm-p23-attached` adds V66 after P00 (ATTACHIT copies the CSM's state
+   into the LM's); `cm-v49-maneuver` keys V76, then V49 (R62) from cm-p40's
+   start, a 180 degree roll loaded on V06N22, and R60's KALCMANU steering
+   runs (with no CM attitude model the CDUs stay put); `cm-p21` is cm-p52
+   on to P21 (ground track): V06N43 shows -7.40, +111.70 degrees and 97.1
+   nmi now. All four match yaAGC.
+   `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus
    the engine model's thrust, so truth and the LGC's navigation part as
@@ -1305,7 +1320,20 @@ port) runs one mission:
    again), V34 (P27 ends); a garbled word (#00001) at 50 s locks the
    uplink out (FLAGWRD7 bit 4), so V37E at 55 s is ignored; ERROR RESET
    at 65 s unlocks it and V37E00E takes P00. On the host every native
-   routine of the four matches yaAGC.
+   routine of the four matches yaAGC. `cm-uplink-reject` sends the same
+   keys to the CMC. `lm-uplink-accept` and `cm-uplink-accept` are
+   accepted loads in P00, one per uplink verb: V71 with 4 components
+   (the count, TTPI's ECADR, its two words; LM E7,1635 is 3635, CM
+   E7,1662 is 3662), then V33 at V21N02 stores TTPI (UPEND71); V72 with
+   II 3 loads TTPI's high word; V73 and V70 each add 0,144 octal (100 cs),
+   V33 after each. V06N37 then shows TTPI 00 03 35.04 (1 x 2^14 + 5120 cs)
+   on both. V74 then starts the erasable dump (with FLIGHT_DOWNRUPT;
+   list 01776 LM, 01777 CM), and its downlink words match yaAGC. All
+   three run with no bridges on the host. V69 (forced restart) is not
+   keyed: it is a TC to itself that waits for the hardware TC trap, which
+   the host does not model, so the CMC's VERB69 loops until the run ends. A V16
+   monitor in place of V06 bridges PASTEVB (02,2124 LM, 02,2140 CM):
+   the Pinball suite refuses it when ENTRET re-enters it each second.
    `flight_scenario_vice.py` on `lm-p63-descent-thrust` from 175 s (the
    LLGE running), on base 72b40a63: 1,564,617 cycles for 66 AGC
    centiseconds (2.4 times real time), then a point the store does not map
