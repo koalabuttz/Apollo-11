@@ -64,14 +64,19 @@ static void load(const fd_state *st){unsigned i;agc_hardware hw=st->hw;
 static void view(fd_state *v){unsigned i;
  for(i=0;i<2048u;++i)v->s.words[i]=mword(i);
  v->io.superbank=(agc_word)(m.OutputChannel7&0160);}
-/* Where the two differ, at most n words: erasable (Z aside), channels,
- * interrupt state. Q is compared in 15 bits on both sides: the native
- * routines and yaAGC do not always agree on Q's 16th bit (LM P63's
- * landing displays, LLGE and integration init), which no instruction reads
- * back except as a return address, and the host differential compares no
- * central register at all. */
+/* Q as both sides hold it: native routines do not sign-extend Q into its
+ * 16th bit where yaAGC does (LM P63's landing displays, LLGE, integration
+ * init, CM P11 and P22), and nothing reads that bit back except as a
+ * return address; the host differential compares no central register.
+ * So the one difference let through is native bit 16 clear where yaAGC's
+ * bit 16 copies its bit 15; any other bit-16 difference is a miss. */
+static int q_same(agc_word native){agc_word y=(agc_word)((uint16_t)*cell(2));
+ if(native==y)return 1;
+ return !(native&0100000u)&&(native&077777u)==(y&077777u)&&((y>>15)&1u)==((y>>14)&1u);}
+/* Where the two differ, at most n words: erasable (Z aside, Q as q_same),
+ * channels, interrupt state. */
 static unsigned differs(const fd_state *st,char *why,size_t len){unsigned i,d=0;size_t o=0;agc_hardware hw=st->hw;
- for(i=0;i<2048u;++i)if(i!=5u&&mword(i)!=(i==2u?st->s.words[i]&077777u:st->s.words[i])){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," %04o %05o/%05o",i,(unsigned)st->s.words[i],(unsigned)mword(i));}
+ for(i=0;i<2048u;++i)if(i!=5u&&(i==2u?!q_same(st->s.words[2]):mword(i)!=st->s.words[i])){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," %04o %05o/%05o",i,(unsigned)st->s.words[i],(unsigned)mword(i));}
  for(i=0;i<CHANNELS;++i)if(ch[i]!=3u&&ch[i]!=4u&&((agc_word)(m.InputChannel[ch[i]]&077777))!=*hwc(&hw,i)){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," ch%02o %05o/%05o",ch[i],(unsigned)*hwc(&hw,i),(unsigned)(m.InputChannel[ch[i]]&077777));}
  /* The downlink words (FLIGHT_DOWNRUPT). */
  if((agc_word)(m.InputChannel[034]&077777)!=st->io.channel34||(agc_word)(m.InputChannel[035]&077777)!=st->io.channel35){
