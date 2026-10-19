@@ -215,10 +215,12 @@ P23_KEYS = ('@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000
 # pericynthion) and V16N45; V37E40E, proceed on V50N18 (R60's maneuver is
 # nil), ENTER on V50N18 (end R60), proceed on V50N25 00204 (the gimbal
 # test); average G at TIG-30, proceed on V99N40 at TIG-5; FLIGHT_SPS (the
-# 43,900 kg stack) burns about 372 s to cutoff (VG under 1 m/s); proceed
+# 43,900 kg stack, its centre of mass 0.5 degrees in pitch and -0.3 in yaw
+# off the pad-loaded trim, so the TVC DAP has to find it) burns about
+# 372 s to cutoff (VG under 1 m/s); proceed
 # on V16N40 and V16N85, then P00.
 P40 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
-       'FLIGHT_SPS': '43900', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p40.load'}
+       'FLIGHT_SPS': '43900,0.5,-0.3', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p40.load'}
 P40_KEYS = ('@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E'
             '@29600V33E@69000V33E@70500V33E@72000V37E00E')
 # lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
@@ -477,11 +479,12 @@ P22_KEYS = ('@4500V37E22E@6000V33E@7000V22E10000E@7500V33E@8500V33E@13200M@15200
 # V25 on V06N33 (TIG 300 s on the CMC clock), V25 on V06N81 (+3283.6
 # ft/s), proceed on N81, N42 (9999.9 x 60.0 nmi) and V16N45; V37E40E,
 # proceed and ENTER on V50N18, proceed on V50N25 00204; proceed on V99N40
-# at TIG-5; FLIGHT_SPS (16,400 kg) burns about 154 s to cutoff (N40 VG 6.1
+# at TIG-5; FLIGHT_SPS (16,400 kg, its centre of mass -0.3 degrees in
+# pitch and +0.2 in yaw off the trim) burns about 154 s to cutoff (N40 VG 6.1
 # ft/s); proceed on V16N40 and V16N85, V37E00E; V82: V16N44 9999.9 x 60.0
 # nmi, then V34E.
 TEI = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
-       'FLIGHT_SPS': '16400', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-tei.load'}
+       'FLIGHT_SPS': '16400,-0.3,0.2', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-tei.load'}
 TEI_KEYS = ('@4500V37E30E@5000V25E+00000E+00005E+00000E@6400V33E@6800V25E+32836E+00000E+00000E@8100V33E'
             '@9500V33E@10500V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@47000V33E@48500V33E'
             '@50000V37E00E@51000V82E@53000V33E@55000V34E')

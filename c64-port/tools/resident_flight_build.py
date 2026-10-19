@@ -166,6 +166,7 @@ COMPONENTS = {
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
         ('AGC timers and interrupt entry', ['src/resident_rupt.c']),
+        ('output drives', ['platform/c64/resident_cdu.S']),
         ('resident state and step', ['platform/c64/resident_flight.c', 'platform/c64/rk_clock.S']),
         ('IRQ entry', ['platform/c64/overlay_v2_irq.S']),
     ],
@@ -179,6 +180,7 @@ COMPONENTS = {
         ('service table exports', ['src/agc_multiword.c']),
         ('word helpers', ['src/agc_word.c']),
         ('AGC timers and interrupt entry', ['src/resident_rupt.c']),
+        ('output drives', ['platform/c64/resident_cdu.S']),
         ('resident state and step', ['platform/c64/resident_flight.c', 'platform/c64/rk_clock.S']),
         ('IRQ entry', ['platform/c64/overlay_v2_irq.S']),
     ],
@@ -357,6 +359,9 @@ def measure(cc, m, prg):
     owners.insert(0, ('transfer ABI trampoline and Executive call sites', {'rk_trampoline', 'agc_find'}))
     owners.insert(0, ('ABI 2 runtime and REU store', {'rk_run_module'}))
     owners.insert(0, ('AGC timers and interrupt entry', {'rk_rupts'}))
+    # The output drives are 6502 (resident_cdu.S); resident_flight.c holds
+    # their state.
+    owners.insert(0, ('output drives', {'rk_cdu_drive6502', 'rk_cdu'}))
     text = Path(f'{prg}.map').read_text()
     end = int(re.search(r'([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__rk_resident_end = \.', text).group(1), 16)
     boot0 = int(re.search(r'([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__rk_boot_start = \.', text).group(1), 16)
