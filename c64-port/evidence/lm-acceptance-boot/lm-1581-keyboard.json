@@ -1,0 +1,152 @@
+{
+ "mission": "lm",
+ "disks": [
+  "lm-1.d81"
+ ],
+ "loader_bytes": 6392,
+ "resident_bytes": 38031,
+ "resident_start": 2061,
+ "boot_return": 2589,
+ "dsky_queue": 1921,
+ "hardware": 28606,
+ "resident_staged": "0x1f6b00",
+ "bytes_loaded": 1914173,
+ "data_bytes": [
+  788735
+ ],
+ "vice": {
+  "mission": "lm",
+  "ok": true,
+  "fast_loader": true,
+  "load_cycles": 260586229,
+  "load_s": 264.5,
+  "reu_clear_s": 2.26,
+  "handoff_cycles": 80724,
+  "boot_cycles": 110815066,
+  "boot_s": 112.5,
+  "boot_status": 0,
+  "samples": [
+   {
+    "cycles": 32944753,
+    "time1": "01124",
+    "z": "03214",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 61957011,
+    "time1": "02217",
+    "z": "03214",
+    "fb": "02000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 88748139,
+    "time1": "03236",
+    "z": "02161",
+    "fb": "34000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 118723540,
+    "time1": "04353",
+    "z": "05032",
+    "fb": "14000",
+    "modreg": "77777"
+   }
+  ],
+  "pc": "47b4",
+  "screen": [
+   " APOLLO 11 LM DSKY",
+   "",
+   " UPLINK ACTY  TEMP         COMP ACTY",
+   " NO ATT       GIMBAL LOCK  PROG",
+   " KEY REL      RESTART      TRACKER",
+   " OPR ERR      ALT          VEL",
+   "",
+   "        VERB    NOUN    PROG",
+   "                         00",
+   "",
+   "            R1",
+   "            R2",
+   "            R3",
+   "",
+   " V VERB  N NOUN  RETURN ENTR  C CLR",
+   " R RSET  K KEY REL  P PRO  0-9 + -",
+   ""
+  ],
+  "failreg": [
+   "00000",
+   "00000",
+   "00000"
+  ],
+  "modreg": "00000",
+  "fb": "02000",
+  "z": "03214",
+  "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
+  "p00": true,
+  "reu_blocks_changed": [
+   "0x1df000",
+   "0x1df100",
+   "0x1df200",
+   "0x1df300",
+   "0x1df400",
+   "0x1df500",
+   "0x1df600",
+   "0x1dfc00",
+   "0x1dfd00",
+   "0x1f2000",
+   "0x1f2100",
+   "0x1f2200",
+   "0x1f2300",
+   "0x1f2400",
+   "0x1f2500",
+   "0x1f2600",
+   "0x1f2c00",
+   "0x1f2d00"
+  ],
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save",
+    "undo"
+   ],
+   "outside": [],
+   "regions": [
+    {
+     "name": "store",
+     "start": "0x0",
+     "end": "0x1c3500",
+     "writable": false
+    },
+    {
+     "name": "pinball save",
+     "start": "0x1df000",
+     "end": "0x1e0000",
+     "writable": true
+    },
+    {
+     "name": "rope",
+     "start": "0x1e0000",
+     "end": "0x1f2000",
+     "writable": false
+    },
+    {
+     "name": "undo",
+     "start": "0x1f2000",
+     "end": "0x1f3000",
+     "writable": true
+    },
+    {
+     "name": "resident stage",
+     "start": "0x1f6b00",
+     "end": "0x1fff8f",
+     "writable": false
+    }
+   ],
+   "dma_outside": 0,
+   "dma_hits": [],
+   "dma_unchecked": 24
+  }
+ }
+}
