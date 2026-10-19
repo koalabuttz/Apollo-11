@@ -57,6 +57,9 @@ static MAYBE_UNUSED uint8_t sane(const apollo_overlay_state *s,const p66_bias_io
 static MAYBE_UNUSED uint8_t at_newops(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
  return W[5]==06037u&&W[4]==fb&&W[0165]==W[6]&&W[0115]==(fb&040000u)&&sane(s,io);
 }
+static MAYBE_UNUSED uint8_t at_danzig(const apollo_overlay_state *s,const p66_bias_io *io,agc_word fb){
+ return W[5]==06030u&&(W[0165]&076000u)==fb&&!(W[0165]&01770u)&&W[0115]==(fb&040000u)&&sane(s,io);
+}
 /* INDEX K: C(K) (A, L, Q overflow-corrected) added to the instruction
  * word w in 16-bit ones' complement, then overflow-corrected. */
 static MAYBE_UNUSED agc_word ixw(const apollo_overlay_state *s,agc_word w,unsigned k){
@@ -1317,6 +1320,19 @@ static enum exec_status r11203(apollo_overlay_state *s,p66_bias_io *io){
 }
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 19) & 1
+/* 04,3204  (pending DANZIG after RTB LOADTIME) */
+static enum exec_status r11204(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_danzig(s,io,010000u))return EXEC_OUT_OF_SCOPE;
+ /* 04,3204 pending DANZIG: RTB on the left, DAD on the right */
+ if(W[023]!=0162u)return EXEC_OUT_OF_SCOPE;
+ TRACE(s);
+ right(s);
+ cmi_direct(s,002364,006744);cmi_dad(s,0);
+ if(next(s))return EXEC_OK;
+ return EXEC_OK; /* on to 04,3206 */
+}
+#endif
+#if (CM_STABLE_ORBIT_KEEP1 >> 20) & 1
 /* 04,3206  (after RTB LOADTIME) */
 static enum exec_status r11206(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1327,7 +1343,7 @@ static enum exec_status r11206(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3207 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 20) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 21) & 1
 /* 04,3207  (CHANG2 resume) */
 static enum exec_status r11207(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1339,7 +1355,7 @@ static enum exec_status r11207(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 21) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 22) & 1
 /* 04,3211  (STCALL return) */
 static enum exec_status r11211(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1351,7 +1367,7 @@ static enum exec_status r11211(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 22) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 23) & 1
 /* 04,3213  (CALL return) */
 static enum exec_status r11213(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1363,7 +1379,7 @@ static enum exec_status r11213(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,011101,002514);cmi_goto_order(s);return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 23) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 24) & 1
 /* 04,3216 PREC/TT (CALL target) */
 static enum exec_status r11216(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1377,7 +1393,7 @@ static enum exec_status r11216(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3221 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 24) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 25) & 1
 /* 04,3221  (CHANG2 resume) */
 static enum exec_status r11221(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1389,7 +1405,7 @@ static enum exec_status r11221(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 25) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 26) & 1
 /* 04,3223  (STCALL return) */
 static enum exec_status r11223(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1403,7 +1419,7 @@ static enum exec_status r11223(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3226 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 26) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 27) & 1
 /* 04,3226  (CHANG2 resume) */
 static enum exec_status r11226(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1415,7 +1431,7 @@ static enum exec_status r11226(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3230 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 27) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 28) & 1
 /* 04,3230  (CHANG2 resume) */
 static enum exec_status r11230(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1429,7 +1445,7 @@ static enum exec_status r11230(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3231 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 28) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 29) & 1
 /* 04,3231  (CHANG2 resume) */
 static enum exec_status r11231(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1441,7 +1457,7 @@ static enum exec_status r11231(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3232 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 29) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 30) & 1
 /* 04,3232  (CHANG2 resume) */
 static enum exec_status r11232(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1455,7 +1471,7 @@ static enum exec_status r11232(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3234 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 30) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 31) & 1
 /* 04,3234  (CHANG2 resume) */
 static enum exec_status r11234(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1467,7 +1483,7 @@ static enum exec_status r11234(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3236 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 31) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 32) & 1
 /* 04,3236  (CHANG2 resume) */
 static enum exec_status r11236(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1479,7 +1495,7 @@ static enum exec_status r11236(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3240 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 32) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 33) & 1
 /* 04,3240  (CHANG2 resume) */
 static enum exec_status r11240(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1491,7 +1507,7 @@ static enum exec_status r11240(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 33) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 34) & 1
 /* 04,3242  (STCALL return) */
 static enum exec_status r11242(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1503,7 +1519,7 @@ static enum exec_status r11242(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 34) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 35) & 1
 /* 04,3244  (CALL return) */
 static enum exec_status r11244(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1515,7 +1531,7 @@ static enum exec_status r11244(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,002367,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 35) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 36) & 1
 /* 04,3247 INTRPVP (STCALL target) */
 static enum exec_status r11247(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1531,7 +1547,7 @@ static enum exec_status r11247(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 04,3253 */
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 36) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 37) & 1
 /* 04,3253  (CHANG2 resume) */
 static enum exec_status r11253(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1543,7 +1559,7 @@ static enum exec_status r11253(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 37) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 38) & 1
 /* 04,3255  (CALL return) */
 static enum exec_status r11255(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1553,7 +1569,7 @@ static enum exec_status r11255(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,002367,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 38) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 39) & 1
 /* 04,3257 OTHERV (switch branch target) */
 static enum exec_status r11257(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1565,7 +1581,7 @@ static enum exec_status r11257(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 39) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 40) & 1
 /* 04,3261  (CALL return) */
 static enum exec_status r11261(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1575,21 +1591,21 @@ static enum exec_status r11261(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,002367,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 40) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 41) & 1
 /* 04,3271  (return from BANKCALL) */
 static enum exec_status r11271_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,010000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,4793u);
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 41) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 42) & 1
 /* 04,3272  (resumed from outside) */
 static enum exec_status r11272_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,010000u))return EXEC_OUT_OF_SCOPE;
  return basic_run(s,(cm_native_io *)v,4794u);
 }
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 42) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 43) & 1
 /* 04,3273  (resumed from outside) */
 static enum exec_status r11273_abi(const agc_native_program *p,apollo_overlay_state *s,void *v){
  (void)p;if(!s||!v||!basic_sane(s,(cm_native_io *)v,010000u))return EXEC_OUT_OF_SCOPE;
@@ -1748,66 +1764,69 @@ WRAP(r11200)
 WRAP(r11203)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 19) & 1
-WRAP(r11206)
+WRAP(r11204)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 20) & 1
-WRAP(r11207)
+WRAP(r11206)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 21) & 1
-WRAP(r11211)
+WRAP(r11207)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 22) & 1
-WRAP(r11213)
+WRAP(r11211)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 23) & 1
-WRAP(r11216)
+WRAP(r11213)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 24) & 1
-WRAP(r11221)
+WRAP(r11216)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 25) & 1
-WRAP(r11223)
+WRAP(r11221)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 26) & 1
-WRAP(r11226)
+WRAP(r11223)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 27) & 1
-WRAP(r11230)
+WRAP(r11226)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 28) & 1
-WRAP(r11231)
+WRAP(r11230)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 29) & 1
-WRAP(r11232)
+WRAP(r11231)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 30) & 1
-WRAP(r11234)
+WRAP(r11232)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 31) & 1
-WRAP(r11236)
+WRAP(r11234)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 32) & 1
-WRAP(r11240)
+WRAP(r11236)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 33) & 1
-WRAP(r11242)
+WRAP(r11240)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 34) & 1
-WRAP(r11244)
+WRAP(r11242)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 35) & 1
-WRAP(r11247)
+WRAP(r11244)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 36) & 1
-WRAP(r11253)
+WRAP(r11247)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 37) & 1
-WRAP(r11255)
+WRAP(r11253)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 38) & 1
-WRAP(r11257)
+WRAP(r11255)
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 39) & 1
+WRAP(r11257)
+#endif
+#if (CM_STABLE_ORBIT_KEEP1 >> 40) & 1
 WRAP(r11261)
 #endif
 /* Each table ends with a sentinel the count leaves out. */
@@ -1954,66 +1973,69 @@ static const agc_routine_entry interpretive_entries[]={
  {4739,r11203_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 19) & 1
- {4742,r11206_abi},
+ {4740,r11204_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 20) & 1
- {4743,r11207_abi},
+ {4742,r11206_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 21) & 1
- {4745,r11211_abi},
+ {4743,r11207_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 22) & 1
- {4747,r11213_abi},
+ {4745,r11211_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 23) & 1
- {4750,r11216_abi},
+ {4747,r11213_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 24) & 1
- {4753,r11221_abi},
+ {4750,r11216_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 25) & 1
- {4755,r11223_abi},
+ {4753,r11221_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 26) & 1
- {4758,r11226_abi},
+ {4755,r11223_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 27) & 1
- {4760,r11230_abi},
+ {4758,r11226_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 28) & 1
- {4761,r11231_abi},
+ {4760,r11230_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 29) & 1
- {4762,r11232_abi},
+ {4761,r11231_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 30) & 1
- {4764,r11234_abi},
+ {4762,r11232_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 31) & 1
- {4766,r11236_abi},
+ {4764,r11234_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 32) & 1
- {4768,r11240_abi},
+ {4766,r11236_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 33) & 1
- {4770,r11242_abi},
+ {4768,r11240_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 34) & 1
- {4772,r11244_abi},
+ {4770,r11242_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 35) & 1
- {4775,r11247_abi},
+ {4772,r11244_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 36) & 1
- {4779,r11253_abi},
+ {4775,r11247_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 37) & 1
- {4781,r11255_abi},
+ {4779,r11253_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 38) & 1
- {4783,r11257_abi},
+ {4781,r11255_abi},
 #endif
 #if (CM_STABLE_ORBIT_KEEP1 >> 39) & 1
+ {4783,r11257_abi},
+#endif
+#if (CM_STABLE_ORBIT_KEEP1 >> 40) & 1
  {4785,r11261_abi},
 #endif
  {0xffffu,0}
@@ -2116,13 +2138,13 @@ static const agc_routine_entry basic_entries[]={
 #if (CM_STABLE_ORBIT_KEEP1 >> 16) & 1
  {4735,r11177_abi},
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 40) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 41) & 1
  {4793,r11271_abi},
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 41) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 42) & 1
  {4794,r11272_abi},
 #endif
-#if (CM_STABLE_ORBIT_KEEP1 >> 42) & 1
+#if (CM_STABLE_ORBIT_KEEP1 >> 43) & 1
  {4795,r11273_abi},
 #endif
  {42231,e2367_abi},
@@ -2209,6 +2231,7 @@ const cm_stable_orbit_point cm_stable_orbit_points[CM_STABLE_ORBIT_POINTS]={
  {4735,0},
  {4736,1},
  {4739,1},
+ {4740,1},
  {4742,1},
  {4743,1},
  {4745,1},

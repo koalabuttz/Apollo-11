@@ -24,6 +24,7 @@
 #define W s->words
 #define NEWOPS 06070u
 #define CHANG2 05126u
+#define NOVAC_FIXLOC 0110u /* NOVAC's FAKEPRET: LOC(MPAC +6) - LOC(QPRET) */
 
 /* MISCJUMP body entries (Luminary099 INTERPRETER). */
 enum { CALLITA = 02507, RTBBHIZ = 02447, SWITCH = 02516, LXA = 02354, BPLBMN = 02474 };
@@ -242,8 +243,13 @@ enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *s, lanec_io *io, e
      * the next DANZIG then changes jobs), the job's
      * VAC area (FIXLOC) in unswitched erasable above the interpreter's work
      * area, and at NEWOPS EDOP +0 with
-     * BANKSET naming the current banks and INTBIT15 its bit 15 */
-    if ((W[067] & 040000u) || W[0120] < 0200u || W[0120] >= 01400u - 060u) return LANEC_OUT_OF_SCOPE;
+     * BANKSET naming the current banks and INTBIT15 its bit 15. TRMTRAK1
+     * (V56) runs in Pinball's NOVAC job: FIXLOC is NOVAC's, MPAC +6 less
+     * QPRET (0110), so CALL INTSTALL's QPRET lands in MPAC +6, as on the
+     * AGC; its two words use no other work-area word. */
+    if (W[067] & 040000u) return LANEC_OUT_OF_SCOPE;
+    if (!(W[0120] == NOVAC_FIXLOC && bank == 042u) && (W[0120] < 0200u || W[0120] >= 01400u - 060u))
+        return LANEC_OUT_OF_SCOPE;
     if (W[023] != 0 || W[0165] != W[LANEC_BB] || W[0115] != (W[0165] & 040000u))
         return LANEC_OUT_OF_SCOPE;
     pio.superbank = io->superbank; pio.interrupt_enabled = io->interrupt_enabled;
