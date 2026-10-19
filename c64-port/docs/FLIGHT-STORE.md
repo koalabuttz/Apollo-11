@@ -1120,7 +1120,10 @@ port) runs one mission:
      scope than the first check: the same erasable set, plus the timers
      TIME1-TIME6 (both sides run one work clock here), plus output channels
      5, 6, 11-14, 34 and 35 and the superbank. A PIPA's -0 and +0 count as
-     equal. Anything else is a difference, apart from the temporary skips
+     equal. A PIPA count the host gave at a sample point the C64 was still
+     busy at goes in at the C64's next step, as the hardware counts whether
+     or not the AGC is idle, and late rows go in before a state is written.
+     Anything else is a difference, apart from the temporary skips
      above, which are named in every result that uses them. Output channel
      10 (the DSKY relay words) is not compared: it is a strobe the AGC
      writes once per relay word, not a latch, so the display is checked
