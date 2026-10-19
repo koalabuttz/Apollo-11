@@ -49,8 +49,18 @@ def host(case):
     r = subprocess.run([str(exe), str(rope), str(cs), keys], cwd=ROOT, capture_output=True,
                        env=dict(os.environ, FLIGHT_SCALED='1,1,2'), errors='replace')
     text = r.stdout + r.stderr
-    bad = [line.strip() for line in text.splitlines()
-           if 'refused by lanec_pin' in line or re.search(r'did not match \([1-9]', line)]
+    bad, points = [], False
+    for line in text.splitlines():
+        if line.startswith('unregistered or refused points'):
+            points = True
+            continue
+        # a Pinball point (banks 40-43) nothing claims or that was refused
+        if points and re.match(r'\s+\w+\s+4[0-3],[0-7]+ ', line):
+            bad.append('unregistered: ' + line.strip())
+        elif points and not line.startswith(' '):
+            points = False
+        if 'refused by lanec_pin' in line or re.search(r'did not match \([1-9]', line):
+            bad.append(line.strip())
     return case, r.returncode, bad
 
 

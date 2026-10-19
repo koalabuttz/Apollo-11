@@ -8,7 +8,9 @@
  * return (each digit, every CCS branch), and the POSTJUMP and BANKJUMP
  * targets GOVNUPDT, DSPOCTIN, UPDAT1 +2 and OCTBACK with their lead-ins
  * (OCTBACK over every WDCNT branch, DSPCOUNT positive, blanking and
- * negative, any CYL). */
+ * negative, any CYL), and DSPSIGN from its entry (MPAC positive, +0,
+ * negative and -0; Q with and without overflow) and from the -ON and +ON
+ * returns (the saved return in fixed memory or not). */
 #include "lanec_suites.h"
 #include "lanec_pin_gaps.h"
 #include "lanec_symbols.h"
@@ -16,6 +18,7 @@
 #define ENTRIES 26u
 #define FIRST (ENTRIES * 2u * 64u * 4u)    /* the jump-target cases follow the first suite's */
 #define JUMPS 6u
+#define SIGNS (FIRST + JUMPS * 2u * 128u)    /* the DSPSIGN cases follow */
 
 static void range(lanec_meta *m, uint16_t bank, uint16_t lo, uint16_t hi)
 {
@@ -68,10 +71,35 @@ static void make_jump(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_m
     }
 }
 
+static void make_sign(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
+{
+    static const uint16_t mpac[8] = { 0, 1, 077777u, 077776u, 037777u, 040000u, 012345u, 065432u };
+    uint16_t *w = s->words, entry = (uint16_t)(n % 3u), x, r0;
+    uint32_t r = n * 2246822519u + 3u, v = n / 3u / 2u;
+    lanec_fill(s, io, SIGNS + n);
+    m->mission = (n / 3u) & 1u ? LANEC_CM : LANEC_LM;
+    x = m->mission == LANEC_LM ? LANEC_LM_DSPSIGN : LANEC_CM_DSPSIGN;
+    /* the return: fixed-fixed, or bank 40 away from DSPSIGN; refused when not fixed */
+    r0 = (uint16_t)(v % 2u ? 04000u + lanec_rand(&r) % 04000u : 02000u + lanec_rand(&r) % 01000u);
+    if (v % 8u == 7u) r0 = (uint16_t)(lanec_rand(&r) % 2u ? lanec_rand(&r) % 02000u : 010000u + lanec_rand(&r) % 070000u);
+    lanec_enter(s, io, 040u, entry == 0u ? x : (uint16_t)(x + (entry == 1u ? 010u : 014u)));
+    if (entry == 0u) {
+        w[LANEC_Q] = r0;
+        if (v % 16u == 13u) w[LANEC_Q] = (uint16_t)(w[LANEC_Q] ^ 040000u);   /* Q overflowed */
+        w[LANEC_LM_MPAC] = v % 4u == 3u ? (uint16_t)(lanec_rand(&r) & 077777u) : mpac[(v / 4u) % 8u];
+        range(m, 040u, x, (uint16_t)(x + 013u));
+    } else {
+        w[LANEC_LM_DSPWDRET] = (uint16_t)(r0 & 077777u);
+        range(m, 040u, w[LANEC_Z], entry == 1u ? (uint16_t)(x + 012u) : w[LANEC_Z]);
+        range(m, LANEC_ANY_BANK, LANEC_LM_DSPWDRET, LANEC_LM_DSPWDRET);   /* TC DSPWDRET runs it */
+    }
+}
+
 static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *m)
 {
     uint16_t *w = s->words, entry = (uint16_t)(n % ENTRIES), x, y, channel;
     uint32_t r = n * 747796405u + 1u, v = n / ENTRIES / 2u;
+    if (n >= SIGNS) { make_sign(n - SIGNS, s, io, m); return; }
     if (n >= FIRST) { make_jump(n - FIRST, s, io, m); return; }
     lanec_fill(s, io, n);
     m->mission = (n / ENTRIES) & 1u ? LANEC_CM : LANEC_LM;
@@ -146,4 +174,4 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     }
 }
 
-const lanec_suite lanec_suite_pin_gaps = { "pin-gaps", FIRST + JUMPS * 2u * 128u, make, lanec_pin_gaps_dispatch };
+const lanec_suite lanec_suite_pin_gaps = { "pin-gaps", SIGNS + 3u * 2u * 128u, make, lanec_pin_gaps_dispatch };
