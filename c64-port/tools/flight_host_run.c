@@ -246,6 +246,12 @@ static int core_start(const char *rope){static agc_t c;int rc;unsigned i,n;
 /* The word at fixed address z under FB and the superbank. */
 /* Reference side only: the rope word yaAGC holds (KEYRUPT1's BRUPT). */
 static agc_word rope_word(agc_word z,agc_word fb,agc_word sb){uint16_t p=agc_fixed_physical(z,fb,sb);return p==AGC_TRANSFER_NONE?0u:(agc_word)loaded.Fixed[p/1024u][p%1024u];}
+/* The TC trap (docs/FLIGHT-RESTART.md): Z at a TC to itself, V69's VERB69
+ * (43,2037) in both ropes. The AGC's trap restarts it after a few ms of
+ * nothing but TCs; yaAGC's own trap is off here (InhibitAlarms), so both
+ * sides take the GOJAM where Z first reaches the word outside an interrupt,
+ * as the C64's resident does after that one step (rk_gojam). */
+static int tc_trap(const agc_word *w,agc_word sb){agc_word z=(agc_word)(w[5]&07777u);return z>=02000u&&rope_word(z,w[4],sb)==z;}
 static agc_routine find(const agc_routine_table *t,uint16_t key){uint16_t lo=0,hi=t->count,mid;
  while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(t->entries[mid].physical==key)return t->entries[mid].call;
   if(t->entries[mid].physical<key)lo=(uint16_t)(mid+1u);else hi=mid;}
@@ -876,7 +882,7 @@ static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16
  load(s,io,hw);
  for(i=1;i<=NUM_INTERRUPT_TYPES;++i)m.InterruptRequests[i]=(int8_t)((*pending&RK_RUPT_BIT(i))!=0u);
  for(n=0;n<limit;++n){
-  if(n&&quiet()){const agc_word *v=view();if(holder(v,(agc_word)m.OutputChannel7,&call)||idle(v,(agc_word)m.OutputChannel7,m.InIsr))break;}
+  if(n&&quiet()){const agc_word *v=view();if(holder(v,(agc_word)m.OutputChannel7,&call)||idle(v,(agc_word)m.OutputChannel7,m.InIsr)||(!m.InIsr&&tc_trap(v,(agc_word)m.OutputChannel7)))break;}
   if(scaled){uint64_t c=m.CycleCounter;unsigned k;if(agc_engine(&m))return -1;spend((unsigned long)(m.CycleCounter-c));
    if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));if(j%3ul==2ul)steal();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
    continue;}
@@ -1156,6 +1162,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     else if((k=uplink_due(now(w),&uref))>=0){*cell(045)=(int16_t)k;
      if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*RK_RUPT_UP);m.InIsr=1;}
      else m.InterruptRequests[RK_RUPT_UP]=1;}}}
+  if(!m.InIsr&&!m.ExtraCode&&!m.SubstituteInstruction&&tc_trap(view(),(agc_word)m.OutputChannel7)){gojam_yaagc(&m);continue;}
   /* FLIGHT_NATIVE_LATENCY: the reference takes interrupts only where some
    * table holds the point, as the native side does (a diagnostic). */
   if(latency&&requests()){agc_routine call;int8_t held[1+NUM_INTERRUPT_TYPES];
@@ -1194,6 +1201,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   p.basic=basic;p.basic_count=nb;p.interpretive=interp;p.interpretive_count=ni;}
  for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;
   steal_cs=now(s.words);
+  if(!hw.in_interrupt&&!substitute&&tc_trap(s.words,io.superbank)){printf("TC trap at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[2]);gojam_native(s.words,&io,&hw,&pending);}
   if(!pending&&(scaled||(hw.channel4&020u))&&((at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt))||busy_due(scaled,s.words,hw.in_interrupt))){int k;busy_last=now(s.words);
    while(next<=refs&&now(s.words)>=next){if(scaled){++next;continue;}++samples;
     if((j=differs(s.words,ref[next]))!=0u&&++diffs<=(getenv("FLIGHT_SHOW")?strtoul(getenv("FLIGHT_SHOW"),0,0):20ul)){

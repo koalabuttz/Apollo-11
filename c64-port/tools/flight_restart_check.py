@@ -71,8 +71,16 @@ RESTARTS = [
     ('cm-p52-restart', 'cm', 20000, fhd.P52_KEYS, fhd.P52, 17100, '1,1,2', True),
     ('lm-p00-restart', 'lm', 4000, '', {}, 2500, None, False),
     ('cm-p00-restart', 'cm', 4000, '', {}, 2500, None, False),
+    ('lm-v69-restart', 'lm', 4000, '', {}, 2350, None, False),
+    ('cm-v69-restart', 'cm', 4000, '', {}, 2350, None, False),
 ] + [(name, m, cs, keys, {k: v for k, v in env.items() if k != 'FLIGHT_GOJAM'}, int(env['FLIGHT_GOJAM']), '1,1,2', True)
      for name, m, cs, keys, env in fhd.RESTART_FLIGHT]
+# The TC trap restarts (V69_FLIGHT in tools/flight_host_differential.py):
+# P00 idle with V69E keyed at the GOJAM centisecond in place of FLIGHT_GOJAM.
+# VERB69, a TC to itself, is where the GOJAM comes (tc_trap in
+# tools/flight_host_run.c, on both sides), so RSBBQ+1 holds VERB69 (02037).
+TC_TRAP = {'lm-v69-restart', 'cm-v69-restart'}
+VERB69 = 0o2037
 # Unscaled, the samples a restart may add over its run without one. LM P00:
 # after the restart STARTSB1 has DAPIDLER call 1/ACCS, and natively AOSTASK's
 # routine from GETAOSUV+6 (20,3250) runs about 1.2 cs as one call, so the
@@ -80,7 +88,10 @@ RESTARTS = [
 # (the routine matches yaAGC run from its own start). From then on T4RUPT
 # runs a centisecond late natively, and one sample in each 120 ms T4RUPT
 # cycle differs in DSRUPTSW (with the display words at the first ones).
-SAMPLE_SLACK = {'lm-p00-restart': 128}
+# lm-v69-restart: the same class; V69's display (VERB 69 lit) leaves more
+# DSPTAB entries for DSPOUT to rewrite after the restart, so the display
+# words (DSPCNT, NOUT, DSPTAB) differ at 15 more samples (143 on ae7872d9).
+SAMPLE_SLACK = {'lm-p00-restart': 128, 'lm-v69-restart': 160}
 # The files whose points a restart runs (FRESH_START_AND_RESTART, RESTARTS,
 # PHASE_TABLE_MAINTENANCE): none may be bridged.
 RESTART_FILES = ('FRESH_START_AND_RESTART.agc', 'RESTARTS_ROUTINE.agc', 'PHASE_TABLE_MAINTENANCE.agc')
@@ -148,7 +159,7 @@ def parse(text, m, words, lanes):
     t = re.search(r'AGC time (\d+) cs', text)
     return dict(routines=int(n[1]) if n else None, bridged=int(n[3]) if n else None,
                 samples=int(s[1]) if s else 0, equal=int(s[2]) if s else 0,
-                agc_cs=int(t[1]) if t else None, gojams=re.findall(r'^GOJAM at (\d+) cs \(Q (\d+)\)', text, re.M),
+                agc_cs=int(t[1]) if t else None, gojams=re.findall(r'^(?:GOJAM|TC trap) at (\d+) cs \(Q (\d+)\)', text, re.M),
                 mismatches=sorted(set(re.findall(r'^  (?:basic |interp) (\d\d,\d{4}) (\S+): \d+ times', text, re.M))),
                 holes=[flight_holes.describe(h, words, lanes, m) for h in flight_holes.HOLE.finditer(text)])
 
@@ -156,20 +167,23 @@ def parse(text, m, words, lanes):
 def host(exe, scenario, words, lanes):
     name, m, cs, keys, env, at, sched, _ = scenario
     env = {**env, **({'FLIGHT_SCALED': sched} if sched else {})}
-    jam = {**env, 'FLIGHT_GOJAM': str(at)}
+    trap = name in TC_TRAP
+    # A TC trap restart: V69E keyed at the centisecond, no FLIGHT_GOJAM.
+    jam, jam_keys = (env, keys + f'@{at}V69E') if trap else ({**env, 'FLIGHT_GOJAM': str(at)}, keys)
     base = parse(run(exe[m], m, cs, keys, env, f'{name}-base').stdout, m, words[m], lanes)
-    r = run(exe[m], m, cs, keys, jam, name)
+    r = run(exe[m], m, cs, jam_keys, jam, name)
     got = parse(r.stdout, m, words[m], lanes)
     sym = symbols(m)
     # At the point the GOJAM restarts at, even with an interrupt pending
     # there (the GOJAM clears it), so the C64's GOJAM module starts where
-    # the host's did.
+    # the host's did. For a TC trap, the state where V69 is keyed (the run
+    # without it is the same up to there).
     pre_path = snapshot(exe[m], m, at, keys, {**env, 'FLIGHT_SNAPSHOT_PENDING': '1'}, f'{name}-pre')
     pre = snap_words(pre_path)
-    post = snapshot(exe[m], m, at, keys, jam, f'{name}-gojam')
+    post = None if trap else snapshot(exe[m], m, at, keys, jam, f'{name}-gojam')
     # (The end states: a busy end, such as P00 just after V37E00E, may
     # have no clean point in its first centisecond.)
-    end = snap_words(snapshot(exe[m], m, cs, keys, jam, f'{name}-end', 200))
+    end = snap_words(snapshot(exe[m], m, cs, jam_keys, jam, f'{name}-end', 200))
     end_base = snap_words(snapshot(exe[m], m, cs, keys, env, f'{name}-base-end', 200))
     failreg = [sym['FAILREG'] + k for k in range(3)]
     phases = {f'PHASE{g}': sym[f'PHASE{g}'] for g in range(1, 7)}
@@ -181,13 +195,13 @@ def host(exe, scenario, words, lanes):
                new_holes=[h for h in got['holes'] if (h['point'], h['kind']) not in {(b['point'], b['kind']) for b in base['holes']}],
                restart_holes=[h for h in got['holes'] if h['file'] in RESTART_FILES],
                redoctr=[pre[sym['REDOCTR']], end[sym['REDOCTR']]],
-               rsbbq=[f'{pre[5]:05o}', f"{end[sym['RSBBQ'] + 1]:05o}"],
+               rsbbq=[f'{VERB69 if trap else pre[5]:05o}', f"{end[sym['RSBBQ'] + 1]:05o}"],
                modreg=[f"{end_base[sym['MODREG']]:05o}", f"{end[sym['MODREG']]:05o}"],
                failreg=[[f'{end_base[a]:05o}' for a in failreg], [f'{end[a]:05o}' for a in failreg]],
                active_phases_before={k: f'{pre[a]:05o}' for k, a in phases.items() if pre[a] not in (0, 0o77777)},
                active_phases_end={k: f'{end[a]:05o}' for k, a in phases.items() if end[a] not in (0, 0o77777)},
                end_words_differing_from_base=sum(1 for i in range(0o20, 2048) if not 0o24 <= i <= 0o31 and end[i] != end_base[i]),
-               gojam_snapshot=str(post.relative_to(ROOT)), pre_snapshot=str(pre_path.relative_to(ROOT)))
+               gojam_snapshot=post and str(post.relative_to(ROOT)), pre_snapshot=str(pre_path.relative_to(ROOT)))
     bad = []
     if r.returncode or len(got['gojams']) != 1:
         bad.append(f"exit {r.returncode}, {len(got['gojams'])} GOJAMs")

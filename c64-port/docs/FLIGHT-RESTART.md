@@ -40,6 +40,45 @@ run on its own clock, and `InhibitAlarms` (which the harness needs) turns
 them off. A TC to 04000 (a poke of Z) would skip the hardware part. So both
 sides apply the GOJAM at the same clean point.
 
+## The TC trap (V69)
+
+V69 (VERB69, 43,2037 in both ropes) is `TC VERB69`, a TC to itself, and
+the one TC to itself in either rope. On the AGC the hardware TC trap sees
+nothing but TCs for a few ms and restarts the computer. yaAGC models that
+trap (`agc_engine.c` TCTrap, channel 77 bit 4), but `InhibitAlarms` turns
+it off here, as for every alarm above. So `tools/flight_host_run.c`
+(`tc_trap`) takes the GOJAM on both sides where Z first reaches the word
+outside an interrupt:
+
+- In the free-running yaAGC reference, before the instruction there
+  (`gojam_yaagc`).
+- At the top of a native step (`gojam_native`). The bridge stops there
+  too, so a bridged path into VERB69 comes back to the native side first.
+
+The C64 resident takes it at the same point, before the step that would
+spin there (`rk_tc_trap` in `platform/c64/resident_flight.h`, called by
+`resident_flight_main.c` and the VICE harness `dap_pass_check.c`; it then
+runs `rk_gojam`). The GOJAM is the same change as `FLIGHT_GOJAM`'s, with Q
+and RSBBQ+1 holding VERB69. The AGC's trap would come a few ms later,
+after more TCs, which change only Q. The first TC's Q is the one GOJAM
+copies from Z either way.
+
+`lm-v69` and `cm-v69` (`V69_FLIGHT` in `tools/flight_host_differential.py`)
+key V69E at 23.5 s in P00. The restart runs GOPROG with no group active,
+back to P00:
+
+- Host: `lm-v69-restart` and `cm-v69-restart` in `make flight-restart-check`
+  (table below).
+- C64: `tools/flight_scenario_vice.py --scenario cm-v69 --snap-cs 2300 --cs 400
+  --replay --replay-every 50` matches the host at all 8 checkpoints, through
+  the restart, to the end of the window. `lm-v69` matches at 50-200 cs,
+  across the restart. At 250 cs it differs only on TIME4 (host 37777, C64
+  37776), the clock class of the LM restart below (T4RUPT a centisecond
+  late).
+
+The x86 program has no TC trap yet, so `V69_FLIGHT`, like the restart
+rows, is not in its scenario list.
+
 ## Scenarios (`make flight-restart-check`)
 
 `tools/flight_restart_check.py` runs each scenario twice, once without the
@@ -67,6 +106,8 @@ Results on base b3a56a5a with this change. `lm-p63-descent-restart` is also regi
 | `cm-entry-restart` (cm-entry, scaled x1) | 250.69 s, P64 | 1 (phase 3), 5 (phase 3), 6 (phase 11) | 1,431,996 (1, 0 new) | P67 at the end (320 s), as without the restart. |
 | `lm-p00-restart` (unscaled) | 25 s | none | 256,955 (0) | 3,872 of 4,000 samples equal (4,000 without the restart). |
 | `cm-p00-restart` (unscaled) | 25 s | none | 259,971 (0) | 3,998 of 4,000 samples equal, the same as without the restart. |
+| `lm-v69-restart` (unscaled, V69E at 23.5 s) | TC trap at 25 s, Z at VERB69 | none | 256,756 (0) | P00. 3,857 of 4,000 samples equal: the `lm-p00-restart` class, plus 15 samples of display words for V69's lit verb (slack 160). |
+| `cm-v69-restart` (unscaled, V69E at 23.5 s) | TC trap at 25 s, Z at VERB69 | none | 259,793 (0) | P00. 3,998 of 4,000 samples equal, the same as without the restart. |
 
 The 8 LM and 1 CM unmatched points are the same ones the scenarios have
 without the restart. They are the compiled interpretive Q sign extension
@@ -257,10 +298,12 @@ restart.
   --cs 1050`) runs to its end there with no stop (20.7x real time).
 - **The TC trap is the C64's one GOJAM source.** The resident's main
   (`platform/c64/resident_flight_main.c`) follows the entry contract
-  (`rk_gojam`, `platform/c64/resident_flight.c`) after a step that ends
-  where the TC trap would fire: a TC to itself, a step that leaves Z and FB
-  as they were with Q = Z + 1 (V69's `TC VERB69`). A refusal
-  (`EXEC_INVALID_ACTION`) stops the run instead (#607). Compiled routines
+  (`rk_gojam`, `platform/c64/resident_flight.c`) where the TC trap would
+  fire: Z at VERB69 outside an interrupt, before the step (`rk_tc_trap`; see
+  The TC trap (V69) above). It used to look after a step that left Z and FB
+  as they were with Q = Z + 1, but no store holds a routine at VERB69, so
+  that step never ran. The check before the step is 41 bytes smaller. A
+  refusal (`EXEC_INVALID_ACTION`) stops the run instead (#607). Compiled routines
   refuse for points they do not cover, and that must stop, not restart.
   The one compiled TCF to itself (`tools/basic_compile.py` TCF +0:
   Comanche055 TVCEXECUTIVE 16,2763, marked NOT USED) refuses from its
