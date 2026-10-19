@@ -95,13 +95,13 @@ int main(void)
         {
             cm_native_io io = { 0 };
             io.superbank = sb; io.interrupt_enabled = ie;
-            t0 = clock(); st = cm_interp_core(0, s, &io); t1 = clock();
+            cm_interp_core_mct = 0; t0 = clock(); st = cm_interp_core(0, s, &io); t1 = clock();
         }
 #else
         {
             p66_bias_io io = { 0 };
             io.superbank = sb; io.interrupt_enabled = ie;
-            t0 = clock(); st = lm_interp_core(0, s, &io); t1 = clock();
+            lm_interp_core_mct = 0; t0 = clock(); st = lm_interp_core(0, s, &io); t1 = clock();
         }
 #endif
         put_num(z, 8); putchar(' '); put_num(word, 8); putchar(' ');

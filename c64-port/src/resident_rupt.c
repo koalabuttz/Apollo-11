@@ -50,6 +50,11 @@ static __attribute__((noinline)) void radar(agc_hardware *hw, uint16_t *pending,
     hw->radar_gate = n;
 }
 
+#if RK_DOWNRUPT
+/* The DOWNRUPT request below sets its bit in pending's high byte. */
+typedef char rk_downrupt_in_high_byte[RK_RUPT_DOWN >= 8 && RK_RUPT_DOWN < 16 ? 1 : -1];
+#endif
+
 void rk_timer_phase(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending, uint8_t phase)
 {
     /* Each step's counter and the request its overflow raises. */
@@ -68,6 +73,13 @@ void rk_timer_phase(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending
     n = phase == RK_PHASE_T5 ? 16u : 8u;
     v = (agc_word)(hw->channel4 + n);
     if (v & 040000u) hw->channel3 = (agc_word)((hw->channel3 + 1u) & 037777u);
+#if RK_DOWNRUPT
+    /* DOWNRUPT whenever SCALER1 passes a multiple of 64 counts (20 ms;
+     * tools/flight_downlink.h). A step is at most 16 counts, so a pass is
+     * exactly a change in bit 6, a byte test. */
+    if ((uint8_t)((uint8_t)v ^ (uint8_t)hw->channel4) & 0100u)
+        ((uint8_t *)pending)[1] |= (uint8_t)(RK_RUPT_BIT(RK_RUPT_DOWN) >> 8);
+#endif
     hw->channel4 = (agc_word)(v & 037777u);
     /* yaAGC CounterDINC on every odd SCALER1 count, half the counts: toward
      * zero by one through the one's complement adder, so +1 and -1 both

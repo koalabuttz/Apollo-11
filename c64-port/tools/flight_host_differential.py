@@ -577,6 +577,14 @@ CM_P41 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '0777
           'FLIGHT_POKE': '2100:3246=00005,2100:3250=57232,2100:3252=00004'}
 CM_P41_KEYS = ('@4500V37E30E@5500V25E+00000E+00008E+00000E@6800V33E@7200V25E+00050E+00000E+00000E'
                '@8500V33E@9500V33E@10500V33E@11500V37E41E@12500V33E@13500E@50000V33E@51000V37E00E')
+# cm-v48-dap: the DAP data load (V48, R03) and V46 (the Comanche055
+# coverage map). cm-p40's load (DAPDATR1 21102: CSM+LM, quads AC and
+# BD, narrow deadband, 0.5 degree/s), before P30; V48: V04N46 shows
+# 21102 01111, the crew loads R1 21112 (the wide 5 degree deadband) and
+# proceeds; proceed on V06N47 (CSM 63,493 and LM 33,290 lb) and V06N48
+# (trims 0); S41.2 sets ADB 455 (wide) and RATEINDX 4 (0.5 degree/s);
+# V46 (STABLISH) establishes the RCS DAP with the new data.
+CM_V48_KEYS = '@2500V48E@3500V21E21112E@4500V33E@5500V33E@6500V33E@7500V46E'
 # Crew verbs the other CM scenarios do not key (the Comanche055 coverage
 # map, /mnt/project-files/acceptance/comanche055-coverage-map.md).
 # cm-p20-crew-verbs: cm-p20 to 200 s, then V90 (R36, out-of-plane): V04N12
@@ -700,6 +708,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p21', 'cm', 25000, P21_KEYS, P52),
           ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
           ('cm-p41', 'cm', 53000, CM_P41_KEYS, CM_P41),
+          ('cm-v48-dap', 'cm', 12000, CM_V48_KEYS, P40),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),

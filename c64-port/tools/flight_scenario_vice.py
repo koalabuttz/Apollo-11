@@ -47,7 +47,7 @@ import flight_host_differential as fhd  # noqa: E402
 import reu_layout  # noqa: E402
 
 
-def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1):
+def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
     """replay: the window's centiseconds; the host run then goes on through
     the window and writes its inputs (-snap.h.replay) and its end state
     (-snap.h.end, and every `every` cs before), tools/flight_host_run.c
@@ -66,6 +66,7 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1):
     # over 100 cs), then stops; running to cs + 1000 leaves room for that.
     r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000 * chain + replay * chain), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}',
+                            **({'FLIGHT_DOWNRUPT': '1'} if downrupt else {}),
                             **({'FLIGHT_REPLAY': f'{replay},0,{every},{chain}'}
                                if replay else {})},
                        capture_output=True, text=True)
@@ -385,6 +386,9 @@ def main():
                    help='with --replay, run that many --cs windows back to back on the host, then each on the C64 from '
                    "the host's state where the one before ended, and fail unless the C64 ends each window in the "
                    "host's state and that state is the next window's start (the seam)")
+    p.add_argument('--downrupt', action='store_true',
+                   help='DOWNRUPT every 20 ms on both sides (host FLIGHT_DOWNRUPT, C64 RK_DOWNRUPT, as on the disk): '
+                        'the window then also compares the downlink, channels 34 and 35 at each checkpoint')
     p.add_argument('--strict-start', action='store_true',
                    help=f'fail when the snapshot slides more than {SLIDE_CS} cs past --snap-cs')
     p.add_argument('--watch', default='', help='up to five erasable words (octal addresses, comma separated) '
@@ -425,7 +429,7 @@ def main():
     if a.replay and a.keys:
         sys.exit('--replay replays the keys itself; leave out --keys')
     every = a.replay_every if 0 < a.replay_every < a.cs else a.cs
-    header = snapshot(exe, a.scenario, a.snap_cs, tag, a.cs if a.replay else 0, every, a.chain)
+    header = snapshot(exe, a.scenario, a.snap_cs, tag, a.cs if a.replay else 0, every, a.chain, a.downrupt)
     # The snapshot waits for a point with no interrupt pending, so inside a
     # long interpretive job it can start well after --snap-cs (CM 9000 ->
     # 9952), and the window then covers other code than asked for.
@@ -509,7 +513,8 @@ def main():
             print(f'{a.scenario}: {len(pressed)} keys pressed on the C64 at '
                   + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
         prg = dp.link(a.cc, tag, header, cs + 500 if a.replay else cs, scratch, os.environ.get('FSV_STEPS') == '1',
-                      m, a.profile, keys, [w for w in a.watch.split(',') if w][:5], defines)
+                      m, a.profile, keys, [w for w in a.watch.split(',') if w][:5],
+                      defines + (['-DRK_DOWNRUPT=1'] if a.downrupt else []))
         if a.replay:
             # rk_device's address comes from the link.
             patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending'))), (table_at, table)]
