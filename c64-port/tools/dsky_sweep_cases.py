@@ -81,6 +81,6 @@ if __name__ == '__main__':
                 failed += 1
                 print(f'FAIL: {m} {keys}: ' + ('; '.join(bad) or f'exit {rc}'))
     n = len(cases())
-    print(f'{"FAIL" if failed else "PASS"}: DSKY sweep on the host: {n - failed} of {n} runs with no refused '
-          f'Pinball point')
+    print(f'{"FAIL" if failed else "PASS"}: DSKY sweep on the host: {n - failed} of {n} runs with no refused or '
+          f'unregistered Pinball point')
     sys.exit(1 if failed else 0)
