@@ -934,6 +934,15 @@ def build(cc, m, engine):
     return exe
 
 
+# The interpretive words' charge is a fitted per-order table
+# (tools/interp_word_mct.py, include/interp_word_mct_table.h), the same on
+# the host and the C64. Each scaled run reports it against yaAGC's own MCT
+# over the same spans (flight_host_run.c "interpreter charge", issue #765);
+# a run with at least CHARGE_MIN_ROUTINES of them fails beyond CHARGE_BOUND
+# percent. At the 10-19 table the runs are 0.2-7.5% over, CM P11 17.8%.
+CHARGE_BOUND = 20.0
+CHARGE_MIN_ROUTINES = 1000
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
@@ -949,6 +958,7 @@ def main():
     lanes = flight_holes.lanes()
     summary, failed = [], 0
     commit = flight_holes.source_commit()
+    charge_over = []
     for m, cs, keys in SCENARIOS:
         name, env = f'{m}-{keys or "p00-idle"}', {}
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
@@ -993,18 +1003,27 @@ def main():
         n = re.search(r'(\d+) native routines \((\d+) yaAGC instructions of time\), (\d+) bridged', text)
         misses = re.findall(r'^  (?:basic |interp) (\d\d,\d{4}) (\S+): (\d+) times; (.*)$', text, re.M)
         holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
+        c = re.search(r'^interpreter charge: fitted (\d+) MCT, yaAGC (\d+) MCT \(([-+][0-9.]+)%\) over (\d+) routines; '
+                      r'mean \|error\| ([0-9.]+) MCT', text, re.M)
+        charge = dict(fitted=int(c[1]), yaagc=int(c[2]), percent=float(c[3]), routines=int(c[4]),
+                      mean_abs_error=float(c[5])) if c else None
+        if charge and charge['routines'] >= CHARGE_MIN_ROUTINES and abs(charge['percent']) > CHARGE_BOUND:
+            charge_over.append(name)
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, exit=r.returncode,
                    commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
                    periods_dropped=int(t[3]) if t else None, agc_centiseconds=int(t[4]) if t else None,
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
-                   unregistered=holes)
+                   unregistered=holes, interpretive_charge=charge)
         summary.append(row)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "
-              f"interrupts" + ('' if not r.returncode else ' FAILED'))
+              f"interrupts" + (f"; interpretive charge {charge['percent']:+.1f}% of yaAGC's" if charge else '')
+              + ('' if not r.returncode else ' FAILED'))
     (EVIDENCE / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
-    return 1 if failed else 0
+    if charge_over:
+        print(f"FAIL: the fitted interpretive charge is more than {CHARGE_BOUND}% from yaAGC's MCT in: {', '.join(charge_over)}")
+    return 1 if failed or charge_over else 0
 
 
 if __name__ == '__main__':
