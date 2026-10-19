@@ -132,7 +132,7 @@ class Ram(unittest.TestCase):
         self.edit('overlay_v2_slot_job.ld', 'LENGTH = 0x4000', 'LENGTH = 0x4400')
         bad = self.failed()
         self.assertIn('class 0 job slot: linker script matches include/overlay_v2.h', bad)
-        self.assertIn('slots do not overlap', bad)
+        self.assertIn('no two areas overlap', bad)
 
     def test_slot_in_io_area(self):
         self.edit('overlay_v2_slot_pinned.ld', 'ORIGIN = 0xc000', 'ORIGIN = 0xd800')
@@ -141,6 +141,18 @@ class Ram(unittest.TestCase):
     def test_slot_over_vectors(self):
         self.edit('overlay_v2_slot_task.ld', 'LENGTH = 0x1ffa', 'LENGTH = 0x2000')
         self.assertIn('class 1 task slot: below the vectors and RAM end', self.failed())
+
+    def test_pinned_slot_on_the_resident(self):
+        self.edit('overlay_v2_slot_pinned.ld', 'ORIGIN = 0xc000', 'ORIGIN = 0x6000')
+        self.assertIn('no two areas overlap', self.failed())
+
+    def test_resident_over_screen_or_services(self):
+        self.edit(ma.RESIDENT_LD, 'ORIGIN = 0x0801, LENGTH = 0x66ff', 'ORIGIN = 0x0601, LENGTH = 0x68ff')
+        self.assertIn('resident ram in $0800-$6eff', self.failed())
+        self.edit(ma.RESIDENT_LD, 'ORIGIN = 0x0601, LENGTH = 0x68ff', 'ORIGIN = 0x0801, LENGTH = 0x6800')
+        bad = self.failed()
+        self.assertIn('resident ram in $0800-$6eff', bad)
+        self.assertIn('no two areas overlap', bad)
 
     def test_header_and_script_agree(self):
         text = self.header.read_text().replace('#define APOLLO_OV2_PINNED_BYTES 0x0c00u',
@@ -180,9 +192,12 @@ class Doc(unittest.TestCase):
         self.assertEqual(re.findall(r'commit `([0-9a-f]+)', text), ['abc123'])
         self.assertNotIn('built at', text)
         self.assertNotIn('48 DMAs outside and fails', text.split('## Control')[0])
+        self.assertEqual(text.count('Result: **'), 1, 'the bundle reads exactly one Result')
 
     def test_control_or_short_run_fails_the_doc(self):
-        self.assertFalse(self.doc(control_ok=False)[1])
+        text, ok = self.doc(control_ok=False)
+        self.assertFalse(ok)
+        self.assertEqual(text.count('Result: **'), 1)
         text, ok = self.doc(run_ok=False)
         self.assertFalse(ok)
         self.assertIn('FAIL: covered 3 of 200 cs', text)

@@ -56,6 +56,13 @@ IO = (0xD000, 0xE000)        # VIC, SID, CIA, colour RAM: only class 2 sits unde
 VECTORS = 0xFFFA             # NMI, RESET, IRQ vectors to $FFFF
 RAM_END = 0x10000
 RESIDENT_LD = 'resident_flight.ld'
+# Where each resident region must sit (resident_flight.ld's header, docs/
+# OVERLAY_ABI_V2.md): (lowest start, highest end). The DSKY runs from
+# $0200-$03FF and keeps its data in the screen's last rows; the screen
+# itself ($0400-$07E7) and the sprite pointers ($07F8) stay clear.
+RESIDENT_AT = {'low': (0x0200, 0x0400), 'screen_end': (0x06A8, 0x07F8), 'ram': (0x0800, 0x6F00),
+               'services': (0x6F00, 0x7000), 'image': (0x7000, 0x8000)}
+SERVICES = 0x6F00            # the service jump table every module calls (OVERLAY_ABI_V2.md)
 # A control run: the program's first default window, short, with the store
 # left out of the layout. Every run reads modules from the store, so the
 # trace must log DMAs outside; one that logs none was never watching.
@@ -162,13 +169,19 @@ def ram_layout(manifest, platform=PLATFORM, header=OV2):
     for mod in manifest['modules']:
         largest[mod['slot']] = max(largest.get(mod['slot'], 0), mod['bytes'])
     res = ld_memory(platform / RESIDENT_LD)
-    for name in ('ram', 'services', 'image'):
-        if name in res:
-            lo, n = res[name]
-            rows.append((f'resident {name}', lo, lo + n, None))
+    for name, (floor, ceil) in RESIDENT_AT.items():
+        if name not in res:
+            checks.append((f'resident {name} declared', False, f'no {name} region in {RESIDENT_LD}'))
+            continue
+        lo, n = res[name]
+        rows.append((f'resident {name}', lo, lo + n, None))
+        checks.append((f'resident {name} in ${floor:04x}-${ceil - 1:04x}', floor <= lo and lo + n <= ceil,
+                       f'${lo:04x}-${lo + n - 1:04x}'))
+    if 'services' in res:
+        checks.append(('service table at $6F00', res['services'][0] == SERVICES, f"${res['services'][0]:04x}"))
     resident_end = max((r[2] for r in rows), default=0)
     checks.append(('resident ends below the job slot', bool(rows) and resident_end <= ov2_define('JOB_ADDRESS', header),
-                   f'resident $0801-${resident_end - 1:04x} ({RESIDENT_LD})'))
+                   f'resident ends ${resident_end - 1:04x} ({RESIDENT_LD})'))
     for cls in sorted(set(largest) | {0, 1, 2, 3}):
         ld, key = SLOTS.get(cls, (None, None))
         if ld is None:
@@ -195,17 +208,18 @@ def ram_layout(manifest, platform=PLATFORM, header=OV2):
                        f'${lo:04x}-${hi - 1:04x}'))
         checks.append((f'{what}: below the vectors and RAM end', hi <= VECTORS and hi <= RAM_END,
                        f'ends ${hi - 1:04x}, vectors at ${VECTORS:04x}'))
-    # Slots may not overlap, except class 4 replacing class 1 (the same
-    # region, one module kept for the run) and the boot code in the job slot.
-    spans = [r for r in rows if r[0].startswith('class')]
+    # Nothing may overlap, resident or slot, except class 4 replacing class 1
+    # (the same region, one module kept for the run). The resident's boot-only
+    # code in the job slot is not a row: the first module load replaces it.
+    spans = list(rows)
     for i, a in enumerate(spans):
         for b in spans[i + 1:]:
             same_task = {a[0][:7], b[0][:7]} == {'class 1', 'class 4'}
             if a[1] < b[2] and b[1] < a[2] and not same_task:
-                checks.append(('slots do not overlap', False, f'{a[0]} ${a[1]:04x}-${a[2] - 1:04x} and '
+                checks.append(('no two areas overlap', False, f'{a[0]} ${a[1]:04x}-${a[2] - 1:04x} and '
                                f'{b[0]} ${b[1]:04x}-${b[2] - 1:04x}'))
-    if not any(c[0] == 'slots do not overlap' for c in checks):
-        checks.append(('slots do not overlap', True, f'{len(spans)} slots (class 1 and 4 share the task region)'))
+    if not any(c[0] == 'no two areas overlap' for c in checks):
+        checks.append(('no two areas overlap', True, f'{len(spans)} areas (class 1 and 4 share the task region)'))
     return sorted(rows, key=lambda r: r[1]), checks
 
 
@@ -396,10 +410,10 @@ def write_doc(m, checks, manifest, regions, sizes, rows, commit, control=None):
               'from the store, so this run must FAIL with DMAs outside; a trace that logs nothing fails here.', '']
     if control:
         lines.append(f"Control: {control['scenario']} from {control['snap_cs']} cs, ran {control['agc_cs']} cs: "
-                     f"{control['detail']}. Result: **{'pass (it failed as it must)' if control['ok'] else 'FAIL'}**. "
+                     f"{control['detail']}: {'it failed as it must (check passes)' if control['ok'] else 'the check FAILS'}. "
                      f"`{control['evidence']}` (sha256 `{control['sha256'][:16]}...`)")
     else:
-        lines.append('Control: not run. Result: **FAIL**.')
+        lines.append('Control: not run; the check FAILS.')
     lines += ['',
               '## Reproduce', '', '```sh', 'make flight-store', 'python3 tools/resident_flight_build.py',
               f'python3 tools/memory_acceptance.py {m}   # runs its default windows; or --run RESULT.json ...',
