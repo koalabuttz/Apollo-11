@@ -400,7 +400,8 @@ CM_CDH_CSM_KEYS = CM_CDH_KEYS.replace('V37E73E', 'V37E33E')
 # (208.3), N58, N81, N59; V37E35E (P35): N81, N59, N45; V37E74E (P74,
 # the LM active): TTPI 0:12:00 with ELEV 26.6, so P74 solves the TIG
 # (0:06:26.03, N81 21.9 ft/s, as the LM's own P34); V37E75E (P75): N81,
-# N59, N45; V37E76E (P76): 10 ft/s on the LM's state; V56.
+# N59, N45; V37E76E (P76): 10 ft/s on the LM's state; V56. (V83's R31
+# display loop, 31,2000-2007, is still refused by cm_r31_basic: Lane E's.)
 CM_TPM_KEYS = CM_P20_KEYS + ('@21000V83E@23000V34E@23500V85E@25000V34E@26000V37E34E@26700V25E+00000E+00006E+03100E'
                              '@28000V33E@29000V33E@32000V33E@36000V33E@38000V33E@40000V33E@41000V33E@42000V37E35E'
                              '@43000V33E@44000V33E@45000V33E@46000V33E@47000V33E@48000V33E@50000V37E74E'
@@ -411,7 +412,8 @@ CM_TPM_KEYS = CM_P20_KEYS + ('@21000V83E@23000V34E@23500V85E@25000V34E@26000V37E
 # cm-stable-orbit: cm-p20, then V37E38E (P38, the CSM active) at 210 s:
 # TIG 0:12:00 on V06N33, CENTANG 130 (V23 on N55: the CMC keeps 0),
 # option 1, DR 0, PRO on N34 and N45; the Lambert solution after 160 s
-# (N58, N81 20.3 ft/s back), then V37E39E (P39): N81. cm-stable-orbit-lm:
+# (N58, N81 20.3 ft/s back), then V37E39E (P39): N81 (P39's 04,3204 is
+# native from #711). cm-stable-orbit-lm:
 # P78 and P79, the LM active. cm-tpi-search: P17 (the CSM active) and P77
 # (the LM), each TTPI 0:10:00: N72 (phase angle, height difference), N58,
 # N55.
