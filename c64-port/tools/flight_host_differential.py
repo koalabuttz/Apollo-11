@@ -800,7 +800,9 @@ RESTART_POINTS = [  # (name, scenario, GOJAM cs, end cs, phase)
     ('cm-p40-burn-restart', 'cm-p40', 50000, 55000, 'P40 SPS burn, TVC DAP running, mid-burn'),
     ('cm-entry-restart', 'cm-entry', 25000, 32000, 'P64 entry, groups 1, 5 and 6 active'),
     ('cm-p20-restart', 'cm-p20', 22000, 25000, 'P20 rendezvous navigation, R22 running'),
-    ('cm-p22-restart', 'cm-p22', 14000, 23000, 'P22 orbital navigation, between the marks'),
+    # Ends at 21000, before the V37E00E at 21500, so the major-mode check
+    # sees P22 resumed, not the P00 both runs reach (#762).
+    ('cm-p22-restart', 'cm-p22', 14000, 21000, 'P22 orbital navigation, between the marks'),
 ]
 RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(at)})
                   for name, scen, at, end, _ in RESTART_POINTS

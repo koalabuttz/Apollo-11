@@ -18,7 +18,7 @@ LM = [x[0] for x in ra.frc.RESTARTS if x[1] == 'lm']
 
 def host_row(name, ok=True, at=None):
     at = at if at is not None else next(x[5] for x in ra.frc.RESTARTS if x[0] == name)
-    return dict(scenario=name, ok=ok, routine_mismatches=[], new_mismatches=[], modreg=['00077', '00077'],
+    return dict(scenario=name, ok=ok, routine_mismatches=[], new_mismatches=[], new_holes=[], modreg=['00077', '00077'],
                 redoctr=[0, 1], failures=[] if ok else ['major mode differs'], gojam=[[at, '00000']],
                 c64_gojam=dict(ok=True, module=dict(id='0x01e5'), gojam=dict(words_equal=2048),
                                burst=dict(words_equal=2048)))
@@ -26,7 +26,7 @@ def host_row(name, ok=True, at=None):
 
 def replay(at, **kw):
     r = dict(ok=True, commit=HEAD, snap_at=at, replay_matched_cs=[50, 100, 150, 200, 250, 300], replay_differences=0,
-             replay_skipped=[], reu_bounds=dict(ok=True, dma_outside=0, outside=[]), records=[1, 2], exit=0,
+             replay_skipped=[], replay_unpaired=[], reu_bounds=dict(ok=True, dma_outside=0, outside=[]), records=[1, 2], exit=0,
              **{k: '0' * 64 for k in ra.HASHES})
     r.update(kw)
     return r
@@ -154,18 +154,63 @@ class RestartAcceptance(unittest.TestCase):
             'no REU bounds': replay(at, reu_bounds=None),
             'DMAs outside': replay(at, reu_bounds=dict(ok=False, dma_outside=3, outside=[dict(region='rope')])),
             'not at the GOJAM': replay(at, snap_at=at + 400),
-            'not abc123': replay(at, commit='def456def456'),
+            'result from another commit': replay(at, commit='def456def456'),
             'differs from the host': replay(at, ok=False, replay_differences=2, replay_differ_at_cs=50),
             'no replay result': dict(ok=False, failure=['VICE timed out']),
             'exited 3': replay(at, exit=3),
             'no record of skipped compares': {k: v for k, v in replay(at).items() if k != 'replay_skipped'},
             'OUTSIDE the layout': replay(at, reu_bounds=dict(ok=True, outside=[])),
             'no prg_sha256': replay(at, prg_sha256=None),
+            'no checkpoint compared': replay(at, replay_matched_cs=[]),
+            'checkpoints with no partner: host 50 cs': replay(at, replay_unpaired=[dict(side='host', cs=50)]),
+            'no record of unpaired checkpoints': {k: v for k, v in replay(at).items() if k != 'replay_unpaired'},
         }
         for why, c in cases.items():
             ok, text = ra.c64_verdict(c, at, HEAD)
             self.assertFalse(ok, why)
             self.assertIn(why, text)
+
+    def test_host_verdicts(self):
+        h = dict(host_row('lm-p12-restart'), commit=HEAD)
+        self.assertTrue(ra.host_verdict(h, HEAD)[0])
+        for why, bad in {'2 yaAGC mismatches': dict(h, routine_mismatches=['a', 'b']),
+                         '1 points bridged after the restart': dict(h, new_holes=[dict(point='1,2')]),
+                         'no record of points bridged': {k: v for k, v in h.items() if k != 'new_holes'},
+                         'result from another commit': dict(h, commit='def456def456')}.items():
+            ok, text = ra.host_verdict(bad, HEAD)
+            self.assertFalse(ok, why)
+            self.assertIn(why, text)
+
+    def test_a_row_ending_in_p00_proves_little(self):
+        rows = {n: host_row(n) for n in LM}
+        rows['lm-p12-restart'] = dict(host_row('lm-p12-restart'), modreg=['00000', '00000'])
+        rows['lm-p00-doi-restart'] = dict(host_row('lm-p00-doi-restart'), modreg=['00000', '00000'])
+        code, doc = self.generate(Fake(host_rows=rows))
+        self.assertEqual(code, 1)
+        why = doc.split('## Why it fails')[1]
+        self.assertIn('lm-p12-restart: host', why)
+        self.assertIn('ends in P00', why)
+        self.assertNotIn('lm-p00-doi-restart', why)   # a P00 row may end in P00
+
+    def test_the_doc_names_one_commit_and_the_store(self):
+        code, doc = self.generate(Fake(), commits=(HEAD, 'def456def456'))
+        self.assertNotIn('def456', doc)
+        sha = ra.sha(ra.STORE / 'lm.reu')
+        self.assertRegex(sha, '^[0-9a-f]{64}$')
+        self.assertIn(f'`flight-store/lm.reu` sha256 `{sha}`', doc)
+
+    def test_another_store_image_fails(self):
+        fake = Fake()
+        real = fake.__call__
+
+        def swap(args, log):
+            code = real(args, log)
+            if args[0] == 'tools/flight_scenario_vice.py' and 'lm-p12-restart' in args:
+                (ra.STORE / 'lm.reu').write_bytes(b'y')
+            return code
+        code, doc = self.generate(swap)
+        self.assertEqual(code, 1)
+        self.assertIn('the C64 ran another store image', doc)
 
     def test_a_c64_skip_fails_the_doc(self):
         fake = Fake(vice={'lm-p12-restart': replay(185000, replay_skipped=['TIME5 a count apart'])})
