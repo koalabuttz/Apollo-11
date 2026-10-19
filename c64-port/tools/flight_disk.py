@@ -516,6 +516,41 @@ def drive_rom(data_dir, drive):
         sys.exit(f'FAIL: {name}: SHA-256 mismatch')
 
 
+def trace_result(text):
+    """The REU bounds trace of a boot, from its monitor.log: the three
+    trace checkpoints as VICE numbered them when the trace was set
+    (reu_layout.dma_trace: whole range, last byte, after-the-fact count),
+    their hits, and whether the check holds. It fails closed: unless all
+    three were set with their conditions (and the first two their io
+    command), any hit on another trace checkpoint, or no DMA seen at all
+    (the third fires on DMAs VICE sees after they ran, every boot has
+    some), it is not ok."""
+    import reu_layout
+    # Set: VICE's reply to each trace command. (A checkpoint listing
+    # repeats the TRACE line with a tab-indented Condition instead.)
+    traces = [int(n) for n in re.findall(r'^TRACE:\s+(\d+)\s+C:\$df01.*\nSetting checkpoint \1 condition to: ',
+                                         text, re.M)]
+    errors = []
+    if len(traces) != 3:
+        errors.append(f'{len(traces)} trace checkpoints set, not 3')
+    for i, n in enumerate(traces[:3]):
+        if i < 2 and not re.search(rf'^Setting checkpoint {n} command to: io \$df00', text, re.M):
+            errors.append(f'checkpoint {n} has no io command')
+    hit = {int(n) for n in re.findall(r'^#(\d+) \(Trace store df01\)', text, re.M)}
+    outside_set, last = traces[:2], traces[2:3]
+    stray = sorted(hit - set(traces[:3]))
+    if stray:
+        errors.append(f'hits on unknown trace checkpoints {stray}')
+    outside = reu_layout.dma_misses(text, outside_set) + sum(
+        len(re.findall(rf'^#{n} \(Trace store df01\)', text, re.M)) for n in stray)
+    unchecked = reu_layout.dma_misses(text, last) if last else 0
+    if not unchecked:
+        errors.append('the trace saw no DMA (checkpoint 3 of 3 never fired)')
+    hits = reu_layout.dma_hits(text, '(?:' + '|'.join(map(str, outside_set + stray)) + ')') if outside_set else []
+    return dict(traces=traces, dma_outside=outside, dma_hits=hits[:16], dma_unchecked=unchecked,
+                trace_errors=errors, trace_ok=not errors and not outside)
+
+
 def boot_layout(m, info):
     """The REU regions of a flight boot: the program's layout
     (tools/reu_layout.py) and the resident's stage, where the last disk
@@ -862,14 +897,13 @@ def vice(a, m, info):
         # Every byte that differs from the store image after the run lies in
         # a writable region, and no DMA left the layout.
         bounds = reu_layout.report(m, regions, want + bytes(len(got) - len(want)), got, f'{m} boot')
-        text = (work / 'monitor.log').read_text(errors='replace')
         bounds['regions'] = [dict(name=n, start=hex(lo), end=hex(hi), writable=w) for n, lo, hi, w in regions]
-        bounds['dma_outside'] = reu_layout.dma_misses(text, (3, 4))
-        bounds['dma_hits'] = reu_layout.dma_hits(text, '[34]')[:16]
-        bounds['dma_unchecked'] = reu_layout.dma_misses(text, (5,))
-        bounds['ok'] = bounds['ok'] and not bounds['dma_outside']
-        print(f"{m} boot: {'every DMA inside' if not bounds['dma_outside'] else str(bounds['dma_outside']) + ' DMAs outside'}"
-              f' the {m} REU layout')
+        trace = trace_result((work / 'monitor.log').read_text(errors='replace'))
+        bounds.update(trace)
+        bounds['ok'] = bounds['ok'] and trace['trace_ok']
+        print(f"{m} boot: DMA trace {'ok' if trace['trace_ok'] else 'FAIL'}: checkpoints {trace['traces']}, "
+              f"{trace['dma_outside']} outside, {trace['dma_unchecked']} checked at their last byte"
+              + ''.join(f'; {e}' for e in trace['trace_errors']))
         result['reu_bounds'] = bounds
         result['ok'] = result['ok'] and bounds['ok']
     return result
@@ -900,6 +934,8 @@ def boot_evidence(a, m, info):
               load_s=r.get('load_s'), boot_s=r.get('boot_s'),
               sha256={f"{f.parent.name}/{f.name}": sha256(f) for f in files if f.exists()},
               vice_log_sha256=sha256(OUT / f'vice-{m}' / 'vice.log'),
+              monitor_log_sha256=sha256(OUT / f'vice-{m}' / 'monitor.log') if (OUT / f'vice-{m}' / 'monitor.log').exists() else None,
+              reu_bounds_ok=(r.get('reu_bounds') or {}).get('ok'),
               screen_sha256=hashlib.sha256('\n'.join(r.get('screen', [])).encode()).hexdigest(),
               screen=r.get('screen'))
     out = OUT / f'boot-{m}.json'

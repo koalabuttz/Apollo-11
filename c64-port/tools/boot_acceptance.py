@@ -5,16 +5,18 @@
 
   boot_acceptance.py lm|cm [--skip RUN,...] [--doc-only]
 
-Boots the program from its disk images in VICE (tools/flight_disk.py, true
-drive emulation, a stock PAL C64 with a 2 MB REU), once for each way in:
+Boots the program from its disk images in VICE (tools/flight_disk.py, a
+stock PAL C64 with a 2 MB REU; true drive emulation but in the 1581-kernal
+run), once for each way in, each with the REU bounds trace:
 
   1581           the D81 set and the fast loader, keys typed into the DSKY's
                  key queue: what CI runs (make flight-disk-vice)
   1581-keyboard  the same set, keys pressed on VICE's window so the C64's
                  own keyboard scan reads them (--xtest, under xvfb-run)
   1541           the D64 set, read with the KERNAL, disk swaps asked for
-  1581-kernal    the D81 set without drive code (--slow): the KERNAL path
-                 any drive that is not a 1581 gets
+  1581-kernal    the D81 set without drive code (--slow), VICE's virtual
+                 drive serving the KERNAL's reads: the path any drive that
+                 is not a 1581 gets
 
 Each run types RSET, V37 ENTR 00 ENTR and passes only with the AGC in P00
 (MODREG 0, 00 under PROG on the screen). Then the hardware check disk
@@ -36,6 +38,9 @@ import pathlib
 import shutil
 import subprocess
 import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import flight_disk as fdisk  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PROGRAM = {'lm': 'Luminary099', 'cm': 'Comanche055'}
@@ -101,7 +106,9 @@ def run_all(m, skip, stage):
         report = flight_disk(['--missions', 'test'])
         # Bind the check disk to the commit, as the boot records do.
         report['commit'] = git('rev-parse', 'HEAD')
-        report['dirty'] = bool(git('status', '--porcelain', '--untracked-files=no', '--', *SOURCES))
+        # the boot records' scope (flight_disk.py boot_evidence)
+        report['dirty'] = bool(git('status', '--porcelain', '--untracked-files=no', '--', '.',
+                                   ':(exclude)evidence', ':(exclude)docs'))
         files = [OUT / d for d in report.get('disks', [])] + sorted(OUT.glob('test-*.prg'))
         report['sha256'] = {f'{f.parent.name}/{f.name}': sha(f) for f in files if f.exists()}
         (stage / f'{m}-check-disk.json').write_text(json.dumps(report, indent=1) + '\n')
@@ -132,8 +139,22 @@ def write_doc(m, commit):
     boots = {n: json.loads((ev / f'{m}-{n}-boot.json').read_text()) for n in RUNS if (ev / f'{m}-{n}-boot.json').exists()}
     check_path = ev / f'{m}-check-disk.json'
     check = json.loads(check_path.read_text()) if check_path.exists() else None
+    # The REU trace is checked again here from each run's monitor log, so
+    # the result rests on the log in the tree, not only on the run's JSON.
+    traced, trace_errors = {}, {}
+    for n in runs:
+        log = ev / f'{m}-{n}-monitor.log'
+        want = boots.get(n, {}).get('monitor_log_sha256')
+        if not log.exists():
+            trace_errors[n] = ['no monitor log']
+        elif want and sha(log) != want:
+            trace_errors[n] = ['the monitor log is not the one the boot record hashes']
+        else:
+            t = fdisk.trace_result(log.read_text(errors='replace'))
+            trace_errors[n] = t['trace_errors'] + ([f"{t['dma_outside']} DMAs outside"] if t['dma_outside'] else [])
+        traced[n] = not trace_errors[n]
     oks = {n: bool(r['vice'].get('ok')) and bool(r['vice'].get('p00'))
-           and bool((r['vice'].get('reu_bounds') or {}).get('ok')) for n, r in runs.items()}
+           and bool((r['vice'].get('reu_bounds') or {}).get('ok')) and traced[n] for n, r in runs.items()}
     commits = {b['commit'] for b in boots.values()} | ({check['commit']} if check and check.get('commit') else set())
     dirty = any(b.get('dirty') for b in boots.values()) or bool(check and check.get('dirty'))
     one_commit = len(commits) == 1 and len(boots) == len(RUNS) and bool(check and check.get('commit')) and not dirty
@@ -192,9 +213,10 @@ def write_doc(m, commit):
             [f for f in (ev / f'{m}-{n}-monitor.log', ev / f'{m}-{n}-boot.json') if f.exists()]
         rb = v.get('reu_bounds')
         bounds = ('not checked' if not rb else
-                  'inside: every DMA and every write'
-                  if rb.get('ok') else
-                  f"OUTSIDE: {rb.get('dma_outside', 0)} DMAs, {len(rb.get('outside', []))} written ranges")
+                  f"inside ({rb.get('dma_unchecked')} DMAs checked at their last byte only)"
+                  if rb.get('ok') and traced.get(n) else
+                  f"FAIL: {rb.get('dma_outside', 0)} DMAs outside, {len(rb.get('outside', []))} written ranges"
+                  + (f"; {'; '.join(trace_errors[n])}" if trace_errors.get(n) else ''))
         lines.append(f"| {n} | {how}{swaps} | {keys} | {v.get('load_s')} s | {v.get('boot_s')} s | "
                      f"{v.get('boot_status')} | {v.get('modreg')} | {' '.join(v.get('failreg') or [])} | "
                      f"{'yes' if v.get('p00') else 'no'} | {bounds} | {'pass' if oks[n] else 'FAIL'} | "
@@ -210,9 +232,13 @@ def write_doc(m, commit):
               'it. From then on VICE traces every REU DMA, read or write: the disks\' data, the hand-off\'s '
               'fetch of the resident and the AGC\'s run, and logs any whose range is not inside the program\'s '
               'declared layout plus the resident\'s stage at the top of the REU (`<run>-monitor.log`; '
-              'tools/flight_disk.py boot_layout). After the run, every REU byte that differs from the store '
-              'image must lie in a writable region. A run passes only with both clean. The run\'s JSON lists '
-              'the regions it checked against.', '']
+              'tools/flight_disk.py boot_layout). VICE now and then evaluates a DMA\'s condition only after it ran; '
+              'then only its last byte is range-checked (the count is in the table, #681\'s limit as in the '
+              'flight runs), and its writes are still covered by the byte check: after the run, every REU byte '
+              'that differs from the store image must lie in a writable region. A run passes only with both '
+              'clean, the trace\'s three checkpoints set as VICE numbered them and at least one DMA seen, '
+              'which this tool checks again from the monitor log. The run\'s JSON lists the regions it '
+              'checked against.', '']
     b = boots.get('1581') or next(iter(boots.values()), None)
     if b and b.get('screen'):
         shot = ev / f'{m}-1581-dsky.png'
@@ -236,10 +262,11 @@ def write_doc(m, commit):
     else:
         lines += ['The keyboard run was skipped.', '']
     lines += ['## In CI', '',
-              'Every port-ci run whose changes touch the boot path (the watch list in tools/mk/ci-extra.mk: the '
-              'disk tool, the loader, the drive code, the decompressor, the resident\'s main) runs '
+              'Every port-ci run whose changes touch a file on the watch list in tools/mk/ci-extra.mk '
+              '(`ci-watch-flight-disk-vice`: the disk tool, the loader, the drive code, the decompressor, the '
+              'resident\'s main, the REU store code and the REU layout check) runs '
               '`make flight-disk-vice`: the `1581` run above for both programs, and the check disk. It fails '
-              'unless both reach P00 and the check passes. The run keeps the boot records '
+              'unless both reach P00, the boots stay inside the REU layout and the check passes. A change outside the list (the store\'s modules, the rest of the resident) does not re-run it, so a program\'s flip PR regenerates this doc at its own commit (tools/boot_acceptance.py). The run keeps the boot records '
               '(`flight-disk-boot-<m>.json`), their VICE logs and the disk images it booted in its '
               '`c64…-logs` artifact.', '']
     lines += ['## Hardware check disk' + (" (the LM build's)" if m != 'lm' else ''), '']
