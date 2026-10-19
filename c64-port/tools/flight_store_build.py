@@ -308,8 +308,20 @@ def host_index(cc, jobs):
     def build(src):
         obj = objs / (src.stem + '.o')
         dep = objs / (src.stem + '.d')
-        if stale(obj, dep):
-            run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', '-MMD', '-MF', dep, '-c', src, '-o', obj])
+        # The compact interpreter charges each word as on the C64
+        # (include/interp_word_mct.h): the host flight run runs the points
+        # the C64 leaves to the interpreter module with it
+        # (tools/flight_host_run.c core_run). The flags are in the
+        # dependency check: a change of build rebuilds the object.
+        # A FLIGHT_INTERP_STOP file's host object is its flight build too:
+        # its chains stop at NEWOPS, as its C64 module does, and the
+        # interpreter takes every hand-off.
+        flags = (['-DINTERP_WORD_CHARGE=1'] if src.stem in ('lm_interp_core', 'cm_interp_core') else
+                 ['-DAGC_FLIGHT_INTERPRETER'] if any(src.stem in s for s in FLIGHT_INTERP_STOP.values()) else [])
+        made = objs / (src.stem + '.flags')
+        if stale(obj, dep) or (made.read_text() if made.exists() else '') != ' '.join(flags):
+            run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', *flags, '-MMD', '-MF', dep, '-c', src, '-o', obj])
+            made.write_text(' '.join(flags))
         return src.stem, obj
     with ThreadPoolExecutor(jobs) as pool:
         built = list(pool.map(build, sources))

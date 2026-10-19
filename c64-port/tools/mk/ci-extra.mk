@@ -12,12 +12,12 @@
   ci-watch-interp-flight-p63-vice ci-watch-interp-core-differential ci-watch-x86-flight-check \
   ci-watch-flight-restart-check ci-watch-flight-restart-vice ci-watch-flight-gojam-vice ci-watch-flight-downlink-check \
   ci-watch-flight-downlink-vice overlay-v2-check ci-watch-overlay-v2-check ci-watch-flight-store \
-  ci-watch-flight-disk-vice ci-watch-interp-loops-check
+  ci-watch-flight-disk-vice ci-watch-flight-downlink-live-vice ci-watch-interp-loops-check
 ci-extra-host: interp-runtime-check interp-core-fuzz interp-core-differential x86-flight-check flight-restart-check \
   flight-downlink-check overlay-v2-check interp-loops-check
 ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice-1 interp-flight-flowed-vice-2 interp-flight-flowed-vice-3 \
   interp-flight-flowed-vice-4 interp-flight-p63-vice flight-restart-vice flight-gojam-vice flight-downlink-vice flight-store \
-  flight-disk-vice
+  flight-disk-vice flight-downlink-live-vice
 # flight-store finds its table sources at run time, so no closure reaches
 # them: it watches every source, the spec and lane-C tools, and the
 # unplaced-key ratchet (its cheap check fails on a count change either way).
@@ -60,6 +60,8 @@ CI_EXTRA_DOWNLINK := $(CI_EXTRA_RESTART) src/lm_downtelemetry.c src/cm_downtelem
   src/cm_downtelemetry_data.inc tools/flight_downlink.h tools/flight_downlink_check.py
 ci-watch-flight-downlink-check: $(CI_EXTRA_DOWNLINK)
 ci-watch-flight-downlink-vice: $(CI_EXTRA_DOWNLINK) platform/c64/downlink_check.c tools/flight_downlink_reference.c
+ci-watch-flight-downlink-live-vice: $(CI_EXTRA_DOWNLINK) src/resident_rupt.c include/resident_rupt.h \
+  tools/flight_scenario_vice.py tools/dap_pass_vice.py platform/c64/dap_pass_check.c
 # The overlay ABI 2 host test (tools/overlay_v2.mk, tests/test_overlay_v2.c),
 # plain and sanitized: the loader, cache, seams, faults and both restarts
 # every flight build links. Its allocation-plan step is left out: it
