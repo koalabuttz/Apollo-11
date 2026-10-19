@@ -1,0 +1,316 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+"""Write one program's integrated_program_tests evidence
+(docs/port-coverage.json, integrated_applications).
+
+  program_acceptance.py lm|cm [--host DIR] [--replay-dir DIR] [--run RUN.json ...] [--no-evidence]
+  program_acceptance.py lm|cm --windows    print the C64 --replay runs the doc needs
+
+Reads, all of which must come from the same commit:
+
+  docs/acceptance/<Program>-program-map.json   one row per coverage-map entry (status,
+                                               the scenarios that run it) and the
+                                               C64 replay windows to run
+  <host>/summary.json and its logs             tools/flight_host_differential.py
+                                               (default build/flight-store/differential)
+  C64 --replay results                         tools/flight_scenario_vice.py --replay
+                                               (every <replay-dir>/*.json with replay rows,
+                                               default build/flight-store/dap-pass, plus --run)
+
+and writes:
+
+  docs/acceptance/<Program>-integrated_program_tests.md
+  evidence/<m>-acceptance-program/host-<scenario>.json      (tools/evidence.py add --tree)
+  evidence/<m>-acceptance-program/replay-<scenario>-<cs>.json
+
+For each row: the scenarios' host result against yaAGC (routines that did
+not match, points the host bridged) and their C64 --replay windows (matches
+host, differs with its class, or stops). A result from another commit is
+listed as stale and counts as not run (a result from an
+older commit counts when the port's sources have not changed since). The doc is rewritten on every run
+(it is cheap: no flight runs), so the auditor can refresh it after each
+rerun. It exits 1 unless every row is mapped or not exercised, every mapped
+row's scenarios match yaAGC, and every mapped row has a C64 window that
+matches the host.
+"""
+import argparse
+import hashlib
+import json
+import pathlib
+import subprocess
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'tools'))
+import flight_holes  # noqa: E402
+
+PROGRAM = {'lm': 'Luminary099', 'cm': 'Comanche055'}
+# The replay's timer words: a first difference in one of these is the clock
+# class (replay-mismatches.md), not a data path.
+TIMERS = {'centiseconds', 'TIME1', 'TIME2', 'TIME3', 'TIME4', 'TIME5', 'TIME6'}
+# Result fields too bulky for the evidence copy (per-step records, profile).
+BULKY = ('records', 'profile', 'watched', 'by_request')
+
+
+# The paths a flight result depends on (flight_holes.source_commit's set),
+# less this tool's own files: a result from an older commit still counts
+# when none of these changed since it.
+SOURCES = ['src', 'include', 'platform', 'tools', 'tests', 'Makefile',
+           ':!tools/program_acceptance.py', ':!tests/test_program_acceptance.py', ':!tools/mk/program-acceptance.mk']
+
+
+def same_sources(run, head):
+    """True when a result made at commit `run` holds for `head`."""
+    if run == head:
+        return True
+    if not run or '(dirty)' in run or '(dirty)' in head:
+        return False
+    r = subprocess.run(['git', 'diff', '--quiet', run, head.split()[0], '--', *SOURCES], cwd=ROOT,
+                       capture_output=True)
+    return r.returncode == 0
+
+
+def sha(path):
+    return hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
+
+
+def host_result(row):
+    """(clean, text) for one flight_host_differential.py summary row."""
+    if row is None:
+        return False, 'not run'
+    bridged = [h for h in row.get('unregistered', []) if not h.get('core_start')]
+    if row['exit']:
+        return False, f"FAILED (exit {row['exit']})"
+    misses = len(row.get('routine_mismatches', []))
+    if misses or bridged:
+        where = ', '.join(f"{h['label']} ({h['file']}, lane {h['lane']})" for h in bridged[:3])
+        return False, (f'{misses} routines differ' if misses else '0 routines differ') + \
+            (f', {len(bridged)} points bridged: {where}' if bridged else '')
+    return True, 'matches yaAGC (0 routines differ, 0 points bridged)'
+
+
+def replay_result(r):
+    """(matches, short text) for one flight_scenario_vice.py --replay result."""
+    if r.get('status') not in (0, None):
+        return False, f"stops at {r.get('at', '?')}"
+    if r.get('short'):
+        return False, f"ends early ({r.get('agc_cs')} of {r.get('requested_cs')} cs)"
+    if not (r.get('reu_bounds') or {}).get('ok', True):
+        return False, 'REU access outside the layout'
+    if r.get('replay_differences') == 0 and r.get('replay_ended'):
+        return True, 'matches host'
+    first = (r.get('replay_first') or [{}])[0]
+    at = first.get('at', '?')
+    cls = 'clock' if at in TIMERS else 'data'
+    when = r.get('replay_differ_at_cs')
+    return False, (f"differs ({cls}: first at {at}, host {first.get('host')} C64 {first.get('c64')}"
+                   + (f', by {when} cs' if when is not None else '') + ')')
+
+
+def load_host(host_dir, commit):
+    """{scenario: summary row}, {scenario: stale commit}."""
+    path = host_dir / 'summary.json'
+    rows, stale = {}, {}
+    if not path.exists():
+        return rows, stale
+    for row in json.loads(path.read_text()):
+        name = row['scenario']
+        if not name.endswith('-scaled-x1') or row.get('schedule') != '1,1,2':
+            continue
+        name = name[:-len('-scaled-x1')]
+        log = host_dir / f"{row['scenario']}.log"
+        row = dict(row, log_sha256=sha(log) if log.exists() else None)
+        if not same_sources(row.get('commit'), commit):
+            stale[name] = row.get('commit') or 'unknown'
+        else:
+            rows[name] = row
+    return rows, stale
+
+
+def load_replays(paths, m, commit):
+    """{scenario: [result]} (sorted by window start), [(file, commit)] stale."""
+    out, stale = {}, []
+    for path in paths:
+        try:
+            r = json.loads(pathlib.Path(path).read_text())
+        except (OSError, ValueError):
+            continue
+        if not isinstance(r, dict) or 'replay_rows' not in r or not r.get('scenario', '').startswith(f'{m}-'):
+            continue
+        if not same_sources(r.get('commit'), commit):
+            stale.append((pathlib.Path(path).name, r.get('commit') or 'unknown'))
+            continue
+        out.setdefault(r['scenario'], []).append(r)
+    for runs in out.values():
+        runs.sort(key=lambda r: r.get('snap_cs') or 0)
+    return out, stale
+
+
+def assess(rows, host, replays, stale_host=None):
+    """Per-row verdicts and the counts."""
+    out, stale_host = [], stale_host or {}
+    for row in rows:
+        h = {s: (False, f'stale (run at {stale_host[s]})') if s not in host and s in stale_host
+             else host_result(host.get(s)) for s in row['scenarios']}
+        c = {s: [(r, *replay_result(r)) for r in replays.get(s, [])] for s in row['scenarios']}
+        mapped = row['status'] == 'mapped'
+        host_clean = mapped and bool(h) and all(ok for ok, _ in h.values())
+        c64_match = mapped and any(match for runs in c.values() for _, match, _ in runs)
+        out.append(dict(row=row, host=h, c64=c, host_clean=host_clean, c64_match=c64_match))
+    counts = dict(rows=len(out),
+                  mapped=sum(a['row']['status'] == 'mapped' for a in out),
+                  not_exercised=sum(a['row']['status'] == 'not exercised' for a in out),
+                  tbd=sum(a['row']['status'] not in ('mapped', 'not exercised') for a in out),
+                  host_clean=sum(a['host_clean'] for a in out),
+                  c64_match=sum(a['c64_match'] for a in out))
+    counts['ok'] = (counts['tbd'] == 0 and counts['host_clean'] == counts['mapped']
+                    and counts['c64_match'] == counts['mapped'])
+    return out, counts
+
+
+def cell(text):
+    return str(text).replace('|', '/').replace('\n', ' ')
+
+
+def write_evidence(m, host, replays, dest, store):
+    """Copy each used result into dest and record it under <m>-acceptance-program."""
+    dest.mkdir(parents=True, exist_ok=True)
+    for old in dest.glob('*.json'):
+        old.unlink()
+    files = {}
+    for name, row in sorted(host.items()):
+        p = dest / f'host-{name}.json'
+        p.write_text(json.dumps(row, indent=1) + '\n')
+        files[('host', name)] = p
+    for name, runs in sorted(replays.items()):
+        for r in runs:
+            p = dest / f"replay-{name}-{r.get('snap_cs')}.json"
+            p.write_text(json.dumps({k: v for k, v in r.items() if k not in BULKY}, indent=1) + '\n')
+            files[('replay', name, r.get('snap_cs'))] = p
+    if files and store:
+        subprocess.run([sys.executable, 'tools/evidence.py', 'add', f'{m}-acceptance-program',
+                        *map(str, files.values()), '--tree'], cwd=ROOT, check=True)
+    return {k: (f'evidence/{m}-acceptance-program/{p.name}', sha(p)) for k, p in files.items()}
+
+
+def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, evidence, commit, out, windows=()):
+    p = PROGRAM[m]
+    ev = lambda key: f"`{evidence[key][0]}`" if key in evidence else '(not stored)'  # noqa: E731
+    lines = [f'# {p}: integrated program tests', '',
+             f'Generated by `tools/program_acceptance.py {m}` at commit `{commit}`. '
+             f"Result: **{'PASS' if counts['ok'] else 'FAIL'}**.", '',
+             'This is the `integrated_program_tests` evidence of the '
+             f'`integrated_applications.{p}` entry (docs/port-coverage.json). It takes every major mode and '
+             f'routine {p} uses (`docs/acceptance/{p}-program-map.json`, one row per coverage-map entry) and '
+             'shows, for each mapped row, the flight scenarios that run it: their whole-program host run '
+             'against yaAGC (`tools/flight_host_differential.py`, scaled time x1) and their C64 windows in '
+             'VICE (`tools/flight_scenario_vice.py --replay`: the host\'s inputs replayed on the C64 and its '
+             'state compared with the host\'s at each checkpoint).', '',
+             'It passes when every row is mapped or not exercised (with its reason), every mapped row\'s '
+             'scenarios match yaAGC with no bridged point, and every mapped row has a C64 window that '
+             'matches the host. A result from a commit with other port sources (src, include, platform, tools, tests) '
+             'is stale and counts as not run.', '',
+             '## Counts', '',
+             '| Rows | mapped | not exercised | TBD | mapped, host matches yaAGC | mapped, a C64 window matches host |',
+             '|---|---|---|---|---|---|',
+             f"| {counts['rows']} | {counts['mapped']} | {counts['not_exercised']} | {counts['tbd']} | "
+             f"{counts['host_clean']} of {counts['mapped']} | {counts['c64_match']} of {counts['mapped']} |", '',
+             '## Rows', '',
+             '| Row | Entry | Status | Scenarios | Host vs yaAGC | C64 replay | Note |',
+             '|---|---|---|---|---|---|---|']
+    section = None
+    for a in assessed:
+        row = a['row']
+        if row['section'] != section:
+            section = row['section']
+            lines.append(f'| **{cell(section)}** | | | | | | |')
+        if row['status'] != 'mapped':
+            lines.append(f"| {cell(row['row'])} | {cell(row['entry'])} | {cell(row['status'])} | | | | "
+                         f"{cell(row.get('note', ''))} |")
+            continue
+        hosts = '; '.join(f"{s}: {t}" for s, (_, t) in a['host'].items())
+        c64 = '; '.join(f"{s} {r.get('snap_cs')}: {t}" for s, runs in a['c64'].items() for r, _, t in runs) or 'not run'
+        lines.append(f"| {cell(row['row'])} | {cell(row['entry'])} | mapped | {', '.join(row['scenarios'])} | "
+                     f"{cell(hosts)} | {cell(c64)} | {cell(row.get('note') or '')} |")
+    used = sorted({s for a in assessed for s in a['row']['scenarios']})
+    lines += ['', '## Scenarios', '',
+              'Each mapped row\'s scenarios, run whole on the host at this commit (exit, routines yaAGC did '
+              'not match, points the host bridged; core-start points of a mid-flight core are not counted).', '',
+              '| Scenario | Centiseconds | Major mode at end (native / yaAGC) | Result | Evidence |',
+              '|---|---|---|---|---|']
+    for s in used:
+        row = host.get(s)
+        if row is None:
+            lines.append(f"| {s} | | | {'stale (' + stale_host[s] + ')' if s in stale_host else 'not run'} | |")
+            continue
+        mode = row.get('major_mode') or {}
+        lines.append(f"| {s} | {row['centiseconds']} | {mode.get('native', '')} / {mode.get('yaagc', '')} | "
+                     f"{cell(host_result(row)[1])} | {ev(('host', s))} |")
+    lines += ['', '## C64 replay windows', '',
+              'Each window starts from the host\'s state at its start (a snapshot), applies the host\'s inputs '
+              '(PIPA counts, channels, erasable writes, interrupt requests) at the host\'s times, and compares '
+              'the C64\'s state with the host\'s every few centiseconds. "clock" means the first difference is '
+              'in a timer (the AGC-time charge class in /mnt/project-files/flight-scenarios/replay-mismatches.md); '
+              '"data" means another word differs first.', '',
+              '| Scenario | Start cs | Window cs | Result | Checkpoints matched | C64 speed | Evidence |',
+              '|---|---|---|---|---|---|---|']
+    windows, plan = [(s, r) for s in used for r in replays.get(s, [])], windows
+    for s, r in windows:
+        lines.append(f"| {s} | {r.get('snap_at', r.get('snap_cs'))} | {r.get('requested_cs')} | "
+                     f"{cell(replay_result(r)[1])} | {len(r.get('replay_matched_cs') or [])} | "
+                     f"{r.get('wall_per_agc', '')}x | {ev(('replay', s, r.get('snap_cs')))} |")
+    ran = {(s, r.get('snap_cs')) for s, r in windows}
+    for s, snap, cs in sorted(w for w in map(tuple, plan) if (w[0], w[1]) not in ran):
+        lines.append(f'| {s} | {snap} | {cs} | not run at this commit | | | |')
+    if not windows and not plan:
+        lines.append('| (none at this commit) | | | | | | |')
+    if stale_host or stale_runs:
+        lines += ['', '## Stale inputs (not counted)', '']
+        lines += [f'- host {s}: run at `{c}`' for s, c in sorted(stale_host.items()) if s in used]
+        lines += [f'- replay {f}: run at `{c}`' for f, c in sorted(stale_runs)]
+    lines += ['', '## Reproduce', '', '```sh', 'make flight-store',
+              'python3 tools/flight_host_differential.py',
+              f'python3 tools/program_acceptance.py {m} --windows | sh   # each C64 window above',
+              f'python3 tools/program_acceptance.py {m}', '```', '']
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text('\n'.join(lines))
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument('mission', choices=sorted(PROGRAM))
+    ap.add_argument('--host', type=pathlib.Path, default=ROOT / 'build/flight-store/differential')
+    ap.add_argument('--replay-dir', type=pathlib.Path, default=ROOT / 'build/flight-store/dap-pass')
+    ap.add_argument('--run', action='append', default=[], help='a flight_scenario_vice.py --replay result JSON')
+    ap.add_argument('--map', type=pathlib.Path, help='default docs/acceptance/<Program>-program-map.json')
+    ap.add_argument('--out', type=pathlib.Path, help='default docs/acceptance/<Program>-integrated_program_tests.md')
+    ap.add_argument('--commit', help='the commit the inputs must come from (default HEAD)')
+    ap.add_argument('--no-evidence', action='store_true', help='do not record the results with tools/evidence.py')
+    ap.add_argument('--windows', action='store_true', help="print the map's C64 --replay runs and exit")
+    a = ap.parse_args(argv)
+    m, p = a.mission, PROGRAM[a.mission]
+    plan = json.loads((a.map or ROOT / f'docs/acceptance/{p}-program-map.json').read_text())
+    rows, windows = plan['rows'], plan.get('replay_windows', [])
+    if a.windows:
+        for s, snap, cs in windows:
+            print(f'python3 tools/flight_scenario_vice.py --scenario {s} --snap-cs {snap} --cs {cs} --replay --replay-every 100')
+        return 0
+    commit = a.commit or flight_holes.source_commit()
+    host, stale_host = load_host(a.host, commit)
+    replays, stale_runs = load_replays(sorted(a.replay_dir.glob('*.json')) + a.run, m, commit)
+    assessed, counts = assess(rows, host, replays, stale_host)
+    used = {s for row in rows for s in row['scenarios']}
+    evidence = write_evidence(m, {s: r for s, r in host.items() if s in used},
+                              {s: r for s, r in replays.items() if s in used},
+                              ROOT / 'build/program-acceptance' / m, not a.no_evidence)
+    out = a.out or ROOT / f'docs/acceptance/{p}-integrated_program_tests.md'
+    write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, evidence, commit, out, windows)
+    print(f"{out.relative_to(ROOT) if ROOT in out.parents else out}: {'PASS' if counts['ok'] else 'FAIL'}: "
+          f"{counts['rows']} rows, {counts['mapped']} mapped ({counts['host_clean']} match yaAGC on the host, "
+          f"{counts['c64_match']} with a C64 window matching the host), {counts['not_exercised']} not exercised, "
+          f"{counts['tbd']} TBD; {len(stale_host)} stale host results, {len(stale_runs)} stale replays")
+    return 0 if counts['ok'] else 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())

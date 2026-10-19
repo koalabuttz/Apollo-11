@@ -1,0 +1,1296 @@
+{
+ "program": "Luminary099",
+ "mission": "lm",
+ "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope.",
+ "replay_windows": [
+  [
+   "lm-p63-descent",
+   17500,
+   200
+  ],
+  [
+   "lm-p63-descent-thrust",
+   17500,
+   120
+  ],
+  [
+   "lm-p63-descent-restart",
+   20000,
+   300
+  ],
+  [
+   "lm-p63-nassp",
+   112000,
+   600
+  ],
+  [
+   "lm-landing-ascent-nassp",
+   140000,
+   1000
+  ],
+  [
+   "lm-landing-ascent-nassp",
+   156000,
+   1000
+  ],
+  [
+   "lm-doi-nassp",
+   48800,
+   1000
+  ],
+  [
+   "lm-abort-p70-nassp",
+   115000,
+   600
+  ],
+  [
+   "lm-abort-p71-nassp",
+   115000,
+   600
+  ],
+  [
+   "lm-p57",
+   12000,
+   600
+  ],
+  [
+   "lm-p52-realign",
+   2000,
+   600
+  ],
+  [
+   "lm-rendezvous",
+   29000,
+   600
+  ],
+  [
+   "lm-csi",
+   2100,
+   800
+  ],
+  [
+   "lm-cdh",
+   2100,
+   800
+  ],
+  [
+   "lm-cdh-csm",
+   2100,
+   800
+  ],
+  [
+   "lm-rendezvous-tpm",
+   40000,
+   600
+  ],
+  [
+   "lm-stable-orbit",
+   8000,
+   800
+  ],
+  [
+   "lm-stable-orbit-lm",
+   8000,
+   800
+  ],
+  [
+   "lm-p63-lr-update",
+   90000,
+   1000
+  ],
+  [
+   "lm-p63-lr-v58",
+   87500,
+   1000
+  ],
+  [
+   "lm-p63-v60-nassp",
+   99500,
+   1000
+  ],
+  [
+   "lm-p65-autoland-nassp",
+   127000,
+   1000
+  ],
+  [
+   "lm-p67-nassp",
+   123800,
+   1000
+  ],
+  [
+   "lm-p47-nassp",
+   2950,
+   1000
+  ],
+  [
+   "lm-p41-nassp",
+   49000,
+   1000
+  ],
+  [
+   "lm-p42-nassp",
+   48800,
+   1000
+  ]
+ ],
+ "rows": [
+  {
+   "row": "P79",
+   "section": "LM V37 major modes",
+   "entry": "P79 STABLE_ORBIT.agc:332 (FCADR FRS:1063, PREMM1 :1116)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-stable-orbit"
+   ],
+   "note": "lm-stable-orbit V37E79E (#690, d0ce93ae; FHD lm-stable-orbit)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P78",
+   "section": "LM V37 major modes",
+   "entry": "P78 STABLE_ORBIT.agc:118 (FRS:1064/:1117)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-stable-orbit"
+   ],
+   "note": "lm-stable-orbit V37E78E at 80 s (#690, d0ce93ae)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P76",
+   "section": "LM V37 major modes",
+   "entry": "P76 P76.agc:57 (FRS:1065/:1118)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous-tpm"
+   ],
+   "note": "lm-rendezvous-tpm V37E76E (#690, d0ce93ae)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P75",
+   "section": "LM V37 major modes",
+   "entry": "P75 P34-35_P74-75.agc:439 (FRS:1066/:1119)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous-tpm"
+   ],
+   "note": "lm-rendezvous-tpm V37E75E (#690, d0ce93ae)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P74",
+   "section": "LM V37 major modes",
+   "entry": "P74 P34-35_P74-75.agc:209 (FRS:1067/:1120)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous-tpm"
+   ],
+   "note": "lm-rendezvous-tpm V37E74E, ELEV 206.6 (#690, d0ce93ae)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P73",
+   "section": "LM V37 major modes",
+   "entry": "P73 P32-P35_P72-P75.agc:484 (FRS:1068/:1121)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-cdh-csm"
+   ],
+   "note": "lm-cdh-csm V37E73E (#690, d0ce93ae; C64 stops at DECDSP, Lane C)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P72",
+   "section": "LM V37 major modes",
+   "entry": "P72 P32-P35_P72-P75.agc:205 (FRS:1069/:1122)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-csi"
+   ],
+   "note": "lm-csi V37E72E after P32 (#690, d0ce93ae)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P68",
+   "section": "LM V37 major modes",
+   "entry": "LANDJUNK THE_LUNAR_LANDING.agc:286 (FRS:1070/:1123)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-landing-ascent-nassp"
+   ],
+   "note": "SB 7, lm-landing-ascent-nassp, V37E68E at 136000 cs (FHD:106). p63-stops.md:94 (140000 window, P68 on the surface, no stop)",
+   "owner": "F (host), Pinball split (C64)"
+  },
+  {
+   "row": "P63",
+   "section": "LM V37 major modes",
+   "entry": "P63LM THE_LUNAR_LANDING.agc:40 (FRS:1071/:1124)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-descent",
+    "lm-p63-descent-thrust",
+    "lm-p63-nassp",
+    "lm-p63-descent-restart"
+   ],
+   "note": "SB 6, lm-p63-descent(-thrust) V37E63E (FHD:55, 303) and lm-p63-nassp (FHD:70). Restart: lm-p63-descent-restart, GOJAM at 200 s (FHD:324)",
+   "owner": "Pinball split"
+  },
+  {
+   "row": "P57",
+   "section": "LM V37 major modes",
+   "entry": "P57 P51-P53.agc:2043 (FRS:1072/:1125)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p57"
+   ],
+   "note": "SB 8, lm-p57 V37E57E (FHD:190; lm-p57-stops.md)",
+   "owner": "D1"
+  },
+  {
+   "row": "P52",
+   "section": "LM V37 major modes",
+   "entry": "PROG52 P51-P53.agc:128 (FRS:1073/:1126)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p52-realign"
+   ],
+   "note": "SB 4, lm-p52-realign V37E52E option 3 (FHD:85; lm-p52-stops.md)",
+   "owner": "D1b"
+  },
+  {
+   "row": "P51",
+   "section": "LM V37 major modes",
+   "entry": "P51 P51-P53.agc:1010 (FRS:1074/:1127)",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D1b?). IMU orientation with no REFSMMAT",
+   "owner": "D1b?"
+  },
+  {
+   "row": "P47",
+   "section": "LM V37 major modes",
+   "entry": "P47LM P40-P47.agc:353 (FRS:1075/:1128)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p47-nassp"
+   ],
+   "note": "V16N83 reads +X translation (#687)",
+   "owner": "E?"
+  },
+  {
+   "row": "P42",
+   "section": "LM V37 major modes",
+   "entry": "P42LM P40-P47.agc:323 (FRS:1076/:1129)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p42-nassp"
+   ],
+   "note": "DOI on the APS after abort stage and V48 (#687)",
+   "owner": "F?"
+  },
+  {
+   "row": "P41",
+   "section": "LM V37 major modes",
+   "entry": "P41LM P40-P47.agc:216 (FRS:1077/:1130)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p41-nassp"
+   ],
+   "note": "5 ft/s RCS trim, N85 nulled (#687)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "P40",
+   "section": "LM V37 major modes",
+   "entry": "P40LM P40-P47.agc:110 (FRS:1078/:1131)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-doi-nassp"
+   ],
+   "note": "SB 5, lm-doi-nassp V37E40E, DPS 75 s to cutoff (FHD:206; lm-doi-stops.md)",
+   "owner": "E"
+  },
+  {
+   "row": "P39",
+   "section": "LM V37 major modes",
+   "entry": "P39 STABLE_ORBIT.agc:327 (FRS:1079/:1132)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-stable-orbit-lm"
+   ],
+   "note": "lm-stable-orbit-lm V37E39E (#690, d0ce93ae)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P38",
+   "section": "LM V37 major modes",
+   "entry": "P38 STABLE_ORBIT.agc:115 (FRS:1080/:1133)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-stable-orbit-lm"
+   ],
+   "note": "lm-stable-orbit-lm V37E38E (#690, d0ce93ae)",
+   "owner": "D2?"
+  },
+  {
+   "row": "P35",
+   "section": "LM V37 major modes",
+   "entry": "P35 P34-35_P74-75.agc:435 (FRS:1082/:1135)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous-tpm"
+   ],
+   "note": "lm-rendezvous-tpm V37E35E at 400 s (#690, d0ce93ae)",
+   "owner": "D2"
+  },
+  {
+   "row": "P34",
+   "section": "LM V37 major modes",
+   "entry": "P34 P34-35_P74-75.agc:207 (FRS:1083/:1136)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous"
+   ],
+   "note": "SB 10, lm-rendezvous V37E34E at 290 s (FHD:255; lm-rendezvous-stops.md)",
+   "owner": "D2"
+  },
+  {
+   "row": "P33",
+   "section": "LM V37 major modes",
+   "entry": "P33 P32-P35_P72-P75.agc:482 (FRS:1084/:1137)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-cdh"
+   ],
+   "note": "lm-cdh V37E33E (#690, d0ce93ae; C64 stops at DECDSP, Lane C)",
+   "owner": "D2"
+  },
+  {
+   "row": "P32",
+   "section": "LM V37 major modes",
+   "entry": "P32 P32-P35_P72-P75.agc:203 (FRS:1085/:1138)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-csi"
+   ],
+   "note": "lm-csi V37E32E (#690, d0ce93ae; C64 replay 2100+800 matches host)",
+   "owner": "D2"
+  },
+  {
+   "row": "P31",
+   "section": "LM V37 major modes",
+   "entry": "P31 GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc:104 (FRS:1086/:1139)",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (E? or D2?)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "P30",
+   "section": "LM V37 major modes",
+   "entry": "P30 P30_P37.agc:61 (FRS:1087/:1140)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-doi-nassp"
+   ],
+   "note": "SB 5, lm-doi-nassp V37E30E (FHD:206; lm-doi-stops.md)",
+   "owner": "E"
+  },
+  {
+   "row": "P25",
+   "section": "LM V37 major modes",
+   "entry": "PROG25 P20-P25.agc:552 (FRS:1088/:1141)",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2). Preferred tracking attitude",
+   "owner": "D2"
+  },
+  {
+   "row": "P22",
+   "section": "LM V37 major modes",
+   "entry": "PROG22 P20-P25.agc:98 (`PROG22 = PROG20`) (FRS:1089/:1142)",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2? or D1?). Lunar-surface navigation (RR tracking of the CSM from the surface)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "P21",
+   "section": "LM V37 major modes",
+   "entry": "PROG21 GROUND_TRACKING_DETERMINATION_PROGRAM.agc:93 (FRS:1090/:1143)",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "P20",
+   "section": "LM V37 major modes",
+   "entry": "PROG20 P20-P25.agc:99 (FRS:1091/:1144)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous"
+   ],
+   "note": "SB 10, lm-rendezvous V37E20E (FHD:255; lm-rendezvous-stops.md)",
+   "owner": "D2"
+  },
+  {
+   "row": "P12",
+   "section": "LM V37 major modes",
+   "entry": "P12LM P12.agc:35 (FRS:1092/:1145)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-landing-ascent-nassp"
+   ],
+   "note": "SB 9, lm-landing-ascent-nassp V37E12E at 148000 cs (FHD:106; lm-p12-stops.md). Also the scaled-time V37E12E runs (FHD:337-339)",
+   "owner": "F"
+  },
+  {
+   "row": "P06",
+   "section": "LM V37 major modes",
+   "entry": "P06 IMU_MODE_SWITCHING_ROUTINES.agc:954 (FRS:1093/:1146)",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned). Possible argument: PGNCS standby only, in coast and prelaunch",
+   "owner": "unassigned"
+  },
+  {
+   "row": "P00",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "POOH FRS:850 (V37E00E). GOTOPOOH FRS:642 (program exits)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p57",
+    "lm-doi-nassp",
+    "lm-landing-ascent-nassp",
+    "lm-p52-realign"
+   ],
+   "note": "V37E00E in lm-p57 (FHD:190), lm-doi (FHD:206), lm-landing-ascent at 142000 cs (FHD:106), the plain differential run (FHD:35-37)",
+   "owner": "C?"
+  },
+  {
+   "row": "P64",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "STARTP64 LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:260 (NEWMODEX DEC 64)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-nassp",
+    "lm-landing-ascent-nassp",
+    "lm-abort-p70-nassp",
+    "lm-abort-p71-nassp"
+   ],
+   "note": "SB 7, lm-p63-nassp / landing-ascent reaches P64 at about 1,118 s (FHD:65-70, 106). Aborts from P64: SB 14",
+   "owner": "F (host), Pinball split (C64)"
+  },
+  {
+   "row": "P65",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "P65START LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:252",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p65-autoland-nassp"
+   ],
+   "note": "P64 low gate starts P65; lands, P68, P00 (#687)",
+   "owner": "F?"
+  },
+  {
+   "row": "P66",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "STARTP66 LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:143 (from GUILDEN :134)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-landing-ascent-nassp"
+   ],
+   "note": "SB 7, attitude hold plus ROD clicks at 122700 cs (FHD:106; p63-stops.md:107)",
+   "owner": "F (host), Pinball split (C64)"
+  },
+  {
+   "row": "P67",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "STARTP67 LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:187",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p67-nassp"
+   ],
+   "note": "manual throttle in P66 enters P67, then P66 again (#687)",
+   "owner": "F?"
+  },
+  {
+   "row": "P70",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "P70 P70-P71.agc:104 (R10,R11 abort check P70-P71.agc:91-99)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-abort-p70-nassp"
+   ],
+   "note": "SB 14, lm-abort-p70-nassp, ABORT at 1,150 s (FHD:108-117, 320; lm-abort-stops.md)",
+   "owner": "A"
+  },
+  {
+   "row": "P71",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "P71 P70-P71.agc:107 (ABORT STAGE check :82-89)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-abort-p71-nassp"
+   ],
+   "note": "SB 14, lm-abort-p71-nassp (FHD:118, 321; lm-abort-stops.md)",
+   "owner": "A"
+  },
+  {
+   "row": "P07",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "REDO IMU_PERFORMANCE_TEST_2.agc:50 (NEWMODEX MM 07, via V92)",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "a ground IMU performance test (V92 SYSTEST), not a flight mode",
+   "owner": "—"
+  },
+  {
+   "row": "P27",
+   "section": "LM P00 and auto-started / non-V37 modes",
+   "entry": "UPDATE_PROGRAM.agc:218 (NEWMODEX DEC 27, via V70-V73)",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2?). The uplink update program",
+   "owner": "A2?"
+  },
+  {
+   "row": "R04 (V63)",
+   "section": "LM R routines",
+   "entry": "R04 EV:607",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2?). RR/LR self test",
+   "owner": "D2?"
+  },
+  {
+   "row": "R30 (V82)",
+   "section": "LM R routines",
+   "entry": "V82PERF EV:945 → V82CALL R30.agc:95",
+   "status": "mapped",
+   "scenarios": [
+    "lm-doi-nassp"
+   ],
+   "note": "SB 5, lm-doi V82E at 60000 cs (FHD:206; lm-doi-stops.md)",
+   "owner": "E"
+  },
+  {
+   "row": "R31 (V83)",
+   "section": "LM R routines",
+   "entry": "V83PERF EV:966 → R31CALL R31.agc:36 / V83CALL :67",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous-tpm"
+   ],
+   "note": "lm-rendezvous-tpm V83E at 200 s (#690, d0ce93ae)",
+   "owner": "D2"
+  },
+  {
+   "row": "R60",
+   "section": "LM R routines",
+   "entry": "R60LEM R60_62.agc:107",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-descent",
+    "lm-doi-nassp",
+    "lm-p52-realign"
+   ],
+   "note": "SB 6 (lm-p63-descent \"ENTER on the attitude maneuver (R60)\", FHD:43-47), SB 5 (lm-doi ENTER on V50N18), SB 4 (lm-p52-stops.md)",
+   "owner": "Pinball split / E / D1b"
+  },
+  {
+   "row": "R61",
+   "section": "LM R routines",
+   "entry": "R61LEM P20-P25.agc:1285",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous"
+   ],
+   "note": "SB 10, lm-rendezvous (FHD:241-250; lm-rendezvous-stops.md)",
+   "owner": "D2"
+  },
+  {
+   "row": "R62 (V49)",
+   "section": "LM R routines",
+   "entry": "CREWMANU EV:1083 (R62FLASH R60_62.agc:563)",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned). Crew-defined maneuver",
+   "owner": "unassigned"
+  },
+  {
+   "row": "R63 (V89)",
+   "section": "LM R routines",
+   "entry": "V89PERF EV:1005 → V89CALL R63.agc:88",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2?)",
+   "owner": "D2?"
+  },
+  {
+   "row": "R64",
+   "section": "LM R routines",
+   "entry": "no R64 in Luminary099 (no label, no reference)",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not in this program (reviewer 1's list has it)",
+   "owner": "—"
+  },
+  {
+   "row": "R65",
+   "section": "LM R routines",
+   "entry": "R65LEM P20-P25.agc:1290",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous"
+   ],
+   "note": "R65LEM runs in lm-rendezvous (Lane F host check, 10-18)",
+   "owner": "D2"
+  },
+  {
+   "row": "R10/R11 (extra)",
+   "section": "LM R routines",
+   "entry": "R10,R11 P70-P71.agc:36",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-descent",
+    "lm-landing-ascent-nassp",
+    "lm-abort-p70-nassp",
+    "lm-abort-p71-nassp"
+   ],
+   "note": "SB 6/7 (p63-stops.md), SB 14 (lm-abort-stops.md)",
+   "owner": "Pinball split / A"
+  },
+  {
+   "row": "R12 (extra)",
+   "section": "LM R routines",
+   "entry": "R12LITES P20-P25.agc:5115",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-descent",
+    "lm-p63-nassp",
+    "lm-p63-lr-update"
+   ],
+   "note": "SB 6 (p63-stops.md, the C64 stop at R12LITES, since fixed)",
+   "owner": "B / Pinball split"
+  },
+  {
+   "row": "R21/R22 (extra)",
+   "section": "LM R routines",
+   "entry": "R21LEM P20-P25.agc:861; R22LEM :645",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous"
+   ],
+   "note": "SB 10 (FHD:241-250 R21 lock-on, R22 marks every 61 s; lm-rendezvous-stops.md)",
+   "owner": "D2"
+  },
+  {
+   "row": "R51 (extra)",
+   "section": "LM R routines",
+   "entry": "R51 P51-P53.agc:631",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-descent"
+   ],
+   "note": "SB 6, lm-p63-descent \"ENTER on fine align (R51)\" (FHD:43-47)",
+   "owner": "Pinball split"
+  },
+  {
+   "row": "R52/R54/R55 (extra)",
+   "section": "LM R routines",
+   "entry": "R52 P51-P53.agc:1223; R54 = CHKSDATA :812; R55 :785",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p52-realign",
+    "lm-p57"
+   ],
+   "note": "SB 4 (lm-p52-stops.md R52/R54/R55), SB 8 (lm-p57-stops.md R54, N93 torquing, FHD:178-189)",
+   "owner": "D1b / D1"
+  },
+  {
+   "row": "R59 / R77 (extra)",
+   "section": "LM R routines",
+   "entry": "R59 P51-P53.agc:1314; R77 EV:598 (V78)",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p57"
+   ],
+   "note": "R59 only; R77 is the V78 row",
+   "owner": "D1"
+  },
+  {
+   "row": "V40 zero CDU/ICDU (N20/N72)",
+   "section": "LM extended verbs",
+   "entry": "VBZERO EV:167",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D1b? or D2?)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V41 coarse align (N20/N72)",
+   "section": "LM extended verbs",
+   "entry": "VBCOARK EV:265",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D1b? or D2?)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V42 fine align",
+   "section": "LM extended verbs",
+   "entry": "IMUFINEK EV:463",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D1b?)",
+   "owner": "D1b?"
+  },
+  {
+   "row": "V43 load attitude error needles",
+   "section": "LM extended verbs",
+   "entry": "IMUATTCK EV:849",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V44 terminate RR continuous designate",
+   "section": "LM extended verbs",
+   "entry": "RRDESEND EV:365",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2?)",
+   "owner": "D2?"
+  },
+  {
+   "row": "V45",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare (operator error)",
+   "owner": "—"
+  },
+  {
+   "row": "V46",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V47 AGS initialization",
+   "section": "LM extended verbs",
+   "entry": "V47TXACT EV:520",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2?). Downlink to AGS",
+   "owner": "A2?"
+  },
+  {
+   "row": "V48 load DAP data (R03)",
+   "section": "LM extended verbs",
+   "entry": "DAPDISP EV:1290",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p42-nassp"
+   ],
+   "note": "DAPDATR1 and N47 loaded (R03) (#687)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V49 crew-defined maneuver (R62)",
+   "section": "LM extended verbs",
+   "entry": "CREWMANU EV:1083",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V50 please perform",
+   "section": "LM extended verbs",
+   "entry": "GOLOADLV EV:508",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p52-realign",
+    "lm-rendezvous",
+    "lm-doi-nassp",
+    "lm-p57"
+   ],
+   "note": "V50N25 in lm-p52 (FHD:75-85), V50N18 in lm-rendezvous and lm-doi (FHD:241-250, 197-206), lm-p57 V50N25 00014 (FHD:178-189)",
+   "owner": "C?"
+  },
+  {
+   "row": "V51",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V52 please mark X reticle",
+   "section": "LM extended verbs",
+   "entry": "GOLOADLV EV:508",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D1?). Not flashed in P57's technique 2 run",
+   "owner": "D1?"
+  },
+  {
+   "row": "V53 please mark Y reticle",
+   "section": "LM extended verbs",
+   "entry": "GOLOADLV EV:508",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D1?)",
+   "owner": "D1?"
+  },
+  {
+   "row": "V54 please mark X or Y",
+   "section": "LM extended verbs",
+   "entry": "GOLOADLV EV:508",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p52-realign",
+    "lm-p57"
+   ],
+   "note": "lm-p52 V54N71 (FHD:75-85), lm-p57 \"on V54\" (FHD:178-189)",
+   "owner": "D1b / D1"
+  },
+  {
+   "row": "V55 align time",
+   "section": "LM extended verbs",
+   "entry": "ALINTIME EV:546",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V56 terminate tracking (P20/P25)",
+   "section": "LM extended verbs",
+   "entry": "TRMTRACK EV:1107",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous-tpm"
+   ],
+   "note": "lm-rendezvous-tpm V56E (#690, d0ce93ae); TRMTRAK1 bridges (NOVAC FIXLOC), D2 fix PR next",
+   "owner": "D2"
+  },
+  {
+   "row": "V57 permit LR updates",
+   "section": "LM extended verbs",
+   "entry": "LRON EV:431",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-lr-update"
+   ],
+   "note": "R12 altitude updates; the velocity-update path is still open (#687)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V58 inhibit LR updates",
+   "section": "LM extended verbs",
+   "entry": "LROFF EV:437",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-lr-v58"
+   ],
+   "note": "LRINH clears, updates stop (#702)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V59",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V60 command LR to position 2",
+   "section": "LM extended verbs",
+   "entry": "LRPOS2K EV:197",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-v60-nassp"
+   ],
+   "note": "antenna to position 2, no 523; 1210/522/511 as Luminary 099 does (#702)",
+   "owner": "F?"
+  },
+  {
+   "row": "V61 display DAP attitude error",
+   "section": "LM extended verbs",
+   "entry": "DAPATTER EV:212",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (C?)",
+   "owner": "C?"
+  },
+  {
+   "row": "V62 display total attitude error",
+   "section": "LM extended verbs",
+   "entry": "TOTATTER EV:218",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (C?)",
+   "owner": "C?"
+  },
+  {
+   "row": "V63 sample radar (R04)",
+   "section": "LM extended verbs",
+   "entry": "R04 EV:607",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2?)",
+   "owner": "D2?"
+  },
+  {
+   "row": "V64 S-band antenna angles",
+   "section": "LM extended verbs",
+   "entry": "VB64 EV:830",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V65 disable U,V jets in DPS burns",
+   "section": "LM extended verbs",
+   "entry": "SNUFFOUT EV:1580",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (Pinball split? or F?)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V66 vehicles attached",
+   "section": "LM extended verbs",
+   "entry": "ATTACHED EV:1509",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2?)",
+   "owner": "D2?"
+  },
+  {
+   "row": "V67 W-matrix monitor",
+   "section": "LM extended verbs",
+   "entry": "V67 EV:1570",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2)",
+   "owner": "D2"
+  },
+  {
+   "row": "V68",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V69 force hardware restart",
+   "section": "LM extended verbs",
+   "entry": "VERB69 EV:81",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2). Restarts use the FLIGHT_GOJAM harness, not V69",
+   "owner": "A2"
+  },
+  {
+   "row": "V70 update liftoff time",
+   "section": "LM extended verbs",
+   "entry": "V70UPDAT UPDATE_PROGRAM.agc:155",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2?)",
+   "owner": "A2?"
+  },
+  {
+   "row": "V71 universal update, block",
+   "section": "LM extended verbs",
+   "entry": "V71UPDAT UPDATE_PROGRAM.agc:159",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2?)",
+   "owner": "A2?"
+  },
+  {
+   "row": "V72 universal update, single",
+   "section": "LM extended verbs",
+   "entry": "V72UPDAT UPDATE_PROGRAM.agc:163",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2?)",
+   "owner": "A2?"
+  },
+  {
+   "row": "V73 update AGC time",
+   "section": "LM extended verbs",
+   "entry": "V73UPDAT UPDATE_PROGRAM.agc:167",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2?)",
+   "owner": "A2?"
+  },
+  {
+   "row": "V74 erasable dump downlink",
+   "section": "LM extended verbs",
+   "entry": "DNEDUMP EV:1180",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2)",
+   "owner": "A2"
+  },
+  {
+   "row": "V75 enable U,V jets in DPS burns",
+   "section": "LM extended verbs",
+   "entry": "OUTSNUFF EV:1586",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V76 minimum impulse",
+   "section": "LM extended verbs",
+   "entry": "MINIMP EV:1039",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V77 rate command",
+   "section": "LM extended verbs",
+   "entry": "NOMINIMP EV:1055",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V78 start LR spurious-return test (R77)",
+   "section": "LM extended verbs",
+   "entry": "R77 EV:598",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "a ground/checkout LR test (R77). Lane to confirm",
+   "owner": "F?"
+  },
+  {
+   "row": "V79 end LR spurious-return test",
+   "section": "LM extended verbs",
+   "entry": "R77END EV:771",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "as V78",
+   "owner": "F?"
+  },
+  {
+   "row": "V80 update LM state vector",
+   "section": "LM extended verbs",
+   "entry": "LEMVEC EV:1191",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2?)",
+   "owner": "D2?"
+  },
+  {
+   "row": "V81 update CSM state vector",
+   "section": "LM extended verbs",
+   "entry": "CSMVEC EV:1201",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2?)",
+   "owner": "D2?"
+  },
+  {
+   "row": "V82 orbit parameters (R30)",
+   "section": "LM extended verbs",
+   "entry": "V82PERF EV:945",
+   "status": "mapped",
+   "scenarios": [
+    "lm-doi-nassp"
+   ],
+   "note": "SB 5, lm-doi V82E (FHD:206)",
+   "owner": "E"
+  },
+  {
+   "row": "V83 rendezvous parameters (R31)",
+   "section": "LM extended verbs",
+   "entry": "V83PERF EV:966",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous-tpm"
+   ],
+   "note": "lm-rendezvous-tpm (#690, d0ce93ae)",
+   "owner": "D2"
+  },
+  {
+   "row": "V84",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V85 RR LOS az/el",
+   "section": "LM extended verbs",
+   "entry": "VERB85 EV:1598",
+   "status": "mapped",
+   "scenarios": [
+    "lm-rendezvous-tpm"
+   ],
+   "note": "lm-rendezvous-tpm V85E at 120 s (#690, d0ce93ae)",
+   "owner": "D2"
+  },
+  {
+   "row": "V86",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V87",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V88",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V89 align X/Z axis to LOS (R63)",
+   "section": "LM extended verbs",
+   "entry": "V89PERF EV:1005",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2?)",
+   "owner": "D2?"
+  },
+  {
+   "row": "V90 out-of-plane display",
+   "section": "LM extended verbs",
+   "entry": "V90PERF EV:1026",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2)",
+   "owner": "D2"
+  },
+  {
+   "row": "V91 bank sum",
+   "section": "LM extended verbs",
+   "entry": "GOSHOSUM EV:1247",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "a rope checksum display for ground checkout. Lane C may cover it in the DSKY sweep",
+   "owner": "C?"
+  },
+  {
+   "row": "V92 IMU performance test",
+   "section": "LM extended verbs",
+   "entry": "SYSTEST EV:1226",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "ground IMU test (P07)",
+   "owner": "—"
+  },
+  {
+   "row": "V93 clear RENDWFLG",
+   "section": "LM extended verbs",
+   "entry": "WMATRXNG EV:1240",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (D2)",
+   "owner": "D2"
+  },
+  {
+   "row": "V94",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V95 no state vector update",
+   "section": "LM extended verbs",
+   "entry": "UPDATOFF EV:1213",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (A2?)",
+   "owner": "A2?"
+  },
+  {
+   "row": "V96 stop integration, go to P00",
+   "section": "LM extended verbs",
+   "entry": "VERB96 EV:1561",
+   "status": "TBD",
+   "scenarios": [],
+   "note": "TBD (unassigned)",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V97 verify engine failure",
+   "section": "LM extended verbs",
+   "entry": "GOLOADLV EV:508",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-descent"
+   ],
+   "note": "lm-p63-descent with no engine model, \"DVMON flashes V97 (thrust fail)\" (FHD:43-47)",
+   "owner": "Pinball split"
+  },
+  {
+   "row": "V98",
+   "section": "LM extended verbs",
+   "entry": "ALM/END EV:145",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "spare",
+   "owner": "—"
+  },
+  {
+   "row": "V99 please enable engine",
+   "section": "LM extended verbs",
+   "entry": "GOLOADLV EV:508",
+   "status": "mapped",
+   "scenarios": [
+    "lm-p63-descent",
+    "lm-doi-nassp",
+    "lm-landing-ascent-nassp"
+   ],
+   "note": "V99N62 in P63 (FHD:43-47), V99N40 in lm-doi (FHD:197-206), V99 in P12 (lm-p12-stops.md:3)",
+   "owner": "Pinball split / E / F"
+  }
+ ]
+}
