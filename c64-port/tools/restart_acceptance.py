@@ -80,6 +80,8 @@ PRG = STORE / 'dap-pass'
 # Result fields too bulky for the evidence copy (per-step records, profile).
 BULKY = ('records', 'profile', 'watched', 'by_request', 'words')
 TREE_LIMIT = 256 * 1024
+# The files a C64 replay row must hash (c64_replay).
+HASHES = ('log_sha256', 'store_sha256', 'manifest_sha256', 'prg_sha256')
 
 
 def sha(path):
@@ -206,13 +208,18 @@ def c64_verdict(c, at, commit):
     if not b:
         bad.append('no REU bounds result')
     else:
-        inside = b.get('ok') and not b.get('dma_outside')
+        inside = b.get('ok') is True and b.get('dma_outside') == 0
         text += f"; REU {'inside the layout' if inside else 'OUTSIDE the layout'}"
         if not inside:
             bad.append(f"{b.get('dma_outside') or 0} DMAs outside the REU layout"
                        + (f", writes in {', '.join(x['region'] for x in b['outside'])}" if b.get('outside') else ''))
-    if c.get('replay_skipped'):
+    if 'replay_matched_cs' in c and c.get('replay_skipped') is None:
+        bad.append('no record of skipped compares')
+    elif c.get('replay_skipped'):
         bad.append(f"skipped {', '.join(c['replay_skipped'])} (temporary compare skips)")
+    missing = [k for k in HASHES if not c.get(k)]
+    if 'replay_matched_cs' in c and missing:
+        bad.append(f"no {', '.join(missing)}")
     if c.get('ok') and c.get('exit') not in (0, None):
         bad.append(f"flight_scenario_vice.py exited {c['exit']}")
     if bad:

@@ -26,7 +26,8 @@ def host_row(name, ok=True, at=None):
 
 def replay(at, **kw):
     r = dict(ok=True, commit=HEAD, snap_at=at, replay_matched_cs=[50, 100, 150, 200, 250, 300], replay_differences=0,
-             replay_skipped=[], reu_bounds=dict(ok=True, dma_outside=0, outside=[]), records=[1, 2], exit=0)
+             replay_skipped=[], reu_bounds=dict(ok=True, dma_outside=0, outside=[]), records=[1, 2], exit=0,
+             **{k: '0' * 64 for k in ra.HASHES})
     r.update(kw)
     return r
 
@@ -51,6 +52,9 @@ class Fake:
                 (ra.frc.OUT / name).write_text(json.dumps(rows))
             return self.host_exit
         name, at = args[args.index('--scenario') + 1], int(args[args.index('--snap-cs') + 1])
+        for f in (ra.STORE / 'lm.reu', ra.STORE / 'lm-manifest.json', ra.PRG / f'{name}-{at}.prg'):
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_bytes(b'x')
         r = self.vice.get(name, replay(at))
         if r is not None:
             ra.VICE_RESULT.write_text(json.dumps(r))
@@ -65,6 +69,7 @@ class RestartAcceptance(unittest.TestCase):
             (t / d).mkdir()
         self.patches = [mock.patch.object(ra.frc, 'OUT', t / 'restart'), mock.patch.object(ra, 'STORE', t / 'store'),
                         mock.patch.object(ra, 'VICE_RESULT', t / 'store/flight-scenario-vice.json'),
+                        mock.patch.object(ra, 'PRG', t / 'store/dap-pass'),
                         mock.patch.object(ra, 'OUT', t / 'out'), mock.patch.object(ra, 'DOCS', t / 'docs'),
                         mock.patch.object(ra, 'EVIDENCE', t / 'evidence'),
                         mock.patch.object(ra, 'prerequisites', lambda: 0)]
@@ -153,6 +158,9 @@ class RestartAcceptance(unittest.TestCase):
             'differs from the host': replay(at, ok=False, replay_differences=2, replay_differ_at_cs=50),
             'no replay result': dict(ok=False, failure=['VICE timed out']),
             'exited 3': replay(at, exit=3),
+            'no record of skipped compares': {k: v for k, v in replay(at).items() if k != 'replay_skipped'},
+            'OUTSIDE the layout': replay(at, reu_bounds=dict(ok=True, outside=[])),
+            'no prg_sha256': replay(at, prg_sha256=None),
         }
         for why, c in cases.items():
             ok, text = ra.c64_verdict(c, at, HEAD)
