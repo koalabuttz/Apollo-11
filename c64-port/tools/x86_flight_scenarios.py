@@ -82,22 +82,50 @@ WORDS = range(0o61, 0o4000)
 # (149 m at 10,051 cs against a spread of 74 m) and grows to orbit.
 KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the harness (TLIFTOFF 10038 against 10005; '
                                 "the harness's other clock: 10022), and P11 navigates from that time",
-                         rn=600.0, vn=1.0)}   # measured 449 m, 0.73 m/s
+                         rn=600.0, vn=1.0),   # measured 449 m, 0.73 m/s
+         # The cage (channel 30 at 3,000 cs) reaches the DAP at the x86
+         # program's sample point 3,000 and at the harness's 3,002 (busy at
+         # 3,000 and 3,001 on both its clocks), so the DAP counts one trap
+         # fewer (NPTRAPS, NQTRAPS) and its jet words differ after the CDU
+         # jump at 5,800. The state vector is the same.
+         'lm-p52-imu-cage': dict(reason="the cage reaches the DAP at the x86 program's sample point 3,000 cs and the "
+                                        "harness's 3,002, so the DAP's trap counts and jet words differ",
+                                 rn=50.0, vn=0.15, words=32)}   # measured 26 words against 25
 UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # A FLIGHT_CORE scenario starts from a yaAGC core dump, which the x86
 # program never reads: the harness loads it and writes its state at the
 # first sample point (FLIGHT_SNAPSHOT=0), and the x86 program starts from
 # that header (X86_START). The header is made here, at test time only.
-# Scenarios the x86 program cannot fly yet: it stops at a routine whose
-# table is not certified (it has no yaAGC bridge). Each is flown and passes
-# only when it stops exactly there: exit 1, this stop line and this refusal.
-# Any other outcome fails, a full run included, so the entry goes when the
-# table is certified.
+# Scenarios the x86 program cannot fly through yet: it stops at a routine
+# whose table is not certified, or at a point no table keys (it has no
+# yaAGC bridge). Each is flown and passes only when it stops exactly there:
+# exit 1, this stop line (or, with 'point', this stop at any time) and this
+# refusal. Any other outcome fails, a full run included, so the entry goes
+# when the table is certified or the point keyed. With 'resume', the rest
+# is then flown from the harness's state at that centisecond (X86_START)
+# and compared as any scenario.
 DECDSP = dict(reason="LM P33's decimal display (DECDSP, 41,2523) is in Pinball, whose LM certificate is pending "
                      "(Lane C)",
               stop='no routine at basic 41,2523 (Z 02523 FB 62000) at 2508 cs',
               refusal='basic  41,2523: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
-GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP}
+# BURN_BABY_BURN's EXIT at 36,2236 (P63, MM 63 at TIG-35) leaves Z at
+# 36,2237, a basic word lm_burn_baby's flight build does not key: since
+# the FLIGHT_INTERP_STOP files build as flight builds (#739), the
+# interpreter runs that EXIT, and tools/flight_exit_returns.py misses the
+# word (it names the listing file 'BURN,_BABY,_BURN_--...'). The resume
+# point is after the stop and before any engine or radar starts.
+BURN_EXIT = dict(reason="lm_burn_baby keys no EXIT return at 36,2237: tools/flight_exit_returns.py names BURN_BABY_BURN's "
+                        "listing file wrongly (sent to the steward)",
+                 point='no routine at basic 36,2237 (Z 02237 FB 74000)', refusal='basic  36,2237: 1 arrivals, 1 slots\n',
+                 resume=20000)
+P47_PINBALL = dict(reason="LM P47's display (Pinball, 41,3321) is in Pinball, whose LM certificate is pending (Lane C)",
+                   stop='no routine at basic 41,3321 (Z 03321 FB 62000) at 4120 cs',
+                   refusal='basic  41,3321: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
+GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP, 'lm-p47-nassp': P47_PINBALL,
+        **{n: BURN_EXIT for n in ('lm-p63-descent', 'lm-p63-descent-thrust', 'lm-p63-descent-restart', 'lm-p63-nassp',
+                                  'lm-p63-v60-nassp', 'lm-p63-lr-dropout', 'lm-p63-lr-update', 'lm-p63-lr-v58',
+                                  'lm-p65-autoland-nassp', 'lm-p67-nassp', 'lm-landing-ascent-nassp',
+                                  'lm-abort-p70-nassp', 'lm-abort-p71-nassp')}}
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7), PIPTIME.
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
 PIPTIME = {'lm': 0o1234, 'cm': 0o1204}
@@ -186,15 +214,16 @@ def harness_state(m, cs, keys, env, at, clock='W'):
     return int(re.search(r'SNAP_CS (\d+)', text)[1]), words
 
 
-def with_start(m, cs, keys, env):
-    """env for the x86 program: with X86_START when the scenario starts
-    from a core dump (the harness's state at its first sample point)."""
-    if 'FLIGHT_CORE' not in env:
+def with_start(m, cs, keys, env, at=0):
+    """env for the x86 program: with X86_START, the harness's state at its
+    first sample point at or after centisecond at (work clock), when the
+    scenario starts from a core dump or at is given (a GAPS resume)."""
+    if 'FLIGHT_CORE' not in env and not at:
         return env
     start = OUT / f'start-{m}-{os.getpid()}.h'
     start.unlink(missing_ok=True)
     subprocess.run([str(fhd.OUT / f'flight-host-run-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []),
-                   cwd=ROOT, env={**os.environ, **env, 'FLIGHT_SCALED': 'W', 'FLIGHT_SNAPSHOT': f'0,{start}'},
+                   cwd=ROOT, env={**os.environ, **env, 'FLIGHT_SCALED': 'W', 'FLIGHT_SNAPSHOT': f'{at},{start}'},
                    capture_output=True, check=False)
     return {**env, 'X86_START': str(start)}
 
@@ -218,7 +247,7 @@ def distance(a, b):
     return sum((x - y) ** 2 for x, y in zip(a, b)) ** 0.5
 
 
-def compare(name, m, cs, keys, env, drop=''):
+def compare(name, m, cs, keys, env, drop='', resume=0):
     """One scenario: (summary row, passed). drop: key letters left out of
     the x86 run only (a check that the comparison sees them)."""
     modreg, rn, vn = STATE[m]
@@ -227,7 +256,7 @@ def compare(name, m, cs, keys, env, drop=''):
         return dict(scenario=name, mission=m, line=f'{name}: the harness wrote no snapshot'), False
     at, hw = ref
     other = harness_state(m, cs, keys, env, at, '1,1,2')
-    r, xcs, xw = x86_state(m, ''.join(c for c in keys if c not in drop), with_start(m, cs, keys, env), at)
+    r, xcs, xw = x86_state(m, ''.join(c for c in keys if c not in drop), with_start(m, cs, keys, env, resume), at)
     if other is None or xcs != at:
         why = 'the harness on its other clock wrote no snapshot' if other is None else \
             f'the x86 program stopped before {at} cs (exit {r.returncode}): {r.stderr.strip()[:200]}'
@@ -295,11 +324,18 @@ def fly_gap(name, m, cs, keys, env):
     r = subprocess.run([str(xb.OUT / f'x86-flight-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
                        env={**os.environ, **with_start(m, cs, keys, env), 'X86_SPEED': '0'}, capture_output=True,
                        text=True)
-    ok = r.returncode == 1 and r.stderr.strip() == g['stop'] and g['refusal'] in r.stdout
-    got = r.stderr.strip()[:200] or 'no stop line'
-    line = (f"{name}: stops as expected ({g['stop']}): {g['reason']}" if ok else
-            f"{name}: expected exit 1 with \"{g['stop']}\", got exit {r.returncode}: {got}")
-    return dict(scenario=name, mission=m, gap=g['reason'], x86_exit=r.returncode, ok=ok, line=line), ok
+    got = r.stderr.strip()
+    want = g.get('stop') or g['point'] + ' at N cs'
+    stopped = got == g['stop'] if 'stop' in g else re.fullmatch(re.escape(g['point']) + r' at \d+ cs', got)
+    ok = r.returncode == 1 and bool(stopped) and g['refusal'] in r.stdout + '\n'
+    line = (f"{name}: stops as expected ({got}): {g['reason']}" if ok else
+            f"{name}: expected exit 1 with \"{want}\", got exit {r.returncode}: {got[:200] or 'no stop line'}")
+    row = dict(scenario=name, mission=m, gap=g['reason'], x86_exit=r.returncode, ok=ok, line=line)
+    if ok and g.get('resume'):
+        rest, ok = compare(name, m, cs, keys, env, resume=g['resume'])
+        row.update(resumed=dict(rest, from_cs=g['resume']), ok=ok)
+        row['line'] = line + f"; from the harness's state at {g['resume']} cs: " + rest['line'].split(': ', 1)[1]
+    return row, ok
 
 
 def within_known(name, row):
@@ -309,9 +345,10 @@ def within_known(name, row):
     if not k or 'words' not in row or row['x86_exit'] != 0:
         return None
     mm, w = row['major_mode'], row['words']
-    inside = (mm['harness'] == mm['x86'] and w['differ'] <= w['limit'] and row['rn_metres']['difference'] <= k['rn']
-              and row['vn_mps']['difference'] <= k['vn'])
-    return f"{k['reason']} (envelope RN {k['rn']:.0f} m, VN {k['vn']} m/s)" if inside else None
+    inside = (mm['harness'] == mm['x86'] and w['differ'] <= k.get('words', w['limit'])
+              and row['rn_metres']['difference'] <= k['rn'] and row['vn_mps']['difference'] <= k['vn'])
+    words = f", {k['words']} words" if 'words' in k else ''
+    return f"{k['reason']} (envelope RN {k['rn']:.0f} m, VN {k['vn']} m/s{words})" if inside else None
 
 
 def main():

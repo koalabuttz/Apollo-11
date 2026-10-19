@@ -263,6 +263,17 @@ static void fs_gojam(fd_state *st){agc_word *w=st->s.words;
  st->io.channel34=st->io.channel35=0u;
  st->hw.channel33|=02000u;}
 
+/* X86_START: the harness wrote its state after the start point's pokes,
+ * channel changes, restart and key, so every input due at or before it
+ * (cs) has happened already and is skipped here. */
+static void fs_inputs_from(fs_inputs *in, unsigned long cs)
+{
+    while (in->poked < in->npokes && in->pokes[in->poked].cs <= cs) ++in->poked;
+    while (in->changed < in->nchans && in->chans[in->changed].cs <= cs) ++in->changed;
+    while (in->gojams < in->ngojams && in->gojam_at[in->gojams] <= cs) ++in->gojams;
+    while (in->keys[in->pressed] && in->key_at[in->pressed] <= cs) ++in->pressed;
+}
+
 enum { FS_NONE, FS_KEY, FS_GOJAM };
 /* At a sample point: the pokes due, then a restart if one is due
  * (FS_GOJAM), else a key if one is due (channel 15 and a KEYRUPT1 request;
