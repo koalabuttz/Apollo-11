@@ -1,14 +1,12 @@
-PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-0a5eee36a04458f04fc628014f421feb7d968f3e78dcbb2524fcc6e655229731  build/cm-stable-orbit-1.prg
-72e93d7e622faf977f890db3662c59df3f817bde3646f188d7fb10cd469eccaa  build/cm-stable-orbit-2.prg
-04d2a250e398bcca3b4dd5e009355cb3f285f0b56b3fbf8643ce982bc447fe60  build/cm-stable-orbit-3.prg
-
-$ make vice-cm-stable-orbit
+# make vice-cm-stable-orbit at b5d3d3dc7cb4642fe57d8fa92d8e002b6bd3f6d5
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw -DAGC_TRANSFER_DANZIG_MARKER -DIRC_GROUP=1 -DIRC_CM_ONLY -DCM_STABLE_ORBIT_KEEP0=0x1f03fffffffff -DCM_STABLE_ORBIT_KEEP1=0xb003000000 -Wl,-Map,build/cm-stable-orbit-1.map src/cm_stable_orbit.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_stable_orbit_target.c platform/c64/cm_stable_orbit_diagnostic.c -o build/cm-stable-orbit-1.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw -DAGC_TRANSFER_DANZIG_MARKER -DIRC_GROUP=2 -DIRC_CM_ONLY -DCM_STABLE_ORBIT_KEEP0=0xfffffc800000000 -DCM_STABLE_ORBIT_KEEP1=0xb001047fff -Wl,-Map,build/cm-stable-orbit-2.map src/cm_stable_orbit.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_stable_orbit_target.c platform/c64/cm_stable_orbit_diagnostic.c -o build/cm-stable-orbit-2.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -fstatic-stack -mlto-zp=110 -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw -DAGC_TRANSFER_DANZIG_MARKER -DIRC_GROUP=3 -DIRC_CM_ONLY -DCM_STABLE_ORBIT_KEEP0=0x1000600000020 -DCM_STABLE_ORBIT_KEEP1=0xfffffff8380 -Wl,-Map,build/cm-stable-orbit-3.map src/cm_stable_orbit.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_stable_orbit_target.c platform/c64/cm_stable_orbit_diagnostic.c -o build/cm-stable-orbit-3.prg
 for p in build/cm-stable-orbit-1.prg build/cm-stable-orbit-2.prg build/cm-stable-orbit-3.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PASS: VICE PAL cm-stable-orbit-1.prg: 48 checks, 0 failures
-PRG sha256: 0a5eee36a04458f04fc628014f421feb7d968f3e78dcbb2524fcc6e655229731 cm-stable-orbit-1.prg
-PASS: VICE PAL cm-stable-orbit-2.prg: 55 checks, 0 failures
-PRG sha256: 72e93d7e622faf977f890db3662c59df3f817bde3646f188d7fb10cd469eccaa cm-stable-orbit-2.prg
-PASS: VICE PAL cm-stable-orbit-3.prg: 36 checks, 0 failures
-PRG sha256: 04d2a250e398bcca3b4dd5e009355cb3f285f0b56b3fbf8643ce982bc447fe60 cm-stable-orbit-3.prg
+PASS: VICE PAL cm-stable-orbit-1.prg: 49 checks, 0 failures
+PRG sha256: 75607b385ebc02cee8395d594443dfecb7f9fde0211b9d77ff2c55115038bd78 cm-stable-orbit-1.prg
+PASS: VICE PAL cm-stable-orbit-2.prg: 54 checks, 0 failures
+PRG sha256: f7fcb94c95eeea58f4f7ff04e5fef0523607d26e210bbd10b828250cf2e3a34a cm-stable-orbit-2.prg
+PASS: VICE PAL cm-stable-orbit-3.prg: 37 checks, 0 failures
+PRG sha256: ece62e95237e2371c5e49058c53e0d155a9a7070d975e4815a00fea2fc71822c cm-stable-orbit-3.prg
 exit 0

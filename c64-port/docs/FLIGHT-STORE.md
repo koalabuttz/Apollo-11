@@ -1143,9 +1143,7 @@ port) runs one mission:
    unlike it, the timers are compared). So a window that ran with no stops also has to match
    the host. Until the CM idle pass is charged as idle on the C64 (it is
    module work there when a job ends into it, idle on the host), CM windows
-   skip what that tick moves: DSPCNT, DSRUPTSW, DSPTAB's sent bit and
-   the clock of checkpoints a centisecond apart, and the whole of such a
-   checkpoint when other words differ too, unless it ends the window
+   skip what that tick moves: DSPCNT, DSRUPTSW and DSPTAB's sent bit
    (`SCHEDULE_SKIP`; the run prints
    `skipped:` when it uses it; `--replay-exact` turns it off). The timers
    TIME1-TIME6 are compared too. Until the work charges agree (Interpreter
