@@ -3,7 +3,9 @@
 """Write one program's native_output_tests evidence
 (docs/port-coverage.json, integrated_applications).
 
-  native_output_acceptance.py lm|cm [--replay-dir DIR] [--run RUN.json ...] [--downlink DIR] [--no-evidence]
+  native_output_acceptance.py lm|cm                runs the downlink check and the map's C64 windows, then writes
+  native_output_acceptance.py lm|cm --from-results [--replay-dir DIR] [--run RUN.json ...] [--downlink DIR] [--no-evidence]
+                                                   writes from results already on disk
   native_output_acceptance.py lm|cm --windows   print the C64 --replay runs the doc needs
   native_output_acceptance.py --stamp-downlink  after tools/flight_downlink_check.py: record the
                                                 commit its summary.json belongs to
@@ -57,6 +59,9 @@ WORK = ROOT / 'build/flight-store/dap-pass'
 # (tools/flight_scenario_vice.py END_CHANNELS).
 CHANNELS = [5, 6, 0o11, 0o12, 0o13, 0o14, 0o34, 0o35]
 STATE_WORDS = 1 + 2048 + len(CHANNELS) + 1
+# This tool's own files do not make a result stale (as program_acceptance.py's).
+pa.SOURCES = pa.SOURCES + [':!tools/native_output_acceptance.py', ':!tests/test_native_output_acceptance.py',
+                           ':!tools/mk/native-output-acceptance.mk']
 
 
 def host_states(header):
@@ -251,7 +256,7 @@ def write_doc(m, assessed, counts, stale_runs, stale_downlink, evidence, commit,
         lines.append(f"| {pa.cell(row['row'])} | {row['kind']} | {chans} | {verdict} | {pa.cell(a['text'])} | "
                      f"{pa.cell(row.get('note') or '')} |")
     lines += ['', '## Evidence', '']
-    lines += [f'- `{path}` (sha256 `{digest[:16]}`)' for _, (path, digest) in sorted(evidence.items(), key=str)] or \
+    lines += [f'- `{path}` (sha256 `{digest[:16]}...`)' for _, (path, digest) in sorted(evidence.items(), key=str)] or \
         ['- none at this commit']
     if stale_runs or stale_downlink:
         lines += ['', '## Stale inputs (not counted)', '']
@@ -259,11 +264,29 @@ def write_doc(m, assessed, counts, stale_runs, stale_downlink, evidence, commit,
                   if any(f.startswith(f'{w[0]}-') for w in windows)]
         lines += [f'- downlink summary: run at `{stale_downlink}`'] if stale_downlink else []
     lines += ['', '## Reproduce', '', '```sh', 'make flight-store',
-              'python3 tools/flight_downlink_check.py --vice && python3 tools/native_output_acceptance.py --stamp-downlink',
-              f'python3 tools/native_output_acceptance.py {m} --windows | sh   # each C64 window',
-              f'python3 tools/native_output_acceptance.py {m}', '```', '']
+              f'python3 tools/native_output_acceptance.py {m}   # runs the downlink check and each C64 window',
+              '```', '']
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text('\n'.join(lines))
+
+
+def window_command(w):
+    s, snap, cs, k, every = list(w) + [1, 100][len(w) - 3:]
+    return (['tools/flight_scenario_vice.py', '--scenario', s, '--snap-cs', str(snap), '--cs', str(cs), '--replay',
+             '--replay-every', str(every)] + (['--chain', str(k)] if k > 1 else []))
+
+
+def run_needed(m, rows, windows, downlink):
+    """The default run (tools/acceptance_bundle.py): the downlink check on the
+    map's host scenarios and C64 windows, then each C64 --replay window. A
+    failing run is not an error here: its result goes in the doc."""
+    only = sorted({x for row in rows if row['kind'] == 'downlink' for x in row.get('host', []) + row.get('c64', [])})
+    if only:
+        subprocess.run([sys.executable, 'tools/flight_downlink_check.py', '--vice', '--only', ','.join(only)], cwd=ROOT)
+        downlink.mkdir(parents=True, exist_ok=True)
+        (downlink / 'commit').write_text(flight_holes.source_commit() + '\n')
+    for w in windows:
+        subprocess.run([sys.executable, *window_command(w)], cwd=ROOT)
 
 
 def main(argv=None):
@@ -278,6 +301,7 @@ def main(argv=None):
     ap.add_argument('--no-evidence', action='store_true')
     ap.add_argument('--note')
     ap.add_argument('--windows', action='store_true', help="print the map's C64 --replay runs and exit")
+    ap.add_argument('--from-results', action='store_true', help='do not run anything: write from the results on disk')
     ap.add_argument('--stamp-downlink', action='store_true',
                     help="write the commit flight_downlink_check.py's summary belongs to")
     a = ap.parse_args(argv)
@@ -292,10 +316,10 @@ def main(argv=None):
     windows = sorted({tuple(w) for row in rows for w in row.get('windows', [])})
     if a.windows:
         for w in windows:
-            s, snap, cs, k, every = list(w) + [1, 100][len(w) - 3:]
-            print(f'python3 tools/flight_scenario_vice.py --scenario {s} --snap-cs {snap} --cs {cs} --replay '
-                  f'--replay-every {every}' + (f' --chain {k}' if k > 1 else ''))
+            print(' '.join(['python3', *window_command(w)]))
         return 0
+    if not a.from_results:
+        run_needed(m, rows, windows, a.downlink)
     commit = a.commit or flight_holes.source_commit()
     replays, stale_runs = pa.load_replays(sorted(a.replay_dir.glob('*.json')) + a.run, m, commit)
     downlink, stale_downlink = load_downlink(a.downlink, commit)
