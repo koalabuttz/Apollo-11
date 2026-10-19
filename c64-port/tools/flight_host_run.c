@@ -911,11 +911,23 @@ static void word_fetch(unsigned long *words,int *in){agc_word fb=(agc_word)(*cel
  if(*in==1&&!now&&at!=AGC_TRANSFER_NONE&&(t=holder(view(),sb,&call))&&(w=weight(t))!=FLIGHT_PER_WORD)
   *words+=w&~FLIGHT_PLUS_WORDS;
  *in=now;}
+/* The output channels a routine must also leave as yaAGC does (channel 13
+ * as the CPU can write it, 043777): a routine that drops a channel write
+ * (an I/O record copied back over it, src/flight_io.c) misses even when
+ * the erasable words agree. chan_diff says how, for the miss report. */
+static const unsigned short out_ch[]={5,6,010,011,012,013,014};
+static char chan_diff[40];
+static int channels_differ(agc_hardware *hw){unsigned i,k;
+ for(i=0;i<sizeof out_ch/sizeof out_ch[0];++i){agc_word nat,ref;unsigned c=out_ch[i];
+  for(k=0;ch[k]!=c;++k);
+  nat=*hwc(hw,k);ref=(agc_word)(m.InputChannel[c]&077777);if(c==013u){nat&=043777u;ref&=043777u;}
+  if(nat!=ref){snprintf(chan_diff,sizeof chan_diff," ch%o %05o/%05o",c,(unsigned)nat,(unsigned)ref);return 1;}}
+ return 0;}
 static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc_hardware *hw0,apollo_overlay_state *after,
                      agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first,int interp){
  static apollo_overlay_state timed;static agc_hardware timed_hw;
  long n;int in,tin;uint16_t target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0,words=0,first_words=0;int in_interp=-1;
- first[5]=077777u;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);c0=m.CycleCounter;
+ first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);c0=m.CycleCounter;
  for(n=0;n<limit;++n){
   /* After RESUME, yaAGC is at ZRUPT with BRUPT substituted for the next
    * instruction: the native continuation is that point. */
@@ -925,8 +937,10 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
     * a copy of bit 15, where the native frontier holds 15 bits (#409). */
    for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&!cdu_counter(i)
                           &&(i==2u&&interp?(mword(2)^after->words[2])&077777u:mword(i)!=after->words[i]))break;
-   if(i==2048u){adopt(after,hw);*pending|=got;substitute=m.SubstituteInstruction;span_mct=(unsigned long)(m.CycleCounter-c0);word_mct=words;return n;}
-   if(first[5]==077777u){for(i=0;i<2048u;++i)first[i]=mword(i);first_mct=(unsigned long)(m.CycleCounter-c0);first_words=words;timed=*after;timed_hw=*hw;adopt(&timed,&timed_hw);got_first=got;}}
+   int words_agree=i==2048u;
+   if(words_agree&&!channels_differ(hw)){adopt(after,hw);*pending|=got;substitute=m.SubstituteInstruction;span_mct=(unsigned long)(m.CycleCounter-c0);word_mct=words;return n;}
+   if(first[5]==077777u){for(i=0;i<2048u;++i)first[i]=mword(i);first_mct=(unsigned long)(m.CycleCounter-c0);first_words=words;timed=*after;timed_hw=*hw;adopt(&timed,&timed_hw);got_first=got;}
+   if(words_agree)break;}   /* the words agree, a channel does not: no later arrival will do better */
   if(work)word_fetch(&words,&in_interp);
   if(step(&got))return -1;}
  /* A miss: the routine took as long as yaAGC to its first arrival there
@@ -961,14 +975,14 @@ static int scaler_latch(const apollo_overlay_state *before,const flight_io *io0,
 
 /* Routines whose result yaAGC never matched. */
 enum { MISSES=256 };
-static struct { const char *name; uint16_t key; uint8_t in; unsigned long count; agc_word word[2048],ref[2048]; int arrived; } misses[MISSES];
+static struct { const char *name; uint16_t key; uint8_t in; unsigned long count; agc_word word[2048],ref[2048]; int arrived; char chan[40]; } misses[MISSES];
 static unsigned nmisses;
 static void miss(const char *name,const agc_word *before,agc_word sb,const agc_word *after,const agc_word *first){int in;uint16_t key=point(before,sb,&in);unsigned i;
  if(getenv("FLIGHT_MISS_LOG"))printf("miss %s at %lu cs: Z %05o FB %05o Q %05o (before), Q %05o/%05o after (native/yaAGC)\n",name,now(before),(unsigned)before[5],(unsigned)before[4],(unsigned)before[2],(unsigned)after[2],(unsigned)first[2]);
  for(i=0;i<nmisses;++i)if(misses[i].name==name&&misses[i].key==key&&misses[i].in==(uint8_t)in){++misses[i].count;return;}
  if(nmisses<MISSES){misses[nmisses].name=name;misses[nmisses].key=key;misses[nmisses].in=(uint8_t)in;misses[nmisses].count=1;
   memcpy(misses[nmisses].word,after,sizeof misses[nmisses].word);memcpy(misses[nmisses].ref,first,sizeof misses[nmisses].ref);
-  misses[nmisses].arrived=first[5]!=077777u;++nmisses;}}
+  misses[nmisses].arrived=first[5]!=077777u;memcpy(misses[nmisses].chan,chan_diff,sizeof chan_diff);++nmisses;}}
 
 /* The flight resident's fixed_data hook (platform/c64/resident_flight.c
  * rk_fixed_word): the rope word at every point where it stops between
@@ -1329,7 +1343,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  for(i=0;i<nmisses;++i){unsigned k,d=0;printf("  %s %02o,%04o %s: %lu times;",misses[i].in?"interp":"basic ",misses[i].key/1024u,misses[i].key%1024u+02000u,misses[i].name,misses[i].count);
   if(!misses[i].arrived)printf(" yaAGC never reached the native continuation Z %05o\n",(unsigned)misses[i].word[5]);
   else{for(k=0;k<2048u;++k)if(!(k>=024u&&k<=031u)&&misses[i].word[k]!=misses[i].ref[k]&&d++<6u)printf(" %04o %05o/%05o",k,(unsigned)misses[i].word[k],(unsigned)misses[i].ref[k]);
-   printf("%s (native/yaAGC)\n",d>6u?" ...":"");}}
+   printf("%s%s (native/yaAGC)\n",d>6u?" ...":"",misses[i].chan);}}
  printf("unregistered or refused points (%u):\n",nholes);
  for(i=0;i<nholes;++i)printf("  %s %02o,%04o Z %05o FB %05o Q %05o: %lu arrivals, %lu instructions%s%s\n",holes[i].in?"interp":"basic ",
   holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q,holes[i].count,holes[i].instructions,

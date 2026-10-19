@@ -415,6 +415,36 @@ __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2
     st=apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
     return st;
 }
+#if !RK_LM
+/* On the CM channels 11-14 have two copies: rk_device's, which the tables'
+ * records (cm_native_io) hold, and rk_hardware's, which the routines that
+ * write a channel straight (p->hardware: the T4RUPT IMU code's WOR and
+ * WAND, KEYRUPT's DSALMOUT) and the CDU drive use. After each step the copy
+ * that changed since the last step gives its value to the other, as
+ * src/flight_io.c's flight_io_leave does after each routine on the host.
+ * When both changed, the record's stands, the host's rule too (here two
+ * routines in one step can each write a different copy, and neither is
+ * reliably the later). The merge ends the step, so the next step's timers
+ * (rk_timer_phase's TIME6 enable, channel 13) and CDU drive (channel 14)
+ * see it. */
+static agc_word rk_ch_last[4];
+static const uint8_t rk_ch_at[4] = {
+    offsetof(agc_hardware, channel11), offsetof(agc_hardware, channel12),
+    offsetof(agc_hardware, channel13), offsetof(agc_hardware, channel14)};
+__attribute__((noinline)) static void rk_channels_merge(void)
+{
+    agc_word *d = &rk_device.channel11; /* cm_native_io: channels 11-14 first, in order */
+    uint8_t i;
+    for (i = 0; i < 4u; ++i, ++d) {
+        agc_word *h = (agc_word *)((uint8_t *)&rk_hardware + rk_ch_at[i]);
+        if (*d != rk_ch_last[i])
+            *h = *d;
+        else
+            *d = *h;
+        rk_ch_last[i] = *d;
+    }
+}
+#endif
 /* The hardware restart (docs/FLIGHT-RESTART.md, Entry contract), at a
  * step boundary: the GOJAM module's change to the image and rk_hardware,
  * every interrupt request dropped, the RESTART lamp lit, the killed jobs'
@@ -425,6 +455,9 @@ __attribute__((noinline)) uint8_t rk_gojam(void)
 {
     apollo_ov2_restart_keep_pinned(&rk_runtime); /* a latched fault refuses the module */
     if (rk_run_module((apollo_ov2_cont){RK_MODULE_GOJAM, 0}) != APOLLO_OV2_OK) return 1u;
+#if !RK_LM
+    rk_channels_merge();
+#endif
     rk_pending = 0;
     rk_restart_lamp = 1u;
     apollo_ov2_restart_keep_pinned(&rk_runtime);
@@ -675,6 +708,7 @@ __attribute__((noinline)) static enum exec_status rk_memo_step(uint16_t stop_phy
 #endif
 __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical)
 {
+    enum exec_status st;
     /* The soft stack ran into the pinned module below it. */
     if (*(volatile uint8_t *)RK_STACK_CANARY != RK_STACK_CANARY_VALUE)
         return EXEC_OUT_OF_SCOPE; /* stop: not a restart (rk_gojam) */
@@ -689,9 +723,18 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
         if (stop_physical == AGC_TRANSFER_NONE && !rk_hardware.in_interrupt && w[067u] == 077777u &&
             !w[01362u] &&
             ((w[4] == 066000u && w[5] == RK_MEMO_PASS) ||
-             (w[4] == 02000u && w[5] == RK_MEMO_ADVAN)))
-            return rk_memo_step(stop_physical);
+             (w[4] == 02000u && w[5] == RK_MEMO_ADVAN))) {
+            st = rk_memo_step(stop_physical);
+            goto out;
+        }
     }
 #endif
-    return rk_step_run(stop_physical);
+    st = rk_step_run(stop_physical);
+#ifdef RK_IDLE_MEMO
+out:
+#endif
+#if !RK_LM
+    rk_channels_merge();
+#endif
+    return st;
 }
