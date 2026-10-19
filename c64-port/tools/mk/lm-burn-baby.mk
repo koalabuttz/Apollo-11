@@ -13,6 +13,7 @@ build/test-lm-burn-baby: $(LM_BB_SRC) tests/test_lm_burn_baby.c tests/lm_burn_ba
 test-lm-burn-baby: build/test-lm-burn-baby
 	./build/test-lm-burn-baby
 	python3 tools/lm_burn_baby_source.py
+	python3 tools/flight_exit_returns.py
 sanitize-lm-burn-baby: | build
 	$(CC) $(CPPFLAGS) -std=c99 -g -O1 -Wall -Wextra -Werror $(LM_BB_FLAGS) -DLMBB_COUNT_PATHS -fsanitize=address,undefined $(LM_BB_SRC) tests/test_lm_burn_baby.c -o build/test-lm-burn-baby-sanitize
 	ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-burn-baby-sanitize
