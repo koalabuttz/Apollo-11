@@ -21,13 +21,14 @@
  * the file's INHINT/RELINT, and its SUPERBNK must select bank 43. Both
  * missions share src/self_check_body.inc; Luminary099's words sit two lower
  * than Comanche055's. */
-#define SELF_CHECK_ROUTINES 11u
+#define SELF_CHECK_ROUTINES 14u
 /* Two routine tables per mission: the idle loop (SELFCHK and the return
- * through SELFRET, src/{lm,cm}_self_check_idle.c), which the flight store
+ * through SELFRET, with the loop's words 3305, 3334 and 3336 as entries,
+ * src/{lm,cm}_self_check_idle.c), which the flight store
  * loads alone, and the rest of the file, with the three words the idle loop
  * continues at after CCS SMODE (3307, 3311 and 3312, Comanche055 numbering)
  * as entries. A program registers both. */
-#define SELF_CHECK_IDLE_ROUTINES 2u
+#define SELF_CHECK_IDLE_ROUTINES 5u
 #define SELF_CHECK_MAIN_ROUTINES 12u
 extern const agc_routine_table lm_self_check_routines, cm_self_check_routines;
 extern const agc_routine_table lm_self_check_idle_routines, cm_self_check_idle_routines;

@@ -4,28 +4,28 @@
  "aggregates": {
   "self-check-cm": {
    "record": "evidence/self-check/self-check-cm-c64-cover.json",
-   "sha256": "63696eb0caab89a73b987670a2d6bdfa63f75645c569d663b8299764f6f4cb06",
+   "sha256": "c1043153726e52cb3adc1efd7a604bbadd88aaa6e06bf1e7b2702f955c670b76",
    "host_cases": 4096,
-   "c64_rows": 78,
-   "host_branch_arcs": 436,
-   "c64_branch_arcs": 436,
+   "c64_rows": 87,
+   "host_branch_arcs": 442,
+   "c64_branch_arcs": 442,
    "host_branches_missing_on_c64": 0
   },
   "self-check-cm-rope": {
    "record": "evidence/self-check/self-check-cm-rope-c64-cover.json",
-   "sha256": "9acfaf7045bb69cad5d9dee1be5241309c004668e927b091f3ec4c7160a18937",
+   "sha256": "2095cce7d2bd37ad465a642e0749c9fa53be771e8a50bb262410984d22415a78",
    "host_cases": 43,
-   "c64_rows": 7,
-   "host_branch_arcs": 400,
-   "c64_branch_arcs": 400,
+   "c64_rows": 10,
+   "host_branch_arcs": 406,
+   "c64_branch_arcs": 406,
    "host_branches_missing_on_c64": 0
   }
  },
  "linked_sources": {
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
   "src/cm_interbank_idle.c": "9f4b1b11e5e37356ceb7cbe384f6fd0e6f1f511a1f5a8249efada9991b0f221c",
@@ -38,48 +38,60 @@
  "host_branches_missing_on_c64": [],
  "entry_slots_host_c64": [
   [
-   373,
+   293,
+   12
+  ],
+  [
+   293,
+   1
+  ],
+  [
+   293,
+   12
+  ],
+  [
+   293,
+   1
+  ],
+  [
+   293,
+   9
+  ],
+  [
+   293,
+   1
+  ],
+  [
+   293,
    10
   ],
   [
-   373,
-   8
+   293,
+   1
   ],
   [
-   373,
-   5
+   292,
+   10
   ],
   [
-   373,
-   8
+   292,
+   1
   ],
   [
-   372,
-   5
-  ],
-  [
-   372,
-   7
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
-   8
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
+   292,
    9
+  ],
+  [
+   292,
+   5
+  ],
+  [
+   292,
+   9
+  ],
+  [
+   292,
+   6
   ]
  ],
  "result": "PASS"

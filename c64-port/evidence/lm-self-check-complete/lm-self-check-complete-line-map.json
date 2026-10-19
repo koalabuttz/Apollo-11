@@ -737,7 +737,7 @@
     "04635"
    ],
    "kind": "instruction",
-   "native": "src/self_check_body.inc (L3334, Comanche055 numbering)",
+   "native": "src/self_check_body.inc (L3336, Comanche055 numbering)",
    "executed_by_oracle": true
   },
   {
