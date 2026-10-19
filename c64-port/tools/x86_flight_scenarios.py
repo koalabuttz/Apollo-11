@@ -32,7 +32,14 @@ time (LM P78: the harness at PIPTIME 19,234 cs, the x86 program at
 41,786). So each run's own state vector is compared with the true orbit
 FLIGHT_RR gives at that run's PIPTIME, and the x86 program's error must be
 within SPREAD_K times the larger of the harness's two errors, plus
-RN_FLOOR / VN_FLOOR.
+RN_FLOOR / VN_FLOOR. That own state only coasts, so it cannot see the
+radar: with FLIGHT_RR the other vehicle's state, the one the marks update,
+is checked too, against the true orbit at its own time (TETOTHER). Its
+errors must be within SPREAD_K times the larger of the harness's two plus
+RN_FLOOR / VN_FLOOR, and its time at most TET_BEHIND behind the earlier of
+the harness's: with the radar off, the target moved, the marks or the
+incorporations (V33E) left out it stays thousands of centiseconds behind
+or kilometres off.
 KNOWN lists scenarios outside the RN/VN bounds with the reason and an
 envelope of their own: such a run is reported and does not fail when it
 reaches the compare point, exits 0, has the same major mode, stays within
@@ -43,8 +50,9 @@ build/x86-flight/scenarios/summary.json.
 
 Scenarios that need a model the x86 program does not have yet (the
 landing radar, the NASSP P63 core, uplink, stolen time) are left out, and
-GAPS lists those that stop at a routine not yet certified. Needs yaAGC (deps/virtualagc) for the harness; the x86
-program itself links none.
+GAPS lists those that stop at a routine not yet certified: they pass only
+when they stop exactly there. Needs yaAGC (deps/virtualagc) for the
+harness; the x86 program itself links none.
 """
 import argparse, json, math, os, re, subprocess, sys
 from pathlib import Path
@@ -57,6 +65,12 @@ import x86_flight_build as xb  # noqa: E402
 OUT = xb.OUT / 'scenarios'
 SPREAD_K, RN_FLOOR, VN_FLOOR = 4.0, 50.0, 0.15
 WORDS_K, WORDS_PLUS = 1.5, 10
+# Marks move the other vehicle's state time (TETOTHER) on: the x86 program's
+# may be ahead of the harness's (it marks at other times) but at most this
+# far behind the earlier of the harness's two (the most measured: CM P20,
+# 355 cs). With no marks it stays where the scenario's first integration
+# left it (LM 4,704 cs).
+TET_BEHIND = 1000
 WORDS = range(0o61, 0o4000)
 # The gyrocompass loop polls the liftoff discrete, so when the AGC sees
 # liftoff depends on its clock schedule: TLIFTOFF is 10,005 cs on the
@@ -69,12 +83,21 @@ KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the har
                          rn=600.0, vn=1.0)}   # measured 449 m, 0.73 m/s
 UNSUPPORTED = ('FLIGHT_CORE', 'FLIGHT_LR', 'FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # Scenarios the x86 program cannot fly yet: it stops at a routine whose
-# table is not certified (it has no yaAGC bridge).
-GAPS = {name: "LM P33's decimal display (DECDSP, 41,2523) is in Pinball, whose LM certificate is pending (Lane C)"
-        for name in ('lm-cdh', 'lm-cdh-csm')}
+# table is not certified (it has no yaAGC bridge). Each is flown and passes
+# only when it stops exactly there: exit 1, this stop line and this refusal.
+# Any other outcome fails, a full run included, so the entry goes when the
+# table is certified.
+DECDSP = dict(reason="LM P33's decimal display (DECDSP, 41,2523) is in Pinball, whose LM certificate is pending "
+                     "(Lane C)",
+              stop='no routine at basic 41,2523 (Z 02523 FB 62000) at 2508 cs',
+              refusal='basic  41,2523: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
+GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP}
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7), PIPTIME.
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
 PIPTIME = {'lm': 0o1234, 'cm': 0o1204}
+# The other vehicle's block (RRECTOTH ... XKEPOTH: RRECT, VRECT, TET at +014,
+# DELTA +016, NUV +024, RCV +032, VCV +040): LM the CSM's, CM the LM's.
+OTHER = {'lm': 0o1554, 'cm': 0o1626}
 MOON_MU = 4.9028e12
 
 
@@ -99,15 +122,35 @@ def kepler(s, dt):
     return [f * s[i] + g * s[i + 3] for i in range(3)], [fd * s[i] + gd * s[i + 3] for i in range(3)]
 
 
+def dp(w, a):
+    return ones(w[a]) * 16384 + ones(w[a + 1])
+
+
 def truth_errors(m, env, w):
     """The run's own state vector against FLIGHT_RR's true orbit at its
     PIPTIME: (RN error m, VN error m/s, PIPTIME cs)."""
     t0, lm, csm = env['FLIGHT_RR'].split(':')
     own = [float(v) for v in (lm if m == 'lm' else csm).split(',')]
     modreg, rn, vn = STATE[m]
-    pip = ones(w[PIPTIME[m]]) * 16384 + ones(w[PIPTIME[m] + 1])
+    pip = dp(w, PIPTIME[m])
     r, v = kepler(own, (pip - int(t0)) * 0.01)
     return distance(vector(w, rn, 29, 1.0), r), distance(vector(w, vn, 7, 100.0), v), pip
+
+
+def other_errors(m, env, w):
+    """The other vehicle's state vector, the one the marks update, against
+    FLIGHT_RR's true orbit at its time TETOTHER: (position error m,
+    velocity error m/s, TETOTHER cs). In the moon's sphere the conic
+    RCV/VCV is at 2^27 m / 2^5 m/cs and the deviation DELTA/NUV 2^9 / 2^6
+    below it (RECTIFY's shifts with PBODY 2)."""
+    t0, lm, csm = env['FLIGHT_RR'].split(':')
+    true = [float(v) for v in (csm if m == 'lm' else lm).split(',')]
+    o = OTHER[m]
+    tet = dp(w, o + 0o14)
+    r, v = kepler(true, (tet - int(t0)) * 0.01)
+    pos = [dp(w, o + 0o32 + 2 * i) * 2.0 ** -1 + dp(w, o + 0o16 + 2 * i) * 2.0 ** -10 for i in range(3)]
+    vel = [(dp(w, o + 0o40 + 2 * i) * 2.0 ** -23 + dp(w, o + 0o24 + 2 * i) * 2.0 ** -29) * 100.0 for i in range(3)]
+    return distance(pos, r), distance(vel, v), tet
 
 
 def ones(v):
@@ -185,6 +228,21 @@ def compare(name, m, cs, keys, env, drop=''):
                      vn_error_mps=dict(harness=round(h_err[1], 3), other_clock=round(o_err[1], 3),
                                        x86=round(x_err[1], 3)))
     ok = r.returncode == 0 and hw[modreg] == xw[modreg] and d_rn <= rn_tol and d_vn <= vn_tol and words <= words_tol
+    oth, oth_line = None, ''
+    if 'FLIGHT_RR' in env:
+        h_o, o_o, x_o = (other_errors(m, env, w) for w in (hw, sw, xw))
+        o_rn_tol = SPREAD_K * max(h_o[0], o_o[0]) + RN_FLOOR
+        o_vn_tol = SPREAD_K * max(h_o[1], o_o[1]) + VN_FLOOR
+        o_tet_min = min(h_o[2], o_o[2]) - TET_BEHIND
+        ok = ok and x_o[0] <= o_rn_tol and x_o[1] <= o_vn_tol and x_o[2] >= o_tet_min
+        oth = dict(tet_cs=dict(harness=h_o[2], other_clock=o_o[2], x86=x_o[2], at_least=o_tet_min),
+                   rn_error_m=dict(harness=round(h_o[0], 1), other_clock=round(o_o[0], 1), x86=round(x_o[0], 1),
+                                   limit=round(o_rn_tol, 1)),
+                   vn_error_mps=dict(harness=round(h_o[1], 3), other_clock=round(o_o[1], 3), x86=round(x_o[1], 3),
+                                     limit=round(o_vn_tol, 3)))
+        oth_line = (f"; other vehicle at {x_o[2]} cs (at least {o_tet_min}; the harness's {h_o[2]}, {o_o[2]}), "
+                    f"{x_o[0]:.1f} m from the true orbit (limit {o_rn_tol:.0f}), {x_o[1]:.2f} m/s "
+                    f"(limit {o_vn_tol:.2f})")
     if truth:
         line = (f"{name}: at {at} cs major mode {hw[modreg]:02o}/{xw[modreg]:02o} (harness/x86), "
                 f"RN {d_rn:.1f} m from the true orbit (limit {rn_tol:.0f}), VN {d_vn:.2f} m/s (limit {vn_tol:.2f}), "
@@ -195,13 +253,28 @@ def compare(name, m, cs, keys, env, drop=''):
                 f"RN {d_rn:.1f} m apart (limit {rn_tol:.0f}), VN {d_vn:.2f} m/s (limit {vn_tol:.2f}), "
                 f"{words} words differ (limit {words_tol}; the harness's clocks: RN {s_rn:.1f} m, VN {s_vn:.3f} m/s, "
                 f"{spread_words} words)")
+    line += oth_line
     return dict(scenario=name, mission=m, centisecond=at, x86_exit=r.returncode,
                 major_mode=dict(harness=f'{hw[modreg]:02o}', x86=f'{xw[modreg]:02o}'),
                 rn_metres=dict(harness=[round(v, 1) for v in state['rn'][0]], x86=[round(v, 1) for v in state['rn'][2]],
                                difference=round(d_rn, 1), spread=round(s_rn, 1), limit=round(rn_tol, 1)),
                 vn_mps=dict(harness=[round(v, 2) for v in state['vn'][0]], x86=[round(v, 2) for v in state['vn'][2]],
                             difference=round(d_vn, 3), spread=round(s_vn, 3), limit=round(vn_tol, 3)),
-                words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, inputs=env, line=line), ok
+                words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, other_vehicle=oth, inputs=env,
+                line=line), ok
+
+
+def fly_gap(name, m, cs, keys, env):
+    """A GAPS scenario: (summary row, passed), passed only when the x86
+    program stops at the expected routine and nowhere else."""
+    g = GAPS[name]
+    r = subprocess.run([str(xb.OUT / f'x86-flight-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
+                       env={**os.environ, **env, 'X86_SPEED': '0'}, capture_output=True, text=True)
+    ok = r.returncode == 1 and r.stderr.strip() == g['stop'] and g['refusal'] in r.stdout
+    got = r.stderr.strip()[:200] or 'no stop line'
+    line = (f"{name}: stops as expected ({g['stop']}): {g['reason']}" if ok else
+            f"{name}: expected exit 1 with \"{g['stop']}\", got exit {r.returncode}: {got}")
+    return dict(scenario=name, mission=m, gap=g['reason'], x86_exit=r.returncode, ok=ok, line=line), ok
 
 
 def within_known(name, row):
@@ -236,8 +309,10 @@ def main():
     summary, failed = [], 0
     for name, m, cs, keys, env in rows:
         if name in GAPS:
-            summary.append(dict(scenario=name, mission=m, gap=GAPS[name]))
-            print(f'{name}: not flown, {GAPS[name]}', flush=True)
+            row, ok = fly_gap(name, m, cs, keys, env)
+            failed += not ok
+            summary.append(row)
+            print(row['line'] + ('' if ok else ' FAILED'), flush=True)
             continue
         row, ok = compare(name, m, cs, keys, env, a.drop_keys)
         known = None if ok else within_known(name, row)

@@ -82,7 +82,7 @@ On base a93ddc4d, keys sent through the live DSKY's typed-key path (`X86_TYPED`,
 | LM typed `v37e00ep` (PRO held), 3000 cs | 191,447 / 193,087 | 0 | 0 / 107 |
 | CM typed `v37e06epmj` (PRO, MARK, MARK REJECT), 3000 cs | 195,045 / 195,050 | 0 | 0 / 4 |
 
-The same check on the 13 flight scenarios below (compiled; not in CI, a few minutes on 4 cores) shows no miss on the four LM runs. Each of the nine CM runs shows one miss: channel 12 bit 5 (zero ICDU) at 06,2356 in `cm_t4rupt_imu_routines` (Gaps). On base c78f441b the rendezvous radar scenarios are the same: no miss on the six LM runs (P20, its RR dropout, CSI, TPI to TPF, P78 and P38: 1.1 to 2.6 million routines each), and the same one channel 12 miss on each of the ten CM runs.
+The same check on the 13 flight scenarios below (compiled; not in CI, a few minutes on 4 cores) shows no miss on the four LM runs. Each of the nine CM runs shows one miss: channel 12 bit 5 (zero ICDU) at 06,2356 in `cm_t4rupt_imu_routines` (Gaps). On base c78f441b the rendezvous radar scenarios are the same: no miss on the six LM runs (P20, P20 with an RR dropout window, CSI, TPI to TPF, P78 and P38: 1.1 to 2.6 million routines each), and the same one channel 12 miss on each of the ten CM runs.
 
 Flat out, 40 s of AGC time takes about 0.05 s of host time.
 
@@ -92,7 +92,7 @@ CI runs `x86-flight-check` in the host job (`ci-extra-host`) when a PR changes a
 
 `platform/x86/vehicle_models.h` (MIT, header only) holds the vehicle the AGC flies: the LM descent and ascent engines with touchdown, abort stage and the P66 crew (`FLIGHT_ENGINE`, `FLIGHT_ENGINE_LAG`, `FLIGHT_TOUCHDOWN`, `FLIGHT_ASCENT`, `FLIGHT_STAGE`, `FLIGHT_PILOT`), the LM RCS jets (`FLIGHT_RCS`), the CSM's SPS (`FLIGHT_SPS`), entry drag and lift (`FLIGHT_AERO`), the IMU gimbals for P01 (`FLIGHT_IMU`), the Saturn V boost (`FLIGHT_SATURN`) and TLI (`FLIGHT_SIVB`). They were written for this port's flight scenarios and contain no Virtual AGC code. `platform/x86/test_vehicle_models.c` checks each one (`make x86-flight-check` builds and runs it first).
 
-`platform/x86/radar_models.h` (MIT, header only) holds the rendezvous radar the same way (`FLIGHT_RR`, `FLIGHT_RR_DROP`): on the LM the rendezvous radar locked on the CSM, on the CM the VHF ranging link and the sextant. Both vehicles fly Kepler conics about the moon from the states `FLIGHT_RR` gives. The model points the antenna (or the sextant) along the true line of sight through REFSMMAT and the CDUs, sets the data-good bits, and answers each read with range or range rate in RNRAD. It is `tools/flight_radar.h`'s model, written for this port's rendezvous scenarios, with the same arithmetic in the same order. `platform/x86/test_radar_models.c` checks it, built once for each mission. Reads start at any routine boundary and the resident timer ends them, often before the next sample point, so the radar also answers a read after any routine where channel 13 bit 4 has come on. `FLIGHT_BUSY_SAMPLE` adds the harness's extra sample points for jobs that busy-wait for the crew (LM R22's V06N49 loop).
+`platform/x86/radar_models.h` (MIT, header only) holds the rendezvous radar the same way (`FLIGHT_RR`, `FLIGHT_RR_DROP`): on the LM the rendezvous radar locked on the CSM, on the CM the VHF ranging link and the sextant. Both vehicles fly Kepler conics about the moon from the states `FLIGHT_RR` gives. The model points the antenna (or the sextant) along the true line of sight through REFSMMAT and the CDUs, sets the data-good bits, and answers each read with range or range rate in RNRAD. It is `tools/flight_radar.h`'s model, written for this port's rendezvous scenarios, with the same arithmetic. `platform/x86/test_radar_models.c` checks it, built once for each mission. Reads start at any routine boundary and the resident timer ends them, often before the next sample point, so the radar also answers a read after any routine where channel 13 bit 4 has come on. `FLIGHT_BUSY_SAMPLE` adds the harness's extra sample points for jobs that busy-wait for the crew (LM R22's V06N49 loop).
 
 The x86 program runs them with the same settings and at the same points as the host differential (`tools/flight_host_run.c`, which still has its own copy): at each sample point after the pokes (the radar after the SPS), then the channel changes (`FLIGHT_CHAN`), then a restart or a key; with `FLIGHT_ENGINE_LAG` the engine, and always the RCS jets, also after every routine. Keys include the mark buttons (`M`, `J`; LM `x`, `y`, `j`: channel 16 and KEYRUPT2).
 
@@ -102,7 +102,18 @@ The x86 program runs them with the same settings and at the same points as the h
 - RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (the largest such case is CM P40: VN 0.13 m/s against a spread of 0.004);
 - the erasable image (061-3777) differs in at most 1.5 times as many words as the harness's two clocks differ in, plus 10.
 
-With the rendezvous radar, marks move the state vector and its time (PIPTIME) by amounts that depend on when each mark falls. Two good runs can then hold state vectors hundreds of kilometres apart, each correct for its own time. On LM P78 the harness's is at PIPTIME 19,234 cs and the x86 program's at 41,786, 369 km apart, and each is within 90 m of the true orbit. So when the harness's two clocks leave the state vector at different times, each run's state vector is compared with the true orbit at its own PIPTIME. The x86 program's error must be within 4 times the larger of the harness's two errors, plus 50 m and 0.15 m/s.
+With the rendezvous radar, the own state vector and its time (PIPTIME) move by amounts that depend on when each mark falls. Two good runs can then hold state vectors hundreds of kilometres apart, each correct for its own time. On LM P78 the harness's is at PIPTIME 19,234 cs and the x86 program's at 41,786, 369 km apart, and each is within 90 m of the true orbit. So when the harness's two clocks leave the state vector at different times, each run's state vector is compared with the true orbit at its own PIPTIME. The x86 program's error must be within 4 times the larger of the harness's two errors, plus 50 m and 0.15 m/s.
+
+That own state only coasts, so it can't see the radar: with the radar off it stays as close to the true orbit. So every `FLIGHT_RR` scenario also checks the other vehicle's state, the one the marks update (the LM's CSM block at 01554, the CM's LM block at 01626: the conic RCV/VCV plus the deviation DELTA/NUV at its time TETOTHER). It is compared with the true orbit at TETOTHER, with the same limits, and TETOTHER must be no more than 1,000 cs behind the earlier of the harness's two. It may be ahead, because the x86 program marks at other times (LM P78: 41,786 against 19,234). Each of these breaks every rendezvous row on that check (x86 run only, harness unchanged):
+
+| Change to the x86 run | The five LM rows (`lm-rendezvous`, `-rr-dropout`, `-tpm`, `lm-stable-orbit`, `-lm`) | The seven CM rows (`cm-p20`, `-vhf-dropout`, `-crew-verbs`, `cm-tpi-search`, `cm-stable-orbit`, `-lm`, `cm-rendezvous-tpm`) |
+|---|---|---|
+| Radar off | TETOTHER stays at 4,704 cs | 25.9 km off, or the run stops |
+| Target moved 5 km | TETOTHER stays at 4,704 cs, or the run stops | 3.2 to 5.1 km off |
+| Sextant marks (`M`) left out | (no `M` on the LM) | 0.5 to 3.6 km off, or TETOTHER 5,800 cs too far behind (`-vhf-dropout`) |
+| Every `V33E` left out | TETOTHER stays at 4,704 cs | 1.8 km off, or the run stops |
+
+`lm-rendezvous-rr-dropout`'s window (19,500 to 21,000 cs) misses R22's reads on the harness's work clock and on the x86 program's, so neither run changes without it; only the harness's other clock sees it. It flies like `lm-rendezvous` with one more `V33E`, and it is not a test of a radar dropout yet (D2 owns the scenario). The CM's VHF dropout does take effect.
 
 The word count is what sees programs that don't move the state vector. With the mark buttons left out of the x86 run (`--drop-keys MJxyj`), P52 differs in 210 words against a limit of 19 and P57 in 188 against 37, so both fail. P22 and P23 fail on RN as well.
 
@@ -126,7 +137,7 @@ On base f499d7ee:
 
 CM P11 is outside its limits (Gaps). The tool lists it as known, with an envelope of its own: RN within 600 m and VN within 1 m/s, reaching the compare point with exit 0, the same major mode and the normal word limit. Inside that envelope it doesn't fail; outside it, it does. With the vehicle models removed, P11 ends 6,563 km off and fails. The other 12 scenarios pass.
 
-On base c78f441b, the 13 above give the same numbers. The 12 rendezvous scenarios whose state vector the marks move are compared with the true orbit, and all pass:
+On base c78f441b, the 13 above give the same numbers. The 12 rendezvous scenarios whose state vector the marks move are compared with the true orbit, and all pass (the other vehicle's state in the next table):
 
 | Scenario | Major mode | RN from the true orbit (limit; harness's larger error) | VN (limit; harness) | Words differing (limit; harness's clocks) |
 |---|---|---|---|---|
@@ -143,6 +154,23 @@ On base c78f441b, the 13 above give the same numbers. The 12 rendezvous scenario
 | `cm-p20-vhf-dropout` | 24 / 24 | 28 m (143; 23) | 0.11 m/s (0.59; 0.11) | 623 (757; 498) |
 | `cm-p20-crew-verbs` | 24 / 24 | 12 m (161; 28) | 0.09 m/s (0.53; 0.09) | 491 (703; 462) |
 
+The other vehicle's state, the one the marks update, in the 12 (the four CSI and CDH rows below hold it at its loaded time, 2,000 cs, within 0.4 m):
+
+| Scenario | TETOTHER x86 (at least; harness's two) | Position from the true orbit (limit; harness's two) | Velocity (limit; harness's two) |
+|---|---|---|---|
+| `cm-p20` | 18,024 (17,379; 18,379, 18,466) | 24 m (222; 43, 32) | 0.24 m/s (3.36; 0.19, 0.80) |
+| `lm-rendezvous` | 31,122 (30,245; 31,245, 31,275) | 21 m (149; 25, 21) | 0.12 m/s (0.62; 0.12, 0.11) |
+| `lm-rendezvous-rr-dropout` | 31,122 (30,245; 31,245, 31,275) | 21 m (149; 25, 21) | 0.12 m/s (0.62; 0.12, 0.11) |
+| `lm-rendezvous-tpm` | 57,526 (46,273; 58,881, 47,273) | 64 m (329; 70, 54) | 0.23 m/s (1.70; 0.24, 0.39) |
+| `lm-stable-orbit` | 41,786 (18,234; 19,234, 20,162) | 28 m (112; 15, 15) | 0.16 m/s (0.43; 0.07, 0.07) |
+| `lm-stable-orbit-lm` | 41,811 (18,231; 19,231, 20,161) | 46 m (110; 15, 9) | 0.16 m/s (0.43; 0.07, 0.07) |
+| `cm-rendezvous-tpm` | 24,293 (23,510; 24,510, 24,798) | 127 m (507; 114, 102) | 0.48 m/s (2.45; 0.40, 0.57) |
+| `cm-stable-orbit` | 18,024 (17,379; 18,379, 18,466) | 24 m (222; 43, 32) | 0.24 m/s (3.36; 0.19, 0.80) |
+| `cm-stable-orbit-lm` | 18,024 (17,379; 18,379, 18,466) | 24 m (222; 43, 32) | 0.24 m/s (3.36; 0.19, 0.80) |
+| `cm-tpi-search` | 18,024 (17,379; 18,379, 18,466) | 24 m (222; 43, 32) | 0.24 m/s (3.36; 0.19, 0.80) |
+| `cm-p20-vhf-dropout` | 30,348 (23,434; 24,434, 24,509) | 62 m (191; 35, 10) | 0.40 m/s (1.71; 0.21, 0.39) |
+| `cm-p20-crew-verbs` | 24,292 (23,511; 24,511, 24,794) | 29 m (181; 31, 33) | 0.24 m/s (1.83; 0.23, 0.42) |
+
 The ten others added since pass on the direct comparison. Four of them are rendezvous scenarios that load a state and move it no further before the compare point (CSI, CDH):
 
 | Scenario | Major mode | RN apart (limit; harness spread) | VN apart (limit; spread) | Words differing (limit; spread) |
@@ -158,7 +186,7 @@ The ten others added since pass on the direct comparison. Four of them are rende
 | `cm-v49-maneuver` | 77777 / 77777 | 0 | 0 | 4 (14; 3) |
 | `cm-p21` | 25 / 25 | 0 | 0 | 1 (14; 3) |
 
-LM P33 CDH (`lm-cdh`, `lm-cdh-csm`) is not flown: the x86 program stops at P33's decimal display (Gaps).
+LM P33 CDH (`lm-cdh`, `lm-cdh-csm`) is flown to P33's decimal display, where the x86 program stops (Gaps); the tool checks that it stops there and nowhere else.
 
 The rest need models the x86 program does not have yet: the landing radar (`FLIGHT_LR`, `FLIGHT_LR_POS2`), the NASSP P63 core (`FLIGHT_CORE`), uplink and stolen time. So no scenario compared here flies the LM RCS (`FLIGHT_RCS`), the throttle lag, touchdown, the P66 crew, the ascent or the abort stage. Those run only in the NASSP scenarios, and the unit checks in `test_vehicle_models.c` are their only x86 test so far.
 
@@ -185,6 +213,6 @@ On base f499d7ee:
 - **CM channels 11-14:** every CM table runs with `FLIGHT_IO_CM_NATIVE`. Its copy back into the hardware channels undoes the channel writes that routines make straight to the hardware: `src/cm_t4rupt_imu.c` (zero ICDU, cage, DSALMOUT) and `src/keyrupt_uprupt.c`. The x86 lockstep shows this as the one channel 12 miss above. The scenario comparison can't see it, because the harness behaves the same way and compares no channels. The cause is in shared code (`src/flight_io.c`), and D1 is fixing it, together with a channel compare in the harness lockstep.
 - **RESTART and STBY lamps** light only in the lamp test. The x86 program models no hardware restart lamp (set by a GOJAM, cleared by RSET) and no standby.
 - **Decimal noun displays** (`V06N36E`, `V16N36E`, `V16N65E`) stop at Pinball's basic point 42,3230 (LM) or 42,3143 (CM) in the live DSKY. The not yet certified `lanec_pin_lm_routines` and `lanec_pin_cm_routines` refuse them. Lane C's Pinball LM and CM certificate covers them.
-- **LM P33 CDH** stops at Pinball's DECDSP (41,2523), which the not yet certified `lanec_pin_lm_routines` hold, so `lm-cdh` and `lm-cdh-csm` aren't flown. Lane C's Pinball LM certificate covers it.
+- **LM P33 CDH** stops at Pinball's DECDSP (41,2523), which the not yet certified `lanec_pin_lm_routines` hold, so `lm-cdh` and `lm-cdh-csm` stop there. The scenario tool flies both and passes them only when they stop at exactly that point, so any other outcome, a full run included, fails until the entry is removed. Lane C's Pinball LM certificate covers it.
 - **Missing models:** the landing radar, NASSP core, uplink and stolen-time scenarios above.
 - The uncompiled interpretive code by file is listed in the design note.

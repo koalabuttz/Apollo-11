@@ -8,7 +8,8 @@
  *
  * This is the model this port wrote for its flight scenarios in the host
  * differential (tools/flight_radar.h, docs/FLIGHT-STORE.md), with the same
- * arithmetic in the same order, so it gives the same words; it contains no
+ * arithmetic, so it gives the same words (the LM's conic is computed before
+ * the CDU steps rather than after; neither reads the other); it contains no
  * Virtual AGC code and links nothing. The host differential still runs its
  * own copy. platform/x86/test_radar_models.c checks it.
  *
