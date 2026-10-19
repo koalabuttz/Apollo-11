@@ -26,14 +26,19 @@ CHECK = xb.OUT / 'check'
 # INITIALIZATION) runs compiled or through the interpreter core; P00 with a
 # DOWNRUPT every 20 ms (the downlink words checked against yaAGC); and
 # hardware restarts with DOWNRUPT: LM P00 at 20 s, and CM V37E06E keyed at
-# 25 s and restarted in P06 at 35 s.
+# 25 s and restarted in P06 at 35 s. The typed rows send keys through the
+# live DSKY's typed-key path (X86_TYPED, platform/x86/terminal_dsky.h: 20 cs
+# apart, p holds PRO), in both the x86 run and the lockstep.
 SCENARIOS = [('p00', 'lm', 4000, '', {}), ('p00', 'cm', 4000, '', {}),
              ('dap-hold', 'lm', 3000, '', fhd.DAP),
              ('v37e00e', 'cm', 3000, 'V37E00E', {}), ('v37e06e', 'cm', 3000, 'V37E06E', {}),
              ('p00-downrupt', 'lm', 4000, '', {'FLIGHT_DOWNRUPT': '1'}),
              ('p00-downrupt', 'cm', 4000, '', {'FLIGHT_DOWNRUPT': '1'}),
              ('restart', 'lm', 4000, '', {'FLIGHT_GOJAM': '2000', 'FLIGHT_DOWNRUPT': '1'}),
-             ('v37e06e-restart', 'cm', 4000, '@2500V37E06E', {'FLIGHT_GOJAM': '3500', 'FLIGHT_DOWNRUPT': '1'})]
+             ('v37e06e-restart', 'cm', 4000, '@2500V37E06E', {'FLIGHT_GOJAM': '3500', 'FLIGHT_DOWNRUPT': '1'}),
+             ('typed-v35e', 'lm', 3000, '', {'X86_TYPED': 'v35e'}),
+             ('typed-v37e00e-pro', 'lm', 3000, '', {'X86_TYPED': 'v37e00ep'}),
+             ('typed-v37e06e-pro-marks', 'cm', 3000, '', {'X86_TYPED': 'v37e06epmj'})]
 
 
 def lockstep(cc, m, mode):

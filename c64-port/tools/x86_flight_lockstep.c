@@ -16,12 +16,16 @@
  * fails the run (the x86 program has no bridge); interpretive points the
  * core ran are listed.
  *   x86-flight-lockstep-<m> ROPE.bin [CS [KEYS]]   (FLIGHT_CH30, FLIGHT_CH31,
- *   FLIGHT_POKE as the x86 program) */
+ *   FLIGHT_POKE as the x86 program)
+ * X86_TYPED=chars sends chars through the live DSKY's typed-key path
+ * (platform/x86/terminal_dsky.h: 20 cs apart, p holds PRO), as if typed at
+ * X86_DSKY=1 from the start. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "agc_engine.h"
 #include "flight_scenario.h"
+#include "terminal_dsky.h"
 #ifndef X86_INTERP_MODE
 #define X86_INTERP_MODE FD_INTERP_COMPILED
 #endif
@@ -114,11 +118,14 @@ static long lockstep(const fd_state *before,const fd_state *after,char *why,size
   for(k=0;k<24u;++k){static fd_state vv;int in2;view(&vv);printf("  yaAGC Z %05o FB %05o A %06o isr %d quiet %d pend %d xd %d iv %d xc %d sub %d point %u/%u\n",(unsigned)mword(5),(unsigned)mword(4),(unsigned)mword(0),m.InIsr,quiet(),m.PendFlag,m.ExtraDelay,m.IndexValue,m.ExtraCode,m.SubstituteInstruction,fd_point(&vv,&in2),fd_point(after,&in2));if(agc_engine(&m))break;}}}
  return -1;}
 
-int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;fd_ran ran;unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,checked=0,instructions=0;
+int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;static terminal_dsky typed;fd_ran ran;
+ const char *keys=getenv("X86_TYPED");unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,checked=0,instructions=0;
  char why[160];unsigned i;
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: x86-flight-lockstep ROPE.bin [CS [KEYS]]\n");return 2;}
  AgcFrozenClock=1;InhibitAlarms=1;m=loaded;
  if(!fs_parse(&in,argc>3?argv[3]:""))return 2;
+ td_init(&typed);
+ for(;keys&&*keys;++keys)td_type(&typed,(unsigned char)*keys);
  fs_start(&st,X86_INTERP_MODE);
  while(fd_centiseconds(&st)<cs){long n;
   /* An interrupt taken at a RESUME point saves the word at Z as BRUPT:
@@ -126,7 +133,7 @@ int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;fd_
   if(fd_boundary(&st))substitute=0;
   if(fs_at_idle_advan(&st)){int k=fs_inputs_due(&in,&st);
    if(k==FS_GOJAM){printf("GOJAM at %lu cs\n",fd_centiseconds(&st));substitute=0;}
-   if(k)continue;}
+   if(k||td_inputs_due(&typed,&st))continue;}
   before=st;
   if(fd_run(&st,&ran)==EXEC_UNMAPPED){printf("no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",ran.key/1024u,ran.key%1024u+02000u,
    (unsigned)st.s.words[5],(unsigned)st.s.words[4],fd_centiseconds(&st));break;}
