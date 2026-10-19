@@ -317,9 +317,9 @@ WINDOWS = {
     'lm': [('lm-p63-descent-thrust', 17500, 120, 120),   # PIPAs under descent thrust
            ('lm-landing-ascent-nassp', 140000, 150, 50),   # touchdown, radar gate, engine arm
            ('lm-uplink-reject', 1950, 100, 100),            # UPRUPT rows, KEYRUPT
-           ('lm-p52-realign', 4200, 500, 500),              # optics marks, channel 30
-           ('lm-p57', 15950, 100, 100),                     # lunar-surface alignment marks
-           ('lm-p63-lr-update', 61000, 50, 50)],            # landing radar reads
+           ('lm-p52-realign', 4200, 500, 100),              # optics marks, channel 30
+           ('lm-p57', 15950, 100, 25),                      # lunar-surface alignment marks
+           ('lm-p63-lr-update', 61000, 50, 10)],            # landing radar reads
     'cm': [('cm-p52', 9950, 300, 100),                      # optics marks, ch30/ch33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP, channels and requests
            ('cm-tei', 52000, 300, 50),                      # RCS DAP and TIME6
@@ -367,8 +367,14 @@ def main(argv=None):
         copies.append(copy)
         return f'evidence/{eid}/{copy.name}'
     if not a.host:
+        # A scenario that differs ends the differential nonzero; its summary
+        # still holds every row. No summary means the run itself broke.
+        summary = ROOT / 'build/flight-store/differential/summary.json'
+        summary.unlink(missing_ok=True)
         subprocess.run([sys.executable, 'tools/flight_host_differential.py'], cwd=ROOT, check=False)
-        a.host = str(ROOT / 'build/flight-store/differential/summary.json')
+        if not summary.exists():
+            sys.exit('tools/flight_host_differential.py wrote no summary')
+        a.host = str(summary)
     if not a.run:
         out = ROOT / 'build' / f'{eid}-runs'
         shutil.rmtree(out, ignore_errors=True)
