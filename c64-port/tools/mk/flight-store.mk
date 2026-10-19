@@ -15,7 +15,6 @@
 # filling it in. Need the listings
 # (build/fixed-data/<mission>/assembly.lst) and the yaAGC objects.
 .PHONY: flight-store flight-store-lm flight-host-differential flight-store-vice flight-disk flight-disk-vice
-.PHONY: acceptance-bundle-lm acceptance-bundle-cm
 flight-store: | build
 	python3 tools/flight_store_build.py
 	python3 tools/native_range_keys.py
@@ -38,10 +37,3 @@ flight-disk: flight-store build/agc_engine_hardware_dv.o
 	python3 tools/flight_disk.py
 flight-disk-vice: flight-store build/agc_engine_hardware_dv.o
 	python3 tools/flight_disk.py --vice --p00
-# acceptance-bundle-<m>: every whole-program acceptance doc of one program
-# (docs/acceptance/) from one commit: builds the store and resident once,
-# runs each category's tools/*_acceptance.py, and checks each doc cites
-# HEAD's sources and all its evidence resolves (tools/acceptance_bundle.py;
-# the flip PRs run it). --check-only checks the docs already in the tree.
-acceptance-bundle-lm acceptance-bundle-cm: acceptance-bundle-%:
-	python3 tools/acceptance_bundle.py $*

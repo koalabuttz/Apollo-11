@@ -145,12 +145,18 @@ def write_doc(m, commit):
     for n in runs:
         log = ev / f'{m}-{n}-monitor.log'
         want = boots.get(n, {}).get('monitor_log_sha256')
+        regions = [(x['name'], int(x['start'], 16), int(x['end'], 16), x['writable'])
+                   for x in (runs[n]['vice'].get('reu_bounds') or {}).get('regions', [])]
         if not log.exists():
             trace_errors[n] = ['no monitor log']
-        elif want and sha(log) != want:
+        elif not want:
+            trace_errors[n] = ['the boot record has no monitor_log_sha256']
+        elif sha(log) != want:
             trace_errors[n] = ['the monitor log is not the one the boot record hashes']
+        elif not regions:
+            trace_errors[n] = ['the run records no REU regions']
         else:
-            t = fdisk.trace_result(log.read_text(errors='replace'))
+            t = fdisk.trace_result(log.read_text(errors='replace'), regions)
             trace_errors[n] = t['trace_errors'] + ([f"{t['dma_outside']} DMAs outside"] if t['dma_outside'] else [])
         traced[n] = not trace_errors[n]
     oks = {n: bool(r['vice'].get('ok')) and bool(r['vice'].get('p00'))
