@@ -73,6 +73,8 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
     m->ranges = 0;
     if (m->mission == LANEC_LM) for (i = 0; i < 6u; ++i) range(m, lm_spans[i][0], lm_spans[i][1], lm_spans[i][2]);
     else for (i = 0; i < 2u; ++i) range(m, cm_spans[i][0], cm_spans[i][1], cm_spans[i][2]);
+    m->range[m->ranges].bank = LANEC_ANY_BANK; m->range[m->ranges].lo = LANEC_Q;   /* TC Q runs Q */
+    m->range[m->ranges].hi = LANEC_Q; ++m->ranges;
 }
 
 const lanec_suite lanec_suite_ev_align = { "ev-align", (95u + 63u) * VARIANTS, make, lanec_ev_align_dispatch };
