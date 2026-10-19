@@ -535,9 +535,18 @@ static void rp_diff(unsigned long t,unsigned where,const agc_word *w,const agc_h
 /* The output channels PATH.end carries after the erasable words (and
  * tools/flight_scenario_vice.py compares, dap_pass_check.c DP_REPLAY). */
 static FILE *rp_ends;static unsigned long rp_every,rp_next;
+/* After the last window's end the run goes on RP_AFTER_CS centiseconds
+ * more and writes the state at each sample point to PATH.after (the .end
+ * format) and the inputs it took there to PATH.after-replay (the .replay
+ * format): a C64 that reaches its first sample point a centisecond or
+ * more after the host's end is compared with the host's state at that
+ * same centisecond (tools/flight_scenario_vice.py pair_states), when no
+ * input came in between. */
+#define RP_AFTER_CS 8ul
+static unsigned long rp_after=~0ul,rp_after_last;
 static void rp_end(unsigned long d,const agc_word *w,const flight_io *io,const agc_hardware *hw){FILE *f=rp_ends;unsigned i;
  uint16_t c[]={hw->channel5,hw->channel6,hw->channel11,hw->channel12,hw->channel13,hw->channel14,io->channel34,io->channel35,io->superbank,
-  hw->channel10};
+  hw->channel10,(uint16_t)(io->interrupt_enabled!=0u),hw->radar_gate};
  {unsigned char b[2]={(unsigned char)d,(unsigned char)(d>>8)};fwrite(b,1,2,f);}
  for(i=0;i<2048u;++i){unsigned char b[2]={(unsigned char)w[i],(unsigned char)(w[i]>>8)};fwrite(b,1,2,f);}
  for(i=0;i<sizeof c/sizeof c[0];++i){unsigned char b[2]={(unsigned char)c[i],(unsigned char)(c[i]>>8)};fwrite(b,1,2,f);}}
@@ -1308,17 +1317,24 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      for(i=0,j=0;i<2048u;++i)if(compared(i)&&s.words[i]!=ref[next][i]&&j++<8u)printf(" %04o %05o/%05o",i,(unsigned)s.words[i],(unsigned)ref[next][i]);
      printf("%s (%u words, native/yaAGC)\n",j>8u?" ...":"",j);}
     ++next;}
-   if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_next&&now(s.words)-rp_t0<rp_cs){rp_end(now(s.words)-rp_t0,s.words,&io,&hw);
+   if(rp_after!=~0ul&&now(s.words)-rp_t0>rp_after_last){unsigned long d=now(s.words)-rp_t0;
+    if(d>rp_after+RP_AFTER_CS){fclose(rp_out);fclose(rp_ends);return 0;}
+    rp_end(d,s.words,&io,&hw);rp_after_last=d;}
+   else if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_next&&now(s.words)-rp_t0<rp_cs){rp_end(now(s.words)-rp_t0,s.words,&io,&hw);
     while(rp_next<=now(s.words)-rp_t0)rp_next+=rp_every;}
-   if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
+   if(rp_after==~0ul&&rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
     rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
     if(core_routines)printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);
-    if(++rp_win>=rp_chain)return 0;
+    if(++rp_win>=rp_chain){char b[640];rp_after=rp_after_last=now(s.words)-rp_t0;
+     snprintf(b,sizeof b,"%s.after-replay",rp_win>1u?rp_path:rp_base);rp_out=fopen(b,"wb");
+     snprintf(b,sizeof b,"%s.after",rp_win>1u?rp_path:rp_base);rp_ends=fopen(b,"wb");
+     if(!rp_out||!rp_ends){perror(b);return 2;}}
+    else{
     /* CHAIN: the next window starts here (FLIGHT_REPLAY above). */
     snprintf(rp_path,sizeof rp_path,"%s-%u",rp_base,rp_win);snap_path=rp_path;snap_cs=now(s.words);snap_any=0;
     {char b[640];snprintf(b,sizeof b,"%s.replay",rp_path);rp_out=fopen(b,"wb");snprintf(b,sizeof b,"%s.end",rp_path);rp_ends=fopen(b,"wb");
      snprintf(b,sizeof b,"%s.seam",rp_path);rp_seam=fopen(b,"wb");if(!rp_out||!rp_ends||!rp_seam){perror(b);return 2;}}
-    rp_mark(s.words,&hw,io.channel16,pending);}
+    rp_mark(s.words,&hw,io.channel16,pending);}}
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
    /* A key is pressed at the first sample point at or after its time, on
     * both sides. */
@@ -1335,6 +1351,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    lr_due(now(s.words),&lr_nat,&hw);
    lrm_due(now(s.words),touchdown_cs,s.words,&hw.channel13,&hw.channel33);
    chan_due(now(s.words),&cnat,&hw,&io);
+   if(rp_after!=~0ul&&gojam_due(now(s.words),&gnat)){fclose(rp_out);fclose(rp_ends);return 0;}
    if(rp_out&&!snap_path&&gojam_due(now(s.words),&gnat)){fprintf(stderr,"FLIGHT_REPLAY: a GOJAM at %lu cs is in the window\n",now(s.words));return 3;}
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
    else if((k=key_due(now(s.words),&knat))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}

@@ -325,10 +325,6 @@ def run_batch(a, m, n, batch, manifest, pinned):
             cc, cw = fsv.c64_states(image[ends + k * fsv.C64_STATE:], 1, m)[0]
             skipped = set()
             diff = fsv.replay_compare(hw, cw, fsv.SCHEDULE_SKIP.get(m), skipped)
-            # Channel 10, which flight windows leave out (fsv.END_EXTRA): a
-            # case ends just after a display update, so its last relay word too.
-            base = 2048 + len(fsv.END_CHANNELS)
-            diff += [(x, hw[base + k], cw[base + k]) for k, x in enumerate(fsv.END_EXTRA) if hw[base + k] != cw[base + k]]
             if hc != cc:
                 diff.insert(0, ('centiseconds', hc, cc))
             res.update(ok=not diff, end_cs=cc, skipped=sorted(skipped), differences=len(diff), diff=diff,
