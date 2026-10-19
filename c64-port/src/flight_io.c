@@ -17,7 +17,8 @@
 #define ENTRY(hw)            ((void)(hw))
 #else
 /* The host and x86: the channels as flight_io_enter found them; a record's
- * channel goes back only when the record's routines changed it. */
+ * channel goes back only when the record's routines changed it. One entry:
+ * enter and leave must not nest (nothing does today). */
 static agc_hardware entry;
 #define PUT(field, value)                                                                          \
     do {                                                                                           \
