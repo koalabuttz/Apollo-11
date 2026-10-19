@@ -82,7 +82,7 @@ CI runs `x86-flight-check` in the host job (`ci-extra-host`) when a PR changes a
 
 The x86 program runs them with the same settings and at the same points as the host differential (`tools/flight_host_run.c`, which still has its own copy): at each sample point after the pokes, then the channel changes (`FLIGHT_CHAN`), then a restart or a key; with `FLIGHT_ENGINE_LAG` the engine, and always the RCS jets, also after every routine. Keys include the mark buttons (`M`, `J`; LM `x`, `y`, `j`: channel 16 and KEYRUPT2).
 
-`make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it, 1,000 cs before its end, with the harness on the work clock (`FLIGHT_SCALED=W`): same major mode, RN within 1 km and VN within 2 m/s. The two charge routine costs differently, so their states are close, not equal. On base 6f61de67 with the models:
+`make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it, 1,000 cs before its end, with the harness on the work clock (`FLIGHT_SCALED=W`): same major mode, RN within 1 km and VN within 2 m/s. The two charge routine costs differently, so their states are close, not equal. On base f499d7ee (#717 merged) with the models:
 
 | Scenario | Major mode | RN apart | VN apart |
 |---|---|---|---|
