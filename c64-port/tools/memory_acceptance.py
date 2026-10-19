@@ -148,7 +148,9 @@ def write_doc(m, checks, manifest, regions, sizes, rows, commit):
              '| Region | Start | End | Bytes | Access |', '|---|---|---|---|---|']
     for name, lo, hi, w in regions:
         lines.append(f"| {name} | `{lo:#08x}` | `{hi:#08x}` | {hi - lo:,} | {'read/write' if w else 'read only'} |")
-    lines += ['', f"Store: {manifest['image_bytes']:,} bytes, {len(manifest['modules'])} modules, "
+    image = STORE / f'{m}.reu'
+    lines += ['', f"Store: `flight-store/{m}.reu` (sha256 `{sha(image) if image.exists() else 'missing'}`), "
+              f"{manifest['image_bytes']:,} bytes, {len(manifest['modules'])} modules, "
               f"{manifest['resolver_records']} resolver records, REU {manifest['reu_size_kb']} KB.", '',
               '## Build-time checks', '', '| Check | Result | Detail |', '|---|---|---|']
     for name, good, detail in checks:
