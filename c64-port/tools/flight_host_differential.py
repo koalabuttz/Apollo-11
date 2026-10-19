@@ -105,6 +105,39 @@ LANDING = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_PILOT': '8', 'FLIGHT_TOU
            'FLIGHT_CHAN': '122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777'}
 LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
                 '@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E')
+# lm-p63-lr-update: lm-p63-nassp with the landing radar from 600 s, the
+# surface 150 m above the LGC's landing site (FLIGHT_LR=60000:150), and
+# V57E at 660 s (LR updates permitted). From 816 s R12's altitude updates
+# take HCALC from about 186 m above the true height to about 77 m by
+# 955 s (HCALC lags the truth by 40-60 m here, a sample apart, with no
+# bias). It stops at 960 s, before the velocity reads: on the host the
+# LR velocity read then starts while an altitude read is still running
+# (SERVICER reaches READV 6 cs after READACCS), HMEAS 0 is stored and
+# the update moves HCALC about 1,200 m (replay-mismatches.md, RK).
+LR_UPDATE = {**NASSP, 'FLIGHT_LR': '60000:150'}
+LR_UPDATE_KEYS = NASSP_KEYS + '@66000V57E'
+# lm-p65-autoland-nassp: lm-p63-nassp on to the surface with no crew
+# takeover. P64 at about 1,118 s; at 1,278 s P64's guidance reaches its
+# low gate and starts P65, which holds the LM vertical and descends at
+# about 1 m/s. Touchdown at 1,324.8 s (FLIGHT_TOUCHDOWN: the engine
+# model's true height reaches the surface then); V37E68E at 1,340 s: P68
+# flashes V06N43, PRO at 1,378 s, V37E00E at 1,390 s: P00 on the surface.
+# The landing radar (FLIGHT_LR, no V57, so no updates) answers R12's reads
+# down to 10 ft, on low scale (below 2,481.7 ft) from 1,171 s.
+P65 = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_TOUCHDOWN': '132480', 'FLIGHT_LR': '60000',
+       'FLIGHT_CHAN': '137800:032=057777,137900:032=077777'}
+P65_KEYS = NASSP_KEYS + '@134000V37E68E@139000V37E00E'
+# lm-p67-nassp: lm-landing-ascent-nassp to P00 on the surface, with the
+# crew on manual throttle (channel 30 bit 5) from 1,240 s to 1,244 s in
+# P66: GUILDENSTERN starts P67 (no throttle commands, the thrust holds),
+# and when the discrete goes again it starts P66 over at the current sink
+# rate; the ROD clicks at 1,250 s and the landing go on as before. The
+# 4 s of held thrust bring touchdown forward to 1,334 s (where the engine
+# model's true height reaches the surface; lm-landing-ascent-nassp
+# touches down at 1,344 s).
+P67 = {**LANDING, 'FLIGHT_TOUCHDOWN': '133400', 'FLIGHT_CHAN': '122500:031=067777,124000:030=036371,124400:030=036351,'
+                                 '134900:031=057777,141000:032=057777,141100:032=077777'}
+P67_KEYS = NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
 # lm-abort-p70-nassp and lm-abort-p71-nassp: lm-p63-nassp with the crew
 # aborting in P64 at 1,150 s (about 1,500 m up). P70: ABORT (channel 30
 # bit 1, active 0; the core's channel 30 is 036351); R10,R11 sees it within 0.25 s and starts P70, which
@@ -205,6 +238,34 @@ DOI = {**NASSP, 'FLIGHT_CH33': '036673', 'FLIGHT_ENGINE_LAG': '0.2',
 del DOI['FLIGHT_LR_POS2']
 DOI_KEYS = ('@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00764E+00000E+00000E@3600V33E@4400V33E'
             '@6000V37E40E@7200E@48500V33E@57000V33E@58000V33E@59000V37E00E@60000V82E@61000V33E@63000V34E')
+# lm-p47-nassp: the lm-doi-nassp start in P00 with the RCS translation
+# model (FLIGHT_RCS: 15,100 kg). V37E47E: P47 shows V16N83 from 25 s; the
+# crew's +X translation (channel 31 bit 7) from 30 s to 40 s, two jets,
+# reads 1.9 ft/s on N83 X; PRO at 50 s and V37E00E: P00.
+P47 = {**{k: v for k, v in DOI.items() if k != 'FLIGHT_POKE'}, 'FLIGHT_RCS': '15100',
+       'FLIGHT_CHAN': '3000:031=057677,4000:031=057777'}
+P47_KEYS = '@200V37E47E@5000V33E@5500V37E00E'
+# lm-p41-nassp: lm-doi-nassp's P30 with a 5.0 ft/s retrograde trim in
+# place of DOI, done by RCS: V37E41E, the crew's maneuver to P41's N18
+# angles (FLIGHT_POKE), ENTER, V16N85 (body VG 4.6, 1.8, -0.8 ft/s); from
+# TIG the crew translates +X 23.5 s, +Y 9.3 s and -Z 4.1 s (FLIGHT_RCS,
+# FLIGHT_CHAN), nulling N85 to 0.1, 0, 0; PRO and V37E00E: P00.
+P41 = {**DOI, 'FLIGHT_RCS': '15100',
+       'FLIGHT_POKE': '7000:032=77776,7000:033=56420,7000:034=74217,7000:3235=77776,7000:3236=56420,7000:3237=74217',
+       'FLIGHT_CHAN': '49000:031=057677,51350:031=057777,51400:031=057377,52330:031=057777,52400:031=053777,52810:031=057777'}
+P41_KEYS = DOI_KEYS.split('@6000')[0].replace('-00764E', '-00050E') + '@6000V37E41E@7200E@53500V33E@54500V37E00E'
+# lm-p42-nassp: lm-doi-nassp's DOI burned on the ascent engine. The
+# descent stage goes at 1.5 s (FLIGHT_STAGE, FLIGHT_ASCENT 4,888 kg); V48:
+# DAPDATR1 11002 (ascent stage, so APSFLAG) and 10,776 lb on N47; P30 as
+# in lm-doi-nassp; V37E42E, the R60 maneuver as there, PRO on V99N40; the
+# APS burns about 6.6 s. With no attitude dynamics the DAP's steering does
+# not turn the LM, so cutoff leaves N85 at 5.3, 14.3, -0.1 ft/s. PRO on
+# V16N40 and N85, V37E00E: P00.
+P42 = {**DOI, 'FLIGHT_STAGE': '150', 'FLIGHT_ASCENT': '4888',
+       'FLIGHT_POKE': '10000:032=77776,10000:033=60216,10000:034=74211,10000:3235=77776,10000:3236=60216,10000:3237=74211'}
+P42_KEYS = ('@200V48E@600V21E11002E@1400V33E@2000V21E+10776E@2800V33E@3200V37E30E@4000V25E+00102E+00034E+00000E'
+            '@5000V33E@5600V25E-00764E+00000E+00000E@6600V33E@7400V33E@9000V37E42E@10200E@48500V33E@52000V33E'
+            '@53000V33E@54000V37E00E')
 # cm-p11: Apollo 11's launch (16 July 1969 13:32 UT), the pad load at 1 s
 # (tools/flight_scenarios/cm_p11.py: launch complex 39A, the 72.058
 # degree flight azimuth, TEPHEM for a 100 s liftoff). The IMU model
@@ -378,15 +439,14 @@ LM_RDZ_RR_DROP_KEYS = LM_RDZ_KEYS.replace('@29000', '@21500V33E@29000')
 # their own.
 CM_P20_VHF_DROP = {**CM_P20, 'FLIGHT_RR_DROP': '18000-19000'}
 CM_P20_VHF_DROP_KEYS = CM_P20_KEYS.replace('@20000V33E', '')
-# lm-p63-lr-dropout: lm-p63-nassp with the landing radar's altitude beam
-# (FLIGHT_LR: the slant range the LGC's own altitude and attitude give,
-# good below 50,000 ft) and its range data good lost from 800 s to 900 s
-# (FLIGHT_LR_DROP). R12 reads it from 35,000 ft (HMEAS, DELTAH within
-# 300 ft; no V57, so no update); in the dropout the reads fail (RADMODES
-# LR range fail, no altitude measured), and R12 measures again from
-# 906 s. (A dropout from 850 s to 950 s also gives alarm 1210 at high
-# gate: R12's read and the antenna's move to position 2 meet.)
-LR_DROP = {**NASSP, 'FLIGHT_LR': '1', 'FLIGHT_LR_DROP': '80000-90000'}
+# lm-p63-lr-dropout: lm-p63-nassp with the landing radar from 600 s
+# (FLIGHT_LR, tools/flight_lr.h: range and velocity beams from the true
+# trajectory, data good below 50,000 ft of slant range) and its data good
+# lost from 880 s to 950 s (FLIGHT_LR_DROP). R12's range reads fail
+# (RADMODES LR range fail) until the slant range comes inside 50,000 ft
+# at 816 s (about 38,000 ft up), pass, fail again in the dropout, and
+# pass again from 952 s. No V57, so nothing is updated.
+LR_DROP = {**NASSP, 'FLIGHT_LR': '60000', 'FLIGHT_LR_DROP': '88000-95000'}
 # lm-uplink-reject: the ground's uplink (FLIGHT_UPLINK) in P00, rejected
 # by the V71 checks: V71 (P27 flashes V21N01), 25 components (octal: 21,
 # over OHWELL1's limit of 20, so V21N01 again), V34 (P27 ends); a garbled
@@ -416,11 +476,17 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-stable-orbit-lm', 'lm', 67000, LM_SO_KEYS.replace('V37E78E', 'V37E38E').replace('V37E79E', 'V37E39E'), LM_RDZ),
           ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
+          ('lm-p63-lr-update', 'lm', 96000, LR_UPDATE_KEYS, LR_UPDATE),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
+          ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
+          ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
           ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
+          ('lm-p47-nassp', 'lm', 7500, P47_KEYS, P47),
+          ('lm-p41-nassp', 'lm', 57500, P41_KEYS, P41),
+          ('lm-p42-nassp', 'lm', 57000, P42_KEYS, P42),
           ('lm-abort-p70-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P70),
           ('lm-abort-p71-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P71),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware

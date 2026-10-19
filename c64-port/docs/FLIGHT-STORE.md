@@ -729,6 +729,20 @@ port) runs one mission:
    1,679 m/s, about 18 km up. On the host every native routine matches
    yaAGC; the unregistered points are the 3 self-check ones and Pinball's
    RELDSP1 (02,2502, 1 arrival).
+   `lm-p65-autoland-nassp`: the same descent with no crew takeover. P64's
+   guidance reaches its low gate at 1,278 s and starts P65, which holds
+   the LM vertical and descends at about 1 m/s; touchdown at 1,324.8 s,
+   where the engine model's true height (`FLIGHT_LR_TRACE`) reaches the
+   surface; P68 and P00 on the surface as above. Apollo 11 never flew
+   P65 (the crew took P66 at about 500 ft).
+   The landing radar runs here too (`FLIGHT_LR=60000`, no V57): R12's
+   range reads go to low scale (no /5, SKALSKAL on the Doppler term)
+   from 1,171 s and data good ends at 10 ft.
+   `lm-p67-nassp`: `lm-landing-ascent-nassp` to P00 on the surface with
+   the crew on manual throttle (channel 30 bit 5) from 1,240 s to
+   1,244 s in P66: GUILDENSTERN starts P67, which issues no throttle
+   commands (the thrust holds), and starts P66 over at the current sink
+   rate when the discrete goes. Touchdown comes 10 s earlier, at 1,334 s.
    `lm-doi-nassp`: Apollo 11's descent orbit insertion from the same core.
    lm_doi.py propagates the core's LM (after DOI, on the 15 x 114 km
    descent orbit) back to that orbit's apolune and undoes the burn there
@@ -745,6 +759,24 @@ port) runs one mission:
    native routine matches yaAGC; the unregistered points are the 3
    self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
    sites (#587).
+   `FLIGHT_RCS=KG` (LM) is the RCS jets' translation for a KG kilogram
+   vehicle: 444.8 N a jet along the axis the DAP's jet tables give it
+   (channel 5 even bits +X, odd bits -X; channel 6 bits 5 and 8 +Y, 6
+   and 7 -Y, 1 and 4 +Z, 2 and 3 -Z; rotation couples cancel), counted
+   to the centisecond at each native routine boundary into PIPAX-Z
+   through CDUX-Z. No attitude dynamics. The crew's translation hand
+   controller is channel 31 bits 7-12 (+X, -X, +Y, -Y, +Z, -Z, active 0).
+   `lm-p47-nassp`: P47 from the lm-doi-nassp start; 10 s of +X (two jets)
+   reads 1.9 ft/s on N83. `lm-p41-nassp`: lm-doi-nassp's P30 with a
+   5.0 ft/s retrograde trim, done by RCS in P41: V16N85 shows body VG
+   4.6, 1.8, -0.8 ft/s at TIG and the crew's +X, +Y and -Z translations
+   null it to 0.1, 0, 0. `lm-p42-nassp`: the DOI burn on the ascent
+   engine after an abort stage at 1.5 s (`FLIGHT_STAGE`, `FLIGHT_ASCENT`)
+   and V48 (DAPDATR1 11002: ascent stage, which sets APSFLAG; 10,776 lb
+   on N47); the APS burns about 6.6 s, and with no attitude dynamics the
+   steering does not turn the LM, so cutoff leaves N85 at 5.3, 14.3,
+   -0.1 ft/s. All three end in P00 and match yaAGC at every native
+   routine.
    `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
    crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
    28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one
@@ -1107,16 +1139,33 @@ port) runs one mission:
    P34 ends on N59 as before. `cm-p20-vhf-dropout` drops VHF ranging
    from 180 s to 190 s, over R22's second range: VHFREAD takes BADEND,
    so no N49 and no mark (VHFCNT 3 by 320 s, not 4), and the next ranges
-   incorporate on their own. `FLIGHT_LR=1` is the LM landing radar's
-   altitude beam, agreeing with the LGC's own navigation: data good
-   (channel 33 bit 5) in position 1 or 2 below 50,000 ft, and an LR
-   range read gives the slant range HCALC, HBEAMNB, XNBPIP and UNIT/R/
-   imply (high scale, 5.395 ft a count, no Doppler term: DELTAH stays
-   within 300 ft, and with no V57 nothing is updated); velocity is not
-   modelled, so channel 33 bit 8 stays not good. `lm-p63-lr-dropout` is
-   lm-p63-nassp with it and `FLIGHT_LR_DROP` from 800 s to 900 s: R12
-   reads altitude from 35,000 ft, its reads fail in the window (RADMODES
-   LR range fail) and it measures again from 906 s.
+   incorporate on their own. `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
+   From CS, once HCALC is set, it takes the LM's state from RN and VN
+   (through REFSMMAT) and flies its own trajectory: lunar gravity plus
+   the engine model's thrust, so truth and the LGC's navigation part as
+   the navigation errs. The surface is the landing site's radius
+   (/LAND/) plus DH metres. Data good (channel 33 bits 5 and 8) holds
+   below 50,000 ft of slant range and above 10 ft, until touchdown and
+   outside `FLIGHT_LR_DROP` windows; bit 9 gives the range scale (high
+   above 2,481.7 ft). On each LR read (channel 13 bit 4 with bit 3) it
+   writes RNRAD: the altitude beam's slant range along HBEAMNB (with the
+   Doppler term POSUPDAT removes), or one velocity beam's component in
+   12288 + counts. The beams follow the antenna's position (LRALPHA,
+   LRBETA and the second pair, `FLIGHT_LR_POS2`). `FLIGHT_LR_TRACE=1`
+   prints each read. `lm-p63-lr-dropout` is lm-p63-nassp with it from
+   600 s and `FLIGHT_LR_DROP` from 880 s to 950 s: R12's range reads fail
+   (RADMODES LR range fail) until the slant range comes inside
+   50,000 ft at 816 s (about 38,000 ft up), pass, fail in the window and
+   pass again from 952 s. `lm-p63-lr-update` is lm-p63-nassp with
+   `FLIGHT_LR=60000:150` (the surface 150 m above the landing site) and
+   V57E at 660 s: from 816 s R12's altitude updates take HCALC from about
+   186 m above the true height to about 77 m by 955 s (with no bias it
+   runs 40-60 m above, a sample's lag). It ends at 960 s, before the
+   velocity reads: on the host SERVICER reaches READV 6 cs after
+   READACCS, so the velocity read starts while the altitude read is
+   still running, HMEAS 0 is stored and the update moves HCALC about
+   1,200 m. That is a timing question for the interpretive charge, not
+   the radar (replay-mismatches.md).
    `FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...]` is the ground's uplink: each
    key, 20 cs apart from CS, reaches INLINK as UPRUPT's triple-redundant
    word with an UPRUPT request; `#OCTAL` sends a raw word, and `R` is

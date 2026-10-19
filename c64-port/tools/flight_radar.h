@@ -114,36 +114,6 @@ static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_w
  if((*ch13&7u)==1u)w[RR_RNRAD]=(agc_word)lround(range/(2.859024*8.0))&077777u;
  else if((*ch13&7u)==2u)w[RR_RNRAD]=(agc_word)(17000l-lround(rdot/0.19135344))&077777u;}
 
-/* FLIGHT_LR=1 (LM): the landing radar's altitude beam, agreeing with the
- * LGC's own navigation (no terrain), so DELTAH stays near zero and the LR
- * update (inhibited until V57) changes nothing. Velocity is not modelled:
- * channel 33 bit 8 (velocity data good) stays as FLIGHT_CH33 set it.
- * - Data good: channel 33 bit 5 is low (good) while the antenna is in
- *   position 1 or 2 (bit 6 or 7 low) and HCALC, the LGC's altitude, is
- *   below 50,000 ft; high otherwise and in FLIGHT_LR_DROP's windows.
- * - A read: when channel 13 bit 4 comes on with the select bits 7 (LR
- *   range), RNRAD takes the slant range along the beam on the high scale
- *   (5.395 ft a count; channel 33 bit 9 stays high, so keep the run above
- *   2,500 ft, where LRSCK would ask for the low scale): HCALC over the
- *   cosine between the beam (HBEAMNB through XNBPIP, nav base to stable
- *   member) and UNIT/R/. No Doppler term. */
-static int lr_model;
-static struct radar_drops lr_drops;
-static struct rr lr_nat_read;
-enum { LR_XNBPIP=02145, LR_HBEAMNB=02272, LR_HCALC=03534, LR_UNITR=03536 };
-static void lr_model_due(unsigned long t,struct rr *e,agc_word *w,const agc_word *ch13,agc_word *ch33){
- double h=rr_dp(w,LR_HCALC,24),b[3],c=0.0;unsigned i,j;
- if(!lr_model)return;
- if((*ch33&0140u)!=0140u&&h<50000.0*0.3048&&!in_drop(&lr_drops,t))*ch33&=(agc_word)~020u;else *ch33|=020u;
- if(!(*ch13&010u)){e->active=0;return;}
- if(e->active||(*ch13&7u)!=7u)return;
- e->active=1;
- for(j=0;j<3u;++j){b[j]=0.0;for(i=0;i<3u;++i)b[j]+=rr_dp(w,LR_HBEAMNB+2u*i,1)*rr_dp(w,LR_XNBPIP+6u*i+2u*j,1);}
- for(j=0;j<3u;++j)c+=b[j]*rr_dp(w,LR_UNITR+2u*j,1);
- /* HSCAL is negative: the beam points down, UNIT/R/ up. */
- c=-c/sqrt(b[0]*b[0]+b[1]*b[1]+b[2]*b[2]);
- if(c<0.1)c=0.1;
- w[RR_RNRAD]=(agc_word)(lround(h/c/0.3048/5.395)&077777l);}
 #else
 /* The CM side (Comanche P20, tools/flight_scenarios/cm_p20.py): the VHF
  * ranging link to the LM and the crew's sextant.
