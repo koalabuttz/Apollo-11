@@ -870,7 +870,7 @@ def check_arms(report, label, path, certificate, specs):
 
 DSKY_SWEEP_FILES = ('PINBALL_GAME_BUTTONS_AND_LIGHTS.agc',)
 DSKY_SWEEP_MISSION = {'Luminary099': 'lm', 'Comanche055': 'cm'}
-DSKY_SWEEP_CLOCK = 'C64 clock one cs behind the host'
+DSKY_SWEEP_CLOCK = 'owner RK'  # the known-list reasons of clock-class cases
 
 
 def check_dsky_sweep(report, label, mission, name, complete):
@@ -886,17 +886,17 @@ def check_dsky_sweep(report, label, mission, name, complete):
         return
     m = DSKY_SWEEP_MISSION.get(mission)
     cases = {k: why for k, why in json.loads(known.read_text()).items() if k.split(' ', 1)[0] == m}
-    # The one-cs-behind clock class is the resident clock's (replay-mismatches.md,
+    # Cases the known list gives to RK are the clock class (replay-mismatches.md,
     # owned by the resident-kernel lane), not a Pinball display difference: warn.
-    clock = sorted(k for k, why in cases.items() if why.startswith(DSKY_SWEEP_CLOCK))
+    clock = sorted(k for k, why in cases.items() if DSKY_SWEEP_CLOCK in why)
     left = sorted(k for k in cases if k not in clock)
     if left:
         report.add('FAIL', label, f'{len(left)} DSKY sweep cases of {m} do not match the host on the C64 '
                    f"(tools/dsky_sweep_known.json: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''})",
                    'fix them, run `make dsky-sweep-vice` and take them off the list')
     if clock:
-        report.add('WARN', label, f'{len(clock)} DSKY sweep cases of {m} end with the C64 clock one cs behind '
-                   f"the host ({', '.join(clock[:6])}{' ...' if len(clock) > 6 else ''})",
+        report.add('WARN', label, f'{len(clock)} DSKY sweep cases of {m} differ by the C64 clock class '
+                   f"({', '.join(clock[:6])}{' ...' if len(clock) > 6 else ''})",
                    'the clock class in flight-scenarios/replay-mismatches.md; no Pinball change needed')
 
 

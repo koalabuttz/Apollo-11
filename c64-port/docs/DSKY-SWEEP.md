@@ -43,7 +43,8 @@ with its reason. The target fails on a failing case that is not listed. It
 also fails on a listed case that now matches, so the list only shrinks.
 
 `tools/cert_precheck.py` fails a complete Pinball certificate while any of
-its mission's cases is still on the list. Cases whose only difference is
-the C64 clock one cs behind the host are an exception: they get a warning,
-because that difference belongs to the resident clock
-(`flight-scenarios/replay-mismatches.md`), not to Pinball.
+its mission's cases is still on the list. Cases whose reason names
+`owner RK` are an exception: they get a warning. Those are the clock class
+(the C64 clock or a timer one tick apart, and words that follow from it),
+which belongs to the resident clock (`flight-scenarios/replay-mismatches.md`),
+not to Pinball.
