@@ -548,6 +548,18 @@ CM_P52_IMU_CAGE = {**P52, 'FLIGHT_CHAN': '4000:033=077757,6000:030=035377,6500:0
 # platform (channel 12 bit 6 with the CDU drives), and NO ATT lights with
 # GIMBAL LOCK.
 CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,19000:034=017200'}
+# cm-p52-coarse: P52 option 2 (nominal), the coarse align R50 runs (the
+# Comanche055 coverage map). cm-p52's load, the IMU model on (FLIGHT_IMU:
+# with channel 12 bits 4 and 6 set the CDUs go to THETAD); V37E52E,
+# proceed on V04N06 (option 00002, the default with PFRATFLG clear);
+# proceed on V06N34 with the time 0 (now): S52.3 computes the nominal
+# orientation and S52.2 the gimbal angles, V06N22 353.72, 110.96, 359.93
+# degrees; proceed; proceed on V50N25 00013 (coarse align, not gyro
+# torque): CAL53A coarse aligns (CDUY 287.9 to 111.0 degrees) and P52
+# goes on to V50N25 00015 (the star acquisition); terminate (V34), P00.
+CM_P52_COARSE = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_IMU': '1',
+                 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p52.load'}
+CM_P52_COARSE_KEYS = '@4500V37E52E@6500V33E@7500V33E@8500V33E@9500V33E@12000V34E@13000V37E00E'
 # Crew verbs the other CM scenarios do not key (the Comanche055 coverage
 # map, /mnt/project-files/acceptance/comanche055-coverage-map.md).
 # cm-p20-crew-verbs: cm-p20 to 200 s, then V90 (R36, out-of-plane): V04N12
@@ -650,6 +662,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p23-attached', 'cm', 30000, P23_ATTACHED_KEYS, P23),
           ('cm-v49-maneuver', 'cm', 15000, V49_KEYS, P40),
           ('cm-p21', 'cm', 25000, P21_KEYS, P52),
+          ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
