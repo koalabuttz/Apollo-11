@@ -42,18 +42,21 @@ error), and their times may be at most TET_BEHIND behind the earlier of
 the harness's: with the radar off, the target moved 300 m or 5 km, the
 marks or the incorporations (V33E) left out one block or the other is
 hundreds of metres off or thousands of centiseconds behind.
-KNOWN lists scenarios outside the RN/VN bounds with the reason and an
-envelope of their own: such a run is reported and does not fail when it
-reaches the compare point, exits 0, has the same major mode, stays within
-the word limit and within the envelope; anything else fails. Results go to
+KNOWN lists scenarios outside the RN/VN bounds, or with an alarm code the
+harness did not raise, with the reason and an envelope of their own: such
+a run is reported and does not fail when it reaches the compare point,
+exits 0, has the same major mode, stays within the word limit and within
+the envelope (alarm codes included); anything else fails. Results go to
 build/x86-flight/scenarios/summary.json.
 
   x86_flight_scenarios.py [--host-cc CC] [--skip-build] [--drop-keys CHARS] [NAME ...]
 
-Scenarios that need a model the x86 program does not have yet (the
-landing radar, the NASSP P63 core, uplink, stolen time) are left out, and
-GAPS lists those that stop at a routine not yet certified: they pass only
-when they stop exactly there. Needs yaAGC (deps/virtualagc) for the
+Scenarios that need a model the x86 program does not have yet (uplink,
+stolen time) are left out. A scenario that starts from the NASSP P63 core
+starts the x86 program from the harness's state at that time (X86_START,
+made at test time and deleted after the run). GAPS lists those that stop
+at a routine not yet certified: they pass only when they stop exactly
+there. Needs yaAGC (deps/virtualagc) for the
 harness; the x86 program itself links none.
 """
 import argparse, json, math, os, re, subprocess, sys
@@ -99,7 +102,24 @@ KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the har
          'cm-p20-vhf-dropout': dict(reason="the marks fall at other times (state blocks at 30,348 cs against the "
                                            "harness's 30,669 and 30,678, each within its limits of the true orbit), so "
                                            "the navigation words they write differ",
-                                    rn=129.0, vn=0.6, words=700)}   # measured 636 words against 616
+                                    rn=129.0, vn=0.6, words=700),   # measured 636 words against 616
+         # The keys go in at fixed times, and on the x86 program's schedule
+         # some land on another display: lm-rendezvous-tpm's V33 at 47,500 cs
+         # comes while P74 is between its N37 and N55 displays (the harness
+         # has N37 back at 47,204, the x86 program at 48,655), so the V25 at
+         # 50,000 loads N37 instead of N55 (no elevation angle) and P74 then
+         # raises 611. In lm-stable-orbit the V37E78E goes in 143 cs later on
+         # the harness (busy at 8,000), P78's redisplay at 10,492 eats the
+         # V25's third register, and each V33 from then on answers one
+         # display behind: the x86 run keeps marking on interim passes to
+         # TET 41,786 cs (the harness's final pass is at 23,100), and P79's
+         # integration raises 430. Everything else (the lockstep check, the
+         # state vector, the words) matches.
+         **{n: dict(reason="keys typed at fixed times land on another display on the x86 program's schedule, so "
+                           f"{p} answers the crew's inputs differently and raises alarm {a:o}",
+                    alarms={0o376: a}) for n, p, a in (('lm-rendezvous-tpm', 'P74', 0o611),
+                                                        ('lm-stable-orbit', 'P79', 0o430),
+                                                        ('lm-stable-orbit-lm', 'P79', 0o430))}}
 UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # A FLIGHT_CORE scenario starts from a yaAGC core dump, which the x86
 # program never reads: the harness loads it and writes its state at the
@@ -137,6 +157,8 @@ GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP, 'lm-p47-nassp': P47_PINBALL, 'lm
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7), PIPTIME.
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
 PIPTIME = {'lm': 0o1234, 'cm': 0o1204}
+# FAILREG and the two alarm code registers after it (both missions).
+FAILREG = (0o375, 0o376, 0o377)
 # The two vehicles' permanent state blocks (RRECTCSM ... and RRECTLEM ...:
 # RRECT, VRECT, TET at +014, DELTA +016, NUV +024, RCV +032, VCV +040), at
 # the same addresses on both missions. Which one a mark updates is
@@ -286,7 +308,12 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
                      rn_error_m=dict(harness=round(h_err[0], 1), other_clock=round(o_err[0], 1), x86=round(x_err[0], 1)),
                      vn_error_mps=dict(harness=round(h_err[1], 3), other_clock=round(o_err[1], 3),
                                        x86=round(x_err[1], 3)))
-    ok = r.returncode == 0 and hw[modreg] == xw[modreg] and d_rn <= rn_tol and d_vn <= vn_tol and words <= words_tol
+    # The alarm codes (FAILREG, +1, +2) wherever the harness's two clocks
+    # agree on them: an alarm the harness raised that the x86 run did not
+    # (LM R22's 521 in an RR dropout), or the reverse.
+    alarms = [a for a in FAILREG if hw[a] == sw[a] and xw[a] != hw[a]]
+    ok = (r.returncode == 0 and hw[modreg] == xw[modreg] and d_rn <= rn_tol and d_vn <= vn_tol and words <= words_tol
+          and not alarms)
     blocks, block_line = None, ''
     if 'FLIGHT_RR' in env:
         blocks = {}
@@ -315,13 +342,17 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
                 f"{words} words differ (limit {words_tol}; the harness's clocks: RN {s_rn:.1f} m, VN {s_vn:.3f} m/s, "
                 f"{spread_words} words)")
     line += block_line
+    if alarms:
+        line += '; alarm codes differ: ' + ', '.join(f'{a:04o} {hw[a]:05o}/{xw[a]:05o}' for a in alarms)
     return dict(scenario=name, mission=m, centisecond=at, x86_exit=r.returncode,
                 major_mode=dict(harness=f'{hw[modreg]:02o}', x86=f'{xw[modreg]:02o}'),
                 rn_metres=dict(harness=[round(v, 1) for v in state['rn'][0]], x86=[round(v, 1) for v in state['rn'][2]],
                                difference=round(d_rn, 1), spread=round(s_rn, 1), limit=round(rn_tol, 1)),
                 vn_mps=dict(harness=[round(v, 2) for v in state['vn'][0]], x86=[round(v, 2) for v in state['vn'][2]],
                             difference=round(d_vn, 3), spread=round(s_vn, 3), limit=round(vn_tol, 3)),
-                words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, state_blocks=blocks, inputs=env,
+                words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, state_blocks=blocks,
+                alarms=dict(harness=[f'{hw[a]:05o}' for a in FAILREG], x86=[f'{xw[a]:05o}' for a in FAILREG],
+                            differ=[f'{a:04o}' for a in alarms]), inputs=env,
                 line=line), ok
 
 
@@ -360,10 +391,16 @@ def within_known(name, row):
     mm, w = row['major_mode'], row['words']
     blocks = all(b['rn_error_m']['x86'] <= b['rn_error_m']['limit'] and b['vn_error_mps']['x86'] <= b['vn_error_mps']['limit']
                  and b['tet_cs']['x86'] >= b['tet_cs']['at_least'] for b in (row.get('state_blocks') or {}).values())
-    inside = (mm['harness'] == mm['x86'] and w['differ'] <= k.get('words', w['limit']) and blocks
-              and row['rn_metres']['difference'] <= k['rn'] and row['vn_mps']['difference'] <= k['vn'])
+    # Alarm codes may differ only where the envelope names the x86 run's code.
+    allowed = k.get('alarms', {})
+    alarms = all(allowed.get(int(a, 8)) == int(row['alarms']['x86'][FAILREG.index(int(a, 8))], 8)
+                 for a in row['alarms']['differ'])
+    rn, vn = k.get('rn', row['rn_metres']['limit']), k.get('vn', row['vn_mps']['limit'])
+    inside = (mm['harness'] == mm['x86'] and w['differ'] <= k.get('words', w['limit']) and blocks and alarms
+              and row['rn_metres']['difference'] <= rn and row['vn_mps']['difference'] <= vn)
     words = f", {k['words']} words" if 'words' in k else ''
-    return f"{k['reason']} (envelope RN {k['rn']:.0f} m, VN {k['vn']} m/s{words})" if inside else None
+    codes = ''.join(f', {a:04o} {v:05o}' for a, v in allowed.items())
+    return f"{k['reason']} (envelope RN {rn:.0f} m, VN {vn} m/s{words}{codes})" if inside else None
 
 
 def main():
@@ -398,6 +435,8 @@ def main():
         summary.append(row)
         print(row['line'] + ('' if ok else f' KNOWN: {known}' if known else ' FAILED'), flush=True)
     (OUT / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
+    for start in OUT.glob(f'start-*-{os.getpid()}.h'):   # the core dump's state is not kept
+        start.unlink()
     return 1 if failed else 0
 
 

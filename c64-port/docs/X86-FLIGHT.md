@@ -24,11 +24,12 @@ It runs Luminary099 from GOJAM for CS centiseconds of AGC time (default 1000), p
 | `FLIGHT_POKE` | `CS:ADDR=VALUE,...`: erasable words set on AGC time, in octal. |
 | `FLIGHT_LOAD` | `CS:FILE,...`: the same from files of octal `ADDR VALUE` lines, a scenario's erasable load (`tools/flight_scenarios/`). |
 | `FLIGHT_CHAN` | `CS:CH=VALUE,...`: input channel 16 or 30-33 set on AGC time, in octal, in time order. |
-| `FLIGHT_ENGINE` ... `FLIGHT_SIVB` | The vehicle models (below). |
+| `FLIGHT_ENGINE` ... `FLIGHT_SIVB`, `FLIGHT_RR`, `FLIGHT_LR` | The vehicle and radar models (below). |
+| `X86_START` | A header `tools/flight_host_run.c`'s `FLIGHT_SNAPSHOT` wrote: start from that state (erasable memory, I/O channels, interrupt state and AGC time) instead of GOJAM, skipping the inputs due at or before it (below). |
 | `FLIGHT_GOJAM` | `CS[,CS...]`: a hardware restart (yaAGC's GOJAM: Q = Z, Z = 04000, interrupts enabled and cleared, output channels zeroed), then the program's own restart code. |
 | `FLIGHT_DOWNRUPT` | `1`: a DOWNRUPT every 20 ms of AGC time, so the downtelemetry program runs. |
 | `X86_REPORT` | A JSON report: the points the interpreter core ran and why (no table, or the table refused), basic points no routine holds, the tables used with their certification, and the clock. |
-| `X86_SAMPLES` | Erasable memory at the first idle pass through ADVAN in each centisecond. |
+| `X86_SAMPLES` | Erasable memory at the first idle pass through ADVAN in each centisecond, after that point's inputs and with nothing pending (as the harness's `FLIGHT_SNAPSHOT`). |
 | `X86_SAMPLES_FROM` | The first centisecond `X86_SAMPLES` writes (default 1). |
 | `X86_DSKY` | `1`: a live DSKY in the terminal (below). With no CS argument the run goes on until `q`, or until a pipe's last key has gone in. |
 | `X86_TYPED` | Characters sent through the live DSKY's typed-key path from the start, as if typed (below). The lockstep check takes it too. |
@@ -54,35 +55,35 @@ A table's kind (basic, keyed by Z; or interpretive, keyed by LOC under BANKSET) 
 
 Each routine adds its cost to a virtual AGC clock (85,333 machine cycles a second). Every 853 1/3 cycles is one clock period, run at the next boundary, with no cap and nothing dropped. At `X86_SPEED` 1 the program sleeps whenever AGC time gets ahead of `CLOCK_MONOTONIC`. When the host falls behind, AGC time runs late (scaled time, docs/RESIDENT-FLIGHT.md). Keys and pokes arrive on AGC time.
 
-The costs come from `docs/flight-routine-mct.json`: for each routine point, the machine cycles yaAGC took for it over the host differential's scenarios and the LM DAP holding and firing (median, runs, sum, sum of squares, least, most and the table that ran; `make x86-flight-mct`, `tools/x86_flight_mct.py`, using `FLIGHT_MCT_OUT` in `tools/flight_host_run.c`). The x86 clock charges each point its median. Points no scenario reaches cost the median of their kind. One interpreter core slot costs 30 cycles, an estimate. The C64 resident's work clock takes its per-module weights from the same file.
+The costs come from `docs/flight-routine-mct.json`: for each routine point, the machine cycles yaAGC took for it over the host differential's scenarios and the LM DAP holding and firing (median, runs, sum, sum of squares, least, most and the table that ran; `make x86-flight-mct`, `tools/x86_flight_mct.py`, using `FLIGHT_MCT_OUT` in `tools/flight_host_run.c`). The x86 clock charges each point its median. Points no scenario reaches cost the median of their kind. An interpreter core slot costs the cycles of the interpretive words it fetched: the core is built with `INTERP_WORD_CHARGE` (include/interp_word_mct.h), and the x86 program starts its count at 0 for each slot, as `tools/flight_host_run.c`'s `core_run` does off the work clock. Since #739 the files in `FLIGHT_INTERP_STOP` hand their interpretive code to the core, so this charge matters: left running, the count's bit 15 made the core skip NEWOPS, and it never fetched a word again (478,218 slots in `lm-doi-nassp`). The C64 resident's work clock takes its per-module weights from the same file.
 
 ## Acceptance: lockstep against yaAGC
 
 `make x86-flight-check` (`tools/x86_flight_check.py`) builds both modes and the lockstep check `tools/x86_flight_lockstep.c`. That check is GPL, host only, and links yaAGC. It runs each scenario on the program's own step. Every routine and every core slot is checked: yaAGC, with its clock frozen (`AgcFrozenClock`, as under scaled time in docs/FLIGHT-STORE.md), runs from the state the routine started in until it reaches the routine's continuation with the same 2,048 erasable words (Z aside), I/O channels and interrupt state. Q has one exception. Native routines leave Q's 16th bit clear where yaAGC sign-extends bit 15 into it (LM P63's landing displays, LLGE and integration init, CM P11 and P22). Nothing reads that bit back except as a return address, and the host differential compares no central register. So the check accepts that exact difference (native bit 16 clear, yaAGC's bit 16 equal to its bit 15) and still fails any other. The clock steps and interrupt entries are the program's own `rk_timer_phase` and `rk_rupt_take`, which `make test-resident-rupt` checks against yaAGC. So a run with no mismatch is one yaAGC run whose clock ran on the x86 program's schedule. The I/O channels compared include the downlink words (channels 34 and 35), which carry the downtelemetry list under `FLIGHT_DOWNRUPT`. The check fails on any mismatch, any basic point no routine holds, or a run that stops early.
 
-On base f499d7ee:
+On base 01f050d6:
 
 | Scenario | Routines and core slots checked (compiled / core) | yaAGC did not match | Points the core ran (compiled / core) |
 |---|---|---|---|
 | LM P00, 4000 cs | 258,356 / 258,356 | 0 | 0 / 0 |
 | CM P00, 4000 cs | 261,326 / 261,326 | 0 | 0 / 0 |
 | LM DAP hold, 3000 cs | 177,110 / 177,110 | 0 | 0 / 0 |
-| CM V37E00E, 3000 cs | 193,699 / 195,166 | 0 | 0 / 108 |
-| CM V37E06E, 3000 cs | 195,334 / 195,337 | 0 | 0 / 4 |
+| CM V37E00E, 3000 cs | 193,699 / 193,696 | 0 | 0 / 108 |
+| CM V37E06E, 3000 cs | 195,334 / 195,310 | 0 | 0 / 4 |
 | LM P00 with DOWNRUPT, 4000 cs | 257,741 / 257,741 | 0 | 0 / 0 |
 | CM P00 with DOWNRUPT, 4000 cs | 259,481 / 259,481 | 0 | 0 / 0 |
 | LM P00, GOJAM at 20 s, DOWNRUPT, 4000 cs | 257,518 / 257,518 | 0 | 0 / 0 |
-| CM V37E06E at 25 s, GOJAM at 35 s, DOWNRUPT, 4000 cs | 258,548 / 258,551 | 0 | 0 / 4 |
+| CM V37E06E at 25 s, GOJAM at 35 s, DOWNRUPT, 4000 cs | 258,548 / 258,519 | 0 | 0 / 4 |
 
-On base a93ddc4d, keys sent through the live DSKY's typed-key path (`X86_TYPED`, below), in both the x86 run and the lockstep:
+On the same base, keys sent through the live DSKY's typed-key path (`X86_TYPED`, below), in both the x86 run and the lockstep:
 
 | Scenario | Routines and core slots checked (compiled / core) | yaAGC did not match | Points the core ran (compiled / core) |
 |---|---|---|---|
 | LM typed `v35e`, 3000 cs | 193,532 / 193,532 | 0 | 0 / 0 |
-| LM typed `v37e00ep` (PRO held), 3000 cs | 191,447 / 193,087 | 0 | 0 / 107 |
-| CM typed `v37e06epmj` (PRO, MARK, MARK REJECT), 3000 cs | 195,045 / 195,050 | 0 | 0 / 4 |
+| LM typed `v37e00ep` (PRO held), 3000 cs | 191,447 / 191,620 | 0 | 0 / 107 |
+| CM typed `v37e06epmj` (PRO, MARK, MARK REJECT), 3000 cs | 195,045 / 195,013 | 0 | 0 / 4 |
 
-The same check on the 13 flight scenarios below (compiled; not in CI, a few minutes on 4 cores) shows no miss on the four LM runs. Each of the nine CM runs shows one miss: channel 12 bit 5 (zero ICDU) at 06,2356 in `cm_t4rupt_imu_routines` (Gaps). On base c78f441b the rendezvous radar scenarios are the same: no miss on the six LM runs (P20, P20 with an RR dropout window, CSI, TPI to TPF, P78 and P38: 1.1 to 2.6 million routines each), and the same one channel 12 miss on each of the ten CM runs.
+On base 01f050d6 the same check (compiled; not in CI) runs the 42 flight scenarios below that start from GOJAM and fly to their end: 13 LM and 29 CM, from 0.4 to 5.1 million routines each. No run shows a miss. The CM's channel 12 miss of earlier bases (zero ICDU in `cm_t4rupt_imu_routines`) is gone on this base: D1 fixed the channel copy in `src/flight_io.c` (#734).
 
 Flat out, 40 s of AGC time takes about 0.05 s of host time.
 
@@ -94,13 +95,20 @@ CI runs `x86-flight-check` in the host job (`ci-extra-host`) when a PR changes a
 
 `platform/x86/radar_models.h` (MIT, header only) holds the rendezvous radar the same way (`FLIGHT_RR`, `FLIGHT_RR_DROP`): on the LM the rendezvous radar locked on the CSM, on the CM the VHF ranging link and the sextant. Both vehicles fly Kepler conics about the moon from the states `FLIGHT_RR` gives. The model points the antenna (or the sextant) along the true line of sight through REFSMMAT and the CDUs, sets the data-good bits, and answers each read with range or range rate in RNRAD. It is `tools/flight_radar.h`'s model, written for this port's rendezvous scenarios, with the same arithmetic. `platform/x86/test_radar_models.c` checks it, built once for each mission. Reads start at any routine boundary and the resident timer ends them, often before the next sample point, so the radar also answers a read after any routine where channel 13 bit 4 has come on. `FLIGHT_BUSY_SAMPLE` adds the harness's extra sample points for jobs that busy-wait for the crew (LM R22's V06N49 loop).
 
+`platform/x86/landing_radar.h` (MIT, header only) holds the LM's landing radar (`FLIGHT_LR=CS[:DH]`, `FLIGHT_LR_POS2`, `FLIGHT_LR_DROP`): from `FLIGHT_LR`'s time, once descent navigation has an altitude (HCALC), it takes the LM's true state from the AGC's own state vector and flies it on with lunar gravity and the engines' and jets' velocity changes. Each read of the four beams answers with the slant range to the surface (`DH` metres above the landing site's radius) or a beam velocity, through REFSMMAT and the CDUs, high or low scale, with data good off in a dropout and after touchdown. `FLIGHT_LR_POS2` moves the antenna to position 2 at that time after the AGC commands it. It is `tools/flight_lr.h`'s model, written for this port's landing scenarios, with the same arithmetic. `platform/x86/test_landing_radar.c` checks it.
+
+A scenario that starts from the NASSP P63 core dump (`FLIGHT_CORE`) needs yaAGC to load the dump, and the x86 program never reads it. `make x86-flight-scenarios` runs the harness with `FLIGHT_SNAPSHOT=0`, which writes the harness's state at its first sample point as a C header. The x86 program then starts from that header (`X86_START`), with AGC time counting from the dump's time as the harness counts it. The header is made at test time and is never kept or shipped. Inputs due at or before the start are skipped, since the header already holds them. The vehicle models start fresh at that point, which is before any of them run in these scenarios. The lockstep check starts only from GOJAM.
+
 The x86 program runs them with the same settings and at the same points as the host differential (`tools/flight_host_run.c`, which still has its own copy): at each sample point after the pokes (the radar after the SPS), then the channel changes (`FLIGHT_CHAN`), then a restart or a key; with `FLIGHT_ENGINE_LAG` the engine, and always the RCS jets, also after every routine. Keys include the mark buttons (`M`, `J`; LM `x`, `y`, `j`: channel 16 and KEYRUPT2).
 
 `make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it with the harness on the work clock (`FLIGHT_SCALED=W`) at the first sample point at or after 1,000 cs before its end. The two programs charge routine costs differently: the x86 program charges each point's median, and the work clock charges each table's weight. So their states are close, not equal. The yardstick is the harness against itself, the same scenario on its other clock (`FLIGHT_SCALED=1,1,2`, yaAGC's own cycles). A scenario passes when all of these hold:
 
 - the major mode is the same;
 - RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (the largest such case is CM P40: VN 0.13 m/s against a spread of 0.004);
-- the erasable image (061-3777) differs in at most 1.5 times as many words as the harness's two clocks differ in, plus 10.
+- the erasable image (061-3777) differs in at most 1.5 times as many words as the harness's two clocks differ in, plus 10;
+- the alarm codes (FAILREG and the two words after it) are the harness's, wherever its two clocks agree on them.
+
+The alarm check is what sees the LM's RR dropout (`lm-rendezvous-rr-dropout`, D2's #748): with the dropout both runs raise R22's alarm 521, and with it left out of the x86 run only, that run raises none and fails (0376: 00521 against 00000). The state checks below don't see it.
 
 With the rendezvous radar, the own state vector and its time (PIPTIME) move by amounts that depend on when each mark falls. Two good runs can then hold state vectors hundreds of kilometres apart, each correct for its own time. On LM P78 the harness's is at PIPTIME 19,234 cs and the x86 program's at 41,786, 369 km apart, and each is within 90 m of the true orbit. So when the harness's two clocks leave the state vector at different times, each run's state vector is compared with the true orbit at its own PIPTIME. The x86 program's error must be within 4 times the larger of the harness's two errors, plus 50 m and 0.15 m/s.
 
@@ -114,82 +122,82 @@ That check alone doesn't see the radar: with the radar off the own state stays a
 | Sextant marks (`M`) left out | (no `M` on the LM) | The LM block 0.5 to 3.6 km off, or its TET 5,800 cs too far behind (`-vhf-dropout`) |
 | Every `V33E` left out | Both TETs stay at 4,704 cs | The LM block 1.8 km off, or the run stops |
 
-`lm-rendezvous-rr-dropout`'s window (19,500 to 21,000 cs) misses R22's reads on the harness's work clock and on the x86 program's, so neither run changes without it; only the harness's other clock sees it. It flies like `lm-rendezvous` with one more `V33E`, and it is not a test of a radar dropout yet (D2 owns the scenario). The CM's VHF dropout does take effect.
+The CM's VHF dropout (`cm-p20-vhf-dropout`) moves the marks and so both blocks.
 
 The word count is what sees programs that don't move the state vector. With the mark buttons left out of the x86 run (`--drop-keys MJxyj`), P52 differs in 210 words against a limit of 19 and P57 in 188 against 37, so both fail. P22 and P23 fail on RN as well.
 
-On base f499d7ee:
+On base 01f050d6 the tool flies 64 scenarios, and all pass. 57 reach their compare point, six of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The other seven stop at a Pinball point not yet certified, exactly where expected (Gaps).
+
+The NASSP rows start from the harness's state at the core dump's time (`X86_START`), and the `lm-p63-lr-*` rows fly the landing radar. So the LM RCS, the throttle lag, touchdown, the P66 crew, the ascent and the abort stage are now compared with the harness (`lm-p63-nassp`, `lm-p67-nassp`, `lm-landing-ascent-nassp`, `lm-abort-p70-nassp`, `lm-abort-p71-nassp`), as well as checked by `test_vehicle_models.c`.
+
+Compared directly with the harness:
 
 | Scenario | Major mode | RN apart (limit; harness spread) | VN apart (limit; spread) | Words differing (limit; spread) |
 |---|---|---|---|---|
-| LM P63 descent (no engine) | 77 / 77 | 125 m (588; 135) | 0.06 m/s (0.87; 0.18) | 318 (509; 333) |
-| LM P63 descent, engine | 77 / 77 | 135 m (751; 175) | 0.58 m/s (0.92; 0.19) | 276 (395; 257) |
-| LM P63 descent, restart at 200 s | 77 / 77 | 147 m (746; 174) | 0.57 m/s (0.63; 0.12) | 242 (434; 283) |
-| LM P57 | 00 / 00 | 0 | 0 | 14 (37; 18) |
-| CM P11 launch to orbit | 00 / 00 | **449 m (371; 80)** | **0.73 m/s (0.37; 0.06)** | 189 (211; 134) |
-| CM TLI | 00 / 00 | 153 m (524; 119) | 0.08 m/s (0.48; 0.08) | 114 (178; 112) |
-| CM P40 SPS burn | 00 / 00 | 21 m (107; 14) | 0.13 m/s (0.17; 0.004) | 92 (127; 78) |
-| CM TEI | 00 / 00 | 16 m (70; 5) | 0.06 m/s (0.38; 0.06) | 145 (221; 141) |
-| CM entry (P61-P67) | 103 / 103 | 30 m (329; 70) | 1.84 m/s (9.33; 2.30) | 320 (437; 285) |
-| CM P22 | 00 / 00 | 0 | 0 | 17 (43; 22) |
-| CM P23 | 00 / 00 | 0 | 0 | 9 (29; 13) |
-| CM P37 | 00 / 00 | 0 | 0 | 27 (50; 27) |
-| CM P52 | 00 / 00 | 0 | 0 | 6 (19; 6) |
+| `lm-p63-descent` | 77 / 77 | 23 m (646; 149) | 0.02 m/s (0.73; 0.14) | 150 (281; 181) |
+| `lm-p63-descent-thrust` | 77 / 77 | 7 m (744; 174) | 0.16 m/s (1.43; 0.32) | 232 (404; 263) |
+| `cm-entry` | 103 / 103 | 97 m (690; 160) | 2.05 m/s (11.12; 2.74) | 333 (448; 292) |
+| `cm-p52` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 7 (23; 9) |
+| `cm-p23` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 24 (47; 25) |
+| `cm-p40` | 00 / 00 | 19 m (99; 12) | 0.13 m/s (0.16; 0.00) | 93 (121; 74) |
+| `cm-p11` (known) | 00 / 00 | 437 m (447; 99) | 0.71 m/s (0.43; 0.07) | 174 (206; 131) |
+| `cm-tli` | 00 / 00 | 148 m (506; 114) | 0.08 m/s (0.47; 0.08) | 113 (176; 111) |
+| `cm-p22` | 00 / 00 | 20 m (130; 20) | 0.02 m/s (0.22; 0.02) | 225 (356; 231) |
+| `cm-tei` | 00 / 00 | 14 m (61; 3) | 0.00 m/s (0.15; 0.00) | 132 (217; 138) |
+| `cm-p37` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 39 (68; 39) |
+| `lm-p57` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 16 (41; 21) |
+| `lm-csi` | 110 / 110 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (37; 18) |
+| `cm-csi` | 40 / 40 | 0 (50; 0) | 0 (0.15; 0.00) | 3 (17; 5) |
+| `cm-cdh` | 111 / 111 | 0 (50; 0) | 0 (0.15; 0.00) | 4 (19; 6) |
+| `cm-cdh-csm` | 41 / 41 | 0 (50; 0) | 0 (0.15; 0.00) | 5 (19; 6) |
+| `lm-p63-lr-dropout` | 100 / 100 | 140 m (386; 84) | 1.27 m/s (34.41; 8.56) | 325 (524; 343) |
+| `lm-p63-lr-update` | 77 / 77 | 137 m (468; 104) | 0.48 m/s (2.25; 0.52) | 216 (433; 282) |
+| `lm-p63-lr-v58` | 77 / 77 | 135 m (474; 106) | 0.48 m/s (2.25; 0.52) | 232 (425; 277) |
+| `lm-p63-nassp` | 100 / 100 | 83 m (359; 77) | 2.01 m/s (41.69; 10.38) | 325 (502; 328) |
+| `lm-p52-realign` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 13 (19; 6) |
+| `lm-p52-imu-fail` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 13 (19; 6) |
+| `lm-p52-imu-cage` (known) | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 27 (22; 8) |
+| `cm-p52-imu-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 7 (23; 9) |
+| `cm-p52-imu-cage` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 16 (34; 16) |
+| `cm-p52-gimbal-lock` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 7 (20; 7) |
+| `cm-p23-attached` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 29 (55; 30) |
+| `cm-v49-maneuver` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 4 (14; 3) |
+| `cm-p21` | 25 / 25 | 0 (50; 0) | 0 (0.15; 0.00) | 4 (16; 4) |
+| `cm-p52-coarse` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 95 (143; 89) |
+| `cm-p41` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 14 (43; 22) |
+| `cm-v48-dap` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (10; 0) |
+| `cm-p40-sps-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (31; 14) |
+| `lm-landing-ascent-nassp` | 14 / 14 | 182 m (330; 70) | 0.20 m/s (0.46; 0.08) | 353 (611; 401) |
+| `lm-p67-nassp` | 104 / 104 | 19 m (171; 30) | 0.01 m/s (0.20; 0.01) | 316 (652; 428) |
+| `lm-doi-nassp` | 00 / 00 | 2 m (58; 2) | 0.01 m/s (0.20; 0.01) | 189 (268; 172) |
+| `lm-p41-nassp` | 00 / 00 | 16 m (111; 15) | 0.00 m/s (0.15; 0.00) | 169 (239; 153) |
+| `lm-p42-nassp` | 00 / 00 | 13 m (116; 16) | 0.26 m/s (1.45; 0.33) | 137 (223; 142) |
+| `lm-abort-p70-nassp` | 106 / 106 | 401 m (1467; 354) | 0.42 m/s (1.51; 0.34) | 264 (418; 272) |
+| `lm-abort-p71-nassp` | 107 / 107 | 957 m (3011; 740) | 0.87 m/s (3.02; 0.72) | 342 (436; 284) |
+| `lm-p63-descent-restart` | 77 / 77 | 7 m (796; 187) | 0.16 m/s (1.25; 0.28) | 212 (422; 275) |
+| `lm-coast-verbs` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 43 (77; 45) |
+| `lm-coast-programs` | 06 / 06 | 0 (50; 0) | 0 (0.15; 0.00) | 118 (175; 110) |
+| `lm-p51` | 63 / 63 | 0 (50; 0) | 0 (0.15; 0.00) | 10 (17; 5) |
+| `lm-p22-surface` | 26 / 26 | 0 (50; 0) | 0 (0.15; 0.00) | 8 (20; 7) |
 
-CM P11 is outside its limits (Gaps). The tool lists it as known, with an envelope of its own: RN within 600 m and VN within 1 m/s, reaching the compare point with exit 0, the same major mode and the normal word limit. Inside that envelope it doesn't fail; outside it, it does. With the vehicle models removed, P11 ends 6,563 km off and fails. The other 12 scenarios pass.
+CM P11's envelope is RN within 600 m and VN within 1 m/s, with the normal word limit. With the vehicle models removed, P11 ends 6,563 km off and fails (base f499d7ee).
 
-On base c78f441b, the 13 above give the same numbers. The 12 rendezvous scenarios whose state vector the marks move are compared with the true orbit, and all pass (both vehicles' state blocks in the next table):
+The rendezvous scenarios whose state vector the marks move, compared with the true orbit. Each one's two state blocks are within their limits too (`build/x86-flight/scenarios/summary.json` lists them):
 
-| Scenario | Major mode | RN from the true orbit (limit; harness's larger error) | VN (limit; harness) | Words differing (limit; harness's clocks) |
-|---|---|---|---|---|
-| `cm-p20` | 24 / 24 | 13 m (148; 24) | 0.07 m/s (0.41; 0.07) | 437 (661; 434) |
-| `lm-rendezvous` | 42 / 42 | 16 m (349; 75) | 0.20 m/s (1.07; 0.23) | 588 (853; 562) |
-| `lm-rendezvous-rr-dropout` | 42 / 42 | 16 m (448; 100) | 0.20 m/s (1.09; 0.23) | 588 (887; 585) |
-| `lm-rendezvous-tpm` | 114 / 114 | 62 m (483; 108) | 0.25 m/s (1.20; 0.26) | 775 (1385; 917) |
-| `lm-stable-orbit` | 117 / 117 | 85 m (377; 82) | 0.22 m/s (1.12; 0.24) | 828 (895; 590) |
-| `lm-stable-orbit-lm` | 47 / 47 | 108 m (467; 104) | 0.28 m/s (1.33; 0.29) | 852 (944; 623) |
-| `cm-rendezvous-tpm` | 114 / 114 | 13 m (150; 25) | 0.09 m/s (0.53; 0.09) | 624 (979; 646) |
-| `cm-stable-orbit` | 47 / 47 | 13 m (148; 24) | 0.07 m/s (0.41; 0.07) | 638 (980; 647) |
-| `cm-stable-orbit-lm` | 117 / 117 | 13 m (148; 24) | 0.07 m/s (0.41; 0.07) | 588 (907; 598) |
-| `cm-tpi-search` | 115 / 115 | 13 m (148; 24) | 0.07 m/s (0.41; 0.07) | 620 (962; 635) |
-| `cm-p20-vhf-dropout` | 24 / 24 | 28 m (143; 23) | 0.11 m/s (0.59; 0.11) | 623 (757; 498) |
-| `cm-p20-crew-verbs` | 24 / 24 | 12 m (161; 28) | 0.09 m/s (0.53; 0.09) | 491 (703; 462) |
-
-Both vehicles' state blocks in the 12 (the four CSI and CDH rows below hold both at their loaded time, 2,000 cs, within 0.4 m). Each cell gives the block's TET in centiseconds (x86; at least; the harness's two), then its error from the true orbit (limit):
-
-| Scenario | CSM block | LM block |
-|---|---|---|
-| `cm-p20` | TET 18,024 (17,379; 18,379, 18,466); 14 m (74), 0.07 m/s (0.21) | TET 18,024 (17,379; 18,379, 18,466); 24 m (93), 0.24 m/s (0.95) |
-| `lm-rendezvous` | TET 31,122 (30,245; 31,245, 31,275); 21 m (75), 0.12 m/s (0.27) | TET 31,122 (30,245; 31,245, 31,275); 15 m (124), 0.20 m/s (0.38) |
-| `lm-rendezvous-rr-dropout` | TET 31,122 (30,245; 31,245, 31,275); 21 m (75), 0.12 m/s (0.27) | TET 31,122 (30,245; 31,245, 31,275); 15 m (149), 0.20 m/s (0.38) |
-| `lm-rendezvous-tpm` | TET 57,526 (46,273; 58,881, 47,273); 64 m (120), 0.23 m/s (0.54) | TET 57,526 (46,273; 58,881, 47,273); 61 m (158), 0.25 m/s (0.41) |
-| `lm-stable-orbit` | TET 41,786 (18,234; 19,234, 20,162); 28 m (65), 0.16 m/s (0.22) | TET 41,786 (18,234; 19,234, 20,162); 86 m (133), 0.22 m/s (0.39) |
-| `lm-stable-orbit-lm` | TET 41,811 (18,231; 19,231, 20,161); 46 m (65), 0.16 m/s (0.22) | TET 41,811 (18,231; 19,231, 20,161); 108 m (155), 0.28 m/s (0.44) |
-| `cm-rendezvous-tpm` | TET 24,293 (23,510; 24,510, 24,798); 12 m (75), 0.09 m/s (0.24) | TET 24,293 (23,510; 24,510, 24,798); 127 m (164), 0.48 m/s (0.72) |
-| `cm-stable-orbit` | TET 18,024 (17,379; 18,379, 18,466); 14 m (74), 0.07 m/s (0.21) | TET 18,024 (17,379; 18,379, 18,466); 24 m (93), 0.24 m/s (0.95) |
-| `cm-stable-orbit-lm` | TET 18,024 (17,379; 18,379, 18,466); 14 m (74), 0.07 m/s (0.21) | TET 18,024 (17,379; 18,379, 18,466); 24 m (93), 0.24 m/s (0.95) |
-| `cm-tpi-search` | TET 18,024 (17,379; 18,379, 18,466); 14 m (74), 0.07 m/s (0.21) | TET 18,024 (17,379; 18,379, 18,466); 24 m (93), 0.24 m/s (0.95) |
-| `cm-p20-vhf-dropout` | TET 30,348 (29,554; 30,554, 30,688); 28 m (73), 0.11 m/s (0.26) | TET 30,348 (23,434; 24,434, 24,509); 62 m (85), 0.40 m/s (0.54) |
-| `cm-p20-crew-verbs` | TET 24,292 (23,511; 24,511, 24,794); 11 m (78), 0.09 m/s (0.24) | TET 24,292 (23,511; 24,511, 24,794); 29 m (83), 0.24 m/s (0.57) |
-
-The ten others added since pass on the direct comparison. Four of them are rendezvous scenarios that load a state and move it no further before the compare point (CSI, CDH):
-
-| Scenario | Major mode | RN apart (limit; harness spread) | VN apart (limit; spread) | Words differing (limit; spread) |
-|---|---|---|---|---|
-| `lm-csi` | 110 / 110 | 0 | 0 | 12 (37; 18) |
-| `cm-csi` | 40 / 40 | 0 | 0 | 3 (17; 5) |
-| `cm-cdh` | 111 / 111 | 0 | 0 | 4 (20; 7) |
-| `cm-cdh-csm` | 41 / 41 | 0 | 0 | 5 (19; 6) |
-| `cm-p52-imu-fail` | 00 / 00 | 0 | 0 | 6 (19; 6) |
-| `cm-p52-imu-cage` | 00 / 00 | 0 | 0 | 6 (20; 7) |
-| `cm-p52-gimbal-lock` | 00 / 00 | 0 | 0 | 6 (22; 8) |
-| `cm-p23-attached` | 00 / 00 | 0 | 0 | 9 (28; 12) |
-| `cm-v49-maneuver` | 77777 / 77777 | 0 | 0 | 4 (14; 3) |
-| `cm-p21` | 25 / 25 | 0 | 0 | 1 (14; 3) |
-
-LM P33 CDH (`lm-cdh`, `lm-cdh-csm`) is flown to P33's decimal display, where the x86 program stops (Gaps); the tool checks that it stops there and nowhere else.
-
-The rest need models the x86 program does not have yet: the landing radar (`FLIGHT_LR`, `FLIGHT_LR_POS2`), the NASSP P63 core (`FLIGHT_CORE`), uplink and stolen time. So no scenario compared here flies the LM RCS (`FLIGHT_RCS`), the throttle lag, touchdown, the P66 crew, the ascent or the abort stage. Those run only in the NASSP scenarios, and the unit checks in `test_vehicle_models.c` are their only x86 test so far.
+| Scenario | Major mode | RN from the true orbit (limit; harness's larger error) | VN (limit; harness) | Words differing (limit; harness's clocks) | Alarm codes (harness / x86) |
+|---|---|---|---|---|---|
+| `cm-p20` | 24 / 24 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 457 (602; 395) | same |
+| `lm-rendezvous` | 42 / 42 | 16 m (456; 102) | 0.20 m/s (1.07; 0.23) | 674 (1004; 663) | same |
+| `lm-rendezvous-rr-dropout` | 42 / 42 | 18 m (520; 118) | 0.19 m/s (0.95; 0.20) | 604 (973; 642) | same |
+| `lm-rendezvous-tpm` (known) | 114 / 114 | 62 m (524; 119) | 0.25 m/s (1.16; 0.25) | 895 (1024; 676) | 0376 00000 / 00611 |
+| `lm-stable-orbit` (known) | 117 / 117 | 85 m (377; 82) | 0.22 m/s (1.12; 0.24) | 835 (878; 579) | 0376 00000 / 00430 |
+| `lm-stable-orbit-lm` (known) | 47 / 47 | 108 m (335; 71) | 0.28 m/s (1.07; 0.23) | 848 (928; 612) | 0376 00000 / 00430 |
+| `cm-rendezvous-tpm` | 114 / 114 | 13 m (142; 23) | 0.09 m/s (0.51; 0.09) | 646 (938; 619) | same |
+| `cm-stable-orbit` | 47 / 47 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 634 (964; 636) | same |
+| `cm-stable-orbit-lm` | 117 / 117 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 648 (940; 620) | same |
+| `cm-tpi-search` | 115 / 115 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 607 (950; 627) | same |
+| `cm-p20-vhf-dropout` (known) | 24 / 24 | 28 m (129; 20) | 0.11 m/s (0.60; 0.11) | 636 (616; 404) | same |
+| `cm-p20-crew-verbs` | 24 / 24 | 12 m (142; 23) | 0.09 m/s (0.50; 0.09) | 483 (692; 455) | 0377 40407 / 00407 |
 
 ## Live DSKY
 
@@ -208,12 +216,24 @@ Typed keys go in at idle sample points at least 20 cs of AGC time apart (scenari
 
 ## Gaps
 
-On base f499d7ee:
+On base 01f050d6:
 
-- **CM P11 boost:** at 89,001 cs the x86 run is 449 m and 0.73 m/s from the harness, against a spread of 80 m and 0.06 m/s between the harness's own two clocks. The cause is when the AGC sees liftoff. The gyrocompass loop polls the liftoff discrete (channel 30 bit 5), and P11 zeroes its clock and navigates from the time it saw it. With `FLIGHT_SATURN` lifting off at 10,000 cs, TLIFTOFF is 10,005 on the harness's work clock, 10,022 on its other clock, and 10,038 on the x86 program's clock. So the state vector carries that offset from liftoff on (149 m at 10,051 cs against a spread of 74 m), and it grows to orbit. This comes from the clock schedule, not from a routine computing differently. Comparing at equal time since liftoff, or making the x86 schedule closer to yaAGC's, would bring P11 inside the limits.
-- **CM channels 11-14:** every CM table runs with `FLIGHT_IO_CM_NATIVE`. Its copy back into the hardware channels undoes the channel writes that routines make straight to the hardware: `src/cm_t4rupt_imu.c` (zero ICDU, cage, DSALMOUT) and `src/keyrupt_uprupt.c`. The x86 lockstep shows this as the one channel 12 miss above. The scenario comparison can't see it, because the harness behaves the same way and compares no channels. The cause is in shared code (`src/flight_io.c`), and D1 is fixing it, together with a channel compare in the harness lockstep.
+- **CM P11 boost:** at 89,001 cs the x86 run is 437 m and 0.72 m/s from the harness, against a spread of 99 m and 0.07 m/s between the harness's own two clocks. The cause is when the AGC sees liftoff. The gyrocompass loop polls the liftoff discrete (channel 30 bit 5), and P11 zeroes its clock and navigates from the time it saw it. With `FLIGHT_SATURN` lifting off at 10,000 cs, TLIFTOFF is 10,005 on the harness's work clock, 10,022 on its other clock, and 10,038 on the x86 program's clock. So the state vector carries that offset from liftoff on, and it grows to orbit. This comes from the clock schedule, not from a routine computing differently. Comparing at equal time since liftoff, or making the x86 schedule closer to yaAGC's, would bring P11 inside the limits.
+- **Inputs at fixed times on another schedule:** a scenario's keys and channel changes go in at fixed centiseconds, and the x86 program's clock runs its jobs at slightly other times than the harness's. Where that moves an input across a display or a DAP pass, the run takes another path. The lockstep check shows no miss on any of these, and the tool lists them as known with the cause:
+  - `lm-p52-imu-cage`: the cage (channel 30 at 3,000 cs) reaches the DAP at the x86 program's sample point 3,000 and the harness's 3,002, so the DAP counts one trap fewer and its jet words differ (27 words against a limit of 22). The state vector is the same.
+  - `cm-p20-vhf-dropout`: the marks fall at other times (both state blocks at 30,348 cs against the harness's 30,669 and 30,678, each within its limits of the true orbit), so 636 words differ against a limit of 616.
+  - `lm-rendezvous-tpm`: the V33 at 47,500 cs comes while P74 is between its N37 and N55 displays (the harness has N37 back at 47,204, the x86 program at 48,655), so the V25 at 50,000 loads N37 instead of N55, with no elevation angle, and P74 raises alarm 611 at 56,801.
+  - `lm-stable-orbit`, `-lm`: the harness is busy at 8,000 cs and takes the V37E78E 143 cs later. On the x86 program P78's redisplay at 10,492 then eats the V25's third register, and from there each V33 answers one display behind. The x86 run keeps marking on interim passes to TET 41,786 cs (the harness reaches its final pass at 23,100) and P79's integration raises alarm 430.
+
+  Keys sent when a display asks for them, as a crew would, should avoid this (not tried yet).
+- **Pinball points without a certified routine:** these stop in the x86 program where the harness runs yaAGC. The tool passes each scenario only when it stops at exactly that point, so any other outcome, a full run included, fails until its entry is removed. Lane C's Pinball LM and CM certificate (#674) keys or certifies all of them:
+  - `lm-cdh`, `lm-cdh-csm`: P33's decimal display (DECDSP, 41,2523).
+  - `lm-p47-nassp`: P47's display (41,3321).
+  - `lm-coast-v55`: V55's display (42,3452).
+  - `lm-p65-autoland-nassp`: P65's display (40,2732).
+  - `lm-coast-r04`, `lm-p63-v60-nassp`: Pinball's EV TC Q (Z 00002, FB 66000: 50,2002), which no table keys.
+  - In the live DSKY, decimal noun displays (`V06N36E`, `V16N36E`, `V16N65E`) stop at 42,3230 (LM) or 42,3143 (CM).
+- **The TC trap:** V69 (VERB69, a TC to itself) restarts the AGC through the hardware's TC trap, which the harness and the C64 now model (#752). The x86 program has no TC trap yet, and no scenario here keys V69 (`lm-v69`, `cm-v69` are restart-check rows).
 - **RESTART and STBY lamps** light only in the lamp test. The x86 program models no hardware restart lamp (set by a GOJAM, cleared by RSET) and no standby.
-- **Decimal noun displays** (`V06N36E`, `V16N36E`, `V16N65E`) stop at Pinball's basic point 42,3230 (LM) or 42,3143 (CM) in the live DSKY. The not yet certified `lanec_pin_lm_routines` and `lanec_pin_cm_routines` refuse them. Lane C's Pinball LM and CM certificate covers them.
-- **LM P33 CDH** stops at Pinball's DECDSP (41,2523), which the not yet certified `lanec_pin_lm_routines` hold, so `lm-cdh` and `lm-cdh-csm` stop there. The scenario tool flies both and passes them only when they stop at exactly that point, so any other outcome, a full run included, fails until the entry is removed. Lane C's Pinball LM certificate covers it.
-- **Missing models:** the landing radar, NASSP core, uplink and stolen-time scenarios above.
+- **Missing models:** uplink (`FLIGHT_UPLINK`) and stolen time (`FLIGHT_STEAL`); the tool leaves those scenarios out.
 - The uncompiled interpretive code by file is listed in the design note.
