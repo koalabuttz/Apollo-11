@@ -516,6 +516,63 @@ def drive_rom(data_dir, drive):
         sys.exit(f'FAIL: {name}: SHA-256 mismatch')
 
 
+def trace_result(text):
+    """The REU bounds trace of a boot, from its monitor.log: the three
+    trace checkpoints as VICE numbered them when the trace was set
+    (reu_layout.dma_trace: whole range, last byte, after-the-fact count),
+    their hits, and whether the check holds. It fails closed: unless all
+    three were set with their conditions (and the first two their io
+    command), any hit on another trace checkpoint, or no DMA seen at all
+    (the third fires on DMAs VICE sees after they ran, every boot has
+    some), it is not ok."""
+    import reu_layout
+    # Set: VICE's reply to each trace command. (A checkpoint listing
+    # repeats the TRACE line with a tab-indented Condition instead.)
+    traces = [int(n) for n in re.findall(r'^TRACE:\s+(\d+)\s+C:\$df01.*\nSetting checkpoint \1 condition to: ',
+                                         text, re.M)]
+    errors = []
+    if len(traces) != 3:
+        errors.append(f'{len(traces)} trace checkpoints set, not 3')
+    for i, n in enumerate(traces[:3]):
+        if i < 2 and not re.search(rf'^Setting checkpoint {n} command to: io \$df00', text, re.M):
+            errors.append(f'checkpoint {n} has no io command')
+    hit = {int(n) for n in re.findall(r'^#(\d+) \(Trace store df01\)', text, re.M)}
+    outside_set, last = traces[:2], traces[2:3]
+    stray = sorted(hit - set(traces[:3]))
+    if stray:
+        errors.append(f'hits on unknown trace checkpoints {stray}')
+    outside = reu_layout.dma_misses(text, outside_set) + sum(
+        len(re.findall(rf'^#{n} \(Trace store df01\)', text, re.M)) for n in stray)
+    unchecked = reu_layout.dma_misses(text, last) if last else 0
+    if not unchecked:
+        errors.append('the trace saw no DMA (checkpoint 3 of 3 never fired)')
+    hits = reu_layout.dma_hits(text, '(?:' + '|'.join(map(str, outside_set + stray)) + ')') if outside_set else []
+    return dict(traces=traces, dma_outside=outside, dma_hits=hits[:16], dma_unchecked=unchecked,
+                trace_errors=errors, trace_ok=not errors and not outside)
+
+
+def boot_layout(m, info):
+    """The REU regions of a flight boot: the program's layout
+    (tools/reu_layout.py) and the resident's stage, where the last disk
+    puts the resident for the hand-off to fetch (read only). The stage is at
+    the REU's top, over the measurement scratch of tools/dap_pass_vice.py,
+    which a flight boot does not have."""
+    import reu_layout
+    at = int(info['resident_staged'], 0)
+    regions = [r for r in reu_layout.layout(m) if r[0] != 'scratch']
+    regions = sorted(regions + [('resident stage', at, at + info['resident_bytes'], False)], key=lambda r: r[1])
+    for x, y in zip(regions, regions[1:]):
+        if x[2] > y[1]:
+            raise SystemExit(f'FAIL: {m} boot REU layout: {x[0]} overlaps {y[0]}')
+    return regions
+
+
+def drop_breaks(mon):
+    """Delete the breakpoints, keeping the REU bounds traces."""
+    for n in re.findall(r'^BREAK:\s+(\d+)', mon.cmd('break'), re.M):
+        mon.cmd(f'del {n}')
+
+
 class Monitor:
     """VICE's remote monitor (text). A command stops the emulation; the
     first one after go() answers with an extra prompt in front."""
@@ -639,7 +696,7 @@ def check_run(mon, info, result):
         mon.go()
         mon.wait_stop()
         result['boot_s'] = round(mon.stopwatch() / PAL_HZ, 1)
-        mon.cmd('del')
+        drop_breaks(mon)
     mon.cmd(f"break {info['done']:04x}")
     mon.cmd('sw reset')
     mon.go()
@@ -677,7 +734,13 @@ def vice(a, m, info):
            '-drive8type', a.drive, '-8', disks[0],
            '-reu', '-reusize', '2048', '-reuimage', reu, '-reuimagerw',
            '-remotemonitor', '-remotemonitoraddress', f'ip4://127.0.0.1:{port}',
+           '-monlogname', work / 'monitor.log', '-monlog',
            '-keybuf', 'load"*",8,1\\nrun\\n']
+    (work / 'monitor.log').unlink(missing_ok=True)
+    # The REU bounds check (tools/reu_layout.py, #681) for a flight boot
+    # (the check disk has its own, at build time).
+    import reu_layout
+    regions = boot_layout(m, info) if m != 'test' else None
     log = (work / 'vice.log').open('w')
     p = subprocess.Popen([str(c) for c in cmd], stdout=log, stderr=subprocess.STDOUT, env=env)
     result = dict(mission=m, ok=False)
@@ -686,6 +749,21 @@ def vice(a, m, info):
         # The hand-off ($0340) is a checkpoint: the poll below may come
         # after the loader is gone.
         mon.cmd('break 0340')
+        if regions:
+            # The loader first checks for a 2 MB REU (a byte at the start of
+            # each 64 KB bank) and clears all of it; its time goes to the
+            # mailbox at $03F6, after the memset of the mailbox at the start.
+            # From then on VICE traces every DMA: checkpoints 3-5, played
+            # back from a file (the remote monitor cuts lines this long).
+            mon.cmd('watch store 03f6')
+            mon.cmd('ignore 2 1')
+            mon.go()
+            mon.wait_stop()
+            mon.cmd('del 2')
+            trace = work / 'trace.mon'
+            trace.write_text(reu_layout.dma_trace(regions).replace('command 3 ', 'command 4 ')
+                             .replace('command 2 ', 'command 3 ') + '\n')
+            mon.cmd(f'pb "{trace.resolve()}"')
         mon.go()
         t0 = time.time()
         state = 0
@@ -697,6 +775,10 @@ def vice(a, m, info):
                 print(f"{time.time() - t0:.0f}s: loader state {state}, mailbox {box.hex()}", flush=True)
             if state == 2:
                 d = box[1]
+                # The loader's message: INSERT DISK (another disk, or none,
+                # in the drive) or READ ERROR.
+                rows = [r for r in screen_text(mon.mem(0x0400, 0x0400 + 999), 25) if r.strip()]
+                result.setdefault('swap_prompts', []).append(' '.join(r.strip() for r in rows[-2:]))
                 mon.cmd(f'attach "{disks[d - 1]}" 8')
                 # RETURN into the keyboard buffer.
                 mon.cmd('> 0277 0d')
@@ -719,13 +801,13 @@ def vice(a, m, info):
                       reu_clear_s=round(clear_cycles / PAL_HZ, 2))
         # From the hand-off to the resident's entry: the fetch and the
         # zeroing.
-        mon.cmd('del')
+        drop_breaks(mon)
         mon.cmd(f"break {info['resident_start']:04x}")
         mon.cmd('sw reset')
         mon.go()
         mon.wait_stop()
         result['handoff_cycles'] = mon.stopwatch()
-        mon.cmd('del')
+        drop_breaks(mon)
         if m == 'test':
             return check_run(mon, info, result)
         # rk_boot: main's first instruction calls it; A holds its result
@@ -737,7 +819,7 @@ def vice(a, m, info):
         result['boot_cycles'] = mon.stopwatch()
         result['boot_s'] = round(result['boot_cycles'] / PAL_HZ, 1)
         result['boot_status'] = int(re.search(r'\.;[0-9a-f]{4} ([0-9a-f]{2})', mon.cmd('r'))[1], 16)
-        mon.cmd('del')
+        drop_breaks(mon)
         # Then the AGC: TIME1 (erasable 025) counts while it runs.
         mon.cmd('sw reset')
         samples = []
@@ -811,6 +893,19 @@ def vice(a, m, info):
         got, want = reu.read_bytes(), (STORE / f'{m}.reu').read_bytes()
         result['reu_blocks_changed'] = [f'0x{i:06x}' for i in range(0, len(want), 256)
                                         if got[i:i + 256] != want[i:i + 256]]
+    if regions and result.get('samples'):
+        # Every byte that differs from the store image after the run lies in
+        # a writable region, and no DMA left the layout.
+        bounds = reu_layout.report(m, regions, want + bytes(len(got) - len(want)), got, f'{m} boot')
+        bounds['regions'] = [dict(name=n, start=hex(lo), end=hex(hi), writable=w) for n, lo, hi, w in regions]
+        trace = trace_result((work / 'monitor.log').read_text(errors='replace'))
+        bounds.update(trace)
+        bounds['ok'] = bounds['ok'] and trace['trace_ok']
+        print(f"{m} boot: DMA trace {'ok' if trace['trace_ok'] else 'FAIL'}: checkpoints {trace['traces']}, "
+              f"{trace['dma_outside']} outside, {trace['dma_unchecked']} checked at their last byte"
+              + ''.join(f'; {e}' for e in trace['trace_errors']))
+        result['reu_bounds'] = bounds
+        result['ok'] = result['ok'] and bounds['ok']
     return result
 
 
@@ -828,7 +923,10 @@ def boot_evidence(a, m, info):
     VICE log and the screen's text after the keys, with the verdict."""
     r = info['vice']
     head = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True, text=True, cwd=ROOT).stdout.strip()
-    dirty = bool(subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no'], capture_output=True,
+    # Dirty: a change to what the boot is built from (evidence and docs,
+    # which tools/boot_acceptance.py rewrites around the runs, are not).
+    dirty = bool(subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no', '--', '.',
+                                 ':(exclude)evidence', ':(exclude)docs'], capture_output=True,
                                 text=True, cwd=ROOT).stdout.strip())
     files = [OUT / d for d in info['disks']] + [OUT / f'{m}-loader.prg', OUT / f'{m}-resident.prg', STORE / f'{m}.reu']
     ev = dict(mission=m, commit=head, dirty=dirty, drive=a.drive, keys=a.keys, ok=r['ok'], p00=r.get('p00'),
@@ -836,6 +934,8 @@ def boot_evidence(a, m, info):
               load_s=r.get('load_s'), boot_s=r.get('boot_s'),
               sha256={f"{f.parent.name}/{f.name}": sha256(f) for f in files if f.exists()},
               vice_log_sha256=sha256(OUT / f'vice-{m}' / 'vice.log'),
+              monitor_log_sha256=sha256(OUT / f'vice-{m}' / 'monitor.log') if (OUT / f'vice-{m}' / 'monitor.log').exists() else None,
+              reu_bounds_ok=(r.get('reu_bounds') or {}).get('ok'),
               screen_sha256=hashlib.sha256('\n'.join(r.get('screen', [])).encode()).hexdigest(),
               screen=r.get('screen'))
     out = OUT / f'boot-{m}.json'

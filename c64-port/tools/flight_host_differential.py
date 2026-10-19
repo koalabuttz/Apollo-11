@@ -590,6 +590,16 @@ CM_P41_KEYS = ('@4500V37E30E@5500V25E+00000E+00008E+00000E@6800V33E@7200V25E+000
 # (trims 0); S41.2 sets ADB 455 (wide) and RATEINDX 4 (0.5 degree/s);
 # V46 (STABLISH) establishes the RCS DAP with the new data.
 CM_V48_KEYS = '@2500V48E@3500V21E21112E@4500V33E@5500V33E@6500V33E@7500V46E'
+# cm-p40-sps-fail: cm-p40 with the SPS failing to light (the Comanche055
+# coverage map, off-nominal; no FLIGHT_SPS: no thrust, and with the
+# R60 maneuver nil no attitude model is needed). The same keys to the
+# V99N40 at TIG-5; at TIG the engine is commanded on but the PIPAs see
+# nothing, so R40 (LOTHRUST) finds the thrust low and FAILDSP flashes
+# V97N40 (SPS thrust fail) at TIG+3 s; the crew terminates (V34):
+# V97T turns the engine off and hands back to the RCS DAP; then P00.
+P40_SPS_FAIL = {k: v for k, v in P40.items() if k != 'FLIGHT_SPS'}
+P40_SPS_FAIL_KEYS = ('@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E'
+                     '@29600V33E@32000V34E@34000V37E00E')
 # Crew verbs the other CM scenarios do not key (the Comanche055 coverage
 # map, /mnt/project-files/acceptance/comanche055-coverage-map.md).
 # cm-p20-crew-verbs: cm-p20 to 200 s, then V90 (R36, out-of-plane): V04N12
@@ -764,6 +774,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
           ('cm-p41', 'cm', 53000, CM_P41_KEYS, CM_P41),
           ('cm-v48-dap', 'cm', 12000, CM_V48_KEYS, P40),
+          ('cm-p40-sps-fail', 'cm', 37000, P40_SPS_FAIL_KEYS, P40_SPS_FAIL),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
@@ -809,9 +820,22 @@ RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(
                   for base in [next(x for x in FLIGHT if x[0] == scen)]]
 
 
+# TC trap restarts: P00 idle, then V69E at 23.5 s. VERB69 is a TC to
+# itself, so the TC trap restarts the computer (yaAGC's own trap unscaled,
+# yaagc_trap in tools/flight_host_run.c; the spin at VERB69 under the work
+# clock there and in the C64's rk_resident_step; docs/FLIGHT-RESTART.md):
+# GOPROG with no group active, back to P00. tools/flight_restart_check.py
+# checks them on the host (lm-v69-restart, cm-v69-restart);
+# tools/flight_scenario_vice.py --scenario lm-v69 --snap-cs 2300 --replay on
+# the C64. Like RESTART_FLIGHT, the host differential (and the x86
+# program, which has no TC trap yet) does not run them.
+V69_FLIGHT = [('lm-v69', 'lm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'}),
+              ('cm-v69', 'cm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'})]
+
+
 def scenario(name):
-    """A FLIGHT or RESTART_FLIGHT row by name."""
-    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT}[name]
+    """A FLIGHT, RESTART_FLIGHT or V69_FLIGHT row by name."""
+    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT + V69_FLIGHT}[name]
 
 
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
@@ -891,6 +915,13 @@ def build(cc, m, engine):
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
                     '-c', 'tools/flight_host_run.c', '-o', str(_tmp(obj))], cwd=ROOT, check=True)
     os.replace(_tmp(obj), obj)
+    # Every host/*.o is linked: refuse objects left from another checkout
+    # or source (10-19: a pre-#734 flight_io.o failed the CM channel compare).
+    import flight_store_build
+    stale = flight_store_build.stale_host_objects()
+    if stale:
+        raise SystemExit(f'{len(stale)} host objects are stale ({", ".join(stale[:5])}...): '
+                         'run tools/flight_store_build.py --host-only first')
     objs = sorted(str(p) for p in (OUT / 'host').glob('*.o'))
     subprocess.run([cc, str(obj), *objs, str(engine), str(YAAGC / 'agc_engine_init.o'),
                     str(YAAGC / 'rfopen.o'), '-Wl,--gc-sections', '-lm', '-o', str(_tmp(exe))], cwd=ROOT, check=True)
