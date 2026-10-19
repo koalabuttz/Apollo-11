@@ -49,6 +49,23 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertIn('differs (data: first at 0107', pa.replay_result(replay('lm-a', 0, 3, first='0107'))[1])
         self.assertEqual(pa.replay_result(replay('lm-a', 0, status=2)), (False, 'stops at 12,2644'))
 
+    def test_chain_verdicts(self):
+        w = replay('lm-a', 0)
+        good = dict(scenario='lm-a', snap_cs=0, chain=3, ok=True, replay_rows=30, windows=[w, w, w])
+        self.assertEqual(pa.replay_result(good), (True, 'matches host (chain of 3 windows, every seam holds)'))
+        seam = dict(good, ok=False, windows=[w, dict(ok=False, seam=1)])
+        self.assertEqual(pa.replay_result(seam), (False, 'chain of 3: seam 1 fails'))
+        bad = dict(good, ok=False, windows=[w, replay('lm-a', 0, differences=2)])
+        self.assertIn('chain of 3: window 1 differs (clock', pa.replay_result(bad)[1])
+        short = dict(good, ok=False, windows=[w])
+        self.assertEqual(pa.replay_result(short)[0], False)
+        with tempfile.TemporaryDirectory() as d:
+            d = pathlib.Path(d)
+            (d / 'part.json').write_text(json.dumps(dict(replay('lm-a', 0), chain=3, chain_window=0)))
+            (d / 'chain.json').write_text(json.dumps(dict(good, commit=HEAD)))
+            runs, _ = pa.load_replays(sorted(d.glob('*.json')), 'lm', HEAD)
+            self.assertEqual([r.get('chain') for r in runs['lm-a']], [3])   # the parts do not count twice
+
     def test_counts_and_pass_rule(self):
         host = {'lm-a': host_row('lm-a'), 'lm-b': host_row('lm-b')}
         _, counts = pa.assess(ROWS[:3], host, {'lm-a': [replay('lm-a', 0)]})
@@ -96,7 +113,7 @@ class ProgramAcceptance(unittest.TestCase):
             plan = json.loads((ROOT / f'docs/acceptance/{program}-program-map.json').read_text())
             rows, windows = plan['rows'], plan['replay_windows']
             self.assertLessEqual({s for row in rows for s in row['scenarios']}, {w[0] for w in windows})
-            self.assertTrue(all(w[0] in names and 0 < w[2] <= 1000 for w in windows), windows)
+            self.assertTrue(all(w[0] in names and 0 < w[2] <= 1000 and 3 <= len(w) <= 5 for w in windows), windows)
             for row in rows:
                 self.assertIn(row['status'], ('mapped', 'not exercised', 'TBD'), row['row'])
                 self.assertEqual(bool(row['scenarios']), row['status'] == 'mapped', row['row'])

@@ -10,7 +10,8 @@ Reads, all of which must come from the same commit:
 
   docs/acceptance/<Program>-program-map.json   one row per coverage-map entry (status,
                                                the scenarios that run it) and the
-                                               C64 replay windows to run
+                                               C64 replay windows to run:
+                                               [scenario, start cs, cs[, chain K[, every]]]
   <host>/summary.json and its logs             tools/flight_host_differential.py
                                                (default build/flight-store/differential)
   C64 --replay results                         tools/flight_scenario_vice.py --replay
@@ -90,7 +91,19 @@ def host_result(row):
 
 
 def replay_result(r):
-    """(matches, short text) for one flight_scenario_vice.py --replay result."""
+    """(matches, short text) for one flight_scenario_vice.py --replay result
+    (a window, or a --chain run's summary)."""
+    if r.get('windows') is not None:
+        k = r.get('chain', len(r['windows']))
+        if r.get('ok') and len(r['windows']) == k:
+            return True, f'matches host (chain of {k} windows, every seam holds)'
+        for n, w in enumerate(r['windows']):
+            if w.get('seam'):
+                return False, f"chain of {k}: seam {w['seam']} fails"
+            ok, text = replay_result(w)
+            if not ok:
+                return False, f'chain of {k}: window {n} {text}'
+        return False, f"chain of {k}: ran {len(r['windows'])} windows"
     if r.get('status') not in (0, None):
         return False, f"stops at {r.get('at', '?')}"
     if r.get('short'):
@@ -136,6 +149,8 @@ def load_replays(paths, m, commit):
         except (OSError, ValueError):
             continue
         if not isinstance(r, dict) or 'replay_rows' not in r or not r.get('scenario', '').startswith(f'{m}-'):
+            continue
+        if 'chain_window' in r:          # one window of a --chain run: its summary counts
             continue
         if not same_sources(r.get('commit'), commit):
             stale.append((pathlib.Path(path).name, r.get('commit') or 'unknown'))
@@ -184,9 +199,9 @@ def write_evidence(m, host, replays, dest, store):
         files[('host', name)] = p
     for name, runs in sorted(replays.items()):
         for r in runs:
-            p = dest / f"replay-{name}-{r.get('snap_cs')}.json"
+            p = dest / f"replay-{name}-{r.get('snap_cs')}{'-chain' + str(r['chain']) if r.get('chain') else ''}.json"
             p.write_text(json.dumps({k: v for k, v in r.items() if k not in BULKY}, indent=1) + '\n')
-            files[('replay', name, r.get('snap_cs'))] = p
+            files[('replay', name, r.get('snap_cs'), r.get('chain'))] = p
     if files and store:
         subprocess.run([sys.executable, 'tools/evidence.py', 'add', f'{m}-acceptance-program',
                         *map(str, files.values()), '--tree'], cwd=ROOT, check=True)
@@ -256,12 +271,17 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
               '|---|---|---|---|---|---|---|']
     windows, plan = [(s, r) for s in used for r in replays.get(s, [])], windows
     for s, r in windows:
-        lines.append(f"| {s} | {r.get('snap_at', r.get('snap_cs'))} | {r.get('requested_cs')} | "
-                     f"{cell(replay_result(r)[1])} | {len(r.get('replay_matched_cs') or [])} | "
-                     f"{r.get('wall_per_agc', '')}x | {ev(('replay', s, r.get('snap_cs')))} |")
-    ran = {(s, r.get('snap_cs')) for s, r in windows}
-    for s, snap, cs in sorted(w for w in map(tuple, plan) if (w[0], w[1]) not in ran):
-        lines.append(f'| {s} | {snap} | {cs} | not run at this commit | | | |')
+        k = r.get('chain')
+        parts = r.get('windows') or [r]
+        lines.append(f"| {s} | {r.get('snap_at', r.get('snap_cs'))} | "
+                     f"{r.get('requested_cs')}{f' x {k}' if k else ''} | {cell(replay_result(r)[1])} | "
+                     f"{sum(len(w.get('replay_matched_cs') or []) for w in parts)} | "
+                     f"{parts[0].get('wall_per_agc') or ''}x | {ev(('replay', s, r.get('snap_cs'), k))} |")
+    ran = {(s, r.get('snap_cs'), r.get('chain') or 1) for s, r in windows}
+    for w in sorted(map(tuple, plan)):
+        s, snap, cs, k = (*w, 1)[:4]
+        if (s, snap, k) not in ran:
+            lines.append(f"| {s} | {snap} | {cs}{f' x {k}' if k > 1 else ''} | not run at this commit | | | |")
     if not windows and not plan:
         lines.append('| (none at this commit) | | | | | | |')
     if stale_host or stale_runs:
@@ -292,8 +312,10 @@ def main(argv=None):
     plan = json.loads((a.map or ROOT / f'docs/acceptance/{p}-program-map.json').read_text())
     rows, windows = plan['rows'], plan.get('replay_windows', [])
     if a.windows:
-        for s, snap, cs in windows:
-            print(f'python3 tools/flight_scenario_vice.py --scenario {s} --snap-cs {snap} --cs {cs} --replay --replay-every 100')
+        for w in windows:
+            s, snap, cs, k, every = list(w) + [1, 100][len(w) - 3:]
+            print(f'python3 tools/flight_scenario_vice.py --scenario {s} --snap-cs {snap} --cs {cs} --replay '
+                  f'--replay-every {every}' + (f' --chain {k}' if k > 1 else ''))
         return 0
     commit = a.commit or flight_holes.source_commit()
     host, stale_host = load_host(a.host, commit)
