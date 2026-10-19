@@ -136,6 +136,8 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertTrue(cites)
         self.assertTrue(all(len(h) == 64 for h in cites), cites)
         self.assertNotIn('oldcommit', text)
+        # Rule 11: only this run's own evidence id is cited.
+        self.assertEqual({c.split('/')[1] for c in re.findall(r'evidence/[^/`\s]+/', text)}, {'lm-acceptance-program'})
         # Rule 9: the store, with its full sha256 on the same line.
         self.assertRegex(text, r'flight-store/lm\.reu.*`(ab){32}`')
         self.assertIn('| 4 | 2 | 1 | 0 | 1 | 2 of 2 | 2 of 2 |', text)
