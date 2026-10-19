@@ -1,8 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Hardware restarts mid-scenario (docs/FLIGHT-RESTART.md). flight-restart-check:
 # a GOJAM (FLIGHT_GOJAM) at a clean sample point of LM P63 powered descent,
-# the LM DAP hold, CM entry and P00 on both missions, the restart and the
-# resumed program in lockstep with yaAGC on the host
+# the LM DAP hold, CM entry and P00 on both missions, plus one restart per
+# acceptance phase group (RESTART_POINTS in tools/flight_host_differential.py:
+# LM P00, DOI burn, P12 ascent, P20 rendezvous; CM P00, P40 SPS burn, P64
+# entry, P20, P22), the restart and the resumed program in lockstep with
+# yaAGC on the host
 # (tools/flight_restart_check.py, build/flight-restart/). flight-restart-vice:
 # the LM P63 and DAP restarts, CM entry and CM P52 again, then the restart on the C64
 # flight store in VICE from the state just after the GOJAM, its erasable

@@ -61,17 +61,18 @@ PAL_HZ = 985248
 # in P67 as without it. cm-p52-restart: cm-p52 restarted at 171 s, in N93
 # gyro torquing with group 4 active (phase 00502), ending in P00 as without
 # it. lm-p00-restart, cm-p00-restart: P00 idle restarted
-# at 25 s, unscaled, sampled against a free-running yaAGC.
+# at 25 s, unscaled, sampled against a free-running yaAGC. Then one restart
+# per phase group (fhd.RESTART_POINTS), cm-entry-restart among them.
 _P63 = next(x for x in fhd.FLIGHT if x[0] == 'lm-p63-descent-restart')
 RESTARTS = [
     (_P63[0], _P63[1], _P63[2], _P63[3], {k: v for k, v in _P63[4].items() if k != 'FLIGHT_GOJAM'},
      int(_P63[4]['FLIGHT_GOJAM']), '1,1,2', True),
     ('lm-dap-hold-restart', 'lm', 3000, '', fhd.DAP, 2000, '4,1,2,1', True),
-    ('cm-entry-restart', 'cm', 32000, fhd.ENTRY_KEYS, fhd.ENTRY, 25000, '1,1,2', True),
     ('cm-p52-restart', 'cm', 20000, fhd.P52_KEYS, fhd.P52, 17100, '1,1,2', True),
     ('lm-p00-restart', 'lm', 4000, '', {}, 2500, None, False),
     ('cm-p00-restart', 'cm', 4000, '', {}, 2500, None, False),
-]
+] + [(name, m, cs, keys, {k: v for k, v in env.items() if k != 'FLIGHT_GOJAM'}, int(env['FLIGHT_GOJAM']), '1,1,2', True)
+     for name, m, cs, keys, env in fhd.RESTART_FLIGHT]
 # Unscaled, the samples a restart may add over its run without one. LM P00:
 # after the restart STARTSB1 has DAPIDLER call 1/ACCS, and natively AOSTASK's
 # routine from GETAOSUV+6 (20,3250) runs about 1.2 cs as one call, so the
@@ -85,6 +86,24 @@ SAMPLE_SLACK = {'lm-p00-restart': 128}
 RESTART_FILES = ('FRESH_START_AND_RESTART.agc', 'RESTARTS_ROUTINE.agc', 'PHASE_TABLE_MAINTENANCE.agc')
 LISTING = {'lm': ROOT / 'build/fixed-data/Luminary099/assembly.lst', 'cm': ROOT / 'build/fixed-data/Comanche055/assembly.lst'}
 ADVAN = {'lm': 0o3214, 'cm': 0o3231}
+
+
+# Alarms a restart raises in flight, as the original does (yaAGC and the
+# native run agree). cm-p20-restart: STARTSB2 resets OPTMODES to OPTINITR
+# (Comanche055 FRESH_START_AND_RESTART.agc:353-356), which clears bit 10
+# (optics zeroed since the last fresh start), so T4RUPT's CONTDRVE, still
+# driving the optics in CMC mode for R22, alarms 00120 "optics torque
+# request with optics not zeroed" (T4RUPT_PROGRAM.agc:1336-1339). The crew
+# rezeroes the optics after such a restart.
+RESTART_ALARMS = {'cm-p20-restart': 0o120}
+
+
+def alarms_agree(name, base, got):
+    """FAILREG (three words) the same as without the restart, apart from the
+    scenario's RESTART_ALARMS code in the words base left +0."""
+    code = RESTART_ALARMS.get(name)
+    return all(b == g or (code is not None and int(b, 8) == 0 and int(g, 8) & 0o37777 == code)
+               for b, g in zip(base, got))
 
 
 def symbols(m):
@@ -112,10 +131,12 @@ def run(exe, m, cs, keys, env, tag):
     return r
 
 
-def snapshot(exe, m, cs, keys, env, tag):
+def snapshot(exe, m, cs, keys, env, tag, slack=1):
+    """The native state at the first sample point at or after cs with no
+    interrupt pending, within slack centiseconds."""
     path = OUT / f'{tag}.h'
     path.unlink(missing_ok=True)
-    run(exe, m, cs + 1, keys, {**env, 'FLIGHT_SNAPSHOT': f'{cs},{path}'}, tag)
+    run(exe, m, cs + slack, keys, {**env, 'FLIGHT_SNAPSHOT': f'{cs},{path}'}, tag)
     if not path.exists():
         sys.exit(f'FAIL: no snapshot {tag} (see {OUT}/{tag}.log)')
     return path
@@ -146,8 +167,10 @@ def host(exe, scenario, words, lanes):
     pre_path = snapshot(exe[m], m, at, keys, {**env, 'FLIGHT_SNAPSHOT_PENDING': '1'}, f'{name}-pre')
     pre = snap_words(pre_path)
     post = snapshot(exe[m], m, at, keys, jam, f'{name}-gojam')
-    end = snap_words(snapshot(exe[m], m, cs, keys, jam, f'{name}-end'))
-    end_base = snap_words(snapshot(exe[m], m, cs, keys, env, f'{name}-base-end'))
+    # (The end states: a busy end, such as P00 just after V37E00E, may
+    # have no clean point in its first centisecond.)
+    end = snap_words(snapshot(exe[m], m, cs, keys, jam, f'{name}-end', 200))
+    end_base = snap_words(snapshot(exe[m], m, cs, keys, env, f'{name}-base-end', 200))
     failreg = [sym['FAILREG'] + k for k in range(3)]
     phases = {f'PHASE{g}': sym[f'PHASE{g}'] for g in range(1, 7)}
     row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, gojam_cs=at, schedule=sched, exit=r.returncode,
@@ -178,7 +201,7 @@ def host(exe, scenario, words, lanes):
         bad.append(f"REDOCTR {row['redoctr']}")
     if row['rsbbq'][0] != row['rsbbq'][1]:
         bad.append(f"RSBBQ+1 {row['rsbbq'][1]}, Z was {row['rsbbq'][0]}")
-    if row['modreg'][0] != row['modreg'][1] or row['failreg'][0] != row['failreg'][1]:
+    if row['modreg'][0] != row['modreg'][1] or not alarms_agree(row['scenario'], *row['failreg']):
         bad.append(f"major mode {row['modreg']} or alarms {row['failreg']} differ from the run without the restart")
     if not sched and got['samples'] - got['equal'] > base['samples'] - base['equal'] + SAMPLE_SLACK.get(name, 0):
         bad.append(f"{got['samples'] - got['equal']} samples differ")

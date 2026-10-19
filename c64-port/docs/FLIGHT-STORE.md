@@ -969,6 +969,18 @@ port) runs one mission:
    BHIZ. With it, on base 3384c02b, five windows between P20's start and N59
    run 4,000 cs in all at 20.2x real time with no stop, ending on DELVTPI
    7.38 m/s as on the host.
+   P51-P53's RTB targets get the same treatment:
+   - Luminary RDCDUS (14,3413);
+   - Comanche RDCDUS (15,2324);
+   - Comanche SET1/PDT (14,3275).
+
+   On the host they run only inside the p51-p53 compiled routines.
+   `lm_p51_p53_rtb_routines` and `cm_p51_p53_rtb_routines` are their basic
+   tables, around the same p51_p53_rtb body. The CM table latches the
+   superbank and interrupt-enable words of cm_native_io across the call.
+   `tools/native_range_keys.py` then reports no known holes. On base
+   6f112402, the C64 replays of LM P52 4200+500 and 6700+500, CM P52
+   9900+1200 and 13900+1200, and LM P57 15900+800 all match the host.
    The rest of the LM's rendezvous programs. lm_coelliptic.py writes the
    loads for the targeting before TPI, shaped like Apollo 11's coelliptic
    sequence: the CSM in a 60 nmi circular orbit 9.5 degrees ahead, the LM
@@ -990,6 +1002,20 @@ port) runs one mission:
    lm-rendezvous's P20. `lm-stable-orbit-lm` runs the same with P38 and
    P39. P78's and P38's Lambert solutions take about 200 s of AGC time
    after N45.
+   The CSM's side: Comanche's P32-P35 and P38/P39 have the CSM active.
+   P72-P79 have the LM active, with the CMC solving for it. P17 and P77
+   are the TPI search. `lm_coelliptic.py CM` writes the same moments
+   for the CMC. `cm-csi`, `cm-cdh` and `cm-cdh-csm` are keyed as the LM
+   ones with the program numbers swapped, and give the LM side's solutions
+   (CM P72 is LM P32; CM P32 is LM P72). The other four start from
+   cm-p20's P20:
+   - `cm-rendezvous-tpm`: V83, V85, P34, P35, P74, P75, P76, V56. P74,
+     with ELEV 26.6, solves the LM's TPI as the LM's own P34 does.
+   - `cm-stable-orbit`: P38/P39.
+   - `cm-stable-orbit-lm`: P78/P79.
+   - `cm-tpi-search`: P17 and P77.
+
+   The CMC leaves P38's CENTANG at 0, so N55 is loaded with V23.
    `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
    second burn, as the CMC monitored it in P47. cm_tli.py writes
    cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100
