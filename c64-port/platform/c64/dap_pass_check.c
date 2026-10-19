@@ -29,7 +29,7 @@
 #define SNAP_DATA __attribute__((section(".boot.text.dp_snap")))
 #define BOOT __attribute__((noinline,section(".boot.text.dp_check")))
 /* Zeroed harness state in the cassette buffer (resident_flight.ld .cassette,
- * $0384-$03F3, between the step profile and the replay row), not in the
+ * $0384-$03F1, between the step profile and the replay row), not in the
  * resident's RAM: the DP_BUSY build had run 22 bytes into the ABI 2
  * service table (#720). load_snapshot() clears it. */
 #define CASSETTE __attribute__((section(".cassette")))
@@ -133,7 +133,7 @@ static void press_due(uint16_t elapsed)
 #ifdef DP_REPLAY
 /* The host run's inputs over the window and its end state
  * (tools/flight_host_run.c FLIGHT_REPLAY, tools/flight_scenario_vice.py
- * --replay). DP_REPLAY_ROWS 8-byte rows at DP_REPLAY_REU in the REU, outside
+ * --replay). DP_REPLAY_ROWS 10-byte rows at DP_REPLAY_REU in the REU, outside
  * the flight store and the resident: the centiseconds since the snapshot,
  * kind, where (0 at a sample point, 1 at any step boundary), address and
  * value, the address a C64 one (tools/flight_scenario_vice.py c64_rows
@@ -165,12 +165,31 @@ static void press_due(uint16_t elapsed)
 typedef struct {
     uint16_t cs;
     uint8_t kind, where;
-    uint16_t addr, value;
+    uint16_t addr, value, work;
 } __attribute__((packed)) dp_row;
-_Static_assert(sizeof(dp_row) == 8u, "rows are 8 bytes (tools/flight_host_run.c rp_row)");
-/* The row being applied sits in the cassette buffer ($03F4-$03FB; the step
+_Static_assert(sizeof(dp_row) == 10u, "rows are 10 bytes (tools/flight_host_run.c rp_row)");
+/* The row being applied sits in the cassette buffer ($03F2-$03FB; the step
  * profile uses its bottom), not in the resident's RAM. */
-#define row (*(dp_row *)0x03f4u)
+#define row (*(dp_row *)0x03f2u)
+/* The centisecond the C64 is in. */
+static uint16_t replay_now CASSETTE;
+/* A boundary row in that centisecond waits for its place in it (where
+ * bits 1-2: the work clock's step, 1 the TIME1/TIME3 step's, then 2 and 3;
+ * work the MCT since that step), so a DAP pass reads the CDUs on the
+ * host's side of it. rk_tick_phase's step: 1 for 2, 5, 8; 2 for 0, 3, 6;
+ * 3 for 1, 4, 7. */
+/* The row code runs from $0200 (the flight program's DSKY code region,
+ * resident_flight.ld .dsky: free in this program), which load_snapshot
+ * fills from its load copy, not from the resident's RAM. */
+#define LOW_TEXT(name) __attribute__((noinline, section(".dsky.text." name)))
+extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
+#define LOW_DATA __attribute__((section(".dsky.text.dp_steps")))
+LOW_DATA static const uint8_t phase_step[9] = {2, 3, 1, 2, 3, 1, 2, 3, 1};
+LOW_TEXT("dp_early") static uint8_t row_early(void)
+{
+    uint8_t at = row.where >> 1 & 3u, step = phase_step[rk_tick_phase];
+    return at && row.cs == replay_now && (step < at || (step == at && rk_work < row.work));
+}
 static uint16_t rows_left = DP_REPLAY_ROWS;
 static uint8_t row_ready CASSETTE;
 static uint32_t row_at = DP_REPLAY_REU, state_at = DP_END;
@@ -245,7 +264,9 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
          * PIPA count: the PIPAs count whether or not the C64 is idle, and a
          * READACCS on a C64 that missed the host's sample point would read
          * fewer counts than the host's. */
-        if (row.cs > t || (!row.where && !sp && (row.kind != 1u || row.cs >= t))) return;
+        if (row.cs > t || (!(row.where & 1u) && !sp && (row.kind != 1u || row.cs >= t)) ||
+            row_early())
+            return;
         w = (uint16_t *)row.addr;
         __asm__ volatile("sei");
         if (row.kind == 1) {
@@ -272,6 +293,7 @@ __attribute__((noinline)) static uint8_t replay_due(void)
 {
     uint16_t t = replay_cs();
     uint8_t sp = sample_point(t);
+    replay_now = t;
     if (sp) {
 #ifdef DP_BUSY
         busy_last = t;
@@ -299,6 +321,9 @@ extern char __dp_cassette_start[], __dp_cassette_end[];
 static void BOOT load_snapshot(void){
     memset(__dp_cassette_start, 0, (size_t)(__dp_cassette_end - __dp_cassette_start));
     memcpy(IMAGE->words, snap_words, sizeof snap_words);
+#ifdef DP_REPLAY
+    memcpy(__rk_dsky_start, __rk_dsky_load, (size_t)(__rk_dsky_end - __rk_dsky_start));
+#endif
 #ifdef RK_STEP_PROFILE
  memset(prof, 0, DP_SEGMENTS * sizeof(dp_segment));
 #endif
