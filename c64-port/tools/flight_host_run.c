@@ -241,6 +241,10 @@ static enum exec_status core_run(const agc_native_program *p,apollo_overlay_stat
  if(work)b=budget<1?1u:budget>=0x7FFF?0x7FFFu:(unsigned)budget+(budget>(unsigned)budget);
  CORE_MCT=(uint16_t)(0x8000u-b);if(!b)CORE_MCT=0;
  for(;;){last=*s;st=CORE(p,s,x);
+  /* A call refused after a slot that ran is undone in the image only.
+   * The I/O record x is not: the one field the core writes there is
+   * interrupt_enabled (INHINT/RELINT in lmi_switch, CHANG2's RELINT), so
+   * a call that changed it and then refused would keep the change. */
   if(st!=EXEC_OK){if(n){*s=last;st=EXEC_OK;}break;}
   if(++n>=CORE_SLOTS||!work||(CORE_MCT&0x8000u))break;}
  core_mct=b?(uint16_t)((CORE_MCT^0x8000u)+b):CORE_MCT;
