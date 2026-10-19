@@ -4763,8 +4763,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-r31-tpi-630.md",
-            "sha256": "9f7097ff9c87efebe68a09d74592d0fc0855748b3e79152d1a9f9a6696ffc993"
+            "path": "docs/audits/rev2-cm-r31-723.md",
+            "sha256": "41fa3586ce7e9c263f61acaa5ccab3261492bada92df58d6a663501a4b65a530"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-r31/cm-r31-c64-cover.json",
