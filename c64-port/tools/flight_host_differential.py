@@ -555,7 +555,7 @@ CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,1900
 # proceed on V06N34 with the time 0 (now): S52.3 computes the nominal
 # orientation and S52.2 the gimbal angles, V06N22 353.72, 110.96, 359.93
 # degrees; proceed; proceed on V50N25 00013 (coarse align, not gyro
-# torque): CAL53A coarse aligns (CDUY 287.9 to 111.0 degrees) and P52
+# torque): CAL53A coarse aligns (CDUY 314.7 to 111.0 degrees) and P52
 # goes on to V50N25 00015 (the star acquisition); terminate (V34), P00.
 CM_P52_COARSE = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_IMU': '1',
                  'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p52.load'}

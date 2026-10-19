@@ -1275,7 +1275,7 @@ port) runs one mission:
    nmi now. All four match yaAGC.
    `cm-p52-coarse` is P52 option 2 (nominal) from cm-p52's load with
    the IMU model on: S52.3's nominal orientation is far from the
-   platform, so CAL53A (R50) coarse aligns (CDUY 287.9 to 111.0 degrees)
+   platform, so CAL53A (R50) coarse aligns (CDUY 314.7 to 111.0 degrees)
    before the star acquisition; then V34 and P00. `cm-p41` is a 5 ft/s
    RCS midcourse correction keyed through P30 (V25 on N33 and N81) from
    cm-p23's load, then P41 to TIG and V16N85; with no CM RCS translation
