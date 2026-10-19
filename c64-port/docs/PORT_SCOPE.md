@@ -40,6 +40,14 @@ outputs and callback placeholders do not implement the corresponding flight
 paths. Software acceptance on a C64 does not by itself establish qualification
 for physical spacecraft hardware.
 
+Speed and real time are not acceptance criteria. A stock C64 runs the flight
+programs about 10-20 times slower than the AGC (each AGC centisecond of a run
+takes 10-20 centiseconds on the C64). Acceptance compares what the C64 computes
+and displays against the host and yaAGC on the same inputs, on the AGC's own
+clock (the C64 charges each step's AGC time, it does not follow the wall
+clock), so a slow run that matches is accepted and a fast run that differs is
+not. Speed work continues, but no acceptance check waits on it.
+
 A complete memory plan is still required. The AGC programs exceed a naive C64
 resident-memory budget when translated without planning. Disk overlays may be
 necessary, with persistent contexts and explicit rules for reloads, interrupts,
@@ -47,6 +55,11 @@ scheduled work and restart. The inventory records this architecture as
 unresolved rather than choosing an untested overlay design. An accepted plan
 must account for code, constants, data, hardware/software/compiler stacks,
 reserved I/O memory and every resident or loaded program phase.
+The flight build's plan is the thin resident plus overlays loaded from a
+2 MB REU store (docs/FLIGHT-STORE.md); each program's
+`docs/acceptance/<Program>-memory_and_overlay_validation.md`, written by
+`tools/memory_acceptance.py`, records its layout, build-time checks and
+runtime REU bound checks.
 
 Run the inventory and immutable-source audit from the repository root:
 

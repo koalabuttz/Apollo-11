@@ -55,7 +55,7 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import interp_specs  # noqa: E402
 from overlay_runtime_library import prepare  # noqa: E402
-from resident_flight_build import (COMMON, MISSION, KERNEL_TABLES, RESIDENT_MODULES, SERVICES, WRAPPED, canonical_record, mct_weight,  # noqa: E402
+from resident_flight_build import (COMMON, MISSION, KERNEL_TABLES, RESIDENT_MODULES, SERVICES, WRAPPED, canonical_record, INTERP_PER_WORD, INTERP_PLUS_WORDS, mct_weight,  # noqa: E402
                                    resident_sources, wrapper_records)
 from resident_boundary_words import header_text, tail_bytes  # noqa: E402
 
@@ -96,26 +96,73 @@ SPLIT_ANY = {'lanec_pin_routines'} | {base for spec in interp_specs.SPECS.values
                                       for base in spec['base'].values()}
 
 
-def lanec_pin_order(table, n):
-    """Pinball's routines grouped by the modules their try-lists run
-    (src/lanec_pin_routines.inc), so a chunk links few of them: routines
-    with the same modules sit together, and address order is kept within a
-    group. A chunk is then a set of entries (FS_PICK), not a key range."""
+# Pinball display chains that each run as one chunk (physical keys): the
+# per-row loop DSPDCPUT, DP1OUTSF, DP3OUTSF, DSPDCEND, DSPDCEND +2; the
+# monitor chain NVMONOPT, KILMONON, NVSUBCOM, NVSUB1, NVSUB2 +9, +11,
+# NVSUBEND and VERBFAN; and ENTPAS0 with MIXNOUN. A monitor display walks
+# them in turn, about 20 points, one load each when they sit in different
+# chunks (docs/LM-FLIGHT-LOAD-PROFILE.md). Each group links under the slot.
+LANEC_PIN_GROUPS = {
+    'lanec_pin_lm_routines': [[34143, 33224, 33231, 34166, 34168],
+                              [2157, 2180, 2168, 34660, 34690, 34692, 2178, 33883],
+                              [33821, 33937]],
+    'lanec_pin_cm_routines': [[34143, 33164, 33171, 34166, 34168],
+                              [2169, 2192, 2180, 34660, 34690, 34692, 2190, 33883],
+                              [33821, 33937]]}
+
+
+def lanec_pin_entries(table, n):
+    """The table's entries in src/lanec_pin_routines.inc: (physical, try-list modules)."""
     inc = (ROOT / 'src/lanec_pin_routines.inc').read_text()
     tries = {k: tuple(sorted(v.replace(' ', '').split(',')[:-1]))
              for k, v in re.findall(r'static const dispatch (try\d+)\[\d+\] = \{ (.*?) \};', inc)}
     body = inc.split(f'agc_routine_entry {table[len("lanec_pin_"):-len("_routines")]}_entries[')[1].split('};')[0]
-    calls = re.findall(r'\{ \d+u, (try\d+)_(?:lm|cm) \}', body)
+    calls = re.findall(r'\{ (\d+)u, (try\d+)_(?:lm|cm) \}', body)
     if len(calls) != n:
         raise SystemExit(f'{table}: {len(calls)} entries in src/lanec_pin_routines.inc, {n} keys')
-    return sorted(range(n), key=lambda i: (tries[calls[i]], i))
+    return [(int(k), tries[t]) for k, t in calls]
+
+
+def lanec_pin_group(table, n):
+    """Each entry's LANEC_PIN_GROUPS group index (len(groups) for the rest)."""
+    groups = LANEC_PIN_GROUPS.get(table, [])
+    of = {k: g for g, ks in enumerate(groups) for k in ks}
+    ents = lanec_pin_entries(table, n)
+    if not set(of) <= {k for k, _ in ents}:
+        raise SystemExit(f'{table}: LANEC_PIN_GROUPS names keys the table lacks: {sorted(set(of) - {k for k, _ in ents})}')
+    return [of.get(k, len(groups)) for k, _ in ents]
+
+
+def lanec_pin_order(table, n):
+    """Pinball's routines grouped by the modules their try-lists run
+    (src/lanec_pin_routines.inc), so a chunk links few of them: routines
+    with the same modules sit together, and address order is kept within a
+    group. LANEC_PIN_GROUPS come first, each in its own chunk (see
+    lanec_pin_breaks). A chunk is then a set of entries (FS_PICK), not a
+    key range."""
+    ents, grp = lanec_pin_entries(table, n), lanec_pin_group(table, n)
+    return sorted(range(n), key=lambda i: (grp[i], ents[i][1], i))
+
+
+def lanec_pin_breaks(table, n):
+    """Positions in lanec_pin_order that no chunk crosses: the end of each
+    LANEC_PIN_GROUPS group."""
+    grp = lanec_pin_group(table, n)
+    ends, at = [], 0
+    for g in range(len(LANEC_PIN_GROUPS.get(table, []))):
+        at += grp.count(g)
+        ends.append(at)
+    return ends
 
 
 # Chunk order per stem: (table, entries) -> the entries' order for packing.
 CHUNK_ORDER = {'lanec_pin_routines': lanec_pin_order}
+# Chunk breaks per stem: (table, entries) -> positions in the chunk order
+# that a chunk does not cross.
+CHUNK_BREAKS = {'lanec_pin_routines': lanec_pin_breaks}
 
 
-def pack_chunks(n, fits, probes):
+def pack_chunks(n, fits, probes, breaks=()):
     """Greedy packing of routines 0..n-1 into chunks of consecutive routines.
 
     Each chunk starts where the last one ended and takes the most routines
@@ -128,15 +175,19 @@ def pack_chunks(n, fits, probes):
     failing end. The chunks depend only on the link results: the same
     inputs give the same chunks in the same order.
 
+    No chunk crosses a position in breaks: a chunk that reaches one ends
+    there.
+
     Returns (kept, over): kept the (start, end) chunks that fit, over the
     (start, overflow) of routines over the slot alone; None on a link error."""
     kept, over, start = [], [], 0
     while start < n:
-        lo, hi, alone = start, n + 1, None      # [start, lo) fits; [start, hi) does not
+        end = min([b for b in breaks if b > start] + [n])
+        lo, hi, alone = start, end + 1, None    # [start, lo) fits; [start, hi) does not
         while hi - lo > 1:
-            if hi == n + 1:                     # gallop until an end fails
+            if hi == end + 1:                   # gallop until an end fails
                 base = lo - start
-                ends = {min(n, start + (base << i + 1 if base else 1 << i)) for i in range(probes)}
+                ends = {min(end, start + (base << i + 1 if base else 1 << i)) for i in range(probes)}
             else:
                 ends = {lo + (hi - lo) * (i + 1) // (probes + 1) for i in range(probes)}
             ends = sorted(e for e in ends if lo < e < hi) or [lo + 1]
@@ -438,16 +489,37 @@ def host_mct(m, t):
     return mct_weight(m, [t], interp=interpretive_table(t))
 
 
-def c64_mct(m, to_interp, modules):
+def c64_mct(m, to_interp, modules, pins=()):
     """{table: work clock weight} as the C64 store charges it: the
-    interpreter's per word (RK_INTERP_MCT) for a table left to the
+    interpreter's per word (INTERP_PER_WORD) for a table left to the
     interpreter module, 0 for the self-check idle tables (FS_IDLE, or a
     module of idle tables only), else the FS_MCT of the first module that
     runs it (link_module). host.inc carries these, so the host's work clock
-    (FLIGHT_SCALED) charges what the C64 does."""
-    out = {t: mct_weight(m, None, interp=True) for t in to_interp}
+    (FLIGHT_SCALED) charges what the C64 does. pins: the packed pinned
+    modules' link parameters, class 3 first."""
+    out = {t: INTERP_PER_WORD for t in to_interp}
+    # rk_direct tries the class-3 pinned module before any slot, and its
+    # table list names the class-4 home's tables too, so every table of the
+    # pinned sets is charged class 3's one FS_MCT (#710).
+    for mod in pins:
+        weighed = list(mod.get('basic') or []) + list(mod.get('interp') or [])
+        rupt = [t for t in weighed if not idle_table(t)]
+        own = [t for t in rupt if t not in LEAD_INS] or rupt
+        for t in weighed:
+            out.setdefault(t, 0 if idle_table(t) or not own else mct_weight(m, own))
+    # A pack's own tables (not its ride ones) resolve to the pack before
+    # their files' modules, so the pack's FS_MCT is what the C64 charges
+    # them (RATELOOP's lm_kalman_basic in the excursion, the radar step in
+    # the T4RUPT pack), not their own module's.
     for mod in modules:
-        weighed = [mod['chunk'][0]] if mod.get('chunk') else list(mod.get('basic') or []) + list(mod.get('interp') or [])
+        if mod.get('excursion'):
+            for t in mod.get('basic') or []:
+                if t not in RIDE and not idle_table(t):
+                    out.setdefault(t, mct_weight(m, [x for x in mod['basic'] if x not in LEAD_INS and not idle_table(x)]))
+    for mod in modules:
+        weighed = [mod['chunk'][0]] if mod.get('chunk') else (list(mod.get('basic') or [])
+                                                               + list(dict.fromkeys(t for t, _ in mod.get('pick') or []))
+                                                               + list(mod.get('interp') or []))
         rupt = [t for t in weighed if not idle_table(t)]
         own = [t for t in rupt if t not in LEAD_INS] or rupt
         for t in weighed:
@@ -473,6 +545,7 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     wrapper = prg.with_suffix('.c')
     head = (f'#define FS_CHUNK_TABLE {chunk[0]}\n#define FS_CHUNK(X) '
             + ' '.join(f'X({i})' for i in range(chunk[1], chunk[2])) + '\n') if chunk else ''
+    picked_tables = list(dict.fromkeys(t for t, _ in pick)) if pick else []
     if pick is not None:
         head, basic = '#define FS_PICK(X) ' + ' '.join(f'X({t},{i})' for t, i in pick) + '\n', []
     if keys is not None and (chunk or pick is not None):
@@ -494,11 +567,18 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     # The work clock's weight (resident_flight.h): its tables' calibrated
     # MCT per routine.
     head += f'#define FS_KEY_LO {key_range[0]}u\n#define FS_KEY_SPAN {key_range[1] - key_range[0]}u\n'
-    weighed = [chunk[0]] if chunk else list(basic) + list(interp)
+    # A picked module (FS_PICK: live entries, or a split pack's part) weighs
+    # the tables its entries come from; it has no basic list of its own.
+    weighed = [chunk[0]] if chunk else list(basic) + picked_tables + list(interp)
     rupt = [t for t in weighed if not idle_table(t)]
     # The lead-ins riding in a pack keep the pack's own weight.
     own = [t for t in rupt if t not in LEAD_INS] or rupt
-    head += f'#define FS_MCT {mct_weight(m, own) if own else 0}u\n'
+    mct = mct_weight(m, own) if own else 0
+    if not mct and (chunk or pick or basic or interp) and not (weighed and all(idle_table(t) for t in weighed)):
+        # 0 is the idle weight (RK_MCT_IDLE): the C64 would charge each
+        # step the rest of its budget.
+        raise SystemExit(f'{m}: {prg.name} links routines but weighs 0 MCT (the idle weight)')
+    head += f'#define FS_MCT {mct}u\n'
     if rupt and len(rupt) < len(weighed):
         # rk_direct honours the idle flag on the LM only (resident_flight.c):
         # a CM module packing the idle loop with other tables would charge
@@ -605,6 +685,9 @@ def add_rope(m):
     data = json.loads(manifest.read_text())
     data.update(reu_size_kb=2048, image_sha256=hashlib.sha256(image).hexdigest(), rope_reu_base=hex(base))
     manifest.write_text(json.dumps(data, indent=1) + '\n')
+    # The declared runtime regions (tools/reu_layout.py) must not overlap.
+    import reu_layout
+    reu_layout.layout(m, data)
 
 
 SCRATCH_BYTES = 32768
@@ -821,6 +904,13 @@ ENTRYPACK = {'lm': [], 'cm': ['cm_entry_dap_hot_routines', 'cm_sp_hot_routines']
 RCSPACK = {'lm': [], 'cm': ['cm_rcs_dap_hot_routines', 'cm_mysubs_routines']}
 JETPACK = {'lm': [], 'cm': ['cm_jet_select_hot_routines']}
 MANPACK = {'lm': [], 'cm': ['cm_auto_man_hot_routines']}
+# A split pack starts a new chunk at these keys (bank << 10 | offset in
+# the bank), so the routines a pass runs back to back share one chunk. CM
+# JETPACK: T6START (17,3617) and the T6 program chain after it (17,3654 to
+# 17,3713) run in each T6RUPT; split greedily the first chunk ended at
+# 17,3663, so a T6RUPT loaded jet-0 and jet-1 by turns (173 job loads in
+# 29 T6RUPTs of cm-p40's window from 70660 cs; 29 with the cut).
+SPLIT_BEFORE = {'cm_jet': [0o17 << 10 | 0o1617]}
 # Job-slot modules beside the pinned home: (name, tables, module id). Lane
 # A's 0xE0-0xFF are the resident's, so the ids are fixed in lane F's.
 PACKS = {m: [('excursion', EXCURSION[m], 0x07F5), ('t4rupt', T4PACK[m], 0x07F6),
@@ -962,9 +1052,10 @@ def interp_modules(cc, m, library):
 # Modules whose fixed_data is not the resident's boundary words: self-check's
 # own hook (include/self_check.h), or 'rope', every rope word from the REU
 # image (include/rope_image.h; LM TRIM_GIMBAL's GTS reads DOSHIFT's indexed
-# CA operands through it).
+# CA operands through it, and SUPDACAL in the interbank routines reads any
+# fixed word: V27 N02's fixed memory display).
 FIXED_DATA = {'lm_self_check': 'lm_self_check_rope_data', 'cm_self_check': 'cm_self_check_rope_data',
-              'lm_trim_gimbal': 'rope'}
+              'lm_trim_gimbal': 'rope', 'lm_interbank_routines': 'rope', 'cm_interbank_routines': 'rope'}
 FIXED_KIND = {None: 0, 'rope': 2}
 # Where the resident's own tables read their inline operands: the thin
 # kernel's program holds the Executive's site table.
@@ -1197,14 +1288,18 @@ def main():
             only while its pack is loaded (slot 5: the host skips it
             otherwise). weights: {table: MCT} as the C64 store charges it
             (c64_mct), once its modules are linked; a host-only build, and
-            a table no module runs, keeps host_mct (the interpreter's per
-            word for a table left to it)."""
+            a table no module runs, keeps host_mct (INTERP_PER_WORD for
+            a table left to the interpreter); a FLIGHT_INTERP_STOP file's
+            basic table adds INTERP_PLUS_WORDS."""
             task_out = 4 in pins.values()
 
             def mct(t, f):
                 if weights is not None and t in weights:
-                    return weights[t]
-                return mct_weight(m, None, interp=True) if f in to_interp else host_mct(m, PIN_HOT.get(f, f))
+                    w = weights[t]
+                else:
+                    w = INTERP_PER_WORD if f in to_interp else host_mct(m, PIN_HOT.get(f, f))
+                stops = packed.get(f) in FLIGHT_INTERP_STOP[m] and not interpretive_table(f)
+                return w | INTERP_PLUS_WORDS if stops and w not in (0, INTERP_PER_WORD) else w
             pin_order = [t for t in pins if t in tables]
             ahead = [t for t in packs if t in tables and (packs[t][1] or hot_full(t))]
             first = [t for t in ahead if hot_full(t) in RESIDENT[m]]
@@ -1355,8 +1450,12 @@ def main():
             as split_greedy): the pass then loads one per chunk it crosses.
             One table splits by FS_CHUNK; several split their entries in key
             order (FS_PICK), so a small table's keys go to the chunk with
-            the keys beside them. Ids follow the pack's."""
+            the keys beside them. A chunk also ends before a SPLIT_BEFORE
+            key. Ids follow the pack's."""
             entries = sorted(((t, i) for t in pts for i in range(len(keys[t]))), key=lambda e: keys[e[0]][e[1]])
+            cuts = sorted({j for c in SPLIT_BEFORE.get(pack['prg_name'], ())
+                           for j in range(1, len(entries)) if keys[entries[j - 1][0]][entries[j - 1][1]] < c
+                           <= keys[entries[j][0]][entries[j][1]]})
 
             def part(lo, hi):
                 if len(pts) == 1:
@@ -1364,7 +1463,7 @@ def main():
                 return dict(basic=[], pick=entries[lo:hi])
             out, lo, n = [], 0, len(entries)
             while lo < n:
-                good, bad = lo, n + 1
+                good, bad = lo, min([j for j in cuts if j > lo] + [n]) + 1
                 while bad - good > 1:
                     mid = (good + bad) // 2
                     r = link(dict(pack, **part(lo, mid), prg_name=f"{pack['prg_name']}-trial"))[2]
@@ -1615,9 +1714,12 @@ def main():
                     with ThreadPoolExecutor(a.jobs) as pool:
                         got = list(pool.map(lambda e: trial((t, start, e), mod), ends))
                     return [True if r['ok'] or r.get('empty') else r.get('overflow') or None for r in got]
+                breaks = ()
                 if mod['stem'] in CHUNK_ORDER:
                     chunk_order[t] = CHUNK_ORDER[mod['stem']](t, len(keys[t]))
-                got = pack_chunks(len(keys[t]), fits, max(1, a.jobs))
+                if mod['stem'] in CHUNK_BREAKS:
+                    breaks = CHUNK_BREAKS[mod['stem']](t, len(keys[t]))
+                got = pack_chunks(len(keys[t]), fits, max(1, a.jobs), breaks)
                 if got is None:
                     return None
                 kept += [(t, i, j) for i, j in got[0]]
@@ -1688,7 +1790,9 @@ def main():
                         continue
                     for k in keys[t][c[1]:c[2]] if c else keys[t]:
                         module_of[(hot_full(t) or t, k)] = pack['id']
-        write_host(packed_pins(pinned), pack_tables(pack_report(packs)), c64_mct(m, to_interp, modules))
+        write_host(packed_pins(pinned), pack_tables(pack_report(packs)), c64_mct(
+            m, to_interp, modules,
+            [params[f"pin-{p['slot']}"] for p in sorted(pinned, key=lambda p: p['slot'] != 'pinned') if p['packed']]))
         records, erasable, unplaced, interpreted = [], 0, 0, 0
         unplaced_by = {}
         for (kind, k), ts in sorted(holders.items()):

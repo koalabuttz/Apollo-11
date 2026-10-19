@@ -6014,6 +6014,39 @@ static enum exec_status r74501(apollo_overlay_state *s,p66_bias_io *io){
  goto L75235;
  /* 36,2503 TCF -2 */
  goto L74501;
+ L74504:;
+ /* 36,2504 CAF V6N60RTE */
+ ai_caf(s,001474);
+ /* 36,2505 TCR P37GFRB1 */
+ ai_tc(s,02506);
+ goto L75211;
+ /* 36,2506 TCF -2 */
+ goto L74504;
+ /* 36,2507 TC INTPRET */
+ ai_tc(s,02510);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+ L75211:;
+ /* 36,3212 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3213 TCR P370GOFR */
+ ai_tc(s,03214);
+ goto L75221;
+ /* 36,3214 CAF ONE */
+ ai_caf(s,000001);
+ /* 36,3215 TCR BLANKET */
+ ai_tc(s,03216);
+ W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
+ L75221:;
+ /* 36,3222 QXCH RTENCKEX */
+ ai_qxch(s,01733u);
+ /* 36,3223 TCR BANKCALL */
+ ai_tc(s,03224);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
  L75235:;
  /* 36,3236 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -6034,18 +6067,6 @@ static enum exec_status r74503(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,2502 TCR P370GOF */
  ai_tc(s,02503);
  goto L75235;
- L75235:;
- /* 36,3236 QXCH SPRTEX */
- ai_qxch(s,01762u);
- /* 36,3237 TCR BANKCALL */
- ai_tc(s,03240);
- W[5]=04662;return EXEC_OK; /* BANKCALL */
-}
-#endif
-#if (CM_P37_P70_KEEP7 >> 18) & 1
-/* 36,2504  (resumed from outside) */
-static enum exec_status r74504(apollo_overlay_state *s,p66_bias_io *io){
- if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  L74504:;
  /* 36,2504 CAF V6N60RTE */
  ai_caf(s,001474);
@@ -6054,6 +6075,9 @@ static enum exec_status r74504(apollo_overlay_state *s,p66_bias_io *io){
  goto L75211;
  /* 36,2506 TCF -2 */
  goto L74504;
+ /* 36,2507 TC INTPRET */
+ ai_tc(s,02510);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75211:;
  /* 36,3212 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -6065,6 +6089,56 @@ static enum exec_status r74504(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,3215 TCR BLANKET */
  ai_tc(s,03216);
  W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
+ L75221:;
+ /* 36,3222 QXCH RTENCKEX */
+ ai_qxch(s,01733u);
+ /* 36,3223 TCR BANKCALL */
+ ai_tc(s,03224);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
+ L75235:;
+ /* 36,3236 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3237 TCR BANKCALL */
+ ai_tc(s,03240);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
+}
+#endif
+#if (CM_P37_P70_KEEP7 >> 18) & 1
+/* 36,2504  (return from P370GOF +1) */
+static enum exec_status r74504(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
+ L74504:;
+ /* 36,2504 CAF V6N60RTE */
+ ai_caf(s,001474);
+ /* 36,2505 TCR P37GFRB1 */
+ ai_tc(s,02506);
+ goto L75211;
+ /* 36,2506 TCF -2 */
+ goto L74504;
+ /* 36,2507 TC INTPRET */
+ ai_tc(s,02510);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+ L75211:;
+ /* 36,3212 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3213 TCR P370GOFR */
+ ai_tc(s,03214);
+ goto L75221;
+ /* 36,3214 CAF ONE */
+ ai_caf(s,000001);
+ /* 36,3215 TCR BLANKET */
+ ai_tc(s,03216);
+ W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
  L75221:;
  /* 36,3222 QXCH RTENCKEX */
  ai_qxch(s,01733u);
@@ -6085,6 +6159,9 @@ static enum exec_status r74506(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,2505 TCR P37GFRB1 */
  ai_tc(s,02506);
  goto L75211;
+ /* 36,2507 TC INTPRET */
+ ai_tc(s,02510);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75211:;
  /* 36,3212 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -6096,6 +6173,11 @@ static enum exec_status r74506(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,3215 TCR BLANKET */
  ai_tc(s,03216);
  W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
  L75221:;
  /* 36,3222 QXCH RTENCKEX */
  ai_qxch(s,01733u);
@@ -6105,7 +6187,7 @@ static enum exec_status r74506(apollo_overlay_state *s,p66_bias_io *io){
 }
 #endif
 #if (CM_P37_P70_KEEP7 >> 20) & 1
-/* 36,2507 RTE299 (resumed from outside) */
+/* 36,2507 RTE299 (return from P37GFRB1 +1) */
 static enum exec_status r74507(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,2507 TC INTPRET */
@@ -7210,6 +7292,8 @@ static enum exec_status r75006(apollo_overlay_state *s,p66_bias_io *io){
  goto L75215;
  /* 36,3012 TCF +5 */
  goto L75017;
+ /* 36,3013 TCF P37 */
+ goto L74466;
  L75017:;
  /* 36,3017 CAF V6N60RTE */
  ai_caf(s,001474);
@@ -7218,6 +7302,16 @@ static enum exec_status r75006(apollo_overlay_state *s,p66_bias_io *io){
  goto L75211;
  /* 36,3021 TCF P37 */
  goto L74466;
+ /* 36,3022 CAF V6N81RTE */
+ ai_caf(s,001521);
+ /* 36,3023 TCR P370GOF */
+ ai_tc(s,03024);
+ goto L75235;
+ /* 36,3024 TCF P37 */
+ goto L74466;
+ /* 36,3025 TCR INTPRET */
+ ai_tc(s,03026);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75211:;
  /* 36,3212 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7230,11 +7324,22 @@ static enum exec_status r75006(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,3215 TCR BLANKET */
  ai_tc(s,03216);
  W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
  L75221:;
  /* 36,3222 QXCH RTENCKEX */
  ai_qxch(s,01733u);
  /* 36,3223 TCR BANKCALL */
  ai_tc(s,03224);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
+ L75235:;
+ /* 36,3236 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3237 TCR BANKCALL */
+ ai_tc(s,03240);
  W[5]=04662;return EXEC_OK; /* BANKCALL */
 }
 #endif
@@ -7263,6 +7368,16 @@ static enum exec_status r75010(apollo_overlay_state *s,p66_bias_io *io){
  goto L75211;
  /* 36,3021 TCF P37 */
  goto L74466;
+ /* 36,3022 CAF V6N81RTE */
+ ai_caf(s,001521);
+ /* 36,3023 TCR P370GOF */
+ ai_tc(s,03024);
+ goto L75235;
+ /* 36,3024 TCF P37 */
+ goto L74466;
+ /* 36,3025 TCR INTPRET */
+ ai_tc(s,03026);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75211:;
  /* 36,3212 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7275,16 +7390,27 @@ static enum exec_status r75010(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,3215 TCR BLANKET */
  ai_tc(s,03216);
  W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
  L75221:;
  /* 36,3222 QXCH RTENCKEX */
  ai_qxch(s,01733u);
  /* 36,3223 TCR BANKCALL */
  ai_tc(s,03224);
  W[5]=04662;return EXEC_OK; /* BANKCALL */
+ L75235:;
+ /* 36,3236 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3237 TCR BANKCALL */
+ ai_tc(s,03240);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
 }
 #endif
 #if (CM_P37_P70_KEEP8 >> 45) & 1
-/* 36,3012  (return from 36,3215) */
+/* 36,3012  (return from P370GOFR +2) */
 static enum exec_status r75012(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,3012 TCF +5 */
@@ -7301,6 +7427,16 @@ static enum exec_status r75012(apollo_overlay_state *s,p66_bias_io *io){
  goto L75211;
  /* 36,3021 TCF P37 */
  goto L74466;
+ /* 36,3022 CAF V6N81RTE */
+ ai_caf(s,001521);
+ /* 36,3023 TCR P370GOF */
+ ai_tc(s,03024);
+ goto L75235;
+ /* 36,3024 TCF P37 */
+ goto L74466;
+ /* 36,3025 TCR INTPRET */
+ ai_tc(s,03026);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75211:;
  /* 36,3212 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7312,16 +7448,27 @@ static enum exec_status r75012(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,3215 TCR BLANKET */
  ai_tc(s,03216);
  W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
  L75221:;
  /* 36,3222 QXCH RTENCKEX */
  ai_qxch(s,01733u);
  /* 36,3223 TCR BANKCALL */
  ai_tc(s,03224);
  W[5]=04662;return EXEC_OK; /* BANKCALL */
+ L75235:;
+ /* 36,3236 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3237 TCR BANKCALL */
+ ai_tc(s,03240);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
 }
 #endif
 #if (CM_P37_P70_KEEP8 >> 46) & 1
-/* 36,3013  (resumed from outside) */
+/* 36,3013  (return from P370GOFR +3) */
 static enum exec_status r75013(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,3013 TCF P37 */
@@ -7349,6 +7496,45 @@ static enum exec_status r75014(apollo_overlay_state *s,p66_bias_io *io){
  goto L75235;
  /* 36,3016 TCF P37 */
  goto L74466;
+ /* 36,3017 CAF V6N60RTE */
+ ai_caf(s,001474);
+ /* 36,3020 TCR P37GFRB1 */
+ ai_tc(s,03021);
+ goto L75211;
+ /* 36,3021 TCF P37 */
+ goto L74466;
+ /* 36,3022 CAF V6N81RTE */
+ ai_caf(s,001521);
+ /* 36,3023 TCR P370GOF */
+ ai_tc(s,03024);
+ goto L75235;
+ /* 36,3024 TCF P37 */
+ goto L74466;
+ /* 36,3025 TCR INTPRET */
+ ai_tc(s,03026);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+ L75211:;
+ /* 36,3212 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3213 TCR P370GOFR */
+ ai_tc(s,03214);
+ goto L75221;
+ /* 36,3214 CAF ONE */
+ ai_caf(s,000001);
+ /* 36,3215 TCR BLANKET */
+ ai_tc(s,03216);
+ W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
+ L75221:;
+ /* 36,3222 QXCH RTENCKEX */
+ ai_qxch(s,01733u);
+ /* 36,3223 TCR BANKCALL */
+ ai_tc(s,03224);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
  L75235:;
  /* 36,3236 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7370,6 +7556,63 @@ static enum exec_status r75016(apollo_overlay_state *s,p66_bias_io *io){
 }
 #endif
 #if (CM_P37_P70_KEEP8 >> 49) & 1
+/* 36,3017  (return from P370GOF +1) */
+static enum exec_status r75017(apollo_overlay_state *s,p66_bias_io *io){
+ if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
+ /* 36,3017 CAF V6N60RTE */
+ ai_caf(s,001474);
+ goto L75020;
+ L74466:;
+ /* 36,2466 TC PHASCHNG */
+ ai_tc(s,02467);
+ W[5]=05412;return EXEC_OK; /* PHASCHNG */
+ L75020:;
+ /* 36,3020 TCR P37GFRB1 */
+ ai_tc(s,03021);
+ goto L75211;
+ /* 36,3021 TCF P37 */
+ goto L74466;
+ /* 36,3022 CAF V6N81RTE */
+ ai_caf(s,001521);
+ /* 36,3023 TCR P370GOF */
+ ai_tc(s,03024);
+ goto L75235;
+ /* 36,3024 TCF P37 */
+ goto L74466;
+ /* 36,3025 TCR INTPRET */
+ ai_tc(s,03026);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
+ L75211:;
+ /* 36,3212 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3213 TCR P370GOFR */
+ ai_tc(s,03214);
+ goto L75221;
+ /* 36,3214 CAF ONE */
+ ai_caf(s,000001);
+ /* 36,3215 TCR BLANKET */
+ ai_tc(s,03216);
+ W[5]=05526;return EXEC_OK; /* BLANKET */
+ /* 36,3216 TCF ENDOFJOB */
+ W[5]=05217;return EXEC_OK;
+ /* 36,3217 TC SPRTEX */
+ ai_tc(s,03220);
+ return tc_e(s,01762u);
+ L75221:;
+ /* 36,3222 QXCH RTENCKEX */
+ ai_qxch(s,01733u);
+ /* 36,3223 TCR BANKCALL */
+ ai_tc(s,03224);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
+ L75235:;
+ /* 36,3236 QXCH SPRTEX */
+ ai_qxch(s,01762u);
+ /* 36,3237 TCR BANKCALL */
+ ai_tc(s,03240);
+ W[5]=04662;return EXEC_OK; /* BANKCALL */
+}
+#endif
+#if (CM_P37_P70_KEEP8 >> 50) & 1
 /* 36,3021  (return from P37GFRB1) */
 static enum exec_status r75021(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7381,8 +7624,8 @@ static enum exec_status r75021(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=05412;return EXEC_OK; /* PHASCHNG */
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 50) & 1
-/* 36,3022  (resumed from outside) */
+#if (CM_P37_P70_KEEP8 >> 51) & 1
+/* 36,3022  (return from P37GFRB1 +1) */
 static enum exec_status r75022(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,3022 CAF V6N81RTE */
@@ -7398,6 +7641,9 @@ static enum exec_status r75022(apollo_overlay_state *s,p66_bias_io *io){
  goto L75235;
  /* 36,3024 TCF P37 */
  goto L74466;
+ /* 36,3025 TCR INTPRET */
+ ai_tc(s,03026);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75235:;
  /* 36,3236 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7406,7 +7652,7 @@ static enum exec_status r75022(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=04662;return EXEC_OK; /* BANKCALL */
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 51) & 1
+#if (CM_P37_P70_KEEP8 >> 52) & 1
 /* 36,3024  (return from P370GOF) */
 static enum exec_status r75024(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7418,8 +7664,8 @@ static enum exec_status r75024(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=05412;return EXEC_OK; /* PHASCHNG */
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 52) & 1
-/* 36,3025  (resumed from outside) */
+#if (CM_P37_P70_KEEP8 >> 53) & 1
+/* 36,3025  (return from P370GOF +1) */
 static enum exec_status r75025(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,3025 TCR INTPRET */
@@ -7427,7 +7673,7 @@ static enum exec_status r75025(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 53) & 1
+#if (CM_P37_P70_KEEP8 >> 54) & 1
 /* 36,3026  (after TC INTPRET) */
 static enum exec_status r75026(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7437,7 +7683,7 @@ static enum exec_status r75026(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,003763,002514);(void)ai_ccs(s,020);cmi_goto_any(s);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 54) & 1
+#if (CM_P37_P70_KEEP8 >> 55) & 1
 /* 36,3030 P37G (BZE target) */
 static enum exec_status r75030(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7449,7 +7695,7 @@ static enum exec_status r75030(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 55) & 1
+#if (CM_P37_P70_KEEP8 >> 56) & 1
 /* 36,3032  (CALL return) */
 static enum exec_status r75032(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7459,7 +7705,7 @@ static enum exec_status r75032(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 56) & 1
+#if (CM_P37_P70_KEEP8 >> 57) & 1
 /* 36,3033 P37N (after EXIT) */
 static enum exec_status r75033(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7481,6 +7727,9 @@ static enum exec_status r75033(apollo_overlay_state *s,p66_bias_io *io){
  goto L75235;
  /* 36,3041 TCF -2 */
  goto L75037;
+ /* 36,3042 TC INTPRET */
+ ai_tc(s,03043);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75235:;
  /* 36,3236 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7489,7 +7738,7 @@ static enum exec_status r75033(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=04662;return EXEC_OK; /* BANKCALL */
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 57) & 1
+#if (CM_P37_P70_KEEP8 >> 58) & 1
 /* 36,3041  (return from P370GOF) */
 static enum exec_status r75041(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7501,6 +7750,9 @@ static enum exec_status r75041(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,3040 TCR P370GOF */
  ai_tc(s,03041);
  goto L75235;
+ /* 36,3042 TC INTPRET */
+ ai_tc(s,03043);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75235:;
  /* 36,3236 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7509,8 +7761,8 @@ static enum exec_status r75041(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=04662;return EXEC_OK; /* BANKCALL */
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 58) & 1
-/* 36,3042  (resumed from outside) */
+#if (CM_P37_P70_KEEP8 >> 59) & 1
+/* 36,3042  (return from P370GOF +1) */
 static enum exec_status r75042(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,3042 TC INTPRET */
@@ -7518,7 +7770,7 @@ static enum exec_status r75042(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP8 >> 59) & 1
+#if (CM_P37_P70_KEEP9 >> 0) & 1
 /* 36,3043  (after TC INTPRET) */
 static enum exec_status r75043(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7532,7 +7784,7 @@ static enum exec_status r75043(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3046 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 0) & 1
+#if (CM_P37_P70_KEEP9 >> 1) & 1
 /* 36,3046  (CHANG2 resume) */
 static enum exec_status r75046(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7550,7 +7802,7 @@ static enum exec_status r75046(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3051 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 1) & 1
+#if (CM_P37_P70_KEEP9 >> 2) & 1
 /* 36,3051  (CHANG2 resume) */
 static enum exec_status r75051(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7564,7 +7816,7 @@ static enum exec_status r75051(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3054 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 2) & 1
+#if (CM_P37_P70_KEEP9 >> 3) & 1
 /* 36,3054  (CHANG2 resume) */
 static enum exec_status r75054(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7576,7 +7828,7 @@ static enum exec_status r75054(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,075070,002514);cmi_goto_order(s);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 3) & 1
+#if (CM_P37_P70_KEEP9 >> 4) & 1
 /* 36,3057 P37Q (BZE target) */
 static enum exec_status r75057(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7592,7 +7844,7 @@ static enum exec_status r75057(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3063 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 4) & 1
+#if (CM_P37_P70_KEEP9 >> 5) & 1
 /* 36,3063  (CHANG2 resume) */
 static enum exec_status r75063(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7604,7 +7856,7 @@ static enum exec_status r75063(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3064 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 5) & 1
+#if (CM_P37_P70_KEEP9 >> 6) & 1
 /* 36,3064 P37R (switch branch target) */
 static enum exec_status r75064(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7616,7 +7868,7 @@ static enum exec_status r75064(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3065 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 6) & 1
+#if (CM_P37_P70_KEEP9 >> 7) & 1
 /* 36,3065  (CHANG2 resume) */
 static enum exec_status r75065(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7630,7 +7882,7 @@ static enum exec_status r75065(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3070 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 7) & 1
+#if (CM_P37_P70_KEEP9 >> 8) & 1
 /* 36,3070 P37T (GOTO target) */
 static enum exec_status r75070(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7644,7 +7896,7 @@ static enum exec_status r75070(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3072 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 8) & 1
+#if (CM_P37_P70_KEEP9 >> 9) & 1
 /* 36,3072  (CHANG2 resume) */
 static enum exec_status r75072(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7654,7 +7906,7 @@ static enum exec_status r75072(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 9) & 1
+#if (CM_P37_P70_KEEP9 >> 10) & 1
 /* 36,3073  (after EXIT) */
 static enum exec_status r75073(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7663,7 +7915,7 @@ static enum exec_status r75073(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=07171;return EXEC_OK; /* POLY */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 10) & 1
+#if (CM_P37_P70_KEEP9 >> 11) & 1
 /* 36,3103  (return from POLY) */
 static enum exec_status r75103(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7672,7 +7924,7 @@ static enum exec_status r75103(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 11) & 1
+#if (CM_P37_P70_KEEP9 >> 12) & 1
 /* 36,3104  (after TC INTPRET) */
 static enum exec_status r75104(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7686,7 +7938,7 @@ static enum exec_status r75104(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3106 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 12) & 1
+#if (CM_P37_P70_KEEP9 >> 13) & 1
 /* 36,3106  (CHANG2 resume) */
 static enum exec_status r75106(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7700,7 +7952,7 @@ static enum exec_status r75106(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3107 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 13) & 1
+#if (CM_P37_P70_KEEP9 >> 14) & 1
 /* 36,3107  (CHANG2 resume) */
 static enum exec_status r75107(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7714,7 +7966,7 @@ static enum exec_status r75107(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3112 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 14) & 1
+#if (CM_P37_P70_KEEP9 >> 15) & 1
 /* 36,3112  (CHANG2 resume) */
 static enum exec_status r75112(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7726,7 +7978,7 @@ static enum exec_status r75112(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3114 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 15) & 1
+#if (CM_P37_P70_KEEP9 >> 16) & 1
 /* 36,3114  (CHANG2 resume) */
 static enum exec_status r75114(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7737,7 +7989,7 @@ static enum exec_status r75114(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3115 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 16) & 1
+#if (CM_P37_P70_KEEP9 >> 17) & 1
 /* 36,3115  (CHANG2 resume) */
 static enum exec_status r75115(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7747,7 +7999,7 @@ static enum exec_status r75115(apollo_overlay_state *s,p66_bias_io *io){
  cmi_exit(s);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 17) & 1
+#if (CM_P37_P70_KEEP9 >> 18) & 1
 /* 36,3116  (after EXIT) */
 static enum exec_status r75116(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7759,6 +8011,16 @@ static enum exec_status r75116(apollo_overlay_state *s,p66_bias_io *io){
  goto L75235;
  /* 36,3120 TCF -2 */
  goto L75116;
+ /* 36,3121 CAF ZERO */
+ ai_caf(s,000000);
+ /* 36,3122 TS VHFCNT */
+ if(ai_ts(s,01125u))goto L75124;
+ /* 36,3123 TS TRKMKCNT */
+ if(ai_ts(s,01126u))return EXEC_OUT_OF_SCOPE;
+ L75124:;
+ /* 36,3124 TC INTPRET */
+ ai_tc(s,03125);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75235:;
  /* 36,3236 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7767,7 +8029,7 @@ static enum exec_status r75116(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=04662;return EXEC_OK; /* BANKCALL */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 18) & 1
+#if (CM_P37_P70_KEEP9 >> 19) & 1
 /* 36,3120  (return from P370GOF) */
 static enum exec_status r75120(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7779,6 +8041,16 @@ static enum exec_status r75120(apollo_overlay_state *s,p66_bias_io *io){
  /* 36,3117 TCR P370GOF */
  ai_tc(s,03120);
  goto L75235;
+ /* 36,3121 CAF ZERO */
+ ai_caf(s,000000);
+ /* 36,3122 TS VHFCNT */
+ if(ai_ts(s,01125u))goto L75124;
+ /* 36,3123 TS TRKMKCNT */
+ if(ai_ts(s,01126u))return EXEC_OUT_OF_SCOPE;
+ L75124:;
+ /* 36,3124 TC INTPRET */
+ ai_tc(s,03125);
+ W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
  L75235:;
  /* 36,3236 QXCH SPRTEX */
  ai_qxch(s,01762u);
@@ -7787,8 +8059,8 @@ static enum exec_status r75120(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=04662;return EXEC_OK; /* BANKCALL */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 19) & 1
-/* 36,3121  (resumed from outside) */
+#if (CM_P37_P70_KEEP9 >> 20) & 1
+/* 36,3121  (return from P370GOF +1) */
 static enum exec_status r75121(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,3121 CAF ZERO */
@@ -7803,7 +8075,7 @@ static enum exec_status r75121(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=06006;cmi_intpret(s,io);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 20) & 1
+#if (CM_P37_P70_KEEP9 >> 21) & 1
 /* 36,3125  (after TC INTPRET) */
 static enum exec_status r75125(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7815,7 +8087,7 @@ static enum exec_status r75125(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 21) & 1
+#if (CM_P37_P70_KEEP9 >> 22) & 1
 /* 36,3127  (CALL return) */
 static enum exec_status r75127(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7829,7 +8101,7 @@ static enum exec_status r75127(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3131 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 22) & 1
+#if (CM_P37_P70_KEEP9 >> 23) & 1
 /* 36,3131  (CHANG2 resume) */
 static enum exec_status r75131(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7843,7 +8115,7 @@ static enum exec_status r75131(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3134 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 23) & 1
+#if (CM_P37_P70_KEEP9 >> 24) & 1
 /* 36,3134  (CHANG2 resume) */
 static enum exec_status r75134(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7857,7 +8129,7 @@ static enum exec_status r75134(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3137 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 24) & 1
+#if (CM_P37_P70_KEEP9 >> 25) & 1
 /* 36,3137  (CHANG2 resume) */
 static enum exec_status r75137(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7871,7 +8143,7 @@ static enum exec_status r75137(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3140 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 25) & 1
+#if (CM_P37_P70_KEEP9 >> 26) & 1
 /* 36,3140  (CHANG2 resume) */
 static enum exec_status r75140(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7889,7 +8161,7 @@ static enum exec_status r75140(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3143 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 26) & 1
+#if (CM_P37_P70_KEEP9 >> 27) & 1
 /* 36,3143  (CHANG2 resume) */
 static enum exec_status r75143(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7903,7 +8175,7 @@ static enum exec_status r75143(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3146 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 27) & 1
+#if (CM_P37_P70_KEEP9 >> 28) & 1
 /* 36,3146  (CHANG2 resume) */
 static enum exec_status r75146(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7921,7 +8193,7 @@ static enum exec_status r75146(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3151 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 28) & 1
+#if (CM_P37_P70_KEEP9 >> 29) & 1
 /* 36,3151  (CHANG2 resume) */
 static enum exec_status r75151(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7933,7 +8205,7 @@ static enum exec_status r75151(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,075155,002514);cmi_goto_order(s);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 29) & 1
+#if (CM_P37_P70_KEEP9 >> 30) & 1
 /* 36,3153 P37U (BMN target) */
 static enum exec_status r75153(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7947,7 +8219,7 @@ static enum exec_status r75153(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3155 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 30) & 1
+#if (CM_P37_P70_KEEP9 >> 31) & 1
 /* 36,3155 P37V (GOTO target) */
 static enum exec_status r75155(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7959,7 +8231,7 @@ static enum exec_status r75155(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3156 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 31) & 1
+#if (CM_P37_P70_KEEP9 >> 32) & 1
 /* 36,3156  (CHANG2 resume) */
 static enum exec_status r75156(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7971,7 +8243,7 @@ static enum exec_status r75156(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3157 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 32) & 1
+#if (CM_P37_P70_KEEP9 >> 33) & 1
 /* 36,3157  (CHANG2 resume) */
 static enum exec_status r75157(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7985,7 +8257,7 @@ static enum exec_status r75157(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3161 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 33) & 1
+#if (CM_P37_P70_KEEP9 >> 34) & 1
 /* 36,3161  (CHANG2 resume) */
 static enum exec_status r75161(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -7997,7 +8269,7 @@ static enum exec_status r75161(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3163 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 34) & 1
+#if (CM_P37_P70_KEEP9 >> 35) & 1
 /* 36,3163  (CHANG2 resume) */
 static enum exec_status r75163(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8009,7 +8281,7 @@ static enum exec_status r75163(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3165 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 35) & 1
+#if (CM_P37_P70_KEEP9 >> 36) & 1
 /* 36,3165  (CHANG2 resume) */
 static enum exec_status r75165(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8021,7 +8293,7 @@ static enum exec_status r75165(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 36) & 1
+#if (CM_P37_P70_KEEP9 >> 37) & 1
 /* 36,3167 P37W (BMN target) */
 static enum exec_status r75167(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8035,7 +8307,7 @@ static enum exec_status r75167(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3172 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 37) & 1
+#if (CM_P37_P70_KEEP9 >> 38) & 1
 /* 36,3172  (CHANG2 resume) */
 static enum exec_status r75172(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8049,7 +8321,7 @@ static enum exec_status r75172(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3174 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 38) & 1
+#if (CM_P37_P70_KEEP9 >> 39) & 1
 /* 36,3174  (CHANG2 resume) */
 static enum exec_status r75174(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8062,7 +8334,7 @@ static enum exec_status r75174(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3177 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 39) & 1
+#if (CM_P37_P70_KEEP9 >> 40) & 1
 /* 36,3177  (CHANG2 resume) */
 static enum exec_status r75177(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8074,7 +8346,7 @@ static enum exec_status r75177(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3201 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 40) & 1
+#if (CM_P37_P70_KEEP9 >> 41) & 1
 /* 36,3201  (CHANG2 resume) */
 static enum exec_status r75201(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8086,7 +8358,7 @@ static enum exec_status r75201(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3203 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 41) & 1
+#if (CM_P37_P70_KEEP9 >> 42) & 1
 /* 36,3203  (CHANG2 resume) */
 static enum exec_status r75203(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8098,7 +8370,7 @@ static enum exec_status r75203(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK; /* on to 36,3205 */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 42) & 1
+#if (CM_P37_P70_KEEP9 >> 43) & 1
 /* 36,3205  (CHANG2 resume) */
 static enum exec_status r75205(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8110,7 +8382,7 @@ static enum exec_status r75205(apollo_overlay_state *s,p66_bias_io *io){
  return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 43) & 1
+#if (CM_P37_P70_KEEP9 >> 44) & 1
 /* 36,3207  (STCALL return) */
 static enum exec_status r75207(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_newops(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8120,7 +8392,7 @@ static enum exec_status r75207(apollo_overlay_state *s,p66_bias_io *io){
  cmi_misc(s,075167,002514);cmi_goto_order(s);return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 44) & 1
+#if (CM_P37_P70_KEEP9 >> 45) & 1
 /* 36,3214 37BLANK (return from P370GOFR) */
 static enum exec_status r75214(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8131,16 +8403,16 @@ static enum exec_status r75214(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=05526;return EXEC_OK; /* BLANKET */
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 45) & 1
-/* 36,3216  (return from BLANKET) */
+#if (CM_P37_P70_KEEP9 >> 46) & 1
+/* 36,3216  (return from P370GOFR +2) */
 static enum exec_status r75216(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,3216 TCF ENDOFJOB */
  W[5]=05217;return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 46) & 1
-/* 36,3217  (resumed from outside) */
+#if (CM_P37_P70_KEEP9 >> 47) & 1
+/* 36,3217  (return from P370GOFR +3) */
 static enum exec_status r75217(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
  /* 36,3217 TC SPRTEX */
@@ -8148,7 +8420,7 @@ static enum exec_status r75217(apollo_overlay_state *s,p66_bias_io *io){
  return tc_e(s,01762u);
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 47) & 1
+#if (CM_P37_P70_KEEP9 >> 48) & 1
 /* 36,3220  (resumed from outside) */
 static enum exec_status r75220(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8159,7 +8431,7 @@ static enum exec_status r75220(apollo_overlay_state *s,p66_bias_io *io){
  {agc_word iw=ixw(s,010001,01762u);if((iw&070000u)!=010000u||(iw&07777u)<02000u)return EXEC_OUT_OF_SCOPE;W[5]=(agc_word)(iw&07777u);return EXEC_OK;}
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 48) & 1
+#if (CM_P37_P70_KEEP9 >> 49) & 1
 /* 36,3225  (return from BANKCALL) */
 static enum exec_status r75225(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8167,7 +8439,7 @@ static enum exec_status r75225(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=04106;return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 49) & 1
+#if (CM_P37_P70_KEEP9 >> 50) & 1
 /* 36,3226  (return 2 from GOFLASHR) */
 static enum exec_status r75226(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8178,7 +8450,7 @@ static enum exec_status r75226(apollo_overlay_state *s,p66_bias_io *io){
  {agc_word iw=ixw(s,010004,01733u);if((iw&070000u)!=010000u||(iw&07777u)<02000u)return EXEC_OUT_OF_SCOPE;W[5]=(agc_word)(iw&07777u);return EXEC_OK;}
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 50) & 1
+#if (CM_P37_P70_KEEP9 >> 51) & 1
 /* 36,3227  (return 3 from GOFLASHR) */
 static enum exec_status r75227(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8189,7 +8461,7 @@ static enum exec_status r75227(apollo_overlay_state *s,p66_bias_io *io){
  {agc_word iw=ixw(s,010003,01733u);if((iw&070000u)!=010000u||(iw&07777u)<02000u)return EXEC_OUT_OF_SCOPE;W[5]=(agc_word)(iw&07777u);return EXEC_OK;}
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 51) & 1
+#if (CM_P37_P70_KEEP9 >> 52) & 1
 /* 36,3230  (return 4 from GOFLASHR) */
 static enum exec_status r75230(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8198,7 +8470,7 @@ static enum exec_status r75230(apollo_overlay_state *s,p66_bias_io *io){
  return tc_e(s,01733u);
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 52) & 1
+#if (CM_P37_P70_KEEP9 >> 53) & 1
 /* 36,3241  (return from BANKCALL) */
 static enum exec_status r75241(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8206,7 +8478,7 @@ static enum exec_status r75241(apollo_overlay_state *s,p66_bias_io *io){
  W[5]=04106;return EXEC_OK;
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 53) & 1
+#if (CM_P37_P70_KEEP9 >> 54) & 1
 /* 36,3242  (return 2 from GOFLASH) */
 static enum exec_status r75242(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -8217,7 +8489,7 @@ static enum exec_status r75242(apollo_overlay_state *s,p66_bias_io *io){
  {agc_word iw=ixw(s,010001,01762u);if((iw&070000u)!=010000u||(iw&07777u)<02000u)return EXEC_OUT_OF_SCOPE;W[5]=(agc_word)(iw&07777u);return EXEC_OK;}
 }
 #endif
-#if (CM_P37_P70_KEEP9 >> 54) & 1
+#if (CM_P37_P70_KEEP9 >> 55) & 1
 /* 36,3243  (return 3 from GOFLASH) */
 static enum exec_status r75243(apollo_overlay_state *s,p66_bias_io *io){
  if(!at_basic(s,io,074000u))return EXEC_OUT_OF_SCOPE;
@@ -9824,201 +10096,204 @@ WRAP(r75014)
 WRAP(r75016)
 #endif
 #if (CM_P37_P70_KEEP8 >> 49) & 1
-WRAP(r75021)
+WRAP(r75017)
 #endif
 #if (CM_P37_P70_KEEP8 >> 50) & 1
-WRAP(r75022)
+WRAP(r75021)
 #endif
 #if (CM_P37_P70_KEEP8 >> 51) & 1
-WRAP(r75024)
+WRAP(r75022)
 #endif
 #if (CM_P37_P70_KEEP8 >> 52) & 1
-WRAP(r75025)
+WRAP(r75024)
 #endif
 #if (CM_P37_P70_KEEP8 >> 53) & 1
-WRAP(r75026)
+WRAP(r75025)
 #endif
 #if (CM_P37_P70_KEEP8 >> 54) & 1
-WRAP(r75030)
+WRAP(r75026)
 #endif
 #if (CM_P37_P70_KEEP8 >> 55) & 1
-WRAP(r75032)
+WRAP(r75030)
 #endif
 #if (CM_P37_P70_KEEP8 >> 56) & 1
-WRAP(r75033)
+WRAP(r75032)
 #endif
 #if (CM_P37_P70_KEEP8 >> 57) & 1
-WRAP(r75041)
+WRAP(r75033)
 #endif
 #if (CM_P37_P70_KEEP8 >> 58) & 1
-WRAP(r75042)
+WRAP(r75041)
 #endif
 #if (CM_P37_P70_KEEP8 >> 59) & 1
-WRAP(r75043)
+WRAP(r75042)
 #endif
 #if (CM_P37_P70_KEEP9 >> 0) & 1
-WRAP(r75046)
+WRAP(r75043)
 #endif
 #if (CM_P37_P70_KEEP9 >> 1) & 1
-WRAP(r75051)
+WRAP(r75046)
 #endif
 #if (CM_P37_P70_KEEP9 >> 2) & 1
-WRAP(r75054)
+WRAP(r75051)
 #endif
 #if (CM_P37_P70_KEEP9 >> 3) & 1
-WRAP(r75057)
+WRAP(r75054)
 #endif
 #if (CM_P37_P70_KEEP9 >> 4) & 1
-WRAP(r75063)
+WRAP(r75057)
 #endif
 #if (CM_P37_P70_KEEP9 >> 5) & 1
-WRAP(r75064)
+WRAP(r75063)
 #endif
 #if (CM_P37_P70_KEEP9 >> 6) & 1
-WRAP(r75065)
+WRAP(r75064)
 #endif
 #if (CM_P37_P70_KEEP9 >> 7) & 1
-WRAP(r75070)
+WRAP(r75065)
 #endif
 #if (CM_P37_P70_KEEP9 >> 8) & 1
-WRAP(r75072)
+WRAP(r75070)
 #endif
 #if (CM_P37_P70_KEEP9 >> 9) & 1
-WRAP(r75073)
+WRAP(r75072)
 #endif
 #if (CM_P37_P70_KEEP9 >> 10) & 1
-WRAP(r75103)
+WRAP(r75073)
 #endif
 #if (CM_P37_P70_KEEP9 >> 11) & 1
-WRAP(r75104)
+WRAP(r75103)
 #endif
 #if (CM_P37_P70_KEEP9 >> 12) & 1
-WRAP(r75106)
+WRAP(r75104)
 #endif
 #if (CM_P37_P70_KEEP9 >> 13) & 1
-WRAP(r75107)
+WRAP(r75106)
 #endif
 #if (CM_P37_P70_KEEP9 >> 14) & 1
-WRAP(r75112)
+WRAP(r75107)
 #endif
 #if (CM_P37_P70_KEEP9 >> 15) & 1
-WRAP(r75114)
+WRAP(r75112)
 #endif
 #if (CM_P37_P70_KEEP9 >> 16) & 1
-WRAP(r75115)
+WRAP(r75114)
 #endif
 #if (CM_P37_P70_KEEP9 >> 17) & 1
-WRAP(r75116)
+WRAP(r75115)
 #endif
 #if (CM_P37_P70_KEEP9 >> 18) & 1
-WRAP(r75120)
+WRAP(r75116)
 #endif
 #if (CM_P37_P70_KEEP9 >> 19) & 1
-WRAP(r75121)
+WRAP(r75120)
 #endif
 #if (CM_P37_P70_KEEP9 >> 20) & 1
-WRAP(r75125)
+WRAP(r75121)
 #endif
 #if (CM_P37_P70_KEEP9 >> 21) & 1
-WRAP(r75127)
+WRAP(r75125)
 #endif
 #if (CM_P37_P70_KEEP9 >> 22) & 1
-WRAP(r75131)
+WRAP(r75127)
 #endif
 #if (CM_P37_P70_KEEP9 >> 23) & 1
-WRAP(r75134)
+WRAP(r75131)
 #endif
 #if (CM_P37_P70_KEEP9 >> 24) & 1
-WRAP(r75137)
+WRAP(r75134)
 #endif
 #if (CM_P37_P70_KEEP9 >> 25) & 1
-WRAP(r75140)
+WRAP(r75137)
 #endif
 #if (CM_P37_P70_KEEP9 >> 26) & 1
-WRAP(r75143)
+WRAP(r75140)
 #endif
 #if (CM_P37_P70_KEEP9 >> 27) & 1
-WRAP(r75146)
+WRAP(r75143)
 #endif
 #if (CM_P37_P70_KEEP9 >> 28) & 1
-WRAP(r75151)
+WRAP(r75146)
 #endif
 #if (CM_P37_P70_KEEP9 >> 29) & 1
-WRAP(r75153)
+WRAP(r75151)
 #endif
 #if (CM_P37_P70_KEEP9 >> 30) & 1
-WRAP(r75155)
+WRAP(r75153)
 #endif
 #if (CM_P37_P70_KEEP9 >> 31) & 1
-WRAP(r75156)
+WRAP(r75155)
 #endif
 #if (CM_P37_P70_KEEP9 >> 32) & 1
-WRAP(r75157)
+WRAP(r75156)
 #endif
 #if (CM_P37_P70_KEEP9 >> 33) & 1
-WRAP(r75161)
+WRAP(r75157)
 #endif
 #if (CM_P37_P70_KEEP9 >> 34) & 1
-WRAP(r75163)
+WRAP(r75161)
 #endif
 #if (CM_P37_P70_KEEP9 >> 35) & 1
-WRAP(r75165)
+WRAP(r75163)
 #endif
 #if (CM_P37_P70_KEEP9 >> 36) & 1
-WRAP(r75167)
+WRAP(r75165)
 #endif
 #if (CM_P37_P70_KEEP9 >> 37) & 1
-WRAP(r75172)
+WRAP(r75167)
 #endif
 #if (CM_P37_P70_KEEP9 >> 38) & 1
-WRAP(r75174)
+WRAP(r75172)
 #endif
 #if (CM_P37_P70_KEEP9 >> 39) & 1
-WRAP(r75177)
+WRAP(r75174)
 #endif
 #if (CM_P37_P70_KEEP9 >> 40) & 1
-WRAP(r75201)
+WRAP(r75177)
 #endif
 #if (CM_P37_P70_KEEP9 >> 41) & 1
-WRAP(r75203)
+WRAP(r75201)
 #endif
 #if (CM_P37_P70_KEEP9 >> 42) & 1
-WRAP(r75205)
+WRAP(r75203)
 #endif
 #if (CM_P37_P70_KEEP9 >> 43) & 1
-WRAP(r75207)
+WRAP(r75205)
 #endif
 #if (CM_P37_P70_KEEP9 >> 44) & 1
-WRAP(r75214)
+WRAP(r75207)
 #endif
 #if (CM_P37_P70_KEEP9 >> 45) & 1
-WRAP(r75216)
+WRAP(r75214)
 #endif
 #if (CM_P37_P70_KEEP9 >> 46) & 1
-WRAP(r75217)
+WRAP(r75216)
 #endif
 #if (CM_P37_P70_KEEP9 >> 47) & 1
-WRAP(r75220)
+WRAP(r75217)
 #endif
 #if (CM_P37_P70_KEEP9 >> 48) & 1
-WRAP(r75225)
+WRAP(r75220)
 #endif
 #if (CM_P37_P70_KEEP9 >> 49) & 1
-WRAP(r75226)
+WRAP(r75225)
 #endif
 #if (CM_P37_P70_KEEP9 >> 50) & 1
-WRAP(r75227)
+WRAP(r75226)
 #endif
 #if (CM_P37_P70_KEEP9 >> 51) & 1
-WRAP(r75230)
+WRAP(r75227)
 #endif
 #if (CM_P37_P70_KEEP9 >> 52) & 1
-WRAP(r75241)
+WRAP(r75230)
 #endif
 #if (CM_P37_P70_KEEP9 >> 53) & 1
-WRAP(r75242)
+WRAP(r75241)
 #endif
 #if (CM_P37_P70_KEEP9 >> 54) & 1
+WRAP(r75242)
+#endif
+#if (CM_P37_P70_KEEP9 >> 55) & 1
 WRAP(r75243)
 #endif
 /* Each table ends with a sentinel the count leaves out. */
@@ -11538,133 +11813,133 @@ static const agc_routine_entry interpretive_entries[]={
 #if (CM_P37_P70_KEEP8 >> 42) & 1
  {31237,r75005_abi},
 #endif
-#if (CM_P37_P70_KEEP8 >> 53) & 1
+#if (CM_P37_P70_KEEP8 >> 54) & 1
  {31254,r75026_abi},
 #endif
-#if (CM_P37_P70_KEEP8 >> 54) & 1
+#if (CM_P37_P70_KEEP8 >> 55) & 1
  {31256,r75030_abi},
 #endif
-#if (CM_P37_P70_KEEP8 >> 55) & 1
+#if (CM_P37_P70_KEEP8 >> 56) & 1
  {31258,r75032_abi},
 #endif
-#if (CM_P37_P70_KEEP8 >> 59) & 1
+#if (CM_P37_P70_KEEP9 >> 0) & 1
  {31267,r75043_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 0) & 1
+#if (CM_P37_P70_KEEP9 >> 1) & 1
  {31270,r75046_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 1) & 1
+#if (CM_P37_P70_KEEP9 >> 2) & 1
  {31273,r75051_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 2) & 1
+#if (CM_P37_P70_KEEP9 >> 3) & 1
  {31276,r75054_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 3) & 1
+#if (CM_P37_P70_KEEP9 >> 4) & 1
  {31279,r75057_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 4) & 1
+#if (CM_P37_P70_KEEP9 >> 5) & 1
  {31283,r75063_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 5) & 1
+#if (CM_P37_P70_KEEP9 >> 6) & 1
  {31284,r75064_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 6) & 1
+#if (CM_P37_P70_KEEP9 >> 7) & 1
  {31285,r75065_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 7) & 1
+#if (CM_P37_P70_KEEP9 >> 8) & 1
  {31288,r75070_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 8) & 1
+#if (CM_P37_P70_KEEP9 >> 9) & 1
  {31290,r75072_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 11) & 1
+#if (CM_P37_P70_KEEP9 >> 12) & 1
  {31300,r75104_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 12) & 1
+#if (CM_P37_P70_KEEP9 >> 13) & 1
  {31302,r75106_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 13) & 1
+#if (CM_P37_P70_KEEP9 >> 14) & 1
  {31303,r75107_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 14) & 1
+#if (CM_P37_P70_KEEP9 >> 15) & 1
  {31306,r75112_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 15) & 1
+#if (CM_P37_P70_KEEP9 >> 16) & 1
  {31308,r75114_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 16) & 1
+#if (CM_P37_P70_KEEP9 >> 17) & 1
  {31309,r75115_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 20) & 1
+#if (CM_P37_P70_KEEP9 >> 21) & 1
  {31317,r75125_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 21) & 1
+#if (CM_P37_P70_KEEP9 >> 22) & 1
  {31319,r75127_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 22) & 1
+#if (CM_P37_P70_KEEP9 >> 23) & 1
  {31321,r75131_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 23) & 1
+#if (CM_P37_P70_KEEP9 >> 24) & 1
  {31324,r75134_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 24) & 1
+#if (CM_P37_P70_KEEP9 >> 25) & 1
  {31327,r75137_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 25) & 1
+#if (CM_P37_P70_KEEP9 >> 26) & 1
  {31328,r75140_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 26) & 1
+#if (CM_P37_P70_KEEP9 >> 27) & 1
  {31331,r75143_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 27) & 1
+#if (CM_P37_P70_KEEP9 >> 28) & 1
  {31334,r75146_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 28) & 1
+#if (CM_P37_P70_KEEP9 >> 29) & 1
  {31337,r75151_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 29) & 1
+#if (CM_P37_P70_KEEP9 >> 30) & 1
  {31339,r75153_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 30) & 1
+#if (CM_P37_P70_KEEP9 >> 31) & 1
  {31341,r75155_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 31) & 1
+#if (CM_P37_P70_KEEP9 >> 32) & 1
  {31342,r75156_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 32) & 1
+#if (CM_P37_P70_KEEP9 >> 33) & 1
  {31343,r75157_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 33) & 1
+#if (CM_P37_P70_KEEP9 >> 34) & 1
  {31345,r75161_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 34) & 1
+#if (CM_P37_P70_KEEP9 >> 35) & 1
  {31347,r75163_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 35) & 1
+#if (CM_P37_P70_KEEP9 >> 36) & 1
  {31349,r75165_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 36) & 1
+#if (CM_P37_P70_KEEP9 >> 37) & 1
  {31351,r75167_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 37) & 1
+#if (CM_P37_P70_KEEP9 >> 38) & 1
  {31354,r75172_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 38) & 1
+#if (CM_P37_P70_KEEP9 >> 39) & 1
  {31356,r75174_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 39) & 1
+#if (CM_P37_P70_KEEP9 >> 40) & 1
  {31359,r75177_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 40) & 1
+#if (CM_P37_P70_KEEP9 >> 41) & 1
  {31361,r75201_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 41) & 1
+#if (CM_P37_P70_KEEP9 >> 42) & 1
  {31363,r75203_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 42) & 1
+#if (CM_P37_P70_KEEP9 >> 43) & 1
  {31365,r75205_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 43) & 1
+#if (CM_P37_P70_KEEP9 >> 44) & 1
  {31367,r75207_abi},
 #endif
  {0xffffu,0}
@@ -11744,72 +12019,75 @@ static const agc_routine_entry basic_entries[]={
  {31246,r75016_abi},
 #endif
 #if (CM_P37_P70_KEEP8 >> 49) & 1
- {31249,r75021_abi},
+ {31247,r75017_abi},
 #endif
 #if (CM_P37_P70_KEEP8 >> 50) & 1
- {31250,r75022_abi},
+ {31249,r75021_abi},
 #endif
 #if (CM_P37_P70_KEEP8 >> 51) & 1
- {31252,r75024_abi},
+ {31250,r75022_abi},
 #endif
 #if (CM_P37_P70_KEEP8 >> 52) & 1
+ {31252,r75024_abi},
+#endif
+#if (CM_P37_P70_KEEP8 >> 53) & 1
  {31253,r75025_abi},
 #endif
-#if (CM_P37_P70_KEEP8 >> 56) & 1
+#if (CM_P37_P70_KEEP8 >> 57) & 1
  {31259,r75033_abi},
 #endif
-#if (CM_P37_P70_KEEP8 >> 57) & 1
+#if (CM_P37_P70_KEEP8 >> 58) & 1
  {31265,r75041_abi},
 #endif
-#if (CM_P37_P70_KEEP8 >> 58) & 1
+#if (CM_P37_P70_KEEP8 >> 59) & 1
  {31266,r75042_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 9) & 1
+#if (CM_P37_P70_KEEP9 >> 10) & 1
  {31291,r75073_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 10) & 1
+#if (CM_P37_P70_KEEP9 >> 11) & 1
  {31299,r75103_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 17) & 1
+#if (CM_P37_P70_KEEP9 >> 18) & 1
  {31310,r75116_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 18) & 1
+#if (CM_P37_P70_KEEP9 >> 19) & 1
  {31312,r75120_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 19) & 1
+#if (CM_P37_P70_KEEP9 >> 20) & 1
  {31313,r75121_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 44) & 1
+#if (CM_P37_P70_KEEP9 >> 45) & 1
  {31372,r75214_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 45) & 1
+#if (CM_P37_P70_KEEP9 >> 46) & 1
  {31374,r75216_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 46) & 1
+#if (CM_P37_P70_KEEP9 >> 47) & 1
  {31375,r75217_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 47) & 1
+#if (CM_P37_P70_KEEP9 >> 48) & 1
  {31376,r75220_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 48) & 1
+#if (CM_P37_P70_KEEP9 >> 49) & 1
  {31381,r75225_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 49) & 1
+#if (CM_P37_P70_KEEP9 >> 50) & 1
  {31382,r75226_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 50) & 1
+#if (CM_P37_P70_KEEP9 >> 51) & 1
  {31383,r75227_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 51) & 1
+#if (CM_P37_P70_KEEP9 >> 52) & 1
  {31384,r75230_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 52) & 1
+#if (CM_P37_P70_KEEP9 >> 53) & 1
  {31393,r75241_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 53) & 1
+#if (CM_P37_P70_KEEP9 >> 54) & 1
  {31394,r75242_abi},
 #endif
-#if (CM_P37_P70_KEEP9 >> 54) & 1
+#if (CM_P37_P70_KEEP9 >> 55) & 1
  {31395,r75243_abi},
 #endif
  {0xffffu,0}
@@ -12345,6 +12623,7 @@ const cm_p37_p70_point cm_p37_p70_points[CM_P37_P70_POINTS]={
  {31243,0},
  {31244,0},
  {31246,0},
+ {31247,0},
  {31249,0},
  {31250,0},
  {31252,0},

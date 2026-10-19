@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-acceptance-memory",
+  "release": "evidence-lm-acceptance-memory",
+  "files": {
+    "lm-landing-ascent-nassp-128000-replay.json": {
+      "sha256": "94f740fd9042b076eef655f9b3d4a7f5bd38ed4fc8d21f31213855d906667ed5",
+      "bytes": 147055,
+      "store": "tree"
+    },
+    "lm-landing-ascent-nassp-140000-replay.json": {
+      "sha256": "168330695c2f3964711741b098d86aef1270a5811b58ab2c15156b617bee05e5",
+      "bytes": 99868,
+      "store": "tree"
+    },
+    "lm-p63-descent-thrust-20010-replay.json": {
+      "sha256": "f7cf92b75cce24ae4916530e0040139c2154b2b5aa1502348926991a032a55f3",
+      "bytes": 17430,
+      "store": "tree"
+    },
+    "lm-uplink-reject-1900-replay.json": {
+      "sha256": "f92f4ee58f9aa1b6943cdf91d496de16e8e71883deff734fa022d498441abb83",
+      "bytes": 39998,
+      "store": "tree"
+    }
+  }
+}

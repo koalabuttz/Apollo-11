@@ -23,7 +23,8 @@ not on real hardware yet.
 make flight-disk          # builds the flight store first (make flight-store)
 ```
 
-This writes `build/flight-disk/lm-1.d81` and `cm-1.d81`. Write each
+This writes `build/flight-disk/lm-1.d81` and `cm-1.d81` (and `test-1.d81`, the
+[hardware check](#check-on-real-hardware)). Write each
 image to a disk with any tool that writes 1581 images. Disk 1 of each set
 also holds the loader, `APOLLO LM` or `APOLLO CM`. For a 1541,
 `tools/flight_disk.py --drive 1541` writes `lm-1.d64` to `lm-5.d64` and
@@ -175,6 +176,14 @@ them on VICE's window instead, so they go through the C64's own keyboard
 scan as typed keys would: `R`, then `V37E00E` on the LM clears RESTART and
 PROG and reaches P00, and `V35E` on the CM runs the lights test.
 
+CI boots both mission disks this way in `make flight-disk-vice`
+(`tools/flight_disk.py --vice --p00`): after the boot it types `R` and
+`V37E00E` into the key queue and fails unless the AGC is in P00 (MODREG 0,
+`00` under PROG on the screen). Each run writes
+`build/flight-disk/boot-lm.json` and `boot-cm.json`: the commit, the
+SHA-256 of the disks, the loader and resident PRGs, the REU store and the
+VICE log, and the screen's text. CI keeps them with its logs.
+
 The DSKY costs the flight resident no memory and the AGC no time: its code
 runs from $0200-$03FF and its tables sit in the screen's last eight rows,
 in the background colour; it draws from the AGC's idle loop, only what
@@ -186,9 +195,82 @@ RSET turns RESTART off, as the AGC's hardware does. If the AGC reaches a
 point the C64 port does not cover yet, it stops there and the display stays
 as it was.
 
+## Check on real hardware
+
+The test disk checks a real C64 and REU against VICE in about 7 minutes,
+with one screen to photograph at the end. `make flight-disk` writes it
+as `build/flight-disk/test-1.d81` beside the mission disks. Without a
+build, take the images CI booted: each port-ci run that runs
+`flight-disk-vice` keeps `test-1.d81`, `lm-1.d81` and `cm-1.d81` in its
+`c64…-logs` artifact (on the run's GitHub Actions page), once they pass
+in VICE. With the REU in and the 1581 on device 8:
+
+```text
+LOAD"APOLLO TEST",8
+RUN
+```
+
+It loads like the LM disk (the same 1.9 MB store, about 4.4 minutes on a
+1581) and verifies the store. Then, at the stock 1 MHz:
+
+1. it measures the video standard (from the raster line count), the
+   REU's size (up to "2048 KB OR MORE"), and the REU's DMA speed both
+   ways (32 KB each way);
+2. it runs one fixed piece of flight: the LM's P63 powered descent for
+   200 cs (2 s of AGC time) from a snapshot of the host run at 17,513 cs,
+   with the host run's inputs (engine, PIPAs, keys) fed at the same AGC
+   times;
+3. it prints the C64's time for that window, its speed against real
+   time, and a CRC of the end state (the erasable words, timers and
+   centiseconds that `tools/flight_scenario_vice.py --replay` compares).
+
+The screen in VICE (`tools/flight_disk.py --missions test --vice`; CI
+runs it in `make flight-disk-vice`):
+
+```text
+APOLLO 11 ON THE C64: HARDWARE CHECK
+
+VIDEO: PAL, 985248 HZ
+REU: 2048 KB OR MORE
+REU DMA, BYTES/S: C64>REU 923472
+                 REU>C64 928145
+
+RUNNING LM P63 FROM 17513 CS...
+
+AGC TIME: 200 CS IN 1215 STEPS
+C64 TIME: 43.33 S, 21.66 X REAL TIME
+
+END STATE CRC 601B (VICE 601B)
+HOST RUN'S CRC 6EF1 (NOT YET THE SAME)
+
+PASS: THIS C64 COMPUTES WHAT VICE DOES
+```
+
+**PASS** means this C64 ended the window in exactly the state VICE's run of
+the same program did: the CRC VICE gave is built into the disk when it is
+made. FAIL means it differs, and is worth a photograph. The AGC's timing
+does not depend on the C64's speed (the work clock), so a faster or slower
+machine still ends in the same state; only "C64 time" and "x real time"
+change. The times are counted in C64 cycles by the CIA timers, divided by
+the PAL or NTSC clock.
+
+The host run's CRC is shown for reference. It matches once this window's
+C64 timing matches the host's (the LM P63 row in the shared replay
+mismatch list); until then "NOT YET THE SAME" is expected and is not a
+fault of the C64.
+
+The test disk only checks: when the report is up, the program stops there.
+Switch off or reset to load a mission disk.
+
+From a real machine, the useful numbers are the whole screen: the video
+line, the REU size and both DMA speeds, the C64 time and x real time, the
+CRC and PASS or FAIL. A photograph of the screen carries all of them.
+
 ## The C64 Ultimate (unverified)
 
-None of this has been tried on a C64 Ultimate. What would differ:
+None of this has been tried on a C64 Ultimate. The test disk above is
+the quickest first try: it shows the REU's size and DMA speed, and PASS
+or FAIL against VICE. What would differ:
 
 - Its 1581 emulation would have to run the drive's own 6502 code at the
   1581's speed for the fast loader to work, as VICE's true drive emulation

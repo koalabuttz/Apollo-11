@@ -146,6 +146,12 @@ def p51_p53_states():
     cm.update({'SXTSM+%d' % n: {'0163': [0]} for n in range(49, 53)})
     for d in (lm, cm):
         d.update({'NOTPLAN+%d' % n: {'vac+046': cat} for n in range(9, 11)})
+    # LM P57's alignment technique (OPTION2, 0-3 from V05N06): SURFDISP's
+    # CCS OPTION2 with technique 0 goes straight to P57POST +1, and
+    # P57POST's ENTER on V50N25 14 with technique 2 computes the landing
+    # site (BZF +2) (issue #658).
+    lm.update({'SURFDISP+%d' % n: {'OPTION2': [0, 0, 1, 2, 3, 'any']} for n in (0, 3, 10, 11)})
+    lm.update({'P57POST+%d' % n: {'OPTION2': [0, 1, 2, 2, 3, 'any']} for n in (0, 1, 6, 7, 8, 9)})
     neg = lambda v: ~v & 0o77777
     loop = [(18, 6), (12, 4), (6, 2)]
     joint = {}
@@ -199,6 +205,29 @@ def n49_wait():
 def v67_loop():
     """V67's W-matrix loop state: X1 a pass (6 to 54), S1 6."""
     return [{'vac+46': x, 'vac+50': 6} for x in range(6, 55, 6)]
+
+
+def v67_small_w():
+    """CM V67WW's W matrix with every summed word small (high words under
+    0400 either sign, any low word), so no DAD or SQRT overflows: two sets."""
+    import random
+    rng = random.Random(658)
+    out = []
+    for _ in range(2):
+        d = {}
+        for n in list(range(36)) + list(range(54, 90)):
+            hi = rng.randrange(0o400)
+            d['W+%d' % n] = (0o77777 - hi if rng.random() < 0.5 else hi) if n % 2 == 0 else rng.getrandbits(15)
+        out.append(d)
+    return out
+
+
+def v67_small_after():
+    """v67_small_w's W matrices with OVFIND clear and the running sums
+    (WWPOS, WWVEL) and MPAC small: CM V67WW's state at any of its points."""
+    sums = {'OVFIND': 0, 'WWPOS': 0o1234, 'WWPOS+1': 0o4567, 'WWVEL': 0o321, 'WWVEL+1': 0o7654,
+            '0154': 0o1234, '0155': 0o4567}
+    return [dict(w, **sums) for w in v67_small_w()]
 
 
 def v67_nochange():
@@ -386,6 +415,10 @@ LLGE_CONVERGE = [{'0154': mh, '0155': ml, '0124': ch, '0125': cl}
                                         (0, 0o12, 0, 0o12), (0, 3, 0o77777, 5), (0, 0, 0o77777, 2),
                                         (0, 0o20000, 1, 0o57777))]
 LLGE_AXIS_MPAC = _llge_axis('MPAC', (0, 3, 5))
+# lm-p34-p35's N81 Delta V words (#661): +0, small, mixed signs and
+# 37777/40000, as GDT/2 and DELVLVC hold them when the crew PROs N81 unchanged.
+P3435_DV = [(0, 0, 0, 0, 0, 0), (0o12345, 0o54321, 1, 0o77776, 0o37777, 0o40000),
+            (0o77777, 0, 0o200, 0o77577, 0o1000, 0o76777)]
 LLGE_AXIS_LAND = _llge_axis('LAND', (0, 2, 4))
 
 
@@ -545,6 +578,9 @@ SPECS = {
     # interpretive) as routines at its original addresses.
     'lm-ascent': {
         'missions': ('lm',),
+        # ENGOFF's time to cutoff (MPAC +1 after TPAGREE) of exactly 0 cs:
+        # CCS MPAC +1's +0 arm (ENGOFFDT one bit).
+        'states': {'14,2364': {'MPAC+1': [0, 0, 'any']}},
         'file': {'lm': 'ASCENT_GUIDANCE.agc'},
         'base': {'lm': 'lm_ascent'},
         'symbol': {'lm': 'lm_ascent'},
@@ -1578,6 +1614,13 @@ SPECS = {
         'cell_pairs': [('E7,1724', 'E7,1725',
                         [(h, l) for h in range(1, 0o40000, 0o1001) for l in range(0, 0o100000, 0o1001)]
                         + [(h, l) for h in (0, 0o77777) for l in range(1, 0o40000, 0o401)])],
+        # (#659) A coast pass with no sensed acceleration: DELV +-0 (no PIPA
+        # counts) where GETUNITV loads it, the zero |DELV| at the DMP, and
+        # the zero product at SL1 BZE, so the pass takes SETMIND.
+        'joint_states': {
+            'GETUNITV+13': [{}] * 2 + [{f'DELV+{i}': v for i in range(6)} for v in (0, 0o77777)],
+            'GETUNITV+15': [{}] * 2 + [{f'MPAC+{i}': v for i in range(6)} for v in (0, 0o77777)],
+            'GETUNITV+17': [{}] * 2 + [{'MPAC': h, 'MPAC+1': l} for h, l in ((0, 0), (0o77777, 0o77777))]},
         'target': 'tests/cm_reentry_target.c',
         'freeze_stride': 128,
         'c64_flags': ['-fno-inline', '-DAGC_TRANSFER_DANZIG_MARKER'],
@@ -1819,6 +1862,33 @@ SPECS = {
                    # INTWAKUQ holds INTWAKEU's caller's Q (QXCH), a fixed
                    # return (TC INTWAKEU at 27,3703) that TC INTWAKUQ runs.
                    '27,2745': {'0330': [0o3704]}},
+        # (#659) Flight states the flowed cases never reach, each as one
+        # joint choice beside the flowed state ('flow'):
+        # TESTLOOP's DSU* RME,2 with RC under the 800 km limit (an Earth
+        # parking orbit, RCV about 6.6E6 m at B-29: MIDFLAG stays clear);
+        # P00HCHK with DT/2 under DT/2MIN (TET at TDEC, the normal end) or
+        # MODREG 0 (P00 integration) and its 4 DT test negative (INTEXIT);
+        # MID2 with TDEC - TET under 3 cs (MIDTOAV2 caught up); INTWAKEU with
+        # UPSVFLAG 0 (not a state-vector uplink) or +-2 (lunar sphere).
+        'flow_range_states': [
+            ('13,3315', '13,3316', {'*': ['flow', {'1534': 0o311, '1535': 0, '1536': 0, '1537': 0, '1540': 0, '1541': 0},
+                                         {'1534': 0, '1535': 0, '1536': 0o77466, '1537': 0o77777, '1540': 0o100, '1541': 0}]}),
+            ('13,3321', '13,3322', {'*': ['flow', {'154': 0o311, '155': 0}, {'154': 0o200, '155': 0o1234}]}),
+            ('13,3377', '13,3400', {'*': ['flow', {'2313': 0, '2314': 1}, {'2313': 0o77777, '2314': 0o77775},
+                                         {'2313': 0, '2314': 0o4000, '1011': 0}, {'2313': 0o77777, '2314': 0o73777, '1011': 0}]}),
+            ('13,3401', '13,3402', {'*': ['flow', {'154': 0, '155': 1}, {'154': 0, '155': 0}]}),
+            ('13,3404', '13,3405', {'*': ['flow', {'1011': 0}, {'1011': 0}]}),
+            ('13,3433', '13,3434', {'*': ['flow', {'154': 0o77777, '155': 0o77760}, {'154': 0o77776, '155': 0}]}),
+            ('13,3652', '13,3653', {'*': ['flow', {'1100': 0o100, '1101': 0o1234, '1516': 0o100, '1517': 0o1234},
+                                         {'1100': 0o100, '1101': 0o1235, '1516': 0o100, '1517': 0o1233}]}),
+            ('13,3657', '13,3660', {'*': ['flow', {'154': 0o77777, '155': 0o77776}, {'154': 0o77777, '155': 0o77777}]}),
+            ('27,2675', '27,2676', {'*': ['flow', {'1501': 0}, {'1501': 0o77777}, {'1501': 2}, {'1501': 0o77775}]}),
+            ('27,2706', '27,2707', {'*': ['flow', {'1501': 2}, {'1501': 0o77775}]}),
+            ('27,2710', '27,2711', {'*': ['flow', {'154': 2, '155': 0}, {'154': 2, '155': 0}]})],
+        'joint_states': dict({lab: [{}] * 4 + [{'1501': v} for v in (0, 0o77777, 2, 0o77775)]
+                              for lab in ('INTWAKEU', 'INTWAKEU+4')},
+                             **{'INTWAKEU+13': [{}, {'1501': 2}, {'1501': 0o77775}],
+                                'INTWAKEU+15': [{}, {'154': 2, '155': 0}]}),
         # CCS DIFEQCNT's negative exits (the MOVE* loops count down to +0)
         # land on interpretive words, never run as basic code.
         # INTSTALL's EXIT and GOBAC's RVQ run in NOVAC jobs too (V37's fresh
@@ -1853,6 +1923,10 @@ SPECS = {
         'base': {'cm': 'cm_stable_orbit'},
         'symbol': {'cm': 'cm_stable_orbit'},
         'basic': 'full',
+        # P39/P79B's RTB LOADTIME has DAD KT on its right: LOADTIME's TC
+        # DANZIG comes back with DAD in EDOP and LOC at its operand word
+        # (04,3204), a routine of its own.
+        'pending_danzig': True,
         'entries': ['@external'],
         # DSPLY81 (in the file) goes on in interpretive code after its
         # displays; TC DSPLY81 never returns.
@@ -1872,7 +1946,7 @@ SPECS = {
         'max_steps': 1000,
         'target': 'tests/cm_stable_orbit_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Lane G: Comanche055 CONIC_SUBROUTINES, the whole file as routines at
     # its original addresses.
@@ -1934,7 +2008,12 @@ SPECS = {
         'joint_states': {'GETX': [{'CSTH': c, 'CSTH+1': cl, 'SNTH': sn, 'SNTH+1': sl}
                                   for sn, c in ((0o20000, 0o17400), (0o10000, 0o17600), (0o30000, 0o17200))
                                   for sl, cl in ((0, 0), (0o200, 0), (0, 0o10))]
-                                 + [{}] * 9},
+                                 + [{}] * 9,
+                         # LAMBERT's SLOAD BZE VTARGTAG (12,3544): a quarter
+                         # of its cases with VTARGTAG +0, so the BZE to
+                         # TARGETV is taken as for a caller that asks for
+                         # the target velocity.
+                         'TARGETV-5': [{}] * 3 + [{'VTARGTAG': 0}]},
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
         # drops every case whose run reaches at least its routines.
         'c64_drop_superset': True,
@@ -1992,14 +2071,19 @@ SPECS = {
                   0o3074: CSMMASS,
                   # NBRCYCLS (E6,1742), S40.13's cycle count, short of
                   # 037777: the count +1 never overflows into the OCT after
-                  # TC PHASCHNG.
-                  0o3342: list(range(0, 0o37777, 0o111))},
+                  # TC PHASCHNG. Or -1 (in about an eighth of the cases),
+                  # as P40SXTY and every S40.9 pass leave it: UPDATEVG's
+                  # SLOAD BMN (24,3110) to SETUP.9.
+                  0o3342: list(range(0, 0o37777, 0o111)) + [0o77776] * 64},
         'fixed_tables': {'BIT11': (-1, 1)},
         # P41/P40 returns to the call +1 (P41) or, INCR Q, +2 (P40).
         'call_skips': {'P41/P40': 1},
         # OUTPUT's return after FIXDELAY: TEMPR60 (1146) holds the Q its
         # QXCH saved, one of GIMDTEST's three TC OUTPUT returns.
-        'states': {'20,2327': {'1146': [0o2303, 0o2305, 0o2307]}},
+        # CLOKTASK's return from WAITLIST (24,3301) in P41 with NVWORD1 =
+        # V06N85B (BZF SETUPDYN).
+        'states': {'20,2327': {'1146': [0o2303, 0o2305, 0o2307]},
+                   '24,3301': {'NVWORD1': [0o1525, 0o1525, 'any']}},
         'index_targets': {'42,3616': 3},
         # PRECHECK's CCS PHASE5 with PHASE5 negative runs CADR PREREAD as MASK.
         'execute_data': ('24,2573',),
@@ -2471,7 +2555,33 @@ SPECS = {
             dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': adb},
                  **{f'ADOT+{i}': (2, 0)[i % 2] for i in range(6)},
                  **{f'ERRORX+{i}': 0o77777 - err for i in range(3)})
-            for adb, err in ((46, 70), (455, 480))]},
+            for adb, err in ((46, 70), (455, 480))] + [
+            # (Certificate fixes, the exact-zero arms the arm check found.)
+            # EDOTVEL exactly WL+H (18, 3350) or WL-H (10, 15117), with
+            # AERRVEL -600: SIGNCK2's and SIGNCK3's low word -0, to NJ22 and
+            # NJ23. A ones' complement sum is +0 only when both addends
+            # are, and -WLH, -WLMH and T5TEMP never are, so the CCS +0 arms
+            # stay impossible.
+            dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': adb},
+                 **{f'ADOT+{i}': edot[i % 2] for i in range(6)},
+                 **{f'ERRORX+{i}': 0o77777 - 600 for i in range(3)})
+            for adb in (46, 455) for edot in ((18, 3350), (10, 15117), (0, 0))] + [
+            # NJ22's sum -0 (to J23): EDOTVEL (14, 0) / SLOPE is 58, so
+            # AERRVEL = -(58 + ADB + 4), with a neighbour either side.
+            # NJ23's sum -0 (to J22): EDOTVEL (2, 0) keeps NJ22's sum
+            # negative and AERRVEL = -(ADB + 4 + 45). EDOT (0, 0) above
+            # takes J22's SIGNCK5 +0 arm to JN.
+            dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': adb},
+                 **{f'ADOT+{i}': edot[i % 2] for i in range(6)},
+                 **{f'ERRORX+{i}': 0o77777 - err for i in range(3)})
+            for adb in (46, 455)
+            for edot, err in [((14, 0), 58 + adb + 4 + d) for d in (-1, 0, 1)]
+            + [((2, 0), adb + 4 + 45)]] + [
+            # J21's SIGNCK4 >0 arm (to JP): EDOT (+0, 500) with AERRVEL 600,
+            # past ADB + 4 + 45, so J6 and J7 go on to J21.
+            dict({'HOLDFLAG': 0, 'SLOPE': 0o7534, 'ADB': 46},
+                 **{f'ADOT+{i}': (0, 500)[i % 2] for i in range(6)},
+                 **{f'ERRORX+{i}': 600 for i in range(3)})]},
         'target': 'tests/cm_auto_man_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
@@ -2517,9 +2627,10 @@ SPECS = {
         # indices 0, 4 and 11 (REPLACER, REPLACEP, REPLACEY): INDEX them
         # before TC REPLACER.
         'index_cells': {0o1460: [0, 4, 11], 0o1462: [0, 4, 11], 0o1464: [0, 4, 11]},
-        # XTRANS (E6,1631) as P40's ullage setup leaves it: +0, +1 or -1.
+        # XTRANS (E6,1631) as P40's ullage setup leaves it: +0, +1, -1, or
+        # -0 when DAPDATR1 selects both quads (1 + -1: TS then ADS).
         'cells': {0o3060: [0, 4, 11], 0o3062: [0, 4, 11], 0o3064: [0, 4, 11],
-                  0o3231: [0, 1, 0o77776]},
+                  0o3231: [0, 1, 0o77776, 0o77777]},
         # Pitch and yaw on-times (TAU1/TAU2, units of 0.625 ms) the RCS DAP's
         # phase plane hands JETSLECT: a minimum impulse below 14 ms (23),
         # between 14 ms and 0.1 s (160) for one jet or two (NJET +1 or
@@ -2601,6 +2712,21 @@ SPECS = {
         # DOBRATE?: INDEX A (CS CM/FLAGS MASK THREE), TC +1 reaches the
         # next four words.
         'index_targets': {'15,2471': 3},
+        # (#659) Roll phase-plane points near the origin, as entry steering
+        # leaves them close to the target: after ATTRATES's SPSIN (15,2724),
+        # past 0.05 g (CMDAPMOD -1) with JETAG set so the pass calls CM/RCS,
+        # roll at 0, shortest path, cos alpha 1, and the roll command and
+        # rate (PREL, ROLLC) that reach each arm: the rate past the desired
+        # drift (OVRLINE's CCS Q > 0, drift at V), the X intercept exactly at
+        # XS (VDT/180 +0 at GETOFF, BZF TOFFOVFL) and just past it (TON2
+        # under 2 cs, TON2TEST's BZMF TIMETST5).
+        'joint_states': {'ATTRATES+31': [{}] * 14 + [
+            {'ROLL/180': 0, 'PHIDOT': 0, 'ROLLC': rc, 'PREL': pr, 'CALFA': 0o37777, 'JETAG': 1, 'CM/FLAGS': 0o14}
+            for pr, rc in ((0o24, 0o100), (0o24, 0o104), (0o24, 0o110),
+                           (0o74, 0o22), (0o106, 0o71), (0o120, 0o146), (0o77657, 0o77631), (0o77671, 0o77706),
+                           (0o106, 0o45), (0o106, 0o63), (0o120, 0o122), (0o120, 0o134),
+                           # a far roll command at speed: XD/360 overflows at MAXVTEST's TS
+                           (0o400, 0o37000), (0o77377, 0o40777))]},
         'target': 'tests/cm_entry_dap_target.c',
         'freeze_stride': 32,
         'c64_flags': ['-fno-inline'],
@@ -2647,7 +2773,11 @@ SPECS = {
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
         # TOBALLC's CCS A (LM 26,2164) takes G+N,AUTO's A: +0 (G+N and auto),
         # BIT10 (not G+N) or BIT14 (not auto), never -0 (auditor, salted run).
-        'states': {'lm': {'26,2164': {'0': [0, 0o1000, 0o20000]}}, 'cm': {}},
+        # The flashing V06N18's TERMINATE return (TC R61TEST: LM 26,2143,
+        # CM 27,2016) in P00 (MODREG +0) as well, where R60 runs under
+        # V49/V89: BZF ENDMANU1.
+        'states': {'lm': {'26,2164': {'0': [0, 0o1000, 0o20000]}, '26,2143': {'MODREG': [0, 0, 'any']}},
+                   'cm': {'27,2016': {'MODREG': [0, 0, 'any']}}},
         # G+N,AUTO and ISITAUTO (READ CHAN30/31) and TOBALLC (RXOR CHAN31)
         # read latched input channels.
         'channel_inputs': True,
@@ -2755,6 +2885,14 @@ SPECS = {
         'states': {'cm': dict({'LOWMEMRY': {'vac+046': list(range(6, 223, 6))},
                                # R61's INDEX MPAC after CALL CRS61.1: 0 or 1
                                '37,2573': {'0154': [0, 1]}, '37,2574': {'0154': [0, 1]},
+                               # R21CSMA after a PROCEED with no mark: MRKBUF1 keeps
+                               # R23CSM's -1, so BZF R21END (issue #658). The cases
+                               # reach it through the two TCF R21CSMA.
+                               '37,2511': {'MRKBUF1': [0o77776, 0o77776, 'any']},
+                               '37,2535': {'MRKBUF1': [0o77776, 0o77776, 'any']},
+                               # V67's R3 (WWOPT, RTHETA) as the crew loads it: 1
+                               # (rendezvous), 2 (orbit: BHIZ V67WORB) or 3 (midcourse)
+                               'V6N99INP': {'WWOPT': [1, 2, 2, 3, 'any']},
                                # RENDISP7 waits on TEMPOR1: the display job
                                # sets it -1 or +1 (+0, the waiting state, in
                                # joint_states).
@@ -2770,7 +2908,13 @@ SPECS = {
         # loop-back): the flowed cases there come from runs whose display job
         # has answered, so a third of them get TEMPOR1 +0 with a job waiting
         # (review #543: the BZE-taken arc).
-        'flow_range_states': {'cm': [('34,3302', '34,3303', {'*': ['flow', 'flow', {'TEMPOR1': 0, '067': 1}]})]},
+        # V67WW with an ordinary W matrix (issue #658): its points are CHANG2
+        # resume LOCs, so half their flowed cases get v67_small_w's W (the
+        # 6 position and 6 velocity vectors the loop sums small), small
+        # running sums and MPAC, and OVFIND clear, so the BOV after the
+        # roots falls through to V67XXX (the flowed X1 keeps the loop's place).
+        'flow_range_states': {'cm': [('34,3302', '34,3303', {'*': ['flow', 'flow', {'TEMPOR1': 0, '067': 1}]}),
+                                     ('40,3701', '40,3740', {'*': ['flow', 'flow'] + v67_small_after()})]},
         # Flight builds skip the entry checks' erasable scan (docs/INTERP-COMPILE.md).
         'trusted_image': True,
         # Loop and mid-sequence points start from the registers the file's
@@ -3398,6 +3542,9 @@ SPECS = {
     },
     'lm-p40-p47': {
         'missions': ('lm',),
+        # 180SETUP's CCS PHASE2 with restart group 2 inactive (+0), as it is
+        # whenever no Lambert job runs: the pass starts S40.9 (CAF PRIO10).
+        'states': {'180SETUP': {'PHASE2': [0, 0, 'any']}},
         'file': {'lm': 'P40-P47.agc'},
         'base': {'lm': 'lm_p40_p47'},
         'symbol': {'lm': 'lm_p40_p47'},
@@ -3476,6 +3623,9 @@ SPECS = {
         # every linked source.
         'edge_cases': True,
         'c64_rows': 'cover',
+        # The V89 axis choice as V89CALL leaves it (OPTIONX +1 = 1, Z axis,
+        # the default the crew proceeds with: BZF ALINEZ) or keyed as 2 (X).
+        'states': {'26,2063': {'OPTIONX+1': [1, 1, 2, 'any']}},
         'target': 'tests/lm_r63_target.c',
         'freeze_stride': 16,
         # V89 runs in flight: skip the entry checks' whole-image scan there.
@@ -3545,7 +3695,11 @@ SPECS = {
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
         # 8D): the DPS or the APS coefficients, eight words on.
-        'states': {lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
+        # R10,R11 (21,2006): the 2 s cycle counter (PIPCTR = PHSPRDT2) on
+        # its last pass (+0: TCF LRHTASK), as SERVICER and LANDISP count it
+        # down from 7.
+        'states': dict({lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
+                       **{'21,2006': {'PIPCTR': [0, 0, 1, 'any']}}),
         'partial': {'lm': 'R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
@@ -3809,6 +3963,11 @@ SPECS = {
         # starts) enter from outside the file.
         'entries': ['V83', 'R31CALL', 'V83CALL'],
         'externals': {'FINDVAC': 2, 'BANKCALL': 1, 'B5OFF': 0, 'ENDEXT': None},
+        # R31CALL, DSPDELAY and the DISPN5X display loop run in the NOVAC
+        # job the extended verb starts in (FIXLOC 0110, NOVAC's LOC(MPAC+6)
+        # - LOC(QPRET)); only V83CALL's FINDVAC job has a VAC area. None of
+        # that basic code indexes through FIXLOC, so it takes any FIXLOC.
+        'any_fixloc': True,
         # V83's job: a DANZIG that finds a job waiting stops at CHANG2, and
         # the word after it is where the job resumes.
         'edge_cases': True,
@@ -3848,9 +4007,17 @@ SPECS = {
         # The resume LOCs after BOTHSHIP's VLOAD run the same DLOAD*s with X2
         # as BOTHSHIP left it.
         # STORHAPO's DSU and STORE MPAC +4 run in DP mode (MODE +0) after its STODL.
-        'states': {**{k: {'vac+047': [0, 2]} for k in ('BOTHSHIP', 'THISSHIP+3', 'BOTHSHIP+2', 'BOTHSHIP+4',
-                                                       'BOTHSHIP+5', 'BOTHSHIP+7', 'BOTHSHIP+8')},
-                   'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]}},
+        # V82GOFF1's CS OPTIONX +1 after EXIT with the vehicle choice V82
+        # loads by default (1, this vehicle: BZF THISSHIP) or keyed other.
+        # CM: CA MODREG after BOTHPAD's and SPLRET's EXITs in P00 (MODREG
+        # +0: BZF CANDEL, then BZF SPLRET1), as crews ran V82 there.
+        'states': {m: {**{k: {'vac+047': [0, 2]} for k in ('BOTHSHIP', 'THISSHIP+3', 'BOTHSHIP+2', 'BOTHSHIP+4',
+                                                         'BOTHSHIP+5', 'BOTHSHIP+7', 'BOTHSHIP+8')},
+                       'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]},
+                       'V82GOFF1+6': {'OPTIONX+1': [1, 1, 2, 'any']},
+                       **({'BOTHPAD+3': {'MODREG': [0, 0, 'any']}, 'SPLRET+1': {'MODREG': [0, 0, 'any']}}
+                          if m == 'cm' else {})}
+                   for m in ('lm', 'cm')},
         # V82CALL's TC INTPRET, BON and EXIT and V82GOFF's option display run
         # in the NOVAC job V82 starts in (FIXLOC 0110, NOVAC's LOC(MPAC+6) -
         # LOC(QPRET)) until V82GOFLP's FINDVAC; TICKTEST runs as a
@@ -3894,7 +4061,11 @@ SPECS = {
         'ebank': 7,
         'all_states': {'03745': [0o77765, 0o77775], '03746': [0, 2]},
         # VNCOMP17's TC QSAVED (01766 under E7): one of its callers' returns.
+        # GOFLASH's third return (VNCOMP17 +8, CS MPAC) with the verb the
+        # crew keyed: V32 (MPAC = BIT6, recycle with a new TPI time) goes
+        # to P17.1.
         'states': {'VNCOMP17+7': {'03766': [0o3176, 0o3226, 0o3262]},
+                   'VNCOMP17+8': {'0154': [0o40, 0o40, 'any']},
                    # TRANSANG's resume LOCs after LXA,1 LXA,2 (the XRS above), with
                    # the push list at 00D (02D after its first PDVL) from SETPD 0.
                    **{'TRANSANG+%d' % n: {'vac+046': [0o77765, 0o77775], 'vac+047': [0, 2],
@@ -4147,6 +4318,10 @@ SPECS = {
                    'LOOPSET': {'vac+046': [0, 2, 4, 6, 8, 10], 'vac+050': [2]},
                    'K2CALC': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
                    'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]}},
+        # AUGEKUGL's last DSU BMN V(400) (32,2123, a CHANG2 resume) with an
+        # entry speed of 28,000-28,400 ft/s (MPAC = V - 28K, below V(400)'s
+        # 0156): BMN LOOPSET.
+        'resume_states': {'32,2123': {'0154': [0, 0o50, 0o150, 'flow']}},
         'target': 'tests/cm_p30_p37_target.c',
         'edge_cases': True,
         'resume_keys': True,
@@ -4246,13 +4421,27 @@ SPECS = {
         # sites, with TBASE5 the caller's FB and RTRN its return (E4,1767 as
         # the routine names it, so 1767 under every EB). The seven outside
         # this file (TPI_SEARCH, P32-P33_P72-P73) are the case's stop.
-        'joint_states': {lab: [dict({'01063': fb << 10}, **({'@stop': fb * 1024 + ret - 0o2000} if out else {}),
+        #
+        # Flight arms no random case reached (issue #661), each in a share
+        # of its routine's cases (the CHANG2 resumes after it flow from
+        # them): R36's crew PRO on V06N16 with no time keyed (DSPTEMX and
+        # DSPTEMX +1 still the zeros R36A put there), so BZF LREGCHK and
+        # BZF ENTTIM2 take present time; the last offset iteration
+        # (ITCTR one below NUMIT in VTARGTAG), so BHIZ INITVEL6 ends the
+        # Lambert/Encke loop; SETRAD in earth orbit (X1 -2, so X2 0 and
+        # BHIZ SETRADX keeps RPAD); and INITVEL3's X1 of 0 past the BMN
+        # (RTX1 -10, the moon, with -N's z negative).
+        'joint_states': {'R36P3+4': [{'DSPTEMX': 0, 'DSPTEMX+1': 0}, {}],
+                         'INITVEL5+13': [{'ITCTR': 0, 'VTARGTAG': 1}, {}],
+                         'SETRAD': [{'vac+046': 0o77775}, {}],
+                         'INITVEL3+15': [{'vac+046': 0o77765}, {}],
+                         **{lab: [dict({'01063': fb << 10}, **({'@stop': fb * 1024 + ret - 0o2000} if out else {}),
                                     **{'0%o' % (eb * 0o400 + 0o367): ret for eb in range(8)})
                                for fb, ret, out in ((0o35, 0o2006, 0), (0o35, 0o2072, 0), (0o35, 0o2150, 0),
                                                     (0o35, 0o2756, 0), (0o35, 0o2777, 0), (0o35, 0o3157, 1),
                                                     (0o4, 0o3341, 1), (0o4, 0o3351, 1), (0o4, 0o3416, 1),
                                                     (0o4, 0o3445, 1), (0o4, 0o3547, 1), (0o37, 0o2642, 1))]
-                         for lab in ('VNBANK-1', 'VNBANK+1')},
+                         for lab in ('VNBANK-1', 'VNBANK+1')}},
         # VNPOOH's entry: Q a return to one of its calls outside the file,
         # under that call's FB (35, 04 or 37).
         'q_callers': ['VNPOOH'],
@@ -4295,6 +4484,11 @@ SPECS = {
         'max_steps': 40000,
         # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
         'index_returns': True,
+        # Those returns land past the call: P370GOF and P37GFRB1 proceed to
+        # the call +2 (TC SPRTEX recycles to +1), P370GOFR recycles to +3
+        # and proceeds to +4 (TC RTENCKEX is +1). Keys of their own, as
+        # RTEVN's CAF V6N60RTE after the N39 display (36,3017).
+        'in_file_returns': {'P370GOF': [1], 'P37GFRB1': [1], 'P370GOFR': [2, 3]},
         # EBANK= RTEDVD: the RTE temporaries are E7 words.
         'ebank': 7,
         # NN2 (E7,1731), GAMDV's pass count, from -144 up to 0: small
@@ -4321,6 +4515,18 @@ SPECS = {
                    'V2T150+2': {'03632': [0], '03633': [0]},
                    'GAMDV35': {'vac+025': [0], 'vac+026': [0, 1]},
                    'RTE360+2': {'0154': [0], '0155': [0]}},
+        # Flight arms no random case reached (issue #661), each in half of
+        # its routine's cases (the CHANG2 resumes after it flow from them):
+        # RTE373's conic convergence, GETERAD's radius (MPAC) plus E3RTE
+        # within EPC2RTE of RCON, so BMN RTE374; PREC175's first precision
+        # pass, NN1A = 10RTE, so BZE PREC207; and the crew's RCS option on
+        # V04N06, OPTION2 = 2, so BZE P37Q. RTE375 keeps the conic
+        # iteration's first pass (NN1A = M9RTEB28, so RTE380's BZE RTE385),
+        # which those cases otherwise leave to chance.
+        'joint_states': {'RTE373+6': [{'MPAC': 0, 'MPAC+1': 0, 'RCON': 3, 'RCON+1': 0o27040}, {}],
+                         'RTE375': [{'NN1A': 0o77777, 'NN1A+1': 0o77766}, {}],
+                         'PREC175': [{'NN1A': 0, 'NN1A+1': 0o12}, {}],
+                         'P37N+8': [{'OPTION2': 2}, {}]},
         'target': 'tests/cm_p37_p70_target.c',
         'edge_cases': True,
         'resume_keys': True,
@@ -4359,8 +4565,27 @@ SPECS = {
         'includes': ['rtb_angles.h', 'rtb_modes.h'],
         'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
         'fixed_index': {'MUTABLE': [2, 10]},
+        # R36's PROCEED return (04,2665, TCF +2 to DXCH DSPTEMX): a crew PRO
+        # without keying a time leaves DSPTEMX and DSPTEMX +1 (01051-01052)
+        # as R36 preloaded them, +0, so BZF LREGCHK and BZF ENTTIM2 use the
+        # present time (LOADTIME). Two thirds +0 each, so cases also key a
+        # time in one word only.
         'states': {'INTLOOP+7': {'0154': [0], '0155': [0]},  # (BZE after its CALL: MPAC zero)
-                   'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+                   'SETMUER': {'vac+046': [0o77775, 0o77765]},
+                   '04,2665': {'01051': [0, 0, 'any'], '01052': [0, 0, 'any']}},
+        # N81's PRO return (35,3542 TC +2; 35,3544 CA EBANK7): the crew PROs
+        # without changing the Delta V, so GDT/2 (01236-01243) equals
+        # DELVLVC (E7,1433-1440), NTARGCHK's sum is +-0 and BZF +3 skips the
+        # UPFLAG NTARGFLG. After INTEGRVS (11,2200): ITCTR (E7,1616) one
+        # below NUMIT (VTARGTAG, E5,1701), so the iteration's SLOAD X2 is +0
+        # and BHIZ ends the precision-offset loop at INITVEL6. Half the
+        # cases keep their own values.
+        'joint_states': {p: [{}, {}, {}] + [dict({'%o' % (0o1236 + k): v for k, v in enumerate(dv)},
+                                                 **{'%o' % (0o3433 + k): v for k, v in enumerate(dv)})
+                                            for dv in P3435_DV]
+                         for p in ('35,3542', '35,3544')} | {
+                         '11,2200': [{}, {}, {}, {'3616': 0, '2701': 1}, {'3616': 1, '2701': 2},
+                                     {'3616': 3, '2701': 4}]},
         # RTX1 and RTX2 (E5,1776-1777): -2 and 0 for the earth, -10 and 2
         # for the moon. INITVELX's DLOAD* MUTABLE -2,1 indexes by RTX1.
         'all_states': {'02776': [0o77775, 0o77765], '02777': [0, 2]},

@@ -4,28 +4,28 @@
  "aggregates": {
   "self-check-cm": {
    "record": "evidence/self-check/self-check-cm-c64-cover.json",
-   "sha256": "63696eb0caab89a73b987670a2d6bdfa63f75645c569d663b8299764f6f4cb06",
+   "sha256": "ce083a84972ae6b6a975219cbf06082bb6b6ec8a47885762e949333e00184f06",
    "host_cases": 4096,
-   "c64_rows": 78,
-   "host_branch_arcs": 436,
-   "c64_branch_arcs": 436,
+   "c64_rows": 85,
+   "host_branch_arcs": 448,
+   "c64_branch_arcs": 448,
    "host_branches_missing_on_c64": 0
   },
   "self-check-cm-rope": {
    "record": "evidence/self-check/self-check-cm-rope-c64-cover.json",
-   "sha256": "9acfaf7045bb69cad5d9dee1be5241309c004668e927b091f3ec4c7160a18937",
+   "sha256": "704bfdb2ca09b3d79a82056bd1de1fd5da56016d797076d7b67f9cb8123b0115",
    "host_cases": 43,
-   "c64_rows": 7,
-   "host_branch_arcs": 400,
-   "c64_branch_arcs": 400,
+   "c64_rows": 9,
+   "host_branch_arcs": 416,
+   "c64_branch_arcs": 416,
    "host_branches_missing_on_c64": 0
   }
  },
  "linked_sources": {
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
   "src/cm_interbank_idle.c": "9f4b1b11e5e37356ceb7cbe384f6fd0e6f1f511a1f5a8249efada9991b0f221c",
@@ -33,53 +33,77 @@
   "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
   "src/cm_self_check_idle.c": "e48f12f322bc8e55e495e103bac062bc47b462b759d4cee842f139b3e992c6da",
   "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625",
-  "tests/self_check_cases.c": "3921b03723a9220e34957458c785a283f8d3b1a59a074334f7d84d2fb2966426"
+  "tests/self_check_cases.c": "93af1186f3cd31c1c0fe03f4490f967949540d33543c852fff47ceaf537c8cb7"
  },
  "host_branches_missing_on_c64": [],
  "entry_slots_host_c64": [
   [
-   373,
+   241,
    10
   ],
   [
-   373,
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
    8
   ],
   [
-   373,
+   241,
+   3
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   3
+  ],
+  [
+   241,
+   6
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   6
+  ],
+  [
+   241,
+   3
+  ],
+  [
+   241,
    5
   ],
   [
-   373,
-   8
-  ],
-  [
-   372,
+   241,
    5
   ],
   [
-   372,
+   241,
+   5
+  ],
+  [
+   240,
    7
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
-   8
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
-   9
   ]
  ],
  "result": "PASS"

@@ -7,12 +7,12 @@
   "src/cm_interbank_routines.c": "4d32b047e9bd683285c39b02e51331579aa55991cee3672f23fd1258900ec218",
   "src/cm_interbank_idle.c": "9f4b1b11e5e37356ceb7cbe384f6fd0e6f1f511a1f5a8249efada9991b0f221c",
   "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
-  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "d95dd752d3f332bd878cd4be6c74983a3b192eae62732aa09af89aa9547b5365",
+  "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/self_check_cases.c": "3921b03723a9220e34957458c785a283f8d3b1a59a074334f7d84d2fb2966426",
+  "tests/self_check_cases.c": "93af1186f3cd31c1c0fe03f4490f967949540d33543c852fff47ceaf537c8cb7",
   "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625"
  },
  "included_sources": {},
@@ -26,42 +26,49 @@
  "host_cases": 4096,
  "c64_rows": [
   0,
-  10,
-  12,
-  21,
-  30,
-  32,
-  33,
+  3,
+  17,
+  20,
+  34,
+  49,
+  50,
+  51,
+  54,
+  62,
   64,
-  67,
   128,
-  168,
+  130,
+  135,
+  150,
   192,
   256,
+  271,
+  298,
   320,
+  340,
   384,
+  408,
+  438,
   448,
-  462,
+  492,
   512,
   576,
   640,
   704,
+  717,
   768,
   832,
-  872,
   896,
   960,
   1024,
   1088,
   1152,
   1216,
+  1224,
   1280,
   1344,
-  1353,
-  1402,
   1408,
   1472,
-  1482,
   1536,
   1600,
   1664,
@@ -71,6 +78,7 @@
   1920,
   1984,
   2048,
+  2100,
   2112,
   2176,
   2240,
@@ -87,7 +95,6 @@
   2944,
   3008,
   3072,
-  3102,
   3136,
   3200,
   3264,
@@ -105,8 +112,8 @@
   4032
  ],
  "c64_row_seed_stride": 64,
- "host_branch_arcs": 436,
- "c64_branch_arcs": 436,
+ "host_branch_arcs": 448,
+ "c64_branch_arcs": 448,
  "arcs_by_source_host_c64": {
   "build/self-check-cm-cover/runner.c": [
    2,
@@ -125,8 +132,8 @@
    0
   ],
   "src/agc_transfer.c": [
-   37,
-   37
+   40,
+   40
   ],
   "src/agc_word.c": [
    0,
@@ -157,60 +164,84 @@
    15
   ],
   "src/self_check_body.inc": [
-   197,
-   197
+   204,
+   204
   ],
   "tests/self_check_cases.c": [
-   104,
-   104
+   106,
+   106
   ]
  },
  "host_branches_missing_on_c64": [],
- "entry_slots": "case n enters entry slot n % 11",
+ "entry_slots": "case n enters entry slot n % 17",
  "entry_slots_host_c64": [
   [
-   373,
+   241,
    10
   ],
   [
-   373,
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
    8
   ],
   [
-   373,
+   241,
+   3
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   3
+  ],
+  [
+   241,
+   6
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   6
+  ],
+  [
+   241,
+   3
+  ],
+  [
+   241,
    5
   ],
   [
-   373,
-   8
-  ],
-  [
-   372,
+   241,
    5
   ],
   [
-   372,
+   241,
+   5
+  ],
+  [
+   240,
    7
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
-   8
-  ],
-  [
-   372,
-   6
-  ],
-  [
-   372,
-   9
   ]
  ]
 }
