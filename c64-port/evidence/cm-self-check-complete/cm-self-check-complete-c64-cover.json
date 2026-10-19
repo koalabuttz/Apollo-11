@@ -4,20 +4,20 @@
  "aggregates": {
   "self-check-cm": {
    "record": "evidence/self-check/self-check-cm-c64-cover.json",
-   "sha256": "c1043153726e52cb3adc1efd7a604bbadd88aaa6e06bf1e7b2702f955c670b76",
+   "sha256": "ce083a84972ae6b6a975219cbf06082bb6b6ec8a47885762e949333e00184f06",
    "host_cases": 4096,
-   "c64_rows": 87,
-   "host_branch_arcs": 442,
-   "c64_branch_arcs": 442,
+   "c64_rows": 85,
+   "host_branch_arcs": 448,
+   "c64_branch_arcs": 448,
    "host_branches_missing_on_c64": 0
   },
   "self-check-cm-rope": {
    "record": "evidence/self-check/self-check-cm-rope-c64-cover.json",
-   "sha256": "2095cce7d2bd37ad465a642e0749c9fa53be771e8a50bb262410984d22415a78",
+   "sha256": "704bfdb2ca09b3d79a82056bd1de1fd5da56016d797076d7b67f9cb8123b0115",
    "host_cases": 43,
-   "c64_rows": 10,
-   "host_branch_arcs": 406,
-   "c64_branch_arcs": 406,
+   "c64_rows": 9,
+   "host_branch_arcs": 416,
+   "c64_branch_arcs": 416,
    "host_branches_missing_on_c64": 0
   }
  },
@@ -33,65 +33,77 @@
   "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
   "src/cm_self_check_idle.c": "e48f12f322bc8e55e495e103bac062bc47b462b759d4cee842f139b3e992c6da",
   "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625",
-  "tests/self_check_cases.c": "3921b03723a9220e34957458c785a283f8d3b1a59a074334f7d84d2fb2966426"
+  "tests/self_check_cases.c": "93af1186f3cd31c1c0fe03f4490f967949540d33543c852fff47ceaf537c8cb7"
  },
  "host_branches_missing_on_c64": [],
  "entry_slots_host_c64": [
   [
-   293,
-   12
-  ],
-  [
-   293,
-   1
-  ],
-  [
-   293,
-   12
-  ],
-  [
-   293,
-   1
-  ],
-  [
-   293,
-   9
-  ],
-  [
-   293,
-   1
-  ],
-  [
-   293,
+   241,
    10
   ],
   [
-   293,
-   1
+   241,
+   4
   ],
   [
-   292,
-   10
+   241,
+   4
   ],
   [
-   292,
-   1
+   241,
+   8
   ],
   [
-   292,
-   9
+   241,
+   3
   ],
   [
-   292,
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   3
+  ],
+  [
+   241,
+   6
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   6
+  ],
+  [
+   241,
+   3
+  ],
+  [
+   241,
    5
   ],
   [
-   292,
-   9
+   241,
+   5
   ],
   [
-   292,
-   6
+   241,
+   5
+  ],
+  [
+   240,
+   7
   ]
  ],
  "result": "PASS"

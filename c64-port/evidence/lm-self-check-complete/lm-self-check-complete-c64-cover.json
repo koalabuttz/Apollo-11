@@ -4,20 +4,20 @@
  "aggregates": {
   "self-check-lm": {
    "record": "evidence/self-check/self-check-lm-c64-cover.json",
-   "sha256": "e6b86bbc826c87d6ea7d53a91fbe8c57347fee03bd8e5568a179c0f525f49ac4",
+   "sha256": "cc2288f2737bf9f521832da729d0a11eb6e160fd25fd9ebb8785eb842bb6e5be",
    "host_cases": 4096,
-   "c64_rows": 89,
-   "host_branch_arcs": 442,
-   "c64_branch_arcs": 442,
+   "c64_rows": 83,
+   "host_branch_arcs": 448,
+   "c64_branch_arcs": 448,
    "host_branches_missing_on_c64": 0
   },
   "self-check-lm-rope": {
    "record": "evidence/self-check/self-check-lm-rope-c64-cover.json",
-   "sha256": "a2ed99afcd733851ee48953be706759da98c12048b5e260a16169cdc9a9f46d0",
+   "sha256": "109d7e315bc6ac53c851a692819d2bbabd8d383798f05b586600b708332ffd76",
    "host_cases": 43,
-   "c64_rows": 8,
-   "host_branch_arcs": 405,
-   "c64_branch_arcs": 405,
+   "c64_rows": 7,
+   "host_branch_arcs": 412,
+   "c64_branch_arcs": 412,
    "host_branches_missing_on_c64": 0
   }
  },
@@ -33,64 +33,76 @@
   "src/lm_self_check.c": "1e29362b21bc705d67154e751b2d2f1a7757b68987c299946b891e0a892fc399",
   "src/lm_self_check_idle.c": "9f6abfe6722d235778cec45fa6d7a088078a72edf7575517f0cb321a9becb67a",
   "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625",
-  "tests/self_check_cases.c": "3921b03723a9220e34957458c785a283f8d3b1a59a074334f7d84d2fb2966426"
+  "tests/self_check_cases.c": "93af1186f3cd31c1c0fe03f4490f967949540d33543c852fff47ceaf537c8cb7"
  },
  "host_branches_missing_on_c64": [],
  "entry_slots_host_c64": [
   [
-   293,
-   14
+   241,
+   8
   ],
   [
-   293,
-   1
+   241,
+   4
   ],
   [
-   293,
-   12
+   241,
+   4
   ],
   [
-   293,
-   1
-  ],
-  [
-   293,
+   241,
    9
   ],
   [
-   293,
-   1
-  ],
-  [
-   293,
-   11
-  ],
-  [
-   293,
-   1
-  ],
-  [
-   292,
-   10
-  ],
-  [
-   292,
-   1
-  ],
-  [
-   292,
-   9
-  ],
-  [
-   292,
+   241,
    3
   ],
   [
-   292,
-   9
+   241,
+   4
   ],
   [
-   292,
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   3
+  ],
+  [
+   241,
+   7
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   5
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   241,
+   5
+  ],
+  [
+   241,
+   4
+  ],
+  [
+   240,
    7
   ]
  ],

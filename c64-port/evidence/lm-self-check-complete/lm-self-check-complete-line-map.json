@@ -495,7 +495,7 @@
     "03303"
    ],
    "kind": "instruction",
-   "native": "src/self_check_body.inc (L3307, Comanche055 numbering)",
+   "native": "src/self_check_body.inc (L3310, Comanche055 numbering)",
    "executed_by_oracle": true
   },
   {
@@ -528,7 +528,7 @@
     "01371"
    ],
    "kind": "instruction",
-   "native": "src/self_check_body.inc (L3312, Comanche055 numbering)",
+   "native": "src/self_check_body.inc (L3313, Comanche055 numbering)",
    "executed_by_oracle": true
   },
   {

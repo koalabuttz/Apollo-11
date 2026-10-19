@@ -12,7 +12,7 @@
   "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/self_check_cases.c": "3921b03723a9220e34957458c785a283f8d3b1a59a074334f7d84d2fb2966426",
+  "tests/self_check_cases.c": "93af1186f3cd31c1c0fe03f4490f967949540d33543c852fff47ceaf537c8cb7",
   "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625"
  },
  "included_sources": {},
@@ -28,15 +28,14 @@
   0,
   1,
   2,
+  3,
   4,
   6,
-  25,
-  26,
-  30
+  27
  ],
  "c64_row_seed_stride": 64,
- "host_branch_arcs": 405,
- "c64_branch_arcs": 405,
+ "host_branch_arcs": 412,
+ "c64_branch_arcs": 412,
  "arcs_by_source_host_c64": {
   "build/self-check-lm-rope-cover/runner.c": [
    2,
@@ -87,12 +86,12 @@
    15
   ],
   "src/self_check_body.inc": [
-   98,
-   98
+   100,
+   100
   ],
   "tests/self_check_cases.c": [
-   95,
-   95
+   100,
+   100
   ]
  },
  "host_branches_missing_on_c64": []
