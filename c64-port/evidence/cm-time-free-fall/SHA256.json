@@ -4,7 +4,7 @@
   "release": "evidence-cm-time-free-fall",
   "files": {
     "cm-time-free-fall-differential.log": {
-      "sha256": "4a13cceb0ee29f808e7cbd149bade2695b5938a6c507abdb9643453e7443e3f0",
+      "sha256": "db5852ceec28fcd2411453b666fc0ea71e17e55e83f0679d547d3c035970e35f",
       "bytes": 5458,
       "store": "tree"
     },
@@ -14,8 +14,8 @@
       "store": "tree"
     },
     "cm-time-free-fall-proof.json": {
-      "sha256": "aff3170fedbbe096441d33db98d29c47f8e0ae7eae532099c571901a838076c6",
-      "bytes": 13554,
+      "sha256": "82ba95b6646127f7cc5a119c860874b59b0b8e4f12c9b9b570f1aa624349c3c0",
+      "bytes": 13534,
       "store": "tree"
     },
     "cm-time-free-fall-source-map.json": {
@@ -24,7 +24,7 @@
       "store": "tree"
     },
     "cm-time-free-fall-vice.log": {
-      "sha256": "842e58abab39da6fb811e06f9f7b4451353d86d867cb0ae6d0c0062e2b8802e0",
+      "sha256": "f9e6cb2baaac5a93aa99db7f6b2f451ba9149d903dc28f428dd393d84fe52f92",
       "bytes": 1302,
       "store": "tree"
     }
