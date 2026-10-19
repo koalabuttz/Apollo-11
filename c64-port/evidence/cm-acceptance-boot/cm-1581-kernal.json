@@ -10,60 +10,60 @@
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
- "bytes_loaded": 1858776,
+ "bytes_loaded": 1855925,
  "data_bytes": [
-  788177
+  788377
  ],
  "vice": {
   "mission": "cm",
   "ok": true,
   "fast_loader": false,
-  "load_cycles": 1256482206,
+  "load_cycles": 1256525315,
   "load_s": 1275.3,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80600,
-  "boot_cycles": 107489968,
-  "boot_s": 109.1,
+  "handoff_cycles": 80770,
+  "boot_cycles": 107321023,
+  "boot_s": 108.9,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 40852304,
-    "time1": "04177",
+    "cycles": 33095878,
+    "time1": "03140",
     "z": "04701",
     "fb": "66000",
     "modreg": "77777"
    },
    {
-    "cycles": 83034081,
-    "time1": "10605",
-    "z": "03306",
+    "cycles": 69426983,
+    "time1": "06647",
+    "z": "04740",
+    "fb": "14000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 101144946,
+    "time1": "12003",
+    "z": "04701",
     "fb": "66000",
     "modreg": "77777"
    },
    {
-    "cycles": 122424708,
-    "time1": "14765",
+    "cycles": 140673165,
+    "time1": "15752",
     "z": "03231",
     "fb": "02000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 162621225,
-    "time1": "21217",
-    "z": "02000",
-    "fb": "14000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "57b4",
-   "5b6e",
-   "49cf",
-   "57b4",
+   "5c10",
    "0200",
-   "09b0",
-   "0861",
-   "14af"
+   "4af8",
+   "5aba",
+   "0269",
+   "0378",
+   "c67c",
+   "30c2"
   ],
   "key_ch32": [
    "7f",
@@ -85,7 +85,7 @@
    "36000",
    "36000"
   ],
-  "pc": "e149",
+  "pc": "5bdf",
   "screen": [
    " APOLLO 11 CM DSKY",
    "",
@@ -111,8 +111,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "02000",
-  "z": "04020",
+  "fb": "66000",
+  "z": "03306",
   "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -124,6 +124,48 @@
    "0x1df500",
    "0x1df600",
    "0x1dfd00"
-  ]
+  ],
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save"
+   ],
+   "outside": [],
+   "regions": [
+    {
+     "name": "store",
+     "start": "0x0",
+     "end": "0x1b4400",
+     "writable": false
+    },
+    {
+     "name": "pinball save",
+     "start": "0x1df000",
+     "end": "0x1e0000",
+     "writable": true
+    },
+    {
+     "name": "rope",
+     "start": "0x1e0000",
+     "end": "0x1f2000",
+     "writable": false
+    },
+    {
+     "name": "undo",
+     "start": "0x1f2000",
+     "end": "0x1f3000",
+     "writable": true
+    },
+    {
+     "name": "resident stage",
+     "start": "0x1f6b00",
+     "end": "0x1fff7c",
+     "writable": false
+    }
+   ],
+   "dma_outside": 0,
+   "dma_hits": [],
+   "dma_unchecked": 17
+  }
  }
 }

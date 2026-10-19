@@ -4,15 +4,15 @@
   "test-1.d81"
  ],
  "loader_bytes": 6405,
- "resident_bytes": 44416,
+ "resident_bytes": 44667,
  "resident_start": 2061,
  "boot_return": null,
  "dsky_queue": null,
  "hardware": null,
- "resident_staged": "0x1f5200",
- "bytes_loaded": 1921750,
+ "resident_staged": "0x1f5100",
+ "bytes_loaded": 1922298,
  "data_bytes": [
-  794166
+  794363
  ],
  "check_expect": "b66a",
  "check_host": "ccfa",
@@ -21,29 +21,29 @@
   "mission": "test",
   "ok": true,
   "fast_loader": true,
-  "load_cycles": 262149188,
+  "load_cycles": 262192824,
   "load_s": 266.1,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 94222,
-  "run_s": 158.5,
+  "handoff_cycles": 94973,
+  "run_s": 156.7,
   "check_crc": "b66a",
   "check_expect": "b66a",
   "check_pass": true,
   "window_cs": 200,
   "window_steps": 1201,
-  "window_x": 21.1,
+  "window_x": 21.11,
   "screen": [
    "APOLLO 11 ON THE C64: HARDWARE CHECK",
    "",
    "VIDEO: PAL, 985248 HZ",
    "REU: 2048 KB OR MORE",
-   "REU DMA, BYTES/S: C64>REU 923472",
+   "REU DMA, BYTES/S: C64>REU 922206",
    "                 REU>C64 928145",
    "",
    "RUNNING LM P63 FROM 17513 CS...",
    "",
    "AGC TIME: 200 CS IN 1201 STEPS",
-   "C64 TIME: 42.20 S, 21.10 X REAL TIME",
+   "C64 TIME: 42.22 S, 21.11 X REAL TIME",
    "",
    "END STATE CRC B66A (VICE B66A)",
    "HOST RUN'S CRC CCFA (NOT YET THE SAME)",
@@ -59,5 +59,11 @@
    "",
    ""
   ]
+ },
+ "commit": "20106b1ebae4eabe575d4c7f100f6e627a4608f4",
+ "dirty": false,
+ "sha256": {
+  "flight-disk/test-1.d81": "f9c4618fe3c68ac77106b6b2d03f662dc8189ecce2a63671dc6e5b79fb908c9f",
+  "flight-disk/test-loader.prg": "bec1c94ed77595adde8b0f9b5441de3bf584cb7183204f60a3919525fa214b85"
  }
 }

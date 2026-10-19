@@ -1,6 +1,6 @@
 {
  "mission": "lm",
- "commit": "baf974b9dfa7b6deb33da8f3a0b3691b8d421796",
+ "commit": "20106b1ebae4eabe575d4c7f100f6e627a4608f4",
  "dirty": false,
  "drive": "1581",
  "keys": "RV37E00E",
@@ -21,7 +21,7 @@
   "flight-disk/lm-resident.prg": "c13e4f1559293bbee47f640319cfdd69ce55b8e5c1d3b08e0e2df70c188a12a4",
   "flight-store/lm.reu": "a1cdf9f4dbcd8649ce28c56dfea330e7e893655d87c57d7548334a238757d95d"
  },
- "vice_log_sha256": "3d667c246296dd3d161f21aa08ae0eff024e093aada6baaab62be536eb51ec6c",
+ "vice_log_sha256": "80db4bc7142072c70a2060e6c161a8cff4c74e16a2faad6a8989bb3b28ec6904",
  "screen_sha256": "eced2f8f3a809820483fdba0214bdcc45928892ebc8ee8a044e0b5de9e7839b9",
  "screen": [
   " APOLLO 11 LM DSKY",

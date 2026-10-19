@@ -25,60 +25,67 @@
  "vice": {
   "mission": "lm",
   "ok": true,
+  "swap_prompts": [
+   "READING DISK 1 INSERT DISK 2 OF 5 AND PRESS RETURN",
+   "READING DISK 2 INSERT DISK 3 OF 5 AND PRESS RETURN",
+   "READING DISK 3 INSERT DISK 4 OF 5 AND PRESS RETURN",
+   "INSERT DISK 4 OF 5 AND PRESS RETURN INSERT DISK 4 OF 5 AND PRESS RETURN",
+   "READING DISK 4 INSERT DISK 5 OF 5 AND PRESS RETURN"
+  ],
   "swaps": [
    2,
-   2,
    3,
+   4,
    4,
    5
   ],
   "fast_loader": false,
-  "load_cycles": 2154396745,
-  "load_s": 2186.7,
+  "load_cycles": 2153988308,
+  "load_s": 2186.2,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80638,
-  "boot_cycles": 110814924,
+  "handoff_cycles": 80765,
+  "boot_cycles": 110814731,
   "boot_s": 112.5,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 40996292,
-    "time1": "01362",
-    "z": "04707",
-    "fb": "34000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 80811715,
-    "time1": "03001",
-    "z": "03214",
-    "fb": "02000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 114069668,
-    "time1": "04214",
+    "cycles": 33974691,
+    "time1": "01147",
     "z": "05270",
     "fb": "14000",
     "modreg": "77777"
    },
    {
-    "cycles": 147524179,
-    "time1": "05434",
-    "z": "02163",
+    "cycles": 68176129,
+    "time1": "02407",
+    "z": "05270",
+    "fb": "14000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 98861442,
+    "time1": "03546",
+    "z": "02024",
     "fb": "34000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 131900881,
+    "time1": "04754",
+    "z": "03304",
+    "fb": "02000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "9370",
-   "476c",
-   "0200",
-   "93b6",
-   "5beb",
-   "3d6b",
-   "0948",
-   "4836"
+   "5161",
+   "472d",
+   "37c0",
+   "0867",
+   "4858",
+   "0880",
+   "3588",
+   "a955"
   ],
   "key_ch32": [
    "7f",
@@ -100,7 +107,7 @@
    "36040",
    "36040"
   ],
-  "pc": "5bf3",
+  "pc": "5bf2",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -149,6 +156,49 @@
    "0x1f2600",
    "0x1f2c00",
    "0x1f2d00"
-  ]
+  ],
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save",
+    "undo"
+   ],
+   "outside": [],
+   "regions": [
+    {
+     "name": "store",
+     "start": "0x0",
+     "end": "0x1c3500",
+     "writable": false
+    },
+    {
+     "name": "pinball save",
+     "start": "0x1df000",
+     "end": "0x1e0000",
+     "writable": true
+    },
+    {
+     "name": "rope",
+     "start": "0x1e0000",
+     "end": "0x1f2000",
+     "writable": false
+    },
+    {
+     "name": "undo",
+     "start": "0x1f2000",
+     "end": "0x1f3000",
+     "writable": true
+    },
+    {
+     "name": "resident stage",
+     "start": "0x1f6b00",
+     "end": "0x1fff8f",
+     "writable": false
+    }
+   ],
+   "dma_outside": 0,
+   "dma_hits": [],
+   "dma_unchecked": 11
+  }
  }
 }

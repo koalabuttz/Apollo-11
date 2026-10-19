@@ -27,43 +27,43 @@
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 42007277,
-    "time1": "01406",
-    "z": "03446",
+    "cycles": 34720600,
+    "time1": "01172",
+    "z": "02626",
+    "fb": "36000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 68346316,
+    "time1": "02416",
+    "z": "02626",
+    "fb": "36000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 105201315,
+    "time1": "03736",
+    "z": "04707",
     "fb": "34000",
     "modreg": "77777"
    },
    {
-    "cycles": 78881932,
-    "time1": "02735",
+    "cycles": 142528059,
+    "time1": "05272",
     "z": "03214",
     "fb": "02000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 122144788,
-    "time1": "04450",
-    "z": "03214",
-    "fb": "02000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 162364816,
-    "time1": "06077",
-    "z": "02000",
-    "fb": "14000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
+   "4e7c",
+   "397e",
+   "4e81",
    "0200",
-   "5bd3",
-   "4ffd",
-   "4e8a",
+   "805a",
+   "59d5",
    "0200",
-   "40d3",
-   "5bf0",
-   "315f"
+   "f36c"
   ],
   "key_ch32": [
    "7f",
@@ -85,7 +85,7 @@
    "36040",
    "36040"
   ],
-  "pc": "0200",
+  "pc": "5c59",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -111,8 +111,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "34000",
-  "z": "04707",
+  "fb": "02000",
+  "z": "03214",
   "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -134,6 +134,49 @@
    "0x1f2600",
    "0x1f2c00",
    "0x1f2d00"
-  ]
+  ],
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save",
+    "undo"
+   ],
+   "outside": [],
+   "regions": [
+    {
+     "name": "store",
+     "start": "0x0",
+     "end": "0x1c3500",
+     "writable": false
+    },
+    {
+     "name": "pinball save",
+     "start": "0x1df000",
+     "end": "0x1e0000",
+     "writable": true
+    },
+    {
+     "name": "rope",
+     "start": "0x1e0000",
+     "end": "0x1f2000",
+     "writable": false
+    },
+    {
+     "name": "undo",
+     "start": "0x1f2000",
+     "end": "0x1f3000",
+     "writable": true
+    },
+    {
+     "name": "resident stage",
+     "start": "0x1f6b00",
+     "end": "0x1fff8f",
+     "writable": false
+    }
+   ],
+   "dma_outside": 0,
+   "dma_hits": [],
+   "dma_unchecked": 19
+  }
  }
 }
