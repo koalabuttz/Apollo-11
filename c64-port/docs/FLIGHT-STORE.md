@@ -1136,16 +1136,29 @@ port) runs one mission:
    the engine lag and radar reads). At the first sample point `--cs` in
    (and with `--replay-every N` at the first one at or after every N cs
    before), both sides write their erasable words and output channels (5,
-   6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
-   the base tables run on). The C64 takes its states at the host's: at
+   6, 11-14, 34, 35, the superbank, 10, whether interrupts are enabled
+   (INHINT/RELINT) and the radar gate counter; on the CM 11-14 from rk_device, which the base tables
+   run on). The C64 takes its states at the host's: at
    its first sample point at or after each centisecond the host wrote a
    state at, the end included (the first sample point at or after the
    asked centisecond can come a tick before the host's, and every timer
    then reads one count off). The states are paired by their
-   centiseconds, not by order: the two ends always pair, and a checkpoint
-   with no state at the same centisecond on the other side (the C64 still
-   busy at the host's point, for one) is listed as unpaired and not
-   compared. The C64's state area holds `--cs` /
+   centiseconds, not by order: a checkpoint with no state at the same
+   centisecond on the other side (the C64 still busy at the host's point,
+   for one) is listed as unpaired and not compared. The ends follow the
+   same rule. After the last window's end the host runs 8 cs more and
+   writes its state at each sample point there (`.after`) and the inputs
+   it took (`.after-replay`). A C64 end that comes after the host's (busy,
+   or an interrupt pending, at the host's end) is compared with the host's
+   state at the C64's centisecond. The summary line and the result's
+   `replay_end_shift_cs` say how late, and program_acceptance.py writes
+   "end compared N cs late" in the row. When the host has no state there,
+   or an input came in between, the ends are unpaired and the window fails
+   ("the ends are not compared"), never a match. The checkpoints not
+   compared are counted in the result (`replay_unpaired_count`, and in
+   the summary line and the acceptance row), and a C64 that ends the
+   window without applying every input row fails. A chain window's end
+   before the last is the next window's seam and always pairs. The C64's state area holds `--cs` /
    `--replay-every` + 1 states and the C64 writes no more, and a window
    the host ran past 16,383 cs (the C64's 14-bit window clock) fails before
    VICE starts;
