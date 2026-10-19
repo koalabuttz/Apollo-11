@@ -17,11 +17,11 @@ triaged with a reason, in tools/cert_arms_allow.py next to the specs:
       already there keep their class and reason; new ones are UNTRIAGED.
       Needs the oracle toolchain (deps/env.sh), like a refreeze.
   cert_arms.py check             (CI: ledgers-and-coverage; no toolchain)
-      fails on an UNTRIAGED arm or one with no reason; warns on FLIGHT
-      and UNSURE arms, on a spec whose
+      fails on a certified spec with no record and on an UNTRIAGED arm
+      or one with no reason; warns on FLIGHT and UNSURE arms, on a spec whose
       record is stale (its proof's cases_sha256 or an own source changed
-      since it was measured: run measure again), and on certified specs
-      not measured yet.
+      since it was measured: run measure again; tools/cert_precheck.py
+      fails on that, so a re-cite carries a fresh record).
 
 An arm is an AGC word's decision outcome that no copy of the word takes
 (the word's '/* bb,aaaa OP */' comment in the generated C): a BZF/BZMF
@@ -249,23 +249,37 @@ def certified():
     return sorted(s for s in interp_specs.SPECS if os.path.exists(os.path.join(R, 'evidence', s, s + '-proof.json')))
 
 
+def stale(sid, rec, spec):
+    """What the record was measured on that has changed since."""
+    proof = json.load(open(os.path.join(R, 'evidence', sid, sid + '-proof.json')))
+    out = ['frozen cases'] if proof.get('cases_sha256') != rec['cases_sha256'] else []
+    return out + [s for s in own_sources(spec) if not os.path.exists(os.path.join(R, s))
+                  or rec['sources_sha256'].get(s) != sha(s)]
+
+
+def problems(sid, rec, spec):
+    """Why a certified spec's record is not current and fully triaged (for
+    tools/cert_precheck.py), or None."""
+    if rec is None:
+        return 'is missing'
+    old = stale(sid, rec, spec)
+    if old:
+        return 'was measured on other ' + ', '.join(old)
+    n = sum(a.get('class') not in CLASSES or a['class'] == 'UNTRIAGED' or not a.get('why') for a in rec['arms'])
+    return '%d arm(s) untriaged' % n if n else None
+
+
 def check():
     import interp_specs
     allow, fails, warns = load(), [], []
     for sid in certified():
         rec = allow.get(sid)
         if rec is None:
-            warns.append('%s: not measured yet (tools/cert_arms.py measure %s)' % (sid, sid))
+            fails.append('%s: certified but not measured (run tools/cert_arms.py measure %s)' % (sid, sid))
             continue
-        proof = json.load(open(os.path.join(R, 'evidence', sid, sid + '-proof.json')))
-        stale = []
-        if proof.get('cases_sha256') != rec['cases_sha256']:
-            stale.append('frozen cases')
-        spec = interp_specs.SPECS[sid]
-        stale += [s for s in own_sources(spec) if not os.path.exists(os.path.join(R, s))
-                  or rec['sources_sha256'].get(s) != sha(s)]
-        if stale:
-            warns.append('%s: measured on other %s; run tools/cert_arms.py measure %s' % (sid, ', '.join(stale), sid))
+        old = stale(sid, rec, interp_specs.SPECS[sid])
+        if old:
+            warns.append('%s: measured on other %s; run tools/cert_arms.py measure %s' % (sid, ', '.join(old), sid))
         for a in rec['arms']:
             if a.get('class') not in CLASSES:
                 fails.append('%s %s:%d %s %s: class %r is not one of %s' % (sid, a['src'], a['line'], a['agc'],

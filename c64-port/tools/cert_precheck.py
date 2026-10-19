@@ -53,6 +53,10 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               the fixed $7000 image; 'trusted_image': flight builds skip the
               ~121K-cycle erasable scan at every entry); set them at the next
               refreeze.
+  arms        every spec the certificate rests on has a tools/cert_arms.py
+              record measured on its current frozen cases and own sources,
+              with every untaken arm triaged; after a refreeze run
+              `tools/cert_arms.py measure SPEC` so the re-cite carries it.
   bovb        a BOVB to TCDANZIG/ENDT(X) in the file needs a native 'rtb'
               entry for that word in its interp spec, else the overflow
               branch stops there and the right-hand order never runs natively
@@ -845,6 +849,25 @@ def check_spec_keys(report, label, path, certificate, specs):
                    f'set {", ".join(repr(f) for f in flags)} in tools/interp_specs.py at the lane\'s next refreeze')
 
 
+def check_arms(report, label, path, certificate, specs):
+    """FAIL when a spec the certificate rests on has no current, fully
+    triaged untaken-arm record (tools/cert_arms.py)."""
+    try:
+        import cert_arms  # noqa: E402
+    except Exception:  # noqa: BLE001 -- a tree without the tool has nothing to check
+        return
+    allow = cert_arms.load()
+    for key in specs_for(path, certificate, specs):
+        proof = ROOT / 'evidence' / key / f'{key}-proof.json'
+        if not proof.exists():
+            continue
+        why = cert_arms.problems(key, allow.get(key), specs[key])
+        if why:
+            report.add('FAIL', label, f'interp spec {key}: untaken-arm record {why}',
+                       f'run `tools/cert_arms.py measure {key}` and triage its UNTRIAGED arms '
+                       'in tools/cert_arms_allow.py')
+
+
 # BOVB to ENDT(X)/TCDANZIG (TC DANZIG) with an order on its right: when
 # overflow is set the compiled pair transfers to that basic word, and unless
 # the spec runs it natively ('rtb' TCDANZIG -> <m>_integration_tcdanzig) the
@@ -1055,6 +1078,7 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             if certificate:
                 check_c64(report, label, certificate)
                 check_spec_keys(report, label, path, certificate, specs)
+                check_arms(report, label, path, certificate, specs)
                 check_bovb_danzig(report, label, path, certificate, specs,
                                   key == 'complete_native_coverage' and entry.get('status') == 'complete')
     return report
