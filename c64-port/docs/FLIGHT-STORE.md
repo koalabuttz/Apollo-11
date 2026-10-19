@@ -969,6 +969,18 @@ port) runs one mission:
    BHIZ. With it, on base 3384c02b, five windows between P20's start and N59
    run 4,000 cs in all at 20.2x real time with no stop, ending on DELVTPI
    7.38 m/s as on the host.
+   P51-P53's RTB targets get the same treatment:
+   - Luminary RDCDUS (14,3413);
+   - Comanche RDCDUS (15,2324);
+   - Comanche SET1/PDT (14,3275).
+
+   On the host they run only inside the p51-p53 compiled routines.
+   `lm_p51_p53_rtb_routines` and `cm_p51_p53_rtb_routines` are their basic
+   tables, around the same p51_p53_rtb body. The CM table latches the
+   superbank and interrupt-enable words of cm_native_io across the call.
+   `tools/native_range_keys.py` then reports no known holes. On base
+   6f112402, the C64 replays of LM P52 4200+500 and 6700+500, CM P52
+   9900+1200 and 13900+1200, and LM P57 15900+800 all match the host.
    The rest of the LM's rendezvous programs. lm_coelliptic.py writes the
    loads for the targeting before TPI, shaped like Apollo 11's coelliptic
    sequence: the CSM in a 60 nmi circular orbit 9.5 degrees ahead, the LM
