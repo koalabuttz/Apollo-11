@@ -19,13 +19,19 @@
 #include "rope_image.h"
 #include "p66_bias.h"
 #include "cm_native_image.h"
+#include "interp_word_mct.h"
+#include "agc_transfer.h"
 #if IF_LM
 #define MISSION 0u
 #define CORE lm_interp_core
+#define CORE_MCT lm_interp_core_mct
+#define FETCH 06070u
 static const unsigned points[]={06070,06061,06063,06106,06460,06144,06463,06466,06252,06646,06037};
 #else
 #define MISSION 1u
 #define CORE cm_interp_core
+#define CORE_MCT cm_interp_core_mct
+#define FETCH 06037u
 static const unsigned points[]={06037,06030,06032,06055,06427,06113,06432,06435,06221,06615,06006};
 #endif
 #define POINTS (sizeof points/sizeof points[0])
@@ -67,15 +73,22 @@ int main(int argc,char **argv){static apollo_overlay_state s,before,first;unsign
  sb=b[4096]|b[4097]<<8u;io.superbank=(agc_word)sb;
  printf("case %ld: Z %05o FB %05o LOC %05o BANKSET %05o EDOP %05o superbank %03o\n",idx,s.words[5],s.words[4],s.words[0164],s.words[0165],s.words[063],sb);
  for(slot=0;slot<4000u;++slot){enum exec_status st;unsigned long n;int arrived=0,ok=0;unsigned zsb=io.superbank;
-  before=s;st=CORE(0,&s,&io);
+  unsigned long words=0;
+  before=s;CORE_MCT=0;st=CORE(0,&s,&io);
   load(&before,zsb);
   for(n=0;n<2000000ul;++n){
    if(n&&quiet()&&(mword(5)&07777u)==(s.words[5]&07777u)&&mword(4)==s.words[4]){
     if(same(&s)&&(unsigned)(m.OutputChannel7&0160)==io.superbank){ok=1;break;}
     if(!arrived++)for(i=0;i<2048u;++i)first.words[i]=(agc_word)mword(i);}
+   /* The work clock's words, as tools/flight_host_run.c word_fetch counts
+    * them: each quiet arrival at the fetch point (NEWOPS), the word at LOC. */
+   if(quiet()&&(mword(5)&07777u)==FETCH){agc_word fb=(agc_word)mword(4),sbk=(agc_word)(m.OutputChannel7&0160);
+    uint16_t p=agc_fixed_physical((agc_word)mword(0164),fb,sbk);
+    words+=4ul*interp_word_units_of(p==AGC_TRANSFER_NONE?0u:(agc_word)loaded.Fixed[p/1024u][p%1024u]);}
    if(agc_engine(&m))break;
    memset(m.InterruptRequests,0,sizeof m.InterruptRequests);}
-  printf("slot %u: status %d Z %05o FB %05o LOC %05o -> %s (%lu yaAGC instructions)\n",slot,(int)st,s.words[5],s.words[4],s.words[0164],ok?"ok":"MISMATCH",n);
+  printf("slot %u: status %d Z %05o FB %05o LOC %05o -> %s (%lu yaAGC instructions), charge %u MCT, yaAGC's words %lu%s\n",slot,(int)st,s.words[5],s.words[4],s.words[0164],ok?"ok":"MISMATCH",n,
+         (unsigned)CORE_MCT,words,st==EXEC_OK&&CORE_MCT!=words?" CHARGE MISMATCH":"");
   if(!ok){
    if(!arrived)printf("  yaAGC never arrived at Z %05o FB %05o\n",s.words[5],s.words[4]);
    else for(i=0;i<2048u;++i)if(!(i>=024u&&i<=031u)&&first.words[i]!=s.words[i])printf("  %04o: native %06o yaAGC %06o (before %06o)\n",i,s.words[i],first.words[i],before.words[i]);

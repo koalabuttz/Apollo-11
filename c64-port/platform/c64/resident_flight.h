@@ -73,15 +73,13 @@ extern const uint8_t rk_phase_step[9];
 /* Weights from the calibration (tools/resident_flight_build.py): the
  * resident tables', each interrupt-body wrapper's (RK_MODULE_LEAD_INS..
  * RK_MODULE_LM_T6; a wrapper reports the routines it ran, which the step
- * weighs) and the interpreter's per slot. A table module's is FS_MCT. */
+ * weighs). A table module's is FS_MCT; the interpreter module charges
+ * each word it runs (include/interp_word_mct.h). */
 #ifndef RK_RESIDENT_MCT
 #define RK_RESIDENT_MCT 24u
 #endif
 #ifndef RK_WRAP_MCT_LIST
 #define RK_WRAP_MCT_LIST RK_RESIDENT_MCT,RK_RESIDENT_MCT,RK_RESIDENT_MCT,RK_RESIDENT_MCT
-#endif
-#ifndef RK_INTERP_MCT
-#define RK_INTERP_MCT RK_RESIDENT_MCT
 #endif
 extern uint16_t rk_work;
 extern uint8_t rk_tick_phase;

@@ -16,16 +16,18 @@ T centiseconds, X, Y, Z in ft/s in the local vertical frame (X forward
 horizontal, Y the negative orbit normal, Z down: P32's and P33's N81),
 and loads the LM's state on the new orbit at 20 s, as if that burn had
 already been made; CSMBURN=T:X,Y,Z the same for the CSM (P72's CSI, for
-P73). LEAD=DEG is the CSM's lead at the load (default 9.5). The truth
-printed for FLIGHT_RR (tools/flight_radar.h) follows.
+P73). LEAD=DEG is the CSM's lead at the load (default 9.5). CM writes
+the same moment for Comanche (its P32/P33 and P72/P73), with cm_p20.py's
+pads. The truth printed for FLIGHT_RR (tools/flight_radar.h) follows.
 
-  lm_coelliptic.py OUT [LEAD=DEG] [BURN=T:X,Y,Z ...] [CSMBURN=T:X,Y,Z ...]
+  lm_coelliptic.py OUT [CM] [LEAD=DEG] [BURN=T:X,Y,Z ...] [CSMBURN=T:X,Y,Z ...] [ELEV=DEG]
 """
 import math, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-LST = ROOT / 'build/fixed-data/Luminary099/assembly.lst'
+CM = 'CM' in sys.argv[2:]
+LST = ROOT / ('build/fixed-data/Comanche055/assembly.lst' if CM else 'build/fixed-data/Luminary099/assembly.lst')
 SYMS = {}
 for line in open(LST, errors='replace'):
     for m in re.finditer(r'\d+,([EF]):\s+(\S+)\s+(\S+)', line):
@@ -59,8 +61,9 @@ def dp(f):
     return [hi, lo]
 
 
-# FLAGWRD0-9 at 20 s after a cold start with the IMU operating.
-BASE_FLAGS = [0, 0, 0o40000, 0o2000, 0, 0, 0, 0o100, 0, 0]
+# FLAGWRD0-9 at 20 s after a cold start with the IMU operating (the
+# CM's: cm_p20.py's).
+BASE_FLAGS = [0, 0, 0, 0, 0, 0o200, 0, 0, 0, 0] if CM else [0, 0, 0o40000, 0o2000, 0, 0, 0, 0o100, 0, 0]
 base = {addr('FLAGWRD0') + i: v for i, v in enumerate(BASE_FLAGS)}
 out = {}
 
@@ -198,15 +201,18 @@ flag(124)               # LMOONFLG
 flag(123)               # CMOONFLG
 flag(40)                # AVFLAG: the LM is the active vehicle
 
-# R22's pads, as lm_rendezvous.py.
+# R22's pads, as lm_rendezvous.py (the CM: cm_p20.py).
 out[addr('WRENDPOS')] = sp(3048.0 / 2**14)
 out[addr('WRENDVEL')] = sp(0.03048)
-out[addr('WSHAFT')] = sp(0.015 * 2**5)
-out[addr('WTRUN')] = sp(0.015 * 2**5)
-put('RANGEVAR', dp(0.001**2 * 2**12))
-put('RATEVAR', dp(0.005**2 * 2**12))
-out[addr('RVARMIN')] = 4 * 20**2
-out[addr('VVARMIN')] = int(round((0.3 * CS)**2 * 2**26))
+if CM:
+    put('RVAR', dp(0.001**2 * 2**16))
+else:
+    out[addr('WSHAFT')] = sp(0.015 * 2**5)
+    out[addr('WTRUN')] = sp(0.015 * 2**5)
+    put('RANGEVAR', dp(0.001**2 * 2**12))
+    put('RATEVAR', dp(0.005**2 * 2**12))
+    out[addr('RVARMIN')] = 4 * 20**2
+    out[addr('VVARMIN')] = int(round((0.3 * CS)**2 * 2**26))
 out[addr('RMAX')] = sp(609.6 / 2**19)
 out[addr('VMAX')] = sp(0.6096 * CS / 2**7)
 out[addr('LEMMASS')] = 2800 // 4
@@ -226,8 +232,8 @@ put('CENTANG', dp(130.0 / 360))
 put('NN', [0, 1])
 
 with open(sys.argv[1], 'w') as f:
-    f.write('# LM coelliptic rendezvous load at 20 s (%s)\n'
-            % ' '.join(['tools/flight_scenarios/lm_coelliptic.py'] + sys.argv[2:]))
+    f.write('# %s coelliptic rendezvous load at 20 s (%s)\n'
+            % ('CM' if CM else 'LM', ' '.join(['tools/flight_scenarios/lm_coelliptic.py'] + sys.argv[2:])))
     for a_, v in sorted(out.items()):
         f.write('%04o %05o\n' % (a_, v))
 rr = lambda r, v: ','.join('%.3f' % c for c in r + v)

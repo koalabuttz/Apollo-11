@@ -143,7 +143,11 @@ def measure_spec(sid):
     if spec.get('flow_states'):
         D.flow_states(sid, spec, missions)
     rng = random.Random('interp-routine:' + sid)
-    proof = json.load(open(os.path.join(R, 'evidence', sid, sid + '-proof.json')))
+    # A refreeze writes build/<spec>-proof.json before the evidence is
+    # recorded: measure against it when it is the newer one.
+    paths = [os.path.join(R, 'evidence', sid, sid + '-proof.json'), os.path.join(R, 'build', sid + '-proof.json')]
+    paths = [x for x in paths if os.path.exists(x)]
+    proof = json.load(open(max(paths, key=os.path.getmtime)))
     n = sum(len(mi.case_points) for mi in missions if mi.m in spec['missions'])
     per = max(1, -(-proof.get('cases', 64 * n) // n))
     cases = []
