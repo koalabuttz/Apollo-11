@@ -59,12 +59,13 @@ BULKY = ('records', 'profile', 'watched', 'by_request')
 
 
 # The paths a flight result may depend on: the whole port (sources, tools,
-# and docs/*.json, which hold layout and weight tables the store reads) and
-# the AGC sources, less what cannot change a run: prose, the acceptance
-# docs and maps, stored evidence and this tool's own files. A result from
-# an older commit still counts only when none of these changed since it.
+# docs/*.json with the layout and weight tables the store reads, and the
+# program maps this tool reads) and the AGC sources, less what cannot
+# change a run: prose (the generated docs included), stored evidence and
+# this tool's own files. A result from an older commit still counts only
+# when none of these changed since it.
 SOURCES = ['.', ':(top)Luminary099', ':(top)Comanche055',
-           ':!*.md', ':!docs/acceptance', ':!evidence',
+           ':!*.md', ':!evidence',
            ':!tools/program_acceptance.py', ':!tests/test_program_acceptance.py', ':!tools/mk/program-acceptance.mk']
 
 
@@ -253,8 +254,8 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
              'state compared with the host\'s at each checkpoint).', '',
              'It passes when every row is mapped or not exercised (with its reason), every mapped row\'s '
              'scenarios match yaAGC with no bridged point, and one of the C64 windows the row names (the '
-             'windows its event falls in) matches the host at one checkpoint or more. A result from a commit with other port sources or AGC sources (anything but prose, the '
-             'acceptance docs and maps, and stored evidence) '
+             'windows its event falls in) matches the host at one checkpoint or more. A result from a commit with other port sources or AGC sources (anything but prose and '
+             'stored evidence) '
              'is stale and counts as not run.', '',
              '## Counts', '',
              '| Rows | mapped | not exercised | not exercised, no reason | TBD | mapped, host matches yaAGC | '

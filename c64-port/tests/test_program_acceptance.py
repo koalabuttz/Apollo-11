@@ -103,7 +103,7 @@ class ProgramAcceptance(unittest.TestCase):
     def test_layout_tables_and_agc_sources_stale_a_result(self):
         self.assertIn(':(top)Luminary099', pa.SOURCES)
         self.assertIn('.', pa.SOURCES)  # docs/*.json layout tables count
-        self.assertIn(':!docs/acceptance', pa.SOURCES)
+        self.assertNotIn(':!docs/acceptance', pa.SOURCES)  # the program maps are inputs
 
     def test_stale_inputs_are_not_counted(self):
         with tempfile.TemporaryDirectory() as d:
