@@ -3760,22 +3760,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "8cebce3fc463bd9ae6cf9a857009b2f2aa2aa9c619de2fdefe4f7c203e701cb3"
+            "sha256": "9390328263e72f5a63e3a8295b46605e0a06275a55c23c738971c10653e7193f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
-            "sha256": "d38045f62d4b18ae95dc5a839ef0180308443cfd5bb812f4c2dbd8ceb98df65c"
+            "sha256": "4d62a21ad8eb0b9616722b39ac4929a1127cfa3c5c85af4a387ecf574d8c32f6"
           },
           "c64_execution_results": {
             "path": "evidence/p51-p53/p51-p53-vice.log",
-            "sha256": "b39c85bc464ba213421dd45a82251653bf728a883ea8fbe1f6a491692e6fe94a",
+            "sha256": "d3db1f3ce8ff46c4d8b98acee5f62e153651cc88973ff3181d1eaa49fb7b0fd9",
             "vice_targets": {
-              "vice-p51-p53": 1565
+              "vice-p51-p53": 1562
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-cover.json",
-            "sha256": "05f51ea652132cb7eaee4786b01a3594a23b92fe4d2469ee7291c85ed6a8655f"
+            "sha256": "8b4772422f19ddee6d942df47005fbccfa6189f3ff7fd5c442925583da591760"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-p51-p53-486.md",
@@ -11136,22 +11136,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/p51-p53/p51-p53-proof.json",
-            "sha256": "8cebce3fc463bd9ae6cf9a857009b2f2aa2aa9c619de2fdefe4f7c203e701cb3"
+            "sha256": "9390328263e72f5a63e3a8295b46605e0a06275a55c23c738971c10653e7193f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/p51-p53/p51-p53-host.log",
-            "sha256": "d38045f62d4b18ae95dc5a839ef0180308443cfd5bb812f4c2dbd8ceb98df65c"
+            "sha256": "4d62a21ad8eb0b9616722b39ac4929a1127cfa3c5c85af4a387ecf574d8c32f6"
           },
           "c64_execution_results": {
             "path": "evidence/p51-p53/p51-p53-vice.log",
-            "sha256": "b39c85bc464ba213421dd45a82251653bf728a883ea8fbe1f6a491692e6fe94a",
+            "sha256": "d3db1f3ce8ff46c4d8b98acee5f62e153651cc88973ff3181d1eaa49fb7b0fd9",
             "vice_targets": {
-              "vice-p51-p53": 1565
+              "vice-p51-p53": 1562
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/p51-p53/p51-p53-c64-cover.json",
-            "sha256": "05f51ea652132cb7eaee4786b01a3594a23b92fe4d2469ee7291c85ed6a8655f"
+            "sha256": "8b4772422f19ddee6d942df47005fbccfa6189f3ff7fd5c442925583da591760"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-p51-p53-486.md",
