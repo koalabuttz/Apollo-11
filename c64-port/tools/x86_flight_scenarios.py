@@ -32,14 +32,16 @@ time (LM P78: the harness at PIPTIME 19,234 cs, the x86 program at
 41,786). So each run's own state vector is compared with the true orbit
 FLIGHT_RR gives at that run's PIPTIME, and the x86 program's error must be
 within SPREAD_K times the larger of the harness's two errors, plus
-RN_FLOOR / VN_FLOOR. That own state only coasts, so it cannot see the
-radar: with FLIGHT_RR the other vehicle's state, the one the marks update,
-is checked too, against the true orbit at its own time (TETOTHER). Its
-errors must be within SPREAD_K times the larger of the harness's two plus
-RN_FLOOR / VN_FLOOR, and its time at most TET_BEHIND behind the earlier of
-the harness's: with the radar off, the target moved, the marks or the
-incorporations (V33E) left out it stays thousands of centiseconds behind
-or kilometres off.
+RN_FLOOR / VN_FLOOR. That check alone does not see the radar:
+with FLIGHT_RR both vehicles' permanent state blocks (BLOCKS), the states
+the marks update, are checked too, each against its vehicle's true orbit
+at the block's own time (TET). Their errors may exceed the larger of the
+harness's two by at most RN_FLOOR / VN_FLOOR (no SPREAD_K: a target 300 m
+off moves the LM's own block by 270-300 m, inside 4 times the harness's
+error), and their times may be at most TET_BEHIND behind the earlier of
+the harness's: with the radar off, the target moved 300 m or 5 km, the
+marks or the incorporations (V33E) left out one block or the other is
+hundreds of metres off or thousands of centiseconds behind.
 KNOWN lists scenarios outside the RN/VN bounds with the reason and an
 envelope of their own: such a run is reported and does not fail when it
 reaches the compare point, exits 0, has the same major mode, stays within
@@ -65,9 +67,9 @@ import x86_flight_build as xb  # noqa: E402
 OUT = xb.OUT / 'scenarios'
 SPREAD_K, RN_FLOOR, VN_FLOOR = 4.0, 50.0, 0.15
 WORDS_K, WORDS_PLUS = 1.5, 10
-# Marks move the other vehicle's state time (TETOTHER) on: the x86 program's
-# may be ahead of the harness's (it marks at other times) but at most this
-# far behind the earlier of the harness's two (the most measured: CM P20,
+# Marks move a state block's time (TET) on: the x86 program's may be ahead
+# of the harness's (it marks at other times) but at most this far behind
+# the earlier of the harness's two (the most measured: CM P20,
 # 355 cs). With no marks it stays where the scenario's first integration
 # left it (LM 4,704 cs).
 TET_BEHIND = 1000
@@ -95,9 +97,12 @@ GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP}
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7), PIPTIME.
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
 PIPTIME = {'lm': 0o1234, 'cm': 0o1204}
-# The other vehicle's block (RRECTOTH ... XKEPOTH: RRECT, VRECT, TET at +014,
-# DELTA +016, NUV +024, RCV +032, VCV +040): LM the CSM's, CM the LM's.
-OTHER = {'lm': 0o1554, 'cm': 0o1626}
+# The two vehicles' permanent state blocks (RRECTCSM ... and RRECTLEM ...:
+# RRECT, VRECT, TET at +014, DELTA +016, NUV +024, RCV +032, VCV +040), at
+# the same addresses on both missions. Which one a mark updates is
+# VEHUPFLG's choice (the LM's own block by default on the LM, the LM's on
+# the CM), so both are checked.
+BLOCKS = {'csm': 0o1554, 'lm': 0o1626}
 MOON_MU = 4.9028e12
 
 
@@ -137,15 +142,15 @@ def truth_errors(m, env, w):
     return distance(vector(w, rn, 29, 1.0), r), distance(vector(w, vn, 7, 100.0), v), pip
 
 
-def other_errors(m, env, w):
-    """The other vehicle's state vector, the one the marks update, against
-    FLIGHT_RR's true orbit at its time TETOTHER: (position error m,
-    velocity error m/s, TETOTHER cs). In the moon's sphere the conic
-    RCV/VCV is at 2^27 m / 2^5 m/cs and the deviation DELTA/NUV 2^9 / 2^6
-    below it (RECTIFY's shifts with PBODY 2)."""
+def block_errors(vehicle, env, w):
+    """One vehicle's permanent state block (BLOCKS), the state the marks
+    update, against FLIGHT_RR's true orbit for that vehicle at the block's
+    time TET: (position error m, velocity error m/s, TET cs). In the moon's
+    sphere the conic RCV/VCV is at 2^27 m / 2^5 m/cs and the deviation
+    DELTA/NUV 2^9 / 2^6 below it (RECTIFY's shifts with PBODY 2)."""
     t0, lm, csm = env['FLIGHT_RR'].split(':')
-    true = [float(v) for v in (csm if m == 'lm' else lm).split(',')]
-    o = OTHER[m]
+    true = [float(v) for v in (lm if vehicle == 'lm' else csm).split(',')]
+    o = BLOCKS[vehicle]
     tet = dp(w, o + 0o14)
     r, v = kepler(true, (tet - int(t0)) * 0.01)
     pos = [dp(w, o + 0o32 + 2 * i) * 2.0 ** -1 + dp(w, o + 0o16 + 2 * i) * 2.0 ** -10 for i in range(3)]
@@ -228,21 +233,23 @@ def compare(name, m, cs, keys, env, drop=''):
                      vn_error_mps=dict(harness=round(h_err[1], 3), other_clock=round(o_err[1], 3),
                                        x86=round(x_err[1], 3)))
     ok = r.returncode == 0 and hw[modreg] == xw[modreg] and d_rn <= rn_tol and d_vn <= vn_tol and words <= words_tol
-    oth, oth_line = None, ''
+    blocks, block_line = None, ''
     if 'FLIGHT_RR' in env:
-        h_o, o_o, x_o = (other_errors(m, env, w) for w in (hw, sw, xw))
-        o_rn_tol = SPREAD_K * max(h_o[0], o_o[0]) + RN_FLOOR
-        o_vn_tol = SPREAD_K * max(h_o[1], o_o[1]) + VN_FLOOR
-        o_tet_min = min(h_o[2], o_o[2]) - TET_BEHIND
-        ok = ok and x_o[0] <= o_rn_tol and x_o[1] <= o_vn_tol and x_o[2] >= o_tet_min
-        oth = dict(tet_cs=dict(harness=h_o[2], other_clock=o_o[2], x86=x_o[2], at_least=o_tet_min),
-                   rn_error_m=dict(harness=round(h_o[0], 1), other_clock=round(o_o[0], 1), x86=round(x_o[0], 1),
-                                   limit=round(o_rn_tol, 1)),
-                   vn_error_mps=dict(harness=round(h_o[1], 3), other_clock=round(o_o[1], 3), x86=round(x_o[1], 3),
-                                     limit=round(o_vn_tol, 3)))
-        oth_line = (f"; other vehicle at {x_o[2]} cs (at least {o_tet_min}; the harness's {h_o[2]}, {o_o[2]}), "
-                    f"{x_o[0]:.1f} m from the true orbit (limit {o_rn_tol:.0f}), {x_o[1]:.2f} m/s "
-                    f"(limit {o_vn_tol:.2f})")
+        blocks = {}
+        for veh in BLOCKS:
+            h_o, o_o, x_o = (block_errors(veh, env, w) for w in (hw, sw, xw))
+            o_rn_tol = max(h_o[0], o_o[0]) + RN_FLOOR
+            o_vn_tol = max(h_o[1], o_o[1]) + VN_FLOOR
+            o_tet_min = min(h_o[2], o_o[2]) - TET_BEHIND
+            ok = ok and x_o[0] <= o_rn_tol and x_o[1] <= o_vn_tol and x_o[2] >= o_tet_min
+            blocks[veh] = dict(tet_cs=dict(harness=h_o[2], other_clock=o_o[2], x86=x_o[2], at_least=o_tet_min),
+                               rn_error_m=dict(harness=round(h_o[0], 1), other_clock=round(o_o[0], 1),
+                                               x86=round(x_o[0], 1), limit=round(o_rn_tol, 1)),
+                               vn_error_mps=dict(harness=round(h_o[1], 3), other_clock=round(o_o[1], 3),
+                                                 x86=round(x_o[1], 3), limit=round(o_vn_tol, 3)))
+            block_line += (f"; {veh.upper()} block at {x_o[2]} cs (at least {o_tet_min}; the harness's {h_o[2]}, "
+                           f"{o_o[2]}), {x_o[0]:.1f} m from the true orbit (limit {o_rn_tol:.0f}), {x_o[1]:.2f} m/s "
+                           f"(limit {o_vn_tol:.2f})")
     if truth:
         line = (f"{name}: at {at} cs major mode {hw[modreg]:02o}/{xw[modreg]:02o} (harness/x86), "
                 f"RN {d_rn:.1f} m from the true orbit (limit {rn_tol:.0f}), VN {d_vn:.2f} m/s (limit {vn_tol:.2f}), "
@@ -253,14 +260,14 @@ def compare(name, m, cs, keys, env, drop=''):
                 f"RN {d_rn:.1f} m apart (limit {rn_tol:.0f}), VN {d_vn:.2f} m/s (limit {vn_tol:.2f}), "
                 f"{words} words differ (limit {words_tol}; the harness's clocks: RN {s_rn:.1f} m, VN {s_vn:.3f} m/s, "
                 f"{spread_words} words)")
-    line += oth_line
+    line += block_line
     return dict(scenario=name, mission=m, centisecond=at, x86_exit=r.returncode,
                 major_mode=dict(harness=f'{hw[modreg]:02o}', x86=f'{xw[modreg]:02o}'),
                 rn_metres=dict(harness=[round(v, 1) for v in state['rn'][0]], x86=[round(v, 1) for v in state['rn'][2]],
                                difference=round(d_rn, 1), spread=round(s_rn, 1), limit=round(rn_tol, 1)),
                 vn_mps=dict(harness=[round(v, 2) for v in state['vn'][0]], x86=[round(v, 2) for v in state['vn'][2]],
                             difference=round(d_vn, 3), spread=round(s_vn, 3), limit=round(vn_tol, 3)),
-                words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, other_vehicle=oth, inputs=env,
+                words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, state_blocks=blocks, inputs=env,
                 line=line), ok
 
 

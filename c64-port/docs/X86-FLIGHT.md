@@ -104,14 +104,15 @@ The x86 program runs them with the same settings and at the same points as the h
 
 With the rendezvous radar, the own state vector and its time (PIPTIME) move by amounts that depend on when each mark falls. Two good runs can then hold state vectors hundreds of kilometres apart, each correct for its own time. On LM P78 the harness's is at PIPTIME 19,234 cs and the x86 program's at 41,786, 369 km apart, and each is within 90 m of the true orbit. So when the harness's two clocks leave the state vector at different times, each run's state vector is compared with the true orbit at its own PIPTIME. The x86 program's error must be within 4 times the larger of the harness's two errors, plus 50 m and 0.15 m/s.
 
-That own state only coasts, so it can't see the radar: with the radar off it stays as close to the true orbit. So every `FLIGHT_RR` scenario also checks the other vehicle's state, the one the marks update (the LM's CSM block at 01554, the CM's LM block at 01626: the conic RCV/VCV plus the deviation DELTA/NUV at its time TETOTHER). It is compared with the true orbit at TETOTHER, with the same limits, and TETOTHER must be no more than 1,000 cs behind the earlier of the harness's two. It may be ahead, because the x86 program marks at other times (LM P78: 41,786 against 19,234). Each of these breaks every rendezvous row on that check (x86 run only, harness unchanged):
+That check alone doesn't see the radar: with the radar off the own state stays as close to the true orbit. So every `FLIGHT_RR` scenario also checks both vehicles' permanent state blocks, the states the marks update (the CSM's at 01554 and the LM's at 01626 on both missions: the conic RCV/VCV plus the deviation DELTA/NUV at the block's time TET). Which block a mark updates is VEHUPFLG's choice: on the LM by default its own, on the CM the LM's. Each block is compared with its vehicle's true orbit at its TET. Its error may exceed the larger of the harness's two by at most 50 m and 0.15 m/s; the factor of 4 is left out here, because a target 300 m off moves the LM's own block by 270 to 300 m, inside 4 times the harness's error. Each TET must be no more than 1,000 cs behind the earlier of the harness's two. It may be ahead, because the x86 program marks at other times (LM P78: 41,786 against 19,234). Each of these breaks every rendezvous row on that check (x86 run only, harness unchanged):
 
 | Change to the x86 run | The five LM rows (`lm-rendezvous`, `-rr-dropout`, `-tpm`, `lm-stable-orbit`, `-lm`) | The seven CM rows (`cm-p20`, `-vhf-dropout`, `-crew-verbs`, `cm-tpi-search`, `cm-stable-orbit`, `-lm`, `cm-rendezvous-tpm`) |
 |---|---|---|
-| Radar off | TETOTHER stays at 4,704 cs | 25.9 km off, or the run stops |
-| Target moved 5 km | TETOTHER stays at 4,704 cs, or the run stops | 3.2 to 5.1 km off |
-| Sextant marks (`M`) left out | (no `M` on the LM) | 0.5 to 3.6 km off, or TETOTHER 5,800 cs too far behind (`-vhf-dropout`) |
-| Every `V33E` left out | TETOTHER stays at 4,704 cs | 1.8 km off, or the run stops |
+| Radar off | Both blocks' TET stays at 4,704 cs | The LM block 25.9 km off, or the run stops |
+| Target moved 5 km | Both TETs stay at 4,704 cs, or the run stops | The LM block 3.2 to 5.1 km off |
+| Target moved 300 m | The LM block 269 to 297 m off (limits 124 to 158) | The LM block 203 to 299 m off (limits 83 to 164) |
+| Sextant marks (`M`) left out | (no `M` on the LM) | The LM block 0.5 to 3.6 km off, or its TET 5,800 cs too far behind (`-vhf-dropout`) |
+| Every `V33E` left out | Both TETs stay at 4,704 cs | The LM block 1.8 km off, or the run stops |
 
 `lm-rendezvous-rr-dropout`'s window (19,500 to 21,000 cs) misses R22's reads on the harness's work clock and on the x86 program's, so neither run changes without it; only the harness's other clock sees it. It flies like `lm-rendezvous` with one more `V33E`, and it is not a test of a radar dropout yet (D2 owns the scenario). The CM's VHF dropout does take effect.
 
@@ -137,7 +138,7 @@ On base f499d7ee:
 
 CM P11 is outside its limits (Gaps). The tool lists it as known, with an envelope of its own: RN within 600 m and VN within 1 m/s, reaching the compare point with exit 0, the same major mode and the normal word limit. Inside that envelope it doesn't fail; outside it, it does. With the vehicle models removed, P11 ends 6,563 km off and fails. The other 12 scenarios pass.
 
-On base c78f441b, the 13 above give the same numbers. The 12 rendezvous scenarios whose state vector the marks move are compared with the true orbit, and all pass (the other vehicle's state in the next table):
+On base c78f441b, the 13 above give the same numbers. The 12 rendezvous scenarios whose state vector the marks move are compared with the true orbit, and all pass (both vehicles' state blocks in the next table):
 
 | Scenario | Major mode | RN from the true orbit (limit; harness's larger error) | VN (limit; harness) | Words differing (limit; harness's clocks) |
 |---|---|---|---|---|
@@ -154,22 +155,22 @@ On base c78f441b, the 13 above give the same numbers. The 12 rendezvous scenario
 | `cm-p20-vhf-dropout` | 24 / 24 | 28 m (143; 23) | 0.11 m/s (0.59; 0.11) | 623 (757; 498) |
 | `cm-p20-crew-verbs` | 24 / 24 | 12 m (161; 28) | 0.09 m/s (0.53; 0.09) | 491 (703; 462) |
 
-The other vehicle's state, the one the marks update, in the 12 (the four CSI and CDH rows below hold it at its loaded time, 2,000 cs, within 0.4 m):
+Both vehicles' state blocks in the 12 (the four CSI and CDH rows below hold both at their loaded time, 2,000 cs, within 0.4 m). Each cell gives the block's TET in centiseconds (x86; at least; the harness's two), then its error from the true orbit (limit):
 
-| Scenario | TETOTHER x86 (at least; harness's two) | Position from the true orbit (limit; harness's two) | Velocity (limit; harness's two) |
-|---|---|---|---|
-| `cm-p20` | 18,024 (17,379; 18,379, 18,466) | 24 m (222; 43, 32) | 0.24 m/s (3.36; 0.19, 0.80) |
-| `lm-rendezvous` | 31,122 (30,245; 31,245, 31,275) | 21 m (149; 25, 21) | 0.12 m/s (0.62; 0.12, 0.11) |
-| `lm-rendezvous-rr-dropout` | 31,122 (30,245; 31,245, 31,275) | 21 m (149; 25, 21) | 0.12 m/s (0.62; 0.12, 0.11) |
-| `lm-rendezvous-tpm` | 57,526 (46,273; 58,881, 47,273) | 64 m (329; 70, 54) | 0.23 m/s (1.70; 0.24, 0.39) |
-| `lm-stable-orbit` | 41,786 (18,234; 19,234, 20,162) | 28 m (112; 15, 15) | 0.16 m/s (0.43; 0.07, 0.07) |
-| `lm-stable-orbit-lm` | 41,811 (18,231; 19,231, 20,161) | 46 m (110; 15, 9) | 0.16 m/s (0.43; 0.07, 0.07) |
-| `cm-rendezvous-tpm` | 24,293 (23,510; 24,510, 24,798) | 127 m (507; 114, 102) | 0.48 m/s (2.45; 0.40, 0.57) |
-| `cm-stable-orbit` | 18,024 (17,379; 18,379, 18,466) | 24 m (222; 43, 32) | 0.24 m/s (3.36; 0.19, 0.80) |
-| `cm-stable-orbit-lm` | 18,024 (17,379; 18,379, 18,466) | 24 m (222; 43, 32) | 0.24 m/s (3.36; 0.19, 0.80) |
-| `cm-tpi-search` | 18,024 (17,379; 18,379, 18,466) | 24 m (222; 43, 32) | 0.24 m/s (3.36; 0.19, 0.80) |
-| `cm-p20-vhf-dropout` | 30,348 (23,434; 24,434, 24,509) | 62 m (191; 35, 10) | 0.40 m/s (1.71; 0.21, 0.39) |
-| `cm-p20-crew-verbs` | 24,292 (23,511; 24,511, 24,794) | 29 m (181; 31, 33) | 0.24 m/s (1.83; 0.23, 0.42) |
+| Scenario | CSM block | LM block |
+|---|---|---|
+| `cm-p20` | TET 18,024 (17,379; 18,379, 18,466); 14 m (74), 0.07 m/s (0.21) | TET 18,024 (17,379; 18,379, 18,466); 24 m (93), 0.24 m/s (0.95) |
+| `lm-rendezvous` | TET 31,122 (30,245; 31,245, 31,275); 21 m (75), 0.12 m/s (0.27) | TET 31,122 (30,245; 31,245, 31,275); 15 m (124), 0.20 m/s (0.38) |
+| `lm-rendezvous-rr-dropout` | TET 31,122 (30,245; 31,245, 31,275); 21 m (75), 0.12 m/s (0.27) | TET 31,122 (30,245; 31,245, 31,275); 15 m (149), 0.20 m/s (0.38) |
+| `lm-rendezvous-tpm` | TET 57,526 (46,273; 58,881, 47,273); 64 m (120), 0.23 m/s (0.54) | TET 57,526 (46,273; 58,881, 47,273); 61 m (158), 0.25 m/s (0.41) |
+| `lm-stable-orbit` | TET 41,786 (18,234; 19,234, 20,162); 28 m (65), 0.16 m/s (0.22) | TET 41,786 (18,234; 19,234, 20,162); 86 m (133), 0.22 m/s (0.39) |
+| `lm-stable-orbit-lm` | TET 41,811 (18,231; 19,231, 20,161); 46 m (65), 0.16 m/s (0.22) | TET 41,811 (18,231; 19,231, 20,161); 108 m (155), 0.28 m/s (0.44) |
+| `cm-rendezvous-tpm` | TET 24,293 (23,510; 24,510, 24,798); 12 m (75), 0.09 m/s (0.24) | TET 24,293 (23,510; 24,510, 24,798); 127 m (164), 0.48 m/s (0.72) |
+| `cm-stable-orbit` | TET 18,024 (17,379; 18,379, 18,466); 14 m (74), 0.07 m/s (0.21) | TET 18,024 (17,379; 18,379, 18,466); 24 m (93), 0.24 m/s (0.95) |
+| `cm-stable-orbit-lm` | TET 18,024 (17,379; 18,379, 18,466); 14 m (74), 0.07 m/s (0.21) | TET 18,024 (17,379; 18,379, 18,466); 24 m (93), 0.24 m/s (0.95) |
+| `cm-tpi-search` | TET 18,024 (17,379; 18,379, 18,466); 14 m (74), 0.07 m/s (0.21) | TET 18,024 (17,379; 18,379, 18,466); 24 m (93), 0.24 m/s (0.95) |
+| `cm-p20-vhf-dropout` | TET 30,348 (29,554; 30,554, 30,688); 28 m (73), 0.11 m/s (0.26) | TET 30,348 (23,434; 24,434, 24,509); 62 m (85), 0.40 m/s (0.54) |
+| `cm-p20-crew-verbs` | TET 24,292 (23,511; 24,511, 24,794); 11 m (78), 0.09 m/s (0.24) | TET 24,292 (23,511; 24,511, 24,794); 29 m (83), 0.24 m/s (0.57) |
 
 The ten others added since pass on the direct comparison. Four of them are rendezvous scenarios that load a state and move it no further before the compare point (CSI, CDH):
 
