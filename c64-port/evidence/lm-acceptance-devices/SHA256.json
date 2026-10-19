@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-acceptance-devices",
+  "release": "evidence-lm-acceptance-devices",
+  "files": {
+    "host-summary.json": {
+      "sha256": "201351081813c8bdf1ae98b2fe5fc41afdd3ff9767a51a529d323a58a38d8ab9",
+      "bytes": 139635,
+      "store": "tree"
+    },
+    "lm-landing-ascent-nassp-140000.json": {
+      "sha256": "a9e930e2019f86dd6fa06739784a0d35460121141fec7398a5b56b4c9c7da0ba",
+      "bytes": 8590,
+      "store": "tree"
+    },
+    "lm-p52-realign-4200.json": {
+      "sha256": "268bf958ec6552447733caff207b6234fc8890fe6693b8a5cd9e87160323b376",
+      "bytes": 30740,
+      "store": "tree"
+    },
+    "lm-p57-15950.json": {
+      "sha256": "0a38599d9812e91915a564a894fa5eeacf0afc9137df26a994bf7efec6c070a6",
+      "bytes": 10762,
+      "store": "tree"
+    },
+    "lm-p63-descent-thrust-17500.json": {
+      "sha256": "96556da4cb2f73dc32d5b4130e14a30a3fbf60e557e6ee07278fda7b04a865ac",
+      "bytes": 10530,
+      "store": "tree"
+    },
+    "lm-p63-lr-update-61000.json": {
+      "sha256": "98eefd55b3c09ce60cbd561152733a0092a3dd034cb06d84b00d2f71bd1bce7e",
+      "bytes": 4353,
+      "store": "tree"
+    },
+    "lm-uplink-reject-1950.json": {
+      "sha256": "529f88d363388695d39a526c30bbf6d67cc3404daf9032643909c00009540b88",
+      "bytes": 6940,
+      "store": "tree"
+    }
+  }
+}

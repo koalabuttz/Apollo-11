@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-acceptance-devices",
+  "release": "evidence-cm-acceptance-devices",
+  "files": {
+    "cm-p40-70660.json": {
+      "sha256": "faf3312eca4511a88800c6bd789fcc8df24ddbe33f8886ee474dece2825fdac8",
+      "bytes": 16633,
+      "store": "tree"
+    },
+    "cm-p52-9950.json": {
+      "sha256": "909114ffaa9881cab6fc0ea15858bc65fcf323bdd1954612ae971e2d7075da5a",
+      "bytes": 14280,
+      "store": "tree"
+    },
+    "cm-tei-4450.json": {
+      "sha256": "585dca7a0f2f9395bcb8a0cf5b781e4bba39e7bda9f355ccd6ba19b6e83dfbfa",
+      "bytes": 14521,
+      "store": "tree"
+    },
+    "cm-tei-52000.json": {
+      "sha256": "8cf7f5fe512dbf4ade0ed1f4cf2a1e9216a4cf0e6651a176e638dc033e424422",
+      "bytes": 36834,
+      "store": "tree"
+    },
+    "host-summary.json": {
+      "sha256": "201351081813c8bdf1ae98b2fe5fc41afdd3ff9767a51a529d323a58a38d8ab9",
+      "bytes": 139635,
+      "store": "tree"
+    }
+  }
+}
