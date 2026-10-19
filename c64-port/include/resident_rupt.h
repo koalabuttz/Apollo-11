@@ -38,6 +38,13 @@ enum {
     RK_RUPT_UP, RK_RUPT_DOWN, RK_RUPT_RADAR, RK_RUPT_HAND
 };
 #define RK_RUPT_BIT(request) ((uint16_t)(1u << (request)))
+/* RK_DOWNRUPT=1 (the flight program on its disk): the timers request
+ * DOWNRUPT every 20 ms of AGC time, whenever SCALER1 (channel 4) passes a
+ * multiple of 64 counts, the rule tools/flight_downlink.h applies on the
+ * host. Off by default: the --replay windows run without downlink. */
+#ifndef RK_DOWNRUPT
+#define RK_DOWNRUPT 0
+#endif
 enum { RK_PHASE_T4, RK_PHASE_T3, RK_PHASE_T5 };
 void rk_timer_phase(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending, uint8_t phase);
 void rk_timer_tick(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending);

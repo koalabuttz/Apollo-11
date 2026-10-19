@@ -466,7 +466,7 @@ def main():
             link_resident(a.cc, m, f'check-{part}', ['platform/c64/resident_flight_check.c', *CHECK_SOURCES[part]],
                           ['-DRK_RUNS_ONLY', '-DRK_NO_DIRECT', f'-DRK_PART={part}', f'-DRK_SERVICES_VERSION={CHECK_SERVICES:#06x}u'],
                           CHECKS)
-        report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', FLIGHT_MAIN, ['-DRK_DSKY=1']))
+        report[m] = measure(a.cc, m, link_resident(a.cc, m, 'resident', FLIGHT_MAIN, ['-DRK_DSKY=1', '-DRK_DOWNRUPT=1']))
     (ROOT / OUT / 'sizes.json').write_text(json.dumps(report, indent=1) + '\n')
     if a.json:
         print(json.dumps(report, indent=1))
