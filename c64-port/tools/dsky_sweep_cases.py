@@ -38,7 +38,9 @@ def cases():
         out += [(m, k, CS) for k in ('V32E', 'V33E', 'V34E', 'V35E', 'V36E', 'V37E00E', 'V37E06E', 'V37E12E',
                                      'V82E', 'V83E', 'V16N36EV32E', 'V27N02E02000E',
                                      'V01N01E01000EV01N15E', 'V05N01E01000EV05N15E', 'V21N01E00010E',
-                                     'V16N36EK', 'V16N36EKR', 'V05N09EC')]
+                                     'V16N36EK', 'V16N36EKR', 'V05N09EC',
+                                     # an 8 or 9 in an octal load: OPR ERR (89TEST)
+                                     'V21N01E8', 'V21N01E00009E', 'V25N01E00008E', 'V21N01E00008ER')]
     return out
 
 

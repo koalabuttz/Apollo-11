@@ -68,7 +68,7 @@ LANEC_PIN_C64_SRC = $(LANEC_PW_C64_SRC) src/lanec_pin_routines.c src/lanec_pin_t
 # modules run on the C64 in their own pw-* programs and through the flight
 # store (vice-lanec-pin-flight, module-test-lanec-pin-keys), and the record
 # pools those programs' arcs (--pool, evidence/lanec-pin-cert/lanec-pin-c64-cover.json).
-LANEC_PIN_C64_TOO_BIG = $(foreach h,decount_lm dpout_cm lamp_cm lamp_lm load_cm load_lm minsec_lm nvsub_cm nvsub_lm \
+LANEC_PIN_C64_TOO_BIG = pin_gaps_cm $(foreach h,decount_lm dpout_cm lamp_cm lamp_lm load_cm load_lm minsec_lm nvsub_cm nvsub_lm \
   proceed_cm proceed_lm release_cm release_lm request_cm request_lm twoint_lm,pin_head_$(h)) pin_key_labels_cm pin_key_labels_lm pin_keys_cm \
   pin_keys_lm pw_address_request_cm pw_address_request_lm pw_fixed_display_cm pw_fixed_display_lm \
   pw_hours_output_cm pw_hours_output_lm pw_jam_control_cm \

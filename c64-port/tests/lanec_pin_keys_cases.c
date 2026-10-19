@@ -5,7 +5,9 @@
  * are covered. pin-keys starts at CHARIN; pin-key-labels starts at the key's
  * label, where CHARIN's dispatch leaves the same states. Every fourth pair replaces
  * CADRSTOR with +0, -0 or another full value, so all four CCS branches and
- * the KEY REL light run for every key. */
+ * the KEY REL light run for every key. Every eighth pair of the number
+ * sources keys an 8 or 9, half of them in an octal load (89TEST's OPR ERR)
+ * and some with DSPCOUNT negative or -0 (the load is blocked). */
 #include <string.h>
 #include "lanec_pw.h"
 #include "lanec_pin_keys.h"
@@ -33,6 +35,11 @@ static void make_case(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_m
     { enum lanec_mission mission = m->mission; memset(m, 0, sizeof *m); m->mission = mission; }
     if ((n / 2u) % SOURCES == SOURCES - 1u)     /* the alarm codes 12-17, 23-30, 35 */
         w[LANEC_LM_MPAC] = (uint16_t)(pair % 3u == 0u ? 012u + pair % 6u : pair % 3u == 1u ? 023u + pair % 6u : 035u);
+    if (((n / 2u) % SOURCES == 2u || (n / 2u) % SOURCES == 7u) && pair % 8u == 7u) {   /* 8 or 9 at 89TEST */
+        w[LANEC_LM_MPAC] = (uint16_t)(010u + (pair / 8u) % 2u);
+        if ((pair / 16u) % 2u == 0u) w[LANEC_LM_DECBRNCH] &= (uint16_t)~3u;   /* an octal load: OPR ERR */
+        if ((pair / 32u) % 4u == 3u) w[LANEC_LM_DSPCOUNT] = (uint16_t)(077776u + (pair / 64u) % 2u);   /* blocked */
+    }
     switch (pair % 8u) {
     case 1: w[LANEC_LM_CADRSTOR] = 0u; break;
     case 3: w[LANEC_LM_CADRSTOR] = 077777u; break;

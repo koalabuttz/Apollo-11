@@ -246,6 +246,17 @@ static enum exec_status chain(const agc_native_program *p, apollo_overlay_state 
  * module test loads (INTER-BANK, Pinball and the keypress modules), not the
  * DI or Executive tables. */
 static uint8_t flight_tables;
+/* The flight store's tables read the rope through the program's fixed_data
+ * (SUPDACAL, from DSPFMEM), so the flight suites give the host the same. */
+static enum lanec_mission rope_mission;
+/* The harness's reader, taken before the trampoline points lanec_fixed_read
+ * at the program's fixed_data (this function). */
+static bool (*rope_read)(enum lanec_mission, uint16_t, agc_word *);
+static bool rope(const agc_native_program *p, uint16_t physical, agc_word *word)
+{
+    (void)p;
+    return rope_read && rope_read(rope_mission, physical, word);
+}
 
 /* At most max_steps routines. */
 enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission, uint16_t stop,
@@ -265,6 +276,10 @@ enum exec_status lanec_pin_chain_max(apollo_overlay_state *s, lanec_io *io, enum
     program.interpreter_fetch = AGC_TRANSFER_NONE; program.loc = 0164u; program.bankset = 0165u;
     program.hardware = &hardware;
     hardware.channel11 = io->channel[011];
+    if (flight_tables) {
+        if (!rope_read) rope_read = lanec_fixed_read;
+        rope_mission = mission; program.fixed_data = rope;
+    }
     if (mission == LANEC_LM) {
         tables[0] = lm_interbank_routines; tables[1] = lanec_di_lm_routines; tables[2] = lanec_pin_lm_routines;
         tables[3] = lm_exec_routines; tables[4] = lm_exec_job_routines;
