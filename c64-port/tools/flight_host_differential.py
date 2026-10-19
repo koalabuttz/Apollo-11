@@ -828,6 +828,13 @@ def build(cc, m, engine):
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
                     '-c', 'tools/flight_host_run.c', '-o', str(_tmp(obj))], cwd=ROOT, check=True)
     os.replace(_tmp(obj), obj)
+    # Every host/*.o is linked: refuse objects left from another checkout
+    # or source (10-19: a pre-#734 flight_io.o failed the CM channel compare).
+    import flight_store_build
+    stale = flight_store_build.stale_host_objects()
+    if stale:
+        raise SystemExit(f'{len(stale)} host objects are stale ({", ".join(stale[:5])}...): '
+                         'run tools/flight_store_build.py --host-only first')
     objs = sorted(str(p) for p in (OUT / 'host').glob('*.o'))
     subprocess.run([cc, str(obj), *objs, str(engine), str(YAAGC / 'agc_engine_init.o'),
                     str(YAAGC / 'rfopen.o'), '-Wl,--gc-sections', '-lm', '-o', str(_tmp(exe))], cwd=ROOT, check=True)
