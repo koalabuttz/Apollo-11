@@ -81,7 +81,8 @@
      49000,
      1000
     ]
-   ]
+   ],
+   "note": "lm-p47-nassp 2950 is #674-blocked (stop at 41,3321 MONDO is a native entry on the #674 head); rerun after #674 merges."
   },
   {
    "section": "Output channels",
@@ -176,7 +177,8 @@
      99500,
      1000
     ]
-   ]
+   ],
+   "note": "lm-p63-v60-nassp 99500 is #674-blocked (stop at 00002 is basic 50,2002, removed by the EV TC Q fix in #674); rerun after #674 merges."
   },
   {
    "section": "Output channels",
