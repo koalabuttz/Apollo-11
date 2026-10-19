@@ -90,7 +90,16 @@ KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the har
          # jump at 5,800. The state vector is the same.
          'lm-p52-imu-cage': dict(reason="the cage reaches the DAP at the x86 program's sample point 3,000 cs and the "
                                         "harness's 3,002, so the DAP's trap counts and jet words differ",
-                                 rn=50.0, vn=0.15, words=32)}   # measured 26 words against 25
+                                 rn=50.0, vn=0.15, words=32),   # measured 26 words against 25
+         # The marks fall at other times: both state blocks at 30,348 cs
+         # against the harness's 30,669 and 30,678, each within its limits
+         # of the true orbit. So the navigation words the marks write differ
+         # beyond the harness's own spread (404 words since #739 made its
+         # two clocks closer).
+         'cm-p20-vhf-dropout': dict(reason="the marks fall at other times (state blocks at 30,348 cs against the "
+                                           "harness's 30,669 and 30,678, each within its limits of the true orbit), so "
+                                           "the navigation words they write differ",
+                                    rn=129.0, vn=0.6, words=700)}   # measured 636 words against 616
 UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # A FLIGHT_CORE scenario starts from a yaAGC core dump, which the x86
 # program never reads: the harness loads it and writes its state at the
@@ -103,7 +112,8 @@ UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # refusal. Any other outcome fails, a full run included, so the entry goes
 # when the table is certified or the point keyed. With 'resume', the rest
 # is then flown from the harness's state at that centisecond (X86_START)
-# and compared as any scenario.
+# and compared as any scenario; with 'then' instead, that resumed run must
+# stop at the next gap ('then', a GAPS entry) in the same way.
 DECDSP = dict(reason="LM P33's decimal display (DECDSP, 41,2523) is in Pinball, whose LM certificate is pending "
                      "(Lane C)",
               stop='no routine at basic 41,2523 (Z 02523 FB 62000) at 2508 cs',
@@ -117,14 +127,26 @@ DECDSP = dict(reason="LM P33's decimal display (DECDSP, 41,2523) is in Pinball, 
 BURN_EXIT = dict(reason="lm_burn_baby keys no EXIT return at 36,2237: tools/flight_exit_returns.py names BURN_BABY_BURN's "
                         "listing file wrongly (sent to the steward)",
                  point='no routine at basic 36,2237 (Z 02237 FB 74000)', refusal='basic  36,2237: 1 arrivals, 1 slots\n',
-                 resume=20000)
+                 resume=10000)
 P47_PINBALL = dict(reason="LM P47's display (Pinball, 41,3321) is in Pinball, whose LM certificate is pending (Lane C)",
                    stop='no routine at basic 41,3321 (Z 03321 FB 62000) at 4120 cs',
                    refusal='basic  41,3321: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
-GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP, 'lm-p47-nassp': P47_PINBALL,
+# A basic point at erasable 2 (Z 00002, FB 66000) that no table keys; the
+# harness bridges it (sent to the steward).
+Z2 = dict(reason='no table keys the basic point Z 00002 FB 66000 (50,2002); the harness bridges it (sent to the steward)',
+          point='no routine at basic 50,2002 (Z 00002 FB 66000)', refusal='basic  50,2002: 1 arrivals, 1 slots\n')
+V55_PINBALL = dict(reason="V55's display (Pinball, 42,3452) is in Pinball, whose LM certificate is pending (Lane C)",
+                   stop='no routine at basic 42,3452 (Z 03452 FB 64000) at 4000 cs',
+                   refusal='basic  42,3452: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
+P65_PINBALL = dict(reason="P65's display (Pinball, 40,2732) is in Pinball, whose LM certificate is pending (Lane C)",
+                   point='no routine at basic 40,2732 (Z 02732 FB 60000)',
+                   refusal='basic  40,2732: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
+GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP, 'lm-p47-nassp': P47_PINBALL, 'lm-coast-v55': V55_PINBALL,
+        'lm-coast-r04': Z2, 'lm-p63-v60-nassp': dict(BURN_EXIT, then=Z2),
+        'lm-p65-autoland-nassp': dict(BURN_EXIT, then=P65_PINBALL),
         **{n: BURN_EXIT for n in ('lm-p63-descent', 'lm-p63-descent-thrust', 'lm-p63-descent-restart', 'lm-p63-nassp',
-                                  'lm-p63-v60-nassp', 'lm-p63-lr-dropout', 'lm-p63-lr-update', 'lm-p63-lr-v58',
-                                  'lm-p65-autoland-nassp', 'lm-p67-nassp', 'lm-landing-ascent-nassp',
+                                  'lm-p63-lr-dropout', 'lm-p63-lr-update', 'lm-p63-lr-v58',
+                                  'lm-p67-nassp', 'lm-landing-ascent-nassp',
                                   'lm-abort-p70-nassp', 'lm-abort-p71-nassp')}}
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7), PIPTIME.
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
@@ -317,13 +339,14 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
                 line=line), ok
 
 
-def fly_gap(name, m, cs, keys, env):
+def fly_gap(name, m, cs, keys, env, g=None, start=0):
     """A GAPS scenario: (summary row, passed), passed only when the x86
-    program stops at the expected routine and nowhere else."""
-    g = GAPS[name]
+    program stops at the expected routine and nowhere else (from the
+    harness's state at start, when given)."""
+    g = g or GAPS[name]
     r = subprocess.run([str(xb.OUT / f'x86-flight-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
-                       env={**os.environ, **with_start(m, cs, keys, env), 'X86_SPEED': '0'}, capture_output=True,
-                       text=True)
+                       env={**os.environ, **with_start(m, cs, keys, env, start), 'X86_SPEED': '0'},
+                       capture_output=True, text=True)
     got = r.stderr.strip()
     want = g.get('stop') or g['point'] + ' at N cs'
     stopped = got == g['stop'] if 'stop' in g else re.fullmatch(re.escape(g['point']) + r' at \d+ cs', got)
@@ -331,7 +354,11 @@ def fly_gap(name, m, cs, keys, env):
     line = (f"{name}: stops as expected ({got}): {g['reason']}" if ok else
             f"{name}: expected exit 1 with \"{want}\", got exit {r.returncode}: {got[:200] or 'no stop line'}")
     row = dict(scenario=name, mission=m, gap=g['reason'], x86_exit=r.returncode, ok=ok, line=line)
-    if ok and g.get('resume'):
+    if ok and g.get('then'):
+        rest, ok = fly_gap(name, m, cs, keys, env, g['then'], g['resume'])
+        row.update(resumed=dict(rest, from_cs=g['resume']), ok=ok)
+        row['line'] = line + f"; from the harness's state at {g['resume']} cs: " + rest['line'].split(': ', 1)[1]
+    elif ok and g.get('resume'):
         rest, ok = compare(name, m, cs, keys, env, resume=g['resume'])
         row.update(resumed=dict(rest, from_cs=g['resume']), ok=ok)
         row['line'] = line + f"; from the harness's state at {g['resume']} cs: " + rest['line'].split(': ', 1)[1]
@@ -345,7 +372,9 @@ def within_known(name, row):
     if not k or 'words' not in row or row['x86_exit'] != 0:
         return None
     mm, w = row['major_mode'], row['words']
-    inside = (mm['harness'] == mm['x86'] and w['differ'] <= k.get('words', w['limit'])
+    blocks = all(b['rn_error_m']['x86'] <= b['rn_error_m']['limit'] and b['vn_error_mps']['x86'] <= b['vn_error_mps']['limit']
+                 and b['tet_cs']['x86'] >= b['tet_cs']['at_least'] for b in (row.get('state_blocks') or {}).values())
+    inside = (mm['harness'] == mm['x86'] and w['differ'] <= k.get('words', w['limit']) and blocks
               and row['rn_metres']['difference'] <= k['rn'] and row['vn_mps']['difference'] <= k['vn'])
     words = f", {k['words']} words" if 'words' in k else ''
     return f"{k['reason']} (envelope RN {k['rn']:.0f} m, VN {k['vn']} m/s{words})" if inside else None

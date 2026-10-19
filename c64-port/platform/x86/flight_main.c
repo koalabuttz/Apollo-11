@@ -15,7 +15,9 @@
  *   X86_REPORT    a JSON report: points the interpreter core ran (and why),
  *                 basic points no routine holds, steps, clock
  *   X86_SAMPLES   each centisecond's erasable memory at the first idle
- *                 ADVAN at or after it, one line of 2048 octal words
+ *                 ADVAN at or after it, after that point's inputs and
+ *                 with nothing pending (the harness's FLIGHT_SNAPSHOT),
+ *                 one line of 2048 octal words
  *   X86_SAMPLES_FROM  the first centisecond X86_SAMPLES writes (default 1)
  *   X86_DSKY=1    a live DSKY in the terminal (platform/x86/terminal_dsky.h);
  *                 with no CS argument the run goes on until q
@@ -94,14 +96,16 @@ int main(int argc, char **argv)
         }
         if (fs_sample_point(&in, &st)) {
             unsigned long t = fd_centiseconds(&st);
-            for (; next <= cs && t >= next; ++next)
+            if (fs_inputs_due(&in, &st)) continue;
+            /* As the harness's FLIGHT_SNAPSHOT: after the point's pokes,
+             * models and channel changes, and only with nothing pending. */
+            for (; next <= cs && t >= next && !st.pending; ++next)
                 if (samples && next >= from) {
                     unsigned i;
                     fprintf(samples, "%lu", next);
                     for (i = 0; i < 2048u; ++i) fprintf(samples, " %05o", (unsigned)st.s.words[i]);
                     fputc('\n', samples);
                 }
-            if (fs_inputs_due(&in, &st)) continue;
             if (live) td_read_keys(&dsky);
             if (dsky.quit) break;
             if (td_inputs_due(&dsky, &st)) continue;
