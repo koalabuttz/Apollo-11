@@ -1137,7 +1137,14 @@ port) runs one mission:
    (and with `--replay-every N` at the first one at or after every N cs
    before), both sides write their erasable words and output channels (5,
    6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
-   the base tables run on);
+   the base tables run on). Each side writes at its own sample points, so
+   the states are paired by their centiseconds, not by order: two ends
+   always pair, and a checkpoint with no state at the same centisecond on
+   the other side (a mark the host was busy through, for one) is listed
+   as unpaired and not compared. The C64's state area holds `--cs` /
+   `--replay-every` + 1 states and the C64 writes no more, and a window
+   the host ran past 16,383 cs (the C64's 14-bit window clock) fails before
+   VICE starts;
    the run fails on any difference, printing the first one, skipping what
    the host differential skips (the central registers and RUPTREG1-4;
    unlike it, the timers are compared). So a window that ran with no stops also has to match
