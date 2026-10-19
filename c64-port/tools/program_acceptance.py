@@ -30,9 +30,11 @@ host, differs with its class, or stops). A result from another commit is
 listed as stale and counts as not run (a result from an
 older commit counts when the port's sources have not changed since). The doc is rewritten on every run
 (it is cheap: no flight runs), so the auditor can refresh it after each
-rerun. It exits 1 unless every row is mapped or not exercised, every mapped
-row's scenarios match yaAGC, and every mapped row has a C64 window that
-matches the host.
+rerun. It exits 1 unless every row is mapped or not exercised (with a
+note giving the reason), every mapped row's scenarios match yaAGC, and one
+of the C64 windows a mapped row names (its `windows`: the windows its event
+falls in; no other window counts for it) matches the host at one checkpoint
+or more.
 """
 import argparse
 import hashlib
@@ -95,7 +97,7 @@ def replay_result(r):
     (a window, or a --chain run's summary)."""
     if r.get('windows') is not None:
         k = r.get('chain', len(r['windows']))
-        if r.get('ok') and len(r['windows']) == k:
+        if r.get('ok') and len(r['windows']) == k and all(w.get('replay_matched_cs') for w in r['windows']):
             return True, f'matches host (chain of {k} windows, every seam holds)'
         for n, w in enumerate(r['windows']):
             if w.get('seam'):
@@ -111,7 +113,13 @@ def replay_result(r):
     if not (r.get('reu_bounds') or {}).get('ok', True):
         return False, 'REU access outside the layout'
     if r.get('replay_differences') == 0 and r.get('replay_ended'):
+        if not r.get('replay_matched_cs'):
+            return False, 'no checkpoint compared'
+        if r.get('ok') is False:          # the run failed for a reason this tool does not name
+            return False, f"run failed ({r.get('error') or 'ok is false'})"
         return True, 'matches host'
+    if not r.get('replay_differences') and r.get('replay_ended') is False:
+        return False, 'did not reach the next checkpoint'
     first = (r.get('replay_first') or [{}])[0]
     at = first.get('at', '?')
     cls = 'clock' if at in TIMERS else 'data'
@@ -161,24 +169,38 @@ def load_replays(paths, m, commit):
     return out, stale
 
 
+def window_key(w):
+    """(scenario, start cs, chain K) of one of a row's windows: [scenario, start cs], or
+    [scenario, start cs, cs, K] for a chain (the replay_windows form)."""
+    return w[0], w[1], w[3] if len(w) > 3 else 1
+
+
+def run_key(r):
+    """(scenario, start cs, chain K) of a --replay result or chain summary."""
+    return r.get('scenario'), r.get('snap_cs'), r.get('chain') or 1
+
+
 def assess(rows, host, replays, stale_host=None):
     """Per-row verdicts and the counts."""
     out, stale_host = [], stale_host or {}
     for row in rows:
         h = {s: (False, f'stale (run at {stale_host[s]})') if s not in host and s in stale_host
              else host_result(host.get(s)) for s in row['scenarios']}
-        c = {s: [(r, *replay_result(r)) for r in replays.get(s, [])] for s in row['scenarios']}
+        named = {(s, snap, k) for s, snap, k in map(window_key, row.get('windows', []))}
+        c = {s: [(r, *replay_result(r)) for r in replays.get(s, []) if run_key(r) in named] for s in row['scenarios']}
         mapped = row['status'] == 'mapped'
+        unexplained = row['status'] == 'not exercised' and not (row.get('note') or '').strip()
         host_clean = mapped and bool(h) and all(ok for ok, _ in h.values())
         c64_match = mapped and any(match for runs in c.values() for _, match, _ in runs)
-        out.append(dict(row=row, host=h, c64=c, host_clean=host_clean, c64_match=c64_match))
+        out.append(dict(row=row, host=h, c64=c, host_clean=host_clean, c64_match=c64_match, unexplained=unexplained))
     counts = dict(rows=len(out),
                   mapped=sum(a['row']['status'] == 'mapped' for a in out),
                   not_exercised=sum(a['row']['status'] == 'not exercised' for a in out),
                   tbd=sum(a['row']['status'] not in ('mapped', 'not exercised') for a in out),
                   host_clean=sum(a['host_clean'] for a in out),
-                  c64_match=sum(a['c64_match'] for a in out))
-    counts['ok'] = (counts['tbd'] == 0 and counts['host_clean'] == counts['mapped']
+                  c64_match=sum(a['c64_match'] for a in out),
+                  unexplained=sum(a['unexplained'] for a in out))
+    counts['ok'] = (counts['tbd'] == 0 and counts['unexplained'] == 0 and counts['host_clean'] == counts['mapped']
                     and counts['c64_match'] == counts['mapped'])
     return out, counts
 
@@ -223,13 +245,14 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
              'VICE (`tools/flight_scenario_vice.py --replay`: the host\'s inputs replayed on the C64 and its '
              'state compared with the host\'s at each checkpoint).', '',
              'It passes when every row is mapped or not exercised (with its reason), every mapped row\'s '
-             'scenarios match yaAGC with no bridged point, and every mapped row has a C64 window that '
-             'matches the host. A result from a commit with other port sources (src, include, platform, tools, tests) '
+             'scenarios match yaAGC with no bridged point, and one of the C64 windows the row names (the '
+             'windows its event falls in) matches the host at one checkpoint or more. A result from a commit with other port sources (src, include, platform, tools, tests) '
              'is stale and counts as not run.', '',
              '## Counts', '',
-             '| Rows | mapped | not exercised | TBD | mapped, host matches yaAGC | mapped, a C64 window matches host |',
-             '|---|---|---|---|---|---|',
-             f"| {counts['rows']} | {counts['mapped']} | {counts['not_exercised']} | {counts['tbd']} | "
+             '| Rows | mapped | not exercised | not exercised, no reason | TBD | mapped, host matches yaAGC | '
+             'mapped, a named C64 window matches host |',
+             '|---|---|---|---|---|---|---|',
+             f"| {counts['rows']} | {counts['mapped']} | {counts['not_exercised']} | {counts['unexplained']} | {counts['tbd']} | "
              f"{counts['host_clean']} of {counts['mapped']} | {counts['c64_match']} of {counts['mapped']} |", '',
              '## Rows', '',
              '| Row | Entry | Status | Scenarios | Host vs yaAGC | C64 replay | Note |',
@@ -242,10 +265,11 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
             lines.append(f'| **{cell(section)}** | | | | | | |')
         if row['status'] != 'mapped':
             lines.append(f"| {cell(row['row'])} | {cell(row['entry'])} | {cell(row['status'])} | | | | "
-                         f"{cell(row.get('note', ''))} |")
+                         f"{cell(row.get('note') or ('no reason given (fails)' if a['unexplained'] else ''))} |")
             continue
         hosts = '; '.join(f"{s}: {t}" for s, (_, t) in a['host'].items())
-        c64 = '; '.join(f"{s} {r.get('snap_cs')}: {t}" for s, runs in a['c64'].items() for r, _, t in runs) or 'not run'
+        c64 = '; '.join(f"{s} {r.get('snap_cs')}: {t}" for s, runs in a['c64'].items() for r, _, t in runs) or \
+            ('not run' if row.get('windows') else 'no window named')
         lines.append(f"| {cell(row['row'])} | {cell(row['entry'])} | mapped | {', '.join(row['scenarios'])} | "
                      f"{cell(hosts)} | {cell(c64)} | {cell(row.get('note') or '')} |")
     used = sorted({s for a in assessed for s in a['row']['scenarios']})

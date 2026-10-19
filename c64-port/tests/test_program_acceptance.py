@@ -29,8 +29,9 @@ def replay(name, snap, differences=0, first='TIME4', status=0, commit=HEAD):
                 reu_bounds=dict(ok=True), records=[1, 2, 3])
 
 
-ROWS = [dict(row='P63', section='modes', entry='P63LM', status='mapped', scenarios=['lm-a']),
-        dict(row='P64', section='modes', entry='STARTP64', status='mapped', scenarios=['lm-a', 'lm-b']),
+ROWS = [dict(row='P63', section='modes', entry='P63LM', status='mapped', scenarios=['lm-a'], windows=[['lm-a', 0]]),
+        dict(row='P64', section='modes', entry='STARTP64', status='mapped', scenarios=['lm-a', 'lm-b'],
+             windows=[['lm-a', 0]]),
         dict(row='V45', section='verbs', entry='ALM/END', status='not exercised', scenarios=[], note='spare'),
         dict(row='V40', section='verbs', entry='VBZERO', status='TBD', scenarios=[])]
 
@@ -48,6 +49,9 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertIn('differs (clock', pa.replay_result(replay('lm-a', 0, differences=3))[1])
         self.assertIn('differs (data: first at 0107', pa.replay_result(replay('lm-a', 0, 3, first='0107'))[1])
         self.assertEqual(pa.replay_result(replay('lm-a', 0, status=2)), (False, 'stops at 12,2644'))
+        self.assertEqual(pa.replay_result(dict(replay('lm-a', 0), replay_matched_cs=[])),
+                         (False, 'no checkpoint compared'))
+        self.assertFalse(pa.replay_result(dict(replay('lm-a', 0), ok=False, error='seam'))[0])
 
     def test_chain_verdicts(self):
         w = replay('lm-a', 0)
@@ -57,6 +61,7 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertEqual(pa.replay_result(seam), (False, 'chain of 3: seam 1 fails'))
         bad = dict(good, ok=False, windows=[w, replay('lm-a', 0, differences=2)])
         self.assertIn('chain of 3: window 1 differs (clock', pa.replay_result(bad)[1])
+        self.assertFalse(pa.replay_result(dict(good, windows=[w, w, dict(w, replay_matched_cs=[])]))[0])
         short = dict(good, ok=False, windows=[w])
         self.assertEqual(pa.replay_result(short)[0], False)
         with tempfile.TemporaryDirectory() as d:
@@ -77,6 +82,22 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertEqual(counts['c64_match'], 0)
         _, counts = pa.assess(ROWS[:3], {'lm-a': host_row('lm-a')}, {})
         self.assertEqual(counts['host_clean'], 1)                      # lm-b not run
+        # Only the windows a row names give it C64 credit.
+        _, counts = pa.assess(ROWS[:3], host, {'lm-a': [replay('lm-a', 500)]})
+        self.assertEqual(counts['c64_match'], 0)
+        _, counts = pa.assess(ROWS[:3], host, {'lm-a': [dict(replay('lm-a', 0), chain=2)]})
+        self.assertEqual(counts['c64_match'], 0)                       # [lm-a, 0] is not the chain of 2
+        # A not-exercised row needs its reason.
+        _, counts = pa.assess(ROWS[:2] + [dict(ROWS[2], note=' ')], host, {'lm-a': [replay('lm-a', 0)]})
+        self.assertEqual(counts['unexplained'], 1)
+        self.assertFalse(counts['ok'])
+        # A mapped row with no scenarios, or no windows, cannot pass.
+        bare = [dict(ROWS[0], scenarios=[], windows=[]), dict(ROWS[0], windows=[])]
+        assessed, counts = pa.assess(bare, host, {'lm-a': [replay('lm-a', 0)]})
+        self.assertEqual((counts['host_clean'], counts['c64_match'], counts['ok']), (1, 0, False))
+        _, counts = pa.assess([dict(ROWS[0], windows=[['lm-a', 0, 100, 2]])], host,
+                              {'lm-a': [dict(replay('lm-a', 0), chain=2, windows=[replay('lm-a', 0)] * 2, ok=True)]})
+        self.assertEqual(counts['c64_match'], 1)                       # a row can name a chain
 
     def test_stale_inputs_are_not_counted(self):
         with tempfile.TemporaryDirectory() as d:
@@ -103,7 +124,7 @@ class ProgramAcceptance(unittest.TestCase):
             pa.write_doc('lm', assessed, counts, host, replays, {}, [], evidence, HEAD, d / 'doc.md')
             text = (d / 'doc.md').read_text()
         self.assertIn('Result: **FAIL**', text)
-        self.assertIn('| 4 | 2 | 1 | 1 | 2 of 2 | 2 of 2 |', text)
+        self.assertIn('| 4 | 2 | 1 | 0 | 1 | 2 of 2 | 2 of 2 |', text)
         self.assertIn('lm-a 0: matches host', text)
 
     def test_real_map_names_real_scenarios(self):
@@ -114,7 +135,16 @@ class ProgramAcceptance(unittest.TestCase):
             rows, windows = plan['rows'], plan['replay_windows']
             self.assertLessEqual({s for row in rows for s in row['scenarios']}, {w[0] for w in windows})
             self.assertTrue(all(w[0] in names and 0 < w[2] <= 1000 and 3 <= len(w) <= 5 for w in windows), windows)
+            planned = {(w[0], w[1], w[3] if len(w) > 3 else 1) for w in windows}
             for row in rows:
+                if row['status'] == 'mapped':
+                    self.assertTrue(row.get('windows'), row['row'])
+                    self.assertLessEqual({pa.window_key(w) for w in row['windows']}, planned, row['row'])
+                    self.assertLessEqual({w[0] for w in row['windows']}, set(row['scenarios']), row['row'])
+                else:
+                    self.assertFalse(row.get('windows'), row['row'])
+                if row['status'] == 'not exercised':
+                    self.assertTrue((row.get('note') or '').strip(), row['row'])
                 self.assertIn(row['status'], ('mapped', 'not exercised', 'TBD'), row['row'])
                 self.assertEqual(bool(row['scenarios']), row['status'] == 'mapped', row['row'])
                 self.assertLessEqual(set(row['scenarios']), names, row['row'])

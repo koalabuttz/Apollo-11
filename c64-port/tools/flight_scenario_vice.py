@@ -563,7 +563,7 @@ def main():
         first = results[0] if results else {}
         (dp.WORK / f'{a.scenario}-{a.snap_cs}-chain{a.chain}.json').write_text(json.dumps(dict(
             scenario=a.scenario, snap_cs=a.snap_cs, snap_at=first.get('snap_at'), requested_cs=a.cs, chain=a.chain,
-            ok=ok, status=0, replay_rows=sum(x.get('replay_rows', 0) for x in results),
+            ok=ok, status=next((x.get('status') for x in results if x.get('status')), 0), replay_rows=sum(x.get('replay_rows', 0) for x in results),
             replay_ended=ok, replay_differences=0 if ok else None, commit=flight_holes.source_commit(),
             reu_bounds=dict(ok=all((x.get('reu_bounds') or {}).get('ok', True) for x in results)),
             windows=[{k: x.get(k) for k in ('ok', 'status', 'at', 'seam', 'error', 'replay_differences',

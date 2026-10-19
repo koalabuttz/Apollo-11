@@ -1,7 +1,7 @@
 {
  "program": "Luminary099",
  "mission": "lm",
- "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope.",
+ "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. A mapped row's windows lists the replay windows that run the row ([scenario, start cs], or [scenario, start cs, cs, K] for a chain) (its event falls inside the window); only those windows give the row its C64 credit. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope.",
  "replay_windows": [
   [
    "lm-p63-descent",
@@ -31,6 +31,11 @@
   [
    "lm-landing-ascent-nassp",
    156000,
+   1000
+  ],
+  [
+   "lm-landing-ascent-nassp",
+   122500,
    1000
   ],
   [
@@ -144,7 +149,13 @@
     "lm-stable-orbit"
    ],
    "note": "lm-stable-orbit V37E79E (#690, d0ce93ae; FHD lm-stable-orbit)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-stable-orbit",
+     8000
+    ]
+   ]
   },
   {
    "row": "P78",
@@ -155,7 +166,13 @@
     "lm-stable-orbit"
    ],
    "note": "lm-stable-orbit V37E78E at 80 s (#690, d0ce93ae)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-stable-orbit",
+     8000
+    ]
+   ]
   },
   {
    "row": "P76",
@@ -166,7 +183,13 @@
     "lm-rendezvous-tpm"
    ],
    "note": "lm-rendezvous-tpm V37E76E (#690, d0ce93ae)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-rendezvous-tpm",
+     40000
+    ]
+   ]
   },
   {
    "row": "P75",
@@ -177,7 +200,13 @@
     "lm-rendezvous-tpm"
    ],
    "note": "lm-rendezvous-tpm V37E75E (#690, d0ce93ae)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-rendezvous-tpm",
+     40000
+    ]
+   ]
   },
   {
    "row": "P74",
@@ -188,7 +217,13 @@
     "lm-rendezvous-tpm"
    ],
    "note": "lm-rendezvous-tpm V37E74E, ELEV 206.6 (#690, d0ce93ae)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-rendezvous-tpm",
+     40000
+    ]
+   ]
   },
   {
    "row": "P73",
@@ -199,7 +234,13 @@
     "lm-cdh-csm"
    ],
    "note": "lm-cdh-csm V37E73E (#690, d0ce93ae; C64 stops at DECDSP, Lane C)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-cdh-csm",
+     2100
+    ]
+   ]
   },
   {
    "row": "P72",
@@ -210,7 +251,13 @@
     "lm-csi"
    ],
    "note": "lm-csi V37E72E after P32 (#690, d0ce93ae)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-csi",
+     2100
+    ]
+   ]
   },
   {
    "row": "P68",
@@ -221,7 +268,13 @@
     "lm-landing-ascent-nassp"
    ],
    "note": "SB 7, lm-landing-ascent-nassp, V37E68E at 136000 cs (FHD:106). p63-stops.md:94 (140000 window, P68 on the surface, no stop)",
-   "owner": "F (host), Pinball split (C64)"
+   "owner": "F (host), Pinball split (C64)",
+   "windows": [
+    [
+     "lm-landing-ascent-nassp",
+     140000
+    ]
+   ]
   },
   {
    "row": "P63",
@@ -235,7 +288,25 @@
     "lm-p63-descent-restart"
    ],
    "note": "SB 6, lm-p63-descent(-thrust) V37E63E (FHD:55, 303) and lm-p63-nassp (FHD:70). Restart: lm-p63-descent-restart, GOJAM at 200 s (FHD:324)",
-   "owner": "Pinball split"
+   "owner": "Pinball split",
+   "windows": [
+    [
+     "lm-p63-descent",
+     17500
+    ],
+    [
+     "lm-p63-descent-thrust",
+     17500
+    ],
+    [
+     "lm-p63-nassp",
+     112000
+    ],
+    [
+     "lm-p63-descent-restart",
+     20000
+    ]
+   ]
   },
   {
    "row": "P57",
@@ -246,7 +317,13 @@
     "lm-p57"
    ],
    "note": "SB 8, lm-p57 V37E57E (FHD:190; lm-p57-stops.md)",
-   "owner": "D1"
+   "owner": "D1",
+   "windows": [
+    [
+     "lm-p57",
+     12000
+    ]
+   ]
   },
   {
    "row": "P52",
@@ -257,7 +334,13 @@
     "lm-p52-realign"
    ],
    "note": "SB 4, lm-p52-realign V37E52E option 3 (FHD:85; lm-p52-stops.md)",
-   "owner": "D1b"
+   "owner": "D1b",
+   "windows": [
+    [
+     "lm-p52-realign",
+     2000
+    ]
+   ]
   },
   {
    "row": "P51",
@@ -277,7 +360,13 @@
     "lm-p47-nassp"
    ],
    "note": "V16N83 reads +X translation (#687)",
-   "owner": "E?"
+   "owner": "E?",
+   "windows": [
+    [
+     "lm-p47-nassp",
+     2950
+    ]
+   ]
   },
   {
    "row": "P42",
@@ -288,7 +377,13 @@
     "lm-p42-nassp"
    ],
    "note": "DOI on the APS after abort stage and V48 (#687)",
-   "owner": "F?"
+   "owner": "F?",
+   "windows": [
+    [
+     "lm-p42-nassp",
+     48800
+    ]
+   ]
   },
   {
    "row": "P41",
@@ -299,7 +394,13 @@
     "lm-p41-nassp"
    ],
    "note": "5 ft/s RCS trim, N85 nulled (#687)",
-   "owner": "unassigned"
+   "owner": "unassigned",
+   "windows": [
+    [
+     "lm-p41-nassp",
+     49000
+    ]
+   ]
   },
   {
    "row": "P40",
@@ -310,7 +411,13 @@
     "lm-doi-nassp"
    ],
    "note": "SB 5, lm-doi-nassp V37E40E, DPS 75 s to cutoff (FHD:206; lm-doi-stops.md)",
-   "owner": "E"
+   "owner": "E",
+   "windows": [
+    [
+     "lm-doi-nassp",
+     48800
+    ]
+   ]
   },
   {
    "row": "P39",
@@ -321,7 +428,13 @@
     "lm-stable-orbit-lm"
    ],
    "note": "lm-stable-orbit-lm V37E39E (#690, d0ce93ae)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-stable-orbit-lm",
+     8000
+    ]
+   ]
   },
   {
    "row": "P38",
@@ -332,7 +445,13 @@
     "lm-stable-orbit-lm"
    ],
    "note": "lm-stable-orbit-lm V37E38E (#690, d0ce93ae)",
-   "owner": "D2?"
+   "owner": "D2?",
+   "windows": [
+    [
+     "lm-stable-orbit-lm",
+     8000
+    ]
+   ]
   },
   {
    "row": "P35",
@@ -343,7 +462,13 @@
     "lm-rendezvous-tpm"
    ],
    "note": "lm-rendezvous-tpm V37E35E at 400 s (#690, d0ce93ae)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous-tpm",
+     40000
+    ]
+   ]
   },
   {
    "row": "P34",
@@ -354,7 +479,13 @@
     "lm-rendezvous"
    ],
    "note": "SB 10, lm-rendezvous V37E34E at 290 s (FHD:255; lm-rendezvous-stops.md)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous",
+     29000
+    ]
+   ]
   },
   {
    "row": "P33",
@@ -365,7 +496,13 @@
     "lm-cdh"
    ],
    "note": "lm-cdh V37E33E (#690, d0ce93ae; C64 stops at DECDSP, Lane C)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-cdh",
+     2100
+    ]
+   ]
   },
   {
    "row": "P32",
@@ -376,7 +513,13 @@
     "lm-csi"
    ],
    "note": "lm-csi V37E32E (#690, d0ce93ae; C64 replay 2100+800 matches host)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-csi",
+     2100
+    ]
+   ]
   },
   {
    "row": "P31",
@@ -396,7 +539,13 @@
     "lm-doi-nassp"
    ],
    "note": "SB 5, lm-doi-nassp V37E30E (FHD:206; lm-doi-stops.md)",
-   "owner": "E"
+   "owner": "E",
+   "windows": [
+    [
+     "lm-doi-nassp",
+     48800
+    ]
+   ]
   },
   {
    "row": "P25",
@@ -434,7 +583,13 @@
     "lm-rendezvous"
    ],
    "note": "SB 10, lm-rendezvous V37E20E (FHD:255; lm-rendezvous-stops.md)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous",
+     29000
+    ]
+   ]
   },
   {
    "row": "P12",
@@ -445,7 +600,13 @@
     "lm-landing-ascent-nassp"
    ],
    "note": "SB 9, lm-landing-ascent-nassp V37E12E at 148000 cs (FHD:106; lm-p12-stops.md). Also the scaled-time V37E12E runs (FHD:337-339)",
-   "owner": "F"
+   "owner": "F",
+   "windows": [
+    [
+     "lm-landing-ascent-nassp",
+     156000
+    ]
+   ]
   },
   {
    "row": "P06",
@@ -468,7 +629,21 @@
     "lm-p52-realign"
    ],
    "note": "V37E00E in lm-p57 (FHD:190), lm-doi (FHD:206), lm-landing-ascent at 142000 cs (FHD:106), the plain differential run (FHD:35-37)",
-   "owner": "C?"
+   "owner": "C?",
+   "windows": [
+    [
+     "lm-p57",
+     12000
+    ],
+    [
+     "lm-doi-nassp",
+     48800
+    ],
+    [
+     "lm-p52-realign",
+     2000
+    ]
+   ]
   },
   {
    "row": "P64",
@@ -482,7 +657,21 @@
     "lm-abort-p71-nassp"
    ],
    "note": "SB 7, lm-p63-nassp / landing-ascent reaches P64 at about 1,118 s (FHD:65-70, 106). Aborts from P64: SB 14",
-   "owner": "F (host), Pinball split (C64)"
+   "owner": "F (host), Pinball split (C64)",
+   "windows": [
+    [
+     "lm-p63-nassp",
+     112000
+    ],
+    [
+     "lm-abort-p70-nassp",
+     115000
+    ],
+    [
+     "lm-abort-p71-nassp",
+     115000
+    ]
+   ]
   },
   {
    "row": "P65",
@@ -493,7 +682,13 @@
     "lm-p65-autoland-nassp"
    ],
    "note": "P64 low gate starts P65; lands, P68, P00 (#687)",
-   "owner": "F?"
+   "owner": "F?",
+   "windows": [
+    [
+     "lm-p65-autoland-nassp",
+     127000
+    ]
+   ]
   },
   {
    "row": "P66",
@@ -504,7 +699,13 @@
     "lm-landing-ascent-nassp"
    ],
    "note": "SB 7, attitude hold plus ROD clicks at 122700 cs (FHD:106; p63-stops.md:107)",
-   "owner": "F (host), Pinball split (C64)"
+   "owner": "F (host), Pinball split (C64)",
+   "windows": [
+    [
+     "lm-landing-ascent-nassp",
+     122500
+    ]
+   ]
   },
   {
    "row": "P67",
@@ -515,7 +716,13 @@
     "lm-p67-nassp"
    ],
    "note": "manual throttle in P66 enters P67, then P66 again (#687)",
-   "owner": "F?"
+   "owner": "F?",
+   "windows": [
+    [
+     "lm-p67-nassp",
+     123800
+    ]
+   ]
   },
   {
    "row": "P70",
@@ -526,7 +733,13 @@
     "lm-abort-p70-nassp"
    ],
    "note": "SB 14, lm-abort-p70-nassp, ABORT at 1,150 s (FHD:108-117, 320; lm-abort-stops.md)",
-   "owner": "A"
+   "owner": "A",
+   "windows": [
+    [
+     "lm-abort-p70-nassp",
+     115000
+    ]
+   ]
   },
   {
    "row": "P71",
@@ -537,7 +750,13 @@
     "lm-abort-p71-nassp"
    ],
    "note": "SB 14, lm-abort-p71-nassp (FHD:118, 321; lm-abort-stops.md)",
-   "owner": "A"
+   "owner": "A",
+   "windows": [
+    [
+     "lm-abort-p71-nassp",
+     115000
+    ]
+   ]
   },
   {
    "row": "P07",
@@ -575,7 +794,13 @@
     "lm-doi-nassp"
    ],
    "note": "SB 5, lm-doi V82E at 60000 cs (FHD:206; lm-doi-stops.md)",
-   "owner": "E"
+   "owner": "E",
+   "windows": [
+    [
+     "lm-doi-nassp",
+     48800
+    ]
+   ]
   },
   {
    "row": "R31 (V83)",
@@ -586,7 +811,13 @@
     "lm-rendezvous-tpm"
    ],
    "note": "lm-rendezvous-tpm V83E at 200 s (#690, d0ce93ae)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous-tpm",
+     40000
+    ]
+   ]
   },
   {
    "row": "R60",
@@ -599,7 +830,21 @@
     "lm-p52-realign"
    ],
    "note": "SB 6 (lm-p63-descent \"ENTER on the attitude maneuver (R60)\", FHD:43-47), SB 5 (lm-doi ENTER on V50N18), SB 4 (lm-p52-stops.md)",
-   "owner": "Pinball split / E / D1b"
+   "owner": "Pinball split / E / D1b",
+   "windows": [
+    [
+     "lm-p63-descent",
+     17500
+    ],
+    [
+     "lm-doi-nassp",
+     48800
+    ],
+    [
+     "lm-p52-realign",
+     2000
+    ]
+   ]
   },
   {
    "row": "R61",
@@ -610,7 +855,13 @@
     "lm-rendezvous"
    ],
    "note": "SB 10, lm-rendezvous (FHD:241-250; lm-rendezvous-stops.md)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous",
+     29000
+    ]
+   ]
   },
   {
    "row": "R62 (V49)",
@@ -648,7 +899,13 @@
     "lm-rendezvous"
    ],
    "note": "R65LEM runs in lm-rendezvous (Lane F host check, 10-18)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous",
+     29000
+    ]
+   ]
   },
   {
    "row": "R10/R11 (extra)",
@@ -662,7 +919,25 @@
     "lm-abort-p71-nassp"
    ],
    "note": "SB 6/7 (p63-stops.md), SB 14 (lm-abort-stops.md)",
-   "owner": "Pinball split / A"
+   "owner": "Pinball split / A",
+   "windows": [
+    [
+     "lm-p63-descent",
+     17500
+    ],
+    [
+     "lm-landing-ascent-nassp",
+     122500
+    ],
+    [
+     "lm-abort-p70-nassp",
+     115000
+    ],
+    [
+     "lm-abort-p71-nassp",
+     115000
+    ]
+   ]
   },
   {
    "row": "R12 (extra)",
@@ -675,7 +950,21 @@
     "lm-p63-lr-update"
    ],
    "note": "SB 6 (p63-stops.md, the C64 stop at R12LITES, since fixed)",
-   "owner": "B / Pinball split"
+   "owner": "B / Pinball split",
+   "windows": [
+    [
+     "lm-p63-descent",
+     17500
+    ],
+    [
+     "lm-p63-nassp",
+     112000
+    ],
+    [
+     "lm-p63-lr-update",
+     90000
+    ]
+   ]
   },
   {
    "row": "R21/R22 (extra)",
@@ -686,7 +975,13 @@
     "lm-rendezvous"
    ],
    "note": "SB 10 (FHD:241-250 R21 lock-on, R22 marks every 61 s; lm-rendezvous-stops.md)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous",
+     29000
+    ]
+   ]
   },
   {
    "row": "R51 (extra)",
@@ -697,7 +992,13 @@
     "lm-p63-descent"
    ],
    "note": "SB 6, lm-p63-descent \"ENTER on fine align (R51)\" (FHD:43-47)",
-   "owner": "Pinball split"
+   "owner": "Pinball split",
+   "windows": [
+    [
+     "lm-p63-descent",
+     17500
+    ]
+   ]
   },
   {
    "row": "R52/R54/R55 (extra)",
@@ -709,7 +1010,17 @@
     "lm-p57"
    ],
    "note": "SB 4 (lm-p52-stops.md R52/R54/R55), SB 8 (lm-p57-stops.md R54, N93 torquing, FHD:178-189)",
-   "owner": "D1b / D1"
+   "owner": "D1b / D1",
+   "windows": [
+    [
+     "lm-p52-realign",
+     2000
+    ],
+    [
+     "lm-p57",
+     12000
+    ]
+   ]
   },
   {
    "row": "R59 / R77 (extra)",
@@ -720,7 +1031,13 @@
     "lm-p57"
    ],
    "note": "R59 only; R77 is the V78 row",
-   "owner": "D1"
+   "owner": "D1",
+   "windows": [
+    [
+     "lm-p57",
+     12000
+    ]
+   ]
   },
   {
    "row": "V40 zero CDU/ICDU (N20/N72)",
@@ -803,7 +1120,13 @@
     "lm-p42-nassp"
    ],
    "note": "DAPDATR1 and N47 loaded (R03) (#687)",
-   "owner": "unassigned"
+   "owner": "unassigned",
+   "windows": [
+    [
+     "lm-p42-nassp",
+     48800
+    ]
+   ]
   },
   {
    "row": "V49 crew-defined maneuver (R62)",
@@ -826,7 +1149,25 @@
     "lm-p57"
    ],
    "note": "V50N25 in lm-p52 (FHD:75-85), V50N18 in lm-rendezvous and lm-doi (FHD:241-250, 197-206), lm-p57 V50N25 00014 (FHD:178-189)",
-   "owner": "C?"
+   "owner": "C?",
+   "windows": [
+    [
+     "lm-p52-realign",
+     2000
+    ],
+    [
+     "lm-rendezvous",
+     29000
+    ],
+    [
+     "lm-doi-nassp",
+     48800
+    ],
+    [
+     "lm-p57",
+     12000
+    ]
+   ]
   },
   {
    "row": "V51",
@@ -865,7 +1206,17 @@
     "lm-p57"
    ],
    "note": "lm-p52 V54N71 (FHD:75-85), lm-p57 \"on V54\" (FHD:178-189)",
-   "owner": "D1b / D1"
+   "owner": "D1b / D1",
+   "windows": [
+    [
+     "lm-p52-realign",
+     2000
+    ],
+    [
+     "lm-p57",
+     12000
+    ]
+   ]
   },
   {
    "row": "V55 align time",
@@ -885,7 +1236,13 @@
     "lm-rendezvous-tpm"
    ],
    "note": "lm-rendezvous-tpm V56E (#690, d0ce93ae); TRMTRAK1 bridges (NOVAC FIXLOC), D2 fix PR next",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous-tpm",
+     40000
+    ]
+   ]
   },
   {
    "row": "V57 permit LR updates",
@@ -896,7 +1253,13 @@
     "lm-p63-lr-update"
    ],
    "note": "R12 altitude updates; the velocity-update path is still open (#687)",
-   "owner": "unassigned"
+   "owner": "unassigned",
+   "windows": [
+    [
+     "lm-p63-lr-update",
+     90000
+    ]
+   ]
   },
   {
    "row": "V58 inhibit LR updates",
@@ -907,7 +1270,13 @@
     "lm-p63-lr-v58"
    ],
    "note": "LRINH clears, updates stop (#702)",
-   "owner": "unassigned"
+   "owner": "unassigned",
+   "windows": [
+    [
+     "lm-p63-lr-v58",
+     87500
+    ]
+   ]
   },
   {
    "row": "V59",
@@ -927,7 +1296,13 @@
     "lm-p63-v60-nassp"
    ],
    "note": "antenna to position 2, no 523; 1210/522/511 as Luminary 099 does (#702)",
-   "owner": "F?"
+   "owner": "F?",
+   "windows": [
+    [
+     "lm-p63-v60-nassp",
+     99500
+    ]
+   ]
   },
   {
    "row": "V61 display DAP attitude error",
@@ -1127,7 +1502,13 @@
     "lm-doi-nassp"
    ],
    "note": "SB 5, lm-doi V82E (FHD:206)",
-   "owner": "E"
+   "owner": "E",
+   "windows": [
+    [
+     "lm-doi-nassp",
+     48800
+    ]
+   ]
   },
   {
    "row": "V83 rendezvous parameters (R31)",
@@ -1138,7 +1519,13 @@
     "lm-rendezvous-tpm"
    ],
    "note": "lm-rendezvous-tpm (#690, d0ce93ae)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous-tpm",
+     40000
+    ]
+   ]
   },
   {
    "row": "V84",
@@ -1158,7 +1545,13 @@
     "lm-rendezvous-tpm"
    ],
    "note": "lm-rendezvous-tpm V85E at 120 s (#690, d0ce93ae)",
-   "owner": "D2"
+   "owner": "D2",
+   "windows": [
+    [
+     "lm-rendezvous-tpm",
+     40000
+    ]
+   ]
   },
   {
    "row": "V86",
@@ -1268,7 +1661,13 @@
     "lm-p63-descent"
    ],
    "note": "lm-p63-descent with no engine model, \"DVMON flashes V97 (thrust fail)\" (FHD:43-47)",
-   "owner": "Pinball split"
+   "owner": "Pinball split",
+   "windows": [
+    [
+     "lm-p63-descent",
+     17500
+    ]
+   ]
   },
   {
    "row": "V98",
@@ -1290,7 +1689,17 @@
     "lm-landing-ascent-nassp"
    ],
    "note": "V99N62 in P63 (FHD:43-47), V99N40 in lm-doi (FHD:197-206), V99 in P12 (lm-p12-stops.md:3)",
-   "owner": "Pinball split / E / F"
+   "owner": "Pinball split / E / F",
+   "windows": [
+    [
+     "lm-p63-descent",
+     17500
+    ],
+    [
+     "lm-doi-nassp",
+     48800
+    ]
+   ]
   }
  ]
 }
