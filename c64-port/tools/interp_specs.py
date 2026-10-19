@@ -1917,7 +1917,7 @@ SPECS = {
         'max_steps': 1000,
         'target': 'tests/cm_stable_orbit_target.c',
         'freeze_stride': 128,
-        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110'],
+        'c64_flags': ['-fno-inline', '-fstatic-stack', '-mlto-zp=110', '-DAGC_TRANSFER_DANZIG_MARKER'],
     },
     # Lane G: Comanche055 CONIC_SUBROUTINES, the whole file as routines at
     # its original addresses.
