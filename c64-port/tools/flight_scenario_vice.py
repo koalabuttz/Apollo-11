@@ -480,8 +480,20 @@ def main():
                        f'-DDP_REPLAY_CS={cs}u', f'-DDP_EVERY={every}u', f'-DDP_EVERY_UNTIL={a.cs}u', f'-DDP_END=0x{end_at:x}ul',
                        f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else [])]
             kinds = {}
+            # What the window's inputs touch, by kind (tools/device_acceptance.py
+            # reads it): erasable words and PIPAs by address, channels (0o377 the
+            # radar gate), interrupt requests by RK_RUPT_BIT bit.
+            touched = {0: set(), 1: set(), 2: set(), 3: 0}
             for row in ROW.iter_unpack(rows):
                 kinds[row[1]] = kinds.get(row[1], 0) + 1
+                if row[1] == 3:
+                    touched[3] |= row[4]
+                elif row[1] in touched:
+                    touched[row[1]].add(row[3])
+            replay_inputs = dict(counts={str(k): n for k, n in sorted(kinds.items())},
+                                 erasable=[f'{a:04o}' for a in sorted(touched[0])],
+                                 pipas=[f'{a:04o}' for a in sorted(touched[1])],
+                                 channels=[f'{a:o}' for a in sorted(touched[2])], requests=touched[3])
             print(f'{a.scenario}: {len(rows) // ROW.size} host input rows ({n_c64} on the C64) in the window at REU 0x{at:x} '
                   f"({kinds.get(1, 0)} PIPA counts, {kinds.get(0, 0)} erasable words, {kinds.get(2, 0)} channels, "
                   f'{kinds.get(3, 0)} interrupt requests)')
@@ -529,7 +541,8 @@ def main():
         if a.replay and r.get('status') is not None:
             mail = (dp.WORK / f'vice-{tag}' / 'results.bin').read_bytes()
             applied, end_cs, ended, c64_written = struct.unpack_from('<HHBB', mail, 0x30)
-            r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended))
+            r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended),
+                     replay_inputs=replay_inputs)
             # Every state the C64 wrote against the host's at the same point.
             image = (dp.WORK / f'vice-{tag}' / 'image.reu').read_bytes()
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, max_states), m)
