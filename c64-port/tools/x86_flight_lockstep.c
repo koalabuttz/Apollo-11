@@ -128,7 +128,7 @@ int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;sta
  for(;keys&&*keys;++keys)td_type(&typed,(unsigned char)*keys);
  /* yaAGC here starts from GOJAM, so the x86 side must too. */
  if(getenv("X86_START")){fprintf(stderr,"x86-flight-lockstep starts from GOJAM: no X86_START\n");return 2;}
- if(!fs_start(&st,X86_INTERP_MODE))return 2;
+ if(!fs_start(&st,&in,X86_INTERP_MODE))return 2;
  while(fd_centiseconds(&st)<cs){long n;
   /* An interrupt taken at a RESUME point saves the word at Z as BRUPT:
    * yaAGC then runs the vector, not BRUPT. */

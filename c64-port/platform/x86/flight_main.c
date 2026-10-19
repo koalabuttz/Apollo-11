@@ -78,8 +78,7 @@ int main(int argc, char **argv)
     } else
         td_init(&dsky);
     for (; typed && *typed; ++typed) td_type(&dsky, (unsigned char)*typed);
-    if (!fs_start(&st, X86_INTERP_MODE)) return 2;
-    if (getenv("X86_START")) fs_inputs_from(&in, fd_centiseconds(&st));
+    if (!fs_start(&st, &in, X86_INTERP_MODE)) return 2;
     t0 = now_s();
     while (fd_centiseconds(&st) < cs) {
         fd_boundary(&st);

@@ -118,22 +118,13 @@ DECDSP = dict(reason="LM P33's decimal display (DECDSP, 41,2523) is in Pinball, 
                      "(Lane C)",
               stop='no routine at basic 41,2523 (Z 02523 FB 62000) at 2508 cs',
               refusal='basic  41,2523: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
-# BURN_BABY_BURN's EXIT at 36,2236 (P63, MM 63 at TIG-35) leaves Z at
-# 36,2237, a basic word lm_burn_baby's flight build does not key: since
-# the FLIGHT_INTERP_STOP files build as flight builds (#739), the
-# interpreter runs that EXIT, and tools/flight_exit_returns.py misses the
-# word (it names the listing file 'BURN,_BABY,_BURN_--...'). The resume
-# point is after the stop and before any engine or radar starts.
-BURN_EXIT = dict(reason="lm_burn_baby keys no EXIT return at 36,2237: tools/flight_exit_returns.py names BURN_BABY_BURN's "
-                        "listing file wrongly (sent to the steward)",
-                 point='no routine at basic 36,2237 (Z 02237 FB 74000)', refusal='basic  36,2237: 1 arrivals, 1 slots\n',
-                 resume=10000)
 P47_PINBALL = dict(reason="LM P47's display (Pinball, 41,3321) is in Pinball, whose LM certificate is pending (Lane C)",
                    stop='no routine at basic 41,3321 (Z 03321 FB 62000) at 4120 cs',
                    refusal='basic  41,3321: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
 # A basic point at erasable 2 (Z 00002, FB 66000) that no table keys; the
-# harness bridges it (sent to the steward).
-Z2 = dict(reason='no table keys the basic point Z 00002 FB 66000 (50,2002); the harness bridges it (sent to the steward)',
+# harness bridges it. Lane C keys it in the Pinball certificate (#674).
+Z2 = dict(reason="no table keys the basic point Z 00002 FB 66000 (50,2002), Pinball's EV TC Q; the harness bridges it "
+                 "(Lane C's Pinball certificate, #674, keys it)",
           point='no routine at basic 50,2002 (Z 00002 FB 66000)', refusal='basic  50,2002: 1 arrivals, 1 slots\n')
 V55_PINBALL = dict(reason="V55's display (Pinball, 42,3452) is in Pinball, whose LM certificate is pending (Lane C)",
                    stop='no routine at basic 42,3452 (Z 03452 FB 64000) at 4000 cs',
@@ -142,12 +133,7 @@ P65_PINBALL = dict(reason="P65's display (Pinball, 40,2732) is in Pinball, whose
                    point='no routine at basic 40,2732 (Z 02732 FB 60000)',
                    refusal='basic  40,2732: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
 GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP, 'lm-p47-nassp': P47_PINBALL, 'lm-coast-v55': V55_PINBALL,
-        'lm-coast-r04': Z2, 'lm-p63-v60-nassp': dict(BURN_EXIT, then=Z2),
-        'lm-p65-autoland-nassp': dict(BURN_EXIT, then=P65_PINBALL),
-        **{n: BURN_EXIT for n in ('lm-p63-descent', 'lm-p63-descent-thrust', 'lm-p63-descent-restart', 'lm-p63-nassp',
-                                  'lm-p63-lr-dropout', 'lm-p63-lr-update', 'lm-p63-lr-v58',
-                                  'lm-p67-nassp', 'lm-landing-ascent-nassp',
-                                  'lm-abort-p70-nassp', 'lm-abort-p71-nassp')}}
+        'lm-coast-r04': Z2, 'lm-p63-v60-nassp': Z2, 'lm-p65-autoland-nassp': P65_PINBALL}
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7), PIPTIME.
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
 PIPTIME = {'lm': 0o1234, 'cm': 0o1204}

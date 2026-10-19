@@ -457,12 +457,16 @@ static int fs_load_start(fd_state *st, const char *path)
 
 /* Cold start with the scenario's input channels and DOWNRUPT, or X86_START's
  * state (its channels as written); 0 (with a message) on a bad start file. */
-static int fs_start(fd_state *st, uint8_t mode)
+static int fs_start(fd_state *st, fs_inputs *in, uint8_t mode)
 {
     const char *d = getenv("FLIGHT_DOWNRUPT"), *start = getenv("X86_START");
     fd_init(st, mode, fs_channel("FLIGHT_CH30", 037777u), fs_channel("FLIGHT_CH31", 077777u));
     st->downrupt = d && *d && strcmp(d, "0") != 0;
-    if (start) return fs_load_start(st, start);
+    if (start) {
+        if (!fs_load_start(st, start)) return 0;
+        fs_inputs_from(in, fd_centiseconds(st));
+        return 1;
+    }
     st->hw.channel32 = fs_channel("FLIGHT_CH32", 077777u);
     st->hw.channel33 = fs_channel("FLIGHT_CH33", 077777u);
     return 1;
