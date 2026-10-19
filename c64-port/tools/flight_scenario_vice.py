@@ -519,7 +519,7 @@ def main():
         if a.profile:
             r['profile'] = dp.profile(tag)
         r.update(scenario=a.scenario, snap_cs=a.snap_cs, snap_at=snap_at, snap_slid=slid > SLIDE_CS, requested_cs=cs,
-                 host_holes=holes)
+                 host_holes=holes, commit=flight_holes.source_commit())
         # Status 0 means no step refused; it does not mean the window ran to its
         # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
         # reports status 0). A window that stops short of --cs without a refusal

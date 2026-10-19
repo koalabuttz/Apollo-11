@@ -6,7 +6,7 @@ the lane that owns the file (docs/overlay-allocation.json).
 
   tools/flight_holes.py lm|cm < flight-host-run output
 """
-import json, re, sys
+import json, re, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,6 +48,14 @@ def listing(mission):
             label = (lab, offset)
         words.setdefault((bank, offset), (name, label))
     return words
+
+
+def source_commit():
+    """HEAD's short hash, with ' (dirty)' when the port's sources differ from
+    it: the commit a run's results belong to."""
+    git = lambda *a: subprocess.run(['git', *a], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    dirty = git('status', '--porcelain', '--', 'src', 'include', 'platform', 'tools', 'tests')
+    return git('rev-parse', '--short=12', 'HEAD') + (' (dirty)' if dirty else '')
 
 
 def lanes():
