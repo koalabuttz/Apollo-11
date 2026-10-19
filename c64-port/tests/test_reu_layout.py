@@ -51,6 +51,17 @@ print('reu layout: ok')
 # parentheses (VICE's monitor gives * no precedence over +).
 t = rl.dma_trace([('a', 0, 0x100, False), ('b', 0x100, 0x200, True), ('c', 0x300, 0x400, True)])
 assert t.startswith('trace store df01 if ') and t.count('(') == t.count(')'), t
-assert t.count('< $') == 2 and '>= $200)' in t and '>= $400)' in t, t
+assert t.count('< $') == 6 and '>= $200)' in t and '>= $400)' in t, t
 assert rl.dma_misses('#1 (Stop on store c000)\n#2 (Trace store df01)    4/$004\n#2 (Trace store df01)  8/$08\n') == 2
+log = ('#2 (Trace store df01)  259/$103,  12/$0c\n'
+       '.C:4358  8E 01 DF    STX $DF01      - A:1F X:90 Y:70 SP:d1 N.-..I.C  266591001\n'
+       'Executing: io $df00\n'
+       'RAM Expansion Module:\n'
+       '>C:df00  10 90 00 70  00 30 1f 00  01 1f 3f ff  ff ff ff ff   ................\n')
+assert rl.dma_hits(log) == [dict(pc='$4358', command='$90', c64='$7000', start='0x1f3000', end='0x1f3100')], rl.dma_hits(log)
+assert rl.dma_misses(log) == 1
+assert '\ncommand 2 "io $df00"\n' in t and '\ncommand 3 "io $df00"\n' in t, t
+assert t.endswith('trace store df01 if (@io:$df01 < $80)') and t.count('(') == t.count(')'), t
+assert rl.dma_misses('#3 (Trace store df01)  1/$01\n#4 (Trace store df01)  1/$01\n') == 1
+assert rl.dma_misses('#4 (Trace store df01)  1/$01\n', (4,)) == 1
 print('reu dma trace: ok')
