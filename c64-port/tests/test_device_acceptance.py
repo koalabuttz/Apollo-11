@@ -332,5 +332,40 @@ class Doc(unittest.TestCase):
         self.assertIn('## Failures', text)
 
 
+class OffNominal(unittest.TestCase):
+    """The Off-nominal inputs section (tools/device_offnominal.py)."""
+
+    def results(self, ok=True):
+        row = da.offnom.ROWS['lm'][0]
+        checks = [dict(check='alarm', ok=ok, at_cs=100 if ok else None)]
+        return row, [dict(row=row, host=dict(ok=ok, mismatches=0, bridged=0, checks=checks, evidence='`e`'))]
+
+    def test_windows_are_window_tuples(self):
+        for m in ('lm', 'cm'):
+            for s, snap, cs, every in da.offnom.windows(m):
+                self.assertTrue(s.startswith(f'{m}-'))
+                self.assertGreater(cs, 0)
+                self.assertGreater(every, 0)
+
+    def test_host_failure_fails_the_doc(self):
+        _, res = self.results(ok=False)
+        lines, bad = da.offnom.section(res, [], da.first_diff)
+        self.assertEqual(len(bad), 1)
+        self.assertIn('not run', '\n'.join(lines))
+
+    def test_window_match_and_difference(self):
+        row, res = self.results()
+        snap, cs = row['window']
+        good = dict(window(scenario=row['scenario'], snap_cs=snap, requested_cs=cs), _why=[])
+        lines, bad = da.offnom.section(res, [good], da.first_diff)
+        self.assertEqual(bad, [])
+        self.assertIn('matches the host at 60, 120 cs', '\n'.join(lines))
+        diff = dict(good, _why=['differs'], replay_differences=2, replay_differ_at_cs=50,
+                    replay_first=[dict(at='0035', host='00001', c64='00002')])
+        lines, bad = da.offnom.section(res, [diff], da.first_diff)
+        self.assertEqual(bad, [])  # a differing window is an open item, not a failure
+        self.assertIn('differs: 2 words by 50 cs', '\n'.join(lines))
+
+
 if __name__ == '__main__':
     unittest.main()
