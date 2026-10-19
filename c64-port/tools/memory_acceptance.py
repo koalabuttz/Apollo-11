@@ -90,6 +90,7 @@ def runtime_checks(m, runs, dest):
         rows.append(dict(scenario=r['scenario'], snap_cs=r.get('snap_cs'), agc_cs=r.get('agc_cs'),
                          replay=r.get('replay'), ok=ok, touched=(b or {}).get('touched', []),
                          outside=len((b or {}).get('outside', [])), dma_outside=(b or {}).get('dma_outside'),
+                         dma_late=(b or {}).get('dma_unchecked', 0),
                          evidence=f'evidence/{m}-acceptance-memory/{name}', sha256=sha(copy)))
     if copies:
         # evidence/<id>/ is flat, with its SHA256.json (tools/ci_guard.py).
@@ -133,15 +134,17 @@ def write_doc(m, checks, manifest, regions, sizes, rows, commit):
               '2 MB REU). Two checks per run: every REU byte that changed lies in a writable region '
               '(the image before the run against the one VICE wrote back), and every DMA the run made, read or '
               'write, lies inside one declared region (a VICE monitor trace on each $DF01 command). '
-              'Either one failing fails the run.', '',
-              '| Scenario | Start cs | Run cs | Replay | Regions written | Writes outside | DMAs outside | Result | Evidence |',
-              '|---|---|---|---|---|---|---|---|---|']
+              'Either one failing fails the run. VICE now and then evaluates the trace only after a DMA '
+              'has run; for those (column "seen late") only the last byte is range-checked, and their '
+              'writes are still in the byte compare.', '',
+              '| Scenario | Start cs | Run cs | Replay | Regions written | Writes outside | DMAs outside | Seen late | Result | Evidence |',
+              '|---|---|---|---|---|---|---|---|---|---|']
     for r in rows:
         lines.append(f"| {r['scenario']} | {r['snap_cs']} | {r['agc_cs']} | {'yes' if r['replay'] else 'no'} | "
-                     f"{', '.join(r['touched']) or 'none'} | {r['outside']} | {r['dma_outside']} | "
+                     f"{', '.join(r['touched']) or 'none'} | {r['outside']} | {r['dma_outside']} | {r['dma_late']} | "
                      f"{'pass' if r['ok'] else 'FAIL'} | `{r['evidence']}` (sha256 `{r['sha256'][:16]}...`) |")
     if not rows:
-        lines.append('| (no runs given) | | | | | | | FAIL | |')
+        lines.append('| (no runs given) | | | | | | | | FAIL | |')
     lines += ['', 'The check\'s own test: the same LM P63 window with the scratch region left out of the layout '
               '(`--reu-check-drop scratch`) logs 48 DMAs outside and fails; with the full layout it logs 0 '
               '(docs/FLIGHT-STORE.md).', '',
