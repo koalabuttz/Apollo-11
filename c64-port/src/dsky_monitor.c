@@ -13,9 +13,10 @@ enum p66_bias_status dsky_monitor(apollo_overlay_state *s,dsky_charin_io *io,enu
 #endif
  w=s->words;cm=(uint8_t)(mission==DSKY_NV_CM);
  if(w[5]!=pc[stage]||w[4]!=062000u||w[3]>03400u||(w[3]&0377u)||w[6]!=(agc_word)(062000u|(w[3]>>8))||w[7]||io->control.superbank<0100u||io->control.superbank>0160u||(io->control.superbank&017u)||io->control.interrupt_enabled>1u||io->channel11>AGC_MASK||io->wrote_channel11>1u)return P66_BIAS_OUT_OF_SCOPE;
- /* MONDO is a job entry: Q is whatever the Executive left (16 bits), and
-  * every path out of MONDO sets Q with a TC before it reads it. */
- for(i=stage==DSKY_MONITOR_DISPLAY?3u:2u;i<2048u;++i)if(w[i]>AGC_MASK)return P66_BIAS_OUT_OF_SCOPE;
+ /* MONDO is a job entry and MONREQ a WAITLIST task: Q is whatever the
+  * Executive or T3RUPT left (16 bits), and every path out of them sets Q
+  * with a TC before it reads it. */
+ for(i=stage==DSKY_MONITOR_DISPLAY||stage==DSKY_MONITOR_REQUEST?3u:2u;i<2048u;++i)if(w[i]>AGC_MASK)return P66_BIAS_OUT_OF_SCOPE;
  w[1]=agc_extend(agc_correct(w[1]));
  if(stage==DSKY_MONITOR_SETUP){agc_word verb=(agc_word)(w[01001]&0177u);int overflow;
   w[0155]=(agc_word)(w[01017]&017777u);a=agc_add_register(agc_extend(agc_negate(w[0136])),cm?05217u:05155u);
