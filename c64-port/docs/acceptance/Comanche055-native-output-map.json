@@ -109,8 +109,7 @@
      29000,
      1000
     ]
-   ],
-   "waits_on": "D1's CM channel 11-14 write-back fix (native CM undoes direct channel 11-14 writes on the host)"
+   ]
   },
   {
    "section": "Output channels",
@@ -125,8 +124,7 @@
      4400,
      2000
     ]
-   ],
-   "waits_on": "D1's CM channel 11-14 write-back fix (native CM undoes direct channel 11-14 writes on the host)"
+   ]
   },
   {
    "section": "Output channels",
@@ -146,8 +144,7 @@
      29000,
      1000
     ]
-   ],
-   "waits_on": "D1's CM channel 11-14 write-back fix (native CM undoes direct channel 11-14 writes on the host)"
+   ]
   },
   {
    "section": "Output channels",
@@ -162,8 +159,7 @@
      12000,
      1000
     ]
-   ],
-   "waits_on": "D1's CM channel 11-14 write-back fix (native CM undoes direct channel 11-14 writes on the host)"
+   ]
   },
   {
    "section": "Output channels",
@@ -183,8 +179,7 @@
      12000,
      1000
     ]
-   ],
-   "waits_on": "D1's CM channel 11-14 write-back fix (native CM undoes direct channel 11-14 writes on the host)"
+   ]
   }
  ]
 }
