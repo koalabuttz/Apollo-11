@@ -1,26 +1,68 @@
 # DSKY sweep on the C64
 
 Acceptance item 6: DSKY key sequences give the same displays and loads on
-the C64 as on the host. `tools/dsky_sweep_vice.py` runs them.
+the C64 as on the host, and the host gives what yaAGC gives.
+`tools/dsky_sweep_vice.py` runs them.
+
+## What item 6 needs
+
+Item 6 is met only by **`--cases all` on both missions with no failure at
+all**, the clock class included, committed as hashed evidence:
+
+    python3 tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep
+    python3 tools/evidence.py add --tree evidence/dsky-sweep
+
+`evidence/dsky-sweep/dsky-sweep.json` records the run's mode and missions,
+the store, rope and manifest hashes per mission, each VICE program's hash,
+and every case's result. Its `item6` field is true only for such a run.
+The CI sample and its known list (below) are a ratchet for pull requests,
+not item 6.
+
+The clock class (below) blocks item 6 until the resident clock (RK) clears
+it. It does not block the Pinball file certificate.
+
+CM results carry the TEMPORARY `SCHEDULE_SKIP` of
+`tools/flight_scenario_vice.py` (DSPTAB sent bits, DSPCNT, DSRUPTSW). Each
+result lists what it skipped in `skipped`, and the item 6 evidence must
+say so while the skip exists.
 
 ## What a case is
 
 A case is a mission and a key string in `tools/flight_host_run.c` syntax:
-`V`, `N`, digits, `E`, `C` (CLR), `K` (KEY REL), `R` (RSET). Every case
-starts from one host snapshot of a fresh start at 1000 cs. The keys go in
-from 1100 cs, and the case ends 150 cs after its last key.
+`V`, `N`, digits, `E`, `C` (CLR), `K` (KEY REL), `R` (RSET), plus `Q` for
+PRO. PRO is no key code: it is channel 32 bit 14, so the sweep gives the
+host a `FLIGHT_CHAN` press (the bit down for 30 cs) in that key's slot, and
+the C64 gets it with the host's input rows. Every case starts from one host
+snapshot of a fresh start at 1000 cs. The keys go in from 1100 cs, and the
+case ends 150 cs after its last key.
 
 - The host runs on from the snapshot and writes its input rows and its end
   state.
 - One VICE run takes a batch of cases (`DP_SWEEP` in
   `platform/c64/dap_pass_check.c`). It loads the snapshot, replays a case's
   rows, stashes the end state in the REU, reloads the snapshot and goes on
-  to the next case.
+  to the next case. Every case's snapshot header must be byte-equal to the
+  first's (but its comment line), since the C64 loads the first's.
 - A case passes when the C64 ends at the host's sample point in the host's
-  state: erasable words, timers and output channels.
-- A case whose host run reaches a point with no native routine (a refused
-  or unregistered point) fails before VICE, naming the point. The C64
-  would stop there.
+  state: erasable words, timers and output channels 5, 6, 10, 11-14, 34 and
+  35.
+- A case fails before VICE when its host run, after the snapshot, reaches
+  a point with no native routine (a refused or unregistered point: the C64
+  would stop there), or runs a native routine yaAGC did not match (the host
+  itself is wrong). It names the point or the routine.
+
+## Classes
+
+The tool gives each failure a class and a signature (the class and what
+differs or where it stops). Nobody writes them by hand.
+
+| Class | Meaning |
+|---|---|
+| clock | Only the centiseconds and TIME1-TIME6 differ, each by one count. |
+| difference | Any other erasable word, timer or channel differs. |
+| stop | The host run bridges a point after the snapshot. |
+| host-miss | The host run has a native routine yaAGC did not match after the snapshot. |
+| run | The C64 stopped before the window's end, or the batch gave no result. |
 
 ## Running it
 
@@ -35,16 +77,30 @@ The results go to `build/flight-store/dsky-sweep/dsky-sweep.json`.
 
 `dsky-sweep-vice` runs in the c64 CI jobs when a Pinball, display, keyboard
 or sweep source changes (`ci-watch-dsky-sweep-vice` in
-`tools/mk/ci-extra.mk`). It runs the 27-case sample (`CI_CASES`) on both
+`tools/mk/ci-extra.mk`). It runs the CI sample (`CI_CASES`) on both
 missions.
 
-`tools/dsky_sweep_known.json` lists the cases that do not match yet, each
-with its reason. The target fails on a failing case that is not listed. It
-also fails on a listed case that now matches, so the list only shrinks.
+`tools/dsky_sweep_known.json` lists the sample's failures not fixed yet,
+each with the tool's signature and a reason. The target fails on:
 
-`tools/cert_precheck.py` fails a complete Pinball certificate while any of
-its mission's cases is still on the list. Cases whose reason names
-`owner RK` are an exception: they get a warning. Those are the clock class
-(the C64 clock or a timer one tick apart, and words that follow from it),
-which belongs to the resident clock (`flight-scenarios/replay-mismatches.md`),
-not to Pinball.
+- a failure that is not listed;
+- a listed case that now matches (so the list only shrinks);
+- a listed case that fails with a different signature;
+- a listed case of a run mission that the run did not exercise.
+
+`--write-known FILE` writes the list from a run, keeping the reasons.
+
+## The precheck
+
+`tools/cert_precheck.py` checks a Pinball certificate, draft or complete,
+for its mission. It FAILs a draft (and WARNs on a certificate already
+accepted complete) when:
+
+- `tools/dsky_sweep_known.json` is missing, or lists a case of the mission
+  that is not the clock class;
+- `evidence/dsky-sweep/dsky-sweep.json` is missing or is not a `--cases all`
+  run of the mission;
+- that run has a failure of the mission that is not the clock class.
+
+Clock-class cases get a WARN. They belong to the resident clock
+(`flight-scenarios/replay-mismatches.md`), not to Pinball.

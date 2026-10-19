@@ -5684,8 +5684,8 @@
             "sha256": "0f58b2b847359a9b4ea3ebf4c4fdbf307e2535c427fe2e63cf9bdd97eb3ab1b6"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-g541.md",
-            "sha256": "d33f705402b4d114577c5c2ce994bb34e2e213898e42e7cd3ca93019ed4c1894"
+            "path": "docs/audits/rev2-cm-stable-orbit-711.md",
+            "sha256": "782ba8802c3ff11d1ce1aa9ca6b542ebb5b6583247d2cb92be9b94013542a6d1"
           }
         }
       }

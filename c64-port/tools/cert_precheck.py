@@ -870,33 +870,56 @@ def check_arms(report, label, path, certificate, specs):
 
 DSKY_SWEEP_FILES = ('PINBALL_GAME_BUTTONS_AND_LIGHTS.agc',)
 DSKY_SWEEP_MISSION = {'Luminary099': 'lm', 'Comanche055': 'cm'}
-DSKY_SWEEP_CLOCK = 'owner RK'  # the known-list reasons of clock-class cases
+DSKY_SWEEP_KNOWN = ROOT / 'tools' / 'dsky_sweep_known.json'
+DSKY_SWEEP_EVIDENCE = ROOT / 'evidence' / 'dsky-sweep' / 'dsky-sweep.json'
 
 
-def check_dsky_sweep(report, label, mission, name, complete):
-    """A complete Pinball certificate needs the C64 DSKY sweep clean for its
-    mission (acceptance item 6, tools/dsky_sweep_vice.py): CI's
-    dsky-sweep-vice fails on any failure not in tools/dsky_sweep_known.json,
-    so a case of the mission still listed there is a display the C64 does
-    not yet show as the host does."""
-    if name not in DSKY_SWEEP_FILES or not complete:
+def check_dsky_sweep(report, label, mission, name, accepted):
+    """A Pinball certificate needs the C64 DSKY sweep (acceptance item 6,
+    tools/dsky_sweep_vice.py, docs/DSKY-SWEEP.md) for its mission: the full
+    sweep's result committed as evidence/dsky-sweep/dsky-sweep.json
+    (--cases all), with no failure but the clock class, and no entry but the
+    clock class in tools/dsky_sweep_known.json (the CI sample's ratchet).
+    The class is the sweep tool's (each known entry's signature, which the
+    run checks), not the entry's reason. FAIL on a draft, WARN on a
+    certificate already accepted complete. The clock class (only the
+    centiseconds and timers one count apart: the resident clock's, RK) is a
+    WARN either way: it blocks item 6, not the Pinball file."""
+    if name not in DSKY_SWEEP_FILES:
         return
-    known = ROOT / 'tools' / 'dsky_sweep_known.json'
-    if not known.exists():
-        return
+    level = 'WARN' if accepted else 'FAIL'
     m = DSKY_SWEEP_MISSION.get(mission)
-    cases = {k: why for k, why in json.loads(known.read_text()).items() if k.split(' ', 1)[0] == m}
-    # Cases the known list gives to RK are the clock class (replay-mismatches.md,
-    # owned by the resident-kernel lane), not a Pinball display difference: warn.
-    clock = sorted(k for k, why in cases.items() if DSKY_SWEEP_CLOCK in why)
-    left = sorted(k for k in cases if k not in clock)
+    if not DSKY_SWEEP_KNOWN.exists():
+        report.add(level, label, 'tools/dsky_sweep_known.json is missing', 'restore it from the base branch')
+        return
+    known = {k: v for k, v in json.loads(DSKY_SWEEP_KNOWN.read_text()).items() if k.split(' ', 1)[0] == m}
+    clock = sorted(k for k, v in known.items() if v.get('signature', '').startswith('clock:'))
+    left = sorted(k for k in known if k not in clock)
     if left:
-        report.add('FAIL', label, f'{len(left)} DSKY sweep cases of {m} do not match the host on the C64 '
+        report.add(level, label, f'{len(left)} DSKY sweep sample cases of {m} do not match the host on the C64 '
                    f"(tools/dsky_sweep_known.json: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''})",
                    'fix them, run `make dsky-sweep-vice` and take them off the list')
+    if not DSKY_SWEEP_EVIDENCE.exists():
+        report.add(level, label, f'no full DSKY sweep result for {m} (evidence/dsky-sweep/dsky-sweep.json)',
+                   'run `tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep` and commit it')
+        return
+    sweep = json.loads(DSKY_SWEEP_EVIDENCE.read_text())
+    if sweep.get('mode') != 'all' or m not in sweep.get('missions', []):
+        report.add(level, label, f"evidence/dsky-sweep/dsky-sweep.json is a {sweep.get('mode')} run of "
+                   f"{', '.join(sweep.get('missions', []))}, not the full sweep of {m}",
+                   'rerun it with --cases all on both missions')
+        return
+    failed = [r for r in sweep.get('results', []) if r['m'] == m and not r['ok']]
+    bad = [r for r in failed if r.get('class') != 'clock']
+    if bad:
+        report.add(level, label, f'{len(bad)} of the full DSKY sweep\'s {m} cases do not match the host on the C64 '
+                   f"({', '.join(r['keys'] for r in bad[:6])}{' ...' if len(bad) > 6 else ''})",
+                   'fix them and rerun the full sweep')
+    clock += [f"{m} {r['keys']}" for r in failed if r.get('class') == 'clock']
     if clock:
-        report.add('WARN', label, f'{len(clock)} DSKY sweep cases of {m} differ by the C64 clock class '
-                   f"({', '.join(clock[:6])}{' ...' if len(clock) > 6 else ''})",
+        clock = sorted(set(clock))
+        report.add('WARN', label, f'{len(clock)} DSKY sweep cases of {m} differ by the C64 clock class only '
+                   f"({', '.join(clock[:6])}{' ...' if len(clock) > 6 else ''}): acceptance item 6 waits on them",
                    'the clock class in flight-scenarios/replay-mismatches.md; no Pinball change needed')
 
 

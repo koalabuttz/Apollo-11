@@ -28,6 +28,11 @@
 #include "resident_flight.h"
 #define SNAP_DATA __attribute__((section(".boot.text.dp_snap")))
 #define BOOT __attribute__((noinline,section(".boot.text.dp_check")))
+/* Zeroed harness state in the cassette buffer (resident_flight.ld .cassette,
+ * $0384-$03F3, between the step profile and the replay row), not in the
+ * resident's RAM: the DP_BUSY build had run 22 bytes into the ABI 2
+ * service table (#720). load_snapshot() clears it. */
+#define CASSETTE __attribute__((section(".cassette")))
 #include DP_SNAP
 #ifndef DP_CS
 #define DP_CS 100u
@@ -100,7 +105,7 @@ static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
  * The key stays in its channel until the next one, as on the host. */
 #include "resident_rupt.h"
 #include DP_KEYS
-static uint8_t key_next;
+static uint8_t key_next CASSETTE;
 static void press_due(uint16_t elapsed)
 {
     uint16_t k;
@@ -191,11 +196,11 @@ static uint32_t sweep_at = DP_SWEEP + 2ul;
  * profile uses its bottom), not in the resident's RAM. */
 #define row (*(dp_row *)0x03f4u)
 static uint16_t rows_left = DP_REPLAY_ROWS;
-static uint8_t row_ready;
+static uint8_t row_ready CASSETTE;
 static uint32_t row_at = DP_REPLAY_REU, state_at = DP_END;
-static uint16_t replay_t0;
+static uint16_t replay_t0 CASSETTE;
 #ifdef DP_BUSY
-static uint16_t busy_last;
+static uint16_t busy_last CASSETTE;
 #endif
 #ifndef DP_EVERY
 #define DP_EVERY DP_REPLAY_CS
@@ -206,9 +211,16 @@ static uint16_t busy_last;
 #ifndef DP_EVERY_UNTIL
 #define DP_EVERY_UNTIL DP_REPLAY_CS
 #endif
+/* The states DP_END has room for (tools/flight_scenario_vice.py
+ * max_states): the checkpoints stop one short of it, so the end always has
+ * its place and nothing goes past the area. */
+#ifndef DP_STATES_MAX
+#error "DP_REPLAY needs DP_STATES_MAX, the states DP_END has room for"
+#endif
+_Static_assert(DP_STATES_MAX >= 1u && DP_STATES_MAX <= 255u, "the states written are counted in a byte ($c035)");
 #define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
 static uint16_t state_next = DP_EVERY;
-static uint8_t states;
+static uint8_t states CASSETTE;
 /* TIME1 since the snapshot: a window is at most 16,383 cs. */
 static uint16_t replay_cs(void)
 {
@@ -235,7 +247,7 @@ __attribute__((noinline)) static void stash(void *from, uint16_t n)
  * rk_hardware and rk_flight, then 32 bytes of rk_device. */
 __attribute__((noinline)) static void replay_state(uint16_t t)
 {
-    static uint16_t at;
+    static uint16_t at CASSETTE;
     at = t;
     ++states;
     stash(&at, 2u);
@@ -297,7 +309,7 @@ __attribute__((noinline)) static uint8_t replay_due(void)
             replay_state(t);
             return 1;
         }
-        if (t >= state_next && t < DP_EVERY_UNTIL) {
+        if (t >= state_next && t < DP_EVERY_UNTIL && states < DP_STATES_MAX - 1u) {
             replay_state(t);
             while (state_next <= t) state_next += DP_EVERY;
         }
@@ -307,8 +319,10 @@ __attribute__((noinline)) static uint8_t replay_due(void)
 }
 #endif
 
+extern char __dp_cassette_start[], __dp_cassette_end[];
 static void BOOT load_snapshot(void){
- memcpy(IMAGE->words,snap_words,sizeof snap_words);
+    memset(__dp_cassette_start, 0, (size_t)(__dp_cassette_end - __dp_cassette_start));
+    memcpy(IMAGE->words, snap_words, sizeof snap_words);
 #ifdef RK_STEP_PROFILE
  memset(prof, 0, DP_SEGMENTS * sizeof(dp_segment));
 #endif
@@ -325,6 +339,8 @@ static void BOOT load_snapshot(void){
 #endif
 }
 
+static dp_record r CASSETTE;
+static dp_summary sum CASSETTE;
 #ifdef DP_SWEEP
 /* The snapshot's state (rk_hardware, rk_flight and the erasable words, one
  * run from RK_HARDWARE to the image's end, then rk_device) to or from the
@@ -334,7 +350,6 @@ __attribute__((noinline)) static void sweep_snap(uint8_t how)
     apollo_reu_transfer(how, (void *)RK_HARDWARE, DP_SWEEP_SNAP, 0x8000u - RK_HARDWARE);
     apollo_reu_transfer(how, &rk_device, DP_SWEEP_SNAP + 0x8000u - RK_HARDWARE, sizeof rk_device);
 }
-static dp_summary sum;
 /* The first call stashes the snapshot and starts case 0. Later calls write
  * case sweep_i's outcome back to its dp_case and start the next case from
  * the snapshot; 0 after the last. */
@@ -375,10 +390,6 @@ __attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t statu
 }
 #endif
 
-static dp_record r;
-#ifndef DP_SWEEP
-static dp_summary sum;
-#endif
 __attribute__((unused)) static void close_record(uint32_t cycles, enum exec_status st)
 {
     r.cycles = cycles;
@@ -396,7 +407,7 @@ __attribute__((unused)) static void close_record(uint32_t cycles, enum exec_stat
 }
 
 #ifdef DP_REPLAY
-static uint8_t replay_ended;
+static uint8_t replay_ended CASSETTE;
 #endif
 
 #ifdef DP_HW_CHECK

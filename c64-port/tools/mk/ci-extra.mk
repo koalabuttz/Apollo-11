@@ -37,7 +37,7 @@ ci-watch-flight-disk-vice: tools/flight_disk.py platform/c64/flight_disk_drive.s
 ci-watch-dsky-sweep-vice: $(wildcard src/lanec_pin*.c src/lanec_pw*.c src/lanec_di*.c src/dsky_*.c src/cm_*display*.c \
   src/cm_pinball.c tests/lanec_pw*.c) platform/c64/resident_dsky.c platform/c64/resident_dsky.S \
   platform/c64/dap_pass_check.c tools/dsky_sweep_vice.py tools/dsky_sweep_known.json tools/flight_scenario_vice.py \
-  tools/dap_pass_vice.py
+  tools/dap_pass_vice.py tools/flight_host_run.c platform/c64/resident_flight.c platform/c64/resident_flight.h
 CI_EXTRA_INTERP := src/lm_interp_core.c src/cm_interp_core.c src/lm_interp_orders.c src/lm_interp_steps.c \
   src/cm_interp_orders.c src/cm_interp_steps.c include/interp_runtime_tables.h
 ci-watch-interp-flight-vice: $(CI_EXTRA_INTERP) tools/interp_flight_test.py platform/c64/interp_flight_check.c \

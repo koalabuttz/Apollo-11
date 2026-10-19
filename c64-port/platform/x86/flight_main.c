@@ -15,10 +15,17 @@
  *   X86_REPORT    a JSON report: points the interpreter core ran (and why),
  *                 basic points no routine holds, steps, clock
  *   X86_SAMPLES   each centisecond's erasable memory at the first idle
- *                 ADVAN at or after it, one line of 2048 octal words */
+ *                 ADVAN at or after it, one line of 2048 octal words
+ *   X86_SAMPLES_FROM  the first centisecond X86_SAMPLES writes (default 1)
+ *   X86_DSKY=1    a live DSKY in the terminal (platform/x86/terminal_dsky.h);
+ *                 with no CS argument the run goes on until q
+ *   X86_TYPED     characters sent through the live DSKY's typed-key path
+ *                 from the start, as if typed (the lockstep check takes the
+ *                 same) */
 #include <string.h>
 #include <time.h>
 #include "flight_scenario.h"
+#include "terminal_dsky.h"
 #include "rope_image.h"
 #if RK_LM
 #define MISSION 0u
@@ -44,34 +51,116 @@ static void report(FILE *f,const fd_state *st,unsigned long cs,double wall){unsi
   fd_table_status(i)=='c'?"complete":fd_table_status(i)=='u'?"uncertified":"shared",st->uses[i]);
  fprintf(f,"\n ]\n}\n");}
 
-int main(int argc,char **argv){static fd_state st;static fs_inputs in;fd_ran ran;unsigned long cs=argc>2?strtoul(argv[2],0,0):1000ul,next=1,periods=0;
- double speed=getenv("X86_SPEED")?atof(getenv("X86_SPEED")):1.0,t0,wall;
- FILE *samples=getenv("X86_SAMPLES")?fopen(getenv("X86_SAMPLES"),"w"):0;
- if(argc<2||!apollo_rope_load(MISSION,argv[1])){fprintf(stderr,"usage: x86-flight ROPE.bin [CS [KEYS]]\n");return 2;}
- if(!fs_parse(&in,argc>3?argv[3]:""))return 2;
- fs_start(&st,X86_INTERP_MODE);
- t0=now_s();
- while(fd_centiseconds(&st)<cs){
-  fd_boundary(&st);
-  /* Real time: AGC time runs no faster than wall time times X86_SPEED. */
-  if(speed>0.0&&st.periods!=periods){double ahead;periods=st.periods;
-   if((ahead=(double)periods/100.0/speed-(now_s()-t0))>0.0){struct timespec d;d.tv_sec=(time_t)ahead;d.tv_nsec=(long)((ahead-(double)d.tv_sec)*1e9);nanosleep(&d,0);}}
-  if(fs_at_idle_advan(&st)){unsigned long t=fd_centiseconds(&st);
-   for(;next<=cs&&t>=next;++next)if(samples){unsigned i;fprintf(samples,"%lu",next);for(i=0;i<2048u;++i)fprintf(samples," %05o",(unsigned)st.s.words[i]);fputc('\n',samples);}
-   if(fs_inputs_due(&in,&st))continue;}
-  if(fd_run(&st,&ran)==EXEC_UNMAPPED){
-   fprintf(stderr,"no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",ran.key/1024u,ran.key%1024u+02000u,(unsigned)st.s.words[5],(unsigned)st.s.words[4],fd_centiseconds(&st));
-   break;}
-  if(ran.status!=EXEC_OK){fprintf(stderr,"%s refused at %02o,%04o (status %d) at %lu cs\n",ran.table?ran.table->name:"interpreter core",
-   ran.key/1024u,ran.key%1024u+02000u,(int)ran.status,fd_centiseconds(&st));break;}}
- wall=now_s()-t0;
- if(samples)fclose(samples);
- printf("%s: %lu cs of AGC time in %.2f s; %lu routines, %lu interpreter core slots, %lu clock periods; major mode %02o, FAILREG %05o\n",
-  MISSION?"CM":"LM",fd_centiseconds(&st),wall,st.steps-st.slots,st.slots,st.periods,(unsigned)st.s.words[01011],(unsigned)st.s.words[0375]);
- {unsigned i,n=0;unsigned long r=0;for(i=0;i<fd_table_count&&i<256u;++i)if(st.uses[i]&&fd_table_status(i)=='u'){++n;r+=st.uses[i];}
-  if(n)printf("%lu routines from %u tables of files not yet certified (X86_REPORT lists them)\n",r,n);}
- if(st.ngaps){unsigned i;printf("points without a compiled routine (%u):\n",st.ngaps);
-  for(i=0;i<st.ngaps;++i)printf("  %s %02o,%04o: %lu arrivals, %lu slots%s%s\n",st.gaps[i].interp?"interp":"basic ",st.gaps[i].key/1024u,
-   st.gaps[i].key%1024u+02000u,st.gaps[i].arrivals,st.gaps[i].slots,st.gaps[i].by?", refused by ":"",st.gaps[i].by?st.gaps[i].by:"");}
- if(getenv("X86_REPORT")){FILE *f=fopen(getenv("X86_REPORT"),"w");if(f){report(f,&st,cs,wall);fclose(f);}}
- return st.unmapped||fd_centiseconds(&st)<cs?1:0;}
+int main(int argc, char **argv)
+{
+    static fd_state st;
+    static fs_inputs in;
+    static terminal_dsky dsky;
+    const int live = getenv("X86_DSKY") && *getenv("X86_DSKY") == '1';
+    const char *typed = getenv("X86_TYPED");
+    fd_ran ran;
+    unsigned long cs = argc > 2 ? strtoul(argv[2], 0, 0) : 1000ul, next = 1, periods = 0,
+                  from =
+                      getenv("X86_SAMPLES_FROM") ? strtoul(getenv("X86_SAMPLES_FROM"), 0, 10) : 1ul;
+    double speed = getenv("X86_SPEED") ? atof(getenv("X86_SPEED")) : 1.0, t0, wall;
+    FILE *samples = getenv("X86_SAMPLES") ? fopen(getenv("X86_SAMPLES"), "w") : 0;
+    if (argc < 2 || !apollo_rope_load(MISSION, argv[1])) {
+        fprintf(stderr, "usage: x86-flight ROPE.bin [CS [KEYS]]\n");
+        return 2;
+    }
+    if (!fs_parse(&in, argc > 3 ? argv[3] : "")) return 2;
+    if (live) {
+        if (argc <= 2) cs = ~0ul;
+        td_start(&dsky);
+        dsky.quit_at_eof = argc <= 2;
+    } else
+        td_init(&dsky);
+    for (; typed && *typed; ++typed) td_type(&dsky, (unsigned char)*typed);
+    fs_start(&st, X86_INTERP_MODE);
+    t0 = now_s();
+    while (fd_centiseconds(&st) < cs) {
+        fd_boundary(&st);
+        /* Real time: AGC time runs no faster than wall time times X86_SPEED. */
+        if (speed > 0.0 && st.periods != periods) {
+            double ahead;
+            periods = st.periods;
+            if ((ahead = (double)periods / 100.0 / speed - (now_s() - t0)) > 0.0) {
+                struct timespec d;
+                d.tv_sec = (time_t)ahead;
+                d.tv_nsec = (long)((ahead - (double)d.tv_sec) * 1e9);
+                nanosleep(&d, 0);
+            }
+        }
+        if (fs_at_idle_advan(&st)) {
+            unsigned long t = fd_centiseconds(&st);
+            for (; next <= cs && t >= next; ++next)
+                if (samples && next >= from) {
+                    unsigned i;
+                    fprintf(samples, "%lu", next);
+                    for (i = 0; i < 2048u; ++i) fprintf(samples, " %05o", (unsigned)st.s.words[i]);
+                    fputc('\n', samples);
+                }
+            if (fs_inputs_due(&in, &st)) continue;
+            if (live) td_read_keys(&dsky);
+            if (dsky.quit) break;
+            if (td_inputs_due(&dsky, &st)) continue;
+        }
+        if (fd_run(&st, &ran) == EXEC_UNMAPPED) {
+            if (live) td_restore(); /* the stop message stays on screen */
+            fprintf(stderr, "no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",
+                    ran.key / 1024u, ran.key % 1024u + 02000u, (unsigned)st.s.words[5],
+                    (unsigned)st.s.words[4], fd_centiseconds(&st));
+            break;
+        }
+        if (ran.status != EXEC_OK) {
+            if (live) td_restore(); /* the stop message stays on screen */
+            fprintf(stderr, "%s refused at %02o,%04o (status %d) at %lu cs\n",
+                    ran.table ? ran.table->name : "interpreter core", ran.key / 1024u,
+                    ran.key % 1024u + 02000u, (int)ran.status, fd_centiseconds(&st));
+            break;
+        }
+        fs_after_routine(&in, &st);
+        if (live) {
+            td_after_routine(&dsky, &st);
+            td_draw(&dsky, &st);
+        }
+    }
+    if (live) td_restore();
+    wall = now_s() - t0;
+    if (samples) fclose(samples);
+    printf("%s: %lu cs of AGC time in %.2f s; %lu routines, %lu interpreter core slots, %lu clock "
+           "periods; major mode %02o, FAILREG %05o\n",
+           MISSION ? "CM" : "LM", fd_centiseconds(&st), wall, st.steps - st.slots, st.slots,
+           st.periods, (unsigned)st.s.words[01011], (unsigned)st.s.words[0375]);
+    {
+        unsigned i, n = 0;
+        unsigned long r = 0;
+        for (i = 0; i < fd_table_count && i < 256u; ++i)
+            if (st.uses[i] && fd_table_status(i) == 'u') {
+                ++n;
+                r += st.uses[i];
+            }
+        if (n)
+            printf(
+                "%lu routines from %u tables of files not yet certified (X86_REPORT lists them)\n",
+                r, n);
+    }
+    if (st.ngaps) {
+        unsigned i;
+        printf("points without a compiled routine (%u):\n", st.ngaps);
+        for (i = 0; i < st.ngaps; ++i)
+            printf("  %s %02o,%04o: %lu arrivals, %lu slots%s%s\n",
+                   st.gaps[i].interp ? "interp" : "basic ", st.gaps[i].key / 1024u,
+                   st.gaps[i].key % 1024u + 02000u, st.gaps[i].arrivals, st.gaps[i].slots,
+                   st.gaps[i].by ? ", refused by " : "", st.gaps[i].by ? st.gaps[i].by : "");
+    }
+    if (getenv("X86_REPORT")) {
+        FILE *f = fopen(getenv("X86_REPORT"), "w");
+        if (f) {
+            report(f, &st, live ? fd_centiseconds(&st) : cs, wall);
+            fclose(f);
+        }
+    }
+    /* A live run the user quit ran as long as they wanted. */
+    return st.unmapped || (fd_centiseconds(&st) < cs && !dsky.quit) ? 1 : 0;
+}
