@@ -10,7 +10,7 @@
  * Runs CS centiseconds of AGC time (default 1000). KEYS (e.g. V37E12E) are
  * DSKY keys, @CS timing them. Scenario inputs FLIGHT_CH30-33, FLIGHT_POKE,
  * FLIGHT_LOAD, FLIGHT_GOJAM and FLIGHT_DOWNRUPT: platform/x86/
- * flight_scenario.h. Environment:
+ * flight_scenario.h (with the radars and X86_START). Environment:
  *   X86_SPEED     AGC time per wall time: 1 real time (default), 0 flat out
  *   X86_REPORT    a JSON report: points the interpreter core ran (and why),
  *                 basic points no routine holds, steps, clock
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     } else
         td_init(&dsky);
     for (; typed && *typed; ++typed) td_type(&dsky, (unsigned char)*typed);
-    fs_start(&st, X86_INTERP_MODE);
+    if (!fs_start(&st, X86_INTERP_MODE)) return 2;
     t0 = now_s();
     while (fd_centiseconds(&st) < cs) {
         fd_boundary(&st);

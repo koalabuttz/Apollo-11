@@ -83,7 +83,11 @@ WORDS = range(0o61, 0o4000)
 KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the harness (TLIFTOFF 10038 against 10005; '
                                 "the harness's other clock: 10022), and P11 navigates from that time",
                          rn=600.0, vn=1.0)}   # measured 449 m, 0.73 m/s
-UNSUPPORTED = ('FLIGHT_CORE', 'FLIGHT_LR', 'FLIGHT_UPLINK', 'FLIGHT_STEAL')
+UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL')
+# A FLIGHT_CORE scenario starts from a yaAGC core dump, which the x86
+# program never reads: the harness loads it and writes its state at the
+# first sample point (FLIGHT_SNAPSHOT=0), and the x86 program starts from
+# that header (X86_START). The header is made here, at test time only.
 # Scenarios the x86 program cannot fly yet: it stops at a routine whose
 # table is not certified (it has no yaAGC bridge). Each is flown and passes
 # only when it stops exactly there: exit 1, this stop line and this refusal.
@@ -182,6 +186,19 @@ def harness_state(m, cs, keys, env, at, clock='W'):
     return int(re.search(r'SNAP_CS (\d+)', text)[1]), words
 
 
+def with_start(m, cs, keys, env):
+    """env for the x86 program: with X86_START when the scenario starts
+    from a core dump (the harness's state at its first sample point)."""
+    if 'FLIGHT_CORE' not in env:
+        return env
+    start = OUT / f'start-{m}-{os.getpid()}.h'
+    start.unlink(missing_ok=True)
+    subprocess.run([str(fhd.OUT / f'flight-host-run-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []),
+                   cwd=ROOT, env={**os.environ, **env, 'FLIGHT_SCALED': 'W', 'FLIGHT_SNAPSHOT': f'0,{start}'},
+                   capture_output=True, check=False)
+    return {**env, 'X86_START': str(start)}
+
+
 def x86_state(m, keys, env, at):
     """The x86 program's erasable image at its first sample point at or after centisecond at:
     (run, centisecond, 2048 words), centisecond None when it wrote none."""
@@ -210,7 +227,7 @@ def compare(name, m, cs, keys, env, drop=''):
         return dict(scenario=name, mission=m, line=f'{name}: the harness wrote no snapshot'), False
     at, hw = ref
     other = harness_state(m, cs, keys, env, at, '1,1,2')
-    r, xcs, xw = x86_state(m, ''.join(c for c in keys if c not in drop), env, at)
+    r, xcs, xw = x86_state(m, ''.join(c for c in keys if c not in drop), with_start(m, cs, keys, env), at)
     if other is None or xcs != at:
         why = 'the harness on its other clock wrote no snapshot' if other is None else \
             f'the x86 program stopped before {at} cs (exit {r.returncode}): {r.stderr.strip()[:200]}'
@@ -276,7 +293,8 @@ def fly_gap(name, m, cs, keys, env):
     program stops at the expected routine and nowhere else."""
     g = GAPS[name]
     r = subprocess.run([str(xb.OUT / f'x86-flight-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
-                       env={**os.environ, **env, 'X86_SPEED': '0'}, capture_output=True, text=True)
+                       env={**os.environ, **with_start(m, cs, keys, env), 'X86_SPEED': '0'}, capture_output=True,
+                       text=True)
     ok = r.returncode == 1 and r.stderr.strip() == g['stop'] and g['refusal'] in r.stdout
     got = r.stderr.strip()[:200] or 'no stop line'
     line = (f"{name}: stops as expected ({g['stop']}): {g['reason']}" if ok else

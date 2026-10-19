@@ -97,7 +97,11 @@ static int interpreting(const fd_state *st){uint16_t z=agc_fixed_physical((agc_w
 uint16_t fd_point(const fd_state *st,int *interp){const agc_word *w=st->s.words;agc_word z=(agc_word)(w[5]&07777u);
  if((*interp=interpreting(st))!=0)return agc_fixed_physical(w[0164],w[0165],st->io.superbank);
  return z<02000u?agc_erasable_point(z,w[3]):agc_fixed_physical(z,w[4],st->io.superbank);}
-unsigned long fd_centiseconds(const fd_state *st){return ((unsigned long)(st->s.words[024]&037777u)<<14)|(st->s.words[025]&037777u);}
+unsigned long fd_centiseconds(const fd_state *st)
+{
+    return ((((unsigned long)(st->s.words[024] & 037777u) << 14) | (st->s.words[025] & 037777u)) -
+            st->t0);
+}
 
 uint8_t fd_boundary(fd_state *st)
 {
