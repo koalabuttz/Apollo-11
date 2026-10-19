@@ -182,6 +182,13 @@ static uint16_t busy_last;
 #ifndef DP_EVERY_UNTIL
 #define DP_EVERY_UNTIL DP_REPLAY_CS
 #endif
+/* The states DP_END has room for (tools/flight_scenario_vice.py
+ * max_states): the checkpoints stop one short of it, so the end always has
+ * its place and nothing goes past the area. */
+#ifndef DP_STATES_MAX
+#error "DP_REPLAY needs DP_STATES_MAX, the states DP_END has room for"
+#endif
+_Static_assert(DP_STATES_MAX >= 1u && DP_STATES_MAX <= 255u, "the states written are counted in a byte ($c035)");
 #define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
 static uint16_t state_next = DP_EVERY;
 static uint8_t states;
@@ -273,7 +280,7 @@ __attribute__((noinline)) static uint8_t replay_due(void)
             replay_state(t);
             return 1;
         }
-        if (t >= state_next && t < DP_EVERY_UNTIL) {
+        if (t >= state_next && t < DP_EVERY_UNTIL && states < DP_STATES_MAX - 1u) {
             replay_state(t);
             while (state_next <= t) state_next += DP_EVERY;
         }
