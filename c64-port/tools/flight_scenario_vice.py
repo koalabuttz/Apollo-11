@@ -537,7 +537,7 @@ def main():
             c64_end = c64_s[-1][1] if c64_s else None
             diff, at_cs, matched, skipped = [], None, [], set()
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            pairs, unpaired = pair_states(host_s, c64_s, bool(ended), skip['cs'] if skip else 0)
+            pairs, unpaired = pair_states(host_s, c64_s, bool(ended), (skip or {}).get('cs', 0))
             r.update(replay_unpaired=unpaired)
             if unpaired:
                 print(f'{a.scenario}: states with no partner, not compared: '
