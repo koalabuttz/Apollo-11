@@ -1,138 +1,154 @@
 {
  "cm V01N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 41,2365 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 41,2365 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V03N20E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 41,2400 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 41,2400 refused by lanec_pin_cm_routines, basic 41,2402",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V04N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 41,2360 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 41,2360 refused by lanec_pin_cm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V05N20E": {
+  "signature": "stop: basic 41,2353 refused by lanec_pin_cm_routines, basic 41,2355, basic 41,2360 refused by lanec_pin_cm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_cm_routines, basic 41,2366, basic 41,2500",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V06N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3143 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V11N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 41,2365 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 41,2365 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V12N36E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 41,2373 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V13N36E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 41,2400 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V14N43E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 02,2140 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V15N36E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 41,2353 refused by lanec_pin_cm_routines, basic 41,2355, basic 41,2360 refused by lanec_pin_cm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V16N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3143 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V16N36EK": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3143 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 40,2656, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V16N36EKR": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3143 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V16N36EQ": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 40,2656, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V16N36EV32E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3143 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V16N65E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3143 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V17N20E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 02,2140 refused by lanec_pin_cm_routines"
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,3105, basic 40,3121",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "cm V37E00E": {
-  "signature": "TBD",
-  "why": "C64 clock one cs behind the host at the end (replay-mismatches clock class, owner RK)"
- },
- "lm V01N01E01000EV01N15E": {
-  "signature": "TBD",
-  "why": "C64 clock one cs behind the host at the end (replay-mismatches clock class, owner RK)"
+  "signature": "difference: 0064, 1136, 1400, 1401, TIME1, TIME3, TIME4, TIME5, centiseconds",
+  "why": "C64 one cs ahead at the end plus waitlist words 0064, 1136, 1400, 1401: clock/charge class (owner Certificate fixes from RK, replay-mismatches.md)"
  },
  "lm V01N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 41,2365 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 41,2365 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V03N20E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 41,2400 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 41,2400 refused by lanec_pin_lm_routines, basic 41,2402",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V04N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 41,2360 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 41,2360 refused by lanec_pin_lm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
- "lm V05N09EC": {
-  "signature": "TBD",
-  "why": "C64 clock one cs behind the host at the end (replay-mismatches clock class, owner RK)"
+ "lm V05N20E": {
+  "signature": "stop: basic 41,2353 refused by lanec_pin_lm_routines, basic 41,2355, basic 41,2360 refused by lanec_pin_lm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_lm_routines, basic 41,2366, basic 41,2500",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V06N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3230 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
- "lm V06N43E": {
-  "signature": "TBD",
-  "why": "C64 clock one cs behind the host at the end (replay-mismatches clock class, owner RK)"
+ "lm V06N49E": {
+  "signature": "stop: basic 40,2717 refused by lanec_pin_lm_routines, basic 40,2722, basic 40,2723, basic 40,2726, basic 40,2727, basic 40,2731",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V11N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 41,2365 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 41,2365 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V12N36E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 41,2373 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V13N36E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 41,2400 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V14N43E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 02,2124 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V15N36E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 41,2353 refused by lanec_pin_lm_routines, basic 41,2355, basic 41,2360 refused by lanec_pin_lm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V16N36E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3230 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V16N36EK": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3230 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V16N36EKR": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3230 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V16N36EQ": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V16N36EV32E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3230 refused by lanec_pin_lm_routines"
+  "signature": "run: the C64 stopped (status 1) before a sample point 800 cs in (rows)",
+  "why": "C64 step returns EXEC_OUT_OF_SCOPE after V32E during the V16N36 monitor (14 of 22 rows); the host is clean (owner Certificate fixes, tracing)"
  },
  "lm V16N65E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 42,3230 refused by lanec_pin_lm_routines"
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3425, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V17N20E": {
-  "signature": "TBD",
-  "why": "Pinball point refused on the host (Lane C #674): basic 02,2124 refused by lanec_pin_lm_routines"
- },
- "lm V32E": {
-  "signature": "TBD",
-  "why": "C64 clock one cs behind the host at the end (replay-mismatches clock class, owner RK)"
- },
- "lm V33E": {
-  "signature": "TBD",
-  "why": "C64 clock one cs behind the host at the end (replay-mismatches clock class, owner RK)"
- },
- "lm V34E": {
-  "signature": "TBD",
-  "why": "C64 clock one cs behind the host at the end (replay-mismatches clock class, owner RK)"
- },
- "lm V35E": {
-  "signature": "TBD",
-  "why": "C64 clock one cs behind the host at the end (replay-mismatches clock class, owner RK)"
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,3200, basic 40,3214",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
  "lm V36E": {
-  "signature": "TBD",
-  "why": "C64 TIME4 one tick ahead after the fresh start, T4RUPT display words follow (DSPCNT, NOUT, DSPTAB+1, DSRUPTSW); clock class, owner RK (replay-mismatches.md)"
+  "signature": "clock: TIME4",
+  "why": "C64 TIME4 one tick late: AOSTASK split across lm_aostask parts is charged per run (owner Certificate fixes from RK: part-charge PR after #738, replay-mismatches.md)"
  },
  "lm V37E00E": {
-  "signature": "TBD",
-  "why": "waitlist entries (LST1, LONGBASE+1, LOCCTR) one cs apart, set while the C64 clock is one cs behind; clock class, owner RK (replay-mismatches.md)"
+  "signature": "difference: 0064, 1152, 1400, 1401",
+  "why": "waitlist words (0064, LONGBASE+1, LST1) differ after P00 integration_init: interpretive charge class (owner Certificate fixes from RK, replay-mismatches.md)"
  }
 }

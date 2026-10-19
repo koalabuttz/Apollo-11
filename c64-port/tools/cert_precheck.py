@@ -900,11 +900,13 @@ def check_dsky_sweep(report, label, mission, name, accepted):
                    f"(tools/dsky_sweep_known.json: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''})",
                    'fix them, run `make dsky-sweep-vice` and take them off the list')
     if not DSKY_SWEEP_EVIDENCE.exists():
+        dsky_sweep_clock(report, label, m, clock)
         report.add(level, label, f'no full DSKY sweep result for {m} (evidence/dsky-sweep/dsky-sweep.json)',
                    'run `tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep` and commit it')
         return
     sweep = json.loads(DSKY_SWEEP_EVIDENCE.read_text())
     if sweep.get('mode') != 'all' or m not in sweep.get('missions', []):
+        dsky_sweep_clock(report, label, m, clock)
         report.add(level, label, f"evidence/dsky-sweep/dsky-sweep.json is a {sweep.get('mode')} run of "
                    f"{', '.join(sweep.get('missions', []))}, not the full sweep of {m}",
                    'rerun it with --cases all on both missions')
@@ -915,7 +917,11 @@ def check_dsky_sweep(report, label, mission, name, accepted):
         report.add(level, label, f'{len(bad)} of the full DSKY sweep\'s {m} cases do not match the host on the C64 '
                    f"({', '.join(r['keys'] for r in bad[:6])}{' ...' if len(bad) > 6 else ''})",
                    'fix them and rerun the full sweep')
-    clock += [f"{m} {r['keys']}" for r in failed if r.get('class') == 'clock']
+    dsky_sweep_clock(report, label, m, clock + [f"{m} {r['keys']}" for r in failed if r.get('class') == 'clock'])
+
+
+def dsky_sweep_clock(report, label, m, clock):
+    """WARN on the clock class: acceptance item 6 waits on it, Pinball does not."""
     if clock:
         clock = sorted(set(clock))
         report.add('WARN', label, f'{len(clock)} DSKY sweep cases of {m} differ by the C64 clock class only '
