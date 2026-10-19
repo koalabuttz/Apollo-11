@@ -168,7 +168,7 @@ def measure_spec(sid):
     if spec.get('resume_flow'):
         D.flow_seed(missions, cases, rng, ref, path, spec)
     D.write_cases(path, missions, cases)
-    cases = D.frozen_only(missions, cases, ref, nat, path)
+    cases = D.frozen_only(missions, cases, ref, nat, path, sid)
     cases_sha = hashlib.sha256(open(path, 'rb').read()).hexdigest()
     if cases_sha != proof.get('cases_sha256'):
         raise SystemExit('%s: the regenerated cases are not the frozen ones (refreeze first)' % sid)
@@ -308,6 +308,19 @@ def check():
     return 1 if fails else 0
 
 
+def loops_of(sid):
+    """The proof's loop cases (interp_routine_differential.py loops_record), in
+    words."""
+    try:
+        loops = json.load(open(os.path.join(R, 'evidence', sid, sid + '-proof.json'))).get('loops') or {}
+    except (OSError, ValueError):
+        return ''
+    n = sum((loops.get('erasable_cadr_cycle') or {}).values())
+    m = sum(((loops.get('step_cap') or {}).get('routines') or {}).values())
+    return ', '.join(x for x in ('%d erasable-CADR cycle cases' % n if n else '',
+                                 '%d step-cap loop cases' % m if m else '') if x)
+
+
 def main(argv):
     if argv[:1] == ['check'] and len(argv) == 1:
         return check()
@@ -318,6 +331,9 @@ def main(argv):
             save(allow)
             print('%s: %d untaken arms, %d untriaged' % (
                 sid, len(allow[sid]['arms']), sum(a['class'] == 'UNTRIAGED' for a in allow[sid]['arms'])))
+            loops = loops_of(sid)
+            if loops:
+                print('  (the frozen set leaves out %s: an arm only they reach is untaken here)' % loops)
         return 0
     print(__doc__)
     return 2

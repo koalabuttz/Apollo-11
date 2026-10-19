@@ -1391,7 +1391,7 @@ def main():
         flow_seed(missions, cases, rng, ref, path, spec)
     write_cases(path, missions, cases)
     if a.cover_check is not None:
-        cases = frozen_only(missions, cases, ref, nat, path)
+        cases = frozen_only(missions, cases, ref, nat, path, a.spec)
         sys.exit(cover_check(a.spec, spec, missions, cases, path, a.cover_check))
     if a.stops_only:
         inside = in_file_stops(missions, cases, run([nat, path]), nat, path)
@@ -1406,14 +1406,13 @@ def main():
     # loops there until the night watchman restarts it. Counted, then left
     # out of the frozen set, as the C64 build would loop too (#224).
     loops = {i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x[1] == '9' and y[1] == '9'}
-    if loops:
-        print('both sides loop (erasable CADR cycle): %d cases' % len(loops))
-    # (And a loop each side ends at its own cap: counted and listed, then
-    # left out as above; #664.)
-    capped = step_cap_loops(rows_r, rows_n, x4_runner(a.spec, spec, missions, cases, path))
-    if capped:
-        report_step_cap_loops(missions, cases, capped)
-        loops |= capped
+    # (And a loop each side ends at its own cap, step_cap_loops: counted and
+    # left out as above, every one named in the proof; #746.)
+    capped = step_cap_loops([i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x[1] == '9' and y[1] == '2'],
+                            spec.get('max_steps', 200), step_cap_probe(a.spec, spec, missions, cases, path, ref, nat))
+    loop_record = loops_record(missions, cases, loops, capped)
+    report_loops(loop_record)
+    loops |= set(capped)
     if loops:
         keep = [i for i in range(len(cases)) if i not in loops]
         cases, rows_r, rows_n = [cases[i] for i in keep], [rows_r[i] for i in keep], [rows_n[i] for i in keep]
@@ -1500,7 +1499,8 @@ def main():
         edges = None
         if spec.get('cover'):
             edges = edge_sets(build_edges(a.spec, spec), path)
-        freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan=chan, edges=edges, covers=covers)
+        freeze(a.spec, spec, missions, cases, rows_r, stops, visits, chan=chan, edges=edges, covers=covers,
+               loops=loop_record)
 
 
 
@@ -1517,61 +1517,129 @@ def place(z, fb, sb):
     return None
 
 
-def step_cap_loops(rows_r, rows_n, rerun_x4):
-    """Cases both sides loop on past their caps: the oracle at its cycle
-    limit (kind 9) and the native runner at its step limit (kind 2) with the
-    same row again when rerun with 4x the steps, i.e. the native state no
-    longer changes (PERIODCH with a +0 period, #664). Any difference in the
-    rerun row keeps the case a mismatch. rerun_x4(indexes) returns the
-    rerun's rows for those cases, in order."""
-    cand = [i for i, (x, y) in enumerate(zip(rows_r, rows_n)) if x[1] == '9' and y[1] == '2']
-    if not cand:
-        return set()
-    return {i for i, z in zip(cand, rerun_x4(cand)) if z[1:] == rows_n[i][1:]}
+def step_cap_loops(cand, max_steps, probe):
+    """The cases of cand (oracle kind 9 at its cycle cap, native kind 2) that
+    both sides loop on: the native run ends at its step cap N with the same
+    image (every erasable word, A and L 16-bit, and the interrupt enable) as
+    at 4N steps, also ended at the cap, so its state repeats; and yaAGC
+    still runs at 4x its cycle cap with LOC in a routine the native loop
+    visits (PERIODCH with a +0 period, #664). Anything else stays a
+    mismatch: a refusal or failure that is not the step cap (kind 2 too,
+    tests/interp_case.c irc_run), an oracle that ends given more cycles,
+    and any rule at all when 4N does not fit the runner's 16-bit cap.
+    probe(cand) gives a record for each case in order (step_cap_probe).
+    Returns {case: routine where the native loop is entered}."""
+    cand = list(cand)
+    if not cand or 4 * max_steps > 0xffff:
+        return {}
+    out = {}
+    for i, r in zip(cand, probe(cand)):
+        if is_step_cap_loop(r, max_steps):
+            out[i] = r['routine']
+    return out
 
 
-def x4_runner(spec_id, spec, missions, cases, path):
-    """step_cap_loops' rerun: the native runner built with 4x max_steps (the
-    runner's 16-bit cap at most) on just those cases."""
-    def rerun(idx):
-        ms = min(4 * spec.get('max_steps', 200), 0xffff)
-        nat4 = build(spec_id, dict(spec, max_steps=ms), tag='-x4')[1]
-        sub = path + '.x4'
+def is_step_cap_loop(r, max_steps):
+    """step_cap_loops' test of one probe record: n1 and n4 the native runs
+    at N and 4N steps (kind, steps, ended at the cap, image), r4 the oracle
+    at 4x its cycles (kind, the routine LOC is in), visited the routines the
+    4N native run visits."""
+    n1, n4, r4 = r['n1'], r['n4'], r['r4']
+    return (n1['kind'] == '2' and n1['steps'] == max_steps and n1['capped']
+            and n4['kind'] == '2' and n4['steps'] == 4 * max_steps and n4['capped']
+            and n1['image'] == n4['image']
+            and r4['kind'] == '9' and r4['loc'] is not None and r4['loc'] in r['visited'])
+
+
+def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
+    """step_cap_loops' probe on the real runners: the native runner as built
+    and again with 4x max_steps (loop and dump modes), and yaAGC with 4x
+    its cycle cap (IRC_SNAP_CYCLES) giving LOC at the cap."""
+    def probe(idx):
+        n = spec.get('max_steps', 200)
+        nat4 = build(spec_id, dict(spec, max_steps=4 * n), tag='-x4')[1]
+        sub = path + '.capped'
         write_cases(sub, missions, [cases[i] for i in idx])
-        rows = run([nat4, sub])
-        os.remove(sub)
-        return rows
-    return rerun
+        cycles = 4 * int(os.environ.get('IRC_SNAP_CYCLES', '4000000'))
+        env = dict(os.environ, IRC_SNAP_CYCLES=str(cycles), IRC_TIMEOUT_LOC='1')
+        try:
+            out = subprocess.run([ref, *ROPES, sub], cwd=R, check=True, capture_output=True, text=True,
+                                 timeout=RUN_TIMEOUT, env=env).stdout
+            rr = [l.split() for l in out.splitlines()]
+            side = {}
+            for k, nat in (('1', nat1), ('4', nat4)):
+                side[k] = (run([nat, sub, 'loop']), run([nat, sub, 'dump']))
+        finally:
+            if os.path.exists(sub):
+                os.remove(sub)
+        recs = []
+        for j, i in enumerate(idx):
+            mi = missions[cases[i]['cm']]
+            nat = {}
+            for k, (lp, dp) in side.items():
+                l, d = lp[j], dp[j]
+                # (image: the dump's words, and the digest for the channels it adds)
+                nat[k] = {'kind': l[1], 'steps': int(l[4][1:]), 'capped': l[5] == 'k1', 'image': [l[2], l[3]] + d[4:],
+                          'visits': [int(t[1:]) for t in l[6:]]}
+            r4 = rr[j]
+            recs.append({'n1': nat['1'], 'n4': nat['4'],
+                         'r4': {'kind': r4[1], 'loc': mi.cp.where(int(r4[4])) if r4[1] == '9' and len(r4) > 4 else None},
+                         'visited': {mi.cp.where(v) for v in nat['4']['visits']},
+                         'routine': '%s %s' % (mi.m, mi.cp.where(cases[i]['point']))})
+        return recs
+    return probe
 
 
-def report_step_cap_loops(missions, cases, capped, show=5):
-    print('both sides loop (oracle cycle cap, native step cap, native state unchanged at 4x the steps): %d cases'
-          % len(capped))
-    for i in sorted(capped)[:show]:
-        c = cases[i]
-        print('  case %d %s %s' % (i, missions[c['cm']].m, missions[c['cm']].cp.where(c['point'])))
+def loops_record(missions, cases, cycle, capped):
+    """The proof's record of the cases left out as loops: the erasable-CADR
+    cycles (kind 9 both sides) and the step-cap loops (step_cap_loops) by
+    routine, the step-cap ones also each case (its number among the
+    generated cases, seed and start point)."""
+    def where(i):
+        mi = missions[cases[i]['cm']]
+        return '%s %s' % (mi.m, mi.cp.where(cases[i]['point']))
+    out = {}
+    if cycle:
+        out['erasable_cadr_cycle'] = dict(sorted(collections.Counter(where(i) for i in cycle).items()))
+    if capped:
+        out['step_cap'] = {'routines': dict(sorted(collections.Counter(capped.values()).items())),
+                           'cases': [{'case': i, 'seed': cases[i]['seed'], 'start': where(i),
+                                      'point': cases[i]['point']} for i in sorted(capped)]}
+    return out
 
 
-def frozen_only(missions, cases, ref, nat, path):
+def report_loops(record):
+    for k, title in (('erasable_cadr_cycle', 'both sides loop (erasable CADR cycle)'),
+                     ('step_cap', 'both sides loop (native step cap with the same image at 4x the steps, '
+                                  'yaAGC still running at 4x its cycles)')):
+        by = record.get(k)
+        if k == 'step_cap' and by:
+            by = by['routines']
+        if by:
+            print('%s: %d cases (%s)' % (title, sum(by.values()), ', '.join('%s x%d' % kv for kv in by.items())))
+
+
+def frozen_only(missions, cases, ref, nat, path, spec_id=None):
     """The cases the freeze kept: the main run's loop and refusal filters,
-    with the oracle run only on the cases the native runner loops on. Writes
-    the kept cases to path and returns them."""
+    with the oracle run only on the cases the native runner loops on or
+    stops in failing (the step-cap loop candidates). Writes the kept cases
+    to path and returns them."""
+    if spec_id is None:
+        spec_id = os.path.basename(nat).rsplit('-native', 1)[0]
+    spec = interp_specs.SPECS[spec_id]
     rows_n = run([nat, path])
     nine = [i for i, y in enumerate(rows_n) if y[1] == '9']
-    # (The step-cap loops, step_cap_loops: native kind 2 rows unchanged at
-    # 4x the steps, then the oracle's kind 9 on those.)
     two = [i for i, y in enumerate(rows_n) if y[1] == '2']
-    if two:
-        spec_id = os.path.basename(nat).rsplit('-native', 1)[0]
-        same = x4_runner(spec_id, interp_specs.SPECS[spec_id], missions, cases, path)(two)
-        two = [i for i, z in zip(two, same) if z[1:] == rows_n[i][1:]]
     loops = set()
     if nine or two:
         sub = path + '.loops'
         ii = nine + two
         write_cases(sub, missions, [cases[i] for i in ii])
-        loops = {i for i, x in zip(ii, run([ref, *ROPES, sub])) if x[1] == '9'}
+        rr = dict(zip(ii, run([ref, *ROPES, sub])))
         os.remove(sub)
+        loops = {i for i in nine if rr[i][1] == '9'}
+        loops |= set(step_cap_loops([i for i in two if rr[i][1] == '9'], spec.get('max_steps', 200),
+                                    step_cap_probe(spec_id, spec, missions, cases, path, ref, nat)))
     if loops:
         cases, rows_n = [c for i, c in enumerate(cases) if i not in loops], [r for i, r in enumerate(rows_n) if i not in loops]
         write_cases(path, missions, cases)
@@ -1859,7 +1927,7 @@ def too_big_record(cases):
             'case_ranges': ','.join('%d' % a if a == b else '%d-%d' % (a, b) for a, b in runs)}
 
 
-def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=None, covers=None):
+def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=None, covers=None, loops=None):
     stride = spec.get('freeze_stride', 16)
     pick = [i for i in range(0, len(cases), stride) if i not in chan]
     cover = None
@@ -1954,6 +2022,9 @@ def freeze(spec_id, spec, missions, cases, rows, stops, visits, chan=(), edges=N
     if 'c64_gcov_branches' in proof:
         # (tools/cert_precheck.py reads the C64 rows' gap from this key.)
         proof['host_branches_missing_on_c64'] = proof['c64_gcov_branches']['missing']
+    if loops:
+        # (The cases left out as loops: tools/cert_precheck.py shows them.)
+        proof['loops'] = loops
     if chan:
         proof['waiting_for_io_channels'] = dict(collections.Counter(chan.values()))
         proof['io_channel_refused_oracle_outcomes'] = {k: dict(sorted(v.items())) for k, v in sorted(chan_outcomes(chan, rows).items())}
