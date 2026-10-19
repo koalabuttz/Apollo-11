@@ -18,7 +18,10 @@
  *                 ADVAN at or after it, one line of 2048 octal words
  *   X86_SAMPLES_FROM  the first centisecond X86_SAMPLES writes (default 1)
  *   X86_DSKY=1    a live DSKY in the terminal (platform/x86/terminal_dsky.h);
- *                 with no CS argument the run goes on until q */
+ *                 with no CS argument the run goes on until q
+ *   X86_TYPED     characters sent through the live DSKY's typed-key path
+ *                 from the start, as if typed (the lockstep check takes the
+ *                 same) */
 #include <string.h>
 #include <time.h>
 #include "flight_scenario.h"
@@ -54,6 +57,7 @@ int main(int argc, char **argv)
     static fs_inputs in;
     static terminal_dsky dsky;
     const int live = getenv("X86_DSKY") && *getenv("X86_DSKY") == '1';
+    const char *typed = getenv("X86_TYPED");
     fd_ran ran;
     unsigned long cs = argc > 2 ? strtoul(argv[2], 0, 0) : 1000ul, next = 1, periods = 0,
                   from =
@@ -68,7 +72,10 @@ int main(int argc, char **argv)
     if (live) {
         if (argc <= 2) cs = ~0ul;
         td_start(&dsky);
-    }
+        dsky.quit_at_eof = argc <= 2;
+    } else
+        td_init(&dsky);
+    for (; typed && *typed; ++typed) td_type(&dsky, (unsigned char)*typed);
     fs_start(&st, X86_INTERP_MODE);
     t0 = now_s();
     while (fd_centiseconds(&st) < cs) {
@@ -94,19 +101,19 @@ int main(int argc, char **argv)
                     fputc('\n', samples);
                 }
             if (fs_inputs_due(&in, &st)) continue;
-            if (live) {
-                td_read_keys(&dsky);
-                if (dsky.quit) break;
-                if (td_inputs_due(&dsky, &st)) continue;
-            }
+            if (live) td_read_keys(&dsky);
+            if (dsky.quit) break;
+            if (td_inputs_due(&dsky, &st)) continue;
         }
         if (fd_run(&st, &ran) == EXEC_UNMAPPED) {
+            if (live) td_restore(); /* the stop message stays on screen */
             fprintf(stderr, "no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",
                     ran.key / 1024u, ran.key % 1024u + 02000u, (unsigned)st.s.words[5],
                     (unsigned)st.s.words[4], fd_centiseconds(&st));
             break;
         }
         if (ran.status != EXEC_OK) {
+            if (live) td_restore(); /* the stop message stays on screen */
             fprintf(stderr, "%s refused at %02o,%04o (status %d) at %lu cs\n",
                     ran.table ? ran.table->name : "interpreter core", ran.key / 1024u,
                     ran.key % 1024u + 02000u, (int)ran.status, fd_centiseconds(&st));
