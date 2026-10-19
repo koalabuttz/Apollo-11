@@ -1284,6 +1284,9 @@ port) runs one mission:
    RCS midcourse correction keyed through P30 (V25 on N33 and N81) from
    cm-p23's load, then P41 to TIG and V16N85; with no CM RCS translation
    model VG holds at 5.0 ft/s. Both match yaAGC.
+   `cm-v48-dap` keys V48 (R03) from cm-p40's load: the crew loads the
+   wide deadband on V04N46 (21112), proceeds on N47 and N48, and S41.2
+   sets ADB and RATEINDX; then V46 (STABLISH). It matches yaAGC.
    `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus
