@@ -3422,8 +3422,8 @@
             "sha256": "4bbe36704917a4cb3f927e432713364e9d7ed9736554da7665ec0aa5ec9f1eaf"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-p30-p33.md",
-            "sha256": "db759789a9652c2783b8f8eaeb62472ee7e6cf88e3719ff32926b358445d4bf1"
+            "path": "docs/audits/rev2-cm-arms-685.md",
+            "sha256": "43dd2c95cd7c9bd0b52bb32b4fb4bf209034d1b97a45732d7e7960216e6516a5"
           }
         }
       }
@@ -3588,7 +3588,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p37-p70 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; two of them (resumed_at 32,3451 and 32,3560) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there, and the words past P370GOF's, P37GFRB1's and P370GOFR's calls that their indexed returns reach) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p37-p70 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; two of them (resumed_at 32,3451 and 32,3560) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
         "external_continuations": [
           "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
           "PHASCHNG with its inline phase words (restart groups)",
@@ -3604,30 +3604,30 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-source-map.json",
-            "sha256": "e8d29b2e163c1442d6bb543a0eedd50c74286713b5baffac08113cc8a7103dfe"
+            "sha256": "092b295e054f610a351c1c4d2cb179c9d7431e140bc95620c51ee94e120fdf4b"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-proof.json",
-            "sha256": "857a9fd1b94212529530d3acc8218d87857bda65b899a143d9844e3cee8b15c7"
+            "sha256": "d90f27a9edbae3db3cd2e0273734ca5d592b00de193647a53b6a8ec0b0953308"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-host.log",
-            "sha256": "ea2797b162424a38869d257b29b77c1dd551bbe9e45ba891178c20608206ebee"
+            "sha256": "3e334383dd0a802d1768378bb15007288b8d50ca8c19af7dfd3ec4c51a1f06ed"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-vice.log",
-            "sha256": "66aaecd11f63b096bfc200b9a5612804d1f5720e26571856e5b213b1034ec449",
+            "sha256": "6ed87a9fc56e0f4fd0f2564a934c1f1b13af3a1a21bb8b719e30e30f028d82a4",
             "vice_targets": {
-              "vice-cm-p37-p70": 692
+              "vice-cm-p37-p70": 698
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-c64-cover.json",
-            "sha256": "40e3748f3d395ba6dd9cd3d1a2959d91f3eb2e2fe04851897f25cbac82081c48"
+            "sha256": "6877433109d359ceb0f4f7229fa24ace0237b3cd911a40de68360cd9a703d6d0"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-e465.md",
-            "sha256": "549d1c322174770cdfc96ffa92a463ce6ab071affe89fa8e7ffb5cb053635b29"
+            "path": "docs/audits/rev2-cm-p37-p70-654.md",
+            "sha256": "7c6a7620ba11ed3747a130fb18f8880b94cec03a7d8b5da0f747df6674b0467c"
           }
         }
       }
@@ -3711,8 +3711,8 @@
             "sha256": "96d473fcb1f0ef268497e6c2a16ffdf20b7d2131eadd6c79b556cc0131284dd9"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-p40-p47-616.md",
-            "sha256": "9e2cc8ff58dd50ee90d0cf287daf522035c8e077d5030ad6b4c6d3c26704b287"
+            "path": "docs/audits/rev2-cm-arms-685.md",
+            "sha256": "43dd2c95cd7c9bd0b52bb32b4fb4bf209034d1b97a45732d7e7960216e6516a5"
           }
         }
       }
@@ -6139,8 +6139,8 @@
             "sha256": "d544b5b1f42442dfa0595dfb965cf69f7c033815cdbf8bcf940343edc3b36ae3"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-r31-tpi-630.md",
-            "sha256": "9f7097ff9c87efebe68a09d74592d0fc0855748b3e79152d1a9f9a6696ffc993"
+            "path": "docs/audits/rev2-cm-arms-685.md",
+            "sha256": "43dd2c95cd7c9bd0b52bb32b4fb4bf209034d1b97a45732d7e7960216e6516a5"
           }
         }
       }
