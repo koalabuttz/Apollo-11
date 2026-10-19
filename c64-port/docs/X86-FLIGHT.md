@@ -23,10 +23,13 @@ It runs Luminary099 from GOJAM for CS centiseconds of AGC time (default 1000), p
 | `FLIGHT_CH30` to `FLIGHT_CH33` | Input channels 30-33 at start, in octal (`FLIGHT_CH30=036377 FLIGHT_CH31=057777`: IMU operate, PGNCS control, AUTO, so the LM DAP runs). |
 | `FLIGHT_POKE` | `CS:ADDR=VALUE,...`: erasable words set on AGC time, in octal. |
 | `FLIGHT_LOAD` | `CS:FILE,...`: the same from files of octal `ADDR VALUE` lines, a scenario's erasable load (`tools/flight_scenarios/`). |
+| `FLIGHT_CHAN` | `CS:CH=VALUE,...`: input channel 16 or 30-33 set on AGC time, in octal, in time order. |
+| `FLIGHT_ENGINE` ... `FLIGHT_SIVB` | The vehicle models (below). |
 | `FLIGHT_GOJAM` | `CS[,CS...]`: a hardware restart (yaAGC's GOJAM: Q = Z, Z = 04000, interrupts enabled and cleared, output channels zeroed), then the program's own restart code. |
 | `FLIGHT_DOWNRUPT` | `1`: a DOWNRUPT every 20 ms of AGC time, so the downtelemetry program runs. |
 | `X86_REPORT` | A JSON report: the points the interpreter core ran and why (no table, or the table refused), basic points no routine holds, the tables used with their certification, and the clock. |
 | `X86_SAMPLES` | Erasable memory at the first idle pass through ADVAN in each centisecond. |
+| `X86_SAMPLES_FROM` | The first centisecond `X86_SAMPLES` writes (default 1). |
 
 ## What links
 
@@ -75,7 +78,26 @@ CI runs `x86-flight-check` in the host job (`ci-extra-host`) when a PR changes a
 
 ## Vehicle models
 
-`platform/x86/vehicle_models.h` (MIT, header only) holds the vehicle the AGC flies: the LM descent and ascent engines with touchdown, abort stage and the P66 crew (`FLIGHT_ENGINE`, `FLIGHT_ENGINE_LAG`, `FLIGHT_TOUCHDOWN`, `FLIGHT_ASCENT`, `FLIGHT_STAGE`, `FLIGHT_PILOT`), the LM RCS jets (`FLIGHT_RCS`), the CSM's SPS (`FLIGHT_SPS`), entry drag and lift (`FLIGHT_AERO`), the IMU gimbals for P01 (`FLIGHT_IMU`), the Saturn V boost (`FLIGHT_SATURN`) and TLI (`FLIGHT_SIVB`). They were written for this port's flight scenarios and contain no Virtual AGC code. `platform/x86/test_vehicle_models.c` checks each one (`make x86-flight-check` builds and runs it first). The host differential (`tools/flight_host_run.c`) still has its own copy, and the x86 program does not run them yet. The rendezvous and landing radars (`tools/flight_radar.h`, `tools/flight_lr.h`) are still harness only.
+`platform/x86/vehicle_models.h` (MIT, header only) holds the vehicle the AGC flies: the LM descent and ascent engines with touchdown, abort stage and the P66 crew (`FLIGHT_ENGINE`, `FLIGHT_ENGINE_LAG`, `FLIGHT_TOUCHDOWN`, `FLIGHT_ASCENT`, `FLIGHT_STAGE`, `FLIGHT_PILOT`), the LM RCS jets (`FLIGHT_RCS`), the CSM's SPS (`FLIGHT_SPS`), entry drag and lift (`FLIGHT_AERO`), the IMU gimbals for P01 (`FLIGHT_IMU`), the Saturn V boost (`FLIGHT_SATURN`) and TLI (`FLIGHT_SIVB`). They were written for this port's flight scenarios and contain no Virtual AGC code. `platform/x86/test_vehicle_models.c` checks each one (`make x86-flight-check` builds and runs it first).
+
+The x86 program runs them with the same settings and at the same points as the host differential (`tools/flight_host_run.c`, which still has its own copy): at each sample point after the pokes, then the channel changes (`FLIGHT_CHAN`), then a restart or a key; with `FLIGHT_ENGINE_LAG` the engine, and always the RCS jets, also after every routine. Keys include the mark buttons (`M`, `J`; LM `x`, `y`, `j`: channel 16 and KEYRUPT2).
+
+`make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it, 1,000 cs before its end, with the harness on the work clock (`FLIGHT_SCALED=W`): same major mode, RN within 1 km and VN within 2 m/s. The two charge routine costs differently, so their states are close, not equal. On base 6f61de67 with the models:
+
+| Scenario | Major mode | RN apart | VN apart |
+|---|---|---|---|
+| LM P63 descent (no engine) | 77 / 77 | 125 m | 0.06 m/s |
+| LM P63 descent, engine | 77 / 77 | 135 m | 0.58 m/s |
+| LM P63 descent, restart at 200 s | 77 / 77 | 147 m | 0.57 m/s |
+| LM P57 | 00 / 00 | 0 | 0 |
+| CM P11 launch to orbit | 00 / 00 | 449 m | 0.73 m/s |
+| CM TLI | 00 / 00 | 153 m | 0.08 m/s |
+| CM P40 SPS burn | 00 / 00 | 21 m | 0.13 m/s |
+| CM TEI | 00 / 00 | 16 m | 0.06 m/s |
+| CM entry (P61-P67) | 103 / 103 | 30 m | 1.84 m/s |
+| CM P22, P23, P37, P52 | 00 / 00 | 0 | 0 |
+
+The rest need models the x86 program does not have yet: the rendezvous radar and VHF (`FLIGHT_RR`), the landing radar (`FLIGHT_LR`, `FLIGHT_LR_POS2`), the NASSP P63 core (`FLIGHT_CORE`), uplink and stolen time.
 
 ## Gaps
 

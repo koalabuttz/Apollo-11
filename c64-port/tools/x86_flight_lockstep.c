@@ -123,7 +123,8 @@ int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;fd_
    (unsigned)st.s.words[5],(unsigned)st.s.words[4],fd_centiseconds(&st));break;}
   if(ran.status!=EXEC_OK){printf("%s refused at %02o,%04o at %lu cs\n",ran.table?ran.table->name:"interpreter core",ran.key/1024u,ran.key%1024u+02000u,fd_centiseconds(&st));break;}
   ++checked;
-  if((n=lockstep(&before,&st,why,sizeof why))<0)miss(&ran,why);else instructions+=(unsigned long)n;}
+  if((n=lockstep(&before,&st,why,sizeof why))<0)miss(&ran,why);else instructions+=(unsigned long)n;
+  fs_after_routine(&in,&st);}
  printf("%s x86 lockstep (%s): %lu cs, %lu routines and core slots checked (%lu yaAGC instructions), %u points yaAGC did not match, "
   "%lu clock periods; major mode %02o, FAILREG %05o\n",MISSION?"CM":"LM",X86_INTERP_MODE==FD_INTERP_CORE?"interpreter core":"compiled",
   fd_centiseconds(&st),checked,instructions,nmisses,st.periods,(unsigned)st.s.words[01011],(unsigned)st.s.words[0375]);
