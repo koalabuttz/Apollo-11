@@ -1021,7 +1021,7 @@
    "scenarios": [
     "lm-coast-r04"
    ],
-   "note": "lm-coast-r04: V63E, V04N12 option 4 (RR), the self test with V16N72. The host bridges one point (50,2002, a TC Q return) (Lane F host check, 10-19)",
+   "note": "lm-coast-r04: V63E, V04N12 option 4 (RR), the self test with V16N72; its reads take the data-fail path (BADRAD, DATAFAIL, BADEND). The host bridges one point (50,2002, a TC Q return) (Lane F host check, 10-19)",
    "owner": "F",
    "windows": [
     [
