@@ -329,6 +329,7 @@ TEXT(t_pal, "VIDEO: PAL, 985248 HZ\n");
 TEXT(t_ntsc, "VIDEO: NTSC, 1022727 HZ\n");
 TEXT(t_reu, "REU: ");
 TEXT(t_kb, " KB\n");
+TEXT(t_kb_more, " KB OR MORE\n");
 TEXT(t_dma, "REU DMA, BYTES/S: C64>REU ");
 TEXT(t_dma2, "\n                 REU>C64 ");
 TEXT(t_run, "\n\nRUNNING " DP_HW_WINDOW "...\n\n");
@@ -480,9 +481,11 @@ static void BOOT hw_start(void)
     hw_hz = top >= 0x20u ? 985248ul : 1022727ul;
     hw_puts(top >= 0x20u ? t_pal : t_ntsc);
     /* The REU's size: the first bank (128 KB up) whose address wraps to 0;
-     * the bytes it touches are put back. */
+     * the bytes it touches are put back. It stops at 1 MB, so that every
+     * probe stays inside the store (tools/reu_layout.py): no wrap there
+     * means 2 MB or more. */
     keep0 = hw_peek(0);
-    for (i = 2; i <= 128u; i = (uint16_t)(i << 1)) {
+    for (i = 2; i <= 16u; i = (uint16_t)(i << 1)) {
         keep = hw_peek((uint32_t)i << 16);
         hw_poke(0, 0x55u);
         hw_poke((uint32_t)i << 16, 0xaau);
@@ -493,7 +496,7 @@ static void BOOT hw_start(void)
     }
     hw_puts(t_reu);
     hw_putu((uint32_t)i << 6);
-    hw_puts(t_kb);
+    hw_puts(i > 16u ? t_kb_more : t_kb);
     timer_start();
     hw_puts(t_dma);
     hw_putu(hw_speed(APOLLO_REU_STASH));
