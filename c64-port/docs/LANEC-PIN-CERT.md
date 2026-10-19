@@ -102,10 +102,14 @@ The guards that stay are argued here:
   the others refuse.
 - **Logical addresses past 01777** other than N13's two words: fixed memory,
   which no noun reaches and a load cannot write. Refused.
-- **2INTOUT negative values.** The nouns it shows are TREDES (clamped to
-  0-99), LOOKANGL (an arcsine in degrees) and on the CM VHFCNT and TRKMKCNT
-  (counters): never negative in flight. Values past 99 are shown modulo 100
-  natively, as DSPDECVN does.
+- **2INTOUT negative values other than -0.** The nouns it shows are TREDES
+  (clamped to 0-99), LOOKANGL (an arcsine in degrees) and on the CM VHFCNT
+  and TRKMKCNT (counters): never below zero in flight. They can be -0: LM
+  P65's display hands 2INTOUT MPAC = 077777 (lm-p65-autoland-nassp), and
+  DSPDECVN shows it as 00 (the 0244 multiply keeps -0, and INDEX -0 picks
+  digit 0). 2INTOUT and DSPDECVN take -0 natively (`pw-two-integer`,
+  `pw-two-digit`). Values past 99 are shown modulo 100 natively, as DSPDECVN
+  does.
 - **ALMCYCLE with superbank 0-3.** ALMCYCLE (fixed-fixed 04145 / 04161) is
   called only from Pinball code in banks 40-43, which runs only under
   superbank 4 or higher.
