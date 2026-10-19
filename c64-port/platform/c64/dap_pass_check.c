@@ -138,8 +138,10 @@ static void press_due(uint16_t elapsed)
  * 3 bits ORed in (interrupt requests), 4 a byte stored, else a word
  * stored. A row is applied before the first step at or after its time where
  * it may be (rows go in order: a sample point's row holds back the
- * boundary rows after it). The sample point is the host's: Z at ADVAN in
- * bank 01, NEWJOB -0, no interrupt running or requested; with DP_BUSY also
+ * boundary rows after it; a PIPA count the C64 is late for goes in at any
+ * step, and every late row goes in before a state is written). The sample
+ * point is the host's: Z at ADVAN in bank 01, NEWJOB -0, no interrupt
+ * running or requested; with DP_BUSY also
  * a step boundary outside an interrupt with none requested DP_BUSY
  * centiseconds after the last (FLIGHT_BUSY_SAMPLE). At the first sample
  * point DP_REPLAY_CS or more centiseconds in, before that point's rows,
@@ -217,24 +219,9 @@ __attribute__((noinline)) static void replay_state(uint16_t t)
     stash((void *)RK_HARDWARE, DP_IO_BYTES);
     stash(&rk_device, 32u);
 }
-/* The rows due before this step; 1 when the window ends here. */
-__attribute__((noinline)) static uint8_t replay_due(void)
+/* Apply the rows due by t (sample point rows only when sp). */
+__attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
 {
-    uint16_t t = replay_cs();
-    uint8_t sp = sample_point(t);
-    if (sp) {
-#ifdef DP_BUSY
-        busy_last = t;
-#endif
-        if (t >= DP_REPLAY_CS) {
-            replay_state(t);
-            return 1;
-        }
-        if (t >= state_next && t < DP_EVERY_UNTIL) {
-            replay_state(t);
-            while (state_next <= t) state_next += DP_EVERY;
-        }
-    }
     while (rows_left) {
         uint16_t *w;
         if (!row_ready) {
@@ -242,7 +229,11 @@ __attribute__((noinline)) static uint8_t replay_due(void)
             row_at += sizeof(dp_row);
             row_ready = 1;
         }
-        if (row.cs > t || (!row.where && !sp)) return 0;
+        /* A sample point's row waits for a sample point, except an overdue
+         * PIPA count: the PIPAs count whether or not the C64 is idle, and a
+         * READACCS on a C64 that missed the host's sample point would read
+         * fewer counts than the host's. */
+        if (row.cs > t || (!row.where && !sp && (row.kind != 1u || row.cs >= t))) return;
         w = (uint16_t *)row.addr;
         __asm__ volatile("sei");
         if (row.kind == 1) {
@@ -263,6 +254,31 @@ __attribute__((noinline)) static uint8_t replay_due(void)
         row_ready = 0;
         --rows_left;
     }
+}
+/* The rows due before this step; 1 when the window ends here. */
+__attribute__((noinline)) static uint8_t replay_due(void)
+{
+    uint16_t t = replay_cs();
+    uint8_t sp = sample_point(t);
+    if (sp) {
+#ifdef DP_BUSY
+        busy_last = t;
+#endif
+        /* The host writes a state at a sample point after every row before
+         * it and before that point's own rows. Rows a busy C64 held back
+         * (a host sample point the C64 was not idle at) go in first, or a
+         * PIPA count the host has is missing from the state. */
+        if (t) replay_rows((uint16_t)(t - 1u), 1u);
+        if (t >= DP_REPLAY_CS) {
+            replay_state(t);
+            return 1;
+        }
+        if (t >= state_next && t < DP_EVERY_UNTIL) {
+            replay_state(t);
+            while (state_next <= t) state_next += DP_EVERY;
+        }
+    }
+    replay_rows(t, sp);
     return 0;
 }
 #endif
