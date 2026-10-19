@@ -146,6 +146,12 @@ def p51_p53_states():
     cm.update({'SXTSM+%d' % n: {'0163': [0]} for n in range(49, 53)})
     for d in (lm, cm):
         d.update({'NOTPLAN+%d' % n: {'vac+046': cat} for n in range(9, 11)})
+    # LM P57's alignment technique (OPTION2, 0-3 from V05N06): SURFDISP's
+    # CCS OPTION2 with technique 0 goes straight to P57POST +1, and
+    # P57POST's ENTER on V50N25 14 with technique 2 computes the landing
+    # site (BZF +2) (issue #658).
+    lm.update({'SURFDISP+%d' % n: {'OPTION2': [0, 0, 1, 2, 3, 'any']} for n in (0, 3, 10, 11)})
+    lm.update({'P57POST+%d' % n: {'OPTION2': [0, 1, 2, 2, 3, 'any']} for n in (0, 1, 6, 7, 8, 9)})
     neg = lambda v: ~v & 0o77777
     loop = [(18, 6), (12, 4), (6, 2)]
     joint = {}
@@ -199,6 +205,29 @@ def n49_wait():
 def v67_loop():
     """V67's W-matrix loop state: X1 a pass (6 to 54), S1 6."""
     return [{'vac+46': x, 'vac+50': 6} for x in range(6, 55, 6)]
+
+
+def v67_small_w():
+    """CM V67WW's W matrix with every summed word small (high words under
+    0400 either sign, any low word), so no DAD or SQRT overflows: two sets."""
+    import random
+    rng = random.Random(658)
+    out = []
+    for _ in range(2):
+        d = {}
+        for n in list(range(36)) + list(range(54, 90)):
+            hi = rng.randrange(0o400)
+            d['W+%d' % n] = (0o77777 - hi if rng.random() < 0.5 else hi) if n % 2 == 0 else rng.getrandbits(15)
+        out.append(d)
+    return out
+
+
+def v67_small_after():
+    """v67_small_w's W matrices with OVFIND clear and the running sums
+    (WWPOS, WWVEL) and MPAC small: CM V67WW's state at any of its points."""
+    sums = {'OVFIND': 0, 'WWPOS': 0o1234, 'WWPOS+1': 0o4567, 'WWVEL': 0o321, 'WWVEL+1': 0o7654,
+            '0154': 0o1234, '0155': 0o4567}
+    return [dict(w, **sums) for w in v67_small_w()]
 
 
 def v67_nochange():
@@ -2852,6 +2881,14 @@ SPECS = {
         'states': {'cm': dict({'LOWMEMRY': {'vac+046': list(range(6, 223, 6))},
                                # R61's INDEX MPAC after CALL CRS61.1: 0 or 1
                                '37,2573': {'0154': [0, 1]}, '37,2574': {'0154': [0, 1]},
+                               # R21CSMA after a PROCEED with no mark: MRKBUF1 keeps
+                               # R23CSM's -1, so BZF R21END (issue #658). The cases
+                               # reach it through the two TCF R21CSMA.
+                               '37,2511': {'MRKBUF1': [0o77776, 0o77776, 'any']},
+                               '37,2535': {'MRKBUF1': [0o77776, 0o77776, 'any']},
+                               # V67's R3 (WWOPT, RTHETA) as the crew loads it: 1
+                               # (rendezvous), 2 (orbit: BHIZ V67WORB) or 3 (midcourse)
+                               'V6N99INP': {'WWOPT': [1, 2, 2, 3, 'any']},
                                # RENDISP7 waits on TEMPOR1: the display job
                                # sets it -1 or +1 (+0, the waiting state, in
                                # joint_states).
@@ -2867,7 +2904,13 @@ SPECS = {
         # loop-back): the flowed cases there come from runs whose display job
         # has answered, so a third of them get TEMPOR1 +0 with a job waiting
         # (review #543: the BZE-taken arc).
-        'flow_range_states': {'cm': [('34,3302', '34,3303', {'*': ['flow', 'flow', {'TEMPOR1': 0, '067': 1}]})]},
+        # V67WW with an ordinary W matrix (issue #658): its points are CHANG2
+        # resume LOCs, so half their flowed cases get v67_small_w's W (the
+        # 6 position and 6 velocity vectors the loop sums small), small
+        # running sums and MPAC, and OVFIND clear, so the BOV after the
+        # roots falls through to V67XXX (the flowed X1 keeps the loop's place).
+        'flow_range_states': {'cm': [('34,3302', '34,3303', {'*': ['flow', 'flow', {'TEMPOR1': 0, '067': 1}]}),
+                                     ('40,3701', '40,3740', {'*': ['flow', 'flow'] + v67_small_after()})]},
         # Flight builds skip the entry checks' erasable scan (docs/INTERP-COMPILE.md).
         'trusted_image': True,
         # Loop and mid-sequence points start from the registers the file's
