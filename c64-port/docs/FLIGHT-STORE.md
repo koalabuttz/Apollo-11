@@ -918,6 +918,27 @@ port) runs one mission:
    BHIZ. With it, on base 3384c02b, five windows between P20's start and N59
    run 4,000 cs in all at 20.2x real time with no stop, ending on DELVTPI
    7.38 m/s as on the host.
+   The rest of the LM's rendezvous programs. lm_coelliptic.py writes the
+   loads for the targeting before TPI, shaped like Apollo 11's coelliptic
+   sequence: the CSM in a 60 nmi circular orbit 9.5 degrees ahead, the LM
+   in a 9 x 45 nmi orbit ten minutes before apolune (CSI there), TTPI 97
+   minutes after apolune. `BURN=` and `CSMBURN=` load a vehicle's state as
+   if a burn had already been made, so P33 and P73 start after their CSI.
+   `lm-csi` runs P32 (CSI) and then P72 (the CSM-active CSI): DH 16.5 nmi,
+   CSI 48.4 ft/s forward; for P72, 49.9 ft/s back. `lm-cdh` runs P33 (CDH)
+   after P32's burn, and `lm-cdh-csm` runs P73 after P72's. The crew
+   loads N55's NN as 1, because P32 zeroes it and with 0 finds no CDH
+   (alarm 604). The CSM-active programs need ELEV 206.6 (180 + 26.6: the
+   CSM looks down at the LM). With 26.6 P73 finds no TPI (alarm 611).
+   `lm-rendezvous-tpm` is lm-rendezvous with V85 (RR line of sight) and
+   V83 (R31: range, range rate, theta) during P20. After P34 come P35
+   (TPM), P74 and P75 (CSM-active TPI and TPM), P76 (target delta V: the
+   CSM's state takes a 10 ft/s burn), then V56 (end tracking).
+   `lm-stable-orbit` runs P78 (CSM-active stable orbit rendezvous, SOI,
+   CENTANG 130) and then P79 (stable orbit midcourse), from
+   lm-rendezvous's P20. `lm-stable-orbit-lm` runs the same with P38 and
+   P39. P78's and P38's Lambert solutions take about 200 s of AGC time
+   after N45.
    `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
    second burn, as the CMC monitored it in P47. cm_tli.py writes
    cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100

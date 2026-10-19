@@ -254,6 +254,69 @@ LM_RDZ = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '0777
           'FLIGHT_BUSY_SAMPLE': '50'}
 LM_RDZ_KEYS = ('@2200V37E20E@3000V33E@4700E@6100V33E@29000V37E34E@29400V33E@29700V33E@34000V33E@36700V33E'
                '@37500V33E@37800V33E')
+# The LM's rendezvous targeting before TPI (tools/flight_scenarios/
+# lm_coelliptic.py: the CSM in a 60 nmi circular orbit 9.5 degrees ahead,
+# the LM in a 9 x 45 nmi orbit ten minutes before apolune, where CSI
+# comes; TPI 97 minutes after apolune, as Apollo 11). No radar marks: the
+# programs work from the state vectors.
+# lm-csi: V37E32E (P32, CSI): PRO on V06N11 (TCSI 0: P32 takes the
+# apolune, 10:20.10); N55 NN 1, ELEV 26.6 (P32 zeroes NN: with 0 it finds
+# no CDH, alarm 604); PRO on N37 (TTPI) and V16N45; the CSI solution on
+# V06N75 (DH 16.5 nmi, CSI to CDH 58:03, CDH to TPI 38:56), V06N81 (48.4
+# ft/s forward) and V06N82, PRO on each, back to N45. Then V37E72E (P72,
+# the CSM-active CSI, the same pads with ELEV 206.6: the CSM looks down at
+# the LM): N75 DH -14.3 nmi, 57:50, 39:10; N81 49.9 ft/s back (the CSM's
+# burn); N82.
+LM_CSI = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_CH33': '077775', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-csi.load',
+          'FLIGHT_RR': '2000:-259681.119,1759068.734,371336.732,1576.461,307.349,-276.315:'
+                       '34932.422,1820802.682,320471.671,1594.204,27.571,-330.419',
+          'FLIGHT_BUSY_SAMPLE': '50'}
+LM_CSI_KEYS = ('@2200V37E32E@3000V33E@4000V33E@4400V25E+00001E+02660E+00000E@5400V33E@6000V33E@6600V33E'
+               '@9800V33E@10500V33E@11300V33E@12000V37E72E@12800V25E+00000E+00010E+02010E@14000V33E'
+               '@14600V25E+00001E+20660E+00000E@15600V33E@16200V33E@16800V33E@20300V33E@21100V33E@21900V33E')
+# lm-cdh: the LM after CSI (lm_coelliptic.py BURN=62010:48.4,0,0: P32's
+# N81 burned at TCSI). V37E33E (P33, CDH): V25 on V06N13, TCDH 1:08:23.10
+# (the next apse after CSI), PRO; PRO on V16N45; the CDH solution on V06N75
+# (DH 16.5 nmi, CDH to TPI 38:34, TPI 23 s before TTPI) and V06N81 (2.0
+# ft/s back, 0.3 down), PRO on each, back to N45.
+LM_CDH = {**LM_CSI, 'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-cdh.load',
+          'FLIGHT_RR': '2000:-267291.806,1762276.412,373515.357,1587.947,300.827,-279.905:'
+                       '34932.422,1820802.682,320471.671,1594.204,27.571,-330.419'}
+LM_CDH_KEYS = '@2200V37E33E@3000V25E+00001E+00008E+02310E@4200V33E@5000V33E@21000V33E@21800V33E@22600V33E'
+# lm-cdh-csm: the CSM after its CSI (lm_coelliptic.py CSMBURN=62010:
+# -49.9,0,0 ELEV=206.6: P72's N81 burned by the CSM). V37E73E (P73, the
+# CSM-active CDH), keyed as lm-cdh: N75 DH -14.3 nmi, 38:35, -0:22; N81
+# 1.3 ft/s back, 15.9 up.
+LM_CDH_CSM = {**LM_CSI, 'FLIGHT_LOAD': '2000:tools/flight_scenarios/lm-cdh-csm.load',
+              'FLIGHT_RR': '2000:-259681.119,1759068.734,371336.732,1576.461,307.349,-276.315:'
+                           '42138.296,1816290.127,318143.276,1583.547,36.018,-326.656'}
+LM_CDH_CSM_KEYS = LM_CDH_KEYS.replace('V37E33E', 'V37E73E')
+# lm-rendezvous-tpm: lm-rendezvous's P20 and P34, with the rendezvous
+# displays and the programs after TPI. V85 at 120 s (V16N56: the RR's
+# line of sight, within 0.3 degrees of the CSM), V34; V83 at 200 s
+# (R31: V16N54, 35.4 nmi, -110 ft/s, 241.9 degrees), V34; P34 as
+# lm-rendezvous, PRO on N59; V37E35E (P35, TPM, TPI not burned: the whole
+# TPI again, N81 21.5 ft/s, N59), PRO to N45; V37E74E (P74, the CSM-active
+# TPI): TTPI 0:12:00, ELEV 206.6 (N58, N81 22.7 ft/s back, N59);
+# V37E75E (P75, the CSM-active TPM): N81, N59, back to N45; V37E76E (P76,
+# target delta V): V06N84 loaded 10 ft/s forward, PRO on N33: the CSM's
+# state takes the burn; V56 (end tracking: P20 stops, V37 flashes).
+LM_TPM_KEYS = ('@2200V37E20E@3000V33E@4700E@6100V33E@12000V85E@14000V34E@20000V83E@25000V34E'
+               '@29000V37E34E@29400V33E@29700V33E@34000V33E@36700V33E@37500V33E@37800V33E@39000V33E'
+               '@40000V37E35E@41000V33E@42000V33E@43000V33E@44000V33E@45000V37E74E@46000V25E+00000E+00012E+00000E'
+               '@47500V33E@50000V25E+00000E+20660E+13000E@51200V33E@52500V33E@56000V33E@57000V33E@58000V33E'
+               '@59000V33E@60000V37E75E@61000V33E@62000V33E@63000V33E@64000V33E@65000V33E@66000V37E76E'
+               '@67000V25E+00010E+00000E+00000E@68000V33E@69000V33E@70000V56E')
+# lm-stable-orbit: lm-rendezvous's P20, then V37E78E (P78, the CSM-active
+# stable orbit rendezvous) at 80 s: V25 on V06N33, TIG 0:10:00; PRO on
+# N55 (CENTANG 130), V04N06 (option 1: SOI), N57 (DR 0), N34 (time of
+# intercept 0:51:58.33) and V16N45; P78's Lambert solution after 200 s
+# (N58, then N81 19.8 ft/s back, 22.3 down), PRO on each; V37E79E (P79,
+# the stable orbit midcourse) at 480 s, PRO on N45: N81. lm-stable-orbit-
+# lm: the same with the LM active, P38 and P39.
+LM_SO_KEYS = ('@2200V37E20E@3000V33E@4700E@6100V33E@8000V37E78E@9500V25E+00000E+00010E+00000E@11000V33E'
+              '@14500V33E@16500V33E@19500V33E@21500V33E@23000V33E@46000V33E@47000V33E@48000V37E79E@50000V33E')
 # cm-tli: Apollo 11's translunar injection (02:44:16 GET), the load at
 # 20 s (tools/flight_scenarios/cm_tli.py: the CSM in the 100 nmi parking
 # orbit, the launch REFSMMAT, body X along the burn, TEPHEM, the sun and
@@ -345,6 +408,12 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p20', 'cm', 25000, CM_P20_KEYS, CM_P20),
           ('lm-rendezvous', 'lm', 40000, LM_RDZ_KEYS, LM_RDZ),
           ('lm-rendezvous-rr-dropout', 'lm', 40000, LM_RDZ_RR_DROP_KEYS, LM_RDZ_RR_DROP),
+          ('lm-csi', 'lm', 23000, LM_CSI_KEYS, LM_CSI),
+          ('lm-cdh', 'lm', 23500, LM_CDH_KEYS, LM_CDH),
+          ('lm-cdh-csm', 'lm', 23500, LM_CDH_CSM_KEYS, LM_CDH_CSM),
+          ('lm-rendezvous-tpm', 'lm', 71000, LM_TPM_KEYS, LM_RDZ),
+          ('lm-stable-orbit', 'lm', 67000, LM_SO_KEYS, LM_RDZ),
+          ('lm-stable-orbit-lm', 'lm', 67000, LM_SO_KEYS.replace('V37E78E', 'V37E38E').replace('V37E79E', 'V37E39E'), LM_RDZ),
           ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),

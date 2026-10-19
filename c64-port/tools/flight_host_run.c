@@ -277,7 +277,7 @@ static const char *keys="";
  * pressed from that centisecond on (e.g. V37E63E@9000R presses RSET at
  * 90 s; P is RSET too, key code 022: PRO is no key code but channel 32
  * bit 14, pressed with FLIGHT_CHAN). Each key's time is set once, by keys_parse. */
-enum { KEYS=256 };
+enum { KEYS=1024 };
 static char keyc[KEYS+1];static unsigned long keyt[KEYS];
 static void keys_parse(const char *t){unsigned long at=KEY_AT;unsigned n=0;
  while(*t&&n<KEYS){if(*t=='@'){char *e;unsigned long v=strtoul(t+1,&e,10);if(v>at)at=v;t=e;continue;}
