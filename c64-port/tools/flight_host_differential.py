@@ -110,10 +110,10 @@ LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142
 # V57E at 660 s (LR updates permitted). From 816 s R12's altitude updates
 # take HCALC from about 186 m above the true height to about 77 m by
 # 955 s (HCALC lags the truth by 40-60 m here, a sample apart, with no
-# bias). It stops at 960 s, before the velocity reads: on the host the
-# LR velocity read then starts while an altitude read is still running
-# (SERVICER reaches READV 6 cs after READACCS), HMEAS 0 is stored and
-# the update moves HCALC about 1,200 m (replay-mismatches.md, RK).
+# bias). From 1,005 s SERVICER also reads the LR velocity (READV, LRVJOB)
+# after each altitude read; it runs to 1,100 s, 50 velocity reads, and
+# HMEAS is never zeroed (the interpretive words run with per-word
+# interrupt and NEWJOB points, #739).
 LR_UPDATE = {**NASSP, 'FLIGHT_LR': '60000:150'}
 LR_UPDATE_KEYS = NASSP_KEYS + '@66000V57E'
 # lm-p65-autoland-nassp: lm-p63-nassp on to the surface with no crew
@@ -685,18 +685,25 @@ OVERLOAD_CM = {**ENTRY, 'FLIGHT_STEAL': '21000-27000:600', 'FLIGHT_BUSY_SAMPLE':
 # V76E and V77E (minimum impulse, rate command), V93E (RENDWFLG cleared),
 # V95E (no state vector update), V67E (V06N99, the W-matrix errors, PRO),
 # V90E (V06N16 time, PRO; V06N90 out-of-plane, PRO), V47E (R47: V06N16,
-# PRO; the AGS downlist for 20 s and the IMU zero, then V50N16, PRO), V44E (RR designate ended), V80E and
-# V81E (LM and CSM state vector updates), V43E (V50N16, V34E), V49E (R62:
-# V06N22, PRO; R60's V50N18, PRO; V34E), V89E (R63: V04N12 option 3, PRO;
-# V06N18, V34E), V74E (erasable dump on the downlink), V42E (V21N93 fine
+# PRO; the AGS downlist for 20 s and the IMU zero, then V50N16, PRO),
+# V44E (RR continuous designate ended: RADMODES bit 15 cleared), V80E and
+# V81E (LM and CSM state vector updates), V43E (V21N22 needle angles
+# +1.00, +2.00, -3.00 degrees loaded; V43 again and the CDU error
+# commands), V49E (R62: V06N22, PRO; R60's V50N18, PRO; V34E), V89E
+# (R63: V04N12 option 3, PRO; V06N18, V34E), V74E (erasable dump on the downlink), V42E (V21N93 fine
 # align torquing, +0.010, 0, -0.010 degrees), V41N20E (V21N22 coarse
 # align to +1.00, 0, 0 degrees), V40N20E (CDUs zeroed) and V96E
 # (integration stopped, P00).
 COAST_VERBS_KEYS = ('@2600V64E@3500V34E@4000V66E@4500V61E@5000V34E@5500V62E@6000V34E@6500V75E@7000V65E@7500V76E'
                     '@8000V77E@8500V93E@9000V95E@9500V67E@10500V33E@11000V90E@12000V33E@12800V33E@13500V34E@14000V47E'
-                    '@15000V33E@18500V33E@19000V44E@19500V80E@20000V81E@20500V43E@21500V34E@22000V49E@23000V33E'
+                    '@15000V33E@18500V33E@19000V44E@19500V80E@20000V81E@20500V43E@20900+00100E+00200E-00300E@22000V49E@23000V33E'
                     '@24000V33E@25000V34E@25500V89E@26500V33E@27500V34E@28000V74E@29000V42E'
                     '@29500+00010E+00000E-00010E@31000V41N20E@31500+00100E+00000E+00000E@34000V40N20E@35500V96E')
+# V44's body runs only in continuous designate (RADMODES, FLGWRD12 at
+# 0110, negative): FLIGHT_POKE sets bit 15 at 188 s, as a designate the crew
+# ends would. V43's needs the PGNS mode switch off (channel 31 bits 13 and
+# 14 both 1) from 204 s to 220 s; LM_RDZ's 057777 is auto.
+COAST_VERBS = {**LM_RDZ, 'FLIGHT_POKE': '18800:0110=040100', 'FLIGHT_CHAN': '20400:031=077777,22000:031=057777'}
 # lm-coast-v55: V55E (V21N24, the AGC clock's correction, loaded as 0 h,
 # 0 min, 0.00 s). The N24 load goes through Pinball's HMSIN.
 COAST_V55_KEYS = '@2500V55E@3000+00000E+00000E+00000E'
@@ -753,7 +760,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-tpi-search', 'cm', 44000, CM_TPI_SEARCH_KEYS, CM_P20),
           ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
-          ('lm-p63-lr-update', 'lm', 96000, LR_UPDATE_KEYS, LR_UPDATE),
+          ('lm-p63-lr-update', 'lm', 110000, LR_UPDATE_KEYS, LR_UPDATE),
           ('lm-p63-lr-v58', 'lm', 96000, LR_V58_KEYS, LR_UPDATE),
           ('lm-p63-v60-nassp', 'lm', 115000, NASSP_KEYS + '@100000V60E', V60),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
@@ -789,7 +796,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'}),
           ('lm-p63-overload', 'lm', 27000, P63_KEYS + '@18000V16N68E', OVERLOAD_LM),
           ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM),
-          ('lm-coast-verbs', 'lm', 36500, COAST_VERBS_KEYS, LM_RDZ),
+          ('lm-coast-verbs', 'lm', 36500, COAST_VERBS_KEYS, COAST_VERBS),
           ('lm-coast-v55', 'lm', 5000, COAST_V55_KEYS, LM_RDZ),
           ('lm-coast-r04', 'lm', 7000, COAST_R04_KEYS, LM_RDZ),
           ('lm-coast-programs', 'lm', 23000, COAST_PROGRAMS_KEYS, LM_RDZ),
@@ -818,9 +825,22 @@ RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(
                   for base in [next(x for x in FLIGHT if x[0] == scen)]]
 
 
+# TC trap restarts: P00 idle, then V69E at 23.5 s. VERB69 is a TC to
+# itself, so the TC trap restarts the computer (yaAGC's own trap unscaled,
+# yaagc_trap in tools/flight_host_run.c; the spin at VERB69 under the work
+# clock there and in the C64's rk_resident_step; docs/FLIGHT-RESTART.md):
+# GOPROG with no group active, back to P00. tools/flight_restart_check.py
+# checks them on the host (lm-v69-restart, cm-v69-restart);
+# tools/flight_scenario_vice.py --scenario lm-v69 --snap-cs 2300 --replay on
+# the C64. Like RESTART_FLIGHT, the host differential (and the x86
+# program, which has no TC trap yet) does not run them.
+V69_FLIGHT = [('lm-v69', 'lm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'}),
+              ('cm-v69', 'cm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'})]
+
+
 def scenario(name):
-    """A FLIGHT or RESTART_FLIGHT row by name."""
-    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT}[name]
+    """A FLIGHT, RESTART_FLIGHT or V69_FLIGHT row by name."""
+    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT + V69_FLIGHT}[name]
 
 
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
