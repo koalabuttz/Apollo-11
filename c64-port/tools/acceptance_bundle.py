@@ -5,9 +5,11 @@
 
   acceptance_bundle.py lm|cm [--check-only | --only CATEGORY,...]
 
-A full run (no option), at HEAD with a clean tree (no change to any tracked
-or untracked file outside docs/acceptance/ and evidence/*-acceptance-*/):
+A full run (no option), at HEAD with a clean tree (no changed or untracked
+file anywhere):
 
+  0. clears the run results generators reuse (build/flight-store/
+     differential, dap-pass) and deletes each doc before its generator runs;
   1. builds the flight store and the resident (make flight-store,
      tools/resident_flight_build.py) and records their sha256;
   2. runs each category's generator, `tools/<x>_acceptance.py <m>`: the one
@@ -20,7 +22,8 @@ or untracked file outside docs/acceptance/ and evidence/*-acceptance-*/):
        Result: **PASS**" line, naming this category's generator and this
        program (and any "built at `X`" on it naming the same commit);
      - C is HEAD (a full run), or, with --check-only, HEAD or a commit
-       after which only docs/acceptance/ and evidence/*-acceptance-*/ changed;
+       after which only the twelve docs and the evidence ids they cite
+       changed (a program map is an input, not an output);
      - all six docs cite the same C (bar item 1);
      - at least one evidence/<id>/<file> cite, every cite with its sha256
        (16 hex digits or more), the file present, its sha256 starting with
@@ -29,7 +32,10 @@ or untracked file outside docs/acceptance/ and evidence/*-acceptance-*/):
      - every flight-store/ or flight-disk/ image a doc gives a full sha256
        for (the store, the D81s and D64s, the loader and resident PRGs) has
        the same sha256 in every doc, and, in a full run, the sha256 of the
-       file this run built;
+       file this run built (an image the run did not build fails); every
+       category but device_adapter_tests names flight-store/<m>.reu;
+     - after the run, nothing outside the docs and their cited evidence
+       changed, and the flight store did not change while generators ran;
   4. prints one table and writes build/acceptance-bundle-<m>.json.
 
 Only a full run where every category was regenerated and passes is an
@@ -45,8 +51,8 @@ import os
 import pathlib
 import re
 import subprocess
+import shutil
 import sys
-import time
 
 TOOLS = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(TOOLS))
@@ -62,6 +68,11 @@ MENTION = re.compile(r'evidence/([a-z0-9][a-z0-9-]*)/([A-Za-z0-9][A-Za-z0-9._-]*
                      r'(`? \(sha256 `([0-9a-f]+)(?:\.\.\.)?`\))?')
 IMAGE = re.compile(r'(flight-(?:store|disk)/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:reu|d81|d64|prg))\b[^\n]*?\b([0-9a-f]{64})\b')
 MIN_SHA = 16
+# Run results the generators reuse when they find them (program_acceptance's
+# host and C64 replays): a full run clears them, so every result is from it.
+RESULTS = ['build/flight-store/differential', 'build/flight-store/dap-pass']
+# Every category but the devices' runs the flight store, so its doc names it.
+STORE_CATS = [c for c in APPLICATION_EVIDENCE if c != 'device_adapter_tests']
 
 
 def sha(path):
@@ -78,27 +89,30 @@ class Repo:
         r = subprocess.run(['git', *args], cwd=self.root, capture_output=True, text=True)
         return r.returncode if check else r.stdout.strip()
 
-    def allowed(self, path):
-        """A path the generators write: the docs and the acceptance evidence."""
-        p = re.escape(self.prefix)
-        return bool(re.match(rf'{p}docs/acceptance/|{p}evidence/[^/]*-acceptance-[^/]*/', path))
+    def outputs(self, docs, ids):
+        """A test for the paths the generators write: these docs, and the
+        evidence ids the docs cite (nothing else in docs/acceptance/, such
+        as a program map, which is a generator's input)."""
+        exact = {self.prefix + d for d in docs}
+        dirs = tuple(f'{self.prefix}evidence/{i}/' for i in ids)
+        return lambda path: path in exact or path.startswith(dirs)
 
-    def dirty(self):
-        """Changed or untracked files anywhere in the git tree but the ones
-        the generators write (ignored files, like build/, do not count)."""
+    def dirty(self, allowed=lambda path: False):
+        """Changed or untracked files anywhere in the git tree but allowed
+        ones (ignored files, like build/, do not count)."""
         out = subprocess.run(['git', 'status', '--porcelain', '--untracked-files=all', '--', ':/'],
                              cwd=self.root, capture_output=True, text=True).stdout
         paths = [line[3:].split(' -> ')[-1].strip('"') for line in out.splitlines()]
-        return [p for p in paths if not self.allowed(p)]
+        return [p for p in paths if not allowed(p)]
 
-    def docs_only_since(self, commit, head):
-        """None when only the generators' outputs changed from commit to head,
-        else why not."""
+    def docs_only_since(self, commit, head, allowed):
+        """None when only allowed paths changed from commit to head, else
+        why not."""
         if self.git('cat-file', '-e', f'{commit}^{{commit}}', check=True):
             return f'commit {commit} is not in this checkout (a shallow clone, or a branch commit a squash merge left behind)'
         if self.git('merge-base', '--is-ancestor', commit, head, check=True):
             return f'commit {commit} is not an ancestor of HEAD'
-        changed = [p for p in self.git('diff', '--name-only', commit, head).splitlines() if not self.allowed(p)]
+        changed = [p for p in self.git('diff', '--name-only', commit, head).splitlines() if not allowed(p)]
         return f"{len(changed)} other files changed since {commit} ({', '.join(changed[:3])})" if changed else None
 
 
@@ -113,24 +127,26 @@ def generators(root):
     return found
 
 
-def images(root, m):
+def images(root, m, store_only=False):
     """sha256 of each image a boot or a store check names, as built now."""
     out = {}
-    for d, pat in (('flight-store', f'{m}.reu'), ('flight-disk', f'{m}-*.d81'), ('flight-disk', f'{m}-*.d64'),
-                   ('flight-disk', f'{m}-loader.prg'), ('flight-disk', f'{m}-resident.prg')):
+    pats = [('flight-store', f'{m}.reu')] + ([] if store_only else [
+        ('flight-disk', f'{m}-*.d81'), ('flight-disk', f'{m}-*.d64'), ('flight-disk', f'{m}-loader.prg'),
+        ('flight-disk', f'{m}-resident.prg')])
+    for d, pat in pats:
         for f in sorted((root / 'build' / d).glob(pat)):
             out[f'{d}/{f.name}'] = sha(f)
     return out
 
 
 def read_doc(root, m, cat, gen):
-    """(commit, images, cites, problems) of one category's doc."""
+    """(commit, images, {cite: full sha256}, problems) of one category's doc."""
     doc = root / 'docs/acceptance' / f'{PROGRAM[m]}-{cat}.md'
     if not doc.exists():
         return None, {}, [], [f'no {doc.relative_to(root)}']
     text = doc.read_text()
     heads = HEADER.findall(text)
-    if len(heads) != 1:
+    if len(heads) != 1 or text.count('Generated by `') != 1:
         return None, {}, [], [f'{len(heads)} "Generated by ... at commit `C`. Result: **PASS|FAIL**" lines, not 1']
     tool, commit, dirty, verdict = heads[0]
     problems = []
@@ -143,7 +159,7 @@ def read_doc(root, m, cat, gen):
             problems.append(f'built at {built}, generated at {commit}: two commits')
     if verdict != 'PASS':
         problems.append('the doc says FAIL')
-    cites = set()
+    cites = {}
     for c in MENTION.finditer(text):
         ident, name, prefix = c[1], c[2], c[4]
         where = f'evidence/{ident}/{name}'
@@ -165,14 +181,14 @@ def read_doc(root, m, cat, gen):
             rec = None
         if rec != got:
             problems.append(f'{where}: not as evidence/{ident}/SHA256.json records it')
-        cites.add(where)
+        cites[where] = got
     if not cites:
         problems.append('cites no evidence')
     named = {}
     for name, digest in IMAGE.findall(text):
         if named.setdefault(name, digest) != digest:
             problems.append(f'{name} has two sha256 in the doc')
-    return commit, named, sorted(cites), problems
+    return commit, named, dict(sorted(cites.items())), problems
 
 
 def run_generator(root, gen, m, log):
@@ -196,26 +212,35 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
         if dirty:
             raise SystemExit(f"uncommitted or untracked files ({', '.join(dirty[:5])}): commit them first, "
                              'so every doc cites one commit')
+        for d in RESULTS:
+            shutil.rmtree(root / d, ignore_errors=True)
         for i, cmd in enumerate(build):
             log = logs / f'build-{i}.log'
             with log.open('w') as f:
                 if subprocess.run(cmd, cwd=root, stdout=f, stderr=subprocess.STDOUT).returncode:
                     raise SystemExit(f"{' '.join(map(str, cmd))} failed: {log}")
-        built = images(root, m)
-        start = time.time()
+        store = images(root, m, store_only=True)
         for cat in APPLICATION_EVIDENCE:
             if cat in rerun and len(gens.get(cat, [])) == 1:
+                # Gone first: a doc there after the run is the run's.
                 doc = root / 'docs/acceptance' / f'{PROGRAM[m]}-{cat}.md'
+                doc.unlink(missing_ok=True)
                 code = run(root, gens[cat][0], m, logs / f'{cat}.log')
-                ran[cat] = dict(exit=code, written=doc.exists() and doc.stat().st_mtime >= start)
-        dirty = repo.dirty()
-        if dirty:
-            errors.append(f"the generators changed files outside the docs and evidence: {', '.join(dirty[:5])}")
-        after = images(root, m)
-        for name, digest in built.items():
-            if after.get(name) != digest:
+                ran[cat] = dict(exit=code, written=doc.exists())
+        built = images(root, m)
+        for name, digest in store.items():
+            if built.get(name) != digest:
                 errors.append(f'{name} changed while the generators ran')
-        built = after
+    # The generators' outputs: both programs' six docs and the evidence ids
+    # they cite. Nothing else may change during a run, or after the docs'
+    # commit for --check-only.
+    docs = [f'docs/acceptance/{p}-{c}.md' for p in PROGRAM.values() for c in APPLICATION_EVIDENCE]
+    ids = {c[1] for d in docs if (root / d).exists() for c in MENTION.finditer((root / d).read_text())}
+    outputs = repo.outputs(docs, ids)
+    if mode != 'check-only':
+        dirty = repo.dirty(outputs)
+        if dirty:
+            errors.append(f"the generators changed files outside their docs and evidence: {', '.join(dirty[:5])}")
     rows = []
     for cat in APPLICATION_EVIDENCE:
         claim = gens.get(cat, [])
@@ -234,7 +259,7 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
         if commit and cat in rerun and not head.startswith(commit):
             problems.append(f'stamped {commit}, not HEAD {head[:12]}: not regenerated at HEAD')
         elif commit and not head.startswith(commit):
-            why = repo.docs_only_since(commit, head)
+            why = repo.docs_only_since(commit, head, outputs)
             if why:
                 problems.append(f'stamped {commit}: {why}')
         rows.append(dict(category=cat, generator=', '.join(claim) or 'missing', commit=commit or '',
@@ -247,10 +272,13 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
     for r in rows:
         for c in r['cites']:
             seen.setdefault(c, []).append(r['category'])
+        if r['category'] in STORE_CATS and f'flight-store/{m}.reu' not in r['images']:
+            r['problems'].append(f'does not give the sha256 of flight-store/{m}.reu it ran')
         for name, digest in r['images'].items():
             want = built.get(name)
-            if want and want != digest:
-                r['problems'].append(f'{name}: the doc gives {digest[:16]}..., this run built {want[:16]}...')
+            if mode != 'check-only' and want != digest:
+                r['problems'].append(f'{name}: the doc gives {digest[:16]}..., this run built '
+                                     + (f'{want[:16]}...' if want else 'none'))
     for c, cats in seen.items():
         if len(cats) > 1:
             for r in rows:
@@ -268,8 +296,21 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
         r['result'] = 'PASS' if not r['problems'] and not errors else 'FAIL'
     consistent = all(r['result'] == 'PASS' for r in rows)
     accepted = mode == 'full' and not only and consistent and all(r['regenerated'] for r in rows)
-    return dict(program=PROGRAM[m], head=head, mode=mode, only=sorted(only), built=built, errors=errors,
-                consistent=consistent, accepted=accepted, ok=accepted, categories=rows)
+    return dict(program=PROGRAM[m], head=head, mode=mode, only=sorted(only), built=built, vice=vice_provenance(),
+                errors=errors, consistent=consistent, accepted=accepted, ok=accepted, categories=rows)
+
+
+def vice_provenance():
+    """The emulator and ROMs the runs used (deps/env.sh), for the record."""
+    out = dict(vice=os.environ.get('VICE'))
+    try:
+        out['version'] = subprocess.run([out['vice'], '--version'], capture_output=True, text=True,
+                                        timeout=30).stdout.strip().splitlines()[0]
+    except (OSError, TypeError, IndexError, subprocess.SubprocessError):
+        pass
+    roms = pathlib.Path(os.environ.get('VICE_ROM_DIR', '/nonexistent'))
+    out['roms'] = {f.name: sha(f) for f in sorted(roms.glob('*.bin'))} if roms.is_dir() else {}
+    return out
 
 
 def main(argv=None):

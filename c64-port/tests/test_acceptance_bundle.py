@@ -16,6 +16,7 @@ import acceptance_bundle as ab  # noqa: E402
 
 CATS = list(ab.APPLICATION_EVIDENCE)
 D81 = 'flight-disk/lm-1.d81'
+STORE = 'flight-store/lm.reu'
 
 
 def git(root, *args):
@@ -34,19 +35,29 @@ class Fake:
     """Stands in for the six generators: writes each doc and its evidence,
     stamped with HEAD, unless told otherwise."""
 
-    def __init__(self, write=True, exit=0, cite=True, sha_len=16, d81=None, stamp=None, tool=None):
+    def __init__(self, write=True, exit=0, cite=True, sha_len=16, d81=None, stamp=None, tool=None, store=True,
+                 side=None):
         self.write, self.exit, self.cite, self.sha_len = write, exit, cite, sha_len
-        self.d81, self.stamp, self.tool = d81, stamp, tool
+        self.d81, self.stamp, self.tool, self.store, self.side = d81, stamp, tool, store, side
 
     def __call__(self, root, gen, m, log):
         cat = pathlib.Path(gen).name[:-len('_acceptance.py')]
+        if self.side:
+            self.side(root)
         if self.write:
             write_doc(root, cat, self.stamp or head(root)[:12], cite=self.cite, sha_len=self.sha_len,
-                      d81=self.d81, tool=self.tool or f'{gen} {m}')
+                      d81=self.d81, tool=self.tool or f'{gen} {m}', store=self.store)
         return self.exit
 
 
-def write_doc(root, cat, commit, cite=True, sha_len=16, d81=None, tool=None, verdict='PASS'):
+def built(root, name, data):
+    f = root / 'build' / name
+    f.parent.mkdir(parents=True, exist_ok=True)
+    f.write_bytes(data)
+    return hashlib.sha256(data).hexdigest()
+
+
+def write_doc(root, cat, commit, cite=True, sha_len=16, d81=None, tool=None, verdict='PASS', store=True):
     ident = f'lm-acceptance-{cat.replace("_", "-")}'
     ev = root / 'evidence' / ident
     ev.mkdir(parents=True, exist_ok=True)
@@ -60,6 +71,8 @@ def write_doc(root, cat, commit, cite=True, sha_len=16, d81=None, tool=None, ver
         lines.append(f'Evidence: `evidence/{ident}/result.json` (sha256 `{digest[:sha_len]}...`).')
     if d81:
         lines.append(f'| `{D81}` | `{d81}` |')
+    if store and cat in ab.STORE_CATS:
+        lines.append(f"| `{STORE}` | `{hashlib.sha256((root / 'build' / STORE).read_bytes()).hexdigest()}` |")
     doc = root / 'docs/acceptance' / f'Luminary099-{cat}.md'
     doc.parent.mkdir(parents=True, exist_ok=True)
     doc.write_text('\n'.join(lines) + '\n')
@@ -77,8 +90,11 @@ class Bundle(unittest.TestCase):
             (root / gen_name(cat)).write_text(f'"""Write one program\'s {cat} evidence."""\n')
         (root / 'src.c').write_text('int x;\n')
         (root / '.gitignore').write_text('build/\n')
+        (root / 'docs/acceptance').mkdir(parents=True)
+        (root / 'docs/acceptance/Luminary099-program-map.json').write_text('{}\n')
         git(root, 'add', '.')
         git(root, 'commit', '-qm', 'base')
+        built(root, STORE, b'store')
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -154,6 +170,7 @@ class Bundle(unittest.TestCase):
         # P5, and an 8-digit prefix
         t = self.run_bundle(fake=Fake(sha_len=8))
         self.assertTrue(any('shorter than 16' in p for p in self.problems(t)))
+        self.commit_docs()
         self.run_bundle()
         doc = self.root / 'docs/acceptance' / f'Luminary099-{CATS[0]}.md'
         doc.write_text(doc.read_text().replace('(sha256 `', '(sha256 `0000'))
@@ -180,22 +197,94 @@ class Bundle(unittest.TestCase):
         write_doc(self.root, CATS[1], head(self.root)[:12])
         self.commit_docs()
         self.assertTrue(any('commits' in e for e in self.run_bundle('check-only')['errors']))
-        t = self.run_bundle(fake=Fake(d81='a' * 64))
+        disk = built(self.root, D81, b'disk')
+        t = self.run_bundle(fake=Fake(d81=disk))
         self.assertTrue(t['accepted'], self.problems(t))
         write_doc(self.root, CATS[1], head(self.root)[:12], d81='b' * 64)
         self.commit_docs()
-        write_doc(self.root, CATS[0], head(self.root)[:12], d81='a' * 64)
+        write_doc(self.root, CATS[0], head(self.root)[:12], d81=disk)
         self.assertTrue(any(D81 in e for e in self.run_bundle('check-only')['errors']))
 
     def test_built_image_must_match(self):
-        disk = self.root / 'build' / D81
-        disk.parent.mkdir(parents=True)
-        disk.write_bytes(b'disk')
+        # Round 2, blocker 2: every named image is one this run built.
         t = self.run_bundle(fake=Fake(d81='c' * 64))
         self.assertFalse(t['accepted'])
-        self.assertTrue(any('this run built' in p for p in self.problems(t)))
+        self.assertTrue(any('this run built none' in p for p in self.problems(t)))
+        self.commit_docs()
+        built(self.root, D81, b'disk')
+        t = self.run_bundle(fake=Fake(d81='c' * 64))
+        self.assertTrue(any('this run built' in p and 'none' not in p for p in self.problems(t)))
+        self.commit_docs()
         t = self.run_bundle(fake=Fake(d81=hashlib.sha256(b'disk').hexdigest()))
         self.assertTrue(t['accepted'], self.problems(t))
+
+    def test_no_store_named(self):
+        t = self.run_bundle(fake=Fake(store=False))
+        self.assertFalse(t['accepted'])
+        self.assertTrue(any(f'sha256 of {STORE}' in p for p in self.problems(t)))
+
+    def test_store_changes_during_run(self):
+        t = self.run_bundle(fake=Fake(side=lambda root: built(root, STORE, b'other')))
+        self.assertFalse(t['accepted'])
+        self.assertTrue(any('changed while the generators ran' in e for e in t['errors']))
+
+    def test_program_map_edit_stops_a_run(self):
+        # Round 2, blocker 1: a program map is a generator input.
+        (self.root / 'docs/acceptance/Luminary099-program-map.json').write_text('{"x": 1}\n')
+        with self.assertRaises(SystemExit):
+            self.run_bundle()
+
+    def test_program_map_change_after_docs(self):
+        self.run_bundle()
+        self.commit_docs()
+        (self.root / 'docs/acceptance/Luminary099-program-map.json').write_text('{"x": 1}\n')
+        git(self.root, 'commit', '-qam', 'map')
+        t = self.run_bundle('check-only')
+        self.assertFalse(t['consistent'])
+        self.assertTrue(any('program-map' in p for p in self.problems(t)))
+
+    def test_generator_edits_an_input(self):
+        side = lambda root: (root / 'docs/acceptance/Luminary099-program-map.json').write_text('{"y": 1}\n')
+        t = self.run_bundle(fake=Fake(side=side))
+        self.assertFalse(t['accepted'])
+        self.assertTrue(any('outside their docs' in e for e in t['errors']))
+
+    def test_staged_docs_with_touch_only_generator(self):
+        # Round 2, blocker 1: uncommitted HEAD-stamped docs stop the run, and
+        # a generator that writes nothing leaves no doc behind.
+        for cat in CATS:
+            write_doc(self.root, cat, head(self.root)[:12])
+        git(self.root, 'add', '.')
+        with self.assertRaises(SystemExit):
+            self.run_bundle(fake=Fake(write=False))
+        git(self.root, 'commit', '-qm', 'docs')
+        t = self.run_bundle(fake=Fake(write=False))
+        self.assertFalse(t['accepted'])
+        self.assertIn('the generator did not rewrite its doc', self.problems(t))
+
+    def test_old_replays_cleared(self):
+        # Round 2, blocker 3: a full run starts with no replay results.
+        for d in ab.RESULTS:
+            (self.root / d).mkdir(parents=True)
+            (self.root / d / 'old.json').write_text('{}\n')
+        seen = []
+        fake = Fake(side=lambda root: seen.append(any((root / d).exists() for d in ab.RESULTS)))
+        t = self.run_bundle(fake=fake)
+        self.assertTrue(t['accepted'], self.problems(t))
+        self.assertEqual(set(seen), {False})
+
+    def test_header_in_a_table_cell(self):
+        self.run_bundle()
+        doc = self.root / 'docs/acceptance' / f'Luminary099-{CATS[0]}.md'
+        doc.write_text(doc.read_text() + f'| x | Generated by `{gen_name(CATS[0])} lm` |\n')
+        self.commit_docs()
+        self.assertFalse(self.run_bundle('check-only')['consistent'])
+
+    def test_full_cite_sha_recorded(self):
+        t = self.run_bundle()
+        for r in t['categories']:
+            for where, digest in r['cites'].items():
+                self.assertEqual(digest, hashlib.sha256((self.root / where).read_bytes()).hexdigest())
 
     def test_duplicate_generator(self):
         # P8
@@ -220,7 +309,8 @@ class Bundle(unittest.TestCase):
         # P7: one category cites another's evidence.
         self.run_bundle()
         doc = self.root / 'docs/acceptance' / f'Luminary099-{CATS[0]}.md'
-        other = (self.root / 'docs/acceptance' / f'Luminary099-{CATS[1]}.md').read_text().splitlines()[-1]
+        other = (self.root / 'docs/acceptance' / f'Luminary099-{CATS[1]}.md').read_text().splitlines()
+        other = next(line for line in other if line.startswith('Evidence:'))
         doc.write_text(doc.read_text() + other + '\n')
         self.commit_docs()
         self.assertTrue(any('also cited by' in p for p in self.problems(self.run_bundle('check-only'))))
