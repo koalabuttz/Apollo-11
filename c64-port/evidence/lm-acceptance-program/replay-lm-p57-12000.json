@@ -7,12 +7,15 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 56510938,
+ "wall_cycles": 56326510,
  "agc_cs": 600,
  "dropped_ticks": 0,
- "steps": 3030,
- "wall_per_agc": 9.56,
+ "steps": 3033,
+ "wall_per_agc": 9.528,
  "lost": false,
+ "mission": "lm",
+ "snap_cs": 12000,
+ "replay": true,
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -21,36 +24,44 @@
    "scratch"
   ],
   "outside": [],
-  "dma_outside": 0
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 9
  },
  "replay_rows": 16,
  "replay_applied": 16,
  "replay_end_cs": 600,
  "replay_ended": true,
- "replay_matched_cs": [],
+ "replay_matched_cs": [
+  100,
+  200,
+  300,
+  400,
+  500
+ ],
  "replay_differences": 5,
- "replay_differ_at_cs": 101,
+ "replay_differ_at_cs": 601,
  "replay_skipped": [],
  "replay_first": [
   {
    "at": "centiseconds",
-   "host": "00145",
-   "c64": "00144"
+   "host": "01131",
+   "c64": "01130"
   },
   {
    "at": "TIME1",
-   "host": "27505",
-   "c64": "27504"
+   "host": "30471",
+   "c64": "30470"
   },
   {
    "at": "TIME3",
-   "host": "27502",
-   "c64": "27501"
+   "host": "30466",
+   "c64": "30465"
   },
   {
    "at": "TIME4",
-   "host": "37777",
-   "c64": "37776"
+   "host": "37773",
+   "c64": "37772"
   },
   {
    "at": "TIME5",
@@ -58,10 +69,9 @@
    "c64": "37774"
   }
  ],
- "snap_cs": 12000,
  "snap_at": 12000,
  "snap_slid": false,
  "requested_cs": 600,
  "host_holes": [],
- "commit": "469af19e2a55"
+ "commit": "c76e489507c0"
 }

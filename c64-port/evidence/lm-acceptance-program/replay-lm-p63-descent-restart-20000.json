@@ -7,12 +7,15 @@
  "superbank": "0060",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 78784689,
+ "wall_cycles": 78428054,
  "agc_cs": 305,
  "dropped_ticks": 0,
  "steps": 2061,
- "wall_per_agc": 26.218,
+ "wall_per_agc": 26.099,
  "lost": false,
+ "mission": "lm",
+ "snap_cs": 20000,
+ "replay": true,
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -22,55 +25,52 @@
    "undo"
   ],
   "outside": [],
-  "dma_outside": 0
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 23
  },
- "replay_rows": 157,
- "replay_applied": 157,
+ "replay_rows": 171,
+ "replay_applied": 171,
  "replay_end_cs": 305,
  "replay_ended": true,
  "replay_matched_cs": [],
- "replay_differences": 43,
- "replay_differ_at_cs": 100,
+ "replay_differences": 41,
+ "replay_differ_at_cs": 101,
  "replay_skipped": [],
  "replay_first": [
   {
    "at": "centiseconds",
-   "host": "00144",
+   "host": "00145",
    "c64": "00152"
   },
   {
    "at": "TIME1",
-   "host": "07204",
+   "host": "07205",
    "c64": "07212"
   },
   {
    "at": "TIME3",
-   "host": "37766",
+   "host": "37767",
    "c64": "37775"
   },
   {
    "at": "TIME4",
-   "host": "37774",
+   "host": "37775",
    "c64": "37771"
   },
   {
    "at": "TIME5",
-   "host": "37773",
+   "host": "37774",
    "c64": "37767"
   },
   {
    "at": "0037",
-   "host": "77777",
+   "host": "77760",
    "c64": "77756"
   },
   {
-   "at": "0040",
-   "host": "77777",
-   "c64": "00001"
-  },
-  {
    "at": "0041",
-   "host": "77777",
+   "host": "77513",
    "c64": "77474"
   },
   {
@@ -95,12 +95,12 @@
   },
   {
    "at": "3026",
-   "host": "77777",
+   "host": "00026",
    "c64": "00000"
   },
   {
    "at": "3027",
-   "host": "00000",
+   "host": "00260",
    "c64": "77777"
   },
   {
@@ -139,11 +139,6 @@
    "c64": "00012"
   },
   {
-   "at": "3125",
-   "host": "77777",
-   "c64": "00000"
-  },
-  {
    "at": "3126",
    "host": "77777",
    "c64": "00000"
@@ -170,7 +165,7 @@
   },
   {
    "at": "3340",
-   "host": "63377",
+   "host": "14400",
    "c64": "00026"
   },
   {
@@ -189,15 +184,24 @@
    "c64": "13374"
   },
   {
-   "at": "3344",
-   "host": "00003",
-   "c64": "00002"
+   "at": "3345",
+   "host": "02714",
+   "c64": "00001"
+  },
+  {
+   "at": "3346",
+   "host": "00000",
+   "c64": "24335"
+  },
+  {
+   "at": "3347",
+   "host": "00000",
+   "c64": "06414"
   }
  ],
- "snap_cs": 20000,
  "snap_at": 20000,
  "snap_slid": false,
  "requested_cs": 300,
  "host_holes": [],
- "commit": "469af19e2a55"
+ "commit": "c76e489507c0"
 }

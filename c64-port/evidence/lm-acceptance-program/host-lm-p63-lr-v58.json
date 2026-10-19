@@ -14,48 +14,14 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "9efb1bfd8187",
+ "commit": "b9a2bcb2256e",
  "cia_interrupts": 98267,
  "periods_taken": 96001,
  "periods_dropped": 2266,
  "agc_centiseconds": 96001,
- "native_routines": 4320855,
- "bridged_instructions": 5,
+ "native_routines": 4320853,
+ "bridged_instructions": 0,
  "routine_mismatches": [],
- "unregistered": [
-  {
-   "kind": "basic",
-   "point": "43,3303",
-   "label": "SMODECHK+2",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 1,
-   "refused_by": null,
-   "core_start": true
-  },
-  {
-   "kind": "basic",
-   "point": "43,3332",
-   "label": "CHECKNJ",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 3,
-   "refused_by": null,
-   "core_start": true
-  },
-  {
-   "kind": "basic",
-   "point": "43,3334",
-   "label": "CHECKNJ+2",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 1,
-   "refused_by": null,
-   "core_start": true
-  }
- ],
- "log_sha256": "51e9b72b0cf65b736140d9eac1e93fc2b451695299317616d7eb770dcaaab884"
+ "unregistered": [],
+ "log_sha256": "22abcdb7b8e6e9f3912d3233d3c2312766e74eb819c2f8733ff4f04dcb635301"
 }

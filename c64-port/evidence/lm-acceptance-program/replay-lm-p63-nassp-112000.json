@@ -7,12 +7,15 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 144885420,
+ "wall_cycles": 144305284,
  "agc_cs": 600,
  "dropped_ticks": 0,
  "steps": 3761,
- "wall_per_agc": 24.509,
+ "wall_per_agc": 24.411,
  "lost": false,
+ "mission": "lm",
+ "snap_cs": 112000,
+ "replay": true,
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -22,30 +25,32 @@
    "undo"
   ],
   "outside": [],
-  "dma_outside": 0
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 18
  },
- "replay_rows": 566,
- "replay_applied": 566,
+ "replay_rows": 560,
+ "replay_applied": 560,
  "replay_end_cs": 600,
  "replay_ended": true,
  "replay_matched_cs": [],
  "replay_differences": 366,
- "replay_differ_at_cs": 167,
+ "replay_differ_at_cs": 166,
  "replay_skipped": [],
  "replay_first": [
   {
    "at": "centiseconds",
-   "host": "00247",
+   "host": "00246",
    "c64": "00144"
   },
   {
    "at": "TIME1",
-   "host": "20624",
+   "host": "20623",
    "c64": "20521"
   },
   {
    "at": "TIME3",
-   "host": "37773",
+   "host": "37772",
    "c64": "37777"
   },
   {
@@ -194,44 +199,9 @@
    "c64": "03457"
   }
  ],
- "snap_cs": 112000,
  "snap_at": 112001,
  "snap_slid": false,
  "requested_cs": 600,
- "host_holes": [
-  {
-   "kind": "basic",
-   "point": "43,3303",
-   "label": "SMODECHK+2",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 1,
-   "refused_by": null,
-   "core_start": true
-  },
-  {
-   "kind": "basic",
-   "point": "43,3332",
-   "label": "CHECKNJ",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 3,
-   "refused_by": null,
-   "core_start": true
-  },
-  {
-   "kind": "basic",
-   "point": "43,3334",
-   "label": "CHECKNJ+2",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 1,
-   "refused_by": null,
-   "core_start": true
-  }
- ],
- "commit": "469af19e2a55"
+ "host_holes": [],
+ "commit": "c76e489507c0"
 }

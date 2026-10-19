@@ -7,12 +7,15 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 243934832,
+ "wall_cycles": 242707504,
  "agc_cs": 1000,
  "dropped_ticks": 0,
- "steps": 6386,
- "wall_per_agc": 24.759,
+ "steps": 6387,
+ "wall_per_agc": 24.634,
  "lost": false,
+ "mission": "lm",
+ "snap_cs": 87500,
+ "replay": true,
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -22,17 +25,39 @@
    "undo"
   ],
   "outside": [],
-  "dma_outside": 0
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 17
  },
- "replay_rows": 764,
- "replay_applied": 764,
+ "replay_rows": 793,
+ "replay_applied": 793,
  "replay_end_cs": 1000,
  "replay_ended": true,
  "replay_matched_cs": [],
- "replay_differences": 23,
- "replay_differ_at_cs": 100,
+ "replay_differences": 28,
+ "replay_differ_at_cs": 101,
  "replay_skipped": [],
  "replay_first": [
+  {
+   "at": "centiseconds",
+   "host": "00145",
+   "c64": "00144"
+  },
+  {
+   "at": "TIME1",
+   "host": "00636",
+   "c64": "00635"
+  },
+  {
+   "at": "TIME3",
+   "host": "37754",
+   "c64": "37753"
+  },
+  {
+   "at": "TIME5",
+   "host": "37772",
+   "c64": "37771"
+  },
   {
    "at": "0066",
    "host": "04400",
@@ -40,13 +65,18 @@
   },
   {
    "at": "0776",
-   "host": "00001",
+   "host": "77777",
    "c64": "00002"
   },
   {
    "at": "1016",
-   "host": "00001",
+   "host": "00000",
    "c64": "00002"
+  },
+  {
+   "at": "1023",
+   "host": "05717",
+   "c64": "72060"
   },
   {
    "at": "1024",
@@ -60,7 +90,7 @@
   },
   {
    "at": "1313",
-   "host": "76005",
+   "host": "00007",
    "c64": "00006"
   },
   {
@@ -134,13 +164,13 @@
    "c64": "02540"
   },
   {
-   "at": "3356",
-   "host": "16000",
-   "c64": "40006"
+   "at": "3355",
+   "host": "00000",
+   "c64": "14006"
   },
   {
    "at": "3617",
-   "host": "00565",
+   "host": "00561",
    "c64": "00570"
   },
   {
@@ -149,44 +179,9 @@
    "c64": "04040"
   }
  ],
- "snap_cs": 87500,
  "snap_at": 87501,
  "snap_slid": false,
  "requested_cs": 1000,
- "host_holes": [
-  {
-   "kind": "basic",
-   "point": "43,3303",
-   "label": "SMODECHK+2",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 1,
-   "refused_by": null,
-   "core_start": true
-  },
-  {
-   "kind": "basic",
-   "point": "43,3332",
-   "label": "CHECKNJ",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 3,
-   "refused_by": null,
-   "core_start": true
-  },
-  {
-   "kind": "basic",
-   "point": "43,3334",
-   "label": "CHECKNJ+2",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 1,
-   "refused_by": null,
-   "core_start": true
-  }
- ],
- "commit": "469af19e2a55"
+ "host_holes": [],
+ "commit": "c76e489507c0"
 }

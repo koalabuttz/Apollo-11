@@ -7,12 +7,15 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 48326277,
+ "wall_cycles": 48235061,
  "agc_cs": 600,
  "dropped_ticks": 0,
  "steps": 2734,
- "wall_per_agc": 8.175,
+ "wall_per_agc": 8.16,
  "lost": false,
+ "mission": "lm",
+ "snap_cs": 2000,
+ "replay": true,
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -21,7 +24,9 @@
    "scratch"
   ],
   "outside": [],
-  "dma_outside": 0
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 17
  },
  "replay_rows": 3,
  "replay_applied": 3,
@@ -60,44 +65,9 @@
    "c64": "37772"
   }
  ],
- "snap_cs": 2000,
  "snap_at": 2002,
  "snap_slid": false,
  "requested_cs": 600,
- "host_holes": [
-  {
-   "kind": "basic",
-   "point": "43,3303",
-   "label": "SMODECHK+2",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 1,
-   "refused_by": null,
-   "core_start": true
-  },
-  {
-   "kind": "basic",
-   "point": "43,3332",
-   "label": "CHECKNJ",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 3,
-   "refused_by": null,
-   "core_start": true
-  },
-  {
-   "kind": "basic",
-   "point": "43,3334",
-   "label": "CHECKNJ+2",
-   "file": "AGC_BLOCK_TWO_SELF_CHECK.agc",
-   "lane": "A",
-   "arrivals": 1,
-   "instructions": 1,
-   "refused_by": null,
-   "core_start": true
-  }
- ],
- "commit": "469af19e2a55"
+ "host_holes": [],
+ "commit": "c76e489507c0"
 }

@@ -1,0 +1,99 @@
+{
+ "scenario": "lm-rendezvous-tpm",
+ "ok": false,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 106391264,
+ "agc_cs": 600,
+ "dropped_ticks": 0,
+ "steps": 3337,
+ "wall_per_agc": 17.997,
+ "lost": false,
+ "mission": "lm",
+ "snap_cs": 40000,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch",
+   "undo"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 12
+ },
+ "replay_rows": 29,
+ "replay_applied": 29,
+ "replay_end_cs": 600,
+ "replay_ended": true,
+ "replay_matched_cs": [
+  100
+ ],
+ "replay_differences": 10,
+ "replay_differ_at_cs": 202,
+ "replay_skipped": [],
+ "replay_first": [
+  {
+   "at": "centiseconds",
+   "host": "00312",
+   "c64": "00310"
+  },
+  {
+   "at": "TIME1",
+   "host": "16566",
+   "c64": "16564"
+  },
+  {
+   "at": "TIME4",
+   "host": "37777",
+   "c64": "37776"
+  },
+  {
+   "at": "TIME5",
+   "host": "37773",
+   "c64": "37772"
+  },
+  {
+   "at": "1065",
+   "host": "61211",
+   "c64": "61213"
+  },
+  {
+   "at": "1400",
+   "host": "77720",
+   "c64": "77716"
+  },
+  {
+   "at": "1401",
+   "host": "77716",
+   "c64": "77720"
+  },
+  {
+   "at": "1403",
+   "host": "60304",
+   "c64": "60302"
+  },
+  {
+   "at": "3355",
+   "host": "14006",
+   "c64": "00000"
+  },
+  {
+   "at": "3356",
+   "host": "00001",
+   "c64": "40006"
+  }
+ ],
+ "snap_at": 40108,
+ "snap_slid": true,
+ "requested_cs": 600,
+ "host_holes": [],
+ "commit": "c76e489507c0"
+}
