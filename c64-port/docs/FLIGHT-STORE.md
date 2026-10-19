@@ -795,6 +795,25 @@ port) runs one mission:
    refuses THROTUP's WOR CHAN14. On the host every native routine matches
    yaAGC in both; the unregistered points are the 3 self-check ones and
    Pinball's VBPROC+3 to +5 (40,3445-3447, 2 arrivals) and RELDSP1.
+   `lm-p63-overload` and `cm-entry-overload`: the Executive overload
+   path, the 1201/1202 alarms of Apollo 11's landing. The flight's cause
+   was the RR CDU counts: counter cycles the LGC lost, about 13% of it in
+   P63. `FLIGHT_STEAL=T0-T1:N[,...]` models that. From the first clock
+   period at or after T0 to the last before T1, each period (each
+   work-clock T5 step) also spends N MCT that no routine runs in. The
+   counted cells are left alone. `lm-p63-overload` is
+   `lm-p63-descent-thrust` with V16N68 at 180 s and 420 MCT a centisecond
+   stolen from 185 s to 240 s. This synthetic P63 runs lighter than the
+   flight's (no landing radar reads), so it takes more than 13% to
+   overload it. SERVICER falls behind: FINDVAC finds no VAC area (alarm
+   1201, 196 s), then NOVAC no core set (1202, 210 s). Each is a BAILOUT
+   that restarts through the phase tables. V06N63 comes back after each
+   one, and the V16N68 monitor does not, as in the flight. Once the steal
+   ends, N63 updates every 2 s again and P63 flies on. `cm-entry-overload`
+   is `cm-entry` with 600 MCT a centisecond stolen from 210 s to 270 s,
+   over P64 and P67: alarm 1201 three times, and the entry still reaches
+   P67. `FLIGHT_WATCH=0375,0376,0377` prints FAILREG as it changes. On the
+   host every native routine matches yaAGC in both.
    `cm-p52`: Apollo 11's first IMU realignment, in earth parking orbit at
    about 00:44 GET on stars 30 (Menkent) and 37 (Nunki), the pair the crew
    used. cm_p52.py writes cm-p52.load (the launch REFSMMAT, the CSM in a
