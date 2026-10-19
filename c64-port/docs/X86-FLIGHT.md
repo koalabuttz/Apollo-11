@@ -73,6 +73,10 @@ Flat out, 40 s of AGC time takes about 0.05 s of host time.
 
 CI runs `x86-flight-check` in the host job (`ci-extra-host`) when a PR changes any source, header or x86 tool (`ci-watch-x86-flight-check`).
 
+## Vehicle models
+
+`platform/x86/vehicle_models.h` (MIT, header only) holds the vehicle the AGC flies: the LM descent and ascent engines with touchdown, abort stage and the P66 crew (`FLIGHT_ENGINE`, `FLIGHT_ENGINE_LAG`, `FLIGHT_TOUCHDOWN`, `FLIGHT_ASCENT`, `FLIGHT_STAGE`, `FLIGHT_PILOT`), the LM RCS jets (`FLIGHT_RCS`), the CSM's SPS (`FLIGHT_SPS`), entry drag and lift (`FLIGHT_AERO`), the IMU gimbals for P01 (`FLIGHT_IMU`), the Saturn V boost (`FLIGHT_SATURN`) and TLI (`FLIGHT_SIVB`). They were written for this port's flight scenarios and contain no Virtual AGC code. `platform/x86/test_vehicle_models.c` checks each one (`make x86-flight-check` builds and runs it first). The host differential (`tools/flight_host_run.c`) still has its own copy, and the x86 program does not run them yet. The rendezvous and landing radars (`tools/flight_radar.h`, `tools/flight_lr.h`) are still harness only.
+
 ## Gaps
 
 Points the scenarios reach that no compiled routine holds:
