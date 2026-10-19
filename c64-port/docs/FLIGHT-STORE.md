@@ -1246,7 +1246,19 @@ port) runs one mission:
    P34 ends on N59 as before. `cm-p20-vhf-dropout` drops VHF ranging
    from 180 s to 190 s, over R22's second range: VHFREAD takes BADEND,
    so no N49 and no mark (VHFCNT 3 by 320 s, not 4), and the next ranges
-   incorporate on their own. `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
+   incorporate on their own. Five more repeat a P52 with an IMU input
+   gone wrong, through the inputs the scenarios already have (channel 30,
+   inverted, with `FLIGHT_CHAN`; the middle gimbal angle with
+   `FLIGHT_POKE` of CDUZ). `lm-p52-imu-fail` and `cm-p52-imu-fail` set
+   IMU FAIL (bit 13) for 15 s and 10 s: IMUMON records it in IMODES30
+   and stores alarm 07777, the LM lights ISS WARNING, and both P52s run
+   on as before. `lm-p52-imu-cage` and `cm-p52-imu-cage` cage the IMU
+   (bit 11) for 5 s: NO ATT lights and the stars are marked against the
+   caged platform, so N05 and N93 show large angles, and P52 still ends.
+   `cm-p52-gimbal-lock` puts CDUZ at 72 degrees for 6 s (GIMBAL LOCK
+   lights, then goes out; P52 runs as before) and, after P00, at 86
+   degrees: GLOCKMON coarse aligns the platform and lights NO ATT. All
+   five match yaAGC. `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus
    the engine model's thrust, so truth and the LGC's navigation part as

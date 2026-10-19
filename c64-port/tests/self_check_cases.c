@@ -78,6 +78,7 @@ void self_check_input(unsigned mission,apollo_overlay_state *s,self_check_io *io
  *self_check_interrupts(mission,io)=(agc_word)upto(&seed,2);*self_check_superbank(mission,io)=upto(&seed,4)?0100u:0140u;
  eb=(agc_word)upto(&seed,8);W[3]=(agc_word)(eb<<8);W[4]=033u<<10;W[6]=(agc_word)(W[4]|eb);W[5]=z;
  W[01362]=smode(&seed);
+ if((n/SELF_CHECK_ROUTINES)%16u==1u)W[01362]=0u;            /* SMODE +0 in every slot, whatever the seed gives */
  W[01371]=tc_word(mission,&seed,0);W[01357]=tc_word(mission,&seed,1);
  W[067]=upto(&seed,4)?0u:(agc_word)(1u+upto(&seed,0377u));
  /* ERASCHK state. */
@@ -156,7 +157,9 @@ const agc_word *self_check_rope_ends(unsigned mission,unsigned *count){static ag
 }
 void self_check_rope_input(unsigned mission,apollo_overlay_state *s,self_check_io *io,uint16_t n){
  static const agc_word skeep6[4]={077777u,0u,1u,077776u};
- self_check_input(mission,s,io,(uint16_t)(n*SELF_CHECK_ROUTINES+2u)); /* a SELFCHK case's image */
+ unsigned e=0;
+ while(self_check_entry_list(mission)[e]!=K(03340u))++e;  /* SELFCHK's slot */
+ self_check_input(mission,s,io,(uint16_t)(n*SELF_CHECK_ROUTINES+e)); /* a SELFCHK case's image */
  W[067]=077777u;W[01362]=5u;                               /* NEWJOB -0; SMODE option 5: ROPECHK */
  *self_check_superbank(mission,io)=0100u;
  switch(n){

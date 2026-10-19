@@ -55,9 +55,17 @@ REF_SLACK = 0
 # GOJAM). lm-p63-descent: the descent and ascent list in the braking phase,
 # before the GOJAM; -after-gojam: the list STARTSUB restarted, 9 cs after the
 # GOJAM; lm-p00: the coast and align list in P00.
+# (tag, restart row, snapshot cs, GOJAM applied before the snapshot). The
+# acceptance windows (LM rendezvous, CM P00, P40 burn, entry) start mid-phase
+# from the restart rows' own scenarios, without their GOJAM, so the lists
+# carry that phase's live state.
 VICE_WINDOWS = [('lm-p63-descent', 'lm-p63-descent-restart', 19950, False),
                 ('lm-p63-descent-after-gojam', 'lm-p63-descent-restart', 20010, True),
-                ('lm-p00', 'lm-p00-restart', 2400, False)]
+                ('lm-p00', 'lm-p00-restart', 2400, False),
+                ('lm-rendezvous', 'lm-rendezvous-restart', 19990, False),
+                ('cm-p00', 'cm-p00-p40-restart', 72990, False),
+                ('cm-p40-burn', 'cm-p40-burn-restart', 49990, False),
+                ('cm-entry', 'cm-entry-restart', 24990, False)]
 
 
 def stream(path):
@@ -195,16 +203,25 @@ def c64_window(a, exe, window, scratch, pinned):
     return row
 
 
-def vice(a, exe):
-    manifest = json.loads((frc.STORE / 'lm-manifest.json').read_text())
+def store(m):
+    """Whether the mission's store pins slot 3, and 4096 unused REU bytes
+    at its end for the C64's scratch."""
+    manifest = json.loads((frc.STORE / f'{m}-manifest.json').read_text())
     pinned = any(x['slot'] == 3 for x in manifest['modules'])
-    reu = (frc.STORE / 'lm.reu').read_bytes()
+    reu = (frc.STORE / f'{m}.reu').read_bytes()
     scratch = len(reu) - 4096
     if any(reu[scratch:]):
-        sys.exit('FAIL: no unused 4096 bytes at the end of lm.reu')
+        sys.exit(f'FAIL: no unused 4096 bytes at the end of {m}.reu')
+    return scratch, pinned
+
+
+def vice(a, exe, only=None):
     rows = []
     for w in VICE_WINDOWS:
-        row = c64_window(a, exe, w, scratch, pinned)
+        if only and w[0] not in only and w[1] not in only:
+            continue
+        m = next(x[1] for x in frc.RESTARTS if x[0] == w[1])
+        row = c64_window(a, exe, w, *store(m))
         print(f"C64 {row['window']}: {row.get('records')} of {row['downrupts']} DOWNRUPTs from {row['snapshot_cs']} cs "
               f"in {row.get('steps')} resident steps, {row.get('records_differ')} differ from yaAGC's; "
               f"first words {row.get('first_words')}; lists started "
@@ -256,7 +273,7 @@ def main():
               f"then at {ag.get('cs')} cs {ag.get('words')} ({ag.get('list')} {ag.get('list_name')}, {ag.get('list_words')} words)"
               + f"; {len(row['mismatches'])} yaAGC did not match ({len(row['new_mismatches'])} new)"
               + ('' if row['ok'] else ' FAILED: ' + '; '.join(row['failures'])))
-    c64 = vice(a, exe) if a.run_vice else []
+    c64 = vice(a, exe, only) if a.run_vice else []
     (OUT / 'summary.json').write_text(json.dumps(dict(host=rows, c64=c64), indent=1) + '\n')
     return 1 if any(not r['ok'] for r in rows + c64) else 0
 

@@ -6,16 +6,16 @@
  "aggregates": {
   "self-check": {
    "record": "evidence/self-check/self-check-proof.json",
-   "sha256": "fce466886e01ae74352e9a3942e4e599dda9ec42afe887819d37d88cb559718a",
+   "sha256": "9df80cf4f416fc5ffa743dfb0a540cbb246167f3fc9c8455f960672ea40b7acf",
    "cases": 4096,
    "cases_rope": 43,
    "snapshot_sha256": [
-    "0d91fa7ecc47bd882228a7c0044bbdf9bc581b81b3c0f745595671ab791a62e4",
-    "ba3cb9a892b017440663908d94dfffe905c7b0d86da7426a85bf70a60d058803"
+    "0d8dd4ebf7ac1e19bc80aa002181b978afd76b5fe8f3b3a8346e50f7ff687f27",
+    "37664f9ef6ceb507e7a2e2a325dd095cf7afeef7947fea1c7443a7ff691dbbf2"
    ],
    "rerun_snapshot_sha256": [
-    "0d91fa7ecc47bd882228a7c0044bbdf9bc581b81b3c0f745595671ab791a62e4",
-    "ba3cb9a892b017440663908d94dfffe905c7b0d86da7426a85bf70a60d058803"
+    "0d8dd4ebf7ac1e19bc80aa002181b978afd76b5fe8f3b3a8346e50f7ff687f27",
+    "37664f9ef6ceb507e7a2e2a325dd095cf7afeef7947fea1c7443a7ff691dbbf2"
    ],
    "result": "PASS"
   }
