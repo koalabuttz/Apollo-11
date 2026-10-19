@@ -123,7 +123,7 @@ every DOWNRUPT, and the old code fails them. The vectors are refrozen.
 ## On the C64 store (`make flight-downlink-vice`)
 
 `platform/c64/downlink_check.c` boots the flight resident on
-`build/flight-store/lm.reu` and loads a native snapshot taken at an idle
+`build/flight-store/lm.reu` (or `cm.reu`) and loads a native snapshot taken at an idle
 sample point of a scenario run with `FLIGHT_DOWNRUPT`. With CIA1 interrupts
 off (no clock period and no other interrupt), it takes 100 DOWNRUPTs one
 after another. Each is set pending, and resident steps run until it has been
@@ -139,6 +139,21 @@ DNTMGOTO, the list phase):
 | `lm-p63-descent` | `lm-p63-descent-restart` at 199.50 s, braking phase, before the GOJAM | 100 / 100 DOWNRUPTs equal | 77773 descent and ascent at DOWNRUPT 30 |
 | `lm-p63-descent-after-gojam` | the same run at 200.10 s, after the GOJAM, the restarted list 5 pairs in | 100 / 100 equal | 77773 at DOWNRUPT 95 (the restarted list ran whole) |
 | `lm-p00` | `lm-p00-restart` at 24.00 s, P00 | 100 / 100 equal | 77777 coast and align at DOWNRUPT 1 |
+| `lm-rendezvous` | `lm-rendezvous-restart` at 199.90 s, P20 radar tracking, before the GOJAM | 100 / 100 equal | 77775 rendezvous/prethrust at DOWNRUPT 6 |
+| `cm-p00` | `cm-p00-p40-restart` at 729.90 s, P00 after the LOI-1 burn | 100 / 100 equal | 77777 coast and align at DOWNRUPT 6 |
+| `cm-p40-burn` | `cm-p40-burn-restart` at 499.90 s, P40 SPS burn with the TVC DAP | 100 / 100 equal | 77774 powered at DOWNRUPT 5 |
+| `cm-entry` | `cm-entry-restart` at 249.90 s, P64 entry | 100 / 100 equal | 77776 entry and update at DOWNRUPT 79 |
+
+The last four are the whole-program acceptance's downlink windows: each
+starts mid-phase from its restart row's own scenario, without the GOJAM, so
+the lists carry that phase's live state (state vectors, burn and entry
+quantities). The CM windows run on `build/flight-store/cm.reu`. The
+`--replay` windows of tools/flight_scenario_vice.py run with DOWNRUPT off,
+since a DOWNRUPT every 20 ms would change the replayed scenarios' timing and
+inputs; channels 34 and 35 are checked here instead, and on the host by
+`make flight-downlink-check` over the 11 restart rows that can take
+DOWNRUPT (the 3 that start from a NASSP core run on scaled time, where
+tools/flight_host_run.c has none).
 
 The downtelemetry module is in the store (slot 1, as in the host run), and
 so are the DOWNRUPT lead-in and RESUME. P63's guidance and displays do not
