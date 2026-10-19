@@ -145,8 +145,15 @@ P67_KEYS = NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V3
 LR_V58_KEYS = LR_UPDATE_KEYS + '@88000V58E'
 # lm-p63-v60-nassp: lm-p63-nassp with the landing radar (no V57) and V60E
 # at 1,000 s: LRPOS2K commands the antenna to position 2 (RADMODES bit 6),
-# the antenna gets there 5 s later (FLIGHT_LR_POS2) with no alarm 523,
-# and R12's reads go on in position 2; P64 at about 1,120 s.
+# the antenna gets there 5 s later (FLIGHT_LR_POS2) with no alarm 523;
+# P64 at about 1,120 s. Three alarms fire, as Luminary 099 does in this
+# state (yaAGC records the same): 1210 at 1,002.99 s, a BAILOUT1 software
+# restart, because V60's RADSTALL and R12's next radar read wait on the
+# same device (RDRUSECK should refuse V60 while R12 is on, but LRBYBIT is
+# bit 15, so CS/MASK leave a negative value and CCS skips past the check);
+# 522 at 1,003.87 s, R12's LRPOSCHK while the antenna is between positions;
+# 511 at 1,007.88 s, SERVICER's POS1CHK: P63 wants position 1, so the
+# update is bypassed.
 V60 = {**NASSP, 'FLIGHT_LR': '60000'}
 # lm-abort-p70-nassp and lm-abort-p71-nassp: lm-p63-nassp with the crew
 # aborting in P64 at 1,150 s (about 1,500 m up). P70: ABORT (channel 30
