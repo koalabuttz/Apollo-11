@@ -545,6 +545,7 @@ def main():
             bounds = reu_layout.report(m, regions, before, after.read_bytes(), a.scenario)
             log = (dp.WORK / f'vice-{tag}' / 'monitor.log').read_text()
             bounds['dma_outside'] = reu_layout.dma_misses(log)
+            bounds['dma_trace_armed'] = reu_layout.trace_armed(log)
             bounds['dma_hits'] = reu_layout.dma_hits(log)[:16]
             bounds['dma_unchecked'] = reu_layout.dma_misses(log, (4,))
             if bounds['dma_unchecked']:
