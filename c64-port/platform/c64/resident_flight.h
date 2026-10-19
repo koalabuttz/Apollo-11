@@ -336,6 +336,10 @@ enum exec_status rk_resident_step(uint16_t stop_physical);
  * takes it where the AGC's TC trap would). 0, or nonzero when the GOJAM
  * module did not run. */
 uint8_t rk_gojam(void);
+/* Spinning at VERB69, where the AGC's TC trap restarts it (rk_resident_step,
+ * docs/FLIGHT-RESTART.md): nonzero, with bit 1 set when the period's T3 step
+ * is still ahead. */
+extern uint8_t rk_spin;
 /* One run of a loaded module's routine at the current point, straight from
  * its slot (EXEC_UNMAPPED: no loaded module holds it). */
 enum exec_status rk_direct(uint16_t stop_physical, uint16_t point);

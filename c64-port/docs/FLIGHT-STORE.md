@@ -1289,6 +1289,10 @@ port) runs one mission:
    `cm-v48-dap` keys V48 (R03) from cm-p40's load: the crew loads the
    wide deadband on V04N46 (21112), proceeds on N47 and N48, and S41.2
    sets ADB and RATEINDX; then V46 (STABLISH). It matches yaAGC.
+   `cm-p40-sps-fail` is cm-p40 with the SPS failing to light (no
+   FLIGHT_SPS): R40 finds the thrust low and flashes V97N40 at TIG+3 s,
+   the crew terminates (V97T: engine off, RCS DAP) and goes to P00. It
+   matches yaAGC, output channels included.
    `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus
@@ -1345,9 +1349,9 @@ port) runs one mission:
    V33 after each. V06N37 then shows TTPI 00 03 35.04 (1 x 2^14 + 5120 cs)
    on both. V74 then starts the erasable dump (with FLIGHT_DOWNRUPT;
    list 01776 LM, 01777 CM), and its downlink words match yaAGC. All
-   three run with no bridges on the host. V69 (forced restart) is not
-   keyed: it is a TC to itself that waits for the hardware TC trap, which
-   the host does not model, so the CMC's VERB69 loops until the run ends. A V16
+   three run with no bridges on the host. V69 (forced restart) is
+   keyed in its own scenarios, `lm-v69` and `cm-v69`: the TC trap restarts
+   the computer at VERB69 (docs/FLIGHT-RESTART.md, The TC trap). A V16
    monitor in place of V06 bridges PASTEVB (02,2124 LM, 02,2140 CM):
    the Pinball suite refuses it when ENTRET re-enters it each second.
    Six LM scenarios cover the rows of the Luminary099 program map

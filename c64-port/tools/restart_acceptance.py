@@ -67,10 +67,10 @@ GROUPS = {
 # Restart rows in the doc that stand for no phase group. A restart row in
 # neither (a new row of flight_restart_check.RESTARTS) fails the doc until
 # it is placed here or in GROUPS.
-EXTRA = {'lm': ['lm-dap-hold-restart'], 'cm': ['cm-p52-restart']}
+EXTRA = {'lm': ['lm-dap-hold-restart', 'lm-v69-restart'], 'cm': ['cm-p52-restart', 'cm-v69-restart']}
 # The rows whose GOJAM is also applied on the C64 (make flight-gojam-vice).
-GOJAM_ON_C64 = {'lm': ['lm-p63-descent-restart', 'lm-dap-hold-restart'],
-                'cm': ['cm-entry-restart', 'cm-p52-restart']}
+GOJAM_ON_C64 = {'lm': ['lm-p63-descent-restart', 'lm-dap-hold-restart', 'lm-v69-restart'],
+                'cm': ['cm-entry-restart', 'cm-p52-restart', 'cm-v69-restart']}
 OUT = ROOT / 'build/restart-acceptance'
 DOCS = ROOT / 'docs/acceptance'
 EVIDENCE = ROOT / 'evidence'

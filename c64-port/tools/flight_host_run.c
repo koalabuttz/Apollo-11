@@ -296,6 +296,26 @@ static int core_start(const char *rope){static agc_t c;int rc;unsigned i,n;
 /* The word at fixed address z under FB and the superbank. */
 /* Reference side only: the rope word yaAGC holds (KEYRUPT1's BRUPT). */
 static agc_word rope_word(agc_word z,agc_word fb,agc_word sb){uint16_t p=agc_fixed_physical(z,fb,sb);return p==AGC_TRANSFER_NONE?0u:(agc_word)loaded.Fixed[p/1024u][p%1024u];}
+/* The TC trap (docs/FLIGHT-RESTART.md, The TC trap). VERB69 (43,2037 in both
+ * ropes, V69's TC VERB69; bank 043 is FB 033 with the superbank's bit 0100):
+ * the test the C64's rk_resident_step makes, Z there outside an interrupt. */
+static int verb69(const agc_word *w,agc_word sb){return (w[5]&07777u)==02037u&&w[4]==066000u&&(sb&0100u);}
+/* Unscaled, yaAGC's own trap fires at scaler phase 000 after nothing but
+ * TCs since phase 020 (agc_engine.c TCTrap; it sets channel 77 bit 3, the
+ * GOJAM itself being off here with InhibitAlarms), on the reference and in
+ * bridged code: yaagc_trap takes the bit, 1 at VERB69, and stops the run
+ * (exit 3) anywhere else or for the no-TC alarm the bit also reports, which
+ * the C64 does not model. */
+static int yaagc_trap(const char *side){const agc_word *v;
+ if(!(m.InputChannel[077]&CH77_TC_TRAP))return 0;
+ m.InputChannel[077]&=~CH77_TC_TRAP;v=view();
+ if(m.TCTrap&&!m.InIsr&&verb69(v,(agc_word)m.OutputChannel7))return 1;
+ fprintf(stderr,"FLIGHT: %s: yaAGC's %s alarm at Z %05o FB %05o, not V69's VERB69 (the C64 does not model it)\n",
+  side,m.TCTrap?"TC trap":"no-TC",(unsigned)v[5],(unsigned)v[4]);
+ exit(3);}
+/* A TC or TCF to itself, with no INDEX before it (bridged code under scaled
+ * time, where yaAGC's clock is frozen and its trap cannot fire). */
+static int self_loop(const agc_word *w,agc_word sb){agc_word z=(agc_word)(w[5]&07777u),k=z>=02000u?rope_word(z,w[4],sb):0u;return z>=02000u&&(k==z||k==(agc_word)(010000u|z));}
 static agc_routine find(const agc_routine_table *t,uint16_t key){uint16_t lo=0,hi=t->count,mid;
  while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(t->entries[mid].physical==key)return t->entries[mid].call;
   if(t->entries[mid].physical<key)lo=(uint16_t)(mid+1u);else hi=mid;}
@@ -468,6 +488,15 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  * seam rows is the snapshot), and starts the next window's work clock as
  * a C64 window starts its own. A key or an interrupt request at that point
  * holds the snapshot off and fails the run (exit 4). */
+/* The TC trap's GOJAM on the native side. FLIGHT_TRAP_SNAPSHOT=PRE,POST:
+ * the native state just before it and just after it (as FLIGHT_SNAPSHOT
+ * writes one), and the run stops. */
+static int spin;
+static void trap_gojam(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending){const char *t=getenv("FLIGHT_TRAP_SNAPSHOT");char pre[600];size_t k;
+ printf("TC trap at %lu cs (Q %05o)\n",now(s->words),(unsigned)s->words[2]);
+ if(t){k=strcspn(t,",");if(!t[k]||k>=sizeof pre){fprintf(stderr,"FLIGHT_TRAP_SNAPSHOT=PRE,POST\n");exit(2);}memcpy(pre,t,k);pre[k]=0;snapshot(pre,s,io,hw);}
+ gojam_native(s->words,io,hw,pending);
+ if(t){snapshot(t+k+1,s,io,hw);printf("trap snapshots at %lu cs\n",now(s->words));exit(0);}}
 static long ones(agc_word v);
 static FILE *rp_out;static unsigned long rp_seed;
 static unsigned long rp_t0,rp_cs,rp_rows;static unsigned rp_chain=1u,rp_win;static FILE *rp_seam;
@@ -922,15 +951,25 @@ static int step(uint16_t *pending){unsigned i;if(agc_engine(&m))return -1;
  * yaAGC takes the native side's pending interrupts, and any it requests,
  * where it would (an interrupt vector is a point the lead-in tables hold);
  * the requests still pending at the end go back to the native side. */
+/* Unscaled, bridged code runs through VERB69 (whatever table holds it) until
+ * yaAGC's own TC trap (yaagc_trap) sets trapped; under scaled time the
+ * bridge stops there for the native spin, and stops the run (-2) at any
+ * other TC or TCF to itself. The trap's watch starts clear: the native code
+ * before it ran other instructions. */
+static int trapped;
 static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,long limit){long n;unsigned i;agc_routine call;
  load(s,io,hw);
  for(i=1;i<=NUM_INTERRUPT_TYPES;++i)m.InterruptRequests[i]=(int8_t)((*pending&RK_RUPT_BIT(i))!=0u);
+ m.TCTrap=0;m.NoTC=0;m.InputChannel[077]&=~CH77_TC_TRAP;trapped=0;
  for(n=0;n<limit;++n){
-  if(n&&quiet()){const agc_word *v=view();if(holder(v,(agc_word)m.OutputChannel7,&call)||idle(v,(agc_word)m.OutputChannel7,m.InIsr))break;}
+  if(n&&quiet()){const agc_word *v=view();agc_word sb=(agc_word)m.OutputChannel7;
+   if((holder(v,sb,&call)&&(scaled||m.InIsr||!verb69(v,sb)))||idle(v,sb,m.InIsr)||(scaled&&!m.InIsr&&verb69(v,sb)))break;
+   if(scaled&&!m.InIsr&&self_loop(v,sb)){fprintf(stderr,"FLIGHT: bridged code at a TC or TCF to itself, Z %05o FB %05o (not VERB69)\n",(unsigned)v[5],(unsigned)v[4]);return -2;}}
   if(scaled){uint64_t c=m.CycleCounter;unsigned k;if(agc_engine(&m))return -1;spend((unsigned long)(m.CycleCounter-c));
    if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));if(j%3ul==2ul)steal();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
    continue;}
-  if(agc_engine(&m))return -1;}
+  if(agc_engine(&m))return -1;
+  if(yaagc_trap("bridge")){trapped=1;++n;break;}}
  if(n==limit)return -1;
  *pending=0;for(i=1;i<=NUM_INTERRUPT_TYPES;++i)if(m.InterruptRequests[i])*pending|=RK_RUPT_BIT(i);
  store(s,io,hw);return n;}
@@ -1233,7 +1272,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(holder(v,(agc_word)m.OutputChannel7,&c)){static agc_word w[2048];memcpy(w,v,sizeof w);w[024]=mword(024);w[025]=mword(025);
     path("REF",w,(agc_word)m.OutputChannel7,(agc_word)m.InputChannel[4],m.InIsr,"");}}
   if(word_out){word_step(next);continue;}
-  if(agc_engine(&m))return 2;}
+  if(agc_engine(&m))return 2;
+  if(yaagc_trap("reference"))gojam_yaagc(&m);}
  if(word_out){fclose(word_out);return 0;}
  refs=scaled?cs:next-1u;
  if(refs<cs)printf("reference: only %lu of %lu centiseconds reached an idle boundary\n",refs,cs);
@@ -1258,7 +1298,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else if(tables[i].t==&agc_lm_danzig_marker||tables[i].t==&agc_cm_danzig_marker)interp[0]=*tables[i].t;
    else interp[ni++]=*tables[i].t;}
   p.basic=basic;p.basic_count=nb;p.interpretive=interp;p.interpretive_count=ni;}
- for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;
+ for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;int v69;
   steal_cs=now(s.words);
   if(!pending&&(scaled||(hw.channel4&020u))&&((at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt))||busy_due(scaled,s.words,hw.in_interrupt))){int k;busy_last=now(s.words);
    while(next<=refs&&now(s.words)>=next){if(scaled){++next;continue;}++samples;
@@ -1327,8 +1367,19 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * Z; rk_rupt_take saves the word at Z. */
     if(substitute&&brupt!=s.words[017]&&++lost_brupt==1ul)printf("interrupt at a RESUME point replaced BRUPT %05o with %05o at %lu cs\n",(unsigned)brupt,(unsigned)s.words[017],now(s.words));
     substitute=0;}}
-  e=holder(s.words,io.superbank,&call);
-  if(!e)e=&core_entry;
+  /* The TC trap (verb69): under the work clock, the spin's period ran
+   * through its T5 step with no interrupt taken and held its T3 step, as
+   * rk_resident_step finds it on the C64. */
+  if(spin){int armed=spin==2;spin=0;
+   if(armed&&!hw.in_interrupt){trap_gojam(&s,&io,&hw,&pending);substitute=0;continue;}}
+  v69=!hw.in_interrupt&&!substitute&&verb69(s.words,io.superbank);
+  /* At VERB69 the AGC runs nothing but TCs: under the work clock a spin
+   * as the idle loop's, to the period's end (rk_resident_step's), with Q
+   * TC VERB69's; unscaled, yaAGC's bridged code, to its own trap. */
+  if(v69&&scaled){if(!work){fprintf(stderr,"FLIGHT: VERB69 under FLIGHT_SCALED=K,D,LAG: the TC trap needs the work clock or unscaled time\n");return 3;}
+   s.words[2]=02040u;spin=consumed%3ul==2ul?1:2;idle_tick();continue;}
+  e=v69?0:holder(s.words,io.superbank,&call);
+  if(!e&&!v69)e=&core_entry;
   /* FLIGHT_REPLAY_TRACE: each routine's Z, FB, TIME1, work clock (step,
    * MCT since it), Q and table, as dap_pass_check.c DP_STEPS records the
    * C64's steps with DP_REPLAY. */
@@ -1410,9 +1461,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    s=before;io=io0;hw=hw0;}
   dl_clear();
   {agc_word w[2048];long n;memcpy(w,s.words,sizeof w);
-   if((n=bridge(&s,&io,&hw,&pending,5000000l))<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
+   if((n=bridge(&s,&io,&hw,&pending,5000000l))==-2)return 3;
+   if(n<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
    dl_bridged(w);
-   hole(w,io.superbank,(unsigned long)n,e&&e!=&core_entry?e->name:0);bridged+=(unsigned long)n;}}
+   hole(w,io.superbank,(unsigned long)n,e&&e!=&core_entry?e->name:0);bridged+=(unsigned long)n;
+   if(trapped){trap_gojam(&s,&io,&hw,&pending);substitute=0;}}}
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
   MISSION?"CM":"LM",steps,locked,bridged,samples,samples-diffs,diffs);
  if(scaled)printf("scaled time: K %.2f, divisor %u, lag %u, seed %lu: %lu CIA interrupts, %lu clock periods taken, %lu dropped (rk_dilation); AGC time %lu cs\n",

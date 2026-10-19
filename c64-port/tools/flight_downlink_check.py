@@ -267,8 +267,9 @@ def main():
         if not only or only - known:
             sys.exit(f'FAIL: --only names nothing to run: {sorted(only - known) or "(empty)"}')
     # A restart that starts from a NASSP core (FLIGHT_CORE) runs on scaled
-    # time, where flight_host_run.c has no DOWNRUPT: those rows stay out.
-    todo = [x for x in frc.RESTARTS if (not only or x[0] in only) and 'FLIGHT_CORE' not in x[4]
+    # time, where flight_host_run.c has no DOWNRUPT: those rows stay out, as
+    # do the TC trap rows (frc.TC_TRAP: keyed V69, no FLIGHT_GOJAM).
+    todo = [x for x in frc.RESTARTS if (not only or x[0] in only) and 'FLIGHT_CORE' not in x[4] and x[0] not in frc.TC_TRAP
             and not (a.run_vice and a.c64_only)]
     windows = [w for w in VICE_WINDOWS if not only or w[0] in only or w[1] in only] if a.run_vice else []
     if not todo and not windows:
