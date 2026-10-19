@@ -5662,26 +5662,26 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-source-map.json",
-            "sha256": "e7e75083785a66e4eea524ca996dbb118945d6453dbe69182fc656bfb5f8554a"
+            "sha256": "798d77c0bdbac7a9f91dba3d497cc1fc097dfbc70e828a80b6583e14185b6cdc"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-proof.json",
-            "sha256": "becb7241cb641063789e883c902682168aece3e92cd1005b90bfc5f394f893e0"
+            "sha256": "0f58b2b847359a9b4ea3ebf4c4fdbf307e2535c427fe2e63cf9bdd97eb3ab1b6"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-host.log",
-            "sha256": "ea69cd19e9f49b6875918d9110f68c3ec324b05f2ad2313deb451d479560c6a0"
+            "sha256": "47b872bf9088d9f64b0ff598752890049105d23238f4111a249fb0cf8ac039dd"
           },
           "c64_execution_results": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-vice.log",
-            "sha256": "09e73c8b0b9a044ed44d0a8a77f4192f6e7c9ba927e122c62b10c97f7557a8a3",
+            "sha256": "99a9ee20dad8e58c9a6b3ef7adba9b23b3c791eb19a9f324f2d89a106cc46a3d",
             "vice_targets": {
               "vice-cm-stable-orbit": 139
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-proof.json",
-            "sha256": "becb7241cb641063789e883c902682168aece3e92cd1005b90bfc5f394f893e0"
+            "sha256": "0f58b2b847359a9b4ea3ebf4c4fdbf307e2535c427fe2e63cf9bdd97eb3ab1b6"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-g541.md",
