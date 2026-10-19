@@ -1245,10 +1245,12 @@ port) runs one mission:
    good high (not good) over those centiseconds whatever the tracker
    does (tools/flight_radar.h: channel 33 bit 4 on the LM, bit 2 on the
    CM); the reads still answer. `lm-rendezvous-rr-dropout` drops it from
-   195 s to 210 s, over R22's third mark: the read fails (alarm 521,
+   180 s to 210 s, over R22's third mark on every clock (200 s scaled,
+   186 s on the reference clock): the read fails (alarm 521,
    RADMODES data fail), R22 drops the lock and R21 flashes V50N72 again;
    proceed at 215 s, the RR locks on and the marks go on, one fewer, and
-   P34 ends on N59 as before. `cm-p20-vhf-dropout` drops VHF ranging
+   P34 ends on N59 as before (its PROs at 304 s and 307 s leave room for
+   P34 coming up late on the reference clock). `cm-p20-vhf-dropout` drops VHF ranging
    from 180 s to 190 s, over R22's second range: VHFREAD takes BADEND,
    so no N49 and no mark (VHFCNT 3 by 320 s, not 4), and the next ranges
    incorporate on their own. Five more repeat a P52 with an IMU input
