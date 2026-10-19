@@ -4733,7 +4733,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-r31 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area (any FIXLOC at a basic routine that never indexes through it: R31CALL, DSPDELAY and DISPN5X run in the extended verb's NOVAC job), any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-r31 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters).",
         "external_continuations": [
           "FINDVAC with its inline 2CADR (Executive)",
           "BANKCALL with its inline CADR (DELAYJOB, GOMARKF)",
@@ -4749,17 +4749,17 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-r31/cm-r31-proof.json",
-            "sha256": "c3a3e13d1b4a7dbcaddba9ebc94dc14c7a1adc9b4eecaabaaf872ebd44e7a273"
+            "sha256": "6f9912127c39ef6bba9a5e5d9f17efab4f2f8305d8716f8e530afd43888e15ea"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-r31/cm-r31-host.log",
-            "sha256": "5e63c2fe8c4b05b1d595652f1b76fd40dd0d5029fa33f0d89ef19e376a19d75a"
+            "sha256": "66f3ab38280d41e6e3069eb737cc401c3b9c2b8dff1ea5fc3f5aac6d65818bb2"
           },
           "c64_execution_results": {
             "path": "evidence/cm-r31/cm-r31-vice.log",
-            "sha256": "5c108ebd1602e315c99ac97de646eef72606572090e87058c8b4516a27c41fbb",
+            "sha256": "bd4da4f82225a98759a80a8ba8e4b7969c715a86ce9e96752dfd3d52e71697b9",
             "vice_targets": {
-              "vice-cm-r31": 117
+              "vice-cm-r31": 115
             }
           },
           "independent_review": {
@@ -4768,7 +4768,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-r31/cm-r31-c64-cover.json",
-            "sha256": "cf53e5ca67a25e8f6e4cef5355e323f9a862d515f544cd67800eaa0303986229"
+            "sha256": "be8a01ad7a68d636a3ba69091a9491f7b7b50ca7aef3ab16abe61230ef2cf628"
           }
         }
       }
