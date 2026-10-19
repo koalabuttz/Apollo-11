@@ -122,6 +122,10 @@ def replay_result(r):
         return False, f"ends early ({r.get('agc_cs')} of {r.get('requested_cs')} cs)"
     if not (r.get('reu_bounds') or {}).get('ok', True):
         return False, 'REU access outside the layout'
+    shift = r.get('replay_end_shift_cs')
+    late = f', end compared {shift} cs late' if shift else ''
+    if r.get('replay_ended') and r.get('replay_end_paired') is False and not r.get('replay_differences'):
+        return False, f'end not compared (the C64 ends {shift} cs after the host, with no host state to match)'
     if r.get('replay_differences') == 0 and r.get('replay_ended'):
         if not r.get('replay_matched_cs'):
             return False, 'no checkpoint compared'
@@ -129,7 +133,9 @@ def replay_result(r):
             return False, f"run failed ({r.get('error') or 'ok is false'})"
         if r.get('replay_skipped'):       # words left out of the compare (SCHEDULE_SKIP): not a full match
             return False, f"matches host except skipped {', '.join(r['replay_skipped'])}"
-        return True, 'matches host'
+        notes = [x for x in (f"{r['replay_unpaired_count']} checkpoints not compared"
+                             if r.get('replay_unpaired_count') else '', late[2:]) if x]
+        return True, 'matches host' + (f" ({', '.join(notes)})" if notes else '')
     if not r.get('replay_differences') and r.get('replay_ended') is False:
         return False, 'did not reach the next checkpoint'
     first = (r.get('replay_first') or [{}])[0]
@@ -137,7 +143,7 @@ def replay_result(r):
     cls = 'clock' if at in TIMERS else 'data'
     when = r.get('replay_differ_at_cs')
     return False, (f"differs ({cls}: first at {at}, host {first.get('host')} C64 {first.get('c64')}"
-                   + (f', by {when} cs' if when is not None else '') + ')')
+                   + (f', by {when} cs' if when is not None else '') + late + ')')
 
 
 def load_host(host_dir, commit):

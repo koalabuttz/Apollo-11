@@ -1364,12 +1364,16 @@
    "scenarios": [
     "lm-coast-verbs"
    ],
-   "note": "lm-coast-verbs: V43E (Lane F host check, 10-19)",
+   "note": "lm-coast-verbs: V43E with the needles mode off (FLIGHT_CHAN channel 31 bits 13-14 set) and the V21N22 angles loaded; ATTCK2 sends the CDU error commands in the 21900 window (#764)",
    "owner": "F",
    "windows": [
     [
      "lm-coast-verbs",
      19900
+    ],
+    [
+     "lm-coast-verbs",
+     21900
     ]
    ]
   },
@@ -1381,7 +1385,7 @@
    "scenarios": [
     "lm-coast-verbs"
    ],
-   "note": "lm-coast-verbs: V44E (Lane F host check, 10-19)",
+   "note": "lm-coast-verbs: V44E ends a continuous designate that FLIGHT_POKE sets (RADMODES bit 15 poked at 188 s, not an in-flight designate); the body clears it at 191.5 s (#764)",
    "owner": "F",
    "windows": [
     [

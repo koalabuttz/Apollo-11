@@ -1136,16 +1136,29 @@ port) runs one mission:
    the engine lag and radar reads). At the first sample point `--cs` in
    (and with `--replay-every N` at the first one at or after every N cs
    before), both sides write their erasable words and output channels (5,
-   6, 11-14, 34, 35, the superbank; on the CM 11-14 from rk_device, which
-   the base tables run on). The C64 takes its states at the host's: at
+   6, 11-14, 34, 35, the superbank, 10, whether interrupts are enabled
+   (INHINT/RELINT) and the radar gate counter; on the CM 11-14 from rk_device, which the base tables
+   run on). The C64 takes its states at the host's: at
    its first sample point at or after each centisecond the host wrote a
    state at, the end included (the first sample point at or after the
    asked centisecond can come a tick before the host's, and every timer
    then reads one count off). The states are paired by their
-   centiseconds, not by order: the two ends always pair, and a checkpoint
-   with no state at the same centisecond on the other side (the C64 still
-   busy at the host's point, for one) is listed as unpaired and not
-   compared. The C64's state area holds `--cs` /
+   centiseconds, not by order: a checkpoint with no state at the same
+   centisecond on the other side (the C64 still busy at the host's point,
+   for one) is listed as unpaired and not compared. The ends follow the
+   same rule. After the last window's end the host runs 8 cs more and
+   writes its state at each sample point there (`.after`) and the inputs
+   it took (`.after-replay`). A C64 end that comes after the host's (busy,
+   or an interrupt pending, at the host's end) is compared with the host's
+   state at the C64's centisecond. The summary line and the result's
+   `replay_end_shift_cs` say how late, and program_acceptance.py writes
+   "end compared N cs late" in the row. When the host has no state there,
+   or an input came in between, the ends are unpaired and the window fails
+   ("the ends are not compared"), never a match. The checkpoints not
+   compared are counted in the result (`replay_unpaired_count`, and in
+   the summary line and the acceptance row), and a C64 that ends the
+   window without applying every input row fails. A chain window's end
+   before the last is the next window's seam and always pairs. The C64's state area holds `--cs` /
    `--replay-every` + 1 states and the C64 writes no more, and a window
    the host ran past 16,383 cs (the C64's 14-bit window clock) fails before
    VICE starts;
@@ -1179,15 +1192,16 @@ port) runs one mission:
      every `--replay-every` cs, it is compared with the host on a wider
      scope than the first check: the same erasable set, plus the timers
      TIME1-TIME6 (both sides run one work clock here), plus output channels
-     5, 6, 11-14, 34 and 35 and the superbank. A PIPA's -0 and +0 count as
+     5, 6, 10, 11-14, 34 and 35, the superbank, the interrupt enable and
+     the radar gate counter. A PIPA's -0 and +0 count as
      equal. A PIPA count the host gave at a sample point the C64 was still
      busy at goes in at the C64's next step, as the hardware counts whether
      or not the AGC is idle, and late rows go in before a state is written.
      Anything else is a difference, apart from the temporary skips
      above, which are named in every result that uses them. Output channel
-     10 (the DSKY relay words) is not compared: it is a strobe the AGC
-     writes once per relay word, not a latch, so the display is checked
-     through DSPTAB in erasable instead.
+     10 holds the last DSKY relay word the AGC wrote (a strobe, not a
+     latch); it is compared too (auditor issue #766), so a relay cycle at
+     a different point fails even where DSPTAB agrees.
    So the chain gives C64 = yaAGC only on the first check's scope. The
    timers and the output channels are checked C64 = host only.
    A window "matches host" when its `--replay` log has no FAIL line. It

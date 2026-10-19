@@ -1,0 +1,185 @@
+{
+ "note": "Comanche055 outputs.",
+ "rows": [
+  {
+   "section": "DSKY",
+   "row": "Noun x verb sweep",
+   "kind": "dsky",
+   "status": "pending",
+   "note": "Every flight noun x display verb (V01-V06, V11-V16, V21-V25), plus V32/V33/V34/V37, PROCEED and KEY REL on the C64 build (bar item 6): the Certificate fixes lane's DSKY sweep tool, run by Lane C on its Pinball certificate. Not on base yet"
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Coast and align list (P00, P52)",
+   "kind": "downlink",
+   "host": [
+    "cm-p00-restart",
+    "cm-p00-p40-restart",
+    "cm-p52-restart"
+   ],
+   "c64": [
+    "cm-p00"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Powered list (P40 SPS burn)",
+   "kind": "downlink",
+   "host": [
+    "cm-p40-burn-restart"
+   ],
+   "c64": [
+    "cm-p40-burn"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Entry and update list (P64)",
+   "kind": "downlink",
+   "host": [
+    "cm-entry-restart"
+   ],
+   "c64": [
+    "cm-entry"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Rendezvous and prethrust list (P20)",
+   "kind": "downlink",
+   "host": [
+    "cm-p20-restart"
+   ],
+   "c64": [],
+   "note": "No C64 downlink window yet (flight_downlink_check.py VICE_WINDOWS, A2)"
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Program 22 list",
+   "kind": "downlink",
+   "host": [
+    "cm-p22-restart"
+   ],
+   "c64": [],
+   "note": "No C64 downlink window yet (flight_downlink_check.py VICE_WINDOWS, A2)"
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Erasable dump (V74)",
+   "kind": "downlink",
+   "status": "not exercised",
+   "note": "No scenario keys V74"
+  },
+  {
+   "section": "Output channels",
+   "row": "RCS jets (pitch/yaw and roll)",
+   "kind": "channels",
+   "channels": [
+    5,
+    6
+   ],
+   "windows": [
+    [
+     "cm-entry",
+     25000,
+     1000
+    ],
+    [
+     "cm-p40",
+     29000,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "SPS engine on (bit 13)",
+   "kind": "channels",
+   "channels": [
+    9
+   ],
+   "windows": [
+    [
+     "cm-p40",
+     29000,
+     1000
+    ],
+    [
+     "cm-tei",
+     29000,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "DSKY lamps and alarms (ISS warning, computer activity, KEY REL, V/N flash, OPER ERR)",
+   "kind": "channels",
+   "channels": [
+    9
+   ],
+   "windows": [
+    [
+     "cm-p37",
+     4400,
+     2000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "Optics and IMU CDU enables, coarse align, TVC enable",
+   "kind": "channels",
+   "channels": [
+    10
+   ],
+   "windows": [
+    [
+     "cm-p52",
+     4000,
+     1000
+    ],
+    [
+     "cm-p40",
+     29000,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "VHF range read",
+   "kind": "channels",
+   "channels": [
+    11
+   ],
+   "windows": [
+    [
+     "cm-p20",
+     12000,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "IMU CDU, optics and gyro drives",
+   "kind": "channels",
+   "channels": [
+    12
+   ],
+   "windows": [
+    [
+     "cm-p52",
+     4000,
+     1000
+    ],
+    [
+     "cm-p22",
+     12000,
+     1000
+    ]
+   ]
+  }
+ ]
+}
