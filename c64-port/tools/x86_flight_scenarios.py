@@ -23,8 +23,10 @@ the x86 program passes when
     plus WORDS_PLUS. This is what sees programs that do not move the
     state vector: P52 and P57 with their marks left out differ in about
     200 words against a spread of 6 and 18.
-KNOWN lists scenarios outside these bounds with the reason; they are
-reported and do not fail the run. Results go to
+KNOWN lists scenarios outside the RN/VN bounds with the reason and an
+envelope of their own: such a run is reported and does not fail when it
+reaches the compare point, exits 0, has the same major mode, stays within
+the word limit and within the envelope; anything else fails. Results go to
 build/x86-flight/scenarios/summary.json.
 
   x86_flight_scenarios.py [--host-cc CC] [--skip-build] [--drop-keys CHARS] [NAME ...]
@@ -52,8 +54,9 @@ WORDS = range(0o61, 0o4000)
 # program's (FLIGHT_SATURN lifts off at 10,000). P11 navigates from the
 # time it saw, so the offset is in the state vector from liftoff on
 # (149 m at 10,051 cs against a spread of 74 m) and grows to orbit.
-KNOWN = {'cm-p11': 'the x86 program sees liftoff 33 cs after the harness (TLIFTOFF 10038 against 10005; the '
-                   "harness's other clock: 10022), and P11 navigates from that time"}
+KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the harness (TLIFTOFF 10038 against 10005; '
+                                "the harness's other clock: 10022), and P11 navigates from that time",
+                         rn=600.0, vn=1.0)}   # measured 449 m, 0.73 m/s
 UNSUPPORTED = ('FLIGHT_CORE', 'FLIGHT_RR', 'FLIGHT_LR', 'FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7).
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
@@ -142,6 +145,18 @@ def compare(name, m, cs, keys, env, drop=''):
                 words=dict(differ=words, spread=spread_words, limit=words_tol), inputs=env, line=line), ok
 
 
+def within_known(name, row):
+    """The KNOWN reason when the row stays inside that scenario's envelope
+    (and every other check passes), else None."""
+    k = KNOWN.get(name)
+    if not k or 'words' not in row or row['x86_exit'] != 0:
+        return None
+    mm, w = row['major_mode'], row['words']
+    inside = (mm['harness'] == mm['x86'] and w['differ'] <= w['limit'] and row['rn_metres']['difference'] <= k['rn']
+              and row['vn_mps']['difference'] <= k['vn'])
+    return f"{k['reason']} (envelope RN {k['rn']:.0f} m, VN {k['vn']} m/s)" if inside else None
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
@@ -162,9 +177,9 @@ def main():
     summary, failed = [], 0
     for name, m, cs, keys, env in rows:
         row, ok = compare(name, m, cs, keys, env, a.drop_keys)
-        known = KNOWN.get(name)
+        known = None if ok else within_known(name, row)
         failed += not ok and not known
-        row.update(ok=ok, known=known if not ok else None)
+        row.update(ok=ok, known=known)
         summary.append(row)
         print(row['line'] + ('' if ok else f' KNOWN: {known}' if known else ' FAILED'), flush=True)
     (OUT / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')

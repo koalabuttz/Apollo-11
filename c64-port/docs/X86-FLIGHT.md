@@ -110,7 +110,7 @@ On base f499d7ee:
 | CM P37 | 00 / 00 | 0 | 0 | 27 (50; 27) |
 | CM P52 | 00 / 00 | 0 | 0 | 6 (19; 6) |
 
-CM P11 is outside its limits. The tool lists it as known and doesn't fail on it (Gaps). The other 12 pass.
+CM P11 is outside its limits (Gaps). The tool lists it as known, with an envelope of its own: RN within 600 m and VN within 1 m/s, reaching the compare point with exit 0, the same major mode and the normal word limit. Inside that envelope it doesn't fail; outside it, it does. With the vehicle models removed, P11 ends 6,563 km off and fails. The other 12 scenarios pass.
 
 The rest need models the x86 program does not have yet: the rendezvous radar and VHF (`FLIGHT_RR`), the landing radar (`FLIGHT_LR`, `FLIGHT_LR_POS2`), the NASSP P63 core (`FLIGHT_CORE`), uplink and stolen time. So no scenario compared here flies the LM RCS (`FLIGHT_RCS`), the throttle lag, touchdown, the P66 crew, the ascent or the abort stage. Those run only in the NASSP scenarios, and the unit checks in `test_vehicle_models.c` are their only x86 test so far.
 
