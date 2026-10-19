@@ -1256,7 +1256,17 @@ port) runs one mission:
    `cm-p52-gimbal-lock` puts CDUZ at 72 degrees for 6 s (GIMBAL LOCK
    lights, then goes out; P52 runs as before) and, after P00, at 86
    degrees: GLOCKMON coarse aligns the platform and lights NO ATT. All
-   five match yaAGC. `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
+   five match yaAGC. Four more key crew verbs no other CM scenario
+   keys (the Comanche055 coverage map): `cm-p20-crew-verbs` adds V90
+   (R36's out-of-plane display, V06N90), V44 (R61 asks for a new tracking
+   attitude for an LM on the surface), V45, V88, V58 and V93 to cm-p20;
+   `cm-p23-attached` adds V66 after P00 (ATTACHIT copies the CSM's state
+   into the LM's); `cm-v49-maneuver` keys V76, then V49 (R62) from cm-p40's
+   start, a 180 degree roll loaded on V06N22, and R60's KALCMANU steering
+   runs (with no CM attitude model the CDUs stay put); `cm-p21` is cm-p52
+   on to P21 (ground track): V06N43 shows -7.40, +111.70 degrees and 97.1
+   nmi now. All four match yaAGC.
+   `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
    From CS, once HCALC is set, it takes the LM's state from RN and VN
    (through REFSMMAT) and flies its own trajectory: lunar gravity plus
    the engine model's thrust, so truth and the LGC's navigation part as
