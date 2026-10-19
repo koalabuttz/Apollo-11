@@ -3538,7 +3538,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-proof.json",
-            "sha256": "8647b73447a0bf21d553899a28d563fab573081e1f61de96dcdecbbba99b8261"
+            "sha256": "700543e4343e822fb2ff521193d3dcc51e01618f540c10fe84671e8da562f77c"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-host.log",
@@ -3546,14 +3546,14 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-vice.log",
-            "sha256": "3266c42a74a873ea994cecba8609aa6d235afdfd0b64b14e54e6d16d0346deb8",
+            "sha256": "14caed681a9190a19282f0535cf5bd381899298d685c7a2d14b4ffc5c6ab7788",
             "vice_targets": {
-              "vice-cm-p34-p35": 584
+              "vice-cm-p34-p35": 590
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p34-p35/cm-p34-p35-c64-cover.json",
-            "sha256": "5a0b54fbdffc77f409a870677962cfc91972b59441aab8a8e8a32ab969e6ead1"
+            "sha256": "b75d35bfc6817774de06ce8f727a5406140e0f95c8afc4e0673314cdbf5e0e71"
           },
           "independent_review": {
             "path": "docs/audits/rev2-cm-p34-p35.md",
