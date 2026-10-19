@@ -149,9 +149,15 @@ def dma_trace(regions):
     outside = terms[0]
     for t in terms[1:]:
         outside = f'({outside} && {t})'
+    # VICE nearly always evaluates the condition before the command runs
+    # (the command register still has its execute bit, $80). Now and then it
+    # evaluates it after the DMA, when the registers hold the end address and
+    # a length of 1: that DMA is not checked here (the byte diff still sees
+    # its writes) and checkpoint 3 counts it (dma_unchecked).
     # On each hit VICE also prints the controller's registers (io $df00),
     # so the log names the DMA: dma_hits() reads them back.
-    return f'trace store df01 if {outside}\ncommand 2 "io $df00"'
+    return (f'trace store df01 if ((@io:$df01 >= $80) && {outside})\ncommand 2 "io $df00"\n'
+            'trace store df01 if (@io:$df01 < $80)')
 
 
 def dma_misses(monitor_log, checkpoint=2):

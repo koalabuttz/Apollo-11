@@ -10,7 +10,8 @@ Reads the built store (make flight-store), the resident sizes
 results, then writes, all from the same commit:
 
   docs/acceptance/<Program>-memory_and_overlay_validation.md
-  evidence/acceptance/memory/<m>-<scenario>-<snap_cs>.json   (each run, copied)
+  evidence/<m>-acceptance-memory/<scenario>-<snap_cs>.json   (each run, tree-stored
+                                         with tools/evidence.py add --tree)
 
 The doc lists the REU layout, each build-time check with its result, the
 resident's free bytes against the floor, and each run's runtime REU bound
@@ -74,21 +75,26 @@ def build_checks(m):
 
 
 def runtime_checks(m, runs, dest):
-    rows = []
+    rows, copies = [], []
     dest.mkdir(parents=True, exist_ok=True)
     for path in runs:
         r = json.loads(pathlib.Path(path).read_text())
         if r.get('mission', m) != m:
             raise SystemExit(f'{path}: a {r["mission"]} run, not {m}')
         b = r.get('reu_bounds')
-        name = f"{m}-{r['scenario']}-{r.get('snap_cs', 'x')}{'-replay' if r.get('replay') else ''}.json"
+        name = f"{r['scenario']}-{r.get('snap_cs', 'x')}{'-replay' if r.get('replay') else ''}.json"
         copy = dest / name
         copy.write_text(json.dumps(r, indent=1) + '\n')
+        copies.append(copy)
         ok = bool(b) and b['ok'] and b.get('dma_outside') == 0
         rows.append(dict(scenario=r['scenario'], snap_cs=r.get('snap_cs'), agc_cs=r.get('agc_cs'),
                          replay=r.get('replay'), ok=ok, touched=(b or {}).get('touched', []),
                          outside=len((b or {}).get('outside', [])), dma_outside=(b or {}).get('dma_outside'),
-                         evidence=str(copy.relative_to(ROOT)), sha256=sha(copy)))
+                         evidence=f'evidence/{m}-acceptance-memory/{name}', sha256=sha(copy)))
+    if copies:
+        # evidence/<id>/ is flat, with its SHA256.json (tools/ci_guard.py).
+        subprocess.run([sys.executable, 'tools/evidence.py', 'add', f'{m}-acceptance-memory',
+                        *map(str, copies), '--tree'], cwd=ROOT, check=True)
     return rows
 
 
@@ -156,7 +162,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     commit = git('rev-parse', '--short=12', 'HEAD') + (' (dirty)' if git('status', '--porcelain', '--', 'src', 'include', 'platform', 'tools') else '')
     checks, manifest, regions, sizes = build_checks(a.mission)
-    rows = runtime_checks(a.mission, a.run, ROOT / 'evidence/acceptance/memory')
+    rows = runtime_checks(a.mission, a.run, ROOT / 'build/memory-acceptance' / a.mission)
     path, ok = write_doc(a.mission, checks, manifest, regions, sizes, rows, commit)
     print(f"{path.relative_to(ROOT)}: {'PASS' if ok else 'FAIL'} (sha256 {sha(path)})")
     for name, good, detail in checks:
