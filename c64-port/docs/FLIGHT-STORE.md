@@ -1192,15 +1192,16 @@ port) runs one mission:
      every `--replay-every` cs, it is compared with the host on a wider
      scope than the first check: the same erasable set, plus the timers
      TIME1-TIME6 (both sides run one work clock here), plus output channels
-     5, 6, 11-14, 34 and 35 and the superbank. A PIPA's -0 and +0 count as
+     5, 6, 10, 11-14, 34 and 35, the superbank, the interrupt enable and
+     the radar gate counter. A PIPA's -0 and +0 count as
      equal. A PIPA count the host gave at a sample point the C64 was still
      busy at goes in at the C64's next step, as the hardware counts whether
      or not the AGC is idle, and late rows go in before a state is written.
      Anything else is a difference, apart from the temporary skips
      above, which are named in every result that uses them. Output channel
-     10 (the DSKY relay words) is not compared: it is a strobe the AGC
-     writes once per relay word, not a latch, so the display is checked
-     through DSPTAB in erasable instead.
+     10 holds the last DSKY relay word the AGC wrote (a strobe, not a
+     latch); it is compared too (auditor issue #766), so a relay cycle at
+     a different point fails even where DSPTAB agrees.
    So the chain gives C64 = yaAGC only on the first check's scope. The
    timers and the output channels are checked C64 = host only.
    A window "matches host" when its `--replay` log has no FAIL line. It
@@ -1327,12 +1328,13 @@ port) runs one mission:
    `FLIGHT_LR=60000:150` (the surface 150 m above the landing site) and
    V57E at 660 s: from 816 s R12's altitude updates take HCALC from about
    186 m above the true height to about 77 m by 955 s (with no bias it
-   runs 40-60 m above, a sample's lag). It ends at 960 s, before the
-   velocity reads: on the host SERVICER reaches READV 6 cs after
-   READACCS, so the velocity read starts while the altitude read is
-   still running, HMEAS 0 is stored and the update moves HCALC about
-   1,200 m. That is a timing question for the interpretive charge, not
-   the radar (replay-mismatches.md).
+   runs 40-60 m above, a sample's lag). From 1,005 s SERVICER also
+   reads the LR velocity (READV queues LRVJOB) after each altitude read,
+   and the run goes on to 1,100 s: 50 velocity reads, HMEAS never
+   zeroed. Before #739 the velocity read started while the altitude
+   read was still running and stored HMEAS 0, because the compiled
+   stretch from MOONSPOT to READV had no interrupt or NEWJOB point; the
+   interpretive words now run with per-word points.
    `lm-p63-lr-v58` adds V58E at 880 s: the updates (HCALC from about
    187 m above the true height to about 96 m by 873 s) stop as LRINH
    clears. `lm-p63-v60-nassp` is lm-p63-nassp with the radar (no V57) and

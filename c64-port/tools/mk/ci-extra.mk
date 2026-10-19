@@ -12,12 +12,12 @@
   ci-watch-interp-flight-p63-vice ci-watch-interp-core-differential ci-watch-x86-flight-check \
   ci-watch-flight-restart-check ci-watch-flight-restart-vice ci-watch-flight-gojam-vice ci-watch-flight-downlink-check \
   ci-watch-flight-downlink-vice overlay-v2-check ci-watch-overlay-v2-check ci-watch-flight-store \
-  ci-watch-flight-disk-vice ci-watch-flight-downlink-live-vice
+  ci-watch-flight-disk-vice ci-watch-dsky-sweep-vice ci-watch-flight-downlink-live-vice
 ci-extra-host: interp-runtime-check interp-core-fuzz interp-core-differential x86-flight-check flight-restart-check \
   flight-downlink-check overlay-v2-check
 ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice-1 interp-flight-flowed-vice-2 interp-flight-flowed-vice-3 \
   interp-flight-flowed-vice-4 interp-flight-p63-vice flight-restart-vice flight-gojam-vice flight-downlink-vice flight-store \
-  flight-disk-vice flight-downlink-live-vice
+  flight-disk-vice dsky-sweep-vice flight-downlink-live-vice
 # flight-store finds its table sources at run time, so no closure reaches
 # them: it watches every source, the spec and lane-C tools, and the
 # unplaced-key ratchet (its cheap check fails on a count change either way).
@@ -31,6 +31,13 @@ ci-watch-flight-disk-vice: tools/flight_disk.py platform/c64/flight_disk_drive.s
   platform/c64/flight_disk_loader.c platform/c64/flight_disk_unz.s tools/fdz.c platform/c64/resident_flight_main.c \
   src/overlay_reu.c include/overlay_reu.h platform/c64/dap_pass_check.c tools/flight_scenario_vice.py \
   tools/dap_pass_vice.py tools/reu_layout.py
+# dsky-sweep-vice runs DSKY key sequences on both stores: it watches the
+# Pinball, display and keyboard sources (Lane C's and the legacy dsky_*
+# modules), the C64 DSKY and the sweep's own harness.
+ci-watch-dsky-sweep-vice: $(wildcard src/lanec_pin*.c src/lanec_pw*.c src/lanec_di*.c src/dsky_*.c src/cm_*display*.c \
+  src/cm_pinball.c tests/lanec_pw*.c) platform/c64/resident_dsky.c platform/c64/resident_dsky.S \
+  platform/c64/dap_pass_check.c tools/dsky_sweep_vice.py tools/dsky_sweep_known.json tools/flight_scenario_vice.py \
+  tools/dap_pass_vice.py tools/flight_host_run.c platform/c64/resident_flight.c platform/c64/resident_flight.h tools/reu_layout.py
 CI_EXTRA_INTERP := src/lm_interp_core.c src/cm_interp_core.c src/lm_interp_orders.c src/lm_interp_steps.c \
   src/cm_interp_orders.c src/cm_interp_steps.c include/interp_runtime_tables.h
 ci-watch-interp-flight-vice: $(CI_EXTRA_INTERP) tools/interp_flight_test.py platform/c64/interp_flight_check.c \
