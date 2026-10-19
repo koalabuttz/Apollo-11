@@ -3404,26 +3404,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-proof.json",
-            "sha256": "49a5c728a7e7cee1d66f996ce0e9abf247ab713e650cf88dabf52491b8087a61"
+            "sha256": "22db90399badd2da201a16a097fe852015cede78e9bd13868f937ebc77323220"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-host.log",
-            "sha256": "d94d58f4965377a71b23e05871f4786aed335bbb8902d4fa5dd6449bb451243b"
+            "sha256": "7d8e9e2fa887da0d520d18be43d372257aae1580cdd94381bc082a77432d42c4"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-vice.log",
-            "sha256": "c0e35390f13fbe8316c0beb01b8941e225a5dc52dcf3f088189eeac7c93565f8",
+            "sha256": "32bc062553d8b4f07bd91a74b8c8e4af58469588caa5ee99afc6e9f57afc71f1",
             "vice_targets": {
-              "vice-cm-p30-p37": 179
+              "vice-cm-p30-p37": 180
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p30-p37/cm-p30-p37-c64-cover.json",
-            "sha256": "fe8aa46d64631d0949a95d7aa5291b6ba1586cc381ebca18e9f1d8272cf18081"
+            "sha256": "4bbe36704917a4cb3f927e432713364e9d7ed9736554da7665ec0aa5ec9f1eaf"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-p30-p33.md",
-            "sha256": "db759789a9652c2783b8f8eaeb62472ee7e6cf88e3719ff32926b358445d4bf1"
+            "path": "docs/audits/rev2-cm-arms-685.md",
+            "sha256": "43dd2c95cd7c9bd0b52bb32b4fb4bf209034d1b97a45732d7e7960216e6516a5"
           }
         }
       }
@@ -3588,7 +3588,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p37-p70 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; two of them (resumed_at 32,3451 and 32,3560) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
+        "supported_domain": "Canonical 2048-word image under EB 7, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there, and the words past P370GOF's, P37GFRB1's and P370GOFR's calls that their indexed returns reach) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py cm-p37-p70 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Three C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; two of them (resumed_at 32,3451 and 32,3560) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
         "external_continuations": [
           "BANKCALL with its inline CADR (GOFLASH, GOFLASHR)",
           "PHASCHNG with its inline phase words (restart groups)",
@@ -3604,30 +3604,30 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-source-map.json",
-            "sha256": "e8d29b2e163c1442d6bb543a0eedd50c74286713b5baffac08113cc8a7103dfe"
+            "sha256": "092b295e054f610a351c1c4d2cb179c9d7431e140bc95620c51ee94e120fdf4b"
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-proof.json",
-            "sha256": "857a9fd1b94212529530d3acc8218d87857bda65b899a143d9844e3cee8b15c7"
+            "sha256": "d90f27a9edbae3db3cd2e0273734ca5d592b00de193647a53b6a8ec0b0953308"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-host.log",
-            "sha256": "ea2797b162424a38869d257b29b77c1dd551bbe9e45ba891178c20608206ebee"
+            "sha256": "3e334383dd0a802d1768378bb15007288b8d50ca8c19af7dfd3ec4c51a1f06ed"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-vice.log",
-            "sha256": "66aaecd11f63b096bfc200b9a5612804d1f5720e26571856e5b213b1034ec449",
+            "sha256": "6ed87a9fc56e0f4fd0f2564a934c1f1b13af3a1a21bb8b719e30e30f028d82a4",
             "vice_targets": {
-              "vice-cm-p37-p70": 692
+              "vice-cm-p37-p70": 698
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p37-p70/cm-p37-p70-c64-cover.json",
-            "sha256": "40e3748f3d395ba6dd9cd3d1a2959d91f3eb2e2fe04851897f25cbac82081c48"
+            "sha256": "6877433109d359ceb0f4f7229fa24ace0237b3cd911a40de68360cd9a703d6d0"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-e465.md",
-            "sha256": "549d1c322174770cdfc96ffa92a463ce6ab071affe89fa8e7ffb5cb053635b29"
+            "path": "docs/audits/rev2-cm-p37-p70-654.md",
+            "sha256": "7c6a7620ba11ed3747a130fb18f8880b94cec03a7d8b5da0f747df6674b0467c"
           }
         }
       }
@@ -3693,26 +3693,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-proof.json",
-            "sha256": "db8c8ce555f092b2db7dc4d97cd3a7c6f6665bcddfcc5db9364e41c6044f32e0"
+            "sha256": "96d473fcb1f0ef268497e6c2a16ffdf20b7d2131eadd6c79b556cc0131284dd9"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-host.log",
-            "sha256": "c758e9c801458d92d4f5ab86da1b4cd7da70b226d5cb450d795c8ef75dbc8d00"
+            "sha256": "e4720bdeaa15df573fb40bc7f22d79399f4e2dd2f03e868b51153393b18ef8e4"
           },
           "c64_execution_results": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-vice.log",
-            "sha256": "0a23210104f1a2c992e4a1a2bba0c292b90d487c3090dea64eeebf3425421637",
+            "sha256": "77de36e0a969cf12744fece94d557b7fc5d32c5b0895b1c60f13a3dc43ee7ca0",
             "vice_targets": {
-              "vice-cm-p40-p47": 645
+              "vice-cm-p40-p47": 646
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-p40-p47/cm-p40-p47-proof.json",
-            "sha256": "db8c8ce555f092b2db7dc4d97cd3a7c6f6665bcddfcc5db9364e41c6044f32e0"
+            "sha256": "96d473fcb1f0ef268497e6c2a16ffdf20b7d2131eadd6c79b556cc0131284dd9"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-p40-p47-616.md",
-            "sha256": "9e2cc8ff58dd50ee90d0cf287daf522035c8e077d5030ad6b4c6d3c26704b287"
+            "path": "docs/audits/rev2-cm-arms-685.md",
+            "sha256": "43dd2c95cd7c9bd0b52bb32b4fb4bf209034d1b97a45732d7e7960216e6516a5"
           }
         }
       }
@@ -4684,22 +4684,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "7a713c9a992e309c5eaa7a6f07cfeff05f9dd302ab84c60017b55842821a3354"
+            "sha256": "4b9afb310d7db6e0f519e155b9e66bb5c329e2d3d9f5b0a541a2f00f84f00d58"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
-            "sha256": "2a4e677c82e13449c7838519a9d6bf5d784ef02d29451201e1aa1785a2387e84"
+            "sha256": "5a0a1bb60d1a168fe4f495013b52206c14a8a4ba188a6449ffba7465543c69f9"
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "592fc04b5b629b2c6e40fcd941cc2a83be02fc3aa33cf8c398bbfff8e2ab4995",
+            "sha256": "25cc6f8b94ff0fdc4ed88ed2bb8192ddb94d7147c2ca4534c13bd67bb3cb0e88",
             "vice_targets": {
-              "vice-r30": 262
+              "vice-r30": 264
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "389120234b31bf12bd0194585b77143dcc1eba6985066731472d9bcc7c456569"
+            "sha256": "b735b8f9623208151915c9f7e508a5c6f015001d4e07e985db97e178cd85fcf3"
           },
           "independent_review": {
             "path": "docs/audits/rev2-r30-604.md",
@@ -4813,22 +4813,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r60-r62/r60-r62-proof.json",
-            "sha256": "f631e21d264086407ee958f1dbfa141334919354f07caa0637bdf260cb85259d"
+            "sha256": "f4fdbe53cc44261cc78840ac0a2f8264e4c283a32f4f9c9b07c6149f2cb5bac1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r60-r62/r60-r62-host.log",
-            "sha256": "9c5c381f1c9ed303fb1bbd2f3dc448b91edf64471f9fe4ad2d524f0fbb702832"
+            "sha256": "d4938517e561194cc0ad33a42d6dd877917e94cc37b60e18a5a00845b5f241ef"
           },
           "c64_execution_results": {
             "path": "evidence/r60-r62/r60-r62-vice.log",
-            "sha256": "d24171840099274b938f5fe951bb12547d25c101c6e98282a2f0fedc4024b604",
+            "sha256": "43fd44134607cec9697b48ca68aea21a97ada88022fe8c3986e8e0c410e49f5b",
             "vice_targets": {
-              "vice-r60-r62": 268
+              "vice-r60-r62": 270
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r60-r62/r60-r62-c64-outcomes.json",
-            "sha256": "1517e3c0eecd57cfa27786e04ef5c7d1a05c62766643f0e7f4ef28cea3e648fd"
+            "sha256": "6d1f6d06c91e1b3998c3cec369d4011b3728d5df9e61ebb7ab536ca1b15caf21"
           },
           "independent_review": {
             "path": "docs/audits/rev2-cm-reentry.md",
@@ -6121,26 +6121,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-proof.json",
-            "sha256": "54f742107f1ce98c4af69ff876784ab1286aa6d665b8788f56ca57eac4c0eca6"
+            "sha256": "7b18a4cee2a807fe630c5275595d566258624a989f07412afb8f74aeef20844f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-host.log",
-            "sha256": "f7aa5032a3f4a2b46d40def2fe9d68d65cc991b15b7b04e39e79c300559dbd4d"
+            "sha256": "b38f4a21def550c4278a7d7a3e394cbf3e6221c2cfcc549eba62671a640a9a67"
           },
           "c64_execution_results": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-vice.log",
-            "sha256": "73eea9a360ea922b7c7f18212b2831d5772aae93ebc1f6d1f95a7283da4415ad",
+            "sha256": "2dfb3794cc6d659f72f2531fcedacc421f6e01c4f3f1a184c34c246a0da01aea",
             "vice_targets": {
-              "vice-cm-tpi-search": 248
+              "vice-cm-tpi-search": 249
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-tpi-search/cm-tpi-search-c64-cover.json",
-            "sha256": "427dc42d783b1f45515b9d0133458a78e029e3574031d5f2da083c903123663e"
+            "sha256": "d544b5b1f42442dfa0595dfb965cf69f7c033815cdbf8bcf940343edc3b36ae3"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-r31-tpi-630.md",
-            "sha256": "9f7097ff9c87efebe68a09d74592d0fc0855748b3e79152d1a9f9a6696ffc993"
+            "path": "docs/audits/rev2-cm-arms-685.md",
+            "sha256": "43dd2c95cd7c9bd0b52bb32b4fb4bf209034d1b97a45732d7e7960216e6516a5"
           }
         }
       }
@@ -7166,22 +7166,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-ascent/lm-ascent-proof.json",
-            "sha256": "fa055983d70b4bea214ba5c0e93bb9fba879a85f9b79f0b1e4d7b64627d32fc2"
+            "sha256": "70991c131aad15f9267e4c28775d12f0d7de5b06960863fdf6638f0a47e49a20"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-ascent/lm-ascent-host.log",
-            "sha256": "cfe65372097914d9055ba61fdaad6befd3cbcb7d3c629c81e63991e97e5818c3"
+            "sha256": "60f721c06794d130fa5277a344e37e02d848a8e14fe0b1556097253c346c4eb4"
           },
           "c64_execution_results": {
             "path": "evidence/lm-ascent/lm-ascent-vice.log",
-            "sha256": "c5beb8da2c940cde0ce40a7ea6493cc647122ee3a244126ee0197f5044a76043",
+            "sha256": "3108a4426bfbaa19ded75433ba28986f3cee384e35fdb2527db9e668630eaa74",
             "vice_targets": {
-              "vice-lm-ascent": 250
+              "vice-lm-ascent": 251
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-ascent/lm-ascent-c64-cover.json",
-            "sha256": "c770665dedcd0f8e1267addb0f3894bc517940b04d95aa1785ebe83314e3f27d"
+            "sha256": "e2b9c2c7362ae2e8e05a770abed9a063a4d0418e8fdac8089d26b460cda877af"
           },
           "independent_review": {
             "path": "docs/audits/rev2-lm-ascent.md",
@@ -10976,7 +10976,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py lm-p34-p35 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Twenty-five C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; six of them (resumed_at 35,3077, 35,3127, 35,3145 or 35,3156) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry, and the one whose cut is 'end' (resumed at 35,3145, the ACOS abort) runs from there to the end of the case.",
+        "supported_domain": "Canonical 2048-word image under any EB, entered at NEWOPS with LOC at any of the file's interpretive routines (each word after a DANZIG among them, started from the state the original program is in when it gets there) or with Z at any of its basic ones, NEWJOB +0 or positive, FIXLOC a VAC area, any PUSHLOC within it, MODE, OVFIND, Q a caller return, and any values of the file's erasables except where tools/interp_specs.py lm-p34-p35 pins them to the values the program gives them (index registers for fixed tables, saved returns, pass counters). Twenty-four C64 rows are truncated (c64_branch_outcomes truncated_rows): each runs its case to the first NEWOPS with LOC at the listed cut, where the yaAGC run of the same case also stops, compared over the full state there; five of them (resumed_at 35,3077 or 35,3156) start from the yaAGC run's recorded snapshot at that resume point rather than from the case's entry.",
         "external_continuations": [
           "BANKCALL with its inline CADR (DELAYJOB, GOFLASH, GOMARKF)",
           "PHASCHNG with its inline phase words (restart groups)",
@@ -10994,7 +10994,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-proof.json",
-            "sha256": "c6ba270d62116c02b095e5736b41262df0ed87f33808e3bc6baa2a76874e0d80"
+            "sha256": "8e04298b3103e971d5c698fb44af9f72157655e1241486e372afe3cf0860830d"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-host.log",
@@ -11002,18 +11002,18 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-vice.log",
-            "sha256": "1e87b8825c7e2aad4a3e2363f679110200a6c0fc21f3dc9444021ac714d8be0b",
+            "sha256": "73d3a63334b666dd0467e520aa737520e59da13bcc41f566b1cda43e16db32ce",
             "vice_targets": {
-              "vice-lm-p34-p35": 597
+              "vice-lm-p34-p35": 604
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p34-p35/lm-p34-p35-c64-cover.json",
-            "sha256": "dccdb4fdbcf26a286d971d807d01fddd28d96f57012444916615548febfa49a8"
+            "sha256": "2f5d65190d0341bd29d68bb1f43b94a4b7951de5c3f5e96c9ae6ce195476b42f"
           },
           "independent_review": {
-            "path": "docs/audits/lane-e-419.md",
-            "sha256": "ee81946d5922215c3b908d6d661b05f031179407a653cac32e9ba9ba7f7ec6a8"
+            "path": "docs/audits/rev2-lm-p34-p35-688.md",
+            "sha256": "8e29613111f0f76d1c2ef4e71aaf6dd954cea10e2f660ae617836109b9aaa31c"
           }
         }
       }
@@ -11069,22 +11069,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-proof.json",
-            "sha256": "71695db2b8067381f9906a4bb78ec9da51ee8717248f14992032eb9e14355e4e"
+            "sha256": "c7b9e20fcc6392919d672419241d6858945ee778c5baf3718c2812191e00de92"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-host.log",
-            "sha256": "7c999ba816ac9dbc4a8ff6c27302c963ff0fc93567a332eb3dc500bd3a9581e7"
+            "sha256": "d227efa43f93498479c180a93da279fcea9a198b3900b8c639eddb13befa7b24"
           },
           "c64_execution_results": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-vice.log",
-            "sha256": "806cf7b88230cce6f5d032b8ec0441d247aad7039ba9a7ae0da3b2ce5f6d8dfe",
+            "sha256": "bce287095e0179b9d55799e617abc73acbdd1672a6513d09567bf5e06b7541c4",
             "vice_targets": {
-              "vice-lm-p40-p47": 468
+              "vice-lm-p40-p47": 471
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-p40-p47/lm-p40-p47-c64-cover.json",
-            "sha256": "ad0f7198300149070b892550577e4f9e83e5bcf05e8a40a1fd0f1a8400bb6948"
+            "sha256": "6d1c2d74433ac3a89449f680449caba21f6c56b10f87a34d8fa079ae911f295d"
           },
           "independent_review": {
             "path": "docs/audits/lane-a2-410.md",
@@ -12121,22 +12121,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r30/r30-proof.json",
-            "sha256": "7a713c9a992e309c5eaa7a6f07cfeff05f9dd302ab84c60017b55842821a3354"
+            "sha256": "4b9afb310d7db6e0f519e155b9e66bb5c329e2d3d9f5b0a541a2f00f84f00d58"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r30/r30-host.log",
-            "sha256": "2a4e677c82e13449c7838519a9d6bf5d784ef02d29451201e1aa1785a2387e84"
+            "sha256": "5a0a1bb60d1a168fe4f495013b52206c14a8a4ba188a6449ffba7465543c69f9"
           },
           "c64_execution_results": {
             "path": "evidence/r30/r30-vice.log",
-            "sha256": "592fc04b5b629b2c6e40fcd941cc2a83be02fc3aa33cf8c398bbfff8e2ab4995",
+            "sha256": "25cc6f8b94ff0fdc4ed88ed2bb8192ddb94d7147c2ca4534c13bd67bb3cb0e88",
             "vice_targets": {
-              "vice-r30": 262
+              "vice-r30": 264
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r30/r30-c64-cover.json",
-            "sha256": "389120234b31bf12bd0194585b77143dcc1eba6985066731472d9bcc7c456569"
+            "sha256": "b735b8f9623208151915c9f7e508a5c6f015001d4e07e985db97e178cd85fcf3"
           },
           "independent_review": {
             "path": "docs/audits/rev2-r30-604.md",
@@ -12271,22 +12271,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/r60-r62/r60-r62-proof.json",
-            "sha256": "f631e21d264086407ee958f1dbfa141334919354f07caa0637bdf260cb85259d"
+            "sha256": "f4fdbe53cc44261cc78840ac0a2f8264e4c283a32f4f9c9b07c6149f2cb5bac1"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/r60-r62/r60-r62-host.log",
-            "sha256": "9c5c381f1c9ed303fb1bbd2f3dc448b91edf64471f9fe4ad2d524f0fbb702832"
+            "sha256": "d4938517e561194cc0ad33a42d6dd877917e94cc37b60e18a5a00845b5f241ef"
           },
           "c64_execution_results": {
             "path": "evidence/r60-r62/r60-r62-vice.log",
-            "sha256": "d24171840099274b938f5fe951bb12547d25c101c6e98282a2f0fedc4024b604",
+            "sha256": "43fd44134607cec9697b48ca68aea21a97ada88022fe8c3986e8e0c410e49f5b",
             "vice_targets": {
-              "vice-r60-r62": 268
+              "vice-r60-r62": 270
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/r60-r62/r60-r62-c64-outcomes.json",
-            "sha256": "1517e3c0eecd57cfa27786e04ef5c7d1a05c62766643f0e7f4ef28cea3e648fd"
+            "sha256": "6d1f6d06c91e1b3998c3cec369d4011b3728d5df9e61ebb7ab536ca1b15caf21"
           },
           "independent_review": {
             "path": "docs/audits/rev2-cm-reentry.md",
@@ -12339,22 +12339,22 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-r63/lm-r63-proof.json",
-            "sha256": "6c0e45d323b3787c2d60df05db6e5aa962b8a8d61059dd729866b2c344eecfbe"
+            "sha256": "0e52f321fc5ca21114ae051c560f317508c1ee103edb7a53d25f1c5495de8760"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-r63/lm-r63-host.log",
-            "sha256": "e5bcb5614c96420ef1b20d6a7308384af96f8ffa64d9569bb38d1d3090cb51b0"
+            "sha256": "eb89982f47a1d08733af237fcd0af3fe98e3a5753663bc234d9a3f18e45fd087"
           },
           "c64_execution_results": {
             "path": "evidence/lm-r63/lm-r63-vice.log",
-            "sha256": "58eb7b5b66187efec36fe0f66db5c2c0e92485d197a7c546736efec69eac2457",
+            "sha256": "bcfd3d859b1d27219888428971c6cb5c85e91d71b409775f035206f7370533e1",
             "vice_targets": {
               "vice-lm-r63": 35
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-r63/lm-r63-c64-cover.json",
-            "sha256": "03a2e4bcf69dc7fba2a396f495a011f5fc62205d0e9ffd3d71b586bf7c25791d"
+            "sha256": "5257743eb9204e577288b8698dee77f3090066c3742960438dfc34cd74400a84"
           },
           "independent_review": {
             "path": "docs/audits/rev2-recite-1014b.md",

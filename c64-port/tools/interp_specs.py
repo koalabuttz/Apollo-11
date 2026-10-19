@@ -386,6 +386,10 @@ LLGE_CONVERGE = [{'0154': mh, '0155': ml, '0124': ch, '0125': cl}
                                         (0, 0o12, 0, 0o12), (0, 3, 0o77777, 5), (0, 0, 0o77777, 2),
                                         (0, 0o20000, 1, 0o57777))]
 LLGE_AXIS_MPAC = _llge_axis('MPAC', (0, 3, 5))
+# lm-p34-p35's N81 Delta V words (#661): +0, small, mixed signs and
+# 37777/40000, as GDT/2 and DELVLVC hold them when the crew PROs N81 unchanged.
+P3435_DV = [(0, 0, 0, 0, 0, 0), (0o12345, 0o54321, 1, 0o77776, 0o37777, 0o40000),
+            (0o77777, 0, 0o200, 0o77577, 0o1000, 0o76777)]
 LLGE_AXIS_LAND = _llge_axis('LAND', (0, 2, 4))
 
 
@@ -545,6 +549,9 @@ SPECS = {
     # interpretive) as routines at its original addresses.
     'lm-ascent': {
         'missions': ('lm',),
+        # ENGOFF's time to cutoff (MPAC +1 after TPAGREE) of exactly 0 cs:
+        # CCS MPAC +1's +0 arm (ENGOFFDT one bit).
+        'states': {'14,2364': {'MPAC+1': [0, 0, 'any']}},
         'file': {'lm': 'ASCENT_GUIDANCE.agc'},
         'base': {'lm': 'lm_ascent'},
         'symbol': {'lm': 'lm_ascent'},
@@ -2031,14 +2038,19 @@ SPECS = {
                   0o3074: CSMMASS,
                   # NBRCYCLS (E6,1742), S40.13's cycle count, short of
                   # 037777: the count +1 never overflows into the OCT after
-                  # TC PHASCHNG.
-                  0o3342: list(range(0, 0o37777, 0o111))},
+                  # TC PHASCHNG. Or -1 (in about an eighth of the cases),
+                  # as P40SXTY and every S40.9 pass leave it: UPDATEVG's
+                  # SLOAD BMN (24,3110) to SETUP.9.
+                  0o3342: list(range(0, 0o37777, 0o111)) + [0o77776] * 64},
         'fixed_tables': {'BIT11': (-1, 1)},
         # P41/P40 returns to the call +1 (P41) or, INCR Q, +2 (P40).
         'call_skips': {'P41/P40': 1},
         # OUTPUT's return after FIXDELAY: TEMPR60 (1146) holds the Q its
         # QXCH saved, one of GIMDTEST's three TC OUTPUT returns.
-        'states': {'20,2327': {'1146': [0o2303, 0o2305, 0o2307]}},
+        # CLOKTASK's return from WAITLIST (24,3301) in P41 with NVWORD1 =
+        # V06N85B (BZF SETUPDYN).
+        'states': {'20,2327': {'1146': [0o2303, 0o2305, 0o2307]},
+                   '24,3301': {'NVWORD1': [0o1525, 0o1525, 'any']}},
         'index_targets': {'42,3616': 3},
         # PRECHECK's CCS PHASE5 with PHASE5 negative runs CADR PREREAD as MASK.
         'execute_data': ('24,2573',),
@@ -2701,7 +2713,11 @@ SPECS = {
         'all_states': {'0133': [0o2000, 0o2513, 0o3266, 0o3777]},
         # TOBALLC's CCS A (LM 26,2164) takes G+N,AUTO's A: +0 (G+N and auto),
         # BIT10 (not G+N) or BIT14 (not auto), never -0 (auditor, salted run).
-        'states': {'lm': {'26,2164': {'0': [0, 0o1000, 0o20000]}}, 'cm': {}},
+        # The flashing V06N18's TERMINATE return (TC R61TEST: LM 26,2143,
+        # CM 27,2016) in P00 (MODREG +0) as well, where R60 runs under
+        # V49/V89: BZF ENDMANU1.
+        'states': {'lm': {'26,2164': {'0': [0, 0o1000, 0o20000]}, '26,2143': {'MODREG': [0, 0, 'any']}},
+                   'cm': {'27,2016': {'MODREG': [0, 0, 'any']}}},
         # G+N,AUTO and ISITAUTO (READ CHAN30/31) and TOBALLC (RXOR CHAN31)
         # read latched input channels.
         'channel_inputs': True,
@@ -3452,6 +3468,9 @@ SPECS = {
     },
     'lm-p40-p47': {
         'missions': ('lm',),
+        # 180SETUP's CCS PHASE2 with restart group 2 inactive (+0), as it is
+        # whenever no Lambert job runs: the pass starts S40.9 (CAF PRIO10).
+        'states': {'180SETUP': {'PHASE2': [0, 0, 'any']}},
         'file': {'lm': 'P40-P47.agc'},
         'base': {'lm': 'lm_p40_p47'},
         'symbol': {'lm': 'lm_p40_p47'},
@@ -3530,6 +3549,9 @@ SPECS = {
         # every linked source.
         'edge_cases': True,
         'c64_rows': 'cover',
+        # The V89 axis choice as V89CALL leaves it (OPTIONX +1 = 1, Z axis,
+        # the default the crew proceeds with: BZF ALINEZ) or keyed as 2 (X).
+        'states': {'26,2063': {'OPTIONX+1': [1, 1, 2, 'any']}},
         'target': 'tests/lm_r63_target.c',
         'freeze_stride': 16,
         # V89 runs in flight: skip the entry checks' whole-image scan there.
@@ -3599,7 +3621,11 @@ SPECS = {
         'basic_fixed_index': {'MODE70': [0, 2]},
         # BOTHPOLY's ABTCOF,1 with X1 -0 (P70, AXC,1 0D) or -8 (P71, AXC,1
         # 8D): the DPS or the APS coefficients, eight words on.
-        'states': {lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
+        # R10,R11 (21,2006): the 2 s cycle counter (PIPCTR = PHSPRDT2) on
+        # its last pass (+0: TCF LRHTASK), as SERVICER and LANDISP count it
+        # down from 7.
+        'states': dict({lab: {'vac+046': [0, 0o77767]} for lab in ('BOTHPOLY', 'BOTHPOLY+3', 'BOTHPOLY+6', 'BOTHPOLY+9')},
+                       **{'21,2006': {'PIPCTR': [0, 0, 1, 'any']}}),
         'partial': {'lm': 'R10,R11A (READ CHAN30) runs in lm-p70-p71-file; RAND/WRITE DSALMOUT and WOR CHAN14 wait for the channel model'},
         'rtb': {'LOADTIME': {'lm': 'rtb_angles(s,io,RTB_LM,RTB_LOAD_TIME)'}},
         'includes': ['rtb_angles.h'],
@@ -3902,9 +3928,17 @@ SPECS = {
         # The resume LOCs after BOTHSHIP's VLOAD run the same DLOAD*s with X2
         # as BOTHSHIP left it.
         # STORHAPO's DSU and STORE MPAC +4 run in DP mode (MODE +0) after its STODL.
-        'states': {**{k: {'vac+047': [0, 2]} for k in ('BOTHSHIP', 'THISSHIP+3', 'BOTHSHIP+2', 'BOTHSHIP+4',
-                                                       'BOTHSHIP+5', 'BOTHSHIP+7', 'BOTHSHIP+8')},
-                   'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]}},
+        # V82GOFF1's CS OPTIONX +1 after EXIT with the vehicle choice V82
+        # loads by default (1, this vehicle: BZF THISSHIP) or keyed other.
+        # CM: CA MODREG after BOTHPAD's and SPLRET's EXITs in P00 (MODREG
+        # +0: BZF CANDEL, then BZF SPLRET1), as crews ran V82 there.
+        'states': {m: {**{k: {'vac+047': [0, 2]} for k in ('BOTHSHIP', 'THISSHIP+3', 'BOTHSHIP+2', 'BOTHSHIP+4',
+                                                         'BOTHSHIP+5', 'BOTHSHIP+7', 'BOTHSHIP+8')},
+                       'STORHAPO+2': {'0163': [0]}, 'STORHAPO+4': {'0163': [0]},
+                       'V82GOFF1+6': {'OPTIONX+1': [1, 1, 2, 'any']},
+                       **({'BOTHPAD+3': {'MODREG': [0, 0, 'any']}, 'SPLRET+1': {'MODREG': [0, 0, 'any']}}
+                          if m == 'cm' else {})}
+                   for m in ('lm', 'cm')},
         # V82CALL's TC INTPRET, BON and EXIT and V82GOFF's option display run
         # in the NOVAC job V82 starts in (FIXLOC 0110, NOVAC's LOC(MPAC+6) -
         # LOC(QPRET)) until V82GOFLP's FINDVAC; TICKTEST runs as a
@@ -3948,7 +3982,11 @@ SPECS = {
         'ebank': 7,
         'all_states': {'03745': [0o77765, 0o77775], '03746': [0, 2]},
         # VNCOMP17's TC QSAVED (01766 under E7): one of its callers' returns.
+        # GOFLASH's third return (VNCOMP17 +8, CS MPAC) with the verb the
+        # crew keyed: V32 (MPAC = BIT6, recycle with a new TPI time) goes
+        # to P17.1.
         'states': {'VNCOMP17+7': {'03766': [0o3176, 0o3226, 0o3262]},
+                   'VNCOMP17+8': {'0154': [0o40, 0o40, 'any']},
                    # TRANSANG's resume LOCs after LXA,1 LXA,2 (the XRS above), with
                    # the push list at 00D (02D after its first PDVL) from SETPD 0.
                    **{'TRANSANG+%d' % n: {'vac+046': [0o77765, 0o77775], 'vac+047': [0, 2],
@@ -4201,6 +4239,10 @@ SPECS = {
                    'LOOPSET': {'vac+046': [0, 2, 4, 6, 8, 10], 'vac+050': [2]},
                    'K2CALC': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]},
                    'K1K2LOOP': {'vac+046': [1, 3, 5, 7, 9, 11], 'vac+050': [2]}},
+        # AUGEKUGL's last DSU BMN V(400) (32,2123, a CHANG2 resume) with an
+        # entry speed of 28,000-28,400 ft/s (MPAC = V - 28K, below V(400)'s
+        # 0156): BMN LOOPSET.
+        'resume_states': {'32,2123': {'0154': [0, 0o50, 0o150, 'flow']}},
         'target': 'tests/cm_p30_p37_target.c',
         'edge_cases': True,
         'resume_keys': True,
@@ -4349,6 +4391,11 @@ SPECS = {
         'max_steps': 40000,
         # P37PROC and P370GOFR return through INDEX SPRTEX (RTENCKEX); TCF 0 +n.
         'index_returns': True,
+        # Those returns land past the call: P370GOF and P37GFRB1 proceed to
+        # the call +2 (TC SPRTEX recycles to +1), P370GOFR recycles to +3
+        # and proceeds to +4 (TC RTENCKEX is +1). Keys of their own, as
+        # RTEVN's CAF V6N60RTE after the N39 display (36,3017).
+        'in_file_returns': {'P370GOF': [1], 'P37GFRB1': [1], 'P370GOFR': [2, 3]},
         # EBANK= RTEDVD: the RTE temporaries are E7 words.
         'ebank': 7,
         # NN2 (E7,1731), GAMDV's pass count, from -144 up to 0: small
@@ -4375,6 +4422,18 @@ SPECS = {
                    'V2T150+2': {'03632': [0], '03633': [0]},
                    'GAMDV35': {'vac+025': [0], 'vac+026': [0, 1]},
                    'RTE360+2': {'0154': [0], '0155': [0]}},
+        # Flight arms no random case reached (issue #661), each in half of
+        # its routine's cases (the CHANG2 resumes after it flow from them):
+        # RTE373's conic convergence, GETERAD's radius (MPAC) plus E3RTE
+        # within EPC2RTE of RCON, so BMN RTE374; PREC175's first precision
+        # pass, NN1A = 10RTE, so BZE PREC207; and the crew's RCS option on
+        # V04N06, OPTION2 = 2, so BZE P37Q. RTE375 keeps the conic
+        # iteration's first pass (NN1A = M9RTEB28, so RTE380's BZE RTE385),
+        # which those cases otherwise leave to chance.
+        'joint_states': {'RTE373+6': [{'MPAC': 0, 'MPAC+1': 0, 'RCON': 3, 'RCON+1': 0o27040}, {}],
+                         'RTE375': [{'NN1A': 0o77777, 'NN1A+1': 0o77766}, {}],
+                         'PREC175': [{'NN1A': 0, 'NN1A+1': 0o12}, {}],
+                         'P37N+8': [{'OPTION2': 2}, {}]},
         'target': 'tests/cm_p37_p70_target.c',
         'edge_cases': True,
         'resume_keys': True,
@@ -4413,8 +4472,27 @@ SPECS = {
         'includes': ['rtb_angles.h', 'rtb_modes.h'],
         'native_sources': ['src/rtb_angles.c', 'src/rtb_modes.c'],
         'fixed_index': {'MUTABLE': [2, 10]},
+        # R36's PROCEED return (04,2665, TCF +2 to DXCH DSPTEMX): a crew PRO
+        # without keying a time leaves DSPTEMX and DSPTEMX +1 (01051-01052)
+        # as R36 preloaded them, +0, so BZF LREGCHK and BZF ENTTIM2 use the
+        # present time (LOADTIME). Two thirds +0 each, so cases also key a
+        # time in one word only.
         'states': {'INTLOOP+7': {'0154': [0], '0155': [0]},  # (BZE after its CALL: MPAC zero)
-                   'SETMUER': {'vac+046': [0o77775, 0o77765]}},
+                   'SETMUER': {'vac+046': [0o77775, 0o77765]},
+                   '04,2665': {'01051': [0, 0, 'any'], '01052': [0, 0, 'any']}},
+        # N81's PRO return (35,3542 TC +2; 35,3544 CA EBANK7): the crew PROs
+        # without changing the Delta V, so GDT/2 (01236-01243) equals
+        # DELVLVC (E7,1433-1440), NTARGCHK's sum is +-0 and BZF +3 skips the
+        # UPFLAG NTARGFLG. After INTEGRVS (11,2200): ITCTR (E7,1616) one
+        # below NUMIT (VTARGTAG, E5,1701), so the iteration's SLOAD X2 is +0
+        # and BHIZ ends the precision-offset loop at INITVEL6. Half the
+        # cases keep their own values.
+        'joint_states': {p: [{}, {}, {}] + [dict({'%o' % (0o1236 + k): v for k, v in enumerate(dv)},
+                                                 **{'%o' % (0o3433 + k): v for k, v in enumerate(dv)})
+                                            for dv in P3435_DV]
+                         for p in ('35,3542', '35,3544')} | {
+                         '11,2200': [{}, {}, {}, {'3616': 0, '2701': 1}, {'3616': 1, '2701': 2},
+                                     {'3616': 3, '2701': 4}]},
         # RTX1 and RTX2 (E5,1776-1777): -2 and 0 for the earth, -10 and 2
         # for the moon. INITVELX's DLOAD* MUTABLE -2,1 indexes by RTX1.
         'all_states': {'02776': [0o77775, 0o77765], '02777': [0, 2]},

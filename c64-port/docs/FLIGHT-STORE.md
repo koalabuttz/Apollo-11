@@ -729,6 +729,20 @@ port) runs one mission:
    1,679 m/s, about 18 km up. On the host every native routine matches
    yaAGC; the unregistered points are the 3 self-check ones and Pinball's
    RELDSP1 (02,2502, 1 arrival).
+   `lm-p65-autoland-nassp`: the same descent with no crew takeover. P64's
+   guidance reaches its low gate at 1,278 s and starts P65, which holds
+   the LM vertical and descends at about 1 m/s; touchdown at 1,324.8 s,
+   where the engine model's true height (`FLIGHT_LR_TRACE`) reaches the
+   surface; P68 and P00 on the surface as above. Apollo 11 never flew
+   P65 (the crew took P66 at about 500 ft).
+   The landing radar runs here too (`FLIGHT_LR=60000`, no V57): R12's
+   range reads go to low scale (no /5, SKALSKAL on the Doppler term)
+   from 1,171 s and data good ends at 10 ft.
+   `lm-p67-nassp`: `lm-landing-ascent-nassp` to P00 on the surface with
+   the crew on manual throttle (channel 30 bit 5) from 1,240 s to
+   1,244 s in P66: GUILDENSTERN starts P67, which issues no throttle
+   commands (the thrust holds), and starts P66 over at the current sink
+   rate when the discrete goes. Touchdown comes 10 s earlier, at 1,334 s.
    `lm-doi-nassp`: Apollo 11's descent orbit insertion from the same core.
    lm_doi.py propagates the core's LM (after DOI, on the 15 x 114 km
    descent orbit) back to that orbit's apolune and undoes the burn there
@@ -745,6 +759,24 @@ port) runs one mission:
    native routine matches yaAGC; the unregistered points are the 3
    self-check ones, Pinball's RELDSP1 and BANKCALL from `TCR BANKCALL`
    sites (#587).
+   `FLIGHT_RCS=KG` (LM) is the RCS jets' translation for a KG kilogram
+   vehicle: 444.8 N a jet along the axis the DAP's jet tables give it
+   (channel 5 even bits +X, odd bits -X; channel 6 bits 5 and 8 +Y, 6
+   and 7 -Y, 1 and 4 +Z, 2 and 3 -Z; rotation couples cancel), counted
+   to the centisecond at each native routine boundary into PIPAX-Z
+   through CDUX-Z. No attitude dynamics. The crew's translation hand
+   controller is channel 31 bits 7-12 (+X, -X, +Y, -Y, +Z, -Z, active 0).
+   `lm-p47-nassp`: P47 from the lm-doi-nassp start; 10 s of +X (two jets)
+   reads 1.9 ft/s on N83. `lm-p41-nassp`: lm-doi-nassp's P30 with a
+   5.0 ft/s retrograde trim, done by RCS in P41: V16N85 shows body VG
+   4.6, 1.8, -0.8 ft/s at TIG and the crew's +X, +Y and -Z translations
+   null it to 0.1, 0, 0. `lm-p42-nassp`: the DOI burn on the ascent
+   engine after an abort stage at 1.5 s (`FLIGHT_STAGE`, `FLIGHT_ASCENT`)
+   and V48 (DAPDATR1 11002: ascent stage, which sets APSFLAG; 10,776 lb
+   on N47); the APS burns about 6.6 s, and with no attitude dynamics the
+   steering does not turn the LM, so cutoff leaves N85 at 5.3, 14.3,
+   -0.1 ft/s. All three end in P00 and match yaAGC at every native
+   routine.
    `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
    crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
    28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one
@@ -918,6 +950,27 @@ port) runs one mission:
    BHIZ. With it, on base 3384c02b, five windows between P20's start and N59
    run 4,000 cs in all at 20.2x real time with no stop, ending on DELVTPI
    7.38 m/s as on the host.
+   The rest of the LM's rendezvous programs. lm_coelliptic.py writes the
+   loads for the targeting before TPI, shaped like Apollo 11's coelliptic
+   sequence: the CSM in a 60 nmi circular orbit 9.5 degrees ahead, the LM
+   in a 9 x 45 nmi orbit ten minutes before apolune (CSI there), TTPI 97
+   minutes after apolune. `BURN=` and `CSMBURN=` load a vehicle's state as
+   if a burn had already been made, so P33 and P73 start after their CSI.
+   `lm-csi` runs P32 (CSI) and then P72 (the CSM-active CSI): DH 16.5 nmi,
+   CSI 48.4 ft/s forward; for P72, 49.9 ft/s back. `lm-cdh` runs P33 (CDH)
+   after P32's burn, and `lm-cdh-csm` runs P73 after P72's. The crew
+   loads N55's NN as 1, because P32 zeroes it and with 0 finds no CDH
+   (alarm 604). The CSM-active programs need ELEV 206.6 (180 + 26.6: the
+   CSM looks down at the LM). With 26.6 P73 finds no TPI (alarm 611).
+   `lm-rendezvous-tpm` is lm-rendezvous with V85 (RR line of sight) and
+   V83 (R31: range, range rate, theta) during P20. After P34 come P35
+   (TPM), P74 and P75 (CSM-active TPI and TPM), P76 (target delta V: the
+   CSM's state takes a 10 ft/s burn), then V56 (end tracking).
+   `lm-stable-orbit` runs P78 (CSM-active stable orbit rendezvous, SOI,
+   CENTANG 130) and then P79 (stable orbit midcourse), from
+   lm-rendezvous's P20. `lm-stable-orbit-lm` runs the same with P38 and
+   P39. P78's and P38's Lambert solutions take about 200 s of AGC time
+   after N45.
    `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
    second burn, as the CMC monitored it in P47. cm_tli.py writes
    cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100
@@ -967,6 +1020,19 @@ port) runs one mission:
    V16N44 9999.9 x 60.0 nmi, then V34E. On the host every native routine
    matches yaAGC; the unregistered points are Pinball's VBPROC +3 to +5 and
    RELDSP1.
+   `cm-p37`: return to earth targeting on the transearth coast, about
+   150 h GET, as the crew ran P37 for midcourse and abort pads. cm_p37.py
+   loads the CSM inbound 240,000 km from the earth on an ellipse from the
+   moon's distance with a natural -6.5 degree entry (outside the moon's
+   sphere, so CMOONFLG clear), the platform in local vertical axes.
+   V37E37E: V25 on V06N33 (TIG 1 h on the CMC clock), V22 and V23 on
+   V06N60 (100 ft/s, -6.50 degrees; with zeros the conic iteration stops
+   on alarm 00605), proceed. The conic solution shows V06N61 (20.52 N,
+   36.79 W), N39 (31:07:43), N60 (36,054 ft/s, -6.50) and N81; the
+   precision solution (about 170 s) shows 20.57 N, 37.51 W, 31:11:05 and
+   36,060 ft/s, then V04N06 (SPS), the biased V06N33 and V16N45. V37E00E;
+   V82 shows V16N44 9999.9 x 22.4 nmi, then V34E. On the host every native
+   routine matches yaAGC.
    tools/flight_scenario_vice.py runs a flight scenario on the C64: the
    host run's native state at `--snap-cs` (FLIGHT_SNAPSHOT) loaded into
    the scenario mission's flight resident on its whole-program store in VICE
@@ -1008,9 +1074,7 @@ port) runs one mission:
    `--replay` replays everything instead and checks the result: the host
    run (`tools/flight_host_run.c` FLIGHT_REPLAY) goes on after the
    snapshot through the window on the C64's work clock, charging each
-   table the weight the C64 store charges it (FLIGHT_REPLAY_MCT: the weight
-   of the module that runs it, the interpreter's per routine for the tables
-   left to it), and writes every input its models and schedules give the
+   table the weight the C64 store charges it (host.inc's, #650), and writes every input its models and schedules give the
    AGC there (the engine, SPS and aero models' PIPA counts, keys,
    FLIGHT_CHAN, pokes, the radar model) as 8-byte rows. They go at the
    top of the zeros between the store and the Pinball trampoline save
@@ -1037,6 +1101,48 @@ port) runs one mission:
    #650, RK #663), both missions skip a TIME5 one count apart when TIME1
    agrees: the two sides sampled in different thirds of the centisecond
    (`TIME5_PHASE`, printed when used). LM windows skip nothing else.
+
+   **What "matches host" means** (whole-program acceptance, bar item 3).
+   It is a chain of two checks on the same inputs:
+   - *Host = yaAGC.* The scenario's host run (native C on the PC,
+     `tools/flight_host_differential.py`) and yaAGC run the same rope,
+     load, keys, channels and device models. At every sample point the
+     erasable words are compared, all 2048 but three groups. The central
+     registers and the interrupt save registers ARUPT-BRUPT (0-017) hold
+     the interrupted step's working values. The
+     clock counters (024-031) are left out because the two clocks are
+     driven differently (FLIGHT_TIMERS compares them). RUPTREG1-4
+     (070-073) hold only what the last interrupt left. A scoreboard row
+     is "host clean" when this finds 0 mismatches over the whole scenario.
+   - *C64 = host (`--replay`).* The C64 window starts from the host's
+     snapshot and gets the host's inputs as rows. At the window's end, and
+     every `--replay-every` cs, it is compared with the host on a wider
+     scope than the first check: the same erasable set, plus the timers
+     TIME1-TIME6 (both sides run one work clock here), plus output channels
+     5, 6, 11-14, 34 and 35 and the superbank. A PIPA's -0 and +0 count as
+     equal. Anything else is a difference, apart from the temporary skips
+     above, which are named in every result that uses them. Output channel
+     10 (the DSKY relay words) is not compared: it is a strobe the AGC
+     writes once per relay word, not a latch, so the display is checked
+     through DSPTAB in erasable instead.
+   So the chain gives C64 = yaAGC only on the first check's scope. The
+   timers and the output channels are checked C64 = host only.
+   A window "matches host" when its `--replay` log has no FAIL line. It
+   "matches exactly" when the log also has no `skipped` line.
+
+   **Seams (`--chain K`, bar item 4).** One replay window is limited to
+   16,383 cs, so a whole phase runs as K windows back to back. The host
+   run goes on through all K windows. A window ends at the first sample
+   point `--cs` or more in that has no interrupt pending. At that point
+   the host writes the next window's snapshot (`-snap.h-1`, `-snap.h-2`,
+   ...), taken after that point's inputs, which it also writes as `.seam`
+   rows. It then starts the next window's work clock the way a C64 window
+   starts its own. Each window runs on the C64 as above. Before window n
+   runs, the C64's end state of window n-1, plus the seam rows, is
+   compared with window n's snapshot on the `--replay` scope. So the run
+   fails unless every window matches the host and every seam is
+   continuous. A key or an interrupt request at a seam point fails the
+   host run (exit 4); move the seam by changing `--cs`.
    On base 72b40a63 `lm-p63-nassp` runs 5,031,476 native routines in
    1,150 s (240,234 bridged instructions, 41 unregistered points) and is
    in P64 (MODREG 100) at the end. Under
@@ -1086,16 +1192,33 @@ port) runs one mission:
    P34 ends on N59 as before. `cm-p20-vhf-dropout` drops VHF ranging
    from 180 s to 190 s, over R22's second range: VHFREAD takes BADEND,
    so no N49 and no mark (VHFCNT 3 by 320 s, not 4), and the next ranges
-   incorporate on their own. `FLIGHT_LR=1` is the LM landing radar's
-   altitude beam, agreeing with the LGC's own navigation: data good
-   (channel 33 bit 5) in position 1 or 2 below 50,000 ft, and an LR
-   range read gives the slant range HCALC, HBEAMNB, XNBPIP and UNIT/R/
-   imply (high scale, 5.395 ft a count, no Doppler term: DELTAH stays
-   within 300 ft, and with no V57 nothing is updated); velocity is not
-   modelled, so channel 33 bit 8 stays not good. `lm-p63-lr-dropout` is
-   lm-p63-nassp with it and `FLIGHT_LR_DROP` from 800 s to 900 s: R12
-   reads altitude from 35,000 ft, its reads fail in the window (RADMODES
-   LR range fail) and it measures again from 906 s.
+   incorporate on their own. `FLIGHT_LR=CS[:DH]` is the LM landing radar (tools/flight_lr.h).
+   From CS, once HCALC is set, it takes the LM's state from RN and VN
+   (through REFSMMAT) and flies its own trajectory: lunar gravity plus
+   the engine model's thrust, so truth and the LGC's navigation part as
+   the navigation errs. The surface is the landing site's radius
+   (/LAND/) plus DH metres. Data good (channel 33 bits 5 and 8) holds
+   below 50,000 ft of slant range and above 10 ft, until touchdown and
+   outside `FLIGHT_LR_DROP` windows; bit 9 gives the range scale (high
+   above 2,481.7 ft). On each LR read (channel 13 bit 4 with bit 3) it
+   writes RNRAD: the altitude beam's slant range along HBEAMNB (with the
+   Doppler term POSUPDAT removes), or one velocity beam's component in
+   12288 + counts. The beams follow the antenna's position (LRALPHA,
+   LRBETA and the second pair, `FLIGHT_LR_POS2`). `FLIGHT_LR_TRACE=1`
+   prints each read. `lm-p63-lr-dropout` is lm-p63-nassp with it from
+   600 s and `FLIGHT_LR_DROP` from 880 s to 950 s: R12's range reads fail
+   (RADMODES LR range fail) until the slant range comes inside
+   50,000 ft at 816 s (about 38,000 ft up), pass, fail in the window and
+   pass again from 952 s. `lm-p63-lr-update` is lm-p63-nassp with
+   `FLIGHT_LR=60000:150` (the surface 150 m above the landing site) and
+   V57E at 660 s: from 816 s R12's altitude updates take HCALC from about
+   186 m above the true height to about 77 m by 955 s (with no bias it
+   runs 40-60 m above, a sample's lag). It ends at 960 s, before the
+   velocity reads: on the host SERVICER reaches READV 6 cs after
+   READACCS, so the velocity read starts while the altitude read is
+   still running, HMEAS 0 is stored and the update moves HCALC about
+   1,200 m. That is a timing question for the interpretive charge, not
+   the radar (replay-mismatches.md).
    `FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...]` is the ground's uplink: each
    key, 20 cs apart from CS, reaches INLINK as UPRUPT's triple-redundant
    word with an UPRUPT request; `#OCTAL` sends a raw word, and `R` is
