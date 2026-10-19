@@ -1002,6 +1002,20 @@ port) runs one mission:
    lm-rendezvous's P20. `lm-stable-orbit-lm` runs the same with P38 and
    P39. P78's and P38's Lambert solutions take about 200 s of AGC time
    after N45.
+   The CSM's side: Comanche's P32-P35 and P38/P39 have the CSM active.
+   P72-P79 have the LM active, with the CMC solving for it. P17 and P77
+   are the TPI search. `lm_coelliptic.py CM` writes the same moments
+   for the CMC. `cm-csi`, `cm-cdh` and `cm-cdh-csm` are keyed as the LM
+   ones with the program numbers swapped, and give the LM side's solutions
+   (CM P72 is LM P32; CM P32 is LM P72). The other four start from
+   cm-p20's P20:
+   - `cm-rendezvous-tpm`: V83, V85, P34, P35, P74, P75, P76, V56. P74,
+     with ELEV 26.6, solves the LM's TPI as the LM's own P34 does.
+   - `cm-stable-orbit`: P38/P39.
+   - `cm-stable-orbit-lm`: P78/P79.
+   - `cm-tpi-search`: P17 and P77.
+
+   The CMC leaves P38's CENTANG at 0, so N55 is loaded with V23.
    `cm-tli`: Apollo 11's translunar injection at 02:44:16 GET, the S-IVB's
    second burn, as the CMC monitored it in P47. cm_tli.py writes
    cm-tli.load, using the same geometry as cm_p52.py: the CSM in the 100
