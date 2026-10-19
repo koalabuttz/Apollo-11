@@ -9,8 +9,8 @@
   "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
  ],
  "cases": 101888,
- "cases_sha256": "6c95badad116e7317bfe9a56056ed2096387983f29ac3208613dd3bae97eeb62",
- "oracle_sha256": "59ef6ae36339eea0e1d75dbd03664c4d6706072a302ec149317919778d0d5956",
+ "cases_sha256": "05241d59a8c6871c3a9444d4862747778e7d2ec198a0e9c0e7691a48e4c27fb1",
+ "oracle_sha256": "97468f246943b1884d5bc87b787991b720472bed4c9fc56f3d7bbea5e2143aa7",
  "frozen_vectors": 796,
  "c64_vectors": [
   {
@@ -117,7 +117,7 @@
   {
    "mission": "cm",
    "keep": "0x7ffffe0000000000",
-   "cases": 23,
+   "cases": 24,
    "case_ids": [
     20992,
     21504,
@@ -129,9 +129,10 @@
     24592,
     25088,
     25624,
+    26120,
     26144,
-    26624,
-    27152,
+    26640,
+    27272,
     27672,
     28168,
     28784,
@@ -375,8 +376,8 @@
   }
  ],
  "c64_gcov_branches": {
-  "host_taken": 1271,
-  "c64_taken": 1271,
+  "host_taken": 1273,
+  "c64_taken": 1273,
   "host_taken_not_c64": 0,
   "missing": [],
   "sources": [
@@ -601,7 +602,8 @@
    "06037": 133
   },
   "CM 35,3247 ": {
-   "04662": 512
+   "04662": 159,
+   "04647": 353
   },
   "CM 35,3254 ALARUMS": {
    "05650": 512
@@ -1222,9 +1224,9 @@
  "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: ALARM, AVFLAGA, AVFLAGP, BANKCALL, BLANKET, CHANG2, GOTOPOOH, P20FLGON, TCF ENDOFJOB, VNPOOH)",
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
- "host_cases_traced": 13200,
- "host_branch_arcs": 1301,
- "c64_rows": 248,
- "c64_branch_arcs": 1301,
+ "host_cases_traced": 13208,
+ "host_branch_arcs": 1303,
+ "c64_rows": 249,
+ "c64_branch_arcs": 1303,
  "host_branches_missing_on_c64": []
 }

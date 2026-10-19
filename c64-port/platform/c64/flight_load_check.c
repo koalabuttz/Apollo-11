@@ -234,10 +234,17 @@ static void pinned(void){static const fl_module p={FL_PINNED_MODULE,0,FL_PINNED_
 #endif
 
 /* Soft-stack watermark: free stack below the timings is filled before the
- * module runs and scanned after; $c3f6 gets the peak depth below $D000. */
+ * module runs and scanned after; $c3f6 gets the peak depth below $D000.
+ * Not inlined: the fill runs up to its own frame, which must lie below
+ * main's (inlined into main, it filled main's own frame slots below its
+ * local, such as the pointer apollo_ov2_run writes the run's value
+ * through, and that write then landed at $5A5A). */
 #define FL_STACK_FLOOR ((volatile uint8_t *)(0xc400u+FL_MODULES*sizeof(fl_timing)))
-static void stack_fill(void){volatile uint8_t here,*p=FL_STACK_FLOOR;
- while(p<&here-16)*p++=0x5a;}
+__attribute__((noinline)) static void stack_fill(void)
+{
+    volatile uint8_t here, *p = FL_STACK_FLOOR;
+    while (p < &here - 16) *p++ = 0x5a;
+}
 static void stack_peak(void){volatile uint8_t *p=FL_STACK_FLOOR;
     expect(*p == 0x5a, 13); /* no fill left at the floor: the stack ran into the timings */
     while (*p == 0x5a) ++p;

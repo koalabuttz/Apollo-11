@@ -25,7 +25,14 @@
  *   reading the select bits name (1 range, high scale: channel 33 bit 3
  *   stays high; 2 range rate, biased 17000). The radar cycle (the bit
  *   reset and RADARUPT nine TIME5 counts later, yaAGC's radar gate) is the
- *   resident timer's (rk_timer_phase), so *radarupt stays unset. */
+ *   resident timer's (rk_timer_phase), so *radarupt stays unset.
+ *
+ * FLIGHT_RR_DROP=T0-T1[,T0-T1...] (centiseconds): a data-good dropout. From
+ * the first sample point at or after T0 to the last before T1 the data-good
+ * bit stays high (not good) whatever the tracker does: channel 33 bit 4 on
+ * the LM (the RR), bit 2 on the CM (VHF ranging). Range reads still answer;
+ * only the discrete drops, as when the RR loses its lock or the VHF link its
+ * signal. */
 #ifndef FLIGHT_RADAR_H
 #define FLIGHT_RADAR_H
 #include <math.h>
@@ -39,6 +46,17 @@ static double rr_lm[6],rr_csm[6];
 static struct rr { unsigned long since; int active; } rr_nat;
 enum { RR_CDUT=035, RR_CDUS=036, RR_RNRAD=046, RR_CDUTCMD=053, RR_REFSMMAT=01733, RR_CDUX=032, RR_CDUXD=03235 };
 #define RR_MU 4.9028e12
+
+/* A dropout list (FLIGHT_RR_DROP, FLIGHT_LR_DROP): up to eight [T0,T1)
+ * windows in centiseconds. */
+struct radar_drops { unsigned n; unsigned long t[8][2]; };
+static struct radar_drops rr_drops;
+static int drops_parse(struct radar_drops *d,const char *t){
+ while(t&&*t){int n=0;
+  if(d->n>=8u||sscanf(t,"%lu-%lu%n",&d->t[d->n][0],&d->t[d->n][1],&n)<2||!n||d->t[d->n][1]<=d->t[d->n][0])return 0;
+  ++d->n;t+=n;if(*t==',')++t;else if(*t)return 0;}
+ return 1;}
+static int in_drop(const struct radar_drops *d,unsigned long t){unsigned i;for(i=0;i<d->n;++i)if(t>=d->t[i][0]&&t<d->t[i][1])return 1;return 0;}
 
 static int rr_parse(const char *t){int n=0;
  if(!t)return 1;
@@ -84,7 +102,7 @@ static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_w
   x2=x1*cos(mg)+y1*sin(mg);y2=-x1*sin(mg)+y1*cos(mg);
   nb[0]=x2;nb[1]=y2*cos(og)+z1*sin(og);nb[2]=-y2*sin(og)+z1*cos(og);
   w[RR_CDUT]=rr_angle(asin(-nb[1]));w[RR_CDUS]=rr_angle(atan2(nb[0],nb[2]));}
- if((*ch12&020000u)&&range<400.0*1852.0)*ch33&=(agc_word)~010u;else *ch33|=010u;
+ if((*ch12&020000u)&&range<400.0*1852.0&&!in_drop(&rr_drops,t))*ch33&=(agc_word)~010u;else *ch33|=010u;
  *ch33|=04u;
  /* The read's data is in RNRAD from its start; the radar cycle itself
   * (channel 13 bit 4 reset and RADARUPT nine TIME5 counts on) is the
@@ -95,6 +113,7 @@ static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_w
  e->active=1;
  if((*ch13&7u)==1u)w[RR_RNRAD]=(agc_word)lround(range/(2.859024*8.0))&077777u;
  else if((*ch13&7u)==2u)w[RR_RNRAD]=(agc_word)(17000l-lround(rdot/0.19135344))&077777u;}
+
 #else
 /* The CM side (Comanche P20, tools/flight_scenarios/cm_p20.py): the VHF
  * ranging link to the LM and the crew's sextant.
@@ -126,7 +145,7 @@ static void rr_due(unsigned long t,struct rr *e,agc_word *w,agc_word *ch12,agc_w
  o1=nb[0]*cos(sa)-nb[2]*sin(sa);o3=nb[0]*sin(sa)+nb[2]*cos(sa);
  tn=acos(o3<-1.0?-1.0:o3>1.0?1.0:o3)-19.775*3.141592653589793/180.0;
  w[RR_CDUS]=rr_angle(atan2(nb[1],o1));w[RR_CDUT]=rr_angle(4.0*tn);
- *ch33&=(agc_word)~02u;
+ if(in_drop(&rr_drops,t))*ch33|=02u;else *ch33&=(agc_word)~02u;
  /* As the LM side: RNRAD from the read's start, the cycle the resident's. */
  (void)radarupt;
  if(!(*ch13&010u)){e->active=0;return;}

@@ -9,8 +9,11 @@
  * Each disk starts with an id sector at track 1, sector 0 (a one-sector
  * file): "APOLLO11", the mission letter, the disk's number, the set's disk
  * count and the track and sector of the disk's data file. The data file is
- * records: 'D', a 3-byte REU address, a 3-byte length and that many bytes;
- * 'R', the REU address of the resident (already in a 'D' record), its
+ * records: 'Z', a 2-byte count of REU ranges, each range's 3-byte REU
+ * address and 3-byte length, then the ranges' bytes, one after the other,
+ * as one fdz stream (tools/fdz.c: LZ77 with offsets up to 24 KB, decoded
+ * here through a 32 KB ring at $4000-$BFFF and sent to the REU 8 KB at a
+ * time); 'R', the REU address of the resident (already in a range), its
  * 2-byte length and its 2-byte start address (the last disk only); 'E',
  * the disk's end. Numbers are low byte first.
  *
@@ -44,8 +47,9 @@ extern const uint8_t fd_tramp[], fd_tramp_end[];
 enum { BOX_LOADING = 1, BOX_DISK = 2, BOX_STARTED = 3, BOX_STOPPED = 0xff };
 enum { STOP_NO_REU = 1, STOP_BAD_RECORD = 2, STOP_NO_START = 3 };
 
-static uint8_t buf[256];
-static uint8_t pos, len;
+/* Shared with flight_disk_unz.s. */
+uint8_t buf[256];
+uint8_t pos, len;
 static uint8_t err;
 static uint8_t zero;
 static uint8_t fast; /* a 1581: the fast loader */
@@ -242,7 +246,8 @@ static uint8_t kernal_sector(void)
 }
 
 /* The next sector into buf; 0 at a read error (err holds the drive's code). */
-static uint8_t fd_sector(void)
+uint8_t fd_sector(void);
+uint8_t fd_sector(void)
 {
     uint8_t n;
     if (!fast) return kernal_sector();
@@ -304,6 +309,78 @@ static void upload_drive_code(void)
            (uint8_t)(sizeof fd_drive_code - i < 32 ? sizeof fd_drive_code - i : 32));
 }
 
+/* The fdz decoder (tools/fdz.c has the format; flight_disk_unz.s runs
+ * it). Output goes round the ring; each 8 KB part, once whole, goes to the REU over the ranges in
+ * order, and the last part when the stream ends. A transfer stays in one
+ * 64 KB bank: past a bank's end the REU's address does not carry into the
+ * bank register reliably (VICE's 2 MB REU put the bytes after 0x100000
+ * elsewhere). */
+#define RING       ((uint8_t *)0x4000)
+#define RING_MASK  0x7fffu
+#define MAX_RANGES 512u
+static uint8_t range_at[MAX_RANGES][3], range_len[MAX_RANGES][3];
+static uint16_t ranges, range_i;
+static uint32_t to_at, to_left; /* the current range: where, and bytes left */
+uint16_t w;                     /* the ring's next byte to write */
+static uint16_t sent;           /* the ring's next byte for the REU */
+static uint32_t done;
+
+static uint32_t get24(const uint8_t *p)
+{
+    return (uint32_t)p[0] | (uint32_t)p[1] << 8 | (uint32_t)p[2] << 16;
+}
+
+/* Send ring bytes sent..w (not wrapping: w is at a part's end or the
+ * stream's) to the ranges. 0 if the stream holds more than they do. */
+static uint8_t send(void)
+{
+    uint16_t n = (uint16_t)((w - sent) & RING_MASK), k;
+    while (n) {
+        while (!to_left) {
+            if (range_i == ranges) return 0;
+            to_at = get24(range_at[range_i]);
+            to_left = get24(range_len[range_i]);
+            ++range_i;
+        }
+        k = n;
+        if (to_left < k) k = (uint16_t)to_left;
+        if ((uint16_t)((uint16_t)to_at + k) < (uint16_t)to_at) k = (uint16_t)-(uint16_t)to_at;
+        dma(TO_REU, RING + sent, to_at, k, 0);
+        to_at += k;
+        to_left -= k;
+        sent = (uint16_t)((sent + k) & RING_MASK);
+        n = (uint16_t)(n - k);
+        done += k;
+        /* The border steps through the colours every 16 KB. */
+        POKE(0xD020, (uint8_t)(done >> 14));
+    }
+    return 1;
+}
+
+/* flight_disk_unz.s: decode a stream into the ring, z_send at each part. */
+uint8_t fd_unz(void);
+uint8_t z_send(void);
+uint8_t z_send(void)
+{
+    return send();
+}
+
+/* A 'Z' record: its ranges, then its stream. */
+static uint8_t unpack(void)
+{
+    uint16_t i, n;
+    ranges = (uint16_t)fd_word(2);
+    if (ranges > MAX_RANGES) return 0;
+    for (i = 0; i < ranges; ++i) {
+        for (n = 0; n < 3; ++n) range_at[i][n] = fd_byte();
+        for (n = 0; n < 3; ++n) range_len[i][n] = fd_byte();
+    }
+    range_i = 0;
+    to_left = 0;
+    w = sent = 0;
+    return fd_unz() && !err && send() && !to_left && range_i == ranges;
+}
+
 static uint32_t start_reu;
 static uint16_t start_len, start_at;
 
@@ -312,8 +389,6 @@ static uint16_t start_len, start_at;
 static uint8_t read_disk(uint8_t d)
 {
     uint8_t t, s, tag, ok;
-    uint32_t a, n, done = 0;
-    uint16_t k;
     if (fast) {
         upload_drive_code();
         fd_start(1, 0, 1);
@@ -345,27 +420,9 @@ static uint8_t read_disk(uint8_t d)
             start_at = (uint16_t)fd_word(2);
             continue;
         }
-        if (tag != 'D') {
-            err = 0xfe;
+        if (tag != 'Z' || !unpack()) {
+            if (!err) err = 0xfe;
             break;
-        }
-        a = fd_word(3);
-        n = fd_word(3);
-        while (n && !err) {
-            if (pos == len && !fd_sector()) break;
-            k = (uint16_t)(len - pos);
-            if (k > n) k = (uint16_t)n;
-            /* One transfer stays in one 64 KB bank: past a bank's end the
-             * REU's address does not carry into the bank register reliably
-             * (VICE's 2 MB REU put the bytes after 0x100000 elsewhere). */
-            if ((uint16_t)((uint16_t)a + k) < (uint16_t)a) k = (uint16_t)-(uint16_t)a;
-            dma(TO_REU, buf + pos, a, k, 0);
-            pos = (uint8_t)(pos + k);
-            a += k;
-            n -= k;
-            done += k;
-            /* The border steps through the colours every 16 KB. */
-            POKE(0xD020, (uint8_t)(done >> 14));
         }
     }
     /* 'E' is the data file's last byte: the drive has let go of the bus.

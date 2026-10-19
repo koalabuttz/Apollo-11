@@ -1,41 +1,39 @@
-PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-f11b00f5cd3dcf180b28b22c5a6573998d3dbf872a3589b56fc4dbd076e4a868  build/r60-r62-1.prg
-dffb226807d58134299ed432daa44621a41e2c11b6fcab41ebcae1559d635f16  build/r60-r62-2.prg
-10e7130b18fe879dbfe4e9f6879c7d7df6585914dca393ad45f444769fa02f50  build/r60-r62-3.prg
-918a107f5e1e8071f80e311521b0d881a1c2fd66c81a77bebfbed036ce0621e2  build/r60-r62-4.prg
-4ef9f54abe81a85744971c722f95de9a339ea4892282350556fa3de684ff0b1a  build/r60-r62-5.prg
-4ac319e19e28896357e731578920324241473eb06a0c4111a0319e543b73690b  build/r60-r62-6.prg
-855493b607fbf1017d414b4c15ac5416379f3667ce916b4ac1f9d71dd781c138  build/r60-r62-7.prg
-87f14163b68e23ad125b71fba7a180962cb9f2a8cfea818fec83f435165cdcff  build/r60-r62-8.prg
-09753ed5ed021d89da994453e63b883c6ce8840d9e8d2bc5059fb22c86098948  build/r60-r62-9.prg
-
-$ make vice-r60-r62
+# make vice-r60-r62 at 41095866c95f534255afd438c3dc942b03c337a4
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=1 -DIRC_LM_ONLY -DLM_R60_R62_KEEP0=0x3ffffffffff -DLM_R60_R62_KEEP1=0x1800 -Wl,-Map,build/r60-r62-1.map src/lm_r60_r62.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-1.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=2 -DIRC_LM_ONLY -DLM_R60_R62_KEEP0=0xffffe0000000000 -DLM_R60_R62_KEEP1=0x1 -Wl,-Map,build/r60-r62-2.map src/lm_r60_r62.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-2.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=3 -DIRC_LM_ONLY -DLM_R60_R62_KEEP0=0x0 -DLM_R60_R62_KEEP1=0x1c00000087ffff -Wl,-Map,build/r60-r62-3.map src/lm_r60_r62.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-3.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=4 -DIRC_LM_ONLY -DLM_R60_R62_KEEP0=0x0 -DLM_R60_R62_KEEP1=0xc000007ff81df -Wl,-Map,build/r60-r62-4.map src/lm_r60_r62.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-4.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=5 -DIRC_LM_ONLY -DLM_R60_R62_KEEP0=0x0 -DLM_R60_R62_KEEP1=0x1ffffffc000000 -Wl,-Map,build/r60-r62-5.map src/lm_r60_r62.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-5.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=6 -DIRC_CM_ONLY -DCM_R60_R62_KEEP0=0x3fffffff -DCM_R60_R62_KEEP1=0x0 -Wl,-Map,build/r60-r62-6.map src/cm_r60_r62.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-6.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=7 -DIRC_CM_ONLY -DCM_R60_R62_KEEP0=0x1ffe0000000 -DCM_R60_R62_KEEP1=0xffe0 -Wl,-Map,build/r60-r62-7.map src/cm_r60_r62.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-7.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=8 -DIRC_CM_ONLY -DCM_R60_R62_KEEP0=0xffffe0000000000 -DCM_R60_R62_KEEP1=0x3ff -Wl,-Map,build/r60-r62-8.map src/cm_r60_r62.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-8.prg
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_INPUTS -DIRC_GROUP=9 -DIRC_CM_ONLY -DCM_R60_R62_KEEP0=0x4000000000 -DCM_R60_R62_KEEP1=0x7ffe00 -Wl,-Map,build/r60-r62-9.map src/cm_r60_r62.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/r60_r62_target.c platform/c64/r60_r62_diagnostic.c -o build/r60-r62-9.prg
 for p in build/r60-r62-1.prg build/r60-r62-2.prg build/r60-r62-3.prg build/r60-r62-4.prg build/r60-r62-5.prg build/r60-r62-6.prg build/r60-r62-7.prg build/r60-r62-8.prg build/r60-r62-9.prg; do echo "PRG $(basename $p) sha256 $(sha256sum $p | cut -c1-64)"; python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
-PRG r60-r62-1.prg sha256 f11b00f5cd3dcf180b28b22c5a6573998d3dbf872a3589b56fc4dbd076e4a868
-PASS: VICE PAL r60-r62-1.prg: 54 checks, 0 failures
-PRG sha256: f11b00f5cd3dcf180b28b22c5a6573998d3dbf872a3589b56fc4dbd076e4a868 r60-r62-1.prg
-PRG r60-r62-2.prg sha256 dffb226807d58134299ed432daa44621a41e2c11b6fcab41ebcae1559d635f16
+PRG r60-r62-1.prg sha256 ee74cc1ba45ee01a97363de7393a0f2dc2119b7bfac0c4a0257eb933f8faabd7
+PASS: VICE PAL r60-r62-1.prg: 55 checks, 0 failures
+PRG sha256: ee74cc1ba45ee01a97363de7393a0f2dc2119b7bfac0c4a0257eb933f8faabd7 r60-r62-1.prg
+PRG r60-r62-2.prg sha256 0c832b61ec3294fbd651253760419b1c6b700f54c60bdcdd7d6bf542d55df04c
 PASS: VICE PAL r60-r62-2.prg: 26 checks, 0 failures
-PRG sha256: dffb226807d58134299ed432daa44621a41e2c11b6fcab41ebcae1559d635f16 r60-r62-2.prg
-PRG r60-r62-3.prg sha256 10e7130b18fe879dbfe4e9f6879c7d7df6585914dca393ad45f444769fa02f50
+PRG sha256: 0c832b61ec3294fbd651253760419b1c6b700f54c60bdcdd7d6bf542d55df04c r60-r62-2.prg
+PRG r60-r62-3.prg sha256 1157626fd990b963200c264108b6ac56c7310e7969f086892581036b2fc1dd74
 PASS: VICE PAL r60-r62-3.prg: 22 checks, 0 failures
-PRG sha256: 10e7130b18fe879dbfe4e9f6879c7d7df6585914dca393ad45f444769fa02f50 r60-r62-3.prg
-PRG r60-r62-4.prg sha256 918a107f5e1e8071f80e311521b0d881a1c2fd66c81a77bebfbed036ce0621e2
+PRG sha256: 1157626fd990b963200c264108b6ac56c7310e7969f086892581036b2fc1dd74 r60-r62-3.prg
+PRG r60-r62-4.prg sha256 e648143bb2a310df377792bcaf6e39dc3bf1a1064ed7ea9e79da5d2204866f12
 PASS: VICE PAL r60-r62-4.prg: 18 checks, 0 failures
-PRG sha256: 918a107f5e1e8071f80e311521b0d881a1c2fd66c81a77bebfbed036ce0621e2 r60-r62-4.prg
-PRG r60-r62-5.prg sha256 4ef9f54abe81a85744971c722f95de9a339ea4892282350556fa3de684ff0b1a
+PRG sha256: e648143bb2a310df377792bcaf6e39dc3bf1a1064ed7ea9e79da5d2204866f12 r60-r62-4.prg
+PRG r60-r62-5.prg sha256 5e654df691c848d8f24c6edb5d8a5265b3b6c157bc249cade23f89527431d7a3
 PASS: VICE PAL r60-r62-5.prg: 33 checks, 0 failures
-PRG sha256: 4ef9f54abe81a85744971c722f95de9a339ea4892282350556fa3de684ff0b1a r60-r62-5.prg
-PRG r60-r62-6.prg sha256 4ac319e19e28896357e731578920324241473eb06a0c4111a0319e543b73690b
-PASS: VICE PAL r60-r62-6.prg: 41 checks, 0 failures
-PRG sha256: 4ac319e19e28896357e731578920324241473eb06a0c4111a0319e543b73690b r60-r62-6.prg
-PRG r60-r62-7.prg sha256 855493b607fbf1017d414b4c15ac5416379f3667ce916b4ac1f9d71dd781c138
+PRG sha256: 5e654df691c848d8f24c6edb5d8a5265b3b6c157bc249cade23f89527431d7a3 r60-r62-5.prg
+PRG r60-r62-6.prg sha256 616c5099c189dece83f08cb0b2621267814019f9e0097acb538160a7a40d4657
+PASS: VICE PAL r60-r62-6.prg: 42 checks, 0 failures
+PRG sha256: 616c5099c189dece83f08cb0b2621267814019f9e0097acb538160a7a40d4657 r60-r62-6.prg
+PRG r60-r62-7.prg sha256 c46d3c26f8a6805e47b16bf4d2789990216eb580f5905a68a2161f2890a74f7f
 PASS: VICE PAL r60-r62-7.prg: 22 checks, 0 failures
-PRG sha256: 855493b607fbf1017d414b4c15ac5416379f3667ce916b4ac1f9d71dd781c138 r60-r62-7.prg
-PRG r60-r62-8.prg sha256 87f14163b68e23ad125b71fba7a180962cb9f2a8cfea818fec83f435165cdcff
+PRG sha256: c46d3c26f8a6805e47b16bf4d2789990216eb580f5905a68a2161f2890a74f7f r60-r62-7.prg
+PRG r60-r62-8.prg sha256 bc40ef0181d021d227deeabc6e87be2912edf8d0563e02c82f03193fd3ba0c6d
 PASS: VICE PAL r60-r62-8.prg: 36 checks, 0 failures
-PRG sha256: 87f14163b68e23ad125b71fba7a180962cb9f2a8cfea818fec83f435165cdcff r60-r62-8.prg
-PRG r60-r62-9.prg sha256 09753ed5ed021d89da994453e63b883c6ce8840d9e8d2bc5059fb22c86098948
+PRG sha256: bc40ef0181d021d227deeabc6e87be2912edf8d0563e02c82f03193fd3ba0c6d r60-r62-8.prg
+PRG r60-r62-9.prg sha256 3ac0128234874bd490b5ad90059344b96029cab6e64f183ab0c8f66e5d16c780
 PASS: VICE PAL r60-r62-9.prg: 16 checks, 0 failures
-PRG sha256: 09753ed5ed021d89da994453e63b883c6ce8840d9e8d2bc5059fb22c86098948 r60-r62-9.prg
+PRG sha256: 3ac0128234874bd490b5ad90059344b96029cab6e64f183ab0c8f66e5d16c780 r60-r62-9.prg
 exit 0

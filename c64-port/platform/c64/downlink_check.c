@@ -51,6 +51,7 @@ static void BOOT load_snapshot(void)
     SNAP_IO(rk_device)
     SNAP_HW(rk_hardware)
     SNAP_FLIGHT(rk_flight)
+    rk_device_from_canonical();
     rk_pending = 0;
 }
 
@@ -90,7 +91,7 @@ int main(void)
         }
         r.channel34 = rk_flight.channel34;
         r.channel35 = rk_flight.channel35;
-        r.wo = (uint8_t)((rk_hardware.channel13 & 0100u) != 0u);
+        r.wo = (uint8_t)((RK_TIMER_CH13 & 0100u) != 0u); /* the CM writes channel 13 in rk_device */
         r.status = (uint8_t)(st != EXEC_OK ? 1u : !taken || rk_hardware.in_interrupt ? 2u : 0u);
         apollo_reu_transfer(APOLLO_REU_STASH, &r, DL_SCRATCH + (uint32_t)k * sizeof r, sizeof r);
         ++sum.records;

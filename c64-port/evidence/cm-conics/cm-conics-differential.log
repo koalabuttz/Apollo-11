@@ -388,7 +388,7 @@ PASS: 114944 cm-conics cases equal the original programs (449 routines)
   CM 12,3537 : 05170 x65, 06037 x191
   CM 12,3541 : 05170 x66, 06037 x190
   CM 12,3543 : 05170 x68, 06037 x188
-  CM 12,3544 : 05170 x67, 06037 x189
+  CM 12,3544 : 05170 x72, 06037 x184
   CM 12,3547 : 06037 x256
   CM 12,3551 TARGETV: 05170 x75, 06037 x181
   CM 12,3554 : 06037 x256
@@ -1305,3 +1305,4 @@ case 101620 (11126) does not fit one C64 diagnostic: host only
 case 101623 (11126) does not fit one C64 diagnostic: host only
 case 101629 (11126) does not fit one C64 diagnostic: host only
 froze 3592 vectors to tests/cm_conics_vectors.h
+exit 0

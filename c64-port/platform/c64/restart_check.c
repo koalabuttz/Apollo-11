@@ -78,6 +78,7 @@ static void BOOT load_snapshot(void)
     SNAP_IO(rk_device)
     SNAP_HW(rk_hardware)
     SNAP_FLIGHT(rk_flight)
+    rk_device_from_canonical();
     rk_pending = 0;
 }
 

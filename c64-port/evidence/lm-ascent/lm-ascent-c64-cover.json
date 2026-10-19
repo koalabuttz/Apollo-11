@@ -8,13 +8,13 @@
   "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
   "src/cm_interp_orders.c": "a2ca5afab1dde9d2a30a0a490f6d6a9912b2a07b3f9c0f282b932e7bbab9e6ac",
   "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
-  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
   "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
-  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
+  "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
   "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
   "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
-  "tests/interp_case.c": "6186c825f80e11d114c3236fb4e5b112520b39c8fabbf8d7d07d135f088cca51",
-  "tests/interp_cut.c": "54cc6844ec54f333929e309da1410895ef2ae85113fbc4d498cb733f58b79821",
+  "tests/interp_case.c": "74c48855582edf093015d152d2651a4fad7d07895c4b3972c8ba8b941438c308",
+  "tests/interp_cut.c": "36fac6031b7eabe2514dc10aa78125b19d3f9f84e21e67f2b599bbc1e5135948",
   "tests/lm_ascent_target.c": "3e9fcf65b8b99d5841a1c719039fd9807439b4f9017fd45097115b00cfe7d6ff"
  },
  "host_cases": 107029,
@@ -38,12 +38,13 @@
   6804,
   7176,
   7688,
-  8204,
-  8228,
-  8724,
-  9224,
-  9895,
-  10308,
+  8224,
+  8284,
+  8476,
+  8704,
+  9216,
+  9735,
+  10288,
   10780,
   11268,
   11780,
@@ -271,8 +272,8 @@
   107027,
   107028
  ],
- "host_branch_arcs": 1728,
- "c64_branch_arcs": 1728,
+ "host_branch_arcs": 1734,
+ "c64_branch_arcs": 1734,
  "arcs_by_source_host_c64": {
   "src/agc_hardware_divide.c": [
    21,
@@ -287,8 +288,8 @@
    10
   ],
   "src/agc_transfer.c": [
-   49,
-   49
+   50,
+   50
   ],
   "src/agc_word.c": [
    3,
@@ -303,8 +304,8 @@
    0
   ],
   "src/lm_ascent.c": [
-   1046,
-   1046
+   1047,
+   1047
   ],
   "src/lm_interp_orders.c": [
    0,
@@ -327,8 +328,8 @@
    25
   ],
   "tests/interp_case.c": [
-   34,
-   34
+   38,
+   38
   ],
   "tests/interp_cut.c": [
    11,
