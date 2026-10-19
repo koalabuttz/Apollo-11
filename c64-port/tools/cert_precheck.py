@@ -868,6 +868,38 @@ def check_arms(report, label, path, certificate, specs):
                        'in tools/cert_arms_allow.py')
 
 
+DSKY_SWEEP_FILES = ('PINBALL_GAME_BUTTONS_AND_LIGHTS.agc',)
+DSKY_SWEEP_MISSION = {'Luminary099': 'lm', 'Comanche055': 'cm'}
+DSKY_SWEEP_CLOCK = 'C64 clock one cs behind the host'
+
+
+def check_dsky_sweep(report, label, mission, name, complete):
+    """A complete Pinball certificate needs the C64 DSKY sweep clean for its
+    mission (acceptance item 6, tools/dsky_sweep_vice.py): CI's
+    dsky-sweep-vice fails on any failure not in tools/dsky_sweep_known.json,
+    so a case of the mission still listed there is a display the C64 does
+    not yet show as the host does."""
+    if name not in DSKY_SWEEP_FILES or not complete:
+        return
+    known = ROOT / 'tools' / 'dsky_sweep_known.json'
+    if not known.exists():
+        return
+    m = DSKY_SWEEP_MISSION.get(mission)
+    cases = {k: why for k, why in json.loads(known.read_text()).items() if k.split(' ', 1)[0] == m}
+    # The one-cs-behind clock class is the resident clock's (replay-mismatches.md,
+    # owned by the resident-kernel lane), not a Pinball display difference: warn.
+    clock = sorted(k for k, why in cases.items() if why.startswith(DSKY_SWEEP_CLOCK))
+    left = sorted(k for k in cases if k not in clock)
+    if left:
+        report.add('FAIL', label, f'{len(left)} DSKY sweep cases of {m} do not match the host on the C64 '
+                   f"(tools/dsky_sweep_known.json: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''})",
+                   'fix them, run `make dsky-sweep-vice` and take them off the list')
+    if clock:
+        report.add('WARN', label, f'{len(clock)} DSKY sweep cases of {m} end with the C64 clock one cs behind '
+                   f"the host ({', '.join(clock[:6])}{' ...' if len(clock) > 6 else ''})",
+                   'the clock class in flight-scenarios/replay-mismatches.md; no Pinball change needed')
+
+
 # BOVB to ENDT(X)/TCDANZIG (TC DANZIG) with an order on its right: when
 # overflow is set the compiled pair transfers to that basic word, and unless
 # the spec runs it natively ('rtb' TCDANZIG -> <m>_integration_tcdanzig) the
@@ -1079,6 +1111,8 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
                 check_c64(report, label, certificate)
                 check_spec_keys(report, label, path, certificate, specs)
                 check_arms(report, label, path, certificate, specs)
+                check_dsky_sweep(report, label, mission, name,
+                                 key == 'complete_native_coverage' and entry.get('status') == 'complete')
                 check_bovb_danzig(report, label, path, certificate, specs,
                                   key == 'complete_native_coverage' and entry.get('status') == 'complete')
     return report

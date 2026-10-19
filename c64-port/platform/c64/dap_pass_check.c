@@ -163,6 +163,30 @@ typedef struct {
     uint16_t addr, value;
 } __attribute__((packed)) dp_row;
 _Static_assert(sizeof(dp_row) == 8u, "rows are 8 bytes (tools/flight_host_run.c rp_row)");
+#ifdef DP_SWEEP
+/* The DSKY sweep (tools/dsky_sweep_vice.py): many windows from one
+ * snapshot in one run. At DP_SWEEP in the REU: the case count, then one
+ * dp_case each (its rows, its window and where its end state goes; the run
+ * writes back whether it ended, the step status and the rows applied).
+ * Before the first case the snapshot (the erasable words, rk_hardware and
+ * rk_flight, rk_device) is stashed at DP_SWEEP_SNAP; each later case starts
+ * from it. A case ends where a window ends, at a step that does not return
+ * EXEC_OK, or DP_CS centiseconds in; the next one then starts. Only the
+ * window's end state is written (DP_EVERY and DP_EVERY_UNTIL past any
+ * window). */
+typedef struct {
+    uint32_t rows_at;
+    uint16_t rows, cs;
+    uint32_t end_at;
+    uint8_t ended, status;
+    uint16_t applied;
+} __attribute__((packed)) dp_case;
+_Static_assert(sizeof(dp_case) == 16u, "cases are 16 bytes (tools/dsky_sweep_vice.py)");
+static dp_case sweep_case;
+static uint16_t sweep_n, sweep_i;
+static uint32_t sweep_at = DP_SWEEP + 2ul;
+#define DP_REPLAY_CS sweep_case.cs
+#endif
 /* The row being applied sits in the cassette buffer ($03F4-$03FB; the step
  * profile uses its bottom), not in the resident's RAM. */
 #define row (*(dp_row *)0x03f4u)
@@ -301,15 +325,75 @@ static void BOOT load_snapshot(void){
 #endif
 }
 
-static dp_record r;
+#ifdef DP_SWEEP
+/* The snapshot's state (rk_hardware, rk_flight and the erasable words, one
+ * run from RK_HARDWARE to the image's end, then rk_device) to or from the
+ * REU. */
+__attribute__((noinline)) static void sweep_snap(uint8_t how)
+{
+    apollo_reu_transfer(how, (void *)RK_HARDWARE, DP_SWEEP_SNAP, 0x8000u - RK_HARDWARE);
+    apollo_reu_transfer(how, &rk_device, DP_SWEEP_SNAP + 0x8000u - RK_HARDWARE, sizeof rk_device);
+}
 static dp_summary sum;
-static void close_record(uint32_t cycles,enum exec_status st){
- r.cycles=cycles;r.status=(uint8_t)st;
- if(sum.records<DP_MAX){
-  apollo_reu_transfer(APOLLO_REU_STASH,&r,DP_SCRATCH+(uint32_t)sum.records*sizeof r,sizeof r);
-  ++sum.records;}
- else sum.lost=1;
- r.steps=0;r.job_loads=0;r.task_loads=0;r.request=0;}
+/* The first call stashes the snapshot and starts case 0. Later calls write
+ * case sweep_i's outcome back to its dp_case and start the next case from
+ * the snapshot; 0 after the last. */
+__attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t status)
+{
+    if (!sweep_n) {
+        apollo_reu_transfer(APOLLO_REU_FETCH, &sweep_n, DP_SWEEP, 2u);
+        sweep_snap(APOLLO_REU_STASH);
+    } else {
+        sweep_case.ended = ended;
+        sweep_case.status = status;
+        sweep_case.applied = sweep_case.rows - rows_left;
+        apollo_reu_transfer(APOLLO_REU_STASH, &sweep_case, sweep_at, 16u);
+        sweep_at += 16u;
+        if (++sweep_i >= sweep_n) return 0;
+        __asm__ volatile("sei");
+        sweep_snap(APOLLO_REU_FETCH);
+    }
+    apollo_reu_transfer(APOLLO_REU_FETCH, &sweep_case, sweep_at, 16u);
+    __asm__ volatile("sei");
+    rk_pending = 0;
+    rk_work = 0;
+    rk_tick_phase = 0;
+    rk_ticks = ov2_irq_count;
+    __asm__ volatile("cli");
+    replay_t0 = IMAGE->words[025];
+    rows_left = sweep_case.rows;
+    row_at = sweep_case.rows_at;
+    state_at = sweep_case.end_at;
+    row_ready = 0;
+    states = 0;
+    state_next = DP_EVERY;
+#ifdef DP_BUSY
+    busy_last = 0;
+#endif
+    sum.start_cs = agc_cs();
+    return 1;
+}
+#endif
+
+static dp_record r;
+#ifndef DP_SWEEP
+static dp_summary sum;
+#endif
+__attribute__((unused)) static void close_record(uint32_t cycles, enum exec_status st)
+{
+    r.cycles = cycles;
+    r.status = (uint8_t)st;
+    if (sum.records < DP_MAX) {
+        apollo_reu_transfer(APOLLO_REU_STASH, &r, DP_SCRATCH + (uint32_t)sum.records * sizeof r,
+                            sizeof r);
+        ++sum.records;
+    } else
+        sum.lost = 1;
+    r.steps = 0;
+    r.job_loads = 0;
+    r.task_loads = 0;
+    r.request = 0;
+}
 
 #ifdef DP_REPLAY
 static uint8_t replay_ended;
@@ -613,6 +697,9 @@ int main(void){
  rk_ticks=ov2_irq_count;
  __asm__ volatile("cli");
  dil=rk_dilation;sum.start_cs=agc_cs();
+#ifdef DP_SWEEP
+ sweep_next(0u, 0u);
+#endif
  job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];
  timer_start();
  t=now();
@@ -630,7 +717,11 @@ int main(void){
 #ifdef DP_REPLAY
   if (replay_due()) {
       replay_ended = 1;
+#ifdef DP_SWEEP
+      if (sweep_next(1u, EXEC_OK)) continue;
+#else
       if (r.steps) close_record(s0 - t, EXEC_OK);
+#endif
       break;
   }
 #endif
@@ -666,12 +757,30 @@ int main(void){
    if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS)break;
    continue;}
 #endif
+#ifdef DP_SWEEP
+  /* The sweep keeps no interrupt records: a case ends at a step error or
+   * DP_CS centiseconds in, and the next one starts. */
+  (void)s0;
+  (void)s1;
+  (void)job;
+  (void)task;
+  (void)t;
+  if (st != EXEC_OK || ((uint16_t)(agc_cs() - sum.start_cs) & 037777u) >= DP_CS) {
+      if (sweep_next(0u, (uint8_t)st)) {
+          st = EXEC_OK;
+          continue;
+      }
+      break;
+  }
+ }
+#else
   if(rk_rupt_last){if(r.steps)close_record(s0-t,EXEC_OK),t=s0;r.request=rk_rupt_last;}
   ++r.steps;
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_JOB]!=job){job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];if(job)++r.job_loads;}
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task){task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];if(task)++r.task_loads;}
   if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS){close_record(s1-t,st);break;}
   if(r.request&&!rk_hardware.in_interrupt){close_record(s1-t,EXEC_OK);t=s1;}}
+#endif
  sum.cycles=now();
  __asm__ volatile("sei");
  sum.dilation=rk_dilation-dil;sum.end_cs=agc_cs();sum.status=(uint8_t)st;
@@ -690,8 +799,11 @@ int main(void){
      mail[0x35] = states;
  }
 #endif
+#ifndef DP_SWEEP
+ /* (The sweep keeps no records; a 0-byte REU transfer would move 64 KB.) */
  apollo_reu_transfer(APOLLO_REU_FETCH, RECORDS, DP_SCRATCH,
                      (sum.records < DP_KEEP ? sum.records : DP_KEEP) * sizeof r);
+#endif
  *SUMMARY=sum;
 #ifdef RK_STEP_PROFILE
  memcpy(PROFILE, prof, DP_SEGMENTS * sizeof(dp_segment));
