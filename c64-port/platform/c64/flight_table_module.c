@@ -249,6 +249,8 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  else {   /* by adding (the asm as in rk_module_limit): no __mulhi3 */
   uint16_t w=0;
 #ifdef FS_PART_GROUP
+  /* Only a run that ends well hands its routine to the next part. */
+  if (e->status != EXEC_OK) rk_part_cont = 0;
   steps = rk_part_steps(FS_PART_GROUP, steps);
 #endif
   while(steps--) { w+=FS_MCT; __asm__("" : "+r"(w)); }

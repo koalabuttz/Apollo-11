@@ -2333,7 +2333,12 @@ const agc_routine_table lm_servicer_routines={basic_entries+LMSV_PART_KEYS,COUNT
 #endif
 const agc_routine_table lm_servicer_interpretive={interp_entries,0};
 static int part_leave(apollo_overlay_state *s,uint16_t ph){unsigned i;
- for(i=0;i<COUNT(basic_entries);++i)if(basic_entries[i].physical==ph){W[5]=(agc_word)(02000u+ph%1024u);FLIGHT_PART_LEFT();return STOP;}
+    for (i = 0; i < COUNT(basic_entries); ++i)
+        if (basic_entries[i].physical == ph) {
+            W[5] = (agc_word)(02000u + ph % 1024u);
+            FLIGHT_PART_LEFT();
+            return STOP;
+        }
  return REFUSE;
 }
 #endif

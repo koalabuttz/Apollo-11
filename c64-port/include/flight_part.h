@@ -11,7 +11,8 @@
  * C64 part module; elsewhere the mark does nothing. */
 #define FLIGHT_PART_AT 0x6ff6u
 #ifdef FS_PART_GROUP
-#define FLIGHT_PART_LEFT() (*(volatile unsigned char *)FLIGHT_PART_AT = (unsigned char)(FS_PART_GROUP))
+#define FLIGHT_PART_LEFT()                                                                         \
+    (*(volatile unsigned char *)FLIGHT_PART_AT = (unsigned char)(FS_PART_GROUP))
 #else
 #define FLIGHT_PART_LEFT() ((void)0)
 #endif

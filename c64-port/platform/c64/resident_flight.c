@@ -608,13 +608,19 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
             RK_PROF(5);
             /* A refused call ran: the next slot works its point out again. */
             if (steps) point = AGC_TRANSFER_NONE;
+#ifdef RK_WORK_CLOCK
+            rk_part_cont = 0; /* a refused run handed nothing back */
+#endif
             continue;
         }
         RK_PROF(6);
+        status = rk_module_status(status, steps, limit);
 #ifdef RK_WORK_CLOCK
+        /* Only a run that ends well hands its routine to the next part. */
+        if (status != EXEC_OK) rk_part_cont = 0;
         rk_charge(steps, mct);
 #endif
-        return rk_module_status(status,steps,limit);
+        return status;
     }
 #ifdef RK_WORK_CLOCK
     rk_charge_group = 0; /* no slot ran: the resolver's charge is its own */
