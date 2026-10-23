@@ -220,8 +220,9 @@ def roles(m):
              uses('FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_SATURN', 'FLIGHT_SIVB', 'FLIGHT_IMU'),
              either(pipas, erasable(0o32, 0o33, 0o34)), unit(m, 't4rupt-imu'),
              how='PIPA counts, or CDUX-Z words, in the host rows',
-             gap='no attitude dynamics: the models hold CDUX-Z at the commanded attitude, so the jets and the '
-                 'engine never move the CDUs', blocking=True,
+             gap='no attitude dynamics from the jets: the models hold CDUX-Z at the commanded attitude' + (
+                 ' (the descent engine moves nothing)' if lm else ' (only the SPS gimbal turns the CM, in pitch and yaw)'),
+             blocking=True,
              closes='Lane B: a rigid-body model fed by the jets and engine, on both sides'),
     ]
     if lm:
@@ -345,9 +346,12 @@ def roles(m):
     else:
         out += [
             role('optics-drive', 'Optics drive', 'out', 'OPTXCMD/OPTYCMD (CDUTCMD/CDUSCMD, 053/054), channel 14 '
-                 'bits 11-12', [host_end], [end], uses('FLIGHT_LOAD'), both(either(words(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
+                 'bits 11-12', [host_end, (FHR, 'drives', 'the output drives once a period after the timers: rk_cdu_drive (src/resident_cdu.c)')],
+                 [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives: 053/054 pulses')],
+                 uses('FLIGHT_LOAD'), both(either(words(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
                  unit(m, 'sxtmark'), how='OPTXCMD or OPTYCMD, or channel 14 bit 11 or 12, changed with TVC off (channel 12 bit 8 clear)',
-                 gap='no optics drive model: the commands never move CDUS/CDUT on either side (FLIGHT_LOAD sets them)',
+                 gap='no optics model: the drives send the pulses, but CDUS/CDUT never follow on either side '
+                     '(FLIGHT_LOAD sets them)',
                  blocking=True, closes='an optics drive model on both sides'),
         ]
     out += [
@@ -371,22 +375,27 @@ def roles(m):
     else:
         out += [
             role('tvc', 'SPS thrust vector control', 'out', 'TVCPITCH/TVCYAW (CDUTCMD/CDUSCMD, 053/054) with channel '
-                 '12 bit 8 (TVC enable)', [host_end], [end], uses('FLIGHT_SPS'),
+                 '12 bit 8 (TVC enable)',
+                 [host_end, (FHR, 'drives', 'the output drives once a period after the timers: rk_cdu_drive (src/resident_cdu.c)'), (FHR, 'sps_due', 'the bell follows the optics error counters while channel 12 '
+                                       'bit 8 is set, and the thrust turns the CM in pitch and yaw')],
+                 [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives: 053/054 pulses')],
+                 uses('FLIGHT_SPS'),
                  both(words(0o53, 0o54), held(0o12, 0o200)), unit(m, 'tvc-roll'),
                  how='TVCPITCH or TVCYAW changed with channel 12 bit 8 set in the host\'s states',
-                 gap='no TVC actuator: the SPS model thrusts along a fixed axis, so the commands move nothing',
-                 blocking=True, closes='Lane B: an SPS gimbal driven by TVCPITCH/TVCYAW'),
+                 gap='roll does not move under TVC (no RCS jet model)'),
         ]
     out += [
-        role('drives', 'IMU CDU and gyro drives', 'out', 'CDUXCMD-CDUZCMD (050-052), GYROCMD (047), channel 14 '
-             'bits 13-15 and 6-10',
-             [host_end], [('src/resident_cdu.c', 'rk_cdu_drive', 'the drive model exists but is not linked into the '
-                           'flight resident')],
-             None, either(words(0o47, 0o50, 0o51, 0o52), moved(0o14, 0o71740)), ['test-resident-cdu'],
-             how='a drive word, or a drive bit of channel 14, changed in the host\'s states',
-             gap='the drive counters never drain on either side in flight runs (rk_cdu_drive is not linked; yaAGC\'s '
-                 'drives are frozen under scaled time)', blocking=True,
-             closes='Lane B: link rk_cdu_drive and the gyro drive on both sides'),
+        role('drives', 'IMU CDU drives', 'out', 'CDUXCMD-CDUZCMD (050-052), channel 14 bits 13-15',
+             [host_end, (FHR, 'drives', 'the output drives once a period after the timers: rk_cdu_drive (src/resident_cdu.c)')],
+             [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives once a period after '
+                    'the timers, checked against src/resident_cdu.c and yaAGC (make c64-resident-cdu-asm)')],
+             None, either(words(0o50, 0o51, 0o52), moved(0o14, 0o70000)), ['test-resident-cdu', 'c64-resident-cdu-asm'],
+             how='a CDU drive word, or a drive bit of channel 14, changed in the host\'s states'),
+        role('gyro', 'Gyro torquing', 'out', 'GYROCMD (047), channel 14 bits 6-10 (gyro enable, select, sign, activity)',
+             [host_end], [end], None, either(words(0o47), moved(0o14, 0o1740)), [],
+             how='GYROCMD, or a gyro bit of channel 14, changed in the host\'s states',
+             gap='no gyro torque model: GYROCMD pulses move nothing on either side (fine align, gyro compensation)',
+             blocking=True, closes='a gyro torque model that turns the platform'),
         role('displays', 'DSKY displays and lamps', 'out', 'channel 10 (relay words), channel 11 lamps',
              [host_end, (FHR, 'dsky_trace', 'FLIGHT_DSKY: prints the DSKY as the relay words set it')],
              [end, ('platform/c64/resident_dsky.S', 'rk_dsky_idle', 'the flight disk draws the DSKY from the relay '
