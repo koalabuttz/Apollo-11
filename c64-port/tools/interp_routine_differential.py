@@ -763,11 +763,52 @@ def case(mi, point, n, rng):
                 E[a] = E[2]
         if point in mi.native_entries and dict(E).get(0o23):
             stop = mi.danzig
+    if mi.off_keys and mi.kinds[point] != 'i' and pending_on_key(mi, seed, E, sb):
+        # ('outside_off_keys') A basic entry whose TC DANZIG would find an
+        # order pending in EDOP with LOC on a key of the file: in flight
+        # only the RTBs' own pairs come back that way (pending_danzig), so
+        # no order is pending here (auditor, #553: ENDT(X) with LOC at
+        # 27,3114 BMN SQRT).
+        E[0o23] = 0
     if vac == 0o110:
         E[0o120] = vac   # (the work area holds FIXLOC itself)
     if jstop is not None:
         stop = jstop
     return seed, list(E.items()), n & 1, stop, sb
+
+
+def seed_word(seed, addr, counters):
+    """Word addr of tests/interp_case.c irc_build's image from the case
+    seed, before the edits (counters: the IRC_COUNTERS edit, 010-061 drawn
+    again after the 2048 words)."""
+    def draws(k):
+        # (rnd's LCG jumped k steps: x -> a x + c, squared k's bits at a time)
+        a, c, ja, jc = 1664525, 1013904223, 1, 0
+        while k:
+            if k & 1:
+                ja, jc = (ja * a) & 0xffffffff, (jc * a + c) & 0xffffffff
+            a, c = (a * a) & 0xffffffff, (c * (a + 1)) & 0xffffffff
+            k >>= 1
+        return (((ja * seed + jc) & 0xffffffff) >> 12) & 0o77777
+    if 0o10 <= addr <= 0o61:
+        return draws(2048 + addr - 0o10 + 1) if counters else 0
+    return draws(addr + 1)
+
+
+def pending_on_key(mi, seed, E, sb):
+    """The case's EDOP holds an order (nonzero, bit 15 clear) and its LOC,
+    under BANKSET's bank, is a word of the file, a key it registers or
+    DANZIG's own (its marker), other than an RTB's pending pair
+    (pending_danzig): DANZIG would go on to a routine of the file there."""
+    def word(a):
+        return E[a] if a in E else seed_word(seed, a, 0x4000 in E)
+    edop = word(0o23)
+    if edop & 0o40000 or not edop & 0o37777:
+        return False
+    loc = place(word(0o164) & 0o7777, word(0o165), sb)
+    if loc is None or not (mi.cp.in_file(loc) or loc in mi.cp.blocks or loc == mi.danzig):
+        return False
+    return getattr(mi.cp, 'pending', {}).get(loc, (None, None, None))[2] != edop
 
 
 # The counters files compare with each other and with stored times and

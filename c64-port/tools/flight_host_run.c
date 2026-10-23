@@ -234,6 +234,15 @@ static unsigned due_steps(void){unsigned n=0;
 #endif
 #define CORE_SLOTS 64u
 static unsigned long core_mct,core_slots,core_routines,core_misses;
+/* The core's charge is a fitted per-order table (tools/interp_word_mct.py),
+ * not yaAGC's count. Over the routines the core ran and yaAGC matched:
+ * the table's sum (core_fit), yaAGC's own MCT for the same spans
+ * (core_yaagc, from span_mct) and the sum of the per-routine differences
+ * (core_err). A replay window counts from its start (issue #765). */
+static unsigned long core_fit,core_yaagc,core_err,core_spans;
+static void core_charge_report(void){
+ if(core_spans)printf("interpreter charge: fitted %lu MCT, yaAGC %lu MCT (%+.1f%%) over %lu routines; mean |error| %.1f MCT per routine\n",
+  core_fit,core_yaagc,core_yaagc?100.0*((double)core_fit-(double)core_yaagc)/(double)core_yaagc:0.0,core_spans,(double)core_err/(double)core_spans);}
 static int core_ran;
 static enum exec_status core_run(const agc_native_program *p,apollo_overlay_state *s,void *x){
  /* As platform/c64/interp_module.c: the clock starts at 0x8000 less the
@@ -948,11 +957,12 @@ static unsigned differs(const agc_word *a,const agc_word *b){unsigned i,n=0;for(
 
 /* Unregistered points, in order of first arrival. */
 enum { HOLES=512 };
-static struct { uint16_t key; uint8_t in; agc_word z,fb,q; unsigned long count,instructions; const char *by; } holes[HOLES];
+static struct { uint16_t key,qat; uint8_t in; agc_word z,fb,q; unsigned long count,instructions; const char *by; } holes[HOLES];
 static unsigned nholes;
 static void hole(const agc_word *w,agc_word sb,unsigned long instructions,const char *by){int in;uint16_t key=point(w,sb,&in);unsigned i;
  for(i=0;i<nholes;++i)if(holes[i].key==key&&holes[i].in==(uint8_t)in&&holes[i].by==by){++holes[i].count;holes[i].instructions+=instructions;return;}
  if(nholes<HOLES){holes[nholes].key=key;holes[nholes].in=(uint8_t)in;holes[nholes].z=w[5];holes[nholes].fb=w[4];holes[nholes].q=w[2];
+  holes[nholes].qat=agc_fixed_physical(w[2],w[4],sb);
   holes[nholes].count=1;holes[nholes].instructions=instructions;holes[nholes].by=by;++nholes;}}
 
 /* Set when the last routine was a RESUME: yaAGC then runs BRUPT (017),
@@ -1399,7 +1409,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     while(rp_next<=now(s.words)-rp_t0)rp_next+=rp_every;}
    if(rp_after==~0ul&&rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
     rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);fclose(rp_outs);rp_outs=0;printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
-    if(core_routines)printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);
+    if(core_routines){printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);core_charge_report();}
     if(++rp_win>=rp_chain){char b[640];rp_after=rp_after_last=now(s.words)-rp_t0;
      snprintf(b,sizeof b,"%s.after-replay",rp_win>1u?rp_path:rp_base);rp_out=fopen(b,"wb");
      snprintf(b,sizeof b,"%s.after",rp_win>1u?rp_path:rp_base);rp_ends=fopen(b,"wb");
@@ -1439,7 +1449,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));
     if(!rp_out)return 0;
     /* FLIGHT_REPLAY: on, on the C64 window's work clock. */
-    snap_path=0;rp_t0=now(s.words);rp_outputs(now(s.words),&hw,0);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;}}
+    snap_path=0;rp_t0=now(s.words);rp_outputs(now(s.words),&hw,0);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;
+    core_fit=core_yaagc=core_err=core_spans=0;}}
   {agc_word brupt=s.words[017];uint8_t got;unsigned long consumed0=consumed;
    if(scaled&&work){
     /* rk_rupts: a request that can be taken before each step due. */
@@ -1534,6 +1545,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);}
     if(st==EXEC_OK){
      if(core_ran){++core_routines;
+      if(n>=0){core_fit+=core_mct;core_yaagc+=span_mct;core_err+=core_mct>span_mct?core_mct-span_mct:span_mct-core_mct;++core_spans;}
       if(n>=0&&core_mct!=word_mct){++core_misses;
        if(getenv("FLIGHT_CORE_LOG"))printf("core charge %lu, yaAGC's words %lu: Z %05o LOC %05o to Z %05o LOC %05o, %s\n",core_mct,word_mct,
         (unsigned)before.words[5],(unsigned)before.words[0164],(unsigned)s.words[5],(unsigned)s.words[0164],e->name);}}
@@ -1570,7 +1582,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
- if(core_routines)printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);
+ if(core_routines){printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);core_charge_report();}
  printf("native routines yaAGC did not match (%u):\n",nmisses);
  for(i=0;i<nmisses;++i){unsigned k,d=0;printf("  %s %02o,%04o %s: %lu times;",misses[i].in?"interp":"basic ",misses[i].key/1024u,misses[i].key%1024u+02000u,misses[i].name,misses[i].count);
   if(!misses[i].arrived)printf(" yaAGC never reached the native continuation Z %05o\n",(unsigned)misses[i].word[5]);
@@ -1579,9 +1591,12 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  for(i=0;i<nreach;++i){if(reach_cs[i]<0)printf("reach %02o,%04o: not reached\n",reach_at[i]/1024u,reach_at[i]%1024u+02000u);
   else printf("reach %02o,%04o: at %ld cs\n",reach_at[i]/1024u,reach_at[i]%1024u+02000u,reach_cs[i]);}
  printf("unregistered or refused points (%u):\n",nholes);
- for(i=0;i<nholes;++i)printf("  %s %02o,%04o Z %05o FB %05o Q %05o: %lu arrivals, %lu instructions%s%s\n",holes[i].in?"interp":"basic ",
-  holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q,holes[i].count,holes[i].instructions,
-  holes[i].by?", refused by ":"",holes[i].by?holes[i].by:"");
+ for(i=0;i<nholes;++i){printf("  %s %02o,%04o Z %05o FB %05o Q %05o",holes[i].in?"interp":"basic ",
+  holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q);
+  /* Q's own fixed point, so a bridged TC Q return names its routine
+   * (the TC at Q - 1 called it; tools/flight_holes.py). */
+  if(holes[i].qat!=AGC_TRANSFER_NONE)printf(" at %02o,%04o",holes[i].qat/1024u,holes[i].qat%1024u+02000u);
+  printf(": %lu arrivals, %lu instructions%s%s\n",holes[i].count,holes[i].instructions,holes[i].by?", refused by ":"",holes[i].by?holes[i].by:"");}
  printf("module loads (%lu in %lu cs):\n",nloads,now(s.words));
  for(i=0;i<nload_points;++i)printf("  load %s slot %u %s %02o,%04o: %lu\n",loads[i].module,loads[i].slot,loads[i].in?"interp":"basic ",
   loads[i].key/1024u,loads[i].key%1024u+02000u,loads[i].count);

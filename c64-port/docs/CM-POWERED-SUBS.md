@@ -41,6 +41,6 @@ Hashes: `evidence/cm-powered-subs/SHA256.json`.
   - The comparison covers Z, all 2,048 erasable words and the interrupt-enable state.
   - Every routine stops at a transfer out of the file: USPRCADR, SPSIN, SPCOS, MPACVBUF, DMPSUB, the interpreter (INTPRET, NEWOPS), the Executive's CHANG2 (05170) with a job waiting, or a caller's return outside.
 - **Host and sanitizer results.** `make test-cm-powered-subs sanitize-cm-powered-subs`: the 1,605 frozen cases, 0 failures.
-- **C64 execution results.** `make vice-cm-powered-subs`: 86 cases in two programs (54 and 32) that the differential picks by edge coverage. They take every branch outcome the host cases take (700 gcov branches, and 1,306 of 1,306 trace edges). 86 checks, 0 failures.
+- **C64 execution results.** `make vice-cm-powered-subs`: 86 cases in two programs (54 and 32) that the differential picks by edge coverage. They take every branch outcome the host cases take (701 gcov branches, and 1,309 of 1,309 trace edges). 86 checks, 0 failures.
 
 The older hand translations (`src/cm_quictrig.c`, `src/cm_powered_trig.c`, `src/cm_nbsm.c` and their docs) stay for their existing callers.

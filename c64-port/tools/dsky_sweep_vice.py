@@ -138,7 +138,7 @@ def case_chan(chan, key_cs):
 
 def bridged(text):
     """{point: arrivals} for the points a host run bridges (flight_holes.HOLE)."""
-    return {f'{h[1].strip()} {h[2]},{h[3]}' + (f' refused by {h[6]}' if h[6] else ''): int(h[4])
+    return {f'{h[1].strip()} {h[2]},{h[3]}' + (f" refused by {h['refused']}" if h['refused'] else ''): int(h['arrivals'])
             for h in flight_holes.HOLE.finditer(text)}
 
 
