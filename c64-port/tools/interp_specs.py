@@ -4937,8 +4937,11 @@ SPECS = {
         'symbol': {'lm': 'lm_aostask'},
         'basic': 'full',
         # The C64 flight store links the basic words as three parts
-        # (docs/FLIGHT-PARTS.md); one module is 24 KB.
-        'flight_parts': [0o20 * 1024 + 0o3010 - 0o2000, 0o20 * 1024 + 0o3434 - 0o2000],
+        # (docs/FLIGHT-PARTS.md); one module is 24 KB. The first cut is
+        # past DVOVSUB (20,2776-3036), so 1/ACCS's divides from LRESC
+        # (20,2672-2710) run in their own part rather than changing parts
+        # (and reloading the job slot) twice per call.
+        'flight_parts': [0o20 * 1024 + 0o3037 - 0o2000, 0o20 * 1024 + 0o3434 - 0o2000],
         'entries': ['@external', '1/ACCS+2'],
         'channels': 'all',
         'channel_inputs': True,
