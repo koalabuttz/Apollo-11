@@ -374,7 +374,8 @@ static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const e
 /* LM: a table of weight 0 (POSTJUMP's and SELFCHK's, RK_MCT_IDLE) idles
  * only where the C64 idles: in the idle loop (FB on SELFCHK's bank 43),
  * outside an interrupt, with no job waiting (resident_flight.c, the idle
- * module's flag). Anywhere else (POSTJUMP in a job, or at the end of a
+ * module's flag), and there once a pass: SELFCHK costs nothing and
+ * POSTJUMP 04635 takes the tick (below). Anywhere else (POSTJUMP in a job, or at the end of a
  * RADARUPT's task) the C64 runs the routine from a module that weighs it as
  * work: the first holder with a weight. Back in the idle loop with a job
  * waiting (NEWJOB +0 or a core set, ADVAN's CCS: anything but -0), the
