@@ -837,8 +837,8 @@ RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(
 # GOPROG with no group active, back to P00. tools/flight_restart_check.py
 # checks them on the host (lm-v69-restart, cm-v69-restart);
 # tools/flight_scenario_vice.py --scenario lm-v69 --snap-cs 2300 --replay on
-# the C64. Like RESTART_FLIGHT, the host differential (and the x86
-# program, which has no TC trap yet) does not run them.
+# the C64. Like RESTART_FLIGHT, the host differential does not run them;
+# tools/x86_flight_scenarios.py flies them on the x86 program.
 V69_FLIGHT = [('lm-v69', 'lm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'}),
               ('cm-v69', 'cm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'})]
 
