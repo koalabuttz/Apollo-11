@@ -711,8 +711,8 @@
             "sha256": "a7741fb957331dc4d479963ec6bf57ad1b6f5155940c99ec179651df40a3e626"
           },
           "independent_review": {
-            "path": "docs/audits/rev1-cm-conics-664.md",
-            "sha256": "e656c7dbd1807ad7e2bbf7e67e4315ce38deeca9fe930917724fdcd5c9449390"
+            "path": "docs/audits/rev2-cm-conics-tff-powered-781.md",
+            "sha256": "1f0c8e79709c2fb4196cefdd6d96f56fde542f5fa4aa19df6b78540859d10c36"
           }
         }
       }
@@ -4630,8 +4630,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/cm-powered-subs.md",
-            "sha256": "682bc9689497a885bdab3b805bb7cd40f9b9b38f3e843e3a450ab743529d261c"
+            "path": "docs/audits/rev2-cm-conics-tff-powered-781.md",
+            "sha256": "1f0c8e79709c2fb4196cefdd6d96f56fde542f5fa4aa19df6b78540859d10c36"
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
@@ -6076,8 +6076,8 @@
             "sha256": "74fa71ec3ad4746bfadd4fe645a9d1ddd33b722c241645269d4c563bcc2b5bb7"
           },
           "independent_review": {
-            "path": "docs/audits/rev1-cm-conics-664.md",
-            "sha256": "e656c7dbd1807ad7e2bbf7e67e4315ce38deeca9fe930917724fdcd5c9449390"
+            "path": "docs/audits/rev2-cm-conics-tff-powered-781.md",
+            "sha256": "1f0c8e79709c2fb4196cefdd6d96f56fde542f5fa4aa19df6b78540859d10c36"
           }
         }
       }
