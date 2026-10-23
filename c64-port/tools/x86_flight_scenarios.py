@@ -103,20 +103,25 @@ KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the har
                                            "harness's 30,669 and 30,678, each within its limits of the true orbit), so "
                                            "the navigation words they write differ",
                                     rn=129.0, vn=0.6, words=700),   # measured 636 words against 616
-         # The keys go in at fixed times, and on the x86 program's schedule
-         # some land on another display: lm-rendezvous-tpm's V33 at 47,500 cs
-         # comes while P74 is between its N37 and N55 displays (the harness
-         # has N37 back at 47,204, the x86 program at 48,655), so the V25 at
-         # 50,000 loads N37 instead of N55 (no elevation angle) and P74 then
-         # raises 611. In lm-stable-orbit the V37E78E goes in 143 cs later on
-         # the harness (busy at 8,000), P78's redisplay at 10,492 eats the
-         # V25's third register, and each V33 from then on answers one
-         # display behind: the x86 run keeps marking on interim passes to
-         # TET 41,786 cs (the harness's final pass is at 23,100), and P79's
-         # integration raises 430. Everything else (the lockstep check, the
-         # state vector, the words) matches.
-         **{n: dict(reason="keys typed at fixed times land on another display on the x86 program's schedule, so "
-                           f"{p} answers the crew's inputs differently and raises alarm {a:o}",
+         # The keys go in at fixed times. After a V25's last ENTER the x86
+         # program stays in P20/R22 for 13 s or more before the program
+         # redisplays its noun, where both harness clocks redisplay within
+         # 0.75 s, so the next V33 lands on a blank display and from there
+         # each key answers a display other than the harness's. The x86 keys
+         # go in on time (19 to 50 cs after theirs); the harness is the one
+         # late on lm-stable-orbit's V37E78E (143 cs on the work clock, 112
+         # on the other, busy at 8,000). lm-rendezvous-tpm: the V33 at
+         # 47,500 cs comes before P74's N37 is back (x86 48,692), so the V25
+         # at 50,000 loads N37 instead of N55 (no elevation angle) and P74
+         # raises 611. lm-stable-orbit and -lm: the x86 run keeps marking on
+         # interim passes to TET 41,786 cs (the harness's final pass is at
+         # 23,100), and P79's integration raises 430. The lockstep check is
+         # clean on all three. Display-driven keys (in the harness and the
+         # scenario inputs) would fly them as the harness does; earlier x86
+         # keys would not.
+         **{n: dict(reason="after a V25 the x86 program stays in P20/R22 13 s or more before redisplaying (the "
+                           "harness under 1 s), so the next V33, typed at its fixed time, lands on a blank display; "
+                           f"{p} then answers the crew's inputs differently and raises alarm {a:o}",
                     alarms={0o376: a}) for n, p, a in (('lm-rendezvous-tpm', 'P74', 0o611),
                                                         ('lm-stable-orbit', 'P79', 0o430),
                                                         ('lm-stable-orbit-lm', 'P79', 0o430))}}
