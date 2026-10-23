@@ -11988,8 +11988,8 @@
             }
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-b506.md",
-            "sha256": "ab238c1332ef2e8d37b9dcb195528c17924d7d9f5f22b5cd5795e66c0a16071f"
+            "path": "docs/audits/rev1-lm-powered-subs-789.md",
+            "sha256": "76857d788704e6ded19ef5ae8b981f1d0eaf129e75f6fa29fd17158f18d5598f"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
