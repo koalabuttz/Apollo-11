@@ -861,11 +861,98 @@ def check_arms(report, label, path, certificate, specs):
         proof = ROOT / 'evidence' / key / f'{key}-proof.json'
         if not proof.exists():
             continue
+        loops_note(report, label, key, proof)
         why = cert_arms.problems(key, allow.get(key), specs[key])
         if why:
             report.add('FAIL', label, f'interp spec {key}: untaken-arm record {why}',
                        f'run `tools/cert_arms.py measure {key}` and triage its UNTRIAGED arms '
                        'in tools/cert_arms_allow.py')
+
+
+def loops_note(report, label, key, proof):
+    """NOTE the cases a spec's frozen set leaves out as loops (the proof's
+    'loops', tools/interp_routine_differential.py loops_record): an arm only
+    those cases reach shows in cert_arms as untaken."""
+    try:
+        loops = json.loads(proof.read_text()).get('loops') or {}
+    except (OSError, ValueError):
+        return
+    for k, what in (('erasable_cadr_cycle', 'erasable-CADR cycle'), ('step_cap', 'step-cap loop')):
+        by = loops.get(k) or {}
+        if k == 'step_cap':
+            by = by.get('routines') or {}
+        if by:
+            report.add('NOTE', label, f'interp spec {key}: {sum(by.values())} cases left out as {what}s (both sides '
+                       'loop): ' + ', '.join(f'{r} x{n}' for r, n in by.items()))
+
+
+DSKY_SWEEP_FILES = ('PINBALL_GAME_BUTTONS_AND_LIGHTS.agc',)
+DSKY_SWEEP_MISSION = {'Luminary099': 'lm', 'Comanche055': 'cm'}
+DSKY_SWEEP_KNOWN = ROOT / 'tools' / 'dsky_sweep_known.json'
+DSKY_SWEEP_EVIDENCE = ROOT / 'evidence' / 'dsky-sweep' / 'dsky-sweep.json'
+
+
+def check_dsky_sweep(report, label, mission, name, accepted):
+    """A Pinball certificate needs the C64 DSKY sweep (acceptance item 6,
+    tools/dsky_sweep_vice.py, docs/DSKY-SWEEP.md) for its mission: the full
+    sweep's result committed as evidence/dsky-sweep/dsky-sweep.json
+    (--cases all), with no failure but the clock class, and no entry but the
+    clock class in tools/dsky_sweep_known.json (the CI sample's ratchet).
+    The class is the sweep tool's (each known entry's signature, which the
+    run checks), not the entry's reason. FAIL on a draft, WARN on a
+    certificate already accepted complete. The clock class (only the
+    centiseconds and timers one count apart: the resident clock's, RK) is a
+    WARN either way: it blocks item 6, not the Pinball file."""
+    if name not in DSKY_SWEEP_FILES:
+        return
+    level = 'WARN' if accepted else 'FAIL'
+    m = DSKY_SWEEP_MISSION.get(mission)
+    if not DSKY_SWEEP_KNOWN.exists():
+        report.add(level, label, 'tools/dsky_sweep_known.json is missing', 'restore it from the base branch')
+        return
+    known = {k: v for k, v in json.loads(DSKY_SWEEP_KNOWN.read_text()).items() if k.split(' ', 1)[0] == m}
+    clock = sorted(k for k, v in known.items() if v.get('signature', '').startswith('clock:'))
+    left = sorted(k for k in known if k not in clock)
+    if left:
+        report.add(level, label, f'{len(left)} DSKY sweep sample cases of {m} do not match the host on the C64 '
+                   f"(tools/dsky_sweep_known.json: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''})",
+                   'fix them, run `make dsky-sweep-vice` and take them off the list')
+    if not DSKY_SWEEP_EVIDENCE.exists():
+        dsky_sweep_clock(report, label, m, clock)
+        report.add(level, label, f'no full DSKY sweep result for {m} (evidence/dsky-sweep/dsky-sweep.json)',
+                   'run `tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep` and commit it')
+        return
+    sweep = json.loads(DSKY_SWEEP_EVIDENCE.read_text())
+    if sweep.get('mode') != 'all' or m not in sweep.get('missions', []):
+        dsky_sweep_clock(report, label, m, clock)
+        report.add(level, label, f"evidence/dsky-sweep/dsky-sweep.json is a {sweep.get('mode')} run of "
+                   f"{', '.join(sweep.get('missions', []))}, not the full sweep of {m}",
+                   'rerun it with --cases all on both missions')
+        return
+    store = sweep.get('stores', {}).get(m, {})
+    rope = ROOT / 'evidence' / f'fixed-data-{m}-original.rope.bin'
+    reu = ROOT / 'build' / 'flight-store' / f'{m}.reu'
+    stale = [what for what, path, key in (('rope', rope, 'rope_sha256'), ('store', reu, 'reu_sha256'))
+             if path.exists() and store.get(key) != hashlib.sha256(path.read_bytes()).hexdigest()]
+    if stale:
+        report.add(level, label, f"evidence/dsky-sweep/dsky-sweep.json's {m} {' and '.join(stale)} hash is not "
+                   'the current one (the full sweep ran on another build)', 'rerun the full sweep and commit it')
+    failed = [r for r in sweep.get('results', []) if r['m'] == m and not r['ok']]
+    bad = [r for r in failed if r.get('class') != 'clock']
+    if bad:
+        report.add(level, label, f'{len(bad)} of the full DSKY sweep\'s {m} cases do not match the host on the C64 '
+                   f"({', '.join(r['keys'] for r in bad[:6])}{' ...' if len(bad) > 6 else ''})",
+                   'fix them and rerun the full sweep')
+    dsky_sweep_clock(report, label, m, clock + [f"{m} {r['keys']}" for r in failed if r.get('class') == 'clock'])
+
+
+def dsky_sweep_clock(report, label, m, clock):
+    """WARN on the clock class: acceptance item 6 waits on it, Pinball does not."""
+    if clock:
+        clock = sorted(set(clock))
+        report.add('WARN', label, f'{len(clock)} DSKY sweep cases of {m} differ by the C64 clock class only '
+                   f"({', '.join(clock[:6])}{' ...' if len(clock) > 6 else ''}): acceptance item 6 waits on them",
+                   'the clock class in flight-scenarios/replay-mismatches.md; no Pinball change needed')
 
 
 # BOVB to ENDT(X)/TCDANZIG (TC DANZIG) with an order on its right: when
@@ -1079,6 +1166,8 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
                 check_c64(report, label, certificate)
                 check_spec_keys(report, label, path, certificate, specs)
                 check_arms(report, label, path, certificate, specs)
+                check_dsky_sweep(report, label, mission, name,
+                                 key == 'complete_native_coverage' and entry.get('status') == 'complete')
                 check_bovb_danzig(report, label, path, certificate, specs,
                                   key == 'complete_native_coverage' and entry.get('status') == 'complete')
     return report

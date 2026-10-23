@@ -1,0 +1,25 @@
+{
+ "scenario": "cm-p23-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 30000,
+ "keys": "@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E@20500V33E@25000V33E@27000V37E00E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_CHAN": "4000:033=077757,10000:033=077777,12000:033=077757,16000:033=077777",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p23.load,10500:tools/flight_scenarios/cm-p23-cal.load,16500:tools/flight_scenarios/cm-p23-mark.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 30003,
+ "periods_taken": 30000,
+ "periods_dropped": 3,
+ "agc_centiseconds": 30000,
+ "native_routines": 1870738,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "4469ea100559aa00e75af2900a7f3b57fb587fc73ff0a230916c7b6ca37a1ee8"
+}

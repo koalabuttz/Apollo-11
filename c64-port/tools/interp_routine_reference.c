@@ -178,7 +178,9 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
    if(!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode)qw_hook(get(RegZ));}
    if(qw_watch){qw_count("unresolved after 400000 more instructions");qw_watch=0;}}
   if(snapmode&&(!snaprow||!snapped)){if(!snapped)printf("%u N\n",n);continue;}}
-  if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0\n",n,pc);continue;}
+  /* IRC_TIMEOUT_LOC: a timeout row also gives LOC's physical address then
+   * (the differential's step-cap loops, #746). */
+  if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0",n,pc);if(getenv("IRC_TIMEOUT_LOC"))printf(" %u",loc_physical());printf("\n");continue;}
   if(cut&&!atcut){printf("%u 8 %u 0\n",n,pc);continue;}
   {agc_word keep[8];for(i=0;i<t->nd;++i)keep[i]=s.words[t->device[i]];
   for(i=0;i<2048u;++i)s.words[i]=(agc_word)((unsigned)*memory(i)&(i<2u?0177777u:077777u));

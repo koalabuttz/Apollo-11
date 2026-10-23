@@ -165,14 +165,40 @@ its restart burst stops at DSPMMJB, which the store does not hold. So the
 window after the GOJAM starts from a host snapshot taken after the restart,
 when the AGC is idle again.
 
+## The C64 flight program's own downlink (`RK_DOWNRUPT`)
+
+With `RK_DOWNRUPT=1` the flight resident's timers request DOWNRUPT every
+20 ms of AGC time, whenever SCALER1 (channel 4) passes a multiple of 64
+counts: `rk_timer_phase` in `src/resident_rupt.c`, the rule
+`tools/flight_downlink.h` applies on the host. Each step adds at most 16
+counts, so a pass is a change in channel 4's bit 6, one byte test. The
+flight program on its disk (`tools/flight_disk.py`) and the resident size
+report (`tools/resident_flight_build.py`) build with it; it costs 24 bytes
+on each program (LM 23,675 resident bytes, 2,692 free; CM 23,418, 2,949
+free; the floor is 2,048). The resident-kernel lane counts the 24 bytes toward the resident bytes it is recovering. Figures from `tools/resident_flight_build.py` on base f22a31dc with this change. Every other build leaves it off.
+
+`tools/flight_scenario_vice.py --replay --downrupt` runs a window with
+DOWNRUPT on both sides (`FLIGHT_DOWNRUPT=1` on the host, `RK_DOWNRUPT=1` on
+the C64). Each checkpoint compares channels 34 and 35 and the downlink's
+erasable state (DNTMGOTO, LDATALST and the list words) with the rest; with
+`--replay-every 2` there is a checkpoint at every DOWNRUPT.
+A scenario that sets `FLIGHT_DOWNRUPT=1` itself (lm-uplink-accept and
+cm-uplink-accept, for V74's erasable dump) turns `--downrupt` on, so
+`tools/program_acceptance.py`'s windows run DOWNRUPT on the C64 too. Before
+this, the host ran DOWNRUPT in those windows and the C64 did not, and every
+window differed first at CTLIST (0334, the downlink list pointer).
+
+| Window | Result |
+|---|---|
+| `cm-p22` 14000 + 40, every 2 cs (`make flight-downlink-live-vice`) | matches at all 20 checkpoints, one per DOWNRUPT, with no schedule skips: the P22 list (77773) from its ID and sync words on |
+| `cm-p22` 14000 + 800, every 50 cs | matches at all 16 checkpoints and ends in the host's state |
+| `cm-uplink-accept` 2010, 5010, 9210, 12010 and `lm-uplink-accept` 2010, 5010, 9210 + 300, every 50 cs | each matches at all 6 checkpoints and ends in the host's state (without DOWNRUPT on the C64: first difference at CTLIST, by 50-100 cs) |
+| `lm-csi` 2100 + 800, every 50 cs | matches at 50-400 cs; at 450 cs LDATALST is one word ahead on the C64 (02215 against 02214). Without DOWNRUPT the same window leaves the host at 51 cs (centiseconds 62 against 63): the LM clock drift on the replay-mismatch list (owner RK), not the downlink. Open: no LM live window matches yet |
+
 ## Gaps
 
-- The C64 windows run with a frozen clock. With CIA1 interrupts on, the
-  flight resident's `rk_timer_tick` (Resident-kernel lane, resident space)
-  does not request DOWNRUPT, so the C64 flight program sends no downlink by
-  itself. Adding that is one line in `src/resident_rupt.c` (`RK_RUPT_DOWN`
-  when channel 4 passes a multiple of 64, as `tools/flight_downlink.h` does
-  on the host), and it costs a DOWNRUPT pass every 20 ms in the CPU budget.
+- The C64 windows above run with a frozen clock and set DOWNRUPT pending
+  themselves; the live flight program is checked in the section above.
 - The x86 program (docs/X86-FLIGHT.md) does not take `FLIGHT_DOWNRUPT` yet
   (`platform/x86/flight_scenario.h` is Lane B's).
 - Nothing reads the stream as telemetry yet (yaAGC's

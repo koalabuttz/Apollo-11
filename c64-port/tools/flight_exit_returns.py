@@ -34,10 +34,10 @@ WORD = re.compile(r'^\d{6},\d{6}: (?:(\d\d),|   )(\d{4})\s+(\d{5})(?: (\d{5}))?\
 FILES = {'lm_servicer': ('SERVICER.agc',),
          'lm_ags_init': ('AGS_INITIALIZATION.agc',),
          'lm_lunar_landing': ('THE_LUNAR_LANDING.agc',),
-         'lm_burn_baby': ('BURN,_BABY,_BURN_--_MASTER_IGNITION_ROUTINE.agc',),
+         'lm_burn_baby': ('BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc',),
          'lm_imu_performance': ('IMU_PERFORMANCE_TEST_2.agc', 'IMU_PERFORMANCE_TESTS_4.agc')}
 # Files whose basic tables key their EXIT returns (checked).
-OPT_IN = {'lm_servicer', 'lm_imu_performance', 'lm_ags_init', 'lm_lunar_landing'}
+OPT_IN = {'lm_servicer', 'lm_imu_performance', 'lm_ags_init', 'lm_lunar_landing', 'lm_burn_baby'}
 # Interpretive orders without an operand word: a pair "X EXIT" with one of
 # these resumes at the next word.
 UNARY = set('ABVAL ABS ARCCOS ARCSIN COS DCOMP DSQ PUSH ROUND RVQ SIN SQRT STADR UNIT VCOMP VDEF VSQ'.split())
@@ -52,11 +52,14 @@ def name(p):
 
 
 def exit_returns(files):
-    """Sorted physical addresses of the basic words EXITs in files resume at."""
-    words, order, on = {}, [], False
+    """Sorted physical addresses of the basic words EXITs in files resume at.
+    Fails when a named file is not in the listing, so a wrong name cannot
+    read as "no EXIT returns"."""
+    words, order, on, seen = {}, [], False, set()
     for t in LST.read_text(errors='replace').splitlines():
         if 'Filename:' in t:
-            on = any(f in t for f in files)
+            on = [f for f in files if f in t]
+            seen.update(on)
             continue
         m = WORD.match(t)
         if not on or not m or m.group(5).lstrip().startswith('#'):
@@ -76,6 +79,8 @@ def exit_returns(files):
         if first is None:
             continue
         out.add(p + (1 if first in UNARY else 2))
+    if set(files) - seen:
+        sys.exit(f'FAIL: not in {LST.name}: {" ".join(sorted(set(files) - seen))}')
     return sorted(out)
 
 

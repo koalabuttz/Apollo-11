@@ -110,10 +110,10 @@ LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142
 # V57E at 660 s (LR updates permitted). From 816 s R12's altitude updates
 # take HCALC from about 186 m above the true height to about 77 m by
 # 955 s (HCALC lags the truth by 40-60 m here, a sample apart, with no
-# bias). It stops at 960 s, before the velocity reads: on the host the
-# LR velocity read then starts while an altitude read is still running
-# (SERVICER reaches READV 6 cs after READACCS), HMEAS 0 is stored and
-# the update moves HCALC about 1,200 m (replay-mismatches.md, RK).
+# bias). From 1,005 s SERVICER also reads the LR velocity (READV, LRVJOB)
+# after each altitude read; it runs to 1,100 s, 50 velocity reads, and
+# HMEAS is never zeroed (the interpretive words run with per-word
+# interrupt and NEWJOB points, #739).
 LR_UPDATE = {**NASSP, 'FLIGHT_LR': '60000:150'}
 LR_UPDATE_KEYS = NASSP_KEYS + '@66000V57E'
 # lm-p65-autoland-nassp: lm-p63-nassp on to the surface with no crew
@@ -506,12 +506,17 @@ P37_KEYS = ('@4500V37E37E@5000V25E+00001E+00000E+00000E@6400V33E@7000V22E+00100E
 # Off-nominal radar and uplink inputs (docs/FLIGHT-STORE.md, Flight
 # scenarios), each a nominal scenario with one input gone wrong.
 # lm-rendezvous-rr-dropout: lm-rendezvous with the RR data good lost from
-# 195 s to 210 s (FLIGHT_RR_DROP), over R22's third mark: the read fails
-# (alarm 521, RADMODES data fail), R22 drops the lock and R21 flashes
-# V50N72 again at 212 s; PRO at 215 s, the RR locks on and the marks go
-# on (4 by 340 s, one fewer); P34 solves TPI and ends on N59 as before.
-LM_RDZ_RR_DROP = {**LM_RDZ, 'FLIGHT_RR_DROP': '19500-21000'}
-LM_RDZ_RR_DROP_KEYS = LM_RDZ_KEYS.replace('@29000', '@21500V33E@29000')
+# 180 s to 210 s (FLIGHT_RR_DROP), over R22's third mark on every clock
+# (the scaled run reaches it at 200 s, the reference clock (W) at
+# 186 s): the read fails (alarm 521, RADMODES data fail), R22 drops the
+# lock and R21 flashes V50N72 again at 211 s; PRO at 215 s, the RR locks
+# on and the marks go on (one fewer); P34 solves TPI and ends on N59 as
+# before. P34's two PROs come at 304 s and 307 s, not 294 s and 297 s:
+# on the reference clock P34 comes up 5 s late after the dropout.
+LM_RDZ_RR_DROP = {**LM_RDZ, 'FLIGHT_RR_DROP': '18000-21000'}
+LM_RDZ_RR_DROP_KEYS = (LM_RDZ_KEYS.replace('@29000', '@21500V33E@29000')
+                       .replace('@29400V33E@29700V33E', '@30400V33E@30700V33E'))
+assert LM_RDZ_RR_DROP_KEYS.count('@30400V33E@30700V33E') == 1
 # cm-p20-vhf-dropout: cm-p20 with the VHF data good lost from 180 s to
 # 190 s, over R22's second range: VHFREAD takes BADEND, so no N49 and no
 # mark (VHFCNT 3 by 320 s, one fewer); the next ranges incorporate on
@@ -551,6 +556,53 @@ CM_P52_IMU_CAGE = {**P52, 'FLIGHT_CHAN': '4000:033=077757,6000:030=035377,6500:0
 # platform (channel 12 bit 6 with the CDU drives), and NO ATT lights with
 # GIMBAL LOCK.
 CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,19000:034=017200'}
+# cm-p52-coarse: P52 option 2 (nominal), the coarse align R50 runs (the
+# Comanche055 coverage map). cm-p52's load, the IMU model on (FLIGHT_IMU:
+# with channel 12 bits 4 and 6 set the CDUs go to THETAD); V37E52E,
+# proceed on V04N06 (option 00002, the default with PFRATFLG clear);
+# proceed on V06N34 with the time 0 (now): S52.3 computes the nominal
+# orientation and S52.2 the gimbal angles, V06N22 353.72, 110.96, 359.93
+# degrees; proceed; proceed on V50N25 00013 (coarse align, not gyro
+# torque): CAL53A coarse aligns (CDUY 314.7 to 111.0 degrees) and P52
+# goes on to V50N25 00015 (the star acquisition); terminate (V34), P00.
+CM_P52_COARSE = {'FLIGHT_CH30': '037377', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0', 'FLIGHT_IMU': '1',
+                 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p52.load'}
+CM_P52_COARSE_KEYS = '@4500V37E52E@6500V33E@7500V33E@8500V33E@9500V33E@12000V34E@13000V37E00E'
+# cm-p41: an RCS midcourse correction in translunar coast (the Comanche055
+# coverage map; inferred: a correction too small for the SPS). cm-p23's
+# load (the CSM at 24:30 GET), the vehicle held at the burn attitude
+# (FLIGHT_POKE puts the RCS DAP's CDUXD-ZD at the gimbal angles P41's
+# S40.1 asks for, 0.05, 266.07, 0.04 degrees, and FLIGHT_SPS's attitude
+# hold puts the CDUs there; the SPS never lights). V37E30E: V25 on V06N33
+# loads TIG at 8 minutes on the CMC clock, V25 on V06N81 a DV of 5.0 ft/s
+# along local horizontal X; proceed on N81, N42 and N45. V37E41E: R60's
+# maneuver is nil (proceed, then ENTER on V50N18); V06N85 shows VG 5.0
+# ft/s, average G starts at TIG-35 s, V16N85 at TIG. No CM RCS
+# translation model: the crew's +X translation gives no thrust, so VG
+# stays 5.0; proceed at 500 s, then P00.
+CM_P41 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
+          'FLIGHT_SPS': '28800', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p23.load',
+          'FLIGHT_POKE': '2100:3246=00005,2100:3250=57232,2100:3252=00004'}
+CM_P41_KEYS = ('@4500V37E30E@5500V25E+00000E+00008E+00000E@6800V33E@7200V25E+00050E+00000E+00000E'
+               '@8500V33E@9500V33E@10500V33E@11500V37E41E@12500V33E@13500E@50000V33E@51000V37E00E')
+# cm-v48-dap: the DAP data load (V48, R03) and V46 (the Comanche055
+# coverage map). cm-p40's load (DAPDATR1 21102: CSM+LM, quads AC and
+# BD, narrow deadband, 0.5 degree/s), before P30; V48: V04N46 shows
+# 21102 01111, the crew loads R1 21112 (the wide 5 degree deadband) and
+# proceeds; proceed on V06N47 (CSM 63,493 and LM 33,290 lb) and V06N48
+# (trims 0); S41.2 sets ADB 455 (wide) and RATEINDX 4 (0.5 degree/s);
+# V46 (STABLISH) establishes the RCS DAP with the new data.
+CM_V48_KEYS = '@2500V48E@3500V21E21112E@4500V33E@5500V33E@6500V33E@7500V46E'
+# cm-p40-sps-fail: cm-p40 with the SPS failing to light (the Comanche055
+# coverage map, off-nominal; no FLIGHT_SPS: no thrust, and with the
+# R60 maneuver nil no attitude model is needed). The same keys to the
+# V99N40 at TIG-5; at TIG the engine is commanded on but the PIPAs see
+# nothing, so R40 (LOTHRUST) finds the thrust low and FAILDSP flashes
+# V97N40 (SPS thrust fail) at TIG+3 s; the crew terminates (V34):
+# V97T turns the engine off and hands back to the RCS DAP; then P00.
+P40_SPS_FAIL = {k: v for k, v in P40.items() if k != 'FLIGHT_SPS'}
+P40_SPS_FAIL_KEYS = ('@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E'
+                     '@29600V33E@32000V34E@34000V37E00E')
 # Crew verbs the other CM scenarios do not key (the Comanche055 coverage
 # map, /mnt/project-files/acceptance/comanche055-coverage-map.md).
 # cm-p20-crew-verbs: cm-p20 to 200 s, then V90 (R36, out-of-plane): V04N12
@@ -624,6 +676,63 @@ UPLINK_ACCEPT_CM = uplink_accept('3662')   # TTPI E7,1662
 # entry still reaches P67.
 OVERLOAD_LM = {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_STEAL': '18500-24000:420', 'FLIGHT_BUSY_SAMPLE': '50'}
 OVERLOAD_CM = {**ENTRY, 'FLIGHT_STEAL': '21000-27000:600', 'FLIGHT_BUSY_SAMPLE': '50'}
+# Coverage scenarios for the Luminary099 program map (docs/acceptance/
+# Luminary099-program-map.json): the extended verbs and V37 programs no
+# flight scenario reached. Each starts from lm-rendezvous's load (the LM
+# and the CSM in lunar orbit, tools/flight_scenarios/lm-rendezvous.load)
+# or, for the AOT and surface rows, from lm-p52-realign's core and
+# lm-p57's load.
+# lm-coast-verbs: the coast verbs one after another, each ended by the
+# crew: V64E (V06N51 S-band angles, V34E), V66E (vehicles attached), V61E
+# and V62E (the attitude error needles' source), V75E and V65E (U,V jets),
+# V76E and V77E (minimum impulse, rate command), V93E (RENDWFLG cleared),
+# V95E (no state vector update), V67E (V06N99, the W-matrix errors, PRO),
+# V90E (V06N16 time, PRO; V06N90 out-of-plane, PRO), V47E (R47: V06N16,
+# PRO; the AGS downlist for 20 s and the IMU zero, then V50N16, PRO),
+# V44E (RR continuous designate ended: RADMODES bit 15 cleared), V80E and
+# V81E (LM and CSM state vector updates), V43E (V21N22 needle angles
+# +1.00, +2.00, -3.00 degrees loaded; V43 again and the CDU error
+# commands), V49E (R62: V06N22, PRO; R60's V50N18, PRO; V34E), V89E
+# (R63: V04N12 option 3, PRO; V06N18, V34E), V74E (erasable dump on the downlink), V42E (V21N93 fine
+# align torquing, +0.010, 0, -0.010 degrees), V41N20E (V21N22 coarse
+# align to +1.00, 0, 0 degrees), V40N20E (CDUs zeroed) and V96E
+# (integration stopped, P00).
+COAST_VERBS_KEYS = ('@2600V64E@3500V34E@4000V66E@4500V61E@5000V34E@5500V62E@6000V34E@6500V75E@7000V65E@7500V76E'
+                    '@8000V77E@8500V93E@9000V95E@9500V67E@10500V33E@11000V90E@12000V33E@12800V33E@13500V34E@14000V47E'
+                    '@15000V33E@18500V33E@19000V44E@19500V80E@20000V81E@20500V43E@20900+00100E+00200E-00300E@22000V49E@23000V33E'
+                    '@24000V33E@25000V34E@25500V89E@26500V33E@27500V34E@28000V74E@29000V42E'
+                    '@29500+00010E+00000E-00010E@31000V41N20E@31500+00100E+00000E+00000E@34000V40N20E@35500V96E')
+# V44's body runs only in continuous designate (RADMODES, FLGWRD12 at
+# 0110, negative): FLIGHT_POKE sets bit 15 at 188 s, as a designate the crew
+# ends would. V43's needs the PGNS mode switch off (channel 31 bits 13 and
+# 14 both 1) from 204 s to 220 s; LM_RDZ's 057777 is auto.
+COAST_VERBS = {**LM_RDZ, 'FLIGHT_POKE': '18800:0110=040100', 'FLIGHT_CHAN': '20400:031=077777,22000:031=057777'}
+# lm-coast-v55: V55E (V21N24, the AGC clock's correction, loaded as 0 h,
+# 0 min, 0.00 s). The N24 load goes through Pinball's HMSIN.
+COAST_V55_KEYS = '@2500V55E@3000+00000E+00000E+00000E'
+# lm-coast-r04: V63E (R04, the radar self test): V04N12 option 4 (the
+# RR), PRO; V16N72 shows the RR angles while the test drives them; V34E.
+COAST_R04_KEYS = '@2500V63E@4000V33E@6000V34E'
+# lm-coast-programs: V37E21E (P21: V04N06 option, PRO; V06N34 time 0,
+# PRO; V06N43 the LM's latitude, longitude and altitude, PRO); V37E31E
+# (P31, the Lambert aimpoint: V06N33 TIG, PRO; V06N81, V06N42 and V06N45,
+# PRO each); V37E25E (P25: R60's V50N18 maneuver to the tracking
+# attitude, PRO); V37E06E (P06: V50N25 00062, PGNCS power down, PRO).
+COAST_PROGRAMS_KEYS = ('@2500V37E21E@4000V33E@5500V33E@7000V33E@8500V37E31E@10000V33E@11500V33E@13000V33E'
+                       '@14500V33E@16000V33E@17000V37E25E@18500V33E@20000V37E06E@21500V33E')
+# lm-p51: P51 in flight from lm-p52-realign's core (its FLIGHT_POKE puts
+# each star on the forward detent's axis): V37E51E, proceed on V50N25
+# 00015; for each star (Regulus 22, then Gienah 24) its code loaded on
+# V01N71, PRO, an X then a Y mark (V53 after the X mark; channel 16,
+# KEYRUPT2), PRO on V54N71; PRO on V06N05 (star angle difference 0.00);
+# P51 ends in V37.
+LM_P51_KEYS = ('@200V37E51E@1000V33E@1300V21E00222E@2000V33E@3500x@3600y@4000V33E@4300V21E00224E@5000V33E'
+               '@6000x@6100y@6500V33E@7100V33E')
+# lm-p22-surface: P22 on the lunar surface from lm-p57's load: V37E22E,
+# PRO on V04N06; the CSM is beyond the RR's 400 nm, so R21 flashes alarm
+# 526 on V05N09 until V34E. (There is no surface RR model, so tracking is
+# not reached.)
+LM_P22_KEYS = '@3000V37E22E@4000V33E@5000V33E@6000V33E@7000V34E'
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -654,7 +763,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-tpi-search', 'cm', 44000, CM_TPI_SEARCH_KEYS, CM_P20),
           ('cm-p20-vhf-dropout', 'cm', 32000, CM_P20_VHF_DROP_KEYS, CM_P20_VHF_DROP),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
-          ('lm-p63-lr-update', 'lm', 96000, LR_UPDATE_KEYS, LR_UPDATE),
+          ('lm-p63-lr-update', 'lm', 110000, LR_UPDATE_KEYS, LR_UPDATE),
           ('lm-p63-lr-v58', 'lm', 96000, LR_V58_KEYS, LR_UPDATE),
           ('lm-p63-v60-nassp', 'lm', 115000, NASSP_KEYS + '@100000V60E', V60),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
@@ -672,6 +781,10 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p23-attached', 'cm', 30000, P23_ATTACHED_KEYS, P23),
           ('cm-v49-maneuver', 'cm', 15000, V49_KEYS, P40),
           ('cm-p21', 'cm', 25000, P21_KEYS, P52),
+          ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
+          ('cm-p41', 'cm', 53000, CM_P41_KEYS, CM_P41),
+          ('cm-v48-dap', 'cm', 12000, CM_V48_KEYS, P40),
+          ('cm-p40-sps-fail', 'cm', 37000, P40_SPS_FAIL_KEYS, P40_SPS_FAIL),
           ('lm-landing-ascent-nassp', 'lm', 215000, LANDING_KEYS, LANDING),
           ('lm-p65-autoland-nassp', 'lm', 140000, P65_KEYS, P65),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
@@ -685,7 +798,13 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'}),
           ('lm-p63-overload', 'lm', 27000, P63_KEYS + '@18000V16N68E', OVERLOAD_LM),
-          ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM)]
+          ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM),
+          ('lm-coast-verbs', 'lm', 36500, COAST_VERBS_KEYS, COAST_VERBS),
+          ('lm-coast-v55', 'lm', 5000, COAST_V55_KEYS, LM_RDZ),
+          ('lm-coast-r04', 'lm', 7000, COAST_R04_KEYS, LM_RDZ),
+          ('lm-coast-programs', 'lm', 23000, COAST_PROGRAMS_KEYS, LM_RDZ),
+          ('lm-p51', 'lm', 8000, LM_P51_KEYS, LM_P52),
+          ('lm-p22-surface', 'lm', 8000, LM_P22_KEYS, P57)]
 # Restarts for the whole-program acceptance (recovery_and_restart_tests,
 # one per phase group): a FLIGHT scenario with a hardware restart
 # (FLIGHT_GOJAM) at a centisecond in that phase, run to an end centisecond.
@@ -702,16 +821,45 @@ RESTART_POINTS = [  # (name, scenario, GOJAM cs, end cs, phase)
     ('cm-p40-burn-restart', 'cm-p40', 50000, 55000, 'P40 SPS burn, TVC DAP running, mid-burn'),
     ('cm-entry-restart', 'cm-entry', 25000, 32000, 'P64 entry, groups 1, 5 and 6 active'),
     ('cm-p20-restart', 'cm-p20', 22000, 25000, 'P20 rendezvous navigation, R22 running'),
-    ('cm-p22-restart', 'cm-p22', 14000, 23000, 'P22 orbital navigation, between the marks'),
+    # Ends at 21000, before the V37E00E at 21500, so the major-mode check
+    # sees P22 resumed, not the P00 both runs reach (#762).
+    ('cm-p22-restart', 'cm-p22', 14000, 21000, 'P22 orbital navigation, between the marks'),
 ]
 RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(at)})
                   for name, scen, at, end, _ in RESTART_POINTS
                   for base in [next(x for x in FLIGHT if x[0] == scen)]]
 
 
+# TC trap restarts: P00 idle, then V69E at 23.5 s. VERB69 is a TC to
+# itself, so the TC trap restarts the computer (yaAGC's own trap unscaled,
+# yaagc_trap in tools/flight_host_run.c; the spin at VERB69 under the work
+# clock there and in the C64's rk_resident_step; docs/FLIGHT-RESTART.md):
+# GOPROG with no group active, back to P00. tools/flight_restart_check.py
+# checks them on the host (lm-v69-restart, cm-v69-restart);
+# tools/flight_scenario_vice.py --scenario lm-v69 --snap-cs 2300 --replay on
+# the C64. Like RESTART_FLIGHT, the host differential (and the x86
+# program, which has no TC trap yet) does not run them.
+V69_FLIGHT = [('lm-v69', 'lm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'}),
+              ('cm-v69', 'cm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'})]
+
+
+def reach_points():
+    """{FLIGHT scenario: [point, ...]}: the bodies the program maps' rows
+    name (a row's `reach`, [[point, label], ...]) for the host run to
+    watch for (FLIGHT_REACH, tools/flight_host_run.c)."""
+    out = {}
+    for path in sorted((ROOT / 'docs/acceptance').glob('*-program-map.json')):
+        for row in json.loads(path.read_text()).get('rows', []):
+            for point, _ in row.get('reach', []):
+                for s in row.get('scenarios', []):
+                    if point not in out.setdefault(s, []):
+                        out[s].append(point)
+    return out
+
+
 def scenario(name):
-    """A FLIGHT or RESTART_FLIGHT row by name."""
-    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT}[name]
+    """A FLIGHT, RESTART_FLIGHT or V69_FLIGHT row by name."""
+    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT + V69_FLIGHT}[name]
 
 
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
@@ -791,6 +939,13 @@ def build(cc, m, engine):
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
                     '-c', 'tools/flight_host_run.c', '-o', str(_tmp(obj))], cwd=ROOT, check=True)
     os.replace(_tmp(obj), obj)
+    # Every host/*.o is linked: refuse objects left from another checkout
+    # or source (10-19: a pre-#734 flight_io.o failed the CM channel compare).
+    import flight_store_build
+    stale = flight_store_build.stale_host_objects()
+    if stale:
+        raise SystemExit(f'{len(stale)} host objects are stale ({", ".join(stale[:5])}...): '
+                         'run tools/flight_store_build.py --host-only first')
     objs = sorted(str(p) for p in (OUT / 'host').glob('*.o'))
     subprocess.run([cc, str(obj), *objs, str(engine), str(YAAGC / 'agc_engine_init.o'),
                     str(YAAGC / 'rfopen.o'), '-Wl,--gc-sections', '-lm', '-o', str(_tmp(exe))], cwd=ROOT, check=True)
@@ -812,6 +967,7 @@ def main():
     words = {m: flight_holes.listing(flight_holes.MISSION[m]) for m in exe}
     lanes = flight_holes.lanes()
     summary, failed = [], 0
+    commit = flight_holes.source_commit()
     for m, cs, keys in SCENARIOS:
         name, env = f'{m}-{keys or "p00-idle"}', {}
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
@@ -829,7 +985,7 @@ def main():
                              label=flight_holes.label(words[m], x[3]), count=int(x[4]))
                         for x in re.findall(r'^  load (\S+) slot (\d) (basic |interp) (\d\d,\d{4}): (\d+)$', text, re.M)),
                        key=lambda d: -d['count'])
-        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, exit=r.returncode,
+        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, exit=r.returncode, commit=commit,
                    samples=int(s[1]) if s else 0, equal=int(s[2]) if s else 0, differ=int(s[3]) if s else None,
                    major_mode=dict(native=mode[1], yaagc=mode[2]) if mode else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
@@ -844,22 +1000,29 @@ def main():
               + ", "
               f"{row['loads_per_second']} module loads per second"
               + (f", major mode native {mode[1]} yaAGC {mode[2]}" if mode else '') + ('' if not r.returncode else ' FAILED'))
+    reach = reach_points()
     for name, m, cs, keys, env, sched in ([(f'{m}-{re.sub(r"@[0-9]+", "", keys) or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)
                                            for m, cs, keys, env, sched, tag in SCALED]
                                           + [(f'{name}-scaled-x1', m, cs, keys, env, '1,1,2') for name, m, cs, keys, env in FLIGHT]):
+        points = reach.get(name[:-len('-scaled-x1')], []) if name.endswith('-scaled-x1') else []
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
-                           capture_output=True, text=True, env={**os.environ, **env, 'FLIGHT_SCALED': sched})
+                           capture_output=True, text=True, env={**os.environ, **env, 'FLIGHT_SCALED': sched,
+                                                                **({'FLIGHT_REACH': ','.join(points)} if points else {})})
         (EVIDENCE / f'{name}.log').write_text(r.stdout)
         failed += bool(r.returncode)
         text = r.stdout
         t = re.search(r'(\d+) CIA interrupts, (\d+) clock periods taken, (\d+) dropped \(rk_dilation\); AGC time (\d+) cs', text)
         n = re.search(r'(\d+) native routines \((\d+) yaAGC instructions of time\), (\d+) bridged', text)
         misses = re.findall(r'^  (?:basic |interp) (\d\d,\d{4}) (\S+): (\d+) times; (.*)$', text, re.M)
+        holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, exit=r.returncode,
-                   cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
+                   commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
                    periods_dropped=int(t[3]) if t else None, agc_centiseconds=int(t[4]) if t else None,
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
-                   routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses])
+                   routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
+                   unregistered=holes,
+                   reached={x[0]: int(x[1]) if x[1] else None
+                            for x in re.findall(r'^reach (\d\d,\d{4}): (?:at (\d+) cs|not reached)$', text, re.M)})
         summary.append(row)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "

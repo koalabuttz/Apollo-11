@@ -1,0 +1,25 @@
+{
+ "scenario": "lm-p63-descent-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 25000,
+ "keys": "@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E",
+ "inputs": {
+  "FLIGHT_CH30": "036357",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077737",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p63.load",
+  "FLIGHT_SWAP_MCT": "0"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "b9a2bcb2256e",
+ "cia_interrupts": 25869,
+ "periods_taken": 25000,
+ "periods_dropped": 869,
+ "agc_centiseconds": 25000,
+ "native_routines": 1112906,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "31b70baecb649873f57daefd3e29cb8f35a8df3ec7be767ba349579f0d25ca5f"
+}

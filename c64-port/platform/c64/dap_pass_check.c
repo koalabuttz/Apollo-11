@@ -29,7 +29,7 @@
 #define SNAP_DATA __attribute__((section(".boot.text.dp_snap")))
 #define BOOT __attribute__((noinline,section(".boot.text.dp_check")))
 /* Zeroed harness state in the cassette buffer (resident_flight.ld .cassette,
- * $0384-$03F3, between the step profile and the replay row), not in the
+ * $0384-$03F1, between the step profile and the replay row), not in the
  * resident's RAM: the DP_BUSY build had run 22 bytes into the ABI 2
  * service table (#720). load_snapshot() clears it. */
 #define CASSETTE __attribute__((section(".cassette")))
@@ -133,7 +133,7 @@ static void press_due(uint16_t elapsed)
 #ifdef DP_REPLAY
 /* The host run's inputs over the window and its end state
  * (tools/flight_host_run.c FLIGHT_REPLAY, tools/flight_scenario_vice.py
- * --replay). DP_REPLAY_ROWS 8-byte rows at DP_REPLAY_REU in the REU, outside
+ * --replay). DP_REPLAY_ROWS 10-byte rows at DP_REPLAY_REU in the REU, outside
  * the flight store and the resident: the centiseconds since the snapshot,
  * kind, where (0 at a sample point, 1 at any step boundary), address and
  * value, the address a C64 one (tools/flight_scenario_vice.py c64_rows
@@ -153,7 +153,9 @@ static void press_due(uint16_t elapsed)
  * the window ends: the centiseconds, the erasable words, rk_hardware and
  * rk_flight (RK_HARDWARE up to RK_RESTART_LAMP) and 32 bytes of rk_device
  * go to DP_END in the REU, after the same state at the first sample point at or
- * after each DP_EVERY centiseconds before; the rows applied to $c030, the
+ * after each centisecond the host wrote a checkpoint at (DP_STATE_FIRST, then
+ * the 2-byte table at DP_STATE_TABLE, ended by 0xFFFF; DP_REPLAY_CS is the
+ * host's own end, so both sides end at the same point); the rows applied to $c030, the
  * end's centiseconds to $c032, $c034 1 if the end was reached and $c035
  * the states written. */
 #include "resident_rupt.h"
@@ -165,12 +167,54 @@ static void press_due(uint16_t elapsed)
 typedef struct {
     uint16_t cs;
     uint8_t kind, where;
-    uint16_t addr, value;
+    uint16_t addr, value, work;
 } __attribute__((packed)) dp_row;
-_Static_assert(sizeof(dp_row) == 8u, "rows are 8 bytes (tools/flight_host_run.c rp_row)");
-/* The row being applied sits in the cassette buffer ($03F4-$03FB; the step
+_Static_assert(sizeof(dp_row) == 10u, "rows are 10 bytes (tools/flight_host_run.c rp_row)");
+#ifdef DP_SWEEP
+/* The DSKY sweep (tools/dsky_sweep_vice.py): many windows from one
+ * snapshot in one run. At DP_SWEEP in the REU: the case count, then one
+ * dp_case each (its rows, its window and where its end state goes; the run
+ * writes back whether it ended, the step status and the rows applied).
+ * Before the first case the snapshot (the erasable words, rk_hardware and
+ * rk_flight, rk_device) is stashed at DP_SWEEP_SNAP; each later case starts
+ * from it. A case ends where a window ends, at a step that does not return
+ * EXEC_OK, or DP_CS centiseconds in; the next one then starts. Only the
+ * window's end state is written (DP_STATE_FIRST 0xFFFF: no checkpoints). */
+typedef struct {
+    uint32_t rows_at;
+    uint16_t rows, cs;
+    uint32_t end_at;
+    uint8_t ended, status;
+    uint16_t applied;
+} __attribute__((packed)) dp_case;
+_Static_assert(sizeof(dp_case) == 16u, "cases are 16 bytes (tools/dsky_sweep_vice.py)");
+static dp_case sweep_case;
+static uint16_t sweep_n, sweep_i;
+static uint32_t sweep_at = DP_SWEEP + 2ul;
+#define DP_REPLAY_CS sweep_case.cs
+#endif
+/* The row being applied sits in the cassette buffer ($03F2-$03FB; the step
  * profile uses its bottom), not in the resident's RAM. */
-#define row (*(dp_row *)0x03f4u)
+#define row (*(dp_row *)0x03f2u)
+/* The centisecond the C64 is in. */
+static uint16_t replay_now CASSETTE;
+/* A boundary row in that centisecond waits for its place in it (where
+ * bits 1-2: the work clock's step, 1 the TIME1/TIME3 step's, then 2 and 3;
+ * work the MCT since that step), so a DAP pass reads the CDUs on the
+ * host's side of it. rk_tick_phase's step: 1 for 2, 5, 8; 2 for 0, 3, 6;
+ * 3 for 1, 4, 7. */
+/* The row code runs from $0200 (the flight program's DSKY code region,
+ * resident_flight.ld .dsky: free in this program), which load_snapshot
+ * fills from its load copy, not from the resident's RAM. */
+#define LOW_TEXT(name) __attribute__((noinline, section(".dsky.text." name)))
+extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
+#define LOW_DATA __attribute__((section(".dsky.text.dp_steps")))
+LOW_DATA static const uint8_t phase_step[9] = {2, 3, 1, 2, 3, 1, 2, 3, 1};
+LOW_TEXT("dp_early") static uint8_t row_early(void)
+{
+    uint8_t at = row.where >> 1 & 3u, step = phase_step[rk_tick_phase];
+    return at && row.cs == replay_now && (step < at || (step == at && rk_work < row.work));
+}
 static uint16_t rows_left = DP_REPLAY_ROWS;
 static uint8_t row_ready CASSETTE;
 static uint32_t row_at = DP_REPLAY_REU, state_at = DP_END;
@@ -178,14 +222,8 @@ static uint16_t replay_t0 CASSETTE;
 #ifdef DP_BUSY
 static uint16_t busy_last CASSETTE;
 #endif
-#ifndef DP_EVERY
-#define DP_EVERY DP_REPLAY_CS
-#endif
-/* --chain: the host's own window length, which the checkpoints stay
- * below; the window itself runs on to DP_REPLAY_CS, the first sample point
- * with no interrupt pending that the host ended it at. */
-#ifndef DP_EVERY_UNTIL
-#define DP_EVERY_UNTIL DP_REPLAY_CS
+#if !defined(DP_STATE_FIRST) || !defined(DP_STATE_TABLE)
+#error "DP_REPLAY needs DP_STATE_FIRST and DP_STATE_TABLE, the host's checkpoint centiseconds"
 #endif
 /* The states DP_END has room for (tools/flight_scenario_vice.py
  * max_states): the checkpoints stop one short of it, so the end always has
@@ -195,7 +233,7 @@ static uint16_t busy_last CASSETTE;
 #endif
 _Static_assert(DP_STATES_MAX >= 1u && DP_STATES_MAX <= 255u, "the states written are counted in a byte ($c035)");
 #define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
-static uint16_t state_next = DP_EVERY;
+static uint16_t state_next = DP_STATE_FIRST;
 static uint8_t states CASSETTE;
 /* TIME1 since the snapshot: a window is at most 16,383 cs. */
 static uint16_t replay_cs(void)
@@ -214,14 +252,16 @@ static uint8_t sample_point(uint16_t t)
     (void)t;
     return 0;
 }
-__attribute__((noinline)) static void stash(void *from, uint16_t n)
+/* stash and replay_state run from the low region too (LOW_TEXT): with
+ * DP_BUSY and RK_STEAL the resident's RAM has no room for them. */
+LOW_TEXT("dp_stash") static void stash(void *from, uint16_t n)
 {
     apollo_reu_transfer(APOLLO_REU_STASH, from, state_at, n);
     state_at += n;
 }
 /* The state at a sample point: its centiseconds, the erasable words,
  * rk_hardware and rk_flight, then 32 bytes of rk_device. */
-__attribute__((noinline)) static void replay_state(uint16_t t)
+LOW_TEXT("dp_state") static void replay_state(uint16_t t)
 {
     static uint16_t at CASSETTE;
     at = t;
@@ -245,7 +285,9 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
          * PIPA count: the PIPAs count whether or not the C64 is idle, and a
          * READACCS on a C64 that missed the host's sample point would read
          * fewer counts than the host's. */
-        if (row.cs > t || (!row.where && !sp && (row.kind != 1u || row.cs >= t))) return;
+        if (row.cs > t || (!(row.where & 1u) && !sp && (row.kind != 1u || row.cs >= t)) ||
+            row_early())
+            return;
         w = (uint16_t *)row.addr;
         __asm__ volatile("sei");
         if (row.kind == 1) {
@@ -272,6 +314,7 @@ __attribute__((noinline)) static uint8_t replay_due(void)
 {
     uint16_t t = replay_cs();
     uint8_t sp = sample_point(t);
+    replay_now = t;
     if (sp) {
 #ifdef DP_BUSY
         busy_last = t;
@@ -285,9 +328,11 @@ __attribute__((noinline)) static uint8_t replay_due(void)
             replay_state(t);
             return 1;
         }
-        if (t >= state_next && t < DP_EVERY_UNTIL && states < DP_STATES_MAX - 1u) {
+        if (t >= state_next && states < DP_STATES_MAX - 1u) {
+            /* The next host checkpoint: table entry `states` - 1 after
+             * this one is written (entry 0 follows DP_STATE_FIRST). */
             replay_state(t);
-            while (state_next <= t) state_next += DP_EVERY;
+            apollo_reu_transfer(APOLLO_REU_FETCH, &state_next, DP_STATE_TABLE + 2ul * (states - 1u), 2u);
         }
     }
     replay_rows(t, sp);
@@ -299,6 +344,9 @@ extern char __dp_cassette_start[], __dp_cassette_end[];
 static void BOOT load_snapshot(void){
     memset(__dp_cassette_start, 0, (size_t)(__dp_cassette_end - __dp_cassette_start));
     memcpy(IMAGE->words, snap_words, sizeof snap_words);
+#ifdef DP_REPLAY
+    memcpy(__rk_dsky_start, __rk_dsky_load, (size_t)(__rk_dsky_end - __rk_dsky_start));
+#endif
 #ifdef RK_STEP_PROFILE
  memset(prof, 0, DP_SEGMENTS * sizeof(dp_segment));
 #endif
@@ -317,13 +365,71 @@ static void BOOT load_snapshot(void){
 
 static dp_record r CASSETTE;
 static dp_summary sum CASSETTE;
-static void close_record(uint32_t cycles,enum exec_status st){
- r.cycles=cycles;r.status=(uint8_t)st;
- if(sum.records<DP_MAX){
-  apollo_reu_transfer(APOLLO_REU_STASH,&r,DP_SCRATCH+(uint32_t)sum.records*sizeof r,sizeof r);
-  ++sum.records;}
- else sum.lost=1;
- r.steps=0;r.job_loads=0;r.task_loads=0;r.request=0;}
+#ifdef DP_SWEEP
+/* The snapshot's state (rk_hardware, rk_flight and the erasable words, one
+ * run from RK_HARDWARE to the image's end, then rk_device) to or from the
+ * REU. */
+__attribute__((noinline)) static void sweep_snap(uint8_t how)
+{
+    apollo_reu_transfer(how, (void *)RK_HARDWARE, DP_SWEEP_SNAP, 0x8000u - RK_HARDWARE);
+    apollo_reu_transfer(how, &rk_device, DP_SWEEP_SNAP + 0x8000u - RK_HARDWARE, sizeof rk_device);
+}
+/* The first call stashes the snapshot and starts case 0. Later calls write
+ * case sweep_i's outcome back to its dp_case and start the next case from
+ * the snapshot; 0 after the last. */
+__attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t status)
+{
+    if (!sweep_n) {
+        apollo_reu_transfer(APOLLO_REU_FETCH, &sweep_n, DP_SWEEP, 2u);
+        sweep_snap(APOLLO_REU_STASH);
+    } else {
+        sweep_case.ended = ended;
+        sweep_case.status = status;
+        sweep_case.applied = sweep_case.rows - rows_left;
+        apollo_reu_transfer(APOLLO_REU_STASH, &sweep_case, sweep_at, 16u);
+        sweep_at += 16u;
+        if (++sweep_i >= sweep_n) return 0;
+        __asm__ volatile("sei");
+        sweep_snap(APOLLO_REU_FETCH);
+    }
+    apollo_reu_transfer(APOLLO_REU_FETCH, &sweep_case, sweep_at, 16u);
+    __asm__ volatile("sei");
+    rk_pending = 0;
+    rk_work = 0;
+    rk_tick_phase = 0;
+    rk_ticks = ov2_irq_count;
+    __asm__ volatile("cli");
+    replay_t0 = IMAGE->words[025];
+    rows_left = sweep_case.rows;
+    row_at = sweep_case.rows_at;
+    state_at = sweep_case.end_at;
+    row_ready = 0;
+    states = 0;
+    state_next = DP_STATE_FIRST;
+    replay_now = 0;
+#ifdef DP_BUSY
+    busy_last = 0;
+#endif
+    sum.start_cs = agc_cs();
+    return 1;
+}
+#endif
+
+__attribute__((unused)) static void close_record(uint32_t cycles, enum exec_status st)
+{
+    r.cycles = cycles;
+    r.status = (uint8_t)st;
+    if (sum.records < DP_MAX) {
+        apollo_reu_transfer(APOLLO_REU_STASH, &r, DP_SCRATCH + (uint32_t)sum.records * sizeof r,
+                            sizeof r);
+        ++sum.records;
+    } else
+        sum.lost = 1;
+    r.steps = 0;
+    r.job_loads = 0;
+    r.task_loads = 0;
+    r.request = 0;
+}
 
 #ifdef DP_REPLAY
 static uint8_t replay_ended CASSETTE;
@@ -627,6 +733,9 @@ int main(void){
  rk_ticks=ov2_irq_count;
  __asm__ volatile("cli");
  dil=rk_dilation;sum.start_cs=agc_cs();
+#ifdef DP_SWEEP
+ sweep_next(0u, 0u);
+#endif
  job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];
  timer_start();
  t=now();
@@ -644,7 +753,11 @@ int main(void){
 #ifdef DP_REPLAY
   if (replay_due()) {
       replay_ended = 1;
+#ifdef DP_SWEEP
+      if (sweep_next(1u, EXEC_OK)) continue;
+#else
       if (r.steps) close_record(s0 - t, EXEC_OK);
+#endif
       break;
   }
 #endif
@@ -680,12 +793,30 @@ int main(void){
    if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS)break;
    continue;}
 #endif
+#ifdef DP_SWEEP
+  /* The sweep keeps no interrupt records: a case ends at a step error or
+   * DP_CS centiseconds in, and the next one starts. */
+  (void)s0;
+  (void)s1;
+  (void)job;
+  (void)task;
+  (void)t;
+  if (st != EXEC_OK || ((uint16_t)(agc_cs() - sum.start_cs) & 037777u) >= DP_CS) {
+      if (sweep_next(0u, (uint8_t)st)) {
+          st = EXEC_OK;
+          continue;
+      }
+      break;
+  }
+ }
+#else
   if(rk_rupt_last){if(r.steps)close_record(s0-t,EXEC_OK),t=s0;r.request=rk_rupt_last;}
   ++r.steps;
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_JOB]!=job){job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];if(job)++r.job_loads;}
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task){task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];if(task)++r.task_loads;}
   if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS){close_record(s1-t,st);break;}
   if(r.request&&!rk_hardware.in_interrupt){close_record(s1-t,EXEC_OK);t=s1;}}
+#endif
  sum.cycles=now();
  __asm__ volatile("sei");
  sum.dilation=rk_dilation-dil;sum.end_cs=agc_cs();sum.status=(uint8_t)st;
@@ -704,8 +835,11 @@ int main(void){
      mail[0x35] = states;
  }
 #endif
+#ifndef DP_SWEEP
+ /* (The sweep keeps no records; a 0-byte REU transfer would move 64 KB.) */
  apollo_reu_transfer(APOLLO_REU_FETCH, RECORDS, DP_SCRATCH,
                      (sum.records < DP_KEEP ? sum.records : DP_KEEP) * sizeof r);
+#endif
  *SUMMARY=sum;
 #ifdef RK_STEP_PROFILE
  memcpy(PROFILE, prof, DP_SEGMENTS * sizeof(dp_segment));

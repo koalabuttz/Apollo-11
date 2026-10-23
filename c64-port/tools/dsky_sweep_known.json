@@ -1,0 +1,150 @@
+{
+ "cm V01N36E": {
+  "signature": "stop: basic 41,2365 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V03N20E": {
+  "signature": "stop: basic 41,2400 refused by lanec_pin_cm_routines, basic 41,2402",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V04N36E": {
+  "signature": "stop: basic 41,2360 refused by lanec_pin_cm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V05N20E": {
+  "signature": "stop: basic 41,2353 refused by lanec_pin_cm_routines, basic 41,2355, basic 41,2360 refused by lanec_pin_cm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_cm_routines, basic 41,2366, basic 41,2500",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V06N36E": {
+  "signature": "stop: basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V11N36E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 41,2365 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V12N36E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 41,2373 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V13N36E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 41,2400 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V14N43E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V15N36E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 41,2353 refused by lanec_pin_cm_routines, basic 41,2355, basic 41,2360 refused by lanec_pin_cm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_cm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V16N36E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V16N36EK": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 40,2656, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V16N36EKR": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V16N36EQ": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 40,2656, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V16N36EV32E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V16N65E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,2655 refused by lanec_pin_cm_routines, basic 42,3143 refused by lanec_pin_cm_routines, basic 42,3145 refused by lanec_pin_cm_routines, basic 42,3146, basic 42,3336, basic 42,3342, basic 42,3343",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V17N20E": {
+  "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,3105, basic 40,3121",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "cm V37E00E": {
+  "signature": "difference: 1136",
+  "why": "waitlist word 1136 one count apart at the end (the charge class; the clock offset cleared on base 2d8158f0) (owner Certificate fixes from RK, replay-mismatches.md)"
+ },
+ "lm V01N36E": {
+  "signature": "stop: basic 41,2365 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V03N20E": {
+  "signature": "stop: basic 41,2400 refused by lanec_pin_lm_routines, basic 41,2402",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V04N36E": {
+  "signature": "stop: basic 41,2360 refused by lanec_pin_lm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V05N20E": {
+  "signature": "stop: basic 41,2353 refused by lanec_pin_lm_routines, basic 41,2355, basic 41,2360 refused by lanec_pin_lm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_lm_routines, basic 41,2366, basic 41,2500",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V06N36E": {
+  "signature": "stop: basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V06N49E": {
+  "signature": "stop: basic 40,2717 refused by lanec_pin_lm_routines, basic 40,2722, basic 40,2723, basic 40,2726, basic 40,2727, basic 40,2731",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V11N36E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 41,2365 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V12N36E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 41,2373 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V13N36E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 41,2400 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V14N43E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V15N36E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 41,2353 refused by lanec_pin_lm_routines, basic 41,2355, basic 41,2360 refused by lanec_pin_lm_routines, basic 41,2362, basic 41,2365 refused by lanec_pin_lm_routines",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V16N36E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V16N36EK": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V16N36EKR": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V16N36EQ": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V16N36EV32E": {
+  "signature": "run: the C64 stopped (status 1) before a sample point 800 cs in (rows)",
+  "why": "the C64 stops at 42,3230 (a Pinball point refused in the #674 domain, EXEC_OUT_OF_SCOPE) about 380 cs after the snapshot, a point the host run of this case never reaches (the host stops the monitor first): a C64/host path difference, traced again once #674 lands (owner Certificate fixes)"
+ },
+ "lm V16N65E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,2747 refused by lanec_pin_lm_routines, basic 40,2750, basic 42,3230 refused by lanec_pin_lm_routines, basic 42,3232 refused by lanec_pin_lm_routines, basic 42,3233, basic 42,3423, basic 42,3425, basic 42,3427, basic 42,3430",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V17N20E": {
+  "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,3200, basic 40,3214",
+  "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
+ },
+ "lm V36E": {
+  "signature": "clock: TIME4",
+  "why": "C64 TIME4 one tick late: AOSTASK split across lm_aostask parts is charged per run (owner Certificate fixes from RK: part-charge PR after #738, replay-mismatches.md)"
+ }
+}

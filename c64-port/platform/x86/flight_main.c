@@ -10,18 +10,23 @@
  * Runs CS centiseconds of AGC time (default 1000). KEYS (e.g. V37E12E) are
  * DSKY keys, @CS timing them. Scenario inputs FLIGHT_CH30-33, FLIGHT_POKE,
  * FLIGHT_LOAD, FLIGHT_GOJAM and FLIGHT_DOWNRUPT: platform/x86/
- * flight_scenario.h. Environment:
+ * flight_scenario.h (with the radars and X86_START). Environment:
  *   X86_SPEED     AGC time per wall time: 1 real time (default), 0 flat out
  *   X86_REPORT    a JSON report: points the interpreter core ran (and why),
  *                 basic points no routine holds, steps, clock
  *   X86_SAMPLES   each centisecond's erasable memory at the first idle
- *                 ADVAN at or after it, one line of 2048 octal words
+ *                 ADVAN at or after it, after that point's inputs and
+ *                 with nothing pending (the harness's FLIGHT_SNAPSHOT),
+ *                 one line of 2048 octal words
  *   X86_SAMPLES_FROM  the first centisecond X86_SAMPLES writes (default 1)
  *   X86_DSKY=1    a live DSKY in the terminal (platform/x86/terminal_dsky.h);
  *                 with no CS argument the run goes on until q
  *   X86_TYPED     characters sent through the live DSKY's typed-key path
  *                 from the start, as if typed (the lockstep check takes the
- *                 same) */
+ *                 same)
+ *   X86_WATCH     ADDR[,ADDR...] (octal, up to 64): after each routine,
+ *                 "watch CS ADDR VALUE" for each word that changed (the
+ *                 harness's FLIGHT_WATCH with FLIGHT_WATCH_STEP) */
 #include <string.h>
 #include <time.h>
 #include "flight_scenario.h"
@@ -35,6 +40,35 @@
 #ifndef X86_INTERP_MODE
 #define X86_INTERP_MODE FD_INTERP_COMPILED
 #endif
+
+/* X86_WATCH: the words to print when they change, and their last values. */
+static struct {
+    unsigned n, addr[64];
+    agc_word last[64];
+} watch;
+
+static void watch_parse(const char *t)
+{
+    char *e;
+    while (t && *t && watch.n < 64u) {
+        unsigned long a = strtoul(t, &e, 8);
+        if (e == t || a >= 2048ul) break;
+        watch.addr[watch.n] = (unsigned)a;
+        watch.last[watch.n++] = (agc_word)~0u;
+        t = *e == ',' ? e + 1 : e;
+    }
+}
+
+static void watch_print(const fd_state *st)
+{
+    unsigned i;
+    for (i = 0; i < watch.n; ++i)
+        if (st->s.words[watch.addr[i]] != watch.last[i]) {
+            watch.last[i] = st->s.words[watch.addr[i]];
+            printf("watch %lu cs: %04o %05o\n", fd_centiseconds(st), watch.addr[i],
+                   (unsigned)watch.last[i]);
+        }
+}
 
 static double now_s(void){struct timespec t;clock_gettime(CLOCK_MONOTONIC,&t);return (double)t.tv_sec+(double)t.tv_nsec*1e-9;}
 
@@ -76,7 +110,9 @@ int main(int argc, char **argv)
     } else
         td_init(&dsky);
     for (; typed && *typed; ++typed) td_type(&dsky, (unsigned char)*typed);
-    fs_start(&st, X86_INTERP_MODE);
+    if (!fs_start(&st, &in, X86_INTERP_MODE)) return 2;
+    watch_parse(getenv("X86_WATCH"));
+    watch_print(&st);
     t0 = now_s();
     while (fd_centiseconds(&st) < cs) {
         fd_boundary(&st);
@@ -91,16 +127,18 @@ int main(int argc, char **argv)
                 nanosleep(&d, 0);
             }
         }
-        if (fs_at_idle_advan(&st)) {
+        if (fs_sample_point(&in, &st)) {
             unsigned long t = fd_centiseconds(&st);
-            for (; next <= cs && t >= next; ++next)
+            if (fs_inputs_due(&in, &st)) continue;
+            /* As the harness's FLIGHT_SNAPSHOT: after the point's pokes,
+             * models and channel changes, and only with nothing pending. */
+            for (; next <= cs && t >= next && !st.pending; ++next)
                 if (samples && next >= from) {
                     unsigned i;
                     fprintf(samples, "%lu", next);
                     for (i = 0; i < 2048u; ++i) fprintf(samples, " %05o", (unsigned)st.s.words[i]);
                     fputc('\n', samples);
                 }
-            if (fs_inputs_due(&in, &st)) continue;
             if (live) td_read_keys(&dsky);
             if (dsky.quit) break;
             if (td_inputs_due(&dsky, &st)) continue;
@@ -120,6 +158,7 @@ int main(int argc, char **argv)
             break;
         }
         fs_after_routine(&in, &st);
+        if (watch.n) watch_print(&st);
         if (live) {
             td_after_routine(&dsky, &st);
             td_draw(&dsky, &st);

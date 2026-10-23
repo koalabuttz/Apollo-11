@@ -47,7 +47,7 @@ import flight_host_differential as fhd  # noqa: E402
 import reu_layout  # noqa: E402
 
 
-def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1):
+def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
     """replay: the window's centiseconds; the host run then goes on through
     the window and writes its inputs (-snap.h.replay) and its end state
     (-snap.h.end, and every `every` cs before), tools/flight_host_run.c
@@ -58,7 +58,7 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1):
     header = dp.WORK / f'{tag}-snap.h'
     header.unlink(missing_ok=True)
     for n in range(chain):
-        for x in ('', '.replay', '.end', '.seam'):
+        for x in ('', '.replay', '.end', '.seam', '.after', '.after-replay'):
             if n or x:
                 pathlib.Path(f'{header}{f"-{n}" if n else ""}{x}').unlink(missing_ok=True)
     # The host takes the snapshot at the first point at or after cs with no
@@ -66,6 +66,7 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1):
     # over 100 cs), then stops; running to cs + 1000 leaves room for that.
     r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000 * chain + replay * chain), keys], cwd=ROOT,
                        env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}',
+                            **({'FLIGHT_DOWNRUPT': '1'} if downrupt else {}),
                             **({'FLIGHT_REPLAY': f'{replay},0,{every},{chain}'}
                                if replay else {})},
                        capture_output=True, text=True)
@@ -80,8 +81,10 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1):
 # The output channels after the erasable words in the end state
 # (tools/flight_host_run.c rp_end, platform/c64/dap_pass_check.c replay_end).
 END_CHANNELS = ['channel 5', 'channel 6', 'channel 11', 'channel 12', 'channel 13', 'channel 14', 'channel 34',
-                'channel 35', 'superbank']
-ROW = struct.Struct('<HBBHH')
+                'channel 35', 'superbank', 'channel 10', 'interrupts enabled', 'radar gate']
+# tools/flight_host_run.c rp_row: centiseconds, kind, where (bit 0; bits
+# 1-2 the work clock's step in the centisecond), address, value, work.
+ROW = struct.Struct('<HBBHHH')
 # A snapshot more than this far past --snap-cs is reported as slid.
 SLIDE_CS = 100
 
@@ -142,19 +145,19 @@ def c64_rows(rows, m, device, pending):
     copy of it, the radar gate a byte store (4), and interrupt requests (3)
     an OR into rk_pending."""
     out = []
-    for cs, kind, where, addr, value in ROW.iter_unpack(rows):
+    for cs, kind, where, addr, value, work in ROW.iter_unpack(rows):
         if kind in (0, 1):
-            out.append((cs, 2 if kind == 0 else 1, where, IMAGE + 2 * addr, value))
+            out.append((cs, 2 if kind == 0 else 1, where, IMAGE + 2 * addr, value, work))
         elif kind == 3:
-            out.append((cs, 3, where, pending, value))
+            out.append((cs, 3, where, pending, value, work))
         elif addr == 0o377:
-            out.append((cs, 4, where, RK_HARDWARE + RADAR_GATE, value))
+            out.append((cs, 4, where, RK_HARDWARE + RADAR_GATE, value, work))
         else:
             at = [RK_HARDWARE + HW[addr]] if addr in HW else [RK_FLIGHT_IO + FLIGHT[addr]] if addr in FLIGHT else []
             at += [device + DEVICE[m][addr]] if addr in DEVICE[m] else []
             if not at:
                 sys.exit(f'FAIL: no C64 copy of channel {addr:o} for the replay')
-            out += [(cs, 2, where, x, value) for x in at]
+            out += [(cs, 2, where, x, value, work) for x in at]
     return b''.join(ROW.pack(*x) for x in out)
 
 
@@ -173,6 +176,10 @@ def c64_states(data, n, m):
         ch = [word(dev + DEVICE[m][c]) if c in DEVICE[m] else word(io + HW[c]) for c in (0o5, 0o6, 0o11, 0o12, 0o13, 0o14)]
         ch += [word(io + RK_FLIGHT_IO - RK_HARDWARE + FLIGHT[c]) for c in (0o34, 0o35)]
         ch.append(word(dev + DEVICE[m]['superbank']))
+        # Channel 10 (the last DSKY relay word) and RELINT/INHINT: the
+        # mission's io record has interrupt_enabled right after superbank
+        # (p66_bias_io, cm_native_io), 0 or 1 on the host.
+        ch += [word(io + HW[0o10]), int(word(dev + DEVICE[m]['superbank'] + 2) != 0), b[io + RADAR_GATE]]
         out.append((cs, (*words, *ch)))
     return out
 
@@ -181,16 +188,34 @@ def c64_states(data, n, m):
 WINDOW_MAX = 0o37777
 
 
-def pair_states(host_s, c64_s, ended):
+def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
     """Host and C64 states to compare, paired by their centiseconds: each
     side writes a state at its own first sample point at or after a mark,
     so one side can have a state the other has none for. Checkpoints pair
-    at the same centisecond; the two ends (the host's last
-    state, and the C64's last when it reached the end) always pair. Returns
-    (pairs, unpaired), unpaired as dict(side, cs)."""
+    at the same centisecond. The two ends pair when they are at the same
+    centisecond. A C64 end later than the host's pairs with the host's
+    state at that centisecond from after (the .after states the host
+    writes past its end, tools/flight_host_run.c RP_AFTER_CS) when no host
+    input came before it (after_rows: the .after-replay rows'
+    centiseconds); otherwise both ends are unpaired. With after None (a
+    chain window before the last, whose end is the next one's seam) the
+    ends always pair. Returns (pairs, unpaired, end): unpaired as
+    dict(side, cs); end None when no ends were compared, else
+    dict(shift_cs, paired)."""
     h, c = list(host_s), list(c64_s)
-    ends = [(h.pop(), c.pop())] if h and c and ended else []
-    pairs, unpaired, i, j = [], [], 0, 0
+    pairs, unpaired, end, ends, i, j = [], [], None, [], 0, 0
+    if h and c and ended:
+        he, ce = h.pop(), c.pop()
+        late = [x for x in (after or ()) if x[0] == ce[0]]
+        if ce[0] == he[0] or after is None:
+            ends, end = [(he, ce)], dict(shift_cs=ce[0] - he[0], paired=True)
+        elif late and not any(cs < ce[0] for cs in after_rows):
+            ends, end = [(late[0], ce)], dict(shift_cs=ce[0] - he[0], paired=True)
+        else:
+            end = dict(shift_cs=ce[0] - he[0], paired=False,
+                       inputs_between=any(cs < ce[0] for cs in after_rows), host_has_cs=bool(late))
+            unpaired.append(dict(side='host', cs=he[0], end=True))
+            unpaired.append(dict(side='C64', cs=ce[0], end=True))
     while i < len(h) and j < len(c):
         if h[i][0] == c[j][0]:
             pairs.append((h[i], c[j]))
@@ -202,7 +227,24 @@ def pair_states(host_s, c64_s, ended):
             unpaired.append(dict(side='C64', cs=c[j][0]))
             j += 1
     unpaired += [dict(side='host', cs=x[0]) for x in h[i:]] + [dict(side='C64', cs=x[0]) for x in c[j:]]
-    return pairs + ends, unpaired
+    return pairs + ends, unpaired, end
+
+
+def replay_verdict(host_s, c64_s, ended, after=None, after_rows=(), skip=None):
+    """pair_states, then each pair compared in order up to the first that
+    differs: dict(pairs, unpaired, end, diff, at_cs, matched, skipped). A
+    window matches only when diff is empty, it ended and its end paired."""
+    pairs, unpaired, end = pair_states(host_s, c64_s, ended, after, after_rows)
+    diff, at_cs, matched, skipped = [], None, [], set()
+    for (hc, hw), (cc, cw) in pairs:
+        diff = replay_compare(hw, cw, skip, skipped)
+        if hc != cc:
+            diff.insert(0, ('centiseconds', hc, cc))
+        if diff:
+            at_cs = hc
+            break
+        matched.append(hc)
+    return dict(pairs=pairs, unpaired=unpaired, end=end, diff=diff, at_cs=at_cs, matched=matched, skipped=skipped)
 
 
 def states(data, n):
@@ -315,7 +357,24 @@ def snap_state(header):
     text = pathlib.Path(header).read_text()
     words = [int(v) for v in re.search(r'snap_words\[2048\][^{]*\{([^}]*)\}', text)[1].replace('u', '').split(',')]
     field = lambda name: int(re.search(r'\(\w\)\.' + name + r'=(\d+)u', text)[1])  # noqa: E731
-    return (*words, *[field(f'channel{c}') for c in (5, 6, 11, 12, 13, 14, 34, 35)], field('superbank'))
+    return (*words, *[field(f'channel{c}') for c in (5, 6, 11, 12, 13, 14, 34, 35)], field('superbank'),
+            field('channel10'), int(field('interrupt_enabled') != 0), field('radar_gate'))
+
+
+def steal_defines(name, start, snap_at):
+    """A FLIGHT_STEAL scenario's stolen cycles on the C64 (resident_flight.c
+    RK_STEAL): its one T0-T1:N window as TIME2:TIME1 centiseconds. The host
+    counts T0 and T1 from its run's start (flight_host_run.c now()); the
+    first snapshot, snap_at cs into that run, gives the clock there."""
+    spec = fhd.scenario(name)[4].get('FLIGHT_STEAL')
+    if not spec:
+        return []
+    m = re.fullmatch(r'(\d+)-(\d+):(\d+)', spec)
+    if not m:
+        sys.exit(f'FAIL: {name}: FLIGHT_STEAL={spec}: the C64 replay models one T0-T1:N window')
+    t0 = ((start[0o24] & 0o37777) << 14 | (start[0o25] & 0o37777)) - snap_at
+    lo, hi, n = (int(x) for x in m.groups())
+    return [f'-DRK_STEAL={n}u', f'-DRK_STEAL_FROM={t0 + lo}ul', f'-DRK_STEAL_TO={t0 + hi}ul']
 
 
 def ones_add(w, d):
@@ -331,8 +390,8 @@ def seam_check(header, c64_end, m):
     if c64_end is None:
         return [('C64 end state', 0, 0)]
     w = list(c64_end)
-    chans = {0o5: 0, 0o6: 1, 0o11: 2, 0o12: 3, 0o13: 4, 0o14: 5, 0o34: 6, 0o35: 7}
-    for _, kind, _, addr, value in ROW.iter_unpack(pathlib.Path(f'{header}.seam').read_bytes()):
+    chans = {0o5: 0, 0o6: 1, 0o11: 2, 0o12: 3, 0o13: 4, 0o14: 5, 0o34: 6, 0o35: 7, 0o10: 9, 0o377: 11}
+    for _, kind, _, addr, value, _ in ROW.iter_unpack(pathlib.Path(f'{header}.seam').read_bytes()):
         if kind == 0:
             w[addr] = value
         elif kind == 1:
@@ -375,6 +434,9 @@ def main():
                    help='with --replay, run that many --cs windows back to back on the host, then each on the C64 from '
                    "the host's state where the one before ended, and fail unless the C64 ends each window in the "
                    "host's state and that state is the next window's start (the seam)")
+    p.add_argument('--downrupt', action='store_true',
+                   help='DOWNRUPT every 20 ms on both sides (host FLIGHT_DOWNRUPT, C64 RK_DOWNRUPT, as on the disk): '
+                        'the window then also compares the downlink, channels 34 and 35 at each checkpoint')
     p.add_argument('--strict-start', action='store_true',
                    help=f'fail when the snapshot slides more than {SLIDE_CS} cs past --snap-cs')
     p.add_argument('--watch', default='', help='up to five erasable words (octal addresses, comma separated) '
@@ -382,6 +444,12 @@ def main():
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = fhd.scenario(a.scenario)[1]
+    # A scenario whose host run has DOWNRUPT on (the uplink-accept rows, for
+    # V74's erasable dump) needs it on the C64 too, or the downlink list
+    # pointer (CTLIST) only moves on the host.
+    if fhd.scenario(a.scenario)[4].get('FLIGHT_DOWNRUPT') == '1' and not a.downrupt:
+        print(f'{a.scenario}: the scenario sets FLIGHT_DOWNRUPT, so --downrupt is on')
+        a.downrupt = True
     # Each window's files (snapshot, PRG, VICE directory, result) carry its
     # start, so windows of one scenario can run side by side.
     tag = f'{a.scenario}-{a.snap_cs}'
@@ -415,7 +483,7 @@ def main():
     if a.replay and a.keys:
         sys.exit('--replay replays the keys itself; leave out --keys')
     every = a.replay_every if 0 < a.replay_every < a.cs else a.cs
-    header = snapshot(exe, a.scenario, a.snap_cs, tag, a.cs if a.replay else 0, every, a.chain)
+    header = snapshot(exe, a.scenario, a.snap_cs, tag, a.cs if a.replay else 0, every, a.chain, a.downrupt)
     # The snapshot waits for a point with no interrupt pending, so inside a
     # long interpretive job it can start well after --snap-cs (CM 9000 ->
     # 9952), and the window then covers other code than asked for.
@@ -441,7 +509,8 @@ def main():
                 sys.exit(f'FAIL: {a.scenario}: the host ran a window {host_window_cs(h)} cs long from {a.snap_cs} cs; '
                          f'the C64 counts at most {WINDOW_MAX} cs')
     # The most states a C64 window writes: one at the first sample point at
-    # or after each `every` mark before --cs, and the end. The C64 has its
+    # or after each of the host's checkpoints (at most one per `every` mark
+    # before --cs), and the end. The C64 has its
     # own sample points, so it can write a state at a mark the host had none
     # for; its area holds them all and replay_state stops at its end.
     max_states = a.cs // every + 1
@@ -456,27 +525,44 @@ def main():
                   f'FAIL: the C64 end of window {n - 1} is not the start of window {n}: {len(seam)} differences, first '
                   + ', '.join(f'{x} {shown(x, h)}/{shown(x, c)}' for x, h, c in seam[:6]) + ' (start/C64 end)'))
             if seam:
-                results.append(dict(ok=False, seam=n))
+                results.append(dict(ok=False, seam=n, error=f'seam {n}: {len(seam)} differences'))
                 break
         keys, defines, patch, end_at = None, [], [], None
         if a.replay:
             rows = pathlib.Path(f'{header}.replay').read_bytes()
             host_end = pathlib.Path(f'{header}.end').read_bytes()
+            # The host's states past its end (the last window only).
+            after_path = pathlib.Path(f'{header}.after')
+            host_after = (states(after_path.read_bytes(), after_path.stat().st_size // STATE) if after_path.exists()
+                          else None)
+            after_rows = [x[0] for x in ROW.iter_unpack(pathlib.Path(f'{header}.after-replay').read_bytes())] \
+                if host_after is not None else []
             n_states = len(host_end) // STATE
             if n_states > max_states:
                 sys.exit(f'FAIL: {a.scenario}: the host wrote {n_states} states, more than the {max_states} reserved')
             end_bytes = max_states * C64_STATE
+            # The C64 writes its checkpoints and ends where the host did: at
+            # its first sample point at or after each of the host's states'
+            # centiseconds (a first sample point at or after the asked cs
+            # can come a tick before the host's). The checkpoints after the
+            # first go in a 2-byte table after the state area, ended by 0xFFFF.
+            host_cs = [x[0] for x in states(host_end, n_states)]
+            cs, marks = host_cs[-1], host_cs[:-1]
+            table = struct.pack(f'<{len(marks[1:]) + 1}H', *marks[1:], 0xffff)
             # CM channel rows can take two C64 rows each.
-            at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + 256)
+            at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + len(table) + 256)
             end_at = (at + 2 * len(rows) + 0xff) & ~0xff
+            table_at = end_at + end_bytes
             busy = fhd.scenario(a.scenario)[4].get('FLIGHT_BUSY_SAMPLE')
             # The window ends at the C64's first sample point cs in; DP_CS
             # stops it later if none comes.
             # The C64's rows (their count does not depend on rk_device's address).
             n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
             defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u',
-                       f'-DDP_REPLAY_CS={cs}u', f'-DDP_EVERY={every}u', f'-DDP_EVERY_UNTIL={a.cs}u', f'-DDP_END=0x{end_at:x}ul',
-                       f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else [])]
+                       f'-DDP_REPLAY_CS={cs}u', f'-DDP_STATE_FIRST={marks[0] if marks else 0xffff}u',
+                       f'-DDP_STATE_TABLE=0x{table_at:x}ul', f'-DDP_END=0x{end_at:x}ul',
+                       f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
+                       *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at)]
             kinds = {}
             for row in ROW.iter_unpack(rows):
                 kinds[row[1]] = kinds.get(row[1], 0) + 1
@@ -488,10 +574,11 @@ def main():
             print(f'{a.scenario}: {len(pressed)} keys pressed on the C64 at '
                   + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
         prg = dp.link(a.cc, tag, header, cs + 500 if a.replay else cs, scratch, os.environ.get('FSV_STEPS') == '1',
-                      m, a.profile, keys, [w for w in a.watch.split(',') if w][:5], defines)
+                      m, a.profile, keys, [w for w in a.watch.split(',') if w][:5],
+                      defines + (['-DRK_DOWNRUPT=1'] if a.downrupt else []))
         if a.replay:
             # rk_device's address comes from the link.
-            patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending')))]
+            patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending'))), (table_at, table)]
         # The run's declared REU regions (tools/reu_layout.py): VICE logs every
         # DMA, read or write, that is not inside one of them, and afterwards every
         # changed byte must lie in a writable one (not the store, the rope or the
@@ -510,6 +597,7 @@ def main():
             bounds = reu_layout.report(m, regions, before, after.read_bytes(), a.scenario)
             log = (dp.WORK / f'vice-{tag}' / 'monitor.log').read_text()
             bounds['dma_outside'] = reu_layout.dma_misses(log)
+            bounds['dma_trace_armed'] = reu_layout.trace_armed(log)
             bounds['dma_hits'] = reu_layout.dma_hits(log)[:16]
             bounds['dma_unchecked'] = reu_layout.dma_misses(log, (4,))
             if bounds['dma_unchecked']:
@@ -532,28 +620,27 @@ def main():
             image = (dp.WORK / f'vice-{tag}' / 'image.reu').read_bytes()
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, max_states), m)
             c64_end = c64_s[-1][1] if c64_s else None
-            diff, at_cs, matched, skipped = [], None, [], set()
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            pairs, unpaired = pair_states(host_s, c64_s, bool(ended))
-            r.update(replay_unpaired=unpaired)
-            if unpaired:
+            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip)
+            unpaired, end, diff, at_cs, matched, skipped = (v[k] for k in ('unpaired', 'end', 'diff', 'at_cs', 'matched',
+                                                                         'skipped'))
+            shift = end['shift_cs'] if end else None
+            inner = [u for u in unpaired if not u.get('end')]
+            r.update(replay_unpaired=unpaired, replay_unpaired_count=len(inner), replay_end_shift_cs=shift,
+                     replay_end_paired=bool(end and end['paired']))
+            if inner:
                 print(f'{a.scenario}: states with no partner, not compared: '
-                      + ', '.join(f"{u['side']} {u['cs']} cs" for u in unpaired))
-            for (hc, hw), (cc, cw) in pairs:
-                diff = replay_compare(hw, cw, skip, skipped)
-                if hc != cc:
-                    diff.insert(0, ('centiseconds', hc, cc))
-                if diff:
-                    at_cs = hc
-                    break
-                matched.append(hc)
+                      + ', '.join(f"{u['side']} {u['cs']} cs" for u in inner))
+            if end and end['paired'] and shift:
+                print(f"{a.scenario}: the C64 ends {shift} cs after the host's end; compared with the host's state "
+                      f"at {c64_s[-1][0]} cs")
             if skipped:
                 print(f"{a.scenario}: skipped (temporary, SCHEDULE_SKIP / TIME5_PHASE): {', '.join(sorted(skipped))}")
             r.update(replay_matched_cs=matched, replay_differences=len(diff), replay_differ_at_cs=at_cs,
                      replay_skipped=sorted(skipped),
                      replay_first=[dict(at=x, host=shown(x, h), c64=shown(x, c)) for x, h, c in diff[:32]])
             seen = (f"matches the host{' (with skips)' if skipped else ''} at {', '.join(map(str, matched))} cs" if matched
-                    else 'matches the host at no point')
+                    else 'matches the host at no point') + (f' ({len(inner)} checkpoints not compared)' if inner else '')
             if diff:
                 r['ok'] = False
                 print(f'FAIL: {a.scenario}: the C64 {seen}, then leaves it by {at_cs} cs into the window '
@@ -561,17 +648,27 @@ def main():
                       f'first at {diff[0][0]} host {shown(*diff[0][:2])} C64 {shown(diff[0][0], diff[0][2])}')
                 for x, h, c in diff[1:12]:
                     print(f'  {x} host {shown(x, h)} C64 {shown(x, c)}')
+            elif ended and end and not end['paired']:
+                r['ok'] = False
+                why = 'a host input comes in between' if end['inputs_between'] else 'the host has no state there'
+                print(f"FAIL: {a.scenario}: the C64 {seen}, then ends at {c64_s[-1][0]} cs, {shift} cs after the host's "
+                      f"end, and the ends are not compared ({why})")
+            elif ended and applied != n_c64:
+                r['ok'] = False
+                print(f'FAIL: {a.scenario}: the C64 {seen}, but applied {applied} of the {n_c64} input rows')
             elif not ended:
                 r['ok'] = False
                 print(f'FAIL: {a.scenario}: the C64 {seen}, then did not reach a sample point {cs} cs in '
                       f'(stopped at {end_cs} cs, {applied} of {n_c64} input rows applied)')
             else:
-                print(f"{a.scenario}: the C64 {seen}: it ends the window ({end_cs} cs, all {applied} input rows) "
-                      "in the host's state")
+                print(f"{a.scenario}: the C64 {seen}: it ends the window ({end_cs} cs, all {applied} input rows"
+                      + (f", {shift} cs after the host's end" if shift else '') + ") in the host's state")
         if a.profile:
             r['profile'] = dp.profile(tag)
         r.update(scenario=a.scenario, snap_cs=a.snap_cs, snap_at=snap_at, snap_slid=slid > SLIDE_CS, requested_cs=cs,
-                 host_holes=holes)
+                 host_holes=holes, commit=flight_holes.source_commit())
+        if a.chain > 1:
+            r.update(chain=a.chain, chain_window=n)
         # Status 0 means no step refused; it does not mean the window ran to its
         # end (a harness exit before --cs, like the TIME1 wrap #595 fixed, also
         # reports status 0). A window that stops short of --cs without a refusal
@@ -608,6 +705,18 @@ def main():
             break
     if a.chain > 1:
         ok = len(results) == a.chain and all(x.get('ok') for x in results)
+        # One result for the whole chain (tools/program_acceptance.py): each
+        # window's verdict, and the seam that failed if one did.
+        first = results[0] if results else {}
+        (dp.WORK / f'{a.scenario}-{a.snap_cs}-chain{a.chain}.json').write_text(json.dumps(dict(
+            scenario=a.scenario, snap_cs=a.snap_cs, snap_at=first.get('snap_at'), requested_cs=a.cs, chain=a.chain,
+            ok=ok, status=next((x.get('status') for x in results if x.get('status')), 0), replay_rows=sum(x.get('replay_rows', 0) for x in results),
+            replay_ended=ok, replay_differences=0 if ok else None, commit=flight_holes.source_commit(),
+            reu_bounds=dict(ok=all((x.get('reu_bounds') or {}).get('ok', True) for x in results)),
+            windows=[{k: x.get(k) for k in ('ok', 'status', 'at', 'seam', 'error', 'replay_differences',
+                                             'replay_differ_at_cs', 'replay_first', 'replay_matched_cs', 'replay_end_shift_cs',
+                                             'replay_end_paired', 'replay_unpaired_count',
+                                             'requested_cs', 'wall_per_agc', 'replay_skipped')} for x in results]), indent=1) + '\n')
         print(f"{a.scenario}: chain of {a.chain} windows from {a.snap_cs} cs: " + ('every window matches the host and every seam holds' if ok else f'FAIL at window {len(results) - 1}'))
     return 0 if all(x.get('ok') for x in results) and len(results) == a.chain else 1
 

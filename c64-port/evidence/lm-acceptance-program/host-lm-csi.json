@@ -1,0 +1,27 @@
+{
+ "scenario": "lm-csi-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 23000,
+ "keys": "@2200V37E32E@3000V33E@4000V33E@4400V25E+00001E+02660E+00000E@5400V33E@6000V33E@6600V33E@9800V33E@10500V33E@11300V33E@12000V37E72E@12800V25E+00000E+00010E+02010E@14000V33E@14600V25E+00001E+20660E+00000E@15600V33E@16200V33E@16800V33E@20300V33E@21100V33E@21900V33E",
+ "inputs": {
+  "FLIGHT_CH30": "036377",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077775",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-csi.load",
+  "FLIGHT_RR": "2000:-259681.119,1759068.734,371336.732,1576.461,307.349,-276.315:34932.422,1820802.682,320471.671,1594.204,27.571,-330.419",
+  "FLIGHT_BUSY_SAMPLE": "50"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "b9a2bcb2256e",
+ "cia_interrupts": 23000,
+ "periods_taken": 23000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 23000,
+ "native_routines": 982733,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "b045690dfb1e08346f9c2ddfe24f6971b9b4c258f9ca746303daa60bc53067b2"
+}
