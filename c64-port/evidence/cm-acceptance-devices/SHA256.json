@@ -4,28 +4,28 @@
   "release": "evidence-cm-acceptance-devices",
   "files": {
     "cm-p40-70660.json": {
-      "sha256": "4d9c875738c899a0e76668e7b49394817a6efe3c02b4e2a8569c718f036621d4",
-      "bytes": 16624,
+      "sha256": "0779dfa588c4acc88ca8c7aa6ba539ea72acd0e98cbab5d8fc4e5b5d1f978523",
+      "bytes": 17480,
       "store": "tree"
     },
     "cm-p52-9950.json": {
-      "sha256": "232470b1560e16156127947447934129202042d1de31ce9809bc1c28887a6971",
-      "bytes": 14272,
+      "sha256": "6970bac84aef2c94b95d6557e3a7ae22b9989fd6c713f7898b00610dcd5b3988",
+      "bytes": 15127,
       "store": "tree"
     },
     "cm-tei-4450.json": {
-      "sha256": "e5862e315c40d7a4aff9188dce5d00435fa3363de70cc4e88783e23aecd1540d",
-      "bytes": 14513,
+      "sha256": "8cbb12189d6f416c10338578ae1f90aa6961c8dc9f5f4d8dba8aec9bb52f5d38",
+      "bytes": 15342,
       "store": "tree"
     },
     "cm-tei-52000.json": {
-      "sha256": "abf4b86670dde4c9edb5ff947da8d9886dd214bd127492996ae984e8aa92de65",
-      "bytes": 36826,
+      "sha256": "6ffe47b1f90541c6520b2d94ac28df3d1303397b8d573806dd2ed9f4cf9bf450",
+      "bytes": 37670,
       "store": "tree"
     },
     "host-summary.json": {
-      "sha256": "8b9b27c7c2a984a26f5c660f1aa2eeb32258cb55be14504018dda2b6466a64f6",
-      "bytes": 152347,
+      "sha256": "be7a81a648f9cf693aa0447e95c96c0a01d49e1fbb0594eb7833ff20d93dcb9b",
+      "bytes": 55724,
       "store": "tree"
     }
   }

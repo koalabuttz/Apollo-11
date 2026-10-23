@@ -4,38 +4,38 @@
   "release": "evidence-lm-acceptance-devices",
   "files": {
     "host-summary.json": {
-      "sha256": "8b9b27c7c2a984a26f5c660f1aa2eeb32258cb55be14504018dda2b6466a64f6",
-      "bytes": 152347,
+      "sha256": "9fdfd739b55f1aa08ac75e4339b860f553dca118fbba73694d5b7d1e3fb03a90",
+      "bytes": 93917,
       "store": "tree"
     },
     "lm-landing-ascent-nassp-140000.json": {
-      "sha256": "8c230db8209649a28d65b039320a9f333c89a755a1da35065f8fde53e07b7574",
-      "bytes": 8924,
+      "sha256": "b0af6dcb44bf876338afaf1822fb75ba34a0d5a7984285803d89cf945a0a8519",
+      "bytes": 9558,
       "store": "tree"
     },
     "lm-p52-realign-4200.json": {
-      "sha256": "bf1a8202c9354861852f10c499d183a75b8296df0e8e46e8b6c5b33b94de7067",
-      "bytes": 30404,
+      "sha256": "7fc49978b19fc7bcd0bd5f0758c4cd01a58ff8c89ac36b6284375d28eb8f4f2f",
+      "bytes": 31332,
       "store": "tree"
     },
     "lm-p57-15950.json": {
-      "sha256": "0cfdbb4788ced65a28af36f82d4bf3bbe32fa96e695e855e1414fd111c39d41f",
-      "bytes": 10415,
+      "sha256": "3fddbf80696838f28ab659b868ca2faabd068a345870a55a4d554e1f50e5d7d4",
+      "bytes": 11308,
       "store": "tree"
     },
     "lm-p63-descent-thrust-17500.json": {
-      "sha256": "da6602b2e19e36dbfc632a10ebe119eeb2e343d74be290c6420a05af2b0ec14d",
-      "bytes": 14954,
+      "sha256": "e0ba52127cb202f7bff342ff99ffa734d4086b5664977fd2caf24fce9335e6e5",
+      "bytes": 14285,
       "store": "tree"
     },
     "lm-p63-lr-update-61000.json": {
-      "sha256": "a5eabef804e9127d3d83063efa61a790176484c9a900962ff8269fd0be471800",
-      "bytes": 4111,
+      "sha256": "f9e552ad138cfeb6a6b4bb688f68e491ffc058aebf9daff9d32ebfcb9271276e",
+      "bytes": 4746,
       "store": "tree"
     },
-    "lm-uplink-reject-1950.json": {
-      "sha256": "34a8252b01f77691cb2027dd17637285351d6536bbdd6af8250eab0ce9dcc44d",
-      "bytes": 6932,
+    "lm-uplink-reject-1900.json": {
+      "sha256": "8e4b8db772a066fe1b8d67f28ca6308064c27df54d244f02344f92a5c68b2923",
+      "bytes": 40899,
       "store": "tree"
     }
   }
