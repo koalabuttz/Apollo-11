@@ -251,30 +251,9 @@ static uint16_t replay_cs(void)
 {
     return (uint16_t)(IMAGE->words[025] - replay_t0) & 037777u;
 }
-/* 1 when a timer step already due will request T4RUPT, T3RUPT or T5RUPT
- * (rk_timer_phase: its counter at 037777). An idle pass charges the rest
- * of its period, so at ADVAN the period's steps are due but run only at
- * the next step's start (rk_rupts_due). The host has a step between the
- * pass and ADVAN (POSTJUMP 04635), where they run and the interrupt is
- * taken, so it reaches ADVAN only after the interrupt: no sample here
- * either. In the resident's RAM, not the screen (no room there). */
-__attribute__((noinline)) static uint8_t rupt_due(void)
-{
-    agc_word v[3] = {IMAGE->words[027], IMAGE->words[026], IMAGE->words[030]};
-    uint16_t w = rk_work;
-    uint8_t p = rk_tick_phase;
-    while (w >= RK_PHASE_MCT(p)) {
-        uint8_t s = rk_phase_step[p];
-        if (v[s] == 037777u) return 1;
-        ++v[s];
-        w -= RK_PHASE_MCT(p);
-        p = p == 8u ? 0u : (uint8_t)(p + 1u);
-    }
-    return 0;
-}
 static uint8_t sample_point(uint16_t t)
 {
-    if (rk_pending || rk_hardware.in_interrupt || rupt_due()) return 0;
+    if (rk_pending || rk_hardware.in_interrupt) return 0;
     if ((IMAGE->words[5] & 07777u) == DP_ADVAN && (IMAGE->words[4] >> 10) == 1u &&
         (IMAGE->words[067] & 077777u) == 077777u)
         return 1;
