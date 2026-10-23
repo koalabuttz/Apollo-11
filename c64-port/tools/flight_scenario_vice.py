@@ -444,6 +444,12 @@ def main():
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = fhd.scenario(a.scenario)[1]
+    # A scenario whose host run has DOWNRUPT on (the uplink-accept rows, for
+    # V74's erasable dump) needs it on the C64 too, or the downlink list
+    # pointer (CTLIST) only moves on the host.
+    if fhd.scenario(a.scenario)[4].get('FLIGHT_DOWNRUPT') == '1' and not a.downrupt:
+        print(f'{a.scenario}: the scenario sets FLIGHT_DOWNRUPT, so --downrupt is on')
+        a.downrupt = True
     # Each window's files (snapshot, PRG, VICE directory, result) carry its
     # start, so windows of one scenario can run side by side.
     tag = f'{a.scenario}-{a.snap_cs}'
