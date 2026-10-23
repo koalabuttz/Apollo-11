@@ -783,6 +783,19 @@ port) runs one mission:
    steering does not turn the LM, so cutoff leaves N85 at 5.3, 14.3,
    -0.1 ft/s. All three end in P00 and match yaAGC at every native
    routine.
+   `FLIGHT_RHC=FROM-TO:P,Q,R;...` (LM, `tools/flight_rhc.h`) is the
+   rotational hand controller: from FROM to TO centiseconds the stick is
+   out of detent (channel 31 bit 15 at 0), and at each sample point where
+   the DAP's ZEROENBL has set channel 13 bits 8 and 9, P-RHCCTR,
+   Q-RHCCTR and R-RHCCTR (043, 042, 044) hold P, Q and R counts (at most
+   42), as yaAGC loads them on that channel 13 write. The replay rows
+   carry the counter and channel 31 writes to the C64.
+   `lm-rhc-att-hold`: lm-dap's start (DAP running, no V37), ATTITUDE HOLD
+   at 20 s (`FLIGHT_CHAN` 031=067777), then pitch +20 counts from 25 to
+   31 s and yaw -12, roll +15 from 36 to 42 s. The DAP's manual rate
+   command finds the stick out of detent (JUSTOUT at 2,505 cs) and reads
+   the counters each pass (RATERROR from 2,514 cs). Every native routine
+   matches yaAGC.
    `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
    crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
    28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one

@@ -761,6 +761,8 @@ static void surface_due(unsigned long t,struct engine *e,agc_word *w){double r[3
  * following the hand controller) take that attitude, outer gimbal kept. */
 static double pilot_tau;
 static void eset(agc_word *w,unsigned a,agc_word v){if(w)w[a]=v;else *cell(a)=(int16_t)v;}
+/* FLIGHT_RHC (tools/flight_rhc.h): the LM hand controller. */
+#include "flight_rhc.h"
 static void pilot(agc_word *w){double r[3],v[3],u[3],rm=0.0,vu=0.0,h[3],hm=0.0,t[3],tm=0.0,ig,mg,lim=tan(15.0*3.141592653589793/180.0);unsigned k;
  surface_v(w,v);for(k=0;k<3u;++k){r[k]=eng_dp(w,03520u+2u*k,24);rm+=r[k]*r[k];}
  rm=sqrt(rm);if(rm<=0.0)return;
@@ -1452,6 +1454,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_STAGE"))stage_cs=strtoul(getenv("FLIGHT_STAGE"),0,10);
  if(stage_cs&&!ascent_kg){fprintf(stderr,"FLIGHT_STAGE needs FLIGHT_ASCENT\n");return 2;}
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
+ if(!rhc_parse(getenv("FLIGHT_RHC"))
+#if !RK_LM
+  ||nrhc
+#endif
+  ){fprintf(stderr,"FLIGHT_RHC=FROM-TO:P,Q,R;... (LM; counts at most 42)\n");return 2;}
  if(!lrm_parse(getenv("FLIGHT_LR"))){fprintf(stderr,"FLIGHT_LR=CS[:DH]\n");return 2;}
  if(!drops_parse(&lrm.drops,getenv("FLIGHT_LR_DROP"))){fprintf(stderr,"FLIGHT_LR_DROP=T0-T1[,T0-T1...]\n");return 2;}
  if(lrm.on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_LR needs FLIGHT_SCALED\n");return 2;}
@@ -1507,6 +1514,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     sivb_due(now(w),&sivb_ref,0);
     lr_due(now(w),&lr_ref,0);
     chan_due(now(w),&cref,0,0);
+    rhc_due(now(w),0,0);
     if(gojam_due(now(w),&gref))gojam_yaagc(&m);
     else if((k=key_due(now(w),&kref,(unsigned)m.InputChannel[011]))>=0){unsigned r=k&MARK_KEY?RK_RUPT_KEY2:RK_RUPT_KEY1;m.InputChannel[k&MARK_KEY?016:015]=(int16_t)(k&0377);
      if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*r);m.InIsr=1;}
@@ -1600,6 +1608,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    lr_due(now(s.words),&lr_nat,&hw);
    lrm_due(now(s.words),touchdown_cs,s.words,&hw.channel13,&hw.channel33);
    chan_due(now(s.words),&cnat,&hw,&io);
+   rhc_due(now(s.words),s.words,&hw);
    if(rp_after!=~0ul&&gojam_due(now(s.words),&gnat)){fclose(rp_out);fclose(rp_ends);return 0;}
    if(rp_out&&!snap_path&&gojam_due(now(s.words),&gnat)){fprintf(stderr,"FLIGHT_REPLAY: a GOJAM at %lu cs is in the window\n",now(s.words));return 3;}
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
