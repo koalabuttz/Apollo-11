@@ -138,6 +138,13 @@ def held(ch, mask=0o77777):
     return lambda r: bool(outputs(r).get('channel_set', {}).get(f'channel {ch:o}', 0) & mask)
 
 
+def steady(ch, mask):
+    """Output channel ch had all of mask's bits set from the window's start
+    to its end, never changing: an enable held through the window."""
+    return lambda r: (outputs(r).get('channel_set', {}).get(f'channel {ch:o}', 0) & mask == mask
+                      and not outputs(r).get('channel_changed', {}).get(f'channel {ch:o}', 0) & mask)
+
+
 def never(pred):
     return lambda r: not pred(r)
 
@@ -337,10 +344,10 @@ def roles(m):
                  'and rate meter), channel 12 cross pointers (LANDING_ANALOG_DISPLAYS)',
                  [host_end], [end], uses('FLIGHT_ENGINE', 'FLIGHT_LR'),
                  either(words(0o60), moved(0o14, 0o6),
-                        both(either(words(0o53, 0o54), moved(0o14, 0o6000)), held(0o12, 0o200))),
+                        both(either(words(0o53, 0o54), moved(0o14, 0o6000)), steady(0o12, 0o200))),
                  unit(m, 'landing-displays'),
                  how='ALTM, or channel 14 bit 2 or 3, changed; or the cross pointers: CDUTCMD/CDUSCMD or channel 14 '
-                     'bit 11 or 12 changed with channel 12 bit 8 set',
+                     'bit 11 or 12 changed with channel 12 bit 8 set throughout the window',
                  gap='no meter model on either side: ALTM and the drive bits are compared as words only'),
         ]
     else:
@@ -380,8 +387,8 @@ def roles(m):
                                        'bit 8 is set, and the thrust turns the CM in pitch and yaw')],
                  [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives: 053/054 pulses')],
                  uses('FLIGHT_SPS'),
-                 both(words(0o53, 0o54), held(0o12, 0o200)), unit(m, 'tvc-roll'),
-                 how='TVCPITCH or TVCYAW changed with channel 12 bit 8 set in the host\'s states',
+                 both(words(0o53, 0o54), steady(0o12, 0o200)), unit(m, 'tvc-roll'),
+                 how='TVCPITCH or TVCYAW changed with channel 12 bit 8 set throughout the window',
                  gap='roll does not move under TVC (no RCS jet model)'),
         ]
     out += [
@@ -634,7 +641,10 @@ def run_window(scenario, snap, cs, every, out):
     except (OSError, ValueError):
         d = {}
     if d.get('scenario') != scenario or d.get('snap_cs') != snap:
-        d = dict(scenario=scenario, snap_cs=snap, error=(r.stdout + r.stderr).strip().splitlines()[-1:] or ['no output'])
+        text = (r.stdout + r.stderr).strip().splitlines()
+        # The first error line says why (a link error before its traceback).
+        d = dict(scenario=scenario, snap_cs=snap,
+                 error=[next((x.strip() for x in text if 'error:' in x), text[-1] if text else 'no output')])
     d['replay_every'] = every
     result.write_text(json.dumps(d, indent=1) + '\n')
     print(f"{scenario} {snap}+{cs}: {next((x for x in reversed(r.stdout.splitlines()) if 'matches the host' in x or 'FAIL' in x), 'no result')}")

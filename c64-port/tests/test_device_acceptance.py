@@ -247,6 +247,23 @@ class RealRoles(unittest.TestCase):
         self.assertEqual({t['key']: s for t, s, *_ in out}, dict(jets='GAP', thrust='GAP'))
         self.assertTrue(bad)
 
+    def test_static_outputs_drive_no_output_role(self):
+        """Every output channel bit set and every output word non-zero, none
+        of them changing: no output role counts the window."""
+        r = static(*range(0o42, 0o61), held={c: 0o77777 for c in (5, 6, 0o10, 0o11, 0o12, 0o13, 0o14, 0o34, 0o35)})
+        for m in da.PROGRAM:
+            for t in da.roles(m):
+                if t['dir'] == 'out' and not t['elsewhere']:
+                    with self.subTest(m=m, role=t['key']):
+                        self.assertFalse(t['window'](r))
+
+    def test_enable_must_hold_through_the_window(self):
+        toggled = outs(changed=[0o53], moved={0o12: 0o200})
+        self.assertFalse(self.hits('cm', 'tvc', toggled))
+        self.assertFalse(self.hits('lm', 'landing-displays', toggled))
+        self.assertFalse(self.hits('lm', 'rr-drive', toggled))
+        self.assertFalse(self.hits('cm', 'optics-drive', toggled))
+
     def test_tvc_needs_its_enable(self):
         self.assertTrue(self.hits('cm', 'tvc', outs(changed=[0o53], held={0o12: 0o200})))
         self.assertFalse(self.hits('cm', 'tvc', outs(changed=[0o53])))
