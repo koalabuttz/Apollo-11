@@ -48,6 +48,10 @@ typedef struct {
     double mct, next_period; /* next_period: the end of the next clock step */
     uint8_t phase;           /* that step (rk_timer_phase) */
     unsigned long periods, steps, slots;
+    /* CM: the optics error counters (yaw, pitch), in pulses: what the CDU
+     * drive sent from CDUTCMD and CDUSCMD (053, 054), the SPS gimbal
+     * commands in TVC mode. Zero while channel 12 bit 2 is clear. */
+    long optics[2];
     /* AGC time counts from here (TIME2/TIME1 in centiseconds): 0 from
      * GOJAM, a start state's own time from X86_START. */
     unsigned long t0;

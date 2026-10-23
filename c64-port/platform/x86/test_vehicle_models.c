@@ -194,6 +194,7 @@ static void test_rcs(void)
 
 static void test_sps(void)
 {
+    static const long none[2] = {0, 0};
     vm_sps s;
     double ig = -0.0375245789, mg = 0.0165806279, a = 91188.0 / 30000.0;
     reset();
@@ -202,18 +203,71 @@ static void test_sps(void)
     w[VM_CM_CDUXD] = 01111u;
     w[VM_CM_CDUXD + 2u] = 02222u;
     w[VM_CM_CDUXD + 4u] = 03333u;
-    vm_sps_step(0, &s, w);
+    vm_sps_step(0, &s, w, 0u, none);
     check(w[VM_CDUX] == 01111u && w[VM_CDUY] == 02222u && w[VM_CDUZ] == 03333u,
           "SPS holds the RCS DAP's desired attitude");
     /* Desired attitude zero, then the engine lights. */
-    w[VM_CM_CDUXD + 2u] = w[VM_CM_CDUXD + 4u] = 0u;
+    w[VM_CM_CDUXD] = w[VM_CM_CDUXD + 2u] = w[VM_CM_CDUXD + 4u] = 0u;
     w[VM_FLAGWRD5] = VM_ENGONBIT;
-    vm_sps_step(100, &s, w);
+    vm_sps_step(100, &s, w, 0u, none);
     w[VM_CM_CDUXD + 2u] = 07777u;
-    vm_sps_step(200, &s, w);
+    vm_sps_step(200, &s, w, 0u, none);
     check_count(w[VM_CDUY], 0, "after ignition the attitude holds");
     check_count(pipa(0), (long)(a * cos(ig) * cos(mg) * 100.0 / 5.85), "SPS along X");
     check_count(pipa(2), (long)(-a * sin(ig) * cos(mg) * 100.0 / 5.85), "SPS PBIAS on Z");
+}
+
+/* The TVC loop: the bell follows the optics counters while channel 12
+ * bit 8 is set, and a thrust line off the centre of mass turns the CSM. */
+static void test_sps_tvc(void)
+{
+    vm_sps s;
+    long optics[2] = {0, 0};
+    unsigned long t;
+    reset();
+    memset(&s, 0, sizeof s);
+    vm_cfg.sps_kg = 30000.0;
+    /* The trim (PACTOFF -100 pulses) and the gimbal command (the pitch
+     * counter, 054) agree; the bell settles there before ignition. */
+    w[VM_PACTOFF] = word(-100);
+    w[VM_IAVGTLX] = 4096u; /* IAVG/TLX 1 s^2 */
+    optics[1] = -100;
+    for (t = 1; t <= 100; ++t) vm_sps_step(t, &s, w, 0200u, optics);
+    check(fabs(s.gimbal[0] - -100.0 * VM_SPS_PULSE) < 1e-9 && s.gimbal[1] == 0.0,
+          "the bell follows the optics counters");
+    w[VM_FLAGWRD5] = VM_ENGONBIT;
+    for (; t <= 200; ++t) vm_sps_step(t, &s, w, 0200u, optics);
+    check_count(w[VM_CDUY], 0, "a thrust line through the centre of mass turns nothing");
+    /* TVC disabled: the bell goes back to zero, 100 pulses off the trim,
+     * and the CSM pitches: 100 pulses (0.0414 radians) at IAVG/TLX 1 s^2
+     * for 1 s in 10 ms steps turns it 0.505 times that, 109 CDU counts,
+     * CDUY falling. */
+    w[VM_FLAGWRD5] = 0u;
+    vm_sps_step(t++, &s, w, 0u, optics);
+    memset(&s, 0, sizeof s);
+    w[VM_CDUY] = w[VM_CM_CDUXD + 2u] = 0u;
+    w[VM_FLAGWRD5] = VM_ENGONBIT;
+    vm_sps_step(1, &s, w, 0u, optics);
+    vm_sps_step(101, &s, w, 0u, optics);
+    check_count((long)w[VM_CDUY] - 32768l, -109, "off the trim the CSM pitches");
+    check_count(w[VM_CDUZ], 0, "and does not yaw");
+    /* FLIGHT_SPS's centre of mass offset adds to the trim: +0.5 degrees of
+     * yaw with the bell at zero yaws the CSM, CDUZ growing. */
+    memset(&s, 0, sizeof s);
+    w[VM_CDUY] = w[VM_CDUZ] = 0u;
+    w[VM_PACTOFF] = 0u;
+    vm_cfg.sps_cg[1] = 0.5;
+    vm_sps_step(1, &s, w, 0u, optics);
+    vm_sps_step(101, &s, w, 0u, optics);
+    check(w[VM_CDUZ] > 0u && w[VM_CDUZ] < 040000u, "a centre of mass off the trim yaws the CSM");
+    /* The engine stops: the rates go to zero and the attitude holds. */
+    w[VM_FLAGWRD5] = 0u;
+    {
+        agc_word y = w[VM_CDUZ];
+        vm_sps_step(201, &s, w, 0u, optics);
+        vm_sps_step(301, &s, w, 0u, optics);
+        check_count(w[VM_CDUZ], y, "after cutoff the attitude holds");
+    }
 }
 
 static void test_aero(void)
@@ -317,6 +371,7 @@ int main(void)
     test_touchdown();
     test_rcs();
     test_sps();
+    test_sps_tvc();
     test_aero();
     test_imu();
     test_saturn();
