@@ -242,7 +242,9 @@ static uint16_t replay_cs(void)
 {
     return (uint16_t)(IMAGE->words[025] - replay_t0) & 037777u;
 }
-static uint8_t sample_point(uint16_t t)
+/* From the low region as well: inlined in each caller it cost the resident
+ * 94 bytes, more than RK_DOWNRUPT's build had left. */
+LOW_TEXT("dp_sample") static uint8_t sample_point(uint16_t t)
 {
     if (rk_pending || rk_hardware.in_interrupt) return 0;
     if ((IMAGE->words[5] & 07777u) == DP_ADVAN && (IMAGE->words[4] >> 10) == 1u &&
