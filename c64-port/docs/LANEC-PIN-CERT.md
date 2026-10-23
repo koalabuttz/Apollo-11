@@ -160,40 +160,53 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
 - Independent assembly comparison: `lanec-pin-comparison.json`: 91
   suites (`pin-gaps`, the ten `pin-head-*` suites, the 76 `pw-*` suites,
   `pin-transfer`, `pin-transfer-c64`, `pin-decdsp3` and `pin-refuse`),
-  149,340 cases, zero differing and 4,608 refused with the image and I/O
+  150,956 cases, zero differing and 4,907 refused with the image and I/O
   unchanged.
 - Host and sanitizer results: `lanec-pin-checks.log`. It has the strict and
   ASan/UBSan runs of every suite and the whole-file map run.
 - C64 execution results: `lanec-pin-c64-results.json`, with every PRG's
-  hash: `vice-lanec-pin-gaps` (50 checks), `vice-lanec-pw-1` to `-5` (86
-  programs, 926 checks), `vice-lanec-pin-transfer-1` to `-4` (89 programs,
-  254 checks) and
-  `vice-lanec-pin-flight` (95 checks: the frozen rows of the ten
-  `pin-head-*` suites and `pw-fixed-display`, both missions, run one
-  routine per case through the Pinball flight modules loaded from the REU
-  store, `docs/MODULE-TEST.md`), all on a VICE PAL C64 with no failures.
+  hash: `vice-lanec-pin-gaps` (63 checks), `vice-lanec-pw-1` to `-5` (86
+  programs, 947 checks) and `vice-lanec-pin-transfer-1` to `-4` (85
+  programs, 216 checks), plus three runs through the Pinball flight modules
+  loaded from the REU store (`docs/MODULE-TEST.md`), one routine per case:
+  `vice-lanec-pin-keys` (every `pin-keys` and `pin-key-labels` case, 1,408
+  per mission each), `vice-lanec-pin-chains` (the frozen C64 rows of
+  `pin-transfer`, `pin-decdsp3` and `pin-refuse`: 240 LM and 151 CM, 11 CM,
+  239 LM and 111 CM) and `vice-lanec-pin-flight` (the frozen rows of the ten
+  `pin-head-*` suites and `pw-fixed-display`, both missions). All ran on a
+  VICE PAL C64 with no failures; the store runs name the store's sha256.
 - C64 branch outcomes: `lanec-pin-c64-cover.json` (`tools/lanec/cover.py
   record --pool`). For each suite it lists the host cases' branch arcs over
   every linked source and the frozen C64 rows. Every host arc is taken by
   some C64 program's rows, with these groups listed apart:
-  - the 119 `pin-transfer-c64` rows of the 37 programs that do not fit
-    below $C000 do not count (`c64_rows_not_run`); the DI round trips
-    (`di-transfer-c64`) and the keypress pair (`pin-keys`,
-    `pin-key-labels`, every case run on the C64 by
-    `module-test-lanec-pin-keys`) are pooled in, since they run the same
-    routines in the same build;
-  - five arcs on four lines of the transfer harness itself
-    (`host_only_lines`, `host_branches_not_on_c64`): the pin-head scan
-    cache in `tests/lanec_pin_head.c` and the range test in
-    `tests/lanec_pin_transfer_cases.c`. Only rows of programs that pass
-    $C000 take them. They are test code, not port code; the rows run in
-    the flight store instead.
+  - the 163 `pin-transfer-c64` rows of the 40 programs that do not fit
+    below $C000 (`LANEC_PIN_C64_TOO_BIG`, `pw_load_store_cm` among them) do
+    not count (`c64_rows_not_run`); the DI round trips
+    (`di-transfer-c64`), the keypress pair (`pin-keys`, `pin-key-labels`)
+    and the flight-module chains (`pin-transfer-flight`,
+    `pin-decdsp3-flight`, `pin-refuse-flight`) are pooled in, since they run
+    the same routines in the same build;
+  - `pin-transfer`, `pin-decdsp3` and `pin-refuse` have no C64 rows of their
+    own (`pooled_only`): their `-flight` twins run the same cases the way the
+    C64 module test does, and their arcs count only through the pool;
+  - 117 arcs on 43 lines that no C64 row can take (`host_only_lines`,
+    `host_branches_not_on_c64`, each line with its reason): the transfer
+    harness itself (the pin-head scan cache in `tests/lanec_pin_head.c`, the
+    range, stop and accept tests in `tests/lanec_pin_transfer_cases.c`), and
+    other files' Executive, waitlist, interpreter-change and DI MARK
+    routines that only the pooled host suites reach, where a host chain runs
+    on past the call the C64 flight run stops at. Those routines are
+    certified with their own files.
+- The full DSKY sweep (`evidence/dsky-sweep/dsky-sweep.json`,
+  `tools/dsky_sweep_vice.py --cases all`, acceptance item 6): every key
+  sequence of `tools/dsky_sweep_cases.py` on both missions, PRO cases
+  included, ends in the host state on the C64.
 
 The supported domain and the external continuations are written into the
 certificates themselves.
 
 Regenerate the evidence with (the suites of `tools/lanec/wholefile_pin.py`
-but the keypress pair, whose evidence is `module-test-lanec-pin-keys`):
+but the keypress pair, whose evidence is `vice-lanec-pin-keys`):
 
     S=$(python3 -c "import sys; sys.path.insert(0, 'tools/lanec'); import wholefile_pin as w; \
       print(' '.join(s[0] for s in w.SUITES if not s[0].startswith('pin-key')))")
@@ -201,12 +214,23 @@ but the keypress pair, whose evidence is `module-test-lanec-pin-keys`):
       pin-decdsp3 --refusals $S pin-transfer pin-transfer-c64 pin-decdsp3 --refusals-only pin-refuse \
       --wholefile tools/lanec/wholefile_pin.py \
       --c64 pin-gaps=lanec-pin-gaps $(for n in 1 2 3 4 5; do echo pw=lanec-pw-$n; done) \
-      $(for n in 1 2 3 4; do echo pin-transfer-c64=lanec-pin-transfer-$n; done) pin-flight=lanec-pin-flight
+      $(for n in 1 2 3 4; do echo pin-transfer-c64=lanec-pin-transfer-$n; done)
+    make flight-store
+    make vice-lanec-pin-keys; make vice-lanec-pin-chains; make vice-lanec-pin-flight
     python3 tools/lanec/cover.py record evidence/lanec-pin-cert/lanec-pin-c64-cover.json $S pin-keys pin-key-labels \
-      pin-transfer-c64 di-transfer-c64 --pool --not-run pin-transfer-c64=<the rows of LANEC_PIN_C64_TOO_BIG's programs> \
-      --host-only 'tests/lanec_pin_head.c:28=<reason>' (and :30, tests/lanec_pin_transfer_cases.c:122 and :128)
+      pin-transfer-c64 di-transfer-c64 pin-transfer-flight pin-decdsp3-flight pin-refuse-flight \
+      pin-transfer pin-decdsp3 pin-refuse --pool \
+      --pooled-only pin-transfer=pin-transfer-flight --pooled-only pin-decdsp3=pin-decdsp3-flight \
+      --pooled-only pin-refuse=pin-refuse-flight \
+      --not-run pin-transfer-c64=<the rows of LANEC_PIN_C64_TOO_BIG's programs> \
+      --host-only 'FILE:LINE=<reason>' (each line of host_only_lines, with its reason)
+    python3 tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep
 
-The C64 runs take about 70 minutes, `vice-lanec-pin-flight` builds the
-flight store first (`tools/flight_store_build.py`), and the record traces
-every host case of every suite (about two hours; it keeps each suite's arcs
-in `build/lanec-cover` and resumes from them).
+The three store runs use the built store and run one after another. The
+cover record traces every host case of every suite (several hours; it keeps
+each suite's arcs in `build/lanec-cover` and resumes from them), and the
+full sweep takes about two hours a mission on four cores. The sweep for this
+certificate ran once per mission (`--missions lm`, then `--missions cm`,
+each with `--known tools/dsky_sweep_known.json --jobs 4`), and the two
+reports were joined into one `evidence/dsky-sweep/dsky-sweep.json` (both
+missions, mode `all`, results and stores side by side).
