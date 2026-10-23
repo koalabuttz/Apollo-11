@@ -811,6 +811,18 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
         }
     }
 #endif
+#ifdef RK_WORK_CLOCK
+    /* An interrupt's steps keep the job's part hand-off (rk_part_cont) for
+     * the job's next step, and charge their own runs as fresh: a T4RUPT
+     * between two parts of a job's routine does not charge it again. */
+    if (rk_hardware.in_interrupt) {
+        uint8_t cont = rk_part_cont;
+        rk_part_cont = 0;
+        st = rk_step_run(stop_physical);
+        rk_part_cont = cont;
+        goto out;
+    }
+#endif
     st = rk_step_run(stop_physical);
 out:
 #if !RK_LM
