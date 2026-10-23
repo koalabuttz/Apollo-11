@@ -1,7 +1,7 @@
 {
  "program": "Luminary099",
  "mission": "lm",
- "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. A mapped row's windows lists the replay windows that run the row ([scenario, start cs], or [scenario, start cs, cs, K] for a chain) (its event falls inside the window); only those windows give the row its C64 credit. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope.",
+ "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. A mapped row's windows lists the replay windows that run the row ([scenario, start cs], or [scenario, start cs, cs, K] for a chain) (its event falls inside the window); only those windows give the row its C64 credit. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope. A mapped row may name its body in reach ([[point, label], ...], a point as the host reports print it): the host run must reach each (FLIGHT_REACH), so a scenario that only takes the entry's refusal does not count.",
  "replay_windows": [
   [
    "lm-p63-descent",
@@ -310,6 +310,11 @@
   [
    "lm-uplink-accept",
    11900,
+   1000
+  ],
+  [
+   "lm-p63-lr-update",
+   100400,
    1000
   ]
  ],
@@ -1359,12 +1364,22 @@
    "scenarios": [
     "lm-coast-verbs"
    ],
-   "note": "lm-coast-verbs: V43E (Lane F host check, 10-19)",
+   "note": "lm-coast-verbs: V43E with the needles mode off (FLIGHT_CHAN channel 31 bits 13-14 set) and the V21N22 angles loaded; ATTCK2 sends the CDU error commands in the 21900 window (#764)",
    "owner": "F",
    "windows": [
     [
      "lm-coast-verbs",
      19900
+    ],
+    [
+     "lm-coast-verbs",
+     21900
+    ]
+   ],
+   "reach": [
+    [
+     "42,2035",
+     "ATTCK2"
     ]
    ]
   },
@@ -1376,12 +1391,18 @@
    "scenarios": [
     "lm-coast-verbs"
    ],
-   "note": "lm-coast-verbs: V44E (Lane F host check, 10-19)",
+   "note": "lm-coast-verbs: V44E ends a continuous designate that FLIGHT_POKE sets (RADMODES bit 15 poked at 188 s, not an in-flight designate); the body clears it at 191.5 s (#764)",
    "owner": "F",
    "windows": [
     [
      "lm-coast-verbs",
      18900
+    ]
+   ],
+   "reach": [
+    [
+     "43,2306",
+     "RRDESEND +4 (CS OCT41000)"
     ]
    ]
   },
@@ -1593,12 +1614,16 @@
    "scenarios": [
     "lm-p63-lr-update"
    ],
-   "note": "R12 altitude updates; the velocity-update path is still open (#687)",
-   "owner": "unassigned",
+   "note": "lm-p63-lr-update: R12 altitude updates from 816 s, then from 1,005 s the velocity updates (READV, LRVJOB) after each altitude read, to 1,100 s (Lane F host check on #739, 10-19)",
+   "owner": "F",
    "windows": [
     [
      "lm-p63-lr-update",
      90000
+    ],
+    [
+     "lm-p63-lr-update",
+     100400
     ]
    ]
   },
@@ -1779,7 +1804,7 @@
    "entry": "VERB69 EV:81",
    "status": "not exercised",
    "scenarios": [],
-   "note": "VERB69 is TC VERB69 (EXTENDED_VERBS.agc:81): the restart comes from the AGC's TC trap, which yaAGC does not model, so neither side restarts (Lane F host check, 10-19). Hardware restarts are covered by FLIGHT_GOJAM in the recovery_and_restart rows (A2).",
+   "note": "VERB69 is TC VERB69 (EXTENDED_VERBS.agc:81), a TC to itself: the AGC's TC trap restarts it. The host differential runs under scaled time, where the bridge stops at a TC to itself, so no FLIGHT scenario runs it. The restart checks do (docs/FLIGHT-RESTART.md, A2's recovery_and_restart rows): lm-v69-restart on the host, unscaled (yaAGC's trap at 25.01 s, 4,000 of 4,000 samples equal, back to P00), and the C64 lm-v69 window from 2300 cs, which matches the host up to the trap (Lane F, 10-23).",
    "owner": "A2"
   },
   {

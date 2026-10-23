@@ -96,10 +96,18 @@ jobs:
           echo "shared=$shared" >> "$GITHUB_OUTPUT"
           echo "affected=$affected" >> "$GITHUB_OUTPUT"
           echo "host=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["test"] or a["sanitize"])))')" >> "$GITHUB_OUTPUT"
-          echo "c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')" >> "$GITHUB_OUTPUT"
+          # A merge's push run on the port branch skips the C64/VICE shards: its PR
+          # already ran them, and the nightly runs every C64 check on the branch
+          # (David, 10-23). c64-maps still links every PRG on each push.
+          post_merge=0
+          if [ "$EVENT" = push ] && [ "$HEAD_REF" = port/c64-native-c ] && [ "$FULL" != 1 ]; then post_merge=1; fi
+          c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')
+          [ "$post_merge" = 1 ] && c64=0
+          echo "c64=$c64" >> "$GITHUB_OUTPUT"
           echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
           # A full c64 run is over two hours of builds and VICE: split it.
           c64_full=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a.get("c64_full", a["full"])))')
+          [ "$post_merge" = 1 ] && c64_full=0
           echo "c64_full=$c64_full" >> "$GITHUB_OUTPUT"
           # A PR's own c64 list gets a runner per hour of measured target time
           # (tools/ci_target_seconds.json), up to 4: shared kernel PRs pick
@@ -143,6 +151,9 @@ jobs:
       - name: Certificate arms are triaged
         working-directory: c64-port
         run: python3 tools/cert_arms.py check
+      - name: Differential step-cap loop classification
+        working-directory: c64-port
+        run: python3 tools/interp_loops_test.py
       - name: Coverage audit
         working-directory: c64-port
         run: |
@@ -289,8 +300,8 @@ jobs:
           path: c64-port/build/vice-manifest-*.json
           if-no-files-found: ignore
 
-  # On every push to the port branch, link every C64 PRG (no VICE) and check
-  # each map. Two PRs can each fit and still push another lane's PRG past
+  # On every push to the port branch (where the c64 job is skipped), link
+  # every C64 PRG (no VICE) and check each map. Two PRs can each fit and still push another lane's PRG past
   # $c000 together; this shows it on the merge commit. Full runs check the
   # maps in the c64 job instead.
   c64-maps:

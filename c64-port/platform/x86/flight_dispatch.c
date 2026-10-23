@@ -13,6 +13,7 @@
 #define FETCH LM_INTERPRETER_FETCH
 #define DANZIG AGC_LM_DANZIG
 #define CORE lm_interp_core
+#define CORE_MCT        lm_interp_core_mct
 #define CORE_IO FLIGHT_IO_P66
 #define SELF_CHECK_ROPE lm_self_check_rope_data
 #else
@@ -21,10 +22,14 @@
 #define FETCH CM_INTERPRETER_FETCH
 #define DANZIG AGC_CM_DANZIG
 #define CORE cm_interp_core
+#define CORE_MCT        cm_interp_core_mct
 #define CORE_IO FLIGHT_IO_CM_NATIVE
 #define SELF_CHECK_ROPE cm_self_check_rope_data
 #endif
 extern const agc_routine CORE;
+/* The core's work clock (src/lm_interp_core.c, built with
+ * INTERP_WORD_CHARGE): each word NEWOPS fetches adds its MCT. */
+extern uint16_t CORE_MCT;
 
 #include FLIGHT_HOST_SITES
 #define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) extern const agc_routine_table t;
@@ -49,9 +54,6 @@ char fd_table_status(unsigned table){unsigned i;
  * points, for points the scenarios never reached. */
 typedef struct { uint16_t key; uint8_t interp; uint16_t mct; } fd_cost_entry;
 #include FLIGHT_MCT
-/* One interpreter core slot: about one interpretive order through NEWOPS
- * and its dispatch (an estimate; the core has no per-order cost table). */
-#define FD_CORE_SLOT_MCT 30.0
 static double cost(uint16_t key,uint8_t interp){unsigned lo=0,hi=sizeof fd_mct/sizeof fd_mct[0],mid;
  while(lo<hi){mid=lo+(hi-lo)/2u;
   if(fd_mct[mid].interp==interp&&fd_mct[mid].key==key)return fd_mct[mid].mct;
@@ -97,7 +99,11 @@ static int interpreting(const fd_state *st){uint16_t z=agc_fixed_physical((agc_w
 uint16_t fd_point(const fd_state *st,int *interp){const agc_word *w=st->s.words;agc_word z=(agc_word)(w[5]&07777u);
  if((*interp=interpreting(st))!=0)return agc_fixed_physical(w[0164],w[0165],st->io.superbank);
  return z<02000u?agc_erasable_point(z,w[3]):agc_fixed_physical(z,w[4],st->io.superbank);}
-unsigned long fd_centiseconds(const fd_state *st){return ((unsigned long)(st->s.words[024]&037777u)<<14)|(st->s.words[025]&037777u);}
+unsigned long fd_centiseconds(const fd_state *st)
+{
+    return ((((unsigned long)(st->s.words[024] & 037777u) << 14) | (st->s.words[025] & 037777u)) -
+            st->t0);
+}
 
 uint8_t fd_boundary(fd_state *st)
 {
@@ -182,8 +188,15 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
  else gap(st,key,1,0,0,!(core_in==1&&core_key==key));
  /* The interpreter core: one slot from this interpretive point. */
  st->p.operands=0;st->p.operand_count=0;st->p.fixed_data=rope_data;
- ran->status=run(st,CORE,CORE_IO);++st->slots;
+ /* As tools/flight_host_run.c's core_run off the work clock: the clock
+  * from 0, one slot, charged the MCT of the words it fetched. Left
+  * running, the clock's bit 15 makes the core skip NEWOPS (the C64
+  * module's budget), and it would never fetch a word again. */
+ CORE_MCT = 0u;
+ ran->status = run(st, CORE, CORE_IO);
+ ++st->slots;
  if(ran->status==EXEC_UNMAPPED)ran->status=EXEC_OK;   /* left the interpreter: the next step resolves Z */
- ran->mct=FD_CORE_SLOT_MCT;st->mct+=ran->mct;
+ ran->mct = (double)CORE_MCT;
+ st->mct += ran->mct;
  core_key=fd_point(st,&in);core_in=(uint8_t)in;
  return ran->status;}

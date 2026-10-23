@@ -31,9 +31,9 @@ For each row: the scenarios' host result against yaAGC (routines that did
 not match, points the host bridged) and their C64 --replay windows (matches
 host, differs with its class, or stops). A result from another commit is
 listed as stale and counts as not run (a result from an
-older commit counts when the port's sources have not changed since). The doc is rewritten on every run
-(it is cheap: no flight runs), so the auditor can refresh it after each
-rerun. It exits 1 unless every row is mapped or not exercised (with a
+older commit counts only when nothing a run depends on, SOURCES below,
+changed since). The doc is rewritten on every run; with --no-run that is
+cheap (no flight runs), so the auditor can refresh it after each rerun. It exits 1 unless every row is mapped or not exercised (with a
 note giving the reason), every mapped row's scenarios match yaAGC, and one
 of the C64 windows a mapped row names (its `windows`: the windows its event
 falls in; no other window counts for it) matches the host at one checkpoint
@@ -58,10 +58,14 @@ TIMERS = {'centiseconds', 'TIME1', 'TIME2', 'TIME3', 'TIME4', 'TIME5', 'TIME6'}
 BULKY = ('records', 'profile', 'watched', 'by_request')
 
 
-# The paths a flight result depends on (flight_holes.source_commit's set),
-# less this tool's own files: a result from an older commit still counts
+# The paths a flight result may depend on: the whole port (sources, tools,
+# docs/*.json with the layout and weight tables the store reads, and the
+# program maps this tool reads) and the AGC sources, less what cannot
+# change a run: prose (the generated docs included), stored evidence and
+# this tool's own files. A result from an older commit still counts only
 # when none of these changed since it.
-SOURCES = ['src', 'include', 'platform', 'tools', 'tests', 'Makefile',
+SOURCES = ['.', ':(top)Luminary099', ':(top)Comanche055',
+           ':!*.md', ':!evidence',
            ':!tools/program_acceptance.py', ':!tests/test_program_acceptance.py', ':!tools/mk/program-acceptance.mk']
 
 
@@ -100,11 +104,14 @@ def replay_result(r):
     (a window, or a --chain run's summary)."""
     if r.get('windows') is not None:
         k = r.get('chain', len(r['windows']))
-        if r.get('ok') and len(r['windows']) == k and all(w.get('replay_matched_cs') for w in r['windows']):
+        if r.get('ok') and len(r['windows']) == k and all(w.get('replay_matched_cs') and not w.get('replay_skipped')
+                                                           for w in r['windows']):
             return True, f'matches host (chain of {k} windows, every seam holds)'
         for n, w in enumerate(r['windows']):
             if w.get('seam'):
                 return False, f"chain of {k}: seam {w['seam']} fails"
+            if w.get('replay_skipped'):   # words left out of the compare (SCHEDULE_SKIP): not a full match
+                return False, f"chain of {k}: window {n} matches host except skipped {', '.join(w['replay_skipped'])}"
             ok, text = replay_result(w)
             if not ok:
                 return False, f'chain of {k}: window {n} {text}'
@@ -115,12 +122,20 @@ def replay_result(r):
         return False, f"ends early ({r.get('agc_cs')} of {r.get('requested_cs')} cs)"
     if not (r.get('reu_bounds') or {}).get('ok', True):
         return False, 'REU access outside the layout'
+    shift = r.get('replay_end_shift_cs')
+    late = f', end compared {shift} cs late' if shift else ''
+    if r.get('replay_ended') and r.get('replay_end_paired') is False and not r.get('replay_differences'):
+        return False, f'end not compared (the C64 ends {shift} cs after the host, with no host state to match)'
     if r.get('replay_differences') == 0 and r.get('replay_ended'):
         if not r.get('replay_matched_cs'):
             return False, 'no checkpoint compared'
         if r.get('ok') is False:          # the run failed for a reason this tool does not name
             return False, f"run failed ({r.get('error') or 'ok is false'})"
-        return True, 'matches host'
+        if r.get('replay_skipped'):       # words left out of the compare (SCHEDULE_SKIP): not a full match
+            return False, f"matches host except skipped {', '.join(r['replay_skipped'])}"
+        notes = [x for x in (f"{r['replay_unpaired_count']} checkpoints not compared"
+                             if r.get('replay_unpaired_count') else '', late[2:]) if x]
+        return True, 'matches host' + (f" ({', '.join(notes)})" if notes else '')
     if not r.get('replay_differences') and r.get('replay_ended') is False:
         return False, 'did not reach the next checkpoint'
     first = (r.get('replay_first') or [{}])[0]
@@ -128,7 +143,26 @@ def replay_result(r):
     cls = 'clock' if at in TIMERS else 'data'
     when = r.get('replay_differ_at_cs')
     return False, (f"differs ({cls}: first at {at}, host {first.get('host')} C64 {first.get('c64')}"
-                   + (f', by {when} cs' if when is not None else '') + ')')
+                   + (f', by {when} cs' if when is not None else '') + late + ')')
+
+
+def body_result(row, host):
+    """(reached, text) for a row's `reach` points ([[point, label], ...],
+    the body its entry leads to): each must be reached in one of its
+    scenarios' host runs (flight_host_differential.py's `reached`, the
+    first centisecond yaAGC ran it), or the row is not run by them, only
+    its refusal. None when the row names no body."""
+    if not row.get('reach'):
+        return None
+    missing = []
+    for point, label in row['reach']:
+        runs = [host[s].get('reached', {}) for s in row['scenarios'] if s in host]
+        if not any(r.get(point) is not None for r in runs):
+            checked = any(point in r for r in runs)
+            missing.append(f"{label} ({point}{'' if checked else ', not checked'})")
+    if missing:
+        return False, 'body not reached: ' + ', '.join(missing)
+    return True, 'body reached: ' + ', '.join(label for _, label in row['reach'])
 
 
 def load_host(host_dir, commit):
@@ -187,12 +221,15 @@ def assess(rows, host, replays, stale_host=None):
     """Per-row verdicts and the counts."""
     out, stale_host = [], stale_host or {}
     for row in rows:
-        h = {s: (False, f'stale (run at {stale_host[s]})') if s not in host and s in stale_host
+        h = {s: (False, 'stale (another commit)') if s not in host and s in stale_host
              else host_result(host.get(s)) for s in row['scenarios']}
         named = {(s, snap, k) for s, snap, k in map(window_key, row.get('windows', []))}
         c = {s: [(r, *replay_result(r)) for r in replays.get(s, []) if run_key(r) in named] for s in row['scenarios']}
         mapped = row['status'] == 'mapped'
         unexplained = row['status'] == 'not exercised' and not (row.get('note') or '').strip()
+        body = body_result(row, host)
+        if body:
+            h = {**h, 'body': body}
         host_clean = mapped and bool(h) and all(ok for ok, _ in h.values())
         c64_match = mapped and any(match for runs in c.values() for _, match, _ in runs)
         out.append(dict(row=row, host=h, c64=c, host_clean=host_clean, c64_match=c64_match, unexplained=unexplained))
@@ -233,13 +270,16 @@ def write_evidence(m, host, replays, dest, store):
     return {k: (f'evidence/{m}-acceptance-program/{p.name}', sha(p)) for k, p in files.items()}
 
 
-def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, evidence, commit, out, windows=(), note=None):
+def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, evidence, commit, out, windows=(), note=None,
+              store_sha=None):
     p = PROGRAM[m]
-    ev = lambda key: (f"`{evidence[key][0]}` (sha256 `{evidence[key][1][:12]}...`)" if key in evidence  # noqa: E731
+    ev = lambda key: (f"`{evidence[key][0]}` (sha256 `{evidence[key][1]}`)" if key in evidence  # noqa: E731
                       else '(not stored)')
     lines = [f'# {p}: integrated program tests', '',
              f'Generated by `tools/program_acceptance.py {m}` at commit `{commit}`. '
              f"Result: **{'PASS' if counts['ok'] else 'FAIL'}**.", '',
+             f"The C64 windows run the store `flight-store/{m}.reu` (sha256 `{store_sha}`)." if store_sha
+             else f"The C64 store `flight-store/{m}.reu` is not built at this commit.", '',
              *([f'**Note:** {note}', ''] if note else []),
              'This is the `integrated_program_tests` evidence of the '
              f'`integrated_applications.{p}` entry (docs/port-coverage.json). It takes every major mode and '
@@ -249,8 +289,9 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
              'VICE (`tools/flight_scenario_vice.py --replay`: the host\'s inputs replayed on the C64 and its '
              'state compared with the host\'s at each checkpoint).', '',
              'It passes when every row is mapped or not exercised (with its reason), every mapped row\'s '
-             'scenarios match yaAGC with no bridged point, and one of the C64 windows the row names (the '
-             'windows its event falls in) matches the host at one checkpoint or more. A result from a commit with other port sources (src, include, platform, tools, tests) '
+             'scenarios match yaAGC with no bridged point (and reach the body the row names, its `reach`), and one of the C64 windows the row names (the '
+             'windows its event falls in) matches the host at one checkpoint or more. A result from a commit with other port sources or AGC sources (anything but prose and '
+             'stored evidence) '
              'is stale and counts as not run.', '',
              '## Counts', '',
              '| Rows | mapped | not exercised | not exercised, no reason | TBD | mapped, host matches yaAGC | '
@@ -285,7 +326,7 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
     for s in used:
         row = host.get(s)
         if row is None:
-            lines.append(f"| {s} | | | | {'stale (' + stale_host[s] + ')' if s in stale_host else 'not run'} | |")
+            lines.append(f"| {s} | | | | {'stale (another commit)' if s in stale_host else 'not run'} | |")
             continue
         lines.append(f"| {s} | {row['centiseconds']} | {row.get('native_routines') or 0:,} | "
                      f"{row.get('bridged_instructions') or 0:,} | {cell(host_result(row)[1])} | {ev(('host', s))} |")
@@ -313,9 +354,9 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
     if not windows and not plan:
         lines.append('| (none at this commit) | | | | | | |')
     if stale_host or stale_runs:
-        lines += ['', '## Stale inputs (not counted)', '']
-        lines += [f'- host {s}: run at `{c}`' for s, c in sorted(stale_host.items()) if s in used]
-        lines += [f'- replay {f}: run at `{c}`' for f, c in sorted(stale_runs)]
+        lines += ['', '## Stale inputs (from another commit, not counted)', '']
+        lines += [f'- host {s}' for s in sorted(stale_host) if s in used]
+        lines += [f'- replay {f}' for f, _ in sorted(stale_runs)]
     lines += ['', '## Reproduce', '', '```sh', 'make flight-store',
               f'python3 tools/program_acceptance.py {m}            # runs the host differential and each C64 window',
               f'python3 tools/program_acceptance.py {m} --no-run   # rewrites this doc from the results already made',
@@ -388,7 +429,9 @@ def main(argv=None):
                               {s: r for s, r in replays.items() if s in used},
                               ROOT / 'build/program-acceptance' / m, not a.no_evidence)
     out = a.out or ROOT / f'docs/acceptance/{p}-integrated_program_tests.md'
-    write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, evidence, commit, out, windows, a.note)
+    reu = ROOT / f'build/flight-store/{m}.reu'
+    write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, evidence, commit, out, windows, a.note,
+              sha(reu) if reu.exists() else None)
     print(f"{out.relative_to(ROOT) if ROOT in out.parents else out}: {'PASS' if counts['ok'] else 'FAIL'}: "
           f"{counts['rows']} rows, {counts['mapped']} mapped ({counts['host_clean']} match yaAGC on the host, "
           f"{counts['c64_match']} with a C64 window matching the host), {counts['not_exercised']} not exercised, "
