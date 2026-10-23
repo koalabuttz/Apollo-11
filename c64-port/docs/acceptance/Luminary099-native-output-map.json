@@ -53,9 +53,17 @@
   {
    "section": "Downlink (channels 34, 35)",
    "row": "Erasable dump (V74)",
-   "kind": "downlink",
-   "status": "not exercised",
-   "note": "No scenario keys V74"
+   "kind": "dump",
+   "note": "lm-uplink-accept keys V74 at 12000 cs; DNTMGOTO enters the dump code about 60 cs after that.",
+   "windows": [
+    [
+     "lm-uplink-accept",
+     12010,
+     300,
+     1,
+     50
+    ]
+   ]
   },
   {
    "section": "Output channels",
@@ -124,8 +132,18 @@
    "windows": [
     [
      "lm-p63-descent",
-     17500,
-     200
+     2300,
+     1000
+    ],
+    [
+     "lm-uplink-accept",
+     1950,
+     1000
+    ],
+    [
+     "lm-coast-verbs",
+     2700,
+     1000
     ]
    ]
   },
@@ -138,19 +156,14 @@
    ],
    "windows": [
     [
-     "lm-p63-descent-thrust",
-     17500,
-     120
+     "lm-p52-imu-cage",
+     2950,
+     1000
     ],
     [
-     "lm-p52-realign",
-     2000,
-     600
-    ],
-    [
-     "lm-abort-p71-nassp",
-     115000,
-     600
+     "lm-rendezvous",
+     5300,
+     1000
     ]
    ]
   },
@@ -163,22 +176,21 @@
    ],
    "windows": [
     [
-     "lm-rendezvous",
-     29000,
-     600
-    ],
-    [
-     "lm-p63-lr-update",
-     90000,
+     "lm-coast-r04",
+     4100,
      1000
     ],
     [
-     "lm-p63-v60-nassp",
-     99500,
+     "lm-stable-orbit",
+     8800,
+     1000
+    ],
+    [
+     "lm-rendezvous",
+     8000,
      1000
     ]
-   ],
-   "note": "lm-p63-v60-nassp 99500 is #674-blocked (stop at 00002 is basic 50,2002, removed by the EV TC Q fix in #674); rerun after #674 merges."
+   ]
   },
   {
    "section": "Output channels",
@@ -189,14 +201,9 @@
    ],
    "windows": [
     [
-     "lm-p63-descent-thrust",
-     17500,
-     120
-    ],
-    [
-     "lm-abort-p70-nassp",
-     115000,
-     600
+     "lm-p63-overload",
+     9550,
+     1000
     ]
    ]
   },
@@ -209,19 +216,19 @@
    ],
    "windows": [
     [
-     "lm-p52-realign",
-     2000,
-     600
-    ],
-    [
      "lm-p57",
-     12000,
-     600
+     42300,
+     1000
     ],
     [
      "lm-rendezvous",
-     29000,
-     600
+     5300,
+     1000
+    ],
+    [
+     "lm-p52-imu-cage",
+     2950,
+     1000
     ]
    ]
   }

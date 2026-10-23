@@ -1062,9 +1062,11 @@ static void store(apollo_overlay_state *s,flight_io *io,agc_hardware *hw){unsign
 static const agc_word *view(void){static agc_word v[2048];static const unsigned short at[]={3,4,5,AGC_EDOP,NEWJOB,0164,0165};unsigned i;
  for(i=0;i<sizeof at/sizeof at[0];++i)v[at[i]]=mword(at[i]);
  return v;}
-/* The output drives, once each clock period after the timers, as the C64
- * resident runs them: the IMU CDU drive (CDUXCMD-CDUZCMD) and, in the CM,
- * the optics error counters (the SPS gimbal commands in TVC mode). */
+/* The output drives, once each clock period, as the C64 resident runs
+ * them: the IMU CDU drive (CDUXCMD-CDUZCMD) and, in the CM, the optics
+ * error counters (the SPS gimbal commands in TVC mode). The work clock
+ * drives at the T5 step before rk_timer_phase (resident_flight.c
+ * rk_rupts_due); the scaled clock after rk_timer_tick (rk_rupts). */
 static void drives(apollo_overlay_state *s,agc_hardware *hw){
 #ifdef RK_CM
  unsigned k;long before[2];

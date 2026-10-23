@@ -56,15 +56,17 @@ REF_SLACK = 0
 # and ascent list in the braking phase, before the GOJAM; -after-gojam: the
 # list STARTSUB restarted, 9 cs after the GOJAM; lm-p00: the coast and align
 # list in P00. The acceptance windows (LM rendezvous, CM P00, P40 burn,
-# entry) start mid-phase from the restart rows' own scenarios, without their
-# GOJAM, so the lists carry that phase's live state.
+# entry, P20 and P22) start mid-phase from the restart rows' own
+# scenarios, without their GOJAM, so the lists carry that phase's live state.
 VICE_WINDOWS = [('lm-p63-descent', 'lm-p63-descent-restart', 19950, False, 0o77773),
                 ('lm-p63-descent-after-gojam', 'lm-p63-descent-restart', 20010, True, 0o77773),
                 ('lm-p00', 'lm-p00-restart', 2400, False, 0o77777),
                 ('lm-rendezvous', 'lm-rendezvous-restart', 19990, False, 0o77775),
                 ('cm-p00', 'cm-p00-p40-restart', 72990, False, 0o77777),
                 ('cm-p40-burn', 'cm-p40-burn-restart', 49990, False, 0o77774),
-                ('cm-entry', 'cm-entry-restart', 24990, False, 0o77776)]
+                ('cm-entry', 'cm-entry-restart', 24990, False, 0o77776),
+                ('cm-p20', 'cm-p20-restart', 19960, False, 0o77775),
+                ('cm-p22', 'cm-p22-restart', 11990, False, 0o77773)]
 
 
 def stream(path):
