@@ -26,7 +26,7 @@ Writes build/flight-downlink/ (logs, word streams, summary.json).
 
   flight_downlink_check.py [--host-cc CC] [--skip-index] [--only NAME,...] [--jobs N] [--vice [--downrupts N]]
 """
-import argparse, json, os, re, struct, subprocess, sys
+import argparse, hashlib, json, os, re, struct, subprocess, sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -34,6 +34,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import flight_host_differential as fhd  # noqa: E402
 import flight_restart_check as frc  # noqa: E402
+import flight_holes  # noqa: E402
 
 OUT = ROOT / 'build/flight-downlink'
 # A downlist is 100 word pairs: ID and sync, then 99 (DOWNLINK_LISTS.agc).
@@ -185,7 +186,9 @@ def check(exe, scenario):
 def window_row(scenario):
     """A window's restart row, or for a scenario with no restart row (a
     plain flight scenario, tools/flight_host_differential.py FLIGHT) the
-    same shape with no GOJAM and the scaled schedule."""
+    same shape with no GOJAM and the scaled schedule. The differential runs
+    those scenarios unscaled; here the snapshot and the yaAGC compare both
+    take the scaled env, so the two sides still run the same schedule."""
     row = next((x for x in frc.RESTARTS if x[0] == scenario), None)
     if row is None:
         name, m, cs, keys, env = fhd.scenario(scenario)
@@ -210,7 +213,8 @@ def c64_window(a, exe, window, scratch, pinned):
         'platform/c64/downlink_check.c', *resident_sources(m), frc.STORE / 'overlay_v2_services.S', '-o', prg]],
         cwd=ROOT, check=True)
     d, _ = frc.vice_boot(a, m, prg, OUT / f'vice-{tag}', pinned, mail_end=f'{0xc040 + 6 * n - 1:x}')
-    row = dict(window=tag, scenario=scenario, snapshot=str(header.relative_to(ROOT)), snapshot_cs=at, downrupts=n)
+    row = dict(window=tag, scenario=scenario, mission=m, snapshot=str(header.relative_to(ROOT)), snapshot_cs=at,
+               downrupts=n)
     if d is None:
         row.update(ok=False, failures=[f'no mailbox (cycle limit or crash; see {OUT}/vice-{tag}/vice.log)'])
         return row
@@ -294,6 +298,7 @@ def main():
     p.add_argument('--cycles', type=int, default=3_000_000_000)
     p.add_argument('--timeout', type=int, default=1800)
     a = p.parse_args()
+    commit = flight_holes.source_commit()
     if not a.skip_index:
         subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--host-cc', a.host_cc],
                        cwd=ROOT, check=True)
@@ -332,7 +337,11 @@ def main():
         print(f"summary: {row['scenario']}: {row['native_words']} native words, {row['span_differ']} differ from "
               f"yaAGC's, {'pass' if row['ok'] else 'FAIL'}")
     c64 = vice(a, exe, only) if a.run_vice else []
-    (OUT / 'summary.json').write_text(json.dumps(dict(host=rows, c64=c64), indent=1) + '\n')
+    # The commit the results belong to and the store each C64 window ran on
+    # (tools/native_output_acceptance.py checks both).
+    stores = {m: hashlib.sha256((frc.STORE / f'{m}.reu').read_bytes()).hexdigest()
+              for m in sorted({r['mission'] for r in c64})}
+    (OUT / 'summary.json').write_text(json.dumps(dict(commit=commit, stores=stores, host=rows, c64=c64), indent=1) + '\n')
     return 1 if any(not r['ok'] for r in rows + c64) else 0
 
 
