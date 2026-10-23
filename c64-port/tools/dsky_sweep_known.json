@@ -146,9 +146,5 @@
  "lm V36E": {
   "signature": "clock: TIME4",
   "why": "C64 TIME4 one tick late: AOSTASK split across lm_aostask parts is charged per run (owner Certificate fixes from RK: part-charge PR after #738, replay-mismatches.md)"
- },
- "lm V37E00E": {
-  "signature": "difference: 0064, 1152, 1400, 1401",
-  "why": "waitlist words (0064, LONGBASE+1, LST1) differ after P00 integration_init: interpretive charge class (owner Certificate fixes from RK, replay-mismatches.md)"
  }
 }

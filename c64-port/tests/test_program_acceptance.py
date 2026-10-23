@@ -105,6 +105,16 @@ class ProgramAcceptance(unittest.TestCase):
                               {'lm-a': [dict(replay('lm-a', 0), chain=2, windows=[replay('lm-a', 0)] * 2, ok=True)]})
         self.assertEqual(counts['c64_match'], 1)                       # a row can name a chain
 
+    def test_body_reached(self):
+        row = dict(row='V44', scenarios=['lm-a'], reach=[['43,2306', 'RRDESEND +4']])
+        self.assertIsNone(pa.body_result(dict(row, reach=[]), {}))
+        self.assertEqual(pa.body_result(row, {'lm-a': dict(reached={'43,2306': 1915})}),
+                         (True, 'body reached: RRDESEND +4'))
+        self.assertEqual(pa.body_result(row, {'lm-a': dict(reached={'43,2306': None})}),
+                         (False, 'body not reached: RRDESEND +4 (43,2306)'))
+        self.assertEqual(pa.body_result(row, {'lm-a': {}}),
+                         (False, 'body not reached: RRDESEND +4 (43,2306, not checked)'))
+
     def test_layout_tables_and_agc_sources_stale_a_result(self):
         self.assertIn(':(top)Luminary099', pa.SOURCES)
         self.assertIn('.', pa.SOURCES)  # docs/*.json layout tables count
@@ -185,6 +195,9 @@ class ProgramAcceptance(unittest.TestCase):
                 self.assertIn(row['status'], ('mapped', 'not exercised', 'TBD'), row['row'])
                 self.assertEqual(bool(row['scenarios']), row['status'] == 'mapped', row['row'])
                 self.assertLessEqual(set(row['scenarios']), names, row['row'])
+                for point, label in row.get('reach', []):   # a fixed point, as the host reports print it
+                    self.assertRegex(point, r'^[0-7]{2},[23][0-7]{3}$', row['row'])
+                    self.assertTrue(label and row['status'] == 'mapped', row['row'])
 
 
 if __name__ == '__main__':

@@ -146,6 +146,25 @@ def replay_result(r):
                    + (f', by {when} cs' if when is not None else '') + late + ')')
 
 
+def body_result(row, host):
+    """(reached, text) for a row's `reach` points ([[point, label], ...],
+    the body its entry leads to): each must be reached in one of its
+    scenarios' host runs (flight_host_differential.py's `reached`, the
+    first centisecond yaAGC ran it), or the row is not run by them, only
+    its refusal. None when the row names no body."""
+    if not row.get('reach'):
+        return None
+    missing = []
+    for point, label in row['reach']:
+        runs = [host[s].get('reached', {}) for s in row['scenarios'] if s in host]
+        if not any(r.get(point) is not None for r in runs):
+            checked = any(point in r for r in runs)
+            missing.append(f"{label} ({point}{'' if checked else ', not checked'})")
+    if missing:
+        return False, 'body not reached: ' + ', '.join(missing)
+    return True, 'body reached: ' + ', '.join(label for _, label in row['reach'])
+
+
 def load_host(host_dir, commit):
     """{scenario: summary row}, {scenario: stale commit}."""
     path = host_dir / 'summary.json'
@@ -208,6 +227,9 @@ def assess(rows, host, replays, stale_host=None):
         c = {s: [(r, *replay_result(r)) for r in replays.get(s, []) if run_key(r) in named] for s in row['scenarios']}
         mapped = row['status'] == 'mapped'
         unexplained = row['status'] == 'not exercised' and not (row.get('note') or '').strip()
+        body = body_result(row, host)
+        if body:
+            h = {**h, 'body': body}
         host_clean = mapped and bool(h) and all(ok for ok, _ in h.values())
         c64_match = mapped and any(match for runs in c.values() for _, match, _ in runs)
         out.append(dict(row=row, host=h, c64=c, host_clean=host_clean, c64_match=c64_match, unexplained=unexplained))
@@ -267,7 +289,7 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
              'VICE (`tools/flight_scenario_vice.py --replay`: the host\'s inputs replayed on the C64 and its '
              'state compared with the host\'s at each checkpoint).', '',
              'It passes when every row is mapped or not exercised (with its reason), every mapped row\'s '
-             'scenarios match yaAGC with no bridged point, and one of the C64 windows the row names (the '
+             'scenarios match yaAGC with no bridged point (and reach the body the row names, its `reach`), and one of the C64 windows the row names (the '
              'windows its event falls in) matches the host at one checkpoint or more. A result from a commit with other port sources or AGC sources (anything but prose and '
              'stored evidence) '
              'is stale and counts as not run.', '',

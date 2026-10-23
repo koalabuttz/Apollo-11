@@ -1,0 +1,27 @@
+{
+ "scenario": "cm-cdh-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 20500,
+ "keys": "@2200V37E73E@3000V25E+00001E+00008E+02310E@4200V33E@5000V33E@18000V33E@18800V33E@19600V33E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH31": "037777",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-cdh.load",
+  "FLIGHT_RR": "2000:-267291.806,1762276.412,373515.357,1587.947,300.827,-279.905:34932.422,1820802.682,320471.671,1594.204,27.571,-330.419",
+  "FLIGHT_BUSY_SAMPLE": "100"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 20500,
+ "periods_taken": 20500,
+ "periods_dropped": 0,
+ "agc_centiseconds": 20500,
+ "native_routines": 598054,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "0a4877af599ee4f1adfc0952b7ce7cdec5cb5cd3ecd17bd93bde93639880006a"
+}
