@@ -1153,16 +1153,22 @@ port) runs one mission:
    for one) is listed as unpaired and not compared. The ends follow the
    same rule. After the last window's end the host runs 8 cs more and
    writes its state at each sample point there (`.after`) and the inputs
-   it took (`.after-replay`). A C64 end that comes after the host's (busy,
-   or an interrupt pending, at the host's end) is compared with the host's
-   state at the C64's centisecond. The summary line and the result's
-   `replay_end_shift_cs` say how late, and program_acceptance.py writes
-   "end compared N cs late" in the row. When the host has no state there,
-   or an input came in between, the ends are unpaired and the window fails
-   ("the ends are not compared"), never a match. The checkpoints not
+   it took (`.after-replay`). The C64 gets those inputs too, after the
+   window's own rows, and runs on to the last of those states, writing a
+   state at its first sample point at or after each. The window's end is
+   the first centisecond at or after the host's end where both sides have
+   a state: the host's end itself, or, when the C64 was busy (or had an
+   interrupt pending) there, a later one. By then the C64 has applied
+   every host input before that centisecond.
+   The summary line and the result's `replay_end_shift_cs` say how late,
+   and program_acceptance.py writes "end compared N cs late" in the row.
+   When the two share no such point, the ends are unpaired and the window
+   fails ("the ends are not compared"), never a match. The checkpoints not
    compared are counted in the result (`replay_unpaired_count`, and in
-   the summary line and the acceptance row), and a C64 that ends the
-   window without applying every input row fails. A chain window's end
+   the summary line and the acceptance row). A C64 that ends the window
+   without applying every input row fails, as does one that did not apply
+   each past-end input before its own end (`replay_after_rows` counts
+   those it applied). A chain window's end
    before the last is the next window's seam and always pairs. The C64's state area holds `--cs` /
    `--replay-every` + 1 states and the C64 writes no more, and a window
    the host ran past 16,383 cs (the C64's 14-bit window clock) fails before
