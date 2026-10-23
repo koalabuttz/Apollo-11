@@ -5,6 +5,7 @@
  * table index, operand sets and routine costs. */
 #include <string.h>
 #include "flight_dispatch.h"
+#include "resident_cdu.h"
 #include "rope_image.h"
 #include "self_check.h"
 #include "standard_lead_routines.h"
@@ -91,6 +92,7 @@ void fd_init(fd_state *st,uint8_t mode,agc_word ch30,agc_word ch31){static agc_r
  st->io.undo=&st->undo;st->io.interrupt_enabled=1;st->s.words[5]=04000u;
  st->hw.channel30=ch30;st->hw.channel31=ch31;st->hw.channel32=st->hw.channel33=077777u;
  st->next_period = 85333.0 / 400.0;
+ memset(&rk_cdu, 0, sizeof rk_cdu);
 }
 
 static int interpreting(const fd_state *st){uint16_t z=agc_fixed_physical((agc_word)(st->s.words[5]&07777u),st->s.words[4],st->io.superbank);
@@ -105,6 +107,36 @@ unsigned long fd_centiseconds(const fd_state *st)
             st->t0);
 }
 
+#if RK_CM
+/* A ones-complement counter as a signed number. */
+static long ones(agc_word v)
+{
+    return (v & 040000u) ? -(long)((~v) & 037777u) : (long)(v & 037777u);
+}
+#endif
+
+/* The output drives, once each clock period at the TIME5 step, as the C64
+ * resident and the host differential run them (resident_cdu.h): the IMU
+ * CDU drive (CDUXCMD-CDUZCMD) and, in the CM, the optics drive, whose
+ * pulses the optics error counters take (the SPS gimbal commands in TVC
+ * mode; zeroed while channel 12 bit 2 is clear). */
+static void drives(fd_state *st)
+{
+#if RK_CM
+    long before[2];
+    unsigned k;
+    rk_cdu_count = 5u;
+    for (k = 0; k < 2u; ++k) before[k] = rk_cdu.owed[3u + k] + ones(st->s.words[053u + k]);
+#endif
+    rk_cdu_drive(&st->s, &st->hw);
+#if RK_CM
+    for (k = 0; k < 2u; ++k) {
+        long after = rk_cdu.owed[3u + k] + ones(st->s.words[053u + k]);
+        st->optics[k] = (st->hw.channel12 & 2u) ? st->optics[k] + before[k] - after : 0;
+    }
+#endif
+}
+
 uint8_t fd_boundary(fd_state *st)
 {
     uint8_t got;
@@ -115,6 +147,7 @@ uint8_t fd_boundary(fd_state *st)
                                 &st->pending)) &&
            st->mct >= st->next_period) {
         agc_word c = st->hw.channel4;
+        if (st->phase == RK_PHASE_T5) drives(st);
         rk_timer_phase(&st->s, &st->hw, &st->pending, st->phase);
         if (st->phase == RK_PHASE_T5) ++st->periods;
         st->phase = st->phase == RK_PHASE_T5 ? RK_PHASE_T4 : (uint8_t)(st->phase + 1u);
