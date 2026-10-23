@@ -229,6 +229,12 @@ class HoleLabels(unittest.TestCase):
         d = self.describe('  basic  43,2642 Z 02642 FB 66000 Q 01234: 2 arrivals, 5 instructions, refused by x')
         self.assertEqual((d['label'], d['refused_by'], d['instructions']), ('RDRUSECK', 'x', 5))
 
+    def test_sweep_bridged(self):
+        import dsky_sweep_vice
+        text = ('  basic  50,2002 Z 00002 FB 66000 Q 02415 at 43,2415: 1 arrivals, 1 instructions\n'
+                '  basic  02,3123 Z 03123 FB 60000 Q 01234: 4 arrivals, 9 instructions, refused by x\n')
+        self.assertEqual(dsky_sweep_vice.bridged(text), {'basic 50,2002': 1, 'basic 02,3123 refused by x': 4})
+
 
 if __name__ == '__main__':
     unittest.main()
