@@ -328,7 +328,8 @@ def run_batch(a, m, n, batch, manifest, pinned):
             hc, hw = c['host_end']
             cc, cw = fsv.c64_states(image[ends + k * fsv.C64_STATE:], 1, m)[0]
             skipped = set()
-            diff = fsv.replay_compare(hw, cw, None if a.replay_exact else fsv.SCHEDULE_SKIP.get(m), skipped)
+            diff = fsv.replay_compare(hw, cw, None if a.replay_exact else fsv.SCHEDULE_SKIP.get(m), skipped,
+                                     exact=a.replay_exact)
             if hc != cc:
                 diff.insert(0, ('centiseconds', hc, cc))
             res.update(ok=not diff, end_cs=cc, skipped=sorted(skipped), differences=len(diff), diff=diff,
