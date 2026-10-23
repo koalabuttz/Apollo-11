@@ -1209,6 +1209,20 @@ port) runs one mission:
    A window "matches host" when its `--replay` log has no FAIL line. It
    "matches exactly" when the log also has no `skipped` line.
 
+   **Batches (`tools/replay_batch.py`).** A list of windows (one
+   `SCENARIO SNAP_CS CS [options]` per line) runs as a batch that
+   resumes: each window writes its own log, and the batch stops starting
+   windows after `--budget-min` (default 75, so the last window still ends
+   inside a 2 h job limit) with exit 3. Rerun the same command to go on. A
+   finished log is reused only on the same tree (commit plus uncommitted
+   changes) and command. A window's status comes from its exit code and
+   every log line: `match`, `match-masked` (ran with a mask or skip),
+   `FAIL` (any FAIL line, seam and chain lines included), `crash` (rerun),
+   `cut off` or `not run`. `OUT/_summary.txt` lists every window with its
+   commit and store sha256, says INCOMPLETE until all finish and MIXED if
+   the logs come from more than one commit or store image. Run one batch
+   per tree; `OUT/.lock` refuses a second one on the same OUT.
+
    **Seams (`--chain K`, bar item 4).** One replay window is limited to
    16,383 cs, so a whole phase runs as K windows back to back. The host
    run goes on through all K windows. A window ends at the first sample
