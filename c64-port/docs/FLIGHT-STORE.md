@@ -1211,17 +1211,20 @@ port) runs one mission:
 
    **Batches (`tools/replay_batch.py`).** A list of windows (one
    `SCENARIO SNAP_CS CS [options]` per line) runs as a batch that
-   resumes: each window writes its own log, and the batch stops starting
-   windows after `--budget-min` (default 75, so the last window still ends
-   inside a 2 h job limit) with exit 3. Rerun the same command to go on. A
-   finished log is reused only on the same tree (commit plus uncommitted
-   changes) and command. A window's status comes from its exit code and
-   every log line: `match`, `match-masked` (ran with a mask or skip),
-   `FAIL` (any FAIL line, seam and chain lines included), `crash` (rerun),
-   `cut off` or `not run`. `OUT/_summary.txt` lists every window with its
-   commit and store sha256, says INCOMPLETE until all finish and MIXED if
-   the logs come from more than one commit or store image. Run one batch
-   per tree; `OUT/.lock` refuses a second one on the same OUT.
+   resumes: each window writes its own log, and the batch starts no new
+   window after `--budget-min` (default 75) and exits 3. A window already
+   running finishes, so budget plus one window must fit the job limit
+   (`--window-timeout-min` caps a window). Rerun the same command to go
+   on. A log counts only on the same tree (commit plus uncommitted
+   changes) and command; any other is `stale` and reruns. A window's
+   status comes from its exit code and every log line: `match` needs rc 0,
+   no FAIL line and the pass line (the chain line under `--chain`);
+   `match-masked` ran with a mask, skip or unpaired state; `FAIL` is any
+   FAIL line, seam and chain lines included; `crash`, `timeout` and `no
+   verdict` rerun up to 3 tries. `OUT/_summary.txt` lists every window
+   with its commit and store sha256, says INCOMPLETE until all finish and
+   MIXED if logs come from more than one commit or store image. One batch
+   per tree: a lock on `OUT/.lock` refuses a second one.
 
    **Seams (`--chain K`, bar item 4).** One replay window is limited to
    16,383 cs, so a whole phase runs as K windows back to back. The host

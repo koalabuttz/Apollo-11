@@ -2,38 +2,57 @@
 # SPDX-License-Identifier: MIT
 """tools/replay_batch.py: a window's status comes from its exit code and
 every log line (a FAIL before the pass line, seam and chain FAILs, a crash
-after the pass line, masks); finished windows are skipped only on the same
-tree and command; the budget stops the batch with exit 3; the summary lists
-every window, run or not; a held lock stops a second batch. A stand-in
-runner prints flight_scenario_vice.py's line shapes in place of VICE."""
+after the pass line, masks, rc 0 with no pass line); logs from another tree
+or command are stale, in the run and in the summary; crashes retry up to 3
+times; budget, timeout, SIGTERM and the lock. A stand-in runner prints
+flight_scenario_vice.py's line shapes in place of VICE."""
+import fcntl
 import os
 import pathlib
+import signal
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOL = ROOT / 'tools/replay_batch.py'
 FAKE = r'''
-import pathlib, sys
+import os, pathlib, sys, time
 a = sys.argv[1:]
 s = a[a.index('--scenario') + 1]
+snap = a[a.index('--snap-cs') + 1]
 c = pathlib.Path(sys.argv[0]).with_name('runs.txt')
 c.write_text(c.read_text() + s + '\n' if c.exists() else s + '\n')
+pathlib.Path(sys.argv[0]).with_name('pid-' + s).write_text(str(os.getpid()))
 print(f'{s}: commit 0123abcd; store lm.reu sha256 ' + ('ff' if s.startswith('other') else 'ee') * 32)
-ok = f"{s}: the C64 ends (100 cs) in the host's state"
-if s.startswith('dma'):        # REU bounds FAIL printed before the pass line
-    print('FAIL: lm: window 1: REU DMA out of bounds at $1C0000'); print(ok); sys.exit(1)
-if s.startswith('seam'):       # chain seams do not start with FAIL
-    print(ok); print(f'{s}: seam 2: TIME3 differs by 1: FAIL')
-    print(f'{s}: chain of 3 windows: FAIL at window 2'); sys.exit(1)
+ok = (f"{s}: the C64 matches the host at 17600 cs: it ends the window (17800 cs, all 12 input rows)"
+      " in the host's state")
+if s.startswith('dma'):        # fsv:745, printed before the pass line
+    print(f'FAIL: {s}: 3 DMAs outside the lm REU layout'); print(ok); sys.exit(1)
+if s.startswith('seam'):       # fsv:645-646 and :875 do not start with FAIL
+    print(ok); print(f'{s}: seam 1: FAIL: the C64 end of window 0 is not the start of window 1: 2 differences, first TIME3')
+    print(f'{s}: chain of 3 windows from {snap} cs: FAIL at window 1'); sys.exit(1)
+if s.startswith('chainok'):
+    print(ok); print(f'{s}: seam 1: the C64 end of window 0 is the start of window 1')
+    if not s.endswith('short'):
+        print(f'{s}: chain of 2 windows from {snap} cs: every window matches the host and every seam holds')
+    sys.exit(0)
 if s.startswith('crash'):      # dies after the pass line
-    print(ok); print('Traceback (most recent call last):'); print('OSError: VICE went away'); sys.exit(1)
+    print(ok); print('Traceback (most recent call last):'); print('OSError: [Errno 28] No space left on device'); sys.exit(1)
 if s.startswith('mask'):
-    print(f'{s}: masked_dead_superbank 1 range'); print(ok); sys.exit(0)
-if s.startswith('big'):
-    print(f'FAIL: {s}: the window does not fit in memory'); sys.exit(1)
+    print(f'{s}: masked_dead_superbank: 1 range'); print(ok); sys.exit(0)
+if s.startswith('unpaired'):
+    print(f'{s}: states with no partner, not compared: c64 17650 cs'); print(ok); sys.exit(0)
+if s.startswith('big'):        # fsv:630
+    sys.exit(f'FAIL: {s}: the host ran a window 20000 cs long from {snap} cs; one window is at most 16383 cs')
+if s.startswith('nopass'):
+    sys.exit(0)
+if s.startswith('sleep'):
+    time.sleep(60)
+if s.startswith('flip') and pathlib.Path(sys.argv[0]).with_name('flip-fails').exists():
+    print(f'FAIL: {s}: 3 DMAs outside the lm REU layout'); sys.exit(1)
 print(ok)
 '''
 
@@ -75,24 +94,42 @@ class Batch(unittest.TestCase):
         self.run_batch()
         row = self.rows()[1]['dma-b-300+400']
         self.assertEqual(row[1:3], ['FAIL', '1'])
-        self.assertIn('REU DMA out of bounds', row[5])
+        self.assertIn('DMAs outside the lm REU layout', row[5])
 
     def test_seam_and_chain_fail(self):
         self.list('seam-a 100 200 --chain 3\n')
         self.assertEqual(self.run_batch().returncode, 0)
         row = self.rows()[1]['seam-a-100+200']
         self.assertEqual(row[1], 'FAIL')
-        self.assertIn('seam 2', row[5])
+        self.assertIn('seam 1: FAIL', row[5])
 
-    def test_crash_after_pass_is_rerun(self):
+    def test_crash_after_pass_is_rerun_up_to_3_tries(self):
         self.list('crash-a 1 2\nlm-b 3 4\n')
         p = self.run_batch()
         self.assertEqual(p.returncode, 3, p.stdout)       # a crash is not finished
         head, rows = self.rows()
-        self.assertEqual(rows['crash-a-1+2'][1], 'crash')
+        self.assertEqual(rows['crash-a-1+2'][1:3], ['crash', '1'])
         self.assertIn('INCOMPLETE', head)
+        self.assertEqual(self.run_batch().returncode, 3)
+        self.assertEqual(self.run_batch().returncode, 0)  # third try: counts as finished
+        self.assertEqual(self.run_batch().returncode, 0)
+        self.assertEqual(self.runs(), ['crash-a', 'lm-b', 'crash-a', 'crash-a'])
+        self.assertEqual(self.rows()[0], '# 2 of 2 windows finished: 1 match, 1 crash')
+
+    def test_rc_0_without_pass_line_is_no_verdict(self):
+        self.list('nopass-a 100 200\n')
+        self.assertEqual(self.run_batch().returncode, 3)
+        head, rows = self.rows()
+        self.assertEqual(rows['nopass-a-100+200'][1], 'no verdict')
+        self.assertIn('INCOMPLETE', head)
+
+    def test_chain_needs_the_chain_line(self):
+        self.list('chainok-a 1 2 --chain 2\nchainok-short 3 4 --chain 2\n')
         self.run_batch()
-        self.assertEqual(self.runs(), ['crash-a', 'lm-b', 'crash-a'])
+        rows = self.rows()[1]
+        self.assertEqual(rows['chainok-a-1+2'][1], 'match')
+        self.assertIn('every seam holds', rows['chainok-a-1+2'][5])
+        self.assertEqual(rows['chainok-short-3+4'][1], 'no verdict')
 
     def test_masked_is_not_a_plain_match(self):
         self.list('mask-a 1 2\n')
@@ -101,6 +138,11 @@ class Batch(unittest.TestCase):
         self.assertEqual(rows['mask-a-1+2'][1], 'match-masked')
         self.assertIn('masked_dead_superbank', rows['mask-a-1+2'][5])
         self.assertIn('1 match-masked', head)
+
+    def test_unpaired_states_are_masked(self):
+        self.list('unpaired-a 1 2\n')
+        self.run_batch()
+        self.assertEqual(self.rows()[1]['unpaired-a-1+2'][1], 'match-masked')
 
     def test_too_big_window_is_fail(self):
         self.list('big-a 1 2\n')
@@ -126,6 +168,44 @@ class Batch(unittest.TestCase):
         (self.d / 'runs.txt').write_text('')
         self.run_batch('--reuse-any', head='c3')
         self.assertEqual(self.runs(), [])
+
+    def test_stale_logs_are_not_finished_in_the_summary(self):
+        # Same commit and store, new uncommitted change: flip-b now FAILs.
+        self.list('lm-a 1 2\nflip-b 3 4\n')
+        self.assertEqual(self.run_batch(head='c1+aaaa').returncode, 0)
+        (self.d / 'flip-fails').write_text('')
+        p = self.run_batch('--budget-min', '0', head='c1+bbbb')
+        self.assertEqual(p.returncode, 3)
+        head, rows = self.rows()
+        self.assertEqual(head, '# 1 of 2 windows finished INCOMPLETE: 1 match, 1 stale')
+        self.assertEqual(rows['flip-b-3+4'][1], 'stale')
+        self.assertIn('c1+aaaa', rows['flip-b-3+4'][5])
+        self.assertEqual(self.run_batch(head='c1+bbbb').returncode, 0)
+        self.assertEqual(self.rows()[1]['flip-b-3+4'][1], 'FAIL')
+
+    def test_window_timeout(self):
+        self.list('sleep-a 1 2\n')
+        p = self.run_batch('--window-timeout-min', '0.02')
+        self.assertEqual(p.returncode, 3)
+        self.assertEqual(self.rows()[1]['sleep-a-1+2'][1:3], ['timeout', 'timeout'])
+
+    def test_sigterm_stops_the_runner_too(self):
+        self.list('sleep-a 1 2\n')
+        p = subprocess.Popen([sys.executable, str(TOOL), '--windows', str(self.d / 'w.txt'), '--out', str(self.out),
+                              '--runner', f'{sys.executable} {self.d / "fake.py"}', '--head', 'c1'],
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        pidf = self.d / 'pid-sleep-a'
+        for _ in range(100):
+            if pidf.exists() and pidf.read_text():
+                break
+            time.sleep(0.05)
+        p.send_signal(signal.SIGTERM)
+        self.assertEqual(p.wait(10), 128 + signal.SIGTERM)
+        pid = int(pidf.read_text())
+        time.sleep(0.2)
+        with self.assertRaises(ProcessLookupError):
+            os.kill(pid, 0)
+        self.assertFalse((self.out / 'sleep-a-1+2.log').exists())
 
     def test_budget_stops_with_exit_3_and_lists_not_run(self):
         p = self.run_batch('--budget-min', '0')
@@ -153,14 +233,15 @@ class Batch(unittest.TestCase):
 
     def test_lock_held(self):
         self.out.mkdir()
-        (self.out / '.lock').write_text(f'{os.getppid()} {os.uname().nodename}')
+        fd = os.open(self.out / '.lock', os.O_RDWR | os.O_CREAT)
+        os.write(fd, b'4242 elsewhere')
+        fcntl.flock(fd, fcntl.LOCK_EX)
         p = self.run_batch()
         self.assertEqual(p.returncode, 1)
-        self.assertIn('held by', p.stderr)
+        self.assertIn('held by 4242 elsewhere', p.stderr)
         self.assertEqual(self.runs(), [])
-        (self.out / '.lock').write_text(f'999999999 {os.uname().nodename}')   # dead pid: taken over
+        os.close(fd)                                    # holder gone: the lock is free
         self.assertEqual(self.run_batch().returncode, 0)
-        self.assertFalse((self.out / '.lock').exists())
 
     def test_bad_list(self):
         self.list('lm-a 100\n')
