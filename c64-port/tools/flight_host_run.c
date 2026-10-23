@@ -76,6 +76,7 @@
  *   flight-host-run ROPE.bin [CS [KEYS]]   (build with -DRK_LM=1 or -DRK_CM=1,
  *   FLIGHT_HOST_TABLES and FLIGHT_HOST_SITES naming the generated files) */
 #include <math.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1342,12 +1343,115 @@ static void word_step(unsigned long cs){int isr=m.InIsr;uint64_t c=m.CycleCounte
   word.code=(uint16_t)rope_word((agc_word)word.loc,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);}
  if(agc_engine(&m)){fclose(word_out);exit(2);}
  if(!isr&&!m.InIsr){if(at!=AGC_TRANSFER_NONE&&(at/1024u==0u||at/1024u==3u))word.in+=m.CycleCounter-c;else word.out+=m.CycleCounter-c;}}
+/* FLIGHT_POINTS=SPEC (tools/flight_vice_load.py, #426): the load check's
+ * host reference. The C64 check (platform/c64/flight_load_check.c) runs
+ * each direct module's point through rk_direct from the boot image and
+ * records the image and channels sum, the routines chained and the status.
+ * Here each point runs from the same start (the boot image and the device
+ * and hardware records the check leaves at $7000 and $c100) on a program
+ * built as the module builds its own (flight_table_module.c): its basic
+ * tables, picked entries or chunk, its interpretive tables after DANZIG's
+ * marker, its own operands or the resident's, its fixed_data hook. It is
+ * run for the C64's own step count, so the work clock's budget (rk_limit)
+ * is not modelled: a C64 run that took its whole limit runs to that count,
+ * one that ended itself may take one step more, so it ends as it did there.
+ * One line out per point: INDEX SUM STEPS STATUS.
+ * Spec lines: "M IMAGE DEVICE" once, then per point "P INDEX Z FB SB STEPS
+ * FULL FIXED IDLE" (FULL 1 when the C64 run took its whole limit; FIXED 0
+ * boundary words, 1 self-check, 2 rope; IDLE 1 for the CM idle loop's
+ * module, whose run rk_direct ends at POSTJUMP), "B TABLE",
+ * "K TABLE INDEX [KEY]" (one entry of the module's single picked table, at
+ * its FS_KEYS key when it has one), "H"
+ * (interpretive tables, DANZIG's marker first), "I TABLE", "S PHYSICAL WORD",
+ * "E" (run). */
+#define POINT_ENTRIES 1024u
+#if RK_LM
+typedef p66_bias_io rk_point_io;
+#define POINT_DANZIG agc_lm_danzig_marker
+#else
+typedef cm_native_io rk_point_io;
+#define POINT_DANZIG agc_cm_danzig_marker
+#endif
+static uint16_t point_sum(uint16_t h,const void *p,size_t n){const uint8_t *b=p;
+ while(n--)h=(uint16_t)((h<<1|h>>15)+*b++);
+ return h;}
+static const entry *table_named(const char *name){unsigned i;
+ for(i=0;i<TABLES;++i)if(!strcmp(tables[i].name,name))return &tables[i];
+ return 0;}
+/* The status as the C64 records it (flight_load_check.c point_record). */
+static unsigned point_code(enum exec_status st){
+ return st==EXEC_NO_VAC?8u:st==EXEC_NO_CORE?9u:(unsigned)st<8u?(unsigned)st:15u;}
+static int points(const char *spec){FILE *f=fopen(spec,"r");char line[256],name[200];
+ static apollo_overlay_state boot,s;static agc_routine_entry pick[POINT_ENTRIES];
+ static agc_routine_table basic[64],interp[64];static agc_site_operand own[1024];
+ static agc_hardware hw0,hw;static rk_point_io io0,io;
+ unsigned nb=0,ni=0,np=0,ns=0,index=0,z=0,fb=0,sb=0,want=0,full=0,fixed=0,idle=0,has_interp=0;
+ const size_t hw_bytes=offsetof(agc_hardware,radar_gate)+1u;
+ if(!f){perror(spec);return 2;}
+ boundary_build();
+ while(fgets(line,sizeof line,f)){unsigned a,b;const entry *e;
+  switch(line[0]){
+  case 'M':{char ip[200],dp[200];FILE *g;
+   if(sscanf(line+1,"%199s %199s",ip,dp)!=2)goto bad;
+   if(!(g=fopen(ip,"rb"))||fread(&boot,sizeof boot,1,g)!=1){perror(ip);return 2;}fclose(g);
+   if(!(g=fopen(dp,"rb"))||fread(&io0,sizeof io0,1,g)!=1||fread(&hw0,hw_bytes,1,g)!=1){perror(dp);return 2;}fclose(g);
+   break;}
+  case 'P':if(sscanf(line+1,"%u %o %o %o %u %u %u %u",&index,&z,&fb,&sb,&want,&full,&fixed,&idle)!=8)goto bad;
+   nb=ni=np=ns=has_interp=0;break;
+  case 'B':if(sscanf(line+1,"%199s",name)!=1||!(e=table_named(name))||nb>=64u)goto bad;basic[nb++]=*e->t;break;
+  case 'K':{unsigned key;int n=sscanf(line+1,"%199s %u %u",name,&a,&key);
+   if(n<2||!(e=table_named(name))||a>=e->t->count||np>=POINT_ENTRIES)goto bad;
+   pick[np]=e->t->entries[a];if(n==3)pick[np].physical=(uint16_t)key;++np;break;}
+  case 'H':has_interp=1;ni=1;interp[0]=POINT_DANZIG;break;
+  case 'I':if(sscanf(line+1,"%199s",name)!=1||!(e=table_named(name))||ni>=64u)goto bad;interp[ni++]=*e->t;break;
+  case 'S':if(sscanf(line+1,"%u %o",&a,&b)!=2||ns>=1024u)goto bad;own[ns].physical=(uint16_t)a;own[ns++].word=(agc_word)b;break;
+  case 'E':{agc_native_program p;uint16_t steps=0;enum exec_status st=EXEC_UNMAPPED;uint16_t h;
+   memset(&p,0,sizeof p);
+   if(np){basic[0].entries=pick;basic[0].count=(uint16_t)np;nb=1;}
+   p.basic=basic;p.basic_count=(uint8_t)nb;
+   p.interpretive=has_interp?interp:0;p.interpretive_count=(uint8_t)(has_interp?ni:0u);
+   if(ns){p.operands=own;p.operand_count=(uint16_t)ns;}
+#if RK_LM
+   else{p.operands=sites_lm_exec_routines;p.operand_count=(uint16_t)(sizeof sites_lm_exec_routines/sizeof sites_lm_exec_routines[0]);}
+   p.fixed_data=fixed==1u?lm_self_check_rope_data:fixed==2u?rope_data:boundary_word;
+#else
+   else{p.operands=sites_cm_exec_routines;p.operand_count=(uint16_t)(sizeof sites_cm_exec_routines/sizeof sites_cm_exec_routines[0]);}
+   p.fixed_data=fixed==1u?cm_self_check_rope_data:fixed==2u?rope_data:boundary_word;
+#endif
+   /* The resident's program fields (resident_flight.c rk_program). */
+   p.interpreter_fetch=AGC_TRANSFER_NONE;p.hardware=&hw;
+   s=boot;io=io0;hw=hw0;
+   s.words[4]=(agc_word)fb;s.words[5]=(agc_word)z;io.superbank=(agc_word)sb;
+   /* No step on the C64: rk_direct found no slot to run the point, or the
+    * module refused it at entry (unmapped with no step, out of scope at the
+    * first), so the host must refuse it the same way. */
+   if(!want){st=agc_transfer_run_at(&p,&s,&io,&io.superbank,AGC_TRANSFER_NONE,2u,&steps,AGC_TRANSFER_NONE);
+    if((st==EXEC_UNMAPPED&&!steps)||(st==EXEC_OUT_OF_SCOPE&&steps<=1u)){st=EXEC_UNMAPPED;steps=0;}
+    else if(st==EXEC_UNMAPPED&&steps)st=EXEC_OK;}
+   else{const unsigned limit=full?want:want+1u;
+    /* resident_flight.c rk_direct: the CM idle loop's run ends at POSTJUMP
+     * (Z 04701, fixed-fixed). */
+    const uint16_t stop=idle&&s.words[5]!=04701u?(uint16_t)(2048u+(04701u-04000u)):AGC_TRANSFER_NONE;
+    st=agc_transfer_run_at(&p,&s,&io,&io.superbank,stop,(uint16_t)limit,&steps,AGC_TRANSFER_NONE);
+    /* resident_flight.h rk_module_status. */
+    if(st==EXEC_UNMAPPED&&steps)st=EXEC_OK;
+    else if(st==EXEC_OUT_OF_SCOPE&&steps==limit)st=EXEC_OK;}
+   h=point_sum(point_sum(point_sum(0,&s,sizeof s),&hw,hw_bytes),&io,sizeof io);
+   printf("%u %u %u %u\n",index,(unsigned)h,(unsigned)steps,point_code(st));
+   break;}
+  case '#':case '\n':break;
+  default:goto bad;}}
+ fclose(f);
+ return 0;
+bad:fprintf(stderr,"FLIGHT_POINTS: bad line: %s",line);return 2;}
+
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
  unsigned i,j,kref=0,knat=0,uref=0,unat=0,cref=0,cnat=0,pref=0,pnat=0,gref=0,gnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
  enum { TRACE=24 };uint16_t trace[TRACE][3];const char *names[TRACE];
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
+ if(getenv("FLIGHT_POINTS"))return points(getenv("FLIGHT_POINTS"));
  keys_parse(argc>3?argv[3]:"");
  if(!uplink_parse(getenv("FLIGHT_UPLINK"))){fprintf(stderr,"FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...] (#OCTAL a raw word)\n");return 2;}
  if(!steal_parse(getenv("FLIGHT_STEAL"))){fprintf(stderr,"FLIGHT_STEAL=T0-T1:MCT[,T0-T1:MCT...]\n");return 2;}
