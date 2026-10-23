@@ -19,6 +19,7 @@ MEMORY {
     boot (rwx) : ORIGIN = 0x8000, LENGTH = 0x4000
     low (rwx) : ORIGIN = 0x0200, LENGTH = 0x200
     screen_end (rw) : ORIGIN = 0x06a8, LENGTH = 0x150
+    screen (rwx) : ORIGIN = 0x0400, LENGTH = 0x3f8
 }
 __rc0 = __basic_zp_start;
 INCLUDE imag-regs.ld
@@ -60,6 +61,20 @@ SECTIONS {
         *(.dsky.bss .dsky.bss.*)
         __rk_dsky_bss_end = .;
     } >screen_end
+    /* The measurement and replay harness's own code (platform/c64/
+     * dap_pass_check.c DP_SCREEN_TEXT) in the text screen ($0400-$07F7),
+     * which nothing shows there; its load_snapshot copies it. Builds with
+     * the flight DSKY have none (that DSKY uses the last rows, .dsky_data). */
+    .dp_screen : {
+        __dp_screen_start = .;
+        *(.dp.screen .dp.screen.*)
+        __dp_screen_end = .;
+    } >screen AT>boot
+    __dp_screen_load = LOADADDR(.dp_screen);
+    ASSERT(__dp_screen_end <= 0x07e8, "harness code past the text screen's last character")
+    ASSERT(__dp_screen_end == __dp_screen_start || __dp_screen_end <= 0x06a8 ||
+           (__rk_dsky_data_end == __rk_dsky_data_start && __rk_dsky_bss_end == __rk_dsky_bss_start),
+           "harness code in the text screen overlaps the DSKY's last rows")
     .text : { INCLUDE text-sections.ld } >ram
     .rodata : { INCLUDE rodata-sections.ld } >ram
     .data : { INCLUDE data-sections.ld } >ram

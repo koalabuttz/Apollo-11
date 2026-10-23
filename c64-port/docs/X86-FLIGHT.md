@@ -91,7 +91,7 @@ CI runs `x86-flight-check` in the host job (`ci-extra-host`) when a PR changes a
 
 ## Vehicle models
 
-`platform/x86/vehicle_models.h` (MIT, header only) holds the vehicle the AGC flies: the LM descent and ascent engines with touchdown, abort stage and the P66 crew (`FLIGHT_ENGINE`, `FLIGHT_ENGINE_LAG`, `FLIGHT_TOUCHDOWN`, `FLIGHT_ASCENT`, `FLIGHT_STAGE`, `FLIGHT_PILOT`), the LM RCS jets (`FLIGHT_RCS`), the CSM's SPS (`FLIGHT_SPS`), entry drag and lift (`FLIGHT_AERO`), the IMU gimbals for P01 (`FLIGHT_IMU`), the Saturn V boost (`FLIGHT_SATURN`) and TLI (`FLIGHT_SIVB`). They were written for this port's flight scenarios and contain no Virtual AGC code. `platform/x86/test_vehicle_models.c` checks each one (`make x86-flight-check` builds and runs it first).
+`platform/x86/vehicle_models.h` (MIT, header only) holds the vehicle the AGC flies: the LM descent and ascent engines with touchdown, abort stage and the P66 crew (`FLIGHT_ENGINE`, `FLIGHT_ENGINE_LAG`, `FLIGHT_TOUCHDOWN`, `FLIGHT_ASCENT`, `FLIGHT_STAGE`, `FLIGHT_PILOT`), the LM RCS jets (`FLIGHT_RCS`), the CSM's SPS with its gimbal and the attitude the thrust turns (`FLIGHT_SPS=KG[,PITCH,YAW]`, the TVC DAP's closed loop of #786), entry drag and lift (`FLIGHT_AERO`), the IMU gimbals for P01 (`FLIGHT_IMU`), the Saturn V boost (`FLIGHT_SATURN`) and TLI (`FLIGHT_SIVB`). They were written for this port's flight scenarios and contain no Virtual AGC code. `platform/x86/test_vehicle_models.c` checks each one (`make x86-flight-check` builds and runs it first).
 
 `platform/x86/radar_models.h` (MIT, header only) holds the rendezvous radar the same way (`FLIGHT_RR`, `FLIGHT_RR_DROP`): on the LM the rendezvous radar locked on the CSM, on the CM the VHF ranging link and the sextant. Both vehicles fly Kepler conics about the moon from the states `FLIGHT_RR` gives. The model points the antenna (or the sextant) along the true line of sight through REFSMMAT and the CDUs, sets the data-good bits, and answers each read with range or range rate in RNRAD. It is `tools/flight_radar.h`'s model, written for this port's rendezvous scenarios, with the same arithmetic. `platform/x86/test_radar_models.c` checks it, built once for each mission. Reads start at any routine boundary and the resident timer ends them, often before the next sample point, so the radar also answers a read after any routine where channel 13 bit 4 has come on. `FLIGHT_BUSY_SAMPLE` adds the harness's extra sample points for jobs that busy-wait for the crew (LM R22's V06N49 loop).
 
@@ -99,12 +99,12 @@ CI runs `x86-flight-check` in the host job (`ci-extra-host`) when a PR changes a
 
 A scenario that starts from the NASSP P63 core dump (`FLIGHT_CORE`) needs yaAGC to load the dump, and the x86 program never reads it. `make x86-flight-scenarios` runs the harness with `FLIGHT_SNAPSHOT=0`, which writes the harness's state at its first sample point as a C header. The x86 program then starts from that header (`X86_START`), with AGC time counting from the dump's time as the harness counts it. The header is made at test time and is never kept or shipped. Inputs due at or before the start are skipped, since the header already holds them. The vehicle models start fresh at that point, which is before any of them run in these scenarios. The lockstep check starts only from GOJAM.
 
-The x86 program runs them with the same settings and at the same points as the host differential (`tools/flight_host_run.c`, which still has its own copy): at each sample point after the pokes (the radar after the SPS), then the channel changes (`FLIGHT_CHAN`), then a restart or a key; with `FLIGHT_ENGINE_LAG` the engine, and always the RCS jets, also after every routine. Keys include the mark buttons (`M`, `J`; LM `x`, `y`, `j`: channel 16 and KEYRUPT2).
+The x86 program runs them with the same settings and at the same points as the host differential (`tools/flight_host_run.c`, which still has its own copy): at each sample point after the pokes (the radar after the SPS), then the channel changes (`FLIGHT_CHAN`), then a restart or a key; with `FLIGHT_ENGINE_LAG` the engine, and always the RCS jets, also after every routine. Keys include the mark buttons (`M`, `J`; LM `x`, `y`, `j`: channel 16 and KEYRUPT2). Once each clock period, at the TIME5 step, the x86 program runs the output drives as the C64 resident and the harness do (`rk_cdu_drive`, `include/resident_cdu.h`): the IMU CDU drive and, in the CM, the optics drive, whose pulses the SPS gimbal follows in TVC mode. `X86_START` takes the drives' state from the header (`SNAP_CDU`).
 
 `make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it with the harness on the work clock (`FLIGHT_SCALED=W`) at the first sample point at or after 1,000 cs before its end. The two programs charge routine costs differently: the x86 program charges each point's median, and the work clock charges each table's weight. So their states are close, not equal. The yardstick is the harness against itself, the same scenario on its other clock (`FLIGHT_SCALED=1,1,2`, yaAGC's own cycles). A scenario passes when all of these hold:
 
 - the major mode is the same;
-- RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (the largest such case is CM P40: VN 0.13 m/s against a spread of 0.004);
+- RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (CM P40 needed it before #786 closed the TVC loop: VN 0.13 m/s apart against a spread of 0.004; on base fc7ded5a every row's RN and VN are within 4 times the spread except known `cm-p11` and `lm-p41-nassp`, whose VN is 0.001 m/s apart against a spread of 0.000);
 - the erasable image (061-3777) differs in at most 1.5 times as many words as the harness's two clocks differ in, plus 10;
 - the alarm codes (FAILREG and the two words after it) are the harness's, wherever its two clocks agree on them.
 
@@ -138,7 +138,7 @@ The CM's VHF dropout (`cm-p20-vhf-dropout`) moves the marks and so both blocks.
 
 The word count is what sees programs that don't move the state vector. With the mark buttons left out of the x86 run (`--drop-keys MJxyj`), P52 differs in 210 words against a limit of 19 and P57 in 188 against 37, so both fail. P22 and P23 fail on RN as well.
 
-On base fea3e3b8 the tool flies 64 scenarios, and all pass. 57 reach their compare point, six of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The other seven stop at a Pinball point not yet certified, exactly where expected (Gaps).
+On base fc7ded5a the tool flies 64 scenarios, and all pass. 57 reach their compare point, six of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The other seven stop at a Pinball point not yet certified, exactly where expected (Gaps).
 
 The NASSP rows start from the harness's state at the core dump's time (`X86_START`), and the `lm-p63-lr-*` rows fly the landing radar. So the LM RCS, the throttle lag, touchdown, the P66 crew, the ascent and the abort stage are now compared with the harness (`lm-p63-nassp`, `lm-p67-nassp`, `lm-landing-ascent-nassp`, `lm-abort-p70-nassp`, `lm-abort-p71-nassp`), as well as checked by `test_vehicle_models.c`.
 
@@ -151,11 +151,11 @@ Compared directly with the harness:
 | `cm-entry` | 103 / 103 | 97 m (690; 160) | 2.05 m/s (11.12; 2.74) | 333 (448; 292) |
 | `cm-p52` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 7 (23; 9) |
 | `cm-p23` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 24 (47; 25) |
-| `cm-p40` | 00 / 00 | 19 m (99; 12) | 0.13 m/s (0.16; 0.00) | 93 (121; 74) |
+| `cm-p40` | 00 / 00 | 4 m (68; 4) | 0.06 m/s (0.39; 0.06) | 102 (163; 102) |
 | `cm-p11` (known) | 00 / 00 | 437 m (447; 99) | 0.71 m/s (0.43; 0.07) | 174 (206; 131) |
 | `cm-tli` | 00 / 00 | 148 m (506; 114) | 0.08 m/s (0.47; 0.08) | 113 (176; 111) |
 | `cm-p22` | 00 / 00 | 20 m (130; 20) | 0.02 m/s (0.22; 0.02) | 225 (356; 231) |
-| `cm-tei` | 00 / 00 | 14 m (61; 3) | 0.00 m/s (0.15; 0.00) | 132 (217; 138) |
+| `cm-tei` | 00 / 00 | 24 m (96; 12) | 0.12 m/s (0.39; 0.06) | 166 (242; 155) |
 | `cm-p37` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 39 (68; 39) |
 | `lm-p57` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 16 (41; 21) |
 | `lm-csi` | 110 / 110 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (37; 18) |
@@ -178,7 +178,7 @@ Compared directly with the harness:
 | `cm-p52-coarse` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 95 (143; 89) |
 | `cm-p41` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 14 (43; 22) |
 | `cm-v48-dap` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (10; 0) |
-| `cm-p40-sps-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (31; 14) |
+| `cm-p40-sps-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 12 (28; 12) |
 | `lm-landing-ascent-nassp` | 14 / 14 | 182 m (330; 70) | 0.20 m/s (0.46; 0.08) | 353 (611; 401) |
 | `lm-p67-nassp` | 104 / 104 | 19 m (171; 30) | 0.01 m/s (0.20; 0.01) | 316 (652; 428) |
 | `lm-doi-nassp` | 00 / 00 | 2 m (58; 2) | 0.01 m/s (0.20; 0.01) | 189 (268; 172) |
@@ -191,6 +191,8 @@ Compared directly with the harness:
 | `lm-coast-programs` | 06 / 06 | 0 (50; 0) | 0 (0.15; 0.00) | 118 (175; 110) |
 | `lm-p51` | 63 / 63 | 0 (50; 0) | 0 (0.15; 0.00) | 10 (17; 5) |
 | `lm-p22-surface` | 26 / 26 | 0 (50; 0) | 0 (0.15; 0.00) | 8 (20; 7) |
+
+With the SPS gimbal held at zero in the x86 run only (TVC enable ignored), `cm-p40` ends 195 km and 853 m/s from the harness and `cm-tei` 120 km and 976 m/s, each with alarm 1407, so both fail (base fc7ded5a).
 
 CM P11's envelope is RN within 600 m and VN within 1 m/s, with the normal word limit. With the vehicle models removed, P11 ends 6,563 km off and fails (base f499d7ee).
 

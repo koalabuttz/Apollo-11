@@ -31,7 +31,18 @@ OWED = rk_cdu
 ELAPSED = rk_cdu + 10
 ACTIVE = rk_cdu + 12
 
+/* The replay and measurement harness (platform/c64/dap_pass_check.c, DP_SNAP)
+ * runs the drive from the text screen, not from the resident's RAM below the
+ * service table: from .dp_screen, or for the hardware check, whose text
+ * fills the screen's top rows, from the last rows (.dsky_data), which it
+ * colours black. Its load_snapshot copies both. */
+#if defined(DP_SNAP) && defined(DP_HW_CHECK)
+.section .dsky.rodata.rk_cdu_drive6502,"ax",@progbits
+#elif defined(DP_SNAP)
+.section .dp.screen.rk_cdu_drive6502,"ax",@progbits
+#else
 .section .text.rk_cdu_drive6502,"ax",@progbits
+#endif
 .globl rk_cdu_drive6502
 .type rk_cdu_drive6502,@function
 rk_cdu_drive6502:

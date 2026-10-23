@@ -172,6 +172,10 @@ static void press_due(uint16_t elapsed)
 }
 #endif
 
+/* The low and screen regions load_snapshot fills (resident_flight.ld). */
+extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
+extern uint8_t __rk_dsky_data_start[], __rk_dsky_data_end[], __rk_dsky_data_load[];
+extern uint8_t __dp_screen_start[], __dp_screen_end[], __dp_screen_load[];
 #ifdef DP_REPLAY
 /* The host run's inputs over the window and its end state
  * (tools/flight_host_run.c FLIGHT_REPLAY, tools/flight_scenario_vice.py
@@ -249,7 +253,13 @@ static uint16_t replay_now CASSETTE;
  * resident_flight.ld .dsky: free in this program), which load_snapshot
  * fills from its load copy, not from the resident's RAM. */
 #define LOW_TEXT(name) __attribute__((noinline, section(".dsky.text." name)))
-extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
+/* Code in the text screen (resident_flight.ld .dp_screen), but in the
+ * resident for the hardware check, whose text the screen shows. */
+#ifdef DP_HW_CHECK
+#define DP_SCREEN_TEXT(name) __attribute__((noinline))
+#else
+#define DP_SCREEN_TEXT(name) __attribute__((noinline, section(".dp.screen." name)))
+#endif
 #define LOW_DATA __attribute__((section(".dsky.text.dp_steps")))
 LOW_DATA static const uint8_t phase_step[9] = {2, 3, 1, 2, 3, 1, 2, 3, 1};
 LOW_TEXT("dp_early") static uint8_t row_early(void)
@@ -350,12 +360,80 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
         --rows_left;
     }
 }
+/* The output channels the window drives (tools/flight_scenario_vice.py
+ * --replay-outputs): each change of channels 5, 6, 11, 12, 13 and 14 seen
+ * before a step, as a 6-byte entry (centiseconds since the snapshot,
+ * channel, value) at DP_OUTPUTS in the REU, the list the host writes to
+ * PATH.outputs (tools/flight_host_run.c rp_outputs). At most DP_OUTPUTS_MAX
+ * entries; one more change sets $c03c and stops the list. $c03a holds the
+ * list's bytes (6 per entry). DP_OUTPUTS_MAX 0 keeps no list (tools/flight_disk.py). */
+#if !defined(DP_OUTPUTS) || !defined(DP_OUTPUTS_MAX)
+#error "DP_REPLAY needs DP_OUTPUTS and DP_OUTPUTS_MAX (the output list; 0 for none)"
+#endif
+#if DP_OUTPUTS_MAX
+static uint16_t outputs_last[6] CASSETTE;
+static uint16_t outputs_bytes CASSETTE;
+static uint8_t outputs_full CASSETTE, outputs_started CASSETTE;
+/* Where each channel's value is: on the CM, rk_device (cm_native_io)
+ * holds channels 11-14 (tools/flight_scenario_vice.py c64_states). The
+ * list's code and tables sit in the text screen (resident_flight.ld
+ * .dp_screen: unused here; load_snapshot copies it; the hw check keeps its
+ * screen, so there they stay in .text), not in the resident or
+ * the full $0200 region. */
+#ifdef DP_HW_CHECK
+#define OUT_DATA
+#define OUT_TEXT(name) __attribute__((noinline))
+#else
+#define OUT_DATA       __attribute__((section(".dp.screen.dp_outputs_tab")))
+#define OUT_TEXT(name) __attribute__((noinline, section(".dp.screen.dp_outputs_" name)))
+#endif
+OUT_DATA static const uint8_t output_number[6] = {05u, 06u, 011u, 012u, 013u, 014u};
+OUT_DATA static const uint16_t *const output_at[6] = {
+    &rk_hardware.channel5,  &rk_hardware.channel6,
+#if RK_LM
+    &rk_hardware.channel11, &rk_hardware.channel12, &rk_hardware.channel13, &rk_hardware.channel14,
+#else
+    (uint16_t *)&rk_device + 0, (uint16_t *)&rk_device + 1,
+    (uint16_t *)&rk_device + 2, (uint16_t *)&rk_device + 3,
+#endif
+};
+/* One change into the list. */
+OUT_TEXT("rec") static void outputs_record(uint16_t t, uint8_t i, uint16_t v)
+{
+    static uint16_t entry[3] CASSETTE;
+    if (outputs_bytes >= 6u * DP_OUTPUTS_MAX) {
+        outputs_full = 1;
+        return;
+    }
+    entry[0] = t;
+    entry[1] = output_number[i];
+    entry[2] = v;
+    apollo_reu_transfer(APOLLO_REU_STASH, entry, DP_OUTPUTS + outputs_bytes, 6u);
+    outputs_bytes += 6u;
+}
+OUT_TEXT("text") static void outputs_log(uint16_t t)
+{
+    uint8_t i;
+    for (i = 0; i < 6u; ++i) {
+        uint16_t v = *output_at[i];
+        if (v == outputs_last[i]) continue;
+        outputs_last[i] = v;
+        if (outputs_started) outputs_record(t, i, v);
+    }
+    outputs_started = 1;
+}
+#endif
 /* The rows due before this step; 1 when the window ends here. */
-__attribute__((noinline)) static uint8_t replay_due(void)
+DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
 {
     uint16_t t = replay_cs();
     uint8_t sp = sample_point(t);
     replay_now = t;
+#if DP_OUTPUTS_MAX
+    /* The values the window starts from, before its first rows (the
+     * host's, at its snapshot). */
+    if (!outputs_started) outputs_log(t);
+#endif
     if (sp) {
 #ifdef DP_BUSY
         busy_last = t;
@@ -377,6 +455,9 @@ __attribute__((noinline)) static uint8_t replay_due(void)
         }
     }
     replay_rows(t, sp);
+#if DP_OUTPUTS_MAX
+    outputs_log(t);
+#endif
     return 0;
 }
 #endif
@@ -388,6 +469,12 @@ static void BOOT load_snapshot(void){
 #ifdef DP_REPLAY
     memcpy(__rk_dsky_start, __rk_dsky_load, (size_t)(__rk_dsky_end - __rk_dsky_start));
 #endif
+    /* The text screen: the output drive (resident_cdu.S), the output list
+     * and DP_SCREEN_TEXT code; for the hardware check, the drive in the
+     * last rows. */
+    memcpy(__dp_screen_start, __dp_screen_load, (size_t)(__dp_screen_end - __dp_screen_start));
+    memcpy(__rk_dsky_data_start, __rk_dsky_data_load,
+           (size_t)(__rk_dsky_data_end - __rk_dsky_data_start));
 #ifdef RK_STEP_PROFILE
  memset(prof, 0, DP_SEGMENTS * sizeof(dp_segment));
 #endif
@@ -651,7 +738,12 @@ static void BOOT hw_start(void)
     VIC[0x18] = 0x15u;
     VIC[0x20] = 0;
     VIC[0x21] = 0;
-    for (i = 0; i < 1000u; ++i) SCREEN[i] = 0x20u;
+    /* Black on black where nothing is printed: the output drive runs from
+     * the last rows during the window (resident_cdu.S). */
+    for (i = 0; i < 1000u; ++i) {
+        SCREEN[i] = 0x20u;
+        COLOUR[i] = 0;
+    }
     hw_puts(t_title);
     /* PAL counts 312 raster lines, NTSC 262 or 263. */
     while (!(VIC[0x11] & 0x80u)) {
@@ -882,6 +974,11 @@ int main(void){
      mail[0x33] = (uint8_t)(t >> 8);
      mail[0x34] = replay_ended;
      mail[0x35] = states;
+#if DP_OUTPUTS_MAX
+     mail[0x3a] = (uint8_t)outputs_bytes;
+     mail[0x3b] = (uint8_t)(outputs_bytes >> 8);
+     mail[0x3c] = outputs_full;
+#endif
  }
 #endif
 #ifndef DP_SWEEP

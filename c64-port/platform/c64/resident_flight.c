@@ -779,10 +779,14 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
             if (spin & 2u) return rk_gojam() ? EXEC_OUT_OF_SCOPE : EXEC_OK;
             if (w[5] == 02037u && w[4] == 066000u && (rk_device.superbank & 0100u)) {
                 IMAGE->words[2] = 02040u; /* Q: TC VERB69's */
+#ifdef RK_WORK_CLOCK
                 rk_charge(0, RK_MCT_IDLE);
                 /* The rest of the period's MCT over 256 (rk_phase_rest): 3
                  * or 2 with its T3 step, 1 without. */
                 rk_spin = (uint8_t)(rk_work >> 8);
+#else
+                rk_spin = 1u; /* the wall clock has no T3 step to count */
+#endif
                 st = EXEC_OK;
                 goto out;
             }

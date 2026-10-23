@@ -28,6 +28,7 @@ As in the CM form, each mid-loop point starts from the words the file's own runs
 - AX\*SR\*T itself, which other files call: A +3 or -3, and Q a return outside the file (05000). Its loop runs within the one routine.
 - FLESHPOT itself: A the ECADR of XNB (2664) or XNBPIP (2145).
 - FLESHPOT at and after VXV (10,2173, 2174): TEM1 the switched address of XNB (1664) or XNBPIP (1545), and TEM2 the caller's EBANK.
+- Return addresses outside the file (QPRET and the other outside CADRs) are never a word of the file, a key it registers or DANZIG, and at the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at such a word, other than the RTB operand pairs (#553: either state would run the file's own words as orders, which no flight caller leaves).
 
 ## Evidence
 
