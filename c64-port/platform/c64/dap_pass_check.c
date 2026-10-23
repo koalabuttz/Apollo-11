@@ -26,6 +26,7 @@
  * $c000, written last. */
 #include <stdint.h>
 #include "resident_flight.h"
+#include "resident_cdu.h"
 #define SNAP_DATA __attribute__((section(".boot.text.dp_snap")))
 #define BOOT __attribute__((noinline,section(".boot.text.dp_check")))
 /* Zeroed harness state in the cassette buffer (resident_flight.ld .cassette,
@@ -353,6 +354,7 @@ static void BOOT load_snapshot(void){
  SNAP_IO(rk_device)
  SNAP_HW(rk_hardware)
  SNAP_FLIGHT(rk_flight)
+ SNAP_CDU(rk_cdu)
  rk_device_from_canonical();
  rk_pending = 0;
 #ifdef DP_REPLAY
@@ -391,6 +393,7 @@ __attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t statu
         if (++sweep_i >= sweep_n) return 0;
         __asm__ volatile("sei");
         sweep_snap(APOLLO_REU_FETCH);
+        SNAP_CDU(rk_cdu) /* (outside the stashed range) */
     }
     apollo_reu_transfer(APOLLO_REU_FETCH, &sweep_case, sweep_at, 16u);
     __asm__ volatile("sei");

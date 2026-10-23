@@ -498,6 +498,11 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  F(superbank)F(interrupt_enabled)F(channel16)F(channel34)F(channel35)F(trap31a)F(trap31b)F(trap32)F(executive_alarm)
  F(waitlist_alarm)F(warning)
 #undef F
+ /* The output drives' state (resident_cdu.h): a window that starts while a
+  * drive owes pulses (an IMU align or torque, a TVC burn) goes on with them. */
+ fprintf(f,"\n#define SNAP_CDU(c) ");
+ for(i=0;i<5u;++i)fprintf(f,"(c).owed[%u]=%d;",i,(int)rk_cdu.owed[i]);
+ fprintf(f,"(c).elapsed=%uu;(c).active=%uu;",(unsigned)rk_cdu.elapsed,(unsigned)rk_cdu.active);
  fprintf(f,"\n");fclose(f);}
 /* FLIGHT_REPLAY=CS (with FLIGHT_SNAPSHOT): the C64 window's inputs and
  * its end state (tools/flight_scenario_vice.py --replay). After the

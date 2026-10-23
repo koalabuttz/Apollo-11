@@ -393,8 +393,8 @@ __attribute__((noinline)) static void rk_rupts(void) {
     for(;rk_ticks!=now;++rk_ticks) {
         if (take) {
             --take;
-            RK_CDU_DRIVE();
             rk_timer_tick(IMAGE, &rk_hardware, &rk_pending);
+            RK_CDU_DRIVE(); /* (after the timers, as the host's scaled path) */
         } else
             ++rk_dilation;
     }
