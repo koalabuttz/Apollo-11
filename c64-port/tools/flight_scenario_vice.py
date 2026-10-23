@@ -626,7 +626,9 @@ def main():
     # A scenario whose host run has DOWNRUPT on (the uplink-accept rows, for
     # V74's erasable dump) needs it on the C64 too, or the downlink list
     # pointer (CTLIST) only moves on the host.
-    if fhd.scenario(a.scenario)[4].get('FLIGHT_DOWNRUPT') == '1' and not a.downrupt:
+    # (As the host reads it, tools/flight_downlink.h dl_parse: any value but
+    # empty or "0".)
+    if fhd.scenario(a.scenario)[4].get('FLIGHT_DOWNRUPT', '0') not in ('', '0') and not a.downrupt:
         print(f'{a.scenario}: the scenario sets FLIGHT_DOWNRUPT, so --downrupt is on')
         a.downrupt = True
     # Each window's files (snapshot, PRG, VICE directory, result) carry its
