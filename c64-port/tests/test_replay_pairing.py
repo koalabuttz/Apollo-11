@@ -164,6 +164,17 @@ class DeadSuperbank(unittest.TestCase):
         for exact, want in ((False, []), (True, [('superbank', 0o60, 0o100)])):
             self.assertEqual(fsv.replay_compare(h, c, None, set(), fsv.mask_mission(exact, 'lm'), {}), want, exact)
 
+    def test_replay_exact_counts_time5_phase(self):
+        # TIME5 a count apart is a noted skip normally, a difference when exact.
+        h, c = self.pair(sb=(0o60, 0o60))
+        c[0o30] = (h[0o30] + 1) % 0o40000
+        skipped = set()
+        self.assertEqual(fsv.replay_compare(h, c, None, skipped, 'lm', {}), [])
+        self.assertEqual(skipped, {fsv.TIME5_PHASE})
+        skipped = set()
+        self.assertEqual(fsv.replay_compare(h, c, None, skipped, 'lm', {}, exact=True), [('TIME5', h[0o30], c[0o30])])
+        self.assertEqual(skipped, set())
+
     def test_verdict_lists_masked_points(self):
         h, c = self.pair()
         v = fsv.replay_verdict([(500, h)], [(500, c)], True, after=[], m='lm')
