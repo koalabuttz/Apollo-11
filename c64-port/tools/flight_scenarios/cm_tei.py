@@ -145,7 +145,7 @@ CSM_KG = 16400.0        # the CSM at TEI (LM jettisoned)
 BURN_S = CSM_KG * SPS_VEX / SPS_THRUST * (1 - math.exp(-DV / SPS_VEX))
 # S40.1's ignition attitude (outer, inner, middle CDU): the angles R60's
 # V50N18 asks for from this platform (0.00, 357.60, 359.04 degrees).
-IGN_CDU = (0, 0o77446, 0o77651)
+IGN_CDU = (0o6, 0o77663, 0o77460)
 
 RO = R_MOON + ALT
 VO = math.sqrt(MUM / RO)
@@ -212,7 +212,16 @@ put('DAPDATR1', [0o11102]); put('DAPDATR2', [0o01111])
 put('CSMMASS', [int(round(CSM_KG / 2**16 * 2**14))])
 put('LEMMASS', [0])
 put('EMDOT', [int(round(SPS_THRUST / SPS_VEX * 0.01 / 8 * 2**14))])
-put('PACTOFF', [0]); put('YACTOFF', [0])
+# Trim (the gimbal angles that put the thrust through the centre of mass)
+# and the TVC DAP's gains, Apollo 11's CMC pad load (NASSP's Comanche055
+# pad load worksheet, github.com/orbiternassp/padloads): PACTOFF -1.541
+# and YACTOFF +1.321 degrees (85.41 arcseconds a bit); EKPRIME (steering)
+# CSM 0.1, CSM/LM 0.15; EKTLX/I (filter) CSM 8.4, CSM/LM 0.6265, CSM/LM low
+# bandwidth 0.05786; EREPFRAC (alignment correction) CSM 0.25, LM 0.0375.
+# Without them VARK and KPRIMEDT are 0: the DAP neither steers nor damps.
+put('PACTOFF', [0o77676]); put('YACTOFF', [0o70])
+put('EKPRIME', [0o123, 0o175]); put('EKTLX/I', [0o37071, 0o2244, 0o156])
+put('EREPFRAC', [0o1000, 0o232])
 put('WEIGHT/G', [int(round(CSM_KG / 2**16 * 2**14))])
 # SPS pads as cm_p40.py.
 put('EK1VAL', dp(SPS_THRUST / 100 / 2**23)); put('EK2VAL', dp(10000 / 100 / 2**23))

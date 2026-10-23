@@ -12,6 +12,10 @@ mean per word:
   with no calibrated runs in docs/flight-routine-mct.json gets this mean.
 Time a word spends outside those banks (an RTB's routine, the basic code
 after EXIT) is the other modules' and is charged where they run.
+Its "word" entry is a least-squares fit per order code (slots in units of
+4 MCT, rmse in MCT): a fitted average, not each word's exact MCT. A host
+flight run prints how far the fitted charge lands from yaAGC's
+("interpreter charge:"), and flight_host_differential.py bounds it.
 
   interp_word_mct.py [--skip-build] [--keep DIR]   (DIR keeps the word lists)
 """

@@ -31,6 +31,7 @@ build/flight-store/flight-scenario-vice.json.
   flight_scenario_vice.py [--scenario lm-p63-descent-thrust] [--snap-cs CS] [--cs N] [--stop-on-holes] [--profile]
 """
 import argparse
+import hashlib
 import json
 import os
 import pathlib
@@ -517,6 +518,13 @@ def main():
     scratch = len(reu) - dp.SCRATCH_BYTES
     if any(reu[scratch:]):
         sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
+    # Which source and store image the log's results come from, so a
+    # result quoted later can be matched to its build.
+    head = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    dirty = subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT,
+                           capture_output=True, text=True).stdout.strip()
+    print(f'{a.scenario}: commit {head or "unknown"}{" with local changes" if dirty else ""}; '
+          f'store {m}.reu sha256 {hashlib.sha256(reu).hexdigest()}')
     holes = host_holes(exe, a.scenario, a.snap_cs + a.cs * a.chain, tag)
     # A core-start point (tools/flight_holes.py CORE_START) is bridged only
     # because the scenario's core starts mid-way through code, before any

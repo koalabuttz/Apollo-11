@@ -1,7 +1,7 @@
 {
  "program": "Luminary099",
  "mission": "lm",
- "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. A mapped row's windows lists the replay windows that run the row ([scenario, start cs], or [scenario, start cs, cs, K] for a chain) (its event falls inside the window); only those windows give the row its C64 credit. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope. A mapped row may name its body in reach ([[point, label], ...], a point as the host reports print it): the host run must reach each (FLIGHT_REACH), so a scenario that only takes the entry's refusal does not count.",
+ "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. A mapped row's windows lists the replay windows that run the row ([scenario, start cs], or [scenario, start cs, cs, K] for a chain) (its event falls inside the window); only those windows give the row its C64 credit. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope. A mapped row may name its body in reach ([[point, label], ...], a point as the host reports print it): the host run must reach each (FLIGHT_REACH), so a scenario that only takes the entry's refusal does not count. Every mapped extended-verb and R-routine row whose entry can refuse (TESTXACT, CHKPOOH, CKMODCAD, OP/INERT, RDRUSECK, the update program's MODREG check, TRMTRACK's flag test) names the routine or job past those checks (Lane F audit, 10-23; uplink rows name their own UPEND70-73); rows whose entry only sets or clears a flag (V57, V58, V61, V62, V65, V66, V74-V77, V80, V81, V93, V95, V96) or goes straight to the load (GOLOADLV: V50, V52-V54, V97, V99) have no refusal to tell apart.",
  "replay_windows": [
   [
    "lm-p63-descent",
@@ -1033,6 +1033,12 @@
      "lm-coast-r04",
      2400
     ]
+   ],
+   "reach": [
+    [
+     "43,2420",
+     "R04Z"
+    ]
    ]
   },
   {
@@ -1050,6 +1056,12 @@
      "lm-doi-nassp",
      48800
     ]
+   ],
+   "reach": [
+    [
+     "22,3242",
+     "V82CALL"
+    ]
    ]
   },
   {
@@ -1066,6 +1078,12 @@
     [
      "lm-rendezvous-tpm",
      40000
+    ]
+   ],
+   "reach": [
+    [
+     "40,3674",
+     "R31CALL"
     ]
    ]
   },
@@ -1128,6 +1146,12 @@
      "lm-coast-verbs",
      21900
     ]
+   ],
+   "reach": [
+    [
+     "23,2103",
+     "R62DISP"
+    ]
    ]
   },
   {
@@ -1144,6 +1168,12 @@
     [
      "lm-coast-verbs",
      25400
+    ]
+   ],
+   "reach": [
+    [
+     "26,2022",
+     "V89CALL"
     ]
    ]
   },
@@ -1320,6 +1350,12 @@
      "lm-coast-verbs",
      33900
     ]
+   ],
+   "reach": [
+    [
+     "07,2714",
+     "IMUZERO"
+    ]
    ]
   },
   {
@@ -1337,6 +1373,12 @@
      "lm-coast-verbs",
      30900
     ]
+   ],
+   "reach": [
+    [
+     "07,3000",
+     "IMUCOARS"
+    ]
    ]
   },
   {
@@ -1353,6 +1395,12 @@
     [
      "lm-coast-verbs",
      28900
+    ]
+   ],
+   "reach": [
+    [
+     "07,3210",
+     "IMUFINE"
     ]
    ]
   },
@@ -1439,6 +1487,12 @@
      "lm-coast-verbs",
      13900
     ]
+   ],
+   "reach": [
+    [
+     "32,2005",
+     "AGSINIT"
+    ]
    ]
   },
   {
@@ -1456,6 +1510,12 @@
      "lm-p42-nassp",
      48800
     ]
+   ],
+   "reach": [
+    [
+     "20,2004",
+     "DAPDATA1 (R03)"
+    ]
    ]
   },
   {
@@ -1472,6 +1532,12 @@
     [
      "lm-coast-verbs",
      21900
+    ]
+   ],
+   "reach": [
+    [
+     "23,2103",
+     "R62DISP"
     ]
    ]
   },
@@ -1587,6 +1653,12 @@
      "lm-coast-v55",
      2400
     ]
+   ],
+   "reach": [
+    [
+     "42,2016",
+     "UPDATIME (R33)"
+    ]
    ]
   },
   {
@@ -1603,6 +1675,12 @@
     [
      "lm-rendezvous-tpm",
      40000
+    ]
+   ],
+   "reach": [
+    [
+     "42,2054",
+     "TRMTRAK1"
     ]
    ]
   },
@@ -1668,6 +1746,12 @@
      "lm-p63-v60-nassp",
      99500
     ]
+   ],
+   "reach": [
+    [
+     "25,3471",
+     "LRPOS2"
+    ]
    ]
   },
   {
@@ -1719,6 +1803,12 @@
      "lm-coast-r04",
      2400
     ]
+   ],
+   "reach": [
+    [
+     "43,2420",
+     "R04Z"
+    ]
    ]
   },
   {
@@ -1735,6 +1825,12 @@
     [
      "lm-coast-verbs",
      2500
+    ]
+   ],
+   "reach": [
+    [
+     "42,3606",
+     "SBANDANT"
     ]
    ]
   },
@@ -1787,6 +1883,12 @@
      "lm-coast-verbs",
      9400
     ]
+   ],
+   "reach": [
+    [
+     "31,2007",
+     "V67CALL"
+    ]
    ]
   },
   {
@@ -1824,6 +1926,12 @@
      1000,
      2
     ]
+   ],
+   "reach": [
+    [
+     "04,3723",
+     "UPEND70"
+    ]
    ]
   },
   {
@@ -1848,6 +1956,12 @@
      1000,
      3
     ]
+   ],
+   "reach": [
+    [
+     "04,3632",
+     "UPEND71"
+    ]
    ]
   },
   {
@@ -1867,6 +1981,12 @@
      1000,
      2
     ]
+   ],
+   "reach": [
+    [
+     "04,3664",
+     "UPEND72"
+    ]
    ]
   },
   {
@@ -1885,6 +2005,12 @@
      7100,
      1000,
      2
+    ]
+   ],
+   "reach": [
+    [
+     "04,3536",
+     "UPEND73"
     ]
    ]
   },
@@ -2023,6 +2149,12 @@
      "lm-doi-nassp",
      48800
     ]
+   ],
+   "reach": [
+    [
+     "22,3242",
+     "V82CALL"
+    ]
    ]
   },
   {
@@ -2039,6 +2171,12 @@
     [
      "lm-rendezvous-tpm",
      40000
+    ]
+   ],
+   "reach": [
+    [
+     "40,3674",
+     "R31CALL"
     ]
    ]
   },
@@ -2065,6 +2203,12 @@
     [
      "lm-rendezvous-tpm",
      40000
+    ]
+   ],
+   "reach": [
+    [
+     "40,2017",
+     "RRLOSDSP"
     ]
    ]
   },
@@ -2110,6 +2254,12 @@
      "lm-coast-verbs",
      25400
     ]
+   ],
+   "reach": [
+    [
+     "26,2022",
+     "V89CALL"
+    ]
    ]
   },
   {
@@ -2126,6 +2276,12 @@
     [
      "lm-coast-verbs",
      10900
+    ]
+   ],
+   "reach": [
+    [
+     "04,2656",
+     "R36"
     ]
    ]
   },

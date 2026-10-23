@@ -139,6 +139,9 @@ typedef struct {
      * interrupt code (FS_IDLE): outside an interrupt its run is the work
      * clock's idle (RK_MCT_IDLE), inside one it weighs mct. */
     uint8_t idle;
+    /* Nonzero in each part of a file split into flight parts (FS_PART_GROUP,
+     * one number per file; docs/FLIGHT-PARTS.md). */
+    uint8_t part;
 } rk_module_tables;
 /* Built, and the resident may call the routines straight from the slot
  * (rk_direct); or built, but the tables take an io record other than rk_io
@@ -191,6 +194,34 @@ static inline enum exec_status rk_module_status(enum exec_status status,uint16_t
     return status;
 }
 extern rk_module_env rk_env;
+#ifdef RK_WORK_CLOCK
+/* Flight parts (docs/FLIGHT-PARTS.md): the host runs a split file's routine
+ * as one routine, of one weight. On the C64 a run that reaches another
+ * part's word hands back with Z on that word, and the next step's part goes
+ * on with the same routine. rk_part_cont: the part group whose run handed
+ * back mid-file in this step; rk_part_prev: the one of the step before
+ * (resident_flight.c rk_step_run). At RK_PART_AT, so the part modules (their
+ * own run's charge, flight_table_module.c) reach them by address. */
+#define RK_PART_AT 0x6ff6u /* the byte after RK_RESTART_LAMP (resident_flight.ld) */
+extern uint8_t rk_part[2];
+#define rk_part_cont (*(uint8_t *)RK_PART_AT)
+#define rk_part_prev (*(uint8_t *)(RK_PART_AT + 1u))
+/* The routines of a part's run to charge: its first one is not, when it
+ * goes on with the routine the previous step's part handed back. That first
+ * routine is the one the host charged in full in the previous step; a part
+ * run that starts a routine of its own (rk_part_prev is another group or 0)
+ * is charged every step. A run of no steps that hands back unmapped ran no
+ * routine, so it leaves rk_part_cont unset: the next step starts afresh. */
+static inline uint16_t rk_part_steps(uint8_t part, enum exec_status status, uint16_t steps)
+{
+    uint16_t n = steps;
+    if (part) {
+        if (rk_part_prev == part && n) --n;
+        if (status == EXEC_UNMAPPED && steps) rk_part_cont = part;
+    }
+    return n;
+}
+#endif
 /* The interrupt-body wrappers (platform/c64/resident_rupt_module.c). */
 #define RK_MODULE_LEAD_INS APOLLO_OV2_ID(APOLLO_LANE_A,0xe1)   /* task slot */
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
