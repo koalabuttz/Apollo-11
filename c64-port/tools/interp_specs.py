@@ -926,6 +926,10 @@ SPECS = {
     # Lane A: Luminary099 POWERED_FLIGHT_SUBROUTINES (CDU trig, QUICTRIG,
     # SMNB/NBSM, AX*SR*T, CALCSMSC), basic and interpretive.
     'lm-powered-subs': {
+        # QPRET and the other outside CADRs stay off DANZIG and the file's
+        # keys, and a basic entry finds no order pending with LOC on one: in
+        # flight QPRET is the word after a CALL (#553, as cm-powered-subs).
+        'outside_off_keys': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
         'resume_keys': True,
@@ -1587,6 +1591,10 @@ SPECS = {
     # Lane G: Comanche055 REENTRY_CONTROL (entry guidance), basic and
     # interpretive.
     'cm-reentry': {
+        # QPRET and the other outside CADRs stay off DANZIG and the file's
+        # keys, and a basic entry finds no order pending with LOC on one: in
+        # flight QPRET is the word after a CALL (#553, as cm-powered-subs).
+        'outside_off_keys': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -1840,6 +1848,10 @@ SPECS = {
     # Lane G: Comanche055 INTEGRATION_INITIALIZATION, the whole file as routines at its
     # original addresses.
     'cm-integration-init': {
+        # QPRET and the other outside CADRs stay off DANZIG and the file's
+        # keys, and a basic entry finds no order pending with LOC on one: in
+        # flight QPRET is the word after a CALL (#553, as cm-powered-subs).
+        'outside_off_keys': True,
         'rope_fallback': True,
         'resume_keys': True,
         'seed_counters': True,
@@ -1927,6 +1939,10 @@ SPECS = {
     # Lane G: Comanche055 STABLE_ORBIT, the whole file as routines at its
     # original addresses.
     'cm-stable-orbit': {
+        # QPRET and the other outside CADRs stay off DANZIG and the file's
+        # keys, and a basic entry finds no order pending with LOC on one: in
+        # flight QPRET is the word after a CALL (#553, as cm-powered-subs).
+        'outside_off_keys': True,
         # Flight builds skip the entry checks' scan of the whole image
         # (about 121K cycles a routine on the C64).
         'trusted_image': True,

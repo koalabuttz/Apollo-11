@@ -2186,7 +2186,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under any EB (cases draw EB 0-7), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area (or NOVAC's 0110 where stated below), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. As for ORBITAL_INTEGRATION, except S1 and S2 hold saved returns here. INTBITAB and WAKESTAL indexes 0 to 2; LOCCTR one of the Executive's core-set offsets at a JOBWAKE return; at 27,2745 (TC INTWAKUQ) INTWAKUQ holds 03704, the return its QXCH saved. INTSTALL, its EXIT and GOBAC's RVQ also run in NOVAC jobs (V37's fresh start): a quarter of their cases have FIXLOC 0110, NOVAC's LOC(MPAC +6) - LOC(QPRET). The six pairs with an RTB on the left and an order on the right (RTB MOVEPCSM, SGNAGREE, LOADTIME three times, MOVEACSM) each also have a routine keyed at the RTB's operand word, entered as the RTB's basic code leaves it at TC DANZIG: Z at DANZIG, EDOP the pair's right order, LOC at that word, BANKSET the pair's bank and FB and BBANK any bank (include/agc_transfer.h). Other erasables take any value.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under any EB (cases draw EB 0-7), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area (or NOVAC's 0110 where stated below), any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. As for ORBITAL_INTEGRATION, except S1 and S2 hold saved returns here. INTBITAB and WAKESTAL indexes 0 to 2; LOCCTR one of the Executive's core-set offsets at a JOBWAKE return; at 27,2745 (TC INTWAKUQ) INTWAKUQ holds 03704, the return its QXCH saved. INTSTALL, its EXIT and GOBAC's RVQ also run in NOVAC jobs (V37's fresh start): a quarter of their cases have FIXLOC 0110, NOVAC's LOC(MPAC +6) - LOC(QPRET). The six pairs with an RTB on the left and an order on the right (RTB MOVEPCSM, SGNAGREE, LOADTIME three times, MOVEACSM) each also have a routine keyed at the RTB's operand word, entered as the RTB's basic code leaves it at TC DANZIG: Z at DANZIG, EDOP the pair's right order, LOC at that word, BANKSET the pair's bank and FB and BBANK any bank (include/agc_transfer.h). Other erasables take any value. Return addresses outside the file (QPRET and the other outside CADRs) are never a word of the file, a key it registers or DANZIG, and at the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at such a word, other than the RTB operand pairs (#553: either state would run the file's own words as orders, which no flight caller leaves).",
         "external_continuations": [
           "ALARM (outside basic routine)",
           "BANKJUMP (outside basic routine)",
@@ -2215,26 +2215,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
-            "sha256": "e527dbbd6efa3ce1ed5a5fdba256d367c3f7a20cff1d8e123640eb3c1becd2cf"
+            "sha256": "c7de58f717822daae723c26f54c04ef38816a5d41231c9d150a2935912a1f50a"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-integration-init/cm-integration-init-host.log",
-            "sha256": "bff824a026ecacc94905d9bee19514f86857942ac9b19954a18a880b24932f5a"
+            "sha256": "38ccc8554b06ce92ef623b1cd6d68d4a35ec3d5c92d7eb5a6a10dfdc90c76310"
           },
           "c64_execution_results": {
             "path": "evidence/cm-integration-init/cm-integration-init-vice.log",
-            "sha256": "8e987379f2e37c8965a02a8baf9f06a1491492262e9e3e829688700b85f45385",
+            "sha256": "2c3c031caf0d6f8fabf26784b260c08e56ae2bd7b29d713ef60ae2ebc1010d62",
             "vice_targets": {
               "vice-cm-integration-init": 336
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-integration-init/cm-integration-init-proof.json",
-            "sha256": "e527dbbd6efa3ce1ed5a5fdba256d367c3f7a20cff1d8e123640eb3c1becd2cf"
+            "sha256": "c7de58f717822daae723c26f54c04ef38816a5d41231c9d150a2935912a1f50a"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-arms-679.md",
-            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
+            "path": "docs/audits/rev2-cm-offkeys-789.md",
+            "sha256": "c5586d4622aa8808012a56a6cce12557db174085476fc5b6b464b74eb1e65ac9"
           }
         }
       }
@@ -5049,7 +5049,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Each routine runs under the EBANK= the listing has in effect at its first word. Interpretive routines are entered at NEWOPS with FIXLOC a VAC area. The two pairs with an RTB on the left and an order on the right (KEP's RTB P66 / SSP at 25,3313 and RTB SIGNMPAC / DMP at 25,3472) each also have a routine keyed at the RTB's operand word, entered as the RTB's basic code leaves it at TC DANZIG: Z at DANZIG, EDOP the pair's right order, LOC at that word, BANKSET the pair's bank and FB and BBANK any bank (include/agc_transfer.h). A BOVB TCDANZIG (on overflow) runs ENDT(X)'s TC DANZIG natively (cm_integration_tcdanzig) and the routine goes on with the pair's right-hand order, as in flight (#414). PREDICT3 reads VREFER and the tables after it at JJ 0 to 91 (13 words per BACK2 pass). The repository copy of the file differs from the flight rope only in text that assembles to the same words: the label GETDLEWD where its one reference says GETLEWD (repaired to GETLEWD in the assembled listing), DEC .063296 (the rope listing has .063298; both assemble to 02015) and KT1's exponent spacing. LEWD (E7,1724-1725) is any positive double word, as STARTENT, LEWDOVFL and LWDSTORE (DAD, BMN, BOV, STORE: the words need not agree in sign) leave it: a nonzero high word over a low word of either sign, or a +0 or -0 high word over a positive low word (spec cell_pairs). Negative, LWDSTORE's BMN LEWDPTR loop never ends on the AGC either.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Each routine runs under the EBANK= the listing has in effect at its first word. Interpretive routines are entered at NEWOPS with FIXLOC a VAC area. The two pairs with an RTB on the left and an order on the right (KEP's RTB P66 / SSP at 25,3313 and RTB SIGNMPAC / DMP at 25,3472) each also have a routine keyed at the RTB's operand word, entered as the RTB's basic code leaves it at TC DANZIG: Z at DANZIG, EDOP the pair's right order, LOC at that word, BANKSET the pair's bank and FB and BBANK any bank (include/agc_transfer.h). A BOVB TCDANZIG (on overflow) runs ENDT(X)'s TC DANZIG natively (cm_integration_tcdanzig) and the routine goes on with the pair's right-hand order, as in flight (#414). PREDICT3 reads VREFER and the tables after it at JJ 0 to 91 (13 words per BACK2 pass). The repository copy of the file differs from the flight rope only in text that assembles to the same words: the label GETDLEWD where its one reference says GETLEWD (repaired to GETLEWD in the assembled listing), DEC .063296 (the rope listing has .063298; both assemble to 02015) and KT1's exponent spacing. LEWD (E7,1724-1725) is any positive double word, as STARTENT, LEWDOVFL and LWDSTORE (DAD, BMN, BOV, STORE: the words need not agree in sign) leave it: a nonzero high word over a low word of either sign, or a +0 or -0 high word over a positive low word (spec cell_pairs). Negative, LWDSTORE's BMN LEWDPTR loop never ends on the AGC either. Return addresses outside the file (QPRET and the other outside CADRs) are never a word of the file, a key it registers or DANZIG, and at the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at such a word, other than the RTB operand pairs (#553: either state would run the file's own words as orders, which no flight caller leaves).",
         "external_continuations": [
           "2PHSCHNG (outside basic routine)",
           "BANKCALL (outside basic routine; Lane A Executive/Waitlist)",
@@ -5075,26 +5075,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-reentry/cm-reentry-proof.json",
-            "sha256": "489911eb4ee704d6420b3b3ca9eaef35ae480bf76b26b9e552266275e9f958e7"
+            "sha256": "9771530c0ff1a2f99bd2952ff74f10c0cefc67b669c7bb79ef785410f103a048"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-reentry/cm-reentry-host.log",
-            "sha256": "26079dfcd652c89453e3802f405492ae4e0ff3dbfa4f4953583608d3e2b8f389"
+            "sha256": "6bccaf01a0ca195cb52f6b04d3dcc546486ede4df307a6eeebd76a2bf9d916d6"
           },
           "c64_execution_results": {
             "path": "evidence/cm-reentry/cm-reentry-vice.log",
-            "sha256": "878445ef472325eda7287dd1900172e5277a22d317f3a06966a102eef7f09c21",
+            "sha256": "0731e08b4fd6ec69f8e32c6d90a9f6d87a074207e5f880fe8cb80b8f21669669",
             "vice_targets": {
               "vice-cm-reentry": 544
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-reentry/cm-reentry-proof.json",
-            "sha256": "489911eb4ee704d6420b3b3ca9eaef35ae480bf76b26b9e552266275e9f958e7"
+            "sha256": "9771530c0ff1a2f99bd2952ff74f10c0cefc67b669c7bb79ef785410f103a048"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-arms-679.md",
-            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
+            "path": "docs/audits/rev2-cm-offkeys-789.md",
+            "sha256": "c5586d4622aa8808012a56a6cce12557db174085476fc5b6b464b74eb1e65ac9"
           }
         }
       }
@@ -5645,7 +5645,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Any values of the program erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area, resume points starting from the state the preceding orders leave. Also entered at DANZIG with LOC at 04,3204 (RTB LOADTIME's operand word, DAD KT on its right) with EDOP the DAD code, BANKSET bank 04 and the DANZIG marker first among the program's interpretive tables (pending_danzig): the RTB's DANZIG comes back there and the routine runs the DAD; any other EDOP is refused with the image unchanged.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under the EBANK= in effect at each routine, entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Any values of the program erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area, resume points starting from the state the preceding orders leave. Also entered at DANZIG with LOC at 04,3204 (RTB LOADTIME's operand word, DAD KT on its right) with EDOP the DAD code, BANKSET bank 04 and the DANZIG marker first among the program's interpretive tables (pending_danzig): the RTB's DANZIG comes back there and the routine runs the DAD; any other EDOP is refused with the image unchanged. Return addresses outside the file (QPRET and the other outside CADRs) are never a word of the file, a key it registers or DANZIG, and at the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at such a word, other than the RTB operand pairs (#553: either state would run the file's own words as orders, which no flight caller leaves).",
         "external_continuations": [
           "AVFLAGA (outside basic routine)",
           "AVFLAGP (outside basic routine)",
@@ -5667,26 +5667,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-proof.json",
-            "sha256": "0f58b2b847359a9b4ea3ebf4c4fdbf307e2535c427fe2e63cf9bdd97eb3ab1b6"
+            "sha256": "5dd0ca9240877b0405fb9d4832e8a79f42c36a45ccdd77daafb77cfbd1fec75b"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-host.log",
-            "sha256": "47b872bf9088d9f64b0ff598752890049105d23238f4111a249fb0cf8ac039dd"
+            "sha256": "e43816494c9002eea990dabb0bfc95c3eb9dc125df42749f2474e4e259b64227"
           },
           "c64_execution_results": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-vice.log",
-            "sha256": "99a9ee20dad8e58c9a6b3ef7adba9b23b3c791eb19a9f324f2d89a106cc46a3d",
+            "sha256": "13e569a7d40c17af419ff69d85bdd32226acdc1779f3d189c3031772fa7b347d",
             "vice_targets": {
               "vice-cm-stable-orbit": 140
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-stable-orbit/cm-stable-orbit-proof.json",
-            "sha256": "0f58b2b847359a9b4ea3ebf4c4fdbf307e2535c427fe2e63cf9bdd97eb3ab1b6"
+            "sha256": "5dd0ca9240877b0405fb9d4832e8a79f42c36a45ccdd77daafb77cfbd1fec75b"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-stable-orbit-711.md",
-            "sha256": "782ba8802c3ff11d1ce1aa9ca6b542ebb5b6583247d2cb92be9b94013542a6d1"
+            "path": "docs/audits/rev2-cm-offkeys-789.md",
+            "sha256": "c5586d4622aa8808012a56a6cce12557db174085476fc5b6b464b74eb1e65ac9"
           }
         }
       }
@@ -11956,7 +11956,8 @@
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; the CDU counters (032-034) in the image; the interrupt-enable bit and SUPERBNK in the native I/O record.",
           "entry_contracts": "Every entry of the file is a control-transfer ABI routine at its original address. Interpretive (lm_powered_subs_interpretive, at NEWOPS with LOC there): 10,2030 CALCSMSC, 10,2034, 23,3537 CDUTRIG, 3542, 3543 CD*TR*G, 3546, 3646 CDU*SMNB, 3651 TRG*SMNB, 3657, 3661 CDU*NBSM, 3664 TRG*NBSM, 3671 *SMNB*, 3673 *NBSM*; and at DANZIG with LOC there and EDOP 1 (USPRCADR's BIT8, the interpreter's EXIT; at_exit, at_danzig without its INTBIT15 test since EXIT decodes no address and INTBIT15 is still the caller's, with the DANZIG marker first among the program's interpretive tables): 23,3567, 3575, 3605, CD*TR*GS's CADR CDULOGIC, COSINE and SINE +1 words, with TEM3 and TEM2 as at the returns after them; and 10,2173, FLESHPOT's TCF VXV word (its DXCH LOC leaves LOC there and its TS EDOP BIT8, so VXV's DANZIG runs EXIT into 10,2174), with TEM1 and TEM2 as at 10,2174. Basic (lm_powered_subs_basic): 10,2031 (after EXIT), 10,2033 (after BANKCALL), 10,2036 FLESHPOT -1, 10,2037 FLESHPOT (A the ECADR of XNB or XNBPIP), its return after VXV (10,2174, where the interpreter resumes LOC with EDOP BIT8); 23,3540, 3544, 3647, 3652, 3662, 3665, 3672, 3674 (after EXIT); 3570, 3576, 3606 (CD*TR*GS after CDULOGIC, COSINE, SINE); 3615 QUICTRIG; 3626, 3635 (after SPSIN, SPCOS); 3654, 3667 (after MPACVBUF); 3675 AX*SR*T. The INTERPRETER's DMP and DMPSUB (07103-07135), which AX*SR*T and FLESHPOT call, run in place (src/lm_dmpsub.c, instruction for instruction, TC Q leaving Q 3) on an erasable operand pair (ADDRWD 010-01776, unmasked; anything else EXEC_OUT_OF_SCOPE before any change), so their returns are not entries; the differential's oracle runs on through those words (native_call_words) to the next stop. Resume points start in the states the file's own runs leave there: TEM3 or ITEMP2 an angle offset 0, 2 or 4; TEM2 and ITEMP1 a return address (a TC in this file or a fixed address outside it); AX*SR*T entered with A +3 or -3 and Q a return outside the file; FLESHPOT's TEM1 the switched address of XNB or XNBPIP and TEM2 the caller's EBANK. Each entry returns EXEC_OUT_OF_SCOPE before any change for inputs outside its guard. The interpretive entries use the generated sane() (at NEWOPS of the routine's bank with BANKSET, FB and INTBIT15 agreeing): an incoherent bank set, NEWJOB -0 or negative, FIXLOC not a VAC area, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits. The basic entries use the generated basic_sane(): FB not the routine's bank (23 or 10), an incoherent EB/BB, a nonzero word 7, an interrupt-enable value over 1, stray SUPERBNK bits or a word over 15 bits; NEWJOB and FIXLOC take any value. At the returns after SPSIN and SPCOS (23,3626, 3635) A takes values across its range, +-0 in about a fifth of the cases, so MP BIT14 runs with a +-0 multiplicand (reviewer 1, #316).",
           "unreached": "23,3757 (TSTPOINT's +0 exit, TC RTNSAVER): AX*SR*T enters with +-3 and DIM of +1 gives -0 in the ones-complement adder, so CCS DEXDEX never sees +0; the cases that reach TSTPOINT all take the -0 exit, in yaAGC and natively. The oracle executed the other 237 basic instructions and read all 14 interpretive words (evidence/lm-powered-subs/lm-powered-subs-closure.json).",
-          "data_validity": "SINSLOC (ADRES SINCDU), XNBECADR (ECADR XNB) and INDEXI (4, 2, 0, 4) are read as the original constants: SINSLOC and XNBECADR by CA/CAF, INDEXI through the spec's fixed table under INDEX A (A 0 to 2)."
+          "data_validity": "SINSLOC (ADRES SINCDU), XNBECADR (ECADR XNB) and INDEXI (4, 2, 0, 4) are read as the original constants: SINSLOC and XNBECADR by CA/CAF, INDEXI through the spec's fixed table under INDEX A (A 0 to 2).",
+          "basic_entries": "Return addresses outside the file (QPRET and the other outside CADRs) are never a word of the file, a key it registers or DANZIG, and at the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at such a word, other than the RTB operand pairs (#553: either state would run the file's own words as orders, which no flight caller leaves)."
         },
         "external_continuations": [
           "CDULOGIC, COSINE and SINE through USPRCADR, which return through DANZIG to this file's routines at the CADR words, then its registered return points",
@@ -11973,26 +11974,26 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
-            "sha256": "1b7ea0c777384f2e214b3bdd6ef1121b613c6162d2fca3faf65cb3617e1e77cd"
+            "sha256": "2e4239b98baae466f751422fc7778922d552905f181aa69a69787144378b02f0"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-host.log",
-            "sha256": "9c31040430e778487c4d02bbb22fbe6af05d907466e9c5d0f5a5ba59e4618b02"
+            "sha256": "ba9f4a0f8d3f3bd839a973a778e357394a1b1b77156778f2c1098c347700a1eb"
           },
           "c64_execution_results": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-vice.log",
-            "sha256": "6f78d3d911de3b55d51d187801b1a6e15808dc1716906c567d7f9e29c53e248b",
+            "sha256": "5c0bbaefb6cf0ce2498a92454862495121630b1999863bfcaee6afd7361dcfe9",
             "vice_targets": {
               "vice-lm-powered-subs": 51
             }
           },
           "independent_review": {
-            "path": "docs/audits/rev2-recite-b506.md",
-            "sha256": "ab238c1332ef2e8d37b9dcb195528c17924d7d9f5f22b5cd5795e66c0a16071f"
+            "path": "docs/audits/rev1-lm-powered-subs-789.md",
+            "sha256": "76857d788704e6ded19ef5ae8b981f1d0eaf129e75f6fa29fd17158f18d5598f"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-proof.json",
-            "sha256": "1b7ea0c777384f2e214b3bdd6ef1121b613c6162d2fca3faf65cb3617e1e77cd"
+            "sha256": "2e4239b98baae466f751422fc7778922d552905f181aa69a69787144378b02f0"
           },
           "executed_instruction_closure": {
             "path": "evidence/lm-powered-subs/lm-powered-subs-closure.json",

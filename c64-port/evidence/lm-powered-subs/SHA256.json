@@ -14,12 +14,12 @@
       "store": "release"
     },
     "lm-powered-subs-host.log": {
-      "sha256": "9c31040430e778487c4d02bbb22fbe6af05d907466e9c5d0f5a5ba59e4618b02",
-      "bytes": 1032,
+      "sha256": "ba9f4a0f8d3f3bd839a973a778e357394a1b1b77156778f2c1098c347700a1eb",
+      "bytes": 1136,
       "store": "release"
     },
     "lm-powered-subs-proof.json": {
-      "sha256": "1b7ea0c777384f2e214b3bdd6ef1121b613c6162d2fca3faf65cb3617e1e77cd",
+      "sha256": "2e4239b98baae466f751422fc7778922d552905f181aa69a69787144378b02f0",
       "bytes": 5441,
       "store": "tree"
     },
@@ -29,8 +29,8 @@
       "store": "tree"
     },
     "lm-powered-subs-vice.log": {
-      "sha256": "6f78d3d911de3b55d51d187801b1a6e15808dc1716906c567d7f9e29c53e248b",
-      "bytes": 159,
+      "sha256": "5c0bbaefb6cf0ce2498a92454862495121630b1999863bfcaee6afd7361dcfe9",
+      "bytes": 359,
       "store": "release"
     }
   }

@@ -25,6 +25,7 @@ digests) for the host test and the C64 diagnostic, and
 build/<id>-proof.json. A spec with 'c64_rows': 'cover' picks the C64 cases
 by branch outcome (tools/c64_row_cover.py) instead of per routine."""
 import argparse
+import bisect
 import collections
 import concurrent.futures
 import functools
@@ -1080,7 +1081,7 @@ def build(spec_id, spec, extra=(), tag=''):
     nat = os.path.join(B, '%s-native%s' % (spec_id, tag))
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + common(spec)
     subprocess.run(['cc', *FLAGS, *extra, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *cut_flags(spec), *srcs, spec['target'],
-                    *WRAP, 'tools/interp_routine_native.c', '-o', nat],
+                    *WRAP, '-DIRC_STATE_HASH', 'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
 
@@ -1573,7 +1574,7 @@ def step_cap_loops(cand, max_steps, probe):
     tests/interp_case.c irc_run), an oracle that ends given more cycles,
     and any rule at all when 4N does not fit the runner's 16-bit cap.
     probe(cand) gives a record for each case in order (step_cap_probe).
-    Returns {case: routine where the native loop is entered}."""
+    Returns {case: the routine the case starts in}."""
     cand = list(cand)
     if not cand or 4 * max_steps > 0xffff:
         return {}
@@ -1587,13 +1588,35 @@ def step_cap_loops(cand, max_steps, probe):
 def is_step_cap_loop(r, max_steps):
     """step_cap_loops' test of one probe record: n1 and n4 the native runs
     at N and 4N steps (kind, steps, ended at the cap, image), r4 the oracle
-    at 4x its cycles (kind, the routine LOC is in), visited the routines the
-    4N native run visits."""
+    at 4x its cycles (kind, the routine LOC is in, span_point), visited the
+    routines the 4N native run visits."""
     n1, n4, r4 = r['n1'], r['n4'], r['r4']
     return (n1['kind'] == '2' and n1['steps'] == max_steps and n1['capped']
             and n4['kind'] == '2' and n4['steps'] == 4 * max_steps and n4['capped']
             and n1['image'] == n4['image']
             and r4['kind'] == '9' and r4['loc'] is not None and r4['loc'] in r['visited'])
+
+
+def span_point(points, loc):
+    """The transfer point whose routine holds the word loc: the last point
+    at or before it in the same 1024-word bank, when another point of the
+    bank follows loc ([point, next point) is that routine's words). None
+    past a bank's last point, where the routine's end is not known, so a
+    LOC outside the file never matches (#746 round 2: the oracle at its
+    cap stops anywhere in the loop, not only on a transfer point)."""
+    i = bisect.bisect_right(points, loc) - 1
+    if i < 0 or points[i] // 1024 != loc // 1024:
+        return None
+    if points[i] == loc:
+        return loc
+    nxt = points[i + 1] if i + 1 < len(points) else None
+    return points[i] if nxt is not None and nxt // 1024 == loc // 1024 else None
+
+
+def span_where(mi, loc):
+    """mi.cp.where() of span_point (LOC itself when no routine holds it)."""
+    p = span_point(mi.points, loc)
+    return mi.cp.where(loc if p is None else p)
 
 
 def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
@@ -1623,18 +1646,20 @@ def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
             nat = {}
             for k, (lp, dp) in side.items():
                 l, d = (lp[j], dp[j]) if j < len(lp) and j < len(dp) else ([], [])
-                if len(l) < 6 or l[1] != '2':
+                if len(l) < 7 or l[1] != '2':
                     # (a run that ended any other way, or a runner that
                     # exited mid-file: not a loop)
                     nat[k] = {'kind': l[1] if len(l) > 1 else '?', 'steps': 0, 'capped': False, 'image': None,
                               'visits': []}
                     continue
-                # (image: the dump's words, and the digest for the channels it adds)
-                nat[k] = {'kind': l[1], 'steps': int(l[4][1:]), 'capped': l[5] == 'k1', 'image': [l[2], l[3]] + d[4:],
-                          'visits': [int(t[1:]) for t in l[6:]]}
+                # (image: the dump's words, the digest for the channels it
+                # adds, and the io record's and agc_hardware's hash)
+                nat[k] = {'kind': l[1], 'steps': int(l[4][1:]), 'capped': l[5] == 'k1',
+                          'image': [l[2], l[3], l[6]] + d[4:], 'visits': [int(t[1:]) for t in l[7:]]}
             r4 = rr[j] if j < len(rr) else ['', '?']
             recs.append({'n1': nat['1'], 'n4': nat['4'],
-                         'r4': {'kind': r4[1], 'loc': mi.cp.where(int(r4[4])) if r4[1] == '9' and len(r4) > 4 else None},
+                         'r4': {'kind': r4[1],
+                                'loc': span_where(mi, int(r4[4])) if r4[1] == '9' and len(r4) > 4 else None},
                          'visited': {mi.cp.where(v) for v in nat['4']['visits']},
                          'routine': '%s %s' % (mi.m, mi.cp.where(cases[i]['point']))})
         return recs
