@@ -151,9 +151,10 @@ def body_result(row, host):
     the body its entry leads to): each must be reached in one of its
     scenarios' host runs (flight_host_differential.py's `reached`, the
     first centisecond yaAGC ran it), or the row is not run by them, only
-    its refusal. None when the row names no body."""
+    its refusal. A row whose entry cannot refuse names why in `no_reach`
+    instead. None when the row names neither."""
     if not row.get('reach'):
-        return None
+        return (True, 'no body check: ' + row['no_reach']) if row.get('no_reach') else None
     missing = []
     for point, label in row['reach']:
         runs = [host[s].get('reached', {}) for s in row['scenarios'] if s in host]
