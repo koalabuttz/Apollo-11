@@ -1,0 +1,4 @@
+PASS: VICE PAL cm-powered-subs-1.prg: 54 checks, 0 failures
+PRG sha256: fa1db2c463de7d7d1cd11cae671bfa812e711e30836300c19efe672c93c3fe0a cm-powered-subs-1.prg
+PASS: VICE PAL cm-powered-subs-2.prg: 32 checks, 0 failures
+PRG sha256: 8505c7281e704f6a15816ba9afcdc00eb52fa56fdc8e1922883aca78a63f2fd9 cm-powered-subs-2.prg

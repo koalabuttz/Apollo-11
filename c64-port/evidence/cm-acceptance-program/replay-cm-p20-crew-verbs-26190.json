@@ -1,0 +1,113 @@
+{
+ "scenario": "cm-p20-crew-verbs",
+ "ok": false,
+ "status": 0,
+ "z": "06037",
+ "fb": "46000",
+ "superbank": "0000",
+ "bank": "23",
+ "at": "03,2037",
+ "wall_cycles": 59993682,
+ "agc_cs": 303,
+ "dropped_ticks": 0,
+ "steps": 1126,
+ "wall_per_agc": 20.096,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 26190,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 11
+ },
+ "replay_rows": 15,
+ "replay_applied": 15,
+ "replay_end_cs": 303,
+ "replay_ended": true,
+ "replay_unpaired": [
+  {
+   "side": "host",
+   "cs": 302,
+   "end": true
+  },
+  {
+   "side": "C64",
+   "cs": 303,
+   "end": true
+  }
+ ],
+ "replay_unpaired_count": 0,
+ "replay_end_shift_cs": 1,
+ "replay_end_paired": false,
+ "replay_matched_cs": [],
+ "replay_differences": 10,
+ "replay_differ_at_cs": 147,
+ "replay_skipped": [
+  "TIME5 a count apart (a third of a centisecond)"
+ ],
+ "replay_first": [
+  {
+   "at": "0020",
+   "host": "20027",
+   "c64": "00004"
+  },
+  {
+   "at": "0116",
+   "host": "01566",
+   "c64": "01560"
+  },
+  {
+   "at": "0130",
+   "host": "07777",
+   "c64": "00012"
+  },
+  {
+   "at": "0154",
+   "host": "07777",
+   "c64": "77765"
+  },
+  {
+   "at": "0155",
+   "host": "37467",
+   "c64": "77125"
+  },
+  {
+   "at": "0156",
+   "host": "00000",
+   "c64": "57777"
+  },
+  {
+   "at": "0161",
+   "host": "07777",
+   "c64": "00012"
+  },
+  {
+   "at": "0164",
+   "host": "02114",
+   "c64": "02110"
+  },
+  {
+   "at": "0477",
+   "host": "77765",
+   "c64": "00043"
+  },
+  {
+   "at": "0500",
+   "host": "77125",
+   "c64": "02000"
+  }
+ ],
+ "snap_at": 26202,
+ "snap_slid": false,
+ "requested_cs": 302,
+ "host_holes": [],
+ "commit": "22bfa334ba31"
+}

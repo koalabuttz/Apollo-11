@@ -1,0 +1,114 @@
+{
+ "scenario": "cm-p11",
+ "ok": false,
+ "status": 0,
+ "z": "03231",
+ "fb": "02000",
+ "superbank": "0060",
+ "bank": "01",
+ "at": "01,3231",
+ "wall_cycles": 64268893,
+ "agc_cs": 301,
+ "dropped_ticks": 0,
+ "steps": 1759,
+ "wall_per_agc": 21.671,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 15050,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 8
+ },
+ "replay_rows": 257,
+ "replay_applied": 257,
+ "replay_end_cs": 301,
+ "replay_ended": true,
+ "replay_unpaired": [
+  {
+   "side": "host",
+   "cs": 50
+  },
+  {
+   "side": "C64",
+   "cs": 51
+  },
+  {
+   "side": "host",
+   "cs": 105
+  },
+  {
+   "side": "C64",
+   "cs": 107
+  },
+  {
+   "side": "host",
+   "cs": 175
+  },
+  {
+   "side": "C64",
+   "cs": 176
+  },
+  {
+   "side": "host",
+   "cs": 206
+  },
+  {
+   "side": "C64",
+   "cs": 207
+  },
+  {
+   "side": "host",
+   "cs": 250
+  },
+  {
+   "side": "C64",
+   "cs": 251
+  }
+ ],
+ "replay_unpaired_count": 10,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "replay_matched_cs": [],
+ "replay_differences": 4,
+ "replay_differ_at_cs": 301,
+ "replay_skipped": [
+  "TIME5 a count apart (a third of a centisecond)"
+ ],
+ "replay_first": [
+  {
+   "at": "TIME3",
+   "host": "37751",
+   "c64": "37747"
+  },
+  {
+   "at": "1400",
+   "host": "77746",
+   "c64": "77750"
+  },
+  {
+   "at": "3307",
+   "host": "34007",
+   "c64": "34010"
+  },
+  {
+   "at": "superbank",
+   "host": "00100",
+   "c64": "00060"
+  }
+ ],
+ "snap_at": 15050,
+ "snap_slid": false,
+ "requested_cs": 301,
+ "host_holes": [],
+ "commit": "22bfa334ba31"
+}

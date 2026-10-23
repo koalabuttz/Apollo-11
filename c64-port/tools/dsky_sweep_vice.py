@@ -142,7 +142,7 @@ def case_chan(chan, key_cs):
 
 def bridged(text):
     """{point: arrivals} for the points a host run bridges (flight_holes.HOLE)."""
-    return {f'{h[1].strip()} {h[2]},{h[3]}' + (f' refused by {h[6]}' if h[6] else ''): int(h[4])
+    return {f'{h[1].strip()} {h[2]},{h[3]}' + (f" refused by {h['refused']}" if h['refused'] else ''): int(h['arrivals'])
             for h in flight_holes.HOLE.finditer(text)}
 
 
@@ -253,8 +253,9 @@ def sha(path):
 
 def link(a, m, name, header, table, snap, cs):
     defines = ['-DDP_REPLAY', '-DDP_REPLAY_REU=0ul', '-DDP_REPLAY_ROWS=1u', '-DDP_END=0ul',
-               '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', '-DDP_STATES_MAX=1u', f'-DDP_BUSY={BUSY_CS}u',
-               f'-DDP_SWEEP=0x{table:x}ul', f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
+               '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', '-DDP_STATES_MAX=1u',
+               '-DDP_OUTPUTS=0ul', '-DDP_OUTPUTS_MAX=0u', f'-DDP_BUSY={BUSY_CS}u', f'-DDP_SWEEP=0x{table:x}ul',
+               f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
     old = dp.WORK
     dp.WORK = WORK
     try:

@@ -200,12 +200,12 @@ extern rk_module_env rk_env;
  * part's word hands back with Z on that word, and the next step's part goes
  * on with the same routine. rk_part_cont: the part group whose run handed
  * back mid-file in this step; rk_part_prev: the one of the step before
- * (resident_flight.c rk_step_run). At RK_PART, so the part modules (their
+ * (resident_flight.c rk_step_run). At RK_PART_AT, so the part modules (their
  * own run's charge, flight_table_module.c) reach them by address. */
-#define RK_PART 0x6ff6u /* the byte after RK_RESTART_LAMP (resident_flight.ld) */
+#define RK_PART_AT 0x6ff6u /* the byte after RK_RESTART_LAMP (resident_flight.ld) */
 extern uint8_t rk_part[2];
-#define rk_part_cont (*(uint8_t *)RK_PART)
-#define rk_part_prev (*(uint8_t *)(RK_PART + 1u))
+#define rk_part_cont (*(uint8_t *)RK_PART_AT)
+#define rk_part_prev (*(uint8_t *)(RK_PART_AT + 1u))
 /* The routines of a part's run to charge: its first one is not, when it
  * goes on with the routine the previous step's part handed back. That first
  * routine is the one the host charged in full in the previous step; a part

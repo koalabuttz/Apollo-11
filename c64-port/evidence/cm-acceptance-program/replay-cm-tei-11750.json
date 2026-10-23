@@ -1,0 +1,71 @@
+{
+ "scenario": "cm-tei",
+ "ok": false,
+ "status": 0,
+ "z": "03231",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3231",
+ "wall_cycles": 28664081,
+ "agc_cs": 300,
+ "dropped_ticks": 0,
+ "steps": 932,
+ "wall_per_agc": 9.698,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 11750,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 8
+ },
+ "replay_rows": 3,
+ "replay_applied": 3,
+ "replay_end_cs": 300,
+ "replay_ended": true,
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "replay_matched_cs": [
+  50
+ ],
+ "replay_differences": 3,
+ "replay_differ_at_cs": 112,
+ "replay_skipped": [
+  "DSPTAB sent bits",
+  "DSRUPTSW"
+ ],
+ "replay_first": [
+  {
+   "at": "TIME4",
+   "host": "37777",
+   "c64": "37776"
+  },
+  {
+   "at": "1016",
+   "host": "00012",
+   "c64": "00011"
+  },
+  {
+   "at": "channel 10",
+   "host": "00000",
+   "c64": "51725"
+  }
+ ],
+ "snap_at": 11750,
+ "snap_slid": false,
+ "requested_cs": 300,
+ "host_holes": [],
+ "commit": "22bfa334ba31"
+}

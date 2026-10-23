@@ -4,17 +4,17 @@
   "release": "evidence-cm-integration-init",
   "files": {
     "cm-integration-init-differential.log": {
-      "sha256": "1278e153919e6d609a2cf8b0392520f9baaa36bef1019df8ea7eef4ee1bad78a",
-      "bytes": 10432,
+      "sha256": "c219d84fc89d75e5454afa06a25760aa377703ebe7dd84b3e1aa9dfd7f5c2856",
+      "bytes": 10425,
       "store": "tree"
     },
     "cm-integration-init-host.log": {
-      "sha256": "bff824a026ecacc94905d9bee19514f86857942ac9b19954a18a880b24932f5a",
-      "bytes": 1114,
+      "sha256": "38ccc8554b06ce92ef623b1cd6d68d4a35ec3d5c92d7eb5a6a10dfdc90c76310",
+      "bytes": 1158,
       "store": "tree"
     },
     "cm-integration-init-proof.json": {
-      "sha256": "e527dbbd6efa3ce1ed5a5fdba256d367c3f7a20cff1d8e123640eb3c1becd2cf",
+      "sha256": "c7de58f717822daae723c26f54c04ef38816a5d41231c9d150a2935912a1f50a",
       "bytes": 22694,
       "store": "tree"
     },
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-integration-init-vice.log": {
-      "sha256": "8e987379f2e37c8965a02a8baf9f06a1491492262e9e3e829688700b85f45385",
-      "bytes": 2922,
+      "sha256": "2c3c031caf0d6f8fabf26784b260c08e56ae2bd7b29d713ef60ae2ebc1010d62",
+      "bytes": 1966,
       "store": "tree"
     }
   }

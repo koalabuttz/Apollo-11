@@ -54,6 +54,10 @@ static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const
  irc_inputs(c,&lio.in);cio.in=lio.in;
  if(c->cm)p=irc_cm_begin(p,&q,&cio.io);
  if(!c->cm){if(p->hardware){agc_hardware z={0};*p->hardware=z;}if(irc_ch_on)irc_lm_io(p->hardware,&lio.in,0);}
+#if IRC_ISR_ON && !defined(IRC_CM_ONLY)
+ /* (the interrupt state an IRC_ISR edit gives, as irc_run) */
+ if(irc_isr_on&&!c->cm&&p->hardware)p->hardware->in_interrupt=irc_isr;
+#endif
  io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;visit_capped=0;
  while(nvisit<max_steps&&nvisit<IRC_MAX_STEPS){
   uint16_t pt=agc_transfer_point(p,s,superbank);
@@ -84,7 +88,8 @@ int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,ed
  dump=argc>2&&!strcmp(argv[2],"dump");fbs=argc>2&&!strcmp(argv[2],"fb");visits=argc>2&&!strcmp(argv[2],"visits");covers=argc>2&&!strcmp(argv[2],"cover");
  edges=argc>2&&!strcmp(argv[2],"edges");
  /* loop: as visits, with the steps the run took and whether it ended at the
-  * step cap (n<steps> k<0|1>) before the points (the differential's
+  * step cap (n<steps> k<0|1>) and the io record's and agc_hardware's hash
+  * (h<hash>, IRC_STATE_HASH) before the points (the differential's
   * step-cap loops, #746). */
  loop=argc>2&&!strcmp(argv[2],"loop");visits|=loop;
  f=fopen(argv[1],"rb");if(!f)return 2;
@@ -123,7 +128,11 @@ int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,ed
   /* fb: the FB the run stops under, LOC and BANKSET, to place a stop in a bank (#325). */
   if(fbs)printf(" %u %u %u",(unsigned)(s.words[4]&077777u),(unsigned)(s.words[0164]&077777u),(unsigned)(s.words[0165]&077777u));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)(s.words[i]&(i<2u?0177777u:077777u)));printf(" %u",(unsigned)ie);}
-  if(loop)printf(" n%u k%u",nvisit,visit_capped);
+#ifdef IRC_STATE_HASH
+  if(loop)printf(" n%u k%u h%lu",nvisit,visit_capped,(unsigned long)irc_state_hash);
+#else
+  if(loop)printf(" n%u k%u h0",nvisit,visit_capped);
+#endif
   if(visits)for(i=0;i<nvisit;++i)printf(" v%u",(unsigned)visit[i]);
   if(covers)for(i=0;i<8192u;++i)if(cover[i>>3]&(1u<<(i&7u)))printf(" c%u",i);
 #ifdef IRC_EDGE_COVER

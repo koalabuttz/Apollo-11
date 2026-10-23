@@ -1,56 +1,7 @@
-PRG sha256 (clang version 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
-14693f00ede54dd8a762c77de343f70ee6405e3722cefa63a84234bdeab86f97  build/cm-reentry-1.prg
-aee39226b79c9dec0274fddf58b887fd7ec881512d6ff573238a52580fb0d755  build/cm-reentry-10.prg
-ac2353c434312f5934813bea275b96e4a9d4fc2ad38d0432e99aa1eb9de9ed06  build/cm-reentry-11.prg
-dfd56ed7627560863de609e01c30713e6d5f77ec1611ce60205604f3475145b3  build/cm-reentry-12.prg
-d047298db054ded66a70f70cd6d32d778227871de3429fb8f6b743952cadea38  build/cm-reentry-13.prg
-c844eb82ea31e8dd42b5a7d9b3121760e508ca935bce4f15a3d30d665e45647d  build/cm-reentry-14.prg
-1dedfaa0b9a64bc4b27f122b5e082319900bbb914d73bfb26b516fa675a0fe7e  build/cm-reentry-15.prg
-f670d437875451cfff22420e10ad4af95be09059c2b999d503613edf9bb3f382  build/cm-reentry-16.prg
-a2325538d792a35348a735dab57ce6d2134346a9231824cc2fc9b804f9e00a1c  build/cm-reentry-17.prg
-84c8428bccc31c51041b7c7b2b13da38419071ad2fc0edd561e0fc5d387b7632  build/cm-reentry-18.prg
-18153ba5578b5e8ea4b35c4d2f23373830b51c2243a9d30f70fa630aa07a09a1  build/cm-reentry-19.prg
-6ab508dfb433af362ee8e06e544ceed31e194c48bbecbdcb2e5bb7bf444c182d  build/cm-reentry-2.prg
-c132505f050296922a77a8d49761826e971cc89a084c12db7f5351cddbe2b967  build/cm-reentry-20.prg
-d7318ac0f1db0f5a680389896c71c7b153ac18110038066298b7acdf6ce62bf0  build/cm-reentry-21.prg
-f3c54e6795546800c0f18d3a1c23d68c55e1885589d3ab93c0586aa6e8d6e8e6  build/cm-reentry-22.prg
-12b9406d05adcea2fd83bdb89fee1a1d220438d372c86b58f381e31ab85062f5  build/cm-reentry-23.prg
-ee791c0c7ddd5afc6a551aabf71c73239ef7844d5bbe1377b925b3d82c625158  build/cm-reentry-24.prg
-319e75a6ab4943312b8c324c11d5017565e2b5bacbced7d3b95bd93967470f4d  build/cm-reentry-25.prg
-76975dd8085caf3bde25520b21fc2aabd801cffc6077971926fde0bb0661d9c3  build/cm-reentry-26.prg
-2053e008c9c149674d17c8df3a5cd4f5888054c7aa8d4e55f04a3389d7db8eb2  build/cm-reentry-27.prg
-daf97b3f4ae42e93ac174e7a809613e14d4f46a8c5af38c59bed6da179b2c834  build/cm-reentry-28.prg
-841eae00d23642d1382e19bed895ac396586dd5b4d82a505eed733afb9e9a228  build/cm-reentry-29.prg
-41473b2b77a08862061347b1ecee016afadbf0c268ae69b8aaf94e854a6126f8  build/cm-reentry-3.prg
-667973b1a6554bfeda95adb025143f958ec90bea6289d4f7a88efdda0178a1c2  build/cm-reentry-30.prg
-47c03c08514045508a9b3e862608dfd4bb5cd91e5fd44dc4cccb3785c39aad2a  build/cm-reentry-31.prg
-08c578e8ef994f8f10cc674715dbc1d6e7f629ba509661a0d5673fc2001e2bed  build/cm-reentry-32.prg
-015083b8b2ab9989b490bdde8784066e0fa5871a7de17ab377afa8bd52a6a177  build/cm-reentry-33.prg
-797373e6f37a2676e3c9a6deaa3e680be8eba5be58302965f7845d7e943ca697  build/cm-reentry-34.prg
-6538b018b712750a153c27c83422b638a9daa3b77a0032c731947558620dd78d  build/cm-reentry-35.prg
-c994d2dade432bf1b7c6cf2774acc6bb5179aa85632f67f04f0971893a30f751  build/cm-reentry-36.prg
-7edde8df2a80d3655f278fd1c35c5c59a583cfdfe3c0473ff964638726a73e6d  build/cm-reentry-37.prg
-95c17542a18c1870fc612d7f03f867905918a4f089f907773b0ff9cc4d6d1651  build/cm-reentry-38.prg
-108d0e86de0cff5d6f7ea21f10d13d165cedc220a4ff62853dd5d0e86b30567e  build/cm-reentry-39.prg
-0b80d11357bc7e27e334af72fd8ed202a82ec5b8ee4e679bc6fb20a39758645d  build/cm-reentry-4.prg
-dbeee29d45cb6316ddbf131c5411546caadb72b8c478862001f2eb070b201b39  build/cm-reentry-40.prg
-008ee952eb0c2e56e184bef26a1d9f496d9b38e538abc8d056c6d152e1dccb4f  build/cm-reentry-41.prg
-74da0129d18ac060aa12a33141b25a7f9497892ec05d62acf9189990a9380d88  build/cm-reentry-42.prg
-1967411c894bb5a07fc7f5c26764cba93c637a750f76ef1db08332569c098725  build/cm-reentry-43.prg
-3a2a471fc9ef7f223f147df397633a516d81ef3cc5ff9535b2d3f4a8319a0504  build/cm-reentry-44.prg
-b7f68483159450520aade39d76e860998f9a8d3445fc997d2c9afd3fc8e73648  build/cm-reentry-45.prg
-9db64eea26e10b5a5548e3b16fcab5da82d8a9e603b0a2caf1e56d01e9acda7a  build/cm-reentry-46.prg
-21089fe402c52c8d31ede274864441ac64c5a36b3192eb46c171cc153be27fb3  build/cm-reentry-47.prg
-942cdc9a74543b063a9b23bf401e0323f22d6281337747d1aaf170dab94d59d9  build/cm-reentry-5.prg
-3d2a3e5ffd1f9941650de04e89c486ee73d2f52bce7e666233922be309f9e465  build/cm-reentry-6.prg
-f5261e8a12b7b8a01b2cc8ec82bb355f2e45f5bdec97623c49455355caca8e3c  build/cm-reentry-7.prg
-b94754e329d2dfa636ef41b4840f7661b5af5cb80238bc097f8773402e3bcfbb  build/cm-reentry-8.prg
-b224c9c8b6620bc5d46151156e89336fd86e1803f4d028566d39a27cd99f7e0b  build/cm-reentry-9.prg
-
-$ make vice-cm-reentry
+# make vice-cm-reentry at e159f0de7b2750a758eaaf083aac10f9fd73340a
 for p in build/cm-reentry-1.prg build/cm-reentry-2.prg build/cm-reentry-3.prg build/cm-reentry-4.prg build/cm-reentry-5.prg build/cm-reentry-6.prg build/cm-reentry-7.prg build/cm-reentry-8.prg build/cm-reentry-9.prg build/cm-reentry-10.prg build/cm-reentry-11.prg build/cm-reentry-12.prg build/cm-reentry-13.prg build/cm-reentry-14.prg build/cm-reentry-15.prg build/cm-reentry-16.prg build/cm-reentry-17.prg build/cm-reentry-18.prg build/cm-reentry-19.prg build/cm-reentry-20.prg build/cm-reentry-21.prg build/cm-reentry-22.prg build/cm-reentry-23.prg build/cm-reentry-24.prg build/cm-reentry-25.prg build/cm-reentry-26.prg build/cm-reentry-27.prg build/cm-reentry-28.prg build/cm-reentry-29.prg build/cm-reentry-30.prg build/cm-reentry-31.prg build/cm-reentry-32.prg build/cm-reentry-33.prg build/cm-reentry-34.prg build/cm-reentry-35.prg build/cm-reentry-36.prg build/cm-reentry-37.prg build/cm-reentry-38.prg build/cm-reentry-39.prg build/cm-reentry-40.prg build/cm-reentry-41.prg build/cm-reentry-42.prg build/cm-reentry-43.prg build/cm-reentry-44.prg build/cm-reentry-45.prg build/cm-reentry-46.prg build/cm-reentry-47.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
 PASS: VICE PAL cm-reentry-1.prg: 21 checks, 0 failures
-PRG sha256: 14693f00ede54dd8a762c77de343f70ee6405e3722cefa63a84234bdeab86f97 cm-reentry-1.prg
+PRG sha256: 2d8fe11d303d90d7ed4bd41fb3268f22e25e558148699d553d2da163b5157253 cm-reentry-1.prg
 PASS: VICE PAL cm-reentry-2.prg: 33 checks, 0 failures
 PRG sha256: 6ab508dfb433af362ee8e06e544ceed31e194c48bbecbdcb2e5bb7bf444c182d cm-reentry-2.prg
 PASS: VICE PAL cm-reentry-3.prg: 2 checks, 0 failures

@@ -1,0 +1,29 @@
+{
+ "scenario": "cm-tpi-search-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 44000,
+ "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E@21000V37E17E@22000V25E+00000E+00010E+00000E@23400V33E@26000V33E@29000V33E@31000V33E@32000V37E77E@33000V25E+00000E+00010E+00000E@34400V33E@37000V33E@40000V33E@42000V33E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH31": "037777",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_CHAN": "4000:033=077757",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+  "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+  "FLIGHT_BUSY_SAMPLE": "100"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "22bfa334ba31",
+ "cia_interrupts": 44038,
+ "periods_taken": 44038,
+ "periods_dropped": 0,
+ "agc_centiseconds": 44038,
+ "native_routines": 1036735,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "reached": {},
+ "log_sha256": "52413d8b9d5c3f9a6d017c78dd88b1d4357766842cd3a33ea686f78c6075c934"
+}

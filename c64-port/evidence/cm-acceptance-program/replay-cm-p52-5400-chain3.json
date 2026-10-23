@@ -1,0 +1,93 @@
+{
+ "scenario": "cm-p52",
+ "snap_cs": 5400,
+ "snap_at": 5400,
+ "requested_cs": 320,
+ "chain": 3,
+ "ok": true,
+ "status": 0,
+ "replay_rows": 16,
+ "replay_ended": true,
+ "replay_differences": 0,
+ "commit": "22bfa334ba31",
+ "reu_bounds": {
+  "ok": true
+ },
+ "windows": [
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3231",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    50,
+    100,
+    151,
+    200,
+    251,
+    300,
+    321
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 321,
+   "wall_per_agc": 3.306,
+   "replay_skipped": []
+  },
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3231",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    50,
+    101,
+    150,
+    200,
+    250,
+    300,
+    320
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 320,
+   "wall_per_agc": 4.156,
+   "replay_skipped": []
+  },
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3231",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    51,
+    101,
+    151,
+    201,
+    250,
+    300,
+    321
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 321,
+   "wall_per_agc": 2.065,
+   "replay_skipped": []
+  }
+ ]
+}

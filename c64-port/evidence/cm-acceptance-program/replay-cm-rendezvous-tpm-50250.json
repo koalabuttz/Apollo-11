@@ -1,0 +1,142 @@
+{
+ "scenario": "cm-rendezvous-tpm",
+ "ok": false,
+ "status": 0,
+ "z": "03231",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3231",
+ "wall_cycles": 83299061,
+ "agc_cs": 300,
+ "dropped_ticks": 0,
+ "steps": 1396,
+ "wall_per_agc": 28.182,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 50250,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 12
+ },
+ "replay_rows": 14,
+ "replay_applied": 14,
+ "replay_end_cs": 300,
+ "replay_ended": true,
+ "replay_unpaired": [
+  {
+   "side": "host",
+   "cs": 296
+  },
+  {
+   "side": "C64",
+   "cs": 298
+  }
+ ],
+ "replay_unpaired_count": 2,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "replay_matched_cs": [
+  125
+ ],
+ "replay_differences": 16,
+ "replay_differ_at_cs": 225,
+ "replay_skipped": [],
+ "replay_first": [
+  {
+   "at": "0020",
+   "host": "20006",
+   "c64": "70005"
+  },
+  {
+   "at": "0116",
+   "host": "00545",
+   "c64": "00531"
+  },
+  {
+   "at": "0117",
+   "host": "24170",
+   "c64": "24143"
+  },
+  {
+   "at": "0154",
+   "host": "00000",
+   "c64": "00052"
+  },
+  {
+   "at": "0155",
+   "host": "00000",
+   "c64": "22204"
+  },
+  {
+   "at": "0164",
+   "host": "02173",
+   "c64": "02131"
+  },
+  {
+   "at": "0531",
+   "host": "00052",
+   "c64": "22330"
+  },
+  {
+   "at": "0532",
+   "host": "22204",
+   "c64": "31016"
+  },
+  {
+   "at": "0545",
+   "host": "00000",
+   "c64": "00072"
+  },
+  {
+   "at": "0546",
+   "host": "00000",
+   "c64": "16205"
+  },
+  {
+   "at": "0555",
+   "host": "00116",
+   "c64": "77777"
+  },
+  {
+   "at": "0556",
+   "host": "35606",
+   "c64": "62217"
+  },
+  {
+   "at": "1101",
+   "host": "02664",
+   "c64": "02665"
+  },
+  {
+   "at": "2306",
+   "host": "35606",
+   "c64": "35670"
+  },
+  {
+   "at": "2312",
+   "host": "62560",
+   "c64": "62561"
+  },
+  {
+   "at": "2356",
+   "host": "02664",
+   "c64": "02665"
+  }
+ ],
+ "snap_at": 50276,
+ "snap_slid": false,
+ "requested_cs": 300,
+ "host_holes": [],
+ "commit": "22bfa334ba31"
+}

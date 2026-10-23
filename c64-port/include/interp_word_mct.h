@@ -1,10 +1,12 @@
 /* SPDX-License-Identifier: MIT */
 /* The work clock's charge for one interpretive word, the same on the C64
  * (the compact interpreter at NEWOPS, src/lm_interp_core.c) and the host
- * (tools/flight_host_run.c, the tables left to the interpreter): yaAGC's
- * MCT for the word, fitted per order and store kind
+ * (tools/flight_host_run.c, the tables left to the interpreter): a charge
+ * per order and store kind fitted to yaAGC's MCT by least squares
  * (tools/interp_word_mct.py, include/interp_word_mct_table.h), in units of
- * 4 MCT. A word is charged once, by the code word NEWOPS fetches; resuming
+ * 4 MCT. It is not the word's own yaAGC count (RMS error 102 MCT a word);
+ * each host run reports the sum against yaAGC's MCT over the same spans
+ * ("interpreter charge", tools/flight_host_differential.py bounds it). A word is charged once, by the code word NEWOPS fetches; resuming
  * a word (DANZIG after an RTB or a job switch) charges nothing. */
 #ifndef INTERP_WORD_MCT_H
 #define INTERP_WORD_MCT_H

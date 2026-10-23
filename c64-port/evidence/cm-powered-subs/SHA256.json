@@ -9,17 +9,17 @@
       "store": "tree"
     },
     "cm-powered-subs-differential.log": {
-      "sha256": "509d6bbb8978660cac0c2161bdaac195663492a98b6da54d17a7a6ddfef18f31",
-      "bytes": 2964,
-      "store": "release"
+      "sha256": "ec1ba03a46e4151ae7a168f09e81faf57697ca96c593efc805739768d2b01a3a",
+      "bytes": 1810,
+      "store": "tree"
     },
     "cm-powered-subs-host.log": {
-      "sha256": "a64a40416ed7f09ba7038a57a382b77b88d7cfa3554ffd5ff2e2ba91edb56a67",
-      "bytes": 1104,
-      "store": "release"
+      "sha256": "1bdb60092eb04711509ad87ccf8dd22a7e3133c9b75fe2174f3f6807be216de1",
+      "bytes": 1000,
+      "store": "tree"
     },
     "cm-powered-subs-proof.json": {
-      "sha256": "88bbb9f695be901f4121e7bc9f4f09730237b2e556931d01828471b02c669d51",
+      "sha256": "be24f9b32338cdab526596f632e6d612f04ef52a65790010637d59e8d7419bdd",
       "bytes": 6703,
       "store": "tree"
     },
@@ -29,9 +29,9 @@
       "store": "tree"
     },
     "cm-powered-subs-vice.log": {
-      "sha256": "85bc53c1d8a25cd2693d3714f8f27ee10a1aa118733946abde07def8bb18b5d1",
-      "bytes": 1695,
-      "store": "release"
+      "sha256": "93c21b3ed1bb2948140047c8a71f5db1d95fb9a6ae56e35963aec9fd44c91e4c",
+      "bytes": 318,
+      "store": "tree"
     }
   }
 }

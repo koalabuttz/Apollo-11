@@ -46,7 +46,7 @@ ARMS = {
         ],
     },
     'cm-conics': {
-        'cases': 114944, 'cases_sha256': 'df691df00551109ad16f02edc82b1fb82d655eaa76430ebb4746744b2429a179',
+        'cases': 114944, 'cases_sha256': 'a3a52853845005bbe6a292b5d20d04b4336186dd8c3b00c63a89286f769116d1',
         'sources_sha256': {'src/cm_conics.c': '1eb02a4d9260e75ab439d635f7fe383014562369761f5bf43ca94bf5c357bbdb'},
         'arms': [
             {'src': 'src/cm_conics.c', 'line': 1147, 'agc': '12,2147', 'op': 'SIGN BZE', 'what': 'branch never taken', 'class': 'UNSURE', 'why': 'Needs the guess XKEPNEW = 0, which KEPPREP produces only for TAU.=0 after RECTIFY (XKEP=0); settled by whether a caller ever asks for a zero-length conic (e.g. RVCON with TDEC=TET, or CSMCONIC/LEMCONIC with zero interval).'},
@@ -121,7 +121,7 @@ ARMS = {
         ],
     },
     'cm-integration-init': {
-        'cases': 61696, 'cases_sha256': '8b45962a600cd0f6ef75c6a64a2da9c00ea7f20ddf52a7e2bdd8d66126765aaf',
+        'cases': 61696, 'cases_sha256': '01d62010e1e26b5f2e094063be80627d8238368c90a5ee22e65cda5a329b6448',
         'sources_sha256': {'src/cm_integration_init.c': 'f276036d3e5505e51553bc2873d5edef0eb9efa76e32381d9b76823fb9337a9d'},
         'arms': [
             {'src': 'src/cm_integration_init.c', 'line': 311, 'agc': '13,2726', 'op': 'CCS DIFEQCNT', 'what': 'CCS never <0/-0', 'class': 'IMPOSSIBLE', 'why': 'SETBANK (:464-467) returns 41 in A, and CCS steps DIFEQCNT down 41..0; the loop exits at +0, so the count is never negative.'},
@@ -244,7 +244,7 @@ ARMS = {
         ],
     },
     'cm-powered-subs': {
-        'cases': 25600, 'cases_sha256': 'd5bdcc5f29b002d42315e580d41c2c69f4324586be574d8c5f56a4b20688eafe',
+        'cases': 25600, 'cases_sha256': '205934fc5286001c94125a0cd012e48bf05c521b337f3151029322215d673262',
         'sources_sha256': {'src/cm_powered_subs.c': '59caaef2e7df61438c16eabcb8f4def6a5eca67cb7664acd9e10d3112071870b'},
         'arms': [
             {'src': 'src/cm_powered_subs.c', 'line': 372, 'agc': '23,3552', 'op': 'CCS TEM3', 'what': 'CCS never <0/-0', 'class': 'IMPOSSIBLE', 'why': 'TEM3 = A MASK SIX (4,2,0), never negative.'},
@@ -287,7 +287,7 @@ ARMS = {
         ],
     },
     'cm-reentry': {
-        'cases': 100352, 'cases_sha256': '0a984fa49d405c13b4f50ff02a5afe42a477e6ac0824abbe37bf32facf79d639',
+        'cases': 100352, 'cases_sha256': '095d86dce3c6b05695c2667c5589edbeb8a505936dd16e7241153c42e93d3e1c',
         'sources_sha256': {'src/cm_reentry.c': 'ee8b973dbf6a808393ee9589c0064c8056f9a2e4aeb3e3e98fec68dcea7edf23'},
         'arms': [
             {'src': 'src/cm_reentry.c', 'line': 379, 'agc': '25,3357', 'op': 'CCS A', 'what': 'CCS never +0', 'class': 'IMPOSSIBLE', 'why': "VREFER entries are nonzero, and a ones'-complement -V + VREF gives -0 when equal, never +0. gcov sees -0 once."},
@@ -313,7 +313,7 @@ ARMS = {
         ],
     },
     'cm-stable-orbit': {
-        'cases': 26624, 'cases_sha256': '286b81277bf21dd3db91bd6fdea04ba80c33b209413b7464045de63b3c542181',
+        'cases': 26624, 'cases_sha256': 'cd8f73fe606d0d4b2ddf85980e66e7688bb85eea16be00eb3920d7e9c7a1aa8a',
         'sources_sha256': {'src/cm_stable_orbit.c': '2785e9f81214eeb7f6ada85e86cf0ee414b8165e4e84966c2fd90e5115a2e39c'},
         'arms': [
         ],
@@ -811,7 +811,7 @@ ARMS = {
         ],
     },
     'lm-powered-subs': {
-        'cases': 19968, 'cases_sha256': '695586455945d5b813feee69872b388cb232fa2d899f925f3db24aec6690ba1e',
+        'cases': 19968, 'cases_sha256': '1c4a79263d790ccbfd278849c50141c6f80a967998f985fa8259dc6459e2f226',
         'sources_sha256': {'src/lm_powered_subs.c': '44106c94d203dad4c6c019386d3738267e699996ce0607430437bfdc405d0665'},
         'arms': [
             {'src': 'src/lm_powered_subs.c', 'line': 875, 'agc': '23,3612', 'op': 'CCS TEM3', 'what': 'CCS never <0/-0', 'class': 'IMPOSSIBLE', 'why': 'TEM3 = A MASK SIX (4,2,0), never negative.'},

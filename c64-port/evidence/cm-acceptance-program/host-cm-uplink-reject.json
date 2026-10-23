@@ -1,0 +1,25 @@
+{
+ "scenario": "cm-uplink-reject-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 9000,
+ "keys": "",
+ "inputs": {
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_UPLINK": "2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "22bfa334ba31",
+ "cia_interrupts": 9000,
+ "periods_taken": 9000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 9000,
+ "native_routines": 585205,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "reached": {
+  "27,3624": null
+ },
+ "log_sha256": "3da68fa645b70c490d7923a975bd8bf54e8483fa65264ea159bbf05d328e3c64"
+}

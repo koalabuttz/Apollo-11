@@ -1,0 +1,28 @@
+{
+ "scenario": "cm-p11-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 90000,
+ "keys": "@2000V37E01E@84000V82E@86000V33E@88000V37E00E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_IMU": "1",
+  "FLIGHT_SATURN": "10000",
+  "FLIGHT_LOAD": "100:tools/flight_scenarios/cm-p11.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "22bfa334ba31",
+ "cia_interrupts": 100023,
+ "periods_taken": 100023,
+ "periods_dropped": 0,
+ "agc_centiseconds": 90000,
+ "native_routines": 4444179,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "reached": {
+  "23,2332": 84150
+ },
+ "log_sha256": "8b69fb2658d367d7ac6681858eb5c864b30f050de6f0f1e2f8d9d1c28b251e78"
+}

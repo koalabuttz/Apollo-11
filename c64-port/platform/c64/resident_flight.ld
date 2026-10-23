@@ -19,6 +19,7 @@ MEMORY {
     boot (rwx) : ORIGIN = 0x8000, LENGTH = 0x4000
     low (rwx) : ORIGIN = 0x0200, LENGTH = 0x200
     screen_end (rw) : ORIGIN = 0x06a8, LENGTH = 0x150
+    screen (rwx) : ORIGIN = 0x0400, LENGTH = 0x3f8
 }
 __rc0 = __basic_zp_start;
 INCLUDE imag-regs.ld
@@ -60,6 +61,20 @@ SECTIONS {
         *(.dsky.bss .dsky.bss.*)
         __rk_dsky_bss_end = .;
     } >screen_end
+    /* The measurement and replay harness's own code (platform/c64/
+     * dap_pass_check.c DP_SCREEN_TEXT) in the text screen ($0400-$07F7),
+     * which nothing shows there; its load_snapshot copies it. Builds with
+     * the flight DSKY have none (that DSKY uses the last rows, .dsky_data). */
+    .dp_screen : {
+        __dp_screen_start = .;
+        *(.dp.screen .dp.screen.*)
+        __dp_screen_end = .;
+    } >screen AT>boot
+    __dp_screen_load = LOADADDR(.dp_screen);
+    ASSERT(__dp_screen_end <= 0x07e8, "harness code past the text screen's last character")
+    ASSERT(__dp_screen_end == __dp_screen_start || __dp_screen_end <= 0x06a8 ||
+           (__rk_dsky_data_end == __rk_dsky_data_start && __rk_dsky_bss_end == __rk_dsky_bss_start),
+           "harness code in the text screen overlaps the DSKY's last rows")
     .text : { INCLUDE text-sections.ld } >ram
     .rodata : { INCLUDE rodata-sections.ld } >ram
     .data : { INCLUDE data-sections.ld } >ram
@@ -83,7 +98,7 @@ SECTIONS {
     .rk_hardware 0x6fbe : { KEEP(*(.rk_hardware)) } >services
     .rk_flight 0x6fdd : { KEEP(*(.rk_flight)) } >services
     .rk_restart_lamp 0x6ff5 : { KEEP(*(.rk_restart_lamp)) } >services
-    /* rk_part_cont and rk_part_prev (resident_flight.h RK_PART): the part
+    /* rk_part_cont and rk_part_prev (resident_flight.h RK_PART_AT): the part
      * modules reach them by address. */
     .rk_part 0x6ff6 : { KEEP(*(.rk_part)) } >services
 }
@@ -93,7 +108,7 @@ ASSERT(ov2_irq_count==0x6fbc && SIZEOF(.rk_irq_count)==2,"ov2_irq_count is not a
 ASSERT(rk_hardware==0x6fbe && SIZEOF(.rk_hardware)<=0x1f,"rk_hardware is not at RK_HARDWARE or overlaps rk_flight")
 ASSERT(rk_flight==0x6fdd && SIZEOF(.rk_flight)<=0x18,"rk_flight is not at RK_FLIGHT_IO")
 ASSERT(rk_restart_lamp==0x6ff5 && SIZEOF(.rk_restart_lamp)==1,"rk_restart_lamp is not at RK_RESTART_LAMP")
-ASSERT(rk_part==0x6ff6 && SIZEOF(.rk_part)==2,"rk_part is not at RK_PART")
+ASSERT(rk_part==0x6ff6 && SIZEOF(.rk_part)==2,"rk_part is not at RK_PART_AT")
 __stack = 0xd000;
 ASSERT(__rk_resident_end<=0x6f00,"resident overlaps the ABI 2 service table")
 ASSERT(__dp_cassette_end<=0x03f2,"harness state overlaps the replay row at $03F2")

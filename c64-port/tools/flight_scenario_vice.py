@@ -31,6 +31,7 @@ build/flight-store/flight-scenario-vice.json.
   flight_scenario_vice.py [--scenario lm-p63-descent-thrust] [--snap-cs CS] [--cs N] [--stop-on-holes] [--profile]
 """
 import argparse
+import hashlib
 import json
 import os
 import pathlib
@@ -58,7 +59,7 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
     header = dp.WORK / f'{tag}-snap.h'
     header.unlink(missing_ok=True)
     for n in range(chain):
-        for x in ('', '.replay', '.end', '.seam', '.after', '.after-replay'):
+        for x in ('', '.replay', '.end', '.seam', '.after', '.after-replay', '.outputs'):
             if n or x:
                 pathlib.Path(f'{header}{f"-{n}" if n else ""}{x}').unlink(missing_ok=True)
     # The host takes the snapshot at the first point at or after cs with no
@@ -182,6 +183,33 @@ def c64_states(data, n, m):
         ch += [word(io + HW[0o10]), int(word(dev + DEVICE[m]['superbank'] + 2) != 0), b[io + RADAR_GATE]]
         out.append((cs, (*words, *ch)))
     return out
+
+
+# --replay-outputs: one output channel change (tools/flight_host_run.c
+# rp_outputs PATH.outputs, dap_pass_check.c DP_OUTPUTS): centiseconds since
+# the snapshot, channel, value.
+OUTPUT = struct.Struct('<HHH')
+
+
+def outputs_cap(host):
+    """The C64's room for its output list: twice the host's changes and
+    some, so a C64 that drives a channel more often still shows where."""
+    return 2 * len(host) + 64
+
+
+def outputs_compare(host, c64, until, slack=0):
+    """The first difference between two output lists up to centisecond
+    `until` (both ended by then), in order: the same channel and value, at
+    most `slack` cs apart. None when they match."""
+    show = lambda x: None if x is None else dict(cs=x[0], channel=f'{x[1]:o}', value=f'{x[2]:05o}')  # noqa: E731
+    for i in range(max(len(host), len(c64))):
+        h = host[i] if i < len(host) else None
+        c = c64[i] if i < len(c64) else None
+        if (h is None or h[0] > until) and (c is None or c[0] > until):
+            return None
+        if h is None or c is None or h[1:] != c[1:] or abs(h[0] - c[0]) > slack:
+            return dict(index=i, host=show(h), c64=show(c))
+    return None
 
 
 # The C64's window clock is TIME1's low 14 bits (dap_pass_check.c replay_cs).
@@ -427,6 +455,13 @@ def main():
                    "host's state (erasable and output channels)")
     p.add_argument('--replay-exact', action='store_true',
                    help='with --replay on the CM, compare without the temporary schedule skip (SCHEDULE_SKIP)')
+    p.add_argument('--replay-outputs', action='store_true',
+                   help='with --replay, also log every change of output channels 5, 6, 11, 12, 13 and 14 on both sides '
+                   'and fail unless the C64 makes the same changes in the same order at the same centiseconds '
+                   "(changes the host's device models make, such as the radar's on 12-14, reach the C64 as replay rows, "
+                   'so those match by construction; the compare tests the writes the flight code makes)')
+    p.add_argument('--outputs-slack', type=int, default=0,
+                   help='with --replay-outputs, let a change come up to N cs earlier or later than the host\'s')
     p.add_argument('--replay-every', type=int, default=0,
                    help='with --replay, also compare at the first sample point at or after every N cs, '
                    'to find when the C64 leaves the host')
@@ -464,6 +499,13 @@ def main():
     scratch = len(reu) - dp.SCRATCH_BYTES
     if any(reu[scratch:]):
         sys.exit(f'FAIL: no unused {dp.SCRATCH_BYTES} bytes at the end of {m}.reu')
+    # Which source and store image the log's results come from, so a
+    # result quoted later can be matched to its build.
+    head = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    dirty = subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT,
+                           capture_output=True, text=True).stdout.strip()
+    print(f'{a.scenario}: commit {head or "unknown"}{" with local changes" if dirty else ""}; '
+          f'store {m}.reu sha256 {hashlib.sha256(reu).hexdigest()}')
     holes = host_holes(exe, a.scenario, a.snap_cs + a.cs * a.chain, tag)
     # A core-start point (tools/flight_holes.py CORE_START) is bridged only
     # because the scenario's core starts mid-way through code, before any
@@ -549,10 +591,14 @@ def main():
             host_cs = [x[0] for x in states(host_end, n_states)]
             cs, marks = host_cs[-1], host_cs[:-1]
             table = struct.pack(f'<{len(marks[1:]) + 1}H', *marks[1:], 0xffff)
+            # --replay-outputs: the C64's output list after the table.
+            host_outs = list(OUTPUT.iter_unpack(pathlib.Path(f'{header}.outputs').read_bytes())) if a.replay_outputs else []
+            cap = outputs_cap(host_outs) if a.replay_outputs else 0
             # CM channel rows can take two C64 rows each.
-            at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + len(table) + 256)
+            at = replay_place(manifest, m, reu, 2 * len(rows) + end_bytes + len(table) + OUTPUT.size * cap + 256)
             end_at = (at + 2 * len(rows) + 0xff) & ~0xff
             table_at = end_at + end_bytes
+            outputs_at = table_at + len(table)
             busy = fhd.scenario(a.scenario)[4].get('FLIGHT_BUSY_SAMPLE')
             # The window ends at the C64's first sample point cs in; DP_CS
             # stops it later if none comes.
@@ -562,6 +608,7 @@ def main():
                        f'-DDP_REPLAY_CS={cs}u', f'-DDP_STATE_FIRST={marks[0] if marks else 0xffff}u',
                        f'-DDP_STATE_TABLE=0x{table_at:x}ul', f'-DDP_END=0x{end_at:x}ul',
                        f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
+                       f'-DDP_OUTPUTS=0x{outputs_at if cap else 0:x}ul', f'-DDP_OUTPUTS_MAX={cap}u',
                        *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at)]
             kinds = {}
             for row in ROW.iter_unpack(rows):
@@ -578,7 +625,8 @@ def main():
                       defines + (['-DRK_DOWNRUPT=1'] if a.downrupt else []))
         if a.replay:
             # rk_device's address comes from the link.
-            patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending'))), (table_at, table)]
+            patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending'))), (table_at, table),
+                     (outputs_at, bytes(OUTPUT.size * cap))]
         # The run's declared REU regions (tools/reu_layout.py): VICE logs every
         # DMA, read or write, that is not inside one of them, and afterwards every
         # changed byte must lie in a writable one (not the store, the rope or the
@@ -641,6 +689,21 @@ def main():
                      replay_first=[dict(at=x, host=shown(x, h), c64=shown(x, c)) for x, h, c in diff[:32]])
             seen = (f"matches the host{' (with skips)' if skipped else ''} at {', '.join(map(str, matched))} cs" if matched
                     else 'matches the host at no point') + (f' ({len(inner)} checkpoints not compared)' if inner else '')
+            if a.replay_outputs:
+                n_bytes, full = struct.unpack_from('<HB', mail, 0x3a)
+                n_outs = n_bytes // OUTPUT.size
+                c64_outs = list(OUTPUT.iter_unpack(image[outputs_at:outputs_at + OUTPUT.size * n_outs]))
+                first = (dict(index=n_outs, host=None, c64=None, full=True) if full else
+                         outputs_compare(host_outs, c64_outs, min(cs, end_cs), a.outputs_slack))
+                r.update(outputs_matched=first is None, outputs_first_diff=first,
+                         outputs_host=len(host_outs), outputs_c64=n_outs)
+                if first is None:
+                    print(f'{a.scenario}: the C64 makes the host\'s {len(host_outs)} output channel changes '
+                          + (f'within {a.outputs_slack} cs' if a.outputs_slack else 'at the same centiseconds'))
+                else:
+                    r['ok'] = False
+                    print(f'FAIL: {a.scenario}: ' + (f'more than {cap} output channel changes on the C64' if full else
+                          f"output channel change {first['index']} differs: host {first['host']} C64 {first['c64']}"))
             if diff:
                 r['ok'] = False
                 print(f'FAIL: {a.scenario}: the C64 {seen}, then leaves it by {at_cs} cs into the window '
@@ -716,7 +779,8 @@ def main():
             windows=[{k: x.get(k) for k in ('ok', 'status', 'at', 'seam', 'error', 'replay_differences',
                                              'replay_differ_at_cs', 'replay_first', 'replay_matched_cs', 'replay_end_shift_cs',
                                              'replay_end_paired', 'replay_unpaired_count',
-                                             'requested_cs', 'wall_per_agc', 'replay_skipped')} for x in results]), indent=1) + '\n')
+                                             'requested_cs', 'wall_per_agc', 'replay_skipped', 'outputs_matched',
+                                             'outputs_first_diff')} for x in results]), indent=1) + '\n')
         print(f"{a.scenario}: chain of {a.chain} windows from {a.snap_cs} cs: " + ('every window matches the host and every seam holds' if ok else f'FAIL at window {len(results) - 1}'))
     return 0 if all(x.get('ok') for x in results) and len(results) == a.chain else 1
 
