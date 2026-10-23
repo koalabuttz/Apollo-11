@@ -96,7 +96,50 @@ static uint32_t now(void){uint8_t b0,b1,a0,a1;
 #ifdef RK_STEP_PROFILE
 void rk_prof(uint8_t segment){uint32_t t=now();prof[segment].cycles+=t-prof_last;++prof[segment].calls;prof_last=now();}
 #endif
+/* The window clock: centiseconds since clock_start(). */
+#ifndef DP_SWEEP
+/* It counts TIME2:TIME1, as the host's window does (tools/flight_host_run.c
+ * now()), and never runs back. TIMEDIDL (the V70-V73 uplinks, 04,3567)
+ * holds TIME2:TIME1 near zero while it adds the uplinked delta; the host
+ * steps whole routines and never sees the hold, but a C64 step can end in
+ * it, and a 14-bit TIME1 difference then reads as a full window. The jump
+ * after the hold (the delta) counts, as it does on the host. */
+static uint32_t clock_t0 CASSETTE;
+static uint16_t clock_last CASSETTE;
+static uint32_t agc_time(void)
+{
+    return ((uint32_t)(IMAGE->words[024] & 037777u) << 14) | (IMAGE->words[025] & 037777u);
+}
+static void clock_start(void)
+{
+    clock_t0 = agc_time();
+    clock_last = 0;
+}
+static uint16_t window_cs(void)
+{
+    int32_t d = (int32_t)(agc_time() - clock_t0);
+    if (d > (int32_t)clock_last) clock_last = d > 0xffff ? 0xffffu : (uint16_t)d;
+    return clock_last;
+}
+/* TIME1 as the window clock moves it (sum.start_cs, sum.end_cs). */
+static uint16_t agc_cs(void)
+{
+    return (uint16_t)(clock_t0 + window_cs()) & 037777u;
+}
+#else
+/* The DSKY sweep keeps TIME1 since the case's start (Lane C's #674 runs
+ * on it). */
+static uint16_t clock_t0 CASSETTE;
+static void clock_start(void)
+{
+    clock_t0 = (uint16_t)IMAGE->words[025];
+}
+static uint16_t window_cs(void)
+{
+    return (uint16_t)(IMAGE->words[025] - clock_t0) & 037777u;
+}
 static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
+#endif
 #ifdef DP_KEYS
 /* The crew's DSKY keys in the window (DP_KEYS, written by
  * tools/flight_scenario_vice.py --keys from the scenario's key string): key
@@ -219,7 +262,6 @@ LOW_TEXT("dp_early") static uint8_t row_early(void)
 static uint16_t rows_left = DP_REPLAY_ROWS;
 static uint8_t row_ready CASSETTE;
 static uint32_t row_at = DP_REPLAY_REU, state_at = DP_END;
-static uint16_t replay_t0 CASSETTE;
 #ifdef DP_BUSY
 static uint16_t busy_last CASSETTE;
 #endif
@@ -236,10 +278,10 @@ _Static_assert(DP_STATES_MAX >= 1u && DP_STATES_MAX <= 255u, "the states written
 #define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
 static uint16_t state_next = DP_STATE_FIRST;
 static uint8_t states CASSETTE;
-/* TIME1 since the snapshot: a window is at most 16,383 cs. */
+/* The window clock since the snapshot: a window is at most 16,383 cs. */
 static uint16_t replay_cs(void)
 {
-    return (uint16_t)(IMAGE->words[025] - replay_t0) & 037777u;
+    return window_cs();
 }
 static uint8_t sample_point(uint16_t t)
 {
@@ -362,7 +404,6 @@ static void BOOT load_snapshot(void){
  rk_work = 0;
  rk_tick_phase = 0;
  rk_part_cont = rk_part_prev = 0;
- replay_t0 = IMAGE->words[025];
 #endif
 }
 
@@ -404,7 +445,7 @@ __attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t statu
     rk_part_cont = rk_part_prev = 0;
     rk_ticks = ov2_irq_count;
     __asm__ volatile("cli");
-    replay_t0 = IMAGE->words[025];
+    clock_start();
     rows_left = sweep_case.rows;
     row_at = sweep_case.rows_at;
     state_at = sweep_case.end_at;
@@ -737,7 +778,9 @@ int main(void){
  __asm__ volatile("sei");
  rk_ticks=ov2_irq_count;
  __asm__ volatile("cli");
- dil=rk_dilation;sum.start_cs=agc_cs();
+ dil = rk_dilation;
+ clock_start();
+ sum.start_cs = agc_cs();
 #ifdef DP_SWEEP
  sweep_next(0u, 0u);
 #endif
@@ -767,7 +810,7 @@ int main(void){
   }
 #endif
 #ifdef DP_KEYS
-  press_due((uint16_t)(agc_cs() - sum.start_cs) & 037777u);
+  press_due(window_cs());
 #endif
 #ifdef RK_STEP_PROFILE
   prof_last=now();
@@ -795,7 +838,7 @@ int main(void){
 #else
    close_record(s1-s0,st);
 #endif
-   if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS)break;
+   if (st != EXEC_OK || window_cs() >= DP_CS) break;
    continue;}
 #endif
 #ifdef DP_SWEEP
@@ -819,7 +862,10 @@ int main(void){
   ++r.steps;
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_JOB]!=job){job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];if(job)++r.job_loads;}
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task){task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];if(task)++r.task_loads;}
-  if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS){close_record(s1-t,st);break;}
+  if (st != EXEC_OK || window_cs() >= DP_CS) {
+      close_record(s1 - t, st);
+      break;
+  }
   if(r.request&&!rk_hardware.in_interrupt){close_record(s1-t,EXEC_OK);t=s1;}}
 #endif
  sum.cycles=now();
