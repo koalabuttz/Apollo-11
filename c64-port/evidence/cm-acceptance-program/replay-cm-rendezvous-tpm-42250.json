@@ -1,0 +1,140 @@
+{
+ "scenario": "cm-rendezvous-tpm",
+ "ok": false,
+ "status": 0,
+ "z": "03231",
+ "fb": "02000",
+ "superbank": "0060",
+ "bank": "01",
+ "at": "01,3231",
+ "wall_cycles": 91020982,
+ "agc_cs": 332,
+ "dropped_ticks": 0,
+ "steps": 1518,
+ "wall_per_agc": 27.826,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 42250,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 19
+ },
+ "replay_rows": 15,
+ "replay_applied": 15,
+ "replay_end_cs": 332,
+ "replay_ended": true,
+ "replay_unpaired": [
+  {
+   "side": "host",
+   "cs": 329,
+   "end": true
+  },
+  {
+   "side": "C64",
+   "cs": 332,
+   "end": true
+  }
+ ],
+ "replay_unpaired_count": 0,
+ "replay_end_shift_cs": 3,
+ "replay_end_paired": false,
+ "replay_matched_cs": [
+  51,
+  151
+ ],
+ "replay_differences": 15,
+ "replay_differ_at_cs": 251,
+ "replay_skipped": [],
+ "replay_first": [
+  {
+   "at": "0116",
+   "host": "03620",
+   "c64": "01711"
+  },
+  {
+   "at": "0117",
+   "host": "24170",
+   "c64": "24143"
+  },
+  {
+   "at": "0135",
+   "host": "00000",
+   "c64": "00400"
+  },
+  {
+   "at": "0154",
+   "host": "00000",
+   "c64": "00001"
+  },
+  {
+   "at": "0155",
+   "host": "00000",
+   "c64": "03062"
+  },
+  {
+   "at": "0164",
+   "host": "02177",
+   "c64": "02133"
+  },
+  {
+   "at": "0166",
+   "host": "00531",
+   "c64": "00533"
+  },
+  {
+   "at": "0545",
+   "host": "00000",
+   "c64": "00072"
+  },
+  {
+   "at": "0546",
+   "host": "00000",
+   "c64": "16205"
+  },
+  {
+   "at": "0555",
+   "host": "00066",
+   "c64": "77777"
+  },
+  {
+   "at": "0556",
+   "host": "23524",
+   "c64": "76325"
+  },
+  {
+   "at": "1101",
+   "host": "23164",
+   "c64": "23165"
+  },
+  {
+   "at": "2306",
+   "host": "23524",
+   "c64": "23606"
+  },
+  {
+   "at": "2312",
+   "host": "03061",
+   "c64": "03062"
+  },
+  {
+   "at": "2356",
+   "host": "23164",
+   "c64": "23165"
+  }
+ ],
+ "snap_at": 42250,
+ "snap_slid": false,
+ "requested_cs": 329,
+ "host_holes": [],
+ "commit": "8a7d27a15a6a"
+}

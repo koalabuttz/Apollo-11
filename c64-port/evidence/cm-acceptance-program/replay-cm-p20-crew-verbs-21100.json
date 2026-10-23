@@ -1,0 +1,88 @@
+{
+ "scenario": "cm-p20-crew-verbs",
+ "ok": false,
+ "status": 0,
+ "z": "06037",
+ "fb": "24000",
+ "superbank": "0000",
+ "bank": "12",
+ "at": "03,2037",
+ "wall_cycles": 87227430,
+ "agc_cs": 387,
+ "dropped_ticks": 0,
+ "steps": 1568,
+ "wall_per_agc": 22.877,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 21100,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 9
+ },
+ "replay_rows": 17,
+ "replay_applied": 17,
+ "replay_end_cs": 387,
+ "replay_ended": true,
+ "replay_unpaired": [
+  {
+   "side": "host",
+   "cs": 138
+  },
+  {
+   "side": "C64",
+   "cs": 139
+  }
+ ],
+ "replay_unpaired_count": 2,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "replay_matched_cs": [],
+ "replay_differences": 5,
+ "replay_differ_at_cs": 151,
+ "replay_skipped": [
+  "DSPTAB sent bits",
+  "DSRUPTSW"
+ ],
+ "replay_first": [
+  {
+   "at": "TIME3",
+   "host": "37733",
+   "c64": "37732"
+  },
+  {
+   "at": "TIME4",
+   "host": "37777",
+   "c64": "37776"
+  },
+  {
+   "at": "1016",
+   "host": "00012",
+   "c64": "00011"
+  },
+  {
+   "at": "1400",
+   "host": "77570",
+   "c64": "77571"
+  },
+  {
+   "at": "channel 10",
+   "host": "00000",
+   "c64": "51257"
+  }
+ ],
+ "snap_at": 21100,
+ "snap_slid": false,
+ "requested_cs": 387,
+ "host_holes": [],
+ "commit": "8a7d27a15a6a"
+}

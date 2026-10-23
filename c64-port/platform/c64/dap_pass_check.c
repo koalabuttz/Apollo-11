@@ -253,14 +253,16 @@ static uint8_t sample_point(uint16_t t)
     (void)t;
     return 0;
 }
-__attribute__((noinline)) static void stash(void *from, uint16_t n)
+/* stash and replay_state run from the low region too (LOW_TEXT): with
+ * DP_BUSY and RK_STEAL the resident's RAM has no room for them. */
+LOW_TEXT("dp_stash") static void stash(void *from, uint16_t n)
 {
     apollo_reu_transfer(APOLLO_REU_STASH, from, state_at, n);
     state_at += n;
 }
 /* The state at a sample point: its centiseconds, the erasable words,
  * rk_hardware and rk_flight, then 32 bytes of rk_device. */
-__attribute__((noinline)) static void replay_state(uint16_t t)
+LOW_TEXT("dp_state") static void replay_state(uint16_t t)
 {
     static uint16_t at CASSETTE;
     at = t;
@@ -338,9 +340,8 @@ OUT_DATA static const uint16_t *const output_at[6] = {
     (uint16_t *)&rk_device + 2, (uint16_t *)&rk_device + 3,
 #endif
 };
-/* One change into the list (in the $0200 region: the two halves fit where
- * neither whole does). */
-LOW_TEXT("dp_outputs") static void outputs_record(uint16_t t, uint8_t i, uint16_t v)
+/* One change into the list. */
+__attribute__((noinline, section(".dsky.rodata.dp_outputs_rec"))) static void outputs_record(uint16_t t, uint8_t i, uint16_t v)
 {
     static uint16_t entry[3] CASSETTE;
     if (outputs_bytes >= 6u * DP_OUTPUTS_MAX) {

@@ -12,9 +12,9 @@
   ci-watch-interp-flight-p63-vice ci-watch-interp-core-differential ci-watch-x86-flight-check \
   ci-watch-flight-restart-check ci-watch-flight-restart-vice ci-watch-flight-gojam-vice ci-watch-flight-downlink-check \
   ci-watch-flight-downlink-vice overlay-v2-check ci-watch-overlay-v2-check ci-watch-flight-store \
-  ci-watch-flight-disk-vice ci-watch-dsky-sweep-vice ci-watch-flight-downlink-live-vice
+  ci-watch-flight-disk-vice ci-watch-dsky-sweep-vice ci-watch-flight-downlink-live-vice ci-watch-interp-loops-check
 ci-extra-host: interp-runtime-check interp-core-fuzz interp-core-differential x86-flight-check flight-restart-check \
-  flight-downlink-check overlay-v2-check
+  flight-downlink-check overlay-v2-check interp-loops-check
 ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice-1 interp-flight-flowed-vice-2 interp-flight-flowed-vice-3 \
   interp-flight-flowed-vice-4 interp-flight-p63-vice flight-restart-vice flight-gojam-vice flight-downlink-vice flight-store \
   flight-disk-vice dsky-sweep-vice flight-downlink-live-vice

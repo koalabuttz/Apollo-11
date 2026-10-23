@@ -2763,8 +2763,13 @@
  "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 11, 12, 14 and the 31A/31B/32 trap flags",
  "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
  "host_cases_traced": 40315,
- "host_branch_arcs": 2585,
+ "host_branch_arcs": 2588,
  "c64_rows": 471,
- "c64_branch_arcs": 2585,
- "host_branches_missing_on_c64": []
+ "c64_branch_arcs": 2588,
+ "host_branches_missing_on_c64": [],
+ "loops": {
+  "erasable_cadr_cycle": {
+   "lm 27,3021": 1
+  }
+ }
 }

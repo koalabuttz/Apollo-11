@@ -456,7 +456,9 @@ def main():
                    help='with --replay on the CM, compare without the temporary schedule skip (SCHEDULE_SKIP)')
     p.add_argument('--replay-outputs', action='store_true',
                    help='with --replay, also log every change of output channels 5, 6, 11, 12, 13 and 14 on both sides '
-                   'and fail unless the C64 makes the same changes in the same order at the same centiseconds')
+                   'and fail unless the C64 makes the same changes in the same order at the same centiseconds '
+                   "(changes the host's device models make, such as the radar's on 12-14, reach the C64 as replay rows, "
+                   'so those match by construction; the compare tests the writes the flight code makes)')
     p.add_argument('--outputs-slack', type=int, default=0,
                    help='with --replay-outputs, let a change come up to N cs earlier or later than the host\'s')
     p.add_argument('--replay-every', type=int, default=0,
