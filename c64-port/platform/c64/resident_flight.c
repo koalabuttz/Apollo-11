@@ -4,6 +4,14 @@
 #include "resident_flight.h"
 #include "sp_routines.h"
 #include "resident_rupt.h"
+#include "resident_cdu.h"
+/* The output drives, once a period: the 6502 version of resident_cdu.c's
+ * rk_cdu_drive (platform/c64/resident_cdu.S, checked against the C and
+ * yaAGC's vectors by tools/resident_cdu_asm_check.c), which stays the host
+ * and vector version. Their state lives here. */
+rk_cdu_state rk_cdu;
+void rk_cdu_drive6502(uint8_t hi);
+#define RK_CDU_DRIVE() rk_cdu_drive6502((uint8_t)(rk_hardware.channel14 >> 8))
 #ifdef AGC_SITES_ROPE
 #include "rope_image.h"
 #endif
@@ -362,7 +370,12 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
                            &rk_pending);
         if (got || rk_work < RK_PHASE_MCT(p)) break;
-        if (t == RK_PHASE_T5) rk_realtime_cap();
+        /* Once a period, at TIME5: the real-time cap, then the output drives
+         * (resident_cdu.h), at the step the host harness runs them. */
+        if (t == RK_PHASE_T5) {
+            rk_realtime_cap();
+            RK_CDU_DRIVE();
+        }
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
@@ -386,8 +399,12 @@ __attribute__((noinline)) static void rk_rupts(void) {
     now=ov2_irq_count;
     __asm__ volatile("plp" ::: "memory");
     for(;rk_ticks!=now;++rk_ticks) {
-        if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
-        else ++rk_dilation;
+        if (take) {
+            --take;
+            rk_timer_tick(IMAGE, &rk_hardware, &rk_pending);
+            RK_CDU_DRIVE(); /* (after the timers, as the host's scaled path) */
+        } else
+            ++rk_dilation;
     }
 #ifdef RK_RUPT_TRACE
     rk_rupt_last=
