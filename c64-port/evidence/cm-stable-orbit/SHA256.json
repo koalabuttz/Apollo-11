@@ -4,17 +4,17 @@
   "release": "evidence-cm-stable-orbit",
   "files": {
     "cm-stable-orbit-differential.log": {
-      "sha256": "66bd1e59091906f899da052adf6c29b3c24f0f029bf1e2b0fc650ca9a78793ec",
-      "bytes": 3685,
+      "sha256": "8bb4402553effa6de64549db6dd9d43166084cbf4487390ac06c6eda84608a3e",
+      "bytes": 3678,
       "store": "tree"
     },
     "cm-stable-orbit-host.log": {
-      "sha256": "47b872bf9088d9f64b0ff598752890049105d23238f4111a249fb0cf8ac039dd",
-      "bytes": 698,
+      "sha256": "e43816494c9002eea990dabb0bfc95c3eb9dc125df42749f2474e4e259b64227",
+      "bytes": 1102,
       "store": "tree"
     },
     "cm-stable-orbit-proof.json": {
-      "sha256": "0f58b2b847359a9b4ea3ebf4c4fdbf307e2535c427fe2e63cf9bdd97eb3ab1b6",
+      "sha256": "5dd0ca9240877b0405fb9d4832e8a79f42c36a45ccdd77daafb77cfbd1fec75b",
       "bytes": 9694,
       "store": "tree"
     },
@@ -24,8 +24,8 @@
       "store": "tree"
     },
     "cm-stable-orbit-vice.log": {
-      "sha256": "99a9ee20dad8e58c9a6b3ef7adba9b23b3c791eb19a9f324f2d89a106cc46a3d",
-      "bytes": 2809,
+      "sha256": "13e569a7d40c17af419ff69d85bdd32226acdc1779f3d189c3031772fa7b347d",
+      "bytes": 733,
       "store": "tree"
     }
   }
