@@ -96,35 +96,32 @@ static uint32_t now(void){uint8_t b0,b1,a0,a1;
 #ifdef RK_STEP_PROFILE
 void rk_prof(uint8_t segment){uint32_t t=now();prof[segment].cycles+=t-prof_last;++prof[segment].calls;prof_last=now();}
 #endif
-/* The window clock: centiseconds since clock_start(). */
-#ifndef DP_SWEEP
-/* It counts TIME2:TIME1, as the host's window does (tools/flight_host_run.c
- * now()), and never runs back. TIMEDIDL (the V70-V73 uplinks, 04,3567)
- * holds TIME2:TIME1 near zero while it adds the uplinked delta; the host
- * steps whole routines and never sees the hold, but a C64 step can end in
- * it, and a 14-bit TIME1 difference then reads as a full window. The jump
- * after the hold (the delta) counts, as it does on the host. */
-static uint32_t clock_t0 CASSETTE;
-static uint16_t clock_last CASSETTE;
-static uint32_t agc_time(void)
-{
-    return ((uint32_t)(IMAGE->words[024] & 037777u) << 14) | (IMAGE->words[025] & 037777u);
-}
-static void clock_start(void)
-{
-    clock_t0 = agc_time();
-    clock_last = 0;
-}
-static uint16_t window_cs(void)
-{
-    int32_t d = (int32_t)(agc_time() - clock_t0);
-    if (d > (int32_t)clock_last) clock_last = d > 0xffff ? 0xffffu : (uint16_t)d;
-    return clock_last;
-}
-/* TIME1 as the window clock moves it (sum.start_cs, sum.end_cs). */
 static uint16_t agc_cs(void)
 {
-    return (uint16_t)(clock_t0 + window_cs()) & 037777u;
+    return (uint16_t)IMAGE->words[025];
+}
+/* The window clock: centiseconds since clock_start(). */
+#ifndef DP_SWEEP
+/* TIME1 since the start, as before, but held at its last value while
+ * TIME2:TIME1 is behind the start. TIMEDIDL (the V70-V73 uplinks, 04,3567)
+ * holds TIME2:TIME1 near zero while it adds the uplinked delta. The host
+ * steps whole routines and never sees the hold (tools/flight_host_run.c
+ * now() counts TIME2:TIME1), but a C64 step can end in it, and the 14-bit
+ * TIME1 difference then reads as a full window. The delta itself counts, as
+ * on the host. */
+static uint16_t clock_t2 CASSETTE, clock_t1 CASSETTE, clock_last CASSETTE;
+static void clock_start(void)
+{
+    clock_t2 = IMAGE->words[024];
+    clock_t1 = IMAGE->words[025];
+    clock_last = 0;
+}
+__attribute__((noinline)) static uint16_t window_cs(void)
+{
+    uint16_t l = IMAGE->words[025];
+    if (((uint32_t)IMAGE->words[024] << 16 | l) < ((uint32_t)clock_t2 << 16 | clock_t1))
+        return clock_last;
+    return clock_last = (l - clock_t1) & 037777u;
 }
 #else
 /* The DSKY sweep keeps TIME1 since the case's start (Lane C's #674 runs
@@ -138,7 +135,6 @@ static uint16_t window_cs(void)
 {
     return (uint16_t)(IMAGE->words[025] - clock_t0) & 037777u;
 }
-static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
 #endif
 #ifdef DP_KEYS
 /* The crew's DSKY keys in the window (DP_KEYS, written by
