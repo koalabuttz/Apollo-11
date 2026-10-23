@@ -4,13 +4,13 @@
   "release": "evidence-lm-p40-p47",
   "files": {
     "lm-p40-p47-c64-cover.json": {
-      "sha256": "6d1c2d74433ac3a89449f680449caba21f6c56b10f87a34d8fa079ae911f295d",
+      "sha256": "715735d8f9ed1f3a1f3ba3f4a9d887b05a958f9dfbcac448da33fb0d4a2a38d4",
       "bytes": 11673,
       "store": "tree"
     },
     "lm-p40-p47-differential.log": {
-      "sha256": "294a4e23e712887de2bf893f52cbc8bbcc32777d7ba63719befd8aef7d95f022",
-      "bytes": 19943,
+      "sha256": "cf694f843e1a68b77a09aaf5bfb0f7eb54b0431aa10615839871b1297475f6a7",
+      "bytes": 19958,
       "store": "release"
     },
     "lm-p40-p47-host.log": {
@@ -19,8 +19,8 @@
       "store": "release"
     },
     "lm-p40-p47-proof.json": {
-      "sha256": "c7b9e20fcc6392919d672419241d6858945ee778c5baf3718c2812191e00de92",
-      "bytes": 41506,
+      "sha256": "a35408d31f16a45c9f3ecf391e8cbd9f3b71f179174f461fa1166f5a91c5ff99",
+      "bytes": 41572,
       "store": "tree"
     },
     "lm-p40-p47-source-map.json": {

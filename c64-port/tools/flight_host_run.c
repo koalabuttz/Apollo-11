@@ -144,6 +144,8 @@ static const entry tables[]={
  * module stops at the interpretive code its host routine runs on through,
  * so a routine spends its weight (the low bits) and the words it ran. */
 #define FLIGHT_PLUS_WORDS 0x8000u
+/* idle_weight's answer for an idle-loop pass: the work clock's idle. */
+#define FLIGHT_IDLE_TICK 0xFFFEu
 static unsigned weight(const entry *e){return e->mct;}
 
 /* Virtual AGC adapter: no peripherals; channel 7 as SocketAPI.c stores it. */
@@ -265,6 +267,8 @@ static enum exec_status core_run(const agc_native_program *p,apollo_overlay_stat
  * other point (EXEC_UNMAPPED), which is then bridged. */
 static const agc_routine_table core_none={0,0};
 static const entry core_entry={&core_none,"interp_module",1,CORE_IO,"",0,0,0,"",0,FLIGHT_PER_WORD};
+/* The routine before's table for the work clock's charge (charged), 0 at a fresh step. */
+static const entry *charge_last;
 /* Input channels 30 and 31 at start (FLIGHT_CH30, FLIGHT_CH31 below). */
 static unsigned long chan30=037777u,chan31=077777u,chan32=077777u,chan33=077777u;
 /* yaAGC's GOJAM state (agc_engine_init) without its first DOWNRUPT. */
@@ -347,6 +351,46 @@ static const entry *holder_after(const agc_word *w,agc_word sb,agc_routine *call
                          &&(*call=find(tables[i].t,key)))return &tables[i];
  return 0;}
 static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){return holder_after(w,sb,call,0);}
+/* The work clock's charge (FLIGHT_REPLAY): the table the C64 would run the
+ * routine from, which can be another holder of the same key than the one
+ * that runs it here (a hot subset and its full table). A C64 step goes on
+ * in the module that ran the last routine while that module holds the
+ * point and no timer step or request came between (rk_step_run's module
+ * chain). Otherwise the step starts afresh: the kernel's tables first
+ * (rk_trampoline, RK_RESIDENT_MCT), then the pinned sets (rk_direct), then
+ * the resolver's order, which is host.inc's. last: the routine before's
+ * table, 0 at a fresh step. */
+static int kernel_table(const entry *e){const char *n=e->name;
+ return strstr(n,"_kernel_routines")||strstr(n,"_kernel_job_routines")||strstr(n,"_kernel_task_routines")
+  ||strstr(n,"_kernel_idle_routines")||(strstr(n,"_sp_routines")&&!strstr(n,"_hot_"));}
+static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const entry *last){int in;unsigned i,r;uint16_t key=point(w,sb,&in);
+ if(last&&*last->module)for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&!strcmp(tables[i].module,last->module)
+                                           &&(tables[i].slot!=5u||in_slot[0]==tables[i].module)&&find(tables[i].t,key))return &tables[i];
+ for(r=0;r<3u;++r)for(i=0;i<TABLES;++i){const entry *t=&tables[i];
+  if((r==0u?kernel_table(t)&&!in:r==1u?t->slot==3u||t->slot==4u:!kernel_table(t)&&t->slot!=3u&&t->slot!=4u)
+     &&t->interp==(uint8_t)in&&(t->slot!=5u||in_slot[0]==t->module)&&find(t->t,key))return t;}
+ return e;}
+/* LM: a table of weight 0 (POSTJUMP's and SELFCHK's, RK_MCT_IDLE) idles
+ * only where the C64 idles: in the idle loop (FB on SELFCHK's bank 43),
+ * outside an interrupt, with no job waiting (resident_flight.c, the idle
+ * module's flag). Anywhere else (POSTJUMP in a job, or at the end of a
+ * RADARUPT's task) the C64 runs the routine from a module that weighs it as
+ * work: the first holder with a weight. Back in the idle loop with a job
+ * waiting (NEWJOB +0 or a core set, ADVAN's CCS: anything but -0), the
+ * C64's pass already ended at ADVAN, so the rest of the host's pass costs
+ * nothing. */
+static unsigned idle_weight(const agc_word *w,agc_word sb,int isr){
+#if RK_LM
+ int in;unsigned i;uint16_t key;
+ if(!isr&&agc_fixed_physical(02000u,w[4],sb)/1024u==043u)return (w[NEWJOB]&077777u)==077777u?FLIGHT_IDLE_TICK:0u;
+ key=point(w,sb,&in);
+ for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&tables[i].mct&&!(tables[i].mct&FLIGHT_PLUS_WORDS)&&find(tables[i].t,key))return tables[i].mct;
+#else
+ /* The CM's idle loop is pinned and its POSTJUMP idles as on the host
+  * (resident_flight.c RK_CM_POSTJUMP). */
+ (void)w;(void)sb;(void)isr;
+#endif
+ return FLIGHT_IDLE_TICK;}
 static void where(const agc_word *w,agc_word sb,const char *what){int in;uint16_t k=point(w,sb,&in);
  printf("%s: %s Z %05o FB %05o EB %05o superbank %03o (key %u = %02o,%04o) Q %05o LOC %05o BANKSET %05o\n",what,
   in?"interpretive":"basic",(unsigned)w[5],(unsigned)w[4],(unsigned)w[3],(unsigned)sb,(unsigned)k,k/1024u,k%1024u+02000u,
@@ -1388,14 +1432,15 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));
     if(!rp_out)return 0;
     /* FLIGHT_REPLAY: on, on the C64 window's work clock. */
-    snap_path=0;rp_t0=now(s.words);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;
+    snap_path=0;rp_t0=now(s.words);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;
     core_fit=core_yaagc=core_err=core_spans=0;}}
-  {agc_word brupt=s.words[017];uint8_t got;
+  {agc_word brupt=s.words[017];uint8_t got;unsigned long consumed0=consumed;
    if(scaled&&work){
     /* rk_rupts: a request that can be taken before each step due. */
     while(!(got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending))&&step_at(consumed)<=wall){
      rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));if(consumed++%3ul==2ul){++taken;steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
+    if(got||consumed!=consumed0)charge_last=0;
     idling=0;}
    else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);steal();}}
     got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending);}
@@ -1442,7 +1487,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
 #if RK_LM
 #endif
   if(path_to)path("NAT",s.words,io.superbank,hw.channel4,hw.in_interrupt,e?e->name:"(bridge)");
-  if(e){flight_io io0=io;agc_hardware hw0=hw;long n;
+  if(e){flight_io io0=io;agc_hardware hw0=hw;const int isr0=hw.in_interrupt!=0u;long n;
    unsigned long t=steps%TRACE;trace[t][0]=(uint16_t)s.words[5];trace[t][1]=(uint16_t)s.words[4];names[t]=e->name;
    before=s;
    for(;;){const entry *next_e;
@@ -1486,7 +1531,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
       if(n>=0&&core_mct!=word_mct){++core_misses;
        if(getenv("FLIGHT_CORE_LOG"))printf("core charge %lu, yaAGC's words %lu: Z %05o LOC %05o to Z %05o LOC %05o, %s\n",core_mct,word_mct,
         (unsigned)before.words[5],(unsigned)before.words[0164],(unsigned)s.words[5],(unsigned)s.words[0164],e->name);}}
-     if(scaled){unsigned w=weight(e);if(core_ran&&work)spend(core_mct);else if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);else if(work&&!w)idle_tick();else spend(work?w:span_mct);}
+     if(scaled){const int rp_on=rp_out&&!snap_path;const entry *ce=work&&rp_on&&!core_ran&&weight(e)!=FLIGHT_PER_WORD?charged(before.words,io0.superbank,e,charge_last):e;unsigned w=!weight(e)||weight(ce)==FLIGHT_PER_WORD||!weight(ce)?weight(e):weight(ce);
+      charge_last=core_ran||weight(e)==FLIGHT_PER_WORD||kernel_table(ce)?0:ce;if(core_ran&&work)spend(core_mct);else if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);else if(work&&!w&&(!rp_on||(w=idle_weight(before.words,io0.superbank,isr0))==FLIGHT_IDLE_TICK))idle_tick();else spend(work?w:span_mct);}
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
      if(n>=0){locked+=(unsigned long)n;
       /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by
