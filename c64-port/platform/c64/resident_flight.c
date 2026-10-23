@@ -339,6 +339,16 @@ static inline void rk_realtime_cap(void)
 void rk_rupts(void);
 __attribute__((noinline, used)) void rk_rupts_due(void) {
     uint8_t got;
+#ifdef RK_STEAL
+    /* A --replay window of a FLIGHT_STEAL scenario (tools/flight_host_run.c
+     * steal): from RK_STEAL_FROM to RK_STEAL_TO (TIME2:TIME1, centiseconds)
+     * each T5 step also spends RK_STEAL MCT that no routine runs in, the
+     * counter cycles Apollo 11's RR CDU counts took. The time as the step
+     * starts, where the host reads it. Replay builds only. */
+    const uint32_t cs =
+        ((uint32_t)(IMAGE->words[024] & 037777u) << 14) | (IMAGE->words[025] & 037777u);
+    const uint8_t steal = cs >= RK_STEAL_FROM && cs < RK_STEAL_TO;
+#endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
         got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
@@ -348,6 +358,9 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
+#ifdef RK_STEAL
+        if (t == RK_PHASE_T5 && steal) rk_work += RK_STEAL;
+#endif
     }
     if (got && rk_idle) rk_work = 0;
     rk_idle = 0;
@@ -706,6 +719,7 @@ __attribute__((noinline)) static enum exec_status rk_memo_step(uint16_t stop_phy
     return status;
 }
 #endif
+uint8_t rk_spin;
 __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical)
 {
     enum exec_status st;
@@ -715,6 +729,31 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     RK_PROF(0);
     rk_rupts();
     RK_PROF(1);
+    /* The TC trap (docs/FLIGHT-RESTART.md, The TC trap). At VERB69 (43,2037
+     * in both ropes, V69's TC VERB69; bank 043 is FB 033 with the
+     * superbank's bit 0100), outside an interrupt, the AGC runs nothing but
+     * TCs, so the step spins there as the idle loop does, to the period's
+     * end. The trap's GOJAM comes at the T5 step when the spin was there for
+     * the T3 step before it and no interrupt came between, as yaAGC's trap
+     * fires at scaler phase 000 after only TCs since phase 020.
+     * tools/flight_host_run.c verb69 and spin do the same. */
+    {
+        uint8_t spin = rk_spin;
+        const agc_word *w = IMAGE->words;
+        rk_spin = 0;
+        if (!rk_hardware.in_interrupt) {
+            if (spin & 2u) return rk_gojam() ? EXEC_OUT_OF_SCOPE : EXEC_OK;
+            if (w[5] == 02037u && w[4] == 066000u && (rk_device.superbank & 0100u)) {
+                IMAGE->words[2] = 02040u; /* Q: TC VERB69's */
+                rk_charge(0, RK_MCT_IDLE);
+                /* The rest of the period's MCT over 256 (rk_phase_rest): 3
+                 * or 2 with its T3 step, 1 without. */
+                rk_spin = (uint8_t)(rk_work >> 8);
+                st = EXEC_OK;
+                goto out;
+            }
+        }
+    }
 #ifdef RK_IDLE_MEMO
     /* A flight step (no stop point) of the pass or ADVAN outside an
      * interrupt, with no job ready and SMODE +0. */
@@ -730,9 +769,7 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
     }
 #endif
     st = rk_step_run(stop_physical);
-#ifdef RK_IDLE_MEMO
 out:
-#endif
 #if !RK_LM
     rk_channels_merge();
 #endif
