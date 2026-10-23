@@ -95,9 +95,10 @@ ROWS = {
              checks=[bit('DSPTAB', NO_ATT, True, 3000, 3100, 'NO ATT lights (DSPTAB+11D bit 4)'),
                      bit('DSPTAB', NO_ATT, False, 3500, 3600, 'and goes out after the cage')],
              window=(2900, 700)),
-        dict(scenario='lm-p63-overload', owner='RK',
+        dict(scenario='lm-p63-overload-nomon', owner='RK',
              failure='420 MCT a centisecond stolen from 185 s to 240 s in P63 (`FLIGHT_STEAL`), as the RR CDU '
-                     'counts did on Apollo 11',
+                     'counts did on Apollo 11 (without lm-p63-overload\'s V16N68 monitor, whose PASTEVB the host '
+                     'still bridges)',
              response='SERVICER falls behind: the Executive runs out of core sets or VAC areas (alarm 1201 or '
                       '1202, which one depends on the job mix), each a BAILOUT and a restart through the '
                       'phase tables; P63 flies on when the steal ends',
@@ -264,6 +265,8 @@ def section(results, runs, first_diff):
             f"{sum(x['ok'] for x in h['checks'])} of {len(h['checks'])} response checks"
         lines.append(f"| {row['scenario']} | {row['owner']} | {row['failure']} | {row['response']} | {host} | "
                      f"{snap}+{cs}: {c64} |")
+        if win is None:
+            bad.append(f"off-nominal {row['scenario']}: no C64 window {snap}+{cs} in the runs")
         if not h['ok']:
             bad.append(f"off-nominal {row['scenario']}: host {h['mismatches']} mismatches, {h['bridged']} bridged, "
                        f"failed checks {[x['check'] for x in h['checks'] if not x['ok']]}")

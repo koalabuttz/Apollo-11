@@ -350,7 +350,7 @@ class OffNominal(unittest.TestCase):
     def test_host_failure_fails_the_doc(self):
         _, res = self.results(ok=False)
         lines, bad = da.offnom.section(res, [], da.first_diff)
-        self.assertEqual(len(bad), 1)
+        self.assertEqual(len(bad), 2)  # the host row, and its window not run
         self.assertIn('not run', '\n'.join(lines))
 
     def test_window_match_and_difference(self):
