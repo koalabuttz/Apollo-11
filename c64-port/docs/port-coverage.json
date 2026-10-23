@@ -2233,8 +2233,8 @@
             "sha256": "c7de58f717822daae723c26f54c04ef38816a5d41231c9d150a2935912a1f50a"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-arms-679.md",
-            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
+            "path": "docs/audits/rev2-cm-offkeys-789.md",
+            "sha256": "c5586d4622aa8808012a56a6cce12557db174085476fc5b6b464b74eb1e65ac9"
           }
         }
       }
@@ -5093,8 +5093,8 @@
             "sha256": "9771530c0ff1a2f99bd2952ff74f10c0cefc67b669c7bb79ef785410f103a048"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-arms-679.md",
-            "sha256": "0680cf43ec7776334a5b4b36a0d927ba6ae7e0e2b4115b90b27193d7f48426fd"
+            "path": "docs/audits/rev2-cm-offkeys-789.md",
+            "sha256": "c5586d4622aa8808012a56a6cce12557db174085476fc5b6b464b74eb1e65ac9"
           }
         }
       }
@@ -5685,8 +5685,8 @@
             "sha256": "5dd0ca9240877b0405fb9d4832e8a79f42c36a45ccdd77daafb77cfbd1fec75b"
           },
           "independent_review": {
-            "path": "docs/audits/rev2-cm-stable-orbit-711.md",
-            "sha256": "782ba8802c3ff11d1ce1aa9ca6b542ebb5b6583247d2cb92be9b94013542a6d1"
+            "path": "docs/audits/rev2-cm-offkeys-789.md",
+            "sha256": "c5586d4622aa8808012a56a6cce12557db174085476fc5b6b464b74eb1e65ac9"
           }
         }
       }
