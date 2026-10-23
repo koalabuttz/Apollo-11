@@ -1,0 +1,24 @@
+{
+ "scenario": "cm-p37-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 51000,
+ "keys": "@4500V37E37E@5000V25E+00001E+00000E+00000E@6400V33E@7000V22E+00100E@7600V23E-00650E@8200V33E@11000V33E@12000V33E@13000V33E@14000V33E@38000V33E@39000V33E@40000V33E@41000V33E@42000V33E@43000V33E@44000V33E@45000V37E00E@46000V82E@47500V33E@49500V34E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p37.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 51000,
+ "periods_taken": 51000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 51000,
+ "native_routines": 2159815,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "7605d62df0565a410b2532b32a741ce6318a0e73fa80f4de6917f3f5f56799b4"
+}

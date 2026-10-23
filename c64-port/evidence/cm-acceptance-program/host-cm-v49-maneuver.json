@@ -1,0 +1,26 @@
+{
+ "scenario": "cm-v49-maneuver-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 15000,
+ "keys": "@2000V76E@3000V49E@4000V25E+18000E+00000E+00000E@5500V33E@6500V33E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH31": "037777",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_SPS": "43900",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 15000,
+ "periods_taken": 15000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 15000,
+ "native_routines": 910787,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "7254cb6424e20f83c7ba9fae6f67c1186a6cc801a93a4a679da7d3aadf36eedb"
+}

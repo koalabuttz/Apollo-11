@@ -1,0 +1,26 @@
+{
+ "scenario": "cm-tei-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 56000,
+ "keys": "@4500V37E30E@5000V25E+00000E+00005E+00000E@6400V33E@6800V25E+32836E+00000E+00000E@8100V33E@9500V33E@10500V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@47000V33E@48500V33E@50000V37E00E@51000V82E@53000V33E@55000V34E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH31": "037777",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_SPS": "16400",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-tei.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 56000,
+ "periods_taken": 56000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 56000,
+ "native_routines": 2874754,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "60ae3db284c58a3194d22081c18209e3545f3b17c0f5a555914b890acfd8d5e6"
+}

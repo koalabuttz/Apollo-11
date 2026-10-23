@@ -1,0 +1,25 @@
+{
+ "scenario": "cm-p52-coarse-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 14000,
+ "keys": "@4500V37E52E@6500V33E@7500V33E@8500V33E@9500V33E@12000V34E@13000V37E00E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_IMU": "1",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 14000,
+ "periods_taken": 14000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 14000,
+ "native_routines": 895599,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "3635ea9a52cda4038024d6c7346c4f44fb13f5320e247213d6a912de0f27f44d"
+}
