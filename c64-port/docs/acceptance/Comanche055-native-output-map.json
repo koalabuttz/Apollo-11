@@ -66,9 +66,17 @@
   {
    "section": "Downlink (channels 34, 35)",
    "row": "Erasable dump (V74)",
-   "kind": "downlink",
-   "status": "not exercised",
-   "note": "No scenario keys V74"
+   "kind": "dump",
+   "note": "cm-uplink-accept keys V74 at 12000 cs; DNTMGOTO enters the dump code about 60 cs after that. The window starts at 12020 because the program map runs 12010 without --downrupt, and both would write one result file.",
+   "windows": [
+    [
+     "cm-uplink-accept",
+     12020,
+     300,
+     1,
+     50
+    ]
+   ]
   },
   {
    "section": "Output channels",

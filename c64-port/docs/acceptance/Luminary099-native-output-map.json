@@ -53,9 +53,17 @@
   {
    "section": "Downlink (channels 34, 35)",
    "row": "Erasable dump (V74)",
-   "kind": "downlink",
-   "status": "not exercised",
-   "note": "No scenario keys V74"
+   "kind": "dump",
+   "note": "lm-uplink-accept keys V74 at 12000 cs; DNTMGOTO enters the dump code about 60 cs after that.",
+   "windows": [
+    [
+     "lm-uplink-accept",
+     12010,
+     300,
+     1,
+     50
+    ]
+   ]
   },
   {
    "section": "Output channels",

@@ -729,7 +729,7 @@ def main():
         if a.profile:
             r['profile'] = dp.profile(tag)
         r.update(scenario=a.scenario, snap_cs=a.snap_cs, snap_at=snap_at, snap_slid=slid > SLIDE_CS, requested_cs=cs,
-                 host_holes=holes, commit=flight_holes.source_commit())
+                 host_holes=holes, downrupt=a.downrupt, commit=flight_holes.source_commit())
         if a.chain > 1:
             r.update(chain=a.chain, chain_window=n)
         # Status 0 means no step refused; it does not mean the window ran to its

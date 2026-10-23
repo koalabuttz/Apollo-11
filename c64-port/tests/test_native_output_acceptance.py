@@ -77,6 +77,43 @@ class NativeOutputAcceptance(unittest.TestCase):
         self.assertIn('waits on D1', out[0]['text'])
         self.assertEqual((counts['not_exercised'], counts['unexplained'], counts['ok']), (2, 1, False))
 
+    def test_end_states_counts_whole_states(self):
+        import struct
+        import flight_scenario_vice as fsv
+        k = fsv.STATE // 2
+        data = b''.join(struct.pack(f'<{k}H', cs, *range(1, k)) for cs in (10, 20, 30))
+        got = no.end_states(data)
+        self.assertEqual([cs for cs, _ in got], [10, 20, 30])
+        self.assertEqual(got[0][1][2048:2048 + len(no.CHANNELS)], tuple(range(2049, 2049 + len(no.CHANNELS))))
+
+    def test_dump_row(self):
+        goto, entries = no.DUMP['lm']
+        row = dict(section='d', row='dump', kind='dump', windows=[['lm-a', 0, 300, 1, 50]])
+
+        def words(*gotos):
+            return [(100 * i, [g if a == goto else 0 for a in range(2048 + len(no.CHANNELS))])
+                    for i, g in enumerate(gotos)]
+        with mock.patch.object(no, 'window_states', return_value=words(0o3523, entries[1])):
+            ok, text = no.assess_dump(row, {'lm-a': [dict(replay('lm-a', 0), downrupt=True)]})
+            self.assertTrue(ok, text)
+            self.assertIn('by 100 cs', text)
+            ok, text = no.assess_dump(row, {'lm-a': [replay('lm-a', 0)]})
+            self.assertFalse(ok)
+            self.assertIn('without --downrupt', text)
+            # The dump starts after the last checkpoint the C64 matched.
+            ok, _ = no.assess_dump(row, {'lm-a': [dict(replay('lm-a', 0, matched=(50,)), downrupt=True)]})
+            self.assertFalse(ok)
+        with mock.patch.object(no, 'window_states', return_value=words(0o3523, 0o3523)):
+            ok, text = no.assess_dump(row, {'lm-a': [dict(replay('lm-a', 0), downrupt=True)]})
+            self.assertFalse(ok)
+            self.assertIn('never points', text)
+
+    def test_dump_windows_run_with_downrupt(self):
+        rows = [dict(kind='dump', windows=[['lm-a', 0, 300, 1, 50]]), JETS]
+        self.assertEqual(no.downrupt_windows(rows), {('lm-a', 0, 300, 1, 50)})
+        self.assertEqual(no.window_command(('lm-a', 0, 300, 1, 50), True)[-1], '--downrupt')
+        self.assertNotIn('--downrupt', no.window_command(('lm-a', 0, 1000)))
+
     def test_doc_names_the_store(self):
         # Acceptance contract rules 3 and 9: one header commit, the store's
         # full sha256 on one line.
@@ -93,13 +130,21 @@ class NativeOutputAcceptance(unittest.TestCase):
         for p in ('Luminary099', 'Comanche055'):
             plan = json.loads((ROOT / f'docs/acceptance/{p}-native-output-map.json').read_text())
             for row in plan['rows']:
-                self.assertIn(row['kind'], ('dsky', 'downlink', 'channels'), row['row'])
+                self.assertIn(row['kind'], ('dsky', 'downlink', 'channels', 'dump'), row['row'])
                 if row.get('status') == 'not exercised':
                     self.assertTrue(row.get('note'), row['row'])
                 if row['kind'] == 'channels':
                     self.assertTrue(set(row['channels']) <= set(no.CHANNELS), row['row'])
                     m = 'lm' if p == 'Luminary099' else 'cm'
                     self.assertTrue(all(w[0].startswith(f'{m}-') for w in row['windows']), row['row'])
+                if row['kind'] == 'dump':
+                    # A --downrupt window writes the same result file as a
+                    # program map window with the same start, so none may share one.
+                    m = 'lm' if p == 'Luminary099' else 'cm'
+                    used = json.dumps(json.loads((ROOT / f'docs/acceptance/{p}-program-map.json').read_text()))
+                    for w in row['windows']:
+                        self.assertTrue(w[0].startswith(f'{m}-'), row['row'])
+                        self.assertNotIn(f'"{w[0]}", {w[1]}', used, row['row'])
 
 
 if __name__ == '__main__':
