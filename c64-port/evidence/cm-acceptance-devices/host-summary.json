@@ -1,0 +1,2717 @@
+[
+ {
+  "scenario": "cm-p00-idle",
+  "mission": "cm",
+  "centiseconds": 4000,
+  "keys": "",
+  "inputs": {},
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "samples": 4000,
+  "equal": 3998,
+  "differ": 2,
+  "major_mode": {
+   "native": "77777",
+   "yaagc": "77777"
+  },
+  "routine_mismatches": [],
+  "unregistered": [],
+  "module_loads": 179,
+  "loads_per_second": 4.5,
+  "loads_by_point": [
+   {
+    "module": "cm_t4rupt_imu",
+    "slot": 1,
+    "kind": "basic",
+    "point": "06,2174",
+    "label": "IMUMON",
+    "count": 84
+   },
+   {
+    "module": "cm_t4rupt_optics",
+    "slot": 1,
+    "kind": "basic",
+    "point": "06,2765",
+    "label": "OPTMON",
+    "count": 83
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2526",
+    "label": "GOPROG",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2662",
+    "label": "BANKCALL",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "20,2000",
+    "label": "VAC5STOR",
+    "count": 1
+   },
+   {
+    "module": "service_transfer",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3606",
+    "label": "GENTRAN",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "20,2033",
+    "label": "V5OUT1+6",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2675",
+    "label": "SWRETURN",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2535",
+    "label": "GOPROG+7",
+    "count": 1
+   },
+   {
+    "module": "cm_alarm",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3650",
+    "label": "ALARM",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2750",
+    "label": "PTBAD+2",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2701",
+    "label": "POSTJUMP",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,3153",
+    "label": "T5IDLOC",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2740",
+    "label": "IBNKCALL",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "scenario": "cm-V37E00E",
+  "mission": "cm",
+  "centiseconds": 3000,
+  "keys": "V37E00E",
+  "inputs": {},
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "samples": 3000,
+  "equal": 2998,
+  "differ": 2,
+  "major_mode": {
+   "native": "00",
+   "yaagc": "00"
+  },
+  "routine_mismatches": [],
+  "unregistered": [],
+  "module_loads": 254,
+  "loads_per_second": 8.5,
+  "loads_by_point": [
+   {
+    "module": "cm_t4rupt_imu",
+    "slot": 1,
+    "kind": "basic",
+    "point": "06,2174",
+    "label": "IMUMON",
+    "count": 63
+   },
+   {
+    "module": "cm_t4rupt_optics",
+    "slot": 1,
+    "kind": "basic",
+    "point": "06,2765",
+    "label": "OPTMON",
+    "count": 62
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2740",
+    "label": "IBNKCALL",
+    "count": 10
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2414",
+    "label": "LODSAMPT",
+    "count": 7
+   },
+   {
+    "module": "lanec_pin_keys_num_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "40,2000",
+    "label": "CHARIN",
+    "count": 7
+   },
+   {
+    "module": "cm_phase_table",
+    "slot": 1,
+    "kind": "basic",
+    "point": "02,3412",
+    "label": "PHASCHNG",
+    "count": 4
+   },
+   {
+    "module": "cm_interp_core",
+    "slot": 0,
+    "kind": "basic",
+    "point": "03,2030",
+    "label": "DANZIG",
+    "count": 4
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2662",
+    "label": "BANKCALL",
+    "count": 3
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2675",
+    "label": "SWRETURN",
+    "count": 3
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2701",
+    "label": "POSTJUMP",
+    "count": 3
+   },
+   {
+    "module": "service_transfer",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3546",
+    "label": "UPFLAG",
+    "count": 3
+   },
+   {
+    "module": "service_transfer",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3560",
+    "label": "DOWNFLAG",
+    "count": 3
+   },
+   {
+    "module": "lanec_pin_keys_cmd_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "40,2060",
+    "label": "ENTERJMP",
+    "count": 2
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,3442",
+    "label": "INTSTALL",
+    "count": 2
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2753",
+    "label": "ISWRETRN",
+    "count": 2
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,3162",
+    "label": "INTEGRV",
+    "count": 2
+   },
+   {
+    "module": "cm_rtb_op_codes",
+    "slot": 0,
+    "kind": "basic",
+    "point": "22,3544",
+    "label": "SGNAGREE",
+    "count": 2
+   },
+   {
+    "module": "cm_interpreter",
+    "slot": 0,
+    "kind": "basic",
+    "point": "03,3226",
+    "label": "TPAGREE",
+    "count": 2
+   },
+   {
+    "module": "cm_rtb_op_codes",
+    "slot": 0,
+    "kind": "basic",
+    "point": "22,3545",
+    "label": "SGNAGREE+1",
+    "count": 2
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,3352",
+    "label": "DT/2COMP+4",
+    "count": 2
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "basic",
+    "point": "13,3214",
+    "label": "ANDOUT+7",
+    "count": 2
+   },
+   {
+    "module": "cm_orbital_integration",
+    "slot": 0,
+    "kind": "interp",
+    "point": "11,3421",
+    "label": "RECTIFY",
+    "count": 2
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,3231",
+    "label": "RECTOUT+3",
+    "count": 2
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2526",
+    "label": "GOPROG",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "20,2000",
+    "label": "VAC5STOR",
+    "count": 1
+   },
+   {
+    "module": "service_transfer",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3606",
+    "label": "GENTRAN",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "20,2033",
+    "label": "V5OUT1+6",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2535",
+    "label": "GOPROG+7",
+    "count": 1
+   },
+   {
+    "module": "cm_alarm",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3650",
+    "label": "ALARM",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2750",
+    "label": "PTBAD+2",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,3153",
+    "label": "T5IDLOC",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_keys_cmd_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "40,2255",
+    "label": "VERB",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,2035",
+    "label": "ENTPAS0",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,3431",
+    "label": "MMCHANG+1",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2011",
+    "label": "V37",
+    "count": 1
+   },
+   {
+    "module": "cm_interp_core",
+    "slot": 0,
+    "kind": "basic",
+    "point": "03,2006",
+    "label": "INTPRET",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "04,2131",
+    "label": "ROC+1",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "04,2133",
+    "label": "DUMMYAD",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2134",
+    "label": "DUMMYAD+1",
+    "count": 1
+   },
+   {
+    "module": "cm_kalcmanu_steering",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2526",
+    "label": "STOPRATE",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2336",
+    "label": "INITSUB+6",
+    "count": 1
+   },
+   {
+    "module": "cm_p40_p47",
+    "slot": 0,
+    "kind": "basic",
+    "point": "24,2304",
+    "label": "SETMINDB",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2344",
+    "label": "INITSUB+14",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2364",
+    "label": "RAKE+15",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3536",
+    "label": "CLEARMRK",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2147",
+    "label": "DUMMYAD+14",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2151",
+    "label": "DUMMYAD+16",
+    "count": 1
+   },
+   {
+    "module": "cm_update",
+    "slot": 0,
+    "kind": "basic",
+    "point": "27,3757",
+    "label": "UPACTOFF",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2153",
+    "label": "DUMMYAD+20",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2155",
+    "label": "DUMMYAD+22",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2157",
+    "label": "DUMMYAD+24",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2473",
+    "label": "RELDSP",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2162",
+    "label": "POOH+1",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2513",
+    "label": "V37KLEAN",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2207",
+    "label": "GROUPKIL+2",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2505",
+    "label": "P00KLEAN",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2213",
+    "label": "GOMOD",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2651",
+    "label": "ENEMA",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2704",
+    "label": "BANKJUMP",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2707",
+    "label": "PCLOOP+17",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2666",
+    "label": "SWCALL",
+    "count": 1
+   },
+   {
+    "module": "cm_restart_routines",
+    "slot": 1,
+    "kind": "basic",
+    "point": "01,3520",
+    "label": "RESTARTS",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2735",
+    "label": "PINACT",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "40,3441",
+    "label": "DSPMMJB",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "basic",
+    "point": "13,2636",
+    "label": "STATINT1",
+    "count": 1
+   },
+   {
+    "module": "cm_rtb_op_codes",
+    "slot": 0,
+    "kind": "basic",
+    "point": "22,3510",
+    "label": "LOADTIME",
+    "count": 1
+   },
+   {
+    "module": "cm_interpreter",
+    "slot": 0,
+    "kind": "basic",
+    "point": "03,2024",
+    "label": "SLOAD2",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2643",
+    "label": "STATINT1+5",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2000",
+    "label": "STATEUP",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2710",
+    "label": "ATOPCSM+3",
+    "count": 1
+   },
+   {
+    "module": "cm_geometry",
+    "slot": 0,
+    "kind": "interp",
+    "point": "10,2237",
+    "label": "SVDWN1",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2713",
+    "label": "ATOPCSM+6",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2011",
+    "label": "STATEUP+11",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2017",
+    "label": "STATEUP+17",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2670",
+    "label": "SETIFLGS",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2022",
+    "label": "STATEUP+22",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,3010",
+    "label": "PTOALEM+4",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2763",
+    "label": "ATOPLEM+3",
+    "count": 1
+   },
+   {
+    "module": "cm_geometry",
+    "slot": 0,
+    "kind": "interp",
+    "point": "10,2263",
+    "label": "SVDWN2",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2766",
+    "label": "ATOPLEM+6",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2031",
+    "label": "STATEND",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,2656",
+    "label": "ENDINT",
+    "count": 1
+   },
+   {
+    "module": "cm_t4rupt_optics",
+    "slot": 1,
+    "kind": "basic",
+    "point": "10,2000",
+    "label": "OPTDRIVE",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "scenario": "cm-V37E06E",
+  "mission": "cm",
+  "centiseconds": 3000,
+  "keys": "V37E06E",
+  "inputs": {},
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "samples": 3000,
+  "equal": 2998,
+  "differ": 2,
+  "major_mode": {
+   "native": "06",
+   "yaagc": "06"
+  },
+  "routine_mismatches": [],
+  "unregistered": [],
+  "module_loads": 264,
+  "loads_per_second": 8.8,
+  "loads_by_point": [
+   {
+    "module": "cm_t4rupt_imu",
+    "slot": 1,
+    "kind": "basic",
+    "point": "06,2174",
+    "label": "IMUMON",
+    "count": 63
+   },
+   {
+    "module": "cm_t4rupt_optics",
+    "slot": 1,
+    "kind": "basic",
+    "point": "06,2765",
+    "label": "OPTMON",
+    "count": 62
+   },
+   {
+    "module": "service_transfer",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3560",
+    "label": "DOWNFLAG",
+    "count": 12
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2740",
+    "label": "IBNKCALL",
+    "count": 9
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2414",
+    "label": "LODSAMPT",
+    "count": 7
+   },
+   {
+    "module": "lanec_pin_keys_num_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "40,2000",
+    "label": "CHARIN",
+    "count": 7
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2662",
+    "label": "BANKCALL",
+    "count": 5
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2675",
+    "label": "SWRETURN",
+    "count": 4
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2701",
+    "label": "POSTJUMP",
+    "count": 3
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2704",
+    "label": "BANKJUMP",
+    "count": 3
+   },
+   {
+    "module": "lanec_pin_keys_cmd_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "40,2060",
+    "label": "ENTERJMP",
+    "count": 2
+   },
+   {
+    "module": "service_transfer",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3546",
+    "label": "UPFLAG",
+    "count": 2
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "40,3441",
+    "label": "DSPMMJB",
+    "count": 2
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2171",
+    "label": "NVMONOPT",
+    "count": 2
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3344",
+    "label": "NV50DSP+2",
+    "count": 2
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2447",
+    "label": "FLASHOFF",
+    "count": 2
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3345",
+    "label": "NV50DSP+3",
+    "count": 2
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3350",
+    "label": "NV50DSP+6",
+    "count": 2
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3352",
+    "label": "NV50DSP+10",
+    "count": 2
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3354",
+    "label": "BLANKCHK",
+    "count": 2
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2271",
+    "label": "BLANKSUB",
+    "count": 2
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3357",
+    "label": "PERFCHEK",
+    "count": 2
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2526",
+    "label": "GOPROG",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "20,2000",
+    "label": "VAC5STOR",
+    "count": 1
+   },
+   {
+    "module": "service_transfer",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3606",
+    "label": "GENTRAN",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "20,2033",
+    "label": "V5OUT1+6",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2535",
+    "label": "GOPROG+7",
+    "count": 1
+   },
+   {
+    "module": "cm_alarm",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3650",
+    "label": "ALARM",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2750",
+    "label": "PTBAD+2",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,3153",
+    "label": "T5IDLOC",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_keys_cmd_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "40,2255",
+    "label": "VERB",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,2035",
+    "label": "ENTPAS0",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,3431",
+    "label": "MMCHANG+1",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2011",
+    "label": "V37",
+    "count": 1
+   },
+   {
+    "module": "cm_phase_table",
+    "slot": 1,
+    "kind": "basic",
+    "point": "02,3412",
+    "label": "PHASCHNG",
+    "count": 1
+   },
+   {
+    "module": "cm_interp_core",
+    "slot": 0,
+    "kind": "basic",
+    "point": "03,2006",
+    "label": "INTPRET",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "04,2131",
+    "label": "ROC+1",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "interp",
+    "point": "13,3442",
+    "label": "INTSTALL",
+    "count": 1
+   },
+   {
+    "module": "cm_stateup",
+    "slot": 0,
+    "kind": "interp",
+    "point": "04,2133",
+    "label": "DUMMYAD",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2134",
+    "label": "DUMMYAD+1",
+    "count": 1
+   },
+   {
+    "module": "cm_kalcmanu_steering",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2526",
+    "label": "STOPRATE",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2336",
+    "label": "INITSUB+6",
+    "count": 1
+   },
+   {
+    "module": "cm_p40_p47",
+    "slot": 0,
+    "kind": "basic",
+    "point": "24,2304",
+    "label": "SETMINDB",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2344",
+    "label": "INITSUB+14",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2364",
+    "label": "RAKE+15",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,3536",
+    "label": "CLEARMRK",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2147",
+    "label": "DUMMYAD+14",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2151",
+    "label": "DUMMYAD+16",
+    "count": 1
+   },
+   {
+    "module": "cm_update",
+    "slot": 0,
+    "kind": "basic",
+    "point": "27,3757",
+    "label": "UPACTOFF",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2153",
+    "label": "DUMMYAD+20",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2155",
+    "label": "DUMMYAD+22",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2157",
+    "label": "DUMMYAD+24",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2266",
+    "label": "NOUVEAU+6",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2513",
+    "label": "V37KLEAN",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2753",
+    "label": "ISWRETRN",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2207",
+    "label": "GROUPKIL+2",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2651",
+    "label": "ENEMA",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2707",
+    "label": "PCLOOP+17",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2666",
+    "label": "SWCALL",
+    "count": 1
+   },
+   {
+    "module": "cm_restart_routines",
+    "slot": 1,
+    "kind": "basic",
+    "point": "01,3520",
+    "label": "RESTARTS",
+    "count": 1
+   },
+   {
+    "module": "cm_fresh_start",
+    "slot": 0,
+    "kind": "basic",
+    "point": "05,2735",
+    "label": "PINACT",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3261",
+    "label": "INITDSP",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2773",
+    "label": "SUPERSW",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3265",
+    "label": "INITDSP+4",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2274",
+    "label": "V37XEQ",
+    "count": 1
+   },
+   {
+    "module": "cm_phase_table",
+    "slot": 1,
+    "kind": "basic",
+    "point": "02,3357",
+    "label": "NEWMODEA",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2326",
+    "label": "V37XEQC+3",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2473",
+    "label": "RELDSP",
+    "count": 1
+   },
+   {
+    "module": "cm_v37",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,2327",
+    "label": "V37XEQC+4",
+    "count": 1
+   },
+   {
+    "module": "imu_mode_switching",
+    "slot": 0,
+    "kind": "basic",
+    "point": "26,3660",
+    "label": "P06",
+    "count": 1
+   },
+   {
+    "module": "imu_mode_switching",
+    "slot": 0,
+    "kind": "basic",
+    "point": "26,3662",
+    "label": "PRESTAND",
+    "count": 1
+   },
+   {
+    "module": "cm_imu_calibration",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2554",
+    "label": "FINETIME+1",
+    "count": 1
+   },
+   {
+    "module": "imu_mode_switching",
+    "slot": 0,
+    "kind": "basic",
+    "point": "26,3722",
+    "label": "SCALPREP+3",
+    "count": 1
+   },
+   {
+    "module": "imu_mode_switching",
+    "slot": 0,
+    "kind": "basic",
+    "point": "07,3060",
+    "label": "RNDREFDR",
+    "count": 1
+   },
+   {
+    "module": "imu_mode_switching",
+    "slot": 0,
+    "kind": "basic",
+    "point": "26,3675",
+    "label": "PRESTAND+13",
+    "count": 1
+   },
+   {
+    "module": "imu_mode_switching",
+    "slot": 0,
+    "kind": "basic",
+    "point": "26,3677",
+    "label": "PRESTAND+15",
+    "count": 1
+   },
+   {
+    "module": "imu_mode_switching",
+    "slot": 0,
+    "kind": "basic",
+    "point": "26,3701",
+    "label": "PRESTAND+17",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3045",
+    "label": "GOPERF1",
+    "count": 1
+   },
+   {
+    "module": "cm_interbank_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2711",
+    "label": "MAKECADR",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3153",
+    "label": "SAVELOCR+2",
+    "count": 1
+   },
+   {
+    "module": "cm_interpreter",
+    "slot": 0,
+    "kind": "basic",
+    "point": "03,2706",
+    "label": "Q+1",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3007",
+    "label": "IFLEGAL+4",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2443",
+    "label": "FLASHON",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3503",
+    "label": "FLASHSUB+1",
+    "count": 1
+   },
+   {
+    "module": "service_transfer",
+    "slot": 0,
+    "kind": "basic",
+    "point": "03,3722",
+    "label": "UPENT2",
+    "count": 1
+   },
+   {
+    "module": "lanec_di_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "10,3511",
+    "label": "ITISMASK+1",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2223",
+    "label": "ENDIDLE",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "scenario": "cm-V37E06E-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 3000,
+  "keys": "V37E06E",
+  "inputs": {},
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 3005,
+  "periods_taken": 3000,
+  "periods_dropped": 5,
+  "agc_centiseconds": 3000,
+  "native_routines": 160860,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-V37E06E-scaled-x0.5",
+  "mission": "cm",
+  "centiseconds": 3000,
+  "keys": "V37E06E",
+  "inputs": {},
+  "schedule": "1.7,2,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 3000,
+  "periods_taken": 3000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 3000,
+  "native_routines": 209333,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-V37E06E-scaled-overrun",
+  "mission": "cm",
+  "centiseconds": 3000,
+  "keys": "V37E06E",
+  "inputs": {},
+  "schedule": "4,1,2,1",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 3313,
+  "periods_taken": 3000,
+  "periods_dropped": 313,
+  "agc_centiseconds": 3000,
+  "native_routines": 30479,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-V37E06E-scaled-work",
+  "mission": "cm",
+  "centiseconds": 3000,
+  "keys": "V37E06E",
+  "inputs": {},
+  "schedule": "W",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 3002,
+  "periods_taken": 3002,
+  "periods_dropped": 0,
+  "agc_centiseconds": 3002,
+  "native_routines": 6357,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 2,
+   "mean_abs_error": 224.0
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-entry-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 32000,
+  "keys": "@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-entry.load",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_AERO": "355"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 32041,
+  "periods_taken": 32041,
+  "periods_dropped": 0,
+  "agc_centiseconds": 32041,
+  "native_routines": 1389253,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 7100524,
+   "yaagc": 6902210,
+   "percent": 2.9,
+   "routines": 29376,
+   "mean_abs_error": 34.3
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p52-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 20000,
+  "keys": "@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,9000:033=077777,11600:033=077757,13000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 20001,
+  "periods_taken": 20000,
+  "periods_dropped": 1,
+  "agc_centiseconds": 20000,
+  "native_routines": 1209437,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1024436,
+   "yaagc": 989248,
+   "percent": 3.6,
+   "routines": 5194,
+   "mean_abs_error": 49.1
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p23-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 30000,
+  "keys": "@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E@20500V33E@25000V33E@27000V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,10000:033=077777,12000:033=077757,16000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p23.load,10500:tools/flight_scenarios/cm-p23-cal.load,16500:tools/flight_scenarios/cm-p23-mark.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 30003,
+  "periods_taken": 30000,
+  "periods_dropped": 3,
+  "agc_centiseconds": 30000,
+  "native_routines": 1870738,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 851516,
+   "yaagc": 794959,
+   "percent": 7.1,
+   "routines": 4691,
+   "mean_abs_error": 49.2
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p40-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 74000,
+  "keys": "@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@69000V33E@70500V33E@72000V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SPS": "43900,0.5,-0.3",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 74000,
+  "periods_taken": 74000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 74000,
+  "native_routines": 3657377,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4187520,
+   "yaagc": 4088096,
+   "percent": 2.4,
+   "routines": 17851,
+   "mean_abs_error": 56.6
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p11-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 90000,
+  "keys": "@2000V37E01E@84000V82E@86000V33E@88000V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_IMU": "1",
+   "FLIGHT_SATURN": "10000",
+   "FLIGHT_LOAD": "100:tools/flight_scenarios/cm-p11.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 100023,
+  "periods_taken": 100023,
+  "periods_dropped": 0,
+  "agc_centiseconds": 90000,
+  "native_routines": 4444179,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 20220248,
+   "yaagc": 17168875,
+   "percent": 17.8,
+   "routines": 140033,
+   "mean_abs_error": 48.2
+  },
+  "reached": {
+   "23,2332": 84150
+  }
+ },
+ {
+  "scenario": "cm-tli-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 70000,
+  "keys": "@3000V37E47E@66000V33E@66500V37E00E@67000V82E@69000V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SIVB": "30000,0.423909,-0.000000,-0.905705",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-tli.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 70000,
+  "periods_taken": 70000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 70000,
+  "native_routines": 3859235,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4638508,
+   "yaagc": 4721610,
+   "percent": -1.8,
+   "routines": 22460,
+   "mean_abs_error": 48.6
+  },
+  "reached": {
+   "23,2332": 67150
+  }
+ },
+ {
+  "scenario": "cm-p22-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 23000,
+  "keys": "@4500V37E22E@6000V33E@7000V22E10000E@7500V33E@8500V33E@13200M@15200M@15600V33E@16200V33E@16800V33E@18500V33E@20300V33E@21500V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,13000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p22.load,13100:tools/flight_scenarios/cm-p22-mark1.load,15100:tools/flight_scenarios/cm-p22-mark2.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 23004,
+  "periods_taken": 23000,
+  "periods_dropped": 4,
+  "agc_centiseconds": 23000,
+  "native_routines": 1189461,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3919720,
+   "yaagc": 3877106,
+   "percent": 1.1,
+   "routines": 22017,
+   "mean_abs_error": 49.2
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-tei-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 56000,
+  "keys": "@4500V37E30E@5000V25E+00000E+00005E+00000E@6400V33E@6800V25E+32836E+00000E+00000E@8100V33E@9500V33E@10500V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@47000V33E@48500V33E@50000V37E00E@51000V82E@53000V33E@55000V34E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SPS": "16400,-0.3,0.2",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-tei.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 56000,
+  "periods_taken": 56000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 56000,
+  "native_routines": 2871690,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 2565772,
+   "yaagc": 2512482,
+   "percent": 2.1,
+   "routines": 11637,
+   "mean_abs_error": 52.6
+  },
+  "reached": {
+   "23,2332": 51150
+  }
+ },
+ {
+  "scenario": "cm-p37-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 51000,
+  "keys": "@4500V37E37E@5000V25E+00001E+00000E+00000E@6400V33E@7000V22E+00100E@7600V23E-00650E@8200V33E@11000V33E@12000V33E@13000V33E@14000V33E@38000V33E@39000V33E@40000V33E@41000V33E@42000V33E@43000V33E@44000V33E@45000V37E00E@46000V82E@47500V33E@49500V34E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p37.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 51000,
+  "periods_taken": 51000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 51000,
+  "native_routines": 2159815,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 16253992,
+   "yaagc": 15617678,
+   "percent": 4.1,
+   "routines": 85741,
+   "mean_abs_error": 47.8
+  },
+  "reached": {
+   "23,2332": 46150
+  }
+ },
+ {
+  "scenario": "cm-p20-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 25000,
+  "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+   "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 25036,
+  "periods_taken": 25036,
+  "periods_dropped": 0,
+  "agc_centiseconds": 25036,
+  "native_routines": 663334,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 12676268,
+   "yaagc": 12605657,
+   "percent": 0.6,
+   "routines": 75165,
+   "mean_abs_error": 45.7
+  },
+  "reached": {
+   "37,2466": 9271
+  }
+ },
+ {
+  "scenario": "cm-csi-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 24000,
+  "keys": "@2200V37E72E@3000V25E+00000E+00010E+02010E@4200V33E@4800V25E+00001E+02660E+00000E@5800V33E@6400V33E@7000V33E@10500V33E@11300V33E@12100V33E@13000V37E32E@13800V25E+00000E+00010E+02010E@15000V33E@15600V25E+00001E+20660E+00000E@16600V33E@17200V33E@17800V33E@21300V33E@22100V33E@22900V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-csi.load",
+   "FLIGHT_RR": "2000:-259681.119,1759068.734,371336.732,1576.461,307.349,-276.315:34932.422,1820802.682,320471.671,1594.204,27.571,-330.419",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 24000,
+  "periods_taken": 24000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 24000,
+  "native_routines": 1270648,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3791120,
+   "yaagc": 3653154,
+   "percent": 3.8,
+   "routines": 19554,
+   "mean_abs_error": 46.6
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-cdh-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 20500,
+  "keys": "@2200V37E73E@3000V25E+00001E+00008E+02310E@4200V33E@5000V33E@18000V33E@18800V33E@19600V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-cdh.load",
+   "FLIGHT_RR": "2000:-267291.806,1762276.412,373515.357,1587.947,300.827,-279.905:34932.422,1820802.682,320471.671,1594.204,27.571,-330.419",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 20500,
+  "periods_taken": 20500,
+  "periods_dropped": 0,
+  "agc_centiseconds": 20500,
+  "native_routines": 598054,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 10194724,
+   "yaagc": 10026449,
+   "percent": 1.7,
+   "routines": 50559,
+   "mean_abs_error": 40.3
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-cdh-csm-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 20500,
+  "keys": "@2200V37E33E@3000V25E+00001E+00008E+02310E@4200V33E@5000V33E@18000V33E@18800V33E@19600V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-cdh-csm.load",
+   "FLIGHT_RR": "2000:-259681.119,1759068.734,371336.732,1576.461,307.349,-276.315:42138.296,1816290.127,318143.276,1583.547,36.018,-326.656",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 20500,
+  "periods_taken": 20500,
+  "periods_dropped": 0,
+  "agc_centiseconds": 20500,
+  "native_routines": 553167,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 10830024,
+   "yaagc": 10627072,
+   "percent": 1.9,
+   "routines": 53770,
+   "mean_abs_error": 40.8
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-rendezvous-tpm-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 79000,
+  "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E@21000V83E@23000V34E@23500V85E@25000V34E@26000V37E34E@26700V25E+00000E+00006E+03100E@28000V33E@29000V33E@32000V33E@36000V33E@38000V33E@40000V33E@41000V33E@42000V37E35E@43000V33E@44000V33E@45000V33E@46000V33E@47000V33E@48000V33E@50000V37E74E@51000V25E+00000E+00012E+00000E@52500V33E@52800V25E+00000E+02660E+13000E@54200V33E@55000V33E@56000V33E@57000V33E@58000V33E@59000V33E@60000V33E@61000V33E@62000V33E@64000V37E75E@65000V33E@66000V33E@67000V33E@68000V33E@69000V33E@70000V33E@72000V37E76E@73000V25E+00010E+00000E+00000E@74000V33E@75000V33E@76000V33E@77000V56E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+   "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 79000,
+  "periods_taken": 79000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 79000,
+  "native_routines": 2391162,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 36177008,
+   "yaagc": 35053971,
+   "percent": 3.2,
+   "routines": 203105,
+   "mean_abs_error": 46.0
+  },
+  "reached": {
+   "43,2570": 21245,
+   "31,2000": 21245,
+   "43,2602": 23738,
+   "43,2657": 77150
+  }
+ },
+ {
+  "scenario": "cm-stable-orbit-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 74000,
+  "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E@21000V37E38E@22500V25E+00000E+00012E+00000E@24000V33E@24300V23E+13000E@25300V33E@27000V33E@30000V33E@31000V33E@33000V33E@55000V33E@56000V33E@57000V37E39E@59000V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+   "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 74000,
+  "periods_taken": 74000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 74000,
+  "native_routines": 1533542,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 44124448,
+   "yaagc": 43259697,
+   "percent": 2.0,
+   "routines": 237095,
+   "mean_abs_error": 43.2
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-stable-orbit-lm-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 74000,
+  "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E@21000V37E78E@22500V25E+00000E+00012E+00000E@24000V33E@24300V23E+13000E@25300V33E@27000V33E@30000V33E@31000V33E@33000V33E@55000V33E@56000V33E@57000V37E79E@59000V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+   "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 74000,
+  "periods_taken": 74000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 74000,
+  "native_routines": 1499263,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 44601780,
+   "yaagc": 43751560,
+   "percent": 1.9,
+   "routines": 239325,
+   "mean_abs_error": 43.1
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-tpi-search-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 44000,
+  "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E@21000V37E17E@22000V25E+00000E+00010E+00000E@23400V33E@26000V33E@29000V33E@31000V33E@32000V37E77E@33000V25E+00000E+00010E+00000E@34400V33E@37000V33E@40000V33E@42000V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+   "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 44038,
+  "periods_taken": 44038,
+  "periods_dropped": 0,
+  "agc_centiseconds": 44038,
+  "native_routines": 1036735,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 24058224,
+   "yaagc": 23464034,
+   "percent": 2.5,
+   "routines": 139279,
+   "mean_abs_error": 46.9
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p20-vhf-dropout-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 32000,
+  "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+   "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+   "FLIGHT_BUSY_SAMPLE": "100",
+   "FLIGHT_RR_DROP": "18000-19000"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 32000,
+  "periods_taken": 32000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 32000,
+  "native_routines": 803965,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 16798152,
+   "yaagc": 16601356,
+   "percent": 1.2,
+   "routines": 98173,
+   "mean_abs_error": 46.5
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-uplink-accept-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 14000,
+  "keys": "",
+  "inputs": {
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_DOWNRUPT": "1",
+   "FLIGHT_UPLINK": "2000:V71E;2400:4E;2800:3662E;3200:0E;3600:12000E;4200:V33E;5000:V72E;5400:3E;5800:3662E;6200:1E;6600:V33E;7200:V73E;7600:0E;8000:144E;8400:V33E;9200:V70E;9600:0E;10000:144E;10400:V33E;11200:V06N37E;12000:V74E"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 14000,
+  "periods_taken": 14000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 14000,
+  "native_routines": 900162,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4200,
+   "yaagc": 1761,
+   "percent": 138.5,
+   "routines": 30,
+   "mean_abs_error": 112.7
+  },
+  "reached": {
+   "27,3715": 10462,
+   "27,3624": 4262,
+   "27,3656": 6662,
+   "27,3530": 8461
+  }
+ },
+ {
+  "scenario": "cm-uplink-reject-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 9000,
+  "keys": "",
+  "inputs": {
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_UPLINK": "2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 9000,
+  "periods_taken": 9000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 9000,
+  "native_routines": 585205,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 24460,
+   "yaagc": 24550,
+   "percent": -0.4,
+   "routines": 183,
+   "mean_abs_error": 68.4
+  },
+  "reached": {
+   "27,3624": null
+  }
+ },
+ {
+  "scenario": "cm-p52-imu-fail-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 20000,
+  "keys": "@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,6000:030=027377,7000:030=037377,9000:033=077777,11600:033=077757,13000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 20001,
+  "periods_taken": 20000,
+  "periods_dropped": 1,
+  "agc_centiseconds": 20000,
+  "native_routines": 1209426,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1024436,
+   "yaagc": 989248,
+   "percent": 3.6,
+   "routines": 5194,
+   "mean_abs_error": 49.1
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p52-imu-cage-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 20000,
+  "keys": "@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,6000:030=035377,6500:030=037377,9000:033=077777,11600:033=077757,13000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 20002,
+  "periods_taken": 20000,
+  "periods_dropped": 2,
+  "agc_centiseconds": 20000,
+  "native_routines": 1212735,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 983960,
+   "yaagc": 941699,
+   "percent": 4.5,
+   "routines": 4948,
+   "mean_abs_error": 49.7
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p52-gimbal-lock-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 21000,
+  "keys": "@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,9000:033=077777,11600:033=077757,13000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load",
+   "FLIGHT_POKE": "3000:034=014600,3600:034=77773,19000:034=017200"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 21001,
+  "periods_taken": 21000,
+  "periods_dropped": 1,
+  "agc_centiseconds": 21000,
+  "native_routines": 1274700,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1024436,
+   "yaagc": 989248,
+   "percent": 3.6,
+   "routines": 5194,
+   "mean_abs_error": 49.1
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p20-crew-verbs-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 32000,
+  "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E@21000V90E@22000V33E@23000V33E@24000V33E@25000V33E@26000V44E@27000V45E@28000V88E@29000V58E@30000V93E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+   "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+   "FLIGHT_BUSY_SAMPLE": "100"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 32000,
+  "periods_taken": 32000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 32000,
+  "native_routines": 1011780,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 14028292,
+   "yaagc": 13957862,
+   "percent": 0.5,
+   "routines": 82215,
+   "mean_abs_error": 45.6
+  },
+  "reached": {
+   "20,2164": 21245
+  }
+ },
+ {
+  "scenario": "cm-p23-attached-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 30000,
+  "keys": "@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E@20500V33E@25000V33E@27000V37E00E@28500V66E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,10000:033=077777,12000:033=077757,16000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p23.load,10500:tools/flight_scenarios/cm-p23-cal.load,16500:tools/flight_scenarios/cm-p23-mark.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 30003,
+  "periods_taken": 30000,
+  "periods_dropped": 3,
+  "agc_centiseconds": 30000,
+  "native_routines": 1870196,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 856432,
+   "yaagc": 799004,
+   "percent": 7.2,
+   "routines": 4723,
+   "mean_abs_error": 49.4
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-v49-maneuver-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 15000,
+  "keys": "@2000V76E@3000V49E@4000V25E+18000E+00000E+00000E@5500V33E@6500V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SPS": "43900,0.5,-0.3",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 15000,
+  "periods_taken": 15000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 15000,
+  "native_routines": 910781,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 862132,
+   "yaagc": 865743,
+   "percent": -0.4,
+   "routines": 3766,
+   "mean_abs_error": 33.3
+  },
+  "reached": {
+   "27,2330": 3151
+  }
+ },
+ {
+  "scenario": "cm-p21-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 25000,
+  "keys": "@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E@19500V37E21E@20500V33E@21500V33E@22500V33E@23500V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,9000:033=077777,11600:033=077757,13000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 25001,
+  "periods_taken": 25000,
+  "periods_dropped": 1,
+  "agc_centiseconds": 25000,
+  "native_routines": 1463448,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1962660,
+   "yaagc": 1949476,
+   "percent": 0.7,
+   "routines": 10351,
+   "mean_abs_error": 49.7
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p52-coarse-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 14000,
+  "keys": "@4500V37E52E@6500V33E@7500V33E@8500V33E@9500V33E@12000V34E@13000V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_IMU": "1",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 14000,
+  "periods_taken": 14000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 14000,
+  "native_routines": 895599,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 194124,
+   "yaagc": 195507,
+   "percent": -0.7,
+   "routines": 1115,
+   "mean_abs_error": 53.3
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p41-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 53000,
+  "keys": "@4500V37E30E@5500V25E+00000E+00008E+00000E@6800V33E@7200V25E+00050E+00000E+00000E@8500V33E@9500V33E@10500V33E@11500V37E41E@12500V33E@13500E@50000V33E@51000V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SPS": "28800",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p23.load",
+   "FLIGHT_POKE": "2100:3246=00005,2100:3250=57232,2100:3252=00004"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 53000,
+  "periods_taken": 53000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 53000,
+  "native_routines": 3066616,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 2068272,
+   "yaagc": 2001125,
+   "percent": 3.4,
+   "routines": 12532,
+   "mean_abs_error": 53.3
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-v48-dap-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 12000,
+  "keys": "@2500V48E@3500V21E21112E@4500V33E@5500V33E@6500V33E@7500V46E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SPS": "43900,0.5,-0.3",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 12000,
+  "periods_taken": 12000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 12000,
+  "native_routines": 757384,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": null,
+  "reached": {}
+ },
+ {
+  "scenario": "cm-p40-sps-fail-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 37000,
+  "keys": "@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@32000V34E@34000V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 37000,
+  "periods_taken": 37000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 37000,
+  "native_routines": 2208892,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1007592,
+   "yaagc": 976395,
+   "percent": 3.2,
+   "routines": 5095,
+   "mean_abs_error": 48.5
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "cm-entry-overload-scaled-x1",
+  "mission": "cm",
+  "centiseconds": 32000,
+  "keys": "@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-entry.load",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_AERO": "355",
+   "FLIGHT_STEAL": "21000-27000:600",
+   "FLIGHT_BUSY_SAMPLE": "50"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "eb940dc53324",
+  "cia_interrupts": 32015,
+  "periods_taken": 32015,
+  "periods_dropped": 0,
+  "agc_centiseconds": 32015,
+  "native_routines": 1172342,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 6407056,
+   "yaagc": 6234339,
+   "percent": 2.8,
+   "routines": 26182,
+   "mean_abs_error": 34.4
+  },
+  "reached": {}
+ }
+]
