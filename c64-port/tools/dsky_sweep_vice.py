@@ -375,7 +375,8 @@ def main():
                    help="write the run's failures as a known list (keeping the reasons of --known's entries)")
     p.add_argument('--evidence', type=pathlib.Path, help='also copy dsky-sweep.json here (evidence)')
     p.add_argument('--replay-exact', action='store_true',
-                   help='compare every word (no SCHEDULE_SKIP), as acceptance item 6 needs')
+                   help='leave no SCHEDULE_SKIP word out of the compare, as acceptance item 6 needs '
+                        '(a TIME5 phase one count apart still matches, and counts as skipped)')
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
     p.add_argument('--rom-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
