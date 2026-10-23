@@ -6,7 +6,8 @@
 # (platform/x86/test_vehicle_models.c) and the radar's on both missions
 # (platform/x86/test_radar_models.c), the landing radar's on the LM
 # (platform/x86/test_landing_radar.c), the TC trap's
-# (platform/x86/test_tc_trap.c), the table kinds, then P00 on both
+# (platform/x86/test_tc_trap.c), the table kinds, the RESTART lamp's
+# (platform/x86/test_restart_lamp.c, built by x86_flight_check.py), then P00 on both
 # missions and the LM DAP hold in lockstep against yaAGC (clock frozen, the
 # x86 program's schedule), in both modes. x86-flight-mct re-measures the
 # routine costs (docs/flight-routine-mct.json) from the host differential.
