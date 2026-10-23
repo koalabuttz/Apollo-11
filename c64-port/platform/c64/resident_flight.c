@@ -38,6 +38,7 @@ __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware={.channel
 __attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =
                                                                         (apollo_overlay_state *)1};
 __attribute__((used, section(".rk_restart_lamp"))) uint8_t rk_restart_lamp;
+__attribute__((used, section(".rk_part"))) uint8_t rk_part[2];
 uint16_t rk_pending,rk_ticks;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
@@ -65,12 +66,19 @@ __attribute__((used)) uint8_t rk_cap; /* read by name in rk_realtime_cap */
 /* The MCT left before the next step (at least 1: rk_rupts drained the
  * whole steps at the step's start), in platform/c64/rk_clock.S. */
 uint16_t rk_budget(void);
+/* The part group of the run rk_charge charges next (rk_direct sets it), 0
+ * for any other run. */
+static uint8_t rk_charge_group;
 /* n units of mct each: n added mct times (no multiply on the 6502; mct
  * is a weight, at most 255, and 1 for a module that reports MCT), or for
  * the idle loop (RK_MCT_IDLE), the rest of the period, which rk_rupts
  * drops if an interrupt request ends the idle first. */
 __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     uint16_t w=rk_work;
+    /* rk_part_steps: a part going on with the routine the previous step's
+     * part handed back is not charged its first routine again. */
+    if (rk_charge_group && rk_charge_group == rk_part_prev && n) --n;
+    rk_charge_group = 0;
     if (mct == RK_MCT_IDLE) {
         rk_work = rk_phase_rest[rk_tick_phase & 15u]; /* 0-8: a byte index */
         rk_idle = 1;
@@ -545,6 +553,7 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         enum exec_status status;
 #ifdef RK_WORK_CLOCK
         uint8_t mct = t->mct;
+        rk_charge_group = t->part;
 #if RK_LM /* only the LM store packs the idle loop beside interrupt code */
         if (t->idle && !rk_hardware.in_interrupt) mct = RK_MCT_IDLE;
 #endif
@@ -586,10 +595,14 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         }
         RK_PROF(6);
 #ifdef RK_WORK_CLOCK
+        if (status == EXEC_UNMAPPED) rk_part_cont = rk_charge_group;
         rk_charge(steps, mct);
 #endif
         return rk_module_status(status,steps,limit);
     }
+#ifdef RK_WORK_CLOCK
+    rk_charge_group = 0; /* no slot ran: the resolver's charge is its own */
+#endif
     return EXEC_UNMAPPED;
 }
 #endif
@@ -601,6 +614,10 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     apollo_ov2_cont at;
     enum exec_status status;
     uint16_t loc;
+#ifdef RK_WORK_CLOCK
+    rk_part_prev = rk_part_cont;
+    rk_part_cont = 0;
+#endif
 #ifndef RK_NO_DIRECT
     rk_point = AGC_TRANSFER_NONE;
 #endif

@@ -189,6 +189,9 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
 #ifdef FS_IDLE
   t->idle = 1;
 #endif
+#ifdef FS_PART_GROUP
+  t->part = FS_PART_GROUP;
+#endif
   t->lo = FS_KEY_LO;
   t->span = FS_KEY_SPAN;
 #ifdef FS_IO_KIND
@@ -245,6 +248,9 @@ uint16_t apollo_ov2_main(apollo_ov2_frame *f,uint16_t selector){
  if(FS_MCT_NOW==RK_MCT_IDLE) e->work=e->budget;
  else {   /* by adding (the asm as in rk_module_limit): no __mulhi3 */
   uint16_t w=0;
+#ifdef FS_PART_GROUP
+  steps = rk_part_steps(FS_PART_GROUP, status, steps);
+#endif
   while(steps--) { w+=FS_MCT; __asm__("" : "+r"(w)); }
   e->work=w;
  }
