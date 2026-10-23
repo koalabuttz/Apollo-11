@@ -12,15 +12,25 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "22bfa334ba31",
+ "commit": "bdb3bb4a485d",
  "cia_interrupts": 37000,
  "periods_taken": 37000,
  "periods_dropped": 0,
  "agc_centiseconds": 37000,
- "native_routines": 2209038,
+ "native_routines": 2208892,
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
- "reached": {},
- "log_sha256": "862364a5f6e3e8e08ef4d336dc5e8c61a1876ee6a16e0619dbb8476050e684cf"
+ "interpretive_charge": {
+  "fitted": 1007592,
+  "yaagc": 976395,
+  "percent": 3.2,
+  "routines": 5095,
+  "mean_abs_error": 48.5
+ },
+ "reached": {
+  "20,2230": 30220,
+  "24,3347": 30252
+ },
+ "log_sha256": "a5fd6bb1f26c3583bf11580163f86494be54d921810d35cdd29596b0bcddbce1"
 }

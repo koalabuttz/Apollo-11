@@ -1,17 +1,17 @@
 {
  "scenario": "cm-tli",
- "ok": false,
+ "ok": true,
  "status": 0,
  "z": "03231",
  "fb": "02000",
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 41137845,
- "agc_cs": 301,
+ "wall_cycles": 41404637,
+ "agc_cs": 308,
  "dropped_ticks": 0,
- "steps": 921,
- "wall_per_agc": 13.872,
+ "steps": 935,
+ "wall_per_agc": 13.644,
  "lost": false,
  "mission": "cm",
  "snap_cs": 3250,
@@ -31,33 +31,82 @@
  },
  "replay_rows": 3,
  "replay_applied": 3,
- "replay_end_cs": 301,
+ "replay_end_cs": 308,
  "replay_ended": true,
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {
+   "2": 1,
+   "3": 1
+  },
+  "erasable": [],
+  "pipas": [],
+  "channels": [
+   "15"
+  ],
+  "requests": 32,
+  "channel_set": {
+   "15": 28
+  },
+  "channel_clear": {
+   "15": 32739
+  },
+  "channel_changed": {
+   "15": 27
+  }
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 32,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 32,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [],
+  "changed": []
+ },
  "replay_unpaired": [],
  "replay_unpaired_count": 0,
  "replay_end_shift_cs": 0,
  "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
  "replay_matched_cs": [
-  51
+  51,
+  201,
+  251,
+  301
  ],
- "replay_differences": 2,
- "replay_differ_at_cs": 201,
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
  "replay_skipped": [],
- "replay_first": [
-  {
-   "at": "TIME3",
-   "host": "35655",
-   "c64": "35654"
-  },
-  {
-   "at": "1400",
-   "host": "70714",
-   "c64": "70715"
-  }
- ],
+ "replay_first": [],
  "snap_at": 3250,
  "snap_slid": false,
  "requested_cs": 301,
  "host_holes": [],
- "commit": "22bfa334ba31"
+ "downrupt": false,
+ "commit": "bdb3bb4a485d"
 }

@@ -9,7 +9,7 @@
  "replay_rows": 16,
  "replay_ended": true,
  "replay_differences": 0,
- "commit": "22bfa334ba31",
+ "commit": "bdb3bb4a485d",
  "reu_bounds": {
   "ok": true
  },
@@ -36,8 +36,10 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 321,
-   "wall_per_agc": 3.306,
-   "replay_skipped": []
+   "wall_per_agc": 3.326,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
   },
   {
    "ok": true,
@@ -61,8 +63,10 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 320,
-   "wall_per_agc": 4.156,
-   "replay_skipped": []
+   "wall_per_agc": 4.173,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
   },
   {
    "ok": true,
@@ -86,8 +90,10 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 321,
-   "wall_per_agc": 2.065,
-   "replay_skipped": []
+   "wall_per_agc": 2.103,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
   }
  ]
 }

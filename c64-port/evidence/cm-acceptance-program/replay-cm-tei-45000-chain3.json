@@ -6,10 +6,10 @@
  "chain": 3,
  "ok": true,
  "status": 0,
- "replay_rows": 266,
+ "replay_rows": 272,
  "replay_ended": true,
  "replay_differences": 0,
- "commit": "22bfa334ba31",
+ "commit": "bdb3bb4a485d",
  "reu_bounds": {
   "ok": true
  },
@@ -25,10 +25,10 @@
    "replay_first": [],
    "replay_matched_cs": [
     50,
-    100,
-    150,
-    200,
-    250,
+    101,
+    151,
+    201,
+    251,
     300,
     320
    ],
@@ -36,33 +36,10 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 320,
-   "wall_per_agc": 22.481,
-   "replay_skipped": []
-  },
-  {
-   "ok": true,
-   "status": 0,
-   "at": "01,3231",
-   "seam": null,
-   "error": null,
-   "replay_differences": 0,
-   "replay_differ_at_cs": null,
-   "replay_first": [],
-   "replay_matched_cs": [
-    50,
-    100,
-    150,
-    200,
-    250,
-    300,
-    320
-   ],
-   "replay_end_shift_cs": 0,
-   "replay_end_paired": true,
-   "replay_unpaired_count": 0,
-   "requested_cs": 320,
-   "wall_per_agc": 22.906,
-   "replay_skipped": []
+   "wall_per_agc": 23.342,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
   },
   {
    "ok": true,
@@ -78,16 +55,45 @@
     101,
     150,
     201,
-    251,
-    300,
-    320
+    250,
+    301,
+    321
    ],
    "replay_end_shift_cs": 0,
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
-   "requested_cs": 320,
-   "wall_per_agc": 16.36,
-   "replay_skipped": []
+   "requested_cs": 321,
+   "wall_per_agc": 23.573,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
+  },
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3231",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    51,
+    100,
+    151,
+    200,
+    250,
+    300,
+    321
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 321,
+   "wall_per_agc": 16.55,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
   }
  ]
 }

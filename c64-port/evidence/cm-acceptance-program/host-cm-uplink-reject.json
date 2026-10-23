@@ -9,7 +9,7 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "22bfa334ba31",
+ "commit": "bdb3bb4a485d",
  "cia_interrupts": 9000,
  "periods_taken": 9000,
  "periods_dropped": 0,
@@ -18,8 +18,16 @@
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 24460,
+  "yaagc": 24550,
+  "percent": -0.4,
+  "routines": 183,
+  "mean_abs_error": 68.4
+ },
  "reached": {
+  "27,3512": null,
   "27,3624": null
  },
- "log_sha256": "3da68fa645b70c490d7923a975bd8bf54e8483fa65264ea159bbf05d328e3c64"
+ "log_sha256": "6487d9a4dcdf1f73e0439004b88afb3afdf6835e4114bc9a2786533e63a91a55"
 }

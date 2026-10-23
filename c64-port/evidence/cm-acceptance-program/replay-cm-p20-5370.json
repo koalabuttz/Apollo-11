@@ -7,11 +7,11 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 79059634,
- "agc_cs": 300,
+ "wall_cycles": 79565335,
+ "agc_cs": 307,
  "dropped_ticks": 0,
- "steps": 1228,
- "wall_per_agc": 26.748,
+ "steps": 1259,
+ "wall_per_agc": 26.305,
  "lost": false,
  "mission": "cm",
  "snap_cs": 5370,
@@ -26,33 +26,75 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 10
+  "dma_unchecked": 8
  },
  "replay_rows": 9,
  "replay_applied": 9,
- "replay_end_cs": 300,
+ "replay_end_cs": 307,
  "replay_ended": true,
- "replay_unpaired": [
-  {
-   "side": "host",
-   "cs": 282
+ "replay_after_rows": 1,
+ "replay_inputs": {
+  "counts": {
+   "0": 9
   },
-  {
-   "side": "C64",
-   "cs": 285
-  }
- ],
- "replay_unpaired_count": 2,
+  "erasable": [
+   "0032",
+   "0033",
+   "0034",
+   "0035",
+   "0036"
+  ],
+  "pipas": [],
+  "channels": [],
+  "requests": 0,
+  "channel_set": {},
+  "channel_clear": {},
+  "channel_changed": {}
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 2,
+   "channel 12": 2,
+   "channel 13": 0,
+   "channel 14": 3072,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 2,
+   "channel 12": 2,
+   "channel 13": 0,
+   "channel 14": 3072,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [],
+  "changed": []
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
  "replay_end_shift_cs": 0,
  "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
  "replay_matched_cs": [
   100
  ],
- "replay_differences": 24,
+ "replay_differences": 5,
  "replay_differ_at_cs": 200,
- "replay_skipped": [
-  "TIME5 a count apart (a third of a centisecond)"
- ],
+ "replay_skipped": [],
  "replay_first": [
   {
    "at": "0020",
@@ -65,119 +107,25 @@
    "c64": "03235"
   },
   {
-   "at": "0116",
-   "host": "00525",
-   "c64": "00523"
-  },
-  {
-   "at": "0130",
-   "host": "00220",
-   "c64": "33617"
-  },
-  {
-   "at": "0131",
-   "host": "00000",
-   "c64": "31561"
-  },
-  {
    "at": "0135",
    "host": "20000",
-   "c64": "00006"
-  },
-  {
-   "at": "0136",
-   "host": "00002",
-   "c64": "00053"
-  },
-  {
-   "at": "0137",
-   "host": "07301",
-   "c64": "03031"
+   "c64": "00022"
   },
   {
    "at": "0154",
    "host": "16260",
-   "c64": "33617"
-  },
-  {
-   "at": "0155",
-   "host": "00000",
-   "c64": "31500"
-  },
-  {
-   "at": "0160",
-   "host": "00000",
-   "c64": "26564"
-  },
-  {
-   "at": "0161",
-   "host": "00220",
-   "c64": "71547"
-  },
-  {
-   "at": "0162",
-   "host": "00000",
-   "c64": "61366"
+   "c64": "34540"
   },
   {
    "at": "0164",
    "host": "02414",
-   "c64": "02404"
-  },
-  {
-   "at": "0166",
-   "host": "00463",
-   "c64": "00465"
-  },
-  {
-   "at": "0457",
-   "host": "33617",
-   "c64": "76056"
-  },
-  {
-   "at": "0460",
-   "host": "31500",
-   "c64": "57607"
-  },
-  {
-   "at": "0461",
-   "host": "77773",
-   "c64": "17436"
-  },
-  {
-   "at": "0462",
-   "host": "01412",
-   "c64": "15303"
-  },
-  {
-   "at": "0516",
-   "host": "13133",
-   "c64": "13134"
-  },
-  {
-   "at": "0525",
-   "host": "77755",
-   "c64": "77770"
-  },
-  {
-   "at": "1101",
-   "host": "13133",
-   "c64": "13134"
-  },
-  {
-   "at": "2312",
-   "host": "01626",
-   "c64": "01627"
-  },
-  {
-   "at": "2356",
-   "host": "13133",
-   "c64": "13134"
+   "c64": "02413"
   }
  ],
  "snap_at": 5400,
  "snap_slid": false,
  "requested_cs": 300,
  "host_holes": [],
- "commit": "22bfa334ba31"
+ "downrupt": false,
+ "commit": "bdb3bb4a485d"
 }

@@ -8,22 +8,33 @@
   "FLIGHT_CH31": "037777",
   "FLIGHT_CH33": "077767",
   "FLIGHT_SWAP_MCT": "0",
-  "FLIGHT_SPS": "16400",
+  "FLIGHT_SPS": "16400,-0.3,0.2",
   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-tei.load"
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "22bfa334ba31",
+ "commit": "bdb3bb4a485d",
  "cia_interrupts": 56000,
  "periods_taken": 56000,
  "periods_dropped": 0,
  "agc_centiseconds": 56000,
- "native_routines": 2874754,
+ "native_routines": 2871690,
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
- "reached": {
-  "23,2332": 51151
+ "interpretive_charge": {
+  "fitted": 2565772,
+  "yaagc": 2512482,
+  "percent": 2.1,
+  "routines": 11637,
+  "mean_abs_error": 52.6
  },
- "log_sha256": "b127d3c3ce814115039846c8884f3866929dc34000fa2155ca3ebf223c187bd1"
+ "reached": {
+  "24,2073": 11804,
+  "35,3323": 4804,
+  "23,2332": 51150,
+  "27,2000": 11840,
+  "24,3410": 29751
+ },
+ "log_sha256": "b6409e9576d20f1673c3f32ea6f03d8405d79331463d78dd43e9a6bd141bc69c"
 }

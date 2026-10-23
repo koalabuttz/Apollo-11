@@ -1,17 +1,17 @@
 {
  "scenario": "cm-p40",
- "ok": false,
+ "ok": true,
  "status": 0,
  "z": "03231",
  "fb": "02000",
- "superbank": "0000",
+ "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 100899626,
- "agc_cs": 428,
+ "wall_cycles": 101617854,
+ "agc_cs": 436,
  "dropped_ticks": 0,
- "steps": 1581,
- "wall_per_agc": 23.928,
+ "steps": 1615,
+ "wall_per_agc": 23.656,
  "lost": false,
  "mission": "cm",
  "snap_cs": 17900,
@@ -27,57 +27,73 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 8
+  "dma_unchecked": 11
  },
  "replay_rows": 0,
  "replay_applied": 0,
- "replay_end_cs": 428,
+ "replay_end_cs": 436,
  "replay_ended": true,
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {},
+  "erasable": [],
+  "pipas": [],
+  "channels": [],
+  "requests": 0,
+  "channel_set": {},
+  "channel_clear": {},
+  "channel_changed": {}
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 0,
+   "channel 12": 1154,
+   "channel 13": 0,
+   "channel 14": 3072,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 0,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [],
+  "changed": []
+ },
  "replay_unpaired": [],
  "replay_unpaired_count": 0,
  "replay_end_shift_cs": 0,
  "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
  "replay_matched_cs": [
-  50
+  50,
+  428
  ],
- "replay_differences": 6,
- "replay_differ_at_cs": 428,
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
  "replay_skipped": [],
- "replay_first": [
-  {
-   "at": "0064",
-   "host": "14173",
-   "c64": "14174"
-  },
-  {
-   "at": "0155",
-   "host": "20745",
-   "c64": "20744"
-  },
-  {
-   "at": "1140",
-   "host": "17761",
-   "c64": "17760"
-  },
-  {
-   "at": "1401",
-   "host": "74173",
-   "c64": "74174"
-  },
-  {
-   "at": "1402",
-   "host": "63604",
-   "c64": "63603"
-  },
-  {
-   "at": "3673",
-   "host": "17761",
-   "c64": "17760"
-  }
- ],
+ "replay_first": [],
  "snap_at": 17900,
  "snap_slid": false,
  "requested_cs": 428,
  "host_holes": [],
- "commit": "22bfa334ba31"
+ "downrupt": false,
+ "commit": "bdb3bb4a485d"
 }
