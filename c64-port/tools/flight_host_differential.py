@@ -804,7 +804,8 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-coast-r04', 'lm', 7000, COAST_R04_KEYS, LM_RDZ),
           ('lm-coast-programs', 'lm', 23000, COAST_PROGRAMS_KEYS, LM_RDZ),
           ('lm-p51', 'lm', 8000, LM_P51_KEYS, LM_P52),
-          ('lm-p22-surface', 'lm', 8000, LM_P22_KEYS, P57)]
+          ('lm-p22-surface', 'lm', 8000, LM_P22_KEYS, P57),
+          ('lm-p63-overload-nomon', 'lm', 27000, P63_KEYS, OVERLOAD_LM)]
 # Restarts for the whole-program acceptance (recovery_and_restart_tests,
 # one per phase group): a FLIGHT scenario with a hardware restart
 # (FLIGHT_GOJAM) at a centisecond in that phase, run to an end centisecond.
