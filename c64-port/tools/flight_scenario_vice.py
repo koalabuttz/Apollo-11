@@ -262,11 +262,16 @@ def replay_verdict(host_s, c64_s, ended, after=None, after_rows=(), skip=None, m
     """pair_states, then each pair compared in order up to the first that
     differs: dict(pairs, unpaired, end, diff, at_cs, matched, skipped,
     masked). A window matches only when diff is empty, it ended and its end
-    paired. masked counts the pairs where a dead superbank was masked (m)."""
+    paired. masked[DEAD_SUPERBANK] counts the pairs where a dead superbank
+    was masked (m), masked[DEAD_SUPERBANK_AT] lists each as (host cs, host
+    superbank, C64 superbank)."""
     pairs, unpaired, end = pair_states(host_s, c64_s, ended, after, after_rows)
     diff, at_cs, matched, skipped, masked = [], None, [], set(), {}
     for (hc, hw), (cc, cw) in pairs:
+        n = masked.get(DEAD_SUPERBANK, 0)
         diff = replay_compare(hw, cw, skip, skipped, m, masked)
+        if masked.get(DEAD_SUPERBANK, 0) > n:
+            masked.setdefault(DEAD_SUPERBANK_AT, []).append((hc, hw[SUPERBANK], cw[SUPERBANK]))
         if hc != cc:
             diff.insert(0, ('centiseconds', hc, cc))
         if diff:
@@ -307,18 +312,24 @@ TIME5_PHASE = 'TIME5 a count apart (a third of a centisecond)'
 # superbank is dead: ADVAN to SELFCHK sets superbank 4 (SUPDXCHZ, SELFBANK),
 # CHECKNJ comes back by POSTJUMP, which keeps it, and every way out writes it
 # before anything reads it (SUPDXCHZ to SELFCHK or, by NUDIRECT, to the job).
-# So two sides at ADVAN with FB below 060000 read 060 or 0100 depending only
-# on whether a self-check pass ran before the sample point.
+# So two sides at ADVAN with FB below 060000 read either the last job's
+# superbank or SELFBANK's 0100, depending only on whether a self-check pass
+# ran before the sample point. Masked only then (one side 0100), and not
+# under --replay-exact. Temporary like SCHEDULE_SKIP: it fires only while the
+# two sides reach ADVAN with different timing. The seam check (seam_check)
+# passes no mission, so it never masks.
 ADVAN = {'lm': 0o3214, 'cm': 0o3231}
 DEAD_SUPERBANK = 'masked_dead_superbank'
+DEAD_SUPERBANK_AT = 'masked_dead_superbank_at'
+SELFBANK_SUPERBANK = 0o100
 SUPERBANK = 2048 + END_CHANNELS.index('superbank')
 
 
 def dead_superbank(h, c, m):
-    """Both sides at ADVAN in bank 01 (FB below 060000), the superbank
-    their only difference to mask."""
-    return (m in ADVAN and h[SUPERBANK] != c[SUPERBANK] and h[5] == c[5] == ADVAN[m]
-            and h[4] < 0o60000 and c[4] < 0o60000)
+    """Both sides at ADVAN in bank 01 (FB below 060000), one side's
+    superbank SELFBANK's 0100: that superbank difference is masked."""
+    return (m in ADVAN and h[SUPERBANK] != c[SUPERBANK] and SELFBANK_SUPERBANK in (h[SUPERBANK], c[SUPERBANK])
+            and h[5] == c[5] == ADVAN[m] and h[4] < 0o60000 and c[4] < 0o60000)
 
 
 def replay_compare(h, c, skip=None, skipped=None, m=None, masked=None):
@@ -532,7 +543,8 @@ def main():
                    'keys, channel changes, pokes) on the C64, and fail unless the C64 ends the window in the '
                    "host's state (erasable and output channels)")
     p.add_argument('--replay-exact', action='store_true',
-                   help='with --replay on the CM, compare without the temporary schedule skip (SCHEDULE_SKIP)')
+                   help='with --replay, compare without the temporary schedule skip (SCHEDULE_SKIP, CM) and '
+                   'without the dead-superbank mask at ADVAN (dead_superbank)')
     p.add_argument('--replay-outputs', action='store_true',
                    help='with --replay, also log every change of output channels 5, 6, 11, 12, 13 and 14 on both sides '
                    'and fail unless the C64 makes the same changes in the same order at the same centiseconds '
@@ -762,7 +774,7 @@ def main():
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, max_states), m)
             c64_end = c64_s[-1][1] if c64_s else None
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip, m)
+            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip, None if a.replay_exact else m)
             unpaired, end, diff, at_cs, matched, skipped = (v[k] for k in ('unpaired', 'end', 'diff', 'at_cs', 'matched',
                                                                          'skipped'))
             shift = end['shift_cs'] if end else None
@@ -777,10 +789,11 @@ def main():
                       f"at {c64_s[-1][0]} cs")
             if skipped:
                 print(f"{a.scenario}: skipped (temporary, SCHEDULE_SKIP / TIME5_PHASE): {', '.join(sorted(skipped))}")
-            n_dead = v['masked'].get(DEAD_SUPERBANK, 0)
+            n_dead, dead_at = v['masked'].get(DEAD_SUPERBANK, 0), v['masked'].get(DEAD_SUPERBANK_AT, [])
             if n_dead:
-                print(f'{a.scenario}: {DEAD_SUPERBANK}: {n_dead} (superbank differs only at ADVAN, where it is dead)')
-            r.update(**{DEAD_SUPERBANK: n_dead})
+                print(f'{a.scenario}: {DEAD_SUPERBANK}: {n_dead} (superbank differs only at ADVAN, where it is dead): '
+                      + ', '.join(f'{x} cs host {hs:04o} C64 {cs:04o}' for x, hs, cs in dead_at))
+            r.update(**{DEAD_SUPERBANK: n_dead, DEAD_SUPERBANK_AT: dead_at})
             r.update(replay_matched_cs=matched, replay_differences=len(diff), replay_differ_at_cs=at_cs,
                      replay_skipped=sorted(skipped),
                      replay_first=[dict(at=x, host=shown(x, h), c64=shown(x, c)) for x, h, c in diff[:32]])
