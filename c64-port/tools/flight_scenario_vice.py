@@ -411,6 +411,59 @@ def snap_state(header):
             field('channel10'), int(field('interrupt_enabled') != 0), field('radar_gate'))
 
 
+def snap_channels(header):
+    """A snapshot header's channels, {octal channel: value} (0o377 the radar
+    gate; tools/flight_host_run.c snapshot)."""
+    text = pathlib.Path(header).read_text()
+    out = {c: int(v) for c, v in re.findall(r'\(\w\)\.channel(\d+)=(\d+)u', text)}  # names in octal
+    gate = re.search(r'\(\w\)\.radar_gate=(\d+)u', text)
+    return {**out, **({'377': int(gate[1])} if gate else {})}
+
+
+def channel_bits(rows, start):
+    """The channel bits a window's host input rows set, clear and change
+    (tools/device_acceptance.py reads them): per channel in octal, the OR of
+    the values, of their complements, and of each row against the
+    channel's value before it (the snapshot's, start, for its first row)."""
+    seen, out = dict(start), dict(channel_set={}, channel_clear={}, channel_changed={})
+    for row in ROW.iter_unpack(rows):
+        if row[1] != 2:
+            continue
+        c, v = f'{row[3]:o}', row[4]
+        out['channel_set'][c] = out['channel_set'].get(c, 0) | v
+        out['channel_clear'][c] = out['channel_clear'].get(c, 0) | (~v & 0o77777)
+        if c in seen:
+            out['channel_changed'][c] = out['channel_changed'].get(c, 0) | (v ^ seen[c])
+        seen[c] = v
+    return out
+
+
+# The counter and I/O words an output drives (tools/device_acceptance.py):
+# RHC counters to ALTM, 042-060.
+OUTPUT_WORDS = range(0o42, 0o61)
+
+
+def outputs_seen(start, host_states):
+    """What the program's outputs did over a window, from the host's start
+    state and its states at the checkpoints: per output channel (END_CHANNELS
+    name) the bits set at any of them and the bits that changed from the
+    start, and the output words (OUTPUT_WORDS, octal) that were non-zero or
+    changed."""
+    every = [start] + [w for _, w in host_states]
+    chans = {name: 2048 + k for k, name in enumerate(END_CHANNELS)}
+    return dict(channel_set={n: _or(w[i] for w in every) for n, i in chans.items()},
+                channel_changed={n: _or(w[i] ^ start[i] for w in every) for n, i in chans.items()},
+                nonzero=[f'{a:04o}' for a in OUTPUT_WORDS if any(w[a] for w in every)],
+                changed=[f'{a:04o}' for a in OUTPUT_WORDS if any(w[a] != start[a] for w in every)])
+
+
+def _or(values):
+    out = 0
+    for v in values:
+        out |= v
+    return out
+
+
 def steal_defines(name, start, snap_at):
     """A FLIGHT_STEAL scenario's stolen cycles on the C64 (resident_flight.c
     RK_STEAL): its one T0-T1:N window as TIME2:TIME1 centiseconds. The host
@@ -645,8 +698,22 @@ def main():
                        f'-DDP_OUTPUTS=0x{outputs_at if cap else 0:x}ul', f'-DDP_OUTPUTS_MAX={cap}u',
                        *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at)]
             kinds = {}
+            # What the window's inputs touch, by kind (tools/device_acceptance.py
+            # reads it): erasable words and PIPAs by address, channels (0o377 the
+            # radar gate), interrupt requests by RK_RUPT_BIT bit.
+            touched = {0: set(), 1: set(), 2: set(), 3: 0}
             for row in ROW.iter_unpack(rows):
                 kinds[row[1]] = kinds.get(row[1], 0) + 1
+                if row[1] == 3:
+                    touched[3] |= row[4]
+                elif row[1] in touched:
+                    touched[row[1]].add(row[3])
+            replay_inputs = dict(counts={str(k): n for k, n in sorted(kinds.items())},
+                                 erasable=[f'{a:04o}' for a in sorted(touched[0])],
+                                 pipas=[f'{a:04o}' for a in sorted(touched[1])],
+                                 channels=[f'{a:o}' for a in sorted(touched[2])], requests=touched[3],
+                                 **channel_bits(rows, snap_channels(header)))
+            replay_outputs = outputs_seen(snap_state(header), states(host_end, n_states))
             print(f'{a.scenario}: {len(rows) // ROW.size} host input rows ({n_c64} on the C64) in the window at REU 0x{at:x} '
                   f"({kinds.get(1, 0)} PIPA counts, {kinds.get(0, 0)} erasable words, {kinds.get(2, 0)} channels, "
                   f'{kinds.get(3, 0)} interrupt requests)'
@@ -703,7 +770,7 @@ def main():
             due_extra = rows_before(c64_rows(extra, m, 0, 0), end_cs) if ended else 0
             applied_extra, applied = max(0, applied - n_c64), min(applied, n_c64)
             r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended),
-                     replay_after_rows=applied_extra)
+                     replay_after_rows=applied_extra, replay_inputs=replay_inputs, replay_outputs=replay_outputs)
             # Every state the C64 wrote against the host's at the same point.
             image = (dp.WORK / f'vice-{tag}' / 'image.reu').read_bytes()
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, states_max), m)
