@@ -73,6 +73,16 @@ void rk_prof(uint8_t segment);
 #else
 #define RK_PROF(n) ((void)0)
 #endif
+/* The flight load check (platform/c64/flight_load_check.c, -DFL_DIRECT_STEPS)
+ * records the routines each rk_direct run chained, for its host reference;
+ * a flight build stores nothing. */
+#ifdef FL_DIRECT_STEPS
+uint16_t fl_direct_steps;
+uint8_t fl_direct_full;
+#define RK_DIRECT_STEPS(n, limit) (fl_direct_steps = (n), fl_direct_full = (n) == (limit))
+#else
+#define RK_DIRECT_STEPS(n, limit) ((void)0)
+#endif
 __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 #ifdef RK_WORK_CLOCK
 uint16_t rk_work;
@@ -691,6 +701,7 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
             continue;
         }
         RK_PROF(6);
+        RK_DIRECT_STEPS(steps, limit);
 #ifdef RK_WORK_CLOCK
         rk_charge(steps, mct);
 #endif

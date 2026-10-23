@@ -42,7 +42,12 @@
 typedef struct { uint16_t id, bytes, bank, loc; } fl_module;   /* loc 0: no record to call */
 /* In fl_modules order (tools/flight_vice_load.py reads ids and sizes from
  * the FL_DATA header). */
-typedef struct { uint32_t load; uint16_t cached, direct, main; } fl_timing;
+/* point: what the record's point did, for tools/flight_vice_load.py's host
+ * reference (step 14): the image and channels sum after the run (sum_bytes
+ * over the words and the agc_hardware fields, not its padding), the routines
+ * rk_direct chained (steps, bit 8 in status bit 7) and the exec status. */
+typedef struct { uint16_t sum; uint8_t steps, status; } fl_point;
+typedef struct { uint32_t load; uint16_t cached, direct, main; fl_point point; } fl_timing;
 #include FL_DATA
 #ifndef FL_FIRST
 #define FL_FIRST 0u
@@ -146,22 +151,47 @@ static void profile(void){apollo_ov2_cont at={RK_MODULE_BOUNDARY,0},resume;uint1
  timer_start();(void)agc_transfer_point(&rk_program,IMAGE,rk_device.superbank);out[1]=(uint16_t)timer_stop();
  timer_start();(void)agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);out[2]=(uint16_t)timer_stop();}
 
-/* A 16-bit sum of the image and the channels (rk_hardware), rotated per byte so moved
- * words differ. */
+/* A 16-bit sum of the image, the channels (rk_hardware) and the device
+ * record (rk_device, which holds the CM's channels 11-14), rotated per byte
+ * so moved words differ. The hardware record's bytes up to radar_gate: the
+ * host reference sums the same bytes (x86 pads the record). */
 static uint16_t sum_bytes(uint16_t h,const void *p,uint16_t n){const uint8_t *b=p;
  while(n--)h=(uint16_t)((h<<1|h>>15)+*b++);
  return h;}
+#define FL_HARDWARE_BYTES (offsetof(agc_hardware,radar_gate)+1u)
 static uint16_t image_sum(void){
- return sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,sizeof rk_hardware);}
+ return sum_bytes(sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,FL_HARDWARE_BYTES),&rk_device,sizeof rk_device);}
 static rk_io device;
 static agc_hardware hardware;
+/* The work clock's state at boot: each point starts from it, so its step
+ * limit (rk_limit) and charge do not depend on the modules run before it. */
+extern uint8_t rk_idle;
+extern uint16_t fl_direct_steps;
+extern uint8_t fl_direct_full;
+static uint16_t work, pending;
+static uint8_t phase, idle, part[2];
+static void clock_save(void){work=rk_work;pending=rk_pending;phase=rk_tick_phase;idle=rk_idle;
+ part[0]=rk_part_cont;part[1]=rk_part_prev;}
+static void clock_restore(void){rk_work=work;rk_pending=pending;rk_tick_phase=phase;rk_idle=idle;
+ rk_part_cont=part[0];rk_part_prev=part[1];}
 static void direct_state(const fl_module *m){
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
- rk_device=device;rk_hardware=hardware;
+ rk_device=device;rk_hardware=hardware;clock_restore();
  IMAGE->words[4]=(agc_word)(m->bank&076000u);IMAGE->words[5]=m->loc;
  rk_device.superbank=(agc_word)(m->bank&0100u);}
 static uint8_t differ;
-static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apollo_ov2_cont at={m->id,0},resume;uint16_t value,sum,t;
+/* What a point did (fl_point): FL_POINT_MAIN marks a run through the module
+ * main (NOT_DIRECT tables: no step count), FL_POINT_NONE no run,
+ * FL_POINT_FULL a run that took its whole step limit (rk_limit). */
+#define FL_POINT_FULL 0x10u
+#define FL_POINT_MAIN 0x40u
+#define FL_POINT_NONE 0x20u
+static void point_record(fl_point *p,enum exec_status st,uint16_t steps,uint8_t flags){
+ p->sum=image_sum();p->steps=(uint8_t)steps;
+ /* The status as a code under 16: 0-7 as they are, 8 for 1201, 9 for 1202. */
+ uint8_t code=st==EXEC_NO_VAC?8u:st==EXEC_NO_CORE?9u:(uint8_t)st<8u?(uint8_t)st:15u;
+ p->status=(uint8_t)(code|flags|(uint8_t)(steps>>1&0x80u));}
+static uint16_t direct(uint16_t k,const fl_module *m,fl_timing *tm){uint16_t *main_cycles=&tm->main;apollo_ov2_cont at={m->id,0},resume;uint16_t value,sum,t;
  uint8_t ok;
  uint8_t action,i;enum exec_status a,b;
  uint8_t *slot=0;uint16_t bytes=0;
@@ -182,6 +212,7 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
   * to compare). */
  {const rk_module_tables *tb=(const rk_module_tables *)(uintptr_t)(slot[APOLLO_OV2_H_TABLES]|(uint16_t)slot[APOLLO_OV2_H_TABLES+1]<<8);
   if(tb&&tb->ready==RK_TABLES_NOT_DIRECT){
+   point_record(&tm->point,a,0u,FL_POINT_MAIN);
    apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
    return 0;}}
  if(a==EXEC_UNMAPPED){expect(image_sum()==sum,12);*main_cycles=0;}
@@ -189,9 +220,11 @@ static uint16_t direct(uint16_t k,const fl_module *m,uint16_t *main_cycles){apol
  for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]!=m->id)rk_runtime.loaded[i]=0;
  direct_state(m);
  apollo_reu_transfer(APOLLO_REU_FETCH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
+ fl_direct_steps=0u;fl_direct_full=0u;
  timer_start();
  b = rk_direct(AGC_TRANSFER_NONE, AGC_TRANSFER_NONE);
  t = (uint16_t)timer_stop();
+ point_record(&tm->point,b,fl_direct_steps,fl_direct_full?FL_POINT_FULL:0u);
  ok=!*main_cycles||(a==b&&image_sum()==sum);expect(ok,6);
  if(!ok&&differ<8u){((volatile uint16_t *)0xc3e0)[differ++]=k;mail[0x3df]=differ;}
  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
@@ -258,7 +291,7 @@ int main(void){uint16_t i;
   resolve_records();
   fixed_extension();
   __asm__ volatile("sei");
-  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;
+  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;clock_save();
 #ifdef FL_PINNED
   pinned();
 #endif
@@ -280,9 +313,16 @@ int main(void){uint16_t i;
 #ifdef FL_PROFILE_MARKS
    mail[8]=1;
 #endif
-   timing[i].direct=module.loc?direct(i,&module,&timing[i].main):0u;
+   timing[i].point.status=FL_POINT_NONE;
+   timing[i].direct=module.loc?direct(i,&module,&timing[i]):0u;
   }
   *(volatile uint16_t *)0xc3fe=FL_LIMIT;
+  /* Every point's start, for the host reference: the boot image back at
+   * IMAGE ($7000, which tools/flight_vice_load.py saves) and the device and
+   * hardware records at $c100. */
+  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
+  memcpy((void *)0xc100,&device,sizeof device);
+  memcpy((void *)(0xc100+sizeof device),&hardware,FL_HARDWARE_BYTES);
   stack_peak();
   __asm__ volatile("cli");}
  else for(i=1;i<0x3e0u;++i)mail[i]=0;
