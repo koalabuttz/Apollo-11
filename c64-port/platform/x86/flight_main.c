@@ -157,6 +157,9 @@ int main(int argc, char **argv)
                     ran.key % 1024u + 02000u, (int)ran.status, fd_centiseconds(&st));
             break;
         }
+        /* The VERB69 spin and the TC trap run no routine (fd_run). */
+        if (ran.trap == 2u && !live) printf("TC trap at %lu cs\n", fd_centiseconds(&st));
+        if (ran.trap) continue;
         fs_after_routine(&in, &st);
         if (watch.n) watch_print(&st);
         if (live) {

@@ -140,6 +140,9 @@ int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;sta
   if(fd_run(&st,&ran)==EXEC_UNMAPPED){printf("no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",ran.key/1024u,ran.key%1024u+02000u,
    (unsigned)st.s.words[5],(unsigned)st.s.words[4],fd_centiseconds(&st));break;}
   if(ran.status!=EXEC_OK){printf("%s refused at %02o,%04o at %lu cs\n",ran.table?ran.table->name:"interpreter core",ran.key/1024u,ran.key%1024u+02000u,fd_centiseconds(&st));break;}
+  /* The TC trap's GOJAM: yaAGC's clock is frozen, so its own trap cannot
+   * fire; the restart is checked from 04000 on, as FLIGHT_GOJAM's. */
+  if(ran.trap==2u){printf("TC trap at %lu cs\n",fd_centiseconds(&st));substitute=0;continue;}
   ++checked;
   if((n=lockstep(&before,&st,why,sizeof why))<0)miss(&ran,why);else instructions+=(unsigned long)n;
   fs_after_routine(&in,&st);}

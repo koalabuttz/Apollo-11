@@ -155,6 +155,11 @@ uint8_t fd_boundary(fd_state *st)
         if (st->downrupt && ((c & 037777u) >> 6) != ((st->hw.channel4 & 037777u) >> 6))
             st->pending |= RK_RUPT_BIT(RK_RUPT_DOWN);
     }
+    /* A request taken in the VERB69 spin's period: the spin ends with the
+     * clock step just run, as the idle loop's does on the work clock. */
+    if (got && st->idling)
+        st->mct = st->next_period - (st->phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0);
+    st->idling = 0;
     return got;
 }
 
@@ -189,9 +194,68 @@ static enum exec_status run(fd_state *st,agc_routine call,enum flight_io_kind ki
  x=flight_io_enter(kind,&st->io,&st->hw,&b);r=call(&st->p,&st->s,x);flight_io_leave(kind,&st->io,&st->hw,&b);
  return r;}
 
+void fd_gojam(fd_state *st)
+{
+    agc_word *w = st->s.words;
+    w[2] = w[5];
+    w[5] = 04000u;
+    st->io.interrupt_enabled = 1u;
+    st->hw.in_interrupt = 0u;
+    st->pending = 0u;
+    st->io.trap31a = st->io.trap31b = st->io.trap32 = 0u;
+    st->hw.channel5 = st->hw.channel6 = st->hw.channel10 = st->hw.channel11 = 0u;
+    st->hw.channel12 = st->hw.channel13 = st->hw.channel14 = 0u;
+    st->io.channel34 = st->io.channel35 = 0u;
+    st->hw.channel33 |= 02000u;
+}
+
+/* The TC trap (docs/FLIGHT-RESTART.md). V69's VERB69 (43,2037 in both ropes:
+ * bank 043 is FB 033 with the superbank's bit 0100) is a TC to itself. There,
+ * outside an interrupt, the AGC runs nothing but TCs, so the step spins as
+ * the idle loop does, to the end of the clock period, with Q TC VERB69's.
+ * The trap's GOJAM comes at the next step when the spin held the period's
+ * T3 step and no interrupt came in between, as yaAGC's trap fires at scaler
+ * phase 000 after only TCs since phase 020. The C64's rk_resident_step and
+ * the host differential's verb69 and spin make the same test. */
+static int tc_trap(fd_state *st, fd_ran *ran)
+{
+    const agc_word *w = st->s.words;
+    uint8_t spin = st->spin;
+    double end;
+    uint8_t phase;
+    st->spin = 0;
+    if (st->hw.in_interrupt) return 0;
+    if (spin == 2u) {
+        fd_gojam(st);
+        ran->trap = 2u;
+        return 1;
+    }
+    if ((w[5] & 07777u) != 02037u || w[4] != 066000u || !(st->io.superbank & 0100u)) return 0;
+    st->s.words[2] = 02040u;
+    st->spin = st->phase == RK_PHASE_T5 ? 1u : 2u;
+    /* The end of this period's T5 step. */
+    for (end = st->next_period, phase = st->phase; phase != RK_PHASE_T5;) {
+        phase = (uint8_t)(phase + 1u);
+        end += phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0;
+    }
+    if (end > st->mct) {
+        ran->mct = end - st->mct;
+        st->mct = end;
+    }
+    st->idling = 1u;
+    ran->trap = 1u;
+    return 1;
+}
+
 enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(st,&in);uint16_t t=at[in][key];
  static uint16_t core_key;static uint8_t core_in;
- ran->key=key;ran->interp=(uint8_t)in;ran->table=0;ran->mct=0.0;++st->steps;
+ ran->key = key;
+ ran->interp = (uint8_t)in;
+ ran->table = 0;
+ ran->mct = 0.0;
+ ran->trap = 0;
+ ++st->steps;
+ if (tc_trap(st, ran)) return ran->status = EXEC_OK;
  if(t){const fd_table *e=&fd_tables[t-1u];apollo_overlay_state before=st->s;flight_io io0=st->io;agc_hardware hw0=st->hw;
   st->p.operands=e->sites;st->p.operand_count=e->nsites;
   st->p.fixed_data=e->fixed==1u?SELF_CHECK_ROPE:rope_data;
