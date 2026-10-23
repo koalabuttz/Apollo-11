@@ -332,6 +332,12 @@ def dead_superbank(h, c, m):
             and h[5] == c[5] == ADVAN[m] and h[4] < 0o60000 and c[4] < 0o60000)
 
 
+def mask_mission(exact, m):
+    """The mission replay_compare masks a dead superbank for: none under
+    --replay-exact."""
+    return None if exact else m
+
+
 def replay_compare(h, c, skip=None, skipped=None, m=None, masked=None):
     """The differences between a host state and the C64's: (name, host,
     C64) for each compared erasable word, the timers, then each output
@@ -774,7 +780,7 @@ def main():
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, max_states), m)
             c64_end = c64_s[-1][1] if c64_s else None
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip, None if a.replay_exact else m)
+            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip, mask_mission(a.replay_exact, m))
             unpaired, end, diff, at_cs, matched, skipped = (v[k] for k in ('unpaired', 'end', 'diff', 'at_cs', 'matched',
                                                                          'skipped'))
             shift = end['shift_cs'] if end else None

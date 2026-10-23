@@ -145,6 +145,11 @@ class DeadSuperbank(unittest.TestCase):
         self.assertEqual(fsv.replay_compare(h, c, None, set(), 'lm', masked), [('channel 11', h[k], c[k])])
         self.assertEqual(masked, {fsv.DEAD_SUPERBANK: 1})
 
+    def test_replay_exact_masks_nothing(self):
+        h, c = self.pair()
+        for exact, want in ((False, []), (True, [('superbank', 0o60, 0o100)])):
+            self.assertEqual(fsv.replay_compare(h, c, None, set(), fsv.mask_mission(exact, 'lm'), {}), want, exact)
+
     def test_verdict_lists_masked_points(self):
         h, c = self.pair()
         v = fsv.replay_verdict([(500, h)], [(500, c)], True, after=[], m='lm')
