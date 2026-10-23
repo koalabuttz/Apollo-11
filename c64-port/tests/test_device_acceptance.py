@@ -202,6 +202,88 @@ class Roles(unittest.TestCase):
         self.assertIn('jets: no make target no-such-target', bad)
 
 
+def outs(changed=(), held=None, moved=None):
+    """A window whose host states changed the words changed, held the
+    channel bits held ({channel: bits}) and changed the bits moved."""
+    held, moved = held or {}, moved or {}
+    return window(replay_outputs=dict(
+        channel_set={f'channel {c:o}': b for c, b in {**held, **moved}.items()},
+        channel_changed={f'channel {c:o}': b for c, b in moved.items()},
+        nonzero=[f'{a:04o}' for a in changed], changed=[f'{a:04o}' for a in changed]))
+
+
+def static(*words, held=None):
+    """Words that sit non-zero and bits that are held, nothing changing."""
+    r = outs(held=held)
+    r['replay_outputs']['nonzero'] = [f'{a:04o}' for a in words]
+    return r
+
+
+class RealRoles(unittest.TestCase):
+    """The predicates and flags of the real role table (roles())."""
+    def role(self, m, key):
+        return {t['key']: t for t in da.roles(m)}[key]
+
+    def hits(self, m, key, r):
+        return self.role(m, key)['window'](r)
+
+    def test_jets_need_a_change(self):
+        for m in da.PROGRAM:
+            with self.subTest(m=m):
+                self.assertFalse(self.hits(m, 'jets', static(held={5: 0o20, 6: 0o4000})))
+                self.assertTrue(self.hits(m, 'jets', outs(moved={5: 0o20})))
+                self.assertTrue(self.hits(m, 'jets', outs(moved={6: 0o4000})))
+        self.assertTrue(self.hits('lm', 'jets', outs(moved={0o11: 0o20000})))
+        self.assertTrue(self.hits('cm', 'jets', outs(moved={0o11: 0o10000})))
+
+    def test_throttle_needs_a_change(self):
+        self.assertFalse(self.hits('lm', 'thrust', static(0o55, held={0o14: 0o10})))
+        self.assertTrue(self.hits('lm', 'thrust', outs(changed=[0o55])))
+        self.assertTrue(self.hits('lm', 'thrust', outs(moved={0o14: 0o10})))
+
+    def test_static_jets_and_throttle_are_gap(self):
+        tab = [self.role('lm', 'jets'), self.role('lm', 'thrust')]
+        out, bad = assess([static(0o55, held={5: 0o20, 6: 0o4000, 0o14: 0o10})], [host_row()], tab)
+        self.assertEqual({t['key']: s for t, s, *_ in out}, dict(jets='GAP', thrust='GAP'))
+        self.assertTrue(bad)
+
+    def test_tvc_needs_its_enable(self):
+        self.assertTrue(self.hits('cm', 'tvc', outs(changed=[0o53], held={0o12: 0o200})))
+        self.assertFalse(self.hits('cm', 'tvc', outs(changed=[0o53])))
+        self.assertFalse(self.hits('cm', 'tvc', static(0o53, held={0o12: 0o200})))
+
+    def test_optics_drive_needs_tvc_off(self):
+        self.assertTrue(self.hits('cm', 'optics-drive', outs(changed=[0o54])))
+        self.assertTrue(self.hits('cm', 'optics-drive', outs(moved={0o14: 0o2000})))
+        self.assertFalse(self.hits('cm', 'optics-drive', outs(changed=[0o54], held={0o12: 0o200})))
+
+    def test_rr_drive_and_cross_pointers(self):
+        self.assertTrue(self.hits('lm', 'rr-drive', outs(changed=[0o53])))
+        self.assertFalse(self.hits('lm', 'rr-drive', outs(changed=[0o53], held={0o12: 0o200})))
+        self.assertTrue(self.hits('lm', 'landing-displays', outs(changed=[0o53], held={0o12: 0o200})))
+        self.assertFalse(self.hits('lm', 'landing-displays', outs(changed=[0o53])))
+        self.assertTrue(self.hits('lm', 'landing-displays', outs(changed=[0o60])))
+        self.assertFalse(self.hits('lm', 'landing-displays', static(0o60)))
+
+    def test_channel_33_discretes(self):
+        def ch33(bits):
+            return window(replay_inputs=dict(channel_changed={'33': bits}))
+        for m in da.PROGRAM:
+            with self.subTest(m=m):
+                for bit in (0o1000, 0o2000, 0o4000, 0o10000, 0o20000, 0o40000):
+                    self.assertTrue(self.hits(m, 'discretes', ch33(bit)), oct(bit))
+                self.assertFalse(self.hits(m, 'discretes', ch33(0o10)))
+
+    def test_blocking_flags(self):
+        blocking = dict(lm={'imu', 'rhc', 'iss', 'trim', 'drives'}, cm={'imu', 'optics-drive', 'tvc', 'drives'})
+        for m in da.PROGRAM:
+            with self.subTest(m=m):
+                self.assertEqual({t['key'] for t in da.roles(m) if t['blocking']}, blocking[m])
+                for t in da.roles(m):
+                    if t['blocking']:
+                        self.assertTrue(t['gap'], t['key'])
+
+
 class Doc(unittest.TestCase):
     def write(self, runs, bad=None):
         out, failed = assess(runs, [host_row()])

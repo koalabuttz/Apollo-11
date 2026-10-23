@@ -26,8 +26,9 @@ radar and optics drives, displays and meters, downlink) gets one row:
              --replay on stock C64 + REU in VICE) that matches the host and
              exercises the role: for an input, its host rows touch the
              role's words, channel bits or interrupt requests; for an
-             output, the role's channel bits or words changed or were set
-             in the host's states over the window (replay_outputs).
+             output, the role's channel bits or words changed in the host's
+             states over the window (replay_outputs); a bit that is only
+             held counts only as an enable gate.
 
 A window matches when the run is ok with status 0, every REU DMA stayed
 inside the layout, it ended with every input row applied, its end and
@@ -135,6 +136,10 @@ def held(ch, mask=0o77777):
     """Output channel ch (an END_CHANNELS name's number) had one of mask's
     bits set in the host's states over the window: an enable, not a drive."""
     return lambda r: bool(outputs(r).get('channel_set', {}).get(f'channel {ch:o}', 0) & mask)
+
+
+def never(pred):
+    return lambda r: not pred(r)
 
 
 def moved(ch, mask=0o77777):
@@ -321,21 +326,26 @@ def roles(m):
             role('rr-drive', 'RR antenna drive', 'out', 'CDUTCMD/CDUSCMD (053/054), channel 14 bits 11-12',
                  [host_end, ('tools/flight_radar.h', 'rr_due', 'takes the drive: empties CDUTCMD/CDUSCMD when '
                              'channel 14 bit 12 or 11 is set')],
-                 [rows, end], uses('FLIGHT_RR', 'FLIGHT_RR_DROP'), either(words(0o53, 0o54), moved(0o14, 0o6000)),
+                 [rows, end], uses('FLIGHT_RR', 'FLIGHT_RR_DROP'),
+                 both(either(words(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
                  unit(m, 't4rupt-rr'),
-                 how='CDUTCMD or CDUSCMD, or channel 14 bit 11 or 12, changed in the host\'s states',
+                 how='CDUTCMD or CDUSCMD, or channel 14 bit 11 or 12, changed with channel 12 bit 8 (cross pointers) '
+                     'clear throughout',
                  gap='the host empties the drive counters at once, not at the pulse rate'),
             role('landing-displays', 'Landing analog displays', 'out', 'ALTM (060), channel 14 bits 2-3 (altitude '
                  'and rate meter), channel 12 cross pointers (LANDING_ANALOG_DISPLAYS)',
-                 [host_end], [end], uses('FLIGHT_ENGINE', 'FLIGHT_LR'), either(words(0o60), moved(0o14, 0o6)),
+                 [host_end], [end], uses('FLIGHT_ENGINE', 'FLIGHT_LR'),
+                 either(words(0o60), moved(0o14, 0o6),
+                        both(either(words(0o53, 0o54), moved(0o14, 0o6000)), held(0o12, 0o200))),
                  unit(m, 'landing-displays'),
-                 how='ALTM, or channel 14 bit 2 or 3, changed in the host\'s states',
+                 how='ALTM, or channel 14 bit 2 or 3, changed; or the cross pointers: CDUTCMD/CDUSCMD or channel 14 '
+                     'bit 11 or 12 changed with channel 12 bit 8 set',
                  gap='no meter model on either side: ALTM and the drive bits are compared as words only'),
         ]
     else:
         out += [
             role('optics-drive', 'Optics drive', 'out', 'OPTXCMD/OPTYCMD (CDUTCMD/CDUSCMD, 053/054), channel 14 '
-                 'bits 11-12', [host_end], [end], uses('FLIGHT_LOAD'), both(either(words(0o53, 0o54), moved(0o14, 0o6000)), lambda r: not held(0o12, 0o200)(r)),
+                 'bits 11-12', [host_end], [end], uses('FLIGHT_LOAD'), both(either(words(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
                  unit(m, 'sxtmark'), how='OPTXCMD or OPTYCMD, or channel 14 bit 11 or 12, changed with TVC off (channel 12 bit 8 clear)',
                  gap='no optics drive model: the commands never move CDUS/CDUT on either side (FLIGHT_LOAD sets them)',
                  blocking=True, closes='an optics drive model on both sides'),
@@ -543,7 +553,8 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit):
              'the end and every checkpoint were paired and compared with no skips and no differences, the last '
              'compared checkpoint is the end, and the run covers the window and is from this commit. '
              'A window exercises an input role when its host rows touch the role; an output role when the role\'s '
-             'channel bits or words changed or were set in the host\'s states over the window.', '',
+             'channel bits or words changed in the host\'s states over the window (a held bit counts only as an enable '
+             'gate, such as TVC or cross-pointer enable).', '',
              store_line, '',
              '## Summary', '', '| Role | In/out | Adapters | Host check | C64 check | Status |', '|---|---|---|---|---|---|']
     detail = []
