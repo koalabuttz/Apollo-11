@@ -67,10 +67,6 @@
   "signature": "stop: basic 02,2140 refused by lanec_pin_cm_routines, basic 02,2152 refused by lanec_pin_cm_routines, basic 02,2153, basic 02,2156 refused by lanec_pin_cm_routines, basic 02,2157 refused by lanec_pin_cm_routines, basic 40,3105, basic 40,3121",
   "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
  },
- "cm V37E00E": {
-  "signature": "difference: 1136",
-  "why": "waitlist word 1136 one count apart at the end (the charge class; the clock offset cleared on base 2d8158f0) (owner Certificate fixes from RK, replay-mismatches.md)"
- },
  "lm V01N36E": {
   "signature": "stop: basic 41,2365 refused by lanec_pin_lm_routines",
   "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
@@ -142,9 +138,5 @@
  "lm V17N20E": {
   "signature": "stop: basic 02,2124 refused by lanec_pin_lm_routines, basic 02,2125, basic 02,2136 refused by lanec_pin_lm_routines, basic 02,2137, basic 02,2142 refused by lanec_pin_lm_routines, basic 02,2143 refused by lanec_pin_lm_routines, basic 40,3200, basic 40,3214",
   "why": "Pinball point refused or unregistered on the host (Lane C #674); a stop on the C64"
- },
- "lm V36E": {
-  "signature": "clock: TIME4",
-  "why": "C64 TIME4 one tick late: AOSTASK split across lm_aostask parts is charged per run (owner Certificate fixes from RK: part-charge PR after #738, replay-mismatches.md)"
  }
 }
