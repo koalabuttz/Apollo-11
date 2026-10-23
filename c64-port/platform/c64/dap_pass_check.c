@@ -251,6 +251,30 @@ static uint16_t replay_cs(void)
 {
     return (uint16_t)(IMAGE->words[025] - replay_t0) & 037777u;
 }
+/* rk_budget (platform/c64/rk_clock.S) in a replay: the MCT left before the
+ * next timer step, or before the waiting row's place (its work, MCT since
+ * the step) if that comes first. A module run chains routines up to its
+ * budget and rows apply only between the C64's steps, so without the cap
+ * a row due in the centisecond the run is in waits for the whole run:
+ * lm-rendezvous-tpm 45000's key rows (host after 02072, 24 MCT into the
+ * step) landed after the q_r_axis run 02072..02661, 60 MCT later. With
+ * it the run stops at the routine that reaches the row's place. A
+ * boundary row (where bits 1-2) caps only in its own step. */
+uint16_t rk_phase_budget(void);
+__attribute__((noinline)) uint16_t dp_budget(void)
+{
+    uint16_t b = rk_phase_budget(), cap;
+    uint8_t at = row.where >> 1 & 3u;
+    if (row_ready && row.cs <= replay_cs() && (!at || at == phase_step[rk_tick_phase]) &&
+        row.work > rk_work) {
+        /* At least 1: an idle run charges its whole budget, and a 0 would
+         * stall the work clock short of the row. */
+        cap = (uint16_t)(row.work - rk_work - 1u);
+        if (!cap) cap = 1u;
+        if (cap < b) b = cap;
+    }
+    return b;
+}
 static uint8_t sample_point(uint16_t t)
 {
     if (rk_pending || rk_hardware.in_interrupt) return 0;
