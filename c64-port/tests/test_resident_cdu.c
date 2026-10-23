@@ -31,12 +31,45 @@ static unsigned optics(void) {
     rk_cdu = (rk_cdu_state){{0}, 0, 0};
     return fail;
 }
+/* The gyro drive: on channel 14 bit 10, GYROCMD (047) less 32 a period,
+ * never past 0; a negative count (-0 too) or bit 10 clear sends nothing;
+ * the CDU drive state stays as it was. */
+static unsigned gyro(void) {
+    static apollo_overlay_state s;
+    agc_hardware hw = {0};
+    unsigned fail = 0;
+    rk_cdu = (rk_cdu_state){{0}, 0, 0};
+    s.words[047] = 70u;
+    hw.channel14 = 01000u;
+    rk_cdu_drive(&s, &hw);
+    if (s.words[047] != 38u || rk_cdu.active || rk_cdu.elapsed != 4u) ++fail;
+    rk_cdu_drive(&s, &hw);
+    rk_cdu_drive(&s, &hw);
+    if (s.words[047]) ++fail;
+    s.words[047] = 040000u;
+    rk_cdu_drive(&s, &hw);
+    if (s.words[047] != 040000u) ++fail;
+    s.words[047] = 077777u;
+    rk_cdu_drive(&s, &hw);
+    if (s.words[047] != 077777u) ++fail;
+    s.words[047] = 037777u;
+    hw.channel14 = 0700u;
+    rk_cdu_drive(&s, &hw);
+    if (s.words[047] != 037777u) ++fail;
+    hw.channel14 = 01740u;
+    rk_cdu_drive(&s, &hw);
+    if (s.words[047] != 037777u - 32u) ++fail;
+    rk_cdu = (rk_cdu_state){{0}, 0, 0};
+    return fail;
+}
 int main(void) {
     static apollo_overlay_state s;
     agc_hardware hw = {0};
     uint32_t n, block = RC_BASIS;
-    unsigned checks = 0, failures = optics(), writes = 0, bursts = 0, k;
+    unsigned checks = 0, failures = optics(), writes = 0, bursts = 0, k, g = gyro();
     if (failures) fprintf(stderr, "CM optics counters: %u checks fail\n", failures);
+    if (g) fprintf(stderr, "gyro drive: %u checks fail\n", g);
+    failures += g;
     for (n = 0; n < RC_PERIODS; ++n) {
         agc_word ch14, write[3];
         uint8_t set[3], was = rk_cdu.active;

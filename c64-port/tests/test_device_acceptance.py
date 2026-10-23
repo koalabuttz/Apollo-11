@@ -292,7 +292,7 @@ class RealRoles(unittest.TestCase):
                 self.assertFalse(self.hits(m, 'discretes', ch33(0o10)))
 
     def test_blocking_flags(self):
-        blocking = dict(lm={'imu', 'rhc', 'iss', 'trim', 'gyro'}, cm={'imu', 'optics-drive', 'gyro'})
+        blocking = dict(lm={'imu', 'rhc', 'iss', 'trim'}, cm={'imu'})
         for m in da.PROGRAM:
             with self.subTest(m=m):
                 self.assertEqual({t['key'] for t in da.roles(m) if t['blocking']}, blocking[m])

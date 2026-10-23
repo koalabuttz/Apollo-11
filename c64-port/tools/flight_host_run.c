@@ -42,9 +42,9 @@
  * land every D * 10 ms of it, and at
  * each native boundary at most LAG of them become rk_timer_tick periods
  * (TIME1-TIME6, the scalers and the radar cycle), the rest dropped
- * (rk_rupts); the IMU CDU
- * drive, timed by yaAGC's cycle counter, stops with it, as do the optics
- * and gyro drives (no C64 resident has them). Bridged code
+ * (rk_rupts); yaAGC's own output drives (the IMU CDU and gyro drives,
+ * timed by its cycle counter and scaler, and its optics dump) stop with
+ * it, and the C64 resident's (drives()) run on both sides. Bridged code
  * gets the same periods between its instructions. Every routine must then
  * match yaAGC run from the same state with the clock frozen, the clock
  * counters included, so the run is one yaAGC run under the same tick
@@ -1062,20 +1062,68 @@ static void store(apollo_overlay_state *s,flight_io *io,agc_hardware *hw){unsign
 static const agc_word *view(void){static agc_word v[2048];static const unsigned short at[]={3,4,5,AGC_EDOP,NEWJOB,0164,0165};unsigned i;
  for(i=0;i<sizeof at/sizeof at[0];++i)v[at[i]]=mword(at[i]);
  return v;}
+/* FLIGHT_GYRO=1: the platform (both programs). The gyro pulses the drive
+ * sends (drives(), below) turn the stable member, and CDUX-Z follow. A pulse is 2^-21 of a
+ * revolution (0.618 arcseconds, 64 to a CDU count; GYROFRAC in
+ * IMU_MODE_SWITCHING_ROUTINES.agc rounds commands to it). Channel 14 bits
+ * 7-8 select the gyro (1 X, 2 Y, 3 Z: the stable member axis it turns
+ * about), bit 9 the sign (set: minus); pulses with no gyro selected turn
+ * nothing. Each sample point turns the stable member by the pulses sent
+ * since the last one, the body held still, and sets CDUX-Z from the new
+ * matrix (sps_matrix's gimbal order). The matrix carries the fractions of
+ * a CDU count between points: it is taken again from CDUX-Z only when they
+ * are no longer what the last point set (another model, or the program's
+ * coarse align, moved them). */
+static int gyro_model;
+static long gyro_sent[4];
+static struct { int have; agc_word cdu[3]; double m[3][3]; } gyro;
+static void gyro_due(agc_word *w){unsigned a,i,j,l;
+ if(!gyro_model){memset(gyro_sent,0,sizeof gyro_sent);return;}
+ if(!gyro_sent[1]&&!gyro_sent[2]&&!gyro_sent[3])return;
+ if(!gyro.have||eword(w,CDUX)!=gyro.cdu[0]||eword(w,CDUY)!=gyro.cdu[1]||eword(w,CDUZ)!=gyro.cdu[2]){sps_matrix(w,gyro.m);gyro.have=1;}
+ for(a=1;a<4u;++a)if(gyro_sent[a]){double t=(double)gyro_sent[a]*(6.283185307179586/2097152.0),c=cos(t),sn=sin(t),r[3][3]={{1,0,0},{0,1,0},{0,0,1}},n[3][3];
+  /* r turns by t about stable member axis a-1; a body axis b (a row of
+   * m, in stable member axes) is then r^T b in the new axes. */
+  i=(a%3u);j=((a+1u)%3u);r[i][i]=c;r[i][j]=-sn;r[j][i]=sn;r[j][j]=c;
+  for(i=0;i<3u;++i)for(j=0;j<3u;++j){n[i][j]=0.0;for(l=0;l<3u;++l)n[i][j]+=gyro.m[i][l]*r[l][j];}
+  memcpy(gyro.m,n,sizeof n);gyro_sent[a]=0;}
+ eset(w,CDUY,sps_cdu(atan2(-gyro.m[0][2],gyro.m[0][0])));eset(w,CDUZ,sps_cdu(asin(gyro.m[0][1])));eset(w,CDUX,sps_cdu(atan2(-gyro.m[2][1],gyro.m[1][1])));
+ for(a=0;a<3u;++a)gyro.cdu[a]=eword(w,CDUX+a);}
+#ifdef RK_CM
+/* FLIGHT_OPTICS=1: the CM optics (sextant). While channel 12 bit 2 (the
+ * optics error counters) is set and bit 8 (TVC enable) clear, the optics follow the pulses the
+ * drive sends from CDUTCMD and CDUSCMD (053, 054), and each sample point
+ * adds them to CDUT and CDUS (035, 036), 4 counts a pulse. The scale is
+ * OPTDRIVE's (T4RUPT_PROGRAM.agc): it commands (DESOPT - CDU) / 4 pulses
+ * a pass, so 4 counts a pulse puts the optics on the desired angles when
+ * the pulses are out (a perfect servo). In TVC mode the same pulses
+ * steer the SPS gimbal (sps_due) and the optics stay. */
+static int optics_model;
+static long optics_sent[2];
+static void optics_due(agc_word *w){unsigned k;
+ if(!optics_model){optics_sent[0]=optics_sent[1]=0;return;}
+ for(k=0;k<2u;++k)if(optics_sent[k]){eset(w,035u+k,(agc_word)((unsigned long)((long)eword(w,035u+k)+4l*optics_sent[k])&077777ul));optics_sent[k]=0;}}
+#endif
 /* The output drives, once each clock period after the timers, as the C64
- * resident runs them: the IMU CDU drive (CDUXCMD-CDUZCMD) and, in the CM,
- * the optics error counters (the SPS gimbal commands in TVC mode). */
+ * resident runs them: the gyro drive (GYROCMD), the IMU CDU drive
+ * (CDUXCMD-CDUZCMD) and, in the CM, the optics error counters (the SPS
+ * gimbal commands in TVC mode, else the optics). */
 static void drives(apollo_overlay_state *s,agc_hardware *hw){
+ agc_word g=s->words[047];
 #ifdef RK_CM
  unsigned k;long before[2];
  rk_cdu_count=5u;
  for(k=0;k<2u;++k)before[k]=rk_cdu.owed[3u+k]+ones(s->words[053u+k]);
 #endif
  rk_cdu_drive(s,hw);
+ /* The gyro pulses sent, signed, for the platform (gyro_due). */
+ if(g!=s->words[047]){long n=(long)g-(long)s->words[047];gyro_sent[(hw->channel14>>6)&3u]+=hw->channel14&0400u?-n:n;}
 #ifdef RK_CM
  /* The pulses sent leave the counter and what the drive owes; the optics
   * error counters take them (zeroed while channel 12 bit 2 is clear). */
- for(k=0;k<2u;++k)optics_counter[k]=(hw->channel12&2u)?optics_counter[k]+before[k]-(rk_cdu.owed[3u+k]+ones(s->words[053u+k])):0;
+ for(k=0;k<2u;++k){long sent=before[k]-(rk_cdu.owed[3u+k]+ones(s->words[053u+k]));
+  optics_counter[k]=(hw->channel12&2u)?optics_counter[k]+sent:0;
+  if((hw->channel12&0202u)==2u)optics_sent[k]+=sent;}
 #endif
 }
 
@@ -1087,9 +1135,9 @@ static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint
  h.channel3=(agc_word)(m.InputChannel[3]&077777);h.channel4=(agc_word)(m.InputChannel[4]&077777);
  h.radar_gate=(uint8_t)m.RadarGateCounter;
  /* The drives (drives(), above) on yaAGC's counters, at the TIME5 step. */
- if(step<0||step==2){for(i=050u;i<=054u;++i)t.words[i]=mword(i);
+ if(step<0||step==2){for(i=047u;i<=054u;++i)t.words[i]=mword(i);
   h.channel12=(agc_word)(m.InputChannel[012]&077777);h.channel14=(agc_word)(m.InputChannel[014]&077777);drives(&t,&h);
-  for(i=050u;i<=054u;++i)*cell(i)=(int16_t)t.words[i];}
+  for(i=047u;i<=054u;++i)*cell(i)=(int16_t)t.words[i];}
  if(step<0)rk_timer_tick(&t,&h,&p);else rk_timer_phase(&t,&h,&p,(uint8_t)step);
  m.RadarGateCounter=h.radar_gate;
  for(i=024u;i<=031u;++i)*cell(i)=(int16_t)t.words[i];
@@ -1385,12 +1433,14 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_AERO"))aero_b=strtod(getenv("FLIGHT_AERO"),0);
  if(getenv("FLIGHT_SPS")&&sscanf(getenv("FLIGHT_SPS"),"%lf,%lf,%lf",&sps_kg,&sps_cg[0],&sps_cg[1])<1){fprintf(stderr,"FLIGHT_SPS=KG[,PITCH,YAW]\n");return 2;}
  if(getenv("FLIGHT_IMU"))imu_model=atoi(getenv("FLIGHT_IMU"));
+ if(getenv("FLIGHT_OPTICS"))optics_model=atoi(getenv("FLIGHT_OPTICS"));
  if(getenv("FLIGHT_SATURN"))saturn_lo=strtoul(getenv("FLIGHT_SATURN"),0,10);
  if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
  if(rr_on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RR needs FLIGHT_SCALED\n");return 2;}
  if(!drops_parse(&rr_drops,getenv("FLIGHT_RR_DROP"))){fprintf(stderr,"FLIGHT_RR_DROP=T0-T1[,T0-T1...]\n");return 2;}
  if(getenv("FLIGHT_SIVB")&&sscanf(getenv("FLIGHT_SIVB"),"%lu,%lf,%lf,%lf",&sivb_tig,&sivb_u[0],&sivb_u[1],&sivb_u[2])!=4){fprintf(stderr,"FLIGHT_SIVB=CS,UX,UY,UZ\n");return 2;}
 #endif
+ if(getenv("FLIGHT_GYRO"))gyro_model=atoi(getenv("FLIGHT_GYRO"));
  core_path=getenv("FLIGHT_CORE");
  if(sps_kg&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_SPS needs FLIGHT_SCALED\n");return 2;}
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
@@ -1510,6 +1560,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    watch(s.words);
    aero_due(now(s.words),&aero_nat,s.words);
    imu_due(s.words,&hw);
+   gyro_due(s.words);
+#ifdef RK_CM
+   optics_due(s.words);
+#endif
    saturn_due(now(s.words),&sat_nat,s.words,&hw);
    sivb_due(now(s.words),&sivb_nat,s.words);
    lr_due(now(s.words),&lr_nat,&hw);
