@@ -71,6 +71,10 @@ SECTIONS {
         __dp_screen_end = .;
     } >screen AT>boot
     __dp_screen_load = LOADADDR(.dp_screen);
+    ASSERT(__dp_screen_end <= 0x07e8, "harness code past the text screen's last character")
+    ASSERT(__dp_screen_end == __dp_screen_start || __dp_screen_end <= 0x06a8 ||
+           (__rk_dsky_data_end == __rk_dsky_data_start && __rk_dsky_bss_end == __rk_dsky_bss_start),
+           "harness code in the text screen overlaps the DSKY's last rows")
     .text : { INCLUDE text-sections.ld } >ram
     .rodata : { INCLUDE rodata-sections.ld } >ram
     .data : { INCLUDE data-sections.ld } >ram
