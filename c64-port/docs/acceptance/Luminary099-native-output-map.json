@@ -45,10 +45,38 @@
   },
   {
    "section": "Downlink (channels 34, 35)",
-   "row": "Orbital maneuvers, lunar surface align, AGS initialization lists",
+   "row": "Orbital maneuvers list (DOI)",
    "kind": "downlink",
-   "status": "not exercised",
-   "note": "Their phases (DOI, P12, P57, V47) start from the NASSP core, which runs on scaled time, where flight_host_run.c takes no DOWNRUPT (flight_downlink_check.py). The list code is the same DNTM routines the three rows above run"
+   "host": [
+    "lm-p00-doi-restart",
+    "lm-doi-burn-restart"
+   ],
+   "c64": [
+    "lm-doi"
+   ],
+   "note": "From the NASSP core: DOWNRUPT starts on both sides at the first sample point after the core (flight_host_run.c dl_arm)."
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Lunar surface align list (P57, P22)",
+   "kind": "downlink",
+   "host": [],
+   "c64": [
+    "lm-p57",
+    "lm-p22-surface"
+   ],
+   "note": "No restart row starts these phases; the C64 windows compare each DOWNRUPT with yaAGC from the same state."
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "AGS initialization and update list (V47, P27)",
+   "kind": "downlink",
+   "host": [],
+   "c64": [
+    "lm-coast-v47",
+    "lm-p27"
+   ],
+   "note": "No restart row starts these phases; the C64 windows compare each DOWNRUPT with yaAGC from the same state."
   },
   {
    "section": "Downlink (channels 34, 35)",

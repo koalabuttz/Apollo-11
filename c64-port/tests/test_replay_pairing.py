@@ -40,6 +40,16 @@ class Pairing(unittest.TestCase):
         self.assertEqual(v['end'], dict(shift_cs=1, paired=True))
         self.assertEqual(v['unpaired'], [])
 
+    def test_busy_c64_end_pairs_at_the_first_point_both_have(self):
+        # The host ends at 170 and writes states at 171, 173 and 175; the C64
+        # is busy until 172, then writes one at its next marks.
+        v = fsv.replay_verdict([state(100), state(170)], [state(100), state(172), state(173), state(175)], True,
+                               after=[state(171), state(173), state(175)])
+        self.assertEqual(v['diff'], [])
+        self.assertEqual(v['matched'], [100, 173])
+        self.assertEqual(v['end'], dict(shift_cs=3, paired=True))
+        self.assertEqual(v['unpaired'], [])
+
     def test_late_c64_end_with_a_data_difference_still_fails(self):
         v = fsv.replay_verdict([state(100), state(172)], [state(100), state(173, **{f'w{WORD:o}': 0o123})], True,
                                after=[state(173)], after_rows=[])
@@ -88,6 +98,10 @@ class Pairing(unittest.TestCase):
         v = fsv.replay_verdict([state(320)], [state(321)], True, after=None)
         self.assertTrue(v['end']['paired'])
         self.assertEqual(v['diff'][0], ('centiseconds', 320, 321))
+
+    def test_rows_before_counts_the_past_end_inputs_due(self):
+        rows = b''.join(fsv.ROW.pack(cs, 1, 1, 0, 1, 0) for cs in (171, 172, 174))
+        self.assertEqual([fsv.rows_before(rows, cs) for cs in (171, 172, 173, 175)], [0, 1, 2, 3])
 
 
 class DeadSuperbank(unittest.TestCase):

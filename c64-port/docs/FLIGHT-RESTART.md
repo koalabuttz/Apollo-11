@@ -96,8 +96,10 @@ back to P00:
   (the `lm-p00-restart` class below), logged in
   `/mnt/project-files/flight-scenarios/replay-mismatches.md`.
 
-The x86 program has no TC trap yet, so `V69_FLIGHT`, like the restart
-rows, is not in its scenario list.
+The x86 program takes the TC trap the same way (`platform/x86/tc_trap.h`,
+#806): `make x86-flight-scenarios` flies `V69_FLIGHT` against the harness,
+and `make x86-flight-check` runs V69 in lockstep against yaAGC
+(docs/X86-FLIGHT.md).
 
 ## Scenarios (`make flight-restart-check`)
 

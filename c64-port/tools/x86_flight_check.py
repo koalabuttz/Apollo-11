@@ -28,7 +28,10 @@ CHECK = xb.OUT / 'check'
 # hardware restarts with DOWNRUPT: LM P00 at 20 s, and CM V37E06E keyed at
 # 25 s and restarted in P06 at 35 s. The typed rows send keys through the
 # live DSKY's typed-key path (X86_TYPED, platform/x86/terminal_dsky.h: 20 cs
-# apart, p holds PRO), in both the x86 run and the lockstep.
+# apart, p holds PRO), in both the x86 run and the lockstep. The v69 rows
+# key V69E at 23.5 s: the spin at VERB69 is checked against yaAGC's TC, and
+# the TC trap's restart from 04000 on (its GOJAM is the x86 program's own:
+# yaAGC's clock is frozen), so they must report the trap.
 SCENARIOS = [('p00', 'lm', 4000, '', {}), ('p00', 'cm', 4000, '', {}),
              ('dap-hold', 'lm', 3000, '', fhd.DAP),
              ('v37e00e', 'cm', 3000, 'V37E00E', {}), ('v37e06e', 'cm', 3000, 'V37E06E', {}),
@@ -38,7 +41,8 @@ SCENARIOS = [('p00', 'lm', 4000, '', {}), ('p00', 'cm', 4000, '', {}),
              ('v37e06e-restart', 'cm', 4000, '@2500V37E06E', {'FLIGHT_GOJAM': '3500', 'FLIGHT_DOWNRUPT': '1'}),
              ('typed-v35e', 'lm', 3000, '', {'X86_TYPED': 'v35e'}),
              ('typed-v37e00e-pro', 'lm', 3000, '', {'X86_TYPED': 'v37e00ep'}),
-             ('typed-v37e06e-pro-marks', 'cm', 3000, '', {'X86_TYPED': 'v37e06epmj'})]
+             ('typed-v37e06e-pro-marks', 'cm', 3000, '', {'X86_TYPED': 'v37e06epmj'}),
+             ('v69', 'lm', 4000, '@2350V69E', {}), ('v69', 'cm', 4000, '@2350V69E', {})]
 
 
 def lockstep(cc, m, mode):
@@ -90,7 +94,7 @@ def main():
                        core_points=[g['point'] for g in report.get('gaps', []) if g['kind'] == 'interp'],
                        unmapped=report.get('unmapped'), major_mode=report.get('major_mode'))
             summary.append(row)
-            bad = r.returncode or k.returncode
+            bad = r.returncode or k.returncode or (name == 'v69' and 'TC trap at' not in k.stdout)
             failed += bool(bad)
             print(f"{tag}: {row['checked']} routines checked, {row['mismatched_points']} points yaAGC did not match, "
                   f"{row['core_slots']} interpreter core slots at {len(row['core_points'])} points, "
