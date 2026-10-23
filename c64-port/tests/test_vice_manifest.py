@@ -22,12 +22,12 @@ def manifest(date='2026-10-13T05:30:00Z', certified=True, **targets):
             'certificates': {PATH: {'complete_native_coverage': {'vice-a': 100}}} if certified else {}}
 
 
-def check(named, data, **extra):
+def check(named, data, accepted=True, **extra):
     certificate = {'evidence': {'c64_execution_results': {'path': 'x', 'vice_targets': named}}, **extra}
     if named is None:
         del certificate['evidence']['c64_execution_results']['vice_targets']
     report = cert_precheck.Report()
-    cert_precheck.check_manifest(report, PATH, PATH, certificate, data, NOW)
+    cert_precheck.check_manifest(report, PATH, PATH, certificate, data, NOW, accepted=accepted)
     return report
 
 
@@ -68,8 +68,9 @@ class ViceManifest(unittest.TestCase):
     def test_migration_and_exempt(self):
         report = check(None, manifest())
         self.assertEqual((report.fails, report.warns), (0, 1))
-        self.assertIn('migrate', report.lines[0])
+        self.assertIn('next refreeze', report.lines[0])
         self.assertEqual(check(None, manifest(), c64_exempt='documentation only').lines, [])
+        self.assertEqual(check(None, manifest(), accepted=False).fails, 1)
 
     def test_malformed(self):
         self.assertEqual(check({'a': 0}, manifest()).fails, 1)
