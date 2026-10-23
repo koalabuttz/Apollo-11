@@ -50,6 +50,16 @@ class NativeOutputAcceptance(unittest.TestCase):
             self.assertFalse(ok)
             self.assertIn('unchanged', text)
 
+    def test_channel_row_needs_the_whole_window_to_match(self):
+        # #804: one matched checkpoint in a window that fails is not a pass.
+        failed = dict(replay('lm-a', 0, differences=7), ok=False, replay_skipped=['DSPCNT'],
+                      reu_bounds=dict(ok=False, outside=12))
+        skipped = dict(replay('lm-a', 0), replay_skipped=['DSPCNT'])
+        with mock.patch.object(no, 'window_states', return_value=states(0, 3)):
+            for r in (failed, skipped, dict(replay('lm-a', 0), ok=False)):
+                ok, text = no.assess_channels(JETS, {'lm-a': [r]})
+                self.assertFalse(ok, text)
+
     def test_downlink(self):
         row = dict(kind='downlink', host=['lm-p00-restart'], c64=['lm-p00'])
         good = dict(host=[dict(scenario='lm-p00-restart', ok=True, native_words=400, span_differ=0)],
@@ -65,8 +75,16 @@ class NativeOutputAcceptance(unittest.TestCase):
             d = pathlib.Path(d)
             (d / 'summary.json').write_text(json.dumps(dict(host=[], c64=[])))
             self.assertEqual(no.load_downlink(d, HEAD), (None, 'unknown'))
-            (d / 'commit').write_text(HEAD + '\n')
+            (d / 'commit').write_text(HEAD + '\n')   # a stamp beside the summary does not count (#804)
+            self.assertEqual(no.load_downlink(d, HEAD), (None, 'unknown'))
+            (d / 'summary.json').write_text(json.dumps(dict(commit=HEAD, host=[], c64=[])))
             self.assertEqual(no.load_downlink(d, HEAD)[0]['commit'], HEAD)
+            # C64 windows count only on the store they ran on.
+            c64 = [dict(window='lm-p00', mission='lm', ok=True)]
+            (d / 'summary.json').write_text(json.dumps(dict(commit=HEAD, stores=dict(lm='ab' * 32), host=[], c64=c64)))
+            self.assertEqual(no.load_downlink(d, HEAD, 'lm', 'ab' * 32)[0]['commit'], HEAD)
+            self.assertIsNone(no.load_downlink(d, HEAD, 'lm', 'cd' * 32)[0])
+            self.assertEqual(no.load_downlink(d, HEAD, 'cm', 'cd' * 32)[0]['commit'], HEAD)
 
     def test_waits_and_not_exercised(self):
         rows = [dict(JETS, waits_on='D1'), dict(section='d', row='dump', kind='downlink', status='not exercised', note='no V74'),
