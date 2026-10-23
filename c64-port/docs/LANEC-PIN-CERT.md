@@ -113,6 +113,13 @@ The guards that stay are argued here:
 - **ALMCYCLE with superbank 0-3.** ALMCYCLE (fixed-fixed 04145 / 04161) is
   called only from Pinball code in banks 40-43, which runs only under
   superbank 4 or higher.
+- **A routine that changes input channel 030-033 through the trampoline.**
+  The device record carries channels 030-033 as inputs the devices own (the
+  switches, the IMU and radar status). A CHANLOAD onto them (V21 onto a
+  channel) is off-nominal, and no flight procedure does it. The trampoline
+  refuses such a result instead of storing it (src/lanec_pin_trampoline.c
+  `swap_inputs`/`unrepresented`), the same way it refuses a write to a
+  channel the record does not carry. No case takes this arm.
 
 Two native files are in no try-list: `src/dsky_decimal_consumer.c` and
 `src/dsky_operator_schedule.c`. Their `pw-*` suites still compare them with
