@@ -59,7 +59,10 @@ runs nothing: it accepts only when every doc and cite is byte for byte what
 a run at HEAD on this store wrote, with the same checks as a full run.
 A run at the commit and store of the ledger keeps the replay results
 (RESULTS), so an interrupted --only integrated_program_tests resumes; any
-other run clears them.
+other run clears them. The ledger's commit and store are written before
+the generators run, so a run killed by the cap still resumes; a result
+JSON cut off mid-write does not parse and is deleted, so its window runs
+again.
 """
 import argparse
 import hashlib
@@ -251,7 +254,7 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
     logs.mkdir(parents=True, exist_ok=True)
     runs = mode in ('full', 'partial')
     rerun = set(only) if mode == 'partial' else set(APPLICATION_EVIDENCE) if mode == 'full' else set()
-    errors, ran, built, resumed = [], {}, {}, False
+    errors, ran, built, resumed, dropped = [], {}, {}, False, []
     # The generators' outputs: both programs' six docs and the evidence ids
     # they cite. Nothing else may change during a run, or after the docs'
     # commit for --check-only.
@@ -288,6 +291,20 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
             for d in RESULTS:
                 shutil.rmtree(root / d, ignore_errors=True)
             resumed = False
+        else:
+            # A run cut off mid-write leaves a JSON that does not parse: it
+            # goes, so its window runs again rather than counting as done.
+            for f in sorted(x for d in RESULTS for x in (root / d).glob('**/*.json')):
+                try:
+                    json.loads(f.read_text())
+                except (OSError, ValueError):
+                    f.unlink()
+                    dropped.append(f.relative_to(root).as_posix())
+        # Written now, before the generators: a run killed by a job's time
+        # cap still leaves the commit and store, so its rerun resumes.
+        for cat in rerun:
+            ledger['categories'].pop(cat, None)
+        ledger_path.write_text(json.dumps(ledger, indent=1) + '\n')
         if not only:
             # A full run starts with none of this program's acceptance
             # evidence, so every id a doc cites is one this run wrote.
@@ -393,7 +410,7 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
     if runs:
         ledger_path.write_text(json.dumps(ledger, indent=1) + '\n')
     return dict(program=PROGRAM[m], head=head, mode=mode, only=sorted(only), built=built, vice=vice_provenance(),
-                resumed=resumed, errors=errors, consistent=consistent, accepted=accepted, ok=accepted,
+                resumed=resumed, dropped=dropped, errors=errors, consistent=consistent, accepted=accepted, ok=accepted,
                 categories=rows)
 
 

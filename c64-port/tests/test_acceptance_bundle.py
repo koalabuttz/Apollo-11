@@ -491,5 +491,46 @@ class Bundle(unittest.TestCase):
         self.assertFalse(kept())
 
 
+    def test_run_cut_off_with_no_ledger_resumes(self):
+        # F's case: the first run is killed by the job cap mid-replay.
+        class Killed(Exception):
+            pass
+
+        def cut(root):
+            for d in ab.RESULTS:
+                (root / d).mkdir(parents=True, exist_ok=True)
+                (root / d / 'done.json').write_text('{"ok": true}\n')
+                (root / d / 'half.json').write_text('{"ok": tr')
+            raise Killed
+        with self.assertRaises(Killed):
+            self.run_bundle('partial', (CATS[1],), fake=Fake(side=cut))
+        t = self.run_bundle('partial', (CATS[1],))
+        self.assertTrue(t['resumed'])
+        for d in ab.RESULTS:
+            self.assertTrue((self.root / d / 'done.json').exists())
+            self.assertFalse((self.root / d / 'half.json').exists())
+        self.assertEqual(sorted(t['dropped']), sorted(f'{d}/half.json' for d in ab.RESULTS))
+        t = self.run_bundle('assemble')
+        self.assertFalse(t['accepted'])  # the other five never ran
+        self.run_each(cats=[c for c in CATS if c != CATS[1]])
+        t = self.run_bundle('assemble')
+        self.assertTrue(t['accepted'], self.problems(t))
+
+    def test_cut_off_run_leaves_no_record_of_its_category(self):
+        self.run_each()
+        self.run_bundle('partial', (CATS[0],), fake=Fake(exit=0, write=False))
+        led = json.loads((self.root / 'build/acceptance-bundle/lm/ledger.json').read_text())
+        self.assertFalse(led['categories'][CATS[0]]['written'])
+
+        def boom(root):
+            raise RuntimeError('cap')
+        self.run_bundle('partial', (CATS[0],))
+        with self.assertRaises(RuntimeError):
+            self.run_bundle('partial', (CATS[0],), fake=Fake(side=boom))
+        led = json.loads((self.root / 'build/acceptance-bundle/lm/ledger.json').read_text())
+        self.assertNotIn(CATS[0], led['categories'])
+        self.assertFalse(self.run_bundle('assemble')['accepted'])
+
+
 if __name__ == '__main__':
     unittest.main()
