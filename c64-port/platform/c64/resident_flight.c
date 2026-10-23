@@ -77,9 +77,6 @@ uint16_t rk_budget(void);
 /* The part group of the run rk_charge charges next (rk_direct sets it), 0
  * for any other run. */
 static uint8_t rk_charge_group;
-/* The hand-off each context's last step left (0: the job, 1: an interrupt),
- * and the context of the step before (rk_step_run). */
-uint8_t rk_part_held[2], rk_part_last;
 /* n units of mct each: n added mct times (no multiply on the 6502; mct
  * is a weight, at most 255, and 1 for a module that reports MCT), or for
  * the idle loop (RK_MCT_IDLE), the rest of the period, which rk_rupts
@@ -370,8 +367,13 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
 #endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
-        got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
-                           &rk_pending);
+        /* A job's part hand-off (rk_part_cont, outside an interrupt) is inside
+         * one host step, where the host takes no interrupt: requests wait
+         * until the job's next part has run. */
+        got = rk_part_cont && !rk_hardware.in_interrupt
+                  ? 0
+                  : rk_rupt_take(&rk_program, IMAGE, rk_device.superbank,
+                                 rk_device.interrupt_enabled, &rk_pending);
         if (got || rk_work < RK_PHASE_MCT(p)) break;
         /* Once a period, at TIME5: the real-time cap, then the output drives
          * (resident_cdu.h), at the step the host harness runs them. */
@@ -634,16 +636,11 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     enum exec_status status;
     uint16_t loc;
 #ifdef RK_WORK_CLOCK
-    {
-        /* Each context (the job, an interrupt: AOSTASK runs inside T3RUPT)
-         * goes on from its own last step, so a T4RUPT between two parts of a
-         * job's routine leaves the job's hand-off for the job's next step. */
-        uint8_t r = rk_hardware.in_interrupt != 0;
-        rk_part_held[rk_part_last] = rk_part_cont;
-        rk_part_last = r;
-        rk_part_prev = rk_part_held[r];
-        rk_part_cont = 0;
-    }
+    /* No interrupt comes between a job's two parts (rk_rupts_due), and an
+     * interrupt's own parts (AOSTASK, inside T3RUPT) end before its RESUME,
+     * so the step before is always the one this step's part goes on from. */
+    rk_part_prev = rk_part_cont;
+    rk_part_cont = 0;
 #endif
 #ifndef RK_NO_DIRECT
     rk_point = AGC_TRANSFER_NONE;

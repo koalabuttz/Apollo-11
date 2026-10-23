@@ -448,7 +448,7 @@ static void BOOT load_snapshot(void){
  /* The host's replay runs on the work clock from its first step. */
  rk_work = 0;
  rk_tick_phase = 0;
- rk_part_cont = rk_part_prev = rk_part_held[0] = rk_part_held[1] = rk_part_last = 0;
+ rk_part_cont = rk_part_prev = 0;
  replay_t0 = IMAGE->words[025];
 #endif
 }
@@ -488,7 +488,7 @@ __attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t statu
     rk_pending = 0;
     rk_work = 0;
     rk_tick_phase = 0;
-    rk_part_cont = rk_part_prev = rk_part_held[0] = rk_part_held[1] = rk_part_last = 0;
+    rk_part_cont = rk_part_prev = 0;
     rk_ticks = ov2_irq_count;
     __asm__ volatile("cli");
     replay_t0 = IMAGE->words[025];
