@@ -280,7 +280,7 @@ def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
     return pairs + ends, unpaired, end
 
 
-def replay_verdict(host_s, c64_s, ended, after=None, after_rows=(), skip=None, m=None):
+def replay_verdict(host_s, c64_s, ended, after=None, after_rows=(), skip=None, m=None, exact=False):
     """pair_states, then each pair compared in order up to the first that
     differs: dict(pairs, unpaired, end, diff, at_cs, matched, skipped,
     masked). A window matches only when diff is empty, it ended and its end
@@ -291,7 +291,7 @@ def replay_verdict(host_s, c64_s, ended, after=None, after_rows=(), skip=None, m
     diff, at_cs, matched, skipped, masked = [], None, [], set(), {}
     for (hc, hw), (cc, cw) in pairs:
         n = masked.get(DEAD_SUPERBANK, 0)
-        diff = replay_compare(hw, cw, skip, skipped, m, masked)
+        diff = replay_compare(hw, cw, skip, skipped, m, masked, exact)
         if masked.get(DEAD_SUPERBANK, 0) > n:
             masked.setdefault(DEAD_SUPERBANK_AT, []).append((hc, hw[SUPERBANK], cw[SUPERBANK]))
         if hc != cc:
@@ -360,16 +360,18 @@ def mask_mission(exact, m):
     return None if exact else m
 
 
-def replay_compare(h, c, skip=None, skipped=None, m=None, masked=None):
+def replay_compare(h, c, skip=None, skipped=None, m=None, masked=None, exact=False):
     """The differences between a host state and the C64's: (name, host,
     C64) for each compared erasable word, the timers, then each output
     channel. With the mission m, a dead superbank (dead_superbank) is not a
-    difference; each one is counted in masked[DEAD_SUPERBANK]."""
+    difference; each one is counted in masked[DEAD_SUPERBANK]. Unless
+    exact, TIME5 a count apart is noted in skipped (TIME5_PHASE), not a
+    difference."""
     out = []
     for i, name in TIMERS.items():
         if h[i] == c[i]:
             continue
-        if i == 0o30 and h[0o25] == c[0o25] and (h[i] - c[i]) % 0o40000 in (1, 0o37777):
+        if not exact and i == 0o30 and h[0o25] == c[0o25] and (h[i] - c[i]) % 0o40000 in (1, 0o37777):
             skipped.add(TIME5_PHASE)
         else:
             out.append((name, h[i], c[i]))
@@ -554,7 +556,7 @@ def ones_add(w, d):
     return v & 0o77777 if v >= 0 else (v + 0o77777) & 0o77777
 
 
-def seam_check(header, c64_end, m):
+def seam_check(header, c64_end, m, exact=False, skipped=None):
     """--chain: the differences between a window's start (its snapshot)
     and the C64's end of the window before plus the inputs the host gave
     at that point (.seam rows), as replay_compare reports them."""
@@ -569,7 +571,9 @@ def seam_check(header, c64_end, m):
             w[addr] = ones_add(w[addr], value)
         elif kind == 2 and addr in chans:
             w[2048 + chans[addr]] = value
-    return replay_compare(snap_state(header), w, None, set())
+    # A TIME5 phase tolerated at a seam goes into skipped, so the next
+    # window reports it (with skips) instead of passing silently.
+    return replay_compare(snap_state(header), w, None, set() if skipped is None else skipped, exact=exact)
 
 
 def main():
@@ -707,8 +711,9 @@ def main():
                  '(raise --replay-every)')
     results, c64_end = [], None
     for n, (header, tag, cs) in enumerate(windows):
+        seam_skipped = set()
         if n:
-            seam = seam_check(header, c64_end, m)
+            seam = seam_check(header, c64_end, m, a.replay_exact, seam_skipped)
             print(f'{a.scenario}: seam {n}: ' + (f'the C64 end of window {n - 1} is the start of window {n}' if not seam else
                   f'FAIL: the C64 end of window {n - 1} is not the start of window {n}: {len(seam)} differences, first '
                   + ', '.join(f'{x} {shown(x, h)}/{shown(x, c)}' for x, h, c in seam[:6]) + ' (start/C64 end)'))
@@ -844,9 +849,11 @@ def main():
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, states_max), m)
             c64_end = c64_s[-1][1] if c64_s else None
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip, mask_mission(a.replay_exact, m))
+            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip, mask_mission(a.replay_exact, m),
+                               a.replay_exact)
             unpaired, end, diff, at_cs, matched, skipped = (v[k] for k in ('unpaired', 'end', 'diff', 'at_cs', 'matched',
                                                                          'skipped'))
+            skipped = skipped | {f'{x} (at seam {n})' for x in seam_skipped}
             shift = end['shift_cs'] if end else None
             inner = [u for u in unpaired if not u.get('end')]
             r.update(replay_unpaired=unpaired, replay_unpaired_count=len(inner), replay_end_shift_cs=shift,
