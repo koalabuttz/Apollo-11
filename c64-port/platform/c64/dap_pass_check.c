@@ -329,7 +329,8 @@ static uint8_t outputs_full CASSETTE, outputs_started CASSETTE;
  * list's code and tables sit in the screen's last rows (the flight DSKY's
  * table area, resident_flight.ld .dsky_data: free here; load_snapshot
  * copies it), not in the resident or the full $0200 region. */
-#define OUT_DATA __attribute__((section(".dsky.rodata.dp_outputs_tab")))
+#define OUT_DATA       __attribute__((section(".dsky.rodata.dp_outputs_tab")))
+#define OUT_TEXT(name) __attribute__((noinline, section(".dsky.rodata.dp_outputs_" name)))
 OUT_DATA static const uint8_t output_number[6] = {05u, 06u, 011u, 012u, 013u, 014u};
 OUT_DATA static const uint16_t *const output_at[6] = {
     &rk_hardware.channel5,  &rk_hardware.channel6,
@@ -341,7 +342,7 @@ OUT_DATA static const uint16_t *const output_at[6] = {
 #endif
 };
 /* One change into the list. */
-__attribute__((noinline, section(".dsky.rodata.dp_outputs_rec"))) static void outputs_record(uint16_t t, uint8_t i, uint16_t v)
+OUT_TEXT("rec") static void outputs_record(uint16_t t, uint8_t i, uint16_t v)
 {
     static uint16_t entry[3] CASSETTE;
     if (outputs_bytes >= 6u * DP_OUTPUTS_MAX) {
@@ -354,8 +355,7 @@ __attribute__((noinline, section(".dsky.rodata.dp_outputs_rec"))) static void ou
     apollo_reu_transfer(APOLLO_REU_STASH, entry, DP_OUTPUTS + outputs_bytes, 6u);
     outputs_bytes += 6u;
 }
-__attribute__((noinline, section(".dsky.rodata.dp_outputs_text"))) static void
-outputs_log(uint16_t t)
+OUT_TEXT("text") static void outputs_log(uint16_t t)
 {
     uint8_t i;
     for (i = 0; i < 6u; ++i) {
