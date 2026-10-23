@@ -48,6 +48,9 @@ typedef struct {
     double mct, next_period; /* next_period: the end of the next clock step */
     uint8_t phase;           /* that step (rk_timer_phase) */
     unsigned long periods, steps, slots;
+    /* AGC time counts from here (TIME2/TIME1 in centiseconds): 0 from
+     * GOJAM, a start state's own time from X86_START. */
+    unsigned long t0;
     fd_gap gaps[FD_GAPS];
     unsigned ngaps;
     unsigned long unmapped;   /* basic points with no routine: fatal */
@@ -74,5 +77,6 @@ enum exec_status fd_run(fd_state *st, fd_ran *ran);
 /* The point at the state: physical key, interpretive or not. */
 uint16_t fd_point(const fd_state *st, int *interp);
 /* MODREG, the time in centiseconds (TIME2:TIME1). */
+/* AGC time in centiseconds since the start (st->t0). */
 unsigned long fd_centiseconds(const fd_state *st);
 #endif

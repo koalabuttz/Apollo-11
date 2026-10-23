@@ -85,7 +85,7 @@ def write_doc(root, cat, commit, cite=True, sha_len=16, d81=None, tool=None, ver
         lines.append(f'Evidence: `evidence/{ident}/result.json` (sha256 `{digest[:sha_len]}...`).')
     if d81:
         lines.append(f'| `{D81}` | `{d81}` |')
-    if store and cat in ab.STORE_CATS:
+    if store:
         lines.append(f"| `{STORE}` | `{hashlib.sha256((root / 'build' / STORE).read_bytes()).hexdigest()}` |")
     doc = root / 'docs/acceptance' / f'Luminary099-{cat}.md'
     doc.parent.mkdir(parents=True, exist_ok=True)
@@ -235,7 +235,9 @@ class Bundle(unittest.TestCase):
     def test_no_store_named(self):
         t = self.run_bundle(fake=Fake(store=False))
         self.assertFalse(t['accepted'])
-        self.assertTrue(any(f'sha256 of {STORE}' in p for p in self.problems(t)))
+        # Every category, device_adapter_tests included (its C64 windows run the store).
+        for r in t['categories']:
+            self.assertTrue(any(f'sha256 of {STORE}' in p for p in r['problems']), r['category'])
 
     def test_store_changes_during_run(self):
         t = self.run_bundle(fake=Fake(side=lambda root: built(root, STORE, b'other')))

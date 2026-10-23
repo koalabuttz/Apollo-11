@@ -818,7 +818,9 @@ RESTART_POINTS = [  # (name, scenario, GOJAM cs, end cs, phase)
     ('cm-p40-burn-restart', 'cm-p40', 50000, 55000, 'P40 SPS burn, TVC DAP running, mid-burn'),
     ('cm-entry-restart', 'cm-entry', 25000, 32000, 'P64 entry, groups 1, 5 and 6 active'),
     ('cm-p20-restart', 'cm-p20', 22000, 25000, 'P20 rendezvous navigation, R22 running'),
-    ('cm-p22-restart', 'cm-p22', 14000, 23000, 'P22 orbital navigation, between the marks'),
+    # Ends at 21000, before the V37E00E at 21500, so the major-mode check
+    # sees P22 resumed, not the P00 both runs reach (#762).
+    ('cm-p22-restart', 'cm-p22', 14000, 21000, 'P22 orbital navigation, between the marks'),
 ]
 RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(at)})
                   for name, scen, at, end, _ in RESTART_POINTS
@@ -836,6 +838,20 @@ RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(
 # program, which has no TC trap yet) does not run them.
 V69_FLIGHT = [('lm-v69', 'lm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'}),
               ('cm-v69', 'cm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'})]
+
+
+def reach_points():
+    """{FLIGHT scenario: [point, ...]}: the bodies the program maps' rows
+    name (a row's `reach`, [[point, label], ...]) for the host run to
+    watch for (FLIGHT_REACH, tools/flight_host_run.c)."""
+    out = {}
+    for path in sorted((ROOT / 'docs/acceptance').glob('*-program-map.json')):
+        for row in json.loads(path.read_text()).get('rows', []):
+            for point, _ in row.get('reach', []):
+                for s in row.get('scenarios', []):
+                    if point not in out.setdefault(s, []):
+                        out[s].append(point)
+    return out
 
 
 def scenario(name):
@@ -981,11 +997,14 @@ def main():
               + ", "
               f"{row['loads_per_second']} module loads per second"
               + (f", major mode native {mode[1]} yaAGC {mode[2]}" if mode else '') + ('' if not r.returncode else ' FAILED'))
+    reach = reach_points()
     for name, m, cs, keys, env, sched in ([(f'{m}-{re.sub(r"@[0-9]+", "", keys) or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)
                                            for m, cs, keys, env, sched, tag in SCALED]
                                           + [(f'{name}-scaled-x1', m, cs, keys, env, '1,1,2') for name, m, cs, keys, env in FLIGHT]):
+        points = reach.get(name[:-len('-scaled-x1')], []) if name.endswith('-scaled-x1') else []
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
-                           capture_output=True, text=True, env={**os.environ, **env, 'FLIGHT_SCALED': sched})
+                           capture_output=True, text=True, env={**os.environ, **env, 'FLIGHT_SCALED': sched,
+                                                                **({'FLIGHT_REACH': ','.join(points)} if points else {})})
         (EVIDENCE / f'{name}.log').write_text(r.stdout)
         failed += bool(r.returncode)
         text = r.stdout
@@ -998,7 +1017,9 @@ def main():
                    periods_dropped=int(t[3]) if t else None, agc_centiseconds=int(t[4]) if t else None,
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
-                   unregistered=holes)
+                   unregistered=holes,
+                   reached={x[0]: int(x[1]) if x[1] else None
+                            for x in re.findall(r'^reach (\d\d,\d{4}): (?:at (\d+) cs|not reached)$', text, re.M)})
         summary.append(row)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "
