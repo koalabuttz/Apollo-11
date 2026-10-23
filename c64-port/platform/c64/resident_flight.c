@@ -612,7 +612,6 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         }
         RK_PROF(6);
 #ifdef RK_WORK_CLOCK
-        if (status == EXEC_UNMAPPED) rk_part_cont = rk_charge_group;
         rk_charge(steps, mct);
 #endif
         return rk_module_status(status,steps,limit);
