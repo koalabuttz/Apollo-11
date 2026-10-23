@@ -95,6 +95,10 @@ TIMER_NAMES = {'centiseconds', *fsv.TIMERS.values()}
 MISS = re.compile(r'^  (interp|basic ) (\d+,\d+) (\S+): (\d+) times;', re.M)
 PRO_BIT = 0o40000  # channel 32 bit 14, 0 while PRO is pressed
 PRO_HOLD = 30      # cs PRO stays down
+# A busy sample point (flight_host_run.c FLIGHT_BUSY_SAMPLE, dap_pass_check.c DP_BUSY)
+# once no sample has come for this many cs: a case whose job never idles
+# (LM V83's R31 display loop) still reaches its window's end on both sides.
+BUSY_CS = 100
 CASE = struct.Struct('<IHHIBBH')   # dap_pass_check.c dp_case
 
 
@@ -187,7 +191,7 @@ def host_case(exe, m, i, case, a, start, channel32):
         # One FLIGHT_CHAN in time order: the Q presses and the case's own.
         both = [(int(x.split(':', 1)[0]), x.split(':', 1)[1]) for x in filter(None, chan.split(','))] + own
         chan = ','.join(f'{t}:{v}' for t, v in sorted(both, key=lambda x: x[0]))
-    env = {**os.environ, 'FLIGHT_SCALED': '1,1,2',
+    env = {**os.environ, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_BUSY_SAMPLE': str(BUSY_CS),
            'FLIGHT_SNAPSHOT': f'{a.snap_cs},{header}', 'FLIGHT_REPLAY': f'{window},0,{window},1',
            **({'FLIGHT_CHAN': chan} if chan else {})}
     r = subprocess.run([str(exe), fhd.ROPE[m], str(a.snap_cs + 1000 + window), hkeys], cwd=ROOT,
@@ -197,7 +201,7 @@ def host_case(exe, m, i, case, a, start, channel32):
     holes = [f'{x} ({n - start[0].get(x, 0)} arrivals)' for x, n in found.items() if n > start[0].get(x, 0)]
     yaagc = [f'{x} ({n - start[1].get(x, 0)} times)' for x, n in missed.items() if n > start[1].get(x, 0)]
     end = pathlib.Path(f'{header}.end')
-    if r.returncode or not end.exists():
+    if r.returncode or not end.exists() or end.stat().st_size < fsv.STATE:
         return dict(m=m, keys=case, ok=False, error=f'the host run did not end its window (exit {r.returncode})',
                     log=(r.stdout + r.stderr)[-2000:])
     data = end.read_bytes()
@@ -249,7 +253,8 @@ def sha(path):
 
 def link(a, m, name, header, table, snap, cs):
     defines = ['-DDP_REPLAY', '-DDP_REPLAY_REU=0ul', '-DDP_REPLAY_ROWS=1u', '-DDP_END=0ul',
-               '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', '-DDP_STATES_MAX=1u', f'-DDP_SWEEP=0x{table:x}ul', f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
+               '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', '-DDP_STATES_MAX=1u', f'-DDP_BUSY={BUSY_CS}u',
+               f'-DDP_SWEEP=0x{table:x}ul', f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
     old = dp.WORK
     dp.WORK = WORK
     try:
