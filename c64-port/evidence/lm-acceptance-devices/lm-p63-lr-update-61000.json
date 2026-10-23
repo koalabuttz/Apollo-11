@@ -6,7 +6,7 @@
   2035,
   49176,
   52076,
-  29
+  30
  ],
  "status": 0,
  "z": "03214",
@@ -14,32 +14,32 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 3488483,
+ "wall_cycles": 3529687,
  "agc_cs": 51,
  "dropped_ticks": 0,
  "steps": 213,
- "wall_per_agc": 6.943,
+ "wall_per_agc": 7.025,
  "by_request": {
   "background": {
    "count": 10,
-   "cycles": 2290930,
-   "max_cycles": 409670,
+   "cycles": 2326799,
+   "max_cycles": 414475,
    "steps": 158,
    "job_loads": 2,
    "task_loads": 0
   },
   "T5RUPT": {
    "count": 5,
-   "cycles": 604480,
-   "max_cycles": 125835,
+   "cycles": 607842,
+   "max_cycles": 126704,
    "steps": 25,
    "job_loads": 8,
    "task_loads": 0
   },
   "T4RUPT": {
    "count": 4,
-   "cycles": 586574,
-   "max_cycles": 188471,
+   "cycles": 588556,
+   "max_cycles": 189168,
    "steps": 30,
    "job_loads": 10,
    "task_loads": 0
@@ -52,7 +52,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 112839
+   "cycles": 118199
   },
   {
    "request": "T5RUPT",
@@ -60,7 +60,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 125835
+   "cycles": 126704
   },
   {
    "request": "background",
@@ -68,7 +68,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 199305
+   "cycles": 199377
   },
   {
    "request": "T4RUPT",
@@ -76,7 +76,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 188471
+   "cycles": 189168
   },
   {
    "request": "background",
@@ -84,7 +84,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 24,
-   "cycles": 267360
+   "cycles": 273565
   },
   {
    "request": "T5RUPT",
@@ -92,7 +92,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 116211
+   "cycles": 116928
   },
   {
    "request": "background",
@@ -100,7 +100,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 363180
+   "cycles": 365492
   },
   {
    "request": "T4RUPT",
@@ -108,7 +108,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 110026
+   "cycles": 109953
   },
   {
    "request": "background",
@@ -116,7 +116,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 78983
+   "cycles": 84131
   },
   {
    "request": "T5RUPT",
@@ -124,7 +124,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 124938
+   "cycles": 125713
   },
   {
    "request": "background",
@@ -132,7 +132,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 20,
-   "cycles": 389850
+   "cycles": 393195
   },
   {
    "request": "T4RUPT",
@@ -140,7 +140,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 176508
+   "cycles": 177142
   },
   {
    "request": "background",
@@ -148,7 +148,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 12,
-   "cycles": 57722
+   "cycles": 61417
   },
   {
    "request": "T5RUPT",
@@ -156,7 +156,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 111834
+   "cycles": 112347
   },
   {
    "request": "background",
@@ -164,7 +164,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 24,
-   "cycles": 409670
+   "cycles": 414475
   },
   {
    "request": "T4RUPT",
@@ -172,7 +172,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 111569
+   "cycles": 112293
   },
   {
    "request": "background",
@@ -180,7 +180,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 38230
+   "cycles": 40401
   },
   {
    "request": "T5RUPT",
@@ -188,7 +188,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 125662
+   "cycles": 126150
   },
   {
    "request": "background",
@@ -196,7 +196,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 18,
-   "cycles": 373791
+   "cycles": 376547
   }
  ],
  "lost": false,
@@ -213,7 +213,7 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 9
+  "dma_unchecked": 6
  },
  "replay_rows": 0,
  "replay_applied": 0,
@@ -260,9 +260,6 @@
   },
   "nonzero": [
    "0046",
-   "0050",
-   "0051",
-   "0052",
    "0053",
    "0054",
    "0055"
@@ -288,6 +285,6 @@
  "snap_slid": false,
  "requested_cs": 51,
  "host_holes": [],
- "commit": "15892b81147f",
+ "commit": "feaa37af1837",
  "replay_every": 10
 }

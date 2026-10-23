@@ -6,7 +6,7 @@
   "keys": "",
   "inputs": {},
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "samples": 4000,
   "equal": 3998,
   "differ": 2,
@@ -140,7 +140,7 @@
   "keys": "V37E00E",
   "inputs": {},
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "samples": 3000,
   "equal": 2998,
   "differ": 2,
@@ -826,7 +826,7 @@
   "keys": "V37E06E",
   "inputs": {},
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "samples": 3000,
   "equal": 2998,
   "differ": 2,
@@ -1545,7 +1545,7 @@
   "inputs": {},
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3005,
   "periods_taken": 3000,
   "periods_dropped": 5,
@@ -1553,7 +1553,15 @@
   "native_routines": 160860,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-V37E06E-scaled-x0.5",
@@ -1563,7 +1571,7 @@
   "inputs": {},
   "schedule": "1.7,2,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -1571,7 +1579,15 @@
   "native_routines": 209333,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-V37E06E-scaled-overrun",
@@ -1581,7 +1597,7 @@
   "inputs": {},
   "schedule": "4,1,2,1",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3313,
   "periods_taken": 3000,
   "periods_dropped": 313,
@@ -1589,7 +1605,15 @@
   "native_routines": 30479,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-V37E06E-scaled-work",
@@ -1599,7 +1623,7 @@
   "inputs": {},
   "schedule": "W",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3002,
   "periods_taken": 3002,
   "periods_dropped": 0,
@@ -1607,7 +1631,15 @@
   "native_routines": 6357,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 2,
+   "mean_abs_error": 224.0
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-entry-scaled-x1",
@@ -1622,7 +1654,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 32041,
   "periods_taken": 32041,
   "periods_dropped": 0,
@@ -1630,7 +1662,15 @@
   "native_routines": 1389253,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 7100524,
+   "yaagc": 6902210,
+   "percent": 2.9,
+   "routines": 29376,
+   "mean_abs_error": 34.3
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p52-scaled-x1",
@@ -1646,7 +1686,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 20001,
   "periods_taken": 20000,
   "periods_dropped": 1,
@@ -1654,7 +1694,15 @@
   "native_routines": 1209437,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1024436,
+   "yaagc": 989248,
+   "percent": 3.6,
+   "routines": 5194,
+   "mean_abs_error": 49.1
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p23-scaled-x1",
@@ -1670,7 +1718,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 30003,
   "periods_taken": 30000,
   "periods_dropped": 3,
@@ -1678,7 +1726,15 @@
   "native_routines": 1870738,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 851516,
+   "yaagc": 794959,
+   "percent": 7.1,
+   "routines": 4691,
+   "mean_abs_error": 49.2
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p40-scaled-x1",
@@ -1690,20 +1746,28 @@
    "FLIGHT_CH31": "037777",
    "FLIGHT_CH33": "077767",
    "FLIGHT_SWAP_MCT": "0",
-   "FLIGHT_SPS": "43900",
+   "FLIGHT_SPS": "43900,0.5,-0.3",
    "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 74000,
   "periods_taken": 74000,
   "periods_dropped": 0,
   "agc_centiseconds": 74000,
-  "native_routines": 3665043,
+  "native_routines": 3657377,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4187520,
+   "yaagc": 4088096,
+   "percent": 2.4,
+   "routines": 17851,
+   "mean_abs_error": 56.6
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p11-scaled-x1",
@@ -1719,7 +1783,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 100023,
   "periods_taken": 100023,
   "periods_dropped": 0,
@@ -1727,7 +1791,15 @@
   "native_routines": 4444179,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 20220248,
+   "yaagc": 17168875,
+   "percent": 17.8,
+   "routines": 140033,
+   "mean_abs_error": 48.2
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-tli-scaled-x1",
@@ -1743,7 +1815,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 70000,
   "periods_taken": 70000,
   "periods_dropped": 0,
@@ -1751,7 +1823,15 @@
   "native_routines": 3859235,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4638508,
+   "yaagc": 4721610,
+   "percent": -1.8,
+   "routines": 22460,
+   "mean_abs_error": 48.6
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p22-scaled-x1",
@@ -1767,7 +1847,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 23004,
   "periods_taken": 23000,
   "periods_dropped": 4,
@@ -1775,7 +1855,15 @@
   "native_routines": 1189461,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3919720,
+   "yaagc": 3877106,
+   "percent": 1.1,
+   "routines": 22017,
+   "mean_abs_error": 49.2
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-tei-scaled-x1",
@@ -1787,20 +1875,28 @@
    "FLIGHT_CH31": "037777",
    "FLIGHT_CH33": "077767",
    "FLIGHT_SWAP_MCT": "0",
-   "FLIGHT_SPS": "16400",
+   "FLIGHT_SPS": "16400,-0.3,0.2",
    "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-tei.load"
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 56000,
   "periods_taken": 56000,
   "periods_dropped": 0,
   "agc_centiseconds": 56000,
-  "native_routines": 2874754,
+  "native_routines": 2871690,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 2565772,
+   "yaagc": 2512482,
+   "percent": 2.1,
+   "routines": 11637,
+   "mean_abs_error": 52.6
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p37-scaled-x1",
@@ -1815,7 +1911,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 51000,
   "periods_taken": 51000,
   "periods_dropped": 0,
@@ -1823,7 +1919,15 @@
   "native_routines": 2159815,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 16253992,
+   "yaagc": 15617678,
+   "percent": 4.1,
+   "routines": 85741,
+   "mean_abs_error": 47.8
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p20-scaled-x1",
@@ -1842,7 +1946,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 25036,
   "periods_taken": 25036,
   "periods_dropped": 0,
@@ -1850,7 +1954,15 @@
   "native_routines": 663334,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 12676268,
+   "yaagc": 12605657,
+   "percent": 0.6,
+   "routines": 75165,
+   "mean_abs_error": 45.7
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-csi-scaled-x1",
@@ -1868,7 +1980,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 24000,
   "periods_taken": 24000,
   "periods_dropped": 0,
@@ -1876,7 +1988,15 @@
   "native_routines": 1270648,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3791120,
+   "yaagc": 3653154,
+   "percent": 3.8,
+   "routines": 19554,
+   "mean_abs_error": 46.6
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-cdh-scaled-x1",
@@ -1894,7 +2014,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 20500,
   "periods_taken": 20500,
   "periods_dropped": 0,
@@ -1902,7 +2022,15 @@
   "native_routines": 598054,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 10194724,
+   "yaagc": 10026449,
+   "percent": 1.7,
+   "routines": 50559,
+   "mean_abs_error": 40.3
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-cdh-csm-scaled-x1",
@@ -1920,7 +2048,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 20500,
   "periods_taken": 20500,
   "periods_dropped": 0,
@@ -1928,7 +2056,15 @@
   "native_routines": 553167,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 10830024,
+   "yaagc": 10627072,
+   "percent": 1.9,
+   "routines": 53770,
+   "mean_abs_error": 40.8
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-rendezvous-tpm-scaled-x1",
@@ -1947,7 +2083,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 79000,
   "periods_taken": 79000,
   "periods_dropped": 0,
@@ -1955,7 +2091,15 @@
   "native_routines": 2391162,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 36177008,
+   "yaagc": 35053971,
+   "percent": 3.2,
+   "routines": 203105,
+   "mean_abs_error": 46.0
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-stable-orbit-scaled-x1",
@@ -1974,7 +2118,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 74000,
   "periods_taken": 74000,
   "periods_dropped": 0,
@@ -1982,7 +2126,15 @@
   "native_routines": 1533542,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 44124448,
+   "yaagc": 43259697,
+   "percent": 2.0,
+   "routines": 237095,
+   "mean_abs_error": 43.2
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-stable-orbit-lm-scaled-x1",
@@ -2001,7 +2153,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 74000,
   "periods_taken": 74000,
   "periods_dropped": 0,
@@ -2009,7 +2161,15 @@
   "native_routines": 1499263,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 44601780,
+   "yaagc": 43751560,
+   "percent": 1.9,
+   "routines": 239325,
+   "mean_abs_error": 43.1
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-tpi-search-scaled-x1",
@@ -2028,7 +2188,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 44038,
   "periods_taken": 44038,
   "periods_dropped": 0,
@@ -2036,7 +2196,15 @@
   "native_routines": 1036735,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 24058224,
+   "yaagc": 23464034,
+   "percent": 2.5,
+   "routines": 139279,
+   "mean_abs_error": 46.9
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p20-vhf-dropout-scaled-x1",
@@ -2056,7 +2224,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 32000,
   "periods_taken": 32000,
   "periods_dropped": 0,
@@ -2064,7 +2232,15 @@
   "native_routines": 803965,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 16798152,
+   "yaagc": 16601356,
+   "percent": 1.2,
+   "routines": 98173,
+   "mean_abs_error": 46.5
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-uplink-accept-scaled-x1",
@@ -2078,7 +2254,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 14000,
   "periods_taken": 14000,
   "periods_dropped": 0,
@@ -2086,7 +2262,15 @@
   "native_routines": 900162,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4200,
+   "yaagc": 1761,
+   "percent": 138.5,
+   "routines": 30,
+   "mean_abs_error": 112.7
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-uplink-reject-scaled-x1",
@@ -2099,7 +2283,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 9000,
   "periods_taken": 9000,
   "periods_dropped": 0,
@@ -2107,7 +2291,15 @@
   "native_routines": 585205,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 24460,
+   "yaagc": 24550,
+   "percent": -0.4,
+   "routines": 183,
+   "mean_abs_error": 68.4
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p52-imu-fail-scaled-x1",
@@ -2123,7 +2315,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 20001,
   "periods_taken": 20000,
   "periods_dropped": 1,
@@ -2131,7 +2323,15 @@
   "native_routines": 1209426,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1024436,
+   "yaagc": 989248,
+   "percent": 3.6,
+   "routines": 5194,
+   "mean_abs_error": 49.1
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p52-imu-cage-scaled-x1",
@@ -2147,7 +2347,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 20002,
   "periods_taken": 20000,
   "periods_dropped": 2,
@@ -2155,7 +2355,15 @@
   "native_routines": 1212735,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 983960,
+   "yaagc": 941699,
+   "percent": 4.5,
+   "routines": 4948,
+   "mean_abs_error": 49.7
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p52-gimbal-lock-scaled-x1",
@@ -2172,7 +2380,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 21001,
   "periods_taken": 21000,
   "periods_dropped": 1,
@@ -2180,7 +2388,15 @@
   "native_routines": 1274700,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1024436,
+   "yaagc": 989248,
+   "percent": 3.6,
+   "routines": 5194,
+   "mean_abs_error": 49.1
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p20-crew-verbs-scaled-x1",
@@ -2199,7 +2415,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 32000,
   "periods_taken": 32000,
   "periods_dropped": 0,
@@ -2207,7 +2423,15 @@
   "native_routines": 1011780,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 14028292,
+   "yaagc": 13957862,
+   "percent": 0.5,
+   "routines": 82215,
+   "mean_abs_error": 45.6
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p23-attached-scaled-x1",
@@ -2223,7 +2447,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 30003,
   "periods_taken": 30000,
   "periods_dropped": 3,
@@ -2231,7 +2455,15 @@
   "native_routines": 1870196,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 856432,
+   "yaagc": 799004,
+   "percent": 7.2,
+   "routines": 4723,
+   "mean_abs_error": 49.4
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-v49-maneuver-scaled-x1",
@@ -2243,20 +2475,28 @@
    "FLIGHT_CH31": "037777",
    "FLIGHT_CH33": "077767",
    "FLIGHT_SWAP_MCT": "0",
-   "FLIGHT_SPS": "43900",
+   "FLIGHT_SPS": "43900,0.5,-0.3",
    "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 15000,
   "periods_taken": 15000,
   "periods_dropped": 0,
   "agc_centiseconds": 15000,
-  "native_routines": 910787,
+  "native_routines": 910781,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 862132,
+   "yaagc": 865743,
+   "percent": -0.4,
+   "routines": 3766,
+   "mean_abs_error": 33.3
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p21-scaled-x1",
@@ -2272,7 +2512,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 25001,
   "periods_taken": 25000,
   "periods_dropped": 1,
@@ -2280,7 +2520,15 @@
   "native_routines": 1463448,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1962660,
+   "yaagc": 1949476,
+   "percent": 0.7,
+   "routines": 10351,
+   "mean_abs_error": 49.7
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p52-coarse-scaled-x1",
@@ -2296,7 +2544,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 14000,
   "periods_taken": 14000,
   "periods_dropped": 0,
@@ -2304,7 +2552,15 @@
   "native_routines": 895599,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 194124,
+   "yaagc": 195507,
+   "percent": -0.7,
+   "routines": 1115,
+   "mean_abs_error": 53.3
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-p41-scaled-x1",
@@ -2322,7 +2578,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 53000,
   "periods_taken": 53000,
   "periods_dropped": 0,
@@ -2330,7 +2586,15 @@
   "native_routines": 3066616,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 2068272,
+   "yaagc": 2001125,
+   "percent": 3.4,
+   "routines": 12532,
+   "mean_abs_error": 53.3
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-v48-dap-scaled-x1",
@@ -2342,20 +2606,22 @@
    "FLIGHT_CH31": "037777",
    "FLIGHT_CH33": "077767",
    "FLIGHT_SWAP_MCT": "0",
-   "FLIGHT_SPS": "43900",
+   "FLIGHT_SPS": "43900,0.5,-0.3",
    "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 12000,
   "periods_taken": 12000,
   "periods_dropped": 0,
   "agc_centiseconds": 12000,
-  "native_routines": 757372,
+  "native_routines": 757384,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": null,
+  "reached": {}
  },
  {
   "scenario": "cm-p40-sps-fail-scaled-x1",
@@ -2371,15 +2637,23 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 37000,
   "periods_taken": 37000,
   "periods_dropped": 0,
   "agc_centiseconds": 37000,
-  "native_routines": 2209038,
+  "native_routines": 2208892,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1007592,
+   "yaagc": 976395,
+   "percent": 3.2,
+   "routines": 5095,
+   "mean_abs_error": 48.5
+  },
+  "reached": {}
  },
  {
   "scenario": "cm-entry-overload-scaled-x1",
@@ -2396,7 +2670,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 32015,
   "periods_taken": 32015,
   "periods_dropped": 0,
@@ -2404,6 +2678,14 @@
   "native_routines": 1172342,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 6407056,
+   "yaagc": 6234339,
+   "percent": 2.8,
+   "routines": 26182,
+   "mean_abs_error": 34.4
+  },
+  "reached": {}
  }
 ]

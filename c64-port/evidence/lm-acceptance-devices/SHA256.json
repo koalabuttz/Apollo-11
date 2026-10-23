@@ -4,38 +4,38 @@
   "release": "evidence-lm-acceptance-devices",
   "files": {
     "host-summary.json": {
-      "sha256": "bb3c535d28427c8a5b60fecc09225e881182dc2b2159250d0169649f19deed68",
-      "bytes": 93917,
+      "sha256": "5b9d2a3a057c37a72bcc99f0abee92923b9d175ce6221ab5a81d30611aabef97",
+      "bytes": 101406,
       "store": "tree"
     },
     "lm-landing-ascent-nassp-140000.json": {
-      "sha256": "c26107701d76091ca8357622b082cf2c505c5401fbc84478e3c3b6701990c909",
-      "bytes": 9558,
+      "sha256": "4cfd921986226e6054dc61188f37d587eb27bb3bc532f979dff937b62b9bb565",
+      "bytes": 9523,
       "store": "tree"
     },
     "lm-p52-realign-4200.json": {
-      "sha256": "5afd09403c716c1651f83721a020d03d71db0535015a01b3ac0459b4032863bb",
-      "bytes": 31332,
+      "sha256": "eaafaa279754a3ce09435d6420048a74ea68eec9d4be0f353575a22a1634724d",
+      "bytes": 31299,
       "store": "tree"
     },
     "lm-p57-15950.json": {
-      "sha256": "e08e8291e6570e9e69a282d97a6149bf0774341c7d14c5fbafd1828936e0e0a5",
-      "bytes": 11308,
+      "sha256": "79f64b9f4bc4badabf4a254735f514acd43d72ccac8282fb086c25a1483d7813",
+      "bytes": 11343,
       "store": "tree"
     },
     "lm-p63-descent-thrust-17500.json": {
-      "sha256": "b53183c0acbff0ade9eff5e96fe2cbc42b79e6588ab84fb04e6ff13dbda06d7a",
-      "bytes": 14285,
+      "sha256": "614ce2baa71d46868970e021bf13e3b02a5ea8b1e4b26dbd248925f13294ed27",
+      "bytes": 14383,
       "store": "tree"
     },
     "lm-p63-lr-update-61000.json": {
-      "sha256": "f9370bc5babdfcead571554f64ba68fb65cf2ef41bca878c20cd21754ec29d62",
-      "bytes": 4746,
+      "sha256": "ed748a14d861a7970d382f9acc0a6d731b85c353c1c8a37f15bb5a3c976c11ea",
+      "bytes": 4713,
       "store": "tree"
     },
     "lm-uplink-reject-1900.json": {
-      "sha256": "fe6ee5cfc3a1b7813df158f080e97bb33ab5dd237681f031352afbf29e191d51",
-      "bytes": 40899,
+      "sha256": "4cc4e811dfca425de8e0c2624926754cb6dd85fd439e17b4920623118eca91eb",
+      "bytes": 1838,
       "store": "tree"
     }
   }

@@ -6,7 +6,7 @@
   "keys": "",
   "inputs": {},
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "samples": 4000,
   "equal": 4000,
   "differ": 0,
@@ -252,7 +252,7 @@
   "keys": "V37E00E",
   "inputs": {},
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -1178,7 +1178,7 @@
   "keys": "V37E12E",
   "inputs": {},
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -2040,7 +2040,7 @@
   "keys": "V37E63E",
   "inputs": {},
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -2903,7 +2903,7 @@
   "inputs": {},
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3027,
   "periods_taken": 3003,
   "periods_dropped": 24,
@@ -2911,7 +2911,15 @@
   "native_routines": 16610,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-V37E12E-scaled-x0.5",
@@ -2921,7 +2929,7 @@
   "inputs": {},
   "schedule": "1.7,2,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3004,
   "periods_taken": 3004,
   "periods_dropped": 0,
@@ -2929,7 +2937,15 @@
   "native_routines": 74687,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-V37E12E-scaled-overrun",
@@ -2939,7 +2955,7 @@
   "inputs": {},
   "schedule": "4,1,2,1",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 4930,
   "periods_taken": 3007,
   "periods_dropped": 1923,
@@ -2947,7 +2963,15 @@
   "native_routines": 8256,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-V37E12E-scaled-work",
@@ -2957,7 +2981,7 @@
   "inputs": {},
   "schedule": "W",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3001,
   "periods_taken": 3001,
   "periods_dropped": 0,
@@ -2965,7 +2989,15 @@
   "native_routines": 10632,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 3,
+   "mean_abs_error": 149.3
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-V37E12E-dap-scaled-x1",
@@ -2980,7 +3012,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -2988,7 +3020,15 @@
   "native_routines": 175620,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-V37E12E-dap-scaled-x0.5",
@@ -3003,7 +3043,7 @@
   },
   "schedule": "1.7,2,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -3011,7 +3051,15 @@
   "native_routines": 210372,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 5,
+   "mean_abs_error": 104.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-V37E12E-dap-scaled-overrun",
@@ -3026,7 +3074,7 @@
   },
   "schedule": "4,1,2,1",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3315,
   "periods_taken": 3035,
   "periods_dropped": 280,
@@ -3034,7 +3082,9 @@
   "native_routines": 22621,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": null,
+  "reached": {}
  },
  {
   "scenario": "lm-V37E12E-dap-scaled-work",
@@ -3049,7 +3099,7 @@
   },
   "schedule": "W",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 3002,
   "periods_taken": 3002,
   "periods_dropped": 0,
@@ -3057,7 +3107,15 @@
   "native_routines": 15346,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 648,
+   "yaagc": 200,
+   "percent": 224.0,
+   "routines": 3,
+   "mean_abs_error": 149.3
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p63-descent-scaled-x1",
@@ -3073,7 +3131,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 25000,
   "periods_taken": 25000,
   "periods_dropped": 0,
@@ -3081,7 +3139,15 @@
   "native_routines": 1061419,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 2876744,
+   "yaagc": 2782011,
+   "percent": 3.4,
+   "routines": 12133,
+   "mean_abs_error": 47.6
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p63-descent-thrust-scaled-x1",
@@ -3098,7 +3164,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 30000,
   "periods_taken": 30000,
   "periods_dropped": 0,
@@ -3106,7 +3172,15 @@
   "native_routines": 1190627,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4331968,
+   "yaagc": 4075684,
+   "percent": 6.3,
+   "routines": 18035,
+   "mean_abs_error": 52.7
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p57-scaled-x1",
@@ -3122,7 +3196,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 56002,
   "periods_taken": 56000,
   "periods_dropped": 2,
@@ -3130,7 +3204,15 @@
   "native_routines": 3034506,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 315340,
+   "yaagc": 300664,
+   "percent": 4.9,
+   "routines": 1475,
+   "mean_abs_error": 40.1
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-rendezvous-scaled-x1",
@@ -3148,7 +3230,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 40033,
   "periods_taken": 40033,
   "periods_dropped": 0,
@@ -3156,7 +3238,15 @@
   "native_routines": 1273391,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 12123380,
+   "yaagc": 12095720,
+   "percent": 0.2,
+   "routines": 65268,
+   "mean_abs_error": 47.6
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-rendezvous-rr-dropout-scaled-x1",
@@ -3175,7 +3265,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 40031,
   "periods_taken": 40031,
   "periods_dropped": 0,
@@ -3183,7 +3273,15 @@
   "native_routines": 1337534,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 11285900,
+   "yaagc": 11195429,
+   "percent": 0.8,
+   "routines": 60736,
+   "mean_abs_error": 47.5
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-csi-scaled-x1",
@@ -3201,7 +3299,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 23000,
   "periods_taken": 23000,
   "periods_dropped": 0,
@@ -3209,7 +3307,15 @@
   "native_routines": 983541,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3841620,
+   "yaagc": 3699809,
+   "percent": 3.8,
+   "routines": 19922,
+   "mean_abs_error": 46.5
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-cdh-scaled-x1",
@@ -3227,7 +3333,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 23500,
   "periods_taken": 23500,
   "periods_dropped": 0,
@@ -3269,7 +3375,15 @@
     "refused_by": null,
     "core_start": false
    }
-  ]
+  ],
+  "interpretive_charge": {
+   "fitted": 10221616,
+   "yaagc": 10038042,
+   "percent": 1.8,
+   "routines": 50888,
+   "mean_abs_error": 40.2
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-cdh-csm-scaled-x1",
@@ -3287,7 +3401,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 23500,
   "periods_taken": 23500,
   "periods_dropped": 0,
@@ -3329,7 +3443,15 @@
     "refused_by": null,
     "core_start": false
    }
-  ]
+  ],
+  "interpretive_charge": {
+   "fitted": 10852256,
+   "yaagc": 10633279,
+   "percent": 2.1,
+   "routines": 54098,
+   "mean_abs_error": 40.7
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-rendezvous-tpm-scaled-x1",
@@ -3347,7 +3469,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 71000,
   "periods_taken": 71000,
   "periods_dropped": 0,
@@ -3355,7 +3477,19 @@
   "native_routines": 2115983,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 22970812,
+   "yaagc": 22717073,
+   "percent": 1.1,
+   "routines": 123642,
+   "mean_abs_error": 46.9
+  },
+  "reached": {
+   "40,3674": 20194,
+   "42,2054": 70151,
+   "40,2017": 12151
+  }
  },
  {
   "scenario": "lm-stable-orbit-scaled-x1",
@@ -3373,7 +3507,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 67000,
   "periods_taken": 67000,
   "periods_dropped": 0,
@@ -3381,7 +3515,15 @@
   "native_routines": 1402684,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 31233404,
+   "yaagc": 30695482,
+   "percent": 1.8,
+   "routines": 160127,
+   "mean_abs_error": 42.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-stable-orbit-lm-scaled-x1",
@@ -3399,7 +3541,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 67020,
   "periods_taken": 67020,
   "periods_dropped": 0,
@@ -3407,7 +3549,15 @@
   "native_routines": 1399818,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 31291840,
+   "yaagc": 30746896,
+   "percent": 1.8,
+   "routines": 160451,
+   "mean_abs_error": 42.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p63-lr-dropout-scaled-x1",
@@ -3426,7 +3576,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 115027,
   "periods_taken": 115027,
   "periods_dropped": 0,
@@ -3434,7 +3584,15 @@
   "native_routines": 4700158,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 14938976,
+   "yaagc": 13900875,
+   "percent": 7.5,
+   "routines": 62239,
+   "mean_abs_error": 55.1
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p63-lr-update-scaled-x1",
@@ -3452,7 +3610,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 110027,
   "periods_taken": 110027,
   "periods_dropped": 0,
@@ -3460,7 +3618,15 @@
   "native_routines": 4534202,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 14229796,
+   "yaagc": 13225275,
+   "percent": 7.6,
+   "routines": 59354,
+   "mean_abs_error": 54.6
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p63-lr-v58-scaled-x1",
@@ -3478,7 +3644,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 96008,
   "periods_taken": 96008,
   "periods_dropped": 0,
@@ -3486,7 +3652,15 @@
   "native_routines": 4184684,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 10281492,
+   "yaagc": 9649983,
+   "percent": 6.5,
+   "routines": 43779,
+   "mean_abs_error": 52.5
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p63-v60-nassp-scaled-x1",
@@ -3504,7 +3678,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 115029,
   "periods_taken": 115029,
   "periods_dropped": 0,
@@ -3516,15 +3690,25 @@
    {
     "kind": "basic",
     "point": "50,2002",
-    "label": "?",
-    "file": "?",
-    "lane": "?",
+    "label": "RDRUSECK TC Q",
+    "file": "EXTENDED_VERBS.agc",
+    "lane": "C",
     "arrivals": 1,
     "instructions": 1,
     "refused_by": null,
     "core_start": false
    }
-  ]
+  ],
+  "interpretive_charge": {
+   "fitted": 14673788,
+   "yaagc": 13666941,
+   "percent": 7.4,
+   "routines": 61204,
+   "mean_abs_error": 54.7
+  },
+  "reached": {
+   "25,3471": 100205
+  }
  },
  {
   "scenario": "lm-uplink-reject-scaled-x1",
@@ -3537,7 +3721,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 9000,
   "periods_taken": 9000,
   "periods_dropped": 0,
@@ -3545,7 +3729,17 @@
   "native_routines": 578810,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 24340,
+   "yaagc": 24151,
+   "percent": 0.8,
+   "routines": 178,
+   "mean_abs_error": 68.9
+  },
+  "reached": {
+   "04,3632": null
+  }
  },
  {
   "scenario": "lm-uplink-accept-scaled-x1",
@@ -3559,7 +3753,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 14000,
   "periods_taken": 14000,
   "periods_dropped": 0,
@@ -3567,7 +3761,20 @@
   "native_routines": 890291,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4200,
+   "yaagc": 1761,
+   "percent": 138.5,
+   "routines": 30,
+   "mean_abs_error": 112.7
+  },
+  "reached": {
+   "04,3723": 10462,
+   "04,3632": 4262,
+   "04,3664": 6662,
+   "04,3536": 8461
+  }
  },
  {
   "scenario": "lm-p63-nassp-scaled-x1",
@@ -3584,7 +3791,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 115014,
   "periods_taken": 115014,
   "periods_dropped": 0,
@@ -3592,7 +3799,15 @@
   "native_routines": 4747895,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 14273384,
+   "yaagc": 13327461,
+   "percent": 7.1,
+   "routines": 59952,
+   "mean_abs_error": 54.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p52-realign-scaled-x1",
@@ -3608,7 +3823,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 10005,
   "periods_taken": 10002,
   "periods_dropped": 3,
@@ -3616,7 +3831,15 @@
   "native_routines": 528189,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 151616,
+   "yaagc": 141778,
+   "percent": 6.9,
+   "routines": 775,
+   "mean_abs_error": 37.7
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p52-imu-fail-scaled-x1",
@@ -3633,7 +3856,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 10004,
   "periods_taken": 10002,
   "periods_dropped": 2,
@@ -3641,7 +3864,15 @@
   "native_routines": 528112,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 151616,
+   "yaagc": 141778,
+   "percent": 6.9,
+   "routines": 775,
+   "mean_abs_error": 37.7
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p52-imu-cage-scaled-x1",
@@ -3658,7 +3889,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 10003,
   "periods_taken": 10002,
   "periods_dropped": 1,
@@ -3666,7 +3897,15 @@
   "native_routines": 542304,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 163084,
+   "yaagc": 153048,
+   "percent": 6.6,
+   "routines": 838,
+   "mean_abs_error": 36.0
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-landing-ascent-nassp-scaled-x1",
@@ -3688,7 +3927,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 215000,
   "periods_taken": 215000,
   "periods_dropped": 0,
@@ -3696,7 +3935,15 @@
   "native_routines": 8292481,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 33589432,
+   "yaagc": 31873216,
+   "percent": 5.4,
+   "routines": 148924,
+   "mean_abs_error": 49.0
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p65-autoland-nassp-scaled-x1",
@@ -3717,7 +3964,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 140001,
   "periods_taken": 140001,
   "periods_dropped": 0,
@@ -3759,7 +4006,15 @@
     "refused_by": "lanec_pin_lm_routines",
     "core_start": false
    }
-  ]
+  ],
+  "interpretive_charge": {
+   "fitted": 21785368,
+   "yaagc": 20260705,
+   "percent": 7.5,
+   "routines": 90865,
+   "mean_abs_error": 55.6
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p67-nassp-scaled-x1",
@@ -3781,7 +4036,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 143001,
   "periods_taken": 143001,
   "periods_dropped": 0,
@@ -3789,7 +4044,15 @@
   "native_routines": 5575396,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 20795232,
+   "yaagc": 19653766,
+   "percent": 5.8,
+   "routines": 89555,
+   "mean_abs_error": 52.4
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-doi-nassp-scaled-x1",
@@ -3808,7 +4071,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 65000,
   "periods_taken": 65000,
   "periods_dropped": 0,
@@ -3816,7 +4079,17 @@
   "native_routines": 3037705,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3667184,
+   "yaagc": 3584328,
+   "percent": 2.3,
+   "routines": 17801,
+   "mean_abs_error": 44.0
+  },
+  "reached": {
+   "22,3242": 61479
+  }
  },
  {
   "scenario": "lm-p47-nassp-scaled-x1",
@@ -3836,7 +4109,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 7500,
   "periods_taken": 7500,
   "periods_dropped": 0,
@@ -3844,7 +4117,15 @@
   "native_routines": 303931,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1211360,
+   "yaagc": 1187389,
+   "percent": 2.0,
+   "routines": 6201,
+   "mean_abs_error": 43.3
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p41-nassp-scaled-x1",
@@ -3865,7 +4146,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 57500,
   "periods_taken": 57500,
   "periods_dropped": 0,
@@ -3873,7 +4154,15 @@
   "native_routines": 2602645,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3410340,
+   "yaagc": 3305652,
+   "percent": 3.2,
+   "routines": 19643,
+   "mean_abs_error": 42.8
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p42-nassp-scaled-x1",
@@ -3894,7 +4183,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 57000,
   "periods_taken": 57000,
   "periods_dropped": 0,
@@ -3902,7 +4191,17 @@
   "native_routines": 2724490,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 2775812,
+   "yaagc": 2755935,
+   "percent": 0.7,
+   "routines": 13875,
+   "mean_abs_error": 41.8
+  },
+  "reached": {
+   "20,2004": 352
+  }
  },
  {
   "scenario": "lm-abort-p70-nassp-scaled-x1",
@@ -3921,7 +4220,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 180007,
   "periods_taken": 180007,
   "periods_dropped": 0,
@@ -3929,7 +4228,15 @@
   "native_routines": 7039008,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 25927452,
+   "yaagc": 24544914,
+   "percent": 5.6,
+   "routines": 111586,
+   "mean_abs_error": 49.1
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-abort-p71-nassp-scaled-x1",
@@ -3950,7 +4257,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 180007,
   "periods_taken": 180007,
   "periods_dropped": 0,
@@ -3958,7 +4265,15 @@
   "native_routines": 6897332,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 28053864,
+   "yaagc": 26506154,
+   "percent": 5.8,
+   "routines": 122884,
+   "mean_abs_error": 48.9
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p63-descent-restart-scaled-x1",
@@ -3976,7 +4291,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 30000,
   "periods_taken": 30000,
   "periods_dropped": 0,
@@ -3984,7 +4299,15 @@
   "native_routines": 1190969,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4331968,
+   "yaagc": 4076172,
+   "percent": 6.3,
+   "routines": 18035,
+   "mean_abs_error": 52.7
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p63-overload-scaled-x1",
@@ -4003,7 +4326,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 27000,
   "periods_taken": 27000,
   "periods_dropped": 0,
@@ -4034,7 +4357,15 @@
     "refused_by": null,
     "core_start": false
    }
-  ]
+  ],
+  "interpretive_charge": {
+   "fitted": 3376032,
+   "yaagc": 3220388,
+   "percent": 4.8,
+   "routines": 14176,
+   "mean_abs_error": 50.5
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-coast-verbs-scaled-x1",
@@ -4054,7 +4385,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 36500,
   "periods_taken": 36500,
   "periods_dropped": 0,
@@ -4062,7 +4393,27 @@
   "native_routines": 1907989,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1755704,
+   "yaagc": 1730022,
+   "percent": 1.5,
+   "routines": 8966,
+   "mean_abs_error": 43.3
+  },
+  "reached": {
+   "23,2103": 22150,
+   "26,2022": 25650,
+   "07,2714": 34300,
+   "07,3000": 32503,
+   "07,3210": 30503,
+   "42,2035": 21906,
+   "43,2306": 19150,
+   "32,2005": 14150,
+   "42,3606": 2750,
+   "31,2007": 9650,
+   "04,2656": 11150
+  }
  },
  {
   "scenario": "lm-coast-v55-scaled-x1",
@@ -4080,7 +4431,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 5000,
   "periods_taken": 5000,
   "periods_dropped": 0,
@@ -4232,7 +4583,11 @@
     "refused_by": null,
     "core_start": false
    }
-  ]
+  ],
+  "interpretive_charge": null,
+  "reached": {
+   "42,2016": 4002
+  }
  },
  {
   "scenario": "lm-coast-r04-scaled-x1",
@@ -4250,7 +4605,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 7000,
   "periods_taken": 7000,
   "periods_dropped": 0,
@@ -4262,15 +4617,19 @@
    {
     "kind": "basic",
     "point": "50,2002",
-    "label": "?",
-    "file": "?",
-    "lane": "?",
+    "label": "RDRUSECK TC Q",
+    "file": "EXTENDED_VERBS.agc",
+    "lane": "C",
     "arrivals": 1,
     "instructions": 1,
     "refused_by": null,
     "core_start": false
    }
-  ]
+  ],
+  "interpretive_charge": null,
+  "reached": {
+   "43,2420": 2650
+  }
  },
  {
   "scenario": "lm-coast-programs-scaled-x1",
@@ -4288,7 +4647,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 23000,
   "periods_taken": 23000,
   "periods_dropped": 0,
@@ -4296,7 +4655,15 @@
   "native_routines": 1162346,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1446108,
+   "yaagc": 1398428,
+   "percent": 3.4,
+   "routines": 7574,
+   "mean_abs_error": 43.2
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p51-scaled-x1",
@@ -4312,7 +4679,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 8007,
   "periods_taken": 8002,
   "periods_dropped": 5,
@@ -4320,7 +4687,15 @@
   "native_routines": 428375,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 48408,
+   "yaagc": 46307,
+   "percent": 4.5,
+   "routines": 258,
+   "mean_abs_error": 44.9
+  },
+  "reached": {}
  },
  {
   "scenario": "lm-p22-surface-scaled-x1",
@@ -4336,7 +4711,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "15892b81147f",
+  "commit": "feaa37af1837",
   "cia_interrupts": 8002,
   "periods_taken": 8000,
   "periods_dropped": 2,
@@ -4344,6 +4719,14 @@
   "native_routines": 434858,
   "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": []
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 168240,
+   "yaagc": 151111,
+   "percent": 11.3,
+   "routines": 921,
+   "mean_abs_error": 66.1
+  },
+  "reached": {}
  }
 ]
