@@ -90,5 +90,45 @@ class Pairing(unittest.TestCase):
         self.assertEqual(v['diff'][0], ('centiseconds', 320, 321))
 
 
+class DeadSuperbank(unittest.TestCase):
+    """The superbank at ADVAN (fsv.dead_superbank): masked and counted only
+    when both sides sit at ADVAN with FB below 060000."""
+
+    def pair(self, z=0o3214, fb=0o2000, c64_fb=None):
+        h, c = state(500)[1], state(500)[1]
+        h[5] = c[5] = z
+        h[4], c[4] = fb, fb if c64_fb is None else c64_fb
+        h[fsv.SUPERBANK], c[fsv.SUPERBANK] = 0o60, 0o100
+        return h, c
+
+    def test_masked_at_advan(self):
+        masked = {}
+        h, c = self.pair()
+        self.assertEqual(fsv.replay_compare(h, c, None, set(), 'lm', masked), [])
+        self.assertEqual(masked, {fsv.DEAD_SUPERBANK: 1})
+        h, c = self.pair(z=0o3231)
+        self.assertEqual(fsv.replay_compare(h, c, None, set(), 'cm', masked), [])
+        self.assertEqual(masked, {fsv.DEAD_SUPERBANK: 2})
+
+    def test_verdict_counts_and_matches(self):
+        h, c = self.pair()
+        v = fsv.replay_verdict([(500, h)], [(500, c)], True, after=[], m='lm')
+        self.assertEqual((v['diff'], v['matched'], v['masked']), ([], [500], {fsv.DEAD_SUPERBANK: 1}))
+
+    def test_not_masked_elsewhere(self):
+        for kw, m in ((dict(fb=0o60000), 'lm'), (dict(c64_fb=0o60000), 'lm'), (dict(z=0o3215), 'lm'),
+                      (dict(z=0o3214), 'cm'), ({}, None)):
+            masked = {}
+            h, c = self.pair(**kw)
+            diff = fsv.replay_compare(h, c, None, set(), m, masked)
+            self.assertIn(('superbank', 0o60, 0o100), diff, (kw, m))
+            self.assertEqual(masked, {}, (kw, m))
+
+    def test_other_differences_still_count(self):
+        h, c = self.pair()
+        c[WORD] = 0o123
+        self.assertEqual(fsv.replay_compare(h, c, None, set(), 'lm', {}), [(f'{WORD:04o}', 0, 0o123)])
+
+
 if __name__ == '__main__':
     unittest.main()
