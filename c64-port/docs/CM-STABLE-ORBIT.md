@@ -120,7 +120,7 @@ Destinations outside the file: AVFLAGA, AVFLAGP, BANKCALL, BLANKET, CHANG2, ENDO
 
 ## Domain
 
-Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under the routine's `EBANK=`, FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. `NEWJOB` is +0 or, in a quarter of the cases, positive: a job waiting, so any `DANZIG` goes to `CHANG2`, where the routine stops; every interpretive word that can follow a `DANZIG` is a `CHANG2` resume key of its own. Any values of the program erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area, resume points starting from the state the preceding orders leave.
+Canonical 2048-word image (every word random, the counters, `TIME1`-`TIME6`, the CDUs and the save registers at 010-061 included) under the routine's `EBANK=`, FB of the routine's bank, any A, L and Q unless stated, and any values of the other erasables. `NEWJOB` is +0 or, in a quarter of the cases, positive: a job waiting, so any `DANZIG` goes to `CHANG2`, where the routine stops; every interpretive word that can follow a `DANZIG` is a `CHANG2` resume key of its own. Any values of the program erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area, resume points starting from the state the preceding orders leave. Return addresses outside the file (QPRET and the other outside CADRs) are never a word of the file, a key it registers or DANZIG, and at the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at such a word, other than the RTB operand pairs (#553: either state would run the file's own words as orders, which no flight caller leaves).
 
 ## Evidence
 
