@@ -391,10 +391,11 @@ def roles(m):
 
 
 # A symbol's definition: a function (its name at the start of a declaration,
+# after any type words, attributes or section macros such as LOW_TEXT("x"),
 # then its parameters and body), an assembler label or a #define.
 def _definition(name):
     n = re.escape(name)
-    return re.compile(rf'^[ \t]*(?:(?:__attribute__\(\([^()]*(?:\([^()]*\))?[^()]*\)\)|[A-Za-z_]\w*)[ \t\*]+)*'
+    return re.compile(rf'^[ \t]*(?:(?:__attribute__\(\([^()]*(?:\([^()]*\))?[^()]*\)\)|[A-Za-z_]\w*(?:\([^()]*\))?)[ \t\*]+)*'
                       rf'{n}[ \t]*\([^;{{}}]*\)\s*\{{|^[ \t]*{n}:|^[ \t]*#[ \t]*define[ \t]+{n}\b', re.M)
 
 

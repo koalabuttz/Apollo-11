@@ -113,6 +113,7 @@ class Adapters(unittest.TestCase):
     def test_definitions(self):
         self.assertTrue(self.check('static void lr_due(unsigned long t,\n  int x){', 'lr_due'))
         self.assertTrue(self.check('static __attribute__((noinline)) void radar(int *p)\n{', 'radar'))
+        self.assertTrue(self.check('LOW_TEXT("dp_state") static void replay_state(uint16_t t)\n{', 'replay_state'))
         self.assertTrue(self.check('#define PRO $40\n', 'PRO', '.S'))
         self.assertTrue(self.check('rk_dsky_keys:\n  .byte 0\n', 'rk_dsky_keys', '.S'))
 
