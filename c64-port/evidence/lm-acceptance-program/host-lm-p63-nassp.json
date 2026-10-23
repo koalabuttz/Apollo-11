@@ -1,0 +1,26 @@
+{
+ "scenario": "lm-p63-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 115000,
+ "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036733",
+  "FLIGHT_LR_POS2": "500",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "b9a2bcb2256e",
+ "cia_interrupts": 118563,
+ "periods_taken": 115001,
+ "periods_dropped": 3562,
+ "agc_centiseconds": 115001,
+ "native_routines": 4947108,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "417fe3dc75b4441e4a58be903ced1189c059a154244dec68a476b181b1a47c16"
+}

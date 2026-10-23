@@ -422,6 +422,13 @@ P3435_DV = [(0, 0, 0, 0, 0, 0), (0o12345, 0o54321, 1, 0o77776, 0o37777, 0o40000)
 LLGE_AXIS_LAND = _llge_axis('LAND', (0, 2, 4))
 
 
+# (cm-conics KEPLERN: R1's high word with C2's (B+6) and with
+# (1/64 - C2/64)/2's, flight pairs that keep ALPHA in range; #664.)
+_R1C2 = {0o310: (-0.03, 0.5, 0.97), 0o340: (-0.05, 0.5, 1.54), 0o2000: (0.87, 2.7),
+         0o17571: (3, 7, 15, 20), 0o26706: (-0.97, -0.3)}
+R1C2 = [(r, round(c * 256) % 0o77777) for r, cs in _R1C2.items() for c in cs]
+R1C2A = [(r, round((1 - c) * 128) % 0o77777) for r, cs in _R1C2.items() for c in cs]
+
 SPECS = {
     # Lane D1: Luminary099 AOTMARK (probe).
     'lm-aotmark': {
@@ -1635,6 +1642,9 @@ SPECS = {
     # Lane G: Comanche055 TIME_OF_FREE_FALL, the whole file as routines at
     # its original addresses (Lane B's LM form is lm-time-free-fall).
     'cm-time-free-fall': {
+        # QPRET and the other outside CADRs stay off DANZIG and the file's
+        # keys: in flight QPRET is the word after a CALL (auditor, #553).
+        'outside_off_keys': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
@@ -1951,6 +1961,9 @@ SPECS = {
     # Lane G: Comanche055 CONIC_SUBROUTINES, the whole file as routines at
     # its original addresses.
     'cm-conics': {
+        # QPRET and the other outside CADRs stay off DANZIG and the file's
+        # keys: in flight QPRET is the word after a CALL (auditor, #553).
+        'outside_off_keys': True,
         'rope_fallback': True,
         'resume_keys': True,
         'seed_counters': True,
@@ -1973,7 +1986,8 @@ SPECS = {
         'all_states': {'vac+046': [0o77775, 0o77765]},
         # KEPLER's and the time-theta iterations run hundreds of orders.
         'max_steps': 2000,
-        # KEPLERN to PERIODCH (12,2045-12,2142): the pushdown list as
+        # KEPLERN to PERIODCH (12,2042 and 12,2045-12,2142; KEPLERN's own
+        # entry too, or a random TAU. runs PERIODCH past max_steps, #553): the pushdown list as
         # SETPD 0 leaves it (vac+2 between the two PDDLs and after
         # PERIODCH's), a positive period (MPAC at PERIODCH, 0D after it) and
         # a small TAU. (E4,1711), so PERIODCH's subtraction loop ends as
@@ -1981,13 +1995,38 @@ SPECS = {
         # (vector after VLOAD*, UNIT, VSQ's operand load, DP otherwise).
         # 04,3650 (GEOM's return) is in DP mode.
         'states': {
+            # TIMERAD's VXSC VSU after its PDDL (PL AT 6), for the joint
+            # state there.
+            '12,3605': {'0166': ['vac+6']},
             **{'12,%o' % a: {'0166': ['vac+2' if a in (0o2122, 0o2124) or a >= 0o2133 else 'vac+0'],
                              '02311': [0, 0o77777], '02312': [1, 0o40, 0o77, 0o77700, 0o77776],
                              '0163': [0o77776 if a in (0o2047, 0o2051, 0o2054, 0o2060, 0o2066) else 0],
                              **({'0154': [0o100, 0o1000, 0o10000]} if a == 0o2131 else {}),
+                             # R1 (32D) an orbit's radius up to DDV R1
+                             # (12,2077), high word from Earth parking orbit
+                             # (0o310 at 2^29 m) and lunar orbit (0o340 at
+                             # 2^27 m) out to the Moon's distance and sphere
+                             # of influence: a random tiny R1 overflows ALPHA,
+                             # the period comes out 0 and PERIODCH loops for
+                             # good (#553; reviewer 1, #664).
+                             **({'vac+040': [0o310, 0o340, 0o2000, 0o17571, 0o26706]} if a <= 0o2077 else {}),
+                             # The hyperbolic arm (DDV ALPHA, SQRT; 12,2105,
+                             # 12,2110) with ALPHA negative, as BPL 1REV sends
+                             # it there, and MPAC = -50SC/ALPHA positive; and
+                             # XMAX positive from SQRT on (12,2110-12,2122):
+                             # a +0 XMAX with a positive ALPHA gives a period
+                             # of 0 and PERIODCH never ends (#664).
+                             **({'vac+010': [0o70000, 0o76000, 0o77700]} if a in (0o2105, 0o2110) else {}),
+                             **({'0154': [0o100, 0o1000, 0o10000]} if a in (0o2110, 0o2114, 0o2116, 0o2117, 0o2122) else {}),
                              **({'vac+0': [0o100, 0o1000, 0o10000]} if a >= 0o2133 else {})}
-               for a in range(0o2045, 0o2143)},
+               for a in [0o2042, *range(0o2045, 0o2143)]},
             '04,3650': {'0163': [0]},
+            # (GETX's DDV: DP mode, the divisor at vac+0, joint_states.)
+            '12,3016': {'0163': [0], '0166': ['vac+2']},
+            # (LAMBERT's SLOAD BZE VTARGTAG: S40.9 steering passes NUMIT
+            # 0, so INITVEL's VTARGTAG is 0 and LAMBERT goes on to TARGETV;
+            # reviewer 1, #659)
+            '12,3544': {'VTARGTAG': [0, 'any']},
             # STOREs into E7's last words (EPSILONL, COGA) after a DP
             # order: a vector store there would run past erasable.
             '12,3241': {'0163': [0]}, '12,3506': {'0163': [0]},
@@ -2001,6 +2040,16 @@ SPECS = {
             '12,2747': {'0166': ['vac+0']}, '12,2751': {'0166': ['vac+0']}, '12,2754': {'0166': ['vac+6']},
             '12,3561': {'0166': ['vac+0']}, '12,3563': {'0166': ['vac+0']}, '12,3566': {'0166': ['vac+6']},
         },
+        # NEWSTATE (CALLed from COMMNOUT and DELTIME's loop) pushes up to
+        # three vectors before its RVQ: PUSHLOC low there as its callers
+        # leave it, or the pushes overrun QPRET and the RVQ goes to a data
+        # word (#553: 12,2524, RTB TPMODE's operand word).
+        'range_states': [('NEWSTATE', 'TIMETHET', {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']}),
+                         # CHECKCTR, the RTB target of BPL RTB: EDOP +0 at its
+                         # TC DANZIG (BRNCHCTR's RTB BHIZ is the pending key
+                         # 12,2306), not a random order DANZIG would run at a
+                         # random LOC (#553).
+                         ('CHECKCTR', 'NEWSTATE', {'023': [0]})],
         # Half of GETX's cases take CSTH and SNTH so that its DDV (12,3016)
         # divides SNTH/64 by 1/4 - CSTH/2 with equal majors (both exactly
         # or a few low-word units apart), so DDV's MAXDV/MAXTEST paths run
@@ -2009,11 +2058,62 @@ SPECS = {
                                   for sn, c in ((0o20000, 0o17400), (0o10000, 0o17600), (0o30000, 0o17200))
                                   for sl, cl in ((0, 0), (0o200, 0), (0, 0o10))]
                                  + [{}] * 9,
-                         # LAMBERT's SLOAD BZE VTARGTAG (12,3544): a quarter
-                         # of its cases with VTARGTAG +0, so the BZE to
-                         # TARGETV is taken as for a caller that asks for
-                         # the target velocity.
-                         'TARGETV-5': [{}] * 3 + [{'VTARGTAG': 0}]},
+                        # (KEPLERN's C2 = RV.V/MU - 1, B+6, in MPAC at
+                        # STORE KEPC2 and BDSU (12,2074, 12,2075), and
+                        # (1/64 - C2/64)/2 at DDV R1 (12,2077), with R1 so
+                        # that ALPHA = 1/a stays in range (|a| > 2^22 m at
+                        # Earth, 2^20 m at the Moon), as every flight conic
+                        # is: LEO and Earth-to-Moon distance, LLO, and
+                        # hyperbolas out to the Moon's sphere of influence
+                        # (C2 up to 20). Otherwise ALPHA's DDV overflows,
+                        # the period is +0 and PERIODCH never ends; yaAGC
+                        # and the port loop alike (reviewer 1, #664).)
+                        **{'KEPLERN+%d' % n: [{'vac+040': r, '0154': m} for r, m in pairs]
+                           for n, pairs in ((26, R1C2), (27, R1C2), (29, R1C2A))},
+                        # (BPL 1REV, 12,2102: MPAC is the ALPHA just
+                        # stored, so the arm it picks reads the same ALPHA;
+                        # #664)
+                        '1REV-8': [{'0154': h, '0155': l, 'vac+010': h, 'vac+011': l}
+                                   for h, l in ((0o13755, 0o1234), (0o100, 0), (0o77000, 0o70000), (0o70000, 0o54321))]
+                                  + [{}] * 4,
+                        # 1REV's SQRT (12,2112) on the edge arguments
+                        # SQRTSUB branches on: MPAC and MPAC +1 +0 with MPAC
+                        # +2 positive, and MPAC -1 with MPAC +1 positive,
+                        # negative, +0 or -0 (#553: the random cases that
+                        # reach them run past one C64 diagnostic).
+                        '1REV': [{'0154': 0, '0155': 0, '0156': 0o1234},
+                                 *({'0154': 0o77776, '0155': w} for w in (0o1234, 0o76543, 0, 0o77777))]
+                                + [{}] * 5,
+                        # GETX's DDV itself (12,3016): dividend and divisor
+                        # (the push-down list's top, PUSHLOC vac+2 below) with
+                        # equal majors and low words below, equal to and above
+                        # each other or rounding the divisor's major up, of
+                        # either sign, so DDV's MAXTEST, MAXDV and equal-majors
+                        # overflow test run in short cases (#553).
+                        'GETX+13': [{'0154': h ^ sa, '0155': l ^ sa, 'vac+0': h ^ sb, 'vac+1': l2 ^ sb}
+                                    for h in (0o10000, 0o17777) for l, l2 in ((0, 0o100), (0o100, 0o100), (0o200, 0o100), (0, 0o30000))
+                                    for sa, sb in ((0, 0), (0o77777, 0), (0, 0o77777))]
+                                   + [{}] * 24,
+                        # LAMBERT's SLOAD BZE VTARGTAG (12,3544): a quarter
+                        # of its cases with VTARGTAG +0, so the BZE to
+                        # TARGETV is taken as for a caller that asks for
+                        # the target velocity.
+                        'TARGETV-5': [{}] * 3 + [{'VTARGTAG': 0}],
+                        # 12,3605's VXSC VSU (a CHANG2 resume in TIMERAD,
+                        # PL at 6, 'states' above): MPAC's scalar near +1
+                        # times UR1 (E5, the operand's own bank) with each
+                        # component 1/2 + 1/2^15, less a push-down vector of
+                        # -1/2 + 1/2^15 (a negative major word and positive
+                        # minor word). Not a flight state: an edge state for
+                        # the shared interpreter. Each component's double add carries
+                        # its major word to exactly 1, with a negative minor
+                        # word, which the interpreter's OVERFLOW can absorb
+                        # (major 037777) and return without OVFIND. #659's
+                        # TARGETV-5 state reshuffled the random case that
+                        # took this.
+                        '12,3605': [{}] * 3 + [{'0154': 0o37777, '0155': 0o37777, '0163': 0,
+                                                **{'UR1+%d' % i: (0o20000, 0o20000)[i % 2] for i in range(6)},
+                                                **{'vac+%o' % i: (0o57777, 0o20000)[i % 2] for i in range(6)}}]},
         # A DIFEQ or iteration run that does not fit one C64 diagnostic
         # drops every case whose run reaches at least its routines.
         'c64_drop_superset': True,

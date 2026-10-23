@@ -20,15 +20,23 @@
  *   FLIGHT_ASCENT, FLIGHT_STAGE, FLIGHT_RCS (LM); FLIGHT_SPS, FLIGHT_AERO,
  *   FLIGHT_IMU, FLIGHT_SATURN, FLIGHT_SIVB (CM): the vehicle models
  *                   (platform/x86/vehicle_models.h)
- * At the first idle pass through ADVAN at or after their time, in this
- * order: pokes, the vehicle models, channel changes, then a restart or a
- * key. With FLIGHT_ENGINE_LAG the engine also runs after every routine, as
- * do the RCS jets (fs_after_routine). */
+ *   FLIGHT_RR, FLIGHT_RR_DROP: the LM's rendezvous radar or the CM's VHF
+ *                   ranging and sextant (platform/x86/radar_models.h)
+ *   FLIGHT_BUSY_SAMPLE  CS: also a sample point at a routine boundary
+ *                   outside interrupts when none has come for CS
+ *                   centiseconds, so inputs reach a job that busy waits
+ *                   for the crew (LM R22's V06N49 loop)
+ * At the first sample point (an idle pass through ADVAN) at or after their
+ * time, in this order: pokes, the vehicle models (the radar after the
+ * SPS), channel changes, then a restart or a key. With FLIGHT_ENGINE_LAG
+ * the engine also runs after every routine, as do the RCS jets and a radar
+ * read that starts between sample points (fs_after_routine). */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "flight_dispatch.h"
 #include "vehicle_models.h"
+#include "radar_models.h"
 #if RK_LM
 #define FS_ADVAN 03214u
 #else
@@ -44,7 +52,7 @@ static int fs_at_idle_advan(const fd_state *st){const agc_word *w=st->s.words;
  return !st->pending&&!st->hw.in_interrupt&&(w[FS_NEWJOB]&077777u)==077777u
         &&(w[5]&07777u)==FS_ADVAN&&agc_fixed_physical(FS_ADVAN,w[4],st->io.superbank)==1024u+(FS_ADVAN-02000u);}
 
-enum { FS_KEYS = 256, FS_POKES = 4096, FS_GOJAMS = 16, FS_CHANS = 64 };
+enum { FS_KEYS = 1024, FS_POKES = 4096, FS_GOJAMS = 16, FS_CHANS = 64 };
 typedef struct {
     char keys[FS_KEYS + 1]; unsigned long key_at[FS_KEYS]; unsigned pressed;
     struct { unsigned long cs; uint16_t addr, value; } pokes[FS_POKES]; unsigned npokes, poked;
@@ -61,7 +69,24 @@ typedef struct {
     vm_aero aero;
     vm_saturn saturn;
     vm_sivb sivb;
+    rm_rr rr;
+    unsigned long busy_last; /* the last sample point (FLIGHT_BUSY_SAMPLE) */
 } fs_inputs;
+static rm_rr_config rm_rr_cfg;
+static unsigned long fs_busy_every;
+
+/* A sample point: an idle pass through ADVAN, or with FLIGHT_BUSY_SAMPLE a
+ * routine boundary outside interrupts with nothing pending when none has
+ * come for that long. Records the time. */
+static int fs_sample_point(fs_inputs *in, const fd_state *st)
+{
+    unsigned long t = fd_centiseconds(st);
+    if (!fs_at_idle_advan(st) && !(fs_busy_every && !st->pending && !st->hw.in_interrupt &&
+                                   t - in->busy_last >= fs_busy_every))
+        return 0;
+    in->busy_last = t;
+    return 1;
+}
 
 static int fs_poke(fs_inputs *in,unsigned long cs,unsigned a,unsigned v){
  if(a>=2048u||in->npokes>=FS_POKES)return 0;
@@ -106,6 +131,16 @@ static int fs_parse_models(void)
         return 0;
     }
 #endif
+    memset(&rm_rr_cfg, 0, sizeof rm_rr_cfg);
+    if (!rm_rr_parse(&rm_rr_cfg, getenv("FLIGHT_RR"))) {
+        fprintf(stderr, "FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");
+        return 0;
+    }
+    if (!rm_drops_parse(&rm_rr_cfg.drops, getenv("FLIGHT_RR_DROP"))) {
+        fprintf(stderr, "FLIGHT_RR_DROP=T0-T1[,T0-T1...]\n");
+        return 0;
+    }
+    fs_busy_every = fs_cs("FLIGHT_BUSY_SAMPLE");
     (void)v;
     return 1;
 }
@@ -117,6 +152,17 @@ static int fs_parse(fs_inputs *in,const char *keys){const char *t;unsigned long 
  for(t=keys?keys:"";*t&&n<FS_KEYS;){
   if(*t=='@'){char *e;unsigned long v=strtoul(t+1,&e,10);if(e==t+1){fprintf(stderr,"bad key time in %s\n",keys);return 0;}if(v>at)at=v;t=e;continue;}
   in->keys[n]=*t++;in->key_at[n++]=at;at+=50ul;}
+ /* As many keys as tools/flight_host_run.c takes (1024); never cut short. */
+ for (; *t == '@';) {
+     char *e;
+     strtoul(t + 1, &e, 10);
+     if (e == t + 1) break;
+     t = e;
+ }
+ if (*t) {
+     fprintf(stderr, "more than %d keys\n", FS_KEYS);
+     return 0;
+ }
  for(t=getenv("FLIGHT_POKE");t&&*t;){unsigned long cs;unsigned a,v;int k=0;
   if(sscanf(t,"%lu:%o=%o%n",&cs,&a,&v,&k)<3||!k||!fs_poke(in,cs,a,v)){fprintf(stderr,"FLIGHT_POKE=CS:ADDR=VALUE,...\n");return 0;}
   t+=k;if(*t==',')++t;}
@@ -194,6 +240,8 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
     }
     vm_engine_step(t, &in->engine, w);
     vm_sps_step(t, &in->sps, w);
+    rm_rr_step(&rm_rr_cfg, t, &in->rr, w, st->hw.channel12, st->hw.channel13, st->hw.channel14,
+               &st->hw.channel33);
     vm_aero_step(t, &in->aero, w);
     vm_imu_step(w, st->hw.channel12);
     vm_saturn_step(t, &in->saturn, w, &st->hw.channel30);
@@ -204,11 +252,13 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
         ++in->changed;
         if (c == 016u)
             st->io.channel16 = v;
+        else if (c == 033u) /* the radar keeps its bits */
+            st->hw.channel33 = (agc_word)((v & ~rm_rr_ch33_bits(&rm_rr_cfg)) |
+                                          (st->hw.channel33 & rm_rr_ch33_bits(&rm_rr_cfg)));
         else
             *(c == 030u   ? &st->hw.channel30
               : c == 031u ? &st->hw.channel31
-              : c == 032u ? &st->hw.channel32
-                          : &st->hw.channel33) = v;
+                          : &st->hw.channel32) = v;
     }
     if (in->gojams < in->ngojams && t >= in->gojam_at[in->gojams]) {
         while (in->gojams < in->ngojams && t >= in->gojam_at[in->gojams]) ++in->gojams;
@@ -231,12 +281,21 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
 }
 
 /* After each routine: the engine with a throttle lag (P66 reads the PIPAs
- * between sample points) and the RCS jets. */
+ * between sample points), the RCS jets, and a radar read: one starts at
+ * any routine boundary and the resident timer ends it nine TIME5 counts
+ * on, often before the next sample point, so the radar answers it where
+ * channel 13 bit 4 comes on and is ready again once it drops. */
 static void fs_after_routine(fs_inputs *in, fd_state *st)
 {
     unsigned long t = fd_centiseconds(st);
     if (vm_cfg.engine_lag) vm_engine_step(t, &in->engine, st->s.words);
     vm_rcs_step(t, &in->rcs, st->s.words, st->hw.channel5, st->hw.channel6);
+    if (!rm_rr_cfg.on) return;
+    if (!(st->hw.channel13 & 010u))
+        in->rr.active = 0;
+    else if (!in->rr.active)
+        rm_rr_step(&rm_rr_cfg, t, &in->rr, st->s.words, st->hw.channel12, st->hw.channel13,
+                   st->hw.channel14, &st->hw.channel33);
 }
 
 /* FLIGHT_CH30-33 (octal), defaults as yaAGC's GOJAM. */

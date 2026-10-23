@@ -339,6 +339,16 @@ static inline void rk_realtime_cap(void)
 void rk_rupts(void);
 __attribute__((noinline, used)) void rk_rupts_due(void) {
     uint8_t got;
+#ifdef RK_STEAL
+    /* A --replay window of a FLIGHT_STEAL scenario (tools/flight_host_run.c
+     * steal): from RK_STEAL_FROM to RK_STEAL_TO (TIME2:TIME1, centiseconds)
+     * each T5 step also spends RK_STEAL MCT that no routine runs in, the
+     * counter cycles Apollo 11's RR CDU counts took. The time as the step
+     * starts, where the host reads it. Replay builds only. */
+    const uint32_t cs =
+        ((uint32_t)(IMAGE->words[024] & 037777u) << 14) | (IMAGE->words[025] & 037777u);
+    const uint8_t steal = cs >= RK_STEAL_FROM && cs < RK_STEAL_TO;
+#endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
         got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
@@ -348,6 +358,9 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
+#ifdef RK_STEAL
+        if (t == RK_PHASE_T5 && steal) rk_work += RK_STEAL;
+#endif
     }
     if (got && rk_idle) rk_work = 0;
     rk_idle = 0;
@@ -415,6 +428,36 @@ __attribute__((noinline)) static enum apollo_ov2_status rk_run_module(apollo_ov2
     st=apollo_ov2_run(&rk_runtime,rk_hardware.in_interrupt?APOLLO_OV2_TASK_CONTEXT:0u,at,&run_value,&run_action,&resume);
     return st;
 }
+#if !RK_LM
+/* On the CM channels 11-14 have two copies: rk_device's, which the tables'
+ * records (cm_native_io) hold, and rk_hardware's, which the routines that
+ * write a channel straight (p->hardware: the T4RUPT IMU code's WOR and
+ * WAND, KEYRUPT's DSALMOUT) and the CDU drive use. After each step the copy
+ * that changed since the last step gives its value to the other, as
+ * src/flight_io.c's flight_io_leave does after each routine on the host.
+ * When both changed, the record's stands, the host's rule too (here two
+ * routines in one step can each write a different copy, and neither is
+ * reliably the later). The merge ends the step, so the next step's timers
+ * (rk_timer_phase's TIME6 enable, channel 13) and CDU drive (channel 14)
+ * see it. */
+agc_word rk_ch_last[4];
+static const uint8_t rk_ch_at[4] = {
+    offsetof(agc_hardware, channel11), offsetof(agc_hardware, channel12),
+    offsetof(agc_hardware, channel13), offsetof(agc_hardware, channel14)};
+__attribute__((noinline)) static void rk_channels_merge(void)
+{
+    agc_word *d = &rk_device.channel11; /* cm_native_io: channels 11-14 first, in order */
+    uint8_t i;
+    for (i = 0; i < 4u; ++i, ++d) {
+        agc_word *h = (agc_word *)((uint8_t *)&rk_hardware + rk_ch_at[i]);
+        if (*d != rk_ch_last[i])
+            *h = *d;
+        else
+            *d = *h;
+        rk_ch_last[i] = *d;
+    }
+}
+#endif
 /* The hardware restart (docs/FLIGHT-RESTART.md, Entry contract), at a
  * step boundary: the GOJAM module's change to the image and rk_hardware,
  * every interrupt request dropped, the RESTART lamp lit, the killed jobs'
@@ -425,6 +468,9 @@ __attribute__((noinline)) uint8_t rk_gojam(void)
 {
     apollo_ov2_restart_keep_pinned(&rk_runtime); /* a latched fault refuses the module */
     if (rk_run_module((apollo_ov2_cont){RK_MODULE_GOJAM, 0}) != APOLLO_OV2_OK) return 1u;
+#if !RK_LM
+    rk_channels_merge();
+#endif
     rk_pending = 0;
     rk_restart_lamp = 1u;
     apollo_ov2_restart_keep_pinned(&rk_runtime);
@@ -673,14 +719,41 @@ __attribute__((noinline)) static enum exec_status rk_memo_step(uint16_t stop_phy
     return status;
 }
 #endif
+uint8_t rk_spin;
 __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physical)
 {
+    enum exec_status st;
     /* The soft stack ran into the pinned module below it. */
     if (*(volatile uint8_t *)RK_STACK_CANARY != RK_STACK_CANARY_VALUE)
         return EXEC_OUT_OF_SCOPE; /* stop: not a restart (rk_gojam) */
     RK_PROF(0);
     rk_rupts();
     RK_PROF(1);
+    /* The TC trap (docs/FLIGHT-RESTART.md, The TC trap). At VERB69 (43,2037
+     * in both ropes, V69's TC VERB69; bank 043 is FB 033 with the
+     * superbank's bit 0100), outside an interrupt, the AGC runs nothing but
+     * TCs, so the step spins there as the idle loop does, to the period's
+     * end. The trap's GOJAM comes at the T5 step when the spin was there for
+     * the T3 step before it and no interrupt came between, as yaAGC's trap
+     * fires at scaler phase 000 after only TCs since phase 020.
+     * tools/flight_host_run.c verb69 and spin do the same. */
+    {
+        uint8_t spin = rk_spin;
+        const agc_word *w = IMAGE->words;
+        rk_spin = 0;
+        if (!rk_hardware.in_interrupt) {
+            if (spin & 2u) return rk_gojam() ? EXEC_OUT_OF_SCOPE : EXEC_OK;
+            if (w[5] == 02037u && w[4] == 066000u && (rk_device.superbank & 0100u)) {
+                IMAGE->words[2] = 02040u; /* Q: TC VERB69's */
+                rk_charge(0, RK_MCT_IDLE);
+                /* The rest of the period's MCT over 256 (rk_phase_rest): 3
+                 * or 2 with its T3 step, 1 without. */
+                rk_spin = (uint8_t)(rk_work >> 8);
+                st = EXEC_OK;
+                goto out;
+            }
+        }
+    }
 #ifdef RK_IDLE_MEMO
     /* A flight step (no stop point) of the pass or ADVAN outside an
      * interrupt, with no job ready and SMODE +0. */
@@ -689,9 +762,16 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
         if (stop_physical == AGC_TRANSFER_NONE && !rk_hardware.in_interrupt && w[067u] == 077777u &&
             !w[01362u] &&
             ((w[4] == 066000u && w[5] == RK_MEMO_PASS) ||
-             (w[4] == 02000u && w[5] == RK_MEMO_ADVAN)))
-            return rk_memo_step(stop_physical);
+             (w[4] == 02000u && w[5] == RK_MEMO_ADVAN))) {
+            st = rk_memo_step(stop_physical);
+            goto out;
+        }
     }
 #endif
-    return rk_step_run(stop_physical);
+    st = rk_step_run(stop_physical);
+out:
+#if !RK_LM
+    rk_channels_merge();
+#endif
+    return st;
 }

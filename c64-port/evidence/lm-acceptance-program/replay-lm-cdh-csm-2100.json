@@ -1,0 +1,85 @@
+{
+ "scenario": "lm-cdh-csm",
+ "ok": false,
+ "status": 1,
+ "z": "02523",
+ "fb": "62000",
+ "superbank": "0100",
+ "bank": "41",
+ "at": "41,2523",
+ "wall_cycles": 38950417,
+ "agc_cs": 406,
+ "dropped_ticks": 0,
+ "steps": 2077,
+ "wall_per_agc": 9.737,
+ "lost": false,
+ "mission": "lm",
+ "snap_cs": 2100,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch",
+   "undo"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_hits": [],
+  "dma_unchecked": 7
+ },
+ "replay_rows": 14,
+ "replay_applied": 14,
+ "replay_end_cs": 406,
+ "replay_ended": false,
+ "replay_matched_cs": [
+  100,
+  200,
+  300,
+  400
+ ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 2100,
+ "snap_slid": false,
+ "requested_cs": 800,
+ "host_holes": [
+  {
+   "kind": "basic",
+   "point": "41,2523",
+   "label": "DECDSP",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": "lanec_pin_lm_routines",
+   "core_start": false
+  },
+  {
+   "kind": "basic",
+   "point": "41,2524",
+   "label": "DECDSP+1",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 1,
+   "instructions": 1,
+   "refused_by": null,
+   "core_start": false
+  },
+  {
+   "kind": "basic",
+   "point": "41,2525",
+   "label": "DECDSP+2",
+   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+   "lane": "C",
+   "arrivals": 1,
+   "instructions": 48,
+   "refused_by": null,
+   "core_start": false
+  }
+ ],
+ "commit": "c76e489507c0"
+}

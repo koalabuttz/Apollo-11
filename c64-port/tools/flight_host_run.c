@@ -86,6 +86,7 @@
 #include "self_check.h"
 #include "standard_lead_routines.h"
 #include "interp_word_mct.h"
+#include "interp_runtime.h"
 #include "flight_gojam.h"
 /* FLIGHT_DOWNRUPT (tools/flight_downlink.h): wraps agc_engine and rk_timer_tick. */
 #include "flight_downlink.h"
@@ -206,6 +207,55 @@ static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*
 static unsigned due_steps(void){unsigned n=0;
  for(;step_at(consumed)<=wall;++consumed,++n)if(consumed%3ul==2ul)++taken;
  return n;}
+/* The work clock's interpreter module (platform/c64/interp_module.c): a
+ * table left to the interpreter (FLIGHT_PER_WORD) runs as the C64 runs it,
+ * with the compact interpreter (src/lm_interp_core.c, built with
+ * INTERP_WORD_CHARGE), slot after slot until the words charged reach the
+ * next timer step (the C64's rk_budget), at most CORE_SLOTS slots, the
+ * first always; off the work clock, one slot a routine (the C64's
+ * resident has no other clock, but the host runs to the snapshot on yaAGC
+ * time, and lockstep checks a slot like any routine). A slot the core refuses after one that ran is not run:
+ * the next routine starts at that point, and the core refusing it there
+ * leaves it to the table, as another holder takes it on the C64. So the
+ * host takes interrupts between the same two words as the C64, not after
+ * a whole chain of them. core_mct: the slots' charge; core_ran: whether
+ * the core ran the routine (core_misses: its charge was not the words
+ * yaAGC fetched over it, word_mct). */
+#if RK_LM
+#define CORE lm_interp_core
+#define CORE_MCT lm_interp_core_mct
+#define CORE_IO FLIGHT_IO_P66
+#else
+#define CORE cm_interp_core
+#define CORE_MCT cm_interp_core_mct
+#define CORE_IO FLIGHT_IO_CM_NATIVE
+#endif
+#define CORE_SLOTS 64u
+static unsigned long core_mct,core_slots,core_routines,core_misses;
+static int core_ran;
+static enum exec_status core_run(const agc_native_program *p,apollo_overlay_state *s,void *x){
+ /* As platform/c64/interp_module.c: the clock starts at 0x8000 less the
+  * step's budget (whole MCT, at least 1), and the core stops before the
+  * next word once bit 15 sets; off the work clock, one slot. */
+ static apollo_overlay_state last;double budget=step_at(consumed)-wall;unsigned n=0,b=0;enum exec_status st;
+ if(work)b=budget<1?1u:budget>=0x7FFF?0x7FFFu:(unsigned)budget+(budget>(unsigned)budget);
+ CORE_MCT=(uint16_t)(0x8000u-b);if(!b)CORE_MCT=0;
+ for(;;){last=*s;st=CORE(p,s,x);
+  /* A call refused after a slot that ran is undone in the image only.
+   * The I/O record x is not: the one field the core writes there is
+   * interrupt_enabled (INHINT/RELINT in lmi_switch, CHANG2's RELINT), so
+   * a call that changed it and then refused would keep the change. */
+  if(st!=EXEC_OK){if(n){*s=last;st=EXEC_OK;}break;}
+  if(++n>=CORE_SLOTS||!work||(CORE_MCT&0x8000u))break;}
+ core_mct=b?(uint16_t)((CORE_MCT^0x8000u)+b):CORE_MCT;
+ core_slots+=n;
+ return st;}
+/* A point no table holds goes to the interpreter module too, as the C64
+ * resolver sends the interpreter's own entry points (NEWOPS, DANZIG, ...;
+ * tools/flight_store_build.py INTERP_POINTS) to it; the core refuses any
+ * other point (EXEC_UNMAPPED), which is then bridged. */
+static const agc_routine_table core_none={0,0};
+static const entry core_entry={&core_none,"interp_module",1,CORE_IO,"",0,0,0,"",0,FLIGHT_PER_WORD};
 /* Input channels 30 and 31 at start (FLIGHT_CH30, FLIGHT_CH31 below). */
 static unsigned long chan30=037777u,chan31=077777u,chan32=077777u,chan33=077777u;
 /* yaAGC's GOJAM state (agc_engine_init) without its first DOWNRUPT. */
@@ -246,6 +296,26 @@ static int core_start(const char *rope){static agc_t c;int rc;unsigned i,n;
 /* The word at fixed address z under FB and the superbank. */
 /* Reference side only: the rope word yaAGC holds (KEYRUPT1's BRUPT). */
 static agc_word rope_word(agc_word z,agc_word fb,agc_word sb){uint16_t p=agc_fixed_physical(z,fb,sb);return p==AGC_TRANSFER_NONE?0u:(agc_word)loaded.Fixed[p/1024u][p%1024u];}
+/* The TC trap (docs/FLIGHT-RESTART.md, The TC trap). VERB69 (43,2037 in both
+ * ropes, V69's TC VERB69; bank 043 is FB 033 with the superbank's bit 0100):
+ * the test the C64's rk_resident_step makes, Z there outside an interrupt. */
+static int verb69(const agc_word *w,agc_word sb){return (w[5]&07777u)==02037u&&w[4]==066000u&&(sb&0100u);}
+/* Unscaled, yaAGC's own trap fires at scaler phase 000 after nothing but
+ * TCs since phase 020 (agc_engine.c TCTrap; it sets channel 77 bit 3, the
+ * GOJAM itself being off here with InhibitAlarms), on the reference and in
+ * bridged code: yaagc_trap takes the bit, 1 at VERB69, and stops the run
+ * (exit 3) anywhere else or for the no-TC alarm the bit also reports, which
+ * the C64 does not model. */
+static int yaagc_trap(const char *side){const agc_word *v;
+ if(!(m.InputChannel[077]&CH77_TC_TRAP))return 0;
+ m.InputChannel[077]&=~CH77_TC_TRAP;v=view();
+ if(m.TCTrap&&!m.InIsr&&verb69(v,(agc_word)m.OutputChannel7))return 1;
+ fprintf(stderr,"FLIGHT: %s: yaAGC's %s alarm at Z %05o FB %05o, not V69's VERB69 (the C64 does not model it)\n",
+  side,m.TCTrap?"TC trap":"no-TC",(unsigned)v[5],(unsigned)v[4]);
+ exit(3);}
+/* A TC or TCF to itself, with no INDEX before it (bridged code under scaled
+ * time, where yaAGC's clock is frozen and its trap cannot fire). */
+static int self_loop(const agc_word *w,agc_word sb){agc_word z=(agc_word)(w[5]&07777u),k=z>=02000u?rope_word(z,w[4],sb):0u;return z>=02000u&&(k==z||k==(agc_word)(010000u|z));}
 static agc_routine find(const agc_routine_table *t,uint16_t key){uint16_t lo=0,hi=t->count,mid;
  while(lo<hi){mid=(uint16_t)(lo+(hi-lo)/2u);if(t->entries[mid].physical==key)return t->entries[mid].call;
   if(t->entries[mid].physical<key)lo=(uint16_t)(mid+1u);else hi=mid;}
@@ -389,10 +459,15 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  * snapshot the run goes on, on the work clock from its first step (the
  * C64 window's own clock: rk_work and rk_tick_phase 0), for CS
  * centiseconds. Every input the models, keys, pokes and channel changes
- * give it in that time is one 8-byte row of PATH.replay (little-endian:
- * centiseconds since the snapshot, kind, where, address, value): where 0
- * at a sample point, 1 at any routine boundary (the engine lag's PIPA
- * counts, the radar model's reads). Kinds: 0 an erasable word set, 1 a
+ * give it in that time is one 10-byte row of PATH.replay (little-endian:
+ * centiseconds since the snapshot, kind, where, address, value, work):
+ * where bit 0 is 0 at a sample point, 1 at any routine boundary (the
+ * engine lag's PIPA counts and CDUs, the radar model's reads); bits 1-2
+ * a boundary row's work-clock step in the centisecond (1 the TIME1/TIME3
+ * step's, then 2 and 3; 0 on a sample-point row, which goes in at its
+ * sample point as before) and work the MCT since that step, so the C64 applies a
+ * boundary row at the same point of the centisecond (a DAP pass reads
+ * the CDUs on the same side of the row). Kinds: 0 an erasable word set, 1 a
  * counter (PIPA) word moved by a signed count, 2 an input channel set
  * (address: the channel; 0377 the radar gate), 3 interrupt requests raised
  * (value: RK_RUPT_BIT bits). At the first sample point CS or more
@@ -413,16 +488,31 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  * seam rows is the snapshot), and starts the next window's work clock as
  * a C64 window starts its own. A key or an interrupt request at that point
  * holds the snapshot off and fails the run (exit 4). */
+/* The TC trap's GOJAM on the native side. FLIGHT_TRAP_SNAPSHOT=PRE,POST:
+ * the native state just before it and just after it (as FLIGHT_SNAPSHOT
+ * writes one), and the run stops. */
+static int spin;
+static void trap_gojam(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending){const char *t=getenv("FLIGHT_TRAP_SNAPSHOT");char pre[600];size_t k;
+ printf("TC trap at %lu cs (Q %05o)\n",now(s->words),(unsigned)s->words[2]);
+ if(t){k=strcspn(t,",");if(!t[k]||k>=sizeof pre){fprintf(stderr,"FLIGHT_TRAP_SNAPSHOT=PRE,POST\n");exit(2);}memcpy(pre,t,k);pre[k]=0;snapshot(pre,s,io,hw);}
+ gojam_native(s->words,io,hw,pending);
+ if(t){snapshot(t+k+1,s,io,hw);printf("trap snapshots at %lu cs\n",now(s->words));exit(0);}}
 static long ones(agc_word v);
 static FILE *rp_out;static unsigned long rp_seed;
 static unsigned long rp_t0,rp_cs,rp_rows;static unsigned rp_chain=1u,rp_win;static FILE *rp_seam;
 static char rp_base[512],rp_path[600];
 static agc_word rp_w[2048];static agc_hardware rp_hw;static agc_word rp_c16;static uint16_t rp_pending;
-static void rp_row(unsigned long t,unsigned kind,unsigned where,unsigned a,unsigned v){unsigned char b[8];unsigned long d=t-rp_t0;
+static void rp_row(unsigned long t,unsigned kind,unsigned where,unsigned a,unsigned v){unsigned char b[10];unsigned long d=t-rp_t0;
+ /* The work clock where the row comes: the step taken last (the TIME1
+  * step's is 2 mod 3, consumed counting from the window's start) and the
+  * MCT since it, as the C64's rk_tick_phase and rk_work. */
+ double since=wall-(consumed?step_at(consumed-1ul):0.0);unsigned work=since<0.0?0u:since>65535.0?65535u:(unsigned)since;
+ if(where&1u)where|=(unsigned)((consumed+1ul)%3ul+1ul)<<1;
  if(d>0xffffu){fprintf(stderr,"FLIGHT_REPLAY: window longer than 65535 cs\n");exit(2);}
  b[0]=(unsigned char)d;b[1]=(unsigned char)(d>>8);b[2]=(unsigned char)kind;b[3]=(unsigned char)where;
  b[4]=(unsigned char)a;b[5]=(unsigned char)(a>>8);b[6]=(unsigned char)v;b[7]=(unsigned char)(v>>8);
- fwrite(b,1,8,rp_out);++rp_rows;}
+ b[8]=(unsigned char)work;b[9]=(unsigned char)(work>>8);
+ fwrite(b,1,10,rp_out);++rp_rows;}
 static void rp_mark(const agc_word *w,const agc_hardware *hw,agc_word c16,uint16_t pending){memcpy(rp_w,w,sizeof rp_w);rp_hw=*hw;rp_c16=c16;rp_pending=pending;}
 /* The rows for what changed since rp_mark. */
 static void rp_diff(unsigned long t,unsigned where,const agc_word *w,const agc_hardware *hw,agc_word c16,uint16_t pending){unsigned i;
@@ -445,8 +535,18 @@ static void rp_diff(unsigned long t,unsigned where,const agc_word *w,const agc_h
 /* The output channels PATH.end carries after the erasable words (and
  * tools/flight_scenario_vice.py compares, dap_pass_check.c DP_REPLAY). */
 static FILE *rp_ends;static unsigned long rp_every,rp_next;
+/* After the last window's end the run goes on RP_AFTER_CS centiseconds
+ * more and writes the state at each sample point to PATH.after (the .end
+ * format) and the inputs it took there to PATH.after-replay (the .replay
+ * format): a C64 that reaches its first sample point a centisecond or
+ * more after the host's end is compared with the host's state at that
+ * same centisecond (tools/flight_scenario_vice.py pair_states), when no
+ * input came in between. */
+#define RP_AFTER_CS 8ul
+static unsigned long rp_after=~0ul,rp_after_last;
 static void rp_end(unsigned long d,const agc_word *w,const flight_io *io,const agc_hardware *hw){FILE *f=rp_ends;unsigned i;
- uint16_t c[]={hw->channel5,hw->channel6,hw->channel11,hw->channel12,hw->channel13,hw->channel14,io->channel34,io->channel35,io->superbank};
+ uint16_t c[]={hw->channel5,hw->channel6,hw->channel11,hw->channel12,hw->channel13,hw->channel14,io->channel34,io->channel35,io->superbank,
+  hw->channel10,(uint16_t)(io->interrupt_enabled!=0u),hw->radar_gate};
  {unsigned char b[2]={(unsigned char)d,(unsigned char)(d>>8)};fwrite(b,1,2,f);}
  for(i=0;i<2048u;++i){unsigned char b[2]={(unsigned char)w[i],(unsigned char)(w[i]>>8)};fwrite(b,1,2,f);}
  for(i=0;i<sizeof c/sizeof c[0];++i){unsigned char b[2]={(unsigned char)c[i],(unsigned char)(c[i]>>8)};fwrite(b,1,2,f);}}
@@ -861,15 +961,25 @@ static int step(uint16_t *pending){unsigned i;if(agc_engine(&m))return -1;
  * yaAGC takes the native side's pending interrupts, and any it requests,
  * where it would (an interrupt vector is a point the lead-in tables hold);
  * the requests still pending at the end go back to the native side. */
+/* Unscaled, bridged code runs through VERB69 (whatever table holds it) until
+ * yaAGC's own TC trap (yaagc_trap) sets trapped; under scaled time the
+ * bridge stops there for the native spin, and stops the run (-2) at any
+ * other TC or TCF to itself. The trap's watch starts clear: the native code
+ * before it ran other instructions. */
+static int trapped;
 static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,long limit){long n;unsigned i;agc_routine call;
  load(s,io,hw);
  for(i=1;i<=NUM_INTERRUPT_TYPES;++i)m.InterruptRequests[i]=(int8_t)((*pending&RK_RUPT_BIT(i))!=0u);
+ m.TCTrap=0;m.NoTC=0;m.InputChannel[077]&=~CH77_TC_TRAP;trapped=0;
  for(n=0;n<limit;++n){
-  if(n&&quiet()){const agc_word *v=view();if(holder(v,(agc_word)m.OutputChannel7,&call)||idle(v,(agc_word)m.OutputChannel7,m.InIsr))break;}
+  if(n&&quiet()){const agc_word *v=view();agc_word sb=(agc_word)m.OutputChannel7;
+   if((holder(v,sb,&call)&&(scaled||m.InIsr||!verb69(v,sb)))||idle(v,sb,m.InIsr)||(scaled&&!m.InIsr&&verb69(v,sb)))break;
+   if(scaled&&!m.InIsr&&self_loop(v,sb)){fprintf(stderr,"FLIGHT: bridged code at a TC or TCF to itself, Z %05o FB %05o (not VERB69)\n",(unsigned)v[5],(unsigned)v[4]);return -2;}}
   if(scaled){uint64_t c=m.CycleCounter;unsigned k;if(agc_engine(&m))return -1;spend((unsigned long)(m.CycleCounter-c));
    if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));if(j%3ul==2ul)steal();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
    continue;}
-  if(agc_engine(&m))return -1;}
+  if(agc_engine(&m))return -1;
+  if(yaagc_trap("bridge")){trapped=1;++n;break;}}
  if(n==limit)return -1;
  *pending=0;for(i=1;i<=NUM_INTERRUPT_TYPES;++i)if(m.InterruptRequests[i])*pending|=RK_RUPT_BIT(i);
  store(s,io,hw);return n;}
@@ -904,18 +1014,32 @@ static void adopt(apollo_overlay_state *after,agc_hardware *hw){unsigned i;
 static unsigned long word_mct;
 static void word_fetch(unsigned long *words,int *in){agc_word fb=(agc_word)(*cell(4)&077777),sb=(agc_word)m.OutputChannel7;
  uint16_t at;int now;agc_routine call;const entry *t;unsigned w;
- if(m.InIsr||!quiet())return;
+ /* At a RESUME point yaAGC runs BRUPT, the word at Z an interrupt
+  * held: a fetch there is the word's own. */
+ if(m.InIsr||!(quiet()||(m.SubstituteInstruction&&!m.PendFlag&&!m.ExtraDelay&&!m.IndexValue&&!m.ExtraCode)))return;
  at=agc_fixed_physical((agc_word)(*cell(5)&07777),fb,sb);
  if(at==FETCH)*words+=4ul*interp_word_units_of(rope_word((agc_word)(*cell(0164)&077777),fb,sb));
  now=at!=AGC_TRANSFER_NONE&&(at/1024u==0u||at/1024u==3u);
  if(*in==1&&!now&&at!=AGC_TRANSFER_NONE&&(t=holder(view(),sb,&call))&&(w=weight(t))!=FLIGHT_PER_WORD)
   *words+=w&~FLIGHT_PLUS_WORDS;
  *in=now;}
+/* The output channels a routine must also leave as yaAGC does (channel 13
+ * as the CPU can write it, 043777): a routine that drops a channel write
+ * (an I/O record copied back over it, src/flight_io.c) misses even when
+ * the erasable words agree. chan_diff says how, for the miss report. */
+static const unsigned short out_ch[]={5,6,010,011,012,013,014};
+static char chan_diff[40];
+static int channels_differ(agc_hardware *hw){unsigned i,k;
+ for(i=0;i<sizeof out_ch/sizeof out_ch[0];++i){agc_word nat,ref;unsigned c=out_ch[i];
+  for(k=0;ch[k]!=c;++k);
+  nat=*hwc(hw,k);ref=(agc_word)(m.InputChannel[c]&077777);if(c==013u){nat&=043777u;ref&=043777u;}
+  if(nat!=ref){snprintf(chan_diff,sizeof chan_diff," ch%o %05o/%05o",c,(unsigned)nat,(unsigned)ref);return 1;}}
+ return 0;}
 static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc_hardware *hw0,apollo_overlay_state *after,
                      agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first,int interp){
  static apollo_overlay_state timed;static agc_hardware timed_hw;
  long n;int in,tin;uint16_t target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0,words=0,first_words=0;int in_interp=-1;
- first[5]=077777u;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);c0=m.CycleCounter;
+ first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);c0=m.CycleCounter;
  for(n=0;n<limit;++n){
   /* After RESUME, yaAGC is at ZRUPT with BRUPT substituted for the next
    * instruction: the native continuation is that point. */
@@ -925,8 +1049,10 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
     * a copy of bit 15, where the native frontier holds 15 bits (#409). */
    for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&!cdu_counter(i)
                           &&(i==2u&&interp?(mword(2)^after->words[2])&077777u:mword(i)!=after->words[i]))break;
-   if(i==2048u){adopt(after,hw);*pending|=got;substitute=m.SubstituteInstruction;span_mct=(unsigned long)(m.CycleCounter-c0);word_mct=words;return n;}
-   if(first[5]==077777u){for(i=0;i<2048u;++i)first[i]=mword(i);first_mct=(unsigned long)(m.CycleCounter-c0);first_words=words;timed=*after;timed_hw=*hw;adopt(&timed,&timed_hw);got_first=got;}}
+   int words_agree=i==2048u;
+   if(words_agree&&!channels_differ(hw)){adopt(after,hw);*pending|=got;substitute=m.SubstituteInstruction;span_mct=(unsigned long)(m.CycleCounter-c0);word_mct=words;return n;}
+   if(first[5]==077777u){for(i=0;i<2048u;++i)first[i]=mword(i);first_mct=(unsigned long)(m.CycleCounter-c0);first_words=words;timed=*after;timed_hw=*hw;adopt(&timed,&timed_hw);got_first=got;}
+   if(words_agree)break;}   /* the words agree, a channel does not: no later arrival will do better */
   if(work)word_fetch(&words,&in_interp);
   if(step(&got))return -1;}
  /* A miss: the routine took as long as yaAGC to its first arrival there
@@ -961,14 +1087,14 @@ static int scaler_latch(const apollo_overlay_state *before,const flight_io *io0,
 
 /* Routines whose result yaAGC never matched. */
 enum { MISSES=256 };
-static struct { const char *name; uint16_t key; uint8_t in; unsigned long count; agc_word word[2048],ref[2048]; int arrived; } misses[MISSES];
+static struct { const char *name; uint16_t key; uint8_t in; unsigned long count; agc_word word[2048],ref[2048]; int arrived; char chan[40]; } misses[MISSES];
 static unsigned nmisses;
 static void miss(const char *name,const agc_word *before,agc_word sb,const agc_word *after,const agc_word *first){int in;uint16_t key=point(before,sb,&in);unsigned i;
  if(getenv("FLIGHT_MISS_LOG"))printf("miss %s at %lu cs: Z %05o FB %05o Q %05o (before), Q %05o/%05o after (native/yaAGC)\n",name,now(before),(unsigned)before[5],(unsigned)before[4],(unsigned)before[2],(unsigned)after[2],(unsigned)first[2]);
  for(i=0;i<nmisses;++i)if(misses[i].name==name&&misses[i].key==key&&misses[i].in==(uint8_t)in){++misses[i].count;return;}
  if(nmisses<MISSES){misses[nmisses].name=name;misses[nmisses].key=key;misses[nmisses].in=(uint8_t)in;misses[nmisses].count=1;
   memcpy(misses[nmisses].word,after,sizeof misses[nmisses].word);memcpy(misses[nmisses].ref,first,sizeof misses[nmisses].ref);
-  misses[nmisses].arrived=first[5]!=077777u;++nmisses;}}
+  misses[nmisses].arrived=first[5]!=077777u;memcpy(misses[nmisses].chan,chan_diff,sizeof chan_diff);++nmisses;}}
 
 /* The flight resident's fixed_data hook (platform/c64/resident_flight.c
  * rk_fixed_word): the rope word at every point where it stops between
@@ -1156,7 +1282,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(holder(v,(agc_word)m.OutputChannel7,&c)){static agc_word w[2048];memcpy(w,v,sizeof w);w[024]=mword(024);w[025]=mword(025);
     path("REF",w,(agc_word)m.OutputChannel7,(agc_word)m.InputChannel[4],m.InIsr,"");}}
   if(word_out){word_step(next);continue;}
-  if(agc_engine(&m))return 2;}
+  if(agc_engine(&m))return 2;
+  if(yaagc_trap("reference"))gojam_yaagc(&m);}
  if(word_out){fclose(word_out);return 0;}
  refs=scaled?cs:next-1u;
  if(refs<cs)printf("reference: only %lu of %lu centiseconds reached an idle boundary\n",refs,cs);
@@ -1181,7 +1308,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else if(tables[i].t==&agc_lm_danzig_marker||tables[i].t==&agc_cm_danzig_marker)interp[0]=*tables[i].t;
    else interp[ni++]=*tables[i].t;}
   p.basic=basic;p.basic_count=nb;p.interpretive=interp;p.interpretive_count=ni;}
- for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;
+ for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;int v69;
   steal_cs=now(s.words);
   if(!pending&&(scaled||(hw.channel4&020u))&&((at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt))||busy_due(scaled,s.words,hw.in_interrupt))){int k;busy_last=now(s.words);
    while(next<=refs&&now(s.words)>=next){if(scaled){++next;continue;}++samples;
@@ -1190,16 +1317,24 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      for(i=0,j=0;i<2048u;++i)if(compared(i)&&s.words[i]!=ref[next][i]&&j++<8u)printf(" %04o %05o/%05o",i,(unsigned)s.words[i],(unsigned)ref[next][i]);
      printf("%s (%u words, native/yaAGC)\n",j>8u?" ...":"",j);}
     ++next;}
-   if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_next&&now(s.words)-rp_t0<rp_cs){rp_end(now(s.words)-rp_t0,s.words,&io,&hw);
+   if(rp_after!=~0ul&&now(s.words)-rp_t0>rp_after_last){unsigned long d=now(s.words)-rp_t0;
+    if(d>rp_after+RP_AFTER_CS){fclose(rp_out);fclose(rp_ends);return 0;}
+    rp_end(d,s.words,&io,&hw);rp_after_last=d;}
+   else if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_next&&now(s.words)-rp_t0<rp_cs){rp_end(now(s.words)-rp_t0,s.words,&io,&hw);
     while(rp_next<=now(s.words)-rp_t0)rp_next+=rp_every;}
-   if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
+   if(rp_after==~0ul&&rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
     rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
-    if(++rp_win>=rp_chain)return 0;
+    if(core_routines)printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);
+    if(++rp_win>=rp_chain){char b[640];rp_after=rp_after_last=now(s.words)-rp_t0;
+     snprintf(b,sizeof b,"%s.after-replay",rp_win>1u?rp_path:rp_base);rp_out=fopen(b,"wb");
+     snprintf(b,sizeof b,"%s.after",rp_win>1u?rp_path:rp_base);rp_ends=fopen(b,"wb");
+     if(!rp_out||!rp_ends){perror(b);return 2;}}
+    else{
     /* CHAIN: the next window starts here (FLIGHT_REPLAY above). */
     snprintf(rp_path,sizeof rp_path,"%s-%u",rp_base,rp_win);snap_path=rp_path;snap_cs=now(s.words);snap_any=0;
     {char b[640];snprintf(b,sizeof b,"%s.replay",rp_path);rp_out=fopen(b,"wb");snprintf(b,sizeof b,"%s.end",rp_path);rp_ends=fopen(b,"wb");
      snprintf(b,sizeof b,"%s.seam",rp_path);rp_seam=fopen(b,"wb");if(!rp_out||!rp_ends||!rp_seam){perror(b);return 2;}}
-    rp_mark(s.words,&hw,io.channel16,pending);}
+    rp_mark(s.words,&hw,io.channel16,pending);}}
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
    /* A key is pressed at the first sample point at or after its time, on
     * both sides. */
@@ -1216,6 +1351,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    lr_due(now(s.words),&lr_nat,&hw);
    lrm_due(now(s.words),touchdown_cs,s.words,&hw.channel13,&hw.channel33);
    chan_due(now(s.words),&cnat,&hw,&io);
+   if(rp_after!=~0ul&&gojam_due(now(s.words),&gnat)){fclose(rp_out);fclose(rp_ends);return 0;}
    if(rp_out&&!snap_path&&gojam_due(now(s.words),&gnat)){fprintf(stderr,"FLIGHT_REPLAY: a GOJAM at %lu cs is in the window\n",now(s.words));return 3;}
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
    else if((k=key_due(now(s.words),&knat))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
@@ -1249,7 +1385,19 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * Z; rk_rupt_take saves the word at Z. */
     if(substitute&&brupt!=s.words[017]&&++lost_brupt==1ul)printf("interrupt at a RESUME point replaced BRUPT %05o with %05o at %lu cs\n",(unsigned)brupt,(unsigned)s.words[017],now(s.words));
     substitute=0;}}
-  e=holder(s.words,io.superbank,&call);
+  /* The TC trap (verb69): under the work clock, the spin's period ran
+   * through its T5 step with no interrupt taken and held its T3 step, as
+   * rk_resident_step finds it on the C64. */
+  if(spin){int armed=spin==2;spin=0;
+   if(armed&&!hw.in_interrupt){trap_gojam(&s,&io,&hw,&pending);substitute=0;continue;}}
+  v69=!hw.in_interrupt&&!substitute&&verb69(s.words,io.superbank);
+  /* At VERB69 the AGC runs nothing but TCs: under the work clock a spin
+   * as the idle loop's, to the period's end (rk_resident_step's), with Q
+   * TC VERB69's; unscaled, yaAGC's bridged code, to its own trap. */
+  if(v69&&scaled){if(!work){fprintf(stderr,"FLIGHT: VERB69 under FLIGHT_SCALED=K,D,LAG: the TC trap needs the work clock or unscaled time\n");return 3;}
+   s.words[2]=02040u;spin=consumed%3ul==2ul?1:2;idle_tick();continue;}
+  e=v69?0:holder(s.words,io.superbank,&call);
+  if(!e&&!v69)e=&core_entry;
   /* FLIGHT_REPLAY_TRACE: each routine's Z, FB, TIME1, work clock (step,
    * MCT since it), Q and table, as dap_pass_check.c DP_STEPS records the
    * C64's steps with DP_REPLAY. */
@@ -1280,6 +1428,18 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
 #else
     p.fixed_data=e->fixed==1u?cm_self_check_rope_data:e->fixed==2u?rope_data:boundary_word;
 #endif
+    core_ran=0;
+    if(weight(e)==FLIGHT_PER_WORD){
+     x=flight_io_enter(CORE_IO,&io,&hw,&b);st=core_run(&p,&s,x);flight_io_leave(CORE_IO,&io,&hw,&b);
+     if(st==EXEC_OK){agc_routine c2;core_ran=1;
+      if(getenv("FLIGHT_CORE_LOG")&&!holder(s.words,io.superbank,&c2))
+       printf("core left an unheld point: Z %05o FB %05o LOC %05o (from Z %05o LOC %05o, %s, %lu cs)\n",(unsigned)s.words[5],(unsigned)s.words[4],
+        (unsigned)s.words[0164],(unsigned)before.words[5],(unsigned)before.words[0164],e->name,now(s.words));
+      break;}
+     if(getenv("FLIGHT_CORE_LOG"))printf("core refused: status %d Z %05o FB %05o LOC %05o BANKSET %05o EDOP %05o, %s\n",(int)st,(unsigned)before.words[5],
+      (unsigned)before.words[4],(unsigned)before.words[0164],(unsigned)before.words[0165],(unsigned)before.words[AGC_EDOP],e->name);
+     s=before;io=io0;hw=hw0;
+     if(e==&core_entry)break;}
     x=flight_io_enter(e->io,&io,&hw,&b);st=call(&p,&s,x);flight_io_leave(e->io,&io,&hw,&b);
     /* A pinned table that refuses the point (slot 3 or 4) leaves it to the
      * next holder, as rk_direct does on the C64 (a slot that runs no step). */
@@ -1295,7 +1455,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      dl_clear();
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);}
     if(st==EXEC_OK){
-     if(scaled){unsigned w=weight(e);if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);else if(work&&!w)idle_tick();else spend(work?w:span_mct);}
+     if(core_ran){++core_routines;
+      if(n>=0&&core_mct!=word_mct){++core_misses;
+       if(getenv("FLIGHT_CORE_LOG"))printf("core charge %lu, yaAGC's words %lu: Z %05o LOC %05o to Z %05o LOC %05o, %s\n",core_mct,word_mct,
+        (unsigned)before.words[5],(unsigned)before.words[0164],(unsigned)s.words[5],(unsigned)s.words[0164],e->name);}}
+     if(scaled){unsigned w=weight(e);if(core_ran&&work)spend(core_mct);else if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);else if(work&&!w)idle_tick();else spend(work?w:span_mct);}
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
      if(n>=0){locked+=(unsigned long)n;
       /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by
@@ -1315,9 +1479,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    s=before;io=io0;hw=hw0;}
   dl_clear();
   {agc_word w[2048];long n;memcpy(w,s.words,sizeof w);
-   if((n=bridge(&s,&io,&hw,&pending,5000000l))<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
+   if((n=bridge(&s,&io,&hw,&pending,5000000l))==-2)return 3;
+   if(n<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
    dl_bridged(w);
-   hole(w,io.superbank,(unsigned long)n,e?e->name:0);bridged+=(unsigned long)n;}}
+   hole(w,io.superbank,(unsigned long)n,e&&e!=&core_entry?e->name:0);bridged+=(unsigned long)n;
+   if(trapped){trap_gojam(&s,&io,&hw,&pending);substitute=0;}}}
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
   MISSION?"CM":"LM",steps,locked,bridged,samples,samples-diffs,diffs);
  if(scaled)printf("scaled time: K %.2f, divisor %u, lag %u, seed %lu: %lu CIA interrupts, %lu clock periods taken, %lu dropped (rk_dilation); AGC time %lu cs\n",
@@ -1325,11 +1491,12 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
+ if(core_routines)printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);
  printf("native routines yaAGC did not match (%u):\n",nmisses);
  for(i=0;i<nmisses;++i){unsigned k,d=0;printf("  %s %02o,%04o %s: %lu times;",misses[i].in?"interp":"basic ",misses[i].key/1024u,misses[i].key%1024u+02000u,misses[i].name,misses[i].count);
   if(!misses[i].arrived)printf(" yaAGC never reached the native continuation Z %05o\n",(unsigned)misses[i].word[5]);
   else{for(k=0;k<2048u;++k)if(!(k>=024u&&k<=031u)&&misses[i].word[k]!=misses[i].ref[k]&&d++<6u)printf(" %04o %05o/%05o",k,(unsigned)misses[i].word[k],(unsigned)misses[i].ref[k]);
-   printf("%s (native/yaAGC)\n",d>6u?" ...":"");}}
+   printf("%s%s (native/yaAGC)\n",d>6u?" ...":"",misses[i].chan);}}
  printf("unregistered or refused points (%u):\n",nholes);
  for(i=0;i<nholes;++i)printf("  %s %02o,%04o Z %05o FB %05o Q %05o: %lu arrivals, %lu instructions%s%s\n",holes[i].in?"interp":"basic ",
   holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q,holes[i].count,holes[i].instructions,
