@@ -52,7 +52,7 @@ def table(**over):
     keys = da.role('keys', 'Keys', 'in', 'channel 15', [(FHR, 'key_due', 'keys')], [(da.DPC, 'replay_rows', 'rows')],
                    da.pressed('0-9A-Z'), da.either(da.channel(0o15, how='channel_set'), da.requests('KEY1')), [])
     jets = da.role('jets', 'Jets', 'out', 'channels 5, 6', [(FHR, 'rp_end', 'end')], [(da.DPC, 'replay_state', 'end')],
-                   da.uses('FLIGHT_ENGINE'), da.either(da.driven(5), da.driven(6)), [])
+                   da.uses('FLIGHT_ENGINE'), da.either(da.moved(5), da.moved(6)), [])
     for k, v in over.items():
         (keys if k.startswith('keys_') else jets)[k.split('_', 1)[1]] = v
     return [keys, jets]
@@ -160,6 +160,15 @@ class Roles(unittest.TestCase):
         s, bad = self.status([w])
         self.assertEqual(s['jets'], 'GAP')
         self.assertEqual(s['keys'], 'covered')
+
+    def test_a_static_output_is_not_driven(self):
+        w = window(replay_outputs=dict(channel_set={'channel 5': 0o20}, channel_changed={'channel 5': 0},
+                                       nonzero=['0055'], changed=[]))
+        s, _ = self.status([w])
+        self.assertEqual(s['jets'], 'GAP')
+        self.assertFalse(da.words(0o55)(w))
+        self.assertTrue(da.words(0o55)(window(replay_outputs=dict(changed=['0055']))))
+        self.assertTrue(da.held(5, 0o20)(w))
 
     def test_host_gates(self):
         for host in [[], [host_row(commit='0123456789ab')], [host_row(exit=1)]]:

@@ -131,12 +131,10 @@ def channel(ch, mask=0o77777, how='channel_changed'):
     return lambda r: bool(inputs(r).get(how, {}).get(f'{ch:o}', 0) & mask)
 
 
-def driven(ch, mask=0o77777):
+def held(ch, mask=0o77777):
     """Output channel ch (an END_CHANNELS name's number) had one of mask's
-    bits set, or changed, in the host's states over the window."""
-    name = f'channel {ch:o}'
-    return lambda r: bool((outputs(r).get('channel_set', {}).get(name, 0)
-                           | outputs(r).get('channel_changed', {}).get(name, 0)) & mask)
+    bits set in the host's states over the window: an enable, not a drive."""
+    return lambda r: bool(outputs(r).get('channel_set', {}).get(f'channel {ch:o}', 0) & mask)
 
 
 def moved(ch, mask=0o77777):
@@ -145,9 +143,10 @@ def moved(ch, mask=0o77777):
 
 
 def words(*addrs):
-    """An output word was non-zero or changed over the window."""
+    """An output word changed over the window (a value that only sits there
+    shows nothing was driven)."""
     want = {f'{a:04o}' for a in addrs}
-    return lambda r: bool(want & (set(outputs(r).get('nonzero', [])) | set(outputs(r).get('changed', []))))
+    return lambda r: bool(want & set(outputs(r).get('changed', [])))
 
 
 def scenario_env(*names, without=()):
@@ -285,12 +284,12 @@ def roles(m):
         ]
     out += [
         role('discretes', 'Discretes', 'in', 'channels 30-32 (IMU, abort, mode switches, hand controller discretes, '
-             'PROCEED)',
+             'PROCEED), channel 33 bits 10-15 (PIPA fail, warnings, oscillator, uplink and downlink too fast)',
              [(FHR, 'chan_due', 'FLIGHT_CHAN changes at sample points (FLIGHT_CH30-33: start values)')],
              [rows, ('platform/c64/resident_dsky.S', 'PRO', 'the flight disk\'s PRO key: channel 32 bit 14')],
-             chan_input(0o30, 0o31, 0o32), either(channel(0o30), channel(0o31), channel(0o32)),
+             chan_input(0o30, 0o31, 0o32, 0o33), either(channel(0o30), channel(0o31), channel(0o32), channel(0o33, 0o77000)),
              unit(m, 't4rupt-imu', 'rcsmon') if lm else unit(m, 't4rupt-imu', 'rcs-dap'),
-             how='a channel 30, 31 or 32 row that changes a bit'),
+             how='a channel 30, 31 or 32 row that changes a bit, or a channel 33 row that changes bits 10-15'),
         role('keys', 'DSKY keys', 'in', 'channel 15 and KEYRUPT1',
              [(FHR, 'key_due', 'the scenario\'s key string, pressed at its times')],
              [rows, ('platform/c64/resident_dsky.S', 'rk_dsky_keys', 'the flight disk\'s keyboard scan: channel 15 '
@@ -308,46 +307,73 @@ def roles(m):
              'channels 5 and 6 (jets), channel 11 bit 13 (SPS on)',
              [host_end, (FHR, 'rcs_due', 'the jets\' translation into the PIPAs')] if lm else [host_end],
              [end], uses('FLIGHT_ENGINE', 'FLIGHT_RCS') if lm else uses('FLIGHT_SPS', 'FLIGHT_AERO'),
-             either(driven(5), driven(6), moved(0o11, 0o30000 if lm else 0o10000)),
+             either(moved(5), moved(6), moved(0o11, 0o30000 if lm else 0o10000)),
              unit(m, 't6rupt', 'tjet-law', 'q-r-axis') if lm else unit(m, 'jet-select', 'rcs-dap', 'tvc-roll'),
-             how='channel 5 or 6 set, or the engine bits of channel 11 changed, in the host\'s states',
+             how='channel 5 or 6, or the engine bits of channel 11, changed in the host\'s states',
              gap='the jets drive no attitude dynamics (IMU row)', closes='Lane B\'s rigid-body model'),
     ]
     if lm:
         out += [
             role('thrust', 'Descent engine throttle', 'out', 'THRUST (055), channel 14 bit 4 (thrust drive)',
                  [host_end, (FHR, 'engine_due', 'reads the throttle command (PSEUDO55/THRUST) into the engine model')],
-                 [end], uses('FLIGHT_ENGINE'), either(words(0o55), driven(0o14, 0o10)),
-                 unit(m, 'throttle'), how='THRUST non-zero or changed, or channel 14 bit 4, in the host\'s states'),
+                 [end], uses('FLIGHT_ENGINE'), either(words(0o55), moved(0o14, 0o10)),
+                 unit(m, 'throttle'), how='THRUST, or channel 14 bit 4, changed in the host\'s states'),
             role('rr-drive', 'RR antenna drive', 'out', 'CDUTCMD/CDUSCMD (053/054), channel 14 bits 11-12',
                  [host_end, ('tools/flight_radar.h', 'rr_due', 'takes the drive: empties CDUTCMD/CDUSCMD when '
                              'channel 14 bit 12 or 11 is set')],
-                 [rows, end], uses('FLIGHT_RR', 'FLIGHT_RR_DROP'), either(words(0o53, 0o54), driven(0o14, 0o6000)),
+                 [rows, end], uses('FLIGHT_RR', 'FLIGHT_RR_DROP'), either(words(0o53, 0o54), moved(0o14, 0o6000)),
                  unit(m, 't4rupt-rr'),
-                 how='CDUTCMD or CDUSCMD non-zero or changed, or channel 14 bit 11 or 12, in the host\'s states',
+                 how='CDUTCMD or CDUSCMD, or channel 14 bit 11 or 12, changed in the host\'s states',
                  gap='the host empties the drive counters at once, not at the pulse rate'),
             role('landing-displays', 'Landing analog displays', 'out', 'ALTM (060), channel 14 bits 2-3 (altitude '
                  'and rate meter), channel 12 cross pointers (LANDING_ANALOG_DISPLAYS)',
                  [host_end], [end], uses('FLIGHT_ENGINE', 'FLIGHT_LR'), either(words(0o60), moved(0o14, 0o6)),
                  unit(m, 'landing-displays'),
-                 how='ALTM non-zero or changed, or channel 14 bit 2 or 3 changed, in the host\'s states',
+                 how='ALTM, or channel 14 bit 2 or 3, changed in the host\'s states',
                  gap='no meter model on either side: ALTM and the drive bits are compared as words only'),
         ]
     else:
         out += [
             role('optics-drive', 'Optics drive', 'out', 'OPTXCMD/OPTYCMD (CDUTCMD/CDUSCMD, 053/054), channel 14 '
-                 'bits 11-12', [host_end], [end], uses('FLIGHT_LOAD'), either(words(0o53, 0o54), driven(0o14, 0o6000)),
-                 unit(m, 'sxtmark'), how='OPTXCMD or OPTYCMD non-zero or changed, or channel 14 bit 11 or 12',
+                 'bits 11-12', [host_end], [end], uses('FLIGHT_LOAD'), both(either(words(0o53, 0o54), moved(0o14, 0o6000)), lambda r: not held(0o12, 0o200)(r)),
+                 unit(m, 'sxtmark'), how='OPTXCMD or OPTYCMD, or channel 14 bit 11 or 12, changed with TVC off (channel 12 bit 8 clear)',
                  gap='no optics drive model: the commands never move CDUS/CDUT on either side (FLIGHT_LOAD sets them)',
                  blocking=True, closes='an optics drive model on both sides'),
+        ]
+    out += [
+        role('iss', 'ISS mode bits', 'out', 'channel 12 bits 4-6 (coarse align, zero the ICDUs, error counters) and '
+             '15 (ISS turn-on delay complete)',
+             [host_end] + ([] if lm else [(FHR, 'imu_due', 'FLIGHT_IMU: zero and coarse align move CDUX-Z')]),
+             [end], None if lm else uses('FLIGHT_IMU'), moved(0o12, 0o40070), unit(m, 't4rupt-imu'),
+             how='channel 12 bit 4, 5, 6 or 15 changed in the host\'s states',
+             gap='no ISS model on the LM: zeroing and coarse align move nothing' if lm else
+             'fine align and gyro torquing move nothing (imu_due: coarse align is perfect)', blocking=lm,
+             closes='an ISS model (zero, coarse align) on the LM, as imu_due on the CM' if lm else None),
+    ]
+    if lm:
+        out += [
+            role('trim', 'DPS gimbal trim', 'out', 'channel 12 bits 9-12 (pitch and roll trim, plus and minus)',
+                 [host_end], [end], uses('FLIGHT_ENGINE'), moved(0o12, 0o7400), unit(m, 'trim-gimbal'),
+                 how='a trim bit of channel 12 changed in the host\'s states',
+                 gap='no gimbal model: the engine thrusts along a fixed axis, so trim moves nothing', blocking=True,
+                 closes='Lane B: a DPS gimbal in the engine model'),
+        ]
+    else:
+        out += [
+            role('tvc', 'SPS thrust vector control', 'out', 'TVCPITCH/TVCYAW (CDUTCMD/CDUSCMD, 053/054) with channel '
+                 '12 bit 8 (TVC enable)', [host_end], [end], uses('FLIGHT_SPS'),
+                 both(words(0o53, 0o54), held(0o12, 0o200)), unit(m, 'tvc-roll'),
+                 how='TVCPITCH or TVCYAW changed with channel 12 bit 8 set in the host\'s states',
+                 gap='no TVC actuator: the SPS model thrusts along a fixed axis, so the commands move nothing',
+                 blocking=True, closes='Lane B: an SPS gimbal driven by TVCPITCH/TVCYAW'),
         ]
     out += [
         role('drives', 'IMU CDU and gyro drives', 'out', 'CDUXCMD-CDUZCMD (050-052), GYROCMD (047), channel 14 '
              'bits 13-15 and 6-10',
              [host_end], [('src/resident_cdu.c', 'rk_cdu_drive', 'the drive model exists but is not linked into the '
                            'flight resident')],
-             None, either(words(0o47, 0o50, 0o51, 0o52), driven(0o14, 0o71740)), ['test-resident-cdu'],
-             how='a drive word non-zero or changed, or a drive bit of channel 14, in the host\'s states',
+             None, either(words(0o47, 0o50, 0o51, 0o52), moved(0o14, 0o71740)), ['test-resident-cdu'],
+             how='a drive word, or a drive bit of channel 14, changed in the host\'s states',
              gap='the drive counters never drain on either side in flight runs (rk_cdu_drive is not linked; yaAGC\'s '
                  'drives are frozen under scaled time)', blocking=True,
              closes='Lane B: link rk_cdu_drive and the gyro drive on both sides'),
