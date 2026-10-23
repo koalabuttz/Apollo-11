@@ -6,6 +6,7 @@
 #include <string.h>
 #include "flight_dispatch.h"
 #include "resident_cdu.h"
+#include "tc_trap.h"
 #include "rope_image.h"
 #include "self_check.h"
 #include "standard_lead_routines.h"
@@ -209,30 +210,21 @@ void fd_gojam(fd_state *st)
     st->hw.channel33 |= 02000u;
 }
 
-/* The TC trap (docs/FLIGHT-RESTART.md). V69's VERB69 (43,2037 in both ropes:
- * bank 043 is FB 033 with the superbank's bit 0100) is a TC to itself. There,
- * outside an interrupt, the AGC runs nothing but TCs, so the step spins as
- * the idle loop does, to the end of the clock period, with Q TC VERB69's.
- * The trap's GOJAM comes at the next step when the spin held the period's
- * T3 step and no interrupt came in between, as yaAGC's trap fires at scaler
- * phase 000 after only TCs since phase 020. The C64's rk_resident_step and
- * the host differential's verb69 and spin make the same test. */
+/* The TC trap (tc_trap.h): the spin at VERB69, to the end of the clock
+ * period, then the trap's GOJAM. */
 static int tc_trap(fd_state *st, fd_ran *ran)
 {
-    const agc_word *w = st->s.words;
-    uint8_t spin = st->spin;
     double end;
     uint8_t phase;
-    st->spin = 0;
-    if (st->hw.in_interrupt) return 0;
-    if (spin == 2u) {
+    int step = tc_trap_step(st->s.words, st->io.superbank, st->hw.in_interrupt != 0u, st->phase,
+                            &st->spin);
+    if (step == TC_TRAP_NONE) return 0;
+    if (step == TC_TRAP_GOJAM) {
         fd_gojam(st);
         ran->trap = 2u;
         return 1;
     }
-    if ((w[5] & 07777u) != 02037u || w[4] != 066000u || !(st->io.superbank & 0100u)) return 0;
     st->s.words[2] = 02040u;
-    st->spin = st->phase == RK_PHASE_T5 ? 1u : 2u;
     /* The end of this period's T5 step. */
     for (end = st->next_period, phase = st->phase; phase != RK_PHASE_T5;) {
         phase = (uint8_t)(phase + 1u);
