@@ -997,7 +997,7 @@ def build(cc, m, engine):
     # Every host/*.o is linked: refuse objects left from another checkout
     # or source (10-19: a pre-#734 flight_io.o failed the CM channel compare).
     import flight_store_build
-    stale = flight_store_build.stale_host_objects()
+    stale = flight_store_build.stale_host_objects(cc)
     if stale:
         raise SystemExit(f'{len(stale)} host objects are stale ({", ".join(stale[:5])}...): '
                          'run tools/flight_store_build.py --host-only first')
