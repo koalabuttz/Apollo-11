@@ -4,7 +4,7 @@
   "release": "evidence-cm-imu-calibration",
   "files": {
     "cm-imu-calibration-c64-cover.json": {
-      "sha256": "b1ef844231751635fae2bc2d2a16d27feafb2ca1366bd04b747f63ff9671feb3",
+      "sha256": "a6bcab319b95b396663ed26c1f408bcc778af814c5e6263f9eacc3f54ca92b4f",
       "bytes": 7541,
       "store": "tree"
     },

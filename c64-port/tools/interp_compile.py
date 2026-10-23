@@ -2045,8 +2045,16 @@ class Compiler:
             # Fixed-fixed: any FB and SUPERBNK (basic_compile.py flight_parts
             # allows it only with 'fixed_fixed_any_fb'), as the per-key entries.
             sane = '0177777u' if b in (2, 3) else '0%05ou' % bfb
-            c.append(' case 0%ou:if(!basic_sane(s,io,%s))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
-                b, sane, chan, run))
+            # A key that runs under any EB (spec 'any_eb_entries', or a
+            # routine that sets EB first) gets basic_sane_any_eb, as its
+            # per-key entry does.
+            free = [k for k in every if k // 1024 == b and k in getattr(self, 'eb_free', ())]
+            test = 'basic_sane(s,io,%s)' % sane
+            if free:
+                test = '(%s?basic_sane_any_eb(s,io,%s):basic_sane(s,io,%s))' % (
+                    '||'.join('at==%uu' % k for k in free), sane, sane)
+            c.append(' case 0%ou:if(!%s)return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
+                b, test, chan, run))
         c += [' }', ' return EXEC_OUT_OF_SCOPE;', '}']
         bounds = [0] + cuts + [0o200000]
         pmap = self.basic.flight_map
