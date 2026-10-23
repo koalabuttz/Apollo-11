@@ -104,7 +104,7 @@ The x86 program runs them with the same settings and at the same points as the h
 `make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it with the harness on the work clock (`FLIGHT_SCALED=W`) at the first sample point at or after 1,000 cs before its end. The two programs charge routine costs differently: the x86 program charges each point's median, and the work clock charges each table's weight. So their states are close, not equal. The yardstick is the harness against itself, the same scenario on its other clock (`FLIGHT_SCALED=1,1,2`, yaAGC's own cycles). A scenario passes when all of these hold:
 
 - the major mode is the same;
-- RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (the largest such case is CM P40: VN 0.13 m/s against a spread of 0.004);
+- RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (CM P40 needed it before #786 closed the TVC loop: VN 0.13 m/s apart against a spread of 0.004; on base fc7ded5a every row's RN and VN are within 4 times the spread);
 - the erasable image (061-3777) differs in at most 1.5 times as many words as the harness's two clocks differ in, plus 10;
 - the alarm codes (FAILREG and the two words after it) are the harness's, wherever its two clocks agree on them.
 
@@ -138,7 +138,7 @@ The CM's VHF dropout (`cm-p20-vhf-dropout`) moves the marks and so both blocks.
 
 The word count is what sees programs that don't move the state vector. With the mark buttons left out of the x86 run (`--drop-keys MJxyj`), P52 differs in 210 words against a limit of 19 and P57 in 188 against 37, so both fail. P22 and P23 fail on RN as well.
 
-On base fea3e3b8 the tool flies 64 scenarios, and all pass. 57 reach their compare point, six of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The other seven stop at a Pinball point not yet certified, exactly where expected (Gaps).
+On base fc7ded5a the tool flies 64 scenarios, and all pass. 57 reach their compare point, six of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The other seven stop at a Pinball point not yet certified, exactly where expected (Gaps).
 
 The NASSP rows start from the harness's state at the core dump's time (`X86_START`), and the `lm-p63-lr-*` rows fly the landing radar. So the LM RCS, the throttle lag, touchdown, the P66 crew, the ascent and the abort stage are now compared with the harness (`lm-p63-nassp`, `lm-p67-nassp`, `lm-landing-ascent-nassp`, `lm-abort-p70-nassp`, `lm-abort-p71-nassp`), as well as checked by `test_vehicle_models.c`.
 
@@ -151,11 +151,11 @@ Compared directly with the harness:
 | `cm-entry` | 103 / 103 | 97 m (690; 160) | 2.05 m/s (11.12; 2.74) | 333 (448; 292) |
 | `cm-p52` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 7 (23; 9) |
 | `cm-p23` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 24 (47; 25) |
-| `cm-p40` | 00 / 00 | 19 m (99; 12) | 0.13 m/s (0.16; 0.00) | 93 (121; 74) |
+| `cm-p40` | 00 / 00 | 4 m (68; 4) | 0.06 m/s (0.39; 0.06) | 102 (163; 102) |
 | `cm-p11` (known) | 00 / 00 | 437 m (447; 99) | 0.71 m/s (0.43; 0.07) | 174 (206; 131) |
 | `cm-tli` | 00 / 00 | 148 m (506; 114) | 0.08 m/s (0.47; 0.08) | 113 (176; 111) |
 | `cm-p22` | 00 / 00 | 20 m (130; 20) | 0.02 m/s (0.22; 0.02) | 225 (356; 231) |
-| `cm-tei` | 00 / 00 | 14 m (61; 3) | 0.00 m/s (0.15; 0.00) | 132 (217; 138) |
+| `cm-tei` | 00 / 00 | 24 m (96; 12) | 0.12 m/s (0.39; 0.06) | 166 (242; 155) |
 | `cm-p37` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 39 (68; 39) |
 | `lm-p57` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 16 (41; 21) |
 | `lm-csi` | 110 / 110 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (37; 18) |
@@ -178,7 +178,7 @@ Compared directly with the harness:
 | `cm-p52-coarse` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 95 (143; 89) |
 | `cm-p41` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 14 (43; 22) |
 | `cm-v48-dap` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (10; 0) |
-| `cm-p40-sps-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (31; 14) |
+| `cm-p40-sps-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 12 (28; 12) |
 | `lm-landing-ascent-nassp` | 14 / 14 | 182 m (330; 70) | 0.20 m/s (0.46; 0.08) | 353 (611; 401) |
 | `lm-p67-nassp` | 104 / 104 | 19 m (171; 30) | 0.01 m/s (0.20; 0.01) | 316 (652; 428) |
 | `lm-doi-nassp` | 00 / 00 | 2 m (58; 2) | 0.01 m/s (0.20; 0.01) | 189 (268; 172) |
@@ -191,6 +191,8 @@ Compared directly with the harness:
 | `lm-coast-programs` | 06 / 06 | 0 (50; 0) | 0 (0.15; 0.00) | 118 (175; 110) |
 | `lm-p51` | 63 / 63 | 0 (50; 0) | 0 (0.15; 0.00) | 10 (17; 5) |
 | `lm-p22-surface` | 26 / 26 | 0 (50; 0) | 0 (0.15; 0.00) | 8 (20; 7) |
+
+With the SPS gimbal held at zero in the x86 run only (TVC enable ignored), `cm-p40` ends 195 km and 853 m/s from the harness and `cm-tei` 120 km and 976 m/s, each with alarm 1407, so both fail (base fc7ded5a).
 
 CM P11's envelope is RN within 600 m and VN within 1 m/s, with the normal word limit. With the vehicle models removed, P11 ends 6,563 km off and fails (base f499d7ee).
 
