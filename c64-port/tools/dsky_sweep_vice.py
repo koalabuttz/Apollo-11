@@ -41,11 +41,14 @@ changed, and a listed one of a run mission the run did not exercise.
 --write-known FILE writes that list from the run (keeping the reasons).
 
 Acceptance item 6 is met only by --cases all on both missions with no
-failure at all, clock class included, committed as evidence
-(--evidence DIR: dsky-sweep.json with the store, rope and program hashes).
+failure at all, clock class included, and no word left out of a compare
+(--replay-exact; without it the compare skips the words SCHEDULE_SKIP
+names, and a case that matches only so does not count), committed as
+evidence (--evidence DIR: dsky-sweep.json with the store, rope and program
+hashes).
 
   dsky_sweep_vice.py [--missions lm,cm] [--cases ci|all] [--keys V16N36E,...] [--batch N] [--jobs N]
-                    [--known FILE] [--write-known FILE] [--evidence DIR]
+                    [--known FILE] [--write-known FILE] [--evidence DIR] [--replay-exact]
 
 Needs make flight-store (both missions' stores and host runs), the yaAGC
 objects and VICE, as flight_scenario_vice.py. Writes
@@ -325,7 +328,7 @@ def run_batch(a, m, n, batch, manifest, pinned):
             hc, hw = c['host_end']
             cc, cw = fsv.c64_states(image[ends + k * fsv.C64_STATE:], 1, m)[0]
             skipped = set()
-            diff = fsv.replay_compare(hw, cw, fsv.SCHEDULE_SKIP.get(m), skipped)
+            diff = fsv.replay_compare(hw, cw, None if a.replay_exact else fsv.SCHEDULE_SKIP.get(m), skipped)
             if hc != cc:
                 diff.insert(0, ('centiseconds', hc, cc))
             res.update(ok=not diff, end_cs=cc, skipped=sorted(skipped), differences=len(diff), diff=diff,
@@ -371,6 +374,8 @@ def main():
     p.add_argument('--write-known', type=pathlib.Path,
                    help="write the run's failures as a known list (keeping the reasons of --known's entries)")
     p.add_argument('--evidence', type=pathlib.Path, help='also copy dsky-sweep.json here (evidence)')
+    p.add_argument('--replay-exact', action='store_true',
+                   help='compare every word (no SCHEDULE_SKIP), as acceptance item 6 needs')
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
     p.add_argument('--rom-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
@@ -454,13 +459,17 @@ def main():
         if 'diff' in r:
             r['differing'] = [x[0] for x in r.pop('diff')]
     ok = sum(1 for r in results if r['ok'])
+    # Item 6: a match with words left out of the compare is not a full match.
+    skipped = sum(1 for r in results if r.get('skipped'))
     classes = {}
     for r in results:
         if not r['ok']:
             classes[r['class']] = classes.get(r['class'], 0) + 1
     report = dict(mode=mode, missions=missions, every=a.every, snap_cs=a.snap_cs, key_cs=a.key_cs,
                   settle_cs=a.settle_cs, passed=ok, cases=len(results), failed_by_class=classes, stores=stores,
-                  item6=mode == 'all' and set(missions) == {'lm', 'cm'} and ok == len(results) and bool(results),
+                  replay_exact=a.replay_exact, skipped_cases=skipped,
+                  item6=mode == 'all' and set(missions) == {'lm', 'cm'} and ok == len(results) and bool(results)
+                  and not skipped,
                   results=results, runs=runs)
     (WORK / 'dsky-sweep.json').write_text(json.dumps(report, indent=1) + '\n')
     if a.evidence:
