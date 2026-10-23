@@ -108,7 +108,9 @@ static uint16_t agc_cs(void)
  * steps whole routines and never sees the hold (tools/flight_host_run.c
  * now() counts TIME2:TIME1), but a C64 step can end in it, and the 14-bit
  * TIME1 difference then reads as a full window. The delta itself counts, as
- * on the host. */
+ * on the host. A negative delta (V70 can move the clock back) that leaves
+ * TIME2:TIME1 behind the start would hold the clock until it catches up,
+ * so the window would run on past its end: no scenario uplinks one. */
 static uint16_t clock_t2 CASSETTE, clock_t1 CASSETTE, clock_last CASSETTE;
 static void clock_start(void)
 {
