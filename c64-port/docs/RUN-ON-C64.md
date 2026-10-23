@@ -171,8 +171,9 @@ it on when the AGC is next idle.
 
 To try the keys in VICE without a C64: `tools/flight_disk.py --missions lm
 --vice --keys V37E00E --screenshot` types them into the DSKY's key queue
-through VICE's monitor. With `--xtest`, run under `xvfb-run -a`, it presses
-them on VICE's window instead, so they go through the C64's own keyboard
+through VICE's monitor. With `--xtest`, run under `xvfb-run -a -s
+"-screen 0 1024x768x24"` (on Xvfb's default 8-bit screen VICE's window
+gets no keys), it presses them on VICE's window instead, so they go through the C64's own keyboard
 scan as typed keys would: `R`, then `V37E00E` on the LM clears RESTART and
 PROG and reaches P00, and `V35E` on the CM runs the lights test.
 
