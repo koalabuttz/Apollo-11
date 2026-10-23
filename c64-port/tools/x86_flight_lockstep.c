@@ -63,6 +63,7 @@ static void load(const fd_state *st){unsigned i;agc_hardware hw=st->hw;
  m.InputChannel[7]=m.OutputChannel7=(int16_t)st->io.superbank;m.AllowInterrupt=st->io.interrupt_enabled!=0u;m.InIsr=st->hw.in_interrupt!=0u;
  m.Trap31A=st->io.trap31a;m.Trap31B=st->io.trap31b;m.Trap32=st->io.trap32;
  memset(m.InterruptRequests,0,sizeof m.InterruptRequests);m.DownruptTimeValid=0;
+ m.RestartLight=st->restart_light!=0u;
  m.SubstituteInstruction=(unsigned)substitute;m.PendFlag=0;m.PendDelay=0;m.ExtraDelay=0;m.IndexValue=0;m.ExtraCode=0;}
 /* yaAGC's state as an fd_state view, for fd_point. */
 static void view(fd_state *v){unsigned i;
@@ -86,6 +87,9 @@ static unsigned differs(const fd_state *st,char *why,size_t len){unsigned i,d=0;
  if((agc_word)(m.InputChannel[034]&077777)!=st->io.channel34||(agc_word)(m.InputChannel[035]&077777)!=st->io.channel35){
   if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," ch34/35 %05o %05o/%05o %05o",(unsigned)st->io.channel34,(unsigned)st->io.channel35,
    (unsigned)(m.InputChannel[034]&077777),(unsigned)(m.InputChannel[035]&077777));}
+ /* The RESTART lamp: yaAGC puts it out when a routine writes channel 11
+  * with bit 10 set (fd_lamps). */
+ if(m.RestartLight!=(st->restart_light!=0u)){if(d++<6u&&o<len)o+=(size_t)snprintf(why+o,len-o," RESTART lamp %u/%u",(unsigned)st->restart_light,(unsigned)m.RestartLight);}
  if((m.OutputChannel7&0160)!=st->io.superbank||m.AllowInterrupt!=(st->io.interrupt_enabled!=0u)||m.InIsr!=(st->hw.in_interrupt!=0u)){++d;if(o<len)snprintf(why+o,len-o," superbank/inhibit/isr");}
  return d;}
 

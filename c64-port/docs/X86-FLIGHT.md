@@ -223,7 +223,7 @@ The rendezvous scenarios whose state vector the marks move, compared with the tr
 
 ## Live DSKY
 
-`X86_DSKY=1 build/x86-flight/x86-flight-lm ROPE.bin` flies the LM in real time with a DSKY in the terminal (`platform/x86/terminal_dsky.h`, MIT). The display is the port's own DSKY device adapter (`src/dsky_display.c`, the one the C64 draws with): the relay words the program writes to channel 10 and the lamps of channel 11, drawn with ANSI escapes. Lit lamps show in bold yellow. Channel 13 bit 10 (TEST DSKY, set by the `V35E` lamp test) also lights RESTART and STBY. The LM's PRIO DISP and NO DAP (relay row 12, bits 1 and 2) are on the status line under the DSKY, because the adapter's 40x25 screen has no place for them. RESTART and STBY light only in the lamp test (Gaps).
+`X86_DSKY=1 build/x86-flight/x86-flight-lm ROPE.bin` flies the LM in real time with a DSKY in the terminal (`platform/x86/terminal_dsky.h`, MIT). The display is the port's own DSKY device adapter (`src/dsky_display.c`, the one the C64 draws with): the relay words the program writes to channel 10 and the lamps of channel 11, drawn with ANSI escapes. Lit lamps show in bold yellow. Channel 13 bit 10 (TEST DSKY, set by the `V35E` lamp test) also lights RESTART and STBY. The LM's PRIO DISP and NO DAP (relay row 12, bits 1 and 2) are on the status line under the DSKY, because the adapter's 40x25 screen has no place for them. RESTART is the hardware restart lamp, as in yaAGC: power-up and every GOJAM (`FLIGHT_GOJAM`, the TC trap) light it, and RSET or a channel 11 bit 10 write puts it out. The x86 program prints "RESTART lamp on/off at N cs" when it changes, the lockstep check compares it with yaAGC's after every routine, and the `v69-rset` rows check it goes out on RSET, comes back with the trap and goes out again. STBY lights only in the lamp test (Gaps).
 
 | Key | DSKY |
 |---|---|
@@ -254,6 +254,6 @@ On base fea3e3b8:
   - `lm-p65-autoland-nassp`: P65's display (40,2732).
   - `lm-coast-r04`, `lm-p63-v60-nassp`: Pinball's EV TC Q (Z 00002, FB 66000: 50,2002), which no table keys.
   - In the live DSKY, decimal noun displays (`V06N36E`, `V16N36E`, `V16N65E`) stop at 42,3230 (LM) or 42,3143 (CM).
-- **RESTART and STBY lamps** light only in the lamp test. The x86 program models no hardware restart lamp (set by a GOJAM, cleared by RSET) and no standby.
+- **STBY lamp** lights only in the lamp test. The x86 program models no standby.
 - **Missing models:** uplink (`FLIGHT_UPLINK`) and stolen time (`FLIGHT_STEAL`); the tool leaves those scenarios out.
 - The uncompiled interpretive code by file is listed in the design note.

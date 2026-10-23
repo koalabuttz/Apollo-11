@@ -42,7 +42,13 @@ SCENARIOS = [('p00', 'lm', 4000, '', {}), ('p00', 'cm', 4000, '', {}),
              ('typed-v35e', 'lm', 3000, '', {'X86_TYPED': 'v35e'}),
              ('typed-v37e00e-pro', 'lm', 3000, '', {'X86_TYPED': 'v37e00ep'}),
              ('typed-v37e06e-pro-marks', 'cm', 3000, '', {'X86_TYPED': 'v37e06epmj'}),
-             ('v69', 'lm', 4000, '@2350V69E', {}), ('v69', 'cm', 4000, '@2350V69E', {})]
+             ('v69', 'lm', 4000, '@2350V69E', {}), ('v69', 'cm', 4000, '@2350V69E', {}),
+             ('v69-rset', 'lm', 4000, '@1000R@2350V69E@3000R', {}), ('v69-rset', 'cm', 4000, '@1000R@2350V69E@3000R', {})]
+# The RESTART lamp each row must show (the x86 run's "RESTART lamp on/off"
+# lines, in order). Power-up lights it, as yaAGC's first cycle does, so every
+# row starts with "on"; v69-rset puts it out, lets the TC trap's GOJAM light
+# it again, then puts it out again.
+LAMP = {'v69-rset': ['on', 'off', 'on', 'off']}
 
 
 def lockstep(cc, m, mode):
@@ -86,15 +92,17 @@ def main():
             k = subprocess.run([str(ls[m]), *args], cwd=ROOT, capture_output=True, text=True, env={**os.environ, **env})
             (CHECK / f'{tag}.log').write_text(r.stdout + r.stderr + '\n' + k.stdout + k.stderr)
             report = json.loads((CHECK / f'{tag}-report.json').read_text()) if (CHECK / f'{tag}-report.json').exists() else {}
+            lamp = re.findall(r'^RESTART lamp (on|off) at', r.stdout, re.M)
             got = re.search(r'(\d+) routines and core slots checked .* (\d+) points yaAGC did not match', k.stdout)
             row = dict(scenario=tag, mission=m, interp=mode, centiseconds=cs, keys=keys, inputs=env,
                        run_exit=r.returncode, lockstep_exit=k.returncode,
                        checked=int(got[1]) if got else None, mismatched_points=int(got[2]) if got else None,
                        wall_seconds=report.get('wall_seconds'), core_slots=report.get('core_slots'),
                        core_points=[g['point'] for g in report.get('gaps', []) if g['kind'] == 'interp'],
-                       unmapped=report.get('unmapped'), major_mode=report.get('major_mode'))
+                       unmapped=report.get('unmapped'), major_mode=report.get('major_mode'), restart_lamp=lamp)
             summary.append(row)
-            bad = r.returncode or k.returncode or (name == 'v69' and 'TC trap at' not in k.stdout)
+            bad = (r.returncode or k.returncode or (name.startswith('v69') and 'TC trap at' not in k.stdout)
+                   or lamp != LAMP.get(name, ['on']))
             failed += bool(bad)
             print(f"{tag}: {row['checked']} routines checked, {row['mismatched_points']} points yaAGC did not match, "
                   f"{row['core_slots']} interpreter core slots at {len(row['core_points'])} points, "

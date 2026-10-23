@@ -93,6 +93,7 @@ int main(int argc, char **argv)
     const int live = getenv("X86_DSKY") && *getenv("X86_DSKY") == '1';
     const char *typed = getenv("X86_TYPED");
     fd_ran ran;
+    uint8_t lamp = 0;
     unsigned long cs = argc > 2 ? strtoul(argv[2], 0, 0) : 1000ul, next = 1, periods = 0,
                   from =
                       getenv("X86_SAMPLES_FROM") ? strtoul(getenv("X86_SAMPLES_FROM"), 0, 10) : 1ul;
@@ -158,6 +159,10 @@ int main(int argc, char **argv)
             break;
         }
         /* The VERB69 spin and the TC trap run no routine (fd_run). */
+        if (st.restart_light != lamp && !live)
+            printf("RESTART lamp %s at %lu cs\n", st.restart_light ? "on" : "off",
+                   fd_centiseconds(&st));
+        lamp = st.restart_light;
         if (ran.trap == 2u && !live) printf("TC trap at %lu cs\n", fd_centiseconds(&st));
         if (ran.trap) continue;
         fs_after_routine(&in, &st);

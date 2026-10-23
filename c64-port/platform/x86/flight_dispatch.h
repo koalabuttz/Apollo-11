@@ -56,6 +56,10 @@ typedef struct {
      * T3 step, 1 when it spun only through T5; idling while that spin's
      * period is charged, until the next boundary. */
     uint8_t spin, idling;
+    /* The DSKY's RESTART lamp, as yaAGC's RestartLight: lit by a GOJAM,
+     * put out by RSET (key code 022 into channel 15, fd_key) and by a
+     * routine that leaves channel 11 bit 10 set (fd_lamps). */
+    uint8_t restart_light;
     /* AGC time counts from here (TIME2/TIME1 in centiseconds): 0 from
      * GOJAM, a start state's own time from X86_START. */
     unsigned long t0;
@@ -100,4 +104,8 @@ unsigned long fd_centiseconds(const fd_state *st);
  * 34 and 35 zeroed, channel 33 bit 11 set. The superbank and the rest of
  * erasable stay. */
 void fd_gojam(fd_state *st);
+/* A DSKY key (channel 15 code) with its KEYRUPT1 request. */
+void fd_key(fd_state *st, agc_word code);
+/* After a routine: the lamps its channel writes control (restart_light). */
+void fd_lamps(fd_state *st);
 #endif

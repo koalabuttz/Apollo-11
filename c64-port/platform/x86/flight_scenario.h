@@ -315,8 +315,7 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
             st->io.channel16 = mark;
             st->pending |= RK_RUPT_BIT(RK_RUPT_KEY2);
         } else {
-            st->hw.channel15 = fs_keycode(c);
-            st->pending |= RK_RUPT_BIT(RK_RUPT_KEY1);
+            fd_key(st, fs_keycode(c));
         }
         return FS_KEY;
     }

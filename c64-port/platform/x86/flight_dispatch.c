@@ -74,6 +74,8 @@ static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *wo
 
 void fd_init(fd_state *st,uint8_t mode,agc_word ch30,agc_word ch31){static agc_routine_table basic[256],interp[256];unsigned i,j;uint8_t nb=0,ni=1;
  memset(st,0,sizeof *st);st->mode=mode;
+ /* Power-up lights RESTART, as yaAGC's first cycle does. */
+ st->restart_light = 1u;
  memset(at,0,sizeof at);
  for(i=0;i<fd_table_count;++i){const fd_table *e=&fd_tables[i];
   if(e->interp&&mode==FD_INTERP_CORE&&e->t!=&agc_lm_danzig_marker&&e->t!=&agc_cm_danzig_marker)continue;
@@ -208,6 +210,21 @@ void fd_gojam(fd_state *st)
     st->hw.channel12 = st->hw.channel13 = st->hw.channel14 = 0u;
     st->io.channel34 = st->io.channel35 = 0u;
     st->hw.channel33 |= 02000u;
+    st->restart_light = 1u;
+}
+
+void fd_key(fd_state *st, agc_word code)
+{
+    st->hw.channel15 = code;
+    st->pending |= RK_RUPT_BIT(RK_RUPT_KEY1);
+    /* RSET puts the RESTART lamp out directly, with no software. */
+    if (code == 022u) st->restart_light = 0u;
+}
+
+void fd_lamps(fd_state *st)
+{
+    /* Channel 11 bit 10 written with a 1 resets the RESTART lamp. */
+    if (st->hw.channel11 & 01000u) st->restart_light = 0u;
 }
 
 /* The TC trap (tc_trap.h): the spin at VERB69, to the end of the clock
@@ -268,7 +285,14 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
           ran->status = run(st, c, e->io);
       }
   }
-  if(ran->status==EXEC_OK){ran->mct=cost(key,(uint8_t)in);st->mct+=ran->mct;core_in=2;if(t-1u<256u)++st->uses[t-1u];return EXEC_OK;}
+  if (ran->status == EXEC_OK) {
+      ran->mct = cost(key, (uint8_t)in);
+      st->mct += ran->mct;
+      core_in = 2;
+      fd_lamps(st);
+      if (t - 1u < 256u) ++st->uses[t - 1u];
+      return EXEC_OK;
+  }
   /* A refusal: undo it; an interpretive point goes to the core. */
   st->s=before;st->io=io0;st->hw=hw0;
   if(!in){++st->unmapped;gap(st,key,0,1,e->name,1);return ran->status=EXEC_UNMAPPED;}
@@ -288,4 +312,5 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
  ran->mct = (double)CORE_MCT;
  st->mct += ran->mct;
  core_key=fd_point(st,&in);core_in=(uint8_t)in;
+ fd_lamps(st);
  return ran->status;}
