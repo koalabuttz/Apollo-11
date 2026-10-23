@@ -515,6 +515,20 @@
    100
   ],
   [
+   "cm-p40-sps-fail",
+   30170,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p40-sps-fail",
+   32100,
+   300,
+   1,
+   50
+  ],
+  [
    "cm-tei",
    29000,
    1000,
@@ -1404,10 +1418,18 @@
    "row": "R40",
    "section": "R routines",
    "entry": "LOTHRUST",
-   "status": "TBD",
-   "scenarios": [],
-   "note": "gap: engine-fail path (FAILDSP flashes V97). Gap, off-nominal (reviewer 2, point 8): a cm-p40 variant with the SPS thrust cut at a set time",
-   "owner": "D1"
+   "status": "mapped",
+   "scenarios": [
+    "cm-p40-sps-fail"
+   ],
+   "note": "mapped (#753, dfd7ac46): cm-p40-sps-fail, the SPS fails to light at TIG; R40 (LOTHRUST) finds the thrust low (first at 30220 cs)",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p40-sps-fail",
+     30170
+    ]
+   ]
   },
   {
    "row": "R41",
@@ -2016,10 +2038,11 @@
    "row": "V69 cause restart",
    "section": "extended verbs",
    "entry": "VERB69",
-   "status": "TBD",
+   "status": "not exercised",
    "scenarios": [],
-   "note": "gap: not keyable on the host yet. VERB69 is a TC to itself that waits for the hardware TC trap, which the host does not model; D2 tried it (the CMC loops in VERB69). Needs a TC-trap model (A2 restart / D1 devices)",
-   "owner": "A2"
+   "note": "not exercised in an integrated flight run: V69 (VERB69, a TC to itself) restarts the computer through the TC trap, so it runs in the restart scenarios instead (cm-v69-restart on the host against yaAGC, cm-v69 on the C64 from 2300 cs; #752, 01f050d6), which recovery_and_restart_tests covers",
+   "owner": "A2",
+   "windows": []
   },
   {
    "row": "V70 update liftoff time",
@@ -2377,10 +2400,18 @@
    "row": "V97 please perform engine fail (R40/R41)",
    "section": "extended verbs",
    "entry": "GOLOADLV` (shared flash/mode entry)",
-   "status": "TBD",
-   "scenarios": [],
-   "note": "gap: with R40: GOLOADLV runs for other flashes, but no run flashes V97",
-   "owner": "D1"
+   "status": "mapped",
+   "scenarios": [
+    "cm-p40-sps-fail"
+   ],
+   "note": "mapped (#753, dfd7ac46): cm-p40-sps-fail, FAILDSP flashes V97N40 (first at 32152 cs); the crew terminates (V97T) and goes to P00",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p40-sps-fail",
+     32100
+    ]
+   ]
   },
   {
    "row": "V98",
