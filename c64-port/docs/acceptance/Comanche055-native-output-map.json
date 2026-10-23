@@ -50,8 +50,9 @@
    "host": [
     "cm-p20-restart"
    ],
-   "c64": [],
-   "note": "No C64 downlink window yet (flight_downlink_check.py VICE_WINDOWS, A2)"
+   "c64": [
+    "cm-p20"
+   ]
   },
   {
    "section": "Downlink (channels 34, 35)",
@@ -60,8 +61,9 @@
    "host": [
     "cm-p22-restart"
    ],
-   "c64": [],
-   "note": "No C64 downlink window yet (flight_downlink_check.py VICE_WINDOWS, A2)"
+   "c64": [
+    "cm-p22"
+   ]
   },
   {
    "section": "Downlink (channels 34, 35)",
@@ -89,12 +91,17 @@
    "windows": [
     [
      "cm-entry",
-     25000,
+     15100,
      1000
     ],
     [
      "cm-p40",
      29000,
+     1000
+    ],
+    [
+     "cm-entry",
+     25000,
      1000
     ]
    ]
@@ -144,7 +151,12 @@
    "windows": [
     [
      "cm-p52",
-     4000,
+     8200,
+     1000
+    ],
+    [
+     "cm-p52-coarse",
+     9600,
      1000
     ],
     [
@@ -179,7 +191,12 @@
    "windows": [
     [
      "cm-p52",
-     4000,
+     8200,
+     1000
+    ],
+    [
+     "cm-p52-coarse",
+     9600,
      1000
     ],
     [
