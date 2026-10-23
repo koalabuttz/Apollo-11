@@ -364,6 +364,7 @@
   "c64-waitlist": 2,
   "c64-waitlist-entries": 24,
   "c64-waitlist-zero": 1,
+  "dsky-sweep-vice": 3000,
   "flight-downlink-vice": 4611,
   "flight-gojam-vice": 4635,
   "flight-restart-vice": 5708,
