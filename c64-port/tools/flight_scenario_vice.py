@@ -356,11 +356,37 @@ def window_keys(name, scen_keys, snap_at, cs):
     snapshot (at snap_at cs) and that fall in the cs-long window, timed from
     the window's start."""
     keys = [(t - snap_at, k) for t, k in key_schedule(scen_keys) if snap_at < t < snap_at + cs]
-    header = dp.WORK / f'{name}-keys.h'
+    return keys_header(dp.WORK / f'{name}-keys.h', keys), keys
+
+
+def keys_header(header, keys):
+    """Write the DP_KEYS header for (cs, key code) pairs; returns its path."""
     header.write_text(f'#define DP_NKEYS {len(keys)}u\n'
                       f"static const uint16_t dp_key_cs[{max(len(keys), 1)}]={{{','.join(str(t) for t, _ in keys) or '0'}}};\n"
                       f"static const uint16_t dp_key_code[{max(len(keys), 1)}]={{{','.join(f'0{k:o}' for _, k in keys) or '0'}}};\n")
-    return header, keys
+    return header
+
+
+# The C64 replay's options (platform/c64/dap_pass_check.c DP_REPLAY and
+# resident_flight.c), in one place for this tool and tools/dp_replay_link.py,
+# which links the harness with them on every push.
+DOWNRUPT_DEFINES = ['-DRK_DOWNRUPT=1']
+
+
+def replay_defines(at, rows, cs, first, table_at, end_at, states_max, busy, outputs_at, cap):
+    """The DP_REPLAY defines: the rows at REU `at`, the window's cs, the
+    first checkpoint and the checkpoint table, the end states, the busy
+    sample (0: none) and the output list (cap 0: none)."""
+    return ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={rows}u',
+            f'-DDP_REPLAY_CS={cs}u', f'-DDP_STATE_FIRST={first}u',
+            f'-DDP_STATE_TABLE=0x{table_at:x}ul', f'-DDP_END=0x{end_at:x}ul',
+            f'-DDP_STATES_MAX={states_max}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
+            f'-DDP_OUTPUTS=0x{outputs_at if cap else 0:x}ul', f'-DDP_OUTPUTS_MAX={cap}u']
+
+
+def steal_flags(n, t_from, t_to):
+    """RK_STEAL: n stolen cycles a step from TIME2:TIME1 cs t_from to t_to."""
+    return [f'-DRK_STEAL={n}u', f'-DRK_STEAL_FROM={t_from}ul', f'-DRK_STEAL_TO={t_to}ul']
 
 
 def host_holes(exe, name, cs, tag):
@@ -455,7 +481,7 @@ def steal_defines(name, start, snap_at):
         sys.exit(f'FAIL: {name}: FLIGHT_STEAL={spec}: the C64 replay models one T0-T1:N window')
     t0 = ((start[0o24] & 0o37777) << 14 | (start[0o25] & 0o37777)) - snap_at
     lo, hi, n = (int(x) for x in m.groups())
-    return [f'-DRK_STEAL={n}u', f'-DRK_STEAL_FROM={t0 + lo}ul', f'-DRK_STEAL_TO={t0 + hi}ul']
+    return steal_flags(n, t0 + lo, t0 + hi)
 
 
 def ones_add(w, d):
@@ -657,11 +683,8 @@ def main():
             # stops it later if none comes.
             # The C64's rows (their count does not depend on rk_device's address).
             n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
-            defines = ['-DDP_REPLAY', f'-DDP_REPLAY_REU=0x{at:x}ul', f'-DDP_REPLAY_ROWS={n_c64}u',
-                       f'-DDP_REPLAY_CS={cs}u', f'-DDP_STATE_FIRST={marks[0] if marks else 0xffff}u',
-                       f'-DDP_STATE_TABLE=0x{table_at:x}ul', f'-DDP_END=0x{end_at:x}ul',
-                       f'-DDP_STATES_MAX={max_states}u', *([f'-DDP_BUSY={int(busy)}u'] if busy else []),
-                       f'-DDP_OUTPUTS=0x{outputs_at if cap else 0:x}ul', f'-DDP_OUTPUTS_MAX={cap}u',
+            defines = [*replay_defines(at, n_c64, cs, marks[0] if marks else 0xffff, table_at, end_at, max_states,
+                                       busy, outputs_at, cap),
                        *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at)]
             kinds = {}
             # What the window's inputs touch, by kind (tools/device_acceptance.py
@@ -689,7 +712,7 @@ def main():
                   + ' '.join(f'+{t}:{k:o}' for t, k in pressed))
         prg = dp.link(a.cc, tag, header, cs + 500 if a.replay else cs, scratch, os.environ.get('FSV_STEPS') == '1',
                       m, a.profile, keys, [w for w in a.watch.split(',') if w][:5],
-                      defines + (['-DRK_DOWNRUPT=1'] if a.downrupt else []))
+                      defines + (DOWNRUPT_DEFINES if a.downrupt else []))
         if a.replay:
             # rk_device's address comes from the link.
             patch = [(at, c64_rows(rows, m, map_symbol(prg, 'rk_device'), map_symbol(prg, 'rk_pending'))), (table_at, table),
