@@ -286,6 +286,8 @@ static void cold(void){unsigned i;m=loaded;memset(m.Erasable,0,sizeof m.Erasable
  * overriding the core's, and AGC time counts from the core's TIME1/TIME2
  * (t0), so keys, pokes and the centisecond limit are relative to it. */
 static const char *core_path;
+/* FLIGHT_DOWNRUPT under FLIGHT_CORE: waiting for the first sample point. */
+static int dl_arm;
 static const agc_word *view(void);
 static int core_start(const char *rope){static agc_t c;int rc;unsigned i,n;
  rc=agc_engine_init(&c,rope,core_path,1);if(rc!=0&&rc!=5){fprintf(stderr,"FLIGHT_CORE: %s: agc_engine_init %d\n",core_path,rc);return 0;}
@@ -1396,9 +1398,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  core_path=getenv("FLIGHT_CORE");
  if(sps_kg&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_SPS needs FLIGHT_SCALED\n");return 2;}
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
- /* core_start's yaAGC steps to the idle loop would land in the downlink
-  * reference stream, so the two are not combined (no scenario sets both). */
- if(core_path&&getenv("FLIGHT_DOWNRUPT")&&*getenv("FLIGHT_DOWNRUPT")&&strcmp(getenv("FLIGHT_DOWNRUPT"),"0")){fprintf(stderr,"FLIGHT_CORE does not take FLIGHT_DOWNRUPT\n");return 2;}
+ /* FLIGHT_CORE with FLIGHT_DOWNRUPT: core_start's yaAGC steps to the idle
+  * loop take no DOWNRUPT and log no downlink word; DOWNRUPT starts on both
+  * sides at the first native sample point after the core (dl_arm). */
+ if(core_path&&dl_on){dl_on=0;dl_arm=1;}
  if(getenv("FLIGHT_PATH"))sscanf(getenv("FLIGHT_PATH"),"%lu,%lu",&path_from,&path_to);
  reach_parse();
  if(getenv("FLIGHT_SCALED")&&!strcmp(getenv("FLIGHT_SCALED"),"W")){scaled=1;AgcFrozenClock=1;work=1;lag=~0u;}
@@ -1482,6 +1485,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      for(i=0,j=0;i<2048u;++i)if(compared(i)&&s.words[i]!=ref[next][i]&&j++<8u)printf(" %04o %05o/%05o",i,(unsigned)s.words[i],(unsigned)ref[next][i]);
      printf("%s (%u words, native/yaAGC)\n",j>8u?" ...":"",j);}
     ++next;}
+   if(dl_arm){dl_arm=0;dl_core_start(s.words);printf("downlink: DOWNRUPT from %lu cs, the first sample point after the core\n",now(s.words));}
    if(rp_after!=~0ul&&now(s.words)-rp_t0>rp_after_last){unsigned long d=now(s.words)-rp_t0;
     if(d>rp_after+RP_AFTER_CS){fclose(rp_out);fclose(rp_ends);return 0;}
     rp_end(d,s.words,&io,&hw);rp_after_last=d;}
