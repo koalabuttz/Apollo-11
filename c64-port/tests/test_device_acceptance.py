@@ -95,6 +95,18 @@ class Host(unittest.TestCase):
         self.assertEqual(self.rows([host_row(exit=1)])[0][1], 'NOT CLEAN')
         self.assertEqual(self.rows([host_row(routine_mismatches=[dict(point='01,2000')])])[0][1], 'NOT CLEAN')
 
+    def test_charge(self):
+        # (#765) an interpretive charge over the bound is NOT CLEAN; a run
+        # with few routines is reported in the detail, still clean.
+        over = dict(fitted=10100, yaagc=10000, percent=1.0, routines=2000, mean_abs_error=2.5)
+        few = dict(fitted=2385, yaagc=1000, percent=138.5, routines=30, mean_abs_error=46.2)
+        row = self.rows([host_row(interpretive_charge=over)])[0]
+        self.assertEqual(row[1], 'NOT CLEAN')
+        self.assertIn('OVER the bound (20% net, 45% routine by routine)', row[2])
+        row = self.rows([host_row(interpretive_charge=few)])[0]
+        self.assertEqual(row[1], 'clean')
+        self.assertIn('fewer than 1000 routines, not bounded', row[2])
+
     def test_unregistered_counted(self):
         self.assertIn('9 unregistered', self.rows([host_row(unregistered=[{}] * 9)])[0][2])
 

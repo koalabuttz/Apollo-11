@@ -91,12 +91,16 @@ def host_result(row):
     bridged = [h for h in row.get('unregistered', []) if not h.get('core_start')]
     if row['exit']:
         return False, f"FAILED (exit {row['exit']})"
+    import flight_host_differential as fhd  # noqa: E402
+    charge, text = fhd.charge_state(row)
+    if charge == 'over':
+        return False, text
     misses = len(row.get('routine_mismatches', []))
     if misses or bridged:
         where = ', '.join(f"{h['label']} ({h['file']}, lane {h['lane']})" for h in bridged[:3])
         return False, (f'{misses} routines differ' if misses else '0 routines differ') + \
             (f', {len(bridged)} points bridged: {where}' if bridged else '')
-    return True, 'matches yaAGC (0 routines differ, 0 points bridged)'
+    return True, 'matches yaAGC (0 routines differ, 0 points bridged)' + (f'; {text}' if charge else '')
 
 
 def replay_result(r):

@@ -460,10 +460,11 @@ def host_rows(m, summary, env, commit):
             continue
         un = r.get('unregistered')
         un = len(un) if isinstance(un, list) else (un or 0)
+        charge, text = fhd.charge_state(r)
         detail = (f"{r.get('native_routines')} native routines, {len(r['routine_mismatches'])} did not match yaAGC, "
-                  f'{un} unregistered or refused points (yaAGC ran them)')
+                  f'{un} unregistered or refused points (yaAGC ran them)' + (f'; {text}' if charge else ''))
         state = ('STALE' if r.get('commit') != commit else
-                 'clean' if r['exit'] == 0 and not r['routine_mismatches'] else 'NOT CLEAN')
+                 'clean' if r['exit'] == 0 and not r['routine_mismatches'] and charge != 'over' else 'NOT CLEAN')
         rows.append((name, state, detail + (f", from {r.get('commit')}" if state == 'STALE' else '')))
     return rows
 
