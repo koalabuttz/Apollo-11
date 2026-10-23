@@ -635,8 +635,11 @@ port) runs one mission:
    the idle loop (a dump is usually inside a routine), the native side
    takes that state with any `FLIGHT_CH30`-`33` given overriding the
    core's, and AGC time (keys, pokes, the centisecond count) runs from the
-   core's TIME1/TIME2. It does not combine with `FLIGHT_DOWNRUPT` (yaAGC's
-   steps to the idle loop would enter the downlink reference stream).
+   core's TIME1/TIME2. With `FLIGHT_DOWNRUPT`, yaAGC's steps to the idle
+   loop take no DOWNRUPT and log no downlink word, and DOWNRUPT starts on
+   both sides at the first native sample point after the core
+   (`downlink: DOWNRUPT from N cs`); tools/flight_downlink_check.py checks
+   that the core start is byte for byte the same either way.
    `FLIGHT_MISS_LOG` prints each routine yaAGC did
    not match with its centisecond, Z, FB and Q (a diagnostic); set to a
    directory, it also names the three routines before each and writes the

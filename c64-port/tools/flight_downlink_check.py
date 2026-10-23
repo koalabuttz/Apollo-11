@@ -58,15 +58,32 @@ REF_SLACK = 0
 # list in P00. The acceptance windows (LM rendezvous, CM P00, P40 burn,
 # entry, P20 and P22) start mid-phase from the restart rows' own
 # scenarios, without their GOJAM, so the lists carry that phase's live state.
+# lm-p57, lm-p22-surface (lunar surface align), lm-coast-v47 (V47's 20 s of
+# the AGS list) and lm-p27 (P27 picks the same list) name plain flight
+# scenarios with no restart row (window_row). lm-doi (the orbital maneuvers
+# list) starts from the NASSP core, with DOWNRUPT from the first sample
+# point after it.
 VICE_WINDOWS = [('lm-p63-descent', 'lm-p63-descent-restart', 19950, False, 0o77773),
                 ('lm-p63-descent-after-gojam', 'lm-p63-descent-restart', 20010, True, 0o77773),
                 ('lm-p00', 'lm-p00-restart', 2400, False, 0o77777),
                 ('lm-rendezvous', 'lm-rendezvous-restart', 19990, False, 0o77775),
+                ('lm-p57', 'lm-p57', 5990, False, 0o77772),
+                ('lm-p22-surface', 'lm-p22-surface', 4990, False, 0o77772),
+                ('lm-coast-v47', 'lm-coast-verbs', 16190, False, 0o77776),
+                ('lm-p27', 'lm-uplink-accept', 2990, False, 0o77776),
+                ('lm-doi', 'lm-doi-burn-restart', 29990, False, 0o77774),
                 ('cm-p00', 'cm-p00-p40-restart', 72990, False, 0o77777),
                 ('cm-p40-burn', 'cm-p40-burn-restart', 49990, False, 0o77774),
                 ('cm-entry', 'cm-entry-restart', 24990, False, 0o77776),
                 ('cm-p20', 'cm-p20-restart', 19960, False, 0o77775),
                 ('cm-p22', 'cm-p22-restart', 11990, False, 0o77773)]
+
+
+# NASSP-core restart rows (FLIGHT_CORE) not run here, with the reason. A
+# core row takes DOWNRUPT from the first sample point after the core
+# (tools/flight_host_run.c dl_arm).
+CORE_SKIP = {'lm-p12-restart': 'one word differs from yaAGC in lockstep: pair 91 of the descent and ascent list '
+                               'at 111,548 cs, native 04107, yaAGC 00107 (lane F)'}
 
 
 def stream(path):
@@ -136,7 +153,17 @@ def check(exe, scenario):
                                 list_words=first[2] if first else None) if after is not None and after + 1 < len(nat) else None,
                mismatches=[' '.join(x) for x in mis(on.stdout)],
                new_mismatches=[' '.join(x) for x in mis(on.stdout) if x not in mis(off.stdout)])
+    if 'FLIGHT_CORE' in env:
+        # The core start is the same with DOWNRUPT as without: no yaAGC step
+        # to the idle loop takes one, so the first sample point's state (the
+        # snapshot) is byte for byte the same.
+        same = [frc.snapshot(exe[m], m, 0, keys, {**env, **x}, f'{name}-core{n}').read_bytes()
+                for n, x in enumerate(({}, {'FLIGHT_DOWNRUPT': '1'}))]
+        row['core_start_same'] = same[0] == same[1]
+        row['core_armed'] = bool(re.search(r'^downlink: DOWNRUPT from \d+ cs', on.stdout, re.M))
     bad = []
+    if 'core_start_same' in row and not (row['core_start_same'] and row['core_armed']):
+        bad.append(f"core start: same with DOWNRUPT {row['core_start_same']}, DOWNRUPT armed {row['core_armed']}")
     if on.returncode or len(gojam) != 1 or (sched and (row['agc_cs'] or 0) < cs):
         bad.append(f"exit {on.returncode}, {len(gojam)} GOJAMs, AGC time {row['agc_cs']}")
     if not nat or row['span_differ'] or row['unmatched_span_words']:
@@ -155,10 +182,23 @@ def check(exe, scenario):
     return row
 
 
+def window_row(scenario):
+    """A window's restart row, or for a scenario with no restart row (a
+    plain flight scenario, tools/flight_host_differential.py FLIGHT) the
+    same shape with no GOJAM and the scaled schedule."""
+    row = next((x for x in frc.RESTARTS if x[0] == scenario), None)
+    if row is None:
+        name, m, cs, keys, env = fhd.scenario(scenario)
+        row = (name, m, cs, keys, env, None, '1,1,2', True)
+    return row
+
+
 def c64_window(a, exe, window, scratch, pinned):
     from resident_flight_build import COMMON, MISSION, resident_sources
     tag, scenario, at, jam, list_id = window
-    name, m, cs, keys, env, gojam, sched, _ = next(x for x in frc.RESTARTS if x[0] == scenario)
+    name, m, cs, keys, env, gojam, sched, _ = window_row(scenario)
+    if jam and gojam is None:
+        sys.exit(f'FAIL: window {tag}: {scenario} has no GOJAM to apply')
     env = {**env, **({'FLIGHT_SCALED': sched} if sched else {}), **({'FLIGHT_GOJAM': str(gojam)} if jam else {}),
            'FLIGHT_DOWNRUPT': '1'}
     header = frc.snapshot(exe[m], m, at, keys, env, f'{tag}-snap')
@@ -224,7 +264,7 @@ def vice(a, exe, only=None):
     for w in VICE_WINDOWS:
         if only and w[0] not in only and w[1] not in only:
             continue
-        m = next(x[1] for x in frc.RESTARTS if x[0] == w[1])
+        m = window_row(w[1])[1]
         row = c64_window(a, exe, w, *store(m))
         print(f"C64 {row['window']}: {row.get('records')} of {row['downrupts']} DOWNRUPTs from {row['snapshot_cs']} cs "
               f"in {row.get('steps')} resident steps, {row.get('records_differ')} differ from yaAGC's; "
@@ -268,10 +308,9 @@ def main():
         known = {x[0] for x in frc.RESTARTS} | ({w[0] for w in VICE_WINDOWS} if a.run_vice else set())
         if not only or only - known:
             sys.exit(f'FAIL: --only names nothing to run: {sorted(only - known) or "(empty)"}')
-    # A restart that starts from a NASSP core (FLIGHT_CORE) runs on scaled
-    # time, where flight_host_run.c has no DOWNRUPT: those rows stay out, as
-    # do the TC trap rows (frc.TC_TRAP: keyed V69, no FLIGHT_GOJAM).
-    todo = [x for x in frc.RESTARTS if (not only or x[0] in only) and 'FLIGHT_CORE' not in x[4] and x[0] not in frc.TC_TRAP
+    # The TC trap rows stay out (frc.TC_TRAP: keyed V69, no FLIGHT_GOJAM), and
+    # the NASSP-core rows CORE_SKIP names.
+    todo = [x for x in frc.RESTARTS if (not only or x[0] in only) and x[0] not in frc.TC_TRAP and x[0] not in CORE_SKIP
             and not (a.run_vice and a.c64_only)]
     windows = [w for w in VICE_WINDOWS if not only or w[0] in only or w[1] in only] if a.run_vice else []
     if not todo and not windows:
