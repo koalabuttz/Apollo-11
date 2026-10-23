@@ -365,6 +365,9 @@ class OffNominal(unittest.TestCase):
         lines, bad = da.offnom.section(res, [diff], da.first_diff)
         self.assertEqual(bad, [])  # a differing window is an open item, not a failure
         self.assertIn('differs: 2 words by 50 cs', '\n'.join(lines))
+        skipped = dict(good, _why=['6 checkpoints not compared'])
+        lines, _ = da.offnom.section(res, [skipped], da.first_diff)
+        self.assertIn('no match: 6 checkpoints not compared', '\n'.join(lines))
 
 
 if __name__ == '__main__':

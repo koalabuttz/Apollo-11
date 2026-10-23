@@ -260,7 +260,8 @@ def section(results, runs, first_diff):
         win = next((r for r in runs if r['scenario'] == row['scenario'] and r.get('snap_cs') == snap), None)
         c64 = ('not run' if win is None else
                'matches the host at ' + ', '.join(map(str, win.get('replay_matched_cs') or [])) + ' cs' if not win['_why']
-               else 'differs: ' + first_diff(win))
+               else 'differs: ' + first_diff(win) if win.get('replay_differences')
+               else 'no match: ' + '; '.join(win['_why']))
         host = ('clean' if h['ok'] else 'NOT CLEAN') + f": {h['mismatches']} mismatches, {h['bridged']} bridged, " \
             f"{sum(x['ok'] for x in h['checks'])} of {len(h['checks'])} response checks"
         lines.append(f"| {row['scenario']} | {row['owner']} | {row['failure']} | {row['response']} | {host} | "
