@@ -182,11 +182,17 @@ DOWNRUPT on both sides (`FLIGHT_DOWNRUPT=1` on the host, `RK_DOWNRUPT=1` on
 the C64). Each checkpoint compares channels 34 and 35 and the downlink's
 erasable state (DNTMGOTO, LDATALST and the list words) with the rest; with
 `--replay-every 2` there is a checkpoint at every DOWNRUPT.
+A scenario that sets `FLIGHT_DOWNRUPT=1` itself (lm-uplink-accept and
+cm-uplink-accept, for V74's erasable dump) turns `--downrupt` on, so
+`tools/program_acceptance.py`'s windows run DOWNRUPT on the C64 too. Before
+this, the host ran DOWNRUPT in those windows and the C64 did not, and every
+window differed first at CTLIST (0334, the downlink list pointer).
 
 | Window | Result |
 |---|---|
 | `cm-p22` 14000 + 40, every 2 cs (`make flight-downlink-live-vice`) | matches at all 20 checkpoints, one per DOWNRUPT, with no schedule skips: the P22 list (77773) from its ID and sync words on |
 | `cm-p22` 14000 + 800, every 50 cs | matches at all 16 checkpoints and ends in the host's state |
+| `cm-uplink-accept` 2010, 5010, 9210, 12010 and `lm-uplink-accept` 2010, 5010, 9210 + 300, every 50 cs | each matches at all 6 checkpoints and ends in the host's state (without DOWNRUPT on the C64: first difference at CTLIST, by 50-100 cs) |
 | `lm-csi` 2100 + 800, every 50 cs | matches at 50-400 cs; at 450 cs LDATALST is one word ahead on the C64 (02215 against 02214). Without DOWNRUPT the same window leaves the host at 51 cs (centiseconds 62 against 63): the LM clock drift on the replay-mismatch list (owner RK), not the downlink. Open: no LM live window matches yet |
 
 ## Gaps
