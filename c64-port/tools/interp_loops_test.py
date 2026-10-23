@@ -160,11 +160,18 @@ assert D.span_point([], 0o12136) is None
 # (live 1), Z's in basic code, where LOC keeps whatever it last held; a Z no
 # routine of the file holds is nowhere, so yaAGC hanging elsewhere with LOC
 # still in the native loop's routine is no loop.
-mp = types.SimpleNamespace(points=PTS, cp=types.SimpleNamespace(where=lambda p: '%o' % p))
+FILE = set(range(0o12131, 0o12142)) | {0o14000}
+mp = types.SimpleNamespace(points=PTS, cp=types.SimpleNamespace(where=lambda p: '%o' % p, words=FILE))
 assert D.oracle_where(mp, ['5', '9', '2137', '0', str(0o12137), str(0o30000), '1']) == '12136'
 assert D.oracle_where(mp, ['5', '9', '2134', '0', str(0o12137), str(0o12134), '0']) == '12133'
 assert D.oracle_where(mp, ['5', '9', '3000', '0', str(0o12137), str(0o30000), '0']) is None
 assert D.oracle_where(mp, ['5', '9', '2137', '0', str(0o12137)]) is None
+# (a Z inside a routine's span but not a word of the file, such as
+# lm-p70-p71's R10/R11 code in 21,2006's span; and LOC the same way)
+mp.cp.words = FILE - {0o12134, 0o12137}
+assert D.oracle_where(mp, ['5', '9', '2134', '0', str(0o12136), str(0o12134), '0']) is None
+assert D.oracle_where(mp, ['5', '9', '2137', '0', str(0o12137), str(0o30000), '1']) is None
+mp.cp.words = FILE
 assert D.oracle_where(mp, ['5', '0', '2137', '0']) is None
 
 # The probe (mocked runners): the native loop's cycle is its visits after N
@@ -187,7 +194,7 @@ try:
 
     def probe_with(oracle_row):
         D.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(stdout=oracle_row + '\n'))
-        mi = types.SimpleNamespace(m='cm', points=PTS, cp=types.SimpleNamespace(where=lambda p: '%o' % p))
+        mi = types.SimpleNamespace(m='cm', points=PTS, cp=types.SimpleNamespace(where=lambda p: '%o' % p, words=FILE))
         cases = [{'cm': 1, 'point': way_in}]
         return D.step_cap_probe('x', {'max_steps': n}, [None, mi], cases, os.devnull + '.x', 'ref', 'nat1')([0])[0]
     r = probe_with('0 9 2137 0 %d %d 1' % (loop_a, 0o30000))

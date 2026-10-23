@@ -1627,14 +1627,16 @@ def oracle_where(mi, r4):
     Zphys live, tools/interp_routine_reference.c IRC_TIMEOUT_LOC): LOC's
     routine when the interpreter fetched an order lately (live 1), else Z's,
     since in basic code LOC keeps its last value and would place a basic
-    loop anywhere (#809). None for any other row, and for a Z no file
-    routine holds (span_point: a loop elsewhere is not the native one)."""
+    loop anywhere (#809). None for any other row, and for an address that is
+    not a word of the file (mi.cp.words: a span can hold code that is not,
+    such as the interpreter's own or lm-p70-p71's R10/R11 at 21,2006), or
+    that no routine of the file holds (span_point): a loop elsewhere is not
+    the native one."""
     if len(r4) < 7 or r4[1] != '9':
         return None
-    if r4[6] == '1':
-        return span_where(mi, int(r4[4]))
-    z = int(r4[5])
-    return mi.cp.where(span_point(mi.points, z)) if span_point(mi.points, z) is not None else None
+    at = int(r4[4]) if r4[6] == '1' else int(r4[5])
+    p = span_point(mi.points, at) if at in mi.cp.words else None
+    return None if p is None else mi.cp.where(p)
 
 
 def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
