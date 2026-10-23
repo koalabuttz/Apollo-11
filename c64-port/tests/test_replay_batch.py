@@ -47,6 +47,9 @@ if s.startswith('unpaired'):
     print(f'{s}: states with no partner, not compared: c64 17650 cs'); print(ok); sys.exit(0)
 if s.startswith('big'):        # fsv:630
     sys.exit(f'FAIL: {s}: the host ran a window 20000 cs long from {snap} cs; one window is at most 16383 cs')
+if s.startswith('nopoint'):     # fsv:781-782 with nothing paired, then :818
+    print(f"{s}: the C64 matches the host at no point: it ends the window (17800 cs, all 12 input rows)"
+          " in the host's state"); sys.exit(0)
 if s.startswith('nopass'):
     sys.exit(0)
 if s.startswith('sleep'):
@@ -122,6 +125,31 @@ class Batch(unittest.TestCase):
         head, rows = self.rows()
         self.assertEqual(rows['nopass-a-100+200'][1], 'no verdict')
         self.assertIn('INCOMPLETE', head)
+
+    def test_no_compared_point_is_no_verdict(self):
+        self.list('nopoint-a 1 2\n')
+        self.assertEqual(self.run_batch().returncode, 3)
+        self.assertEqual(self.rows()[1]['nopoint-a-1+2'][1], 'no verdict')
+
+    def test_sigkill_of_batch_keeps_out_locked_while_runner_runs(self):
+        self.list('sleep-a 1 2\n')
+        p = subprocess.Popen([sys.executable, str(TOOL), '--windows', str(self.d / 'w.txt'), '--out', str(self.out),
+                              '--runner', f'{sys.executable} {self.d / "fake.py"}', '--head', 'c1'],
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        pidf = self.d / 'pid-sleep-a'
+        for _ in range(100):
+            if pidf.exists() and pidf.read_text():
+                break
+            time.sleep(0.05)
+        p.kill()
+        p.wait(10)
+        pid = int(pidf.read_text())
+        try:
+            q = self.run_batch()
+            self.assertEqual(q.returncode, 1)
+            self.assertIn('held by', q.stderr)
+        finally:
+            os.kill(pid, signal.SIGKILL)
 
     def test_chain_needs_the_chain_line(self):
         self.list('chainok-a 1 2 --chain 2\nchainok-short 3 4 --chain 2\n')

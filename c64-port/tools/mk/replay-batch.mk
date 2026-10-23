@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 # tools/replay_batch.py: a list of C64 replay windows run as a batch that
-# resumes (finished windows skipped, a time budget under the 2 h job limit),
+# resumes (finished windows skipped, a budget that stops starting windows),
 # tested with a stand-in runner.
 .PHONY: test-replay-batch
 test: test-replay-batch
