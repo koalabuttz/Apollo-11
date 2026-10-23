@@ -93,7 +93,7 @@ static void qw_hook(unsigned pc){unsigned zp=z_physical(pc),endz,q,insw;const ch
  snprintf(k,sizeof k,"%s %s %+d%s: %s (Q bit 16 %s bit 15; Q %s)",insw?"inside SWITCH":"after SWITCH",t==2?"write":"read",insw?(int)zp-(int)qw_tsq:0,qw_frontier?" past the case's stop":"",nm,((q>>15)&1u)==((q>>14)&1u)?"=":"!=",(q>>14)&1u?"negative":"positive");
  if(!insw&&t!=2&&((q>>14)&1u)&&strcmp(nm,"TC Q")&&strcmp(nm,"QXCH")){char k2[160];snprintf(k2,sizeof k2,"   at %02o,%04o (SWITCH TS Q at %02o,%04o) %s",zp/1024u,(zp%1024u)+((zp/1024u==2u||zp/1024u==3u)?(zp/1024u)*02000u:02000u),qw_tsq/1024u,(qw_tsq%1024u)+02000u,nm);qw_count(k2);}
  qw_count(k);if(!insw)qw_watch=0;}
-int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned irc3;unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend,rtbn=0,rtbk[8],rtbin=0;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu,retloc=0,trace=getenv("IRC_TRACE")?(unsigned)atoi(getenv("IRC_TRACE")):~0u;unsigned flow=getenv("IRC_FLOW")!=0;struct stops st[2];FILE *f;static irc_edit edits[4096];static agc_word init[2048];unsigned irc3;unsigned snapmode=getenv("IRC_SNAP")!=0;unsigned inputs=getenv("IRC_INPUTS")!=0;unsigned snaprow=getenv("IRC_SNAPROW")!=0;unsigned pendz=0,pendn=0,pendk[32],pende[32],pend,rtbn=0,rtbk[8],rtbin=0;unsigned lastnew;unsigned through=getenv("IRC_SNAP_THROUGH")!=0,maxcycles=getenv("IRC_SNAP_CYCLES")?(unsigned)atoi(getenv("IRC_SNAP_CYCLES")):4000000u;
  if(argc<4)return 2;
  if(getenv("IRC_PENDING_DANZIG")){const char *e=getenv("IRC_PENDING_DANZIG");int k=0;unsigned a,b;
   if(sscanf(e,"%u%n",&pendz,&k)==1)for(e+=k;pendn<32u&&sscanf(e," %u:%u%n",&a,&b,&k)==2;e+=k){pendk[pendn]=a;pende[pendn++]=b;}}
@@ -133,8 +133,9 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
   {unsigned z0=z_physical(get(RegZ));if(z0<0xfffeu)was_in=!outside(t,z0);}
   if(irc_ch_on){for(i=0;i<IRC_NCH;++i)machine.InputChannel[irc_ch_num[i]]=(int16_t)irc_ch[i];machine.Trap31A=machine.Trap31B=machine.Trap32=0;}
   if(irc_isr_on)machine.InIsr=irc_isr;
+  lastnew=0;
   for(cycles=0;cycles<maxcycles;++cycles){
-   if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);if(qw_on)qw_hook(pc);
+   if(cycles&&!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode){pc=get(RegZ);if(qw_on)qw_hook(pc);if(pc==t->newops)lastnew=cycles;
     if(pc==t->newops&&snap!=0xffffu&&loc_physical()==snap&&snaprow){snapped=stopped=1;break;}
     if(snap!=0xffffu&&((pc==t->newops&&(!through||(get(0164)>=02000u&&get(0164)<010000u&&get(0120)==init[0120]))&&loc_physical()==snap)||(through&&pc!=t->newops&&get(0120)==init[0120]&&z_physical(pc)==snap))){printf("%u S",n);
      for(i=0;i<2048u;++i){unsigned w=(unsigned)*memory(i)&(i<2u?0177777u:077777u);if(w!=init[i])printf(" %u %u",i,w);}
@@ -178,9 +179,14 @@ int main(int argc,char **argv){unsigned n,i,cycles,pc=0,count,m,dump,ret=0xffffu
    if(!machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode)qw_hook(get(RegZ));}
    if(qw_watch){qw_count("unresolved after 400000 more instructions");qw_watch=0;}}
   if(snapmode&&(!snaprow||!snapped)){if(!snapped)printf("%u N\n",n);continue;}}
-  /* IRC_TIMEOUT_LOC: a timeout row also gives LOC's physical address then
-   * (the differential's step-cap loops, #746). */
-  if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0",n,pc);if(getenv("IRC_TIMEOUT_LOC"))printf(" %u",loc_physical());printf("\n");continue;}
+  /* IRC_TIMEOUT_LOC: a timeout row also gives LOC's and Z's physical
+   * addresses then, and 1 when the interpreter fetched an order in the last
+   * sixteenth of the cycles (LOC is where the run is), else 0 (a basic
+   * loop: LOC keeps whatever it last held, Z is where the run is). The
+   * differential's step-cap loops (#746, #809). */
+  if(!stopped){fprintf(stderr,"case %u timeout %05o\n",n,pc);printf("%u 9 %u 0",n,pc);
+   if(getenv("IRC_TIMEOUT_LOC"))printf(" %u %u %u",loc_physical(),z_physical(pc),(unsigned)(lastnew&&cycles-lastnew<=maxcycles/16u));
+   printf("\n");continue;}
   if(cut&&!atcut){printf("%u 8 %u 0\n",n,pc);continue;}
   {agc_word keep[8];for(i=0;i<t->nd;++i)keep[i]=s.words[t->device[i]];
   for(i=0;i<2048u;++i)s.words[i]=(agc_word)((unsigned)*memory(i)&(i<2u?0177777u:077777u));
