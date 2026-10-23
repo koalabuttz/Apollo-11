@@ -1435,7 +1435,11 @@ def main():
                 if defines:
                     if mod['interp'] or extra:
                         raise SystemExit(f'{m}: {stem} parts link basic tables only')
-                    part.update(defines=list(defines), part=i + 1, prg_name=f'{stem}-part{i + 1}',
+                    # FS_PART_GROUP: one number per split file, so a part
+                    # going on with its file's routine is not charged again.
+                    group = sorted(FLIGHT_PARTS[m]).index(stem) + 1
+                    part.update(defines=list(defines) + [f'-DFS_PART_GROUP={group}'], part=i + 1,
+                                prg_name=f'{stem}-part{i + 1}',
                                 key_slice=parts[stem][i])
                 modules.append(part)
         (ROOT / OUT / m).mkdir(exist_ok=True)

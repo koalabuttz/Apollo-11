@@ -4,6 +4,14 @@
 #include "resident_flight.h"
 #include "sp_routines.h"
 #include "resident_rupt.h"
+#include "resident_cdu.h"
+/* The output drives, once a period: the 6502 version of resident_cdu.c's
+ * rk_cdu_drive (platform/c64/resident_cdu.S, checked against the C and
+ * yaAGC's vectors by tools/resident_cdu_asm_check.c), which stays the host
+ * and vector version. Their state lives here. */
+rk_cdu_state rk_cdu;
+void rk_cdu_drive6502(uint8_t hi);
+#define RK_CDU_DRIVE() rk_cdu_drive6502((uint8_t)(rk_hardware.channel14 >> 8))
 #ifdef AGC_SITES_ROPE
 #include "rope_image.h"
 #endif
@@ -38,6 +46,7 @@ __attribute__((used,section(".rk_hardware"))) agc_hardware rk_hardware={.channel
 __attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =
                                                                         (apollo_overlay_state *)1};
 __attribute__((used, section(".rk_restart_lamp"))) uint8_t rk_restart_lamp;
+__attribute__((used, section(".rk_part"))) uint8_t rk_part[2];
 uint16_t rk_pending,rk_ticks;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
@@ -65,12 +74,19 @@ __attribute__((used)) uint8_t rk_cap; /* read by name in rk_realtime_cap */
 /* The MCT left before the next step (at least 1: rk_rupts drained the
  * whole steps at the step's start), in platform/c64/rk_clock.S. */
 uint16_t rk_budget(void);
+/* The part group of the run rk_charge charges next (rk_direct sets it), 0
+ * for any other run. */
+static uint8_t rk_charge_group;
 /* n units of mct each: n added mct times (no multiply on the 6502; mct
  * is a weight, at most 255, and 1 for a module that reports MCT), or for
  * the idle loop (RK_MCT_IDLE), the rest of the period, which rk_rupts
  * drops if an interrupt request ends the idle first. */
 __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     uint16_t w=rk_work;
+    /* rk_part_steps: a part going on with the routine the previous step's
+     * part handed back is not charged its first routine again. */
+    if (rk_charge_group && rk_charge_group == rk_part_prev && n) --n;
+    rk_charge_group = 0;
     if (mct == RK_MCT_IDLE) {
         rk_work = rk_phase_rest[rk_tick_phase & 15u]; /* 0-8: a byte index */
         rk_idle = 1;
@@ -354,7 +370,12 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
                            &rk_pending);
         if (got || rk_work < RK_PHASE_MCT(p)) break;
-        if (t == RK_PHASE_T5) rk_realtime_cap();
+        /* Once a period, at TIME5: the real-time cap, then the output drives
+         * (resident_cdu.h), at the step the host harness runs them. */
+        if (t == RK_PHASE_T5) {
+            rk_realtime_cap();
+            RK_CDU_DRIVE();
+        }
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
@@ -378,8 +399,12 @@ __attribute__((noinline)) static void rk_rupts(void) {
     now=ov2_irq_count;
     __asm__ volatile("plp" ::: "memory");
     for(;rk_ticks!=now;++rk_ticks) {
-        if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
-        else ++rk_dilation;
+        if (take) {
+            --take;
+            rk_timer_tick(IMAGE, &rk_hardware, &rk_pending);
+            RK_CDU_DRIVE(); /* (after the timers, as the host's scaled path) */
+        } else
+            ++rk_dilation;
     }
 #ifdef RK_RUPT_TRACE
     rk_rupt_last=
@@ -545,6 +570,7 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         enum exec_status status;
 #ifdef RK_WORK_CLOCK
         uint8_t mct = t->mct;
+        rk_charge_group = t->part;
 #if RK_LM /* only the LM store packs the idle loop beside interrupt code */
         if (t->idle && !rk_hardware.in_interrupt) mct = RK_MCT_IDLE;
 #endif
@@ -586,10 +612,14 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         }
         RK_PROF(6);
 #ifdef RK_WORK_CLOCK
+        if (status == EXEC_UNMAPPED) rk_part_cont = rk_charge_group;
         rk_charge(steps, mct);
 #endif
         return rk_module_status(status,steps,limit);
     }
+#ifdef RK_WORK_CLOCK
+    rk_charge_group = 0; /* no slot ran: the resolver's charge is its own */
+#endif
     return EXEC_UNMAPPED;
 }
 #endif
@@ -601,6 +631,10 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     apollo_ov2_cont at;
     enum exec_status status;
     uint16_t loc;
+#ifdef RK_WORK_CLOCK
+    rk_part_prev = rk_part_cont;
+    rk_part_cont = 0;
+#endif
 #ifndef RK_NO_DIRECT
     rk_point = AGC_TRANSFER_NONE;
 #endif

@@ -227,7 +227,7 @@ flag(47)                # REFSMFLG
 # the ignition thrust direction VGTIG, so P40's preferred attitude is
 # pitched up from the DV. These are the gimbal angles the AGC computes
 # (THETAD after S40.2,3); starting there makes R60's maneuver nil.
-IGN_CDU = (0, 0o3224, 0o77651)
+IGN_CDU = (0o6, 0o3440, 0o77460)
 put('CDUX', [IGN_CDU[0]]); put('CDUY', [IGN_CDU[1]]); put('CDUZ', [IGN_CDU[2]])
 # The RCS DAP's desired angles (DP, high words) start at the same attitude.
 put('CDUXD', [IGN_CDU[0], 0, IGN_CDU[1], 0, IGN_CDU[2], 0])
@@ -238,7 +238,20 @@ put('DAPDATR1', [0o21102]); put('DAPDATR2', [0o01111])
 put('CSMMASS', [int(round(CSM_KG / 2**16 * 2**14))])
 put('LEMMASS', [int(round(LM_KG / 2**16 * 2**14))])
 put('EMDOT', [int(round(SPS_THRUST / SPS_VEX * 0.01 / 8 * 2**14))])
-put('PACTOFF', [0]); put('YACTOFF', [0])
+# Trim (the gimbal angles that put the thrust through the centre of mass)
+# and the TVC DAP's gains, Apollo 11's CMC pad load (NASSP's Comanche055
+# pad load worksheet, github.com/orbiternassp/padloads): PACTOFF -1.541
+# and YACTOFF +1.321 degrees (85.41 arcseconds a bit); EKPRIME (steering)
+# CSM 0.1, CSM/LM 0.15; EKTLX/I (filter) CSM 8.4, CSM/LM 0.6265, CSM/LM low
+# bandwidth 0.05786; EREPFRAC (alignment correction) CSM 0.25, LM 0.0375.
+# Without them VARK and KPRIMEDT are 0: the DAP neither steers nor damps.
+put('PACTOFF', [0o77676]); put('YACTOFF', [0o70])
+put('EKPRIME', [0o123, 0o175]); put('EKTLX/I', [0o37071, 0o2244, 0o156])
+put('EREPFRAC', [0o1000, 0o232])
+# The CSM/LM (high bandwidth) DAP filter coefficients, from the same pad
+# load (HBN10-HBD32; the CSM-only and low bandwidth tables are fixed).
+put('HBN10', [0o37777, 0, 0, 0o54360, 0o21075, 0o37777, 0o60465, 0, 0o54360, 0o21075,
+             0o37777, 0o57142, 0o33106, 0o50741, 0o31162])
 put('WEIGHT/G', [int(round((CSM_KG + LM_KG) / 2**16 * 2**14))])
 # SPS pads (synthetic): the 1-second impulse and the tail-off impulse
 # (N s / 100, B+23), the thrust (N / 1E4: EK3VAL B+9, FANG B+7), the

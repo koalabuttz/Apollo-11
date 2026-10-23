@@ -15,7 +15,7 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "8a7d27a15a6a",
+ "commit": "22bfa334ba31",
  "cia_interrupts": 25036,
  "periods_taken": 25036,
  "periods_dropped": 0,
@@ -24,5 +24,8 @@
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
- "log_sha256": "e7760c53bd623b7c4a65c9e8e5dbe54548790af77070c66732ec260e76b09a2e"
+ "reached": {
+  "37,2466": 9271
+ },
+ "log_sha256": "f140daf305451d16a4d2c9e9961560d308881731161312a9167bf81d4df64ef3"
 }
