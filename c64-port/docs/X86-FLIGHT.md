@@ -104,7 +104,7 @@ The x86 program runs them with the same settings and at the same points as the h
 `make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it with the harness on the work clock (`FLIGHT_SCALED=W`) at the first sample point at or after 1,000 cs before its end. The two programs charge routine costs differently: the x86 program charges each point's median, and the work clock charges each table's weight. So their states are close, not equal. The yardstick is the harness against itself, the same scenario on its other clock (`FLIGHT_SCALED=1,1,2`, yaAGC's own cycles). A scenario passes when all of these hold:
 
 - the major mode is the same;
-- RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (CM P40 needed it before #786 closed the TVC loop: VN 0.13 m/s apart against a spread of 0.004; on base fc7ded5a every row's RN and VN are within 4 times the spread);
+- RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (CM P40 needed it before #786 closed the TVC loop: VN 0.13 m/s apart against a spread of 0.004; on base fc7ded5a every row's RN and VN are within 4 times the spread except known `cm-p11` and `lm-p41-nassp`, whose VN is 0.001 m/s apart against a spread of 0.000);
 - the erasable image (061-3777) differs in at most 1.5 times as many words as the harness's two clocks differ in, plus 10;
 - the alarm codes (FAILREG and the two words after it) are the harness's, wherever its two clocks agree on them.
 
