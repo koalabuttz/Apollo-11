@@ -15,7 +15,7 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "8a7d27a15a6a",
+ "commit": "22bfa334ba31",
  "cia_interrupts": 44038,
  "periods_taken": 44038,
  "periods_dropped": 0,
@@ -24,5 +24,6 @@
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
+ "reached": {},
  "log_sha256": "52413d8b9d5c3f9a6d017c78dd88b1d4357766842cd3a33ea686f78c6075c934"
 }
