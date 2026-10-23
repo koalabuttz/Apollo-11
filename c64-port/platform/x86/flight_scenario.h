@@ -42,6 +42,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "flight_dispatch.h"
+#include "resident_cdu.h"
 #include "vehicle_models.h"
 #include "radar_models.h"
 #include "landing_radar.h"
@@ -137,7 +138,11 @@ static int fs_parse_models(void)
         return 0;
     }
 #else
-    vm_cfg.sps_kg = fs_number("FLIGHT_SPS");
+    if ((v = getenv("FLIGHT_SPS")) &&
+        sscanf(v, "%lf,%lf,%lf", &vm_cfg.sps_kg, &vm_cfg.sps_cg[0], &vm_cfg.sps_cg[1]) < 1) {
+        fprintf(stderr, "FLIGHT_SPS=KG[,PITCH,YAW]\n");
+        return 0;
+    }
     vm_cfg.aero_b = fs_number("FLIGHT_AERO");
     vm_cfg.imu = getenv("FLIGHT_IMU") ? atoi(getenv("FLIGHT_IMU")) : 0;
     vm_cfg.saturn_lo = fs_cs("FLIGHT_SATURN");
@@ -287,7 +292,7 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
         ++in->poked;
     }
     vm_engine_step(t, &in->engine, w);
-    vm_sps_step(t, &in->sps, w);
+    vm_sps_step(t, &in->sps, w, st->hw.channel12, st->optics);
     rm_rr_step(&rm_rr_cfg, t, &in->rr, w, st->hw.channel12, st->hw.channel13, st->hw.channel14,
                &st->hw.channel33);
     vm_aero_step(t, &in->aero, w);
@@ -449,6 +454,22 @@ static int fs_load_start(fd_state *st, const char *path)
     if (found != 29u) {
         fprintf(stderr, "X86_START: %s: %u of 29 fields\n", path, found);
         return 0;
+    }
+    /* SNAP_CDU (headers since #786): the output drives' state, so a window
+     * that starts while a drive owes pulses goes on with them. */
+    if ((p = strstr(text, "#define SNAP_CDU(c) ")) != 0) {
+        int owed[5];
+        unsigned elapsed, active;
+        if (sscanf(p + 20,
+                   "(c).owed[0]=%d;(c).owed[1]=%d;(c).owed[2]=%d;(c).owed[3]=%d;(c).owed[4]=%d;"
+                   "(c).elapsed=%uu;(c).active=%uu;",
+                   &owed[0], &owed[1], &owed[2], &owed[3], &owed[4], &elapsed, &active) != 7) {
+            fprintf(stderr, "X86_START: %s: bad SNAP_CDU\n", path);
+            return 0;
+        }
+        for (i = 0; i < 5u; ++i) rk_cdu.owed[i] = (int16_t)owed[i];
+        rk_cdu.elapsed = (uint16_t)elapsed;
+        rk_cdu.active = (uint8_t)active;
     }
     abs_cs = ((unsigned long)(st->s.words[024] & 037777u) << 14) | (st->s.words[025] & 037777u);
     st->t0 = abs_cs - snap_cs;
