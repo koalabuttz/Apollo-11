@@ -7,7 +7,8 @@
  *   KEYS            DSKY keys (and the mark buttons M, J, x, y, j), one
  *                   every half second from 2 s; @CS (decimal)
  *                   moves the next key and the ones after it to CS or later
- *                   (V37E63E@9000P presses PRO at 90 s)
+ *                   (V37E63E@9000R presses RSET at 90 s; P is RSET too,
+ *                   as in the harness: PRO is no key code)
  *   FLIGHT_CH30-33  input channels at start (octal)
  *   FLIGHT_POKE     CS:ADDR=VALUE,... erasable words (octal)
  *   FLIGHT_LOAD     CS:FILE,...: the same from files of octal "ADDR VALUE"

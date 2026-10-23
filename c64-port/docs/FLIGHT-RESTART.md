@@ -338,8 +338,9 @@ restart.
   the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF5),
   the hardware flip-flop ERROR RESET's `WRITE 77` clears. Pinball's
   `restart_light` reads and writes it there (Lane C).
-- **The x86 program** (docs/X86-FLIGHT.md) does not take `FLIGHT_GOJAM` yet.
-  `platform/x86/flight_scenario.h` is Lane B's.
+- **The x86 program** (docs/X86-FLIGHT.md) takes `FLIGHT_GOJAM` and the TC
+  trap through `fd_gojam`, which also lights its RESTART lamp; RSET and
+  channel 11 bit 10 put the lamp out, as in yaAGC.
 
 ## Telemetry
 

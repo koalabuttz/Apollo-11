@@ -71,6 +71,22 @@ def lockstep(cc, m, mode):
     return exe
 
 
+def lamp_test(cc, m):
+    """build/x86-flight/test-restart-lamp-<m>: platform/x86/test_restart_lamp.c
+    linked with mission m's dispatcher (x86_flight_build.build's object), so
+    each of the lamp's light and clear paths is checked on its own."""
+    flags = xb.flags(m, xb.MODES['compiled'][0])
+    o = xb.OUT / f'test_restart_lamp_{m}.o'
+    subprocess.run([cc, *flags, '-c', 'platform/x86/test_restart_lamp.c', '-o', str(o)], cwd=ROOT, check=True)
+    exe = xb.OUT / f'test-restart-lamp-{m}'
+    host = sorted(str(p) for p in (xb.STORE / 'host').glob('*.o'))
+    subprocess.run([cc, str(o), str(xb.OUT / f'flight_dispatch_{m}.o'), *host, '-Wl,--gc-sections', '-lm',
+                    '-o', str(exe)], cwd=ROOT, check=True)
+    r = subprocess.run([str(exe)], cwd=ROOT, capture_output=True, text=True)
+    print(f'{m}: {r.stdout.strip()}')
+    return r.returncode
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
@@ -83,6 +99,8 @@ def main():
     summary, failed = [], 0
     for mode in xb.MODES:
         exe = {m: xb.build(a.host_cc, m, mode) for m in ('lm', 'cm')}
+        if mode == 'compiled':
+            failed += sum(bool(lamp_test(a.host_cc, m)) for m in ('lm', 'cm'))
         ls = {m: lockstep(a.host_cc, m, mode) for m in ('lm', 'cm')}
         for name, m, cs, keys, env in SCENARIOS:
             tag = f'{m}-{name}-{mode}'
