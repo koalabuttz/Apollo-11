@@ -135,15 +135,6 @@ static const entry tables[]={
 };
 #undef FLIGHT_TABLE
 #define TABLES (sizeof tables/sizeof tables[0])
-/* A zero-weight (idle) table that shares its keys with a full table (the
- * LM's POSTJUMP beside the self-check idle loop, module
- * "lm_interbank_routines"): that table's weight. The C64 runs POSTJUMP as
- * idle only in the idle loop's module, so from anywhere else (the fresh
- * start after a GOJAM: GOPROG, ..., POSTJUMP, ADVAN) it charges the full
- * table's weight, and so does the host. 0 when there is none. */
-static unsigned idle_only_weight(const entry *e){size_t i;
- for(i=0;i<TABLES;++i)if(tables[i].mct&&e->module&&!strcmp(tables[i].name,e->module))return tables[i].mct;
- return 0u;}
 /* A table left to the interpreter module (weight FLIGHT_PER_WORD,
  * tools/resident_flight_build.py INTERP_PER_WORD) spends its words' MCT
  * instead, as the compact interpreter charges them at NEWOPS
@@ -206,8 +197,6 @@ static double step_at(unsigned long j){return (double)(2560ul*(j/9ul)+step_end[j
  * period, which the boundary drops if it takes a request first. */
 static int idling;
 static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
-/* Whether the last routine run outside an interrupt was the idle loop's. */
-static int bg_idle;
 /* rk_rupts: the CIA1 interrupts since the last boundary, at most lag of
  * them as clock periods, the rest dropped. */
 static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
@@ -1470,9 +1459,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
       if(n>=0&&core_mct!=word_mct){++core_misses;
        if(getenv("FLIGHT_CORE_LOG"))printf("core charge %lu, yaAGC's words %lu: Z %05o LOC %05o to Z %05o LOC %05o, %s\n",core_mct,word_mct,
         (unsigned)before.words[5],(unsigned)before.words[0164],(unsigned)s.words[5],(unsigned)s.words[0164],e->name);}}
-     if(scaled){unsigned w=weight(e),f=0u;if(core_ran&&work)spend(core_mct);else if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);
-      else if(work&&!w&&!hw0.in_interrupt&&!bg_idle&&(f=idle_only_weight(e)))spend(f);else if(work&&!w)idle_tick();else spend(work?w:span_mct);
-      if(work&&!hw0.in_interrupt)bg_idle=!w&&!f;}
+     if(scaled){unsigned w=weight(e);if(core_ran&&work)spend(core_mct);else if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);else if(work&&!w)idle_tick();else spend(work?w:span_mct);}
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
      if(n>=0){locked+=(unsigned long)n;
       /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by

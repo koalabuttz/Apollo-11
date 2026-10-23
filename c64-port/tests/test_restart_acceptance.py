@@ -181,6 +181,18 @@ class RestartAcceptance(unittest.TestCase):
             self.assertFalse(ok, why)
             self.assertIn(why, text)
 
+    def test_only_v69_may_bridge_verb69(self):
+        v69 = dict(host_row('lm-v69-restart'), commit=HEAD, new_holes=[dict(kind='basic', point='43,2037')])
+        ok, text = ra.host_verdict(v69, HEAD)
+        self.assertTrue(ok, text)
+        self.assertIn('VERB69', text)
+        for bad in (dict(v69, new_holes=v69['new_holes'] + [dict(kind='basic', point='43,2040')]),
+                    dict(v69, scenario='lm-p12-restart'),
+                    dict(v69, new_holes=[dict(kind='interpretive', point='43,2037')])):
+            ok, text = ra.host_verdict(bad, HEAD)
+            self.assertFalse(ok, text)
+            self.assertIn('1 points bridged', text)
+
     def test_a_row_ending_in_p00_proves_little(self):
         rows = {n: host_row(n) for n in LM}
         rows['lm-p12-restart'] = dict(host_row('lm-p12-restart'), modreg=['00000', '00000'])

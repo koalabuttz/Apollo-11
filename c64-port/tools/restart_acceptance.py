@@ -71,6 +71,10 @@ EXTRA = {'lm': ['lm-dap-hold-restart', 'lm-v69-restart'], 'cm': ['cm-p52-restart
 # The rows whose GOJAM is also applied on the C64 (make flight-gojam-vice).
 GOJAM_ON_C64 = {'lm': ['lm-p63-descent-restart', 'lm-dap-hold-restart', 'lm-v69-restart'],
                 'cm': ['cm-entry-restart', 'cm-p52-restart', 'cm-v69-restart']}
+# The one point a row may bridge after its restart: V69's VERB69 (43,2037)
+# is a TC to itself that only the TC trap ends, so yaAGC runs it on both
+# sides by design (tools/flight_restart_check.py TC_TRAP). The doc names it.
+KNOWN_BRIDGE = {'lm-v69-restart': ('basic', '43,2037'), 'cm-v69-restart': ('basic', '43,2037')}
 OUT = ROOT / 'build/restart-acceptance'
 DOCS = ROOT / 'docs/acceptance'
 EVIDENCE = ROOT / 'evidence'
@@ -183,8 +187,12 @@ def host_verdict(h, commit):
     # no point after the restart that yaAGC had to bridge (#762).
     if h['routine_mismatches']:
         bad.append(f"{len(h['routine_mismatches'])} yaAGC mismatches")
-    if h.get('new_holes'):
-        bad.append(f"{len(h['new_holes'])} points bridged after the restart (new_holes)")
+    known = KNOWN_BRIDGE.get(h.get('scenario'))
+    holes = [x for x in h.get('new_holes') or [] if (x.get('kind'), x.get('point')) != known]
+    if known and len(holes) < len(h.get('new_holes') or []):
+        text += f"; bridges {known[0]} {known[1]} (VERB69, the TC trap's loop) by design"
+    if holes:
+        bad.append(f"{len(holes)} points bridged after the restart (new_holes)")
     if 'new_holes' not in h:
         bad.append('no record of points bridged after the restart')
     return (False, text + '; FAILED: ' + '; '.join(bad)) if bad else (True, text)
