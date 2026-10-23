@@ -5,8 +5,10 @@ batch that resumes: every window writes its own log, a window whose log is
 finished on the same tree with the same command is skipped, and the batch
 stops starting windows once its time budget is spent (each run still starts
 at least one window). Rerun the same command to go on where it stopped,
-after a time limit, a lost container or a crash. Run one batch per tree:
-a lock on OUT/.lock stops a second batch on the same OUT.
+after a time limit, a lost container or a crash. Run one batch per tree
+(windows share build/flight-store); the lock on OUT/.lock only catches a
+second batch on the same OUT. The runner holds the lock too, so it stays
+held until the runner is gone even if the batch itself is killed.
 
 The window list has one window per line, '#' starts a comment:
 
@@ -24,8 +26,9 @@ always added. A window's log is OUT/SCENARIO-SNAP+CS.log (written to a
 
 A window's status comes from its exit code and every line of its log:
   match         rc 0, no line with FAIL, and the pass line ("... in the
-                host's state"; under --chain K > 1, the chain line "every
-                window matches the host and every seam holds")
+                host's state", not "matches the host at no point"; under
+                --chain K > 1, the chain line "every window matches the
+                host and every seam holds")
   match-masked  a match that ran with a mask, skip or unpaired state
                 ("skipped (temporary", "masked_", "(with skips)", "states
                 with no partner"): not a full match
@@ -33,7 +36,8 @@ A window's status comes from its exit code and every line of its log:
                 outputs), whatever the order; the first one is quoted
   crash         rc not 0 and no FAIL line (a traceback, VICE died)
   timeout       stopped by --window-timeout-min
-  no verdict    rc 0 but no pass line
+  no verdict    rc 0 but no pass line, or a pass line with no compared
+                point
   stale         a finished log from another tree or command (rerun)
   not run       no log yet
 crash, timeout and no verdict rerun on resume, up to 3 attempts on the same
@@ -74,7 +78,9 @@ RUNNER = [sys.executable, 'tools/flight_scenario_vice.py']
 STAMP = re.compile(r': commit (\S+)( with local changes)?; store \S+ sha256 ([0-9a-f]+)')
 MASKS = ('skipped (temporary', 'masked_', '(with skips)', 'states with no partner')
 PASS = "in the host's state"
+NO_POINT = 'matches the host at no point'
 CHAIN_PASS = 'every window matches the host and every seam holds'
+SIGNALS = (signal.SIGTERM, signal.SIGINT, signal.SIGHUP)
 RETRY = ('crash', 'timeout', 'no verdict')
 TRIES = 3
 ORDER = ['match', 'match-masked', 'FAIL', 'crash', 'timeout', 'no verdict', 'stale', 'not run']
@@ -125,7 +131,9 @@ def read(log):
     r = {'cmd': None, 'tree': None, 'attempt': 1, 'rc': None, 'commit': '', 'store': '', 'detail': ''}
     if lines and lines[0].startswith('$ '):
         r['cmd'] = lines.pop(0)[2:]
-    while lines and lines[0].startswith('# '):
+    for _ in range(2):
+        if not (lines and lines[0].startswith(('# tree ', '# attempt '))):
+            break
         k, _, v = lines.pop(0)[2:].partition(' ')
         if k == 'tree':
             r['tree'] = v
@@ -147,7 +155,7 @@ def read(log):
             fail = line.strip()
         if masked is None and any(k in line for k in MASKS):
             masked = line.strip()
-        if PASS in line:
+        if PASS in line and NO_POINT not in line:
             passes.append(line.strip())
         if CHAIN_PASS in line:
             chained = line.strip()
@@ -272,7 +280,7 @@ def main():
 
     def stop(sig, _frame):
         raise Stop(sig)
-    for s in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
+    for s in SIGNALS:
         signal.signal(s, stop)
     try:
         for stale in a.out.glob('*.log.part'):
@@ -299,9 +307,16 @@ def main():
             with part.open('w') as f:
                 f.write(f'$ {cmd}\n# tree {cur}\n# attempt {attempt}\n')
                 f.flush()
-                # Own session, so a stop of the batch can stop the whole run.
-                child = subprocess.Popen(runner + args + extra, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT,
-                                         start_new_session=True)
+                # Own session, so a stop of the batch can stop the whole run;
+                # the runner inherits the lock fd, so OUT stays locked while it
+                # runs; signals wait until child is set.
+                old = signal.pthread_sigmask(signal.SIG_BLOCK, SIGNALS)
+                try:
+                    child = subprocess.Popen(runner + args + extra, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT,
+                                             start_new_session=True, pass_fds=(held,),
+                                             preexec_fn=lambda: signal.pthread_sigmask(signal.SIG_SETMASK, old))
+                finally:
+                    signal.pthread_sigmask(signal.SIG_SETMASK, old)
                 try:
                     rc = child.wait(timeout=a.window_timeout_min * 60 or None)
                 except subprocess.TimeoutExpired:

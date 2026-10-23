@@ -1568,8 +1568,9 @@ def step_cap_loops(cand, max_steps, probe):
     both sides loop on: the native run ends at its step cap N with the same
     image (every erasable word, A and L 16-bit, and the interrupt enable) as
     at 4N steps, also ended at the cap, so its state repeats; and yaAGC
-    still runs at 4x its cycle cap with LOC in a routine the native loop
-    visits (PERIODCH with a +0 period, #664). Anything else stays a
+    still runs at 4x its cycle cap inside a routine the native loop's
+    cycle visits (its steps after N): LOC's routine while yaAGC still
+    interprets, else Z's (PERIODCH with a +0 period, #664; #809). Anything else stays a
     mismatch: a refusal or failure that is not the step cap (kind 2 too,
     tests/interp_case.c irc_run), an oracle that ends given more cycles,
     and any rule at all when 4N does not fit the runner's 16-bit cap.
@@ -1588,8 +1589,10 @@ def step_cap_loops(cand, max_steps, probe):
 def is_step_cap_loop(r, max_steps):
     """step_cap_loops' test of one probe record: n1 and n4 the native runs
     at N and 4N steps (kind, steps, ended at the cap, image), r4 the oracle
-    at 4x its cycles (kind, the routine LOC is in, span_point), visited the
-    routines the 4N native run visits."""
+    at 4x its cycles (kind, and loc: the routine it is in, span_point of
+    LOC while it interprets, of Z in basic code), visited the routines the
+    4N native run visits after its first N steps: the cycle, not the
+    routines on the way in (#809)."""
     n1, n4, r4 = r['n1'], r['n4'], r['r4']
     return (n1['kind'] == '2' and n1['steps'] == max_steps and n1['capped']
             and n4['kind'] == '2' and n4['steps'] == 4 * max_steps and n4['capped']
@@ -1617,6 +1620,23 @@ def span_where(mi, loc):
     """mi.cp.where() of span_point (LOC itself when no routine holds it)."""
     p = span_point(mi.points, loc)
     return mi.cp.where(loc if p is None else p)
+
+
+def oracle_where(mi, r4):
+    """Where yaAGC is at its cycle cap, from its timeout row (n 9 Z 0 LOC
+    Zphys live, tools/interp_routine_reference.c IRC_TIMEOUT_LOC): LOC's
+    routine when the interpreter fetched an order lately (live 1), else Z's,
+    since in basic code LOC keeps its last value and would place a basic
+    loop anywhere (#809). None for any other row, and for an address that is
+    not a word of the file (mi.cp.words: a span can hold code that is not,
+    such as the interpreter's own or lm-p70-p71's R10/R11 at 21,2006), or
+    that no routine of the file holds (span_point): a loop elsewhere is not
+    the native one."""
+    if len(r4) < 7 or r4[1] != '9':
+        return None
+    at = int(r4[4]) if r4[6] == '1' else int(r4[5])
+    p = span_point(mi.points, at) if at in mi.cp.words else None
+    return None if p is None else mi.cp.where(p)
 
 
 def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
@@ -1658,9 +1678,8 @@ def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
                           'image': [l[2], l[3], l[6]] + d[4:], 'visits': [int(t[1:]) for t in l[7:]]}
             r4 = rr[j] if j < len(rr) else ['', '?']
             recs.append({'n1': nat['1'], 'n4': nat['4'],
-                         'r4': {'kind': r4[1],
-                                'loc': span_where(mi, int(r4[4])) if r4[1] == '9' and len(r4) > 4 else None},
-                         'visited': {mi.cp.where(v) for v in nat['4']['visits']},
+                         'r4': {'kind': r4[1], 'loc': oracle_where(mi, r4)},
+                         'visited': {mi.cp.where(v) for v in nat['4']['visits'][n:]},
                          'routine': '%s %s' % (mi.m, mi.cp.where(cases[i]['point']))})
         return recs
     return probe

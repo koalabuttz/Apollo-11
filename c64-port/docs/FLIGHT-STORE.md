@@ -1218,13 +1218,15 @@ port) runs one mission:
    on. A log counts only on the same tree (commit plus uncommitted
    changes) and command; any other is `stale` and reruns. A window's
    status comes from its exit code and every log line: `match` needs rc 0,
-   no FAIL line and the pass line (the chain line under `--chain`);
+   no FAIL line and a pass line with a compared point (the chain line
+   under `--chain`);
    `match-masked` ran with a mask, skip or unpaired state; `FAIL` is any
    FAIL line, seam and chain lines included; `crash`, `timeout` and `no
    verdict` rerun up to 3 tries. `OUT/_summary.txt` lists every window
    with its commit and store sha256, says INCOMPLETE until all finish and
-   MIXED if logs come from more than one commit or store image. One batch
-   per tree: a lock on `OUT/.lock` refuses a second one.
+   MIXED if logs come from more than one commit or store image. Run one
+   batch per tree; the lock on `OUT/.lock` (held by the runner too) only
+   catches a second batch on the same OUT.
 
    **Seams (`--chain K`, bar item 4).** One replay window is limited to
    16,383 cs, so a whole phase runs as K windows back to back. The host
