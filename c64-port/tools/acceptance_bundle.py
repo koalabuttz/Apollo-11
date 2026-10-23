@@ -38,7 +38,7 @@ file anywhere):
        for (the store, the D81s and D64s, the loader and resident PRGs) has
        the same sha256 in every doc, and, in a full run, the sha256 of the
        file this run built (an image the run did not build fails); every
-       category but device_adapter_tests names flight-store/<m>.reu;
+       category (each runs the flight store) names flight-store/<m>.reu;
      - after the run, nothing outside the docs and their cited evidence
        changed, and the flight store did not change while generators ran;
   4. prints one table and writes build/acceptance-bundle-<m>.json.
@@ -81,8 +81,6 @@ MIN_SHA = 16
 # Run results the generators reuse when they find them (program_acceptance's
 # host and C64 replays): a full run clears them, so every result is from it.
 RESULTS = ['build/flight-store/differential', 'build/flight-store/dap-pass']
-# Every category but the devices' runs the flight store, so its doc names it.
-STORE_CATS = [c for c in APPLICATION_EVIDENCE if c != 'device_adapter_tests']
 
 
 OWN = re.compile(r'(?:lm|cm)-acceptance-[a-z0-9-]+$')
@@ -309,7 +307,7 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
     for r in rows:
         for c in r['cites']:
             seen.setdefault(c, []).append(r['category'])
-        if r['category'] in STORE_CATS and f'flight-store/{m}.reu' not in r['images']:
+        if f'flight-store/{m}.reu' not in r['images']:
             r['problems'].append(f'does not give the sha256 of flight-store/{m}.reu it ran')
         for name, digest in r['images'].items():
             want = built.get(name)
