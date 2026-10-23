@@ -6,6 +6,11 @@ const uint8_t irc_ch_num[IRC_NCH]={05,06,011,012,013,014,030,031,032,033};
 agc_word irc_ch[IRC_NCH],irc_trap[3];
 uint8_t irc_ch_on,irc_isr_on;
 uint16_t irc_isr;
+#ifdef IRC_STATE_HASH
+#include <string.h>
+uint32_t irc_state_hash;
+static uint32_t irc_fnv(uint32_t h,const void *b,unsigned long n){const unsigned char *q=(const unsigned char *)b;while(n--)h=(h^*q++)*16777619u;return h;}
+#endif
 #if IRC_IO && !defined(IRC_BUILD_ONLY) && !defined(IRC_LM_ONLY)
 /* C64 builds of the 'all' specs name the diagnostic's agc_hardware to the
  * programs with -DAGC_CHANNELS_HW=irc_cm_hw (absolute addressing, as the
@@ -100,6 +105,9 @@ void irc_inputs(const irc_case *c,agc_input_channels *in){uint32_t seed=c->seed^
 #ifndef IRC_BUILD_ONLY
 unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps,uint16_t *ie){
  lm_channel_io lio;cm_channel_io cio;agc_native_program q;void *io;agc_word superbank=c->superbank;enum exec_status st;uint16_t steps;unsigned i;
+#ifdef IRC_STATE_HASH
+ memset(&lio,0,sizeof lio);memset(&cio,0,sizeof cio);
+#endif
  (void)q;lio.io.superbank=c->superbank;lio.io.interrupt_enabled=c->interrupt_enabled;
  {uint16_t *w=(uint16_t *)&cio.io;for(i=0;i<sizeof cio.io/sizeof *w;++i)w[i]=0;}
  cio.io.superbank=c->superbank;cio.io.interrupt_enabled=c->interrupt_enabled;
@@ -127,6 +135,10 @@ unsigned irc_run(const agc_native_program *p,apollo_overlay_state *s,const irc_c
  if(irc_ch_on&&!c->cm)irc_lm_io(p->hardware,&lio.in,1);
 #endif
  if(ie)*ie=c->cm?cio.io.interrupt_enabled:lio.io.interrupt_enabled;
+#ifdef IRC_STATE_HASH
+ irc_state_hash=c->cm?irc_fnv(2166136261u,&cio,sizeof cio):irc_fnv(2166136261u,&lio,sizeof lio);
+ if(p->hardware)irc_state_hash=irc_fnv(irc_state_hash,p->hardware,sizeof *p->hardware);
+#endif
  return st==EXEC_UNMAPPED||st==EXEC_IDLE?IRC_STOPPED:st==EXEC_OUT_OF_SCOPE&&steps==0u?IRC_REFUSED:IRC_FAILED;
 }
 #endif

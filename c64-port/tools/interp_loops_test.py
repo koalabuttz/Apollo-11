@@ -145,6 +145,16 @@ want = {'erasable_cadr_cycle': {'cm 12,2200': 1},
 assert got == want, got
 assert D.loops_record([None, mi], cases, set(), {}) == {}
 
+# span_point: the oracle's LOC at the cap maps to the routine holding it,
+# [point, next point) in one bank; past a bank's last point or before its
+# first, no routine (#746 round 2).
+PTS = [0o12131, 0o12133, 0o12136, 0o12140, 0o12141, 0o14000]
+assert D.span_point(PTS, 0o12136) == 0o12136
+assert D.span_point(PTS, 0o12135) == 0o12133 and D.span_point(PTS, 0o12137) == 0o12136
+assert D.span_point(PTS, 0o12130) is None and D.span_point(PTS, 0o12142) is None
+assert D.span_point(PTS, 0o14000) == 0o14000 and D.span_point(PTS, 0o14001) is None
+assert D.span_point([], 0o12136) is None
+
 if '--real' in sys.argv[1:]:
     # cm-conics IRC_SALT=specs1017 case 27577 on the real runners: the
     # native run at 2,000 and 8,000 steps, yaAGC at 16M cycles.
@@ -177,4 +187,4 @@ if '--real' in sys.argv[1:]:
           'yaAGC still running at 4x its cycles with LOC in %s)' % (n1['steps'], n4['steps'], record['r4']['loc']))
 
 print('interp_loops_test: step-cap loops OK (the loop; %d near-misses stay mismatches; the 16-bit clamp; '
-      'frozen_only and its loop record; the proof record and its check)' % len(NEAR))
+      'frozen_only and its loop record; the proof record and its check; LOC by routine span)' % len(NEAR))

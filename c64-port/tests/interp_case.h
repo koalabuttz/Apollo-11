@@ -49,6 +49,11 @@ extern const uint8_t irc_ch_num[IRC_NCH];
 extern agc_word irc_ch[IRC_NCH], irc_trap[3];
 extern uint8_t irc_ch_on, irc_isr_on;
 extern uint16_t irc_isr;
+#ifdef IRC_STATE_HASH
+/* The differential's native runner: a hash of the io record and agc_hardware
+ * irc_run leaves, so a step-cap loop's "same state" covers them (#746). */
+extern uint32_t irc_state_hash;
+#endif
 /* Fill all 2048 words from the seed (A and L sign-extended, the special
  * and counter registers 010-061 and ZERO cleared unless the case has the
  * IRC_COUNTERS edit), then apply the edits. */
