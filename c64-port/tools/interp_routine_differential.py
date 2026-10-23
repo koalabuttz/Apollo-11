@@ -486,6 +486,14 @@ def basic_refs(cp):
     return _REFS[id(cp)]
 
 
+def put_words(E, phys, words):
+    """words into erasable from phys up, stopping at 03777: an operand at
+    the top of erasable does not run on into A, L and Q (#148)."""
+    for j, w in enumerate(words):
+        if phys + j <= 0o3777:
+            E[phys + j] = w
+
+
 def case(mi, point, n, rng):
     """(seed, edits, ie) for case n of routine point."""
     E = collections.OrderedDict()
@@ -560,9 +568,7 @@ def case(mi, point, n, rng):
             for a in [0o154, 0] + mi.operands:
                 phys = vac + a if a < 45 else a
                 row = perm[(phys // 6) % 3] if perm else None
-                for k, (hi, lo) in enumerate(edge_vector(rng, row)):
-                    E[(phys + 2 * k) & 0o3777] = hi
-                    E[(phys + 2 * k + 1) & 0o3777] = lo
+                put_words(E, phys, [w for pair in edge_vector(rng, row) for w in pair])
         else:
             E.update(edge_cases.edits(n // 4, rng, [vac + a if a < 45 else a for a in mi.operands]))
     E[0o67] = newjob   # (NEWJOB, which an operand's randomizing may have hit)
