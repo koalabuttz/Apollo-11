@@ -83,7 +83,7 @@ SECTIONS {
     .rk_hardware 0x6fbe : { KEEP(*(.rk_hardware)) } >services
     .rk_flight 0x6fdd : { KEEP(*(.rk_flight)) } >services
     .rk_restart_lamp 0x6ff5 : { KEEP(*(.rk_restart_lamp)) } >services
-    /* rk_part_cont and rk_part_prev (resident_flight.h RK_PART): the part
+    /* rk_part_cont and rk_part_prev (resident_flight.h RK_PART_AT): the part
      * modules reach them by address. */
     .rk_part 0x6ff6 : { KEEP(*(.rk_part)) } >services
 }
@@ -93,7 +93,7 @@ ASSERT(ov2_irq_count==0x6fbc && SIZEOF(.rk_irq_count)==2,"ov2_irq_count is not a
 ASSERT(rk_hardware==0x6fbe && SIZEOF(.rk_hardware)<=0x1f,"rk_hardware is not at RK_HARDWARE or overlaps rk_flight")
 ASSERT(rk_flight==0x6fdd && SIZEOF(.rk_flight)<=0x18,"rk_flight is not at RK_FLIGHT_IO")
 ASSERT(rk_restart_lamp==0x6ff5 && SIZEOF(.rk_restart_lamp)==1,"rk_restart_lamp is not at RK_RESTART_LAMP")
-ASSERT(rk_part==0x6ff6 && SIZEOF(.rk_part)==2,"rk_part is not at RK_PART")
+ASSERT(rk_part==0x6ff6 && SIZEOF(.rk_part)==2,"rk_part is not at RK_PART_AT")
 __stack = 0xd000;
 ASSERT(__rk_resident_end<=0x6f00,"resident overlaps the ABI 2 service table")
 ASSERT(__dp_cassette_end<=0x03f2,"harness state overlaps the replay row at $03F2")
