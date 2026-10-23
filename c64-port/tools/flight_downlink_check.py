@@ -299,6 +299,14 @@ def main():
     p.add_argument('--timeout', type=int, default=1800)
     a = p.parse_args()
     commit = flight_holes.source_commit()
+    only = {x for x in a.only.split(',') if x} if a.only is not None else None
+    if a.run_vice:
+        # The C64 windows take DOWNRUPTs on build/flight-store/<m>.reu, so the
+        # store must be current (as tools/flight_scenario_vice.py builds it);
+        # summary.json records its sha256.
+        for m in sorted({window_row(w[1])[1] for w in VICE_WINDOWS if not only or w[0] in only or w[1] in only}):
+            subprocess.run([sys.executable, 'tools/flight_store_build.py', '--missions', m, '--host-cc', a.host_cc],
+                           cwd=ROOT, check=True)
     if not a.skip_index:
         subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--host-cc', a.host_cc],
                        cwd=ROOT, check=True)
@@ -306,7 +314,6 @@ def main():
     exe = {m: fhd.build(a.host_cc, m, engine) for m in ('lm', 'cm')}
     OUT.mkdir(parents=True, exist_ok=True)
     frc.OUT = OUT   # frc.run writes its logs here
-    only = {x for x in a.only.split(',') if x} if a.only is not None else None
     if a.downrupts < 1:
         sys.exit('FAIL: --downrupts must be at least 1')
     if only is not None:
