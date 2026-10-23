@@ -890,11 +890,12 @@ static unsigned differs(const agc_word *a,const agc_word *b){unsigned i,n=0;for(
 
 /* Unregistered points, in order of first arrival. */
 enum { HOLES=512 };
-static struct { uint16_t key; uint8_t in; agc_word z,fb,q; unsigned long count,instructions; const char *by; } holes[HOLES];
+static struct { uint16_t key,qat; uint8_t in; agc_word z,fb,q; unsigned long count,instructions; const char *by; } holes[HOLES];
 static unsigned nholes;
 static void hole(const agc_word *w,agc_word sb,unsigned long instructions,const char *by){int in;uint16_t key=point(w,sb,&in);unsigned i;
  for(i=0;i<nholes;++i)if(holes[i].key==key&&holes[i].in==(uint8_t)in&&holes[i].by==by){++holes[i].count;holes[i].instructions+=instructions;return;}
  if(nholes<HOLES){holes[nholes].key=key;holes[nholes].in=(uint8_t)in;holes[nholes].z=w[5];holes[nholes].fb=w[4];holes[nholes].q=w[2];
+  holes[nholes].qat=agc_fixed_physical(w[2],w[4],sb);
   holes[nholes].count=1;holes[nholes].instructions=instructions;holes[nholes].by=by;++nholes;}}
 
 /* Set when the last routine was a RESUME: yaAGC then runs BRUPT (017),
@@ -1516,9 +1517,12 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  for(i=0;i<nreach;++i){if(reach_cs[i]<0)printf("reach %02o,%04o: not reached\n",reach_at[i]/1024u,reach_at[i]%1024u+02000u);
   else printf("reach %02o,%04o: at %ld cs\n",reach_at[i]/1024u,reach_at[i]%1024u+02000u,reach_cs[i]);}
  printf("unregistered or refused points (%u):\n",nholes);
- for(i=0;i<nholes;++i)printf("  %s %02o,%04o Z %05o FB %05o Q %05o: %lu arrivals, %lu instructions%s%s\n",holes[i].in?"interp":"basic ",
-  holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q,holes[i].count,holes[i].instructions,
-  holes[i].by?", refused by ":"",holes[i].by?holes[i].by:"");
+ for(i=0;i<nholes;++i){printf("  %s %02o,%04o Z %05o FB %05o Q %05o",holes[i].in?"interp":"basic ",
+  holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q);
+  /* Q's own fixed point, so a bridged TC Q return names its routine
+   * (the TC at Q - 1 called it; tools/flight_holes.py). */
+  if(holes[i].qat!=AGC_TRANSFER_NONE)printf(" at %02o,%04o",holes[i].qat/1024u,holes[i].qat%1024u+02000u);
+  printf(": %lu arrivals, %lu instructions%s%s\n",holes[i].count,holes[i].instructions,holes[i].by?", refused by ":"",holes[i].by?holes[i].by:"");}
  printf("module loads (%lu in %lu cs):\n",nloads,now(s.words));
  for(i=0;i<nload_points;++i)printf("  load %s slot %u %s %02o,%04o: %lu\n",loads[i].module,loads[i].slot,loads[i].in?"interp":"basic ",
   loads[i].key/1024u,loads[i].key%1024u+02000u,loads[i].count);

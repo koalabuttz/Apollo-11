@@ -10,6 +10,7 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
+import flight_holes  # noqa: E402
 import program_acceptance as pa  # noqa: E402
 
 HEAD = 'abc123'
@@ -198,6 +199,35 @@ class ProgramAcceptance(unittest.TestCase):
                 for point, label in row.get('reach', []):   # a fixed point, as the host reports print it
                     self.assertRegex(point, r'^[0-7]{2},[23][0-7]{3}$', row['row'])
                     self.assertTrue(label and row['status'] == 'mapped', row['row'])
+
+
+class HoleLabels(unittest.TestCase):
+    """flight_holes names a bridged erasable point: a register or erasable
+    symbol, and a TC Q return after the routine the caller's TC calls."""
+
+    def words(self):
+        w = flight_holes.Words({(0o43, 0o2642): ('EXTENDED_VERBS.agc', ('RDRUSECK', 0o2642))})
+        w.values_at = {(0o43, 0o2413): 0o12420, (0o43, 0o2414): 0o2642}
+        w.erasable = {**dict(enumerate(flight_holes.REGISTERS)), 0o110: 'RADMODES', 0o2200: 'AGSBUFF'}
+        return w
+
+    def describe(self, line):
+        return flight_holes.describe(flight_holes.HOLE.match(line), self.words(), {'Luminary099/EXTENDED_VERBS.agc': 'C'}, 'lm')
+
+    def test_tc_q_return(self):
+        d = self.describe('  basic  50,2002 Z 00002 FB 66000 Q 02415 at 43,2415: 1 arrivals, 1 instructions')
+        self.assertEqual((d['label'], d['file'], d['lane'], d['arrivals']), ('RDRUSECK TC Q', 'EXTENDED_VERBS.agc', 'C', 1))
+        # Q's word before is not a TC (here a TCF): the register only.
+        d = self.describe('  basic  50,2002 Z 00002 FB 66000 Q 02414 at 43,2414: 1 arrivals, 1 instructions')
+        self.assertEqual((d['label'], d['file']), ('Q', 'erasable'))
+
+    def test_erasable_symbols(self):
+        self.assertEqual(flight_holes.label(self.words(), '50,2110'), 'RADMODES')
+        self.assertEqual(flight_holes.label(self.words(), '50,2112'), 'RADMODES+2')
+        self.assertEqual(flight_holes.label(self.words(), '51,2200'), 'AGSBUFF')  # E4,1600: physical 2200
+        self.assertEqual(flight_holes.label(self.words(), '43,2642'), 'RDRUSECK')
+        d = self.describe('  basic  43,2642 Z 02642 FB 66000 Q 01234: 2 arrivals, 5 instructions, refused by x')
+        self.assertEqual((d['label'], d['refused_by'], d['instructions']), ('RDRUSECK', 'x', 5))
 
 
 if __name__ == '__main__':
