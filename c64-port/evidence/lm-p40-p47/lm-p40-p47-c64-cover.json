@@ -491,8 +491,8 @@
   197144,
   197145
  ],
- "host_branch_arcs": 2585,
- "c64_branch_arcs": 2585,
+ "host_branch_arcs": 2588,
+ "c64_branch_arcs": 2588,
  "arcs_by_source_host_c64": {
   "include/agc_channel_ops.h": [
    28,
@@ -559,12 +559,12 @@
    0
   ],
   "tools/interp_routine_native.c": [
-   31,
-   31
+   34,
+   34
   ]
  },
  "host_branches_missing_on_c64": [],
- "all_cases_branch_arcs": 2572,
+ "all_cases_branch_arcs": 2575,
  "all_cases_branches_missing_on_c64": [],
  "truncated_rows": [
   {

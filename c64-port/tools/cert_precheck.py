@@ -861,11 +861,29 @@ def check_arms(report, label, path, certificate, specs):
         proof = ROOT / 'evidence' / key / f'{key}-proof.json'
         if not proof.exists():
             continue
+        loops_note(report, label, key, proof)
         why = cert_arms.problems(key, allow.get(key), specs[key])
         if why:
             report.add('FAIL', label, f'interp spec {key}: untaken-arm record {why}',
                        f'run `tools/cert_arms.py measure {key}` and triage its UNTRIAGED arms '
                        'in tools/cert_arms_allow.py')
+
+
+def loops_note(report, label, key, proof):
+    """NOTE the cases a spec's frozen set leaves out as loops (the proof's
+    'loops', tools/interp_routine_differential.py loops_record): an arm only
+    those cases reach shows in cert_arms as untaken."""
+    try:
+        loops = json.loads(proof.read_text()).get('loops') or {}
+    except (OSError, ValueError):
+        return
+    for k, what in (('erasable_cadr_cycle', 'erasable-CADR cycle'), ('step_cap', 'step-cap loop')):
+        by = loops.get(k) or {}
+        if k == 'step_cap':
+            by = by.get('routines') or {}
+        if by:
+            report.add('NOTE', label, f'interp spec {key}: {sum(by.values())} cases left out as {what}s (both sides '
+                       'loop): ' + ', '.join(f'{r} x{n}' for r, n in by.items()))
 
 
 DSKY_SWEEP_FILES = ('PINBALL_GAME_BUTTONS_AND_LIGHTS.agc',)
