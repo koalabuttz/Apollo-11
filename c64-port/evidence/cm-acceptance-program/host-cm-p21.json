@@ -1,0 +1,25 @@
+{
+ "scenario": "cm-p21-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 25000,
+ "keys": "@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E@19500V37E21E@20500V33E@21500V33E@22500V33E@23500V33E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_CHAN": "4000:033=077757,9000:033=077777,11600:033=077757,13000:033=077777",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 25001,
+ "periods_taken": 25000,
+ "periods_dropped": 1,
+ "agc_centiseconds": 25000,
+ "native_routines": 1463448,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "8c4ed64b95de2b35f1eb72de534e00addfe90ebfb770e490efd5c1752e2a6d76"
+}

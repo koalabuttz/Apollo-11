@@ -1,0 +1,25 @@
+{
+ "scenario": "cm-tli-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 70000,
+ "keys": "@3000V37E47E@66000V33E@66500V37E00E@67000V82E@69000V33E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_SIVB": "30000,0.423909,-0.000000,-0.905705",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-tli.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 70000,
+ "periods_taken": 70000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 70000,
+ "native_routines": 3859235,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "0a663dc4abe94bef935a140058171f9e47141ebc22834b7c3b38ad130f1251c9"
+}

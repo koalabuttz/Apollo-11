@@ -1,0 +1,26 @@
+{
+ "scenario": "cm-entry-overload-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 32000,
+ "keys": "@2200V37E61E@4800V33E@5400V33E@6000V33E@6800V33E@7400V33E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-entry.load",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_AERO": "355",
+  "FLIGHT_STEAL": "21000-27000:600",
+  "FLIGHT_BUSY_SAMPLE": "50"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "8a7d27a15a6a",
+ "cia_interrupts": 32015,
+ "periods_taken": 32015,
+ "periods_dropped": 0,
+ "agc_centiseconds": 32015,
+ "native_routines": 1172342,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "log_sha256": "07f5822f1d444b9caed08d9d0713eac87ddfd4829251cc9c8ba61122396e2707"
+}

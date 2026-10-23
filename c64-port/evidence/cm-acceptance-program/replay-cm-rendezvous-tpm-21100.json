@@ -1,0 +1,77 @@
+{
+ "scenario": "cm-rendezvous-tpm",
+ "ok": false,
+ "status": 0,
+ "z": "06037",
+ "fb": "22000",
+ "superbank": "0060",
+ "bank": "11",
+ "at": "03,2037",
+ "wall_cycles": 74121392,
+ "agc_cs": 339,
+ "dropped_ticks": 0,
+ "steps": 1187,
+ "wall_per_agc": 22.192,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 21100,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 12
+ },
+ "replay_rows": 11,
+ "replay_applied": 11,
+ "replay_end_cs": 339,
+ "replay_ended": true,
+ "replay_unpaired": [
+  {
+   "side": "host",
+   "cs": 338,
+   "end": true
+  },
+  {
+   "side": "C64",
+   "cs": 339,
+   "end": true
+  },
+  {
+   "side": "host",
+   "cs": 138
+  },
+  {
+   "side": "C64",
+   "cs": 139
+  },
+  {
+   "side": "host",
+   "cs": 238
+  },
+  {
+   "side": "C64",
+   "cs": 239
+  }
+ ],
+ "replay_unpaired_count": 4,
+ "replay_end_shift_cs": 1,
+ "replay_end_paired": false,
+ "replay_matched_cs": [],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 21100,
+ "snap_slid": false,
+ "requested_cs": 338,
+ "host_holes": [],
+ "commit": "8a7d27a15a6a"
+}
