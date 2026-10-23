@@ -131,6 +131,10 @@ static void press_due(uint16_t elapsed)
 }
 #endif
 
+/* The low and screen regions load_snapshot fills (resident_flight.ld). */
+extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
+extern uint8_t __rk_dsky_data_start[], __rk_dsky_data_end[], __rk_dsky_data_load[];
+extern uint8_t __dp_screen_start[], __dp_screen_end[], __dp_screen_load[];
 #ifdef DP_REPLAY
 /* The host run's inputs over the window and its end state
  * (tools/flight_host_run.c FLIGHT_REPLAY, tools/flight_scenario_vice.py
@@ -208,8 +212,13 @@ static uint16_t replay_now CASSETTE;
  * resident_flight.ld .dsky: free in this program), which load_snapshot
  * fills from its load copy, not from the resident's RAM. */
 #define LOW_TEXT(name) __attribute__((noinline, section(".dsky.text." name)))
-extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
-extern uint8_t __rk_dsky_data_start[], __rk_dsky_data_end[], __rk_dsky_data_load[];
+/* Code in the text screen (resident_flight.ld .dp_screen), but in the
+ * resident for the hardware check, whose text the screen shows. */
+#ifdef DP_HW_CHECK
+#define DP_SCREEN_TEXT(name) __attribute__((noinline))
+#else
+#define DP_SCREEN_TEXT(name) __attribute__((noinline, section(".dp.screen." name)))
+#endif
 #define LOW_DATA __attribute__((section(".dsky.text.dp_steps")))
 LOW_DATA static const uint8_t phase_step[9] = {2, 3, 1, 2, 3, 1, 2, 3, 1};
 LOW_TEXT("dp_early") static uint8_t row_early(void)
@@ -327,11 +336,17 @@ static uint16_t outputs_bytes CASSETTE;
 static uint8_t outputs_full CASSETTE, outputs_started CASSETTE;
 /* Where each channel's value is: on the CM, rk_device (cm_native_io)
  * holds channels 11-14 (tools/flight_scenario_vice.py c64_states). The
- * list's code and tables sit in the screen's last rows (the flight DSKY's
- * table area, resident_flight.ld .dsky_data: free here; load_snapshot
- * copies it), not in the resident or the full $0200 region. */
-#define OUT_DATA       __attribute__((section(".dsky.rodata.dp_outputs_tab")))
-#define OUT_TEXT(name) __attribute__((noinline, section(".dsky.rodata.dp_outputs_" name)))
+ * list's code and tables sit in the text screen (resident_flight.ld
+ * .dp_screen: unused here; load_snapshot copies it; the hw check keeps its
+ * screen, so there they stay in .text), not in the resident or
+ * the full $0200 region. */
+#ifdef DP_HW_CHECK
+#define OUT_DATA
+#define OUT_TEXT(name) __attribute__((noinline))
+#else
+#define OUT_DATA       __attribute__((section(".dp.screen.dp_outputs_tab")))
+#define OUT_TEXT(name) __attribute__((noinline, section(".dp.screen.dp_outputs_" name)))
+#endif
 OUT_DATA static const uint8_t output_number[6] = {05u, 06u, 011u, 012u, 013u, 014u};
 OUT_DATA static const uint16_t *const output_at[6] = {
     &rk_hardware.channel5,  &rk_hardware.channel6,
@@ -369,7 +384,7 @@ OUT_TEXT("text") static void outputs_log(uint16_t t)
 }
 #endif
 /* The rows due before this step; 1 when the window ends here. */
-__attribute__((noinline)) static uint8_t replay_due(void)
+DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
 {
     uint16_t t = replay_cs();
     uint8_t sp = sample_point(t);
@@ -413,11 +428,13 @@ static void BOOT load_snapshot(void){
     memcpy(IMAGE->words, snap_words, sizeof snap_words);
 #ifdef DP_REPLAY
     memcpy(__rk_dsky_start, __rk_dsky_load, (size_t)(__rk_dsky_end - __rk_dsky_start));
-#if DP_OUTPUTS_MAX
+#endif
+    /* The text screen: the output drive (resident_cdu.S), the output list
+     * and DP_SCREEN_TEXT code; for the hardware check, the drive in the
+     * last rows. */
+    memcpy(__dp_screen_start, __dp_screen_load, (size_t)(__dp_screen_end - __dp_screen_start));
     memcpy(__rk_dsky_data_start, __rk_dsky_data_load,
            (size_t)(__rk_dsky_data_end - __rk_dsky_data_start));
-#endif
-#endif
 #ifdef RK_STEP_PROFILE
  memset(prof, 0, DP_SEGMENTS * sizeof(dp_segment));
 #endif
@@ -682,7 +699,12 @@ static void BOOT hw_start(void)
     VIC[0x18] = 0x15u;
     VIC[0x20] = 0;
     VIC[0x21] = 0;
-    for (i = 0; i < 1000u; ++i) SCREEN[i] = 0x20u;
+    /* Black on black where nothing is printed: the output drive runs from
+     * the last rows during the window (resident_cdu.S). */
+    for (i = 0; i < 1000u; ++i) {
+        SCREEN[i] = 0x20u;
+        COLOUR[i] = 0;
+    }
     hw_puts(t_title);
     /* PAL counts 312 raster lines, NTSC 262 or 263. */
     while (!(VIC[0x11] & 0x80u)) {
