@@ -260,12 +260,17 @@ instead a work clock: AGC time advances by the work the resident ran.
   `docs/flight-routine-mct.json` (the x86_64 build uses the same file).
   `tools/resident_flight_build.py` and `tools/flight_store_build.py`
   compute them. The resident's weight leaves out the Executive idle table
-  (LM 35, CM 73). The compact interpreter charges `RK_INTERP_MCT` per
-  interpretive word it runs: yaAGC's mean MCT per word in the
-  interpreter's banks over the CM entry and LM P63 scenarios
-  (`docs/flight-interp-mct.json`, `tools/interp_word_mct.py`; CM 237, LM
-  264 capped at 255). The host's interpretive tables with no calibrated
-  runs get the same mean. The interrupt wrappers report their weight in
+  (LM 35, CM 73). The compact interpreter charges each interpretive word
+  it runs from a table fitted per order and store kind to yaAGC's MCT
+  over the CM entry and LM P63 scenarios (`include/interp_word_mct.h`,
+  `docs/flight-interp-mct.json`, `tools/interp_word_mct.py`; RMS error
+  102 MCT a word). It is a fitted charge, not yaAGC's count for the word:
+  the host and the C64 share it, so "C64 matches host" says nothing about
+  it. Each scaled host run prints its sum against yaAGC's MCT over the
+  same spans ("interpreter charge"); `tools/flight_host_differential.py`
+  fails a run more than 20% off (at the 10-19 table the flight scenarios
+  are 0.2-7.5% over yaAGC, CM P11 17.8%; issue #765). The host's
+  interpretive tables with no calibrated runs get the mean per word. The interrupt wrappers report their weight in
   `rk_module_env.scale`, and a module reports its routine count in
   `rk_module_env.work`.
 - A module runs at most `rk_module_limit(budget, mct)` routines before it

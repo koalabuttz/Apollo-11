@@ -2305,7 +2305,8 @@ static NI void ccs_edop(void)
     W[023] = (agc_word)((W[023] >> 7) & 0177u);
 }
 /* The flight module's work clock (platform/c64/interp_module.c): each word
- * NEWOPS fetches adds its yaAGC MCT (include/interp_word_mct.h) to
+ * NEWOPS fetches adds its fitted charge (include/interp_word_mct.h: a
+ * per-order fit to yaAGC's MCT, not the word's own count) to
  * lm_interp_core_mct, which the module starts at 0x8000 less the step's
  * budget (WORK_DUE below). With INTERP_WORD_CHARGE, the host's
  * tools/interp_flight_replay.c zeroes it per call and checks it against
