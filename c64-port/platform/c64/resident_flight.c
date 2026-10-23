@@ -77,6 +77,9 @@ uint16_t rk_budget(void);
 /* The part group of the run rk_charge charges next (rk_direct sets it), 0
  * for any other run. */
 static uint8_t rk_charge_group;
+/* The hand-off each context's last step left (0: the job, 1: an interrupt),
+ * and the context of the step before (rk_step_run). */
+uint8_t rk_part_held[2], rk_part_last;
 /* n units of mct each: n added mct times (no multiply on the 6502; mct
  * is a weight, at most 255, and 1 for a module that reports MCT), or for
  * the idle loop (RK_MCT_IDLE), the rest of the period, which rk_rupts
@@ -608,19 +611,13 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
             RK_PROF(5);
             /* A refused call ran: the next slot works its point out again. */
             if (steps) point = AGC_TRANSFER_NONE;
-#ifdef RK_WORK_CLOCK
-            rk_part_cont = 0; /* a refused run handed nothing back */
-#endif
             continue;
         }
         RK_PROF(6);
-        status = rk_module_status(status, steps, limit);
 #ifdef RK_WORK_CLOCK
-        /* Only a run that ends well hands its routine to the next part. */
-        if (status != EXEC_OK) rk_part_cont = 0;
         rk_charge(steps, mct);
 #endif
-        return status;
+        return rk_module_status(status, steps, limit);
     }
 #ifdef RK_WORK_CLOCK
     rk_charge_group = 0; /* no slot ran: the resolver's charge is its own */
@@ -637,8 +634,16 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     enum exec_status status;
     uint16_t loc;
 #ifdef RK_WORK_CLOCK
-    rk_part_prev = rk_part_cont;
-    rk_part_cont = 0;
+    {
+        /* Each context (the job, an interrupt: AOSTASK runs inside T3RUPT)
+         * goes on from its own last step, so a T4RUPT between two parts of a
+         * job's routine leaves the job's hand-off for the job's next step. */
+        uint8_t r = rk_hardware.in_interrupt != 0;
+        rk_part_held[rk_part_last] = rk_part_cont;
+        rk_part_last = r;
+        rk_part_prev = rk_part_held[r];
+        rk_part_cont = 0;
+    }
 #endif
 #ifndef RK_NO_DIRECT
     rk_point = AGC_TRANSFER_NONE;
@@ -809,18 +814,6 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
             st = rk_memo_step(stop_physical);
             goto out;
         }
-    }
-#endif
-#ifdef RK_WORK_CLOCK
-    /* An interrupt's steps keep the job's part hand-off (rk_part_cont) for
-     * the job's next step, and charge their own runs as fresh: a T4RUPT
-     * between two parts of a job's routine does not charge it again. */
-    if (rk_hardware.in_interrupt) {
-        uint8_t cont = rk_part_cont;
-        rk_part_cont = 0;
-        st = rk_step_run(stop_physical);
-        rk_part_cont = cont;
-        goto out;
     }
 #endif
     st = rk_step_run(stop_physical);

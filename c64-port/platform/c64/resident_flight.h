@@ -208,6 +208,9 @@ extern rk_module_env rk_env;
 extern uint8_t rk_part[2];
 #define rk_part_cont (*(uint8_t *)RK_PART_AT)
 #define rk_part_prev (*(uint8_t *)(RK_PART_AT + 1u))
+/* The hand-off each context's last step left (0: the job, 1: an
+ * interrupt: AOSTASK runs inside T3RUPT) and the last step's context. */
+extern uint8_t rk_part_held[2], rk_part_last;
 /* The routines of a part's run to charge: its first one is not, when it
  * goes on with the routine the previous step's part handed back. That first
  * routine is the one the host charged in full in the previous step; a part
