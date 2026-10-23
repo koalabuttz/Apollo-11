@@ -300,6 +300,12 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
             row_early())
             return;
         w = (uint16_t *)row.addr;
+        /* An interrupt request whose bit the C64 has not taken yet waits
+         * for it: two rows of one bit mean the host took the interrupt
+         * between them, and ORing the second into a bit still set would
+         * lose one (cm-rendezvous-tpm 26620: two KEYRUPT1s at 141 cs). */
+        if (row.kind == 3 && (*w & row.value))
+            return;
         __asm__ volatile("sei");
         if (row.kind == 1) {
             /* tools/flight_host_run.c pipa_add: a signed count into a ones'
