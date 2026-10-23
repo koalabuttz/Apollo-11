@@ -267,9 +267,14 @@ instead a work clock: AGC time advances by the work the resident ran.
   102 MCT a word). It is a fitted charge, not yaAGC's count for the word:
   the host and the C64 share it, so "C64 matches host" says nothing about
   it. Each scaled host run prints its sum against yaAGC's MCT over the
-  same spans ("interpreter charge"); `tools/flight_host_differential.py`
-  fails a run more than 20% off (at the 10-19 table the flight scenarios
-  are 0.2-7.5% over yaAGC, CM P11 17.8%; issue #765). The host's
+  same spans ("interpreter charge"). For a run of 1,000 routines or more,
+  `tools/flight_host_differential.py` fails the run, and program and
+  device acceptance mark its row failed, when the net error is over 20% or
+  the error summed routine by routine (so over- and under-charges cannot
+  cancel) is over 45% of yaAGC's MCT. On da027bee the 58 such runs are
+  -0.7..+17.8% net (CM P11 highest) and 14.4..39.3% routine by routine;
+  the second bound guards against regressions and is not an accuracy
+  claim. Smaller runs are reported, not bounded (issue #765). The host's
   interpretive tables with no calibrated runs get the mean per word. The interrupt wrappers report their weight in
   `rk_module_env.scale`, and a module reports its routine count in
   `rk_module_env.work`.

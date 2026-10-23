@@ -956,11 +956,59 @@ def build(cc, m, engine):
 # The interpretive words' charge is a fitted per-order table
 # (tools/interp_word_mct.py, include/interp_word_mct_table.h), the same on
 # the host and the C64. Each scaled run reports it against yaAGC's own MCT
-# over the same spans (flight_host_run.c "interpreter charge", issue #765);
-# a run with at least CHARGE_MIN_ROUTINES of them fails beyond CHARGE_BOUND
-# percent. At the 10-19 table the runs are 0.2-7.5% over, CM P11 17.8%.
+# over the same spans (flight_host_run.c "interpreter charge", issue #765).
+# Two bounds, both needed for a run of at least CHARGE_MIN_ROUTINES
+# routines:
+# - the net error (fitted total against yaAGC's total) within
+#   CHARGE_BOUND percent;
+# - the absolute error routine by routine (the sum of |fitted - yaAGC|
+#   over yaAGC's total) within CHARGE_ABS_BOUND percent, so routines
+#   charged too much cannot hide routines charged too little.
+# The per-order table ignores data-dependent timing, so the absolute
+# error is large even when the net is small: measured on da027bee, 58
+# scaled runs of 1000+ routines, net -0.7..+17.8% (cm-p11) and absolute
+# 14.4..39.3% (cm-p11), 33.4% next (cm-p41). The absolute bound is a
+# regression guard on that measurement, not an accuracy claim; a
+# per-span refit would tighten it. yaAGC counts whole spans, so orders
+# inside one routine can still cancel. A run beyond either bound is
+# interpretive_charge.state 'over', which tools/program_acceptance.py and
+# tools/device_acceptance.py fail; a run under CHARGE_MIN_ROUTINES is
+# 'few', reported in both documents but not bounded.
 CHARGE_BOUND = 20.0
+CHARGE_ABS_BOUND = 45.0
 CHARGE_MIN_ROUTINES = 1000
+
+
+def charge_verdict(charge):
+    """The interpretive_charge row of one scaled run, from its report line
+    (fitted, yaagc, percent, routines, mean_abs_error), with abs_percent,
+    bound, state ('ok', 'over' or 'few') and text."""
+    c = dict(charge)
+    c['abs_percent'] = round(100.0 * c['mean_abs_error'] * c['routines'] / c['yaagc'], 1) if c['yaagc'] else 0.0
+    c['bound'] = dict(net=CHARGE_BOUND, routine=CHARGE_ABS_BOUND)
+    if c['routines'] < CHARGE_MIN_ROUTINES:
+        c['state'] = 'few'
+    else:
+        c['state'] = 'over' if abs(c['percent']) > CHARGE_BOUND or c['abs_percent'] > CHARGE_ABS_BOUND else 'ok'
+    c['text'] = (f"interpretive charge {c['percent']:+.1f}% net, {c['abs_percent']:.1f}% routine by routine, "
+                 f"from yaAGC's MCT over {c['routines']} routines; "
+                 + {'ok': f'within {CHARGE_BOUND:g}% net and {CHARGE_ABS_BOUND:g}% routine by routine',
+                    'over': f'OVER the bound ({CHARGE_BOUND:g}% net, {CHARGE_ABS_BOUND:g}% routine by routine)',
+                    'few': f'fewer than {CHARGE_MIN_ROUTINES} routines, not bounded'}[c['state']])
+    return c
+
+
+def charge_state(row):
+    """(state, text) of a summary row's interpretive charge: None, '' for a
+    row without one (an older summary, or a run with no interpretive
+    routine)."""
+    c = row.get('interpretive_charge')
+    if not c:
+        return None, ''
+    if 'state' not in c:
+        c = charge_verdict(c)
+    return c['state'], c['text']
+
 
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
@@ -1027,9 +1075,9 @@ def main():
         holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
         c = re.search(r'^interpreter charge: fitted (\d+) MCT, yaAGC (\d+) MCT \(([-+][0-9.]+)%\) over (\d+) routines; '
                       r'mean \|error\| ([0-9.]+) MCT', text, re.M)
-        charge = dict(fitted=int(c[1]), yaagc=int(c[2]), percent=float(c[3]), routines=int(c[4]),
-                      mean_abs_error=float(c[5])) if c else None
-        if charge and charge['routines'] >= CHARGE_MIN_ROUTINES and abs(charge['percent']) > CHARGE_BOUND:
+        charge = charge_verdict(dict(fitted=int(c[1]), yaagc=int(c[2]), percent=float(c[3]), routines=int(c[4]),
+                                     mean_abs_error=float(c[5]))) if c else None
+        if charge and charge['state'] == 'over':
             charge_over.append(name)
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, exit=r.returncode,
                    commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
@@ -1042,11 +1090,12 @@ def main():
         summary.append(row)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "
-              f"interrupts" + (f"; interpretive charge {charge['percent']:+.1f}% of yaAGC's" if charge else '')
+              f"interrupts" + (f"; {charge['text']}" if charge else '')
               + ('' if not r.returncode else ' FAILED'))
     (EVIDENCE / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
     if charge_over:
-        print(f"FAIL: the fitted interpretive charge is more than {CHARGE_BOUND}% from yaAGC's MCT in: {', '.join(charge_over)}")
+        print(f"FAIL: the fitted interpretive charge is more than {CHARGE_BOUND:g}% net or {CHARGE_ABS_BOUND:g}% "
+              f"routine by routine from yaAGC's MCT in: {', '.join(charge_over)}")
     return 1 if failed or charge_over else 0
 
 
