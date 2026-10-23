@@ -444,6 +444,12 @@ def main():
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     m = fhd.scenario(a.scenario)[1]
+    # A scenario whose host run has DOWNRUPT on (the uplink-accept rows, for
+    # V74's erasable dump) needs it on the C64 too, or the downlink list
+    # pointer (CTLIST) only moves on the host.
+    if fhd.scenario(a.scenario)[4].get('FLIGHT_DOWNRUPT') == '1' and not a.downrupt:
+        print(f'{a.scenario}: the scenario sets FLIGHT_DOWNRUPT, so --downrupt is on')
+        a.downrupt = True
     # Each window's files (snapshot, PRG, VICE directory, result) carry its
     # start, so windows of one scenario can run side by side.
     tag = f'{a.scenario}-{a.snap_cs}'
@@ -710,7 +716,7 @@ def main():
             windows=[{k: x.get(k) for k in ('ok', 'status', 'at', 'seam', 'error', 'replay_differences',
                                              'replay_differ_at_cs', 'replay_first', 'replay_matched_cs', 'replay_end_shift_cs',
                                              'replay_end_paired', 'replay_unpaired_count',
-                                             'requested_cs', 'wall_per_agc')} for x in results]), indent=1) + '\n')
+                                             'requested_cs', 'wall_per_agc', 'replay_skipped')} for x in results]), indent=1) + '\n')
         print(f"{a.scenario}: chain of {a.chain} windows from {a.snap_cs} cs: " + ('every window matches the host and every seam holds' if ok else f'FAIL at window {len(results) - 1}'))
     return 0 if all(x.get('ok') for x in results) and len(results) == a.chain else 1
 

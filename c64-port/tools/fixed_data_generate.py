@@ -466,8 +466,11 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output / 'audit.json').write_text(json.dumps(manifest, indent=2) + '\n')
     evidence = ROOT / 'evidence/fixed-data-audit.json.gz'
-    evidence.write_bytes(gzip.compress(json.dumps(manifest, sort_keys=True).encode(),
-                                       mtime=0))
+    audit = json.dumps(manifest, sort_keys=True).encode()
+    # Rewrite only when the audit changed: gzip's header OS byte differs between
+    # Python versions (3 before 3.12, 255 after), which dirtied the tracked file.
+    if not evidence.exists() or gzip.decompress(evidence.read_bytes()) != audit:
+        evidence.write_bytes(gzip.compress(audit, mtime=0))
     certificates = []
     symbol_header = ['/* SPDX-License-Identifier: MIT */',
                      '/* Generated original source label/alias bindings; no storage. */',

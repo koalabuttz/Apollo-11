@@ -42,7 +42,9 @@ static unsigned rd16(FILE *f){int a=fgetc(f),b=fgetc(f);if(a<0||b<0){fprintf(std
 static unsigned long rd32(FILE *f){unsigned long lo=rd16(f);return lo|(unsigned long)rd16(f)<<16;}
 /* visits: the points the run enters, in agc_transfer_run's order, so the
  * differential can pick C64 cases that stay within one group of routines. */
-static uint16_t visit[IRC_MAX_STEPS];static unsigned nvisit;
+static uint16_t visit[IRC_MAX_STEPS];static unsigned nvisit,visit_capped;
+/* (visit_capped: the run ended at max_steps with every step EXEC_OK, as
+ * agc_transfer_run's step cap; loop mode prints it.) */
 static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const irc_case *c,uint16_t max_steps){
  /* (the io records and input latches irc_run gives the routines) */
  lm_channel_io lio;cm_channel_io cio;agc_native_program q;void *io;agc_word superbank=c->superbank;unsigned i;agc_routine call;
@@ -52,17 +54,18 @@ static void irc_visits(const agc_native_program *p,apollo_overlay_state *s,const
  irc_inputs(c,&lio.in);cio.in=lio.in;
  if(c->cm)p=irc_cm_begin(p,&q,&cio.io);
  if(!c->cm){if(p->hardware){agc_hardware z={0};*p->hardware=z;}if(irc_ch_on)irc_lm_io(p->hardware,&lio.in,0);}
- io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;
+ io=c->cm?(void *)&cio:(void *)&lio;nvisit=0;visit_capped=0;
  while(nvisit<max_steps&&nvisit<IRC_MAX_STEPS){
   uint16_t pt=agc_transfer_point(p,s,superbank);
   call=agc_transfer_resolve(p,s,superbank);
-  if(!call)break;
+  if(!call)return;
 #ifdef IRC_CUTS
-  if(cut&&pt==cut)break;
+  if(cut&&pt==cut)return;
 #endif
   visit[nvisit++]=pt;
-  if(call(p,s,io)!=EXEC_OK)break;
+  if(call(p,s,io)!=EXEC_OK)return;
  }
+ visit_capped=nvisit>=max_steps;
 }
 /* cover: the labels of the compiled basic code a case reaches (a build with
  * -DIRC_COVER_ON). */
@@ -75,11 +78,15 @@ void irc_cover(unsigned k){if(k<8192u)cover[k>>3]=(uint8_t)(cover[k>>3]|1u<<(k&7
 #ifdef IRC_EDGE_COVER
 unsigned irc_edge_count(void);void irc_edges_reset(void);int irc_edge_hit(unsigned k);unsigned irc_edge_byte(unsigned k);
 #endif
-int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,edges,fbs;static FILE *f;static irc_edit edits[4096];
+int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,edges,fbs,loop;static FILE *f;static irc_edit edits[4096];
  /* (static: a case may longjmp back here, IRC_WRAP_EXIT) */
  if(argc<2)return 2;
  dump=argc>2&&!strcmp(argv[2],"dump");fbs=argc>2&&!strcmp(argv[2],"fb");visits=argc>2&&!strcmp(argv[2],"visits");covers=argc>2&&!strcmp(argv[2],"cover");
  edges=argc>2&&!strcmp(argv[2],"edges");
+ /* loop: as visits, with the steps the run took and whether it ended at the
+  * step cap (n<steps> k<0|1>) before the points (the differential's
+  * step-cap loops, #746). */
+ loop=argc>2&&!strcmp(argv[2],"loop");visits|=loop;
  f=fopen(argv[1],"rb");if(!f)return 2;
  {unsigned long mg=rd32(f);unsigned irc3=mg==0x33435249ul;if(mg!=0x32435249ul&&!irc3)return 2;
  for(m=0;m<2;++m){unsigned k,j;rd16(f);k=rd16(f);for(i=0;i<2u*k;++i)rd16(f);for(j=0;j<2u;++j){k=rd16(f);for(i=0;i<k;++i)rd16(f);}if(irc3){k=rd16(f);for(i=0;i<2u*k;++i)rd16(f);}}}
@@ -116,6 +123,7 @@ int main(int argc,char **argv){static unsigned n,i,m,count,dump,visits,covers,ed
   /* fb: the FB the run stops under, LOC and BANKSET, to place a stop in a bank (#325). */
   if(fbs)printf(" %u %u %u",(unsigned)(s.words[4]&077777u),(unsigned)(s.words[0164]&077777u),(unsigned)(s.words[0165]&077777u));
   if(dump){for(i=0;i<2048u;++i)printf(" %u",(unsigned)(s.words[i]&(i<2u?0177777u:077777u)));printf(" %u",(unsigned)ie);}
+  if(loop)printf(" n%u k%u",nvisit,visit_capped);
   if(visits)for(i=0;i<nvisit;++i)printf(" v%u",(unsigned)visit[i]);
   if(covers)for(i=0;i<8192u;++i)if(cover[i>>3]&(1u<<(i&7u)))printf(" c%u",i);
 #ifdef IRC_EDGE_COVER
