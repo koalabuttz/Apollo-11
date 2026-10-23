@@ -95,7 +95,7 @@ ARMS = {
     },
     'cm-imu-calibration': {
         'cases': 177152, 'cases_sha256': '285eeed2d18a54adb3e26ebcc91504f61f3aa233500453960421ff009b21fcaf',
-        'sources_sha256': {'src/cm_imu_calibration.c': '47164031b7d42f0e29ed51d17d2fc102675c2f0d39814d9e7328bf113ee4d530'},
+        'sources_sha256': {'src/cm_imu_calibration.c': 'fd49c548c8bda879abadbaa61f37939b998c3364c326f97c0bd947b9e0969440'},
         'arms': [
             {'src': 'src/cm_imu_calibration.c', 'line': 418, 'agc': '02,2562', 'op': 'EXTENDED BZF +4', 'what': 'never falls through', 'class': 'IMPOSSIBLE', 'why': 'impossible inside the certificate domain (input channels latched for the run; the resident advances scalers only between steps), not on the real AGC: falls through only when SCALER1 ticks between the READ at 02,2555 and the RXOR at 02,2560, the hardware race FINETIME guards. In this port the scalers advance only between steps (src/resident_rupt.c rk_timer_phase; the host and x86 runs use the same timer model), and FINETIME+0 to +4 runs inside one step, so both READs see the same LOSCALAR and the BZF always branches (interp_specs.py cm-imu-calibration idle note). Equivalent to the race never landing.'},
             {'src': 'src/cm_imu_calibration.c', 'line': 699, 'agc': '33,2102', 'op': 'CCS NDXCTR', 'what': 'CCS never <0/-0', 'class': 'IMPOSSIBLE', 'why': 'NDXCTR = 0 (:78), plus at most one INCR when gimbal lock is seen (:113). No other writer'},

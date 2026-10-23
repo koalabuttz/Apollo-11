@@ -9397,9 +9397,9 @@ static enum exec_status cm_imu_calibration_flight_entry(const agc_native_program
  if(!s||!io)return EXEC_OUT_OF_SCOPE;
  at=agc_fixed_physical(W[5],W[4],io->superbank);
  switch(at/1024u){
- case 02u:if(!basic_sane(s,io,0177777u))return EXEC_OUT_OF_SCOPE;agc_channels_in=&((cm_channel_io *)v)->in;return basic_run(s,io,at);
+ case 02u:if(!(at==2411u||at==2412u?basic_sane_any_eb(s,io,0177777u):basic_sane(s,io,0177777u)))return EXEC_OUT_OF_SCOPE;agc_channels_in=&((cm_channel_io *)v)->in;return basic_run(s,io,at);
  case 04u:if(!basic_sane(s,io,010000u))return EXEC_OUT_OF_SCOPE;agc_channels_in=&((cm_channel_io *)v)->in;return basic_run(s,io,at);
- case 033u:if(!basic_sane(s,io,066000u))return EXEC_OUT_OF_SCOPE;agc_channels_in=&((cm_channel_io *)v)->in;return basic_run(s,io,at);
+ case 033u:if(!(at==28188u?basic_sane_any_eb(s,io,066000u):basic_sane(s,io,066000u)))return EXEC_OUT_OF_SCOPE;agc_channels_in=&((cm_channel_io *)v)->in;return basic_run(s,io,at);
  }
  return EXEC_OUT_OF_SCOPE;
 }
