@@ -130,9 +130,10 @@ int main(int argc, char **argv)
         }
         if (fs_sample_point(&in, &st)) {
             unsigned long t = fd_centiseconds(&st);
-            if (fs_inputs_due(&in, &st)) continue;
+            const int due = fs_inputs_due(&in, &st);
             /* As the harness's FLIGHT_SNAPSHOT: after the point's pokes,
-             * models and channel changes, and only with nothing pending. */
+             * models, channel changes and restart or key, and only with
+             * nothing pending (so after a GOJAM, not after a key). */
             for (; next <= cs && t >= next && !st.pending; ++next)
                 if (samples && next >= from) {
                     unsigned i;
@@ -140,6 +141,7 @@ int main(int argc, char **argv)
                     for (i = 0; i < 2048u; ++i) fprintf(samples, " %05o", (unsigned)st.s.words[i]);
                     fputc('\n', samples);
                 }
+            if (due) continue;
             if (live) td_read_keys(&dsky);
             if (dsky.quit) break;
             if (td_inputs_due(&dsky, &st)) continue;

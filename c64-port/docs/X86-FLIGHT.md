@@ -144,7 +144,9 @@ The CM's VHF dropout (`cm-p20-vhf-dropout`) moves the marks and so both blocks.
 
 The word count is what sees programs that don't move the state vector. With the mark buttons left out of the x86 run (`--drop-keys MJxyj`), P52 differs in 210 words against a limit of 19 and P57 in 188 against 37, so both fail. P22 and P23 fail on RN as well.
 
-On base 085a9162 the tool flies 66 scenarios, and all pass. 59 reach their compare point, six of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The other seven stop at a Pinball point not yet certified, exactly where expected (Gaps).
+On base e164cd37 the tool flies 75 scenarios, and all pass. 68 reach their compare point, six of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The other seven stop at a Pinball point not yet certified, exactly where expected (Gaps).
+
+The nine restart rows (`fhd.RESTART_FLIGHT`: a `FLIGHT_GOJAM` in each phase, the same rows `tools/flight_restart_check.py` checks against yaAGC) are flown too. Every row with a restart, these, `lm-p63-descent-restart` and the V69 rows, must also count as many restarts as the harness on one of its clocks (REDOCTR: LM 0320, CM 01154), because a restart that resumes the same program can leave the state vector and most words as they were. With `FLIGHT_GOJAM` ignored in the x86 run only, 8 of those 10 `FLIGHT_GOJAM` rows fail on REDOCTR (only 2 failed before the check). The other two can't see it: `lm-p00-doi-restart`'s harness clocks count 0 and 1 at the compare point, and `cm-p00-p40-restart`'s compare point is the GOJAM itself. Like the harness's FLIGHT_SNAPSHOT, the x86 program's samples are taken after a sample point's restart (nothing is pending after a GOJAM); before, it sampled one step late at the GOJAM and `cm-p00-p40-restart` differed in 171 words against a limit of 163.
 
 The NASSP rows start from the harness's state at the core dump's time (`X86_START`), and the `lm-p63-lr-*` rows fly the landing radar. So the LM RCS, the throttle lag, touchdown, the P66 crew, the ascent and the abort stage are now compared with the harness (`lm-p63-nassp`, `lm-p67-nassp`, `lm-landing-ascent-nassp`, `lm-abort-p70-nassp`, `lm-abort-p71-nassp`), as well as checked by `test_vehicle_models.c`.
 
@@ -193,6 +195,13 @@ Compared directly with the harness:
 | `lm-abort-p70-nassp` | 106 / 106 | 401 m (1467; 354) | 0.42 m/s (1.51; 0.34) | 264 (418; 272) |
 | `lm-abort-p71-nassp` | 107 / 107 | 957 m (3011; 740) | 0.87 m/s (3.02; 0.72) | 342 (436; 284) |
 | `lm-p63-descent-restart` | 77 / 77 | 7 m (796; 187) | 0.16 m/s (1.25; 0.28) | 212 (422; 275) |
+| `lm-p00-doi-restart` | 00 / 00 | 2 m (58; 2) | 0.01 m/s (0.20; 0.01) | 247 (361; 234) |
+| `lm-doi-burn-restart` | 50 / 50 | 2 m (117; 17) | 0.01 m/s (0.19; 0.01) | 123 (218; 139) |
+| `lm-p12-restart` | 14 / 14 | 133 m (220; 42) | 0.38 m/s (0.45; 0.08) | 387 (622; 408) |
+| `cm-p00-p40-restart` | 00 / 00 | 4 m (68; 4) | 0.06 m/s (0.39; 0.06) | 102 (163; 102) |
+| `cm-p40-burn-restart` | 50 / 50 | 8 m (83; 8) | 0.08 m/s (0.48; 0.08) | 148 (229; 146) |
+| `cm-entry-restart` | 103 / 103 | 34 m (541; 123) | 0.61 m/s (5.05; 1.23) | 305 (425; 277) |
+| `cm-p22-restart` | 26 / 26 | 0 (50; 0) | 0.02 m/s (0.23; 0.02) | 59 (118; 72) |
 | `lm-coast-verbs` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 49 (85; 50) |
 | `lm-coast-programs` | 06 / 06 | 0 (50; 0) | 0 (0.15; 0.00) | 118 (175; 110) |
 | `lm-p51` | 63 / 63 | 0 (50; 0) | 0 (0.15; 0.00) | 10 (17; 5) |
@@ -209,6 +218,8 @@ The rendezvous scenarios whose state vector the marks move, compared with the tr
 | Scenario | Major mode | RN from the true orbit (limit; harness's larger error) | VN (limit; harness) | Words differing (limit; harness's clocks) | Alarm codes (harness / x86) |
 |---|---|---|---|---|---|
 | `cm-p20` | 24 / 24 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 457 (602; 395) | same |
+| `lm-rendezvous-restart` | 24 / 24 | 57 m (270; 55) | 0.31 m/s (1.64; 0.37) | 650 (1000; 660) | same |
+| `cm-p20-restart` | 24 / 24 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 465 (589; 386) | same |
 | `lm-rendezvous` | 42 / 42 | 16 m (456; 102) | 0.20 m/s (1.07; 0.23) | 674 (1004; 663) | same |
 | `lm-rendezvous-rr-dropout` | 42 / 42 | 18 m (520; 118) | 0.19 m/s (0.95; 0.20) | 604 (973; 642) | same |
 | `lm-rendezvous-tpm` (known) | 114 / 114 | 62 m (524; 119) | 0.25 m/s (1.16; 0.25) | 895 (1024; 676) | 0376 00000 / 00611 |

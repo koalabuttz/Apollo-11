@@ -164,6 +164,13 @@ STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
 PIPTIME = {'lm': 0o1234, 'cm': 0o1204}
 # FAILREG and the two alarm code registers after it (both missions).
 FAILREG = (0o375, 0o376, 0o377)
+# REDOCTR, the count of restarts each restart's GOPROG adds to
+# (Luminary099 and Comanche055 ERASABLE_ASSIGNMENTS.agc). A row with a
+# restart (FLIGHT_GOJAM, or the TC trap's) must count as many as the harness
+# on one of its two clocks (they can differ just after the GOJAM):
+# a restart that resumes the same program can leave the state vector and
+# most words as they were, so this is what sees that the x86 run took it.
+REDOCTR = {'lm': 0o320, 'cm': 0o1154}
 # The two vehicles' permanent state blocks (RRECTCSM ... and RRECTLEM ...:
 # RRECT, VRECT, TET at +014, DELTA +016, NUV +024, RCV +032, VCV +040), at
 # the same addresses on both missions. Which one a mark updates is
@@ -174,7 +181,7 @@ MOON_MU = 4.9028e12
 
 
 def supported():
-    return [row for row in fhd.FLIGHT + fhd.V69_FLIGHT if not any(k in row[4] for k in UNSUPPORTED)]
+    return [row for row in fhd.FLIGHT + fhd.RESTART_FLIGHT + fhd.V69_FLIGHT if not any(k in row[4] for k in UNSUPPORTED)]
 
 
 # The TC trap rows (fhd.V69_FLIGHT: P00, then V69E). The harness takes the
@@ -500,6 +507,13 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     line += block_line
     if alarms:
         line += '; alarm codes differ: ' + ', '.join(f'{a:04o} {hw[a]:05o}/{xw[a]:05o}' for a in alarms)
+    restarts = None
+    if 'FLIGHT_GOJAM' in env or name in TC_TRAP:
+        c = REDOCTR[m]
+        restarts = dict(harness=hw[c], other_clock=sw[c], x86=xw[c])
+        same = xw[c] in (hw[c], sw[c])
+        ok = ok and same
+        line += f'; REDOCTR {hw[c]}/{xw[c]}' + ('' if same else ' (restarts differ)')
     trap = None
     if logs is not None:
         trap, trap_ok, trap_line = trap_compare(logs, r.stdout)
@@ -518,7 +532,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
                             difference=round(d_vn, 3), spread=round(s_vn, 3), limit=round(vn_tol, 3)),
                 words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, state_blocks=blocks,
                 alarms=dict(harness=[f'{hw[a]:05o}' for a in FAILREG], x86=[f'{xw[a]:05o}' for a in FAILREG],
-                            differ=[f'{a:04o}' for a in alarms]), landing_radar=radar, tc_trap=trap, inputs=env,
+                            differ=[f'{a:04o}' for a in alarms]), landing_radar=radar, tc_trap=trap, redoctr=restarts, inputs=env,
                 line=line), ok
 
 
