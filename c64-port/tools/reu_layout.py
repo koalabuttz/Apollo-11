@@ -165,6 +165,15 @@ def dma_trace(regions):
             'trace store df01 if (@io:$df01 < $80)')
 
 
+def trace_armed(monitor_log):
+    """True when VICE set all three dma_trace checkpoints (2 and 3 with their
+    conditions, 4 to count late DMAs): a run whose trace was never armed
+    logs no misses, so its "0 DMAs outside" proves nothing."""
+    traced = {int(n) for n in re.findall(r'^TRACE: (\d+)\s+C:\$df01', monitor_log, re.M)}
+    conds = {int(n) for n in re.findall(r'^Setting checkpoint (\d+) condition', monitor_log, re.M)}
+    return {2, 3, 4} <= traced and {2, 3, 4} <= conds
+
+
 def dma_misses(monitor_log, checkpoints=(2, 3)):
     """DMAs the trace logged outside the layout (checkpoints 2 and 3 of
     dma_trace) in tools/dap_pass_vice.py's monitor.log; checkpoints=(4,)

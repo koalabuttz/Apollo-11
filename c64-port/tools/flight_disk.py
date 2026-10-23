@@ -516,7 +516,13 @@ def drive_rom(data_dir, drive):
         sys.exit(f'FAIL: {name}: SHA-256 mismatch')
 
 
-def trace_result(text):
+def numbers(expr):
+    """The constants of a VICE condition, in order: $hex, or decimal
+    (VICE prints a decimal 1 back as $01)."""
+    return [int(h, 16) if h else int(d) for h, d in re.findall(r'\$([0-9a-fA-F]+)|\b(\d+)\b', expr)]
+
+
+def trace_result(text, regions=None):
     """The REU bounds trace of a boot, from its monitor.log: the three
     trace checkpoints as VICE numbered them when the trace was set
     (reu_layout.dma_trace: whole range, last byte, after-the-fact count),
@@ -524,7 +530,9 @@ def trace_result(text):
     three were set with their conditions (and the first two their io
     command), any hit on another trace checkpoint, or no DMA seen at all
     (the third fires on DMAs VICE sees after they ran, every boot has
-    some), it is not ok."""
+    some), it is not ok. With regions ([(name, start, end, writable)]),
+    the first two conditions VICE set must hold the bounds
+    reu_layout.dma_trace() gives for them, in order."""
     import reu_layout
     # Set: VICE's reply to each trace command. (A checkpoint listing
     # repeats the TRACE line with a tab-indented Condition instead.)
@@ -536,6 +544,12 @@ def trace_result(text):
     for i, n in enumerate(traces[:3]):
         if i < 2 and not re.search(rf'^Setting checkpoint {n} command to: io \$df00', text, re.M):
             errors.append(f'checkpoint {n} has no io command')
+    if regions is not None and len(traces) == 3:
+        want = [line for line in reu_layout.dma_trace(regions).splitlines() if line.startswith('trace ')]
+        for n, line in zip(traces[:2], want):
+            got = re.search(rf'^Setting checkpoint {n} condition to: (.*)$', text, re.M)
+            if numbers(got[1] if got else '') != numbers(line.split(' if ', 1)[1]):
+                errors.append(f'checkpoint {n} condition does not hold the bounds of the regions')
     hit = {int(n) for n in re.findall(r'^#(\d+) \(Trace store df01\)', text, re.M)}
     outside_set, last = traces[:2], traces[2:3]
     stray = sorted(hit - set(traces[:3]))
@@ -898,7 +912,7 @@ def vice(a, m, info):
         # a writable region, and no DMA left the layout.
         bounds = reu_layout.report(m, regions, want + bytes(len(got) - len(want)), got, f'{m} boot')
         bounds['regions'] = [dict(name=n, start=hex(lo), end=hex(hi), writable=w) for n, lo, hi, w in regions]
-        trace = trace_result((work / 'monitor.log').read_text(errors='replace'))
+        trace = trace_result((work / 'monitor.log').read_text(errors='replace'), regions)
         bounds.update(trace)
         bounds['ok'] = bounds['ok'] and trace['trace_ok']
         print(f"{m} boot: DMA trace {'ok' if trace['trace_ok'] else 'FAIL'}: checkpoints {trace['traces']}, "
