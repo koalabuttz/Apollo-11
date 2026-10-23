@@ -385,5 +385,111 @@ class Bundle(unittest.TestCase):
         self.assertFalse(self.run_bundle('check-only')['consistent'])
 
 
+    # One --only run per category, then --assemble (runs past a job's time cap).
+
+    def run_each(self, fake=None, cats=CATS):
+        for cat in cats:
+            self.run_bundle('partial', (cat,), fake=fake)
+
+    def test_assemble_after_one_run_per_category(self):
+        self.run_each()
+        t = self.run_bundle('assemble')
+        self.assertTrue(t['accepted'], self.problems(t))
+        self.assertTrue(all(r['regenerated'] for r in t['categories']))
+
+    def test_assemble_needs_every_category(self):
+        self.run_each(cats=CATS[:-1])
+        t = self.run_bundle('assemble')
+        self.assertFalse(t['accepted'])
+        self.assertTrue(any('no run of this category' in p for p in self.problems(t)))
+
+    def test_assemble_after_a_doc_edit(self):
+        self.run_each()
+        doc = self.root / 'docs/acceptance' / f'Luminary099-{CATS[2]}.md'
+        doc.write_text(doc.read_text() + 'More.\n')
+        t = self.run_bundle('assemble')
+        self.assertFalse(t['accepted'])
+        self.assertTrue(any('changed since its run' in p for p in self.problems(t)))
+
+    def test_assemble_after_resealed_evidence(self):
+        self.run_each()
+        cat = CATS[1]
+        digest = seal(self.root, ident_of(cat), '{"edited": 1}\n')
+        doc = self.root / 'docs/acceptance' / f'Luminary099-{cat}.md'
+        text = doc.read_text()
+        old = text.split('(sha256 `')[1][:16]
+        doc.write_text(text.replace(old, digest[:16]))
+        self.assertFalse(self.run_bundle('assemble')['accepted'])
+
+    def test_assemble_after_a_failed_run(self):
+        self.run_each(cats=CATS[:-1])
+        self.run_bundle('partial', (CATS[-1],), fake=Fake(exit=2))
+        self.assertFalse(self.run_bundle('assemble')['accepted'])
+        self.run_bundle('partial', (CATS[-1],))
+        t = self.run_bundle('assemble')
+        self.assertTrue(t['accepted'], self.problems(t))
+
+    def test_assemble_after_a_new_commit(self):
+        self.run_each()
+        self.commit_docs()
+        (self.root / 'src.c').write_text('int z;\n')
+        git(self.root, 'commit', '-qam', 'code')
+        self.assertFalse(self.run_bundle('assemble')['accepted'])
+
+    def test_assembled_docs_commit_cleanly(self):
+        # Assemble at the run commit, then commit the docs: --check-only
+        # holds on the docs commit (the flip PR's).
+        self.run_each()
+        self.assertTrue(self.run_bundle('assemble')['accepted'])
+        self.commit_docs()
+        t = self.run_bundle('check-only')
+        self.assertTrue(t['consistent'], self.problems(t))
+
+    def test_only_runs_refuse_other_changes(self):
+        self.run_bundle('partial', (CATS[0],))
+        (self.root / 'src.c').write_text('int z;\n')
+        with self.assertRaises(SystemExit):
+            self.run_bundle('partial', (CATS[1],))
+        with self.assertRaises(SystemExit):
+            self.run_bundle('assemble')
+
+    def test_only_run_with_problems_cannot_assemble(self):
+        # A run that cited a stale id: --assemble does not forgive it later.
+        self.run_each()
+        fake = Fake(ident=ident_of(CATS[1]), digest=hashlib.sha256(
+            (self.root / 'evidence' / ident_of(CATS[1]) / 'result.json').read_bytes()).hexdigest())
+        self.run_bundle('partial', (CATS[0],), fake=fake)
+        self.assertFalse(self.run_bundle('assemble')['accepted'])
+
+    def test_store_change_between_runs(self):
+        self.run_each(cats=CATS[:3])
+        built(self.root, STORE, b'rebuilt')
+        self.run_each(cats=CATS[3:])
+        self.assertFalse(self.run_bundle('assemble')['accepted'])
+
+    def test_replays_resume_only_at_the_same_commit_and_store(self):
+        def mark(root):
+            for d in ab.RESULTS:
+                (root / d).mkdir(parents=True, exist_ok=True)
+                (root / d / 'w.json').write_text('{}\n')
+        kept = lambda: all((self.root / d / 'w.json').exists() for d in ab.RESULTS)  # noqa: E731
+        self.run_bundle('partial', (CATS[1],), fake=Fake(side=mark))
+        self.assertTrue(kept())
+        t = self.run_bundle('partial', (CATS[1],))
+        self.assertTrue(t['resumed'])
+        self.assertTrue(kept())
+        built(self.root, STORE, b'rebuilt')
+        t = self.run_bundle('partial', (CATS[1],))
+        self.assertFalse(t['resumed'])
+        self.assertFalse(kept())
+        self.commit_docs()
+        self.run_bundle('partial', (CATS[1],), fake=Fake(side=mark, write=False))
+        self.assertTrue(kept())
+        git(self.root, 'checkout', '--', '.')
+        t = self.run_bundle()  # a full run never resumes
+        self.assertFalse(t['resumed'])
+        self.assertFalse(kept())
+
+
 if __name__ == '__main__':
     unittest.main()

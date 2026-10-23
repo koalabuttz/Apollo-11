@@ -3,7 +3,7 @@
 """Build one program's whole-program acceptance evidence from one commit
 (docs/PORT_SCOPE.md, integrated_applications; acceptance bar item 1).
 
-  acceptance_bundle.py lm|cm [--check-only | --only CATEGORY,...]
+  acceptance_bundle.py lm|cm [--check-only | --only CATEGORY,... | --assemble]
 
 A full run (no option), at HEAD with a clean tree (no changed or untracked
 file anywhere):
@@ -45,10 +45,21 @@ file anywhere):
   4. prints one table and writes build/acceptance-bundle-<m>.json.
 
 Only a full run where every category was regenerated and passes is an
-acceptance ("accepted": true, exit 0). --check-only checks the docs already
-in the tree without running anything (exit 0 when they are consistent; it
-cannot back a flip). --only re-runs some categories and checks all (never
-an acceptance).
+acceptance ("accepted": true, exit 0), or --assemble after one run per
+category. --check-only checks the docs already in the tree without running
+anything (exit 0 when they are consistent; it cannot back a flip). --only
+re-runs some categories and checks all (never an acceptance by itself).
+
+Runs longer than a job's time cap (the flip): run `--only <category>` once
+per category at one commit, then `--assemble`. Each run records what it
+wrote in build/acceptance-bundle/<m>/ledger.json (HEAD, the store sha256,
+and each doc's and cite's sha256). Between --only runs the tree may hold
+earlier runs' docs and <m>-acceptance-* evidence, nothing else. --assemble
+runs nothing: it accepts only when every doc and cite is byte for byte what
+a run at HEAD on this store wrote, with the same checks as a full run.
+A run at the commit and store of the ledger keeps the replay results
+(RESULTS), so an interrupted --only integrated_program_tests resumes; any
+other run clears them.
 """
 import argparse
 import hashlib
@@ -212,6 +223,17 @@ def read_doc(root, m, cat, gen):
     return commit, named, dict(sorted(cites.items())), problems
 
 
+def load_ledger(path, head, store):
+    """The runs recorded at this HEAD on this store, or a fresh ledger."""
+    try:
+        led = json.loads(path.read_text())
+    except (OSError, ValueError):
+        led = None
+    if not led or led.get('head') != head or led.get('store') != store:
+        return dict(head=head, store=store, categories={}), False
+    return led, True
+
+
 def run_generator(root, gen, m, log):
     print('+', gen, m, flush=True)
     with log.open('w') as f:
@@ -227,15 +249,29 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
     gens = generators(root)
     logs = root / 'build/acceptance-bundle' / m
     logs.mkdir(parents=True, exist_ok=True)
-    rerun = set() if mode == 'check-only' else (set(only) if only else set(APPLICATION_EVIDENCE))
-    errors, ran, built = [], {}, {}
+    runs = mode in ('full', 'partial')
+    rerun = set(only) if mode == 'partial' else set(APPLICATION_EVIDENCE) if mode == 'full' else set()
+    errors, ran, built, resumed = [], {}, {}, False
+    # The generators' outputs: both programs' six docs and the evidence ids
+    # they cite. Nothing else may change during a run, or after the docs'
+    # commit for --check-only.
+    docs = [f'docs/acceptance/{p}-{c}.md' for p in PROGRAM.values() for c in APPLICATION_EVIDENCE]
+    outputs = repo.outputs(docs)
+    ledger_path = logs / 'ledger.json'
+    ledger = None
     if mode != 'check-only':
-        dirty = repo.dirty()
+        # A full run starts from a clean tree; --only and --assemble may find
+        # earlier runs' outputs (the ledger vouches for them), nothing else.
+        dirty = repo.dirty() if mode == 'full' else repo.dirty(outputs)
         if dirty:
             raise SystemExit(f"uncommitted or untracked files ({', '.join(dirty[:5])}): commit them first, "
                              'so every doc cites one commit')
-        for d in RESULTS:
-            shutil.rmtree(root / d, ignore_errors=True)
+    if mode == 'assemble':
+        built = images(root, m)
+        if f'flight-store/{m}.reu' not in built:
+            raise SystemExit(f'no build/flight-store/{m}.reu: run the categories first')
+        ledger, _ = load_ledger(ledger_path, head, built[f'flight-store/{m}.reu'])
+    if runs:
         for i, cmd in enumerate(build):
             log = logs / f'build-{i}.log'
             with log.open('w') as f:
@@ -244,6 +280,14 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
         store = images(root, m, store_only=True)
         if f'flight-store/{m}.reu' not in store:
             raise SystemExit(f'the build made no build/flight-store/{m}.reu')
+        ledger, resumed = load_ledger(ledger_path, head, store[f'flight-store/{m}.reu'])
+        if mode == 'full':
+            ledger['categories'] = {}
+        if mode == 'full' or not resumed:
+            # Replays from another commit or store are never reused.
+            for d in RESULTS:
+                shutil.rmtree(root / d, ignore_errors=True)
+            resumed = False
         if not only:
             # A full run starts with none of this program's acceptance
             # evidence, so every id a doc cites is one this run wrote.
@@ -265,12 +309,7 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
         for name, digest in store.items():
             if built.get(name) != digest:
                 errors.append(f'{name} changed while the generators ran')
-    # The generators' outputs: both programs' six docs and the evidence ids
-    # they cite. Nothing else may change during a run, or after the docs'
-    # commit for --check-only.
-    docs = [f'docs/acceptance/{p}-{c}.md' for p in PROGRAM.values() for c in APPLICATION_EVIDENCE]
-    outputs = repo.outputs(docs)
-    if mode != 'check-only':
+    if runs:
         dirty = repo.dirty(outputs)
         if dirty:
             errors.append(f"the generators changed files outside their docs and evidence: {', '.join(dirty[:5])}")
@@ -295,14 +334,30 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
                 problems.insert(0, f"generator exited {r['exit']} (build/acceptance-bundle/{m}/{cat}.log)")
             if not r['written']:
                 problems.insert(0, 'the generator did not rewrite its doc')
-        if commit and cat in rerun and not head.startswith(commit):
+        doc = root / 'docs/acceptance' / f'{PROGRAM[m]}-{cat}.md'
+        rec = (ledger or {}).get('categories', {}).get(cat)
+        if r and runs:
+            # What this run wrote, for a later --assemble.
+            ledger['categories'][cat] = dict(exit=r['exit'], written=r['written'],
+                                             doc_sha256=sha(doc) if doc.exists() else None, cites=cites,
+                                             problems=list(problems))
+        elif mode == 'assemble':
+            if not rec:
+                problems.insert(0, 'no run of this category at HEAD on this store (run --only first)')
+            elif rec['exit'] or not rec['written'] or rec.get('problems'):
+                problems.insert(0, 'its run at HEAD failed, wrote no doc or reported problems (run --only again)')
+            elif rec['doc_sha256'] != (sha(doc) if doc.exists() else None) or rec['cites'] != cites:
+                problems.insert(0, 'the doc or its evidence changed since its run at HEAD')
+        if commit and (cat in rerun or mode == 'assemble') and not head.startswith(commit):
             problems.append(f'stamped {commit}, not HEAD {head[:12]}: not regenerated at HEAD')
         elif commit and not head.startswith(commit):
             why = repo.docs_only_since(commit, head, outputs)
             if why:
                 problems.append(f'stamped {commit}: {why}')
         rows.append(dict(category=cat, generator=', '.join(claim) or 'missing', commit=commit or '',
-                         regenerated=bool(r and not r['exit'] and r['written']), images=named, cites=cites,
+                         regenerated=bool(r and not r['exit'] and r['written']) if runs else
+                         bool(mode == 'assemble' and rec and not rec['exit'] and rec['written']),
+                         images=named, cites=cites,
                          problems=problems))
     commits = {r['commit'] for r in rows if r['commit']}
     if len(commits) > 1:
@@ -334,9 +389,12 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
     for r in rows:
         r['result'] = 'PASS' if not r['problems'] and not errors else 'FAIL'
     consistent = all(r['result'] == 'PASS' for r in rows)
-    accepted = mode == 'full' and not only and consistent and all(r['regenerated'] for r in rows)
+    accepted = mode in ('full', 'assemble') and consistent and all(r['regenerated'] for r in rows)
+    if runs:
+        ledger_path.write_text(json.dumps(ledger, indent=1) + '\n')
     return dict(program=PROGRAM[m], head=head, mode=mode, only=sorted(only), built=built, vice=vice_provenance(),
-                errors=errors, consistent=consistent, accepted=accepted, ok=accepted, categories=rows)
+                resumed=resumed, errors=errors, consistent=consistent, accepted=accepted, ok=accepted,
+                categories=rows)
 
 
 def vice_provenance():
@@ -358,12 +416,14 @@ def main(argv=None):
     g = ap.add_mutually_exclusive_group()
     g.add_argument('--check-only', action='store_true', help='only check the docs in the tree (not an acceptance)')
     g.add_argument('--only', default='', help='comma-separated categories to re-run (not an acceptance)')
+    g.add_argument('--assemble', action='store_true',
+                   help='accept docs written by --only runs at HEAD (build/acceptance-bundle/<m>/ledger.json)')
     a = ap.parse_args(argv)
     only = tuple(filter(None, a.only.split(',')))
     bad = [c for c in only if c not in APPLICATION_EVIDENCE]
     if bad:
         ap.error(f"unknown categories: {', '.join(bad)}")
-    mode = 'check-only' if a.check_only else 'partial' if only else 'full'
+    mode = 'check-only' if a.check_only else 'assemble' if a.assemble else 'partial' if only else 'full'
     root = pathlib.Path(os.environ.get('ACCEPTANCE_BUNDLE_ROOT', ROOT))
     t = bundle(a.mission, mode, only, root)
     print(f"\n{t['program']} at {t['head'][:12]}: whole-program acceptance ({mode})\n")
@@ -378,7 +438,7 @@ def main(argv=None):
     n = sum(r['result'] == 'PASS' for r in t['categories'])
     if t['accepted']:
         verdict = 'ACCEPTED: every category regenerated at HEAD and passes'
-    elif mode == 'full':
+    elif mode in ('full', 'assemble'):
         verdict = 'NOT ACCEPTED: the program is not ready for its flip PR'
     else:
         verdict = (('CONSISTENT' if t['consistent'] else 'NOT CONSISTENT')
@@ -386,7 +446,7 @@ def main(argv=None):
     print(f"\n{n} of {len(t['categories'])} categories pass. {verdict}")
     out = root / 'build' / f'acceptance-bundle-{a.mission}.json'
     out.write_text(json.dumps(t, indent=1) + '\n')
-    return 0 if t['accepted'] or (mode != 'full' and t['consistent']) else 1
+    return 0 if t['accepted'] or (mode in ('check-only', 'partial') and t['consistent']) else 1
 
 
 if __name__ == '__main__':
