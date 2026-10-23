@@ -674,7 +674,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under any EB 0-7, one per case (the file's only EBANK=, UR1's, is 5), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Return addresses from outside the file (QPRET, an outside caller's Q) are never DANZIG nor a key the file registers, as in flight, where QPRET is the word after a CALL (#553). X1 -2 (Earth) or -10 (Moon), as the callers' AXT,1 set it for the MUTABLE,1 table reads. Mid-flow resume points hold MODE and PUSHLOC as the preceding orders leave them; in KEPLERN to PERIODCH, KEPLERN's own entry (12,2042) included, TAU.'s high word is +-0 (|TAU.| < 163.84 s; flight's time since rectification can be longer, a narrowing for the case length) and the period positive, so PERIODCH ends as in flight. Up to KEPLERN's DDV R1 (12,2077), R1 is an orbit's radius: its high word is one of 0310 (Earth parking orbit, 2^29 m), 0340 (lunar orbit, 2^27 m), 02000, 017571 (the Moon's sphere of influence) or 026706 (the Moon's distance), and where MPAC holds C2 (KEPC2, RV.V/MU - 1: 12,2074, 12,2075) or the matching (1/64 - C2/64)/2 (DDV R1, 12,2077), R1 and C2 are a flight pair that keeps ALPHA = 1/a in range (|a| > 2^22 m at Earth, 2^20 m at the Moon): C2 -0.03 to 0.97 at 0310, -0.05 to 1.54 at 0340, 0.87 and 2.7 at 02000, 3 to 20 at 017571 (lunar-approach and post-TEI hyperbolas), -0.97 to -0.3 at 026706 (#553, #664: otherwise ALPHA's DDV overflows (C2 large, or near -1 against a small R1), the period is +0 and PERIODCH never ends, on yaAGC and the port alike). On KEPLERN's hyperbolic arm (12,2105, 12,2110) ALPHA is negative, as BPL 1REV sends it there, and at BPL 1REV (12,2102), in half the cases, MPAC and ALPHA are the same value, as STORE ALPHA leaves them; MPAC is positive at 12,2110 (-50SC/ALPHA before the SQRT), 12,2114 and 12,2116 (XMAX, 2PISC/SQRT(ALPHA)), 12,2117 (XMAX) and 12,2122 (XMAX/ROOTMU) (a +0 XMAX with a positive ALPHA gives a period of 0 and PERIODCH never ends; #664). PUSHLOC is vac+0 to vac+12 from NEWSTATE to TIMETHET, as COMMNOUT and DELTIME's loop leave it for NEWSTATE's pushes, and vac+2 at GETX's DDV (12,3016) in DP mode. EDOP is +0 from CHECKCTR to NEWSTATE: CHECKCTR's TC DANZIG is the RTB target of BPL RTB, and the BHIZ that follows RTB CHECKCTR is the key 12,2306 below. VTARGTAG is 0 in half the cases at LAMBERT's SLOAD BZE VTARGTAG (12,3544), as S40.9 steering's NUMIT 0 leaves it, so LAMBERT goes on to TARGETV (#659). A quarter of the cases at TARGETV -5 (the same word) also have VTARGTAG +0 (#659). At 12,3605 (TIMERAD's VXSC VSU) PUSHLOC is vac+6 (PL at 6), and a quarter of the cases there have MPAC's scalar 037777 037777, each component of UR1 (E5,1723-1730) 020000 020000 and each component of the push-down vector (vac+0 to +5) 057777 020000, so a component's double add can overflow by a carry the interpreter's OVERFLOW absorbs (an edge state for the shared interpreter, not a flight state). Also entered at DANZIG with LOC at an RTB operand word whose pair has a right-hand order and that order's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): 12,2306 (BHIZ after RTB CHECKCTR), and 12,2524, 12,2533 (DELTIME) and 12,3165 (PDDL after RTB TPMODE); the RTB's DANZIG comes back there and the routine runs the order; any other EDOP is refused with the image unchanged.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under any EB 0-7, one per case (the file's only EBANK=, UR1's, is 5), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Return addresses from outside the file (QPRET, an outside caller's Q) are never DANZIG nor a key the file registers, as in flight, where QPRET is the word after a CALL (#553). At the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at a word of the file, a key it registers or DANZIG, other than the RTB operand pairs (#553: such a state would run the order on the file's own words, which no flight caller leaves). X1 -2 (Earth) or -10 (Moon), as the callers' AXT,1 set it for the MUTABLE,1 table reads. Mid-flow resume points hold MODE and PUSHLOC as the preceding orders leave them; in KEPLERN to PERIODCH, KEPLERN's own entry (12,2042) included, TAU.'s high word is +-0 (|TAU.| < 163.84 s; flight's time since rectification can be longer, a narrowing for the case length) and the period positive, so PERIODCH ends as in flight. Up to KEPLERN's DDV R1 (12,2077), R1 is an orbit's radius: its high word is one of 0310 (Earth parking orbit, 2^29 m), 0340 (lunar orbit, 2^27 m), 02000, 017571 (the Moon's sphere of influence) or 026706 (the Moon's distance), and where MPAC holds C2 (KEPC2, RV.V/MU - 1: 12,2074, 12,2075) or the matching (1/64 - C2/64)/2 (DDV R1, 12,2077), R1 and C2 are a flight pair that keeps ALPHA = 1/a in range (|a| > 2^22 m at Earth, 2^20 m at the Moon): C2 -0.03 to 0.97 at 0310, -0.05 to 1.54 at 0340, 0.87 and 2.7 at 02000, 3 to 20 at 017571 (lunar-approach and post-TEI hyperbolas), -0.97 to -0.3 at 026706 (#553, #664: otherwise ALPHA's DDV overflows (C2 large, or near -1 against a small R1), the period is +0 and PERIODCH never ends, on yaAGC and the port alike). On KEPLERN's hyperbolic arm (12,2105, 12,2110) ALPHA is negative, as BPL 1REV sends it there, and at BPL 1REV (12,2102), in half the cases, MPAC and ALPHA are the same value, as STORE ALPHA leaves them; MPAC is positive at 12,2110 (-50SC/ALPHA before the SQRT), 12,2114 and 12,2116 (XMAX, 2PISC/SQRT(ALPHA)), 12,2117 (XMAX) and 12,2122 (XMAX/ROOTMU) (a +0 XMAX with a positive ALPHA gives a period of 0 and PERIODCH never ends; #664). PUSHLOC is vac+0 to vac+14 (PL 0 to 12 decimal, as LAMENTER's pushes leave it) from NEWSTATE to TIMETHET, as COMMNOUT and DELTIME's loop leave it for NEWSTATE's pushes, and vac+2 at GETX's DDV (12,3016) in DP mode. EDOP is +0 from CHECKCTR to NEWSTATE: CHECKCTR's TC DANZIG is the RTB target of BPL RTB, and the BHIZ that follows RTB CHECKCTR is the key 12,2306 below. VTARGTAG is 0 in half the cases at LAMBERT's SLOAD BZE VTARGTAG (12,3544), as S40.9 steering's NUMIT 0 leaves it, so LAMBERT goes on to TARGETV (#659). A quarter of the cases at TARGETV -5 (the same word) also have VTARGTAG +0 (#659). At 12,3605 (TIMERAD's VXSC VSU) PUSHLOC is vac+6 (PL at 6), and a quarter of the cases there have MPAC's scalar 037777 037777, each component of UR1 (E5,1723-1730) 020000 020000 and each component of the push-down vector (vac+0 to +5) 057777 020000, so a component's double add can overflow by a carry the interpreter's OVERFLOW absorbs (an edge state for the shared interpreter, not a flight state). Also entered at DANZIG with LOC at an RTB operand word whose pair has a right-hand order and that order's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): 12,2306 (BHIZ after RTB CHECKCTR), and 12,2524, 12,2533 (DELTIME) and 12,3165 (PDDL after RTB TPMODE); the RTB's DANZIG comes back there and the routine runs the order; any other EDOP is refused with the image unchanged.",
         "external_continuations": [
           "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
           "DANZIG (outside basic routine)",
@@ -691,7 +691,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "5f54a84bed5708802631e19a93af30786bd55c1bc95aebf82862929895a9e43c"
+            "sha256": "a7741fb957331dc4d479963ec6bf57ad1b6f5155940c99ec179651df40a3e626"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-conics/cm-conics-host.log",
@@ -699,16 +699,16 @@
           },
           "c64_execution_results": {
             "path": "evidence/cm-conics/cm-conics-vice.log",
-            "sha256": "f04bca665520d12df05e4a87593c2ae06ee6ad9962cbb81465848b239413c441",
+            "sha256": "ac047b8183fee843403d9eeede24bd3576c5f2f9adfe991e7e3705e52a833e8d",
             "vice_targets": {
-              "vice-cm-conics-1": 322,
-              "vice-cm-conics-2": 172,
-              "vice-cm-conics-3": 130
+              "vice-cm-conics-1": 330,
+              "vice-cm-conics-2": 166,
+              "vice-cm-conics-3": 125
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-conics/cm-conics-proof.json",
-            "sha256": "5f54a84bed5708802631e19a93af30786bd55c1bc95aebf82862929895a9e43c"
+            "sha256": "a7741fb957331dc4d479963ec6bf57ad1b6f5155940c99ec179651df40a3e626"
           },
           "independent_review": {
             "path": "docs/audits/rev1-cm-conics-664.md",
@@ -4569,7 +4569,8 @@
             "legacy_nbsm": "stable S1 sixword erasable angle array0400..3772; final indirect saved fixedFCADR004000..077777",
             "rvq": "all ordinary saved fixedFCADR000000..077777 (source entersGOTO+4 directly)",
             "SMCDURES": "stable ordinaryraw DTHETASM/trig pairs, source stack offsetbase, exact raw zero/overflow division behavior",
-            "scheduling": "genuineEDOP0DANZIG checkpoints are exposed as source phases; Executive/producer ownership and live overlay admission remain caller obligations"
+            "scheduling": "genuineEDOP0DANZIG checkpoints are exposed as source phases; Executive/producer ownership and live overlay admission remain caller obligations",
+            "basic_entries": "At the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at a word of the file, a key it registers or DANZIG, other than the RTB operand pairs (#553: such a state would run the order on the file's own words, which no flight caller leaves)."
           },
           "evidence": {
             "source_to_native_map": {
@@ -4615,15 +4616,15 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
-            "sha256": "88bbb9f695be901f4121e7bc9f4f09730237b2e556931d01828471b02c669d51"
+            "sha256": "be24f9b32338cdab526596f632e6d612f04ef52a65790010637d59e8d7419bdd"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-host.log",
-            "sha256": "a64a40416ed7f09ba7038a57a382b77b88d7cfa3554ffd5ff2e2ba91edb56a67"
+            "sha256": "1bdb60092eb04711509ad87ccf8dd22a7e3133c9b75fe2174f3f6807be216de1"
           },
           "c64_execution_results": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-vice.log",
-            "sha256": "85bc53c1d8a25cd2693d3714f8f27ee10a1aa118733946abde07def8bb18b5d1",
+            "sha256": "93c21b3ed1bb2948140047c8a71f5db1d95fb9a6ae56e35963aec9fd44c91e4c",
             "vice_targets": {
               "vice-cm-powered-subs": 86
             }
@@ -4634,7 +4635,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-proof.json",
-            "sha256": "88bbb9f695be901f4121e7bc9f4f09730237b2e556931d01828471b02c669d51"
+            "sha256": "be24f9b32338cdab526596f632e6d612f04ef52a65790010637d59e8d7419bdd"
           },
           "executed_instruction_closure": {
             "path": "evidence/cm-powered-subs/cm-powered-subs-closure.json",
@@ -6041,7 +6042,7 @@
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
-        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under any EB (cases draw EB 0-7), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Return addresses from outside the file (QPRET, an outside caller's Q) are never DANZIG nor a key the file registers, as in flight, where QPRET is the word after a CALL (#553). Any values of the conic erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area. A BOVB TCDANZIG (on overflow) runs ENDT(X)'s TC DANZIG natively (cm_integration_tcdanzig) and the routine goes on with the pair's right-hand order, as in flight (#414). Also entered at DANZIG with LOC at an RTB T(X) operand word (27,3211, 27,3274) and DMP's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): T(X)'s TC DANZIG comes back there and the routine runs the DMP; any other EDOP is refused with the image unchanged.",
+        "supported_domain": "Canonical 2048-word image (every word random, 010-061 included: TIME1-TIME6, the CDUs, PIPAs and save registers) under any EB (cases draw EB 0-7), entered with Z at any of the file's routines (FB of the routine's bank) or at NEWOPS with LOC at its interpretive ones and FIXLOC a VAC area, any A, L and Q unless stated, any values of the other erasables and of the I/O channels the file uses. NEWJOB is +0 or, in a quarter of the cases, positive: a job waiting, so any DANZIG goes to CHANG2, where the routine stops; every interpretive word that can follow a DANZIG is a CHANG2 resume key of its own. Return addresses from outside the file (QPRET, an outside caller's Q) are never DANZIG nor a key the file registers, as in flight, where QPRET is the word after a CALL (#553). At the file's basic entries EDOP holds no right-hand order still to run while LOC (under BANKSET) points at a word of the file, a key it registers or DANZIG, other than the RTB operand pairs (#553: such a state would run the order on the file's own words, which no flight caller leaves). Any values of the conic erasables; interpretive routines entered at NEWOPS with FIXLOC a VAC area. A BOVB TCDANZIG (on overflow) runs ENDT(X)'s TC DANZIG natively (cm_integration_tcdanzig) and the routine goes on with the pair's right-hand order, as in flight (#414). Also entered at DANZIG with LOC at an RTB T(X) operand word (27,3211, 27,3274) and DMP's code in EDOP (pending_danzig, at_danzig, the DANZIG marker first among the program's interpretive tables): T(X)'s TC DANZIG comes back there and the routine runs the DMP; any other EDOP is refused with the image unchanged.",
         "external_continuations": [
           "BOVB SIGNMPAC (outside basic routine)",
           "CHANG2 (outside basic routine; Lane A Executive/Waitlist)",
@@ -6057,7 +6058,7 @@
           },
           "independent_assembly_comparison": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
-            "sha256": "82ba95b6646127f7cc5a119c860874b59b0b8e4f12c9b9b570f1aa624349c3c0"
+            "sha256": "74fa71ec3ad4746bfadd4fe645a9d1ddd33b722c241645269d4c563bcc2b5bb7"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-host.log",
@@ -6072,7 +6073,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/cm-time-free-fall/cm-time-free-fall-proof.json",
-            "sha256": "82ba95b6646127f7cc5a119c860874b59b0b8e4f12c9b9b570f1aa624349c3c0"
+            "sha256": "74fa71ec3ad4746bfadd4fe645a9d1ddd33b722c241645269d4c563bcc2b5bb7"
           },
           "independent_review": {
             "path": "docs/audits/rev1-cm-conics-664.md",

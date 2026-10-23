@@ -855,6 +855,11 @@ SPECS = {
     # Lane A: Comanche055 POWERED_FLIGHT_SUBROUTINES (CDU trig, QUICTRIG,
     # NBSM/SMNB, AX*SR*T, SMCDURES), basic and interpretive.
     'cm-powered-subs': {
+        # QPRET and the other outside CADRs stay off DANZIG and the file's
+        # keys, and a basic entry finds no order pending with LOC on one: in
+        # flight QPRET is the word after a CALL (auditor, #553: SMCDURES's
+        # RVQ to a drawn QPRET at DANZIG).
+        'outside_off_keys': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
         # resume key.
         'resume_keys': True,
@@ -1643,7 +1648,10 @@ SPECS = {
     # its original addresses (Lane B's LM form is lm-time-free-fall).
     'cm-time-free-fall': {
         # QPRET and the other outside CADRs stay off DANZIG and the file's
-        # keys: in flight QPRET is the word after a CALL (auditor, #553).
+        # keys, and a basic entry finds no order pending with LOC on one
+        # (ENDT(X)'s TC DANZIG): in flight QPRET is the word after a CALL,
+        # and only TFFXTEST's RTB DMP T(X) comes back with an order pending
+        # (auditor, #553).
         'outside_off_keys': True,
         'rope_fallback': True,
         # Any DANZIG can find a job waiting: every word after one is a CHANG2
@@ -2044,7 +2052,9 @@ SPECS = {
         # three vectors before its RVQ: PUSHLOC low there as its callers
         # leave it, or the pushes overrun QPRET and the RVQ goes to a data
         # word (#553: 12,2524, RTB TPMODE's operand word).
-        'range_states': [('NEWSTATE', 'TIMETHET', {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12']}),
+        # (vac+14: PL 12 decimal, where LAMENTER's PUSHes leave it; auditor, #553.)
+        'range_states': [('NEWSTATE', 'TIMETHET', {'0166': ['vac+0', 'vac+2', 'vac+4', 'vac+6', 'vac+10', 'vac+12',
+                                                            'vac+14']}),
                          # CHECKCTR, the RTB target of BPL RTB: EDOP +0 at its
                          # TC DANZIG (BRNCHCTR's RTB BHIZ is the pending key
                          # 12,2306), not a random order DANZIG would run at a
