@@ -7002,7 +7002,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-alarm/lm-alarm-vice.log",
-            "sha256": "3376f29fa5fc63df6161dabc84675b7267ac40e6b79cd5afd5a48970b2d85619"
+            "sha256": "b57a07b23ebdb47e7b99f88c81a6df1ced4ec588af8e9f1c3e977df4de48dc6e",
+            "vice_targets": {
+              "vice-lm-alarm": 256
+            }
           },
           "independent_review": {
             "path": "docs/audits/lm-alarm.md",

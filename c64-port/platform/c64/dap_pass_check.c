@@ -413,6 +413,16 @@ OUT_TEXT("text") static void outputs_log(uint16_t t)
     outputs_started = 1;
 }
 #endif
+/* The rows a sample point's state follows: those a busy C64 held back
+ * in the last centisecond, then this centisecond's boundary rows already
+ * due (a step that began before the row's place and ended past it), which
+ * the host takes before its state too. (Low code: the text screen has no
+ * room.) */
+LOW_TEXT("dp_before_state") static void rows_before_state(uint16_t t)
+{
+    if (t) replay_rows((uint16_t)(t - 1u), 1u);
+    replay_rows(t, 0u);
+}
 /* The rows due before this step; 1 when the window ends here. */
 DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
 {
@@ -432,7 +442,7 @@ DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
          * it and before that point's own rows. Rows a busy C64 held back
          * (a host sample point the C64 was not idle at) go in first, or a
          * PIPA count the host has is missing from the state. */
-        if (t) replay_rows((uint16_t)(t - 1u), 1u);
+        rows_before_state(t);
         if (t >= DP_REPLAY_CS) {
             replay_state(t);
             return 1;

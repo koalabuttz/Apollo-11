@@ -130,9 +130,11 @@ class DeadSuperbank(unittest.TestCase):
         self.assertEqual((v['diff'], v['matched'], v['masked'][fsv.DEAD_SUPERBANK]), ([], [500], 1))
 
     def test_not_masked_elsewhere(self):
-        # FB at or above 060000 on either side or both, Z at ADVAN on
+        # FB not bank 01 on either side or both (banks 05 and 10 hold real
+        # code at the same offset), Z at ADVAN on
         # neither side or one side only, the wrong mission or none.
-        for kw, m in ((dict(fb=0o60000), 'lm'), (dict(fb=0o60000, c64_fb=0o2000), 'lm'),
+        for kw, m in ((dict(fb=0o60000), 'lm'), (dict(fb=0o60000, c64_fb=0o2000), 'lm'), (dict(fb=0o12000), 'lm'),
+                      (dict(z=0o3231, fb=0o20000), 'cm'), (dict(c64_fb=0o4000), 'lm'),
                       (dict(c64_fb=0o60000), 'lm'), (dict(z=0o3215), 'lm'), (dict(c64_z=0o3215), 'lm'),
                       (dict(z=0o3215, c64_z=0o3214), 'lm'), (dict(z=0o3214), 'cm'), ({}, None)):
             masked = {}
