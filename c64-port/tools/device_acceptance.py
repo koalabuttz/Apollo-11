@@ -90,6 +90,19 @@ WINDOWS = {
 }
 
 
+def windows(m):
+    """WINDOWS[m] and the off-nominal rows' windows, one run per (scenario,
+    snapshot): a run's files are named by those two, so a second entry would
+    overwrite the first (lm-uplink-reject 1900 is in both; checkpoints every
+    50 cs over 800 cs do not fit below the rope)."""
+    seen, out = set(), []
+    for w in WINDOWS[m] + offnom.windows(m):
+        if w[:2] not in seen:
+            seen.add(w[:2])
+            out.append(w)
+    return out
+
+
 def sha(path):
     return hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
 
@@ -697,12 +710,12 @@ def main(argv=None):
         out = ROOT / 'build' / f'{eid}-runs'
         shutil.rmtree(out, ignore_errors=True)
         out.mkdir(parents=True)
-        a.run = [str(run_window(*w, out)) for w in WINDOWS[m] + offnom.windows(m)]
+        a.run = [str(run_window(*w, out)) for w in windows(m)]
     host = [r for r in json.loads(pathlib.Path(a.host).read_text()) if r.get('mission') == m]
     copy = dest / 'host-summary.json'
     copy.write_text(json.dumps(host, indent=1) + '\n')
     host_cite = stored(copy)
-    asked = {(s, snap): cs for s, snap, cs, _ in WINDOWS[m] + offnom.windows(m)}
+    asked = {(s, snap): cs for s, snap, cs, _ in windows(m)}
     bad, runs = [], []
     for path in a.run:
         r = json.loads(pathlib.Path(path).read_text())

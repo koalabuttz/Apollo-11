@@ -382,5 +382,17 @@ class OffNominal(unittest.TestCase):
         self.assertIn('no match: 6 checkpoints not compared', '\n'.join(lines))
 
 
+class Windows(unittest.TestCase):
+    def test_one_run_per_snapshot(self):
+        # Runs are named <scenario>-<snapshot>: a repeat would overwrite the first.
+        for m in da.PROGRAM:
+            keys = [w[:2] for w in da.windows(m)]
+            self.assertEqual(len(keys), len(set(keys)), m)
+            self.assertEqual(set(keys), {w[:2] for w in da.WINDOWS[m] + da.offnom.windows(m)}, m)
+
+    def test_first_entry_kept(self):
+        self.assertIn(('lm-uplink-reject', 1900, 800, 100), da.windows('lm'))
+
+
 if __name__ == '__main__':
     unittest.main()
