@@ -4,7 +4,8 @@
  * and yaAGC-vector version (tools/resident_cdu_asm_check.c runs both).
  *
  *   void rk_cdu_drive6502(uint8_t hi);
- * One 10 ms period. hi: channel 14's high byte (bit 15 is 0100). The
+ * One 10 ms period. hi: channel 14's high byte (bit 15 is 0100). First
+ * the gyro drive: on bit 10, GYROCMD (047) sends 32 pulses. Then the
  * counters, from CDUXCMD (050) at the fixed image (APOLLO_SHARED_ADDRESS),
  * one per channel 14 bit from 15 down: 3 in the LM, 5 in the CM (053 and
  * 054 on bits 12 and 11). A period with none of their bits only counts
@@ -19,6 +20,7 @@
 #define MASK 0x70
 #endif
 IMG = 0x7000 + 2 * 050  /* CDUXCMD's word in the fixed image */
+GYRO = 0x7000 + 2 * 047 /* GYROCMD's */
 
 .zeropage __rc2, __rc3, __rc4, __rc5
 HI = __rc2     /* channel 14's high byte */
@@ -47,6 +49,25 @@ ACTIVE = rk_cdu + 12
 .type rk_cdu_drive6502,@function
 rk_cdu_drive6502:
     sta HI
+    /* The gyro drive: while channel 14 bit 10 is set, GYROCMD less 32,
+     * never past 0; a negative count (the word's sign bit, 0x40 of its
+     * high byte; -0 too) sends nothing. */
+    and #0x02
+    beq .Lgyro
+    ldx GYRO+1
+    cpx #0x40
+    bcs .Lgyro
+    lda GYRO
+    sbc #31             /* carry clear (cpx): less 32 */
+    bcs 1f
+    dex
+    bpl 1f              /* 32 or more */
+    lda #0
+    tax
+1:
+    sta GYRO
+    stx GYRO+1
+.Lgyro:
     /* elapsed += 4, short of 0xfff0. */
     ldx ELAPSED+1
     inx
@@ -90,51 +111,52 @@ rk_cdu_drive6502:
     bcs 1f
     dec ELAPSED+1
 1:
-    lda #0
-    sta BURST
+    ldx #0
+    stx BURST
     lda #0x40
     sta BIT
-    ldx #0
 .Lcounter:
     lda HI
     and BIT
     beq .Lowed
-    /* owed += the count, a one's complement word (-0 is 0); count = 0. */
-    clc
+    /* owed += the count, a one's complement word (-0 is 0); count = 0. A
+     * negative word less 077777 is the word with bit 15 set, plus 1: the
+     * 1 is the carry (the sign) into the low byte's add, bit 15 joins the
+     * high byte. */
+    lda IMG+1,x
+    cmp #0x40           /* carry: negative */
+    bcc 2f
+    ora #0x80
+2:
+    tay
     lda OWED,x
     adc IMG,x
     sta OWED,x
-    lda OWED+1,x
-    adc IMG+1,x
+    tya
+    adc OWED+1,x
     sta OWED+1,x
-    lda IMG+1,x
-    and #0x40
-    beq 2f
-    clc                 /* negative: less 077777, so + 0x8001 */
-    lda OWED,x
-    adc #1
-    sta OWED,x
-    lda OWED+1,x
-    adc #0x80
-    sta OWED+1,x
-2:
     lda #0
     sta IMG,x
     sta IMG+1,x
 .Lowed:
     /* At most 24 IMU pulses a burst (050-052), 240 optics pulses: the
      * magnitude less the cap, never past 0. */
+#if N == 3
+#define CAPV #24
+#else
+#define CAPV CAP
     ldy #24
     cpx #6
     bcc 3f
     ldy #240
 3:
     sty CAP
+#endif
     lda OWED+1,x
     bmi .Lneg
     sec
     lda OWED,x
-    sbc CAP
+    sbc CAPV
     sta OWED,x
     lda OWED+1,x
     sbc #0
@@ -144,7 +166,7 @@ rk_cdu_drive6502:
 .Lneg:
     clc
     lda OWED,x
-    adc CAP
+    adc CAPV
     sta OWED,x
     lda OWED+1,x
     adc #0
@@ -166,9 +188,13 @@ rk_cdu_drive6502:
     inx
     lsr BIT
     cpx #2 * N
+#if N == 3
+    bne .Lcounter
+#else
     beq 4f
-    jmp .Lcounter
+    jmp .Lcounter       /* out of branch range in the CM */
 4:
+#endif
     lda BURST
     sta ACTIVE
     beq 5f

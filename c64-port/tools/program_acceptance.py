@@ -137,8 +137,10 @@ def replay_result(r):
             return False, f"run failed ({r.get('error') or 'ok is false'})"
         if r.get('replay_skipped'):       # words left out of the compare (SCHEDULE_SKIP): not a full match
             return False, f"matches host except skipped {', '.join(r['replay_skipped'])}"
+        dead = r.get('masked_dead_superbank')   # flight_scenario_vice.DEAD_SUPERBANK: reported, not hidden
         notes = [x for x in (f"{r['replay_unpaired_count']} checkpoints not compared"
-                             if r.get('replay_unpaired_count') else '', late[2:]) if x]
+                             if r.get('replay_unpaired_count') else '', late[2:],
+                             f'{dead} dead superbanks masked at ADVAN' if dead else '') if x]
         return True, 'matches host' + (f" ({', '.join(notes)})" if notes else '')
     if not r.get('replay_differences') and r.get('replay_ended') is False:
         return False, 'did not reach the next checkpoint'

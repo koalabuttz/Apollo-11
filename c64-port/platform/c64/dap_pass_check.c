@@ -135,6 +135,9 @@ static void press_due(uint16_t elapsed)
 extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
 extern uint8_t __rk_dsky_data_start[], __rk_dsky_data_end[], __rk_dsky_data_load[];
 extern uint8_t __dp_screen_start[], __dp_screen_end[], __dp_screen_load[];
+#ifdef RK_HOLD_METER
+#include "rupt_hold.h"
+#endif
 #ifdef DP_REPLAY
 /* The host run's inputs over the window and its end state
  * (tools/flight_host_run.c FLIGHT_REPLAY, tools/flight_scenario_vice.py
@@ -306,6 +309,8 @@ LOW_TEXT("dp_state") static void replay_state(uint16_t t)
     stash((void *)RK_HARDWARE, DP_IO_BYTES);
     stash(&rk_device, 32u);
 }
+/* The last interrupt request row applied. */
+static dp_row rupt CASSETTE;
 /* Apply the rows due by t (sample point rows only when sp). */
 __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
 {
@@ -330,6 +335,17 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
          * lose one (cm-rendezvous-tpm 26620: two KEYRUPT1s at 141 cs). */
         if (row.kind == 3 && (*w & row.value))
             return;
+        /* A row the host took later in the same centisecond than an
+         * interrupt request waits until the C64 has taken that request:
+         * the host's interrupt came first. Two keys in one centisecond
+         * each get their own KEYRUPT this way, which reads its own channel
+         * 15 value, not the second key's. Not in the hardware check: its
+         * window has no interrupt request rows and its resident no room. */
+#ifndef DP_HW_CHECK
+        if (rupt.value && row.cs == rupt.cs && row.work != rupt.work &&
+            (*(uint16_t *)rupt.addr & rupt.value))
+            return;
+#endif
         __asm__ volatile("sei");
         if (row.kind == 1) {
             /* tools/flight_host_run.c pipa_add: a signed count into a ones'
@@ -339,9 +355,10 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
             if (v > 037777) v = 037777;
             if (v < -037777) v = -037777;
             *w = v < 0 ? (uint16_t)((~(uint16_t)(-v)) & 077777u) : (uint16_t)v;
-        } else if (row.kind == 3)
+        } else if (row.kind == 3) {
             *w |= row.value;
-        else if (row.kind == 4)
+            rupt = row;
+        } else if (row.kind == 4)
             *(uint8_t *)w = (uint8_t)row.value;
         else
             *w = row.value;
@@ -413,6 +430,16 @@ OUT_TEXT("text") static void outputs_log(uint16_t t)
     outputs_started = 1;
 }
 #endif
+/* The rows a sample point's state follows: those a busy C64 held back
+ * in the last centisecond, then this centisecond's boundary rows already
+ * due (a step that began before the row's place and ended past it), which
+ * the host takes before its state too. (Low code: the text screen has no
+ * room.) */
+LOW_TEXT("dp_before_state") static void rows_before_state(uint16_t t)
+{
+    if (t) replay_rows((uint16_t)(t - 1u), 1u);
+    replay_rows(t, 0u);
+}
 /* The rows due before this step; 1 when the window ends here. */
 DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
 {
@@ -432,7 +459,7 @@ DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
          * it and before that point's own rows. Rows a busy C64 held back
          * (a host sample point the C64 was not idle at) go in first, or a
          * PIPA count the host has is missing from the state. */
-        if (t) replay_rows((uint16_t)(t - 1u), 1u);
+        rows_before_state(t);
         if (t >= DP_REPLAY_CS) {
             replay_state(t);
             return 1;
@@ -480,6 +507,7 @@ static void BOOT load_snapshot(void){
  rk_tick_phase = 0;
  rk_part_cont = rk_part_prev = 0;
  replay_t0 = IMAGE->words[025];
+ rupt.value = 0;
 #endif
 }
 
@@ -526,6 +554,7 @@ __attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t statu
     row_at = sweep_case.rows_at;
     state_at = sweep_case.end_at;
     row_ready = 0;
+    rupt.value = 0;
     states = 0;
     state_next = DP_STATE_FIRST;
     replay_now = 0;
@@ -960,6 +989,17 @@ int main(void){
      mail[0x33] = (uint8_t)(t >> 8);
      mail[0x34] = replay_ended;
      mail[0x35] = states;
+#ifdef RK_HOLD_METER
+     /* The interrupt hold meter (include/rupt_hold.h): the longest hold
+      * (MCT) and TIME1 at it. */
+     {
+         extern rupt_hold rk_hold;
+         mail[0x36] = (uint8_t)rk_hold.max;
+         mail[0x37] = (uint8_t)(rk_hold.max >> 8);
+         mail[0x38] = (uint8_t)rk_hold.max_at;
+         mail[0x39] = (uint8_t)(rk_hold.max_at >> 8);
+     }
+#endif
 #if DP_OUTPUTS_MAX
      mail[0x3a] = (uint8_t)outputs_bytes;
      mail[0x3b] = (uint8_t)(outputs_bytes >> 8);
