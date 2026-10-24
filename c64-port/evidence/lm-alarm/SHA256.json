@@ -19,8 +19,8 @@
       "store": "tree"
     },
     "lm-alarm-vice.log": {
-      "sha256": "3376f29fa5fc63df6161dabc84675b7267ac40e6b79cd5afd5a48970b2d85619",
-      "bytes": 608,
+      "sha256": "b57a07b23ebdb47e7b99f88c81a6df1ced4ec588af8e9f1c3e977df4de48dc6e",
+      "bytes": 606,
       "store": "release"
     }
   }
