@@ -417,6 +417,9 @@ def run(target, log_dir, make_args, attempts, stack=()):
 
 # Per-target seconds measured on CI runners (tools/ci_target_seconds.py
 # rebuilds it from a run's logs). --shard balances the shards by them.
+# A PR that adds or retimes targets puts their seconds in a file of its own
+# under tools/ci_target_seconds.d/ (same shape, read after the main file),
+# so two PRs never edit the same lines; the next refresh folds them in.
 WEIGHTS = ROOT / 'tools/ci_target_seconds.json'
 
 
@@ -437,17 +440,41 @@ def covered_by_vice(targets):
     return covered
 
 
+def overlay_paths(weights_path):
+    """The per-PR timing files beside the main one, in name order."""
+    return sorted(weights_path.with_suffix('.d').glob('*.json'))
+
+
 def load_weights(weights_path):
     weights = {}
-    for table in json.loads(weights_path.read_text()).values():
-        if isinstance(table, dict):
-            weights.update({t: float(v) for t, v in table.items() if isinstance(v, (int, float))})
+    for path in [weights_path, *overlay_paths(weights_path)]:
+        for table in json.loads(path.read_text()).values():
+            if isinstance(table, dict):
+                weights.update({t: float(v) for t, v in table.items() if isinstance(v, (int, float))})
     return weights
 
 
-def median_weight(targets, weights):
+PART = re.compile(r'^(.+)-(\d+)$')
+
+
+def target_weights(targets, weights):
+    """Seconds for each target. A part never measured (<name>-<k>) whose
+    whole <name> was measured gets an even share of it, so splitting a
+    target needs no timing edit; any other unmeasured target counts as the
+    median."""
+    parts = {}
+    for t in targets:
+        m = PART.match(t)
+        if t not in weights and m and m[1] in weights:
+            parts[m[1]] = max(parts.get(m[1], 0), int(m[2]))
     known = sorted(weights[t] for t in targets if t in weights)
-    return known[len(known) // 2] if known else 1.0
+    default = known[len(known) // 2] if known else 1.0
+    out = {}
+    for t in targets:
+        m = PART.match(t)
+        out[t] = (weights[t] if t in weights else
+                  weights[m[1]] / parts[m[1]] if m and m[1] in parts else default)
+    return out
 
 
 # A PR's c64 job gets another runner for each RUNNER_SECONDS of measured
@@ -463,8 +490,7 @@ def count_shards(targets, most, weights_path):
         weights = load_weights(weights_path)
     except (OSError, ValueError):
         return 1
-    default = median_weight(targets, weights)
-    total = sum(weights.get(t, default) for t in targets)
+    total = sum(target_weights(targets, weights).values())
     # Never more runners than targets: an empty shard has nothing to build.
     return max(1, min(most, len(targets), -(-int(total) // RUNNER_SECONDS)))
 
@@ -477,12 +503,12 @@ def shard_targets(targets, k, n, weights_path):
         weights = load_weights(weights_path)
     except (OSError, ValueError):
         return targets[k::n]
-    default = median_weight(targets, weights)
+    weight = target_weights(targets, weights)
     loads = [0.0] * n
     mine = []
-    for target in sorted(targets, key=lambda t: (-weights.get(t, default), t)):
+    for target in sorted(targets, key=lambda t: (-weight[t], t)):
         shard = min(range(n), key=lambda i: (loads[i], i))
-        loads[shard] += weights.get(target, default)
+        loads[shard] += weight[target]
         if shard == k:
             mine.append(target)
     # Longest first, so a long VICE run starts as soon as the shard does
