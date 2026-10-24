@@ -236,13 +236,13 @@ REU: 2048 KB OR MORE
 REU DMA, BYTES/S: C64>REU 923472
                  REU>C64 928145
 
-RUNNING LM P63 FROM 17513 CS...
+RUNNING LM P63 FROM 17532 CS...
 
-AGC TIME: 200 CS IN 1215 STEPS
-C64 TIME: 43.33 S, 21.66 X REAL TIME
+AGC TIME: 200 CS IN 1218 STEPS
+C64 TIME: 43.50 S, 21.75 X REAL TIME
 
-END STATE CRC 601B (VICE 601B)
-HOST RUN'S CRC 6EF1 (NOT YET THE SAME)
+END STATE CRC C4D5 (VICE C4D5)
+HOST RUN'S CRC C4D5 (THE SAME)
 
 PASS: THIS C64 COMPUTES WHAT VICE DOES
 ```
@@ -260,10 +260,12 @@ machine still ends in the same state; only "C64 time" and "x real time"
 change. The times are counted in C64 cycles by the CIA timers, divided by
 the PAL or NTSC clock.
 
-The host run's CRC is shown for reference. It matches once this window's
-C64 timing matches the host's (the LM P63 row in the shared replay
-mismatch list); until then "NOT YET THE SAME" is expected and is not a
-fault of the C64.
+The host run's CRC is shown for reference. Since base 08c07360 (the screen
+above) the window ends in the host's state too, so the line reads "THE
+SAME". If a later build shows "NOT YET THE SAME", a timing change moved the
+C64 off the host in this window (a row for the shared replay mismatch list),
+not a fault of the C64; PASS or FAIL still says whether this C64 computes
+what VICE does.
 
 The test disk only checks: when the report is up, the program stops there.
 Switch off or reset to load a mission disk.

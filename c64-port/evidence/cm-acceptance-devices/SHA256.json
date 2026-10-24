@@ -3,9 +3,14 @@
   "milestone": "cm-acceptance-devices",
   "release": "evidence-cm-acceptance-devices",
   "files": {
+    "cm-entry-15100.json": {
+      "sha256": "470b68cc75b6481b1bd91d94cc045728ca88baf2231409934e66218c2dded31c",
+      "bytes": 29926,
+      "store": "tree"
+    },
     "cm-entry-overload-20900.json": {
-      "sha256": "7a102294b9faf8782f87467daf722b20bb07a9b712e2641b483b9e4b97f5ebd2",
-      "bytes": 44172,
+      "sha256": "939d6285277239ddbefcfa403a6ec1a45c7b44f8202b99a1c7fff1fc9f24f019",
+      "bytes": 44174,
       "store": "tree"
     },
     "cm-entry-overload.log": {
@@ -14,18 +19,18 @@
       "store": "tree"
     },
     "cm-p20-12200.json": {
-      "sha256": "d9e05805acfcb0f8bb3700e1521fd58e8a6aff785f3f30d14837541510aef3b2",
-      "bytes": 10045,
+      "sha256": "16f6dcfe7090dbd1f4822eb665b281ee62273c12145672b2931c27c5bc135d67",
+      "bytes": 10044,
       "store": "tree"
     },
     "cm-p20-18300.json": {
-      "sha256": "68cfafd90c4389cbe8a6d36d883e077597adffc2eb67dcd0e048cf8781f04f52",
+      "sha256": "73a13187e1c3335620b3912e52a744d7936046fd5b979db65225d30717b65aac",
       "bytes": 12750,
       "store": "tree"
     },
     "cm-p20-vhf-dropout-17900.json": {
-      "sha256": "672aade4feec4eae9e9537498961c1b6433752cce709a6f8c2ace9645cd52648",
-      "bytes": 17738,
+      "sha256": "3622c505b17ebbd8014a37afa5842ee825a4d8989388d59d1c048958df77b77b",
+      "bytes": 17737,
       "store": "tree"
     },
     "cm-p20-vhf-dropout.log": {
@@ -33,19 +38,24 @@
       "bytes": 27751,
       "store": "tree"
     },
+    "cm-p40-44000.json": {
+      "sha256": "a2cdeadeb6d73431f9edf42b7a4cadac7847094340ab3be3fc27e5bb7d21cf90",
+      "bytes": 39021,
+      "store": "tree"
+    },
     "cm-p40-70660.json": {
-      "sha256": "131fc47ab16ad3fc054654711dd056e15ae966a8888491451b025aaa45d8f2d9",
-      "bytes": 18321,
+      "sha256": "468c0f47f3e386e69f2908118be0c28e4c0b2422dd8bd810688d092dcce2d4e5",
+      "bytes": 18320,
       "store": "tree"
     },
     "cm-p52-9950.json": {
-      "sha256": "8ec859de8b012c753b758e47a139db6ada2e13125fa871566e4d47a1fa71311b",
+      "sha256": "9d7d747e5aef435c981e4c52e22457fcb30e912c2080a7864d7349d908890484",
       "bytes": 15509,
       "store": "tree"
     },
     "cm-p52-gimbal-lock-2900.json": {
-      "sha256": "9ed3a3666a719443b2a7fc5e231380d2278be8fb8b3a18d5ec2c8596b933026d",
-      "bytes": 21813,
+      "sha256": "efb80704c3b96c5e99ea8d3ab522ffc9c30e0383fbd65d18b344a389c7d48524",
+      "bytes": 21814,
       "store": "tree"
     },
     "cm-p52-gimbal-lock.log": {
@@ -54,8 +64,8 @@
       "store": "tree"
     },
     "cm-p52-imu-cage-5900.json": {
-      "sha256": "b683282e019e39f2aad540da667e2037e1a127df3016734d7ff1d4179fa0d4dd",
-      "bytes": 21285,
+      "sha256": "9d43f9e501ba0737496b01ab19e98eaa4e9b176fb7de4b3f1926c90445b88391",
+      "bytes": 21286,
       "store": "tree"
     },
     "cm-p52-imu-cage.log": {
@@ -64,7 +74,7 @@
       "store": "tree"
     },
     "cm-p52-imu-fail-5900.json": {
-      "sha256": "a626b78ecb97c0147c5177371eb7433a14a862d2301a7f164d3eaab1ced5aa31",
+      "sha256": "af12452d5955fa37dc4bd3a7cc68d77d7a1693f105fb795745cf0954146fa0c8",
       "bytes": 16035,
       "store": "tree"
     },
@@ -74,27 +84,27 @@
       "store": "tree"
     },
     "cm-p52-optics-12250.json": {
-      "sha256": "960422cea0c9b7bcb54319a8994198cbeefd54bfdd0dd89073e84c06e541cd0d",
-      "bytes": 9361,
+      "sha256": "06e62ed1ea80d84cbdf0e204a7d1f56094c0c316313757ebaabe08ad598c8c23",
+      "bytes": 9363,
       "store": "tree"
     },
     "cm-p52-optics-17100.json": {
-      "sha256": "3a213c74661d608650cb57d14ddf66b2c74c620fc0b71fb6191498c8c4f16fb5",
-      "bytes": 11317,
+      "sha256": "d6520f75e302e325c9a7f8c267cd50b1e5aec58e22dcbfaa5617ad48f70fae93",
+      "bytes": 11318,
       "store": "tree"
     },
     "cm-tei-4450.json": {
-      "sha256": "8f96e61d6301685db7e139547e910db7e8fe24614fa6e0f29083e74ddfb20d18",
-      "bytes": 16493,
+      "sha256": "903a35caf6af1c6f8fe6207aab9e41eba031407dc392240d0cf49237043ba0e7",
+      "bytes": 16494,
       "store": "tree"
     },
     "cm-tei-52000.json": {
-      "sha256": "939b729bec2dc5bbbb06dd2f78aaf79cb261b406ca9d672c4864781ec5d13265",
-      "bytes": 39759,
+      "sha256": "11b67e7d234f75fd5516137449b40936443faefd20043b5432b5f368b02b8cb3",
+      "bytes": 39766,
       "store": "tree"
     },
     "cm-uplink-reject-1900.json": {
-      "sha256": "36bee73c749272af703290a0e6d0f27427ed0b9d94c86ca1f745ced19d51f3cd",
+      "sha256": "95a16dc4529d4466e625303243ab658f6bd8c0c3b6f51c8e6e8d57e47661d09c",
       "bytes": 21253,
       "store": "tree"
     },
@@ -104,7 +114,7 @@
       "store": "tree"
     },
     "host-summary.json": {
-      "sha256": "dcbe72043f7d599c0ccdc0a097eec2fc8ad80d03d6f06604e3ecb6f162e294d8",
+      "sha256": "da60f027810edac51c6cd5f4a8620cf1b22545d3525ca8986d4c4c06477d0636",
       "bytes": 72864,
       "store": "tree"
     }

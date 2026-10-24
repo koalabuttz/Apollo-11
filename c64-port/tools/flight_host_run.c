@@ -89,6 +89,7 @@
 #include "interp_word_mct.h"
 #include "interp_runtime.h"
 #include "flight_gojam.h"
+#include "../platform/x86/night_watchman.h"
 #include "rupt_hold.h"
 /* FLIGHT_DOWNRUPT (tools/flight_downlink.h): wraps agc_engine and rk_timer_tick. */
 #include "flight_downlink.h"
@@ -208,15 +209,28 @@ static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,fli
  * period, which the boundary drops if it takes a request first. */
 static int idling;
 static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
+/* The night watchman (platform/x86/night_watchman.h) under scaled time: wm
+ * by the native rule, wm_ya by the NEWJOB accesses yaAGC makes over the
+ * same spans (lockstep and bridge arm yaAGC's own flag and read it back).
+ * wm_fire: the alarm sounded at the last period's end. wm_windows counts
+ * the alarm's checks, wm_disagree those where the two rules differ. */
+static night_watchman wm,wm_ya;static int wm_fire;static unsigned long wm_alarms,wm_windows,wm_disagree,wm_stuck;
+static void period_end(void){++taken;
+ if(!scaled)return;
+ if(taken%NW_PERIODS==0u&&(wm.armed||wm_ya.armed)){++wm_windows;
+  if(wm.armed!=wm_ya.armed&&++wm_disagree<=8ul)printf("night watchman: at period %lu the native rule has it %s, yaAGC's NEWJOB accesses %s\n",
+   taken,wm.armed?"armed":"disarmed",wm_ya.armed?"armed":"disarmed");}
+ (void)nw_period(&wm_ya,taken);
+ if(nw_period(&wm,taken))wm_fire=1;}
 /* rk_rupts: the CIA1 interrupts since the last boundary, at most lag of
  * them as clock periods, the rest dropped. */
 static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
- for(;consumed<now;++consumed){if(n<lag){++n;++taken;}else ++dropped;}
+ for(;consumed<now;++consumed){if(n<lag){++n;period_end();}else ++dropped;}
  return n;}
 /* The work clock's steps due, for bridged code (yaAGC takes their
  * requests between its instructions). */
 static unsigned due_steps(void){unsigned n=0;
- for(;step_at(consumed)<=wall;++consumed,++n)if(consumed%3ul==2ul)++taken;
+ for(;step_at(consumed)<=wall;++consumed,++n)if(consumed%3ul==2ul)period_end();
  return n;}
 /* The work clock's interpreter module (platform/c64/interp_module.c): a
  * table left to the interpreter (FLIGHT_PER_WORD) runs as the C64 runs it,
@@ -580,7 +594,7 @@ static int spin;
 static void trap_gojam(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending){const char *t=getenv("FLIGHT_TRAP_SNAPSHOT");char pre[600];size_t k;
  printf("TC trap at %lu cs (Q %05o)\n",now(s->words),(unsigned)s->words[2]);
  if(t){k=strcspn(t,",");if(!t[k]||k>=sizeof pre){fprintf(stderr,"FLIGHT_TRAP_SNAPSHOT=PRE,POST\n");exit(2);}memcpy(pre,t,k);pre[k]=0;snapshot(pre,s,io,hw);}
- gojam_native(s->words,io,hw,pending);
+ gojam_native(s->words,io,hw,pending);wm.hung=0;
  if(t){snapshot(t+k+1,s,io,hw);printf("trap snapshots at %lu cs\n",now(s->words));exit(0);}}
 static long ones(agc_word v);
 static FILE *rp_out;static unsigned long rp_seed;
@@ -1205,7 +1219,7 @@ static int step(uint16_t *pending){unsigned i;reach();if(agc_engine(&m))return -
  * before it ran other instructions. */
 static int trapped;
 static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,long limit){long n;unsigned i;agc_routine call;
- load(s,io,hw);
+ load(s,io,hw);m.NightWatchman=1;
  for(i=1;i<=NUM_INTERRUPT_TYPES;++i)m.InterruptRequests[i]=(int8_t)((*pending&RK_RUPT_BIT(i))!=0u);
  m.TCTrap=0;m.NoTC=0;m.InputChannel[077]&=~CH77_TC_TRAP;trapped=0;
  for(n=0;n<limit;++n){
@@ -1273,16 +1287,30 @@ static int channels_differ(agc_hardware *hw){unsigned i,k;
   nat=*hwc(hw,k);ref=(agc_word)(m.InputChannel[c]&077777);if(c==013u){nat&=043777u;ref&=043777u;}
   if(nat!=ref){snprintf(chan_diff,sizeof chan_diff," ch%o %05o/%05o",c,(unsigned)nat,(unsigned)ref);return 1;}}
  return 0;}
+/* A native continuation at GOTO (the interpreter's, fixed-fixed) with A
+ * already POLISH is yaAGC's GOTO +1: GOTOERS loops back there (TCF GOTO +1)
+ * after each erasable CADR, with A the POLISH it stored, and GOTO's CA
+ * POLISH would set no other word. So an erasable CADR chain the native
+ * code stops in at GOTO, and the night watchman's cycle (night_watchman.h),
+ * match yaAGC at GOTO +1. */
+#if RK_LM
+#define GOTO_Z 06646u
+#else
+#define GOTO_Z 06615u
+#endif
+#define POLISH_W 0117u
+static int goto_seam(uint16_t target,int tin,const apollo_overlay_state *after,uint16_t at,int in,agc_word sb){
+ return !tin&&!in&&target==agc_fixed_physical(GOTO_Z,0u,sb)&&at==agc_fixed_physical(GOTO_Z+1u,0u,sb)&&after->words[0]==after->words[POLISH_W];}
 static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc_hardware *hw0,apollo_overlay_state *after,
                      agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first,int interp){
  static apollo_overlay_state timed;static agc_hardware timed_hw;
- long n;int in,tin;uint16_t target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0,words=0,first_words=0;int in_interp=-1;
- first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);c0=m.CycleCounter;
+ long n;int in,tin;uint16_t at,target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0,words=0,first_words=0;int in_interp=-1;
+ first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);m.NightWatchman=1;c0=m.CycleCounter;
  for(n=0;n<limit;++n){
   /* After RESUME, yaAGC is at ZRUPT with BRUPT substituted for the next
    * instruction: the native continuation is that point. */
   if(n&&(quiet()||(m.SubstituteInstruction&&!m.PendFlag&&!m.ExtraDelay&&!m.IndexValue&&!m.ExtraCode))
-     &&point(view(),(agc_word)m.OutputChannel7,&in)==target&&in==tin){
+     &&(((at=point(view(),(agc_word)m.OutputChannel7,&in))==target&&in==tin)||goto_seam(target,tin,after,at,in,superbank))){
    /* An interpretive step (SWITCH's TS Q) may leave yaAGC's Q with bit 16,
     * a copy of bit 15, where the native frontier holds 15 bits (#409). */
    for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&!cdu_counter(i)
@@ -1611,7 +1639,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    rhc_due(now(s.words),s.words,&hw);
    if(rp_after!=~0ul&&gojam_due(now(s.words),&gnat)){fclose(rp_out);fclose(rp_ends);return 0;}
    if(rp_out&&!snap_path&&gojam_due(now(s.words),&gnat)){fprintf(stderr,"FLIGHT_REPLAY: a GOJAM at %lu cs is in the window\n",now(s.words));return 3;}
-   if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
+   if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);wm.hung=0;substitute=0;}
    else if((k=key_due(now(s.words),&knat,hw.channel11))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
     else{hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}}
    else if((k=uplink_due(now(s.words),&unat))>=0){s.words[045]=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_UP);}
@@ -1634,7 +1662,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      if(consumed%3ul==2ul)drives(&s,&hw);
      rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));
      if(hold_on)rupt_hold_raise(&hold,(uint16_t)(unsigned long)step_at(consumed),pending);
-     if(consumed++%3ul==2ul){++taken;steal();}}
+     if(consumed++%3ul==2ul){period_end();steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
     if(got&&hold_on)rupt_hold_taken(&hold,(uint16_t)(unsigned long)wall,s.words[025]);
     if(got||consumed!=consumed0)charge_last=0;
@@ -1656,6 +1684,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   /* The TC trap (verb69): under the work clock, the spin's period ran
    * through its T5 step with no interrupt taken and held its T3 step, as
    * rk_resident_step finds it on the C64. */
+  /* The night watchman sounded at the last period's end: GOJAM, Q the
+   * point the AGC was at (night_watchman.h). */
+  if(wm_fire){wm_fire=0;spin=0;++wm_alarms;printf("night watchman at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);
+   gojam_native(s.words,&io,&hw,&pending);wm.hung=0;substitute=0;continue;}
   if(spin){int armed=spin==2;spin=0;
    if(armed&&!hw.in_interrupt){trap_gojam(&s,&io,&hw,&pending);substitute=0;continue;}}
   v69=!hw.in_interrupt&&!substitute&&verb69(s.words,io.superbank);
@@ -1731,6 +1763,14 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
         (unsigned)before.words[5],(unsigned)before.words[0164],(unsigned)s.words[5],(unsigned)s.words[0164],e->name);}}
      if(scaled){const int rp_on=rp_out&&!snap_path;const entry *ce=work&&rp_on&&!core_ran&&weight(e)!=FLIGHT_PER_WORD?charged(before.words,io0.superbank,e,charge_last):e;unsigned w=!weight(e)||weight(ce)==FLIGHT_PER_WORD||!weight(ce)?weight(e):weight(ce);
       charge_last=core_ran||weight(e)==FLIGHT_PER_WORD||kernel_table(ce)?0:ce;if(core_ran&&work)spend(core_mct);else if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);else if(work&&!w&&(!rp_on||(w=idle_weight(before.words,io0.superbank,isr0))==FLIGHT_IDLE_TICK))idle_tick();else spend(work?w:span_mct);}
+     /* A stuck step (an erasable CADR cycle in GOTO) spins to the
+      * period's end, interrupts taken, until the night watchman. */
+     {int stuck=nw_stuck(before.words,s.words,isr0,interp);if(nw_step(&wm,before.words,s.words,isr0,stuck))wm.armed=0;
+      if(!m.NightWatchman)wm_ya.armed=0;
+      /* The C64's boundary words hold no stuck point (GOTO), so no
+       * interrupt could come there: the AGC and the x86 program take them
+       * (night_watchman.h), and so does the next boundary here. */
+      if(stuck){++wm_stuck;p.fixed_data=rope_data;if(work)idle_tick();}}
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
      if(n>=0){locked+=(unsigned long)n;
       /* FLIGHT_MCT_OUT: each matched routine's machine cycles in yaAGC, by
@@ -1753,6 +1793,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if((n=bridge(&s,&io,&hw,&pending,5000000l))==-2)return 3;
    if(n<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
    dl_bridged(w);
+   {int in,stuck;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);if(nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck))wm.armed=0;if(!m.NightWatchman)wm_ya.armed=0;}
    hole(w,io.superbank,(unsigned long)n,e&&e!=&core_entry?e->name:0);bridged+=(unsigned long)n;
    if(trapped){trap_gojam(&s,&io,&hw,&pending);substitute=0;}}}
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
@@ -1760,6 +1801,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(scaled)printf("scaled time: K %.2f, divisor %u, lag %u, seed %lu: %lu CIA interrupts, %lu clock periods taken, %lu dropped (rk_dilation); AGC time %lu cs\n",
   slow,divisor,lag,seed,work?consumed/3ul:consumed,taken,dropped,now(s.words));   /* work: whole periods' steps */
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
+ if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule\n",wm_alarms,wm_stuck,wm_windows,wm_disagree);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
  if(core_routines){printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);core_charge_report();}

@@ -33,6 +33,9 @@ x86-flight-check: build/agc_engine_hardware_dv.o | build
 	$(CC) -std=c99 -O2 -g -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Iplatform/x86 \
 	  platform/x86/test_tc_trap.c -o build/test-tc-trap
 	./build/test-tc-trap
+	$(CC) -std=c99 -O2 -g -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Iplatform/x86 \
+	  platform/x86/test_night_watchman.c -o build/test-night-watchman
+	./build/test-night-watchman
 	python3 tools/flight_store_build.py --host-only
 	python3 tools/flight_table_kinds.py
 	python3 tools/x86_flight_check.py --skip-index

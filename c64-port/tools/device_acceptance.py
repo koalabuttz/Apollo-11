@@ -88,6 +88,8 @@ WINDOWS = {
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6
            ('cm-p40', 70660, 100, 50),                      # SPS burn
+           ('cm-p40', 44000, 300, 50),                      # SPS burn: TVC drives with channel 12 bit 8 held
+           ('cm-entry', 15100, 300, 50),                    # entry DAP: jets (channel 5)
            ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
            ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
            ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
