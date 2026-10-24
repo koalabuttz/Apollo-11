@@ -39,8 +39,13 @@ Rows by kind:
              matches the host at a checkpoint, and in the host's states up to
              that checkpoint DNTMGOTO points into the dump code (DNDUMPI, DNDUMP,
              DNDUMP1), so the dump list was going out on channels 34 and 35.
-  dsky       pending until the DSKY sweep's result exists (the row's note
-             names its owner).
+  dsky       the full DSKY sweep (tools/dsky_sweep_vice.py --cases all
+             --replay-exact on both missions, acceptance bar item 6): its
+             summary (dsky-sweep-summary.json, bound to the full report by
+             full_sha256) ran on this program's store, every case of this
+             program ends in the host state with no word left out of the
+             compare, and the sweep meets item 6 (both missions, no failure).
+             Pending while no summary is on disk (--dsky-sweep).
 
 A row with `waits_on` is reported as waiting and does not pass. The doc
 passes when every row passes or is "not exercised" with a reason.
@@ -58,6 +63,8 @@ import program_acceptance as pa  # noqa: E402
 
 DOWNLINK = ROOT / 'build/flight-downlink'
 WORK = ROOT / 'build/flight-store/dap-pass'
+# tools/dsky_sweep_vice.py's tree-sized summary of the full report (SUMMARY).
+SWEEP = ROOT / 'build/flight-store/dsky-sweep/dsky-sweep-summary.json'
 # The output channels of a --replay state, after the 2048 erasable words
 # (the first of tools/flight_scenario_vice.py END_CHANNELS).
 CHANNELS = [5, 6, 0o11, 0o12, 0o13, 0o14, 0o34, 0o35]
@@ -136,6 +143,41 @@ def load_downlink(path, commit, m=None, store_sha=None):
     return s, None
 
 
+def load_sweep(path, m, store_sha):
+    """(summary or None, why it does not count or None). A sweep that did
+    not run this program, or ran it on another store than store_sha, does
+    not count (the store holds the rope and every compiled routine)."""
+    path = pathlib.Path(path)
+    if not path.exists():
+        return None, None
+    s = json.loads(path.read_text())
+    ran_on = ((s.get('stores') or {}).get(m) or {}).get('reu_sha256')
+    if m not in (s.get('missions') or []) or not ran_on:
+        return None, f'the sweep at {path.name} did not run {m}'
+    if ran_on != store_sha:
+        return None, f'the sweep ran on {m}.reu sha256 {ran_on[:16]}, not this store'
+    return s, None
+
+
+def assess_dsky(row, sweep, m, stale=None):
+    """Bar item 6 for program m from the sweep summary (load_sweep)."""
+    if sweep is None:
+        return False, stale or 'pending: no DSKY sweep summary on disk'
+    mine = (sweep.get('by_mission') or {}).get(m) or {}
+    failed = [r for r in sweep.get('failed', []) if r.get('m') == m]
+    parts = [f"{mine.get('passed', 0)} of {mine.get('cases', 0)} {m} cases end in the host state",
+             f"mode {sweep.get('mode')}", 'every word compared' if sweep.get('replay_exact') else 'without --replay-exact']
+    if mine.get('skipped_cases'):
+        parts.append(f"{mine['skipped_cases']} match only with words skipped")
+    if failed:
+        parts.append(f"first failure {failed[0].get('keys')}: {failed[0].get('class') or failed[0].get('error')}")
+    if not sweep.get('item6'):
+        parts.append('the sweep does not meet item 6 (needs --cases all, both missions, every case, --replay-exact)')
+    ok = bool(sweep.get('item6') and sweep.get('replay_exact') and sweep.get('mode') == 'all' and mine.get('cases')
+              and mine.get('passed') == mine.get('cases') and not mine.get('skipped_cases') and not failed)
+    return ok, '; '.join(parts)
+
+
 def assess_downlink(row, summary):
     if summary is None:
         return False, 'not run at this commit'
@@ -211,7 +253,7 @@ def assess_dump(row, replays):
     return best, '; '.join(parts) or ('not run' if row.get('windows') else 'no window named')
 
 
-def assess(rows, replays, downlink):
+def assess(rows, replays, downlink, sweep=None, m=None, stale_sweep=None):
     out = []
     for row in rows:
         kind, status = row['kind'], row.get('status', 'mapped')
@@ -223,6 +265,8 @@ def assess(rows, replays, downlink):
             ok, text = assess_channels(row, replays)
         elif kind == 'dump':
             ok, text = assess_dump(row, replays)
+        elif kind == 'dsky':
+            ok, text = assess_dsky(row, sweep, m, stale_sweep)
         else:
             ok, text = False, 'pending'
         if row.get('waits_on') and status != 'not exercised':
@@ -237,7 +281,7 @@ def assess(rows, replays, downlink):
     return out, counts
 
 
-def write_evidence(m, replays, downlink, dest, store):
+def write_evidence(m, replays, downlink, dest, store, sweep_path=None):
     dest.mkdir(parents=True, exist_ok=True)
     for old in dest.glob('*.json'):
         old.unlink()
@@ -253,6 +297,11 @@ def write_evidence(m, replays, downlink, dest, store):
         p.write_text(json.dumps(dict(commit=downlink.get('commit'), host=keep(downlink.get('host', [])),
                                      c64=keep(downlink.get('c64', []))), indent=1) + '\n')
         files[('downlink',)] = p
+    if sweep_path is not None:
+        # Byte for byte, so its full_sha256 still binds the full report (release evidence-dsky-sweep).
+        p = dest / 'dsky-sweep-summary.json'
+        p.write_bytes(pathlib.Path(sweep_path).read_bytes())
+        files[('dsky',)] = p
     if files and store:
         subprocess.run([sys.executable, 'tools/evidence.py', 'add', f'{m}-acceptance-outputs',
                         *map(str, files.values()), '--tree'], cwd=ROOT, check=True)
@@ -285,7 +334,10 @@ def write_doc(m, assessed, counts, stale_runs, stale_downlink, evidence, commit,
              '- **Erasable dump (V74)**: `tools/flight_scenario_vice.py --replay --downrupt`. The window is '
              'compared as an output channel window, with DOWNRUPTs on both sides, and the host\'s states show '
              'DNTMGOTO in the dump code (DNDUMPI, DNDUMP, DNDUMP1) by the last checkpoint the C64 matched.',
-             '- **DSKY**: the noun x verb sweep on the C64 build (acceptance bar item 6).', '',
+             '- **DSKY**: `tools/dsky_sweep_vice.py --cases all --replay-exact` on both missions (acceptance bar '
+             'item 6): every flight noun x display verb and the other key sequences of tools/dsky_sweep_cases.py '
+             'from one snapshot, each C64 end state compared with the host\'s over every erasable word and output '
+             'channel. Its summary counts on this program\'s store only.', '',
              'A result from a commit with other port sources (src, include, platform, tools, tests) is stale and '
              'counts as not run.', '',
              '## Counts', '',
@@ -303,7 +355,7 @@ def write_doc(m, assessed, counts, stale_runs, stale_downlink, evidence, commit,
             section = row['section']
             lines.append(f'| **{pa.cell(section)}** | | | | | |')
         verdict = {True: 'pass', None: 'not exercised', False: 'waiting' if row.get('waits_on') else
-                   ('pending' if row['kind'] == 'dsky' else 'not yet')}[a['ok']]
+                   ('pending' if a['text'].startswith('pending') else 'not yet')}[a['ok']]
         chans = ', '.join(f'{c:o}' for c in row.get('channels', [])) or \
             ('34, 35' if row['kind'] in ('downlink', 'dump') else ('10 (display)' if row['kind'] == 'dsky' else ''))
         lines.append(f"| {pa.cell(row['row'])} | {row['kind']} | {chans} | {verdict} | {pa.cell(a['text'])} | "
@@ -352,6 +404,8 @@ def main(argv=None):
     ap.add_argument('--replay-dir', type=pathlib.Path, default=WORK)
     ap.add_argument('--run', action='append', default=[], help='a flight_scenario_vice.py --replay result JSON')
     ap.add_argument('--downlink', type=pathlib.Path, default=DOWNLINK)
+    ap.add_argument('--dsky-sweep', type=pathlib.Path, default=SWEEP,
+                    help='tools/dsky_sweep_vice.py summary (default build/flight-store/dsky-sweep/dsky-sweep-summary.json)')
     ap.add_argument('--map', type=pathlib.Path, help='default docs/acceptance/<Program>-native-output-map.json')
     ap.add_argument('--out', type=pathlib.Path, help='default docs/acceptance/<Program>-native_output_tests.md')
     ap.add_argument('--commit', help='the commit the inputs must come from (default HEAD)')
@@ -379,10 +433,12 @@ def main(argv=None):
     store = ROOT / 'build/flight-store' / f'{m}.reu'
     store_sha = pa.sha(store) if store.exists() else None
     downlink, stale_downlink = load_downlink(a.downlink, commit, m, store_sha)
-    assessed, counts = assess(rows, replays, downlink)
+    sweep, stale_sweep = load_sweep(a.dsky_sweep, m, store_sha)
+    assessed, counts = assess(rows, replays, downlink, sweep, m, stale_sweep)
     used = {w[0] for w in windows}
     evidence = write_evidence(m, {s: r for s, r in replays.items() if s in used}, downlink,
-                              ROOT / 'build/native-output-acceptance' / m, not a.no_evidence)
+                              ROOT / 'build/native-output-acceptance' / m, not a.no_evidence,
+                              a.dsky_sweep if sweep is not None else None)
     out = a.out or ROOT / f'docs/acceptance/{p}-native_output_tests.md'
     if not store_sha:
         counts['ok'] = False

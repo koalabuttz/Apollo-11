@@ -1,0 +1,567 @@
+{
+ "program": "Comanche055",
+ "about": "The longest an interrupt request waits for a native boundary (#838), per\nreplay window, on the host.",
+ "mct_ms": 0.01172,
+ "longest": {
+  "scenario": "cm-p20",
+  "snap_cs": 9210,
+  "cs": 300,
+  "hold_mct": 1425,
+  "time1": "22401"
+ },
+ "windows": [
+  {
+   "scenario": "cm-cdh",
+   "snap_cs": 2450,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-cdh-csm",
+   "snap_cs": 2450,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-csi",
+   "snap_cs": 2450,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-csi",
+   "snap_cs": 13250,
+   "cs": 300,
+   "hold_mct": 4,
+   "time1": "31764"
+  },
+  {
+   "scenario": "cm-entry",
+   "snap_cs": 2450,
+   "cs": 300,
+   "hold_mct": 391,
+   "time1": "04730"
+  },
+  {
+   "scenario": "cm-entry",
+   "snap_cs": 6100,
+   "cs": 300,
+   "hold_mct": 741,
+   "time1": "14030"
+  },
+  {
+   "scenario": "cm-entry",
+   "snap_cs": 9850,
+   "cs": 300,
+   "hold_mct": 592,
+   "time1": "23455"
+  },
+  {
+   "scenario": "cm-entry",
+   "snap_cs": 30580,
+   "cs": 300,
+   "hold_mct": 847,
+   "time1": "34464"
+  },
+  {
+   "scenario": "cm-entry-overload",
+   "snap_cs": 20370,
+   "cs": 300,
+   "hold_mct": 899,
+   "time1": "10153"
+  },
+  {
+   "scenario": "cm-p11",
+   "snap_cs": 2250,
+   "cs": 300,
+   "hold_mct": 151,
+   "time1": "04404"
+  },
+  {
+   "scenario": "cm-p11",
+   "snap_cs": 4340,
+   "cs": 300,
+   "hold_mct": 352,
+   "time1": "10452"
+  },
+  {
+   "scenario": "cm-p11",
+   "snap_cs": 15050,
+   "cs": 300,
+   "hold_mct": 295,
+   "time1": "35543"
+  },
+  {
+   "scenario": "cm-p11",
+   "snap_cs": 84100,
+   "cs": 300,
+   "hold_mct": 678,
+   "time1": "04274"
+  },
+  {
+   "scenario": "cm-p20",
+   "snap_cs": 4750,
+   "cs": 300,
+   "hold_mct": 539,
+   "time1": "11356"
+  },
+  {
+   "scenario": "cm-p20",
+   "snap_cs": 5370,
+   "cs": 300,
+   "hold_mct": 612,
+   "time1": "13012"
+  },
+  {
+   "scenario": "cm-p20",
+   "snap_cs": 6260,
+   "cs": 300,
+   "hold_mct": 667,
+   "time1": "14457"
+  },
+  {
+   "scenario": "cm-p20",
+   "snap_cs": 9210,
+   "cs": 300,
+   "hold_mct": 1425,
+   "time1": "22401"
+  },
+  {
+   "scenario": "cm-p20-crew-verbs",
+   "snap_cs": 21100,
+   "cs": 300,
+   "hold_mct": 325,
+   "time1": "12043"
+  },
+  {
+   "scenario": "cm-p20-crew-verbs",
+   "snap_cs": 26190,
+   "cs": 300,
+   "hold_mct": 350,
+   "time1": "23603"
+  },
+  {
+   "scenario": "cm-p20-crew-verbs",
+   "snap_cs": 27100,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-p20-crew-verbs",
+   "snap_cs": 28100,
+   "cs": 300,
+   "hold_mct": 71,
+   "time1": "26774"
+  },
+  {
+   "scenario": "cm-p20-crew-verbs",
+   "snap_cs": 29100,
+   "cs": 300,
+   "hold_mct": 89,
+   "time1": "30740"
+  },
+  {
+   "scenario": "cm-p20-crew-verbs",
+   "snap_cs": 30100,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-p21",
+   "snap_cs": 20600,
+   "cs": 300,
+   "hold_mct": 8,
+   "time1": "10261"
+  },
+  {
+   "scenario": "cm-p22",
+   "snap_cs": 4750,
+   "cs": 300,
+   "hold_mct": 561,
+   "time1": "11344"
+  },
+  {
+   "scenario": "cm-p23",
+   "snap_cs": 4750,
+   "cs": 300,
+   "hold_mct": 74,
+   "time1": "11306"
+  },
+  {
+   "scenario": "cm-p23",
+   "snap_cs": 8950,
+   "cs": 300,
+   "hold_mct": 39,
+   "time1": "21452"
+  },
+  {
+   "scenario": "cm-p23-attached",
+   "snap_cs": 28600,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-p37",
+   "snap_cs": 4750,
+   "cs": 300,
+   "hold_mct": 74,
+   "time1": "11306"
+  },
+  {
+   "scenario": "cm-p37",
+   "snap_cs": 46100,
+   "cs": 300,
+   "hold_mct": 3,
+   "time1": "32107"
+  },
+  {
+   "scenario": "cm-p40",
+   "snap_cs": 4750,
+   "cs": 300,
+   "hold_mct": 87,
+   "time1": "11312"
+  },
+  {
+   "scenario": "cm-p40",
+   "snap_cs": 11750,
+   "cs": 300,
+   "hold_mct": 830,
+   "time1": "27116"
+  },
+  {
+   "scenario": "cm-p40",
+   "snap_cs": 14950,
+   "cs": 300,
+   "hold_mct": 17,
+   "time1": "35240"
+  },
+  {
+   "scenario": "cm-p40",
+   "snap_cs": 17900,
+   "cs": 300,
+   "hold_mct": 827,
+   "time1": "03350"
+  },
+  {
+   "scenario": "cm-p40",
+   "snap_cs": 29000,
+   "cs": 1000,
+   "hold_mct": 466,
+   "time1": "31340"
+  },
+  {
+   "scenario": "cm-p40-sps-fail",
+   "snap_cs": 30170,
+   "cs": 300,
+   "hold_mct": 352,
+   "time1": "33304"
+  },
+  {
+   "scenario": "cm-p40-sps-fail",
+   "snap_cs": 32100,
+   "cs": 300,
+   "hold_mct": 574,
+   "time1": "37233"
+  },
+  {
+   "scenario": "cm-p41",
+   "snap_cs": 11750,
+   "cs": 300,
+   "hold_mct": 1034,
+   "time1": "27055"
+  },
+  {
+   "scenario": "cm-p52",
+   "snap_cs": 4000,
+   "cs": 1000,
+   "hold_mct": 74,
+   "time1": "11306"
+  },
+  {
+   "scenario": "cm-p52",
+   "snap_cs": 4750,
+   "cs": 300,
+   "hold_mct": 74,
+   "time1": "11306"
+  },
+  {
+   "scenario": "cm-p52",
+   "snap_cs": 5400,
+   "cs": 320,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-p52",
+   "snap_cs": 8150,
+   "cs": 300,
+   "hold_mct": 512,
+   "time1": "20340"
+  },
+  {
+   "scenario": "cm-p52",
+   "snap_cs": 8970,
+   "cs": 300,
+   "hold_mct": 56,
+   "time1": "21504"
+  },
+  {
+   "scenario": "cm-p52",
+   "snap_cs": 15180,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-p52",
+   "snap_cs": 16110,
+   "cs": 300,
+   "hold_mct": 542,
+   "time1": "37455"
+  },
+  {
+   "scenario": "cm-p52",
+   "snap_cs": 18750,
+   "cs": 300,
+   "hold_mct": 275,
+   "time1": "04577"
+  },
+  {
+   "scenario": "cm-p52-coarse",
+   "snap_cs": 9600,
+   "cs": 300,
+   "hold_mct": 639,
+   "time1": "22710"
+  },
+  {
+   "scenario": "cm-rendezvous-tpm",
+   "snap_cs": 21100,
+   "cs": 300,
+   "hold_mct": 683,
+   "time1": "11623"
+  },
+  {
+   "scenario": "cm-rendezvous-tpm",
+   "snap_cs": 23600,
+   "cs": 300,
+   "hold_mct": 471,
+   "time1": "16703"
+  },
+  {
+   "scenario": "cm-rendezvous-tpm",
+   "snap_cs": 26620,
+   "cs": 300,
+   "hold_mct": 370,
+   "time1": "24641"
+  },
+  {
+   "scenario": "cm-rendezvous-tpm",
+   "snap_cs": 42250,
+   "cs": 300,
+   "hold_mct": 1330,
+   "time1": "23075"
+  },
+  {
+   "scenario": "cm-rendezvous-tpm",
+   "snap_cs": 50250,
+   "cs": 300,
+   "hold_mct": 504,
+   "time1": "02427"
+  },
+  {
+   "scenario": "cm-rendezvous-tpm",
+   "snap_cs": 64250,
+   "cs": 300,
+   "hold_mct": 832,
+   "time1": "36013"
+  },
+  {
+   "scenario": "cm-rendezvous-tpm",
+   "snap_cs": 72250,
+   "cs": 300,
+   "hold_mct": 736,
+   "time1": "15370"
+  },
+  {
+   "scenario": "cm-rendezvous-tpm",
+   "snap_cs": 77100,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-stable-orbit",
+   "snap_cs": 21250,
+   "cs": 300,
+   "hold_mct": 871,
+   "time1": "12061"
+  },
+  {
+   "scenario": "cm-stable-orbit",
+   "snap_cs": 57250,
+   "cs": 300,
+   "hold_mct": 735,
+   "time1": "17743"
+  },
+  {
+   "scenario": "cm-stable-orbit-lm",
+   "snap_cs": 21250,
+   "cs": 300,
+   "hold_mct": 871,
+   "time1": "12061"
+  },
+  {
+   "scenario": "cm-stable-orbit-lm",
+   "snap_cs": 57250,
+   "cs": 300,
+   "hold_mct": 320,
+   "time1": "20157"
+  },
+  {
+   "scenario": "cm-tei",
+   "snap_cs": 4750,
+   "cs": 300,
+   "hold_mct": 87,
+   "time1": "11312"
+  },
+  {
+   "scenario": "cm-tei",
+   "snap_cs": 11750,
+   "cs": 300,
+   "hold_mct": 791,
+   "time1": "27046"
+  },
+  {
+   "scenario": "cm-tei",
+   "snap_cs": 14950,
+   "cs": 300,
+   "hold_mct": 37,
+   "time1": "35234"
+  },
+  {
+   "scenario": "cm-tei",
+   "snap_cs": 17900,
+   "cs": 300,
+   "hold_mct": 653,
+   "time1": "03170"
+  },
+  {
+   "scenario": "cm-tei",
+   "snap_cs": 29000,
+   "cs": 1000,
+   "hold_mct": 467,
+   "time1": "31650"
+  },
+  {
+   "scenario": "cm-tei",
+   "snap_cs": 45000,
+   "cs": 320,
+   "hold_mct": 492,
+   "time1": "27731"
+  },
+  {
+   "scenario": "cm-tei",
+   "snap_cs": 51100,
+   "cs": 300,
+   "hold_mct": 48,
+   "time1": "04203"
+  },
+  {
+   "scenario": "cm-tli",
+   "snap_cs": 3250,
+   "cs": 300,
+   "hold_mct": 733,
+   "time1": "06540"
+  },
+  {
+   "scenario": "cm-tli",
+   "snap_cs": 67100,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-tpi-search",
+   "snap_cs": 21250,
+   "cs": 300,
+   "hold_mct": 884,
+   "time1": "12061"
+  },
+  {
+   "scenario": "cm-tpi-search",
+   "snap_cs": 32320,
+   "cs": 300,
+   "hold_mct": 736,
+   "time1": "37617"
+  },
+  {
+   "scenario": "cm-uplink-accept",
+   "snap_cs": 2010,
+   "cs": 300,
+   "hold_mct": 75,
+   "time1": "04020"
+  },
+  {
+   "scenario": "cm-uplink-accept",
+   "snap_cs": 5010,
+   "cs": 300,
+   "hold_mct": 75,
+   "time1": "11710"
+  },
+  {
+   "scenario": "cm-uplink-accept",
+   "snap_cs": 9210,
+   "cs": 300,
+   "hold_mct": 75,
+   "time1": "22060"
+  },
+  {
+   "scenario": "cm-uplink-accept",
+   "snap_cs": 12010,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-uplink-reject",
+   "snap_cs": 2010,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-v48-dap",
+   "snap_cs": 2450,
+   "cs": 300,
+   "hold_mct": 68,
+   "time1": "05136"
+  },
+  {
+   "scenario": "cm-v48-dap",
+   "snap_cs": 7450,
+   "cs": 300,
+   "hold_mct": 10,
+   "time1": "17062"
+  },
+  {
+   "scenario": "cm-v49-maneuver",
+   "snap_cs": 2100,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "cm-v49-maneuver",
+   "snap_cs": 3100,
+   "cs": 300,
+   "hold_mct": 0,
+   "time1": "00000"
+  }
+ ]
+}

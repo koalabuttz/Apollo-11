@@ -420,7 +420,7 @@ def main():
     p.add_argument('--evidence', type=pathlib.Path, help='also copy dsky-sweep.json here (evidence)')
     p.add_argument('--replay-exact', action='store_true',
                    help='leave no SCHEDULE_SKIP word out of the compare, as acceptance item 6 needs '
-                        '(a TIME5 phase one count apart still matches, and counts as skipped)')
+                        '(and counts a TIME5 phase one count apart as a difference; without it, that is a noted skip)')
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
     p.add_argument('--rom-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
