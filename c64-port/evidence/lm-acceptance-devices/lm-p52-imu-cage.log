@@ -71,18 +71,18 @@ interpreter module: 838 routines, 838 slots; 760 charged other than yaAGC's word
 interpreter charge: fitted 163084 MCT, yaAGC 153048 MCT (+6.6%) over 838 routines; mean |error| 36.0 MCT per routine
 native routines yaAGC did not match (0):
 unregistered or refused points (0):
-module loads (6515 in 10002 cs):
+module loads (6519 in 10002 cs):
   load lm_self_check_idle slot 0 basic  43,3303: 1
   load lm_dapidler slot 0 basic  16,2024: 159
   load lm_interbank_routines slot 0 basic  02,2674: 10
   load lm_dap_interface slot 0 basic  20,2153: 2
   load lm_interbank_routines slot 0 basic  02,2707: 8
   load lm_dapidler slot 0 basic  16,2050: 2
-  load lm_self_check_idle slot 0 basic  43,3304: 1261
+  load lm_self_check_idle slot 0 basic  43,3304: 1262
   load t4rupt slot 0 basic  06,2000: 1074
   load excursion slot 0 basic  16,2213: 841
   load lm_rcsmon slot 0 basic  06,3156: 208
-  load lm_interbank_routines slot 0 basic  02,2635: 286
+  load lm_interbank_routines slot 0 basic  02,2635: 289
   load lm_t4rupt_imu slot 0 basic  06,2172: 208
   load excursion slot 0 basic  16,3014: 24
   load excursion slot 0 basic  16,2667: 1
@@ -151,7 +151,7 @@ module loads (6515 in 10002 cs):
   load lanec_di_routines slot 0 basic  10,2565: 9
   load lanec_pin_routines slot 0 basic  02,2155: 26
   load lanec_pin_routines slot 0 basic  41,3602: 2
-  load excursion slot 0 basic  16,2666: 124
+  load excursion slot 0 basic  16,2666: 123
   load excursion slot 0 basic  17,3005: 34
   load lanec_pin_routines slot 0 basic  02,2202: 5
   load lanec_di_routines slot 0 basic  10,3122: 26
@@ -168,7 +168,7 @@ module loads (6515 in 10002 cs):
   load lanec_di_routines slot 0 basic  10,3267: 17
   load lanec_pin_routines slot 0 basic  02,2207: 13
   load lm_self_check_idle slot 0 basic  43,3336: 1
-  load excursion slot 0 basic  17,2714: 84
+  load excursion slot 0 basic  17,2714: 85
   load excursion slot 0 basic  17,2200: 3
   load imu_compensation slot 0 basic  06,3555: 1
   load lanec_pin_routines slot 0 basic  41,2750: 1
