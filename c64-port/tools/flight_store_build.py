@@ -50,6 +50,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import threading
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -1725,9 +1726,14 @@ def main():
             return dict(mod, also=[], sources=c64_sources(index, mod['stem'], 'agc_transfer'),
                         sites=file_sites(a.host_cc, m, mod['stem']))
 
+        # Modules split side by side (below), so at most a.jobs trial links
+        # run at once across all of them.
+        trial_slots = threading.BoundedSemaphore(max(1, a.jobs))
+
         def trial(c, mod):
-            return link(dict(own(mod), id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c, chunk_of=mod['id'],
-                             prg_name=f'trial-{c[0]}-{c[1]}-{c[2]}'))[2]
+            with trial_slots:
+                return link(dict(own(mod), id=LANE_BYTE[mod['lane']] << 8 | 0xFF, basic=[], chunk=c,
+                                 chunk_of=mod['id'], prg_name=f'trial-{c[0]}-{c[1]}-{c[2]}'))[2]
 
         def split_greedy(mod):
             """As split, but each chunk takes as many consecutive routines as fit
@@ -1782,13 +1788,24 @@ def main():
                 kept += [(t, i, j) for i, j in got[0]]
                 over += [((t, i, i + 1), overflow) for i, overflow in got[1]]
             return (kept, over) if kept else None
+        to_split = []
         for mod, prg, res in linked:
             if res['ok'] or not res.get('overflow') or mod['interp'] or mod.get('defines') or mod.get('excursion'):
                 continue
             if res['overflow'] > SPLIT_LIMIT and mod['stem'] not in SPLIT_ANY:
                 mod['chunking'] = 'too big to split'
                 continue
-            got = split(mod)
+            to_split.append(mod)
+        # Each split depends only on its own trial links (named for its
+        # tables), so the modules split side by side; ids are then given
+        # out in the same order as before, so the store does not change.
+        split_tables = [t for mod in to_split for t in mod['basic'] if t not in mod['also']]
+        if len(split_tables) == len(set(split_tables)):
+            with ThreadPoolExecutor(max(1, len(to_split))) as pool:
+                splits = list(pool.map(split, to_split))
+        else:  # two modules would write the same trial files
+            splits = [split(mod) for mod in to_split]
+        for mod, got in zip(to_split, splits):
             if not got or seq[mod['lane']] + len(got[0]) - 1 > LANE_LIMIT.get(mod['lane'], 0xFF):
                 mod['chunking'] = 'every routine over its slot' if got is None else 'no module ids left'
                 continue
