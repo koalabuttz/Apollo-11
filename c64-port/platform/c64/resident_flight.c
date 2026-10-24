@@ -4,6 +4,14 @@
 #include "resident_flight.h"
 #include "sp_routines.h"
 #include "resident_rupt.h"
+#include "resident_cdu.h"
+/* The output drives, once a period: the 6502 version of resident_cdu.c's
+ * rk_cdu_drive (platform/c64/resident_cdu.S, checked against the C and
+ * yaAGC's vectors by tools/resident_cdu_asm_check.c), which stays the host
+ * and vector version. Their state lives here. */
+rk_cdu_state rk_cdu;
+void rk_cdu_drive6502(uint8_t hi);
+#define RK_CDU_DRIVE() rk_cdu_drive6502((uint8_t)(rk_hardware.channel14 >> 8))
 #ifdef AGC_SITES_ROPE
 #include "rope_image.h"
 #endif
@@ -359,10 +367,20 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
 #endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
-        got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
-                           &rk_pending);
+        /* A job's part hand-off (rk_part_cont, outside an interrupt) is inside
+         * one host step, where the host takes no interrupt: requests wait
+         * until the job's next part has run. */
+        got = rk_part_cont && !rk_hardware.in_interrupt
+                  ? 0
+                  : rk_rupt_take(&rk_program, IMAGE, rk_device.superbank,
+                                 rk_device.interrupt_enabled, &rk_pending);
         if (got || rk_work < RK_PHASE_MCT(p)) break;
-        if (t == RK_PHASE_T5) rk_realtime_cap();
+        /* Once a period, at TIME5: the real-time cap, then the output drives
+         * (resident_cdu.h), at the step the host harness runs them. */
+        if (t == RK_PHASE_T5) {
+            rk_realtime_cap();
+            RK_CDU_DRIVE();
+        }
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
@@ -386,8 +404,12 @@ __attribute__((noinline)) static void rk_rupts(void) {
     now=ov2_irq_count;
     __asm__ volatile("plp" ::: "memory");
     for(;rk_ticks!=now;++rk_ticks) {
-        if(take) { --take; rk_timer_tick(IMAGE,&rk_hardware,&rk_pending); }
-        else ++rk_dilation;
+        if (take) {
+            --take;
+            rk_timer_tick(IMAGE, &rk_hardware, &rk_pending);
+            RK_CDU_DRIVE(); /* (after the timers, as the host's scaled path) */
+        } else
+            ++rk_dilation;
     }
 #ifdef RK_RUPT_TRACE
     rk_rupt_last=
@@ -595,10 +617,9 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         }
         RK_PROF(6);
 #ifdef RK_WORK_CLOCK
-        if (status == EXEC_UNMAPPED) rk_part_cont = rk_charge_group;
         rk_charge(steps, mct);
 #endif
-        return rk_module_status(status,steps,limit);
+        return rk_module_status(status, steps, limit);
     }
 #ifdef RK_WORK_CLOCK
     rk_charge_group = 0; /* no slot ran: the resolver's charge is its own */
@@ -615,6 +636,9 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     enum exec_status status;
     uint16_t loc;
 #ifdef RK_WORK_CLOCK
+    /* No interrupt comes between a job's two parts (rk_rupts_due), and an
+     * interrupt's own parts (AOSTASK, inside T3RUPT) end before its RESUME,
+     * so the step before is always the one this step's part goes on from. */
     rk_part_prev = rk_part_cont;
     rk_part_cont = 0;
 #endif
@@ -762,10 +786,14 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
             if (spin & 2u) return rk_gojam() ? EXEC_OUT_OF_SCOPE : EXEC_OK;
             if (w[5] == 02037u && w[4] == 066000u && (rk_device.superbank & 0100u)) {
                 IMAGE->words[2] = 02040u; /* Q: TC VERB69's */
+#ifdef RK_WORK_CLOCK
                 rk_charge(0, RK_MCT_IDLE);
                 /* The rest of the period's MCT over 256 (rk_phase_rest): 3
                  * or 2 with its T3 step, 1 without. */
                 rk_spin = (uint8_t)(rk_work >> 8);
+#else
+                rk_spin = 1u; /* the wall clock has no T3 step to count */
+#endif
                 st = EXEC_OK;
                 goto out;
             }

@@ -215,10 +215,12 @@ P23_KEYS = ('@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000
 # pericynthion) and V16N45; V37E40E, proceed on V50N18 (R60's maneuver is
 # nil), ENTER on V50N18 (end R60), proceed on V50N25 00204 (the gimbal
 # test); average G at TIG-30, proceed on V99N40 at TIG-5; FLIGHT_SPS (the
-# 43,900 kg stack) burns about 372 s to cutoff (VG under 1 m/s); proceed
+# 43,900 kg stack, its centre of mass 0.5 degrees in pitch and -0.3 in yaw
+# off the pad-loaded trim, so the TVC DAP has to find it) burns about
+# 372 s to cutoff (VG under 1 m/s); proceed
 # on V16N40 and V16N85, then P00.
 P40 = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
-       'FLIGHT_SPS': '43900', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p40.load'}
+       'FLIGHT_SPS': '43900,0.5,-0.3', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-p40.load'}
 P40_KEYS = ('@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E'
             '@29600V33E@69000V33E@70500V33E@72000V37E00E')
 # lm-p57: Apollo 11's two-star lunar surface alignment (103:45 GET), the
@@ -477,11 +479,12 @@ P22_KEYS = ('@4500V37E22E@6000V33E@7000V22E10000E@7500V33E@8500V33E@13200M@15200
 # V25 on V06N33 (TIG 300 s on the CMC clock), V25 on V06N81 (+3283.6
 # ft/s), proceed on N81, N42 (9999.9 x 60.0 nmi) and V16N45; V37E40E,
 # proceed and ENTER on V50N18, proceed on V50N25 00204; proceed on V99N40
-# at TIG-5; FLIGHT_SPS (16,400 kg) burns about 154 s to cutoff (N40 VG 6.1
+# at TIG-5; FLIGHT_SPS (16,400 kg, its centre of mass -0.3 degrees in
+# pitch and +0.2 in yaw off the trim) burns about 154 s to cutoff (N40 VG 6.1
 # ft/s); proceed on V16N40 and V16N85, V37E00E; V82: V16N44 9999.9 x 60.0
 # nmi, then V34E.
 TEI = {'FLIGHT_CH30': '037377', 'FLIGHT_CH31': '037777', 'FLIGHT_CH33': '077767', 'FLIGHT_SWAP_MCT': '0',
-       'FLIGHT_SPS': '16400', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-tei.load'}
+       'FLIGHT_SPS': '16400,-0.3,0.2', 'FLIGHT_LOAD': '2000:tools/flight_scenarios/cm-tei.load'}
 TEI_KEYS = ('@4500V37E30E@5000V25E+00000E+00005E+00000E@6400V33E@6800V25E+32836E+00000E+00000E@8100V33E'
             '@9500V33E@10500V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@47000V33E@48500V33E'
             '@50000V37E00E@51000V82E@53000V33E@55000V34E')
@@ -801,7 +804,8 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-coast-r04', 'lm', 7000, COAST_R04_KEYS, LM_RDZ),
           ('lm-coast-programs', 'lm', 23000, COAST_PROGRAMS_KEYS, LM_RDZ),
           ('lm-p51', 'lm', 8000, LM_P51_KEYS, LM_P52),
-          ('lm-p22-surface', 'lm', 8000, LM_P22_KEYS, P57)]
+          ('lm-p22-surface', 'lm', 8000, LM_P22_KEYS, P57),
+          ('lm-p63-overload-nomon', 'lm', 27000, P63_KEYS, OVERLOAD_LM)]
 # Restarts for the whole-program acceptance (recovery_and_restart_tests,
 # one per phase group): a FLIGHT scenario with a hardware restart
 # (FLIGHT_GOJAM) at a centisecond in that phase, run to an end centisecond.
@@ -834,8 +838,8 @@ RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(
 # GOPROG with no group active, back to P00. tools/flight_restart_check.py
 # checks them on the host (lm-v69-restart, cm-v69-restart);
 # tools/flight_scenario_vice.py --scenario lm-v69 --snap-cs 2300 --replay on
-# the C64. Like RESTART_FLIGHT, the host differential (and the x86
-# program, which has no TC trap yet) does not run them.
+# the C64. Like RESTART_FLIGHT, the host differential does not run them;
+# tools/x86_flight_scenarios.py flies them on the x86 program.
 V69_FLIGHT = [('lm-v69', 'lm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'}),
               ('cm-v69', 'cm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'})]
 
@@ -953,11 +957,59 @@ def build(cc, m, engine):
 # The interpretive words' charge is a fitted per-order table
 # (tools/interp_word_mct.py, include/interp_word_mct_table.h), the same on
 # the host and the C64. Each scaled run reports it against yaAGC's own MCT
-# over the same spans (flight_host_run.c "interpreter charge", issue #765);
-# a run with at least CHARGE_MIN_ROUTINES of them fails beyond CHARGE_BOUND
-# percent. At the 10-19 table the runs are 0.2-7.5% over, CM P11 17.8%.
+# over the same spans (flight_host_run.c "interpreter charge", issue #765).
+# Two bounds, both needed for a run of at least CHARGE_MIN_ROUTINES
+# routines:
+# - the net error (fitted total against yaAGC's total) within
+#   CHARGE_BOUND percent;
+# - the absolute error routine by routine (the sum of |fitted - yaAGC|
+#   over yaAGC's total) within CHARGE_ABS_BOUND percent, so routines
+#   charged too much cannot hide routines charged too little.
+# The per-order table ignores data-dependent timing, so the absolute
+# error is large even when the net is small: measured on da027bee, 58
+# scaled runs of 1000+ routines, net -0.7..+17.8% (cm-p11) and absolute
+# 14.4..39.3% (cm-p11), 33.4% next (cm-p41). The absolute bound is a
+# regression guard on that measurement, not an accuracy claim; a
+# per-span refit would tighten it. yaAGC counts whole spans, so orders
+# inside one routine can still cancel. A run beyond either bound is
+# interpretive_charge.state 'over', which tools/program_acceptance.py and
+# tools/device_acceptance.py fail; a run under CHARGE_MIN_ROUTINES is
+# 'few', reported in both documents but not bounded.
 CHARGE_BOUND = 20.0
+CHARGE_ABS_BOUND = 45.0
 CHARGE_MIN_ROUTINES = 1000
+
+
+def charge_verdict(charge):
+    """The interpretive_charge row of one scaled run, from its report line
+    (fitted, yaagc, percent, routines, mean_abs_error), with abs_percent,
+    bound, state ('ok', 'over' or 'few') and text."""
+    c = dict(charge)
+    c['abs_percent'] = round(100.0 * c['mean_abs_error'] * c['routines'] / c['yaagc'], 1) if c['yaagc'] else 0.0
+    c['bound'] = dict(net=CHARGE_BOUND, routine=CHARGE_ABS_BOUND)
+    if c['routines'] < CHARGE_MIN_ROUTINES:
+        c['state'] = 'few'
+    else:
+        c['state'] = 'over' if abs(c['percent']) > CHARGE_BOUND or c['abs_percent'] > CHARGE_ABS_BOUND else 'ok'
+    c['text'] = (f"interpretive charge {c['percent']:+.1f}% net, {c['abs_percent']:.1f}% routine by routine, "
+                 f"from yaAGC's MCT over {c['routines']} routines; "
+                 + {'ok': f'within {CHARGE_BOUND:g}% net and {CHARGE_ABS_BOUND:g}% routine by routine',
+                    'over': f'OVER the bound ({CHARGE_BOUND:g}% net, {CHARGE_ABS_BOUND:g}% routine by routine)',
+                    'few': f'fewer than {CHARGE_MIN_ROUTINES} routines, not bounded'}[c['state']])
+    return c
+
+
+def charge_state(row):
+    """(state, text) of a summary row's interpretive charge: None, '' for a
+    row without one (an older summary, or a run with no interpretive
+    routine)."""
+    c = row.get('interpretive_charge')
+    if not c:
+        return None, ''
+    if 'state' not in c:
+        c = charge_verdict(c)
+    return c['state'], c['text']
+
 
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
@@ -1024,9 +1076,9 @@ def main():
         holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
         c = re.search(r'^interpreter charge: fitted (\d+) MCT, yaAGC (\d+) MCT \(([-+][0-9.]+)%\) over (\d+) routines; '
                       r'mean \|error\| ([0-9.]+) MCT', text, re.M)
-        charge = dict(fitted=int(c[1]), yaagc=int(c[2]), percent=float(c[3]), routines=int(c[4]),
-                      mean_abs_error=float(c[5])) if c else None
-        if charge and charge['routines'] >= CHARGE_MIN_ROUTINES and abs(charge['percent']) > CHARGE_BOUND:
+        charge = charge_verdict(dict(fitted=int(c[1]), yaagc=int(c[2]), percent=float(c[3]), routines=int(c[4]),
+                                     mean_abs_error=float(c[5]))) if c else None
+        if charge and charge['state'] == 'over':
             charge_over.append(name)
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, exit=r.returncode,
                    commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
@@ -1039,11 +1091,12 @@ def main():
         summary.append(row)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "
-              f"interrupts" + (f"; interpretive charge {charge['percent']:+.1f}% of yaAGC's" if charge else '')
+              f"interrupts" + (f"; {charge['text']}" if charge else '')
               + ('' if not r.returncode else ' FAILED'))
     (EVIDENCE / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
     if charge_over:
-        print(f"FAIL: the fitted interpretive charge is more than {CHARGE_BOUND}% from yaAGC's MCT in: {', '.join(charge_over)}")
+        print(f"FAIL: the fitted interpretive charge is more than {CHARGE_BOUND:g}% net or {CHARGE_ABS_BOUND:g}% "
+              f"routine by routine from yaAGC's MCT in: {', '.join(charge_over)}")
     return 1 if failed or charge_over else 0
 
 

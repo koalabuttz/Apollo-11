@@ -1,4 +1,5 @@
-# make test-cm-stable-orbit sanitize-cm-stable-orbit at b5d3d3dc7cb4642fe57d8fa92d8e002b6bd3f6d5
+# make test-cm-stable-orbit sanitize-cm-stable-orbit at e159f0de7b2750a758eaaf083aac10f9fd73340a
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_stable_orbit.c tests/cm_stable_orbit_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_stable_orbit.c -o build/test-cm-stable-orbit
 ./build/test-cm-stable-orbit
 cm-stable-orbit: 208 checks, 0 failures
 cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_stable_orbit.c tests/cm_stable_orbit_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/test_cm_stable_orbit.c -o build/test-cm-stable-orbit-sanitize

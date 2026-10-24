@@ -25,6 +25,7 @@ digests) for the host test and the C64 diagnostic, and
 build/<id>-proof.json. A spec with 'c64_rows': 'cover' picks the C64 cases
 by branch outcome (tools/c64_row_cover.py) instead of per routine."""
 import argparse
+import bisect
 import collections
 import concurrent.futures
 import functools
@@ -485,6 +486,14 @@ def basic_refs(cp):
     return _REFS[id(cp)]
 
 
+def put_words(E, phys, words):
+    """words into erasable from phys up, stopping at 03777: an operand at
+    the top of erasable does not run on into A, L and Q (#148)."""
+    for j, w in enumerate(words):
+        if phys + j <= 0o3777:
+            E[phys + j] = w
+
+
 def case(mi, point, n, rng):
     """(seed, edits, ie) for case n of routine point."""
     E = collections.OrderedDict()
@@ -559,9 +568,7 @@ def case(mi, point, n, rng):
             for a in [0o154, 0] + mi.operands:
                 phys = vac + a if a < 45 else a
                 row = perm[(phys // 6) % 3] if perm else None
-                for k, (hi, lo) in enumerate(edge_vector(rng, row)):
-                    E[(phys + 2 * k) & 0o3777] = hi
-                    E[(phys + 2 * k + 1) & 0o3777] = lo
+                put_words(E, phys, [w for pair in edge_vector(rng, row) for w in pair])
         else:
             E.update(edge_cases.edits(n // 4, rng, [vac + a if a < 45 else a for a in mi.operands]))
     E[0o67] = newjob   # (NEWJOB, which an operand's randomizing may have hit)
@@ -1080,7 +1087,7 @@ def build(spec_id, spec, extra=(), tag=''):
     nat = os.path.join(B, '%s-native%s' % (spec_id, tag))
     srcs = ['src/%s.c' % spec['base'][m] for m in spec['missions']] + spec.get('native_sources', []) + common(spec)
     subprocess.run(['cc', *FLAGS, *extra, '-DIRC_MAX_STEPS=%d' % spec.get('max_steps', 200), *cut_flags(spec), *srcs, spec['target'],
-                    *WRAP, 'tools/interp_routine_native.c', '-o', nat],
+                    *WRAP, '-DIRC_STATE_HASH', 'tools/interp_routine_native.c', '-o', nat],
                    cwd=R, check=True)
     return ref, nat
 
@@ -1567,13 +1574,14 @@ def step_cap_loops(cand, max_steps, probe):
     both sides loop on: the native run ends at its step cap N with the same
     image (every erasable word, A and L 16-bit, and the interrupt enable) as
     at 4N steps, also ended at the cap, so its state repeats; and yaAGC
-    still runs at 4x its cycle cap with LOC in a routine the native loop
-    visits (PERIODCH with a +0 period, #664). Anything else stays a
+    still runs at 4x its cycle cap inside a routine the native loop's
+    cycle visits (its steps after N): LOC's routine while yaAGC still
+    interprets, else Z's (PERIODCH with a +0 period, #664; #809). Anything else stays a
     mismatch: a refusal or failure that is not the step cap (kind 2 too,
     tests/interp_case.c irc_run), an oracle that ends given more cycles,
     and any rule at all when 4N does not fit the runner's 16-bit cap.
     probe(cand) gives a record for each case in order (step_cap_probe).
-    Returns {case: routine where the native loop is entered}."""
+    Returns {case: the routine the case starts in}."""
     cand = list(cand)
     if not cand or 4 * max_steps > 0xffff:
         return {}
@@ -1587,13 +1595,54 @@ def step_cap_loops(cand, max_steps, probe):
 def is_step_cap_loop(r, max_steps):
     """step_cap_loops' test of one probe record: n1 and n4 the native runs
     at N and 4N steps (kind, steps, ended at the cap, image), r4 the oracle
-    at 4x its cycles (kind, the routine LOC is in), visited the routines the
-    4N native run visits."""
+    at 4x its cycles (kind, and loc: the routine it is in, span_point of
+    LOC while it interprets, of Z in basic code), visited the routines the
+    4N native run visits after its first N steps: the cycle, not the
+    routines on the way in (#809)."""
     n1, n4, r4 = r['n1'], r['n4'], r['r4']
     return (n1['kind'] == '2' and n1['steps'] == max_steps and n1['capped']
             and n4['kind'] == '2' and n4['steps'] == 4 * max_steps and n4['capped']
             and n1['image'] == n4['image']
             and r4['kind'] == '9' and r4['loc'] is not None and r4['loc'] in r['visited'])
+
+
+def span_point(points, loc):
+    """The transfer point whose routine holds the word loc: the last point
+    at or before it in the same 1024-word bank, when another point of the
+    bank follows loc ([point, next point) is that routine's words). None
+    past a bank's last point, where the routine's end is not known, so a
+    LOC outside the file never matches (#746 round 2: the oracle at its
+    cap stops anywhere in the loop, not only on a transfer point)."""
+    i = bisect.bisect_right(points, loc) - 1
+    if i < 0 or points[i] // 1024 != loc // 1024:
+        return None
+    if points[i] == loc:
+        return loc
+    nxt = points[i + 1] if i + 1 < len(points) else None
+    return points[i] if nxt is not None and nxt // 1024 == loc // 1024 else None
+
+
+def span_where(mi, loc):
+    """mi.cp.where() of span_point (LOC itself when no routine holds it)."""
+    p = span_point(mi.points, loc)
+    return mi.cp.where(loc if p is None else p)
+
+
+def oracle_where(mi, r4):
+    """Where yaAGC is at its cycle cap, from its timeout row (n 9 Z 0 LOC
+    Zphys live, tools/interp_routine_reference.c IRC_TIMEOUT_LOC): LOC's
+    routine when the interpreter fetched an order lately (live 1), else Z's,
+    since in basic code LOC keeps its last value and would place a basic
+    loop anywhere (#809). None for any other row, and for an address that is
+    not a word of the file (mi.cp.words: a span can hold code that is not,
+    such as the interpreter's own or lm-p70-p71's R10/R11 at 21,2006), or
+    that no routine of the file holds (span_point): a loop elsewhere is not
+    the native one."""
+    if len(r4) < 7 or r4[1] != '9':
+        return None
+    at = int(r4[4]) if r4[6] == '1' else int(r4[5])
+    p = span_point(mi.points, at) if at in mi.cp.words else None
+    return None if p is None else mi.cp.where(p)
 
 
 def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
@@ -1623,19 +1672,20 @@ def step_cap_probe(spec_id, spec, missions, cases, path, ref, nat1):
             nat = {}
             for k, (lp, dp) in side.items():
                 l, d = (lp[j], dp[j]) if j < len(lp) and j < len(dp) else ([], [])
-                if len(l) < 6 or l[1] != '2':
+                if len(l) < 7 or l[1] != '2':
                     # (a run that ended any other way, or a runner that
                     # exited mid-file: not a loop)
                     nat[k] = {'kind': l[1] if len(l) > 1 else '?', 'steps': 0, 'capped': False, 'image': None,
                               'visits': []}
                     continue
-                # (image: the dump's words, and the digest for the channels it adds)
-                nat[k] = {'kind': l[1], 'steps': int(l[4][1:]), 'capped': l[5] == 'k1', 'image': [l[2], l[3]] + d[4:],
-                          'visits': [int(t[1:]) for t in l[6:]]}
+                # (image: the dump's words, the digest for the channels it
+                # adds, and the io record's and agc_hardware's hash)
+                nat[k] = {'kind': l[1], 'steps': int(l[4][1:]), 'capped': l[5] == 'k1',
+                          'image': [l[2], l[3], l[6]] + d[4:], 'visits': [int(t[1:]) for t in l[7:]]}
             r4 = rr[j] if j < len(rr) else ['', '?']
             recs.append({'n1': nat['1'], 'n4': nat['4'],
-                         'r4': {'kind': r4[1], 'loc': mi.cp.where(int(r4[4])) if r4[1] == '9' and len(r4) > 4 else None},
-                         'visited': {mi.cp.where(v) for v in nat['4']['visits']},
+                         'r4': {'kind': r4[1], 'loc': oracle_where(mi, r4)},
+                         'visited': {mi.cp.where(v) for v in nat['4']['visits'][n:]},
                          'routine': '%s %s' % (mi.m, mi.cp.where(cases[i]['point']))})
         return recs
     return probe

@@ -5,8 +5,9 @@
 A case the oracle runs to its cycle cap (kind 9) and the native runner ends
 in failing (kind 2) is a loop only when the native run ended at its step cap
 N with the same image as at 4N steps (also at the cap), and yaAGC still runs
-at 4x its cycles with LOC in a routine the native loop visits. Everything
-else stays a mismatch.
+at 4x its cycles in a routine the native loop's cycle (its steps after N)
+visits: LOC's while it interprets, Z's in basic code (#809). Everything else
+stays a mismatch.
 
   tools/interp_loops_test.py          the rule, frozen_only and the proof record
                                       (mocked runners; the CI ledgers job)
@@ -145,6 +146,70 @@ want = {'erasable_cadr_cycle': {'cm 12,2200': 1},
 assert got == want, got
 assert D.loops_record([None, mi], cases, set(), {}) == {}
 
+# span_point: the oracle's LOC at the cap maps to the routine holding it,
+# [point, next point) in one bank; past a bank's last point or before its
+# first, no routine (#746 round 2).
+PTS = [0o12131, 0o12133, 0o12136, 0o12140, 0o12141, 0o14000]
+assert D.span_point(PTS, 0o12136) == 0o12136
+assert D.span_point(PTS, 0o12135) == 0o12133 and D.span_point(PTS, 0o12137) == 0o12136
+assert D.span_point(PTS, 0o12130) is None and D.span_point(PTS, 0o12142) is None
+assert D.span_point(PTS, 0o14000) == 0o14000 and D.span_point(PTS, 0o14001) is None
+assert D.span_point([], 0o12136) is None
+
+# Where yaAGC is at its cap (#809): LOC's routine while it interprets
+# (live 1), Z's in basic code, where LOC keeps whatever it last held; a Z no
+# routine of the file holds is nowhere, so yaAGC hanging elsewhere with LOC
+# still in the native loop's routine is no loop.
+FILE = set(range(0o12131, 0o12142)) | {0o14000}
+mp = types.SimpleNamespace(points=PTS, cp=types.SimpleNamespace(where=lambda p: '%o' % p, words=FILE))
+assert D.oracle_where(mp, ['5', '9', '2137', '0', str(0o12137), str(0o30000), '1']) == '12136'
+assert D.oracle_where(mp, ['5', '9', '2134', '0', str(0o12137), str(0o12134), '0']) == '12133'
+assert D.oracle_where(mp, ['5', '9', '3000', '0', str(0o12137), str(0o30000), '0']) is None
+assert D.oracle_where(mp, ['5', '9', '2137', '0', str(0o12137)]) is None
+# (a Z inside a routine's span but not a word of the file, such as
+# lm-p70-p71's R10/R11 code in 21,2006's span; and LOC the same way)
+mp.cp.words = FILE - {0o12134, 0o12137}
+assert D.oracle_where(mp, ['5', '9', '2134', '0', str(0o12136), str(0o12134), '0']) is None
+assert D.oracle_where(mp, ['5', '9', '2137', '0', str(0o12137), str(0o30000), '1']) is None
+mp.cp.words = FILE
+assert D.oracle_where(mp, ['5', '0', '2137', '0']) is None
+
+# The probe (mocked runners): the native loop's cycle is its visits after N
+# steps, so a routine run only on the way in is not in it, and yaAGC at
+# its cap there is no loop.
+saved = {k: getattr(D, k) for k in ('build', 'run', 'write_cases', 'subprocess')}
+try:
+    n = 3
+    way_in, loop_a, loop_b = 0o12131, 0o12136, 0o12140
+    nat_visits = ' '.join('v%d' % v for v in [way_in] * n + [loop_a, loop_b] * (3 * n // 2))
+    D.build = lambda spec_id, spec, tag='': (None, 'nat4')
+    D.write_cases = lambda path, missions, cases: None
+
+    def run(cmd):
+        steps = n if cmd[0] == 'nat1' else 4 * n
+        if cmd[-1] == 'loop':
+            return [('0 2 a b n%d k1 h7 ' % steps + nat_visits).split()]
+        return [['0', '2', 'a', 'b', 'w1', 'w2']]
+    D.run = run
+
+    def probe_with(oracle_row):
+        D.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(stdout=oracle_row + '\n'))
+        mi = types.SimpleNamespace(m='cm', points=PTS, cp=types.SimpleNamespace(where=lambda p: '%o' % p, words=FILE))
+        cases = [{'cm': 1, 'point': way_in}]
+        return D.step_cap_probe('x', {'max_steps': n}, [None, mi], cases, os.devnull + '.x', 'ref', 'nat1')([0])[0]
+    r = probe_with('0 9 2137 0 %d %d 1' % (loop_a, 0o30000))
+    assert r['visited'] == {'12136', '12140'} and r['r4']['loc'] == '12136', r
+    assert D.is_step_cap_loop(r, n), r
+    # (yaAGC at its cap in the routine the native run took on the way in)
+    r = probe_with('0 9 2132 0 %d %d 1' % (way_in, 0o30000))
+    assert r['r4']['loc'] == '12131' and not D.is_step_cap_loop(r, n), r
+    # (yaAGC hung in basic code outside the file, LOC left in the loop)
+    r = probe_with('0 9 3000 0 %d %d 0' % (loop_a, 0o30000))
+    assert r['r4']['loc'] is None and not D.is_step_cap_loop(r, n), r
+finally:
+    for k, v in saved.items():
+        setattr(D, k, v)
+
 if '--real' in sys.argv[1:]:
     # cm-conics IRC_SALT=specs1017 case 27577 on the real runners: the
     # native run at 2,000 and 8,000 steps, yaAGC at 16M cycles.
@@ -174,7 +239,8 @@ if '--real' in sys.argv[1:]:
     assert got == {0: 'cm %s' % c['point']}, got
     os.remove(path)
     print('interp_loops_test: real PERIODCH case a step-cap loop (native %d and %d steps at the cap, one image; '
-          'yaAGC still running at 4x its cycles with LOC in %s)' % (n1['steps'], n4['steps'], record['r4']['loc']))
+          'yaAGC still running at 4x its cycles in %s)' % (n1['steps'], n4['steps'], record['r4']['loc']))
 
 print('interp_loops_test: step-cap loops OK (the loop; %d near-misses stay mismatches; the 16-bit clamp; '
-      'frozen_only and its loop record; the proof record and its check)' % len(NEAR))
+      'frozen_only and its loop record; the proof record and its check; LOC by routine span; '
+      'LOC or Z, and the cycle only)' % len(NEAR))

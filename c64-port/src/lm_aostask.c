@@ -8,6 +8,7 @@
 #include "lm_interp_steps.h"
 #include "lm_interp_orders.h"
 #include "agc_image_ops.h"
+#include "flight_part.h"
 #include "agc_channel_ops.h"
 #include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
@@ -3928,7 +3929,7 @@ static const agc_routine_entry basic_entries[]={
 /* Flight: the keys of every part (routines and part keys). */
 static const uint16_t lm_aostask_flight_keys[40]={16679u,16684u,16686u,16687u,16689u,16690u,16827u,16828u,16835u,16836u,16841u,16842u,16891u,16894u,16896u,16965u,17006u,17007u,17031u,17032u,17048u,17049u,17064u,17085u,17104u,17151u,17170u,17180u,17198u,17203u,17217u,17226u,17239u,17279u,17296u,17337u,17344u,17350u,17369u,17371u};
 static enum exec_status lm_aostask_leave(apollo_overlay_state *s,uint16_t at){unsigned i;
- for(i=0;i<40u;++i)if(lm_aostask_flight_keys[i]==at){W[5]=(agc_word)(02000u+at%1024u);return EXEC_OK;}
+ for(i=0;i<40u;++i)if(lm_aostask_flight_keys[i]==at){W[5]=(agc_word)(02000u+at%1024u);FLIGHT_PART_LEFT();return EXEC_OK;}
  return EXEC_OUT_OF_SCOPE;
 }
 /* Every key of the part: Z (under FB and SUPERBNK) names it. */

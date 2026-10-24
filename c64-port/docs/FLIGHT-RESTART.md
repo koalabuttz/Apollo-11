@@ -96,8 +96,10 @@ back to P00:
   (the `lm-p00-restart` class below), logged in
   `/mnt/project-files/flight-scenarios/replay-mismatches.md`.
 
-The x86 program has no TC trap yet, so `V69_FLIGHT`, like the restart
-rows, is not in its scenario list.
+The x86 program takes the TC trap the same way (`platform/x86/tc_trap.h`,
+#806): `make x86-flight-scenarios` flies `V69_FLIGHT` against the harness,
+and `make x86-flight-check` runs V69 in lockstep against yaAGC
+(docs/X86-FLIGHT.md).
 
 ## Scenarios (`make flight-restart-check`)
 
@@ -336,8 +338,9 @@ restart.
   the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF5),
   the hardware flip-flop ERROR RESET's `WRITE 77` clears. Pinball's
   `restart_light` reads and writes it there (Lane C).
-- **The x86 program** (docs/X86-FLIGHT.md) does not take `FLIGHT_GOJAM` yet.
-  `platform/x86/flight_scenario.h` is Lane B's.
+- **The x86 program** (docs/X86-FLIGHT.md) takes `FLIGHT_GOJAM` and the TC
+  trap through `fd_gojam`, which also lights its RESTART lamp; RSET and
+  channel 11 bit 10 put the lamp out, as in yaAGC.
 
 ## Telemetry
 

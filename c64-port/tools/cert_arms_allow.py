@@ -95,7 +95,7 @@ ARMS = {
     },
     'cm-imu-calibration': {
         'cases': 177152, 'cases_sha256': '285eeed2d18a54adb3e26ebcc91504f61f3aa233500453960421ff009b21fcaf',
-        'sources_sha256': {'src/cm_imu_calibration.c': '47164031b7d42f0e29ed51d17d2fc102675c2f0d39814d9e7328bf113ee4d530'},
+        'sources_sha256': {'src/cm_imu_calibration.c': 'fd49c548c8bda879abadbaa61f37939b998c3364c326f97c0bd947b9e0969440'},
         'arms': [
             {'src': 'src/cm_imu_calibration.c', 'line': 418, 'agc': '02,2562', 'op': 'EXTENDED BZF +4', 'what': 'never falls through', 'class': 'IMPOSSIBLE', 'why': 'impossible inside the certificate domain (input channels latched for the run; the resident advances scalers only between steps), not on the real AGC: falls through only when SCALER1 ticks between the READ at 02,2555 and the RXOR at 02,2560, the hardware race FINETIME guards. In this port the scalers advance only between steps (src/resident_rupt.c rk_timer_phase; the host and x86 runs use the same timer model), and FINETIME+0 to +4 runs inside one step, so both READs see the same LOSCALAR and the BZF always branches (interp_specs.py cm-imu-calibration idle note). Equivalent to the race never landing.'},
             {'src': 'src/cm_imu_calibration.c', 'line': 699, 'agc': '33,2102', 'op': 'CCS NDXCTR', 'what': 'CCS never <0/-0', 'class': 'IMPOSSIBLE', 'why': 'NDXCTR = 0 (:78), plus at most one INCR when gimbal lock is seen (:113). No other writer'},
@@ -121,7 +121,7 @@ ARMS = {
         ],
     },
     'cm-integration-init': {
-        'cases': 61696, 'cases_sha256': '8b45962a600cd0f6ef75c6a64a2da9c00ea7f20ddf52a7e2bdd8d66126765aaf',
+        'cases': 61696, 'cases_sha256': '01d62010e1e26b5f2e094063be80627d8238368c90a5ee22e65cda5a329b6448',
         'sources_sha256': {'src/cm_integration_init.c': 'f276036d3e5505e51553bc2873d5edef0eb9efa76e32381d9b76823fb9337a9d'},
         'arms': [
             {'src': 'src/cm_integration_init.c', 'line': 311, 'agc': '13,2726', 'op': 'CCS DIFEQCNT', 'what': 'CCS never <0/-0', 'class': 'IMPOSSIBLE', 'why': 'SETBANK (:464-467) returns 41 in A, and CCS steps DIFEQCNT down 41..0; the loop exits at +0, so the count is never negative.'},
@@ -287,7 +287,7 @@ ARMS = {
         ],
     },
     'cm-reentry': {
-        'cases': 100352, 'cases_sha256': '0a984fa49d405c13b4f50ff02a5afe42a477e6ac0824abbe37bf32facf79d639',
+        'cases': 100352, 'cases_sha256': '095d86dce3c6b05695c2667c5589edbeb8a505936dd16e7241153c42e93d3e1c',
         'sources_sha256': {'src/cm_reentry.c': 'ee8b973dbf6a808393ee9589c0064c8056f9a2e4aeb3e3e98fec68dcea7edf23'},
         'arms': [
             {'src': 'src/cm_reentry.c', 'line': 379, 'agc': '25,3357', 'op': 'CCS A', 'what': 'CCS never +0', 'class': 'IMPOSSIBLE', 'why': "VREFER entries are nonzero, and a ones'-complement -V + VREF gives -0 when equal, never +0. gcov sees -0 once."},
@@ -313,7 +313,7 @@ ARMS = {
         ],
     },
     'cm-stable-orbit': {
-        'cases': 26624, 'cases_sha256': '286b81277bf21dd3db91bd6fdea04ba80c33b209413b7464045de63b3c542181',
+        'cases': 26624, 'cases_sha256': 'cd8f73fe606d0d4b2ddf85980e66e7688bb85eea16be00eb3920d7e9c7a1aa8a',
         'sources_sha256': {'src/cm_stable_orbit.c': '2785e9f81214eeb7f6ada85e86cf0ee414b8165e4e84966c2fd90e5115a2e39c'},
         'arms': [
         ],
@@ -811,7 +811,7 @@ ARMS = {
         ],
     },
     'lm-powered-subs': {
-        'cases': 19968, 'cases_sha256': '695586455945d5b813feee69872b388cb232fa2d899f925f3db24aec6690ba1e',
+        'cases': 19968, 'cases_sha256': '1c4a79263d790ccbfd278849c50141c6f80a967998f985fa8259dc6459e2f226',
         'sources_sha256': {'src/lm_powered_subs.c': '44106c94d203dad4c6c019386d3738267e699996ce0607430437bfdc405d0665'},
         'arms': [
             {'src': 'src/lm_powered_subs.c', 'line': 875, 'agc': '23,3612', 'op': 'CCS TEM3', 'what': 'CCS never <0/-0', 'class': 'IMPOSSIBLE', 'why': 'TEM3 = A MASK SIX (4,2,0), never negative.'},

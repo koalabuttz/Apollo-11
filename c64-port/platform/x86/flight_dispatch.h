@@ -48,6 +48,18 @@ typedef struct {
     double mct, next_period; /* next_period: the end of the next clock step */
     uint8_t phase;           /* that step (rk_timer_phase) */
     unsigned long periods, steps, slots;
+    /* CM: the optics error counters (yaw, pitch), in pulses: what the CDU
+     * drive sent from CDUTCMD and CDUSCMD (053, 054), the SPS gimbal
+     * commands in TVC mode. Zero while channel 12 bit 2 is clear. */
+    long optics[2];
+    /* The TC trap (fd_run): 2 when the last step spun at VERB69 through a
+     * T3 step, 1 when it spun only through T5; idling while that spin's
+     * period is charged, until the next boundary. */
+    uint8_t spin, idling;
+    /* The DSKY's RESTART lamp, as yaAGC's RestartLight: lit by a GOJAM,
+     * put out by RSET (key code 022 into channel 15, fd_key) and by a
+     * routine that leaves channel 11 bit 10 set (fd_lamps). */
+    uint8_t restart_light;
     /* AGC time counts from here (TIME2/TIME1 in centiseconds): 0 from
      * GOJAM, a start state's own time from X86_START. */
     unsigned long t0;
@@ -57,8 +69,16 @@ typedef struct {
     unsigned long uses[256];  /* routines run, by table */
 } fd_state;
 
-/* What the last fd_run ran: the table (NULL for the core) and the point. */
-typedef struct { const fd_table *table; uint16_t key; uint8_t interp; enum exec_status status; double mct; } fd_ran;
+/* What the last fd_run ran: the table (NULL for the core, the VERB69 spin
+ * and the TC trap) and the point; trap is 1 for the spin, 2 for the trap's
+ * GOJAM. */
+typedef struct {
+    const fd_table *table;
+    uint16_t key;
+    uint8_t interp, trap;
+    enum exec_status status;
+    double mct;
+} fd_ran;
 
 extern const fd_table fd_tables[];
 extern const unsigned fd_table_count;
@@ -79,4 +99,13 @@ uint16_t fd_point(const fd_state *st, int *interp);
 /* MODREG, the time in centiseconds (TIME2:TIME1). */
 /* AGC time in centiseconds since the start (st->t0). */
 unsigned long fd_centiseconds(const fd_state *st);
+/* A restart (GOJAM): Q = Z, Z = 04000, interrupts enabled and none in
+ * progress or pending, HANDRUPT traps cleared, output channels 5, 6, 10-14,
+ * 34 and 35 zeroed, channel 33 bit 11 set. The superbank and the rest of
+ * erasable stay. */
+void fd_gojam(fd_state *st);
+/* A DSKY key (channel 15 code) with its KEYRUPT1 request. */
+void fd_key(fd_state *st, agc_word code);
+/* After a routine: the lamps its channel writes control (restart_light). */
+void fd_lamps(fd_state *st);
 #endif

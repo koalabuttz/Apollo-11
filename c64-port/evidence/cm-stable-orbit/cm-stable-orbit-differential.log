@@ -106,4 +106,3 @@ PASS: 26624 cm-stable-orbit cases equal the original programs (104 routines)
   CM 04,3272 : 04662 x131, 05170 x11, 06037 x114
   CM 04,3273 : 04662 x256
 froze 208 vectors to tests/cm_stable_orbit_vectors.h
-exit 0

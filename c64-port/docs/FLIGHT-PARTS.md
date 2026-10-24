@@ -25,7 +25,15 @@ A spec's `'flight_parts'` lists cuts: physical addresses, ascending. With
   flight builds.
 - **One entry routine.** All the part's keys share one entry,
   `<sym>_flight_entry`, which finds the key from Z, FB and SUPERBNK. It
-  makes the same checks as the per-key routines, which are left out.
+  makes the same checks as the per-key routines, which are left out:
+  `basic_sane` with the key's bank FB, and `basic_sane_any_eb` (any EB)
+  for a key whose per-key routine has it, from the spec's
+  `'any_eb_entries'` or a routine that sets EB first. Comanche055 P06
+  calls FINETIME +1 under its own EB, not E5; with `basic_sane` alone the
+  C64 flight store refused it (CM V37E06E stopped at 02,2554).
+  `tests/test_flight_entry_any_eb.py` checks the generated entries, and
+  `tools/flight_parts_check.py` runs the differential's cases at those
+  keys again under EB 01000.
 
 Both missions and both basic layouts work: a `'basic_split'` file (one
 function per bank) and a `'basic': 'full'` file (one `basic_run`) get the

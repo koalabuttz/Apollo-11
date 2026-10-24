@@ -50,8 +50,9 @@
    "host": [
     "cm-p20-restart"
    ],
-   "c64": [],
-   "note": "No C64 downlink window yet (flight_downlink_check.py VICE_WINDOWS, A2)"
+   "c64": [
+    "cm-p20"
+   ]
   },
   {
    "section": "Downlink (channels 34, 35)",
@@ -60,15 +61,24 @@
    "host": [
     "cm-p22-restart"
    ],
-   "c64": [],
-   "note": "No C64 downlink window yet (flight_downlink_check.py VICE_WINDOWS, A2)"
+   "c64": [
+    "cm-p22"
+   ]
   },
   {
    "section": "Downlink (channels 34, 35)",
    "row": "Erasable dump (V74)",
-   "kind": "downlink",
-   "status": "not exercised",
-   "note": "No scenario keys V74"
+   "kind": "dump",
+   "note": "cm-uplink-accept keys V74 at 12000 cs; DNTMGOTO enters the dump code about 60 cs after that. The window starts at 12020 because the program map runs 12010 without --downrupt, and both would write one result file.",
+   "windows": [
+    [
+     "cm-uplink-accept",
+     12020,
+     300,
+     1,
+     50
+    ]
+   ]
   },
   {
    "section": "Output channels",
@@ -81,12 +91,17 @@
    "windows": [
     [
      "cm-entry",
-     25000,
+     15100,
      1000
     ],
     [
      "cm-p40",
      29000,
+     1000
+    ],
+    [
+     "cm-entry",
+     25000,
      1000
     ]
    ]
@@ -107,6 +122,16 @@
     [
      "cm-tei",
      29000,
+     1000
+    ],
+    [
+     "cm-p40",
+     29900,
+     1000
+    ],
+    [
+     "cm-p40",
+     66800,
      1000
     ]
    ]
@@ -136,7 +161,12 @@
    "windows": [
     [
      "cm-p52",
-     4000,
+     8200,
+     1000
+    ],
+    [
+     "cm-p52-coarse",
+     9600,
      1000
     ],
     [
@@ -171,12 +201,22 @@
    "windows": [
     [
      "cm-p52",
-     4000,
+     8200,
+     1000
+    ],
+    [
+     "cm-p52-coarse",
+     9600,
      1000
     ],
     [
      "cm-p22",
      12000,
+     1000
+    ],
+    [
+     "cm-p40",
+     29900,
      1000
     ]
    ]

@@ -164,6 +164,13 @@ STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
 PIPTIME = {'lm': 0o1234, 'cm': 0o1204}
 # FAILREG and the two alarm code registers after it (both missions).
 FAILREG = (0o375, 0o376, 0o377)
+# REDOCTR, the count of restarts each restart's GOPROG adds to
+# (Luminary099 and Comanche055 ERASABLE_ASSIGNMENTS.agc). A row with a
+# restart (FLIGHT_GOJAM, or the TC trap's) must count as many as the harness
+# on one of its two clocks (they can differ just after the GOJAM):
+# a restart that resumes the same program can leave the state vector and
+# most words as they were, so this is what sees that the x86 run took it.
+REDOCTR = {'lm': 0o320, 'cm': 0o1154}
 # The two vehicles' permanent state blocks (RRECTCSM ... and RRECTLEM ...:
 # RRECT, VRECT, TET at +014, DELTA +016, NUV +024, RCV +032, VCV +040), at
 # the same addresses on both missions. Which one a mark updates is
@@ -174,7 +181,32 @@ MOON_MU = 4.9028e12
 
 
 def supported():
-    return [row for row in fhd.FLIGHT if not any(k in row[4] for k in UNSUPPORTED)]
+    return [row for row in fhd.FLIGHT + fhd.RESTART_FLIGHT + fhd.V69_FLIGHT if not any(k in row[4] for k in UNSUPPORTED)]
+
+
+# The TC trap rows (fhd.V69_FLIGHT: P00, then V69E). The harness takes the
+# trap on the work clock and unscaled (yaAGC's own trap), not on its
+# 1,1,2 clock, so their spread is the work clock against unscaled. The x86
+# program must take the trap too, within SPREAD_K times the harness's two
+# trap times apart plus TRAP_CS.
+TC_TRAP = {row[0] for row in fhd.V69_FLIGHT}
+TRAP_CS = 10
+TRAP_LINE = re.compile(r'^TC trap at (\d+) cs', re.M)
+
+
+def trap_compare(logs, x86_out):
+    """The TC trap's time in the harness's two runs and the x86 run:
+    (summary, passed, line)."""
+    h, o, x = (TRAP_LINE.search(t) for t in (logs[0], logs[1], x86_out))
+    if not (h and o):
+        return None, False, 'the harness took no TC trap'
+    h, o = int(h[1]), int(o[1])
+    lim = SPREAD_K * abs(h - o) + TRAP_CS
+    if not x:
+        return dict(harness=h, other_clock=o, x86=None, limit=lim), False, 'the x86 program took no TC trap'
+    x = int(x[1])
+    return (dict(harness=h, other_clock=o, x86=x, limit=lim), abs(x - h) <= lim,
+            f'TC trap at {x} cs (harness {h}, unscaled {o}; limit {lim} cs apart)')
 
 
 def kepler(s, dt):
@@ -233,18 +265,24 @@ def vector(w, a, scale, k):
     return [(ones(w[a + 2 * i]) * 16384 + ones(w[a + 2 * i + 1])) * 2.0 ** (scale - 28) * k for i in range(3)]
 
 
-def harness_state(m, cs, keys, env, at, clock='W', out=None):
+def harness_state(m, cs, keys, env, at, clock='W', out=None, log=None):
     """The harness's native erasable image at the first sample point at or
-    after centisecond at, on the given clock (FLIGHT_SCALED): (centisecond,
-    2048 words), or None when it wrote no snapshot. With a list out, the run
-    also watches the landing radar's words (LR_ENV) and appends its output."""
+    after centisecond at, on the given clock (FLIGHT_SCALED; None: unscaled,
+    yaAGC's own clock): (centisecond, 2048 words), or None when it wrote no
+    snapshot. With a list out, the run also watches the landing radar's
+    words (LR_ENV) and appends its output; with a list log, it appends its
+    output only."""
     snap = OUT / f'snap-{os.getpid()}.h'
+    run_env = {**os.environ, **env, **(LR_ENV if out is not None else {}), 'FLIGHT_SNAPSHOT': f'{at},{snap}'}
+    run_env.pop('FLIGHT_SCALED', None)
+    if clock is not None:
+        run_env['FLIGHT_SCALED'] = clock
     p = subprocess.run([str(fhd.OUT / f'flight-host-run-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []),
-                       cwd=ROOT, env={**os.environ, **env, **(LR_ENV if out is not None else {}),
-                                      'FLIGHT_SCALED': clock, 'FLIGHT_SNAPSHOT': f'{at},{snap}'},
-                       capture_output=True, text=True, check=False)
+                       cwd=ROOT, env=run_env, capture_output=True, text=True, check=False)
     if out is not None:
         out.append(p.stdout)
+    if log is not None:
+        log.append(p.stdout)
     if not snap.exists():
         return None
     text = snap.read_text()
@@ -404,11 +442,12 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     the x86 run only (a check that the comparison sees them)."""
     modreg, rn, vn = STATE[m]
     lr = [] if 'FLIGHT_LR' in env else None
-    ref = harness_state(m, cs, keys, env, cs - 1000, out=lr)
+    logs = [] if name in TC_TRAP else None
+    ref = harness_state(m, cs, keys, env, cs - 1000, out=lr, log=logs)
     if ref is None:
         return dict(scenario=name, mission=m, line=f'{name}: the harness wrote no snapshot'), False
     at, hw = ref
-    other = harness_state(m, cs, keys, env, at, '1,1,2', out=lr)
+    other = harness_state(m, cs, keys, env, at, None if name in TC_TRAP else '1,1,2', out=lr, log=logs)
     r, xcs, xw = x86_state(m, ''.join(c for c in keys if c not in drop), with_start(m, cs, keys, env, resume), at,
                            lr is not None)
     if other is None or xcs != at:
@@ -468,6 +507,18 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     line += block_line
     if alarms:
         line += '; alarm codes differ: ' + ', '.join(f'{a:04o} {hw[a]:05o}/{xw[a]:05o}' for a in alarms)
+    restarts = None
+    if 'FLIGHT_GOJAM' in env or name in TC_TRAP:
+        c = REDOCTR[m]
+        restarts = dict(harness=hw[c], other_clock=sw[c], x86=xw[c])
+        same = xw[c] in (hw[c], sw[c])
+        ok = ok and same
+        line += f'; REDOCTR {hw[c]}/{xw[c]}' + ('' if same else ' (restarts differ)')
+    trap = None
+    if logs is not None:
+        trap, trap_ok, trap_line = trap_compare(logs, r.stdout)
+        ok = ok and trap_ok
+        line += '; ' + trap_line
     radar = None
     if lr is not None:
         radar, lr_ok, lr_line = lr_compare(lr[0], lr[1], r.stdout, at)
@@ -481,7 +532,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
                             difference=round(d_vn, 3), spread=round(s_vn, 3), limit=round(vn_tol, 3)),
                 words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, state_blocks=blocks,
                 alarms=dict(harness=[f'{hw[a]:05o}' for a in FAILREG], x86=[f'{xw[a]:05o}' for a in FAILREG],
-                            differ=[f'{a:04o}' for a in alarms]), landing_radar=radar, inputs=env,
+                            differ=[f'{a:04o}' for a in alarms]), landing_radar=radar, tc_trap=trap, redoctr=restarts, inputs=env,
                 line=line), ok
 
 

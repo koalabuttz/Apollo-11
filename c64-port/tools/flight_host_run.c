@@ -82,6 +82,7 @@
 #include "agc_engine.h"
 #include "flight_io.h"
 #include "resident_rupt.h"
+#include "resident_cdu.h"
 #include "rope_image.h"
 #include "self_check.h"
 #include "standard_lead_routines.h"
@@ -285,6 +286,8 @@ static void cold(void){unsigned i;m=loaded;memset(m.Erasable,0,sizeof m.Erasable
  * overriding the core's, and AGC time counts from the core's TIME1/TIME2
  * (t0), so keys, pokes and the centisecond limit are relative to it. */
 static const char *core_path;
+/* FLIGHT_DOWNRUPT under FLIGHT_CORE: waiting for the first sample point. */
+static int dl_arm;
 static const agc_word *view(void);
 static int core_start(const char *rope){static agc_t c;int rc;unsigned i,n;
  rc=agc_engine_init(&c,rope,core_path,1);if(rc!=0&&rc!=5){fprintf(stderr,"FLIGHT_CORE: %s: agc_engine_init %d\n",core_path,rc);return 0;}
@@ -373,7 +376,8 @@ static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const e
 /* LM: a table of weight 0 (POSTJUMP's and SELFCHK's, RK_MCT_IDLE) idles
  * only where the C64 idles: in the idle loop (FB on SELFCHK's bank 43),
  * outside an interrupt, with no job waiting (resident_flight.c, the idle
- * module's flag). Anywhere else (POSTJUMP in a job, or at the end of a
+ * module's flag), and there once a pass: SELFCHK costs nothing and
+ * POSTJUMP 04635 takes the tick (below). Anywhere else (POSTJUMP in a job, or at the end of a
  * RADARUPT's task) the C64 runs the routine from a module that weighs it as
  * work: the first holder with a weight. Back in the idle loop with a job
  * waiting (NEWJOB +0 or a core set, ADVAN's CCS: anything but -0), the
@@ -382,7 +386,13 @@ static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const e
 static unsigned idle_weight(const agc_word *w,agc_word sb,int isr){
 #if RK_LM
  int in;unsigned i;uint16_t key;
- if(!isr&&agc_fixed_physical(02000u,w[4],sb)/1024u==043u)return (w[NEWJOB]&077777u)==077777u?FLIGHT_IDLE_TICK:0u;
+ /* The C64 runs the idle pass (SELFCHK to POSTJUMP 04635) as one step with
+  * one idle charge, and its timer steps come due at ADVAN. Here POSTJUMP is
+  * a step of its own, so the pass's charge goes there: SELFCHK costs
+  * nothing, and the period's steps (and an interrupt they request) also
+  * come due at ADVAN, after its sample point. */
+ if(!isr&&agc_fixed_physical(02000u,w[4],sb)/1024u==043u)
+  return (w[NEWJOB]&077777u)==077777u&&(w[5]&07777u)==04635u?FLIGHT_IDLE_TICK:0u;
  key=point(w,sb,&in);
  for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&tables[i].mct&&!(tables[i].mct&FLIGHT_PLUS_WORDS)&&find(tables[i].t,key))return tables[i].mct;
 #else
@@ -506,6 +516,11 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  F(superbank)F(interrupt_enabled)F(channel16)F(channel34)F(channel35)F(trap31a)F(trap31b)F(trap32)F(executive_alarm)
  F(waitlist_alarm)F(warning)
 #undef F
+ /* The output drives' state (resident_cdu.h): a window that starts while a
+  * drive owes pulses (an IMU align or torque, a TVC burn) goes on with them. */
+ fprintf(f,"\n#define SNAP_CDU(c) ");
+ for(i=0;i<5u;++i)fprintf(f,"(c).owed[%u]=%d;",i,(int)rk_cdu.owed[i]);
+ fprintf(f,"(c).elapsed=%uu;(c).active=%uu;",(unsigned)rk_cdu.elapsed,(unsigned)rk_cdu.active);
  fprintf(f,"\n");fclose(f);}
 /* FLIGHT_REPLAY=CS (with FLIGHT_SNAPSHOT): the C64 window's inputs and
  * its end state (tools/flight_scenario_vice.py --replay). After the
@@ -603,6 +618,20 @@ static void rp_end(unsigned long d,const agc_word *w,const flight_io *io,const a
  {unsigned char b[2]={(unsigned char)d,(unsigned char)(d>>8)};fwrite(b,1,2,f);}
  for(i=0;i<2048u;++i){unsigned char b[2]={(unsigned char)w[i],(unsigned char)(w[i]>>8)};fwrite(b,1,2,f);}
  for(i=0;i<sizeof c/sizeof c[0];++i){unsigned char b[2]={(unsigned char)c[i],(unsigned char)(c[i]>>8)};fwrite(b,1,2,f);}}
+/* PATH.outputs: each change of output channels 5, 6, 11, 12, 13 and 14 in
+ * the window, seen at the routine boundary where it shows, as a 6-byte row
+ * (little-endian: centiseconds since the snapshot, channel, value), the
+ * list dap_pass_check.c DP_OUTPUTS keeps on the C64
+ * (tools/flight_scenario_vice.py --replay-outputs). log 0 takes the values
+ * the window starts from. */
+static FILE *rp_outs;static agc_word rp_ov[6];
+static void rp_outputs(unsigned long t,const agc_hardware *hw,int log){static const unsigned char ch[6]={05u,06u,011u,012u,013u,014u};
+ agc_word v[6];unsigned i;
+ v[0]=hw->channel5;v[1]=hw->channel6;v[2]=hw->channel11;v[3]=hw->channel12;v[4]=hw->channel13;v[5]=hw->channel14;
+ for(i=0;i<6u;++i){
+  if(log&&rp_outs&&v[i]!=rp_ov[i]){unsigned long d=t-rp_t0;
+   unsigned char b[6]={(unsigned char)d,(unsigned char)(d>>8),ch[i],0u,(unsigned char)v[i],(unsigned char)(v[i]>>8)};fwrite(b,1,6,rp_outs);}
+  rp_ov[i]=v[i];}}
 static void pokes_parse(const char *t){while(t&&*t&&npokes<POKES){unsigned long cs;unsigned a,v;int n=0;
   if(sscanf(t,"%lu:%o=%o%n",&cs,&a,&v,&n)<3||!n||a>=2048u)break;
   pokes[npokes].cs=cs;pokes[npokes].addr=a;pokes[npokes++].value=v&077777u;t+=n;if(*t==',')++t;}}
@@ -783,33 +812,83 @@ static void rcs_due(unsigned long t,agc_word *w,const agc_hardware *hw){double b
 static void rcs_due(unsigned long t,agc_word *w,const agc_hardware *hw){(void)t;(void)w;(void)hw;}
 #endif
 
-/* FLIGHT_SPS=KG (CM): the service propulsion engine, the same on both
- * sides, so P40 sees its burn. From the first sample point with ENGONFLG
- * set (FLAGWRD5 bit 7) it thrusts 91,188 N along the engine bell, body X
- * turned by the mechanical biases P40 assumes (PBIAS -2.15, YBIAS +0.95
- * degrees; small angles: CDUY less 2.15 and CDUZ plus 0.95 degrees in the
- * FLIGHT_ENGINE direction), burning KG kilograms down at 3,080 m/s, and each sample
- * point adds the velocity since the last one to PIPAX-Z (5.85 cm/s a
- * count), carrying the fraction. No attitude dynamics: each sample point
- * sets CDUX-Z to the RCS DAP's desired angles CDUXD-ZD (perfect attitude
- * control, so P40's R60 maneuver ends) until the engine first lights;
- * from then on the TVC DAP reuses those cells as temporaries, so the
- * attitude holds at ignition for the rest of the run. */
-static double sps_kg;
-enum { CM_CDUXD=03246 };
-static struct sps { int on,lit; unsigned long t; double kg,carry[3]; } sps_ref,sps_nat;
-static void sps_due(unsigned long t,struct sps *e,agc_word *w){double a,dt,ig,mg,dir[3];unsigned k;
+/* FLIGHT_SPS=KG (CM, scaled time only): the service propulsion engine,
+ * so P40 sees its burn and the TVC DAP its own steering. From the first
+ * sample point with ENGONFLG set (FLAGWRD5 bit 7) it thrusts 91,188 N,
+ * burning KG kilograms down at 3,080 m/s, and each sample point adds the
+ * velocity since the last one to PIPAX-Z (5.85 cm/s a count, carrying the
+ * fraction).
+ *
+ * The gimbal: the optics error counters (drives(), each 10 ms of the
+ * clock: rk_cdu_drive's 053/054 pulses) hold the TVC DAP's pitch and yaw
+ * commands, 85.41 arcseconds a pulse. While channel 12 bit 8 (TVC enable) is set the
+ * bell follows them with a first-order lag of SPS_LAG seconds, else it
+ * goes back to the actuator zero. The thrust leaves the bell turned by the
+ * mechanical biases P40 assumes (PBIAS -2.15, YBIAS +0.95 degrees) plus
+ * the gimbal angles, pitch about body Y and yaw about body Z.
+ *
+ * The attitude: before the engine first lights, each sample point sets
+ * CDUX-Z to the RCS DAP's desired angles CDUXD-ZD (perfect attitude
+ * control, so P40's R60 maneuver ends). While it burns the thrust line
+ * misses the centre of mass by the gimbal angle less the trim the DAP was
+ * loaded with (PACTOFF, YACTOFF at ignition: a perfect trim), and the
+ * vehicle turns in pitch and yaw with angular acceleration (that angle) /
+ * (IAVG/TLX), the AGC's own inertia over thrust times moment arm
+ * (TVCMASSPROP.agc, scaled at B+2 s^2), in 10 ms steps; CDUX-Z follow the
+ * body (CDUX outer, CDUZ middle, CDUY inner gimbal). Roll does not move:
+ * no RCS jet model. When the engine stops, the rates go to zero (the RCS
+ * DAP holds attitude) and the attitude holds. */
+/* The CM optics error counters (resident_cdu.h): [0] yaw (053, TVCYAW),
+ * [1] pitch (054, TVCPITCH), in pulses. */
+static long optics_counter[2];
+static double sps_kg,sps_cg[2];
+enum { CM_CDUXD=03246, PACTOFF=03023, IAVGTLX=03072 };
+#define SPS_LAG 0.05
+#define SPS_PULSE (85.41/206264.806)
+static struct sps { int on,lit; unsigned long t; double kg,carry[3],del[2],cg[2],rate[2],m[3][3]; } sps_ref,sps_nat;
+/* m: stable member to body, from CDUX-Z, and back. */
+static void sps_matrix(const agc_word *w,double m[3][3]){double o,g,i,co,so,cg,sg,ci,si;
+ o=(double)eword(w,CDUX)*(6.283185307179586/32768.0);g=(double)eword(w,CDUZ)*(6.283185307179586/32768.0);i=(double)eword(w,CDUY)*(6.283185307179586/32768.0);
+ co=cos(o);so=sin(o);cg=cos(g);sg=sin(g);ci=cos(i);si=sin(i);
+ /* Rx(outer) Rz(middle) Ry(inner): row 0 is body X in stable member axes. */
+ m[0][0]=cg*ci;m[0][1]=sg;m[0][2]=-cg*si;
+ m[1][0]=-co*sg*ci+so*si;m[1][1]=co*cg;m[1][2]=co*sg*si+so*ci;
+ m[2][0]=so*sg*ci+co*si;m[2][1]=-so*cg;m[2][2]=-so*sg*si+co*ci;}
+static agc_word sps_cdu(double a){long n=lround(a*(32768.0/6.283185307179586));return (agc_word)(n&077777l);}
+static void sps_turn(struct sps *e,double h){double p=e->rate[0]*h,y=e->rate[1]*h,r[3][3],n[3][3],l;unsigned i,j,k;
+ /* The body turns by (0, p, y): the stable member, seen from it, by minus that. */
+ r[0][0]=1.0;r[0][1]=y;r[0][2]=-p;r[1][0]=-y;r[1][1]=1.0;r[1][2]=0.0;r[2][0]=p;r[2][1]=0.0;r[2][2]=1.0;
+ for(i=0;i<3u;++i)for(j=0;j<3u;++j){n[i][j]=0.0;for(k=0;k<3u;++k)n[i][j]+=r[i][k]*e->m[k][j];}
+ /* Keep the rows orthonormal. */
+ for(i=0;i<3u;++i){for(j=0;j<i;++j){double d=0.0;for(k=0;k<3u;++k)d+=n[i][k]*n[j][k];for(k=0;k<3u;++k)n[i][k]-=d*n[j][k];}
+  l=sqrt(n[i][0]*n[i][0]+n[i][1]*n[i][1]+n[i][2]*n[i][2]);for(k=0;k<3u;++k)e->m[i][k]=n[i][k]/l;}}
+/* dt seconds of gimbal (and, with acc, the attitude it turns) in 10 ms steps. */
+static void sps_gimbal(struct sps *e,double dt,const agc_hardware *hw,double acc){double h;unsigned k;
+ for(h=dt;h>1e-9;h-=0.01){double s=h<0.01?h:0.01;
+  for(k=0;k<2u;++k){double c=hw&&(hw->channel12&0200u)?(double)optics_counter[1u-k]*SPS_PULSE:0.0;
+   e->del[k]+=(c-e->del[k])*(1.0-exp(-s/SPS_LAG));
+   if(acc>0.0)e->rate[k]-=(e->del[k]-e->cg[k])/acc*s;}
+  if(acc>0.0)sps_turn(e,s);}}
+static void sps_due(unsigned long t,struct sps *e,agc_word *w,const agc_hardware *hw){double a,dt,dir[3],b[3],pb,yb,acc;unsigned k,j;
  if(!sps_kg)return;
- if(!e->lit)for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,CM_CDUXD+2u*k);else *cell(CDUX+k)=(int16_t)eword(w,CM_CDUXD+2u*k);}
- if(!(eword(w,FLAGWRD5)&ENGONBIT)){e->on=0;return;}
- if(!e->on){e->on=e->lit=1;e->t=t;if(!e->kg)e->kg=sps_kg;return;}
- dt=(double)(t-e->t)*0.01;e->t=t;a=91188.0/e->kg;e->kg-=91188.0/3080.0*dt;
- ig=(double)eword(w,CDUY)*(6.283185307179586/32768.0)-0.0375245789;mg=(double)eword(w,CDUZ)*(6.283185307179586/32768.0)+0.0165806279;
- dir[0]=cos(ig)*cos(mg);dir[1]=sin(mg);dir[2]=-sin(ig)*cos(mg);
+ if(!e->lit)for(k=0;k<3u;++k)eset(w,CDUX+k,eword(w,CM_CDUXD+2u*k));
+ dt=e->t&&t>e->t?(double)(t-e->t)*0.01:0.0;e->t=t;
+ if(!(eword(w,FLAGWRD5)&ENGONBIT)){sps_gimbal(e,dt,hw,0.0);if(e->on){e->rate[0]=e->rate[1]=0.0;}e->on=0;return;}
+ if(!e->on){sps_gimbal(e,dt,hw,0.0);e->on=e->lit=1;if(!e->kg)e->kg=sps_kg;sps_matrix(w,e->m);
+  for(k=0;k<2u;++k){e->cg[k]=(double)ones(eword(w,PACTOFF+k))*SPS_PULSE+sps_cg[k]*(3.141592653589793/180.0);}
+  return;}
+ a=91188.0/e->kg;e->kg-=91188.0/3080.0*dt;
+ acc=(double)ones(eword(w,IAVGTLX))*(4.0/16384.0);
+ sps_gimbal(e,dt,hw,acc);
+ eset(w,CDUY,sps_cdu(atan2(-e->m[0][2],e->m[0][0])));eset(w,CDUZ,sps_cdu(asin(e->m[0][1])));eset(w,CDUX,sps_cdu(atan2(-e->m[2][1],e->m[1][1])));
+ /* The thrust in body axes, then in stable member axes (the transpose). */
+ pb=-0.0375245789+e->del[0];yb=0.0165806279+e->del[1];
+ b[0]=cos(pb)*cos(yb);b[1]=sin(yb);b[2]=-sin(pb)*cos(yb);
+ for(j=0;j<3u;++j){dir[j]=0.0;for(k=0;k<3u;++k)dir[j]+=e->m[k][j]*b[k];}
  for(k=0;k<3u;++k){long n,v;e->carry[k]+=a*dt*dir[k]*100.0/5.85;n=(long)e->carry[k];e->carry[k]-=(double)n;
   v=ones(eword(w,PIPAX+k))+n;if(v>037777l)v=037777l;if(v<-037777l)v=-037777l;
   v=v<0?(long)((~(unsigned long)(-v))&077777ul):v;
-  if(w)w[PIPAX+k]=(agc_word)v;else *cell(PIPAX+k)=(int16_t)v;}}
+  eset(w,PIPAX+k,(agc_word)v);}}
 
 /* FLIGHT_AERO=B (CM): drag and lift on a capsule of ballistic coefficient
  * B kg/m^2 and L/D 0.3, the same on both sides, so the entry programs see
@@ -992,6 +1071,25 @@ static void store(apollo_overlay_state *s,flight_io *io,agc_hardware *hw){unsign
 static const agc_word *view(void){static agc_word v[2048];static const unsigned short at[]={3,4,5,AGC_EDOP,NEWJOB,0164,0165};unsigned i;
  for(i=0;i<sizeof at/sizeof at[0];++i)v[at[i]]=mword(at[i]);
  return v;}
+/* The output drives, once each clock period, as the C64 resident runs
+ * them: the IMU CDU drive (CDUXCMD-CDUZCMD) and, in the CM, the optics
+ * error counters (the SPS gimbal commands in TVC mode). The work clock
+ * drives at the T5 step before rk_timer_phase (resident_flight.c
+ * rk_rupts_due); the scaled clock after rk_timer_tick (rk_rupts). */
+static void drives(apollo_overlay_state *s,agc_hardware *hw){
+#ifdef RK_CM
+ unsigned k;long before[2];
+ rk_cdu_count=5u;
+ for(k=0;k<2u;++k)before[k]=rk_cdu.owed[3u+k]+ones(s->words[053u+k]);
+#endif
+ rk_cdu_drive(s,hw);
+#ifdef RK_CM
+ /* The pulses sent leave the counter and what the drive owes; the optics
+  * error counters take them (zeroed while channel 12 bit 2 is clear). */
+ for(k=0;k<2u;++k)optics_counter[k]=(hw->channel12&2u)?optics_counter[k]+before[k]-(rk_cdu.owed[3u+k]+ones(s->words[053u+k])):0;
+#endif
+}
+
 /* One clock period (rk_timer_tick), or with step >= 0 one work-clock step
  * (rk_timer_phase), on yaAGC's state, for bridged code. */
 static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint16_t p=0;unsigned i;
@@ -999,6 +1097,10 @@ static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint
  memset(&h,0,sizeof h);h.channel13=(agc_word)(m.InputChannel[013]&077777);
  h.channel3=(agc_word)(m.InputChannel[3]&077777);h.channel4=(agc_word)(m.InputChannel[4]&077777);
  h.radar_gate=(uint8_t)m.RadarGateCounter;
+ /* The drives (drives(), above) on yaAGC's counters, at the TIME5 step. */
+ if(step<0||step==2){for(i=050u;i<=054u;++i)t.words[i]=mword(i);
+  h.channel12=(agc_word)(m.InputChannel[012]&077777);h.channel14=(agc_word)(m.InputChannel[014]&077777);drives(&t,&h);
+  for(i=050u;i<=054u;++i)*cell(i)=(int16_t)t.words[i];}
  if(step<0)rk_timer_tick(&t,&h,&p);else rk_timer_phase(&t,&h,&p,(uint8_t)step);
  m.RadarGateCounter=h.radar_gate;
  for(i=024u;i<=031u;++i)*cell(i)=(int16_t)t.words[i];
@@ -1267,7 +1369,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(*c==','&&(rp_chain=(unsigned)strtoul(c+1,0,10))<1u)rp_chain=1u;
    snprintf(rp_base,sizeof rp_base,"%s",snap_path);
    snprintf(rp_buf,sizeof rp_buf,"%s.replay",snap_path);if(!rp_cs||!(rp_out=fopen(rp_buf,"wb"))){fprintf(stderr,"FLIGHT_REPLAY=CS[,SEED[,EVERY]] (with FLIGHT_SNAPSHOT)\n");return 2;}
-   snprintf(rp_buf,sizeof rp_buf,"%s.end",snap_path);if(!(rp_ends=fopen(rp_buf,"wb"))){perror(rp_buf);return 2;}}}
+   snprintf(rp_buf,sizeof rp_buf,"%s.end",snap_path);if(!(rp_ends=fopen(rp_buf,"wb"))){perror(rp_buf);return 2;}
+   snprintf(rp_buf,sizeof rp_buf,"%s.outputs",snap_path);if(!(rp_outs=fopen(rp_buf,"wb"))){perror(rp_buf);return 2;}}}
  if(!load_parse(getenv("FLIGHT_LOAD")))return 2;
  if(!gojam_parse(getenv("FLIGHT_GOJAM"))){fprintf(stderr,"FLIGHT_GOJAM=CS[,CS...]\n");return 2;}
  dl_parse();
@@ -1291,7 +1394,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(!drops_parse(&rr_drops,getenv("FLIGHT_RR_DROP"))){fprintf(stderr,"FLIGHT_RR_DROP=T0-T1[,T0-T1...]\n");return 2;}
 #else
  if(getenv("FLIGHT_AERO"))aero_b=strtod(getenv("FLIGHT_AERO"),0);
- if(getenv("FLIGHT_SPS"))sps_kg=strtod(getenv("FLIGHT_SPS"),0);
+ if(getenv("FLIGHT_SPS")&&sscanf(getenv("FLIGHT_SPS"),"%lf,%lf,%lf",&sps_kg,&sps_cg[0],&sps_cg[1])<1){fprintf(stderr,"FLIGHT_SPS=KG[,PITCH,YAW]\n");return 2;}
  if(getenv("FLIGHT_IMU"))imu_model=atoi(getenv("FLIGHT_IMU"));
  if(getenv("FLIGHT_SATURN"))saturn_lo=strtoul(getenv("FLIGHT_SATURN"),0,10);
  if(!rr_parse(getenv("FLIGHT_RR"))){fprintf(stderr,"FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");return 2;}
@@ -1300,10 +1403,12 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_SIVB")&&sscanf(getenv("FLIGHT_SIVB"),"%lu,%lf,%lf,%lf",&sivb_tig,&sivb_u[0],&sivb_u[1],&sivb_u[2])!=4){fprintf(stderr,"FLIGHT_SIVB=CS,UX,UY,UZ\n");return 2;}
 #endif
  core_path=getenv("FLIGHT_CORE");
+ if(sps_kg&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_SPS needs FLIGHT_SCALED\n");return 2;}
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
- /* core_start's yaAGC steps to the idle loop would land in the downlink
-  * reference stream, so the two are not combined (no scenario sets both). */
- if(core_path&&getenv("FLIGHT_DOWNRUPT")&&*getenv("FLIGHT_DOWNRUPT")&&strcmp(getenv("FLIGHT_DOWNRUPT"),"0")){fprintf(stderr,"FLIGHT_CORE does not take FLIGHT_DOWNRUPT\n");return 2;}
+ /* FLIGHT_CORE with FLIGHT_DOWNRUPT: core_start's yaAGC steps to the idle
+  * loop take no DOWNRUPT and log no downlink word; DOWNRUPT starts on both
+  * sides at the first native sample point after the core (dl_arm). */
+ if(core_path&&dl_on){dl_on=0;dl_arm=1;}
  if(getenv("FLIGHT_PATH"))sscanf(getenv("FLIGHT_PATH"),"%lu,%lu",&path_from,&path_to);
  reach_parse();
  if(getenv("FLIGHT_SCALED")&&!strcmp(getenv("FLIGHT_SCALED"),"W")){scaled=1;AgcFrozenClock=1;work=1;lag=~0u;}
@@ -1327,7 +1432,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * is rk_rupt_take's: ZRUPT = Z + 1, BRUPT = the word at Z. */
     poke_due(now(w),&pref,0);
     engine_due(now(w),&eng_ref,0);
-    sps_due(now(w),&sps_ref,0);
+    sps_due(now(w),&sps_ref,0,0);
     aero_due(now(w),&aero_ref,0);
     imu_due(0,0);
     saturn_due(now(w),&sat_ref,0,0);
@@ -1387,13 +1492,14 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      for(i=0,j=0;i<2048u;++i)if(compared(i)&&s.words[i]!=ref[next][i]&&j++<8u)printf(" %04o %05o/%05o",i,(unsigned)s.words[i],(unsigned)ref[next][i]);
      printf("%s (%u words, native/yaAGC)\n",j>8u?" ...":"",j);}
     ++next;}
+   if(dl_arm){dl_arm=0;dl_core_start(s.words);printf("downlink: DOWNRUPT from %lu cs, the first sample point after the core\n",now(s.words));}
    if(rp_after!=~0ul&&now(s.words)-rp_t0>rp_after_last){unsigned long d=now(s.words)-rp_t0;
     if(d>rp_after+RP_AFTER_CS){fclose(rp_out);fclose(rp_ends);return 0;}
     rp_end(d,s.words,&io,&hw);rp_after_last=d;}
    else if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_next&&now(s.words)-rp_t0<rp_cs){rp_end(now(s.words)-rp_t0,s.words,&io,&hw);
     while(rp_next<=now(s.words)-rp_t0)rp_next+=rp_every;}
    if(rp_after==~0ul&&rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
-    rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
+    rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);fclose(rp_outs);rp_outs=0;printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
     if(core_routines){printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);core_charge_report();}
     if(++rp_win>=rp_chain){char b[640];rp_after=rp_after_last=now(s.words)-rp_t0;
      snprintf(b,sizeof b,"%s.after-replay",rp_win>1u?rp_path:rp_base);rp_out=fopen(b,"wb");
@@ -1403,14 +1509,15 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     /* CHAIN: the next window starts here (FLIGHT_REPLAY above). */
     snprintf(rp_path,sizeof rp_path,"%s-%u",rp_base,rp_win);snap_path=rp_path;snap_cs=now(s.words);snap_any=0;
     {char b[640];snprintf(b,sizeof b,"%s.replay",rp_path);rp_out=fopen(b,"wb");snprintf(b,sizeof b,"%s.end",rp_path);rp_ends=fopen(b,"wb");
-     snprintf(b,sizeof b,"%s.seam",rp_path);rp_seam=fopen(b,"wb");if(!rp_out||!rp_ends||!rp_seam){perror(b);return 2;}}
+     snprintf(b,sizeof b,"%s.outputs",rp_path);rp_outs=fopen(b,"wb");
+     snprintf(b,sizeof b,"%s.seam",rp_path);rp_seam=fopen(b,"wb");if(!rp_out||!rp_ends||!rp_outs||!rp_seam){perror(b);return 2;}}
     rp_mark(s.words,&hw,io.channel16,pending);}}
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
    /* A key is pressed at the first sample point at or after its time, on
     * both sides. */
    poke_due(now(s.words),&pnat,s.words);
    engine_due(now(s.words),&eng_nat,s.words);
-   sps_due(now(s.words),&sps_nat,s.words);
+   sps_due(now(s.words),&sps_nat,s.words,&hw);
    if(getenv("FLIGHT_DSKY"))dsky_trace(now(s.words),s.words);
    {int r=0;rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);if(r)pending|=RK_RUPT_BIT(RK_RUPT_RADAR);}
    watch(s.words);
@@ -1433,17 +1540,19 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));
     if(!rp_out)return 0;
     /* FLIGHT_REPLAY: on, on the C64 window's work clock. */
-    snap_path=0;rp_t0=now(s.words);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;
+    snap_path=0;rp_t0=now(s.words);rp_outputs(now(s.words),&hw,0);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;
     core_fit=core_yaagc=core_err=core_spans=0;}}
   {agc_word brupt=s.words[017];uint8_t got;unsigned long consumed0=consumed;
    if(scaled&&work){
     /* rk_rupts: a request that can be taken before each step due. */
     while(!(got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending))&&step_at(consumed)<=wall){
+     /* The drives run on the TIME5 step, as rk_rupts_due's. */
+     if(consumed%3ul==2ul)drives(&s,&hw);
      rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));if(consumed++%3ul==2ul){++taken;steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
     if(got||consumed!=consumed0)charge_last=0;
     idling=0;}
-   else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);steal();}}
+   else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);drives(&s,&hw);steal();}}
     got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending);}
    /* The PIPAs count as the clock runs, not only at sample points: P66
     * reads them a few centiseconds after SERVICER, often with no idle pass
@@ -1468,6 +1577,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    * TC VERB69's; unscaled, yaAGC's bridged code, to its own trap. */
   if(v69&&scaled){if(!work){fprintf(stderr,"FLIGHT: VERB69 under FLIGHT_SCALED=K,D,LAG: the TC trap needs the work clock or unscaled time\n");return 3;}
    s.words[2]=02040u;spin=consumed%3ul==2ul?1:2;idle_tick();continue;}
+  if(rp_out&&!snap_path)rp_outputs(now(s.words),&hw,1);
   e=v69?0:holder(s.words,io.superbank,&call);
   if(!e&&!v69)e=&core_entry;
   /* FLIGHT_REPLAY_TRACE: each routine's Z, FB, TIME1, work clock (step,

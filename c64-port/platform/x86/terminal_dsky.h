@@ -21,7 +21,8 @@
  *
  * Lamps: the adapter draws the channel 11 lamps and the relay row 12
  * annunciators. Channel 13 bit 10 (TEST DSKY, the V35E lamp test) also
- * lights RESTART and STBY here, and the LM's PRIO DISP and NO DAP (row 12
+ * lights RESTART and STBY here, a GOJAM (FLIGHT_GOJAM, the TC trap) lights
+ * RESTART until RSET or channel 11 bit 10 puts it out, and the LM's PRIO DISP and NO DAP (row 12
  * bits 1 and 2), which the adapter's 40x25 screen has no room for, are drawn
  * on the status line below it. */
 #ifndef TERMINAL_DSKY_H
@@ -48,6 +49,7 @@ enum { TD_QUEUE = 256, TD_PRO_CS = 50, TD_KEY_CS = 20 };
 typedef struct {
     dsky_display_state display;
     agc_word channel10, channel11, channel13;
+    uint8_t restart_light;
     char queue[TD_QUEUE];
     unsigned head, tail;
     unsigned long pro_until, drawn_cs, key_cs;
@@ -203,8 +205,7 @@ static inline int td_inputs_due(terminal_dsky *d, fd_state *st)
         st->io.channel16 = mark;
         st->pending |= RK_RUPT_BIT(RK_RUPT_KEY2);
     } else {
-        st->hw.channel15 = fs_keycode(k);
-        st->pending |= RK_RUPT_BIT(RK_RUPT_KEY1);
+        fd_key(st, fs_keycode(k));
     }
     return 1;
 }
@@ -213,6 +214,9 @@ static inline int td_inputs_due(terminal_dsky *d, fd_state *st)
  * bit 10) as the real DSKY's lamp test lights them. */
 #define TD_TEST_DSKY    01000u
 #define TD_RESTART_STBY 0600u
+/* The adapter's RESTART lamp bit, lit by the hardware's restart lamp
+ * (fd_state.restart_light: a GOJAM lights it, RSET puts it out). */
+#define TD_RESTART 0200u
 
 /* After each routine: a new relay word, lamp word or lamp test. */
 static inline void td_after_routine(terminal_dsky *d, const fd_state *st)
@@ -221,12 +225,15 @@ static inline void td_after_routine(terminal_dsky *d, const fd_state *st)
         d->channel10 = st->hw.channel10;
         dsky_display_output(&d->display, 010, d->channel10);
     }
-    if (st->hw.channel11 != d->channel11 || st->hw.channel13 != d->channel13) {
+    if (st->hw.channel11 != d->channel11 || st->hw.channel13 != d->channel13 ||
+        st->restart_light != d->restart_light) {
         d->channel11 = st->hw.channel11;
         d->channel13 = st->hw.channel13;
+        d->restart_light = st->restart_light;
         dsky_display_output(&d->display, 011,
                             (uint16_t)(d->channel11 & ~TD_RESTART_STBY) |
-                                (d->channel13 & TD_TEST_DSKY ? TD_RESTART_STBY : 0u));
+                                (d->channel13 & TD_TEST_DSKY ? TD_RESTART_STBY : 0u) |
+                                (d->restart_light ? TD_RESTART : 0u));
     }
 }
 

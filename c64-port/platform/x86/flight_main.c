@@ -93,6 +93,7 @@ int main(int argc, char **argv)
     const int live = getenv("X86_DSKY") && *getenv("X86_DSKY") == '1';
     const char *typed = getenv("X86_TYPED");
     fd_ran ran;
+    uint8_t lamp = 0;
     unsigned long cs = argc > 2 ? strtoul(argv[2], 0, 0) : 1000ul, next = 1, periods = 0,
                   from =
                       getenv("X86_SAMPLES_FROM") ? strtoul(getenv("X86_SAMPLES_FROM"), 0, 10) : 1ul;
@@ -129,9 +130,10 @@ int main(int argc, char **argv)
         }
         if (fs_sample_point(&in, &st)) {
             unsigned long t = fd_centiseconds(&st);
-            if (fs_inputs_due(&in, &st)) continue;
+            const int due = fs_inputs_due(&in, &st);
             /* As the harness's FLIGHT_SNAPSHOT: after the point's pokes,
-             * models and channel changes, and only with nothing pending. */
+             * models, channel changes and restart or key, and only with
+             * nothing pending (so after a GOJAM, not after a key). */
             for (; next <= cs && t >= next && !st.pending; ++next)
                 if (samples && next >= from) {
                     unsigned i;
@@ -139,6 +141,7 @@ int main(int argc, char **argv)
                     for (i = 0; i < 2048u; ++i) fprintf(samples, " %05o", (unsigned)st.s.words[i]);
                     fputc('\n', samples);
                 }
+            if (due) continue;
             if (live) td_read_keys(&dsky);
             if (dsky.quit) break;
             if (td_inputs_due(&dsky, &st)) continue;
@@ -157,6 +160,13 @@ int main(int argc, char **argv)
                     ran.key % 1024u + 02000u, (int)ran.status, fd_centiseconds(&st));
             break;
         }
+        /* The VERB69 spin and the TC trap run no routine (fd_run). */
+        if (st.restart_light != lamp && !live)
+            printf("RESTART lamp %s at %lu cs\n", st.restart_light ? "on" : "off",
+                   fd_centiseconds(&st));
+        lamp = st.restart_light;
+        if (ran.trap == 2u && !live) printf("TC trap at %lu cs\n", fd_centiseconds(&st));
+        if (ran.trap) continue;
         fs_after_routine(&in, &st);
         if (watch.n) watch_print(&st);
         if (live) {
