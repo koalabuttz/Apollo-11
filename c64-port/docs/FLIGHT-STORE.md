@@ -1155,11 +1155,16 @@ port) runs one mission:
    writes its state at each sample point there (`.after`) and the inputs
    it took (`.after-replay`). The C64 gets those inputs too, after the
    window's own rows, and runs on to the last of those states, writing a
-   state at its first sample point at or after each. The window's end is
+   state at its first sample point at or after each. Each of those states
+   takes a C64 state's room in the REU below the rope, so when they do not
+   all fit the C64 takes the first ones that do (and the inputs up to the
+   last of them), and none at all leaves the plain end; the summary line
+   says how many fit. The window's end is
    the first centisecond at or after the host's end where both sides have
    a state: the host's end itself, or, when the C64 was busy (or had an
    interrupt pending) there, a later one. By then the C64 has applied
-   every host input before that centisecond.
+   every host input before that centisecond, and possibly that
+   centisecond's routine-boundary inputs.
    The summary line and the result's `replay_end_shift_cs` say how late,
    and program_acceptance.py writes "end compared N cs late" in the row.
    When the two share no such point, the ends are unpaired and the window
