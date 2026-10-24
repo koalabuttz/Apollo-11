@@ -35,9 +35,10 @@ Writes build/flight-restart/ (logs, snapshots, summary.json, or
 summary-gojam-module.json).
 
   flight_restart_check.py [--host-cc CC] [--skip-index] [--only NAME,...]
-                          [--vice [--resume-cs CS | --gojam-module]]
+                          [--jobs N] [--vice [--resume-cs CS | --gojam-module]]
 """
 import argparse, json, os, re, struct, subprocess, sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -396,6 +397,8 @@ def main():
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
     p.add_argument('--skip-index', action='store_true', help='reuse build/flight-store/<m>-host.inc and host objects')
     p.add_argument('--only', help='comma-separated scenario names')
+    p.add_argument('--jobs', type=int, default=os.cpu_count() or 1,
+                   help='host scenarios run at once (each is its own processes and files)')
     p.add_argument('--vice', dest='run_vice', action='store_true', help='also run the restart on the C64 store in VICE')
     p.add_argument('--resume-cs', type=int, default=200, help='AGC centiseconds the C64 resume runs')
     p.add_argument('--gojam-module', action='store_true',
@@ -417,10 +420,13 @@ def main():
     lanes = flight_holes.lanes()
     only = set(a.only.split(',')) if a.only else None
     summary, failed = [], 0
-    for scenario in RESTARTS:
-        if only and scenario[0] not in only:
-            continue
-        row = host(exe, scenario, words, lanes)
+    chosen = [s for s in RESTARTS if not only or s[0] in only]
+    # The host runs are independent (each scenario writes only its own logs
+    # and snapshots), so they run side by side; results are reported, and the
+    # C64 runs made, in RESTARTS order as before.
+    with ThreadPoolExecutor(max(1, a.jobs)) as pool:
+        rows = list(pool.map(lambda s: host(exe, s, words, lanes), chosen))
+    for scenario, row in zip(chosen, rows):
         print(f"{row['scenario']}: GOJAM at {row['gojam'][0][0] if row['gojam'] else '?'} cs, "
               f"{row['native_routines']} native routines, {len(row['routine_mismatches'])} yaAGC did not match "
               f"({len(row['new_mismatches'])} new), REDOCTR {row['redoctr'][0]}->{row['redoctr'][1]}, "
