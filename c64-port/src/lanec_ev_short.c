@@ -282,7 +282,7 @@ static uint16_t cm_step(apollo_overlay_state *s, lanec_io *io, uint16_t z)
         lanec_ev_cs(s, CW(OCT60000));
         lanec_mask(s, w[C(FLAGWRD6)]);
         (void)lanec_ts(s, C(FLAGWRD6));
-        JUMP(LANEC_Q);                         /* TC Q leaves Q and runs the register */
+        JUMP(lanec_ev_tc_q(s));                         /* TC Q leaves Q and runs the register */
     /* CHECKMM, MM nn: returns past the TC ALM/END that follows when in that program */
     case C(CKOPTVB): case C(CHAZFOGC): case C(V52): CALL(C(CHECKMM), z + 1u);
     case C(CKOPTVB) + 2u: case C(CHAZFOGC) + 2u: case C(V52) + 2u: case C(VERB94) + 8u:

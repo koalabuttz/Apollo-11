@@ -4,33 +4,33 @@
   "release": "evidence-lanec-pin-cert",
   "files": {
     "lanec-pin-c64-cover.json": {
-      "sha256": "afbaa370cc4984d8cef92a102cb366d6936b84c1d13d41abd639586c6b2a5a62",
-      "bytes": 252656,
+      "sha256": "bec2ac00f86e776e650f5d8d8b6a48a3e367aa115f228ff2e24bf2e6004adcc9",
+      "bytes": 168484,
       "store": "tree"
     },
     "lanec-pin-c64-results.json": {
-      "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
-      "bytes": 21791,
+      "sha256": "046a9fc4cb2f629de69eb155f0d7453816521d2feca9c8e89af092da09ea2b02",
+      "bytes": 48305,
       "store": "tree"
     },
     "lanec-pin-checks.log": {
-      "sha256": "96c586d186e1e8f89565c5668f0e3f03d912871ee0ba8298cca820cbb2fba2d6",
-      "bytes": 32518,
+      "sha256": "79979d9e858d97dfe05775831465196b54bffdc471e0e164936275a0bfc79ebe",
+      "bytes": 48987,
       "store": "tree"
     },
     "lanec-pin-cm-source-map.json": {
-      "sha256": "56c29a7644b19b9593e37be2df454b555e326123869f0a168f41ad0eebb59b65",
-      "bytes": 590082,
+      "sha256": "d31e71842c6ad79693a97323ab2cc390a81407fff1136b3866ea4372dcab54c0",
+      "bytes": 586619,
       "store": "release"
     },
     "lanec-pin-comparison.json": {
-      "sha256": "dc6f8c58a38a537a47d26a872bd9442f374e341528b432b8ce03bb908b06127b",
-      "bytes": 41245,
+      "sha256": "ad421a5da0e72426e7e929b2f4114e0a4fa713b983a02b457193f331203e204f",
+      "bytes": 41714,
       "store": "tree"
     },
     "lanec-pin-lm-source-map.json": {
-      "sha256": "0e26d8cb38a139f4e8b113438e7df3926a9dd060f97c487858ee1b09d4560da3",
-      "bytes": 591056,
+      "sha256": "d9b59882b15ebfecde4b8dea1fd5ccb54805aafd5eac976fe8f367039fcaa8b7",
+      "bytes": 590631,
       "store": "release"
     }
   }

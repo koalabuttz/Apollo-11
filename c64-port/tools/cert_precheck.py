@@ -890,6 +890,9 @@ DSKY_SWEEP_FILES = ('PINBALL_GAME_BUTTONS_AND_LIGHTS.agc',)
 DSKY_SWEEP_MISSION = {'Luminary099': 'lm', 'Comanche055': 'cm'}
 DSKY_SWEEP_KNOWN = ROOT / 'tools' / 'dsky_sweep_known.json'
 DSKY_SWEEP_EVIDENCE = ROOT / 'evidence' / 'dsky-sweep' / 'dsky-sweep.json'
+# The full report is release-stored (about 1 MB); CI has only the tree's
+# summary (tools/dsky_sweep_vice.py summary), which keeps every failed case.
+DSKY_SWEEP_SUMMARY = ROOT / 'evidence' / 'dsky-sweep' / 'dsky-sweep-summary.json'
 
 
 def check_dsky_sweep(report, label, mission, name, accepted):
@@ -917,12 +920,20 @@ def check_dsky_sweep(report, label, mission, name, accepted):
         report.add(level, label, f'{len(left)} DSKY sweep sample cases of {m} do not match the host on the C64 '
                    f"(tools/dsky_sweep_known.json: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''})",
                    'fix them, run `make dsky-sweep-vice` and take them off the list')
-    if not DSKY_SWEEP_EVIDENCE.exists():
+    if DSKY_SWEEP_EVIDENCE.exists():
+        sweep = json.loads(DSKY_SWEEP_EVIDENCE.read_text())
+        if DSKY_SWEEP_SUMMARY.exists() and json.loads(DSKY_SWEEP_SUMMARY.read_text()).get('full_sha256') != \
+                hashlib.sha256(DSKY_SWEEP_EVIDENCE.read_bytes()).hexdigest():
+            report.add(level, label, 'evidence/dsky-sweep/dsky-sweep-summary.json is not the summary of '
+                       'dsky-sweep.json (its full_sha256 differs)', 'commit the summary the sweep wrote with it')
+    elif DSKY_SWEEP_SUMMARY.exists():
+        sweep = json.loads(DSKY_SWEEP_SUMMARY.read_text())
+        sweep['results'] = sweep.get('failed', [])
+    else:
         dsky_sweep_clock(report, label, m, clock)
         report.add(level, label, f'no full DSKY sweep result for {m} (evidence/dsky-sweep/dsky-sweep.json)',
                    'run `tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep` and commit it')
         return
-    sweep = json.loads(DSKY_SWEEP_EVIDENCE.read_text())
     if sweep.get('mode') != 'all' or m not in sweep.get('missions', []):
         dsky_sweep_clock(report, label, m, clock)
         report.add(level, label, f"evidence/dsky-sweep/dsky-sweep.json is a {sweep.get('mode')} run of "

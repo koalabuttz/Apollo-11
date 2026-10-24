@@ -98,6 +98,33 @@ TIMER_NAMES = {'centiseconds', *fsv.TIMERS.values()}
 MISS = re.compile(r'^  (interp|basic ) (\d+,\d+) (\S+): (\d+) times;', re.M)
 PRO_BIT = 0o40000  # channel 32 bit 14, 0 while PRO is pressed
 PRO_HOLD = 30      # cs PRO stays down
+# A busy sample point (flight_host_run.c FLIGHT_BUSY_SAMPLE, dap_pass_check.c DP_BUSY)
+# once no sample has come for this many cs: a case whose job never idles
+# (LM V83's R31 display loop) still reaches its window's end on both sides.
+BUSY_CS = 100
+
+# A full sweep's report is about 1 MB, past tools/evidence.py's tree limit,
+# so it is stored in the release, which CI does not fetch. The summary stays
+# in the tree: everything tools/cert_precheck.py checks (mode, missions, the
+# hashes per mission, the counts and every failed case in full), bound to the
+# full report by its hash.
+SUMMARY = 'dsky-sweep-summary.json'
+
+
+def summary(full):
+    """The tree-sized summary of the report at path full, as JSON text."""
+    raw = full.read_bytes()
+    report = json.loads(raw)
+    keep = {k: v for k, v in report.items() if k not in ('results', 'runs')}
+    by_mission = {}
+    for r in report['results']:
+        row = by_mission.setdefault(r['m'], dict(cases=0, passed=0, skipped_cases=0))
+        row['cases'] += 1
+        row['passed'] += bool(r['ok'])
+        row['skipped_cases'] += bool(r.get('skipped'))
+    return json.dumps(dict(keep, full=full.name, full_sha256=hashlib.sha256(raw).hexdigest(),
+                           by_mission=by_mission, failed=[r for r in report['results'] if not r['ok']]),
+                      indent=1) + '\n'
 CASE = struct.Struct('<IHHIBBH')   # dap_pass_check.c dp_case
 
 
@@ -203,7 +230,7 @@ def host_case(exe, m, i, case, a, start, channel32):
         # One FLIGHT_CHAN in time order: the Q presses and the case's own.
         both = [(int(x.split(':', 1)[0]), x.split(':', 1)[1]) for x in filter(None, chan.split(','))] + own
         chan = ','.join(f'{t}:{v}' for t, v in sorted(both, key=lambda x: x[0]))
-    env = {**os.environ, 'FLIGHT_SCALED': '1,1,2',
+    env = {**os.environ, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_BUSY_SAMPLE': str(BUSY_CS),
            'FLIGHT_SNAPSHOT': f'{a.snap_cs},{header}', 'FLIGHT_REPLAY': f'{window},0,{window},1',
            **({'FLIGHT_CHAN': chan} if chan else {})}
     r = subprocess.run([str(exe), fhd.ROPE[m], str(a.snap_cs + 1000 + window), hkeys], cwd=ROOT,
@@ -213,7 +240,7 @@ def host_case(exe, m, i, case, a, start, channel32):
     holes = [f'{x} ({n - start[0].get(x, 0)} arrivals)' for x, n in found.items() if n > start[0].get(x, 0)]
     yaagc = [f'{x} ({n - start[1].get(x, 0)} times)' for x, n in missed.items() if n > start[1].get(x, 0)]
     end = pathlib.Path(f'{header}.end')
-    if r.returncode or not end.exists():
+    if r.returncode or not end.exists() or end.stat().st_size < fsv.STATE:
         return dict(m=m, keys=case, ok=False, error=f'the host run did not end its window (exit {r.returncode})',
                     log=(r.stdout + r.stderr)[-2000:])
     data = end.read_bytes()
@@ -266,7 +293,8 @@ def sha(path):
 def link(a, m, name, header, table, snap, cs):
     defines = ['-DDP_REPLAY', '-DDP_REPLAY_REU=0ul', '-DDP_REPLAY_ROWS=1u', '-DDP_END=0ul',
                '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', '-DDP_STATES_MAX=1u',
-               '-DDP_OUTPUTS=0ul', '-DDP_OUTPUTS_MAX=0u', f'-DDP_SWEEP=0x{table:x}ul', f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
+               '-DDP_OUTPUTS=0ul', '-DDP_OUTPUTS_MAX=0u', f'-DDP_BUSY={BUSY_CS}u', f'-DDP_SWEEP=0x{table:x}ul',
+               f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
     old = dp.WORK
     dp.WORK = WORK
     try:
@@ -489,9 +517,11 @@ def main():
                   and not skipped,
                   results=results, runs=runs)
     (WORK / 'dsky-sweep.json').write_text(json.dumps(report, indent=1) + '\n')
+    (WORK / SUMMARY).write_text(summary(WORK / 'dsky-sweep.json'))
     if a.evidence:
         a.evidence.mkdir(parents=True, exist_ok=True)
         shutil.copy(WORK / 'dsky-sweep.json', a.evidence / 'dsky-sweep.json')
+        shutil.copy(WORK / SUMMARY, a.evidence / SUMMARY)
     print(f"{'PASS' if ok == len(results) and results else 'FAIL'}: DSKY sweep on the C64: {ok} of {len(results)} "
           'cases end in the host state' + (f" (failed: {', '.join(f'{n} {c}' for c, n in sorted(classes.items()))})"
                                            if classes else ''))

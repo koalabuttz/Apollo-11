@@ -19,7 +19,7 @@ enum p66_bias_status dsky_scale_output(apollo_overlay_state *s,p66_bias_io *io,e
  if(w[3]>03400 || (w[3]&0377u)!=0 || w[4]!=060000 || w[6]!=(uint16_t)(060000|eb) || io->superbank!=0100 || io->interrupt_enabled>1 || (unsigned)entry>DSKY_DP3OUT || (w[0140]!=1 && w[0140]!=2) || (w[0140]==2 && w[0117]>2))return P66_BIAS_OUT_OF_SCOPE;
  if(w[0140]==2){address=(uint16_t)(w[0150+w[0117]]&03777u);eb=(uint16_t)(address>>8);}
  else{logical=w[0145];if(logical>01777)return P66_BIAS_OUT_OF_SCOPE;address=logical<01400 ? logical : (uint16_t)(eb*0400u+(logical&0377u));}
- if(address<01000 || address>03776 || (address&0377u)==0377)return P66_BIAS_OUT_OF_SCOPE;
+ if(address<010 || (address>=017 && address<=023) || address>03776 || (address&0377u)==0377)return P66_BIAS_OUT_OF_SCOPE;
  w[0162]=entry==DSKY_DP1OUT ? 02711 : entry==DSKY_DP2OUT ? 02716 : 02720;w[0144]=02726;
  if(w[0140]==2)w[3]=(uint16_t)(eb*0400u);
  w[0154]=w[address];w[0155]=w[address+1u];w[0156]=0;agree(w);
