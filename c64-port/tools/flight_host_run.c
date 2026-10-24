@@ -1188,8 +1188,25 @@ static void optics_due(agc_word *w){unsigned k;
  * mode, else the optics). The work clock drives at the T5 step before
  * rk_timer_phase (resident_flight.c rk_rupts_due); the scaled clock after
  * rk_timer_tick (rk_rupts). */
+/* FLIGHT_ISS=1: the ISS gimbals in coarse align and ICDU zero (both
+ * programs; the CM's FLIGHT_IMU is a perfect coarse align instead). While
+ * channel 12 bit 5 (zero the ICDUs) is set each sample point holds CDUX-Z
+ * at 0. While bits 4 and 6 (coarse align, ISS error counters) are set the
+ * gimbals follow the pulses the drive sends from CDUXCMD-CDUZCMD (050-052),
+ * 4 CDU counts a pulse: COARS (IMU_MODE_SWITCHING_ROUTINES.agc) commands
+ * (THETAD - CDU) / 4, so the gimbals reach THETAD when the pulses are out
+ * (a perfect servo, no gimbal rate limit). Pulses sent at other times move
+ * nothing. */
+static int iss_model;
+static long iss_sent[3];
+static void iss_due(agc_word *w,agc_hardware *hw){unsigned k;
+ if(!iss_model){memset(iss_sent,0,sizeof iss_sent);return;}
+ if(hw->channel12&020u){for(k=0;k<3u;++k){eset(w,CDUX+k,0u);iss_sent[k]=0;}return;}
+ for(k=0;k<3u;++k)if(iss_sent[k]){eset(w,CDUX+k,(agc_word)((unsigned long)((long)eword(w,CDUX+k)+4l*iss_sent[k])&077777ul));iss_sent[k]=0;}}
 static void drives(apollo_overlay_state *s,agc_hardware *hw){
  agc_word g=s->words[047];
+ unsigned i;long issb[3];
+ for(i=0;i<3u;++i)issb[i]=rk_cdu.owed[i]+ones(s->words[050u+i]);
 #ifdef RK_CM
  unsigned k;long before[2];
  rk_cdu_count=5u;
@@ -1205,6 +1222,8 @@ static void drives(apollo_overlay_state *s,agc_hardware *hw){
   optics_counter[k]=(hw->channel12&2u)?optics_counter[k]+sent:0;
   if((hw->channel12&0202u)==2u)optics_sent[k]+=sent;}
 #endif
+ /* The IMU CDU pulses sent, for the gimbals in coarse align (iss_due). */
+ if((hw->channel12&050u)==050u)for(i=0;i<3u;++i)iss_sent[i]+=issb[i]-(rk_cdu.owed[i]+ones(s->words[050u+i]));
 }
 
 /* One clock period (rk_timer_tick), or with step >= 0 one work-clock step
@@ -1562,6 +1581,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_SIVB")&&sscanf(getenv("FLIGHT_SIVB"),"%lu,%lf,%lf,%lf",&sivb_tig,&sivb_u[0],&sivb_u[1],&sivb_u[2])!=4){fprintf(stderr,"FLIGHT_SIVB=CS,UX,UY,UZ\n");return 2;}
 #endif
  if(getenv("FLIGHT_GYRO"))gyro_model=atoi(getenv("FLIGHT_GYRO"));
+ if(getenv("FLIGHT_ISS"))iss_model=atoi(getenv("FLIGHT_ISS"));
  core_path=getenv("FLIGHT_CORE");
  if(sps_kg&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_SPS needs FLIGHT_SCALED\n");return 2;}
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
@@ -1684,6 +1704,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    watch(s.words);
    aero_due(now(s.words),&aero_nat,s.words);
    imu_due(s.words,&hw);
+   iss_due(s.words,&hw);
    gyro_due(s.words);
 #ifdef RK_CM
    optics_due(s.words);
