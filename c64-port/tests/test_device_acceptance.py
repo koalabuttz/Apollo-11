@@ -380,6 +380,11 @@ class OffNominal(unittest.TestCase):
         skipped = dict(good, _why=['6 checkpoints not compared'])
         lines, _ = da.offnom.section(res, [skipped], da.first_diff)
         self.assertIn('no match: 6 checkpoints not compared', '\n'.join(lines))
+        shared = dict(good, replay_every=100)  # the device window's run at the same snapshot
+        lines, _ = da.offnom.section(res, [shared], da.first_diff)
+        self.assertIn("(the device window's run, checkpoints every 100 cs)", '\n'.join(lines))
+        lines, _ = da.offnom.section(res, [dict(good, replay_every=50)], da.first_diff)
+        self.assertNotIn("device window's run", '\n'.join(lines))
 
 
 class Windows(unittest.TestCase):
