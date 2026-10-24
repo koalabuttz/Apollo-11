@@ -749,6 +749,13 @@ LM_P51_KEYS = ('@200V37E51E@1000V33E@1300V21E00222E@2000V33E@3500x@3600y@4000V33
 # 526 on V05N09 until V34E. (There is no surface RR model, so tracking is
 # not reached.)
 LM_P22_KEYS = '@3000V37E22E@4000V33E@5000V33E@6000V33E@7000V34E'
+# lm-rhc-att-hold: lm-dap's start (DAP, below; no V37), then ATTITUDE HOLD
+# at 20 s (channel 31 bit 13 on, AUTO off) and the hand controller
+# (FLIGHT_RHC, tools/flight_rhc.h) out of detent twice: pitch +20 counts
+# for 6 s, then yaw -12 and roll +15 for 6 s. The DAP's manual rate command
+# reads the counters each pass (P-AXIS_RCS_AUTOPILOT RATERROR, Q,R alike).
+RHC = {'FLIGHT_CH30': '036377', 'FLIGHT_CH31': '057777', 'FLIGHT_POKE': '1500:035=02000', 'FLIGHT_SWAP_MCT': '0',
+       'FLIGHT_CHAN': '2000:031=067777', 'FLIGHT_RHC': '2500-3100:20,0,0;3600-4200:0,-12,15'}
 FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-descent-thrust', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100'}),
           ('cm-entry', 'cm', 32000, ENTRY_KEYS, ENTRY),
@@ -809,6 +816,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p67-nassp', 'lm', 143000, P67_KEYS, P67),
           ('lm-doi-nassp', 'lm', 65000, DOI_KEYS, DOI),
           ('lm-p47-nassp', 'lm', 7500, P47_KEYS, P47),
+          ('lm-rhc-att-hold', 'lm', 5500, '', RHC),
           ('lm-p41-nassp', 'lm', 57500, P41_KEYS, P41),
           ('lm-p42-nassp', 'lm', 57000, P42_KEYS, P42),
           ('lm-abort-p70-nassp', 'lm', 180000, NASSP_KEYS, ABORT_P70),
