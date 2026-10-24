@@ -111,20 +111,31 @@ static uint16_t agc_cs(void)
  * on the host. A negative delta (V70 can move the clock back) that leaves
  * TIME2:TIME1 behind the start would hold the clock until it catches up,
  * so the window would run on past its end: no scenario uplinks one. */
-static uint16_t clock_t2 CASSETTE, clock_t1 CASSETTE, clock_last CASSETTE;
+uint16_t dp_clock_t2 CASSETTE, dp_clock_t1 CASSETTE, dp_clock_last CASSETTE;
 static void clock_start(void)
 {
-    clock_t2 = IMAGE->words[024];
-    clock_t1 = IMAGE->words[025];
-    clock_last = 0;
+    dp_clock_t2 = IMAGE->words[024];
+    dp_clock_t1 = IMAGE->words[025];
+    dp_clock_last = 0;
 }
-__attribute__((noinline)) static uint16_t window_cs(void)
-{
-    uint16_t l = IMAGE->words[025];
-    if (((uint32_t)IMAGE->words[024] << 16 | l) < ((uint32_t)clock_t2 << 16 | clock_t1))
-        return clock_last;
-    return clock_last = (l - clock_t1) & 037777u;
-}
+/* window_cs, in 6502 code for room: TIME2 ($7028) and TIME1 ($702A) less
+ * the start as one 30-bit subtraction; a borrow (behind the start) holds
+ * the clock, else it is the TIME1 difference, 14 bits. Returns A:X. */
+_Static_assert(APOLLO_SHARED_ADDRESS == 0x7000u, "dp_window_cs reads TIME2/TIME1 at $7028/$702A");
+uint16_t dp_window_cs(void);
+__asm__(".section .text.dp_window_cs,\"ax\",@progbits\n"
+        ".globl dp_window_cs\n"
+        "dp_window_cs:\n"
+        "  sec\n"
+        "  lda $702a\n  sbc dp_clock_t1\n  tay\n"
+        "  lda $702b\n  sbc dp_clock_t1+1\n  pha\n"
+        "  lda $7028\n  sbc dp_clock_t2\n"
+        "  lda $7029\n  sbc dp_clock_t2+1\n"
+        "  pla\n  bcc 1f\n"
+        "  sty dp_clock_last\n  and #$3f\n  sta dp_clock_last+1\n"
+        "1:\n  lda dp_clock_last\n  ldx dp_clock_last+1\n  rts\n"
+        ".text\n");
+#define window_cs dp_window_cs
 #else
 /* The DSKY sweep keeps TIME1 since the case's start (Lane C's #674 runs
  * on it). */
