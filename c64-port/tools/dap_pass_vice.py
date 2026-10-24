@@ -57,13 +57,16 @@ def snapshot(exe, name, cs):
     return header
 
 
-def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False, keys=None, watch=None, defines=()):
-    out = WORK / f'{name}.prg'
+def link(cc, name, header, cs, scratch, steps=False, m='lm', profile=False, keys=None, watch=None, defines=(),
+         services=None, out=None):
+    """services: the ABI 2 service table source (default the flight
+    store's); out: the PRG (default WORK/name.prg)."""
+    out = out or WORK / f'{name}.prg'
     subprocess.run([str(c) for c in [
         cc, *COMMON, *MISSION[m], '-DRK_RUPT_TRACE', f'-DDP_SNAP="{header}"', f'-DDP_CS={cs}u',
         f'-DDP_SCRATCH=0x{scratch:x}ul', f'-DDP_SCRATCH_BYTES={SCRATCH_BYTES}ul', *(['-DDP_STEPS'] if steps else []), *(['-DRK_STEP_PROFILE'] if profile else []), *([f'-DDP_KEYS="{keys}"'] if keys else []),
         *([f"-DDP_WATCH={','.join('0' + w for w in watch)}"] if watch else []), *defines, '-T', 'platform/c64/resident_flight.ld', f'-Wl,-Map,{out}.map',
-        'platform/c64/dap_pass_check.c', *resident_sources(m), OUT / 'overlay_v2_services.S', '-o', out]],
+        'platform/c64/dap_pass_check.c', *resident_sources(m), services or OUT / 'overlay_v2_services.S', '-o', out]],
         cwd=ROOT, check=True)
     return out
 

@@ -50,6 +50,16 @@ class NativeOutputAcceptance(unittest.TestCase):
             self.assertFalse(ok)
             self.assertIn('unchanged', text)
 
+    def test_channel_row_needs_the_whole_window_to_match(self):
+        # #804: one matched checkpoint in a window that fails is not a pass.
+        failed = dict(replay('lm-a', 0, differences=7), ok=False, replay_skipped=['DSPCNT'],
+                      reu_bounds=dict(ok=False, outside=12))
+        skipped = dict(replay('lm-a', 0), replay_skipped=['DSPCNT'])
+        with mock.patch.object(no, 'window_states', return_value=states(0, 3)):
+            for r in (failed, skipped, dict(replay('lm-a', 0), ok=False)):
+                ok, text = no.assess_channels(JETS, {'lm-a': [r]})
+                self.assertFalse(ok, text)
+
     def test_downlink(self):
         row = dict(kind='downlink', host=['lm-p00-restart'], c64=['lm-p00'])
         good = dict(host=[dict(scenario='lm-p00-restart', ok=True, native_words=400, span_differ=0)],
@@ -65,8 +75,16 @@ class NativeOutputAcceptance(unittest.TestCase):
             d = pathlib.Path(d)
             (d / 'summary.json').write_text(json.dumps(dict(host=[], c64=[])))
             self.assertEqual(no.load_downlink(d, HEAD), (None, 'unknown'))
-            (d / 'commit').write_text(HEAD + '\n')
+            (d / 'commit').write_text(HEAD + '\n')   # a stamp beside the summary does not count (#804)
+            self.assertEqual(no.load_downlink(d, HEAD), (None, 'unknown'))
+            (d / 'summary.json').write_text(json.dumps(dict(commit=HEAD, host=[], c64=[])))
             self.assertEqual(no.load_downlink(d, HEAD)[0]['commit'], HEAD)
+            # C64 windows count only on the store they ran on.
+            c64 = [dict(window='lm-p00', mission='lm', ok=True)]
+            (d / 'summary.json').write_text(json.dumps(dict(commit=HEAD, stores=dict(lm='ab' * 32), host=[], c64=c64)))
+            self.assertEqual(no.load_downlink(d, HEAD, 'lm', 'ab' * 32)[0]['commit'], HEAD)
+            self.assertIsNone(no.load_downlink(d, HEAD, 'lm', 'cd' * 32)[0])
+            self.assertEqual(no.load_downlink(d, HEAD, 'cm', 'cd' * 32)[0]['commit'], HEAD)
 
     def test_waits_and_not_exercised(self):
         rows = [dict(JETS, waits_on='D1'), dict(section='d', row='dump', kind='downlink', status='not exercised', note='no V74'),
@@ -76,6 +94,43 @@ class NativeOutputAcceptance(unittest.TestCase):
         self.assertFalse(out[0]['ok'])
         self.assertIn('waits on D1', out[0]['text'])
         self.assertEqual((counts['not_exercised'], counts['unexplained'], counts['ok']), (2, 1, False))
+
+    def test_end_states_counts_whole_states(self):
+        import struct
+        import flight_scenario_vice as fsv
+        k = fsv.STATE // 2
+        data = b''.join(struct.pack(f'<{k}H', cs, *range(1, k)) for cs in (10, 20, 30))
+        got = no.end_states(data)
+        self.assertEqual([cs for cs, _ in got], [10, 20, 30])
+        self.assertEqual(got[0][1][2048:2048 + len(no.CHANNELS)], tuple(range(2049, 2049 + len(no.CHANNELS))))
+
+    def test_dump_row(self):
+        goto, entries = no.DUMP['lm']
+        row = dict(section='d', row='dump', kind='dump', windows=[['lm-a', 0, 300, 1, 50]])
+
+        def words(*gotos):
+            return [(100 * i, [g if a == goto else 0 for a in range(2048 + len(no.CHANNELS))])
+                    for i, g in enumerate(gotos)]
+        with mock.patch.object(no, 'window_states', return_value=words(0o3523, entries[1])):
+            ok, text = no.assess_dump(row, {'lm-a': [dict(replay('lm-a', 0), downrupt=True)]})
+            self.assertTrue(ok, text)
+            self.assertIn('by 100 cs', text)
+            ok, text = no.assess_dump(row, {'lm-a': [replay('lm-a', 0)]})
+            self.assertFalse(ok)
+            self.assertIn('without --downrupt', text)
+            # The dump starts after the last checkpoint the C64 matched.
+            ok, _ = no.assess_dump(row, {'lm-a': [dict(replay('lm-a', 0, matched=(50,)), downrupt=True)]})
+            self.assertFalse(ok)
+        with mock.patch.object(no, 'window_states', return_value=words(0o3523, 0o3523)):
+            ok, text = no.assess_dump(row, {'lm-a': [dict(replay('lm-a', 0), downrupt=True)]})
+            self.assertFalse(ok)
+            self.assertIn('never points', text)
+
+    def test_dump_windows_run_with_downrupt(self):
+        rows = [dict(kind='dump', windows=[['lm-a', 0, 300, 1, 50]]), JETS]
+        self.assertEqual(no.downrupt_windows(rows), {('lm-a', 0, 300, 1, 50)})
+        self.assertEqual(no.window_command(('lm-a', 0, 300, 1, 50), True)[-1], '--downrupt')
+        self.assertNotIn('--downrupt', no.window_command(('lm-a', 0, 1000)))
 
     def test_doc_names_the_store(self):
         # Acceptance contract rules 3 and 9: one header commit, the store's
@@ -93,13 +148,21 @@ class NativeOutputAcceptance(unittest.TestCase):
         for p in ('Luminary099', 'Comanche055'):
             plan = json.loads((ROOT / f'docs/acceptance/{p}-native-output-map.json').read_text())
             for row in plan['rows']:
-                self.assertIn(row['kind'], ('dsky', 'downlink', 'channels'), row['row'])
+                self.assertIn(row['kind'], ('dsky', 'downlink', 'channels', 'dump'), row['row'])
                 if row.get('status') == 'not exercised':
                     self.assertTrue(row.get('note'), row['row'])
                 if row['kind'] == 'channels':
                     self.assertTrue(set(row['channels']) <= set(no.CHANNELS), row['row'])
                     m = 'lm' if p == 'Luminary099' else 'cm'
                     self.assertTrue(all(w[0].startswith(f'{m}-') for w in row['windows']), row['row'])
+                if row['kind'] == 'dump':
+                    # A --downrupt window writes the same result file as a
+                    # program map window with the same start, so none may share one.
+                    m = 'lm' if p == 'Luminary099' else 'cm'
+                    used = json.dumps(json.loads((ROOT / f'docs/acceptance/{p}-program-map.json').read_text()))
+                    for w in row['windows']:
+                        self.assertTrue(w[0].startswith(f'{m}-'), row['row'])
+                        self.assertNotIn(f'"{w[0]}", {w[1]}', used, row['row'])
 
 
 if __name__ == '__main__':

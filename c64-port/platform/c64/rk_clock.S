@@ -64,6 +64,12 @@ rk_rupts:
 .globl rk_budget
 .type rk_budget,@function
 rk_budget:
+#ifdef DP_REPLAY
+    jmp dp_budget       /* platform/c64/dap_pass_check.c: the replay's cap */
+.globl rk_phase_budget
+.type rk_phase_budget,@function
+rk_phase_budget:
+#endif
     lda rk_tick_phase
     asl a
     tay
@@ -87,10 +93,19 @@ rk_limit:
     ldx #0
     rts
 .Lweigh:
+#ifdef DP_REPLAY
+    pha                 /* dp_budget is C: it may clobber __rc4-__rc6 */
+    jsr rk_budget
+    sta BL
+    stx BH
+    pla
+    sta D
+#else
     sta D
     jsr rk_budget
     sta BL
     stx BH
+#endif
     ldy #16
     lda #0              /* the remainder; carry its ninth bit */
 .Lbit:

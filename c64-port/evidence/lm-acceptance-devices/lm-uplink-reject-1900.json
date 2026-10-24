@@ -1,0 +1,8 @@
+{
+ "scenario": "lm-uplink-reject",
+ "snap_cs": 1900,
+ "error": [
+  "ld.lld: error: resident overlaps the ABI 2 service table"
+ ],
+ "replay_every": 100
+}

@@ -151,9 +151,11 @@ quantities). The CM windows run on `build/flight-store/cm.reu`. The
 `--replay` windows of tools/flight_scenario_vice.py run with DOWNRUPT off,
 since a DOWNRUPT every 20 ms would change the replayed scenarios' timing and
 inputs; channels 34 and 35 are checked here instead, and on the host by
-`make flight-downlink-check` over the 11 restart rows that can take
-DOWNRUPT (the 3 that start from a NASSP core run on scaled time, where
-tools/flight_host_run.c has none).
+`make flight-downlink-check` over the restart rows: the 11 from a cold
+start, and 2 of the 3 that start from a NASSP core (scaled time), which take
+DOWNRUPT from the first sample point after the core. lm-p12-restart stays
+out until one word of its descent and ascent list matches
+(tools/flight_downlink_check.py CORE_SKIP).
 
 The downtelemetry module is in the store (slot 1, as in the host run), and
 so are the DOWNRUPT lead-in and RESUME. P63's guidance and displays do not

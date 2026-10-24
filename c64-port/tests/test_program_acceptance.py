@@ -46,6 +46,30 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertIn('1 routines differ', pa.host_result(host_row('lm-a', misses=1))[1])
         self.assertIn('2 points bridged', pa.host_result(host_row('lm-a', bridged=2))[1])
 
+    def test_host_charge(self):
+        # (#765) The interpretive charge's bound fails the row in the doc,
+        # not only the differential's exit; a run with few routines is
+        # reported, not bounded; a row without a charge reads as before.
+        def charge(fitted, yaagc, routines, mean_abs):
+            return dict(fitted=fitted, yaagc=yaagc, percent=100.0 * (fitted - yaagc) / yaagc, routines=routines,
+                        mean_abs_error=mean_abs)
+        ok, text = pa.host_result(dict(host_row('lm-a'), interpretive_charge=charge(10100, 10000, 2000, 0.5)))
+        self.assertTrue(ok)
+        self.assertIn('+1.0% net, 10.0% routine by routine', text)
+        # (net +1%, but routines over and under by 2.5 MCT each of 5: 50%
+        # routine by routine, over the 45% bound)
+        ok, text = pa.host_result(dict(host_row('lm-a'), interpretive_charge=charge(10100, 10000, 2000, 2.5)))
+        self.assertFalse(ok)
+        self.assertIn('OVER the bound (20% net, 45% routine by routine)', text)
+        # (net +25%, routine by routine 25%: over the net bound)
+        ok, text = pa.host_result(dict(host_row('lm-a'), interpretive_charge=charge(12500, 10000, 2000, 1.25)))
+        self.assertFalse(ok)
+        self.assertIn('OVER the bound', text)
+        ok, text = pa.host_result(dict(host_row('lm-a'), interpretive_charge=charge(2385, 1000, 30, 46.2)))
+        self.assertTrue(ok)
+        self.assertIn('fewer than 1000 routines, not bounded', text)
+        self.assertNotIn('charge', pa.host_result(host_row('lm-a'))[1])
+
     def test_replay_verdicts(self):
         self.assertEqual(pa.replay_result(replay('lm-a', 0)), (True, 'matches host'))
         self.assertIn('differs (clock', pa.replay_result(replay('lm-a', 0, differences=3))[1])
@@ -115,6 +139,9 @@ class ProgramAcceptance(unittest.TestCase):
                          (False, 'body not reached: RRDESEND +4 (43,2306)'))
         self.assertEqual(pa.body_result(row, {'lm-a': {}}),
                          (False, 'body not reached: RRDESEND +4 (43,2306, not checked)'))
+        flag = dict(row='V44', scenarios=['lm-a'], no_reach='entry cannot refuse: it only sets SURFFLAG')
+        self.assertEqual(pa.body_result(flag, {}), (True, 'no body check: entry cannot refuse: it only sets SURFFLAG'))
+        self.assertEqual(pa.body_result(dict(row, no_reach='x'), {'lm-a': {}})[0], False)  # reach still wins
 
     def test_layout_tables_and_agc_sources_stale_a_result(self):
         self.assertIn(':(top)Luminary099', pa.SOURCES)

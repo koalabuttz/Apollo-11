@@ -7,6 +7,7 @@
 #include "cm_interpreter.h"
 #include "cm_interp.h"
 #include "agc_image_ops.h"
+#include "flight_part.h"
 #include "agc_image_w.h"
 /* A group build (KEEP masks below) leaves some helpers and operands unused. */
 #ifdef __GNUC__
@@ -4333,7 +4334,7 @@ static const agc_routine_entry basic_entries[]={
 /* Flight: the keys of every part (routines and part keys). */
 static const uint16_t cm_interpreter_flight_keys[97]={264u,267u,352u,359u,360u,361u,362u,363u,364u,365u,366u,367u,368u,369u,370u,371u,372u,520u,523u,526u,529u,531u,532u,533u,537u,547u,594u,598u,602u,662u,663u,664u,665u,704u,722u,728u,738u,739u,846u,847u,848u,849u,855u,856u,878u,879u,890u,892u,3078u,3080u,3087u,3092u,3094u,3095u,3359u,3365u,3384u,3514u,3526u,3528u,3529u,3530u,3559u,3563u,3568u,3571u,3574u,3584u,3626u,3629u,3630u,3692u,3699u,3700u,3705u,3725u,3732u,3734u,3736u,3737u,3738u,3758u,3759u,3831u,3863u,3868u,3873u,3880u,3885u,3894u,3895u,3902u,3903u,3905u,3915u,3999u,4012u};
 static enum exec_status cm_interpreter_leave(apollo_overlay_state *s,uint16_t at){unsigned i;
- for(i=0;i<97u;++i)if(cm_interpreter_flight_keys[i]==at){W[5]=(agc_word)(at>=04000u&&at<010000u?at:02000u+at%1024u);return EXEC_OK;}
+ for(i=0;i<97u;++i)if(cm_interpreter_flight_keys[i]==at){W[5]=(agc_word)(at>=04000u&&at<010000u?at:02000u+at%1024u);FLIGHT_PART_LEFT();return EXEC_OK;}
  return EXEC_OUT_OF_SCOPE;
 }
 /* Every key of the part: Z (under FB and SUPERBNK) names it. */
