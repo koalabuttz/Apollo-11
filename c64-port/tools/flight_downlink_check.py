@@ -83,8 +83,7 @@ VICE_WINDOWS = [('lm-p63-descent', 'lm-p63-descent-restart', 19950, False, 0o777
 # NASSP-core restart rows (FLIGHT_CORE) not run here, with the reason. A
 # core row takes DOWNRUPT from the first sample point after the core
 # (tools/flight_host_run.c dl_arm).
-CORE_SKIP = {'lm-p12-restart': 'one word differs from yaAGC in lockstep: pair 91 of the descent and ascent list '
-                               'at 111,548 cs, native 04107, yaAGC 00107 (lane F)'}
+CORE_SKIP = {}
 
 
 def stream(path):
