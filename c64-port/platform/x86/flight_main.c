@@ -3,7 +3,8 @@
  * (RK_LM) or Comanche055 (RK_CM) from GOJAM, every lane's native routines
  * through platform/x86/flight_dispatch.c, interpretive code compiled
  * (X86_INTERP_MODE FD_INTERP_CORE: through the interpreter core), on the
- * virtual AGC clock.
+ * work clock: each routine charged as the C64 resident and the harness's
+ * FLIGHT_SCALED=W charge it (fd_work_clock).
  *
  *   x86-flight-<m> ROPE.bin [CS [KEYS]]
  *
@@ -26,7 +27,10 @@
  *                 same)
  *   X86_WATCH     ADDR[,ADDR...] (octal, up to 64): after each routine,
  *                 "watch CS ADDR VALUE" for each word that changed (the
- *                 harness's FLIGHT_WATCH with FLIGHT_WATCH_STEP) */
+ *                 harness's FLIGHT_WATCH with FLIGHT_WATCH_STEP)
+ *   X86_PATH      FROM,TO (centiseconds): each routine run in that span, its
+ *                 table, core slots, charge and clock (MCT), to line up with
+ *                 the harness's FLIGHT_PATH */
 #include <string.h>
 #include <time.h>
 #include "flight_scenario.h"
@@ -99,6 +103,8 @@ int main(int argc, char **argv)
                       getenv("X86_SAMPLES_FROM") ? strtoul(getenv("X86_SAMPLES_FROM"), 0, 10) : 1ul;
     double speed = getenv("X86_SPEED") ? atof(getenv("X86_SPEED")) : 1.0, t0, wall;
     FILE *samples = getenv("X86_SAMPLES") ? fopen(getenv("X86_SAMPLES"), "w") : 0;
+    unsigned long path_from = 0, path_to = 0;
+    if (getenv("X86_PATH")) sscanf(getenv("X86_PATH"), "%lu,%lu", &path_from, &path_to);
     if (argc < 2 || !apollo_rope_load(MISSION, argv[1])) {
         fprintf(stderr, "usage: x86-flight ROPE.bin [CS [KEYS]]\n");
         return 2;
@@ -112,22 +118,11 @@ int main(int argc, char **argv)
         td_init(&dsky);
     for (; typed && *typed; ++typed) td_type(&dsky, (unsigned char)*typed);
     if (!fs_start(&st, &in, X86_INTERP_MODE)) return 2;
+    fd_work_clock(&st);
     watch_parse(getenv("X86_WATCH"));
     watch_print(&st);
     t0 = now_s();
     while (fd_centiseconds(&st) < cs) {
-        fd_boundary(&st);
-        /* Real time: AGC time runs no faster than wall time times X86_SPEED. */
-        if (speed > 0.0 && st.periods != periods) {
-            double ahead;
-            periods = st.periods;
-            if ((ahead = (double)periods / 100.0 / speed - (now_s() - t0)) > 0.0) {
-                struct timespec d;
-                d.tv_sec = (time_t)ahead;
-                d.tv_nsec = (long)((ahead - (double)d.tv_sec) * 1e9);
-                nanosleep(&d, 0);
-            }
-        }
         if (fs_sample_point(&in, &st)) {
             unsigned long t = fd_centiseconds(&st);
             const int due = fs_inputs_due(&in, &st);
@@ -145,6 +140,28 @@ int main(int argc, char **argv)
             if (live) td_read_keys(&dsky);
             if (dsky.quit) break;
             if (td_inputs_due(&dsky, &st)) continue;
+        }
+        fd_boundary(&st);
+        /* Real time: AGC time runs no faster than wall time times X86_SPEED. */
+        if (speed > 0.0 && st.periods != periods) {
+            double ahead;
+            periods = st.periods;
+            if ((ahead = (double)periods / 100.0 / speed - (now_s() - t0)) > 0.0) {
+                struct timespec d;
+                d.tv_sec = (time_t)ahead;
+                d.tv_nsec = (long)((ahead - (double)d.tv_sec) * 1e9);
+                nanosleep(&d, 0);
+            }
+        }
+        if (path_to && fd_centiseconds(&st) >= path_from && fd_centiseconds(&st) <= path_to) {
+            double before = st.mct;
+            unsigned long slots = st.slots;
+            enum exec_status r = fd_run(&st, &ran);
+            printf("X86 %lu cs key %u %s slots %lu charge %.0f at %.0f\n", fd_centiseconds(&st),
+                   ran.key, ran.table ? ran.table->name : "core", st.slots - slots, ran.mct,
+                   before);
+            if (r == EXEC_UNMAPPED) break;
+            continue;
         }
         if (fd_run(&st, &ran) == EXEC_UNMAPPED) {
             if (live) td_restore(); /* the stop message stays on screen */
