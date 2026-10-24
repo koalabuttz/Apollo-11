@@ -304,7 +304,7 @@ class RealRoles(unittest.TestCase):
                 self.assertFalse(self.hits(m, 'discretes', ch33(0o10)))
 
     def test_blocking_flags(self):
-        blocking = dict(lm={'imu', 'rhc', 'iss', 'trim', 'gyro'}, cm={'imu', 'optics-drive', 'gyro'})
+        blocking = dict(lm={'imu', 'rhc', 'iss', 'trim'}, cm={'imu'})
         for m in da.PROGRAM:
             with self.subTest(m=m):
                 self.assertEqual({t['key'] for t in da.roles(m) if t['blocking']}, blocking[m])
@@ -380,6 +380,23 @@ class OffNominal(unittest.TestCase):
         skipped = dict(good, _why=['6 checkpoints not compared'])
         lines, _ = da.offnom.section(res, [skipped], da.first_diff)
         self.assertIn('no match: 6 checkpoints not compared', '\n'.join(lines))
+        shared = dict(good, replay_every=100)  # the device window's run at the same snapshot
+        lines, _ = da.offnom.section(res, [shared], da.first_diff)
+        self.assertIn("(the device window's run, checkpoints every 100 cs)", '\n'.join(lines))
+        lines, _ = da.offnom.section(res, [dict(good, replay_every=50)], da.first_diff)
+        self.assertNotIn("device window's run", '\n'.join(lines))
+
+
+class Windows(unittest.TestCase):
+    def test_one_run_per_snapshot(self):
+        # Runs are named <scenario>-<snapshot>: a repeat would overwrite the first.
+        for m in da.PROGRAM:
+            keys = [w[:2] for w in da.windows(m)]
+            self.assertEqual(len(keys), len(set(keys)), m)
+            self.assertEqual(set(keys), {w[:2] for w in da.WINDOWS[m] + da.offnom.windows(m)}, m)
+
+    def test_first_entry_kept(self):
+        self.assertIn(('lm-uplink-reject', 1900, 800, 100), da.windows('lm'))
 
 
 if __name__ == '__main__':

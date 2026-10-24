@@ -90,6 +90,7 @@ rk_limit:
     cmp #0
     bne .Lweigh
     lda #4              /* RK_MCT_IDLE: one pass */
+    sta rk_run_limit    /* for rk_charge: a run of them all was cut */
     ldx #0
     rts
 .Lweigh:
@@ -125,5 +126,6 @@ rk_limit:
     lda BL              /* the quotient's low byte, plus 1 */
     clc
     adc #1
+    sta rk_run_limit
     rts
 #endif

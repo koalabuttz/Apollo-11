@@ -627,7 +627,10 @@ port) runs one mission:
    tools/flight_scenarios/) the same way; `FLIGHT_CH32` and `FLIGHT_CH33`
    set those input channels as `FLIGHT_CH30` does. In the keys argument,
    `@CS` holds the next key until CS centiseconds (keys otherwise go every
-   half second from 2 s). The reference keeps up to 32,767 centiseconds
+   half second from 2 s). `!` before a key (opt in) holds it past its time until
+   that side's verb and noun flash (channel 11 bit 6), and moves the keys
+   after it later by as long; `tools/key_wait_check.py` shows a keys string
+   without `!` runs exactly as before. The reference keeps up to 32,767 centiseconds
    (scaled time, which has none, any number). `FLIGHT_CORE=FILE` (scaled
    time only) starts from a yaAGC core dump (agc_engine_init's format,
    e.g. a NASSP save) in place of GOJAM: yaAGC loads it and finishes any
@@ -1155,11 +1158,16 @@ port) runs one mission:
    writes its state at each sample point there (`.after`) and the inputs
    it took (`.after-replay`). The C64 gets those inputs too, after the
    window's own rows, and runs on to the last of those states, writing a
-   state at its first sample point at or after each. The window's end is
+   state at its first sample point at or after each. Each of those states
+   takes a C64 state's room in the REU below the rope, so when they do not
+   all fit the C64 takes the first ones that do (and the inputs up to the
+   last of them), and none at all leaves the plain end; the summary line
+   says how many fit. The window's end is
    the first centisecond at or after the host's end where both sides have
    a state: the host's end itself, or, when the C64 was busy (or had an
    interrupt pending) there, a later one. By then the C64 has applied
-   every host input before that centisecond.
+   every host input before that centisecond, and possibly that
+   centisecond's routine-boundary inputs.
    The summary line and the result's `replay_end_shift_cs` say how late,
    and program_acceptance.py writes "end compared N cs late" in the row.
    When the two share no such point, the ends are unpaired and the window

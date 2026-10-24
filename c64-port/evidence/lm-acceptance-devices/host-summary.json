@@ -6,7 +6,7 @@
   "keys": "",
   "inputs": {},
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "samples": 4000,
   "equal": 4000,
   "differ": 0,
@@ -252,7 +252,7 @@
   "keys": "V37E00E",
   "inputs": {},
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -1178,7 +1178,7 @@
   "keys": "V37E12E",
   "inputs": {},
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -2040,7 +2040,7 @@
   "keys": "V37E63E",
   "inputs": {},
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -2903,7 +2903,7 @@
   "inputs": {},
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 3027,
   "periods_taken": 3003,
   "periods_dropped": 24,
@@ -2917,7 +2917,14 @@
    "yaagc": 200,
    "percent": 224.0,
    "routines": 5,
-   "mean_abs_error": 104.4
+   "mean_abs_error": 104.4,
+   "abs_percent": 261.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -2929,7 +2936,7 @@
   "inputs": {},
   "schedule": "1.7,2,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 3004,
   "periods_taken": 3004,
   "periods_dropped": 0,
@@ -2943,7 +2950,14 @@
    "yaagc": 200,
    "percent": 224.0,
    "routines": 5,
-   "mean_abs_error": 104.4
+   "mean_abs_error": 104.4,
+   "abs_percent": 261.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -2955,7 +2969,7 @@
   "inputs": {},
   "schedule": "4,1,2,1",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 4930,
   "periods_taken": 3007,
   "periods_dropped": 1923,
@@ -2969,7 +2983,14 @@
    "yaagc": 200,
    "percent": 224.0,
    "routines": 5,
-   "mean_abs_error": 104.4
+   "mean_abs_error": 104.4,
+   "abs_percent": 261.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -2981,12 +3002,12 @@
   "inputs": {},
   "schedule": "W",
   "exit": 0,
-  "commit": "eb940dc53324",
-  "cia_interrupts": 3001,
-  "periods_taken": 3001,
+  "commit": "837aecf39a91",
+  "cia_interrupts": 3000,
+  "periods_taken": 3000,
   "periods_dropped": 0,
-  "agc_centiseconds": 3001,
-  "native_routines": 10632,
+  "agc_centiseconds": 3000,
+  "native_routines": 15393,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
@@ -2995,7 +3016,14 @@
    "yaagc": 200,
    "percent": 224.0,
    "routines": 3,
-   "mean_abs_error": 149.3
+   "mean_abs_error": 149.3,
+   "abs_percent": 224.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +224.0% net, 224.0% routine by routine, from yaAGC's MCT over 3 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -3012,7 +3040,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -3026,7 +3054,14 @@
    "yaagc": 200,
    "percent": 224.0,
    "routines": 5,
-   "mean_abs_error": 104.4
+   "mean_abs_error": 104.4,
+   "abs_percent": 261.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -3043,7 +3078,7 @@
   },
   "schedule": "1.7,2,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -3057,7 +3092,14 @@
    "yaagc": 200,
    "percent": 224.0,
    "routines": 5,
-   "mean_abs_error": 104.4
+   "mean_abs_error": 104.4,
+   "abs_percent": 261.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -3074,7 +3116,7 @@
   },
   "schedule": "4,1,2,1",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 3315,
   "periods_taken": 3035,
   "periods_dropped": 280,
@@ -3099,12 +3141,12 @@
   },
   "schedule": "W",
   "exit": 0,
-  "commit": "eb940dc53324",
-  "cia_interrupts": 3002,
-  "periods_taken": 3002,
+  "commit": "837aecf39a91",
+  "cia_interrupts": 3000,
+  "periods_taken": 3000,
   "periods_dropped": 0,
-  "agc_centiseconds": 3002,
-  "native_routines": 15346,
+  "agc_centiseconds": 3000,
+  "native_routines": 19114,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
@@ -3113,7 +3155,14 @@
    "yaagc": 200,
    "percent": 224.0,
    "routines": 3,
-   "mean_abs_error": 149.3
+   "mean_abs_error": 149.3,
+   "abs_percent": 224.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +224.0% net, 224.0% routine by routine, from yaAGC's MCT over 3 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -3131,7 +3180,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 25000,
   "periods_taken": 25000,
   "periods_dropped": 0,
@@ -3145,7 +3194,14 @@
    "yaagc": 2782011,
    "percent": 3.4,
    "routines": 12133,
-   "mean_abs_error": 47.6
+   "mean_abs_error": 47.6,
+   "abs_percent": 20.8,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +3.4% net, 20.8% routine by routine, from yaAGC's MCT over 12133 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3164,7 +3220,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 30000,
   "periods_taken": 30000,
   "periods_dropped": 0,
@@ -3178,7 +3234,14 @@
    "yaagc": 4075684,
    "percent": 6.3,
    "routines": 18035,
-   "mean_abs_error": 52.7
+   "mean_abs_error": 52.7,
+   "abs_percent": 23.3,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +6.3% net, 23.3% routine by routine, from yaAGC's MCT over 18035 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3196,7 +3259,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 56002,
   "periods_taken": 56000,
   "periods_dropped": 2,
@@ -3210,7 +3273,14 @@
    "yaagc": 300664,
    "percent": 4.9,
    "routines": 1475,
-   "mean_abs_error": 40.1
+   "mean_abs_error": 40.1,
+   "abs_percent": 19.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +4.9% net, 19.7% routine by routine, from yaAGC's MCT over 1475 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3230,7 +3300,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 40033,
   "periods_taken": 40033,
   "periods_dropped": 0,
@@ -3244,7 +3314,14 @@
    "yaagc": 12095720,
    "percent": 0.2,
    "routines": 65268,
-   "mean_abs_error": 47.6
+   "mean_abs_error": 47.6,
+   "abs_percent": 25.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +0.2% net, 25.7% routine by routine, from yaAGC's MCT over 65268 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3265,7 +3342,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 40031,
   "periods_taken": 40031,
   "periods_dropped": 0,
@@ -3279,7 +3356,14 @@
    "yaagc": 11195429,
    "percent": 0.8,
    "routines": 60736,
-   "mean_abs_error": 47.5
+   "mean_abs_error": 47.5,
+   "abs_percent": 25.8,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +0.8% net, 25.8% routine by routine, from yaAGC's MCT over 60736 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3299,7 +3383,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 23000,
   "periods_taken": 23000,
   "periods_dropped": 0,
@@ -3313,7 +3397,14 @@
    "yaagc": 3699809,
    "percent": 3.8,
    "routines": 19922,
-   "mean_abs_error": 46.5
+   "mean_abs_error": 46.5,
+   "abs_percent": 25.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +3.8% net, 25.0% routine by routine, from yaAGC's MCT over 19922 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3333,55 +3424,28 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 23500,
   "periods_taken": 23500,
   "periods_dropped": 0,
   "agc_centiseconds": 23500,
-  "native_routines": 568784,
-  "bridged_instructions": 100,
+  "native_routines": 568776,
+  "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": [
-   {
-    "kind": "basic",
-    "point": "41,2523",
-    "label": "DECDSP",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 2,
-    "instructions": 2,
-    "refused_by": "lanec_pin_lm_routines",
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "41,2524",
-    "label": "DECDSP+1",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 2,
-    "instructions": 2,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "41,2525",
-    "label": "DECDSP+2",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 2,
-    "instructions": 96,
-    "refused_by": null,
-    "core_start": false
-   }
-  ],
+  "unregistered": [],
   "interpretive_charge": {
    "fitted": 10221616,
    "yaagc": 10038042,
    "percent": 1.8,
    "routines": 50888,
-   "mean_abs_error": 40.2
+   "mean_abs_error": 40.2,
+   "abs_percent": 20.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.8% net, 20.4% routine by routine, from yaAGC's MCT over 50888 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3401,55 +3465,28 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 23500,
   "periods_taken": 23500,
   "periods_dropped": 0,
   "agc_centiseconds": 23500,
-  "native_routines": 524073,
-  "bridged_instructions": 100,
+  "native_routines": 524065,
+  "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": [
-   {
-    "kind": "basic",
-    "point": "41,2523",
-    "label": "DECDSP",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 2,
-    "instructions": 2,
-    "refused_by": "lanec_pin_lm_routines",
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "41,2524",
-    "label": "DECDSP+1",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 2,
-    "instructions": 2,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "41,2525",
-    "label": "DECDSP+2",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 2,
-    "instructions": 96,
-    "refused_by": null,
-    "core_start": false
-   }
-  ],
+  "unregistered": [],
   "interpretive_charge": {
    "fitted": 10852256,
    "yaagc": 10633279,
    "percent": 2.1,
    "routines": 54098,
-   "mean_abs_error": 40.7
+   "mean_abs_error": 40.7,
+   "abs_percent": 20.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +2.1% net, 20.7% routine by routine, from yaAGC's MCT over 54098 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3469,7 +3506,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 71000,
   "periods_taken": 71000,
   "periods_dropped": 0,
@@ -3483,7 +3520,14 @@
    "yaagc": 22717073,
    "percent": 1.1,
    "routines": 123642,
-   "mean_abs_error": 46.9
+   "mean_abs_error": 46.9,
+   "abs_percent": 25.5,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.1% net, 25.5% routine by routine, from yaAGC's MCT over 123642 routines; within 20% net and 45% routine by routine"
   },
   "reached": {
    "40,3674": 20194,
@@ -3507,7 +3551,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 67000,
   "periods_taken": 67000,
   "periods_dropped": 0,
@@ -3521,7 +3565,14 @@
    "yaagc": 30695482,
    "percent": 1.8,
    "routines": 160127,
-   "mean_abs_error": 42.4
+   "mean_abs_error": 42.4,
+   "abs_percent": 22.1,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.8% net, 22.1% routine by routine, from yaAGC's MCT over 160127 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3541,7 +3592,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 67020,
   "periods_taken": 67020,
   "periods_dropped": 0,
@@ -3555,7 +3606,14 @@
    "yaagc": 30746896,
    "percent": 1.8,
    "routines": 160451,
-   "mean_abs_error": 42.4
+   "mean_abs_error": 42.4,
+   "abs_percent": 22.1,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.8% net, 22.1% routine by routine, from yaAGC's MCT over 160451 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3576,7 +3634,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 115027,
   "periods_taken": 115027,
   "periods_dropped": 0,
@@ -3590,7 +3648,14 @@
    "yaagc": 13900875,
    "percent": 7.5,
    "routines": 62239,
-   "mean_abs_error": 55.1
+   "mean_abs_error": 55.1,
+   "abs_percent": 24.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +7.5% net, 24.7% routine by routine, from yaAGC's MCT over 62239 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3610,7 +3675,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 110027,
   "periods_taken": 110027,
   "periods_dropped": 0,
@@ -3624,7 +3689,14 @@
    "yaagc": 13225275,
    "percent": 7.6,
    "routines": 59354,
-   "mean_abs_error": 54.6
+   "mean_abs_error": 54.6,
+   "abs_percent": 24.5,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +7.6% net, 24.5% routine by routine, from yaAGC's MCT over 59354 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3644,7 +3716,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 96008,
   "periods_taken": 96008,
   "periods_dropped": 0,
@@ -3658,7 +3730,56 @@
    "yaagc": 9649983,
    "percent": 6.5,
    "routines": 43779,
-   "mean_abs_error": 52.5
+   "mean_abs_error": 52.5,
+   "abs_percent": 23.8,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +6.5% net, 23.8% routine by routine, from yaAGC's MCT over 43779 routines; within 20% net and 45% routine by routine"
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "lm-p63-landing-displays-scaled-x1",
+  "mission": "lm",
+  "centiseconds": 70000,
+  "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E@66000V57E",
+  "inputs": {
+   "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_CH33": "036733",
+   "FLIGHT_LR_POS2": "500",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_ENGINE": "15100",
+   "FLIGHT_LR": "60000:150",
+   "FLIGHT_CH30": "036311"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "837aecf39a91",
+  "cia_interrupts": 70012,
+  "periods_taken": 70012,
+  "periods_dropped": 0,
+  "agc_centiseconds": 70012,
+  "native_routines": 3439963,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4038808,
+   "yaagc": 3926491,
+   "percent": 2.9,
+   "routines": 19036,
+   "mean_abs_error": 43.1,
+   "abs_percent": 20.9,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +2.9% net, 20.9% routine by routine, from yaAGC's MCT over 19036 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3678,33 +3799,28 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 115029,
   "periods_taken": 115029,
   "periods_dropped": 0,
   "agc_centiseconds": 115029,
-  "native_routines": 4727353,
-  "bridged_instructions": 1,
+  "native_routines": 4727351,
+  "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": [
-   {
-    "kind": "basic",
-    "point": "50,2002",
-    "label": "RDRUSECK TC Q",
-    "file": "EXTENDED_VERBS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 1,
-    "refused_by": null,
-    "core_start": false
-   }
-  ],
+  "unregistered": [],
   "interpretive_charge": {
    "fitted": 14673788,
    "yaagc": 13666941,
    "percent": 7.4,
    "routines": 61204,
-   "mean_abs_error": 54.7
+   "mean_abs_error": 54.7,
+   "abs_percent": 24.5,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +7.4% net, 24.5% routine by routine, from yaAGC's MCT over 61204 routines; within 20% net and 45% routine by routine"
   },
   "reached": {
    "25,3471": 100205
@@ -3721,7 +3837,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 9000,
   "periods_taken": 9000,
   "periods_dropped": 0,
@@ -3735,7 +3851,14 @@
    "yaagc": 24151,
    "percent": 0.8,
    "routines": 178,
-   "mean_abs_error": 68.9
+   "mean_abs_error": 68.9,
+   "abs_percent": 50.8,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +0.8% net, 50.8% routine by routine, from yaAGC's MCT over 178 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {
    "04,3632": null
@@ -3753,7 +3876,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 14000,
   "periods_taken": 14000,
   "periods_dropped": 0,
@@ -3767,7 +3890,14 @@
    "yaagc": 1761,
    "percent": 138.5,
    "routines": 30,
-   "mean_abs_error": 112.7
+   "mean_abs_error": 112.7,
+   "abs_percent": 192.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +138.5% net, 192.0% routine by routine, from yaAGC's MCT over 30 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {
    "04,3723": 10462,
@@ -3791,7 +3921,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 115014,
   "periods_taken": 115014,
   "periods_dropped": 0,
@@ -3805,7 +3935,14 @@
    "yaagc": 13327461,
    "percent": 7.1,
    "routines": 59952,
-   "mean_abs_error": 54.4
+   "mean_abs_error": 54.4,
+   "abs_percent": 24.5,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +7.1% net, 24.5% routine by routine, from yaAGC's MCT over 59952 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3823,7 +3960,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 10005,
   "periods_taken": 10002,
   "periods_dropped": 3,
@@ -3837,7 +3974,14 @@
    "yaagc": 141778,
    "percent": 6.9,
    "routines": 775,
-   "mean_abs_error": 37.7
+   "mean_abs_error": 37.7,
+   "abs_percent": 20.6,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +6.9% net, 20.6% routine by routine, from yaAGC's MCT over 775 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -3856,7 +4000,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 10004,
   "periods_taken": 10002,
   "periods_dropped": 2,
@@ -3870,7 +4014,14 @@
    "yaagc": 141778,
    "percent": 6.9,
    "routines": 775,
-   "mean_abs_error": 37.7
+   "mean_abs_error": 37.7,
+   "abs_percent": 20.6,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +6.9% net, 20.6% routine by routine, from yaAGC's MCT over 775 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -3889,7 +4040,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 10003,
   "periods_taken": 10002,
   "periods_dropped": 1,
@@ -3903,7 +4054,55 @@
    "yaagc": 153048,
    "percent": 6.6,
    "routines": 838,
-   "mean_abs_error": 36.0
+   "mean_abs_error": 36.0,
+   "abs_percent": 19.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +6.6% net, 19.7% routine by routine, from yaAGC's MCT over 838 routines; fewer than 1000 routines, not bounded"
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "lm-p52-cage-torque-scaled-x1",
+  "mission": "lm",
+  "centiseconds": 10000,
+  "keys": "@200V37E52E@1000V22E3E@1500V33E@2200E@2600V33E@3400E@3800V33E@4300y@4400x@4800V33E@5300V33E@5900E@6300V33E@6800y@6900x@7300V33E@7900V33E@8500V33E@9100E",
+  "inputs": {
+   "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_CH33": "036673",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_POKE": "3300:032=01062,3300:033=33476,3300:034=01144,5800:032=03521,5800:033=42475,5800:034=77717",
+   "FLIGHT_CHAN": "3000:030=034351,3500:030=036351",
+   "FLIGHT_GYRO": "1"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "837aecf39a91",
+  "cia_interrupts": 10003,
+  "periods_taken": 10002,
+  "periods_dropped": 1,
+  "agc_centiseconds": 10002,
+  "native_routines": 542286,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 163084,
+   "yaagc": 153048,
+   "percent": 6.6,
+   "routines": 838,
+   "mean_abs_error": 36.0,
+   "abs_percent": 19.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +6.6% net, 19.7% routine by routine, from yaAGC's MCT over 838 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -3927,7 +4126,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 215000,
   "periods_taken": 215000,
   "periods_dropped": 0,
@@ -3941,7 +4140,14 @@
    "yaagc": 31873216,
    "percent": 5.4,
    "routines": 148924,
-   "mean_abs_error": 49.0
+   "mean_abs_error": 49.0,
+   "abs_percent": 22.9,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +5.4% net, 22.9% routine by routine, from yaAGC's MCT over 148924 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -3964,55 +4170,28 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 140001,
   "periods_taken": 140001,
   "periods_dropped": 0,
   "agc_centiseconds": 140001,
-  "native_routines": 5382373,
-  "bridged_instructions": 264,
+  "native_routines": 5382227,
+  "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": [
-   {
-    "kind": "basic",
-    "point": "40,2732",
-    "label": "2INTOUT",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 12,
-    "instructions": 12,
-    "refused_by": "lanec_pin_lm_routines",
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "40,2734",
-    "label": "2INTOUT+2",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 12,
-    "instructions": 36,
-    "refused_by": "lanec_pin_lm_routines",
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "40,3306",
-    "label": "DSPDECVN",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 12,
-    "instructions": 216,
-    "refused_by": "lanec_pin_lm_routines",
-    "core_start": false
-   }
-  ],
+  "unregistered": [],
   "interpretive_charge": {
    "fitted": 21785368,
-   "yaagc": 20260705,
+   "yaagc": 20260704,
    "percent": 7.5,
    "routines": 90865,
-   "mean_abs_error": 55.6
+   "mean_abs_error": 55.6,
+   "abs_percent": 24.9,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +7.5% net, 24.9% routine by routine, from yaAGC's MCT over 90865 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4036,7 +4215,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 143001,
   "periods_taken": 143001,
   "periods_dropped": 0,
@@ -4050,7 +4229,14 @@
    "yaagc": 19653766,
    "percent": 5.8,
    "routines": 89555,
-   "mean_abs_error": 52.4
+   "mean_abs_error": 52.4,
+   "abs_percent": 23.9,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +5.8% net, 23.9% routine by routine, from yaAGC's MCT over 89555 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4071,7 +4257,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 65000,
   "periods_taken": 65000,
   "periods_dropped": 0,
@@ -4085,7 +4271,14 @@
    "yaagc": 3584328,
    "percent": 2.3,
    "routines": 17801,
-   "mean_abs_error": 44.0
+   "mean_abs_error": 44.0,
+   "abs_percent": 21.9,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +2.3% net, 21.9% routine by routine, from yaAGC's MCT over 17801 routines; within 20% net and 45% routine by routine"
   },
   "reached": {
    "22,3242": 61479
@@ -4109,7 +4302,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 7500,
   "periods_taken": 7500,
   "periods_dropped": 0,
@@ -4123,7 +4316,14 @@
    "yaagc": 1187389,
    "percent": 2.0,
    "routines": 6201,
-   "mean_abs_error": 43.3
+   "mean_abs_error": 43.3,
+   "abs_percent": 22.6,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +2.0% net, 22.6% routine by routine, from yaAGC's MCT over 6201 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4146,7 +4346,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 57500,
   "periods_taken": 57500,
   "periods_dropped": 0,
@@ -4160,7 +4360,14 @@
    "yaagc": 3305652,
    "percent": 3.2,
    "routines": 19643,
-   "mean_abs_error": 42.8
+   "mean_abs_error": 42.8,
+   "abs_percent": 25.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +3.2% net, 25.4% routine by routine, from yaAGC's MCT over 19643 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4183,7 +4390,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 57000,
   "periods_taken": 57000,
   "periods_dropped": 0,
@@ -4197,7 +4404,14 @@
    "yaagc": 2755935,
    "percent": 0.7,
    "routines": 13875,
-   "mean_abs_error": 41.8
+   "mean_abs_error": 41.8,
+   "abs_percent": 21.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +0.7% net, 21.0% routine by routine, from yaAGC's MCT over 13875 routines; within 20% net and 45% routine by routine"
   },
   "reached": {
    "20,2004": 352
@@ -4220,7 +4434,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 180007,
   "periods_taken": 180007,
   "periods_dropped": 0,
@@ -4234,7 +4448,14 @@
    "yaagc": 24544914,
    "percent": 5.6,
    "routines": 111586,
-   "mean_abs_error": 49.1
+   "mean_abs_error": 49.1,
+   "abs_percent": 22.3,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +5.6% net, 22.3% routine by routine, from yaAGC's MCT over 111586 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4257,7 +4478,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 180007,
   "periods_taken": 180007,
   "periods_dropped": 0,
@@ -4271,7 +4492,14 @@
    "yaagc": 26506154,
    "percent": 5.8,
    "routines": 122884,
-   "mean_abs_error": 48.9
+   "mean_abs_error": 48.9,
+   "abs_percent": 22.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +5.8% net, 22.7% routine by routine, from yaAGC's MCT over 122884 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4291,7 +4519,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 30000,
   "periods_taken": 30000,
   "periods_dropped": 0,
@@ -4305,7 +4533,14 @@
    "yaagc": 4076172,
    "percent": 6.3,
    "routines": 18035,
-   "mean_abs_error": 52.7
+   "mean_abs_error": 52.7,
+   "abs_percent": 23.3,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +6.3% net, 23.3% routine by routine, from yaAGC's MCT over 18035 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4326,44 +4561,28 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 27000,
   "periods_taken": 27000,
   "periods_dropped": 0,
   "agc_centiseconds": 27000,
-  "native_routines": 952680,
-  "bridged_instructions": 70,
+  "native_routines": 952660,
+  "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": [
-   {
-    "kind": "basic",
-    "point": "41,3275",
-    "label": "MONREQ",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 10,
-    "instructions": 10,
-    "refused_by": "lanec_pin_lm_routines",
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "41,3276",
-    "label": "MONREQ+1",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 10,
-    "instructions": 60,
-    "refused_by": null,
-    "core_start": false
-   }
-  ],
+  "unregistered": [],
   "interpretive_charge": {
    "fitted": 3376032,
    "yaagc": 3220388,
    "percent": 4.8,
    "routines": 14176,
-   "mean_abs_error": 50.5
+   "mean_abs_error": 50.5,
+   "abs_percent": 22.2,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +4.8% net, 22.2% routine by routine, from yaAGC's MCT over 14176 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4385,7 +4604,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 36500,
   "periods_taken": 36500,
   "periods_dropped": 0,
@@ -4399,7 +4618,14 @@
    "yaagc": 1730022,
    "percent": 1.5,
    "routines": 8966,
-   "mean_abs_error": 43.3
+   "mean_abs_error": 43.3,
+   "abs_percent": 22.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.5% net, 22.4% routine by routine, from yaAGC's MCT over 8966 routines; within 20% net and 45% routine by routine"
   },
   "reached": {
    "23,2103": 22150,
@@ -4431,159 +4657,15 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 5000,
   "periods_taken": 5000,
   "periods_dropped": 0,
   "agc_centiseconds": 5000,
-  "native_routines": 285504,
-  "bridged_instructions": 80,
+  "native_routines": 285479,
+  "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": [
-   {
-    "kind": "basic",
-    "point": "42,3452",
-    "label": "HMSIN",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 1,
-    "refused_by": "lanec_pin_lm_routines",
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3453",
-    "label": "HMSIN+1",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 1,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3455",
-    "label": "HMSIN+3",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 1,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3456",
-    "label": "HMSIN+4",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 13,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3465",
-    "label": "HMSIN+13",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 1,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3466",
-    "label": "HMSIN+14",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 14,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3475",
-    "label": "HMSIN+23",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 1,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3476",
-    "label": "HMSIN+24",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 3,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3500",
-    "label": "HMSIN+26",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 19,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3514",
-    "label": "HMSIN+42",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 1,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3515",
-    "label": "HMSIN+43",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 3,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3517",
-    "label": "HMSIN+45",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 13,
-    "refused_by": null,
-    "core_start": false
-   },
-   {
-    "kind": "basic",
-    "point": "42,3527",
-    "label": "HMSIN+55",
-    "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 9,
-    "refused_by": null,
-    "core_start": false
-   }
-  ],
+  "unregistered": [],
   "interpretive_charge": null,
   "reached": {
    "42,2016": 4002
@@ -4605,27 +4687,15 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 7000,
   "periods_taken": 7000,
   "periods_dropped": 0,
   "agc_centiseconds": 7000,
-  "native_routines": 390237,
-  "bridged_instructions": 1,
+  "native_routines": 390236,
+  "bridged_instructions": 0,
   "routine_mismatches": [],
-  "unregistered": [
-   {
-    "kind": "basic",
-    "point": "50,2002",
-    "label": "RDRUSECK TC Q",
-    "file": "EXTENDED_VERBS.agc",
-    "lane": "C",
-    "arrivals": 1,
-    "instructions": 1,
-    "refused_by": null,
-    "core_start": false
-   }
-  ],
+  "unregistered": [],
   "interpretive_charge": null,
   "reached": {
    "43,2420": 2650
@@ -4647,7 +4717,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 23000,
   "periods_taken": 23000,
   "periods_dropped": 0,
@@ -4661,7 +4731,14 @@
    "yaagc": 1398428,
    "percent": 3.4,
    "routines": 7574,
-   "mean_abs_error": 43.2
+   "mean_abs_error": 43.2,
+   "abs_percent": 23.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +3.4% net, 23.4% routine by routine, from yaAGC's MCT over 7574 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  },
@@ -4679,7 +4756,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 8007,
   "periods_taken": 8002,
   "periods_dropped": 5,
@@ -4693,7 +4770,14 @@
    "yaagc": 46307,
    "percent": 4.5,
    "routines": 258,
-   "mean_abs_error": 44.9
+   "mean_abs_error": 44.9,
+   "abs_percent": 25.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +4.5% net, 25.0% routine by routine, from yaAGC's MCT over 258 routines; fewer than 1000 routines, not bounded"
   },
   "reached": {}
  },
@@ -4711,7 +4795,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "eb940dc53324",
+  "commit": "837aecf39a91",
   "cia_interrupts": 8002,
   "periods_taken": 8000,
   "periods_dropped": 2,
@@ -4725,7 +4809,56 @@
    "yaagc": 151111,
    "percent": 11.3,
    "routines": 921,
-   "mean_abs_error": 66.1
+   "mean_abs_error": 66.1,
+   "abs_percent": 40.3,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +11.3% net, 40.3% routine by routine, from yaAGC's MCT over 921 routines; fewer than 1000 routines, not bounded"
+  },
+  "reached": {}
+ },
+ {
+  "scenario": "lm-p63-overload-nomon-scaled-x1",
+  "mission": "lm",
+  "centiseconds": 27000,
+  "keys": "@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E",
+  "inputs": {
+   "FLIGHT_CH30": "036357",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_CH33": "077737",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p63.load",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_ENGINE": "15100",
+   "FLIGHT_STEAL": "18500-24000:420",
+   "FLIGHT_BUSY_SAMPLE": "50"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "837aecf39a91",
+  "cia_interrupts": 27000,
+  "periods_taken": 27000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 27000,
+  "native_routines": 956514,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3420940,
+   "yaagc": 3254037,
+   "percent": 5.1,
+   "routines": 14418,
+   "mean_abs_error": 50.7,
+   "abs_percent": 22.5,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +5.1% net, 22.5% routine by routine, from yaAGC's MCT over 14418 routines; within 20% net and 45% routine by routine"
   },
   "reached": {}
  }

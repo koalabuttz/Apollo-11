@@ -143,6 +143,11 @@ P67_KEYS = NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V3
 # 187 m above the true height to about 96 m by 873 s, then stop; HCALC
 # drifts with the navigation after that (about 107 m by 953 s).
 LR_V58_KEYS = LR_UPDATE_KEYS + '@88000V58E'
+# lm-p63-landing-displays: lm-p63-lr-update with the mode select switch in
+# PGNCS (channel 30 bit 6 clear; the NASSP core has it set, so R10 sends
+# nothing). From P63 ignition (SWANDISP) at about 649 s R10 drives the
+# landing analog displays: ALTM and channel 14 bits 2-3, 4 times a second.
+LR_DISPLAYS = {**LR_UPDATE, 'FLIGHT_CH30': '036311'}
 # lm-p63-v60-nassp: lm-p63-nassp with the landing radar (no V57) and V60E
 # at 1,000 s: LRPOS2K commands the antenna to position 2 (RADMODES bit 6),
 # the antenna gets there 5 s later (FLIGHT_LR_POS2) with no alarm 523;
@@ -556,6 +561,17 @@ CM_P52_IMU_CAGE = {**P52, 'FLIGHT_CHAN': '4000:033=077757,6000:030=035377,6500:0
 # platform (channel 12 bit 6 with the CDU drives), and NO ATT lights with
 # GIMBAL LOCK.
 CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,19000:034=017200'}
+# The output models (flight_host_run.c gyro_due, optics_due), each on in
+# its own scenario so the others keep their inputs:
+# lm-p52-cage-torque: lm-p52-imu-cage with the platform model
+# (FLIGHT_GYRO): the large torquing angles after the cage (V50N25 00014)
+# turn the stable member by the pulses the gyro drive sends.
+LM_P52_TORQUE = {**LM_P52_IMU_CAGE, 'FLIGHT_GYRO': '1'}
+# cm-p52-optics: cm-p52 with the platform and optics models (FLIGHT_GYRO,
+# FLIGHT_OPTICS): R52 drives the sextant to each star (CDUT/CDUS follow
+# the 053/054 pulses), and the torquing at about 171.5 s turns the stable
+# member. The star loads still set the mark angles.
+CM_P52_OPTICS = {**P52, 'FLIGHT_GYRO': '1', 'FLIGHT_OPTICS': '1'}
 # cm-p52-coarse: P52 option 2 (nominal), the coarse align R50 runs (the
 # Comanche055 coverage map). cm-p52's load, the IMU model on (FLIGHT_IMU:
 # with channel 12 bits 4 and 6 set the CDUs go to THETAD); V37E52E,
@@ -765,6 +781,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
           ('lm-p63-lr-update', 'lm', 110000, LR_UPDATE_KEYS, LR_UPDATE),
           ('lm-p63-lr-v58', 'lm', 96000, LR_V58_KEYS, LR_UPDATE),
+          ('lm-p63-landing-displays', 'lm', 70000, LR_UPDATE_KEYS, LR_DISPLAYS),
           ('lm-p63-v60-nassp', 'lm', 115000, NASSP_KEYS + '@100000V60E', V60),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
           ('lm-uplink-accept', 'lm', 14000, '', UPLINK_ACCEPT_LM),
@@ -782,6 +799,8 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-v49-maneuver', 'cm', 15000, V49_KEYS, P40),
           ('cm-p21', 'cm', 25000, P21_KEYS, P52),
           ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
+          ('lm-p52-cage-torque', 'lm', 10000, LM_P52_KEYS, LM_P52_TORQUE),
+          ('cm-p52-optics', 'cm', 20000, P52_KEYS, CM_P52_OPTICS),
           ('cm-p41', 'cm', 53000, CM_P41_KEYS, CM_P41),
           ('cm-v48-dap', 'cm', 12000, CM_V48_KEYS, P40),
           ('cm-p40-sps-fail', 'cm', 37000, P40_SPS_FAIL_KEYS, P40_SPS_FAIL),
@@ -891,7 +910,8 @@ def _tmp(path):
 def frozen_engine(cc):
     """build/agc_engine_hardware_dv.c with AgcFrozenClock: when set, the
     scaler (and with it every counter timer and the cycles they take) and
-    the IMU CDU drive stop. Unset, the engine is unchanged."""
+    yaAGC's output drives (IMU CDU, optics, gyro) stop. Unset, the engine is
+    unchanged."""
     src = (ROOT / 'build/agc_engine_hardware_dv.c').read_text()
     loop = '  while (State->ScalerCounter >= SCALER_OVERFLOW)\n'
     assert src.count(loop) == 1
@@ -906,15 +926,17 @@ def frozen_engine(cc):
     # channel 14 bit 11 or 12 is set and zeroes them: those are the
     # sextant's CDU counters CDUS and CDUT, not the drive counters CDUSCMD
     # and CDUTCMD (054, 053), so after a coarse optics drive yaAGC loses
-    # the angles the crew marks on (CM P52). No C64 resident drives the
-    # optics: under the frozen clock it stops with the IMU drive.
+    # the angles the crew marks on (CM P52). Under the frozen clock it
+    # stops with the IMU drive; the C64 resident's drive and the host's
+    # optics model (flight_host_run.c drives, optics_due) run instead.
     optics = '  if (State->Erasable[0][RegOPT'
     assert src.count(optics) == 2
     src = src.replace(optics, '  if (!AgcFrozenClock && State->Erasable[0][RegOPT')
     # yaAGC's gyro drive takes GYROCMD (047) whole and zeroes it the
-    # instruction after channel 14 bit 10 comes on; no C64 resident drives
-    # the gyros (P52's torquing times itself on WAITLIST): under the frozen
-    # clock the drive stops too.
+    # instruction after channel 14 bit 10 comes on, where the hardware
+    # sends 3,200 pulses a second (P52's torquing times itself on WAITLIST
+    # by that rate): under the frozen clock it stops too, and the C64
+    # resident's drive (32 pulses a period, resident_cdu.h) runs instead.
     gyro = '  if (0 != (State->InputChannel[014] & 01000))\n    if (0 != State->Erasable[0][RegGYROCTR])'
     assert src.count(gyro) == 1
     src = src.replace(gyro, gyro.replace('if (0 != (', 'if (!AgcFrozenClock && 0 != (', 1))

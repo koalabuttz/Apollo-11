@@ -48,8 +48,22 @@ __attribute__((used, section(".rk_flight"))) flight_io rk_flight = {.undo =
 __attribute__((used, section(".rk_restart_lamp"))) uint8_t rk_restart_lamp;
 __attribute__((used, section(".rk_part"))) uint8_t rk_part[2];
 uint16_t rk_pending,rk_ticks;
+#if defined(RK_WORK_CLOCK) && !defined(RK_NO_DIRECT)
+/* The last direct run stopped at its routine limit, mid-chain in its module:
+ * the next step goes on in a loaded module first (rk_step_run), as the host
+ * charges a loaded pack's copy of a routine ahead of the resident's. An
+ * interrupt taken in between ends the chain. */
+static uint8_t rk_cut;
+#endif
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
+#endif
+#ifdef RK_HOLD_METER
+/* The interrupt hold meter (include/rupt_hold.h), on the work clock:
+ * rk_hold_base is the current step's start, in MCT. */
+#include "rupt_hold.h"
+rupt_hold rk_hold;
+static uint16_t rk_hold_base;
 #endif
 /* The step profile (platform/c64/dap_pass_check.c -DRK_STEP_PROFILE): the
  * check's rk_prof(n) charges the cycles since its last call to segment n. */
@@ -77,6 +91,17 @@ uint16_t rk_budget(void);
 /* The part group of the run rk_charge charges next (rk_direct sets it), 0
  * for any other run. */
 static uint8_t rk_charge_group;
+#ifndef RK_NO_DIRECT
+/* The routines rk_limit last allowed a direct run (platform/c64/rk_clock.S
+ * stores it), 0 for any other run: a run that used them all stopped mid-chain
+ * (rk_cut). */
+uint8_t rk_run_limit;
+/* The high byte of the step's fixed point, set by rk_direct (below). */
+static uint8_t rk_point_hi;
+#if RK_LM
+static uint8_t rk_point_lo; /* and its low byte, for an interrupt's lead-in */
+#endif
+#endif
 /* n units of mct each: n added mct times (no multiply on the 6502; mct
  * is a weight, at most 255, and 1 for a module that reports MCT), or for
  * the idle loop (RK_MCT_IDLE), the rest of the period, which rk_rupts
@@ -85,6 +110,17 @@ __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     uint16_t w=rk_work;
     /* rk_part_steps: a part going on with the routine the previous step's
      * part handed back is not charged its first routine again. */
+#ifndef RK_NO_DIRECT
+    if (rk_run_limit) {
+        if ((uint8_t)n >= rk_run_limit) rk_cut = 1; /* n is at most the limit */
+        rk_run_limit = 0;
+#if RK_LM
+        /* Only the run's first routine is the lead-in itself. */
+        if (rk_point_hi == 2048u >> 8 && rk_point_lo < 050u && mct > 9u && n)
+            w -= (uint8_t)(mct - 9u);
+#endif
+    }
+#endif
     if (rk_charge_group && rk_charge_group == rk_part_prev && n) --n;
     rk_charge_group = 0;
     if (mct == RK_MCT_IDLE) {
@@ -370,6 +406,14 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         /* A job's part hand-off (rk_part_cont, outside an interrupt) is inside
          * one host step, where the host takes no interrupt: requests wait
          * until the job's next part has run. */
+#ifdef RK_HOLD_METER
+        /* While idle, rk_work runs to the period's end; the boundary is at
+         * the step start (where a take resets rk_work to). */
+        rupt_hold_boundary(&rk_hold, (uint16_t)(rk_hold_base + (rk_idle ? 0u : rk_work)),
+                           rk_pending,
+                           (uint8_t)(rk_hardware.in_interrupt || !rk_device.interrupt_enabled ||
+                                     agc_overflow(IMAGE->words[0])));
+#endif
         got = rk_part_cont && !rk_hardware.in_interrupt
                   ? 0
                   : rk_rupt_take(&rk_program, IMAGE, rk_device.superbank,
@@ -384,11 +428,21 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
+#ifdef RK_HOLD_METER
+        rk_hold_base += RK_PHASE_MCT(p);
+        rupt_hold_raise(&rk_hold, rk_hold_base, rk_pending);
+#endif
 #ifdef RK_STEAL
         if (t == RK_PHASE_T5 && steal) rk_work += RK_STEAL;
 #endif
     }
+#ifndef RK_NO_DIRECT
+    if (got) rk_cut = 0;
+#endif
     if (got && rk_idle) rk_work = 0;
+#ifdef RK_HOLD_METER
+    if (got) rupt_hold_taken(&rk_hold, (uint16_t)(rk_hold_base + rk_work), IMAGE->words[025]);
+#endif
     rk_idle = 0;
 #ifdef RK_RUPT_TRACE
     /* The DAP pass check (platform/c64/dap_pass_check.c): which request
@@ -502,6 +556,9 @@ __attribute__((noinline)) uint8_t rk_gojam(void)
     rk_channels_merge();
 #endif
     rk_pending = 0;
+#if defined(RK_WORK_CLOCK) && !defined(RK_NO_DIRECT)
+    rk_cut = 0; /* the chain the restart ended goes on nowhere */
+#endif
     rk_restart_lamp = 1u;
     apollo_ov2_restart_keep_pinned(&rk_runtime);
     return 0u;
@@ -523,9 +580,9 @@ uint16_t rk_resolver_bank(agc_word fb, agc_word superbank, uint16_t loc) {
 #ifndef RK_NO_DIRECT
 /* The high byte of the step's fixed point (Z under FB), or 0xff when Z is
  * erasable (its point is AGC_TRANSFER_ERASABLE_BASE or above, which no fixed
- * point reaches), for rk_direct's range checks. Static: absolute addressing
- * is smaller than the soft stack. */
-static uint8_t rk_point_hi;
+ * point reaches), for rk_direct's range checks: rk_point_hi, defined above
+ * rk_charge, which also reads it. Static: absolute addressing is smaller than
+ * the soft stack. */
 #ifdef AGC_TRANSFER_FIND_ASM
 /* platform/c64/agc_find.S, the transfer engine's find (agc_transfer.c). */
 agc_routine agc_find(const agc_routine_table *tables, uint8_t count, uint16_t physical);
@@ -539,6 +596,9 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         point = agc_transfer_point(&rk_program, IMAGE, rk_device.superbank);
     rk_point_hi = (uint8_t)(point >> 8);
     if (rk_point_hi >= (uint8_t)(AGC_TRANSFER_ERASABLE_BASE >> 8)) rk_point_hi = 0xffu;
+#if defined(RK_WORK_CLOCK) && RK_LM
+    rk_point_lo = (uint8_t)point; /* rk_charge: an interrupt's lead-in */
+#endif
     /* The pinned module (slot class 3) first, then the job and task slots. */
     for(i=0;i<=APOLLO_OV2_SLOTS;++i) {
         const rk_module_tables *t=rk_pinned;
@@ -580,6 +640,13 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         if (t->idle && !rk_hardware.in_interrupt) mct = RK_MCT_IDLE;
 #endif
         uint16_t limit = rk_limit(mct);
+        /* A request is waiting (interrupts inhibited, or inside an
+         * interrupt): the host takes it at the first routine boundary it
+         * can, so the run goes one routine at a time (RELINT, RESUME).
+         * rk_run_limit keeps rk_limit's count, for rk_charge. */
+#if RK_LM /* the CM's windows match without it (cm-entry 17000 leaves with it) */
+        if (rk_pending && mct != RK_MCT_IDLE) limit = 1u;
+#endif
 #else
         const uint16_t limit=RK_MODULE_STEPS;
 #endif
@@ -623,6 +690,7 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
     }
 #ifdef RK_WORK_CLOCK
     rk_charge_group = 0; /* no slot ran: the resolver's charge is its own */
+    rk_run_limit = 0;
 #endif
     return EXEC_UNMAPPED;
 }
@@ -645,6 +713,13 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
 #ifndef RK_NO_DIRECT
     rk_point = AGC_TRANSFER_NONE;
 #endif
+#if defined(RK_WORK_CLOCK) && !defined(RK_NO_DIRECT)
+    if (rk_cut) {
+        rk_cut = 0;
+        status = rk_direct(stop_physical, AGC_TRANSFER_NONE);
+        if (status != EXEC_UNMAPPED) return status;
+    }
+#endif
     status=rk_trampoline(stop_physical);
     if(status!=EXEC_UNMAPPED) { RK_PROF(2); return status; }
     RK_PROF(3);
@@ -658,7 +733,13 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
         return EXEC_UNMAPPED;
     RK_PROF(8);
 #ifdef RK_WORK_CLOCK
-    rk_env.budget=rk_budget(); rk_env.work=0; rk_env.scale=1u;
+#if RK_LM
+    rk_env.budget = rk_pending ? 0u : rk_budget(); /* as rk_direct: one routine */
+#else
+    rk_env.budget = rk_budget();
+#endif
+    rk_env.work = 0;
+    rk_env.scale = 1u;
 #endif
     if(rk_run_module(at)!=APOLLO_OV2_OK) return EXEC_UNMAPPED;
 #ifdef RK_WORK_CLOCK

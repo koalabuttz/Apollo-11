@@ -38,7 +38,9 @@ BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[
 # rerun; a check that ran and reported wrong results fails the same way alone.
 RACE = re.compile(r'Text file busy|No such file or directory|File exists|Directory not empty|'
                   r'Resource temporarily unavailable|\[Errno|Killed|Segmentation fault|Bus error|'
-                  r'truncated|unexpected end of file|file format not recognized|file not found')
+                  r'truncated|unexpected end of file|file format not recognized|file not found|'
+                  # gcov: another make process rebuilt the .gcno under a running cover check
+                  r'stamp mismatch with notes file')
 
 
 def missing_build(output):
@@ -483,8 +485,9 @@ def shard_targets(targets, k, n, weights_path):
         loads[shard] += weights.get(target, default)
         if shard == k:
             mine.append(target)
-    order = {t: i for i, t in enumerate(targets)}
-    return sorted(mine, key=order.get)
+    # Longest first, so a long VICE run starts as soon as the shard does
+    # rather than after the short ones that happen to sort before it.
+    return mine
 
 
 def main():

@@ -9,6 +9,9 @@
  *                   moves the next key and the ones after it to CS or later
  *                   (V37E63E@9000R presses RSET at 90 s; P is RSET too,
  *                   as in the harness: PRO is no key code)
+ *                   ! before a key waits past its time for the verb and
+ *                   noun to flash (channel 11 bit 6), and moves the keys
+ *                   after it later by as long
  *   FLIGHT_CH30-33  input channels at start (octal)
  *   FLIGHT_POKE     CS:ADDR=VALUE,... erasable words (octal)
  *   FLIGHT_LOAD     CS:FILE,...: the same from files of octal "ADDR VALUE"
@@ -65,6 +68,8 @@ static int fs_at_idle_advan(const fd_state *st){const agc_word *w=st->s.words;
 enum { FS_KEYS = 1024, FS_POKES = 4096, FS_GOJAMS = 16, FS_CHANS = 64 };
 typedef struct {
     char keys[FS_KEYS + 1]; unsigned long key_at[FS_KEYS]; unsigned pressed;
+    uint8_t key_wait[FS_KEYS];
+    unsigned long key_late; /* ! keys (fs_inputs_due) */
     struct { unsigned long cs; uint16_t addr, value; } pokes[FS_POKES]; unsigned npokes, poked;
     unsigned long gojam_at[FS_GOJAMS]; unsigned ngojams, gojams;
     struct {
@@ -188,58 +193,126 @@ static int fs_parse_models(void)
 
 /* The keys argument and the environment above; 0 (with a message) on a bad
  * value. */
-static int fs_parse(fs_inputs *in,const char *keys){const char *t;unsigned long at=200ul;unsigned n=0,i,j;
- memset(in,0,sizeof *in);
- for(t=keys?keys:"";*t&&n<FS_KEYS;){
-  if(*t=='@'){char *e;unsigned long v=strtoul(t+1,&e,10);if(e==t+1){fprintf(stderr,"bad key time in %s\n",keys);return 0;}if(v>at)at=v;t=e;continue;}
-  in->keys[n]=*t++;in->key_at[n++]=at;at+=50ul;}
- /* As many keys as tools/flight_host_run.c takes (1024); never cut short. */
- for (; *t == '@';) {
-     char *e;
-     strtoul(t + 1, &e, 10);
-     if (e == t + 1) break;
-     t = e;
- }
- if (*t) {
-     fprintf(stderr, "more than %d keys\n", FS_KEYS);
-     return 0;
- }
- for(t=getenv("FLIGHT_POKE");t&&*t;){unsigned long cs;unsigned a,v;int k=0;
-  if(sscanf(t,"%lu:%o=%o%n",&cs,&a,&v,&k)<3||!k||!fs_poke(in,cs,a,v)){fprintf(stderr,"FLIGHT_POKE=CS:ADDR=VALUE,...\n");return 0;}
-  t+=k;if(*t==',')++t;}
- for(t=getenv("FLIGHT_LOAD");t&&*t;){unsigned long cs;char path[512],line[256];int k=0;FILE *f;
-  if(sscanf(t,"%lu:%511[^,]%n",&cs,path,&k)<2||!k){fprintf(stderr,"FLIGHT_LOAD=CS:FILE,...\n");return 0;}
-  t+=k;if(*t==',')++t;
-  if(!(f=fopen(path,"r"))){fprintf(stderr,"FLIGHT_LOAD: cannot open %s\n",path);return 0;}
-  while(fgets(line,sizeof line,f)){unsigned a,v;char *c=strchr(line,'#');if(c)*c=0;
-   if(sscanf(line,"%o %o",&a,&v)!=2)continue;
-   if(!fs_poke(in,cs,a,v)){fclose(f);fprintf(stderr,"FLIGHT_LOAD: bad address or too many words in %s\n",path);return 0;}}
-  fclose(f);}
- /* In time order, keeping each time's words in the order given. */
- for(i=1;i<in->npokes;++i)for(j=i;j>0&&in->pokes[j-1].cs>in->pokes[j].cs;--j){unsigned long c=in->pokes[j].cs;uint16_t a=in->pokes[j].addr,v=in->pokes[j].value;
-  in->pokes[j]=in->pokes[j-1];in->pokes[j-1].cs=c;in->pokes[j-1].addr=a;in->pokes[j-1].value=v;}
- for (t = getenv("FLIGHT_CHAN"); t && *t;) {
-     unsigned long cs;
-     unsigned c, v;
-     int k = 0;
-     if (sscanf(t, "%lu:%o=%o%n", &cs, &c, &v, &k) < 3 || !k || in->nchans >= FS_CHANS ||
-         (c != 016u && (c < 030u || c > 033u)) ||
-         (in->nchans && cs < in->chans[in->nchans - 1].cs)) {
-         fprintf(stderr, "FLIGHT_CHAN=CS:CH=VALUE,... (channel 16 or 30-33, in time order)\n");
-         return 0;
-     }
-     in->chans[in->nchans].cs = cs;
-     in->chans[in->nchans].ch = (uint16_t)c;
-     in->chans[in->nchans++].value = (uint16_t)(v & 077777u);
-     t += k;
-     if (*t == ',') ++t;
- }
- if (!fs_parse_models()) return 0;
- fs_lr = &in->lr;
- in->engine.dv = in->rcs.dv = fs_lr_dv;
- for(t=getenv("FLIGHT_GOJAM");t&&*t&&in->ngojams<FS_GOJAMS;){char *e;in->gojam_at[in->ngojams++]=strtoul(t,&e,10);
-  if(e==t){fprintf(stderr,"FLIGHT_GOJAM=CS[,CS...]\n");return 0;}t=*e==','?e+1:e;}
- return 1;}
+static int fs_parse(fs_inputs *in, const char *keys)
+{
+    const char *t;
+    unsigned long at = 200ul;
+    unsigned n = 0, i, j;
+    uint8_t wait = 0;
+    memset(in, 0, sizeof *in);
+    for (t = keys ? keys : ""; *t && n < FS_KEYS;) {
+        if (*t == '@') {
+            char *e;
+            unsigned long v = strtoul(t + 1, &e, 10);
+            if (e == t + 1) {
+                fprintf(stderr, "bad key time in %s\n", keys);
+                return 0;
+            }
+            if (v > at) at = v;
+            t = e;
+            continue;
+        }
+        if (*t == '!') {
+            wait = 1;
+            ++t;
+            continue;
+        }
+        in->key_wait[n] = wait;
+        wait = 0;
+        in->keys[n] = *t++;
+        in->key_at[n++] = at;
+        at += 50ul;
+    }
+    /* As many keys as tools/flight_host_run.c takes (1024); never cut short. */
+    for (; *t == '@';) {
+        char *e;
+        strtoul(t + 1, &e, 10);
+        if (e == t + 1) break;
+        t = e;
+    }
+    if (*t) {
+        fprintf(stderr, "more than %d keys\n", FS_KEYS);
+        return 0;
+    }
+    for (t = getenv("FLIGHT_POKE"); t && *t;) {
+        unsigned long cs;
+        unsigned a, v;
+        int k = 0;
+        if (sscanf(t, "%lu:%o=%o%n", &cs, &a, &v, &k) < 3 || !k || !fs_poke(in, cs, a, v)) {
+            fprintf(stderr, "FLIGHT_POKE=CS:ADDR=VALUE,...\n");
+            return 0;
+        }
+        t += k;
+        if (*t == ',') ++t;
+    }
+    for (t = getenv("FLIGHT_LOAD"); t && *t;) {
+        unsigned long cs;
+        char path[512], line[256];
+        int k = 0;
+        FILE *f;
+        if (sscanf(t, "%lu:%511[^,]%n", &cs, path, &k) < 2 || !k) {
+            fprintf(stderr, "FLIGHT_LOAD=CS:FILE,...\n");
+            return 0;
+        }
+        t += k;
+        if (*t == ',') ++t;
+        if (!(f = fopen(path, "r"))) {
+            fprintf(stderr, "FLIGHT_LOAD: cannot open %s\n", path);
+            return 0;
+        }
+        while (fgets(line, sizeof line, f)) {
+            unsigned a, v;
+            char *c = strchr(line, '#');
+            if (c) *c = 0;
+            if (sscanf(line, "%o %o", &a, &v) != 2) continue;
+            if (!fs_poke(in, cs, a, v)) {
+                fclose(f);
+                fprintf(stderr, "FLIGHT_LOAD: bad address or too many words in %s\n", path);
+                return 0;
+            }
+        }
+        fclose(f);
+    }
+    /* In time order, keeping each time's words in the order given. */
+    for (i = 1; i < in->npokes; ++i)
+        for (j = i; j > 0 && in->pokes[j - 1].cs > in->pokes[j].cs; --j) {
+            unsigned long c = in->pokes[j].cs;
+            uint16_t a = in->pokes[j].addr, v = in->pokes[j].value;
+            in->pokes[j] = in->pokes[j - 1];
+            in->pokes[j - 1].cs = c;
+            in->pokes[j - 1].addr = a;
+            in->pokes[j - 1].value = v;
+        }
+    for (t = getenv("FLIGHT_CHAN"); t && *t;) {
+        unsigned long cs;
+        unsigned c, v;
+        int k = 0;
+        if (sscanf(t, "%lu:%o=%o%n", &cs, &c, &v, &k) < 3 || !k || in->nchans >= FS_CHANS ||
+            (c != 016u && (c < 030u || c > 033u)) ||
+            (in->nchans && cs < in->chans[in->nchans - 1].cs)) {
+            fprintf(stderr, "FLIGHT_CHAN=CS:CH=VALUE,... (channel 16 or 30-33, in time order)\n");
+            return 0;
+        }
+        in->chans[in->nchans].cs = cs;
+        in->chans[in->nchans].ch = (uint16_t)c;
+        in->chans[in->nchans++].value = (uint16_t)(v & 077777u);
+        t += k;
+        if (*t == ',') ++t;
+    }
+    if (!fs_parse_models()) return 0;
+    fs_lr = &in->lr;
+    in->engine.dv = in->rcs.dv = fs_lr_dv;
+    for (t = getenv("FLIGHT_GOJAM"); t && *t && in->ngojams < FS_GOJAMS;) {
+        char *e;
+        in->gojam_at[in->ngojams++] = strtoul(t, &e, 10);
+        if (e == t) {
+            fprintf(stderr, "FLIGHT_GOJAM=CS[,CS...]\n");
+            return 0;
+        }
+        t = *e == ',' ? e + 1 : e;
+    }
+    return 1;
+}
 
 static agc_word fs_keycode(char c){return c=='V'?021u:c=='N'?037u:c=='E'?034u:c=='0'?020u:c=='+'?032u:c=='-'?033u:
  c=='C'?036u:c=='P'?022u:c=='K'?031u:c=='R'?022u:(agc_word)(c-'0');}
@@ -309,8 +382,13 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
         fd_gojam(st); /* as yaAGC's GOJAM and tools/flight_gojam.h */
         return FS_GOJAM;
     }
-    if (in->keys[in->pressed] && t >= in->key_at[in->pressed]) {
-        char c = in->keys[in->pressed++];
+    if (in->keys[in->pressed] && t >= in->key_at[in->pressed] + in->key_late &&
+        (!in->key_wait[in->pressed] || (st->hw.channel11 & 040u))) {
+        char c;
+        /* A ! key waited for the verb and noun to flash: the keys after it
+         * move later by as long (tools/flight_host_run.c). */
+        if (in->key_wait[in->pressed]) in->key_late = t - in->key_at[in->pressed];
+        c = in->keys[in->pressed++];
         agc_word mark = fs_markcode(c);
         if (mark) {
             st->io.channel16 = mark;
