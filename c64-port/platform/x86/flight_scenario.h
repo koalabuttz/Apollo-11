@@ -7,7 +7,8 @@
  *   KEYS            DSKY keys (and the mark buttons M, J, x, y, j), one
  *                   every half second from 2 s; @CS (decimal)
  *                   moves the next key and the ones after it to CS or later
- *                   (V37E63E@9000P presses PRO at 90 s)
+ *                   (V37E63E@9000R presses RSET at 90 s; P is RSET too,
+ *                   as in the harness: PRO is no key code)
  *   FLIGHT_CH30-33  input channels at start (octal)
  *   FLIGHT_POKE     CS:ADDR=VALUE,... erasable words (octal)
  *   FLIGHT_LOAD     CS:FILE,...: the same from files of octal "ADDR VALUE"
@@ -256,18 +257,6 @@ static agc_word fs_markcode(char c)
                       : 0u;
 }
 
-/* A hardware restart, as yaAGC's GOJAM and tools/flight_gojam.h do it:
- * Q = Z, Z = 04000, interrupts enabled and none in progress or pending,
- * HANDRUPT traps cleared, output channels 5, 6, 10-14, 34 and 35 zeroed,
- * channel 33 bit 11 set. The superbank and the rest of erasable stay. */
-static void fs_gojam(fd_state *st){agc_word *w=st->s.words;
- w[2]=w[5];w[5]=04000u;
- st->io.interrupt_enabled=1u;st->hw.in_interrupt=0u;st->pending=0u;
- st->io.trap31a=st->io.trap31b=st->io.trap32=0u;
- st->hw.channel5=st->hw.channel6=st->hw.channel10=st->hw.channel11=st->hw.channel12=st->hw.channel13=st->hw.channel14=0u;
- st->io.channel34=st->io.channel35=0u;
- st->hw.channel33|=02000u;}
-
 /* X86_START: the harness wrote its state after the start point's pokes,
  * channel changes, restart and key, so every input due at or before it
  * (cs) has happened already and is skipped here. */
@@ -317,7 +306,7 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
     }
     if (in->gojams < in->ngojams && t >= in->gojam_at[in->gojams]) {
         while (in->gojams < in->ngojams && t >= in->gojam_at[in->gojams]) ++in->gojams;
-        fs_gojam(st);
+        fd_gojam(st); /* as yaAGC's GOJAM and tools/flight_gojam.h */
         return FS_GOJAM;
     }
     if (in->keys[in->pressed] && t >= in->key_at[in->pressed]) {
@@ -327,8 +316,7 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
             st->io.channel16 = mark;
             st->pending |= RK_RUPT_BIT(RK_RUPT_KEY2);
         } else {
-            st->hw.channel15 = fs_keycode(c);
-            st->pending |= RK_RUPT_BIT(RK_RUPT_KEY1);
+            fd_key(st, fs_keycode(c));
         }
         return FS_KEY;
     }

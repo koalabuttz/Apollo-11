@@ -58,6 +58,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import flight_holes  # noqa: E402
+import device_offnominal as offnom  # noqa: E402  the Off-nominal inputs section (item 8)
 
 PROGRAM = {'lm': 'Luminary099', 'cm': 'Comanche055'}
 # include/resident_rupt.h: RK_RUPT_T6 = 1, T5, T3, T4, KEY1, KEY2, UP, DOWN, RADAR, HAND.
@@ -77,11 +78,14 @@ WINDOWS = {
            ('lm-p52-realign', 4200, 500, 100),              # AOT marks (channel 16, KEYRUPT2)
            ('lm-p57', 15950, 100, 25),                      # lunar-surface AOT mark
            ('lm-p63-lr-update', 61000, 50, 10),             # P63 descent: jets, landing displays
+           ('lm-rendezvous', 8000, 300, 50),                # P20: an RR read (RNRAD) and the RR CDUs
            ('lm-p52-cage-torque', 8600, 100, 25)],          # gyro torquing (GYROCMD drains, CDUY follows)
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6
            ('cm-p40', 70660, 100, 50),                      # SPS burn
+           ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
+           ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
            ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
            ('cm-p52-optics', 17100, 100, 25)],              # gyro torquing: CDUX-Z follow
 }
@@ -464,10 +468,11 @@ def host_rows(m, summary, env, commit):
             continue
         un = r.get('unregistered')
         un = len(un) if isinstance(un, list) else (un or 0)
+        charge, text = fhd.charge_state(r)
         detail = (f"{r.get('native_routines')} native routines, {len(r['routine_mismatches'])} did not match yaAGC, "
-                  f'{un} unregistered or refused points (yaAGC ran them)')
+                  f'{un} unregistered or refused points (yaAGC ran them)' + (f'; {text}' if charge else ''))
         state = ('STALE' if r.get('commit') != commit else
-                 'clean' if r['exit'] == 0 and not r['routine_mismatches'] else 'NOT CLEAN')
+                 'clean' if r['exit'] == 0 and not r['routine_mismatches'] and charge != 'over' else 'NOT CLEAN')
         rows.append((name, state, detail + (f", from {r.get('commit')}" if state == 'STALE' else '')))
     return rows
 
@@ -551,7 +556,7 @@ def assess(m, table, runs, host, commit):
     return out, bad
 
 
-def write_doc(m, assessed, bad, runs, host_cite, store, commit):
+def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
     p = PROGRAM[m]
     store_line = (f"The C64 windows run the store `flight-store/{m}.reu` (sha256 `{store}`), each with its own "
                   'resident PRG linked by tools/flight_scenario_vice.py.' if store else
@@ -617,7 +622,7 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit):
               'GAP = no matching window, or a blocking open item (a model that does not run).', '']
     if bad:
         lines += ['## Failures', ''] + [f'- {b}' for b in bad] + ['']
-    lines += ['## Roles', ''] + detail
+    lines += ['## Roles', ''] + detail + list(off_lines)
     lines += ['## Runs', '', 'A window that differs is not a device failure by itself: each difference is triaged on the '
               'shared replay mismatch list (clock and charge classes, DAP-rate words), and only the device or channel '
               'class is this doc\'s. A role counts as covered only through windows that match.', '',
@@ -698,12 +703,12 @@ def main(argv=None):
         out = ROOT / 'build' / f'{eid}-runs'
         shutil.rmtree(out, ignore_errors=True)
         out.mkdir(parents=True)
-        a.run = [str(run_window(*w, out)) for w in WINDOWS[m]]
+        a.run = [str(run_window(*w, out)) for w in WINDOWS[m] + offnom.windows(m)]
     host = [r for r in json.loads(pathlib.Path(a.host).read_text()) if r.get('mission') == m]
     copy = dest / 'host-summary.json'
     copy.write_text(json.dumps(host, indent=1) + '\n')
     host_cite = stored(copy)
-    asked = {(s, snap): cs for s, snap, cs, _ in WINDOWS[m]}
+    asked = {(s, snap): cs for s, snap, cs, _ in WINDOWS[m] + offnom.windows(m)}
     bad, runs = [], []
     for path in a.run:
         r = json.loads(pathlib.Path(path).read_text())
@@ -716,13 +721,18 @@ def main(argv=None):
         r['_env'] = env_of(r['scenario'])
         r['_why'] = not_matched(r, asked.get((r['scenario'], r.get('snap_cs'))), commit)
         runs.append(r)
+    off = offnom.check(m, dest)
+    for res in off:
+        res['host']['evidence'] = stored(res['host']['log'])
     shutil.rmtree(ROOT / 'evidence' / eid, ignore_errors=True)  # this generator's alone: no stale runs
     # evidence/<id>/ is flat, with its SHA256.json (tools/ci_guard.py).
     subprocess.run([sys.executable, 'tools/evidence.py', 'add', eid, *map(str, copies), '--tree'], cwd=ROOT, check=True)
     assessed, failed = assess(m, roles(m), runs, host, commit)
     bad += failed
+    off_lines, off_bad = offnom.section(off, runs, first_diff)
+    bad += off_bad
     store = ROOT / f'build/flight-store/{m}.reu'
-    path = write_doc(m, assessed, bad, runs, host_cite, sha(store) if store.exists() else None, commit)
+    path = write_doc(m, assessed, bad, runs, host_cite, sha(store) if store.exists() else None, commit, off_lines)
     print(f"{path.relative_to(ROOT)}: {'PASS' if not bad else 'FAIL'} (sha256 {sha(path)})")
     for b in bad:
         print(f'FAIL: {b}')

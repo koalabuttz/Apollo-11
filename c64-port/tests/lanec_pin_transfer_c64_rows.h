@@ -4,21 +4,20 @@
  * tools/lanec/c64_diag.c. Do not edit. */
 #ifdef LANEC_PIN_C64_MOD_pin_gaps_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1232u, 0xeba0beadu},
-    {1240u, 0x5e3019b7u},
-    {1244u, 0x7d7fc342u},
-    {1410u, 0x083d8c8bu},
-    {1505u, 0x3a60a290u},
-    {1507u, 0xf04158edu},
-    {1524u, 0x7952fb5cu},
-    {1540u, 0x4c5550f3u},
-    {1541u, 0x20a055d8u},
-    {1554u, 0xd94913fau},
-    {1568u, 0xabaf2718u},
-    {1569u, 0x04000db0u},
-    {2028u, 0xda7c4ceeu},
-    {2200u, 0x885fe899u},
-    {2208u, 0x89ffef34u},
+    {1244u, 0xeba0beadu},
+    {1252u, 0x5e3019b7u},
+    {1256u, 0x7d7fc342u},
+    {1520u, 0xcd228589u},
+    {1529u, 0x3a60a290u},
+    {1531u, 0xf04158edu},
+    {1548u, 0x7952fb5cu},
+    {1564u, 0x4c5550f3u},
+    {1565u, 0x20a055d8u},
+    {1592u, 0xabaf2718u},
+    {1593u, 0x04000db0u},
+    {2052u, 0xda7c4ceeu},
+    {2224u, 0x885fe899u},
+    {2232u, 0x89ffef34u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_gaps_lm
@@ -28,69 +27,74 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {96u, 0xf80480e8u},
     {260u, 0x482fd2ceu},
     {264u, 0x685de490u},
-    {360u, 0xdac30156u},
-    {364u, 0x787616c2u},
-    {376u, 0x97d0b191u},
-    {377u, 0x5444ec4au},
-    {380u, 0x608f57d9u},
-    {384u, 0x94e118a0u},
-    {390u, 0xbecfd543u},
-    {400u, 0x937de489u},
-    {423u, 0xfa727bccu},
-    {516u, 0x6bf21516u},
-    {520u, 0x4c95205eu},
-    {600u, 0x7ff5e59cu},
-    {604u, 0x17c0107fu},
-    {880u, 0x9ffc9057u},
-    {952u, 0x83b7915au},
+    {268u, 0x56d4d177u},
+    {352u, 0x627f13f1u},
+    {353u, 0x028c0251u},
+    {355u, 0xcc0ed21fu},
+    {356u, 0xdd66380du},
+    {372u, 0xdac30156u},
+    {376u, 0x787616c2u},
+    {389u, 0x5444ec4au},
+    {392u, 0x608f57d9u},
+    {396u, 0x94e118a0u},
+    {402u, 0xbecfd543u},
+    {412u, 0x937de489u},
+    {416u, 0xa83268b6u},
+    {435u, 0xfa727bccu},
+    {528u, 0x6bf21516u},
+    {532u, 0x4c95205eu},
+    {612u, 0x7ff5e59cu},
+    {616u, 0x17c0107fu},
+    {892u, 0x9ffc9057u},
+    {964u, 0x83b7915au},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_decount_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {680u, 0x00eef5adu},
-    {683u, 0x4ec67cdfu},
+    {692u, 0x00eef5adu},
+    {695u, 0x4ec67cdfu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_dpout_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1368u, 0x3f4a6164u},
+    {1380u, 0x3f4a6164u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_lamp_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2192u, 0x99e1234fu},
+    {2216u, 0x99e1234fu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_lamp_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1045u, 0xb83d4fe1u},
-    {1046u, 0xdf5e16c5u},
-    {1053u, 0x1ef2378du},
+    {1057u, 0xb83d4fe1u},
+    {1058u, 0xdf5e16c5u},
+    {1065u, 0x1ef2378du},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_load_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1976u, 0x4e416597u},
+    {2000u, 0x4e416597u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_load_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {685u, 0xbaf19681u},
-    {698u, 0x384c4670u},
-    {753u, 0x573dcbf1u},
-    {814u, 0x88b28aa5u},
-    {829u, 0x01a0f4adu},
+    {697u, 0xbaf19681u},
+    {710u, 0x384c4670u},
+    {765u, 0x573dcbf1u},
+    {826u, 0x88b28aa5u},
+    {841u, 0x01a0f4adu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_minsec_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1100u, 0x6ae5381fu},
+    {1112u, 0x6ae5381fu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_nvsub_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1168u, 0xb43ad44au},
-    {1175u, 0x552586b9u},
+    {1180u, 0xb43ad44au},
+    {1187u, 0x552586b9u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_nvsub_lm
@@ -100,40 +104,40 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_proceed_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1606u, 0x4c336950u},
+    {1630u, 0x4c336950u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_proceed_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {463u, 0xd118adb2u},
-    {490u, 0xb6d4867bu},
+    {475u, 0xd118adb2u},
+    {502u, 0xb6d4867bu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_release_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1264u, 0x3b0f9b9du},
-    {1266u, 0x9171c699u},
-    {1600u, 0x988e16aau},
+    {1278u, 0x1339d55bu},
+    {1624u, 0x988e16aau},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_release_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {119u, 0x4203c0a8u},
-    {444u, 0xa99deea7u},
+    {116u, 0xadbd8bdcu},
+    {117u, 0xe92b430fu},
+    {456u, 0xa99deea7u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_request_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2120u, 0x987f619eu},
-    {2121u, 0x3f1b12edu},
+    {2144u, 0x987f619eu},
+    {2145u, 0x3f1b12edu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_request_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {973u, 0x8598771eu},
-    {975u, 0x5fc41140u},
-    {996u, 0x9cf36014u},
-    {997u, 0xf8b4d8fau},
+    {985u, 0x8598771eu},
+    {987u, 0x5fc41140u},
+    {1008u, 0x9cf36014u},
+    {1009u, 0xf8b4d8fau},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_head_twoint_lm
@@ -143,40 +147,40 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_key_labels_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1280u, 0x2464809fu},
-    {1285u, 0xe54a1453u},
-    {1290u, 0xaf5156ceu},
-    {1291u, 0x19dbf47fu},
-    {1301u, 0x5ecd3016u},
-    {1322u, 0xd86c2238u},
-    {1323u, 0xe67720b7u},
-    {1580u, 0x87cef08cu},
-    {1616u, 0xa7174ab6u},
-    {1663u, 0x8e4f3c96u},
+    {1292u, 0x2464809fu},
+    {1299u, 0x5fdd2121u},
+    {1312u, 0x55f2069du},
+    {1334u, 0xd86c2238u},
+    {1335u, 0xe67720b7u},
+    {1640u, 0xa7174ab6u},
+    {1687u, 0x8e4f3c96u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_key_labels_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {133u, 0x1192b160u},
     {136u, 0x62c701eau},
+    {137u, 0xe27ca98eu},
+    {139u, 0x47451f7fu},
     {142u, 0xdf2b00e8u},
-    {146u, 0x9ee39229u},
+    {147u, 0x41a5f700u},
     {148u, 0x98e108d1u},
-    {149u, 0xdec07facu},
     {157u, 0xfe66800bu},
     {172u, 0xd58b866eu},
     {173u, 0xa4a9bf48u},
     {174u, 0x829e0b89u},
-    {468u, 0x449b527eu},
-    {470u, 0x8b05080eu},
-    {512u, 0x125a31c7u},
-    {514u, 0xaedcd660u},
+    {445u, 0x0f9cb52bu},
+    {446u, 0xd145e585u},
+    {480u, 0x449b527eu},
+    {482u, 0x8b05080eu},
+    {524u, 0x125a31c7u},
+    {526u, 0xaedcd660u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_keys_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1278u, 0x6a9c12e8u},
-    {1279u, 0x7cf45eacu},
+    {1290u, 0x6a9c12e8u},
+    {1291u, 0x7cf45eacu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pin_keys_lm
@@ -187,27 +191,28 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_address_request_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1685u, 0x867b72aeu},
-    {1688u, 0x4a648244u},
-    {1689u, 0xe22fb53bu},
-    {1690u, 0xedfdcf62u},
-    {1691u, 0x749fa78cu},
-    {1727u, 0x46d1833bu},
-    {1729u, 0xee24cf52u},
+    {1709u, 0x867b72aeu},
+    {1712u, 0x4a648244u},
+    {1713u, 0xe22fb53bu},
+    {1714u, 0xedfdcf62u},
+    {1715u, 0x749fa78cu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_address_request_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {536u, 0xd07f8a52u},
-    {543u, 0x370eeb38u},
-    {545u, 0xb515e6dbu},
-    {568u, 0x92b093b4u},
-    {573u, 0x177df66cu},
+    {548u, 0xd07f8a52u},
+    {552u, 0x7b3c00e1u},
+    {557u, 0xb515e6dbu},
+    {559u, 0x37f9eb4eu},
+    {580u, 0x92b093b4u},
+    {585u, 0x177df66cu},
+    {588u, 0xabeab55eu},
+    {593u, 0x7e29feacu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_alarm_cycle_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1164u, 0xa6994c61u},
+    {1176u, 0xa6994c61u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_alarm_cycle_lm
@@ -217,86 +222,80 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_blank_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1628u, 0xc2859338u},
+    {1652u, 0xc2859338u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_blank_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {480u, 0x6ac2caadu},
+    {492u, 0x6ac2caadu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_blanksub_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1206u, 0x9b8f178cu},
+    {1217u, 0x988ba61eu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_blanksub_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {56u, 0xf72517cdu},
-    {57u, 0xc7929ca2u},
-    {58u, 0xb6c48825u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_cm_decimal_pair_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1520u, 0x81911a1eu},
-    {1521u, 0xedf3db79u},
+    {1544u, 0x81911a1eu},
+    {1545u, 0xedf3db79u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_cm_formatter_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1500u, 0xc917a2efu},
-    {1517u, 0xfd361225u},
-    {1546u, 0x6c541681u},
+    {1524u, 0xc917a2efu},
+    {1541u, 0xfd361225u},
+    {1570u, 0x6c541681u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_cm_pinball_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1340u, 0x243f4e9bu},
-    {1556u, 0x770d8798u},
-    {1561u, 0x432ac73fu},
+    {1352u, 0x243f4e9bu},
+    {1580u, 0x770d8798u},
+    {1585u, 0x432ac73fu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_general_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {353u, 0xd46077e8u},
-    {355u, 0x4103ededu},
-    {368u, 0x27f74585u},
-    {369u, 0x814d0327u},
-    {370u, 0xf6664b03u},
-    {371u, 0xef299408u},
-};
-#endif
-#ifdef LANEC_PIN_C64_MOD_pw_decimal_load_cm
-static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1816u, 0xfcebebdfu},
+    {365u, 0xd46077e8u},
+    {367u, 0x4103ededu},
+    {380u, 0x27f74585u},
+    {381u, 0x814d0327u},
+    {382u, 0xf6664b03u},
+    {383u, 0xef299408u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_load_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {669u, 0x7b1f3e55u},
+    {680u, 0x85f182adu},
+    {681u, 0x760c57bau},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_row_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {676u, 0x42252538u},
-    {677u, 0xe265adedu},
+    {688u, 0x42252538u},
+    {689u, 0xe265adedu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_select_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1820u, 0x0edd16f1u},
+    {1844u, 0x0edd16f1u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_decimal_select_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {672u, 0x78a1ca81u},
-    {674u, 0x59a5ac46u},
+    {684u, 0x78a1ca81u},
+    {686u, 0x59a5ac46u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_display_release_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1260u, 0x8ec1d9bdu},
+    {1272u, 0x8ec1d9bdu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_display_release_lm
@@ -307,35 +306,35 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_enter_zero_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1679u, 0xdbd3cb56u},
+    {1703u, 0xdbd3cb56u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_enter_zero_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {529u, 0x5b7cf238u},
-    {530u, 0x241fad73u},
+    {541u, 0x5b7cf238u},
+    {542u, 0x241fad73u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_extended_dispatch_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1708u, 0x3d46ec5du},
-    {1709u, 0x224dc2dfu},
-    {1710u, 0xa946b5a9u},
-    {1711u, 0xad0b0211u},
+    {1732u, 0x3d46ec5du},
+    {1733u, 0x224dc2dfu},
+    {1734u, 0xa946b5a9u},
+    {1735u, 0x46d3e52fu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_extended_dispatch_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {560u, 0xb1853073u},
-    {561u, 0xa7472b08u},
-    {562u, 0x150030c9u},
-    {563u, 0x0229470du},
+    {572u, 0xb1853073u},
+    {573u, 0xa7472b08u},
+    {574u, 0x150030c9u},
+    {575u, 0x0229470du},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_five_blank_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1324u, 0x082d947du},
-    {1328u, 0xf53a883du},
+    {1336u, 0x082d947du},
+    {1340u, 0xf53a883du},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_five_blank_lm
@@ -347,45 +346,45 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_fixed_display_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2092u, 0x6eed0a60u},
-    {2093u, 0xacfa00a8u},
-    {2094u, 0xa29a95a8u},
-    {2095u, 0x17dca5ecu},
+    {2116u, 0x6eed0a60u},
+    {2117u, 0xacfa00a8u},
+    {2118u, 0xa29a95a8u},
+    {2119u, 0x17dca5ecu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_fixed_display_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {940u, 0x8af470cfu},
-    {944u, 0x49f95ea6u},
-    {945u, 0xf0ad05c4u},
-    {946u, 0x352d2870u},
-    {947u, 0x21995c7du},
+    {952u, 0x8af470cfu},
+    {956u, 0x49f95ea6u},
+    {957u, 0xf0ad05c4u},
+    {958u, 0x352d2870u},
+    {959u, 0x21995c7du},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_fraction_pair_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {372u, 0x1c12fce4u},
-    {373u, 0xd5d2428fu},
-    {374u, 0x26ef249bu},
+    {384u, 0x1c12fce4u},
+    {385u, 0xc3ff73abu},
+    {386u, 0x26ef249bu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_hours_output_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2220u, 0xcce30f10u},
+    {2251u, 0x4b320982u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_hours_output_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1068u, 0x37a56121u},
-    {1069u, 0x8a332cadu},
+    {1080u, 0x37a56121u},
+    {1084u, 0x44e049b2u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_angle_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1412u, 0xe64cc187u},
-    {1448u, 0xeb8b7580u},
-    {1449u, 0xf0f28d0bu},
-    {1452u, 0x32000a9du},
+    {1424u, 0xe64cc187u},
+    {1460u, 0xeb8b7580u},
+    {1461u, 0xf0f28d0bu},
+    {1464u, 0x32000a9du},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_angle_lm
@@ -401,63 +400,65 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_arithmetic_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1236u, 0x404e3a6fu},
-    {1496u, 0x3985ca21u},
+    {1248u, 0x404e3a6fu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_arithmetic_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {328u, 0x422ec9b5u},
-    {335u, 0xbf1a6905u},
+    {332u, 0xbac33606u},
     {344u, 0xda5b43b2u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_factor_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2032u, 0x64c22648u},
+    {2056u, 0x64c22648u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_factor_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {884u, 0xba39bd01u},
-    {888u, 0xf60dff1bu},
-    {892u, 0x164ea03au},
+    {896u, 0xba39bd01u},
+    {900u, 0xf60dff1bu},
+    {904u, 0x164ea03au},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_mode_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1981u, 0xfe8bd3eau},
-    {2299u, 0x288a6c5cu},
+    {2005u, 0xfe8bd3eau},
+    {2323u, 0x288a6c5cu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_mode_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {833u, 0x0cbcb28fu},
-    {1144u, 0x8266d32au},
+    {845u, 0x0cbcb28fu},
+    {1155u, 0xaa8499ceu},
+    {1156u, 0x8266d32au},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_scale_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1437u, 0x01c01b8au},
-    {1441u, 0x801bc1ffu},
-    {1470u, 0x7e4464abu},
-    {1472u, 0x4359243cu},
+    {1449u, 0x01c01b8au},
+    {1450u, 0x52a4736du},
+    {1480u, 0x34c83cdbu},
+    {1486u, 0x4db3290eu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_scale_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {297u, 0x82a51d29u},
-    {298u, 0x3ce020d4u},
-    {306u, 0xcfbf5163u},
+    {297u, 0xb764bac0u},
+    {299u, 0xec92714au},
+    {300u, 0x10a607b2u},
+    {305u, 0x01195c6du},
+    {306u, 0x4d9c7b79u},
     {310u, 0xff8e5db0u},
     {316u, 0xab7dee7bu},
-    {323u, 0xd4c53e1eu},
+    {320u, 0x3a763e5cu},
     {324u, 0xf03fd9e7u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_select_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2001u, 0x29b7e27du},
+    {2025u, 0x916e09f5u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_select_lm
@@ -465,52 +466,52 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {60u, 0x8a8efb30u},
     {64u, 0x5eaef522u},
     {68u, 0xd8c6c031u},
-    {836u, 0x94ca9ee0u},
-    {844u, 0x482823bfu},
-    {848u, 0x513b747bu},
-    {852u, 0x3a9d63bbu},
-    {853u, 0xa5e53d5du},
-    {856u, 0x1a7b515eu},
-    {860u, 0x0e01a9b6u},
+    {848u, 0x94ca9ee0u},
+    {856u, 0x482823bfu},
+    {860u, 0x513b747bu},
+    {864u, 0x3a9d63bbu},
+    {865u, 0xa5e53d5du},
+    {868u, 0x1a7b515eu},
+    {872u, 0x0e01a9b6u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_store_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2013u, 0x19559442u},
-    {2015u, 0x5f7fc62du},
-    {2023u, 0x84a1783fu},
+    {2037u, 0x0397e140u},
+    {2039u, 0x902b9b2au},
+    {2046u, 0xb0bbba84u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_store_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {864u, 0xaeb30a5fu},
-    {867u, 0x2698861eu},
-    {868u, 0xacbd5c04u},
-    {876u, 0xec3f6ba1u},
+    {877u, 0xb2b67eb6u},
+    {879u, 0x2698861eu},
+    {882u, 0x81b87921u},
+    {887u, 0xc50e74ebu},
+    {888u, 0xec3f6ba1u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_time_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2277u, 0x7d8df641u},
-    {2278u, 0xad1eabacu},
-    {2280u, 0xacd6bc82u},
-    {2288u, 0xe08772d7u},
+    {2303u, 0x9141d4fau},
+    {2304u, 0xacd6bc82u},
+    {2312u, 0xe08772d7u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_input_time_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1124u, 0xd6655885u},
-    {1126u, 0x5b8865b3u},
-    {1127u, 0x9499dc6cu},
-    {1132u, 0x80d5e841u},
-    {1139u, 0x43bf6fceu},
+    {1136u, 0xd6655885u},
+    {1138u, 0x5b8865b3u},
+    {1139u, 0x9499dc6cu},
+    {1145u, 0xff168fceu},
+    {1151u, 0x43bf6fceu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_jam_control_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1196u, 0x4033c3ecu},
-    {1200u, 0x2bba09b9u},
-    {1201u, 0x2f3cd3c5u},
+    {1208u, 0x4033c3ecu},
+    {1212u, 0x2bba09b9u},
+    {1213u, 0x2f3cd3c5u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_jam_control_lm
@@ -522,23 +523,23 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_release_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1622u, 0x32c81c24u},
+    {1646u, 0x32c81c24u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_release_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {472u, 0x361af039u},
-    {473u, 0xae54eb60u},
+    {484u, 0x361af039u},
+    {485u, 0xae54eb60u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_test_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2216u, 0xfe711500u},
+    {2240u, 0xfe711500u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lamp_test_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1064u, 0x67e21083u},
+    {1076u, 0x67e21083u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_lm_pinball_busy_lm
@@ -550,67 +551,68 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_store_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1867u, 0x07d5fe5fu},
-    {1916u, 0x60757dfdu},
-    {1970u, 0x6b8ce307u},
+    {1891u, 0x07d5fe5fu},
+    {1972u, 0x13b9a54au},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_load_store_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {719u, 0xcb81fa0cu},
-    {720u, 0x12c54869u},
-    {724u, 0x1595bdb3u},
-    {728u, 0x8ee69196u},
-    {729u, 0x42fb4c94u},
-    {732u, 0x0c8449d5u},
-    {736u, 0xc46d5940u},
-    {772u, 0x7c54e1e0u},
-    {776u, 0x1e037131u},
-    {788u, 0x3f840aceu},
-    {800u, 0x43afbaeau},
-    {804u, 0x4bf2571eu},
-    {816u, 0xda4888a4u},
+    {731u, 0xcb81fa0cu},
+    {735u, 0x165a3378u},
+    {736u, 0x1595bdb3u},
+    {740u, 0x8ee69196u},
+    {741u, 0x42fb4c94u},
+    {744u, 0x0c8449d5u},
+    {747u, 0x1ba57a84u},
+    {749u, 0x1af60962u},
+    {780u, 0xb8f5fd14u},
+    {784u, 0x7c54e1e0u},
+    {788u, 0x1e037131u},
+    {800u, 0x3f840aceu},
+    {816u, 0x4bf2571eu},
+    {828u, 0xda4888a4u},
+    {832u, 0xf2a8f7ecu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_machine_cadr_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1700u, 0x1061e33cu},
+    {1724u, 0x1061e33cu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_machine_cadr_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {548u, 0x19b71f30u},
+    {560u, 0x19b71f30u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_major_request_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2108u, 0x390196c1u},
-    {2112u, 0xf1869fb0u},
-    {2116u, 0xc9ef56b9u},
+    {2132u, 0x390196c1u},
+    {2136u, 0xf1869fb0u},
+    {2140u, 0xc9ef56b9u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_major_request_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {960u, 0x3775d71fu},
-    {961u, 0x3dd488a6u},
-    {964u, 0x7913db7au},
-    {966u, 0xf5b785c1u},
-    {970u, 0x8e55a9feu},
+    {972u, 0x3775d71fu},
+    {973u, 0x3dd488a6u},
+    {976u, 0x7913db7au},
+    {978u, 0xf5b785c1u},
+    {982u, 0x8e55a9feu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mixed_noun_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1714u, 0x25280055u},
+    {1738u, 0x25280055u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mixed_noun_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {564u, 0x95abed8du},
+    {576u, 0x95abed8du},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mode_admit_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1269u, 0x82c927fau},
+    {1281u, 0x82c927fau},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mode_admit_lm
@@ -620,61 +622,59 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mode_job_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1632u, 0x719bbfefu},
-    {1633u, 0x5dfe1d5cu},
+    {1656u, 0x719bbfefu},
+    {1657u, 0x5dfe1d5cu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_mode_job_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {484u, 0xe82f8e6au},
-    {485u, 0x17d4dacdu},
+    {496u, 0xe82f8e6au},
+    {497u, 0x17d4dacdu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_monitor_paste_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1148u, 0xa4570618u},
-    {1153u, 0x96fd93afu},
+    {1164u, 0x0cf63740u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_monitor_paste_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {0u, 0xf8d11b4bu},
-    {8u, 0x4aa9a5b9u},
+    {3u, 0xba1dfe8bu},
+    {4u, 0x2fe08ae8u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_noun_check_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1795u, 0x1c7ce286u},
-    {1801u, 0x3efb9190u},
+    {1819u, 0xfb959513u},
+    {1825u, 0x3efb9190u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_noun_check_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {636u, 0x49f3b5c3u},
-    {640u, 0xc2718755u},
-    {645u, 0x7d233927u},
-    {648u, 0xb6be9a3au},
-    {653u, 0xfea6edb7u},
-    {664u, 0x1b74a323u},
+    {648u, 0x49f3b5c3u},
+    {652u, 0xc2718755u},
+    {657u, 0x7d233927u},
+    {660u, 0x62babf57u},
+    {676u, 0x1b74a323u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_admission_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1008u, 0x76bfa973u},
-    {1010u, 0x4e2a852eu},
-    {1021u, 0x7ddd6b80u},
+    {1020u, 0x76bfa973u},
+    {1022u, 0x4e2a852eu},
+    {1033u, 0x7ddd6b80u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_blank_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1004u, 0x4a3cd0c0u},
+    {1016u, 0x4a3cd0c0u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_busy_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1192u, 0xdd6c459bu},
-    {1252u, 0xb831e9bdu},
-    {1272u, 0x6a7e8ae1u},
+    {1204u, 0xdd6c459bu},
+    {1264u, 0xb831e9bdu},
+    {1284u, 0x6a7e8ae1u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_busy_lm
@@ -689,12 +689,12 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #ifdef LANEC_PIN_C64_MOD_pw_nv_continuation_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {28u, 0x6d612a78u},
-    {1036u, 0x412a0208u},
+    {1048u, 0x412a0208u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_return_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1184u, 0xed03dc14u},
+    {1196u, 0xed03dc14u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_return_lm
@@ -704,120 +704,122 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_nv_update_general_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {584u, 0x24f7e3e9u},
-    {588u, 0x01ce0ceeu},
-    {592u, 0xfff8887au},
-    {596u, 0x1ff4d07eu},
+    {596u, 0x24f7e3e9u},
+    {600u, 0x01ce0ceeu},
+    {604u, 0xfff8887au},
+    {608u, 0x1ff4d07eu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_consumer_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1771u, 0x1e2f686eu},
-    {1773u, 0x077cdb31u},
+    {1793u, 0xd789ff72u},
+    {1795u, 0x74ed3b39u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_consumer_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {613u, 0xbb35053fu},
-    {620u, 0xcb7a8663u},
-    {623u, 0xd556538cu},
-    {628u, 0x92919061u},
+    {626u, 0x3fbaf0cbu},
+    {627u, 0x12b755b1u},
+    {630u, 0xe058c9b4u},
+    {632u, 0xcb7a8663u},
+    {633u, 0xd118fb24u},
+    {637u, 0xdcf833c8u},
+    {640u, 0x92919061u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_display_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2098u, 0x068dd5c7u},
+    {2122u, 0x068dd5c7u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_display_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {948u, 0x8c5db0c9u},
-    {957u, 0x3a763311u},
+    {960u, 0x8c5db0c9u},
+    {969u, 0x3a763311u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_octal_verb_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {632u, 0x50b9f31fu},
-    {660u, 0xf21f4a69u},
-    {661u, 0x7ef119feu},
+    {644u, 0x50b9f31fu},
+    {673u, 0x60cfd6bcu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_release_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1624u, 0xecb51424u},
-    {1626u, 0x1f69f17bu},
+    {1648u, 0xecb51424u},
+    {1650u, 0x1f69f17bu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_release_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {477u, 0x1078d12eu},
-    {479u, 0xaaeba5b1u},
+    {489u, 0x1078d12eu},
+    {491u, 0xaaeba5b1u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_response_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1588u, 0x10c6be5au},
-    {1589u, 0xec2e1be0u},
+    {1612u, 0x10c6be5au},
+    {1613u, 0xec2e1be0u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_operator_response_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {443u, 0x76bdb088u},
+    {455u, 0x76bdb088u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_pinball_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {192u, 0x063a6bb7u},
-    {408u, 0x0d6a685fu},
-    {412u, 0xfc9433feu},
+    {192u, 0x4e4c655bu},
+    {420u, 0x0d6a685fu},
+    {424u, 0xfc9433feu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_read_pair_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1396u, 0x9bd60fe3u},
-    {1399u, 0xe6bfb07cu},
+    {1408u, 0x9bd60fe3u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_read_pair_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {256u, 0x658ac8c3u},
+    {259u, 0x7fb99414u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_request_control_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {2148u, 0xd6ad7c89u},
+    {2172u, 0xd6ad7c89u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_request_control_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {976u, 0xdca4bbc5u},
-    {980u, 0x40014f5au},
-    {984u, 0x8035af8bu},
-    {988u, 0xe73f0565u},
+    {988u, 0xdca4bbc5u},
+    {992u, 0x40014f5au},
+    {996u, 0x8035af8bu},
+    {1000u, 0xe73f0565u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_response_recall_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1644u, 0xa3d182aau},
-    {1649u, 0x4d3c91f7u},
+    {1668u, 0xa3d182aau},
+    {1673u, 0x4d3c91f7u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_response_recall_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {492u, 0x4d5d7842u},
-    {501u, 0x20b67a29u},
-    {506u, 0xdd381868u},
-    {509u, 0xd156ade6u},
+    {504u, 0x4d5d7842u},
+    {513u, 0x20b67a29u},
+    {518u, 0xdd381868u},
+    {521u, 0xd156ade6u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_scalar_output_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1348u, 0x5147523au},
-    {1349u, 0x95a57571u},
-    {1350u, 0xe9324735u},
-    {1392u, 0x6d56c02au},
-    {1393u, 0x4fc7fd43u},
-    {1394u, 0x5111dd7au},
+    {1360u, 0x5147523au},
+    {1361u, 0x95a57571u},
+    {1362u, 0xe9324735u},
+    {1404u, 0x6d56c02au},
+    {1405u, 0x4fc7fd43u},
+    {1406u, 0x5111dd7au},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_scalar_output_lm
@@ -829,7 +831,7 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_sign_output_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1315u, 0xef2b157cu},
+    {1327u, 0xef2b157cu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_sign_output_lm
@@ -841,8 +843,8 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_source_alarm_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1223u, 0x437c4df4u},
-    {1756u, 0x102d4debu},
+    {1235u, 0x437c4df4u},
+    {1780u, 0x102d4debu},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_source_alarm_lm
@@ -850,32 +852,32 @@ static const struct { uint32_t n, hash; } lanec_frozen[] = {
     {76u, 0xc3d621dfu},
     {81u, 0x9b26b670u},
     {83u, 0x97e613e2u},
-    {426u, 0xd6f8a690u},
+    {438u, 0xd6f8a690u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_test_noun_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1680u, 0x8118714cu},
-    {1681u, 0x92e8690au},
+    {1704u, 0x8118714cu},
+    {1705u, 0x92e8690au},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_test_noun_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {534u, 0x277f4f27u},
+    {546u, 0x277f4f27u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_two_digit_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {396u, 0x5307db73u},
+    {408u, 0x5307db73u},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_verb_dispatch_cm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {1707u, 0x7c1b9c0au},
+    {1731u, 0x7c1b9c0au},
 };
 #endif
 #ifdef LANEC_PIN_C64_MOD_pw_verb_dispatch_lm
 static const struct { uint32_t n, hash; } lanec_frozen[] = {
-    {556u, 0x6f232f25u},
+    {568u, 0x6f232f25u},
 };
 #endif

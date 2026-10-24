@@ -15,6 +15,16 @@ static inline uint16_t lanec_ev_call(apollo_overlay_state *s, uint16_t target, u
     lanec_tc(s, target, ret);
     return target;
 }
+/* TC Q: runs Q as a TC. A return into fixed memory is taken whole (Z = the
+ * return, Q = 3, as yaAGC leaves it after the word at 2); any other Q stops
+ * at Z = 2 for the engine to run. Returns the next Z. */
+static inline uint16_t lanec_ev_tc_q(apollo_overlay_state *s)
+{
+    uint16_t q = s->words[LANEC_Q];
+    if (q < 02000u || q > 07777u) return LANEC_Q;
+    s->words[LANEC_Q] = 3u;
+    return q;
+}
 /* CA/CAF/CAE of a memory word (not an editing register). */
 static inline void lanec_ev_ca(apollo_overlay_state *s, uint16_t word) { s->words[LANEC_A] = lanec_a16(word); }
 /* CS of a memory word. */

@@ -95,6 +95,18 @@ class Host(unittest.TestCase):
         self.assertEqual(self.rows([host_row(exit=1)])[0][1], 'NOT CLEAN')
         self.assertEqual(self.rows([host_row(routine_mismatches=[dict(point='01,2000')])])[0][1], 'NOT CLEAN')
 
+    def test_charge(self):
+        # (#765) an interpretive charge over the bound is NOT CLEAN; a run
+        # with few routines is reported in the detail, still clean.
+        over = dict(fitted=10100, yaagc=10000, percent=1.0, routines=2000, mean_abs_error=2.5)
+        few = dict(fitted=2385, yaagc=1000, percent=138.5, routines=30, mean_abs_error=46.2)
+        row = self.rows([host_row(interpretive_charge=over)])[0]
+        self.assertEqual(row[1], 'NOT CLEAN')
+        self.assertIn('OVER the bound (20% net, 45% routine by routine)', row[2])
+        row = self.rows([host_row(interpretive_charge=few)])[0]
+        self.assertEqual(row[1], 'clean')
+        self.assertIn('fewer than 1000 routines, not bounded', row[2])
+
     def test_unregistered_counted(self):
         self.assertIn('9 unregistered', self.rows([host_row(unregistered=[{}] * 9)])[0][2])
 
@@ -330,6 +342,44 @@ class Doc(unittest.TestCase):
         (_, _, _, problems), text = self.write([window(ok=False)])
         self.assertEqual(problems, ['the doc says FAIL'])
         self.assertIn('## Failures', text)
+
+
+class OffNominal(unittest.TestCase):
+    """The Off-nominal inputs section (tools/device_offnominal.py)."""
+
+    def results(self, ok=True):
+        row = da.offnom.ROWS['lm'][0]
+        checks = [dict(check='alarm', ok=ok, at_cs=100 if ok else None)]
+        return row, [dict(row=row, host=dict(ok=ok, mismatches=0, bridged=0, checks=checks, evidence='`e`'))]
+
+    def test_windows_are_window_tuples(self):
+        for m in ('lm', 'cm'):
+            for s, snap, cs, every in da.offnom.windows(m):
+                self.assertTrue(s.startswith(f'{m}-'))
+                self.assertGreater(cs, 0)
+                self.assertGreater(every, 0)
+
+    def test_host_failure_fails_the_doc(self):
+        _, res = self.results(ok=False)
+        lines, bad = da.offnom.section(res, [], da.first_diff)
+        self.assertEqual(len(bad), 2)  # the host row, and its window not run
+        self.assertIn('not run', '\n'.join(lines))
+
+    def test_window_match_and_difference(self):
+        row, res = self.results()
+        snap, cs = row['window']
+        good = dict(window(scenario=row['scenario'], snap_cs=snap, requested_cs=cs), _why=[])
+        lines, bad = da.offnom.section(res, [good], da.first_diff)
+        self.assertEqual(bad, [])
+        self.assertIn('matches the host at 60, 120 cs', '\n'.join(lines))
+        diff = dict(good, _why=['differs'], replay_differences=2, replay_differ_at_cs=50,
+                    replay_first=[dict(at='0035', host='00001', c64='00002')])
+        lines, bad = da.offnom.section(res, [diff], da.first_diff)
+        self.assertEqual(bad, [])  # a differing window is an open item, not a failure
+        self.assertIn('differs: 2 words by 50 cs', '\n'.join(lines))
+        skipped = dict(good, _why=['6 checkpoints not compared'])
+        lines, _ = da.offnom.section(res, [skipped], da.first_diff)
+        self.assertIn('no match: 6 checkpoints not compared', '\n'.join(lines))
 
 
 if __name__ == '__main__':

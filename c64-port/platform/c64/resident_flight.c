@@ -367,8 +367,13 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
 #endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
-        got = rk_rupt_take(&rk_program, IMAGE, rk_device.superbank, rk_device.interrupt_enabled,
-                           &rk_pending);
+        /* A job's part hand-off (rk_part_cont, outside an interrupt) is inside
+         * one host step, where the host takes no interrupt: requests wait
+         * until the job's next part has run. */
+        got = rk_part_cont && !rk_hardware.in_interrupt
+                  ? 0
+                  : rk_rupt_take(&rk_program, IMAGE, rk_device.superbank,
+                                 rk_device.interrupt_enabled, &rk_pending);
         if (got || rk_work < RK_PHASE_MCT(p)) break;
         /* Once a period, at TIME5: the real-time cap, then the output drives
          * (resident_cdu.h), at the step the host harness runs them. */
@@ -612,10 +617,9 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
         }
         RK_PROF(6);
 #ifdef RK_WORK_CLOCK
-        if (status == EXEC_UNMAPPED) rk_part_cont = rk_charge_group;
         rk_charge(steps, mct);
 #endif
-        return rk_module_status(status,steps,limit);
+        return rk_module_status(status, steps, limit);
     }
 #ifdef RK_WORK_CLOCK
     rk_charge_group = 0; /* no slot ran: the resolver's charge is its own */
@@ -632,6 +636,9 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     enum exec_status status;
     uint16_t loc;
 #ifdef RK_WORK_CLOCK
+    /* No interrupt comes between a job's two parts (rk_rupts_due), and an
+     * interrupt's own parts (AOSTASK, inside T3RUPT) end before its RESUME,
+     * so the step before is always the one this step's part goes on from. */
     rk_part_prev = rk_part_cont;
     rk_part_cont = 0;
 #endif

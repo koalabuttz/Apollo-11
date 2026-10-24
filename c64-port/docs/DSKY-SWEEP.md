@@ -10,7 +10,17 @@ Item 6 is met only by **`--cases all` on both missions with no failure at
 all**, the clock class included, committed as hashed evidence:
 
     python3 tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep
-    python3 tools/evidence.py add --tree evidence/dsky-sweep
+    python3 tools/evidence.py add dsky-sweep <run>/dsky-sweep.json
+    python3 tools/evidence.py add dsky-sweep <run>/dsky-sweep-summary.json --tree
+    python3 tools/evidence.py push dsky-sweep
+
+A full sweep's `dsky-sweep.json` is about 1 MB, past the 256 KiB tree
+limit, so it is stored in the release, and CI does not fetch it.
+`dsky-sweep-summary.json` stays in the tree: the run's mode, missions and
+hashes, the counts per mission and every failed case in full, with the
+full report's hash in `full_sha256`. `tools/cert_precheck.py` checks the
+full report when it is on disk (and that the summary is its summary), and
+the summary otherwise.
 
 `evidence/dsky-sweep/dsky-sweep.json` records the run's mode and missions,
 the store, rope and manifest hashes per mission, each VICE program's hash,
@@ -71,6 +81,7 @@ differs or where it stops). Nobody writes them by hand.
     make dsky-sweep-vice                       # the CI sample, against the known list
     python3 tools/dsky_sweep_vice.py --cases ci
     python3 tools/dsky_sweep_vice.py --keys V16N36E,V06N43E
+    python3 tools/dsky_sweep_vice.py --keys V16N36E --keys 'V37E00E|1200:032=17777,1300:032=37777'
     python3 tools/dsky_sweep_vice.py --cases all   # Lane C's full list (tools/dsky_sweep_cases.py)
 
 The results go to `build/flight-store/dsky-sweep/dsky-sweep.json`.

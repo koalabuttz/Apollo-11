@@ -9,7 +9,7 @@ enum p66_bias_status dsky_monitor_paste(apollo_overlay_state *s,p66_bias_io *io,
  if(stage!=DSKY_MONITOR_PASTE_ONLY_STAGE)return P66_BIAS_OUT_OF_SCOPE;
 #endif
  w=s->words;cm=(uint8_t)(mission==DSKY_NV_CM);paste=cm?04140u:04124u;after=cm?04152u:04136u;blank=cm?04156u:04142u;
- if(w[4]!=062000u||w[3]>03400u||(w[3]&0377u)||w[6]!=(agc_word)(062000u|(w[3]>>8))||w[7]||io->superbank<0100u||io->superbank>0160u||(io->superbank&017u)||io->interrupt_enabled>1u)return P66_BIAS_OUT_OF_SCOPE;
+ if((w[4]&01777u)||(stage==DSKY_MONITOR_PASTE_UPDATED&&w[4]!=062000u)||w[3]>03400u||(w[3]&0377u)||w[6]!=(agc_word)(w[4]|(w[3]>>8))||w[7]||io->superbank<0100u||io->superbank>0160u||(io->superbank&017u)||io->interrupt_enabled>1u)return P66_BIAS_OUT_OF_SCOPE;
  for(i=2;i<2048u;++i)if(w[i]>AGC_MASK)return P66_BIAS_OUT_OF_SCOPE;
  if(stage==DSKY_MONITOR_PASTE_BEGIN){
   if((w[5]!=paste&&(w[5]!=0136u||w[0136]!=paste)))return P66_BIAS_OUT_OF_SCOPE;
@@ -18,7 +18,7 @@ enum p66_bias_status dsky_monitor_paste(apollo_overlay_state *s,p66_bias_io *io,
   if(cm){c.superbank=io->superbank;c.interrupt_enabled=io->interrupt_enabled;if(!cm_interbank_complete(s,&c,CM_IC_BANKCALL,062337,0))return P66_BIAS_OUT_OF_SCOPE;io->superbank=c.superbank;io->interrupt_enabled=c.interrupt_enabled;}
   else if(!lm_interbank(s,io,LM_IB_BANKCALL,062337,0))return P66_BIAS_OUT_OF_SCOPE;
  }else if(stage==DSKY_MONITOR_PASTE_UPDATED){
-  if(w[5]!=(cm?04675u:04631u)||w[0133]!=after||w[0134]!=062000u)return P66_BIAS_OUT_OF_SCOPE;
+  if(w[5]!=(cm?04675u:04631u)||w[0133]!=after||(w[0134]&01770u))return P66_BIAS_OUT_OF_SCOPE;
   if(cm){c.superbank=io->superbank;c.interrupt_enabled=io->interrupt_enabled;if(!cm_interbank_complete(s,&c,CM_IC_SWRETURN,0,0))return P66_BIAS_OUT_OF_SCOPE;io->superbank=c.superbank;io->interrupt_enabled=c.interrupt_enabled;}
   else if(!lm_interbank(s,io,LM_IB_SWRETURN,0,0))return P66_BIAS_OUT_OF_SCOPE;
   w[01013]=0;w[0]=agc_extend(w[01022]);w[2]=blank;w[5]=cm?04271u:04255u;

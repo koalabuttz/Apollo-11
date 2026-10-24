@@ -71,6 +71,10 @@ static unsigned dl_starts;
 static void dl_mark(const agc_word *w){
  if((w[5]&07777u)==04000u&&dl_starts<DL_STARTS){dl_start_at[dl_starts]=dl_s[DL_NAT].n;
   dl_start_cs[dl_starts++]=((unsigned long)(w[024]&037777u)<<14)|(w[025]&037777u);}}
+/* FLIGHT_CORE: the downlink starts at the first sample point after the
+ * core (tools/flight_host_run.c dl_arm), which stands for the cold start. */
+static void dl_core_start(const agc_word *w){dl_on=1;dl_starts=1;dl_start_at[0]=dl_s[DL_NAT].n;
+ dl_start_cs[0]=((unsigned long)(w[024]&037777u)<<14)|(w[025]&037777u);}
 static void dl_push(dl_stream *t,dl_word w){
  if(t->n==t->cap){t->cap=t->cap?t->cap*2u:4096u;if(!(t->w=realloc(t->w,t->cap*sizeof *t->w))){perror("downlink");exit(2);}}
  t->w[t->n++]=w;}
