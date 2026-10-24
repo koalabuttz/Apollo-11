@@ -77,7 +77,9 @@ WINDOWS = {
            ('lm-uplink-reject', 1900, 800, 100),            # uplink words (UPRUPT) and DSKY keys
            ('lm-p52-realign', 4200, 500, 100),              # AOT marks (channel 16, KEYRUPT2)
            ('lm-p57', 15950, 100, 25),                      # lunar-surface AOT mark
-           ('lm-p63-lr-update', 61000, 50, 10),             # P63 descent: jets, landing displays
+           ('lm-p63-lr-update', 80000, 300, 50),            # P63 with LR updates: LR reads (RNRAD), trim
+           ('lm-p63-landing-displays', 65000, 300, 50),     # P63 ignition, mode select in PGNCS: R10 drives ALTM
+           ('lm-p65-autoland-nassp', 130000, 300, 50),      # P65 low scale: LR reads, THRUST
            ('lm-rendezvous', 8000, 300, 50)],               # P20: an RR read (RNRAD) and the RR CDUs
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
