@@ -180,6 +180,7 @@ int main(int argc, char **argv)
                    fd_centiseconds(&st));
         lamp = st.restart_light;
         if (ran.trap == 2u && !live) printf("TC trap at %lu cs\n", fd_centiseconds(&st));
+        if (ran.trap == 3u && !live) printf("night watchman at %lu cs\n", fd_centiseconds(&st));
         if (ran.trap) continue;
         fs_after_routine(&in, &st);
         if (watch.n) watch_print(&st);

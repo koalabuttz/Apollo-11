@@ -1,5 +1,15 @@
 # Architecture and original Executive investigation
 
+> **Scope of this page.** This records the first Executive diagnostic
+> milestones (2026-10-10 and 10-11) and is kept as their engineering record.
+> It does not describe the current flight program. For that, see
+> [RESIDENT-KERNEL.md](RESIDENT-KERNEL.md) and
+> [RESIDENT-FLIGHT.md](RESIDENT-FLIGHT.md) (the thin resident Executive and
+> Waitlist), [FLIGHT-STORE.md](FLIGHT-STORE.md) (the REU module store and
+> whole-program runs), [INTERPRETER-RUNTIME.md](INTERPRETER-RUNTIME.md),
+> [BUILD-TARGETS.md](BUILD-TARGETS.md), [RUN-ON-C64.md](RUN-ON-C64.md), and
+> [PORT_SCOPE.md](PORT_SCOPE.md) with `acceptance/` for current status.
+
 ## Translation boundary
 
 The core executes Apollo control logic directly in C. Its arrays are native

@@ -81,11 +81,15 @@ WINDOWS = {
            ('lm-p63-landing-displays', 65000, 300, 50),     # P63 ignition, mode select in PGNCS: R10 drives ALTM
            ('lm-p65-autoland-nassp', 130000, 300, 50),      # P65 low scale: LR reads, THRUST
            ('lm-rendezvous', 8000, 300, 50),                # P20: an RR read (RNRAD) and the RR CDUs
-           ('lm-p52-cage-torque', 8600, 100, 25)],          # gyro torquing (GYROCMD drains, CDUY follows)
+           ('lm-p52-cage-torque', 8600, 100, 25),           # gyro torquing (GYROCMD drains, CDUY follows)
+           ('lm-rhc-att-hold', 2400, 500, 100),             # RHC pitch out of detent (P-RHCCTR)
+           ('lm-rhc-att-hold', 3500, 500, 100)],            # RHC yaw and roll (Q-, R-RHCCTR)
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6
            ('cm-p40', 70660, 100, 50),                      # SPS burn
+           ('cm-p40', 44000, 300, 50),                      # SPS burn: TVC drives with channel 12 bit 8 held
+           ('cm-entry', 15100, 300, 50),                    # entry DAP: jets (channel 5)
            ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
            ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
            ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
@@ -256,12 +260,13 @@ def roles(m):
     ]
     if lm:
         out += [
-            role('rhc', 'Hand controller (RHC)', 'in', 'P-RHCCTR, Q-RHCCTR, R-RHCCTR (042-044), HANDRUPT, '
-                 'channel 13 bit 8 (RHC counter enable)', [], [rows], uses('FLIGHT_RHC'),
+            role('rhc', 'Hand controller (RHC)', 'in', 'P-RHCCTR, Q-RHCCTR, R-RHCCTR (042-044), '
+                 'channel 31 bit 15 (out of detent), channel 13 bits 8-9 (RHC counters enabled, read)',
+                 [('tools/flight_rhc.h', 'rhc_due', 'RHC model: out of detent in each FLIGHT_RHC span, the '
+                   'deflection loaded into 042-044 when ZEROENBL sets channel 13 bits 8 and 9')],
+                 [rows], uses('FLIGHT_RHC'),
                  either(erasable(0o42, 0o43, 0o44), requests('HAND')), unit(m, 'p-axis'),
-                 how='RHC counter words or HANDRUPT in the host rows',
-                 gap='no hand controller model on the host and no scenario drives the RHC counters or HANDRUPT',
-                 blocking=True, closes='an RHC model (counts into 042-044, HANDRUPT) and a P66 or attitude-hold window'),
+                 how='RHC counter words or HANDRUPT in the host rows'),
             role('aot', 'AOT marks', 'in', 'channel 16 bits 3-5 (X MARK, Y MARK, MARK REJECT), KEYRUPT2',
                  [(FHR, 'key_due', 'keys x, y and j: channel 16 bits 3, 4 and 5 with KEYRUPT2'),
                   (FHR, 'MARK_KEY', 'the mark keys\' flag')],

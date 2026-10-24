@@ -6,7 +6,8 @@ programs with a native port of INTERPRETER.agc, reading the order words from
 the rope image in the REU as the AGC read them from its rope. Basic code in
 every file stays native C. Compiled interpretive routines
 (`tools/interp_compile.py`) stay: they are the host oracle, the C64 fallback for
-profiled hot spots, and the code of the planned fully compiled x86_64 build.
+profiled hot spots, and the code of the fully compiled x86_64 build
+(docs/X86-FLIGHT.md).
 
 ## Hook
 
