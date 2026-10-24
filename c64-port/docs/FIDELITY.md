@@ -1,7 +1,8 @@
 # Fidelity register
 
-> **Scope of this page.** This records the first Executive diagnostic
-> milestones (2026-10-10 and 10-11) and is kept as their engineering record.
+> **Scope of this page.** This records the early milestones (the first
+> Executive diagnostics and the P66 arithmetic stages from DSU PIPTIME to
+> DDV, 2026-10-10 and 10-11) and is kept as their engineering record.
 > It does not describe the current flight program. For that, see
 > [RESIDENT-KERNEL.md](RESIDENT-KERNEL.md) and
 > [RESIDENT-FLIGHT.md](RESIDENT-FLIGHT.md) (the thin resident Executive and
