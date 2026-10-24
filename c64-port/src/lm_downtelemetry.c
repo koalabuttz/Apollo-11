@@ -104,13 +104,16 @@ static void write_channel(lm_dntm_io *x,agc_word c,agc_word v){
  *channel(x,c)=v;
 }
 /* EXTEND; WOR/WAND CHAN13. */
-static void wor13(apollo_overlay_state *s,lm_dntm_io *x){agc_word v=(agc_word)(agc_correct(W[0])|x->channel13);write_channel(x,013u,v);W[0]=agc_extend(v);}
-static void wand13(apollo_overlay_state *s,lm_dntm_io *x){agc_word v=(agc_word)(agc_correct(W[0])&x->channel13);write_channel(x,013u,v);W[0]=agc_extend(v);}
+/* Channel 13 as the CPU reads it back: bits 12-14 (the HANDRUPT traps, kept
+ * in agc_hardware by include/agc_channel_ops.h) read 0, as in yaAGC. */
+#define CH13 ((agc_word)(x->channel13&043777u))
+static void wor13(apollo_overlay_state *s,lm_dntm_io *x){agc_word v=(agc_word)(agc_correct(W[0])|CH13);write_channel(x,013u,v);W[0]=agc_extend(v);}
+static void wand13(apollo_overlay_state *s,lm_dntm_io *x){agc_word v=(agc_word)(agc_correct(W[0])&CH13);write_channel(x,013u,v);W[0]=agc_extend(v);}
 /* EXTEND; INDEX DNECADR; INDEX 0 -400n executed as READ: A = channel. */
 static int read_indexed(apollo_overlay_state *s,lm_dntm_io *x,agc_word word){
  agc_word ins=indexed(word,ai_word(s,DNECADR)),*p;
  if((ins>>9)!=0u||(p=channel(x,(agc_word)(ins&0777u)))==0||(ins&0777u)>=034u)return 0;
- W[0]=agc_extend(*p);return 1;
+ W[0]=agc_extend(p==&x->channel13?CH13:*p);return 1;
 }
 #define TS(a) do{if(ai_ts(s,(a)))return EXEC_OUT_OF_SCOPE;}while(0)
 
@@ -122,7 +125,7 @@ static enum exec_status dodowntm(const agc_native_program *p,apollo_overlay_stat
  TS(BANKRUPT);                       /* 3506 */
  ai_qxch(s,QRUPT);                   /* 3507-3510; 3511 TCF WOTEST */
  ai_caf(s,k(K_BIT7));                /* WOTEST 3763 */
- W[0]=agc_extend((agc_word)(agc_correct(W[0])&x->channel13)); /* 3764-3765 EXTEND; RAND CHAN13 */
+ W[0]=agc_extend((agc_word)(agc_correct(W[0])&CH13)); /* 3764-3765 EXTEND; RAND CHAN13 */
  c=ai_ccs(s,0u);                     /* 3766 */
  if(c==0u){ai_tc(s,03770u);W[5]=DNTMGOTO;return EXEC_OK;} /* 3767 TC DNTMGOTO */
  if(c==3u)return EXEC_OUT_OF_SCOPE;  /* RAND of BIT7 is never -0 */
