@@ -664,6 +664,18 @@ class Monitor:
     def stopwatch(self):
         return int(re.search(r'Stopwatch:\s*(\d+)', self.cmd('sw'))[1])
 
+    def run_c64(self, seconds):
+        """Let the C64 run for this many seconds of its own time, then stop.
+        A wall-clock sleep gives warp VICE far fewer cycles on a busy CI
+        runner (four VICE checks at once) than on an idle machine, and the
+        DSKY then had not caught up with the keys by the screenshot."""
+        end = self.stopwatch() + int(seconds * PAL_HZ)
+        while True:
+            self.go()
+            time.sleep(0.5)
+            if self.stopwatch() >= end:
+                return
+
 
 # The DSKY's key queue (platform/c64/resident_dsky.S): its head in zero
 # page, and the channel 15 codes of the keys it takes (P is PRO).
@@ -861,9 +873,8 @@ def vice(a, m, info):
                 mon.cmd(f'> {queue + head:04x} {DSKY_KEYS[ch]:02x}')
                 mon.cmd(f'> {queue + ((head + 1) & 7):04x} 00')
                 mon.cmd(f'> {DSKY_HEAD:04x} {(head + 2) & 7:02x}')
-                mon.go()
-                time.sleep(a.key_wait)
-                mon.cmd('r')  # the first answer after go() can be the stale prompt
+                mon.run_c64(a.key_c64)
+                mon.cmd('r')
                 result.setdefault('key_pcs', []).append(re.search(r'\.;([0-9a-f]{4})', mon.cmd('r'))[1])
                 # channel 32's high byte (PRO holds bit 14, 0x20, low for 1 s
                 # of AGC time), and IMODES33, where T4RUPT keeps the bit it saw
@@ -872,10 +883,9 @@ def vice(a, m, info):
                 im = mon.mem(0x7000 + 2 * IMODES33[m], 0x7000 + 2 * IMODES33[m] + 1)
                 result.setdefault('key_imodes33', []).append(f'{im[0] | im[1] << 8:05o}')
         if a.screenshot:
-            mon.go()
-            time.sleep(a.settle)
+            mon.run_c64(a.settle)
             shot = (work / f'{m}-dsky.png').resolve()
-            mon.cmd('r')  # the first answer after go() can be the stale prompt
+            mon.cmd('r')
             result['pc'] = re.search(r'\.;([0-9a-f]{4})', mon.cmd('r'))[1]
             result['screen'] = screen_text(mon.mem(0x0400, 0x0400 + 679))
             f = mon.mem(0x7000 + 2 * 0o375, 0x7000 + 2 * 0o377 + 1)
@@ -976,8 +986,13 @@ def main():
     p.add_argument('--keys', default='', help='DSKY keys to type after the boot (E is ENTR, P is PRO), e.g. V35E')
     p.add_argument('--xtest', action='store_true',
                    help="type --keys on VICE's window through X (run under xvfb-run): the C64's keyboard scan sees them")
-    p.add_argument('--key-wait', dest='key_wait', type=float, default=1.0, help='seconds of VICE run after each key')
-    p.add_argument('--settle', type=float, default=2.0, help='seconds of VICE run before the screenshot')
+    p.add_argument('--key-wait', dest='key_wait', type=float, default=1.0,
+                   help='wall seconds after each key typed with --xtest')
+    p.add_argument('--key-c64', dest='key_c64', type=float, default=8.0,
+                   help="seconds of C64 time after each key put in the DSKY's queue (about 1 s of an idle "
+                        "machine's warp VICE)")
+    p.add_argument('--settle', type=float, default=16.0,
+                   help="seconds of C64 time before the screenshot (about 2 s of an idle machine's warp VICE)")
     p.add_argument('--screenshot', action='store_true', help="save the DSKY's screen after the boot (and keys)")
     p.add_argument('--p00', action='store_true',
                    help='after the boot type RSET V37E00E, require P00 (MODREG 0, PROG 00 on the screen) and write '
