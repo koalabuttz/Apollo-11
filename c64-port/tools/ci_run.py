@@ -483,8 +483,9 @@ def shard_targets(targets, k, n, weights_path):
         loads[shard] += weights.get(target, default)
         if shard == k:
             mine.append(target)
-    order = {t: i for i, t in enumerate(targets)}
-    return sorted(mine, key=order.get)
+    # Longest first, so a long VICE run starts as soon as the shard does
+    # rather than after the short ones that happen to sort before it.
+    return mine
 
 
 def main():
