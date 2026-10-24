@@ -5,8 +5,7 @@
    "section": "DSKY",
    "row": "Noun x verb sweep",
    "kind": "dsky",
-   "status": "pending",
-   "note": "Every flight noun x display verb (V01-V06, V11-V16, V21-V25), plus V32/V33/V34/V37, PROCEED and KEY REL on the C64 build (bar item 6): the Certificate fixes lane's DSKY sweep tool, run by Lane C on its Pinball certificate. Not on base yet"
+   "note": "Every flight noun x display verb (V01-V06, V11-V16, V21-V25), plus V32/V33/V34/V37, PROCEED and KEY REL on the C64 build (bar item 6): tools/dsky_sweep_vice.py --cases all --replay-exact --missions lm,cm, run by Lane C at the flip commit; its summary goes to build/flight-store/dsky-sweep/dsky-sweep-summary.json"
   },
   {
    "section": "Downlink (channels 34, 35)",

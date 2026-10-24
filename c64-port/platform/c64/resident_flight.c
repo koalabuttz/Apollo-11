@@ -58,6 +58,13 @@ static uint8_t rk_cut;
 #ifdef RK_RUPT_TRACE
 uint8_t rk_rupt_last;
 #endif
+#ifdef RK_HOLD_METER
+/* The interrupt hold meter (include/rupt_hold.h), on the work clock:
+ * rk_hold_base is the current step's start, in MCT. */
+#include "rupt_hold.h"
+rupt_hold rk_hold;
+static uint16_t rk_hold_base;
+#endif
 /* The step profile (platform/c64/dap_pass_check.c -DRK_STEP_PROFILE): the
  * check's rk_prof(n) charges the cycles since its last call to segment n. */
 #ifdef RK_STEP_PROFILE
@@ -399,6 +406,14 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         /* A job's part hand-off (rk_part_cont, outside an interrupt) is inside
          * one host step, where the host takes no interrupt: requests wait
          * until the job's next part has run. */
+#ifdef RK_HOLD_METER
+        /* While idle, rk_work runs to the period's end; the boundary is at
+         * the step start (where a take resets rk_work to). */
+        rupt_hold_boundary(&rk_hold, (uint16_t)(rk_hold_base + (rk_idle ? 0u : rk_work)),
+                           rk_pending,
+                           (uint8_t)(rk_hardware.in_interrupt || !rk_device.interrupt_enabled ||
+                                     agc_overflow(IMAGE->words[0])));
+#endif
         got = rk_part_cont && !rk_hardware.in_interrupt
                   ? 0
                   : rk_rupt_take(&rk_program, IMAGE, rk_device.superbank,
@@ -413,6 +428,10 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
+#ifdef RK_HOLD_METER
+        rk_hold_base += RK_PHASE_MCT(p);
+        rupt_hold_raise(&rk_hold, rk_hold_base, rk_pending);
+#endif
 #ifdef RK_STEAL
         if (t == RK_PHASE_T5 && steal) rk_work += RK_STEAL;
 #endif
@@ -421,6 +440,9 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
     if (got) rk_cut = 0;
 #endif
     if (got && rk_idle) rk_work = 0;
+#ifdef RK_HOLD_METER
+    if (got) rupt_hold_taken(&rk_hold, (uint16_t)(rk_hold_base + rk_work), IMAGE->words[025]);
+#endif
     rk_idle = 0;
 #ifdef RK_RUPT_TRACE
     /* The DAP pass check (platform/c64/dap_pass_check.c): which request

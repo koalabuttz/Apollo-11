@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* The IMU CDU drive (resident_cdu.h; yaAGC agc_engine.c BurstOutput).
+/* The output drives (resident_cdu.h): the gyro drive and the IMU CDU drive
+ * (yaAGC agc_engine.c BurstOutput).
  * Time is in 2.5 ms units: a period adds 4, bursts are 30 apart. A burst is
  * due once more than 30 have passed: yaAGC's burst comes an instruction
  * after the 75 ms mark, so it shows at the end of the period after it. */
@@ -22,6 +23,13 @@ void rk_cdu_drive(apollo_overlay_state *s, agc_hardware *hw) {
     uint8_t hi = (uint8_t)(hw->channel14 >> 8), bit, i, burst = !rk_cdu.active;
     int16_t v;
     uint8_t cap, neg;
+    /* The gyro drive: while channel 14 bit 10 (gyro activity) is set,
+     * GYROCMD (047) sends 32 pulses a period (3,200 a second) to the gyro
+     * that bits 7-9 select, never past 0. The program writes only
+     * positive counts or -0 (bit 9 is the sign): a negative count sends
+     * nothing. */
+    w = W[047u];
+    if ((hw->channel14 & 01000u) && w && w < 040000u) W[047u] = w > 32u ? (agc_word)(w - 32u) : 0u;
     if(rk_cdu.elapsed<0xfff0u) rk_cdu.elapsed=(uint16_t)(rk_cdu.elapsed+4u);
     /* None of the counters' bits: nothing moves. */
     if (!(hi & (uint8_t)(0200u - (0200u >> RK_CDU_N)))) return;

@@ -96,7 +96,67 @@ static uint32_t now(void){uint8_t b0,b1,a0,a1;
 #ifdef RK_STEP_PROFILE
 void rk_prof(uint8_t segment){uint32_t t=now();prof[segment].cycles+=t-prof_last;++prof[segment].calls;prof_last=now();}
 #endif
-static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
+static uint16_t agc_cs(void)
+{
+    return (uint16_t)IMAGE->words[025];
+}
+/* The window clock: centiseconds since clock_start(). */
+#ifndef DP_SWEEP
+/* TIME1 since the start, as before, but held at its last value while
+ * TIME2:TIME1 is behind the start. TIMEDIDL (the V70-V73 uplinks, 04,3567)
+ * holds TIME2:TIME1 near zero while it adds the uplinked delta. The host
+ * steps whole routines and never sees the hold (tools/flight_host_run.c
+ * now() counts TIME2:TIME1), but a C64 step can end in it, and the 14-bit
+ * TIME1 difference then reads as a full window. The delta itself counts, as
+ * on the host. A negative delta (V70 can move the clock back) that leaves
+ * TIME2:TIME1 behind the start would hold the clock until it catches up,
+ * so the window would run on past its end: no scenario uplinks one. */
+uint16_t dp_clock_t2 CASSETTE, dp_clock_t1 CASSETTE, dp_clock_last CASSETTE;
+static void clock_start(void)
+{
+    dp_clock_t2 = IMAGE->words[024];
+    dp_clock_t1 = IMAGE->words[025];
+    /* dp_clock_last: 0 from load_snapshot (the cassette state). */
+}
+/* window_cs, in 6502 code for room: TIME2 ($7028) and TIME1 ($702A) less
+ * the start as one 30-bit subtraction; a borrow (behind the start) holds
+ * the clock, else it is the TIME1 difference, 14 bits. Returns A:X. */
+_Static_assert(APOLLO_SHARED_ADDRESS == 0x7000u, "dp_window_cs reads TIME2/TIME1 at $7028/$702A");
+uint16_t dp_window_cs(void);
+/* Where the room is: on the LM, in the text screen with the other harness
+ * code (DP_SCREEN_TEXT); in the resident for the hardware check (it shows
+ * its screen) and on the CM (its screen code reaches the last character). */
+#if defined(DP_HW_CHECK) || defined(RK_CM)
+#define DP_CLOCK_SECTION ".text.dp_window_cs"
+#else
+#define DP_CLOCK_SECTION ".dp.screen.dp_window_cs"
+#endif
+__asm__(".section " DP_CLOCK_SECTION ",\"ax\",@progbits\n"
+        ".globl dp_window_cs\n"
+        "dp_window_cs:\n"
+        "  sec\n"
+        "  lda $702a\n  sbc dp_clock_t1\n  tay\n"
+        "  lda $702b\n  sbc dp_clock_t1+1\n  pha\n"
+        "  lda $7028\n  sbc dp_clock_t2\n"
+        "  lda $7029\n  sbc dp_clock_t2+1\n"
+        "  pla\n  bcc 1f\n"
+        "  sty dp_clock_last\n  and #$3f\n  sta dp_clock_last+1\n"
+        "1:\n  lda dp_clock_last\n  ldx dp_clock_last+1\n  rts\n"
+        ".text\n");
+#define window_cs dp_window_cs
+#else
+/* The DSKY sweep keeps TIME1 since the case's start (Lane C's #674 runs
+ * on it). */
+static uint16_t clock_t0 CASSETTE;
+static void clock_start(void)
+{
+    clock_t0 = (uint16_t)IMAGE->words[025];
+}
+static uint16_t window_cs(void)
+{
+    return (uint16_t)(IMAGE->words[025] - clock_t0) & 037777u;
+}
+#endif
 #ifdef DP_KEYS
 /* The crew's DSKY keys in the window (DP_KEYS, written by
  * tools/flight_scenario_vice.py --keys from the scenario's key string): key
@@ -135,6 +195,9 @@ static void press_due(uint16_t elapsed)
 extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
 extern uint8_t __rk_dsky_data_start[], __rk_dsky_data_end[], __rk_dsky_data_load[];
 extern uint8_t __dp_screen_start[], __dp_screen_end[], __dp_screen_load[];
+#ifdef RK_HOLD_METER
+#include "rupt_hold.h"
+#endif
 #ifdef DP_REPLAY
 /* The host run's inputs over the window and its end state
  * (tools/flight_host_run.c FLIGHT_REPLAY, tools/flight_scenario_vice.py
@@ -229,7 +292,6 @@ LOW_TEXT("dp_early") static uint8_t row_early(void)
 static uint16_t rows_left = DP_REPLAY_ROWS;
 static uint8_t row_ready CASSETTE;
 static uint32_t row_at = DP_REPLAY_REU, state_at = DP_END;
-static uint16_t replay_t0 CASSETTE;
 #ifdef DP_BUSY
 static uint16_t busy_last CASSETTE;
 #endif
@@ -246,10 +308,10 @@ _Static_assert(DP_STATES_MAX >= 1u && DP_STATES_MAX <= 255u, "the states written
 #define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
 static uint16_t state_next = DP_STATE_FIRST;
 static uint8_t states CASSETTE;
-/* TIME1 since the snapshot: a window is at most 16,383 cs. */
+/* The window clock since the snapshot: a window is at most 16,383 cs. */
 static uint16_t replay_cs(void)
 {
-    return (uint16_t)(IMAGE->words[025] - replay_t0) & 037777u;
+    return window_cs();
 }
 /* rk_budget (platform/c64/rk_clock.S) in a replay: the MCT left before the
  * next timer step, or before the waiting row's place (its work, MCT since
@@ -263,9 +325,10 @@ static uint16_t replay_cs(void)
 uint16_t rk_phase_budget(void);
 __attribute__((noinline)) uint16_t dp_budget(void)
 {
+    uint16_t now = replay_cs();
     uint16_t b = rk_phase_budget(), cap;
     uint8_t at = row.where >> 1 & 3u;
-    if (row_ready && row.cs <= replay_cs() && (!at || at == phase_step[rk_tick_phase]) &&
+    if (row_ready && row.cs <= now && (!at || at == phase_step[rk_tick_phase]) &&
         row.work > rk_work) {
         /* At least 1: an idle run charges its whole budget, and a 0 would
          * stall the work clock short of the row. */
@@ -306,6 +369,8 @@ LOW_TEXT("dp_state") static void replay_state(uint16_t t)
     stash((void *)RK_HARDWARE, DP_IO_BYTES);
     stash(&rk_device, 32u);
 }
+/* The last interrupt request row applied. */
+static dp_row rupt CASSETTE;
 /* Apply the rows due by t (sample point rows only when sp). */
 __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
 {
@@ -330,6 +395,17 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
          * lose one (cm-rendezvous-tpm 26620: two KEYRUPT1s at 141 cs). */
         if (row.kind == 3 && (*w & row.value))
             return;
+        /* A row the host took later in the same centisecond than an
+         * interrupt request waits until the C64 has taken that request:
+         * the host's interrupt came first. Two keys in one centisecond
+         * each get their own KEYRUPT this way, which reads its own channel
+         * 15 value, not the second key's. Not in the hardware check: its
+         * window has no interrupt request rows and its resident no room. */
+#ifndef DP_HW_CHECK
+        if (rupt.value && row.cs == rupt.cs && row.work != rupt.work &&
+            (*(uint16_t *)rupt.addr & rupt.value))
+            return;
+#endif
         __asm__ volatile("sei");
         if (row.kind == 1) {
             /* tools/flight_host_run.c pipa_add: a signed count into a ones'
@@ -339,9 +415,10 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
             if (v > 037777) v = 037777;
             if (v < -037777) v = -037777;
             *w = v < 0 ? (uint16_t)((~(uint16_t)(-v)) & 077777u) : (uint16_t)v;
-        } else if (row.kind == 3)
+        } else if (row.kind == 3) {
             *w |= row.value;
-        else if (row.kind == 4)
+            rupt = row;
+        } else if (row.kind == 4)
             *(uint8_t *)w = (uint8_t)row.value;
         else
             *w = row.value;
@@ -413,6 +490,16 @@ OUT_TEXT("text") static void outputs_log(uint16_t t)
     outputs_started = 1;
 }
 #endif
+/* The rows a sample point's state follows: those a busy C64 held back
+ * in the last centisecond, then this centisecond's boundary rows already
+ * due (a step that began before the row's place and ended past it), which
+ * the host takes before its state too. (Low code: the text screen has no
+ * room.) */
+LOW_TEXT("dp_before_state") static void rows_before_state(uint16_t t)
+{
+    if (t) replay_rows((uint16_t)(t - 1u), 1u);
+    replay_rows(t, 0u);
+}
 /* The rows due before this step; 1 when the window ends here. */
 DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
 {
@@ -432,7 +519,7 @@ DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
          * it and before that point's own rows. Rows a busy C64 held back
          * (a host sample point the C64 was not idle at) go in first, or a
          * PIPA count the host has is missing from the state. */
-        if (t) replay_rows((uint16_t)(t - 1u), 1u);
+        rows_before_state(t);
         if (t >= DP_REPLAY_CS) {
             replay_state(t);
             return 1;
@@ -479,7 +566,7 @@ static void BOOT load_snapshot(void){
  rk_work = 0;
  rk_tick_phase = 0;
  rk_part_cont = rk_part_prev = 0;
- replay_t0 = IMAGE->words[025];
+ rupt.value = 0;
 #endif
 }
 
@@ -521,11 +608,12 @@ __attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t statu
     rk_part_cont = rk_part_prev = 0;
     rk_ticks = ov2_irq_count;
     __asm__ volatile("cli");
-    replay_t0 = IMAGE->words[025];
+    clock_start();
     rows_left = sweep_case.rows;
     row_at = sweep_case.rows_at;
     state_at = sweep_case.end_at;
     row_ready = 0;
+    rupt.value = 0;
     states = 0;
     state_next = DP_STATE_FIRST;
     replay_now = 0;
@@ -859,7 +947,9 @@ int main(void){
  __asm__ volatile("sei");
  rk_ticks=ov2_irq_count;
  __asm__ volatile("cli");
- dil=rk_dilation;sum.start_cs=agc_cs();
+ dil = rk_dilation;
+ clock_start();
+ sum.start_cs = agc_cs();
 #ifdef DP_SWEEP
  sweep_next(0u, 0u);
 #endif
@@ -889,7 +979,7 @@ int main(void){
   }
 #endif
 #ifdef DP_KEYS
-  press_due((uint16_t)(agc_cs() - sum.start_cs) & 037777u);
+  press_due(window_cs());
 #endif
 #ifdef RK_STEP_PROFILE
   prof_last=now();
@@ -917,7 +1007,7 @@ int main(void){
 #else
    close_record(s1-s0,st);
 #endif
-   if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS)break;
+   if (st != EXEC_OK || window_cs() >= DP_CS) break;
    continue;}
 #endif
 #ifdef DP_SWEEP
@@ -941,7 +1031,10 @@ int main(void){
   ++r.steps;
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_JOB]!=job){job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];if(job)++r.job_loads;}
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task){task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];if(task)++r.task_loads;}
-  if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS){close_record(s1-t,st);break;}
+  if (st != EXEC_OK || window_cs() >= DP_CS) {
+      close_record(s1 - t, st);
+      break;
+  }
   if(r.request&&!rk_hardware.in_interrupt){close_record(s1-t,EXEC_OK);t=s1;}}
 #endif
  sum.cycles=now();
@@ -960,6 +1053,17 @@ int main(void){
      mail[0x33] = (uint8_t)(t >> 8);
      mail[0x34] = replay_ended;
      mail[0x35] = states;
+#ifdef RK_HOLD_METER
+     /* The interrupt hold meter (include/rupt_hold.h): the longest hold
+      * (MCT) and TIME1 at it. */
+     {
+         extern rupt_hold rk_hold;
+         mail[0x36] = (uint8_t)rk_hold.max;
+         mail[0x37] = (uint8_t)(rk_hold.max >> 8);
+         mail[0x38] = (uint8_t)rk_hold.max_at;
+         mail[0x39] = (uint8_t)(rk_hold.max_at >> 8);
+     }
+#endif
 #if DP_OUTPUTS_MAX
      mail[0x3a] = (uint8_t)outputs_bytes;
      mail[0x3b] = (uint8_t)(outputs_bytes >> 8);
