@@ -90,6 +90,7 @@
 #include "interp_runtime.h"
 #include "flight_gojam.h"
 #include "../platform/x86/night_watchman.h"
+#include "rupt_hold.h"
 /* FLIGHT_DOWNRUPT (tools/flight_downlink.h): wraps agc_engine and rk_timer_tick. */
 #include "flight_downlink.h"
 /* FLIGHT_RR (tools/flight_radar.h): the rendezvous radar and attitude model. */
@@ -197,6 +198,13 @@ static void steal(void){unsigned i;
  * rk_timer_phase step); consumed counts the steps taken. */
 static const unsigned step_end[9]={214u,427u,854u,1067u,1280u,1707u,1920u,2134u,2560u};
 static double step_at(unsigned long j){return (double)(2560ul*(j/9ul)+step_end[j%9ul]);}
+/* FLIGHT_HOLD: the interrupt hold meter (include/rupt_hold.h) over the
+ * replay window, on the work clock, as -DRK_HOLD_METER runs it on the C64. */
+static rupt_hold hold;static int hold_on;
+static void hold_report(void){if(getenv("FLIGHT_HOLD"))printf("interrupt hold: max %u MCT at TIME1 %05o\n",(unsigned)hold.max,(unsigned)hold.max_at);}
+static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,double t){
+ if(hold_on)rupt_hold_boundary(&hold,(uint16_t)(unsigned long)t,*pending,(uint8_t)(hw->in_interrupt||!io->interrupt_enabled||agc_overflow(s->words[0])));
+ return rk_rupt_take(p,s,io->superbank,io->interrupt_enabled,pending);}
 /* The work clock's idle loop (weight 0, RK_MCT_IDLE): to the end of the
  * period, which the boundary drops if it takes a request first. */
 static int idling;
@@ -1427,6 +1435,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  keys_parse(argc>3?argv[3]:"");
  if(!uplink_parse(getenv("FLIGHT_UPLINK"))){fprintf(stderr,"FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...] (#OCTAL a raw word)\n");return 2;}
  if(!steal_parse(getenv("FLIGHT_STEAL"))){fprintf(stderr,"FLIGHT_STEAL=T0-T1:MCT[,T0-T1:MCT...]\n");return 2;}
+ atexit(hold_report);
  if(getenv("FLIGHT_MCT_OUT")&&!(mct_out=fopen(getenv("FLIGHT_MCT_OUT"),"a"))){perror("FLIGHT_MCT_OUT");return 2;}
  if(getenv("FLIGHT_WORD_OUT")&&!(word_out=fopen(getenv("FLIGHT_WORD_OUT"),"w"))){perror("FLIGHT_WORD_OUT");return 2;}
  if(getenv("FLIGHT_CH30"))chan30=strtoul(getenv("FLIGHT_CH30"),0,8)&077777u;
@@ -1627,11 +1636,17 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   {agc_word brupt=s.words[017];uint8_t got;unsigned long consumed0=consumed;
    if(scaled&&work){
     /* rk_rupts: a request that can be taken before each step due. */
-    while(!(got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending))&&step_at(consumed)<=wall){
+    hold_on=rp_out&&!snap_path;
+    /* While idling, wall is the idle period's end; the boundary is at the
+     * last step the loop has run (where the take resets wall to). */
+    while(!(got=take_held(&p,&s,&io,&hw,&pending,idling?(consumed?step_at(consumed-1ul):0.0):wall))&&step_at(consumed)<=wall){
      /* The drives run on the TIME5 step, as rk_rupts_due's. */
      if(consumed%3ul==2ul)drives(&s,&hw);
-     rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));if(consumed++%3ul==2ul){period_end();steal();}}
+     rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));
+     if(hold_on)rupt_hold_raise(&hold,(uint16_t)(unsigned long)step_at(consumed),pending);
+     if(consumed++%3ul==2ul){period_end();steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
+    if(got&&hold_on)rupt_hold_taken(&hold,(uint16_t)(unsigned long)wall,s.words[025]);
     if(got||consumed!=consumed0)charge_last=0;
     idling=0;}
    else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);drives(&s,&hw);steal();}}

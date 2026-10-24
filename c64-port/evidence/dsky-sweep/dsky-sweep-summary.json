@@ -23,11 +23,11 @@
    "manifest_sha256": "f7fae0f6c3cc530c102939d8dfefd5ce4f7378e90b36cff0b2d6274ea4521014"
   }
  },
- "replay_exact": false,
+ "replay_exact": true,
  "skipped_cases": 0,
  "item6": true,
  "full": "dsky-sweep.json",
- "full_sha256": "d96a1cb841d860500eb808fae7ebe578912a084d03fbf75467b545b03e4f4889",
+ "full_sha256": "2c9f399a4046eae937f791f62472e36dac365b03094ec42b4b0dd67f79949d01",
  "by_mission": {
   "lm": {
    "cases": 1830,
