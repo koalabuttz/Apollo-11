@@ -247,6 +247,11 @@ HOST RUN'S CRC 6EF1 (NOT YET THE SAME)
 PASS: THIS C64 COMPUTES WHAT VICE DOES
 ```
 
+The CRCs, step count and times above are from one build. The CRC VICE gives
+is baked into the disk when it is made, so it moves with every store build;
+the latest recorded screen is in
+[acceptance/Luminary099-bootable_c64_application.md](acceptance/Luminary099-bootable_c64_application.md).
+
 **PASS** means this C64 ended the window in exactly the state VICE's run of
 the same program did: the CRC VICE gave is built into the disk when it is
 made. FAIL means it differs, and is worth a photograph. The AGC's timing
