@@ -17,7 +17,8 @@ For each program's replay windows (docs/acceptance/<program>-program-map.json
 replay_windows) it runs the host to the window's end and writes
 <out>/<program>-interrupt-hold.json: each window's longest hold (MCT, and
 TIME1 there) and the program's largest. --bound fails the run when a window
-holds a request longer than MCT (the acceptance docs' bound).
+holds a request longer than MCT (default the acceptance docs' bound,
+flight_scenario_vice.HOLD_BOUND_MCT).
 
 Host only: no VICE.
 """
@@ -61,7 +62,8 @@ def main():
     p.add_argument('--jobs', type=int, default=os.cpu_count() or 2)
     p.add_argument('--host-cc', default='cc')
     p.add_argument('--out', type=pathlib.Path, default=ROOT / 'docs/acceptance')
-    p.add_argument('--bound', type=int, default=0, help='fail on a window that holds a request longer (MCT)')
+    p.add_argument('--bound', type=int, default=fsv.HOLD_BOUND_MCT,
+                   help='fail on a window that holds a request longer (MCT; default %(default)s, 0: no bound)')
     a = p.parse_args()
     dp.WORK.mkdir(parents=True, exist_ok=True)
     bad = 0
