@@ -219,7 +219,10 @@ static inline uint16_t rk_part_steps(uint8_t part, uint16_t steps)
     return steps;
 }
 #endif
-/* The interrupt-body wrappers (platform/c64/resident_rupt_module.c). */
+/* The interrupt-body wrappers (platform/c64/resident_rupt_module.c). "task
+ * slot" is the store's directory slot; with the class-4 pinned home packed,
+ * every task-slot module links for the job slot instead
+ * (tools/flight_store_build.py task_pinned_out). */
 #define RK_MODULE_LEAD_INS APOLLO_OV2_ID(APOLLO_LANE_A,0xe1)   /* task slot */
 #define RK_MODULE_T4RUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe2)     /* task slot */
 #define RK_MODULE_KEYRUPT APOLLO_OV2_ID(APOLLO_LANE_A,0xe3)    /* task slot */
