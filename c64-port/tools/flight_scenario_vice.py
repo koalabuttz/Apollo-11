@@ -101,15 +101,17 @@ def shown(x, v):
     return f'{v} cs' if x == 'centiseconds' else f'{v:05o}'
 
 
-def replay_place(manifest, m, image, size):
+def replay_place(manifest, m, image, size, need=True):
     """An REU address for size bytes of replay rows and end state: the top
     of the zeros between the store and the next declared region (the
     Pinball trampoline save below the rope, tools/reu_layout.py), which the
-    run must not touch."""
+    run must not touch. None when they do not fit and need is False."""
     top = reu_layout.free_top(m, manifest)
     at = (top - size) & ~0xff
     if at < 0 or any(image[at:top]):
-        sys.exit(f'FAIL: no {size} zero bytes below the {m} rope at 0x{top:x} for the replay rows')
+        if need:
+            sys.exit(f'FAIL: no {size} zero bytes below the {m} rope at 0x{top:x} for the replay rows')
+        return None
     return at
 
 
@@ -749,29 +751,44 @@ def main():
             host_cs = [x[0] for x in states(host_end, n_states)]
             cs, marks = host_cs[-1], host_cs[:-1]
             # Past the host's end the C64 runs on to the host's last .after
-            # state, writing a state at each of them too, so a C64 busy at
-            # the host's end still ends at a point where the host has one.
-            after_cs = [x[0] for x in host_after or () if x[0] > cs]
-            c64_cs, marks = (after_cs[-1], marks + [cs] + after_cs[:-1]) if after_cs else (cs, marks)
-            states_max = max_states + len(after_cs)
-            if states_max > 255:
-                sys.exit(f'FAIL: {a.scenario}: {states_max} states in a window; the C64 counts at most 255')
-            end_bytes = states_max * C64_STATE
-            table = struct.pack(f'<{len(marks[1:]) + 1}H', *marks[1:], 0xffff)
+            # state (of those that fit, below), writing a state at each of
+            # them too, so a C64 busy at the host's end still ends at a point
+            # where the host has one.
+            after_all = [x[0] for x in host_after or () if x[0] > cs]
             # --replay-outputs: the C64's output list after the table.
             host_outs = list(OUTPUT.iter_unpack(pathlib.Path(f'{header}.outputs').read_bytes())) if a.replay_outputs else []
             cap = outputs_cap(host_outs) if a.replay_outputs else 0
-            # CM channel rows can take two C64 rows each.
-            at = replay_place(manifest, m, reu, 2 * len(rows + extra) + end_bytes + len(table) + OUTPUT.size * cap + 256)
-            end_at = (at + 2 * len(rows + extra) + 0xff) & ~0xff
+            # The C64's rows (their count does not depend on rk_device's address).
+            n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
+            # Each past-end state costs a C64 state in the REU: take as many
+            # as fit below the rope (the first ones, where a C64 busy at the
+            # host's end pairs), and the past-end rows up to the last taken.
+            for k in range(len(after_all), -1, -1):
+                after_cs = after_all[:k]
+                c64_cs = after_cs[-1] if after_cs else cs
+                tail = b''.join(ROW.pack(*x) for x in ROW.iter_unpack(extra) if x[0] <= c64_cs) if after_cs else b''
+                states_max = max_states + len(after_cs)
+                c64_marks = marks + [cs] + after_cs[:-1] if after_cs else marks
+                table = struct.pack(f'<{len(c64_marks[1:]) + 1}H', *c64_marks[1:], 0xffff)
+                n_extra = len(c64_rows(tail, m, 0, 0)) // ROW.size
+                row_bytes = (n_c64 + n_extra) * ROW.size
+                at = replay_place(manifest, m, reu, row_bytes + states_max * C64_STATE + len(table) + OUTPUT.size * cap + 512,
+                                  need=k == 0)
+                if at is not None:
+                    break
+            if len(after_cs) < len(after_all):
+                print(f'{a.scenario}: {len(after_cs)} of the host\'s {len(after_all)} states past its end fit in the REU')
+            extra, host_after = tail, [x for x in host_after or () if x[0] <= c64_cs] if host_after is not None else None
+            marks = c64_marks
+            if states_max > 255:
+                sys.exit(f'FAIL: {a.scenario}: {states_max} states in a window; the C64 counts at most 255')
+            end_bytes = states_max * C64_STATE
+            end_at = (at + row_bytes + 0xff) & ~0xff
             table_at = end_at + end_bytes
             outputs_at = table_at + len(table)
             busy = fhd.scenario(a.scenario)[4].get('FLIGHT_BUSY_SAMPLE')
             # The window ends at the C64's first sample point cs in; DP_CS
             # stops it later if none comes.
-            # The C64's rows (their count does not depend on rk_device's address).
-            n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
-            n_extra = len(c64_rows(extra, m, 0, 0)) // ROW.size
             defines = [*replay_defines(at, n_c64 + n_extra, c64_cs, marks[0] if marks else 0xffff, table_at, end_at,
                                        states_max, busy, outputs_at, cap),
                        *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at),

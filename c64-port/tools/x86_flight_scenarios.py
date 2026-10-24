@@ -54,7 +54,7 @@ build/x86-flight/scenarios/summary.json.
   x86_flight_scenarios.py [--host-cc CC] [--skip-build] [--drop-keys CHARS] [NAME ...]
 
 Scenarios that need a model the x86 program does not have yet (uplink,
-stolen time) are left out. A scenario that starts from the NASSP P63 core
+stolen time, the gyro torquing and optics output models) are left out. A scenario that starts from the NASSP P63 core
 starts the x86 program from the harness's state at that time (X86_START,
 made at test time and deleted after the run). GAPS lists those that stop
 at a routine not yet certified: they pass only when they stop exactly
@@ -79,75 +79,13 @@ WORDS_K, WORDS_PLUS = 1.5, 10
 # left it (LM 4,704 cs).
 TET_BEHIND = 1000
 WORDS = range(0o61, 0o4000)
-# The gyrocompass loop polls the liftoff discrete, so when the AGC sees
-# liftoff depends on its clock schedule: TLIFTOFF is 10,005 cs on the
-# harness's work clock, 10,022 on its other clock and 10,038 on the x86
-# program's (FLIGHT_SATURN lifts off at 10,000). P11 navigates from the
-# time it saw, so the offset is in the state vector from liftoff on
-# (149 m at 10,051 cs against a spread of 74 m) and grows to orbit.
-KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the harness (TLIFTOFF 10038 against 10005; '
-                                "the harness's other clock: 10022), and P11 navigates from that time",
-                         rn=600.0, vn=1.0),   # measured 449 m, 0.73 m/s
-         # The cage (channel 30 at 3,000 cs) reaches the DAP at the x86
-         # program's sample point 3,000 and at the harness's 3,002 (busy at
-         # 3,000 and 3,001 on both its clocks), so the DAP counts one trap
-         # fewer (NPTRAPS, NQTRAPS) and its jet words differ after the CDU
-         # jump at 5,800. The state vector is the same.
-         'lm-p52-imu-cage': dict(reason="the cage reaches the DAP at the x86 program's sample point 3,000 cs and the "
-                                        "harness's 3,002, so the DAP's trap counts and jet words differ",
-                                 rn=50.0, vn=0.15, words=32),   # measured 26 words against 25
-         # The marks fall at other times: both state blocks at 30,348 cs
-         # against the harness's 30,669 and 30,678, each within its limits
-         # of the true orbit. So the navigation words the marks write differ
-         # beyond the harness's own spread (404 words since #739 made its
-         # two clocks closer).
-         'cm-p20-vhf-dropout': dict(reason="the marks fall at other times (state blocks at 30,348 cs against the "
-                                           "harness's 30,669 and 30,678, each within its limits of the true orbit), so "
-                                           "the navigation words they write differ",
-                                    rn=129.0, vn=0.6, words=700),   # measured 636 words against 616
-         # The keys go in at fixed times. After a V25's last ENTER the x86
-         # program stays in P20/R22 for 13 s or more before the program
-         # redisplays its noun, where both harness clocks redisplay within
-         # 0.75 s, so the next V33 lands on a blank display and from there
-         # each key answers a display other than the harness's. The x86 keys
-         # go in on time (19 to 50 cs after theirs); the harness is the one
-         # late on lm-stable-orbit's V37E78E (143 cs on the work clock, 112
-         # on the other, busy at 8,000). lm-rendezvous-tpm: the V33 at
-         # 47,500 cs comes before P74's N37 is back (x86 48,692), so the V25
-         # at 50,000 loads N37 instead of N55 (no elevation angle) and P74
-         # raises 611. lm-stable-orbit and -lm: the x86 run keeps marking on
-         # interim passes to TET 41,786 cs (the harness's final pass is at
-         # 23,100), and P79's integration raises 430. The lockstep check is
-         # clean on all three. Display-driven keys (in the harness and the
-         # scenario inputs) would fly them as the harness does; earlier x86
-         # keys would not.
-         **{n: dict(reason="after a V25 the x86 program stays in P20/R22 13 s or more before redisplaying (the "
-                           "harness under 1 s), so the next V33, typed at its fixed time, lands on a blank display; "
-                           f"{p} then answers the crew's inputs differently and raises alarm {a:o}",
-                    alarms={0o376: a}) for n, p, a in (('lm-rendezvous-tpm', 'P74', 0o611),
-                                                        ('lm-stable-orbit', 'P79', 0o430),
-                                                        ('lm-stable-orbit-lm', 'P79', 0o430))},
-         # Pinball's certificates (#674) let these fly through. The x86
-         # program charges each point the time docs/flight-routine-mct.json
-         # measured on short P00 and V37 runs (and a default where it has
-         # none); the harness's work clock charges the tables' own weights.
-         # So jobs and displays end at other times: the lockstep check is
-         # clean on all five, and the state vector agrees, but the words a
-         # job leaves behind, and when the landing radar is read, differ.
-         **{n: dict(reason="the x86 program charges its routines the time measured on short P00/V37 runs, the "
-                           "harness's work clock the tables' own weights, so jobs end at other times" + why, **env)
-            for n, why, env in (
-                ('lm-cdh', '', dict(words=50)),                     # measured 41 words against 32
-                ('lm-cdh-csm', ' and the display comes up later', dict(words=130)),   # 115 against 28
-                ('lm-p47-nassp', '', dict(words=140)),              # 122 against 115
-                # Alarm 522 (no LR data for the reading) in place of the
-                # harness's 511 (LR antenna not in position).
-                ('lm-p63-v60-nassp', '; the radar is read at other times, and it raises alarm 522 where the '
-                                     'harness raises 511',
-                 dict(alarms={0o377: 0o40522}, radar=dict(HMEAS=70, DELTAH=20))),   # 62, 15
-                ('lm-p65-autoland-nassp', '; the radar is read at other times',
-                 dict(radar=dict(DELTAH=45))))}}   # 37
-UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL')
+# Since the x86 program charges time as the harness's work clock does
+# (fd_work_clock), every scenario is inside its limits; the eleven that
+# needed an envelope (P11's liftoff time, the cage at a sample point, the
+# V25s' redisplays, the rendezvous marks, the Pinball rows) fly as the
+# harness does.
+KNOWN = {}
+UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL', 'FLIGHT_GYRO', 'FLIGHT_OPTICS')
 # A FLIGHT_CORE scenario starts from a yaAGC core dump, which the x86
 # program never reads: the harness loads it and writes its state at the
 # first sample point (FLIGHT_SNAPSHOT=0), and the x86 program starts from

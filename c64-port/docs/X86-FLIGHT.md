@@ -53,9 +53,19 @@ A table's kind (basic, keyed by Z; or interpretive, keyed by LOC under BANKSET) 
 
 ## The AGC clock
 
-Each routine adds its cost to a virtual AGC clock (85,333 machine cycles a second). Every 853 1/3 cycles is one clock period, run at the next boundary, with no cap and nothing dropped. At `X86_SPEED` 1 the program sleeps whenever AGC time gets ahead of `CLOCK_MONOTONIC`. When the host falls behind, AGC time runs late (scaled time, docs/RESIDENT-FLIGHT.md). Keys and pokes arrive on AGC time.
+Each routine adds its cost to a virtual AGC clock (85,333 machine cycles a second), and the clock steps (TIME4, TIME1/TIME3, TIME5, three to a 10 ms period) run at the next boundary, with no cap and nothing dropped. At `X86_SPEED` 1 the program sleeps whenever AGC time gets ahead of `CLOCK_MONOTONIC`. When the host falls behind, AGC time runs late (scaled time, docs/RESIDENT-FLIGHT.md). Keys and pokes arrive on AGC time.
 
-The costs come from `docs/flight-routine-mct.json`: for each routine point, the machine cycles yaAGC took for it over the host differential's scenarios and the LM DAP holding and firing (median, runs, sum, sum of squares, least, most and the table that ran; `make x86-flight-mct`, `tools/x86_flight_mct.py`, using `FLIGHT_MCT_OUT` in `tools/flight_host_run.c`). The x86 clock charges each point its median. Points no scenario reaches cost the median of their kind. An interpreter core slot costs the cycles of the interpretive words it fetched: the core is built with `INTERP_WORD_CHARGE` (include/interp_word_mct.h), and the x86 program starts its count at 0 for each slot, as `tools/flight_host_run.c`'s `core_run` does off the work clock. Since #739 the files in `FLIGHT_INTERP_STOP` hand their interpretive code to the core, so this charge matters: left running, the count's bit 15 made the core skip NEWOPS, and it never fetched a word again (478,218 slots in `lm-doi-nassp`). The C64 resident's work clock takes its per-module weights from the same file.
+The program charges time as the C64 resident's work clock does, which is also the harness's `FLIGHT_SCALED=W` (`fd_work_clock`, `tools/flight_host_run.c`):
+
+- each routine costs its table's weight (host.inc's work clock MCT, from `docs/flight-routine-mct.json`); the idle loop's tables (weight 0) run to the end of the clock period, which the next boundary drops if it takes a request first;
+- a table left to the interpreter module (weight `FD_PER_WORD`) runs through the interpreter core, slot after slot, until the words it charged reach the next clock step (at most 64 slots, the first always), as the C64's interpreter module runs on its step budget; so does an interpretive point no table holds;
+- the clock steps end at whole cycles (214, 427, 854, ... of each 2,560), as the harness's;
+- a slot 5 table (a hot copy inside a module) holds its points only while its module is in slot 0, and the program follows the module loads to know which is, as the harness's `holder` and `module_load`;
+- a sample point's inputs go in before the boundary's clock steps, as the harness's, so a key that ends the idle loop's period early ends it at the same cycle.
+
+The CM, and most LM scenarios, then run the same routines at the same cycles as the harness: CM entry was checked routine by routine to 27 s with `X86_PATH` against the harness's `FLIGHT_PATH`. A `FLIGHT_INTERP_STOP` file's basic table (`FD_PLUS_WORDS`, five LM tables) costs only its weight here, where the harness adds the interpretive words yaAGC ran inside it, which this program cannot count (Gaps).
+
+The lockstep check below keeps the measured clock: each routine point costs the median machine cycles yaAGC took for it over the host differential's scenarios (`docs/flight-routine-mct.json`, `make x86-flight-mct`, `tools/x86_flight_mct.py`, using `FLIGHT_MCT_OUT` in `tools/flight_host_run.c`), points no scenario reaches the median of their kind, and an interpreter core slot the cycles of the words it fetched, its count started at 0 for each slot as `core_run` does off the work clock (left running, the count's bit 15 made the core skip NEWOPS, and it never fetched a word again: 478,218 slots in `lm-doi-nassp`).
 
 ## Acceptance: lockstep against yaAGC
 
@@ -105,14 +115,14 @@ A scenario that starts from the NASSP P63 core dump (`FLIGHT_CORE`) needs yaAGC 
 
 The x86 program runs them with the same settings and at the same points as the host differential (`tools/flight_host_run.c`, which still has its own copy): at each sample point after the pokes (the radar after the SPS), then the channel changes (`FLIGHT_CHAN`), then a restart or a key; with `FLIGHT_ENGINE_LAG` the engine, and always the RCS jets, also after every routine. Keys include the mark buttons (`M`, `J`; LM `x`, `y`, `j`: channel 16 and KEYRUPT2). Once each clock period, at the TIME5 step, the x86 program runs the output drives as the C64 resident and the harness do (`rk_cdu_drive`, `include/resident_cdu.h`): the IMU CDU drive and, in the CM, the optics drive, whose pulses the SPS gimbal follows in TVC mode. `X86_START` takes the drives' state from the header (`SNAP_CDU`). The TC trap is modelled as the harness and the C64 model it (#752, docs/FLIGHT-RESTART.md). V69's VERB69 (43,2037) is a TC to itself, so outside an interrupt the x86 program spins there as the idle loop does, to the end of the clock period, with Q 02040. When the spin held the period's T3 step and no interrupt came in between, the next step is the trap's GOJAM, as yaAGC's trap fires at scaler phase 000 after nothing but TCs since phase 020. `platform/x86/tc_trap.h` makes that decision, and `platform/x86/test_tc_trap.c` checks it in `x86-flight-check`: where the step spins, when it takes the GOJAM, and that an interrupt, another bank or a bank without the superbank bit does neither.
 
-`make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it with the harness on the work clock (`FLIGHT_SCALED=W`) at the first sample point at or after 1,000 cs before its end. The two programs charge routine costs differently: the x86 program charges each point's median, and the work clock charges each table's weight. So their states are close, not equal. The yardstick is the harness against itself, the same scenario on its other clock (`FLIGHT_SCALED=1,1,2`, yaAGC's own cycles). A scenario passes when all of these hold:
+`make x86-flight-scenarios` (`tools/x86_flight_scenarios.py`, not in CI) flies every host differential flight scenario the x86 program can run on its own and compares it with the harness on the work clock (`FLIGHT_SCALED=W`) at the first sample point at or after 1,000 cs before its end. The two programs charge time the same way, so most scenarios end in the same state, and the rest close to it. The yardstick is the harness against itself, the same scenario on its other clock (`FLIGHT_SCALED=1,1,2`, yaAGC's own cycles). A scenario passes when all of these hold:
 
 - the major mode is the same;
-- RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (CM P40 needed it before #786 closed the TVC loop: VN 0.13 m/s apart against a spread of 0.004; on base fc7ded5a every row's RN and VN are within 4 times the spread except known `cm-p11` and `lm-p41-nassp`, whose VN is 0.001 m/s apart against a spread of 0.000);
+- RN and VN are within 4 times the harness's own spread, plus 50 m and 0.15 m/s for the per-routine charges the spread cannot see (CM P40 needed it before #786 closed the TVC loop: VN 0.13 m/s apart against a spread of 0.004; on base fccb0653 every row's RN and VN are within 4 times the spread);
 - the erasable image (061-3777) differs in at most 1.5 times as many words as the harness's two clocks differ in, plus 10;
 - the alarm codes (FAILREG and the two words after it) are the harness's, wherever its two clocks agree on them.
 
-The night watchman is modelled as in the harness (`platform/x86/night_watchman.h`, docs/FLIGHT-RESTART.md, The night watchman). A step from a basic point outside an interrupt that leaves the erasable image as it found it, with a job active, is stuck: it spins to the end of the clock period, as the TC trap's spin does. An exit(3) from `lmi_goto_any` inside a routine (an erasable CADR cycle) is such a step. The x86 program links with `--wrap=exit` (`tools/x86_flight_build.py` LINK). When the watchman sounds at a period's end, the next step is its GOJAM, and the program prints "night watchman at N cs". The `lm-p52-watchman` row requires it within the TC trap rows' limit of the harness's.
+The night watchman is modelled as in the harness (`platform/x86/night_watchman.h`, docs/FLIGHT-RESTART.md, The night watchman). A step from a basic point outside an interrupt that leaves the erasable image as it found it, with a job active, is stuck: it spins to the end of the clock period, as the TC trap's spin does. An exit(3) from `lmi_goto_any` inside a routine (an erasable CADR cycle) is such a step. On the work clock a table left to the interpreter runs through the core, which stops after each GOTOERS hop at GOTO; GOTO has no table, so the core runs it, as the harness's `core_entry` does, but only as a stuck step: any other point no table holds stays a gap. The x86 program links with `--wrap=exit` (`tools/x86_flight_build.py` LINK). When the watchman sounds at a period's end, the next step is its GOJAM, and the program prints "night watchman at N cs". The `lm-p52-watchman` row requires it within the TC trap rows' limit of the harness's.
 
 The V69 rows (`lm-v69`, `cm-v69`: P00, then V69E at 23.5 s) take their spread from the work clock against unscaled time, yaAGC's own clock and its own TC trap, because the harness's 1,1,2 clock takes no trap. They also require the TC trap in the x86 run, within 4 times the harness's two trap times apart plus 10 cs. With the trap's GOJAM left out of the x86 program, both stop spinning at VERB69 and fail.
 
@@ -146,7 +156,7 @@ The CM's VHF dropout (`cm-p20-vhf-dropout`) moves the marks and so both blocks.
 
 The word count is what sees programs that don't move the state vector. With the mark buttons left out of the x86 run (`--drop-keys MJxyj`), P52 differs in 210 words against a limit of 19 and P57 in 188 against 37, so both fail. P22 and P23 fail on RN as well.
 
-On base 5094c66f the tool flies 75 scenarios, and all pass. All reach their compare point, eleven of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The seven that stopped at an uncertified Pinball point before Pinball's certificates (#674) now fly to the end.
+On base fccb0653 the tool flies 75 scenarios, and all pass with no envelope of their own. 62 end in the same erasable image as the harness on the work clock, every CM scenario among them; the other 13 are LM (Gaps). The seven that stopped at an uncertified Pinball point before Pinball's certificates (#674) fly to the end.
 
 The nine restart rows (`fhd.RESTART_FLIGHT`: a `FLIGHT_GOJAM` in each phase, the same rows `tools/flight_restart_check.py` checks against yaAGC) are flown too. Every row with a restart, these, `lm-p63-descent-restart` and the V69 rows, must also count as many restarts as the harness on one of its clocks (REDOCTR: LM 0320, CM 01154), because a restart that resumes the same program can leave the state vector and most words as they were. With `FLIGHT_GOJAM` ignored in the x86 run only, 8 of those 10 `FLIGHT_GOJAM` rows fail on REDOCTR (only 2 failed before the check). The other two can't see it: `lm-p00-doi-restart`'s harness clocks count 0 and 1 at the compare point, and `cm-p00-p40-restart`'s compare point is the GOJAM itself. Like the harness's FLIGHT_SNAPSHOT, the x86 program's samples are taken after a sample point's restart (nothing is pending after a GOJAM); before, it sampled one step late at the GOJAM and `cm-p00-p40-restart` differed in 171 words against a limit of 163.
 
@@ -156,90 +166,90 @@ Compared directly with the harness:
 
 | Scenario | Major mode | RN apart (limit; harness spread) | VN apart (limit; spread) | Words differing (limit; spread) |
 |---|---|---|---|---|
-| `lm-p63-descent` | 77 / 77 | 23 m (646; 149) | 0.02 m/s (0.73; 0.14) | 150 (281; 181) |
-| `lm-p63-descent-thrust` | 77 / 77 | 7 m (744; 174) | 0.16 m/s (1.43; 0.32) | 232 (404; 263) |
-| `cm-entry` | 103 / 103 | 97 m (690; 160) | 2.05 m/s (11.12; 2.74) | 333 (448; 292) |
-| `cm-p52` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 7 (23; 9) |
-| `cm-p23` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 24 (47; 25) |
-| `cm-p40` | 00 / 00 | 4 m (68; 4) | 0.06 m/s (0.39; 0.06) | 102 (163; 102) |
-| `cm-p11` (known) | 00 / 00 | 437 m (447; 99) | 0.71 m/s (0.43; 0.07) | 174 (206; 131) |
-| `cm-tli` | 00 / 00 | 148 m (506; 114) | 0.08 m/s (0.47; 0.08) | 113 (176; 111) |
-| `cm-p22` | 00 / 00 | 20 m (130; 20) | 0.02 m/s (0.22; 0.02) | 225 (356; 231) |
-| `cm-tei` | 00 / 00 | 24 m (96; 12) | 0.12 m/s (0.39; 0.06) | 166 (242; 155) |
-| `cm-p37` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 39 (68; 39) |
-| `lm-p57` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 16 (41; 21) |
-| `lm-csi` | 110 / 110 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (37; 18) |
-| `cm-csi` | 40 / 40 | 0 (50; 0) | 0 (0.15; 0.00) | 3 (17; 5) |
-| `cm-cdh` | 111 / 111 | 0 (50; 0) | 0 (0.15; 0.00) | 4 (19; 6) |
-| `cm-cdh-csm` | 41 / 41 | 0 (50; 0) | 0 (0.15; 0.00) | 5 (19; 6) |
-| `lm-p63-lr-dropout` | 100 / 100 | 140 m (386; 84) | 1.27 m/s (34.41; 8.56) | 325 (524; 343) |
-| `lm-p63-lr-update` | 77 / 77 | 220 m (774; 181) | 1.36 m/s (3.75; 0.90) | 312 (464; 303) |
-| `lm-p63-lr-v58` | 77 / 77 | 135 m (474; 106) | 0.48 m/s (2.25; 0.52) | 232 (425; 277) |
-| `lm-p63-nassp` | 100 / 100 | 83 m (359; 77) | 2.01 m/s (41.69; 10.38) | 325 (502; 328) |
-| `lm-p52-realign` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 13 (19; 6) |
-| `lm-p52-imu-fail` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 13 (19; 6) |
-| `lm-p52-imu-cage` (known) | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 27 (22; 8) |
-| `cm-p52-imu-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 7 (23; 9) |
-| `cm-p52-imu-cage` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 16 (34; 16) |
-| `cm-p52-gimbal-lock` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 7 (20; 7) |
-| `cm-p23-attached` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 29 (55; 30) |
-| `cm-v49-maneuver` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 4 (14; 3) |
-| `cm-p21` | 25 / 25 | 0 (50; 0) | 0 (0.15; 0.00) | 4 (16; 4) |
-| `cm-p52-coarse` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 95 (143; 89) |
-| `cm-p41` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 14 (43; 22) |
+| `lm-p63-descent` | 77 / 77 | 0 (646; 149) | 0 (0.73; 0.14) | 0 (281; 181) |
+| `lm-p63-descent-thrust` | 77 / 77 | 0 (744; 174) | 0 (1.43; 0.32) | 0 (404; 263) |
+| `cm-entry` | 103 / 103 | 0 (690; 160) | 0 (11.11; 2.74) | 0 (448; 292) |
+| `cm-p52` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (23; 9) |
+| `cm-p23` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (47; 25) |
+| `cm-p40` | 00 / 00 | 0 (68; 4) | 0 (0.39; 0.06) | 0 (163; 102) |
+| `cm-p11` | 00 / 00 | 0 (447; 99) | 0 (0.43; 0.07) | 0 (206; 131) |
+| `cm-tli` | 00 / 00 | 0 (506; 114) | 0 (0.47; 0.08) | 0 (176; 111) |
+| `cm-p22` | 00 / 00 | 0 (130; 20) | 0 (0.22; 0.02) | 0 (356; 231) |
+| `cm-tei` | 00 / 00 | 0 (96; 12) | 0 (0.38; 0.06) | 0 (242; 155) |
+| `cm-p37` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (68; 39) |
+| `lm-p57` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (41; 21) |
+| `lm-csi` | 110 / 110 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (37; 18) |
+| `cm-csi` | 40 / 40 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (17; 5) |
+| `cm-cdh` | 111 / 111 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (19; 6) |
+| `cm-cdh-csm` | 41 / 41 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (19; 6) |
+| `lm-p63-lr-dropout` | 100 / 100 | 0 (386; 84) | 0 (34.41; 8.56) | 0 (524; 343) |
+| `lm-p63-lr-update` | 77 / 77 | 3 m (775; 181) | 0.02 m/s (3.75; 0.90) | 145 (464; 303) |
+| `lm-p63-lr-v58` | 77 / 77 | 0 (474; 106) | 0 (2.25; 0.52) | 0 (425; 277) |
+| `lm-p63-nassp` | 100 / 100 | 0 (359; 77) | 0 (41.69; 10.38) | 0 (502; 328) |
+| `lm-p52-realign` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (19; 6) |
+| `lm-p52-imu-fail` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (19; 6) |
+| `lm-p52-imu-cage` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (22; 8) |
+| `cm-p52-imu-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (23; 9) |
+| `cm-p52-imu-cage` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (34; 16) |
+| `cm-p52-gimbal-lock` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (20; 7) |
+| `cm-p23-attached` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (55; 30) |
+| `cm-v49-maneuver` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (14; 3) |
+| `cm-p21` | 25 / 25 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (16; 4) |
+| `cm-p52-coarse` | 64 / 64 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (143; 89) |
+| `cm-p41` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (43; 22) |
 | `cm-v48-dap` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (10; 0) |
-| `cm-p40-sps-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 12 (28; 12) |
-| `lm-landing-ascent-nassp` | 14 / 14 | 182 m (330; 70) | 0.20 m/s (0.46; 0.08) | 353 (611; 401) |
-| `lm-p67-nassp` | 104 / 104 | 19 m (171; 30) | 0.01 m/s (0.20; 0.01) | 316 (652; 428) |
-| `lm-doi-nassp` | 00 / 00 | 2 m (58; 2) | 0.01 m/s (0.20; 0.01) | 189 (268; 172) |
-| `lm-p41-nassp` | 00 / 00 | 16 m (111; 15) | 0.00 m/s (0.15; 0.00) | 169 (239; 153) |
-| `lm-p42-nassp` | 00 / 00 | 13 m (116; 16) | 0.26 m/s (1.45; 0.33) | 137 (223; 142) |
-| `lm-abort-p70-nassp` | 106 / 106 | 401 m (1467; 354) | 0.42 m/s (1.51; 0.34) | 264 (418; 272) |
-| `lm-abort-p71-nassp` | 107 / 107 | 957 m (3011; 740) | 0.87 m/s (3.02; 0.72) | 342 (436; 284) |
-| `lm-p63-descent-restart` | 77 / 77 | 7 m (796; 187) | 0.16 m/s (1.25; 0.28) | 212 (422; 275) |
-| `lm-p00-doi-restart` | 00 / 00 | 2 m (58; 2) | 0.01 m/s (0.20; 0.01) | 247 (361; 234) |
-| `lm-doi-burn-restart` | 50 / 50 | 2 m (117; 17) | 0.01 m/s (0.19; 0.01) | 123 (218; 139) |
-| `lm-p12-restart` | 14 / 14 | 133 m (220; 42) | 0.38 m/s (0.45; 0.08) | 387 (622; 408) |
-| `cm-p00-p40-restart` | 00 / 00 | 4 m (68; 4) | 0.06 m/s (0.39; 0.06) | 102 (163; 102) |
-| `cm-p40-burn-restart` | 50 / 50 | 8 m (83; 8) | 0.08 m/s (0.48; 0.08) | 148 (229; 146) |
-| `cm-entry-restart` | 103 / 103 | 34 m (541; 123) | 0.61 m/s (5.05; 1.23) | 305 (425; 277) |
-| `cm-p22-restart` | 26 / 26 | 0 (50; 0) | 0.02 m/s (0.23; 0.02) | 59 (118; 72) |
-| `lm-coast-verbs` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 49 (85; 50) |
-| `lm-coast-programs` | 06 / 06 | 0 (50; 0) | 0 (0.15; 0.00) | 118 (175; 110) |
-| `lm-p51` | 63 / 63 | 0 (50; 0) | 0 (0.15; 0.00) | 10 (17; 5) |
-| `lm-p22-surface` | 26 / 26 | 0 (50; 0) | 0 (0.15; 0.00) | 8 (20; 7) |
+| `cm-p40-sps-fail` | 00 / 00 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (28; 12) |
+| `lm-landing-ascent-nassp` | 14 / 14 | 2 m (330; 70) | 0.01 m/s (0.46; 0.08) | 117 (611; 401) |
+| `lm-p67-nassp` | 104 / 104 | 0 (171; 30) | 0.01 m/s (0.20; 0.01) | 83 (652; 428) |
+| `lm-doi-nassp` | 00 / 00 | 0 (58; 2) | 0 (0.20; 0.01) | 0 (268; 172) |
+| `lm-p41-nassp` | 00 / 00 | 0 (111; 15) | 0 (0.15; 0.00) | 0 (239; 153) |
+| `lm-p42-nassp` | 00 / 00 | 0 (116; 16) | 0 (1.45; 0.33) | 0 (223; 142) |
+| `lm-abort-p70-nassp` | 106 / 106 | 8 m (1467; 354) | 0.03 m/s (1.51; 0.34) | 123 (418; 272) |
+| `lm-abort-p71-nassp` | 107 / 107 | 3 m (3011; 740) | 0.01 m/s (3.02; 0.72) | 150 (436; 284) |
+| `lm-p63-descent-restart` | 77 / 77 | 0 (796; 187) | 0 (1.25; 0.28) | 0 (422; 275) |
+| `lm-p00-doi-restart` | 00 / 00 | 0 (58; 2) | 0 (0.20; 0.01) | 0 (361; 234) |
+| `lm-doi-burn-restart` | 50 / 50 | 0 (117; 17) | 0 (0.19; 0.01) | 0 (218; 139) |
+| `lm-p12-restart` | 14 / 14 | 7 m (220; 42) | 0.01 m/s (0.45; 0.07) | 123 (622; 408) |
+| `cm-p00-p40-restart` | 00 / 00 | 0 (68; 4) | 0 (0.39; 0.06) | 0 (163; 102) |
+| `cm-p40-burn-restart` | 50 / 50 | 0 (83; 8) | 0 (0.48; 0.08) | 0 (229; 146) |
+| `cm-entry-restart` | 103 / 103 | 0 (541; 123) | 0 (5.05; 1.23) | 0 (425; 277) |
+| `cm-p22-restart` | 26 / 26 | 0 (50; 0) | 0 (0.23; 0.02) | 0 (118; 72) |
+| `lm-coast-verbs` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (85; 50) |
+| `lm-coast-programs` | 06 / 06 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (175; 110) |
+| `lm-p51` | 63 / 63 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (17; 5) |
+| `lm-p22-surface` | 26 / 26 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (20; 7) |
 | `lm-v69` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (10; 0) |
 | `cm-v69` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (10; 0) |
-| `lm-cdh` (known) | 41 / 41 | 0 (50; 0) | 0 (0.15; 0.00) | 41 (32; 15) |
-| `lm-cdh-csm` (known) | 111 / 111 | 0 (50; 0) | 0 (0.15; 0.00) | 115 (28; 12) |
-| `lm-p47-nassp` (known) | 00 / 00 | 17 m (75; 6) | 0 (0.21; 0.01) | 122 (115; 70) |
-| `lm-p63-v60-nassp` (known) | 100 / 100 | 83 m (611; 140) | 1.99 m/s (32.83; 8.17) | 362 (560; 367) |
-| `lm-p65-autoland-nassp` (known) | 104 / 104 | 2 m (83; 8) | 0.01 m/s (0.24; 0.02) | 329 (625; 410) |
-| `lm-coast-v55` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (11; 1) |
-| `lm-coast-r04` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 4 (16; 4) |
+| `lm-cdh` | 41 / 41 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (32; 15) |
+| `lm-cdh-csm` | 111 / 111 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (28; 12) |
+| `lm-p47-nassp` | 00 / 00 | 0 (75; 6) | 0 (0.21; 0.01) | 0 (115; 70) |
+| `lm-p63-v60-nassp` | 100 / 100 | 0 (611; 140) | 0 (32.83; 8.17) | 0 (560; 367) |
+| `lm-p65-autoland-nassp` | 104 / 104 | 2 m (83; 8) | 0.01 m/s (0.24; 0.02) | 139 (625; 410) |
+| `lm-coast-v55` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (11; 1) |
+| `lm-coast-r04` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (16; 4) |
 
 With the SPS gimbal held at zero in the x86 run only (TVC enable ignored), `cm-p40` ends 195 km and 853 m/s from the harness and `cm-tei` 120 km and 976 m/s, each with alarm 1407, so both fail (base fc7ded5a).
 
-CM P11's envelope is RN within 600 m and VN within 1 m/s, with the normal word limit. With the vehicle models removed, P11 ends 6,563 km off and fails (base f499d7ee).
+With the vehicle models removed, P11 ends 6,563 km off and fails (base f499d7ee).
 
 The rendezvous scenarios whose state vector the marks move, compared with the true orbit. Each one's two state blocks are within their limits too (`build/x86-flight/scenarios/summary.json` lists them):
 
 | Scenario | Major mode | RN from the true orbit (limit; harness's larger error) | VN (limit; harness) | Words differing (limit; harness's clocks) | Alarm codes (harness / x86) |
 |---|---|---|---|---|---|
-| `cm-p20` | 24 / 24 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 457 (602; 395) | same |
-| `lm-rendezvous-restart` | 24 / 24 | 57 m (270; 55) | 0.31 m/s (1.64; 0.37) | 650 (1000; 660) | same |
-| `cm-p20-restart` | 24 / 24 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 465 (589; 386) | same |
-| `lm-rendezvous` | 42 / 42 | 16 m (456; 102) | 0.20 m/s (1.07; 0.23) | 674 (1004; 663) | same |
-| `lm-rendezvous-rr-dropout` | 42 / 42 | 18 m (520; 118) | 0.19 m/s (0.95; 0.20) | 604 (973; 642) | same |
-| `lm-rendezvous-tpm` (known) | 114 / 114 | 62 m (524; 119) | 0.25 m/s (1.16; 0.25) | 895 (1024; 676) | 0376 00000 / 00611 |
-| `lm-stable-orbit` (known) | 117 / 117 | 85 m (377; 82) | 0.22 m/s (1.12; 0.24) | 835 (878; 579) | 0376 00000 / 00430 |
-| `lm-stable-orbit-lm` (known) | 47 / 47 | 108 m (335; 71) | 0.28 m/s (1.07; 0.23) | 848 (928; 612) | 0376 00000 / 00430 |
-| `cm-rendezvous-tpm` | 114 / 114 | 13 m (142; 23) | 0.09 m/s (0.51; 0.09) | 646 (938; 619) | same |
-| `cm-stable-orbit` | 47 / 47 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 634 (964; 636) | same |
-| `cm-stable-orbit-lm` | 117 / 117 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 648 (940; 620) | same |
-| `cm-tpi-search` | 115 / 115 | 13 m (98; 12) | 0.07 m/s (0.41; 0.07) | 607 (950; 627) | same |
-| `cm-p20-vhf-dropout` (known) | 24 / 24 | 28 m (129; 20) | 0.11 m/s (0.60; 0.11) | 636 (616; 404) | same |
-| `cm-p20-crew-verbs` | 24 / 24 | 12 m (142; 23) | 0.09 m/s (0.50; 0.09) | 483 (692; 455) | 0377 40407 / 00407 |
+| `cm-p20` | 24 / 24 | 11 m (98; 12) | 0.06 m/s (0.41; 0.07) | 0 (602; 395) | same |
+| `lm-rendezvous-restart` | 24 / 24 | 47 m (270; 55) | 0.30 m/s (1.64; 0.37) | 17 (1000; 660) | same |
+| `cm-p20-restart` | 24 / 24 | 11 m (98; 12) | 0.06 m/s (0.41; 0.07) | 0 (589; 386) | same |
+| `lm-rendezvous` | 42 / 42 | 102 m (456; 102) | 0.16 m/s (1.07; 0.23) | 13 (1004; 663) | same |
+| `lm-rendezvous-rr-dropout` | 42 / 42 | 111 m (521; 118) | 0.19 m/s (0.95; 0.20) | 1 (973; 642) | same |
+| `lm-rendezvous-tpm` | 114 / 114 | 50 m (525; 119) | 0.25 m/s (1.16; 0.25) | 431 (1024; 676) | same |
+| `lm-stable-orbit` | 117 / 117 | 50 m (377; 82) | 0.14 m/s (1.12; 0.24) | 323 (878; 579) | same |
+| `lm-stable-orbit-lm` | 47 / 47 | 50 m (335; 71) | 0.14 m/s (1.07; 0.23) | 373 (928; 612) | same |
+| `cm-rendezvous-tpm` | 114 / 114 | 23 m (142; 23) | 0.09 m/s (0.51; 0.09) | 0 (938; 619) | same |
+| `cm-stable-orbit` | 47 / 47 | 11 m (98; 12) | 0.06 m/s (0.41; 0.07) | 0 (964; 636) | same |
+| `cm-stable-orbit-lm` | 117 / 117 | 11 m (98; 12) | 0.06 m/s (0.41; 0.07) | 0 (940; 620) | same |
+| `cm-tpi-search` | 115 / 115 | 11 m (98; 12) | 0.06 m/s (0.41; 0.07) | 0 (950; 627) | same |
+| `cm-p20-vhf-dropout` | 24 / 24 | 20 m (129; 20) | 0.11 m/s (0.60; 0.11) | 0 (616; 404) | same |
+| `cm-p20-crew-verbs` | 24 / 24 | 23 m (142; 23) | 0.09 m/s (0.50; 0.09) | 0 (692; 455) | same |
 
 ## Live DSKY
 
@@ -258,24 +268,10 @@ Typed keys go in at idle sample points at least 20 cs of AGC time apart (scenari
 
 ## Gaps
 
-On base 5094c66f:
+On base fccb0653:
 
-- **CM P11 boost:** at 89,001 cs the x86 run is 437 m and 0.72 m/s from the harness, against a spread of 99 m and 0.07 m/s between the harness's own two clocks. The cause is when the AGC sees liftoff. The gyrocompass loop polls the liftoff discrete (channel 30 bit 5), and P11 zeroes its clock and navigates from the time it saw it. With `FLIGHT_SATURN` lifting off at 10,000 cs, TLIFTOFF is 10,005 on the harness's work clock, 10,022 on its other clock, and 10,038 on the x86 program's clock. So the state vector carries that offset from liftoff on, and it grows to orbit. This comes from the clock schedule, not from a routine computing differently. Comparing at equal time since liftoff, or making the x86 schedule closer to yaAGC's, would bring P11 inside the limits.
-- **Inputs at fixed times on another schedule:** a scenario's keys and channel changes go in at fixed centiseconds, and the x86 program's clock runs its jobs at slightly other times than the harness's. Where that moves an input across a display or a DAP pass, the run takes another path. The lockstep check shows no miss on any of these, and the tool lists them as known with the cause:
-  - `lm-p52-imu-cage`: the cage (channel 30 at 3,000 cs) reaches the DAP at the x86 program's sample point 3,000 and the harness's 3,002, so the DAP counts one trap fewer and its jet words differ (27 words against a limit of 22). The state vector is the same.
-  - `cm-p20-vhf-dropout`: the marks fall at other times (both state blocks at 30,348 cs against the harness's 30,669 and 30,678, each within its limits of the true orbit), so 636 words differ against a limit of 616.
-  - `lm-rendezvous-tpm`, `lm-stable-orbit`, `lm-stable-orbit-lm`: after a V25's last ENTER the x86 program stays in P20/R22 for 13 s or more before the program redisplays its noun, where both harness clocks redisplay within 0.75 s. So the next V33 lands on a blank display, and from there each key answers a display other than the harness's. The x86 keys go in on time (19 to 50 cs after the harness's); the harness is the one late on `lm-stable-orbit`'s V37E78E (143 cs on the work clock, 112 on the other, busy at 8,000). In `lm-rendezvous-tpm` the V33 at 47,500 cs comes before P74's N37 is back (48,692 on x86), so the V25 at 50,000 loads N37 instead of N55, with no elevation angle, and P74 raises alarm 611. In `lm-stable-orbit` and `-lm` the x86 run keeps marking on interim passes to TET 41,786 cs (the harness reaches its final pass at 23,100), and P79's integration raises alarm 430. Each is allowed exactly that alarm. The radar turned off, the target moved 300 m, the `V33E`s left out or any other alarm still fail them.
-
-  Keys sent when a display asks for them, as a crew would (in the harness and the scenario inputs), should fly these as the harness does; moving the x86 keys would not. (Reviewer 1 measured these times on #768: `X86_SAMPLES` times are labels of the first idle point at or after a centisecond, so a busy stretch makes them earlier than the moment the state was taken.)
-- **Routine time charged another way:** the x86 program charges each point the time `docs/flight-routine-mct.json` measured on short P00 and V37 runs, and points those runs never reach a default; the harness's work clock charges each table's own weight. So jobs and displays end at other times. Since Pinball's certificates (#674) the seven scenarios that stopped at an uncertified Pinball point fly to the end. `lm-coast-v55` and `lm-coast-r04` pass; the lockstep check shows no miss on the other five, and the tool lists them as known with this cause:
-  - `lm-cdh`: 41 words differ against a limit of 32 (envelope 50).
-  - `lm-cdh-csm`: the display comes up later; 115 words against 28 (envelope 130).
-  - `lm-p47-nassp`: 122 words against 115 (envelope 140).
-  - `lm-p63-v60-nassp`: the landing radar is read at other times (62 HMEAS readings with no harness reading near them against a limit of 6, DELTAH 15 against 13; envelope 70 and 20), and P63 raises alarm 522 where the harness raises 511.
-  - `lm-p65-autoland-nassp`: the radar is read at other times (DELTAH 37 unmatched against 34; envelope 45).
-
-  A radar envelope allows only more unmatched readings: each matched reading's median and 90th percentile, LRALTFLG and HCALC still have their normal limits, and no envelope excuses the restart count or the TC trap. Charging time as the work clock does would bring these closer.
+- **LM scenarios not yet word for word:** 13 of the 75 scenarios, all LM, end a few words to a few hundred from the harness, all within their limits: the rendezvous rows (`lm-rendezvous` 13 words, `-rr-dropout` 1, `-restart` 17, `-tpm` 431, `lm-stable-orbit` 323, `-lm` 373), the landing radar and powered flight rows (`lm-p63-lr-update` 145, `lm-p65-autoland-nassp` 139, `lm-landing-ascent-nassp` 117, `lm-p67-nassp` 83, `lm-abort-p70-nassp` 123, `lm-abort-p71-nassp` 150) and `lm-p12-restart` (123). The likeliest cause is the `FLIGHT_INTERP_STOP` basic tables, which cost only their weight here (The AGC clock); the radar and engine models running at other routine boundaries is the other candidate. Before the work clock (on base 5094c66f), eleven scenarios needed an envelope of their own for timing (CM P11's liftoff 33 cs late, the LM P52 cage at another sample point, the V25 redisplays in the LM rendezvous rows, the CM VHF marks, the five Pinball rows); none does now.
 - **STBY lamp** lights only in the lamp test. The x86 program models no standby.
 - **The CM's navigation DSKY RSET** (channel 16, 022) does not put the RESTART lamp out directly as yaAGC's does: x86 channel 16 carries only the mark buttons. Pinball's ERROR would still put it out through channel 11 bit 10.
-- **Missing models:** uplink (`FLIGHT_UPLINK`) and stolen time (`FLIGHT_STEAL`); the tool leaves those scenarios out.
+- **Missing models:** uplink (`FLIGHT_UPLINK`), stolen time (`FLIGHT_STEAL`) and the harness's new output models, gyro torquing turning the platform (`FLIGHT_GYRO`) and the CM sextant following the optics drive (`FLIGHT_OPTICS`; the `lm-p52-cage-torque` and `cm-p52-optics` rows); the tool leaves those scenarios out.
 - The uncompiled interpretive code by file is listed in the design note.
