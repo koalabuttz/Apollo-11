@@ -627,7 +627,10 @@ port) runs one mission:
    tools/flight_scenarios/) the same way; `FLIGHT_CH32` and `FLIGHT_CH33`
    set those input channels as `FLIGHT_CH30` does. In the keys argument,
    `@CS` holds the next key until CS centiseconds (keys otherwise go every
-   half second from 2 s). The reference keeps up to 32,767 centiseconds
+   half second from 2 s). `!` before a key (opt in) holds it past its time until
+   that side's verb and noun flash (channel 11 bit 6), and moves the keys
+   after it later by as long; `tools/key_wait_check.py` shows a keys string
+   without `!` runs exactly as before. The reference keeps up to 32,767 centiseconds
    (scaled time, which has none, any number). `FLIGHT_CORE=FILE` (scaled
    time only) starts from a yaAGC core dump (agc_engine_init's format,
    e.g. a NASSP save) in place of GOJAM: yaAGC loads it and finishes any

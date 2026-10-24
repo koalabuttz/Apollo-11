@@ -169,11 +169,11 @@ Hashes: `evidence/lanec-pin-cert/SHA256.json`.
   programs, 947 checks) and `vice-lanec-pin-transfer-1` to `-4` (85
   programs, 216 checks), plus three runs through the Pinball flight modules
   loaded from the REU store (`docs/MODULE-TEST.md`), one routine per case:
-  `vice-lanec-pin-keys` (every `pin-keys` and `pin-key-labels` case, 1,408
-  per mission each), `vice-lanec-pin-chains` (the frozen C64 rows of
+  `vice-lanec-pin-keys-1` to `-4` (every `pin-keys` and `pin-key-labels`
+  case, 1,408 per mission each, one part per suite and mission), `vice-lanec-pin-chains` (the frozen C64 rows of
   `pin-transfer`, `pin-decdsp3` and `pin-refuse`: 240 LM and 151 CM, 11 CM,
-  239 LM and 111 CM) and `vice-lanec-pin-flight` (the frozen rows of the ten
-  `pin-head-*` suites and `pw-fixed-display`, both missions). All ran on a
+  239 LM and 111 CM) and `vice-lanec-pin-flight-1` and `-2` (the frozen rows of the ten
+  `pin-head-*` suites and `pw-fixed-display`, LM then CM). All ran on a
   VICE PAL C64 with no failures; the store runs name the store's sha256.
 - C64 branch outcomes: `lanec-pin-c64-cover.json` (`tools/lanec/cover.py
   record --pool`). For each suite it lists the host cases' branch arcs over
@@ -206,7 +206,7 @@ The supported domain and the external continuations are written into the
 certificates themselves.
 
 Regenerate the evidence with (the suites of `tools/lanec/wholefile_pin.py`
-but the keypress pair, whose evidence is `vice-lanec-pin-keys`):
+but the keypress pair, whose evidence is `vice-lanec-pin-keys-1` to `-4`):
 
     S=$(python3 -c "import sys; sys.path.insert(0, 'tools/lanec'); import wholefile_pin as w; \
       print(' '.join(s[0] for s in w.SUITES if not s[0].startswith('pin-key')))")
@@ -216,7 +216,7 @@ but the keypress pair, whose evidence is `vice-lanec-pin-keys`):
       --c64 pin-gaps=lanec-pin-gaps $(for n in 1 2 3 4 5; do echo pw=lanec-pw-$n; done) \
       $(for n in 1 2 3 4; do echo pin-transfer-c64=lanec-pin-transfer-$n; done)
     make flight-store
-    make vice-lanec-pin-keys; make vice-lanec-pin-chains; make vice-lanec-pin-flight
+    make lanec-pin-keys-vice; make vice-lanec-pin-chains; make lanec-pin-flight-vice
     python3 tools/lanec/cover.py record evidence/lanec-pin-cert/lanec-pin-c64-cover.json $S pin-keys pin-key-labels \
       pin-transfer-c64 di-transfer-c64 pin-transfer-flight pin-decdsp3-flight pin-refuse-flight \
       pin-transfer pin-decdsp3 pin-refuse --pool \

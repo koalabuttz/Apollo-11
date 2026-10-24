@@ -34,7 +34,7 @@ LANEC_PW_C64_SRC = src/agc_word.c src/lanec.c tests/lanec_case.c tests/lanec_pw.
   tests/throttle_bridge_cases.c tests/lanec_p66_dispatch.c,$(LANEC_SUITE_SRC)))
 # These modules do not fit one program with the harness. fixed-display runs
 # on the C64 through the Pinball flight modules loaded from the REU store
-# (vice-lanec-pin-flight, tools/mk/lanec-pin-heads.mk); the others no longer
+# (vice-lanec-pin-flight-<n>, tools/mk/lanec-pin-heads.mk); the others no longer
 # run in the program (routines.py pin `dropped`, docs/LANEC-PIN-HEADS.md):
 # their suites stay as host tests and are not in the Pinball certificates.
 LANEC_PW_C64_TOO_BIG = pw-cm-dynamic-display pw-cm-normal-display pw-cm-nv85 pw-decimal-time-consumer pw-fixed-display \
@@ -66,7 +66,7 @@ LANEC_PIN_C64_SRC = $(LANEC_PW_C64_SRC) src/lanec_pin_routines.c src/lanec_pin_t
 # program without the REU store does not carry.
 # Their rows do not run (tools/lanec/cover.py record --not-run); their
 # modules run on the C64 in their own pw-* programs and through the flight
-# store (vice-lanec-pin-flight, module-test-lanec-pin-keys), and the record
+# store (vice-lanec-pin-flight-<n>, vice-lanec-pin-keys-<n>), and the record
 # pools those programs' arcs (--pool, evidence/lanec-pin-cert/lanec-pin-c64-cover.json).
 LANEC_PIN_C64_TOO_BIG = pin_gaps_cm pin_gaps_lm $(foreach h,decount_lm dpout_cm lamp_cm lamp_lm load_cm load_lm minsec_lm nvsub_cm nvsub_lm \
   proceed_cm proceed_lm release_cm release_lm request_cm request_lm twoint_lm,pin_head_$(h)) pin_key_labels_cm pin_key_labels_lm pin_keys_cm \

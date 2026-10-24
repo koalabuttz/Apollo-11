@@ -30,7 +30,7 @@ Where a window matches the host, both sides report the same hold.
 | Luminary099 | 62 | 50 MCT (0.6 ms) | 1,186 MCT (13.9 ms) | lm-coast-verbs 2500+1000, TIME1 05624 |
 | Comanche055 | 79 | 325 MCT (3.8 ms) | 1,425 MCT (16.7 ms) | cm-p20 9210+300, TIME1 22401 |
 
-The C64 meter was checked against the host (C64 runs at 1cfd6bc5, the base before #674; the host values are the same at b56219b3):
+The C64 meter was checked against the host (C64 runs at 1cfd6bc5, the base before #674; the host values are the same at b56219b3). cm-p20 9210+300 was rerun at c8fc9622, after #674 and #849: host 1,425 MCT, C64 1,425 MCT, and the C64 ends the window in the host's state.
 
 | Window | Host | C64 | Note |
 |---|---|---|---|

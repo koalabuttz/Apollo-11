@@ -696,6 +696,8 @@ def main():
     # --chain: the windows the host run wrote (header-1, header-2, ...),
     # each as long as the host ran it (to its first sample point with no
     # interrupt pending at or after --cs).
+    # One host run covers every chain window; its log has the base tag.
+    host_log = dp.WORK / f'{tag}-host.log'
     windows = [(header, tag, a.cs)]
     for n in range(1, a.chain):
         windows.append((pathlib.Path(f'{header}-{n}'), f'{tag}-{n}', a.cs))
@@ -872,10 +874,11 @@ def main():
             applied_extra, applied = max(0, applied - n_c64), min(applied, n_c64)
             # The interrupt hold meter (include/rupt_hold.h): the host's in its
             # log, the C64's in the mailbox (dap_pass_check.c, -DRK_HOLD_METER).
-            hm = re.search(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)', (dp.WORK / f'{tag}-host.log').read_text(), re.M)
+            hm = re.search(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)', host_log.read_text(), re.M)
             if hm:
                 r.update(hold_host_mct=int(hm[1]), hold_host_time1=int(hm[2], 8))
-                line = f"{a.scenario}: interrupt hold: host max {hm[1]} MCT at TIME1 {hm[2]}"
+                whole = ' (whole chain)' if a.chain > 1 else ''
+                line = f"{a.scenario}: interrupt hold: host max{whole} {hm[1]} MCT at TIME1 {hm[2]}"
                 if a.hold:
                     c_max, c_at = struct.unpack_from('<HH', mail, 0x36)
                     r.update(hold_c64_mct=c_max, hold_c64_time1=c_at)
