@@ -103,7 +103,8 @@ int main(int argc, char **argv)
                       getenv("X86_SAMPLES_FROM") ? strtoul(getenv("X86_SAMPLES_FROM"), 0, 10) : 1ul;
     double speed = getenv("X86_SPEED") ? atof(getenv("X86_SPEED")) : 1.0, t0, wall;
     FILE *samples = getenv("X86_SAMPLES") ? fopen(getenv("X86_SAMPLES"), "w") : 0;
-    unsigned long path_from = 0, path_to = 0;
+    unsigned long path_from = 0, path_to = 0, path_slots;
+    double path_mct;
     if (getenv("X86_PATH")) sscanf(getenv("X86_PATH"), "%lu,%lu", &path_from, &path_to);
     if (argc < 2 || !apollo_rope_load(MISSION, argv[1])) {
         fprintf(stderr, "usage: x86-flight ROPE.bin [CS [KEYS]]\n");
@@ -153,16 +154,8 @@ int main(int argc, char **argv)
                 nanosleep(&d, 0);
             }
         }
-        if (path_to && fd_centiseconds(&st) >= path_from && fd_centiseconds(&st) <= path_to) {
-            double before = st.mct;
-            unsigned long slots = st.slots;
-            enum exec_status r = fd_run(&st, &ran);
-            printf("X86 %lu cs key %u %s slots %lu charge %.0f at %.0f\n", fd_centiseconds(&st),
-                   ran.key, ran.table ? ran.table->name : "core", st.slots - slots, ran.mct,
-                   before);
-            if (r == EXEC_UNMAPPED) break;
-            continue;
-        }
+        path_mct = st.mct;
+        path_slots = st.slots;
         if (fd_run(&st, &ran) == EXEC_UNMAPPED) {
             if (live) td_restore(); /* the stop message stays on screen */
             fprintf(stderr, "no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",
@@ -170,6 +163,10 @@ int main(int argc, char **argv)
                     (unsigned)st.s.words[4], fd_centiseconds(&st));
             break;
         }
+        if (path_to && fd_centiseconds(&st) >= path_from && fd_centiseconds(&st) <= path_to)
+            printf("X86 %lu cs key %u %s slots %lu charge %.0f at %.0f\n", fd_centiseconds(&st),
+                   ran.key, ran.table ? ran.table->name : "core", st.slots - path_slots, ran.mct,
+                   path_mct);
         if (ran.status != EXEC_OK) {
             if (live) td_restore(); /* the stop message stays on screen */
             fprintf(stderr, "%s refused at %02o,%04o (status %d) at %lu cs\n",
