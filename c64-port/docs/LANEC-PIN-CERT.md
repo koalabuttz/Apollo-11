@@ -233,4 +233,5 @@ full sweep takes about two hours a mission on four cores. The sweep for this
 certificate ran once per mission (`--missions lm`, then `--missions cm`,
 each with `--known tools/dsky_sweep_known.json --jobs 4`), and the two
 reports were joined into one `evidence/dsky-sweep/dsky-sweep.json` (both
-missions, mode `all`, results and stores side by side).
+missions, mode `all`, results and stores side by side)), with its tree summary
+`evidence/dsky-sweep/dsky-sweep-summary.json` (docs/DSKY-SWEEP.md).

@@ -3,6 +3,11 @@
   "milestone": "dsky-sweep",
   "release": "evidence-dsky-sweep",
   "files": {
+    "dsky-sweep-summary.json": {
+      "sha256": "da6efc88ac24a64c695d3a961faef04a840cc398482805160e3b20851f18ec93",
+      "bytes": 1099,
+      "store": "tree"
+    },
     "dsky-sweep.json": {
       "sha256": "d96a1cb841d860500eb808fae7ebe578912a084d03fbf75467b545b03e4f4889",
       "bytes": 1012745,

@@ -102,6 +102,29 @@ PRO_HOLD = 30      # cs PRO stays down
 # once no sample has come for this many cs: a case whose job never idles
 # (LM V83's R31 display loop) still reaches its window's end on both sides.
 BUSY_CS = 100
+
+# A full sweep's report is about 1 MB, past tools/evidence.py's tree limit,
+# so it is stored in the release, which CI does not fetch. The summary stays
+# in the tree: everything tools/cert_precheck.py checks (mode, missions, the
+# hashes per mission, the counts and every failed case in full), bound to the
+# full report by its hash.
+SUMMARY = 'dsky-sweep-summary.json'
+
+
+def summary(full):
+    """The tree-sized summary of the report at path full, as JSON text."""
+    raw = full.read_bytes()
+    report = json.loads(raw)
+    keep = {k: v for k, v in report.items() if k not in ('results', 'runs')}
+    by_mission = {}
+    for r in report['results']:
+        row = by_mission.setdefault(r['m'], dict(cases=0, passed=0, skipped_cases=0))
+        row['cases'] += 1
+        row['passed'] += bool(r['ok'])
+        row['skipped_cases'] += bool(r.get('skipped'))
+    return json.dumps(dict(keep, full=full.name, full_sha256=hashlib.sha256(raw).hexdigest(),
+                           by_mission=by_mission, failed=[r for r in report['results'] if not r['ok']]),
+                      indent=1) + '\n'
 CASE = struct.Struct('<IHHIBBH')   # dap_pass_check.c dp_case
 
 
@@ -494,9 +517,11 @@ def main():
                   and not skipped,
                   results=results, runs=runs)
     (WORK / 'dsky-sweep.json').write_text(json.dumps(report, indent=1) + '\n')
+    (WORK / SUMMARY).write_text(summary(WORK / 'dsky-sweep.json'))
     if a.evidence:
         a.evidence.mkdir(parents=True, exist_ok=True)
         shutil.copy(WORK / 'dsky-sweep.json', a.evidence / 'dsky-sweep.json')
+        shutil.copy(WORK / SUMMARY, a.evidence / SUMMARY)
     print(f"{'PASS' if ok == len(results) and results else 'FAIL'}: DSKY sweep on the C64: {ok} of {len(results)} "
           'cases end in the host state' + (f" (failed: {', '.join(f'{n} {c}' for c, n in sorted(classes.items()))})"
                                            if classes else ''))
