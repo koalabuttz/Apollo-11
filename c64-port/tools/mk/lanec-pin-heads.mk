@@ -35,9 +35,7 @@ LANEC_PIN_FLIGHT_SUITES = $(foreach h,$(LANEC_PIN_HEADS) $(LANEC_PIN_HEAD_FAMILI
 LANEC_PIN_FLIGHT_MODULES = lanec_pin_routines,lanec_pin_keys_num_routines,lanec_pin_keys_cmd_routines,lanec_pin_keys_release_routines,lanec_pin_keys_sign_routines,lanec_pin_keys_clear_routines
 LANEC_PIN_FLIGHT_PARTS = lm cm
 define LANEC_PIN_FLIGHT_PART
-.PHONY: c64-lanec-pin-flight-$(1) vice-lanec-pin-flight-$(1)
-c64-lanec-pin-flight-$(1):
-	python3 tools/flight_store_build.py --missions $(2)
+.PHONY: vice-lanec-pin-flight-$(1)
 vice-lanec-pin-flight-$(1): c64-lanec-pin-flight-$(1) build/lanec-native build/lanec-oracle tools/module_test.py tools/module_test.c
 	set -e; for s in $$(LANEC_PIN_FLIGHT_SUITES); do \
 	  build/lanec-native --states $$$$s > build/lanec-$$$$s-$(2)-states.txt; \
@@ -49,6 +47,13 @@ vice-lanec-pin-flight-$(1): c64-lanec-pin-flight-$(1) build/lanec-native build/l
 	  rm -f build/lanec-$$$$s-$(2)-states.txt build/lanec-$$$$s-$(2)-flight.txt; done
 	@echo "PASS: VICE PAL lanec-pin-flight-$(1): the frozen C64 $(2) rows of $$(words $$(LANEC_PIN_FLIGHT_SUITES)) suites through the Pinball flight modules"
 endef
+# The c64- parts are written out so that tools/ci_affected.py, which reads
+# a .mk file's literal rules, selects them when this file changes.
+.PHONY: c64-lanec-pin-flight-1 c64-lanec-pin-flight-2
+c64-lanec-pin-flight-1:
+	python3 tools/flight_store_build.py --missions lm
+c64-lanec-pin-flight-2:
+	python3 tools/flight_store_build.py --missions cm
 $(eval $(call LANEC_PIN_FLIGHT_PART,1,lm))
 $(eval $(call LANEC_PIN_FLIGHT_PART,2,cm))
 .PHONY: lanec-pin-flight-vice

@@ -27,9 +27,7 @@ LANEC_PIN_KEYS_MODULES = lanec_pin_keys_num_routines,lanec_pin_keys_cmd_routines
 LANEC_PIN_KEYS_PARTS = pin-keys:lm pin-keys:cm pin-key-labels:lm pin-key-labels:cm
 lanec_pin_keys_part = $(subst :, ,$(word $(1),$(LANEC_PIN_KEYS_PARTS)))
 define LANEC_PIN_KEYS_PART
-.PHONY: c64-lanec-pin-keys-$(1) vice-lanec-pin-keys-$(1)
-c64-lanec-pin-keys-$(1):
-	python3 tools/flight_store_build.py --missions $(word 2,$(call lanec_pin_keys_part,$(1)))
+.PHONY: vice-lanec-pin-keys-$(1)
 vice-lanec-pin-keys-$(1): c64-lanec-pin-keys-$(1) build/lanec-native build/lanec-oracle tools/module_test.py tools/module_test.c
 	$$(call LANEC_PIN_KEYS_RUN,$(word 1,$(call lanec_pin_keys_part,$(1))),$(word 2,$(call lanec_pin_keys_part,$(1))),$(1))
 endef
@@ -47,6 +45,17 @@ LANEC_PIN_KEYS_RUN = set -e; python3 tools/lanec/diff.py $(1) --refusals$(if $(f
 	    --states build/lanec-pin-keys-$(3)-states.txt --oracle build/lanec-$(1)-oracle.txt \
 	    --native build/lanec-$(1)-native.txt --name $(1); \
 	  rm -f build/lanec-pin-keys-$(3)-states.txt
+# The c64- parts are written out so that tools/ci_affected.py, which reads
+# a .mk file's literal rules, selects them when this file changes.
+.PHONY: c64-lanec-pin-keys-1 c64-lanec-pin-keys-2 c64-lanec-pin-keys-3 c64-lanec-pin-keys-4
+c64-lanec-pin-keys-1:
+	python3 tools/flight_store_build.py --missions lm
+c64-lanec-pin-keys-2:
+	python3 tools/flight_store_build.py --missions cm
+c64-lanec-pin-keys-3:
+	python3 tools/flight_store_build.py --missions lm
+c64-lanec-pin-keys-4:
+	python3 tools/flight_store_build.py --missions cm
 $(foreach n,1 2 3 4,$(eval $(call LANEC_PIN_KEYS_PART,$(n))))
 .PHONY: module-test-lanec-pin-keys lanec-pin-keys-vice
 module-test: module-test-lanec-pin-keys
