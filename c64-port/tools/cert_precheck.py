@@ -890,6 +890,38 @@ DSKY_SWEEP_FILES = ('PINBALL_GAME_BUTTONS_AND_LIGHTS.agc',)
 DSKY_SWEEP_MISSION = {'Luminary099': 'lm', 'Comanche055': 'cm'}
 DSKY_SWEEP_KNOWN = ROOT / 'tools' / 'dsky_sweep_known.json'
 DSKY_SWEEP_EVIDENCE = ROOT / 'evidence' / 'dsky-sweep' / 'dsky-sweep.json'
+# The full report is release-stored (about 1 MB); CI has only the tree's
+# summary (tools/dsky_sweep_vice.py summary), which keeps every failed case.
+DSKY_SWEEP_SUMMARY = ROOT / 'evidence' / 'dsky-sweep' / 'dsky-sweep-summary.json'
+
+
+def dsky_sweep_summary_faults(summary, m):
+    """Why a DSKY sweep summary (tools/dsky_sweep_vice.py summary) cannot
+    stand for its full report: it keeps only the failed cases, so its counts
+    must add up, overall and for mission m, or a case could drop out of it
+    unseen. Its bytes must also be the ones evidence/dsky-sweep/SHA256.json
+    records, when it records them (#843)."""
+    faults = []
+    failed = summary.get('failed', [])
+    by = summary.get('by_mission') or {}
+    if summary.get('passed', -1) + len(failed) != summary.get('cases'):
+        faults.append(f"counts do not add up: {summary.get('passed')} passed + {len(failed)} failed, "
+                      f"{summary.get('cases')} cases")
+    per = {k: (v or {}).get('cases', 0) for k, v in by.items()}
+    if sum(per.values()) != summary.get('cases'):
+        listed = ', '.join(f'{k} {n}' for k, n in per.items()) or 'none'
+        faults.append(f"per-mission cases ({listed}) do not sum to its {summary.get('cases')} cases")
+    row = by.get(m) or {}
+    failed_m = sum(1 for r in failed if r.get('m') == m)
+    if not row.get('cases') or row.get('passed', -1) + failed_m != row['cases']:
+        faults.append(f"{m} counts do not add up: {row.get('passed')} passed + {failed_m} failed, "
+                      f"{row.get('cases')} cases")
+    manifest = DSKY_SWEEP_SUMMARY.parent / 'SHA256.json'
+    if manifest.exists():
+        listed = (json.loads(manifest.read_text()).get('files') or {}).get(DSKY_SWEEP_SUMMARY.name)
+        if listed and listed.get('sha256') != hashlib.sha256(DSKY_SWEEP_SUMMARY.read_bytes()).hexdigest():
+            faults.append('differs from the hash evidence/dsky-sweep/SHA256.json records')
+    return faults
 
 
 def check_dsky_sweep(report, label, mission, name, accepted):
@@ -917,16 +949,28 @@ def check_dsky_sweep(report, label, mission, name, accepted):
         report.add(level, label, f'{len(left)} DSKY sweep sample cases of {m} do not match the host on the C64 '
                    f"(tools/dsky_sweep_known.json: {', '.join(left[:6])}{' ...' if len(left) > 6 else ''})",
                    'fix them, run `make dsky-sweep-vice` and take them off the list')
-    if not DSKY_SWEEP_EVIDENCE.exists():
+    if DSKY_SWEEP_EVIDENCE.exists():
+        src = 'evidence/dsky-sweep/dsky-sweep.json'
+        sweep = json.loads(DSKY_SWEEP_EVIDENCE.read_text())
+        if DSKY_SWEEP_SUMMARY.exists() and json.loads(DSKY_SWEEP_SUMMARY.read_text()).get('full_sha256') != \
+                hashlib.sha256(DSKY_SWEEP_EVIDENCE.read_bytes()).hexdigest():
+            report.add(level, label, 'evidence/dsky-sweep/dsky-sweep-summary.json is not the summary of '
+                       'dsky-sweep.json (its full_sha256 differs)', 'commit the summary the sweep wrote with it')
+    elif DSKY_SWEEP_SUMMARY.exists():
+        src = 'evidence/dsky-sweep/dsky-sweep-summary.json'
+        sweep = json.loads(DSKY_SWEEP_SUMMARY.read_text())
+        sweep['results'] = sweep.get('failed', [])
+        for why in dsky_sweep_summary_faults(sweep, m):
+            report.add(level, label, f'{src} {why}', 'commit the summary the sweep wrote with its full report')
+    else:
         dsky_sweep_clock(report, label, m, clock)
         report.add(level, label, f'no full DSKY sweep result for {m} (evidence/dsky-sweep/dsky-sweep.json)',
                    'run `tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep` and commit it')
         return
-    sweep = json.loads(DSKY_SWEEP_EVIDENCE.read_text())
     if sweep.get('mode') != 'all' or m not in sweep.get('missions', []):
         dsky_sweep_clock(report, label, m, clock)
-        report.add(level, label, f"evidence/dsky-sweep/dsky-sweep.json is a {sweep.get('mode')} run of "
-                   f"{', '.join(sweep.get('missions', []))}, not the full sweep of {m}",
+        report.add(level, label, f"{src} records a run of mode {sweep.get('mode')!r} on "
+                   f"{', '.join(sweep.get('missions', [])) or 'no mission'}, not the full sweep of {m}",
                    'rerun it with --cases all on both missions')
         return
     store = sweep.get('stores', {}).get(m, {})
@@ -935,7 +979,7 @@ def check_dsky_sweep(report, label, mission, name, accepted):
     stale = [what for what, path, key in (('rope', rope, 'rope_sha256'), ('store', reu, 'reu_sha256'))
              if path.exists() and store.get(key) != hashlib.sha256(path.read_bytes()).hexdigest()]
     if stale:
-        report.add(level, label, f"evidence/dsky-sweep/dsky-sweep.json's {m} {' and '.join(stale)} hash is not "
+        report.add(level, label, f"{src}'s {m} {' and '.join(stale)} hash is not "
                    'the current one (the full sweep ran on another build)', 'rerun the full sweep and commit it')
     failed = [r for r in sweep.get('results', []) if r['m'] == m and not r['ok']]
     bad = [r for r in failed if r.get('class') != 'clock']

@@ -40,6 +40,16 @@ class Pairing(unittest.TestCase):
         self.assertEqual(v['end'], dict(shift_cs=1, paired=True))
         self.assertEqual(v['unpaired'], [])
 
+    def test_busy_c64_end_pairs_at_the_first_point_both_have(self):
+        # The host ends at 170 and writes states at 171, 173 and 175; the C64
+        # is busy until 172, then writes one at its next marks.
+        v = fsv.replay_verdict([state(100), state(170)], [state(100), state(172), state(173), state(175)], True,
+                               after=[state(171), state(173), state(175)])
+        self.assertEqual(v['diff'], [])
+        self.assertEqual(v['matched'], [100, 173])
+        self.assertEqual(v['end'], dict(shift_cs=3, paired=True))
+        self.assertEqual(v['unpaired'], [])
+
     def test_late_c64_end_with_a_data_difference_still_fails(self):
         v = fsv.replay_verdict([state(100), state(172)], [state(100), state(173, **{f'w{WORD:o}': 0o123})], True,
                                after=[state(173)], after_rows=[])
@@ -88,6 +98,92 @@ class Pairing(unittest.TestCase):
         v = fsv.replay_verdict([state(320)], [state(321)], True, after=None)
         self.assertTrue(v['end']['paired'])
         self.assertEqual(v['diff'][0], ('centiseconds', 320, 321))
+
+    def test_rows_before_counts_the_past_end_inputs_due(self):
+        rows = b''.join(fsv.ROW.pack(cs, 1, 1, 0, 1, 0) for cs in (171, 172, 174))
+        self.assertEqual([fsv.rows_before(rows, cs) for cs in (171, 172, 173, 175)], [0, 1, 2, 3])
+
+
+class DeadSuperbank(unittest.TestCase):
+    """The superbank at ADVAN (fsv.dead_superbank): masked and counted only
+    when both sides sit at ADVAN with FB below 060000."""
+
+    def pair(self, z=0o3214, fb=0o2000, c64_fb=None, c64_z=None, sb=(0o60, 0o100)):
+        h, c = state(500)[1], state(500)[1]
+        h[5], c[5] = z, z if c64_z is None else c64_z
+        h[4], c[4] = fb, fb if c64_fb is None else c64_fb
+        h[fsv.SUPERBANK], c[fsv.SUPERBANK] = sb
+        return h, c
+
+    def test_masked_at_advan(self):
+        masked = {}
+        h, c = self.pair()
+        self.assertEqual(fsv.replay_compare(h, c, None, set(), 'lm', masked), [])
+        self.assertEqual(masked, {fsv.DEAD_SUPERBANK: 1})
+        h, c = self.pair(z=0o3231)
+        self.assertEqual(fsv.replay_compare(h, c, None, set(), 'cm', masked), [])
+        self.assertEqual(masked, {fsv.DEAD_SUPERBANK: 2})
+
+    def test_verdict_counts_and_matches(self):
+        h, c = self.pair()
+        v = fsv.replay_verdict([(500, h)], [(500, c)], True, after=[], m='lm')
+        self.assertEqual((v['diff'], v['matched'], v['masked'][fsv.DEAD_SUPERBANK]), ([], [500], 1))
+
+    def test_not_masked_elsewhere(self):
+        # FB at or above 060000 on either side or both, Z at ADVAN on
+        # neither side or one side only, the wrong mission or none.
+        for kw, m in ((dict(fb=0o60000), 'lm'), (dict(fb=0o60000, c64_fb=0o2000), 'lm'),
+                      (dict(c64_fb=0o60000), 'lm'), (dict(z=0o3215), 'lm'), (dict(c64_z=0o3215), 'lm'),
+                      (dict(z=0o3215, c64_z=0o3214), 'lm'), (dict(z=0o3214), 'cm'), ({}, None)):
+            masked = {}
+            h, c = self.pair(**kw)
+            diff = fsv.replay_compare(h, c, None, set(), m, masked)
+            self.assertIn(('superbank', 0o60, 0o100), diff, (kw, m))
+            self.assertEqual(masked, {}, (kw, m))
+
+    def test_only_selfbank_against_another(self):
+        # One side must hold SELFBANK's 0100, either side; any other pair of
+        # superbanks is a fault, not a dead read.
+        for sb in ((0o100, 0o60), (0, 0o100), (0o100, 0)):
+            self.assertEqual(fsv.replay_compare(*self.pair(sb=sb), None, set(), 'lm', {}), [], sb)
+        for sb in ((0, 0o60), (0o60, 0o70)):
+            self.assertEqual(fsv.replay_compare(*self.pair(sb=sb), None, set(), 'lm', {}), [('superbank', *sb)], sb)
+
+    def test_other_channel_at_a_masked_pair(self):
+        # Only the superbank is masked: another channel differing at the same
+        # pair is reported, alone.
+        h, c = self.pair()
+        k = 2048 + fsv.END_CHANNELS.index('channel 11')
+        c[k] = h[k] ^ 0o40
+        masked = {}
+        self.assertEqual(fsv.replay_compare(h, c, None, set(), 'lm', masked), [('channel 11', h[k], c[k])])
+        self.assertEqual(masked, {fsv.DEAD_SUPERBANK: 1})
+
+    def test_replay_exact_masks_nothing(self):
+        h, c = self.pair()
+        for exact, want in ((False, []), (True, [('superbank', 0o60, 0o100)])):
+            self.assertEqual(fsv.replay_compare(h, c, None, set(), fsv.mask_mission(exact, 'lm'), {}), want, exact)
+
+    def test_replay_exact_counts_time5_phase(self):
+        # TIME5 a count apart is a noted skip normally, a difference when exact.
+        h, c = self.pair(sb=(0o60, 0o60))
+        c[0o30] = (h[0o30] + 1) % 0o40000
+        skipped = set()
+        self.assertEqual(fsv.replay_compare(h, c, None, skipped, 'lm', {}), [])
+        self.assertEqual(skipped, {fsv.TIME5_PHASE})
+        skipped = set()
+        self.assertEqual(fsv.replay_compare(h, c, None, skipped, 'lm', {}, exact=True), [('TIME5', h[0o30], c[0o30])])
+        self.assertEqual(skipped, set())
+
+    def test_verdict_lists_masked_points(self):
+        h, c = self.pair()
+        v = fsv.replay_verdict([(500, h)], [(500, c)], True, after=[], m='lm')
+        self.assertEqual(v['masked'][fsv.DEAD_SUPERBANK_AT], [(500, 0o60, 0o100)])
+
+    def test_other_differences_still_count(self):
+        h, c = self.pair()
+        c[WORD] = 0o123
+        self.assertEqual(fsv.replay_compare(h, c, None, set(), 'lm', {}), [(f'{WORD:04o}', 0, 0o123)])
 
 
 if __name__ == '__main__':

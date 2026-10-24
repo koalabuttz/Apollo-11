@@ -23,7 +23,7 @@ REU bound check covers them.
 
 Cases: --cases ci (a fixed sample: CI_CASES; the CI gate for Pinball and
 display changes), --cases all (Lane C's tools/dsky_sweep_cases.py cases(),
-about 2,400), or --keys K1,K2 (named key strings). Keys are
+about 2,400), or --keys K1,K2 (named key strings: see key_cases). Keys are
 tools/flight_host_run.c's, plus Q for PRO (channel 32 bit 14, which is no
 key code: the host gets it as a FLIGHT_CHAN press). A case passes when the
 C64 ends its window at the host's sample point in the host's state. A case
@@ -41,11 +41,14 @@ changed, and a listed one of a run mission the run did not exercise.
 --write-known FILE writes that list from the run (keeping the reasons).
 
 Acceptance item 6 is met only by --cases all on both missions with no
-failure at all, clock class included, committed as evidence
-(--evidence DIR: dsky-sweep.json with the store, rope and program hashes).
+failure at all, clock class included, and no word left out of a compare
+(--replay-exact; without it the compare skips the words SCHEDULE_SKIP
+names, and a case that matches only so does not count), committed as
+evidence (--evidence DIR: dsky-sweep.json with the store, rope and program
+hashes).
 
-  dsky_sweep_vice.py [--missions lm,cm] [--cases ci|all] [--keys V16N36E,...] [--batch N] [--jobs N]
-                    [--known FILE] [--write-known FILE] [--evidence DIR]
+  dsky_sweep_vice.py [--missions lm,cm] [--cases ci|all] [--keys V16N36E,... | --keys 'K|CS:CH=V,...' ...] [--batch N] [--jobs N]
+                    [--known FILE] [--write-known FILE] [--evidence DIR] [--replay-exact]
 
 Needs make flight-store (both missions' stores and host runs), the yaAGC
 objects and VICE, as flight_scenario_vice.py. Writes
@@ -95,6 +98,33 @@ TIMER_NAMES = {'centiseconds', *fsv.TIMERS.values()}
 MISS = re.compile(r'^  (interp|basic ) (\d+,\d+) (\S+): (\d+) times;', re.M)
 PRO_BIT = 0o40000  # channel 32 bit 14, 0 while PRO is pressed
 PRO_HOLD = 30      # cs PRO stays down
+# A busy sample point (flight_host_run.c FLIGHT_BUSY_SAMPLE, dap_pass_check.c DP_BUSY)
+# once no sample has come for this many cs: a case whose job never idles
+# (LM V83's R31 display loop) still reaches its window's end on both sides.
+BUSY_CS = 100
+
+# A full sweep's report is about 1 MB, past tools/evidence.py's tree limit,
+# so it is stored in the release, which CI does not fetch. The summary stays
+# in the tree: everything tools/cert_precheck.py checks (mode, missions, the
+# hashes per mission, the counts and every failed case in full), bound to the
+# full report by its hash.
+SUMMARY = 'dsky-sweep-summary.json'
+
+
+def summary(full):
+    """The tree-sized summary of the report at path full, as JSON text."""
+    raw = full.read_bytes()
+    report = json.loads(raw)
+    keep = {k: v for k, v in report.items() if k not in ('results', 'runs')}
+    by_mission = {}
+    for r in report['results']:
+        row = by_mission.setdefault(r['m'], dict(cases=0, passed=0, skipped_cases=0))
+        row['cases'] += 1
+        row['passed'] += bool(r['ok'])
+        row['skipped_cases'] += bool(r.get('skipped'))
+    return json.dumps(dict(keep, full=full.name, full_sha256=hashlib.sha256(raw).hexdigest(),
+                           by_mission=by_mission, failed=[r for r in report['results'] if not r['ok']]),
+                      indent=1) + '\n'
 CASE = struct.Struct('<IHHIBBH')   # dap_pass_check.c dp_case
 
 
@@ -124,6 +154,19 @@ def all_cases():
         sys.exit('FAIL: --cases all needs tools/dsky_sweep_cases.py (Lane C, #674)')
     full = getattr(dsky_sweep_cases, 'all_cases', None)
     return [(c[0], c[1] + (f'|{c[3]}' if len(c) > 3 and c[3] else '')) for c in (full or dsky_sweep_cases.cases)()]
+
+
+def key_cases(values):
+    """The case strings of the --keys values. ';' always separates cases. A
+    case's own channel part (after '|': CS:CH=VALUE,...) has commas of its
+    own, so ',' separates cases only in a value with no ';' and no '|':
+    --keys V16N36E,V06N43E is two cases, --keys 'V37E00E|1200:032=17777,1300:032=37777'
+    is one."""
+    out = []
+    for v in values:
+        sep = ';' if ';' in v or '|' in v else ','
+        out += [k.strip() for k in v.split(sep) if k.strip()]
+    return out
 
 
 def case_chan(chan, key_cs):
@@ -187,7 +230,7 @@ def host_case(exe, m, i, case, a, start, channel32):
         # One FLIGHT_CHAN in time order: the Q presses and the case's own.
         both = [(int(x.split(':', 1)[0]), x.split(':', 1)[1]) for x in filter(None, chan.split(','))] + own
         chan = ','.join(f'{t}:{v}' for t, v in sorted(both, key=lambda x: x[0]))
-    env = {**os.environ, 'FLIGHT_SCALED': '1,1,2',
+    env = {**os.environ, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_BUSY_SAMPLE': str(BUSY_CS),
            'FLIGHT_SNAPSHOT': f'{a.snap_cs},{header}', 'FLIGHT_REPLAY': f'{window},0,{window},1',
            **({'FLIGHT_CHAN': chan} if chan else {})}
     r = subprocess.run([str(exe), fhd.ROPE[m], str(a.snap_cs + 1000 + window), hkeys], cwd=ROOT,
@@ -197,7 +240,7 @@ def host_case(exe, m, i, case, a, start, channel32):
     holes = [f'{x} ({n - start[0].get(x, 0)} arrivals)' for x, n in found.items() if n > start[0].get(x, 0)]
     yaagc = [f'{x} ({n - start[1].get(x, 0)} times)' for x, n in missed.items() if n > start[1].get(x, 0)]
     end = pathlib.Path(f'{header}.end')
-    if r.returncode or not end.exists():
+    if r.returncode or not end.exists() or end.stat().st_size < fsv.STATE:
         return dict(m=m, keys=case, ok=False, error=f'the host run did not end its window (exit {r.returncode})',
                     log=(r.stdout + r.stderr)[-2000:])
     data = end.read_bytes()
@@ -250,7 +293,8 @@ def sha(path):
 def link(a, m, name, header, table, snap, cs):
     defines = ['-DDP_REPLAY', '-DDP_REPLAY_REU=0ul', '-DDP_REPLAY_ROWS=1u', '-DDP_END=0ul',
                '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', '-DDP_STATES_MAX=1u',
-               '-DDP_OUTPUTS=0ul', '-DDP_OUTPUTS_MAX=0u', f'-DDP_SWEEP=0x{table:x}ul', f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
+               '-DDP_OUTPUTS=0ul', '-DDP_OUTPUTS_MAX=0u', f'-DDP_BUSY={BUSY_CS}u', f'-DDP_SWEEP=0x{table:x}ul',
+               f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
     old = dp.WORK
     dp.WORK = WORK
     try:
@@ -325,7 +369,8 @@ def run_batch(a, m, n, batch, manifest, pinned):
             hc, hw = c['host_end']
             cc, cw = fsv.c64_states(image[ends + k * fsv.C64_STATE:], 1, m)[0]
             skipped = set()
-            diff = fsv.replay_compare(hw, cw, fsv.SCHEDULE_SKIP.get(m), skipped)
+            diff = fsv.replay_compare(hw, cw, None if a.replay_exact else fsv.SCHEDULE_SKIP.get(m), skipped,
+                                     exact=a.replay_exact)
             if hc != cc:
                 diff.insert(0, ('centiseconds', hc, cc))
             res.update(ok=not diff, end_cs=cc, skipped=sorted(skipped), differences=len(diff), diff=diff,
@@ -355,7 +400,9 @@ def main():
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
     p.add_argument('--missions', default='lm,cm')
     p.add_argument('--cases', default='ci', choices=('ci', 'all'))
-    p.add_argument('--keys', default='', help='key strings, comma separated, instead of --cases')
+    p.add_argument('--keys', action='append', default=[],
+                   help="key strings instead of --cases; give it more than once, or separate with ';' "
+                        "(',' too while no string has a '|CS:CH=V,...' channel part)")
     p.add_argument('--every', type=int, default=1, help='with --cases all, every Nth case')
     p.add_argument('--snap-cs', type=int, default=1000)
     p.add_argument('--key-cs', type=int, default=1100, help='the first key, in AGC cs from the fresh start')
@@ -371,6 +418,9 @@ def main():
     p.add_argument('--write-known', type=pathlib.Path,
                    help="write the run's failures as a known list (keeping the reasons of --known's entries)")
     p.add_argument('--evidence', type=pathlib.Path, help='also copy dsky-sweep.json here (evidence)')
+    p.add_argument('--replay-exact', action='store_true',
+                   help='leave no SCHEDULE_SKIP word out of the compare, as acceptance item 6 needs '
+                        '(a TIME5 phase one count apart still matches, and counts as skipped)')
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
     p.add_argument('--rom-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
@@ -382,7 +432,7 @@ def main():
     WORK.mkdir(parents=True, exist_ok=True)
     missions = [m for m in a.missions.split(',') if m]
     if a.keys:
-        cases, mode = [(m, k) for m in missions for k in a.keys.split(',') if k], 'keys'
+        cases, mode = [(m, k) for m in missions for k in key_cases(a.keys)], 'keys'
     elif a.cases == 'ci':
         cases, mode = ci_cases(missions), 'ci'
     else:
@@ -454,18 +504,24 @@ def main():
         if 'diff' in r:
             r['differing'] = [x[0] for x in r.pop('diff')]
     ok = sum(1 for r in results if r['ok'])
+    # Item 6: a match with words left out of the compare is not a full match.
+    skipped = sum(1 for r in results if r.get('skipped'))
     classes = {}
     for r in results:
         if not r['ok']:
             classes[r['class']] = classes.get(r['class'], 0) + 1
     report = dict(mode=mode, missions=missions, every=a.every, snap_cs=a.snap_cs, key_cs=a.key_cs,
                   settle_cs=a.settle_cs, passed=ok, cases=len(results), failed_by_class=classes, stores=stores,
-                  item6=mode == 'all' and set(missions) == {'lm', 'cm'} and ok == len(results) and bool(results),
+                  replay_exact=a.replay_exact, skipped_cases=skipped,
+                  item6=mode == 'all' and set(missions) == {'lm', 'cm'} and ok == len(results) and bool(results)
+                  and not skipped,
                   results=results, runs=runs)
     (WORK / 'dsky-sweep.json').write_text(json.dumps(report, indent=1) + '\n')
+    (WORK / SUMMARY).write_text(summary(WORK / 'dsky-sweep.json'))
     if a.evidence:
         a.evidence.mkdir(parents=True, exist_ok=True)
         shutil.copy(WORK / 'dsky-sweep.json', a.evidence / 'dsky-sweep.json')
+        shutil.copy(WORK / SUMMARY, a.evidence / SUMMARY)
     print(f"{'PASS' if ok == len(results) and results else 'FAIL'}: DSKY sweep on the C64: {ok} of {len(results)} "
           'cases end in the host state' + (f" (failed: {', '.join(f'{n} {c}' for c, n in sorted(classes.items()))})"
                                            if classes else ''))

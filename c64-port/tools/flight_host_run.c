@@ -286,6 +286,8 @@ static void cold(void){unsigned i;m=loaded;memset(m.Erasable,0,sizeof m.Erasable
  * overriding the core's, and AGC time counts from the core's TIME1/TIME2
  * (t0), so keys, pokes and the centisecond limit are relative to it. */
 static const char *core_path;
+/* FLIGHT_DOWNRUPT under FLIGHT_CORE: waiting for the first sample point. */
+static int dl_arm;
 static const agc_word *view(void);
 static int core_start(const char *rope){static agc_t c;int rc;unsigned i,n;
  rc=agc_engine_init(&c,rope,core_path,1);if(rc!=0&&rc!=5){fprintf(stderr,"FLIGHT_CORE: %s: agc_engine_init %d\n",core_path,rc);return 0;}
@@ -374,7 +376,8 @@ static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const e
 /* LM: a table of weight 0 (POSTJUMP's and SELFCHK's, RK_MCT_IDLE) idles
  * only where the C64 idles: in the idle loop (FB on SELFCHK's bank 43),
  * outside an interrupt, with no job waiting (resident_flight.c, the idle
- * module's flag). Anywhere else (POSTJUMP in a job, or at the end of a
+ * module's flag), and there once a pass: SELFCHK costs nothing and
+ * POSTJUMP 04635 takes the tick (below). Anywhere else (POSTJUMP in a job, or at the end of a
  * RADARUPT's task) the C64 runs the routine from a module that weighs it as
  * work: the first holder with a weight. Back in the idle loop with a job
  * waiting (NEWJOB +0 or a core set, ADVAN's CCS: anything but -0), the
@@ -383,7 +386,13 @@ static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const e
 static unsigned idle_weight(const agc_word *w,agc_word sb,int isr){
 #if RK_LM
  int in;unsigned i;uint16_t key;
- if(!isr&&agc_fixed_physical(02000u,w[4],sb)/1024u==043u)return (w[NEWJOB]&077777u)==077777u?FLIGHT_IDLE_TICK:0u;
+ /* The C64 runs the idle pass (SELFCHK to POSTJUMP 04635) as one step with
+  * one idle charge, and its timer steps come due at ADVAN. Here POSTJUMP is
+  * a step of its own, so the pass's charge goes there: SELFCHK costs
+  * nothing, and the period's steps (and an interrupt they request) also
+  * come due at ADVAN, after its sample point. */
+ if(!isr&&agc_fixed_physical(02000u,w[4],sb)/1024u==043u)
+  return (w[NEWJOB]&077777u)==077777u&&(w[5]&07777u)==04635u?FLIGHT_IDLE_TICK:0u;
  key=point(w,sb,&in);
  for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&tables[i].mct&&!(tables[i].mct&FLIGHT_PLUS_WORDS)&&find(tables[i].t,key))return tables[i].mct;
 #else
@@ -1062,9 +1071,11 @@ static void store(apollo_overlay_state *s,flight_io *io,agc_hardware *hw){unsign
 static const agc_word *view(void){static agc_word v[2048];static const unsigned short at[]={3,4,5,AGC_EDOP,NEWJOB,0164,0165};unsigned i;
  for(i=0;i<sizeof at/sizeof at[0];++i)v[at[i]]=mword(at[i]);
  return v;}
-/* The output drives, once each clock period after the timers, as the C64
- * resident runs them: the IMU CDU drive (CDUXCMD-CDUZCMD) and, in the CM,
- * the optics error counters (the SPS gimbal commands in TVC mode). */
+/* The output drives, once each clock period, as the C64 resident runs
+ * them: the IMU CDU drive (CDUXCMD-CDUZCMD) and, in the CM, the optics
+ * error counters (the SPS gimbal commands in TVC mode). The work clock
+ * drives at the T5 step before rk_timer_phase (resident_flight.c
+ * rk_rupts_due); the scaled clock after rk_timer_tick (rk_rupts). */
 static void drives(apollo_overlay_state *s,agc_hardware *hw){
 #ifdef RK_CM
  unsigned k;long before[2];
@@ -1394,9 +1405,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  core_path=getenv("FLIGHT_CORE");
  if(sps_kg&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_SPS needs FLIGHT_SCALED\n");return 2;}
  if(core_path&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_CORE needs FLIGHT_SCALED\n");return 2;}
- /* core_start's yaAGC steps to the idle loop would land in the downlink
-  * reference stream, so the two are not combined (no scenario sets both). */
- if(core_path&&getenv("FLIGHT_DOWNRUPT")&&*getenv("FLIGHT_DOWNRUPT")&&strcmp(getenv("FLIGHT_DOWNRUPT"),"0")){fprintf(stderr,"FLIGHT_CORE does not take FLIGHT_DOWNRUPT\n");return 2;}
+ /* FLIGHT_CORE with FLIGHT_DOWNRUPT: core_start's yaAGC steps to the idle
+  * loop take no DOWNRUPT and log no downlink word; DOWNRUPT starts on both
+  * sides at the first native sample point after the core (dl_arm). */
+ if(core_path&&dl_on){dl_on=0;dl_arm=1;}
  if(getenv("FLIGHT_PATH"))sscanf(getenv("FLIGHT_PATH"),"%lu,%lu",&path_from,&path_to);
  reach_parse();
  if(getenv("FLIGHT_SCALED")&&!strcmp(getenv("FLIGHT_SCALED"),"W")){scaled=1;AgcFrozenClock=1;work=1;lag=~0u;}
@@ -1480,6 +1492,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      for(i=0,j=0;i<2048u;++i)if(compared(i)&&s.words[i]!=ref[next][i]&&j++<8u)printf(" %04o %05o/%05o",i,(unsigned)s.words[i],(unsigned)ref[next][i]);
      printf("%s (%u words, native/yaAGC)\n",j>8u?" ...":"",j);}
     ++next;}
+   if(dl_arm){dl_arm=0;dl_core_start(s.words);printf("downlink: DOWNRUPT from %lu cs, the first sample point after the core\n",now(s.words));}
    if(rp_after!=~0ul&&now(s.words)-rp_t0>rp_after_last){unsigned long d=now(s.words)-rp_t0;
     if(d>rp_after+RP_AFTER_CS){fclose(rp_out);fclose(rp_ends);return 0;}
     rp_end(d,s.words,&io,&hw);rp_after_last=d;}

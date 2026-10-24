@@ -14,12 +14,15 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
 {
     p66_bias_io p;
     enum dsky_nv_mission mission;
-    uint16_t k = (uint16_t)lanec_pw_spread(n, CASES, DSKY_OCTAL_CONSUMER_CASES);
+    /* past the spread: the module's own states with the noun in low erasable */
+    uint16_t k = n < CASES ? (uint16_t)lanec_pw_spread(n, CASES, DSKY_OCTAL_CONSUMER_CASES)
+                           : (uint16_t)((n - CASES) * 127u % DSKY_OCTAL_CONSUMER_CASES);
     lanec_fill(s, io, n);
     dsky_octal_consumer_input(s, &p, k, &mission);
+    if (n >= CASES) lanec_pw_low_noun(s, n - CASES);
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;
     lanec_pw_settle(s);
     m->mission = mission == DSKY_NV_CM ? LANEC_CM : LANEC_LM;
     lanec_pw_exit_stop(m, s, io, lanec_pw_octal_consumer_run);
 }
-const lanec_suite lanec_suite_pw_octal_consumer = { "pw-octal-consumer", CASES, make, lanec_pw_octal_consumer_run };
+const lanec_suite lanec_suite_pw_octal_consumer = { "pw-octal-consumer", CASES + LANEC_PW_LOW_NOUN, make, lanec_pw_octal_consumer_run };

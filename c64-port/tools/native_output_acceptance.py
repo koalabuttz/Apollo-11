@@ -7,8 +7,6 @@
   native_output_acceptance.py lm|cm --from-results [--replay-dir DIR] [--run RUN.json ...] [--downlink DIR] [--no-evidence]
                                                    writes from results already on disk
   native_output_acceptance.py lm|cm --windows   print the C64 --replay runs the doc needs
-  native_output_acceptance.py --stamp-downlink  after tools/flight_downlink_check.py: record the
-                                                commit its summary.json belongs to
 
 Reads, all of which must come from the same commit (as
 tools/program_acceptance.py: a result from an older commit counts when
@@ -18,7 +16,8 @@ the port's sources have not changed since):
                                                      the DSKY, the downlink lists, and the
                                                      output channels (RCS jets, engine, lamps,
                                                      CDU, gimbal and radar drives)
-  build/flight-downlink/summary.json                 tools/flight_downlink_check.py --vice
+  build/flight-downlink/summary.json                 tools/flight_downlink_check.py --vice (it records
+                                                     the commit and each C64 store's sha256)
   C64 --replay results                               tools/flight_scenario_vice.py --replay
                                                      (build/flight-store/dap-pass, plus --run)
 
@@ -36,6 +35,10 @@ Rows by kind:
              (the compare covers the erasable words and channels 5, 6, 11-14,
              34 and 35), and one of the row's channels changes in the host's
              states up to that checkpoint, so the window drove it.
+  dump       the erasable dump (V74): one named C64 --replay --downrupt window
+             matches the host at a checkpoint, and in the host's states up to
+             that checkpoint DNTMGOTO points into the dump code (DNDUMPI, DNDUMP,
+             DNDUMP1), so the dump list was going out on channels 34 and 35.
   dsky       pending until the DSKY sweep's result exists (the row's note
              names its owner).
 
@@ -56,27 +59,36 @@ import program_acceptance as pa  # noqa: E402
 DOWNLINK = ROOT / 'build/flight-downlink'
 WORK = ROOT / 'build/flight-store/dap-pass'
 # The output channels of a --replay state, after the 2048 erasable words
-# (tools/flight_scenario_vice.py END_CHANNELS).
+# (the first of tools/flight_scenario_vice.py END_CHANNELS).
 CHANNELS = [5, 6, 0o11, 0o12, 0o13, 0o14, 0o34, 0o35]
-STATE_WORDS = 1 + 2048 + len(CHANNELS) + 1
+# The erasable dump: DNTMGOTO and the addresses it holds while the dump goes
+# out (DNDUMPI after TC SENDID, DNDUMP, DNDUMP1; include/*_downtelemetry.h).
+DUMP = {'lm': (0o335, (0o3712, 0o3722, 0o3735)), 'cm': (0o335, (0o3725, 0o3735, 0o3750))}
 # This tool's own files do not make a result stale (as program_acceptance.py's).
 pa.SOURCES = pa.SOURCES + [':!tools/native_output_acceptance.py', ':!tests/test_native_output_acceptance.py',
                            ':!tools/mk/native-output-acceptance.mk']
 
 
-def host_states(header):
+def host_states(header, words=False):
     """[(cs, {channel: value})]: the snapshot's channels (cs 0), then each
     state the host wrote in the window (its .end file); [] when the files
-    are gone."""
+    are gone. words: the whole state (2048 erasable words, then the
+    channels) in place of the channel dict."""
     head, end = pathlib.Path(header), pathlib.Path(f'{header}.end')
     if not head.exists() or not end.exists():
         return []
     import flight_scenario_vice as fsv
-    out = [(0, dict(zip(CHANNELS, fsv.snap_state(head)[2048:2048 + len(CHANNELS)])))]
-    data = end.read_bytes()
-    for cs, words in fsv.states(data, len(data) // (2 * STATE_WORDS)):
-        out.append((cs, dict(zip(CHANNELS, words[2048:2048 + len(CHANNELS)]))))
+    pick = (lambda w: list(w)) if words else (lambda w: dict(zip(CHANNELS, w[2048:2048 + len(CHANNELS)])))
+    out = [(0, pick(fsv.snap_state(head)))]
+    for cs, state in end_states(end.read_bytes()):
+        out.append((cs, pick(state)))
     return out
+
+
+def end_states(data):
+    """Every state of an end-state file (flight_scenario_vice.py STATE bytes each)."""
+    import flight_scenario_vice as fsv
+    return fsv.states(data, len(data) // fsv.STATE)
 
 
 def driven(states, channels, until):
@@ -93,30 +105,35 @@ def driven(states, channels, until):
     return {c: v for c, v in seen.items() if len(v) > 1}
 
 
-def window_states(r):
+def window_states(r, words=False):
     """host_states for a --replay result (a chain's windows one after another)."""
     header = WORK / f"{r['scenario']}-{r['snap_cs']}-snap.h"
     if not r.get('chain'):
-        return host_states(header)
+        return host_states(header, words)
     out, base = [], 0
     for n in range(r['chain']):
-        part = host_states(f'{header}-{n}' if n else header)
+        part = host_states(f'{header}-{n}' if n else header, words)
         out += [(base + cs, ch) for cs, ch in part]
         base = out[-1][0] if out else base
     return out
 
 
-def load_downlink(path, commit):
-    """(summary or None, stale commit or None)."""
+def load_downlink(path, commit, m=None, store_sha=None):
+    """(summary or None, why it is stale or None). The summary names the
+    commit it ran at and the store each C64 window ran on
+    (tools/flight_downlink_check.py); a summary from other sources, or whose
+    C64 windows ran on another store than store_sha, is stale."""
     f = path / 'summary.json'
     if not f.exists():
         return None, None
     s = json.loads(f.read_text())
-    stamp = path / 'commit'
-    run = s.get('commit') or (stamp.read_text().strip() if stamp.exists() else None)
+    run = s.get('commit')
     if not pa.same_sources(run, commit):
         return None, run or 'unknown'
-    return dict(s, commit=run), None
+    ran_on = (s.get('stores') or {}).get(m)
+    if m and s.get('c64') and any(r.get('mission', m) == m for r in s['c64']) and ran_on != store_sha:
+        return None, f"{run}, {m}.reu sha256 {(ran_on or 'unknown')[:16]}"
+    return s, None
 
 
 def assess_downlink(row, summary):
@@ -161,7 +178,35 @@ def assess_channels(row, replays):
                                           for c, vals in moved.items()) if moved else
                                 'channels unchanged to the last matched checkpoint')
             r.setdefault('outputs_driven', {}).update({f'{c:o}': vals for c, vals in moved.items()})
-            best |= bool(matched) and bool(moved) and (match or bool(r.get('replay_matched_cs')))
+            # The whole window must match (program_acceptance.replay_result): one matched
+            # checkpoint in a window that fails later, skips words or leaves the layout is not enough.
+            best |= match and bool(matched) and bool(moved)
+            parts.append(f"{s} {r.get('snap_cs')}: {text}")
+    return best, '; '.join(parts) or ('not run' if row.get('windows') else 'no window named')
+
+
+def assess_dump(row, replays):
+    named = {pa.window_key(w) for w in row.get('windows', [])}
+    parts, best = [], False
+    for s in sorted({w[0] for w in row.get('windows', [])}):
+        goto, entries = DUMP[s.split('-')[0]]
+        for r in replays.get(s, []):
+            if pa.run_key(r) not in named:
+                continue
+            match, text = pa.replay_result(r)
+            if not r.get('downrupt'):
+                parts.append(f"{s} {r.get('snap_cs')}: run without --downrupt, so no downlink to compare")
+                continue
+            matched = [cs for w in (r.get('windows') or [r]) for cs in (w.get('replay_matched_cs') or [])]
+            states = window_states(r, words=True)
+            dump = [(cs, w[goto]) for cs, w in states if matched and cs <= max(matched) and w[goto] in entries]
+            if matched and not states:
+                text += '; host states gone, rerun to show the dump'
+            elif matched:
+                text += (f'; the dump is going out by {dump[0][0]} cs (DNTMGOTO {dump[0][1]:05o})' if dump else
+                         '; DNTMGOTO never points into the dump code to the last matched checkpoint')
+            r['dump_from_cs'] = dump[0][0] if dump else None
+            best |= match and bool(dump)
             parts.append(f"{s} {r.get('snap_cs')}: {text}")
     return best, '; '.join(parts) or ('not run' if row.get('windows') else 'no window named')
 
@@ -176,6 +221,8 @@ def assess(rows, replays, downlink):
             ok, text = assess_downlink(row, downlink)
         elif kind == 'channels':
             ok, text = assess_channels(row, replays)
+        elif kind == 'dump':
+            ok, text = assess_dump(row, replays)
         else:
             ok, text = False, 'pending'
         if row.get('waits_on') and status != 'not exercised':
@@ -235,6 +282,9 @@ def write_doc(m, assessed, counts, stale_runs, stale_downlink, evidence, commit,
              'checkpoint (the host matches yaAGC on the same inputs: the integrated_program_tests doc). A row counts '
              'a window only when one of its channels changes in the host\'s states up to the last checkpoint the '
              'C64 matched, so the window drove that output.',
+             '- **Erasable dump (V74)**: `tools/flight_scenario_vice.py --replay --downrupt`. The window is '
+             'compared as an output channel window, with DOWNRUPTs on both sides, and the host\'s states show '
+             'DNTMGOTO in the dump code (DNDUMPI, DNDUMP, DNDUMP1) by the last checkpoint the C64 matched.',
              '- **DSKY**: the noun x verb sweep on the C64 build (acceptance bar item 6).', '',
              'A result from a commit with other port sources (src, include, platform, tools, tests) is stale and '
              'counts as not run.', '',
@@ -255,7 +305,7 @@ def write_doc(m, assessed, counts, stale_runs, stale_downlink, evidence, commit,
         verdict = {True: 'pass', None: 'not exercised', False: 'waiting' if row.get('waits_on') else
                    ('pending' if row['kind'] == 'dsky' else 'not yet')}[a['ok']]
         chans = ', '.join(f'{c:o}' for c in row.get('channels', [])) or \
-            ('34, 35' if row['kind'] == 'downlink' else ('10 (display)' if row['kind'] == 'dsky' else ''))
+            ('34, 35' if row['kind'] in ('downlink', 'dump') else ('10 (display)' if row['kind'] == 'dsky' else ''))
         lines.append(f"| {pa.cell(row['row'])} | {row['kind']} | {chans} | {verdict} | {pa.cell(a['text'])} | "
                      f"{pa.cell(row.get('note') or '')} |")
     lines += ['', '## Evidence', '']
@@ -273,10 +323,15 @@ def write_doc(m, assessed, counts, stale_runs, stale_downlink, evidence, commit,
     out.write_text('\n'.join(lines))
 
 
-def window_command(w):
+def window_command(w, downrupt=False):
     s, snap, cs, k, every = list(w) + [1, 100][len(w) - 3:]
     return (['tools/flight_scenario_vice.py', '--scenario', s, '--snap-cs', str(snap), '--cs', str(cs), '--replay',
-             '--replay-every', str(every)] + (['--chain', str(k)] if k > 1 else []))
+             '--replay-every', str(every)] + (['--chain', str(k)] if k > 1 else []) + (['--downrupt'] if downrupt else []))
+
+
+def downrupt_windows(rows):
+    """The windows a dump row names: they run with --downrupt."""
+    return {tuple(w) for row in rows if row['kind'] == 'dump' for w in row.get('windows', [])}
 
 
 def run_needed(m, rows, windows, downlink):
@@ -286,10 +341,9 @@ def run_needed(m, rows, windows, downlink):
     only = sorted({x for row in rows if row['kind'] == 'downlink' for x in row.get('host', []) + row.get('c64', [])})
     if only:
         subprocess.run([sys.executable, 'tools/flight_downlink_check.py', '--vice', '--only', ','.join(only)], cwd=ROOT)
-        downlink.mkdir(parents=True, exist_ok=True)
-        (downlink / 'commit').write_text(flight_holes.source_commit() + '\n')
+    dr = downrupt_windows(rows)
     for w in windows:
-        subprocess.run([sys.executable, *window_command(w)], cwd=ROOT)
+        subprocess.run([sys.executable, *window_command(w, w in dr)], cwd=ROOT)
 
 
 def main(argv=None):
@@ -305,12 +359,7 @@ def main(argv=None):
     ap.add_argument('--note')
     ap.add_argument('--windows', action='store_true', help="print the map's C64 --replay runs and exit")
     ap.add_argument('--from-results', action='store_true', help='do not run anything: write from the results on disk')
-    ap.add_argument('--stamp-downlink', action='store_true',
-                    help="write the commit flight_downlink_check.py's summary belongs to")
     a = ap.parse_args(argv)
-    if a.stamp_downlink:
-        (a.downlink / 'commit').write_text(flight_holes.source_commit() + '\n')
-        return 0
     if not a.mission:
         ap.error('mission required')
     m, p = a.mission, pa.PROGRAM[a.mission]
@@ -318,22 +367,23 @@ def main(argv=None):
     rows = plan['rows']
     windows = sorted({tuple(w) for row in rows for w in row.get('windows', [])})
     if a.windows:
+        dr = downrupt_windows(rows)
         for w in windows:
-            print(' '.join(['python3', *window_command(w)]))
+            print(' '.join(['python3', *window_command(w, w in dr)]))
         return 0
     if not a.from_results:
         run_needed(m, rows, windows, a.downlink)
     commit = a.commit or flight_holes.source_commit()
     replays, stale_runs = pa.load_replays(sorted(a.replay_dir.glob('*.json')) + a.run, m, commit)
-    downlink, stale_downlink = load_downlink(a.downlink, commit)
+    # The store the windows ran on (acceptance contract rule 9).
+    store = ROOT / 'build/flight-store' / f'{m}.reu'
+    store_sha = pa.sha(store) if store.exists() else None
+    downlink, stale_downlink = load_downlink(a.downlink, commit, m, store_sha)
     assessed, counts = assess(rows, replays, downlink)
     used = {w[0] for w in windows}
     evidence = write_evidence(m, {s: r for s, r in replays.items() if s in used}, downlink,
                               ROOT / 'build/native-output-acceptance' / m, not a.no_evidence)
     out = a.out or ROOT / f'docs/acceptance/{p}-native_output_tests.md'
-    # The store the windows ran on (acceptance contract rule 9).
-    store = ROOT / 'build/flight-store' / f'{m}.reu'
-    store_sha = pa.sha(store) if store.exists() else None
     if not store_sha:
         counts['ok'] = False
     write_doc(m, assessed, counts, stale_runs, stale_downlink, evidence, commit, out, windows, a.note, store_sha)

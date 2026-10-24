@@ -24,12 +24,15 @@ typedef char same_layout[(LANEC_LM_CHARIN2 == LANEC_LM_CHARIN + 11u && LANEC_CM_
     LANEC_CM_ENTERJMP == LANEC_CM_CHARIN2 + 4u + 33u && LANEC_LM_DSPLOCK == LANEC_CM_DSPLOCK &&
     LANEC_LM_CADRSTOR == LANEC_CM_CADRSTOR && LANEC_LM_MPAC == LANEC_CM_MPAC && LANEC_LM_CHAR == LANEC_CM_CHAR &&
     LANEC_LM_21_S_22REG == LANEC_CM_21_S_22REG && LANEC_LM_ELRCODE1_WORD == 022u &&
-    LANEC_CM_ELRCODE1_WORD == 022u) ? 1 : -1];
+    LANEC_CM_ELRCODE1_WORD == 022u && LANEC_LM_DSPCOUNT == LANEC_CM_DSPCOUNT &&
+    LANEC_LM_DECBRNCH == LANEC_CM_DECBRNCH && LANEC_LM_89TEST_BANK == 040u && LANEC_CM_89TEST_BANK == 040u) ? 1 : -1];
 #define DSPLOCK LANEC_LM_DSPLOCK
 #define CADRSTOR LANEC_LM_CADRSTOR
 #define MPAC LANEC_LM_MPAC
 #define CHAR LANEC_LM_CHAR
 #define REG2122 LANEC_LM_21_S_22REG
+#define DSPCOUNT89 LANEC_LM_DSPCOUNT
+#define DECBRNCH LANEC_LM_DECBRNCH
 #define ELRCODE1 022u
 #define BIT5 020u
 #define DSALMOUT 011u
@@ -109,6 +112,23 @@ static enum lanec_status from_charin(apollo_overlay_state *s, lanec_io *io, enum
     return LANEC_OUT_OF_SCOPE;
 }
 
+/* 89TEST +0 CCS DSPCOUNT, TC +4, TC +3, TC ENDOFJOB, TC ENDOFJOB, +5 CAF THREE,
+ * MASK DECBRNCH, CCS A, +8 TC NUM, +9 TC CHARALRM: an 8 or 9 goes on to NUM
+ * only in a decimal load; in an octal one (DECBRNCH +0) it is an OPR ERR. */
+static enum lanec_status test89(apollo_overlay_state *s, enum lanec_mission m)
+{
+    const places *p = at(m);
+    uint16_t *w = s->words, x = p->label[T89];
+    uint16_t endofjob = m == LANEC_LM ? LANEC_LM_ENDOFJOB : LANEC_CM_ENDOFJOB;
+    uint8_t skip = lanec_ccs(s, w[DSPCOUNT89]);                        /* CCS DSPCOUNT */
+    if (skip >= 2u) { lanec_tc(s, endofjob, (uint16_t)(x + skip + 2u)); return LANEC_OK; }
+    w[LANEC_A] = 3u;                                                   /* CAF THREE */
+    lanec_mask(s, w[DECBRNCH]);
+    if (lanec_ccs_a(s) == 0u) lanec_tc(s, p->label[NUM], (uint16_t)(x + 9u));
+    else lanec_tc(s, p->label[ALRM], (uint16_t)(x + 10u));
+    return LANEC_OK;
+}
+
 enum lanec_status lanec_pin_keys_num(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)
 {
     uint8_t g;
@@ -117,7 +137,9 @@ enum lanec_status lanec_pin_keys_num(apollo_overlay_state *s, lanec_io *io, enum
     if (!lanec_registers_valid(s) || lanec_current_bank(s, io) != 040u) return LANEC_OUT_OF_SCOPE;
     g = label_of(at(m), s->words[LANEC_Z]);
     if (g != NUM && g != T89 && g != NUM0) return LANEC_OUT_OF_SCOPE;
-    return from_charin(s, io, m, g, m == LANEC_LM ? lanec_pw_charin_number_run : lanec_pw_cm_charin_number_run);
+    if (from_charin(s, io, m, g, m == LANEC_LM ? lanec_pw_charin_number_run : lanec_pw_cm_charin_number_run) == LANEC_OK)
+        return LANEC_OK;
+    return g == T89 ? test89(s, m) : LANEC_OUT_OF_SCOPE;    /* an octal 8 or 9, or a blocked load */
 }
 
 static uint8_t at_label(apollo_overlay_state *s, lanec_io *io, enum lanec_mission m)

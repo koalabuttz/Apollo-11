@@ -20,6 +20,7 @@ whole build runs is a hand-off at a word no part keys, and fails the check.
 import argparse
 import os
 import re
+import struct
 import subprocess
 import sys
 
@@ -96,6 +97,85 @@ def main():
             print('case %d: whole %s / parts %s' % (i, w[i][:60], p[i][:60]))
         sys.exit('FAIL: %d of %d %s cases end differently in the flight parts' % (len(bad), len(w), a.spec))
     print('PASS: %d %s cases end the same in its %d flight parts chained as in the whole build' % (len(w), a.spec, n))
+    any_eb(a.spec, base, cases, whole, runner, out)
+
+
+# An EB the differential's cases never start under (they draw E5 for the
+# fast-window files).
+OTHER_EB = 0o1000
+
+
+def any_eb_keys(base):
+    """The keys whose per-key entry runs under any EB (basic_sane_any_eb:
+    spec 'any_eb_entries', or a routine that sets EB first), as Z and the
+    FB the entry checks (None: fixed-fixed, any FB)."""
+    src = open(os.path.join(R, 'src', '%s.c' % base)).read()
+    keys = []
+    for m in re.finditer(r'static enum exec_status r\w+_abi\(.*?\n(.*?)\n}', src, re.S):
+        b = re.search(r'basic_sane_any_eb\([^,]*,[^,]*,0(\d+)u\)', m.group(1))
+        k = re.search(r'basic_run\(s,\([^)]*\)v,(\d+)u\)', m.group(1))
+        if b and k:
+            at = int(k.group(1))
+            z = 0o4000 + at - 2048 if at // 1024 in (2, 3) else 0o2000 + at % 1024
+            keys.append((z, None if b.group(1) == '177777' else int(b.group(1), 8)))
+    return keys
+
+
+def any_eb(spec, base, cases, whole, runner, out):
+    """The parts' flight entry must take an any-EB key under an EB other
+    than E5, as the whole build's per-key entry does (P06 calls FINETIME +1
+    under its own EB). The differential's cases that start at such a key,
+    run again under OTHER_EB, must end the same in the parts as in the whole
+    build, and the whole build must not refuse them."""
+    keys = any_eb_keys(base)
+    if not keys:
+        return
+    d = open(cases, 'rb').read()
+    o = 4
+    for _ in range(2):
+        k, = struct.unpack_from('<H', d, o + 2)
+        o += 4 + 4 * k
+        for _ in range(2):
+            k, = struct.unpack_from('<H', d, o)
+            o += 2 + 2 * k
+        if struct.unpack_from('<I', d, 0)[0] == 0x33435249:
+            k, = struct.unpack_from('<H', d, o)
+            o += 2 + 4 * k
+    head, (count,), o = d[:o], struct.unpack_from('<I', d, o), o + 4
+    picked, seen = [], set()
+    for _ in range(count):
+        seed, cm, ie, sb, x, ne = struct.unpack_from('<IBBHHH', d, o)
+        cut = d[o + 12:o + 14] if ie & 0x80 else b''
+        at = o + 12 + len(cut)
+        edits = [struct.unpack_from('<2H', d, at + 4 * i) for i in range(ne)]
+        o = at + 4 * ne
+        e = dict(edits)
+        for z, fb in keys:
+            if e.get(5) == z and (fb is None or e.get(4) == fb) and 4 in e:
+                seen.add(z)
+                more = [(3, OTHER_EB), (6, (e[4] & 0o76000) | OTHER_EB >> 8)]
+                edits2 = [x for x in edits if x[0] not in (3, 6)] + more
+                picked.append(struct.pack('<IBBHHH', seed, cm, ie, sb, x, len(edits2)) + cut
+                              + b''.join(struct.pack('<2H', *x) for x in edits2))
+    missing = sorted({z for z, _ in keys} - seen)
+    if missing:
+        sys.exit('FAIL: no %s case starts at the any-EB key(s) %s' % (spec, ', '.join('%05o' % z for z in missing)))
+    path = os.path.join(out, 'any-eb-cases.bin')
+    with open(path, 'wb') as f:
+        f.write(head + struct.pack('<I', len(picked)) + b''.join(picked))
+    w = subprocess.run([whole, path], cwd=R, check=True, capture_output=True, text=True).stdout.splitlines()
+    p = subprocess.run([runner, path], cwd=R, check=True, capture_output=True, text=True).stdout.splitlines()
+    refused = [x for x in w if x.split()[1] == '1']
+    if refused:
+        sys.exit('FAIL: the whole build refuses %d of %d %s any-EB cases' % (len(refused), len(w), spec))
+    bad = [i for i, (x, y) in enumerate(zip(w, p)) if x != y]
+    if len(w) != len(p) or bad:
+        for i in bad[:5]:
+            print('any-EB case %d: whole %s / parts %s' % (i, w[i][:60], p[i][:60]))
+        sys.exit('FAIL: %d of %d %s cases at an any-EB key under EB %05o end differently in the flight parts'
+                 % (len(bad), len(w), spec, OTHER_EB))
+    print('PASS: %d %s cases at its %d any-EB keys under EB %05o end the same in the flight parts'
+          % (len(w), spec, len(keys), OTHER_EB))
 
 
 if __name__ == '__main__':

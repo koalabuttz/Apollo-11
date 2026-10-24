@@ -2,8 +2,8 @@
  "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
  "results": [
   "PASS: VICE PAL lanec-ev-front.prg: 23 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-short.prg: 122 checks, 0 failures",
-  "PASS: VICE PAL lanec-ev-align.prg: 104 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-short.prg: 121 checks, 0 failures",
+  "PASS: VICE PAL lanec-ev-align.prg: 97 checks, 0 failures",
   "PASS: VICE PAL lanec-ev-radar.prg: 31 checks, 0 failures",
   "PASS: VICE PAL lanec-ev-dap.prg: 46 checks, 0 failures",
   "PASS: VICE PAL lanec-ev-time.prg: 13 checks, 0 failures",
@@ -13,8 +13,8 @@
  ],
  "prg_sha256": {
   "lanec-ev-front.prg": "fcc6973c932096181040c8e2358fdd8f38ca4fb2ee233e0646bbc2277217277c",
-  "lanec-ev-short.prg": "1aa1e17b48c7d98e81c0670cf8a26615ca0d037416237a37a9fe3a1e06808d24",
-  "lanec-ev-align.prg": "c261b182ff53fa3cedc09a0558e3160155af58fde116952cdc878853730db8a1",
+  "lanec-ev-short.prg": "2bf122cf640df2bcef260ee8ed9ec5eeeebe0cde18369455305e350c1b4ab569",
+  "lanec-ev-align.prg": "c69cd6646386529f69d89ea83f6cc47d79d28f57a61072ff08b75cd86a13641d",
   "lanec-ev-radar.prg": "9e9864b8ceac76062531be0e48dc6a42bdd1ee791fa5deaa7cdbcb9415695aee",
   "lanec-ev-dap.prg": "048e63c9b4f2350c2f7d8a464f3f4cd211c413b8a4819c95a2b59121d8bbbf57",
   "lanec-ev-time.prg": "d795b4390f442653d0949610f9f2c735e9120e569b2d4324b2f4e43db41fcc0f",

@@ -154,6 +154,9 @@ jobs:
       - name: Differential step-cap loop classification
         working-directory: c64-port
         run: python3 tools/interp_loops_test.py
+      - name: Differential edge-value writes stay in erasable
+        working-directory: c64-port
+        run: python3 tools/interp_edges_test.py
       - name: Coverage audit
         working-directory: c64-port
         run: |

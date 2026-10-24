@@ -2019,7 +2019,7 @@ class Compiler:
              'static const uint16_t %s_flight_keys[%d]={%s};' % (sym, len(every), ','.join('%uu' % k for k in every)),
              'static enum exec_status %s_leave(apollo_overlay_state *s,uint16_t at){unsigned i;' % sym,
              # A fixed-fixed key's Z is its physical address (banks 02, 03).
-             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(%s);return EXEC_OK;}' % (
+             ' for(i=0;i<%du;++i)if(%s_flight_keys[i]==at){W[5]=(agc_word)(%s);FLIGHT_PART_LEFT();return EXEC_OK;}' % (
                  len(every), sym, 'at>=04000u&&at<010000u?at:02000u+at%1024u'
                  if any(k // 1024 in (2, 3) for k in every) else '02000u+at%1024u'),
              ' return EXEC_OUT_OF_SCOPE;',
@@ -2045,8 +2045,16 @@ class Compiler:
             # Fixed-fixed: any FB and SUPERBNK (basic_compile.py flight_parts
             # allows it only with 'fixed_fixed_any_fb'), as the per-key entries.
             sane = '0177777u' if b in (2, 3) else '0%05ou' % bfb
-            c.append(' case 0%ou:if(!basic_sane(s,io,%s))return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
-                b, sane, chan, run))
+            # A key that runs under any EB (spec 'any_eb_entries', or a
+            # routine that sets EB first) gets basic_sane_any_eb, as its
+            # per-key entry does.
+            free = [k for k in every if k // 1024 == b and k in getattr(self, 'eb_free', ())]
+            test = 'basic_sane(s,io,%s)' % sane
+            if free:
+                test = '(%s?basic_sane_any_eb(s,io,%s):basic_sane(s,io,%s))' % (
+                    '||'.join('at==%uu' % k for k in free), sane, sane)
+            c.append(' case 0%ou:if(!%s)return EXEC_OUT_OF_SCOPE;%sreturn %s(s,io,at);' % (
+                b, test, chan, run))
         c += [' }', ' return EXEC_OUT_OF_SCOPE;', '}']
         bounds = [0] + cuts + [0o200000]
         pmap = self.basic.flight_map
@@ -2079,6 +2087,8 @@ class Compiler:
         c.append('#include "%s.h"' % base)
         c.append('#include "%s"' % ('lm_interp_steps.h"\n#include "lm_interp_orders.h' if self.m == 'lm' else 'cm_interp.h'))
         c.append('#include "agc_image_ops.h"')
+        if self.spec.get('flight_parts'):
+            c.append('#include "flight_part.h"')  # FLIGHT_PART_LEFT, in flight_table's _leave
         if self.uses_hw:
             c.append('#include "agc_channel_ops.h"')
         elif self.uses_channels:

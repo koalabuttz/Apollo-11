@@ -18,8 +18,15 @@ sanitize-lanec-pin-keys: build/lanec-native-sanitize build/lanec-oracle tools/la
 # five keypress flight modules loaded from the REU store; run make
 # flight-store first.
 LANEC_PIN_KEYS_MODULES = lanec_pin_keys_num_routines,lanec_pin_keys_cmd_routines,lanec_pin_keys_release_routines,lanec_pin_keys_sign_routines,lanec_pin_keys_clear_routines
-.PHONY: module-test-lanec-pin-keys
+# c64-/vice-lanec-pin-keys are the same run under the names the certificate
+# evidence (tools/lanec/cert_evidence.py --c64 pin-keys=lanec-pin-keys)
+# and docs/port-coverage.json vice_targets use; c64-lanec-pin-keys builds
+# the store.
+.PHONY: module-test-lanec-pin-keys c64-lanec-pin-keys vice-lanec-pin-keys
 module-test: module-test-lanec-pin-keys
+c64-lanec-pin-keys:
+	python3 tools/flight_store_build.py
+vice-lanec-pin-keys: c64-lanec-pin-keys module-test-lanec-pin-keys
 module-test-lanec-pin-keys: build/lanec-native build/lanec-oracle tools/module_test.py tools/module_test.c
 	set -e; for s in pin-keys pin-key-labels; do \
 	  python3 tools/lanec/diff.py $$s --refusals; \

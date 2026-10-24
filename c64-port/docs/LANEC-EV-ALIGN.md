@@ -19,7 +19,10 @@ rendezvous radar and command the landing radar, with the checks they share:
 As in `lanec-ev-short`, each `case` of `lm_step`/`cm_step` in
 `src/lanec_ev_align.c` is one basic block, every label and return point is
 an entry, and control runs from block to block until it leaves these
-bodies. `TC Q` (RDRUSECK, XACT0Q, CKLFTBTS) is a transfer to register Q.
+bodies. `TC Q` (RDRUSECK, XACT0Q, CKLFTBTS) is a transfer to register Q. When Q
+holds a return address in fixed memory (02000-07777) the routine goes on
+there (`lanec_ev_tc_q`: Q = 3, Z = that address), as the TC Q's next word;
+any other Q (erasable code) is a boundary at Z = Q, as before.
 CCS skips follow the source exactly, including LRBYBIT, which is bit 15:
 its masked value is +0 or negative, and the negative case lands on
 CHECKRR +1. Luminary's ATTCK2 task (bank 42, MP) is not part of this

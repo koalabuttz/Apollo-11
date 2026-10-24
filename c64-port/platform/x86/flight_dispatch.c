@@ -6,6 +6,7 @@
 #include <string.h>
 #include "flight_dispatch.h"
 #include "resident_cdu.h"
+#include "tc_trap.h"
 #include "rope_image.h"
 #include "self_check.h"
 #include "standard_lead_routines.h"
@@ -73,6 +74,8 @@ static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *wo
 
 void fd_init(fd_state *st,uint8_t mode,agc_word ch30,agc_word ch31){static agc_routine_table basic[256],interp[256];unsigned i,j;uint8_t nb=0,ni=1;
  memset(st,0,sizeof *st);st->mode=mode;
+ /* Power-up lights RESTART, as yaAGC's first cycle does. */
+ st->restart_light = 1u;
  memset(at,0,sizeof at);
  for(i=0;i<fd_table_count;++i){const fd_table *e=&fd_tables[i];
   if(e->interp&&mode==FD_INTERP_CORE&&e->t!=&agc_lm_danzig_marker&&e->t!=&agc_cm_danzig_marker)continue;
@@ -155,6 +158,11 @@ uint8_t fd_boundary(fd_state *st)
         if (st->downrupt && ((c & 037777u) >> 6) != ((st->hw.channel4 & 037777u) >> 6))
             st->pending |= RK_RUPT_BIT(RK_RUPT_DOWN);
     }
+    /* A request taken in the VERB69 spin's period: the spin ends with the
+     * clock step just run, as the idle loop's does on the work clock. */
+    if (got && st->idling)
+        st->mct = st->next_period - (st->phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0);
+    st->idling = 0;
     return got;
 }
 
@@ -189,9 +197,74 @@ static enum exec_status run(fd_state *st,agc_routine call,enum flight_io_kind ki
  x=flight_io_enter(kind,&st->io,&st->hw,&b);r=call(&st->p,&st->s,x);flight_io_leave(kind,&st->io,&st->hw,&b);
  return r;}
 
+void fd_gojam(fd_state *st)
+{
+    agc_word *w = st->s.words;
+    w[2] = w[5];
+    w[5] = 04000u;
+    st->io.interrupt_enabled = 1u;
+    st->hw.in_interrupt = 0u;
+    st->pending = 0u;
+    st->io.trap31a = st->io.trap31b = st->io.trap32 = 0u;
+    st->hw.channel5 = st->hw.channel6 = st->hw.channel10 = st->hw.channel11 = 0u;
+    st->hw.channel12 = st->hw.channel13 = st->hw.channel14 = 0u;
+    st->io.channel34 = st->io.channel35 = 0u;
+    st->hw.channel33 |= 02000u;
+    st->restart_light = 1u;
+}
+
+void fd_key(fd_state *st, agc_word code)
+{
+    st->hw.channel15 = code;
+    st->pending |= RK_RUPT_BIT(RK_RUPT_KEY1);
+    /* RSET puts the RESTART lamp out directly, with no software. */
+    if (code == 022u) st->restart_light = 0u;
+}
+
+void fd_lamps(fd_state *st)
+{
+    /* Channel 11 bit 10 written with a 1 resets the RESTART lamp. */
+    if (st->hw.channel11 & 01000u) st->restart_light = 0u;
+}
+
+/* The TC trap (tc_trap.h): the spin at VERB69, to the end of the clock
+ * period, then the trap's GOJAM. */
+static int tc_trap(fd_state *st, fd_ran *ran)
+{
+    double end;
+    uint8_t phase;
+    int step = tc_trap_step(st->s.words, st->io.superbank, st->hw.in_interrupt != 0u, st->phase,
+                            &st->spin);
+    if (step == TC_TRAP_NONE) return 0;
+    if (step == TC_TRAP_GOJAM) {
+        fd_gojam(st);
+        ran->trap = 2u;
+        return 1;
+    }
+    st->s.words[2] = 02040u;
+    /* The end of this period's T5 step. */
+    for (end = st->next_period, phase = st->phase; phase != RK_PHASE_T5;) {
+        phase = (uint8_t)(phase + 1u);
+        end += phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0;
+    }
+    if (end > st->mct) {
+        ran->mct = end - st->mct;
+        st->mct = end;
+    }
+    st->idling = 1u;
+    ran->trap = 1u;
+    return 1;
+}
+
 enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(st,&in);uint16_t t=at[in][key];
  static uint16_t core_key;static uint8_t core_in;
- ran->key=key;ran->interp=(uint8_t)in;ran->table=0;ran->mct=0.0;++st->steps;
+ ran->key = key;
+ ran->interp = (uint8_t)in;
+ ran->table = 0;
+ ran->mct = 0.0;
+ ran->trap = 0;
+ ++st->steps;
+ if (tc_trap(st, ran)) return ran->status = EXEC_OK;
  if(t){const fd_table *e=&fd_tables[t-1u];apollo_overlay_state before=st->s;flight_io io0=st->io;agc_hardware hw0=st->hw;
   st->p.operands=e->sites;st->p.operand_count=e->nsites;
   st->p.fixed_data=e->fixed==1u?SELF_CHECK_ROPE:rope_data;
@@ -212,7 +285,14 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
           ran->status = run(st, c, e->io);
       }
   }
-  if(ran->status==EXEC_OK){ran->mct=cost(key,(uint8_t)in);st->mct+=ran->mct;core_in=2;if(t-1u<256u)++st->uses[t-1u];return EXEC_OK;}
+  if (ran->status == EXEC_OK) {
+      ran->mct = cost(key, (uint8_t)in);
+      st->mct += ran->mct;
+      core_in = 2;
+      fd_lamps(st);
+      if (t - 1u < 256u) ++st->uses[t - 1u];
+      return EXEC_OK;
+  }
   /* A refusal: undo it; an interpretive point goes to the core. */
   st->s=before;st->io=io0;st->hw=hw0;
   if(!in){++st->unmapped;gap(st,key,0,1,e->name,1);return ran->status=EXEC_UNMAPPED;}
@@ -232,4 +312,5 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
  ran->mct = (double)CORE_MCT;
  st->mct += ran->mct;
  core_key=fd_point(st,&in);core_in=(uint8_t)in;
+ fd_lamps(st);
  return ran->status;}
