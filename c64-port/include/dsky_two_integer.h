@@ -3,7 +3,7 @@
 #define DSKY_TWO_INTEGER_H
 #include "dsky_sign_output.h"
 enum dsky_two_integer_stage {DSKY_TWO_INTEGER_BLANK,DSKY_TWO_INTEGER_SIGN,DSKY_TWO_INTEGER_FIRST,DSKY_TWO_INTEGER_SECOND,DSKY_TWO_INTEGER_RETURN};
-/* Original 2INTOUT, two positive SP integers0..99. Explicit stages retain
+/* Original 2INTOUT, two positive SP integers 0..99 (or -0). Explicit stages retain
  * actual source call/return boundaries. Bank40/allEB/four selectingSUPER,
  * legalIRQ, row0..2, ordinaryRAM, nonzero relay words and restoring producer
  * exclusion. SECOND reads fresh ordinary pair0100..3776/no bank crossing;

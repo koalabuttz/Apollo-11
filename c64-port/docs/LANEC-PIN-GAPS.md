@@ -23,6 +23,8 @@ translated, in both Luminary099 and Comanche055:
   verb display of UPDATVB) and its return from DSPDECVN, UPDAT1 +2, DSPOCTIN
   and its return from DSPIN (bank 40), and OCTBACK, the octal display's
   per-character loop (bank 41).
+- DSPSIGN, the sign of the decimal display (bank 40): its entry and the
+  points where -ON and +ON return.
 
 Each native entry runs one source path from its entry to the first boundary
 and leaves the image exactly as the original program leaves it there (A/L/Q
@@ -52,6 +54,8 @@ debris, the stores, Z at the boundary, FB/BB, superbank, channels).
 | DSPOCTIN `TC DSPIN`; +1 (DSPIN returns) `CAF +2`, `TC BANKJUMP` | `lanec_pin_jumps` | DSPIN; BANKJUMP with A = ENDSPOCT (CADR OCTBACK) |
 | OCTBACK `CCS WDCNT`: WDAGAIN (`TS WDCNT`, `CS CYL` three times, `CS A`, `MASK DSPMSK`, the relay code from RELTAB, `TS CODE`, `XCH DSPCOUNT`, `TS COUNT`, `CCS A`, `TS DSPCOUNT`) | `lanec_pin_jumps` | POSTJUMP (CADR DSPOCTIN), the next character |
 | OCTBACK's other branches, DSPLV `CS VD1`, `TS DSPCOUNT` | `lanec_pin_jumps` | WDRET |
+| DSPSIGN `XCH Q`, `TS DSPWDRET`, `CCS MPAC` and its four branches (`AD ONE`, `TS MPAC` for negative and -0) | `lanec_pin_dspsign` | +ON (positive, +0) or -ON (negative, -0) |
+| DSPSIGN +010 (-ON returns) `CS MPAC +1`, `TS MPAC +1`, `TC DSPWDRET`; +014 (+ON returns) `TC DSPWDRET` | `lanec_pin_dspsign` | the saved return, run as a TC (Q = DSPWDRET +1) |
 | dispatch by Z and bank | `lanec_pin_gaps_dispatch` | |
 
 `NOUNADD` may name any erasable pair from 010 up to 01376 or inside the
@@ -83,6 +87,11 @@ leaves the display position there, plus BIT14 to blank the signs); a negative
 DSPCOUNT would run the `CADR DSPOCTIN` word as an instruction, and is out of
 scope.
 
+DSPSIGN saves its caller's Q in DSPWDRET and returns with `TC DSPWDRET`,
+which runs that word as a `TC`. The return must be a fixed-memory address
+(02000-07777); anything else would run as some other instruction and is out
+of scope, as is a Q that overflowed (its `TS DSPWDRET` would skip).
+
 `DCA` reads the pair's second word into L before the first into A, so a
 pair whose first word is L (NOUNADD 1) gives A the new L; a central register
 read through its address gives its low 15 bits, sign-extended. Verb 07
@@ -93,7 +102,7 @@ follows both rules.
 Harness: `tools/lanec/` (see `docs/LANEC-EV-FRONT.md`).
 Hashes: `evidence/lanec-pin-gaps/SHA256.json`.
 
-- Independent assembly comparison: `lanec-pin-gaps-diff.json` (14,848 cases:
+- Independent assembly comparison: `lanec-pin-gaps-diff.json` (15,616 cases:
   both MIXBR branches, NOUNADD over unswitched, switched, MPAC-overlapping and
   editing-register pairs, both return points, every channel 0-077 with and
   without high NOUNCADR bits, DSP2DEC from its entry with and without an
@@ -101,10 +110,12 @@ Hashes: `evidence/lanec-pin-gaps/SHA256.json`.
   with fixed and erasable callers, the lamp-test returns, DSPDCWD1 from its
   three points with every digit, every CCS branch and out-of-range A or MPAC,
   the POSTJUMP and BANKJUMP targets with OCTBACK over every WDCNT branch,
-  positive, blanking and negative DSPCOUNT and any CYL, both missions;
-  14,545 identical, 303 refused unchanged) and
+  positive, blanking and negative DSPCOUNT and any CYL, DSPSIGN from its
+  entry over every CCS branch (Q with and without overflow) and from both
+  returns with fixed and non-fixed saved returns, both missions;
+  15,224 identical, 392 refused unchanged) and
   `lanec-pin-gaps-oracle.crc`.
 - Host and sanitizer results: `make test-lanec-pin-gaps sanitize-lanec-pin-gaps`
   (`lanec-pin-gaps-sanitize.txt`).
-- C64 execution results: `make vice-lanec-pin-gaps`, 50 frozen cases that `tools/lanec/cover.py pick`
+- C64 execution results: `make vice-lanec-pin-gaps`, 63 frozen cases that `tools/lanec/cover.py pick`
   chose to take every host branch arc of the suite, on a VICE PAL C64 (`lanec-pin-gaps-vice.txt`).

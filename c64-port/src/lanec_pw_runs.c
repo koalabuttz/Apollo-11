@@ -366,14 +366,23 @@ enum lanec_status lanec_pw_test_noun_run(apollo_overlay_state *s, lanec_io *io, 
 
 enum lanec_status lanec_pw_two_integer_run(apollo_overlay_state *s, lanec_io *io, enum lanec_mission mission)
 { LANEC_ONE_MISSION(mission);
+#ifndef AGC_FLIGHT_INTERPRETER
+    /* A flight run needs no copy: the Pinball trampoline (src/lanec_pin_trampoline.c)
+     * gives a refused routine its entry state back, and the 4 KB stays out of the
+     * module's store slot. */
     static apollo_overlay_state before;
+#endif
     p66_bias_io p;
     unsigned k;
+#ifndef AGC_FLIGHT_INTERPRETER
     before = *s;
+#endif
     p.superbank = io->superbank; p.interrupt_enabled = io->interrupt_enabled;
     for (k = 0; k < 5u; ++k)
         if (dsky_two_integer(s, &p, mission == LANEC_CM ? DSKY_NV_CM : DSKY_NV_LM, (enum dsky_two_integer_stage)k) != P66_BIAS_OK) {
+#ifndef AGC_FLIGHT_INTERPRETER
             *s = before;
+#endif
             return LANEC_OUT_OF_SCOPE;
         }
     io->superbank = p.superbank; io->interrupt_enabled = p.interrupt_enabled;

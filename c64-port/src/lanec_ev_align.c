@@ -166,7 +166,7 @@ static uint16_t lm_step(apollo_overlay_state *s, lanec_io *io, uint16_t key)
         lanec_ev_cs(s, w[L(MODREG)]);
         lanec_ad(s, LW(DEC22));
         if (lanec_ev_zero(s)) JUMP(L(ALM_S_END));
-        JUMP(LANEC_Q);
+        JUMP(lanec_ev_tc_q(s));
     /* IMUATTCK: TC CHKPOOH; +1 coarse-align and needles mode checks */
     case L(IMUATTCK): CALL(L(CHKPOOH), z + 1u);
     case L(IMUATTCK) + 1u:
@@ -253,7 +253,7 @@ static uint16_t cm_step(apollo_overlay_state *s, lanec_io *io, uint16_t z)
         lanec_ad(s, CW(OPIMDIFF));
         if (lanec_ev_zero(s)) JUMP(C(XACT0Q));
         CALL(C(ALM_S_END), z + 9u);
-    case C(XACT0Q): JUMP(LANEC_Q);                                     /* TC Q */
+    case C(XACT0Q): JUMP(lanec_ev_tc_q(s));                                     /* TC Q */
     case C(IMUZEROK): case C(IMUCOARK): case C(IMUFINEK): CALL(C(CKMODCAD), z + 1u);
     case C(IMUZEROK) + 1u: case C(IMUZEROK) + 3u: case C(ICORK2) + 3u: case C(ICORK2) + 5u:
     case C(IMUFINEK) + 10u: case C(IMUFINEK) + 12u: case C(FINEK2) + 3u:
@@ -337,7 +337,7 @@ static uint16_t cm_step(apollo_overlay_state *s, lanec_io *io, uint16_t z)
     case C(CKLFTBTS):
         lanec_ev_ca(s, CW(GRRBKBIT));
         lanec_mask(s, w[C(FLAGWRD5)]);
-        if (lanec_ccs_a(s) == 0) JUMP(LANEC_Q);
+        if (lanec_ccs_a(s) == 0) JUMP(lanec_ev_tc_q(s));
         lanec_ev_ca(s, CW(BIT5));
         lanec_ev_rand(s, io, 030u);
         if (lanec_ccs_a(s) == 0) JUMP(C(Q_P_1));
