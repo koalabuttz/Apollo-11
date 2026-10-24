@@ -123,8 +123,26 @@ BLOCKS = {'csm': 0o1554, 'lm': 0o1626}
 MOON_MU = 4.9028e12
 
 
+# Three rendezvous rows again, with each V33 a display-driven key: !
+# makes it wait for the verb and noun to flash (both programs:
+# tools/flight_host_run.c keys_parse, platform/x86/flight_scenario.h), as
+# the crew answers the display rather than the clock. Before the x86
+# program ran on the work clock these were the rows whose V33s landed on
+# a blank display; they check that both programs wait the same way.
+WAIT = ('lm-rendezvous-tpm', 'lm-stable-orbit', 'lm-stable-orbit-lm')
+
+# Word limits tighter than the harness's clock spread, for rows the x86
+# program flies nearly word for word. The two stable-orbit -wait rows end
+# 8 and 17 words apart; with the x86 program ignoring ! (--drop-keys !)
+# they end over 500 apart, still inside the spread, so without a cap they
+# could not show that both programs wait the same way.
+WORD_CAP = {'lm-stable-orbit-wait': 100, 'lm-stable-orbit-lm-wait': 100}
+
+
 def supported():
-    return [row for row in fhd.FLIGHT + fhd.RESTART_FLIGHT + fhd.V69_FLIGHT if not any(k in row[4] for k in UNSUPPORTED)]
+    rows = [row for row in fhd.FLIGHT + fhd.RESTART_FLIGHT + fhd.V69_FLIGHT if not any(k in row[4] for k in UNSUPPORTED)]
+    return rows + [(f'{name}-wait', m, cs, keys.replace('V33E', '!V33E'), env)
+                   for name, m, cs, keys, env in fhd.FLIGHT if name in WAIT]
 
 
 # The TC trap rows (fhd.V69_FLIGHT: P00, then V69E). The harness takes the
@@ -404,7 +422,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     words = sum(hw[i] != xw[i] for i in WORDS)
     spread_words = sum(hw[i] != sw[i] for i in WORDS)
     rn_tol, vn_tol = SPREAD_K * s_rn + RN_FLOOR, SPREAD_K * s_vn + VN_FLOOR
-    words_tol = int(WORDS_K * spread_words) + WORDS_PLUS
+    words_tol = min(int(WORDS_K * spread_words) + WORDS_PLUS, WORD_CAP.get(name, 1 << 30))
     truth = None
     h_err, o_err, x_err = (truth_errors(m, env, w) for w in (hw, sw, xw)) if 'FLIGHT_RR' in env else (None,) * 3
     if h_err and h_err[2] != o_err[2]:

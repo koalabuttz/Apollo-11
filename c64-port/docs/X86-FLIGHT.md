@@ -15,7 +15,7 @@ Lane B, for David's second product target (roadmap, 2026-10-13): a native x86_64
 x86-flight-lm ROPE.bin [CS [KEYS]]
 ```
 
-It runs Luminary099 from GOJAM for CS centiseconds of AGC time (default 1000), pressing the DSKY KEYS (for example `V37E12E`) one every half second from 2 s. `@CS` in KEYS moves the next key and the ones after it to that centisecond or later (`V37E63E@9000P` presses PRO at 90 s). Environment:
+It runs Luminary099 from GOJAM for CS centiseconds of AGC time (default 1000), pressing the DSKY KEYS (for example `V37E12E`) one every half second from 2 s. `@CS` in KEYS moves the next key and the ones after it to that centisecond or later (`V37E63E@9000R` presses RSET at 90 s; `P` is RSET too, as in the harness). `!` before a key makes it wait past its time until the verb and noun flash (channel 11 bit 6, the crew's cue), and moves the keys after it later by as long; the harness takes `!` the same way. Environment:
 
 | Variable | Effect |
 |---|---|
@@ -154,7 +154,7 @@ The CM's VHF dropout (`cm-p20-vhf-dropout`) moves the marks and so both blocks.
 
 The word count is what sees programs that don't move the state vector. With the mark buttons left out of the x86 run (`--drop-keys MJxyj`), P52 differs in 210 words against a limit of 19 and P57 in 188 against 37, so both fail. P22 and P23 fail on RN as well.
 
-On base fccb0653 the tool flies 75 scenarios, and all pass with no envelope of their own. 62 end in the same erasable image as the harness on the work clock, every CM scenario among them; the other 13 are LM (Gaps). The seven that stopped at an uncertified Pinball point before Pinball's certificates (#674) fly to the end.
+On base 7f7f89fa the tool flies 78 scenarios, and all pass with no envelope of their own. 62 end in the same erasable image as the harness on the work clock, every CM scenario among them; the other 13 are LM (Gaps). The seven that stopped at an uncertified Pinball point before Pinball's certificates (#674) fly to the end. Three more rows fly `lm-rendezvous-tpm`, `lm-stable-orbit` and `lm-stable-orbit-lm` with each V33 a display-driven key (`!V33E`, the `-wait` rows): both programs hold the key until the verb and noun flash, as a crew answers the display rather than the clock. The two stable-orbit `-wait` rows end 8 and 17 words from the harness, so their word limit is capped at 100 (`WORD_CAP`); with the x86 program ignoring `!` (`--drop-keys !`) they end over 500 words apart and fail, as does `lm-rendezvous-tpm-wait` on its LM state block.
 
 The nine restart rows (`fhd.RESTART_FLIGHT`: a `FLIGHT_GOJAM` in each phase, the same rows `tools/flight_restart_check.py` checks against yaAGC) are flown too. Every row with a restart, these, `lm-p63-descent-restart` and the V69 rows, must also count as many restarts as the harness on one of its clocks (REDOCTR: LM 0320, CM 01154), because a restart that resumes the same program can leave the state vector and most words as they were. With `FLIGHT_GOJAM` ignored in the x86 run only, 8 of those 10 `FLIGHT_GOJAM` rows fail on REDOCTR (only 2 failed before the check). The other two can't see it: `lm-p00-doi-restart`'s harness clocks count 0 and 1 at the compare point, and `cm-p00-p40-restart`'s compare point is the GOJAM itself. Like the harness's FLIGHT_SNAPSHOT, the x86 program's samples are taken after a sample point's restart (nothing is pending after a GOJAM); before, it sampled one step late at the GOJAM and `cm-p00-p40-restart` differed in 171 words against a limit of 163.
 
