@@ -929,6 +929,14 @@ def check_dsky_sweep(report, label, mission, name, accepted):
     elif DSKY_SWEEP_SUMMARY.exists():
         sweep = json.loads(DSKY_SWEEP_SUMMARY.read_text())
         sweep['results'] = sweep.get('failed', [])
+        # The summary keeps only the failed cases: its counts must add up, or
+        # a case could drop out of it unseen.
+        row = (sweep.get('by_mission') or {}).get(m) or {}
+        failed_m = sum(1 for r in sweep['results'] if r.get('m') == m)
+        if not row.get('cases') or row.get('passed', -1) + failed_m != row['cases']:
+            report.add(level, label, f"evidence/dsky-sweep/dsky-sweep-summary.json's {m} counts do not add up "
+                       f"({row.get('passed')} passed + {failed_m} failed, {row.get('cases')} cases)",
+                       'commit the summary the sweep wrote with its full report')
     else:
         dsky_sweep_clock(report, label, m, clock)
         report.add(level, label, f'no full DSKY sweep result for {m} (evidence/dsky-sweep/dsky-sweep.json)',
