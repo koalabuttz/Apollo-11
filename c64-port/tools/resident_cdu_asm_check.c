@@ -8,8 +8,10 @@
  *  - against src/resident_cdu.c's rk_cdu_drive, the reference, period by
  *    period on seeded inputs: any channel 14 high byte, writes to every
  *    counter the mission drives (edges, +0 and -0, large counts), long idle
- *    stretches and elapsed counts near the C's 0xfff0 stop. Each period
- *    compares 050-054 and the whole drive state;
+ *    stretches and elapsed counts near the C's 0xfff0 stop, and GYROCMD
+ *    (047) writes. Each period compares 047, 050-054 and the whole drive
+ *    state;
+ *  - the gyro drive's check from tests/test_resident_cdu.c;
  *  - in the CM, the optics counters' check from tests/test_resident_cdu.c.
  * Prints the periods, the mean cycles a period and the differences; exits
  * 1 on any difference.
@@ -56,6 +58,7 @@ static void drive(uint8_t hi) {
 static void clear(void) {
     uint8_t k;
     for (k = 0; k < 5u; ++k) IMG[050u + k] = ref.words[050u + k] = 0;
+    IMG[047] = ref.words[047] = 0;
     rk_cdu = rk_cdu_c = (rk_cdu_state){{0}, 0, 0};
 }
 
@@ -109,22 +112,50 @@ static unsigned against_c(uint32_t periods) {
         if (r % 997u == 0u) rk_cdu.elapsed = rk_cdu_c.elapsed = (uint16_t)(0xffe0u + rnd() % 32u);
         for (k = 0; k < 5u; ++k)
             if (rnd() % 12u == 0u) IMG[050u + k] = ref.words[050u + k] = count();
+        if (rnd() % 40u == 0u) IMG[047] = ref.words[047] = count();
         hw.channel14 = (uint16_t)((uint16_t)hi << 8 | (rnd() & 0xffu));
         rk_cdu_drive_c(&ref, &hw);
         drive(hi);
         for (k = 0; k < 5u; ++k)
             if (IMG[050u + k] != ref.words[050u + k] || rk_cdu.owed[k] != rk_cdu_c.owed[k]) break;
-        if (k < 5u || rk_cdu.elapsed != rk_cdu_c.elapsed || rk_cdu.active != rk_cdu_c.active) {
+        if (k < 5u || IMG[047] != ref.words[047] || rk_cdu.elapsed != rk_cdu_c.elapsed || rk_cdu.active != rk_cdu_c.active) {
             if (++failures <= 5u)
                 printf("period %lu, ch14 %02x: counter %u %05o/%05o owed %d/%d, elapsed %u/%u, active %u/%u (.S/C)\n",
                        (unsigned long)n, hi, k, k < 5u ? IMG[050u + k] : 0, k < 5u ? ref.words[050u + k] : 0,
                        k < 5u ? rk_cdu.owed[k] : 0, k < 5u ? rk_cdu_c.owed[k] : 0,
                        rk_cdu.elapsed, rk_cdu_c.elapsed, rk_cdu.active, rk_cdu_c.active);
             for (k = 0; k < 5u; ++k) IMG[050u + k] = ref.words[050u + k];
+            IMG[047] = ref.words[047];
             rk_cdu = rk_cdu_c;
         }
     }
     return failures;
+}
+
+/* The gyro drive (tests/test_resident_cdu.c gyro): 32 pulses a period on
+ * channel 14 bit 10, never past 0; a negative count or bit 10 clear sends
+ * nothing; the CDU drive state stays as it was. */
+static unsigned gyro(void) {
+    unsigned fail = 0;
+    clear();
+    IMG[047] = 70u;
+    drive(01000u >> 8);
+    if (IMG[047] != 38u || rk_cdu.active || rk_cdu.elapsed != 4u) ++fail;
+    drive(01000u >> 8);
+    drive(01000u >> 8);
+    if (IMG[047]) ++fail;
+    IMG[047] = 040000u;
+    drive(01000u >> 8);
+    if (IMG[047] != 040000u) ++fail;
+    IMG[047] = 077777u;
+    drive(01000u >> 8);
+    if (IMG[047] != 077777u) ++fail;
+    IMG[047] = 037777u;
+    drive(0700u >> 8);
+    if (IMG[047] != 037777u) ++fail;
+    drive(01740u >> 8);
+    if (IMG[047] != 037777u - 32u) ++fail;
+    return fail;
 }
 
 #if defined(RK_CM)
@@ -146,7 +177,7 @@ static unsigned optics(void) {
 #endif
 
 int main(void) {
-    unsigned yaagc, c, opt = 0;
+    unsigned yaagc, c, opt = 0, gy;
     if ((uintptr_t)&__heap_start > APOLLO_SHARED_ADDRESS) {
         printf("FAIL: the check reaches %p, past the image at %04x\n", (void *)&__heap_start, APOLLO_SHARED_ADDRESS);
         return 1;
@@ -157,11 +188,12 @@ int main(void) {
     }
     yaagc = timeline();
     c = against_c(UINT32_C(65536));
+    gy = gyro();
 #if defined(RK_CM)
     opt = optics();
 #endif
-    printf("%s: resident-cdu-asm %s: yaAGC timeline %lu periods, %u blocks differ; against the C 65536 periods, %u differ; optics %u fail; cycles a period with the call: idle %ld, driving %ld (mean)\n",
-           yaagc || c || opt ? "FAIL" : "PASS", MISSION, (unsigned long)RC_PERIODS, yaagc, c, opt,
+    printf("%s: resident-cdu-asm %s: yaAGC timeline %lu periods, %u blocks differ; against the C 65536 periods, %u differ; gyro %u fail; optics %u fail; cycles a period with the call: idle %ld, driving %ld (mean)\n",
+           yaagc || c || gy || opt ? "FAIL" : "PASS", MISSION, (unsigned long)RC_PERIODS, yaagc, c, gy, opt,
            calls[0] ? cycles[0] / calls[0] : 0, calls[1] ? cycles[1] / calls[1] : 0);
-    return yaagc || c || opt ? 1 : 0;
+    return yaagc || c || gy || opt ? 1 : 0;
 }
