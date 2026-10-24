@@ -1443,6 +1443,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(!gojam_parse(getenv("FLIGHT_GOJAM"))){fprintf(stderr,"FLIGHT_GOJAM=CS[,CS...]\n");return 2;}
  dl_parse();
  pokes_sort();
+ if(!rhc_parse(getenv("FLIGHT_RHC"))
+#if !RK_LM
+  ||nrhc
+#endif
+  ){fprintf(stderr,"FLIGHT_RHC=FROM-TO:P,Q,R;... (LM; counts at most 42)\n");return 2;}
 #if RK_LM
  if(getenv("FLIGHT_ENGINE"))engine_kg=strtod(getenv("FLIGHT_ENGINE"),0);
  if(getenv("FLIGHT_ENGINE_LAG"))engine_lag=strtod(getenv("FLIGHT_ENGINE_LAG"),0);
@@ -1454,11 +1459,6 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_STAGE"))stage_cs=strtoul(getenv("FLIGHT_STAGE"),0,10);
  if(stage_cs&&!ascent_kg){fprintf(stderr,"FLIGHT_STAGE needs FLIGHT_ASCENT\n");return 2;}
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
- if(!rhc_parse(getenv("FLIGHT_RHC"))
-#if !RK_LM
-  ||nrhc
-#endif
-  ){fprintf(stderr,"FLIGHT_RHC=FROM-TO:P,Q,R;... (LM; counts at most 42)\n");return 2;}
  if(!lrm_parse(getenv("FLIGHT_LR"))){fprintf(stderr,"FLIGHT_LR=CS[:DH]\n");return 2;}
  if(!drops_parse(&lrm.drops,getenv("FLIGHT_LR_DROP"))){fprintf(stderr,"FLIGHT_LR_DROP=T0-T1[,T0-T1...]\n");return 2;}
  if(lrm.on&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_LR needs FLIGHT_SCALED\n");return 2;}
