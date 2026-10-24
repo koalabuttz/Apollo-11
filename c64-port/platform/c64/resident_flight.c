@@ -88,6 +88,10 @@ __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     if (rk_charge_group && rk_charge_group == rk_part_prev && n) --n;
     rk_charge_group = 0;
     if (mct == RK_MCT_IDLE) {
+        /* A pass with a job ready (NEWJOB not -0: CHECKNJ leaves for it)
+         * is no idle: the host charges it nothing (tools/flight_host_run.c
+         * idle). */
+        if (IMAGE->words[067u] != 077777u) return;
         rk_work = rk_phase_rest[rk_tick_phase & 15u]; /* 0-8: a byte index */
         rk_idle = 1;
         return;
