@@ -432,12 +432,18 @@ static const char *keys="";
  * pressed from that centisecond on (e.g. V37E63E@9000R presses RSET at
  * 90 s; P is RSET too, key code 022: PRO is no key code but channel 32
  * bit 14, pressed with FLIGHT_CHAN). Each key's time is set once, by keys_parse. */
+/* A key may also be preceded by ! (opt in; no scenario without one changes):
+ * it waits past its time for the DSKY's verb and noun to flash (channel 11
+ * bit 6, the crew's cue to answer), and the keys after it move later by as
+ * long as it waited. Each side waits on its own channel 11 (struct key_side). */
 enum { KEYS=1024 };
-static char keyc[KEYS+1];static unsigned long keyt[KEYS];
-static void keys_parse(const char *t){unsigned long at=KEY_AT;unsigned n=0;
+static char keyc[KEYS+1];static unsigned long keyt[KEYS];static unsigned char keyw[KEYS];
+static void keys_parse(const char *t){unsigned long at=KEY_AT;unsigned n=0;unsigned char wait=0;
  while(*t&&n<KEYS){if(*t=='@'){char *e;unsigned long v=strtoul(t+1,&e,10);if(v>at)at=v;t=e;continue;}
-  keyc[n]=*t++;keyt[n++]=at;at+=KEY_GAP;}
+  if(*t=='!'){wait=1;++t;continue;}
+  keyw[n]=wait;wait=0;keyc[n]=*t++;keyt[n++]=at;at+=KEY_GAP;}
  keyc[n]=0;keys=keyc;}
+struct key_side{unsigned pressed;unsigned long late;};
 static agc_word keycode(char c){return c=='V'?021u:c=='N'?037u:c=='E'?034u:c=='0'?020u:c=='+'?032u:c=='-'?033u:
  c=='C'?036u:c=='P'?022u:c=='K'?031u:c=='R'?022u:(agc_word)(c-'0');}
 /* M and J are the CM's MARK and MARK REJECT buttons (CM P52): channel 16
@@ -445,7 +451,10 @@ static agc_word keycode(char c){return c=='V'?021u:c=='N'?037u:c=='E'?034u:c=='0
  * j are the LM's X MARK, Y MARK and MARK REJECT (channel 16 bits 3, 4
  * and 5, LM P57). key_due returns them as MARK_KEY | the channel 16 bits. */
 #define MARK_KEY 0x100
-static int key_due(unsigned long t,unsigned *pressed){char c;if(!keys[*pressed]||t<keyt[*pressed])return -1;c=keys[(*pressed)++];
+static int key_due(unsigned long t,struct key_side *k,unsigned channel11){char c;unsigned i=k->pressed;
+ if(!keys[i]||t<keyt[i]+k->late)return -1;
+ if(keyw[i]){if(!(channel11&040u))return -1;k->late=t-keyt[i];}
+ c=keys[k->pressed++];
  return c=='M'?MARK_KEY|040:c=='J'?MARK_KEY|0100:c=='x'?MARK_KEY|04:c=='y'?MARK_KEY|010:c=='j'?MARK_KEY|020:(int)keycode(c);}
 /* FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...]: the ground's uplink. From the first
  * sample point at or after CS, each key (the DSKY key letters, R for ERROR
@@ -1401,7 +1410,7 @@ static void word_step(unsigned long cs){int isr=m.InIsr;uint64_t c=m.CycleCounte
 int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static agc_word ref[32768][2048],first[2048];
  flight_io io;agc_hardware hw;agc_native_program p;uint16_t pending=0;
  unsigned long cs=argc>2?strtoul(argv[2],0,0):100ul,steps,next,refs,limit,bridged=0,locked=0;
- unsigned i,j,kref=0,knat=0,uref=0,unat=0,cref=0,cnat=0,pref=0,pnat=0,gref=0,gnat=0;int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
+ unsigned i,j,uref=0,unat=0,cref=0,cnat=0,pref=0,pnat=0,gref=0,gnat=0;struct key_side kref={0,0},knat={0,0};int latency=getenv("FLIGHT_NATIVE_LATENCY")!=0;unsigned long diffs=0,samples=0,lost_brupt=0;
  enum { TRACE=24 };uint16_t trace[TRACE][3];const char *names[TRACE];
  if(argc<2||!apollo_rope_load(MISSION,argv[1])||agc_load_binfile(&loaded,argv[1])){fprintf(stderr,"usage: flight-host-run ROPE.bin [CS [KEYS]]\n");return 2;}
  keys_parse(argc>3?argv[3]:"");
@@ -1499,7 +1508,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     lr_due(now(w),&lr_ref,0);
     chan_due(now(w),&cref,0,0);
     if(gojam_due(now(w),&gref))gojam_yaagc(&m);
-    else if((k=key_due(now(w),&kref))>=0){unsigned r=k&MARK_KEY?RK_RUPT_KEY2:RK_RUPT_KEY1;m.InputChannel[k&MARK_KEY?016:015]=(int16_t)(k&0377);
+    else if((k=key_due(now(w),&kref,(unsigned)m.InputChannel[011]))>=0){unsigned r=k&MARK_KEY?RK_RUPT_KEY2:RK_RUPT_KEY1;m.InputChannel[k&MARK_KEY?016:015]=(int16_t)(k&0377);
      if(m.AllowInterrupt){*cell(015)=(int16_t)(ADVAN+1u);*cell(017)=(int16_t)rope_word(ADVAN,(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);*cell(5)=(int16_t)(04000u+4u*r);m.InIsr=1;}
      else m.InterruptRequests[r]=1;}
     else if((k=uplink_due(now(w),&uref))>=0){*cell(045)=(int16_t)k;
@@ -1594,7 +1603,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(rp_after!=~0ul&&gojam_due(now(s.words),&gnat)){fclose(rp_out);fclose(rp_ends);return 0;}
    if(rp_out&&!snap_path&&gojam_due(now(s.words),&gnat)){fprintf(stderr,"FLIGHT_REPLAY: a GOJAM at %lu cs is in the window\n",now(s.words));return 3;}
    if(gojam_due(now(s.words),&gnat)){printf("GOJAM at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);gojam_native(s.words,&io,&hw,&pending);substitute=0;}
-   else if((k=key_due(now(s.words),&knat))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
+   else if((k=key_due(now(s.words),&knat,hw.channel11))>=0){if(k&MARK_KEY){io.channel16=(agc_word)(k&0377);pending|=RK_RUPT_BIT(RK_RUPT_KEY2);}
     else{hw.channel15=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_KEY1);}}
    else if((k=uplink_due(now(s.words),&unat))>=0){s.words[045]=(agc_word)k;pending|=RK_RUPT_BIT(RK_RUPT_UP);}
    if(rp_out&&!snap_path)rp_diff(now(s.words),0u,s.words,&hw,io.channel16,pending);
