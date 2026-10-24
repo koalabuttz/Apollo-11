@@ -96,7 +96,67 @@ static uint32_t now(void){uint8_t b0,b1,a0,a1;
 #ifdef RK_STEP_PROFILE
 void rk_prof(uint8_t segment){uint32_t t=now();prof[segment].cycles+=t-prof_last;++prof[segment].calls;prof_last=now();}
 #endif
-static uint16_t agc_cs(void){return (uint16_t)IMAGE->words[025];}
+static uint16_t agc_cs(void)
+{
+    return (uint16_t)IMAGE->words[025];
+}
+/* The window clock: centiseconds since clock_start(). */
+#ifndef DP_SWEEP
+/* TIME1 since the start, as before, but held at its last value while
+ * TIME2:TIME1 is behind the start. TIMEDIDL (the V70-V73 uplinks, 04,3567)
+ * holds TIME2:TIME1 near zero while it adds the uplinked delta. The host
+ * steps whole routines and never sees the hold (tools/flight_host_run.c
+ * now() counts TIME2:TIME1), but a C64 step can end in it, and the 14-bit
+ * TIME1 difference then reads as a full window. The delta itself counts, as
+ * on the host. A negative delta (V70 can move the clock back) that leaves
+ * TIME2:TIME1 behind the start would hold the clock until it catches up,
+ * so the window would run on past its end: no scenario uplinks one. */
+uint16_t dp_clock_t2 CASSETTE, dp_clock_t1 CASSETTE, dp_clock_last CASSETTE;
+static void clock_start(void)
+{
+    dp_clock_t2 = IMAGE->words[024];
+    dp_clock_t1 = IMAGE->words[025];
+    /* dp_clock_last: 0 from load_snapshot (the cassette state). */
+}
+/* window_cs, in 6502 code for room: TIME2 ($7028) and TIME1 ($702A) less
+ * the start as one 30-bit subtraction; a borrow (behind the start) holds
+ * the clock, else it is the TIME1 difference, 14 bits. Returns A:X. */
+_Static_assert(APOLLO_SHARED_ADDRESS == 0x7000u, "dp_window_cs reads TIME2/TIME1 at $7028/$702A");
+uint16_t dp_window_cs(void);
+/* Where the room is: on the LM, in the text screen with the other harness
+ * code (DP_SCREEN_TEXT); in the resident for the hardware check (it shows
+ * its screen) and on the CM (its screen code reaches the last character). */
+#if defined(DP_HW_CHECK) || defined(RK_CM)
+#define DP_CLOCK_SECTION ".text.dp_window_cs"
+#else
+#define DP_CLOCK_SECTION ".dp.screen.dp_window_cs"
+#endif
+__asm__(".section " DP_CLOCK_SECTION ",\"ax\",@progbits\n"
+        ".globl dp_window_cs\n"
+        "dp_window_cs:\n"
+        "  sec\n"
+        "  lda $702a\n  sbc dp_clock_t1\n  tay\n"
+        "  lda $702b\n  sbc dp_clock_t1+1\n  pha\n"
+        "  lda $7028\n  sbc dp_clock_t2\n"
+        "  lda $7029\n  sbc dp_clock_t2+1\n"
+        "  pla\n  bcc 1f\n"
+        "  sty dp_clock_last\n  and #$3f\n  sta dp_clock_last+1\n"
+        "1:\n  lda dp_clock_last\n  ldx dp_clock_last+1\n  rts\n"
+        ".text\n");
+#define window_cs dp_window_cs
+#else
+/* The DSKY sweep keeps TIME1 since the case's start (Lane C's #674 runs
+ * on it). */
+static uint16_t clock_t0 CASSETTE;
+static void clock_start(void)
+{
+    clock_t0 = (uint16_t)IMAGE->words[025];
+}
+static uint16_t window_cs(void)
+{
+    return (uint16_t)(IMAGE->words[025] - clock_t0) & 037777u;
+}
+#endif
 #ifdef DP_KEYS
 /* The crew's DSKY keys in the window (DP_KEYS, written by
  * tools/flight_scenario_vice.py --keys from the scenario's key string): key
@@ -232,7 +292,6 @@ LOW_TEXT("dp_early") static uint8_t row_early(void)
 static uint16_t rows_left = DP_REPLAY_ROWS;
 static uint8_t row_ready CASSETTE;
 static uint32_t row_at = DP_REPLAY_REU, state_at = DP_END;
-static uint16_t replay_t0 CASSETTE;
 #ifdef DP_BUSY
 static uint16_t busy_last CASSETTE;
 #endif
@@ -249,10 +308,10 @@ _Static_assert(DP_STATES_MAX >= 1u && DP_STATES_MAX <= 255u, "the states written
 #define DP_IO_BYTES (RK_RESTART_LAMP - RK_HARDWARE)
 static uint16_t state_next = DP_STATE_FIRST;
 static uint8_t states CASSETTE;
-/* TIME1 since the snapshot: a window is at most 16,383 cs. */
+/* The window clock since the snapshot: a window is at most 16,383 cs. */
 static uint16_t replay_cs(void)
 {
-    return (uint16_t)(IMAGE->words[025] - replay_t0) & 037777u;
+    return window_cs();
 }
 /* rk_budget (platform/c64/rk_clock.S) in a replay: the MCT left before the
  * next timer step, or before the waiting row's place (its work, MCT since
@@ -266,9 +325,10 @@ static uint16_t replay_cs(void)
 uint16_t rk_phase_budget(void);
 __attribute__((noinline)) uint16_t dp_budget(void)
 {
+    uint16_t now = replay_cs();
     uint16_t b = rk_phase_budget(), cap;
     uint8_t at = row.where >> 1 & 3u;
-    if (row_ready && row.cs <= replay_cs() && (!at || at == phase_step[rk_tick_phase]) &&
+    if (row_ready && row.cs <= now && (!at || at == phase_step[rk_tick_phase]) &&
         row.work > rk_work) {
         /* At least 1: an idle run charges its whole budget, and a 0 would
          * stall the work clock short of the row. */
@@ -506,7 +566,6 @@ static void BOOT load_snapshot(void){
  rk_work = 0;
  rk_tick_phase = 0;
  rk_part_cont = rk_part_prev = 0;
- replay_t0 = IMAGE->words[025];
  rupt.value = 0;
 #endif
 }
@@ -549,7 +608,7 @@ __attribute__((noinline)) static uint8_t sweep_next(uint8_t ended, uint8_t statu
     rk_part_cont = rk_part_prev = 0;
     rk_ticks = ov2_irq_count;
     __asm__ volatile("cli");
-    replay_t0 = IMAGE->words[025];
+    clock_start();
     rows_left = sweep_case.rows;
     row_at = sweep_case.rows_at;
     state_at = sweep_case.end_at;
@@ -888,7 +947,9 @@ int main(void){
  __asm__ volatile("sei");
  rk_ticks=ov2_irq_count;
  __asm__ volatile("cli");
- dil=rk_dilation;sum.start_cs=agc_cs();
+ dil = rk_dilation;
+ clock_start();
+ sum.start_cs = agc_cs();
 #ifdef DP_SWEEP
  sweep_next(0u, 0u);
 #endif
@@ -918,7 +979,7 @@ int main(void){
   }
 #endif
 #ifdef DP_KEYS
-  press_due((uint16_t)(agc_cs() - sum.start_cs) & 037777u);
+  press_due(window_cs());
 #endif
 #ifdef RK_STEP_PROFILE
   prof_last=now();
@@ -946,7 +1007,7 @@ int main(void){
 #else
    close_record(s1-s0,st);
 #endif
-   if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS)break;
+   if (st != EXEC_OK || window_cs() >= DP_CS) break;
    continue;}
 #endif
 #ifdef DP_SWEEP
@@ -970,7 +1031,10 @@ int main(void){
   ++r.steps;
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_JOB]!=job){job=rk_runtime.loaded[APOLLO_OV2_SLOT_JOB];if(job)++r.job_loads;}
   if(rk_runtime.loaded[APOLLO_OV2_SLOT_TASK]!=task){task=rk_runtime.loaded[APOLLO_OV2_SLOT_TASK];if(task)++r.task_loads;}
-  if(st!=EXEC_OK||((uint16_t)(agc_cs()-sum.start_cs)&037777u)>=DP_CS){close_record(s1-t,st);break;}
+  if (st != EXEC_OK || window_cs() >= DP_CS) {
+      close_record(s1 - t, st);
+      break;
+  }
   if(r.request&&!rk_hardware.in_interrupt){close_record(s1-t,EXEC_OK);t=s1;}}
 #endif
  sum.cycles=now();
