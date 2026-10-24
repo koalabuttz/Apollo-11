@@ -46,7 +46,9 @@ KNOWN lists scenarios outside the RN/VN bounds, or with an alarm code the
 harness did not raise, with the reason and an envelope of their own: such
 a run is reported and does not fail when it reaches the compare point,
 exits 0, has the same major mode, stays within the word limit and within
-the envelope (alarm codes included); anything else fails. Results go to
+the envelope (alarm codes included, and with 'radar' more landing radar
+readings unmatched; never the restart count or the TC trap); anything
+else fails. Results go to
 build/x86-flight/scenarios/summary.json.
 
   x86_flight_scenarios.py [--host-cc CC] [--skip-build] [--drop-keys CHARS] [NAME ...]
@@ -124,7 +126,27 @@ KNOWN = {'cm-p11': dict(reason='the x86 program sees liftoff 33 cs after the har
                            f"{p} then answers the crew's inputs differently and raises alarm {a:o}",
                     alarms={0o376: a}) for n, p, a in (('lm-rendezvous-tpm', 'P74', 0o611),
                                                         ('lm-stable-orbit', 'P79', 0o430),
-                                                        ('lm-stable-orbit-lm', 'P79', 0o430))}}
+                                                        ('lm-stable-orbit-lm', 'P79', 0o430))},
+         # Pinball's certificates (#674) let these fly through. The x86
+         # program charges each point the time docs/flight-routine-mct.json
+         # measured on short P00 and V37 runs (and a default where it has
+         # none); the harness's work clock charges the tables' own weights.
+         # So jobs and displays end at other times: the lockstep check is
+         # clean on all five, and the state vector agrees, but the words a
+         # job leaves behind, and when the landing radar is read, differ.
+         **{n: dict(reason="the x86 program charges its routines the time measured on short P00/V37 runs, the "
+                           "harness's work clock the tables' own weights, so jobs end at other times" + why, **env)
+            for n, why, env in (
+                ('lm-cdh', '', dict(words=50)),                     # measured 41 words against 32
+                ('lm-cdh-csm', ' and the display comes up later', dict(words=130)),   # 115 against 28
+                ('lm-p47-nassp', '', dict(words=140)),              # 122 against 115
+                # Alarm 522 (no LR data for the reading) in place of the
+                # harness's 511 (LR antenna not in position).
+                ('lm-p63-v60-nassp', '; the radar is read at other times, and it raises alarm 522 where the '
+                                     'harness raises 511',
+                 dict(alarms={0o377: 0o40522}, radar=dict(HMEAS=70, DELTAH=20))),   # 62, 15
+                ('lm-p65-autoland-nassp', '; the radar is read at other times',
+                 dict(radar=dict(DELTAH=45))))}}   # 37
 UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # A FLIGHT_CORE scenario starts from a yaAGC core dump, which the x86
 # program never reads: the harness loads it and writes its state at the
@@ -139,26 +161,9 @@ UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL')
 # is then flown from the harness's state at that centisecond (X86_START)
 # and compared as any scenario; with 'then' instead, that resumed run must
 # stop at the next gap ('then', a GAPS entry) in the same way.
-DECDSP = dict(reason="LM P33's decimal display (DECDSP, 41,2523) is in Pinball, whose LM certificate is pending "
-                     "(Lane C)",
-              stop='no routine at basic 41,2523 (Z 02523 FB 62000) at 2508 cs',
-              refusal='basic  41,2523: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
-P47_PINBALL = dict(reason="LM P47's display (Pinball, 41,3321) is in Pinball, whose LM certificate is pending (Lane C)",
-                   stop='no routine at basic 41,3321 (Z 03321 FB 62000) at 4120 cs',
-                   refusal='basic  41,3321: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
-# A basic point at erasable 2 (Z 00002, FB 66000) that no table keys; the
-# harness bridges it. Lane C keys it in the Pinball certificate (#674).
-Z2 = dict(reason="no table keys the basic point Z 00002 FB 66000 (50,2002), Pinball's EV TC Q; the harness bridges it "
-                 "(Lane C's Pinball certificate, #674, keys it)",
-          point='no routine at basic 50,2002 (Z 00002 FB 66000)', refusal='basic  50,2002: 1 arrivals, 1 slots\n')
-V55_PINBALL = dict(reason="V55's display (Pinball, 42,3452) is in Pinball, whose LM certificate is pending (Lane C)",
-                   stop='no routine at basic 42,3452 (Z 03452 FB 64000) at 4000 cs',
-                   refusal='basic  42,3452: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
-P65_PINBALL = dict(reason="P65's display (Pinball, 40,2732) is in Pinball, whose LM certificate is pending (Lane C)",
-                   point='no routine at basic 40,2732 (Z 02732 FB 60000)',
-                   refusal='basic  40,2732: 1 arrivals, 1 slots, refused by lanec_pin_lm_routines')
-GAPS = {'lm-cdh': DECDSP, 'lm-cdh-csm': DECDSP, 'lm-p47-nassp': P47_PINBALL, 'lm-coast-v55': V55_PINBALL,
-        'lm-coast-r04': Z2, 'lm-p63-v60-nassp': Z2, 'lm-p65-autoland-nassp': P65_PINBALL}
+# Pinball's LM and CM certificates (#674) took the last of them: DECDSP,
+# P47, V55 and P65's displays and the EV TC Q point now run natively.
+GAPS = {}
 # Each mission's MODREG, RN and VN (metres at 2^29, m/cs at 2^7), PIPTIME.
 STATE = {'lm': (0o1011, 0o1220, 0o1226), 'cm': (0o1011, 0o1170, 0o1176)}
 PIPTIME = {'lm': 0o1234, 'cm': 0o1204}
@@ -432,7 +437,7 @@ def lr_compare(ref, other, x86, at):
         if len(of) == len(hf) else [2 * LR_FLAG_CS] * len(hf)
     good = [v for _, v in xf] == [v for _, v in hf] and all(abs(a[0] - b[0]) <= c for a, b, c in zip(hf, xf, lim))
     ok = ok and good
-    block['LRALTFLG'] = dict(harness=hf, other_clock=of, x86=xf)
+    block['LRALTFLG'] = dict(harness=hf, other_clock=of, x86=xf, ok=good)
     parts.append(f"LRALTFLG changes at {', '.join(str(t) for t, _ in xf) or 'none'} cs (the harness's "
                  f"{', '.join(str(t) for t, _ in hf) or 'none'})" + ('' if good else ' FAILED'))
     hp, h_un = lr_pairs(h[2], o[2])
@@ -441,8 +446,8 @@ def lr_compare(ref, other, x86, at):
     lim = SPREAD_K * h_d + LR_HCALC_M
     good = x_un <= h_un + LR_UNMATCHED and x_d <= lim
     ok = ok and good
-    block['hcalc_error_m'] = dict(readings=len(x[2]), unmatched=x_un, other_clock=round(h_d, 1), x86=round(x_d, 1),
-                                  limit=round(lim, 1))
+    block['hcalc_error_m'] = dict(readings=len(x[2]), unmatched=x_un, unmatched_limit=h_un + LR_UNMATCHED,
+                                  other_clock=round(h_d, 1), x86=round(x_d, 1), limit=round(lim, 1))
     parts.append(f"HCALC from the true height within {x_d:.1f} m of the harness's at each altitude reading "
                  f"(limit {lim:.1f}; {x_un} unmatched)" + ('' if good else ' FAILED'))
     return block, ok, 'landing radar: ' + ', '.join(parts)
@@ -518,17 +523,19 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     line += block_line
     if alarms:
         line += '; alarm codes differ: ' + ', '.join(f'{a:04o} {hw[a]:05o}/{xw[a]:05o}' for a in alarms)
-    restarts = None
+    # Checks a KNOWN envelope never excuses: the restart count, the TC trap
+    # and the night watchman.
+    checks_ok, restarts = True, None
     if 'FLIGHT_GOJAM' in env or name in TC_TRAP or name in WATCHMAN:
         c = REDOCTR[m]
         restarts = dict(harness=hw[c], other_clock=sw[c], x86=xw[c])
         same = xw[c] in (hw[c], sw[c])
-        ok = ok and same
+        ok, checks_ok = ok and same, checks_ok and same
         line += f'; REDOCTR {hw[c]}/{xw[c]}' + ('' if same else ' (restarts differ)')
     trap = None
     if logs is not None:
         trap, trap_ok, trap_line = trap_compare(logs, r.stdout, name in WATCHMAN)
-        ok = ok and trap_ok
+        ok, checks_ok = ok and trap_ok, checks_ok and trap_ok
         line += '; ' + trap_line
     radar = None
     if lr is not None:
@@ -543,7 +550,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
                             difference=round(d_vn, 3), spread=round(s_vn, 3), limit=round(vn_tol, 3)),
                 words=dict(differ=words, spread=spread_words, limit=words_tol), truth=truth, state_blocks=blocks,
                 alarms=dict(harness=[f'{hw[a]:05o}' for a in FAILREG], x86=[f'{xw[a]:05o}' for a in FAILREG],
-                            differ=[f'{a:04o}' for a in alarms]), landing_radar=radar, tc_trap=trap, redoctr=restarts, inputs=env,
+                            differ=[f'{a:04o}' for a in alarms]), landing_radar=radar, tc_trap=trap, redoctr=restarts, checks_ok=checks_ok, inputs=env,
                 line=line), ok
 
 
@@ -588,10 +595,26 @@ def within_known(name, row):
                  for a in row['alarms']['differ'])
     rn, vn = k.get('rn', row['rn_metres']['limit']), k.get('vn', row['vn_mps']['limit'])
     inside = (mm['harness'] == mm['x86'] and w['differ'] <= k.get('words', w['limit']) and blocks and alarms
-              and row['rn_metres']['difference'] <= rn and row['vn_mps']['difference'] <= vn)
+              and row['rn_metres']['difference'] <= rn and row['vn_mps']['difference'] <= vn
+              and row['checks_ok'] and radar_within(row['landing_radar'], k.get('radar', {})))
     words = f", {k['words']} words" if 'words' in k else ''
     codes = ''.join(f', {a:04o} {v:05o}' for a, v in allowed.items())
-    return f"{k['reason']} (envelope RN {rn:.0f} m, VN {vn} m/s{words}{codes})" if inside else None
+    lr = ''.join(f', {r} {n} unmatched' for r, n in k.get('radar', {}).items())
+    return f"{k['reason']} (envelope RN {rn:.0f} m, VN {vn} m/s{words}{codes}{lr})" if inside else None
+
+
+def radar_within(block, unmatched):
+    """The landing radar check passes, except that a reading named in
+    unmatched may have up to that many x86 readings with no harness reading
+    near them (each one's median and 90th percentile still within limits)."""
+    if block is None:
+        return True
+    readings = all(b['unmatched']['x86'] <= max(b['unmatched']['limit'], unmatched.get(r, 0))
+                   and b['median']['x86'] <= b['median']['limit'] and b['p90']['x86'] <= b['p90']['limit']
+                   for r, b in block.items() if r in LR_READINGS)
+    h = block['hcalc_error_m']
+    hcalc = h['x86'] <= h['limit'] and h['unmatched'] <= max(h['unmatched_limit'], unmatched.get('HCALC', 0))
+    return readings and hcalc and block['LRALTFLG']['ok']
 
 
 def main():
