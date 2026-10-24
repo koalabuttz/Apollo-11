@@ -144,7 +144,7 @@ The CM's VHF dropout (`cm-p20-vhf-dropout`) moves the marks and so both blocks.
 
 The word count is what sees programs that don't move the state vector. With the mark buttons left out of the x86 run (`--drop-keys MJxyj`), P52 differs in 210 words against a limit of 19 and P57 in 188 against 37, so both fail. P22 and P23 fail on RN as well.
 
-On base e164cd37 the tool flies 75 scenarios, and all pass. 68 reach their compare point, six of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The other seven stop at a Pinball point not yet certified, exactly where expected (Gaps).
+On base 5094c66f the tool flies 75 scenarios, and all pass. All reach their compare point, eleven of them as known with an envelope of their own (marked "known"; Gaps gives each cause). The seven that stopped at an uncertified Pinball point before Pinball's certificates (#674) now fly to the end.
 
 The nine restart rows (`fhd.RESTART_FLIGHT`: a `FLIGHT_GOJAM` in each phase, the same rows `tools/flight_restart_check.py` checks against yaAGC) are flown too. Every row with a restart, these, `lm-p63-descent-restart` and the V69 rows, must also count as many restarts as the harness on one of its clocks (REDOCTR: LM 0320, CM 01154), because a restart that resumes the same program can leave the state vector and most words as they were. With `FLIGHT_GOJAM` ignored in the x86 run only, 8 of those 10 `FLIGHT_GOJAM` rows fail on REDOCTR (only 2 failed before the check). The other two can't see it: `lm-p00-doi-restart`'s harness clocks count 0 and 1 at the compare point, and `cm-p00-p40-restart`'s compare point is the GOJAM itself. Like the harness's FLIGHT_SNAPSHOT, the x86 program's samples are taken after a sample point's restart (nothing is pending after a GOJAM); before, it sampled one step late at the GOJAM and `cm-p00-p40-restart` differed in 171 words against a limit of 163.
 
@@ -208,6 +208,13 @@ Compared directly with the harness:
 | `lm-p22-surface` | 26 / 26 | 0 (50; 0) | 0 (0.15; 0.00) | 8 (20; 7) |
 | `lm-v69` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (10; 0) |
 | `cm-v69` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 0 (10; 0) |
+| `lm-cdh` (known) | 41 / 41 | 0 (50; 0) | 0 (0.15; 0.00) | 41 (32; 15) |
+| `lm-cdh-csm` (known) | 111 / 111 | 0 (50; 0) | 0 (0.15; 0.00) | 115 (28; 12) |
+| `lm-p47-nassp` (known) | 00 / 00 | 17 m (75; 6) | 0 (0.21; 0.01) | 122 (115; 70) |
+| `lm-p63-v60-nassp` (known) | 100 / 100 | 83 m (611; 140) | 1.99 m/s (32.83; 8.17) | 362 (560; 367) |
+| `lm-p65-autoland-nassp` (known) | 104 / 104 | 2 m (83; 8) | 0.01 m/s (0.24; 0.02) | 329 (625; 410) |
+| `lm-coast-v55` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 11 (11; 1) |
+| `lm-coast-r04` | 77777 / 77777 | 0 (50; 0) | 0 (0.15; 0.00) | 4 (16; 4) |
 
 With the SPS gimbal held at zero in the x86 run only (TVC enable ignored), `cm-p40` ends 195 km and 853 m/s from the harness and `cm-tei` 120 km and 976 m/s, each with alarm 1407, so both fail (base fc7ded5a).
 
@@ -245,11 +252,11 @@ The rendezvous scenarios whose state vector the marks move, compared with the tr
 | `m`, `j` | the CM's MARK and MARK REJECT (nothing on the LM) |
 | `q` or Ctrl-C | quit |
 
-Typed keys go in at idle sample points at least 20 cs of AGC time apart (scenario keys are 50 cs apart). Keys are read without waiting, from a terminal or a pipe, so the AGC clock never stops for input. Keys piped in (`printf v35e | X86_DSKY=1 ...`) work too; with no CS argument, a run whose pipe has ended stops once its last key has gone in. `X86_TYPED=chars` sends the same characters through the same path from the start without a terminal, and the lockstep check takes it too (the typed rows above). KEYS and the `FLIGHT_*` inputs still apply. The lamp test (`V35E`), `V37E` program changes and octal displays (`V01N01E`, `V05N09E`) run on both programs. Decimal noun displays don't yet (Gaps).
+Typed keys go in at idle sample points at least 20 cs of AGC time apart (scenario keys are 50 cs apart). Keys are read without waiting, from a terminal or a pipe, so the AGC clock never stops for input. Keys piped in (`printf v35e | X86_DSKY=1 ...`) work too; with no CS argument, a run whose pipe has ended stops once its last key has gone in. `X86_TYPED=chars` sends the same characters through the same path from the start without a terminal, and the lockstep check takes it too (the typed rows above). KEYS and the `FLIGHT_*` inputs still apply. The lamp test (`V35E`), `V37E` program changes, octal displays (`V01N01E`, `V05N09E`) and decimal displays (`V16N36E`, `V06N65E`) run on both programs.
 
 ## Gaps
 
-On base fea3e3b8:
+On base 5094c66f:
 
 - **CM P11 boost:** at 89,001 cs the x86 run is 437 m and 0.72 m/s from the harness, against a spread of 99 m and 0.07 m/s between the harness's own two clocks. The cause is when the AGC sees liftoff. The gyrocompass loop polls the liftoff discrete (channel 30 bit 5), and P11 zeroes its clock and navigates from the time it saw it. With `FLIGHT_SATURN` lifting off at 10,000 cs, TLIFTOFF is 10,005 on the harness's work clock, 10,022 on its other clock, and 10,038 on the x86 program's clock. So the state vector carries that offset from liftoff on, and it grows to orbit. This comes from the clock schedule, not from a routine computing differently. Comparing at equal time since liftoff, or making the x86 schedule closer to yaAGC's, would bring P11 inside the limits.
 - **Inputs at fixed times on another schedule:** a scenario's keys and channel changes go in at fixed centiseconds, and the x86 program's clock runs its jobs at slightly other times than the harness's. Where that moves an input across a display or a DAP pass, the run takes another path. The lockstep check shows no miss on any of these, and the tool lists them as known with the cause:
@@ -258,13 +265,14 @@ On base fea3e3b8:
   - `lm-rendezvous-tpm`, `lm-stable-orbit`, `lm-stable-orbit-lm`: after a V25's last ENTER the x86 program stays in P20/R22 for 13 s or more before the program redisplays its noun, where both harness clocks redisplay within 0.75 s. So the next V33 lands on a blank display, and from there each key answers a display other than the harness's. The x86 keys go in on time (19 to 50 cs after the harness's); the harness is the one late on `lm-stable-orbit`'s V37E78E (143 cs on the work clock, 112 on the other, busy at 8,000). In `lm-rendezvous-tpm` the V33 at 47,500 cs comes before P74's N37 is back (48,692 on x86), so the V25 at 50,000 loads N37 instead of N55, with no elevation angle, and P74 raises alarm 611. In `lm-stable-orbit` and `-lm` the x86 run keeps marking on interim passes to TET 41,786 cs (the harness reaches its final pass at 23,100), and P79's integration raises alarm 430. Each is allowed exactly that alarm. The radar turned off, the target moved 300 m, the `V33E`s left out or any other alarm still fail them.
 
   Keys sent when a display asks for them, as a crew would (in the harness and the scenario inputs), should fly these as the harness does; moving the x86 keys would not. (Reviewer 1 measured these times on #768: `X86_SAMPLES` times are labels of the first idle point at or after a centisecond, so a busy stretch makes them earlier than the moment the state was taken.)
-- **Pinball points without a certified routine:** these stop in the x86 program where the harness runs yaAGC. The tool passes each scenario only when it stops at exactly that point, so any other outcome, a full run included, fails until its entry is removed. Lane C's Pinball LM and CM certificate (#674) keys or certifies all of them:
-  - `lm-cdh`, `lm-cdh-csm`: P33's decimal display (DECDSP, 41,2523).
-  - `lm-p47-nassp`: P47's display (41,3321).
-  - `lm-coast-v55`: V55's display (42,3452).
-  - `lm-p65-autoland-nassp`: P65's display (40,2732).
-  - `lm-coast-r04`, `lm-p63-v60-nassp`: Pinball's EV TC Q (Z 00002, FB 66000: 50,2002), which no table keys.
-  - In the live DSKY, decimal noun displays (`V06N36E`, `V16N36E`, `V16N65E`) stop at 42,3230 (LM) or 42,3143 (CM).
+- **Routine time charged another way:** the x86 program charges each point the time `docs/flight-routine-mct.json` measured on short P00 and V37 runs, and points those runs never reach a default; the harness's work clock charges each table's own weight. So jobs and displays end at other times. Since Pinball's certificates (#674) the seven scenarios that stopped at an uncertified Pinball point fly to the end. `lm-coast-v55` and `lm-coast-r04` pass; the lockstep check shows no miss on the other five, and the tool lists them as known with this cause:
+  - `lm-cdh`: 41 words differ against a limit of 32 (envelope 50).
+  - `lm-cdh-csm`: the display comes up later; 115 words against 28 (envelope 130).
+  - `lm-p47-nassp`: 122 words against 115 (envelope 140).
+  - `lm-p63-v60-nassp`: the landing radar is read at other times (62 HMEAS readings with no harness reading near them against a limit of 6, DELTAH 15 against 13; envelope 70 and 20), and P63 raises alarm 522 where the harness raises 511.
+  - `lm-p65-autoland-nassp`: the radar is read at other times (DELTAH 37 unmatched against 34; envelope 45).
+
+  A radar envelope allows only more unmatched readings: each matched reading's median and 90th percentile, LRALTFLG and HCALC still have their normal limits, and no envelope excuses the restart count or the TC trap. Charging time as the work clock does would bring these closer.
 - **STBY lamp** lights only in the lamp test. The x86 program models no standby.
 - **The CM's navigation DSKY RSET** (channel 16, 022) does not put the RESTART lamp out directly as yaAGC's does: x86 channel 16 carries only the mark buttons. Pinball's ERROR would still put it out through channel 11 bit 10.
 - **Missing models:** uplink (`FLIGHT_UPLINK`) and stolen time (`FLIGHT_STEAL`); the tool leaves those scenarios out.
