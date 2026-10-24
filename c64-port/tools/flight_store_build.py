@@ -1390,6 +1390,11 @@ def main():
                      or (o in FLIGHT_INTERP_STOP[m] and interpretive_table(t))}
         write_host(host_pins(m, packed), host_packs(m, packed))
         if a.host_only:
+            # Only a full build knows each split table's module ids. A
+            # host-only build that runs at all has inputs no current full
+            # build covers, so the last full build's chunk list is stale:
+            # drop it, and the host runs without chunk tracking.
+            (ROOT / OUT / f'{m}-host-chunks.inc').unlink(missing_ok=True)
             continue
         # Shadowed entries: a basic table's keys that the resident or an
         # earlier linked table in resolution order (holders, less the
