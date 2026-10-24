@@ -12,6 +12,8 @@ STATES=65536;ROW=4106
 PIN=R/'evidence/lm-time-free-fall/lm-time-free-fall-source-stream.json'
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('--record',action='store_true');a=p.parse_args()
 (R/'build').mkdir(exist_ok=True)
+# CI runs a spec's test- and sanitize- targets at once; both rebuild these build/ outputs, so one waits.
+import fcntl;LOCK=open(R/'build'/(pathlib.Path(__file__).stem+'.lock'),'w');fcntl.flock(LOCK,fcntl.LOCK_EX)
 if not (R/'build/agc_engine_hardware_dv.o').exists():subprocess.run([sys.executable,'tools/prepare_hardware_dv.py'],cwd=R,check=True)
 subprocess.run(['gcc','-std=c99','-O2','-Iinclude','-Itests','-Ideps/virtualagc/yaAGC','-Itools','tools/lm_time_free_fall_reference.c','tests/lm_time_free_fall_cases.c','tests/lm_time_free_fall_debris.c','tests/cm_executive_cases.c','src/agc_word.c','build/agc_engine_hardware_dv.o','deps/virtualagc/yaAGC/agc_engine_init.o','deps/virtualagc/yaAGC/rfopen.o','-o','build/lm-time-free-fall-reference'],cwd=R,check=True)
 subprocess.run(['cc','-std=c99','-O2','-Wall','-Wextra','-Werror','-Wconversion','-pedantic','-Iinclude','-Itests','tools/lm_time_free_fall_snapshot.c',*CORE,'-o','build/lm-time-free-fall-native'],cwd=R,check=True)

@@ -24,6 +24,8 @@ def table(name,values):
  return out+['};']
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('--record',action='store_true');a=p.parse_args()
 (R/'build').mkdir(exist_ok=True)
+# CI runs a spec's test- and sanitize- targets at once; both rebuild these build/ outputs, so one waits.
+import fcntl;LOCK=open(R/'build'/(pathlib.Path(__file__).stem+'.lock'),'w');fcntl.flock(LOCK,fcntl.LOCK_EX)
 if not (R/'build/agc_engine_hardware_dv.o').exists():subprocess.run([sys.executable,'tools/prepare_hardware_dv.py'],cwd=R,check=True)
 subprocess.run(['gcc','-std=c99','-O2','-DLM_S3435_NO_TRAMPOLINE','-Iinclude','-Itests','-Ideps/virtualagc/yaAGC','-Itools','tools/lm_s3435_reference.c',*CASES,'tests/cm_executive_cases.c','src/agc_word.c','build/agc_engine_hardware_dv.o','deps/virtualagc/yaAGC/agc_engine_init.o','deps/virtualagc/yaAGC/rfopen.o','-lm','-o','build/lm-s3435-reference'],cwd=R,check=True)
 subprocess.run(['cc','-std=c99','-O2','-Wall','-Wextra','-Werror','-Wconversion','-pedantic','-Iinclude','-Itests','tools/lm_s3435_snapshot.c',*CORE,'-lm','-o','build/lm-s3435-native'],cwd=R,check=True)
