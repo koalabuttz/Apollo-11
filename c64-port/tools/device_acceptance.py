@@ -77,7 +77,9 @@ WINDOWS = {
            ('lm-uplink-reject', 1900, 800, 100),            # uplink words (UPRUPT) and DSKY keys
            ('lm-p52-realign', 4200, 500, 100),              # AOT marks (channel 16, KEYRUPT2)
            ('lm-p57', 15950, 100, 25),                      # lunar-surface AOT mark
-           ('lm-p63-lr-update', 61000, 50, 10),             # P63 descent: jets, landing displays
+           ('lm-p63-lr-update', 80000, 300, 50),            # P63 with LR updates: LR reads (RNRAD), trim
+           ('lm-p63-landing-displays', 65000, 300, 50),     # P63 ignition, mode select in PGNCS: R10 drives ALTM
+           ('lm-p65-autoland-nassp', 130000, 300, 50),      # P65 low scale: LR reads, THRUST
            ('lm-rendezvous', 8000, 300, 50),                # P20: an RR read (RNRAD) and the RR CDUs
            ('lm-p52-cage-torque', 8600, 100, 25)],          # gyro torquing (GYROCMD drains, CDUY follows)
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
@@ -89,6 +91,19 @@ WINDOWS = {
            ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
            ('cm-p52-optics', 17100, 100, 25)],              # gyro torquing: CDUX-Z follow
 }
+
+
+def windows(m):
+    """WINDOWS[m] and the off-nominal rows' windows, one run per (scenario,
+    snapshot): a run's files are named by those two, so a second entry would
+    overwrite the first (lm-uplink-reject 1900 is in both; checkpoints every
+    50 cs over 800 cs do not fit below the rope)."""
+    seen, out = set(), []
+    for w in WINDOWS[m] + offnom.windows(m):
+        if w[:2] not in seen:
+            seen.add(w[:2])
+            out.append(w)
+    return out
 
 
 def sha(path):
@@ -703,12 +718,12 @@ def main(argv=None):
         out = ROOT / 'build' / f'{eid}-runs'
         shutil.rmtree(out, ignore_errors=True)
         out.mkdir(parents=True)
-        a.run = [str(run_window(*w, out)) for w in WINDOWS[m] + offnom.windows(m)]
+        a.run = [str(run_window(*w, out)) for w in windows(m)]
     host = [r for r in json.loads(pathlib.Path(a.host).read_text()) if r.get('mission') == m]
     copy = dest / 'host-summary.json'
     copy.write_text(json.dumps(host, indent=1) + '\n')
     host_cite = stored(copy)
-    asked = {(s, snap): cs for s, snap, cs, _ in WINDOWS[m] + offnom.windows(m)}
+    asked = {(s, snap): cs for s, snap, cs, _ in windows(m)}
     bad, runs = [], []
     for path in a.run:
         r = json.loads(pathlib.Path(path).read_text())

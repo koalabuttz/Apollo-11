@@ -143,6 +143,11 @@ P67_KEYS = NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V3
 # 187 m above the true height to about 96 m by 873 s, then stop; HCALC
 # drifts with the navigation after that (about 107 m by 953 s).
 LR_V58_KEYS = LR_UPDATE_KEYS + '@88000V58E'
+# lm-p63-landing-displays: lm-p63-lr-update with the mode select switch in
+# PGNCS (channel 30 bit 6 clear; the NASSP core has it set, so R10 sends
+# nothing). From P63 ignition (SWANDISP) at about 649 s R10 drives the
+# landing analog displays: ALTM and channel 14 bits 2-3, 4 times a second.
+LR_DISPLAYS = {**LR_UPDATE, 'FLIGHT_CH30': '036311'}
 # lm-p63-v60-nassp: lm-p63-nassp with the landing radar (no V57) and V60E
 # at 1,000 s: LRPOS2K commands the antenna to position 2 (RADMODES bit 6),
 # the antenna gets there 5 s later (FLIGHT_LR_POS2) with no alarm 523;
@@ -776,6 +781,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('lm-p63-lr-dropout', 'lm', 115000, NASSP_KEYS, LR_DROP),
           ('lm-p63-lr-update', 'lm', 110000, LR_UPDATE_KEYS, LR_UPDATE),
           ('lm-p63-lr-v58', 'lm', 96000, LR_V58_KEYS, LR_UPDATE),
+          ('lm-p63-landing-displays', 'lm', 70000, LR_UPDATE_KEYS, LR_DISPLAYS),
           ('lm-p63-v60-nassp', 'lm', 115000, NASSP_KEYS + '@100000V60E', V60),
           ('lm-uplink-reject', 'lm', 9000, '', UPLINK),
           ('lm-uplink-accept', 'lm', 14000, '', UPLINK_ACCEPT_LM),
