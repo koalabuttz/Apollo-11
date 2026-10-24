@@ -23,7 +23,7 @@ REU bound check covers them.
 
 Cases: --cases ci (a fixed sample: CI_CASES; the CI gate for Pinball and
 display changes), --cases all (Lane C's tools/dsky_sweep_cases.py cases(),
-about 2,400), or --keys K1,K2 (named key strings). Keys are
+about 2,400), or --keys K1,K2 (named key strings: see key_cases). Keys are
 tools/flight_host_run.c's, plus Q for PRO (channel 32 bit 14, which is no
 key code: the host gets it as a FLIGHT_CHAN press). A case passes when the
 C64 ends its window at the host's sample point in the host's state. A case
@@ -47,7 +47,7 @@ names, and a case that matches only so does not count), committed as
 evidence (--evidence DIR: dsky-sweep.json with the store, rope and program
 hashes).
 
-  dsky_sweep_vice.py [--missions lm,cm] [--cases ci|all] [--keys V16N36E,...] [--batch N] [--jobs N]
+  dsky_sweep_vice.py [--missions lm,cm] [--cases ci|all] [--keys V16N36E,... | --keys 'K|CS:CH=V,...' ...] [--batch N] [--jobs N]
                     [--known FILE] [--write-known FILE] [--evidence DIR] [--replay-exact]
 
 Needs make flight-store (both missions' stores and host runs), the yaAGC
@@ -127,6 +127,19 @@ def all_cases():
         sys.exit('FAIL: --cases all needs tools/dsky_sweep_cases.py (Lane C, #674)')
     full = getattr(dsky_sweep_cases, 'all_cases', None)
     return [(c[0], c[1] + (f'|{c[3]}' if len(c) > 3 and c[3] else '')) for c in (full or dsky_sweep_cases.cases)()]
+
+
+def key_cases(values):
+    """The case strings of the --keys values. ';' always separates cases. A
+    case's own channel part (after '|': CS:CH=VALUE,...) has commas of its
+    own, so ',' separates cases only in a value with no ';' and no '|':
+    --keys V16N36E,V06N43E is two cases, --keys 'V37E00E|1200:032=17777,1300:032=37777'
+    is one."""
+    out = []
+    for v in values:
+        sep = ';' if ';' in v or '|' in v else ','
+        out += [k.strip() for k in v.split(sep) if k.strip()]
+    return out
 
 
 def case_chan(chan, key_cs):
@@ -359,7 +372,9 @@ def main():
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
     p.add_argument('--missions', default='lm,cm')
     p.add_argument('--cases', default='ci', choices=('ci', 'all'))
-    p.add_argument('--keys', default='', help='key strings, comma separated, instead of --cases')
+    p.add_argument('--keys', action='append', default=[],
+                   help="key strings instead of --cases; give it more than once, or separate with ';' "
+                        "(',' too while no string has a '|CS:CH=V,...' channel part)")
     p.add_argument('--every', type=int, default=1, help='with --cases all, every Nth case')
     p.add_argument('--snap-cs', type=int, default=1000)
     p.add_argument('--key-cs', type=int, default=1100, help='the first key, in AGC cs from the fresh start')
@@ -389,7 +404,7 @@ def main():
     WORK.mkdir(parents=True, exist_ok=True)
     missions = [m for m in a.missions.split(',') if m]
     if a.keys:
-        cases, mode = [(m, k) for m in missions for k in a.keys.split(',') if k], 'keys'
+        cases, mode = [(m, k) for m in missions for k in key_cases(a.keys)], 'keys'
     elif a.cases == 'ci':
         cases, mode = ci_cases(missions), 'ci'
     else:

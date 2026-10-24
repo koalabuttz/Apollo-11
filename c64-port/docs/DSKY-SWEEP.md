@@ -71,6 +71,7 @@ differs or where it stops). Nobody writes them by hand.
     make dsky-sweep-vice                       # the CI sample, against the known list
     python3 tools/dsky_sweep_vice.py --cases ci
     python3 tools/dsky_sweep_vice.py --keys V16N36E,V06N43E
+    python3 tools/dsky_sweep_vice.py --keys V16N36E --keys 'V37E00E|1200:032=17777,1300:032=37777'
     python3 tools/dsky_sweep_vice.py --cases all   # Lane C's full list (tools/dsky_sweep_cases.py)
 
 The results go to `build/flight-store/dsky-sweep/dsky-sweep.json`.
