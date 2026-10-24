@@ -124,11 +124,11 @@ cases `tools/lanec/cover.py pick` finds that take every host branch arc
 cases: the keypress tables, docs/LANEC-PIN-KEYS.md, and DP1OUTSF/DP2OUTSF).
 `routines.py pin` groups them by module and mission
 (`tests/lanec_pin_transfer_c64_rows.h`), and `tools/mk/lanec-pw.mk` builds
-one program per group. 103 programs (341 rows) fit below the mailbox page
+one program per group. 85 programs (216 rows) fit below the mailbox page
 and pass on a VICE PAL C64 (`make lanec-pin-transfer-vice`, CI runs it as
 `vice-lanec-pin-transfer-1` to `-4`). The programs
 that do not (`LANEC_PIN_C64_TOO_BIG`: modules whose code and state, with
-INTER-BANK and the harness, pass $C000) leave 106 rows to the host; the
+INTER-BANK and the harness, pass $C000) leave 163 rows to the host; the
 Pinball certificate's C64 branch record (`tools/lanec/cover.py record
 --not-run`) counts those rows' host arcs only where another C64 program
 takes them.
