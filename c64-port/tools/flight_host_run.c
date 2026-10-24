@@ -345,11 +345,41 @@ static uint16_t point(const agc_word *w,agc_word sb,int *in){*in=interpreting(w,
  return *in?agc_fixed_physical(w[0164],w[0165],sb):basic_point(w,sb);}
 /* The module loaded in each slot (job, task; module_load). */
 static const char *in_slot[2];
+/* A table split over several modules (chunks): the module id holding
+ * each key (<m>-host-chunks.inc), and the id loaded in each slot, so a
+ * chunk's key runs in the loaded module only when that chunk is loaded. */
+#ifdef FLIGHT_HOST_CHUNKS
+#define FLIGHT_CHUNK(t,k,i) {&t,k,i},
+static const struct{const agc_routine_table *t;uint16_t key,id;} chunks[]={
+#include FLIGHT_HOST_CHUNKS
+};
+#undef FLIGHT_CHUNK
+#define NCHUNKS (sizeof chunks/sizeof chunks[0])
+static uint16_t chunk_of(const agc_routine_table *t,uint16_t key){unsigned lo=0,hi=NCHUNKS;
+ while(lo<hi){unsigned mid=(lo+hi)/2u;if(chunks[mid].key<key)lo=mid+1u;else hi=mid;}
+ for(;lo<NCHUNKS&&chunks[lo].key==key;++lo)if(chunks[lo].t==t)return chunks[lo].id;
+ return 0;}
+#else
+static uint16_t chunk_of(const agc_routine_table *t,uint16_t key){(void)t;(void)key;return 0;}
+#endif
+static uint16_t in_chunk[2];
+/* Whether slot s holds t's module, and for a split table the chunk with key. */
+static int slot_has(unsigned s,const char *module,const agc_routine_table *t,uint16_t key){uint16_t c;
+ if(!in_slot[s]||strcmp(module,in_slot[s]))return 0;
+ c=chunk_of(t,key);return !c||c==in_chunk[s];}
 /* A ride table (slot 5, flight_store_build.py RIDE) holds its keys only
  * while its pack is loaded in the job slot. */
 /* after: the holder that refused (a pinned table: the next one may take
  * the point, as rk_direct moves on when a slot runs no step), or 0. */
-static const entry *holder_after(const agc_word *w,agc_word sb,agc_routine *call,const entry *after){int in;unsigned i;uint16_t key=point(w,sb,&in);
+static int kernel_table(const entry *e);
+static const entry *holder_after(const agc_word *w,agc_word sb,agc_routine *call,const entry *after){int in;unsigned i,r;uint16_t key=point(w,sb,&in);
+ /* A fresh search goes as rk_direct does: the kernel's tables, the pinned
+  * sets, then the modules loaded in the job and task slots (the loaded
+  * one runs a key two modules hold), then host.inc's order. */
+ if(!after)for(r=0;r<4u;++r)for(i=0;i<TABLES;++i){const entry *t=&tables[i];
+  if((r==0u?kernel_table(t)&&!in:r==1u?t->slot==3u||t->slot==4u
+      :in_slot[r-2u]&&!kernel_table(t)&&t->slot!=3u&&t->slot!=4u&&slot_has(r-2u,t->module,t->t,key))
+     &&t->interp==(uint8_t)in&&(t->slot!=5u||in_slot[0]==t->module)&&(*call=find(t->t,key)))return t;}
  for(i=after?(unsigned)(after-tables)+1u:0u;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&(tables[i].slot!=5u||in_slot[0]==tables[i].module)
                          &&(*call=find(tables[i].t,key)))return &tables[i];
  return 0;}
@@ -368,9 +398,15 @@ static int kernel_table(const entry *e){const char *n=e->name;
   ||strstr(n,"_kernel_idle_routines")||(strstr(n,"_sp_routines")&&!strstr(n,"_hot_"));}
 static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const entry *last){int in;unsigned i,r;uint16_t key=point(w,sb,&in);
  if(last&&*last->module)for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&!strcmp(tables[i].module,last->module)
+                                           &&(tables[i].slot>1u||slot_has(tables[i].slot,tables[i].module,tables[i].t,key))
                                            &&(tables[i].slot!=5u||in_slot[0]==tables[i].module)&&find(tables[i].t,key))return &tables[i];
- for(r=0;r<3u;++r)for(i=0;i<TABLES;++i){const entry *t=&tables[i];
-  if((r==0u?kernel_table(t)&&!in:r==1u?t->slot==3u||t->slot==4u:!kernel_table(t)&&t->slot!=3u&&t->slot!=4u)
+ /* r 2 and 3: the job and task slots' loaded modules, which rk_direct
+  * tries before the resolver (a pack's copy of a key runs ahead of the
+  * resolver's table: T6RUPT's 05757 from the excursion pack). */
+ for(r=0;r<5u;++r)for(i=0;i<TABLES;++i){const entry *t=&tables[i];
+  if((r==0u?kernel_table(t)&&!in:r==1u?t->slot==3u||t->slot==4u
+      :r<4u?in_slot[r-2u]&&!kernel_table(t)&&t->slot!=3u&&t->slot!=4u&&slot_has(r-2u,t->module,t->t,key)
+      :!kernel_table(t)&&t->slot!=3u&&t->slot!=4u)
      &&t->interp==(uint8_t)in&&(t->slot!=5u||in_slot[0]==t->module)&&find(t->t,key))return t;}
  return e;}
 /* LM: a table of weight 0 (POSTJUMP's and SELFCHK's, RK_MCT_IDLE) idles
@@ -1181,7 +1217,10 @@ static void adopt(apollo_overlay_state *after,agc_hardware *hw){unsigned i;
  * code an interpretive word calls outside the interpreter's banks (00 and
  * 03: an RTB's routine) is a routine of its own on the C64, charged its
  * table's weight; so is it here, each time yaAGC leaves those banks for a
- * point a table holds (in: whether the last instruction was in them). */
+ * point a table holds (in: whether the last instruction was in them).
+ * A routine that starts outside interpretive code (a basic table's, in -2)
+ * counts nothing until its first FETCH: native fixed-fixed code (KILLTASK
+ * 06027 on to KILLTSK2) is the routine's own, as on the C64. */
 static unsigned long word_mct;
 static void word_fetch(unsigned long *words,int *in){agc_word fb=(agc_word)(*cell(4)&077777),sb=(agc_word)m.OutputChannel7;
  uint16_t at;int now;agc_routine call;const entry *t;unsigned w;
@@ -1189,6 +1228,7 @@ static void word_fetch(unsigned long *words,int *in){agc_word fb=(agc_word)(*cel
   * held: a fetch there is the word's own. */
  if(m.InIsr||!(quiet()||(m.SubstituteInstruction&&!m.PendFlag&&!m.ExtraDelay&&!m.IndexValue&&!m.ExtraCode)))return;
  at=agc_fixed_physical((agc_word)(*cell(5)&07777),fb,sb);
+ if(*in==-2&&at!=FETCH)return;
  if(at==FETCH)*words+=4ul*interp_word_units_of(rope_word((agc_word)(*cell(0164)&077777),fb,sb));
  now=at!=AGC_TRANSFER_NONE&&(at/1024u==0u||at/1024u==3u);
  if(*in==1&&!now&&at!=AGC_TRANSFER_NONE&&(t=holder(view(),sb,&call))&&(w=weight(t))!=FLIGHT_PER_WORD)
@@ -1209,7 +1249,7 @@ static int channels_differ(agc_hardware *hw){unsigned i,k;
 static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc_hardware *hw0,apollo_overlay_state *after,
                      agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first,int interp){
  static apollo_overlay_state timed;static agc_hardware timed_hw;
- long n;int in,tin;uint16_t target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0,words=0,first_words=0;int in_interp=-1;
+ long n;int in,tin;uint16_t target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0,words=0,first_words=0;int in_interp=interp?-1:-2;
  first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);c0=m.CycleCounter;
  for(n=0;n<limit;++n){
   /* After RESUME, yaAGC is at ZRUPT with BRUPT substituted for the next
@@ -1301,12 +1341,29 @@ static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *wo
 static unsigned long nloads;
 static struct { const char *module; uint16_t key; uint8_t in, slot; unsigned long count; } loads[LOADS];
 static unsigned nload_points;
+/* The resident's interrupt-body wrappers (resident_rupt_module.c,
+ * 0x01E1-0x01E4) are modules too: with the LM's class-4 home in the task
+ * slot, they load in the job slot (flight_store_build.py task_pinned_out),
+ * so a wrapper run swaps out the job slot's module. */
+static int ends(const char *n,const char *x){size_t l=strlen(n),k=strlen(x);return l>=k&&!strcmp(n+l-k,x);}
+static int wrapped_table(const entry *e){const char *n=e->name;
+#if RK_LM
+ return !*e->module&&(ends(n,"_t6rupt_routines")||ends(n,"_lead_in_routines")||ends(n,"_t4rupt_core_routines")
+                      ||ends(n,"_keyrupt_routines"));
+#else
+ /* The CM packs no class-4 home: its wrappers keep the task slot. */
+ (void)n;(void)ends;return 0;
+#endif
+}
 static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uint16_t key;unsigned i;
- if(e->slot>1||in_slot[e->slot]==e->module)return;
+ if(wrapped_table(e)){if(in_slot[0]!=e->name){in_slot[0]=e->name;in_chunk[0]=0;}return;}
+ if(e->slot>1)return;
+ key=point(w,sb,&in);
+ if(slot_has(e->slot,e->module,e->t,key))return;
  /* A table packed into the loaded module too runs there (CO_LOCATE). */
  if(in_slot[e->slot]&&*e->also){const char *a=strstr(e->also,in_slot[e->slot]);size_t n=strlen(in_slot[e->slot]);
   if(a&&(a==e->also||a[-1]==' ')&&(a[n]==0||a[n]==' '))return;}
- in_slot[e->slot]=e->module;++nloads;key=point(w,sb,&in);
+ in_slot[e->slot]=e->module;in_chunk[e->slot]=chunk_of(e->t,key);++nloads;
  /* Scaled time: a swap is about 20 ms of C64 time (docs/FLIGHT-STORE.md:
   * 7,459 cycles plus 1.1 a byte), 1,707 AGC machine cycles of wall. The
   * work clock counts no load time (resident_flight.h). */
@@ -1584,7 +1641,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    * MCT since it), Q and table, as dap_pass_check.c DP_STEPS records the
    * C64's steps with DP_REPLAY. */
   if(rp_out&&!snap_path&&getenv("FLIGHT_REPLAY_TRACE"))printf("RT %05o %05o %03o %lu %.0f Q %05o %s\n",(unsigned)s.words[5],(unsigned)s.words[4],(unsigned)(s.words[025]&0377u),consumed%9ul,wall-(consumed?step_at(consumed-1ul):0.0),(unsigned)s.words[2],e?e->name:"(bridge)");
-  if(e&&*e->module)module_load(e,s.words,io.superbank);
+  if(e&&(*e->module||wrapped_table(e)))module_load(e,s.words,io.superbank);
   if(getenv("FLIGHT_WATCH_STEP"))watch(s.words);
   /* A radar read starts at any routine boundary and the resident's cycle
    * ends it nine TIME5 counts on, often before the next sample point: the
@@ -1627,7 +1684,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * next holder, as rk_direct does on the C64 (a slot that runs no step). */
     if(st==EXEC_OK||e->slot<3u||e->slot>4u||!(next_e=holder_after(before.words,io0.superbank,&call,e)))break;
     s=before;io=io0;hw=hw0;e=next_e;names[t]=e->name;
-    if(*e->module)module_load(e,s.words,io.superbank);}
+    if(*e->module||wrapped_table(e))module_load(e,s.words,io.superbank);}
    if(st==EXEC_OK){uint16_t pending0=pending;agc_hardware hw1=hw0;int interp;(void)point(before.words,io0.superbank,&interp);
     n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);
     /* Again with the scalers yaAGC read (scaler_latch). */

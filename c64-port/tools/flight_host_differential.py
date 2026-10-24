@@ -938,6 +938,8 @@ def build(cc, m, engine):
     subprocess.run([cc, '-std=c99', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{YAAGC}',
                     f'-DRK_{m.upper()}=1', f'-DFLIGHT_HOST_TABLES="../build/flight-store/{m}-host.inc"',
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
+                    *([f'-DFLIGHT_HOST_CHUNKS="../build/flight-store/{m}-host-chunks.inc"']
+                      if (ROOT / f'build/flight-store/{m}-host-chunks.inc').exists() else []),
                     '-c', 'tools/flight_host_run.c', '-o', str(_tmp(obj))], cwd=ROOT, check=True)
     os.replace(_tmp(obj), obj)
     # Every host/*.o is linked: refuse objects left from another checkout
