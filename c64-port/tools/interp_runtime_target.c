@@ -55,6 +55,7 @@ static int store_outside(unsigned cm,const apollo_overlay_state *s,agc_word sb){
  if(s->words[5]!=(cm?06037u:06070u))return 0;   /* NEWOPS */
  ph=agc_fixed_physical(s->words[0164],s->words[0165],sb);   /* LOC under BANKSET */
  if(ph==AGC_TRANSFER_NONE||!apollo_rope_read(cm,ph,&w)||(w&040000u))return 0;
+ w=(agc_word)(w-1u);   /* DOSTORE's A: the rope word less NEWOPS's CCS 1 */
  kind=(w>>11)&7u;if(kind-1u>1u)return 0;
  nx=~(unsigned)s->words[(s->words[0120]+045u+kind)&01777u]&077777u;   /* -X1 or -X2 */
  if(nx<040000u)return 0;
