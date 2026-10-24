@@ -336,10 +336,13 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
          * interrupt request waits until the C64 has taken that request:
          * the host's interrupt came first. Two keys in one centisecond
          * each get their own KEYRUPT this way, which reads its own channel
-         * 15 value, not the second key's. */
+         * 15 value, not the second key's. Not in the hardware check: its
+         * window has no interrupt request rows and its resident no room. */
+#ifndef DP_HW_CHECK
         if (rupt.value && row.cs == rupt.cs && row.work != rupt.work &&
             (*(uint16_t *)rupt.addr & rupt.value))
             return;
+#endif
         __asm__ volatile("sei");
         if (row.kind == 1) {
             /* tools/flight_host_run.c pipa_add: a signed count into a ones'
