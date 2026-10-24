@@ -116,14 +116,22 @@ static void clock_start(void)
 {
     dp_clock_t2 = IMAGE->words[024];
     dp_clock_t1 = IMAGE->words[025];
-    dp_clock_last = 0;
+    /* dp_clock_last: 0 from load_snapshot (the cassette state). */
 }
 /* window_cs, in 6502 code for room: TIME2 ($7028) and TIME1 ($702A) less
  * the start as one 30-bit subtraction; a borrow (behind the start) holds
  * the clock, else it is the TIME1 difference, 14 bits. Returns A:X. */
 _Static_assert(APOLLO_SHARED_ADDRESS == 0x7000u, "dp_window_cs reads TIME2/TIME1 at $7028/$702A");
 uint16_t dp_window_cs(void);
-__asm__(".section .text.dp_window_cs,\"ax\",@progbits\n"
+/* Where the room is: on the LM, in the text screen with the other harness
+ * code (DP_SCREEN_TEXT); in the resident for the hardware check (it shows
+ * its screen) and on the CM (its screen code reaches the last character). */
+#if defined(DP_HW_CHECK) || defined(RK_CM)
+#define DP_CLOCK_SECTION ".text.dp_window_cs"
+#else
+#define DP_CLOCK_SECTION ".dp.screen.dp_window_cs"
+#endif
+__asm__(".section " DP_CLOCK_SECTION ",\"ax\",@progbits\n"
         ".globl dp_window_cs\n"
         "dp_window_cs:\n"
         "  sec\n"
@@ -317,9 +325,10 @@ static uint16_t replay_cs(void)
 uint16_t rk_phase_budget(void);
 __attribute__((noinline)) uint16_t dp_budget(void)
 {
+    uint16_t now = replay_cs();
     uint16_t b = rk_phase_budget(), cap;
     uint8_t at = row.where >> 1 & 3u;
-    if (row_ready && row.cs <= replay_cs() && (!at || at == phase_step[rk_tick_phase]) &&
+    if (row_ready && row.cs <= now && (!at || at == phase_step[rk_tick_phase]) &&
         row.work > rk_work) {
         /* At least 1: an idle run charges its whole budget, and a 0 would
          * stall the work clock short of the row. */
