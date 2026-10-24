@@ -7,6 +7,7 @@
 #include "cm_imu_calibration.h"
 #include "cm_interp.h"
 #include "agc_image_ops.h"
+#include "flight_part.h"
 #include "agc_input_channels.h"
 #include "rtb_angles.h"
 #define AFR_EBN 5
@@ -9386,7 +9387,7 @@ static const agc_routine_entry basic_entries[]={
 /* Flight: the keys of every part (routines and part keys). */
 static const uint16_t cm_imu_calibration_flight_keys[181]={2411u,2412u,4497u,4501u,4504u,4505u,4506u,4507u,27652u,27658u,27672u,27674u,27675u,27679u,27683u,27696u,27698u,27699u,27704u,27706u,27713u,27714u,27716u,27718u,27719u,27724u,27726u,27728u,27730u,27737u,27739u,27740u,27750u,27754u,27755u,27763u,27767u,27768u,27770u,27771u,27778u,27796u,27798u,27799u,27817u,27826u,27831u,27833u,27835u,27837u,27850u,27852u,27853u,27854u,27857u,27860u,27865u,27880u,27886u,27919u,27925u,27926u,27927u,27934u,27935u,27936u,27945u,27947u,27950u,27962u,27972u,27974u,27975u,27979u,27983u,27985u,27986u,27987u,27989u,27991u,27992u,27993u,28007u,28010u,28028u,28034u,28053u,28057u,28058u,28059u,28061u,28062u,28063u,28065u,28066u,28067u,28069u,28188u,28191u,28193u,28196u,28210u,28212u,28215u,28216u,28218u,28222u,28223u,28225u,28226u,28228u,28230u,28231u,28249u,28278u,28279u,28280u,28295u,28343u,28345u,28346u,28355u,28357u,28367u,28368u,28372u,28377u,28379u,28381u,28397u,28398u,28400u,28407u,28410u,28412u,28413u,28414u,28415u,28419u,28422u,28441u,28446u,28448u,28450u,28451u,28453u,28464u,28467u,28468u,28469u,28470u,28480u,28481u,28517u,28532u,28534u,28538u,28548u,28551u,28552u,28553u,28560u,28562u,28564u,28566u,28568u,28572u,28573u,28585u,28594u,28596u,28597u,28601u,28642u,28647u,28651u,28654u,28655u,28656u,28663u,28667u};
 static enum exec_status cm_imu_calibration_leave(apollo_overlay_state *s,uint16_t at){unsigned i;
- for(i=0;i<181u;++i)if(cm_imu_calibration_flight_keys[i]==at){W[5]=(agc_word)(at>=04000u&&at<010000u?at:02000u+at%1024u);return EXEC_OK;}
+ for(i=0;i<181u;++i)if(cm_imu_calibration_flight_keys[i]==at){W[5]=(agc_word)(at>=04000u&&at<010000u?at:02000u+at%1024u);FLIGHT_PART_LEFT();return EXEC_OK;}
  return EXEC_OUT_OF_SCOPE;
 }
 /* Every key of the part: Z (under FB and SUPERBNK) names it. */
