@@ -1,0 +1,177 @@
+DSKY 1 cs: P   V   N   R1        R2        R3       
+watch 1 cs: 0103 00000
+watch 1 cs: 0375 01107
+watch 1 cs: 0376 00000
+watch 1 cs: 0377 00000
+DSKY 2020 cs: P   V7  N   R1        R2        R3       
+DSKY 2040 cs: P   V71 N   R1        R2        R3       
+DSKY 2064 cs: P27 V21 N01 R1        R2        R3  00304
+DSKY 2080 cs: P27 V21 N01 R1  2     R2        R3  00304
+DSKY 2100 cs: P27 V21 N01 R1  25    R2        R3  00304
+DSKY 2124 cs: P27 V21 N01 R1        R2        R3  00304
+DSKY 3500 cs: P27 V   N01 R1        R2        R3  00304
+DSKY 3520 cs: P27 V3  N01 R1        R2        R3  00304
+DSKY 3540 cs: P27 V34 N01 R1        R2        R3  00304
+DSKY 3561 cs: P   V   N   R1        R2        R3       
+watch 5000 cs: 0103 00010
+watch 6500 cs: 0103 00000
+watch 6500 cs: 0375 00000
+DSKY 7020 cs: P   V3  N   R1        R2        R3       
+DSKY 7040 cs: P   V37 N   R1        R2        R3       
+DSKY 7080 cs: P   V37 N0  R1        R2        R3       
+DSKY 7100 cs: P   V37 N00 R1        R2        R3       
+DSKY 7157 cs: P00 V   N   R1        R2        R3       
+CM: 585205 native routines (7680030 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
+scaled time: K 1.00, divisor 1, lag 2, seed 0: 9000 CIA interrupts, 9000 clock periods taken, 0 dropped (rk_dilation); AGC time 9000 cs
+major mode (MODREG 01011) at 9000 cs: native 00, yaAGC 00; FAILREG 00000/00000
+interpreter module: 183 routines, 183 slots; 175 charged other than yaAGC's words
+interpreter charge: fitted 24460 MCT, yaAGC 24550 MCT (-0.4%) over 183 routines; mean |error| 68.4 MCT per routine
+native routines yaAGC did not match (0):
+unregistered or refused points (0):
+module loads (621 in 9000 cs):
+  load cm_fresh_start slot 0 basic  05,2526: 1
+  load cm_interbank_routines slot 0 basic  02,2662: 5
+  load cm_v37 slot 0 basic  20,2000: 1
+  load service_transfer slot 0 basic  02,3606: 1
+  load cm_v37 slot 0 basic  20,2033: 1
+  load cm_interbank_routines slot 0 basic  02,2675: 3
+  load cm_fresh_start slot 0 basic  05,2535: 1
+  load cm_alarm slot 0 basic  02,3650: 1
+  load cm_fresh_start slot 0 basic  05,2750: 1
+  load cm_interbank_routines slot 0 basic  02,2701: 6
+  load cm_fresh_start slot 0 basic  05,3153: 1
+  load cm_t4rupt_imu slot 1 basic  06,2174: 188
+  load cm_t4rupt_optics slot 1 basic  06,2765: 187
+  load cm_interbank_routines slot 0 basic  02,2740: 17
+  load lanec_pin_routines slot 0 basic  02,2414: 21
+  load lanec_pin_keys_num_routines slot 0 basic  40,2000: 19
+  load lanec_pin_keys_cmd_routines slot 0 basic  40,2255: 3
+  load lanec_pin_keys_cmd_routines slot 0 basic  40,2060: 5
+  load lanec_pin_routines slot 0 basic  41,2035: 3
+  load cm_update slot 0 basic  43,3730: 1
+  load cm_extended_verbs_file slot 0 basic  43,2076: 1
+  load lanec_pin_routines slot 0 basic  02,2170: 3
+  load cm_extended_verbs_file slot 0 basic  43,2113: 1
+  load cm_update slot 0 basic  43,3737: 1
+  load cm_update slot 0 basic  27,3373: 1
+  load cm_phase_table slot 1 basic  02,3412: 5
+  load cm_interbank_routines slot 0 basic  02,2704: 5
+  load cm_update slot 0 basic  27,3404: 1
+  load lanec_di_routines slot 0 basic  10,2561: 2
+  load cm_interbank_routines slot 0 basic  02,2711: 2
+  load lanec_di_routines slot 0 basic  10,3153: 2
+  load lanec_pin_routines slot 0 basic  02,2171: 2
+  load lanec_di_routines slot 0 basic  10,3344: 2
+  load lanec_pin_routines slot 0 basic  02,2447: 2
+  load lanec_di_routines slot 0 basic  10,3345: 2
+  load service_transfer slot 0 basic  02,3560: 9
+  load lanec_di_routines slot 0 basic  10,3350: 2
+  load lanec_di_routines slot 0 basic  10,3352: 2
+  load lanec_di_routines slot 0 basic  10,3354: 2
+  load lanec_pin_routines slot 0 basic  02,2271: 2
+  load lanec_di_routines slot 0 basic  10,3357: 2
+  load lanec_pin_routines slot 0 basic  02,2443: 2
+  load lanec_di_routines slot 0 basic  10,3503: 2
+  load service_transfer slot 0 basic  03,3722: 2
+  load lanec_di_routines slot 0 basic  10,3511: 2
+  load lanec_pin_routines slot 0 basic  02,2223: 2
+  load lanec_pin_routines slot 0 basic  41,2733: 1
+  load lanec_pin_routines slot 0 basic  40,3454: 1
+  load lanec_di_routines slot 0 basic  10,3525: 1
+  load service_transfer slot 0 basic  03,3740: 2
+  load lanec_di_routines slot 0 basic  10,3572: 2
+  load lanec_di_routines slot 0 basic  10,3575: 2
+  load cm_update slot 0 basic  27,3423: 1
+  load lanec_di_routines slot 0 basic  10,3523: 1
+  load cm_update slot 0 basic  27,3421: 1
+  load cm_phase_table slot 1 basic  02,3357: 1
+  load cm_update slot 0 basic  27,3706: 1
+  load lanec_di_routines slot 0 basic  02,3534: 1
+  load lanec_di_routines slot 0 basic  10,2553: 1
+  load lanec_pin_routines slot 0 basic  40,3441: 2
+  load lanec_pin_keys_sign_routines slot 0 basic  40,3510: 1
+  load lanec_pin_routines slot 0 basic  41,3431: 1
+  load cm_v37 slot 0 basic  04,2011: 1
+  load cm_interp_core slot 0 basic  03,2006: 1
+  load cm_stateup slot 0 interp 04,2131: 1
+  load cm_integration_init slot 0 interp 13,3442: 2
+  load cm_stateup slot 0 interp 04,2133: 1
+  load cm_v37 slot 0 basic  04,2134: 1
+  load cm_kalcmanu_steering slot 0 basic  02,2526: 1
+  load cm_v37 slot 0 basic  04,2336: 1
+  load cm_p40_p47 slot 0 basic  24,2304: 1
+  load cm_v37 slot 0 basic  04,2344: 1
+  load service_transfer slot 0 basic  02,3546: 3
+  load cm_v37 slot 0 basic  04,2364: 1
+  load lanec_di_routines slot 0 basic  02,3536: 1
+  load cm_v37 slot 0 basic  04,2147: 1
+  load cm_v37 slot 0 basic  04,2151: 1
+  load cm_update slot 0 basic  27,3757: 1
+  load cm_v37 slot 0 basic  04,2153: 1
+  load cm_v37 slot 0 basic  04,2155: 1
+  load cm_v37 slot 0 basic  04,2157: 1
+  load lanec_pin_routines slot 0 basic  02,2473: 1
+  load cm_v37 slot 0 basic  04,2162: 1
+  load cm_fresh_start slot 0 basic  05,2513: 1
+  load cm_interbank_routines slot 0 basic  02,2753: 2
+  load cm_v37 slot 0 basic  04,2207: 1
+  load cm_fresh_start slot 0 basic  05,2505: 1
+  load cm_v37 slot 0 basic  04,2213: 1
+  load cm_fresh_start slot 0 basic  05,2651: 1
+  load cm_fresh_start slot 0 basic  05,2707: 1
+  load cm_interbank_routines slot 0 basic  02,2666: 1
+  load cm_restart_routines slot 1 basic  01,3520: 1
+  load cm_fresh_start slot 0 basic  05,2735: 1
+  load cm_integration_init slot 0 basic  13,2636: 1
+  load cm_rtb_op_codes slot 0 basic  22,3510: 1
+  load cm_interpreter slot 0 basic  03,2024: 1
+  load cm_interp_core slot 0 basic  03,2030: 4
+  load cm_integration_init slot 0 interp 13,2643: 1
+  load cm_stateup slot 0 interp 13,2000: 1
+  load cm_integration_init slot 0 interp 13,3162: 2
+  load cm_rtb_op_codes slot 0 basic  22,3544: 2
+  load cm_interpreter slot 0 basic  03,3226: 2
+  load cm_rtb_op_codes slot 0 basic  22,3545: 2
+  load cm_integration_init slot 0 interp 13,3352: 2
+  load cm_integration_init slot 0 basic  13,3214: 2
+  load cm_integration_init slot 0 interp 13,2710: 1
+  load cm_geometry slot 0 interp 10,2237: 1
+  load cm_integration_init slot 0 interp 13,2713: 1
+  load cm_orbital_integration slot 0 interp 11,3421: 2
+  load cm_integration_init slot 0 interp 13,3231: 2
+  load cm_stateup slot 0 interp 13,2011: 1
+  load cm_stateup slot 0 interp 13,2017: 1
+  load cm_integration_init slot 0 interp 13,2670: 1
+  load cm_stateup slot 0 interp 13,2022: 1
+  load cm_integration_init slot 0 interp 13,3010: 1
+  load cm_integration_init slot 0 interp 13,2763: 1
+  load cm_geometry slot 0 interp 10,2263: 1
+  load cm_integration_init slot 0 interp 13,2766: 1
+  load cm_stateup slot 0 interp 13,2031: 1
+  load cm_integration_init slot 0 interp 13,2656: 1
+  load cm_t4rupt_optics slot 1 basic  10,2000: 1
+last routines:
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 04701 FB 66000 cm_interbank_postjump_hot_routines
+  Z 03306 FB 66000 cm_self_check_idle_routines
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 04701 FB 66000 cm_interbank_postjump_hot_routines
+  Z 03306 FB 66000 cm_self_check_idle_routines
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 04701 FB 66000 cm_interbank_postjump_hot_routines
+  Z 03306 FB 66000 cm_self_check_idle_routines
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 04701 FB 66000 cm_interbank_postjump_hot_routines
+  Z 03306 FB 66000 cm_self_check_idle_routines
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 04701 FB 66000 cm_interbank_postjump_hot_routines
+  Z 03306 FB 66000 cm_self_check_idle_routines
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 04701 FB 66000 cm_interbank_postjump_hot_routines
+  Z 03306 FB 66000 cm_self_check_idle_routines
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 04701 FB 66000 cm_interbank_postjump_hot_routines
+  Z 03306 FB 66000 cm_self_check_idle_routines
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 04701 FB 66000 cm_interbank_postjump_hot_routines
+  Z 03306 FB 66000 cm_self_check_idle_routines
