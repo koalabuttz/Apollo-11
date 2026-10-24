@@ -427,6 +427,19 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
         --rows_left;
     }
 }
+/* The host writes a step boundary's rows after its timer steps
+ * (tools/flight_host_run.c: rp_diff with where 1 after the drives and
+ * rk_timer_phase), with the work clock's place after them. replay_due runs
+ * before rk_rupts has run this step's timer steps, so a row placed just
+ * after them waits there: rk_resident_step calls this once they have run,
+ * before the step's routine. LM landing 128000: a CDU row the host's
+ * STOPRATE read (33,2630) came one step late on the C64. */
+void dp_rows_after_rupts(void)
+{
+    uint16_t t = replay_cs();
+    replay_now = t;
+    replay_rows(t, 0u);
+}
 /* The output channels the window drives (tools/flight_scenario_vice.py
  * --replay-outputs): each change of channels 5, 6, 11, 12, 13 and 14 seen
  * before a step, as a 6-byte entry (centiseconds since the snapshot,
