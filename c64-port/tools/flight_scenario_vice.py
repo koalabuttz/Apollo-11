@@ -344,14 +344,17 @@ ADVAN = {'lm': 0o3214, 'cm': 0o3231}
 DEAD_SUPERBANK = 'masked_dead_superbank'
 DEAD_SUPERBANK_AT = 'masked_dead_superbank_at'
 SELFBANK_SUPERBANK = 0o100
+ADVAN_FB = 0o2000   # bank 01
 SUPERBANK = 2048 + END_CHANNELS.index('superbank')
 
 
 def dead_superbank(h, c, m):
-    """Both sides at ADVAN in bank 01 (FB below 060000), one side's
-    superbank SELFBANK's 0100: that superbank difference is masked."""
+    """Both sides at ADVAN in bank 01 (FB 02000), one side's superbank
+    SELFBANK's 0100: that superbank difference is masked. Other banks hold
+    real code at the same offset (LM 05,3214 WAITLIST; CM 10,3231), so only
+    bank 01 counts."""
     return (m in ADVAN and h[SUPERBANK] != c[SUPERBANK] and SELFBANK_SUPERBANK in (h[SUPERBANK], c[SUPERBANK])
-            and h[5] == c[5] == ADVAN[m] and h[4] < 0o60000 and c[4] < 0o60000)
+            and h[5] == c[5] == ADVAN[m] and h[4] == c[4] == ADVAN_FB)
 
 
 def mask_mission(exact, m):
@@ -732,7 +735,6 @@ def main():
             # window's own, so a C64 state past the host's end has every
             # input the host had before it (pair_states).
             extra = pathlib.Path(f'{header}.after-replay').read_bytes() if host_after is not None else b''
-            after_rows = []
             n_states = len(host_end) // STATE
             if n_states > max_states:
                 sys.exit(f'FAIL: {a.scenario}: the host wrote {n_states} states, more than the {max_states} reserved')
@@ -854,7 +856,7 @@ def main():
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, states_max), m)
             c64_end = c64_s[-1][1] if c64_s else None
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip, mask_mission(a.replay_exact, m),
+            v = replay_verdict(host_s, c64_s, bool(ended), host_after, (), skip, mask_mission(a.replay_exact, m),
                                a.replay_exact)
             unpaired, end, diff, at_cs, matched, skipped = (v[k] for k in ('unpaired', 'end', 'diff', 'at_cs', 'matched',
                                                                          'skipped'))
