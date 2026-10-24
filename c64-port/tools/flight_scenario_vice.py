@@ -66,7 +66,7 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
     # interrupt pending (a long job, such as PICAPAR, can hold one off for
     # over 100 cs), then stops; running to cs + 1000 leaves room for that.
     r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000 * chain + replay * chain), keys], cwd=ROOT,
-                       env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}',
+                       env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}', 'FLIGHT_HOLD': '1',
                             **({'FLIGHT_DOWNRUPT': '1'} if downrupt else {}),
                             **({'FLIGHT_REPLAY': f'{replay},0,{every},{chain}'}
                                if replay else {})},
@@ -616,6 +616,9 @@ def main():
     p.add_argument('--replay-every', type=int, default=0,
                    help='with --replay, also compare at the first sample point at or after every N cs, '
                    'to find when the C64 leaves the host')
+    p.add_argument('--hold', action='store_true',
+                   help='with --replay, also meter the longest an interrupt request waits for a native boundary '
+                   '(include/rupt_hold.h, #838) on the C64, beside the host\'s, and report both')
     p.add_argument('--chain', type=int, default=1,
                    help='with --replay, run that many --cs windows back to back on the host, then each on the C64 from '
                    "the host's state where the one before ended, and fail unless the C64 ends each window in the "
@@ -771,7 +774,8 @@ def main():
             n_extra = len(c64_rows(extra, m, 0, 0)) // ROW.size
             defines = [*replay_defines(at, n_c64 + n_extra, c64_cs, marks[0] if marks else 0xffff, table_at, end_at,
                                        states_max, busy, outputs_at, cap),
-                       *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at)]
+                       *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at),
+                       *(['-DRK_HOLD_METER'] if a.hold else [])]
             kinds = {}
             # What the window's inputs touch, by kind (tools/device_acceptance.py
             # reads it): erasable words and PIPAs by address, channels (0o377 the
@@ -849,6 +853,17 @@ def main():
             due_extra = rows_before(after, end_cs) if ended else 0
             may_extra = sum(1 for x in ROW.iter_unpack(after) if x[0] == end_cs and x[2] & 1) if ended else 0
             applied_extra, applied = max(0, applied - n_c64), min(applied, n_c64)
+            # The interrupt hold meter (include/rupt_hold.h): the host's in its
+            # log, the C64's in the mailbox (dap_pass_check.c, -DRK_HOLD_METER).
+            hm = re.search(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)', (dp.WORK / f'{tag}-host.log').read_text(), re.M)
+            if hm:
+                r.update(hold_host_mct=int(hm[1]), hold_host_time1=int(hm[2], 8))
+                line = f"{a.scenario}: interrupt hold: host max {hm[1]} MCT at TIME1 {hm[2]}"
+                if a.hold:
+                    c_max, c_at = struct.unpack_from('<HH', mail, 0x36)
+                    r.update(hold_c64_mct=c_max, hold_c64_time1=c_at)
+                    line += f', C64 max {c_max} MCT at TIME1 {c_at:05o}'
+                print(line)
             r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended),
                      replay_after_rows=applied_extra, replay_inputs=replay_inputs, replay_outputs=replay_outputs)
             # Every state the C64 wrote against the host's at the same point.
