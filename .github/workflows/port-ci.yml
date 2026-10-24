@@ -147,7 +147,7 @@ jobs:
         run: python3 tools/mk_vars_check.py
       # Every branch arm no frozen host case takes is triaged in
       # tools/cert_arms_allow.py with a class and a reason; fails on an
-      # untriaged one, warns on open flight gaps and stale records.
+      # untriaged one or a stale record (a src change re-measures in the same PR, #834), warns on open flight gaps.
       - name: Certificate arms are triaged
         working-directory: c64-port
         run: python3 tools/cert_arms.py check
