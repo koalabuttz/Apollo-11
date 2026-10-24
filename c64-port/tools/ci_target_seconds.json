@@ -486,10 +486,10 @@
   "vice-lanec-pin-flight-1": 2586,
   "vice-lanec-pin-flight-2": 2442,
   "vice-lanec-pin-gaps": 16,
-  "vice-lanec-pin-keys-1": 1370,
-  "vice-lanec-pin-keys-2": 1224,
-  "vice-lanec-pin-keys-3": 1399,
-  "vice-lanec-pin-keys-4": 1283,
+  "vice-lanec-pin-keys-1": 2220,
+  "vice-lanec-pin-keys-2": 1921,
+  "vice-lanec-pin-keys-3": 2225,
+  "vice-lanec-pin-keys-4": 1892,
   "vice-lanec-pin-transfer-1": 493,
   "vice-lanec-pin-transfer-2": 493,
   "vice-lanec-pin-transfer-3": 577,
@@ -1739,6 +1739,7 @@
   38576290117,
   39059905834,
   40070324669,
-  40070804208
+  40070804208,
+  40100498731
  ]
 }

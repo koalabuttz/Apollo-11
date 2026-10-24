@@ -38,7 +38,9 @@ BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[
 # rerun; a check that ran and reported wrong results fails the same way alone.
 RACE = re.compile(r'Text file busy|No such file or directory|File exists|Directory not empty|'
                   r'Resource temporarily unavailable|\[Errno|Killed|Segmentation fault|Bus error|'
-                  r'truncated|unexpected end of file|file format not recognized|file not found')
+                  r'truncated|unexpected end of file|file format not recognized|file not found|'
+                  # gcov: another make process rebuilt the .gcno under a running cover check
+                  r'stamp mismatch with notes file')
 
 
 def missing_build(output):
