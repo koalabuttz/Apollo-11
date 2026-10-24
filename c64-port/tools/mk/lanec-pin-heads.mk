@@ -26,19 +26,30 @@ sanitize-lanec-pin-heads: build/lanec-native-sanitize build/lanec-oracle tools/l
 # that is the suite's row; where it refuses, the try-list's next module runs.
 # It runs the head families and fixed-display, which no stand-alone C64
 # program holds (lanec-pin-transfer's LANEC_PIN_C64_TOO_BIG).
-# c64-lanec-pin-flight builds the store (it needs build/fixed-data).
+# CI runs it in two parts, one per mission (c64-/vice-lanec-pin-flight-<n>:
+# 1 LM, 2 CM; docs/port-coverage.json vice_targets names the parts), so each
+# builds only its own mission's store (c64-lanec-pin-flight-<n>; the store
+# needs build/fixed-data). lanec-pin-flight-vice runs both; the CI regex
+# does not match it.
 LANEC_PIN_FLIGHT_SUITES = $(foreach h,$(LANEC_PIN_HEADS) $(LANEC_PIN_HEAD_FAMILIES),pin-head-$(h)) pw-fixed-display
 LANEC_PIN_FLIGHT_MODULES = lanec_pin_routines,lanec_pin_keys_num_routines,lanec_pin_keys_cmd_routines,lanec_pin_keys_release_routines,lanec_pin_keys_sign_routines,lanec_pin_keys_clear_routines
-.PHONY: c64-lanec-pin-flight vice-lanec-pin-flight
-c64-lanec-pin-flight:
-	python3 tools/flight_store_build.py
-vice-lanec-pin-flight: c64-lanec-pin-flight build/lanec-native build/lanec-oracle tools/module_test.py tools/module_test.c
-	set -e; for s in $(LANEC_PIN_FLIGHT_SUITES); do \
-	  build/lanec-native --states $$s > build/lanec-$$s-states.txt; \
-	  build/lanec-native --flight $$s > build/lanec-$$s-flight.txt; \
-	  rows=$$(sed -n 's/^ *{\([0-9]*\)u, 0x.*/\1/p' tests/lanec_$$(echo $$s | tr - _)_c64.h | paste -sd,); \
-	  for m in lm cm; do python3 tools/module_test.py --mission $$m --modules $(LANEC_PIN_FLIGHT_MODULES) --limit 1 \
-	    --flight-rows --cases $$rows --states build/lanec-$$s-states.txt --oracle build/lanec-$$s-flight.txt \
-	    --native build/lanec-$$s-flight.txt --name $$s; done; \
-	  rm -f build/lanec-$$s-states.txt build/lanec-$$s-flight.txt; done
-	@echo "PASS: VICE PAL lanec-pin-flight: the frozen C64 rows of $(words $(LANEC_PIN_FLIGHT_SUITES)) suites through the Pinball flight modules"
+LANEC_PIN_FLIGHT_PARTS = lm cm
+define LANEC_PIN_FLIGHT_PART
+.PHONY: c64-lanec-pin-flight-$(1) vice-lanec-pin-flight-$(1)
+c64-lanec-pin-flight-$(1):
+	python3 tools/flight_store_build.py --missions $(2)
+vice-lanec-pin-flight-$(1): c64-lanec-pin-flight-$(1) build/lanec-native build/lanec-oracle tools/module_test.py tools/module_test.c
+	set -e; for s in $$(LANEC_PIN_FLIGHT_SUITES); do \
+	  build/lanec-native --states $$$$s > build/lanec-$$$$s-$(2)-states.txt; \
+	  build/lanec-native --flight $$$$s > build/lanec-$$$$s-$(2)-flight.txt; \
+	  rows=$$$$(sed -n 's/^ *{\([0-9]*\)u, 0x.*/\1/p' tests/lanec_$$$$(echo $$$$s | tr - _)_c64.h | paste -sd,); \
+	  python3 tools/module_test.py --mission $(2) --modules $$(LANEC_PIN_FLIGHT_MODULES) --limit 1 \
+	    --flight-rows --cases $$$$rows --states build/lanec-$$$$s-$(2)-states.txt --oracle build/lanec-$$$$s-$(2)-flight.txt \
+	    --native build/lanec-$$$$s-$(2)-flight.txt --name $$$$s; \
+	  rm -f build/lanec-$$$$s-$(2)-states.txt build/lanec-$$$$s-$(2)-flight.txt; done
+	@echo "PASS: VICE PAL lanec-pin-flight-$(1): the frozen C64 $(2) rows of $$(words $$(LANEC_PIN_FLIGHT_SUITES)) suites through the Pinball flight modules"
+endef
+$(eval $(call LANEC_PIN_FLIGHT_PART,1,lm))
+$(eval $(call LANEC_PIN_FLIGHT_PART,2,cm))
+.PHONY: lanec-pin-flight-vice
+lanec-pin-flight-vice: vice-lanec-pin-flight-1 vice-lanec-pin-flight-2
