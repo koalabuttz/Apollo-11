@@ -147,32 +147,46 @@ static uint8_t fetch(void *user,const apollo_ov2_dirent *d,uint16_t offset,uint8
 /* resolve's search state. Static: absolute addressing is smaller than the
  * soft stack. */
 static uint16_t probe_low, probe_high;
+/* The key searched for, most significant byte first: bank high, bank low,
+ * loc high, loc low. A record holds it little-endian (bank, loc). */
+static uint8_t key[4];
+static const uint8_t key_at[4] = {1u, 0u, 3u, 2u};
+/* 0 when the record at e has the key, else 1 when its key is below, 2 above. */
+static uint8_t key_order(const uint8_t *e)
+{
+    uint8_t i;
+    for (i = 0; i < 4u; ++i) {
+        uint8_t b = e[key_at[i]];
+        if (b != key[i]) return b < key[i] ? 1u : 2u;
+    }
+    return 0;
+}
 static uint8_t resolve(void *user,uint16_t bank,uint16_t loc,apollo_ov2_cont *out) {
     uint8_t *e = cache + (uint8_t)(((uint8_t)loc ^ (uint8_t)(loc >> 4) ^ (uint8_t)(bank >> 10)) &
                                    (APOLLO_REU_RESOLVE_CACHE - 1u)) *
                              APOLLO_REU_RESOLVER_RECORD;
     (void)user;
-    if (le16(e) != bank || le16(e + 2) != loc) {
+    key[0] = (uint8_t)(bank >> 8);
+    key[1] = (uint8_t)bank;
+    key[2] = (uint8_t)(loc >> 8);
+    key[3] = (uint8_t)loc;
+    if (key_order(e)) {
         /* Records are sorted by (bank, loc), 8 bytes each, fewer than 8192,
          * so a record's offset in the resolver fits 16 bits. */
-        uint8_t f = (uint8_t)(bank >> 8);
+        uint8_t f = key[0];
         const uint16_t *g = fence + (f & 0x80u ? APOLLO_REU_FENCES : (uint8_t)(f >> 2));
         probe_low = g[0];
         probe_high = g[1];
         for (;;) {
-            uint16_t middle = (uint16_t)(probe_low + (uint16_t)((probe_high - probe_low) >> 1)), b;
+            uint16_t middle = (uint16_t)(probe_low + (uint16_t)((probe_high - probe_low) >> 1));
+            uint8_t o;
             if (probe_low >= probe_high ||
                 !read_bytes(resolver_base + (uint16_t)(middle * APOLLO_REU_RESOLVER_RECORD), e,
                             APOLLO_REU_RESOLVER_RECORD))
                 return 0;
-            b = le16(e);
-            if (b == bank) {
-                uint16_t l = le16(e + 2);
-                if (l == loc) break;
-                b = (uint16_t)(l < loc);
-            } else
-                b = (uint16_t)(b < bank);
-            if (b)
+            o = key_order(e);
+            if (!o) break;
+            if (o == 1u)
                 probe_low = (uint16_t)(middle + 1u);
             else
                 probe_high = middle;
