@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "milestone": "dsky-sweep",
+  "release": "evidence-dsky-sweep",
+  "files": {
+    "dsky-sweep.json": {
+      "sha256": "d96a1cb841d860500eb808fae7ebe578912a084d03fbf75467b545b03e4f4889",
+      "bytes": 1012745,
+      "store": "release"
+    }
+  }
+}

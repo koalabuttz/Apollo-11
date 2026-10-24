@@ -4365,21 +4365,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "56c29a7644b19b9593e37be2df454b555e326123869f0a168f41ad0eebb59b65"
+            "sha256": "d31e71842c6ad79693a97323ab2cc390a81407fff1136b3866ea4372dcab54c0"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
-            "sha256": "2d576e54bee69b642724fdb73ab8ea72601a4c81f993765412091ba96c5b05c3"
+            "sha256": "ad421a5da0e72426e7e929b2f4114e0a4fa713b983a02b457193f331203e204f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "e667772423fb7e98f971d4ede094935d4c3cbf0b8e4c3b862588d262caceb04c"
+            "sha256": "79979d9e858d97dfe05775831465196b54bffdc471e0e164936275a0bfc79ebe"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
-            "sha256": "754460df9dfa8bb2fcf2df446566815e7173b42488c106199398e0afaf038966",
+            "sha256": "046a9fc4cb2f629de69eb155f0d7453816521d2feca9c8e89af092da09ea2b02",
             "vice_targets": {
-              "vice-lanec-pin-gaps": 50,
+              "vice-lanec-pin-gaps": 63,
               "vice-lanec-pw-1": 140,
               "vice-lanec-pw-2": 328,
               "vice-lanec-pw-3": 168,
@@ -4389,12 +4389,14 @@
               "vice-lanec-pin-transfer-2": 78,
               "vice-lanec-pin-transfer-3": 52,
               "vice-lanec-pin-transfer-4": 46,
-              "vice-lanec-pin-flight": 95
+              "vice-lanec-pin-flight": 94,
+              "vice-lanec-pin-keys": 11070,
+              "vice-lanec-pin-chains": 753
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-cover.json",
-            "sha256": "b0c19e62362f6b5dfed66e2cc18561af9c9a33d517eba1317d2ec089215eb506"
+            "sha256": "bec2ac00f86e776e650f5d8d8b6a48a3e367aa115f228ff2e24bf2e6004adcc9"
           }
         }
       }
@@ -11735,21 +11737,21 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "0e26d8cb38a139f4e8b113438e7df3926a9dd060f97c487858ee1b09d4560da3"
+            "sha256": "d9b59882b15ebfecde4b8dea1fd5ccb54805aafd5eac976fe8f367039fcaa8b7"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
-            "sha256": "2d576e54bee69b642724fdb73ab8ea72601a4c81f993765412091ba96c5b05c3"
+            "sha256": "ad421a5da0e72426e7e929b2f4114e0a4fa713b983a02b457193f331203e204f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "e667772423fb7e98f971d4ede094935d4c3cbf0b8e4c3b862588d262caceb04c"
+            "sha256": "79979d9e858d97dfe05775831465196b54bffdc471e0e164936275a0bfc79ebe"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
-            "sha256": "754460df9dfa8bb2fcf2df446566815e7173b42488c106199398e0afaf038966",
+            "sha256": "046a9fc4cb2f629de69eb155f0d7453816521d2feca9c8e89af092da09ea2b02",
             "vice_targets": {
-              "vice-lanec-pin-gaps": 50,
+              "vice-lanec-pin-gaps": 63,
               "vice-lanec-pw-1": 140,
               "vice-lanec-pw-2": 328,
               "vice-lanec-pw-3": 168,
@@ -11759,12 +11761,14 @@
               "vice-lanec-pin-transfer-2": 78,
               "vice-lanec-pin-transfer-3": 52,
               "vice-lanec-pin-transfer-4": 46,
-              "vice-lanec-pin-flight": 95
+              "vice-lanec-pin-flight": 94,
+              "vice-lanec-pin-keys": 11070,
+              "vice-lanec-pin-chains": 753
             }
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-cover.json",
-            "sha256": "b0c19e62362f6b5dfed66e2cc18561af9c9a33d517eba1317d2ec089215eb506"
+            "sha256": "bec2ac00f86e776e650f5d8d8b6a48a3e367aa115f228ff2e24bf2e6004adcc9"
           }
         }
       }
