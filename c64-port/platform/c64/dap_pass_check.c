@@ -135,6 +135,9 @@ static void press_due(uint16_t elapsed)
 extern uint8_t __rk_dsky_start[], __rk_dsky_end[], __rk_dsky_load[];
 extern uint8_t __rk_dsky_data_start[], __rk_dsky_data_end[], __rk_dsky_data_load[];
 extern uint8_t __dp_screen_start[], __dp_screen_end[], __dp_screen_load[];
+#ifdef RK_HOLD_METER
+#include "rupt_hold.h"
+#endif
 #ifdef DP_REPLAY
 /* The host run's inputs over the window and its end state
  * (tools/flight_host_run.c FLIGHT_REPLAY, tools/flight_scenario_vice.py
@@ -960,6 +963,17 @@ int main(void){
      mail[0x33] = (uint8_t)(t >> 8);
      mail[0x34] = replay_ended;
      mail[0x35] = states;
+#ifdef RK_HOLD_METER
+     /* The interrupt hold meter (include/rupt_hold.h): the longest hold
+      * (MCT) and TIME1 at it. */
+     {
+         extern rupt_hold rk_hold;
+         mail[0x36] = (uint8_t)rk_hold.max;
+         mail[0x37] = (uint8_t)(rk_hold.max >> 8);
+         mail[0x38] = (uint8_t)rk_hold.max_at;
+         mail[0x39] = (uint8_t)(rk_hold.max_at >> 8);
+     }
+#endif
 #if DP_OUTPUTS_MAX
      mail[0x3a] = (uint8_t)outputs_bytes;
      mail[0x3b] = (uint8_t)(outputs_bytes >> 8);
