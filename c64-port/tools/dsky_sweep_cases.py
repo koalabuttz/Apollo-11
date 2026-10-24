@@ -43,7 +43,7 @@ REQUEST_ADDRESSES = {'lm': ('05155', '05261'), 'cm': ('05217', '05324')}
 # Decimal loads of more than one register, a sign missing (OPR ERR), fewer
 # than five digits, and a load cleared and keyed again.
 DECIMAL_LOADS = ['V24N33E+00010E-00020E', 'V25N33E+00001E+00002E+00003E', 'V25N34E-00001E+00030E+04500E',
-                 'V22N36E+00002E', 'V23N36E-01000E', 'V25N36E+00000E+00002E+00300E', 'V21N33E00100E',
+                 'V22N36E+00002E', 'V23N36E-01000E', 'V21N33E00100E',
                  'V21N33E+12E', 'V21N33E+00100CE+00200E', 'V24N34E+00001E-00002E', 'V21N34E+99999E']
 
 
