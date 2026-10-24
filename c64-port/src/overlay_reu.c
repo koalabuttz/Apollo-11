@@ -34,10 +34,11 @@ static uint8_t read_bytes(uint32_t reu,uint8_t *dest,uint16_t count) {
  * the search. Open fills them with a key no record has (bank 0xFFFF). The
  * cache is valid only because resolver records are read-only once the
  * store is open: restart and GOJAM keep it, and only a reopen clears it.
- * 32 entries hold most of a flight phase's resolved points (CM entry
- * 17000-19000 cs: 80 points, 80% of lookups hit; 4 entries hit 29%). */
+ * CM entry 17000-19000 cs resolves 80 points: 32 entries hit 80% of
+ * lookups, 4 entries 29%. 16 entries free 128 resident bytes for 0.2-0.6%
+ * of C64 time (CM entry, LM rendezvous, landing and P63 windows, 10-24). */
 #ifndef APOLLO_REU_RESOLVE_CACHE
-#define APOLLO_REU_RESOLVE_CACHE 32u
+#define APOLLO_REU_RESOLVE_CACHE 16u
 #endif
 static uint8_t cache[APOLLO_REU_RESOLVE_CACHE * APOLLO_REU_RESOLVER_RECORD];
 /* Where each bank's records start: fence[f] is the first record whose key
