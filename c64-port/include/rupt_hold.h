@@ -14,11 +14,18 @@
  * - the last boundary where the AGC itself could not take it (in an
  *   interrupt, interrupts inhibited, overflow in A). The AGC would take it
  *   somewhere in the next routine, so this is an upper bound.
- * Times are MCT on a 16-bit clock: only differences are used. */
+ * Times are MCT on a 16-bit clock: only differences are used.
+ *
+ * RUPT_HOLD_PENDING (03776) is every request bit: RK_RUPT_BIT(RK_RUPT_T6)
+ * to RK_RUPT_BIT(RK_RUPT_HAND), bits 1-10 (include/resident_rupt.h). Bit 0
+ * is never a request: yaAGC numbers its interrupts from 1 and leaves
+ * InterruptRequests[0] unused. */
 #ifndef RUPT_HOLD_H
 #define RUPT_HOLD_H
 
 #include <stdint.h>
+
+#define RUPT_HOLD_PENDING 03776u
 
 typedef struct {
     uint16_t from;   /* when the oldest waiting request could first be taken */
@@ -32,7 +39,7 @@ typedef struct {
 static inline void rupt_hold_boundary(rupt_hold *h, uint16_t t, uint16_t pending,
                                       uint8_t agc_blocked)
 {
-    if (!(pending & 03776u))
+    if (!(pending & RUPT_HOLD_PENDING))
         h->on = 0;
     else if (agc_blocked || !h->on) {
         h->from = t;
@@ -43,7 +50,7 @@ static inline void rupt_hold_boundary(rupt_hold *h, uint16_t t, uint16_t pending
 /* The work clock step that ended at time at may have raised a request. */
 static inline void rupt_hold_raise(rupt_hold *h, uint16_t at, uint16_t pending)
 {
-    if ((pending & 03776u) && !h->on) {
+    if ((pending & RUPT_HOLD_PENDING) && !h->on) {
         h->from = at;
         h->on = 1;
     }
