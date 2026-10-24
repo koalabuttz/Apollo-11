@@ -37,6 +37,9 @@ PRO_AFTER = ['', 'V16N36E', 'V06N36E', 'V05N09E', 'V21N01E', 'V21N01E01000E', 'V
 
 # Verbs below 40 that no sweep line above keys: spare and illegal ones.
 SPARE_VERBS = [f'{v:02d}' for v in (0, 8, 9, 10, 18, 19, 20, 26, 28, 29, 38, 39)]
+# ENDOFJOB and TASKOVER (fixed-fixed, from the yaYUL symbol tables) for the
+# V30/V31 requests.
+REQUEST_ADDRESSES = {'lm': ('05155', '05261'), 'cm': ('05217', '05324')}
 # Decimal loads of more than one register, a sign missing (OPR ERR), fewer
 # than five digits, and a load cleared and keyed again.
 DECIMAL_LOADS = ['V24N33E+00010E-00020E', 'V25N33E+00001E+00002E+00003E', 'V25N34E-00001E+00030E+04500E',
@@ -61,10 +64,14 @@ def cases():
         out += [(m, f'V07N{n}E', CS) for n in NOUNS if n != '15']
         # the spare and illegal verbs, alone and with a noun: OPR ERR
         out += [(m, f'V{v}{nn}E', CS) for v in SPARE_VERBS for nn in ('', 'N01')]
-        # V30/V31 (request an executive job or a waitlist task) flash noun
-        # 26 for its load; the request is ended, not completed, because the
-        # address it would load is the operator's arbitrary job
-        out += [(m, k, CS) for k in ('V30E', 'V31E', 'V30EV34E', 'V31EV34E', 'V30EK', 'V31EC')]
+        # V30/V31 (request an executive job or a waitlist task) take the job
+        # or task from noun 26, which the operator loads first (VBRQEXEC):
+        # ENDOFJOB as the job (NOVAC and FINDVAC) and TASKOVER as the task,
+        # which end at once. Without the load the request runs address 0.
+        job, task = REQUEST_ADDRESSES[m]
+        out += [(m, k, max(CS, 200 + 50 * len(k) + 500))
+                for k in (f'V25N26E01000E{job}E00000EV30E', f'V25N26E01001E{job}E00000EV30E',
+                          f'V25N26E00100E{task}E00000EV31E')]
         # decimal data entry: a signed five-digit load of R1 on every noun
         # (an octal noun answers OPR ERR), and of two and three registers
         out += [(m, f'V21N{n}E{s}00100E', CS) for n in NOUNS if n != '15' for s in '+-']
