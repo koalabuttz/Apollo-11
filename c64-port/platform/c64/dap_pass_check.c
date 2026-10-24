@@ -431,8 +431,12 @@ DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
         /* The host writes a state at a sample point after every row before
          * it and before that point's own rows. Rows a busy C64 held back
          * (a host sample point the C64 was not idle at) go in first, or a
-         * PIPA count the host has is missing from the state. */
+         * PIPA count the host has is missing from the state. Then this
+         * centisecond's boundary rows already due (a step that began
+         * before the row's place and ended past it): the host takes those
+         * before its state too. */
         if (t) replay_rows((uint16_t)(t - 1u), 1u);
+        replay_rows(t, 0u);
         if (t >= DP_REPLAY_CS) {
             replay_state(t);
             return 1;
