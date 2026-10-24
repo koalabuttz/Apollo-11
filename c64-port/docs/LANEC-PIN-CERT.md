@@ -2,11 +2,12 @@
 
 Lane C. Milestone `lanec-pin-cert`.
 
-This drafts the `pending_complete_certificate` of
+This documents the accepted `complete_native_coverage` certificates of
 `Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc` and of
 `Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc` in
-`docs/port-coverage.json` for the reviewers. The files stay `partial` until
-a reviewer flips them.
+`docs/port-coverage.json`. The reviewer accepted them
+(`docs/audits/pinball-674.md`, #674 merged as b56219b3) and both files are
+`complete` (flip #844, merged as d38c7704).
 
 ## Transfer ABI
 
@@ -14,8 +15,8 @@ Every labelled entry, every return into the file from a callee outside it,
 every BANKCALL return point and every word the file reaches through
 POSTJUMP or BANKJUMP (GOVNUPDT, UPDAT1 +2, DSPOCTIN, OCTBACK; registered by
 `lanec-pin-gaps`) is a routine of the native control-transfer
-ABI (`docs/NATIVE_TRANSFER_ABI.md`): 280 Luminary099 routines in
-`lanec_pin_lm_routines` and 279 Comanche055 routines in
+ABI (`docs/NATIVE_TRANSFER_ABI.md`): 287 Luminary099 routines in
+`lanec_pin_lm_routines` and 286 Comanche055 routines in
 `lanec_pin_cm_routines` (`src/lanec_pin_routines.inc`), and 13 per mission
 at CHARIN and its key labels in the keypress tables
 (`docs/LANEC-PIN-KEYS.md`), generated and
@@ -25,9 +26,9 @@ are compiled into their callers. Each routine runs the earlier Pinball
 modules that claim its point, with the head families
 (`docs/LANEC-PIN-HEADS.md`) in place of the composite modules at the points
 they claim. See `docs/LANEC-PIN-TRANSFER.md` (milestone
-`lanec-pin-transfer`): 2,276 round trips from the genuine external callers
-and from every routine's own entry give 1,336 complete states identical to
-the original and 940 chains refused unchanged; `pin-refuse` refuses all
+`lanec-pin-transfer`): 2,332 round trips from the genuine external callers
+and from every routine's own entry give 1,265 complete states identical to
+the original and 1,067 chains refused unchanged; `pin-refuse` refuses all
 1,530 entry states with a broken register contract unchanged; and on the C64
 one program per module and mission runs the round trips in VICE, and the
 Pinball flight modules run the rest from the REU store.
@@ -38,10 +39,10 @@ Every assembled word of each file has exactly one owner:
 
 | Words (LM / CM) | Owner | Native code |
 |---|---|---|
-| 107 / 108 | `lanec-pin-gaps`: DSP2DEC/END2DEC, NVSUBB, LOADLV1, DSPDCWD1, GOVNUPDT, DSPOCTIN, the octal display's WDAGAIN/OCTBACK loop and the other words no earlier module carried | `src/lanec_pin_gaps.c` |
-| 110 / 110 | `lanec-pin-heads`: the head families, each run by its `pin-head-*` suite | `src/lanec_pin_head_*.c` |
-| 49 / 45 | `lanec-pin-keys`: CHARIN and the key labels | `src/lanec_pin_keys*.c` |
-| 1,902 / 1,903 | `lanec-pw`: the earlier Pinball modules, each run by its `pw-*` suite | `src/dsky_*.c`, `src/cm_*.c` through `src/lanec_pw*_runs.c` |
+| 120 / 121 | `lanec-pin-gaps`: DSP2DEC/END2DEC, NVSUBB, LOADLV1, DSPDCWD1, GOVNUPDT, DSPOCTIN, the octal display's WDAGAIN/OCTBACK loop and the other words no earlier module carried | `src/lanec_pin_gaps.c` |
+| 101 / 84 | `lanec-pin-heads`: the head families, each run by its `pin-head-*` suite | `src/lanec_pin_head_*.c` |
+| 49 / 46 | `lanec-pin-keys`: CHARIN and the key labels | `src/lanec_pin_keys*.c` |
+| 1,898 / 1,915 | `lanec-pw`: the earlier Pinball modules, each run by its `pw-*` suite | `src/dsky_*.c`, `src/cm_*.c` through `src/lanec_pw*_runs.c` |
 | 210 / 213 | constants | compiled `symbols.txt` WORD rows or literals |
 
 Both module counts include each call's inline arguments (65 words per

@@ -504,7 +504,8 @@ def main():
         if 'diff' in r:
             r['differing'] = [x[0] for x in r.pop('diff')]
     ok = sum(1 for r in results if r['ok'])
-    # Item 6: a match with words left out of the compare is not a full match.
+    # Item 6: a match with words left out of the compare, or a run without
+    # --replay-exact, is not a full match.
     skipped = sum(1 for r in results if r.get('skipped'))
     classes = {}
     for r in results:
@@ -514,7 +515,7 @@ def main():
                   settle_cs=a.settle_cs, passed=ok, cases=len(results), failed_by_class=classes, stores=stores,
                   replay_exact=a.replay_exact, skipped_cases=skipped,
                   item6=mode == 'all' and set(missions) == {'lm', 'cm'} and ok == len(results) and bool(results)
-                  and not skipped,
+                  and not skipped and a.replay_exact,
                   results=results, runs=runs)
     (WORK / 'dsky-sweep.json').write_text(json.dumps(report, indent=1) + '\n')
     (WORK / SUMMARY).write_text(summary(WORK / 'dsky-sweep.json'))
