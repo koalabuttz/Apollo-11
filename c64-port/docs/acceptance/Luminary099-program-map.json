@@ -1,7 +1,7 @@
 {
  "program": "Luminary099",
  "mission": "lm",
- "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. A mapped row's windows lists the replay windows that run the row ([scenario, start cs], or [scenario, start cs, cs, K] for a chain) (its event falls inside the window); only those windows give the row its C64 credit. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope. A mapped row may name its body in reach ([[point, label], ...], a point as the host reports print it): the host run must reach each (FLIGHT_REACH), so a scenario that only takes the entry's refusal does not count. Every mapped extended-verb and R-routine row whose entry can refuse (TESTXACT, CHKPOOH, CKMODCAD, OP/INERT, RDRUSECK, the update program's MODREG check, TRMTRACK's flag test) names the routine or job past those checks (Lane F audit, 10-23; uplink rows name their own UPEND70-73); rows whose entry only sets or clears a flag (V57, V58, V61, V62, V65, V66, V74-V77, V80, V81, V93, V95, V96) or goes straight to the load (GOLOADLV: V50, V52-V54, V97, V99) have no refusal to tell apart.",
+ "about": "One row per entry of the LM coverage map (acceptance point 2: every major mode and routine the program uses). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries that run it), not exercised (note gives the reason) or TBD. Rows start from the auditor draft (/mnt/project-files/steward/coverage-map.md, 10-18) with Lane F corrections (luminary099-coverage-map.md sections 3, 6, 7). Each lane edits its own rows; tools/program_acceptance.py lm turns this into docs/acceptance/Luminary099-integrated_program_tests.md. A mapped row's windows lists the replay windows that run the row ([scenario, start cs], or [scenario, start cs, cs, K] for a chain) (its event falls inside the window); only those windows give the row its C64 credit. replay_windows lists the C64 --replay windows (scenario, start cs, length cs) the doc is made from; each mapped scenario has at least one, at most 1000 cs so the replay rows fit below the rope. A mapped row may name its body in reach ([[point, label], ...], a point as the host reports print it): the host run must reach each (FLIGHT_REACH), so a scenario that only takes the entry's refusal does not count. Every mapped extended-verb and R-routine row whose entry can refuse (TESTXACT, CHKPOOH, CKMODCAD, OP/INERT, RDRUSECK, the update program's MODREG check, TRMTRACK's flag test) names the routine or job past those checks (Lane F audit, 10-23; uplink rows name their own UPEND70-73); rows whose entry only sets or clears a flag (V57, V58, V61, V62, V65, V66, V74-V77, V80, V81, V93, V95, V96) name that entry, program rows name the program's own entry (run only once V37 accepts it; P70/P71 past LEGAL?), other R rows the first basic word of the routine, and V97/V99 the program's paste of the flash. Program flashes with no paste of their own (GOLOADLV: V50, V52-V54) name why in no_reach instead (#805 item 2). A point two rows share in one scenario takes a third field, the centisecond this row's body runs from; the host run reports every arrival.",
  "replay_windows": [
   [
    "lm-p63-descent",
@@ -334,6 +334,12 @@
      "lm-stable-orbit",
      8000
     ]
+   ],
+   "reach": [
+    [
+     "34,3526",
+     "P79"
+    ]
    ]
   },
   {
@@ -350,6 +356,12 @@
     [
      "lm-stable-orbit",
      8000
+    ]
+   ],
+   "reach": [
+    [
+     "34,3274",
+     "P78"
     ]
    ]
   },
@@ -368,6 +380,12 @@
      "lm-rendezvous-tpm",
      40000
     ]
+   ],
+   "reach": [
+    [
+     "13,2207",
+     "P76"
+    ]
    ]
   },
   {
@@ -384,6 +402,12 @@
     [
      "lm-rendezvous-tpm",
      40000
+    ]
+   ],
+   "reach": [
+    [
+     "35,2731",
+     "P75"
     ]
    ]
   },
@@ -402,6 +426,12 @@
      "lm-rendezvous-tpm",
      40000
     ]
+   ],
+   "reach": [
+    [
+     "35,2547",
+     "P74"
+    ]
    ]
   },
   {
@@ -418,6 +448,12 @@
     [
      "lm-cdh-csm",
      2100
+    ]
+   ],
+   "reach": [
+    [
+     "35,2220",
+     "P73"
     ]
    ]
   },
@@ -436,6 +472,12 @@
      "lm-csi",
      2100
     ]
+   ],
+   "reach": [
+    [
+     "35,2031",
+     "P72"
+    ]
    ]
   },
   {
@@ -452,6 +494,12 @@
     [
      "lm-landing-ascent-nassp",
      140000
+    ]
+   ],
+   "reach": [
+    [
+     "31,2144",
+     "LANDJUNK"
     ]
    ]
   },
@@ -485,6 +533,12 @@
      "lm-p63-descent-restart",
      20000
     ]
+   ],
+   "reach": [
+    [
+     "32,2776",
+     "P63LM"
+    ]
    ]
   },
   {
@@ -501,6 +555,12 @@
     [
      "lm-p57",
      12000
+    ]
+   ],
+   "reach": [
+    [
+     "15,3314",
+     "P57"
     ]
    ]
   },
@@ -519,6 +579,12 @@
      "lm-p52-realign",
      2000
     ]
+   ],
+   "reach": [
+    [
+     "15,2050",
+     "PROG52"
+    ]
    ]
   },
   {
@@ -535,6 +601,12 @@
     [
      "lm-p51",
      100
+    ]
+   ],
+   "reach": [
+    [
+     "14,3427",
+     "P51"
     ]
    ]
   },
@@ -553,6 +625,12 @@
      "lm-p47-nassp",
      2950
     ]
+   ],
+   "reach": [
+    [
+     "36,3436",
+     "P47LM"
+    ]
    ]
   },
   {
@@ -569,6 +647,12 @@
     [
      "lm-p42-nassp",
      48800
+    ]
+   ],
+   "reach": [
+    [
+     "36,3410",
+     "P42LM"
     ]
    ]
   },
@@ -587,6 +671,12 @@
      "lm-p41-nassp",
      49000
     ]
+   ],
+   "reach": [
+    [
+     "36,3272",
+     "P41LM"
+    ]
    ]
   },
   {
@@ -603,6 +693,12 @@
     [
      "lm-doi-nassp",
      48800
+    ]
+   ],
+   "reach": [
+    [
+     "36,3147",
+     "P40LM"
     ]
    ]
   },
@@ -621,6 +717,12 @@
      "lm-stable-orbit-lm",
      8000
     ]
+   ],
+   "reach": [
+    [
+     "34,3521",
+     "P39"
+    ]
    ]
   },
   {
@@ -637,6 +739,12 @@
     [
      "lm-stable-orbit-lm",
      8000
+    ]
+   ],
+   "reach": [
+    [
+     "34,3271",
+     "P38"
     ]
    ]
   },
@@ -655,6 +763,12 @@
      "lm-rendezvous-tpm",
      40000
     ]
+   ],
+   "reach": [
+    [
+     "35,2725",
+     "P35"
+    ]
    ]
   },
   {
@@ -671,6 +785,12 @@
     [
      "lm-rendezvous",
      29000
+    ]
+   ],
+   "reach": [
+    [
+     "35,2545",
+     "P34"
     ]
    ]
   },
@@ -689,6 +809,12 @@
      "lm-cdh",
      2100
     ]
+   ],
+   "reach": [
+    [
+     "35,2216",
+     "P33"
+    ]
    ]
   },
   {
@@ -705,6 +831,12 @@
     [
      "lm-csi",
      2100
+    ]
+   ],
+   "reach": [
+    [
+     "35,2027",
+     "P32"
     ]
    ]
   },
@@ -723,6 +855,12 @@
      "lm-coast-programs",
      8400
     ]
+   ],
+   "reach": [
+    [
+     "35,2450",
+     "P31"
+    ]
    ]
   },
   {
@@ -739,6 +877,12 @@
     [
      "lm-doi-nassp",
      48800
+    ]
+   ],
+   "reach": [
+    [
+     "35,2000",
+     "P30"
     ]
    ]
   },
@@ -757,6 +901,12 @@
      "lm-coast-programs",
      16900
     ]
+   ],
+   "reach": [
+    [
+     "24,2404",
+     "PROG25"
+    ]
    ]
   },
   {
@@ -773,6 +923,12 @@
     [
      "lm-p22-surface",
      2900
+    ]
+   ],
+   "reach": [
+    [
+     "24,2000",
+     "PROG22 (= PROG20)"
     ]
    ]
   },
@@ -791,6 +947,12 @@
      "lm-coast-programs",
      2400
     ]
+   ],
+   "reach": [
+    [
+     "24,3505",
+     "PROG21"
+    ]
    ]
   },
   {
@@ -807,6 +969,12 @@
     [
      "lm-rendezvous",
      29000
+    ]
+   ],
+   "reach": [
+    [
+     "24,2000",
+     "PROG20"
     ]
    ]
   },
@@ -825,6 +993,12 @@
      "lm-landing-ascent-nassp",
      156000
     ]
+   ],
+   "reach": [
+    [
+     "30,2061",
+     "P12LM"
+    ]
    ]
   },
   {
@@ -841,6 +1015,12 @@
     [
      "lm-coast-programs",
      19900
+    ]
+   ],
+   "reach": [
+    [
+     "37,3655",
+     "P06"
     ]
    ]
   },
@@ -870,6 +1050,12 @@
      "lm-p52-realign",
      2000
     ]
+   ],
+   "reach": [
+    [
+     "04,2163",
+     "POOH"
+    ]
    ]
   },
   {
@@ -898,6 +1084,12 @@
      "lm-abort-p71-nassp",
      115000
     ]
+   ],
+   "reach": [
+    [
+     "31,2630",
+     "STARTP64"
+    ]
    ]
   },
   {
@@ -914,6 +1106,12 @@
     [
      "lm-p65-autoland-nassp",
      127000
+    ]
+   ],
+   "reach": [
+    [
+     "31,2621",
+     "P65START"
     ]
    ]
   },
@@ -932,6 +1130,12 @@
      "lm-landing-ascent-nassp",
      122500
     ]
+   ],
+   "reach": [
+    [
+     "31,2477",
+     "STARTP66"
+    ]
    ]
   },
   {
@@ -948,6 +1152,12 @@
     [
      "lm-p67-nassp",
      123800
+    ]
+   ],
+   "reach": [
+    [
+     "31,2551",
+     "STARTP67"
     ]
    ]
   },
@@ -966,6 +1176,12 @@
      "lm-abort-p70-nassp",
      115000
     ]
+   ],
+   "reach": [
+    [
+     "21,2073",
+     "P70A (past LEGAL?)"
+    ]
    ]
   },
   {
@@ -982,6 +1198,12 @@
     [
      "lm-abort-p71-nassp",
      115000
+    ]
+   ],
+   "reach": [
+    [
+     "21,2076",
+     "P71A (past LEGAL?)"
     ]
    ]
   },
@@ -1015,6 +1237,12 @@
      1900,
      1000,
      3
+    ]
+   ],
+   "reach": [
+    [
+     "04,3401",
+     "UPPART2"
     ]
    ]
   },
@@ -1112,6 +1340,12 @@
      "lm-p52-realign",
      2000
     ]
+   ],
+   "reach": [
+    [
+     "26,2123",
+     "R60LEM"
+    ]
    ]
   },
   {
@@ -1128,6 +1362,12 @@
     [
      "lm-rendezvous",
      29000
+    ]
+   ],
+   "reach": [
+    [
+     "23,2116",
+     "R61LEM"
     ]
    ]
   },
@@ -1201,6 +1441,12 @@
      "lm-rendezvous",
      29000
     ]
+   ],
+   "reach": [
+    [
+     "23,2123",
+     "R65LEM"
+    ]
    ]
   },
   {
@@ -1233,6 +1479,12 @@
      "lm-abort-p71-nassp",
      115000
     ]
+   ],
+   "reach": [
+    [
+     "21,2021",
+     "R10,R11A"
+    ]
    ]
   },
   {
@@ -1260,6 +1512,12 @@
      "lm-p63-lr-update",
      90000
     ]
+   ],
+   "reach": [
+    [
+     "25,3607",
+     "R12LITES"
+    ]
    ]
   },
   {
@@ -1277,6 +1535,16 @@
      "lm-rendezvous",
      29000
     ]
+   ],
+   "reach": [
+    [
+     "24,2674",
+     "R21LEM"
+    ],
+    [
+     "24,2451",
+     "R22LEM"
+    ]
    ]
   },
   {
@@ -1293,6 +1561,12 @@
     [
      "lm-p63-descent",
      17500
+    ]
+   ],
+   "reach": [
+    [
+     "14,3135",
+     "R51P63 (P63's entry to R51)"
     ]
    ]
   },
@@ -1316,6 +1590,16 @@
      "lm-p57",
      12000
     ]
+   ],
+   "reach": [
+    [
+     "14,3672",
+     "R52 +2 (first basic word)"
+    ],
+    [
+     "14,3231",
+     "R55.1"
+    ]
    ]
   },
   {
@@ -1332,6 +1616,12 @@
     [
      "lm-p57",
      12000
+    ]
+   ],
+   "reach": [
+    [
+     "15,2245",
+     "R59"
     ]
    ]
   },
@@ -1571,7 +1861,8 @@
      "lm-p57",
      12000
     ]
-   ]
+   ],
+   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
   },
   {
    "row": "V51",
@@ -1597,7 +1888,8 @@
      "lm-p52-realign",
      4000
     ]
-   ]
+   ],
+   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
   },
   {
    "row": "V53 please mark Y reticle",
@@ -1614,7 +1906,8 @@
      "lm-p51",
      3400
     ]
-   ]
+   ],
+   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
   },
   {
    "row": "V54 please mark X or Y",
@@ -1636,7 +1929,8 @@
      "lm-p57",
      12000
     ]
-   ]
+   ],
+   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
   },
   {
    "row": "V55 align time",
@@ -1703,6 +1997,12 @@
      "lm-p63-lr-update",
      100400
     ]
+   ],
+   "reach": [
+    [
+     "43,2322",
+     "LRON"
+    ]
    ]
   },
   {
@@ -1719,6 +2019,12 @@
     [
      "lm-p63-lr-v58",
      87500
+    ]
+   ],
+   "reach": [
+    [
+     "43,2325",
+     "LROFF"
     ]
    ]
   },
@@ -1769,6 +2075,12 @@
      "lm-coast-verbs",
      3900
     ]
+   ],
+   "reach": [
+    [
+     "43,2163",
+     "DAPATTER"
+    ]
    ]
   },
   {
@@ -1785,6 +2097,12 @@
     [
      "lm-coast-verbs",
      5400
+    ]
+   ],
+   "reach": [
+    [
+     "43,2166",
+     "TOTATTER"
     ]
    ]
   },
@@ -1849,6 +2167,12 @@
      "lm-coast-verbs",
      6400
     ]
+   ],
+   "reach": [
+    [
+     "43,3221",
+     "SNUFFOUT"
+    ]
    ]
   },
   {
@@ -1865,6 +2189,12 @@
     [
      "lm-coast-verbs",
      3900
+    ]
+   ],
+   "reach": [
+    [
+     "43,3142",
+     "ATTACHED"
     ]
    ]
   },
@@ -2029,6 +2359,12 @@
      "lm-uplink-accept",
      11900
     ]
+   ],
+   "reach": [
+    [
+     "43,3045",
+     "DNEDUMP"
+    ]
    ]
   },
   {
@@ -2045,6 +2381,12 @@
     [
      "lm-coast-verbs",
      6400
+    ]
+   ],
+   "reach": [
+    [
+     "43,3224",
+     "OUTSNUFF"
     ]
    ]
   },
@@ -2063,6 +2405,12 @@
      "lm-coast-verbs",
      7400
     ]
+   ],
+   "reach": [
+    [
+     "43,3001",
+     "MINIMP"
+    ]
    ]
   },
   {
@@ -2079,6 +2427,12 @@
     [
      "lm-coast-verbs",
      7400
+    ]
+   ],
+   "reach": [
+    [
+     "43,3006",
+     "NOMINIMP"
     ]
    ]
   },
@@ -2115,6 +2469,12 @@
      "lm-coast-verbs",
      18900
     ]
+   ],
+   "reach": [
+    [
+     "43,3051",
+     "LEMVEC"
+    ]
    ]
   },
   {
@@ -2131,6 +2491,12 @@
     [
      "lm-coast-verbs",
      19900
+    ]
+   ],
+   "reach": [
+    [
+     "43,3054",
+     "CSMVEC"
     ]
    ]
   },
@@ -2318,6 +2684,12 @@
      "lm-coast-verbs",
      8400
     ]
+   ],
+   "reach": [
+    [
+     "43,3073",
+     "WMATRXNG"
+    ]
    ]
   },
   {
@@ -2344,6 +2716,12 @@
      "lm-coast-verbs",
      8400
     ]
+   ],
+   "reach": [
+    [
+     "43,3061",
+     "UPDATOFF"
+    ]
    ]
   },
   {
@@ -2361,6 +2739,12 @@
      "lm-coast-verbs",
      35400
     ]
+   ],
+   "reach": [
+    [
+     "43,3206",
+     "VERB96"
+    ]
    ]
   },
   {
@@ -2377,6 +2761,12 @@
     [
      "lm-p63-descent",
      17500
+    ]
+   ],
+   "reach": [
+    [
+     "36,2755",
+     "V97 paste (VB97DEX, CS ZERO)"
     ]
    ]
   },
@@ -2409,6 +2799,12 @@
     [
      "lm-doi-nassp",
      48800
+    ]
+   ],
+   "reach": [
+    [
+     "36,2777",
+     "V99 paste (V99RECYC -13, CS BIT9)"
     ]
    ]
   }

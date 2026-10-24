@@ -144,6 +144,14 @@ class ProgramAcceptance(unittest.TestCase):
         flag = dict(row='V44', scenarios=['lm-a'], no_reach='entry cannot refuse: it only sets SURFFLAG')
         self.assertEqual(pa.body_result(flag, {}), (True, 'no body check: entry cannot refuse: it only sets SURFFLAG'))
         self.assertEqual(pa.body_result(dict(row, no_reach='x'), {'lm-a': {}})[0], False)  # reach still wins
+        # Every arrival (arrivals); a shared point names the time this row's body runs from.
+        late = dict(row, reach=[['43,2306', 'RRDESEND +4', 2000]])
+        self.assertEqual(pa.body_result(late, {'lm-a': dict(arrivals={'43,2306': [1915, 2400]})}),
+                         (True, 'body reached: RRDESEND +4'))
+        self.assertEqual(pa.body_result(late, {'lm-a': dict(arrivals={'43,2306': [1915]})}),
+                         (False, 'body not reached: RRDESEND +4 (43,2306, at or after 2000 cs)'))
+        self.assertEqual(pa.body_result(row, {'lm-a': dict(arrivals={'43,2306': []}, reached={'43,2306': None})}),
+                         (False, 'body not reached: RRDESEND +4 (43,2306)'))
 
     def test_layout_tables_and_agc_sources_stale_a_result(self):
         self.assertIn(':(top)Luminary099', pa.SOURCES)
@@ -225,9 +233,12 @@ class ProgramAcceptance(unittest.TestCase):
                 self.assertIn(row['status'], ('mapped', 'not exercised', 'TBD'), row['row'])
                 self.assertEqual(bool(row['scenarios']), row['status'] == 'mapped', row['row'])
                 self.assertLessEqual(set(row['scenarios']), names, row['row'])
-                for point, label in row.get('reach', []):   # a fixed point, as the host reports print it
+                for point, label, *after in row.get('reach', []):   # a fixed point, as the host reports print it
                     self.assertRegex(point, r'^[0-7]{2},[23][0-7]{3}$', row['row'])
                     self.assertTrue(label and row['status'] == 'mapped', row['row'])
+                    self.assertTrue(after == [] or (len(after) == 1 and isinstance(after[0], int)), row['row'])
+                if row['status'] == 'mapped':   # a body check, or why the entry cannot refuse (#805)
+                    self.assertTrue(row.get('reach') or (row.get('no_reach') or '').strip(), row['row'])
 
 
 class HoleLabels(unittest.TestCase):
