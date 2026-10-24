@@ -839,8 +839,13 @@ def main():
             mail = (dp.WORK / f'vice-{tag}' / 'results.bin').read_bytes()
             applied, end_cs, ended, c64_written = struct.unpack_from('<HHBB', mail, 0x30)
             # Rows past the host's end the C64 applied before its own end:
-            # every one before that centisecond (dap_pass_check.c replay_due).
-            due_extra = rows_before(c64_rows(extra, m, 0, 0), end_cs) if ended else 0
+            # every one before that centisecond (dap_pass_check.c replay_due),
+            # and maybe its routine-boundary rows (odd where) at that
+            # centisecond: an earlier step in the same centisecond applies
+            # them, an end on its first step does not.
+            after = c64_rows(extra, m, 0, 0)
+            due_extra = rows_before(after, end_cs) if ended else 0
+            may_extra = sum(1 for x in ROW.iter_unpack(after) if x[0] == end_cs and x[2] & 1) if ended else 0
             applied_extra, applied = max(0, applied - n_c64), min(applied, n_c64)
             r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended),
                      replay_after_rows=applied_extra, replay_inputs=replay_inputs, replay_outputs=replay_outputs)
@@ -903,10 +908,11 @@ def main():
                 why = 'a host input comes in between' if end['inputs_between'] else 'the host has no state there'
                 print(f"FAIL: {a.scenario}: the C64 {seen}, then ends at {cs + shift} cs, {shift} cs after the host's "
                       f"end, and the ends are not compared ({why})")
-            elif ended and (applied != n_c64 or applied_extra != due_extra):
+            elif ended and (applied != n_c64 or not due_extra <= applied_extra <= due_extra + may_extra):
                 r['ok'] = False
+                due = f'{due_extra}-{due_extra + may_extra}' if may_extra else f'{due_extra}'
                 print(f'FAIL: {a.scenario}: the C64 {seen}, but applied {applied} of the {n_c64} input rows'
-                      + (f' and {applied_extra} of the {due_extra} past the host\'s end' if due_extra or applied_extra else ''))
+                      + (f' and {applied_extra} of the {due} past the host\'s end' if due_extra or applied_extra else ''))
             elif not ended:
                 r['ok'] = False
                 print(f'FAIL: {a.scenario}: the C64 {seen}, then did not reach a sample point {c64_cs} cs in '

@@ -38,6 +38,9 @@ p.add_argument('--legacy', action='append', default=[], metavar='SUITE=TARGET',
 p.add_argument('--host-only', action='append', default=[], metavar='FILE:LINE=REASON',
                help='record: host arcs on this source line that no C64 program can take (REASON says why and where '
                     'the code is checked instead); they are listed apart with the reason')
+p.add_argument('--pooled-only', action='append', default=[], metavar='SUITE=C64SUITE',
+               help='record (with --pool): a host suite with no C64 rows of its own; C64SUITE runs its cases on the '
+                    'C64 the way the C64 runs them, and its arcs count only through the pool')
 p.add_argument('--pool', action='store_true',
                help='record: a host arc counts as taken on the C64 when any suite\'s C64 rows take it')
 a = p.parse_args()
@@ -96,9 +99,10 @@ else:
     for item in a.not_run:
         suite, ns = item.split('=')
         skip[suite] = {int(n) for n in ns.split(',') if n}
+    pooled_only = dict(item.split('=') for item in a.pooled_only)
     for suite in a.args[1:]:
         t = traced(suite)
-        rows = frozen(suite)
+        rows = [] if suite in pooled_only else frozen(suite)
         run = [n for n in (rows if rows is not None else t) if n not in skip.get(suite, ())]
         seen[suite] = (t, rows, run, frozenset().union(*t.values()), frozenset().union(*(t[n] for n in run)))
     legacy = dict(item.split('=') for item in a.legacy)
@@ -120,6 +124,8 @@ else:
                                    'sources_measured': sorted({x.split(':')[0] for x in host})}
         if suite in skip:
             record['suites'][suite]['c64_rows_not_run'] = sorted(skip[suite])
+        if suite in pooled_only:
+            record['suites'][suite]['c64_rows_in'] = pooled_only[suite]
         if suite in legacy:
             record['suites'][suite]['c64_rows'] = []
             record['suites'][suite]['c64_program'] = legacy[suite]
@@ -130,6 +136,11 @@ else:
     if a.pool:
         record['method'] += ('; with --pool, a host arc of one suite counts as taken on the C64 when the C64 rows '
                              'of any suite in the record take it (the same source line and branch in the same build)')
+    if pooled_only:
+        record['pooled_only'] = (
+            'these host suites have no C64 rows of their own: the suite named in c64_rows_in runs the same cases '
+            'one routine at a time through the flight modules as the C64 module test does, and its frozen rows '
+            'run on the C64 (make vice-lanec-pin-chains); their arcs count as taken on the C64 only through the pool')
     if legacy:
         record['legacy_c64_programs'] = (
             'the modules of these suites do not fit one C64 program with the Lane C harness; each runs on the C64 '

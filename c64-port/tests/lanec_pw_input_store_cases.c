@@ -6,5 +6,13 @@
 #include "dsky_input_store_cases.h"
 
 #define CASES 1024u
-LANEC_PW_MAKE(make, dsky_lamp_io, dsky_input_store_input, lanec_pw_lamp_out, lanec_pw_input_store_run, 8192u, CASES)
-const lanec_suite lanec_suite_pw_input_store = { "pw-input-store", CASES, make, lanec_pw_input_store_run };
+/* past the domain: the module's own states with the store in low erasable
+ * (the CDU counters of noun 20, the clock of noun 36) */
+static void input(apollo_overlay_state *s, dsky_lamp_io *p, uint16_t k)
+{
+    if (k < 8192u) { dsky_input_store_input(s, p, k); return; }
+    dsky_input_store_input(s, p, (uint16_t)((k - 8192u) * 127u % 8192u));
+    lanec_pw_low_noun(s, k - 8192u);
+}
+LANEC_PW_MAKE(make, dsky_lamp_io, input, lanec_pw_lamp_out, lanec_pw_input_store_run, 8192u, CASES)
+const lanec_suite lanec_suite_pw_input_store = { "pw-input-store", CASES + LANEC_PW_LOW_NOUN, make, lanec_pw_input_store_run };

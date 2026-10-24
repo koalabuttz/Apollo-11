@@ -66,6 +66,8 @@ static void make(uint32_t n, apollo_overlay_state *s, lanec_io *io, lanec_meta *
         if (z >= LANEC_CM_ATTACHED && z <= LANEC_CM_ATTACHED + 4u) range(m, cm_spans[6][0], cm_spans[6][1]);
         else for (i = 0; i < 6u; ++i) range(m, cm_spans[i][0], cm_spans[i][1]);
     }
+    m->range[m->ranges].bank = LANEC_ANY_BANK; m->range[m->ranges].lo = LANEC_Q;   /* TC Q runs Q */
+    m->range[m->ranges].hi = LANEC_Q; ++m->ranges;
 }
 
 const lanec_suite lanec_suite_ev_short = { "ev-short", (84u + 115u) * VARIANTS, make, lanec_ev_short_dispatch };
