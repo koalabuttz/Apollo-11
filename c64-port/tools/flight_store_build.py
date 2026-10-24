@@ -822,6 +822,10 @@ CO_LOCATE_HOT = {'lm_interbank_postjump_hot_routines': 'lm_interbank_routines',
 DOWNRUPT_HOST = {'lm': ('lm_downtelemetry', 'lm_dntm_rupt_routines'),
                  'cm': ('cm_downtelemetry', 'cm_dntm_rupt_routines')}
 DOWNRUPT_VECTOR = 2048 + 0o40   # physical 04040
+# Erasable points other modules return to, with the bank their callers run
+# in: REQUESTC (PINBALL bank 41) leaves TC ENDOFJOB at MPAC +3.
+ERASABLE_RECORDS = {'lm': (('lanec_pin_request_lm_routines', 0o41),),
+                    'cm': (('lanec_pin_request_cm_routines', 0o41),)}
 # Tables pinned in a slot (docs/FLIGHT-STORE.md): loaded once and kept, so
 # a cycle that runs them all costs no swaps. The builder links each slot's
 # set as one module and reports its size. A class-3 set (slot 3, $C000)
@@ -1963,6 +1967,20 @@ def main():
                         if (record['bank'], record['loc']) in taken:
                             raise SystemExit(f'{m}: DOWNRUPT point {record} already has a record')
                         wrappers.append(record)
+        # An erasable point reached from another module (the resident's
+        # NOVAC, FINDVAC or WAITLIST returning to MPAC +3 after V30 or V31)
+        # gets a record under the FB its callers run in, as DNTMGOTO does.
+        for table, bank in ERASABLE_RECORDS.get(m, ()):
+            owner = next((mod['id'] for mod, _, res in linked if res['ok'] and table in mod['basic']), None)
+            if owner is None:
+                raise SystemExit(f'{m}: {table} is not in a linked module')
+            fb = canonical_record(bank * 1024)[0]
+            taken = {(r['bank'], r['loc']) for r in resolver + wrappers}
+            for k in keys[table]:
+                record = dict(bank=fb, loc=k - ERASABLE_BASE, module=owner, selector=0)
+                if not ERASABLE_BASE <= k < ERASABLE_BASE + 0o1400 or (fb, record['loc']) in taken:
+                    raise SystemExit(f'{m}: {table} point {k} cannot take a record under bank {bank:o}')
+                wrappers.append(record)
         # The interpreter's modules and its points' records, where no
         # table record or resident table already holds the point.
         interp_prgs, interp = interp_modules(a.cc, m, library)
