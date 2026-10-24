@@ -422,6 +422,10 @@ static int kernel_table(const entry *e){const char *n=e->name;
  return strstr(n,"_kernel_routines")||strstr(n,"_kernel_job_routines")||strstr(n,"_kernel_task_routines")
   ||strstr(n,"_kernel_idle_routines")||(strstr(n,"_sp_routines")&&!strstr(n,"_hot_"));}
 static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const entry *last){int in;unsigned i,r;uint16_t key=point(w,sb,&in);
+ /* A table with no module (lm_t6rupt_routines: the T6RUPT vector, DOT6RUPT
+  * and the RESUME family) runs on the C64 as one run too: DOT6RUPT's TCF
+  * RESUME goes on in that run, not in the pinned RESUME set. */
+ if(last&&!*last->module&&!kernel_table(last)&&last->interp==(uint8_t)in&&find(last->t,key))return last;
  if(last&&*last->module)for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&!strcmp(tables[i].module,last->module)
                                            &&(tables[i].slot>1u||slot_has(tables[i].slot,tables[i].module,tables[i].t,key))
                                            &&(tables[i].slot!=5u||in_slot[0]==tables[i].module)&&find(tables[i].t,key))return &tables[i];
