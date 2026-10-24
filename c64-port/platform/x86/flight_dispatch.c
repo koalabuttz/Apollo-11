@@ -3,6 +3,8 @@
  * docs/X86-FLIGHT.md). Compiled with RK_LM=1 or RK_CM=1 and
  * FLIGHT_HOST_TABLES, FLIGHT_HOST_SITES and FLIGHT_MCT naming the generated
  * table index, operand sets and routine costs. */
+#include <setjmp.h>
+#include <stdlib.h>
 #include <string.h>
 #include "flight_dispatch.h"
 #include "resident_cdu.h"
@@ -152,7 +154,7 @@ uint8_t fd_boundary(fd_state *st)
         agc_word c = st->hw.channel4;
         if (st->phase == RK_PHASE_T5) drives(st);
         rk_timer_phase(&st->s, &st->hw, &st->pending, st->phase);
-        if (st->phase == RK_PHASE_T5) ++st->periods;
+        if (st->phase == RK_PHASE_T5 && nw_period(&st->wm, ++st->periods)) st->wm_fire = 1u;
         st->phase = st->phase == RK_PHASE_T5 ? RK_PHASE_T4 : (uint8_t)(st->phase + 1u);
         st->next_period += st->phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0;
         if (st->downrupt && ((c & 037777u) >> 6) != ((st->hw.channel4 & 037777u) >> 6))
@@ -193,9 +195,37 @@ static unsigned next_holder(const fd_state *st, unsigned i, uint8_t interp, uint
     return 0;
 }
 
+/* lmi_goto_any (src/lm_interp_orders.c) stops a host build with exit(3)
+ * on an erasable CADR cycle, where the AGC loops in GOTOERS until the night
+ * watchman restarts it. The x86 program links with --wrap=exit
+ * (tools/x86_flight_build.py LINK): an exit(3) inside a routine comes back
+ * here, run reports it in fd_cycled, and fd_run puts the state back as the
+ * step found it, a stuck step (night_watchman.h). */
+void __real_exit(int code) __attribute__((noreturn));
+void __wrap_exit(int code) __attribute__((noreturn));
+static jmp_buf fd_cycle;
+static int fd_in_routine, fd_cycled;
+void __wrap_exit(int code)
+{
+    if (fd_in_routine && code == 3) {
+        fd_in_routine = 0;
+        longjmp(fd_cycle, 1);
+    }
+    __real_exit(code);
+}
+
 static enum exec_status run(fd_state *st,agc_routine call,enum flight_io_kind kind){flight_io_buffer b;void *x;enum exec_status r;
- x=flight_io_enter(kind,&st->io,&st->hw,&b);r=call(&st->p,&st->s,x);flight_io_leave(kind,&st->io,&st->hw,&b);
- return r;}
+    x = flight_io_enter(kind, &st->io, &st->hw, &b);
+    if (setjmp(fd_cycle)) {
+        fd_cycled = 1;
+        return EXEC_OK;
+    }
+    fd_in_routine = 1;
+    r = call(&st->p, &st->s, x);
+    fd_in_routine = 0;
+    flight_io_leave(kind, &st->io, &st->hw, &b);
+    return r;
+}
 
 void fd_gojam(fd_state *st)
 {
@@ -211,6 +241,7 @@ void fd_gojam(fd_state *st)
     st->io.channel34 = st->io.channel35 = 0u;
     st->hw.channel33 |= 02000u;
     st->restart_light = 1u;
+    st->wm.hung = 0u;
 }
 
 void fd_key(fd_state *st, agc_word code)
@@ -227,12 +258,43 @@ void fd_lamps(fd_state *st)
     if (st->hw.channel11 & 01000u) st->restart_light = 0u;
 }
 
+/* The end of this period's T5 step: the spin's end (tc_trap, nw_spin). */
+static double period_end(const fd_state *st)
+{
+    double end;
+    uint8_t phase;
+    for (end = st->next_period, phase = st->phase; phase != RK_PHASE_T5;) {
+        phase = (uint8_t)(phase + 1u);
+        end += phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0;
+    }
+    return end;
+}
+
+/* A step that ran from before (at an interpretive point or not): the night
+ * watchman's NEWJOB rule, and a stuck step (night_watchman.h, or cycled:
+ * an erasable CADR cycle, run) spins to the end of the clock period, as the
+ * AGC loops on with interrupts taken until the watchman sounds. */
+static void watch_step(fd_state *st, fd_ran *ran, const agc_word *before, int in_interrupt,
+                       int interpretive, int cycled)
+{
+    int stuck =
+        (cycled && !in_interrupt) || nw_stuck(before, st->s.words, in_interrupt, interpretive);
+    double end;
+    if (nw_step(&st->wm, before, st->s.words, in_interrupt, stuck)) st->wm.armed = 0u;
+    if (!stuck) return;
+    end = period_end(st);
+    if (end > st->mct) {
+        ran->mct += end - st->mct;
+        st->mct = end;
+    }
+    st->idling = 1u;
+}
+
 /* The TC trap (tc_trap.h): the spin at VERB69, to the end of the clock
  * period, then the trap's GOJAM. */
 static int tc_trap(fd_state *st, fd_ran *ran)
 {
     double end;
-    uint8_t phase;
     int step = tc_trap_step(st->s.words, st->io.superbank, st->hw.in_interrupt != 0u, st->phase,
                             &st->spin);
     if (step == TC_TRAP_NONE) return 0;
@@ -242,11 +304,7 @@ static int tc_trap(fd_state *st, fd_ran *ran)
         return 1;
     }
     st->s.words[2] = 02040u;
-    /* The end of this period's T5 step. */
-    for (end = st->next_period, phase = st->phase; phase != RK_PHASE_T5;) {
-        phase = (uint8_t)(phase + 1u);
-        end += phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0;
-    }
+    end = period_end(st);
     if (end > st->mct) {
         ran->mct = end - st->mct;
         st->mct = end;
@@ -264,6 +322,14 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
  ran->mct = 0.0;
  ran->trap = 0;
  ++st->steps;
+ /* The night watchman sounded at the last period's end: GOJAM. */
+ if (st->wm_fire) {
+     st->wm_fire = 0u;
+     st->spin = 0u;
+     fd_gojam(st);
+     ran->trap = 3u;
+     return ran->status = EXEC_OK;
+ }
  if (tc_trap(st, ran)) return ran->status = EXEC_OK;
  if(t){const fd_table *e=&fd_tables[t-1u];apollo_overlay_state before=st->s;flight_io io0=st->io;agc_hardware hw0=st->hw;
   st->p.operands=e->sites;st->p.operand_count=e->nsites;
@@ -285,9 +351,19 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
           ran->status = run(st, c, e->io);
       }
   }
+  if (fd_cycled) {
+      fd_cycled = 0;
+      st->s = before;
+      st->io = io0;
+      st->hw = hw0;
+      watch_step(st, ran, before.words, hw0.in_interrupt != 0u, in, 1);
+      core_in = 2;
+      return ran->status = EXEC_OK;
+  }
   if (ran->status == EXEC_OK) {
       ran->mct = cost(key, (uint8_t)in);
       st->mct += ran->mct;
+      watch_step(st, ran, before.words, hw0.in_interrupt != 0u, in, 0);
       core_in = 2;
       fd_lamps(st);
       if (t - 1u < 256u) ++st->uses[t - 1u];
@@ -306,11 +382,29 @@ enum exec_status fd_run(fd_state *st,fd_ran *ran){int in;uint16_t key=fd_point(s
   * running, the clock's bit 15 makes the core skip NEWOPS (the C64
   * module's budget), and it would never fetch a word again. */
  CORE_MCT = 0u;
- ran->status = run(st, CORE, CORE_IO);
+ {
+     agc_word before[2048];
+     int cycled;
+     flight_io io0 = st->io;
+     agc_hardware hw0 = st->hw;
+     int isr = st->hw.in_interrupt != 0u;
+     memcpy(before, st->s.words, sizeof before);
+     ran->status = run(st, CORE, CORE_IO);
+     cycled = fd_cycled;
+     if (fd_cycled) {
+         fd_cycled = 0;
+         memcpy(st->s.words, before, sizeof before);
+         st->io = io0;
+         st->hw = hw0;
+         CORE_MCT = 0u;
+     }
+     ran->mct = (double)CORE_MCT;
+     st->mct += ran->mct;
+     if (ran->status == EXEC_OK || ran->status == EXEC_UNMAPPED)
+         watch_step(st, ran, before, isr, in, cycled);
+ }
  ++st->slots;
  if(ran->status==EXEC_UNMAPPED)ran->status=EXEC_OK;   /* left the interpreter: the next step resolves Z */
- ran->mct = (double)CORE_MCT;
- st->mct += ran->mct;
  core_key=fd_point(st,&in);core_in=(uint8_t)in;
  fd_lamps(st);
  return ran->status;}

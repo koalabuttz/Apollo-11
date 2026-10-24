@@ -181,7 +181,8 @@ MOON_MU = 4.9028e12
 
 
 def supported():
-    return [row for row in fhd.FLIGHT + fhd.RESTART_FLIGHT + fhd.V69_FLIGHT if not any(k in row[4] for k in UNSUPPORTED)]
+    return [row for row in fhd.FLIGHT + fhd.RESTART_FLIGHT + fhd.V69_FLIGHT + fhd.WATCHMAN_FLIGHT
+            if not any(k in row[4] for k in UNSUPPORTED)]
 
 
 # The TC trap rows (fhd.V69_FLIGHT: P00, then V69E). The harness takes the
@@ -194,19 +195,29 @@ TRAP_CS = 10
 TRAP_LINE = re.compile(r'^TC trap at (\d+) cs', re.M)
 
 
-def trap_compare(logs, x86_out):
-    """The TC trap's time in the harness's two runs and the x86 run:
-    (summary, passed, line)."""
-    h, o, x = (TRAP_LINE.search(t) for t in (logs[0], logs[1], x86_out))
+# The night watchman rows (fhd.WATCHMAN_FLIGHT: an erasable CADR cycle).
+# The harness's watchman sounds on both its scaled clocks, at the end of a
+# period whose count is a multiple of 128 (platform/x86/night_watchman.h);
+# the x86 program must take it too, within the TC trap's limit of the
+# harness's (each prints the time at its next step: a centisecond apart).
+WATCHMAN = {row[0] for row in fhd.WATCHMAN_FLIGHT}
+WATCHMAN_LINE = re.compile(r'^night watchman at (\d+) cs', re.M)
+
+
+def trap_compare(logs, x86_out, watchman=False):
+    """The TC trap's (or the night watchman's) time in the harness's two
+    runs and the x86 run: (summary, passed, line)."""
+    what, other = ('night watchman', 'the 1,1,2 clock') if watchman else ('TC trap', 'unscaled')
+    h, o, x = ((WATCHMAN_LINE if watchman else TRAP_LINE).search(t) for t in (logs[0], logs[1], x86_out))
     if not (h and o):
-        return None, False, 'the harness took no TC trap'
+        return None, False, f'the harness took no {what}'
     h, o = int(h[1]), int(o[1])
     lim = SPREAD_K * abs(h - o) + TRAP_CS
     if not x:
-        return dict(harness=h, other_clock=o, x86=None, limit=lim), False, 'the x86 program took no TC trap'
+        return dict(harness=h, other_clock=o, x86=None, limit=lim), False, f'the x86 program took no {what}'
     x = int(x[1])
     return (dict(harness=h, other_clock=o, x86=x, limit=lim), abs(x - h) <= lim,
-            f'TC trap at {x} cs (harness {h}, unscaled {o}; limit {lim} cs apart)')
+            f'{what} at {x} cs (harness {h}, {other} {o}; limit {lim} cs apart)')
 
 
 def kepler(s, dt):
@@ -442,7 +453,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     the x86 run only (a check that the comparison sees them)."""
     modreg, rn, vn = STATE[m]
     lr = [] if 'FLIGHT_LR' in env else None
-    logs = [] if name in TC_TRAP else None
+    logs = [] if name in TC_TRAP or name in WATCHMAN else None
     ref = harness_state(m, cs, keys, env, cs - 1000, out=lr, log=logs)
     if ref is None:
         return dict(scenario=name, mission=m, line=f'{name}: the harness wrote no snapshot'), False
@@ -508,7 +519,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     if alarms:
         line += '; alarm codes differ: ' + ', '.join(f'{a:04o} {hw[a]:05o}/{xw[a]:05o}' for a in alarms)
     restarts = None
-    if 'FLIGHT_GOJAM' in env or name in TC_TRAP:
+    if 'FLIGHT_GOJAM' in env or name in TC_TRAP or name in WATCHMAN:
         c = REDOCTR[m]
         restarts = dict(harness=hw[c], other_clock=sw[c], x86=xw[c])
         same = xw[c] in (hw[c], sw[c])
@@ -516,7 +527,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
         line += f'; REDOCTR {hw[c]}/{xw[c]}' + ('' if same else ' (restarts differ)')
     trap = None
     if logs is not None:
-        trap, trap_ok, trap_line = trap_compare(logs, r.stdout)
+        trap, trap_ok, trap_line = trap_compare(logs, r.stdout, name in WATCHMAN)
         ok = ok and trap_ok
         line += '; ' + trap_line
     radar = None

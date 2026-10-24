@@ -12,6 +12,7 @@
  * (RK_LM or RK_CM). */
 #include "flight_io.h"
 #include "resident_rupt.h"
+#include "night_watchman.h"
 
 /* X86_INTERP_COMPILED (default): compiled interpretive tables first, the
  * interpreter core where none holds the point. X86_INTERP_CORE: no
@@ -56,6 +57,11 @@ typedef struct {
      * T3 step, 1 when it spun only through T5; idling while that spin's
      * period is charged, until the next boundary. */
     uint8_t spin, idling;
+    /* The night watchman (night_watchman.h): armed and checked by the
+     * period count, disarmed by the steps' NEWJOB accesses; wm_fire when it
+     * sounded at the last period's end, for the next fd_run's GOJAM. */
+    night_watchman wm;
+    uint8_t wm_fire;
     /* The DSKY's RESTART lamp, as yaAGC's RestartLight: lit by a GOJAM,
      * put out by RSET (key code 022 into channel 15, fd_key) and by a
      * routine that leaves channel 11 bit 10 set (fd_lamps). */
@@ -71,7 +77,7 @@ typedef struct {
 
 /* What the last fd_run ran: the table (NULL for the core, the VERB69 spin
  * and the TC trap) and the point; trap is 1 for the spin, 2 for the trap's
- * GOJAM. */
+ * GOJAM, 3 for the night watchman's. */
 typedef struct {
     const fd_table *table;
     uint16_t key;

@@ -843,6 +843,17 @@ RESTART_FLIGHT = [(name, base[1], end, base[3], {**base[4], 'FLIGHT_GOJAM': str(
 V69_FLIGHT = [('lm-v69', 'lm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'}),
               ('cm-v69', 'cm', 4000, '@2350V69E', {'FLIGHT_SWAP_MCT': '0'})]
 
+# The night watchman (docs/FLIGHT-RESTART.md, The night watchman):
+# lm-p52-watchman is lm-p52-realign with SAVQR52 (QTEMP1, 03665) poked at
+# 24 s, during R52's V01N70, to point to itself. R52's GOTO SAVQR52 after
+# the R60 maneuver then loops in GOTOERS (an erasable CADR cycle) until
+# the night watchman restarts the AGC (35.84 s on the harness's work
+# clock); R52 restarts at V01N70 and P52 goes on. Like V69_FLIGHT, the host
+# differential does not run it; tools/x86_flight_scenarios.py flies it on
+# the x86 program.
+WATCHMAN_FLIGHT = [('lm-p52-watchman', 'lm', 10000, LM_P52_KEYS,
+                    {**LM_P52, 'FLIGHT_POKE': '2400:03665=03665,' + LM_P52['FLIGHT_POKE']})]
+
 
 def reach_points():
     """{FLIGHT scenario: [point, ...]}: the bodies the program maps' rows
@@ -859,8 +870,8 @@ def reach_points():
 
 
 def scenario(name):
-    """A FLIGHT, RESTART_FLIGHT or V69_FLIGHT row by name."""
-    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT + V69_FLIGHT}[name]
+    """A FLIGHT, RESTART_FLIGHT, V69_FLIGHT or WATCHMAN_FLIGHT row by name."""
+    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT + V69_FLIGHT + WATCHMAN_FLIGHT}[name]
 
 
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],

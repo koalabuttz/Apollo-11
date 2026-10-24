@@ -67,7 +67,7 @@ def lockstep(cc, m, mode):
     exe = xb.OUT / f'x86-flight-lockstep-{m}{suffix}'
     host = sorted(str(p) for p in (xb.STORE / 'host').glob('*.o'))
     subprocess.run([cc, *objs, *host, str(engine), str(fhd.YAAGC / 'agc_engine_init.o'), str(fhd.YAAGC / 'rfopen.o'),
-                    '-Wl,--gc-sections', '-lm', '-o', str(exe)], cwd=ROOT, check=True)
+                    *xb.LINK, '-Wl,--gc-sections', '-lm', '-o', str(exe)], cwd=ROOT, check=True)
     return exe
 
 
@@ -80,8 +80,8 @@ def lamp_test(cc, m):
     subprocess.run([cc, *flags, '-c', 'platform/x86/test_restart_lamp.c', '-o', str(o)], cwd=ROOT, check=True)
     exe = xb.OUT / f'test-restart-lamp-{m}'
     host = sorted(str(p) for p in (xb.STORE / 'host').glob('*.o'))
-    subprocess.run([cc, str(o), str(xb.OUT / f'flight_dispatch_{m}.o'), *host, '-Wl,--gc-sections', '-lm',
-                    '-o', str(exe)], cwd=ROOT, check=True)
+    subprocess.run([cc, str(o), str(xb.OUT / f'flight_dispatch_{m}.o'), *host, *xb.LINK, '-Wl,--gc-sections',
+                    '-lm', '-o', str(exe)], cwd=ROOT, check=True)
     r = subprocess.run([str(exe)], cwd=ROOT, capture_output=True, text=True)
     print(f'{m}: {r.stdout.strip()}')
     return r.returncode
