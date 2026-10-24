@@ -534,6 +534,9 @@ __attribute__((noinline)) uint8_t rk_gojam(void)
     rk_channels_merge();
 #endif
     rk_pending = 0;
+#if defined(RK_WORK_CLOCK) && !defined(RK_NO_DIRECT)
+    rk_cut = 0; /* the chain the restart ended goes on nowhere */
+#endif
     rk_restart_lamp = 1u;
     apollo_ov2_restart_keep_pinned(&rk_runtime);
     return 0u;
