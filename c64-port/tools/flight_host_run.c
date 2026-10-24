@@ -214,7 +214,10 @@ static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
  * same spans (lockstep and bridge arm yaAGC's own flag and read it back).
  * wm_fire: the alarm sounded at the last period's end. wm_windows counts
  * the alarm's checks, wm_disagree those where the two rules differ. */
-static night_watchman wm,wm_ya;static int wm_fire;static unsigned long wm_alarms,wm_windows,wm_disagree,wm_stuck;
+static night_watchman wm,wm_ya;static int wm_fire;static unsigned long wm_alarms,wm_windows,wm_disagree,wm_stuck,wm_ya_tripped;
+/* yaAGC's own alarm inside a span (its scaler is frozen there, so never
+ * expected): counted, and cleared so the span's GOJAM bit does not stay. */
+static void ya_tripped(void){if(m.NightWatchmanTripped){++wm_ya_tripped;m.NightWatchmanTripped=0;}}
 static void period_end(void){++taken;
  if(!scaled)return;
  if(taken%NW_PERIODS==0u&&(wm.armed||wm_ya.armed)){++wm_windows;
@@ -1767,9 +1770,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
       * period's end, interrupts taken, until the night watchman. */
      {int stuck=nw_stuck(before.words,s.words,isr0,interp);if(nw_step(&wm,before.words,s.words,isr0,stuck))wm.armed=0;
       if(!m.NightWatchman)wm_ya.armed=0;
+      ya_tripped();
       /* The C64's boundary words hold no stuck point (GOTO), so no
        * interrupt could come there: the AGC and the x86 program take them
        * (night_watchman.h), and so does the next boundary here. */
+      /* Only for the boundary after it: the next routine sets fixed_data again. */
       if(stuck){++wm_stuck;p.fixed_data=rope_data;if(work)idle_tick();}}
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
      if(n>=0){locked+=(unsigned long)n;
@@ -1793,7 +1798,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if((n=bridge(&s,&io,&hw,&pending,5000000l))==-2)return 3;
    if(n<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
    dl_bridged(w);
-   {int in,stuck;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);if(nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck))wm.armed=0;if(!m.NightWatchman)wm_ya.armed=0;}
+   {int in,stuck;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);if(nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck))wm.armed=0;if(!m.NightWatchman)wm_ya.armed=0;ya_tripped();}
    hole(w,io.superbank,(unsigned long)n,e&&e!=&core_entry?e->name:0);bridged+=(unsigned long)n;
    if(trapped){trap_gojam(&s,&io,&hw,&pending);substitute=0;}}}
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
@@ -1801,7 +1806,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(scaled)printf("scaled time: K %.2f, divisor %u, lag %u, seed %lu: %lu CIA interrupts, %lu clock periods taken, %lu dropped (rk_dilation); AGC time %lu cs\n",
   slow,divisor,lag,seed,work?consumed/3ul:consumed,taken,dropped,now(s.words));   /* work: whole periods' steps */
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
- if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule\n",wm_alarms,wm_stuck,wm_windows,wm_disagree);
+ if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule; yaAGC's own alarm inside %lu spans\n",wm_alarms,wm_stuck,wm_windows,wm_disagree,wm_ya_tripped);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
  if(core_routines){printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);core_charge_report();}

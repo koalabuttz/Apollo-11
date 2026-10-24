@@ -4,6 +4,7 @@
  * FLIGHT_HOST_TABLES, FLIGHT_HOST_SITES and FLIGHT_MCT naming the generated
  * table index, operand sets and routine costs. */
 #include <setjmp.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "flight_dispatch.h"
@@ -325,7 +326,13 @@ static void watch_step(fd_state *st, fd_ran *ran, const agc_word *before, int in
 {
     int stuck =
         (cycled && !in_interrupt) || nw_stuck(before, st->s.words, in_interrupt, interpretive);
+    int fresh = cycled && !(st->wm.hung && st->wm.z == before[5] && st->wm.fb == before[4] &&
+                            st->wm.loc == before[0164]);
     double end;
+    /* Each point a cycle starts at, so no exit(3) passes unseen. */
+    if (fresh)
+        printf("erasable CADR cycle at Z %05o FB %05o LOC %05o, %lu cs\n", (unsigned)before[5],
+               (unsigned)before[4], (unsigned)before[0164], fd_centiseconds(st));
     if (nw_step(&st->wm, before, st->s.words, in_interrupt, stuck)) st->wm.armed = 0u;
     if (!stuck) return;
     end = period_end(st);
@@ -456,7 +463,7 @@ static int core_stuck(fd_state *st, fd_ran *ran)
         (cycled || nw_stuck(before, st->s.words, isr, 0))) {
         ran->mct = mct;
         st->mct += mct;
-        watch_step(st, ran, before, isr, 0, 1);
+        watch_step(st, ran, before, isr, 0, cycled);
         fd_lamps(st);
         return 1;
     }
