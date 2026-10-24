@@ -1733,13 +1733,5 @@
   "velocity-phased-host": 1,
   "velocity-phased-sanitize": 12,
   "x86-flight-check": 315
- },
- "source_runs": [
-  38544479648,
-  38576290117,
-  39059905834,
-  40070324669,
-  40070804208,
-  40100498731
- ]
+ }
 }
