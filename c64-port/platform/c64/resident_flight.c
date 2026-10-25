@@ -394,6 +394,9 @@ static inline void rk_realtime_cap(void)
 /* rk_rupts (platform/c64/rk_clock.S) comes here when a timer step is due
  * or a request is pending. */
 void rk_rupts(void);
+#ifdef DP_REPLAY
+void dp_rows_after_rupts(void);
+#endif
 __attribute__((noinline, used)) void rk_rupts_due(void) {
     uint8_t got;
 #ifdef RK_STEAL
@@ -855,6 +858,11 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
         return EXEC_OUT_OF_SCOPE; /* stop: not a restart (rk_gojam) */
     RK_PROF(0);
     rk_rupts();
+#ifdef DP_REPLAY
+    /* The --replay rows the host writes after its timer steps (where bit 0),
+     * now that rk_rupts has run this step's (platform/c64/dap_pass_check.c). */
+    dp_rows_after_rupts();
+#endif
     RK_PROF(1);
     /* The TC trap (docs/FLIGHT-RESTART.md, The TC trap). At VERB69 (43,2037
      * in both ropes, V69's TC VERB69; bank 043 is FB 033 with the
