@@ -802,9 +802,16 @@ port) runs one mission:
    SCALE, about P from channel 6 (00125 +P, 00252 -P) and about Q and R
    from channel 5's U and V jets (ALLJETS). Each native sample point
    turns the body by its rates since the last one and writes CDUX-Z; anything else that moves
-   CDUX-Z (coarse align, gyro torquing) resets the attitude to them. No
-   cross-coupling, no engine torque; with it the engine model no longer
-   sets CDUX-Z to CDUXD-ZD. `lm-rhc-att-turn`: `lm-rhc-att-hold` with
+   CDUX-Z (coarse align, gyro torquing) resets the attitude to them.
+   While the descent engine burns, the trim gimbal (`dps_gimbal`) adds
+   the torque the DAP counts on: ACCDOTQ and ACCDOTR (AOSTASK's T L / I,
+   the jerk at the gimbal's 0.2 deg/s) per gimbal radian, -sin p cos r
+   about Q and -sin r about R. No cross-coupling and no CG offset; with
+   it the engine model no longer sets CDUX-Z to CDUXD-ZD. `lm-p63-att`:
+   `lm-p63-trim` with `FLIGHT_ATT=1`. No attitude is held for the DAP:
+   the jets and the trim gimbal fly P63 through throttle-up, CDUX-Z stay
+   within 4 degrees of the engine model's held attitude, and the gimbal
+   ends within 0.1 degree of zero. Every native routine matches yaAGC. `lm-rhc-att-turn`: `lm-rhc-att-hold` with
    `FLIGHT_ATT=1`. The +P stick turns the LM at 0.097 rad/s (CDUX to 5652
    octal) and the DAP stops it at release; the Q and R stick turns CDUY
    and CDUZ the same way. Every native routine matches yaAGC.
