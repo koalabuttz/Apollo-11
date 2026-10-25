@@ -835,7 +835,7 @@ static double pilot_tau;
 static void eset(agc_word *w,unsigned a,agc_word v){if(w)w[a]=v;else *cell(a)=(int16_t)v;}
 /* FLIGHT_RHC (tools/flight_rhc.h): the LM hand controller. */
 #include "flight_rhc.h"
-/* FLIGHT_ATT (tools/flight_attitude.h): the LM turning under its jets. */
+/* FLIGHT_ATT (tools/flight_attitude.h): the spacecraft turning under its jets. */
 #include "flight_attitude.h"
 static void pilot(agc_word *w){double r[3],v[3],u[3],rm=0.0,vu=0.0,h[3],hm=0.0,t[3],tm=0.0,ig,mg,lim=tan(15.0*3.141592653589793/180.0);unsigned k;
  surface_v(w,v);for(k=0;k<3u;++k){r[k]=eng_dp(w,03520u+2u*k,24);rm+=r[k]*r[k];}
@@ -964,7 +964,7 @@ static void sps_gimbal(struct sps *e,double dt,const agc_hardware *hw,double acc
   if(acc>0.0)sps_turn(e,s);}}
 static void sps_due(unsigned long t,struct sps *e,agc_word *w,const agc_hardware *hw){double a,dt,dir[3],b[3],pb,yb,acc;unsigned k,j;
  if(!sps_kg)return;
- if(!e->lit)for(k=0;k<3u;++k)eset(w,CDUX+k,eword(w,CM_CDUXD+2u*k));
+ if(!e->lit&&!att_scale)for(k=0;k<3u;++k)eset(w,CDUX+k,eword(w,CM_CDUXD+2u*k));
  dt=e->t&&t>e->t?(double)(t-e->t)*0.01:0.0;e->t=t;
  if(!(eword(w,FLAGWRD5)&ENGONBIT)){sps_gimbal(e,dt,hw,0.0);if(e->on){e->rate[0]=e->rate[1]=0.0;}e->on=0;return;}
  if(!e->on){sps_gimbal(e,dt,hw,0.0);e->on=e->lit=1;if(!e->kg)e->kg=sps_kg;sps_matrix(w,e->m);
@@ -1004,7 +1004,7 @@ static double edp(const agc_word *w,unsigned a,int scale){
  return ((double)ones(eword(w,a))*16384.0+(double)ones(eword(w,a+1u)))*ldexp(1.0,scale-28);}
 static void aero_due(unsigned long t,struct aero *e,agc_word *w){double r[3],v[3],vr[3],lt[3],sd[3],acc[3],rt,h,vm,d,ph,un,dt,tn;unsigned k,j;
  if(!aero_b)return;
- if(eword(w,P63FLAG)==1u)for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,THETAD+k);else *cell(CDUX+k)=(int16_t)eword(w,THETAD+k);}
+ if(eword(w,P63FLAG)==1u&&!att_scale)for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,THETAD+k);else *cell(CDUX+k)=(int16_t)eword(w,THETAD+k);}
  dt=(double)(t-e->t)*0.01;e->t=t;
  if(!(eword(w,AVEGWORD)&AVEGBIT)||dt<=0.0)return;
  tn=(double)(eword(w,024)&037777u)*16384.0+(double)(eword(w,025)&037777u)-edp(w,PIPTIME,28);
@@ -1586,6 +1586,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   ||nrhc
 #endif
   ){fprintf(stderr,"FLIGHT_RHC=FROM-TO:P,Q,R;... (LM; counts at most 42)\n");return 2;}
+ if(getenv("FLIGHT_ATT"))att_scale=strtod(getenv("FLIGHT_ATT"),0);
+ if(att_scale&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_ATT needs FLIGHT_SCALED\n");return 2;}
 #if RK_LM
  if(getenv("FLIGHT_ENGINE"))engine_kg=strtod(getenv("FLIGHT_ENGINE"),0);
  if(getenv("FLIGHT_ENGINE_LAG"))engine_lag=strtod(getenv("FLIGHT_ENGINE_LAG"),0);
@@ -1594,8 +1596,6 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_ASCENT"))ascent_kg=strtod(getenv("FLIGHT_ASCENT"),0);
  if(getenv("FLIGHT_RCS"))rcs_kg=strtod(getenv("FLIGHT_RCS"),0);
  if(rcs_kg&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RCS needs FLIGHT_SCALED\n");return 2;}
- if(getenv("FLIGHT_ATT"))att_scale=strtod(getenv("FLIGHT_ATT"),0);
- if(att_scale&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_ATT needs FLIGHT_SCALED\n");return 2;}
  if(getenv("FLIGHT_STAGE"))stage_cs=strtoul(getenv("FLIGHT_STAGE"),0,10);
  if(stage_cs&&!ascent_kg){fprintf(stderr,"FLIGHT_STAGE needs FLIGHT_ASCENT\n");return 2;}
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
@@ -1741,6 +1741,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    aero_due(now(s.words),&aero_nat,s.words);
    imu_due(s.words,&hw);
    iss_due(s.words,&hw);
+#ifdef RK_CM
+   att.hold=sps_nat.on;
+#endif
    att_due(now(s.words),s.words,&hw);
    gyro_due(s.words);
 #ifdef RK_CM

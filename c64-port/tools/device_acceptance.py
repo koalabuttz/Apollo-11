@@ -96,7 +96,8 @@ WINDOWS = {
            ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
            ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
            ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
-           ('cm-p52-optics', 17100, 100, 25)],              # gyro torquing: CDUX-Z follow
+           ('cm-p52-optics', 17100, 100, 25),               # gyro torquing: CDUX-Z follow
+           ('cm-v49-att', 13000, 700, 100)],                # the jets turn the CSM (FLIGHT_ATT): CDUX-Z follow
 }
 
 
@@ -251,19 +252,19 @@ def roles(m):
              [(FHR, 'engine_due' if lm else 'sps_due', 'engine model: PIPA counts along the thrust'),
               (FHR, 'rcs_due' if lm else 'aero_due', 'RCS translation (LM) or aerodynamic drag (CM) into the PIPAs')]
              + ([(ATT, 'att_due', 'FLIGHT_ATT: the jets turn the LM at the DAP\'s own one-jet accelerations; CDUX-Z follow')]
-                if lm else [(FHR, 'imu_due', 'FLIGHT_IMU: channel 12 zero and coarse align move CDUX-Z'),
-                               (FHR, 'saturn_due', 'FLIGHT_SATURN boost'), (FHR, 'sivb_due', 'FLIGHT_SIVB TLI burn')]),
+                if lm else [(ATT, 'att_due', 'FLIGHT_ATT: the jets turn the CSM over the AGC\'s IXX and IAVG; CDUX-Z follow'),
+                            (FHR, 'imu_due', 'FLIGHT_IMU: channel 12 zero and coarse align move CDUX-Z'),
+                            (FHR, 'saturn_due', 'FLIGHT_SATURN boost'), (FHR, 'sivb_due', 'FLIGHT_SIVB TLI burn')]),
              [rows], uses('FLIGHT_ENGINE', 'FLIGHT_RCS', 'FLIGHT_POKE', 'FLIGHT_ATT') if lm else
-             uses('FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_SATURN', 'FLIGHT_SIVB', 'FLIGHT_IMU'),
+             uses('FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_SATURN', 'FLIGHT_SIVB', 'FLIGHT_IMU', 'FLIGHT_ATT'),
              either(pipas, erasable(0o32, 0o33, 0o34)), unit(m, 't4rupt-imu'),
              how='PIPA counts, or CDUX-Z words, in the host rows',
              gap=('the jets turn the LM exactly as the DAP expects (att_due uses 1JACC-1JACCR), with no cross-coupling '
                   'and no engine torque; under thrust without FLIGHT_ATT the engine model holds CDUX-Z at CDUXD-ZD') if lm else
-                 'no attitude dynamics from the jets: the models hold CDUX-Z at the commanded attitude '
-                 '(only the SPS gimbal turns the CM, in pitch and yaw)',
-             blocking=not lm,
+                 ('the jets turn the CSM at 100 lbf on a 1.96 m arm over the AGC\'s own IXX and IAVG (att_due), with '
+                  'no cross-coupling; under SPS thrust the SPS model turns it in pitch and yaw only (no roll jets)'),
              closes='the engine\'s trim torque (Lane F, tools/flight_dps_gimbal.h)' if lm else
-                    'Lane D1: tools/flight_attitude.h for the CM\'s jets'),
+                    'roll during SPS burns (Lane D1, tools/flight_attitude.h)'),
     ]
     if lm:
         out += [

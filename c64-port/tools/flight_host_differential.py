@@ -648,6 +648,14 @@ P23_ATTACHED_KEYS = P23_KEYS + '@28500V66E'
 # V06N18. The harness has no CM attitude dynamics, so the CDUs stay put
 # and the steering runs to the end of the run.
 V49_KEYS = '@2000V76E@3000V49E@4000V25E+18000E+00000E+00000E@5500V33E@6500V33E'
+# cm-v49-att: cm-p40's start with the CSM turning under its jets
+# (FLIGHT_ATT, tools/flight_attitude.h). V48 proceeds through N46-N48, so
+# MASSPROP sets IXX and IAVG for the docked stack; V46 starts the RCS DAP;
+# V76, then V49 to gimbal angles 30, 0, 0 (proceed, then R60's V50N18).
+# KALCMANU steers CDUXD toward 30 degrees at 0.5 degree/s, the DAP fires
+# the roll, pitch and yaw jets, and CDUX-Z follow it there.
+V49_ATT_KEYS = ('@2500V48E@3500V33E@4500V33E@5500V33E@6500V46E@7500V76E@8500V49E@9500V25E+03000E+00000E+00000E'
+                '@11000V33E@12000V33E')
 # cm-p21: cm-p52 to P00, then V37E21E (P21, ground track): V04N06 option 2
 # (this vehicle), proceed; V06N34 (the GET of interest: now, 00:33:00.81),
 # proceed; V06N43 shows the latitude, longitude and altitude there
@@ -819,6 +827,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p20-crew-verbs', 'cm', 32000, CM_P20_CREW_KEYS, CM_P20),
           ('cm-p23-attached', 'cm', 30000, P23_ATTACHED_KEYS, P23),
           ('cm-v49-maneuver', 'cm', 15000, V49_KEYS, P40),
+          ('cm-v49-att', 'cm', 22000, V49_ATT_KEYS, {**P40, 'FLIGHT_ATT': '1'}),
           ('cm-p21', 'cm', 25000, P21_KEYS, P52),
           ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
           ('lm-p52-cage-torque', 'lm', 10000, LM_P52_KEYS, LM_P52_TORQUE),
