@@ -17,11 +17,10 @@ triaged with a reason, in tools/cert_arms_allow.py next to the specs:
       already there keep their class and reason; new ones are UNTRIAGED.
       Needs the oracle toolchain (deps/env.sh), like a refreeze.
   cert_arms.py check             (CI: ledgers-and-coverage; no toolchain)
-      fails on a certified spec with no record and on an UNTRIAGED arm
-      or one with no reason; warns on FLIGHT and UNSURE arms, on a spec whose
-      record is stale (its proof's cases_sha256 or an own source changed
-      since it was measured: run measure again; tools/cert_precheck.py
-      fails on that, so a re-cite carries a fresh record).
+      fails on a certified spec with no record, on one whose record is
+      stale (its proof's cases_sha256 or an own source changed since it
+      was measured: run measure again in the same PR), and on an UNTRIAGED
+      arm or one with no reason; warns on FLIGHT and UNSURE arms.
 
 An arm is an AGC word's decision outcome that no copy of the word takes
 (the word's '/* bb,aaaa OP */' comment in the generated C): a BZF/BZMF
@@ -287,7 +286,8 @@ def check():
             continue
         old = stale(sid, rec, interp_specs.SPECS[sid])
         if old:
-            warns.append('%s: measured on other %s; run tools/cert_arms.py measure %s' % (sid, ', '.join(old), sid))
+            # A src change to a certified spec re-measures in the same PR (#834).
+            fails.append('%s: measured on other %s; run tools/cert_arms.py measure %s' % (sid, ', '.join(old), sid))
         for a in rec['arms']:
             if a.get('class') not in CLASSES:
                 fails.append('%s %s:%d %s %s: class %r is not one of %s' % (sid, a['src'], a['line'], a['agc'],

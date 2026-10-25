@@ -262,6 +262,9 @@ def section(results, runs, first_diff):
                'matches the host at ' + ', '.join(map(str, win.get('replay_matched_cs') or [])) + ' cs' if not win['_why']
                else 'differs: ' + first_diff(win) if win.get('replay_differences')
                else 'no match: ' + '; '.join(win['_why']))
+        if win is not None and win.get('replay_every', 50) != 50:
+            # The device window at the same snapshot is the one run (device_acceptance.windows).
+            c64 += f" (the device window's run, checkpoints every {win['replay_every']} cs)"
         host = ('clean' if h['ok'] else 'NOT CLEAN') + f": {h['mismatches']} mismatches, {h['bridged']} bridged, " \
             f"{sum(x['ok'] for x in h['checks'])} of {len(h['checks'])} response checks"
         lines.append(f"| {row['scenario']} | {row['owner']} | {row['failure']} | {row['response']} | {host} | "

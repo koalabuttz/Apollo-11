@@ -66,7 +66,7 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
     # interrupt pending (a long job, such as PICAPAR, can hold one off for
     # over 100 cs), then stops; running to cs + 1000 leaves room for that.
     r = subprocess.run([str(exe), fhd.ROPE[m], str(cs + 1000 * chain + replay * chain), keys], cwd=ROOT,
-                       env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}',
+                       env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SNAPSHOT': f'{cs},{header}', 'FLIGHT_HOLD': '1',
                             **({'FLIGHT_DOWNRUPT': '1'} if downrupt else {}),
                             **({'FLIGHT_REPLAY': f'{replay},0,{every},{chain}'}
                                if replay else {})},
@@ -101,15 +101,17 @@ def shown(x, v):
     return f'{v} cs' if x == 'centiseconds' else f'{v:05o}'
 
 
-def replay_place(manifest, m, image, size):
+def replay_place(manifest, m, image, size, need=True):
     """An REU address for size bytes of replay rows and end state: the top
     of the zeros between the store and the next declared region (the
     Pinball trampoline save below the rope, tools/reu_layout.py), which the
-    run must not touch."""
+    run must not touch. None when they do not fit and need is False."""
     top = reu_layout.free_top(m, manifest)
     at = (top - size) & ~0xff
     if at < 0 or any(image[at:top]):
-        sys.exit(f'FAIL: no {size} zero bytes below the {m} rope at 0x{top:x} for the replay rows')
+        if need:
+            sys.exit(f'FAIL: no {size} zero bytes below the {m} rope at 0x{top:x} for the replay rows')
+        return None
     return at
 
 
@@ -219,6 +221,10 @@ def outputs_compare(host, c64, until, slack=0):
 
 # The C64's window clock is TIME1's low 14 bits (dap_pass_check.c replay_cs).
 WINDOW_MAX = 0o37777
+# The longest an interrupt request may wait for a native boundary, in MCT
+# (docs/acceptance/interrupt-hold.md): one DOWNRUPT period, 20 ms. A replay
+# window whose host (or, with --hold, C64) meter shows a longer hold fails.
+HOLD_BOUND_MCT = 1706
 
 
 def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
@@ -344,14 +350,17 @@ ADVAN = {'lm': 0o3214, 'cm': 0o3231}
 DEAD_SUPERBANK = 'masked_dead_superbank'
 DEAD_SUPERBANK_AT = 'masked_dead_superbank_at'
 SELFBANK_SUPERBANK = 0o100
+ADVAN_FB = 0o2000   # bank 01
 SUPERBANK = 2048 + END_CHANNELS.index('superbank')
 
 
 def dead_superbank(h, c, m):
-    """Both sides at ADVAN in bank 01 (FB below 060000), one side's
-    superbank SELFBANK's 0100: that superbank difference is masked."""
+    """Both sides at ADVAN in bank 01 (FB 02000), one side's superbank
+    SELFBANK's 0100: that superbank difference is masked. Other banks hold
+    real code at the same offset (LM 05,3214 WAITLIST; CM 10,3231), so only
+    bank 01 counts."""
     return (m in ADVAN and h[SUPERBANK] != c[SUPERBANK] and SELFBANK_SUPERBANK in (h[SUPERBANK], c[SUPERBANK])
-            and h[5] == c[5] == ADVAN[m] and h[4] < 0o60000 and c[4] < 0o60000)
+            and h[5] == c[5] == ADVAN[m] and h[4] == c[4] == ADVAN_FB)
 
 
 def mask_mission(exact, m):
@@ -613,6 +622,12 @@ def main():
     p.add_argument('--replay-every', type=int, default=0,
                    help='with --replay, also compare at the first sample point at or after every N cs, '
                    'to find when the C64 leaves the host')
+    p.add_argument('--hold', action='store_true',
+                   help='with --replay, also meter the longest an interrupt request waits for a native boundary '
+                   '(include/rupt_hold.h, #838) on the C64, beside the host\'s, and report both')
+    p.add_argument('--hold-bound', type=int, default=HOLD_BOUND_MCT, metavar='MCT',
+                   help='with --replay, fail when an interrupt request waits longer than MCT for a native boundary '
+                   '(default %(default)s, one DOWNRUPT period; 0: no bound)')
     p.add_argument('--chain', type=int, default=1,
                    help='with --replay, run that many --cs windows back to back on the host, then each on the C64 from '
                    "the host's state where the one before ended, and fail unless the C64 ends each window in the "
@@ -688,6 +703,8 @@ def main():
     # --chain: the windows the host run wrote (header-1, header-2, ...),
     # each as long as the host ran it (to its first sample point with no
     # interrupt pending at or after --cs).
+    # One host run covers every chain window; its log has the base tag.
+    host_log = dp.WORK / f'{tag}-host.log'
     windows = [(header, tag, a.cs)]
     for n in range(1, a.chain):
         windows.append((pathlib.Path(f'{header}-{n}'), f'{tag}-{n}', a.cs))
@@ -732,7 +749,6 @@ def main():
             # window's own, so a C64 state past the host's end has every
             # input the host had before it (pair_states).
             extra = pathlib.Path(f'{header}.after-replay').read_bytes() if host_after is not None else b''
-            after_rows = []
             n_states = len(host_end) // STATE
             if n_states > max_states:
                 sys.exit(f'FAIL: {a.scenario}: the host wrote {n_states} states, more than the {max_states} reserved')
@@ -744,32 +760,48 @@ def main():
             host_cs = [x[0] for x in states(host_end, n_states)]
             cs, marks = host_cs[-1], host_cs[:-1]
             # Past the host's end the C64 runs on to the host's last .after
-            # state, writing a state at each of them too, so a C64 busy at
-            # the host's end still ends at a point where the host has one.
-            after_cs = [x[0] for x in host_after or () if x[0] > cs]
-            c64_cs, marks = (after_cs[-1], marks + [cs] + after_cs[:-1]) if after_cs else (cs, marks)
-            states_max = max_states + len(after_cs)
-            if states_max > 255:
-                sys.exit(f'FAIL: {a.scenario}: {states_max} states in a window; the C64 counts at most 255')
-            end_bytes = states_max * C64_STATE
-            table = struct.pack(f'<{len(marks[1:]) + 1}H', *marks[1:], 0xffff)
+            # state (of those that fit, below), writing a state at each of
+            # them too, so a C64 busy at the host's end still ends at a point
+            # where the host has one.
+            after_all = [x[0] for x in host_after or () if x[0] > cs]
             # --replay-outputs: the C64's output list after the table.
             host_outs = list(OUTPUT.iter_unpack(pathlib.Path(f'{header}.outputs').read_bytes())) if a.replay_outputs else []
             cap = outputs_cap(host_outs) if a.replay_outputs else 0
-            # CM channel rows can take two C64 rows each.
-            at = replay_place(manifest, m, reu, 2 * len(rows + extra) + end_bytes + len(table) + OUTPUT.size * cap + 256)
-            end_at = (at + 2 * len(rows + extra) + 0xff) & ~0xff
+            # The C64's rows (their count does not depend on rk_device's address).
+            n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
+            # Each past-end state costs a C64 state in the REU: take as many
+            # as fit below the rope (the first ones, where a C64 busy at the
+            # host's end pairs), and the past-end rows up to the last taken.
+            for k in range(len(after_all), -1, -1):
+                after_cs = after_all[:k]
+                c64_cs = after_cs[-1] if after_cs else cs
+                tail = b''.join(ROW.pack(*x) for x in ROW.iter_unpack(extra) if x[0] <= c64_cs) if after_cs else b''
+                states_max = max_states + len(after_cs)
+                c64_marks = marks + [cs] + after_cs[:-1] if after_cs else marks
+                table = struct.pack(f'<{len(c64_marks[1:]) + 1}H', *c64_marks[1:], 0xffff)
+                n_extra = len(c64_rows(tail, m, 0, 0)) // ROW.size
+                row_bytes = (n_c64 + n_extra) * ROW.size
+                at = replay_place(manifest, m, reu, row_bytes + states_max * C64_STATE + len(table) + OUTPUT.size * cap + 512,
+                                  need=k == 0)
+                if at is not None:
+                    break
+            if len(after_cs) < len(after_all):
+                print(f'{a.scenario}: {len(after_cs)} of the host\'s {len(after_all)} states past its end fit in the REU')
+            extra, host_after = tail, [x for x in host_after or () if x[0] <= c64_cs] if host_after is not None else None
+            marks = c64_marks
+            if states_max > 255:
+                sys.exit(f'FAIL: {a.scenario}: {states_max} states in a window; the C64 counts at most 255')
+            end_bytes = states_max * C64_STATE
+            end_at = (at + row_bytes + 0xff) & ~0xff
             table_at = end_at + end_bytes
             outputs_at = table_at + len(table)
             busy = fhd.scenario(a.scenario)[4].get('FLIGHT_BUSY_SAMPLE')
             # The window ends at the C64's first sample point cs in; DP_CS
             # stops it later if none comes.
-            # The C64's rows (their count does not depend on rk_device's address).
-            n_c64 = len(c64_rows(rows, m, 0, 0)) // ROW.size
-            n_extra = len(c64_rows(extra, m, 0, 0)) // ROW.size
             defines = [*replay_defines(at, n_c64 + n_extra, c64_cs, marks[0] if marks else 0xffff, table_at, end_at,
                                        states_max, busy, outputs_at, cap),
-                       *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at)]
+                       *steal_defines(a.scenario, snap_state(windows[0][0]), snap_at),
+                       *(['-DRK_HOLD_METER'] if a.hold else [])]
             kinds = {}
             # What the window's inputs touch, by kind (tools/device_acceptance.py
             # reads it): erasable words and PIPAs by address, channels (0o377 the
@@ -839,9 +871,39 @@ def main():
             mail = (dp.WORK / f'vice-{tag}' / 'results.bin').read_bytes()
             applied, end_cs, ended, c64_written = struct.unpack_from('<HHBB', mail, 0x30)
             # Rows past the host's end the C64 applied before its own end:
-            # every one before that centisecond (dap_pass_check.c replay_due).
-            due_extra = rows_before(c64_rows(extra, m, 0, 0), end_cs) if ended else 0
+            # every one before that centisecond (dap_pass_check.c replay_due),
+            # and maybe its routine-boundary rows (odd where) at that
+            # centisecond: an earlier step in the same centisecond applies
+            # them, an end on its first step does not.
+            after = c64_rows(extra, m, 0, 0)
+            due_extra = rows_before(after, end_cs) if ended else 0
+            may_extra = sum(1 for x in ROW.iter_unpack(after) if x[0] == end_cs and x[2] & 1) if ended else 0
             applied_extra, applied = max(0, applied - n_c64), min(applied, n_c64)
+            # The interrupt hold meter (include/rupt_hold.h): the host's in its
+            # log, the C64's in the mailbox (dap_pass_check.c, -DRK_HOLD_METER).
+            hm = re.search(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)', host_log.read_text(), re.M)
+            if hm:
+                r.update(hold_host_mct=int(hm[1]), hold_host_time1=int(hm[2], 8))
+                whole = ' (whole chain)' if a.chain > 1 else ''
+                line = f"{a.scenario}: interrupt hold: host max{whole} {hm[1]} MCT at TIME1 {hm[2]}"
+                if a.hold:
+                    c_max, c_at = struct.unpack_from('<HH', mail, 0x36)
+                    r.update(hold_c64_mct=c_max, hold_c64_time1=c_at)
+                    line += f', C64 max {c_max} MCT at TIME1 {c_at:05o}'
+                print(line)
+                over = [(side, n) for side, n in (('host', int(hm[1])), ('C64', r.get('hold_c64_mct', 0)))
+                        if a.hold_bound and n > a.hold_bound]
+                for side, n in over:
+                    print(f'FAIL: {a.scenario}: the {side} holds an interrupt request {n} MCT, over the '
+                          f'{a.hold_bound} MCT bound (docs/acceptance/interrupt-hold.md)')
+                if over:
+                    r['ok'] = False
+            elif a.hold_bound:
+                # The host meters every replay window (FLIGHT_HOLD), so no
+                # line means the bound went unchecked.
+                r['ok'] = False
+                print(f'FAIL: {a.scenario}: no "interrupt hold:" line in {host_log.name}, so the '
+                      f'{a.hold_bound} MCT hold bound was not checked')
             r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended),
                      replay_after_rows=applied_extra, replay_inputs=replay_inputs, replay_outputs=replay_outputs)
             # Every state the C64 wrote against the host's at the same point.
@@ -849,7 +911,7 @@ def main():
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, states_max), m)
             c64_end = c64_s[-1][1] if c64_s else None
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            v = replay_verdict(host_s, c64_s, bool(ended), host_after, after_rows, skip, mask_mission(a.replay_exact, m),
+            v = replay_verdict(host_s, c64_s, bool(ended), host_after, (), skip, mask_mission(a.replay_exact, m),
                                a.replay_exact)
             unpaired, end, diff, at_cs, matched, skipped = (v[k] for k in ('unpaired', 'end', 'diff', 'at_cs', 'matched',
                                                                          'skipped'))
@@ -903,10 +965,11 @@ def main():
                 why = 'a host input comes in between' if end['inputs_between'] else 'the host has no state there'
                 print(f"FAIL: {a.scenario}: the C64 {seen}, then ends at {cs + shift} cs, {shift} cs after the host's "
                       f"end, and the ends are not compared ({why})")
-            elif ended and (applied != n_c64 or applied_extra != due_extra):
+            elif ended and (applied != n_c64 or not due_extra <= applied_extra <= due_extra + may_extra):
                 r['ok'] = False
+                due = f'{due_extra}-{due_extra + may_extra}' if may_extra else f'{due_extra}'
                 print(f'FAIL: {a.scenario}: the C64 {seen}, but applied {applied} of the {n_c64} input rows'
-                      + (f' and {applied_extra} of the {due_extra} past the host\'s end' if due_extra or applied_extra else ''))
+                      + (f' and {applied_extra} of the {due} past the host\'s end' if due_extra or applied_extra else ''))
             elif not ended:
                 r['ok'] = False
                 print(f'FAIL: {a.scenario}: the C64 {seen}, then did not reach a sample point {c64_cs} cs in '

@@ -57,13 +57,13 @@ outside the file is registered (15 each).
 
 ## Round trips
 
-`tests/lanec_pin_transfer_cases.c` (suite `pin-transfer`, 2,176 cases) has
+`tests/lanec_pin_transfer_cases.c` (suite `pin-transfer`, 2,332 cases) has
 two kinds of case:
 
 - the genuine callers outside the file whose BANKCALL or POSTJUMP CADR names
   a Pinball routine (8 cases);
 - every registered routine from its own entry, with up to four accepted
-  cases of the first module it tries (2,168 cases), chained through the
+  cases of the first module it tries (2,324 cases), chained through the
   routines that follow it.
 
 Channels the device records do not carry are 0. `agc_transfer_run` runs
@@ -83,8 +83,8 @@ state restored, when it ends where the oracle would go on (a point inside
 those words that no routine claims, reached through a random return address
 or cell) or when a routine refuses its state midway: the entry chains start
 from module cases whose return cells and Q hold random values, so many
-leave the modules' domains after the first routine. 1,320 cases are
-identical to the original and 856 are refused unchanged, in strict and
+leave the modules' domains after the first routine. 1,265 cases are
+identical to the original and 1,067 are refused unchanged, in strict and
 ASan/UBSan builds. A caller in banks 40-43 runs with FEB 4 alone, and
 Comanche cases get the Executive Luminary's do (the caller alone in core
 set 0), as CM GOLOADLV needs before its POSTJUMP to LOADLV1.
@@ -95,7 +95,7 @@ set 0), as CM GOLOADLV needs before its POSTJUMP to LOADLV1.
 `pw-cm-scale` module. Each case is a `pw-cm-scale` case run to DSPDCEND
 with one more component to display, whose normal noun names one of those
 SF routines; the chain displays it, runs DSPDCPUT and DECDSP3, crosses into
-bank 40 and returns. 657 cases are identical and 111 refused unchanged.
+bank 40 and returns. 619 cases are identical and 149 refused unchanged.
 `routines.py --check` also fails on any CADR or 2CADR in the file whose
 target lies in another of its banks and is not registered.
 
@@ -109,26 +109,26 @@ registered. Every case is refused with the image and I/O unchanged
 `pin-transfer-c64` runs the round trips as the C64 does. Every module does
 not fit one C64 program, so each program registers one mission's INTER-BANK
 routines and one module's points (those it claims first,
-`lanec_pin_c64_select`) and runs that module alone. Its 2,168 cases are
+`lanec_pin_c64_select`) and runs that module alone. Its 2,324 cases are
 every routine from its own entry, in both missions, with up to four cases
 of that module. The oracle has the host cases' ranges and stops at the
 services that hand control away; a chain that ends at another module's
 point, at the display interface or in the Executive (which the program
 lacks) is refused, as in `pin-transfer`, which compares those chains. The
 other modules' points are not oracle stops: a module runs through some of
-them inline. 989 cases are identical and 1,179 refused unchanged.
+them inline. 734 cases are identical and 1,590 refused unchanged.
 
-The C64 rows (447, `tests/lanec_pin_transfer_c64_c64.h`) are the fewest
+The C64 rows (379, `tests/lanec_pin_transfer_c64_c64.h`) are the fewest
 cases `tools/lanec/cover.py pick` finds that take every host branch arc
 (re-picked whenever the routine or case lists change and renumber the
 cases: the keypress tables, docs/LANEC-PIN-KEYS.md, and DP1OUTSF/DP2OUTSF).
 `routines.py pin` groups them by module and mission
 (`tests/lanec_pin_transfer_c64_rows.h`), and `tools/mk/lanec-pw.mk` builds
-one program per group. 103 programs (341 rows) fit below the mailbox page
+one program per group. 85 programs (216 rows) fit below the mailbox page
 and pass on a VICE PAL C64 (`make lanec-pin-transfer-vice`, CI runs it as
 `vice-lanec-pin-transfer-1` to `-4`). The programs
 that do not (`LANEC_PIN_C64_TOO_BIG`: modules whose code and state, with
-INTER-BANK and the harness, pass $C000) leave 106 rows to the host; the
+INTER-BANK and the harness, pass $C000) leave 163 rows to the host; the
 Pinball certificate's C64 branch record (`tools/lanec/cover.py record
 --not-run`) counts those rows' host arcs only where another C64 program
 takes them.

@@ -37,7 +37,7 @@ enum p66_bias_status dsky_hours_output(apollo_overlay_state *s,p66_bias_io *io,e
  if(!s||!io||(unsigned)mission>1u||(unsigned)stage>7u)return P66_BIAS_OUT_OF_SCOPE;
  w=s->words;if(w[5]!=pc[mission][stage]||w[4]!=064000u||w[3]>03400u||(w[3]&0377u)||w[6]!=(agc_word)(064000u|(w[3]>>8))||w[7]||io->superbank>0160u||(io->superbank&017u)||!(io->superbank&0100u)||io->interrupt_enabled>1u||w[0117]>2u)return P66_BIAS_OUT_OF_SCOPE;
  for(i=3;i<2048u;++i)if(w[i]>AGC_MASK)return P66_BIAS_OUT_OF_SCOPE;
- if(stage==DSKY_HOURS_FRESH){if(w[0140]==2u)address=(agc_word)(w[0150u+w[0117]]&03777u);else if(w[0140]==1u&&w[0145]<=01777u)address=w[0145]<01400u?w[0145]:(agc_word)(w[3]+(w[0145]&0377u));else return P66_BIAS_OUT_OF_SCOPE;if(address<01000u||address>03776u||(address&0377u)==0377u)return P66_BIAS_OUT_OF_SCOPE;}
+ if(stage==DSKY_HOURS_FRESH){if(w[0140]==2u)address=(agc_word)(w[0150u+w[0117]]&03777u);else if(w[0140]==1u&&w[0145]<=01777u)address=w[0145]<01400u?w[0145]:(agc_word)(w[3]+(w[0145]&0377u));else return P66_BIAS_OUT_OF_SCOPE;if(address<010u||(agc_word)(address-017u)<5u||address>03776u||(address&0377u)==0377u)return P66_BIAS_OUT_OF_SCOPE;}
  if(stage==DSKY_HOURS_SECONDS_DISPLAY||stage==DSKY_HOURS_MINUTES_DISPLAY||stage==DSKY_HOURS_HOURS_DISPLAY){for(i=01023;i<=01035u;++i)if(!w[i])return P66_BIAS_OUT_OF_SCOPE;if(w[0777]!=(stage==DSKY_HOURS_SECONDS_DISPLAY?4u:stage==DSKY_HOURS_MINUTES_DISPLAY?9u:14u))return P66_BIAS_OUT_OF_SCOPE;}
  switch(stage){
 #if !defined(DSKY_HOURS_ONLY_STAGE) || DSKY_HOURS_ONLY_STAGE==0

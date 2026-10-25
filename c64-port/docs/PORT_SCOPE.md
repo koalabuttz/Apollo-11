@@ -13,17 +13,19 @@ they measure the source corpus, not translated executable instructions.
 
 | Program | AGC files | Source lines | Untranslated | Partial | Complete |
 |---|---:|---:|---:|---:|---:|
-| Luminary099 | 90 | 64,838 | 76 | 14 | 0 |
-| Comanche055 | 85 | 65,348 | 85 | 0 | 0 |
+| Luminary099 | 90 | 64,838 | 0 | 0 | 90 |
+| Comanche055 | 85 | 65,348 | 0 | 0 | 85 |
+
+Every file has been `complete` since #844 (2026-10-24). Run
+`tools/port_coverage.py` for the current counts.
 
 `partial` means a declared bounded path or data definition has a native
 implementation and verification artifacts. It does not imply that the rest of
 its file, callers or device interactions are translated. For example, the
-SERVICER entry covers only the separately checked `4SEC(28)` constant. The
-RESTART_TABLES file remains untranslated: including original assembly in a host
-fixture does not translate it. Comanche files remain untranslated even when they
-look similar to a Luminary implementation; each needs its own source mapping and
-verification before coverage is claimed.
+SERVICER entry once covered only the separately checked `4SEC(28)` constant.
+Including original assembly in a host fixture does not translate a file, and a
+Comanche file is not covered because it looks like a Luminary implementation;
+each needs its own source mapping and verification before coverage is claimed.
 
 The C64 target must execute native functions and native continuations. An AGC
 instruction decoder, an AGC emulator running on the C64, or shipping the original
@@ -48,13 +50,12 @@ clock (the C64 charges each step's AGC time, it does not follow the wall
 clock), so a slow run that matches is accepted and a fast run that differs is
 not. Speed work continues, but no acceptance check waits on it.
 
-A complete memory plan is still required. The AGC programs exceed a naive C64
-resident-memory budget when translated without planning. Disk overlays may be
-necessary, with persistent contexts and explicit rules for reloads, interrupts,
-scheduled work and restart. The inventory records this architecture as
-unresolved rather than choosing an untested overlay design. An accepted plan
-must account for code, constants, data, hardware/software/compiler stacks,
-reserved I/O memory and every resident or loaded program phase.
+A complete memory plan is required. The AGC programs exceed a naive C64
+resident-memory budget when translated without planning, so they need overlays
+with persistent contexts and explicit rules for reloads, interrupts, scheduled
+work and restart. An accepted plan must account for code, constants, data,
+hardware/software/compiler stacks, reserved I/O memory and every resident or
+loaded program phase.
 The flight build's plan is the thin resident plus overlays loaded from a
 2 MB REU store (docs/FLIGHT-STORE.md); each program's
 `docs/acceptance/<Program>-memory_and_overlay_validation.md`, written by
@@ -74,9 +75,10 @@ The completion gate is:
 python3 c64-port/tools/port_coverage.py --require-complete
 ```
 
-It intentionally exits with a failure today. All 175 AGC files still require
-complete native coverage, and integrated LM and CM C64 applications have not
-passed acceptance. Routine development checks use the audit without
+It still exits with a failure. All 175 AGC files have complete native coverage,
+but neither integrated application (LM or CM) has passed whole-program
+acceptance yet, and the gate needs both. The per-program acceptance records
+are in `docs/acceptance/`. Routine development checks use the audit without
 `--require-complete`; this distinction does not narrow the completion goal.
 
 A file can become `complete` only with a reviewed `complete_native_coverage`
@@ -104,6 +106,6 @@ C64 application, integrated program tests, device-adapter tests, native-output
 tests, memory/overlay validation and recovery/restart tests. Complete-file
 certificates cannot substitute for this integrated application acceptance.
 
-The inventory is an honest completion checklist. Continue adding independently
-verified milestones and commits, update their declared coverage, and retain
-untranslated and partial classifications until the corresponding scope is met.
+The inventory is an honest completion checklist. A file or application keeps
+its untranslated, partial or unverified classification until the corresponding
+scope is met and reviewed.

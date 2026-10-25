@@ -67,6 +67,11 @@ def table_status(m):
         path.write_text(text)
 
 
+# Every link of platform/x86/flight_dispatch.c: lmi_goto_any's exit(3) on
+# an erasable CADR cycle becomes a stuck step (flight_dispatch.c, fd_cycle).
+LINK = ['-Wl,--wrap=exit']
+
+
 def flags(m, define, certified_only=False):
     """The compile flags of the x86 program's sources for mission m."""
     mct_table(m)
@@ -89,7 +94,7 @@ def build(cc, m, mode, certified_only=False):
         objs.append(str(o))
     exe = OUT / f'x86-flight-{m}{suffix}'
     host = sorted(str(p) for p in (STORE / 'host').glob('*.o'))
-    subprocess.run([cc, *objs, *host, '-Wl,--gc-sections', '-lm', '-o', str(exe)], cwd=ROOT, check=True)
+    subprocess.run([cc, *objs, *host, *LINK, '-Wl,--gc-sections', '-lm', '-o', str(exe)], cwd=ROOT, check=True)
     return exe
 
 

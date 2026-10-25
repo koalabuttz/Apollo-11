@@ -86,6 +86,39 @@ class NativeOutputAcceptance(unittest.TestCase):
             self.assertIsNone(no.load_downlink(d, HEAD, 'lm', 'cd' * 32)[0])
             self.assertEqual(no.load_downlink(d, HEAD, 'cm', 'cd' * 32)[0]['commit'], HEAD)
 
+    def test_dsky_sweep(self):
+        store = 'ab' * 32
+        good = dict(mode='all', missions=['lm', 'cm'], replay_exact=True, item6=True, failed=[],
+                    stores=dict(lm=dict(reu_sha256=store), cm=dict(reu_sha256='cd' * 32)),
+                    by_mission=dict(lm=dict(cases=1830, passed=1830, skipped_cases=0),
+                                    cm=dict(cases=1830, passed=1830, skipped_cases=0)))
+        row = dict(kind='dsky')
+        with tempfile.TemporaryDirectory() as d:
+            f = pathlib.Path(d) / 'dsky-sweep-summary.json'
+            self.assertEqual(no.load_sweep(f, 'lm', store), (None, None))
+            ok, text = no.assess_dsky(row, None, 'lm')
+            self.assertFalse(ok)
+            self.assertTrue(text.startswith('pending'), text)
+            f.write_text(json.dumps(good))
+            sweep, why = no.load_sweep(f, 'lm', store)
+            self.assertIsNone(why)
+            self.assertTrue(no.assess_dsky(row, sweep, 'lm')[0])
+            # Another store does not count, and says why.
+            sweep, why = no.load_sweep(f, 'lm', 'ef' * 32)
+            self.assertIsNone(sweep)
+            self.assertFalse(no.assess_dsky(row, sweep, 'lm', why)[0])
+            f.write_text(json.dumps(dict(good, missions=['cm'])))
+            self.assertIsNone(no.load_sweep(f, 'lm', store)[0])
+        # Item 6: no failure, no skipped word, --cases all, --replay-exact.
+        bad = [dict(good, replay_exact=False), dict(good, mode='ci'), dict(good, item6=False),
+               dict(good, failed=[dict(m='lm', keys='V16N36E', ok=False, **{'class': 'clock'})]),
+               dict(good, by_mission=dict(lm=dict(cases=1830, passed=1830, skipped_cases=2))),
+               dict(good, by_mission=dict(lm=dict(cases=1830, passed=1829, skipped_cases=0)))]
+        for s in bad:
+            self.assertFalse(no.assess_dsky(row, s, 'lm')[0], s)
+        out, counts = no.assess([dict(section='DSKY', row='sweep', kind='dsky')], {}, None, good, 'lm')
+        self.assertTrue(out[0]['ok'], out[0]['text'])
+
     def test_waits_and_not_exercised(self):
         rows = [dict(JETS, waits_on='D1'), dict(section='d', row='dump', kind='downlink', status='not exercised', note='no V74'),
                 dict(section='d', row='x', kind='downlink', status='not exercised')]

@@ -12,8 +12,9 @@ source. Every label and every return point is an entry (after TESTXACT,
 CHKPOOH, FINDVAC/NOVAC past their 2CADR, UPFLAG/DOWNFLAG past their ADRES,
 CHECKMM past its MM, PHASCHNG past its OCT, BANKCALL past its CADR and the
 three GOXDSPF returns), and control runs from block to block until it
-leaves these bodies. `TC Q` (EXDAPOFF) is a transfer to register Q and is a
-boundary; `CA SR` re-edits SR as the hardware does (CM V52).
+leaves these bodies. `TC Q` (EXDAPOFF) is a transfer to register Q: to the
+return address it holds in fixed memory (02000-07777, `lanec_ev_tc_q`),
+or a boundary at Z = Q for any other Q; `CA SR` re-edits SR as the hardware does (CM V52).
 
 ## Source map
 

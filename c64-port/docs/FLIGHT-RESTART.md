@@ -101,6 +101,67 @@ The x86 program takes the TC trap the same way (`platform/x86/tc_trap.h`,
 and `make x86-flight-check` runs V69 in lockstep against yaAGC
 (docs/X86-FLIGHT.md).
 
+## The night watchman
+
+On the AGC (yaAGC `agc_engine.c`) the night watchman arms every 1.28 s, at
+scaler phase 04000. Any access to NEWJOB (067) disarms it. If it is still
+armed 0.64 s later, at phase 00000, it sounds and the AGC restarts (GOJAM).
+The Executive reads NEWJOB all the time (DANZIG before each interpretive
+instruction, ADVAN in the idle loop, CCSNEWJOB, NOVAC), so only a job that
+loops without the Executive trips it. The one such loop found in the port
+is the interpreter's GOTO on an erasable CADR cycle: GOTOERS fetches
+erasable CADRs until it finds a fixed one, and a cycle never ends.
+
+The host harness and the x86 program model it the same way
+(`platform/x86/night_watchman.h`, under scaled time):
+
+- **The clock.** The scaler is the clock period count: the alarm arms 64
+  periods into each 128 and sounds at the period that ends them.
+- **A stuck step.** A step from a basic point outside an interrupt, with a
+  job active (NEWJOB not -0), that leaves every erasable word as it found
+  it, would run again and again from the same state, as the AGC would. An
+  interpretive step is never stuck: it ends at DANZIG or the next fetch, so
+  a loop of them reads NEWJOB (CM P20 waits that way). It spins to the end of
+  the clock period, interrupts are taken, and the job is hung at that point
+  until a step there is not stuck. The interpreter core stops after each
+  GOTOERS hop at GOTO with the same state. `lmi_goto_any`
+  (`src/lm_interp_orders.c`) still stops a host build with exit(3) on the
+  cycle; the x86 program links with `--wrap=exit` and turns that exit
+  inside a routine into a stuck step.
+- **NEWJOB accesses.** The Executive runs natively, so an access is read
+  from the steps: any step outside an interrupt while no job is hung, and
+  any step that changes NEWJOB or a core set's PRIORITY (NOVAC, FINDVAC,
+  JOBWAKE). While a job is hung, the steps outside an interrupt at other
+  points are the LM DAP's jasks (T6RUPT RESUMEs into DAP code), which do not
+  read NEWJOB.
+- **Checked against yaAGC.** Each lockstep and bridge span sets yaAGC's own
+  NightWatchman flag and reads it back, so the harness also tracks the
+  watchman by yaAGC's own NEWJOB accesses. Its summary line counts the
+  checks where the two disagree.
+- **The GOJAM.** When the alarm sounds, the next step is the GOJAM, with Q
+  at the hung point. The harness prints "night watchman at N cs".
+- **Lockstep at GOTO.** A native continuation at GOTO (06646 LM, 06615 CM)
+  with A already POLISH matches yaAGC at GOTO +1. GOTOERS loops back there
+  (`TCF GOTO +1`), and GOTO's `CA POLISH` sets no other word.
+
+`lm-p52-watchman` (`WATCHMAN_FLIGHT` in `tools/flight_host_differential.py`)
+is lm-p52-realign with SAVQR52 (QTEMP1, 03665) poked at 24 s, during R52's
+V01N70, to point to itself. After the R60 maneuver (ENTER at 34 s), R52's
+GOTO SAVQR52 loops in GOTOERS:
+
+- **The harness.** The watchman restarts the AGC at 35.84 s on both scaled
+  clocks (171 stuck steps on the work clock). R52 restarts at V01N70 and
+  P52 goes on to its end. No native routine misses yaAGC, and yaAGC's
+  NEWJOB accesses agree with the rule at every check.
+- **The x86 program.** `make x86-flight-scenarios` flies the row against
+  the harness. The watchman comes at 35.85 s, within the TC trap rows'
+  limit of the harness's 35.84 s. The x86 run ends with the same major
+  mode, REDOCTR and state vector, and 11 words differ (limit 34).
+- **The C64.** The resident does not model the watchman yet. Its boundary
+  words hold no GOTO, so no interrupt is taken at the stuck point either:
+  the C64 hangs there instead of restarting. This is listed as a known gap
+  in the restart acceptance docs. Nominal flight never trips it.
+
 ## Scenarios (`make flight-restart-check`)
 
 `tools/flight_restart_check.py` runs each scenario twice, once without the
@@ -332,14 +393,15 @@ restart.
   routine's entry, with Z not at the trap and the routine's earlier writes
   kept. If a reachable one appears, the compiler should leave Z at the trap
   and the resident should spin there as at VERB69. The night watchman (NEWJOB not
-  tested for 0.64 s) and the rupt lock (an interrupt held too long) are not
-  modelled yet. The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
+  tested for 0.64 s) is modelled on the host and the x86 program, not on
+  the C64 (The night watchman, above). The rupt lock (an interrupt held too
+  long) is not modelled yet. The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
   so a stack overflow is never taken for a TC trap. `rk_gojam` also lights
   the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF5),
   the hardware flip-flop ERROR RESET's `WRITE 77` clears. Pinball's
   `restart_light` reads and writes it there (Lane C).
-- **The x86 program** (docs/X86-FLIGHT.md) takes `FLIGHT_GOJAM` and the TC
-  trap through `fd_gojam`, which also lights its RESTART lamp; RSET and
+- **The x86 program** (docs/X86-FLIGHT.md) takes `FLIGHT_GOJAM`, the TC
+  trap and the night watchman through `fd_gojam`, which also lights its RESTART lamp; RSET and
   channel 11 bit 10 put the lamp out, as in yaAGC.
 
 ## Telemetry

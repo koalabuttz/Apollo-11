@@ -4016,7 +4016,7 @@
       "sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
       "bytes": 100080,
       "lines": 3809,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -4346,14 +4346,14 @@
           "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in fixed-fixed (04140-04525) and banks 04, 40, 41 and 42.",
-          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 292 routines: 279 in lanec_pin_cm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_cm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c), the head families that stand in for composite modules at the points they claim (src/lanec_pin_head_*.c, docs/LANEC-PIN-HEADS.md) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take a cm_dntm_io device record (channels 11-16) (docs/LANEC-PIN-TRANSFER.md).",
-          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 940 refused chains; pin-decdsp3: 114 of 768 Comanche DECDSP3 chains through SFOUTABR; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 76 pw-* suites: 20, the nine pin-head-* suites: 69 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,430 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains. The head families and the fixed display (whose stand-alone programs do not fit, or lack the rope) run on the C64 through the Pinball flight modules loaded from the REU store, one routine per case (vice-lanec-pin-flight, docs/MODULE-TEST.md).",
+          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 299 routines: 286 in lanec_pin_cm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_cm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Outside those tables, MPAC +3 (erasable 0157, where REQUESTC stores TC ENDOFJOB for V30/V31) is one routine in lanec_pin_request_cm_routines (src/lanec_pin_request_routines.c), resolved under bank 41 (ERASABLE_RECORDS in tools/flight_store_build.py); it runs only that word. Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c), the head families that stand in for composite modules at the points they claim (src/lanec_pin_head_*.c, docs/LANEC-PIN-HEADS.md) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take a cm_dntm_io device record (channels 11-16) (docs/LANEC-PIN-TRANSFER.md).",
+          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 1,067 refused chains; pin-decdsp3: 149 of 768 Comanche DECDSP3 chains through SFOUTABR; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 392, the 76 pw-* suites: 136, the ten pin-head-* suites: 43 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it or onto the input channels 030-033 the devices own (off-nominal: no flight procedure loads them), is refused the same way. Operator-entered machine addresses in the central registers 0-07 (V21/V01-V05 N01-N03, N15), 016-023 (017-023 for the decimal displays and loads) and fixed memory past 01777 are refused, and 2INTOUT takes 0-037777 and -0 (values past 99 shown modulo 100), as argued in docs/LANEC-PIN-CERT.md. src/dsky_decimal_consumer.c and src/dsky_operator_schedule.c are in no Pinball try-list (only the C64 stand-alone programs link them); they run no Pinball point. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,590 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains. The head families and the fixed display (whose stand-alone programs do not fit, or lack the rope) run on the C64 through the Pinball flight modules loaded from the REU store, one routine per case (vice-lanec-pin-flight-1 and -2, docs/MODULE-TEST.md).",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on channel 11 (DSALMOUT: KEY REL, V/N flash, OPR ERR, UPLINK ACTY and TEMP lamp bits), WOR/WAND on channel 13 (bit 10, the test-alarm outbit of the lamp test), RAND of channel 12 (bit 4, NO ATT during the lamp test), INDEX READ/WRITE 0 of the channel CHANLOAD names (only channels inside the record; a WRITE to any other is refused), ROR/WRITE of channel 07 SUPERBNK where the file saves and restores the superbank with the bank. Lighting the DSKY lamps and relays from those bits and from the display table is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -4365,36 +4365,46 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-cm-source-map.json",
-            "sha256": "56c29a7644b19b9593e37be2df454b555e326123869f0a168f41ad0eebb59b65"
+            "sha256": "d31e71842c6ad79693a97323ab2cc390a81407fff1136b3866ea4372dcab54c0"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
-            "sha256": "dc6f8c58a38a537a47d26a872bd9442f374e341528b432b8ce03bb908b06127b"
+            "sha256": "ad421a5da0e72426e7e929b2f4114e0a4fa713b983a02b457193f331203e204f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "96c586d186e1e8f89565c5668f0e3f03d912871ee0ba8298cca820cbb2fba2d6"
+            "sha256": "79979d9e858d97dfe05775831465196b54bffdc471e0e164936275a0bfc79ebe"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
-            "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
+            "sha256": "046a9fc4cb2f629de69eb155f0d7453816521d2feca9c8e89af092da09ea2b02",
             "vice_targets": {
-              "vice-lanec-pin-gaps": 50,
+              "vice-lanec-pin-gaps": 63,
               "vice-lanec-pw-1": 140,
               "vice-lanec-pw-2": 328,
-              "vice-lanec-pw-3": 167,
+              "vice-lanec-pw-3": 168,
               "vice-lanec-pw-4": 186,
               "vice-lanec-pw-5": 104,
-              "vice-lanec-pin-transfer-1": 79,
-              "vice-lanec-pin-transfer-2": 92,
-              "vice-lanec-pin-transfer-3": 71,
-              "vice-lanec-pin-transfer-4": 50,
-              "vice-lanec-pin-flight": 81
+              "vice-lanec-pin-transfer-1": 78,
+              "vice-lanec-pin-transfer-2": 78,
+              "vice-lanec-pin-transfer-3": 52,
+              "vice-lanec-pin-transfer-4": 46,
+              "vice-lanec-pin-flight-1": 58,
+              "vice-lanec-pin-flight-2": 37,
+              "vice-lanec-pin-keys-1": 4127,
+              "vice-lanec-pin-keys-2": 1408,
+              "vice-lanec-pin-keys-3": 4127,
+              "vice-lanec-pin-keys-4": 1408,
+              "vice-lanec-pin-chains": 753
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/pinball-674.md",
+            "sha256": "ac58017b0c6561f26745f2fc56aa4eff71ad287bb92e4ef2e7aaccf20bcdcff7"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-cover.json",
-            "sha256": "afbaa370cc4984d8cef92a102cb366d6936b84c1d13d41abd639586c6b2a5a62"
+            "sha256": "bec2ac00f86e776e650f5d8d8b6a48a3e367aa115f228ff2e24bf2e6004adcc9"
           }
         }
       }
@@ -6996,7 +7006,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/lm-alarm/lm-alarm-vice.log",
-            "sha256": "3376f29fa5fc63df6161dabc84675b7267ac40e6b79cd5afd5a48970b2d85619"
+            "sha256": "b57a07b23ebdb47e7b99f88c81a6df1ced4ec588af8e9f1c3e977df4de48dc6e",
+            "vice_targets": {
+              "vice-lm-alarm": 256
+            }
           },
           "independent_review": {
             "path": "docs/audits/lm-alarm.md",
@@ -8165,23 +8178,23 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-ev-cert/lanec-ev-lm-source-map.json",
-            "sha256": "1158185460795ff0b8790279e18f479fe2b9c2e6f862aa712ff7265d4ed26352"
+            "sha256": "72a30e6f7efd55449d5efdc03e72b46b0f33166ff9eb125a00b1d91036a90880"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-ev-cert/lanec-ev-comparison.json",
-            "sha256": "b4c329c63f0431e750903d0c8209cf037c43ca8a9eeb91af1fa777663e8c7da7"
+            "sha256": "db0ff10e7bcf9494f244a61b20f7e729217a6af1a5e0430db9dfa697d9ae3880"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-checks.log",
-            "sha256": "34bc0d0d962b17ba60297cdc1f21939c8380d3c85b1405b203363367cbf98dac"
+            "sha256": "80317a33665e40fecf2ece7dbbcfe0de8eb2b61e0ad32f2ffc2b0f0fe1c540aa"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-results.json",
-            "sha256": "d78533afbee60d756cfc1432e7eedb6d20805964e8ba831ee8055558bb7af265",
+            "sha256": "21be20b434ab94e3b8715cd11d0d692d8c48579ea1d1c6bc23c4d105c462007b",
             "vice_targets": {
               "vice-lanec-ev-front": 23,
-              "vice-lanec-ev-short": 122,
-              "vice-lanec-ev-align": 104,
+              "vice-lanec-ev-short": 121,
+              "vice-lanec-ev-align": 97,
               "vice-lanec-ev-radar": 31,
               "vice-lanec-ev-dap": 46,
               "vice-lanec-ev-time": 13,
@@ -8196,7 +8209,7 @@
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-ev-cert/lanec-ev-c64-cover.json",
-            "sha256": "ddb0a1f7545dff78140e903858c3cdcdb39c72841806adc4f237b66f7ee016ce"
+            "sha256": "8217e0e6ff22d80ad4e509e7cdd47d58fa7b728200cb1329c43f048979f88755"
           }
         }
       },
@@ -11411,7 +11424,7 @@
       "sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
       "bytes": 102264,
       "lines": 3798,
-      "status": "partial",
+      "status": "complete",
       "native_coverage": [
         {
           "native_files": [
@@ -11716,14 +11729,14 @@
           "verification": "docs/LANEC-PIN-GAPS.md"
         }
       ],
-      "pending_complete_certificate": {
+      "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
         "qualification_kind": "native_translation",
         "supported_domain": {
           "canonical_state": "Sole canonical 2048-word erasable image; A/L/Q raw 16-bit, other registers 15-bit, coherent EB/FB/BB, ZERO=0; I/O channels 0-77, superbank and interrupt enable carried with the image. The file's code runs in fixed-fixed (04124-04511) and banks 04, 40, 41 and 42.",
-          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 293 routines: 280 in lanec_pin_lm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_lm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c), the head families that stand in for composite modules at the points they claim (src/lanec_pin_head_*.c, docs/LANEC-PIN-HEADS.md) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take an lm_dntm_io device record (channels 11-14) (docs/LANEC-PIN-TRANSFER.md).",
-          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 940 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 303, the 76 pw-* suites: 20, the nine pin-head-* suites: 69 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it, is refused the same way. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,430 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains. The head families and the fixed display (whose stand-alone programs do not fit, or lack the rope) run on the C64 through the Pinball flight modules loaded from the REU store, one routine per case (vice-lanec-pin-flight, docs/MODULE-TEST.md).",
+          "entry_contracts": "Every labelled entry, every return into the file from a callee outside it and every BANKCALL return point (through SWRETURN) is a transfer-ABI routine at its physical address: 300 routines: 287 in lanec_pin_lm_routines (src/lanec_pin_routines.inc) and 13 at CHARIN and its key labels in the five lanec_pin_keys_*_lm_routines tables (src/lanec_pin_keys_*_routines.c, docs/LANEC-PIN-KEYS.md), all generated and checked against the listing by tools/lanec/routines.py pin; fixed-fixed points at 2048+(Z-04000)). Outside those tables, MPAC +3 (erasable 0157, where REQUESTC stores TC ENDOFJOB for V30/V31) is one routine in lanec_pin_request_lm_routines (src/lanec_pin_request_routines.c), resolved under bank 41 (ERASABLE_RECORDS in tools/flight_store_build.py); it runs only that word. Internal subroutines reached only by a TC inside the file are compiled into their callers. Each routine checks the register contract (lanec_registers_valid) and runs the native modules that claim its point in order (lanec-pin-keys alone at CHARIN and its key labels): lanec-pin-gaps (src/lanec_pin_gaps.c), the head families that stand in for composite modules at the points they claim (src/lanec_pin_head_*.c, docs/LANEC-PIN-HEADS.md) and the earlier Pinball modules (src/dsky_*.c, src/cm_*.c through src/lanec_pw*_runs.c, docs/LANEC-PW.md). Every word of the file has exactly one owner (docs/LANEC-PIN-CERT.md). The routines take an lm_dntm_io device record (channels 11-14) (docs/LANEC-PIN-TRANSFER.md).",
+          "index_domains": "Each module's documented domain (docs/LANEC-PW.md and the module documents it names; docs/LANEC-PIN-GAPS.md): among them NOUNADD/NOUNCADR, the verb and noun codes and component counts indexing the noun and scale tables, DSPCOUNT 0-19 (not 15) for the digit position, the CHANLOAD channel within the device record, and saved return words in 02000-07777 where a TC Q or a return cell transfers through them. Other inputs return LANEC_OUT_OF_SCOPE (EXEC_OUT_OF_SCOPE) with the image and I/O unchanged: a module refuses a state outside its domain, the routine then tries the next module that claims the point, and a chain whose routine refuses midway is refused whole with the entry state restored (pin-transfer: 1,067 refused chains; pin-refuse: 1,530 entry states with BB not FB|EB>>8, ZERO nonzero or FB at bank 7; the pin-gaps: 392, the 76 pw-* suites: 136, the ten pin-head-* suites: 43 and pin-keys and pin-key-labels: 98 each refused module cases). A result the device record cannot carry, CHANLOAD's WRITE to a channel outside it or onto the input channels 030-033 the devices own (off-nominal: no flight procedure loads them), is refused the same way. Operator-entered machine addresses in the central registers 0-07 (V21/V01-V05 N01-N03, N15), 016-023 (017-023 for the decimal displays and loads) and fixed memory past 01777 are refused, and 2INTOUT takes 0-037777 and -0 (values past 99 shown modulo 100), as argued in docs/LANEC-PIN-CERT.md. src/dsky_decimal_consumer.c and src/dsky_operator_schedule.c are in no Pinball try-list (only the C64 stand-alone programs link them); they run no Pinball point. On the C64, where each program links INTER-BANK and one module, pin-transfer-c64 refuses 1,590 call chains, image and I/O unchanged, that end where only an unlinked module, the display interface or the Executive could continue; pin-transfer, with every routine linked, compares those chains. The head families and the fixed display (whose stand-alone programs do not fit, or lack the rope) run on the C64 through the Pinball flight modules loaded from the REU store, one routine per case (vice-lanec-pin-flight-1 and -2, docs/MODULE-TEST.md).",
           "hardware_side_effects": "Channel I/O, kept exactly in the carried device record: WOR/WAND on channel 11 (DSALMOUT: KEY REL, V/N flash, OPR ERR, UPLINK ACTY and TEMP lamp bits), WOR/WAND on channel 13 (bit 10, the test-alarm outbit of the lamp test), RAND of channel 12 (bit 4, NO ATT during the lamp test), INDEX READ/WRITE 0 of the channel CHANLOAD names (only channels inside the record; a WRITE to any other is refused), ROR/WRITE of channel 07 SUPERBNK where the file saves and restores the superbank with the bank, and READ of channel 33 (LRPOSOUT: the landing radar antenna position, bits 7-6). Lighting the DSKY lamps and relays from those bits and from the display table is the device adapter's job, as for the other Lane C modules."
         },
         "external_continuations": [
@@ -11735,36 +11748,46 @@
         "evidence": {
           "source_to_native_map": {
             "path": "evidence/lanec-pin-cert/lanec-pin-lm-source-map.json",
-            "sha256": "0e26d8cb38a139f4e8b113438e7df3926a9dd060f97c487858ee1b09d4560da3"
+            "sha256": "d9b59882b15ebfecde4b8dea1fd5ccb54805aafd5eac976fe8f367039fcaa8b7"
           },
           "independent_assembly_comparison": {
             "path": "evidence/lanec-pin-cert/lanec-pin-comparison.json",
-            "sha256": "dc6f8c58a38a537a47d26a872bd9442f374e341528b432b8ce03bb908b06127b"
+            "sha256": "ad421a5da0e72426e7e929b2f4114e0a4fa713b983a02b457193f331203e204f"
           },
           "host_and_sanitizer_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-checks.log",
-            "sha256": "96c586d186e1e8f89565c5668f0e3f03d912871ee0ba8298cca820cbb2fba2d6"
+            "sha256": "79979d9e858d97dfe05775831465196b54bffdc471e0e164936275a0bfc79ebe"
           },
           "c64_execution_results": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-results.json",
-            "sha256": "f36f06bf6b2a24a2711ac1622f96273736338d32637ed9d5ca956c49681da6c9",
+            "sha256": "046a9fc4cb2f629de69eb155f0d7453816521d2feca9c8e89af092da09ea2b02",
             "vice_targets": {
-              "vice-lanec-pin-gaps": 50,
+              "vice-lanec-pin-gaps": 63,
               "vice-lanec-pw-1": 140,
               "vice-lanec-pw-2": 328,
-              "vice-lanec-pw-3": 167,
+              "vice-lanec-pw-3": 168,
               "vice-lanec-pw-4": 186,
               "vice-lanec-pw-5": 104,
-              "vice-lanec-pin-transfer-1": 79,
-              "vice-lanec-pin-transfer-2": 92,
-              "vice-lanec-pin-transfer-3": 71,
-              "vice-lanec-pin-transfer-4": 50,
-              "vice-lanec-pin-flight": 81
+              "vice-lanec-pin-transfer-1": 78,
+              "vice-lanec-pin-transfer-2": 78,
+              "vice-lanec-pin-transfer-3": 52,
+              "vice-lanec-pin-transfer-4": 46,
+              "vice-lanec-pin-flight-1": 58,
+              "vice-lanec-pin-flight-2": 37,
+              "vice-lanec-pin-keys-1": 4127,
+              "vice-lanec-pin-keys-2": 1408,
+              "vice-lanec-pin-keys-3": 4127,
+              "vice-lanec-pin-keys-4": 1408,
+              "vice-lanec-pin-chains": 753
             }
+          },
+          "independent_review": {
+            "path": "docs/audits/pinball-674.md",
+            "sha256": "ac58017b0c6561f26745f2fc56aa4eff71ad287bb92e4ef2e7aaccf20bcdcff7"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lanec-pin-cert/lanec-pin-c64-cover.json",
-            "sha256": "afbaa370cc4984d8cef92a102cb366d6936b84c1d13d41abd639586c6b2a5a62"
+            "sha256": "bec2ac00f86e776e650f5d8d8b6a48a3e367aa115f228ff2e24bf2e6004adcc9"
           }
         }
       }

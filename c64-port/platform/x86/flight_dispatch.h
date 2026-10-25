@@ -12,6 +12,7 @@
  * (RK_LM or RK_CM). */
 #include "flight_io.h"
 #include "resident_rupt.h"
+#include "night_watchman.h"
 
 /* X86_INTERP_COMPILED (default): compiled interpretive tables first, the
  * interpreter core where none holds the point. X86_INTERP_CORE: no
@@ -21,7 +22,17 @@ enum { FD_INTERP_COMPILED, FD_INTERP_CORE };
 typedef struct {
     const agc_routine_table *t; const char *name; uint8_t interp; enum flight_io_kind io;
     const agc_site_operand *sites; uint16_t nsites; uint8_t fixed;
+    /* host.inc's work clock MCT per routine (FD_PER_WORD, FD_PLUS_WORDS),
+     * and its C64 module, slot and the other modules holding it. */
+    uint16_t weight;
+    const char *module;
+    uint8_t slot;
+    const char *also;
 } fd_table;
+/* A table left to the interpreter module: its routines run through the
+ * core on the work clock, charged their words. A FLIGHT_INTERP_STOP file's
+ * basic table: its weight is the low bits. */
+enum { FD_PER_WORD = 0xFFFFu, FD_PLUS_WORDS = 0x8000u };
 /* Each table's certification (build/x86-flight/<m>-status.inc): 'c' a
  * complete file's, 'u' a file's not yet complete, 'x' shared code. With
  * X86_CERTIFIED_ONLY the 'u' tables are not linked into the indexes. */
@@ -56,6 +67,15 @@ typedef struct {
      * T3 step, 1 when it spun only through T5; idling while that spin's
      * period is charged, until the next boundary. */
     uint8_t spin, idling;
+    /* The night watchman (night_watchman.h): armed and checked by the
+     * period count, disarmed by the steps' NEWJOB accesses; wm_fire when it
+     * sounded at the last period's end, for the next fd_run's GOJAM. */
+    night_watchman wm;
+    uint8_t wm_fire;
+    /* The work clock (fd_work_clock): clock steps at whole cycles, as the
+     * harness's FLIGHT_SCALED=W; clock_steps counts the steps taken. */
+    uint8_t work;
+    unsigned long clock_steps;
     /* The DSKY's RESTART lamp, as yaAGC's RestartLight: lit by a GOJAM,
      * put out by RSET (key code 022 into channel 15, fd_key) and by a
      * routine that leaves channel 11 bit 10 set (fd_lamps). */
@@ -67,11 +87,12 @@ typedef struct {
     unsigned ngaps;
     unsigned long unmapped;   /* basic points with no routine: fatal */
     unsigned long uses[256];  /* routines run, by table */
+    const char *in_slot[2];   /* the module in each C64 slot (flight_host_run.c's module_load) */
 } fd_state;
 
 /* What the last fd_run ran: the table (NULL for the core, the VERB69 spin
  * and the TC trap) and the point; trap is 1 for the spin, 2 for the trap's
- * GOJAM. */
+ * GOJAM, 3 for the night watchman's. */
 typedef struct {
     const fd_table *table;
     uint16_t key;
@@ -86,6 +107,13 @@ extern const unsigned fd_table_count;
 /* Cold start at GOJAM (Z 04000, interrupts enabled, input channels 30-33 as
  * given, everything else zero). The rope must be loaded (apollo_rope_load). */
 void fd_init(fd_state *st, uint8_t mode, agc_word ch30, agc_word ch31);
+/* Charge time as the harness's work clock (FLIGHT_SCALED=W) and the C64's
+ * resident do: each routine its table's weight, the idle loop to the end
+ * of the period, a table left to the interpreter its core's words, run
+ * slot after slot to the next clock step. Without it each routine point
+ * costs the cycles yaAGC took for it (docs/flight-routine-mct.json), as the
+ * lockstep check runs. Call before the first step. */
+void fd_work_clock(fd_state *st);
 /* The clock steps due (rk_timer_phase each), with rk_rupt_take before
  * each, as the flight resident's rk_rupts: a request that can be taken is
  * taken before the later steps raise theirs. Returns the interrupt it took

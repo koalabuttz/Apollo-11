@@ -87,7 +87,11 @@ CI_CASES = ['V01N36E', 'V04N36E', 'V05N09E', 'V06N36E', 'V06N43E', 'V02N65E', 'V
             'V06N20E', 'V06N21E', 'V05N20E', 'lm:V06N49E',
             'V32E', 'V33E', 'V34E', 'V35E', 'V36E', 'V37E00E',
             'V16N36EV32E', 'V16N36EK', 'V16N36EKR', 'V05N09EC', 'V16N36EQ', 'V05N09EQ',
-            'V01N01E01000EV01N15E', 'V27N02E02000E']
+            'V01N01E01000EV01N15E', 'V27N02E02000E',
+            # V30/V31 with noun 26 loaded (dsky_sweep_cases.py): MPAC+3
+            # (src/lanec_pin_request_routines.c)
+            'lm:V25N26E01000E05155E00000EV30E', 'lm:V25N26E01001E05155E00000EV30E', 'lm:V25N26E00100E05261E00000EV31E',
+            'cm:V25N26E01000E05217E00000EV30E', 'cm:V25N26E01001E05217E00000EV30E', 'cm:V25N26E00100E05324E00000EV31E']
 # The C64's sweep copy (dap_pass_check.c sweep_snap): RK_HARDWARE to the
 # image's end, then rk_device (at most 64 bytes; the 64 bytes of slack
 # after SNAP in run_batch).
@@ -98,6 +102,33 @@ TIMER_NAMES = {'centiseconds', *fsv.TIMERS.values()}
 MISS = re.compile(r'^  (interp|basic ) (\d+,\d+) (\S+): (\d+) times;', re.M)
 PRO_BIT = 0o40000  # channel 32 bit 14, 0 while PRO is pressed
 PRO_HOLD = 30      # cs PRO stays down
+# A busy sample point (flight_host_run.c FLIGHT_BUSY_SAMPLE, dap_pass_check.c DP_BUSY)
+# once no sample has come for this many cs: a case whose job never idles
+# (LM V83's R31 display loop) still reaches its window's end on both sides.
+BUSY_CS = 100
+
+# A full sweep's report is about 1 MB, past tools/evidence.py's tree limit,
+# so it is stored in the release, which CI does not fetch. The summary stays
+# in the tree: everything tools/cert_precheck.py checks (mode, missions, the
+# hashes per mission, the counts and every failed case in full), bound to the
+# full report by its hash.
+SUMMARY = 'dsky-sweep-summary.json'
+
+
+def summary(full):
+    """The tree-sized summary of the report at path full, as JSON text."""
+    raw = full.read_bytes()
+    report = json.loads(raw)
+    keep = {k: v for k, v in report.items() if k not in ('results', 'runs')}
+    by_mission = {}
+    for r in report['results']:
+        row = by_mission.setdefault(r['m'], dict(cases=0, passed=0, skipped_cases=0))
+        row['cases'] += 1
+        row['passed'] += bool(r['ok'])
+        row['skipped_cases'] += bool(r.get('skipped'))
+    return json.dumps(dict(keep, full=full.name, full_sha256=hashlib.sha256(raw).hexdigest(),
+                           by_mission=by_mission, failed=[r for r in report['results'] if not r['ok']]),
+                      indent=1) + '\n'
 CASE = struct.Struct('<IHHIBBH')   # dap_pass_check.c dp_case
 
 
@@ -203,7 +234,7 @@ def host_case(exe, m, i, case, a, start, channel32):
         # One FLIGHT_CHAN in time order: the Q presses and the case's own.
         both = [(int(x.split(':', 1)[0]), x.split(':', 1)[1]) for x in filter(None, chan.split(','))] + own
         chan = ','.join(f'{t}:{v}' for t, v in sorted(both, key=lambda x: x[0]))
-    env = {**os.environ, 'FLIGHT_SCALED': '1,1,2',
+    env = {**os.environ, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_BUSY_SAMPLE': str(BUSY_CS),
            'FLIGHT_SNAPSHOT': f'{a.snap_cs},{header}', 'FLIGHT_REPLAY': f'{window},0,{window},1',
            **({'FLIGHT_CHAN': chan} if chan else {})}
     r = subprocess.run([str(exe), fhd.ROPE[m], str(a.snap_cs + 1000 + window), hkeys], cwd=ROOT,
@@ -213,7 +244,7 @@ def host_case(exe, m, i, case, a, start, channel32):
     holes = [f'{x} ({n - start[0].get(x, 0)} arrivals)' for x, n in found.items() if n > start[0].get(x, 0)]
     yaagc = [f'{x} ({n - start[1].get(x, 0)} times)' for x, n in missed.items() if n > start[1].get(x, 0)]
     end = pathlib.Path(f'{header}.end')
-    if r.returncode or not end.exists():
+    if r.returncode or not end.exists() or end.stat().st_size < fsv.STATE:
         return dict(m=m, keys=case, ok=False, error=f'the host run did not end its window (exit {r.returncode})',
                     log=(r.stdout + r.stderr)[-2000:])
     data = end.read_bytes()
@@ -266,7 +297,8 @@ def sha(path):
 def link(a, m, name, header, table, snap, cs):
     defines = ['-DDP_REPLAY', '-DDP_REPLAY_REU=0ul', '-DDP_REPLAY_ROWS=1u', '-DDP_END=0ul',
                '-DDP_STATE_FIRST=0xffffu', '-DDP_STATE_TABLE=0ul', '-DDP_STATES_MAX=1u',
-               '-DDP_OUTPUTS=0ul', '-DDP_OUTPUTS_MAX=0u', f'-DDP_SWEEP=0x{table:x}ul', f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
+               '-DDP_OUTPUTS=0ul', '-DDP_OUTPUTS_MAX=0u', f'-DDP_BUSY={BUSY_CS}u', f'-DDP_SWEEP=0x{table:x}ul',
+               f'-DDP_SWEEP_SNAP=0x{snap:x}ul']
     old = dp.WORK
     dp.WORK = WORK
     try:
@@ -392,7 +424,7 @@ def main():
     p.add_argument('--evidence', type=pathlib.Path, help='also copy dsky-sweep.json here (evidence)')
     p.add_argument('--replay-exact', action='store_true',
                    help='leave no SCHEDULE_SKIP word out of the compare, as acceptance item 6 needs '
-                        '(a TIME5 phase one count apart still matches, and counts as skipped)')
+                        '(and counts a TIME5 phase one count apart as a difference; without it, that is a noted skip)')
     p.add_argument('--vice', default=os.environ.get('VICE', 'x64sc'))
     p.add_argument('--rom-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
@@ -476,7 +508,8 @@ def main():
         if 'diff' in r:
             r['differing'] = [x[0] for x in r.pop('diff')]
     ok = sum(1 for r in results if r['ok'])
-    # Item 6: a match with words left out of the compare is not a full match.
+    # Item 6: a match with words left out of the compare, or a run without
+    # --replay-exact, is not a full match.
     skipped = sum(1 for r in results if r.get('skipped'))
     classes = {}
     for r in results:
@@ -486,12 +519,14 @@ def main():
                   settle_cs=a.settle_cs, passed=ok, cases=len(results), failed_by_class=classes, stores=stores,
                   replay_exact=a.replay_exact, skipped_cases=skipped,
                   item6=mode == 'all' and set(missions) == {'lm', 'cm'} and ok == len(results) and bool(results)
-                  and not skipped,
+                  and not skipped and a.replay_exact,
                   results=results, runs=runs)
     (WORK / 'dsky-sweep.json').write_text(json.dumps(report, indent=1) + '\n')
+    (WORK / SUMMARY).write_text(summary(WORK / 'dsky-sweep.json'))
     if a.evidence:
         a.evidence.mkdir(parents=True, exist_ok=True)
         shutil.copy(WORK / 'dsky-sweep.json', a.evidence / 'dsky-sweep.json')
+        shutil.copy(WORK / SUMMARY, a.evidence / SUMMARY)
     print(f"{'PASS' if ok == len(results) and results else 'FAIL'}: DSKY sweep on the C64: {ok} of {len(results)} "
           'cases end in the host state' + (f" (failed: {', '.join(f'{n} {c}' for c, n in sorted(classes.items()))})"
                                            if classes else ''))

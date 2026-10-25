@@ -1,8 +1,9 @@
 # Overlay ABI 2: memory, module store and continuations
 
-Lane H owns this contract. Every lane that emits native modules for the
+The Resident kernel lane owns this contract (Lane H wrote it and has since
+finished). Every lane that emits native modules for the
 integrated LM and CM applications builds them against it. Changes go through a
-PR that Lane H reviews. ABI 1 ([OVERLAYS.md](OVERLAYS.md)) stays in place for
+PR that the Resident kernel lane reviews. ABI 1 ([OVERLAYS.md](OVERLAYS.md)) stays in place for
 the retained single-slot proofs; nothing in this document changes them.
 
 Status: the runtime, REU store, packer, allocation plan and service-table

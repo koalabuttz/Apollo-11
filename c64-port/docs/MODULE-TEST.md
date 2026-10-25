@@ -71,13 +71,32 @@ is under test. A store whose pinned class-3 module is copied to `$c000` at
 boot (the DAP pins) overwrites the mailbox page: the runner clears it after
 `rk_boot`, and VICE ignores that copy's first write.
 
-`vice-lanec-pin-flight` (`tools/mk/lanec-pin-heads.mk`) runs the frozen C64
-rows of the nine `pin-head-*` suites and `pw-fixed-display` (whose rows
+`vice-lanec-pin-flight-1` (LM) and `-2` (CM) (`tools/mk/lanec-pin-heads.mk`;
+`lanec-pin-flight-vice` runs both) run the frozen C64
+rows of the ten `pin-head-*` suites and `pw-fixed-display` (whose rows
 read the rope, which only the store carries) in both missions with
 `--limit 1 --flight-rows`. The expected rows come from
 `tools/lanec/native.c --flight SUITE`: the try-list registered at the case's
 entry, run once on the host. Where the suite's own module refuses a state,
 the next module of that try-list runs it, here as in flight.
+
+`vice-lanec-pin-keys-1` to `-4` (`tools/mk/lanec-pin-keys.mk`: `pin-keys`
+LM and CM, then `pin-key-labels` LM and CM; `module-test-lanec-pin-keys`
+and `lanec-pin-keys-vice` run all four) run every case of `pin-keys` and
+`pin-key-labels` through the five keypress modules with `--limit 1`, each
+part on its own mission's store.
+
+`vice-lanec-pin-chains` (`tools/mk/lanec-pin-transfer.mk`) runs whole
+chains: the frozen C64 rows of `pin-transfer-flight`,
+`pin-decdsp3-flight` and `pin-refuse-flight` through the INTER-BANK,
+Pinball and keypress modules with `--limit 64 --flight-rows`. Those suites
+are the cases of `pin-transfer`, `pin-decdsp3` and `pin-refuse` run on the
+host the way this harness runs them (`run_flight` in
+`tests/lanec_pin_transfer_cases.c`): one routine at a time through those
+modules' tables until a point none of them holds. A first routine that
+refuses gives a refused case; one that refuses later ends the case where
+it stands (status 2). The host suites compare the same cases with the
+original program.
 
 A suite whose modules take another io kind needs that device record added
 to `tools/module_test.c`, mapping the case's channels in and out.

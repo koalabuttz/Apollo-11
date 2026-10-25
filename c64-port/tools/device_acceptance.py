@@ -77,15 +77,38 @@ WINDOWS = {
            ('lm-uplink-reject', 1900, 800, 100),            # uplink words (UPRUPT) and DSKY keys
            ('lm-p52-realign', 4200, 500, 100),              # AOT marks (channel 16, KEYRUPT2)
            ('lm-p57', 15950, 100, 25),                      # lunar-surface AOT mark
-           ('lm-p63-lr-update', 61000, 50, 10),             # P63 descent: jets, landing displays
-           ('lm-rendezvous', 8000, 300, 50)],               # P20: an RR read (RNRAD) and the RR CDUs
+           ('lm-p63-lr-update', 80000, 300, 50),            # P63 with LR updates: LR reads (RNRAD), trim
+           ('lm-p63-landing-displays', 65000, 300, 50),     # P63 ignition, mode select in PGNCS: R10 drives ALTM
+           ('lm-p65-autoland-nassp', 130000, 300, 50),      # P65 low scale: LR reads, THRUST
+           ('lm-rendezvous', 8000, 300, 50),                # P20: an RR read (RNRAD) and the RR CDUs
+           ('lm-p52-cage-torque', 8600, 100, 25),           # gyro torquing (GYROCMD drains, CDUY follows)
+           ('lm-rhc-att-hold', 2400, 500, 100),             # RHC pitch out of detent (P-RHCCTR)
+           ('lm-rhc-att-hold', 3500, 500, 100),             # RHC yaw and roll (Q-, R-RHCCTR)
+           ('lm-p52-coarse', 4650, 500, 50)],               # coarse align: channel 12 bit 4, CDUY follows the drive
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6
            ('cm-p40', 70660, 100, 50),                      # SPS burn
+           ('cm-p40', 44000, 300, 50),                      # SPS burn: TVC drives with channel 12 bit 8 held
+           ('cm-entry', 15100, 300, 50),                    # entry DAP: jets (channel 5)
            ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
-           ('cm-p20', 18300, 400, 50)],                     # R22: the second VHF range
+           ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
+           ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
+           ('cm-p52-optics', 17100, 100, 25)],              # gyro torquing: CDUX-Z follow
 }
+
+
+def windows(m):
+    """WINDOWS[m] and the off-nominal rows' windows, one run per (scenario,
+    snapshot): a run's files are named by those two, so a second entry would
+    overwrite the first (lm-uplink-reject 1900 is in both; checkpoints every
+    50 cs over 800 cs do not fit below the rope)."""
+    seen, out = set(), []
+    for w in WINDOWS[m] + offnom.windows(m):
+        if w[:2] not in seen:
+            seen.add(w[:2])
+            out.append(w)
+    return out
 
 
 def sha(path):
@@ -238,12 +261,13 @@ def roles(m):
     ]
     if lm:
         out += [
-            role('rhc', 'Hand controller (RHC)', 'in', 'P-RHCCTR, Q-RHCCTR, R-RHCCTR (042-044), HANDRUPT, '
-                 'channel 13 bit 8 (RHC counter enable)', [], [rows], uses('FLIGHT_RHC'),
+            role('rhc', 'Hand controller (RHC)', 'in', 'P-RHCCTR, Q-RHCCTR, R-RHCCTR (042-044), '
+                 'channel 31 bit 15 (out of detent), channel 13 bits 8-9 (RHC counters enabled, read)',
+                 [('tools/flight_rhc.h', 'rhc_due', 'RHC model: out of detent in each FLIGHT_RHC span, the '
+                   'deflection loaded into 042-044 when ZEROENBL sets channel 13 bits 8 and 9')],
+                 [rows], uses('FLIGHT_RHC'),
                  either(erasable(0o42, 0o43, 0o44), requests('HAND')), unit(m, 'p-axis'),
-                 how='RHC counter words or HANDRUPT in the host rows',
-                 gap='no hand controller model on the host and no scenario drives the RHC counters or HANDRUPT',
-                 blocking=True, closes='an RHC model (counts into 042-044, HANDRUPT) and a P66 or attitude-hold window'),
+                 how='RHC counter words or HANDRUPT in the host rows'),
             role('aot', 'AOT marks', 'in', 'channel 16 bits 3-5 (X MARK, Y MARK, MARK REJECT), KEYRUPT2',
                  [(FHR, 'key_due', 'keys x, y and j: channel 16 bits 3, 4 and 5 with KEYRUPT2'),
                   (FHR, 'MARK_KEY', 'the mark keys\' flag')],
@@ -357,23 +381,24 @@ def roles(m):
     else:
         out += [
             role('optics-drive', 'Optics drive', 'out', 'OPTXCMD/OPTYCMD (CDUTCMD/CDUSCMD, 053/054), channel 14 '
-                 'bits 11-12', [host_end, (FHR, 'drives', 'the output drives once a period after the timers: rk_cdu_drive (src/resident_cdu.c)')],
+                 'bits 11-12', [host_end, (FHR, 'drives', 'the output drives once a period after the timers: rk_cdu_drive (src/resident_cdu.c)'),
+                                (FHR, 'optics_due', 'the optics: with TVC off, CDUT/CDUS follow the 053/054 pulses sent, 4 counts a pulse')],
                  [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives: 053/054 pulses')],
-                 uses('FLIGHT_LOAD'), both(either(words(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
+                 uses('FLIGHT_OPTICS'), both(either(words(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
                  unit(m, 'sxtmark'), how='OPTXCMD or OPTYCMD, or channel 14 bit 11 or 12, changed with TVC off (channel 12 bit 8 clear)',
-                 gap='no optics model: the drives send the pulses, but CDUS/CDUT never follow on either side '
-                     '(FLIGHT_LOAD sets them)',
-                 blocking=True, closes='an optics drive model on both sides'),
+                 gap='the optics are a perfect servo at OPTDRIVE\'s scale (4 CDU counts a pulse, from its (DESOPT - CDU) / 4 '
+                     'command); FLIGHT_LOAD still sets CDUS/CDUT for the marks'),
         ]
     out += [
         role('iss', 'ISS mode bits', 'out', 'channel 12 bits 4-6 (coarse align, zero the ICDUs, error counters) and '
              '15 (ISS turn-on delay complete)',
-             [host_end] + ([] if lm else [(FHR, 'imu_due', 'FLIGHT_IMU: zero and coarse align move CDUX-Z')]),
-             [end], None if lm else uses('FLIGHT_IMU'), moved(0o12, 0o40070), unit(m, 't4rupt-imu'),
+             [host_end] + ([(FHR, 'iss_due', 'FLIGHT_ISS: ICDU zero holds CDUX-Z at 0; in coarse align the gimbals '
+                                              'follow the CDUXCMD-CDUZCMD pulses the drive sends, 4 counts a pulse')] if lm
+                           else [(FHR, 'imu_due', 'FLIGHT_IMU: zero and coarse align move CDUX-Z')]),
+             [end], uses('FLIGHT_ISS') if lm else uses('FLIGHT_IMU'), moved(0o12, 0o40070), unit(m, 't4rupt-imu'),
              how='channel 12 bit 4, 5, 6 or 15 changed in the host\'s states',
-             gap='no ISS model on the LM: zeroing and coarse align move nothing' if lm else
-             'fine align and gyro torquing move nothing (imu_due: coarse align is perfect)', blocking=lm,
-             closes='an ISS model (zero, coarse align) on the LM, as imu_due on the CM' if lm else None),
+             gap='a perfect servo: no gimbal rate limit or settling (iss_due)' if lm else
+             'fine align and gyro torquing move nothing (imu_due: coarse align is perfect)'),
     ]
     if lm:
         out += [
@@ -403,10 +428,15 @@ def roles(m):
              None, either(words(0o50, 0o51, 0o52), moved(0o14, 0o70000)), ['test-resident-cdu', 'c64-resident-cdu-asm'],
              how='a CDU drive word, or a drive bit of channel 14, changed in the host\'s states'),
         role('gyro', 'Gyro torquing', 'out', 'GYROCMD (047), channel 14 bits 6-10 (gyro enable, select, sign, activity)',
-             [host_end], [end], None, either(words(0o47), moved(0o14, 0o1740)), [],
+             [host_end, (FHR, 'drives', 'the output drives once a period after the timers: rk_cdu_drive (src/resident_cdu.c) '
+                         'sends GYROCMD 32 pulses a period on channel 14 bit 10'),
+              (FHR, 'gyro_due', 'the platform: the pulses sent turn the stable member about the selected axis, '
+                                'CDUX-Z follow')],
+             [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives: GYROCMD 32 pulses a period '
+                    'on channel 14 bit 10')],
+             uses('FLIGHT_GYRO'), either(words(0o47), moved(0o14, 0o1740)), ['test-resident-cdu', 'c64-resident-cdu-asm'],
              how='GYROCMD, or a gyro bit of channel 14, changed in the host\'s states',
-             gap='no gyro torque model: GYROCMD pulses move nothing on either side (fine align, gyro compensation)',
-             blocking=True, closes='a gyro torque model that turns the platform'),
+             gap='perfect gyros: no drift or torquer scale error, and the body holds still while the platform turns'),
         role('displays', 'DSKY displays and lamps', 'out', 'channel 10 (relay words), channel 11 lamps',
              [host_end, (FHR, 'dsky_trace', 'FLIGHT_DSKY: prints the DSKY as the relay words set it')],
              [end, ('platform/c64/resident_dsky.S', 'rk_dsky_idle', 'the flight disk draws the DSKY from the relay '
@@ -695,12 +725,12 @@ def main(argv=None):
         out = ROOT / 'build' / f'{eid}-runs'
         shutil.rmtree(out, ignore_errors=True)
         out.mkdir(parents=True)
-        a.run = [str(run_window(*w, out)) for w in WINDOWS[m] + offnom.windows(m)]
+        a.run = [str(run_window(*w, out)) for w in windows(m)]
     host = [r for r in json.loads(pathlib.Path(a.host).read_text()) if r.get('mission') == m]
     copy = dest / 'host-summary.json'
     copy.write_text(json.dumps(host, indent=1) + '\n')
     host_cite = stored(copy)
-    asked = {(s, snap): cs for s, snap, cs, _ in WINDOWS[m] + offnom.windows(m)}
+    asked = {(s, snap): cs for s, snap, cs, _ in windows(m)}
     bad, runs = [], []
     for path in a.run:
         r = json.loads(pathlib.Path(path).read_text())

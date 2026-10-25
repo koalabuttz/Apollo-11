@@ -4,38 +4,128 @@
   "release": "evidence-lm-acceptance-devices",
   "files": {
     "host-summary.json": {
-      "sha256": "6fadf2e05db5c39c10a621a060863d19a28cd6cf447e9fb47237838f07f190bc",
-      "bytes": 101406,
+      "sha256": "7ea311bc8deeddeb5b8a46cb25ed45ba6cea88669f4e5496b5d08a34a619eedd",
+      "bytes": 111023,
       "store": "tree"
     },
     "lm-landing-ascent-nassp-140000.json": {
-      "sha256": "f34ec2503fec038477db59ad9b760bddfb57ec13116cdb5cd940f068f82d17ef",
-      "bytes": 9523,
+      "sha256": "6a9ba94b165f6afd2cef6a722be7f541e31cecb196af21aac488c21ef589e561",
+      "bytes": 9682,
+      "store": "tree"
+    },
+    "lm-p52-cage-torque-8600.json": {
+      "sha256": "2deba93e8d5069f6b7dbf29dede8d8087710f1efdc035c6b5908acc9654d73d0",
+      "bytes": 13034,
+      "store": "tree"
+    },
+    "lm-p52-coarse-4650.json": {
+      "sha256": "eb7363de2861aa64d9cf7a76668dbb33ed86cd55e11f12b88a562d33db043029",
+      "bytes": 29526,
+      "store": "tree"
+    },
+    "lm-p52-imu-cage-2900.json": {
+      "sha256": "4bab29ed1e94a94fd60fd637a3e3ab399e2fa9b74bc388b1147ee4272e3e81c8",
+      "bytes": 41129,
+      "store": "tree"
+    },
+    "lm-p52-imu-cage.log": {
+      "sha256": "0ffb1e92da2326d1eb13c621192276f6f23c4342558359ac335a0c9201971815",
+      "bytes": 18550,
+      "store": "tree"
+    },
+    "lm-p52-imu-fail-2900.json": {
+      "sha256": "d20a3312b3e810e10d933b19524ebb72f9cf88d8287415202fe90cba4c7af2db",
+      "bytes": 39863,
+      "store": "tree"
+    },
+    "lm-p52-imu-fail.log": {
+      "sha256": "c900b1f561c566a4edce0a2a889d0cb9ed91ce759c8491b2e06ffa32f38417e4",
+      "bytes": 18581,
       "store": "tree"
     },
     "lm-p52-realign-4200.json": {
-      "sha256": "b4c33c09ede4096096b36199d4218fe166738dae9ed069f5f4b187dea4ab8479",
-      "bytes": 31299,
+      "sha256": "f51c89b13c9adf24d9e02ddbab699a113bd6d5721c33535decf2af4c6d57e056",
+      "bytes": 31656,
       "store": "tree"
     },
     "lm-p57-15950.json": {
-      "sha256": "2575882c7ce4d69dac8a8664d9f547ca84ee954160d9226e8594fa5b0a9650d7",
-      "bytes": 11343,
+      "sha256": "33c72ab19367ac3a1bf24bda67472dab2e90af72607aaac99650a3091a2fad92",
+      "bytes": 11867,
       "store": "tree"
     },
     "lm-p63-descent-thrust-17500.json": {
-      "sha256": "75f3b565c2bf7df1e3b1c015784c3d3a065d26a49a7b4f302b6264de3204e0a4",
-      "bytes": 14383,
+      "sha256": "6ab53bb236401b8fb043e37de01b59ef5d1e965920202580e12ed34ccd51db26",
+      "bytes": 14935,
       "store": "tree"
     },
-    "lm-p63-lr-update-61000.json": {
-      "sha256": "e52584f58aaff105555299269154bb13dacdb4cee0c993beadad21516a0d611d",
-      "bytes": 4713,
+    "lm-p63-landing-displays-65000.json": {
+      "sha256": "dbebd576fb901aa7824d0a6ea910f8328b91ee7a52aadae4e455b9d4d1e1a5f5",
+      "bytes": 24288,
+      "store": "tree"
+    },
+    "lm-p63-lr-dropout-87900.json": {
+      "sha256": "0a60ed3c020f9ab78ac868f68bac783b6e714d16e33abae4345c853bfd87582c",
+      "bytes": 45273,
+      "store": "tree"
+    },
+    "lm-p63-lr-dropout.log": {
+      "sha256": "e494e0252fab4dc733e59925a15b78f888a60dad2a2c6f8d72b223edbcf8f518",
+      "bytes": 46212,
+      "store": "tree"
+    },
+    "lm-p63-lr-update-80000.json": {
+      "sha256": "e7c3568d37c1547b4f776c9af225bd8feb77f6f877818cefd138b35fa18f79b2",
+      "bytes": 29361,
+      "store": "tree"
+    },
+    "lm-p63-overload-nomon-19000.json": {
+      "sha256": "92b6c02fe21fdbfefdc7408fc84549b5c8638b9fac50671e05e1692049fea1f7",
+      "bytes": 46091,
+      "store": "tree"
+    },
+    "lm-p63-overload-nomon.log": {
+      "sha256": "d74350d85cada3b3e8dab5ecc86a618307a688bab85a2248f57a3601c8f94ea2",
+      "bytes": 33262,
+      "store": "tree"
+    },
+    "lm-p65-autoland-nassp-130000.json": {
+      "sha256": "92b55d7b880b8837f1709cb2bf77151f56308468b04289bb58b459cdbb61496c",
+      "bytes": 29786,
+      "store": "tree"
+    },
+    "lm-rendezvous-8000.json": {
+      "sha256": "9f26e5d3b26a2027172fa24fdec4523048fce0f3af5b899ac366aa41a0304541",
+      "bytes": 18094,
+      "store": "tree"
+    },
+    "lm-rendezvous-rr-dropout-19900.json": {
+      "sha256": "b6ab9e60cb267ba21e33a89d925aa9090347c37051ba9b7eddc8a04b0b81623f",
+      "bytes": 34148,
+      "store": "tree"
+    },
+    "lm-rendezvous-rr-dropout.log": {
+      "sha256": "2d8fa37607e32b6c11fb48254a91bb762b556916fd3f8bb4c5e93425a24508a5",
+      "bytes": 31626,
+      "store": "tree"
+    },
+    "lm-rhc-att-hold-2400.json": {
+      "sha256": "bd52e083ff53aaed29edb4aa19ed6d3f94a0c8f42d2580d96702798b0f491971",
+      "bytes": 26148,
+      "store": "tree"
+    },
+    "lm-rhc-att-hold-3500.json": {
+      "sha256": "e0052faa7e89ca5a2cc6008f1c103f26e2be83afec7c7ca8345938ae719e952c",
+      "bytes": 27718,
       "store": "tree"
     },
     "lm-uplink-reject-1900.json": {
-      "sha256": "c84d57622282a37e5b7ece9545cd12bc015be6ed5ccaef24b22576700ae34006",
-      "bytes": 153,
+      "sha256": "10f0a83e0a11e75073b9047ec92592b6c7c88e72421ba091e00db91857e9ad5e",
+      "bytes": 41565,
+      "store": "tree"
+    },
+    "lm-uplink-reject.log": {
+      "sha256": "1e265e83504614828e49d29a6f5c7c8b7d1a11950fd72d00519aa0cfefdfe81e",
+      "bytes": 9888,
       "store": "tree"
     }
   }

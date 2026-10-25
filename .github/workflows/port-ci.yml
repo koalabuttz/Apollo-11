@@ -147,7 +147,7 @@ jobs:
         run: python3 tools/mk_vars_check.py
       # Every branch arm no frozen host case takes is triaged in
       # tools/cert_arms_allow.py with a class and a reason; fails on an
-      # untriaged one, warns on open flight gaps and stale records.
+      # untriaged one or a stale record (a src change re-measures in the same PR, #834), warns on open flight gaps.
       - name: Certificate arms are triaged
         working-directory: c64-port
         run: python3 tools/cert_arms.py check
@@ -259,6 +259,17 @@ jobs:
       - *checkout
       - *deps
       - *setup
+      # Module links of the flight store (tools/flight_store_build.py link
+      # cache), from the newest run that saved one: a store build relinks
+      # only the modules whose inputs changed.
+      - name: Restore the flight store link cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-${{ matrix.shard }}
+          restore-keys: flight-link-cache-
       - name: Build C64 PRGs and run VICE checks (shard ${{ matrix.shard }})
         working-directory: c64-port
         env:
@@ -266,6 +277,8 @@ jobs:
           SHARD: ${{ matrix.shard }}
           SHARDS: ${{ needs.plan.outputs.c64_nshards }}
           C64_FULL: ${{ needs.plan.outputs.c64_full }}
+          # Full runs link every module afresh and check the cache's entries.
+          FLIGHT_LINK_CACHE: ${{ needs.plan.outputs.full == '1' && 'verify' || '' }}
         run: |
           source deps/env.sh
           if [ "$C64_FULL" = 1 ]; then
@@ -286,6 +299,14 @@ jobs:
         working-directory: c64-port
         run: python3 tools/map_check.py
       - *logs
+      - name: Save the flight store link cache
+        if: always() && hashFiles('c64-port/build/flight-link-cache/updated') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-${{ matrix.shard }}
       - &piece
         name: Vice manifest piece
         if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
@@ -337,6 +358,43 @@ jobs:
             echo "FAIL: some PRGs did not link (build/c64-maps.log)"; exit 1
           fi
       - *map-check
+
+  # On every push to the port branch (where the c64 job is skipped), build
+  # the flight store and save its link cache, so PRs start from the base's
+  # links (a PR's own cache is visible only to that PR). Usually a few
+  # minutes: only modules the merge changed relink.
+  flight-link-cache:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/port/c64-native-c'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Restore the flight store link cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-base
+          restore-keys: flight-link-cache-
+      - name: Build the flight store
+        working-directory: c64-port
+        run: |
+          source deps/env.sh
+          python3 tools/flight_store_build.py
+      - name: Save the flight store link cache
+        if: always() && hashFiles('c64-port/build/flight-link-cache/updated') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-base
 
   # The legacy tools/*_vice_test.py scripts, as tools/mk/legacy-vice.mk
   # targets. Requested full runs only (nightly, dispatch): about 400 VICE

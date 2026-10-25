@@ -2,7 +2,8 @@
 #ifndef RESIDENT_CDU_H
 #define RESIDENT_CDU_H
 #include "agc_transfer.h"
-/* rk_cdu_drive is the IMU CDU drive for one 10 ms period, as yaAGC's
+/* rk_cdu_drive is the output drives for one 10 ms period: the gyro drive
+ * (below) and the IMU CDU drive, as yaAGC's
  * BurstOutput: while channel 14 bit 15, 14 or 13 is set it empties
  * CDUXCMD, CDUYCMD or CDUZCMD (050-052) into the pulses that axis owes, and
  * a burst sends at most 24 of each axis's pulses (the pulses themselves go
@@ -12,6 +13,17 @@
  * the write; the 75 ms bursts after it then land in the same periods as
  * yaAGC's. rk_cdu holds the drive's state (all zero at a fresh start, as
  * yaAGC's).
+ *
+ * Each period starts with the gyro drive: while channel 14 bit 10 (gyro
+ * activity) is set, GYROCMD (047) sends 32 pulses (3,200 a second, the
+ * rate IMU_MODE_SWITCHING_ROUTINES.agc times its WAITLIST task by) to the
+ * gyro channel 14 bits 7-8 select, bit 9 the sign, until it is 0. The
+ * count is a magnitude: a negative word (-0, which SETCOARS and the
+ * caging code write) sends nothing. The pulses torque the gyros, which no
+ * AGC word sees (the host harness turns the platform with them,
+ * tools/flight_host_run.c gyro_due). yaAGC's own gyro drive takes the
+ * count whole the instruction after bit 10 comes on, so it is no model
+ * for the timing (it is off under the frozen clock).
  *
  * In the CM the same drive empties the optics counters too: CDUTCMD (053)
  * on channel 14 bit 12 and CDUSCMD (054) on bit 11, which in TVC mode are

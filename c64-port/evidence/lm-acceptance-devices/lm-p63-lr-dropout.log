@@ -1,0 +1,892 @@
+core tools/scenarios/luminary099-p63-ignition.core at 36875116 cs
+DSKY 0 cs: P00 V   N   R1        R2        R3       
+watch 0 cs: 0110 00102
+watch 0 cs: 0375 01520
+watch 0 cs: 0376 00405
+watch 0 cs: 0377 41203
+DSKY 253 cs: P00 V3  N   R1        R2        R3       
+DSKY 302 cs: P00 V37 N   R1        R2        R3       
+DSKY 402 cs: P00 V37 N6  R1        R2        R3       
+DSKY 452 cs: P00 V37 N63 R1        R2        R3       
+DSKY 2012 cs: P63 V   N   R1        R2        R3       
+DSKY 2102 cs: P63 V06 N61 R1 -09 50 R2 -10 28 R3 -00007
+DSKY 2202 cs: P63 V06 N61 R1 -09 50 R2 -10 27 R3 -00007
+DSKY 2302 cs: P63 V06 N61 R1 -09 50 R2 -10 26 R3 -00007
+DSKY 2403 cs: P63 V06 N61 R1 -09 50 R2 -10 25 R3 -00007
+DSKY 2502 cs: P63 V06 N61 R1 -09 50 R2 -10 24 R3 -00007
+DSKY 2602 cs: P63 V06 N61 R1 -09 50 R2 -10 23 R3 -00007
+DSKY 2702 cs: P63 V06 N61 R1 -09 50 R2 -10 22 R3 -00007
+DSKY 2802 cs: P63 V06 N61 R1 -09 50 R2 -10 21 R3 -00007
+DSKY 2902 cs: P63 V06 N61 R1 -09 50 R2 -10 20 R3 -00007
+DSKY 3003 cs: P63 V06 N61 R1 -09 50 R2 -10 19 R3 -00007
+DSKY 3102 cs: P63 V06 N61 R1 -09 50 R2 -10 18 R3 -00007
+DSKY 3202 cs: P63 V06 N61 R1 -09 50 R2 -10 17 R3 -00007
+DSKY 3302 cs: P63 V06 N61 R1 -09 50 R2 -10 16 R3 -00007
+DSKY 3402 cs: P63 V06 N61 R1 -09 50 R2 -10 15 R3 -00007
+DSKY 3502 cs: P63 V06 N61 R1 -09 50 R2 -10 14 R3 -00007
+DSKY 3603 cs: P63 V06 N61 R1 -09 50 R2 -10 13 R3 -00007
+DSKY 3702 cs: P63 V06 N61 R1 -09 50 R2 -10 12 R3 -00007
+DSKY 3802 cs: P63 V06 N61 R1 -09 50 R2 -10 11 R3 -00007
+DSKY 3902 cs: P63 V06 N61 R1 -09 50 R2 -10 10 R3 -00007
+DSKY 4002 cs: P63 V06 N61 R1 -09 50 R2 -10 09 R3 -00007
+DSKY 4102 cs: P63 V06 N61 R1 -09 50 R2 -10 08 R3 -00007
+DSKY 4202 cs: P63 V06 N61 R1 -09 50 R2 -10 07 R3 -00007
+DSKY 4302 cs: P63 V06 N61 R1 -09 50 R2 -10 06 R3 -00007
+DSKY 4402 cs: P63 V06 N61 R1 -09 50 R2 -10 05 R3 -00007
+DSKY 4502 cs: P63 V06 N61 R1 -09 50 R2 -10 04 R3 -00007
+DSKY 4602 cs: P63 V06 N61 R1 -09 50 R2 -10 03 R3 -00007
+DSKY 4702 cs: P63 V06 N61 R1 -09 50 R2 -10 02 R3 -00007
+DSKY 4803 cs: P63 V06 N61 R1 -09 50 R2 -10 01 R3 -00007
+DSKY 4903 cs: P63 V06 N61 R1 -09 50 R2 -10 00 R3 -00007
+DSKY 5003 cs: P63 V06 N61 R1 -09 50 R2 -09 59 R3 -00007
+DSKY 5102 cs: P63 V06 N61 R1 -09 50 R2 -09 58 R3 -00007
+DSKY 5202 cs: P63 V06 N61 R1 -09 50 R2 -09 57 R3 -00007
+DSKY 5302 cs: P63 V06 N61 R1 -09 50 R2 -09 56 R3 -00007
+DSKY 5402 cs: P63 V06 N61 R1 -09 50 R2 -09 55 R3 -00007
+DSKY 5502 cs: P63 V06 N61 R1 -09 50 R2 -09 54 R3 -00007
+DSKY 5602 cs: P63 V06 N61 R1 -09 50 R2 -09 53 R3 -00007
+DSKY 5702 cs: P63 V06 N61 R1 -09 50 R2 -09 52 R3 -00007
+DSKY 5802 cs: P63 V06 N61 R1 -09 50 R2 -09 51 R3 -00007
+DSKY 5902 cs: P63 V06 N61 R1 -09 50 R2 -09 50 R3 -00007
+DSKY 6003 cs: P63 V06 N61 R1 -09 50 R2 -09 49 R3 -00007
+DSKY 6003 cs: P63 V   N61 R1 -09 50 R2 -09 49 R3 -00007
+DSKY 6052 cs: P63 V3  N61 R1 -09 50 R2 -09 49 R3 -00007
+DSKY 6102 cs: P63 V33 N61 R1 -09 50 R2 -09 49 R3 -00007
+DSKY 6158 cs: P63 V50 N25 R1  00014 R2        R3       
+DSKY 6478 cs: P63 V50 N18 R1 +35944 R2 +10430 R3 +34049
+DSKY 9913 cs: P63 V   N   R1        R2        R3       
+DSKY 62004 cs: P63 V06 N62 R1 +55567 R2 -00 29 R3 +00000
+DSKY 62136 cs: P63 V06 N62 R1 +55567 R2 -00 28 R3 +00000
+DSKY 62203 cs: P63 V06 N62 R1 +55568 R2 -00 27 R3 +00000
+DSKY 62337 cs: P63 V06 N62 R1 +55568 R2 -00 26 R3 +00000
+DSKY 62403 cs: P63 V06 N62 R1 +55568 R2 -00 25 R3 +00000
+DSKY 62537 cs: P63 V06 N62 R1 +55568 R2 -00 24 R3 +00000
+DSKY 62604 cs: P63 V06 N62 R1 +55569 R2 -00 23 R3 +00000
+DSKY 62737 cs: P63 V06 N62 R1 +55569 R2 -00 22 R3 +00000
+DSKY 62803 cs: P63 V06 N62 R1 +55570 R2 -00 21 R3 +00000
+DSKY 62937 cs: P63 V06 N62 R1 +55570 R2 -00 20 R3 +00000
+DSKY 63003 cs: P63 V06 N62 R1 +55571 R2 -00 19 R3 +00000
+DSKY 63137 cs: P63 V06 N62 R1 +55571 R2 -00 18 R3 +00000
+DSKY 63204 cs: P63 V06 N62 R1 +55571 R2 -00 17 R3 +00000
+DSKY 63337 cs: P63 V06 N62 R1 +55571 R2 -00 16 R3 +00000
+DSKY 63403 cs: P63 V06 N62 R1 +55572 R2 -00 15 R3 +00000
+DSKY 63537 cs: P63 V06 N62 R1 +55572 R2 -00 14 R3 +00000
+DSKY 63603 cs: P63 V06 N62 R1 +55573 R2 -00 13 R3 +00000
+DSKY 63737 cs: P63 V06 N62 R1 +55573 R2 -00 12 R3 +00000
+DSKY 63804 cs: P63 V06 N62 R1 +55573 R2 -00 11 R3 +00000
+DSKY 63937 cs: P63 V06 N62 R1 +55573 R2 -00 10 R3 +00000
+DSKY 64003 cs: P63 V06 N62 R1 +55574 R2 -00 09 R3 +00000
+DSKY 64137 cs: P63 V06 N62 R1 +55574 R2 -00 08 R3 +00000
+DSKY 64203 cs: P63 V06 N62 R1 +55575 R2 -00 07 R3 +00000
+DSKY 64337 cs: P63 V06 N62 R1 +55575 R2 -00 06 R3 +00000
+DSKY 64405 cs: P63 V99 N62 R1 +55576 R2 -00 05 R3 +00000
+DSKY 64541 cs: P63 V99 N62 R1 +55576 R2 -00 04 R3 +00000
+DSKY 64541 cs: P63 V   N62 R1 +55576 R2 -00 04 R3 +00000
+DSKY 64551 cs: P63 V3  N62 R1 +55576 R2 -00 04 R3 +00000
+DSKY 64601 cs: P63 V33 N62 R1 +55576 R2 -00 04 R3 +00000
+DSKY 64652 cs: P63 V   N   R1        R2        R3       
+DSKY 64738 cs: P63 V06 N62 R1 +55576 R2 -00 02 R3 +00000
+DSKY 64804 cs: P63 V06 N62 R1 +55577 R2 -00 01 R3 +00000
+DSKY 64945 cs: P63 V06 N63 R1 +55577 R2 -00362 R3 +52886
+DSKY 65144 cs: P63 V06 N63 R1 +55578 R2 -00379 R3 +52811
+DSKY 65345 cs: P63 V06 N63 R1 +55579 R2 -00397 R3 +52734
+DSKY 65544 cs: P63 V06 N63 R1 +55579 R2 -00414 R3 +52653
+DSKY 65744 cs: P63 V06 N63 R1 +55580 R2 -00432 R3 +52568
+DSKY 65944 cs: P63 V06 N63 R1 +55581 R2 -00449 R3 +52480
+DSKY 66144 cs: P63 V06 N63 R1 +55582 R2 -00467 R3 +52389
+DSKY 66344 cs: P63 V06 N63 R1 +55583 R2 -00484 R3 +52294
+DSKY 66544 cs: P63 V06 N63 R1 +55584 R2 -00502 R3 +52195
+DSKY 66744 cs: P63 V06 N63 R1 +55586 R2 -00519 R3 +52093
+DSKY 66944 cs: P63 V06 N63 R1 +55587 R2 -00537 R3 +51987
+DSKY 67145 cs: P63 V06 N63 R1 +55588 R2 -00555 R3 +51878
+DSKY 67344 cs: P63 V06 N63 R1 +55590 R2 -00572 R3 +51766
+DSKY 67602 cs: P63 V06 N63 R1 +55592 R2 -00598 R3 +51649
+DSKY 67803 cs: P63 V06 N63 R1 +55587 R2 -00784 R3 +51511
+DSKY 68003 cs: P63 V06 N63 R1 +55519 R2 -00957 R3 +51337
+DSKY 68203 cs: P63 V06 N63 R1 +55397 R2 -01096 R3 +51131
+DSKY 68404 cs: P63 V06 N63 R1 +55234 R2 -01185 R3 +50903
+DSKY 68603 cs: P63 V06 N63 R1 +55048 R2 -01213 R3 +50664
+DSKY 68805 cs: P63 V06 N63 R1 +54860 R2 -01191 R3 +50423
+DSKY 69005 cs: P63 V06 N63 R1 +54672 R2 -01166 R3 +50187
+DSKY 69205 cs: P63 V06 N63 R1 +54483 R2 -01143 R3 +49957
+DSKY 69406 cs: P63 V06 N63 R1 +54294 R2 -01121 R3 +49730
+watch 69406 cs: 0110 00502
+DSKY 69606 cs: P63 V06 N63 R1 +54104 R2 -01101 R3 +49508
+watch 69606 cs: 0110 00522
+DSKY 69806 cs: P63 V06 N63 R1 +53914 R2 -01083 R3 +49290
+DSKY 70006 cs: P63 V06 N63 R1 +53723 R2 -01065 R3 +49075
+DSKY 70206 cs: P63 V06 N63 R1 +53532 R2 -01048 R3 +48864
+DSKY 70406 cs: P63 V06 N63 R1 +53341 R2 -01032 R3 +48656
+DSKY 70606 cs: P63 V06 N63 R1 +53149 R2 -01017 R3 +48451
+DSKY 70805 cs: P63 V06 N63 R1 +52956 R2 -01002 R3 +48249
+DSKY 71006 cs: P63 V06 N63 R1 +52763 R2 -00988 R3 +48050
+DSKY 71206 cs: P63 V06 N63 R1 +52570 R2 -00975 R3 +47853
+DSKY 71405 cs: P63 V06 N63 R1 +52377 R2 -00962 R3 +47660
+DSKY 71606 cs: P63 V06 N63 R1 +52183 R2 -00949 R3 +47468
+DSKY 71806 cs: P63 V06 N63 R1 +51988 R2 -00937 R3 +47280
+DSKY 72006 cs: P63 V06 N63 R1 +51794 R2 -00925 R3 +47094
+DSKY 72206 cs: P63 V06 N63 R1 +51599 R2 -00913 R3 +46910
+DSKY 72406 cs: P63 V06 N63 R1 +51403 R2 -00901 R3 +46729
+DSKY 72606 cs: P63 V06 N63 R1 +51207 R2 -00890 R3 +46549
+DSKY 72806 cs: P63 V06 N63 R1 +51012 R2 -00878 R3 +46373
+DSKY 73006 cs: P63 V06 N63 R1 +50815 R2 -00866 R3 +46198
+DSKY 73206 cs: P63 V06 N63 R1 +50618 R2 -00855 R3 +46026
+DSKY 73406 cs: P63 V06 N63 R1 +50421 R2 -00844 R3 +45857
+DSKY 73605 cs: P63 V06 N63 R1 +50223 R2 -00833 R3 +45689
+DSKY 73806 cs: P63 V06 N63 R1 +50025 R2 -00822 R3 +45523
+DSKY 74006 cs: P63 V06 N63 R1 +49827 R2 -00811 R3 +45360
+DSKY 74206 cs: P63 V06 N63 R1 +49628 R2 -00802 R3 +45199
+DSKY 74406 cs: P63 V06 N63 R1 +49429 R2 -00792 R3 +45039
+DSKY 74606 cs: P63 V06 N63 R1 +49229 R2 -00783 R3 +44882
+DSKY 74806 cs: P63 V06 N63 R1 +49030 R2 -00774 R3 +44726
+DSKY 75006 cs: P63 V06 N63 R1 +48829 R2 -00765 R3 +44572
+DSKY 75206 cs: P63 V06 N63 R1 +48629 R2 -00756 R3 +44420
+DSKY 75405 cs: P63 V06 N63 R1 +48428 R2 -00748 R3 +44270
+DSKY 75606 cs: P63 V06 N63 R1 +48226 R2 -00740 R3 +44121
+DSKY 75806 cs: P63 V06 N63 R1 +48024 R2 -00732 R3 +43974
+DSKY 76005 cs: P63 V06 N63 R1 +47822 R2 -00724 R3 +43828
+DSKY 76206 cs: P63 V06 N63 R1 +47620 R2 -00716 R3 +43684
+DSKY 76406 cs: P63 V06 N63 R1 +47417 R2 -00708 R3 +43542
+DSKY 76605 cs: P63 V06 N63 R1 +47214 R2 -00701 R3 +43401
+DSKY 76806 cs: P63 V06 N63 R1 +47010 R2 -00694 R3 +43261
+DSKY 77005 cs: P63 V06 N63 R1 +46806 R2 -00687 R3 +43123
+DSKY 77205 cs: P63 V06 N63 R1 +46602 R2 -00680 R3 +42987
+DSKY 77406 cs: P63 V06 N63 R1 +46396 R2 -00674 R3 +42851
+DSKY 77605 cs: P63 V06 N63 R1 +46191 R2 -00668 R3 +42717
+DSKY 77805 cs: P63 V06 N63 R1 +45985 R2 -00662 R3 +42584
+DSKY 78006 cs: P63 V06 N63 R1 +45779 R2 -00656 R3 +42453
+DSKY 78205 cs: P63 V06 N63 R1 +45573 R2 -00651 R3 +42322
+DSKY 78405 cs: P63 V06 N63 R1 +45366 R2 -00645 R3 +42192
+DSKY 78606 cs: P63 V06 N63 R1 +45159 R2 -00640 R3 +42064
+DSKY 78806 cs: P63 V06 N63 R1 +44951 R2 -00635 R3 +41936
+DSKY 79006 cs: P63 V06 N63 R1 +44743 R2 -00631 R3 +41810
+DSKY 79206 cs: P63 V06 N63 R1 +44535 R2 -00627 R3 +41684
+DSKY 79405 cs: P63 V06 N63 R1 +44326 R2 -00622 R3 +41559
+DSKY 79606 cs: P63 V06 N63 R1 +44117 R2 -00618 R3 +41435
+DSKY 79806 cs: P63 V06 N63 R1 +43907 R2 -00615 R3 +41312
+DSKY 80005 cs: P63 V06 N63 R1 +43697 R2 -00612 R3 +41189
+DSKY 80206 cs: P63 V06 N63 R1 +43486 R2 -00609 R3 +41067
+DSKY 80406 cs: P63 V06 N63 R1 +43275 R2 -00606 R3 +40946
+DSKY 80605 cs: P63 V06 N63 R1 +43064 R2 -00602 R3 +40825
+DSKY 80805 cs: P63 V06 N63 R1 +42852 R2 -00600 R3 +40705
+DSKY 81006 cs: P63 V06 N63 R1 +42640 R2 -00598 R3 +40585
+DSKY 81205 cs: P63 V06 N63 R1 +42428 R2 -00596 R3 +40465
+DSKY 81406 cs: P63 V06 N63 R1 +42215 R2 -00594 R3 +40347
+watch 81406 cs: 0110 00502
+DSKY 81606 cs: P63 V06 N63 R1 +42001 R2 -00593 R3 +40228
+DSKY 81812 cs: P63 V06 N63 R1 +41787 R2 -00592 R3 +40109
+DSKY 82012 cs: P63 V06 N63 R1 +41573 R2 -00591 R3 +39991
+DSKY 82212 cs: P63 V06 N63 R1 +41358 R2 -00590 R3 +39873
+DSKY 82411 cs: P63 V06 N63 R1 +41143 R2 -00590 R3 +39755
+DSKY 82612 cs: P63 V06 N63 R1 +40927 R2 -00590 R3 +39637
+DSKY 82812 cs: P63 V06 N63 R1 +40711 R2 -00589 R3 +39519
+DSKY 83012 cs: P63 V06 N63 R1 +40495 R2 -00590 R3 +39401
+DSKY 83212 cs: P63 V06 N63 R1 +40278 R2 -00590 R3 +39283
+DSKY 83412 cs: P63 V06 N63 R1 +40060 R2 -00591 R3 +39165
+DSKY 83612 cs: P63 V06 N63 R1 +39843 R2 -00592 R3 +39047
+DSKY 83812 cs: P63 V06 N63 R1 +39624 R2 -00593 R3 +38929
+DSKY 84012 cs: P63 V06 N63 R1 +39406 R2 -00594 R3 +38810
+DSKY 84212 cs: P63 V06 N63 R1 +39186 R2 -00596 R3 +38691
+DSKY 84412 cs: P63 V06 N63 R1 +38967 R2 -00598 R3 +38571
+DSKY 84612 cs: P63 V06 N63 R1 +38747 R2 -00599 R3 +38452
+DSKY 84812 cs: P63 V06 N63 R1 +38526 R2 -00602 R3 +38332
+DSKY 85012 cs: P63 V06 N63 R1 +38305 R2 -00605 R3 +38211
+DSKY 85212 cs: P63 V06 N63 R1 +38084 R2 -00607 R3 +38090
+DSKY 85412 cs: P63 V06 N63 R1 +37862 R2 -00610 R3 +37968
+DSKY 85612 cs: P63 V06 N63 R1 +37640 R2 -00613 R3 +37846
+DSKY 85812 cs: P63 V06 N63 R1 +37417 R2 -00616 R3 +37723
+DSKY 86012 cs: P63 V06 N63 R1 +37194 R2 -00620 R3 +37599
+DSKY 86212 cs: P63 V06 N63 R1 +36970 R2 -00624 R3 +37475
+DSKY 86412 cs: P63 V06 N63 R1 +36746 R2 -00628 R3 +37350
+DSKY 86611 cs: P63 V06 N63 R1 +36521 R2 -00632 R3 +37224
+DSKY 86812 cs: P63 V06 N63 R1 +36296 R2 -00636 R3 +37097
+DSKY 87012 cs: P63 V06 N63 R1 +36070 R2 -00641 R3 +36969
+DSKY 87212 cs: P63 V06 N63 R1 +35844 R2 -00646 R3 +36840
+DSKY 87412 cs: P63 V06 N63 R1 +35617 R2 -00651 R3 +36711
+DSKY 87612 cs: P63 V06 N63 R1 +35390 R2 -00657 R3 +36580
+DSKY 87812 cs: P63 V06 N63 R1 +35162 R2 -00662 R3 +36448
+DSKY 88012 cs: P63 V06 N63 R1 +34934 R2 -00668 R3 +36315
+DSKY 88206 cs: P63 V06 N63 R1 +34706 R2 -00673 R3 +36181
+watch 88206 cs: 0110 00522
+DSKY 88405 cs: P63 V06 N63 R1 +34476 R2 -00680 R3 +36046
+DSKY 88606 cs: P63 V06 N63 R1 +34247 R2 -00686 R3 +35909
+DSKY 88806 cs: P63 V06 N63 R1 +34017 R2 -00693 R3 +35771
+DSKY 89006 cs: P63 V06 N63 R1 +33786 R2 -00699 R3 +35632
+DSKY 89206 cs: P63 V06 N63 R1 +33555 R2 -00706 R3 +35492
+DSKY 89406 cs: P63 V06 N63 R1 +33323 R2 -00713 R3 +35350
+DSKY 89605 cs: P63 V06 N63 R1 +33091 R2 -00719 R3 +35207
+DSKY 89806 cs: P63 V06 N63 R1 +32859 R2 -00727 R3 +35062
+DSKY 90006 cs: P63 V06 N63 R1 +32625 R2 -00735 R3 +34916
+DSKY 90205 cs: P63 V06 N63 R1 +32391 R2 -00743 R3 +34768
+DSKY 90405 cs: P63 V06 N63 R1 +32157 R2 -00751 R3 +34619
+DSKY 90605 cs: P63 V06 N63 R1 +31922 R2 -00759 R3 +34468
+DSKY 90805 cs: P63 V06 N63 R1 +31687 R2 -00767 R3 +34315
+DSKY 91006 cs: P63 V06 N63 R1 +31451 R2 -00776 R3 +34161
+DSKY 91206 cs: P63 V06 N63 R1 +31215 R2 -00784 R3 +34005
+DSKY 91405 cs: P63 V06 N63 R1 +30978 R2 -00793 R3 +33847
+DSKY 91605 cs: P63 V06 N63 R1 +30741 R2 -00802 R3 +33688
+DSKY 91806 cs: P63 V06 N63 R1 +30503 R2 -00811 R3 +33526
+DSKY 92005 cs: P63 V06 N63 R1 +30264 R2 -00821 R3 +33363
+DSKY 92205 cs: P63 V06 N63 R1 +30025 R2 -00831 R3 +33198
+DSKY 92406 cs: P63 V06 N63 R1 +29785 R2 -00840 R3 +33031
+DSKY 92605 cs: P63 V06 N63 R1 +29545 R2 -00850 R3 +32862
+DSKY 92805 cs: P63 V06 N63 R1 +29304 R2 -00861 R3 +32690
+DSKY 93006 cs: P63 V06 N63 R1 +29063 R2 -00871 R3 +32517
+DSKY 93205 cs: P63 V06 N63 R1 +28821 R2 -00881 R3 +32342
+DSKY 93405 cs: P63 V06 N63 R1 +28578 R2 -00892 R3 +32165
+DSKY 93606 cs: P63 V06 N63 R1 +28335 R2 -00902 R3 +31985
+DSKY 93805 cs: P63 V06 N63 R1 +28092 R2 -00913 R3 +31804
+DSKY 94005 cs: P63 V06 N63 R1 +27848 R2 -00924 R3 +31620
+DSKY 94206 cs: P63 V06 N63 R1 +27603 R2 -00935 R3 +31434
+DSKY 94405 cs: P63 V06 N63 R1 +27358 R2 -00946 R3 +31246
+DSKY 94605 cs: P63 V06 N63 R1 +27112 R2 -00957 R3 +31056
+DSKY 94806 cs: P63 V06 N63 R1 +26865 R2 -00968 R3 +30863
+DSKY 95005 cs: P63 V06 N63 R1 +26618 R2 -00980 R3 +30669
+DSKY 95205 cs: P63 V06 N63 R1 +26371 R2 -00991 R3 +30472
+watch 95205 cs: 0110 00502
+DSKY 95406 cs: P63 V06 N63 R1 +26122 R2 -01003 R3 +30272
+DSKY 95608 cs: P63 V06 N63 R1 +25873 R2 -01014 R3 +30071
+DSKY 95808 cs: P63 V06 N63 R1 +25624 R2 -01026 R3 +29867
+DSKY 96012 cs: P63 V06 N63 R1 +25374 R2 -01038 R3 +29660
+DSKY 96208 cs: P63 V06 N63 R1 +25123 R2 -01050 R3 +29451
+DSKY 96408 cs: P63 V06 N63 R1 +24872 R2 -01062 R3 +29240
+DSKY 96608 cs: P63 V06 N63 R1 +24620 R2 -01074 R3 +29027
+DSKY 96808 cs: P63 V06 N63 R1 +24367 R2 -01087 R3 +28810
+DSKY 97008 cs: P63 V06 N63 R1 +24114 R2 -01099 R3 +28592
+DSKY 97208 cs: P63 V06 N63 R1 +23860 R2 -01111 R3 +28371
+DSKY 97408 cs: P63 V06 N63 R1 +23606 R2 -01124 R3 +28147
+DSKY 97608 cs: P63 V06 N63 R1 +23351 R2 -01136 R3 +27921
+DSKY 97808 cs: P63 V06 N63 R1 +23095 R2 -01149 R3 +27693
+DSKY 98008 cs: P63 V06 N63 R1 +22839 R2 -01161 R3 +27462
+DSKY 98208 cs: P63 V06 N63 R1 +22582 R2 -01174 R3 +27229
+DSKY 98408 cs: P63 V06 N63 R1 +22325 R2 -01186 R3 +26992
+DSKY 98608 cs: P63 V06 N63 R1 +22067 R2 -01199 R3 +26754
+DSKY 98808 cs: P63 V06 N63 R1 +21808 R2 -01211 R3 +26513
+DSKY 99008 cs: P63 V06 N63 R1 +21549 R2 -01223 R3 +26269
+DSKY 99208 cs: P63 V06 N63 R1 +21289 R2 -01236 R3 +26024
+DSKY 99408 cs: P63 V06 N63 R1 +21028 R2 -01249 R3 +25775
+DSKY 99608 cs: P63 V06 N63 R1 +20766 R2 -01261 R3 +25524
+DSKY 99808 cs: P63 V06 N63 R1 +20504 R2 -01273 R3 +25271
+DSKY 100008 cs: P63 V06 N63 R1 +20242 R2 -01285 R3 +25015
+DSKY 100214 cs: P63 V06 N63 R1 +19978 R2 -01298 R3 +24757
+DSKY 100413 cs: P63 V06 N63 R1 +19714 R2 -01310 R3 +24496
+DSKY 100614 cs: P63 V06 N63 R1 +19450 R2 -01322 R3 +24233
+DSKY 100822 cs: P63 V06 N63 R1 +19184 R2 -01334 R3 +23967
+DSKY 101023 cs: P63 V06 N63 R1 +18919 R2 -01347 R3 +23699
+DSKY 101222 cs: P63 V06 N63 R1 +18652 R2 -01359 R3 +23429
+DSKY 101422 cs: P63 V06 N63 R1 +18384 R2 -01370 R3 +23156
+DSKY 101623 cs: P63 V06 N63 R1 +18116 R2 -01382 R3 +22881
+DSKY 101822 cs: P63 V06 N63 R1 +17848 R2 -01393 R3 +22603
+DSKY 102022 cs: P63 V06 N63 R1 +17579 R2 -01404 R3 +22323
+DSKY 102223 cs: P63 V06 N63 R1 +17309 R2 -01416 R3 +22041
+DSKY 102423 cs: P63 V06 N63 R1 +17038 R2 -01427 R3 +21757
+DSKY 102623 cs: P63 V06 N63 R1 +16767 R2 -01437 R3 +21470
+DSKY 102823 cs: P63 V06 N63 R1 +16495 R2 -01448 R3 +21182
+DSKY 103022 cs: P63 V06 N63 R1 +16222 R2 -01458 R3 +20891
+DSKY 103223 cs: P63 V06 N63 R1 +15949 R2 -01469 R3 +20599
+DSKY 103423 cs: P63 V06 N63 R1 +15675 R2 -01479 R3 +20304
+DSKY 103623 cs: P63 V06 N63 R1 +15400 R2 -01488 R3 +20007
+DSKY 103823 cs: P63 V06 N63 R1 +15124 R2 -01498 R3 +19709
+DSKY 104023 cs: P63 V06 N63 R1 +14848 R2 -01507 R3 +19408
+DSKY 104223 cs: P63 V06 N63 R1 +14571 R2 -01516 R3 +19106
+DSKY 104422 cs: P63 V06 N63 R1 +14294 R2 -01524 R3 +18802
+DSKY 104623 cs: P63 V06 N63 R1 +14016 R2 -01532 R3 +18496
+DSKY 104823 cs: P63 V06 N63 R1 +13737 R2 -01539 R3 +18189
+DSKY 105023 cs: P63 V06 N63 R1 +13458 R2 -01546 R3 +17881
+DSKY 105223 cs: P63 V06 N63 R1 +13178 R2 -01552 R3 +17571
+DSKY 105423 cs: P63 V06 N63 R1 +12897 R2 -01559 R3 +17260
+DSKY 105623 cs: P63 V06 N63 R1 +12616 R2 -01564 R3 +16947
+DSKY 105823 cs: P63 V06 N63 R1 +12333 R2 -01569 R3 +16634
+DSKY 106023 cs: P63 V06 N63 R1 +12051 R2 -01574 R3 +16320
+DSKY 106223 cs: P63 V06 N63 R1 +11767 R2 -01577 R3 +16005
+DSKY 106423 cs: P63 V06 N63 R1 +11483 R2 -01580 R3 +15689
+DSKY 106622 cs: P63 V06 N63 R1 +11199 R2 -01582 R3 +15373
+DSKY 106823 cs: P63 V06 N63 R1 +10914 R2 -01583 R3 +15056
+DSKY 107023 cs: P63 V06 N63 R1 +10628 R2 -01580 R3 +14740
+DSKY 107223 cs: P63 V06 N63 R1 +10343 R2 -01574 R3 +14425
+DSKY 107423 cs: P63 V06 N63 R1 +10057 R2 -01565 R3 +14111
+DSKY 107623 cs: P63 V06 N63 R1 +09772 R2 -01554 R3 +13799
+DSKY 107823 cs: P63 V06 N63 R1 +09485 R2 -01540 R3 +13489
+DSKY 108023 cs: P63 V06 N63 R1 +09199 R2 -01524 R3 +13183
+DSKY 108223 cs: P63 V06 N63 R1 +08913 R2 -01505 R3 +12880
+DSKY 108423 cs: P63 V06 N63 R1 +08626 R2 -01483 R3 +12581
+DSKY 108623 cs: P63 V06 N63 R1 +08338 R2 -01459 R3 +12287
+DSKY 108823 cs: P63 V06 N63 R1 +08051 R2 -01432 R3 +11998
+DSKY 109023 cs: P63 V06 N63 R1 +07763 R2 -01401 R3 +11715
+DSKY 109223 cs: P63 V06 N63 R1 +07476 R2 -01368 R3 +11438
+DSKY 109423 cs: P63 V06 N63 R1 +07188 R2 -01333 R3 +11168
+DSKY 109623 cs: P63 V06 N63 R1 +07054 R2 -01365 R3 +10898
+DSKY 109823 cs: P63 V06 N63 R1 +06803 R2 -01342 R3 +10627
+DSKY 110023 cs: P63 V06 N63 R1 +06723 R2 -01397 R3 +10354
+DSKY 110223 cs: P63 V06 N63 R1 +06436 R2 -01349 R3 +10079
+DSKY 110423 cs: P63 V06 N63 R1 +06426 R2 -01437 R3 +09800
+DSKY 110623 cs: P63 V06 N63 R1 +06139 R2 -01383 R3 +09519
+DSKY 110822 cs: P63 V06 N63 R1 +06131 R2 -01471 R3 +09233
+DSKY 111023 cs: P63 V06 N63 R1 +05845 R2 -01411 R3 +08945
+DSKY 111224 cs: P63 V06 N63 R1 +05838 R2 -01498 R3 +08654
+DSKY 111423 cs: P63 V06 N63 R1 +05554 R2 -01433 R3 +08361
+DSKY 111624 cs: P63 V06 N63 R1 +05548 R2 -01520 R3 +08066
+DSKY 111814 cs: P64 V06 N64 R1 +99 74 R2 -01557 R3 +07758
+watch 111814 cs: 0110 00542
+DSKY 112011 cs: P64 V06 N64 R1 +99 69 R2 -01479 R3 +07455
+DSKY 112208 cs: P64 V06 N64 R1 +99 64 R2 -01365 R3 +07170
+DSKY 112408 cs: P64 V06 N64 R1 +99 63 R2 -01243 R3 +06909
+DSKY 112607 cs: P64 V06 N64 R1 +99 62 R2 -01235 R3 +06661
+DSKY 112817 cs: P64 V06 N64 R1 +99 62 R2 -01146 R3 +06423
+DSKY 113028 cs: P64 V06 N64 R1 +99 62 R2 -01166 R3 +06192
+DSKY 113227 cs: P64 V06 N64 R1 +99 61 R2 -01064 R3 +05969
+DSKY 113427 cs: P64 V06 N64 R1 +99 61 R2 -01128 R3 +05750
+DSKY 113627 cs: P64 V06 N64 R1 +99 60 R2 -00991 R3 +05538
+DSKY 113827 cs: P64 V06 N64 R1 +99 60 R2 -01071 R3 +05331
+DSKY 114027 cs: P64 V06 N64 R1 +99 59 R2 -00929 R3 +05131
+DSKY 114227 cs: P64 V06 N64 R1 +99 59 R2 -01008 R3 +04938
+DSKY 114427 cs: P64 V06 N64 R1 +99 58 R2 -00860 R3 +04751
+DSKY 114627 cs: P64 V06 N64 R1 +99 57 R2 -00939 R3 +04571
+DSKY 114827 cs: P64 V06 N64 R1 +99 57 R2 -00785 R3 +04399
+DSKY 115027 cs: P64 V06 N64 R1 +99 56 R2 -00863 R3 +04234
+LM: 4700158 native routines (98156165 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
+scaled time: K 1.00, divisor 1, lag 2, seed 0: 115027 CIA interrupts, 115027 clock periods taken, 0 dropped (rk_dilation); AGC time 115027 cs
+night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule
+major mode (MODREG 01011) at 115000 cs: native 100, yaAGC 00; FAILREG 01520/00000
+interpreter module: 62239 routines, 62239 slots; 58863 charged other than yaAGC's words
+interpreter charge: fitted 14938976 MCT, yaAGC 13900875 MCT (+7.5%) over 62239 routines; mean |error| 55.1 MCT per routine
+native routines yaAGC did not match (0):
+unregistered or refused points (0):
+module loads (123606 in 115027 cs):
+  load lm_self_check_idle slot 0 basic  43,3303: 1
+  load lm_dapidler slot 0 basic  16,2024: 1
+  load lm_interbank_routines slot 0 basic  02,2674: 551
+  load lm_dap_interface slot 0 basic  20,2153: 1
+  load lm_interbank_routines slot 0 basic  02,2707: 555
+  load lm_dapidler slot 0 basic  16,2050: 1
+  load lm_self_check_idle slot 0 basic  43,3304: 12946
+  load t4rupt slot 0 basic  06,2000: 11130
+  load excursion slot 0 basic  16,2213: 11501
+  load lm_rcsmon slot 0 basic  06,3156: 2395
+  load lm_interbank_routines slot 0 basic  02,2635: 4319
+  load lm_t4rupt_imu slot 0 basic  06,2172: 2395
+  load excursion slot 0 basic  16,3014: 825
+  load excursion slot 0 basic  16,2667: 661
+  load lanec_pin_routines slot 0 basic  02,2400: 18
+  load lanec_pin_keys_num_routines slot 0 basic  40,2077: 19
+  load lanec_pin_keys_cmd_routines slot 0 basic  40,2354: 3
+  load lanec_pin_keys_cmd_routines slot 0 basic  40,2157: 8
+  load lanec_pin_routines slot 0 basic  41,2035: 11
+  load excursion slot 0 basic  16,3443: 350
+  load lanec_pin_routines slot 0 basic  41,3431: 1
+  load lm_v37 slot 0 basic  04,2040: 1
+  load lm_phase_table slot 0 basic  02,3353: 780
+  load lm_v37 slot 0 basic  04,2143: 1
+  load lm_interp_core slot 0 basic  03,2037: 1
+  load lm_stateup slot 0 interp 04,2144: 1
+  load lm_integration_init slot 0 interp 13,3414: 3
+  load lm_stateup slot 0 interp 04,2146: 1
+  load lm_v37 slot 0 basic  04,2147: 1
+  load service_transfer slot 0 basic  02,3516: 1067
+  load lm_v37 slot 0 basic  04,2151: 1
+  load lm_v37 slot 0 basic  04,2155: 1
+  load lm_v37 slot 0 basic  04,2157: 1
+  load lm_v37 slot 0 basic  04,2161: 1
+  load lm_v37 slot 0 basic  04,2316: 1
+  load lm_p40_p47 slot 0 basic  36,3555: 1
+  load lm_burn_baby slot 0 basic  36,2653: 1
+  load lm_p40_p47 slot 0 basic  36,3561: 1
+  load lm_v37 slot 0 basic  04,2206: 1
+  load lm_dap_interface slot 0 basic  20,2204: 1
+  load lm_v37 slot 0 basic  04,2210: 1
+  load lm_fresh_start slot 0 basic  05,2652: 1
+  load lm_v37 slot 0 basic  04,2216: 1
+  load lm_p20_p25 slot 0 basic  03,2011: 1
+  load lm_v37 slot 0 basic  04,2254: 1
+  load lm_fresh_start slot 0 basic  05,2770: 1
+  load lm_phase_table slot 0 basic  02,3315: 1
+  load lm_interbank_routines slot 0 basic  02,2640: 537
+  load lm_phase_table slot 0 basic  10,2213: 3
+  load lm_fresh_start slot 0 basic  05,3015: 1
+  load lm_interbank_routines slot 0 basic  02,2622: 1
+  load lm_restart_routines slot 0 basic  01,3526: 1
+  load lm_interbank_routines slot 0 basic  02,2631: 4118
+  load lm_fresh_start slot 0 basic  05,3043: 1
+  load lanec_pin_routines slot 0 basic  40,3534: 3
+  load lanec_di_routines slot 0 basic  10,3037: 1
+  load lm_interbank_routines slot 0 basic  02,2727: 1
+  load lanec_di_routines slot 0 basic  10,3043: 1
+  load lm_v37 slot 0 basic  04,2330: 1
+  load lm_phase_table slot 0 basic  02,3314: 1
+  load lm_v37 slot 0 basic  04,2362: 1
+  load lanec_pin_routines slot 0 basic  02,2457: 1
+  load lm_v37 slot 0 basic  04,2363: 1
+  load lm_lunar_landing slot 0 basic  32,2776: 1
+  load lm_lunar_landing slot 0 basic  32,3000: 1
+  load lm_interbank_routines slot 0 basic  02,2616: 4454
+  load imu_mode_switching slot 0 basic  04,3254: 1
+  load service_transfer slot 0 basic  02,3504: 7
+  load imu_mode_switching slot 0 basic  04,3272: 1
+  load lm_lunar_landing slot 0 basic  32,3002: 1
+  load lm_planetary slot 0 interp 26,3716: 35
+  load excursion slot 0 basic  16,2451: 134
+  load lm_planetary slot 0 interp 25,3746: 9
+  load lm_planetary slot 0 interp 25,3756: 10
+  load lm_planetary slot 0 interp 24,3735: 10
+  load lm_planetary slot 0 interp 25,3763: 18
+  load lm_planetary slot 0 interp 25,3754: 14
+  load excursion slot 0 basic  16,2602: 58
+  load lm_planetary slot 0 interp 25,3765: 20
+  load lm_planetary slot 0 interp 24,3754: 10
+  load lm_planetary slot 0 interp 24,3773: 4
+  load lm_planetary slot 0 interp 25,3712: 3
+  load lm_planetary slot 0 interp 25,3724: 13
+  load lm_planetary slot 0 interp 25,3726: 13
+  load lm_planetary slot 0 interp 25,3731: 2
+  load lm_planetary slot 0 interp 25,3740: 4
+  load lm_planetary slot 0 interp 24,3706: 11
+  load lm_lunar_landing slot 0 interp 32,3040: 1
+  load lm_p12 slot 0 interp 23,2432: 1
+  load lm_rtb_op_codes slot 0 basic  10,3573: 5
+  load lm_interpreter slot 0 basic  03,2055: 5
+  load lm_p12 slot 0 interp 23,2441: 1
+  load lm_planetary slot 0 interp 24,3723: 3
+  load lm_planetary slot 0 interp 25,3751: 8
+  load lm_planetary slot 0 interp 24,3733: 9
+  load lm_planetary slot 0 interp 25,3741: 4
+  load lm_p12 slot 0 interp 23,2443: 1
+  load lm_lunar_landing slot 0 interp 32,3044: 1
+  load lm_integration_init slot 0 interp 13,3057: 1
+  load lm_integration_init slot 0 interp 13,3307: 2
+  load lm_rtb_op_codes slot 0 basic  10,3612: 544
+  load lm_interpreter slot 0 basic  03,3257: 546
+  load lm_rtb_op_codes slot 0 basic  10,3613: 544
+  load lm_integration_init slot 0 interp 13,3326: 14
+  load lm_integration_init slot 0 interp 13,3361: 1
+  load lm_orbital_integration slot 0 interp 11,3252: 11
+  load lm_orbital_integration slot 0 interp 11,2664: 7
+  load lm_orbital_integration slot 0 interp 11,2671: 5
+  load lm_orbital_integration slot 0 interp 11,3034: 2
+  load lm_planetary slot 0 interp 24,3670: 33
+  load lm_planetary slot 0 interp 25,3753: 6
+  load lm_planetary slot 0 interp 25,3736: 11
+  load lm_orbital_integration slot 0 interp 11,3042: 33
+  load lm_orbital_integration slot 0 interp 11,3051: 8
+  load lm_orbital_integration slot 0 interp 11,3115: 5
+  load lm_orbital_integration slot 0 interp 11,3145: 3
+  load lm_orbital_integration slot 0 interp 11,3220: 6
+  load lm_planetary slot 0 interp 26,3721: 3
+  load lm_planetary slot 0 interp 25,3730: 9
+  load lm_planetary slot 0 interp 25,3734: 12
+  load lm_orbital_integration slot 0 interp 11,3226: 33
+  load lm_orbital_integration slot 0 interp 11,2476: 3
+  load lm_orbital_integration slot 0 interp 11,2410: 1
+  load lm_orbital_integration slot 0 interp 11,2465: 4
+  load lm_conic_compiled slot 0 interp 12,2023: 23
+  load lm_conic_compiled slot 0 interp 12,2100: 1
+  load lm_conic_compiled slot 0 interp 12,2170: 1
+  load lm_interpreter slot 0 basic  03,3222: 46
+  load lm_conic_compiled slot 0 basic  12,2450: 23
+  load lm_conic_compiled slot 0 basic  12,2502: 23
+  load lm_rtb_op_codes slot 0 basic  10,3633: 46
+  load lm_interpreter slot 0 basic  03,2060: 48
+  load lm_conic_compiled slot 0 interp 12,2513: 23
+  load lm_conic_compiled slot 0 interp 12,2523: 23
+  load lm_conic_compiled slot 0 interp 12,2344: 2
+  load lm_conic_compiled slot 0 interp 12,2352: 1
+  load lm_orbital_integration slot 0 interp 11,2516: 22
+  load lm_orbital_integration slot 0 interp 11,2652: 3
+  load lm_orbital_integration slot 0 interp 11,2746: 2
+  load lm_orbital_integration slot 0 interp 11,2754: 4
+  load lm_planetary slot 0 interp 25,3743: 7
+  load lm_planetary slot 0 interp 25,3704: 4
+  load lm_planetary slot 0 interp 24,3700: 8
+  load lm_orbital_integration slot 0 interp 11,3112: 5
+  load lm_orbital_integration slot 0 interp 11,3200: 2
+  load lm_planetary slot 0 interp 25,3711: 9
+  load lm_orbital_integration slot 0 interp 11,2403: 4
+  load lm_orbital_integration slot 0 interp 11,2417: 4
+  load lm_conic_compiled slot 0 interp 12,2051: 3
+  load lm_conic_compiled slot 0 interp 12,2062: 5
+  load lm_conic_compiled slot 0 interp 12,2525: 4
+  load lm_conic_compiled slot 0 interp 12,2411: 4
+  load lm_conic_compiled slot 0 interp 12,2417: 1
+  load lm_orbital_integration slot 0 interp 11,2703: 3
+  load lm_orbital_integration slot 0 interp 11,2740: 5
+  load imu_compensation slot 0 basic  06,3555: 8
+  load lm_planetary slot 0 interp 25,3767: 4
+  load lm_orbital_integration slot 0 interp 11,3150: 2
+  load lm_orbital_integration slot 0 interp 13,3731: 1
+  load lm_planetary slot 0 interp 25,3713: 3
+  load lm_orbital_integration slot 0 interp 11,3517: 2
+  load lm_orbital_integration slot 0 interp 11,3524: 1
+  load lm_integration_init slot 0 interp 13,3257: 9
+  load lm_orbital_integration slot 0 interp 11,3325: 1
+  load lm_orbital_integration slot 0 interp 11,3037: 1
+  load lm_planetary slot 0 interp 25,3707: 5
+  load lm_orbital_integration slot 0 interp 11,3046: 5
+  load excursion slot 0 basic  16,3463: 98
+  load lm_planetary slot 0 interp 24,3730: 2
+  load lm_orbital_integration slot 0 interp 11,3232: 2
+  load lm_orbital_integration slot 0 interp 11,2454: 4
+  load lm_orbital_integration slot 0 interp 11,2470: 2
+  load lm_conic_compiled slot 0 interp 12,2172: 3
+  load lm_conic_compiled slot 0 interp 12,2356: 5
+  load lm_conic_compiled slot 0 interp 12,2363: 7
+  load lm_orbital_integration slot 0 interp 11,2750: 4
+  load lm_planetary slot 0 interp 25,3675: 5
+  load lm_planetary slot 0 interp 24,3704: 7
+  load lm_orbital_integration slot 0 interp 11,3120: 3
+  load lm_orbital_integration slot 0 interp 11,3126: 4
+  load lm_planetary slot 0 interp 24,3720: 1
+  load lm_planetary slot 0 interp 24,3765: 9
+  load lm_orbital_integration slot 0 interp 11,2422: 4
+  load lm_conic_compiled slot 0 interp 12,2103: 1
+  load lm_conic_compiled slot 0 interp 12,2530: 5
+  load lm_conic_compiled slot 0 interp 12,2347: 1
+  load lm_orbital_integration slot 0 interp 11,2661: 2
+  load lm_orbital_integration slot 0 interp 11,2706: 1
+  load lm_planetary slot 0 interp 24,3673: 2
+  load lm_orbital_integration slot 0 interp 11,3052: 6
+  load lm_orbital_integration slot 0 interp 13,3740: 7
+  load lm_orbital_integration slot 0 interp 11,3214: 3
+  load lm_planetary slot 0 interp 24,3760: 5
+  load lm_integration_init slot 0 interp 13,3271: 2
+  load lm_integration_init slot 0 interp 13,3300: 1
+  load lm_orbital_integration slot 0 interp 11,2521: 2
+  load lm_orbital_integration slot 0 interp 11,2654: 4
+  load lm_orbital_integration slot 0 interp 11,2713: 1
+  load lm_orbital_integration slot 0 interp 11,2552: 2
+  load lm_planetary slot 0 interp 25,3760: 6
+  load lm_orbital_integration slot 0 interp 11,3065: 4
+  load lm_orbital_integration slot 0 interp 11,3076: 1
+  load lm_orbital_integration slot 0 interp 13,3742: 5
+  load lm_orbital_integration slot 0 interp 11,3205: 4
+  load lm_orbital_integration slot 0 interp 11,2405: 4
+  load lm_conic_compiled slot 0 interp 12,2037: 1
+  load lm_conic_compiled slot 0 interp 12,2045: 1
+  load lm_conic_compiled slot 0 interp 12,2532: 2
+  load lm_conic_compiled slot 0 interp 12,2370: 2
+  load lm_orbital_integration slot 0 interp 11,2542: 9
+  load lm_orbital_integration slot 0 interp 11,2757: 2
+  load lm_orbital_integration slot 0 interp 11,2772: 2
+  load lm_planetary slot 0 interp 24,3746: 1
+  load lm_orbital_integration slot 0 interp 11,3063: 1
+  load lm_orbital_integration slot 0 interp 11,3136: 3
+  load lm_orbital_integration slot 0 interp 11,3172: 2
+  load lm_orbital_integration slot 0 interp 11,3651: 2
+  load lm_orbital_integration slot 0 interp 11,3657: 3
+  load lm_orbital_integration slot 0 interp 11,2442: 3
+  load lm_conic_compiled slot 0 interp 12,2035: 6
+  load lm_conic_compiled slot 0 interp 12,2112: 2
+  load lm_conic_compiled slot 0 interp 12,2507: 1
+  load lm_conic_compiled slot 0 interp 12,2335: 2
+  load lm_orbital_integration slot 0 interp 11,2530: 3
+  load lm_orbital_integration slot 0 interp 11,2725: 1
+  load lm_planetary slot 0 interp 25,3716: 6
+  load lm_orbital_integration slot 0 interp 11,3073: 1
+  load lm_orbital_integration slot 0 interp 13,3744: 1
+  load lm_orbital_integration slot 0 interp 13,3753: 1
+  load lm_planetary slot 0 interp 26,3725: 1
+  load lm_orbital_integration slot 0 interp 11,3510: 2
+  load lm_orbital_integration slot 0 interp 11,3441: 6
+  load lm_integration_init slot 0 interp 13,3203: 4
+  load lm_integration_init slot 0 interp 13,3206: 1
+  load lm_lunar_landing slot 0 interp 32,3051: 1
+  load lm_lunar_landing slot 0 interp 32,3063: 1
+  load lm_servicer slot 0 interp 33,3130: 131
+  load lm_lunar_landing slot 0 interp 32,3100: 2
+  load lm_llge slot 0 interp 31,2454: 2
+  load lm_rtb_op_codes slot 0 basic  10,3726: 1471
+  load lm_interpreter slot 0 basic  00,3010: 1471
+  load lm_rtb_op_codes slot 0 basic  10,3733: 1471
+  load lm_interpreter slot 0 basic  00,3024: 1471
+  load lm_interp_core slot 0 basic  03,2061: 1527
+  load lm_llge slot 0 interp 31,2655: 240
+  load lm_llge slot 0 basic  31,2702: 8
+  load lm_llge slot 0 interp 31,3044: 244
+  load lm_findcduw slot 0 basic  30,3672: 244
+  load lm_llge slot 0 basic  31,3053: 244
+  load lm_interpreter slot 0 basic  03,3307: 509
+  load lm_llge slot 0 basic  31,3574: 244
+  load lm_interbank_routines slot 0 basic  02,2713: 799
+  load lm_interpreter slot 0 basic  00,3226: 508
+  load lm_llge slot 0 interp 31,3575: 244
+  load lm_interpreter slot 0 basic  03,3316: 732
+  load lm_llge slot 0 basic  31,3610: 732
+  load lm_interpreter slot 0 basic  03,3215: 528
+  load lm_llge slot 0 basic  31,3632: 264
+  load lm_llge slot 0 basic  31,3641: 264
+  load lm_interpreter slot 0 basic  00,2353: 264
+  load lm_llge slot 0 interp 31,3642: 264
+  load lm_llge slot 0 interp 31,3647: 264
+  load lm_llge slot 0 interp 31,3206: 44
+  load lm_llge slot 0 interp 31,3211: 62
+  load lm_llge slot 0 interp 31,3302: 244
+  load lm_llge slot 0 interp 31,3305: 244
+  load lm_llge slot 0 interp 31,3335: 6
+  load lm_llge slot 0 interp 31,3030: 36
+  load lm_llge slot 0 interp 31,3075: 10
+  load lm_llge slot 0 interp 31,3167: 15
+  load lm_llge slot 0 interp 31,3266: 2
+  load lm_llge slot 0 interp 31,3270: 23
+  load lm_llge slot 0 interp 31,3011: 1
+  load lm_llge slot 0 interp 31,3214: 45
+  load lm_lunar_landing slot 0 basic  32,3102: 2
+  load lm_lunar_landing slot 0 interp 32,3134: 1
+  load lm_lunar_landing slot 0 interp 32,3146: 1
+  load lm_integration_init slot 0 interp 13,3107: 1
+  load lm_orbital_integration slot 0 interp 11,3447: 1
+  load lm_integration_init slot 0 interp 13,3126: 1
+  load lm_integration_init slot 0 interp 13,3250: 1
+  load lm_orbital_integration slot 0 interp 11,2376: 1
+  load lm_orbital_integration slot 0 interp 11,2414: 3
+  load lm_conic_compiled slot 0 interp 12,2405: 4
+  load lm_integration_init slot 0 interp 13,3252: 1
+  load lm_orbital_integration slot 0 interp 11,3455: 1
+  load lm_lunar_landing slot 0 interp 32,3161: 1
+  load lm_servicer slot 0 interp 33,3131: 94
+  load lm_llge slot 0 interp 31,3017: 111
+  load lm_llge slot 0 interp 31,3073: 16
+  load lm_llge slot 0 interp 31,3213: 12
+  load lm_llge slot 0 interp 31,3311: 63
+  load lm_llge slot 0 interp 31,3036: 69
+  load lm_llge slot 0 interp 31,3070: 12
+  load lm_llge slot 0 interp 31,3200: 104
+  load lm_llge slot 0 interp 31,3224: 33
+  load lm_llge slot 0 interp 31,3012: 1
+  load excursion slot 0 basic  16,2544: 60
+  load lm_llge slot 0 interp 31,3232: 37
+  load lm_lunar_landing slot 0 interp 32,3127: 1
+  load lm_lunar_landing slot 0 basic  32,3204: 1
+  load lm_burn_baby slot 0 basic  36,2664: 1
+  load lm_interbank_routines slot 0 basic  02,2645: 1662
+  load lm_burn_baby slot 0 basic  36,2666: 1
+  load lm_burn_baby slot 0 basic  36,2676: 1
+  load lm_phase_table slot 0 basic  02,3327: 2
+  load lm_burn_baby slot 0 basic  36,2715: 1
+  load lm_lunar_landing slot 0 basic  32,3207: 1
+  load lm_self_check_idle slot 0 basic  43,3336: 1
+  load lm_burn_baby slot 0 basic  36,2717: 1
+  load lm_burn_baby slot 0 basic  36,2737: 397
+  load lanec_di_routines slot 0 basic  10,2457: 41
+  load lanec_di_routines slot 0 basic  10,2731: 1095
+  load lanec_pin_routines slot 0 basic  02,2155: 840
+  load lanec_pin_routines slot 0 basic  41,2570: 876
+  load lanec_di_routines slot 0 basic  10,3122: 325
+  load lanec_pin_routines slot 0 basic  02,2433: 327
+  load lanec_di_routines slot 0 basic  10,3123: 325
+  load lanec_di_routines slot 0 basic  10,3126: 325
+  load lanec_di_routines slot 0 basic  10,3130: 325
+  load lanec_di_routines slot 0 basic  10,3132: 325
+  load lanec_pin_routines slot 0 basic  02,2255: 325
+  load lanec_di_routines slot 0 basic  10,3135: 325
+  load lanec_pin_routines slot 0 basic  02,2427: 61
+  load lanec_di_routines slot 0 basic  10,3261: 61
+  load service_transfer slot 0 basic  10,3544: 581
+  load lanec_di_routines slot 0 basic  10,3267: 66
+  load lanec_pin_routines slot 0 basic  02,2207: 66
+  load lm_burn_baby slot 0 basic  36,2732: 628
+  load lanec_pin_routines slot 0 basic  42,3343: 9
+  load lanec_di_routines slot 0 basic  10,3124: 11
+  load lanec_pin_routines slot 0 basic  42,3347: 5
+  load lanec_di_routines slot 0 basic  10,3302: 2
+  load service_transfer slot 0 basic  10,3554: 9
+  load lanec_di_routines slot 0 basic  10,3350: 9
+  load lanec_pin_routines slot 0 basic  02,2154: 9
+  load lanec_di_routines slot 0 basic  10,3353: 9
+  load lm_burn_baby slot 0 basic  36,2771: 1
+  load lm_burn_baby slot 0 basic  36,3032: 1
+  load lm_lunar_landing slot 0 basic  32,3210: 1
+  load lm_p51_p53 slot 0 basic  14,3135: 1
+  load lanec_di_routines slot 0 basic  10,2623: 1
+  load lm_interpreter slot 0 basic  03,2737: 240
+  load lanec_di_routines slot 0 basic  10,2565: 2
+  load lanec_ev_routines slot 0 basic  43,2361: 2
+  load lanec_ev_routines slot 0 basic  43,2362: 2
+  load lanec_pin_routines slot 0 basic  41,2001: 2
+  load lanec_pin_routines slot 0 basic  40,3547: 2
+  load lanec_di_routines slot 0 basic  10,3303: 2
+  load lm_p51_p53 slot 0 basic  14,3142: 1
+  load lm_lunar_landing slot 0 interp 32,3215: 1
+  load lm_dap_interface slot 0 basic  20,2142: 1
+  load lm_lunar_landing slot 0 basic  32,3230: 1
+  load lm_r60_r62 slot 0 basic  26,2123: 1
+  load lm_r60_r62 slot 0 basic  26,2124: 1
+  load lm_aostask slot 0 basic  20,2454: 1
+  load lm_aostask slot 0 basic  20,2461: 1
+  load lm_aostask slot 0 basic  20,2462: 266
+  load lm_q_r_axis slot 0 basic  17,3146: 266
+  load lm_aostask slot 0 basic  20,3250: 266
+  load service_transfer slot 0 basic  02,3545: 532
+  load lm_aostask slot 0 basic  20,3577: 266
+  load lm_aostask slot 0 basic  20,3620: 266
+  load lm_aostask slot 0 basic  20,2456: 1
+  load lm_r60_r62 slot 0 interp 27,2043: 1
+  load lm_attitude_maneuver slot 0 basic  22,2403: 1
+  load lm_interpreter slot 0 basic  03,2476: 1
+  load lm_r60_r62 slot 0 interp 27,2046: 1
+  load lm_attitude_maneuver slot 0 interp 22,2410: 1
+  load lm_rtb_op_codes slot 0 basic  10,3576: 12
+  load lm_attitude_maneuver slot 0 interp 22,2422: 3
+  load lm_attitude_maneuver slot 0 interp 22,2423: 2
+  load lm_attitude_maneuver slot 0 interp 22,2425: 1
+  load lm_attitude_maneuver slot 0 interp 22,2417: 1
+  load lm_attitude_maneuver slot 0 interp 22,2442: 1
+  load lm_attitude_maneuver slot 0 interp 22,2475: 1
+  load lm_attitude_maneuver slot 0 interp 22,2507: 1
+  load lm_attitude_maneuver slot 0 interp 22,2520: 1
+  load lm_r60_r62 slot 0 interp 27,2050: 1
+  load lm_r60_r62 slot 0 interp 27,2054: 1
+  load lm_r60_r62 slot 0 interp 27,2061: 1
+  load lm_attitude_maneuver slot 0 interp 22,2527: 1
+  load lm_attitude_maneuver slot 0 interp 22,2532: 1
+  load lm_attitude_maneuver slot 0 interp 22,2533: 1
+  load lm_attitude_maneuver slot 0 interp 22,2537: 1
+  load lm_attitude_maneuver slot 0 interp 22,2567: 1
+  load lm_attitude_maneuver slot 0 interp 22,2621: 1
+  load lm_attitude_maneuver slot 0 interp 22,2650: 1
+  load lm_r60_r62 slot 0 interp 27,2074: 1
+  load lm_attitude_maneuver slot 0 interp 22,2312: 1
+  load excursion slot 0 basic  16,2316: 38
+  load lm_attitude_maneuver slot 0 interp 22,2320: 1
+  load lm_attitude_maneuver slot 0 interp 22,2323: 1
+  load lm_r60_r62 slot 0 interp 27,2101: 1
+  load lm_attitude_maneuver slot 0 interp 22,2654: 1
+  load lm_attitude_maneuver slot 0 interp 22,2656: 1
+  load lm_attitude_maneuver slot 0 interp 22,2666: 1
+  load excursion slot 0 basic  16,2666: 2250
+  load lm_attitude_maneuver slot 0 interp 22,2706: 1
+  load lm_r60_r62 slot 0 interp 27,2163: 1
+  load lm_rtb_op_codes slot 0 basic  10,3620: 2
+  load lm_r60_r62 slot 0 interp 27,2166: 1
+  load lm_r60_r62 slot 0 basic  26,2266: 1
+  load lm_r60_r62 slot 0 basic  26,2267: 1
+  load lm_powered_subs slot 0 interp 23,3543: 1
+  load lm_powered_subs slot 0 interp 23,3567: 9
+  load lm_interpreter slot 0 basic  00,3517: 9
+  load lm_powered_subs slot 0 interp 23,3575: 9
+  load lm_interpreter slot 0 basic  00,3531: 9
+  load lm_powered_subs slot 0 interp 23,3605: 9
+  load lm_r60_r62 slot 0 interp 26,2302: 1
+  load lm_lat_long slot 0 interp 13,2510: 2
+  load lm_r60_r62 slot 0 interp 26,2316: 1
+  load lm_r60_r62 slot 0 interp 26,2341: 1
+  load lm_r60_r62 slot 0 interp 26,2344: 1
+  load lm_r60_r62 slot 0 basic  26,2140: 1
+  load lanec_di_routines slot 0 basic  10,2710: 1
+  load lm_r60_r62 slot 0 basic  26,2146: 1
+  load lanec_di_routines slot 0 basic  10,2546: 252
+  load lanec_di_routines slot 0 basic  10,3070: 29
+  load excursion slot 0 basic  17,2714: 109
+  load excursion slot 0 basic  17,3005: 18
+  load lm_r60_r62 slot 0 basic  26,2145: 1
+  load lm_r60_r62 slot 0 basic  26,2177: 1
+  load lm_lunar_landing slot 0 basic  32,3233: 1
+  load lm_lunar_landing slot 0 basic  32,3235: 1
+  load lm_servicer slot 0 basic  33,3721: 1
+  load lm_servicer slot 0 basic  33,3722: 1
+  load lm_powered_subs slot 0 interp 23,3651: 2
+  load lm_powered_subs slot 0 basic  23,3576: 1
+  load lm_interpreter slot 0 basic  03,3532: 310
+  load lm_powered_subs slot 0 basic  23,3654: 244
+  load lm_servicer slot 0 interp 33,3761: 2
+  load lm_powered_subs slot 0 interp 23,3671: 242
+  load lm_powered_subs slot 0 interp 23,3657: 118
+  load lm_servicer slot 0 interp 33,3765: 2
+  load lm_servicer slot 0 interp 33,3774: 2
+  load lm_lunar_landing slot 0 basic  32,3251: 1
+  load lm_burn_baby slot 0 basic  36,2126: 1
+  load lm_burn_baby slot 0 basic  36,2130: 1
+  load lm_burn_baby slot 0 basic  35,3747: 1
+  load lm_burn_baby slot 0 basic  35,3750: 1
+  load lm_r60_r62 slot 0 basic  26,2255: 1
+  load lm_burn_baby slot 0 basic  35,3753: 1
+  load lm_burn_baby slot 0 basic  36,2135: 1
+  load lm_p40_p47 slot 0 basic  36,3564: 1
+  load lm_burn_baby slot 0 basic  36,2143: 1
+  load lm_findcduw slot 0 interp 30,3104: 1
+  load lm_burn_baby slot 0 interp 36,2157: 1
+  load lm_integration_init slot 0 interp 13,3043: 1
+  load lm_integration_init slot 0 interp 13,2705: 1
+  load lm_integration_init slot 0 interp 13,2716: 2
+  load lm_integration_init slot 0 interp 13,3305: 4
+  load lm_integration_init slot 0 interp 13,3327: 1
+  load lm_orbital_integration slot 0 interp 11,3315: 1
+  load lm_orbital_integration slot 0 interp 11,3333: 1
+  load lm_orbital_integration slot 0 interp 11,3346: 1
+  load lm_orbital_integration slot 0 interp 11,2663: 2
+  load lm_orbital_integration slot 0 interp 11,2674: 1
+  load lm_orbital_integration slot 0 interp 11,2712: 3
+  load lm_orbital_integration slot 0 interp 11,2720: 3
+  load lm_orbital_integration slot 0 interp 11,2762: 3
+  load lm_planetary slot 0 interp 24,3725: 2
+  load lm_planetary slot 0 interp 24,3734: 2
+  load lm_orbital_integration slot 0 interp 13,3734: 2
+  load lm_planetary slot 0 interp 25,3671: 3
+  load lm_orbital_integration slot 0 interp 11,2505: 1
+  load lm_planetary slot 0 interp 25,3673: 2
+  load lm_orbital_integration slot 0 interp 11,3174: 5
+  load lm_planetary slot 0 interp 26,3730: 3
+  load lm_conic_compiled slot 0 interp 12,2053: 4
+  load lm_conic_compiled slot 0 interp 12,2073: 2
+  load lm_conic_compiled slot 0 interp 12,2516: 4
+  load lm_conic_compiled slot 0 interp 12,2202: 1
+  load lm_conic_compiled slot 0 interp 12,2400: 2
+  load lm_orbital_integration slot 0 interp 11,2545: 1
+  load lm_orbital_integration slot 0 interp 11,2767: 2
+  load lm_orbital_integration slot 0 interp 11,2554: 2
+  load lm_orbital_integration slot 0 interp 11,3140: 1
+  load lm_orbital_integration slot 0 interp 11,3223: 3
+  load lm_planetary slot 0 interp 24,3750: 3
+  load lm_orbital_integration slot 0 interp 11,3515: 1
+  load lm_orbital_integration slot 0 interp 11,3522: 2
+  load lm_orbital_integration slot 0 interp 11,3305: 2
+  load lm_orbital_integration slot 0 interp 11,3350: 1
+  load lm_planetary slot 0 interp 25,3722: 3
+  load lm_planetary slot 0 interp 24,3710: 3
+  load lm_orbital_integration slot 0 interp 11,3134: 1
+  load lm_orbital_integration slot 0 interp 11,3216: 2
+  load lm_planetary slot 0 interp 24,3737: 3
+  load lm_planetary slot 0 interp 25,3720: 5
+  load lm_orbital_integration slot 0 interp 11,3470: 1
+  load lm_orbital_integration slot 0 interp 11,2437: 1
+  load lm_orbital_integration slot 0 interp 11,2451: 1
+  load lm_conic_compiled slot 0 interp 12,2107: 1
+  load lm_conic_compiled slot 0 interp 12,2421: 2
+  load lm_conic_compiled slot 0 interp 12,2205: 1
+  load lm_orbital_integration slot 0 interp 11,2721: 1
+  load lm_planetary slot 0 interp 24,3764: 1
+  load lm_planetary slot 0 interp 24,3770: 2
+  load lm_planetary slot 0 interp 24,3701: 2
+  load lm_orbital_integration slot 0 interp 11,3056: 3
+  load lm_planetary slot 0 interp 26,3723: 1
+  load lm_conic_compiled slot 0 interp 12,2124: 2
+  load lm_orbital_integration slot 0 interp 11,2666: 1
+  load lm_orbital_integration slot 0 interp 11,2753: 4
+  load lm_orbital_integration slot 0 interp 11,3122: 3
+  load lm_orbital_integration slot 0 interp 11,3211: 4
+  load lm_planetary slot 0 interp 25,3733: 2
+  load lm_orbital_integration slot 0 interp 11,3503: 1
+  load lm_integration_init slot 0 interp 13,3351: 1
+  load lm_orbital_integration slot 0 interp 11,3320: 1
+last routines:
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 05155 FB 20000 lm_kernel_job_routines
+  Z 05133 FB 20000 lm_kernel_job_routines
+  Z 04207 FB 20000 lanec_pin_lm_routines
+  Z 03267 FB 20000 lanec_di_lm_idle
+  Z 03544 FB 20000 lm_service_routines
+  Z 03261 FB 20000 lanec_di_lm_idle
+  Z 04427 FB 20000 lanec_pin_lm_routines
+  Z 03260 FB 20000 lanec_di_lm_idle
+  Z 03135 FB 20000 lanec_di_lm_nvdsp
+  Z 04255 FB 20000 lanec_pin_lm_routines
+  Z 03132 FB 20000 lanec_di_lm_nvdsp
+  Z 05516 FB 20000 lm_service_routines
+  Z 03130 FB 20000 lanec_di_lm_nvdsp
+  Z 05516 FB 20000 lm_service_routines
+  Z 03126 FB 20000 lanec_di_lm_nvdsp
+  Z 05516 FB 20000 lm_service_routines
+  Z 03124 FB 20000 lanec_di_lm_nvdsp
+  Z 02415 FB 20000 lanec_di_lm_mark
+  Z 03123 FB 20000 lanec_di_lm_nvdsp
+  Z 04433 FB 20000 lanec_pin_lm_routines
+  Z 03122 FB 20000 lanec_di_lm_nvdsp
+  Z 04202 FB 62000 lanec_pin_lm_routines
+  Z 02570 FB 62000 lanec_pin_lm_routines
