@@ -427,11 +427,20 @@ static int kernel_table(const entry *e){static uint8_t known[TABLES];unsigned i=
  if(i>=TABLES)return kernel_name(e->name)!=0;
  if(!known[i])known[i]=(uint8_t)(1u+(kernel_name(e->name)!=0));
  return known[i]-1u;}
+/* The resident's interrupt body tables, which the C64 runs from its wrapper
+ * modules (tools/resident_flight_build.py RESIDENT_MODULES and WRAPPED,
+ * 0x01E1-0x01E4): one wrapper run goes on through its table, as a module's
+ * does. The other tables with no module are the kernel's (rk_trampoline,
+ * one routine a step) and the DANZIG marker. */
+static int wrapper_run(const entry *e){static const char *const body[]={"_lead_in_routines","_t4rupt_core_routines","_keyrupt_routines","_t6rupt_routines"};
+ size_t l=strlen(e->name),k;unsigned i;
+ if(*e->module)return 0;
+ for(i=0;i<sizeof body/sizeof body[0];++i)if(l>=(k=strlen(body[i]))&&!strcmp(e->name+l-k,body[i]))return 1;
+ return 0;}
 static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const entry *last){int in;unsigned i,r;uint16_t key=point(w,sb,&in);
- /* A table with no module (lm_t6rupt_routines: the T6RUPT vector, DOT6RUPT
-  * and the RESUME family) runs on the C64 as one run too: DOT6RUPT's TCF
-  * RESUME goes on in that run, not in the pinned RESUME set. */
- if(last&&!*last->module&&!kernel_table(last)&&last->interp==(uint8_t)in&&find(last->t,key))return last;
+ /* An interrupt body table (wrapper_run) runs on the C64 as one run too:
+  * DOT6RUPT's TCF RESUME goes on in that run, not in the pinned RESUME set. */
+ if(last&&wrapper_run(last)&&last->interp==(uint8_t)in&&find(last->t,key))return last;
  if(last&&*last->module)for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&!strcmp(tables[i].module,last->module)
                                            &&(tables[i].slot>1u||slot_has(tables[i].slot,tables[i].module,tables[i].t,key))
                                            &&(tables[i].slot!=5u||in_slot[0]==tables[i].module)&&find(tables[i].t,key))return &tables[i];
