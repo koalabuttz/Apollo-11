@@ -821,6 +821,20 @@ port) runs one mission:
    CDUXD at 0.5 degree/s, the DAP fires roll, pitch and yaw jets, and
    CDUX follows it to 30 degrees by 195 s, inside the 0.5 degree deadband
    after that. Every native routine matches yaAGC.
+
+   The descent engine has a trim gimbal (LM, `tools/flight_dps_gimbal.h`).
+   Channel 12 bits 9-12 turn it at 0.2 deg/s within 6 deg in pitch and
+   roll: bits 10 and 12 the positive way, which the DAP expects to change
+   the angular acceleration negatively (AOSTASK GIMBLBTS). Both sides keep
+   their own angles, and the run prints them at the end. `dps_gimbal()`
+   gives them to an attitude model. `FLIGHT_TRIM=1` makes the thrust
+   follow the gimbal into the PIPAs. It is off by default because the
+   engine model holds the attitude at the DAP's desired angles, so the tilt
+   would only bend the trajectory.
+   `lm-p63-trim`: `lm-p63-descent-thrust` with `FLIGHT_TRIM=1`. The trim
+   control drives the pitch gimbal and turns the drive off at 14,871 cs
+   (ACDT+C12), with the gimbal at -2.4 deg. Every native routine matches
+   yaAGC.
    `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
    crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
    28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one

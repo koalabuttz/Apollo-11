@@ -15,6 +15,11 @@
  * The DAP reads them on its next pass (P-AXIS_RCS_AUTOPILOT RATERROR, the
  * Q,R axes alike) in ATTITUDE HOLD (channel 31 bit 13 at 0, set with
  * FLIGHT_CH31 or FLIGHT_CHAN). In detent the counters are left to the DAP.
+ * Loading at every such sample point, not only when bits 8 and 9 come on,
+ * is yaAGC's behavior: Luminary never clears the bits after the first
+ * ZEROENBL (only a fresh start does), and ChannelOutput reloads the stick on
+ * every channel 13 write with them set, ZEROENBL's own WOR CHAN13 included,
+ * right after it zeroes the counters (#886 item 8).
  * The replay rows carry the counter and channel 31 writes to the C64. */
 enum { RHC_SPANS = 16, P_RHCCTR = 043, Q_RHCCTR = 042, R_RHCCTR = 044 };
 static struct { unsigned long from, to; int count[3]; } rhc[RHC_SPANS];

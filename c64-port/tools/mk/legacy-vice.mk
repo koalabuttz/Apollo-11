@@ -222,12 +222,14 @@ vice-legacy-cm-mission-overlay: | build
 	python3 tools/legacy_vice_run.py tools/cm_mission_overlay_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-cm-mysubs: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_mysubs.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_mysubs_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-native-image: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
 	python3 tools/legacy_vice_run.py tools/cm_native_image_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-cm-nbsm: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_nbsm.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_nbsm_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-norm: build/cm-norm.prg | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -253,18 +255,23 @@ vice-legacy-cm-pinball: c64-cm-pinball | build
 	python3 tools/legacy_vice_run.py tools/cm_pinball_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-cm-powered-axis: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_powered_axis.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_powered_axis_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-powered-fixed-return: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_powered_fixed_return.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_powered_fixed_return_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-powered-interface: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_powered_interface.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_powered_interface_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-powered-quick: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_powered_quick.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_powered_quick_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-powered-trig: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_powered_trig.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_powered_trig_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-priolarm: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -291,6 +298,7 @@ vice-legacy-cm-r52-priority-alarm: | build
 	python3 tools/legacy_vice_run.py tools/cm_r52_priority_alarm_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-cm-rcs-matrix: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_rcs_matrix.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_rcs_matrix_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-rectify: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -333,12 +341,14 @@ vice-legacy-cm-service-overlay: | build
 	python3 tools/legacy_vice_run.py tools/cm_service_overlay_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-cm-single-return: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_single_return.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_single_return_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-sleep: cm_sleep-c64 | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
 	python3 tools/legacy_vice_run.py tools/cm_sleep_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-cm-smcdure: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_smcdure.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_smcdure_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-startup: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -361,6 +371,7 @@ vice-legacy-cm-tig5: | build
 	python3 tools/legacy_vice_run.py tools/cm_tig5_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-cm-trig: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/cm_trig.mk c64
 	python3 tools/legacy_vice_run.py tools/cm_trig_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-cm-unit: build/cm-unit.prg | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -833,18 +844,22 @@ vice-legacy-interp-core: | build
 	python3 tools/legacy_vice_run.py tools/interp_core_vice_test.py 
 vice-legacy-interpreted-sign: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/interpreted_sign.mk c64
 	python3 tools/legacy_vice_run.py tools/interpreted_sign_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-interpreted-square: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/interpreted_square.mk c64
 	python3 tools/legacy_vice_run.py tools/interpreted_square_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-interpreter-native: build/interpreter-native.prg | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
 	python3 tools/legacy_vice_run.py tools/interpreter_native_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-inverse-trig-sweep: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/inverse_trig_sweep.mk c64
 	python3 tools/legacy_vice_run.py tools/inverse_trig_sweep_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-inverse-trig: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/inverse_trig.mk c64
 	python3 tools/legacy_vice_run.py tools/inverse_trig_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-irq: build/irq.prg | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -891,9 +906,11 @@ vice-legacy-lm-finish: lm_finish-c64 | build
 	python3 tools/legacy_vice_run.py tools/lm_finish_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-fleshpot-interface: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_fleshpot_interface.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_fleshpot_interface_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-fleshpot: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_fleshpot.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_fleshpot_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-idle-dispatch: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -912,18 +929,23 @@ vice-legacy-lm-interpreter-exchange: | build
 	python3 tools/legacy_vice_run.py tools/lm_interpreter_exchange_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-powered-axis: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_powered_axis.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_powered_axis_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-powered-fixed-return: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_powered_fixed_return.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_powered_fixed_return_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-powered-interface: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_powered_interface.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_powered_interface_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-powered-quick: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_powered_quick.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_powered_quick_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-powered-trig: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_powered_trig.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_powered_trig_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-priority: lm_priority-c64 | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -934,6 +956,7 @@ vice-legacy-lm-radar-leadin: | build
 	python3 tools/legacy_vice_run.py tools/lm_radar_leadin_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-rcs-monitor: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_rcs_monitor.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_rcs_monitor_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-recurrence-bridge: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -945,6 +968,7 @@ vice-legacy-lm-scan-exception: | build
 	python3 tools/legacy_vice_run.py tools/lm_scan_exception_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-single-trig: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_single_trig.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_single_trig_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-sleep: lm_sleep-c64 | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
@@ -955,6 +979,7 @@ vice-legacy-lm-spectest-handoff: | build
 	python3 tools/legacy_vice_run.py tools/lm_spectest_handoff_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)"
 vice-legacy-lm-sps-rcs: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice
+	$(MAKE) -f tools/lm_sps_rcs.mk c64
 	python3 tools/legacy_vice_run.py tools/lm_sps_rcs_vice_test.py --vice "$(VICE)" --rom-dir "$(VICE_ROM_DIR)" --data-dir "$(VICE_DATA_DIR)" --phase 0
 vice-legacy-lm-super-dispatch: | build
 	mkdir -p build/vice-cache/vice build/vice-config/vice

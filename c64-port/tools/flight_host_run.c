@@ -191,8 +191,9 @@ static int steal_parse(const char *t){
      ||steal_t[nsteal][1]<=steal_t[nsteal][0])return 0;
   ++nsteal;t+=n;if(*t==',')++t;else if(*t)return 0;}
  return 1;}
+static void hold_steal(unsigned long mct);
 static void steal(void){unsigned i;
- for(i=0;i<nsteal;++i)if(steal_cs>=steal_t[i][0]&&steal_cs<steal_t[i][1]){wall+=(double)steal_t[i][2]*slow;return;}}
+ for(i=0;i<nsteal;++i)if(steal_cs>=steal_t[i][0]&&steal_cs<steal_t[i][1]){wall+=(double)steal_t[i][2]*slow;hold_steal(steal_t[i][2]);return;}}
 /* The work clock's steps (resident_flight.h rk_phase_mct): step j (from 0)
  * ends at step_at(j) MCT and steps TIME4, TIME1/TIME3 or TIME5 (j % 3, the
  * rk_timer_phase step); consumed counts the steps taken. */
@@ -201,13 +202,27 @@ static double step_at(unsigned long j){return (double)(2560ul*(j/9ul)+step_end[j
 /* FLIGHT_HOLD: the interrupt hold meter (include/rupt_hold.h) over the
  * replay window, on the work clock, as -DRK_HOLD_METER runs it on the C64. */
 static rupt_hold hold;static int hold_on;
-static void hold_report(void){if(getenv("FLIGHT_HOLD"))printf("interrupt hold: max %u MCT at TIME1 %05o\n",(unsigned)hold.max,(unsigned)hold.max_at);}
+/* MCT stolen (FLIGHT_STEAL) while the longest hold waited, reported beside
+ * it but still part of it: the AGC takes a waiting request at its next
+ * instruction, so a steal delays the port's take, not the AGC's. */
+static unsigned long hold_stolen,hold_max_stolen;static uint16_t hold_stolen_from;
+static void hold_report(void){if(!getenv("FLIGHT_HOLD"))return;
+ printf("interrupt hold: max %u MCT at TIME1 %05o",(unsigned)hold.max,(unsigned)hold.max_at);
+ if(hold_max_stolen)printf(" (%lu without %lu stolen)",(unsigned long)hold.max-hold_max_stolen,hold_max_stolen);
+ putchar('\n');}
 static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,double t){
  if(hold_on)rupt_hold_boundary(&hold,(uint16_t)(unsigned long)t,*pending,(uint8_t)(hw->in_interrupt||!io->interrupt_enabled||agc_overflow(s->words[0])));
  return rk_rupt_take(p,s,io->superbank,io->interrupt_enabled,pending);}
 /* The work clock's idle loop (weight 0, RK_MCT_IDLE): to the end of the
  * period, which the boundary drops if it takes a request first. */
 static int idling;
+/* Stolen MCT counted toward the waiting request, unless idle: the idle
+ * period absorbs them, and a take there is at the step, not at wall. */
+static void hold_steal(unsigned long mct){if(!hold_on||!hold.on||idling)return;
+ if(hold.from!=hold_stolen_from){hold_stolen=0;hold_stolen_from=hold.from;}hold_stolen+=mct;}
+static void hold_take(uint16_t t,uint16_t time1){uint16_t max=hold.max;
+ unsigned long st=hold.on&&hold.from==hold_stolen_from?hold_stolen:0ul;
+ rupt_hold_taken(&hold,t,time1);if(hold.max!=max)hold_max_stolen=st;hold_stolen=0;hold_stolen_from=(uint16_t)~hold.from;}
 static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
 /* The night watchman (platform/x86/night_watchman.h) under scaled time: wm
  * by the native rule, wm_ya by the NEWJOB accesses yaAGC makes over the
@@ -772,8 +787,10 @@ static void poke_due(unsigned long t,unsigned *done,agc_word *words){
  * carrying the fraction. No attitude dynamics: while the engine is on, each
  * sample point sets CDUX-Z to the DAP's desired angles CDUXD-ZD (perfect
  * attitude control). */
+/* FLIGHT_TRIM (tools/flight_dps_gimbal.h): the descent engine's trim gimbal. */
+#include "flight_dps_gimbal.h"
 static double engine_kg,engine_lag;
-static struct engine { int on,lifted,stopped,landed; unsigned long t; agc_word tthrot; double bits,cmd,ramp,kg,carry[3]; } eng_ref,eng_nat;
+static struct engine { int on,lifted,stopped,landed; unsigned long t; agc_word tthrot; double bits,cmd,ramp,kg,carry[3]; struct dps_gim gim; } eng_ref,eng_nat;
 enum { FLAGWRD5=0101, ENGONBIT=0100, PSEUDO55=03614, TTHROT=03617, PIPAX=037, CDUX=032, CDUY=033, CDUZ=034, CDUXD=03235 };
 static agc_word eword(const agc_word *w,unsigned a){return w?w[a]:(agc_word)(*cell(a)&077777);}
 static long ones(agc_word v){return (v&040000u)?-(long)((~v)&037777u):(long)v;}
@@ -849,8 +866,9 @@ static void pilot(agc_word *w){double r[3],v[3],u[3],rm=0.0,vu=0.0,h[3],hm=0.0,t
  {long cy=(long)floor(ig/(2.0*3.141592653589793)*32768.0+0.5),cz=(long)floor(mg/(2.0*3.141592653589793)*32768.0+0.5);
   agc_word y=(agc_word)((unsigned long)cy&077777ul),z=(agc_word)((unsigned long)cz&077777ul);
   eset(w,CDUY,y);eset(w,CDUZ,z);eset(w,CDUXD+1u,y);eset(w,CDUXD+2u,z);}}
-static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,dt,ig,mg,dir[3];unsigned k;
+static void engine_due(unsigned long t,struct engine *e,agc_word *w,agc_word c12){double f,a,dt,ig,mg,dir[3];unsigned k;
  if(!engine_kg)return;
+ if(!e->lifted)dps_gimbal_due(t,&e->gim,c12);
  if(touchdown_cs&&t>=touchdown_cs&&!e->lifted){int on=(eword(w,FLAGWRD5)&ENGONBIT)!=0;if(!on)e->stopped=1;
   if(!(ascent_kg&&e->stopped&&on)){surface_due(t,e,w);return;}
   e->lifted=1;e->on=0;e->kg=ascent_kg;}
@@ -867,7 +885,8 @@ static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,
   e->ramp+=e->cmd-e->ramp>r?r:e->cmd-e->ramp<-r?-r:e->cmd-e->ramp;
   e->bits+=(e->ramp-e->bits)*(1.0-exp(-dt/engine_lag));}
  ig=(double)eword(w,CDUY)*(6.283185307179586/32768.0);mg=(double)eword(w,CDUZ)*(6.283185307179586/32768.0);
- dir[0]=cos(ig)*cos(mg);dir[1]=sin(mg);dir[2]=-sin(ig)*cos(mg);
+ if(dps_trim&&!e->lifted)dps_thrust_sm(&e->gim,(double)eword(w,CDUX)*(6.283185307179586/32768.0),ig,mg,dir);
+ else{dir[0]=cos(ig)*cos(mg);dir[1]=sin(mg);dir[2]=-sin(ig)*cos(mg);}
  if(w){double dv[3];for(k=0;k<3u;++k)dv[k]=a*dt*dir[k];lrm_dv(dv,t,dt);}
  for(k=0;k<3u;++k){long n,v;e->carry[k]+=a*dt*dir[k]*100.0;n=(long)e->carry[k];e->carry[k]-=(double)n;
   v=ones(eword(w,PIPAX+k))+n;if(v>037777l)v=037777l;if(v<-037777l)v=-037777l;
@@ -1591,6 +1610,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
 #if RK_LM
  if(getenv("FLIGHT_ENGINE"))engine_kg=strtod(getenv("FLIGHT_ENGINE"),0);
  if(getenv("FLIGHT_ENGINE_LAG"))engine_lag=strtod(getenv("FLIGHT_ENGINE_LAG"),0);
+ dps_trim=getenv("FLIGHT_TRIM")&&atoi(getenv("FLIGHT_TRIM"))!=0;
  if(getenv("FLIGHT_TOUCHDOWN"))touchdown_cs=strtoul(getenv("FLIGHT_TOUCHDOWN"),0,10);
  if(getenv("FLIGHT_PILOT"))pilot_tau=strtod(getenv("FLIGHT_PILOT"),0);
  if(getenv("FLIGHT_ASCENT"))ascent_kg=strtod(getenv("FLIGHT_ASCENT"),0);
@@ -1647,7 +1667,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * which can delay the job it starts by a self-check pass). The entry
      * is rk_rupt_take's: ZRUPT = Z + 1, BRUPT = the word at Z. */
     poke_due(now(w),&pref,0);
-    engine_due(now(w),&eng_ref,0);
+    engine_due(now(w),&eng_ref,0,(agc_word)(m.InputChannel[012]&077777));
     sps_due(now(w),&sps_ref,0,0);
     aero_due(now(w),&aero_ref,0);
     imu_due(0,0);
@@ -1733,7 +1753,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    /* A key is pressed at the first sample point at or after its time, on
     * both sides. */
    poke_due(now(s.words),&pnat,s.words);
-   engine_due(now(s.words),&eng_nat,s.words);
+   engine_due(now(s.words),&eng_nat,s.words,hw.channel12);
    sps_due(now(s.words),&sps_nat,s.words,&hw);
    if(getenv("FLIGHT_DSKY"))dsky_trace(now(s.words),s.words);
    {int r=0;rr_due(now(s.words),&rr_nat,s.words,&hw.channel12,&hw.channel13,&hw.channel14,&hw.channel33,&r);if(r)pending|=RK_RUPT_BIT(RK_RUPT_RADAR);}
@@ -1782,7 +1802,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      if(hold_on)rupt_hold_raise(&hold,(uint16_t)(unsigned long)step_at(consumed),pending);
      if(consumed++%3ul==2ul){period_end();steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
-    if(got&&hold_on)rupt_hold_taken(&hold,(uint16_t)(unsigned long)wall,s.words[025]);
+    if(got&&hold_on)hold_take((uint16_t)(unsigned long)wall,s.words[025]);
     /* Only a taken interrupt ends the module chain: a C64 run its budget
      * cut at a timer step goes on in its module after the step (rk_cut). */
     if(got)charge_last=0;
@@ -1793,7 +1813,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     * reads them a few centiseconds after SERVICER, often with no idle pass
     * between. */
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
-   if(scaled&&engine_lag)engine_due(now(s.words),&eng_nat,s.words);
+   if(scaled&&engine_lag)engine_due(now(s.words),&eng_nat,s.words,hw.channel12);
    rcs_due(now(s.words),s.words,&hw);
    if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);
    if(got){
@@ -1936,6 +1956,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   if(!narrive[i]){printf("not reached\n");continue;}
   printf("at");for(k=0;k<narrive[i];++k)printf(" %ld",reach_cs[i][k]);
   printf(" cs");if(reach_more[i])printf(" (%lu more before the last)",reach_more[i]);printf("\n");}
+ if(engine_kg){double n[2],r[2];dps_gimbal(&eng_nat.gim,n);dps_gimbal(&eng_ref.gim,r);
+  printf("trim gimbal (deg): native pitch %.3f roll %.3f, yaAGC pitch %.3f roll %.3f%s\n",n[0]*57.29577951308232,n[1]*57.29577951308232,
+   r[0]*57.29577951308232,r[1]*57.29577951308232,dps_trim?" (FLIGHT_TRIM: the thrust follows)":"");}
  printf("unregistered or refused points (%u):\n",nholes);
  for(i=0;i<nholes;++i){printf("  %s %02o,%04o Z %05o FB %05o Q %05o",holes[i].in?"interp":"basic ",
   holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q);

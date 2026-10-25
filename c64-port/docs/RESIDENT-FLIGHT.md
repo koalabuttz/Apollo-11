@@ -280,6 +280,15 @@ instead a work clock: AGC time advances by the work the resident ran.
   `rk_module_env.work`.
 - A module runs at most `rk_module_limit(budget, mct)` routines before it
   hands back, so a clock step is never more than one routine late.
+  With a request waiting (interrupts inhibited, or inside an interrupt)
+  the budget is 0 (`rk_budget`), so a run goes one routine at a time and
+  the host's take at the first routine boundary it can (RELINT, RESUME)
+  falls at the same place, on both missions. That one routine counts as
+  the run's whole limit (`rk_cut`): if the request is not taken, the next
+  step goes on in the same module and is charged its table's weight, as
+  the host keeps charging the chain's table. Without that, cm-entry 17000
+  charged an SP routine in an entry DAP chain the SP table's mean (73 MCT,
+  not 13) and took T4RUPT 28 MCT late (issue #886).
 - Every table has one weight, its mean MCT per routine, on the host and
   on the C64 alike. That holds for the interrupt lead-ins too: on the LM a
   direct run that starts at a lead-in vector (04000-04053, GOPROG to

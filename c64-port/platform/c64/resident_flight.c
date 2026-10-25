@@ -656,14 +656,8 @@ __attribute__((noinline)) enum exec_status rk_direct(uint16_t stop_physical, uin
 #if RK_LM /* only the LM store packs the idle loop beside interrupt code */
         if (t->idle && !rk_hardware.in_interrupt) mct = RK_MCT_IDLE;
 #endif
+        /* With a request waiting, one routine (rk_budget). */
         uint16_t limit = rk_limit(mct);
-        /* A request is waiting (interrupts inhibited, or inside an
-         * interrupt): the host takes it at the first routine boundary it
-         * can, so the run goes one routine at a time (RELINT, RESUME).
-         * rk_run_limit keeps rk_limit's count, for rk_charge. */
-#if RK_LM /* the CM's windows match without it (cm-entry 17000 leaves with it) */
-        if (rk_pending && mct != RK_MCT_IDLE) limit = 1u;
-#endif
 #else
         const uint16_t limit=RK_MODULE_STEPS;
 #endif
@@ -750,11 +744,7 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
         return EXEC_UNMAPPED;
     RK_PROF(8);
 #ifdef RK_WORK_CLOCK
-#if RK_LM
-    rk_env.budget = rk_pending ? 0u : rk_budget(); /* as rk_direct: one routine */
-#else
-    rk_env.budget = rk_budget();
-#endif
+    rk_env.budget = rk_budget(); /* 0 with a request waiting: one routine */
     rk_env.work = 0;
     rk_env.scale = 1u;
 #endif
@@ -895,7 +885,10 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
                  * or 2 with its T3 step, 1 without. */
                 rk_spin = (uint8_t)(rk_work >> 8);
 #else
-                rk_spin = 1u; /* the wall clock has no T3 step to count */
+                /* The wall clock has no T3 step to count: the trap's GOJAM
+                 * comes at the next step outside an interrupt, as yaAGC's
+                 * within the scaler period (issue #810). */
+                rk_spin = 2u;
 #endif
                 st = EXEC_OK;
                 goto out;

@@ -15,6 +15,8 @@ Frozen-clock lockstep with yaAGC cannot see this, because the harness takes the 
 
 The second "from" case is an upper bound: the AGC would take the request somewhere inside the next routine, at its RELINT or RESUME.
 
+Cycles stolen while a request waits (`FLIGHT_STEAL`, the counter cycles Apollo 11's RR CDU counts took) stay in the measure. The AGC takes a waiting request at its next instruction, so a steal delays only the port's take. The host prints their share beside the hold, as `interrupt hold: max 1753 MCT at TIME1 11763 (1153 without 600 stolen)`, but the bound gates the elapsed hold.
+
 The same meter runs in two places:
 - on the host, `tools/flight_host_run.c` with `FLIGHT_HOLD=1`, over the replay window;
 - on the C64, `tools/flight_scenario_vice.py --replay --hold`, which builds with `-DRK_HOLD_METER`, a measurement build only. The result is in mailbox bytes 0x36-0x39.
@@ -48,7 +50,7 @@ The bound is a limit on the port, not a claim that the real AGC behaves this way
 
 ## T6RUPT: late jet-off
 
-A T6RUPT that comes due inside a routine is taken at the next native boundary, so the DAP's jet-off write to channels 5 and 6 goes out that much later than the AGC's would. The same meter, counting T6RUPT requests only (a local change to `RUPT_HOLD_PENDING`, on the host, over every program map window, at 36103941):
+A T6RUPT that comes due inside a routine is taken at the next native boundary, so the DAP's jet-off write to channels 5 and 6 goes out that much later than the AGC's would. The same meter, counting T6RUPT requests only (a local change of `RUPT_HOLD_PENDING` to `02u`, the T6RUPT bit, on the host, over every program map window, at 36103941):
 
 | Program | Windows with a held T6RUPT | Longest | Where |
 |---|---|---|---|

@@ -86,7 +86,8 @@ WINDOWS = {
            ('lm-rhc-att-hold', 2400, 500, 100),             # RHC pitch out of detent (P-RHCCTR)
            ('lm-rhc-att-hold', 3500, 500, 100),             # RHC yaw and roll (Q-, R-RHCCTR)
            ('lm-p52-coarse', 4650, 500, 50),                # coarse align: channel 12 bit 4, CDUY follows the drive
-           ('lm-rhc-att-turn', 3500, 900, 100)],            # the jets turn the LM (FLIGHT_ATT): CDUY, CDUZ follow
+           ('lm-rhc-att-turn', 3500, 900, 100),             # the jets turn the LM (FLIGHT_ATT): CDUY, CDUZ follow
+           ('lm-p63-trim', 17400, 220, 50)],                # DPS trim reversal at 17498, thrust along the gimbal
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6
@@ -263,7 +264,7 @@ def roles(m):
                   'and no engine torque; under thrust without FLIGHT_ATT the engine model holds CDUX-Z at CDUXD-ZD') if lm else
                  ('the jets turn the CSM at 100 lbf on a 1.96 m arm over the AGC\'s own IXX and IAVG (att_due), with '
                   'no cross-coupling; under SPS thrust the SPS model turns it in pitch and yaw only (no roll jets)'),
-             closes='the engine\'s trim torque (Lane F, tools/flight_dps_gimbal.h)' if lm else
+             closes='the engine\'s trim torque in att_due from dps_gimbal (D1, tools/flight_attitude.h)' if lm else
                     'roll during SPS burns (Lane D1, tools/flight_attitude.h)'),
     ]
     if lm:
@@ -353,12 +354,15 @@ def roles(m):
         role('jets', 'RCS jets and engine on/off' if lm else 'RCS jets and SPS on/off', 'out',
              'channels 5 and 6 (jets), channel 11 bits 13-14 (engine on, off)' if lm else
              'channels 5 and 6 (jets), channel 11 bit 13 (SPS on)',
-             [host_end, (FHR, 'rcs_due', 'the jets\' translation into the PIPAs')] if lm else [host_end],
-             [end], uses('FLIGHT_ENGINE', 'FLIGHT_RCS') if lm else uses('FLIGHT_SPS', 'FLIGHT_AERO'),
+             [host_end, (FHR, 'rcs_due', 'the jets\' translation into the PIPAs'),
+              (ATT, 'att_due', 'FLIGHT_ATT: the jets turn the LM')] if lm else
+             [host_end, (ATT, 'att_due', 'FLIGHT_ATT: the jets turn the CSM')],
+             [end], uses('FLIGHT_ENGINE', 'FLIGHT_RCS', 'FLIGHT_ATT') if lm else uses('FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_ATT'),
              either(moved(5), moved(6), moved(0o11, 0o30000 if lm else 0o10000)),
              unit(m, 't6rupt', 'tjet-law', 'q-r-axis') if lm else unit(m, 'jet-select', 'rcs-dap', 'tvc-roll'),
              how='channel 5 or 6, or the engine bits of channel 11, changed in the host\'s states',
-             gap='the jets drive no attitude dynamics (IMU row)', closes='Lane B\'s rigid-body model'),
+             gap='the jets turn the spacecraft only with FLIGHT_ATT (IMU row), with no cross-coupling',
+             closes='products of inertia in tools/flight_attitude.h (D1)'),
     ]
     if lm:
         out += [
@@ -410,10 +414,15 @@ def roles(m):
     if lm:
         out += [
             role('trim', 'DPS gimbal trim', 'out', 'channel 12 bits 9-12 (pitch and roll trim, plus and minus)',
-                 [host_end], [end], uses('FLIGHT_ENGINE'), moved(0o12, 0o7400), unit(m, 'trim-gimbal'),
-                 how='a trim bit of channel 12 changed in the host\'s states',
-                 gap='no gimbal model: the engine thrusts along a fixed axis, so trim moves nothing', blocking=True,
-                 closes='Lane B: a DPS gimbal in the engine model'),
+                 [host_end, ('tools/flight_dps_gimbal.h', 'dps_gimbal_due', 'the trim gimbal: channel 12 bits 9-12 '
+                             'turn it at 0.2 deg/s within 6 deg, on both sides'),
+                  ('tools/flight_dps_gimbal.h', 'dps_thrust_sm', 'FLIGHT_TRIM: the thrust follows the gimbal into '
+                   'the PIPAs')],
+                 [end], uses('FLIGHT_TRIM'), both(moved(0o12, 0o7400), pipas), unit(m, 'trim-gimbal'),
+                 how='a trim bit of channel 12 changed, with PIPA counts, in the host\'s states',
+                 gap='the trim torque turns nothing yet: FLIGHT_ATT turns the LM under its jets only, so the tilt '
+                     'bends the thrust but not the attitude (att_due will read dps_gimbal)',
+                 closes='the engine torque in the IMU row\'s attitude model (D1, tools/flight_attitude.h)'),
         ]
     else:
         out += [

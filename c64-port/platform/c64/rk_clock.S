@@ -59,11 +59,24 @@ rk_rupts:
 
 /*   uint16_t rk_budget(void);
  * The MCT left before the next timer step: the step's MCT less rk_work.
+ * With a request waiting (rk_pending: interrupts inhibited, or inside an
+ * interrupt) it is 0: the host takes the request at the first routine
+ * boundary it can, so a run goes one routine at a time (RELINT, RESUME),
+ * and rk_limit's count of 1 makes that run a cut one (rk_cut): if the
+ * request is not taken, the next step goes on in the same module, whose
+ * table the host goes on charging (tools/flight_host_run.c, charged).
  * Out: A low, X high. Uses Y. */
 .section .text.rk_budget,"ax",@progbits
 .globl rk_budget
 .type rk_budget,@function
 rk_budget:
+    lda rk_pending
+    ora rk_pending+1
+    beq .Lfree
+    lda #0
+    tax
+    rts
+.Lfree:
 #ifdef DP_REPLAY
     jmp dp_budget       /* platform/c64/dap_pass_check.c: the replay's cap */
 .globl rk_phase_budget
