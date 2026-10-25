@@ -42,6 +42,6 @@ The C64 meter was checked against the host (C64 runs at 1cfd6bc5, the base befor
 
 **A request waits at most 1,706 MCT (20 ms) for a native boundary.** That is one DOWNRUPT period (20 ms), the shortest fixed interrupt period in flight, so a held request can't let a second DOWNRUPT arrive and merge with it.
 
-The longest measured hold is 1,425 MCT, 84% of the bound. `tools/rupt_hold_report.py --bound 1706` fails a window that holds a request longer.
+The longest measured hold is 1,425 MCT, 84% of the bound. The bound is `HOLD_BOUND_MCT` in `tools/flight_scenario_vice.py`. Every `--replay` window fails when its host meter shows a longer hold, and with `--hold` the C64's too, so each replay window CI runs checks it. `tools/rupt_hold_report.py` checks it over every program map window.
 
 The bound is a limit on the port, not a claim that the real AGC behaves this way. A held T6RUPT ends an RCS jet firing up to that much later than the AGC would. The host and C64 agree on it, so replay matches. Flight effect is a model question for the lanes that own the DAP (D1) and powered flight (F).
