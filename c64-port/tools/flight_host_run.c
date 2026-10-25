@@ -418,9 +418,15 @@ static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){retu
  * (rk_trampoline, RK_RESIDENT_MCT), then the pinned sets (rk_direct), then
  * the resolver's order, which is host.inc's. last: the routine before's
  * table, 0 at a fresh step. */
-static int kernel_table(const entry *e){const char *n=e->name;
+static int kernel_name(const char *n){
  return strstr(n,"_kernel_routines")||strstr(n,"_kernel_job_routines")||strstr(n,"_kernel_task_routines")
   ||strstr(n,"_kernel_idle_routines")||(strstr(n,"_sp_routines")&&!strstr(n,"_hot_"));}
+/* Asked for every table at every point (holder, charged), so each table's
+ * answer is worked out once. */
+static int kernel_table(const entry *e){static uint8_t known[TABLES];unsigned i=(unsigned)(e-tables);
+ if(i>=TABLES)return kernel_name(e->name)!=0;
+ if(!known[i])known[i]=(uint8_t)(1u+(kernel_name(e->name)!=0));
+ return known[i]-1u;}
 static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const entry *last){int in;unsigned i,r;uint16_t key=point(w,sb,&in);
  /* A table with no module (lm_t6rupt_routines: the T6RUPT vector, DOT6RUPT
   * and the RESUME family) runs on the C64 as one run too: DOT6RUPT's TCF
