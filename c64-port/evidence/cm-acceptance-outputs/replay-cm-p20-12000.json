@@ -1,0 +1,126 @@
+{
+ "scenario": "cm-p20",
+ "ok": true,
+ "status": 0,
+ "z": "06037",
+ "fb": "20000",
+ "superbank": "0060",
+ "bank": "10",
+ "at": "03,2037",
+ "wall_cycles": 237974043,
+ "agc_cs": 1085,
+ "dropped_ticks": 0,
+ "steps": 3273,
+ "wall_per_agc": 22.261,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 12000,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 23
+ },
+ "hold_host_mct": 636,
+ "hold_host_time1": 12462,
+ "replay_rows": 25,
+ "replay_applied": 25,
+ "replay_end_cs": 1085,
+ "replay_ended": true,
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {
+   "0": 25
+  },
+  "erasable": [
+   "0035",
+   "0036",
+   "0046"
+  ],
+  "pipas": [],
+  "channels": [],
+  "requests": 0,
+  "channel_set": {},
+  "channel_clear": {},
+  "channel_changed": {}
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 2,
+   "channel 12": 2,
+   "channel 13": 1,
+   "channel 14": 3072,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 2,
+   "channel 12": 0,
+   "channel 13": 1,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [
+   "0046"
+  ],
+  "changed": [
+   "0046"
+  ]
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
+ "replay_matched_cs": [
+  136,
+  285,
+  385,
+  485,
+  585,
+  685,
+  785,
+  885,
+  985,
+  1085
+ ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 12000,
+ "snap_slid": false,
+ "requested_cs": 1085,
+ "host_holes": [],
+ "downrupt": false,
+ "commit": "7dd3db437cfa",
+ "outputs_driven": {
+  "13": [
+   0,
+   1
+  ]
+ }
+}

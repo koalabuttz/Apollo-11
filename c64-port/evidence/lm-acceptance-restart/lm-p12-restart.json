@@ -1,0 +1,219 @@
+{
+ "name": "lm-p12-restart",
+ "gojam": 185000,
+ "asked": 185000,
+ "host": {
+  "scenario": "lm-p12-restart",
+  "mission": "lm",
+  "centiseconds": 190000,
+  "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E",
+  "inputs": {
+   "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_CH33": "036733",
+   "FLIGHT_LR_POS2": "500",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_ENGINE": "15100",
+   "FLIGHT_ENGINE_LAG": "0.2",
+   "FLIGHT_PILOT": "8",
+   "FLIGHT_TOUCHDOWN": "134400",
+   "FLIGHT_ASCENT": "4888",
+   "FLIGHT_CHAN": "122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777",
+   "FLIGHT_SCALED": "1,1,2"
+  },
+  "gojam_cs": 185000,
+  "schedule": "1,1,2",
+  "exit": 0,
+  "native_routines": 7434598,
+  "bridged_instructions": 0,
+  "agc_cs": 190000,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "185000",
+    "03214"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   0,
+   1
+  ],
+  "rsbbq": [
+   "03214",
+   "03214"
+  ],
+  "modreg": [
+   "00014",
+   "00014"
+  ],
+  "failreg": [
+   [
+    "01520",
+    "00405",
+    "41203"
+   ],
+   [
+    "01520",
+    "00405",
+    "41203"
+   ]
+  ],
+  "active_phases_before": {
+   "PHASE2": "00021",
+   "PHASE5": "00003"
+  },
+  "active_phases_end": {
+   "PHASE2": "00021",
+   "PHASE5": "00003"
+  },
+  "end_words_differing_from_base": 176,
+  "gojam_snapshot": "build/flight-restart/lm-p12-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/lm-p12-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "7dd3db437cfa",
+  "log": "host.log",
+  "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
+ },
+ "c64": {
+  "scenario": "lm-p12-restart",
+  "ok": true,
+  "status": 0,
+  "z": "03214",
+  "fb": "02000",
+  "superbank": "0100",
+  "bank": "01",
+  "at": "01,3214",
+  "wall_cycles": 81374062,
+  "agc_cs": 376,
+  "dropped_ticks": 0,
+  "steps": 2285,
+  "wall_per_agc": 21.966,
+  "lost": false,
+  "mission": "lm",
+  "snap_cs": 185000,
+  "replay": true,
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save",
+    "replay states",
+    "scratch",
+    "undo"
+   ],
+   "outside": [],
+   "dma_outside": 0,
+   "dma_trace_armed": true,
+   "dma_hits": [],
+   "dma_unchecked": 11
+  },
+  "hold_host_mct": 508,
+  "hold_host_time1": 16218,
+  "replay_rows": 762,
+  "replay_applied": 762,
+  "replay_end_cs": 376,
+  "replay_ended": true,
+  "replay_after_rows": 17,
+  "replay_inputs": {
+   "counts": {
+    "0": 20,
+    "1": 742
+   },
+   "erasable": [
+    "0033"
+   ],
+   "pipas": [
+    "0037",
+    "0040",
+    "0041"
+   ],
+   "channels": [],
+   "requests": 0,
+   "channel_set": {},
+   "channel_clear": {},
+   "channel_changed": {}
+  },
+  "replay_outputs": {
+   "channel_set": {
+    "channel 5": 0,
+    "channel 6": 0,
+    "channel 11": 4352,
+    "channel 12": 32,
+    "channel 13": 0,
+    "channel 14": 28680,
+    "channel 34": 0,
+    "channel 35": 0,
+    "superbank": 112,
+    "channel 10": 11939,
+    "interrupts enabled": 1,
+    "radar gate": 0
+   },
+   "channel_changed": {
+    "channel 5": 0,
+    "channel 6": 0,
+    "channel 11": 4352,
+    "channel 12": 32,
+    "channel 13": 0,
+    "channel 14": 28680,
+    "channel 34": 0,
+    "channel 35": 0,
+    "superbank": 112,
+    "channel 10": 11939,
+    "interrupts enabled": 0,
+    "radar gate": 0
+   },
+   "nonzero": [
+    "0046",
+    "0050",
+    "0051",
+    "0052",
+    "0053",
+    "0054",
+    "0055"
+   ],
+   "changed": [
+    "0050",
+    "0051",
+    "0052"
+   ]
+  },
+  "replay_unpaired": [],
+  "replay_unpaired_count": 0,
+  "replay_busy_apart": [],
+  "replay_busy_apart_count": 0,
+  "replay_end_shift_cs": 0,
+  "replay_end_paired": true,
+  "masked_dead_superbank": 0,
+  "masked_dead_superbank_at": [],
+  "replay_matched_cs": [
+   50,
+   168,
+   200,
+   250,
+   368
+  ],
+  "replay_differences": 0,
+  "replay_differ_at_cs": null,
+  "replay_skipped": [],
+  "replay_first": [],
+  "snap_at": 185000,
+  "snap_slid": false,
+  "requested_cs": 368,
+  "host_holes": [],
+  "downrupt": false,
+  "commit": "7dd3db437cfa",
+  "exit": 0,
+  "log": "lm-p12-restart-c64.log",
+  "log_sha256": "fecbd639a90639d1595f8c3aae8c1ae8aa6bf4107526ee77da13eb5098804510",
+  "store_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
+  "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259",
+  "prg_sha256": "9e8fb26f73157fb6f20fc5bd266d20eb92eaa55a97124c55ceec0f54f9e21188"
+ },
+ "gojam_on_c64": null
+}

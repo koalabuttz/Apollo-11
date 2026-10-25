@@ -1,17 +1,17 @@
 {
  "scenario": "cm-p40",
- "ok": false,
+ "ok": true,
  "status": 0,
  "z": "03231",
  "fb": "02000",
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 28353929,
- "agc_cs": 301,
+ "wall_cycles": 29671696,
+ "agc_cs": 307,
  "dropped_ticks": 0,
- "steps": 914,
- "wall_per_agc": 9.561,
+ "steps": 926,
+ "wall_per_agc": 9.81,
  "lost": false,
  "mission": "cm",
  "snap_cs": 11750,
@@ -27,66 +27,92 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 6
+  "dma_unchecked": 5
  },
+ "hold_host_mct": 830,
+ "hold_host_time1": 11854,
  "replay_rows": 3,
  "replay_applied": 3,
- "replay_end_cs": 301,
+ "replay_end_cs": 307,
  "replay_ended": true,
- "replay_unpaired": [
-  {
-   "side": "host",
-   "cs": 300,
-   "end": true
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {
+   "2": 1,
+   "3": 1
   },
-  {
-   "side": "C64",
-   "cs": 301,
-   "end": true
+  "erasable": [],
+  "pipas": [],
+  "channels": [
+   "15"
+  ],
+  "requests": 32,
+  "channel_set": {
+   "15": 28
   },
-  {
-   "side": "host",
-   "cs": 200
+  "channel_clear": {
+   "15": 32739
   },
-  {
-   "side": "C64",
-   "cs": 201
-  },
-  {
-   "side": "host",
-   "cs": 250
-  },
-  {
-   "side": "C64",
-   "cs": 251
+  "channel_changed": {
+   "15": 12
   }
- ],
- "replay_unpaired_count": 4,
- "replay_end_shift_cs": 1,
- "replay_end_paired": false,
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 48,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 16,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [],
+  "changed": []
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
  "replay_matched_cs": [
-  50
+  50,
+  112,
+  150,
+  200,
+  250,
+  300
  ],
- "replay_differences": 2,
- "replay_differ_at_cs": 112,
- "replay_skipped": [
-  "DSRUPTSW"
- ],
- "replay_first": [
-  {
-   "at": "TIME4",
-   "host": "37776",
-   "c64": "37777"
-  },
-  {
-   "at": "channel 10",
-   "host": "00000",
-   "c64": "13737"
-  }
- ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
  "snap_at": 11750,
  "snap_slid": false,
  "requested_cs": 300,
  "host_holes": [],
- "commit": "22bfa334ba31"
+ "downrupt": false,
+ "commit": "7dd3db437cfa"
 }

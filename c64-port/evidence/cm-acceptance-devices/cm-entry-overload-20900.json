@@ -1,6 +1,6 @@
 {
  "scenario": "cm-entry-overload",
- "ok": false,
+ "ok": true,
  "watched": [
   515,
   499,
@@ -2674,6 +2674,8 @@
  },
  "hold_host_mct": 1753,
  "hold_host_time1": 5107,
+ "hold_host_work_mct": 1153,
+ "hold_host_work_stolen": 600,
  "replay_rows": 63,
  "replay_applied": 63,
  "replay_end_cs": 611,
@@ -2766,6 +2768,6 @@
  "requested_cs": 611,
  "host_holes": [],
  "downrupt": false,
- "commit": "1e9f9f8c8324",
+ "commit": "7dd3db437cfa",
  "replay_every": 50
 }

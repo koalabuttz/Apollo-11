@@ -1,0 +1,44 @@
+{
+ "mode": "all",
+ "missions": [
+  "lm",
+  "cm"
+ ],
+ "every": 1,
+ "snap_cs": 1000,
+ "key_cs": 1100,
+ "settle_cs": 150,
+ "passed": 4322,
+ "cases": 4322,
+ "failed_by_class": {},
+ "stores": {
+  "lm": {
+   "reu_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
+   "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+   "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259"
+  },
+  "cm": {
+   "reu_sha256": "a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf",
+   "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+   "manifest_sha256": "9968b925d9733cae9263d7dc766173dbb5ed7fb880e1ca972684f0a257813bc6"
+  }
+ },
+ "replay_exact": true,
+ "skipped_cases": 0,
+ "item6": true,
+ "full": "dsky-sweep.json",
+ "full_sha256": "8ddd79039cd50c0e462685a205ce29bdf2e0d4ed8a16e0e373ef031dc4159de6",
+ "by_mission": {
+  "lm": {
+   "cases": 2161,
+   "passed": 2161,
+   "skipped_cases": 0
+  },
+  "cm": {
+   "cases": 2161,
+   "passed": 2161,
+   "skipped_cases": 0
+  }
+ },
+ "failed": []
+}

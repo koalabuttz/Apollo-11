@@ -1,0 +1,67 @@
+{
+ "name": "lm-p00-restart",
+ "gojam": 2500,
+ "asked": 2500,
+ "host": {
+  "scenario": "lm-p00-restart",
+  "mission": "lm",
+  "centiseconds": 4000,
+  "keys": "",
+  "inputs": {},
+  "gojam_cs": 2500,
+  "schedule": null,
+  "exit": 0,
+  "native_routines": 256955,
+  "bridged_instructions": 0,
+  "agc_cs": null,
+  "samples": 4000,
+  "samples_equal": 3872,
+  "base_samples_equal": 4000,
+  "gojam": [
+   [
+    "2500",
+    "03214"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03214",
+   "03214"
+  ],
+  "modreg": [
+   "77777",
+   "77777"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "00000",
+    "00000"
+   ],
+   [
+    "01107",
+    "00000",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {},
+  "active_phases_end": {},
+  "end_words_differing_from_base": 12,
+  "gojam_snapshot": "build/flight-restart/lm-p00-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/lm-p00-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "7dd3db437cfa",
+  "log": "host.log",
+  "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
+ },
+ "c64": null,
+ "gojam_on_c64": null
+}

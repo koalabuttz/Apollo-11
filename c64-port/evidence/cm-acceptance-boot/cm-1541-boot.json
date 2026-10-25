@@ -1,6 +1,6 @@
 {
  "mission": "cm",
- "commit": "20106b1ebae4eabe575d4c7f100f6e627a4608f4",
+ "commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0",
  "dirty": false,
  "drive": "1541",
  "keys": "RV37E00E",
@@ -13,19 +13,21 @@
   "00000",
   "00000"
  ],
- "load_s": 2189.8,
- "boot_s": 108.9,
+ "load_s": 2200.0,
+ "boot_s": 109.4,
  "sha256": {
-  "flight-disk/cm-1.d64": "71b70b088426c9e8e4b8de4d0328ab9e967179ce1abf2a57842bac1c277bba3d",
-  "flight-disk/cm-2.d64": "d5d0f9912eb416e2c191a2156d27cde95903dc94e6858384451fd9a854de4e1e",
-  "flight-disk/cm-3.d64": "2f43c8e6f5ff233b6abafb57ca18072947444e66b02293330bd2f25453debbe8",
-  "flight-disk/cm-4.d64": "ff87823d158231c4d87fc2321ebc6c04ec8970d658f51f4c74f7dd932a7eb65c",
-  "flight-disk/cm-5.d64": "344d92d84fd5c707ec8efd476e2226a61045b808ccb6a6d4328495353445e952",
+  "flight-disk/cm-1.d64": "77fb2c4dbd22d4c948a0928a36d075f509141f9407710cc1ba5a98818d36f791",
+  "flight-disk/cm-2.d64": "5e3089d3a69029d9ad3cda50d44f85fb24ef9366d7e91721cdcc9b8a09df361f",
+  "flight-disk/cm-3.d64": "9d0b0845fc4e6a2f05ecfb89e0e324b115df4e859fae59594c81fe1bd74e244d",
+  "flight-disk/cm-4.d64": "358f6eb6a062956be138561f7aea551603e3a26ce574c74d237f93f00f11da59",
+  "flight-disk/cm-5.d64": "41812017e6b48293f6afb740d014f73e91c0d7746a26204681fad0f0f0398ff6",
   "flight-disk/cm-loader.prg": "64d1501ea7aed917e84e2b1248c4f822de3afc17591b077741015e0f30a81c15",
-  "flight-disk/cm-resident.prg": "cb8a194108af9a26f03949aa060d5cf09b9fcf678a786282d05ac7d82b53a708",
-  "flight-store/cm.reu": "7fa7e815d6882931c493a0f1ea47e82516265b9dd754933518f14f59271c6a85"
+  "flight-disk/cm-resident.prg": "c171cda82d05b90afe096c0ee6a8f83c009e8966fcdf0ebc94def46f4589e3fc",
+  "flight-store/cm.reu": "a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf"
  },
- "vice_log_sha256": "8d687f2b12fdd195eae21fcd3641d871a27a50def82cbabdbc9c0190e916adcb",
+ "vice_log_sha256": "e35ebc9faa16a09ce6b37f33ba3490e031e6c7e5d1a68dafea6ba1faba7d2b4e",
+ "monitor_log_sha256": "e835945013eb722eef3107ece50409c7b5be5483de8e05220b60c4a27b5295ef",
+ "reu_bounds_ok": true,
  "screen_sha256": "2af4a287541ddb1a8b5b95f77837045970a086c2bc6b56f26fe2f63275f188cd",
  "screen": [
   " APOLLO 11 CM DSKY",

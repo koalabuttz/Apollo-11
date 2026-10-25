@@ -1,0 +1,16 @@
+build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
+build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
+cm-entry-restart: commit 7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0 with local changes; store cm.reu sha256 a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf
+cm-entry-restart: the host run to 25341 cs bridges 0 points, each a stop on the C64
+cm-entry-restart: snapshot at 25041 cs (asked 25041, +0 cs)
+cm-entry-restart: 428 host input rows (428 on the C64) in the window at REU 0x1d1800 (428 PIPA counts, 0 erasable words, 0 channels, 0 interrupt requests), then 17 past the host's end
+cm-entry-restart: REU writes inside the cm layout (changed: pinball save, replay states, scratch)
+cm-entry-restart: 5 DMAs seen only after they ran (last byte checked)
+cm-entry-restart: every DMA inside the cm REU layout
+cm-entry-restart: interrupt hold: host max 652 MCT at TIME1 21200
+cm-entry-restart: the C64 matches the host at 50, 100, 192, 200, 251, 301 cs: it ends the window (309 cs, all 428 input rows) in the host's state
+cm-entry-restart from 25041 cs: 45670365 cycles for 309 AGC cs (15.001 x real time), 0 ticks dropped, 1355 steps, status 0 at 01,3231 (Z 03231 FB 02000 superbank 0100)
+  T3RUPT: 40 x, mean 182052 cycles (max 388469), 204 steps, 35 job and 3 task loads
+  T4RUPT: 63 x, mean 94733 cycles (max 165410), 214 steps, 25 job and 131 task loads
+  T5RUPT: 31 x, mean 269909 cycles (max 422825), 223 steps, 82 job and 2 task loads
+  background: 119 x, mean 202059 cycles (max 4366876), 714 steps, 109 job and 9 task loads

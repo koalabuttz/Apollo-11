@@ -1,6 +1,6 @@
 {
  "mission": "lm",
- "commit": "20106b1ebae4eabe575d4c7f100f6e627a4608f4",
+ "commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0",
  "dirty": false,
  "drive": "1581",
  "keys": "RV37E00E",
@@ -13,15 +13,17 @@
   "00000",
   "00000"
  ],
- "load_s": 264.5,
- "boot_s": 112.5,
+ "load_s": 267.0,
+ "boot_s": 113.5,
  "sha256": {
-  "flight-disk/lm-1.d81": "045221c88583205e6dc4136699c5f2d2ce21bca6fc308e7347f45b3d9deb58ce",
+  "flight-disk/lm-1.d81": "1715b29a4ade9365081c4613571ed5a0b7077b89f7915e9cebb399bc6aa0385b",
   "flight-disk/lm-loader.prg": "737149160db05062b991e4e3a96df7b45a5d07cd573f3ec61c6faee4363560b5",
-  "flight-disk/lm-resident.prg": "c13e4f1559293bbee47f640319cfdd69ce55b8e5c1d3b08e0e2df70c188a12a4",
-  "flight-store/lm.reu": "a1cdf9f4dbcd8649ce28c56dfea330e7e893655d87c57d7548334a238757d95d"
+  "flight-disk/lm-resident.prg": "6d8aafbf39dc13339ba1e2c3051935946ac7ca0150cd5c5828f65f4132a42a48",
+  "flight-store/lm.reu": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf"
  },
- "vice_log_sha256": "5e69c03d5ba0613b6e14e6290234b428183052020cb7c9bf44b78b7db5eb897e",
+ "vice_log_sha256": "b836f46c32a7eb739a0be1dd179defff6591d0630e75dcb3c4dd09417a1af6d4",
+ "monitor_log_sha256": "2edbc4025ac232395f6aff3ac1662b44af7ab3083f5d22e49439f30793129ffa",
+ "reu_bounds_ok": true,
  "screen_sha256": "eced2f8f3a809820483fdba0214bdcc45928892ebc8ee8a044e0b5de9e7839b9",
  "screen": [
   " APOLLO 11 LM DSKY",

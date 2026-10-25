@@ -1,0 +1,351 @@
+{
+ "name": "lm-p63-descent-restart",
+ "gojam": 20000,
+ "asked": 20000,
+ "host": {
+  "scenario": "lm-p63-descent-restart",
+  "mission": "lm",
+  "centiseconds": 30000,
+  "keys": "@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E",
+  "inputs": {
+   "FLIGHT_CH30": "036357",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_CH33": "077737",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p63.load",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_ENGINE": "15100",
+   "FLIGHT_SCALED": "1,1,2"
+  },
+  "gojam_cs": 20000,
+  "schedule": "1,1,2",
+  "exit": 0,
+  "native_routines": 1190969,
+  "bridged_instructions": 0,
+  "agc_cs": 30000,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "20000",
+    "03214"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03214",
+   "03214"
+  ],
+  "modreg": [
+   "00077",
+   "00077"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "01703",
+    "00000"
+   ],
+   [
+    "01107",
+    "01703",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {
+   "PHASE2": "00021",
+   "PHASE5": "00003"
+  },
+  "active_phases_end": {
+   "PHASE2": "00021",
+   "PHASE5": "00003"
+  },
+  "end_words_differing_from_base": 142,
+  "gojam_snapshot": "build/flight-restart/lm-p63-descent-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/lm-p63-descent-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "7dd3db437cfa",
+  "log": "host.log",
+  "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
+ },
+ "c64": {
+  "scenario": "lm-p63-descent-restart",
+  "ok": true,
+  "status": 0,
+  "z": "03214",
+  "fb": "02000",
+  "superbank": "0100",
+  "bank": "01",
+  "at": "01,3214",
+  "wall_cycles": 81916450,
+  "agc_cs": 310,
+  "dropped_ticks": 0,
+  "steps": 2112,
+  "wall_per_agc": 26.82,
+  "lost": false,
+  "mission": "lm",
+  "snap_cs": 20000,
+  "replay": true,
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save",
+    "replay states",
+    "scratch",
+    "undo"
+   ],
+   "outside": [],
+   "dma_outside": 0,
+   "dma_trace_armed": true,
+   "dma_hits": [],
+   "dma_unchecked": 7
+  },
+  "hold_host_mct": 670,
+  "hold_host_time1": 3872,
+  "replay_rows": 207,
+  "replay_applied": 207,
+  "replay_end_cs": 310,
+  "replay_ended": true,
+  "replay_after_rows": 11,
+  "replay_inputs": {
+   "counts": {
+    "1": 207
+   },
+   "erasable": [],
+   "pipas": [
+    "0037",
+    "0040",
+    "0041"
+   ],
+   "channels": [],
+   "requests": 0,
+   "channel_set": {},
+   "channel_clear": {},
+   "channel_changed": {}
+  },
+  "replay_outputs": {
+   "channel_set": {
+    "channel 5": 0,
+    "channel 6": 0,
+    "channel 11": 4352,
+    "channel 12": 288,
+    "channel 13": 0,
+    "channel 14": 28680,
+    "channel 34": 0,
+    "channel 35": 0,
+    "superbank": 112,
+    "channel 10": 7038,
+    "interrupts enabled": 1,
+    "radar gate": 0
+   },
+   "channel_changed": {
+    "channel 5": 0,
+    "channel 6": 0,
+    "channel 11": 4352,
+    "channel 12": 288,
+    "channel 13": 0,
+    "channel 14": 28680,
+    "channel 34": 0,
+    "channel 35": 0,
+    "superbank": 112,
+    "channel 10": 7038,
+    "interrupts enabled": 0,
+    "radar gate": 0
+   },
+   "nonzero": [
+    "0055"
+   ],
+   "changed": [
+    "0055"
+   ]
+  },
+  "replay_unpaired": [],
+  "replay_unpaired_count": 0,
+  "replay_busy_apart": [],
+  "replay_busy_apart_count": 0,
+  "replay_end_shift_cs": 0,
+  "replay_end_paired": true,
+  "masked_dead_superbank": 0,
+  "masked_dead_superbank_at": [],
+  "replay_matched_cs": [
+   103,
+   150,
+   200,
+   302
+  ],
+  "replay_differences": 0,
+  "replay_differ_at_cs": null,
+  "replay_skipped": [],
+  "replay_first": [],
+  "snap_at": 20000,
+  "snap_slid": false,
+  "requested_cs": 302,
+  "host_holes": [],
+  "downrupt": false,
+  "commit": "7dd3db437cfa",
+  "exit": 0,
+  "log": "lm-p63-descent-restart-c64.log",
+  "log_sha256": "69ae3a45e35a79f19efab949abdbb566ce7d3ef42befe6004b95077ffd09b6e9",
+  "store_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
+  "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259",
+  "prg_sha256": "9fa3d53ef7f6d952c0ad0a8f12936989d15624b6201b47e4b39683c0c2a4288b"
+ },
+ "gojam_on_c64": {
+  "scenario": "lm-p63-descent-restart",
+  "mission": "lm",
+  "centiseconds": 30000,
+  "keys": "@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E",
+  "inputs": {
+   "FLIGHT_CH30": "036357",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_CH33": "077737",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p63.load",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_ENGINE": "15100",
+   "FLIGHT_SCALED": "1,1,2"
+  },
+  "gojam_cs": 20000,
+  "schedule": "1,1,2",
+  "exit": 0,
+  "native_routines": 1190969,
+  "bridged_instructions": 0,
+  "agc_cs": 30000,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "20000",
+    "03214"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03214",
+   "03214"
+  ],
+  "modreg": [
+   "00077",
+   "00077"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "01703",
+    "00000"
+   ],
+   [
+    "01107",
+    "01703",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {
+   "PHASE2": "00021",
+   "PHASE5": "00003"
+  },
+  "active_phases_end": {
+   "PHASE2": "00021",
+   "PHASE5": "00003"
+  },
+  "end_words_differing_from_base": 142,
+  "gojam_snapshot": "build/flight-restart/lm-p63-descent-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/lm-p63-descent-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "c64_gojam": {
+   "module": {
+    "id": "0x01e5",
+    "slot": 0,
+    "bytes": 486
+   },
+   "gojam": {
+    "run_status": 0,
+    "env_status": 0,
+    "q": "03214",
+    "z": "04000",
+    "words_equal": 2048,
+    "words_differing": [],
+    "fields_compared": 28,
+    "fields_differing": {}
+   },
+   "burst": {
+    "ok": true,
+    "boot_failed": false,
+    "failed": 0,
+    "fail_class": 0,
+    "devices": {
+     "hw.channel11": 0,
+     "hw.in_interrupt": 0,
+     "hw.channel5": 0,
+     "hw.channel6": 0,
+     "hw.channel13": 0,
+     "hw.channel15": 28,
+     "hw.channel10": 0,
+     "hw.channel32": 32767,
+     "hw.channel12": 0,
+     "hw.channel14": 0,
+     "hw.channel30": 15599,
+     "hw.channel33": 32735,
+     "hw.channel31": 24575,
+     "hw.channel3": 39,
+     "hw.channel4": 1024,
+     "flight.superbank": 64,
+     "flight.interrupt_enabled": 1,
+     "flight.channel16": 0,
+     "flight.channel34": 0,
+     "flight.channel35": 0,
+     "flight.trap31a": 0,
+     "flight.trap31b": 0,
+     "flight.trap32": 0,
+     "flight.executive_alarm": 0,
+     "flight.waitlist_alarm": 0,
+     "flight.warning": 0,
+     "io.superbank": 64,
+     "io.interrupt_enabled": 1,
+     "run_status": 0,
+     "env_status": 0,
+     "rk_pending": 0,
+     "loaded_job": 0,
+     "loaded_task": 0,
+     "fault": 0
+    },
+    "steps": 24,
+    "start_cs": 3616,
+    "end_cs": 3616,
+    "z": "03214",
+    "fb": "02000",
+    "q": "03547",
+    "newjob": "77777",
+    "status": 0,
+    "superbank": "100",
+    "in_interrupt": 0,
+    "interrupt_enabled": 1,
+    "idle": true,
+    "reference": "reference: arrived after 1734 instructions: Z 03214 FB 02000 superbank 100, NEWJOB 77777, interrupts enabled",
+    "reference_arrived": true,
+    "words_differing": [],
+    "words_equal": 2048
+   },
+   "ok": true
+  },
+  "commit": "7dd3db437cfa",
+  "log": "gojam-on-c64.log",
+  "log_sha256": "e7f23ba73a6b46dcdb3136ec2acca320ec261f962c7cc640676d4229c7b90bd0"
+ }
+}

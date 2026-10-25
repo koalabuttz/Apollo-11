@@ -4,18 +4,23 @@
   "release": "evidence-cm-acceptance-memory",
   "files": {
     "cm-entry-29000-replay.json": {
-      "sha256": "c31bfe41c7c1043a13689d8aa08be2bcba9ae96bd0b3b9a1e580a3dbb2393fd7",
-      "bytes": 36345,
+      "sha256": "e0e013f8171889f15722d9e2323d5b109d074edb553dbc760eeeeff5ee24117c",
+      "bytes": 38096,
       "store": "tree"
     },
     "cm-p52-5400-replay.json": {
-      "sha256": "baf75e7c69fc96dcdb7c9b61b71368539106ba39825bfc78ec0932633920070e",
-      "bytes": 11464,
+      "sha256": "3a533383c5af90f146a829959cce5825ddc2bb99a4587fd16a2b02bdddf112ae",
+      "bytes": 13782,
       "store": "tree"
     },
     "cm-tli-31000-replay.json": {
-      "sha256": "a508110272a2ef023409e34074cc89203967bf28f23951c22c51a97300799c6d",
-      "bytes": 12714,
+      "sha256": "2a91d508f3e33f21efee915b14e178dd4ebc6f74119a714913ec5a16561a8e5a",
+      "bytes": 14011,
+      "store": "tree"
+    },
+    "control-cm-entry-29000.json": {
+      "sha256": "886c6b58b4a5341cc814516ecff6adcc0d1cac75443c978b6128eec70522af1c",
+      "bytes": 20662,
       "store": "tree"
     }
   }

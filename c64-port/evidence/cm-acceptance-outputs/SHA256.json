@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-acceptance-outputs",
+  "release": "evidence-cm-acceptance-outputs",
+  "files": {
+    "downlink.json": {
+      "sha256": "045db541416441fe3f91b07b6930fc4b451f65c1df55fb338a5155ca911f3236",
+      "bytes": 10360,
+      "store": "tree"
+    },
+    "dsky-sweep-summary.json": {
+      "sha256": "503655465800aa8213d76613c225a78bf37b64f5e2621a3978234a49239cb302",
+      "bytes": 1098,
+      "store": "tree"
+    },
+    "replay-cm-entry-15100.json": {
+      "sha256": "e612142f69747f48a0a356a568d45e8ab2844d50919dc486785bea7e800548f1",
+      "bytes": 2131,
+      "store": "tree"
+    },
+    "replay-cm-entry-25000.json": {
+      "sha256": "c79e234d979b8e1fcd24e03bae933f71d4e7595c565d00091001c63e729057f1",
+      "bytes": 2118,
+      "store": "tree"
+    },
+    "replay-cm-p20-12000.json": {
+      "sha256": "5677281bf45f444d807b54e6a6da288286b3d5a7e9ca9e38c6ccf0e0f1b6f05c",
+      "bytes": 2132,
+      "store": "tree"
+    },
+    "replay-cm-p22-12000.json": {
+      "sha256": "4001d0306d8015ec404758ad12d228516712de11f3dad695618935a5cbf06c96",
+      "bytes": 2055,
+      "store": "tree"
+    },
+    "replay-cm-p37-4400.json": {
+      "sha256": "6b6d6f1f6973ea0ef7d94b1263dc517aff0497e2e8a05d9a912ccaec9090c200",
+      "bytes": 2240,
+      "store": "tree"
+    },
+    "replay-cm-p40-29000.json": {
+      "sha256": "70b838d7ffec9853ecc0057e70fc8a6484255c5ac1512db0fff2a36d00ac7c38",
+      "bytes": 2188,
+      "store": "tree"
+    },
+    "replay-cm-p40-29900.json": {
+      "sha256": "e40373a89287c01067cad0b23428a826f95a76f25579ef7f7509daf857a1e3b4",
+      "bytes": 2296,
+      "store": "tree"
+    },
+    "replay-cm-p40-66800.json": {
+      "sha256": "712217797b835cb2c9eaa4336fea0f6210fd8363b97261f2cb105dd73fedf72c",
+      "bytes": 2199,
+      "store": "tree"
+    },
+    "replay-cm-p52-5400.json": {
+      "sha256": "eac5f1ca70498ebc59f217e4e086cae55e031c507b2a89955f15689f6d83bfca",
+      "bytes": 2061,
+      "store": "tree"
+    },
+    "replay-cm-p52-8200.json": {
+      "sha256": "fce0d47b4a614426cb8f7977232758295ec7faa784572f839a9ff870a30bfb10",
+      "bytes": 2174,
+      "store": "tree"
+    },
+    "replay-cm-p52-coarse-9600.json": {
+      "sha256": "d2eec780e42424e39ddbb6d8a3e99bbc83991e55f86de8199f037adfa9135982",
+      "bytes": 2268,
+      "store": "tree"
+    },
+    "replay-cm-tei-29000.json": {
+      "sha256": "837b732278693fe49edd5806100c48a0141b6cfaa57828efb1e70af14b437399",
+      "bytes": 2188,
+      "store": "tree"
+    },
+    "replay-cm-uplink-accept-12020.json": {
+      "sha256": "99607a852ad1ca57ab2962253007a6aa9bd7b0714a6f6b025193b748ffffa825",
+      "bytes": 2058,
+      "store": "tree"
+    }
+  }
+}

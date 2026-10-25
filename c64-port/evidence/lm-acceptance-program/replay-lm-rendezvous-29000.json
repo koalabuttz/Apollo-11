@@ -1,17 +1,17 @@
 {
  "scenario": "lm-rendezvous",
- "ok": false,
+ "ok": true,
  "status": 0,
- "z": "03252",
- "fb": "36000",
+ "z": "06070",
+ "fb": "22000",
  "superbank": "0060",
- "bank": "17",
- "at": "17,3252",
- "wall_cycles": 104530737,
- "agc_cs": 605,
+ "bank": "11",
+ "at": "03,2070",
+ "wall_cycles": 108665898,
+ "agc_cs": 604,
  "dropped_ticks": 0,
- "steps": 3352,
- "wall_per_agc": 17.537,
+ "steps": 3341,
+ "wall_per_agc": 18.26,
  "lost": false,
  "mission": "lm",
  "snap_cs": 29000,
@@ -26,182 +26,101 @@
   ],
   "outside": [],
   "dma_outside": 0,
+  "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 14
+  "dma_unchecked": 20
  },
+ "hold_host_mct": 652,
+ "hold_host_time1": 12769,
  "replay_rows": 37,
  "replay_applied": 37,
- "replay_end_cs": 605,
+ "replay_end_cs": 604,
  "replay_ended": true,
- "replay_matched_cs": [],
- "replay_differences": 46,
- "replay_differ_at_cs": 136,
- "replay_skipped": [],
- "replay_first": [
-  {
-   "at": "0020",
-   "host": "40007",
-   "c64": "20016"
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {
+   "0": 18,
+   "2": 9,
+   "3": 10
   },
-  {
-   "at": "0022",
-   "host": "56401",
-   "c64": "70161"
+  "erasable": [
+   "0033",
+   "0036"
+  ],
+  "pipas": [],
+  "channels": [
+   "15"
+  ],
+  "requests": 32,
+  "channel_set": {
+   "15": 31
   },
-  {
-   "at": "0116",
-   "host": "00133",
-   "c64": "01666"
+  "channel_clear": {
+   "15": 32767
   },
-  {
-   "at": "0117",
-   "host": "03560",
-   "c64": "56050"
-  },
-  {
-   "at": "0122",
-   "host": "07746",
-   "c64": "77777"
-  },
-  {
-   "at": "0123",
-   "host": "50637",
-   "c64": "00000"
-  },
-  {
-   "at": "0124",
-   "host": "03775",
-   "c64": "00226"
-  },
-  {
-   "at": "0125",
-   "host": "16735",
-   "c64": "00000"
-  },
-  {
-   "at": "0126",
-   "host": "00023",
-   "c64": "00000"
-  },
-  {
-   "at": "0127",
-   "host": "06311",
-   "c64": "00000"
-  },
-  {
-   "at": "0130",
-   "host": "25014",
-   "c64": "00226"
-  },
-  {
-   "at": "0131",
-   "host": "12406",
-   "c64": "00000"
-  },
-  {
-   "at": "0133",
-   "host": "17746",
-   "c64": "07777"
-  },
-  {
-   "at": "0134",
-   "host": "47323",
-   "c64": "00000"
-  },
-  {
-   "at": "0135",
-   "host": "17746",
-   "c64": "17544"
-  },
-  {
-   "at": "0136",
-   "host": "16061",
-   "c64": "00006"
-  },
-  {
-   "at": "0137",
-   "host": "07332",
-   "c64": "07373"
-  },
-  {
-   "at": "0140",
-   "host": "00000",
-   "c64": "77765"
-  },
-  {
-   "at": "0154",
-   "host": "17777",
-   "c64": "77752"
-  },
-  {
-   "at": "0155",
-   "host": "34432",
-   "c64": "76640"
-  },
-  {
-   "at": "0156",
-   "host": "00154",
-   "c64": "51134"
-  },
-  {
-   "at": "0157",
-   "host": "00000",
-   "c64": "77777"
-  },
-  {
-   "at": "0160",
-   "host": "00000",
-   "c64": "03777"
-  },
-  {
-   "at": "0161",
-   "host": "77777",
-   "c64": "07777"
-  },
-  {
-   "at": "0162",
-   "host": "00000",
-   "c64": "36215"
-  },
-  {
-   "at": "0163",
-   "host": "00000",
-   "c64": "77776"
-  },
-  {
-   "at": "0164",
-   "host": "02533",
-   "c64": "02053"
-  },
-  {
-   "at": "0165",
-   "host": "44007",
-   "c64": "56007"
-  },
-  {
-   "at": "0166",
-   "host": "00405",
-   "c64": "00415"
-  },
-  {
-   "at": "0401",
-   "host": "00052",
-   "c64": "00001"
-  },
-  {
-   "at": "0402",
-   "host": "01410",
-   "c64": "22207"
-  },
-  {
-   "at": "0404",
-   "host": "34432",
-   "c64": "37777"
+  "channel_changed": {
+   "15": 31
   }
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 8242,
+   "channel 12": 8224,
+   "channel 13": 1,
+   "channel 14": 31744,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 50,
+   "channel 12": 0,
+   "channel 13": 1,
+   "channel 14": 3072,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [
+   "0046",
+   "0055"
+  ],
+  "changed": []
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
+ "replay_matched_cs": [
+  136,
+  200,
+  300,
+  400,
+  500,
+  604
  ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
  "snap_at": 29000,
  "snap_slid": false,
- "requested_cs": 600,
+ "requested_cs": 604,
  "host_holes": [],
- "commit": "c76e489507c0"
+ "downrupt": false,
+ "commit": "7dd3db437cfa"
 }

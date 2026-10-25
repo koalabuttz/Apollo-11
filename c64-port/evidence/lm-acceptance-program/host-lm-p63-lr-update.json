@@ -1,7 +1,7 @@
 {
  "scenario": "lm-p63-lr-update-scaled-x1",
  "mission": "lm",
- "centiseconds": 96000,
+ "centiseconds": 110000,
  "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E@66000V57E",
  "inputs": {
   "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
@@ -14,14 +14,77 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "b9a2bcb2256e",
- "cia_interrupts": 98297,
- "periods_taken": 96002,
- "periods_dropped": 2295,
- "agc_centiseconds": 96002,
- "native_routines": 4318797,
+ "commit": "7dd3db437cfa",
+ "cia_interrupts": 110027,
+ "periods_taken": 110027,
+ "periods_dropped": 0,
+ "agc_centiseconds": 110027,
+ "native_routines": 4534202,
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
- "log_sha256": "ee78555c87c9737f7d6178eef983e9115929372d6d33070bd8df530a178b75f7"
+ "interpretive_charge": {
+  "fitted": 14229796,
+  "yaagc": 13225275,
+  "percent": 7.6,
+  "routines": 59354,
+  "mean_abs_error": 54.6,
+  "abs_percent": 24.5,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +7.6% net, 24.5% routine by routine, from yaAGC's MCT over 59354 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "25,3607": 62124,
+  "43,2322": 66151
+ },
+ "arrivals": {
+  "25,3607": [
+   62124,
+   62324,
+   62525,
+   62725,
+   62924,
+   63124,
+   63325,
+   63524,
+   63724,
+   63925,
+   64124,
+   64324,
+   64526,
+   64726,
+   64923,
+   65122,
+   65323,
+   65523,
+   65722,
+   65923,
+   66123,
+   66322,
+   66522,
+   66723,
+   66922,
+   67123,
+   67323,
+   67522,
+   67723,
+   67923,
+   68123,
+   109943
+  ],
+  "43,2322": [
+   66151
+  ]
+ },
+ "log_sha256": "a76fd8fc9f1c87831b7f99cdd68e1f0b7ae438422883d01c27cf1391aeaafdc9"
 }

@@ -1,0 +1,214 @@
+{
+ "name": "lm-dap-hold-restart",
+ "gojam": 2000,
+ "asked": 2000,
+ "host": {
+  "scenario": "lm-dap-hold-restart",
+  "mission": "lm",
+  "centiseconds": 3000,
+  "keys": "",
+  "inputs": {
+   "FLIGHT_CH30": "036377",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_POKE": "1500:035=02000",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SCALED": "4,1,2,1"
+  },
+  "gojam_cs": 2000,
+  "schedule": "4,1,2,1",
+  "exit": 0,
+  "native_routines": 22495,
+  "bridged_instructions": 0,
+  "agc_cs": 3001,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "2000",
+    "03214"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03214",
+   "03214"
+  ],
+  "modreg": [
+   "77777",
+   "77777"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "02000",
+    "42000"
+   ],
+   [
+    "01107",
+    "02000",
+    "42000"
+   ]
+  ],
+  "active_phases_before": {},
+  "active_phases_end": {},
+  "end_words_differing_from_base": 10,
+  "gojam_snapshot": "build/flight-restart/lm-dap-hold-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/lm-dap-hold-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "7dd3db437cfa",
+  "log": "host.log",
+  "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
+ },
+ "c64": null,
+ "gojam_on_c64": {
+  "scenario": "lm-dap-hold-restart",
+  "mission": "lm",
+  "centiseconds": 3000,
+  "keys": "",
+  "inputs": {
+   "FLIGHT_CH30": "036377",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_POKE": "1500:035=02000",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SCALED": "4,1,2,1"
+  },
+  "gojam_cs": 2000,
+  "schedule": "4,1,2,1",
+  "exit": 0,
+  "native_routines": 22495,
+  "bridged_instructions": 0,
+  "agc_cs": 3001,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "2000",
+    "03214"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03214",
+   "03214"
+  ],
+  "modreg": [
+   "77777",
+   "77777"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "02000",
+    "42000"
+   ],
+   [
+    "01107",
+    "02000",
+    "42000"
+   ]
+  ],
+  "active_phases_before": {},
+  "active_phases_end": {},
+  "end_words_differing_from_base": 10,
+  "gojam_snapshot": "build/flight-restart/lm-dap-hold-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/lm-dap-hold-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "c64_gojam": {
+   "module": {
+    "id": "0x01e5",
+    "slot": 0,
+    "bytes": 486
+   },
+   "gojam": {
+    "run_status": 0,
+    "env_status": 0,
+    "q": "03214",
+    "z": "04000",
+    "words_equal": 2048,
+    "words_differing": [],
+    "fields_compared": 28,
+    "fields_differing": {}
+   },
+   "burst": {
+    "ok": true,
+    "boot_failed": false,
+    "failed": 0,
+    "fail_class": 0,
+    "devices": {
+     "hw.channel11": 0,
+     "hw.in_interrupt": 0,
+     "hw.channel5": 0,
+     "hw.channel6": 0,
+     "hw.channel13": 0,
+     "hw.channel15": 0,
+     "hw.channel10": 0,
+     "hw.channel32": 32767,
+     "hw.channel12": 0,
+     "hw.channel14": 0,
+     "hw.channel30": 15615,
+     "hw.channel33": 32767,
+     "hw.channel31": 24575,
+     "hw.channel3": 3,
+     "hw.channel4": 14848,
+     "flight.superbank": 64,
+     "flight.interrupt_enabled": 1,
+     "flight.channel16": 0,
+     "flight.channel34": 0,
+     "flight.channel35": 0,
+     "flight.trap31a": 0,
+     "flight.trap31b": 0,
+     "flight.trap32": 0,
+     "flight.executive_alarm": 0,
+     "flight.waitlist_alarm": 0,
+     "flight.warning": 0,
+     "io.superbank": 64,
+     "io.interrupt_enabled": 1,
+     "run_status": 0,
+     "env_status": 0,
+     "rk_pending": 0,
+     "loaded_job": 0,
+     "loaded_task": 0,
+     "fault": 0
+    },
+    "steps": 12,
+    "start_cs": 2000,
+    "end_cs": 2000,
+    "z": "03214",
+    "fb": "02000",
+    "q": "03547",
+    "newjob": "77777",
+    "status": 0,
+    "superbank": "100",
+    "in_interrupt": 0,
+    "interrupt_enabled": 1,
+    "idle": true,
+    "reference": "reference: arrived after 938 instructions: Z 03214 FB 02000 superbank 100, NEWJOB 77777, interrupts enabled",
+    "reference_arrived": true,
+    "words_differing": [],
+    "words_equal": 2048
+   },
+   "ok": true
+  },
+  "commit": "7dd3db437cfa",
+  "log": "gojam-on-c64.log",
+  "log_sha256": "e7f23ba73a6b46dcdb3136ec2acca320ec261f962c7cc640676d4229c7b90bd0"
+ }
+}

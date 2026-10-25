@@ -15,14 +15,81 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "b9a2bcb2256e",
- "cia_interrupts": 188107,
- "periods_taken": 180001,
- "periods_dropped": 8106,
- "agc_centiseconds": 180001,
- "native_routines": 7512906,
+ "commit": "7dd3db437cfa",
+ "cia_interrupts": 180007,
+ "periods_taken": 180007,
+ "periods_dropped": 0,
+ "agc_centiseconds": 180007,
+ "native_routines": 7039008,
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
- "log_sha256": "983ff74821e4a92f025f281af557923dd0bb218c0d5f8a89b31a9d650554801d"
+ "interpretive_charge": {
+  "fitted": 25927452,
+  "yaagc": 24544914,
+  "percent": 5.6,
+  "routines": 111586,
+  "mean_abs_error": 49.1,
+  "abs_percent": 22.3,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +5.6% net, 22.3% routine by routine, from yaAGC's MCT over 111586 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "31,2630": 111738,
+  "21,2073": 115022,
+  "21,2021": 62122
+ },
+ "arrivals": {
+  "31,2630": [
+   111738
+  ],
+  "21,2073": [
+   115022
+  ],
+  "21,2021": [
+   62122,
+   62147,
+   62172,
+   62198,
+   62222,
+   62247,
+   62272,
+   62297,
+   62322,
+   62347,
+   62372,
+   62398,
+   62422,
+   62447,
+   62472,
+   62497,
+   62522,
+   62547,
+   62572,
+   62598,
+   62622,
+   62647,
+   62672,
+   62697,
+   62722,
+   62747,
+   62772,
+   62798,
+   62822,
+   62847,
+   62872,
+   179997
+  ]
+ },
+ "log_sha256": "a3c855da7dd9a7517c1b4581a777683cb672c164fce2aa61634edfe166e356c6"
 }

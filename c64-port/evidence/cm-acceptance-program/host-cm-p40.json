@@ -8,20 +8,55 @@
   "FLIGHT_CH31": "037777",
   "FLIGHT_CH33": "077767",
   "FLIGHT_SWAP_MCT": "0",
-  "FLIGHT_SPS": "43900",
+  "FLIGHT_SPS": "43900,0.5,-0.3",
   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "22bfa334ba31",
+ "commit": "7dd3db437cfa",
  "cia_interrupts": 74000,
  "periods_taken": 74000,
  "periods_dropped": 0,
  "agc_centiseconds": 74000,
- "native_routines": 3665043,
+ "native_routines": 3657377,
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
- "reached": {},
- "log_sha256": "209ea0b218331202814b20ee013c2cae5d7901396d0a4abd4d424b881327e654"
+ "interpretive_charge": {
+  "fitted": 4187520,
+  "yaagc": 4088096,
+  "percent": 2.4,
+  "routines": 17851,
+  "mean_abs_error": 56.6,
+  "abs_percent": 24.7,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +2.4% net, 24.7% routine by routine, from yaAGC's MCT over 17851 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "24,2073": 11805,
+  "35,3323": 4804,
+  "24,3410": 29751
+ },
+ "arrivals": {
+  "24,2073": [
+   11805
+  ],
+  "35,3323": [
+   4804
+  ],
+  "24,3410": [
+   29751
+  ]
+ },
+ "log_sha256": "53b0d093259a789e9b4e13bcf11c429a9a1526a99d166512e9bf89c0dea2c43c"
 }

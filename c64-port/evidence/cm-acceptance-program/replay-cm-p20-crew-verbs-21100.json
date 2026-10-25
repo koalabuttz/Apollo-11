@@ -1,17 +1,17 @@
 {
  "scenario": "cm-p20-crew-verbs",
- "ok": false,
+ "ok": true,
  "status": 0,
  "z": "06037",
  "fb": "24000",
  "superbank": "0000",
  "bank": "12",
  "at": "03,2037",
- "wall_cycles": 87224681,
+ "wall_cycles": 89749432,
  "agc_cs": 387,
  "dropped_ticks": 0,
- "steps": 1568,
- "wall_per_agc": 22.876,
+ "steps": 1558,
+ "wall_per_agc": 23.538,
  "lost": false,
  "mission": "cm",
  "snap_cs": 21100,
@@ -27,62 +27,95 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 11
+  "dma_unchecked": 13
  },
+ "hold_host_mct": 325,
+ "hold_host_time1": 5155,
  "replay_rows": 17,
  "replay_applied": 17,
  "replay_end_cs": 387,
  "replay_ended": true,
- "replay_unpaired": [
-  {
-   "side": "host",
-   "cs": 138
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {
+   "0": 14,
+   "2": 1,
+   "3": 1
   },
-  {
-   "side": "C64",
-   "cs": 139
+  "erasable": [
+   "0035"
+  ],
+  "pipas": [],
+  "channels": [
+   "15"
+  ],
+  "requests": 32,
+  "channel_set": {
+   "15": 28
+  },
+  "channel_clear": {
+   "15": 32739
+  },
+  "channel_changed": {
+   "15": 12
   }
- ],
- "replay_unpaired_count": 2,
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 34,
+   "channel 12": 2,
+   "channel 13": 1,
+   "channel 14": 3072,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 34,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [
+   "0046"
+  ],
+  "changed": []
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
  "replay_end_shift_cs": 0,
  "replay_end_paired": true,
- "replay_matched_cs": [],
- "replay_differences": 5,
- "replay_differ_at_cs": 151,
- "replay_skipped": [
-  "DSPTAB sent bits",
-  "DSRUPTSW"
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
+ "replay_matched_cs": [
+  138,
+  151,
+  287,
+  387
  ],
- "replay_first": [
-  {
-   "at": "TIME3",
-   "host": "37733",
-   "c64": "37732"
-  },
-  {
-   "at": "TIME4",
-   "host": "37777",
-   "c64": "37776"
-  },
-  {
-   "at": "1016",
-   "host": "00012",
-   "c64": "00011"
-  },
-  {
-   "at": "1400",
-   "host": "77570",
-   "c64": "77571"
-  },
-  {
-   "at": "channel 10",
-   "host": "00000",
-   "c64": "51257"
-  }
- ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
  "snap_at": 21100,
  "snap_slid": false,
  "requested_cs": 387,
  "host_holes": [],
- "commit": "22bfa334ba31"
+ "downrupt": false,
+ "commit": "7dd3db437cfa"
 }

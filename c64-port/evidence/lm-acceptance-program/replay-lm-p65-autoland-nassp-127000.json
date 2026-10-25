@@ -1,17 +1,17 @@
 {
  "scenario": "lm-p65-autoland-nassp",
- "ok": false,
- "status": 1,
- "z": "02732",
- "fb": "60000",
+ "ok": true,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
  "superbank": "0100",
- "bank": "40",
- "at": "40,2732",
- "wall_cycles": 49178139,
- "agc_cs": 181,
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 258472746,
+ "agc_cs": 1008,
  "dropped_ticks": 0,
- "steps": 1207,
- "wall_per_agc": 27.577,
+ "steps": 6625,
+ "wall_per_agc": 26.026,
  "lost": false,
  "mission": "lm",
  "snap_cs": 127000,
@@ -26,216 +26,107 @@
   ],
   "outside": [],
   "dma_outside": 0,
+  "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 17
+  "dma_unchecked": 24
  },
- "replay_rows": 1265,
- "replay_applied": 206,
- "replay_end_cs": 181,
- "replay_ended": false,
- "replay_matched_cs": [],
- "replay_differences": 329,
- "replay_differ_at_cs": 170,
- "replay_skipped": [],
- "replay_first": [
-  {
-   "at": "centiseconds",
-   "host": "00252",
-   "c64": "00144"
+ "hold_host_mct": 743,
+ "hold_host_time1": 7555,
+ "replay_rows": 1381,
+ "replay_applied": 1381,
+ "replay_end_cs": 1008,
+ "replay_ended": true,
+ "replay_after_rows": 11,
+ "replay_inputs": {
+  "counts": {
+   "0": 195,
+   "1": 1186
   },
-  {
-   "at": "TIME1",
-   "host": "16057",
-   "c64": "15751"
+  "erasable": [
+   "0032",
+   "0033",
+   "0034",
+   "0046"
+  ],
+  "pipas": [
+   "0037",
+   "0040",
+   "0041"
+  ],
+  "channels": [],
+  "requests": 0,
+  "channel_set": {},
+  "channel_clear": {},
+  "channel_changed": {}
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 4416,
+   "channel 12": 3872,
+   "channel 13": 15,
+   "channel 14": 28712,
+   "channel 34": 32767,
+   "channel 35": 32480,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 7
   },
-  {
-   "at": "TIME3",
-   "host": "37776",
-   "c64": "37777"
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 0,
+   "channel 12": 3840,
+   "channel 13": 11,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 7
   },
-  {
-   "at": "TIME4",
-   "host": "37771",
-   "c64": "37765"
-  },
-  {
-   "at": "0033",
-   "host": "01076",
-   "c64": "01077"
-  },
-  {
-   "at": "0037",
-   "host": "00157",
-   "c64": "00501"
-  },
-  {
-   "at": "0040",
-   "host": "00001",
-   "c64": "00002"
-  },
-  {
-   "at": "0041",
-   "host": "77763",
-   "c64": "77733"
-  },
-  {
-   "at": "0046",
-   "host": "27777",
-   "c64": "00231"
-  },
-  {
-   "at": "0055",
-   "host": "77771",
-   "c64": "77766"
-  },
-  {
-   "at": "0061",
-   "host": "00004",
-   "c64": "37777"
-  },
-  {
-   "at": "0062",
-   "host": "00010",
-   "c64": "00007"
-  },
-  {
-   "at": "0063",
-   "host": "10000",
-   "c64": "32110"
-  },
-  {
-   "at": "0064",
-   "host": "00014",
-   "c64": "00000"
-  },
-  {
-   "at": "0065",
-   "host": "00013",
-   "c64": "00000"
-  },
-  {
-   "at": "0066",
-   "host": "00200",
-   "c64": "01000"
-  },
-  {
-   "at": "0124",
-   "host": "00034",
-   "c64": "00031"
-  },
-  {
-   "at": "0126",
-   "host": "75615",
-   "c64": "76373"
-  },
-  {
-   "at": "0127",
-   "host": "01464",
-   "c64": "01516"
-  },
-  {
-   "at": "0130",
-   "host": "03122",
-   "c64": "00000"
-  },
-  {
-   "at": "0132",
-   "host": "32107",
-   "c64": "20107"
-  },
-  {
-   "at": "0133",
-   "host": "02570",
-   "c64": "03722"
-  },
-  {
-   "at": "0134",
-   "host": "60000",
-   "c64": "70000"
-  },
-  {
-   "at": "0164",
-   "host": "00000",
-   "c64": "71722"
-  },
-  {
-   "at": "0165",
-   "host": "00017",
-   "c64": "00067"
-  },
-  {
-   "at": "0167",
-   "host": "77777",
-   "c64": "45667"
-  },
-  {
-   "at": "0170",
-   "host": "02040",
-   "c64": "77720"
-  },
-  {
-   "at": "0171",
-   "host": "00000",
-   "c64": "01500"
-  },
-  {
-   "at": "0172",
-   "host": "00017",
-   "c64": "00030"
-  },
-  {
-   "at": "0173",
-   "host": "00100",
-   "c64": "63476"
-  },
-  {
-   "at": "0175",
-   "host": "00017",
-   "c64": "00014"
-  },
-  {
-   "at": "0176",
-   "host": "11254",
-   "c64": "06622"
-  }
+  "nonzero": [
+   "0046",
+   "0053",
+   "0054",
+   "0055"
+  ],
+  "changed": [
+   "0046",
+   "0055"
+  ]
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
+ "replay_matched_cs": [
+  162,
+  200,
+  362,
+  400,
+  562,
+  600,
+  755,
+  800,
+  955,
+  1000
  ],
- "snap_at": 127001,
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 127017,
  "snap_slid": false,
  "requested_cs": 1000,
- "host_holes": [
-  {
-   "kind": "basic",
-   "point": "40,2732",
-   "label": "2INTOUT",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 12,
-   "instructions": 12,
-   "refused_by": "lanec_pin_lm_routines",
-   "core_start": false
-  },
-  {
-   "kind": "basic",
-   "point": "40,2734",
-   "label": "2INTOUT+2",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 12,
-   "instructions": 36,
-   "refused_by": "lanec_pin_lm_routines",
-   "core_start": false
-  },
-  {
-   "kind": "basic",
-   "point": "40,3306",
-   "label": "DSPDECVN",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 12,
-   "instructions": 216,
-   "refused_by": "lanec_pin_lm_routines",
-   "core_start": false
-  }
- ],
- "commit": "c76e489507c0"
+ "host_holes": [],
+ "downrupt": false,
+ "commit": "7dd3db437cfa"
 }

@@ -1,0 +1,16 @@
+build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
+build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
+lm-p63-descent-restart: commit 7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0 with local changes; store lm.reu sha256 4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf
+lm-p63-descent-restart: the host run to 20300 cs bridges 0 points, each a stop on the C64
+lm-p63-descent-restart: snapshot at 20000 cs (asked 20000, +0 cs)
+lm-p63-descent-restart: 207 host input rows (207 on the C64) in the window at REU 0x1d0000 (207 PIPA counts, 0 erasable words, 0 channels, 0 interrupt requests), then 13 past the host's end
+lm-p63-descent-restart: REU writes inside the lm layout (changed: pinball save, replay states, scratch, undo)
+lm-p63-descent-restart: 7 DMAs seen only after they ran (last byte checked)
+lm-p63-descent-restart: every DMA inside the lm REU layout
+lm-p63-descent-restart: interrupt hold: host max 670 MCT at TIME1 07440
+lm-p63-descent-restart: the C64 matches the host at 103, 150, 200, 302 cs: it ends the window (310 cs, all 207 input rows) in the host's state
+lm-p63-descent-restart from 20000 cs: 81916450 cycles for 310 AGC cs (26.82 x real time), 0 ticks dropped, 2112 steps, status 0 at 01,3214 (Z 03214 FB 02000 superbank 0100)
+  T3RUPT: 16 x, mean 183871 cycles (max 281233), 97 steps, 32 job and 0 task loads
+  T4RUPT: 66 x, mean 102308 cycles (max 203191), 292 steps, 98 job and 0 task loads
+  T5RUPT: 31 x, mean 158580 cycles (max 402071), 180 steps, 74 job and 0 task loads
+  background: 111 x, mean 606289 cycles (max 5627155), 1543 steps, 626 job and 0 task loads

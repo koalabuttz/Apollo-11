@@ -16,26 +16,42 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "b9a2bcb2256e",
- "cia_interrupts": 7589,
+ "commit": "7dd3db437cfa",
+ "cia_interrupts": 7500,
  "periods_taken": 7500,
- "periods_dropped": 89,
+ "periods_dropped": 0,
  "agc_centiseconds": 7500,
- "native_routines": 309187,
- "bridged_instructions": 80,
+ "native_routines": 303931,
+ "bridged_instructions": 0,
  "routine_mismatches": [],
- "unregistered": [
-  {
-   "kind": "basic",
-   "point": "41,3321",
-   "label": "MONDO",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 8,
-   "instructions": 80,
-   "refused_by": "lanec_pin_lm_routines",
-   "core_start": false
-  }
- ],
- "log_sha256": "0346ca3136bc3caecb5bfdf9dff32c943791a96f3eac09b950f7d2c6f1cc5ca6"
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 1211360,
+  "yaagc": 1187389,
+  "percent": 2.0,
+  "routines": 6201,
+  "mean_abs_error": 43.3,
+  "abs_percent": 22.6,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +2.0% net, 22.6% routine by routine, from yaAGC's MCT over 6201 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "36,3436": 507
+ },
+ "arrivals": {
+  "36,3436": [
+   507
+  ]
+ },
+ "log_sha256": "44a4a5d32947aaebc157d998fd0d59037c26534579155e765dee9b66f26a0177"
 }

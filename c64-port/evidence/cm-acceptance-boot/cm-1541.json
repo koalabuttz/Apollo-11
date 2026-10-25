@@ -8,81 +8,87 @@
   "cm-5.d64"
  ],
  "loader_bytes": 6462,
- "resident_bytes": 38012,
+ "resident_bytes": 38019,
  "resident_start": 2061,
- "boot_return": 2589,
+ "boot_return": 2871,
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
- "bytes_loaded": 1855925,
+ "bytes_loaded": 1863663,
  "data_bytes": [
-  161678,
-  168230,
-  168356,
-  168325,
-  128918
+  161752,
+  168257,
+  168331,
+  168298,
+  132582
  ],
  "vice": {
   "mission": "cm",
   "ok": true,
   "swap_prompts": [
    "READING DISK 1 INSERT DISK 2 OF 5 AND PRESS RETURN",
+   "INSERT DISK 2 OF 5 AND PRESS RETURN INSERT DISK 2 OF 5 AND PRESS RETURN",
    "READING DISK 2 INSERT DISK 3 OF 5 AND PRESS RETURN",
+   "INSERT DISK 3 OF 5 AND PRESS RETURN INSERT DISK 3 OF 5 AND PRESS RETURN",
    "READING DISK 3 INSERT DISK 4 OF 5 AND PRESS RETURN",
-   "READING DISK 4 INSERT DISK 5 OF 5 AND PRESS RETURN"
+   "READING DISK 4 INSERT DISK 5 OF 5 AND PRESS RETURN",
+   "INSERT DISK 5 OF 5 AND PRESS RETURN INSERT DISK 5 OF 5 AND PRESS RETURN"
   ],
   "swaps": [
    2,
+   2,
+   3,
    3,
    4,
+   5,
    5
   ],
   "fast_loader": false,
-  "load_cycles": 2157541954,
-  "load_s": 2189.8,
+  "load_cycles": 2167539302,
+  "load_s": 2200.0,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80600,
-  "boot_cycles": 107321505,
-  "boot_s": 108.9,
+  "handoff_cycles": 80784,
+  "boot_cycles": 107752135,
+  "boot_s": 109.4,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 35693259,
-    "time1": "03347",
-    "z": "02000",
-    "fb": "14000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 66730081,
-    "time1": "06432",
+    "cycles": 43683618,
+    "time1": "01614",
     "z": "04701",
     "fb": "66000",
     "modreg": "77777"
    },
    {
-    "cycles": 102425376,
-    "time1": "12103",
-    "z": "02000",
-    "fb": "14000",
+    "cycles": 89128288,
+    "time1": "03534",
+    "z": "05333",
+    "fb": "12000",
     "modreg": "77777"
    },
    {
-    "cycles": 137059249,
-    "time1": "15463",
-    "z": "02000",
-    "fb": "14000",
+    "cycles": 135457483,
+    "time1": "05474",
+    "z": "04040",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 185462345,
+    "time1": "07556",
+    "z": "03521",
+    "fb": "12000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "55b7",
-   "5826",
-   "0200",
-   "08d5",
-   "0375",
-   "58cf",
-   "083c",
+   "0a7a",
+   "5d59",
+   "08e8",
+   "5b02",
+   "5d8c",
+   "34cb",
+   "3721",
    "0200"
   ],
   "key_ch32": [
@@ -105,7 +111,7 @@
    "36000",
    "36000"
   ],
-  "pc": "5af1",
+  "pc": "0895",
   "screen": [
    " APOLLO 11 CM DSKY",
    "",
@@ -132,8 +138,8 @@
   ],
   "modreg": "00000",
   "fb": "02000",
-  "z": "03231",
-  "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
+  "z": "04040",
+  "screenshot": "/tmp/x/fresh/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
    "0x1df000",
@@ -155,7 +161,7 @@
     {
      "name": "store",
      "start": "0x0",
-     "end": "0x1b4400",
+     "end": "0x1b6000",
      "writable": false
     },
     {
@@ -179,13 +185,20 @@
     {
      "name": "resident stage",
      "start": "0x1f6b00",
-     "end": "0x1fff7c",
+     "end": "0x1fff83",
      "writable": false
     }
    ],
+   "traces": [
+    3,
+    4,
+    5
+   ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 19
+   "dma_unchecked": 40,
+   "trace_errors": [],
+   "trace_ok": true
   }
  }
 }

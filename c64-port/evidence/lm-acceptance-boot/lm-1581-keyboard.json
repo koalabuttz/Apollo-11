@@ -4,58 +4,58 @@
   "lm-1.d81"
  ],
  "loader_bytes": 6392,
- "resident_bytes": 38031,
+ "resident_bytes": 38054,
  "resident_start": 2061,
- "boot_return": 2589,
+ "boot_return": 2855,
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
- "bytes_loaded": 1914173,
+ "bytes_loaded": 1930342,
  "data_bytes": [
-  788735
+  795264
  ],
  "vice": {
   "mission": "lm",
   "ok": true,
   "fast_loader": true,
-  "load_cycles": 260586229,
-  "load_s": 264.5,
+  "load_cycles": 263023252,
+  "load_s": 267.0,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80724,
-  "boot_cycles": 110815066,
-  "boot_s": 112.5,
+  "handoff_cycles": 80768,
+  "boot_cycles": 111785075,
+  "boot_s": 113.5,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 32944753,
-    "time1": "01124",
-    "z": "03214",
-    "fb": "66000",
+    "cycles": 46013053,
+    "time1": "01026",
+    "z": "02626",
+    "fb": "36000",
     "modreg": "77777"
    },
    {
-    "cycles": 61957011,
-    "time1": "02217",
-    "z": "03214",
-    "fb": "02000",
+    "cycles": 91906116,
+    "time1": "02106",
+    "z": "00335",
+    "fb": "12000",
     "modreg": "77777"
    },
    {
-    "cycles": 88748139,
-    "time1": "03236",
-    "z": "02161",
+    "cycles": 137901156,
+    "time1": "03174",
+    "z": "03523",
+    "fb": "12000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 185507988,
+    "time1": "04304",
+    "z": "02163",
     "fb": "34000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 118723540,
-    "time1": "04353",
-    "z": "05032",
-    "fb": "14000",
     "modreg": "77777"
    }
   ],
-  "pc": "47b4",
+  "pc": "08e1",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -82,7 +82,7 @@
   ],
   "modreg": "00000",
   "fb": "02000",
-  "z": "03214",
+  "z": "04040",
   "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -116,7 +116,7 @@
     {
      "name": "store",
      "start": "0x0",
-     "end": "0x1c3500",
+     "end": "0x1c6400",
      "writable": false
     },
     {
@@ -140,13 +140,20 @@
     {
      "name": "resident stage",
      "start": "0x1f6b00",
-     "end": "0x1fff8f",
+     "end": "0x1fffa6",
      "writable": false
     }
    ],
+   "traces": [
+    3,
+    4,
+    5
+   ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 24
+   "dma_unchecked": 37,
+   "trace_errors": [],
+   "trace_ok": true
   }
  }
 }

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-acceptance-restart",
+  "release": "evidence-lm-acceptance-restart",
+  "files": {
+    "gojam-on-c64.log": {
+      "sha256": "e7f23ba73a6b46dcdb3136ec2acca320ec261f962c7cc640676d4229c7b90bd0",
+      "bytes": 1847,
+      "store": "tree"
+    },
+    "host.log": {
+      "sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76",
+      "bytes": 1620,
+      "store": "tree"
+    },
+    "lm-dap-hold-restart.json": {
+      "sha256": "107b38ada2b7860efefe1f612dc9aae66effebe78a0ea7ee0e7c9557a5df8646",
+      "bytes": 4377,
+      "store": "tree"
+    },
+    "lm-doi-burn-restart-c64.log": {
+      "sha256": "1278ad92971e264c2206a7b3355328c39ee18771eea4f21a592753c39917fcbc",
+      "bytes": 1606,
+      "store": "tree"
+    },
+    "lm-doi-burn-restart.json": {
+      "sha256": "5d5605fd6d93b5fcb467f9d7519e70f0ee426e3e79e55dcddd182ef0fa6effbb",
+      "bytes": 4626,
+      "store": "tree"
+    },
+    "lm-p00-doi-restart-c64.log": {
+      "sha256": "cf9f90402e46c395aa8a7ddf6f4be74a92394c425ed79a89917a7aa2dda97b25",
+      "bytes": 1546,
+      "store": "tree"
+    },
+    "lm-p00-doi-restart.json": {
+      "sha256": "bc6ee2bf1d59f49e171179b2d15c21be75e333e42bd1d55a17aad717d7cb7473",
+      "bytes": 4489,
+      "store": "tree"
+    },
+    "lm-p00-restart.json": {
+      "sha256": "53bd61037340077c4ffaee1f862ec7c84ff0e9cc8ddb5382b6d69464dd4bf815",
+      "bytes": 1189,
+      "store": "tree"
+    },
+    "lm-p12-restart-c64.log": {
+      "sha256": "fecbd639a90639d1595f8c3aae8c1ae8aa6bf4107526ee77da13eb5098804510",
+      "bytes": 1560,
+      "store": "tree"
+    },
+    "lm-p12-restart.json": {
+      "sha256": "db925a00f67492f6793b1d5199d49af9d90d63df838b5ca777aeba069fa84bea",
+      "bytes": 4661,
+      "store": "tree"
+    },
+    "lm-p63-descent-restart-c64.log": {
+      "sha256": "69ae3a45e35a79f19efab949abdbb566ce7d3ef42befe6004b95077ffd09b6e9",
+      "bytes": 1627,
+      "store": "tree"
+    },
+    "lm-p63-descent-restart.json": {
+      "sha256": "f3515917e90844350ce1a9183d1240b13aa92f777769d0c442b4c3ba39a345e7",
+      "bytes": 7472,
+      "store": "tree"
+    },
+    "lm-rendezvous-restart-c64.log": {
+      "sha256": "620746a02f29399180e16e7cdcb598ffc8365a97968a293c163dedd2f8366e49",
+      "bytes": 1589,
+      "store": "tree"
+    },
+    "lm-rendezvous-restart.json": {
+      "sha256": "2ae1761be1b6e8d4fd6ba75afededbbcf4b84e6a9f9d97af74eb15001d3a9855",
+      "bytes": 4499,
+      "store": "tree"
+    },
+    "lm-v69-restart.json": {
+      "sha256": "fb9bc01e728f9b42ed33c639185ec0fc32fd95a8751a592fc04492522617832d",
+      "bytes": 4501,
+      "store": "tree"
+    }
+  }
+}

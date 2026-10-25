@@ -1,6 +1,6 @@
 {
  "mission": "lm",
- "commit": "20106b1ebae4eabe575d4c7f100f6e627a4608f4",
+ "commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0",
  "dirty": false,
  "drive": "1541",
  "keys": "RV37E00E",
@@ -13,19 +13,21 @@
   "00000",
   "00000"
  ],
- "load_s": 2186.2,
- "boot_s": 112.5,
+ "load_s": 2209.0,
+ "boot_s": 113.5,
  "sha256": {
-  "flight-disk/lm-1.d64": "8d702af44544fc1dc13d73ab68e6d2b2f9c6c3671d6c80503e3ba788976bbe02",
-  "flight-disk/lm-2.d64": "ba38821984d8a66a49431cbdc5191e6d2718cd7e40e66827d128bcfa9051905b",
-  "flight-disk/lm-3.d64": "fa6cae99300f24463cf03e3bb79b042776eb956a90ccca9b8b26b6191824233c",
-  "flight-disk/lm-4.d64": "88d617dfbb027226b12c4d4d1fa33bf463fe70d7e9a45d42a18d2ed88c6c14ca",
-  "flight-disk/lm-5.d64": "f3a004197d264c52b163392096f509144325db65f23129b7ed75976008ad2b89",
+  "flight-disk/lm-1.d64": "dd67f35be44513627b1f08bafa556df2c45402ad5425927c661e151ddcdc2a50",
+  "flight-disk/lm-2.d64": "dbdadf94d6c609afc689e0fd9f6ee305ea206450f6cffb3fcafe772410927aed",
+  "flight-disk/lm-3.d64": "1b082d70d20d765e2fcb7a9791ee6a28fdedcb1a4562f63cf988ead98e20ba5e",
+  "flight-disk/lm-4.d64": "129db0e9618c1ce38f500eae983ef5d46bc4235aef4a8588ea6c9082b4a11eff",
+  "flight-disk/lm-5.d64": "22e21cbac0e50a941e6be7b597a1645d1621ada52578db43173f7a33ca07084b",
   "flight-disk/lm-loader.prg": "6433ed6fe14a7eedb751b4ae5d6b1b5352448cc9915c6f435f62edce752a2080",
-  "flight-disk/lm-resident.prg": "c13e4f1559293bbee47f640319cfdd69ce55b8e5c1d3b08e0e2df70c188a12a4",
-  "flight-store/lm.reu": "a1cdf9f4dbcd8649ce28c56dfea330e7e893655d87c57d7548334a238757d95d"
+  "flight-disk/lm-resident.prg": "6d8aafbf39dc13339ba1e2c3051935946ac7ca0150cd5c5828f65f4132a42a48",
+  "flight-store/lm.reu": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf"
  },
- "vice_log_sha256": "94d849e02e107a65b24704fde7a870b93a663ac98b56bea62de01d749e6a8ad0",
+ "vice_log_sha256": "2b0d03787d1338cc83d1e94177fd9551ff573f151a657072771311d43ba4dc99",
+ "monitor_log_sha256": "88e17c3df71f14ee8ddc7f34197dc58cbf43d072871fedecffd5177cbcfaab40",
+ "reu_bounds_ok": true,
  "screen_sha256": "eced2f8f3a809820483fdba0214bdcc45928892ebc8ee8a044e0b5de9e7839b9",
  "screen": [
   " APOLLO 11 LM DSKY",

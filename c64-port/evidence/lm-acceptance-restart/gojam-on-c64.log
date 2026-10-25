@@ -1,0 +1,10 @@
+build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
+lm-p63-descent-restart: GOJAM at 20000 cs, 1190969 native routines, 0 yaAGC did not match (0 new), REDOCTR 1->2, phases {'PHASE2': '00021', 'PHASE5': '00003'}, major mode 00077 (without the restart 00077)
+  C64 GOJAM module {'id': '0x01e5', 'slot': 0, 'bytes': 486}: run status 0, Q 03214 Z 04000; 2048/2048 words and 28/28 device fields equal the post-GOJAM snapshot
+  C64 burst after apollo_ov2_restart_keep_pinned: 24 steps, idle at ADVAN Z 03214 FB 02000 status 0; yaAGC reference: arrived after 1734 instructions: Z 03214 FB 02000 superbank 100, NEWJOB 77777, interrupts enabled; 2048/2048 words equal
+lm-dap-hold-restart: GOJAM at 2000 cs, 22495 native routines, 0 yaAGC did not match (0 new), REDOCTR 1->2, phases {}, major mode 77777 (without the restart 77777)
+  C64 GOJAM module {'id': '0x01e5', 'slot': 0, 'bytes': 486}: run status 0, Q 03214 Z 04000; 2048/2048 words and 28/28 device fields equal the post-GOJAM snapshot
+  C64 burst after apollo_ov2_restart_keep_pinned: 12 steps, idle at ADVAN Z 03214 FB 02000 status 0; yaAGC reference: arrived after 938 instructions: Z 03214 FB 02000 superbank 100, NEWJOB 77777, interrupts enabled; 2048/2048 words equal
+lm-v69-restart: GOJAM at 2501 cs, 256682 native routines, 0 yaAGC did not match (0 new), REDOCTR 1->2, phases {}, major mode 77777 (without the restart 77777), 4000/4000 samples equal (4000 without the restart)
+  C64 GOJAM module {'id': '0x01e5', 'slot': 0, 'bytes': 486}: run status 0, Q 02037 Z 04000; 2048/2048 words and 28/28 device fields equal the post-GOJAM snapshot
+  C64 burst after apollo_ov2_restart_keep_pinned: 12 steps, idle at ADVAN Z 03214 FB 02000 status 0; yaAGC reference: arrived after 938 instructions: Z 03214 FB 02000 superbank 100, NEWJOB 77777, interrupts enabled; 2048/2048 words equal

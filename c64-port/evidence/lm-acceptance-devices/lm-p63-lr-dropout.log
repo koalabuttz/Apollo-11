@@ -351,7 +351,7 @@ major mode (MODREG 01011) at 115000 cs: native 100, yaAGC 00; FAILREG 01520/0000
 interpreter module: 62239 routines, 62239 slots; 58863 charged other than yaAGC's words
 interpreter charge: fitted 14938976 MCT, yaAGC 13900875 MCT (+7.5%) over 62239 routines; mean |error| 55.1 MCT per routine
 native routines yaAGC did not match (0):
-trim gimbal (deg): native pitch -2.856 roll 5.958, yaAGC pitch 0.000 roll 0.000
+trim gimbal (deg): native pitch -2.856 roll 5.958
 unregistered or refused points (0):
 module loads (155568 in 115027 cs):
   load lm_self_check_idle slot 0 basic  43,3303: 1

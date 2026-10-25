@@ -1,0 +1,549 @@
+{
+ "commit": "7dd3db437cfa",
+ "host": [
+  {
+   "scenario": "cm-p52-restart",
+   "mission": "cm",
+   "centiseconds": 20000,
+   "schedule": "1,1,2",
+   "gojam_cs": 17100,
+   "exit": 0,
+   "agc_cs": 20000,
+   "native_words": 20000,
+   "span_words": 20000,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 101,
+     "whole": 99,
+     "first_cs": 2
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77777",
+     "from_cs": 17002,
+     "words": 100
+    }
+   ],
+   "after_gojam": {
+    "cs": 17102,
+    "words": [
+     "77777",
+     "77340"
+    ],
+    "list": "77777",
+    "list_name": "coast and align",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "cm-p00-restart",
+   "mission": "cm",
+   "centiseconds": 4000,
+   "schedule": null,
+   "gojam_cs": 2500,
+   "exit": 0,
+   "agc_cs": null,
+   "native_words": 3998,
+   "span_words": 3998,
+   "reference_words": 3998,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 21,
+     "whole": 19,
+     "first_cs": 2
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77777",
+     "from_cs": 2402,
+     "words": 98
+    }
+   ],
+   "after_gojam": {
+    "cs": 2502,
+    "words": [
+     "77777",
+     "77340"
+    ],
+    "list": "77777",
+    "list_name": "coast and align",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "cm-p00-p40-restart",
+   "mission": "cm",
+   "centiseconds": 74000,
+   "schedule": "1,1,2",
+   "gojam_cs": 73000,
+   "exit": 0,
+   "agc_cs": 74000,
+   "native_words": 73992,
+   "span_words": 73992,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 31,
+     "whole": 30,
+     "first_cs": 2
+    },
+    "77775": {
+     "name": "rendezvous and prethrust",
+     "lists": 36,
+     "whole": 36,
+     "first_cs": 4802
+    },
+    "77774": {
+     "name": "powered",
+     "lists": 303,
+     "whole": 303,
+     "first_cs": 12002
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77777",
+     "from_cs": 72810,
+     "words": 192
+    }
+   ],
+   "after_gojam": {
+    "cs": 73002,
+    "words": [
+     "77777",
+     "77340"
+    ],
+    "list": "77777",
+    "list_name": "coast and align",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "cm-p40-burn-restart",
+   "mission": "cm",
+   "centiseconds": 55000,
+   "schedule": "1,1,2",
+   "gojam_cs": 50000,
+   "exit": 0,
+   "agc_cs": 55000,
+   "native_words": 54986,
+   "span_words": 54986,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 24,
+     "whole": 24,
+     "first_cs": 2
+    },
+    "77775": {
+     "name": "rendezvous and prethrust",
+     "lists": 36,
+     "whole": 36,
+     "first_cs": 4802
+    },
+    "77774": {
+     "name": "powered",
+     "lists": 215,
+     "whole": 214,
+     "first_cs": 12002
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77774",
+     "from_cs": 49802,
+     "words": 200
+    }
+   ],
+   "after_gojam": {
+    "cs": 50003,
+    "words": [
+     "77774",
+     "77340"
+    ],
+    "list": "77774",
+    "list_name": "powered",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "cm-entry-restart",
+   "mission": "cm",
+   "centiseconds": 32000,
+   "schedule": "1,1,2",
+   "gojam_cs": 25043,
+   "exit": 0,
+   "agc_cs": 32046,
+   "native_words": 32044,
+   "span_words": 32044,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 13,
+     "whole": 13,
+     "first_cs": 2
+    },
+    "77774": {
+     "name": "powered",
+     "lists": 18,
+     "whole": 18,
+     "first_cs": 2602
+    },
+    "77776": {
+     "name": "entry and update",
+     "lists": 131,
+     "whole": 129,
+     "first_cs": 6202
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77776",
+     "from_cs": 25002,
+     "words": 42
+    }
+   ],
+   "after_gojam": {
+    "cs": 25047,
+    "words": [
+     "77776",
+     "77340"
+    ],
+    "list": "77776",
+    "list_name": "entry and update",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "cm-p20-restart",
+   "mission": "cm",
+   "centiseconds": 25000,
+   "schedule": "1,1,2",
+   "gojam_cs": 22081,
+   "exit": 0,
+   "agc_cs": 25007,
+   "native_words": 25004,
+   "span_words": 25004,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 24,
+     "whole": 24,
+     "first_cs": 2
+    },
+    "77775": {
+     "name": "rendezvous and prethrust",
+     "lists": 102,
+     "whole": 100,
+     "first_cs": 4802
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77775",
+     "from_cs": 22002,
+     "words": 80
+    }
+   ],
+   "after_gojam": {
+    "cs": 22084,
+    "words": [
+     "77775",
+     "77340"
+    ],
+    "list": "77775",
+    "list_name": "rendezvous and prethrust",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "cm-p22-restart",
+   "mission": "cm",
+   "centiseconds": 21000,
+   "schedule": "1,1,2",
+   "gojam_cs": 14000,
+   "exit": 0,
+   "agc_cs": 21000,
+   "native_words": 21000,
+   "span_words": 21000,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 24,
+     "whole": 24,
+     "first_cs": 2
+    },
+    "77773": {
+     "name": "program 22",
+     "lists": 81,
+     "whole": 81,
+     "first_cs": 4802
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77773",
+     "from_cs": 13802,
+     "words": 200
+    }
+   ],
+   "after_gojam": {
+    "cs": 14002,
+    "words": [
+     "77773",
+     "77340"
+    ],
+    "list": "77773",
+    "list_name": "program 22",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  }
+ ],
+ "c64": [
+  {
+   "window": "cm-p00",
+   "scenario": "cm-p00-p40-restart",
+   "mission": "cm",
+   "snapshot": "build/flight-downlink/cm-p00-snap.h",
+   "snapshot_cs": 72990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 7454,
+   "z": "03231",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 9,
+     "id": "77777",
+     "name": "coast and align"
+    }
+   ],
+   "first_words": [
+    "00100 76000 1",
+    "37377 37777 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "cm-p40-burn",
+   "scenario": "cm-p40-burn-restart",
+   "mission": "cm",
+   "snapshot": "build/flight-downlink/cm-p40-burn-snap.h",
+   "snapshot_cs": 49990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 838,
+   "z": "03231",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 5,
+     "id": "77774",
+     "name": "powered"
+    }
+   ],
+   "first_words": [
+    "76772 10020 1",
+    "77435 32650 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "cm-entry",
+   "scenario": "cm-entry-restart",
+   "mission": "cm",
+   "snapshot": "build/flight-downlink/cm-entry-snap.h",
+   "snapshot_cs": 24990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 8659,
+   "z": "03231",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 79,
+     "id": "77776",
+     "name": "entry and update"
+    }
+   ],
+   "first_words": [
+    "77777 77777 1",
+    "77777 77777 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "cm-p20",
+   "scenario": "cm-p20-restart",
+   "mission": "cm",
+   "snapshot": "build/flight-downlink/cm-p20-snap.h",
+   "snapshot_cs": 19960,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 3579,
+   "z": "06037",
+   "fb": "24000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 19,
+     "id": "77775",
+     "name": "rendezvous and prethrust"
+    }
+   ],
+   "first_words": [
+    "00000 00000 1",
+    "00000 00000 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "cm-p22",
+   "scenario": "cm-p22-restart",
+   "mission": "cm",
+   "snapshot": "build/flight-downlink/cm-p22-snap.h",
+   "snapshot_cs": 11990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 11990,
+   "z": "03231",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 5,
+     "id": "77773",
+     "name": "program 22"
+    }
+   ],
+   "first_words": [
+    "00000 00000 1",
+    "00000 00000 1"
+   ],
+   "ok": true,
+   "failures": []
+  }
+ ]
+}
