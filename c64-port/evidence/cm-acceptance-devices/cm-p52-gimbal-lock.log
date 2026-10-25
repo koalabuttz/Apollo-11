@@ -79,7 +79,7 @@ watch 19014 cs: 1036 40450
 watch 19026 cs: 1036 00450
 CM: 1274700 native routines (17920823 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
 scaled time: K 1.00, divisor 1, lag 2, seed 0: 21001 CIA interrupts, 21000 clock periods taken, 1 dropped (rk_dilation); AGC time 21000 cs
-night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule
+night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule; yaAGC's own alarm inside 0 spans
 major mode (MODREG 01011) at 21000 cs: native 00, yaAGC 00; FAILREG 01107/00000
 interpreter module: 5194 routines, 5194 slots; 4845 charged other than yaAGC's words
 interpreter charge: fitted 1024436 MCT, yaAGC 989248 MCT (+3.6%) over 5194 routines; mean |error| 49.1 MCT per routine

@@ -151,13 +151,13 @@ DSKY 31813 cs: P67 V06 N66 R1 +08912 R2 -00335 R3 +00662
 DSKY 32015 cs: P67 V06 N66 R1 +08796 R2 -00327 R3 +00639
 CM: 1172342 native routines (23719810 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
 scaled time: K 1.00, divisor 1, lag 2, seed 0: 32015 CIA interrupts, 32015 clock periods taken, 0 dropped (rk_dilation); AGC time 32015 cs
-night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule
+night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule; yaAGC's own alarm inside 0 spans
 major mode (MODREG 01011) at 32000 cs: native 103, yaAGC 00; FAILREG 01107/00000
 interpreter module: 26182 routines, 26182 slots; 25737 charged other than yaAGC's words
 interpreter charge: fitted 6407056 MCT, yaAGC 6234339 MCT (+2.8%) over 26182 routines; mean |error| 34.4 MCT per routine
 native routines yaAGC did not match (0):
 unregistered or refused points (0):
-module loads (21369 in 32015 cs):
+module loads (18797 in 32015 cs):
   load cm_fresh_start slot 0 basic  05,2526: 1
   load cm_interbank_routines slot 0 basic  02,2662: 253
   load cm_v37 slot 0 basic  20,2000: 6
@@ -171,9 +171,9 @@ module loads (21369 in 32015 cs):
   load cm_fresh_start slot 0 basic  05,3153: 1
   load cm_t4rupt_imu slot 1 basic  06,2174: 650
   load cm_t4rupt_optics slot 1 basic  06,2765: 650
-  load cm_interbank_routines slot 0 basic  02,2740: 1767
+  load cm_interbank_routines slot 0 basic  02,2740: 1757
   load imu_mode_switching slot 0 basic  07,3151: 1
-  load cm_interbank_routines slot 0 basic  02,2753: 1206
+  load cm_interbank_routines slot 0 basic  02,2753: 2
   load imu_mode_switching slot 0 basic  02,3521: 2
   load cm_t4rupt_imu slot 1 basic  06,2315: 1
   load cm_t4rupt_imu slot 1 basic  06,2323: 1
@@ -275,7 +275,7 @@ module loads (21369 in 32015 cs):
   load cm_interbank_routines slot 0 basic  02,2711: 200
   load lanec_di_routines slot 0 basic  10,3153: 200
   load cm_p61_p67 slot 0 basic  26,2232: 1
-  load lanec_di_routines slot 0 basic  10,2770: 94
+  load lanec_di_routines slot 0 basic  10,2770: 93
   load cm_interpreter slot 0 basic  03,2706: 5
   load lanec_di_routines slot 0 basic  10,3007: 5
   load lanec_pin_routines slot 0 basic  02,2171: 102
@@ -346,7 +346,7 @@ module loads (21369 in 32015 cs):
   load cm_p61_p67 slot 0 basic  26,2326: 1
   load lanec_di_routines slot 0 basic  10,3125: 1
   load cm_p61_p67 slot 0 basic  26,2337: 1
-  load cm_entry slot 0 basic  15,2434: 1755
+  load cm_entry slot 0 basic  15,2434: 1682
   load cm_servicer slot 0 interp 37,3431: 12
   load cm_body_attitude slot 0 basic  37,3470: 129
   load cm_body_attitude slot 0 interp 37,3502: 15
@@ -374,11 +374,11 @@ module loads (21369 in 32015 cs):
   load cm_body_attitude slot 0 interp 37,3633: 65
   load cm_body_attitude slot 0 interp 37,3634: 17
   load cm_p61_p67 slot 0 interp 10,2413: 12
-  load cm_inflight_align slot 0 interp 23,3271: 4
+  load cm_inflight_align slot 0 interp 23,3271: 3
   load cm_entry_dap slot 1 basic  15,3207: 127
   load cm_entry_dap slot 1 basic  15,3215: 127
   load cm_body_attitude slot 0 interp 37,3573: 6
-  load cm_body_attitude slot 0 interp 37,3577: 11
+  load cm_body_attitude slot 0 interp 37,3577: 10
   load cm_inflight_align slot 0 interp 23,3260: 3
   load cm_body_attitude slot 0 interp 37,3523: 10
   load cm_p61_p67 slot 0 interp 10,2430: 1
@@ -388,7 +388,7 @@ module loads (21369 in 32015 cs):
   load cm_p61_p67 slot 0 basic  26,2335: 1
   load cm_entry_dap slot 1 basic  20,3612: 1
   load cm_p61_p67 slot 0 basic  26,2342: 1
-  load cm_entry slot 0 basic  15,2665: 1160
+  load cm_entry slot 0 basic  15,2665: 1135
   load cm_servicer slot 0 interp 37,3136: 39
   load cm_servicer slot 0 interp 37,3364: 39
   load cm_servicer slot 0 interp 37,3412: 9
@@ -398,19 +398,18 @@ module loads (21369 in 32015 cs):
   load cm_body_attitude slot 0 interp 37,3531: 6
   load cm_body_attitude slot 0 interp 37,3534: 41
   load cm_body_attitude slot 0 interp 37,3610: 12
-  load cm_body_attitude slot 0 interp 37,3613: 45
+  load cm_body_attitude slot 0 interp 37,3613: 36
   load cm_inflight_align slot 0 interp 23,3302: 1
   load cm_servicer slot 0 basic  37,3067: 344
   load cm_p61_p67 slot 0 interp 10,2422: 1
-  load cm_rcs-1 slot 0 basic  21,2471: 1204
   load cm_p61_p67 slot 0 interp 10,2423: 2
   load cm_inflight_align slot 0 interp 23,3354: 1
   load cm_body_attitude slot 0 interp 37,3504: 7
-  load cm_body_attitude slot 0 interp 37,3561: 35
+  load cm_body_attitude slot 0 interp 37,3561: 33
   load cm_p61_p67 slot 0 interp 10,2403: 2
-  load cm_inflight_align slot 0 interp 23,3317: 2
+  load cm_inflight_align slot 0 interp 23,3317: 1
   load cm_inflight_align slot 0 interp 23,3326: 1
-  load cm_reentry slot 0 basic  25,3577: 2
+  load cm_reentry slot 0 basic  25,3577: 1
   load cm_p61_p67 slot 0 interp 10,2407: 13
   load cm_p61_p67 slot 0 interp 10,2411: 12
   load cm_servicer slot 0 basic  37,3231: 3
@@ -429,20 +428,20 @@ module loads (21369 in 32015 cs):
   load lanec_di_routines slot 0 basic  10,2712: 96
   load cm_reentry slot 0 basic  25,3606: 96
   load cm_servicer slot 0 interp 37,3360: 67
-  load cm_body_attitude slot 0 interp 37,3563: 66
-  load cm_body_attitude slot 0 interp 37,3615: 10
+  load cm_body_attitude slot 0 interp 37,3563: 63
+  load cm_body_attitude slot 0 interp 37,3615: 9
   load cm_body_attitude slot 0 interp 37,3631: 56
   load cm_entry_dap slot 1 basic  15,3056: 1
   load cm_body_attitude slot 0 interp 37,3507: 21
-  load cm_body_attitude slot 0 interp 37,3550: 11
-  load cm_body_attitude slot 0 interp 37,3565: 44
+  load cm_body_attitude slot 0 interp 37,3550: 9
+  load cm_body_attitude slot 0 interp 37,3565: 42
   load cm_inflight_align slot 0 interp 23,3335: 10
   load lanec_di_routines slot 0 basic  10,3312: 23
   load cm_body_attitude slot 0 interp 37,3567: 24
   load lanec_di_routines slot 0 basic  10,2775: 7
   load cm_servicer slot 0 interp 37,3371: 10
   load cm_p61_p67 slot 0 interp 10,2414: 3
-  load cm_body_attitude slot 0 interp 37,3625: 13
+  load cm_body_attitude slot 0 interp 37,3625: 12
   load cm_body_attitude slot 0 interp 37,3514: 16
   load cm_servicer slot 0 interp 37,3425: 13
   load cm_p61_p67 slot 0 basic  26,2374: 1
@@ -471,7 +470,7 @@ module loads (21369 in 32015 cs):
   load cm_reentry slot 0 interp 25,2164: 19
   load cm_geometry slot 0 interp 23,2243: 54
   load cm_reentry slot 0 interp 25,2200: 84
-  load lanec_pin_routines slot 0 basic  41,3602: 47
+  load lanec_pin_routines slot 0 basic  41,3602: 46
   load cm_reentry slot 0 interp 25,2150: 21
   load cm_reentry slot 0 interp 25,2154: 19
   load cm_reentry slot 0 interp 25,2166: 48
@@ -491,18 +490,18 @@ module loads (21369 in 32015 cs):
   load cm_reentry slot 0 interp 25,2143: 10
   load cm_reentry slot 0 interp 25,2162: 5
   load cm_reentry slot 0 interp 25,2212: 4
-  load cm_body_attitude slot 0 interp 37,3545: 10
+  load cm_body_attitude slot 0 interp 37,3545: 5
   load cm_reentry slot 0 interp 25,2141: 5
   load cm_reentry slot 0 interp 25,2160: 14
   load cm_reentry slot 0 interp 25,2205: 7
   load cm_reentry slot 0 interp 25,3530: 1
   load cm_geometry slot 0 interp 23,2240: 7
   load cm_inflight_align slot 0 interp 23,3300: 13
-  load cm_body_attitude slot 0 interp 37,3543: 19
+  load cm_body_attitude slot 0 interp 37,3543: 14
   load cm_reentry slot 0 interp 25,3532: 1
   load cm_reentry slot 0 interp 25,2207: 5
   load lanec_di_routines slot 0 basic  10,3313: 1
-  load cm_reentry slot 0 interp 25,2250: 2
+  load cm_reentry slot 0 interp 25,2250: 1
   load cm_p61_p67 slot 0 basic  26,2433: 1
   load cm_p61_p67 slot 0 basic  26,2435: 1
   load cm_reentry slot 0 interp 25,2275: 1
@@ -530,21 +529,21 @@ module loads (21369 in 32015 cs):
   load cm_servicer slot 0 interp 37,3150: 20
   load cm_body_attitude slot 0 interp 37,3521: 12
   load cm_body_attitude slot 0 interp 37,3535: 21
-  load cm_body_attitude slot 0 interp 37,3547: 11
-  load cm_body_attitude slot 0 interp 37,3600: 15
+  load cm_body_attitude slot 0 interp 37,3547: 10
   load cm_body_attitude slot 0 interp 37,3602: 16
-  load cm_body_attitude slot 0 interp 37,3617: 16
+  load cm_body_attitude slot 0 interp 37,3617: 12
   load cm_servicer slot 0 interp 37,3434: 15
   load cm_servicer slot 0 interp 37,3376: 14
   load cm_servicer slot 0 interp 37,3405: 12
   load cm_servicer slot 0 interp 37,3407: 9
   load cm_servicer slot 0 interp 37,3444: 12
   load cm_body_attitude slot 0 interp 37,3474: 14
-  load cm_body_attitude slot 0 interp 37,3520: 14
-  load cm_body_attitude slot 0 interp 37,3536: 14
+  load cm_body_attitude slot 0 interp 37,3520: 13
+  load cm_body_attitude slot 0 interp 37,3536: 13
   load cm_body_attitude slot 0 interp 37,3552: 10
-  load cm_body_attitude slot 0 interp 37,3611: 24
-  load cm_body_attitude slot 0 interp 37,3621: 21
+  load cm_body_attitude slot 0 interp 37,3600: 14
+  load cm_body_attitude slot 0 interp 37,3611: 17
+  load cm_body_attitude slot 0 interp 37,3621: 19
   load cm_body_attitude slot 0 interp 37,3623: 9
   load cm_servicer slot 0 basic  37,3145: 11
   load cm_servicer slot 0 interp 37,3423: 8
@@ -578,7 +577,6 @@ module loads (21369 in 32015 cs):
   load cm_entry_dap slot 1 basic  15,2631: 4
   load cm_body_attitude slot 0 interp 37,3753: 1
   load cm_body_attitude slot 0 interp 37,3755: 1
-  load cm_geometry slot 0 interp 23,2234: 1
   load cm_reentry slot 0 interp 25,2515: 4
   load cm_reentry slot 0 interp 25,2520: 12
   load cm_reentry slot 0 interp 25,2562: 1
@@ -621,7 +619,6 @@ module loads (21369 in 32015 cs):
   load cm_reentry slot 0 interp 25,2502: 1
   load cm_reentry slot 0 interp 25,2630: 2
   load cm_reentry slot 0 interp 25,3253: 1
-  load lanec_pin_routines slot 0 basic  41,2133: 2
   load cm_reentry slot 0 interp 26,3102: 15
   load cm_reentry slot 0 interp 25,2511: 2
   load cm_reentry slot 0 interp 25,2522: 4
@@ -644,6 +641,7 @@ module loads (21369 in 32015 cs):
   load cm_p61_p67 slot 0 basic  26,2500: 1
   load cm_p61_p67 slot 0 basic  26,2502: 1
   load cm_reentry slot 0 interp 25,3337: 1
+  load lanec_pin_routines slot 0 basic  41,2133: 1
   load cm_reentry slot 0 interp 25,2244: 4
 last routines:
   Z 03231 FB 02000 cm_kernel_idle_routines
