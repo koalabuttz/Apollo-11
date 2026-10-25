@@ -115,8 +115,10 @@ __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
         if ((uint8_t)n >= rk_run_limit) rk_cut = 1; /* n is at most the limit */
         rk_run_limit = 0;
 #if RK_LM
-        /* Only the run's first routine is the lead-in itself. */
-        if (rk_point_hi == 2048u >> 8 && rk_point_lo < 050u && mct > 9u && n)
+        /* Only the run's first routine is the lead-in itself: the vectors
+         * 04000-04053, RUPT10 (04050, PITFALL) the last
+         * (src/rupt_lead_ins.c). */
+        if (rk_point_hi == 2048u >> 8 && rk_point_lo < 054u && mct > 9u && n)
             w -= (uint8_t)(mct - 9u);
 #endif
     }
