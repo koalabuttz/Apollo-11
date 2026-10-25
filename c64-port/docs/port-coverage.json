@@ -37,34 +37,9 @@
   },
   "integrated_applications": {
     "Luminary099": {
-      "status": "complete",
-      "reviewed_entire_program": true,
-      "evidence": {
-        "bootable_c64_application": {
-          "path": "docs/acceptance/Luminary099-bootable_c64_application.md",
-          "sha256": "3c4953d6a6339258aeaf810ecc7521bc889e537ac5b7718e2161e523d20e2a25"
-        },
-        "integrated_program_tests": {
-          "path": "docs/acceptance/Luminary099-integrated_program_tests.md",
-          "sha256": "b85c0bad299a847930c699bca2860cfbc946fe9815f57764c3946305a90b344d"
-        },
-        "device_adapter_tests": {
-          "path": "docs/acceptance/Luminary099-device_adapter_tests.md",
-          "sha256": "2b5e697705f9b8523c9eba949ea7d6b88161effedd248926b3d9a50558ceeeae"
-        },
-        "native_output_tests": {
-          "path": "docs/acceptance/Luminary099-native_output_tests.md",
-          "sha256": "fd74d4e4ae22a9238de66ea5542758e2e7a7d674330e4d040e01141ae6f9226b"
-        },
-        "memory_and_overlay_validation": {
-          "path": "docs/acceptance/Luminary099-memory_and_overlay_validation.md",
-          "sha256": "5d014f1a995fceb73788bc9d6c90ab3ade8b4a056a6f194e6158e06f7ef06b5e"
-        },
-        "recovery_and_restart_tests": {
-          "path": "docs/acceptance/Luminary099-recovery_and_restart_tests.md",
-          "sha256": "2a845ab88d5c1aa232223e42ec563816d3544b88af5804210742c8880a37e61f"
-        }
-      },
+      "status": "unverified",
+      "reviewed_entire_program": false,
+      "evidence": {},
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
@@ -76,8 +51,7 @@
           "scope": "111-module native C64 STARTP66 guidance display idle actual hardware clock IRQ1 RODTASK RESUME and second guidance iteration,310 C64 checkpoints; complete flight program and ongoing periodic scheduling remain open.",
           "reviewed_entire_program": false
         }
-      ],
-      "acceptance_commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0"
+      ]
     },
     "Comanche055": {
       "status": "complete",
@@ -89,7 +63,7 @@
         },
         "integrated_program_tests": {
           "path": "docs/acceptance/Comanche055-integrated_program_tests.md",
-          "sha256": "459f8b58f80e8862ee378619992127ef0363c4d28709736ee56fc3cb80cd6e1c"
+          "sha256": "3ba40281d3102099ee124962af3c7217de3eed78c2372ce3a85cd281227e5955"
         },
         "device_adapter_tests": {
           "path": "docs/acceptance/Comanche055-device_adapter_tests.md",
