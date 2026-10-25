@@ -1482,22 +1482,26 @@ static int wrapped_table(const entry *e){const char *n=e->name;
  (void)n;(void)ends;return 0;
 #endif
 }
-static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uint16_t key;unsigned i;
- if(wrapped_table(e)){if(in_slot[0]!=e->name){in_slot[0]=e->name;in_chunk[0]=0;}return;}
- if(e->slot>1)return;
- key=point(w,sb,&in);
- if(slot_has(e->slot,e->module,e->t,key))return;
- /* A table packed into the loaded module too runs there (CO_LOCATE). */
- if(in_slot[e->slot]&&*e->also){const char *a=strstr(e->also,in_slot[e->slot]);size_t n=strlen(in_slot[e->slot]);
-  if(a&&(a==e->also||a[-1]==' ')&&(a[n]==0||a[n]==' '))return;}
- in_slot[e->slot]=e->module;in_chunk[e->slot]=chunk_of(e->t,key);++nloads;
+static void module_load(const entry *e,const agc_word *w,agc_word sb){int in;uint16_t key;unsigned i;const char *module=e->module;unsigned slot=e->slot;
+ /* A wrapper load is a job-slot load like any other (#886 item 5): it is
+  * counted, and under scaled wall time it costs a swap. */
+ if(wrapped_table(e)){if(in_slot[0]==e->name)return;key=point(w,sb,&in);module=e->name;slot=0;in_slot[0]=module;in_chunk[0]=0;}
+ else{
+  if(slot>1)return;
+  key=point(w,sb,&in);
+  if(slot_has(slot,module,e->t,key))return;
+  /* A table packed into the loaded module too runs there (CO_LOCATE). */
+  if(in_slot[slot]&&*e->also){const char *a=strstr(e->also,in_slot[slot]);size_t n=strlen(in_slot[slot]);
+   if(a&&(a==e->also||a[-1]==' ')&&(a[n]==0||a[n]==' '))return;}
+  in_slot[slot]=module;in_chunk[slot]=chunk_of(e->t,key);}
+ ++nloads;
  /* Scaled time: a swap is about 20 ms of C64 time (docs/FLIGHT-STORE.md:
   * 7,459 cycles plus 1.1 a byte), 1,707 AGC machine cycles of wall. The
   * work clock counts no load time (resident_flight.h). */
  if(scaled&&!work)wall+=swap_mct*jitter();
- for(i=0;i<nload_points;++i)if(loads[i].module==e->module&&loads[i].key==key){++loads[i].count;return;}
- if(nload_points<LOADS){loads[nload_points].module=e->module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
-  loads[nload_points].slot=e->slot;loads[nload_points++].count=1;}}
+ for(i=0;i<nload_points;++i)if(loads[i].module==module&&loads[i].key==key){++loads[i].count;return;}
+ if(nload_points<LOADS){loads[nload_points].module=module;loads[nload_points].key=key;loads[nload_points].in=(uint8_t)in;
+  loads[nload_points].slot=(uint8_t)slot;loads[nload_points++].count=1;}}
 static unsigned long snap_cs;
 static int snap_any;
 static const char *snap_path;
