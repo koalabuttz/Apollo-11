@@ -6,7 +6,7 @@
  "aggregates": {
   "lm-fresh-start": {
    "record": "evidence/lm-fresh-start/lm-fresh-start-proof.json",
-   "sha256": "9fae759889edc5d487dcf8ec414e46aa461c4879ef9ec6ad4489c017cbe63ae0",
+   "sha256": "db197730984b2170dd365027f6b9849c5c164c3fd3271bf2bb19669e5ab97648",
    "cases": 4096,
    "snapshot_sha256": "25f7b29f4858195f5769fa20a1ea63b71d78c3ac71b91e88d9e46a64ed183f15",
    "rerun_snapshot_sha256": "25f7b29f4858195f5769fa20a1ea63b71d78c3ac71b91e88d9e46a64ed183f15",
@@ -14,7 +14,7 @@
   },
   "lm-v37": {
    "record": "evidence/lm-v37/lm-v37-proof.json",
-   "sha256": "8380117efedf86253d0fac270d4a605f9b9c4b265f1a391fec6aad8b42394a09",
+   "sha256": "8be3525f01f5984bcdb8e74bbdfb985564fda6b14d69bea6e4ed63399d9f7afb",
    "cases": 4096,
    "snapshot_sha256": "37af90fe7d60b92ead0e583e334fb09a79333d001b8458e6888de4fa4a79750d",
    "rerun_snapshot_sha256": "37af90fe7d60b92ead0e583e334fb09a79333d001b8458e6888de4fa4a79750d",
@@ -22,7 +22,7 @@
   },
   "lm-stateup": {
    "record": "evidence/lm-stateup/lm-stateup-proof.json",
-   "sha256": "ef7cfc6434b33cd56faf52314e18a31752b1b0820476635aab0ebbfa47ebe64d",
+   "sha256": "3b4a45f3b75d778b6c336688552ade2e3efae5e58fcec745125f1fc34f62a324",
    "cases": 4096,
    "snapshot_sha256": "1314192fd7d3c4f4ec25e9a9a0fc1f8bdd4acaee6804397b98e5e39d81b6524b",
    "rerun_snapshot_sha256": "1314192fd7d3c4f4ec25e9a9a0fc1f8bdd4acaee6804397b98e5e39d81b6524b",

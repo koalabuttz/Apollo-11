@@ -27,7 +27,7 @@ FRESH_START_AND_RESTART is what the AGC runs after a V36 fresh start, a hardware
 - Data: the CADRs after the file's own POSTJUMPs and BANKCALLs and the fixed constants it reads are compiled from the source listing into `src/lm_fresh_start_operands.inc` (`tools/file_operands_generate.py lm-fresh-start`) and checked against the rope. The table covers the whole file, banks 04 and 13 included, for the next milestone. Constants with an offset (`SWINIT +2`) get their own name (`LM_FRESH_K_SWINIT_P2`).
 - Devices: io is an `lm_fresh_io`, which starts with `p66_bias_io` so Lane A's `lm_interbank_routines` read the same record.
   - Outputs 5, 6, 12, 13 and 14, inputs 15 (MNKEYIN), 16 (NAVKEYIN) and 33, and the three HANDRUPT trap latches.
-  - As in yaAGC, writing channel 13 bits 12-14 arms the traps, and those bits do not stay in the channel. WOR/WAND/RAND/ROR/READ follow yaAGC's OverflowCorrected/SignExtend.
+  - As in yaAGC, writing channel 13 bits 12-14 arms the traps, and those bits do not stay in the channel. Reading channel 13 masks them too (`chan_op`), so a latch `agc_ch_op` left there (LLGE's WOR BIT12 before a restart with no GOJAM) reads as 0, as on the AGC. WOR/WAND/RAND/ROR/READ follow yaAGC's OverflowCorrected/SignExtend.
   - Channel 11 (DSALMOUT) is `program->hardware`'s. A path that writes it refuses without the hardware record.
   - INHINT acts on the interrupt-enable state.
 
@@ -58,5 +58,6 @@ Hashes: `evidence/lm-fresh-start/SHA256.json`. Bulk files are assets of the `evi
   - all 11 entries are reached;
   - each case ends at one of seven kinds of exit (DUMMYJOB +2, GOP00FIX, RESTARTS, MMDSPLAY, ALARM, SWRETURN, another KLEAN return), and every kind is reached;
   - the C64 rows are host cases with their host digests;
+  - every case run again with channel 13 bits 12-14 latched ends exactly as without them (the trap latches, channels and erasable);
   - an ERESTORE repair into a counter, a TC Q to no return point, a missing io and a fresh start without the hardware record are refused.
-- C64 execution results: `make vice-lm-fresh-start` (`evidence/lm-fresh-start/lm-fresh-start-vice.log`): 259 C64 rows chosen by native branch outcome (`tools/a2_c64_rows.py`: every 16th case plus a greedy cover of the gcov branch arcs of every linked source; the freeze fails unless the rows take all 389 arcs the host cases take). Among them are the outcomes a stride missed: the ERESTORE != SKEEP7 fresh start (05,2716-2717) and the no-group-active restart, both outcomes of BZF GOTOPOOH and ENDRSTRT (05,3045-3053). The proof records the host and C64 arc counts; the host test checks every C64 row is a host case with its host digest.
+- C64 execution results: `make vice-lm-fresh-start` (`evidence/lm-fresh-start/lm-fresh-start-vice.log`): 259 C64 rows chosen by native branch outcome (`tools/a2_c64_rows.py`: every 16th case plus a greedy cover of the gcov branch arcs of every linked source; the freeze fails unless the rows take all 392 arcs the host cases take). Among them are the outcomes a stride missed: the ERESTORE != SKEEP7 fresh start (05,2716-2717) and the no-group-active restart, both outcomes of BZF GOTOPOOH and ENDRSTRT (05,3045-3053). The proof records the host and C64 arc counts; the host test checks every C64 row is a host case with its host digest.
