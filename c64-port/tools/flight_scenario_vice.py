@@ -232,6 +232,26 @@ WINDOW_MAX = 0o37777
 # (docs/acceptance/interrupt-hold.md): one DOWNRUPT period, 20 ms. A replay
 # window whose host (or, with --hold, C64) meter shows a longer hold fails.
 HOLD_BOUND_MCT = 1706
+HOLD = re.compile(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)( \(\d+ without \d+ stolen\))?', re.M)
+HOLD_WORK = re.compile(r'^interrupt hold work: max (\d+) MCT at TIME1 ([0-7]+) \((\d+) stolen\)', re.M)
+
+
+def host_hold(name, log):
+    """The host log's interrupt hold, and the hold the bound gates: the
+    elapsed hold, or in a FLIGHT_STEAL (overload) window the longest hold
+    without its stolen MCT (docs/acceptance/interrupt-hold.md). None when
+    the log has no hold line (or a FLIGHT_STEAL window no work line)."""
+    hm = HOLD.search(log)
+    if not hm:
+        return None
+    h = dict(mct=int(hm[1]), time1=hm[2], stolen_note=hm[3] or '', gated=int(hm[1]), gated_time1=hm[2])
+    if fhd.scenario(name)[4].get('FLIGHT_STEAL'):
+        wm = HOLD_WORK.search(log)
+        if not wm:
+            return None
+        h.update(work_mct=int(wm[1]), work_time1=wm[2], work_stolen=int(wm[3]),
+                 gated=int(wm[1]), gated_time1=wm[2])
+    return h
 
 
 def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
@@ -907,23 +927,30 @@ def main():
             applied_extra, applied = max(0, applied - n_c64), min(applied, n_c64)
             # The interrupt hold meter (include/rupt_hold.h): the host's in its
             # log, the C64's in the mailbox (dap_pass_check.c, -DRK_HOLD_METER).
-            hm = re.search(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)( \(\d+ without \d+ stolen\))?',
-                           host_log.read_text(), re.M)
-            if hm:
-                r.update(hold_host_mct=int(hm[1]), hold_host_time1=int(hm[2], 8))
+            hold = host_hold(a.scenario, host_log.read_text())
+            if hold:
+                r.update(hold_host_mct=hold['mct'], hold_host_time1=int(hold['time1'], 8))
                 whole = ' (whole chain)' if a.chain > 1 else ''
-                # The stolen share (FLIGHT_STEAL) is reported, but the bound
-                # gates the elapsed hold.
-                line = f"{a.scenario}: interrupt hold: host max{whole} {hm[1]} MCT at TIME1 {hm[2]}{hm[3] or ''}"
+                line = (f"{a.scenario}: interrupt hold: host max{whole} {hold['mct']} MCT at TIME1 "
+                        f"{hold['time1']}{hold['stolen_note']}")
+                steal = 'work_mct' in hold
+                if steal:
+                    # An overload window gates the hold without its stolen MCT.
+                    r.update(hold_host_work_mct=hold['work_mct'], hold_host_work_stolen=hold['work_stolen'])
+                    line += (f"; work max {hold['work_mct']} MCT at TIME1 {hold['work_time1']} "
+                             f"({hold['work_stolen']} stolen)")
                 if a.hold:
                     c_max, c_at = struct.unpack_from('<HH', mail, 0x36)
                     r.update(hold_c64_mct=c_max, hold_c64_time1=c_at)
-                    line += f', C64 max {c_max} MCT at TIME1 {c_at:05o}'
+                    # The C64 meter has no stolen share, so it gates nominal windows only.
+                    line += f', C64 max {c_max} MCT at TIME1 {c_at:05o}{" (not gated: FLIGHT_STEAL)" if steal else ""}'
                 print(line)
-                over = [(side, n) for side, n in (('host', int(hm[1])), ('C64', r.get('hold_c64_mct', 0)))
-                        if a.hold_bound and n > a.hold_bound]
-                for side, n in over:
-                    print(f'FAIL: {a.scenario}: the {side} holds an interrupt request {n} MCT, over the '
+                sides = [('host', hold['gated'], ' without its stolen MCT' if steal else '')]
+                if not steal:
+                    sides.append(('C64', r.get('hold_c64_mct', 0), ''))
+                over = [(side, n, what) for side, n, what in sides if a.hold_bound and n > a.hold_bound]
+                for side, n, what in over:
+                    print(f'FAIL: {a.scenario}: the {side} holds an interrupt request {n} MCT{what}, over the '
                           f'{a.hold_bound} MCT bound (docs/acceptance/interrupt-hold.md)')
                 if over:
                     r['ok'] = False
@@ -931,8 +958,8 @@ def main():
                 # The host meters every replay window (FLIGHT_HOLD), so no
                 # line means the bound went unchecked.
                 r['ok'] = False
-                print(f'FAIL: {a.scenario}: no "interrupt hold:" line in {host_log.name}, so the '
-                      f'{a.hold_bound} MCT hold bound was not checked')
+                print(f'FAIL: {a.scenario}: no "interrupt hold:" line in {host_log.name} (or, under '
+                      f'FLIGHT_STEAL, no work line), so the {a.hold_bound} MCT hold bound was not checked')
             r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended),
                      replay_after_rows=applied_extra, replay_inputs=replay_inputs, replay_outputs=replay_outputs)
             # Every state the C64 wrote against the host's at the same point.

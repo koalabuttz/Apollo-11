@@ -15,7 +15,12 @@ Frozen-clock lockstep with yaAGC cannot see this, because the harness takes the 
 
 The second "from" case is an upper bound: the AGC would take the request somewhere inside the next routine, at its RELINT or RESUME.
 
-Cycles stolen while a request waits (`FLIGHT_STEAL`, the counter cycles Apollo 11's RR CDU counts took) stay in the measure. The AGC takes a waiting request at its next instruction, so a steal delays only the port's take. The host prints their share beside the hold, as `interrupt hold: max 1753 MCT at TIME1 11763 (1153 without 600 stolen)`, but the bound gates the elapsed hold.
+Cycles stolen while a request waits (`FLIGHT_STEAL`, the counter cycles Apollo 11's RR CDU counts took) stay in the elapsed hold, since the AGC takes a waiting request at its next instruction and a steal delays only the port's take. Under `FLIGHT_STEAL` the host also prints their share and the longest hold without them, the hold's work:
+
+```
+interrupt hold: max 2309 MCT at TIME1 11423 (1109 without 1200 stolen)
+interrupt hold work: max 1109 MCT at TIME1 11423 (1200 stolen)
+```
 
 The same meter runs in two places:
 - on the host, `tools/flight_host_run.c` with `FLIGHT_HOLD=1`, over the replay window;
@@ -44,7 +49,14 @@ The C64 meter was checked against the host (C64 runs at 1cfd6bc5, the base befor
 
 **A request waits at most 1,706 MCT (20 ms) for a native boundary.** That is one DOWNRUPT period (20 ms), the shortest fixed interrupt period in flight, so a held request can't let a second DOWNRUPT arrive and merge with it.
 
-The longest measured hold is 1,425 MCT, 84% of the bound. The bound is `HOLD_BOUND_MCT` in `tools/flight_scenario_vice.py`. Every `--replay` window fails when its host meter shows a longer hold, and with `--hold` the C64's too, so each replay window CI runs checks it. `tools/rupt_hold_report.py` checks it over every program map window.
+The longest measured hold is 1,425 MCT, 84% of the bound. The bound is `HOLD_BOUND_MCT` in `tools/flight_scenario_vice.py`. `tools/rupt_hold_report.py` checks it over every program map window, and every `--replay` window checks it, so each replay window CI runs is gated:
+
+- **Nominal windows** gate the elapsed hold: the host's, and with `--hold` the C64's too.
+- **Overload windows** (a scenario with `FLIGHT_STEAL`) gate the host's hold work, the longest hold without its stolen MCT. Every such window still prints its stolen MCT. The C64 meter has no stolen share, so with `--hold` its elapsed hold is printed but not gated there.
+
+### Known limit: no take inside a basic math body
+
+The port takes no interrupt inside a basic math body. UNIT, SQRT and the trig routines are about 1,100 MCT each. Under overload, cycles stolen inside such a body add to the elapsed hold without adding any work. cm-entry-overload 20900+600 (Lane B's 11d measurement, /mnt/project-files/lane-b/11d/v2/) holds a request 2,309 MCT elapsed. 1,109 MCT of that is work and 1,200 MCT is stolen. A take point inside these bodies would split them, so the overload gate counts work. The work is under the nominal windows' 1,425 MCT maximum.
 
 The bound is a limit on the port, not a claim that the real AGC behaves this way. The host and C64 agree on every hold, so replay matches.
 
