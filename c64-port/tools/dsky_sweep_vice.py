@@ -449,9 +449,7 @@ def main():
         if not a.skip_build:
             subprocess.run([sys.executable, 'tools/flight_store_build.py', '--missions', m, '--host-cc', a.host_cc],
                            cwd=ROOT, check=True)
-            subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--missions', m,
-                            '--host-cc', a.host_cc], cwd=ROOT, check=True)
-        exe = fhd.build(a.host_cc, m, fhd.frozen_engine(a.host_cc))
+        exe = fhd.build(a.host_cc, m, fhd.frozen_engine(a.host_cc), store=True)
         manifest = json.loads((dp.OUT / f'{m}-manifest.json').read_text())
         pinned = any(mod['slot'] == 3 for mod in manifest['modules'])
         stores[m] = dict(reu_sha256=sha(dp.OUT / f'{m}.reu'), rope_sha256=sha(fhd.ROPE[m]),
