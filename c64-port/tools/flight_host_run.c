@@ -202,8 +202,6 @@ static double step_at(unsigned long j){return (double)(2560ul*(j/9ul)+step_end[j
 /* FLIGHT_HOLD: the interrupt hold meter (include/rupt_hold.h) over the
  * replay window, on the work clock, as -DRK_HOLD_METER runs it on the C64. */
 static rupt_hold hold;static int hold_on;
-/* Stolen MCT leave the measure (rupt_hold_steal). */
-static void hold_steal(unsigned long mct){if(hold_on)rupt_hold_steal(&hold,(uint16_t)mct);}
 static void hold_report(void){if(getenv("FLIGHT_HOLD"))printf("interrupt hold: max %u MCT at TIME1 %05o\n",(unsigned)hold.max,(unsigned)hold.max_at);}
 static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,double t){
  if(hold_on)rupt_hold_boundary(&hold,(uint16_t)(unsigned long)t,*pending,(uint8_t)(hw->in_interrupt||!io->interrupt_enabled||agc_overflow(s->words[0])));
@@ -211,6 +209,9 @@ static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,fli
 /* The work clock's idle loop (weight 0, RK_MCT_IDLE): to the end of the
  * period, which the boundary drops if it takes a request first. */
 static int idling;
+/* Stolen MCT leave the hold measure (rupt_hold_steal), unless idle: the
+ * idle period absorbs them, and a take there is at the step, not at wall. */
+static void hold_steal(unsigned long mct){if(hold_on&&!idling)rupt_hold_steal(&hold,(uint16_t)mct);}
 static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
 /* The night watchman (platform/x86/night_watchman.h) under scaled time: wm
  * by the native rule, wm_ya by the NEWJOB accesses yaAGC makes over the

@@ -60,7 +60,9 @@ static inline void rupt_hold_raise(rupt_hold *h, uint16_t at, uint16_t pending)
 }
 
 /* n MCT stolen from the program at the current time (a FLIGHT_STEAL
- * period): a waiting request counts from n MCT later. */
+ * period) while it runs a routine, so the take comes n MCT later: a waiting
+ * request counts from n MCT later. Not while idle, where the take is at the
+ * step and the idle period absorbs the steal. */
 static inline void rupt_hold_steal(rupt_hold *h, uint16_t n)
 {
     if (h->on)
