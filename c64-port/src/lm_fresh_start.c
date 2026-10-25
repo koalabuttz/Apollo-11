@@ -78,16 +78,19 @@ static int write_channel(lm_fresh_io *x,agc_hardware *hw,agc_word c,agc_word v){
 }
 /* EXTEND; WRITE/WOR/WAND/RAND/ROR/READ k. */
 static int chan_op(apollo_overlay_state *s,lm_fresh_io *x,agc_hardware *hw,agc_word c,char op){
- agc_word *ch=channel(x,hw,c),v;
+ agc_word *ch=channel(x,hw,c),v,r;
  if(!ch)return 0;
  v=(agc_word)agc_correct(W[0]);
+ /* Channel 13's trap bits (12-14) read as 0: the hardware holds them, and
+  * agc_ch_op's latch of them (agc_channel_ops.h) is not this site's. */
+ r=c==013u?(agc_word)(*ch&043777u):*ch;
  switch(op){
  case 'W':return write_channel(x,hw,c,v);
- case 'O':v=(agc_word)((v|*ch)&077777u);if(!write_channel(x,hw,c,v))return 0;break;
- case 'A':v&=*ch;if(!write_channel(x,hw,c,v))return 0;break;
- case 'a':v&=*ch;break;
- case 'o':v=(agc_word)((v|*ch)&077777u);break;
- default:v=*ch;break;}
+ case 'O':v=(agc_word)((v|r)&077777u);if(!write_channel(x,hw,c,v))return 0;break;
+ case 'A':v&=r;if(!write_channel(x,hw,c,v))return 0;break;
+ case 'a':v&=r;break;
+ case 'o':v=(agc_word)((v|r)&077777u);break;
+ default:v=r;break;}
  W[0]=agc_extend(v);return 1;
 }
 #define CH(c,op) do{if(!chan_op(s,x,hw,(c),(op)))return EXEC_OUT_OF_SCOPE;}while(0)

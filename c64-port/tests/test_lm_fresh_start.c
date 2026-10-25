@@ -56,6 +56,20 @@ int main(void){apollo_overlay_state s;lm_fresh_io io;agc_hardware hw;enum exec_s
    else check(0,"end point",n);}
   for(i=0;i<LM_FS_ROUTINES;++i)check(reached[i]>0u,"entry reached",i);
   for(i=0;i<7u;++i)check(ended[i]>0u,"end reached",i);}
+ /* A latched channel 13 trap bit (12-14, held by agc_ch_op's model) reads
+  * as 0: every case ends as it does without the latch. */
+ {static apollo_overlay_state a;lm_fresh_io ia;agc_hardware ha;
+  agc_routine_table tables[2];agc_native_program p={0,2,0,0,lm_fresh_operands,LM_FRESH_OPERAND_COUNT,AGC_TRANSFER_NONE,0,0,0,0,0};uint16_t steps;
+  tables[0]=lm_fresh_start_routines;tables[1]=lm_interbank_routines;p.basic=tables;
+  for(n=0;n<LM_FS_CASES;++n){unsigned same=1;
+   lm_fs_run(&a,&ia,&ha,(uint16_t)n,&steps);
+   lm_fs_input(&s,&io,&hw,(uint16_t)n);io.channel13|=034000u;p.hardware=&hw;
+   agc_transfer_run(&p,&s,&io,&io.control.superbank,LM_FS_SWRETURN_POINT,24,&steps);
+   for(i=0;i<2048u;++i)same&=s.words[i]==a.words[i];
+   same&=(io.channel13&043777u)==(ia.channel13&043777u)&&io.channel5==ia.channel5&&io.channel6==ia.channel6&&
+         io.channel12==ia.channel12&&io.channel14==ia.channel14&&hw.channel11==ha.channel11&&
+         io.trap31a==ia.trap31a&&io.trap31b==ia.trap31b&&io.trap32==ia.trap32;
+   check(same!=0u,"channel 13 trap latch reads as 0",n);}}
  /* Refusals, each entered once directly. */
  at(&s,&io,&hw,02667u);io.channel16=0;s.words[LM_FS_ERESTORE]=s.words[LM_FS_SKEEP7]=040u; /* GOPROG: repair TIME3 */
  check(once(&s,&io,&hw)==EXEC_OUT_OF_SCOPE,"ERESTORE repair into a counter",0);
