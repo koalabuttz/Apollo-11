@@ -8518,7 +8518,7 @@
           },
           "source_to_native_map": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-source-map.json",
-            "sha256": "02a39283f0921bc3125dfdace1a2889423a13694745765e44e025496d3877827"
+            "sha256": "ce85dd4e766eda04e2366fd7087509d06214d477df1f33b44dfdda90e1e05cfd"
           },
           "c64_branch_outcomes": {
             "path": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-c64-cover.json",
