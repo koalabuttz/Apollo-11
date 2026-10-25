@@ -433,12 +433,13 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
  * before rk_rupts has run this step's timer steps, so a row placed just
  * after them waits there: rk_resident_step calls this once they have run,
  * before the step's routine. LM landing 128000: a CDU row the host's
- * STOPRATE read (33,2630) came one step late on the C64. */
-void dp_rows_after_rupts(void)
+ * STOPRATE read (33,2630) came one step late on the C64. The step's
+ * centisecond (replay_now): a row whose centisecond the timer steps just
+ * began still waits for the next step. Low code, which it fills: the
+ * overload build's resident and the text screen have no room. */
+LOW_TEXT("dp_rows_after_rupts") void dp_rows_after_rupts(void)
 {
-    uint16_t t = replay_cs();
-    replay_now = t;
-    replay_rows(t, 0u);
+    replay_rows(replay_now, 0u);
 }
 /* The output channels the window drives (tools/flight_scenario_vice.py
  * --replay-outputs): each change of channels 5, 6, 11, 12, 13 and 14 seen
