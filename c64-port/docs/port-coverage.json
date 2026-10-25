@@ -37,9 +37,34 @@
   },
   "integrated_applications": {
     "Luminary099": {
-      "status": "unverified",
-      "reviewed_entire_program": false,
-      "evidence": {},
+      "status": "complete",
+      "reviewed_entire_program": true,
+      "evidence": {
+        "bootable_c64_application": {
+          "path": "docs/acceptance/Luminary099-bootable_c64_application.md",
+          "sha256": "3c4953d6a6339258aeaf810ecc7521bc889e537ac5b7718e2161e523d20e2a25"
+        },
+        "integrated_program_tests": {
+          "path": "docs/acceptance/Luminary099-integrated_program_tests.md",
+          "sha256": "b85c0bad299a847930c699bca2860cfbc946fe9815f57764c3946305a90b344d"
+        },
+        "device_adapter_tests": {
+          "path": "docs/acceptance/Luminary099-device_adapter_tests.md",
+          "sha256": "2b5e697705f9b8523c9eba949ea7d6b88161effedd248926b3d9a50558ceeeae"
+        },
+        "native_output_tests": {
+          "path": "docs/acceptance/Luminary099-native_output_tests.md",
+          "sha256": "fd74d4e4ae22a9238de66ea5542758e2e7a7d674330e4d040e01141ae6f9226b"
+        },
+        "memory_and_overlay_validation": {
+          "path": "docs/acceptance/Luminary099-memory_and_overlay_validation.md",
+          "sha256": "5d014f1a995fceb73788bc9d6c90ab3ade8b4a056a6f194e6158e06f7ef06b5e"
+        },
+        "recovery_and_restart_tests": {
+          "path": "docs/acceptance/Luminary099-recovery_and_restart_tests.md",
+          "sha256": "2a845ab88d5c1aa232223e42ec563816d3544b88af5804210742c8880a37e61f"
+        }
+      },
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
@@ -51,12 +76,38 @@
           "scope": "111-module native C64 STARTP66 guidance display idle actual hardware clock IRQ1 RODTASK RESUME and second guidance iteration,310 C64 checkpoints; complete flight program and ongoing periodic scheduling remain open.",
           "reviewed_entire_program": false
         }
-      ]
+      ],
+      "acceptance_commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0"
     },
     "Comanche055": {
-      "status": "unverified",
-      "reviewed_entire_program": false,
-      "evidence": {},
+      "status": "complete",
+      "reviewed_entire_program": true,
+      "evidence": {
+        "bootable_c64_application": {
+          "path": "docs/acceptance/Comanche055-bootable_c64_application.md",
+          "sha256": "e66db03f215a1db9130c3c80f6f689bae1285e1f6c35d33d4ecc5a8c4ba0a712"
+        },
+        "integrated_program_tests": {
+          "path": "docs/acceptance/Comanche055-integrated_program_tests.md",
+          "sha256": "459f8b58f80e8862ee378619992127ef0363c4d28709736ee56fc3cb80cd6e1c"
+        },
+        "device_adapter_tests": {
+          "path": "docs/acceptance/Comanche055-device_adapter_tests.md",
+          "sha256": "21c4ebbada9ce512cda8127a12be6bc4079ab499f37da166805f6ce4b8a44a93"
+        },
+        "native_output_tests": {
+          "path": "docs/acceptance/Comanche055-native_output_tests.md",
+          "sha256": "5adaeb4a173f917c403b817dca1e0f0cad72e55816f524a06728cecedcd8d6dc"
+        },
+        "memory_and_overlay_validation": {
+          "path": "docs/acceptance/Comanche055-memory_and_overlay_validation.md",
+          "sha256": "431fcf7b7aea10041e811537b286ed37662739ab5aa58903823c9e9ef80ef005"
+        },
+        "recovery_and_restart_tests": {
+          "path": "docs/acceptance/Comanche055-recovery_and_restart_tests.md",
+          "sha256": "5fbdcb7bd90ea80e3668501a2975506eb37972f59193299191600e553c719054"
+        }
+      },
       "qualified_partial_milestones": [
         {
           "verification": "docs/COMANCHE-NORMAL-N40.md",
@@ -78,7 +129,8 @@
           "scope": "Continuous native original alarm cleanup restart selection with1536 original paths and12 C64 paths; complete application and remaining entry/device/display acceptance remain open.",
           "reviewed_entire_program": false
         }
-      ]
+      ],
+      "acceptance_commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0"
     }
   },
   "files": [
