@@ -1267,19 +1267,25 @@ static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint
  m.InputChannel[013]=(int16_t)h.channel13;m.InputChannel[3]=(int16_t)h.channel3;m.InputChannel[4]=(int16_t)h.channel4;
  for(i=1;i<=NUM_INTERRUPT_TYPES;++i)if(p&RK_RUPT_BIT(i))m.InterruptRequests[i]=1;}
 /* FLIGHT_REACH=BB,AAAA[,BB,AAAA...] (octal, a point as the reports print
- * it): the first centisecond yaAGC runs the instruction there, in a native
+ * it): every centisecond yaAGC runs the instruction there, in a native
  * routine's lockstep or bridged code, printed at the end ("not reached"
- * when it never does). A row of the program map names the body its
- * scenario must run this way (tools/program_acceptance.py). */
-enum { REACHES=64 };
-static uint16_t reach_at[REACHES];static long reach_cs[REACHES];static unsigned nreach;
+ * when it never does). The first ARRIVALS-1 centiseconds and the last are
+ * kept, with a count of the ones between. A row of the program map names
+ * the body its scenario must run this way, after a given time when two
+ * rows share a point (tools/program_acceptance.py). */
+enum { REACHES=64, ARRIVALS=32 };
+static uint16_t reach_at[REACHES];static long reach_cs[REACHES][ARRIVALS];static unsigned nreach,narrive[REACHES];
+static unsigned long reach_more[REACHES];
 static void reach_parse(void){const char *t=getenv("FLIGHT_REACH");char *e;unsigned long b,a;
  while(t&&*t&&nreach<REACHES){b=strtoul(t,&e,8);if(e==t||*e!=',')break;t=e+1;a=strtoul(t,&e,8);if(e==t||a<02000ul||a>03777ul)break;
-  reach_at[nreach]=(uint16_t)(b*1024ul+(a-02000ul));reach_cs[nreach++]=-1;t=*e==','?e+1:e;}}
+  reach_at[nreach++]=(uint16_t)(b*1024ul+(a-02000ul));t=*e==','?e+1:e;}}
 static void reach(void){unsigned i;uint16_t at;
  if(!nreach)return;
  at=agc_fixed_physical((agc_word)(*cell(5)&07777),(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);
- for(i=0;i<nreach;++i)if(reach_cs[i]<0&&reach_at[i]==at){agc_word w[2048];w[024]=mword(024);w[025]=mword(025);reach_cs[i]=(long)now(w);}}
+ for(i=0;i<nreach;++i)if(reach_at[i]==at){agc_word w[2048];long t;unsigned n=narrive[i];
+  w[024]=mword(024);w[025]=mword(025);t=(long)now(w);
+  if(n&&reach_cs[i][n-1]==t)continue;
+  if(n<ARRIVALS)reach_cs[i][narrive[i]++]=t;else{reach_cs[i][ARRIVALS-1]=t;++reach_more[i];}}}
 /* One yaAGC instruction with its clock running; the interrupts it requests
  * are left pending for the native side to take. */
 static int step(uint16_t *pending){unsigned i;reach();if(agc_engine(&m))return -1;
@@ -1919,8 +1925,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   if(!misses[i].arrived)printf(" yaAGC never reached the native continuation Z %05o\n",(unsigned)misses[i].word[5]);
   else{for(k=0;k<2048u;++k)if(!(k>=024u&&k<=031u)&&misses[i].word[k]!=misses[i].ref[k]&&d++<6u)printf(" %04o %05o/%05o",k,(unsigned)misses[i].word[k],(unsigned)misses[i].ref[k]);
    printf("%s%s (native/yaAGC)\n",d>6u?" ...":"",misses[i].chan);}}
- for(i=0;i<nreach;++i){if(reach_cs[i]<0)printf("reach %02o,%04o: not reached\n",reach_at[i]/1024u,reach_at[i]%1024u+02000u);
-  else printf("reach %02o,%04o: at %ld cs\n",reach_at[i]/1024u,reach_at[i]%1024u+02000u,reach_cs[i]);}
+ for(i=0;i<nreach;++i){unsigned k;printf("reach %02o,%04o: ",reach_at[i]/1024u,reach_at[i]%1024u+02000u);
+  if(!narrive[i]){printf("not reached\n");continue;}
+  printf("at");for(k=0;k<narrive[i];++k)printf(" %ld",reach_cs[i][k]);
+  printf(" cs");if(reach_more[i])printf(" (%lu more before the last)",reach_more[i]);printf("\n");}
  printf("unregistered or refused points (%u):\n",nholes);
  for(i=0;i<nholes;++i){printf("  %s %02o,%04o Z %05o FB %05o Q %05o",holes[i].in?"interp":"basic ",
   holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q);

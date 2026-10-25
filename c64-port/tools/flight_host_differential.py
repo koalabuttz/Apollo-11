@@ -906,7 +906,7 @@ def reach_points():
     out = {}
     for path in sorted((ROOT / 'docs/acceptance').glob('*-program-map.json')):
         for row in json.loads(path.read_text()).get('rows', []):
-            for point, _ in row.get('reach', []):
+            for point, *_ in row.get('reach', []):
                 for s in row.get('scenarios', []):
                     if point not in out.setdefault(s, []):
                         out[s].append(point)
@@ -1133,6 +1133,9 @@ def main():
         t = re.search(r'(\d+) CIA interrupts, (\d+) clock periods taken, (\d+) dropped \(rk_dilation\); AGC time (\d+) cs', text)
         n = re.search(r'(\d+) native routines \((\d+) yaAGC instructions of time\), (\d+) bridged', text)
         misses = re.findall(r'^  (?:basic |interp) (\d\d,\d{4}) (\S+): (\d+) times; (.*)$', text, re.M)
+        # reach points: every centisecond yaAGC ran one (the first 31 and the last; FLIGHT_REACH)
+        arrivals = re.findall(r'^reach (\d\d,\d{4}): (?:at ([\d ]+) cs(?: \(\d+ more before the last\))?|not reached)$',
+                              text, re.M)
         holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
         c = re.search(r'^interpreter charge: fitted (\d+) MCT, yaAGC (\d+) MCT \(([-+][0-9.]+)%\) over (\d+) routines; '
                       r'mean \|error\| ([0-9.]+) MCT', text, re.M)
@@ -1154,8 +1157,8 @@ def main():
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
                    unregistered=holes, interpretive_charge=charge, night_watchman=watchman,
-                   reached={x[0]: int(x[1]) if x[1] else None
-                            for x in re.findall(r'^reach (\d\d,\d{4}): (?:at (\d+) cs|not reached)$', text, re.M)})
+                   reached={x[0]: int(x[1].split()[0]) if x[1] else None for x in arrivals},
+                   arrivals={x[0]: [int(c) for c in x[1].split()] for x in arrivals})
         summary.append(row)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "

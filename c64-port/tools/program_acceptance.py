@@ -175,21 +175,26 @@ def replay_result(r, bounds_here=True):
 def body_result(row, host):
     """(reached, text) for a row's `reach` points ([[point, label], ...],
     the body its entry leads to): each must be reached in one of its
-    scenarios' host runs (flight_host_differential.py's `reached`, the
-    first centisecond yaAGC ran it), or the row is not run by them, only
-    its refusal. A row whose entry cannot refuse names why in `no_reach`
-    instead. None when the row names neither."""
+    scenarios' host runs (flight_host_differential.py's `arrivals`, every
+    centisecond yaAGC ran it; `reached`, the first, in older runs), or the
+    row is not run by them, only its refusal. A point two rows share in one
+    scenario takes a third field, [point, label, cs]: this row's body runs
+    at or after that centisecond. A row whose entry cannot refuse names why
+    in `no_reach` instead. None when the row names neither."""
     if not row.get('reach'):
         return (True, 'no body check: ' + row['no_reach']) if row.get('no_reach') else None
     missing = []
-    for point, label in row['reach']:
-        runs = [host[s].get('reached', {}) for s in row['scenarios'] if s in host]
-        if not any(r.get(point) is not None for r in runs):
-            checked = any(point in r for r in runs)
-            missing.append(f"{label} ({point}{'' if checked else ', not checked'})")
+    for point, label, *after in row['reach']:
+        runs = [host[s] for s in row['scenarios'] if s in host]
+        times = [t for r in runs for t in (r['arrivals'].get(point, []) if 'arrivals' in r
+                                            else [r.get('reached', {}).get(point)]) if t is not None]
+        if not any(t >= after[0] for t in times) if after else not times:
+            checked = any(point in r.get('arrivals', r.get('reached', {})) for r in runs)
+            missing.append(f"{label} ({point}{f', at or after {after[0]} cs' if after else ''}"
+                           f"{'' if checked else ', not checked'})")
     if missing:
         return False, 'body not reached: ' + ', '.join(missing)
-    return True, 'body reached: ' + ', '.join(label for _, label in row['reach'])
+    return True, 'body reached: ' + ', '.join(label for _, label, *_ in row['reach'])
 
 
 def load_host(host_dir, commit):
