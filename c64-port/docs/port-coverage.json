@@ -1670,20 +1670,6 @@
         },
         {
           "native_files": [
-            "src/gimbal_complete.c",
-            "src/gimbal_data.inc",
-            "src/gimbal_stage.c",
-            "src/delcomp.c",
-            "src/guidance_product.c",
-            "src/guidance_dot.c",
-            "src/guidance_dp_divide.c",
-            "src/guidance_shift.c"
-          ],
-          "scope": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h; external NEWANGL body and live scheduling remain application integration work.",
-          "verification": "docs/GIMBAL_COMPLETE.md"
-        },
-        {
-          "native_files": [
             "src/cm_gimbal_lock.c",
             "src/cm_interp_orders.c",
             "src/cm_interp_steps.c",
@@ -1694,38 +1680,6 @@
           "verification": "docs/GIMBAL-LOCK.md"
         }
       ],
-      "withdrawn_certificate": {
-        "withdrawn_by": "port auditor",
-        "date": "2026-10-13",
-        "issue": "#129",
-        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
-        "certificate": {
-          "reviewed_all_source_paths": true,
-          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-          "qualification_kind": "native_translation",
-          "review": "evidence/gimbal-complete-independent-review.txt",
-          "review_sha256": "2f1bac4dc22632af8a10714005860afa67eff6a4afd90639686dead237495918",
-          "domain_certificate": "docs/gimbal-complete-certificates.json",
-          "evidence": {
-            "source_to_native_map": {
-              "path": "evidence/gimbal-complete-source-audit.json.gz",
-              "sha256": "da8935643ec4de449ecf4b5a076c70a43e0875681100ad6870ca85471f7d4210"
-            },
-            "independent_assembly_comparison": {
-              "path": "evidence/gimbal-complete-source-observations.json",
-              "sha256": "a8151634f753edac5f914654d81a43b2fc604851f16a1a7d8f9a4305e797e728"
-            },
-            "host_and_sanitizer_results": {
-              "path": "evidence/gimbal-complete-host.log",
-              "sha256": "e4ac4e52d19e07df6b9127573bd0e133c81a0d497826182a2770516af0a490e2"
-            },
-            "c64_execution_results": {
-              "path": "evidence/gimbal-complete-target.log",
-              "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
-            }
-          }
-        }
-      },
       "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
@@ -8681,20 +8635,6 @@
         },
         {
           "native_files": [
-            "src/gimbal_complete.c",
-            "src/gimbal_data.inc",
-            "src/gimbal_stage.c",
-            "src/delcomp.c",
-            "src/guidance_product.c",
-            "src/guidance_dot.c",
-            "src/guidance_dp_divide.c",
-            "src/guidance_shift.c"
-          ],
-          "scope": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h; external NEWANGL body and live scheduling remain application integration work.",
-          "verification": "docs/GIMBAL_COMPLETE.md"
-        },
-        {
-          "native_files": [
             "src/lm_gimbal_lock.c",
             "src/lm_interp_orders.c",
             "src/lm_interp_steps.c",
@@ -8705,38 +8645,6 @@
           "verification": "docs/GIMBAL-LOCK.md"
         }
       ],
-      "withdrawn_certificate": {
-        "withdrawn_by": "port auditor",
-        "date": "2026-10-13",
-        "issue": "#129",
-        "reason": "fails the current certificate bar (tools/cert_precheck.py FAIL); re-certify through the Certificate reviewer once the issue is fixed",
-        "certificate": {
-          "reviewed_all_source_paths": true,
-          "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
-          "qualification_kind": "native_translation",
-          "review": "evidence/gimbal-complete-independent-review.txt",
-          "review_sha256": "2f1bac4dc22632af8a10714005860afa67eff6a4afd90639686dead237495918",
-          "domain_certificate": "docs/gimbal-complete-certificates.json",
-          "evidence": {
-            "source_to_native_map": {
-              "path": "evidence/gimbal-complete-source-audit.json.gz",
-              "sha256": "da8935643ec4de449ecf4b5a076c70a43e0875681100ad6870ca85471f7d4210"
-            },
-            "independent_assembly_comparison": {
-              "path": "evidence/gimbal-complete-source-observations.json",
-              "sha256": "a8151634f753edac5f914654d81a43b2fc604851f16a1a7d8f9a4305e797e728"
-            },
-            "host_and_sanitizer_results": {
-              "path": "evidence/gimbal-complete-host.log",
-              "sha256": "e4ac4e52d19e07df6b9127573bd0e133c81a0d497826182a2770516af0a490e2"
-            },
-            "c64_execution_results": {
-              "path": "evidence/gimbal-complete-target.log",
-              "sha256": "2c4f280ca2588f768b9721d695ab6a81893342d7c058aafdfd2b3b9dd7c82071"
-            }
-          }
-        }
-      },
       "complete_native_coverage": {
         "reviewed_all_source_paths": true,
         "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",

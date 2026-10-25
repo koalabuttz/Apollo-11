@@ -23,7 +23,7 @@ Destinations outside the file stop with `EXEC_UNMAPPED` until their files have r
 
 ARATE,1 reads one of the four rates. The index guard (`index_guard`) keeps the starred operand inside a window of the rope words it can reach.
 
-These routines replace `src/gimbal_complete.c` as the file's translation. Nothing in `src/` called that code, and it had no routine table.
+These routines replace `src/gimbal_complete.c` as the file's translation. Nothing in `src/` called that code, and it had no routine table, so the #129 cleanup deleted it.
 
 ## Evidence
 
