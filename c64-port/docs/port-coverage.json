@@ -1670,20 +1670,6 @@
         },
         {
           "native_files": [
-            "src/gimbal_complete.c",
-            "src/gimbal_data.inc",
-            "src/gimbal_stage.c",
-            "src/delcomp.c",
-            "src/guidance_product.c",
-            "src/guidance_dot.c",
-            "src/guidance_dp_divide.c",
-            "src/guidance_shift.c"
-          ],
-          "scope": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h; external NEWANGL body and live scheduling remain application integration work.",
-          "verification": "docs/GIMBAL_COMPLETE.md"
-        },
-        {
-          "native_files": [
             "src/cm_gimbal_lock.c",
             "src/cm_interp_orders.c",
             "src/cm_interp_steps.c",
@@ -8646,20 +8632,6 @@
           ],
           "scope": "Source-qualified NOGIMLOC/WCALC entry stages and ten original constants; DELCOMP and subsequent arithmetic/control remain unported.",
           "verification": "docs/GIMBAL_STAGES.md"
-        },
-        {
-          "native_files": [
-            "src/gimbal_complete.c",
-            "src/gimbal_data.inc",
-            "src/gimbal_stage.c",
-            "src/delcomp.c",
-            "src/guidance_product.c",
-            "src/guidance_dot.c",
-            "src/guidance_dp_divide.c",
-            "src/guidance_shift.c"
-          ],
-          "scope": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h; external NEWANGL body and live scheduling remain application integration work.",
-          "verification": "docs/GIMBAL_COMPLETE.md"
         },
         {
           "native_files": [
