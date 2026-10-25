@@ -36,9 +36,11 @@ signed decimal loads, CLR, KEY REL, RSET and PRO. On one 4-job machine the
 noun 36 with V25 is left out: it moves the AGC clock past the sweep's
 sample point.
 
-The V30/V31 cases are in the known list until MPAC+3 (erasable 0157, the
-TC ENDOFJOB that REQUESTC stores) runs natively. They block item 6; they
-are not an accepted gap.
+The V30/V31 cases end at MPAC+3 (erasable 0157), where REQUESTC stores
+TC ENDOFJOB; `src/lanec_pin_request_routines.c` runs that word, and its
+resolver record sits under bank 41 (`ERASABLE_RECORDS` in
+`tools/flight_store_build.py`). All six match the host with
+`--replay-exact` on the C64 (2026-10-25) and are in the CI sample.
 
 The clock class (below) blocks item 6 until the resident clock (RK) clears
 it. It does not block the Pinball file certificate.
