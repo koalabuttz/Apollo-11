@@ -413,7 +413,7 @@ static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){retu
  * routine from, which can be another holder of the same key than the one
  * that runs it here (a hot subset and its full table). A C64 step goes on
  * in the module that ran the last routine while that module holds the
- * point and no timer step or request came between (rk_step_run's module
+ * point and no interrupt was taken between (rk_step_run's module
  * chain). Otherwise the step starts afresh: the kernel's tables first
  * (rk_trampoline, RK_RESIDENT_MCT), then the pinned sets (rk_direct), then
  * the resolver's order, which is host.inc's. last: the routine before's
