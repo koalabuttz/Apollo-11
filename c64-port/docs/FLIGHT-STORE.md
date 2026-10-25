@@ -1191,7 +1191,11 @@ port) runs one mission:
    fails ("the ends are not compared"), never a match. The checkpoints not
    compared are counted in the result (`replay_unpaired_count`, and in
    the summary line), and acceptance fails a window, or any window of a
-   chain, with one or more, or with no count recorded. A C64 that ends the window
+   chain, with one or more, or with no count recorded. The exception is a
+   checkpoint where both sides took a busy sample point (FLIGHT_BUSY_SAMPLE)
+   at different places in a job (`replay_busy_apart_count`): it is listed
+   as a note in the row, not a failure, since the next checkpoint and the
+   end still compare. A C64 that ends the window
    without applying every input row fails, as does one that did not apply
    each past-end input before its own end (`replay_after_rows` counts
    those it applied). A chain window's end

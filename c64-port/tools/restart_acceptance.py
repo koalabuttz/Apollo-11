@@ -219,8 +219,9 @@ def c64_verdict(c, at, commit):
         bad.append('no replay result')
     if 'replay_matched_cs' in c and not c['replay_matched_cs']:
         bad.append('no checkpoint compared')
-    if c.get('replay_unpaired'):
-        bad.append('checkpoints with no partner: ' + ', '.join(f"{u['side']} {u['cs']} cs" for u in c['replay_unpaired']))
+    lone = [u for u in c.get('replay_unpaired') or [] if not u.get('busy')]  # busy-apart pairs (#892): a note
+    if lone:
+        bad.append('checkpoints with no partner: ' + ', '.join(f"{u['side']} {u['cs']} cs" for u in lone))
     elif 'replay_matched_cs' in c and c.get('replay_unpaired') is None:
         bad.append('no record of unpaired checkpoints')
     if c.get('commit') != commit:

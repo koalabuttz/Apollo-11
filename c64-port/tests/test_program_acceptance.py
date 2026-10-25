@@ -82,6 +82,16 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertFalse(pa.replay_result(dict(replay('lm-a', 0), ok=False, error='seam'))[0])
         self.assertEqual(pa.replay_result(dict(replay('lm-a', 0), replay_skipped=['DSPCNT'])),
                          (False, 'matches host except skipped DSPCNT'))
+        # Busy checkpoints at different places (#892): a note in the text,
+        # never silent and never a failure; any other unpaired one fails (#766).
+        self.assertEqual(pa.replay_result(dict(replay('lm-a', 0), replay_unpaired_count=1, replay_busy_apart_count=1)),
+                         (True, 'matches host (1 checkpoints busy at different places, not compared)'))
+        self.assertEqual(pa.replay_result(dict(replay('lm-a', 0), replay_unpaired_count=2, replay_busy_apart_count=1)),
+                         (False, '1 checkpoints not compared'))
+        busy_chain = dict(replay('cm-a', 0), chain=2, ok=True,
+                          windows=[replay('cm-a', 0), dict(replay('cm-a', 0), replay_unpaired_count=1,
+                                                           replay_busy_apart_count=1)])
+        self.assertTrue(pa.replay_result(busy_chain)[0])
         chain = dict(replay('cm-a', 0), chain=2, ok=True,
                      windows=[replay('cm-a', 0), dict(replay('cm-a', 0), replay_skipped=['TIME3'])])
         self.assertEqual(pa.replay_result(chain), (False, 'chain of 2: window 1 matches host except skipped TIME3'))

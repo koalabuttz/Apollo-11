@@ -26,6 +26,47 @@ def state(cs, **set_):
 
 
 class Pairing(unittest.TestCase):
+    def test_busy_points_at_different_places_are_not_compared(self):
+        # 150 cs: both sides took a busy sample point in one interpretive job,
+        # the host at LOC 03760 and the C64 two words earlier (lm-p63-overload
+        # 9550 every 50): the same run seen at two places, not a difference.
+        h = state(150, o5=0o6070, o4=0o24000, o164=0o3760, o20=0o20010)
+        c = state(150, o5=0o6070, o4=0o24000, o164=0o3756, o20=0o20034)
+        v = fsv.replay_verdict([state(100), h, state(200)], [state(100), c, state(200)], True, after=[state(201)])
+        self.assertEqual((v['diff'], v['matched']), ([], [100, 200]))
+        self.assertEqual(v['unpaired'], [dict(side='both', cs=150, busy=True)])
+
+    def test_busy_points_at_the_same_place_are_compared(self):
+        h = state(150, o5=0o6070, o4=0o24000, o164=0o3760, o20=0o20010)
+        c = state(150, o5=0o6070, o4=0o24000, o164=0o3760, o20=0o20034)
+        v = fsv.replay_verdict([state(100), h, state(200)], [state(100), c, state(200)], True, after=[state(201)])
+        self.assertEqual((v['at_cs'], v['matched'], v['unpaired']), (150, [100], []))
+
+    def test_idle_against_busy_is_compared(self):
+        # The C64 at ADVAN (its jobs done) and the host busy in a job: a
+        # difference (the C64-ahead class), not a busy pair.
+        h = state(150, o5=0o6070, o4=0o24000, o164=0o3760)
+        c = state(150, o5=fsv.ADVAN['lm'], o4=0o2000, o164=0o3756)
+        v = fsv.replay_verdict([state(100), h, state(200)], [state(100), c, state(200)], True, after=[state(201)])
+        self.assertEqual((v['at_cs'], v['unpaired']), (150, []))
+
+    def test_busy_ends_at_different_places_still_fail(self):
+        # The window's end is always compared: the C64 a job ahead at the
+        # end (one interpretive word on) fails.
+        h = state(200, o5=0o6070, o4=0o24000, o164=0o3760, o20=0o20010)
+        c = state(200, o5=0o6070, o4=0o24000, o164=0o3762, o20=0o20034)
+        v = fsv.replay_verdict([state(100), h], [state(100), c], True, after=[state(201)])
+        self.assertEqual((v['at_cs'], v['matched'], v['unpaired']), (200, [100], []))
+        v = fsv.replay_verdict([state(100), h], [state(100), c], True, after=None)
+        self.assertEqual(v['at_cs'], 200)
+
+    def test_idle_points_are_compared_whatever_their_loc(self):
+        # Both at ADVAN in bank 01: LOC is the last job's, still compared.
+        h = state(150, o5=fsv.ADVAN['lm'], o4=0o2000, o164=0o3760)
+        c = state(150, o5=fsv.ADVAN['lm'], o4=0o2000, o164=0o3756)
+        v = fsv.replay_verdict([state(100), h, state(200)], [state(100), c, state(200)], True, after=[state(201)])
+        self.assertEqual((v['at_cs'], v['unpaired']), (150, []))
+
     def test_same_cs_ends_pair(self):
         v = fsv.replay_verdict([state(50), state(100)], [state(50), state(100)], True, after=[state(101)])
         self.assertEqual((v['diff'], v['matched'], v['end']), ([], [50, 100], dict(shift_cs=0, paired=True)))

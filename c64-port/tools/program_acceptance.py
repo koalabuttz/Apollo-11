@@ -113,7 +113,9 @@ def replay_result(r, bounds_here=True):
         if not (bounds.get('ok') and not bounds.get('dma_outside') and bounds.get('dma_trace_armed')):
             return False, f'chain of {k}: REU bounds not checked inside the layout'
         if r.get('ok') and len(r['windows']) == k and all(w.get('replay_matched_cs') and not w.get('replay_skipped')
-                                                           and w.get('replay_unpaired_count') == 0
+                                                           and w.get('replay_unpaired_count') is not None
+                                                           and w['replay_unpaired_count']
+                                                           == (w.get('replay_busy_apart_count') or 0)
                                                            for w in r['windows']):
             return True, f'matches host (chain of {k} windows, every seam holds)'
         for n, w in enumerate(r['windows']):
@@ -147,12 +149,18 @@ def replay_result(r, bounds_here=True):
             return False, f"run failed ({r.get('error') or 'ok is false'})"
         if r.get('replay_skipped'):       # words left out of the compare (SCHEDULE_SKIP): not a full match
             return False, f"matches host except skipped {', '.join(r['replay_skipped'])}"
-        if r.get('replay_unpaired_count'):   # #766: a checkpoint with no partner was not compared
-            return False, f"{r['replay_unpaired_count']} checkpoints not compared"
         if r.get('replay_unpaired_count') is None:
             return False, 'no record of unpaired checkpoints'
+        # #766: a checkpoint with no partner was not compared, and fails. A
+        # pair where both sides are busy at different places (#892) is a
+        # counted note: the next checkpoint or the end still compares.
+        busy = r.get('replay_busy_apart_count') or 0
+        lone = r['replay_unpaired_count'] - busy
+        if lone > 0:
+            return False, f"{lone} checkpoints not compared"
         dead = r.get('masked_dead_superbank')   # flight_scenario_vice.DEAD_SUPERBANK: reported, not hidden
-        notes = [x for x in (late[2:], f'{dead} dead superbanks masked at ADVAN' if dead else '') if x]
+        notes = [x for x in (f'{busy} checkpoints busy at different places, not compared' if busy else '', late[2:],
+                             f'{dead} dead superbanks masked at ADVAN' if dead else '') if x]
         return True, 'matches host' + (f" ({', '.join(notes)})" if notes else '')
     if not r.get('replay_differences') and r.get('replay_ended') is False:
         return False, 'did not reach the next checkpoint'

@@ -264,8 +264,14 @@ static uint32_t sweep_at = DP_SWEEP + 2ul;
 /* The row being applied sits in the cassette buffer ($03F2-$03FB; the step
  * profile uses its bottom), not in the resident's RAM. */
 #define row (*(dp_row *)0x03f2u)
-/* The centisecond the C64 is in. */
+/* The centisecond the C64 is in: the window clock's last reading
+ * (dp_window_cs keeps it), which replay_due takes before the step's timer
+ * steps and dp_rows_after_rupts after them. */
+#ifdef DP_SWEEP
 static uint16_t replay_now CASSETTE;
+#else
+#define replay_now dp_clock_last
+#endif
 /* A boundary row in that centisecond waits for its place in it (where
  * bits 1-2: the work clock's step, 1 the TIME1/TIME3 step's, then 2 and 3;
  * work the MCT since that step), so a DAP pass reads the CDUs on the
@@ -426,6 +432,29 @@ __attribute__((noinline)) static void replay_rows(uint16_t t, uint8_t sp)
         row_ready = 0;
         --rows_left;
     }
+}
+/* The host writes a step boundary's rows after its timer steps
+ * (tools/flight_host_run.c: rp_diff with where 1 after the drives and
+ * rk_timer_phase), with the work clock's place after them. replay_due runs
+ * before rk_rupts has run this step's timer steps, so a row placed just
+ * after them waits there: rk_resident_step calls this once they have run,
+ * before the step's routine. LM landing 128000: a CDU row the host's
+ * STOPRATE read (33,2630) came one step late on the C64. The centisecond
+ * after the timer steps, which the clock's reading also makes replay_now:
+ * with the one before them, landing 128000 leaves the host at 1000 cs.
+ * Low code: the overload build's resident and the text screen have no
+ * room. The DSKY sweep's low code has none, and its resident has. */
+#ifdef DP_SWEEP
+__attribute__((noinline)) void dp_rows_after_rupts(void)
+#else
+LOW_TEXT("dp_rows_after_rupts") void dp_rows_after_rupts(void)
+#endif
+{
+    uint16_t t = replay_cs();
+#ifdef DP_SWEEP
+    replay_now = t;
+#endif
+    replay_rows(t, 0u);
 }
 /* The output channels the window drives (tools/flight_scenario_vice.py
  * --replay-outputs): each change of channels 5, 6, 11, 12, 13 and 14 seen

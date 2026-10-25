@@ -148,6 +148,8 @@ class RestartAcceptance(unittest.TestCase):
     def test_c64_verdicts(self):
         at = 20000
         self.assertTrue(ra.c64_verdict(replay(at), at, HEAD)[0])
+        # A busy-apart pair (#892) is a note, not a failure.
+        self.assertTrue(ra.c64_verdict(replay(at, replay_unpaired=[dict(side='both', cs=50, busy=True)]), at, HEAD)[0])
         self.assertEqual(ra.c64_verdict(None, at, HEAD)[0], None)
         cases = {
             'skipped': replay(at, replay_skipped=['DSPCNT']),
