@@ -112,20 +112,35 @@ class Pairing(unittest.TestCase):
 
     def test_unpaired_end_is_never_a_match(self):
         r = dict(status=0, replay_ended=True, replay_differences=0, replay_matched_cs=[100], ok=False,
-                 replay_end_paired=False, replay_end_shift_cs=2, reu_bounds=dict(ok=True))
+                 replay_end_paired=False, replay_end_shift_cs=2, replay_unpaired_count=0, reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True))
         ok, text = pa.replay_result(r)
         self.assertFalse(ok)
         self.assertIn('end not compared', text)
 
     def test_shifted_match_is_shown(self):
         r = dict(status=0, replay_ended=True, replay_differences=0, replay_matched_cs=[100, 173],
-                 replay_end_paired=True, replay_end_shift_cs=1, reu_bounds=dict(ok=True))
+                 replay_end_paired=True, replay_end_shift_cs=1, replay_unpaired_count=0, reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True))
         self.assertEqual(pa.replay_result(r), (True, 'matches host (end compared 1 cs late)'))
 
-    def test_unpaired_checkpoints_are_counted_in_the_result(self):
+    def test_unpaired_checkpoints_fail_the_result(self):
+        # #766: a checkpoint with no partner was not compared, so not a match.
         r = dict(status=0, replay_ended=True, replay_differences=0, replay_matched_cs=[100, 300],
-                 replay_end_paired=True, replay_end_shift_cs=0, replay_unpaired_count=2, reu_bounds=dict(ok=True))
-        self.assertEqual(pa.replay_result(r), (True, 'matches host (2 checkpoints not compared)'))
+                 replay_end_paired=True, replay_end_shift_cs=0, replay_unpaired_count=2, reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True))
+        self.assertEqual(pa.replay_result(r), (False, '2 checkpoints not compared'))
+        self.assertEqual(pa.replay_result({**r, 'replay_unpaired_count': None}),
+                         (False, 'no record of unpaired checkpoints'))
+
+    def test_reu_bounds_must_be_recorded_and_armed(self):
+        # #766: no bounds record, or a DMA trace that was never armed, is not a pass.
+        r = dict(status=0, replay_ended=True, replay_differences=0, replay_matched_cs=[100],
+                 replay_end_paired=True, replay_end_shift_cs=0, replay_unpaired_count=0, reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True))
+        self.assertEqual(pa.replay_result(r), (True, 'matches host'))
+        self.assertEqual(pa.replay_result({k: v for k, v in r.items() if k != 'reu_bounds'}),
+                         (False, 'no REU bounds result'))
+        self.assertEqual(pa.replay_result({**r, 'reu_bounds': dict(ok=True, dma_outside=0)}),
+                         (False, 'REU DMA trace not armed'))
+        self.assertEqual(pa.replay_result({**r, 'reu_bounds': dict(ok=True, dma_outside=1, dma_trace_armed=True)}),
+                         (False, 'REU access outside the layout'))
 
     def test_channel_10_and_interrupt_enable_are_compared(self):
         h, c = state(100)[1], state(100)[1]

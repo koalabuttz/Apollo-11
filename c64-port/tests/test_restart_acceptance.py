@@ -26,7 +26,7 @@ def host_row(name, ok=True, at=None):
 
 def replay(at, **kw):
     r = dict(ok=True, commit=HEAD, snap_at=at, replay_matched_cs=[50, 100, 150, 200, 250, 300], replay_differences=0,
-             replay_skipped=[], replay_unpaired=[], reu_bounds=dict(ok=True, dma_outside=0, outside=[]), records=[1, 2], exit=0,
+             replay_skipped=[], replay_unpaired=[], reu_bounds=dict(ok=True, dma_outside=0, outside=[], dma_trace_armed=True), records=[1, 2], exit=0,
              **{k: '0' * 64 for k in ra.HASHES})
     r.update(kw)
     return r
@@ -148,6 +148,8 @@ class RestartAcceptance(unittest.TestCase):
     def test_c64_verdicts(self):
         at = 20000
         self.assertTrue(ra.c64_verdict(replay(at), at, HEAD)[0])
+        # A busy-apart pair (#892) is a note, not a failure.
+        self.assertTrue(ra.c64_verdict(replay(at, replay_unpaired=[dict(side='both', cs=50, busy=True)]), at, HEAD)[0])
         self.assertEqual(ra.c64_verdict(None, at, HEAD)[0], None)
         cases = {
             'skipped': replay(at, replay_skipped=['DSPCNT']),
@@ -160,6 +162,7 @@ class RestartAcceptance(unittest.TestCase):
             'exited 3': replay(at, exit=3),
             'no record of skipped compares': {k: v for k, v in replay(at).items() if k != 'replay_skipped'},
             'OUTSIDE the layout': replay(at, reu_bounds=dict(ok=True, outside=[])),
+            'REU DMA trace not armed': replay(at, reu_bounds=dict(ok=True, dma_outside=0, outside=[])),
             'no prg_sha256': replay(at, prg_sha256=None),
             'no checkpoint compared': replay(at, replay_matched_cs=[]),
             'checkpoints with no partner: host 50 cs': replay(at, replay_unpaired=[dict(side='host', cs=50)]),

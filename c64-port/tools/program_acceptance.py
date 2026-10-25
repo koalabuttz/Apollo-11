@@ -103,12 +103,19 @@ def host_result(row):
     return True, 'matches yaAGC (0 routines differ, 0 points bridged)' + (f'; {text}' if charge else '')
 
 
-def replay_result(r):
+def replay_result(r, bounds_here=True):
     """(matches, short text) for one flight_scenario_vice.py --replay result
-    (a window, or a --chain run's summary)."""
+    (a window, or a --chain run's summary). A chain's windows carry no REU
+    bounds of their own (the summary has them): bounds_here False."""
     if r.get('windows') is not None:
         k = r.get('chain', len(r['windows']))
+        bounds = r.get('reu_bounds') or {}
+        if not (bounds.get('ok') and not bounds.get('dma_outside') and bounds.get('dma_trace_armed')):
+            return False, f'chain of {k}: REU bounds not checked inside the layout'
         if r.get('ok') and len(r['windows']) == k and all(w.get('replay_matched_cs') and not w.get('replay_skipped')
+                                                           and w.get('replay_unpaired_count') is not None
+                                                           and w['replay_unpaired_count']
+                                                           == (w.get('replay_busy_apart_count') or 0)
                                                            for w in r['windows']):
             return True, f'matches host (chain of {k} windows, every seam holds)'
         for n, w in enumerate(r['windows']):
@@ -116,7 +123,7 @@ def replay_result(r):
                 return False, f"chain of {k}: seam {w['seam']} fails"
             if w.get('replay_skipped'):   # words left out of the compare (SCHEDULE_SKIP): not a full match
                 return False, f"chain of {k}: window {n} matches host except skipped {', '.join(w['replay_skipped'])}"
-            ok, text = replay_result(w)
+            ok, text = replay_result(w, False)
             if not ok:
                 return False, f'chain of {k}: window {n} {text}'
         return False, f"chain of {k}: ran {len(r['windows'])} windows"
@@ -124,8 +131,13 @@ def replay_result(r):
         return False, f"stops at {r.get('at', '?')}"
     if r.get('short'):
         return False, f"ends early ({r.get('agc_cs')} of {r.get('requested_cs')} cs)"
-    if not (r.get('reu_bounds') or {}).get('ok', True):
+    bounds = r.get('reu_bounds') if bounds_here else dict(ok=True, dma_trace_armed=True)
+    if not bounds:                       # #766: no record is not a pass
+        return False, 'no REU bounds result'
+    if not bounds.get('ok') or bounds.get('dma_outside'):
         return False, 'REU access outside the layout'
+    if not bounds.get('dma_trace_armed'):
+        return False, 'REU DMA trace not armed'
     shift = r.get('replay_end_shift_cs')
     late = f', end compared {shift} cs late' if shift else ''
     if r.get('replay_ended') and r.get('replay_end_paired') is False and not r.get('replay_differences'):
@@ -137,11 +149,17 @@ def replay_result(r):
             return False, f"run failed ({r.get('error') or 'ok is false'})"
         if r.get('replay_skipped'):       # words left out of the compare (SCHEDULE_SKIP): not a full match
             return False, f"matches host except skipped {', '.join(r['replay_skipped'])}"
+        if r.get('replay_unpaired_count') is None:
+            return False, 'no record of unpaired checkpoints'
+        # #766: a checkpoint with no partner was not compared, and fails. A
+        # pair where both sides are busy at different places (#892) is a
+        # counted note: the next checkpoint or the end still compares.
+        busy = r.get('replay_busy_apart_count') or 0
+        lone = r['replay_unpaired_count'] - busy
+        if lone > 0:
+            return False, f"{lone} checkpoints not compared"
         dead = r.get('masked_dead_superbank')   # flight_scenario_vice.DEAD_SUPERBANK: reported, not hidden
-        busy = r.get('replay_busy_apart_count')
-        notes = [x for x in (f"{r['replay_unpaired_count']} checkpoints not compared"
-                             + (f" ({busy} busy at different places)" if busy else '')
-                             if r.get('replay_unpaired_count') else '', late[2:],
+        notes = [x for x in (f'{busy} checkpoints busy at different places, not compared' if busy else '', late[2:],
                              f'{dead} dead superbanks masked at ADVAN' if dead else '') if x]
         return True, 'matches host' + (f" ({', '.join(notes)})" if notes else '')
     if not r.get('replay_differences') and r.get('replay_ended') is False:

@@ -83,6 +83,11 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
 # (tools/flight_host_run.c rp_end, platform/c64/dap_pass_check.c replay_end).
 END_CHANNELS = ['channel 5', 'channel 6', 'channel 11', 'channel 12', 'channel 13', 'channel 14', 'channel 34',
                 'channel 35', 'superbank', 'channel 10', 'interrupts enabled', 'radar gate']
+# No pending-request word: rk_pending is 0 at every state both sides
+# write. The host writes one only with its pending mask clear (the
+# `!pending` test before rp_end in tools/flight_host_run.c's step loop),
+# and the C64's sample_point (platform/c64/dap_pass_check.c) returns
+# before writing while rk_pending is set or an interrupt runs (#766).
 # tools/flight_host_run.c rp_row: centiseconds, kind, where (bit 0; bits
 # 1-2 the work clock's step in the centisecond), address, value, work.
 ROW = struct.Struct('<HBBHHH')
@@ -91,9 +96,11 @@ SLIDE_CS = 100
 
 
 def compared(i):
-    """tools/flight_host_run.c compared(): not the central registers, RUPTREG1-4
-    or the clock counters (024-031, the work clock's scalers)."""
-    return i >= 0o20 and not 0o70 <= i <= 0o73 and not 0o24 <= i <= 0o31
+    """The replay compare's words: tools/flight_host_run.c compared() (not
+    RUPTREG1-4 or the clock counters 024-031, the work clock's scalers), and
+    the central registers 0-017 too (#766): both sides end at a sample point,
+    so they hold the same native state there."""
+    return not 0o70 <= i <= 0o73 and not 0o24 <= i <= 0o31
 
 
 def shown(x, v):
@@ -1053,7 +1060,11 @@ def main():
             scenario=a.scenario, snap_cs=a.snap_cs, snap_at=first.get('snap_at'), requested_cs=a.cs, chain=a.chain,
             ok=ok, status=next((x.get('status') for x in results if x.get('status')), 0), replay_rows=sum(x.get('replay_rows', 0) for x in results),
             replay_ended=ok, replay_differences=0 if ok else None, commit=flight_holes.source_commit(),
-            reu_bounds=dict(ok=all((x.get('reu_bounds') or {}).get('ok', True) for x in results)),
+            # A window with no bounds record fails the chain's (#766).
+            reu_bounds=dict(ok=bool(results) and all((x.get('reu_bounds') or {}).get('ok') is True for x in results),
+                            dma_outside=sum((x.get('reu_bounds') or {}).get('dma_outside') or 0 for x in results),
+                            dma_trace_armed=bool(results) and all((x.get('reu_bounds') or {}).get('dma_trace_armed')
+                                                                  for x in results)),
             windows=[{k: x.get(k) for k in ('ok', 'status', 'at', 'seam', 'error', 'replay_differences',
                                              'replay_differ_at_cs', 'replay_first', 'replay_matched_cs', 'replay_end_shift_cs',
                                              'replay_end_paired', 'replay_unpaired_count',

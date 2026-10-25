@@ -219,8 +219,9 @@ def c64_verdict(c, at, commit):
         bad.append('no replay result')
     if 'replay_matched_cs' in c and not c['replay_matched_cs']:
         bad.append('no checkpoint compared')
-    if c.get('replay_unpaired'):
-        bad.append('checkpoints with no partner: ' + ', '.join(f"{u['side']} {u['cs']} cs" for u in c['replay_unpaired']))
+    lone = [u for u in c.get('replay_unpaired') or [] if not u.get('busy')]  # busy-apart pairs (#892): a note
+    if lone:
+        bad.append('checkpoints with no partner: ' + ', '.join(f"{u['side']} {u['cs']} cs" for u in lone))
     elif 'replay_matched_cs' in c and c.get('replay_unpaired') is None:
         bad.append('no record of unpaired checkpoints')
     if c.get('commit') != commit:
@@ -232,6 +233,8 @@ def c64_verdict(c, at, commit):
         bad.append('no REU bounds result')
     else:
         inside = b.get('ok') is True and b.get('dma_outside') == 0
+        if not b.get('dma_trace_armed'):   # #766: an unarmed trace saw no DMAs at all
+            bad.append('REU DMA trace not armed')
         text += f"; REU {'inside the layout' if inside else 'OUTSIDE the layout'}"
         if not inside:
             bad.append(f"{b.get('dma_outside') or 0} DMAs outside the REU layout"
@@ -352,7 +355,7 @@ def write_doc(m, rows, groups, problems, commit, store_sha):
              'On the C64 (tools/flight_scenario_vice.py --replay --replay-exact --strict-start, VICE, a stock C64 '
              "with the store in an REU) the window starts at the host's GOJAM point, just after the GOJAM, so it "
              f"replays the recovery: {REPLAY_CS} cs with the host's inputs, a checkpoint every {REPLAY_EVERY} cs. "
-             'At each checkpoint the C64 must equal the host in erasable 0020-3777 (less the clock scalers '
+             'At each checkpoint the C64 must equal the host in erasable 0000-3777 (less the clock scalers '
              '0024-0031 and RUPTREG1-4, 0070-0073), the timers and the output channels, with no compare skipped, '
              "and every REU DMA must stay inside the program's layout (tools/reu_layout.py). The window covers the "
              "recovery, not the whole resumed phase, which the host covers to the row's end. For the rows "
