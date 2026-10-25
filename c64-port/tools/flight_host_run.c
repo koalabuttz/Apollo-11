@@ -816,6 +816,8 @@ static double pilot_tau;
 static void eset(agc_word *w,unsigned a,agc_word v){if(w)w[a]=v;else *cell(a)=(int16_t)v;}
 /* FLIGHT_RHC (tools/flight_rhc.h): the LM hand controller. */
 #include "flight_rhc.h"
+/* FLIGHT_ATT (tools/flight_attitude.h): the LM turning under its jets. */
+#include "flight_attitude.h"
 static void pilot(agc_word *w){double r[3],v[3],u[3],rm=0.0,vu=0.0,h[3],hm=0.0,t[3],tm=0.0,ig,mg,lim=tan(15.0*3.141592653589793/180.0);unsigned k;
  surface_v(w,v);for(k=0;k<3u;++k){r[k]=eng_dp(w,03520u+2u*k,24);rm+=r[k]*r[k];}
  rm=sqrt(rm);if(rm<=0.0)return;
@@ -835,7 +837,7 @@ static void engine_due(unsigned long t,struct engine *e,agc_word *w){double f,a,
   e->lifted=1;e->on=0;e->kg=ascent_kg;}
  if(stage_cs&&t>=stage_cs&&!e->lifted){e->lifted=1;e->kg=ascent_kg;}
  if(!(eword(w,FLAGWRD5)&ENGONBIT)){e->on=0;return;}
- for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,CDUXD+k);else *cell(CDUX+k)=(int16_t)eword(w,CDUXD+k);}
+ if(!att_scale)for(k=0;k<3u;++k){if(w)w[CDUX+k]=eword(w,CDUXD+k);else *cell(CDUX+k)=(int16_t)eword(w,CDUXD+k);}
  if(pilot_tau&&!e->lifted&&eword(w,01011)==0102u&&(!touchdown_cs||t<touchdown_cs))pilot(w);
  if(!e->on){e->on=1;e->t=t;e->tthrot=eword(w,TTHROT);if(!e->kg){e->kg=engine_kg;e->bits=e->cmd=e->ramp=373.0;}return;}
  if(!e->lifted&&eword(w,01011)==0106u){e->cmd=3467.0;if(!engine_lag)e->bits=e->cmd;}
@@ -1563,6 +1565,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(getenv("FLIGHT_ASCENT"))ascent_kg=strtod(getenv("FLIGHT_ASCENT"),0);
  if(getenv("FLIGHT_RCS"))rcs_kg=strtod(getenv("FLIGHT_RCS"),0);
  if(rcs_kg&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_RCS needs FLIGHT_SCALED\n");return 2;}
+ if(getenv("FLIGHT_ATT"))att_scale=strtod(getenv("FLIGHT_ATT"),0);
+ if(att_scale&&!getenv("FLIGHT_SCALED")){fprintf(stderr,"FLIGHT_ATT needs FLIGHT_SCALED\n");return 2;}
  if(getenv("FLIGHT_STAGE"))stage_cs=strtoul(getenv("FLIGHT_STAGE"),0,10);
  if(stage_cs&&!ascent_kg){fprintf(stderr,"FLIGHT_STAGE needs FLIGHT_ASCENT\n");return 2;}
  if(getenv("FLIGHT_LR_POS2"))lr_pos2=strtoul(getenv("FLIGHT_LR_POS2"),0,10);
@@ -1756,6 +1760,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
    if(scaled&&engine_lag)engine_due(now(s.words),&eng_nat,s.words);
    rcs_due(now(s.words),s.words,&hw);
+   att_due(now(s.words),s.words,&hw);
    if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);
    if(got){
     /* At a RESUME point the instruction to run is BRUPT, not the word at

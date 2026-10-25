@@ -796,6 +796,18 @@ port) runs one mission:
    command finds the stick out of detent (JUSTOUT at 2,505 cs) and reads
    the counters each pass (RATERROR from 2,514 cs). Every native routine
    matches yaAGC.
+   `FLIGHT_ATT=SCALE` (LM, `tools/flight_attitude.h`, scaled time) turns
+   the LM under its RCS jets: each jet the DAP fires gives the angular
+   acceleration the DAP itself counts on (1JACC, 1JACCQ, 1JACCR) times
+   SCALE, about P from channel 6 (00125 +P, 00252 -P) and about Q and R
+   from channel 5's U and V jets (ALLJETS). Each native routine boundary
+   turns the body by its rates and writes CDUX-Z; anything else that moves
+   CDUX-Z (coarse align, gyro torquing) resets the attitude to them. No
+   cross-coupling, no engine torque; with it the engine model no longer
+   sets CDUX-Z to CDUXD-ZD. `lm-rhc-att-turn`: `lm-rhc-att-hold` with
+   `FLIGHT_ATT=1`. The +P stick turns the LM at 0.097 rad/s (CDUX to 5652
+   octal) and the DAP stops it at release; the Q and R stick turns CDUY
+   and CDUZ the same way. Every native routine matches yaAGC.
    `lm-abort-p70-nassp` and `lm-abort-p71-nassp`: `lm-p63-nassp` with the
    crew aborting in P64 at 1,150 s after the core (about 1,230 m up,
    28 m/s down), with `FLIGHT_ENGINE_LAG=0.2`. `FLIGHT_CHAN` clears one
