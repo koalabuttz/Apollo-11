@@ -83,6 +83,11 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
 # (tools/flight_host_run.c rp_end, platform/c64/dap_pass_check.c replay_end).
 END_CHANNELS = ['channel 5', 'channel 6', 'channel 11', 'channel 12', 'channel 13', 'channel 14', 'channel 34',
                 'channel 35', 'superbank', 'channel 10', 'interrupts enabled', 'radar gate']
+# No pending-request word: rk_pending is 0 at every state both sides
+# write. The host writes one only with its pending mask clear (the
+# `!pending` test before rp_end in tools/flight_host_run.c's step loop),
+# and the C64's sample_point (platform/c64/dap_pass_check.c) returns
+# before writing while rk_pending is set or an interrupt runs (#766).
 # tools/flight_host_run.c rp_row: centiseconds, kind, where (bit 0; bits
 # 1-2 the work clock's step in the centisecond), address, value, work.
 ROW = struct.Struct('<HBBHHH')

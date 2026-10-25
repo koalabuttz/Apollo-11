@@ -354,7 +354,7 @@ def write_doc(m, rows, groups, problems, commit, store_sha):
              'On the C64 (tools/flight_scenario_vice.py --replay --replay-exact --strict-start, VICE, a stock C64 '
              "with the store in an REU) the window starts at the host's GOJAM point, just after the GOJAM, so it "
              f"replays the recovery: {REPLAY_CS} cs with the host's inputs, a checkpoint every {REPLAY_EVERY} cs. "
-             'At each checkpoint the C64 must equal the host in erasable 0020-3777 (less the clock scalers '
+             'At each checkpoint the C64 must equal the host in erasable 0000-3777 (less the clock scalers '
              '0024-0031 and RUPTREG1-4, 0070-0073), the timers and the output channels, with no compare skipped, '
              "and every REU DMA must stay inside the program's layout (tools/reu_layout.py). The window covers the "
              "recovery, not the whole resumed phase, which the host covers to the row's end. For the rows "

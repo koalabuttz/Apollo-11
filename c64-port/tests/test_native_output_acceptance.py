@@ -20,7 +20,8 @@ def replay(name, snap, differences=0, matched=(100,), commit=HEAD):
     return dict(scenario=name, snap_cs=snap, snap_at=snap, requested_cs=1000, status=0, replay_rows=10,
                 replay_ended=True, replay_differences=differences, replay_matched_cs=list(matched),
                 replay_differ_at_cs=200 if differences else None, commit=commit,
-                replay_first=[dict(at='TIME4', host='1', c64='2')] if differences else [], reu_bounds=dict(ok=True))
+                replay_first=[dict(at='TIME4', host='1', c64='2')] if differences else [],
+                reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True), replay_unpaired_count=0)
 
 
 def states(*values):

@@ -1138,7 +1138,11 @@ port) runs one mission:
    counted as `dma_unchecked` and only its last byte is range-checked
    (the address registers then hold the byte after it); its writes are
    still in the byte diff. VICE evaluates the condition itself, so an in-bounds
-   run costs nothing. `--reu-check-drop REGION` leaves a region out, as a
+   run costs nothing. Acceptance (tools/program_acceptance.py,
+   tools/restart_acceptance.py) takes a window only with a `reu_bounds`
+   result that is `ok`, has no `dma_outside` and says the trace was armed
+   (`dma_trace_armed`); a window or chain with none of these recorded
+   fails. `--reu-check-drop REGION` leaves a region out, as a
    test of the check: with the scratch left out, an LM P63 window logs 48
    DMAs (the step records) and fails; with every region, it logs none.
    `--replay` replays everything instead and checks the result: the host
@@ -1186,7 +1190,8 @@ port) runs one mission:
    When the two share no such point, the ends are unpaired and the window
    fails ("the ends are not compared"), never a match. The checkpoints not
    compared are counted in the result (`replay_unpaired_count`, and in
-   the summary line and the acceptance row). A C64 that ends the window
+   the summary line), and acceptance fails a window, or any window of a
+   chain, with one or more, or with no count recorded. A C64 that ends the window
    without applying every input row fails, as does one that did not apply
    each past-end input before its own end (`replay_after_rows` counts
    those it applied). A chain window's end
@@ -1194,9 +1199,13 @@ port) runs one mission:
    `--replay-every` + 1 states and the C64 writes no more, and a window
    the host ran past 16,383 cs (the C64's 14-bit window clock) fails before
    VICE starts;
-   the run fails on any difference, printing the first one, skipping what
-   the host differential skips (the central registers and RUPTREG1-4;
-   unlike it, the timers are compared). So a window that ran with no stops also has to match
+   the run fails on any difference, printing the first one, skipping only
+   RUPTREG1-4 and the clock counters 024-031. Unlike the host
+   differential it compares the central registers 0-017 and the timers:
+   both sides write a state only at a sample point with no interrupt
+   pending (the host's `!pending` test before rp_end, the C64's
+   sample_point in dap_pass_check.c), so the registers hold the same
+   values there and rk_pending is 0 on both. So a window that ran with no stops also has to match
    the host. Until the CM idle pass is charged as idle on the C64 (it is
    module work there when a job ends into it, idle on the host), CM windows
    skip what that tick moves: DSPCNT, DSRUPTSW and DSPTAB's sent bit
@@ -1222,7 +1231,8 @@ port) runs one mission:
    - *C64 = host (`--replay`).* The C64 window starts from the host's
      snapshot and gets the host's inputs as rows. At the window's end, and
      every `--replay-every` cs, it is compared with the host on a wider
-     scope than the first check: the same erasable set, plus the timers
+     scope than the first check: the same erasable set plus the central
+     registers 0-017, plus the timers
      TIME1-TIME6 (both sides run one work clock here), plus output channels
      5, 6, 10, 11-14, 34 and 35, the superbank, the interrupt enable and
      the radar gate counter. A PIPA's -0 and +0 count as
