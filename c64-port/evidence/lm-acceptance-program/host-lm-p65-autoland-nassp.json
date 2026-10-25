@@ -17,48 +17,42 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "b9a2bcb2256e",
- "cia_interrupts": 145228,
+ "commit": "7dd3db437cfa",
+ "cia_interrupts": 140001,
  "periods_taken": 140001,
- "periods_dropped": 5227,
+ "periods_dropped": 0,
  "agc_centiseconds": 140001,
- "native_routines": 5716211,
- "bridged_instructions": 264,
+ "native_routines": 5382227,
+ "bridged_instructions": 0,
  "routine_mismatches": [],
- "unregistered": [
-  {
-   "kind": "basic",
-   "point": "40,2732",
-   "label": "2INTOUT",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 12,
-   "instructions": 12,
-   "refused_by": "lanec_pin_lm_routines",
-   "core_start": false
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 21785368,
+  "yaagc": 20260704,
+  "percent": 7.5,
+  "routines": 90865,
+  "mean_abs_error": 55.6,
+  "abs_percent": 24.9,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
   },
-  {
-   "kind": "basic",
-   "point": "40,2734",
-   "label": "2INTOUT+2",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 12,
-   "instructions": 36,
-   "refused_by": "lanec_pin_lm_routines",
-   "core_start": false
-  },
-  {
-   "kind": "basic",
-   "point": "40,3306",
-   "label": "DSPDECVN",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 12,
-   "instructions": 216,
-   "refused_by": "lanec_pin_lm_routines",
-   "core_start": false
-  }
- ],
- "log_sha256": "d3b1893ba0bb714bd656a3901c35a2ede3a8abb56b265ecefa8e934acdd39f35"
+  "state": "ok",
+  "text": "interpretive charge +7.5% net, 24.9% routine by routine, from yaAGC's MCT over 90865 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "31,2621": 127754
+ },
+ "arrivals": {
+  "31,2621": [
+   127754
+  ]
+ },
+ "log_sha256": "dc692dd2f632908675eb7c4c5de89311e837eada2114b11aebfb20aa522c2428"
 }

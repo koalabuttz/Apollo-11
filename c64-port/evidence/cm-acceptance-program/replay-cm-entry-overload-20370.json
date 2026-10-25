@@ -7,11 +7,11 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 47640596,
- "agc_cs": 301,
+ "wall_cycles": 50433162,
+ "agc_cs": 309,
  "dropped_ticks": 0,
- "steps": 1270,
- "wall_per_agc": 16.064,
+ "steps": 1314,
+ "wall_per_agc": 16.566,
  "lost": false,
  "mission": "cm",
  "snap_cs": 20370,
@@ -27,16 +27,81 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 10
+  "dma_unchecked": 6
  },
+ "hold_host_mct": 899,
+ "hold_host_time1": 4203,
+ "hold_host_work_mct": 899,
+ "hold_host_work_stolen": 0,
  "replay_rows": 47,
  "replay_applied": 47,
- "replay_end_cs": 301,
+ "replay_end_cs": 309,
  "replay_ended": true,
+ "replay_after_rows": 1,
+ "replay_inputs": {
+  "counts": {
+   "1": 47
+  },
+  "erasable": [],
+  "pipas": [
+   "0037",
+   "0040",
+   "0041"
+  ],
+  "channels": [],
+  "requests": 0,
+  "channel_set": {},
+  "channel_clear": {},
+  "channel_changed": {}
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 10,
+   "channel 6": 5,
+   "channel 11": 258,
+   "channel 12": 32,
+   "channel 13": 0,
+   "channel 14": 28672,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 9021,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 10,
+   "channel 6": 5,
+   "channel 11": 2,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 9021,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [
+   "0050",
+   "0051",
+   "0052"
+  ],
+  "changed": [
+   "0050",
+   "0051",
+   "0052"
+  ]
+ },
  "replay_unpaired": [],
  "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
  "replay_end_shift_cs": 0,
  "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
  "replay_matched_cs": [
   50,
   101,
@@ -53,5 +118,6 @@
  "snap_slid": false,
  "requested_cs": 301,
  "host_holes": [],
- "commit": "22bfa334ba31"
+ "downrupt": false,
+ "commit": "7dd3db437cfa"
 }

@@ -1,0 +1,216 @@
+{
+ "name": "lm-rendezvous-restart",
+ "gojam": 20007,
+ "asked": 20000,
+ "host": {
+  "scenario": "lm-rendezvous-restart",
+  "mission": "lm",
+  "centiseconds": 25000,
+  "keys": "@2200V37E20E@3000V33E@4700E@6100V33E@29000V37E34E@29400V33E@29700V33E@34000V33E@36700V33E@37500V33E@37800V33E",
+  "inputs": {
+   "FLIGHT_CH30": "036377",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_CH33": "077775",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-rendezvous.load",
+   "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+   "FLIGHT_BUSY_SAMPLE": "50",
+   "FLIGHT_SCALED": "1,1,2"
+  },
+  "gojam_cs": 20000,
+  "schedule": "1,1,2",
+  "exit": 0,
+  "native_routines": 949481,
+  "bridged_instructions": 0,
+  "agc_cs": 25000,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "20007",
+    "06070"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "06070",
+   "06070"
+  ],
+  "modreg": [
+   "00024",
+   "00024"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "00000",
+    "00000"
+   ],
+   [
+    "01107",
+    "00000",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {
+   "PHASE2": "00402"
+  },
+  "active_phases_end": {
+   "PHASE2": "00402"
+  },
+  "end_words_differing_from_base": 625,
+  "gojam_snapshot": "build/flight-restart/lm-rendezvous-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/lm-rendezvous-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "7dd3db437cfa",
+  "log": "host.log",
+  "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
+ },
+ "c64": {
+  "scenario": "lm-rendezvous-restart",
+  "ok": true,
+  "status": 0,
+  "z": "03214",
+  "fb": "02000",
+  "superbank": "0100",
+  "bank": "01",
+  "at": "01,3214",
+  "wall_cycles": 61460217,
+  "agc_cs": 308,
+  "dropped_ticks": 0,
+  "steps": 1649,
+  "wall_per_agc": 20.253,
+  "lost": false,
+  "mission": "lm",
+  "snap_cs": 20007,
+  "replay": true,
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save",
+    "replay states",
+    "scratch",
+    "undo"
+   ],
+   "outside": [],
+   "dma_outside": 0,
+   "dma_trace_armed": true,
+   "dma_hits": [],
+   "dma_unchecked": 13
+  },
+  "hold_host_mct": 446,
+  "hold_host_time1": 3745,
+  "replay_rows": 2,
+  "replay_applied": 2,
+  "replay_end_cs": 308,
+  "replay_ended": true,
+  "replay_after_rows": 0,
+  "replay_inputs": {
+   "counts": {
+    "0": 1,
+    "2": 1
+   },
+   "erasable": [
+    "0033"
+   ],
+   "pipas": [],
+   "channels": [
+    "33"
+   ],
+   "requests": 0,
+   "channel_set": {
+    "33": 32765
+   },
+   "channel_clear": {
+    "33": 2
+   },
+   "channel_changed": {
+    "33": 8
+   }
+  },
+  "replay_outputs": {
+   "channel_set": {
+    "channel 5": 0,
+    "channel 6": 0,
+    "channel 11": 8194,
+    "channel 12": 32,
+    "channel 13": 0,
+    "channel 14": 28680,
+    "channel 34": 0,
+    "channel 35": 0,
+    "superbank": 112,
+    "channel 10": 0,
+    "interrupts enabled": 1,
+    "radar gate": 0
+   },
+   "channel_changed": {
+    "channel 5": 0,
+    "channel 6": 0,
+    "channel 11": 8194,
+    "channel 12": 32,
+    "channel 13": 0,
+    "channel 14": 28680,
+    "channel 34": 0,
+    "channel 35": 0,
+    "superbank": 112,
+    "channel 10": 0,
+    "interrupts enabled": 0,
+    "radar gate": 0
+   },
+   "nonzero": [
+    "0046",
+    "0050",
+    "0051",
+    "0052",
+    "0055"
+   ],
+   "changed": [
+    "0050",
+    "0051",
+    "0052"
+   ]
+  },
+  "replay_unpaired": [],
+  "replay_unpaired_count": 0,
+  "replay_busy_apart": [],
+  "replay_busy_apart_count": 0,
+  "replay_end_shift_cs": 0,
+  "replay_end_paired": true,
+  "masked_dead_superbank": 0,
+  "masked_dead_superbank_at": [],
+  "replay_matched_cs": [
+   50,
+   100,
+   150,
+   200,
+   250,
+   300
+  ],
+  "replay_differences": 0,
+  "replay_differ_at_cs": null,
+  "replay_skipped": [],
+  "replay_first": [],
+  "snap_at": 20007,
+  "snap_slid": false,
+  "requested_cs": 300,
+  "host_holes": [],
+  "downrupt": false,
+  "commit": "7dd3db437cfa",
+  "exit": 0,
+  "log": "lm-rendezvous-restart-c64.log",
+  "log_sha256": "620746a02f29399180e16e7cdcb598ffc8365a97968a293c163dedd2f8366e49",
+  "store_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
+  "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259",
+  "prg_sha256": "59ecd1de193e1d4f2a29704b92cb5f39f23d05b8eb06a3c2a9bb0eadd8036f89"
+ },
+ "gojam_on_c64": null
+}

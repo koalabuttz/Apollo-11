@@ -1,0 +1,67 @@
+{
+ "name": "cm-p00-restart",
+ "gojam": 2500,
+ "asked": 2500,
+ "host": {
+  "scenario": "cm-p00-restart",
+  "mission": "cm",
+  "centiseconds": 4000,
+  "keys": "",
+  "inputs": {},
+  "gojam_cs": 2500,
+  "schedule": null,
+  "exit": 0,
+  "native_routines": 259971,
+  "bridged_instructions": 0,
+  "agc_cs": null,
+  "samples": 4000,
+  "samples_equal": 3998,
+  "base_samples_equal": 3998,
+  "gojam": [
+   [
+    "2500",
+    "03231"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03231",
+   "03231"
+  ],
+  "modreg": [
+   "77777",
+   "77777"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "00000",
+    "00000"
+   ],
+   [
+    "01107",
+    "00000",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {},
+  "active_phases_end": {},
+  "end_words_differing_from_base": 25,
+  "gojam_snapshot": "build/flight-restart/cm-p00-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/cm-p00-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "7dd3db437cfa",
+  "log": "host.log",
+  "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
+ },
+ "c64": null,
+ "gojam_on_c64": null
+}

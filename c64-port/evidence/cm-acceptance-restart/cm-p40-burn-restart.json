@@ -1,0 +1,213 @@
+{
+ "name": "cm-p40-burn-restart",
+ "gojam": 50000,
+ "asked": 50000,
+ "host": {
+  "scenario": "cm-p40-burn-restart",
+  "mission": "cm",
+  "centiseconds": 55000,
+  "keys": "@4500V37E30E@6000V33E@7000V33E@8500V33E@10000V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@69000V33E@70500V33E@72000V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH31": "037777",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_SPS": "43900,0.5,-0.3",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load",
+   "FLIGHT_SCALED": "1,1,2"
+  },
+  "gojam_cs": 50000,
+  "schedule": "1,1,2",
+  "exit": 0,
+  "native_routines": 2815059,
+  "bridged_instructions": 0,
+  "agc_cs": 55000,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "50000",
+    "03231"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03231",
+   "03231"
+  ],
+  "modreg": [
+   "00050",
+   "00050"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "00000",
+    "00000"
+   ],
+   [
+    "01107",
+    "00000",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {
+   "PHASE5": "00003",
+   "PHASE6": "00003"
+  },
+  "active_phases_end": {
+   "PHASE5": "00003",
+   "PHASE6": "00003"
+  },
+  "end_words_differing_from_base": 151,
+  "gojam_snapshot": "build/flight-restart/cm-p40-burn-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/cm-p40-burn-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "7dd3db437cfa",
+  "log": "host.log",
+  "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
+ },
+ "c64": {
+  "scenario": "cm-p40-burn-restart",
+  "ok": true,
+  "status": 0,
+  "z": "03231",
+  "fb": "02000",
+  "superbank": "0100",
+  "bank": "01",
+  "at": "01,3231",
+  "wall_cycles": 66382932,
+  "agc_cs": 307,
+  "dropped_ticks": 0,
+  "steps": 1573,
+  "wall_per_agc": 21.947,
+  "lost": false,
+  "mission": "cm",
+  "snap_cs": 50000,
+  "replay": true,
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save",
+    "replay states",
+    "scratch"
+   ],
+   "outside": [],
+   "dma_outside": 0,
+   "dma_trace_armed": true,
+   "dma_hits": [],
+   "dma_unchecked": 8
+  },
+  "hold_host_mct": 1143,
+  "hold_host_time1": 871,
+  "replay_rows": 134,
+  "replay_applied": 134,
+  "replay_end_cs": 307,
+  "replay_ended": true,
+  "replay_after_rows": 3,
+  "replay_inputs": {
+   "counts": {
+    "0": 7,
+    "1": 127
+   },
+   "erasable": [
+    "0033",
+    "0034"
+   ],
+   "pipas": [
+    "0037",
+    "0040",
+    "0041"
+   ],
+   "channels": [],
+   "requests": 0,
+   "channel_set": {},
+   "channel_clear": {},
+   "channel_changed": {}
+  },
+  "replay_outputs": {
+   "channel_set": {
+    "channel 5": 0,
+    "channel 6": 0,
+    "channel 11": 4352,
+    "channel 12": 1186,
+    "channel 13": 0,
+    "channel 14": 31744,
+    "channel 34": 0,
+    "channel 35": 0,
+    "superbank": 64,
+    "channel 10": 7043,
+    "interrupts enabled": 1,
+    "radar gate": 0
+   },
+   "channel_changed": {
+    "channel 5": 0,
+    "channel 6": 0,
+    "channel 11": 4352,
+    "channel 12": 1186,
+    "channel 13": 0,
+    "channel 14": 31744,
+    "channel 34": 0,
+    "channel 35": 0,
+    "superbank": 0,
+    "channel 10": 7043,
+    "interrupts enabled": 0,
+    "radar gate": 0
+   },
+   "nonzero": [
+    "0050",
+    "0051",
+    "0052",
+    "0054"
+   ],
+   "changed": [
+    "0050",
+    "0051",
+    "0052",
+    "0054"
+   ]
+  },
+  "replay_unpaired": [],
+  "replay_unpaired_count": 0,
+  "replay_busy_apart": [],
+  "replay_busy_apart_count": 0,
+  "replay_end_shift_cs": 0,
+  "replay_end_paired": true,
+  "masked_dead_superbank": 0,
+  "masked_dead_superbank_at": [],
+  "replay_matched_cs": [
+   50,
+   100,
+   150,
+   201,
+   250,
+   300
+  ],
+  "replay_differences": 0,
+  "replay_differ_at_cs": null,
+  "replay_skipped": [],
+  "replay_first": [],
+  "snap_at": 50000,
+  "snap_slid": false,
+  "requested_cs": 300,
+  "host_holes": [],
+  "downrupt": false,
+  "commit": "7dd3db437cfa",
+  "exit": 0,
+  "log": "cm-p40-burn-restart-c64.log",
+  "log_sha256": "eb4a6c3395ee28e8316488cbab0d795b8786c814ce5e57f535f8b54f9bf98c6b",
+  "store_sha256": "a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf",
+  "manifest_sha256": "9968b925d9733cae9263d7dc766173dbb5ed7fb880e1ca972684f0a257813bc6",
+  "prg_sha256": "b97d9fa8993347ccd992b3f0f72114a830e384fc4a3b35b01665ed72405ebcdd"
+ },
+ "gojam_on_c64": null
+}

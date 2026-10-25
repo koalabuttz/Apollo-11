@@ -1,0 +1,80 @@
+{
+ "scenario": "lm-uplink-accept",
+ "snap_cs": 9100,
+ "snap_at": 9100,
+ "requested_cs": 1000,
+ "chain": 2,
+ "ok": true,
+ "status": 0,
+ "replay_rows": 28,
+ "replay_ended": true,
+ "replay_differences": 0,
+ "commit": "7dd3db437cfa",
+ "reu_bounds": {
+  "ok": true,
+  "dma_outside": 0,
+  "dma_trace_armed": true
+ },
+ "windows": [
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3214",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 1000,
+   "wall_per_agc": 10.746,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
+  },
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3214",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 1000,
+   "wall_per_agc": 10.478,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
+  }
+ ]
+}

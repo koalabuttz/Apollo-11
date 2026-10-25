@@ -1,17 +1,17 @@
 {
  "scenario": "cm-entry",
- "ok": false,
+ "ok": true,
  "status": 0,
  "z": "03231",
  "fb": "02000",
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 40564303,
- "agc_cs": 300,
+ "wall_cycles": 42572157,
+ "agc_cs": 308,
  "dropped_ticks": 0,
- "steps": 1200,
- "wall_per_agc": 13.724,
+ "steps": 1287,
+ "wall_per_agc": 14.029,
  "lost": false,
  "mission": "cm",
  "snap_cs": 9850,
@@ -27,33 +27,81 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 12
+  "dma_unchecked": 10
  },
+ "hold_host_mct": 472,
+ "hold_host_time1": 10029,
  "replay_rows": 0,
  "replay_applied": 0,
- "replay_end_cs": 300,
+ "replay_end_cs": 308,
  "replay_ended": true,
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {},
+  "erasable": [],
+  "pipas": [],
+  "channels": [],
+  "requests": 0,
+  "channel_set": {},
+  "channel_clear": {},
+  "channel_changed": {}
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 256,
+   "channel 12": 32,
+   "channel 13": 0,
+   "channel 14": 28672,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 8192,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 0,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 8192,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [],
+  "changed": []
+ },
  "replay_unpaired": [],
  "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
  "replay_end_shift_cs": 0,
  "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
  "replay_matched_cs": [
   51,
-  100
+  100,
+  185,
+  201,
+  251,
+  300
  ],
- "replay_differences": 1,
- "replay_differ_at_cs": 185,
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
  "replay_skipped": [],
- "replay_first": [
-  {
-   "at": "TIME4",
-   "host": "37770",
-   "c64": "37771"
-  }
- ],
+ "replay_first": [],
  "snap_at": 9850,
  "snap_slid": false,
  "requested_cs": 300,
  "host_holes": [],
- "commit": "22bfa334ba31"
+ "downrupt": false,
+ "commit": "7dd3db437cfa"
 }

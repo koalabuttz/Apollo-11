@@ -54,9 +54,34 @@
       ]
     },
     "Comanche055": {
-      "status": "unverified",
-      "reviewed_entire_program": false,
-      "evidence": {},
+      "status": "complete",
+      "reviewed_entire_program": true,
+      "evidence": {
+        "bootable_c64_application": {
+          "path": "docs/acceptance/Comanche055-bootable_c64_application.md",
+          "sha256": "e66db03f215a1db9130c3c80f6f689bae1285e1f6c35d33d4ecc5a8c4ba0a712"
+        },
+        "integrated_program_tests": {
+          "path": "docs/acceptance/Comanche055-integrated_program_tests.md",
+          "sha256": "3ba40281d3102099ee124962af3c7217de3eed78c2372ce3a85cd281227e5955"
+        },
+        "device_adapter_tests": {
+          "path": "docs/acceptance/Comanche055-device_adapter_tests.md",
+          "sha256": "21c4ebbada9ce512cda8127a12be6bc4079ab499f37da166805f6ce4b8a44a93"
+        },
+        "native_output_tests": {
+          "path": "docs/acceptance/Comanche055-native_output_tests.md",
+          "sha256": "5adaeb4a173f917c403b817dca1e0f0cad72e55816f524a06728cecedcd8d6dc"
+        },
+        "memory_and_overlay_validation": {
+          "path": "docs/acceptance/Comanche055-memory_and_overlay_validation.md",
+          "sha256": "431fcf7b7aea10041e811537b286ed37662739ab5aa58903823c9e9ef80ef005"
+        },
+        "recovery_and_restart_tests": {
+          "path": "docs/acceptance/Comanche055-recovery_and_restart_tests.md",
+          "sha256": "5fbdcb7bd90ea80e3668501a2975506eb37972f59193299191600e553c719054"
+        }
+      },
       "qualified_partial_milestones": [
         {
           "verification": "docs/COMANCHE-NORMAL-N40.md",
@@ -78,7 +103,8 @@
           "scope": "Continuous native original alarm cleanup restart selection with1536 original paths and12 C64 paths; complete application and remaining entry/device/display acceptance remain open.",
           "reviewed_entire_program": false
         }
-      ]
+      ],
+      "acceptance_commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0"
     }
   },
   "files": [

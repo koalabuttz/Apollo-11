@@ -1,0 +1,67 @@
+{
+ "scenario": "lm-coast-programs-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 23000,
+ "keys": "@2500V37E21E@4000V33E@5500V33E@7000V33E@8500V37E31E@10000V33E@11500V33E@13000V33E@14500V33E@16000V33E@17000V37E25E@18500V33E@20000V37E06E@21500V33E",
+ "inputs": {
+  "FLIGHT_CH30": "036377",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077775",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-rendezvous.load",
+  "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+  "FLIGHT_BUSY_SAMPLE": "50"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "7dd3db437cfa",
+ "cia_interrupts": 23000,
+ "periods_taken": 23000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 23000,
+ "native_routines": 1162346,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 1446108,
+  "yaagc": 1398428,
+  "percent": 3.4,
+  "routines": 7574,
+  "mean_abs_error": 43.2,
+  "abs_percent": 23.4,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +3.4% net, 23.4% routine by routine, from yaAGC's MCT over 7574 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "35,2450": 8807,
+  "24,2404": 17306,
+  "24,3505": 2806,
+  "37,3655": 20307
+ },
+ "arrivals": {
+  "35,2450": [
+   8807
+  ],
+  "24,2404": [
+   17306
+  ],
+  "24,3505": [
+   2806
+  ],
+  "37,3655": [
+   20307
+  ]
+ },
+ "log_sha256": "dab10b111674edd2640f40b87cfb1428d07a96f13e4d3065cb6f474a3de098ca"
+}

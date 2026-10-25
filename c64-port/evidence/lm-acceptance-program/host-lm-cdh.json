@@ -14,48 +14,42 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "b9a2bcb2256e",
+ "commit": "7dd3db437cfa",
  "cia_interrupts": 23500,
  "periods_taken": 23500,
  "periods_dropped": 0,
  "agc_centiseconds": 23500,
- "native_routines": 567979,
- "bridged_instructions": 100,
+ "native_routines": 568776,
+ "bridged_instructions": 0,
  "routine_mismatches": [],
- "unregistered": [
-  {
-   "kind": "basic",
-   "point": "41,2523",
-   "label": "DECDSP",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 2,
-   "instructions": 2,
-   "refused_by": "lanec_pin_lm_routines",
-   "core_start": false
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 10221616,
+  "yaagc": 10038042,
+  "percent": 1.8,
+  "routines": 50888,
+  "mean_abs_error": 40.2,
+  "abs_percent": 20.4,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
   },
-  {
-   "kind": "basic",
-   "point": "41,2524",
-   "label": "DECDSP+1",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 2,
-   "instructions": 2,
-   "refused_by": null,
-   "core_start": false
-  },
-  {
-   "kind": "basic",
-   "point": "41,2525",
-   "label": "DECDSP+2",
-   "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
-   "lane": "C",
-   "arrivals": 2,
-   "instructions": 96,
-   "refused_by": null,
-   "core_start": false
-  }
- ],
- "log_sha256": "f9302218ef6fd26e3fa7035d4c81808144a247ca54ed3c05d2a5d46ac7c5470b"
+  "state": "ok",
+  "text": "interpretive charge +1.8% net, 20.4% routine by routine, from yaAGC's MCT over 50888 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "35,2216": 2506
+ },
+ "arrivals": {
+  "35,2216": [
+   2506
+  ]
+ },
+ "log_sha256": "bc8d3dbfb6f85274b387b33e449c85858b59cc6e3da57e952de8f957962805a4"
 }

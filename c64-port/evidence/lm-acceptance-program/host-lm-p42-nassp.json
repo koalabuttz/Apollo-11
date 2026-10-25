@@ -17,14 +17,46 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "b9a2bcb2256e",
- "cia_interrupts": 57233,
+ "commit": "7dd3db437cfa",
+ "cia_interrupts": 57000,
  "periods_taken": 57000,
- "periods_dropped": 233,
+ "periods_dropped": 0,
  "agc_centiseconds": 57000,
- "native_routines": 2738419,
+ "native_routines": 2724490,
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
- "log_sha256": "e96b81c9852f117270a31e7c419bf5ad88db40c4db718b73d8f4a6f9f99447cf"
+ "interpretive_charge": {
+  "fitted": 2775812,
+  "yaagc": 2755935,
+  "percent": 0.7,
+  "routines": 13875,
+  "mean_abs_error": 41.8,
+  "abs_percent": 21.0,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +0.7% net, 21.0% routine by routine, from yaAGC's MCT over 13875 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "36,3410": 9307,
+  "20,2004": 352
+ },
+ "arrivals": {
+  "36,3410": [
+   9307
+  ],
+  "20,2004": [
+   352
+  ]
+ },
+ "log_sha256": "30d44c7658ab41f65f7aa45853378e0b7b09f94e7b9053671333c1abb4469fbe"
 }

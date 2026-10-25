@@ -14,37 +14,80 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "b9a2bcb2256e",
- "cia_interrupts": 71001,
+ "commit": "7dd3db437cfa",
+ "cia_interrupts": 71000,
  "periods_taken": 71000,
- "periods_dropped": 1,
+ "periods_dropped": 0,
  "agc_centiseconds": 71000,
- "native_routines": 2118395,
- "bridged_instructions": 104,
+ "native_routines": 2115962,
+ "bridged_instructions": 0,
  "routine_mismatches": [],
- "unregistered": [
-  {
-   "kind": "interp",
-   "point": "42,2063",
-   "label": "TRMTRAK1+7",
-   "file": "EXTENDED_VERBS.agc",
-   "lane": "C",
-   "arrivals": 1,
-   "instructions": 82,
-   "refused_by": "lanec_ev_lm_interpretive",
-   "core_start": false
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 22970812,
+  "yaagc": 22716908,
+  "percent": 1.1,
+  "routines": 123631,
+  "mean_abs_error": 46.9,
+  "abs_percent": 25.5,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
   },
-  {
-   "kind": "interp",
-   "point": "42,2065",
-   "label": "TRMTRAK1+11",
-   "file": "EXTENDED_VERBS.agc",
-   "lane": "C",
-   "arrivals": 1,
-   "instructions": 22,
-   "refused_by": "lanec_ev_lm_interpretive",
-   "core_start": false
-  }
- ],
- "log_sha256": "9d8c91d9b52917f072ea9a14260e2f866f41dd19216ab342f80de70092fd64a7"
+  "state": "ok",
+  "text": "interpretive charge +1.1% net, 25.5% routine by routine, from yaAGC's MCT over 123631 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "13,2207": 66353,
+  "35,2731": 60308,
+  "35,2547": 45342,
+  "35,2725": 40308,
+  "40,3674": 20194,
+  "42,2054": 70151,
+  "40,2017": 12151
+ },
+ "arrivals": {
+  "13,2207": [
+   66353
+  ],
+  "35,2731": [
+   60308
+  ],
+  "35,2547": [
+   45342
+  ],
+  "35,2725": [
+   40308
+  ],
+  "40,3674": [
+   20194
+  ],
+  "42,2054": [
+   70151
+  ],
+  "40,2017": [
+   12151,
+   12412,
+   12527,
+   12640,
+   12753,
+   12869,
+   12990,
+   13182,
+   13299,
+   13412,
+   13527,
+   13640,
+   13753,
+   13948,
+   16290
+  ]
+ },
+ "log_sha256": "d92783a0df630adcbfd0eb40847388e7c524927051035c45217d28a34e368901"
 }

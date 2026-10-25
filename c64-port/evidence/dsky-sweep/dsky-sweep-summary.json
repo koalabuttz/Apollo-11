@@ -8,35 +8,35 @@
  "snap_cs": 1000,
  "key_cs": 1100,
  "settle_cs": 150,
- "passed": 3660,
- "cases": 3660,
+ "passed": 4322,
+ "cases": 4322,
  "failed_by_class": {},
  "stores": {
   "lm": {
-   "reu_sha256": "ac161b96d39775dc0ec89f153b37043c1237028b06e37a77f9309f5f53bbbd74",
+   "reu_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
-   "manifest_sha256": "65c778c3c9837ebda7f67433b67fdb3296ac08071ac02907df3c984f488e6039"
+   "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259"
   },
   "cm": {
-   "reu_sha256": "14b3c88738a0b8812a4acfd689b3c03095fe6fee8c68475b6ad5fdeec66e041d",
+   "reu_sha256": "a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf",
    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
-   "manifest_sha256": "f7fae0f6c3cc530c102939d8dfefd5ce4f7378e90b36cff0b2d6274ea4521014"
+   "manifest_sha256": "9968b925d9733cae9263d7dc766173dbb5ed7fb880e1ca972684f0a257813bc6"
   }
  },
  "replay_exact": true,
  "skipped_cases": 0,
  "item6": true,
  "full": "dsky-sweep.json",
- "full_sha256": "2c9f399a4046eae937f791f62472e36dac365b03094ec42b4b0dd67f79949d01",
+ "full_sha256": "8ddd79039cd50c0e462685a205ce29bdf2e0d4ed8a16e0e373ef031dc4159de6",
  "by_mission": {
   "lm": {
-   "cases": 1830,
-   "passed": 1830,
+   "cases": 2161,
+   "passed": 2161,
    "skipped_cases": 0
   },
   "cm": {
-   "cases": 1830,
-   "passed": 1830,
+   "cases": 2161,
+   "passed": 2161,
    "skipped_cases": 0
   }
  },

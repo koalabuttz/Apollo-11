@@ -1,0 +1,53 @@
+{
+ "scenario": "lm-p22-surface-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 8000,
+ "keys": "@3000V37E22E@4000V33E@5000V33E@6000V33E@7000V34E",
+ "inputs": {
+  "FLIGHT_CH30": "036357",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077737",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p57.load,15900:tools/flight_scenarios/lm-p57-star1.load,29900:tools/flight_scenarios/lm-p57-star2.load"
+ },
+ "schedule": "1,1,2",
+ "exit": 0,
+ "commit": "7dd3db437cfa",
+ "cia_interrupts": 8002,
+ "periods_taken": 8000,
+ "periods_dropped": 2,
+ "agc_centiseconds": 8000,
+ "native_routines": 434858,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 168240,
+  "yaagc": 151111,
+  "percent": 11.3,
+  "routines": 921,
+  "mean_abs_error": 66.1,
+  "abs_percent": 40.3,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "few",
+  "text": "interpretive charge +11.3% net, 40.3% routine by routine, from yaAGC's MCT over 921 routines; fewer than 1000 routines, not bounded"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "24,2000": 3307
+ },
+ "arrivals": {
+  "24,2000": [
+   3307
+  ]
+ },
+ "log_sha256": "69e8eb798844149c68049d54b9996a8ec46f0330e0d99232ad61c85ee93ff721"
+}

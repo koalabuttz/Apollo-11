@@ -1,0 +1,16 @@
+build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
+build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
+lm-doi-burn-restart: commit 7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0 with local changes; store lm.reu sha256 4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf
+lm-doi-burn-restart: the host run to 52300 cs bridges 0 points, each a stop on the C64
+lm-doi-burn-restart: snapshot at 52000 cs (asked 52000, +0 cs)
+lm-doi-burn-restart: 110 host input rows (110 on the C64) in the window at REU 0x1d0400 (110 PIPA counts, 0 erasable words, 0 channels, 0 interrupt requests), then 3 past the host's end
+lm-doi-burn-restart: REU writes inside the lm layout (changed: pinball save, replay states, scratch, undo)
+lm-doi-burn-restart: 16 DMAs seen only after they ran (last byte checked)
+lm-doi-burn-restart: every DMA inside the lm REU layout
+lm-doi-burn-restart: interrupt hold: host max 729 MCT at TIME1 33354
+lm-doi-burn-restart: the C64 matches the host at 50, 127, 150, 200, 250, 325 cs: it ends the window (333 cs, all 110 input rows) in the host's state
+lm-doi-burn-restart from 52000 cs: 67629924 cycles for 333 AGC cs (20.613 x real time), 0 ticks dropped, 2001 steps, status 0 at 01,3214 (Z 03214 FB 02000 superbank 0100)
+  T3RUPT: 6 x, mean 167256 cycles (max 217609), 33 steps, 5 job and 0 task loads
+  T4RUPT: 71 x, mean 105845 cycles (max 219303), 321 steps, 119 job and 0 task loads
+  T5RUPT: 33 x, mean 154536 cycles (max 402689), 191 steps, 76 job and 0 task loads
+  background: 107 x, mean 504712 cycles (max 4242028), 1456 steps, 423 job and 0 task loads

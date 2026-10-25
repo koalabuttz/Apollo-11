@@ -1,0 +1,132 @@
+{
+ "scenario": "lm-doi-nassp",
+ "ok": true,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 178405643,
+ "agc_cs": 1009,
+ "dropped_ticks": 0,
+ "steps": 5550,
+ "wall_per_agc": 17.946,
+ "lost": false,
+ "mission": "lm",
+ "snap_cs": 48800,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch",
+   "undo"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 16
+ },
+ "hold_host_mct": 700,
+ "hold_host_time1": 11462,
+ "replay_rows": 409,
+ "replay_applied": 409,
+ "replay_end_cs": 1009,
+ "replay_ended": true,
+ "replay_after_rows": 2,
+ "replay_inputs": {
+  "counts": {
+   "0": 68,
+   "1": 341
+  },
+  "erasable": [
+   "0034"
+  ],
+  "pipas": [
+   "0037",
+   "0040",
+   "0041"
+  ],
+  "channels": [],
+  "requests": 0,
+  "channel_set": {},
+  "channel_clear": {},
+  "channel_changed": {}
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 218,
+   "channel 6": 0,
+   "channel 11": 12544,
+   "channel 12": 2080,
+   "channel 13": 0,
+   "channel 14": 28712,
+   "channel 34": 32767,
+   "channel 35": 32480,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 218,
+   "channel 6": 0,
+   "channel 11": 12288,
+   "channel 12": 2048,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [
+   "0046",
+   "0053",
+   "0054",
+   "0055"
+  ],
+  "changed": []
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
+ "replay_matched_cs": [
+  108,
+  201,
+  325,
+  401,
+  526,
+  601,
+  726,
+  801,
+  925,
+  1001
+ ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 48800,
+ "snap_slid": false,
+ "requested_cs": 1001,
+ "host_holes": [],
+ "downrupt": false,
+ "commit": "7dd3db437cfa",
+ "outputs_driven": {
+  "11": [
+   8448,
+   4352
+  ]
+ }
+}

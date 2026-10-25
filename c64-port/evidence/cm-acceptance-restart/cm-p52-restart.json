@@ -1,0 +1,224 @@
+{
+ "name": "cm-p52-restart",
+ "gojam": 17100,
+ "asked": 17100,
+ "host": {
+  "scenario": "cm-p52-restart",
+  "mission": "cm",
+  "centiseconds": 20000,
+  "keys": "@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,9000:033=077777,11600:033=077757,13000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load",
+   "FLIGHT_SCALED": "1,1,2"
+  },
+  "gojam_cs": 17100,
+  "schedule": "1,1,2",
+  "exit": 0,
+  "native_routines": 1209622,
+  "bridged_instructions": 0,
+  "agc_cs": 20000,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "17100",
+    "03231"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03231",
+   "03231"
+  ],
+  "modreg": [
+   "00000",
+   "00000"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "00000",
+    "00000"
+   ],
+   [
+    "01107",
+    "00000",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {
+   "PHASE4": "00502"
+  },
+  "active_phases_end": {
+   "PHASE2": "00003"
+  },
+  "end_words_differing_from_base": 54,
+  "gojam_snapshot": "build/flight-restart/cm-p52-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/cm-p52-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "7dd3db437cfa",
+  "log": "host.log",
+  "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
+ },
+ "c64": null,
+ "gojam_on_c64": {
+  "scenario": "cm-p52-restart",
+  "mission": "cm",
+  "centiseconds": 20000,
+  "keys": "@4500V37E52E@5500V22E3E@6500V33E@7500V33E@8000V33E@10000M@10500V33E@11000V33E@12000V33E@14000M@14500V33E@15000V33E@16000V33E@17000V33E@18000E@18500V37E00E",
+  "inputs": {
+   "FLIGHT_CH30": "037377",
+   "FLIGHT_CH33": "077767",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_CHAN": "4000:033=077757,9000:033=077777,11600:033=077757,13000:033=077777",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load",
+   "FLIGHT_SCALED": "1,1,2"
+  },
+  "gojam_cs": 17100,
+  "schedule": "1,1,2",
+  "exit": 0,
+  "native_routines": 1209622,
+  "bridged_instructions": 0,
+  "agc_cs": 20000,
+  "samples": 0,
+  "samples_equal": 0,
+  "base_samples_equal": 0,
+  "gojam": [
+   [
+    "17100",
+    "03231"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "03231",
+   "03231"
+  ],
+  "modreg": [
+   "00000",
+   "00000"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "00000",
+    "00000"
+   ],
+   [
+    "01107",
+    "00000",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {
+   "PHASE4": "00502"
+  },
+  "active_phases_end": {
+   "PHASE2": "00003"
+  },
+  "end_words_differing_from_base": 54,
+  "gojam_snapshot": "build/flight-restart/cm-p52-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/cm-p52-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "c64_gojam": {
+   "module": {
+    "id": "0x01e5",
+    "slot": 1,
+    "bytes": 730
+   },
+   "gojam": {
+    "run_status": 0,
+    "env_status": 0,
+    "q": "03231",
+    "z": "04000",
+    "words_equal": 2048,
+    "words_differing": [],
+    "fields_compared": 28,
+    "fields_differing": {}
+   },
+   "burst": {
+    "ok": true,
+    "boot_failed": false,
+    "failed": 0,
+    "fail_class": 0,
+    "devices": {
+     "hw.channel11": 0,
+     "hw.in_interrupt": 0,
+     "hw.channel5": 0,
+     "hw.channel6": 0,
+     "hw.channel13": 0,
+     "hw.channel15": 3,
+     "hw.channel10": 0,
+     "hw.channel32": 32767,
+     "hw.channel12": 0,
+     "hw.channel14": 0,
+     "hw.channel30": 16127,
+     "hw.channel33": 32767,
+     "hw.channel31": 32767,
+     "hw.channel3": 33,
+     "hw.channel4": 6528,
+     "flight.superbank": 64,
+     "flight.interrupt_enabled": 1,
+     "flight.channel16": 32,
+     "flight.channel34": 0,
+     "flight.channel35": 0,
+     "flight.trap31a": 0,
+     "flight.trap31b": 0,
+     "flight.trap32": 0,
+     "flight.executive_alarm": 0,
+     "flight.waitlist_alarm": 0,
+     "flight.warning": 0,
+     "io.superbank": 64,
+     "io.interrupt_enabled": 1,
+     "run_status": 0,
+     "env_status": 0,
+     "rk_pending": 0,
+     "loaded_job": 0,
+     "loaded_task": 0,
+     "fault": 0
+    },
+    "steps": 79,
+    "start_cs": 716,
+    "end_cs": 716,
+    "z": "03231",
+    "fb": "02000",
+    "q": "04233",
+    "newjob": "77777",
+    "status": 0,
+    "superbank": "000",
+    "in_interrupt": 0,
+    "interrupt_enabled": 1,
+    "idle": true,
+    "reference": "reference: arrived after 5657 instructions: Z 03231 FB 02000 superbank 000, NEWJOB 77777, interrupts enabled",
+    "reference_arrived": true,
+    "words_differing": [],
+    "words_equal": 2048
+   },
+   "ok": true
+  },
+  "commit": "7dd3db437cfa",
+  "log": "gojam-on-c64.log",
+  "log_sha256": "0c2bd0ed10e1c1124baee4e65204b8097cf6e52eba77305322802aacb7ff0ea3"
+ }
+}

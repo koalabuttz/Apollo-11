@@ -4,8 +4,8 @@
   "release": "evidence-lm-acceptance-boot",
   "files": {
     "lm-1541-boot.json": {
-      "sha256": "120a21e52607108bdbaec0b5315d9104c764777c7989b9076ba059e83cbdb0f4",
-      "bytes": 1671,
+      "sha256": "03be83cf920233db664e295071a1f413ce43c72a46feb3b059925804e80d3dd1",
+      "bytes": 1786,
       "store": "tree"
     },
     "lm-1541-dsky.png": {
@@ -14,23 +14,23 @@
       "store": "tree"
     },
     "lm-1541-monitor.log": {
-      "sha256": "105a232299c87049468cf55e0f46dc692459469cdbc4b3a1b73342e3e47d118c",
-      "bytes": 80512,
+      "sha256": "88e17c3df71f14ee8ddc7f34197dc58cbf43d072871fedecffd5177cbcfaab40",
+      "bytes": 79746,
       "store": "tree"
     },
     "lm-1541-vice.log": {
-      "sha256": "94d849e02e107a65b24704fde7a870b93a663ac98b56bea62de01d749e6a8ad0",
-      "bytes": 9924,
+      "sha256": "2b0d03787d1338cc83d1e94177fd9551ff573f151a657072771311d43ba4dc99",
+      "bytes": 9572,
       "store": "tree"
     },
     "lm-1541.json": {
-      "sha256": "93802802c474803756765c67bf40554135d2a9554ae1b294309083fadb9794e0",
-      "bytes": 3496,
+      "sha256": "6f467c1528cd00fd71da9026ca848e076a20ff06b0d926990e236d3b8322fd4c",
+      "bytes": 3582,
       "store": "tree"
     },
     "lm-1581-boot.json": {
-      "sha256": "b0285cccc38c6bcaee5ed0c611a4a8874bce68935612d9bc0d1a300d04783112",
-      "bytes": 1294,
+      "sha256": "e7bb04d8f1eb1a8cbdbb38774634290168010e987313cb4b1681b88d7b2fbe3c",
+      "bytes": 1409,
       "store": "tree"
     },
     "lm-1581-dsky.png": {
@@ -39,8 +39,8 @@
       "store": "tree"
     },
     "lm-1581-kernal-boot.json": {
-      "sha256": "63a81c1371ea7843ef40245c193ec7e6bf7a0d69b580fe07b7d9c2c1bba29be0",
-      "bytes": 1295,
+      "sha256": "3f1098275b1ee47f9450658d6cad2181f31d7208094251525574f7fcdc928105",
+      "bytes": 1410,
       "store": "tree"
     },
     "lm-1581-kernal-dsky.png": {
@@ -49,23 +49,23 @@
       "store": "tree"
     },
     "lm-1581-kernal-monitor.log": {
-      "sha256": "324b617bb69d096d42bcf9383456a0e4389a5aad9f1b13d623e0deddee98cc46",
-      "bytes": 48424,
+      "sha256": "16c7563b19676ccbc09c91c1915cddf2218a9953983e83940a5412fecf63c4a7",
+      "bytes": 48906,
       "store": "tree"
     },
     "lm-1581-kernal-vice.log": {
-      "sha256": "49a16ec652076264ef913f11139e0b087dbec695497fe9990c99bf3671a1637c",
-      "bytes": 9314,
+      "sha256": "aa9288da070c8270eccb96152c88336d93757fc5e2c86e04b646f00943217028",
+      "bytes": 9163,
       "store": "tree"
     },
     "lm-1581-kernal.json": {
-      "sha256": "781c2a02f4ee7149112525ba6f612822b03b2e658b4ca5e1651cc524aa0cf7cb",
-      "bytes": 3024,
+      "sha256": "9d462bd051178a0a09e38c2fc24692609076a5308cdd4d8c5b1344f8bc3c1850",
+      "bytes": 3109,
       "store": "tree"
     },
     "lm-1581-keyboard-boot.json": {
-      "sha256": "7b3622410506bbcf9601529ee5610c8e350600deb29f8b1f91d61ef538ce9b3f",
-      "bytes": 1294,
+      "sha256": "b6b5d3048baafe8612b65ffbe02092990791117da1039cf86ecd38eebe7c77d8",
+      "bytes": 1409,
       "store": "tree"
     },
     "lm-1581-keyboard-dsky.png": {
@@ -74,43 +74,43 @@
       "store": "tree"
     },
     "lm-1581-keyboard-monitor.log": {
-      "sha256": "7bb92696bc999853e9558a6d5217f48d2d57593113e3b01cd8562d731de63fc6",
-      "bytes": 37838,
+      "sha256": "2c4dfe4fc9e8013f33a928bb1e318661ac3771e5b4b9105176383f02a447fd39",
+      "bytes": 38884,
       "store": "tree"
     },
     "lm-1581-keyboard-vice.log": {
-      "sha256": "80db4bc7142072c70a2060e6c161a8cff4c74e16a2faad6a8989bb3b28ec6904",
-      "bytes": 10353,
+      "sha256": "c490fc42b26b2478eb57c551d2fd9d4a22ac1f173b43f6df01f2f88370ad4017",
+      "bytes": 10312,
       "store": "tree"
     },
     "lm-1581-keyboard.json": {
-      "sha256": "df9010813fda277e8fbdf3e6fade15aeb87d21ec8b2ae651454a8c833bf7b93f",
-      "bytes": 2701,
+      "sha256": "07810477ff24dc12072f56d9ca1b505c7ff724e18d19a2ce273006a73f360fa8",
+      "bytes": 2787,
       "store": "tree"
     },
     "lm-1581-monitor.log": {
-      "sha256": "deda9e9ce07bd2d05bf8f217928415815a025815c6040862d975ea44ea10c601",
-      "bytes": 41891,
+      "sha256": "2edbc4025ac232395f6aff3ac1662b44af7ab3083f5d22e49439f30793129ffa",
+      "bytes": 43873,
       "store": "tree"
     },
     "lm-1581-vice.log": {
-      "sha256": "5e69c03d5ba0613b6e14e6290234b428183052020cb7c9bf44b78b7db5eb897e",
-      "bytes": 8524,
+      "sha256": "b836f46c32a7eb739a0be1dd179defff6591d0630e75dcb3c4dd09417a1af6d4",
+      "bytes": 8572,
       "store": "tree"
     },
     "lm-1581.json": {
-      "sha256": "c8635648c4373d2d7e04608f7e4167aa71cf69f4ae40b1273b17dc0496498666",
-      "bytes": 3020,
+      "sha256": "c66b1b5a86c153dce4c2e5892e415442ff14945f58cd9fed260c4c348c74543c",
+      "bytes": 3106,
       "store": "tree"
     },
     "lm-check-disk-vice.log": {
-      "sha256": "f3ebf232833a362aab05fc9ea5d3dca16a20cb7ceac254245232df5d4113147b",
-      "bytes": 6865,
+      "sha256": "83706dd7ec9e311d03b1a17dd0f6b62d25a7cc31ee0ddc3100bd32a32031ee7b",
+      "bytes": 6815,
       "store": "tree"
     },
     "lm-check-disk.json": {
-      "sha256": "99b412816c613a8b68e31a952c6a91230fa98df755b35c70567a15fbe0280106",
-      "bytes": 1485,
+      "sha256": "0a23b23f0641e221f8a7617bf5a1eb6fe482fbfd2f0d98eb23e6c7f59df3a338",
+      "bytes": 1959,
       "store": "tree"
     }
   }

@@ -76,8 +76,8 @@ python3 c64-port/tools/port_coverage.py --require-complete
 ```
 
 It still exits with a failure. All 175 AGC files have complete native coverage,
-but neither integrated application (LM or CM) has passed whole-program
-acceptance yet, and the gate needs both. The per-program acceptance records
+and the CM (Comanche055) has passed whole-program acceptance; the LM
+(Luminary099) has not yet, and the gate needs both. The per-program acceptance records
 are in `docs/acceptance/`. Routine development checks use the audit without
 `--require-complete`; this distinction does not narrow the completion goal.
 

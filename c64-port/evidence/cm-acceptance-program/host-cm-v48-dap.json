@@ -8,20 +8,38 @@
   "FLIGHT_CH31": "037777",
   "FLIGHT_CH33": "077767",
   "FLIGHT_SWAP_MCT": "0",
-  "FLIGHT_SPS": "43900",
+  "FLIGHT_SPS": "43900,0.5,-0.3",
   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p40.load"
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "22bfa334ba31",
+ "commit": "7dd3db437cfa",
  "cia_interrupts": 12000,
  "periods_taken": 12000,
  "periods_dropped": 0,
  "agc_centiseconds": 12000,
- "native_routines": 757372,
+ "native_routines": 757384,
  "bridged_instructions": 0,
  "routine_mismatches": [],
  "unregistered": [],
- "reached": {},
- "log_sha256": "c1f46103509b509645ce0c65f727a2d269597f5637110bb156eaccf26a878429"
+ "interpretive_charge": null,
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0
+ },
+ "reached": {
+  "42,2000": 2650,
+  "42,3606": 7650
+ },
+ "arrivals": {
+  "42,2000": [
+   2650
+  ],
+  "42,3606": [
+   7650
+  ]
+ },
+ "log_sha256": "4e3c2c9ba24187fd6d703c644d6790ef6b5e635fa5b0672b4ffe759f33b5c703"
 }

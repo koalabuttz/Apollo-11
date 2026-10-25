@@ -1,0 +1,626 @@
+{
+ "commit": "7dd3db437cfa",
+ "host": [
+  {
+   "scenario": "lm-p63-descent-restart",
+   "mission": "lm",
+   "centiseconds": 30000,
+   "schedule": "1,1,2",
+   "gojam_cs": 20002,
+   "exit": 0,
+   "agc_cs": 30000,
+   "native_words": 29932,
+   "span_words": 29932,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 13,
+     "whole": 13,
+     "first_cs": 2
+    },
+    "77773": {
+     "name": "descent and ascent",
+     "lists": 137,
+     "whole": 135,
+     "first_cs": 2602
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77773",
+     "from_cs": 19834,
+     "words": 168
+    }
+   ],
+   "after_gojam": {
+    "cs": 20004,
+    "words": [
+     "77773",
+     "77340"
+    ],
+    "list": "77773",
+    "list_name": "descent and ascent",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "lm-dap-hold-restart",
+   "mission": "lm",
+   "centiseconds": 3000,
+   "schedule": "4,1,2,1",
+   "gojam_cs": 2000,
+   "exit": 0,
+   "agc_cs": 3033,
+   "native_words": 2134,
+   "span_words": 2134,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 11,
+     "whole": 9,
+     "first_cs": 9
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77777",
+     "from_cs": 1680,
+     "words": 168
+    }
+   ],
+   "after_gojam": {
+    "cs": 2011,
+    "words": [
+     "77777",
+     "77340"
+    ],
+    "list": "77777",
+    "list_name": "coast and align",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "lm-p00-restart",
+   "mission": "lm",
+   "centiseconds": 4000,
+   "schedule": null,
+   "gojam_cs": 2500,
+   "exit": 0,
+   "agc_cs": null,
+   "native_words": 3998,
+   "span_words": 3998,
+   "reference_words": 3998,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 21,
+     "whole": 19,
+     "first_cs": 2
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77777",
+     "from_cs": 2402,
+     "words": 98
+    }
+   ],
+   "after_gojam": {
+    "cs": 2501,
+    "words": [
+     "77777",
+     "77340"
+    ],
+    "list": "77777",
+    "list_name": "coast and align",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "lm-p00-doi-restart",
+   "mission": "lm",
+   "centiseconds": 65000,
+   "schedule": "1,1,2",
+   "gojam_cs": 64000,
+   "exit": 0,
+   "agc_cs": 65000,
+   "native_words": 64930,
+   "span_words": 64930,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 19,
+     "whole": 18,
+     "first_cs": 36875315
+    },
+    "77775": {
+     "name": "rendezvous/prethrust",
+     "lists": 29,
+     "whole": 29,
+     "first_cs": 36875715
+    },
+    "77774": {
+     "name": "orbital maneuvers",
+     "lists": 276,
+     "whole": 276,
+     "first_cs": 36881515
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77777",
+     "from_cs": 36938985,
+     "words": 132
+    }
+   ],
+   "after_gojam": {
+    "cs": 36939117,
+    "words": [
+     "77777",
+     "77340"
+    ],
+    "list": "77777",
+    "list_name": "coast and align",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "core_start_same": true,
+   "core_armed": true,
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "lm-doi-burn-restart",
+   "mission": "lm",
+   "centiseconds": 57000,
+   "schedule": "1,1,2",
+   "gojam_cs": 52000,
+   "exit": 0,
+   "agc_cs": 57000,
+   "native_words": 56982,
+   "span_words": 56982,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 2,
+     "whole": 2,
+     "first_cs": 36875315
+    },
+    "77775": {
+     "name": "rendezvous/prethrust",
+     "lists": 29,
+     "whole": 29,
+     "first_cs": 36875715
+    },
+    "77774": {
+     "name": "orbital maneuvers",
+     "lists": 253,
+     "whole": 251,
+     "first_cs": 36881515
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77774",
+     "from_cs": 36926931,
+     "words": 186
+    }
+   ],
+   "after_gojam": {
+    "cs": 36927117,
+    "words": [
+     "77774",
+     "77340"
+    ],
+    "list": "77774",
+    "list_name": "orbital maneuvers",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "core_start_same": true,
+   "core_armed": true,
+   "ok": true,
+   "failures": []
+  },
+  {
+   "scenario": "lm-rendezvous-restart",
+   "mission": "lm",
+   "centiseconds": 25000,
+   "schedule": "1,1,2",
+   "gojam_cs": 20000,
+   "exit": 0,
+   "agc_cs": 25000,
+   "native_words": 25000,
+   "span_words": 25000,
+   "reference_words": 0,
+   "bridged_words": 0,
+   "unmatched_span_words": 0,
+   "span_differ": 0,
+   "reference_differ": 0,
+   "reference_frame_only": 0,
+   "lists": {
+    "77777": {
+     "name": "coast and align",
+     "lists": 13,
+     "whole": 13,
+     "first_cs": 2
+    },
+    "77775": {
+     "name": "rendezvous/prethrust",
+     "lists": 112,
+     "whole": 112,
+     "first_cs": 2602
+    }
+   },
+   "partial_lists": [],
+   "cut_by_gojam": [
+    {
+     "id": "77775",
+     "from_cs": 19802,
+     "words": 200
+    }
+   ],
+   "after_gojam": {
+    "cs": 20002,
+    "words": [
+     "77775",
+     "77340"
+    ],
+    "list": "77775",
+    "list_name": "rendezvous/prethrust",
+    "list_words": 200
+   },
+   "mismatches": [],
+   "new_mismatches": [],
+   "ok": true,
+   "failures": []
+  }
+ ],
+ "c64": [
+  {
+   "window": "lm-p63-descent",
+   "scenario": "lm-p63-descent-restart",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-p63-descent-snap.h",
+   "snapshot_cs": 19950,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 3568,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 41,
+     "id": "77773",
+     "name": "descent and ascent"
+    }
+   ],
+   "first_words": [
+    "77777 03400 1",
+    "00000 00000 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "lm-p63-descent-after-gojam",
+   "scenario": "lm-p63-descent-restart",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-p63-descent-after-gojam-snap.h",
+   "snapshot_cs": 20010,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 3626,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 96,
+     "id": "77773",
+     "name": "descent and ascent"
+    }
+   ],
+   "first_words": [
+    "00000 00000 1",
+    "00000 00000 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "lm-p00",
+   "scenario": "lm-p00-restart",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-p00-snap.h",
+   "snapshot_cs": 2400,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 2400,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 1,
+     "id": "77777",
+     "name": "coast and align"
+    }
+   ],
+   "first_words": [
+    "04000 00400 1",
+    "77777 77340 0"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "lm-rendezvous",
+   "scenario": "lm-rendezvous-restart",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-rendezvous-snap.h",
+   "snapshot_cs": 19990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 3606,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 5,
+     "id": "77775",
+     "name": "rendezvous/prethrust"
+    }
+   ],
+   "first_words": [
+    "13434 16162 1",
+    "00000 00000 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "lm-p57",
+   "scenario": "lm-p57",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-p57-snap.h",
+   "snapshot_cs": 5990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 5990,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 6,
+     "id": "77772",
+     "name": "lunar surface align"
+    }
+   ],
+   "first_words": [
+    "00000 00000 1",
+    "00000 00000 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "lm-p22-surface",
+   "scenario": "lm-p22-surface",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-p22-surface-snap.h",
+   "snapshot_cs": 4990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 4990,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 5,
+     "id": "77772",
+     "name": "lunar surface align"
+    }
+   ],
+   "first_words": [
+    "00000 00000 1",
+    "00000 00000 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "lm-coast-v47",
+   "scenario": "lm-coast-verbs",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-coast-v47-snap.h",
+   "snapshot_cs": 16190,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 16190,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 5,
+     "id": "77776",
+     "name": "AGS initialization and update"
+    }
+   ],
+   "first_words": [
+    "05265 05265 1",
+    "07265 05265 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "lm-p27",
+   "scenario": "lm-uplink-accept",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-p27-snap.h",
+   "snapshot_cs": 2990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 2990,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 5,
+     "id": "77776",
+     "name": "AGS initialization and update"
+    }
+   ],
+   "first_words": [
+    "73752 73777 1",
+    "73777 73777 1"
+   ],
+   "ok": true,
+   "failures": []
+  },
+  {
+   "window": "lm-doi",
+   "scenario": "lm-doi-burn-restart",
+   "mission": "lm",
+   "snapshot": "build/flight-downlink/lm-doi-snap.h",
+   "snapshot_cs": 29990,
+   "downrupts": 100,
+   "steps": 100,
+   "records": 100,
+   "start_cs": 8343,
+   "z": "03214",
+   "fb": "02000",
+   "status": 0,
+   "in_interrupt": 0,
+   "boot_failed": false,
+   "reference_records": 100,
+   "reference": "",
+   "records_differ": 0,
+   "first_differences": [],
+   "list_starts": [
+    {
+     "downrupt": 1,
+     "id": "77774",
+     "name": "orbital maneuvers"
+    }
+   ],
+   "first_words": [
+    "00000 15420 1",
+    "77774 77340 0"
+   ],
+   "ok": true,
+   "failures": []
+  }
+ ]
+}
