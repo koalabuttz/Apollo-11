@@ -2215,7 +2215,16 @@ def main():
                   f"{'' if p['ok'] else ' (does not fit)'}"
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
-        (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+        # A --missions lm build keeps the CM entry an earlier full build
+        # wrote (cm.reu is still that build's): a check reading report.json
+        # for the CM while an LM-only build finishes beside it would
+        # otherwise find no CM entry.
+        try:
+            whole = json.loads((ROOT / OUT / 'report.json').read_text())
+        except (OSError, ValueError):
+            whole = {}
+        whole = {k: v for k, v in whole.items() if k not in report} | report
+        (ROOT / OUT / 'report.json').write_text(json.dumps(whole, indent=1) + '\n')
         # Each mission's own, which a later build of the other mission (or
         # an up-to-date one, which writes none) leaves in place
         # (tools/flight_scenario_vice.py c64_weights).
