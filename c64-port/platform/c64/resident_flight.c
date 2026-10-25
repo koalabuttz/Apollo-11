@@ -450,13 +450,7 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         rupt_hold_raise(&rk_hold, rk_hold_base, rk_pending);
 #endif
 #ifdef RK_STEAL
-        if (t == RK_PHASE_T5 && steal) {
-            rk_work += RK_STEAL;
-#ifdef RK_HOLD_METER
-            /* Not a hold the port adds; idle absorbs it (a take resets rk_work). */
-            if (!rk_idle) rupt_hold_steal(&rk_hold, RK_STEAL);
-#endif
-        }
+        if (t == RK_PHASE_T5 && steal) rk_work += RK_STEAL;
 #endif
     }
 #ifndef RK_NO_DIRECT

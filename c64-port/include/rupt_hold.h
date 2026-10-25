@@ -14,9 +14,6 @@
  * - the last boundary where the AGC itself could not take it (in an
  *   interrupt, interrupts inhibited, overflow in A). The AGC would take it
  *   somewhere in the next routine, so this is an upper bound.
- * MCT stolen while a request waits (FLIGHT_STEAL: counter cycles that no
- * routine runs in) leave the measure (rupt_hold_steal): they delay the AGC's
- * take as much as the port's, so they are no hold the port adds.
  * Times are MCT on a 16-bit clock: only differences are used.
  *
  * RUPT_HOLD_PENDING (03776) is every request bit: RK_RUPT_BIT(RK_RUPT_T6)
@@ -57,16 +54,6 @@ static inline void rupt_hold_raise(rupt_hold *h, uint16_t at, uint16_t pending)
         h->from = at;
         h->on = 1;
     }
-}
-
-/* n MCT stolen from the program at the current time (a FLIGHT_STEAL
- * period) while it runs a routine, so the take comes n MCT later: a waiting
- * request counts from n MCT later. Not while idle, where the take is at the
- * step and the idle period absorbs the steal. */
-static inline void rupt_hold_steal(rupt_hold *h, uint16_t n)
-{
-    if (h->on)
-        h->from = (uint16_t)(h->from + n);
 }
 
 /* A request taken at time t; time1 is TIME1. The next waiting request
