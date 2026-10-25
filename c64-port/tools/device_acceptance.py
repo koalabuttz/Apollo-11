@@ -87,7 +87,8 @@ WINDOWS = {
            ('lm-rhc-att-hold', 3500, 500, 100),             # RHC yaw and roll (Q-, R-RHCCTR)
            ('lm-p52-coarse', 4650, 500, 50),                # coarse align: channel 12 bit 4, CDUY follows the drive
            ('lm-rhc-att-turn', 3500, 900, 100),             # the jets turn the LM (FLIGHT_ATT): CDUY, CDUZ follow
-           ('lm-p63-trim', 17400, 220, 50)],                # DPS trim reversal at 17498, thrust along the gimbal
+           ('lm-p63-trim', 17400, 220, 50),                  # DPS trim reversal at 17498, thrust along the gimbal
+           ('lm-landing-ascent-nassp', 122650, 150, 25)],   # ROD switch: the channel 16 row of the 122700 M key
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6
