@@ -1954,8 +1954,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   printf("at");for(k=0;k<narrive[i];++k)printf(" %ld",reach_cs[i][k]);
   printf(" cs");if(reach_more[i])printf(" (%lu more before the last)",reach_more[i]);printf("\n");}
  if(engine_kg){double n[2],r[2];dps_gimbal(&eng_nat.gim,n);dps_gimbal(&eng_ref.gim,r);
-  printf("trim gimbal (deg): native pitch %.3f roll %.3f, yaAGC pitch %.3f roll %.3f%s\n",n[0]*57.29577951308232,n[1]*57.29577951308232,
-   r[0]*57.29577951308232,r[1]*57.29577951308232,dps_trim?" (FLIGHT_TRIM: the thrust follows)":"");}
+  /* yaAGC's gimbal only when the reference side ran (not under FLIGHT_SCALED). */
+  printf("trim gimbal (deg): native pitch %.3f roll %.3f",n[0]*57.29577951308232,n[1]*57.29577951308232);
+  if(eng_ref.gim.started)printf(", yaAGC pitch %.3f roll %.3f",r[0]*57.29577951308232,r[1]*57.29577951308232);
+  printf("%s\n",dps_trim?" (FLIGHT_TRIM: the thrust follows)":"");}
  printf("unregistered or refused points (%u):\n",nholes);
  for(i=0;i<nholes;++i){printf("  %s %02o,%04o Z %05o FB %05o Q %05o",holes[i].in?"interp":"basic ",
   holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q);
