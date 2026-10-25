@@ -424,6 +424,7 @@ static int kernel_name(const char *n){
 /* Asked for every table at every point (holder, charged), so each table's
  * answer is worked out once. */
 static int kernel_table(const entry *e){static uint8_t known[TABLES];unsigned i=(unsigned)(e-tables);
+ if(i>=TABLES)return kernel_name(e->name)!=0;
  if(!known[i])known[i]=(uint8_t)(1u+(kernel_name(e->name)!=0));
  return known[i]-1u;}
 static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const entry *last){int in;unsigned i,r;uint16_t key=point(w,sb,&in);
