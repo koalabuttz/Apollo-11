@@ -145,8 +145,11 @@ def link_check(a):
     import flight_scenario_vice as fsv
     scen, snap_cs, cs = CHECK
     m, host_cc = 'lm', os.environ.get('CC', 'cc')
-    run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--missions', m, '--host-cc', host_cc])
-    exe = fhd.build(host_cc, m, fhd.frozen_engine(host_cc))
+    # The full store build, not --host-only: a host-only build that runs
+    # drops the store's chunk list, and the check's expected CRC would come
+    # from a host that does not match the C64 (10-25, 157 rows, 3e90).
+    run([sys.executable, 'tools/flight_store_build.py', '--missions', m, '--host-cc', host_cc])
+    exe = fhd.build(host_cc, m, fhd.frozen_engine(host_cc), store=True)
     dp.WORK.mkdir(parents=True, exist_ok=True)
     tag = f'check-{scen}-{snap_cs}'
     header = fsv.snapshot(exe, scen, snap_cs, tag, cs, cs)

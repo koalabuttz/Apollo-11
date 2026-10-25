@@ -1005,14 +1005,24 @@ def frozen_engine(cc):
     return o
 
 
-def build(cc, m, engine):
+def build(cc, m, engine, store=False):
+    """The host run for mission m. store=True: it is compared with the C64
+    store, so it must carry the store's chunk list (<m>-host-chunks.inc,
+    written by the full store build). A --host-only build that ran after the
+    store build deletes that list, and the host then runs without chunk
+    tracking: its work clock no longer matches the C64's (10-25: the LM
+    check disk's expected CRC came from such a host)."""
+    chunks = ROOT / f'build/flight-store/{m}-host-chunks.inc'
+    if store and not chunks.exists():
+        raise SystemExit(f'{chunks.relative_to(ROOT)} is missing, so this host run would not match the C64 store: '
+                         f'run tools/flight_store_build.py --missions {m} (not --host-only) first')
     exe = OUT / f'flight-host-run-{m}'
     obj = OUT / f'flight_host_run_{m}.o'
     subprocess.run([cc, '-std=c99', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{YAAGC}',
                     f'-DRK_{m.upper()}=1', f'-DFLIGHT_HOST_TABLES="../build/flight-store/{m}-host.inc"',
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
                     *([f'-DFLIGHT_HOST_CHUNKS="../build/flight-store/{m}-host-chunks.inc"']
-                      if (ROOT / f'build/flight-store/{m}-host-chunks.inc').exists() else []),
+                      if chunks.exists() else []),
                     '-c', 'tools/flight_host_run.c', '-o', str(_tmp(obj))], cwd=ROOT, check=True)
     os.replace(_tmp(obj), obj)
     # Every host/*.o is linked: refuse objects left from another checkout

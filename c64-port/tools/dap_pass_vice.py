@@ -177,9 +177,9 @@ def main():
     p.add_argument('--timeout', type=int, default=1800)
     a = p.parse_args()
     WORK.mkdir(parents=True, exist_ok=True)
-    subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--missions', 'lm',
-                    '--host-cc', a.host_cc], cwd=ROOT, check=True)
-    exe = flight_host_differential.build(a.host_cc, 'lm', flight_host_differential.frozen_engine(a.host_cc))
+    subprocess.run([sys.executable, 'tools/flight_store_build.py', '--missions', 'lm', '--host-cc', a.host_cc],
+                   cwd=ROOT, check=True)
+    exe = flight_host_differential.build(a.host_cc, 'lm', flight_host_differential.frozen_engine(a.host_cc), store=True)
     manifest = json.loads((OUT / 'lm-manifest.json').read_text())
     pinned = any(m['slot'] == 3 for m in manifest['modules'])
     reu = (OUT / 'lm.reu').read_bytes()
