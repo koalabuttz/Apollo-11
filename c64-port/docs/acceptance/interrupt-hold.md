@@ -44,4 +44,15 @@ The C64 meter was checked against the host (C64 runs at 1cfd6bc5, the base befor
 
 The longest measured hold is 1,425 MCT, 84% of the bound. The bound is `HOLD_BOUND_MCT` in `tools/flight_scenario_vice.py`. Every `--replay` window fails when its host meter shows a longer hold, and with `--hold` the C64's too, so each replay window CI runs checks it. `tools/rupt_hold_report.py` checks it over every program map window.
 
-The bound is a limit on the port, not a claim that the real AGC behaves this way. A held T6RUPT ends an RCS jet firing up to that much later than the AGC would. The host and C64 agree on it, so replay matches. Flight effect is a model question for the lanes that own the DAP (D1) and powered flight (F).
+The bound is a limit on the port, not a claim that the real AGC behaves this way. The host and C64 agree on every hold, so replay matches.
+
+## T6RUPT: late jet-off
+
+A T6RUPT that comes due inside a routine is taken at the next native boundary, so the DAP's jet-off write to channels 5 and 6 goes out that much later than the AGC's would. The same meter, counting T6RUPT requests only (a local change to `RUPT_HOLD_PENDING`, on the host, over every program map window, at 36103941):
+
+| Program | Windows with a held T6RUPT | Longest | Where |
+|---|---|---|---|
+| Luminary099 | 2 of 62 | 259 MCT (3.0 ms) | lm-abort-p71-nassp 115000+600, TIME1 27006; next lm-p42-nassp 48800+1000, 11 MCT |
+| Comanche055 | 2 of 79 | 3 MCT (0.04 ms) | cm-tei 51100+300 and cm-v48-dap 7450 |
+
+3.0 ms is about 5 TIME6 ticks and about a fifth of the DAP's 14 ms minimum jet pulse, in one window. The host's RCS model (`FLIGHT_RCS`) has no attitude dynamics, and the extra translation is about 1e-4 m/s a jet. The only cure would be taking T6RUPT inside a routine, which the native design does not do, so this stays a documented limit (#838 part b). Results: /mnt/project-files/cert-fixes/t6-hold/.

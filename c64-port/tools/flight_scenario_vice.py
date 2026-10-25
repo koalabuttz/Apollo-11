@@ -898,6 +898,12 @@ def main():
                           f'{a.hold_bound} MCT bound (docs/acceptance/interrupt-hold.md)')
                 if over:
                     r['ok'] = False
+            elif a.hold_bound:
+                # The host meters every replay window (FLIGHT_HOLD), so no
+                # line means the bound went unchecked.
+                r['ok'] = False
+                print(f'FAIL: {a.scenario}: no "interrupt hold:" line in {host_log.name}, so the '
+                      f'{a.hold_bound} MCT hold bound was not checked')
             r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended),
                      replay_after_rows=applied_extra, replay_inputs=replay_inputs, replay_outputs=replay_outputs)
             # Every state the C64 wrote against the host's at the same point.
