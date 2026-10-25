@@ -232,6 +232,8 @@ def c64_verdict(c, at, commit):
         bad.append('no REU bounds result')
     else:
         inside = b.get('ok') is True and b.get('dma_outside') == 0
+        if not b.get('dma_trace_armed'):   # #766: an unarmed trace saw no DMAs at all
+            bad.append('REU DMA trace not armed')
         text += f"; REU {'inside the layout' if inside else 'OUTSIDE the layout'}"
         if not inside:
             bad.append(f"{b.get('dma_outside') or 0} DMAs outside the REU layout"

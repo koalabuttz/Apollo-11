@@ -28,7 +28,7 @@ def replay(name, snap, differences=0, first='TIME4', status=0, commit=HEAD):
                 replay_rows=10, replay_ended=True, replay_differences=differences, replay_matched_cs=[100],
                 replay_differ_at_cs=100 if differences else None, commit=commit,
                 replay_first=[dict(at=first, host='1', c64='2')] if differences else [],
-                reu_bounds=dict(ok=True), records=[1, 2, 3])
+                replay_unpaired_count=0, reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True), records=[1, 2, 3])
 
 
 ROWS = [dict(row='P63', section='modes', entry='P63LM', status='mapped', scenarios=['lm-a'], windows=[['lm-a', 0]]),
@@ -88,8 +88,14 @@ class ProgramAcceptance(unittest.TestCase):
 
     def test_chain_verdicts(self):
         w = replay('lm-a', 0)
-        good = dict(scenario='lm-a', snap_cs=0, chain=3, ok=True, replay_rows=30, windows=[w, w, w])
+        good = dict(scenario='lm-a', snap_cs=0, chain=3, ok=True, replay_rows=30, windows=[w, w, w],
+                    reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True))
         self.assertEqual(pa.replay_result(good), (True, 'matches host (chain of 3 windows, every seam holds)'))
+        # #766: a chain needs its bounds checked, and every window's checkpoints paired.
+        self.assertEqual(pa.replay_result(dict(good, reu_bounds=dict(ok=True))),
+                         (False, 'chain of 3: REU bounds not checked inside the layout'))
+        self.assertEqual(pa.replay_result(dict(good, windows=[w, dict(w, replay_unpaired_count=1), w])),
+                         (False, 'chain of 3: window 1 1 checkpoints not compared'))
         seam = dict(good, ok=False, windows=[w, dict(ok=False, seam=1)])
         self.assertEqual(pa.replay_result(seam), (False, 'chain of 3: seam 1 fails'))
         bad = dict(good, ok=False, windows=[w, replay('lm-a', 0, differences=2)])
