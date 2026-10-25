@@ -841,6 +841,9 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           # lm-p63-descent-restart: lm-p63-descent-thrust with a hardware
           # restart at 200 s (FLIGHT_GOJAM; tools/flight_restart_check.py).
           ('lm-p63-descent-restart', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_GOJAM': '20000'}),
+          # lm-p63-trim: lm-p63-descent-thrust with the thrust along the DPS
+          # trim gimbal (FLIGHT_TRIM; tools/flight_dps_gimbal.h).
+          ('lm-p63-trim', 'lm', 30000, P63_KEYS, {**P63, 'FLIGHT_ENGINE': '15100', 'FLIGHT_TRIM': '1'}),
           ('lm-p63-overload', 'lm', 27000, P63_KEYS + '@18000V16N68E', OVERLOAD_LM),
           ('cm-entry-overload', 'cm', 32000, ENTRY_KEYS, OVERLOAD_CM),
           ('lm-coast-verbs', 'lm', 36500, COAST_VERBS_KEYS, COAST_VERBS),
