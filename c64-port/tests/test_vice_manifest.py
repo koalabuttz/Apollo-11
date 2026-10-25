@@ -86,6 +86,45 @@ class ViceManifest(unittest.TestCase):
         self.assertEqual(vice_manifest.run_result(log, True)[:2], (1024 + 32 + 1 + 64, 0))
         self.assertEqual(vice_manifest.run_result('FAIL: x.prg: mailbox (2 failures, 9 checks)', False)[:2], (0, 2))
         self.assertEqual(vice_manifest.run_result('PRG sha256: ' + 'a' * 64 + ' x.prg', True)[2], {'x.prg': 'a' * 64})
+        line = 'PASS: stock-ROM PAL C64 proves 4232 native original bindings and alias RAM reads/writes\n'
+        self.assertEqual(vice_manifest.run_result(line, True)[:2], (4232, 0))
+
+
+class StaleEvidence(unittest.TestCase):
+    """A release-stored file whose certificate and SHA256.json agree but whose
+    local copy differs is reported as a stale download, not a bad hash."""
+
+    def run_check(self, certified):
+        import hashlib
+        import json
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'evidence' / 'm').mkdir(parents=True)
+            good = hashlib.sha256(b'new log\n').hexdigest()
+            (root / 'evidence' / 'm' / 'SHA256.json').write_text(json.dumps(
+                {'files': {'m-host.log': {'sha256': good, 'store': 'release'}}}))
+            (root / 'evidence' / 'm' / 'm-host.log').write_text('old log\n')
+            record = {'path': 'evidence/m/m-host.log', 'sha256': good if certified else 'b' * 64}
+            evidence = {c: dict(record) for c in cert_precheck.CATEGORIES}
+            report = cert_precheck.Report()
+            saved = cert_precheck.ROOT
+            cert_precheck.ROOT = root
+            try:
+                cert_precheck.check_evidence(report, PATH, {'evidence': evidence}, False)
+            finally:
+                cert_precheck.ROOT = saved
+            return '\n'.join(report.lines)
+
+    def test_stale_copy(self):
+        text = self.run_check(True)
+        self.assertIn('stale local copy', text)
+        self.assertNotIn('update the hash', text)
+
+    def test_wrong_hash(self):
+        text = self.run_check(False)
+        self.assertIn('update the hash', text)
+        self.assertNotIn('stale local copy', text)
 
 
 if __name__ == '__main__':

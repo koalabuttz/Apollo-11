@@ -82,6 +82,12 @@ def selectors(args):
             if name.startswith('--') and name not in FIXED}
 
 
+# A tools/*.mk c64 rule named by its default selector, as in
+# `-o build/cm-mysubs$(if $(SELECTOR),$(SELECTOR),0).prg`, writes the phase 0
+# PRG (and map) that a script's f'...{a.phase}.prg' reads with --phase 0.
+SELECTOR_DEFAULT = '$(if $(SELECTOR),$(SELECTOR),0)'
+
+
 def producers():
     """Map each build/*.prg that a make rule writes to how to run that rule.
 
@@ -101,6 +107,7 @@ def producers():
             continue
         rule = None
         for line in mk.read_text(errors='replace').splitlines():
+            line = line.replace(SELECTOR_DEFAULT, '0')
             head = re.match(r'([A-Za-z0-9_./-]+)\s*:(?!=)', line)
             if head:
                 rule = head[1]
@@ -116,7 +123,8 @@ def prerequisites(script, known):
     if ('dep', c64) in known.values():
         return [c64], []
     deps, lines = [], []
-    for prg in sorted(set(re.findall(r'[A-Za-z0-9_.-]+\.prg', script.read_text(errors='replace')))):
+    text = script.read_text(errors='replace').replace('{a.phase}', '0')
+    for prg in sorted(set(re.findall(r'[A-Za-z0-9_.-]+\.prg', text))):
         kind, how = known.get(f'build/{prg}', (None, None))
         if kind == 'dep' and how not in deps:
             deps.append(how)

@@ -40,7 +40,7 @@ NAME = 'vice-manifest'
 BRANCH = 'port/c64-native-c'
 CACHE = ROOT / 'build' / NAME
 CERTIFICATES = ('pending_complete_certificate', 'complete_native_coverage')
-COUNT = re.compile(r"\b(\d[\d,]*) (?:[\w-]+ ){0,4}(?:checks|cases|states|scenarios|vectors|rows|words|sequences)\b|"
+COUNT = re.compile(r"\b(\d[\d,]*) (?:[\w-]+ ){0,4}(?:checks|cases|states|scenarios|vectors|rows|words|sequences|bindings)\b|"
                    r"'(?:checks|cases|states)': (\d+)")
 LOGGED_PRG = re.compile(r'PRG sha256: ([0-9a-f]{64}) ([\w.-]+\.prg)\b', re.I)
 PRG = re.compile(r'(?<![\w.-])([\w.-]+\.prg)\b')
