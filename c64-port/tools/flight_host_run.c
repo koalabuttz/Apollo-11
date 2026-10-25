@@ -191,8 +191,9 @@ static int steal_parse(const char *t){
      ||steal_t[nsteal][1]<=steal_t[nsteal][0])return 0;
   ++nsteal;t+=n;if(*t==',')++t;else if(*t)return 0;}
  return 1;}
+static void hold_steal(unsigned long mct);
 static void steal(void){unsigned i;
- for(i=0;i<nsteal;++i)if(steal_cs>=steal_t[i][0]&&steal_cs<steal_t[i][1]){wall+=(double)steal_t[i][2]*slow;return;}}
+ for(i=0;i<nsteal;++i)if(steal_cs>=steal_t[i][0]&&steal_cs<steal_t[i][1]){wall+=(double)steal_t[i][2]*slow;hold_steal(steal_t[i][2]);return;}}
 /* The work clock's steps (resident_flight.h rk_phase_mct): step j (from 0)
  * ends at step_at(j) MCT and steps TIME4, TIME1/TIME3 or TIME5 (j % 3, the
  * rk_timer_phase step); consumed counts the steps taken. */
@@ -201,6 +202,8 @@ static double step_at(unsigned long j){return (double)(2560ul*(j/9ul)+step_end[j
 /* FLIGHT_HOLD: the interrupt hold meter (include/rupt_hold.h) over the
  * replay window, on the work clock, as -DRK_HOLD_METER runs it on the C64. */
 static rupt_hold hold;static int hold_on;
+/* Stolen MCT leave the measure (rupt_hold_steal). */
+static void hold_steal(unsigned long mct){if(hold_on)rupt_hold_steal(&hold,(uint16_t)mct);}
 static void hold_report(void){if(getenv("FLIGHT_HOLD"))printf("interrupt hold: max %u MCT at TIME1 %05o\n",(unsigned)hold.max,(unsigned)hold.max_at);}
 static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,double t){
  if(hold_on)rupt_hold_boundary(&hold,(uint16_t)(unsigned long)t,*pending,(uint8_t)(hw->in_interrupt||!io->interrupt_enabled||agc_overflow(s->words[0])));
