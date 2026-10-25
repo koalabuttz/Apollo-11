@@ -52,11 +52,11 @@ The C64 meter was checked against the host (C64 runs at 1cfd6bc5, the base befor
 The longest measured hold is 1,425 MCT, 84% of the bound. The bound is `HOLD_BOUND_MCT` in `tools/flight_scenario_vice.py`. `tools/rupt_hold_report.py` checks it over every program map window, and every `--replay` window checks it, so each replay window CI runs is gated:
 
 - **Nominal windows** gate the elapsed hold: the host's, and with `--hold` the C64's too.
-- **Overload windows** (a scenario with `FLIGHT_STEAL`) gate the host's hold work, the longest hold without its stolen MCT. Every such window still prints its stolen MCT. The C64 meter has no stolen share, so with `--hold` its elapsed hold is printed but not gated there.
+- **Overload windows** (a scenario with `FLIGHT_STEAL`) gate the host's hold work, the longest hold without its stolen MCT. Every such window still prints its stolen MCT. The C64 meter has no stolen share, so with `--hold` its elapsed hold is held to the host's instead: it fails when longer than the host's elapsed hold plus `HOLD_C64_SLACK_MCT` (0, since the holds agree exactly where a window matches).
 
 ### Known limit: no take inside a basic math body
 
-The port takes no interrupt inside a basic math body. UNIT, SQRT and the trig routines are about 1,100 MCT each. Under overload, cycles stolen inside such a body add to the elapsed hold without adding any work. cm-entry-overload 20900+600 (Lane B's 11d measurement, /mnt/project-files/lane-b/11d/v2/) holds a request 2,309 MCT elapsed. 1,109 MCT of that is work and 1,200 MCT is stolen. A take point inside these bodies would split them, so the overload gate counts work. The work is under the nominal windows' 1,425 MCT maximum.
+The port takes no interrupt inside a basic math body. UNIT, SQRT and the trig routines are about 1,100 MCT each. Under overload, cycles stolen inside such a body add to the elapsed hold without adding any work. cm-entry-overload 20900+600 (Lane B's 11d measurement, /mnt/project-files/lane-b/11d/v2/) holds a request 2,309 MCT elapsed. 1,109 MCT of that is work and 1,200 MCT is stolen. A take point inside these bodies would split them, so the overload gate counts work. The work is under the nominal windows' 1,425 MCT maximum. The risk the bound covers stays open in such a window: an elapsed hold of 2,309 MCT is longer than one DOWNRUPT period, so a second DOWNRUPT can arrive and merge with the first, and a downlink word is lost. The host and the C64 agree on that, and frozen-clock lockstep cannot see it, so it is not checked against the AGC anywhere.
 
 The bound is a limit on the port, not a claim that the real AGC behaves this way. The host and C64 agree on every hold, so replay matches.
 

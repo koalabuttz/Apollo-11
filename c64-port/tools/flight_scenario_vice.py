@@ -232,6 +232,11 @@ WINDOW_MAX = 0o37777
 # (docs/acceptance/interrupt-hold.md): one DOWNRUPT period, 20 ms. A replay
 # window whose host (or, with --hold, C64) meter shows a longer hold fails.
 HOLD_BOUND_MCT = 1706
+# In a FLIGHT_STEAL window the C64 meter has no stolen share, so its
+# elapsed hold is held to the host's instead: at most this much longer.
+# Where a window matches, the two holds agree exactly
+# (docs/acceptance/interrupt-hold.md).
+HOLD_C64_SLACK_MCT = 0
 HOLD = re.compile(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)( \(\d+ without \d+ stolen\))?', re.M)
 HOLD_WORK = re.compile(r'^interrupt hold work: max (\d+) MCT at TIME1 ([0-7]+) \((\d+) stolen\)', re.M)
 
@@ -942,9 +947,14 @@ def main():
                 if a.hold:
                     c_max, c_at = struct.unpack_from('<HH', mail, 0x36)
                     r.update(hold_c64_mct=c_max, hold_c64_time1=c_at)
-                    # The C64 meter has no stolen share, so it gates nominal windows only.
-                    line += f', C64 max {c_max} MCT at TIME1 {c_at:05o}{" (not gated: FLIGHT_STEAL)" if steal else ""}'
+                    line += f', C64 max {c_max} MCT at TIME1 {c_at:05o}'
                 print(line)
+                if a.hold and steal and r['hold_c64_mct'] > hold['mct'] + HOLD_C64_SLACK_MCT:
+                    # The C64 meter has no stolen share: it is held to the host's elapsed hold.
+                    r['ok'] = False
+                    print(f"FAIL: {a.scenario}: the C64 holds an interrupt request {r['hold_c64_mct']} MCT, "
+                          f"over the host's {hold['mct']} MCT (+{HOLD_C64_SLACK_MCT}) in this FLIGHT_STEAL window "
+                          f"(docs/acceptance/interrupt-hold.md)")
                 sides = [('host', hold['gated'], ' without its stolen MCT' if steal else '')]
                 if not steal:
                     sides.append(('C64', r.get('hold_c64_mct', 0), ''))
