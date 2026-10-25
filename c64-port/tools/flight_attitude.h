@@ -17,6 +17,10 @@
  *   2 and 5 -V (Q_R-AXIS_RCS_AUTOPILOT's ALLJETS). A U jet gives +1JACCQ
  *   and +1JACCR, a V jet -1JACCQ and +1JACCR (the JETRATEQ and JETRATER
  *   formulas in P-AXIS_RCS_AUTOPILOT).
+ * While the descent engine burns, its trim gimbal (dps_gimbal,
+ * tools/flight_dps_gimbal.h) adds -ACCDOTQ sin p cos r about Q and
+ * -ACCDOTR sin r about R per 0.2 deg/s of gimbal rate: the T L / I the DAP
+ * itself counts on (AOSTASK), with p the pitch and r the roll trim angle.
  *
  * CM: ATT_JET newtons a jet (the 100 lbf service module jets), ATT_ARM
  * metres from the roll axis (the quads), over the inertia the AGC itself
@@ -25,7 +29,7 @@
  * - channel 5 (JET_SELECTION_LOGIC's PYTABLE, masks PJETS and YJETS):
  *   bits 1 and 3 +pitch, 2 and 4 -pitch, 5 and 7 +yaw, 6 and 8 -yaw;
  * - channel 6 (RTABLE): bits 1, 3, 5 and 7 +roll, 2, 4, 6 and 8 -roll.
- * While the SPS burns (FLIGHT_SPS lit) the SPS model owns the attitude
+ * While the SPS is on (FLIGHT_SPS, sps_nat.on) the SPS model owns the attitude
  * and this one only follows it.
  *
  * Each native sample point turns the body by its rates over the time
@@ -34,13 +38,13 @@
  * seen), and writes CDUX-Z (outer, inner, middle gimbal) from the new
  * attitude. If anything else moved CDUX-Z since (a coarse align, a
  * snapshot, gyro torquing, the SPS model), the attitude is taken from the
- * CDUs as they are and the body rates are kept. No engine torque, no
- * propellant use, no cross-coupling between the axes (no products of
+ * CDUs as they are and the body rates are kept. No CG offset (the LM's
+ * engine torque comes from the trim angles alone), no propellant use, no cross-coupling between the axes (no products of
  * inertia) and no rate limit on the gimbals. With FLIGHT_ATT the engine
  * models no longer set CDUX-Z to the DAP's desired angles. */
 #if RK_LM || RK_CM
 #if RK_LM
-enum { ATT_1JACC = 03130 };
+enum { ATT_ACCDOTQ = 03107, ATT_ACCDOTR = 03111, ATT_1JACC = 03130 };
 #else
 enum { ATT_IXX = 03070, ATT_IAVG = 03071 };
 #define ATT_JET 444.8
@@ -84,6 +88,16 @@ static void att_accel(const agc_word *w, agc_word c5, agc_word c6, double acc[3]
     acc[0] = (double)(att_pop(c6 & 0125u) - att_pop(c6 & 0252u)) * att_ones(w[ATT_1JACC]) * s;
     acc[1] = (u - v) * att_ones(w[ATT_1JACC + 1u]) * s;
     acc[2] = (u + v) * att_ones(w[ATT_1JACC + 2u]) * s;
+    if (eng_nat.on && !eng_nat.lifted) {
+        /* The descent engine through its trim gimbal: the angular
+         * acceleration per radian of gimbal the DAP itself counts on,
+         * ACCDOTQ and ACCDOTR (the jerk while the gimbal turns at 0.2
+         * deg/s, scaled at pi/2^7 rad/s^3; AOSTASK's T L / I). */
+        double off[2], k = 3.141592653589793 / 128.0 / 16384.0 / DPS_GIMBAL_RATE * att_scale;
+        dps_gimbal(&eng_nat.gim, off);
+        acc[1] -= att_ones(w[ATT_ACCDOTQ]) * k * sin(off[0]) * cos(off[1]);
+        acc[2] -= att_ones(w[ATT_ACCDOTR]) * k * sin(off[1]);
+    }
 #else
     double ixx = att_ones(w[ATT_IXX]) * 64.0, iavg = att_ones(w[ATT_IAVG]) * 64.0,
            f = ATT_JET * ATT_ARM * att_scale;
