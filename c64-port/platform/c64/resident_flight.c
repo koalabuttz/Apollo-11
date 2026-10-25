@@ -895,7 +895,10 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
                  * or 2 with its T3 step, 1 without. */
                 rk_spin = (uint8_t)(rk_work >> 8);
 #else
-                rk_spin = 1u; /* the wall clock has no T3 step to count */
+                /* The wall clock has no T3 step to count: the trap's GOJAM
+                 * comes at the next step outside an interrupt, as yaAGC's
+                 * within the scaler period (issue #810). */
+                rk_spin = 2u;
 #endif
                 st = EXEC_OK;
                 goto out;
