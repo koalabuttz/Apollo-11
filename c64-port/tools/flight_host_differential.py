@@ -1080,7 +1080,7 @@ def main():
     lanes = flight_holes.lanes()
     summary, failed = [], 0
     commit = flight_holes.source_commit()
-    charge_over = []
+    charge_over, watchman_bad = [], []
     for m, cs, keys in SCENARIOS:
         name, env = f'{m}-{keys or "p00-idle"}', {}
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
@@ -1134,12 +1134,20 @@ def main():
                                      mean_abs_error=float(c[5]))) if c else None
         if charge and charge['state'] == 'over':
             charge_over.append(name)
+        # The night watchman (docs/FLIGHT-RESTART.md): no row here may sound
+        # it, and on the work clock the native rule must agree with yaAGC's
+        # NEWJOB accesses at every armed check. The other schedules miss some
+        # of yaAGC's NEWJOB reads (#886), so their count is only reported.
+        w = re.search(r'^night watchman: (\d+) alarms, (\d+) stuck steps; (\d+) checks while armed, (\d+) where', text, re.M)
+        watchman = dict(alarms=int(w[1]), stuck_steps=int(w[2]), checks=int(w[3]), disagree=int(w[4])) if w else None
+        if watchman and (watchman['alarms'] or (sched == 'W' and watchman['disagree'])):
+            watchman_bad.append(name)
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, exit=r.returncode,
                    commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
                    periods_dropped=int(t[3]) if t else None, agc_centiseconds=int(t[4]) if t else None,
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
-                   unregistered=holes, interpretive_charge=charge,
+                   unregistered=holes, interpretive_charge=charge, night_watchman=watchman,
                    reached={x[0]: int(x[1]) if x[1] else None
                             for x in re.findall(r'^reach (\d\d,\d{4}): (?:at (\d+) cs|not reached)$', text, re.M)})
         summary.append(row)
@@ -1151,7 +1159,10 @@ def main():
     if charge_over:
         print(f"FAIL: the fitted interpretive charge is more than {CHARGE_BOUND:g}% net or {CHARGE_ABS_BOUND:g}% "
               f"routine by routine from yaAGC's MCT in: {', '.join(charge_over)}")
-    return 1 if failed or charge_over else 0
+    if watchman_bad:
+        print(f"FAIL: the night watchman sounded, or on the work clock disagreed with yaAGC's NEWJOB accesses, in: "
+              f"{', '.join(watchman_bad)}")
+    return 1 if failed or charge_over or watchman_bad else 0
 
 
 if __name__ == '__main__':
