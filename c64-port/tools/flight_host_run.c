@@ -413,7 +413,7 @@ static const entry *holder(const agc_word *w,agc_word sb,agc_routine *call){retu
  * routine from, which can be another holder of the same key than the one
  * that runs it here (a hot subset and its full table). A C64 step goes on
  * in the module that ran the last routine while that module holds the
- * point and no timer step or request came between (rk_step_run's module
+ * point and no interrupt was taken between (rk_step_run's module
  * chain). Otherwise the step starts afresh: the kernel's tables first
  * (rk_trampoline, RK_RESIDENT_MCT), then the pinned sets (rk_direct), then
  * the resolver's order, which is host.inc's. last: the routine before's
@@ -1736,7 +1736,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     /* FLIGHT_REPLAY: on, on the C64 window's work clock. */
     snap_path=0;rp_t0=now(s.words);rp_outputs(now(s.words),&hw,0);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;
     core_fit=core_yaagc=core_err=core_spans=0;}}
-  {agc_word brupt=s.words[017];uint8_t got;unsigned long consumed0=consumed;
+  {agc_word brupt=s.words[017];uint8_t got;
    if(scaled&&work){
     /* rk_rupts: a request that can be taken before each step due. */
     hold_on=rp_out&&!snap_path;
@@ -1750,7 +1750,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      if(consumed++%3ul==2ul){period_end();steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
     if(got&&hold_on)rupt_hold_taken(&hold,(uint16_t)(unsigned long)wall,s.words[025]);
-    if(got||consumed!=consumed0)charge_last=0;
+    /* Only a taken interrupt ends the module chain: a C64 run its budget
+     * cut at a timer step goes on in its module after the step (rk_cut). */
+    if(got)charge_last=0;
     idling=0;}
    else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);drives(&s,&hw);steal();}}
     got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending);}
