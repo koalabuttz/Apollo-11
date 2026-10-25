@@ -473,6 +473,15 @@ def released(path):
     return bool(record) and record.get('store') == 'release'
 
 
+def stored_sha256(path):
+    """The sha256 evidence/<id>/SHA256.json records for evidence/<id>/<name>."""
+    parts = pathlib.PurePosixPath(path).parts
+    try:
+        return json.loads((ROOT / 'evidence' / parts[1] / 'SHA256.json').read_text())['files'][parts[2]]['sha256']
+    except (OSError, ValueError, KeyError, IndexError):
+        return None
+
+
 def fetch(path):
     """Download one release-stored evidence file (tools/evidence.py's store)."""
     sys.path.insert(0, str(ROOT / 'tools'))
@@ -591,7 +600,22 @@ def check_evidence(report, label, certificate, fetch_missing):
             else:
                 report.add('FAIL', label, f'{category} {path} does not exist', 'commit or publish it with tools/evidence.py')
             continue
-        if hashlib.sha256(candidate.read_bytes()).hexdigest() != record.get('sha256'):
+        digest = hashlib.sha256(candidate.read_bytes()).hexdigest()
+        if digest != record.get('sha256') and released(path) and stored_sha256(path) == record.get('sha256'):
+            # The certificate and evidence/<id>/SHA256.json agree: the local
+            # file is an old download (from before a refreeze), not a bad hash.
+            if fetch_missing:
+                try:
+                    fetch(path)
+                    digest = hashlib.sha256(candidate.read_bytes()).hexdigest()
+                except (OSError, SystemExit, KeyError) as error:
+                    report.add('WARN', label, f'{category} {path} could not be re-fetched ({error})')
+            if digest != record.get('sha256'):
+                report.add('FAIL', label, f'{category} {path} is a stale local copy (the certificate and '
+                           'SHA256.json agree)', f'tools/evidence.py fetch {pathlib.PurePosixPath(path).parts[1]}'
+                           ' after deleting it, or run with --fetch')
+                continue
+        if digest != record.get('sha256'):
             report.add('FAIL', label, f'{category} {path} sha256 differs from the certificate', 'update the hash')
     source_map = (evidence.get('source_to_native_map') or {}).get('path')
     for category in CATEGORIES[1:]:
