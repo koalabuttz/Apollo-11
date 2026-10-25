@@ -567,6 +567,16 @@ CM_P52_GIMBAL_LOCK = {**P52, 'FLIGHT_POKE': '3000:034=014600,3600:034=77773,1900
 # (FLIGHT_GYRO): the large torquing angles after the cage (V50N25 00014)
 # turn the stable member by the pulses the gyro drive sends.
 LM_P52_TORQUE = {**LM_P52_IMU_CAGE, 'FLIGHT_GYRO': '1'}
+# lm-p52-coarse: P52 option 2 (nominal) with the ISS model (FLIGHT_ISS: in
+# coarse align the gimbals follow the CDU drive pulses, 4 counts a pulse).
+# lm-p52-realign's start (no CDU pokes); V37E52E, V22E2E on V04N06 (option
+# 2), proceed; proceed on V06N34 with the time 0 (now): V06N22 020.57,
+# 145.04, 359.49 degrees; proceed; proceed on V50N25 00013 (coarse align):
+# from 46.9 s COARS drives CDUY from 194.74 to 145.04 degrees, 3.5 s of
+# pulses (CDUX and CDUZ move a count or two), and P52 goes on to V50N25
+# 00015 (the star acquisition) at 54.2 s.
+LM_P52_COARSE = {**{k: v for k, v in LM_P52.items() if k != 'FLIGHT_POKE'}, 'FLIGHT_ISS': '1'}
+LM_P52_COARSE_KEYS = '@200V37E52E@1000V22E2E@1500V33E@2500V33E@3500V33E@4500V33E'
 # cm-p52-optics: cm-p52 with the platform and optics models (FLIGHT_GYRO,
 # FLIGHT_OPTICS): R52 drives the sextant to each star (CDUT/CDUS follow
 # the 053/054 pulses), and the torquing at about 171.5 s turns the stable
@@ -807,6 +817,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-p21', 'cm', 25000, P21_KEYS, P52),
           ('cm-p52-coarse', 'cm', 14000, CM_P52_COARSE_KEYS, CM_P52_COARSE),
           ('lm-p52-cage-torque', 'lm', 10000, LM_P52_KEYS, LM_P52_TORQUE),
+          ('lm-p52-coarse', 'lm', 6000, LM_P52_COARSE_KEYS, LM_P52_COARSE),
           ('cm-p52-optics', 'cm', 20000, P52_KEYS, CM_P52_OPTICS),
           ('cm-p41', 'cm', 53000, CM_P41_KEYS, CM_P41),
           ('cm-v48-dap', 'cm', 12000, CM_V48_KEYS, P40),
@@ -979,6 +990,8 @@ def build(cc, m, engine):
     subprocess.run([cc, '-std=c99', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{YAAGC}',
                     f'-DRK_{m.upper()}=1', f'-DFLIGHT_HOST_TABLES="../build/flight-store/{m}-host.inc"',
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
+                    *([f'-DFLIGHT_HOST_CHUNKS="../build/flight-store/{m}-host-chunks.inc"']
+                      if (ROOT / f'build/flight-store/{m}-host-chunks.inc').exists() else []),
                     '-c', 'tools/flight_host_run.c', '-o', str(_tmp(obj))], cwd=ROOT, check=True)
     os.replace(_tmp(obj), obj)
     # Every host/*.o is linked: refuse objects left from another checkout

@@ -121,6 +121,7 @@ DSKY 26756 cs: P63 V06 N63 R1 +49002 R2 -05639 R3 +57471
 DSKY 26956 cs: P63 V06 N63 R1 +49058 R2 -05914 R3 +56316
 LM: 956514 native routines (20729949 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
 scaled time: K 1.00, divisor 1, lag 2, seed 0: 27000 CIA interrupts, 27000 clock periods taken, 0 dropped (rk_dilation); AGC time 27000 cs
+night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule
 major mode (MODREG 01011) at 27000 cs: native 77, yaAGC 00; FAILREG 01107/00000
 interpreter module: 14418 routines, 14418 slots; 13698 charged other than yaAGC's words
 interpreter charge: fitted 3420940 MCT, yaAGC 3254037 MCT (+5.1%) over 14418 routines; mean |error| 50.7 MCT per routine
