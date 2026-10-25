@@ -23,13 +23,13 @@ DSKY 7100 cs: P   V37 N00 R1        R2        R3
 DSKY 7158 cs: P00 V   N   R1        R2        R3       
 LM: 578810 native routines (7680006 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
 scaled time: K 1.00, divisor 1, lag 2, seed 0: 9000 CIA interrupts, 9000 clock periods taken, 0 dropped (rk_dilation); AGC time 9000 cs
-night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule
+night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule; yaAGC's own alarm inside 0 spans
 major mode (MODREG 01011) at 9000 cs: native 00, yaAGC 00; FAILREG 00000/00000
 interpreter module: 178 routines, 178 slots; 173 charged other than yaAGC's words
 interpreter charge: fitted 24340 MCT, yaAGC 24151 MCT (+0.8%) over 178 routines; mean |error| 68.9 MCT per routine
 native routines yaAGC did not match (0):
 unregistered or refused points (0):
-module loads (10856 in 9000 cs):
+module loads (10895 in 9000 cs):
   load lm_fresh_start slot 0 basic  05,2667: 1
   load lm_alarm slot 0 basic  02,3567: 1
   load lm_fresh_start slot 0 basic  05,3056: 1
@@ -62,10 +62,14 @@ module loads (10856 in 9000 cs):
   load lanec_pin_keys_num_routines slot 0 basic  40,2077: 19
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2354: 3
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2157: 5
-  load lanec_pin_routines slot 0 basic  41,2035: 3
+  load lanec_pin_routines slot 0 basic  41,2035: 5
+  load lanec_pin_routines slot 0 basic  41,2133: 5
+  load lanec_pin_routines slot 0 basic  02,2457: 3
   load lm_update slot 0 basic  43,3726: 1
   load lanec_ev_routines slot 0 basic  43,2076: 1
   load lanec_pin_routines slot 0 basic  02,2154: 3
+  load lanec_pin_routines slot 0 basic  02,2204: 3
+  load lanec_pin_routines slot 0 basic  41,3516: 3
   load lanec_ev_routines slot 0 basic  43,2113: 1
   load lm_update slot 0 basic  43,3735: 1
   load lm_update slot 0 basic  04,3401: 1
@@ -77,6 +81,14 @@ module loads (10856 in 9000 cs):
   load lanec_di_routines slot 0 basic  10,2334: 2
   load lanec_di_routines slot 0 basic  10,2731: 2
   load lanec_pin_routines slot 0 basic  02,2155: 2
+  load lanec_pin_routines slot 0 basic  41,2337: 2
+  load lanec_pin_routines slot 0 basic  41,3602: 2
+  load lanec_pin_routines slot 0 basic  41,2317: 2
+  load lanec_pin_routines slot 0 basic  41,3604: 2
+  load lanec_pin_routines slot 0 basic  41,2064: 2
+  load lanec_pin_routines slot 0 basic  41,2732: 2
+  load lanec_pin_routines slot 0 basic  41,2303: 2
+  load lanec_pin_routines slot 0 basic  02,2202: 2
   load lanec_di_routines slot 0 basic  10,3122: 2
   load lanec_pin_routines slot 0 basic  02,2433: 2
   load lanec_di_routines slot 0 basic  10,3123: 2
@@ -93,12 +105,19 @@ module loads (10856 in 9000 cs):
   load lanec_pin_routines slot 0 basic  02,2207: 2
   load lanec_pin_routines slot 0 basic  40,3534: 3
   load lanec_pin_routines slot 0 basic  41,2733: 1
+  load lanec_pin_routines slot 0 basic  41,3075: 1
+  load lanec_pin_routines slot 0 basic  41,2740: 1
+  load lanec_pin_routines slot 0 basic  41,2775: 1
+  load lanec_pin_routines slot 0 basic  41,3002: 1
   load lanec_pin_routines slot 0 basic  40,3547: 1
+  load lanec_pin_routines slot 0 basic  40,3552: 1
   load lanec_di_routines slot 0 basic  10,3303: 1
   load service_transfer slot 0 basic  10,3554: 2
   load lanec_di_routines slot 0 basic  10,3350: 2
   load lanec_di_routines slot 0 basic  10,3353: 2
   load lm_update slot 0 basic  04,3431: 1
+  load lanec_pin_routines slot 0 basic  40,3450: 1
+  load lanec_pin_routines slot 0 basic  40,3443: 1
   load lanec_di_routines slot 0 basic  10,3301: 1
   load lm_update slot 0 basic  04,3427: 1
   load lm_phase_table slot 0 basic  02,3314: 1
@@ -106,6 +125,7 @@ module loads (10856 in 9000 cs):
   load lanec_di_routines slot 0 basic  02,3472: 1
   load lanec_di_routines slot 0 basic  10,2326: 1
   load lanec_pin_keys_sign_routines slot 0 basic  40,3603: 1
+  load lanec_pin_routines slot 0 basic  41,3430: 1
   load lanec_pin_routines slot 0 basic  41,3431: 1
   load lm_v37 slot 0 basic  04,2040: 1
   load lm_v37 slot 0 basic  04,2143: 1
@@ -118,7 +138,6 @@ module loads (10856 in 9000 cs):
   load lm_v37 slot 0 basic  04,2155: 1
   load lm_v37 slot 0 basic  04,2157: 1
   load lm_v37 slot 0 basic  04,2161: 1
-  load lanec_pin_routines slot 0 basic  02,2457: 1
   load lm_v37 slot 0 basic  04,2164: 1
   load lm_p20_p25 slot 0 basic  03,2011: 1
   load lm_v37 slot 0 basic  04,2167: 1
