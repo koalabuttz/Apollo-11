@@ -137,6 +137,11 @@ __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
 uint16_t rk_limit(uint8_t mct);
 #endif
 #endif
+#if !defined(RK_WORK_CLOCK) && !defined(RK_NO_DIRECT)
+/* rk_direct's fixed-point high byte for a build without the work clock (the
+ * work-clock build defines it above rk_charge). */
+static uint8_t rk_point_hi;
+#endif
 rk_module_env rk_env={&rk_program,&rk_device,EXEC_OK,0,0,0};
 static uint8_t record[APOLLO_REU_INDEX_RECORD];
 #if defined(APOLLO_OV2_STORE_VERIFIED) && !defined(RK_STEP_PROFILE)

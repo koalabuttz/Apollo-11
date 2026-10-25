@@ -699,8 +699,12 @@ def check_refusals(report, label, entry, certificate, notes):
         data = json.loads(text) if text else None
     except ValueError:
         data = None
-    refused = sum(v for k, v in walk(data) if isinstance(k, str) and re.search(r'refus', k, re.I)
-                  and isinstance(v, int) and not isinstance(v, bool))
+    counts = [(k, v) for k, v in walk(data) if isinstance(k, str) and re.search(r'refus', k, re.I)
+              and isinstance(v, int) and not isinstance(v, bool)]
+    # A record that gives its own total also gives the parts it adds up:
+    # count the total, not both.
+    totals = [v for k, v in counts if re.match(r'total', k, re.I)]
+    refused = max(totals) if totals else sum(v for _, v in counts)
     if refused:
         report.add('WARN', label, f'the comparison refuses {refused} cases; each refused input must be '
                    'unreachable from the source (#82, #88, #99)', 'argue each refusal or compare it')
@@ -981,6 +985,10 @@ def check_dsky_sweep(report, label, mission, name, accepted):
     if stale:
         report.add(level, label, f"{src}'s {m} {' and '.join(stale)} hash is not "
                    'the current one (the full sweep ran on another build)', 'rerun the full sweep and commit it')
+    if not sweep.get('replay_exact') or sweep.get('skipped_cases'):
+        report.add('WARN', label, f"{src} was not run with --replay-exact or leaves words of "
+                   f"{sweep.get('skipped_cases', 0)} cases out of the compare: acceptance item 6 is not met",
+                   'rerun the full sweep with --replay-exact')
     failed = [r for r in sweep.get('results', []) if r['m'] == m and not r['ok']]
     bad = [r for r in failed if r.get('class') != 'clock']
     if bad:

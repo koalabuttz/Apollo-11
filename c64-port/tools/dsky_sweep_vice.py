@@ -87,7 +87,11 @@ CI_CASES = ['V01N36E', 'V04N36E', 'V05N09E', 'V06N36E', 'V06N43E', 'V02N65E', 'V
             'V06N20E', 'V06N21E', 'V05N20E', 'lm:V06N49E',
             'V32E', 'V33E', 'V34E', 'V35E', 'V36E', 'V37E00E',
             'V16N36EV32E', 'V16N36EK', 'V16N36EKR', 'V05N09EC', 'V16N36EQ', 'V05N09EQ',
-            'V01N01E01000EV01N15E', 'V27N02E02000E']
+            'V01N01E01000EV01N15E', 'V27N02E02000E',
+            # V30/V31 with noun 26 loaded (dsky_sweep_cases.py): listed in
+            # dsky_sweep_known.json until MPAC+3 runs natively
+            'lm:V25N26E01000E05155E00000EV30E', 'lm:V25N26E01001E05155E00000EV30E', 'lm:V25N26E00100E05261E00000EV31E',
+            'cm:V25N26E01000E05217E00000EV30E', 'cm:V25N26E01001E05217E00000EV30E', 'cm:V25N26E00100E05324E00000EV31E']
 # The C64's sweep copy (dap_pass_check.c sweep_snap): RK_HARDWARE to the
 # image's end, then rk_device (at most 64 bytes; the 64 bytes of slack
 # after SNAP in run_batch).
@@ -504,7 +508,8 @@ def main():
         if 'diff' in r:
             r['differing'] = [x[0] for x in r.pop('diff')]
     ok = sum(1 for r in results if r['ok'])
-    # Item 6: a match with words left out of the compare is not a full match.
+    # Item 6: a match with words left out of the compare, or a run without
+    # --replay-exact, is not a full match.
     skipped = sum(1 for r in results if r.get('skipped'))
     classes = {}
     for r in results:
@@ -514,7 +519,7 @@ def main():
                   settle_cs=a.settle_cs, passed=ok, cases=len(results), failed_by_class=classes, stores=stores,
                   replay_exact=a.replay_exact, skipped_cases=skipped,
                   item6=mode == 'all' and set(missions) == {'lm', 'cm'} and ok == len(results) and bool(results)
-                  and not skipped,
+                  and not skipped and a.replay_exact,
                   results=results, runs=runs)
     (WORK / 'dsky-sweep.json').write_text(json.dumps(report, indent=1) + '\n')
     (WORK / SUMMARY).write_text(summary(WORK / 'dsky-sweep.json'))
