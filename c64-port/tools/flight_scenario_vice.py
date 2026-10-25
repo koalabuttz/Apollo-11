@@ -273,7 +273,15 @@ def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
             else:
                 h.append(he)
     while i < len(h) and j < len(c):
-        if h[i][0] == c[j][0]:
+        if h[i][0] == c[j][0] and apart(h[i][1], c[j][1]):
+            # Busy sample points (FLIGHT_BUSY_SAMPLE, DP_BUSY) at different
+            # places in the same centisecond: the host samples at a routine's
+            # boundary, the C64 at a step's (a run of routines), so the two
+            # states are the same run seen at different points. Never the
+            # window's end (the ends above): those are always compared.
+            unpaired.append(dict(side='both', cs=h[i][0], busy=True))
+            i, j = i + 1, j + 1
+        elif h[i][0] == c[j][0]:
             pairs.append((h[i], c[j]))
             i, j = i + 1, j + 1
         elif h[i][0] < c[j][0]:
@@ -284,6 +292,17 @@ def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
             j += 1
     unpaired += [dict(side='host', cs=x[0]) for x in h[i:]] + [dict(side='C64', cs=x[0]) for x in c[j:]]
     return pairs + ends, unpaired, end
+
+
+def apart(hw, cw):
+    """Two states of one centisecond, both busy sample points (neither at
+    ADVAN in bank 01: FLIGHT_BUSY_SAMPLE, DP_BUSY), at different program
+    points (Z, FB, LOC): the two sides take them at different places
+    (pair_states). A side at ADVAN against a busy one is compared: the
+    one at ADVAN finished its jobs first."""
+    def idle(w):
+        return (w[5] & 0o7777) in ADVAN.values() and (w[4] >> 10) == 1
+    return not idle(hw) and not idle(cw) and (hw[4], hw[5], hw[0o164]) != (cw[4], cw[5], cw[0o164])
 
 
 def replay_verdict(host_s, c64_s, ended, after=None, after_rows=(), skip=None, m=None, exact=False):
@@ -918,11 +937,19 @@ def main():
             skipped = skipped | {f'{x} (at seam {n})' for x in seam_skipped}
             shift = end['shift_cs'] if end else None
             inner = [u for u in unpaired if not u.get('end')]
-            r.update(replay_unpaired=unpaired, replay_unpaired_count=len(inner), replay_end_shift_cs=shift,
+            busy_apart = [u['cs'] for u in inner if u.get('busy')]
+            r.update(replay_unpaired=unpaired, replay_unpaired_count=len(inner), replay_busy_apart=busy_apart,
+                     replay_busy_apart_count=len(busy_apart), replay_end_shift_cs=shift,
                      replay_end_paired=bool(end and end['paired']))
             if inner:
-                print(f'{a.scenario}: states with no partner, not compared: '
-                      + ', '.join(f"{u['side']} {u['cs']} cs" for u in inner))
+                lone = [u for u in inner if not u.get('busy')]
+                busy = [u for u in inner if u.get('busy')]
+                if lone:
+                    print(f'{a.scenario}: states with no partner, not compared: '
+                          + ', '.join(f"{u['side']} {u['cs']} cs" for u in lone))
+                if busy:
+                    print(f'{a.scenario}: busy sample points at different places, not compared: '
+                          + ', '.join(f"{u['cs']} cs" for u in busy))
             if end and end['paired'] and shift:
                 print(f"{a.scenario}: the C64 ends {shift} cs after the host's end; compared with the host's state "
                       f"at {cs + shift} cs")
