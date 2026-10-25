@@ -221,6 +221,10 @@ def outputs_compare(host, c64, until, slack=0):
 
 # The C64's window clock is TIME1's low 14 bits (dap_pass_check.c replay_cs).
 WINDOW_MAX = 0o37777
+# The longest an interrupt request may wait for a native boundary, in MCT
+# (docs/acceptance/interrupt-hold.md): one DOWNRUPT period, 20 ms. A replay
+# window whose host (or, with --hold, C64) meter shows a longer hold fails.
+HOLD_BOUND_MCT = 1706
 
 
 def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
@@ -621,6 +625,9 @@ def main():
     p.add_argument('--hold', action='store_true',
                    help='with --replay, also meter the longest an interrupt request waits for a native boundary '
                    '(include/rupt_hold.h, #838) on the C64, beside the host\'s, and report both')
+    p.add_argument('--hold-bound', type=int, default=HOLD_BOUND_MCT, metavar='MCT',
+                   help='with --replay, fail when an interrupt request waits longer than MCT for a native boundary '
+                   '(default %(default)s, one DOWNRUPT period; 0: no bound)')
     p.add_argument('--chain', type=int, default=1,
                    help='with --replay, run that many --cs windows back to back on the host, then each on the C64 from '
                    "the host's state where the one before ended, and fail unless the C64 ends each window in the "
@@ -884,6 +891,19 @@ def main():
                     r.update(hold_c64_mct=c_max, hold_c64_time1=c_at)
                     line += f', C64 max {c_max} MCT at TIME1 {c_at:05o}'
                 print(line)
+                over = [(side, n) for side, n in (('host', int(hm[1])), ('C64', r.get('hold_c64_mct', 0)))
+                        if a.hold_bound and n > a.hold_bound]
+                for side, n in over:
+                    print(f'FAIL: {a.scenario}: the {side} holds an interrupt request {n} MCT, over the '
+                          f'{a.hold_bound} MCT bound (docs/acceptance/interrupt-hold.md)')
+                if over:
+                    r['ok'] = False
+            elif a.hold_bound:
+                # The host meters every replay window (FLIGHT_HOLD), so no
+                # line means the bound went unchecked.
+                r['ok'] = False
+                print(f'FAIL: {a.scenario}: no "interrupt hold:" line in {host_log.name}, so the '
+                      f'{a.hold_bound} MCT hold bound was not checked')
             r.update(replay_rows=n_c64, replay_applied=applied, replay_end_cs=end_cs, replay_ended=bool(ended),
                      replay_after_rows=applied_extra, replay_inputs=replay_inputs, replay_outputs=replay_outputs)
             # Every state the C64 wrote against the host's at the same point.

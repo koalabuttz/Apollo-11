@@ -362,6 +362,10 @@ def write_doc(m, rows, groups, problems, commit, store_sha):
              "The inputs (keys, loads, radar and vehicle models) are each scenario's, in "
              'tools/flight_host_differential.py (FLIGHT, RESTART_POINTS) and tools/flight_restart_check.py '
              '(RESTARTS).', '',
+             'Known gap: the night watchman (a job that loops without the Executive, such as GOTO on an '
+             'erasable CADR cycle) restarts the AGC on the host and the x86 program (lm-p52-watchman, '
+             'docs/FLIGHT-RESTART.md, The night watchman), but not yet on the C64, which hangs at that point '
+             'instead. Nominal flight never trips it, and no row here uses it.', '',
              '## Phase groups', '',
              'A group passes when one of its rows passes on the host and on the C64.', '',
              '| Phase group | Rows | Result |', '|---|---|---|']

@@ -6,10 +6,10 @@ the C64 as on the host, and the host gives what yaAGC gives.
 
 ## What item 6 needs
 
-Item 6 is met only by **`--cases all` on both missions with no failure at
-all**, the clock class included, committed as hashed evidence:
+Item 6 is met only by **`--cases all --replay-exact` on both missions with
+no failure at all**, the clock class included, committed as hashed evidence:
 
-    python3 tools/dsky_sweep_vice.py --cases all --evidence evidence/dsky-sweep
+    python3 tools/dsky_sweep_vice.py --cases all --replay-exact --evidence evidence/dsky-sweep
     python3 tools/evidence.py add dsky-sweep <run>/dsky-sweep.json
     python3 tools/evidence.py add dsky-sweep <run>/dsky-sweep-summary.json --tree
     python3 tools/evidence.py push dsky-sweep
@@ -27,6 +27,20 @@ the store, rope and manifest hashes per mission, each VICE program's hash,
 and every case's result. Its `item6` field is true only for such a run.
 The CI sample and its known list (below) are a ratchet for pull requests,
 not item 6.
+
+`--cases all` is 2,161 cases a mission (`tools/dsky_sweep_cases.py`): every
+display, monitor and load verb on every noun, V07, the spare and illegal
+verbs below 40, the extended verbs, V30/V31 with noun 26 loaded, octal and
+signed decimal loads, CLR, KEY REL, RSET and PRO. On one 4-job machine the
+`--replay-exact` run took 80 min (LM) and 62 min (CM) on 2026-10-24. Loading
+noun 36 with V25 is left out: it moves the AGC clock past the sweep's
+sample point.
+
+The V30/V31 cases end at MPAC+3 (erasable 0157), where REQUESTC stores
+TC ENDOFJOB; `src/lanec_pin_request_routines.c` runs that word, and its
+resolver record sits under bank 41 (`ERASABLE_RECORDS` in
+`tools/flight_store_build.py`). All six match the host with
+`--replay-exact` on the C64 (2026-10-25) and are in the CI sample.
 
 The clock class (below) blocks item 6 until the resident clock (RK) clears
 it. It does not block the Pinball file certificate.

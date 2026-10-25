@@ -8,6 +8,7 @@
 #include <string.h>
 #include "lm_servicer_cases.h"
 #include "lm_servicer_vectors.h"
+#include "lm_interp_orders.h"
 #define PATHS 1474u
 #define E7(a) (07u*0400u+(a)-01400u)
 unsigned lmsv_paths[PATHS];
@@ -49,6 +50,30 @@ static uint16_t slot(uint16_t k){unsigned i,v;apollo_overlay_state t;
  check(i<LMSV_ROUTINES&&v<LMSV_STATES,"refusal test case",k);
  return (uint16_t)(i+v*LMSV_ROUTINES);}
 #define K(b,a) (uint16_t)((0##b)*1024u+((a)-02000u))
+/* The store helpers (#422). A store's rope word is its code + 1 (yaYUL);
+ * NEWOPS's CCS takes the 1 off, so lmi_store_spills counts from the word
+ * less one, as DOSTORE does: a DP store to 0376 stays in the window, one to
+ * 0377 passes its end, and so for a vector at 0372 and 0373. */
+static void store_checks(void){
+ static apollo_overlay_state t;
+ memset(&t,0,sizeof t);t.words[0120]=0400u;   /* FIXLOC */
+ t.words[0163]=0u;                            /* MODE +0: double precision */
+ check(!lmi_store_spills(&t,0377u),"DP store to 0376 refused",0376u);
+ check(lmi_store_spills(&t,0400u)!=0u,"DP store to 0377 not refused",0377u);
+ t.words[0163]=077776u;                       /* MODE negative: vector */
+ check(!lmi_store_spills(&t,0373u),"vector store to 0372 refused",0372u);
+ check(lmi_store_spills(&t,0374u)!=0u,"vector store to 0373 not refused",0373u);
+ /* STORE,1 whose index takes the address negative (#422, not flight-
+  * reachable): STORE's CCS takes the work-area branch and ADDRWD becomes
+  * FIXLOC + 047611 = 050211. yaAGC's INDEX ADDRWD then changes the DXCH and
+  * stores nothing; the compact core wraps the address to 0211
+  * (docs/INTERPRETER-RUNTIME.md) and stores MPAC there. Pinned as is. */
+ memset(&t,0,sizeof t);t.words[0120]=0400u;t.words[0446]=030176u;   /* X1 */
+ t.words[0154]=012345u;t.words[0155]=054321u;t.words[0163]=0u;
+ check(!lmi_store_spills(&t,04011u),"STORE,1 10 refused",04011u);
+ lmi_store_code(&t,04011u);
+ check(t.words[0116]==050211u&&t.words[0211]==012345u&&t.words[0212]==054321u,"STORE,1 overflow wrap",t.words[0116]);
+}
 int main(void){apollo_overlay_state s;unsigned n,i,stopped=0,refusals=0;
  /* Paths no admitted input reaches (02400 + n): ABVAL's, ABS's and UNIT's
   * alarm 1302 (BR 2-4), SQRTSUB's abort on a negative sum of squares;
@@ -204,6 +229,7 @@ int main(void){apollo_overlay_state s;unsigned n,i,stopped=0,refusals=0;
  refused(slot(K(33,03633u)),stilbadv_m0,"33,3633 with STILBADV -0");
  refused(slot(K(33,03534u)),a_overflow,"GNURVST with overflow in A");
  refused(slot(K(37,03410u)),no_undo,"SERVICER without an undo image");
+ store_checks();
  printf("lm-servicer: %u cases left the file, %u refusals; routines",stopped,refusals);
  for(i=0;i<LMSV_ROUTINES;++i)printf(" %u",reached[i]);
  printf("; %u checks, %u failures\n",checks,failures);

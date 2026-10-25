@@ -83,11 +83,14 @@ WINDOWS = {
            ('lm-rendezvous', 8000, 300, 50),                # P20: an RR read (RNRAD) and the RR CDUs
            ('lm-p52-cage-torque', 8600, 100, 25),           # gyro torquing (GYROCMD drains, CDUY follows)
            ('lm-rhc-att-hold', 2400, 500, 100),             # RHC pitch out of detent (P-RHCCTR)
-           ('lm-rhc-att-hold', 3500, 500, 100)],            # RHC yaw and roll (Q-, R-RHCCTR)
+           ('lm-rhc-att-hold', 3500, 500, 100),             # RHC yaw and roll (Q-, R-RHCCTR)
+           ('lm-p52-coarse', 4650, 500, 50)],               # coarse align: channel 12 bit 4, CDUY follows the drive
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6
            ('cm-p40', 70660, 100, 50),                      # SPS burn
+           ('cm-p40', 44000, 300, 50),                      # SPS burn: TVC drives with channel 12 bit 8 held
+           ('cm-entry', 15100, 300, 50),                    # entry DAP: jets (channel 5)
            ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
            ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
            ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
@@ -389,12 +392,13 @@ def roles(m):
     out += [
         role('iss', 'ISS mode bits', 'out', 'channel 12 bits 4-6 (coarse align, zero the ICDUs, error counters) and '
              '15 (ISS turn-on delay complete)',
-             [host_end] + ([] if lm else [(FHR, 'imu_due', 'FLIGHT_IMU: zero and coarse align move CDUX-Z')]),
-             [end], None if lm else uses('FLIGHT_IMU'), moved(0o12, 0o40070), unit(m, 't4rupt-imu'),
+             [host_end] + ([(FHR, 'iss_due', 'FLIGHT_ISS: ICDU zero holds CDUX-Z at 0; in coarse align the gimbals '
+                                              'follow the CDUXCMD-CDUZCMD pulses the drive sends, 4 counts a pulse')] if lm
+                           else [(FHR, 'imu_due', 'FLIGHT_IMU: zero and coarse align move CDUX-Z')]),
+             [end], uses('FLIGHT_ISS') if lm else uses('FLIGHT_IMU'), moved(0o12, 0o40070), unit(m, 't4rupt-imu'),
              how='channel 12 bit 4, 5, 6 or 15 changed in the host\'s states',
-             gap='no ISS model on the LM: zeroing and coarse align move nothing' if lm else
-             'fine align and gyro torquing move nothing (imu_due: coarse align is perfect)', blocking=lm,
-             closes='an ISS model (zero, coarse align) on the LM, as imu_due on the CM' if lm else None),
+             gap='a perfect servo: no gimbal rate limit or settling (iss_due)' if lm else
+             'fine align and gyro torquing move nothing (imu_due: coarse align is perfect)'),
     ]
     if lm:
         out += [
