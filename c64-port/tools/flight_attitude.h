@@ -13,7 +13,7 @@
  *   2 and 5 -V (Q_R-AXIS_RCS_AUTOPILOT's ALLJETS). A U jet gives +1JACCQ
  *   and +1JACCR, a V jet -1JACCQ and +1JACCR (the JETRATEQ and JETRATER
  *   formulas in P-AXIS_RCS_AUTOPILOT).
- * Each native routine boundary turns the body by its rates over the time
+ * Each native sample point turns the body by its rates over the time
  * since the last, in steps of at most 1 cs, and writes CDUX-Z (outer,
  * inner, middle gimbal) from the new attitude. If anything else moved
  * CDUX-Z since (a coarse align, a snapshot, gyro torquing), the attitude is

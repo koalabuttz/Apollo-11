@@ -1712,6 +1712,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    aero_due(now(s.words),&aero_nat,s.words);
    imu_due(s.words,&hw);
    iss_due(s.words,&hw);
+   att_due(now(s.words),s.words,&hw);
    gyro_due(s.words);
 #ifdef RK_CM
    optics_due(s.words);
@@ -1760,7 +1761,6 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
    if(scaled&&engine_lag)engine_due(now(s.words),&eng_nat,s.words);
    rcs_due(now(s.words),s.words,&hw);
-   att_due(now(s.words),s.words,&hw);
    if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);
    if(got){
     /* At a RESUME point the instruction to run is BRUPT, not the word at

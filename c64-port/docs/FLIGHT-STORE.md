@@ -800,8 +800,8 @@ port) runs one mission:
    the LM under its RCS jets: each jet the DAP fires gives the angular
    acceleration the DAP itself counts on (1JACC, 1JACCQ, 1JACCR) times
    SCALE, about P from channel 6 (00125 +P, 00252 -P) and about Q and R
-   from channel 5's U and V jets (ALLJETS). Each native routine boundary
-   turns the body by its rates and writes CDUX-Z; anything else that moves
+   from channel 5's U and V jets (ALLJETS). Each native sample point
+   turns the body by its rates since the last one and writes CDUX-Z; anything else that moves
    CDUX-Z (coarse align, gyro torquing) resets the attitude to them. No
    cross-coupling, no engine torque; with it the engine model no longer
    sets CDUX-Z to CDUXD-ZD. `lm-rhc-att-turn`: `lm-rhc-att-hold` with
