@@ -1,5 +1,10 @@
 # Complete original gimbal calculations
 
+> **Removed.** `src/gimbal_complete.c` and the tools and tests below were deleted
+> in the #129 cleanup. `src/lm_gimbal_lock.c` and `src/cm_gimbal_lock.c`
+> replaced them (#132); see [GIMBAL-LOCK.md](GIMBAL-LOCK.md). This page and the
+> frozen `evidence/gimbal-complete-*` files are kept as history.
+
 `gimbal_complete` composes all native execution and data in both original
 `GIMBAL_LOCK_AVOIDANCE.agc` files. LM enters through NOGIMLOC or WCALC; CM
 enters through WCALC. Both leave the interpreter at the original SETGO target
