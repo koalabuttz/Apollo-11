@@ -2224,7 +2224,9 @@ def main():
         except (OSError, ValueError):
             whole = {}
         whole = {k: v for k, v in whole.items() if k not in report} | report
-        (ROOT / OUT / 'report.json').write_text(json.dumps(whole, indent=1) + '\n')
+        tmp = ROOT / OUT / 'report.json.tmp'
+        tmp.write_text(json.dumps(whole, indent=1) + '\n')
+        os.replace(tmp, ROOT / OUT / 'report.json')
         # Each mission's own, which a later build of the other mission (or
         # an up-to-date one, which writes none) leaves in place
         # (tools/flight_scenario_vice.py c64_weights).
