@@ -48,6 +48,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
 import threading
@@ -576,6 +577,157 @@ def c64_mct(m, to_interp, modules, pins=()):
     return out
 
 
+# Link cache: a module link's result and the files it wrote, keyed on
+# everything that can change them: the toolchain (its binaries, libraries
+# and platform files), the full command line, and the contents of every
+# file the link reads (each source with the headers it includes, from
+# `cc -M` with the link's flags, the linker scripts and archives). A hit
+# copies the files back as the link would have written them. Off with
+# --no-link-cache or FLIGHT_LINK_CACHE=off; FLIGHT_LINK_CACHE=verify links
+# everything and fails the build if a cached link differs (CI's full runs).
+# It lives in build/ (and the CI cache), never in git.
+LINK_CACHE = Path('build/flight-link-cache')  # beside OUT, not in it: not a build output
+LINK_CACHE_DAYS = 3  # entries no build has used for this long are removed
+link_cache = dict(on=False, verify=False, hits=0, misses=0, verified=0, differ=[])
+
+
+@functools.lru_cache(maxsize=None)
+def toolchain_digest(cc):
+    """The compiler's identity: its --version and every file of the
+    llvm-mos install it links with (binaries, libraries, platform files)."""
+    h = hashlib.sha256(subprocess.run([cc, '--version'], capture_output=True, text=True).stdout.encode())
+    top = Path(cc).resolve().parents[1]
+    for sub in ('bin', 'lib', 'mos-platform'):
+        for f in sorted((top / sub).rglob('*')):
+            if f.is_file():
+                h.update(str(f.relative_to(top)).encode() + b'\0' + file_digest(f).encode())
+    return h.hexdigest()
+
+
+file_digests = {}
+
+
+def file_digest(path):
+    """sha256 of a file's bytes, remembered while its size and mtime hold
+    (generated headers are rewritten during a build)."""
+    st = os.stat(path)
+    k = (str(path), st.st_size, st.st_mtime_ns)
+    if k not in file_digests:
+        file_digests[k] = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    return file_digests[k]
+
+
+@functools.lru_cache(maxsize=None)
+def source_deps(cc, flags, source):
+    """The files one source reads under these flags (cc -M)."""
+    r = subprocess.run([cc, *flags, '-w', '-M', source], cwd=ROOT, capture_output=True, text=True)
+    if r.returncode:
+        return None
+    words = r.stdout.replace('\\\n', ' ').split()
+    return tuple(w for w in words if not w.endswith(':'))
+
+
+LINK_INPUT = re.compile(r'\.(c|S|s|a|ld)$')
+
+
+def link_key(cmd):
+    """The cache key of a link, or None when its inputs cannot be listed."""
+    cc, args = str(cmd[0]), [str(c) for c in cmd[1:]]
+    inputs = [x for x in args if not x.startswith('-') and LINK_INPUT.search(x) and (ROOT / x).is_file()]
+    # The flags a source compiles with: the command less its inputs, its
+    # output and its link-only arguments.
+    flags, skip = [], False
+    for x in args:
+        if skip:
+            skip = False
+        elif x in ('-o', '-T'):
+            skip = True
+        elif not (x in inputs or x.startswith(('-Wl,', '-l', '-L'))):
+            flags.append(x)
+    files = set(inputs)
+    for src in inputs:
+        if src.endswith(('.c', '.S')):
+            deps = source_deps(cc, tuple(flags), src)
+            if deps is None:
+                return None
+            files.update(deps)
+    # Linker scripts INCLUDE others by name from the search path, and -l
+    # finds archives there: take every script and archive it can reach.
+    for d in (ROOT / 'platform/c64', ROOT / OUT):
+        files.update(str(f.relative_to(ROOT)) for f in d.iterdir() if f.suffix in ('.ld', '.a') and f.is_file())
+    h = hashlib.sha256(toolchain_digest(cc).encode() + json.dumps([cc, *args]).encode())
+    for f in sorted(files):
+        h.update(f.encode() + b'\0' + file_digest(ROOT / f if not os.path.isabs(f) else f).encode())
+    return h.hexdigest()
+
+
+# The compiler's temporary object names (/tmp/<file>-<random>.o), which a
+# map lists for each input section: the one part of a link's output that
+# differs from run to run.
+TEMP_OBJECT = re.compile(rb'(/[^\s:()]*?/[^/\s:()]+)-[0-9a-f]{6}\.o\b')
+
+
+def link_output(path, name=None):
+    """A link output's bytes, with temporary object names masked in a map."""
+    data = Path(path).read_bytes()
+    return TEMP_OBJECT.sub(rb'\1-XXXXXX.o', data) if str(name or path).endswith('.map') else data
+
+
+def cached_link(cmd, outputs):
+    """Run a link through the cache: (returncode, stderr). outputs: the
+    files it may write; those it does write are cached and restored."""
+    key = link_key(cmd) if link_cache['on'] else None
+    entry = ROOT / LINK_CACHE / key[:2] / key if key else None
+    meta = json.loads((entry / 'result.json').read_text()) if entry and (entry / 'result.json').exists() else None
+    if meta and link_cache['verify']:
+        # Link anyway and check the entry: a difference means the key
+        # missed an input.
+        before = {o: (ROOT / o).stat().st_mtime_ns if (ROOT / o).exists() else None for o in outputs}
+        r = subprocess.run([str(c) for c in cmd], cwd=ROOT, capture_output=True, text=True)
+        wrote = [o for o in outputs if (ROOT / o).exists() and (ROOT / o).stat().st_mtime_ns != before[o]]
+        same = (r.returncode == meta['returncode'] and wrote == meta['wrote']
+                and all(link_output(ROOT / o) == link_output(entry / str(i), o) for i, o in enumerate(wrote)))
+        link_cache['verified'] += 1
+        if not same:
+            link_cache['differ'].append(str(outputs[0]))
+        os.utime(entry)
+        return r.returncode, r.stderr
+    if meta:
+        for i, out in enumerate(meta['wrote']):
+            shutil.copyfile(entry / str(i), ROOT / out)
+        os.utime(entry)  # in use: keep it
+        link_cache['hits'] += 1
+        return meta['returncode'], meta['stderr']
+    before = {o: (ROOT / o).stat().st_mtime_ns if (ROOT / o).exists() else None for o in outputs}
+    r = subprocess.run([str(c) for c in cmd], cwd=ROOT, capture_output=True, text=True)
+    if entry:
+        link_cache['misses'] += 1
+        wrote = [o for o in outputs if (ROOT / o).exists() and (ROOT / o).stat().st_mtime_ns != before[o]]
+        tmp = entry.with_name(entry.name + f'.tmp{os.getpid()}-{threading.get_ident()}')
+        shutil.rmtree(tmp, ignore_errors=True)
+        tmp.mkdir(parents=True)
+        for i, out in enumerate(wrote):
+            shutil.copyfile(ROOT / out, tmp / str(i))
+        (tmp / 'result.json').write_text(json.dumps(dict(returncode=r.returncode, stderr=r.stderr, wrote=wrote)))
+        try:
+            tmp.rename(entry)
+        except OSError:  # another thread stored the same link first
+            shutil.rmtree(tmp, ignore_errors=True)
+    return r.returncode, r.stderr
+
+
+def prune_link_cache():
+    """Drop entries no build has used for LINK_CACHE_DAYS."""
+    top = ROOT / LINK_CACHE
+    if not top.is_dir():
+        return
+    old = time.time() - LINK_CACHE_DAYS * 86400
+    for d in top.iterdir():
+        for e in d.iterdir() if d.is_dir() else ():
+            if e.stat().st_mtime < old or '.tmp' in e.name:
+                shutil.rmtree(e, ignore_errors=True)
+
+
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
                 io=None, direct_only=False, defines=(), link_flags=(), pick=None, keys=None,
                 key_range=(0, 0xFF)):
@@ -657,12 +809,12 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
            f'-Map,{prg}.map', *(f'-Wl,--wrap=ai_{op}' for op in SHARED_OPS), *CHANNELS[m], *link_flags,
            wrapper, *sources, 'platform/c64/flight_image_op_services.c', 'platform/c64/overlay_v2_entry.S', '-lc', library,
            '-lcrt', '-o', prg]
-    r = subprocess.run([str(c) for c in cmd], cwd=ROOT, capture_output=True, text=True)
-    if r.returncode:
-        over = [int(v) for v in re.findall(r"overflowed by (\d+) bytes", r.stderr)]
-        undefined = sorted(set(re.findall(r'undefined symbol: (\S+)', r.stderr)))
+    returncode, stderr = cached_link(cmd, [str(prg), f'{prg}.map', f'{prg}.elf'])
+    if returncode:
+        over = [int(v) for v in re.findall(r"overflowed by (\d+) bytes", stderr)]
+        undefined = sorted(set(re.findall(r'undefined symbol: (\S+)', stderr)))
         return dict(ok=False, overflow=max(over) if over else None, undefined=undefined,
-                    error=None if over else [l for l in r.stderr.splitlines() if 'error' in l][:4])
+                    error=None if over else [l for l in stderr.splitlines() if 'error' in l][:4])
     return dict(ok=True, bytes=(ROOT / prg).stat().st_size - 2)
 
 
@@ -1254,7 +1406,13 @@ def main():
     p.add_argument('--host-only', action='store_true',
                    help='steps 1-3 only: the host index and build/flight-store/<m>-host.inc')
     p.add_argument('--force', action='store_true', help='build even when the last build is up to date')
+    p.add_argument('--no-link-cache', action='store_true',
+                   help=f'link every module afresh, without reading or writing {LINK_CACHE}')
     a = p.parse_args()
+    mode = os.environ.get('FLIGHT_LINK_CACHE', '')
+    if mode not in ('', 'off', 'verify'):
+        raise SystemExit(f'FLIGHT_LINK_CACHE={mode}: use off or verify')
+    link_cache.update(on=not a.no_link_cache and mode != 'off', verify=mode == 'verify')
     (ROOT / OUT).mkdir(parents=True, exist_ok=True)
     # One build at a time in the tree: ci_run runs flight-store targets in
     # parallel, and two builds rewriting build/flight-store/keys at once fail
@@ -2075,7 +2233,16 @@ def main():
                   f"{'' if p['ok'] else ' (does not fit)'}"
                   + (f"; {p['direct_bytes']} direct-only once {p['io']} folds into agc_hardware" if p['io'] else ''))
     if not a.host_only:
-        (ROOT / OUT / 'report.json').write_text(json.dumps(report, indent=1) + '\n')
+        # A --missions lm build keeps the CM entry an earlier full build
+        # wrote (cm.reu is still that build's): a check reading report.json
+        # for the CM while an LM-only build finishes beside it would
+        # otherwise find no CM entry.
+        try:
+            whole = json.loads((ROOT / OUT / 'report.json').read_text())
+        except (OSError, ValueError):
+            whole = {}
+        whole = {k: v for k, v in whole.items() if k not in report} | report
+        (ROOT / OUT / 'report.json').write_text(json.dumps(whole, indent=1) + '\n')
         # Each mission's own, which a later build of the other mission (or
         # an up-to-date one, which writes none) leaves in place
         # (tools/flight_scenario_vice.py c64_weights).
@@ -2083,7 +2250,18 @@ def main():
             (ROOT / OUT / f'report-{m}.json').write_text(json.dumps(report[m], indent=1) + '\n')
     if errors:
         raise SystemExit('\n'.join(errors))
+    if link_cache['differ']:
+        raise SystemExit(f"{len(link_cache['differ'])} links differ from the link cache (its key misses an input): "
+                         + ' '.join(link_cache['differ'][:10]))
     stamp.write_text(json.dumps(dict(inputs=digest, outputs=output_digests(started)), indent=1) + '\n')
+    if link_cache['on']:
+        prune_link_cache()
+        if link_cache['misses']:
+            # CI saves the cache only when a build added to it (port-ci.yml
+            # leaves this file out of the saved cache).
+            (ROOT / LINK_CACHE / 'updated').write_text(f"{link_cache['misses']}\n")
+        print(f"link cache ({LINK_CACHE}): {link_cache['hits']} hits, {link_cache['misses']} links run"
+              + (f", {link_cache['verified']} cached links checked" if link_cache['verify'] else ''))
     return 0
 
 
