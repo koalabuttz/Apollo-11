@@ -907,11 +907,14 @@ def main():
             applied_extra, applied = max(0, applied - n_c64), min(applied, n_c64)
             # The interrupt hold meter (include/rupt_hold.h): the host's in its
             # log, the C64's in the mailbox (dap_pass_check.c, -DRK_HOLD_METER).
-            hm = re.search(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)', host_log.read_text(), re.M)
+            hm = re.search(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)( \(\d+ without \d+ stolen\))?',
+                           host_log.read_text(), re.M)
             if hm:
                 r.update(hold_host_mct=int(hm[1]), hold_host_time1=int(hm[2], 8))
                 whole = ' (whole chain)' if a.chain > 1 else ''
-                line = f"{a.scenario}: interrupt hold: host max{whole} {hm[1]} MCT at TIME1 {hm[2]}"
+                # The stolen share (FLIGHT_STEAL) is reported, but the bound
+                # gates the elapsed hold.
+                line = f"{a.scenario}: interrupt hold: host max{whole} {hm[1]} MCT at TIME1 {hm[2]}{hm[3] or ''}"
                 if a.hold:
                     c_max, c_at = struct.unpack_from('<HH', mail, 0x36)
                     r.update(hold_c64_mct=c_max, hold_c64_time1=c_at)
