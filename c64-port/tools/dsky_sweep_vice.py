@@ -88,8 +88,8 @@ CI_CASES = ['V01N36E', 'V04N36E', 'V05N09E', 'V06N36E', 'V06N43E', 'V02N65E', 'V
             'V32E', 'V33E', 'V34E', 'V35E', 'V36E', 'V37E00E',
             'V16N36EV32E', 'V16N36EK', 'V16N36EKR', 'V05N09EC', 'V16N36EQ', 'V05N09EQ',
             'V01N01E01000EV01N15E', 'V27N02E02000E',
-            # V30/V31 with noun 26 loaded (dsky_sweep_cases.py): listed in
-            # dsky_sweep_known.json until MPAC+3 runs natively
+            # V30/V31 with noun 26 loaded (dsky_sweep_cases.py): MPAC+3
+            # (src/lanec_pin_request_routines.c)
             'lm:V25N26E01000E05155E00000EV30E', 'lm:V25N26E01001E05155E00000EV30E', 'lm:V25N26E00100E05261E00000EV31E',
             'cm:V25N26E01000E05217E00000EV30E', 'cm:V25N26E01001E05217E00000EV30E', 'cm:V25N26E00100E05324E00000EV31E']
 # The C64's sweep copy (dap_pass_check.c sweep_snap): RK_HARDWARE to the
