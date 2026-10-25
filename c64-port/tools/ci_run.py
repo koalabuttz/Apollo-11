@@ -40,7 +40,9 @@ RACE = re.compile(r'Text file busy|No such file or directory|File exists|Directo
                   r'Resource temporarily unavailable|\[Errno|Killed|Segmentation fault|Bus error|'
                   r'truncated|unexpected end of file|file format not recognized|file not found|'
                   # gcov: another make process rebuilt the .gcno under a running cover check
-                  r'stamp mismatch with notes file')
+                  r'stamp mismatch with notes file|'
+                  # make: a tool binary another target is relinking can't be run yet
+                  r'Error 126')
 
 
 def missing_build(output):
