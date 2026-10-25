@@ -202,14 +202,17 @@ static double step_at(unsigned long j){return (double)(2560ul*(j/9ul)+step_end[j
 /* FLIGHT_HOLD: the interrupt hold meter (include/rupt_hold.h) over the
  * replay window, on the work clock, as -DRK_HOLD_METER runs it on the C64. */
 static rupt_hold hold;static int hold_on;
-/* MCT stolen (FLIGHT_STEAL) while the longest hold waited, reported beside
- * it but still part of it: the AGC takes a waiting request at its next
- * instruction, so a steal delays the port's take, not the AGC's. */
-static unsigned long hold_stolen,hold_max_stolen;static uint16_t hold_stolen_from;
+/* MCT stolen (FLIGHT_STEAL) while a request waits. The elapsed hold keeps
+ * them (the AGC takes a waiting request at its next instruction, so a steal
+ * delays only the port's take); under FLIGHT_STEAL the work line gives the
+ * longest hold without them, which tools/flight_scenario_vice.py gates
+ * overload windows on (docs/acceptance/interrupt-hold.md). */
+static unsigned long hold_stolen,hold_max_stolen,hold_work,hold_work_stolen;static uint16_t hold_stolen_from,hold_work_at;
 static void hold_report(void){if(!getenv("FLIGHT_HOLD"))return;
  printf("interrupt hold: max %u MCT at TIME1 %05o",(unsigned)hold.max,(unsigned)hold.max_at);
  if(hold_max_stolen)printf(" (%lu without %lu stolen)",(unsigned long)hold.max-hold_max_stolen,hold_max_stolen);
- putchar('\n');}
+ putchar('\n');
+ if(nsteal)printf("interrupt hold work: max %lu MCT at TIME1 %05o (%lu stolen)\n",hold_work,(unsigned)hold_work_at,hold_work_stolen);}
 static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,double t){
  if(hold_on)rupt_hold_boundary(&hold,(uint16_t)(unsigned long)t,*pending,(uint8_t)(hw->in_interrupt||!io->interrupt_enabled||agc_overflow(s->words[0])));
  return rk_rupt_take(p,s,io->superbank,io->interrupt_enabled,pending);}
@@ -221,7 +224,8 @@ static int idling;
 static void hold_steal(unsigned long mct){if(!hold_on||!hold.on||idling)return;
  if(hold.from!=hold_stolen_from){hold_stolen=0;hold_stolen_from=hold.from;}hold_stolen+=mct;}
 static void hold_take(uint16_t t,uint16_t time1){uint16_t max=hold.max;
- unsigned long st=hold.on&&hold.from==hold_stolen_from?hold_stolen:0ul;
+ unsigned long st=hold.on&&hold.from==hold_stolen_from?hold_stolen:0ul,d=(uint16_t)(t-hold.from);
+ if(hold.on&&st<=d&&d-st>hold_work){hold_work=d-st;hold_work_at=(uint16_t)(time1&037777u);hold_work_stolen=st;}
  rupt_hold_taken(&hold,t,time1);if(hold.max!=max)hold_max_stolen=st;hold_stolen=0;hold_stolen_from=(uint16_t)~hold.from;}
 static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
 /* The night watchman (platform/x86/night_watchman.h) under scaled time: wm
@@ -1970,8 +1974,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   printf("at");for(k=0;k<narrive[i];++k)printf(" %ld",reach_cs[i][k]);
   printf(" cs");if(reach_more[i])printf(" (%lu more before the last)",reach_more[i]);printf("\n");}
  if(engine_kg){double n[2],r[2];dps_gimbal(&eng_nat.gim,n);dps_gimbal(&eng_ref.gim,r);
-  printf("trim gimbal (deg): native pitch %.3f roll %.3f, yaAGC pitch %.3f roll %.3f%s\n",n[0]*57.29577951308232,n[1]*57.29577951308232,
-   r[0]*57.29577951308232,r[1]*57.29577951308232,dps_trim?" (FLIGHT_TRIM: the thrust follows)":"");}
+  /* yaAGC's gimbal only when the reference side ran (not under FLIGHT_SCALED). */
+  printf("trim gimbal (deg): native pitch %.3f roll %.3f",n[0]*57.29577951308232,n[1]*57.29577951308232);
+  if(eng_ref.gim.started)printf(", yaAGC pitch %.3f roll %.3f",r[0]*57.29577951308232,r[1]*57.29577951308232);
+  printf("%s\n",dps_trim?" (FLIGHT_TRIM: the thrust follows)":"");}
  printf("unregistered or refused points (%u):\n",nholes);
  for(i=0;i<nholes;++i){printf("  %s %02o,%04o Z %05o FB %05o Q %05o",holes[i].in?"interp":"basic ",
   holes[i].key/1024u,holes[i].key%1024u+02000u,(unsigned)holes[i].z,(unsigned)holes[i].fb,(unsigned)holes[i].q);

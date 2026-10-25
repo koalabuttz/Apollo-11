@@ -2246,6 +2246,11 @@ def main():
                          for mod in modules])
         if not a.host_only:
             errors += [e for e in [check_unplaced(m, report[m]['unplaced'])] if e]
+            if not interp['ok']:
+                # Without its modules the C64 stops at the first NEWOPS
+                # (status 4), long after a build that looked fine.
+                errors.append(f"{m}: the interpreter module does not link ({interp}); the store would stop "
+                              'at NEWOPS')
         print(f"{m}: {len(packed)} tables in {len(modules)} modules ({len(good)} linked, {len(failed)} failed); "
               f"{len(resolver)} resolver records; {sum(r['keys'] for r in report[m]['collisions'])} colliding keys; "
               f"{pack.stdout.strip()}")

@@ -38,7 +38,6 @@ import flight_host_differential as fhd  # noqa: E402
 import flight_scenario_vice as fsv  # noqa: E402
 
 MISSION = {'Luminary099': 'lm', 'Comanche055': 'cm'}
-HOLD = re.compile(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)', re.M)
 # One MCT is 11.72 microseconds.
 MCT_MS = 0.01172
 
@@ -50,10 +49,14 @@ def window(exe, name, snap, cs):
         fsv.snapshot(exe, name, snap, tag, replay=cs, downrupt=downrupt)
     except SystemExit as e:
         return dict(scenario=name, snap_cs=snap, cs=cs, error=str(e))
-    m = HOLD.search((dp.WORK / f'{tag}-host.log').read_text())
-    if not m:
+    h = fsv.host_hold(name, (dp.WORK / f'{tag}-host.log').read_text())
+    if not h:
         return dict(scenario=name, snap_cs=snap, cs=cs, error='no interrupt hold line in the host log')
-    return dict(scenario=name, snap_cs=snap, cs=cs, hold_mct=int(m[1]), time1=m[2])
+    r = dict(scenario=name, snap_cs=snap, cs=cs, hold_mct=h['mct'], time1=h['time1'], gated_mct=h['gated'])
+    if 'work_mct' in h:
+        # FLIGHT_STEAL: the bound gates the hold without its stolen MCT.
+        r.update(work_mct=h['work_mct'], work_time1=h['work_time1'], work_stolen=h['work_stolen'])
+    return r
 
 
 def main():
@@ -86,15 +89,18 @@ def main():
             if 'error' in r:
                 print(f"{program}: {r['scenario']} {r['snap_cs']}+{r['cs']}: {r['error']}")
             else:
+                work = (f"; work {r['work_mct']} MCT at TIME1 {r['work_time1']} ({r['work_stolen']} stolen)"
+                        if 'work_mct' in r else '')
                 print(f"{program}: {r['scenario']} {r['snap_cs']}+{r['cs']}: hold {r['hold_mct']} MCT "
-                      f"({r['hold_mct'] * MCT_MS:.2f} ms) at TIME1 {r['time1']}")
+                      f"({r['hold_mct'] * MCT_MS:.2f} ms) at TIME1 {r['time1']}{work}")
         if worst:
             print(f"{program}: longest hold {worst['hold_mct']} MCT ({worst['hold_mct'] * MCT_MS:.2f} ms), "
                   f"{worst['scenario']} {worst['snap_cs']}+{worst['cs']}; {len(held)} of {len(rows)} windows measured")
-        over = [r for r in held if a.bound and r['hold_mct'] > a.bound]
+        over = [r for r in held if a.bound and r['gated_mct'] > a.bound]
         for r in over:
+            what = ' without its stolen MCT' if 'work_mct' in r else ''
             print(f"FAIL: {program}: {r['scenario']} {r['snap_cs']}+{r['cs']} holds a request "
-                  f"{r['hold_mct']} MCT, over the {a.bound} MCT bound")
+                  f"{r['gated_mct']} MCT{what}, over the {a.bound} MCT bound")
         bad += len(over)
         out = dict(program=program, about=__doc__.split('\n\n')[0], mct_ms=MCT_MS,
                    longest=worst, windows=rows)
