@@ -796,8 +796,8 @@ port) runs one mission:
    command finds the stick out of detent (JUSTOUT at 2,505 cs) and reads
    the counters each pass (RATERROR from 2,514 cs). Every native routine
    matches yaAGC.
-   `FLIGHT_ATT=SCALE` (LM, `tools/flight_attitude.h`, scaled time) turns
-   the LM under its RCS jets: each jet the DAP fires gives the angular
+   `FLIGHT_ATT=SCALE` (both programs, `tools/flight_attitude.h`, scaled
+   time) turns the spacecraft under its RCS jets. LM: each jet the DAP fires gives the angular
    acceleration the DAP itself counts on (1JACC, 1JACCQ, 1JACCR) times
    SCALE, about P from channel 6 (00125 +P, 00252 -P) and about Q and R
    from channel 5's U and V jets (ALLJETS). Each native sample point
@@ -808,6 +808,19 @@ port) runs one mission:
    `FLIGHT_ATT=1`. The +P stick turns the LM at 0.097 rad/s (CDUX to 5652
    octal) and the DAP stops it at release; the Q and R stick turns CDUY
    and CDUZ the same way. Every native routine matches yaAGC.
+   CM: each jet gives 100 lbf (444.8 N) on a 1.96 m arm over the inertia
+   the AGC holds (IXX for roll, IAVG for pitch and yaw, from MASSPROP),
+   times SCALE: pitch from channel 5 bits 1 and 3 (+) and 2 and 4 (-),
+   yaw from bits 5 and 7 (+) and 6 and 8 (-), roll from channel 6's odd
+   (+) and even (-) bits (JET_SELECTION_LOGIC's PYTABLE and RTABLE). While
+   the SPS burns, the SPS model turns the CM instead. With it the SPS
+   model no longer holds CDUX-Z at the RCS DAP's CDUXD-ZD, and the entry
+   model no longer sets them to THETAD. `cm-v49-att`: cm-p40's start, V48
+   (MASSPROP: IXX and IAVG for the docked stack), V46 (the RCS DAP on),
+   V76, then V49 to gimbal angles 30, 0, 0. From 122 s KALCMANU steers
+   CDUXD at 0.5 degree/s, the DAP fires roll, pitch and yaw jets, and
+   CDUX follows it to 30 degrees by 195 s, inside the 0.5 degree deadband
+   after that. Every native routine matches yaAGC.
 
    The descent engine has a trim gimbal (LM, `tools/flight_dps_gimbal.h`).
    Channel 12 bits 9-12 turn it at 0.2 deg/s within 6 deg in pitch and

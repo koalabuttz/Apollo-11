@@ -98,7 +98,8 @@ WINDOWS = {
            ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
            ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
            ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
-           ('cm-p52-optics', 17100, 100, 25)],              # gyro torquing: CDUX-Z follow
+           ('cm-p52-optics', 17100, 100, 25),               # gyro torquing: CDUX-Z follow
+           ('cm-v49-att', 13000, 700, 100)],                # the jets turn the CSM (FLIGHT_ATT): CDUX-Z follow
 }
 
 
@@ -253,19 +254,19 @@ def roles(m):
              [(FHR, 'engine_due' if lm else 'sps_due', 'engine model: PIPA counts along the thrust'),
               (FHR, 'rcs_due' if lm else 'aero_due', 'RCS translation (LM) or aerodynamic drag (CM) into the PIPAs')]
              + ([(ATT, 'att_due', 'FLIGHT_ATT: the jets turn the LM at the DAP\'s own one-jet accelerations; CDUX-Z follow')]
-                if lm else [(FHR, 'imu_due', 'FLIGHT_IMU: channel 12 zero and coarse align move CDUX-Z'),
-                               (FHR, 'saturn_due', 'FLIGHT_SATURN boost'), (FHR, 'sivb_due', 'FLIGHT_SIVB TLI burn')]),
+                if lm else [(ATT, 'att_due', 'FLIGHT_ATT: the jets turn the CSM over the AGC\'s IXX and IAVG; CDUX-Z follow'),
+                            (FHR, 'imu_due', 'FLIGHT_IMU: channel 12 zero and coarse align move CDUX-Z'),
+                            (FHR, 'saturn_due', 'FLIGHT_SATURN boost'), (FHR, 'sivb_due', 'FLIGHT_SIVB TLI burn')]),
              [rows], uses('FLIGHT_ENGINE', 'FLIGHT_RCS', 'FLIGHT_POKE', 'FLIGHT_ATT') if lm else
-             uses('FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_SATURN', 'FLIGHT_SIVB', 'FLIGHT_IMU'),
+             uses('FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_SATURN', 'FLIGHT_SIVB', 'FLIGHT_IMU', 'FLIGHT_ATT'),
              either(pipas, erasable(0o32, 0o33, 0o34)), unit(m, 't4rupt-imu'),
              how='PIPA counts, or CDUX-Z words, in the host rows',
              gap=('the jets turn the LM exactly as the DAP expects (att_due uses 1JACC-1JACCR), with no cross-coupling '
                   'and no engine torque; under thrust without FLIGHT_ATT the engine model holds CDUX-Z at CDUXD-ZD') if lm else
-                 'no attitude dynamics from the jets: the models hold CDUX-Z at the commanded attitude '
-                 '(only the SPS gimbal turns the CM, in pitch and yaw)',
-             blocking=not lm,
-             closes='the engine\'s trim torque (Lane F, tools/flight_dps_gimbal.h)' if lm else
-                    'Lane D1: tools/flight_attitude.h for the CM\'s jets'),
+                 ('the jets turn the CSM at 100 lbf on a 1.96 m arm over the AGC\'s own IXX and IAVG (att_due), with '
+                  'no cross-coupling; under SPS thrust the SPS model turns it in pitch and yaw only (no roll jets)'),
+             closes='the engine\'s trim torque in att_due from dps_gimbal (D1, tools/flight_attitude.h)' if lm else
+                    'roll during SPS burns (Lane D1, tools/flight_attitude.h)'),
     ]
     if lm:
         out += [
@@ -354,12 +355,15 @@ def roles(m):
         role('jets', 'RCS jets and engine on/off' if lm else 'RCS jets and SPS on/off', 'out',
              'channels 5 and 6 (jets), channel 11 bits 13-14 (engine on, off)' if lm else
              'channels 5 and 6 (jets), channel 11 bit 13 (SPS on)',
-             [host_end, (FHR, 'rcs_due', 'the jets\' translation into the PIPAs')] if lm else [host_end],
-             [end], uses('FLIGHT_ENGINE', 'FLIGHT_RCS') if lm else uses('FLIGHT_SPS', 'FLIGHT_AERO'),
+             [host_end, (FHR, 'rcs_due', 'the jets\' translation into the PIPAs'),
+              (ATT, 'att_due', 'FLIGHT_ATT: the jets turn the LM')] if lm else
+             [host_end, (ATT, 'att_due', 'FLIGHT_ATT: the jets turn the CSM')],
+             [end], uses('FLIGHT_ENGINE', 'FLIGHT_RCS', 'FLIGHT_ATT') if lm else uses('FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_ATT'),
              either(moved(5), moved(6), moved(0o11, 0o30000 if lm else 0o10000)),
              unit(m, 't6rupt', 'tjet-law', 'q-r-axis') if lm else unit(m, 'jet-select', 'rcs-dap', 'tvc-roll'),
              how='channel 5 or 6, or the engine bits of channel 11, changed in the host\'s states',
-             gap='the jets drive no attitude dynamics (IMU row)', closes='Lane B\'s rigid-body model'),
+             gap='the jets turn the spacecraft only with FLIGHT_ATT (IMU row), with no cross-coupling',
+             closes='products of inertia in tools/flight_attitude.h (D1)'),
     ]
     if lm:
         out += [

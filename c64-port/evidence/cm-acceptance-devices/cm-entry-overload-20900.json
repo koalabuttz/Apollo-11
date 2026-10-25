@@ -14,41 +14,41 @@
  "superbank": "0060",
  "bank": "23",
  "at": "03,2037",
- "wall_cycles": 76368097,
+ "wall_cycles": 79007050,
  "agc_cs": 611,
  "dropped_ticks": 0,
- "steps": 1600,
- "wall_per_agc": 12.686,
+ "steps": 1796,
+ "wall_per_agc": 13.124,
  "by_request": {
   "background": {
    "count": 138,
-   "cycles": 39574325,
-   "max_cycles": 2270895,
-   "steps": 596,
+   "cycles": 40114183,
+   "max_cycles": 2283233,
+   "steps": 620,
    "job_loads": 198,
    "task_loads": 15
   },
   "T4RUPT": {
    "count": 55,
-   "cycles": 6445589,
-   "max_cycles": 167467,
+   "cycles": 6554787,
+   "max_cycles": 169915,
    "steps": 215,
    "job_loads": 50,
    "task_loads": 120
   },
   "T3RUPT": {
    "count": 74,
-   "cycles": 14786832,
-   "max_cycles": 360917,
-   "steps": 422,
+   "cycles": 15504860,
+   "max_cycles": 383668,
+   "steps": 480,
    "job_loads": 77,
    "task_loads": 5
   },
   "T5RUPT": {
    "count": 58,
-   "cycles": 15553724,
-   "max_cycles": 395402,
-   "steps": 367,
+   "cycles": 16825808,
+   "max_cycles": 540280,
+   "steps": 481,
    "job_loads": 176,
    "task_loads": 5
   }
@@ -60,7 +60,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 25200
+   "cycles": 25969
   },
   {
    "request": "T4RUPT",
@@ -68,7 +68,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 5,
-   "cycles": 167467
+   "cycles": 169915
   },
   {
    "request": "background",
@@ -76,7 +76,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 35357
+   "cycles": 37007
   },
   {
    "request": "T3RUPT",
@@ -84,7 +84,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 194537
+   "cycles": 197135
   },
   {
    "request": "background",
@@ -92,7 +92,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 7375
+   "cycles": 7886
   },
   {
    "request": "T5RUPT",
@@ -100,7 +100,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 146991
+   "cycles": 148906
   },
   {
    "request": "background",
@@ -108,7 +108,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 45234
+   "cycles": 47414
   },
   {
    "request": "T3RUPT",
@@ -116,7 +116,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 101465
+   "cycles": 102938
   },
   {
    "request": "background",
@@ -124,7 +124,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 91282
+   "cycles": 96555
   },
   {
    "request": "T4RUPT",
@@ -132,7 +132,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 72133
+   "cycles": 74109
   },
   {
    "request": "background",
@@ -140,7 +140,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 10021
+   "cycles": 9982
   },
   {
    "request": "T3RUPT",
@@ -148,7 +148,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 189915
+   "cycles": 192148
   },
   {
    "request": "background",
@@ -156,7 +156,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 7006
+   "cycles": 7484
   },
   {
    "request": "T5RUPT",
@@ -164,7 +164,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 354227
+   "cycles": 358688
   },
   {
    "request": "background",
@@ -172,7 +172,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 71498
+   "cycles": 75400
   },
   {
    "request": "T3RUPT",
@@ -180,7 +180,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 106621
+   "cycles": 107593
   },
   {
    "request": "background",
@@ -188,7 +188,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 63637
+   "cycles": 67750
   },
   {
    "request": "T3RUPT",
@@ -196,7 +196,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 192649
+   "cycles": 194874
   },
   {
    "request": "background",
@@ -204,7 +204,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 9435
+   "cycles": 10210
   },
   {
    "request": "T5RUPT",
@@ -212,7 +212,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 143752
+   "cycles": 145369
   },
   {
    "request": "background",
@@ -220,7 +220,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 23631
+   "cycles": 25186
   },
   {
    "request": "T4RUPT",
@@ -228,7 +228,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 112521
+   "cycles": 114417
   },
   {
    "request": "background",
@@ -236,7 +236,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 14,
-   "cycles": 119954
+   "cycles": 126667
   },
   {
    "request": "T3RUPT",
@@ -244,7 +244,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 187071
+   "cycles": 189645
   },
   {
    "request": "background",
@@ -252,7 +252,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 9955
+   "cycles": 9960
   },
   {
    "request": "T5RUPT",
@@ -260,7 +260,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 343254
+   "cycles": 348197
   },
   {
    "request": "background",
@@ -268,7 +268,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 50582
+   "cycles": 52987
   },
   {
    "request": "T4RUPT",
@@ -276,7 +276,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 119422
+   "cycles": 121499
   },
   {
    "request": "background",
@@ -284,7 +284,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 92002
+   "cycles": 97230
   },
   {
    "request": "T3RUPT",
@@ -292,7 +292,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 191753
+   "cycles": 194080
   },
   {
    "request": "background",
@@ -300,7 +300,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 9955
+   "cycles": 10090
   },
   {
    "request": "T5RUPT",
@@ -308,7 +308,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 142549
+   "cycles": 144585
   },
   {
    "request": "background",
@@ -316,7 +316,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 78316
+   "cycles": 82669
   },
   {
    "request": "T4RUPT",
@@ -324,7 +324,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 147658
+   "cycles": 149699
   },
   {
    "request": "background",
@@ -332,7 +332,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 70960
+   "cycles": 75133
   },
   {
    "request": "T3RUPT",
@@ -340,7 +340,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 188413
+   "cycles": 190469
   },
   {
    "request": "background",
@@ -348,7 +348,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 9267
+   "cycles": 9827
   },
   {
    "request": "T5RUPT",
@@ -356,7 +356,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 344063
+   "cycles": 348237
   },
   {
    "request": "background",
@@ -364,7 +364,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 38555
+   "cycles": 40868
   },
   {
    "request": "T3RUPT",
@@ -372,7 +372,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 15,
-   "cycles": 355506
+   "cycles": 362245
   },
   {
    "request": "background",
@@ -380,7 +380,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 18,
-   "cycles": 1279718
+   "cycles": 1288518
   },
   {
    "request": "T4RUPT",
@@ -388,7 +388,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 3,
-   "cycles": 81693
+   "cycles": 83079
   },
   {
    "request": "background",
@@ -396,7 +396,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 466525
+   "cycles": 467977
   },
   {
    "request": "T3RUPT",
@@ -404,7 +404,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 192718
+   "cycles": 195017
   },
   {
    "request": "T5RUPT",
@@ -412,7 +412,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 147049
+   "cycles": 148961
   },
   {
    "request": "background",
@@ -420,7 +420,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 26,
-   "cycles": 2270895
+   "cycles": 2283233
   },
   {
    "request": "T4RUPT",
@@ -428,7 +428,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 4,
-   "cycles": 127547
+   "cycles": 129344
   },
   {
    "request": "background",
@@ -436,7 +436,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 239792
+   "cycles": 240460
   },
   {
    "request": "T3RUPT",
@@ -444,7 +444,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 198294
+   "cycles": 200660
   },
   {
    "request": "background",
@@ -452,7 +452,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 62345
+   "cycles": 62741
   },
   {
    "request": "T5RUPT",
@@ -460,7 +460,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 374642
+   "cycles": 378797
   },
   {
    "request": "background",
@@ -468,7 +468,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 24,
-   "cycles": 2082509
+   "cycles": 2094513
   },
   {
    "request": "T3RUPT",
@@ -476,7 +476,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 194127
+   "cycles": 196368
   },
   {
    "request": "background",
@@ -484,15 +484,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 54705
+   "cycles": 55233
   },
   {
    "request": "T5RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 4,
-   "cycles": 172789
+   "steps": 11,
+   "cycles": 239171
   },
   {
    "request": "T4RUPT",
@@ -500,7 +500,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 120460
+   "cycles": 122539
   },
   {
    "request": "background",
@@ -508,7 +508,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 18,
-   "cycles": 2100178
+   "cycles": 2108215
   },
   {
    "request": "T3RUPT",
@@ -516,7 +516,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 196860
+   "cycles": 199750
   },
   {
    "request": "background",
@@ -524,7 +524,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 340095
+   "cycles": 341996
   },
   {
    "request": "T5RUPT",
@@ -532,7 +532,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 373304
+   "cycles": 377560
   },
   {
    "request": "background",
@@ -540,7 +540,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 50340
+   "cycles": 50410
   },
   {
    "request": "T4RUPT",
@@ -548,7 +548,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 152505
+   "cycles": 154975
   },
   {
    "request": "background",
@@ -556,7 +556,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 1095330
+   "cycles": 1100764
   },
   {
    "request": "T3RUPT",
@@ -564,7 +564,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 198657
+   "cycles": 201086
   },
   {
    "request": "background",
@@ -572,15 +572,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 50772
+   "cycles": 50930
   },
   {
    "request": "T5RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 4,
-   "cycles": 173971
+   "steps": 19,
+   "cycles": 310575
   },
   {
    "request": "T3RUPT",
@@ -588,7 +588,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 129579
+   "cycles": 131788
   },
   {
    "request": "background",
@@ -596,7 +596,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 93667
+   "cycles": 94258
   },
   {
    "request": "T4RUPT",
@@ -604,7 +604,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 79022
+   "cycles": 80477
   },
   {
    "request": "background",
@@ -612,7 +612,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 309725
+   "cycles": 310782
   },
   {
    "request": "T3RUPT",
@@ -620,7 +620,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 200417
+   "cycles": 203574
   },
   {
    "request": "background",
@@ -628,15 +628,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 342953
+   "cycles": 342813
   },
   {
    "request": "T5RUPT",
    "job_loads": 6,
    "task_loads": 0,
    "status": 0,
-   "steps": 9,
-   "cycles": 393574
+   "steps": 11,
+   "cycles": 425695
   },
   {
    "request": "T4RUPT",
@@ -644,7 +644,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 115091
+   "cycles": 117104
   },
   {
    "request": "background",
@@ -652,7 +652,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 184908
+   "cycles": 185953
   },
   {
    "request": "T3RUPT",
@@ -660,7 +660,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 205423
+   "cycles": 208674
   },
   {
    "request": "background",
@@ -668,7 +668,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 78332
+   "cycles": 78797
   },
   {
    "request": "T5RUPT",
@@ -676,7 +676,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 172589
+   "cycles": 174633
   },
   {
    "request": "background",
@@ -684,7 +684,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 466799
+   "cycles": 469387
   },
   {
    "request": "T4RUPT",
@@ -692,7 +692,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 126875
+   "cycles": 129803
   },
   {
    "request": "T3RUPT",
@@ -700,7 +700,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 190781
+   "cycles": 192980
   },
   {
    "request": "T5RUPT",
@@ -708,7 +708,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 341977
+   "cycles": 346126
   },
   {
    "request": "background",
@@ -716,15 +716,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 551571
+   "cycles": 553393
   },
   {
    "request": "T3RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 5,
-   "cycles": 205085
+   "steps": 15,
+   "cycles": 296845
   },
   {
    "request": "T4RUPT",
@@ -732,7 +732,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 156321
+   "cycles": 160962
   },
   {
    "request": "T5RUPT",
@@ -740,7 +740,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 169413
+   "cycles": 171697
   },
   {
    "request": "background",
@@ -748,15 +748,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 552213
+   "cycles": 554698
   },
   {
    "request": "T3RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 6,
-   "cycles": 205520
+   "steps": 10,
+   "cycles": 245898
   },
   {
    "request": "T3RUPT",
@@ -764,15 +764,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 133309
+   "cycles": 134878
   },
   {
    "request": "T5RUPT",
    "job_loads": 6,
    "task_loads": 0,
    "status": 0,
-   "steps": 9,
-   "cycles": 378401
+   "steps": 15,
+   "cycles": 447317
   },
   {
    "request": "T4RUPT",
@@ -780,15 +780,15 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 77234
+   "cycles": 79204
   },
   {
    "request": "background",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 5,
-   "cycles": 454769
+   "steps": 4,
+   "cycles": 454656
   },
   {
    "request": "T3RUPT",
@@ -796,7 +796,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 206620
+   "cycles": 209128
   },
   {
    "request": "background",
@@ -804,7 +804,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 112478
+   "cycles": 113393
   },
   {
    "request": "T5RUPT",
@@ -812,7 +812,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 172505
+   "cycles": 174407
   },
   {
    "request": "background",
@@ -820,7 +820,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 138308
+   "cycles": 139204
   },
   {
    "request": "T4RUPT",
@@ -828,7 +828,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 117242
+   "cycles": 119152
   },
   {
    "request": "background",
@@ -836,7 +836,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 5,
-   "cycles": 342098
+   "cycles": 344026
   },
   {
    "request": "T3RUPT",
@@ -844,7 +844,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 329419
+   "cycles": 333547
   },
   {
    "request": "T5RUPT",
@@ -852,7 +852,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 7,
-   "cycles": 305037
+   "cycles": 308200
   },
   {
    "request": "background",
@@ -860,7 +860,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 304485
+   "cycles": 307214
   },
   {
    "request": "T4RUPT",
@@ -868,7 +868,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 119960
+   "cycles": 121824
   },
   {
    "request": "background",
@@ -876,7 +876,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 170760
+   "cycles": 172127
   },
   {
    "request": "T3RUPT",
@@ -884,7 +884,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 193138
+   "cycles": 195105
   },
   {
    "request": "background",
@@ -892,7 +892,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 79582
+   "cycles": 80158
   },
   {
    "request": "T5RUPT",
@@ -900,7 +900,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 376066
+   "cycles": 380192
   },
   {
    "request": "background",
@@ -908,7 +908,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 308583
+   "cycles": 309261
   },
   {
    "request": "T4RUPT",
@@ -916,7 +916,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 155687
+   "cycles": 158139
   },
   {
    "request": "background",
@@ -924,7 +924,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 57364
+   "cycles": 58388
   },
   {
    "request": "T3RUPT",
@@ -932,7 +932,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 205964
+   "cycles": 208721
   },
   {
    "request": "background",
@@ -940,7 +940,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 348033
+   "cycles": 357603
   },
   {
    "request": "T5RUPT",
@@ -948,7 +948,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 168786
+   "cycles": 170807
   },
   {
    "request": "background",
@@ -956,7 +956,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 25,
-   "cycles": 1348027
+   "cycles": 1362320
   },
   {
    "request": "T4RUPT",
@@ -964,7 +964,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 3,
-   "cycles": 90650
+   "cycles": 91335
   },
   {
    "request": "T3RUPT",
@@ -972,7 +972,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 7,
-   "cycles": 277898
+   "cycles": 281094
   },
   {
    "request": "T5RUPT",
@@ -980,7 +980,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 365504
+   "cycles": 370274
   },
   {
    "request": "background",
@@ -988,7 +988,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 12,
-   "cycles": 856806
+   "cycles": 862283
   },
   {
    "request": "T3RUPT",
@@ -996,7 +996,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 104750
+   "cycles": 106520
   },
   {
    "request": "background",
@@ -1004,15 +1004,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 18,
-   "cycles": 1035320
+   "cycles": 1043817
   },
   {
    "request": "T3RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 6,
-   "cycles": 206847
+   "steps": 11,
+   "cycles": 255493
   },
   {
    "request": "T4RUPT",
@@ -1020,7 +1020,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 131028
+   "cycles": 132914
   },
   {
    "request": "T5RUPT",
@@ -1028,7 +1028,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 166039
+   "cycles": 167844
   },
   {
    "request": "background",
@@ -1036,7 +1036,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 65741
+   "cycles": 66959
   },
   {
    "request": "T4RUPT",
@@ -1044,7 +1044,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 83192
+   "cycles": 80354
   },
   {
    "request": "background",
@@ -1052,7 +1052,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 31365
+   "cycles": 31768
   },
   {
    "request": "T4RUPT",
@@ -1060,7 +1060,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 99590
+   "cycles": 100842
   },
   {
    "request": "background",
@@ -1068,7 +1068,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 30064
+   "cycles": 32218
   },
   {
    "request": "T4RUPT",
@@ -1076,7 +1076,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 73503
+   "cycles": 74875
   },
   {
    "request": "background",
@@ -1084,7 +1084,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 25035
+   "cycles": 26343
   },
   {
    "request": "T4RUPT",
@@ -1092,7 +1092,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 83873
+   "cycles": 85016
   },
   {
    "request": "background",
@@ -1100,7 +1100,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 11651
+   "cycles": 13008
   },
   {
    "request": "T3RUPT",
@@ -1108,7 +1108,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 190028
+   "cycles": 192801
   },
   {
    "request": "background",
@@ -1116,7 +1116,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 9439
+   "cycles": 9869
   },
   {
    "request": "T5RUPT",
@@ -1124,7 +1124,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 356805
+   "cycles": 371182
   },
   {
    "request": "T4RUPT",
@@ -1132,7 +1132,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 71023
+   "cycles": 73001
   },
   {
    "request": "background",
@@ -1140,7 +1140,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 25782
+   "cycles": 26621
   },
   {
    "request": "T4RUPT",
@@ -1148,7 +1148,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 120495
+   "cycles": 121954
   },
   {
    "request": "background",
@@ -1156,7 +1156,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 94601
+   "cycles": 100401
   },
   {
    "request": "T3RUPT",
@@ -1164,7 +1164,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 194058
+   "cycles": 195691
   },
   {
    "request": "background",
@@ -1172,7 +1172,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 9953
+   "cycles": 10091
   },
   {
    "request": "T5RUPT",
@@ -1180,7 +1180,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 142965
+   "cycles": 145020
   },
   {
    "request": "background",
@@ -1188,7 +1188,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 53260
+   "cycles": 55829
   },
   {
    "request": "T4RUPT",
@@ -1196,7 +1196,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 153858
+   "cycles": 156292
   },
   {
    "request": "background",
@@ -1204,7 +1204,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 67003
+   "cycles": 72461
   },
   {
    "request": "T3RUPT",
@@ -1212,7 +1212,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 191074
+   "cycles": 191781
   },
   {
    "request": "background",
@@ -1220,7 +1220,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 9308
+   "cycles": 9875
   },
   {
    "request": "T5RUPT",
@@ -1228,7 +1228,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 344416
+   "cycles": 348753
   },
   {
    "request": "background",
@@ -1236,7 +1236,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 85652
+   "cycles": 89777
   },
   {
    "request": "T4RUPT",
@@ -1244,7 +1244,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 76980
+   "cycles": 78939
   },
   {
    "request": "background",
@@ -1252,7 +1252,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 11990
+   "cycles": 12835
   },
   {
    "request": "T3RUPT",
@@ -1260,7 +1260,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 15,
-   "cycles": 359655
+   "cycles": 366279
   },
   {
    "request": "background",
@@ -1268,7 +1268,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 9419
+   "cycles": 9694
   },
   {
    "request": "T3RUPT",
@@ -1276,7 +1276,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 195050
+   "cycles": 197307
   },
   {
    "request": "background",
@@ -1284,7 +1284,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 8772
+   "cycles": 9335
   },
   {
    "request": "T5RUPT",
@@ -1292,7 +1292,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 3,
-   "cycles": 147054
+   "cycles": 148563
   },
   {
    "request": "background",
@@ -1300,7 +1300,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 14,
-   "cycles": 1116709
+   "cycles": 1123539
   },
   {
    "request": "T4RUPT",
@@ -1308,7 +1308,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 4,
-   "cycles": 132236
+   "cycles": 134859
   },
   {
    "request": "T3RUPT",
@@ -1316,7 +1316,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 190478
+   "cycles": 192917
   },
   {
    "request": "T5RUPT",
@@ -1324,7 +1324,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 346573
+   "cycles": 350754
   },
   {
    "request": "background",
@@ -1332,7 +1332,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 555234
+   "cycles": 556868
   },
   {
    "request": "T3RUPT",
@@ -1340,7 +1340,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 213927
+   "cycles": 216802
   },
   {
    "request": "background",
@@ -1348,15 +1348,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 67735
+   "cycles": 68266
   },
   {
    "request": "T5RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 4,
-   "cycles": 174424
+   "steps": 19,
+   "cycles": 310984
   },
   {
    "request": "T4RUPT",
@@ -1364,7 +1364,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 120814
+   "cycles": 122649
   },
   {
    "request": "background",
@@ -1372,7 +1372,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 506657
+   "cycles": 509666
   },
   {
    "request": "T3RUPT",
@@ -1380,7 +1380,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 192829
+   "cycles": 195210
   },
   {
    "request": "background",
@@ -1388,7 +1388,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 103446
+   "cycles": 103608
   },
   {
    "request": "T5RUPT",
@@ -1396,7 +1396,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 378059
+   "cycles": 382324
   },
   {
    "request": "background",
@@ -1404,7 +1404,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 51398
+   "cycles": 52014
   },
   {
    "request": "T4RUPT",
@@ -1412,7 +1412,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 155621
+   "cycles": 158050
   },
   {
    "request": "background",
@@ -1420,7 +1420,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 339898
+   "cycles": 341864
   },
   {
    "request": "T3RUPT",
@@ -1428,7 +1428,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 208864
+   "cycles": 211697
   },
   {
    "request": "background",
@@ -1436,7 +1436,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 43276
+   "cycles": 43802
   },
   {
    "request": "T5RUPT",
@@ -1444,23 +1444,23 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 166832
+   "cycles": 167999
   },
   {
    "request": "background",
    "job_loads": 4,
    "task_loads": 1,
    "status": 0,
-   "steps": 15,
-   "cycles": 783503
+   "steps": 32,
+   "cycles": 949980
   },
   {
    "request": "T3RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 9,
-   "cycles": 285279
+   "steps": 18,
+   "cycles": 374624
   },
   {
    "request": "T4RUPT",
@@ -1468,7 +1468,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 3,
-   "cycles": 87948
+   "cycles": 89120
   },
   {
    "request": "background",
@@ -1476,7 +1476,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 83812
+   "cycles": 84900
   },
   {
    "request": "T5RUPT",
@@ -1484,7 +1484,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 379028
+   "cycles": 383913
   },
   {
    "request": "background",
@@ -1492,7 +1492,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 549871
+   "cycles": 551619
   },
   {
    "request": "T3RUPT",
@@ -1500,15 +1500,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 203551
+   "cycles": 205387
   },
   {
    "request": "T5RUPT",
    "job_loads": 0,
    "task_loads": 0,
    "status": 0,
-   "steps": 4,
-   "cycles": 148828
+   "steps": 19,
+   "cycles": 286139
   },
   {
    "request": "T4RUPT",
@@ -1516,7 +1516,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 115234
+   "cycles": 117077
   },
   {
    "request": "background",
@@ -1524,7 +1524,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 613766
+   "cycles": 615265
   },
   {
    "request": "T3RUPT",
@@ -1532,7 +1532,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 202177
+   "cycles": 204530
   },
   {
    "request": "T5RUPT",
@@ -1540,7 +1540,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 344624
+   "cycles": 348987
   },
   {
    "request": "background",
@@ -1548,7 +1548,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 62557
+   "cycles": 63228
   },
   {
    "request": "T4RUPT",
@@ -1556,7 +1556,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 119960
+   "cycles": 121863
   },
   {
    "request": "background",
@@ -1564,7 +1564,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 508175
+   "cycles": 511146
   },
   {
    "request": "T3RUPT",
@@ -1572,7 +1572,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 197593
+   "cycles": 199820
   },
   {
    "request": "background",
@@ -1580,7 +1580,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 43555
+   "cycles": 43568
   },
   {
    "request": "T5RUPT",
@@ -1588,7 +1588,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 168153
+   "cycles": 170042
   },
   {
    "request": "background",
@@ -1596,7 +1596,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 204813
+   "cycles": 205222
   },
   {
    "request": "T4RUPT",
@@ -1604,7 +1604,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 163174
+   "cycles": 165628
   },
   {
    "request": "background",
@@ -1612,7 +1612,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 260949
+   "cycles": 262084
   },
   {
    "request": "T3RUPT",
@@ -1620,7 +1620,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 204678
+   "cycles": 207694
   },
   {
    "request": "background",
@@ -1628,7 +1628,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 55468
+   "cycles": 57877
   },
   {
    "request": "T5RUPT",
@@ -1636,7 +1636,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 371202
+   "cycles": 375196
   },
   {
    "request": "background",
@@ -1644,7 +1644,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 305413
+   "cycles": 306728
   },
   {
    "request": "T3RUPT",
@@ -1652,7 +1652,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 141021
+   "cycles": 140859
   },
   {
    "request": "T4RUPT",
@@ -1660,7 +1660,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 76268
+   "cycles": 77568
   },
   {
    "request": "background",
@@ -1668,7 +1668,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 227952
+   "cycles": 228877
   },
   {
    "request": "T3RUPT",
@@ -1676,7 +1676,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 206372
+   "cycles": 208412
   },
   {
    "request": "T5RUPT",
@@ -1684,7 +1684,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 151860
+   "cycles": 153663
   },
   {
    "request": "background",
@@ -1692,7 +1692,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 440908
+   "cycles": 443158
   },
   {
    "request": "T4RUPT",
@@ -1700,7 +1700,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 119746
+   "cycles": 121472
   },
   {
    "request": "background",
@@ -1708,23 +1708,23 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 161516
+   "cycles": 162477
   },
   {
    "request": "T3RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 5,
-   "cycles": 202029
+   "steps": 15,
+   "cycles": 293454
   },
   {
    "request": "T5RUPT",
    "job_loads": 5,
    "task_loads": 0,
    "status": 0,
-   "steps": 9,
-   "cycles": 354629
+   "steps": 24,
+   "cycles": 501634
   },
   {
    "request": "T3RUPT",
@@ -1732,7 +1732,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 6,
-   "cycles": 170773
+   "cycles": 173665
   },
   {
    "request": "background",
@@ -1740,7 +1740,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 516857
+   "cycles": 518287
   },
   {
    "request": "T4RUPT",
@@ -1748,7 +1748,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 4,
-   "cycles": 131266
+   "cycles": 134663
   },
   {
    "request": "T3RUPT",
@@ -1756,7 +1756,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 195348
+   "cycles": 197519
   },
   {
    "request": "background",
@@ -1764,7 +1764,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 58674
+   "cycles": 59154
   },
   {
    "request": "T5RUPT",
@@ -1772,7 +1772,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 7,
-   "cycles": 331784
+   "cycles": 335031
   },
   {
    "request": "background",
@@ -1780,7 +1780,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 474066
+   "cycles": 475322
   },
   {
    "request": "T3RUPT",
@@ -1788,7 +1788,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 193117
+   "cycles": 195371
   },
   {
    "request": "background",
@@ -1796,15 +1796,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 103825
+   "cycles": 104367
   },
   {
    "request": "T5RUPT",
    "job_loads": 6,
    "task_loads": 0,
    "status": 0,
-   "steps": 9,
-   "cycles": 387226
+   "steps": 24,
+   "cycles": 533925
   },
   {
    "request": "T4RUPT",
@@ -1812,7 +1812,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 153276
+   "cycles": 155432
   },
   {
    "request": "background",
@@ -1820,7 +1820,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 355956
+   "cycles": 358106
   },
   {
    "request": "T3RUPT",
@@ -1828,7 +1828,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 211689
+   "cycles": 214469
   },
   {
    "request": "background",
@@ -1836,7 +1836,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 56702
+   "cycles": 59115
   },
   {
    "request": "T5RUPT",
@@ -1844,7 +1844,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 172804
+   "cycles": 174426
   },
   {
    "request": "background",
@@ -1852,7 +1852,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 83996
+   "cycles": 84308
   },
   {
    "request": "T3RUPT",
@@ -1860,7 +1860,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 104015
+   "cycles": 103488
   },
   {
    "request": "background",
@@ -1868,7 +1868,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 118625
+   "cycles": 119097
   },
   {
    "request": "T4RUPT",
@@ -1876,7 +1876,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 81774
+   "cycles": 83291
   },
   {
    "request": "background",
@@ -1884,7 +1884,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 237736
+   "cycles": 238744
   },
   {
    "request": "T3RUPT",
@@ -1892,7 +1892,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 201825
+   "cycles": 204542
   },
   {
    "request": "background",
@@ -1900,7 +1900,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 106216
+   "cycles": 106380
   },
   {
    "request": "T5RUPT",
@@ -1908,7 +1908,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 377096
+   "cycles": 382034
   },
   {
    "request": "background",
@@ -1916,7 +1916,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 262179
+   "cycles": 264087
   },
   {
    "request": "T4RUPT",
@@ -1924,7 +1924,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 118719
+   "cycles": 121805
   },
   {
    "request": "T3RUPT",
@@ -1932,7 +1932,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 106444
+   "cycles": 108001
   },
   {
    "request": "background",
@@ -1940,7 +1940,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 238172
+   "cycles": 238651
   },
   {
    "request": "T3RUPT",
@@ -1948,7 +1948,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 212411
+   "cycles": 214886
   },
   {
    "request": "background",
@@ -1956,7 +1956,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 49737
+   "cycles": 50411
   },
   {
    "request": "T5RUPT",
@@ -1964,7 +1964,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 172514
+   "cycles": 174340
   },
   {
    "request": "background",
@@ -1972,7 +1972,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 437290
+   "cycles": 438755
   },
   {
    "request": "T4RUPT",
@@ -1980,7 +1980,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 131196
+   "cycles": 133034
   },
   {
    "request": "background",
@@ -1988,7 +1988,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 54040
+   "cycles": 54144
   },
   {
    "request": "T3RUPT",
@@ -1996,7 +1996,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 203711
+   "cycles": 207258
   },
   {
    "request": "background",
@@ -2004,7 +2004,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 187344
+   "cycles": 187680
   },
   {
    "request": "T5RUPT",
@@ -2012,7 +2012,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 380150
+   "cycles": 385003
   },
   {
    "request": "background",
@@ -2020,7 +2020,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 427386
+   "cycles": 428930
   },
   {
    "request": "T4RUPT",
@@ -2028,7 +2028,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 163281
+   "cycles": 168232
   },
   {
    "request": "T3RUPT",
@@ -2036,7 +2036,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 196146
+   "cycles": 198450
   },
   {
    "request": "T5RUPT",
@@ -2044,7 +2044,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 147640
+   "cycles": 149500
   },
   {
    "request": "background",
@@ -2052,7 +2052,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 268078
+   "cycles": 270320
   },
   {
    "request": "T3RUPT",
@@ -2060,7 +2060,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 15,
-   "cycles": 360917
+   "cycles": 367709
   },
   {
    "request": "background",
@@ -2068,15 +2068,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 189632
+   "cycles": 192491
   },
   {
    "request": "T3RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 6,
-   "cycles": 204274
+   "steps": 12,
+   "cycles": 260671
   },
   {
    "request": "T4RUPT",
@@ -2084,15 +2084,15 @@
    "task_loads": 3,
    "status": 0,
    "steps": 3,
-   "cycles": 81740
+   "cycles": 83308
   },
   {
    "request": "background",
    "job_loads": 1,
    "task_loads": 1,
    "status": 0,
-   "steps": 3,
-   "cycles": 139360
+   "steps": 4,
+   "cycles": 149172
   },
   {
    "request": "T5RUPT",
@@ -2100,7 +2100,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 9,
-   "cycles": 380784
+   "cycles": 385641
   },
   {
    "request": "background",
@@ -2108,15 +2108,15 @@
    "task_loads": 2,
    "status": 0,
    "steps": 12,
-   "cycles": 1012427
+   "cycles": 1018889
   },
   {
    "request": "T3RUPT",
    "job_loads": 1,
    "task_loads": 0,
    "status": 0,
-   "steps": 6,
-   "cycles": 215736
+   "steps": 13,
+   "cycles": 281961
   },
   {
    "request": "T4RUPT",
@@ -2124,7 +2124,7 @@
    "task_loads": 3,
    "status": 0,
    "steps": 4,
-   "cycles": 128182
+   "cycles": 130534
   },
   {
    "request": "T5RUPT",
@@ -2132,7 +2132,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 169721
+   "cycles": 171201
   },
   {
    "request": "background",
@@ -2140,7 +2140,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 586463
+   "cycles": 588559
   },
   {
    "request": "T3RUPT",
@@ -2148,7 +2148,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 200994
+   "cycles": 204077
   },
   {
    "request": "background",
@@ -2156,7 +2156,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 53793
+   "cycles": 54123
   },
   {
    "request": "T5RUPT",
@@ -2164,7 +2164,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 373789
+   "cycles": 383963
   },
   {
    "request": "T4RUPT",
@@ -2172,7 +2172,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 120847
+   "cycles": 122609
   },
   {
    "request": "background",
@@ -2180,7 +2180,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 508043
+   "cycles": 510966
   },
   {
    "request": "T3RUPT",
@@ -2188,7 +2188,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 197778
+   "cycles": 200081
   },
   {
    "request": "T5RUPT",
@@ -2196,7 +2196,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 136331
+   "cycles": 137743
   },
   {
    "request": "background",
@@ -2204,7 +2204,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 165741
+   "cycles": 166989
   },
   {
    "request": "T4RUPT",
@@ -2212,7 +2212,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 154416
+   "cycles": 156726
   },
   {
    "request": "background",
@@ -2220,7 +2220,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 301666
+   "cycles": 303197
   },
   {
    "request": "T3RUPT",
@@ -2228,7 +2228,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 204469
+   "cycles": 206987
   },
   {
    "request": "background",
@@ -2236,7 +2236,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 74545
+   "cycles": 75312
   },
   {
    "request": "T5RUPT",
@@ -2244,7 +2244,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 9,
-   "cycles": 373501
+   "cycles": 377598
   },
   {
    "request": "background",
@@ -2252,7 +2252,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 50472
+   "cycles": 51191
   },
   {
    "request": "T3RUPT",
@@ -2260,7 +2260,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 135972
+   "cycles": 137675
   },
   {
    "request": "background",
@@ -2268,7 +2268,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 4,
-   "cycles": 200047
+   "cycles": 205383
   },
   {
    "request": "T4RUPT",
@@ -2276,15 +2276,15 @@
    "task_loads": 3,
    "status": 0,
    "steps": 3,
-   "cycles": 83657
+   "cycles": 84553
   },
   {
    "request": "background",
    "job_loads": 2,
    "task_loads": 1,
    "status": 0,
-   "steps": 10,
-   "cycles": 533464
+   "steps": 18,
+   "cycles": 609601
   },
   {
    "request": "T3RUPT",
@@ -2292,7 +2292,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 201258
+   "cycles": 203605
   },
   {
    "request": "T5RUPT",
@@ -2300,7 +2300,7 @@
    "task_loads": 1,
    "status": 0,
    "steps": 4,
-   "cycles": 150837
+   "cycles": 152746
   },
   {
    "request": "background",
@@ -2308,7 +2308,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 348217
+   "cycles": 347677
   },
   {
    "request": "T4RUPT",
@@ -2316,7 +2316,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 127719
+   "cycles": 129661
   },
   {
    "request": "background",
@@ -2324,7 +2324,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 276602
+   "cycles": 277570
   },
   {
    "request": "T3RUPT",
@@ -2332,7 +2332,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 206515
+   "cycles": 209425
   },
   {
    "request": "background",
@@ -2340,7 +2340,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 45825
+   "cycles": 46175
   },
   {
    "request": "T5RUPT",
@@ -2348,7 +2348,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 373088
+   "cycles": 376791
   },
   {
    "request": "background",
@@ -2356,7 +2356,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 389965
+   "cycles": 391009
   },
   {
    "request": "T4RUPT",
@@ -2364,7 +2364,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 128404
+   "cycles": 130335
   },
   {
    "request": "background",
@@ -2372,7 +2372,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 220518
+   "cycles": 221793
   },
   {
    "request": "T3RUPT",
@@ -2380,7 +2380,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 201324
+   "cycles": 203098
   },
   {
    "request": "T5RUPT",
@@ -2388,7 +2388,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 141883
+   "cycles": 143297
   },
   {
    "request": "background",
@@ -2396,7 +2396,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 517491
+   "cycles": 520444
   },
   {
    "request": "T4RUPT",
@@ -2404,7 +2404,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 159478
+   "cycles": 164338
   },
   {
    "request": "T3RUPT",
@@ -2412,7 +2412,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 191490
+   "cycles": 193428
   },
   {
    "request": "T5RUPT",
@@ -2420,7 +2420,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 346578
+   "cycles": 350830
   },
   {
    "request": "background",
@@ -2428,15 +2428,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 517085
+   "cycles": 519275
   },
   {
    "request": "T3RUPT",
    "job_loads": 2,
    "task_loads": 0,
    "status": 0,
-   "steps": 9,
-   "cycles": 323590
+   "steps": 15,
+   "cycles": 383668
   },
   {
    "request": "T4RUPT",
@@ -2444,7 +2444,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 74285
+   "cycles": 76297
   },
   {
    "request": "background",
@@ -2452,7 +2452,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 55911
+   "cycles": 57607
   },
   {
    "request": "T5RUPT",
@@ -2460,15 +2460,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 176788
+   "cycles": 177862
   },
   {
    "request": "background",
    "job_loads": 3,
    "task_loads": 0,
    "status": 0,
-   "steps": 6,
-   "cycles": 525676
+   "steps": 5,
+   "cycles": 517515
   },
   {
    "request": "T3RUPT",
@@ -2476,7 +2476,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 199064
+   "cycles": 201024
   },
   {
    "request": "T5RUPT",
@@ -2484,7 +2484,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 352427
+   "cycles": 360965
   },
   {
    "request": "T4RUPT",
@@ -2492,7 +2492,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 114660
+   "cycles": 116245
   },
   {
    "request": "background",
@@ -2500,15 +2500,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 443930
+   "cycles": 445550
   },
   {
    "request": "T3RUPT",
    "job_loads": 1,
    "task_loads": 1,
    "status": 0,
-   "steps": 5,
-   "cycles": 166828
+   "steps": 6,
+   "cycles": 180662
   },
   {
    "request": "T3RUPT",
@@ -2516,7 +2516,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 206090
+   "cycles": 208460
   },
   {
    "request": "background",
@@ -2524,15 +2524,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 148204
+   "cycles": 148720
   },
   {
    "request": "T5RUPT",
    "job_loads": 2,
    "task_loads": 1,
    "status": 0,
-   "steps": 7,
-   "cycles": 339066
+   "steps": 16,
+   "cycles": 427517
   },
   {
    "request": "T4RUPT",
@@ -2540,7 +2540,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 4,
-   "cycles": 122475
+   "cycles": 124679
   },
   {
    "request": "background",
@@ -2548,7 +2548,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 501722
+   "cycles": 502481
   },
   {
    "request": "T3RUPT",
@@ -2556,7 +2556,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 206338
+   "cycles": 209125
   },
   {
    "request": "background",
@@ -2564,15 +2564,15 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 365907
+   "cycles": 384187
   },
   {
    "request": "T5RUPT",
    "job_loads": 6,
    "task_loads": 0,
    "status": 0,
-   "steps": 9,
-   "cycles": 395402
+   "steps": 24,
+   "cycles": 540280
   },
   {
    "request": "T4RUPT",
@@ -2580,7 +2580,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 5,
-   "cycles": 157907
+   "cycles": 159883
   },
   {
    "request": "background",
@@ -2588,7 +2588,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 148136
+   "cycles": 149375
   },
   {
    "request": "T3RUPT",
@@ -2596,7 +2596,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 206002
+   "cycles": 207896
   },
   {
    "request": "background",
@@ -2604,7 +2604,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 104699
+   "cycles": 105567
   },
   {
    "request": "T5RUPT",
@@ -2612,7 +2612,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 172381
+   "cycles": 173724
   },
   {
    "request": "background",
@@ -2620,7 +2620,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 142562
+   "cycles": 144221
   },
   {
    "request": "T3RUPT",
@@ -2628,7 +2628,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 102251
+   "cycles": 102983
   },
   {
    "request": "background",
@@ -2636,7 +2636,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 1,
-   "cycles": 234490
+   "cycles": 234651
   },
   {
    "request": "T4RUPT",
@@ -2644,7 +2644,7 @@
    "task_loads": 2,
    "status": 0,
    "steps": 3,
-   "cycles": 88276
+   "cycles": 89113
   },
   {
    "request": "T3RUPT",
@@ -2652,7 +2652,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 198464
+   "cycles": 201158
   }
  ],
  "lost": false,
@@ -2670,18 +2670,18 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 11
+  "dma_unchecked": 17
  },
- "hold_host_mct": 1742,
- "hold_host_time1": 4631,
- "replay_rows": 62,
- "replay_applied": 62,
+ "hold_host_mct": 1753,
+ "hold_host_time1": 5107,
+ "replay_rows": 63,
+ "replay_applied": 63,
  "replay_end_cs": 611,
  "replay_ended": true,
  "replay_after_rows": 0,
  "replay_inputs": {
   "counts": {
-   "1": 62
+   "1": 63
   },
   "erasable": [],
   "pipas": [
@@ -2735,142 +2735,37 @@
    "0052"
   ]
  },
- "replay_unpaired": [
-  {
-   "side": "host",
-   "cs": 160
-  },
-  {
-   "side": "C64",
-   "cs": 220
-  },
-  {
-   "side": "host",
-   "cs": 251
-  },
-  {
-   "side": "C64",
-   "cs": 252
-  },
-  {
-   "side": "host",
-   "cs": 305
-  },
-  {
-   "side": "C64",
-   "cs": 354
-  },
-  {
-   "side": "host",
-   "cs": 359
-  },
-  {
-   "side": "C64",
-   "cs": 407
-  },
-  {
-   "side": "host",
-   "cs": 409
-  },
-  {
-   "side": "C64",
-   "cs": 458
-  },
-  {
-   "side": "host",
-   "cs": 459
-  },
-  {
-   "side": "C64",
-   "cs": 508
-  },
-  {
-   "side": "host",
-   "cs": 509
-  },
-  {
-   "side": "C64",
-   "cs": 558
-  },
-  {
-   "side": "host",
-   "cs": 560
-  }
- ],
- "replay_unpaired_count": 15,
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
  "replay_end_shift_cs": 0,
  "replay_end_paired": true,
  "masked_dead_superbank": 0,
  "masked_dead_superbank_at": [],
  "replay_matched_cs": [
   51,
-  105
+  105,
+  159,
+  210,
+  250,
+  304,
+  354,
+  407,
+  458,
+  508,
+  558,
+  611
  ],
- "replay_differences": 11,
- "replay_differ_at_cs": 210,
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
  "replay_skipped": [],
- "replay_first": [
-  {
-   "at": "TIME4",
-   "host": "37764",
-   "c64": "37767"
-  },
-  {
-   "at": "0022",
-   "host": "77775",
-   "c64": "77772"
-  },
-  {
-   "at": "0064",
-   "host": "00046",
-   "c64": "00045"
-  },
-  {
-   "at": "0114",
-   "host": "02243",
-   "c64": "02561"
-  },
-  {
-   "at": "0123",
-   "host": "01512",
-   "c64": "00631"
-  },
-  {
-   "at": "0124",
-   "host": "00017",
-   "c64": "23146"
-  },
-  {
-   "at": "0154",
-   "host": "02240",
-   "c64": "23175"
-  },
-  {
-   "at": "0156",
-   "host": "21331",
-   "c64": "00000"
-  },
-  {
-   "at": "0777",
-   "host": "77754",
-   "c64": "00004"
-  },
-  {
-   "at": "1400",
-   "host": "77775",
-   "c64": "77774"
-  },
-  {
-   "at": "1401",
-   "host": "77731",
-   "c64": "77732"
-  }
- ],
+ "replay_first": [],
  "snap_at": 20900,
  "snap_slid": false,
  "requested_cs": 611,
  "host_holes": [],
  "downrupt": false,
- "commit": "1b188d0d5d07",
+ "commit": "1e9f9f8c8324",
  "replay_every": 50
 }

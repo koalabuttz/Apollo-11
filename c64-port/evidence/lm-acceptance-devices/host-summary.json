@@ -6,7 +6,7 @@
   "keys": "",
   "inputs": {},
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "samples": 4000,
   "equal": 4000,
   "differ": 0,
@@ -16,8 +16,8 @@
   },
   "routine_mismatches": [],
   "unregistered": [],
-  "module_loads": 4728,
-  "loads_per_second": 118.2,
+  "module_loads": 5298,
+  "loads_per_second": 132.4,
   "loads_by_point": [
    {
     "module": "lm_interbank_routines",
@@ -84,12 +84,28 @@
     "count": 400
    },
    {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2020",
+    "label": "?",
+    "count": 337
+   },
+   {
     "module": "t4rupt",
     "slot": 0,
     "kind": "basic",
     "point": "06,2000",
     "label": "T4RUPT",
     "count": 337
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2010",
+    "label": "?",
+    "count": 232
    },
    {
     "module": "lm_interbank_routines",
@@ -122,6 +138,14 @@
     "point": "02,3545",
     "label": "GENTRAN+1",
     "count": 2
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2000",
+    "label": "?",
+    "count": 1
    },
    {
     "module": "lm_fresh_start",
@@ -252,7 +276,7 @@
   "keys": "V37E00E",
   "inputs": {},
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -262,8 +286,8 @@
   },
   "routine_mismatches": [],
   "unregistered": [],
-  "module_loads": 3696,
-  "loads_per_second": 123.2,
+  "module_loads": 4161,
+  "loads_per_second": 138.7,
   "loads_by_point": [
    {
     "module": "lm_interbank_routines",
@@ -330,12 +354,28 @@
     "count": 300
    },
    {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2020",
+    "label": "?",
+    "count": 273
+   },
+   {
     "module": "t4rupt",
     "slot": 0,
     "kind": "basic",
     "point": "06,2000",
     "label": "T4RUPT",
     "count": 273
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2010",
+    "label": "?",
+    "count": 171
    },
    {
     "module": "lm_interbank_routines",
@@ -370,11 +410,27 @@
     "count": 8
    },
    {
+    "module": "lm_keyrupt_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,3274",
+    "label": "KEYRUPT1",
+    "count": 7
+   },
+   {
     "module": "lanec_pin_routines",
     "slot": 0,
     "kind": "basic",
     "point": "02,2400",
     "label": "LODSAMPT",
+    "count": 7
+   },
+   {
+    "module": "lm_keyrupt_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,3300",
+    "label": "KEYRUPT1+4",
     "count": 7
    },
    {
@@ -384,6 +440,14 @@
     "point": "40,2077",
     "label": "CHARIN",
     "count": 7
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2024",
+    "label": "?",
+    "count": 6
    },
    {
     "module": "service_transfer",
@@ -544,6 +608,14 @@
     "point": "13,3436",
     "label": "INTWAKE+11",
     "count": 2
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2000",
+    "label": "?",
+    "count": 1
    },
    {
     "module": "lm_fresh_start",
@@ -1178,7 +1250,7 @@
   "keys": "V37E12E",
   "inputs": {},
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -1188,8 +1260,8 @@
   },
   "routine_mismatches": [],
   "unregistered": [],
-  "module_loads": 3673,
-  "loads_per_second": 122.4,
+  "module_loads": 4123,
+  "loads_per_second": 137.4,
   "loads_by_point": [
    {
     "module": "lm_interbank_routines",
@@ -1256,12 +1328,28 @@
     "count": 300
    },
    {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2020",
+    "label": "?",
+    "count": 261
+   },
+   {
     "module": "t4rupt",
     "slot": 0,
     "kind": "basic",
     "point": "06,2000",
     "label": "T4RUPT",
     "count": 261
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2010",
+    "label": "?",
+    "count": 168
    },
    {
     "module": "lm_interbank_routines",
@@ -1296,11 +1384,27 @@
     "count": 10
    },
    {
+    "module": "lm_keyrupt_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,3274",
+    "label": "KEYRUPT1",
+    "count": 7
+   },
+   {
     "module": "lanec_pin_routines",
     "slot": 0,
     "kind": "basic",
     "point": "02,2400",
     "label": "LODSAMPT",
+    "count": 7
+   },
+   {
+    "module": "lm_keyrupt_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,3300",
+    "label": "KEYRUPT1+4",
     "count": 7
    },
    {
@@ -1310,6 +1414,14 @@
     "point": "40,2077",
     "label": "CHARIN",
     "count": 7
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2024",
+    "label": "?",
+    "count": 6
    },
    {
     "module": "lm_interbank_routines",
@@ -1382,6 +1494,14 @@
     "point": "40,3534",
     "label": "DSPMMJB",
     "count": 2
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2000",
+    "label": "?",
+    "count": 1
    },
    {
     "module": "lm_fresh_start",
@@ -2040,7 +2160,7 @@
   "keys": "V37E63E",
   "inputs": {},
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "samples": 3000,
   "equal": 3000,
   "differ": 0,
@@ -2050,8 +2170,8 @@
   },
   "routine_mismatches": [],
   "unregistered": [],
-  "module_loads": 3667,
-  "loads_per_second": 122.2,
+  "module_loads": 4117,
+  "loads_per_second": 137.2,
   "loads_by_point": [
    {
     "module": "lm_interbank_routines",
@@ -2118,12 +2238,28 @@
     "count": 300
    },
    {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2020",
+    "label": "?",
+    "count": 261
+   },
+   {
     "module": "t4rupt",
     "slot": 0,
     "kind": "basic",
     "point": "06,2000",
     "label": "T4RUPT",
     "count": 261
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2010",
+    "label": "?",
+    "count": 168
    },
    {
     "module": "lm_interbank_routines",
@@ -2158,11 +2294,27 @@
     "count": 10
    },
    {
+    "module": "lm_keyrupt_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,3274",
+    "label": "KEYRUPT1",
+    "count": 7
+   },
+   {
     "module": "lanec_pin_routines",
     "slot": 0,
     "kind": "basic",
     "point": "02,2400",
     "label": "LODSAMPT",
+    "count": 7
+   },
+   {
+    "module": "lm_keyrupt_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "04,3300",
+    "label": "KEYRUPT1+4",
     "count": 7
    },
    {
@@ -2172,6 +2324,14 @@
     "point": "40,2077",
     "label": "CHARIN",
     "count": 7
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2024",
+    "label": "?",
+    "count": 6
    },
    {
     "module": "lm_interbank_routines",
@@ -2244,6 +2404,14 @@
     "point": "40,3534",
     "label": "DSPMMJB",
     "count": 2
+   },
+   {
+    "module": "lm_lead_in_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2000",
+    "label": "?",
+    "count": 1
    },
    {
     "module": "lm_fresh_start",
@@ -2903,12 +3071,12 @@
   "inputs": {},
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
-  "cia_interrupts": 3021,
-  "periods_taken": 3002,
-  "periods_dropped": 19,
-  "agc_centiseconds": 3002,
-  "native_routines": 16343,
+  "commit": "1e9f9f8c8324",
+  "cia_interrupts": 3023,
+  "periods_taken": 3000,
+  "periods_dropped": 23,
+  "agc_centiseconds": 3000,
+  "native_routines": 20350,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
@@ -2926,7 +3094,14 @@
    "state": "few",
    "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 2,
+   "disagree": 2
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-V37E12E-scaled-x0.5",
@@ -2936,12 +3111,12 @@
   "inputs": {},
   "schedule": "1.7,2,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
-  "cia_interrupts": 3004,
-  "periods_taken": 3004,
+  "commit": "1e9f9f8c8324",
+  "cia_interrupts": 3010,
+  "periods_taken": 3010,
   "periods_dropped": 0,
-  "agc_centiseconds": 3004,
-  "native_routines": 74687,
+  "agc_centiseconds": 3010,
+  "native_routines": 80231,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
@@ -2959,7 +3134,14 @@
    "state": "few",
    "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-V37E12E-scaled-overrun",
@@ -2969,12 +3151,12 @@
   "inputs": {},
   "schedule": "4,1,2,1",
   "exit": 0,
-  "commit": "c6f8597e286f",
-  "cia_interrupts": 4930,
-  "periods_taken": 3007,
-  "periods_dropped": 1923,
-  "agc_centiseconds": 3007,
-  "native_routines": 8256,
+  "commit": "1e9f9f8c8324",
+  "cia_interrupts": 4891,
+  "periods_taken": 3006,
+  "periods_dropped": 1885,
+  "agc_centiseconds": 3006,
+  "native_routines": 7885,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
@@ -2992,7 +3174,14 @@
    "state": "few",
    "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 1,
+   "disagree": 1
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-V37E12E-scaled-work",
@@ -3002,7 +3191,7 @@
   "inputs": {},
   "schedule": "W",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -3025,7 +3214,14 @@
    "state": "few",
    "text": "interpretive charge +224.0% net, 224.0% routine by routine, from yaAGC's MCT over 3 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-V37E12E-dap-scaled-x1",
@@ -3040,7 +3236,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -3063,7 +3259,14 @@
    "state": "few",
    "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-V37E12E-dap-scaled-x0.5",
@@ -3078,7 +3281,7 @@
   },
   "schedule": "1.7,2,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -3101,7 +3304,14 @@
    "state": "few",
    "text": "interpretive charge +224.0% net, 261.0% routine by routine, from yaAGC's MCT over 5 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-V37E12E-dap-scaled-overrun",
@@ -3116,17 +3326,24 @@
   },
   "schedule": "4,1,2,1",
   "exit": 0,
-  "commit": "c6f8597e286f",
-  "cia_interrupts": 3329,
-  "periods_taken": 3030,
-  "periods_dropped": 299,
-  "agc_centiseconds": 3030,
-  "native_routines": 22333,
+  "commit": "1e9f9f8c8324",
+  "cia_interrupts": 3409,
+  "periods_taken": 3024,
+  "periods_dropped": 385,
+  "agc_centiseconds": 3024,
+  "native_routines": 22318,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": null,
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-V37E12E-dap-scaled-work",
@@ -3141,7 +3358,7 @@
   },
   "schedule": "W",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
@@ -3164,7 +3381,14 @@
    "state": "few",
    "text": "interpretive charge +224.0% net, 224.0% routine by routine, from yaAGC's MCT over 3 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-p63-descent-scaled-x1",
@@ -3180,7 +3404,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 25000,
   "periods_taken": 25000,
   "periods_dropped": 0,
@@ -3203,7 +3427,139 @@
    "state": "ok",
    "text": "interpretive charge +3.4% net, 20.8% routine by routine, from yaAGC's MCT over 12133 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "32,2776": 2507,
+   "26,2123": 3803,
+   "21,2021": 11860,
+   "25,3607": 11860,
+   "14,3135": 3551,
+   "36,2755": 15739,
+   "36,2777": 14211
+  },
+  "arrivals": {
+   "32,2776": [
+    2507
+   ],
+   "26,2123": [
+    3803
+   ],
+   "21,2021": [
+    11860,
+    11885,
+    11910,
+    11935,
+    11960,
+    11985,
+    12010,
+    12035,
+    12060,
+    12085,
+    12110,
+    12135,
+    12160,
+    12185,
+    12210,
+    12235,
+    12260,
+    12285,
+    12310,
+    12335,
+    12360,
+    12385,
+    12410,
+    12435,
+    12460,
+    12485,
+    12510,
+    12535,
+    12560,
+    12585,
+    12610,
+    24985
+   ],
+   "25,3607": [
+    11860,
+    12060,
+    12259,
+    12459,
+    12660,
+    12860,
+    13060,
+    13260,
+    13460,
+    13659,
+    13860,
+    14059,
+    14260,
+    14460,
+    14660,
+    14860,
+    15060,
+    15260,
+    15460,
+    15660,
+    15870,
+    16070,
+    16270,
+    16470,
+    16670,
+    16870,
+    17070,
+    17270,
+    17470,
+    17670,
+    17870,
+    24870
+   ],
+   "14,3135": [
+    3551
+   ],
+   "36,2755": [
+    15739,
+    15839,
+    15939,
+    16039,
+    16139,
+    16239,
+    16339,
+    16439,
+    16539,
+    16639,
+    16739,
+    16839,
+    16939,
+    17039,
+    17139,
+    17239,
+    17339,
+    17439,
+    17539,
+    17639,
+    17739,
+    17839,
+    17939,
+    18039,
+    18139,
+    18239,
+    18339,
+    18439,
+    18539,
+    18639,
+    18739,
+    24939
+   ],
+   "36,2777": [
+    14211,
+    14311,
+    14411
+   ]
+  }
  },
  {
   "scenario": "lm-p63-descent-thrust-scaled-x1",
@@ -3220,7 +3576,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 30000,
   "periods_taken": 30000,
   "periods_dropped": 0,
@@ -3243,7 +3599,20 @@
    "state": "ok",
    "text": "interpretive charge +6.3% net, 23.3% routine by routine, from yaAGC's MCT over 18035 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "32,2776": 2507
+  },
+  "arrivals": {
+   "32,2776": [
+    2507
+   ]
+  }
  },
  {
   "scenario": "lm-p57-scaled-x1",
@@ -3259,7 +3628,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 56002,
   "periods_taken": 56000,
   "periods_dropped": 2,
@@ -3282,7 +3651,35 @@
    "state": "ok",
    "text": "interpretive charge +4.9% net, 19.7% routine by routine, from yaAGC's MCT over 1475 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "15,3314": 3307,
+   "04,2163": 52301,
+   "14,3672": null,
+   "14,3231": null,
+   "15,2245": 6481
+  },
+  "arrivals": {
+   "15,3314": [
+    3307
+   ],
+   "04,2163": [
+    52301
+   ],
+   "14,3672": [],
+   "14,3231": [],
+   "15,2245": [
+    6481,
+    12451,
+    19179,
+    26451
+   ]
+  }
  },
  {
   "scenario": "lm-rendezvous-scaled-x1",
@@ -3300,7 +3697,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 40033,
   "periods_taken": 40033,
   "periods_dropped": 0,
@@ -3323,7 +3720,59 @@
    "state": "ok",
    "text": "interpretive charge +0.2% net, 25.7% routine by routine, from yaAGC's MCT over 65268 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "35,2545": 29307,
+   "24,2000": 2506,
+   "23,2116": 2617,
+   "23,2123": 6501,
+   "24,2674": 5508,
+   "24,2451": 8170
+  },
+  "arrivals": {
+   "35,2545": [
+    29307
+   ],
+   "24,2000": [
+    2506
+   ],
+   "23,2116": [
+    2617
+   ],
+   "23,2123": [
+    6501,
+    9127,
+    9971,
+    15226,
+    16076,
+    21330,
+    22180,
+    27431,
+    28279,
+    29560,
+    32717,
+    33650,
+    38097,
+    39910
+   ],
+   "24,2674": [
+    5508
+   ],
+   "24,2451": [
+    8170,
+    13910,
+    20013,
+    26118,
+    31271,
+    37946,
+    39763
+   ]
+  }
  },
  {
   "scenario": "lm-rendezvous-rr-dropout-scaled-x1",
@@ -3342,7 +3791,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 40031,
   "periods_taken": 40031,
   "periods_dropped": 0,
@@ -3365,7 +3814,14 @@
    "state": "ok",
    "text": "interpretive charge +0.8% net, 25.8% routine by routine, from yaAGC's MCT over 60736 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-csi-scaled-x1",
@@ -3383,7 +3839,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 23000,
   "periods_taken": 23000,
   "periods_dropped": 0,
@@ -3406,7 +3862,24 @@
    "state": "ok",
    "text": "interpretive charge +3.8% net, 25.0% routine by routine, from yaAGC's MCT over 19922 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "35,2031": 12307,
+   "35,2027": 2506
+  },
+  "arrivals": {
+   "35,2031": [
+    12307
+   ],
+   "35,2027": [
+    2506
+   ]
+  }
  },
  {
   "scenario": "lm-cdh-scaled-x1",
@@ -3424,7 +3897,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 23500,
   "periods_taken": 23500,
   "periods_dropped": 0,
@@ -3447,7 +3920,20 @@
    "state": "ok",
    "text": "interpretive charge +1.8% net, 20.4% routine by routine, from yaAGC's MCT over 50888 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "35,2216": 2506
+  },
+  "arrivals": {
+   "35,2216": [
+    2506
+   ]
+  }
  },
  {
   "scenario": "lm-cdh-csm-scaled-x1",
@@ -3465,7 +3951,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 23500,
   "periods_taken": 23500,
   "periods_dropped": 0,
@@ -3488,7 +3974,20 @@
    "state": "ok",
    "text": "interpretive charge +2.1% net, 20.7% routine by routine, from yaAGC's MCT over 54098 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "35,2220": 2507
+  },
+  "arrivals": {
+   "35,2220": [
+    2507
+   ]
+  }
  },
  {
   "scenario": "lm-rendezvous-tpm-scaled-x1",
@@ -3506,7 +4005,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 71000,
   "periods_taken": 71000,
   "periods_dropped": 0,
@@ -3529,10 +4028,57 @@
    "state": "ok",
    "text": "interpretive charge +1.1% net, 25.5% routine by routine, from yaAGC's MCT over 123631 routines; within 20% net and 45% routine by routine"
   },
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
+   "13,2207": 66353,
+   "35,2731": 60308,
+   "35,2547": 45342,
+   "35,2725": 40308,
    "40,3674": 20194,
    "42,2054": 70151,
    "40,2017": 12151
+  },
+  "arrivals": {
+   "13,2207": [
+    66353
+   ],
+   "35,2731": [
+    60308
+   ],
+   "35,2547": [
+    45342
+   ],
+   "35,2725": [
+    40308
+   ],
+   "40,3674": [
+    20194
+   ],
+   "42,2054": [
+    70151
+   ],
+   "40,2017": [
+    12151,
+    12412,
+    12527,
+    12640,
+    12753,
+    12869,
+    12990,
+    13182,
+    13299,
+    13412,
+    13527,
+    13640,
+    13753,
+    13948,
+    16290
+   ]
   }
  },
  {
@@ -3551,7 +4097,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 67000,
   "periods_taken": 67000,
   "periods_dropped": 0,
@@ -3574,7 +4120,24 @@
    "state": "ok",
    "text": "interpretive charge +1.8% net, 22.1% routine by routine, from yaAGC's MCT over 160127 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "34,3526": 48308,
+   "34,3274": 9148
+  },
+  "arrivals": {
+   "34,3526": [
+    48308
+   ],
+   "34,3274": [
+    9148
+   ]
+  }
  },
  {
   "scenario": "lm-stable-orbit-lm-scaled-x1",
@@ -3592,7 +4155,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 67020,
   "periods_taken": 67020,
   "periods_dropped": 0,
@@ -3615,7 +4178,24 @@
    "state": "ok",
    "text": "interpretive charge +1.8% net, 22.1% routine by routine, from yaAGC's MCT over 160451 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "34,3521": 48307,
+   "34,3271": 9148
+  },
+  "arrivals": {
+   "34,3521": [
+    48307
+   ],
+   "34,3271": [
+    9148
+   ]
+  }
  },
  {
   "scenario": "lm-p63-lr-dropout-scaled-x1",
@@ -3634,7 +4214,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 115027,
   "periods_taken": 115027,
   "periods_dropped": 0,
@@ -3657,7 +4237,14 @@
    "state": "ok",
    "text": "interpretive charge +7.5% net, 24.7% routine by routine, from yaAGC's MCT over 62239 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-p63-lr-update-scaled-x1",
@@ -3675,7 +4262,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 110027,
   "periods_taken": 110027,
   "periods_dropped": 0,
@@ -3698,7 +4285,55 @@
    "state": "ok",
    "text": "interpretive charge +7.6% net, 24.5% routine by routine, from yaAGC's MCT over 59354 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "25,3607": 62124,
+   "43,2322": 66151
+  },
+  "arrivals": {
+   "25,3607": [
+    62124,
+    62324,
+    62525,
+    62725,
+    62924,
+    63124,
+    63325,
+    63524,
+    63724,
+    63925,
+    64124,
+    64324,
+    64526,
+    64726,
+    64923,
+    65122,
+    65323,
+    65523,
+    65722,
+    65923,
+    66123,
+    66322,
+    66522,
+    66723,
+    66922,
+    67123,
+    67323,
+    67522,
+    67723,
+    67923,
+    68123,
+    109943
+   ],
+   "43,2322": [
+    66151
+   ]
+  }
  },
  {
   "scenario": "lm-p63-lr-v58-scaled-x1",
@@ -3716,7 +4351,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 96008,
   "periods_taken": 96008,
   "periods_dropped": 0,
@@ -3739,7 +4374,20 @@
    "state": "ok",
    "text": "interpretive charge +6.5% net, 23.8% routine by routine, from yaAGC's MCT over 43779 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "43,2325": 88207
+  },
+  "arrivals": {
+   "43,2325": [
+    88207
+   ]
+  }
  },
  {
   "scenario": "lm-p63-landing-displays-scaled-x1",
@@ -3758,7 +4406,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 70012,
   "periods_taken": 70012,
   "periods_dropped": 0,
@@ -3781,7 +4429,14 @@
    "state": "ok",
    "text": "interpretive charge +2.9% net, 20.9% routine by routine, from yaAGC's MCT over 19036 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-p63-v60-nassp-scaled-x1",
@@ -3799,7 +4454,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 115029,
   "periods_taken": 115029,
   "periods_dropped": 0,
@@ -3822,8 +4477,20 @@
    "state": "ok",
    "text": "interpretive charge +7.4% net, 24.5% routine by routine, from yaAGC's MCT over 61204 routines; within 20% net and 45% routine by routine"
   },
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
    "25,3471": 100205
+  },
+  "arrivals": {
+   "25,3471": [
+    100205,
+    111727
+   ]
   }
  },
  {
@@ -3837,7 +4504,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 9000,
   "periods_taken": 9000,
   "periods_dropped": 0,
@@ -3860,8 +4527,21 @@
    "state": "few",
    "text": "interpretive charge +0.8% net, 50.8% routine by routine, from yaAGC's MCT over 178 routines; fewer than 1000 routines, not bounded"
   },
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
+   "04,3401": 2060,
    "04,3632": null
+  },
+  "arrivals": {
+   "04,3401": [
+    2060
+   ],
+   "04,3632": []
   }
  },
  {
@@ -3876,7 +4556,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 14000,
   "periods_taken": 14000,
   "periods_dropped": 0,
@@ -3899,11 +4579,42 @@
    "state": "few",
    "text": "interpretive charge +138.5% net, 192.0% routine by routine, from yaAGC's MCT over 30 routines; fewer than 1000 routines, not bounded"
   },
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
+   "04,3401": 2060,
    "04,3723": 10462,
    "04,3632": 4262,
    "04,3664": 6662,
-   "04,3536": 8461
+   "04,3536": 8461,
+   "43,3045": 12060
+  },
+  "arrivals": {
+   "04,3401": [
+    2060,
+    5060,
+    7260,
+    9260
+   ],
+   "04,3723": [
+    10462
+   ],
+   "04,3632": [
+    4262
+   ],
+   "04,3664": [
+    6662
+   ],
+   "04,3536": [
+    8461
+   ],
+   "43,3045": [
+    12060
+   ]
   }
  },
  {
@@ -3921,7 +4632,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 115014,
   "periods_taken": 115014,
   "periods_dropped": 0,
@@ -3944,7 +4655,59 @@
    "state": "ok",
    "text": "interpretive charge +7.1% net, 24.5% routine by routine, from yaAGC's MCT over 59952 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "32,2776": 507,
+   "31,2630": 111738,
+   "25,3607": 62124
+  },
+  "arrivals": {
+   "32,2776": [
+    507
+   ],
+   "31,2630": [
+    111738
+   ],
+   "25,3607": [
+    62124,
+    62324,
+    62525,
+    62725,
+    62924,
+    63124,
+    63325,
+    63524,
+    63724,
+    63925,
+    64124,
+    64324,
+    64526,
+    64726,
+    64923,
+    65122,
+    65323,
+    65523,
+    65722,
+    65923,
+    66123,
+    66322,
+    66522,
+    66723,
+    66922,
+    67123,
+    67323,
+    67522,
+    67723,
+    67923,
+    68123,
+    114924
+   ]
+  }
  },
  {
   "scenario": "lm-p52-realign-scaled-x1",
@@ -3960,7 +4723,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 10005,
   "periods_taken": 10002,
   "periods_dropped": 3,
@@ -3983,7 +4746,36 @@
    "state": "few",
    "text": "interpretive charge +6.9% net, 20.6% routine by routine, from yaAGC's MCT over 775 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "15,2050": 507,
+   "04,2163": null,
+   "26,2123": 2764,
+   "14,3672": 2204,
+   "14,3231": 8086
+  },
+  "arrivals": {
+   "15,2050": [
+    507
+   ],
+   "04,2163": [],
+   "26,2123": [
+    2764,
+    5464
+   ],
+   "14,3672": [
+    2204,
+    4983
+   ],
+   "14,3231": [
+    8086
+   ]
+  }
  },
  {
   "scenario": "lm-p52-imu-fail-scaled-x1",
@@ -4000,7 +4792,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 10004,
   "periods_taken": 10002,
   "periods_dropped": 2,
@@ -4023,7 +4815,14 @@
    "state": "few",
    "text": "interpretive charge +6.9% net, 20.6% routine by routine, from yaAGC's MCT over 775 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-p52-imu-cage-scaled-x1",
@@ -4040,7 +4839,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 10003,
   "periods_taken": 10002,
   "periods_dropped": 1,
@@ -4063,7 +4862,14 @@
    "state": "few",
    "text": "interpretive charge +6.6% net, 19.7% routine by routine, from yaAGC's MCT over 838 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-p52-cage-torque-scaled-x1",
@@ -4081,7 +4887,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 10003,
   "periods_taken": 10002,
   "periods_dropped": 1,
@@ -4104,7 +4910,14 @@
    "state": "few",
    "text": "interpretive charge +6.6% net, 19.7% routine by routine, from yaAGC's MCT over 838 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-p52-coarse-scaled-x1",
@@ -4120,7 +4933,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 6002,
   "periods_taken": 6002,
   "periods_dropped": 0,
@@ -4143,7 +4956,14 @@
    "state": "few",
    "text": "interpretive charge +5.2% net, 26.8% routine by routine, from yaAGC's MCT over 404 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-landing-ascent-nassp-scaled-x1",
@@ -4165,7 +4985,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 215000,
   "periods_taken": 215000,
   "periods_dropped": 0,
@@ -4188,7 +5008,80 @@
    "state": "ok",
    "text": "interpretive charge +5.4% net, 22.9% routine by routine, from yaAGC's MCT over 148924 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "31,2144": 139331,
+   "30,2061": 148305,
+   "04,2163": 142302,
+   "31,2630": 111738,
+   "31,2477": 122738,
+   "21,2021": 62122,
+   "36,2777": 64394
+  },
+  "arrivals": {
+   "31,2144": [
+    139331
+   ],
+   "30,2061": [
+    148305
+   ],
+   "04,2163": [
+    142302
+   ],
+   "31,2630": [
+    111738
+   ],
+   "31,2477": [
+    122738
+   ],
+   "21,2021": [
+    62122,
+    62147,
+    62172,
+    62198,
+    62222,
+    62247,
+    62272,
+    62297,
+    62322,
+    62347,
+    62372,
+    62398,
+    62422,
+    62447,
+    62472,
+    62497,
+    62522,
+    62547,
+    62572,
+    62598,
+    62622,
+    62647,
+    62672,
+    62697,
+    62722,
+    62747,
+    62772,
+    62798,
+    62822,
+    62847,
+    62872,
+    214991
+   ],
+   "36,2777": [
+    64394,
+    64494,
+    64594,
+    162385,
+    162485,
+    162585
+   ]
+  }
  },
  {
   "scenario": "lm-p65-autoland-nassp-scaled-x1",
@@ -4209,7 +5102,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 140001,
   "periods_taken": 140001,
   "periods_dropped": 0,
@@ -4232,7 +5125,20 @@
    "state": "ok",
    "text": "interpretive charge +7.5% net, 24.9% routine by routine, from yaAGC's MCT over 90865 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "31,2621": 127754
+  },
+  "arrivals": {
+   "31,2621": [
+    127754
+   ]
+  }
  },
  {
   "scenario": "lm-p67-nassp-scaled-x1",
@@ -4254,7 +5160,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 143001,
   "periods_taken": 143001,
   "periods_dropped": 0,
@@ -4277,7 +5183,21 @@
    "state": "ok",
    "text": "interpretive charge +5.8% net, 23.9% routine by routine, from yaAGC's MCT over 89555 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "31,2551": 124138
+  },
+  "arrivals": {
+   "31,2551": [
+    124138,
+    124338
+   ]
+  }
  },
  {
   "scenario": "lm-doi-nassp-scaled-x1",
@@ -4296,7 +5216,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 65000,
   "periods_taken": 65000,
   "periods_dropped": 0,
@@ -4319,8 +5239,41 @@
    "state": "ok",
    "text": "interpretive charge +2.3% net, 21.9% routine by routine, from yaAGC's MCT over 17801 routines; within 20% net and 45% routine by routine"
   },
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
-   "22,3242": 61479
+   "36,3147": 6307,
+   "35,2000": 507,
+   "04,2163": 61425,
+   "22,3242": 61479,
+   "26,2123": 6338,
+   "36,2777": 48386
+  },
+  "arrivals": {
+   "36,3147": [
+    6307
+   ],
+   "35,2000": [
+    507
+   ],
+   "04,2163": [
+    61425
+   ],
+   "22,3242": [
+    61479
+   ],
+   "26,2123": [
+    6338
+   ],
+   "36,2777": [
+    48386,
+    48485,
+    48585
+   ]
   }
  },
  {
@@ -4341,7 +5294,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 7500,
   "periods_taken": 7500,
   "periods_dropped": 0,
@@ -4364,7 +5317,20 @@
    "state": "ok",
    "text": "interpretive charge +2.0% net, 22.6% routine by routine, from yaAGC's MCT over 6201 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "36,3436": 507
+  },
+  "arrivals": {
+   "36,3436": [
+    507
+   ]
+  }
  },
  {
   "scenario": "lm-rhc-att-hold-scaled-x1",
@@ -4381,7 +5347,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 5500,
   "periods_taken": 5500,
   "periods_dropped": 0,
@@ -4391,7 +5357,14 @@
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": null,
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-rhc-att-turn-scaled-x1",
@@ -4409,7 +5382,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 5500,
   "periods_taken": 5500,
   "periods_dropped": 0,
@@ -4419,7 +5392,14 @@
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": null,
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-p41-nassp-scaled-x1",
@@ -4440,7 +5420,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 57500,
   "periods_taken": 57500,
   "periods_dropped": 0,
@@ -4463,7 +5443,20 @@
    "state": "ok",
    "text": "interpretive charge +3.2% net, 25.4% routine by routine, from yaAGC's MCT over 19643 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "36,3272": 6307
+  },
+  "arrivals": {
+   "36,3272": [
+    6307
+   ]
+  }
  },
  {
   "scenario": "lm-p42-nassp-scaled-x1",
@@ -4484,7 +5477,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 57000,
   "periods_taken": 57000,
   "periods_dropped": 0,
@@ -4507,8 +5500,23 @@
    "state": "ok",
    "text": "interpretive charge +0.7% net, 21.0% routine by routine, from yaAGC's MCT over 13875 routines; within 20% net and 45% routine by routine"
   },
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
+   "36,3410": 9307,
    "20,2004": 352
+  },
+  "arrivals": {
+   "36,3410": [
+    9307
+   ],
+   "20,2004": [
+    352
+   ]
   }
  },
  {
@@ -4528,7 +5536,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 180007,
   "periods_taken": 180007,
   "periods_dropped": 0,
@@ -4551,7 +5559,59 @@
    "state": "ok",
    "text": "interpretive charge +5.6% net, 22.3% routine by routine, from yaAGC's MCT over 111586 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "31,2630": 111738,
+   "21,2073": 115022,
+   "21,2021": 62122
+  },
+  "arrivals": {
+   "31,2630": [
+    111738
+   ],
+   "21,2073": [
+    115022
+   ],
+   "21,2021": [
+    62122,
+    62147,
+    62172,
+    62198,
+    62222,
+    62247,
+    62272,
+    62297,
+    62322,
+    62347,
+    62372,
+    62398,
+    62422,
+    62447,
+    62472,
+    62497,
+    62522,
+    62547,
+    62572,
+    62598,
+    62622,
+    62647,
+    62672,
+    62697,
+    62722,
+    62747,
+    62772,
+    62798,
+    62822,
+    62847,
+    62872,
+    179997
+   ]
+  }
  },
  {
   "scenario": "lm-abort-p71-nassp-scaled-x1",
@@ -4572,7 +5632,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 180007,
   "periods_taken": 180007,
   "periods_dropped": 0,
@@ -4595,7 +5655,59 @@
    "state": "ok",
    "text": "interpretive charge +5.8% net, 22.7% routine by routine, from yaAGC's MCT over 122884 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "31,2630": 111738,
+   "21,2076": 115022,
+   "21,2021": 62122
+  },
+  "arrivals": {
+   "31,2630": [
+    111738
+   ],
+   "21,2076": [
+    115022
+   ],
+   "21,2021": [
+    62122,
+    62147,
+    62172,
+    62198,
+    62222,
+    62247,
+    62272,
+    62297,
+    62322,
+    62347,
+    62372,
+    62398,
+    62422,
+    62447,
+    62472,
+    62497,
+    62522,
+    62547,
+    62572,
+    62598,
+    62622,
+    62647,
+    62672,
+    62697,
+    62722,
+    62747,
+    62772,
+    62798,
+    62822,
+    62847,
+    62872,
+    179997
+   ]
+  }
  },
  {
   "scenario": "lm-p63-descent-restart-scaled-x1",
@@ -4613,7 +5725,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 30000,
   "periods_taken": 30000,
   "periods_dropped": 0,
@@ -4636,7 +5748,68 @@
    "state": "ok",
    "text": "interpretive charge +6.3% net, 23.3% routine by routine, from yaAGC's MCT over 18035 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "32,2776": 2507
+  },
+  "arrivals": {
+   "32,2776": [
+    2507
+   ]
+  }
+ },
+ {
+  "scenario": "lm-p63-trim-scaled-x1",
+  "mission": "lm",
+  "centiseconds": 30000,
+  "keys": "@2200V37E63E@3400V33E@3800E@4400V33E@9600E@14300V33E",
+  "inputs": {
+   "FLIGHT_CH30": "036357",
+   "FLIGHT_CH31": "057777",
+   "FLIGHT_CH33": "077737",
+   "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p63.load",
+   "FLIGHT_SWAP_MCT": "0",
+   "FLIGHT_ENGINE": "15100",
+   "FLIGHT_TRIM": "1"
+  },
+  "schedule": "1,1,2",
+  "exit": 0,
+  "commit": "1e9f9f8c8324",
+  "cia_interrupts": 30000,
+  "periods_taken": 30000,
+  "periods_dropped": 0,
+  "agc_centiseconds": 30000,
+  "native_routines": 1191816,
+  "bridged_instructions": 0,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4331968,
+   "yaagc": 4076986,
+   "percent": 6.3,
+   "routines": 18035,
+   "mean_abs_error": 52.8,
+   "abs_percent": 23.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +6.3% net, 23.4% routine by routine, from yaAGC's MCT over 18035 routines; within 20% net and 45% routine by routine"
+  },
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-p63-overload-scaled-x1",
@@ -4655,7 +5828,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 27000,
   "periods_taken": 27000,
   "periods_dropped": 0,
@@ -4678,7 +5851,14 @@
    "state": "ok",
    "text": "interpretive charge +4.8% net, 22.2% routine by routine, from yaAGC's MCT over 14176 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  },
  {
   "scenario": "lm-coast-verbs-scaled-x1",
@@ -4698,7 +5878,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 36500,
   "periods_taken": 36500,
   "periods_dropped": 0,
@@ -4721,6 +5901,12 @@
    "state": "ok",
    "text": "interpretive charge +1.5% net, 22.4% routine by routine, from yaAGC's MCT over 8966 routines; within 20% net and 45% routine by routine"
   },
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
    "23,2103": 22150,
    "26,2022": 25650,
@@ -4730,9 +5916,92 @@
    "42,2035": 21906,
    "43,2306": 19150,
    "32,2005": 14150,
+   "43,2163": 4650,
+   "43,2166": 5650,
    "42,3606": 2750,
+   "43,3221": 7150,
+   "43,3142": 4150,
    "31,2007": 9650,
-   "04,2656": 11150
+   "43,3224": 6650,
+   "43,3001": 7650,
+   "43,3006": 8150,
+   "43,3051": 19650,
+   "43,3054": 20150,
+   "04,2656": 11150,
+   "43,3073": 8650,
+   "43,3061": 9150,
+   "43,3206": 35650
+  },
+  "arrivals": {
+   "23,2103": [
+    22150
+   ],
+   "26,2022": [
+    25650
+   ],
+   "07,2714": [
+    34300
+   ],
+   "07,3000": [
+    32503
+   ],
+   "07,3210": [
+    30503
+   ],
+   "42,2035": [
+    21906
+   ],
+   "43,2306": [
+    19150
+   ],
+   "32,2005": [
+    14150
+   ],
+   "43,2163": [
+    4650
+   ],
+   "43,2166": [
+    5650
+   ],
+   "42,3606": [
+    2750
+   ],
+   "43,3221": [
+    7150
+   ],
+   "43,3142": [
+    4150
+   ],
+   "31,2007": [
+    9650
+   ],
+   "43,3224": [
+    6650
+   ],
+   "43,3001": [
+    7650
+   ],
+   "43,3006": [
+    8150
+   ],
+   "43,3051": [
+    19650
+   ],
+   "43,3054": [
+    20150
+   ],
+   "04,2656": [
+    11150
+   ],
+   "43,3073": [
+    8650
+   ],
+   "43,3061": [
+    9150
+   ],
+   "43,3206": [
+    35650
+   ]
   }
  },
  {
@@ -4751,7 +6020,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 5000,
   "periods_taken": 5000,
   "periods_dropped": 0,
@@ -4761,8 +6030,19 @@
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": null,
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
    "42,2016": 4002
+  },
+  "arrivals": {
+   "42,2016": [
+    4002
+   ]
   }
  },
  {
@@ -4781,7 +6061,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 7000,
   "periods_taken": 7000,
   "periods_dropped": 0,
@@ -4791,8 +6071,19 @@
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": null,
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
   "reached": {
    "43,2420": 2650
+  },
+  "arrivals": {
+   "43,2420": [
+    2650
+   ]
   }
  },
  {
@@ -4811,7 +6102,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 23000,
   "periods_taken": 23000,
   "periods_dropped": 0,
@@ -4834,7 +6125,32 @@
    "state": "ok",
    "text": "interpretive charge +3.4% net, 23.4% routine by routine, from yaAGC's MCT over 7574 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "35,2450": 8807,
+   "24,2404": 17306,
+   "24,3505": 2806,
+   "37,3655": 20307
+  },
+  "arrivals": {
+   "35,2450": [
+    8807
+   ],
+   "24,2404": [
+    17306
+   ],
+   "24,3505": [
+    2806
+   ],
+   "37,3655": [
+    20307
+   ]
+  }
  },
  {
   "scenario": "lm-p51-scaled-x1",
@@ -4850,7 +6166,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 8007,
   "periods_taken": 8002,
   "periods_dropped": 5,
@@ -4873,7 +6189,20 @@
    "state": "few",
    "text": "interpretive charge +4.5% net, 25.0% routine by routine, from yaAGC's MCT over 258 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "14,3427": 507
+  },
+  "arrivals": {
+   "14,3427": [
+    507
+   ]
+  }
  },
  {
   "scenario": "lm-p22-surface-scaled-x1",
@@ -4889,7 +6218,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 8002,
   "periods_taken": 8000,
   "periods_dropped": 2,
@@ -4912,7 +6241,20 @@
    "state": "few",
    "text": "interpretive charge +11.3% net, 40.3% routine by routine, from yaAGC's MCT over 921 routines; fewer than 1000 routines, not bounded"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {
+   "24,2000": 3307
+  },
+  "arrivals": {
+   "24,2000": [
+    3307
+   ]
+  }
  },
  {
   "scenario": "lm-p63-overload-nomon-scaled-x1",
@@ -4931,7 +6273,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "c6f8597e286f",
+  "commit": "1e9f9f8c8324",
   "cia_interrupts": 27000,
   "periods_taken": 27000,
   "periods_dropped": 0,
@@ -4954,6 +6296,13 @@
    "state": "ok",
    "text": "interpretive charge +5.1% net, 22.5% routine by routine, from yaAGC's MCT over 14418 routines; within 20% net and 45% routine by routine"
   },
-  "reached": {}
+  "night_watchman": {
+   "alarms": 0,
+   "stuck_steps": 0,
+   "checks": 0,
+   "disagree": 0
+  },
+  "reached": {},
+  "arrivals": {}
  }
 ]

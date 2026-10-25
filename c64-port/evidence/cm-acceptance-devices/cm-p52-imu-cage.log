@@ -80,7 +80,7 @@ interpreter module: 4948 routines, 4948 slots; 4587 charged other than yaAGC's w
 interpreter charge: fitted 983960 MCT, yaAGC 941699 MCT (+4.5%) over 4948 routines; mean |error| 49.7 MCT per routine
 native routines yaAGC did not match (0):
 unregistered or refused points (0):
-module loads (5458 in 20000 cs):
+module loads (6232 in 20000 cs):
   load cm_fresh_start slot 0 basic  05,2526: 1
   load cm_interbank_routines slot 0 basic  02,2662: 193
   load cm_v37 slot 0 basic  20,2000: 1
@@ -105,17 +105,20 @@ module loads (5458 in 20000 cs):
   load imu_mode_switching slot 0 basic  07,3136: 2
   load cm_t4rupt_optics slot 1 basic  10,2000: 6
   load cm_t4rupt_optics slot 1 basic  06,3200: 1
-  load lanec_pin_routines slot 0 basic  02,2414: 60
+  load lanec_pin_routines slot 0 basic  02,2414: 61
   load lanec_pin_keys_num_routines slot 0 basic  40,2000: 61
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2255: 13
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2060: 17
-  load lanec_pin_routines slot 0 basic  41,2035: 14
+  load lanec_pin_routines slot 0 basic  41,2035: 52
+  load lanec_pin_routines slot 0 basic  41,2133: 51
+  load lanec_pin_routines slot 0 basic  41,3430: 2
   load lanec_pin_routines slot 0 basic  41,3431: 2
   load cm_v37 slot 0 basic  04,2011: 2
   load cm_phase_table slot 1 basic  02,3412: 10
   load cm_interp_core slot 0 basic  03,2006: 2
   load cm_stateup slot 0 interp 04,2131: 2
   load cm_integration_init slot 0 interp 13,3442: 3
+  load cm_integration_init slot 0 basic  13,3443: 9
   load cm_stateup slot 0 interp 04,2133: 2
   load cm_v37 slot 0 basic  04,2134: 2
   load cm_kalcmanu_steering slot 0 basic  02,2526: 2
@@ -148,7 +151,7 @@ module loads (5458 in 20000 cs):
   load cm_v37 slot 0 basic  04,2274: 1
   load cm_phase_table slot 1 basic  02,3357: 1
   load cm_v37 slot 0 basic  04,2326: 1
-  load lanec_pin_routines slot 0 basic  02,2473: 2
+  load lanec_pin_routines slot 0 basic  02,2473: 13
   load cm_v37 slot 0 basic  04,2327: 1
   load cm_p51_p53 slot 0 basic  15,2000: 1
   load cm_p51_p53 slot 0 basic  15,2004: 1
@@ -164,8 +167,14 @@ module loads (5458 in 20000 cs):
   load cm_interpreter slot 0 basic  03,2706: 42
   load lanec_di_routines slot 0 basic  10,3007: 34
   load lanec_pin_routines slot 0 basic  02,2171: 45
+  load lanec_pin_routines slot 0 basic  41,2337: 45
+  load lanec_pin_routines slot 0 basic  41,3602: 38
+  load lanec_pin_routines slot 0 basic  41,2317: 38
+  load lanec_pin_routines slot 0 basic  41,3604: 38
+  load lanec_pin_routines slot 0 basic  41,2360: 2
+  load lanec_pin_routines slot 0 basic  02,2216: 38
   load lanec_di_routines slot 0 basic  10,3344: 45
-  load lanec_pin_routines slot 0 basic  02,2447: 45
+  load lanec_pin_routines slot 0 basic  02,2447: 55
   load lanec_di_routines slot 0 basic  10,3345: 45
   load lanec_di_routines slot 0 basic  10,3350: 45
   load lanec_di_routines slot 0 basic  10,3352: 45
@@ -177,18 +186,35 @@ module loads (5458 in 20000 cs):
   load service_transfer slot 0 basic  03,3722: 18
   load lanec_di_routines slot 0 basic  10,3511: 18
   load lanec_pin_routines slot 0 basic  02,2223: 16
+  load lanec_pin_routines slot 0 basic  41,2743: 1
+  load lanec_pin_routines slot 0 basic  41,2424: 1
+  load lanec_pin_routines slot 0 basic  41,2745: 1
+  load lanec_pin_routines slot 0 basic  41,2305: 1
   load lanec_pin_routines slot 0 basic  41,2750: 1
+  load lanec_pin_routines slot 0 basic  41,3075: 1
+  load lanec_pin_routines slot 0 basic  41,2755: 1
+  load lanec_pin_routines slot 0 basic  41,2775: 1
+  load lanec_pin_routines slot 0 basic  41,3002: 1
   load lanec_pin_routines slot 0 basic  40,3454: 1
+  load lanec_pin_routines slot 0 basic  40,3457: 11
   load lanec_di_routines slot 0 basic  10,3525: 1
   load service_transfer slot 0 basic  03,3740: 16
   load lanec_di_routines slot 0 basic  10,3572: 16
   load lanec_pin_routines slot 0 basic  02,2170: 16
+  load lanec_pin_routines slot 0 basic  02,2220: 26
+  load lanec_pin_routines slot 0 basic  41,3516: 16
+  load lanec_pin_routines slot 0 basic  41,3566: 16
   load lanec_di_routines slot 0 basic  10,3575: 16
   load cm_p51_p53 slot 0 basic  15,2025: 1
   load imu_mode_switching slot 0 basic  07,3060: 1
+  load lanec_pin_routines slot 0 basic  40,3347: 10
+  load lanec_pin_routines slot 0 basic  40,3352: 10
+  load lanec_pin_routines slot 0 basic  40,3353: 10
+  load lanec_pin_routines slot 0 basic  40,3354: 10
   load lanec_di_routines slot 0 basic  10,3524: 10
   load cm_p51_p53 slot 0 basic  15,2024: 1
   load lanec_di_routines slot 0 basic  10,3045: 1
+  load lanec_pin_routines slot 0 basic  41,2365: 5
   load cm_p51_p53 slot 0 basic  15,2126: 1
   load cm_rtb_op_codes slot 0 basic  22,3510: 29
   load cm_interpreter slot 0 basic  03,2024: 29
@@ -210,7 +236,9 @@ module loads (5458 in 20000 cs):
   load cm_conics slot 0 interp 12,2533: 5
   load cm_integration_init slot 0 interp 13,3300: 5
   load cm_integration_init slot 0 interp 13,3231: 7
+  load cm_integration_init slot 0 basic  13,3265: 7
   load cm_p51_p53 slot 0 interp 14,2237: 5
+  load cm_p51_p53 slot 0 basic  15,2137: 1
   load cm_p51_p53 slot 0 basic  14,2333: 1
   load cm_p51_p53 slot 0 basic  14,2334: 1
   load cm_powered_subs slot 0 interp 23,3477: 26
@@ -230,15 +258,18 @@ module loads (5458 in 20000 cs):
   load cm_p51_p53 slot 0 interp 14,2424: 1
   load cm_p51_p53 slot 0 interp 14,2427: 1
   load cm_p51_p53 slot 0 interp 14,2376: 1
+  load cm_p51_p53 slot 0 basic  14,2527: 1
   load cm_p51_p53 slot 0 basic  15,2142: 1
+  load cm_p51_p53 slot 0 basic  14,2533: 1
   load lanec_di_routines slot 0 basic  10,3057: 2
   load cm_p51_p53 slot 0 basic  14,2561: 2
   load lanec_di_routines slot 0 basic  02,3526: 2
   load cm_p51_p53 slot 0 basic  14,2563: 2
-  load lanec_pin_routines slot 0 basic  41,2133: 1
   load cm_p51_p53 slot 0 basic  14,2557: 2
   load cm_p51_p53 slot 0 interp 15,2340: 2
   load cm_conics slot 0 interp 12,2376: 1
+  load cm_p51_p53 slot 0 basic  15,2354: 4
+  load cm_p51_p53 slot 0 basic  14,2605: 2
   load cm_p51_p53 slot 0 basic  13,2244: 25
   load cm_p51_p53 slot 0 basic  13,2245: 25
   load cm_p51_p53 slot 0 interp 13,2252: 25
@@ -258,19 +289,26 @@ module loads (5458 in 20000 cs):
   load cm_geometry slot 0 interp 23,2120: 25
   load cm_geometry slot 0 interp 23,2136: 25
   load cm_p51_p53 slot 0 interp 13,2336: 25
+  load cm_p51_p53 slot 0 basic  13,2356: 25
   load cm_p51_p53 slot 0 basic  14,2044: 25
   load cm_p51_p53 slot 0 basic  14,2046: 25
   load lanec_di_routines slot 0 basic  10,2676: 25
   load cm_p51_p53 slot 0 basic  14,2061: 25
   load service_transfer slot 0 basic  00,3732: 110
+  load lanec_pin_routines slot 0 basic  41,2523: 29
+  load lanec_pin_routines slot 0 basic  41,2537: 58
+  load lanec_pin_routines slot 0 basic  40,2524: 27
+  load lanec_pin_routines slot 0 basic  41,2566: 55
+  load lanec_pin_routines slot 0 basic  40,3133: 58
   load lanec_pin_routines slot 0 basic  41,2570: 58
+  load lanec_pin_routines slot 0 basic  40,2516: 27
   load service_transfer slot 0 basic  00,3761: 110
   load cm_p51_p53 slot 0 basic  14,2077: 110
   load cm_geometry slot 0 interp 23,2131: 1
   load cm_geometry slot 0 interp 23,2110: 1
-  load lanec_pin_routines slot 0 basic  41,2566: 1
   load cm_p51_p53 slot 0 interp 13,2313: 1
   load cm_p51_p53 slot 0 basic  14,2153: 2
+  load cm_p51_p53 slot 0 basic  14,3304: 2
   load cm_sxtmark slot 0 basic  07,2002: 2
   load cm_phase_table slot 1 basic  02,3364: 4
   load cm_sxtmark slot 0 basic  07,2042: 2
@@ -280,11 +318,15 @@ module loads (5458 in 20000 cs):
   load imu_mode_switching slot 0 basic  07,3617: 3
   load cm_sxtmark slot 0 basic  07,2347: 2
   load lanec_di_routines slot 0 basic  10,2560: 2
+  load lanec_pin_routines slot 0 basic  02,2245: 5
   load lanec_di_routines slot 0 basic  10,3523: 5
   load cm_sxtmark slot 0 basic  07,2351: 2
   load lanec_di_routines slot 0 basic  10,2572: 4
   load cm_sxtmark slot 0 basic  07,2104: 2
+  load cm_sxtmark slot 0 basic  07,2440: 2
   load cm_sxtmark slot 0 basic  07,2153: 2
+  load cm_sxtmark slot 0 basic  07,2422: 2
+  load lanec_pin_routines slot 0 basic  41,2353: 2
   load cm_sxtmark slot 0 basic  07,2355: 2
   load lanec_di_routines slot 0 basic  02,3534: 2
   load lanec_di_routines slot 0 basic  10,2553: 2
@@ -297,6 +339,7 @@ module loads (5458 in 20000 cs):
   load cm_p51_p53 slot 0 basic  14,3341: 2
   load lanec_di_routines slot 0 basic  10,2720: 4
   load cm_p51_p53 slot 0 basic  14,3345: 2
+  load cm_p51_p53 slot 0 basic  14,2157: 2
   load cm_geometry slot 0 interp 23,2000: 2
   load cm_geometry slot 0 interp 23,2003: 2
   load cm_geometry slot 0 interp 23,2012: 2
@@ -304,11 +347,12 @@ module loads (5458 in 20000 cs):
   load cm_powered_subs slot 0 interp 23,3606: 2
   load cm_powered_subs slot 0 basic  23,3642: 2
   load cm_p51_p53 slot 0 interp 17,2052: 2
+  load cm_p51_p53 slot 0 basic  14,2620: 2
   load cm_sxtmark slot 0 basic  07,2063: 2
   load cm_p51_p53 slot 0 basic  14,2622: 2
   load cm_orbital_integration slot 0 interp 11,2464: 1
+  load cm_p51_p53 slot 0 basic  14,2627: 2
   load cm_conics slot 0 interp 12,2210: 1
-  load lanec_pin_routines slot 0 basic  41,2337: 1
   load cm_inflight_align slot 0 interp 23,3270: 1
   load lanec_di_routines slot 0 basic  10,3346: 1
   load cm_p51_p53 slot 0 interp 13,2330: 1
@@ -319,19 +363,26 @@ module loads (5458 in 20000 cs):
   load cm_interpreter slot 0 basic  03,3226: 6
   load cm_rtb_op_codes slot 0 basic  22,3545: 3
   load cm_p51_p53 slot 0 interp 14,2745: 1
+  load cm_p51_p53 slot 0 basic  14,2750: 1
   load cm_p51_p53 slot 0 basic  14,2753: 1
+  load lanec_pin_routines slot 0 basic  40,2621: 1
   load cm_p51_p53 slot 0 basic  14,2757: 1
   load cm_inflight_align slot 0 interp 23,3401: 1
   load cm_p51_p53 slot 0 interp 14,2651: 1
   load cm_inflight_align slot 0 interp 23,3205: 1
   load cm_inflight_align slot 0 interp 23,3215: 1
   load cm_p51_p53 slot 0 interp 15,2275: 1
+  load cm_p51_p53 slot 0 basic  15,2276: 1
+  load lanec_pin_routines slot 0 basic  40,2623: 3
   load cm_p51_p53 slot 0 basic  15,2302: 1
   load imu_mode_switching slot 0 basic  07,3206: 1
   load imu_mode_switching slot 0 basic  07,3242: 3
   load cm_p51_p53 slot 0 basic  15,2311: 1
   load imu_mode_switching slot 0 basic  07,3577: 1
+  load imu_mode_switching slot 0 basic  07,3270: 1
   load imu_mode_switching slot 0 basic  07,3442: 5
+  load imu_mode_switching slot 0 basic  07,3441: 5
+  load lanec_pin_routines slot 0 basic  41,2351: 1
   load cm_v37 slot 0 basic  04,2162: 1
   load cm_fresh_start slot 0 basic  05,2505: 1
   load cm_v37 slot 0 basic  04,2213: 1
@@ -339,21 +390,26 @@ module loads (5458 in 20000 cs):
   load cm_integration_init slot 0 interp 13,2643: 1
   load cm_stateup slot 0 interp 13,2000: 1
   load cm_integration_init slot 0 interp 13,3162: 2
+  load cm_integration_init slot 0 basic  13,2747: 1
   load cm_integration_init slot 0 interp 13,3352: 2
+  load cm_integration_init slot 0 basic  13,3210: 2
   load cm_integration_init slot 0 basic  13,3214: 2
   load cm_integration_init slot 0 interp 13,2710: 1
   load cm_geometry slot 0 interp 10,2237: 1
   load cm_integration_init slot 0 interp 13,2713: 1
+  load cm_integration_init slot 0 basic  27,2752: 2
   load cm_stateup slot 0 interp 13,2011: 1
   load cm_stateup slot 0 interp 13,2017: 1
   load cm_integration_init slot 0 interp 13,2670: 1
   load cm_stateup slot 0 interp 13,2022: 1
+  load cm_integration_init slot 0 basic  13,3014: 1
   load cm_integration_init slot 0 interp 13,3010: 1
   load cm_integration_init slot 0 interp 13,2763: 1
   load cm_geometry slot 0 interp 10,2263: 1
   load cm_integration_init slot 0 interp 13,2766: 1
   load cm_stateup slot 0 interp 13,2031: 1
   load cm_integration_init slot 0 interp 13,2656: 1
+  load cm_integration_init slot 0 basic  13,2660: 1
 last routines:
   Z 03231 FB 02000 cm_kernel_idle_routines
   Z 04701 FB 66000 cm_interbank_postjump_hot_routines
