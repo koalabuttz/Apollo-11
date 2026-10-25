@@ -461,9 +461,12 @@ static int wrapper_run(const entry *e){static const char *const body[]={"_lead_i
  * just before its full table, with the full table's module, and its other
  * modules in also. On the C64 only those other modules carry it: the full
  * table's module (the resolver's) runs the key from the full table, at the
- * full table's weight. */
-static int hot_copy(const entry *t){unsigned i=(unsigned)(t-tables);
- return i+1u<TABLES&&*t->also&&!strcmp(t->module,tables[i+1u].module)&&t->slot==tables[i+1u].slot;}
+ * full table's weight. CO_LOCATE_HOT names each such table *_hot_routines;
+ * the layout check keeps a misnamed table out. */
+static int hot_copy(const entry *t){unsigned i=(unsigned)(t-tables);static const char hot[]="_hot_routines";
+ size_t l=strlen(t->name),k=sizeof hot-1u;
+ return i+1u<TABLES&&l>k&&!strcmp(t->name+l-k,hot)&&*t->also&&!strcmp(t->module,tables[i+1u].module)
+        &&t->slot==tables[i+1u].slot;}
 static int names(const char *list,const char *n){const char *a=list;size_t k=strlen(n);
  for(;(a=strstr(a,n))!=0;a+=k)if((a==list||a[-1]==' ')&&(a[k]==0||a[k]==' '))return 1;
  return 0;}
