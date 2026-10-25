@@ -64,6 +64,7 @@ PROGRAM = {'lm': 'Luminary099', 'cm': 'Comanche055'}
 # include/resident_rupt.h: RK_RUPT_T6 = 1, T5, T3, T4, KEY1, KEY2, UP, DOWN, RADAR, HAND.
 RUPT = {name: 1 << (i + 1) for i, name in enumerate(('T6', 'T5', 'T3', 'T4', 'KEY1', 'KEY2', 'UP', 'DOWN', 'RADAR', 'HAND'))}
 FHR = 'tools/flight_host_run.c'
+ATT = 'tools/flight_attitude.h'
 DPC = 'platform/c64/dap_pass_check.c'
 RF = 'platform/c64/resident_flight.c'
 RRU = 'src/resident_rupt.c'
@@ -84,7 +85,8 @@ WINDOWS = {
            ('lm-p52-cage-torque', 8600, 100, 25),           # gyro torquing (GYROCMD drains, CDUY follows)
            ('lm-rhc-att-hold', 2400, 500, 100),             # RHC pitch out of detent (P-RHCCTR)
            ('lm-rhc-att-hold', 3500, 500, 100),             # RHC yaw and roll (Q-, R-RHCCTR)
-           ('lm-p52-coarse', 4650, 500, 50)],               # coarse align: channel 12 bit 4, CDUY follows the drive
+           ('lm-p52-coarse', 4650, 500, 50),                # coarse align: channel 12 bit 4, CDUY follows the drive
+           ('lm-rhc-att-turn', 3500, 900, 100)],            # the jets turn the LM (FLIGHT_ATT): CDUY, CDUZ follow
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6
@@ -248,16 +250,20 @@ def roles(m):
         role('imu', 'IMU: CDUs and PIPAs', 'in', 'CDUX-CDUZ (032-034), PIPAX-PIPAZ (037-041)',
              [(FHR, 'engine_due' if lm else 'sps_due', 'engine model: PIPA counts along the thrust'),
               (FHR, 'rcs_due' if lm else 'aero_due', 'RCS translation (LM) or aerodynamic drag (CM) into the PIPAs')]
-             + ([] if lm else [(FHR, 'imu_due', 'FLIGHT_IMU: channel 12 zero and coarse align move CDUX-Z'),
+             + ([(ATT, 'att_due', 'FLIGHT_ATT: the jets turn the LM at the DAP\'s own one-jet accelerations; CDUX-Z follow')]
+                if lm else [(FHR, 'imu_due', 'FLIGHT_IMU: channel 12 zero and coarse align move CDUX-Z'),
                                (FHR, 'saturn_due', 'FLIGHT_SATURN boost'), (FHR, 'sivb_due', 'FLIGHT_SIVB TLI burn')]),
-             [rows], uses('FLIGHT_ENGINE', 'FLIGHT_RCS', 'FLIGHT_POKE') if lm else
+             [rows], uses('FLIGHT_ENGINE', 'FLIGHT_RCS', 'FLIGHT_POKE', 'FLIGHT_ATT') if lm else
              uses('FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_SATURN', 'FLIGHT_SIVB', 'FLIGHT_IMU'),
              either(pipas, erasable(0o32, 0o33, 0o34)), unit(m, 't4rupt-imu'),
              how='PIPA counts, or CDUX-Z words, in the host rows',
-             gap='no attitude dynamics from the jets: the models hold CDUX-Z at the commanded attitude' + (
-                 ' (the descent engine moves nothing)' if lm else ' (only the SPS gimbal turns the CM, in pitch and yaw)'),
-             blocking=True,
-             closes='Lane B: a rigid-body model fed by the jets and engine, on both sides'),
+             gap=('the jets turn the LM exactly as the DAP expects (att_due uses 1JACC-1JACCR), with no cross-coupling '
+                  'and no engine torque; under thrust without FLIGHT_ATT the engine model holds CDUX-Z at CDUXD-ZD') if lm else
+                 'no attitude dynamics from the jets: the models hold CDUX-Z at the commanded attitude '
+                 '(only the SPS gimbal turns the CM, in pitch and yaw)',
+             blocking=not lm,
+             closes='the engine\'s trim torque (Lane F, tools/flight_dps_gimbal.h)' if lm else
+                    'Lane D1: tools/flight_attitude.h for the CM\'s jets'),
     ]
     if lm:
         out += [

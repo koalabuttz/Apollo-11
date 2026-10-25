@@ -14,7 +14,7 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 40764781,
+ "wall_cycles": 40764713,
  "agc_cs": 178,
  "dropped_ticks": 0,
  "steps": 1099,
@@ -22,23 +22,23 @@
  "by_request": {
   "background": {
    "count": 48,
-   "cycles": 33509023,
-   "max_cycles": 4465657,
+   "cycles": 33508932,
+   "max_cycles": 4465607,
    "steps": 806,
    "job_loads": 291,
    "task_loads": 0
   },
   "T4RUPT": {
    "count": 23,
-   "cycles": 2849453,
-   "max_cycles": 208731,
+   "cycles": 2849481,
+   "max_cycles": 208759,
    "steps": 134,
    "job_loads": 40,
    "task_loads": 0
   },
   "T3RUPT": {
    "count": 9,
-   "cycles": 1680295,
+   "cycles": 1680290,
    "max_cycles": 278631,
    "steps": 56,
    "job_loads": 19,
@@ -46,8 +46,8 @@
   },
   "T5RUPT": {
    "count": 18,
-   "cycles": 2717987,
-   "max_cycles": 185328,
+   "cycles": 2717985,
+   "max_cycles": 185326,
    "steps": 103,
    "job_loads": 39,
    "task_loads": 0
@@ -796,7 +796,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 77,
-   "cycles": 4465657
+   "cycles": 4465607
   },
   {
    "request": "T5RUPT",
@@ -804,7 +804,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 185328
+   "cycles": 185326
   },
   {
    "request": "background",
@@ -812,7 +812,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 416307
+   "cycles": 416300
   },
   {
    "request": "T4RUPT",
@@ -820,7 +820,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 208731
+   "cycles": 208759
   },
   {
    "request": "background",
@@ -828,7 +828,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 29358
+   "cycles": 29324
   },
   {
    "request": "T3RUPT",
@@ -836,7 +836,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 172575
+   "cycles": 172570
   }
  ],
  "lost": false,
@@ -855,7 +855,7 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 12
+  "dma_unchecked": 13
  },
  "hold_host_mct": 580,
  "hold_host_time1": 1272,
@@ -933,6 +933,6 @@
  "requested_cs": 170,
  "host_holes": [],
  "downrupt": false,
- "commit": "eb364deb4ded",
+ "commit": "c6f8597e286f",
  "replay_every": 120
 }

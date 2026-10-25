@@ -14,7 +14,7 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 92817858,
+ "wall_cycles": 92820369,
  "agc_cs": 372,
  "dropped_ticks": 0,
  "steps": 2431,
@@ -22,7 +22,7 @@
  "by_request": {
   "background": {
    "count": 104,
-   "cycles": 73751917,
+   "cycles": 73750378,
    "max_cycles": 4303567,
    "steps": 1733,
    "job_loads": 621,
@@ -30,7 +30,7 @@
   },
   "T5RUPT": {
    "count": 38,
-   "cycles": 5650854,
+   "cycles": 5654699,
    "max_cycles": 183084,
    "steps": 211,
    "job_loads": 84,
@@ -38,15 +38,15 @@
   },
   "T4RUPT": {
    "count": 41,
-   "cycles": 5485079,
-   "max_cycles": 209400,
+   "cycles": 5485069,
+   "max_cycles": 209193,
    "steps": 259,
    "job_loads": 83,
    "task_loads": 0
   },
   "T3RUPT": {
    "count": 19,
-   "cycles": 3491042,
+   "cycles": 3491011,
    "max_cycles": 281656,
    "steps": 116,
    "job_loads": 38,
@@ -54,8 +54,8 @@
   },
   "RADARUPT": {
    "count": 12,
-   "cycles": 4431586,
-   "max_cycles": 604718,
+   "cycles": 4431650,
+   "max_cycles": 604782,
    "steps": 112,
    "job_loads": 86,
    "task_loads": 0
@@ -1668,7 +1668,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 177955
+   "cycles": 181846
   },
   {
    "request": "background",
@@ -1676,7 +1676,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 63,
-   "cycles": 3464807
+   "cycles": 3463671
   },
   {
    "request": "T3RUPT",
@@ -1684,7 +1684,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 172328
+   "cycles": 172297
   },
   {
    "request": "background",
@@ -1692,7 +1692,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 41688
+   "cycles": 41557
   },
   {
    "request": "T4RUPT",
@@ -1700,7 +1700,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 209400
+   "cycles": 209193
   },
   {
    "request": "background",
@@ -1708,7 +1708,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 40953
+   "cycles": 40998
   },
   {
    "request": "T4RUPT",
@@ -1716,7 +1716,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 52358
+   "cycles": 52500
   },
   {
    "request": "background",
@@ -1724,7 +1724,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 23367
+   "cycles": 23155
   },
   {
    "request": "RADARUPT",
@@ -1732,7 +1732,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 15,
-   "cycles": 604718
+   "cycles": 604782
   },
   {
    "request": "background",
@@ -1740,7 +1740,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 7,
-   "cycles": 142985
+   "cycles": 142807
   },
   {
    "request": "T4RUPT",
@@ -1748,7 +1748,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 96328
+   "cycles": 96383
   },
   {
    "request": "background",
@@ -1756,7 +1756,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 10300
+   "cycles": 10481
   },
   {
    "request": "T5RUPT",
@@ -1764,7 +1764,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 119574
+   "cycles": 119528
   },
   {
    "request": "background",
@@ -1772,7 +1772,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 7,
-   "cycles": 385859
+   "cycles": 385751
   }
  ],
  "lost": false,
@@ -1791,9 +1791,9 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 14
+  "dma_unchecked": 15
  },
- "hold_host_mct": 725,
+ "hold_host_mct": 729,
  "hold_host_time1": 10401,
  "replay_rows": 378,
  "replay_applied": 378,
@@ -1882,6 +1882,6 @@
  "requested_cs": 364,
  "host_holes": [],
  "downrupt": false,
- "commit": "eb364deb4ded",
+ "commit": "c6f8597e286f",
  "replay_every": 50
 }
