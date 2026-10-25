@@ -456,20 +456,39 @@ static int wrapper_run(const entry *e){static const char *const body[]={"_lead_i
  if(*e->module)return 0;
  for(i=0;i<sizeof body/sizeof body[0];++i)if(l>=(k=strlen(body[i]))&&!strcmp(e->name+l-k,body[i]))return 1;
  return 0;}
+/* A hot table CO_LOCATE packs into another module (flight_store_build.py
+ * CO_LOCATE_HOT: lm_q_r_axis_tg_hot in lm_trim_gimbal): host.inc lists it
+ * just before its full table, with the full table's module, and its other
+ * modules in also. On the C64 only those other modules carry it: the full
+ * table's module (the resolver's) runs the key from the full table, at the
+ * full table's weight. CO_LOCATE_HOT names each such table *_hot_routines;
+ * the layout check keeps a misnamed table out. */
+static int hot_copy(const entry *t){unsigned i=(unsigned)(t-tables);static const char hot[]="_hot_routines";
+ size_t l=strlen(t->name),k=sizeof hot-1u;
+ return i+1u<TABLES&&l>k&&!strcmp(t->name+l-k,hot)&&*t->also&&!strcmp(t->module,tables[i+1u].module)
+        &&t->slot==tables[i+1u].slot;}
+static int names(const char *list,const char *n){const char *a=list;size_t k=strlen(n);
+ for(;(a=strstr(a,n))!=0;a+=k)if((a==list||a[-1]==' ')&&(a[k]==0||a[k]==' '))return 1;
+ return 0;}
+/* Whether module mod carries t, and whether slot s holds t for key. */
+static int carries(const entry *t,const char *mod){return hot_copy(t)?names(t->also,mod):!strcmp(t->module,mod);}
+static int held(unsigned s,const entry *t,uint16_t key){
+ return hot_copy(t)?in_slot[s]&&names(t->also,in_slot[s]):slot_has(s,t->module,t->t,key);}
 static const entry *charged(const agc_word *w,agc_word sb,const entry *e,const entry *last){int in;unsigned i,r;uint16_t key=point(w,sb,&in);
  /* An interrupt body table (wrapper_run) runs on the C64 as one run too:
   * DOT6RUPT's TCF RESUME goes on in that run, not in the pinned RESUME set. */
  if(last&&wrapper_run(last)&&last->interp==(uint8_t)in&&find(last->t,key))return last;
- if(last&&*last->module)for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&!strcmp(tables[i].module,last->module)
-                                           &&(tables[i].slot>1u||slot_has(tables[i].slot,tables[i].module,tables[i].t,key))
-                                           &&(tables[i].slot!=5u||in_slot[0]==tables[i].module)&&find(tables[i].t,key))return &tables[i];
+ if(last&&*last->module){const char *mod=hot_copy(last)&&in_slot[last->slot]&&names(last->also,in_slot[last->slot])?in_slot[last->slot]:last->module;
+  for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&carries(&tables[i],mod)
+                                           &&(tables[i].slot>1u||held(tables[i].slot,&tables[i],key))
+                                           &&(tables[i].slot!=5u||in_slot[0]==tables[i].module)&&find(tables[i].t,key))return &tables[i];}
  /* r 2 and 3: the job and task slots' loaded modules, which rk_direct
   * tries before the resolver (a pack's copy of a key runs ahead of the
   * resolver's table: T6RUPT's 05757 from the excursion pack). */
  for(r=0;r<5u;++r)for(i=0;i<TABLES;++i){const entry *t=&tables[i];
   if((r==0u?kernel_table(t)&&!in:r==1u?t->slot==3u||t->slot==4u
-      :r<4u?in_slot[r-2u]&&!kernel_table(t)&&t->slot!=3u&&t->slot!=4u&&slot_has(r-2u,t->module,t->t,key)
-      :!kernel_table(t)&&t->slot!=3u&&t->slot!=4u)
+      :r<4u?in_slot[r-2u]&&!kernel_table(t)&&t->slot!=3u&&t->slot!=4u&&held(r-2u,t,key)
+      :!kernel_table(t)&&t->slot!=3u&&t->slot!=4u&&!hot_copy(t))
      &&t->interp==(uint8_t)in&&(t->slot!=5u||in_slot[0]==t->module)&&find(t->t,key))return t;}
  return e;}
 /* LM: a table of weight 0 (POSTJUMP's and SELFCHK's, RK_MCT_IDLE) idles
