@@ -36,9 +36,10 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
   manifest    every target the C64 record's vice_targets names PASSED with at
               least the certified checks in the newest complete nightly vice
               manifest (tools/vice_manifest.py), which is under MANIFEST_DAYS
-              old; WARN instead when the manifest predates those vice_targets,
-              when a certificate names none and claims no c64_exempt (#127
-              migration), or when no manifest is available (#127). WARN
+              old; WARN instead when the manifest predates those vice_targets
+              or when no manifest is available (#127). A certificate naming
+              neither vice_targets nor c64_exempt FAILs (WARN when already
+              accepted complete, until its next refreeze; #127). WARN
               when that manifest's c64_cover (tools/cover_check.py) shows
               the cited branch cover stale or missing host branches (#234).
   domain      no open item ("pending", "follow-up") in a certificate's text (#77
@@ -1068,8 +1069,10 @@ def check_bovb_danzig(report, label, path, certificate, specs, accepted):
 MANIFEST_DAYS = 3
 
 
-def check_manifest(report, label, path, certificate, manifest, now=None):
-    """The certificate's vice_targets against the nightly vice manifest (#127)."""
+def check_manifest(report, label, path, certificate, manifest, now=None, accepted=True):
+    """The certificate's vice_targets against the nightly vice manifest (#127).
+    A certificate naming neither vice_targets nor c64_exempt FAILs, or WARNs
+    when already accepted complete (those migrate as they are refrozen)."""
     sys.path.insert(0, str(ROOT / 'tools'))
     import vice_manifest  # noqa: E402
     record = (certificate.get('evidence') or {}).get('c64_execution_results') or {}
@@ -1078,8 +1081,9 @@ def check_manifest(report, label, path, certificate, manifest, now=None):
             'c64_execution_results, or "c64_exempt": "<reason>" when no C64 run applies')
     if named is None:
         if not certificate.get('c64_exempt'):
-            report.add('WARN', label, 'names no vice_targets or c64_exempt; WARN, not FAIL, while certificates '
-                       'migrate (#127)', hint)
+            report.add('WARN' if accepted else 'FAIL', label,
+                       'names no vice_targets or c64_exempt' + ('; WARN on an accepted certificate until its next '
+                                                                'refreeze (#127)' if accepted else ' (#127)'), hint)
         return
     targets = vice_manifest.normalized(named)
     if targets is None:
@@ -1200,9 +1204,10 @@ def precheck(paths, report, notes=True, fetch_missing=False, keys=None, manifest
             label = path + (f' ({key})' if key else '')
             documentation = (certificate or {}).get('qualification_kind') == 'documentation_preservation' or \
                 'review_scope' in (certificate or {})
+            accepted = key == 'complete_native_coverage' and entry.get('status') == 'complete'
             if certificate:
                 check_revision(report, label, certificate)
-                check_manifest(report, label, path, certificate, manifest)
+                check_manifest(report, label, path, certificate, manifest, accepted=accepted)
                 check_review(report, label, key, certificate)
             if certificate and not documentation:
                 check_evidence(report, label, certificate, fetch_missing)

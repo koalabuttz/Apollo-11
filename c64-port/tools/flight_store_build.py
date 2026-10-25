@@ -305,13 +305,30 @@ def host_flags(stem):
             ['-DAGC_FLIGHT_INTERPRETER'] if any(stem in s for s in FLIGHT_INTERP_STOP.values()) else [])
 
 
-def host_inputs_hash(stem, dep):
-    """sha256 of a host object's flags and every input its -MMD .d file
-    lists (its source, headers and .inc files), by content: an object copied
-    in, or built in another checkout, with a newer mtime than its source
-    still rebuilds when the text differs. None when an input is missing."""
+_CC_IDS = {}
+
+
+def cc_id(cc):
+    """The host compiler as a stamp sees it: its resolved path and its
+    --version text, so a different compiler (or version) rebuilds."""
+    if cc not in _CC_IDS:
+        path = shutil.which(cc) or cc
+        try:
+            ver = subprocess.run([cc, '--version'], capture_output=True, text=True).stdout
+        except OSError:
+            ver = ''
+        _CC_IDS[cc] = os.path.realpath(path) + '\n' + ver
+    return _CC_IDS[cc]
+
+
+def host_inputs_hash(stem, dep, cc):
+    """sha256 of a host object's compiler, flags and every input its -MMD
+    .d file lists (its source, headers and .inc files), by content: an
+    object copied in, or built in another checkout or by another compiler,
+    with a newer mtime than its source still rebuilds when anything
+    differs. None when an input is missing."""
     words = dep.read_text().replace('\\\n', ' ').split()[1:]
-    h = hashlib.sha256(' '.join(host_flags(stem)).encode() + b'\0')
+    h = hashlib.sha256(cc_id(cc).encode() + b'\0' + ' '.join(host_flags(stem)).encode() + b'\0')
     for w in words:
         f = ROOT / w
         if not f.exists():
@@ -320,19 +337,27 @@ def host_inputs_hash(stem, dep):
     return h.hexdigest()
 
 
-def stale_host_objects():
+def host_stamp(stem, obj, dep, cc):
+    """A host object's .sha stamp: its inputs hash and the object's own
+    sha256, so an object overwritten after its build (copied in, a
+    half-written file) no longer matches. None when an input is missing."""
+    inputs = host_inputs_hash(stem, dep, cc)
+    return inputs and f'{inputs} {hashlib.sha256(obj.read_bytes()).hexdigest()}'
+
+
+def stamp_ok(o, cc):
+    dep, stamp = o.with_suffix('.d'), o.with_suffix('.sha')
+    return (o.exists() and dep.exists() and stamp.exists()
+            and stamp.read_text().strip() == (host_stamp(o.stem, o, dep, cc) or 'missing input'))
+
+
+def stale_host_objects(cc):
     """The host/*.o under OUT that host_index would rebuild or delete: no
-    stamp, a stamp that no longer matches its flags and inputs, or no
-    source."""
+    stamp, a stamp that no longer matches its compiler, flags, inputs and
+    object bytes, or no source."""
     objs = ROOT / OUT / 'host'
     keep = {s.stem for s in (ROOT / 'src').glob('*.c')}
-    bad = []
-    for o in sorted(objs.glob('*.o')):
-        dep, stamp = o.with_suffix('.d'), o.with_suffix('.sha')
-        if (o.stem not in keep or not dep.exists() or not stamp.exists()
-                or host_inputs_hash(o.stem, dep) != stamp.read_text().strip()):
-            bad.append(o.name)
-    return bad
+    return [o.name for o in sorted(objs.glob('*.o')) if o.stem not in keep or not stamp_ok(o, cc)]
 
 
 def host_index(cc, jobs):
@@ -345,14 +370,14 @@ def host_index(cc, jobs):
         obj = objs / (src.stem + '.o')
         dep = objs / (src.stem + '.d')
         stamp = objs / (src.stem + '.sha')
-        # Rebuilt when the flags or any input's text changed (the stamp),
-        # so an edit to a shared body (src/self_check_body.inc) rebuilds
-        # its includers.
-        if (not obj.exists() or not dep.exists() or not stamp.exists()
-                or host_inputs_hash(src.stem, dep) != stamp.read_text().strip()):
+        # Rebuilt when the compiler, the flags, any input's text or the
+        # object itself changed (the stamp), so an edit to a shared body
+        # (src/self_check_body.inc) rebuilds its includers.
+        if not stamp_ok(obj, cc):
+            stamp.unlink(missing_ok=True)
             run([cc, '-std=c99', '-O0', '-Iinclude', '-Itests', *host_flags(src.stem),
                  '-MMD', '-MF', dep, '-c', src, '-o', obj])
-            stamp.write_text((host_inputs_hash(src.stem, dep) or '') + '\n')
+            stamp.write_text((host_stamp(src.stem, obj, dep, cc) or '') + '\n')
         return src.stem, obj
     # An object whose source was removed or renamed would still be linked by
     # tools/flight_host_differential.py (it links every host/*.o).
