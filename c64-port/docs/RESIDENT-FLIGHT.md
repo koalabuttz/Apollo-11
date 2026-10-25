@@ -280,6 +280,16 @@ instead a work clock: AGC time advances by the work the resident ran.
   `rk_module_env.work`.
 - A module runs at most `rk_module_limit(budget, mct)` routines before it
   hands back, so a clock step is never more than one routine late.
+- Every table has one weight, its mean MCT per routine, on the host and
+  on the C64 alike. That holds for the interrupt lead-ins too: on the LM a
+  direct run that starts at a lead-in vector (04000-04053, GOPROG to
+  RUPT10) charges its first routine the lead-in table's 9 MCT. The AGC's
+  own costs are 5 (GOPROG), 7 (banked vectors), 8 (RUPT10) and 10 (T5,
+  T6), so each interrupt's lead-in is charged between 3 MCT too much and
+  1 too little. At 50 interrupts a second that is at most 150 of the
+  about 85,000 MCT in an AGC second (0.18%). It moves where a routine falls
+  against the timers, not the timers' own rate, and the host is charged
+  the same, so a replay still compares like with like (issue #886).
 - The self-check idle tables (`*_self_check_idle_routines`) carry weight
   0 (`RK_MCT_IDLE`): one idle pass takes the rest of the tick, unless a
   step on the way raises a request that is taken, which ends the idle
