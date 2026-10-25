@@ -138,7 +138,9 @@ def replay_result(r):
         if r.get('replay_skipped'):       # words left out of the compare (SCHEDULE_SKIP): not a full match
             return False, f"matches host except skipped {', '.join(r['replay_skipped'])}"
         dead = r.get('masked_dead_superbank')   # flight_scenario_vice.DEAD_SUPERBANK: reported, not hidden
+        busy = r.get('replay_busy_apart_count')
         notes = [x for x in (f"{r['replay_unpaired_count']} checkpoints not compared"
+                             + (f" ({busy} busy at different places)" if busy else '')
                              if r.get('replay_unpaired_count') else '', late[2:],
                              f'{dead} dead superbanks masked at ADVAN' if dead else '') if x]
         return True, 'matches host' + (f" ({', '.join(notes)})" if notes else '')

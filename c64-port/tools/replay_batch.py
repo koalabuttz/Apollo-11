@@ -31,7 +31,8 @@ A window's status comes from its exit code and every line of its log:
                 host and every seam holds")
   match-masked  a match that ran with a mask, skip or unpaired state
                 ("skipped (temporary", "masked_", "(with skips)", "states
-                with no partner"): not a full match
+                with no partner", "busy sample points at different
+                places"): not a full match
   FAIL          a line with FAIL anywhere (window, seam, chain, REU bounds,
                 outputs), whatever the order; the first one is quoted
   crash         rc not 0 and no FAIL line (a traceback, VICE died)
@@ -76,7 +77,8 @@ import time
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 RUNNER = [sys.executable, 'tools/flight_scenario_vice.py']
 STAMP = re.compile(r': commit (\S+)( with local changes)?; store \S+ sha256 ([0-9a-f]+)')
-MASKS = ('skipped (temporary', 'masked_', '(with skips)', 'states with no partner')
+MASKS = ('skipped (temporary', 'masked_', '(with skips)', 'states with no partner',
+         'busy sample points at different places')
 PASS = "in the host's state"
 NO_POINT = 'matches the host at no point'
 CHAIN_PASS = 'every window matches the host and every seam holds'
