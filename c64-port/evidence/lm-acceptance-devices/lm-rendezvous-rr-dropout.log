@@ -96,12 +96,14 @@ interpreter module: 60736 routines, 60736 slots; 59258 charged other than yaAGC'
 interpreter charge: fitted 11285900 MCT, yaAGC 11195429 MCT (+0.8%) over 60736 routines; mean |error| 47.5 MCT per routine
 native routines yaAGC did not match (0):
 unregistered or refused points (0):
-module loads (35671 in 40031 cs):
+module loads (42981 in 40031 cs):
+  load lm_lead_in_routines slot 0 basic  02,2000: 1
   load lm_fresh_start slot 0 basic  05,2667: 1
   load lm_alarm slot 0 basic  02,3567: 2
   load lm_fresh_start slot 0 basic  05,3056: 1
   load lm_interbank_routines slot 0 basic  02,2635: 662
   load lm_self_check_idle slot 0 basic  43,3336: 3
+  load lm_lead_in_routines slot 0 basic  02,2020: 3706
   load t4rupt slot 0 basic  06,2000: 3706
   load lm_dapidler slot 0 basic  16,2024: 113
   load lm_aostask slot 0 basic  20,2447: 1
@@ -120,6 +122,7 @@ module loads (35671 in 40031 cs):
   load lm_aostask slot 0 basic  20,2456: 3
   load lm_self_check_idle slot 0 basic  43,3304: 2885
   load lm_t4rupt_imu slot 0 basic  06,2172: 833
+  load lm_lead_in_routines slot 0 basic  02,2010: 3312
   load lm_p20_p25 slot 0 basic  25,2062: 1
   load lm_p20_p25 slot 0 basic  25,2100: 1
   load lm_rcsmon slot 0 basic  06,3156: 833
@@ -150,7 +153,10 @@ module loads (35671 in 40031 cs):
   load imu_mode_switching slot 0 basic  07,3254: 1
   load lm_t4rupt_imu slot 0 basic  06,2703: 1
   load imu_mode_switching slot 0 basic  07,3253: 1
+  load lm_lead_in_routines slot 0 basic  02,2024: 44
+  load lm_keyrupt_routines slot 0 basic  04,3274: 51
   load lanec_pin_routines slot 0 basic  02,2400: 51
+  load lm_keyrupt_routines slot 0 basic  04,3300: 51
   load lanec_pin_keys_num_routines slot 0 basic  40,2077: 51
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2354: 11
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2157: 14
@@ -333,6 +339,7 @@ module loads (35671 in 40031 cs):
   load lm_r60_r62 slot 0 basic  26,2123: 1
   load lm_r60_r62 slot 0 basic  26,2124: 1
   load lm_aostask slot 0 basic  20,2454: 2
+  load lm_t6rupt_routines slot 0 basic  02,3753: 135
   load excursion slot 0 basic  16,3443: 135
   load lm_r60_r62 slot 0 interp 27,2043: 1
   load lm_attitude_maneuver slot 0 basic  22,2403: 2
@@ -602,13 +609,6 @@ module loads (35671 in 40031 cs):
   load lm_p20_p25 slot 0 basic  24,2722: 2
   load imu_mode_switching slot 0 basic  07,3714: 17
   load imu_mode_switching slot 0 basic  07,3736: 17
-  load lm_p20_p25 slot 0 basic  25,2573: 7
-  load lm_p20_p25 slot 0 basic  25,2636: 11
-  load lm_p20_p25 slot 0 interp 25,2665: 17
-  load lm_p20_p25 slot 0 interp 25,2701: 17
-  load lm_p20_p25 slot 0 basic  25,2715: 17
-  load lm_p20_p25 slot 0 basic  25,3013: 4
-  load lm_p20_p25 slot 0 basic  25,2602: 14
 last routines:
   Z 06070 FB 24000 lm_conic_compiled_interpretive
   Z 06070 FB 24000 lm_conic_compiled_interpretive

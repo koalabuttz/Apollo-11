@@ -29,7 +29,7 @@ interpreter module: 183 routines, 183 slots; 175 charged other than yaAGC's word
 interpreter charge: fitted 24460 MCT, yaAGC 24550 MCT (-0.4%) over 183 routines; mean |error| 68.4 MCT per routine
 native routines yaAGC did not match (0):
 unregistered or refused points (0):
-module loads (621 in 9000 cs):
+module loads (678 in 9000 cs):
   load cm_fresh_start slot 0 basic  05,2526: 1
   load cm_interbank_routines slot 0 basic  02,2662: 5
   load cm_v37 slot 0 basic  20,2000: 1
@@ -44,14 +44,19 @@ module loads (621 in 9000 cs):
   load cm_t4rupt_imu slot 1 basic  06,2174: 188
   load cm_t4rupt_optics slot 1 basic  06,2765: 187
   load cm_interbank_routines slot 0 basic  02,2740: 17
-  load lanec_pin_routines slot 0 basic  02,2414: 21
+  load lanec_pin_routines slot 0 basic  02,2414: 23
   load lanec_pin_keys_num_routines slot 0 basic  40,2000: 19
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2255: 3
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2060: 5
-  load lanec_pin_routines slot 0 basic  41,2035: 3
+  load lanec_pin_routines slot 0 basic  41,2035: 5
+  load lanec_pin_routines slot 0 basic  41,2133: 5
+  load lanec_pin_routines slot 0 basic  02,2473: 3
   load cm_update slot 0 basic  43,3730: 1
   load cm_extended_verbs_file slot 0 basic  43,2076: 1
   load lanec_pin_routines slot 0 basic  02,2170: 3
+  load lanec_pin_routines slot 0 basic  02,2220: 3
+  load lanec_pin_routines slot 0 basic  41,3516: 3
+  load lanec_pin_routines slot 0 basic  41,3566: 3
   load cm_extended_verbs_file slot 0 basic  43,2113: 1
   load cm_update slot 0 basic  43,3737: 1
   load cm_update slot 0 basic  27,3373: 1
@@ -62,6 +67,14 @@ module loads (621 in 9000 cs):
   load cm_interbank_routines slot 0 basic  02,2711: 2
   load lanec_di_routines slot 0 basic  10,3153: 2
   load lanec_pin_routines slot 0 basic  02,2171: 2
+  load lanec_pin_routines slot 0 basic  41,2337: 2
+  load lanec_pin_routines slot 0 basic  41,3602: 2
+  load lanec_pin_routines slot 0 basic  41,2317: 2
+  load lanec_pin_routines slot 0 basic  41,3604: 2
+  load lanec_pin_routines slot 0 basic  41,2064: 2
+  load lanec_pin_routines slot 0 basic  41,2732: 2
+  load lanec_pin_routines slot 0 basic  41,2303: 2
+  load lanec_pin_routines slot 0 basic  02,2216: 2
   load lanec_di_routines slot 0 basic  10,3344: 2
   load lanec_pin_routines slot 0 basic  02,2447: 2
   load lanec_di_routines slot 0 basic  10,3345: 2
@@ -76,26 +89,35 @@ module loads (621 in 9000 cs):
   load service_transfer slot 0 basic  03,3722: 2
   load lanec_di_routines slot 0 basic  10,3511: 2
   load lanec_pin_routines slot 0 basic  02,2223: 2
+  load lanec_pin_routines slot 0 basic  40,3441: 3
   load lanec_pin_routines slot 0 basic  41,2733: 1
+  load lanec_pin_routines slot 0 basic  41,3075: 1
+  load lanec_pin_routines slot 0 basic  41,2740: 1
+  load lanec_pin_routines slot 0 basic  41,2775: 1
+  load lanec_pin_routines slot 0 basic  41,3002: 1
   load lanec_pin_routines slot 0 basic  40,3454: 1
+  load lanec_pin_routines slot 0 basic  40,3457: 1
   load lanec_di_routines slot 0 basic  10,3525: 1
   load service_transfer slot 0 basic  03,3740: 2
   load lanec_di_routines slot 0 basic  10,3572: 2
   load lanec_di_routines slot 0 basic  10,3575: 2
   load cm_update slot 0 basic  27,3423: 1
+  load lanec_pin_routines slot 0 basic  40,3355: 1
+  load lanec_pin_routines slot 0 basic  40,3350: 1
   load lanec_di_routines slot 0 basic  10,3523: 1
   load cm_update slot 0 basic  27,3421: 1
   load cm_phase_table slot 1 basic  02,3357: 1
   load cm_update slot 0 basic  27,3706: 1
   load lanec_di_routines slot 0 basic  02,3534: 1
   load lanec_di_routines slot 0 basic  10,2553: 1
-  load lanec_pin_routines slot 0 basic  40,3441: 2
   load lanec_pin_keys_sign_routines slot 0 basic  40,3510: 1
+  load lanec_pin_routines slot 0 basic  41,3430: 1
   load lanec_pin_routines slot 0 basic  41,3431: 1
   load cm_v37 slot 0 basic  04,2011: 1
   load cm_interp_core slot 0 basic  03,2006: 1
   load cm_stateup slot 0 interp 04,2131: 1
   load cm_integration_init slot 0 interp 13,3442: 2
+  load cm_integration_init slot 0 basic  13,3443: 3
   load cm_stateup slot 0 interp 04,2133: 1
   load cm_v37 slot 0 basic  04,2134: 1
   load cm_kalcmanu_steering slot 0 basic  02,2526: 1
@@ -111,7 +133,6 @@ module loads (621 in 9000 cs):
   load cm_v37 slot 0 basic  04,2153: 1
   load cm_v37 slot 0 basic  04,2155: 1
   load cm_v37 slot 0 basic  04,2157: 1
-  load lanec_pin_routines slot 0 basic  02,2473: 1
   load cm_v37 slot 0 basic  04,2162: 1
   load cm_fresh_start slot 0 basic  05,2513: 1
   load cm_interbank_routines slot 0 basic  02,2753: 2
@@ -130,26 +151,32 @@ module loads (621 in 9000 cs):
   load cm_integration_init slot 0 interp 13,2643: 1
   load cm_stateup slot 0 interp 13,2000: 1
   load cm_integration_init slot 0 interp 13,3162: 2
+  load cm_integration_init slot 0 basic  13,2747: 1
   load cm_rtb_op_codes slot 0 basic  22,3544: 2
   load cm_interpreter slot 0 basic  03,3226: 2
   load cm_rtb_op_codes slot 0 basic  22,3545: 2
   load cm_integration_init slot 0 interp 13,3352: 2
+  load cm_integration_init slot 0 basic  13,3210: 2
   load cm_integration_init slot 0 basic  13,3214: 2
   load cm_integration_init slot 0 interp 13,2710: 1
   load cm_geometry slot 0 interp 10,2237: 1
   load cm_integration_init slot 0 interp 13,2713: 1
+  load cm_integration_init slot 0 basic  27,2752: 2
   load cm_orbital_integration slot 0 interp 11,3421: 2
   load cm_integration_init slot 0 interp 13,3231: 2
+  load cm_integration_init slot 0 basic  13,3265: 2
   load cm_stateup slot 0 interp 13,2011: 1
   load cm_stateup slot 0 interp 13,2017: 1
   load cm_integration_init slot 0 interp 13,2670: 1
   load cm_stateup slot 0 interp 13,2022: 1
+  load cm_integration_init slot 0 basic  13,3014: 1
   load cm_integration_init slot 0 interp 13,3010: 1
   load cm_integration_init slot 0 interp 13,2763: 1
   load cm_geometry slot 0 interp 10,2263: 1
   load cm_integration_init slot 0 interp 13,2766: 1
   load cm_stateup slot 0 interp 13,2031: 1
   load cm_integration_init slot 0 interp 13,2656: 1
+  load cm_integration_init slot 0 basic  13,2660: 1
   load cm_t4rupt_optics slot 1 basic  10,2000: 1
 last routines:
   Z 03231 FB 02000 cm_kernel_idle_routines

@@ -351,15 +351,18 @@ major mode (MODREG 01011) at 115000 cs: native 100, yaAGC 00; FAILREG 01520/0000
 interpreter module: 62239 routines, 62239 slots; 58863 charged other than yaAGC's words
 interpreter charge: fitted 14938976 MCT, yaAGC 13900875 MCT (+7.5%) over 62239 routines; mean |error| 55.1 MCT per routine
 native routines yaAGC did not match (0):
+trim gimbal (deg): native pitch -2.856 roll 5.958, yaAGC pitch 0.000 roll 0.000
 unregistered or refused points (0):
-module loads (135049 in 115027 cs):
+module loads (155568 in 115027 cs):
   load lm_self_check_idle slot 0 basic  43,3303: 1
+  load lm_lead_in_routines slot 0 basic  02,2010: 8420
   load lm_dapidler slot 0 basic  16,2024: 1
   load lm_interbank_routines slot 0 basic  02,2674: 551
   load lm_dap_interface slot 0 basic  20,2153: 1
   load lm_interbank_routines slot 0 basic  02,2707: 555
   load lm_dapidler slot 0 basic  16,2050: 1
   load lm_self_check_idle slot 0 basic  43,3304: 12951
+  load lm_lead_in_routines slot 0 basic  02,2020: 11131
   load t4rupt slot 0 basic  06,2000: 11131
   load excursion slot 0 basic  16,2213: 11501
   load lm_rcsmon slot 0 basic  06,3156: 2395
@@ -367,13 +370,17 @@ module loads (135049 in 115027 cs):
   load lm_t4rupt_imu slot 0 basic  06,2172: 2395
   load excursion slot 0 basic  16,3014: 825
   load excursion slot 0 basic  16,2667: 661
+  load lm_lead_in_routines slot 0 basic  02,2024: 18
+  load lm_keyrupt_routines slot 0 basic  04,3274: 19
   load lanec_pin_routines slot 0 basic  02,2400: 19
+  load lm_keyrupt_routines slot 0 basic  04,3300: 19
   load lanec_pin_keys_num_routines slot 0 basic  40,2077: 19
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2354: 3
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2157: 8
   load lanec_pin_routines slot 0 basic  41,2035: 328
   load lanec_pin_routines slot 0 basic  41,2133: 326
   load lanec_pin_routines slot 0 basic  41,3430: 1
+  load lm_t6rupt_routines slot 0 basic  02,3753: 350
   load excursion slot 0 basic  16,3443: 350
   load lanec_pin_routines slot 0 basic  41,3431: 1
   load lm_v37 slot 0 basic  04,2040: 1
@@ -859,12 +866,6 @@ module loads (135049 in 115027 cs):
   load lm_orbital_integration slot 0 interp 11,2720: 3
   load lm_orbital_integration slot 0 interp 11,2762: 3
   load lm_planetary slot 0 interp 24,3725: 2
-  load lm_planetary slot 0 interp 24,3734: 2
-  load lm_orbital_integration slot 0 interp 13,3734: 2
-  load lm_planetary slot 0 interp 25,3671: 3
-  load lm_orbital_integration slot 0 interp 11,2505: 1
-  load lm_planetary slot 0 interp 25,3673: 2
-  load lm_orbital_integration slot 0 interp 11,3174: 5
 last routines:
   Z 03214 FB 02000 lm_kernel_idle_routines
   Z 05155 FB 20000 lm_kernel_job_routines

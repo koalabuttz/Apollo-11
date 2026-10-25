@@ -72,14 +72,16 @@ interpreter module: 838 routines, 838 slots; 760 charged other than yaAGC's word
 interpreter charge: fitted 163084 MCT, yaAGC 153048 MCT (+6.6%) over 838 routines; mean |error| 36.0 MCT per routine
 native routines yaAGC did not match (0):
 unregistered or refused points (0):
-module loads (6910 in 10002 cs):
+module loads (8785 in 10002 cs):
   load lm_self_check_idle slot 0 basic  43,3303: 1
+  load lm_lead_in_routines slot 0 basic  02,2010: 633
   load lm_dapidler slot 0 basic  16,2024: 159
   load lm_interbank_routines slot 0 basic  02,2674: 10
   load lm_dap_interface slot 0 basic  20,2153: 2
   load lm_interbank_routines slot 0 basic  02,2707: 8
   load lm_dapidler slot 0 basic  16,2050: 2
   load lm_self_check_idle slot 0 basic  43,3304: 1262
+  load lm_lead_in_routines slot 0 basic  02,2020: 1074
   load t4rupt slot 0 basic  06,2000: 1074
   load excursion slot 0 basic  16,2213: 841
   load lm_rcsmon slot 0 basic  06,3156: 208
@@ -87,13 +89,17 @@ module loads (6910 in 10002 cs):
   load lm_t4rupt_imu slot 0 basic  06,2172: 208
   load excursion slot 0 basic  16,3014: 24
   load excursion slot 0 basic  16,2667: 1
+  load lm_lead_in_routines slot 0 basic  02,2024: 53
+  load lm_keyrupt_routines slot 0 basic  04,3274: 53
   load lanec_pin_routines slot 0 basic  02,2400: 53
+  load lm_keyrupt_routines slot 0 basic  04,3300: 53
   load lanec_pin_keys_num_routines slot 0 basic  40,2077: 53
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2354: 11
   load lanec_pin_keys_cmd_routines slot 0 basic  40,2157: 17
   load lanec_pin_routines slot 0 basic  41,2035: 32
   load lanec_pin_routines slot 0 basic  41,2133: 31
   load lanec_pin_routines slot 0 basic  41,3430: 1
+  load lm_t6rupt_routines slot 0 basic  02,3753: 5
   load excursion slot 0 basic  16,3443: 5
   load lanec_pin_routines slot 0 basic  41,3431: 1
   load lm_v37 slot 0 basic  04,2040: 1
@@ -312,6 +318,7 @@ module loads (6910 in 10002 cs):
   load lm_aotmark slot 0 basic  07,2170: 2
   load lanec_di_routines slot 0 basic  10,2345: 6
   load lanec_pin_routines slot 0 basic  41,2353: 6
+  load lm_lead_in_routines slot 0 basic  02,2030: 4
   load lm_aotmark slot 0 basic  07,2332: 4
   load lm_aotmark slot 0 basic  07,2610: 4
   load lm_t4rupt_imu slot 0 basic  06,2321: 1
