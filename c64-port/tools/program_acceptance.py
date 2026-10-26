@@ -69,13 +69,18 @@ SOURCES = ['.', ':(top)Luminary099', ':(top)Comanche055',
            ':!tools/program_acceptance.py', ':!tests/test_program_acceptance.py', ':!tools/mk/program-acceptance.mk']
 
 
-def same_sources(run, head):
+# A C64 replay does not read the program maps (the host run does: it watches
+# each row's reach points), so a map edit leaves replays current.
+REPLAY_SOURCES = SOURCES + [':!docs/acceptance/*-program-map.json']
+
+
+def same_sources(run, head, sources=SOURCES):
     """True when a result made at commit `run` holds for `head`."""
     if run == head:
         return True
     if not run or '(dirty)' in run or '(dirty)' in head:
         return False
-    r = subprocess.run(['git', 'diff', '--quiet', run, head.split()[0], '--', *SOURCES], cwd=ROOT,
+    r = subprocess.run(['git', 'diff', '--quiet', run, head.split()[0], '--', *sources], cwd=ROOT,
                        capture_output=True)
     return r.returncode == 0
 
@@ -229,7 +234,7 @@ def load_replays(paths, m, commit):
             continue
         if 'chain_window' in r:          # one window of a --chain run: its summary counts
             continue
-        if not same_sources(r.get('commit'), commit):
+        if not same_sources(r.get('commit'), commit, REPLAY_SOURCES):
             stale.append((pathlib.Path(path).name, r.get('commit') or 'unknown'))
             continue
         out.setdefault(r['scenario'], []).append(r)
@@ -249,6 +254,41 @@ def run_key(r):
     return r.get('scenario'), r.get('snap_cs'), r.get('chain') or 1
 
 
+def window_span(r):
+    """(first cs, last cs) of host time a --replay result or chain summary
+    covers: from where its snapshot landed (snap_at, later than snap_cs when
+    the snapshot slid) to that plus the cs it ran."""
+    start = r.get('snap_at', r.get('snap_cs')) or 0
+    if r.get('windows') is not None:
+        ran = sum(w.get('requested_cs') or r.get('requested_cs') or 0 for w in r['windows'])
+    else:
+        ran = max(r.get('requested_cs') or 0, r.get('replay_end_cs') or 0)
+    return start, start + ran
+
+
+def body_in_window(row, host, runs):
+    """None when the row names no reach points. Otherwise (True, text) when
+    each reach point arrives on the host inside a matching C64 window of the
+    same scenario (at or after its third field, if any), so the window runs
+    the row's body and not only some other stretch of the scenario (#925 A1)."""
+    if not row.get('reach'):
+        return None
+    missing = []
+    for point, label, *after in row['reach']:
+        ok = False
+        for s, rs in runs.items():
+            r = host.get(s) or {}
+            times = [t for t in (r['arrivals'].get(point, []) if 'arrivals' in r
+                                 else [r.get('reached', {}).get(point)]) if t is not None and (not after or t >= after[0])]
+            ok = ok or any(lo <= t <= hi for run, match, _ in rs if match
+                           for lo, hi in [window_span(run)] for t in times)
+        if not ok:
+            missing.append(f'{label} ({point})')
+    if missing:
+        return False, 'no matching C64 window covers ' + ', '.join(missing)
+    return True, 'a matching C64 window covers ' + ', '.join(label for _, label, *_ in row['reach'])
+
+
 def assess(rows, host, replays, stale_host=None):
     """Per-row verdicts and the counts."""
     out, stale_host = [], stale_host or {}
@@ -263,8 +303,10 @@ def assess(rows, host, replays, stale_host=None):
         if body:
             h = {**h, 'body': body}
         host_clean = mapped and bool(h) and all(ok for ok, _ in h.values())
-        c64_match = mapped and any(match for runs in c.values() for _, match, _ in runs)
-        out.append(dict(row=row, host=h, c64=c, host_clean=host_clean, c64_match=c64_match, unexplained=unexplained))
+        covered = body_in_window(row, host, c)
+        c64_match = mapped and any(match for runs in c.values() for _, match, _ in runs) and (covered or (True,))[0]
+        out.append(dict(row=row, host=h, c64=c, host_clean=host_clean, c64_match=c64_match, unexplained=unexplained,
+                        covered=covered))
     counts = dict(rows=len(out),
                   mapped=sum(a['row']['status'] == 'mapped' for a in out),
                   not_exercised=sum(a['row']['status'] == 'not exercised' for a in out),
@@ -347,6 +389,8 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
         hosts = '; '.join(f"{s}: {t}" for s, (_, t) in a['host'].items())
         c64 = '; '.join(f"{s} {r.get('snap_cs')}: {t}" for s, runs in a['c64'].items() for r, _, t in runs) or \
             ('not run' if row.get('windows') else 'no window named')
+        if a.get('covered') and a['c64']:
+            c64 += '; ' + a['covered'][1]
         lines.append(f"| {cell(row['row'])} | {cell(row['entry'])} | mapped | {', '.join(row['scenarios'])} | "
                      f"{cell(hosts)} | {cell(c64)} | {cell(row.get('note') or '')} |")
     used = sorted({s for a in assessed for s in a['row']['scenarios']})

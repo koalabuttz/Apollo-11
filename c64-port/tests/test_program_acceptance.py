@@ -169,6 +169,32 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertEqual(pa.body_result(row, {'lm-a': dict(arrivals={'43,2306': []}, reached={'43,2306': None})}),
                          (False, 'body not reached: RRDESEND +4 (43,2306)'))
 
+    def test_body_in_a_c64_window(self):
+        # A matching window counts only when the row's reach point arrives on the host inside it (#925 A1).
+        row = dict(ROWS[0], reach=[['43,2306', 'RRDESEND +4']])
+        host = {'lm-a': dict(host_row('lm-a'), arrivals={'43,2306': [500]})}
+        out, counts = pa.assess([row], host, {'lm-a': [replay('lm-a', 0)]})
+        self.assertEqual((counts['c64_match'], out[0]['covered'][0]), (1, True))
+        host = {'lm-a': dict(host_row('lm-a'), arrivals={'43,2306': [1500]})}
+        out, counts = pa.assess([row], host, {'lm-a': [replay('lm-a', 0)]})
+        self.assertEqual(counts['c64_match'], 0)
+        self.assertEqual(out[0]['covered'], (False, 'no matching C64 window covers RRDESEND +4 (43,2306)'))
+        # A slid snapshot starts where it landed; a non-matching window covers nothing.
+        out, counts = pa.assess([row], host, {'lm-a': [dict(replay('lm-a', 0), snap_at=600)]})
+        self.assertEqual(counts['c64_match'], 1)
+        host = {'lm-a': dict(host_row('lm-a'), arrivals={'43,2306': [500]})}
+        out, counts = pa.assess([row], host, {'lm-a': [dict(replay('lm-a', 0), snap_at=600)]})
+        self.assertEqual(counts['c64_match'], 0)
+        _, counts = pa.assess([row], host, {'lm-a': [replay('lm-a', 0, differences=1)]})
+        self.assertEqual(counts['c64_match'], 0)
+        # The row's after field applies; a chain spans all its windows.
+        late = dict(row, reach=[['43,2306', 'RRDESEND +4', 900]])
+        host = {'lm-a': dict(host_row('lm-a'), arrivals={'43,2306': [500, 1800]})}
+        chain = dict(replay('lm-a', 0), chain=2, windows=[dict(requested_cs=1000)] * 2)
+        self.assertEqual(pa.body_in_window(late, host, {'lm-a': [(chain, True, '')]})[0], True)
+        self.assertEqual(pa.body_in_window(late, host, {'lm-a': [(replay('lm-a', 0), True, '')]})[0], False)
+        self.assertIsNone(pa.body_in_window(ROWS[0], host, {}))
+
     def test_layout_tables_and_agc_sources_stale_a_result(self):
         self.assertIn(':(top)Luminary099', pa.SOURCES)
         self.assertIn('.', pa.SOURCES)  # docs/*.json layout tables count
