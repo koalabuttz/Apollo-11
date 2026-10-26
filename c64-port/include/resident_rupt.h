@@ -51,9 +51,9 @@ void rk_timer_tick(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending)
 /* HANDRUPT, as yaAGC's agc_engine.c checks it each scaler step: trap is the
  * three trap arms (flight_io trap31a, trap31b, trap32). First the arms a
  * write to channel 13 left in its bits 12-14 (agc_ch_op) move to trap and
- * the bits clear. Then an armed trap whose inputs are no longer all ones
- * (31A: channel 31 bits 1-6, 31B: bits 7-12, 32: channel 32 bits 1-10)
- * disarms and requests RUPT10. Call it after each timer step. */
+ * the bits clear. Then an armed 31A whose inputs (channel 31 bits 1-6) are
+ * no longer all ones disarms and requests RUPT10 (31B and 32 are never
+ * armed: resident_rupt.c). Call it after each timer step. */
 void rk_hand_due(agc_hardware *hw, uint16_t *trap, uint16_t *pending);
 uint8_t rk_rupt_take(const agc_native_program *p, apollo_overlay_state *s, agc_word superbank,
                      agc_word interrupt_enabled, uint16_t *pending);

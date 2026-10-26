@@ -105,7 +105,7 @@ void rk_timer_tick(apollo_overlay_state *s, agc_hardware *hw, uint16_t *pending)
  * 004, and an arm is 0 or 1 in its low byte (the high byte stays 0). */
 void rk_hand_due(agc_hardware *hw, uint16_t *trap, uint16_t *pending)
 {
-    uint8_t *arm = (uint8_t *)trap, c = ((uint8_t *)&CH13(hw))[1], fire = 0u;
+    uint8_t *arm = (uint8_t *)trap, c = ((uint8_t *)&CH13(hw))[1];
     /* A WOR or WRITE to channel 13 through agc_ch_op leaves bits 12-14
      * set: they arm the traps (yaAGC CpuWriteIO) and never stay set. */
     if (c & 070u) {
@@ -114,11 +114,15 @@ void rk_hand_due(agc_hardware *hw, uint16_t *trap, uint16_t *pending)
         if (c & 040u) arm[4] = 1u;
         ((uint8_t *)&CH13(hw))[1] = (uint8_t)(c & ~070u);
     }
-    /* An armed trap fires when its inputs leave all ones, then disarms. */
-    if (arm[0] && ((uint8_t)hw->channel31 & 077u) != 077u) arm[0] = 0u, fire = 1u;
-    if (arm[2] && (hw->channel31 & 07700u) != 07700u) arm[2] = 0u, fire = 1u;
-    if (arm[4] && (hw->channel32 & 01777u) != 01777u) arm[4] = 0u, fire = 1u;
-    if (fire) ((uint8_t *)pending)[1] |= (uint8_t)(RK_RUPT_BIT(RK_RUPT_HAND) >> 8);
+    /* Armed, 31A fires when channel 31 bits 1-6 leave all ones, then
+     * disarms. Neither program arms 31B or 32 (Luminary099 arms only 31A:
+     * STARTP64, RESETRPT and the restart's WOR BIT12; Comanche055 none), so
+     * their checks (channel 31 bits 7-12, channel 32 bits 1-10) are left
+     * out of the resident. */
+    if (arm[0] && ((uint8_t)hw->channel31 & 077u) != 077u) {
+        arm[0] = 0u;
+        ((uint8_t *)pending)[1] |= (uint8_t)(RK_RUPT_BIT(RK_RUPT_HAND) >> 8);
+    }
 }
 
 static uint8_t word_at(const agc_native_program *p, const apollo_overlay_state *s, agc_word superbank,
