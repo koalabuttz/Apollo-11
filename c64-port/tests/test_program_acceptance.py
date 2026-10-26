@@ -240,6 +240,42 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertIn('| 4 | 2 | 1 | 0 | 1 | 2 of 2 | 2 of 2 |', text)
         self.assertIn('lm-a 0: matches host', text)
 
+    def test_rescore(self):
+        # (#942 B2) The committed doc is re-scored from the evidence it cites
+        # with the current map: a map edit that would change its counts shows.
+        rows = ROWS[:3]
+        host = {'lm-a': host_row('lm-a'), 'lm-b': host_row('lm-b')}
+        replays = {'lm-a': [replay('lm-a', 0)]}
+        assessed, counts = pa.assess(rows, host, replays)
+        root = pa.ROOT
+        with tempfile.TemporaryDirectory() as d:
+            d = pathlib.Path(d)
+            try:
+                pa.ROOT = d
+                pa.write_evidence('lm', host, replays, d / 'evidence/lm-acceptance-program', store=False)
+                evidence = {k: (f'evidence/lm-acceptance-program/{p.name}', pa.sha(p)) for k, p in [
+                    (('host', 'lm-a'), d / 'evidence/lm-acceptance-program/host-lm-a.json'),
+                    (('host', 'lm-b'), d / 'evidence/lm-acceptance-program/host-lm-b.json'),
+                    (('replay', 'lm-a', 0, None), d / 'evidence/lm-acceptance-program/replay-lm-a-0.json')]}
+                doc = d / 'docs/acceptance/Luminary099-integrated_program_tests.md'
+                pa.write_doc('lm', assessed, counts, host, replays, {}, [], evidence, HEAD, doc)
+                plan = d / 'docs/acceptance/Luminary099-program-map.json'
+                plan.write_text(json.dumps(dict(rows=rows)))
+                self.assertTrue(pa.rescore('lm')[0], pa.rescore('lm'))
+                # The window no longer holds P64's event: one row loses its C64 credit.
+                moved = json.loads(json.dumps(rows))
+                moved[1]['reach'] = [['40,3000', 'later']]
+                plan.write_text(json.dumps(dict(rows=moved)))
+                same, text = pa.rescore('lm')
+                self.assertFalse(same)
+                self.assertIn('c64_match 2 -> 1', text)
+                # A cited file that changed is reported, not scored.
+                plan.write_text(json.dumps(dict(rows=rows)))
+                (d / 'evidence/lm-acceptance-program/host-lm-b.json').write_text('{}')
+                self.assertIn('missing or changed', pa.rescore('lm')[1])
+            finally:
+                pa.ROOT = root
+
     def test_runs_what_is_missing(self):
         self.assertEqual(pa.window_cmd(['lm-a', 100, 600])[1:],
                          ['tools/flight_scenario_vice.py', '--scenario', 'lm-a', '--snap-cs', '100', '--cs', '600',

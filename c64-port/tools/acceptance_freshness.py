@@ -28,6 +28,14 @@ moved at that point. A listed program reports STALE without failing only
 while every moved file still has its pinned hash, so any further byte move
 fails as usual. The re-acceptance PR deletes the entry; an entry can only be
 added in a reviewed PR.
+
+Bytes are not the only thing an acceptance rests on: the program map and
+the scoring in program_acceptance.py decide what the integrated doc
+credits. So each program's integrated doc is also re-scored from the
+evidence it cites with the current map and tool (program_acceptance.py
+--rescore), and a doc whose counts or result would change is CRITERIA
+STALE and fails like a byte move (#942 B2). A pending entry with a
+"criteria" reason reports it without failing, the same way.
 """
 import json
 import argparse
@@ -37,6 +45,9 @@ import re
 import subprocess
 import sys
 import time
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import program_acceptance  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PROGRAMS = {'Luminary099': 'lm', 'Comanche055': 'cm'}
@@ -140,6 +151,13 @@ def main():
         else:
             print(f'{program}: FRESH (accepted at {commit}; every built file the doc lists matches)'
                   + (f'; not built, so not checked: {", ".join(unchecked)}' if unchecked else ''))
+        same, text = program_acceptance.rescore(m)
+        if not same and program in pending and pending[program].get('criteria'):
+            print(f'{program}: CRITERIA STALE, pending re-acceptance ({pending[program]["criteria"]}): {text}')
+        elif not same:
+            bad = True
+            print(f'{program}: CRITERIA STALE: the integrated doc {text}. Re-run program_acceptance.py {m} '
+                  '(--no-run when the results exist) in a re-acceptance PR, or add a "criteria" pending entry.')
     return 1 if bad and args.require_fresh else 0
 
 
