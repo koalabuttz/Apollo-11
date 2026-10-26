@@ -434,8 +434,9 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
     /* (TIME2 and TIME1 compared as a pair, not as one 28-bit count: the
      * same test in 16-bit compares, which the overload harness has room for.) */
     const uint16_t t2 = IMAGE->words[024] & 037777u, t1 = IMAGE->words[025] & 037777u;
-#define RK_STEAL_AT_OR_PAST(cs) \
-    (t2 > (uint16_t)((cs) >> 14) || (t2 == (uint16_t)((cs) >> 14) && t1 >= (uint16_t)((cs) & 037777u)))
+#define RK_STEAL_AT_OR_PAST(cs)                                                                    \
+    (t2 > (uint16_t)((cs) >> 14) ||                                                                \
+     (t2 == (uint16_t)((cs) >> 14) && t1 >= (uint16_t)((cs) & 037777u)))
     const uint8_t steal = RK_STEAL_AT_OR_PAST(RK_STEAL_FROM) && !RK_STEAL_AT_OR_PAST(RK_STEAL_TO);
 #undef RK_STEAL_AT_OR_PAST
 #endif
