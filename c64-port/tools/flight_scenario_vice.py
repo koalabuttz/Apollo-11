@@ -260,7 +260,7 @@ def host_hold(name, log):
     return h
 
 
-def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
+def pair_states(host_s, c64_s, ended, after=None):
     """Host and C64 states to compare, paired by their centiseconds: each
     side writes a state at its own first sample point at or after a mark,
     so one side can have a state the other has none for. Checkpoints (before
@@ -270,11 +270,9 @@ def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
     its first sample point at or after each (main), and the end is the
     first centisecond at or after the host's end where both sides have a
     state: the host's end itself, or a later point when the C64 was busy
-    there. It does not pair when a host input the C64 was not given comes
-    before it (after_rows: those inputs' centiseconds; main gives the C64
-    every .after-replay row, so none), or when the two sides share no such
-    point; the host's end and the C64's first state from there are then
-    unpaired. With after None (a chain window before the last, whose end
+    there. When the two sides share no such point, the host's end and the
+    C64's first state from there are unpaired (main gives the C64 every
+    .after-replay row, so no host input can come in between). With after None (a chain window before the last, whose end
     is the next one's seam) the two last states always pair. Returns
     (pairs, unpaired, end): unpaired as dict(side, cs); end None when no
     ends were compared, else dict(shift_cs, paired), shift_cs the paired
@@ -294,13 +292,11 @@ def pair_states(host_s, c64_s, ended, after=None, after_rows=()):
             c = [x for x in c if x[0] < he[0]]
             by_cs = {x[0]: x for x in host_end}
             common = [x for x in c64_end if x[0] in by_cs]
-            if common and not any(cs < common[0][0] for cs in after_rows):
+            if common:
                 ce = common[0]
                 ends, end = [(by_cs[ce[0]], ce)], dict(shift_cs=ce[0] - he[0], paired=True)
             elif c64_end:
-                at = common[0][0] if common else c64_end[0][0]
-                end = dict(shift_cs=at - he[0], paired=False,
-                           inputs_between=bool(common), host_has_cs=bool(common))
+                end = dict(shift_cs=c64_end[0][0] - he[0], paired=False)
                 unpaired.append(dict(side='host', cs=he[0], end=True))
                 unpaired.append(dict(side='C64', cs=c64_end[0][0], end=True))
             else:
@@ -338,14 +334,14 @@ def apart(hw, cw):
     return not idle(hw) and not idle(cw) and (hw[4], hw[5], hw[0o164]) != (cw[4], cw[5], cw[0o164])
 
 
-def replay_verdict(host_s, c64_s, ended, after=None, after_rows=(), skip=None, m=None, exact=False):
+def replay_verdict(host_s, c64_s, ended, after=None, skip=None, m=None, exact=False):
     """pair_states, then each pair compared in order up to the first that
     differs: dict(pairs, unpaired, end, diff, at_cs, matched, skipped,
     masked). A window matches only when diff is empty, it ended and its end
     paired. masked[DEAD_SUPERBANK] counts the pairs where a dead superbank
     was masked (m), masked[DEAD_SUPERBANK_AT] lists each as (host cs, host
     superbank, C64 superbank)."""
-    pairs, unpaired, end = pair_states(host_s, c64_s, ended, after, after_rows)
+    pairs, unpaired, end = pair_states(host_s, c64_s, ended, after)
     diff, at_cs, matched, skipped, masked = [], None, [], set(), {}
     for (hc, hw), (cc, cw) in pairs:
         n = masked.get(DEAD_SUPERBANK, 0)
@@ -982,7 +978,7 @@ def main():
             host_s, c64_s = states(host_end, n_states), c64_states(image[end_at:], min(c64_written, states_max), m)
             c64_end = c64_s[-1][1] if c64_s else None
             skip = None if a.replay_exact else SCHEDULE_SKIP.get(m)
-            v = replay_verdict(host_s, c64_s, bool(ended), host_after, (), skip, mask_mission(a.replay_exact, m),
+            v = replay_verdict(host_s, c64_s, bool(ended), host_after, skip, mask_mission(a.replay_exact, m),
                                a.replay_exact)
             unpaired, end, diff, at_cs, matched, skipped = (v[k] for k in ('unpaired', 'end', 'diff', 'at_cs', 'matched',
                                                                          'skipped'))
@@ -1041,9 +1037,8 @@ def main():
                     print(f'  {x} host {shown(x, h)} C64 {shown(x, c)}')
             elif ended and end and not end['paired']:
                 r['ok'] = False
-                why = 'a host input comes in between' if end['inputs_between'] else 'the host has no state there'
                 print(f"FAIL: {a.scenario}: the C64 {seen}, then ends at {cs + shift} cs, {shift} cs after the host's "
-                      f"end, and the ends are not compared ({why})")
+                      f"end, and the ends are not compared (the host has no state there)")
             elif ended and (applied != n_c64 or not due_extra <= applied_extra <= due_extra + may_extra):
                 r['ok'] = False
                 due = f'{due_extra}-{due_extra + may_extra}' if may_extra else f'{due_extra}'
