@@ -768,7 +768,7 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
 #endif
     return rk_env.status;
 }
-#if defined(RK_WORK_CLOCK) && !defined(RK_RUNS_ONLY)
+#if defined(RK_WORK_CLOCK) && !defined(RK_RUNS_ONLY) && !defined(RK_HOLD_METER)
 /* The idle loop's two steps, remembered (docs/RESIDENT-FLIGHT.md, Idle
  * memo): the self-check pass from SELFRET's return (CCS SMODE, CHECKNJ,
  * POSTJUMP to ADVAN) and ADVAN with no job ready (DXCH Z back to the
@@ -778,7 +778,9 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
  * step that starts on the key it started on last time ends on the result it
  * ended on: the resident writes the result and charges the work it charged,
  * without running the step or loading the idle module. The resident check
- * builds (RK_RUNS_ONLY) leave it out. */
+ * builds (RK_RUNS_ONLY) leave it out, and so does the hold meter's
+ * measurement build (RK_HOLD_METER), which needs its room: the work clock
+ * reads the same without it. */
 #define RK_IDLE_MEMO 1
 #if RK_LM
 #define RK_MEMO_PASS  03304u /* 43,3304 */
