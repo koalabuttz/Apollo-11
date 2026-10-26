@@ -49,6 +49,7 @@ jobs:
       affected: ${{ steps.plan.outputs.affected }}
       host: ${{ steps.plan.outputs.host }}
       c64: ${{ steps.plan.outputs.c64 }}
+      fresh: ${{ steps.plan.outputs.fresh }}
       full: ${{ steps.plan.outputs.full }}
       c64_shards: ${{ steps.plan.outputs.c64_shards }}
       host_shards: ${{ steps.plan.outputs.host_shards }}
@@ -104,6 +105,10 @@ jobs:
           c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')
           [ "$post_merge" = 1 ] && c64=0
           echo "c64=$c64" >> "$GITHUB_OUTPUT"
+          # acceptance-fresh runs where C64 code changed, and where the guard itself did.
+          fresh=$c64
+          if git diff --name-only "$base" HEAD 2>/dev/null | grep -qE '^(c64-port/tools/acceptance_freshness\.py|c64-port/docs/acceptance/|\.github/workflows/port-ci\.yml)'; then fresh=1; fi
+          echo "fresh=$fresh" >> "$GITHUB_OUTPUT"
           echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
           # A full c64 run is over two hours of builds and VICE: split it.
           c64_full=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a.get("c64_full", a["full"])))')
@@ -334,7 +339,7 @@ jobs:
     needs: plan
     env:
       REF: ${{ needs.plan.outputs.sha }}
-    if: github.event_name == 'pull_request' && needs.plan.outputs.c64 == '1'
+    if: github.event_name == 'pull_request' && needs.plan.outputs.fresh == '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
