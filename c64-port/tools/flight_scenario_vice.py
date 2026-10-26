@@ -44,6 +44,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import dap_pass_vice as dp  # noqa: E402
 import flight_holes  # noqa: E402
+import flight_load_profile  # noqa: E402
 import flight_host_differential as fhd  # noqa: E402
 import reu_layout  # noqa: E402
 
@@ -654,6 +655,8 @@ def main():
     p.add_argument('--timeout', type=int, default=3600)
     p.add_argument('--stop-on-holes', action='store_true', help='fail before VICE if the host run bridges any point')
     p.add_argument('--profile', action='store_true', help='cycles per resident step segment (RK_STEP_PROFILE)')
+    p.add_argument('--load-trace', action='store_true',
+                   help='count module loads and bytes fetched by module from the REU trace (tools/flight_load_profile.py)')
     p.add_argument('--keys', action='store_true',
                    help="press the scenario's DSKY keys that fall in the window on the C64, as the host run does")
     p.add_argument('--replay', action='store_true',
@@ -891,7 +894,8 @@ def main():
         regions = [x for x in reu_layout.layout(
             m, manifest, (at, end_at, reu_layout.free_top(m, manifest)) if a.replay else None)
             if x[0] != a.reu_check_drop]
-        r = dp.vice(a, tag, prg, pinned, m, patch, [reu_layout.dma_trace(regions)])
+        r = dp.vice(a, tag, prg, pinned, m, patch, [reu_layout.dma_trace(regions)]
+                    + ([flight_load_profile.monitor()] if a.load_trace else []))
         r.update(mission=m, snap_cs=a.snap_cs, replay=bool(a.replay))
         after = dp.WORK / f'vice-{tag}' / 'image.reu'
         if r.get('status') is not None and after.exists():
@@ -914,6 +918,9 @@ def main():
             else:
                 print(f'{a.scenario}: every DMA inside the {m} REU layout')
             r['reu_bounds'] = bounds
+            if a.load_trace:
+                r['load_profile'] = flight_load_profile.profile(log, manifest)
+                flight_load_profile.show(r['load_profile'])
             if not bounds['ok']:
                 r['ok'] = False
         if a.replay and r.get('status') is not None:
