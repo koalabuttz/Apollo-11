@@ -511,8 +511,11 @@ static unsigned idle_weight(const agc_word *w,agc_word sb,int isr){
   * one idle charge, and its timer steps come due at ADVAN. Here POSTJUMP is
   * a step of its own, so the pass's charge goes there: SELFCHK costs
   * nothing, and the period's steps (and an interrupt they request) also
-  * come due at ADVAN, after its sample point. */
- if(!isr&&agc_fixed_physical(02000u,w[4],sb)/1024u==043u)
+  * come due at ADVAN, after its sample point.
+  * Pinball's code shares bank 43 and calls POSTJUMP from it in a job
+  * (43,2365 and others): only CHECKNJ's call (43,3334, so Q 03335) is the
+  * idle pass's; any other is work, weighed below as the C64 weighs it. */
+ if(!isr&&agc_fixed_physical(02000u,w[4],sb)/1024u==043u&&((w[5]&07777u)!=04635u||(w[2]&07777u)==03335u))
   return (w[NEWJOB]&077777u)==077777u&&(w[5]&07777u)==04635u?FLIGHT_IDLE_TICK:0u;
  key=point(w,sb,&in);
  for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&tables[i].mct&&!(tables[i].mct&FLIGHT_PLUS_WORDS)&&find(tables[i].t,key))return tables[i].mct;
