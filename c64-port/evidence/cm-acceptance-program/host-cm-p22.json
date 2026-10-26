@@ -11,8 +11,9 @@
   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p22.load,13100:tools/flight_scenarios/cm-p22-mark1.load,15100:tools/flight_scenarios/cm-p22-mark2.load"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "39dc823fd285",
+ "commit": "11cab8d39055",
  "cia_interrupts": 23004,
  "periods_taken": 23000,
  "periods_dropped": 4,

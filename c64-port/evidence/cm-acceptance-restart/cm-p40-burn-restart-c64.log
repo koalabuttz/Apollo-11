@@ -1,16 +1,16 @@
 build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
-cm-p40-burn-restart: commit 39dc823fd2850b4f422a35d0141cb6c4340ae78c with local changes; store cm.reu sha256 a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf
+cm-p40-burn-restart: commit 11cab8d39055f515cf7cd3e4fdb9e08562366f3b with local changes; store cm.reu sha256 a22042dfd13040dd047559a4d8668d5d7a378d796c44115b31b0b91b47dcd9c6
 cm-p40-burn-restart: the host run to 50300 cs bridges 0 points, each a stop on the C64
 cm-p40-burn-restart: snapshot at 50000 cs (asked 50000, +0 cs)
 cm-p40-burn-restart: 134 host input rows (134 on the C64) in the window at REU 0x1d2400 (127 PIPA counts, 7 erasable words, 0 channels, 0 interrupt requests), then 4 past the host's end
 cm-p40-burn-restart: REU writes inside the cm layout (changed: pinball save, replay states, scratch)
-cm-p40-burn-restart: 9 DMAs seen only after they ran (last byte checked)
+cm-p40-burn-restart: 4 DMAs seen only after they ran (last byte checked)
 cm-p40-burn-restart: every DMA inside the cm REU layout
 cm-p40-burn-restart: interrupt hold: host max 1081 MCT at TIME1 01547
 cm-p40-burn-restart: the C64 matches the host at 50, 100, 150, 201, 250, 300 cs: it ends the window (307 cs, all 134 input rows) in the host's state
-cm-p40-burn-restart from 50000 cs: 66325920 cycles for 307 AGC cs (21.928 x real time), 0 ticks dropped, 1568 steps, status 0 at 01,3231 (Z 03231 FB 02000 superbank 0100)
-  T3RUPT: 16 x, mean 244735 cycles (max 750851), 125 steps, 52 job and 2 task loads
-  T4RUPT: 74 x, mean 92567 cycles (max 164959), 247 steps, 25 job and 152 task loads
-  T5RUPT: 75 x, mean 281098 cycles (max 314502), 229 steps, 42 job and 5 task loads
-  T6RUPT: 5 x, mean 61284 cycles (max 82072), 15 steps, 1 job and 1 task loads
-  background: 170 x, mean 200963 cycles (max 3887710), 952 steps, 264 job and 15 task loads
+cm-p40-burn-restart from 50000 cs: 66324714 cycles for 307 AGC cs (21.928 x real time), 0 ticks dropped, 1568 steps, status 0 at 01,3231 (Z 03231 FB 02000 superbank 0100)
+  T3RUPT: 16 x, mean 244875 cycles (max 751670), 125 steps, 52 job and 2 task loads
+  T4RUPT: 74 x, mean 92589 cycles (max 165638), 247 steps, 25 job and 152 task loads
+  T5RUPT: 75 x, mean 281089 cycles (max 314493), 229 steps, 42 job and 5 task loads
+  T6RUPT: 5 x, mean 61323 cycles (max 82219), 15 steps, 1 job and 1 task loads
+  background: 170 x, mean 200937 cycles (max 3888349), 952 steps, 264 job and 15 task loads

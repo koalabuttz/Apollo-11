@@ -11,8 +11,9 @@
   "FLIGHT_POKE": "3300:032=01062,3300:033=33476,3300:034=01144,5800:032=03521,5800:033=42475,5800:034=77717"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "6e8b31cefe1d",
+ "commit": "11cab8d39055",
  "cia_interrupts": 8007,
  "periods_taken": 8002,
  "periods_dropped": 5,
@@ -39,15 +40,23 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
-  "14,3427": 507
+  "14,3427": 507,
+  "07,2613": 3502
  },
  "arrivals": {
   "14,3427": [
    507
+  ],
+  "07,2613": [
+   3502,
+   3602,
+   6002,
+   6102
   ]
  },
- "log_sha256": "ae1ca4c0dde14d556f07c778be4733da07d38c09f94ccc319f1fc9fbaa0818b6"
+ "log_sha256": "e61fdf3cfde278b0f4ba267d3e09a6d91bdd8ffe60dce9a6cffae553af159ed2"
 }

@@ -264,7 +264,7 @@ def check(m, dest):
     return out
 
 
-def section(results, runs, first_diff):
+def section(results, runs, first_diff, busy_note=lambda win: ''):
     """(lines, bad): the doc section, and what fails the result. runs are
     device_acceptance's window results (with '_why', empty on a match)."""
     bad, lines = [], ['## Off-nominal inputs', '',
@@ -285,7 +285,7 @@ def section(results, runs, first_diff):
             win = next((r for r in runs if r['scenario'] == row['scenario'] and r.get('snap_cs') == snap), None)
             c64 = ('not run' if win is None else
                    'matches the host at ' + ', '.join(map(str, win.get('replay_matched_cs') or [])) + ' cs'
-                   if not win['_why']
+                   + busy_note(win) if not win['_why']
                    else 'differs: ' + first_diff(win) if win.get('replay_differences')
                    else 'no match: ' + '; '.join(win['_why']))
             if win is not None and win.get('replay_every', 50) != 50:

@@ -15,8 +15,9 @@
   "FLIGHT_CHAN": "20400:031=077777,22000:031=057777"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "6e8b31cefe1d",
+ "commit": "11cab8d39055",
  "cia_interrupts": 36500,
  "periods_taken": 36500,
  "periods_dropped": 0,
@@ -43,7 +44,8 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
   "23,2103": 22150,
@@ -141,5 +143,5 @@
    35650
   ]
  },
- "log_sha256": "798035d4a648de5f374149da6ae250876bd8d8b89996bbf5ff6d3a25416b5700"
+ "log_sha256": "e6692bcaaa2eaf3ceb9ffb0036c038c6e2024c86222acf6916ebad4a51541d36"
 }

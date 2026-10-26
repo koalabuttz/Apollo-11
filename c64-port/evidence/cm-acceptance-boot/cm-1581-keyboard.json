@@ -6,56 +6,56 @@
  "loader_bytes": 6392,
  "resident_bytes": 38019,
  "resident_start": 2061,
- "boot_return": 2871,
+ "boot_return": 2887,
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
- "bytes_loaded": 1863663,
+ "bytes_loaded": 1863151,
  "data_bytes": [
-  792189
+  792108
  ],
  "vice": {
   "mission": "cm",
   "ok": true,
   "fast_loader": true,
-  "load_cycles": 260751722,
+  "load_cycles": 260773740,
   "load_s": 264.7,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80784,
-  "boot_cycles": 107751737,
+  "handoff_cycles": 80785,
+  "boot_cycles": 107747965,
   "boot_s": 109.4,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 39164862,
-    "time1": "01450",
-    "z": "04701",
-    "fb": "66000",
+    "cycles": 28787690,
+    "time1": "01116",
+    "z": "04040",
+    "fb": "02000",
     "modreg": "77777"
    },
    {
-    "cycles": 81897006,
-    "time1": "03276",
-    "z": "03521",
-    "fb": "12000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 121680750,
-    "time1": "05024",
-    "z": "03521",
-    "fb": "12000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 162231078,
-    "time1": "06567",
+    "cycles": 61436306,
+    "time1": "02407",
     "z": "02000",
     "fb": "20000",
     "modreg": "77777"
+   },
+   {
+    "cycles": 93632830,
+    "time1": "03672",
+    "z": "03231",
+    "fb": "02000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 124355159,
+    "time1": "05110",
+    "z": "03536",
+    "fb": "12000",
+    "modreg": "77777"
    }
   ],
-  "pc": "37bf",
+  "pc": "482e",
   "screen": [
    " APOLLO 11 CM DSKY",
    "",
@@ -105,7 +105,7 @@
     {
      "name": "store",
      "start": "0x0",
-     "end": "0x1b6000",
+     "end": "0x1b5e00",
      "writable": false
     },
     {
@@ -140,7 +140,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 37,
+   "dma_unchecked": 34,
    "trace_errors": [],
    "trace_ok": true
   }

@@ -13,8 +13,9 @@
   "FLIGHT_LR": "60000"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "6e8b31cefe1d",
+ "commit": "11cab8d39055",
  "cia_interrupts": 115029,
  "periods_taken": 115029,
  "periods_dropped": 0,
@@ -41,7 +42,8 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
   "25,3471": 100205
@@ -52,5 +54,5 @@
    111727
   ]
  },
- "log_sha256": "1c04d6787e18052ab2aa181b91ff72c6549b2b4bade5109af7650b304a2d417c"
+ "log_sha256": "cf81451fb4aa6e1c19ecc170c68713c10430816a3e0f3a6bf0cf646876b462db"
 }

@@ -66,7 +66,7 @@ DSKY 8602 cs: P52 V33 N93 R1 +42292 R2 +86884 R3 +58043
 DSKY 8654 cs: P52 V   N   R1        R2        R3       
 LM: 542304 native routines (8535996 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
 scaled time: K 1.00, divisor 1, lag 2, seed 0: 10003 CIA interrupts, 10002 clock periods taken, 1 dropped (rk_dilation); AGC time 10002 cs
-night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule; yaAGC's own alarm inside 0 spans
+night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule (0 with the native rule armed); yaAGC's own alarm inside 0 spans
 major mode (MODREG 01011) at 10000 cs: native 64, yaAGC 00; FAILREG 01520/00000
 interpreter module: 838 routines, 838 slots; 760 charged other than yaAGC's words
 interpreter charge: fitted 163084 MCT, yaAGC 153048 MCT (+6.6%) over 838 routines; mean |error| 36.0 MCT per routine

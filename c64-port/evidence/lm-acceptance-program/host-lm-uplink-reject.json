@@ -8,8 +8,9 @@
   "FLIGHT_UPLINK": "2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "6e8b31cefe1d",
+ "commit": "11cab8d39055",
  "cia_interrupts": 9000,
  "periods_taken": 9000,
  "periods_dropped": 0,
@@ -36,7 +37,8 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
   "04,3401": 2060,
@@ -48,5 +50,5 @@
   ],
   "04,3632": []
  },
- "log_sha256": "d0dd07331c92706c7da2c8476b5e1e2d3823323f22aaeb1ee3f2cf2a8f717ed4"
+ "log_sha256": "f94a3c8b879e377544c350ad37405333ffc9be0a96a1ee6dad9212c18e7e88dd"
 }
