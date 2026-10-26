@@ -294,13 +294,19 @@ instead a work clock: AGC time advances by the work the resident ran.
   direct run that starts at a lead-in vector (04000-04053, GOPROG to
   RUPT10) charges its first routine the lead-in table's 9 MCT. The AGC's
   own costs are 5 (GOPROG), 7 (banked vectors), 8 (RUPT10) and 10 (T5,
-  T6), so each interrupt's lead-in is charged between 3 MCT too much and
-  1 too little. The LM in powered flight takes about 100 interrupts a
-  second: DOWNRUPT alone is 50, and lm-p63-overload 19000+600 takes T3RUPT
-  5.4, T4RUPT 11.5 and T5RUPT 10.0 a second (the C64 run's own counts),
-  plus T6RUPT, up to two per DAP pass (20), and RADARUPT. Allowing up to
-  130 a second, the error is at most about 390 of the 85,333 MCT in an AGC
-  second (0.46%; issue #912 item 4, the rate not otherwise measured). On
+  T6), so a lead-in is charged between 4 MCT too much (GOPROG, taken only
+  at a restart) and 1 too little; in flight, 2 too much (the banked
+  vectors: T3, T4, the keys, UPRUPT, DOWNRUPT, RADARUPT) or 1 too little
+  (T5RUPT, T6RUPT). Counted on the host (`FLIGHT_RUPT_COUNT=1`, with
+  `FLIGHT_DOWNRUPT=1` as on the disk; issue #912 item 4), the LM in powered
+  flight takes 78 to 83 interrupts a second: DOWNRUPT 50, T4RUPT 11 to 15,
+  T5RUPT 10, T3RUPT 4.5 to 5.5 and, with the landing radar on, RADARUPT 3,
+  over lm-p63-overload 19000+600, lm-p63-descent-thrust 17500+1000,
+  lm-p63-nassp 108000+1000 and lm-landing-ascent-nassp 126000+1000 (P66).
+  T6RUPT is rare: none in those four, 3 in lm-p63-att 17400+300 and 4 in
+  lm-rhc-att-turn 3500+900 (under 1 a second). At 2 MCT each the error is
+  at most about 166 of the 85,333 MCT in an AGC second (0.19%); with the
+  counted mix it is about 135 too much (0.16%). On
   the work clock that acts as a CPU-speed error of that size: it moves
   where a routine falls against the timers, not the timers' own rate. The
   host is charged the same, so a replay still compares like with like
