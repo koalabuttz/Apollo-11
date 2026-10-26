@@ -431,9 +431,13 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
      * each T5 step also spends RK_STEAL MCT that no routine runs in, the
      * counter cycles Apollo 11's RR CDU counts took. The time as the step
      * starts, where the host reads it. Replay builds only. */
-    const uint32_t cs =
-        ((uint32_t)(IMAGE->words[024] & 037777u) << 14) | (IMAGE->words[025] & 037777u);
-    const uint8_t steal = cs >= RK_STEAL_FROM && cs < RK_STEAL_TO;
+    /* (TIME2 and TIME1 compared as a pair, not as one 28-bit count: the
+     * same test in 16-bit compares, which the overload harness has room for.) */
+    const uint16_t t2 = IMAGE->words[024] & 037777u, t1 = IMAGE->words[025] & 037777u;
+#define RK_STEAL_AT_OR_PAST(cs) \
+    (t2 > (uint16_t)((cs) >> 14) || (t2 == (uint16_t)((cs) >> 14) && t1 >= (uint16_t)((cs) & 037777u)))
+    const uint8_t steal = RK_STEAL_AT_OR_PAST(RK_STEAL_FROM) && !RK_STEAL_AT_OR_PAST(RK_STEAL_TO);
+#undef RK_STEAL_AT_OR_PAST
 #endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];

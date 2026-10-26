@@ -295,9 +295,10 @@ LOW_TEXT("dp_early") static uint8_t row_early(void)
     uint8_t at = row.where >> 1 & 3u, step = phase_step[rk_tick_phase];
     return at && row.cs == replay_now && (step < at || (step == at && rk_work < row.work));
 }
-static uint16_t rows_left = DP_REPLAY_ROWS;
+/* (Set by load_snapshot: in the cassette buffer, not the resident's .data.) */
+static uint16_t rows_left CASSETTE;
 static uint8_t row_ready CASSETTE;
-static uint32_t row_at = DP_REPLAY_REU, state_at = DP_END;
+static uint32_t row_at CASSETTE, state_at CASSETTE;
 #ifdef DP_BUSY
 static uint16_t busy_last CASSETTE;
 #endif
@@ -469,7 +470,7 @@ LOW_TEXT("dp_rows_after_rupts") void dp_rows_after_rupts(void)
 #if DP_OUTPUTS_MAX
 static uint16_t outputs_last[6] CASSETTE;
 static uint16_t outputs_bytes CASSETTE;
-static uint8_t outputs_full CASSETTE, outputs_started CASSETTE;
+static uint8_t outputs_full CASSETTE;
 /* Where each channel's value is: on the CM, rk_device (cm_native_io)
  * holds channels 11-14 (tools/flight_scenario_vice.py c64_states). The
  * list's code and tables sit in the text screen (resident_flight.ld
@@ -514,9 +515,8 @@ OUT_TEXT("text") static void outputs_log(uint16_t t)
         uint16_t v = *output_at[i];
         if (v == outputs_last[i]) continue;
         outputs_last[i] = v;
-        if (outputs_started) outputs_record(t, i, v);
+        outputs_record(t, i, v);
     }
-    outputs_started = 1;
 }
 #endif
 /* The rows a sample point's state follows: those a busy C64 held back
@@ -535,11 +535,6 @@ DP_SCREEN_TEXT("replay_due") static uint8_t replay_due(void)
     uint16_t t = replay_cs();
     uint8_t sp = sample_point(t);
     replay_now = t;
-#if DP_OUTPUTS_MAX
-    /* The values the window starts from, before its first rows (the
-     * host's, at its snapshot). */
-    if (!outputs_started) outputs_log(t);
-#endif
     if (sp) {
 #ifdef DP_BUSY
         busy_last = t;
@@ -596,6 +591,18 @@ static void BOOT load_snapshot(void){
  rk_tick_phase = 0;
  rk_part_cont = rk_part_prev = 0;
  rupt.value = 0;
+ rows_left = DP_REPLAY_ROWS;
+ row_at = DP_REPLAY_REU;
+ state_at = DP_END;
+#if DP_OUTPUTS_MAX
+ /* The output values the window starts from (the host's, at its
+  * snapshot): set here, in the boot code, so the text screen's list code
+  * only records changes. */
+ {
+     uint8_t i;
+     for (i = 0; i < 6u; ++i) outputs_last[i] = *output_at[i];
+ }
+#endif
 #endif
 }
 
