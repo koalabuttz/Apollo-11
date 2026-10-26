@@ -77,7 +77,7 @@
   "pre_snapshot": "build/flight-restart/lm-p12-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -207,10 +207,10 @@
   "requested_cs": 368,
   "host_holes": [],
   "downrupt": false,
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "exit": 0,
   "log": "lm-p12-restart-c64.log",
-  "log_sha256": "fecbd639a90639d1595f8c3aae8c1ae8aa6bf4107526ee77da13eb5098804510",
+  "log_sha256": "8c53cd8fe5277d40b767b5ddf4b9aebf599899140a0c3ee9496bd476898fe611",
   "store_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
   "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259",
   "prg_sha256": "9e8fb26f73157fb6f20fc5bd266d20eb92eaa55a97124c55ceec0f54f9e21188"

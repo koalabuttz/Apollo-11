@@ -74,7 +74,7 @@
   "pre_snapshot": "build/flight-restart/lm-doi-burn-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -202,10 +202,10 @@
   "requested_cs": 325,
   "host_holes": [],
   "downrupt": false,
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "exit": 0,
   "log": "lm-doi-burn-restart-c64.log",
-  "log_sha256": "1278ad92971e264c2206a7b3355328c39ee18771eea4f21a592753c39917fcbc",
+  "log_sha256": "5519ef4d4220ddba984f4085f71292b1c934d6bba3430d668e49acedafcda1c8",
   "store_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
   "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259",
   "prg_sha256": "7127847d9fcef5d0e199de9229cb2d9041d8fe07fe960e011d9210c23177ba31"

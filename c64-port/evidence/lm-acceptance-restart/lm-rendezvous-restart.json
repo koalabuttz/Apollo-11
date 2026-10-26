@@ -71,7 +71,7 @@
   "pre_snapshot": "build/flight-restart/lm-rendezvous-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -204,10 +204,10 @@
   "requested_cs": 300,
   "host_holes": [],
   "downrupt": false,
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "exit": 0,
   "log": "lm-rendezvous-restart-c64.log",
-  "log_sha256": "620746a02f29399180e16e7cdcb598ffc8365a97968a293c163dedd2f8366e49",
+  "log_sha256": "cb299666e2e0ab02de0b9feaf956e30e31799c4c48920dcc99cad69d2e0cfa64",
   "store_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
   "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259",
   "prg_sha256": "59ecd1de193e1d4f2a29704b92cb5f39f23d05b8eb06a3c2a9bb0eadd8036f89"

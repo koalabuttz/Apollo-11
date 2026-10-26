@@ -37,9 +37,34 @@
   },
   "integrated_applications": {
     "Luminary099": {
-      "status": "unverified",
-      "reviewed_entire_program": false,
-      "evidence": {},
+      "status": "complete",
+      "reviewed_entire_program": true,
+      "evidence": {
+        "bootable_c64_application": {
+          "path": "docs/acceptance/Luminary099-bootable_c64_application.md",
+          "sha256": "94b36accd0eb60c4e43313183d65d8c6aab1ff5bce524df8afe22dce7f5ebbdf"
+        },
+        "integrated_program_tests": {
+          "path": "docs/acceptance/Luminary099-integrated_program_tests.md",
+          "sha256": "437005759bf9de145d4951e1a8118041b98f9d8e89b2a8bf24435498c1b23ab4"
+        },
+        "device_adapter_tests": {
+          "path": "docs/acceptance/Luminary099-device_adapter_tests.md",
+          "sha256": "f02fd80c363b37447d38ce96e83670b9ece162c1f0c3c52b1fa3637565bb23d5"
+        },
+        "native_output_tests": {
+          "path": "docs/acceptance/Luminary099-native_output_tests.md",
+          "sha256": "04ce38fc0b2348fe331ff7d7849e8c5844a1ce8803ccd7b3cfaeaca6aac6ce2f"
+        },
+        "memory_and_overlay_validation": {
+          "path": "docs/acceptance/Luminary099-memory_and_overlay_validation.md",
+          "sha256": "1e1a316ea35401f71a5bab245ff7c5f6799d1a764151f9036e1445b8ca25fce7"
+        },
+        "recovery_and_restart_tests": {
+          "path": "docs/acceptance/Luminary099-recovery_and_restart_tests.md",
+          "sha256": "3bcae5c84a4d28f66e1670bb2df14eea42278815f3748cdf7993ceba215ef627"
+        }
+      },
       "qualified_partial_milestones": [
         {
           "verification": "docs/P66-APPLICATION-STARTUP.md",
@@ -51,7 +76,8 @@
           "scope": "111-module native C64 STARTP66 guidance display idle actual hardware clock IRQ1 RODTASK RESUME and second guidance iteration,310 C64 checkpoints; complete flight program and ongoing periodic scheduling remain open.",
           "reviewed_entire_program": false
         }
-      ]
+      ],
+      "acceptance_commit": "6e8b31cefe1d1265bc7a002210b59f80e04ddd1e"
     },
     "Comanche055": {
       "status": "complete",

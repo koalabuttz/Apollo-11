@@ -72,7 +72,7 @@
   "pre_snapshot": "build/flight-restart/lm-p63-descent-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -190,10 +190,10 @@
   "requested_cs": 302,
   "host_holes": [],
   "downrupt": false,
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "exit": 0,
   "log": "lm-p63-descent-restart-c64.log",
-  "log_sha256": "69ae3a45e35a79f19efab949abdbb566ce7d3ef42befe6004b95077ffd09b6e9",
+  "log_sha256": "920aa9d9b89ddc9a56b9fd1cfd2abd615e19f4f79ebdf4643af9924a167480d4",
   "store_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
   "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259",
   "prg_sha256": "9fa3d53ef7f6d952c0ad0a8f12936989d15624b6201b47e4b39683c0c2a4288b"
@@ -344,7 +344,7 @@
    },
    "ok": true
   },
-  "commit": "7dd3db437cfa",
+  "commit": "6e8b31cefe1d",
   "log": "gojam-on-c64.log",
   "log_sha256": "e7f23ba73a6b46dcdb3136ec2acca320ec261f962c7cc640676d4229c7b90bd0"
  }
