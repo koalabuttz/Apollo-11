@@ -362,29 +362,43 @@ class OffNominal(unittest.TestCase):
     def test_host_failure_fails_the_doc(self):
         _, res = self.results(ok=False)
         lines, bad = da.offnom.section(res, [], da.first_diff)
-        self.assertEqual(len(bad), 2)  # the host row, and its window not run
+        row = res[0]['row']
+        self.assertEqual(len(bad), 1 + len(row['windows']))  # the host row, and each window not run
         self.assertIn('not run', '\n'.join(lines))
 
     def test_window_match_and_difference(self):
         row, res = self.results()
-        snap, cs = row['window']
+        (snap, cs), *rest = row['windows']
         good = dict(window(scenario=row['scenario'], snap_cs=snap, requested_cs=cs), _why=[])
-        lines, bad = da.offnom.section(res, [good], da.first_diff)
+        others = [dict(window(scenario=row['scenario'], snap_cs=s, requested_cs=c), _why=[]) for s, c in rest]
+        lines, bad = da.offnom.section(res, [good] + others, da.first_diff)
         self.assertEqual(bad, [])
         self.assertIn('matches the host at 60, 120 cs', '\n'.join(lines))
         diff = dict(good, _why=['differs'], replay_differences=2, replay_differ_at_cs=50,
                     replay_first=[dict(at='0035', host='00001', c64='00002')])
-        lines, bad = da.offnom.section(res, [diff], da.first_diff)
+        lines, bad = da.offnom.section(res, [diff] + others, da.first_diff)
         self.assertEqual(bad, [])  # a differing window is an open item, not a failure
         self.assertIn('differs: 2 words by 50 cs', '\n'.join(lines))
         skipped = dict(good, _why=['6 checkpoints not compared'])
-        lines, _ = da.offnom.section(res, [skipped], da.first_diff)
+        lines, _ = da.offnom.section(res, [skipped] + others, da.first_diff)
         self.assertIn('no match: 6 checkpoints not compared', '\n'.join(lines))
         shared = dict(good, replay_every=100)  # the device window's run at the same snapshot
-        lines, _ = da.offnom.section(res, [shared], da.first_diff)
+        lines, _ = da.offnom.section(res, [shared] + others, da.first_diff)
         self.assertIn("(the device window's run, checkpoints every 100 cs)", '\n'.join(lines))
-        lines, _ = da.offnom.section(res, [dict(good, replay_every=50)], da.first_diff)
+        lines, _ = da.offnom.section(res, [dict(good, replay_every=50)] + others, da.first_diff)
         self.assertNotIn("device window's run", '\n'.join(lines))
+
+    def test_check_names_its_window(self):
+        row, res = self.results()
+        (snap, cs), *rest = row['windows']
+        runs = [dict(window(scenario=row['scenario'], snap_cs=s, requested_cs=c), snap_at=s + 5, agc_cs=c + 8,
+                     _why=[]) for s, c in row['windows']]
+        res[0]['host']['checks'] = [dict(check='lamp', kind='word', ok=True, at_cs=snap + 100),
+                                    dict(check='late', kind='word', ok=True, at_cs=snap + cs + 5000)]
+        text = '\n'.join(da.offnom.section(res, runs, da.first_diff)[0])
+        self.assertIn(f'lamp: yes, at {snap + 100} cs (C64 window {snap}+{cs})', text)
+        self.assertIn('(host only: no C64 window holds it)', text)
+        self.assertIn(f'{snap}+{cs} (ran {snap + 5}-{snap + 5 + cs + 8})', text)
 
 
 class Windows(unittest.TestCase):
