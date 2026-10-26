@@ -24,7 +24,7 @@ interrupt hold work: max 1109 MCT at TIME1 11423 (1200 stolen)
 
 The same meter runs in two places:
 - on the host, `tools/flight_host_run.c` with `FLIGHT_HOLD=1`, over the replay window;
-- on the C64, `tools/flight_scenario_vice.py --replay --hold`, which builds with `-DRK_HOLD_METER`, a measurement build only. The result is in mailbox bytes 0x36-0x39.
+- on the C64, `tools/flight_scenario_vice.py --replay --hold`, which builds with `-DRK_HOLD_METER`, a measurement build only. The result is in mailbox bytes 0x36-0x39. That build leaves out the idle memo (`RK_IDLE_MEMO`, docs/RESIDENT-FLIGHT.md) to make room for the meter in the overload replay harness: the memo writes the result and charges the work the idle step itself would (tests/test_idle_memo.c), so the work clock and the meter read the same without it, only slower.
 
 Where a window matches the host, both sides report the same hold.
 
