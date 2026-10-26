@@ -519,6 +519,22 @@ def host_rows(m, summary, env, commit):
     return rows
 
 
+# The summary fields host_rows reads (charge_state reads interpretive_charge).
+HOST_FIELDS = ('scenario', 'mission', 'commit', 'exit', 'native_routines', 'routine_mismatches', 'unregistered',
+               'interpretive_charge')
+
+
+def host_evidence(m, summary):
+    """The rows of m's host summary that host_rows reads (its scaled-x1
+    flight scenarios), with only the fields it reads: the stored copy stays
+    under the in-tree limit (the whole LM summary is over 256 KiB, mostly
+    per-point arrival and load counts) and gives the same document rows."""
+    import flight_host_differential as fhd  # noqa: E402
+    names = {f'{name}-scaled-x1' for name, mm, *_ in fhd.FLIGHT if mm == m}
+    return [{k: r[k] for k in HOST_FIELDS if k in r} for r in summary
+            if r.get('mission') == m and r.get('scenario') in names]
+
+
 def not_matched(r, asked, commit):
     """Why a window result is not a match ([] when it is)."""
     why = []
@@ -746,7 +762,7 @@ def main(argv=None):
         shutil.rmtree(out, ignore_errors=True)
         out.mkdir(parents=True)
         a.run = [str(run_window(*w, out)) for w in windows(m)]
-    host = [r for r in json.loads(pathlib.Path(a.host).read_text()) if r.get('mission') == m]
+    host = host_evidence(m, json.loads(pathlib.Path(a.host).read_text()))
     copy = dest / 'host-summary.json'
     copy.write_text(json.dumps(host, indent=1) + '\n')
     host_cite = stored(copy)
