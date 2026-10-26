@@ -183,7 +183,10 @@ static inline uint16_t rk_module_limit(uint16_t budget,uint8_t mct) {
      * (tools/resident_flight_build.py mct_weight): under RK_MODULE_STEPS. */
     /* The empty asm keeps LLVM from folding the loop into a division,
      * which links __udivhi3 (196 bytes) into every flight module. */
-    while(budget>=mct) { budget-=mct; ++n; __asm__("" : "+r"(budget)); }
+    /* The routines that start before the tick: a run whose work reaches
+     * the budget exactly ends there, as on the host (tools/flight_host_run.c:
+     * a step due at wall == step_at takes its request first). */
+    while(budget>mct) { budget-=mct; ++n; __asm__("" : "+r"(budget)); }
     return n;
 }
 /* A module's run, as the step reports it: an unmapped point after at least
