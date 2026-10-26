@@ -37,6 +37,7 @@
  * direct call differs from their main ($c3df their count). */
 #include <stdint.h>
 #include "resident_flight.h"
+#include "flight_undo.h"
 #define BOOT_DATA __attribute__((section(".boot.text.fl_data")))
 #define BOOT __attribute__((noinline,section(".boot.text.fl_check")))
 typedef struct { uint16_t id, bytes, bank, loc; } fl_module;   /* loc 0: no record to call */
@@ -191,6 +192,38 @@ static void point_record(fl_point *p,enum exec_status st,uint16_t steps,uint8_t 
  /* The status as a code under 16: 0-7 as they are, 8 for 1201, 9 for 1202. */
  uint8_t code=st==EXEC_NO_VAC?8u:st==EXEC_NO_CORE?9u:(uint8_t)st<8u?(uint8_t)st:15u;
  p->status=(uint8_t)(code|flags|(uint8_t)(steps>>1&0x80u));}
+/* Every other resolver record of a direct module (tools/flight_vice_load.py
+ * writes them into its copy of the store, between the flight undo image and
+ * the scratch; docs/FLIGHT-STORE.md): at FL_POINTS_REU the point count, one
+ * count per module in fl_modules order, then each point's bank and loc, then
+ * room for each point's fl_point. Each runs as the module's own point does,
+ * from the same start state; the results go to the job slot at the end
+ * ($8000), which the tool saves. A store without the table holds zeros. */
+#define FL_POINTS_REU 0x1F3000ul
+#define FL_POINTS_END 0x1F8000ul
+_Static_assert(FL_POINTS_REU>=FLIGHT_UNDO_REU+FLIGHT_UNDO_BYTES&&FL_POINTS_END<=FLIGHT_UNDO_LIMIT,
+               "the points table overlaps the undo image or the scratch");
+static uint16_t points_total;
+static uint32_t points_at,points_out;
+static void point_run(const fl_module *m,uint8_t *slot,uint16_t bytes,fl_point *p){enum exec_status b;
+ direct_state(m);
+ apollo_reu_transfer(APOLLO_REU_FETCH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
+ fl_direct_steps=0u;fl_direct_full=0u;
+ b=rk_direct(AGC_TRANSFER_NONE,AGC_TRANSFER_NONE);
+ point_record(p,b,fl_direct_steps,fl_direct_full?FL_POINT_FULL:0u);
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;}
+/* Module k's other points: run when its own point ran directly, skipped
+ * (FL_POINT_NONE) when not. */
+static void more_points(uint16_t k,const fl_module *m,uint8_t run){uint16_t n,j,w[2];uint8_t *slot=0;uint16_t bytes=0;uint8_t i;
+ fl_module q=*m;fl_point p;
+ if(!points_total)return;
+ apollo_reu_transfer(APOLLO_REU_FETCH,&n,FL_POINTS_REU+2ul+2ul*k,2u);
+ for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]==m->id){slot=rk_runtime.slot[i];bytes=apollo_ov2_slot_bytes(i);}
+ for(j=0;j<n;++j,points_at+=4u,points_out+=4u){
+  p.sum=0;p.steps=0;p.status=FL_POINT_NONE;
+  if(run&&slot){apollo_reu_transfer(APOLLO_REU_FETCH,w,points_at,4u);q.bank=w[0];q.loc=w[1];point_run(&q,slot,bytes,&p);}
+  apollo_reu_transfer(APOLLO_REU_STASH,&p,points_out,sizeof p);}}
+
 static uint16_t direct(uint16_t k,const fl_module *m,fl_timing *tm){uint16_t *main_cycles=&tm->main;apollo_ov2_cont at={m->id,0},resume;uint16_t value,sum,t;
  uint8_t ok;
  uint8_t action,i;enum exec_status a,b;
@@ -284,6 +317,25 @@ static void stack_peak(void){volatile uint8_t *p=FL_STACK_FLOOR;
     *(volatile uint16_t *)0xc3f6 = (uint16_t)(0xd000u - (uintptr_t)p);
 }
 
+#ifdef FL_SNAP
+/* -DFL_SNAP="<header>" (tools/flight_vice_load.py --snap): every point
+ * starts from a host flight snapshot (tools/flight_host_run.c
+ * FLIGHT_SNAPSHOT) instead of the boot image, as the replay harness loads
+ * one (platform/c64/dap_pass_check.c load_snapshot), so more of them find
+ * the job and interrupt state their routines run in. */
+#include "resident_cdu.h"
+#define SNAP_DATA BOOT_DATA
+#include FL_SNAP
+static void BOOT snapshot(void){
+ memcpy(IMAGE->words,snap_words,sizeof snap_words);
+ SNAP_IO(rk_device)
+ SNAP_HW(rk_hardware)
+ SNAP_FLIGHT(rk_flight)
+ SNAP_CDU(rk_cdu)
+ rk_device_from_canonical();
+ rk_pending=0;rk_work=0;rk_tick_phase=0;rk_part_cont=rk_part_prev=0;}
+#endif
+
 int main(void){uint16_t i;
  expect(rk_boot()==0,1);
  if(!failures){
@@ -291,11 +343,18 @@ int main(void){uint16_t i;
   resolve_records();
   fixed_extension();
   __asm__ volatile("sei");
+#ifdef FL_SNAP
+  snapshot();
+#endif
   apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;clock_save();
 #ifdef FL_PINNED
   pinned();
 #endif
   rk_pinned=0;
+  apollo_reu_transfer(APOLLO_REU_FETCH,&points_total,FL_POINTS_REU,2u);
+  /* Step 15: the points table fits its area and its results the job slot. */
+  if(FL_POINTS_REU+2ul+2ul*FL_MODULES+8ul*points_total>FL_POINTS_END||4ul*points_total>APOLLO_OV2_JOB_BYTES){expect(0,15);points_total=0;}
+  points_at=FL_POINTS_REU+2ul+2ul*FL_MODULES;points_out=points_at+4ul*points_total;
   for(i=1;i<0x3e0u;++i)mail[i]=0;
   timer_start();*(volatile uint32_t *)0xc3f8=timer_stop();
   stack_fill();
@@ -315,6 +374,7 @@ int main(void){uint16_t i;
 #endif
    timing[i].point.status=FL_POINT_NONE;
    timing[i].direct=module.loc?direct(i,&module,&timing[i]):0u;
+   more_points(i,&module,!(timing[i].point.status&(FL_POINT_NONE|FL_POINT_MAIN)));
   }
   *(volatile uint16_t *)0xc3fe=FL_LIMIT;
   /* Every point's start, for the host reference: the boot image back at
@@ -324,6 +384,8 @@ int main(void){uint16_t i;
   apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
   memcpy((void *)0xc100,&device,sizeof device);
   memcpy((void *)(0xc100+sizeof device),&hardware,FL_HARDWARE_BYTES);
+  /* The other points' results, for the host reference. */
+  if(points_total)apollo_reu_transfer(APOLLO_REU_FETCH,(void *)APOLLO_OV2_JOB_ADDRESS,FL_POINTS_REU+2ul+2ul*FL_MODULES+4ul*points_total,4u*points_total);
   mail[0xfe]=(uint8_t)sizeof device;mail[0xff]=(uint8_t)FL_HARDWARE_BYTES;
   stack_peak();
   __asm__ volatile("cli");}

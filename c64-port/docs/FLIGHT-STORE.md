@@ -68,6 +68,7 @@ The 2 MB REU, by address:
 | 0x1df000-0x1dffff | Lane C Pinball trampoline's state save (`LANEC_PIN_REU_SAVE`, `src/lanec_pin_trampoline.c`) |
 | 0x1e0000-0x1f1fff | The mission's rope image |
 | 0x1f2000-0x1f2fff | The flight undo image (4 KB, one `apollo_overlay_state`) the five FLIGHT_INTERP_STOP modules stash before a run and fetch back on a refusal (`FLIGHT_UNDO_REU`, `include/flight_undo.h`; the build checks that the rope image ends at or below it and that it is unused) |
+| 0x1f3000-0x1f7fff | The load check's other points (`FL_POINTS_REU`): `tools/flight_vice_load.py` writes them into its own copy of the store and checks the area is unused |
 | 0x1f8000-0x1fffff | The load check's scratch (`SCRATCH_BYTES`; the build checks it is unused) |
 
 The compact interpreter (Interpreter lane, `platform/c64/interp_module.c`)
@@ -571,6 +572,22 @@ flight part's keys exist only in the C64 build (FLIGHT-PARTS.md). On
 361dd731 plus #426: LM 65 points match the host (56 refused at entry on
 both), 94 run through their main, 3 parts; CM 84 match (77 refused), 63
 through their main, 11 parts.
+
+One point per module mostly checks a refusal. So the check also runs every
+other resolver record of each direct, whole module: the tool writes them
+at `FL_POINTS_REU` in its copy of the store, the check runs each from the
+same start state after the module's own point, and leaves the results in
+the job slot. `--one-point` turns this off. `--snap lm=SCENARIO:CS,...`
+starts every point from a host flight snapshot (`FLIGHT_SNAPSHOT`, as the
+#644 replay windows start) instead of the boot image: the check is relinked
+with `-DFL_SNAP` and writes `vice-load-snap.json`. On 3c648cdb:
+
+| Start | LM points (working) | CM points (working) |
+|---|---|---|
+| Boot | 1,173 (160) | 1,883 (175) |
+| lm-rendezvous 8000 / cm-p20 12200 | 1,173 (168) | 1,883 (216) |
+
+Every point matches the host. The rest are refused at entry on both sides.
 
 The step now computes the transfer point once (it was computed again to
 pick the table set), which cut it from about 1,100 to 880 cycles, and the

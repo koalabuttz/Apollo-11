@@ -4,6 +4,7 @@
 results: the FLIGHT_POINTS lines a module wrapper gives, the fl_point fields
 the check records, and what makes a point differ from the host."""
 import pathlib
+import struct
 import sys
 import tempfile
 import unittest
@@ -53,6 +54,24 @@ class Wrapper(unittest.TestCase):
         with self.assertRaises(SystemExit):
             wrapper('#define FS_PICK(X) X(lm_t,1) X(lm_t,2)\n#define FS_KEYS 5u\n'
                     '#define FS_BASIC(X) \n#define FS_INTERP(X) \n')
+
+
+class PointTable(unittest.TestCase):
+    def test_layout(self):
+        reu = bytearray(fvl.POINTS_END + 16)
+        total = fvl.write_points(reu, [[(0o4000, 0o5567)], [], [(0, 0o2353), (0o20000, 0o3010)]])
+        self.assertEqual(total, 3)
+        self.assertEqual(struct.unpack_from('<4H', reu, fvl.POINTS_REU), (3, 1, 0, 2))
+        self.assertEqual(struct.unpack_from('<6H', reu, fvl.POINTS_REU + 8),
+                         (0o4000, 0o5567, 0, 0o2353, 0o20000, 0o3010))
+
+    def test_refuses_a_used_area_and_overflow(self):
+        reu = bytearray(fvl.POINTS_END + 16)
+        reu[fvl.POINTS_END - 1] = 1
+        with self.assertRaises(SystemExit):
+            fvl.write_points(reu, [[(0, 1)]])
+        with self.assertRaises(SystemExit):
+            fvl.write_points(bytearray(fvl.POINTS_END), [[(0, i) for i in range(fvl.JOB_BYTES // 4 + 1)]])
 
 
 class Point(unittest.TestCase):
