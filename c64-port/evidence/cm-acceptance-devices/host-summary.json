@@ -6,7 +6,7 @@
   "keys": "",
   "inputs": {},
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "samples": 4000,
   "equal": 3998,
   "differ": 2,
@@ -140,7 +140,7 @@
   "keys": "V37E00E",
   "inputs": {},
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "samples": 3000,
   "equal": 2998,
   "differ": 2,
@@ -150,8 +150,8 @@
   },
   "routine_mismatches": [],
   "unregistered": [],
-  "module_loads": 254,
-  "loads_per_second": 8.5,
+  "module_loads": 268,
+  "loads_per_second": 8.9,
   "loads_by_point": [
    {
     "module": "cm_t4rupt_imu",
@@ -231,6 +231,14 @@
     "kind": "basic",
     "point": "02,2701",
     "label": "POSTJUMP",
+    "count": 3
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "basic",
+    "point": "13,3443",
+    "label": "INTSTALL+1",
     "count": 3
    },
    {
@@ -317,8 +325,24 @@
     "module": "cm_integration_init",
     "slot": 0,
     "kind": "basic",
+    "point": "13,3210",
+    "label": "ANDOUT+3",
+    "count": 2
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "basic",
     "point": "13,3214",
     "label": "ANDOUT+7",
+    "count": 2
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "basic",
+    "point": "27,2752",
+    "label": "GRP2PC+2",
     "count": 2
    },
    {
@@ -335,6 +359,14 @@
     "kind": "interp",
     "point": "13,3231",
     "label": "RECTOUT+3",
+    "count": 2
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "basic",
+    "point": "13,3265",
+    "label": "INTEXIT+12",
     "count": 2
    },
    {
@@ -415,6 +447,22 @@
     "kind": "basic",
     "point": "41,2035",
     "label": "ENTPAS0",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,2133",
+    "label": "VERBFAN",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,3430",
+    "label": "MMCHANG",
     "count": 1
    },
    {
@@ -708,6 +756,14 @@
    {
     "module": "cm_integration_init",
     "slot": 0,
+    "kind": "basic",
+    "point": "13,2747",
+    "label": "MOVEPCSM",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
     "kind": "interp",
     "point": "13,2710",
     "label": "ATOPCSM+3",
@@ -764,6 +820,14 @@
    {
     "module": "cm_integration_init",
     "slot": 0,
+    "kind": "basic",
+    "point": "13,3014",
+    "label": "MOVEPLEM",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
     "kind": "interp",
     "point": "13,3010",
     "label": "PTOALEM+4",
@@ -810,6 +874,14 @@
     "count": 1
    },
    {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "basic",
+    "point": "13,2660",
+    "label": "ENDINT+2",
+    "count": 1
+   },
+   {
     "module": "cm_t4rupt_optics",
     "slot": 1,
     "kind": "basic",
@@ -826,7 +898,7 @@
   "keys": "V37E06E",
   "inputs": {},
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "samples": 3000,
   "equal": 2998,
   "differ": 2,
@@ -836,8 +908,8 @@
   },
   "routine_mismatches": [],
   "unregistered": [],
-  "module_loads": 264,
-  "loads_per_second": 8.8,
+  "module_loads": 276,
+  "loads_per_second": 9.2,
   "loads_by_point": [
    {
     "module": "cm_t4rupt_imu",
@@ -928,6 +1000,22 @@
     "count": 2
    },
    {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,2035",
+    "label": "ENTPAS0",
+    "count": 2
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,2133",
+    "label": "VERBFAN",
+    "count": 2
+   },
+   {
     "module": "service_transfer",
     "slot": 0,
     "kind": "basic",
@@ -949,6 +1037,14 @@
     "kind": "basic",
     "point": "02,2171",
     "label": "NVMONOPT",
+    "count": 2
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,2337",
+    "label": "PUTADD+5",
     "count": 2
    },
    {
@@ -1091,8 +1187,8 @@
     "module": "lanec_pin_routines",
     "slot": 0,
     "kind": "basic",
-    "point": "41,2035",
-    "label": "ENTPAS0",
+    "point": "41,3430",
+    "label": "MMCHANG",
     "count": 1
    },
    {
@@ -1141,6 +1237,14 @@
     "kind": "interp",
     "point": "13,3442",
     "label": "INTSTALL",
+    "count": 1
+   },
+   {
+    "module": "cm_integration_init",
+    "slot": 0,
+    "kind": "basic",
+    "point": "13,3443",
+    "label": "INTSTALL+1",
     "count": 1
    },
    {
@@ -1499,6 +1603,46 @@
     "module": "lanec_pin_routines",
     "slot": 0,
     "kind": "basic",
+    "point": "41,3602",
+    "label": "NVSUB2+11",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,2317",
+    "label": "ENDRQDAT+1",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,3604",
+    "label": "NVSUB2+13",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "41,2365",
+    "label": "DSPA",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
+    "point": "02,2216",
+    "label": "NVSUBEND",
+    "count": 1
+   },
+   {
+    "module": "lanec_pin_routines",
+    "slot": 0,
+    "kind": "basic",
     "point": "02,2443",
     "label": "FLASHON",
     "count": 1
@@ -1545,12 +1689,12 @@
   "inputs": {},
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
-  "cia_interrupts": 3005,
+  "commit": "39dc823fd285",
+  "cia_interrupts": 3009,
   "periods_taken": 3000,
-  "periods_dropped": 5,
+  "periods_dropped": 9,
   "agc_centiseconds": 3000,
-  "native_routines": 160860,
+  "native_routines": 159418,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
@@ -1571,8 +1715,9 @@
   "night_watchman": {
    "alarms": 0,
    "stuck_steps": 0,
-   "checks": 0,
-   "disagree": 0
+   "checks": 1,
+   "disagree": 1,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -1585,12 +1730,12 @@
   "inputs": {},
   "schedule": "1.7,2,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 3000,
   "periods_taken": 3000,
   "periods_dropped": 0,
   "agc_centiseconds": 3000,
-  "native_routines": 209333,
+  "native_routines": 208404,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
@@ -1612,7 +1757,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -1625,12 +1771,12 @@
   "inputs": {},
   "schedule": "4,1,2,1",
   "exit": 0,
-  "commit": "7dd3db437cfa",
-  "cia_interrupts": 3313,
+  "commit": "39dc823fd285",
+  "cia_interrupts": 3231,
   "periods_taken": 3000,
-  "periods_dropped": 313,
+  "periods_dropped": 231,
   "agc_centiseconds": 3000,
-  "native_routines": 30479,
+  "native_routines": 32960,
   "bridged_instructions": 0,
   "routine_mismatches": [],
   "unregistered": [],
@@ -1652,7 +1798,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -1665,7 +1812,7 @@
   "inputs": {},
   "schedule": "W",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 3002,
   "periods_taken": 3002,
   "periods_dropped": 0,
@@ -1692,7 +1839,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -1710,7 +1858,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 32041,
   "periods_taken": 32041,
   "periods_dropped": 0,
@@ -1737,7 +1885,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "26,2320": 6151,
@@ -1779,7 +1928,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 20001,
   "periods_taken": 20000,
   "periods_dropped": 1,
@@ -1806,13 +1955,15 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "15,2000": 4804,
    "04,2161": 18801,
    "14,2533": 8209,
    "14,3304": 9029,
+   "14,2750": 15243,
    "15,2276": 16177
   },
   "arrivals": {
@@ -1828,6 +1979,9 @@
    "14,3304": [
     9029,
     13106
+   ],
+   "14,2750": [
+    15243
    ],
    "15,2276": [
     16177
@@ -1848,7 +2002,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 30003,
   "periods_taken": 30000,
   "periods_dropped": 3,
@@ -1875,11 +2029,13 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "31,2403": 4804,
-   "37,2413": 9001
+   "37,2413": 9001,
+   "43,2275": 9000
   },
   "arrivals": {
    "31,2403": [
@@ -1887,6 +2043,9 @@
    ],
    "37,2413": [
     9001
+   ],
+   "43,2275": [
+    9000
    ]
   }
  },
@@ -1905,7 +2064,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 74000,
   "periods_taken": 74000,
   "periods_dropped": 0,
@@ -1932,11 +2091,14 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "24,2073": 11805,
    "35,3323": 4804,
+   "13,3443": 4800,
+   "43,2275": 15000,
    "24,3410": 29751
   },
   "arrivals": {
@@ -1945,6 +2107,19 @@
    ],
    "35,3323": [
     4804
+   ],
+   "13,3443": [
+    4800,
+    7151,
+    11801,
+    17952,
+    72416,
+    72440,
+    72444,
+    72467
+   ],
+   "43,2275": [
+    15000
    ],
    "24,3410": [
     29751
@@ -1965,7 +2140,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 100023,
   "periods_taken": 100023,
   "periods_dropped": 0,
@@ -1992,12 +2167,13 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "33,2001": 2304,
    "33,2522": 4448,
-   "34,2002": 10023,
+   "34,2307": 213,
    "23,2332": 84150
   },
   "arrivals": {
@@ -2038,8 +2214,39 @@
     6107,
     9978
    ],
-   "34,2002": [
-    10023
+   "34,2307": [
+    213,
+    413,
+    613,
+    813,
+    1013,
+    1213,
+    1413,
+    1613,
+    1813,
+    2013,
+    2213,
+    2413,
+    2613,
+    2813,
+    3013,
+    3213,
+    3413,
+    3613,
+    3813,
+    4013,
+    4213,
+    4413,
+    4613,
+    4813,
+    5013,
+    5213,
+    5413,
+    5613,
+    5813,
+    6013,
+    6213,
+    88212
    ],
    "23,2332": [
     84150
@@ -2060,7 +2267,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 70000,
   "periods_taken": 70000,
   "periods_dropped": 0,
@@ -2087,7 +2294,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "24,2463": 3304,
@@ -2116,7 +2324,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 23004,
   "periods_taken": 23000,
   "periods_dropped": 4,
@@ -2143,7 +2351,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "30,2000": 4804
@@ -2169,7 +2378,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 56000,
   "periods_taken": 56000,
   "periods_dropped": 0,
@@ -2196,13 +2405,16 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "24,2073": 11804,
    "35,3323": 4804,
    "23,2332": 51150,
+   "13,3443": 4800,
    "27,2000": 11840,
+   "43,2275": 15000,
    "24,3410": 29751
   },
   "arrivals": {
@@ -2215,8 +2427,23 @@
    "23,2332": [
     51150
    ],
+   "13,3443": [
+    4800,
+    8251,
+    11801,
+    17952,
+    50416,
+    50440,
+    50444,
+    50467,
+    53153,
+    53558
+   ],
    "27,2000": [
     11840
+   ],
+   "43,2275": [
+    15000
    ],
    "24,3410": [
     29751
@@ -2236,7 +2463,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 51000,
   "periods_taken": 51000,
   "periods_dropped": 0,
@@ -2263,7 +2490,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "36,2466": 4804,
@@ -2295,7 +2523,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 25036,
   "periods_taken": 25036,
   "periods_dropped": 0,
@@ -2322,14 +2550,16 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "37,2261": 4804,
    "37,2466": 9271,
    "34,2630": 5423,
    "14,2015": 5597,
-   "37,2557": 5424
+   "37,2557": 5424,
+   "43,3023": 6310
   },
   "arrivals": {
    "37,2261": [
@@ -2377,6 +2607,9 @@
     10917,
     11900,
     24637
+   ],
+   "43,3023": [
+    6310
    ]
   }
  },
@@ -2396,7 +2629,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 24000,
   "periods_taken": 24000,
   "periods_dropped": 0,
@@ -2423,7 +2656,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "04,3305": 2504,
@@ -2454,7 +2688,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 20500,
   "periods_taken": 20500,
   "periods_dropped": 0,
@@ -2481,7 +2715,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "04,3441": 2504
@@ -2508,7 +2743,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 20500,
   "periods_taken": 20500,
   "periods_dropped": 0,
@@ -2535,7 +2770,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "04,3437": 2504
@@ -2563,7 +2799,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 79000,
   "periods_taken": 79000,
   "periods_dropped": 0,
@@ -2590,7 +2826,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "13,2071": 72305,
@@ -2651,7 +2888,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 74000,
   "periods_taken": 74000,
   "periods_dropped": 0,
@@ -2678,7 +2915,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "04,3166": 57305,
@@ -2710,7 +2948,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 74000,
   "periods_taken": 74000,
   "periods_dropped": 0,
@@ -2737,7 +2975,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "04,3172": 57305,
@@ -2769,7 +3008,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 44038,
   "periods_taken": 44038,
   "periods_dropped": 0,
@@ -2796,7 +3035,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "35,3153": 32390,
@@ -2829,7 +3069,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 32000,
   "periods_taken": 32000,
   "periods_dropped": 0,
@@ -2856,7 +3096,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -2873,7 +3114,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 14000,
   "periods_taken": 14000,
   "periods_dropped": 0,
@@ -2900,14 +3141,16 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "27,3512": 4261,
    "27,3715": 10462,
    "27,3624": 4262,
    "27,3656": 6662,
-   "27,3530": 8461
+   "27,3530": 8461,
+   "43,2721": 12060
   },
   "arrivals": {
    "27,3512": [
@@ -2927,6 +3170,9 @@
    ],
    "27,3530": [
     8461
+   ],
+   "43,2721": [
+    12060
    ]
   }
  },
@@ -2941,7 +3187,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 9000,
   "periods_taken": 9000,
   "periods_dropped": 0,
@@ -2968,7 +3214,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "27,3512": null,
@@ -2993,7 +3240,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 20001,
   "periods_taken": 20000,
   "periods_dropped": 1,
@@ -3020,7 +3267,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -3039,7 +3287,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 20002,
   "periods_taken": 20000,
   "periods_dropped": 2,
@@ -3066,7 +3314,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -3086,7 +3335,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 21001,
   "periods_taken": 21000,
   "periods_dropped": 1,
@@ -3113,7 +3362,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -3135,7 +3385,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 32000,
   "periods_taken": 32000,
   "periods_dropped": 0,
@@ -3162,14 +3412,35 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
-   "20,2164": 21245
+   "20,2164": 21245,
+   "43,3207": 26202,
+   "43,3212": 27150,
+   "43,2510": 29150,
+   "43,3027": 28150,
+   "43,2755": 30150
   },
   "arrivals": {
    "20,2164": [
     21245
+   ],
+   "43,3207": [
+    26202
+   ],
+   "43,3212": [
+    27150
+   ],
+   "43,2510": [
+    29150
+   ],
+   "43,3027": [
+    28150
+   ],
+   "43,2755": [
+    30150
    ]
   }
  },
@@ -3187,7 +3458,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 30003,
   "periods_taken": 30000,
   "periods_dropped": 3,
@@ -3214,10 +3485,17 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
-  "reached": {},
-  "arrivals": {}
+  "reached": {
+   "43,3034": 28650
+  },
+  "arrivals": {
+   "43,3034": [
+    28650
+   ]
+  }
  },
  {
   "scenario": "cm-v49-maneuver-scaled-x1",
@@ -3234,7 +3512,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 15000,
   "periods_taken": 15000,
   "periods_dropped": 0,
@@ -3261,15 +3539,20 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
-   "27,2330": 3151
+   "27,2330": 3151,
+   "43,3015": 2150
   },
   "arrivals": {
    "27,2330": [
     3151,
     5202
+   ],
+   "43,3015": [
+    2150
    ]
   }
  },
@@ -3289,7 +3572,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 22000,
   "periods_taken": 22000,
   "periods_dropped": 0,
@@ -3316,7 +3599,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -3335,7 +3619,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 25001,
   "periods_taken": 25000,
   "periods_dropped": 1,
@@ -3362,7 +3646,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "37,2001": 19804
@@ -3387,7 +3672,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 14000,
   "periods_taken": 14000,
   "periods_dropped": 0,
@@ -3414,10 +3699,17 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
-  "reached": {},
-  "arrivals": {}
+  "reached": {
+   "15,2324": 9679
+  },
+  "arrivals": {
+   "15,2324": [
+    9679
+   ]
+  }
  },
  {
   "scenario": "cm-p52-optics-scaled-x1",
@@ -3435,7 +3727,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 20001,
   "periods_taken": 20000,
   "periods_dropped": 1,
@@ -3462,7 +3754,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {},
   "arrivals": {}
@@ -3483,7 +3776,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 53000,
   "periods_taken": 53000,
   "periods_dropped": 0,
@@ -3510,7 +3803,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "27,2614": 11805
@@ -3536,7 +3830,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 12000,
   "periods_taken": 12000,
   "periods_dropped": 0,
@@ -3550,7 +3844,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "42,2000": 2650,
@@ -3579,7 +3874,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 37000,
   "periods_taken": 37000,
   "periods_dropped": 0,
@@ -3606,7 +3901,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "20,2230": 30220,
@@ -3654,7 +3950,7 @@
   },
   "schedule": "1,1,2",
   "exit": 0,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "cia_interrupts": 32015,
   "periods_taken": 32015,
   "periods_dropped": 0,
@@ -3681,7 +3977,8 @@
    "alarms": 0,
    "stuck_steps": 0,
    "checks": 0,
-   "disagree": 0
+   "disagree": 0,
+   "native_armed": 0
   },
   "reached": {
    "26,2433": 20421

@@ -85,27 +85,27 @@
       "evidence": {
         "bootable_c64_application": {
           "path": "docs/acceptance/Comanche055-bootable_c64_application.md",
-          "sha256": "e66db03f215a1db9130c3c80f6f689bae1285e1f6c35d33d4ecc5a8c4ba0a712"
+          "sha256": "515a80e91669f5a87c7f4a157729892a005b22262dadb35e64d2dc3524f15997"
         },
         "integrated_program_tests": {
           "path": "docs/acceptance/Comanche055-integrated_program_tests.md",
-          "sha256": "3ba40281d3102099ee124962af3c7217de3eed78c2372ce3a85cd281227e5955"
+          "sha256": "640b1cca3258fd369194afdbf38f2df0d23ed0e771665f63216154ccaef15968"
         },
         "device_adapter_tests": {
           "path": "docs/acceptance/Comanche055-device_adapter_tests.md",
-          "sha256": "21c4ebbada9ce512cda8127a12be6bc4079ab499f37da166805f6ce4b8a44a93"
+          "sha256": "db9bccf89907884a6a6bc0315259108dc58c2a8b30de1941669445f231437ed7"
         },
         "native_output_tests": {
           "path": "docs/acceptance/Comanche055-native_output_tests.md",
-          "sha256": "5adaeb4a173f917c403b817dca1e0f0cad72e55816f524a06728cecedcd8d6dc"
+          "sha256": "50d2b9cbc71a714ed4ae28e5ac6f99e670172724f64580b25b5522989d46e827"
         },
         "memory_and_overlay_validation": {
           "path": "docs/acceptance/Comanche055-memory_and_overlay_validation.md",
-          "sha256": "431fcf7b7aea10041e811537b286ed37662739ab5aa58903823c9e9ef80ef005"
+          "sha256": "2e095cb250501a99b37a2c0d62663662fc632df10abfd72b28a2dee62f8a9d82"
         },
         "recovery_and_restart_tests": {
           "path": "docs/acceptance/Comanche055-recovery_and_restart_tests.md",
-          "sha256": "5fbdcb7bd90ea80e3668501a2975506eb37972f59193299191600e553c719054"
+          "sha256": "d238ff6c85d9258d0ef7659a30114f3fc6f9402df7fb991c81e5fc648e3b5188"
         }
       },
       "qualified_partial_milestones": [
@@ -130,7 +130,7 @@
           "reviewed_entire_program": false
         }
       ],
-      "acceptance_commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0"
+      "acceptance_commit": "39dc823fd2850b4f422a35d0141cb6c4340ae78c"
     }
   },
   "files": [

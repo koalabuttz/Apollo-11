@@ -1,0 +1,125 @@
+{
+ "scenario": "cm-tpi-search",
+ "ok": true,
+ "status": 0,
+ "z": "06037",
+ "fb": "24000",
+ "superbank": "0060",
+ "bank": "12",
+ "at": "03,2037",
+ "wall_cycles": 140372534,
+ "agc_cs": 486,
+ "dropped_ticks": 0,
+ "steps": 2231,
+ "wall_per_agc": 29.316,
+ "lost": false,
+ "mission": "cm",
+ "snap_cs": 32090,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 21
+ },
+ "hold_host_mct": 850,
+ "hold_host_time1": 15861,
+ "replay_rows": 23,
+ "replay_applied": 23,
+ "replay_end_cs": 486,
+ "replay_ended": true,
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {
+   "0": 10,
+   "2": 4,
+   "3": 5
+  },
+  "erasable": [
+   "0032",
+   "0033",
+   "0035",
+   "0036"
+  ],
+  "pipas": [],
+  "channels": [
+   "15"
+  ],
+  "requests": 32,
+  "channel_set": {
+   "15": 31
+  },
+  "channel_clear": {
+   "15": 32763
+  },
+  "channel_changed": {
+   "15": 31
+  }
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 50,
+   "channel 12": 2,
+   "channel 13": 1,
+   "channel 14": 3072,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 18,
+   "channel 12": 2,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [
+   "0046"
+  ],
+  "changed": []
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
+ "replay_matched_cs": [
+  122,
+  222,
+  285,
+  386,
+  486
+ ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 32090,
+ "snap_slid": false,
+ "requested_cs": 486,
+ "host_holes": [],
+ "downrupt": false,
+ "commit": "39dc823fd285"
+}

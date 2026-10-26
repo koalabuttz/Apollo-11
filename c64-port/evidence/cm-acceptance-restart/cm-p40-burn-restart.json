@@ -72,7 +72,7 @@
   "pre_snapshot": "build/flight-restart/cm-p40-burn-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -85,11 +85,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 66382932,
+  "wall_cycles": 66325920,
   "agc_cs": 307,
   "dropped_ticks": 0,
-  "steps": 1573,
-  "wall_per_agc": 21.947,
+  "steps": 1568,
+  "wall_per_agc": 21.928,
   "lost": false,
   "mission": "cm",
   "snap_cs": 50000,
@@ -105,9 +105,9 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 8
+   "dma_unchecked": 9
   },
-  "hold_host_mct": 1143,
+  "hold_host_mct": 1081,
   "hold_host_time1": 871,
   "replay_rows": 134,
   "replay_applied": 134,
@@ -201,13 +201,13 @@
   "requested_cs": 300,
   "host_holes": [],
   "downrupt": false,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "exit": 0,
   "log": "cm-p40-burn-restart-c64.log",
-  "log_sha256": "eb4a6c3395ee28e8316488cbab0d795b8786c814ce5e57f535f8b54f9bf98c6b",
+  "log_sha256": "b7831e9592799c5b8f623b925a7a7312728c7bcd5aaf5fbb04d46b45ec364057",
   "store_sha256": "a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf",
   "manifest_sha256": "9968b925d9733cae9263d7dc766173dbb5ed7fb880e1ca972684f0a257813bc6",
-  "prg_sha256": "b97d9fa8993347ccd992b3f0f72114a830e384fc4a3b35b01665ed72405ebcdd"
+  "prg_sha256": "1bd9b9e89c0b59dfcf87ef09928baa903300e75ac1506a9a8f06730a616b21c8"
  },
  "gojam_on_c64": null
 }

@@ -69,7 +69,7 @@
   "pre_snapshot": "build/flight-restart/cm-p22-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -82,11 +82,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 17756098,
+  "wall_cycles": 17762338,
   "agc_cs": 309,
   "dropped_ticks": 0,
   "steps": 916,
-  "wall_per_agc": 5.832,
+  "wall_per_agc": 5.834,
   "lost": false,
   "mission": "cm",
   "snap_cs": 14000,
@@ -102,7 +102,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 12
+   "dma_unchecked": 9
   },
   "hold_host_mct": 73,
   "hold_host_time1": 14002,
@@ -178,13 +178,13 @@
   "requested_cs": 301,
   "host_holes": [],
   "downrupt": false,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "exit": 0,
   "log": "cm-p22-restart-c64.log",
-  "log_sha256": "1f13c1775cb90207319d7e1c0c7814d890ead129ab5126dc81661bd63ab5b85a",
+  "log_sha256": "3b14404e7e075ee0144b0d7f691e86cc1932d1ae0297a66b054179890b032b36",
   "store_sha256": "a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf",
   "manifest_sha256": "9968b925d9733cae9263d7dc766173dbb5ed7fb880e1ca972684f0a257813bc6",
-  "prg_sha256": "2e4a5435f3881f12a59031fc11fc985d8a931558792b43113fece22a2ba05a89"
+  "prg_sha256": "89befa8eab18f17954a6e34fd4cf7d3188b8f1a8a3922663da7bb9a99377c209"
  },
  "gojam_on_c64": null
 }

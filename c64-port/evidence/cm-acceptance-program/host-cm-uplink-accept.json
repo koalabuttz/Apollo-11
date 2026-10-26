@@ -10,7 +10,7 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "7dd3db437cfa",
+ "commit": "39dc823fd285",
  "cia_interrupts": 14000,
  "periods_taken": 14000,
  "periods_dropped": 0,
@@ -37,14 +37,16 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
   "27,3512": 4261,
   "27,3715": 10462,
   "27,3624": 4262,
   "27,3656": 6662,
-  "27,3530": 8461
+  "27,3530": 8461,
+  "43,2721": 12060
  },
  "arrivals": {
   "27,3512": [
@@ -64,7 +66,10 @@
   ],
   "27,3530": [
    8461
+  ],
+  "43,2721": [
+   12060
   ]
  },
- "log_sha256": "83c921dadac0aeaca69dc41852528a7b273e22a280334a82efd911566ae01cf0"
+ "log_sha256": "59e2877296137e8e83016a0b70f52c126f5b859c4bcfd637910eb657107598b2"
 }

@@ -11,13 +11,13 @@
  "dsky_queue": null,
  "hardware": null,
  "resident_staged": "0x1f4e00",
- "bytes_loaded": 1939298,
+ "bytes_loaded": 1939329,
  "data_bytes": [
-  795665,
-  6223
+  795722,
+  6072
  ],
  "check_expect": "c4d5",
- "check_host": "3e90",
+ "check_host": "c4d5",
  "done": 2713,
  "vice": {
   "mission": "test",
@@ -29,17 +29,17 @@
    2
   ],
   "fast_loader": true,
-  "load_cycles": 265473987,
+  "load_cycles": 265437359,
   "load_s": 269.4,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 96523,
-  "run_s": 159.6,
+  "handoff_cycles": 96430,
+  "run_s": 159.5,
   "check_crc": "c4d5",
   "check_expect": "c4d5",
   "check_pass": true,
   "window_cs": 200,
-  "window_steps": 1237,
-  "window_x": 22.07,
+  "window_steps": 1218,
+  "window_x": 21.99,
   "screen": [
    "APOLLO 11 ON THE C64: HARDWARE CHECK",
    "",
@@ -50,11 +50,11 @@
    "",
    "RUNNING LM P63 FROM 17532 CS...",
    "",
-   "AGC TIME: 200 CS IN 1237 STEPS",
-   "C64 TIME: 44.14 S, 22.07 X REAL TIME",
+   "AGC TIME: 200 CS IN 1218 STEPS",
+   "C64 TIME: 43.98 S, 21.99 X REAL TIME",
    "",
    "END STATE CRC C4D5 (VICE C4D5)",
-   "HOST RUN'S CRC 3E90 (NOT YET THE SAME)",
+   "HOST RUN'S CRC C4D5 (THE SAME)",
    "",
    "PASS: THIS C64 COMPUTES WHAT VICE DOES",
    "",
@@ -68,11 +68,11 @@
    ""
   ]
  },
- "commit": "7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0",
+ "commit": "39dc823fd2850b4f422a35d0141cb6c4340ae78c",
  "dirty": false,
  "sha256": {
-  "flight-disk/test-1.d81": "f412fdd3dd882234522e3d5827317a379b4385d87290f1988a82dd9386a48009",
-  "flight-disk/test-2.d81": "a5a1b3aab1a309162013ee675b6f19c740ff5e8861b6f803bd749a6d297e434e",
+  "flight-disk/test-1.d81": "1ddfc64a3f12ff36fec635d54059e324a6a37d3ff9b809a5853dda3ce1a4de93",
+  "flight-disk/test-2.d81": "21dedf7e92c7e87fa5468a1772b441cecb9382108a888aaf447e6ac796997d1d",
   "flight-disk/test-loader.prg": "9b187bcf29162fcd24664be1fc2d50b23f2940c235ad7905e7776a511f86c608"
  }
 }
