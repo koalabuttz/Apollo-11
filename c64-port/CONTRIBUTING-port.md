@@ -136,6 +136,8 @@ with the document that says so; anything else that fails is a failure to fix.
 Both programs are accepted (docs/acceptance/). Their bootable docs record the sha256 of the
 REU store, resident, loader and disks each program ships. `tools/acceptance_freshness.py`
 (after `make flight-disk`) compares those with the build and prints FRESH or STALE per program.
+The LM bootable doc also lists the check disk (`test-*.d81`), so a change to the check program
+makes Luminary099 STALE too.
 
 port-ci's `acceptance-fresh` job runs it with `--require-fresh` on every PR that touches C64
 code. A PR that moves an accepted program's bytes fails there unless it also re-cites that
