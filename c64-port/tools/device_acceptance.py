@@ -89,7 +89,8 @@ WINDOWS = {
            ('lm-rhc-att-turn', 3500, 900, 100),             # the jets turn the LM (FLIGHT_ATT): CDUY, CDUZ follow
            ('lm-p63-trim', 17400, 220, 50),                  # DPS trim reversal at 17498, thrust along the gimbal
            ('lm-landing-ascent-nassp', 122650, 150, 25),    # ROD switch: the channel 16 row of the 122700 M key
-           ('lm-p63-att', 17400, 300, 50)],                 # throttle-up: jets and the trim torque turn the LM
+           ('lm-p63-att', 17400, 300, 50),                  # throttle-up: jets and the trim torque turn the LM
+           ('lm-p64-redesignation', 114900, 250, 50)],      # P64 redesignation: HANDRUPT (RUPT10, PITFALL)
     'cm': [('cm-p52', 9950, 300, 100),                      # sextant marks, channel 33
            ('cm-tei', 4450, 300, 100),                      # RCS DAP: jets, channels and requests
            ('cm-tei', 52000, 300, 50),                      # TEI coast: jets and TIME6

@@ -105,6 +105,14 @@ LANDING = {**NASSP, 'FLIGHT_ENGINE_LAG': '0.2', 'FLIGHT_PILOT': '8', 'FLIGHT_TOU
            'FLIGHT_CHAN': '122500:031=067777,134900:031=057777,141000:032=057777,141100:032=077777'}
 LANDING_KEYS = (NASSP_KEYS + '@122700M@123000MMMMMM@125000MMMM@136000V37E68E@142000V37E00E'
                 '@148000V37E12E@150000V25E+00102E+00053E+00000E@153000V33E@155000V33E@162500V33E')
+# lm-p64-redesignation: lm-p63-nassp into P64 (about 1,118 s), where the
+# crew moves the hand controller to redesignate the landing site: channel
+# 31 bit 1 is cleared from 1,150 s to 1,151 s. P64 armed the RUPT10 trap
+# (STARTP64's WOR CHAN13 BIT12), so the deflection requests RUPT10 at the
+# next timer step: PITFALL, then REDESMON samples the controller until it
+# is back in detent, COUNT'EM takes one ELEACH (1/2 degree; bit 1 is
+# -EL) off ELINCR1, and RESETRPT arms the trap again.
+REDESIG = {**NASSP, 'FLIGHT_CHAN': '115000:031=057776,115100:031=057777'}
 # lm-p63-lr-update: lm-p63-nassp with the landing radar from 600 s, the
 # surface 150 m above the LGC's landing site (FLIGHT_LR=60000:150), and
 # V57E at 660 s (LR updates permitted). From 816 s R12's altitude updates
@@ -818,6 +826,7 @@ FLIGHT = [('lm-p63-descent', 'lm', 25000, P63_KEYS, P63),
           ('cm-uplink-accept', 'cm', 14000, '', UPLINK_ACCEPT_CM),
           ('cm-uplink-reject', 'cm', 9000, '', UPLINK),
           ('lm-p63-nassp', 'lm', 115000, NASSP_KEYS, NASSP),
+          ('lm-p64-redesignation', 'lm', 117000, NASSP_KEYS, REDESIG),
           ('lm-p52-realign', 'lm', 10000, LM_P52_KEYS, LM_P52),
           ('lm-p52-imu-fail', 'lm', 10000, LM_P52_KEYS, LM_P52_IMU_FAIL),
           ('lm-p52-imu-cage', 'lm', 10000, LM_P52_KEYS, LM_P52_IMU_CAGE),

@@ -14,8 +14,10 @@
  *
  *  - Output channels 5, 6, 011, 012, 013 and 014 are program->hardware's
  *    latches (agc_hardware, the Kernel lane's field names). Channel 013's
- *    bits 12-14 arm the HANDRUPT traps (31A, 31B, 32): hw->channel13 keeps
- *    them set there until something else clears them, and they read back 0.
+ *    bits 12-14 arm the HANDRUPT traps (31A, 31B, 32): they read back 0,
+ *    and hw->channel13 holds them only until the next timer step, where
+ *    rk_hand_due (resident_rupt.h) moves them to the program's trap arms
+ *    (flight_io trap31a, trap31b, trap32) and clears them.
  *  - Inputs 3, 4, 016 and 030-033 are the run's latched agc_input_channels
  *    (AGC_CHANNEL). A write to 030-032 stores, as yaAGC's does; a write to
  *    033 only sets its bits 11-15 again (the CPU's latch reset); a write to
