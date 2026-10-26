@@ -232,14 +232,16 @@ static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
  * by the native rule, wm_ya by the NEWJOB accesses yaAGC makes over the
  * same spans (lockstep and bridge arm yaAGC's own flag and read it back).
  * wm_fire: the alarm sounded at the last period's end. wm_windows counts
- * the alarm's checks, wm_disagree those where the two rules differ. */
-static night_watchman wm,wm_ya;static int wm_fire;static unsigned long wm_alarms,wm_windows,wm_disagree,wm_stuck,wm_ya_tripped;
+ * the alarm's checks, wm_disagree those where the two rules differ, and
+ * wm_missed those where yaAGC read NEWJOB but the native rule saw no access. */
+static night_watchman wm,wm_ya;static int wm_fire;static unsigned long wm_alarms,wm_windows,wm_disagree,wm_missed,wm_stuck,wm_ya_tripped;
 /* yaAGC's own alarm inside a span (its scaler is frozen there, so never
  * expected): counted, and cleared so the span's GOJAM bit does not stay. */
 static void ya_tripped(void){if(m.NightWatchmanTripped){++wm_ya_tripped;m.NightWatchmanTripped=0;}}
 static void period_end(void){++taken;
  if(!scaled)return;
  if(taken%NW_PERIODS==0u&&(wm.armed||wm_ya.armed)){++wm_windows;
+  if(wm.armed&&!wm_ya.armed)++wm_missed;
   if(wm.armed!=wm_ya.armed&&++wm_disagree<=8ul)printf("night watchman: at period %lu the native rule has it %s, yaAGC's NEWJOB accesses %s\n",
    taken,wm.armed?"armed":"disarmed",wm_ya.armed?"armed":"disarmed");}
  (void)nw_period(&wm_ya,taken);
@@ -1966,7 +1968,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(scaled)printf("scaled time: K %.2f, divisor %u, lag %u, seed %lu: %lu CIA interrupts, %lu clock periods taken, %lu dropped (rk_dilation); AGC time %lu cs\n",
   slow,divisor,lag,seed,work?consumed/3ul:consumed,taken,dropped,now(s.words));   /* work: whole periods' steps */
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
- if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule; yaAGC's own alarm inside %lu spans\n",wm_alarms,wm_stuck,wm_windows,wm_disagree,wm_ya_tripped);
+ if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule (%lu with the native rule armed); yaAGC's own alarm inside %lu spans\n",wm_alarms,wm_stuck,wm_windows,wm_disagree,wm_missed,wm_ya_tripped);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
  if(core_routines){printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);core_charge_report();}

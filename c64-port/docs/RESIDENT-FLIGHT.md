@@ -295,10 +295,16 @@ instead a work clock: AGC time advances by the work the resident ran.
   RUPT10) charges its first routine the lead-in table's 9 MCT. The AGC's
   own costs are 5 (GOPROG), 7 (banked vectors), 8 (RUPT10) and 10 (T5,
   T6), so each interrupt's lead-in is charged between 3 MCT too much and
-  1 too little. At 50 interrupts a second that is at most 150 of the
-  about 85,000 MCT in an AGC second (0.18%). It moves where a routine falls
-  against the timers, not the timers' own rate, and the host is charged
-  the same, so a replay still compares like with like (issue #886).
+  1 too little. The LM in powered flight takes about 100 interrupts a
+  second: DOWNRUPT alone is 50, and lm-p63-overload 19000+600 takes T3RUPT
+  5.4, T4RUPT 11.5 and T5RUPT 10.0 a second (the C64 run's own counts),
+  plus T6RUPT, up to two per DAP pass (20), and RADARUPT. Allowing up to
+  130 a second, the error is at most about 390 of the 85,333 MCT in an AGC
+  second (0.46%; issue #912 item 4, the rate not otherwise measured). On
+  the work clock that acts as a CPU-speed error of that size: it moves
+  where a routine falls against the timers, not the timers' own rate. The
+  host is charged the same, so a replay still compares like with like
+  (issue #886).
 - The self-check idle tables (`*_self_check_idle_routines`) carry weight
   0 (`RK_MCT_IDLE`): one idle pass takes the rest of the tick, unless a
   step on the way raises a request that is taken, which ends the idle
