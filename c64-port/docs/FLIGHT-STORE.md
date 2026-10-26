@@ -556,6 +556,22 @@ CM 1,394, 99), and a direct call saves 1,433 to 2,536 cycles over the
 module main: the ABI 2 run and the copy of the program record. Most of
 what is left is the step itself: the transfer point and the table search.
 
+A direct-only module's point has no main to compare with, so since #426 it
+is compared with the host. The check records what each point's run did
+(`fl_point`: the image and channels sum, the routines `rk_direct` chained
+and its status; the hook `RK_DIRECT_STEPS` builds only into the check),
+starting every point from the boot image and the boot work clock, and
+leaves that start state at $7000 and $C100. `tools/flight_vice_load.py`
+then runs each point on the host (`flight-host-run-<m>` with
+`FLIGHT_POINTS`) from the same state, on the tables the module's wrapper
+names, for the C64's step count, and fails on any difference. A point the
+C64 ran no step of must be refused on the host too. Not compared: a module
+whose tables take an io record of their own runs through its main, and a
+flight part's keys exist only in the C64 build (FLIGHT-PARTS.md). On
+361dd731 plus #426: LM 65 points match the host (56 refused at entry on
+both), 94 run through their main, 3 parts; CM 84 match (77 refused), 63
+through their main, 11 parts.
+
 The step now computes the transfer point once (it was computed again to
 pick the table set), which cut it from about 1,100 to 880 cycles, and the
 search skips a table whose key range cannot hold the point.

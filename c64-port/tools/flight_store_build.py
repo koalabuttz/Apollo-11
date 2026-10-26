@@ -956,7 +956,9 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
            if pinned else ''))
     out = OUT / f'{m}-load-check.prg'
     subprocess.run([str(c) for c in [
-        cc, *COMMON, *MISSION[m], f'-DFL_DATA="{ROOT / data}"', '-T', 'platform/c64/resident_flight.ld',
+        cc, *COMMON, *MISSION[m], f'-DFL_DATA="{ROOT / data}"',
+        # rk_direct records each run's steps for the host reference (#426).
+        '-DFL_DIRECT_STEPS', '-T', 'platform/c64/resident_flight.ld',
         f'-Wl,-Map,{out}.map', 'platform/c64/flight_load_check.c', *resident_sources(m),
         OUT / 'overlay_v2_services.S', '-o', out]], cwd=ROOT, check=True)
     return out
