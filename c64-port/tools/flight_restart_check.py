@@ -83,14 +83,24 @@ RESTARTS = [
 # tools/flight_host_run.c); the snapshots before and after its GOJAM come
 # from FLIGHT_TRAP_SNAPSHOT.
 TC_TRAP = {'lm-v69-restart', 'cm-v69-restart'}
-# Unscaled, the samples a restart may add over its run without one. LM P00:
-# after the restart STARTSB1 has DAPIDLER call 1/ACCS, and natively AOSTASK's
-# routine from GETAOSUV+6 (20,3250) runs about 1.2 cs as one call, so the
-# T4RUPT due meanwhile waits for its end, where yaAGC takes it at INVERT
-# (the routine matches yaAGC run from its own start). From then on T4RUPT
-# runs a centisecond late natively, and one sample in each 120 ms T4RUPT
-# cycle differs in DSRUPTSW (with the display words at the first ones).
-SAMPLE_SLACK = {'lm-p00-restart': 128}
+# Unscaled, each sample (one per centisecond) where the restart run differs
+# from yaAGC and the run without the restart does not, or differs there in
+# other words, must fit its scenario's known artifact; any other fails.
+# LM P00 (T4RUPT_LATE): after the restart STARTSB1 has DAPIDLER call
+# 1/ACCS, and natively AOSTASK's routine from GETAOSUV+6 (20,3250) runs
+# about 1.2 cs as one call, so the T4RUPT due meanwhile waits for its end,
+# where yaAGC takes it at INVERT (the routine matches yaAGC run from its own
+# start). So in the first LATE_LEAD_CS after the GOJAM, while the restart's
+# display passes run every 2 cs, samples may differ in the DSKY words
+# (LEAD_WORDS); from then on T4RUPT runs a centisecond late natively, and
+# the one sample in each 120 ms T4RUPT cycle (T4_CS) that lands in that
+# centisecond holds the previous DSRUPTSW phase (with ITEMP1, T4RUPT's
+# scratch, at the first). 5 + 123 samples at 11cab8d3 (#942 B4).
+T4RUPT_LATE = {'lm-p00-restart'}
+LATE_LEAD_CS = 16
+T4_CS = 12
+LEAD_WORDS = ('DSPCNT', 'NOUT', 'DSRUPTSW')
+LATE_WORDS = ('DSRUPTSW', 'ITEMP1')
 # The files whose points a restart runs (FRESH_START_AND_RESTART, RESTARTS,
 # PHASE_TABLE_MAINTENANCE): none may be bridged.
 RESTART_FILES = ('FRESH_START_AND_RESTART.agc', 'RESTARTS_ROUTINE.agc', 'PHASE_TABLE_MAINTENANCE.agc')
@@ -163,14 +173,61 @@ def parse(text, m, words, lanes):
                 holes=[flight_holes.describe(h, words, lanes, m) for h in flight_holes.HOLE.finditer(text)])
 
 
+def sample_diffs(text):
+    """{cs: {address: (native, yaAGC)}} for each differing sample the run
+    printed (FLIGHT_SHOW), or None for a sample with more than 8 words."""
+    out = {}
+    for x in re.finditer(r'^(\d+) cs \(native routine \d+\):(.*?) \((\d+) words, native/yaAGC\)$', text, re.M):
+        words = {int(a, 8): (int(n, 8), int(y, 8)) for a, n, y in re.findall(r' ([0-7]{4}) ([0-7]{5})/([0-7]{5})', x[2])}
+        out[int(x[1])] = None if int(x[3]) > 8 else words
+    return out
+
+
+def t4rupt_late(extra, at, sym):
+    """The samples of extra ({cs: words}) that T4RUPT_LATE does not explain."""
+    lead = {sym[w] for w in LEAD_WORDS} | set(range(sym['DSPTAB'], sym['DSPTAB'] + 12))
+    late = {sym[w] for w in LATE_WORDS}
+    bad, grid = [], None
+    for t in sorted(extra):
+        d = extra[t]
+        if d is None:
+            bad.append(f'{t} cs: more than 8 words differ')
+            continue
+        if t <= at + LATE_LEAD_CS:
+            if not set(d) <= lead:
+                bad.append(f'{t} cs: {sorted(f"{a:04o}" for a in set(d) - lead)} differ, not DSKY words')
+            continue
+        ds = d.get(sym['DSRUPTSW'])
+        if not set(d) <= late or ds is None or (ds[0] - ds[1]) & 7 != 1 or ds[0] >> 3 != ds[1] >> 3:
+            bad.append(f'{t} cs: not the previous DSRUPTSW phase alone ({", ".join(f"{a:04o} {n:05o}/{y:05o}" for a, (n, y) in sorted(d.items()))})')
+        elif grid is None:
+            grid = t
+        elif (t - grid) % T4_CS:
+            bad.append(f'{t} cs: off the {T4_CS} cs T4RUPT grid from {grid} cs')
+    return bad
+
+
+def sample_problems(name, got, base, at, sym):
+    """The differing samples the restart adds (a sample differing in other
+    words than without the restart counts) that its artifact does not
+    explain, one line each."""
+    extra = {t: d for t, d in got.items() if t not in base or base[t] != d}
+    if name in T4RUPT_LATE:
+        return t4rupt_late(extra, at, sym)
+    return [f'{t} cs differs' for t in sorted(extra)]
+
+
 def host(exe, scenario, words, lanes):
     name, m, cs, keys, env, at, sched, _ = scenario
     env = {**env, **({'FLIGHT_SCALED': sched} if sched else {})}
+    # Unscaled: print every differing sample, for sample_problems.
+    show = {} if sched else {'FLIGHT_SHOW': str(cs + 1)}
     trap = name in TC_TRAP
     # A TC trap restart: V69E keyed at the centisecond, no FLIGHT_GOJAM.
     jam, jam_keys = (env, keys + f'@{at}V69E') if trap else ({**env, 'FLIGHT_GOJAM': str(at)}, keys)
-    base = parse(run(exe[m], m, cs, keys, env, f'{name}-base').stdout, m, words[m], lanes)
-    r = run(exe[m], m, cs, jam_keys, jam, name)
+    rb = run(exe[m], m, cs, keys, {**env, **show}, f'{name}-base')
+    base = parse(rb.stdout, m, words[m], lanes)
+    r = run(exe[m], m, cs, jam_keys, {**jam, **show}, name)
     got = parse(r.stdout, m, words[m], lanes)
     sym = symbols(m)
     # At the point the GOJAM restarts at, even with an interrupt pending
@@ -196,6 +253,7 @@ def host(exe, scenario, words, lanes):
     row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, gojam_cs=at, schedule=sched, exit=r.returncode,
                native_routines=got['routines'], bridged_instructions=got['bridged'], agc_cs=got['agc_cs'],
                samples=got['samples'], samples_equal=got['equal'], base_samples_equal=base['equal'],
+               sample_problems=None if sched else sample_problems(name, sample_diffs(r.stdout), sample_diffs(rb.stdout), at, sym),
                gojam=got['gojams'], routine_mismatches=[f'{p} {t}' for p, t in got['mismatches']],
                new_mismatches=[f'{p} {t}' for p, t in got['mismatches'] if (p, t) not in base['mismatches']],
                new_holes=[h for h in got['holes'] if (h['point'], h['kind']) not in {(b['point'], b['kind']) for b in base['holes']}],
@@ -223,8 +281,8 @@ def host(exe, scenario, words, lanes):
         bad.append(f"RSBBQ+1 {row['rsbbq'][1]}, Z was {row['rsbbq'][0]}")
     if row['modreg'][0] != row['modreg'][1] or not alarms_agree(row['scenario'], *row['failreg']):
         bad.append(f"major mode {row['modreg']} or alarms {row['failreg']} differ from the run without the restart")
-    if not sched and got['samples'] - got['equal'] > base['samples'] - base['equal'] + SAMPLE_SLACK.get(name, 0):
-        bad.append(f"{got['samples'] - got['equal']} samples differ")
+    if row['sample_problems']:
+        bad.append(f"{len(row['sample_problems'])} samples differ outside the known artifact (first: {row['sample_problems'][0]})")
     row['ok'] = not bad
     row['failures'] = bad
     return row

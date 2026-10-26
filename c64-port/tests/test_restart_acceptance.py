@@ -20,7 +20,7 @@ def host_row(name, ok=True, at=None):
     at = at if at is not None else next(x[5] for x in ra.frc.RESTARTS if x[0] == name)
     return dict(scenario=name, ok=ok, routine_mismatches=[], new_mismatches=[], new_holes=[], modreg=['00077', '00077'],
                 redoctr=[0, 1], failures=[] if ok else ['major mode differs'], gojam=[[at, '00000']],
-                **(dict(samples=4000, samples_equal=4000, base_samples_equal=4000) if name in ra.UNSCALED else {}),
+                **(dict(samples=4000, samples_equal=4000, base_samples_equal=4000, sample_problems=[]) if name in ra.UNSCALED else {}),
                 c64_gojam=dict(ok=True, module=dict(id='0x01e5'), gojam=dict(words_equal=2048),
                                burst=dict(words_equal=2048)))
 
@@ -193,16 +193,19 @@ class RestartAcceptance(unittest.TestCase):
         ok, text = ra.host_verdict(dict(h, samples_equal=3872), HEAD)
         self.assertTrue(ok, text)
         self.assertIn('the 128 more are a known artifact', text)
-        for why, bad in {'129 more samples differ': dict(h, samples_equal=3871),
-                         'no record of samples': {k: v for k, v in h.items() if k != 'samples_equal'}}.items():
+        p = ['2552 cs: off the 12 cs T4RUPT grid from 2527 cs']
+        for why, bad in {'1 samples differ outside the known artifact (first: 2552 cs: off the 12 cs': dict(h, samples_equal=3871, sample_problems=p),
+                         'no record of samples': {k: v for k, v in h.items() if k != 'samples_equal'},
+                         'no record of the samples the restart adds': {k: v for k, v in h.items() if k != 'sample_problems'}}.items():
             ok, text = ra.host_verdict(bad, HEAD)
             self.assertFalse(ok, why)
             self.assertIn(why, text)
-        cm = dict(host_row('cm-p00-restart'), commit=HEAD, samples_equal=3997, base_samples_equal=3998)
+        cm = dict(host_row('cm-p00-restart'), commit=HEAD, samples_equal=3997, base_samples_equal=3998,
+                  sample_problems=['3100 cs differs'])
         ok, text = ra.host_verdict(cm, HEAD)
         self.assertFalse(ok, text)
-        self.assertIn('1 more samples differ than without the restart (allowed 0)', text)
-        self.assertTrue(ra.host_verdict(dict(cm, samples_equal=3998), HEAD)[0])
+        self.assertIn('1 samples differ outside the known artifact (first: 3100 cs differs)', text)
+        self.assertTrue(ra.host_verdict(dict(cm, samples_equal=3998, sample_problems=[]), HEAD)[0])
 
     def test_only_v69_may_bridge_verb69(self):
         v69 = dict(host_row('lm-v69-restart'), commit=HEAD, new_holes=[dict(kind='basic', point='43,2037')])

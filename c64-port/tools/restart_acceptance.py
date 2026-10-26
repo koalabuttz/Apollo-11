@@ -76,8 +76,9 @@ GOJAM_ON_C64 = {'lm': ['lm-p63-descent-restart', 'lm-dap-hold-restart', 'lm-v69-
 # sides by design (tools/flight_restart_check.py TC_TRAP). The doc names it.
 KNOWN_BRIDGE = {'lm-v69-restart': ('basic', '43,2037'), 'cm-v69-restart': ('basic', '43,2037')}
 # The unscaled rows are sampled against a free-running yaAGC. A restart may
-# add differing samples only within flight_restart_check.SAMPLE_SLACK, and
-# the row then says why (#925 A5).
+# add differing samples only as its known artifact (flight_restart_check
+# sample_problems: each added sample is checked, not counted), and the row
+# then says why (#925 A5, #942 B4).
 SAMPLE_ARTIFACT = {'lm-p00-restart': 'after the restart T4RUPT runs a centisecond late natively (AOSTASK\'s routine '
                                      'runs as one call), so one DSRUPTSW sample in each 120 ms T4RUPT cycle differs'}
 UNSCALED = {x[0] for x in frc.RESTARTS if not x[6]}
@@ -207,10 +208,12 @@ def host_verdict(h, commit):
             bad.append('no record of samples')
         else:
             text += f'; {eq} of {n} samples equal ({base} without the restart)'
-            extra, slack = base - eq, frc.SAMPLE_SLACK.get(h['scenario'], 0)
-            if extra > slack:
-                bad.append(f'{extra} more samples differ than without the restart (allowed {slack})')
-            elif extra > 0:
+            extra, problems = base - eq, h.get('sample_problems')
+            if problems is None:
+                bad.append('no record of the samples the restart adds')
+            elif problems:
+                bad.append(f'{len(problems)} samples differ outside the known artifact (first: {problems[0]})')
+            elif extra > 0 and h['scenario'] in SAMPLE_ARTIFACT:
                 text += f"; the {extra} more are a known artifact: {SAMPLE_ARTIFACT[h['scenario']]}"
     return (False, text + '; FAILED: ' + '; '.join(bad)) if bad else (True, text)
 
