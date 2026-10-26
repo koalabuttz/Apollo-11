@@ -39,9 +39,10 @@ The checks come from the certificate reviews (docs/audits/, auditor issues):
               old; WARN instead when the manifest predates those vice_targets
               or when no manifest is available (#127). A certificate naming
               neither vice_targets nor c64_exempt FAILs (WARN when already
-              accepted complete, until its next refreeze; #127). WARN
-              when that manifest's c64_cover (tools/cover_check.py) shows
-              the cited branch cover stale or missing host branches (#234).
+              accepted complete, until its next refreeze; #127). FAIL
+              when that manifest's c64_cover (tools/cover_check.py) cannot
+              verify the cited branch cover or shows it missing host
+              branches (WARN when already accepted complete; #234).
   domain      no open item ("pending", "follow-up") in a certificate's text (#77
               #84), and every cited native file exists (#51).
   revision    reviewed_all_source_paths and the pinned source_revision, the
@@ -1125,7 +1126,7 @@ def check_manifest(report, label, path, certificate, manifest, now=None, accepte
     if age > datetime.timedelta(days=MANIFEST_DAYS):
         report.add('FAIL', label, f'{run} is over {MANIFEST_DAYS} days old, so it does not prove the tip',
                    'run port-ci with full from the Actions tab, or fix the nightly')
-    check_cover(report, label, certificate, manifest, run)
+    check_cover(report, label, certificate, manifest, run, accepted)
     covered = targets in (manifest.get('certificates') or {}).get(path, {}).values()
     level, note = ('FAIL', '') if covered else (
         'WARN', '; the manifest predates these vice_targets, so the next nightly decides')
@@ -1141,26 +1142,37 @@ def check_manifest(report, label, path, certificate, manifest, now=None, accepte
                        f'{checks} certified{note}', 'restore the C64 rows or certify what runs')
 
 
-def check_cover(report, label, certificate, manifest, run):
+def check_cover(report, label, certificate, manifest, run, accepted=True):
     """The cited C64 branch cover as the nightly re-derived it (cover_check.py, #234).
-    WARN while records are refrozen with their cases and rows."""
+    A cover the nightly cannot verify (no re-derivation, cases or rows not
+    the frozen ones) or that misses host branches FAILs, and WARNs on a
+    certificate already accepted complete until its next refreeze. A cover
+    the nightly re-derived from another record WARNs: the next nightly
+    decides."""
     record = (certificate.get('evidence') or {}).get('c64_branch_outcomes') or {}
     path = record.get('path') if isinstance(record, dict) else None
     if not path or not path.startswith('evidence/'):
         return
     milestone = pathlib.PurePosixPath(path).parts[1]
     row = (manifest.get('c64_cover') or {}).get(milestone)
-    if row is None or row.get('reason') == 'no re-derivation for this record yet':
+    level = 'WARN' if accepted else 'FAIL'
+    note = '; WARN on an accepted certificate until its next refreeze (#234)' if accepted else ' (#234)'
+    if row is None:
+        return
+    if row.get('reason') == 'no re-derivation for this record yet':
+        if not accepted:
+            report.add('FAIL', label, f'C64 branch cover {path} has no re-derivation in {run} (#234)',
+                       'give tools/cover_check.py a re-derivation for this record')
         return
     if row.get('record') != path:
         report.add('WARN', label, f'{run} re-derived {row.get("record")}, not the cited {path}; '
                    'the next nightly decides')
     elif not row.get('verified'):
-        report.add('WARN', label, f'C64 branch cover {path} is not re-derivable in {run}: {row.get("reason")}',
+        report.add(level, label, f'C64 branch cover {path} is not re-derivable in {run}: {row.get("reason")}{note}',
                    'refreeze the record with its cases_sha256 and C64 rows')
     elif row.get('missing') or row.get('missing_count'):
-        report.add('WARN', label, f'C64 branch cover {path} misses {row.get("missing_count")} host branches '
-                   f'in {run}', 'add C64 rows that take them, or show they are host-only')
+        report.add(level, label, f'C64 branch cover {path} misses {row.get("missing_count")} host branches '
+                   f'in {run}{note}', 'add C64 rows that take them, or show they are host-only')
 
 
 # ---------------------------------------------------------------- driver

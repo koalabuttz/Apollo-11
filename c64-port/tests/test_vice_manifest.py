@@ -75,6 +75,28 @@ class ViceManifest(unittest.TestCase):
     def test_malformed(self):
         self.assertEqual(check({'a': 0}, manifest()).fails, 1)
 
+    def test_cover(self):
+        record = {'c64_branch_outcomes': {'path': 'evidence/m/m-cover.json'}}
+
+        def cover(row, accepted):
+            certificate = {'evidence': {'c64_execution_results': {'path': 'x', 'vice_targets': {'vice-a': 100}},
+                                        **record}}
+            report = cert_precheck.Report()
+            cert_precheck.check_manifest(report, PATH, PATH, certificate, manifest() | {'c64_cover': {'m': row}},
+                                         NOW, accepted=accepted)
+            return (report.fails, report.warns)
+        good = {'record': 'evidence/m/m-cover.json', 'verified': True}
+        self.assertEqual(cover(good, False), (0, 0))
+        for bad in ({**good, 'verified': False, 'reason': 'regenerated cases are not the frozen ones'},
+                    {**good, 'missing_count': 2, 'missing': ['x']}):
+            self.assertEqual(cover(bad, True), (0, 1))
+            self.assertEqual(cover(bad, False), (1, 0))
+        none = {'reason': 'no re-derivation for this record yet'}
+        self.assertEqual(cover(none, True), (0, 0))
+        self.assertEqual(cover(none, False), (1, 0))
+        # another record re-derived: the next nightly decides, accepted or not
+        self.assertEqual(cover({**good, 'record': 'evidence/m/old.json'}, False), (0, 1))
+
     def test_no_manifest(self):
         self.assertEqual(check({'vice-a': 1}, None).lines, [])
 
