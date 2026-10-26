@@ -8,6 +8,9 @@
   program_acceptance.py lm|cm --no-run [--host DIR] [--replay-dir DIR] [--run RUN.json ...] [--no-evidence]
                                    only collect the results already made (cheap)
   program_acceptance.py lm|cm --windows    print the C64 --replay runs the doc needs
+  program_acceptance.py lm|cm --rescore    re-score the committed doc's stored evidence with
+                                   this tool and the current map; exit 1 when its counts
+                                   or result differ from the doc's (acceptance_freshness.py)
 
 Reads, all of which must come from the same commit:
 
@@ -43,6 +46,7 @@ import argparse
 import hashlib
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -443,6 +447,47 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
     out.write_text('\n'.join(lines))
 
 
+COUNTS = re.compile(r'^\| (\d+) \| (\d+) \| (\d+) \| (\d+) \| (\d+) \| (\d+) of \d+ \| (\d+) of \d+ \|$', re.M)
+CITED = re.compile(r'`(evidence/[a-z]+-acceptance-program/((?:host|replay)-[^`]+\.json))` \(sha256 `([0-9a-f]{64})`\)')
+
+
+def rescore(m, map_path=None):
+    """(same, text): re-score the committed integrated doc from the evidence it
+    cites, with this tool and the current map. A map edit or a scoring change
+    that would turn the doc's counts or result leaves the store bytes alone,
+    so freshness by bytes alone would call such a doc current (#942 B2)."""
+    p = PROGRAM[m]
+    doc = (ROOT / f'docs/acceptance/{p}-integrated_program_tests.md').read_text()
+    claimed = COUNTS.search(doc)
+    if not claimed:
+        return False, 'no counts table in the doc'
+    claimed = dict(zip(('rows', 'mapped', 'not_exercised', 'unexplained', 'tbd', 'host_clean', 'c64_match'),
+                       map(int, claimed.groups())))
+    claimed['ok'] = 'Result: **PASS**' in doc[:600]
+    host, replays, bad = {}, {}, []
+    for path, name, want in CITED.findall(doc):
+        f = ROOT / path
+        if not f.exists() or sha(f) != want:
+            bad.append(name)
+            continue
+        r = json.loads(f.read_text())
+        if name.startswith('host-'):
+            host[r['scenario'][:-len('-scaled-x1')] if r['scenario'].endswith('-scaled-x1') else r['scenario']] = r
+        else:
+            replays.setdefault(r['scenario'], []).append(r)
+    if bad:
+        return False, f"{len(bad)} cited evidence files missing or changed (run tools/evidence.py fetch --coverage): " \
+            + ', '.join(bad[:3])
+    for runs in replays.values():
+        runs.sort(key=lambda r: r.get('snap_cs') or 0)
+    plan = json.loads((map_path or ROOT / f'docs/acceptance/{p}-program-map.json').read_text())
+    _, counts = assess(plan['rows'], host, replays)
+    diff = [f'{k} {claimed[k]} -> {counts[k]}' for k in claimed if claimed[k] != counts[k]]
+    if diff:
+        return False, 're-scored with this map and tool: ' + ', '.join(diff)
+    return True, f"re-scores to the doc's counts ({counts['c64_match']} of {counts['mapped']} mapped rows on the C64)"
+
+
 def window_cmd(w):
     """The flight_scenario_vice.py --replay run for a map window
     [scenario, start cs, cs(, chain K(, every))]."""
@@ -486,8 +531,14 @@ def main(argv=None):
                     help='only collect results already made (default: first run the host differential and '
                          'each C64 window with no result at this commit)')
     ap.add_argument('--windows', action='store_true', help="print the map's C64 --replay runs and exit")
+    ap.add_argument('--rescore', action='store_true',
+                    help="re-score the committed doc's cited evidence with this tool and the map; exit 1 on a change")
     a = ap.parse_args(argv)
     m, p = a.mission, PROGRAM[a.mission]
+    if a.rescore:
+        same, text = rescore(m, a.map)
+        print(f'{p} integrated_program_tests: {text}')
+        return 0 if same else 1
     plan = json.loads((a.map or ROOT / f'docs/acceptance/{p}-program-map.json').read_text())
     rows, windows = plan['rows'], plan.get('replay_windows', [])
     if a.windows:
