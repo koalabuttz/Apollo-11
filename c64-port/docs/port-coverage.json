@@ -1225,7 +1225,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/layout-vice-result.txt",
-            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a"
+            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a",
+            "vice_targets": {
+              "vice-legacy-layout": 4232
+            }
           }
         }
       }
@@ -6028,7 +6031,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/layout-vice-result.txt",
-            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a"
+            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a",
+            "vice_targets": {
+              "vice-legacy-layout": 4232
+            }
           }
         }
       }
@@ -7946,7 +7952,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/layout-vice-result.txt",
-            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a"
+            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a",
+            "vice_targets": {
+              "vice-legacy-layout": 4232
+            }
           }
         }
       }
@@ -8480,7 +8489,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/layout-vice-result.txt",
-            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a"
+            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a",
+            "vice_targets": {
+              "vice-legacy-layout": 4232
+            }
           }
         }
       }
@@ -13528,7 +13540,10 @@
           },
           "c64_execution_results": {
             "path": "evidence/layout-vice-result.txt",
-            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a"
+            "sha256": "5538e6da84f763554526b92b4bcdbf450627fdd7576fff86cd4fd03d965d9b5a",
+            "vice_targets": {
+              "vice-legacy-layout": 4232
+            }
           }
         }
       }
