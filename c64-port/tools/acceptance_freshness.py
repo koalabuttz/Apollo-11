@@ -14,9 +14,11 @@ re-acceptance run at the current commit before anyone quotes it for the
 shipped build.
 
 port_coverage.py --require-complete checks that acceptance exists; this
-checks that it is current. --require-fresh exits 1 on any STALE program or
-missing build file. port-ci runs it on every PR that touches C64 code
-(job acceptance-fresh), so a PR that moves an accepted program's bytes must
+checks that it is current. It also requires the six category docs of each
+program to name one commit and PASS. --require-fresh exits 1 on any STALE or
+MIXED program or missing build file. port-ci runs it (job acceptance-fresh,
+1541 and 1581 sets) on every PR and port-branch push that changes more than
+prose or evidence, so a PR that moves an accepted program's bytes must
 carry that program's re-acceptance (CONTRIBUTING-port.md, "After
 acceptance").
 
@@ -39,6 +41,8 @@ import time
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PROGRAMS = {'Luminary099': 'lm', 'Comanche055': 'cm'}
 PENDING = ROOT / 'docs/acceptance/pending-reacceptance.json'
+CATEGORIES = ('bootable_c64_application', 'device_adapter_tests', 'integrated_program_tests',
+              'memory_and_overlay_validation', 'native_output_tests', 'recovery_and_restart_tests')
 ROW = re.compile(r'^\| `([^`]+)` \| `([0-9a-f]{64})` \|$')
 
 
@@ -80,6 +84,19 @@ def check(program, m, build):
     return commit, moved, missing, unchecked
 
 
+def docs_agree(program):
+    """The six category docs must come from one acceptance run: each names
+    the same commit and says PASS. Re-citing only the bootable doc's hash
+    table would otherwise make a program FRESH without re-running the rest."""
+    seen = {}
+    for c in CATEGORIES:
+        doc = ROOT / 'docs/acceptance' / f'{program}-{c}.md'
+        head = doc.read_text()[:400] if doc.exists() else ''
+        commit = re.search(r'at commit `([0-9a-f]+)`', head)
+        seen[c] = (commit.group(1) if commit else 'missing') + ('' if 'Result: **PASS' in head else ' (not PASS)')
+    return len(set(seen.values())) == 1 and not next(iter(seen.values())).endswith(')') and 'missing' not in seen.values(), seen
+
+
 def head():
     try:
         out = subprocess.run(['git', 'rev-parse', '--short=12', 'HEAD'], cwd=ROOT, capture_output=True, text=True)
@@ -103,7 +120,12 @@ def main():
     pending = json.loads(PENDING.read_text()) if PENDING.exists() else {}
     for program, m in PROGRAMS.items():
         commit, moved, missing, unchecked = check(program, m, args.build)
-        if missing:
+        agree, seen = docs_agree(program)
+        if not agree:
+            bad = True
+            print(f'{program}: MIXED acceptance docs (each category must come from one run at one commit, PASS): '
+                  + ', '.join(f'{c} {v}' for c, v in seen.items()))
+        elif missing:
             bad = True
             print(f'{program}: UNKNOWN (accepted at {commit}); missing: {", ".join(missing)}')
         elif moved and program in pending and all(

@@ -105,9 +105,13 @@ jobs:
           c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')
           [ "$post_merge" = 1 ] && c64=0
           echo "c64=$c64" >> "$GITHUB_OUTPUT"
-          # acceptance-fresh runs where C64 code changed, and where the guard itself did.
-          fresh=$c64
-          if git diff --name-only "$base" HEAD 2>/dev/null | grep -qE '^(c64-port/tools/acceptance_freshness\.py|c64-port/docs/acceptance/|\.github/workflows/port-ci\.yml)'; then fresh=1; fi
+          # acceptance-fresh runs unless every changed file is prose (.md outside
+          # docs/acceptance) or evidence: AGC source, docs/*.json and tools/*.json
+          # all reach the shipped bytes without counting as C64 code (#926).
+          fresh=1
+          if changed=$(git diff --name-only "$base" HEAD 2>/dev/null) && [ -n "$changed" ] \
+             && ! echo "$changed" | grep -qvE '^c64-port/evidence/|\.md$' \
+             && ! echo "$changed" | grep -q '^c64-port/docs/acceptance/'; then fresh=0; fi
           echo "fresh=$fresh" >> "$GITHUB_OUTPUT"
           echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
           # A full c64 run is over two hours of builds and VICE: split it.
@@ -333,13 +337,15 @@ jobs:
   # C64 bytes an accepted program ships (its REU store, resident, loader or
   # disks) fails here unless the same PR re-cites that program's acceptance
   # at its head, so a merge can't leave an acceptance describing an older
-  # build. Changes that wait for a steward re-acceptance window ride in the
+  # build. It runs on pushes to the port branch too, so a merge of two
+  # green PRs that together move bytes shows on the merge commit.
+  # Changes that wait for a steward re-acceptance window ride in the
   # window's one PR, which carries the regenerated docs.
   acceptance-fresh:
     needs: plan
     env:
       REF: ${{ needs.plan.outputs.sha }}
-    if: github.event_name == 'pull_request' && needs.plan.outputs.fresh == '1'
+    if: needs.plan.outputs.fresh == '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -358,7 +364,12 @@ jobs:
         working-directory: c64-port
         run: |
           source deps/env.sh
-          make flight-disk MOS_CC="$MOS_CC" > build/acceptance-fresh-build.log 2>&1 || { tail -40 build/acceptance-fresh-build.log; exit 1; }
+          # The 1541 sets too (the docs list their d64s); each run rewrites the
+          # loaders, so the 1581 run goes last.
+          { make flight-disk MOS_CC="$MOS_CC" \
+            && python3 tools/flight_disk.py --missions lm,cm --drive 1541 \
+            && python3 tools/flight_disk.py --missions lm,cm; } > build/acceptance-fresh-build.log 2>&1 \
+            || { tail -40 build/acceptance-fresh-build.log; exit 1; }
           python3 tools/acceptance_freshness.py --require-fresh || {
             echo "FAIL: this PR changes the C64 bytes of an accepted program (above)."
             echo "Merge it in a steward re-acceptance window, whose PR re-cites docs/acceptance at its head"
