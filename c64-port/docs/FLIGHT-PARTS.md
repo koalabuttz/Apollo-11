@@ -121,6 +121,18 @@ cuts above:
 | `lm-p63-nassp`, 90000 cs, 500 cs | 21.581x, 784 background job loads | 21.032x, 736 |
 | `lm-landing-ascent-nassp`, 123000 cs, 300 cs | 26.864x, 759 | 26.666x, 738 |
 
+P66 then bounced between SN1 (00,3553, part 1) and the POLY and DMP it
+calls (03,3222 and 03,3106, part 2): about 150 loads each way per 1000 cs
+(Lane D2, /mnt/project-files/d2/lm-load-profile.md). COSINE to SN1's end
+(00,3517-3607) is now in part 2 too. The parts are 14,054, 15,024 and 9,439
+bytes. Same store (33cb8e12), with `tools/flight_scenario_vice.py
+--load-trace`:
+
+| Window | Before | After |
+|---|---|---|
+| `lm-landing-ascent-nassp`, 126000 cs, 1000 cs | 27.085x, 3,120 loads | 26.291x, 2,938 |
+| `lm-p63-descent-thrust`, 17500 cs, 1000 cs | 21.755x, 2,236 loads | 21.795x, 2,236 |
+
 Larger hot parts (with more of UNIT, or VSQSUB and SQRTSUB) were slower:
 they moved the bounce to other words. Most of the remaining interpreter
 loads are calls from other files (FLESHPOT to DMP, SGNAGREE to TPAGREE,

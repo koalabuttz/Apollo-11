@@ -1036,9 +1036,9 @@ SPECS = {
         # and UNIT's start (00,3000) with ENDDOT, TPAGREE, DMP (03,3100),
         # VXV, MPACVBUF, ALSIGNAG (03,3400) and BRANCH's tail (03,2700).
         # Cut at 0o100-word lines, so the sizes stay under one job slot.
-        **({'flight_parts': [0o1000, 0o1100, 0o2000, 0o3 * 1024 + 0o700, 0o3 * 1024 + 0o1000,
+        **({'flight_parts': [0o1000, 0o1100, 0o1517, 0o1610, 0o2000, 0o3 * 1024 + 0o700, 0o3 * 1024 + 0o1000,
                              0o3 * 1024 + 0o1100, 0o3 * 1024 + 0o1300, 0o3 * 1024 + 0o1400, 0o3 * 1024 + 0o1600],
-            'flight_part_map': [1, 2, 1, 3, 2, 3, 2, 3, 2, 3]} if m == 'lm' else
+            'flight_part_map': [1, 2, 1, 2, 1, 3, 2, 3, 2, 3, 2, 3]} if m == 'lm' else
            {'flight_parts': [0o1517, 0o3 * 1024 + 0o1000]}),
         'inside': ['BRANCH', 'Q+1', 'NEG', 'DMP', 'DMPSUB', 'DMPSUB2', 'ROUNDSUB', 'POWRSERS', 'POLY', 'POLYCOM',
                    'POLYLOOP', 'POLY2', 'DPAGREE', 'TPAGREE', 'ARG+', 'ARGZERO2', 'ARGZERO', 'SHORTMP', 'SHORTMP2',
