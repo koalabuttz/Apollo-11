@@ -16,8 +16,14 @@ so the c64 job keeps its own list when host targets alone pass the limit.
 
   python3 tools/ci_affected.py --base origin/port/c64-native-c
   python3 tools/ci_affected.py --files src/waitlist.c tools/mk/foo.mk
+
+With --base, a C, header, assembly or Python file whose code is the same on
+both sides (only comments, blank lines or indentation changed) is left out,
+so a comment-only PR runs no build or VICE targets. C files that use
+__LINE__ or assert still count, since moving lines changes their output.
 """
 import argparse
+import ast
 import json
 import pathlib
 import re
@@ -176,6 +182,53 @@ def changed_files(base):
     return [line[len(prefix):] if line.startswith(prefix) else line for line in out.splitlines()]
 
 
+C_COMMENT = re.compile(r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\\n])*"|\'(?:\\.|[^\'\\\n])*\'', re.S)
+LINE_SENSITIVE = re.compile(r'\b(__LINE__|assert)\b')
+
+
+def code_of(path, text):
+    """The file's code without comments, blank lines or indentation, or None
+    when this file kind is not compared (or its line numbers matter)."""
+    if path.endswith('.py'):
+        try:
+            return ast.dump(ast.parse(text))
+        except SyntaxError:
+            return None
+    if not path.endswith(('.c', '.h', '.S', '.s')):
+        return None
+    # Only C-style comments are stripped (an assembly ; comment counts as
+    # code). A string continued over a line keeps its indentation, so such a
+    # file is always compared as changed.
+    literals = []
+    code = C_COMMENT.sub(lambda m: (literals.append(m.group(0)), m.group(0))[1]
+                         if m.group(0)[0] in '"\'' else ' ', text)
+    if LINE_SENSITIVE.search(code) or any('\n' in lit for lit in literals):
+        return None
+    return '\n'.join(line.strip() for line in code.splitlines() if line.strip())
+
+
+def show(rev, path):
+    try:
+        return subprocess.check_output(['git', 'show', f'{rev}:c64-port/{path}'], cwd=ROOT,
+                                       text=True, stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError:
+        return None
+
+
+def code_changed(base, files):
+    """Drop files whose code is the same at the merge base and HEAD."""
+    mb = subprocess.check_output(['git', 'merge-base', base, 'HEAD'], cwd=ROOT, text=True).strip()
+    kept = []
+    for f in files:
+        old, new = show(mb, f), show('HEAD', f)
+        if old is not None and new is not None:
+            a, b = code_of(f, old), code_of(f, new)
+            if a is not None and a == b:
+                continue
+        kept.append(f)
+    return kept
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -186,6 +239,8 @@ def main():
     args = parser.parse_args()
     files = args.files if args.files is not None else changed_files(args.base)
     relevant = [f for f in files if not IGNORED.match(f)]
+    if args.base:
+        relevant = code_changed(args.base, relevant)
     result = {'files': len(files), 'full': any(f in SHARED for f in relevant),
               'test': [], 'sanitize': [], 'c64': [], 'vice': []}
     if relevant and not result['full']:
