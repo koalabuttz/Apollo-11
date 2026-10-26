@@ -15,8 +15,17 @@ shipped build.
 
 port_coverage.py --require-complete checks that acceptance exists; this
 checks that it is current. --require-fresh exits 1 on any STALE program or
-missing build file.
+missing build file. port-ci runs it on every PR that touches C64 code
+(job acceptance-fresh), so a PR that moves an accepted program's bytes must
+carry that program's re-acceptance (CONTRIBUTING-port.md, "After
+acceptance").
+
+docs/acceptance/pending-reacceptance.json lists programs the base already
+knows are stale, with the PR that made them so: {"Comanche055": "#919"}.
+Those report STALE without failing until the re-acceptance PR removes them.
+A program can only be added there in a reviewed PR.
 """
+import json
 import argparse
 import hashlib
 import pathlib
@@ -27,6 +36,7 @@ import time
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PROGRAMS = {'Luminary099': 'lm', 'Comanche055': 'cm'}
+PENDING = ROOT / 'docs/acceptance/pending-reacceptance.json'
 ROW = re.compile(r'^\| `([^`]+)` \| `([0-9a-f]{64})` \|$')
 
 
@@ -88,11 +98,15 @@ def main():
     print(f'checkout {head()}; compare against the build at that checkout (rebuild with `make flight-disk` if build/ is older)'
           + (f'; build/flight-store/lm.reu written {time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime(built.stat().st_mtime))}'
              if built.exists() else ''))
+    pending = json.loads(PENDING.read_text()) if PENDING.exists() else {}
     for program, m in PROGRAMS.items():
         commit, moved, missing, unchecked = check(program, m, args.build)
         if missing:
             bad = True
             print(f'{program}: UNKNOWN (accepted at {commit}); missing: {", ".join(missing)}')
+        elif moved and program in pending:
+            print(f'{program}: STALE, pending re-acceptance (since {pending[program]}; accepted at {commit});'
+                  f' changed since: {", ".join(moved)}')
         elif moved:
             bad = True
             print(f'{program}: STALE (accepted at {commit}); changed since: {", ".join(moved)}')

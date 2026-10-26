@@ -131,6 +131,26 @@ A script your milestone records as an unqualified development trial (never
 passed, replaced by a staged script) goes in `TRIALS` in `tools/legacy_vice.py`
 with the document that says so; anything else that fails is a failure to fix.
 
+## After acceptance
+
+Both programs are accepted (docs/acceptance/). Their bootable docs record the sha256 of the
+REU store, resident, loader and disks each program ships. `tools/acceptance_freshness.py`
+(after `make flight-disk`) compares those with the build and prints FRESH or STALE per program.
+
+port-ci's `acceptance-fresh` job runs it with `--require-fresh` on every PR that touches C64
+code. A PR that moves an accepted program's bytes fails there unless it also re-cites that
+program's acceptance at its head (the regenerated docs/acceptance/<program>-*.md). In practice:
+
+- Get green CI elsewhere and a reviewer accept, then tell the steward the PR is READY and which
+  program it moves. The steward merges waiting PRs for that program into one re-acceptance
+  window PR, runs the program's acceptance at its head and commits the docs there.
+- A fix for a failing acceptance check ships with its own re-run.
+- Tools, host-only and docs PRs, and PRs that leave both programs FRESH, are unaffected.
+
+`docs/acceptance/pending-reacceptance.json` names a program the base already knows is stale and
+the PR that made it so. That program reports STALE without failing until its re-acceptance PR
+deletes the entry. Adding an entry is a reviewed change, never a way around the check.
+
 ## Pick the C64 rows by outcome
 
 The C64 runs a subset of the host cases. Pick it with `tools/c64_row_cover.py`,

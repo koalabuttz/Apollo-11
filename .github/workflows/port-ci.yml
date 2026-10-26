@@ -324,6 +324,42 @@ jobs:
           path: c64-port/build/vice-manifest-*.json
           if-no-files-found: ignore
 
+  # Both programs are accepted (docs/acceptance/). A PR that changes the
+  # C64 bytes an accepted program ships (its REU store, resident, loader or
+  # disks) fails here unless the same PR re-cites that program's acceptance
+  # at its head, so a merge can't leave an acceptance describing an older
+  # build. Changes that wait for a steward re-acceptance window ride in the
+  # window's one PR, which carries the regenerated docs.
+  acceptance-fresh:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: github.event_name == 'pull_request' && needs.plan.outputs.c64 == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Restore the flight store link cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-fresh
+          restore-keys: flight-link-cache-
+      - name: Accepted programs still match the build
+        working-directory: c64-port
+        run: |
+          source deps/env.sh
+          make flight-disk MOS_CC="$MOS_CC" > build/acceptance-fresh-build.log 2>&1 || { tail -40 build/acceptance-fresh-build.log; exit 1; }
+          python3 tools/acceptance_freshness.py --require-fresh || {
+            echo "FAIL: this PR changes the C64 bytes of an accepted program (above)."
+            echo "Merge it in a steward re-acceptance window, whose PR re-cites docs/acceptance at its head"
+            echo "(c64-port/CONTRIBUTING-port.md, section After acceptance)."
+            exit 1; }
+
   # On every push to the port branch (where the c64 job is skipped), link
   # every C64 PRG (no VICE) and check each map. Two PRs can each fit and still push another lane's PRG past
   # $c000 together; this shows it on the merge commit. Full runs check the
