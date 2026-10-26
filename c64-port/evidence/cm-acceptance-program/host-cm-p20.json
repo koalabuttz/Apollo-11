@@ -15,7 +15,7 @@
  },
  "schedule": "1,1,2",
  "exit": 0,
- "commit": "7dd3db437cfa",
+ "commit": "39dc823fd285",
  "cia_interrupts": 25036,
  "periods_taken": 25036,
  "periods_dropped": 0,
@@ -42,14 +42,16 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
   "37,2261": 4804,
   "37,2466": 9271,
   "34,2630": 5423,
   "14,2015": 5597,
-  "37,2557": 5424
+  "37,2557": 5424,
+  "43,3023": 6310
  },
  "arrivals": {
   "37,2261": [
@@ -97,7 +99,10 @@
    10917,
    11900,
    24637
+  ],
+  "43,3023": [
+   6310
   ]
  },
- "log_sha256": "991e5388872c0c194a6b911f8565dbc442d0c15061e4435f40060caff1b67a05"
+ "log_sha256": "d9dee5863831fa60fd6378e06de5dda7eff9dc7116bc4f7d316f12503c580113"
 }

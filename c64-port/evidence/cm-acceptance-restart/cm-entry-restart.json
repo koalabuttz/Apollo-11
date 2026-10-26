@@ -72,7 +72,7 @@
   "pre_snapshot": "build/flight-restart/cm-entry-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -85,11 +85,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 45670365,
+  "wall_cycles": 45636809,
   "agc_cs": 309,
   "dropped_ticks": 0,
-  "steps": 1355,
-  "wall_per_agc": 15.001,
+  "steps": 1350,
+  "wall_per_agc": 14.99,
   "lost": false,
   "mission": "cm",
   "snap_cs": 25041,
@@ -105,18 +105,18 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 5
+   "dma_unchecked": 11
   },
-  "hold_host_mct": 652,
-  "hold_host_time1": 8832,
-  "replay_rows": 428,
-  "replay_applied": 428,
+  "hold_host_mct": 495,
+  "hold_host_time1": 8781,
+  "replay_rows": 430,
+  "replay_applied": 430,
   "replay_end_cs": 309,
   "replay_ended": true,
   "replay_after_rows": 14,
   "replay_inputs": {
    "counts": {
-    "1": 428
+    "1": 430
    },
    "erasable": [],
    "pipas": [
@@ -181,7 +181,7 @@
   "replay_matched_cs": [
    50,
    100,
-   192,
+   191,
    200,
    251,
    301
@@ -195,13 +195,13 @@
   "requested_cs": 301,
   "host_holes": [],
   "downrupt": false,
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "exit": 0,
   "log": "cm-entry-restart-c64.log",
-  "log_sha256": "06949bc78b23a966d106043a19a0c105704eb7714fa139a8606144d43eb19e47",
+  "log_sha256": "1f3aee68dce3053e0ff66e3d8298cee3b15e240ea8e4f2cb6efe6a79255750a1",
   "store_sha256": "a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf",
   "manifest_sha256": "9968b925d9733cae9263d7dc766173dbb5ed7fb880e1ca972684f0a257813bc6",
-  "prg_sha256": "8809f20f31889532be7876eb7188f0eb07d1e6285786bd0d321c6c38fdc7c481"
+  "prg_sha256": "c3b5945f7379c6993815fb57e67f6c34da4e89620ac689ad0eb275c46f626765"
  },
  "gojam_on_c64": {
   "scenario": "cm-entry-restart",
@@ -349,7 +349,7 @@
    },
    "ok": true
   },
-  "commit": "7dd3db437cfa",
+  "commit": "39dc823fd285",
   "log": "gojam-on-c64.log",
   "log_sha256": "0c2bd0ed10e1c1124baee4e65204b8097cf6e52eba77305322802aacb7ff0ea3"
  }

@@ -555,6 +555,118 @@
    300,
    1,
    50
+  ],
+  [
+   "cm-tpi-search",
+   32090,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   25843,
+   900,
+   1,
+   50
+  ],
+  [
+   "cm-p21",
+   19704,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   8361,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   10362,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-entry",
+   30532,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20",
+   9021,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   23438,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   7609,
+   700,
+   1,
+   50
+  ],
+  [
+   "cm-p11",
+   88000,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   4136,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   6537,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   15123,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20-crew-verbs",
+   26082,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20",
+   6030,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-entry-overload",
+   20301,
+   300,
+   1,
+   50
   ]
  ],
  "rows": [
@@ -617,7 +729,7 @@
    "windows": [
     [
      "cm-tpi-search",
-     32320
+     32090
     ]
    ],
    "reach": [
@@ -1021,7 +1133,7 @@
    "windows": [
     [
      "cm-rendezvous-tpm",
-     26620
+     25843
     ]
    ],
    "reach": [
@@ -1083,7 +1195,7 @@
    "entry": "P31",
    "status": "not exercised",
    "scenarios": [],
-   "note": "not exercised: not used on Apollo 11: burns were targeted by P30 from ground pads (inferred; E to confirm) Reviewer 2: accepted (ruling 07:40).",
+   "note": "not exercised: not used on Apollo 11: burns were targeted by P30 from ground pads Reviewer 2: accepted (ruling 07:40).",
    "owner": "E"
   },
   {
@@ -1173,7 +1285,7 @@
    "windows": [
     [
      "cm-p21",
-     20600
+     19704
     ]
    ],
    "reach": [
@@ -1333,18 +1445,18 @@
    "scenarios": [
     "cm-p11"
    ],
-   "note": "mapped: SB 0, cm-p11, liftoff at 100 s (FLIGHT_SATURN) to orbit (FHD:210-222; cm-p11-stops.md)",
+   "note": "mapped: SB 0, cm-p11, liftoff at 100 s (FLIGHT_SATURN) to orbit (FHD:210-222; cm-p11-stops.md) Reach is VHHDOT (34,2307), the P11 body every 2 s after liftoff: the entry (34,2002, host 10023 cs) runs just before P11 zeroes TIME2:TIME1 at liftoff, and no replay window can span that zeroing (the window clock counts AGC time), so the window (88000+400) covers a late VHHDOT arrival (88212).",
    "owner": "E",
    "windows": [
     [
      "cm-p11",
-     15050
+     88000
     ]
    ],
    "reach": [
     [
-     "34,2002",
-     "P11"
+     "34,2307",
+     "VHHDOT (P11 body: every 2 s after liftoff)"
     ]
    ]
   },
@@ -1371,7 +1483,7 @@
    "windows": [
     [
      "cm-uplink-accept",
-     2010
+     4136
     ],
     [
      "cm-uplink-reject",
@@ -1421,7 +1533,7 @@
    "windows": [
     [
      "cm-entry-overload",
-     20370
+     20301
     ]
    ],
    "reach": [
@@ -1437,7 +1549,7 @@
    "entry": "P65",
    "status": "not exercised",
    "scenarios": [],
-   "note": "not exercised: upcontrol: Apollo 11's entry went P64 \u2192 P67 (cm-entry MODREG 100 \u2192 103 octal); a longer-range target would be needed (G to confirm) Reviewer 2: accepted (ruling 07:40).",
+   "note": "not exercised: upcontrol: Apollo 11's entry went P64 \u2192 P67 (cm-entry MODREG 100 \u2192 103 octal); a longer-range target would be needed Reviewer 2: accepted (ruling 07:40).",
    "owner": "G"
   },
   {
@@ -1446,7 +1558,7 @@
    "entry": "P66",
    "status": "not exercised",
    "scenarios": [],
-   "note": "not exercised: ballistic phase: not reached on an Apollo 11-range entry (G to confirm) Reviewer 2: accepted (ruling 07:40).",
+   "note": "not exercised: ballistic phase: not reached on an Apollo 11-range entry Reviewer 2: accepted (ruling 07:40).",
    "owner": "G"
   },
   {
@@ -1462,7 +1574,7 @@
    "windows": [
     [
      "cm-entry",
-     30580
+     30532
     ]
    ],
    "reach": [
@@ -1517,7 +1629,7 @@
    "windows": [
     [
      "cm-p20",
-     9210
+     9021
     ]
    ],
    "reach": [
@@ -1637,7 +1749,7 @@
    "windows": [
     [
      "cm-rendezvous-tpm",
-     23600
+     23438
     ]
    ],
    "reach": [
@@ -1718,7 +1830,12 @@
      17900
     ]
    ],
-   "no_reach": "started by P40, not keyed: nothing to refuse (MIDTOAV1 is interpretive)"
+   "reach": [
+    [
+     "13,3443",
+     "INTSTALL +1 (MIDTOAV1 is interpretive: its first basic word)"
+    ]
+   ]
   },
   {
    "row": "R50",
@@ -1736,7 +1853,12 @@
      9600
     ]
    ],
-   "no_reach": "started by P52, not keyed: nothing to refuse (CAL53A is interpretive)"
+   "reach": [
+    [
+     "15,2324",
+     "RDCDUS (CAL53A is interpretive: its first basic call)"
+    ]
+   ]
   },
   {
    "row": "R51",
@@ -1751,7 +1873,7 @@
    "windows": [
     [
      "cm-p52",
-     8150
+     7609
     ]
    ],
    "reach": [
@@ -1820,10 +1942,15 @@
    "windows": [
     [
      "cm-p52",
-     15180
+     15123
     ]
    ],
-   "no_reach": "started by P52, not keyed: nothing to refuse (CHKSDATA is interpretive)"
+   "reach": [
+    [
+     "14,2750",
+     "CHKSD EXIT +1 (CHKSDATA is interpretive: its first basic word)"
+    ]
+   ]
   },
   {
    "row": "R55",
@@ -2039,10 +2166,15 @@
    "windows": [
     [
      "cm-p20-crew-verbs",
-     26190
+     26082
     ]
    ],
-   "no_reach": "entry cannot refuse: it only sets SURFFLAG"
+   "reach": [
+    [
+     "43,3207",
+     "SETSURF"
+    ]
+   ]
   },
   {
    "row": "V45 reset surface flag",
@@ -2060,7 +2192,12 @@
      27100
     ]
    ],
-   "no_reach": "entry cannot refuse: it only clears SURFFLAG"
+   "reach": [
+    [
+     "43,3212",
+     "RESTSRF"
+    ]
+   ]
   },
   {
    "row": "V46 establish G&C control (DAP)",
@@ -2166,7 +2303,12 @@
      14950
     ]
    ],
-   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
+   "reach": [
+    [
+     "43,2275",
+     "GOLOADLV"
+    ]
+   ]
   },
   {
    "row": "V51 please mark",
@@ -2184,7 +2326,12 @@
      8950
     ]
    ],
-   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
+   "reach": [
+    [
+     "43,2275",
+     "GOLOADLV"
+    ]
+   ]
   },
   {
    "row": "V52 set P22 offset number",
@@ -2258,7 +2405,7 @@
    "windows": [
     [
      "cm-p20",
-     9210
+     9021
     ]
    ],
    "reach": [
@@ -2284,7 +2431,12 @@
      29100
     ]
    ],
-   "no_reach": "entry cannot refuse: it only sets the auto-maneuver flag"
+   "reach": [
+    [
+     "43,2510",
+     "ENATMA"
+    ]
+   ]
   },
   {
    "row": "V59 please calibrate",
@@ -2302,7 +2454,12 @@
      8950
     ]
    ],
-   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
+   "reach": [
+    [
+     "43,2275",
+     "GOLOADLV"
+    ]
+   ]
   },
   {
    "row": "V60 set CPHIX = CDU",
@@ -2374,7 +2531,12 @@
      28600
     ]
    ],
-   "no_reach": "entry cannot refuse: it starts ATTACHED with no check"
+   "reach": [
+    [
+     "43,3034",
+     "ATTACHED"
+    ]
+   ]
   },
   {
    "row": "V67 W-matrix monitor",
@@ -2417,7 +2579,7 @@
    "windows": [
     [
      "cm-uplink-accept",
-     9210
+     10362
     ]
    ],
    "reach": [
@@ -2441,7 +2603,7 @@
    "windows": [
     [
      "cm-uplink-accept",
-     2010
+     4136
     ],
     [
      "cm-uplink-reject",
@@ -2468,7 +2630,7 @@
    "windows": [
     [
      "cm-uplink-accept",
-     5010
+     6537
     ]
    ],
    "reach": [
@@ -2491,7 +2653,7 @@
    "windows": [
     [
      "cm-uplink-accept",
-     2010
+     8361
     ]
    ],
    "reach": [
@@ -2517,7 +2679,12 @@
      12010
     ]
    ],
-   "no_reach": "entry cannot refuse: it only starts the dump"
+   "reach": [
+    [
+     "43,2721",
+     "DNEDUMP"
+    ]
+   ]
   },
   {
    "row": "V75 set liftoff flag (backup liftoff)",
@@ -2544,7 +2711,12 @@
      2100
     ]
    ],
-   "no_reach": "entry cannot refuse: it only sets PFRATFLG"
+   "reach": [
+    [
+     "43,3015",
+     "SETPRFLG"
+    ]
+   ]
   },
   {
    "row": "V77 reset preferred attitude flag",
@@ -2663,7 +2835,7 @@
    "windows": [
     [
      "cm-rendezvous-tpm",
-     23600
+     23438
     ]
    ],
    "reach": [
@@ -2699,10 +2871,15 @@
    "windows": [
     [
      "cm-p20",
-     6260
+     6030
     ]
    ],
-   "no_reach": "entry cannot refuse: it only sets VHFRFLAG"
+   "reach": [
+    [
+     "43,3023",
+     "SETVHFLG"
+    ]
+   ]
   },
   {
    "row": "V88 reset VHF range flag",
@@ -2720,7 +2897,12 @@
      28100
     ]
    ],
-   "no_reach": "entry cannot refuse: it only clears VHFRFLAG"
+   "reach": [
+    [
+     "43,3027",
+     "RESETVHF"
+    ]
+   ]
   },
   {
    "row": "V89 align axis to LOS (R63)",
@@ -2760,7 +2942,7 @@
    "entry": "GOSHOSUM",
    "status": "not exercised",
    "scenarios": [],
-   "note": "not exercised: rope checksum display for checkout (Lane C's DSKY sweep may key it) Reviewer 2: accepted (ruling 07:40).",
+   "note": "not exercised: rope checksum display for checkout (the DSKY sweep does not key it: tools/dsky_sweep_cases.py keys V01-V39 and V82/V83) Reviewer 2: accepted (ruling 07:40).",
    "owner": "C"
   },
   {
@@ -2788,7 +2970,12 @@
      30100
     ]
    ],
-   "no_reach": "entry cannot refuse: it only clears RENDWFLG"
+   "reach": [
+    [
+     "43,2755",
+     "WMATRXNG"
+    ]
+   ]
   },
   {
    "row": "V94 do R64",
@@ -2830,7 +3017,7 @@
    "windows": [
     [
      "cm-p40-sps-fail",
-     32100
+     30170
     ]
    ],
    "reach": [
@@ -2863,11 +3050,11 @@
    "windows": [
     [
      "cm-p40",
-     14950
+     29000
     ],
     [
      "cm-tei",
-     14950
+     29000
     ]
    ],
    "reach": [

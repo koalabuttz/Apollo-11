@@ -6,13 +6,13 @@ No PCI HardSID boards found.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
 Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
-VSP Bug: safe channels are: 2467. Emulation of memory corruption is disabled.
+VSP Bug: safe channels are: 1234567. Emulation of memory corruption is disabled.
 c64cartridge_reset changed: 1
 set_cartridge_type: -1
 512KiB unit installed.
 2048KiB unit installed.
 2048KiB unit installed.
-Reading REU image /tmp/x/fresh/c64-port/build/flight-disk/vice-cm/image.reu.
+Reading REU image /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu.
  
 *** VICE Version 3.7.1 ***
  
@@ -27,8 +27,8 @@ Empathic Qubit, Roberto Muscedere, June Tate-Gans, Pablo Roldan.
 This is free software with ABSOLUTELY NO WARRANTY.
 See the "About VICE" command for more info.
  
-random seed was: 0x6ade3513
-command line was: /usr/bin/x64sc -default -console -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data -drive8truedrive +virtualdev8 -drive8type 1541 -8 /tmp/x/fresh/c64-port/build/flight-disk/cm-1.d64 -reu -reusize 2048 -reuimage /tmp/x/fresh/c64-port/build/flight-disk/vice-cm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:7002 -monlogname /tmp/x/fresh/c64-port/build/flight-disk/vice-cm/monitor.log -monlog -keybuf load"*",8,1\nrun\n
+random seed was: 0x6adeafb7
+command line was: /usr/bin/x64sc -default -console -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data -drive8truedrive +virtualdev8 -drive8type 1541 -8 /tmp/x/dk/c64-port/build/flight-disk/cm-1.d64 -reu -reusize 2048 -reuimage /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6897 -monlogname /tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log -monlog -keybuf load"*",8,1\nrun\n
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin'.
@@ -76,13 +76,19 @@ Sync reset
 Unit 8: RESET.
 Increasing trap_func array size to 1 with 1 to run
 Sync reset
-Opening monitor command playback file: /tmp/x/fresh/c64-port/build/flight-disk/vice-cm/trace.mon
+Opening monitor command playback file: /tmp/x/dk/c64-port/build/flight-disk/vice-cm/trace.mon
 Monitor playback command: trace store df01 if ((@io:$df01 >= $80) && (((((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) < $0) || (((((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) + (@io:$df08 * $100)) + @io:$df07) - 1) >= $1b6000)) && (((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) < $1df000) || (((((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) + (@io:$df08 * $100)) + @io:$df07) - 1) >= $1f3000))) && (((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) < $1f6b00) || (((((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) + (@io:$df08 * $100)) + @io:$df07) - 1) >= $1fff83))))
 Monitor playback command: command 3 "io $df00"
 Monitor playback command: trace store df01 if ((@io:$df01 < $80) && ((((((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) - 1) < $0) || (((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) - 1) >= $1b6000)) && ((((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) - 1) < $1df000) || (((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) - 1) >= $1f3000))) && ((((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) - 1) < $1f6b00) || (((((@io:$df06 * $10000) + (@io:$df05 * $100)) + @io:$df04) - 1) >= $1fff83))))
 Monitor playback command: command 4 "io $df00"
 Monitor playback command: trace store df01 if (@io:$df01 < $80)
-Closed monitor command playback file: /tmp/x/fresh/c64-port/build/flight-disk/vice-cm/trace.mon
+Closed monitor command playback file: /tmp/x/dk/c64-port/build/flight-disk/vice-cm/trace.mon
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
+Sync reset
 Sync reset
 Sync reset
 Sync reset
@@ -220,21 +226,21 @@ Directory="/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11
 Sound=0
 ChargenName="/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin"
 BasicName="/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin"
-REUfilename="/tmp/x/fresh/c64-port/build/flight-disk/vice-cm/image.reu"
+REUfilename="/tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu"
 REUImageWrite=1
 REUsize=2048
 REU=1
 Drive8Type=1541
-MonitorLogFileName="/tmp/x/fresh/c64-port/build/flight-disk/vice-cm/monitor.log"
+MonitorLogFileName="/tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log"
 MonitorLogEnabled=1
-MonitorServerAddress="ip4://127.0.0.1:7002"
+MonitorServerAddress="ip4://127.0.0.1:6897"
 MonitorServer=1
 
 reconstructed commandline options (might be incomplete):
--default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data" -monlogname "/tmp/x/fresh/c64-port/build/flight-disk/vice-cm/monitor.log" -monlog +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -drive8type "1541" -reu -reusize "2048" -reuimage "/tmp/x/fresh/c64-port/build/flight-disk/vice-cm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:7002"
+-default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data" -monlogname "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log" -monlog +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -drive8type "1541" -reu -reusize "2048" -reuimage "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6897"
 
 VICE thread has been joined.
-REU: Writing REU image /tmp/x/fresh/c64-port/build/flight-disk/vice-cm/image.reu.
+REU: Writing REU image /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
-VIC-II: VSP Bug: safe channels are: 47. Emulation of memory corruption is disabled.
+VIC-II: VSP Bug: safe channels are: 1267. Emulation of memory corruption is disabled.
