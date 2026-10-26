@@ -552,8 +552,12 @@ def not_matched(r, asked, commit):
         why.append(f"applied {r.get('replay_applied')} of {r.get('replay_rows')} input rows")
     if r.get('replay_end_paired') is not True:
         why.append('its end was not paired with the host\'s')
-    if r.get('replay_unpaired_count'):
-        why.append(f"{r['replay_unpaired_count']} checkpoints not compared")
+    # As program_acceptance (#892): a mid checkpoint where both sides are busy
+    # at different places is a note, since the next checkpoint or the end
+    # still compares; a checkpoint with no partner at all fails.
+    lone = (r.get('replay_unpaired_count') or 0) - (r.get('replay_busy_apart_count') or 0)
+    if lone > 0:
+        why.append(f"{lone} checkpoints not compared")
     if r.get('replay_skipped'):
         why.append('skipped ' + '; '.join(r['replay_skipped']))
     if r.get('replay_differences') != 0:
@@ -570,6 +574,12 @@ def not_matched(r, asked, commit):
     if r.get('commit') != commit:
         why.append(f"from {r.get('commit')}, not {commit}")
     return why
+
+
+def busy_note(r):
+    """The busy-apart checkpoints of a matching window, said in its line."""
+    busy = r.get('replay_busy_apart') or []
+    return f" ({len(busy)} busy at different places at {', '.join(map(str, busy))} cs, not compared)" if busy else ''
 
 
 def first_diff(r):
@@ -666,7 +676,7 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
         d += ['', f"C64 windows that exercise it ({t['how']}):", '']
         d += [f"- {r['scenario']} {r['snap_cs']}+{r.get('requested_cs')}: "
               + ('matches the host at ' + ', '.join(map(str, r.get('replay_matched_cs') or [])) + ' cs'
-                 if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \
+                 + busy_note(r) if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \
             or ['- none']
         if t['units']:
             d += ['', 'Routine-level checks (host differential against yaAGC, then the same cases on the C64 in VICE): '
@@ -787,7 +797,7 @@ def main(argv=None):
     subprocess.run([sys.executable, 'tools/evidence.py', 'add', eid, *map(str, copies), '--tree'], cwd=ROOT, check=True)
     assessed, failed = assess(m, roles(m), runs, host, commit)
     bad += failed
-    off_lines, off_bad = offnom.section(off, runs, first_diff)
+    off_lines, off_bad = offnom.section(off, runs, first_diff, busy_note)
     bad += off_bad
     store = ROOT / f'build/flight-store/{m}.reu'
     path = write_doc(m, assessed, bad, runs, host_cite, sha(store) if store.exists() else None, commit, off_lines)

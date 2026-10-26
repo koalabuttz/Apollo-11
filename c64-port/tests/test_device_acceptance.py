@@ -79,6 +79,13 @@ class Match(unittest.TestCase):
             with self.subTest(kw=kw):
                 self.assertNotEqual(da.not_matched(window(**kw), 120, HEAD), [])
 
+    def test_busy_apart_checkpoint_is_a_note(self):
+        # #892: both sides busy at different places mid-window; the end still compares
+        w = window(replay_unpaired_count=1, replay_busy_apart_count=1, replay_busy_apart=[60])
+        self.assertEqual(da.not_matched(w, 120, HEAD), [])
+        self.assertIn('busy at different places at 60 cs', da.busy_note(w))
+        self.assertNotEqual(da.not_matched(window(replay_unpaired_count=2, replay_busy_apart_count=1), 120, HEAD), [])
+
     def test_not_a_program_window(self):
         self.assertIn("not one of the program's windows", da.not_matched(window(), None, HEAD))
 
