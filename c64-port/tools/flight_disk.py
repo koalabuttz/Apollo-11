@@ -51,6 +51,12 @@ from resident_flight_build import COMMON, FLIGHT_MAIN, MISSION, resident_sources
 STORE = ROOT / 'build/flight-store'
 OUT = ROOT / 'build/flight-disk'
 PAL_HZ = 985248
+# The load's budget in C64 time: the slowest real load is the 1541 LM set,
+# 2,175,446,323 cycles (2,208 s, evidence/lm-acceptance-boot/lm-1541.json),
+# and each disk prompt adds the C64 time one poll runs while it waits. On a
+# busy runner warp VICE gets fewer cycles per wall second, so the wait is
+# bounded by these cycles, and --timeout (wall) is only a hang guard.
+LOAD_BUDGET_S = 4800
 TITLE = {'lm': 'APOLLO 11 LM: LUMINARY 99', 'cm': 'APOLLO 11 CM: COMANCHE 55',
          'test': 'APOLLO 11 HARDWARE CHECK: LM P63'}
 # The hardware check set, "test" (docs/RUN-ON-C64.md, Checking real
@@ -794,13 +800,18 @@ def vice(a, m, info):
             trace.write_text(reu_layout.dma_trace(regions).replace('command 3 ', 'command 4 ')
                              .replace('command 2 ', 'command 3 ') + '\n')
             mon.cmd(f'pb "{trace.resolve()}"')
+        mon.cmd('sw reset')
         mon.go()
         t0 = time.time()
         state = 0
+        budget = int(a.load_c64 * PAL_HZ)
         while time.time() - t0 < a.timeout:
             time.sleep(2)
             box = mon.mem(0x03f0, 0x03ff)
             state = box[0]
+            if state not in (2, 3, 0xff) and mon.stopwatch() > budget:
+                result['error'] = f'the load ran past {a.load_c64:g} s of C64 time in state {state}'
+                break
             if state != 1:
                 print(f"{time.time() - t0:.0f}s: loader state {state}, mailbox {box.hex()}", flush=True)
             if state == 2:
@@ -822,7 +833,7 @@ def vice(a, m, info):
                 break
             mon.go()
         if state != 3:
-            result.setdefault('error', f'timed out in state {state}')
+            result.setdefault('error', f'timed out in state {state} after {a.timeout} s of wall time (hang guard)')
             return result
         load_cycles = int.from_bytes(box[2:6], 'little')
         clear_cycles = int.from_bytes(box[6:10], 'little')
@@ -1007,7 +1018,11 @@ def main():
                    default=pathlib.Path(os.environ.get('VICE_ROM_DIR', ROOT / 'deps/vice-data/C64')))
     p.add_argument('--data-dir', type=pathlib.Path,
                    default=pathlib.Path(os.environ.get('VICE_DATA_DIR', ROOT / 'deps/vice-data')))
-    p.add_argument('--timeout', type=int, default=3600)
+    p.add_argument('--load-c64', dest='load_c64', type=float, default=LOAD_BUDGET_S,
+                   help='seconds of C64 time the disk load may take (default %(default)s: about twice the slowest, '
+                        'the 1541 LM set)')
+    p.add_argument('--timeout', type=int, default=4 * 3600,
+                   help='wall seconds for the load, a hang guard only (default %(default)s)')
     p.add_argument('--store', type=pathlib.Path, default=STORE, help='the flight store build (make flight-store)')
     a = p.parse_args()
     if a.p00:
