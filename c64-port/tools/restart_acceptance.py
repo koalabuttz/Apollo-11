@@ -75,6 +75,12 @@ GOJAM_ON_C64 = {'lm': ['lm-p63-descent-restart', 'lm-dap-hold-restart', 'lm-v69-
 # is a TC to itself that only the TC trap ends, so yaAGC runs it on both
 # sides by design (tools/flight_restart_check.py TC_TRAP). The doc names it.
 KNOWN_BRIDGE = {'lm-v69-restart': ('basic', '43,2037'), 'cm-v69-restart': ('basic', '43,2037')}
+# The unscaled rows are sampled against a free-running yaAGC. A restart may
+# add differing samples only within flight_restart_check.SAMPLE_SLACK, and
+# the row then says why (#925 A5).
+SAMPLE_ARTIFACT = {'lm-p00-restart': 'after the restart T4RUPT runs a centisecond late natively (AOSTASK\'s routine '
+                                     'runs as one call), so one DSRUPTSW sample in each 120 ms T4RUPT cycle differs'}
+UNSCALED = {x[0] for x in frc.RESTARTS if not x[6]}
 OUT = ROOT / 'build/restart-acceptance'
 DOCS = ROOT / 'docs/acceptance'
 EVIDENCE = ROOT / 'evidence'
@@ -195,6 +201,17 @@ def host_verdict(h, commit):
         bad.append(f"{len(holes)} points bridged after the restart (new_holes)")
     if 'new_holes' not in h:
         bad.append('no record of points bridged after the restart')
+    if h.get('scenario') in UNSCALED:
+        n, eq, base = (h.get(k) for k in ('samples', 'samples_equal', 'base_samples_equal'))
+        if None in (n, eq, base) or not n:
+            bad.append('no record of samples')
+        else:
+            text += f'; {eq} of {n} samples equal ({base} without the restart)'
+            extra, slack = base - eq, frc.SAMPLE_SLACK.get(h['scenario'], 0)
+            if extra > slack:
+                bad.append(f'{extra} more samples differ than without the restart (allowed {slack})')
+            elif extra > 0:
+                text += f"; the {extra} more are a known artifact: {SAMPLE_ARTIFACT[h['scenario']]}"
     return (False, text + '; FAILED: ' + '; '.join(bad)) if bad else (True, text)
 
 
@@ -350,8 +367,9 @@ def write_doc(m, rows, groups, problems, commit, store_sha):
              'This is the `recovery_and_restart_tests` evidence of the '
              f'`integrated_applications.{p}` entry (docs/PORT_SCOPE.md). Each row is a hardware restart (GOJAM) '
              'in flight. On the host (tools/flight_restart_check.py) the restart and the resumed program run in '
-             "lockstep with yaAGC to the row's end, and the program ends in the same major mode as the run "
-             'without the restart.', '',
+             "lockstep with yaAGC to the row's end (an unscaled row is sampled against a free-running yaAGC, and "
+             'names any sample the restart adds that differs), and the program ends in the same major mode as the '
+             'run without the restart.', '',
              'On the C64 (tools/flight_scenario_vice.py --replay --replay-exact --strict-start, VICE, a stock C64 '
              "with the store in an REU) the window starts at the host's GOJAM point, just after the GOJAM, so it "
              f"replays the recovery: {REPLAY_CS} cs with the host's inputs, a checkpoint every {REPLAY_EVERY} cs. "
