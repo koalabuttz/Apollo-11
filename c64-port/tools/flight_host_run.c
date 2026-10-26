@@ -209,6 +209,16 @@ static rupt_hold hold;static int hold_on;
  * longest hold without them, which tools/flight_scenario_vice.py gates
  * overload windows on (docs/acceptance/interrupt-hold.md). */
 static unsigned long hold_stolen,hold_max_stolen,hold_work,hold_work_stolen;static uint16_t hold_stolen_from,hold_work_at;
+/* FLIGHT_RUPT_COUNT: the interrupts the native side takes, by request,
+ * from the replay window's start (or the run's), and the AGC time they span,
+ * for the lead-in bound in docs/RESIDENT-FLIGHT.md (issue #912 item 4). */
+static unsigned long rupt_n[RK_RUPT_HAND+1],rupt_t0=~0ul,rupt_t1;
+static void rupt_count(uint8_t got,unsigned long cs){if(rupt_t0==~0ul)rupt_t0=cs;rupt_t1=cs;++rupt_n[got];}
+static void rupt_report(void){static const char *const name[]={"","T6","T5","T3","T4","KEY1","KEY2","UP","DOWN","RADAR","HAND"};
+ unsigned i;unsigned long all=0;if(!getenv("FLIGHT_RUPT_COUNT")||rupt_t0==~0ul)return;
+ printf("interrupts %lu-%lu cs:",rupt_t0,rupt_t1);
+ for(i=1;i<=RK_RUPT_HAND;++i){all+=rupt_n[i];if(rupt_n[i])printf(" %s %lu",name[i],rupt_n[i]);}
+ printf(", all %lu\n",all);}
 static void hold_report(void){if(!getenv("FLIGHT_HOLD"))return;
  printf("interrupt hold: max %u MCT at TIME1 %05o",(unsigned)hold.max,(unsigned)hold.max_at);
  if(hold_max_stolen)printf(" (%lu without %lu stolen)",(unsigned long)hold.max-hold_max_stolen,hold_max_stolen);
@@ -1720,7 +1730,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  keys_parse(argc>3?argv[3]:"");
  if(!uplink_parse(getenv("FLIGHT_UPLINK"))){fprintf(stderr,"FLIGHT_UPLINK=CS:KEYS[;CS:KEYS...] (#OCTAL a raw word)\n");return 2;}
  if(!steal_parse(getenv("FLIGHT_STEAL"))){fprintf(stderr,"FLIGHT_STEAL=T0-T1:MCT[,T0-T1:MCT...]\n");return 2;}
- atexit(hold_report);
+ atexit(hold_report);atexit(rupt_report);
  if(getenv("FLIGHT_MCT_OUT")&&!(mct_out=fopen(getenv("FLIGHT_MCT_OUT"),"a"))){perror("FLIGHT_MCT_OUT");return 2;}
  if(getenv("FLIGHT_WORD_OUT")&&!(word_out=fopen(getenv("FLIGHT_WORD_OUT"),"w"))){perror("FLIGHT_WORD_OUT");return 2;}
  if(getenv("FLIGHT_CH30"))chan30=strtoul(getenv("FLIGHT_CH30"),0,8)&077777u;
@@ -1962,6 +1972,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(scaled&&engine_lag)engine_due(now(s.words),&eng_nat,s.words,hw.channel12);
    rcs_due(now(s.words),s.words,&hw);
    if(rp_out&&!snap_path)rp_diff(now(s.words),1u,s.words,&hw,io.channel16,pending);
+   if(got&&(!snap_path||!rp_out))rupt_count(got,now(s.words));
    if(got){
     /* At a RESUME point the instruction to run is BRUPT, not the word at
      * Z; rk_rupt_take saves the word at Z. */
