@@ -11,8 +11,9 @@
   "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p57.load,15900:tools/flight_scenarios/lm-p57-star1.load,29900:tools/flight_scenarios/lm-p57-star2.load"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "6e8b31cefe1d",
+ "commit": "11cab8d39055",
  "cia_interrupts": 56002,
  "periods_taken": 56000,
  "periods_dropped": 2,
@@ -39,30 +40,33 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
-  "15,3314": 3307,
+  "15,2245": 6481,
   "04,2163": 52301,
   "14,3672": null,
   "14,3231": null,
-  "15,2245": 6481
+  "43,2014": 48000,
+  "07,2613": null
  },
  "arrivals": {
-  "15,3314": [
-   3307
+  "15,2245": [
+   6481,
+   12451,
+   19179,
+   26451
   ],
   "04,2163": [
    52301
   ],
   "14,3672": [],
   "14,3231": [],
-  "15,2245": [
-   6481,
-   12451,
-   19179,
-   26451
-  ]
+  "43,2014": [
+   48000
+  ],
+  "07,2613": []
  },
- "log_sha256": "6fdc3d4ac108334bcb2ca9a06bf3937bb95ba721b3bf91277ab78b13639a18cc"
+ "log_sha256": "bc96a1eb7eb4093910abd64a8c5c19cd642a3675b39b9306d4d89c5d757cf812"
 }

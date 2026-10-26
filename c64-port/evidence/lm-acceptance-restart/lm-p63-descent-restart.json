@@ -72,7 +72,7 @@
   "pre_snapshot": "build/flight-restart/lm-p63-descent-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "6e8b31cefe1d",
+  "commit": "11cab8d39055",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -85,11 +85,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3214",
-  "wall_cycles": 81916450,
+  "wall_cycles": 82151684,
   "agc_cs": 310,
   "dropped_ticks": 0,
   "steps": 2112,
-  "wall_per_agc": 26.82,
+  "wall_per_agc": 26.897,
   "lost": false,
   "mission": "lm",
   "snap_cs": 20000,
@@ -106,7 +106,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 7
+   "dma_unchecked": 15
   },
   "hold_host_mct": 670,
   "hold_host_time1": 3872,
@@ -190,13 +190,13 @@
   "requested_cs": 302,
   "host_holes": [],
   "downrupt": false,
-  "commit": "6e8b31cefe1d",
+  "commit": "11cab8d39055",
   "exit": 0,
   "log": "lm-p63-descent-restart-c64.log",
-  "log_sha256": "920aa9d9b89ddc9a56b9fd1cfd2abd615e19f4f79ebdf4643af9924a167480d4",
-  "store_sha256": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf",
-  "manifest_sha256": "c2669d2c153478902c31176a3af1168e55c53c8401c1553e781369997802e259",
-  "prg_sha256": "9fa3d53ef7f6d952c0ad0a8f12936989d15624b6201b47e4b39683c0c2a4288b"
+  "log_sha256": "4c94631cfa3c504d06aa588e5757873e9598b7a362cd7f59c890f6f201e4211c",
+  "store_sha256": "d905808ec3ae8d6c144fc43c1c8d45f086031e0d549642fa7332259e3516f1c1",
+  "manifest_sha256": "c5f219caeb494a00bb71c3463acf4c01b06cc1e6467dd6ade09f28d7b8683cd8",
+  "prg_sha256": "200a7209b403248c04ae663bad01e884cf48095410bbff254efaf5fe2d44fc6a"
  },
  "gojam_on_c64": {
   "scenario": "lm-p63-descent-restart",
@@ -344,7 +344,7 @@
    },
    "ok": true
   },
-  "commit": "6e8b31cefe1d",
+  "commit": "11cab8d39055",
   "log": "gojam-on-c64.log",
   "log_sha256": "e7f23ba73a6b46dcdb3136ec2acca320ec261f962c7cc640676d4229c7b90bd0"
  }

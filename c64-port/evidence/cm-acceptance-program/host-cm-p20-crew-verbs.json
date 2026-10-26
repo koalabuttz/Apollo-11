@@ -14,8 +14,9 @@
   "FLIGHT_BUSY_SAMPLE": "100"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "39dc823fd285",
+ "commit": "11cab8d39055",
  "cia_interrupts": 32000,
  "periods_taken": 32000,
  "periods_dropped": 0,

@@ -11,8 +11,9 @@
   "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p57.load,15900:tools/flight_scenarios/lm-p57-star1.load,29900:tools/flight_scenarios/lm-p57-star2.load"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "6e8b31cefe1d",
+ "commit": "11cab8d39055",
  "cia_interrupts": 8002,
  "periods_taken": 8000,
  "periods_dropped": 2,
@@ -39,7 +40,8 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
   "24,2000": 3307
@@ -49,5 +51,5 @@
    3307
   ]
  },
- "log_sha256": "69e8eb798844149c68049d54b9996a8ec46f0330e0d99232ad61c85ee93ff721"
+ "log_sha256": "14196c1d4c70e531d322671d2cf4341473a3d2bb1976b59d895ee24fba206115"
 }

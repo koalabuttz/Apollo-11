@@ -13,8 +13,9 @@
   "FLIGHT_POKE": "2100:3246=00005,2100:3250=57232,2100:3252=00004"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "39dc823fd285",
+ "commit": "11cab8d39055",
  "cia_interrupts": 53000,
  "periods_taken": 53000,
  "periods_dropped": 0,
