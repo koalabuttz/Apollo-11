@@ -231,8 +231,13 @@ static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,fli
  * period, which the boundary drops if it takes a request first. */
 static int idling;
 /* Stolen MCT counted toward the waiting request, unless idle: the idle
- * period absorbs them, and a take there is at the step, not at wall. */
-static void hold_steal(unsigned long mct){if(!hold_on||!hold.on||idling)return;
+ * period absorbs them, and a take there is at the step, not at wall. Only
+ * the steal at the period end of the step that raised the request counts:
+ * the AGC, at its next instruction, would wait that one out too. A later
+ * steal falls inside the routine holding the request, after the AGC would
+ * have taken it, so it stays in the hold's work (issue #912 item 3). */
+static void hold_steal(unsigned long mct){if(!hold_on||!hold.on||idling||!consumed
+  ||(uint16_t)(unsigned long)step_at(consumed-1ul)!=hold.from)return;
  if(hold.from!=hold_stolen_from){hold_stolen=0;hold_stolen_from=hold.from;}hold_stolen+=mct;}
 static void hold_take(uint16_t t,uint16_t time1){uint16_t max=hold.max;
  unsigned long st=hold.on&&hold.from==hold_stolen_from?hold_stolen:0ul,d=(uint16_t)(t-hold.from);
