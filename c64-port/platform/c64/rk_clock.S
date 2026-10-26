@@ -11,7 +11,8 @@
  *
  *   uint16_t rk_limit(uint8_t mct);
  * rk_module_limit(rk_budget(), mct): 4 for the idle weight (RK_MCT_IDLE,
- * 0), else 1 + budget / mct, by shift and subtract in 16 passes; the C's
+ * 0), else the routines that start before the tick, 1 + (budget - 1) / mct
+ * (1 for a budget of 0), by shift and subtract in 16 passes; the C's
  * loop subtracts once per routine allowed. A weight is 0 or at least 4
  * (tools/resident_flight_build.py mct_weight) and a budget at most 854,
  * so the count is at most 214 and fits the low byte returned (as it
@@ -120,6 +121,14 @@ rk_limit:
     sta BL
     stx BH
 #endif
+    lda BL              /* budget - 1, unless 0 */
+    bne .Llow
+    ora BH
+    beq .Lzero
+    dec BH
+.Llow:
+    dec BL
+.Lzero:
     ldy #16
     lda #0              /* the remainder; carry its ninth bit */
 .Lbit:
