@@ -1344,8 +1344,13 @@ def check_site_includers():
 
 # Everything the build reads: sources, headers, platform code, the tools it
 # imports and runs, the docs tables and the assembled listings. The C
-# compilers are named by path, size and mtime.
+# compilers are named by path, size and mtime. Not docs/acceptance: the
+# acceptance bundle rewrites those docs as it goes, and the build reads none
+# of them. Counting them made each bundle step's store stale, so the
+# differential's --host-only build deleted the chunk lists and the next
+# C64 window rebuilt the store (10-26, the CM re-acceptance at 39dc823f).
 STAMP_INPUTS = ('src', 'include', 'platform', 'tools', 'docs', 'build/fixed-data')
+STAMP_SKIP = ('docs/acceptance',)
 
 
 def input_digest(a):
@@ -1359,8 +1364,9 @@ def input_digest(a):
             h.update(f'{tool}:missing'.encode())
     for top in STAMP_INPUTS:
         for f in sorted((ROOT / top).rglob('*')):
-            if f.is_file() and '__pycache__' not in f.parts:
-                h.update(f.relative_to(ROOT).as_posix().encode() + b'\0' + f.read_bytes())
+            rel = f.relative_to(ROOT).as_posix()
+            if f.is_file() and '__pycache__' not in f.parts and not rel.startswith(tuple(d + '/' for d in STAMP_SKIP)):
+                h.update(rel.encode() + b'\0' + f.read_bytes())
     return h.hexdigest()
 
 
