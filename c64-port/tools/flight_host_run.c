@@ -1312,6 +1312,15 @@ static void drives(apollo_overlay_state *s,agc_hardware *hw){
  if((hw->channel12&050u)==050u)for(i=0;i<3u;++i)iss_sent[i]+=issb[i]-(rk_cdu.owed[i]+ones(s->words[050u+i]));
 }
 
+/* rk_hand_due, counting every arm of 31B or 32: the resident keeps only
+ * 31A (neither program arms the others), so a run that arms one fails. */
+static unsigned long hand_31b_32;
+static void hand_due(agc_hardware *hw, uint16_t *trap, uint16_t *pending)
+{
+    if ((hw->channel13 & 030000u) || trap[1] || trap[2]) ++hand_31b_32;
+    rk_hand_due(hw, trap, pending);
+}
+
 /* One clock period (rk_timer_tick), or with step >= 0 one work-clock step
  * (rk_timer_phase), on yaAGC's state, for bridged code. */
 static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint16_t p=0;unsigned i;
@@ -1327,7 +1336,7 @@ static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint
  /* HANDRUPT: the frozen clock stops yaAGC's own check with its scaler. */
  {uint16_t trap[3];trap[0]=m.Trap31A;trap[1]=m.Trap31B;trap[2]=m.Trap32;
   h.channel31=(agc_word)(m.InputChannel[031]&077777);h.channel32=(agc_word)(m.InputChannel[032]&077777);
-  rk_hand_due(&h,trap,&p);m.Trap31A=trap[0]&1u;m.Trap31B=trap[1]&1u;m.Trap32=trap[2]&1u;}
+  hand_due(&h,trap,&p);m.Trap31A=!!trap[0];m.Trap31B=!!trap[1];m.Trap32=!!trap[2];}
  m.RadarGateCounter=h.radar_gate;
  for(i=024u;i<=031u;++i)*cell(i)=(int16_t)t.words[i];
  m.InputChannel[013]=(int16_t)h.channel13;m.InputChannel[3]=(int16_t)h.channel3;m.InputChannel[4]=(int16_t)h.channel4;
@@ -1954,7 +1963,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      /* The drives run on the TIME5 step, as rk_rupts_due's. */
      if(consumed%3ul==2ul)drives(&s,&hw);
      rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));
-     rk_hand_due(&hw,&io.trap31a,&pending);
+     hand_due(&hw,&io.trap31a,&pending);
      if(hold_on)rupt_hold_raise(&hold,(uint16_t)(unsigned long)step_at(consumed),pending);
      if(consumed++%3ul==2ul){period_end();steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
@@ -1963,7 +1972,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * cut at a timer step goes on in its module after the step (rk_cut). */
     if(got)charge_last=0;
     idling=0;}
-   else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);rk_hand_due(&hw,&io.trap31a,&pending);drives(&s,&hw);steal();}}
+   else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);hand_due(&hw,&io.trap31a,&pending);drives(&s,&hw);steal();}}
     got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending);}
    /* The PIPAs count as the clock runs, not only at sample points: P66
     * reads them a few centiseconds after SERVICER, often with no idle pass
@@ -2131,4 +2140,6 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  dl_report();
  printf("last routines:\n");
  for(i=0;i<TRACE&&i<steps;++i){unsigned long t=(steps-1u-i)%TRACE;printf("  Z %05o FB %05o %s\n",trace[t][0],trace[t][1],names[t]);}
+ if(io.trap31b||io.trap32||m.Trap31B||m.Trap32)++hand_31b_32;   /* (unscaled runs: armed at the end) */
+ if(hand_31b_32){printf("HANDRUPT: trap 31B or 32 armed at %lu timer steps; the C64 resident keeps only 31A\n",hand_31b_32);return 1;}
  return 0;}
