@@ -370,6 +370,9 @@ jobs:
             && python3 tools/flight_disk.py --missions lm,cm --drive 1541 \
             && python3 tools/flight_disk.py --missions lm,cm; } > build/acceptance-fresh-build.log 2>&1 \
             || { tail -40 build/acceptance-fresh-build.log; exit 1; }
+          # The docs' commit must be an ancestor of HEAD: fetch the commit
+          # history (commits only, no trees) that the lean checkout lacks.
+          if [ "$(git rev-parse --is-shallow-repository)" = true ]; then git fetch -q --filter=tree:0 --unshallow origin "$REF"; fi
           python3 tools/acceptance_freshness.py --require-fresh || {
             echo "FAIL: this PR changes the C64 bytes of an accepted program (above)."
             echo "Merge it in a steward re-acceptance window, whose PR re-cites docs/acceptance at its head"

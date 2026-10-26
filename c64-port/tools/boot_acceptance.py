@@ -32,6 +32,7 @@ already in the tree.
 """
 import argparse
 import hashlib
+import re
 import json
 import os
 import pathlib
@@ -146,6 +147,23 @@ def kb(n):
     return f'{n:,}'
 
 
+def image_hashes(m, boots, check):
+    """The hash table's rows: each boot record's images, then (LM only) the
+    check disk's test-*.d81, so tools/acceptance_freshness.py compares the
+    disk people load on real hardware too. The check disk is built from the
+    LM's store, so the Comanche055 doc does not list it: an LM change must
+    not make Comanche055 stale."""
+    seen = {}
+    for n in ('1581', '1541'):
+        for f, h in boots.get(n, {}).get('sha256', {}).items():
+            seen.setdefault(f, h)
+    if m == 'lm' and check:
+        for f, h in sorted(check.get('sha256', {}).items()):
+            if re.fullmatch(r'flight-disk/test-[0-9]+\.d81', f):
+                seen.setdefault(f, h)
+    return seen
+
+
 def write_doc(m, commit):
     p = PROGRAM[m]
     ev = ROOT / 'evidence' / f'{m}-acceptance-boot'
@@ -215,11 +233,7 @@ def write_doc(m, commit):
               f'{m}.reu` (the module store and the rope image), compressed (tools/fdz.c), and the flight resident. '
               'The loader is the first file on disk 1. Image hashes, from each run\'s boot record:', '',
               '| File | sha256 |', '|---|---|']
-    seen = {}
-    for n in ('1581', '1541'):
-        for f, h in boots.get(n, {}).get('sha256', {}).items():
-            seen.setdefault(f, h)
-    for f, h in seen.items():
+    for f, h in image_hashes(m, boots, check).items():
         lines.append(f'| `{f}` | `{h}` |')
     lines += ['', '## Boot to P00', '',
               '| Run | Disks and load | Keys entered through | Load | Store check (rk_boot) | Boot status | '
