@@ -319,10 +319,12 @@ int main(void){uint16_t i;
   *(volatile uint16_t *)0xc3fe=FL_LIMIT;
   /* Every point's start, for the host reference: the boot image back at
    * IMAGE ($7000, which tools/flight_vice_load.py saves) and the device and
-   * hardware records at $c100. */
+   * hardware records at $c100, their sizes at $c0fe and $c0ff (the host
+   * checks them against its own layout). */
   apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
   memcpy((void *)0xc100,&device,sizeof device);
   memcpy((void *)(0xc100+sizeof device),&hardware,FL_HARDWARE_BYTES);
+  mail[0xfe]=(uint8_t)sizeof device;mail[0xff]=(uint8_t)FL_HARDWARE_BYTES;
   stack_peak();
   __asm__ volatile("cli");}
  else for(i=1;i<0x3e0u;++i)mail[i]=0;

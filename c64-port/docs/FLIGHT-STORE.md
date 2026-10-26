@@ -568,8 +568,8 @@ names, for the C64's step count, and fails on any difference. A point the
 C64 ran no step of must be refused on the host too. Not compared: a module
 whose tables take an io record of their own runs through its main, and a
 flight part's keys exist only in the C64 build (FLIGHT-PARTS.md). On
-4735fafe6 plus #426: LM 64 points match the host (55 refused at entry on
-both), 94 run through their main, 3 parts; CM 83 match (76 refused), 63
+361dd731 plus #426: LM 65 points match the host (56 refused at entry on
+both), 94 run through their main, 3 parts; CM 84 match (77 refused), 63
 through their main, 11 parts.
 
 The step now computes the transfer point once (it was computed again to

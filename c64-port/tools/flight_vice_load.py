@@ -95,7 +95,8 @@ def host_points(m, work, data, modules, listed, host):
     import flight_host_differential as fhd
     paths = {x['id']: ROOT / x['path'] for x in json.loads((OUT / f'{m}-manifest.json').read_text())['modules']}
     (work / 'device.bin').write_bytes(data[0x100:0x200])
-    spec, recorded, not_direct, parts = [f'M {work / "image.bin"} {work / "device.bin"}'], {}, [], []
+    # The C64's record sizes ($c0fe, $c0ff): the host fails on a layout of its own.
+    spec, recorded, not_direct, parts = [f'M {work / "image.bin"} {work / "device.bin"} {data[0xfe]} {data[0xff]}'], {}, [], []
     for i, x in enumerate(modules):
         code, flags, steps = point(x['point_status'], x['point_steps'])
         if flags & POINT_NONE:

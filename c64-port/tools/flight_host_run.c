@@ -1607,7 +1607,8 @@ static void word_step(unsigned long cs){int isr=m.InIsr;uint64_t c=m.CycleCounte
  * is not modelled: a C64 run that took its whole limit runs to that count,
  * one that ended itself may take one step more, so it ends as it did there.
  * One line out per point: INDEX SUM STEPS STATUS.
- * Spec lines: "M IMAGE DEVICE" once, then per point "P INDEX Z FB SB STEPS
+ * Spec lines: "M IMAGE DEVICE IO_BYTES HW_BYTES" once (the C64's sizes of
+ * the device record and of the hardware bytes, which must be this build's), then per point "P INDEX Z FB SB STEPS
  * FULL FIXED IDLE" (FULL 1 when the C64 run took its whole limit; FIXED 0
  * boundary words, 1 self-check, 2 rope; IDLE 1 for the CM idle loop's
  * module, whose run rk_direct ends at POSTJUMP), "B TABLE",
@@ -1643,7 +1644,9 @@ static int points(const char *spec){FILE *f=fopen(spec,"r");char line[256],name[
  while(fgets(line,sizeof line,f)){unsigned a,b;const entry *e;
   switch(line[0]){
   case 'M':{char ip[200],dp[200];FILE *g;
-   if(sscanf(line+1,"%199s %199s",ip,dp)!=2)goto bad;
+   if(sscanf(line+1,"%199s %199s %u %u",ip,dp,&a,&b)!=4)goto bad;
+   if(a!=sizeof io0||b!=hw_bytes){fprintf(stderr,"FLIGHT_POINTS: the C64's device record is %u bytes and its hardware %u, here %u and %u\n",
+    a,b,(unsigned)sizeof io0,(unsigned)hw_bytes);return 2;}
    if(!(g=fopen(ip,"rb"))||fread(&boot,sizeof boot,1,g)!=1){perror(ip);return 2;}fclose(g);
    if(!(g=fopen(dp,"rb"))||fread(&io0,sizeof io0,1,g)!=1||fread(&hw0,hw_bytes,1,g)!=1){perror(dp);return 2;}fclose(g);
    break;}
