@@ -515,8 +515,10 @@ static unsigned idle_weight(const agc_word *w,agc_word sb,int isr){
  for(i=0;i<TABLES;++i)if(tables[i].interp==(uint8_t)in&&tables[i].mct&&!(tables[i].mct&FLIGHT_PLUS_WORDS)&&find(tables[i].t,key))return tables[i].mct;
 #else
  /* The CM's idle loop is pinned and its POSTJUMP idles as on the host
-  * (resident_flight.c RK_CM_POSTJUMP). */
- (void)w;(void)sb;(void)isr;
+  * (resident_flight.c RK_CM_POSTJUMP); a pass with a job ready (NEWJOB not
+  * -0) costs nothing, as on the LM (issue #912 item 1). */
+ (void)sb;(void)isr;
+ if((w[NEWJOB]&077777u)!=077777u)return 0u;
 #endif
  return FLIGHT_IDLE_TICK;}
 static void where(const agc_word *w,agc_word sb,const char *what){int in;uint16_t k=point(w,sb,&in);
