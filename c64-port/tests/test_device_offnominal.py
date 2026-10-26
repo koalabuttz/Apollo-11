@@ -59,6 +59,13 @@ class Windows(unittest.TestCase):
                 self.assertLessEqual(cs, 800, scenario)
                 self.assertEqual(every, 50)
 
+    def test_nomon_window_ends_past_the_busy_jet_pass(self):
+        # 19400+600 ends at 648 cs inside a DAP jet pass (host HEADTJET+5, C64
+        # TJETLAW, every timer equal), a busy end the replay must compare;
+        # 19400+750 matches there as a mid checkpoint and ends quiet at 759 cs.
+        nomon = next(r for r in off.ROWS['lm'] if r['scenario'] == 'lm-p63-overload-nomon')
+        self.assertEqual(nomon['windows'], [(19400, 750)])
+
     def test_covered_names_the_window_that_ran(self):
         spans = [((1900, 800), (1907, 2715)), ((4900, 300), (4912, 5220))]
         self.assertEqual(off.covered(dict(kind='word', at_cs=5000), spans), '4900+300')

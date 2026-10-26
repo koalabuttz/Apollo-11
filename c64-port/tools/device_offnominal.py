@@ -105,7 +105,10 @@ ROWS = {
                       '1202, which one depends on the job mix), each a BAILOUT and a restart through the '
                       'phase tables; P63 flies on when the steal ends',
              checks=[alarm((0o1201, 0o1202), 18500, 24000)],
-             windows=[(19400, 600)]),
+             # 750, not 600: a 600 cs window ends at 648 cs, a busy sample
+             # point inside a DAP jet pass, where the host and the C64 stop
+             # one routine apart; the end is always compared (L, 11cab8d3).
+             windows=[(19400, 750)]),
     ],
     'cm': [
         dict(scenario='cm-p20-vhf-dropout', owner='D2',
