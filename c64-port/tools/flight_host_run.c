@@ -1316,23 +1316,25 @@ static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint
 /* FLIGHT_REACH=BB,AAAA[,BB,AAAA...] (octal, a point as the reports print
  * it): every centisecond yaAGC runs the instruction there, in a native
  * routine's lockstep or bridged code, printed at the end ("not reached"
- * when it never does). The first ARRIVALS-1 centiseconds and the last are
- * kept, with a count of the ones between. A row of the program map names
- * the body its scenario must run this way, after a given time when two
- * rows share a point (tools/program_acceptance.py). */
-enum { REACHES=64, ARRIVALS=32 };
-static uint16_t reach_at[REACHES];static long reach_cs[REACHES][ARRIVALS];static unsigned nreach,narrive[REACHES];
-static unsigned long reach_more[REACHES];
+ * when it never does). Every arrival is kept (a list grows as it needs;
+ * the run stops if memory runs out, so a printed list is always whole).
+ * A row of the program map names the body its scenario must run this way,
+ * after a given time when two rows share a point
+ * (tools/program_acceptance.py). */
+enum { REACHES=64 };
+static uint16_t reach_at[REACHES];static long *reach_cs[REACHES];static unsigned nreach,narrive[REACHES],reach_room[REACHES];
 static void reach_parse(void){const char *t=getenv("FLIGHT_REACH");char *e;unsigned long b,a;
  while(t&&*t&&nreach<REACHES){b=strtoul(t,&e,8);if(e==t||*e!=',')break;t=e+1;a=strtoul(t,&e,8);if(e==t||a<02000ul||a>03777ul)break;
   reach_at[nreach++]=(uint16_t)(b*1024ul+(a-02000ul));t=*e==','?e+1:e;}}
 static void reach(void){unsigned i;uint16_t at;
  if(!nreach)return;
  at=agc_fixed_physical((agc_word)(*cell(5)&07777),(agc_word)(*cell(4)&077777),(agc_word)m.OutputChannel7);
- for(i=0;i<nreach;++i)if(reach_at[i]==at){agc_word w[2048];long t;unsigned n=narrive[i];
+ for(i=0;i<nreach;++i)if(reach_at[i]==at){agc_word w[2048];long t,*g;unsigned n=narrive[i];
   w[024]=mword(024);w[025]=mword(025);t=(long)now(w);
   if(n&&reach_cs[i][n-1]==t)continue;
-  if(n<ARRIVALS)reach_cs[i][narrive[i]++]=t;else{reach_cs[i][ARRIVALS-1]=t;++reach_more[i];}}}
+  if(n==reach_room[i]){if(!(g=realloc(reach_cs[i],(n?2u*n:64u)*sizeof *g))){fprintf(stderr,"FLIGHT_REACH: out of memory\n");exit(2);}
+   reach_cs[i]=g;reach_room[i]=n?2u*n:64u;}
+  reach_cs[i][narrive[i]++]=t;}}
 /* One yaAGC instruction with its clock running; the interrupts it requests
  * are left pending for the native side to take. */
 static int step(uint16_t *pending){unsigned i;reach();if(agc_engine(&m))return -1;
@@ -2089,7 +2091,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  for(i=0;i<nreach;++i){unsigned k;printf("reach %02o,%04o: ",reach_at[i]/1024u,reach_at[i]%1024u+02000u);
   if(!narrive[i]){printf("not reached\n");continue;}
   printf("at");for(k=0;k<narrive[i];++k)printf(" %ld",reach_cs[i][k]);
-  printf(" cs");if(reach_more[i])printf(" (%lu more before the last)",reach_more[i]);printf("\n");}
+  printf(" cs\n");}
  if(engine_kg){double n[2],r[2];dps_gimbal(&eng_nat.gim,n);dps_gimbal(&eng_ref.gim,r);
   /* yaAGC's gimbal only when the reference side ran (not under FLIGHT_SCALED). */
   printf("trim gimbal (deg): native pitch %.3f roll %.3f",n[0]*57.29577951308232,n[1]*57.29577951308232);

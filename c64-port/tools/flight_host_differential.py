@@ -1014,19 +1014,22 @@ def frozen_engine(cc):
     return o
 
 
-def build(cc, m, engine, store=False):
+def build(cc, m, engine, store=False, chunked=False):
     """The host run for mission m. store=True: it is compared with the C64
     store, so it must carry the store's chunk list (<m>-host-chunks.inc,
     written by the full store build). A --host-only build that ran after the
     store build deletes that list, and the host then runs without chunk
     tracking: its work clock no longer matches the C64's (10-25: the LM
-    check disk's expected CRC came from such a host)."""
+    check disk's expected CRC came from such a host). chunked=True builds
+    with the list (as store) under a name of its own, -chunked."""
     chunks = ROOT / f'build/flight-store/{m}-host-chunks.inc'
+    store = store or chunked
     if store and not chunks.exists():
         raise SystemExit(f'{chunks.relative_to(ROOT)} is missing, so this host run would not match the C64 store: '
                          f'run tools/flight_store_build.py --missions {m} (not --host-only) first')
-    exe = OUT / f'flight-host-run-{m}'
-    obj = OUT / f'flight_host_run_{m}.o'
+    tag = '-chunked' if chunked else ''
+    exe = OUT / f'flight-host-run-{m}{tag}'
+    obj = OUT / f'flight_host_run_{m}{tag}.o'
     subprocess.run([cc, '-std=c99', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', f'-I{YAAGC}',
                     f'-DRK_{m.upper()}=1', f'-DFLIGHT_HOST_TABLES="../build/flight-store/{m}-host.inc"',
                     f'-DFLIGHT_HOST_SITES="../build/flight-store/{m}-sites.inc"',
@@ -1109,19 +1112,37 @@ def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
     p.add_argument('--skip-index', action='store_true', help='reuse build/flight-store/<m>-host.inc and host objects')
+    p.add_argument('--chunked', action='store_true',
+                   help='also the chunked rows: builds the C64 store first (llvm-mos) for its chunk lists')
+    p.add_argument('--chunked-only', action='store_true',
+                   help='only the chunked rows (make flight-chunked-lockstep), summary in summary-chunked.json')
     a = p.parse_args()
-    if not a.skip_index:
+    engine = frozen_engine(a.host_cc)
+    # The chunked rows (#926 F3): the host the C64 is compared with (replays,
+    # check disk) tracks which chunk of a split table the job slot holds, and
+    # its work clock with it, a schedule of its own. These rows run that host
+    # on the work clock in lockstep with yaAGC, as the -scaled-work rows run
+    # the host-only build's, and fail on any routine yaAGC does not match.
+    # They take the chunk lists of a current full store build, so they are
+    # built before the --host-only build below can delete the lists.
+    chunked = {}
+    if a.chunked or a.chunked_only:
+        subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-cc', a.host_cc], cwd=ROOT, check=True)
+        chunked = {m: build(a.host_cc, m, engine, chunked=True) for m in ('lm', 'cm')}
+    if not a.skip_index and not a.chunked_only:
         subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--host-cc', a.host_cc],
                        cwd=ROOT, check=True)
-    engine = frozen_engine(a.host_cc)
-    exe = {m: build(a.host_cc, m, engine) for m in ('lm', 'cm')}
+    # The other rows' host takes a chunk list only when one is left (a
+    # current full store build; CI's host-only build leaves none).
+    exe = {m: build(a.host_cc, m, engine) for m in ('lm', 'cm')} if not a.chunked_only else {}
+    listed = {m: (OUT / f'{m}-host-chunks.inc').exists() for m in exe}
     EVIDENCE.mkdir(parents=True, exist_ok=True)
-    words = {m: flight_holes.listing(flight_holes.MISSION[m]) for m in exe}
+    words = {m: flight_holes.listing(flight_holes.MISSION[m]) for m in ('lm', 'cm')}
     lanes = flight_holes.lanes()
     summary, failed = [], 0
     commit = flight_holes.source_commit()
     charge_over, watchman_bad = [], []
-    for m, cs, keys in SCENARIOS:
+    for m, cs, keys in SCENARIOS if exe else ():
         name, env = f'{m}-{keys or "p00-idle"}', {}
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
                            capture_output=True, text=True)
@@ -1154,21 +1175,29 @@ def main():
               f"{row['loads_per_second']} module loads per second"
               + (f", major mode native {mode[1]} yaAGC {mode[2]}" if mode else '') + ('' if not r.returncode else ' FAILED'))
     reach = reach_points()
-    for name, m, cs, keys, env, sched in ([(f'{m}-{re.sub(r"@[0-9]+", "", keys) or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)
-                                           for m, cs, keys, env, sched, tag in SCALED]
-                                          + [(f'{name}-scaled-x1', m, cs, keys, env, '1,1,2') for name, m, cs, keys, env in FLIGHT]):
+    scaled = [(f'{m}-{re.sub(r"@[0-9]+", "", keys) or "p00-idle"}{"-dap" if env else ""}-scaled-{tag}', m, cs, keys, env, sched)
+              for m, cs, keys, env, sched, tag in SCALED]
+    rows = [] if a.chunked_only else scaled
+    rows += [(f'{name}-chunked', m, cs, keys, env, sched) for name, m, cs, keys, env, sched in scaled
+             if sched == 'W' and m in chunked]
+    rows += [] if a.chunked_only else [(f'{name}-scaled-x1', m, cs, keys, env, '1,1,2')
+                                       for name, m, cs, keys, env in FLIGHT]
+    chunk_misses = []
+    for name, m, cs, keys, env, sched in rows:
         points = reach.get(name[:-len('-scaled-x1')], []) if name.endswith('-scaled-x1') else []
-        r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
+        run = chunked[m] if name.endswith('-chunked') else exe[m]
+        r = subprocess.run([str(run), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
                            capture_output=True, text=True, env={**os.environ, **env, 'FLIGHT_SCALED': sched,
                                                                 **({'FLIGHT_REACH': ','.join(points)} if points else {})})
         (EVIDENCE / f'{name}.log').write_text(r.stdout)
         failed += bool(r.returncode)
+        chunk_row = name.endswith('-chunked')
         text = r.stdout
         t = re.search(r'(\d+) CIA interrupts, (\d+) clock periods taken, (\d+) dropped \(rk_dilation\); AGC time (\d+) cs', text)
         n = re.search(r'(\d+) native routines \((\d+) yaAGC instructions of time\), (\d+) bridged', text)
         misses = re.findall(r'^  (?:basic |interp) (\d\d,\d{4}) (\S+): (\d+) times; (.*)$', text, re.M)
-        # reach points: every centisecond yaAGC ran one (the first 31 and the last; FLIGHT_REACH)
-        arrivals = re.findall(r'^reach (\d\d,\d{4}): (?:at ([\d ]+) cs(?: \(\d+ more before the last\))?|not reached)$',
+        # reach points: every centisecond yaAGC ran one (FLIGHT_REACH)
+        arrivals = re.findall(r'^reach (\d\d,\d{4}): (?:at ([\d ]+) cs|not reached)$',
                               text, re.M)
         holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
         c = re.search(r'^interpreter charge: fitted (\d+) MCT, yaAGC (\d+) MCT \(([-+][0-9.]+)%\) over (\d+) routines; '
@@ -1190,7 +1219,7 @@ def main():
                         native_armed=int(w[5])) if w else None
         if scaled_watchman_bad(watchman, sched):
             watchman_bad.append(name)
-        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, exit=r.returncode,
+        row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, chunked=chunk_row or listed[m], exit=r.returncode,
                    commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
                    periods_dropped=int(t[3]) if t else None, agc_centiseconds=int(t[4]) if t else None,
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
@@ -1199,11 +1228,16 @@ def main():
                    reached={x[0]: int(x[1].split()[0]) if x[1] else None for x in arrivals},
                    arrivals={x[0]: [int(c) for c in x[1].split()] for x in arrivals})
         summary.append(row)
+        if chunk_row and misses:
+            chunk_misses.append(name)
         print(f"{name}: {row['native_routines']} routines, {len(misses)} yaAGC did not match under the schedule; "
               f"{row['periods_taken']} periods taken, {row['periods_dropped']} dropped of {row['cia_interrupts']} "
               f"interrupts" + (f"; {charge['text']}" if charge else '')
               + ('' if not r.returncode else ' FAILED'))
-    (EVIDENCE / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
+    (EVIDENCE / ('summary-chunked.json' if a.chunked_only else 'summary.json')).write_text(
+        json.dumps(summary, indent=1) + '\n')
+    if chunk_misses:
+        print(f"FAIL: the chunked host ran a routine yaAGC did not match on the work clock, in: {', '.join(chunk_misses)}")
     if charge_over:
         print(f"FAIL: the fitted interpretive charge is more than {CHARGE_BOUND:g}% net or {CHARGE_ABS_BOUND:g}% "
               f"routine by routine from yaAGC's MCT in: {', '.join(charge_over)}")
@@ -1211,7 +1245,7 @@ def main():
         print(f"FAIL: the night watchman sounded, missed a NEWJOB access yaAGC made, or on the work clock "
               f"disagreed with yaAGC's NEWJOB accesses, in: "
               f"{', '.join(watchman_bad)}")
-    return 1 if failed or charge_over or watchman_bad else 0
+    return 1 if failed or charge_over or watchman_bad or chunk_misses else 0
 
 
 if __name__ == '__main__':
