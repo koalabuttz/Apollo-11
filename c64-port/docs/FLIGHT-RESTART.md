@@ -138,11 +138,14 @@ The host harness and the x86 program model it the same way
   NightWatchman flag and reads it back, so the harness also tracks the
   watchman by yaAGC's own NEWJOB accesses. Its summary line counts the
   checks where the two disagree. `tools/flight_host_differential.py` fails
-  a scaled row where the alarm sounds, and a work-clock row with any
-  disagreement. On the other schedules some of yaAGC's NEWJOB reads fall
-  outside the spans (#886: lm V37E12E at boot, x1 and overrun, where the
-  same row unscaled, yaAGC's own watchman armed by SCALER1, never
-  restarts), so their count is reported only.
+  a scaled row where the alarm sounds, a work-clock row with any
+  disagreement, and a row on any schedule where the native rule is armed
+  but yaAGC read NEWJOB (the native rule missed an access). On the other
+  schedules some of yaAGC's NEWJOB reads fall outside the spans (#886: lm
+  V37E12E at boot, x1 and overrun, where the same row unscaled, yaAGC's
+  own watchman armed by SCALER1, never restarts). That leaves only yaAGC
+  armed, so that direction is reported only (#912 item 5: lm V37E12E x1 3
+  of 3 and overrun 2 of 2, cm V37E06E x1 1 of 1, all that direction).
 - **The GOJAM.** When the alarm sounds, the next step is the GOJAM, with Q
   at the hung point. The harness prints "night watchman at N cs".
 - **Lockstep at GOTO.** A native continuation at GOTO (06646 LM, 06615 CM)
