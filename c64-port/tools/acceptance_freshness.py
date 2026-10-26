@@ -4,7 +4,8 @@ C64 build it would ship.
 
 Each program's bootable acceptance doc (docs/acceptance/<program>-
 bootable_c64_application.md) lists the sha256 of the files the C64 runs:
-the REU store, the flight resident, the loader and the disk images. This
+the REU store, the flight resident, the loader and the disk images (for
+Luminary099 also the check disk, test-*.d81, which is built from its store). This
 tool hashes the same files under build/ (run `make flight-disk` first) and
 reports each program as FRESH when every built one matches (the store,
 resident and loader must be built), or STALE with the files that moved. It
@@ -15,7 +16,8 @@ shipped build.
 
 port_coverage.py --require-complete checks that acceptance exists; this
 checks that it is current. It also requires the six category docs of each
-program to name one commit and PASS. --require-fresh exits 1 on any STALE or
+program to name one commit and PASS, and that commit to be an ancestor of the
+checkout's HEAD. --require-fresh exits 1 on any STALE or
 MIXED program or missing build file. port-ci runs it (job acceptance-fresh,
 1541 and 1581 sets) on every PR and port-branch push that changes more than
 prose or evidence, so a PR that moves an accepted program's bytes must
@@ -105,7 +107,26 @@ def docs_agree(program):
         head = doc.read_text()[:400] if doc.exists() else ''
         commit = re.search(r'at commit `([0-9a-f]+)`', head)
         seen[c] = (commit.group(1) if commit else 'missing') + ('' if 'Result: **PASS' in head else ' (not PASS)')
-    return len(set(seen.values())) == 1 and not next(iter(seen.values())).endswith(')') and 'missing' not in seen.values(), seen
+    agree = len(set(seen.values())) == 1 and not next(iter(seen.values())).endswith(')') and 'missing' not in seen.values()
+    if agree:
+        commit = next(iter(seen.values()))
+        if not is_ancestor(commit):
+            seen = {c: f'{v} (not an ancestor of HEAD)' for c, v in seen.items()}
+            agree = False
+    return agree, seen
+
+
+def is_ancestor(commit):
+    """The docs' commit must be in this checkout's history: a doc that names
+    a commit from another branch (or one made up) describes a build this
+    checkout never had. Fails closed: a commit the checkout lacks, or a
+    shallow history that cannot show the ancestry, is not an ancestor
+    (port-ci fetches the commit history before it runs this)."""
+    try:
+        return subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], cwd=ROOT,
+                              capture_output=True).returncode == 0
+    except OSError:
+        return False
 
 
 def head():
@@ -134,7 +155,7 @@ def main():
         agree, seen = docs_agree(program)
         if not agree:
             bad = True
-            print(f'{program}: MIXED acceptance docs (each category must come from one run at one commit, PASS): '
+            print(f'{program}: MIXED acceptance docs (each category must come from one run at one commit, PASS, and that commit must be an ancestor of HEAD): '
                   + ', '.join(f'{c} {v}' for c, v in seen.items()))
         elif missing:
             bad = True
@@ -151,6 +172,9 @@ def main():
         else:
             print(f'{program}: FRESH (accepted at {commit}; every built file the doc lists matches)'
                   + (f'; not built, so not checked: {", ".join(unchecked)}' if unchecked else ''))
+        if m == 'lm' and not any(re.fullmatch(r'flight-disk/test-[0-9]+\.d81', n) for n in recorded(program)[1]):
+            print(f'{program}: note: the doc lists no check disk (test-*.d81); a bootable doc written by '
+                  'tools/boot_acceptance.py since #942 B7 does, and then a moved check disk is STALE')
         same, text = program_acceptance.rescore(m)
         if not same and program in pending and pending[program].get('criteria'):
             print(f'{program}: CRITERIA STALE, pending re-acceptance ({pending[program]["criteria"]}): {text}')
