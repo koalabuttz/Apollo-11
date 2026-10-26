@@ -106,7 +106,7 @@ PASS: THIS C64 COMPUTES WHAT VICE DOES
 ...C..F.
 ```
 
-The `HOST RUN'S CRC ... (NOT YET THE SAME)` line is not a boot failure. The check passes when the C64 computes what VICE does; the host run's CRC is shown for reference and differs because of the known C64-versus-host mismatch in this P63 window (docs/RUN-ON-C64.md, Check on real hardware). It becomes the same when that window matches the host.
+The check passes when the C64 computes what VICE does. The host run's CRC is the same as well: the C64 ends this P63 window in the host's state (160 host input rows). A later `NOT YET THE SAME` would mean a timing change moved the C64 off the host in this window, and calls for a replay-mismatch row (docs/RUN-ON-C64.md, Check on real hardware).
 
 ## Real hardware
 
