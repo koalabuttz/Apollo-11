@@ -596,9 +596,10 @@ def c64_mct(m, to_interp, modules, pins=()):
                                                                + list(dict.fromkeys(t for t, _ in mod.get('pick') or []))
                                                                + list(mod.get('interp') or []))
         rupt = [t for t in weighed if not idle_table(t)]
-        own = [t for t in rupt if t not in LEAD_INS] or rupt
+        own = [t for t in rupt if t not in LEAD_INS and t not in mod.get('rides', ())] or rupt
         for t in weighed:
-            out.setdefault(t, 0 if idle_table(t) or not own else mct_weight(m, own))
+            if t not in mod.get('rides', ()):
+                out.setdefault(t, 0 if idle_table(t) or not own else mct_weight(m, own))
     return out
 
 
@@ -755,7 +756,7 @@ def prune_link_cache():
 
 def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=None, sites=None, fixed_data=None,
                 io=None, direct_only=False, defines=(), link_flags=(), pick=None, keys=None,
-                key_range=(0, 0xFF)):
+                key_range=(0, 0xFF), rides=()):
     """chunk: (table, first, last) links only entries first..last-1 of one
     basic table (platform/c64/flight_table_module.c FS_CHUNK). pick:
     [(table, index)] in key order instead of basic and chunk (FS_PICK). io: the
@@ -797,8 +798,9 @@ def link_module(cc, m, prg, slot, ident, sources, basic, interp, library, chunk=
     # the tables its entries come from; it has no basic list of its own.
     weighed = [chunk[0]] if chunk else list(basic) + picked_tables + list(interp)
     rupt = [t for t in weighed if not idle_table(t)]
-    # The lead-ins riding in a pack keep the pack's own weight.
-    own = [t for t in rupt if t not in LEAD_INS] or rupt
+    # The lead-ins riding in a pack, and a module's ride tables (MODULE_RIDE),
+    # keep the module's own weight.
+    own = [t for t in rupt if t not in LEAD_INS and t not in rides] or rupt
     mct = mct_weight(m, own) if own else 0
     if not mct and (chunk or pick or basic or interp) and not (weighed and all(idle_table(t) for t in weighed)):
         # 0 is the idle weight (RK_MCT_IDLE): the C64 would charge each
@@ -993,6 +995,14 @@ CO_LOCATE = {'lm': {'lm_self_check': ['lm_interbank_routines'],
                     'lm_trim_gimbal': ['lm_p_axis_tg_hot_routines', 'lm_q_r_axis_tg_hot_routines']},
              'cm': {'cm_self_check': ['cm_interbank_routines'], 'cm_self_check_idle': ['cm_interbank_postjump_hot_routines'],
                     'cm_downtelemetry': ['cm_dntm_rupt_routines']}}
+# Ride tables a file's module carries beside its own, for rk_direct only, as
+# a pack's RIDE: the resident keeps their keys (no resolver record), so only
+# a run already in the module takes them, at the module's own weight. P66's
+# attitude-hold pass runs CHEKSTIK in lm_q_r_axis, whose jet write (WRITEV
+# -1) loaded the 01E4 wrapper and then the excursion back for NOROTAT +5
+# (/mnt/project-files/d2/lm-load-profile.md item 4); with the jet writes
+# here the pass runs on in lm_q_r_axis.
+MODULE_RIDE = {'lm': {'lm_q_r_axis': ['lm_t6rupt_jets_hot_routines']}, 'cm': {}}
 # A hot table CO_LOCATE packs, and the full table whose keys it shares: the
 # host flight run lists it just before that table, with the full table's
 # module, sites and weight, so a call from the module carrying it runs there
@@ -1585,7 +1595,14 @@ def main():
                           f'{FIXED_KIND.get(FIXED_DATA.get(packed.get(f)), 1) if f not in RESIDENT[m] else 0}, '
                           f'{mct(t, f)}u)\n'
                           for t in list(dict.fromkeys(first + RESIDENT[m] + pin_order + ahead + order)) if t in tables
-                          for f in [hot_of.get(t, t)]))
+                          for f in [hot_of.get(t, t)])
+                # A module's ride (MODULE_RIDE): the table again, held only
+                # while that module is loaded (slot 5), at its weight.
+                + ''.join(f'FLIGHT_TABLE({t}, 0, FLIGHT_IO_{io_kind(m, tables[t])}, "{stem}", 5, '
+                          f'sites_{site_stem(t)}, {len(file_sites(a.host_cc, m, site_stem(t)))}u, "", 0, '
+                          f'{mct(full, full)}u)\n'
+                          for stem, ts in MODULE_RIDE[m].items() for t in ts if t in tables
+                          for full in [f'{stem}_routines']))
         to_interp = {t for t, o in packed.items()
                      if t in INTERP_ONLY[m] or (interpretive_table(t) and not t.endswith('_marker'))
                      or (o in FLIGHT_INTERP_STOP[m] and interpretive_table(t))}
@@ -1622,7 +1639,8 @@ def main():
             if seq[lane] > LANE_LIMIT.get(lane, 0xFF):
                 raise SystemExit(f'{m}: lane {lane} has more than {LANE_LIMIT.get(lane, 0xFF)} modules')
             ts = sorted(by_stem[stem])
-            extra = [t for t in CO_LOCATE[m].get(stem, []) if t in packed]
+            rides = [t for t in MODULE_RIDE[m].get(stem, []) if t in packed]
+            extra = [t for t in CO_LOCATE[m].get(stem, []) if t in packed] + rides
             sources = list(dict.fromkeys([stem] + [packed[t] for t in extra]))
             sites = {}
             for st in sources:
@@ -1630,7 +1648,7 @@ def main():
             mod = dict(stem=stem, agc=agc, lane=lane, slot=slot,
                        basic=[t for t in ts if not interpretive_table(t)] + [t for t in extra if not interpretive_table(t)],
                        interp=[t for t in ts if interpretive_table(t)] + [t for t in extra if interpretive_table(t)],
-                       also=extra, sites=sites, fixed_data=FIXED_DATA.get(stem), io=module_io(m, sources),
+                       also=extra, rides=rides, sites=sites, fixed_data=FIXED_DATA.get(stem), io=module_io(m, sources),
                        sources=c64_sources(index, *sources, 'agc_transfer'))
             for i, defines in enumerate(FLIGHT_PARTS[m].get(stem, [()])):
                 if i:
@@ -1692,12 +1710,14 @@ def main():
                    if ks and not mod['interp'] else (0, 0xFF))
             res = link_module(a.cc, m, prg, mod['slot'], mod['id'], mod['sources'], mod['basic'], mod['interp'],
                               library, mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick, keys, rng)
+                              direct_only, mod.get('defines', ()), mod.get('link_flags', ()), pick, keys, rng,
+                              rides=mod.get('rides', ()))
             if not res['ok'] and res.get('overflow') and mod['slot'] == 1:
                 # A task-slot module that does not fit tries the job slot.
                 res2 = link_module(a.cc, m, prg, 0, mod['id'], mod['sources'], mod['basic'], mod['interp'], library,
                                    mod.get('chunk'), mod.get('sites'), mod.get('fixed_data'), mod.get('io'),
-                                   direct_only, mod.get('defines', ()), (), pick, keys, rng)
+                                   direct_only, mod.get('defines', ()), (), pick, keys, rng,
+                                   rides=mod.get('rides', ()))
                 if res2['ok']:
                     res = dict(res2, moved_to_job_slot=True, task_overflow=res['overflow'])
                     mod['slot'] = 0
