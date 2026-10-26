@@ -25,9 +25,11 @@ ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice-1 in
 ci-watch-flight-store: $(wildcard src/*.c src/*.inc) tools/flight_store_build.py tools/flight_table_kinds.py \
   tools/interp_specs.py $(wildcard tools/lanec/*) docs/flight-store-unplaced.json
 # flight-chunked-lockstep runs the chunk-tracking host against yaAGC: it
-# watches the host run, the differential and the store build that writes
-# the chunk lists.
-ci-watch-flight-chunked-lockstep: tools/flight_host_run.c tools/flight_host_differential.py tools/flight_store_build.py
+# watches the host run, the differential, the store build that writes the
+# chunk lists, and the two files that move chunk splits: the table kinds
+# and the fast ops the split tables are made of (#942 B6).
+ci-watch-flight-chunked-lockstep: tools/flight_host_run.c tools/flight_host_differential.py tools/flight_store_build.py \
+  tools/flight_table_kinds.py src/agc_fast_ops.c
 # flight-disk-vice boots both stores from their disks alone (docs/RUN-ON-C64.md):
 # the loader, the drive code, the resident's boot and its store check; and
 # the hardware check disk's window, which must end in the state VICE's own run of
