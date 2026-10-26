@@ -69,7 +69,7 @@
   "pre_snapshot": "build/flight-restart/cm-p52-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "39dc823fd285",
+  "commit": "11cab8d39055",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -217,7 +217,7 @@
    },
    "ok": true
   },
-  "commit": "39dc823fd285",
+  "commit": "11cab8d39055",
   "log": "gojam-on-c64.log",
   "log_sha256": "0c2bd0ed10e1c1124baee4e65204b8097cf6e52eba77305322802aacb7ff0ea3"
  }

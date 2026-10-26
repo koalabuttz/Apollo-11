@@ -1,15 +1,15 @@
 build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
-lm-rendezvous-restart: commit 6e8b31cefe1d1265bc7a002210b59f80e04ddd1e with local changes; store lm.reu sha256 4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf
+lm-rendezvous-restart: commit 11cab8d39055f515cf7cd3e4fdb9e08562366f3b with local changes; store lm.reu sha256 d905808ec3ae8d6c144fc43c1c8d45f086031e0d549642fa7332259e3516f1c1
 lm-rendezvous-restart: the host run to 20307 cs bridges 0 points, each a stop on the C64
 lm-rendezvous-restart: snapshot at 20007 cs (asked 20007, +0 cs)
 lm-rendezvous-restart: 2 host input rows (2 on the C64) in the window at REU 0x1d0800 (0 PIPA counts, 1 erasable words, 1 channels, 0 interrupt requests)
 lm-rendezvous-restart: REU writes inside the lm layout (changed: pinball save, replay states, scratch, undo)
-lm-rendezvous-restart: 13 DMAs seen only after they ran (last byte checked)
+lm-rendezvous-restart: 16 DMAs seen only after they ran (last byte checked)
 lm-rendezvous-restart: every DMA inside the lm REU layout
 lm-rendezvous-restart: interrupt hold: host max 446 MCT at TIME1 07241
 lm-rendezvous-restart: the C64 matches the host at 50, 100, 150, 200, 250, 300 cs: it ends the window (308 cs, all 2 input rows) in the host's state
-lm-rendezvous-restart from 20007 cs: 61460217 cycles for 308 AGC cs (20.253 x real time), 0 ticks dropped, 1649 steps, status 0 at 01,3214 (Z 03214 FB 02000 superbank 0100)
-  T3RUPT: 3 x, mean 108095 cycles (max 124190), 13 steps, 2 job and 0 task loads
-  T4RUPT: 46 x, mean 124696 cycles (max 255139), 258 steps, 105 job and 0 task loads
-  T5RUPT: 31 x, mean 139658 cycles (max 409568), 172 steps, 66 job and 0 task loads
-  background: 75 x, mean 680839 cycles (max 6643012), 1206 steps, 314 job and 0 task loads
+lm-rendezvous-restart from 20007 cs: 59940446 cycles for 308 AGC cs (19.753 x real time), 0 ticks dropped, 1613 steps, status 0 at 01,3214 (Z 03214 FB 02000 superbank 0100)
+  T3RUPT: 3 x, mean 108199 cycles (max 124230), 13 steps, 2 job and 0 task loads
+  T4RUPT: 46 x, mean 125233 cycles (max 255060), 258 steps, 105 job and 0 task loads
+  T5RUPT: 31 x, mean 140381 cycles (max 409827), 172 steps, 66 job and 0 task loads
+  background: 75 x, mean 659949 cycles (max 5819861), 1170 steps, 278 job and 0 task loads
