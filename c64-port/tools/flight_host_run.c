@@ -1199,7 +1199,9 @@ static void load(const apollo_overlay_state *s,const flight_io *io,agc_hardware 
  m.InputChannel[013]&=043777;   /* bits 12-14 arm the traps (io->trap*), and yaAGC reads its channel 13 back */
  m.InputChannel[016]=(int16_t)io->channel16;m.InputChannel[034]=(int16_t)io->channel34;m.InputChannel[035]=(int16_t)io->channel35;
  m.InputChannel[7]=m.OutputChannel7=(int16_t)io->superbank;m.AllowInterrupt=io->interrupt_enabled!=0u;m.InIsr=hw->in_interrupt!=0u;
- m.Trap31A=io->trap31a;m.Trap31B=io->trap31b;m.Trap32=io->trap32;m.RadarGateCounter=hw->radar_gate;
+ /* (with the arms a native write left in channel 13, rk_hand_due) */
+ m.Trap31A=(io->trap31a||(hw->channel13&004000u));m.Trap31B=(io->trap31b||(hw->channel13&010000u));
+ m.Trap32=(io->trap32||(hw->channel13&020000u));m.RadarGateCounter=hw->radar_gate;
  memset(m.InterruptRequests,0,sizeof m.InterruptRequests);m.DownruptTimeValid=0;
  m.SubstituteInstruction=(unsigned)substitute;substitute=0;m.PendFlag=0;m.PendDelay=0;m.ExtraDelay=0;m.IndexValue=0;m.ExtraCode=0;}
 /* A, L and Q are 16 bits (Q keeps the overflow pair a TS Q or XCH Q gives it). */
@@ -1312,6 +1314,10 @@ static void ref_tick(int step){static apollo_overlay_state t;agc_hardware h;uint
   h.channel12=(agc_word)(m.InputChannel[012]&077777);h.channel14=(agc_word)(m.InputChannel[014]&077777);drives(&t,&h);
   for(i=047u;i<=054u;++i)*cell(i)=(int16_t)t.words[i];}
  if(step<0)rk_timer_tick(&t,&h,&p);else rk_timer_phase(&t,&h,&p,(uint8_t)step);
+ /* HANDRUPT: the frozen clock stops yaAGC's own check with its scaler. */
+ {uint16_t trap[3];trap[0]=m.Trap31A;trap[1]=m.Trap31B;trap[2]=m.Trap32;
+  h.channel31=(agc_word)(m.InputChannel[031]&077777);h.channel32=(agc_word)(m.InputChannel[032]&077777);
+  rk_hand_due(&h,trap,&p);m.Trap31A=trap[0]&1u;m.Trap31B=trap[1]&1u;m.Trap32=trap[2]&1u;}
  m.RadarGateCounter=h.radar_gate;
  for(i=024u;i<=031u;++i)*cell(i)=(int16_t)t.words[i];
  m.InputChannel[013]=(int16_t)h.channel13;m.InputChannel[3]=(int16_t)h.channel3;m.InputChannel[4]=(int16_t)h.channel4;
@@ -1938,6 +1944,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      /* The drives run on the TIME5 step, as rk_rupts_due's. */
      if(consumed%3ul==2ul)drives(&s,&hw);
      rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));
+     rk_hand_due(&hw,&io.trap31a,&pending);
      if(hold_on)rupt_hold_raise(&hold,(uint16_t)(unsigned long)step_at(consumed),pending);
      if(consumed++%3ul==2ul){period_end();steal();}}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
@@ -1946,7 +1953,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      * cut at a timer step goes on in its module after the step (rk_cut). */
     if(got)charge_last=0;
     idling=0;}
-   else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);drives(&s,&hw);steal();}}
+   else{if(scaled){unsigned k;for(k=due();k;--k){rk_timer_tick(&s,&hw,&pending);rk_hand_due(&hw,&io.trap31a,&pending);drives(&s,&hw);steal();}}
     got=rk_rupt_take(&p,&s,io.superbank,io.interrupt_enabled,&pending);}
    /* The PIPAs count as the clock runs, not only at sample points: P66
     * reads them a few centiseconds after SERVICER, often with no idle pass

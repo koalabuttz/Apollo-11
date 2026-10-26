@@ -747,6 +747,17 @@ port) runs one mission:
    phase to P64 at about 1,118 s after the core (on yaAGC alone too). The
    radar reads end (the resident's radar cycle requests RADARUPT, as
    yaAGC does), with no data good, so no LR update is taken.
+   `lm-p64-redesignation`: `lm-p63-nassp` into P64, where the crew moves
+   the hand controller to redesignate the landing site: channel 31 bit 1
+   is cleared from 1,150 s to 1,151 s (`FLIGHT_CHAN`). STARTP64's
+   `WOR CHAN13` with bit 12 armed trap 31A, so at the next timer step the
+   deflection requests RUPT10 (`rk_hand_due`, src/resident_rupt.c, on the
+   host, the C64 LM resident and x86, as yaAGC checks its traps each
+   scaler step). PITFALL runs at 1,150.15 s, REDESMON samples the
+   controller every 70 ms until it is back in detent, then COUNT'EM
+   takes one ELEACH (1/2 degree; bit 1 is -EL) off ELINCR1, and RESETRPT
+   arms the trap again. On the host every native routine matches yaAGC,
+   with no bridged instruction.
    `lm-landing-ascent-nassp`: `lm-p63-nassp` on to the surface and back to
    orbit. `FLIGHT_ENGINE_LAG=0.2`: the throttle command reaches the engine
    as pulses at 3,200 a second and the thrust lags them 0.2 s, and the

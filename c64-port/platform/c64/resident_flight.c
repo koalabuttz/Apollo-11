@@ -395,6 +395,16 @@ static inline void rk_realtime_cap(void)
     // clang-format on
 }
 #endif
+#if RK_LM
+/* HANDRUPT after each timer step (rk_hand_due). One out-of-line caller, so
+ * LTO can put the resident's fixed addresses in place of the pointers.
+ * The CM resident has none: Comanche never arms a trap (its RUPT10 vector
+ * is "NOT USED"), so its arms stay 0. */
+__attribute__((noinline)) static void rk_hand(void)
+{
+    rk_hand_due(&rk_hardware, &rk_flight.trap31a, &rk_pending);
+}
+#endif
 /* The AGC clock, then the highest pending interrupt if it can be taken at
  * this boundary. The work clock steps the timers (rk_timer_phase) for each
  * whole step of work since the last, but takes a request that can be taken
@@ -452,6 +462,9 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         rk_work -= RK_PHASE_MCT(p);
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
+#if RK_LM
+        rk_hand();
+#endif
 #ifdef RK_HOLD_METER
         rk_hold_base += RK_PHASE_MCT(p);
         rupt_hold_raise(&rk_hold, rk_hold_base, rk_pending);
@@ -485,6 +498,9 @@ __attribute__((noinline)) static void rk_rupts(void) {
         if (take) {
             --take;
             rk_timer_tick(IMAGE, &rk_hardware, &rk_pending);
+#if RK_LM
+            rk_hand();
+#endif
             RK_CDU_DRIVE(); /* (after the timers, as the host's scaled path) */
         } else
             ++rk_dilation;

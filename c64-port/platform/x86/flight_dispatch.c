@@ -171,6 +171,7 @@ uint8_t fd_boundary(fd_state *st)
         agc_word c = st->hw.channel4;
         if (st->phase == RK_PHASE_T5) drives(st);
         rk_timer_phase(&st->s, &st->hw, &st->pending, st->phase);
+        rk_hand_due(&st->hw, &st->io.trap31a, &st->pending);
         if (st->phase == RK_PHASE_T5 && nw_period(&st->wm, ++st->periods)) st->wm_fire = 1u;
         st->phase = st->phase == RK_PHASE_T5 ? RK_PHASE_T4 : (uint8_t)(st->phase + 1u);
         ++st->clock_steps;

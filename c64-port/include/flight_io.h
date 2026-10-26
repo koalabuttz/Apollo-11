@@ -28,7 +28,7 @@
 typedef struct {
     agc_word superbank, interrupt_enabled;
     agc_word channel16, channel34, channel35;   /* the rest are in agc_hardware */
-    uint16_t trap31a, trap31b, trap32;
+    uint16_t trap31a, trap31b, trap32;          /* HANDRUPT arms, in this order (rk_hand_due) */
     agc_word executive_alarm, waitlist_alarm;
     agc_word warning;                           /* yaAGC WarningFilter over its threshold */
     apollo_overlay_state *undo;                 /* scratch image some files take */
