@@ -318,6 +318,131 @@
    "lm-p63-lr-update",
    100400,
    1000
+  ],
+  [
+   "lm-stable-orbit",
+   8950,
+   600
+  ],
+  [
+   "lm-stable-orbit",
+   48100,
+   600
+  ],
+  [
+   "lm-stable-orbit-lm",
+   8950,
+   600
+  ],
+  [
+   "lm-stable-orbit-lm",
+   48100,
+   600
+  ],
+  [
+   "lm-csi",
+   12100,
+   600
+  ],
+  [
+   "lm-rendezvous-tpm",
+   45150,
+   600
+  ],
+  [
+   "lm-rendezvous-tpm",
+   60100,
+   600
+  ],
+  [
+   "lm-doi-nassp",
+   300,
+   800
+  ],
+  [
+   "lm-landing-ascent-nassp",
+   148100,
+   1000
+  ],
+  [
+   "lm-rendezvous-tpm",
+   65900,
+   800
+  ],
+  [
+   "lm-doi-nassp",
+   59310,
+   2200
+  ],
+  [
+   "lm-rendezvous-tpm",
+   19890,
+   1000
+  ],
+  [
+   "lm-rendezvous-tpm",
+   69850,
+   1000
+  ],
+  [
+   "lm-rendezvous-tpm",
+   11850,
+   1000
+  ],
+  [
+   "lm-p63-descent",
+   3250,
+   400
+  ],
+  [
+   "lm-p63-descent",
+   13910,
+   1000
+  ],
+  [
+   "lm-rendezvous",
+   2320,
+   1000
+  ],
+  [
+   "lm-rendezvous",
+   5210,
+   1000
+  ],
+  [
+   "lm-rendezvous",
+   7870,
+   1000
+  ],
+  [
+   "lm-p52-realign",
+   7790,
+   1000
+  ],
+  [
+   "lm-p52-realign",
+   2460,
+   600
+  ],
+  [
+   "lm-coast-verbs",
+   30200,
+   1000
+  ],
+  [
+   "lm-coast-verbs",
+   32200,
+   1000
+  ],
+  [
+   "lm-p42-nassp",
+   50,
+   1000
+  ],
+  [
+   "lm-p63-lr-update",
+   65850,
+   1000
   ]
  ],
  "rows": [
@@ -334,7 +459,7 @@
    "windows": [
     [
      "lm-stable-orbit",
-     8000
+     48100
     ]
    ],
    "reach": [
@@ -357,7 +482,7 @@
    "windows": [
     [
      "lm-stable-orbit",
-     8000
+     8950
     ]
    ],
    "reach": [
@@ -380,7 +505,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     65900
     ]
    ],
    "reach": [
@@ -403,7 +528,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     60100
     ]
    ],
    "reach": [
@@ -426,7 +551,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     45150
     ]
    ],
    "reach": [
@@ -472,7 +597,7 @@
    "windows": [
     [
      "lm-csi",
-     2100
+     12100
     ]
    ],
    "reach": [
@@ -486,24 +611,10 @@
    "row": "P68",
    "section": "LM V37 major modes",
    "entry": "LANDJUNK THE_LUNAR_LANDING.agc:286 (FRS:1070/:1123)",
-   "status": "mapped",
-   "scenarios": [
-    "lm-landing-ascent-nassp"
-   ],
-   "note": "SB 7, lm-landing-ascent-nassp, V37E68E at 136000 cs (FHD:106). p63-stops.md:94 (140000 window, P68 on the surface, no stop)",
-   "owner": "F (host), Pinball split (C64)",
-   "windows": [
-    [
-     "lm-landing-ascent-nassp",
-     140000
-    ]
-   ],
-   "reach": [
-    [
-     "31,2144",
-     "LANDJUNK"
-    ]
-   ]
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "SB 7, lm-landing-ascent-nassp, V37E68E at 136000 cs (FHD:106); LANDJUNK runs at 139331. No C64 window can cover it: every host snapshot asked for between 137000 and 139311 cs slides to 139417 (an interrupt stays pending), and the last clean start (136501) is over 2800 cs before the event, past the 1000 cs cap. After LANDJUNK P68 only flashes V06N43 until V37E00E at 142000 (#925 A1)",
+   "owner": "F (host), Pinball split (C64)"
   },
   {
    "row": "P63",
@@ -538,8 +649,8 @@
    ],
    "reach": [
     [
-     "32,2776",
-     "P63LM"
+     "31,3473",
+     "P63DISPS (P63's N63 display, braking phase)"
     ]
    ]
   },
@@ -561,8 +672,8 @@
    ],
    "reach": [
     [
-     "15,3314",
-     "P57"
+     "15,2245",
+     "R59 (P57's star acquisition)"
     ]
    ]
   },
@@ -584,8 +695,8 @@
    ],
    "reach": [
     [
-     "15,2050",
-     "PROG52"
+     "14,3055",
+     "R51.2 (P52's fine align)"
     ]
    ]
   },
@@ -630,8 +741,8 @@
    ],
    "reach": [
     [
-     "36,3436",
-     "P47LM"
+     "36,3462",
+     "CALCN83 (P47's N83 delta-V display)"
     ]
    ]
   },
@@ -653,8 +764,8 @@
    ],
    "reach": [
     [
-     "36,3410",
-     "P42LM"
+     "36,3666",
+     "STEERING (P42's burn steering, S40.8)"
     ]
    ]
   },
@@ -676,8 +787,8 @@
    ],
    "reach": [
     [
-     "36,3272",
-     "P41LM"
+     "36,3376",
+     "CALCN85 (P41's N85 during the thrust)"
     ]
    ]
   },
@@ -699,8 +810,8 @@
    ],
    "reach": [
     [
-     "36,3147",
-     "P40LM"
+     "36,3666",
+     "STEERING (P40's burn steering, S40.8)"
     ]
    ]
   },
@@ -717,7 +828,7 @@
    "windows": [
     [
      "lm-stable-orbit-lm",
-     8000
+     48100
     ]
    ],
    "reach": [
@@ -740,7 +851,7 @@
    "windows": [
     [
      "lm-stable-orbit-lm",
-     8000
+     8950
     ]
    ],
    "reach": [
@@ -878,7 +989,7 @@
    "windows": [
     [
      "lm-doi-nassp",
-     48800
+     300
     ]
    ],
    "reach": [
@@ -975,8 +1086,8 @@
    ],
    "reach": [
     [
-     "24,2000",
-     "PROG20"
+     "24,2232",
+     "P20LEMWT (P20's wait for its next radar pass)"
     ]
    ]
   },
@@ -993,7 +1104,7 @@
    "windows": [
     [
      "lm-landing-ascent-nassp",
-     156000
+     148100
     ]
    ],
    "reach": [
@@ -1041,16 +1152,8 @@
    "owner": "C?",
    "windows": [
     [
-     "lm-p57",
-     12000
-    ],
-    [
      "lm-doi-nassp",
-     48800
-    ],
-    [
-     "lm-p52-realign",
-     2000
+     59310
     ]
    ],
    "reach": [
@@ -1089,8 +1192,8 @@
    ],
    "reach": [
     [
-     "31,2630",
-     "STARTP64"
+     "31,3477",
+     "P64DISPS (P64's redesignation display)"
     ]
    ]
   },
@@ -1216,7 +1319,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "a ground IMU performance test (V92 SYSTEST), not a flight mode",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "P27",
@@ -1274,7 +1377,7 @@
   {
    "row": "R30 (V82)",
    "section": "LM R routines",
-   "entry": "V82PERF EV:945 → V82CALL R30.agc:95",
+   "entry": "V82PERF EV:945 \u2192 V82CALL R30.agc:95",
    "status": "mapped",
    "scenarios": [
     "lm-doi-nassp"
@@ -1284,7 +1387,7 @@
    "windows": [
     [
      "lm-doi-nassp",
-     48800
+     59310
     ]
    ],
    "reach": [
@@ -1297,7 +1400,7 @@
   {
    "row": "R31 (V83)",
    "section": "LM R routines",
-   "entry": "V83PERF EV:966 → R31CALL R31.agc:36 / V83CALL :67",
+   "entry": "V83PERF EV:966 \u2192 R31CALL R31.agc:36 / V83CALL :67",
    "status": "mapped",
    "scenarios": [
     "lm-rendezvous-tpm"
@@ -1307,7 +1410,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     19890
     ]
    ],
    "reach": [
@@ -1331,16 +1434,8 @@
    "owner": "Pinball split / E / D1b",
    "windows": [
     [
-     "lm-p63-descent",
-     17500
-    ],
-    [
-     "lm-doi-nassp",
-     48800
-    ],
-    [
      "lm-p52-realign",
-     2000
+     2460
     ]
    ],
    "reach": [
@@ -1363,7 +1458,7 @@
    "windows": [
     [
      "lm-rendezvous",
-     29000
+     2320
     ]
    ],
    "reach": [
@@ -1399,7 +1494,7 @@
   {
    "row": "R63 (V89)",
    "section": "LM R routines",
-   "entry": "V89PERF EV:1005 → V89CALL R63.agc:88",
+   "entry": "V89PERF EV:1005 \u2192 V89CALL R63.agc:88",
    "status": "mapped",
    "scenarios": [
     "lm-coast-verbs"
@@ -1426,7 +1521,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "not in this program (reviewer 1's list has it)",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "R65",
@@ -1535,7 +1630,11 @@
    "windows": [
     [
      "lm-rendezvous",
-     29000
+     5210
+    ],
+    [
+     "lm-rendezvous",
+     7870
     ]
    ],
    "reach": [
@@ -1562,7 +1661,7 @@
    "windows": [
     [
      "lm-p63-descent",
-     17500
+     3250
     ]
    ],
    "reach": [
@@ -1589,8 +1688,8 @@
      2000
     ],
     [
-     "lm-p57",
-     12000
+     "lm-p52-realign",
+     7790
     ]
    ],
    "reach": [
@@ -1663,7 +1762,7 @@
    "windows": [
     [
      "lm-coast-verbs",
-     30900
+     32200
     ]
    ],
    "reach": [
@@ -1686,7 +1785,7 @@
    "windows": [
     [
      "lm-coast-verbs",
-     28900
+     30200
     ]
    ],
    "reach": [
@@ -1753,7 +1852,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare (operator error)",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V46",
@@ -1762,7 +1861,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V47 AGS initialization",
@@ -1800,7 +1899,7 @@
    "windows": [
     [
      "lm-p42-nassp",
-     48800
+     50
     ]
    ],
    "reach": [
@@ -1873,7 +1972,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V52 please mark X reticle",
@@ -1938,24 +2037,10 @@
    "row": "V55 align time",
    "section": "LM extended verbs",
    "entry": "ALINTIME EV:546",
-   "status": "mapped",
-   "scenarios": [
-    "lm-coast-v55"
-   ],
-   "note": "lm-coast-v55: V55E, V21N24 loaded 0, 0, 0. The host bridges Pinball's HMSIN (42,3452, refused by lanec_pin_lm_routines; Lane C) (Lane F host check, 10-19)",
-   "owner": "F",
-   "windows": [
-    [
-     "lm-coast-v55",
-     2400
-    ]
-   ],
-   "reach": [
-    [
-     "42,2016",
-     "UPDATIME (R33)"
-    ]
-   ]
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "V55E runs on the host (lm-coast-v55: V21N24 loaded 0, 0, 0; UPDATIME at 4002 cs), but no C64 window can run it: UPDATIME zeroes TIME2/TIME1 while it aligns the clock (EXTENDED_VERBS.agc:568-578), and a replay window counts its length from that clock, so one over the update runs 61836 cs on the host, past the 16383 cs the C64 counts (Lane E dry run, 10-26, #925 A1)",
+   "owner": "F"
   },
   {
    "row": "V56 terminate tracking (P20/P25)",
@@ -1970,7 +2055,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     69850
     ]
    ],
    "reach": [
@@ -1993,11 +2078,7 @@
    "windows": [
     [
      "lm-p63-lr-update",
-     90000
-    ],
-    [
-     "lm-p63-lr-update",
-     100400
+     65850
     ]
    ],
    "reach": [
@@ -2037,7 +2118,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V60 command LR to position 2",
@@ -2230,7 +2311,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V69 force hardware restart",
@@ -2515,7 +2596,7 @@
    "windows": [
     [
      "lm-doi-nassp",
-     48800
+     59310
     ]
    ],
    "reach": [
@@ -2538,7 +2619,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     19890
     ]
    ],
    "reach": [
@@ -2555,7 +2636,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V85 RR LOS az/el",
@@ -2570,7 +2651,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     11850
     ]
    ],
    "reach": [
@@ -2587,7 +2668,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V87",
@@ -2596,7 +2677,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V88",
@@ -2605,7 +2686,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V89 align X/Z axis to LOS (R63)",
@@ -2669,7 +2750,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "ground IMU test (P07)",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V93 clear RENDWFLG",
@@ -2701,7 +2782,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V95 no state vector update",
@@ -2779,7 +2860,7 @@
    "status": "not exercised",
    "scenarios": [],
    "note": "spare",
-   "owner": "—"
+   "owner": "\u2014"
   },
   {
    "row": "V99 please enable engine",
@@ -2796,11 +2877,7 @@
    "windows": [
     [
      "lm-p63-descent",
-     17500
-    ],
-    [
-     "lm-doi-nassp",
-     48800
+     13910
     ]
    ],
    "reach": [
