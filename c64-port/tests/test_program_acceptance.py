@@ -228,6 +228,15 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertEqual(calls, ['tools/flight_host_differential.py', 'tools/flight_scenario_vice.py',
                                  'tools/flight_scenario_vice.py'])
 
+    # Replay windows longer than the 1000 cs cap, each with its own cap and
+    # why no window within the cap can run its rows (#925 A1).
+    WINDOW_CAP = 1000
+    LONG_WINDOWS = {
+        ('lm-doi-nassp', 59310): (2200, 'V82/R30 and P00 after DOI: no snapshot point from about 59600 to 61920 cs '
+                                        '(every snap there slides to 61920, past V82CALL at 61479 and POOH at 61425); '
+                                        'the window ends at the quiet point 61538'),
+    }
+
     def test_real_map_names_real_scenarios(self):
         import flight_host_differential as fhd
         names = {n for n, *_ in fhd.FLIGHT}
@@ -235,7 +244,8 @@ class ProgramAcceptance(unittest.TestCase):
             plan = json.loads((ROOT / f'docs/acceptance/{program}-program-map.json').read_text())
             rows, windows = plan['rows'], plan['replay_windows']
             self.assertLessEqual({s for row in rows for s in row['scenarios']}, {w[0] for w in windows})
-            self.assertTrue(all(w[0] in names and 0 < w[2] <= 1000 and 3 <= len(w) <= 5 for w in windows), windows)
+            cap = lambda w: self.LONG_WINDOWS.get((w[0], w[1]), (self.WINDOW_CAP,))[0]  # noqa: E731
+            self.assertTrue(all(w[0] in names and 0 < w[2] <= cap(w) and 3 <= len(w) <= 5 for w in windows), windows)
             planned = {(w[0], w[1], w[3] if len(w) > 3 else 1) for w in windows}
             for row in rows:
                 if row['status'] == 'mapped':
