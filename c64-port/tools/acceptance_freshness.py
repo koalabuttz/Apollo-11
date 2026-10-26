@@ -140,9 +140,9 @@ def main():
             bad = True
             print(f'{program}: UNKNOWN (accepted at {commit}); missing: {", ".join(missing)}')
         elif moved and program in pending and all(
-                hashlib.sha256((args.build / n).read_bytes()).hexdigest() == pending[program]['files'].get(n)
+                hashlib.sha256((args.build / n).read_bytes()).hexdigest() == pending[program].get('files', {}).get(n)
                 for n in moved):
-            print(f'{program}: STALE, pending re-acceptance (since {pending[program]["since"]}; accepted at {commit});'
+            print(f'{program}: STALE, pending re-acceptance (since {pending[program].get("since", "?")}; accepted at {commit});'
                   f' changed since, at their pinned hashes: {", ".join(moved)}')
         elif moved:
             bad = True
