@@ -114,6 +114,25 @@ class Host(unittest.TestCase):
         self.assertEqual(self.rows([host_row()], da.uses('FLIGHT_RR')), [])
         self.assertEqual(len(self.rows([host_row()], da.uses('FLIGHT_ENGINE'))), 1)
 
+    def test_trimmed_evidence_gives_the_same_rows(self):
+        # The stored host-summary.json keeps only m's scaled-x1 flight rows
+        # and the fields host_rows reads (the whole LM summary is over the
+        # 256 KiB in-tree limit, L 11cab8d3); each state reads the same.
+        bulk = dict(arrivals={str(i): i for i in range(500)}, loads_by_point={'01,2000': 7}, inputs={'A': 1})
+        over = dict(fitted=10100, yaagc=10000, percent=1.0, routines=2000, mean_abs_error=2.5)
+        cases = [host_row(**bulk), host_row(commit='0123456789ab', **bulk), host_row(exit=1, **bulk),
+                 host_row(routine_mismatches=[dict(point='01,2000')], **bulk),
+                 host_row(unregistered=[{}] * 9, **bulk), host_row(interpretive_charge=over, **bulk)]
+        others = [host_row('lm-a-scaled-x0.5'), dict(host_row(), mission='cm', scenario='cm-a-scaled-x1')]
+        for row in cases:
+            summary = others + [row]
+            with mock.patch.object(fhd, 'FLIGHT', FLIGHT):
+                kept = da.host_evidence('lm', summary)
+            self.assertEqual([r['scenario'] for r in kept], ['lm-a-scaled-x1'])
+            self.assertFalse(set(kept[0]) - set(da.HOST_FIELDS))
+            for env in (None, da.uses('FLIGHT_ENGINE'), da.uses('FLIGHT_RR')):
+                self.assertEqual(self.rows(kept, env), self.rows([row], env))
+
 
 class Adapters(unittest.TestCase):
     def check(self, text, symbol, suffix='.c'):
