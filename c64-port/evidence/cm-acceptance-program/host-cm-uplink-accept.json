@@ -9,8 +9,9 @@
   "FLIGHT_UPLINK": "2000:V71E;2400:4E;2800:3662E;3200:0E;3600:12000E;4200:V33E;5000:V72E;5400:3E;5800:3662E;6200:1E;6600:V33E;7200:V73E;7600:0E;8000:144E;8400:V33E;9200:V70E;9600:0E;10000:144E;10400:V33E;11200:V06N37E;12000:V74E"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "39dc823fd285",
+ "commit": "11cab8d39055",
  "cia_interrupts": 14000,
  "periods_taken": 14000,
  "periods_dropped": 0,

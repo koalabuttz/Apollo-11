@@ -11,8 +11,9 @@
   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p52.load,9500:tools/flight_scenarios/cm-p52-star1.load,13500:tools/flight_scenarios/cm-p52-star2.load"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "39dc823fd285",
+ "commit": "11cab8d39055",
  "cia_interrupts": 20001,
  "periods_taken": 20000,
  "periods_dropped": 1,

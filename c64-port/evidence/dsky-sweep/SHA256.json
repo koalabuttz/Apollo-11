@@ -4,12 +4,12 @@
   "release": "evidence-dsky-sweep",
   "files": {
     "dsky-sweep-summary.json": {
-      "sha256": "e1b2c5bc0edf51de0a60ceed573e5be50cb0e9da8287b41373e02c9ba0a18d8a",
+      "sha256": "a6f4e8c8d9bd13f424db89452b33df1382c7ae6a6e8fc3a5ffc7043c82e73423",
       "bytes": 1098,
       "store": "tree"
     },
     "dsky-sweep.json": {
-      "sha256": "c87e8682c2e8642e01fdf9f7afa410772ce165b2c1c4ad40ba11be418f0e6889",
+      "sha256": "2b3c7fff1ff7a149dec39fa1e7b0c9475bb27e5f2447f4ea975bab92c8975d25",
       "bytes": 1198194,
       "store": "release"
     }

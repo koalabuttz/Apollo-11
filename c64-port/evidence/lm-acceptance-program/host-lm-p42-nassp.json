@@ -16,8 +16,9 @@
   "FLIGHT_ASCENT": "4888"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "6e8b31cefe1d",
+ "commit": "11cab8d39055",
  "cia_interrupts": 57000,
  "periods_taken": 57000,
  "periods_dropped": 0,
@@ -44,19 +45,37 @@
   "alarms": 0,
   "stuck_steps": 0,
   "checks": 0,
-  "disagree": 0
+  "disagree": 0,
+  "native_armed": 0
  },
  "reached": {
-  "36,3410": 9307,
+  "36,3666": 46110,
   "20,2004": 352
  },
  "arrivals": {
-  "36,3410": [
-   9307
+  "36,3666": [
+   46110,
+   46310,
+   46510,
+   46710,
+   46910,
+   47110,
+   47310,
+   47510,
+   47710,
+   47910,
+   48110,
+   48310,
+   48514,
+   48714,
+   48910,
+   49110,
+   49314,
+   49514
   ],
   "20,2004": [
    352
   ]
  },
- "log_sha256": "30d44c7658ab41f65f7aa45853378e0b7b09f94e7b9053671333c1abb4469fbe"
+ "log_sha256": "44770c3a7a02770e3a9c1cdb6199adeea1a648067d772abf8942ba824cf1caed"
 }

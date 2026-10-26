@@ -8,8 +8,9 @@
   "FLIGHT_UPLINK": "2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "39dc823fd285",
+ "commit": "11cab8d39055",
  "cia_interrupts": 9000,
  "periods_taken": 9000,
  "periods_dropped": 0,

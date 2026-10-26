@@ -13,12 +13,12 @@
  "resident_staged": "0x1f4e00",
  "bytes_loaded": 1939329,
  "data_bytes": [
-  795722,
-  6072
+  795741,
+  5602
  ],
  "check_expect": "c4d5",
  "check_host": "c4d5",
- "done": 2713,
+ "done": 2729,
  "vice": {
   "mission": "test",
   "ok": true,
@@ -29,17 +29,17 @@
    2
   ],
   "fast_loader": true,
-  "load_cycles": 265437359,
-  "load_s": 269.4,
+  "load_cycles": 265335857,
+  "load_s": 269.3,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 96430,
-  "run_s": 159.5,
+  "handoff_cycles": 96349,
+  "run_s": 159.6,
   "check_crc": "c4d5",
   "check_expect": "c4d5",
   "check_pass": true,
   "window_cs": 200,
   "window_steps": 1218,
-  "window_x": 21.99,
+  "window_x": 22.05,
   "screen": [
    "APOLLO 11 ON THE C64: HARDWARE CHECK",
    "",
@@ -51,7 +51,7 @@
    "RUNNING LM P63 FROM 17532 CS...",
    "",
    "AGC TIME: 200 CS IN 1218 STEPS",
-   "C64 TIME: 43.98 S, 21.99 X REAL TIME",
+   "C64 TIME: 44.09 S, 22.04 X REAL TIME",
    "",
    "END STATE CRC C4D5 (VICE C4D5)",
    "HOST RUN'S CRC C4D5 (THE SAME)",
@@ -68,11 +68,11 @@
    ""
   ]
  },
- "commit": "39dc823fd2850b4f422a35d0141cb6c4340ae78c",
+ "commit": "11cab8d39055f515cf7cd3e4fdb9e08562366f3b",
  "dirty": false,
  "sha256": {
-  "flight-disk/test-1.d81": "1ddfc64a3f12ff36fec635d54059e324a6a37d3ff9b809a5853dda3ce1a4de93",
-  "flight-disk/test-2.d81": "21dedf7e92c7e87fa5468a1772b441cecb9382108a888aaf447e6ac796997d1d",
+  "flight-disk/test-1.d81": "1269e8153b93804f769404b08ede0a87dfc3f24026a4bd5d82fabfeafd2dce8c",
+  "flight-disk/test-2.d81": "ff3e37ee1ff7c0a1e283cb3f97d17bd7b9935bd39ead590b76e03ae04db6e3c3",
   "flight-disk/test-loader.prg": "9b187bcf29162fcd24664be1fc2d50b23f2940c235ad7905e7776a511f86c608"
  }
 }

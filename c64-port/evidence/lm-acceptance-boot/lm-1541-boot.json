@@ -1,6 +1,6 @@
 {
  "mission": "lm",
- "commit": "6e8b31cefe1d1265bc7a002210b59f80e04ddd1e",
+ "commit": "11cab8d39055f515cf7cd3e4fdb9e08562366f3b",
  "dirty": false,
  "drive": "1541",
  "keys": "RV37E00E",
@@ -13,20 +13,20 @@
   "00000",
   "00000"
  ],
- "load_s": 2208.0,
+ "load_s": 2209.6,
  "boot_s": 113.5,
  "sha256": {
-  "flight-disk/lm-1.d64": "dd67f35be44513627b1f08bafa556df2c45402ad5425927c661e151ddcdc2a50",
-  "flight-disk/lm-2.d64": "dbdadf94d6c609afc689e0fd9f6ee305ea206450f6cffb3fcafe772410927aed",
-  "flight-disk/lm-3.d64": "1b082d70d20d765e2fcb7a9791ee6a28fdedcb1a4562f63cf988ead98e20ba5e",
-  "flight-disk/lm-4.d64": "129db0e9618c1ce38f500eae983ef5d46bc4235aef4a8588ea6c9082b4a11eff",
-  "flight-disk/lm-5.d64": "22e21cbac0e50a941e6be7b597a1645d1621ada52578db43173f7a33ca07084b",
+  "flight-disk/lm-1.d64": "8d86445ce87d76ce64845f4451fc8c044cc3c89054e82b3e0536b2c4c9fd1453",
+  "flight-disk/lm-2.d64": "053e3e841b1038918d023d06d60dafc037e6831a7f625145812bb41252f7b74f",
+  "flight-disk/lm-3.d64": "bb7b3eb554e5f33193d1f71b098c4f9875816b21e77afbb5b8c12550119b3045",
+  "flight-disk/lm-4.d64": "e37b311b30b6861484ede72f0566662eb4924289636a5cabbc599c8d869c8b80",
+  "flight-disk/lm-5.d64": "6be1a8b93ccd07fdd822aa9c0743686f182fc58756aede9f9375dc4d4c201ec9",
   "flight-disk/lm-loader.prg": "6433ed6fe14a7eedb751b4ae5d6b1b5352448cc9915c6f435f62edce752a2080",
-  "flight-disk/lm-resident.prg": "6d8aafbf39dc13339ba1e2c3051935946ac7ca0150cd5c5828f65f4132a42a48",
-  "flight-store/lm.reu": "4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf"
+  "flight-disk/lm-resident.prg": "fd4f1ab348dcb864bf3d88c8d9cd1397ba404314e476a2edb5669e905498e6df",
+  "flight-store/lm.reu": "d905808ec3ae8d6c144fc43c1c8d45f086031e0d549642fa7332259e3516f1c1"
  },
- "vice_log_sha256": "4efe103d7f4ae7dafe31a90ef32ec6fce25994c804731395d2dfa9d47ffdf0c9",
- "monitor_log_sha256": "c2cf89e89bfe1d73a231a7f7bb69ccb70152240feeae7b03473794a7037e6a79",
+ "vice_log_sha256": "ee052fb6d456237cc60b11c40bf751618e0124554ca7c20a3f02c6bb268671f8",
+ "monitor_log_sha256": "beea4605907b299f0a396c9446fe0679f000bbbf27acf6d44dd35c49e13ffc9e",
  "reu_bounds_ok": true,
  "screen_sha256": "eced2f8f3a809820483fdba0214bdcc45928892ebc8ee8a044e0b5de9e7839b9",
  "screen": [

@@ -11,8 +11,9 @@
   "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p23.load,10500:tools/flight_scenarios/cm-p23-cal.load,16500:tools/flight_scenarios/cm-p23-mark.load"
  },
  "schedule": "1,1,2",
+ "chunked": true,
  "exit": 0,
- "commit": "39dc823fd285",
+ "commit": "11cab8d39055",
  "cia_interrupts": 30003,
  "periods_taken": 30000,
  "periods_dropped": 3,
