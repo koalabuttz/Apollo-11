@@ -57,6 +57,22 @@ RUNS = {
 SOURCES = ['src', 'include', 'platform', 'tools', 'tests', 'Makefile']
 
 
+def host_line(check):
+    """The paragraph under the check disk's screen: what its HOST RUN'S CRC
+    line says about this build."""
+    expect, host = check.get('check_expect'), check.get('check_host')
+    if expect and host and expect == host:
+        return ("The check passes when the C64 computes what VICE does. The host run's CRC is the same as well: "
+                "the C64 ends this P63 window in the host's state. A later `NOT YET THE SAME` would mean a timing "
+                'change moved the C64 off the host in this window, and calls for a replay-mismatch row '
+                '(docs/RUN-ON-C64.md, Check on real hardware).')
+    return ("The `HOST RUN'S CRC ... (NOT YET THE SAME)` line is not a boot failure: the check passes when the C64 "
+            f"computes what VICE does. The host run ends this P63 window in CRC {str(host or '?').upper()}, not "
+            f"{str(expect or '?').upper()}: the C64 has moved off the host in this window (or the host was built "
+            'without its chunk list, #915). It needs a replay-mismatch row and a root cause '
+            '(docs/RUN-ON-C64.md, Check on real hardware).')
+
+
 def sha(path):
     return hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()
 
@@ -295,11 +311,7 @@ def write_doc(m, commit):
                   'commit and the image hash tie this result to the boots above. Evidence: '
                   f"{digest(check_path)}, {digest(ev / f'{m}-check-disk-vice.log')}.", '',
                   '```text', *trim(v.get('screen', [])), '```', '',
-                  "The `HOST RUN'S CRC ... (NOT YET THE SAME)` line is not a boot failure. The check passes "
-                  "when the C64 computes what VICE does; the host run's CRC is shown for reference and differs "
-                  'because of the known C64-versus-host mismatch in this P63 window '
-                  '(docs/RUN-ON-C64.md, Check on '
-                  'real hardware). It becomes the same when that window matches the host.', '']
+                  host_line(check), '']
     else:
         lines += ['Not run.', '']
     lines += ['## Real hardware', '',
