@@ -19,8 +19,9 @@
  *   formulas in P-AXIS_RCS_AUTOPILOT).
  * While the descent engine burns, its trim gimbal (dps_gimbal,
  * tools/flight_dps_gimbal.h) adds -ACCDOTQ sin p cos r about Q and
- * -ACCDOTR sin r about R per 0.2 deg/s of gimbal rate: the T L / I the DAP
- * itself counts on (AOSTASK), with p the pitch and r the roll trim angle.
+ * -ACCDOTR sin r about R per radian of gimbal angle (the jerk ACCDOTQ or
+ * ACCDOTR over the 0.2 deg/s gimbal rate): the T L / I the DAP itself
+ * counts on (AOSTASK), with p the pitch and r the roll trim angle.
  *
  * CM: ATT_JET newtons a jet (the 100 lbf service module jets), ATT_ARM
  * metres from the roll axis (the quads), over the inertia the AGC itself
@@ -39,8 +40,9 @@
  * attitude. If anything else moved CDUX-Z since (a coarse align, a
  * snapshot, gyro torquing, the SPS model), the attitude is taken from the
  * CDUs as they are and the body rates are kept. No CG offset (the LM's
- * engine torque comes from the trim angles alone), no propellant use, no cross-coupling between the axes (no products of
- * inertia) and no rate limit on the gimbals. With FLIGHT_ATT the engine
+ * engine torque comes from the trim angles alone), no propellant use, no
+ * cross-coupling between the axes (no products of inertia) and no rate
+ * limit on the gimbals. With FLIGHT_ATT the engine
  * models no longer set CDUX-Z to the DAP's desired angles. */
 #if RK_LM || RK_CM
 #if RK_LM

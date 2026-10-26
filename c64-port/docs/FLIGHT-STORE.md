@@ -855,8 +855,8 @@ port) runs one mission:
    `lm-p63-trim` with `FLIGHT_ATT=1`. No attitude is held for the DAP:
    the jets and the trim gimbal fly P63 through throttle-up, CDUX-Z stay
    within 4 degrees of the engine model's held attitude, and the gimbal
-   ends within 0.1 degree of zero. Every native routine matches yaAGC. `lm-rhc-att-turn`: `lm-rhc-att-hold` with
-   `FLIGHT_ATT=1`. The +P stick turns the LM at 0.097 rad/s (CDUX to 5652
+   ends within 0.1 degree of zero. Every native routine matches yaAGC.
+   `lm-rhc-att-turn`: `lm-rhc-att-hold` with `FLIGHT_ATT=1`. The +P stick turns the LM at 0.097 rad/s (CDUX to 5652
    octal) and the DAP stops it at release; the Q and R stick turns CDUY
    and CDUZ the same way. Every native routine matches yaAGC.
    CM: each jet gives 100 lbf (444.8 N) on a 1.96 m arm over the inertia
