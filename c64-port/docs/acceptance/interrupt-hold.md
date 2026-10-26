@@ -15,7 +15,7 @@ Frozen-clock lockstep with yaAGC cannot see this, because the harness takes the 
 
 The second "from" case is an upper bound: the AGC would take the request somewhere inside the next routine, at its RELINT or RESUME.
 
-Cycles stolen while a request waits (`FLIGHT_STEAL`, the counter cycles Apollo 11's RR CDU counts took) stay in the elapsed hold, since the AGC takes a waiting request at its next instruction and a steal delays only the port's take. Under `FLIGHT_STEAL` the host also prints their share and the longest hold without them, the hold's work:
+Cycles stolen while a request waits (`FLIGHT_STEAL`, the counter cycles Apollo 11's RR CDU counts took) stay in the elapsed hold, since the AGC takes a waiting request at its next instruction and a steal delays only the port's take. `FLIGHT_STEAL` steals one block at each period end. Only the block at the period end of the step that raised the request is the request's stolen share: the AGC would wait that block out too. A later block falls inside the routine holding the request, after the AGC would have taken it, so it stays in the hold's work (issue #912 item 3). Under `FLIGHT_STEAL` the host also prints that share and the longest hold without it, the hold's work:
 
 ```
 interrupt hold: max 2309 MCT at TIME1 11423 (1109 without 1200 stolen)
@@ -56,7 +56,7 @@ The longest measured hold is 1,425 MCT, 84% of the bound. The bound is `HOLD_BOU
 
 ### Known limit: no take inside a basic math body
 
-The port takes no interrupt inside a basic math body. UNIT, SQRT and the trig routines are about 1,100 MCT each. Under overload, cycles stolen inside such a body add to the elapsed hold without adding any work. cm-entry-overload 20900+600 (Lane B's 11d measurement, /mnt/project-files/lane-b/11d/v2/) holds a request 2,309 MCT elapsed. 1,109 MCT of that is work and 1,200 MCT is stolen. A take point inside these bodies would split them, so the overload gate counts work. The work is under the nominal windows' 1,425 MCT maximum. The risk the bound covers stays open in such a window: an elapsed hold of 2,309 MCT is longer than one DOWNRUPT period, so a second DOWNRUPT can arrive and merge with the first, and a downlink word is lost. The host and the C64 agree on that, and frozen-clock lockstep cannot see it, so it is not checked against the AGC anywhere.
+The port takes no interrupt inside a basic math body. UNIT, SQRT and the trig routines are about 1,100 MCT each. Under overload, cycles stolen inside such a body add to the elapsed hold without adding any work. cm-entry-overload 20900+600 (Lane B's 11d measurement, /mnt/project-files/lane-b/11d/v2/) held a request 2,309 MCT elapsed: 1,109 MCT of work and two 600 MCT blocks, one of them after the raise, which the work now counts. At 28c8fe7a it holds T5RUPT 1,749 MCT elapsed, 1,149 MCT of it work, inside the interpreter (`cm_body_attitude_interpretive` at 03,2037, NEWOPS), and its longest work is 1,241 MCT. A take point inside these bodies would split them, so the overload gate counts work. The work is under the nominal windows' 1,425 MCT maximum. The risk the bound covers stays open in such a window: an elapsed hold of 2,309 MCT is longer than one DOWNRUPT period, so a second DOWNRUPT can arrive and merge with the first, and a downlink word is lost. The host and the C64 agree on that, and frozen-clock lockstep cannot see it, so it is not checked against the AGC anywhere.
 
 The bound is a limit on the port, not a claim that the real AGC behaves this way. The host and C64 agree on every hold, so replay matches.
 
