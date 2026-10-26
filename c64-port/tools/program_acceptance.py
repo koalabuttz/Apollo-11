@@ -267,12 +267,14 @@ def window_span(r):
 
 
 def body_in_window(row, host, runs):
-    """None when the row names no reach points. Otherwise (True, text) when
-    each reach point arrives on the host inside a matching C64 window of the
-    same scenario (at or after its third field, if any), so the window runs
-    the row's body and not only some other stretch of the scenario (#925 A1)."""
+    """(True, text) when each of the row's reach points arrives on the host
+    inside a matching C64 window of the same scenario (at or after its third
+    field, if any), so the window runs the row's body and not only some other
+    stretch of the scenario (#925 A1). A row with no reach point fails: even
+    an entry that cannot refuse (no_reach) names a point for its window to
+    hold."""
     if not row.get('reach'):
-        return None
+        return False, 'no reach point to find in a C64 window'
     missing = []
     for point, label, *after in row['reach']:
         ok = False
@@ -304,7 +306,7 @@ def assess(rows, host, replays, stale_host=None):
             h = {**h, 'body': body}
         host_clean = mapped and bool(h) and all(ok for ok, _ in h.values())
         covered = body_in_window(row, host, c)
-        c64_match = mapped and any(match for runs in c.values() for _, match, _ in runs) and (covered or (True,))[0]
+        c64_match = mapped and any(match for runs in c.values() for _, match, _ in runs) and covered[0]
         out.append(dict(row=row, host=h, c64=c, host_clean=host_clean, c64_match=c64_match, unexplained=unexplained,
                         covered=covered))
     counts = dict(rows=len(out),
@@ -389,7 +391,7 @@ def write_doc(m, assessed, counts, host, replays, stale_host, stale_runs, eviden
         hosts = '; '.join(f"{s}: {t}" for s, (_, t) in a['host'].items())
         c64 = '; '.join(f"{s} {r.get('snap_cs')}: {t}" for s, runs in a['c64'].items() for r, _, t in runs) or \
             ('not run' if row.get('windows') else 'no window named')
-        if a.get('covered') and a['c64']:
+        if a['c64']:
             c64 += '; ' + a['covered'][1]
         lines.append(f"| {cell(row['row'])} | {cell(row['entry'])} | mapped | {', '.join(row['scenarios'])} | "
                      f"{cell(hosts)} | {cell(c64)} | {cell(row.get('note') or '')} |")

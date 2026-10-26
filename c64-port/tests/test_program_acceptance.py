@@ -20,7 +20,7 @@ def host_row(name, exit=0, misses=0, bridged=0, commit=HEAD):
     holes = [dict(point='43,3303', label='SMODECHK+2', file='X.agc', lane='A', core_start=True)]
     holes += [dict(point='50,2002', label='?', file='?', lane='?', core_start=False)] * bridged
     return dict(scenario=f'{name}-scaled-x1', schedule='1,1,2', exit=exit, commit=commit, centiseconds=100,
-                routine_mismatches=[dict(point='01,2000')] * misses, unregistered=holes)
+                routine_mismatches=[dict(point='01,2000')] * misses, unregistered=holes, arrivals={'40,2000': [50]})
 
 
 def replay(name, snap, differences=0, first='TIME4', status=0, commit=HEAD):
@@ -31,9 +31,10 @@ def replay(name, snap, differences=0, first='TIME4', status=0, commit=HEAD):
                 replay_unpaired_count=0, reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True), records=[1, 2, 3])
 
 
-ROWS = [dict(row='P63', section='modes', entry='P63LM', status='mapped', scenarios=['lm-a'], windows=[['lm-a', 0]]),
+ROWS = [dict(row='P63', section='modes', entry='P63LM', status='mapped', scenarios=['lm-a'], windows=[['lm-a', 0]],
+             reach=[['40,2000', 'P63LM']]),
         dict(row='P64', section='modes', entry='STARTP64', status='mapped', scenarios=['lm-a', 'lm-b'],
-             windows=[['lm-a', 0]]),
+             windows=[['lm-a', 0]], reach=[['40,2000', 'STARTP64']]),
         dict(row='V45', section='verbs', entry='ALM/END', status='not exercised', scenarios=[], note='spare'),
         dict(row='V40', section='verbs', entry='VBZERO', status='TBD', scenarios=[])]
 
@@ -193,7 +194,8 @@ class ProgramAcceptance(unittest.TestCase):
         chain = dict(replay('lm-a', 0), chain=2, windows=[dict(requested_cs=1000)] * 2)
         self.assertEqual(pa.body_in_window(late, host, {'lm-a': [(chain, True, '')]})[0], True)
         self.assertEqual(pa.body_in_window(late, host, {'lm-a': [(replay('lm-a', 0), True, '')]})[0], False)
-        self.assertIsNone(pa.body_in_window(ROWS[0], host, {}))
+        self.assertEqual(pa.body_in_window(dict(ROWS[0], reach=[], no_reach='x'), host, {'lm-a': [(replay('lm-a', 0), True, '')]}),
+                         (False, 'no reach point to find in a C64 window'))
 
     def test_layout_tables_and_agc_sources_stale_a_result(self):
         self.assertIn(':(top)Luminary099', pa.SOURCES)
