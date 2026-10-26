@@ -590,7 +590,7 @@ ARMS = {
     },
     'lm-interpreter': {
         'cases': 28148, 'cases_sha256': '1748e39866e29a2a93ae739f060246cfbfeff4f0359bbe93a621cfb965a770bc',
-        'sources_sha256': {'src/lm_interpreter.c': '058e59fbdaec679490ebc87b52475f59ba161eda8c1ca4c75306c3ab6ccd00ae'},
+        'sources_sha256': {'src/lm_interpreter.c': '416d72c4713223165b5f899b25807da0f1e88d0f76b980e3bef990ba330a70f6'},
         'arms': [
             {'src': 'src/lm_interpreter.c', 'line': 569, 'agc': '00,2442', 'op': 'CCS A', 'what': 'CCS never +0', 'class': 'IMPOSSIBLE', 'why': "A = (-MPAC-1)+BUF where -MPAC-1 is nonzero negative (MPAC forced >=0), and a ones'-complement add gives +0 only from +0 + +0. The +0 slot is the constant `-1/2+2 OCT 60001`."},
             {'src': 'src/lm_interpreter.c', 'line': 671, 'agc': '00,2466', 'op': 'CCS A', 'what': 'CCS never +0', 'class': 'IMPOSSIBLE', 'why': '+0 would need MPAC=-0 and BUF=+0. The sign-agreement step leaves MPAC as MPAC or MPAC-1 (+0, never -0) and BUF >=1. The +0 slot is the constant `LBUF2 ADRES BUF2`.'},
