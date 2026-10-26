@@ -1035,7 +1035,9 @@ SPECS = {
         # a P63 background pass calls back and forth in one part: VECAGREE
         # and UNIT's start (00,3000) with ENDDOT, TPAGREE, DMP (03,3100),
         # VXV, MPACVBUF, ALSIGNAG (03,3400) and BRANCH's tail (03,2700).
-        # Cut at 0o100-word lines, so the sizes stay under one job slot.
+        # Cut at 0o100-word lines, so the sizes stay under one job slot,
+        # except COSINE to SN1's end (00,3517-3607), which rides in part 2
+        # with the POLY and DMP that SN1 calls (P66, Lane D2 #933).
         **({'flight_parts': [0o1000, 0o1100, 0o1517, 0o1610, 0o2000, 0o3 * 1024 + 0o700, 0o3 * 1024 + 0o1000,
                              0o3 * 1024 + 0o1100, 0o3 * 1024 + 0o1300, 0o3 * 1024 + 0o1400, 0o3 * 1024 + 0o1600],
             'flight_part_map': [1, 2, 1, 2, 1, 3, 2, 3, 2, 3, 2, 3]} if m == 'lm' else
