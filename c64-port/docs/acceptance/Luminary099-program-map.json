@@ -318,6 +318,137 @@
    "lm-p63-lr-update",
    100400,
    1000
+  ],
+  [
+   "lm-stable-orbit",
+   8950,
+   600
+  ],
+  [
+   "lm-stable-orbit",
+   48100,
+   600
+  ],
+  [
+   "lm-stable-orbit-lm",
+   8950,
+   600
+  ],
+  [
+   "lm-stable-orbit-lm",
+   48100,
+   600
+  ],
+  [
+   "lm-csi",
+   12100,
+   600
+  ],
+  [
+   "lm-rendezvous-tpm",
+   45150,
+   600
+  ],
+  [
+   "lm-rendezvous-tpm",
+   60100,
+   600
+  ],
+  [
+   "lm-doi-nassp",
+   300,
+   800
+  ],
+  [
+   "lm-landing-ascent-nassp",
+   148100,
+   1000
+  ],
+  [
+   "lm-rendezvous-tpm",
+   65900,
+   800
+  ],
+  [
+   "lm-doi-nassp",
+   59310,
+   2200
+  ],
+  [
+   "lm-rendezvous-tpm",
+   19890,
+   1000
+  ],
+  [
+   "lm-rendezvous-tpm",
+   69850,
+   1000
+  ],
+  [
+   "lm-rendezvous-tpm",
+   11850,
+   1000
+  ],
+  [
+   "lm-p63-descent",
+   3250,
+   400
+  ],
+  [
+   "lm-p63-descent",
+   13910,
+   1000
+  ],
+  [
+   "lm-rendezvous",
+   2320,
+   1000
+  ],
+  [
+   "lm-rendezvous",
+   5210,
+   1000
+  ],
+  [
+   "lm-rendezvous",
+   7870,
+   1000
+  ],
+  [
+   "lm-p52-realign",
+   7790,
+   1000
+  ],
+  [
+   "lm-p52-realign",
+   2460,
+   600
+  ],
+  [
+   "lm-coast-verbs",
+   30200,
+   1000
+  ],
+  [
+   "lm-coast-verbs",
+   32200,
+   1000
+  ],
+  [
+   "lm-p42-nassp",
+   50,
+   1000
+  ],
+  [
+   "lm-p63-lr-update",
+   65850,
+   1000
+  ],
+  [
+   "lm-landing-ascent-nassp",
+   136501,
+   1000,
+   3
   ]
  ],
  "rows": [
@@ -334,7 +465,7 @@
    "windows": [
     [
      "lm-stable-orbit",
-     8000
+     48100
     ]
    ],
    "reach": [
@@ -357,7 +488,7 @@
    "windows": [
     [
      "lm-stable-orbit",
-     8000
+     8950
     ]
    ],
    "reach": [
@@ -380,7 +511,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     65900
     ]
    ],
    "reach": [
@@ -403,7 +534,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     60100
     ]
    ],
    "reach": [
@@ -426,7 +557,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     45150
     ]
    ],
    "reach": [
@@ -472,7 +603,7 @@
    "windows": [
     [
      "lm-csi",
-     2100
+     12100
     ]
    ],
    "reach": [
@@ -490,12 +621,14 @@
    "scenarios": [
     "lm-landing-ascent-nassp"
    ],
-   "note": "SB 7, lm-landing-ascent-nassp, V37E68E at 136000 cs (FHD:106). p63-stops.md:94 (140000 window, P68 on the surface, no stop)",
+   "note": "SB 7, lm-landing-ascent-nassp, V37E68E at 136000 cs (FHD:106); LANDJUNK runs at 139331. A plain window cannot cover it: every snapshot asked for between 137000 and 139311 cs slides to 139417 (an interrupt stays pending). The window is a 3 x 1000 cs chain from the clean start at 136501. Its first seam slides to 138871, so the first window runs 2370 cs, and the second window (138871-139871) holds LANDJUNK (#925 A1)",
    "owner": "F (host), Pinball split (C64)",
    "windows": [
     [
      "lm-landing-ascent-nassp",
-     140000
+     136501,
+     1000,
+     3
     ]
    ],
    "reach": [
@@ -538,8 +671,8 @@
    ],
    "reach": [
     [
-     "32,2776",
-     "P63LM"
+     "31,3473",
+     "P63DISPS (P63's N63 display, braking phase)"
     ]
    ]
   },
@@ -561,8 +694,8 @@
    ],
    "reach": [
     [
-     "15,3314",
-     "P57"
+     "15,2245",
+     "R59 (P57's star acquisition)"
     ]
    ]
   },
@@ -584,8 +717,8 @@
    ],
    "reach": [
     [
-     "15,2050",
-     "PROG52"
+     "14,3055",
+     "R51.2 (P52's fine align)"
     ]
    ]
   },
@@ -630,8 +763,8 @@
    ],
    "reach": [
     [
-     "36,3436",
-     "P47LM"
+     "36,3462",
+     "CALCN83 (P47's N83 delta-V display)"
     ]
    ]
   },
@@ -653,8 +786,8 @@
    ],
    "reach": [
     [
-     "36,3410",
-     "P42LM"
+     "36,3666",
+     "STEERING (P42's burn steering, S40.8)"
     ]
    ]
   },
@@ -676,8 +809,8 @@
    ],
    "reach": [
     [
-     "36,3272",
-     "P41LM"
+     "36,3376",
+     "CALCN85 (P41's N85 during the thrust)"
     ]
    ]
   },
@@ -699,8 +832,8 @@
    ],
    "reach": [
     [
-     "36,3147",
-     "P40LM"
+     "36,3666",
+     "STEERING (P40's burn steering, S40.8)"
     ]
    ]
   },
@@ -717,7 +850,7 @@
    "windows": [
     [
      "lm-stable-orbit-lm",
-     8000
+     48100
     ]
    ],
    "reach": [
@@ -740,7 +873,7 @@
    "windows": [
     [
      "lm-stable-orbit-lm",
-     8000
+     8950
     ]
    ],
    "reach": [
@@ -878,7 +1011,7 @@
    "windows": [
     [
      "lm-doi-nassp",
-     48800
+     300
     ]
    ],
    "reach": [
@@ -975,8 +1108,8 @@
    ],
    "reach": [
     [
-     "24,2000",
-     "PROG20"
+     "24,2232",
+     "P20LEMWT (P20's wait for its next radar pass)"
     ]
    ]
   },
@@ -993,7 +1126,7 @@
    "windows": [
     [
      "lm-landing-ascent-nassp",
-     156000
+     148100
     ]
    ],
    "reach": [
@@ -1041,16 +1174,8 @@
    "owner": "C?",
    "windows": [
     [
-     "lm-p57",
-     12000
-    ],
-    [
      "lm-doi-nassp",
-     48800
-    ],
-    [
-     "lm-p52-realign",
-     2000
+     59310
     ]
    ],
    "reach": [
@@ -1089,8 +1214,8 @@
    ],
    "reach": [
     [
-     "31,2630",
-     "STARTP64"
+     "31,3477",
+     "P64DISPS (P64's redesignation display)"
     ]
    ]
   },
@@ -1215,8 +1340,8 @@
    "entry": "REDO IMU_PERFORMANCE_TEST_2.agc:50 (NEWMODEX MM 07, via V92)",
    "status": "not exercised",
    "scenarios": [],
-   "note": "a ground IMU performance test (V92 SYSTEST), not a flight mode",
-   "owner": "—"
+   "note": "Never run: a ground IMU performance test (V92 SYSTEST), not a flight mode",
+   "owner": "\u2014"
   },
   {
    "row": "P27",
@@ -1274,7 +1399,7 @@
   {
    "row": "R30 (V82)",
    "section": "LM R routines",
-   "entry": "V82PERF EV:945 → V82CALL R30.agc:95",
+   "entry": "V82PERF EV:945 \u2192 V82CALL R30.agc:95",
    "status": "mapped",
    "scenarios": [
     "lm-doi-nassp"
@@ -1284,7 +1409,7 @@
    "windows": [
     [
      "lm-doi-nassp",
-     48800
+     59310
     ]
    ],
    "reach": [
@@ -1297,7 +1422,7 @@
   {
    "row": "R31 (V83)",
    "section": "LM R routines",
-   "entry": "V83PERF EV:966 → R31CALL R31.agc:36 / V83CALL :67",
+   "entry": "V83PERF EV:966 \u2192 R31CALL R31.agc:36 / V83CALL :67",
    "status": "mapped",
    "scenarios": [
     "lm-rendezvous-tpm"
@@ -1307,7 +1432,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     19890
     ]
    ],
    "reach": [
@@ -1331,16 +1456,8 @@
    "owner": "Pinball split / E / D1b",
    "windows": [
     [
-     "lm-p63-descent",
-     17500
-    ],
-    [
-     "lm-doi-nassp",
-     48800
-    ],
-    [
      "lm-p52-realign",
-     2000
+     2460
     ]
    ],
    "reach": [
@@ -1363,7 +1480,7 @@
    "windows": [
     [
      "lm-rendezvous",
-     29000
+     2320
     ]
    ],
    "reach": [
@@ -1399,7 +1516,7 @@
   {
    "row": "R63 (V89)",
    "section": "LM R routines",
-   "entry": "V89PERF EV:1005 → V89CALL R63.agc:88",
+   "entry": "V89PERF EV:1005 \u2192 V89CALL R63.agc:88",
    "status": "mapped",
    "scenarios": [
     "lm-coast-verbs"
@@ -1425,8 +1542,8 @@
    "entry": "no R64 in Luminary099 (no label, no reference)",
    "status": "not exercised",
    "scenarios": [],
-   "note": "not in this program (reviewer 1's list has it)",
-   "owner": "—"
+   "note": "Never run: not in this program (reviewer 1's list has it)",
+   "owner": "\u2014"
   },
   {
    "row": "R65",
@@ -1535,7 +1652,11 @@
    "windows": [
     [
      "lm-rendezvous",
-     29000
+     5210
+    ],
+    [
+     "lm-rendezvous",
+     7870
     ]
    ],
    "reach": [
@@ -1562,7 +1683,7 @@
    "windows": [
     [
      "lm-p63-descent",
-     17500
+     3250
     ]
    ],
    "reach": [
@@ -1589,8 +1710,8 @@
      2000
     ],
     [
-     "lm-p57",
-     12000
+     "lm-p52-realign",
+     7790
     ]
    ],
    "reach": [
@@ -1663,7 +1784,7 @@
    "windows": [
     [
      "lm-coast-verbs",
-     30900
+     32200
     ]
    ],
    "reach": [
@@ -1686,7 +1807,7 @@
    "windows": [
     [
      "lm-coast-verbs",
-     28900
+     30200
     ]
    ],
    "reach": [
@@ -1752,8 +1873,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare (operator error)",
-   "owner": "—"
+   "note": "Never run: spare (operator error)",
+   "owner": "\u2014"
   },
   {
    "row": "V46",
@@ -1761,8 +1882,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V47 AGS initialization",
@@ -1800,7 +1921,7 @@
    "windows": [
     [
      "lm-p42-nassp",
-     48800
+     50
     ]
    ],
    "reach": [
@@ -1844,7 +1965,7 @@
     "lm-doi-nassp",
     "lm-p57"
    ],
-   "note": "V50N25 in lm-p52 (FHD:75-85), V50N18 in lm-rendezvous and lm-doi (FHD:241-250, 197-206), lm-p57 V50N25 00014 (FHD:178-189)",
+   "note": "V50N25 in lm-p52 (FHD:75-85), V50N18 in lm-rendezvous and lm-doi (FHD:241-250, 197-206), lm-p57 V50N25 00014 (FHD:178-189). Reach: the V50 word of the extended-verb table, run when NVSUB executes a pasted V50 (lm-p52-realign 2202 cs, in the 2000 window)",
    "owner": "C?",
    "windows": [
     [
@@ -1864,7 +1985,12 @@
      12000
     ]
    ],
-   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
+   "reach": [
+    [
+     "43,2014",
+     "V50's extended-verb entry (TC GOLOADLV)"
+    ]
+   ]
   },
   {
    "row": "V51",
@@ -1872,8 +1998,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V52 please mark X reticle",
@@ -1883,7 +2009,7 @@
    "scenarios": [
     "lm-p52-realign"
    ],
-   "note": "lm-p52-realign: after the first star's Y mark AOTMARK's CHANGEVB pastes V52N71 (4308 cs), then the X mark (Lane F host check, 10-19)",
+   "note": "lm-p52-realign: after the first star's Y mark AOTMARK's CHANGEVB pastes V52N71 (4308 cs), then the X mark (Lane F host check, 10-19). Reach: CHANGEVB's INDEX MKDEX after the Y mark (4302 cs, in the 4000 window)",
    "owner": "F",
    "windows": [
     [
@@ -1891,7 +2017,13 @@
      4000
     ]
    ],
-   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
+   "reach": [
+    [
+     "07,2613",
+     "CHANGEVB's mark-verb pick (V52 after a Y mark)",
+     4300
+    ]
+   ]
   },
   {
    "row": "V53 please mark Y reticle",
@@ -1901,7 +2033,7 @@
    "scenarios": [
     "lm-p51"
    ],
-   "note": "lm-p51: CHANGEVB pastes V53N71 after each X mark (Lane F host check, 10-19)",
+   "note": "lm-p51: CHANGEVB pastes V53N71 after each X mark (Lane F host check, 10-19). Reach: CHANGEVB's INDEX MKDEX after the first X mark (3502 cs, in the 3400 window)",
    "owner": "F",
    "windows": [
     [
@@ -1909,7 +2041,13 @@
      3400
     ]
    ],
-   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
+   "reach": [
+    [
+     "07,2613",
+     "CHANGEVB's mark-verb pick (V53 after an X mark)",
+     3500
+    ]
+   ]
   },
   {
    "row": "V54 please mark X or Y",
@@ -1920,7 +2058,7 @@
     "lm-p52-realign",
     "lm-p57"
    ],
-   "note": "lm-p52 V54N71 (FHD:75-85), lm-p57 \"on V54\" (FHD:178-189)",
+   "note": "lm-p52 V54N71 (FHD:75-85), lm-p57 \"on V54\" (FHD:178-189). Reach: CHANGEVB's INDEX MKDEX when the X mark completes the pair, MKDEX 3 = MKVB54* (4402 cs, in the 4000 window)",
    "owner": "D1b / D1",
    "windows": [
     [
@@ -1930,32 +2068,28 @@
     [
      "lm-p57",
      12000
+    ],
+    [
+     "lm-p52-realign",
+     4000
     ]
    ],
-   "no_reach": "a program's flash (GOLOADLV), not a keyed entry: nothing to refuse"
+   "reach": [
+    [
+     "07,2613",
+     "CHANGEVB's mark-verb pick (V54 once the mark pair is complete)",
+     4400
+    ]
+   ]
   },
   {
    "row": "V55 align time",
    "section": "LM extended verbs",
    "entry": "ALINTIME EV:546",
-   "status": "mapped",
-   "scenarios": [
-    "lm-coast-v55"
-   ],
-   "note": "lm-coast-v55: V55E, V21N24 loaded 0, 0, 0. The host bridges Pinball's HMSIN (42,3452, refused by lanec_pin_lm_routines; Lane C) (Lane F host check, 10-19)",
-   "owner": "F",
-   "windows": [
-    [
-     "lm-coast-v55",
-     2400
-    ]
-   ],
-   "reach": [
-    [
-     "42,2016",
-     "UPDATIME (R33)"
-    ]
-   ]
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "Host only, no C64 window can hold it: V55E runs on the host (lm-coast-v55: V21N24 loaded 0, 0, 0; UPDATIME at 4002 cs), but no C64 window can run it: UPDATIME zeroes TIME2/TIME1 while it aligns the clock (EXTENDED_VERBS.agc:568-578), and a replay window counts its length from that clock, so one over the update runs 61836 cs on the host, past the 16383 cs the C64 counts (Lane E dry run, 10-26, #925 A1)",
+   "owner": "F"
   },
   {
    "row": "V56 terminate tracking (P20/P25)",
@@ -1970,7 +2104,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     69850
     ]
    ],
    "reach": [
@@ -1993,11 +2127,7 @@
    "windows": [
     [
      "lm-p63-lr-update",
-     90000
-    ],
-    [
-     "lm-p63-lr-update",
-     100400
+     65850
     ]
    ],
    "reach": [
@@ -2036,8 +2166,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V60 command LR to position 2",
@@ -2229,8 +2359,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V69 force hardware restart",
@@ -2238,7 +2368,7 @@
    "entry": "VERB69 EV:81",
    "status": "not exercised",
    "scenarios": [],
-   "note": "VERB69 is TC VERB69 (EXTENDED_VERBS.agc:81), a TC to itself: the AGC's TC trap restarts it. The host differential runs under scaled time, where the bridge stops at a TC to itself, so no FLIGHT scenario runs it. The restart checks do (docs/FLIGHT-RESTART.md, A2's recovery_and_restart rows): lm-v69-restart on the host, unscaled (yaAGC's trap at 25.01 s, 4,000 of 4,000 samples equal, back to P00), and the C64 lm-v69 window from 2300 cs, which matches the host up to the trap (Lane F, 10-23).",
+   "note": "Run by the restart checks, not by this map: VERB69 is TC VERB69 (EXTENDED_VERBS.agc:81), a TC to itself: the AGC's TC trap restarts it. The host differential runs under scaled time, where the bridge stops at a TC to itself, so no FLIGHT scenario runs it. The restart checks do (docs/FLIGHT-RESTART.md, A2's recovery_and_restart rows): lm-v69-restart on the host, unscaled (yaAGC's trap at 25.01 s, 4,000 of 4,000 samples equal, back to P00), and the C64 lm-v69 window from 2300 cs, which matches the host up to the trap (Lane F, 10-23).",
    "owner": "A2"
   },
   {
@@ -2444,7 +2574,7 @@
    "entry": "R77 EV:598",
    "status": "not exercised",
    "scenarios": [],
-   "note": "a ground/checkout LR test (R77). Lane to confirm",
+   "note": "Never run: a ground/checkout LR test (R77). Lane to confirm",
    "owner": "F?"
   },
   {
@@ -2453,7 +2583,7 @@
    "entry": "R77END EV:771",
    "status": "not exercised",
    "scenarios": [],
-   "note": "as V78",
+   "note": "Never run: as V78",
    "owner": "F?"
   },
   {
@@ -2515,7 +2645,7 @@
    "windows": [
     [
      "lm-doi-nassp",
-     48800
+     59310
     ]
    ],
    "reach": [
@@ -2538,7 +2668,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     19890
     ]
    ],
    "reach": [
@@ -2554,8 +2684,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V85 RR LOS az/el",
@@ -2570,7 +2700,7 @@
    "windows": [
     [
      "lm-rendezvous-tpm",
-     40000
+     11850
     ]
    ],
    "reach": [
@@ -2586,8 +2716,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V87",
@@ -2595,8 +2725,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V88",
@@ -2604,8 +2734,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V89 align X/Z axis to LOS (R63)",
@@ -2659,7 +2789,7 @@
    "entry": "GOSHOSUM EV:1247",
    "status": "not exercised",
    "scenarios": [],
-   "note": "a rope checksum display for ground checkout. Lane C may cover it in the DSKY sweep",
+   "note": "Never run: a rope checksum display for ground checkout. Lane C may cover it in the DSKY sweep",
    "owner": "C?"
   },
   {
@@ -2668,8 +2798,8 @@
    "entry": "SYSTEST EV:1226",
    "status": "not exercised",
    "scenarios": [],
-   "note": "ground IMU test (P07)",
-   "owner": "—"
+   "note": "Never run: ground IMU test (P07)",
+   "owner": "\u2014"
   },
   {
    "row": "V93 clear RENDWFLG",
@@ -2700,8 +2830,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V95 no state vector update",
@@ -2778,8 +2908,8 @@
    "entry": "ALM/END EV:145",
    "status": "not exercised",
    "scenarios": [],
-   "note": "spare",
-   "owner": "—"
+   "note": "Never run: spare",
+   "owner": "\u2014"
   },
   {
    "row": "V99 please enable engine",
@@ -2796,11 +2926,7 @@
    "windows": [
     [
      "lm-p63-descent",
-     17500
-    ],
-    [
-     "lm-doi-nassp",
-     48800
+     13910
     ]
    ],
    "reach": [
