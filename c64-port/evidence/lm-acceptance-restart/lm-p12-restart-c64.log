@@ -1,6 +1,5 @@
 build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
-build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
-lm-p12-restart: commit 7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0 with local changes; store lm.reu sha256 4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf
+lm-p12-restart: commit 6e8b31cefe1d1265bc7a002210b59f80e04ddd1e with local changes; store lm.reu sha256 4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf
 lm-p12-restart: the host run to 185300 cs bridges 0 points, each a stop on the C64
 lm-p12-restart: snapshot at 185000 cs (asked 185000, +0 cs)
 lm-p12-restart: 762 host input rows (762 on the C64) in the window at REU 0x1cea00 (742 PIPA counts, 20 erasable words, 0 channels, 0 interrupt requests), then 17 past the host's end

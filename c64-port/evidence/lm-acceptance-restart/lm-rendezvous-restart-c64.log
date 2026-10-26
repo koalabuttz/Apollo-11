@@ -1,6 +1,5 @@
 build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
-build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
-lm-rendezvous-restart: commit 7dd3db437cfa8ad8e3341e156d1701eea1bdf4d0 with local changes; store lm.reu sha256 4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf
+lm-rendezvous-restart: commit 6e8b31cefe1d1265bc7a002210b59f80e04ddd1e with local changes; store lm.reu sha256 4a230508c1dc03dbff6a4c7f7c29a2eee9d208401c47aab86f6985c010b6bcdf
 lm-rendezvous-restart: the host run to 20307 cs bridges 0 points, each a stop on the C64
 lm-rendezvous-restart: snapshot at 20007 cs (asked 20007, +0 cs)
 lm-rendezvous-restart: 2 host input rows (2 on the C64) in the window at REU 0x1d0800 (0 PIPA counts, 1 erasable words, 1 channels, 0 interrupt requests)

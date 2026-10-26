@@ -822,6 +822,6 @@
  "requested_cs": 100,
  "host_holes": [],
  "downrupt": false,
- "commit": "7dd3db437cfa",
+ "commit": "6e8b31cefe1d",
  "replay_every": 25
 }

@@ -130,7 +130,7 @@
  "requested_cs": 1000,
  "host_holes": [],
  "downrupt": false,
- "commit": "7dd3db437cfa",
+ "commit": "6e8b31cefe1d",
  "outputs_driven": {
   "13": [
    0,
