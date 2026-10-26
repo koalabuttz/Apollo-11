@@ -20,7 +20,7 @@ def host_row(name, exit=0, misses=0, bridged=0, commit=HEAD):
     holes = [dict(point='43,3303', label='SMODECHK+2', file='X.agc', lane='A', core_start=True)]
     holes += [dict(point='50,2002', label='?', file='?', lane='?', core_start=False)] * bridged
     return dict(scenario=f'{name}-scaled-x1', schedule='1,1,2', exit=exit, commit=commit, centiseconds=100,
-                routine_mismatches=[dict(point='01,2000')] * misses, unregistered=holes)
+                routine_mismatches=[dict(point='01,2000')] * misses, unregistered=holes, arrivals={'40,2000': [50]})
 
 
 def replay(name, snap, differences=0, first='TIME4', status=0, commit=HEAD):
@@ -31,9 +31,10 @@ def replay(name, snap, differences=0, first='TIME4', status=0, commit=HEAD):
                 replay_unpaired_count=0, reu_bounds=dict(ok=True, dma_outside=0, dma_trace_armed=True), records=[1, 2, 3])
 
 
-ROWS = [dict(row='P63', section='modes', entry='P63LM', status='mapped', scenarios=['lm-a'], windows=[['lm-a', 0]]),
+ROWS = [dict(row='P63', section='modes', entry='P63LM', status='mapped', scenarios=['lm-a'], windows=[['lm-a', 0]],
+             reach=[['40,2000', 'P63LM']]),
         dict(row='P64', section='modes', entry='STARTP64', status='mapped', scenarios=['lm-a', 'lm-b'],
-             windows=[['lm-a', 0]]),
+             windows=[['lm-a', 0]], reach=[['40,2000', 'STARTP64']]),
         dict(row='V45', section='verbs', entry='ALM/END', status='not exercised', scenarios=[], note='spare'),
         dict(row='V40', section='verbs', entry='VBZERO', status='TBD', scenarios=[])]
 
@@ -168,6 +169,33 @@ class ProgramAcceptance(unittest.TestCase):
                          (False, 'body not reached: RRDESEND +4 (43,2306, at or after 2000 cs)'))
         self.assertEqual(pa.body_result(row, {'lm-a': dict(arrivals={'43,2306': []}, reached={'43,2306': None})}),
                          (False, 'body not reached: RRDESEND +4 (43,2306)'))
+
+    def test_body_in_a_c64_window(self):
+        # A matching window counts only when the row's reach point arrives on the host inside it (#925 A1).
+        row = dict(ROWS[0], reach=[['43,2306', 'RRDESEND +4']])
+        host = {'lm-a': dict(host_row('lm-a'), arrivals={'43,2306': [500]})}
+        out, counts = pa.assess([row], host, {'lm-a': [replay('lm-a', 0)]})
+        self.assertEqual((counts['c64_match'], out[0]['covered'][0]), (1, True))
+        host = {'lm-a': dict(host_row('lm-a'), arrivals={'43,2306': [1500]})}
+        out, counts = pa.assess([row], host, {'lm-a': [replay('lm-a', 0)]})
+        self.assertEqual(counts['c64_match'], 0)
+        self.assertEqual(out[0]['covered'], (False, 'no matching C64 window covers RRDESEND +4 (43,2306)'))
+        # A slid snapshot starts where it landed; a non-matching window covers nothing.
+        out, counts = pa.assess([row], host, {'lm-a': [dict(replay('lm-a', 0), snap_at=600)]})
+        self.assertEqual(counts['c64_match'], 1)
+        host = {'lm-a': dict(host_row('lm-a'), arrivals={'43,2306': [500]})}
+        out, counts = pa.assess([row], host, {'lm-a': [dict(replay('lm-a', 0), snap_at=600)]})
+        self.assertEqual(counts['c64_match'], 0)
+        _, counts = pa.assess([row], host, {'lm-a': [replay('lm-a', 0, differences=1)]})
+        self.assertEqual(counts['c64_match'], 0)
+        # The row's after field applies; a chain spans all its windows.
+        late = dict(row, reach=[['43,2306', 'RRDESEND +4', 900]])
+        host = {'lm-a': dict(host_row('lm-a'), arrivals={'43,2306': [500, 1800]})}
+        chain = dict(replay('lm-a', 0), chain=2, windows=[dict(requested_cs=1000)] * 2)
+        self.assertEqual(pa.body_in_window(late, host, {'lm-a': [(chain, True, '')]})[0], True)
+        self.assertEqual(pa.body_in_window(late, host, {'lm-a': [(replay('lm-a', 0), True, '')]})[0], False)
+        self.assertEqual(pa.body_in_window(dict(ROWS[0], reach=[], no_reach='x'), host, {'lm-a': [(replay('lm-a', 0), True, '')]}),
+                         (False, 'no reach point to find in a C64 window'))
 
     def test_layout_tables_and_agc_sources_stale_a_result(self):
         self.assertIn(':(top)Luminary099', pa.SOURCES)
