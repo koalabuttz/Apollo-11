@@ -16,10 +16,10 @@ import program_acceptance as pa  # noqa: E402
 HEAD = 'abc123'
 
 
-def host_row(name, exit=0, misses=0, bridged=0, commit=HEAD):
+def host_row(name, exit=0, misses=0, bridged=0, commit=HEAD, chunked=True):
     holes = [dict(point='43,3303', label='SMODECHK+2', file='X.agc', lane='A', core_start=True)]
     holes += [dict(point='50,2002', label='?', file='?', lane='?', core_start=False)] * bridged
-    return dict(scenario=f'{name}-scaled-x1', schedule='1,1,2', exit=exit, commit=commit, centiseconds=100,
+    return dict(scenario=f'{name}-scaled-x1', schedule='1,1,2', chunked=chunked, exit=exit, commit=commit, centiseconds=100,
                 routine_mismatches=[dict(point='01,2000')] * misses, unregistered=holes, arrivals={'40,2000': [50]})
 
 
@@ -46,6 +46,7 @@ class ProgramAcceptance(unittest.TestCase):
         self.assertFalse(pa.host_result(host_row('lm-a', exit=1))[0])
         self.assertIn('1 routines differ', pa.host_result(host_row('lm-a', misses=1))[1])
         self.assertIn('2 points bridged', pa.host_result(host_row('lm-a', bridged=2))[1])
+        self.assertIn('without the chunk lists', pa.host_result(host_row('lm-a', chunked=False))[1])
 
     def test_host_charge(self):
         # (#765) The interpretive charge's bound fails the row in the doc,

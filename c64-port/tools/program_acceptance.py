@@ -100,6 +100,12 @@ def host_result(row):
     bridged = [h for h in row.get('unregistered', []) if not h.get('core_start')]
     if row['exit']:
         return False, f"FAILED (exit {row['exit']})"
+    # The C64 is compared with the chunk-tracking host (flight_scenario_vice.py
+    # builds it from the store's chunk lists), so the host rows must come from
+    # that host too: a host-only build (no chunk lists) runs another schedule
+    # of job-slot loads and work clock (#926 F3, #942 B6).
+    if not row.get('chunked'):
+        return False, 'host ran without the chunk lists (run after a current full store build)'
     import flight_host_differential as fhd  # noqa: E402
     charge, text = fhd.charge_state(row)
     if charge == 'over':
