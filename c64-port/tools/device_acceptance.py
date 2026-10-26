@@ -347,9 +347,8 @@ def roles(m):
              [rows, ('platform/c64/resident_dsky.S', 'rk_dsky_keys', 'the flight disk\'s keyboard scan: channel 15 '
                      'and KEYRUPT1 (not in a window: there the keys are replay rows)')],
              pressed('0-9A-Z+-'), either(channel(0o15, how='channel_set'), requests('KEY1')),
-             unit(None, 'keyrupt-uprupt') + ['flight-disk-vice'],
-             how='a channel 15 row or KEYRUPT1 in the host rows',
-             gap='the DSKY noun x verb sweep on the C64 screen is Lane C\'s', closes='Lane C\'s DSKY sweep check'),
+             unit(None, 'keyrupt-uprupt') + ['flight-disk-vice', 'dsky-sweep-vice'],
+             how='a channel 15 row or KEYRUPT1 in the host rows'),
         role('uplink', 'Uplink', 'in', 'INLINK (045), UPRUPT',
              [(FHR, 'uplink_due', 'FLIGHT_UPLINK: triple-redundant INLINK words and UPRUPT, 20 cs apart')],
              [rows], uses('FLIGHT_UPLINK'), either(erasable(0o45), requests('UP')),
@@ -461,9 +460,9 @@ def roles(m):
              [host_end, (FHR, 'dsky_trace', 'FLIGHT_DSKY: prints the DSKY as the relay words set it')],
              [end, ('platform/c64/resident_dsky.S', 'rk_dsky_idle', 'the flight disk draws the DSKY from the relay '
                     'words and channel 11')],
-             None, either(moved(0o10), moved(0o11, 0o1176)), unit(None, 't4rupt-core') + ['flight-disk-vice'],
-             how='channel 10, or a lamp bit of channel 11, changed in the host\'s states',
-             gap='the on-screen DSKY sweep is Lane C\'s', closes='Lane C\'s DSKY sweep check'),
+             None, either(moved(0o10), moved(0o11, 0o1176)),
+             unit(None, 't4rupt-core') + ['flight-disk-vice', 'dsky-sweep-vice'],
+             how='channel 10, or a lamp bit of channel 11, changed in the host\'s states'),
         role('downlink', 'Downlink', 'out', 'channels 34 and 35, DOWNRUPT', [], [], None, any_window, [],
              elsewhere=f'docs/acceptance/{PROGRAM[m]}-native_output_tests.md'),
     ]
