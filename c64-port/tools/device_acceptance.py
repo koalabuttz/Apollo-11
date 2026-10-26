@@ -519,6 +519,22 @@ def host_rows(m, summary, env, commit):
     return rows
 
 
+# The summary fields host_rows reads (charge_state reads interpretive_charge).
+HOST_FIELDS = ('scenario', 'mission', 'commit', 'exit', 'native_routines', 'routine_mismatches', 'unregistered',
+               'interpretive_charge')
+
+
+def host_evidence(m, summary):
+    """The rows of m's host summary that host_rows reads (its scaled-x1
+    flight scenarios), with only the fields it reads: the stored copy stays
+    under the in-tree limit (the whole LM summary is over 256 KiB, mostly
+    per-point arrival and load counts) and gives the same document rows."""
+    import flight_host_differential as fhd  # noqa: E402
+    names = {f'{name}-scaled-x1' for name, mm, *_ in fhd.FLIGHT if mm == m}
+    return [{k: r[k] for k in HOST_FIELDS if k in r} for r in summary
+            if r.get('mission') == m and r.get('scenario') in names]
+
+
 def not_matched(r, asked, commit):
     """Why a window result is not a match ([] when it is)."""
     why = []
@@ -536,8 +552,12 @@ def not_matched(r, asked, commit):
         why.append(f"applied {r.get('replay_applied')} of {r.get('replay_rows')} input rows")
     if r.get('replay_end_paired') is not True:
         why.append('its end was not paired with the host\'s')
-    if r.get('replay_unpaired_count'):
-        why.append(f"{r['replay_unpaired_count']} checkpoints not compared")
+    # As program_acceptance (#892): a mid checkpoint where both sides are busy
+    # at different places is a note, since the next checkpoint or the end
+    # still compares; a checkpoint with no partner at all fails.
+    lone = (r.get('replay_unpaired_count') or 0) - (r.get('replay_busy_apart_count') or 0)
+    if lone > 0:
+        why.append(f"{lone} checkpoints not compared")
     if r.get('replay_skipped'):
         why.append('skipped ' + '; '.join(r['replay_skipped']))
     if r.get('replay_differences') != 0:
@@ -554,6 +574,12 @@ def not_matched(r, asked, commit):
     if r.get('commit') != commit:
         why.append(f"from {r.get('commit')}, not {commit}")
     return why
+
+
+def busy_note(r):
+    """The busy-apart checkpoints of a matching window, said in its line."""
+    busy = r.get('replay_busy_apart') or []
+    return f" ({len(busy)} busy at different places at {', '.join(map(str, busy))} cs, not compared)" if busy else ''
 
 
 def first_diff(r):
@@ -650,7 +676,7 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
         d += ['', f"C64 windows that exercise it ({t['how']}):", '']
         d += [f"- {r['scenario']} {r['snap_cs']}+{r.get('requested_cs')}: "
               + ('matches the host at ' + ', '.join(map(str, r.get('replay_matched_cs') or [])) + ' cs'
-                 if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \
+                 + busy_note(r) if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \
             or ['- none']
         if t['units']:
             d += ['', 'Routine-level checks (host differential against yaAGC, then the same cases on the C64 in VICE): '
@@ -746,7 +772,7 @@ def main(argv=None):
         shutil.rmtree(out, ignore_errors=True)
         out.mkdir(parents=True)
         a.run = [str(run_window(*w, out)) for w in windows(m)]
-    host = [r for r in json.loads(pathlib.Path(a.host).read_text()) if r.get('mission') == m]
+    host = host_evidence(m, json.loads(pathlib.Path(a.host).read_text()))
     copy = dest / 'host-summary.json'
     copy.write_text(json.dumps(host, indent=1) + '\n')
     host_cite = stored(copy)
@@ -771,7 +797,7 @@ def main(argv=None):
     subprocess.run([sys.executable, 'tools/evidence.py', 'add', eid, *map(str, copies), '--tree'], cwd=ROOT, check=True)
     assessed, failed = assess(m, roles(m), runs, host, commit)
     bad += failed
-    off_lines, off_bad = offnom.section(off, runs, first_diff)
+    off_lines, off_bad = offnom.section(off, runs, first_diff, busy_note)
     bad += off_bad
     store = ROOT / f'build/flight-store/{m}.reu'
     path = write_doc(m, assessed, bad, runs, host_cite, sha(store) if store.exists() else None, commit, off_lines)

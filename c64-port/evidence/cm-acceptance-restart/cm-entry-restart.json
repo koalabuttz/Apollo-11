@@ -72,7 +72,7 @@
   "pre_snapshot": "build/flight-restart/cm-entry-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "39dc823fd285",
+  "commit": "11cab8d39055",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -85,11 +85,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 45636809,
+  "wall_cycles": 45712769,
   "agc_cs": 309,
   "dropped_ticks": 0,
-  "steps": 1350,
-  "wall_per_agc": 14.99,
+  "steps": 1358,
+  "wall_per_agc": 15.015,
   "lost": false,
   "mission": "cm",
   "snap_cs": 25041,
@@ -105,7 +105,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 11
+   "dma_unchecked": 14
   },
   "hold_host_mct": 495,
   "hold_host_time1": 8781,
@@ -195,13 +195,13 @@
   "requested_cs": 301,
   "host_holes": [],
   "downrupt": false,
-  "commit": "39dc823fd285",
+  "commit": "11cab8d39055",
   "exit": 0,
   "log": "cm-entry-restart-c64.log",
-  "log_sha256": "1f3aee68dce3053e0ff66e3d8298cee3b15e240ea8e4f2cb6efe6a79255750a1",
-  "store_sha256": "a0e2c835331e4196be6f0ae3320bac1aebc829321f66366d4c6b5ffe21aaa3cf",
-  "manifest_sha256": "9968b925d9733cae9263d7dc766173dbb5ed7fb880e1ca972684f0a257813bc6",
-  "prg_sha256": "c3b5945f7379c6993815fb57e67f6c34da4e89620ac689ad0eb275c46f626765"
+  "log_sha256": "472707dbfabee253e7e8805a58b504eb358e4211f0377d0c85d09de838eeefd7",
+  "store_sha256": "a22042dfd13040dd047559a4d8668d5d7a378d796c44115b31b0b91b47dcd9c6",
+  "manifest_sha256": "720ac63e58a847061278bc0b41e961404369d057298423a1ae857971db66d5a4",
+  "prg_sha256": "b31c2d4a3d212771f4187332f73e6ae1178d397c3c5ba4ebe54f841a742e335b"
  },
  "gojam_on_c64": {
   "scenario": "cm-entry-restart",
@@ -349,7 +349,7 @@
    },
    "ok": true
   },
-  "commit": "39dc823fd285",
+  "commit": "11cab8d39055",
   "log": "gojam-on-c64.log",
   "log_sha256": "0c2bd0ed10e1c1124baee4e65204b8097cf6e52eba77305322802aacb7ff0ea3"
  }

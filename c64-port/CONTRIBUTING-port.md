@@ -145,12 +145,18 @@ program's acceptance at its head (the regenerated docs/acceptance/<program>-*.md
   program it moves. The steward merges waiting PRs for that program into one re-acceptance
   window PR, runs the program's acceptance at its head and commits the docs there.
 - A fix for a failing acceptance check ships with its own re-run.
-- Tools, host-only and docs PRs, and PRs that leave both programs FRESH, are unaffected.
+- Tools, host-only and docs PRs, and PRs that leave both programs FRESH, are unaffected, with one
+  exception: a PR that edits a program map or the scoring in `tools/program_acceptance.py`. The job
+  also re-scores each integrated doc from the evidence it cites with the PR's map and tool
+  (`program_acceptance.py <m> --rescore`) and fails (CRITERIA STALE) when the counts or result would
+  change. Regenerate the doc in the same PR (`--no-run` when the results exist) or send it to the
+  steward's next re-acceptance window.
 
 `docs/acceptance/pending-reacceptance.json` names a program the base already knows is stale, the
 PR that made it so, and the sha256 of each file that moved then. That program reports STALE without
 failing only while those files keep their pinned hashes (any further move fails), until its
-re-acceptance PR deletes the entry. Adding an entry is a reviewed change, never a way around the check.
+re-acceptance PR deletes the entry. An entry with a `"criteria"` reason does the same for a CRITERIA
+STALE program. Adding an entry is a reviewed change, never a way around the check.
 
 ## Pick the C64 rows by outcome
 

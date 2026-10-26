@@ -16,8 +16,10 @@ DOWNRUPT_DEFINES), so the two cannot drift apart. Profiles:
   busy      DP_REPLAY (with an output list, as --replay-outputs), DP_BUSY,
             DP_KEYS (8 keys in the window) and RK_DOWNRUPT: the rendezvous,
             coast and P20 windows (FLIGHT_BUSY_SAMPLE, --keys, --downrupt)
-  overload  DP_REPLAY, DP_BUSY and RK_STEAL: lm-p63-overload,
-            cm-entry-overload (FLIGHT_STEAL)
+  overload  DP_REPLAY, DP_BUSY and RK_STEAL, without an output list:
+            lm-p63-overload, lm-p63-overload-nomon, cm-entry-overload
+            (FLIGHT_STEAL; no FLIGHT_STEAL run takes --replay-outputs, and
+            the LM's output list does not fit beside RK_STEAL)
 Every option at once has never fitted (RK_STEAL and DP_KEYS alone are about
 330 bytes in the LM), and no scenario turns them all on.
 
@@ -52,7 +54,8 @@ def main():
                    capture_output=True)
     keys, defines = None, []
     if a.profile != 'plain':
-        defines = fsv.replay_defines(0x100000, 4000, 2000, 100, 0x110000, 0x108000, 255, 10, 0x112000, 1000)
+        outputs = 1000 if a.profile == 'busy' else 0
+        defines = fsv.replay_defines(0x100000, 4000, 2000, 100, 0x110000, 0x108000, 255, 10, 0x112000, outputs)
     if a.profile == 'busy':
         keys = fsv.keys_header(work / f'{m}-keys.h', [(100 * (i + 1), 0o21) for i in range(8)])
         defines += fsv.DOWNRUPT_DEFINES

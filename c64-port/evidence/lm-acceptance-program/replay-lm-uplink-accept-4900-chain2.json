@@ -9,7 +9,7 @@
  "replay_rows": 34,
  "replay_ended": true,
  "replay_differences": 0,
- "commit": "6e8b31cefe1d",
+ "commit": "11cab8d39055",
  "reu_bounds": {
   "ok": true,
   "dma_outside": 0,
@@ -41,7 +41,7 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 1000,
-   "wall_per_agc": 10.79,
+   "wall_per_agc": 10.947,
    "replay_skipped": [],
    "outputs_matched": null,
    "outputs_first_diff": null
@@ -71,7 +71,7 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 1000,
-   "wall_per_agc": 10.058,
+   "wall_per_agc": 10.213,
    "replay_skipped": [],
    "outputs_matched": null,
    "outputs_first_diff": null

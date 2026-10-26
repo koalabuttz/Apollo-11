@@ -1,0 +1,152 @@
+{
+ "scenario": "lm-p42-nassp",
+ "ok": true,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 93643238,
+ "agc_cs": 1010,
+ "dropped_ticks": 0,
+ "steps": 4755,
+ "wall_per_agc": 9.41,
+ "lost": false,
+ "mission": "lm",
+ "snap_cs": 50,
+ "replay": true,
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 15
+ },
+ "hold_host_mct": 26,
+ "hold_host_time1": 11476,
+ "replay_rows": 50,
+ "replay_applied": 50,
+ "replay_end_cs": 1010,
+ "replay_ended": true,
+ "replay_after_rows": 0,
+ "replay_inputs": {
+  "counts": {
+   "0": 24,
+   "2": 12,
+   "3": 14
+  },
+  "erasable": [
+   "1626",
+   "1627",
+   "1630",
+   "1631",
+   "1632",
+   "1633",
+   "1634",
+   "1635",
+   "1636",
+   "1637",
+   "1640",
+   "1641",
+   "1660",
+   "1661",
+   "1662",
+   "1663",
+   "1664",
+   "1665",
+   "1666",
+   "1667",
+   "1670",
+   "1671",
+   "1672",
+   "1673"
+  ],
+  "pipas": [],
+  "channels": [
+   "15"
+  ],
+  "requests": 32,
+  "channel_set": {
+   "15": 31
+  },
+  "channel_clear": {
+   "15": 32767
+  },
+  "channel_changed": {
+   "15": 31
+  }
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 8240,
+   "channel 12": 32,
+   "channel 13": 0,
+   "channel 14": 28704,
+   "channel 34": 32767,
+   "channel 35": 32480,
+   "superbank": 64,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 48,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 0,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [
+   "0046",
+   "0053",
+   "0054"
+  ],
+  "changed": []
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
+ "replay_matched_cs": [
+  100,
+  200,
+  302,
+  400,
+  500,
+  600,
+  700,
+  800,
+  900,
+  1002
+ ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 52,
+ "snap_slid": false,
+ "requested_cs": 1002,
+ "host_holes": [],
+ "downrupt": false,
+ "commit": "11cab8d39055"
+}
