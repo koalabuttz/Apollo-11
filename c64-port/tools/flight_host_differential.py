@@ -1196,9 +1196,8 @@ def main():
         t = re.search(r'(\d+) CIA interrupts, (\d+) clock periods taken, (\d+) dropped \(rk_dilation\); AGC time (\d+) cs', text)
         n = re.search(r'(\d+) native routines \((\d+) yaAGC instructions of time\), (\d+) bridged', text)
         misses = re.findall(r'^  (?:basic |interp) (\d\d,\d{4}) (\S+): (\d+) times; (.*)$', text, re.M)
-        # reach points: every centisecond yaAGC ran one (FLIGHT_REACH); a list
-        # the host could not keep whole says how many it dropped before the last
-        arrivals = re.findall(r'^reach (\d\d,\d{4}): (?:at ([\d ]+) cs(?: \((\d+) more before the last\))?|not reached)$',
+        # reach points: every centisecond yaAGC ran one (FLIGHT_REACH)
+        arrivals = re.findall(r'^reach (\d\d,\d{4}): (?:at ([\d ]+) cs|not reached)$',
                               text, re.M)
         holes = [flight_holes.describe(h, words[m], lanes, m) for h in flight_holes.HOLE.finditer(text)]
         c = re.search(r'^interpreter charge: fitted (\d+) MCT, yaAGC (\d+) MCT \(([-+][0-9.]+)%\) over (\d+) routines; '
@@ -1227,8 +1226,7 @@ def main():
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
                    unregistered=holes, interpretive_charge=charge, night_watchman=watchman,
                    reached={x[0]: int(x[1].split()[0]) if x[1] else None for x in arrivals},
-                   arrivals={x[0]: [int(c) for c in x[1].split()] for x in arrivals},
-                   arrivals_dropped={x[0]: int(x[2]) for x in arrivals if x[2]})
+                   arrivals={x[0]: [int(c) for c in x[1].split()] for x in arrivals})
         summary.append(row)
         if chunk_row and misses:
             chunk_misses.append(name)
