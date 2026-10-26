@@ -12,17 +12,22 @@
   ci-watch-interp-flight-p63-vice ci-watch-interp-core-differential ci-watch-x86-flight-check \
   ci-watch-flight-restart-check ci-watch-flight-restart-vice ci-watch-flight-gojam-vice ci-watch-flight-downlink-check \
   ci-watch-flight-downlink-vice overlay-v2-check ci-watch-overlay-v2-check ci-watch-flight-store \
-  ci-watch-flight-disk-vice ci-watch-dsky-sweep-vice ci-watch-flight-downlink-live-vice ci-watch-interp-loops-check
+  ci-watch-flight-disk-vice ci-watch-dsky-sweep-vice ci-watch-flight-downlink-live-vice ci-watch-interp-loops-check \
+  ci-watch-flight-chunked-lockstep
 ci-extra-host: interp-runtime-check interp-core-fuzz interp-core-differential x86-flight-check flight-restart-check \
   flight-downlink-check overlay-v2-check interp-loops-check
 ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice-1 interp-flight-flowed-vice-2 interp-flight-flowed-vice-3 \
   interp-flight-flowed-vice-4 interp-flight-p63-vice flight-restart-vice flight-gojam-vice flight-downlink-vice flight-store \
-  flight-disk-vice dsky-sweep-vice flight-downlink-live-vice
+  flight-disk-vice dsky-sweep-vice flight-downlink-live-vice flight-chunked-lockstep
 # flight-store finds its table sources at run time, so no closure reaches
 # them: it watches every source, the spec and lane-C tools, and the
 # unplaced-key ratchet (its cheap check fails on a count change either way).
 ci-watch-flight-store: $(wildcard src/*.c src/*.inc) tools/flight_store_build.py tools/flight_table_kinds.py \
   tools/interp_specs.py $(wildcard tools/lanec/*) docs/flight-store-unplaced.json
+# flight-chunked-lockstep runs the chunk-tracking host against yaAGC: it
+# watches the host run, the differential and the store build that writes
+# the chunk lists.
+ci-watch-flight-chunked-lockstep: tools/flight_host_run.c tools/flight_host_differential.py tools/flight_store_build.py
 # flight-disk-vice boots both stores from their disks alone (docs/RUN-ON-C64.md):
 # the loader, the drive code, the resident's boot and its store check; and
 # the hardware check disk's window, which must end in the state VICE's own run of

@@ -14,7 +14,7 @@
 # None gates `test`: they measure the whole program while lanes are still
 # filling it in. Need the listings
 # (build/fixed-data/<mission>/assembly.lst) and the yaAGC objects.
-.PHONY: flight-store flight-store-lm flight-host-differential flight-store-vice flight-disk flight-disk-vice
+.PHONY: flight-store flight-store-lm flight-host-differential flight-chunked-lockstep flight-store-vice flight-disk flight-disk-vice
 flight-store: | build
 	python3 tools/flight_store_build.py
 	python3 tools/native_range_keys.py
@@ -24,6 +24,12 @@ flight-store-lm: | build
 	python3 tools/flight_store_build.py --missions lm
 flight-host-differential: build/agc_engine_hardware_dv.o | build
 	python3 tools/flight_host_differential.py
+# flight-chunked-lockstep: the host the C64 is compared with (the store's
+# chunk lists, which the host-only build above runs without) on the work
+# clock in lockstep with yaAGC, failing on any routine yaAGC does not match
+# (#926 F3; build/flight-store/differential/summary-chunked.json).
+flight-chunked-lockstep: flight-store build/agc_engine_hardware_dv.o
+	python3 tools/flight_host_differential.py --chunked-only
 flight-store-vice: flight-store
 	python3 tools/flight_vice_load.py
 # flight-disk: the 1581 disk sets that boot each store on a stock C64 with
