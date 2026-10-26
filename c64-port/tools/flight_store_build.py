@@ -954,11 +954,16 @@ def link_load_check(cc, m, resolver, modules, keys, pinned=None):
            f'#define FL_PINNED_LOC 0{pinned["loc"]:o}u\n#define FL_PINNED_MODULE 0x{pinned["module"]:04x}u\n'
            + (f'#define FL_PINNED_TASK 0x{pinned["task_id"]:04x}u\n' if pinned.get('task_id') else '')
            if pinned else ''))
-    out = OUT / f'{m}-load-check.prg'
+    return load_check_link(cc, m, OUT / f'{m}-load-check.prg')
+
+
+def load_check_link(cc, m, out, defines=()):
+    """Link the load check on the data header link_load_check wrote
+    (tools/flight_vice_load.py relinks it with -DFL_SNAP)."""
     subprocess.run([str(c) for c in [
-        cc, *COMMON, *MISSION[m], f'-DFL_DATA="{ROOT / data}"',
+        cc, *COMMON, *MISSION[m], f'-DFL_DATA="{ROOT / OUT / f"{m}-load-check.h"}"',
         # rk_direct records each run's steps for the host reference (#426).
-        '-DFL_DIRECT_STEPS', '-T', 'platform/c64/resident_flight.ld',
+        '-DFL_DIRECT_STEPS', *defines, '-T', 'platform/c64/resident_flight.ld',
         f'-Wl,-Map,{out}.map', 'platform/c64/flight_load_check.c', *resident_sources(m),
         OUT / 'overlay_v2_services.S', '-o', out]], cwd=ROOT, check=True)
     return out
