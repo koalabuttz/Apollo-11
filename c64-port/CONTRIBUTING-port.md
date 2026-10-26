@@ -147,9 +147,10 @@ program's acceptance at its head (the regenerated docs/acceptance/<program>-*.md
 - A fix for a failing acceptance check ships with its own re-run.
 - Tools, host-only and docs PRs, and PRs that leave both programs FRESH, are unaffected.
 
-`docs/acceptance/pending-reacceptance.json` names a program the base already knows is stale and
-the PR that made it so. That program reports STALE without failing until its re-acceptance PR
-deletes the entry. Adding an entry is a reviewed change, never a way around the check.
+`docs/acceptance/pending-reacceptance.json` names a program the base already knows is stale, the
+PR that made it so, and the sha256 of each file that moved then. That program reports STALE without
+failing only while those files keep their pinned hashes (any further move fails), until its
+re-acceptance PR deletes the entry. Adding an entry is a reviewed change, never a way around the check.
 
 ## Pick the C64 rows by outcome
 

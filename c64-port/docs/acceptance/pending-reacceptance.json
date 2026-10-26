@@ -1,1 +1,9 @@
-{"Comanche055": "#919 (CM re-acceptance at 39dc823f in progress)"}
+{
+ "Comanche055": {
+  "since": "#919 (CM re-acceptance at 39dc823f in progress)",
+  "files": {
+   "flight-disk/cm-resident.prg": "10ed08ee1f886e47f2fa4e6dcacd90ccd952b5c5e6417e5529131a64fe8acfdd",
+   "flight-disk/cm-1.d81": "d117b2d935b666bebd87e5e3c2e5bd403bf8bfea3957037edb0821881a3a924c"
+  }
+ }
+}

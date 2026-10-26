@@ -21,9 +21,11 @@ carry that program's re-acceptance (CONTRIBUTING-port.md, "After
 acceptance").
 
 docs/acceptance/pending-reacceptance.json lists programs the base already
-knows are stale, with the PR that made them so: {"Comanche055": "#919"}.
-Those report STALE without failing until the re-acceptance PR removes them.
-A program can only be added there in a reviewed PR.
+knows are stale: the PR that made them so, and the sha256 of each file that
+moved at that point. A listed program reports STALE without failing only
+while every moved file still has its pinned hash, so any further byte move
+fails as usual. The re-acceptance PR deletes the entry; an entry can only be
+added in a reviewed PR.
 """
 import json
 import argparse
@@ -104,12 +106,15 @@ def main():
         if missing:
             bad = True
             print(f'{program}: UNKNOWN (accepted at {commit}); missing: {", ".join(missing)}')
-        elif moved and program in pending:
-            print(f'{program}: STALE, pending re-acceptance (since {pending[program]}; accepted at {commit});'
-                  f' changed since: {", ".join(moved)}')
+        elif moved and program in pending and all(
+                hashlib.sha256((args.build / n).read_bytes()).hexdigest() == pending[program]['files'].get(n)
+                for n in moved):
+            print(f'{program}: STALE, pending re-acceptance (since {pending[program]["since"]}; accepted at {commit});'
+                  f' changed since, at their pinned hashes: {", ".join(moved)}')
         elif moved:
             bad = True
-            print(f'{program}: STALE (accepted at {commit}); changed since: {", ".join(moved)}')
+            print(f'{program}: STALE (accepted at {commit}); changed since: {", ".join(moved)}'
+                  + ('; the pending entry pins other bytes, so this is a new move' if program in pending else ''))
         else:
             print(f'{program}: FRESH (accepted at {commit}; every built file the doc lists matches)'
                   + (f'; not built, so not checked: {", ".join(unchecked)}' if unchecked else ''))
