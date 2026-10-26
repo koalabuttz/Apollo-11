@@ -136,6 +136,8 @@ with the document that says so; anything else that fails is a failure to fix.
 Both programs are accepted (docs/acceptance/). Their bootable docs record the sha256 of the
 REU store, resident, loader and disks each program ships. `tools/acceptance_freshness.py`
 (after `make flight-disk`) compares those with the build and prints FRESH or STALE per program.
+The LM bootable doc also lists the check disk (`test-*.d81`), so a change to the check program
+makes Luminary099 STALE too.
 
 port-ci's `acceptance-fresh` job runs it with `--require-fresh` on every PR that touches C64
 code. A PR that moves an accepted program's bytes fails there unless it also re-cites that
@@ -145,6 +147,10 @@ program's acceptance at its head (the regenerated docs/acceptance/<program>-*.md
   program it moves. The steward merges waiting PRs for that program into one re-acceptance
   window PR, runs the program's acceptance at its head and commits the docs there.
 - A fix for a failing acceptance check ships with its own re-run.
+- A PR that adds resident bytes: `c64-maps` links every PRG only after merge, never on a PR, and the
+  flight-replay harness has little headroom (LM overload had 13 B at 48de9ae9). Before saying READY,
+  run `make c64-dp-replay-link` (all six lm/cm profiles) and the check disk on the PR head, and the
+  steward does the same on the combined head before merging a batch.
 - Tools, host-only and docs PRs, and PRs that leave both programs FRESH, are unaffected, with one
   exception: a PR that edits a program map or the scoring in `tools/program_acceptance.py`. The job
   also re-scores each integrated doc from the evidence it cites with the PR's map and tool
