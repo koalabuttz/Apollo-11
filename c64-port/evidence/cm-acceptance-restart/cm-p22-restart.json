@@ -24,6 +24,7 @@
   "samples": 0,
   "samples_equal": 0,
   "base_samples_equal": 0,
+  "sample_problems": null,
   "gojam": [
    [
     "14000",
@@ -69,7 +70,7 @@
   "pre_snapshot": "build/flight-restart/cm-p22-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -82,7 +83,7 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 17736174,
+  "wall_cycles": 17736037,
   "agc_cs": 309,
   "dropped_ticks": 0,
   "steps": 916,
@@ -102,7 +103,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 9
+   "dma_unchecked": 11
   },
   "hold_host_mct": 73,
   "hold_host_time1": 14002,
@@ -178,13 +179,13 @@
   "requested_cs": 301,
   "host_holes": [],
   "downrupt": false,
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "exit": 0,
   "log": "cm-p22-restart-c64.log",
-  "log_sha256": "6a02f343e1eb695eb72d416b18c964a621fa8e992fa3f53e4492a3fe0bc241f7",
+  "log_sha256": "9229175677360a6ce5f9d3f359a188f34fafc7170b043c9f8c93d19802aabe9d",
   "store_sha256": "a22042dfd13040dd047559a4d8668d5d7a378d796c44115b31b0b91b47dcd9c6",
   "manifest_sha256": "720ac63e58a847061278bc0b41e961404369d057298423a1ae857971db66d5a4",
-  "prg_sha256": "cb448541042519e5cd7ed947745259083877a86f7273a597843b525358a6c444"
+  "prg_sha256": "575cbab15364b5c432e06358a227f253ca6f59737d7e78949c00d146b7474587"
  },
  "gojam_on_c64": null
 }

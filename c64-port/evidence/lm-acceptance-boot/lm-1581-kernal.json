@@ -10,60 +10,60 @@
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
- "bytes_loaded": 1930342,
+ "bytes_loaded": 1931366,
  "data_bytes": [
-  794793
+  795520
  ],
  "vice": {
   "mission": "lm",
   "ok": true,
   "fast_loader": false,
-  "load_cycles": 1267542587,
-  "load_s": 1286.5,
+  "load_cycles": 1268745768,
+  "load_s": 1287.7,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80854,
-  "boot_cycles": 111784789,
+  "handoff_cycles": 80684,
+  "boot_cycles": 111860194,
   "boot_s": 113.5,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 38570627,
-    "time1": "00662",
+    "cycles": 41751759,
+    "time1": "00732",
+    "z": "04674",
+    "fb": "34000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 83481448,
+    "time1": "01716",
     "z": "02000",
     "fb": "14000",
     "modreg": "77777"
    },
    {
-    "cycles": 74066663,
-    "time1": "01540",
-    "z": "03446",
-    "fb": "34000",
+    "cycles": 127157081,
+    "time1": "02740",
+    "z": "04010",
+    "fb": "02000",
     "modreg": "77777"
    },
    {
-    "cycles": 106636657,
-    "time1": "02346",
-    "z": "03523",
+    "cycles": 167687751,
+    "time1": "03710",
+    "z": "05270",
     "fb": "12000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 142764383,
-    "time1": "03236",
-    "z": "04674",
-    "fb": "34000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "092d",
-   "39b6",
-   "031a",
-   "3d84",
-   "087b",
-   "498f",
-   "093c",
-   "37d7"
+   "549e",
+   "5077",
+   "f1d6",
+   "0200",
+   "5a60",
+   "350d",
+   "5bff",
+   "a636"
   ],
   "key_ch32": [
    "7f",
@@ -85,7 +85,7 @@
    "36040",
    "36040"
   ],
-  "pc": "5794",
+  "pc": "5c2f",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -111,8 +111,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "14000",
-  "z": "03142",
+  "fb": "02000",
+  "z": "04040",
   "screenshot": "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -146,7 +146,7 @@
     {
      "name": "store",
      "start": "0x0",
-     "end": "0x1c6400",
+     "end": "0x1c6800",
      "writable": false
     },
     {
@@ -181,7 +181,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 36,
+   "dma_unchecked": 33,
    "trace_errors": [],
    "trace_ok": true
   }

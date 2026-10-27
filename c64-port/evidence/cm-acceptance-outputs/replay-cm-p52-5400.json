@@ -7,7 +7,7 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 11088560,
+ "wall_cycles": 11087815,
  "agc_cs": 308,
  "dropped_ticks": 0,
  "steps": 730,
@@ -114,5 +114,5 @@
  "requested_cs": 300,
  "host_holes": [],
  "downrupt": false,
- "commit": "11cab8d39055"
+ "commit": "bab6fab33581"
 }

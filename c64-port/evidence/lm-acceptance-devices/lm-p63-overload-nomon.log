@@ -128,7 +128,7 @@ interpreter charge: fitted 3420940 MCT, yaAGC 3254037 MCT (+5.1%) over 14418 rou
 native routines yaAGC did not match (0):
 trim gimbal (deg): native pitch 0.648 roll -0.692
 unregistered or refused points (0):
-module loads (35127 in 27000 cs):
+module loads (35119 in 27000 cs):
   load lm_lead_in_routines slot 0 basic  02,2000: 1
   load lm_fresh_start slot 0 basic  05,2667: 1
   load lm_alarm slot 0 basic  02,3567: 18

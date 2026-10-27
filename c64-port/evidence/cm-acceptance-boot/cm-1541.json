@@ -28,62 +28,64 @@
   "swap_prompts": [
    "READING DISK 1 INSERT DISK 2 OF 5 AND PRESS RETURN",
    "READING DISK 2 INSERT DISK 3 OF 5 AND PRESS RETURN",
+   "INSERT DISK 3 OF 5 AND PRESS RETURN INSERT DISK 3 OF 5 AND PRESS RETURN",
    "READING DISK 3 INSERT DISK 4 OF 5 AND PRESS RETURN",
    "READING DISK 4 INSERT DISK 5 OF 5 AND PRESS RETURN"
   ],
   "swaps": [
    2,
    3,
+   3,
    4,
    5
   ],
   "fast_loader": false,
-  "load_cycles": 2167807818,
-  "load_s": 2200.3,
+  "load_cycles": 2167417754,
+  "load_s": 2199.9,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80614,
-  "boot_cycles": 107749366,
+  "handoff_cycles": 80741,
+  "boot_cycles": 107748826,
   "boot_s": 109.4,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 33280959,
-    "time1": "01256",
-    "z": "03231",
+    "cycles": 42053001,
+    "time1": "01550",
+    "z": "03306",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 82485392,
+    "time1": "03312",
+    "z": "05333",
     "fb": "02000",
     "modreg": "77777"
    },
    {
-    "cycles": 68052430,
-    "time1": "02626",
-    "z": "03231",
-    "fb": "02000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 98303007,
-    "time1": "04036",
+    "cycles": 125512376,
+    "time1": "05144",
     "z": "04701",
     "fb": "66000",
     "modreg": "77777"
    },
    {
-    "cycles": 129221895,
-    "time1": "05263",
-    "z": "04020",
-    "fb": "66000",
+    "cycles": 166514792,
+    "time1": "06722",
+    "z": "04040",
+    "fb": "02000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "8202",
-   "5402",
-   "33f1",
-   "8b31",
-   "8951",
-   "8b4f",
-   "5d9f",
-   "32dc"
+   "5db9",
+   "46e9",
+   "39b3",
+   "359c",
+   "0b95",
+   "3a6c",
+   "5d12",
+   "98c4"
   ],
   "key_ch32": [
    "7f",
@@ -105,7 +107,7 @@
    "36000",
    "36000"
   ],
-  "pc": "3721",
+  "pc": "8486",
   "screen": [
    " APOLLO 11 CM DSKY",
    "",
@@ -190,7 +192,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 27,
+   "dma_unchecked": 41,
    "trace_errors": [],
    "trace_ok": true
   }

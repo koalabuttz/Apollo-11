@@ -5,16 +5,16 @@
   "test-2.d81"
  ],
  "loader_bytes": 6498,
- "resident_bytes": 45441,
+ "resident_bytes": 45480,
  "resident_start": 2061,
  "boot_return": null,
  "dsky_queue": null,
  "hardware": null,
  "resident_staged": "0x1f4e00",
- "bytes_loaded": 1939329,
+ "bytes_loaded": 1940392,
  "data_bytes": [
-  795741,
-  5602
+  795592,
+  6460
  ],
  "check_expect": "c4d5",
  "check_host": "c4d5",
@@ -29,11 +29,11 @@
    2
   ],
   "fast_loader": true,
-  "load_cycles": 265350953,
-  "load_s": 269.3,
+  "load_cycles": 265389087,
+  "load_s": 269.4,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 96344,
-  "run_s": 159.6,
+  "handoff_cycles": 96474,
+  "run_s": 159.7,
   "check_crc": "c4d5",
   "check_expect": "c4d5",
   "check_pass": true,
@@ -68,11 +68,11 @@
    ""
   ]
  },
- "commit": "11cab8d39055f515cf7cd3e4fdb9e08562366f3b",
+ "commit": "bab6fab33581bc838eebe048ef420a199692abf8",
  "dirty": false,
  "sha256": {
-  "flight-disk/test-1.d81": "1269e8153b93804f769404b08ede0a87dfc3f24026a4bd5d82fabfeafd2dce8c",
-  "flight-disk/test-2.d81": "ff3e37ee1ff7c0a1e283cb3f97d17bd7b9935bd39ead590b76e03ae04db6e3c3",
+  "flight-disk/test-1.d81": "8d0ac49429af19116860a18b1d5d90fd2e6a668153002daf936751dec58f0ead",
+  "flight-disk/test-2.d81": "4629cae07b267405559e39ac333e43c764044f639f11f6b846314ae861c28d13",
   "flight-disk/test-loader.prg": "9b187bcf29162fcd24664be1fc2d50b23f2940c235ad7905e7776a511f86c608"
  }
 }

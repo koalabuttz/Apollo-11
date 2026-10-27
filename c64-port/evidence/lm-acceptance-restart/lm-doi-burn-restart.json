@@ -27,6 +27,7 @@
   "samples": 0,
   "samples_equal": 0,
   "base_samples_equal": 0,
+  "sample_problems": null,
   "gojam": [
    [
     "52000",
@@ -74,7 +75,7 @@
   "pre_snapshot": "build/flight-restart/lm-doi-burn-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -87,11 +88,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3214",
-  "wall_cycles": 67842399,
+  "wall_cycles": 67860178,
   "agc_cs": 333,
   "dropped_ticks": 0,
   "steps": 2001,
-  "wall_per_agc": 20.678,
+  "wall_per_agc": 20.684,
   "lost": false,
   "mission": "lm",
   "snap_cs": 52000,
@@ -108,7 +109,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 21
+   "dma_unchecked": 12
   },
   "hold_host_mct": 729,
   "hold_host_time1": 14060,
@@ -202,13 +203,13 @@
   "requested_cs": 325,
   "host_holes": [],
   "downrupt": false,
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "exit": 0,
   "log": "lm-doi-burn-restart-c64.log",
-  "log_sha256": "6d27a9ee48a928b2a9b61d9ad2f9ffddb84738043005100623af4d33eda1d1c5",
-  "store_sha256": "d905808ec3ae8d6c144fc43c1c8d45f086031e0d549642fa7332259e3516f1c1",
-  "manifest_sha256": "c5f219caeb494a00bb71c3463acf4c01b06cc1e6467dd6ade09f28d7b8683cd8",
-  "prg_sha256": "9cc95b99106f430eb8db651ab72643cdbe32bed07130b3ccb0ac28490a36c383"
+  "log_sha256": "6d03e59789ca62c4ee4eedc198ee5b45f2cbe5bcd2305fcdf5500a63cc3efe32",
+  "store_sha256": "1703ed873137a9bb6a7cdbb3b845617a6aa8303e2714b328c04bdd348bb99e50",
+  "manifest_sha256": "7decef9389db0b4330f7e4b48d34012f2925b216f944a5217ed9b9b1e200d416",
+  "prg_sha256": "b235f9a7b3ad2706e688ac20cd0daa7377d11dac9cf595813b8d40432c9f91eb"
  },
  "gojam_on_c64": null
 }

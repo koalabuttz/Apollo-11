@@ -25,6 +25,7 @@
   "samples": 0,
   "samples_equal": 0,
   "base_samples_equal": 0,
+  "sample_problems": null,
   "gojam": [
    [
     "20000",
@@ -72,7 +73,7 @@
   "pre_snapshot": "build/flight-restart/lm-p63-descent-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -85,11 +86,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3214",
-  "wall_cycles": 82151684,
+  "wall_cycles": 82168376,
   "agc_cs": 310,
   "dropped_ticks": 0,
   "steps": 2112,
-  "wall_per_agc": 26.897,
+  "wall_per_agc": 26.903,
   "lost": false,
   "mission": "lm",
   "snap_cs": 20000,
@@ -106,7 +107,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 15
+   "dma_unchecked": 12
   },
   "hold_host_mct": 670,
   "hold_host_time1": 3872,
@@ -190,13 +191,13 @@
   "requested_cs": 302,
   "host_holes": [],
   "downrupt": false,
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "exit": 0,
   "log": "lm-p63-descent-restart-c64.log",
-  "log_sha256": "4c94631cfa3c504d06aa588e5757873e9598b7a362cd7f59c890f6f201e4211c",
-  "store_sha256": "d905808ec3ae8d6c144fc43c1c8d45f086031e0d549642fa7332259e3516f1c1",
-  "manifest_sha256": "c5f219caeb494a00bb71c3463acf4c01b06cc1e6467dd6ade09f28d7b8683cd8",
-  "prg_sha256": "200a7209b403248c04ae663bad01e884cf48095410bbff254efaf5fe2d44fc6a"
+  "log_sha256": "5588e775ebed0830e66f6febea2f68c56c8b3208836a5fe1bfe851a6fa99a26f",
+  "store_sha256": "1703ed873137a9bb6a7cdbb3b845617a6aa8303e2714b328c04bdd348bb99e50",
+  "manifest_sha256": "7decef9389db0b4330f7e4b48d34012f2925b216f944a5217ed9b9b1e200d416",
+  "prg_sha256": "44a8ca99ef38ee0a02f8e82313c82608187f4d2ed3409d0238d5aa23685da473"
  },
  "gojam_on_c64": {
   "scenario": "lm-p63-descent-restart",
@@ -221,6 +222,7 @@
   "samples": 0,
   "samples_equal": 0,
   "base_samples_equal": 0,
+  "sample_problems": null,
   "gojam": [
    [
     "20000",
@@ -344,7 +346,7 @@
    },
    "ok": true
   },
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "log": "gojam-on-c64.log",
   "log_sha256": "e7f23ba73a6b46dcdb3136ec2acca320ec261f962c7cc640676d4229c7b90bd0"
  }

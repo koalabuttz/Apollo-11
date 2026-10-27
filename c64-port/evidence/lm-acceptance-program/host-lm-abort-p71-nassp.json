@@ -18,7 +18,7 @@
  "schedule": "1,1,2",
  "chunked": true,
  "exit": 0,
- "commit": "11cab8d39055",
+ "commit": "bab6fab33581",
  "cia_interrupts": 180007,
  "periods_taken": 180007,
  "periods_dropped": 0,
@@ -4796,5 +4796,5 @@
    179997
   ]
  },
- "log_sha256": "ada4d21c47f9ab6efe4a5dc78a4e82f65fceb8e7f758172e6c3fe27cb76e46f3"
+ "log_sha256": "f8118f037bf068e315649353dd6ad8e5ebbd75021f8e955feaa056de6d8f5bef"
 }

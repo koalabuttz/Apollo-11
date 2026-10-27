@@ -17,6 +17,7 @@
   "samples": 4000,
   "samples_equal": 3872,
   "base_samples_equal": 4000,
+  "sample_problems": [],
   "gojam": [
    [
     "2500",
@@ -58,7 +59,7 @@
   "pre_snapshot": "build/flight-restart/lm-p00-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
