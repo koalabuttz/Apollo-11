@@ -73,9 +73,13 @@ _DATA = 'never executed: the word before it ends in a transfer or is data, and n
 # (label, listing code fields after the label): (kind, reason). The label is
 # the last one at or above the word; both missions unless noted.
 CLASSIFIED = {
+    # Data entry sets DSPCOUNT from VD1 (19) down to R3D5 (0), so the range
+    # below is really 0-14 and 16-19 (#862 item 4). The text is part of the
+    # source maps evidence/lanec-pin-cert/SHA256.json pins under both accepted
+    # certificates, so it stays until those maps are next regenerated.
     ('INRELTAB', 'TC CCSHOLE'): ('constant instruction',
         'INRELTAB +15: GETINREL and CLEAR read it as data (INDEX DSPCOUNT / A, CAF INRELTAB) only for display '
-        'count 15, which no DSPCOUNT reaches (data entry sets 0-14 and 16-19, VD1 down to R3D5); ' + _DATA),
+        'count 15, which no DSPCOUNT reaches (0-14, 16-22); ' + _DATA),
     ('MIXAD', 'TC MIXTEMP'): ('constant instruction',
         'read by AD MIXAD (MIXNOUN builds TC MIXTEMP +n); ' + _DATA),
     ('DISPLACE', 'TC GOQ'): ('constant instruction', 'read by INDEX DECOUNT, CAF DISPLACE (SFRET); ' + _DATA),
