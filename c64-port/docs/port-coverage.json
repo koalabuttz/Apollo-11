@@ -7919,7 +7919,7 @@
             },
             {
               "path": "docs/SOURCE_MAP.md",
-              "sha256": "08a94ee0c36e28a5fad4ef5cb6de23b2d508d37167d99324c05ebf84baa01ff6"
+              "pin_dropped": "#20: changed after this partial-coverage pin; the file is certified by complete_native_coverage"
             }
           ]
         },
@@ -7977,7 +7977,7 @@
             },
             {
               "path": "src/native_dispatch.c",
-              "sha256": "c4106ad10baeb34d96591446bb0214131a9c315beec5cac8a10861f14c4aac40"
+              "pin_dropped": "#20: changed after this partial-coverage pin; the file is certified by complete_native_coverage"
             },
             {
               "path": "tools/executive_service_reference.c",
@@ -13967,7 +13967,7 @@
           "artifacts": [
             {
               "path": "src/waitlist.c",
-              "sha256": "198ae3ca98977c70624b81cc68dc5bc2f3ce80ae902ba5807bda1268ba4c4b80"
+              "pin_dropped": "#20: changed after this partial-coverage pin; the file is certified by complete_native_coverage"
             },
             {
               "path": "tools/waitlist_reference.c",

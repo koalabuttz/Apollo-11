@@ -63,6 +63,26 @@ def evidence_ok(records, required, errors, label):
             errors.append(label + ': evidence SHA mismatch for ' + category)
 
 
+def pins_ok(entry, errors):
+    """Each artifact a native_coverage entry pins must still hash to its pin
+    (#20). A pin that went stale says so with pin_dropped instead."""
+    for item in entry.get('native_coverage', []):
+        for artifact in item.get('artifacts', []) if isinstance(item, dict) else []:
+            if not isinstance(artifact, dict):
+                continue
+            label = entry['path'] + ': native_coverage artifact ' + str(artifact.get('path'))
+            if 'sha256' not in artifact:
+                if not artifact.get('pin_dropped'):
+                    errors.append(label + ' has neither sha256 nor pin_dropped')
+                continue
+            candidate = (ROOT / artifact.get('path', '')).resolve()
+            if ROOT not in candidate.parents or not candidate.is_file():
+                errors.append(label + ' is missing')
+            elif hashlib.sha256(candidate.read_bytes()).hexdigest() != artifact['sha256']:
+                errors.append(label + ' no longer matches its pinned sha256 (re-pin it to evidence for the '
+                              'current file, or replace the pin with pin_dropped and the reason)')
+
+
 def runs_distinct(records, errors, label):
     """The comparison and both results categories must be their own records,
     not the source-to-native map cited again."""
@@ -111,6 +131,7 @@ def audit(manifest, require_complete):
         expected_kind = 'agc' if path.endswith('.agc') else 'source_documentation'
         if entry.get('kind') != expected_kind:
             errors.append('Wrong inventory file kind: ' + path)
+        pins_ok(entry, errors)
         if expected_kind != 'agc':
             continue
         if entry.get('status') not in ('untranslated', 'partial', 'complete'):
