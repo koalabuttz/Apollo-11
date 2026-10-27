@@ -497,6 +497,39 @@ def count_shards(targets, most, weights_path):
     return max(1, min(most, len(targets), -(-int(total) // RUNNER_SECONDS)))
 
 
+# A target whose run took more than STALE_RATIO times its weight, or
+# STALE_SECONDS more, unbalances the shards it lands on (a weight is only
+# refreshed by hand, tools/ci_target_seconds.py), so the run says so.
+STALE_RATIO = 2
+STALE_SECONDS = 1200
+
+
+def stale_weights(results, weights_path):
+    """A warning line for each result that ran well over its weight, naming
+    the timing file to put its new seconds in."""
+    try:
+        weights = load_weights(weights_path)
+    except (OSError, ValueError):
+        return []
+    weight = target_weights([r['target'] for r in results], weights)
+    source = {}
+    for path in [weights_path, *overlay_paths(weights_path)]:
+        for table in json.loads(path.read_text()).values():
+            if isinstance(table, dict):
+                source.update({t: path for t in table})
+    lines = []
+    for r in sorted(results, key=lambda r: r['target']):
+        t, seconds, w = r['target'], r['seconds'], weight[r['target']]
+        if seconds <= max(STALE_RATIO * w, w + STALE_SECONDS):
+            continue
+        file = source.get(t)
+        where = (f'update {file.relative_to(ROOT)}' if file and file != weights_path else
+                 f'put it in tools/ci_target_seconds.d/{t}.json (or refresh {weights_path.relative_to(ROOT)})')
+        lines.append(f"{t} took {seconds:.0f}s against its weight of {w:.0f}s"
+                     f"{'' if t in weights else ' (unmeasured)'}: {where}")
+    return lines
+
+
 def shard_targets(targets, k, n, weights_path):
     """Shard k of n: longest target first onto the least loaded shard, by
     measured seconds (a target never measured counts as the median). Without
@@ -587,6 +620,10 @@ def main():
         failed = sorted(r['target'] for r in results if not r['ok'])
     if args.summary:
         args.summary.write_text(json.dumps({'failed': failed, 'results': results}, indent=1) + '\n')
+    # A warning, not a failure: the shards still ran, only unevenly.
+    for line in stale_weights(results, args.weights):
+        print(f"{'::warning title=stale CI weight::' if os.environ.get('GITHUB_ACTIONS') else 'warning: '}{line}",
+              flush=True)
     print(f'{len(results) - len(failed)}/{len(results)} targets passed' +
           (': failed ' + ' '.join(failed) if failed else ''))
     return 1 if failed else 0
