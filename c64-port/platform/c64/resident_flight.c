@@ -423,14 +423,60 @@ void rk_rupts(void);
 #ifdef DP_REPLAY
 void dp_rows_after_rupts(void);
 #endif
+#ifdef RK_STEAL
+/* Where the room is: on the LM, in the text screen with the replay
+ * harness's other code (resident_flight.ld .dp_screen, which load_snapshot
+ * fills); on the CM, whose harness code fills the screen, in the resident. */
+#if RK_LM && !defined(DP_HW_CHECK)
+#define RK_STEAL_AT(name) __attribute__((section(".dp.screen." name)))
+#else
+#define RK_STEAL_AT(name)
+#endif
+/* A period's RK_STEAL MCT over its steps, by where each ends (the host's
+ * steal_share): 3n of every 2560 MCT. A byte each while they fit. */
+#define RK_STEAL_CUM(e) (3ul * (RK_STEAL) * (e) / 2560ul)
+#if RK_STEAL_CUM(1707u) - RK_STEAL_CUM(1280u) < 256u
+typedef uint8_t rk_steal_mct;
+#else
+typedef uint16_t rk_steal_mct;
+#endif
+RK_STEAL_AT("rk_steal_share")
+static const rk_steal_mct rk_steal_share[9] = {RK_STEAL_CUM(214u),
+                                               RK_STEAL_CUM(427u) - RK_STEAL_CUM(214u),
+                                               RK_STEAL_CUM(854u) - RK_STEAL_CUM(427u),
+                                               RK_STEAL_CUM(1067u) - RK_STEAL_CUM(854u),
+                                               RK_STEAL_CUM(1280u) - RK_STEAL_CUM(1067u),
+                                               RK_STEAL_CUM(1707u) - RK_STEAL_CUM(1280u),
+                                               RK_STEAL_CUM(1920u) - RK_STEAL_CUM(1707u),
+                                               RK_STEAL_CUM(2134u) - RK_STEAL_CUM(1920u),
+                                               RK_STEAL_CUM(2560u) - RK_STEAL_CUM(2134u)};
+#undef RK_STEAL_CUM
+/* rk_phase_mct less 200, a byte each. */
+RK_STEAL_AT("rk_steal_step")
+static const uint8_t rk_steal_step[9] = {14u, 13u, 227u, 13u, 13u, 227u, 13u, 14u, 226u};
+uint16_t rk_steal_end = 214u;
+uint8_t rk_steal_q;
+RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(uint8_t steal)
+{
+    uint8_t q = rk_steal_q;
+    while (rk_steal_end <= rk_work) {
+        if (steal) rk_work += rk_steal_share[q];
+        if (++q == 9u) q = 0;
+        rk_steal_end += 200u + rk_steal_step[q];
+    }
+    rk_steal_q = q;
+}
+#endif
 __attribute__((noinline, used)) void rk_rupts_due(void) {
     uint8_t got;
 #ifdef RK_STEAL
     /* A --replay window of a FLIGHT_STEAL scenario (tools/flight_host_run.c
      * steal): from RK_STEAL_FROM to RK_STEAL_TO (TIME2:TIME1, centiseconds)
-     * each T5 step also spends RK_STEAL MCT that no routine runs in, the
-     * counter cycles Apollo 11's RR CDU counts took. The time as the step
-     * starts, where the host reads it. Replay builds only. */
+     * each period also spends RK_STEAL MCT that no routine runs in, the
+     * counter cycles Apollo 11's RR CDU counts took: each step's share at
+     * the step's end, also when the end fell inside the routine that just
+     * ran, which the steal stretches (issue #912 item 3). The time as the
+     * boundary starts, where the host reads it. Replay builds only. */
     /* (TIME2 and TIME1 compared as a pair, not as one 28-bit count: the
      * same test in 16-bit compares, which the overload harness has room for.) */
     const uint16_t t2 = IMAGE->words[024] & 037777u, t1 = IMAGE->words[025] & 037777u;
@@ -439,6 +485,7 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
      (t2 == (uint16_t)((cs) >> 14) && t1 >= (uint16_t)((cs) & 037777u)))
     const uint8_t steal = RK_STEAL_AT_OR_PAST(RK_STEAL_FROM) && !RK_STEAL_AT_OR_PAST(RK_STEAL_TO);
 #undef RK_STEAL_AT_OR_PAST
+    rk_steal_run(steal);
 #endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
@@ -465,6 +512,9 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
             RK_CDU_DRIVE();
         }
         rk_work -= RK_PHASE_MCT(p);
+#ifdef RK_STEAL
+        rk_steal_end -= RK_PHASE_MCT(p);
+#endif
         rk_tick_phase = p == 8u ? 0u : (uint8_t)(p + 1u);
         rk_timer_phase(IMAGE, &rk_hardware, &rk_pending, t);
 #if RK_LM
@@ -473,9 +523,6 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
 #ifdef RK_HOLD_METER
         rk_hold_base += RK_PHASE_MCT(p);
         rupt_hold_raise(&rk_hold, rk_hold_base, rk_pending);
-#endif
-#ifdef RK_STEAL
-        if (t == RK_PHASE_T5 && steal) rk_work += RK_STEAL;
 #endif
     }
 #ifndef RK_NO_DIRECT

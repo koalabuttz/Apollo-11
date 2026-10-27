@@ -182,9 +182,14 @@ static void spend(unsigned long mct){wall+=(double)mct*slow*jitter();}
 /* FLIGHT_STEAL=T0-T1:N[,T0-T1:N...] (centiseconds; N MCT): counter cycles
  * the program loses, as Apollo 11's RR CDU counts took about 13% of the
  * LGC in P63/P64 (the 1201/1202 alarms). From the first clock period at or
- * after T0 to the last before T1, each period (each work-clock T5 step)
- * also spends N MCT that no routine runs in, so the Executive's jobs get
- * less time; the counted cells themselves are left alone. */
+ * after T0 to the last before T1, each period also spends N MCT that no
+ * routine runs in, so the Executive's jobs get less time; the counted cells
+ * themselves are left alone. On the work clock (a replay window) the N MCT
+ * are spread over the period's steps by their length (steal_share) and
+ * charged as the clock runs: each step's share at the step's end, also
+ * when the end falls inside a routine, so a long routine is stretched by
+ * the steal of every step it spans, as the AGC's would be (issue #912
+ * item 3). Elsewhere a period's N MCT go at its end. */
 static unsigned nsteal;static unsigned long steal_t[8][3],steal_cs;
 static int steal_parse(const char *t){
  while(t&&*t){int n=0;
@@ -192,14 +197,26 @@ static int steal_parse(const char *t){
      ||steal_t[nsteal][1]<=steal_t[nsteal][0])return 0;
   ++nsteal;t+=n;if(*t==',')++t;else if(*t)return 0;}
  return 1;}
-static void hold_steal(unsigned long mct);
-static void steal(void){unsigned i;
- for(i=0;i<nsteal;++i)if(steal_cs>=steal_t[i][0]&&steal_cs<steal_t[i][1]){wall+=(double)steal_t[i][2]*slow;hold_steal(steal_t[i][2]);return;}}
+static unsigned long steal_now(void){unsigned i;
+ for(i=0;i<nsteal;++i)if(steal_cs>=steal_t[i][0]&&steal_cs<steal_t[i][1])return steal_t[i][2];
+ return 0;}
+static void steal(void){wall+=(double)steal_now()*slow;}
 /* The work clock's steps (resident_flight.h rk_phase_mct): step j (from 0)
  * ends at step_at(j) MCT and steps TIME4, TIME1/TIME3 or TIME5 (j % 3, the
  * rk_timer_phase step); consumed counts the steps taken. */
 static const unsigned step_end[9]={214u,427u,854u,1067u,1280u,1707u,1920u,2134u,2560u};
 static double step_at(unsigned long j){return (double)(2560ul*(j/9ul)+step_end[j%9ul]);}
+/* Step j's share of a period's n stolen MCT: 3n of every 2560 MCT, by
+ * where the step ends, so a period's three steps take n between them.
+ * resident_flight.c rk_steal_share is the same split. */
+static unsigned long steal_share(unsigned long n,unsigned long j){unsigned k=(unsigned)(j%9ul);
+ return 3ul*n*step_end[k]/2560ul-(k?3ul*n*step_end[k-1u]/2560ul:0ul);}
+/* The work clock's steal (FLIGHT_STEAL, above): steal_j counts the steps
+ * whose share is charged; steal_log keeps the last shares, for the hold. */
+static unsigned long steal_j,steal_log[64];static int idling;
+static void steal_run(void){unsigned long n=steal_now();
+ for(;step_at(steal_j)<=wall;++steal_j){unsigned long s=n?steal_share(n,steal_j):0ul;
+  wall+=(double)s*slow;steal_log[steal_j%64ul]=idling?0ul:s;}}
 /* FLIGHT_HOLD: the interrupt hold meter (include/rupt_hold.h) over the
  * replay window, on the work clock, as -DRK_HOLD_METER runs it on the C64. */
 static rupt_hold hold;static int hold_on;
@@ -208,7 +225,7 @@ static rupt_hold hold;static int hold_on;
  * delays only the port's take); under FLIGHT_STEAL the work line gives the
  * longest hold without them, which tools/flight_scenario_vice.py gates
  * overload windows on (docs/acceptance/interrupt-hold.md). */
-static unsigned long hold_stolen,hold_max_stolen,hold_work,hold_work_stolen;static uint16_t hold_stolen_from,hold_work_at;
+static unsigned long hold_max_stolen,hold_work,hold_work_stolen;static uint16_t hold_work_at;
 /* FLIGHT_RUPT_COUNT: the interrupts the native side takes, by request,
  * from the replay window's start (or the run's), and the AGC time they span,
  * for the lead-in bound in docs/RESIDENT-FLIGHT.md (issue #912 item 4). */
@@ -227,22 +244,19 @@ static void hold_report(void){if(!getenv("FLIGHT_HOLD"))return;
 static uint8_t take_held(const agc_native_program *p,apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,double t){
  if(hold_on)rupt_hold_boundary(&hold,(uint16_t)(unsigned long)t,*pending,(uint8_t)(hw->in_interrupt||!io->interrupt_enabled||agc_overflow(s->words[0])));
  return rk_rupt_take(p,s,io->superbank,io->interrupt_enabled,pending);}
-/* The work clock's idle loop (weight 0, RK_MCT_IDLE): to the end of the
- * period, which the boundary drops if it takes a request first. */
-static int idling;
-/* Stolen MCT counted toward the waiting request, unless idle: the idle
- * period absorbs them, and a take there is at the step, not at wall. Only
- * the steal at the period end of the step that raised the request counts:
- * the AGC, at its next instruction, would wait that one out too. A later
- * steal falls inside the routine holding the request, after the AGC would
- * have taken it, so it stays in the hold's work (issue #912 item 3). */
-static void hold_steal(unsigned long mct){if(!hold_on||!hold.on||idling||!consumed
-  ||(uint16_t)(unsigned long)step_at(consumed-1ul)!=hold.from)return;
- if(hold.from!=hold_stolen_from){hold_stolen=0;hold_stolen_from=hold.from;}hold_stolen+=mct;}
+/* The work clock's idle loop (weight 0, RK_MCT_IDLE, idling above): to the
+ * end of the period, which the boundary drops if it takes a request first. */
+/* The MCT stolen while the request waited: the shares of the steps ending
+ * at or after the hold's start (a share sits right after its step's end),
+ * unless idle (the idle period absorbs them, and a take there is at the
+ * step, not at wall). The work line is the hold without them. */
+static unsigned long hold_stolen_mct(void){unsigned long j=steal_j,st=0;unsigned k;
+ for(k=0;k<64u&&j;++k){--j;if((int16_t)(uint16_t)((uint16_t)(unsigned long)step_at(j)-hold.from)<0)break;st+=steal_log[j%64ul];}
+ return st;}
 static void hold_take(uint16_t t,uint16_t time1){uint16_t max=hold.max;
- unsigned long st=hold.on&&hold.from==hold_stolen_from?hold_stolen:0ul,d=(uint16_t)(t-hold.from);
+ unsigned long st=hold.on?hold_stolen_mct():0ul,d=(uint16_t)(t-hold.from);
  if(hold.on&&st<=d&&d-st>hold_work){hold_work=d-st;hold_work_at=(uint16_t)(time1&037777u);hold_work_stolen=st;}
- rupt_hold_taken(&hold,t,time1);if(hold.max!=max)hold_max_stolen=st;hold_stolen=0;hold_stolen_from=(uint16_t)~hold.from;}
+ rupt_hold_taken(&hold,t,time1);if(hold.max!=max)hold_max_stolen=st;}
 static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
 /* The night watchman (platform/x86/night_watchman.h) under scaled time: wm
  * by the native rule, wm_ya by the NEWJOB accesses yaAGC makes over the
@@ -1395,7 +1409,7 @@ static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16
    if(scaled&&!m.InIsr&&self_loop(v,sb)){fprintf(stderr,"FLIGHT: bridged code at a TC or TCF to itself, Z %05o FB %05o (not VERB69)\n",(unsigned)v[5],(unsigned)v[4]);return -2;}}
   reach();
   if(scaled){uint64_t c=m.CycleCounter;unsigned k;if(agc_engine(&m))return -1;spend((unsigned long)(m.CycleCounter-c));
-   if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));if(j%3ul==2ul)steal();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
+   if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));steal_run();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
    continue;}
   if(agc_engine(&m))return -1;
   if(yaagc_trap("bridge")){trapped=1;++n;break;}}
@@ -1958,7 +1972,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));
     if(!rp_out)return 0;
     /* FLIGHT_REPLAY: on, on the C64 window's work clock. */
-    snap_path=0;rp_t0=now(s.words);rp_outputs(now(s.words),&hw,0);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;
+    snap_path=0;rp_t0=now(s.words);rp_outputs(now(s.words),&hw,0);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;steal_j=0;
     core_fit=core_yaagc=core_err=core_spans=0;}}
   {agc_word brupt=s.words[017];uint8_t got;
    if(scaled&&work){
@@ -1966,13 +1980,14 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     hold_on=rp_out&&!snap_path;
     /* While idling, wall is the idle period's end; the boundary is at the
      * last step the loop has run (where the take resets wall to). */
+    steal_run();
     while(!(got=take_held(&p,&s,&io,&hw,&pending,idling?(consumed?step_at(consumed-1ul):0.0):wall))&&step_at(consumed)<=wall){
      /* The drives run on the TIME5 step, as rk_rupts_due's. */
      if(consumed%3ul==2ul)drives(&s,&hw);
      rk_timer_phase(&s,&hw,&pending,(uint8_t)(consumed%3ul));
      hand_due(&hw,&io.trap31a,&pending);
      if(hold_on)rupt_hold_raise(&hold,(uint16_t)(unsigned long)step_at(consumed),pending);
-     if(consumed++%3ul==2ul){period_end();steal();}}
+     if(consumed++%3ul==2ul)period_end();}
     if(got&&idling)wall=consumed?step_at(consumed-1ul):0.0;
     if(got&&hold_on)hold_take((uint16_t)(unsigned long)wall,s.words[025]);
     /* Only a taken interrupt ends the module chain: a C64 run its budget
