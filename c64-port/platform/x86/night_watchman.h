@@ -18,15 +18,24 @@
  * again from the same state, as the AGC would, until an interrupt changes
  * it; the job is hung at that point until a step there is not stuck.
  *
- * The Executive runs natively, so a NEWJOB access is read from the steps:
- * - a step outside an interrupt while no job is hung: the job passes
- *   DANZIG, ADVAN or CCSNEWJOB in time;
- * - any step that changes NEWJOB or a core set's PRIORITY: NOVAC, FINDVAC
- *   and JOBWAKE read NEWJOB and change one.
- * While a job is hung, the steps outside an interrupt at other points are
- * the LM DAP's jasks (an interrupt RESUMEs into DAP code, which returns to
- * the job's point): they do not read NEWJOB. The host harness checks the
- * rule against the NEWJOB accesses yaAGC makes over the same spans. */
+ * The Executive runs natively, so a NEWJOB access is read from the steps
+ * (#912 item 5):
+ * - a step from one of the Executive's points that read NEWJOB (NOVAC,
+ *   FINDVAC, SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG,
+ *   ENDOFJOB, DUMMYJOB and its restart entry, ADVAN, NUCHANG2, DANZIG), in
+ *   or out of an interrupt;
+ * - an interpretive step outside an interrupt, while no job is hung, that
+ *   ends at NEWOPS with LOC 1 to 3 words on: it went round DANZIG, which
+ *   reads NEWJOB (a CALL or GOTO also ends at NEWOPS, but at a new LOC
+ *   and without DANZIG);
+ * - any step that changes NEWJOB or a core set's PRIORITY.
+ * Any other step is not counted, even outside an interrupt: a job starved
+ * by interrupts (the boot rows on the wall-clock schedules, where every
+ * boundary takes an interrupt and a module swap) can go 0.64 s on a few
+ * basic steps that never reach the Executive, and the AGC would sound the
+ * alarm then. While a job is hung, its steps are stuck and count for
+ * nothing. The host harness checks the rule against the NEWJOB accesses
+ * yaAGC makes over the same spans, at every check, on every schedule. */
 #include <string.h>
 #include "agc_word.h"
 
@@ -67,10 +76,39 @@ static __attribute__((unused)) int nw_stuck(const agc_word *before, const agc_wo
            !memcmp(before, after, 2048u * sizeof *before);
 }
 
-/* A step from before to after: whether it accessed NEWJOB by the rule
- * above, with the job's hung point updated. */
+/* The Executive's points that read NEWJOB (Luminary099 and Comanche055
+ * EXECUTIVE.agc, INTERPRETER.agc; include/lm_exec_routines.h and
+ * include/cm_exec_routines.h): NOVAC, FINDVAC, SPVACIN, SPVAC, CHANG1,
+ * CHANG2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB and DANZIG in fixed-fixed
+ * memory, then DUMMYJOB, DUMMYJOB +2, ADVAN and NUCHANG2 in bank 01.
+ * NEWOPS is where an interpretive step that went round DANZIG ends. */
+static const agc_word nw_fixed_readers[2][11] = {
+    {05072u, 05105u, 05112u, 05116u, 05122u, 05126u, 05133u, 05137u, 05146u, 05155u, 06061u},
+    {05134u, 05147u, 05154u, 05160u, 05164u, 05170u, 05175u, 05201u, 05210u, 05217u, 06030u}};
+static const agc_word nw_bank1_readers[2][4] = {{03206u, 03210u, 03214u, 03011u},
+                                                {03223u, 03225u, 03231u, 03032u}};
+static const agc_word nw_newops[2] = {06070u, 06037u};
+
+/* Whether a step from before starts at one of the Executive's NEWJOB
+ * readers (cm: 0 Luminary099, 1 Comanche055). */
+static __attribute__((unused)) int nw_reader(const agc_word *before, unsigned cm)
+{
+    agc_word z = (agc_word)(before[5] & 07777u);
+    unsigned k;
+    for (k = 0; k < sizeof nw_fixed_readers[0] / sizeof nw_fixed_readers[0][0]; ++k)
+        if (z == nw_fixed_readers[cm][k]) return 1;
+    if (((before[4] >> 10) & 037u) == 1u)
+        for (k = 0; k < sizeof nw_bank1_readers[0] / sizeof nw_bank1_readers[0][0]; ++k)
+            if (z == nw_bank1_readers[cm][k]) return 1;
+    return 0;
+}
+
+/* A step from before to after (erasable words), from an interpretive point
+ * or not: whether it accessed NEWJOB by the rule above, with the job's
+ * hung point updated. */
 static __attribute__((unused)) int nw_step(night_watchman *n, const agc_word *before,
-                                           const agc_word *after, int in_interrupt, int stuck)
+                                           const agc_word *after, int in_interrupt, int stuck,
+                                           int interpretive, unsigned cm)
 {
     unsigned k;
     if (!in_interrupt) {
@@ -83,7 +121,11 @@ static __attribute__((unused)) int nw_step(night_watchman *n, const agc_word *be
         } else if (here)
             n->hung = 0u;
     }
-    if (!in_interrupt && !stuck && !n->hung) return 1;
+    if (stuck) return 0;
+    if (nw_reader(before, cm)) return 1;
+    if (!in_interrupt && !n->hung && interpretive && (after[5] & 07777u) == nw_newops[cm] &&
+        (unsigned)((after[0164] - before[0164]) & 077777u) - 1u < 3u)
+        return 1;
     if (before[NW_NEWJOB] != after[NW_NEWJOB]) return 1;
     for (k = 0; k < NW_CORE_SETS; ++k)
         if (before[NW_PRIORITY + NW_CORE_SET * k] != after[NW_PRIORITY + NW_CORE_SET * k]) return 1;

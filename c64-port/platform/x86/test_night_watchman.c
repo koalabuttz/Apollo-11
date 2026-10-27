@@ -54,31 +54,65 @@ int main(void)
     after[0] = 1u;
     check(!nw_stuck(before, after, 0, 0), "a step that changes a word is not stuck");
 
-    /* NEWJOB accesses. */
+    /* NEWJOB accesses (#912 item 5). */
     memset(&n, 0, sizeof n);
     job_at_goto();
     after[0] = 1u;
-    check(nw_step(&n, before, after, 0, 0), "a job step, no job hung: an access");
-    check(!nw_step(&n, before, after, 1, 0), "an interrupt step that changes no core set: none");
+    check(!nw_step(&n, before, after, 0, 0, 0, 0u),
+          "a basic job step away from the Executive: none (a starved job does not reach it)");
+    check(!nw_step(&n, before, after, 1, 0, 0, 0u),
+          "an interrupt step that changes no core set: none");
     after[NW_PRIORITY + NW_CORE_SET * 3u] = 020u;
-    check(nw_step(&n, before, after, 1, 0),
+    check(nw_step(&n, before, after, 1, 0, 0, 0u),
           "an interrupt step that sets a PRIORITY (NOVAC): an access");
     job_at_goto();
     after[NW_NEWJOB] = 2u;
-    check(nw_step(&n, before, after, 1, 0), "an interrupt step that sets NEWJOB: an access");
+    check(nw_step(&n, before, after, 1, 0, 0, 0u), "an interrupt step that sets NEWJOB: an access");
+    job_at_goto();
+    before[5] = 05072u;
+    memcpy(after, before, sizeof after);
+    check(nw_step(&n, before, after, 1, 0, 0, 0u),
+          "LM NOVAC in an interrupt, nothing changed: an access");
+    check(!nw_step(&n, before, after, 1, 0, 0, 1u), "05072 on the CM is not NOVAC: none");
+    before[5] = 03214u;
+    before[4] = 02000u;
+    memcpy(after, before, sizeof after);
+    after[0] = 1u;
+    check(nw_step(&n, before, after, 0, 0, 0, 0u), "LM ADVAN (bank 01): an access");
+    before[4] = 04000u;
+    check(!nw_step(&n, before, after, 0, 0, 0, 0u), "03214 in bank 02 is not ADVAN: none");
+    /* Interpretive: round DANZIG back to NEWOPS, LOC a word on. */
+    job_at_goto();
+    before[5] = 06037u;
+    memcpy(after, before, sizeof after);
+    after[0164] = 03771u;
+    check(nw_step(&n, before, after, 0, 0, 1, 1u),
+          "CM interpretive step on to the next word: an access");
+    after[0164] = 02100u;
+    check(!nw_step(&n, before, after, 0, 0, 1, 1u), "a CALL to a new LOC (no DANZIG): none");
+    after[0164] = 03771u;
+    after[5] = 03140u;
+    check(!nw_step(&n, before, after, 0, 0, 1, 1u),
+          "an interpretive step that exits to basic code: none");
     /* A hung job: its stuck steps and the DAP's jasks are no access. */
     job_at_goto();
-    check(!nw_step(&n, before, after, 0, 1) && n.hung,
+    check(!nw_step(&n, before, after, 0, 1, 0, 0u) && n.hung,
           "a stuck step: none, and the job is hung there");
     before[5] = 02666u;
     before[4] = 034000u;
     memcpy(after, before, sizeof after);
     after[0] = 1u;
-    check(!nw_step(&n, before, after, 0, 0) && n.hung, "a jask while the job is hung: none");
+    check(!nw_step(&n, before, after, 0, 0, 0, 0u) && n.hung, "a jask while the job is hung: none");
+    job_at_goto();
+    before[5] = 06070u;
+    memcpy(after, before, sizeof after);
+    after[0164] = 03771u;
+    check(!nw_step(&n, before, after, 0, 0, 1, 0u) && n.hung,
+          "an interpretive step elsewhere while the job is hung: none");
     job_at_goto();
     after[0] = 1u;
-    check(nw_step(&n, before, after, 0, 0) && !n.hung,
-          "a step at the hung point that is not stuck frees the job: an access");
+    check(!nw_step(&n, before, after, 0, 0, 0, 0u) && !n.hung,
+          "a step at the hung point that is not stuck frees the job");
     printf("night watchman: %s\n", failures ? "checks failed" : "all checks pass");
     return failures != 0;
 }

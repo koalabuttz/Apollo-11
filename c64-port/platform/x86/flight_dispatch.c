@@ -334,7 +334,8 @@ static void watch_step(fd_state *st, fd_ran *ran, const agc_word *before, int in
     if (fresh)
         printf("erasable CADR cycle at Z %05o FB %05o LOC %05o, %lu cs\n", (unsigned)before[5],
                (unsigned)before[4], (unsigned)before[0164], fd_centiseconds(st));
-    if (nw_step(&st->wm, before, st->s.words, in_interrupt, stuck)) st->wm.armed = 0u;
+    if (nw_step(&st->wm, before, st->s.words, in_interrupt, stuck, interpretive, MISSION))
+        st->wm.armed = 0u;
     if (!stuck) return;
     end = period_end(st);
     if (end > st->mct) {

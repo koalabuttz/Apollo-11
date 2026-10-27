@@ -982,13 +982,13 @@ def _tmp(path):
     return path.with_name(f'{path.name}.{os.getpid()}.{threading.get_ident()}.tmp')
 
 
-def scaled_watchman_bad(watchman, sched):
-    """A scaled row's night watchman fails: it sounded, the native rule
-    missed a NEWJOB access yaAGC made (any schedule), or on the work clock
-    the two disagree at all. No summary line fails too."""
-    if not watchman:
-        return True
-    return bool(watchman['alarms'] or watchman['native_armed'] or (sched == 'W' and watchman['disagree']))
+def scaled_watchman_bad(watchman):
+    """A scaled row's night watchman fails when the native rule and yaAGC's
+    NEWJOB accesses disagree at any check, on any schedule (#912 item 5).
+    The alarm may sound only where yaAGC's accesses would sound it too: a
+    job starved by interrupts on the wall-clock schedules. No summary line
+    fails too."""
+    return not watchman or bool(watchman['disagree'])
 
 
 def frozen_engine(cc):
@@ -1230,18 +1230,14 @@ def main():
                                      mean_abs_error=float(c[5]))) if c else None
         if charge and charge['state'] == 'over':
             charge_over.append(name)
-        # The night watchman (docs/FLIGHT-RESTART.md): no row here may sound
-        # it, and on the work clock the native rule must agree with yaAGC's
-        # NEWJOB accesses at every armed check. The other schedules miss some
-        # of yaAGC's NEWJOB reads (#886), which leaves yaAGC's watchman armed
-        # where the native rule is not; that direction is only reported. The
-        # other (native armed: yaAGC read NEWJOB, the native rule saw no
-        # access) fails on every schedule.
+        # The night watchman (docs/FLIGHT-RESTART.md): the native rule must
+        # agree with yaAGC's NEWJOB accesses at every armed check, on every
+        # schedule, so it sounds exactly where yaAGC's accesses would.
         w = re.search(r'^night watchman: (\d+) alarms, (\d+) stuck steps; (\d+) checks while armed, (\d+) where'
                       r'.*?\((\d+) with the native rule armed\)', text, re.M)
         watchman = dict(alarms=int(w[1]), stuck_steps=int(w[2]), checks=int(w[3]), disagree=int(w[4]),
                         native_armed=int(w[5])) if w else None
-        if scaled_watchman_bad(watchman, sched):
+        if scaled_watchman_bad(watchman):
             watchman_bad.append(name)
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, chunked=chunk_row or listed[m], exit=r.returncode,
                    commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
@@ -1266,9 +1262,8 @@ def main():
         print(f"FAIL: the fitted interpretive charge is more than {CHARGE_BOUND:g}% net or {CHARGE_ABS_BOUND:g}% "
               f"routine by routine from yaAGC's MCT in: {', '.join(charge_over)}")
     if watchman_bad:
-        print(f"FAIL: the night watchman sounded, missed a NEWJOB access yaAGC made, or on the work clock "
-              f"disagreed with yaAGC's NEWJOB accesses, in: "
-              f"{', '.join(watchman_bad)}")
+        print(f"FAIL: the night watchman's native rule disagreed with yaAGC's NEWJOB accesses at a check "
+              f"(or printed no summary), in: {', '.join(watchman_bad)}")
     return 1 if failed or charge_over or watchman_bad or chunk_misses else 0
 
 
