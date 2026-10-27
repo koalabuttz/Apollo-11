@@ -75,7 +75,7 @@ class ProgramAcceptance(unittest.TestCase):
     def test_replay_verdicts(self):
         self.assertEqual(pa.replay_result(replay('lm-a', 0)), (True, 'matches host'))
         self.assertEqual(pa.replay_result(dict(replay('lm-a', 0), masked_dead_superbank=2)),
-                         (True, 'matches host (2 dead superbanks masked at ADVAN)'))
+                         (False, 'matches host except 2 dead superbanks masked at ADVAN (run --replay-exact)'))
         self.assertIn('differs (clock', pa.replay_result(replay('lm-a', 0, differences=3))[1])
         self.assertIn('differs (data: first at 0107', pa.replay_result(replay('lm-a', 0, 3, first='0107'))[1])
         self.assertEqual(pa.replay_result(replay('lm-a', 0, status=2)), (False, 'stops at 12,2644'))
@@ -108,6 +108,10 @@ class ProgramAcceptance(unittest.TestCase):
                          (False, 'chain of 3: REU bounds not checked inside the layout'))
         self.assertEqual(pa.replay_result(dict(good, windows=[w, dict(w, replay_unpaired_count=1), w])),
                          (False, 'chain of 3: window 1 1 checkpoints not compared'))
+        # #837: a window with a masked superbank is not a full match.
+        self.assertEqual(pa.replay_result(dict(good, windows=[w, dict(w, masked_dead_superbank=1), w])),
+                         (False, 'chain of 3: window 1 matches host except 1 dead superbanks masked at ADVAN '
+                                 '(run --replay-exact)'))
         seam = dict(good, ok=False, windows=[w, dict(ok=False, seam=1)])
         self.assertEqual(pa.replay_result(seam), (False, 'chain of 3: seam 1 fails'))
         bad = dict(good, ok=False, windows=[w, replay('lm-a', 0, differences=2)])

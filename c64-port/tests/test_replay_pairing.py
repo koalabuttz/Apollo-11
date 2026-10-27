@@ -75,7 +75,7 @@ class Pairing(unittest.TestCase):
         # The host ends at 172; the C64's first sample point is 173. The
         # host's state at 173 (written past its end) is the same as the C64's.
         v = fsv.replay_verdict([state(100), state(172)], [state(100), state(173)], True,
-                               after=[state(173), state(175)], after_rows=[])
+                               after=[state(173), state(175)])
         self.assertEqual(v['diff'], [])
         self.assertEqual(v['matched'], [100, 173])
         self.assertEqual(v['end'], dict(shift_cs=1, paired=True))
@@ -93,22 +93,14 @@ class Pairing(unittest.TestCase):
 
     def test_late_c64_end_with_a_data_difference_still_fails(self):
         v = fsv.replay_verdict([state(100), state(172)], [state(100), state(173, **{f'w{WORD:o}': 0o123})], True,
-                               after=[state(173)], after_rows=[])
+                               after=[state(173)])
         self.assertEqual(v['end'], dict(shift_cs=1, paired=True))
         self.assertEqual(v['at_cs'], 173)
         self.assertEqual(v['diff'], [(f'{WORD:04o}', 0, 0o123)])
 
-    def test_late_end_unpaired_when_an_input_comes_in_between(self):
-        v = fsv.replay_verdict([state(172)], [state(173)], True, after=[state(173)], after_rows=[172])
-        self.assertEqual(v['diff'], [])
-        self.assertEqual(v['matched'], [])
-        self.assertFalse(v['end']['paired'])
-        self.assertTrue(v['end']['inputs_between'])
-        self.assertEqual([(u['side'], u['cs']) for u in v['unpaired']], [('host', 172), ('C64', 173)])
-
     def test_late_end_unpaired_when_the_host_has_no_state_there(self):
-        v = fsv.replay_verdict([state(172)], [state(174)], True, after=[state(173), state(176)], after_rows=[])
-        self.assertEqual(v['end'], dict(shift_cs=2, paired=False, inputs_between=False, host_has_cs=False))
+        v = fsv.replay_verdict([state(172)], [state(174)], True, after=[state(173), state(176)])
+        self.assertEqual(v['end'], dict(shift_cs=2, paired=False))
 
     def test_unpaired_end_is_never_a_match(self):
         r = dict(status=0, replay_ended=True, replay_differences=0, replay_matched_cs=[100], ok=False,
