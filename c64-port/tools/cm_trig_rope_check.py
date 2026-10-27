@@ -82,14 +82,22 @@ def main():
         if hashlib.sha256(data).hexdigest() != SHA[name]:
             bad.append(f'the {name} rope is not {SHA[name][:8]}')
     rows = {(int(r[0], 8) if r[0] else None, r[1]): r for r in listing('cm')}
+    bugger = {(int(b, 8), int(a, 8)) for b, a in
+              re.findall(r'^Bugger word [0-7]{5} at ([0-7]{2}),([0-7]{4})\.$', LST['cm'].read_text(), re.M)}
     diffs = []
     for i in range(0, min(len(original), len(fixture)), 2):
         if original[i:i + 2] != fixture[i:i + 2]:
             bank, offset = divmod(i // 2, 1024)
-            r = rows.get((bank, 0o2000 + offset))
+            # The listing prints fixed-fixed banks 02 and 03 by their 04000/06000 addresses, with no bank.
+            r = rows.get((bank, 0o2000 + offset)) or (rows.get((None, 0o2000 * bank + offset)) if bank in (2, 3) else None)
+            checksum = (bank, 0o2000 + offset) in bugger
             diffs.append(dict(address=f'{bank:02o},{0o2000 + offset:04o}', original=original[i:i + 2].hex(),
                               fixture=fixture[i:i + 2].hex(), file=r[5] if r else None,
-                              listing=r[6].strip() if r else 'no listing line (bank checksum word)'))
+                              listing=r[6].strip() if r else 'bank checksum (bugger) word' if checksum else None))
+            if not r and not checksum:
+                bad.append(f"the fixture rope differs at {diffs[-1]['address']}, which no listing line explains")
+    if len(original) != len(fixture):
+        bad.append('the fixture and original ropes differ in length')
     out['rope_differences'] = diffs
     for d in diffs:
         if d['file'] in ('SINGLE_PRECISION_SUBROUTINES.agc', 'MYSUBS.agc'):

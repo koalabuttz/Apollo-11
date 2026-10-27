@@ -3175,7 +3175,7 @@
             "note": "#25: the proof (evidence/cm-mysubs-proof.json) ran on the indentation-repaired fixture rope 2ba31de9, not the byte-original 6e3150ae. tools/cm_trig_rope_check.py shows the two ropes differ only at 34,3215 (an ALTVAR operand in P20-P25) and 34,3765 (bank 34's checksum word), outside this file's code (20,3612-21,2104), so the proof holds for the byte-original rope.",
             "evidence": {
               "path": "evidence/cm-trig-rope-check/result.json",
-              "sha256": "e1024d1ffea54328a0c422b7a54e19d9a9d3a446cdf56e88020b136c5e73a7a0"
+              "sha256": "64299829c7d6a385a47f2a9e82310010b1ce2a59ba4787af9760de957e5d824b"
             }
           }
         ]
@@ -4675,7 +4675,7 @@
             "note": "#25: src/cm_powered_trig.c (and src/sband_trig.c on the CM) run the LM P66 trig kernel for interpretive SIN/COS and store POLISH 03557 and TEM1 (POLYRET) 03572. tools/cm_trig_rope_check.py shows the kernel is the CM polynomial (Comanche055 and Luminary099 SN1 have the same TC POLY table) and that 03557 and 03572 are the CM SN1 call's own POLY table and return addresses (TC POLY at 00,3556), so every CM SIN/COS leaves exactly these words; they are not register debris.",
             "evidence": {
               "path": "evidence/cm-trig-rope-check/result.json",
-              "sha256": "e1024d1ffea54328a0c422b7a54e19d9a9d3a446cdf56e88020b136c5e73a7a0"
+              "sha256": "64299829c7d6a385a47f2a9e82310010b1ce2a59ba4787af9760de957e5d824b"
             }
           }
         ]
@@ -5660,7 +5660,7 @@
             "note": "#25: the proof (evidence/cm-single-return-proof.json) ran on the indentation-repaired fixture rope 2ba31de9, not the byte-original 6e3150ae. tools/cm_trig_rope_check.py shows the two ropes differ only at 34,3215 (an ALTVAR operand in P20-P25) and 34,3765 (bank 34's checksum word), outside this file's code (02,5074-5133), so the proof holds for the byte-original rope.",
             "evidence": {
               "path": "evidence/cm-trig-rope-check/result.json",
-              "sha256": "e1024d1ffea54328a0c422b7a54e19d9a9d3a446cdf56e88020b136c5e73a7a0"
+              "sha256": "64299829c7d6a385a47f2a9e82310010b1ce2a59ba4787af9760de957e5d824b"
             }
           }
         ]
