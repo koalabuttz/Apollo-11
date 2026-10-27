@@ -1086,13 +1086,14 @@ def build(cc, m, engine, store=False, chunked=False):
 # - the absolute error routine by routine (the sum of |fitted - yaAGC|
 #   over yaAGC's total) within CHARGE_ABS_BOUND percent, so routines
 #   charged too much cannot hide routines charged too little.
-# The per-order table ignores data-dependent timing, so the absolute
-# error is large even when the net is small: measured on da027bee, 58
-# scaled runs of 1000+ routines, net -0.7..+17.8% (cm-p11) and absolute
-# 14.4..39.3% (cm-p11), 33.4% next (cm-p41). The absolute bound is a
-# regression guard on that measurement, not an accuracy claim; a
-# per-span refit would tighten it. yaAGC counts whole spans, so orders
-# inside one routine can still cancel. A run beyond either bound is
+# The table is fitted to these spans (interp_word_mct.py --spans). A
+# per-order table cannot follow every pair of orders, so the absolute
+# error stays well above the net: over the 65 scaled runs of 1000+
+# routines, net -5.3..+4.9% and absolute 12.9% on average (worst 18.6%,
+# cm-p11); the earlier whole-word fit measured -1.8..+17.8% and 24.0%
+# (worst 39.3%). The bounds are a regression guard, not an accuracy claim
+# (tightening them would change the acceptance documents' criteria text).
+# yaAGC counts whole spans, so orders inside one routine can still cancel. A run beyond either bound is
 # interpretive_charge.state 'over', which tools/program_acceptance.py and
 # tools/device_acceptance.py fail; a run under CHARGE_MIN_ROUTINES is
 # 'few', reported in both documents but not bounded.
