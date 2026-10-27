@@ -197,8 +197,10 @@ def code_of(path, text):
     if not path.endswith(('.c', '.h', '.S', '.s')):
         return None
     # Only C-style comments are stripped (an assembly ; comment counts as
-    # code). A string continued over a line keeps its indentation, so such a
-    # file is always compared as changed.
+    # code).
+    # Join backslash-newline first, as the compiler does, so a // comment
+    # ending in a backslash also swallows the next line here.
+    text = re.sub(r'\\\r?\n', '', text)
     literals = []
     code = C_COMMENT.sub(lambda m: (literals.append(m.group(0)), m.group(0))[1]
                          if m.group(0)[0] in '"\'' else ' ', text)

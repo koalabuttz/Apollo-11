@@ -26,7 +26,15 @@ class CodeOf(unittest.TestCase):
     def test_line_sensitive_files_are_not_compared(self):
         self.assertIsNone(code_of('a.c', 'assert(x); /* a */'))
         self.assertIsNone(code_of('a.c', 'int l = __LINE__;'))
-        self.assertIsNone(code_of('a.c', 'char *s = "a\\\n  b";'))
+
+    def test_backslash_newline_is_joined_first(self):
+        # A // comment ending in a backslash swallows the next line, so a
+        # change there is a comment change; and the reverse.
+        self.assertEqual(code_of('a.c', '// c \\\nint y = 1;\nint z;'),
+                         code_of('a.c', '// c \\\nint y = 2;\nint z;'))
+        self.assertNotEqual(code_of('a.c', '// c \\\nint y = 1;'), code_of('a.c', '// c\nint y = 1;'))
+        # A string continued over a line keeps the next line's indentation.
+        self.assertNotEqual(code_of('a.c', 'char *s = "a\\\n  b";'), code_of('a.c', 'char *s = "a\\\nb";'))
 
     def test_python(self):
         self.assertEqual(code_of('a.py', 'x=1  # a\n'), code_of('a.py', 'x = 1\n# b\n'))
