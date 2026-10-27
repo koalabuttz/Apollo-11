@@ -52,7 +52,8 @@ The C64 meter was checked against the host (C64 runs at 1cfd6bc5, the base befor
 The longest measured hold is 1,425 MCT, 84% of the bound. The bound is `HOLD_BOUND_MCT` in `tools/flight_scenario_vice.py`. `tools/rupt_hold_report.py` checks it over every program map window, and every `--replay` window checks it, so each replay window CI runs is gated:
 
 - **Nominal windows** gate the elapsed hold: the host's, and with `--hold` the C64's too.
-- **Overload windows** (a scenario with `FLIGHT_STEAL`) gate the host's hold work, the longest hold without its stolen MCT. Every such window still prints its stolen MCT. The C64 meter has no stolen share, so with `--hold` its elapsed hold is held to the host's instead: it fails when longer than the host's elapsed hold plus `HOLD_C64_SLACK_MCT` (0, since the holds agree exactly where a window matches).
+- **Flight-steal windows** (`FLIGHT_STEAL` at or under the flight's share, `fhd.FLIGHT_STEAL_MCT`, below) gate the elapsed hold, stolen MCT and all: the host's, and with `--hold` the C64's too.
+- **Overload windows** (`FLIGHT_STEAL` above the flight's share) gate the host's hold work, the longest hold without its stolen MCT. Every such window still prints its stolen MCT. The C64 meter has no stolen share, so with `--hold` its elapsed hold is held to the host's instead: it fails when longer than the host's elapsed hold plus `HOLD_C64_SLACK_MCT` (0, since the holds agree exactly where a window matches).
 
 ### Known limit: no take inside a basic math body
 
@@ -64,7 +65,19 @@ The port takes no interrupt inside a basic math body. UNIT, SQRT and the trig ro
 | cm-entry-overload 22000+400 | 600 | 3,635 MCT at TIME1 13461 | 1,085 | 2,550 |
 | lm-p63-overload-nomon 19400+750 | 420 | 2,242 MCT at TIME1 06651 | 982 | 1,260 |
 
-The CM holds are T5RUPT inside the interpreter (`cm_body_attitude_interpretive` at 03,2037, NEWOPS). The program map's overload windows (cm-entry-overload 20301+300 and 20370+300) end before the steal starts, so they hold 1,013 and 850 MCT, unchanged. This is a known limit of the port at base: the overload gate counts work, every window's work is under the nominal windows' 1,425 MCT maximum, and the bound stays 1,706 MCT. The risk the bound covers is open in these windows: an elapsed hold longer than one DOWNRUPT period lets a second DOWNRUPT arrive and merge with the first, and a downlink word is lost. The host and the C64 agree on that, and frozen-clock lockstep cannot see it, so it is not checked against the AGC anywhere. The fix is a take point inside the holding routines, then a gate on the elapsed hold (issue #912, follow-up (b)).
+The CM holds are T5RUPT inside the interpreter (`cm_body_attitude_interpretive` at 03,2037, NEWOPS). The program map's overload windows (cm-entry-overload 20301+300 and 20370+300) end before the steal starts, so they hold 1,013 and 850 MCT, unchanged. This is a known limit of the port at base: the overload gate counts work, every window's work is under the nominal windows' 1,425 MCT maximum, and the bound stays 1,706 MCT. The risk the bound covers is open in these windows: an elapsed hold longer than one DOWNRUPT period lets a second DOWNRUPT arrive and merge with the first, and a downlink word is lost. The host and the C64 agree on that, and frozen-clock lockstep cannot see it, so it is not checked against the AGC anywhere. Most of these holds are in the interpreter's dispatch, across the CM's and the LM's interpretive tables, and a single math op stretched by a 600 MCT steal is already over the bound. Meeting it there would take a take point between interpretive ops and inside the math bodies.
+
+### The flight's steal
+
+The overload rows steal far more than the flight did, to force the 1201/1202 alarms. Apollo 11's RR CDU counts took about 13% of the LGC's duty cycle at the landing: "An uncorrected problem in the rendezvous radar interface stole approximately 13% of the computer's duty cycle" (Don Eyles, [Tales from the Lunar Module Guidance Computer](https://klabs.org/history/apollo_11_alarms/eyles_2004/eyles_2004_z.htm), AAS 04-064, 2004, abstract). That is 111 of a period's 853 MCT (`fhd.FLIGHT_STEAL_MCT`). `cm-entry-steal13` and `lm-p63-steal13-nomon` (`fhd.STEAL_FLIGHT`) are the overload rows with the steal set to that share, over the same windows. They gate the elapsed hold against the bound on both sides (`make hold-flight-steal`). At 9797e2c9:
+
+| Window | Elapsed hold, host and C64 | Work | Stolen |
+| --- | --- | --- | --- |
+| cm-entry-steal13 20900+600 | 1,141 MCT at TIME1 11013 | 1,002 | 139 |
+| cm-entry-steal13 22000+400 | 1,063 MCT at TIME1 13304 | 925 | 138 |
+| lm-p63-steal13-nomon 19400+750 | 993 MCT at TIME1 06024 | 826 | 167 |
+
+Each window's C64 replay matches the host's state at every checkpoint. The holds are under the bound with 565 MCT or more to spare, so at the steal that flew, a DOWNRUPT is not merged.
 
 The bound is a limit on the port, not a claim that the real AGC behaves this way. The host and C64 agree on every hold, so replay matches.
 

@@ -54,8 +54,11 @@ def window(exe, name, snap, cs):
         return dict(scenario=name, snap_cs=snap, cs=cs, error='no interrupt hold line in the host log')
     r = dict(scenario=name, snap_cs=snap, cs=cs, hold_mct=h['mct'], time1=h['time1'], gated_mct=h['gated'])
     if 'work_mct' in h:
-        # FLIGHT_STEAL: the bound gates the hold without its stolen MCT.
+        # FLIGHT_STEAL: above the flight's share the bound gates the hold
+        # without its stolen MCT (flight_scenario_vice.host_hold).
         r.update(work_mct=h['work_mct'], work_time1=h['work_time1'], work_stolen=h['work_stolen'])
+        if h.get('flight_level'):
+            r['flight_level'] = True
     return r
 
 
@@ -98,7 +101,7 @@ def main():
                   f"{worst['scenario']} {worst['snap_cs']}+{worst['cs']}; {len(held)} of {len(rows)} windows measured")
         over = [r for r in held if a.bound and r['gated_mct'] > a.bound]
         for r in over:
-            what = ' without its stolen MCT' if 'work_mct' in r else ''
+            what = ' without its stolen MCT' if 'work_mct' in r and not r.get('flight_level') else ''
             print(f"FAIL: {program}: {r['scenario']} {r['snap_cs']}+{r['cs']} holds a request "
                   f"{r['gated_mct']} MCT{what}, over the {a.bound} MCT bound")
         bad += len(over)

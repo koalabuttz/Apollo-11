@@ -242,11 +242,19 @@ HOLD = re.compile(r'^interrupt hold: max (\d+) MCT at TIME1 ([0-7]+)( \(\d+ with
 HOLD_WORK = re.compile(r'^interrupt hold work: max (\d+) MCT at TIME1 ([0-7]+) \((\d+) stolen\)', re.M)
 
 
+def flight_level_steal(name):
+    """Whether a FLIGHT_STEAL scenario steals no more than the flight did
+    (fhd.FLIGHT_STEAL_MCT a period): there the bound gates the elapsed hold."""
+    spec = fhd.scenario(name)[4].get('FLIGHT_STEAL')
+    return bool(spec) and all(int(w.split(':')[1]) <= fhd.FLIGHT_STEAL_MCT for w in spec.split(','))
+
+
 def host_hold(name, log):
     """The host log's interrupt hold, and the hold the bound gates: the
-    elapsed hold, or in a FLIGHT_STEAL (overload) window the longest hold
-    without its stolen MCT (docs/acceptance/interrupt-hold.md). None when
-    the log has no hold line (or a FLIGHT_STEAL window no work line)."""
+    elapsed hold, or in an overload window (FLIGHT_STEAL above the flight's
+    share) the longest hold without its stolen MCT
+    (docs/acceptance/interrupt-hold.md). None when the log has no hold line
+    (or a FLIGHT_STEAL window no work line)."""
     hm = HOLD.search(log)
     if not hm:
         return None
@@ -255,8 +263,11 @@ def host_hold(name, log):
         wm = HOLD_WORK.search(log)
         if not wm:
             return None
-        h.update(work_mct=int(wm[1]), work_time1=wm[2], work_stolen=int(wm[3]),
-                 gated=int(wm[1]), gated_time1=wm[2])
+        h.update(work_mct=int(wm[1]), work_time1=wm[2], work_stolen=int(wm[3]))
+        if flight_level_steal(name):
+            h['flight_level'] = True
+        else:
+            h.update(gated=int(wm[1]), gated_time1=wm[2])
     return h
 
 
@@ -956,8 +967,10 @@ def main():
                     print(f"FAIL: {a.scenario}: the C64 holds an interrupt request {r['hold_c64_mct']} MCT, "
                           f"over the host's {hold['mct']} MCT (+{HOLD_C64_SLACK_MCT}) in this FLIGHT_STEAL window "
                           f"(docs/acceptance/interrupt-hold.md)")
-                sides = [('host', hold['gated'], ' without its stolen MCT' if steal else '')]
-                if not steal:
+                # At the flight's steal the bound gates the elapsed hold on both sides.
+                overload = steal and not hold.get('flight_level')
+                sides = [('host', hold['gated'], ' without its stolen MCT' if overload else '')]
+                if not overload:
                     sides.append(('C64', r.get('hold_c64_mct', 0), ''))
                 over = [(side, n, what) for side, n, what in sides if a.hold_bound and n > a.hold_bound]
                 for side, n, what in over:
