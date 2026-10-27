@@ -35,9 +35,12 @@ Bytes are not the only thing an acceptance rests on: the program map and
 the scoring in program_acceptance.py decide what the integrated doc
 credits. So each program's integrated doc is also re-scored from the
 evidence it cites with the current map and tool (program_acceptance.py
---rescore), and a doc whose counts or result would change is CRITERIA
-STALE and fails like a byte move (#942 B2). A pending entry with a
-"criteria" reason reports it without failing, the same way.
+--rescore), and so is each recovery and restart doc, re-judged with
+restart_acceptance.py's verdicts (#969 B8). A doc whose counts or result
+would change is CRITERIA STALE and fails like a byte move (#942 B2). A
+pending entry with a "criteria" reason reports it without failing, the
+same way: a string covers every re-scored doc, a dict maps each category
+it covers to its reason.
 """
 import json
 import argparse
@@ -50,6 +53,7 @@ import time
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import program_acceptance  # noqa: E402
+import restart_acceptance  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PROGRAMS = {'Luminary099': 'lm', 'Comanche055': 'cm'}
@@ -139,6 +143,20 @@ def head():
         return '?'
 
 
+# Each category whose doc is re-judged from the evidence it cites, the
+# re-scoring function, and the run that regenerates the doc.
+RESCORE = (('integrated_program_tests', program_acceptance.rescore,
+            'program_acceptance.py {m} (--no-run when the results exist)'),
+           ('recovery_and_restart_tests', restart_acceptance.rescore, 'restart_acceptance.py {m}'))
+
+
+def criteria(entry, category):
+    """A pending entry's "criteria" reason for this category: a string covers
+    every re-scored doc, a dict names each category it covers."""
+    reason = entry.get('criteria')
+    return reason.get(category) if isinstance(reason, dict) else reason
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--build', type=pathlib.Path, default=ROOT / 'build')
@@ -175,13 +193,15 @@ def main():
         if m == 'lm' and not any(re.fullmatch(r'flight-disk/test-[0-9]+\.d81', n) for n in recorded(program)[1]):
             print(f'{program}: note: the doc lists no check disk (test-*.d81); a bootable doc written by '
                   'tools/boot_acceptance.py since #942 B7 does, and then a moved check disk is STALE')
-        same, text = program_acceptance.rescore(m)
-        if not same and program in pending and pending[program].get('criteria'):
-            print(f'{program}: CRITERIA STALE, pending re-acceptance ({pending[program]["criteria"]}): {text}')
-        elif not same:
-            bad = True
-            print(f'{program}: CRITERIA STALE: the integrated doc {text}. Re-run program_acceptance.py {m} '
-                  '(--no-run when the results exist) in a re-acceptance PR, or add a "criteria" pending entry.')
+        for category, rescore, rerun in RESCORE:
+            same, text = rescore(m)
+            reason = criteria(pending.get(program, {}), category)
+            if not same and reason:
+                print(f'{program}: CRITERIA STALE, pending re-acceptance ({reason}): the {category} doc {text}')
+            elif not same:
+                bad = True
+                print(f'{program}: CRITERIA STALE: the {category} doc {text}. Re-run {rerun.format(m=m)} in a '
+                      're-acceptance PR, or add a "criteria" pending entry.')
     return 1 if bad and args.require_fresh else 0
 
 
