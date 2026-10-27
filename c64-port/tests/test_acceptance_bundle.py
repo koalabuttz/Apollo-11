@@ -532,5 +532,20 @@ class Bundle(unittest.TestCase):
         self.assertFalse(self.run_bundle('assemble')['accepted'])
 
 
+class Images(unittest.TestCase):
+    def test_lm_images_include_the_check_disk(self):
+        # #950: the LM bootable doc lists test-*.d81, built from the LM's store
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            for sub, name in (('flight-store', 'lm.reu'), ('flight-store', 'cm.reu'), ('flight-disk', 'lm-1.d81'),
+                              ('flight-disk', 'cm-1.d81'), ('flight-disk', 'test-1.d81')):
+                (root / 'build' / sub).mkdir(parents=True, exist_ok=True)
+                (root / 'build' / sub / name).write_bytes(name.encode())
+            self.assertIn('flight-disk/test-1.d81', ab.images(root, 'lm'))
+            self.assertNotIn('flight-disk/test-1.d81', ab.images(root, 'cm'))
+            self.assertEqual(list(ab.images(root, 'lm', store_only=True)), ['flight-store/lm.reu'])
+
+
 if __name__ == '__main__':
     unittest.main()
+
