@@ -3,7 +3,7 @@
 """Build one program's whole-program acceptance evidence from one commit
 (docs/PORT_SCOPE.md, integrated_applications; acceptance bar item 1).
 
-  acceptance_bundle.py lm|cm [--check-only | --only CATEGORY,... | --assemble]
+  acceptance_bundle.py lm|cm [--check-only | --check-docs | --only CATEGORY,... | --assemble]
 
 A full run (no option), at HEAD with a clean tree (no changed or untracked
 file anywhere):
@@ -47,7 +47,12 @@ file anywhere):
 Only a full run where every category was regenerated and passes is an
 acceptance ("accepted": true, exit 0), or --assemble after one run per
 category. --check-only checks the docs already in the tree without running
-anything (exit 0 when they are consistent; it cannot back a flip). --only
+anything (exit 0 when they are consistent; it cannot back a flip).
+--check-docs is --check-only without the rule that nothing but the docs
+changed after their commit: the docs' own rules (one commit, PASS, every
+cite present with its recorded sha256, one sha256 per image across the
+docs). CI runs it beside acceptance_freshness.py, which owns the bytes,
+criteria and ancestor checks between windows (#942 B7). --only
 re-runs some categories and checks all (never an acceptance by itself).
 
 Runs longer than a job's time cap (the flip): run `--only <category>` once
@@ -264,7 +269,7 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
     outputs = repo.outputs(docs)
     ledger_path = logs / 'ledger.json'
     ledger = None
-    if mode != 'check-only':
+    if mode not in ('check-only', 'check-docs'):
         # A full run starts from a clean tree; --only and --assemble may find
         # earlier runs' outputs (the ledger vouches for them), nothing else.
         dirty = repo.dirty() if mode == 'full' else repo.dirty(outputs)
@@ -369,7 +374,7 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
                 problems.insert(0, 'the doc or its evidence changed since its run at HEAD')
         if commit and (cat in rerun or mode == 'assemble') and not head.startswith(commit):
             problems.append(f'stamped {commit}, not HEAD {head[:12]}: not regenerated at HEAD')
-        elif commit and not head.startswith(commit):
+        elif commit and not head.startswith(commit) and mode != 'check-docs':
             why = repo.docs_only_since(commit, head, outputs)
             if why:
                 problems.append(f'stamped {commit}: {why}')
@@ -389,7 +394,7 @@ def bundle(m, mode='full', only=(), root=ROOT, build=BUILD, run=run_generator):
             r['problems'].append(f'does not give the sha256 of flight-store/{m}.reu it ran')
         for name, digest in r['images'].items():
             want = built.get(name)
-            if mode != 'check-only' and want != digest:
+            if mode not in ('check-only', 'check-docs') and want != digest:
                 r['problems'].append(f'{name}: the doc gives {digest[:16]}..., this run built '
                                      + (f'{want[:16]}...' if want else 'none'))
     for c, cats in seen.items():
@@ -434,6 +439,8 @@ def main(argv=None):
     ap.add_argument('mission', choices=sorted(PROGRAM))
     g = ap.add_mutually_exclusive_group()
     g.add_argument('--check-only', action='store_true', help='only check the docs in the tree (not an acceptance)')
+    g.add_argument('--check-docs', action='store_true',
+                   help='check the docs\' own rules, not what changed since their commit (CI, between windows)')
     g.add_argument('--only', default='', help='comma-separated categories to re-run (not an acceptance)')
     g.add_argument('--assemble', action='store_true',
                    help='accept docs written by --only runs at HEAD (build/acceptance-bundle/<m>/ledger.json)')
@@ -442,7 +449,7 @@ def main(argv=None):
     bad = [c for c in only if c not in APPLICATION_EVIDENCE]
     if bad:
         ap.error(f"unknown categories: {', '.join(bad)}")
-    mode = 'check-only' if a.check_only else 'assemble' if a.assemble else 'partial' if only else 'full'
+    mode = 'check-only' if a.check_only else 'check-docs' if a.check_docs else 'assemble' if a.assemble else 'partial' if only else 'full'
     root = pathlib.Path(os.environ.get('ACCEPTANCE_BUNDLE_ROOT', ROOT))
     t = bundle(a.mission, mode, only, root)
     print(f"\n{t['program']} at {t['head'][:12]}: whole-program acceptance ({mode})\n")
@@ -465,7 +472,7 @@ def main(argv=None):
     print(f"\n{n} of {len(t['categories'])} categories pass. {verdict}")
     out = root / 'build' / f'acceptance-bundle-{a.mission}.json'
     out.write_text(json.dumps(t, indent=1) + '\n')
-    return 0 if t['accepted'] or (mode in ('check-only', 'partial') and t['consistent']) else 1
+    return 0 if t['accepted'] or (mode in ('check-only', 'check-docs', 'partial') and t['consistent']) else 1
 
 
 if __name__ == '__main__':
