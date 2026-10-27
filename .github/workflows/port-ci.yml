@@ -106,12 +106,13 @@ jobs:
           [ "$post_merge" = 1 ] && c64=0
           echo "c64=$c64" >> "$GITHUB_OUTPUT"
           # acceptance-fresh runs unless every changed file is prose (.md outside
-          # docs/acceptance) or evidence: AGC source, docs/*.json and tools/*.json
+          # docs/acceptance) or evidence other than acceptance evidence (whose run
+          # logs it checks, #979 B14): AGC source, docs/*.json and tools/*.json
           # all reach the shipped bytes without counting as C64 code (#926).
           fresh=1
           if changed=$(git diff --name-only "$base" HEAD 2>/dev/null) && [ -n "$changed" ] \
              && ! echo "$changed" | grep -qvE '^c64-port/evidence/|\.md$' \
-             && ! echo "$changed" | grep -q '^c64-port/docs/acceptance/'; then fresh=0; fi
+             && ! echo "$changed" | grep -qE '^c64-port/(docs/acceptance/|evidence/(lm|cm)-acceptance-)'; then fresh=0; fi
           echo "fresh=$fresh" >> "$GITHUB_OUTPUT"
           echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
           # A full c64 run is over two hours of builds and VICE: split it.
