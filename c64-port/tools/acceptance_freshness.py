@@ -17,7 +17,9 @@ shipped build.
 port_coverage.py --require-complete checks that acceptance exists; this
 checks that it is current. It also requires the six category docs of each
 program to name one commit and PASS, and that commit to be an ancestor of the
-checkout's HEAD. --require-fresh exits 1 on any STALE or
+checkout's HEAD, and every run log under the program's acceptance evidence
+(evidence/<m>-acceptance-*/*.log) that names a commit to name that one (a log
+left over from an earlier run fails, #979 B14). --require-fresh exits 1 on any STALE or
 MIXED program or missing build file. port-ci runs it (job acceptance-fresh,
 1541 and 1581 sets) on every PR and port-branch push that changes more than
 prose or evidence, so a PR that moves an accepted program's bytes must
@@ -120,6 +122,23 @@ def docs_agree(program):
     return agree, seen
 
 
+LOG_COMMIT = re.compile(r'(?:^|[ :])commit ([0-9a-f]{7,40})\b', re.M)
+
+
+def logs_agree(m, commit):
+    """Run logs in the program's acceptance evidence that name a commit must
+    name the docs' commit: the docs cite JSON records, so a log copied in
+    from an older run would otherwise pass unnoticed (#979 B14). Returns
+    the logs that name another commit, each with what it names."""
+    stale = []
+    for log in sorted((ROOT / 'evidence').glob(f'{m}-acceptance-*/*.log')):
+        named = set(LOG_COMMIT.findall(log.read_text(errors='replace')))
+        other = sorted(c[:12] for c in named if not (c.startswith(commit) or commit.startswith(c)))
+        if other:
+            stale.append(f'{log.relative_to(ROOT)} ({", ".join(other)})')
+    return stale
+
+
 def is_ancestor(commit):
     """The docs' commit must be in this checkout's history: a doc that names
     a commit from another branch (or one made up) describes a build this
@@ -175,6 +194,10 @@ def main():
             bad = True
             print(f'{program}: MIXED acceptance docs (each category must come from one run at one commit, PASS, and that commit must be an ancestor of HEAD): '
                   + ', '.join(f'{c} {v}' for c, v in seen.items()))
+        elif logs := logs_agree(m, next(iter(seen.values()))):
+            bad = True
+            print(f'{program}: MIXED evidence: run logs name another commit than the docs\' {next(iter(seen.values()))} '
+                  f'(re-run the category or restore its own logs): {"; ".join(logs)}')
         elif missing:
             bad = True
             print(f'{program}: UNKNOWN (accepted at {commit}); missing: {", ".join(missing)}')

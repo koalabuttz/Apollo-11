@@ -3,7 +3,7 @@
 """tools/acceptance_freshness.py and the bootable doc's hash table
 (tools/boot_acceptance.py image_hashes) on made-up docs in a scratch git
 repository: the six docs must name one commit that is an ancestor of HEAD
-(#942 B7), and the LM doc lists the check disk so a moved one is STALE."""
+(#942 B7), run logs must name that commit (#979 B14), and the LM doc lists the check disk so a moved one is STALE."""
 import hashlib
 import pathlib
 import subprocess
@@ -80,6 +80,21 @@ class Freshness(unittest.TestCase):
         self.assertFalse(af.docs_agree('Luminary099')[0])
         self.docs(self.first[:12], skip=('native_output_tests',))
         self.assertFalse(af.docs_agree('Luminary099')[0])
+
+    def test_run_logs_must_name_the_docs_commit(self):
+        """#979 B14: a restart log left over from an earlier window fails."""
+        ev = self.repo / 'evidence/cm-acceptance-restart'
+        ev.mkdir(parents=True)
+        (ev / 'host.log').write_text('no commit named here\n')
+        (ev / 'cm-p20-restart-c64.log').write_text(
+            f'cm-p20-restart: commit {self.first} with local changes; store cm.reu sha256 ab\n')
+        self.assertEqual(af.logs_agree('cm', self.first[:12]), [])
+        (ev / 'cm-p22-restart-c64.log').write_text(f'cm-p22-restart: commit {self.side} with local changes\n')
+        stale = af.logs_agree('cm', self.first[:12])
+        self.assertEqual(len(stale), 1)
+        self.assertIn('cm-p22-restart-c64.log', stale[0])
+        self.assertIn(self.side[:12], stale[0])
+        self.assertEqual(af.logs_agree('lm', self.first[:12]), [])
 
     def test_check_disk_row_is_compared(self):
         build = self.repo / 'build'

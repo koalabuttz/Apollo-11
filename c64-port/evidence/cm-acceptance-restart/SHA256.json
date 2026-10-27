@@ -4,7 +4,7 @@
   "release": "evidence-cm-acceptance-restart",
   "files": {
     "cm-entry-restart-c64.log": {
-      "sha256": "472707dbfabee253e7e8805a58b504eb358e4211f0377d0c85d09de838eeefd7",
+      "sha256": "701e177ee5e9b133409ac884e9494a68bf4c706501156d6bc8b848a0bf971cf7",
       "bytes": 1509,
       "store": "tree"
     },
@@ -14,7 +14,7 @@
       "store": "tree"
     },
     "cm-p00-p40-restart-c64.log": {
-      "sha256": "568ff70789d51008a155351d1f5db4d00610f66288313a56342171b4f6761e49",
+      "sha256": "dffd0665d08577c8804190e685c3c09609321865fc816b7a4b3ce8030400c604",
       "bytes": 1565,
       "store": "tree"
     },
@@ -29,7 +29,7 @@
       "store": "tree"
     },
     "cm-p20-restart-c64.log": {
-      "sha256": "8736cd65938bcdad5b3034b989b2e1dada5bf445e2865870cc9f07dca4fe4016",
+      "sha256": "67018e6adc4d6f5068dd03a702898bda0e86999f742a8b83ea87a874520ed23e",
       "bytes": 1465,
       "store": "tree"
     },
@@ -39,8 +39,8 @@
       "store": "tree"
     },
     "cm-p22-restart-c64.log": {
-      "sha256": "6a02f343e1eb695eb72d416b18c964a621fa8e992fa3f53e4492a3fe0bc241f7",
-      "bytes": 1436,
+      "sha256": "9229175677360a6ce5f9d3f359a188f34fafc7170b043c9f8c93d19802aabe9d",
+      "bytes": 1437,
       "store": "tree"
     },
     "cm-p22-restart.json": {
@@ -49,8 +49,8 @@
       "store": "tree"
     },
     "cm-p40-burn-restart-c64.log": {
-      "sha256": "b405e4b1a2840555a3dd468d7e4e9617d55823d705e3fc6ce5ee907c3536fb30",
-      "bytes": 1618,
+      "sha256": "f6e645a59194a47f5d270f6ce4e1785a06e03405b34a50f7c29048634bf4658a",
+      "bytes": 1619,
       "store": "tree"
     },
     "cm-p40-burn-restart.json": {
