@@ -9,8 +9,8 @@
       "store": "tree"
     },
     "cm-entry-restart.json": {
-      "sha256": "5abe5498f14e41181e6d9586e8369596d0326a24c4c3c99d94af18487313d5ae",
-      "bytes": 7444,
+      "sha256": "a2ca2b70f1be21ee5e7e0621dd16dd75e76a87895b4b3dfdef475e70032f1366",
+      "bytes": 7498,
       "store": "tree"
     },
     "cm-p00-p40-restart-c64.log": {
@@ -19,13 +19,13 @@
       "store": "tree"
     },
     "cm-p00-p40-restart.json": {
-      "sha256": "0470865ce737849e28a19c6fbd43c75517d160d9f7140e84b7a643036a8ee464",
-      "bytes": 4207,
+      "sha256": "0118ec6c827f020629943a7f4bca260fbd0c3d90a45233e23f07cebfec7ff3cb",
+      "bytes": 4234,
       "store": "tree"
     },
     "cm-p00-restart.json": {
-      "sha256": "ed88d9d9e5630d50a62e4e60d30a83c0c0f2b00634a2693cda64db54993a1a44",
-      "bytes": 1189,
+      "sha256": "899c01af02968f2411d69cbd32cafb3230d16f7210f362fe619dbb591b0ae7a4",
+      "bytes": 1214,
       "store": "tree"
     },
     "cm-p20-restart-c64.log": {
@@ -34,8 +34,8 @@
       "store": "tree"
     },
     "cm-p20-restart.json": {
-      "sha256": "11e53e27d91a95c30935a8e57cc7ba5279aa9afab0f1640c1e82a008f31b024e",
-      "bytes": 4391,
+      "sha256": "f89c159b267aa5e9ecc3b4dffc81ebd37bf9799bedd9b8798ff22a2142d04dcb",
+      "bytes": 4418,
       "store": "tree"
     },
     "cm-p22-restart-c64.log": {
@@ -44,8 +44,8 @@
       "store": "tree"
     },
     "cm-p22-restart.json": {
-      "sha256": "8a3abde94bf6622dc678c3722adc3d7c805284491bc5c2f71536755bef3e7680",
-      "bytes": 4175,
+      "sha256": "6675cf2d07db0e5675f89af7c89a07088baed29f79e5cb2e93412414c827c500",
+      "bytes": 4203,
       "store": "tree"
     },
     "cm-p40-burn-restart-c64.log": {
@@ -54,18 +54,18 @@
       "store": "tree"
     },
     "cm-p40-burn-restart.json": {
-      "sha256": "5ef18dcd3d121af313679744ef1c2a713b2dae49ed577304cfb1645ed702724f",
-      "bytes": 4392,
+      "sha256": "c44b60c64139a8014d6a8de290bf078d5da68d145bd930af596644e211b0c4fa",
+      "bytes": 4420,
       "store": "tree"
     },
     "cm-p52-restart.json": {
-      "sha256": "c447159f64d54bf21b5e130d05c386a9c800765599fa8eb565cec29996cd5519",
-      "bytes": 5162,
+      "sha256": "9986ccd3347b21bc07048ea45ef5434a91d16223ab4f199ed813c72990046694",
+      "bytes": 5216,
       "store": "tree"
     },
     "cm-v69-restart.json": {
-      "sha256": "734e4bfc7690e3cd3edd989e82b751bb8a4e88f692592ebaf7eb686ab817040b",
-      "bytes": 4506,
+      "sha256": "3f955146535f76d5ebcae7f678bb75559cae6ab5e4168a1cb22fc741ae1009a2",
+      "bytes": 4556,
       "store": "tree"
     },
     "gojam-on-c64.log": {

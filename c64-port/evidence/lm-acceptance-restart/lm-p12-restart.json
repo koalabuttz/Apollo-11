@@ -30,6 +30,7 @@
   "samples": 0,
   "samples_equal": 0,
   "base_samples_equal": 0,
+  "sample_problems": null,
   "gojam": [
    [
     "185000",
@@ -77,7 +78,7 @@
   "pre_snapshot": "build/flight-restart/lm-p12-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -90,11 +91,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3214",
-  "wall_cycles": 81638798,
+  "wall_cycles": 81657456,
   "agc_cs": 376,
   "dropped_ticks": 0,
   "steps": 2285,
-  "wall_per_agc": 22.038,
+  "wall_per_agc": 22.043,
   "lost": false,
   "mission": "lm",
   "snap_cs": 185000,
@@ -207,13 +208,13 @@
   "requested_cs": 368,
   "host_holes": [],
   "downrupt": false,
-  "commit": "11cab8d39055",
+  "commit": "bab6fab33581",
   "exit": 0,
   "log": "lm-p12-restart-c64.log",
-  "log_sha256": "50272515f766f2f7d3dc8a2a8196ae1d88eda63641d3663c4ced4e1a5bcd5ed3",
-  "store_sha256": "d905808ec3ae8d6c144fc43c1c8d45f086031e0d549642fa7332259e3516f1c1",
-  "manifest_sha256": "c5f219caeb494a00bb71c3463acf4c01b06cc1e6467dd6ade09f28d7b8683cd8",
-  "prg_sha256": "b1c59b8930261e5ad051b05c30c7f87889a02f7cab57f38830f3c727520d541e"
+  "log_sha256": "24c66c78e8a72276cf5bfe52d2276e707a10afccb1bdd97fb688ca4160d9a55b",
+  "store_sha256": "1703ed873137a9bb6a7cdbb3b845617a6aa8303e2714b328c04bdd348bb99e50",
+  "manifest_sha256": "7decef9389db0b4330f7e4b48d34012f2925b216f944a5217ed9b9b1e200d416",
+  "prg_sha256": "c527c4fcdc0be1257941fe29ff248c30205ba43b3571217047525aa4ff4cd2cd"
  },
  "gojam_on_c64": null
 }

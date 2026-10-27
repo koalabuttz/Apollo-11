@@ -6,7 +6,7 @@ No PCI HardSID boards found.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
 Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
-VSP Bug: safe channels are: 01234567. Emulation of memory corruption is disabled.
+VSP Bug: safe channels are: 456. Emulation of memory corruption is disabled.
 c64cartridge_reset changed: 1
 set_cartridge_type: -1
 512KiB unit installed.
@@ -27,8 +27,8 @@ Empathic Qubit, Roberto Muscedere, June Tate-Gans, Pablo Roldan.
 This is free software with ABSOLUTELY NO WARRANTY.
 See the "About VICE" command for more info.
  
-random seed was: 0x6adf797b
-command line was: /usr/bin/x64sc -default -console -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data +drive8truedrive -virtualdev8 -iecdevice8 -drive8type 1581 -8 /tmp/x/dk/c64-port/build/flight-disk/cm-1.d81 -reu -reusize 2048 -reuimage /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6682 -monlogname /tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log -monlog -keybuf load"*",8,1\nrun\n
+random seed was: 0x6ae038c8
+command line was: /usr/bin/x64sc -default -console -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data +drive8truedrive -virtualdev8 -iecdevice8 -drive8type 1581 -8 /tmp/x/dk/c64-port/build/flight-disk/cm-1.d81 -reu -reusize 2048 -reuimage /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6705 -monlogname /tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log -monlog -keybuf load"*",8,1\nrun\n
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin'.
@@ -168,25 +168,6 @@ Sync reset
 Sync reset
 Sync reset
 Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
 VICE thread initiating shutdown
 VICE thread is exiting
 
@@ -204,14 +185,14 @@ Drive8TrueEmulation=0
 Drive8Type=1581
 MonitorLogFileName="/tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log"
 MonitorLogEnabled=1
-MonitorServerAddress="ip4://127.0.0.1:6682"
+MonitorServerAddress="ip4://127.0.0.1:6705"
 MonitorServer=1
 
 reconstructed commandline options (might be incomplete):
--default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data" -monlogname "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log" -monlog +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -iecdevice8 -drive8type "1581" +drive8truedrive -reu -reusize "2048" -reuimage "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6682"
+-default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data" -monlogname "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log" -monlog +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -iecdevice8 -drive8type "1581" +drive8truedrive -reu -reusize "2048" -reuimage "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6705"
 
 VICE thread has been joined.
 REU: Writing REU image /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
-VIC-II: VSP Bug: safe channels are: 035. Emulation of memory corruption is disabled.
+VIC-II: VSP Bug: safe channels are: 0135. Emulation of memory corruption is disabled.

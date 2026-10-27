@@ -77,7 +77,7 @@ python3 c64-port/tools/port_coverage.py --require-complete
 
 All 175 AGC files have complete native coverage, and both integrated
 applications have passed whole-program acceptance, both last re-accepted at
-`11cab8d3`. The per-program acceptance records
+`bab6fab3`. The per-program acceptance records
 are in `docs/acceptance/`. Routine development checks use the audit without
 `--require-complete`; this distinction does not narrow the completion goal.
 

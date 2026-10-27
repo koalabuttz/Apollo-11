@@ -10,60 +10,60 @@
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
- "bytes_loaded": 1930342,
+ "bytes_loaded": 1931366,
  "data_bytes": [
-  794793
+  795520
  ],
  "vice": {
   "mission": "lm",
   "ok": true,
   "fast_loader": true,
-  "load_cycles": 263006152,
-  "load_s": 266.9,
+  "load_cycles": 263135987,
+  "load_s": 267.1,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80854,
-  "boot_cycles": 111784931,
+  "handoff_cycles": 80684,
+  "boot_cycles": 111860135,
   "boot_s": 113.5,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 36935168,
-    "time1": "00636",
-    "z": "03446",
+    "cycles": 42519163,
+    "time1": "00743",
+    "z": "05270",
+    "fb": "14000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 82263596,
+    "time1": "01702",
+    "z": "02000",
+    "fb": "14000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 123108767,
+    "time1": "02656",
+    "z": "04674",
     "fb": "34000",
     "modreg": "77777"
    },
    {
-    "cycles": 71206876,
-    "time1": "01476",
-    "z": "00335",
-    "fb": "12000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 106214211,
-    "time1": "02344",
-    "z": "03304",
-    "fb": "02000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 140002874,
-    "time1": "03173",
-    "z": "03214",
-    "fb": "02000",
+    "cycles": 163719612,
+    "time1": "03630",
+    "z": "04707",
+    "fb": "36000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "894a",
-   "4957",
-   "3540",
-   "3bab",
-   "0a80",
-   "a287",
-   "0f14",
-   "0e01"
+   "4b95",
+   "0955",
+   "4864",
+   "8b11",
+   "3b09",
+   "37cb",
+   "1371",
+   "0200"
   ],
   "key_ch32": [
    "7f",
@@ -85,7 +85,7 @@
    "36040",
    "36040"
   ],
-  "pc": "55cd",
+  "pc": "9107",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -111,8 +111,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "36000",
-  "z": "02626",
+  "fb": "34000",
+  "z": "02163",
   "screenshot": "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -146,7 +146,7 @@
     {
      "name": "store",
      "start": "0x0",
-     "end": "0x1c6400",
+     "end": "0x1c6800",
      "writable": false
     },
     {
@@ -181,7 +181,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 40,
+   "dma_unchecked": 35,
    "trace_errors": [],
    "trace_ok": true
   }

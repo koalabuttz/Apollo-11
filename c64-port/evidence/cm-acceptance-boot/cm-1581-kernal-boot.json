@@ -1,6 +1,6 @@
 {
  "mission": "cm",
- "commit": "11cab8d39055f515cf7cd3e4fdb9e08562366f3b",
+ "commit": "bab6fab33581bc838eebe048ef420a199692abf8",
  "dirty": false,
  "drive": "1581",
  "keys": "RV37E00E",
@@ -21,8 +21,8 @@
   "flight-disk/cm-resident.prg": "043b1bf811dbdb1ccfc4606965bb19a0dbdc7ac01d34cb8c5808730512c16ede",
   "flight-store/cm.reu": "a22042dfd13040dd047559a4d8668d5d7a378d796c44115b31b0b91b47dcd9c6"
  },
- "vice_log_sha256": "131a4b3eca29bf7ec058617faf74cc7299f3aef1f7b735da9f2a6a27087331d0",
- "monitor_log_sha256": "469bbca2102f9ccc2fc0d62c742ae8641109e0669e9f5ea6edaea7499d1cf5f9",
+ "vice_log_sha256": "7316a0a08a66a094cc217d37d6bf202e8e3f9dd9594dd76ac65bc492ac917a9f",
+ "monitor_log_sha256": "92b61b70c43c42f1d231012ebf399011deaba4c18ca4cee8f518ae4dd3203974",
  "reu_bounds_ok": true,
  "screen_sha256": "2af4a287541ddb1a8b5b95f77837045970a086c2bc6b56f26fe2f63275f188cd",
  "screen": [
