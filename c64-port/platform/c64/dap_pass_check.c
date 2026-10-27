@@ -589,6 +589,9 @@ static void BOOT load_snapshot(void){
  /* The host's replay runs on the work clock from its first step. */
  rk_work = 0;
  rk_tick_phase = 0;
+#ifdef RK_STEAL
+ RK_STEAL_START();
+#endif
  rk_part_cont = rk_part_prev = 0;
  rupt.value = 0;
  rows_left = DP_REPLAY_ROWS;

@@ -84,6 +84,14 @@ extern const uint8_t rk_phase_step[9];
 #endif
 extern uint16_t rk_work;
 extern uint8_t rk_tick_phase;
+#ifdef RK_STEAL
+/* The steal's clock (resident_flight.c rk_rupts_due): where the first step
+ * whose share is not yet charged ends, from the current step's start, and
+ * its rk_tick_phase. */
+extern uint16_t rk_steal_end;
+extern uint8_t rk_steal_q;
+#define RK_STEAL_START() (rk_steal_end = rk_phase_mct[0], rk_steal_q = 0u)
+#endif
 /* The ticks taken, mod 256, for the real-time cap (rk_rupts). */
 extern uint8_t rk_cap;
 #endif
