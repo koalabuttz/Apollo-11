@@ -9,6 +9,7 @@ import argparse
 import hashlib
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -81,6 +82,47 @@ def pins_ok(entry, errors):
             elif hashlib.sha256(candidate.read_bytes()).hexdigest() != artifact['sha256']:
                 errors.append(label + ' no longer matches its pinned sha256 (re-pin it to evidence for the '
                               'current file, or replace the pin with pin_dropped and the reason)')
+
+
+UNMAPPED = ROOT / 'docs/unmapped-native-sources.txt'
+SOURCE_NAME = re.compile(r'src/[\w./+-]+\.(?:c|inc)')
+
+
+def mapped_sources(files):
+    """The src/ files some entry maps: its native_coverage native_files and
+    the names its certificate's source-to-native map cites. None when a map
+    is not on disk (run tools/evidence.py fetch --coverage first)."""
+    found = set()
+    for entry in files:
+        for item in entry.get('native_coverage', []):
+            if isinstance(item, dict):
+                found.update(f for f in item.get('native_files', []) if isinstance(f, str))
+        record = (((entry.get('complete_native_coverage') or {}).get('evidence') or {})
+                  .get('source_to_native_map') or {})
+        path = record.get('path', '')
+        if path.endswith('.json'):
+            if not (ROOT / path).is_file():
+                return None
+            found.update(SOURCE_NAME.findall((ROOT / path).read_text()))
+    return found
+
+
+def unmapped_ok(files, errors):
+    """#22: every src/*.c and *.inc is mapped to an AGC file, or listed in
+    docs/unmapped-native-sources.txt; the list only shrinks."""
+    mapped = mapped_sources(files)
+    if mapped is None:
+        print('Unmapped native sources: not checked (a source-to-native map is not fetched)')
+        return
+    sources = {str(p.relative_to(ROOT)) for pattern in ('src/*.c', 'src/*.inc') for p in ROOT.glob(pattern)}
+    listed = {line.split('#')[0].strip() for line in UNMAPPED.read_text().splitlines()} - {''}
+    for path in sorted(sources - mapped - listed):
+        errors.append(path + ' is in no native_files list or source-to-native map: map it, or list it in '
+                      + str(UNMAPPED.relative_to(ROOT)) + ' as shared code (#22)')
+    for path in sorted(listed - (sources - mapped)):
+        errors.append(str(UNMAPPED.relative_to(ROOT)) + ' lists ' + path + ', which is '
+                      + ('now mapped' if path in sources else 'gone') + ': remove the line')
+    print(f'Unmapped native sources: {len(sources - mapped)} of {len(sources)} src/ files (#22)')
 
 
 def runs_distinct(records, errors, label):
@@ -162,6 +204,7 @@ def audit(manifest, require_complete):
             if application.get('status') != 'complete' or application.get('reviewed_entire_program') is not True:
                 errors.append('Integrated C64 application acceptance missing: ' + program)
             evidence_ok(application.get('evidence'), APPLICATION_EVIDENCE, errors, program)
+    unmapped_ok(files, errors)
     for tree in TREES:
         source = [entry for entry in files if entry.get('kind') == 'agc' and entry['path'].startswith(tree + '/')]
         counts = {status: sum(entry.get('status') == status for entry in source)
