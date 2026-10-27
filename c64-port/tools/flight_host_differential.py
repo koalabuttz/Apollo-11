@@ -937,9 +937,24 @@ def reach_points():
     return out
 
 
+# The flight's steal: Apollo 11's RR CDU counts took about 13% of the LGC's
+# duty cycle at the landing (Don Eyles, "Tales from the Lunar Module
+# Guidance Computer", AAS 04-064, 2004, abstract), 111 of a period's 853
+# MCT. The overload rows steal 420 to 600 to force the 1201/1202 alarms;
+# these two steal the flight's share over the same windows, where the
+# interrupt hold bound gates the elapsed hold, stolen MCT and all
+# (docs/acceptance/interrupt-hold.md, issue #912 item 3). Replay windows
+# only: they are not FLIGHT rows, so the host differential does not run them.
+FLIGHT_STEAL_MCT = 111
+STEAL_FLIGHT = [('cm-entry-steal13', 'cm', 32000, ENTRY_KEYS,
+                 {**OVERLOAD_CM, 'FLIGHT_STEAL': f'21000-27000:{FLIGHT_STEAL_MCT}'}),
+                ('lm-p63-steal13-nomon', 'lm', 27000, P63_KEYS,
+                 {**OVERLOAD_LM, 'FLIGHT_STEAL': f'18500-24000:{FLIGHT_STEAL_MCT}'})]
+
+
 def scenario(name):
-    """A FLIGHT, RESTART_FLIGHT, V69_FLIGHT or WATCHMAN_FLIGHT row by name."""
-    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT + V69_FLIGHT + WATCHMAN_FLIGHT}[name]
+    """A FLIGHT, RESTART_FLIGHT, V69_FLIGHT, WATCHMAN_FLIGHT or STEAL_FLIGHT row by name."""
+    return {s[0]: s for s in FLIGHT + RESTART_FLIGHT + V69_FLIGHT + WATCHMAN_FLIGHT + STEAL_FLIGHT}[name]
 
 
 # Scaled time: (mission, centiseconds, keys, FLIGHT_SCALED=K,D,LAG[,SEED],
