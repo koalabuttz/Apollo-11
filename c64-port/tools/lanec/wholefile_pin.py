@@ -75,7 +75,7 @@ _DATA = 'never executed: the word before it ends in a transfer or is data, and n
 CLASSIFIED = {
     ('INRELTAB', 'TC CCSHOLE'): ('constant instruction',
         'INRELTAB +15: GETINREL and CLEAR read it as data (INDEX DSPCOUNT / A, CAF INRELTAB) only for display '
-        'count 15, which no DSPCOUNT reaches (0-14, 16-22); ' + _DATA),
+        'count 15, which no DSPCOUNT reaches (data entry sets 0-14 and 16-19, VD1 down to R3D5); ' + _DATA),
     ('MIXAD', 'TC MIXTEMP'): ('constant instruction',
         'read by AD MIXAD (MIXNOUN builds TC MIXTEMP +n); ' + _DATA),
     ('DISPLACE', 'TC GOQ'): ('constant instruction', 'read by INDEX DECOUNT, CAF DISPLACE (SFRET); ' + _DATA),
