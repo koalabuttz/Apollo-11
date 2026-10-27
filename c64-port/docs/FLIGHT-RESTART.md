@@ -129,23 +129,41 @@ The host harness and the x86 program model it the same way
   cycle; the x86 program links with `--wrap=exit` and turns that exit
   inside a routine into a stuck step.
 - **NEWJOB accesses.** The Executive runs natively, so an access is read
-  from the steps: any step outside an interrupt while no job is hung, and
-  any step that changes NEWJOB or a core set's PRIORITY (NOVAC, FINDVAC,
-  JOBWAKE). While a job is hung, the steps outside an interrupt at other
-  points are the LM DAP's jasks (T6RUPT RESUMEs into DAP code), which do not
-  read NEWJOB.
+  from the steps (#912 item 5). These count:
+  - A step from one of the Executive's points that read NEWJOB, in or out of
+    an interrupt: NOVAC, FINDVAC, SPVACIN, SPVAC, CHANG1, CHANG2, JOBSLEEP,
+    JOBWAKE, PRIOCHNG, ENDOFJOB, DUMMYJOB and its restart entry, ADVAN,
+    NUCHANG2 and DANZIG.
+  - An interpretive step outside an interrupt, while no job is hung, that
+    ends at NEWOPS 1 to 3 words on. It went round DANZIG. A CALL or GOTO
+    also ends at NEWOPS, but at a new LOC and without DANZIG.
+  - Any step that changes NEWJOB or a core set's PRIORITY.
+
+  No other step counts, even outside an interrupt. A job's basic steps away
+  from the Executive do not read NEWJOB. A hung job's steps are stuck.
 - **Checked against yaAGC.** Each lockstep and bridge span sets yaAGC's own
   NightWatchman flag and reads it back, so the harness also tracks the
   watchman by yaAGC's own NEWJOB accesses. Its summary line counts the
   checks where the two disagree. `tools/flight_host_differential.py` fails
-  a scaled row where the alarm sounds, a work-clock row with any
-  disagreement, and a row on any schedule where the native rule is armed
-  but yaAGC read NEWJOB (the native rule missed an access). On the other
-  schedules some of yaAGC's NEWJOB reads fall outside the spans (#886: lm
-  V37E12E at boot, x1 and overrun, where the same row unscaled, yaAGC's
-  own watchman armed by SCALER1, never restarts). That leaves only yaAGC
-  armed, so that direction is reported only (#912 item 5: lm V37E12E x1 3
-  of 3 and overrun 2 of 2, cm V37E06E x1 1 of 1, all that direction).
+  a scaled row with any disagreement, on every schedule. So the alarm
+  sounds exactly where yaAGC's accesses would sound it.
+- **Boot starvation on the wall-clock schedules.** At boot, lm V37E12E on
+  x1 and overrun starves the job (and cm V37E06E on x1 can, by where the
+  store's chunk lists put the swaps). Every boundary takes
+  an interrupt (T4, T6, the DAP idler, the P and Q/R axes), each with a
+  module swap. In 0.64 s the job gets only a few basic steps, and none
+  reaches the Executive. A real AGC this slow would sound the night watchman
+  and restart. The harness does the same, at the same checks as yaAGC's
+  accesses. On lm x1 and overrun the restart starves again, so the AGC
+  restarts every 1.28 s and V37 never runs. A scaled run that never idles
+  takes no sample point, so it also ends 10 s of AGC time past its end. The
+  unscaled run never restarts, because yaAGC at AGC speed is not starved.
+  The `-dap` boot rows (`FLIGHT_SWAP_MCT=0`) and the flight rows on x1
+  never sound it. The work clock, which the C64 flight build and the x86
+  program run, does not starve the job: its rows never sound the alarm.
+  Before #912 item 5, the native rule counted every step outside an
+  interrupt as an access. That missed these alarms, and the doc blamed
+  yaAGC reads outside the spans.
 - **The GOJAM.** When the alarm sounds, the next step is the GOJAM, with Q
   at the hung point. The harness prints "night watchman at N cs".
 - **Lockstep at GOTO.** A native continuation at GOTO (06646 LM, 06615 CM)

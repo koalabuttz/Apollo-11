@@ -1905,7 +1905,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else if(tables[i].t==&agc_lm_danzig_marker||tables[i].t==&agc_cm_danzig_marker)interp[0]=*tables[i].t;
    else interp[ni++]=*tables[i].t;}
   p.basic=basic;p.basic_count=nb;p.interpretive=interp;p.interpretive_count=ni;}
- for(steps=0,next=1;next<=refs&&steps<20000000ul;++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;int v69;
+ /* Scaled, a run whose job never idles (a boot starved into night
+  * watchman restarts, docs/FLIGHT-RESTART.md) takes no sample point, so it
+  * also ends 10 s of AGC time past its end. */
+ for(steps=0,next=1;next<=refs&&steps<20000000ul&&!(scaled&&now(s.words)>refs+1000ul);++steps){agc_routine call=0;const entry *e;flight_io_buffer b;void *x;enum exec_status st;int v69;
   steal_cs=now(s.words);
   if(!pending&&(scaled||(hw.channel4&020u))&&((at_advan(s.words,io.superbank)&&idle(s.words,io.superbank,hw.in_interrupt))||busy_due(scaled,s.words,hw.in_interrupt))){int k;busy_last=now(s.words);
    while(next<=refs&&now(s.words)>=next){if(scaled){++next;continue;}++samples;
@@ -2093,7 +2096,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
       charge_last=core_ran||weight(e)==FLIGHT_PER_WORD||kernel_table(ce)?0:ce;if(core_ran&&work)spend(core_mct);else if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);else if(work&&!w&&(!rp_on||(w=idle_weight(before.words,io0.superbank,isr0))==FLIGHT_IDLE_TICK))idle_tick();else spend(work?w:span_mct);}
      /* A stuck step (an erasable CADR cycle in GOTO) spins to the
       * period's end, interrupts taken, until the night watchman. */
-     {int stuck=nw_stuck(before.words,s.words,isr0,interp);if(nw_step(&wm,before.words,s.words,isr0,stuck))wm.armed=0;
+     {int stuck=nw_stuck(before.words,s.words,isr0,interp);if(nw_step(&wm,before.words,s.words,isr0,stuck,interp,MISSION))wm.armed=0;
       if(!m.NightWatchman)wm_ya.armed=0;
       ya_tripped();
       /* The C64's boundary words hold no stuck point (GOTO), so no
@@ -2123,7 +2126,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if((n=bridge(&s,&io,&hw,&pending,5000000l))==-2)return 3;
    if(n<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
    dl_bridged(w);
-   {int in,stuck;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);if(nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck))wm.armed=0;if(!m.NightWatchman)wm_ya.armed=0;ya_tripped();}
+   {int in,stuck;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);if(nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck,in,MISSION))wm.armed=0;if(!m.NightWatchman)wm_ya.armed=0;ya_tripped();}
    hole(w,io.superbank,(unsigned long)n,e&&e!=&core_entry?e->name:0);bridged+=(unsigned long)n;
    if(trapped){trap_gojam(&s,&io,&hw,&pending);substitute=0;}}}
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
