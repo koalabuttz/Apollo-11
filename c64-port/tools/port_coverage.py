@@ -88,10 +88,24 @@ UNMAPPED = ROOT / 'docs/unmapped-native-sources.txt'
 SOURCE_NAME = re.compile(r'src/[\w./+-]+\.(?:c|inc)')
 
 
-def mapped_sources(files):
+def strings(node):
+    """Every key and string value in a JSON document."""
+    if isinstance(node, dict):
+        for key, value in node.items():
+            yield key
+            yield from strings(value)
+    elif isinstance(node, list):
+        for value in node:
+            yield from strings(value)
+    elif isinstance(node, str):
+        yield node
+
+
+def mapped_sources(files, errors):
     """The src/ files some entry maps: its native_coverage native_files and
-    the names its certificate's source-to-native map cites. None when a map
-    is not on disk (run tools/evidence.py fetch --coverage first)."""
+    each key or string value of its certificate's source-to-native map that
+    is a src/ path. A map not on disk is an error (run tools/evidence.py
+    fetch --coverage first): the gate fails closed (#969 B11)."""
     found = set()
     for entry in files:
         for item in entry.get('native_coverage', []):
@@ -102,19 +116,18 @@ def mapped_sources(files):
         path = record.get('path', '')
         if path.endswith('.json'):
             if not (ROOT / path).is_file():
-                return None
-            found.update(SOURCE_NAME.findall((ROOT / path).read_text()))
+                errors.append(entry['path'] + ': source-to-native map ' + path + ' is not on disk, so unmapped '
+                              'src/ files cannot be checked (run tools/evidence.py fetch --coverage)')
+                continue
+            found.update(x for x in strings(json.loads((ROOT / path).read_text())) if SOURCE_NAME.fullmatch(x))
     return found
 
 
 def unmapped_ok(files, errors):
-    """#22: every src/*.c and *.inc is mapped to an AGC file, or listed in
+    """#22: every .c and .inc under src/ is mapped to an AGC file, or listed in
     docs/unmapped-native-sources.txt; the list only shrinks."""
-    mapped = mapped_sources(files)
-    if mapped is None:
-        print('Unmapped native sources: not checked (a source-to-native map is not fetched)')
-        return
-    sources = {str(p.relative_to(ROOT)) for pattern in ('src/*.c', 'src/*.inc') for p in ROOT.glob(pattern)}
+    mapped = mapped_sources(files, errors)
+    sources = {str(p.relative_to(ROOT)) for pattern in ('src/**/*.c', 'src/**/*.inc') for p in ROOT.glob(pattern)}
     listed = {line.split('#')[0].strip() for line in UNMAPPED.read_text().splitlines()} - {''}
     for path in sorted(sources - mapped - listed):
         errors.append(path + ' is in no native_files list or source-to-native map: map it, or list it in '
