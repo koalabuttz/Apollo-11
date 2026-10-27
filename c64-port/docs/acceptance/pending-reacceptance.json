@@ -1,0 +1,14 @@
+{
+ "Luminary099": {
+  "since": "#969 B8 (restart verdicts tightened by #951 after the L run; window M regenerates the doc)",
+  "criteria": {
+   "recovery_and_restart_tests": "#969 B8: #951 fails a host row with no sample_problems record; lm-p00 and lm-v69 at L have none (a record gap: the host gives [] at the tip)"
+  }
+ },
+ "Comanche055": {
+  "since": "#969 B8 (restart verdicts tightened by #951 after the L run; window M regenerates the doc)",
+  "criteria": {
+   "recovery_and_restart_tests": "#969 B8: #951 fails a host row with no sample_problems record; cm-p00 and cm-v69 at L have none (a record gap: the host gives [] at the tip)"
+  }
+ }
+}
