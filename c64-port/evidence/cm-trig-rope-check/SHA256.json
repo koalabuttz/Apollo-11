@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-trig-rope-check",
+  "release": "evidence-cm-trig-rope-check",
+  "files": {
+    "result.json": {
+      "sha256": "e1024d1ffea54328a0c422b7a54e19d9a9d3a446cdf56e88020b136c5e73a7a0",
+      "bytes": 714,
+      "store": "tree"
+    }
+  }
+}

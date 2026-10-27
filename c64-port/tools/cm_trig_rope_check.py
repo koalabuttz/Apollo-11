@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 """Two facts the CM certificates rest on (#25, #969 B13), checked against
-the yaYUL listings and ropes and written to evidence/cm-trig-rope-check.json.
+the yaYUL listings and ropes. The result goes to build/cm-trig-rope-check/result.json;
+record it with tools/evidence.py add cm-trig-rope-check build/cm-trig-rope-check/result.json --tree.
 
 1. CM interpretive SIN/COS runs the LM P66 trig kernel
    (src/cm_powered_trig.c, src/sband_trig.c). That kernel is shared
@@ -28,7 +29,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 LST = {m: ROOT / f'build/fixed-data/{p}/assembly.lst' for m, p in (('lm', 'Luminary099'), ('cm', 'Comanche055'))}
 ORIGINAL = ROOT / 'evidence/fixed-data-cm-original.rope.bin'
 FIXTURE = ROOT / 'deps/cm-trig-fixture/MAIN.agc.bin'
-OUT = ROOT / 'evidence/cm-trig-rope-check.json'
+OUT = ROOT / 'build/cm-trig-rope-check/result.json'
 SHA = {'original': '6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061',
        'fixture': '2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79'}
 LINE = re.compile(r'^\d+,\d+: +(?:(\d\d),)?([0-7]{4}) +([0-7]{5})(?: ([0-7]{5}))?(.*)$')
@@ -94,6 +95,7 @@ def main():
         if d['file'] in ('SINGLE_PRECISION_SUBROUTINES.agc', 'MYSUBS.agc'):
             bad.append(f"the fixture rope differs inside {d['file']} at {d['address']}")
     out['ok'] = not bad
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, indent=1) + '\n')
     for x in bad:
         print('FAIL:', x)
