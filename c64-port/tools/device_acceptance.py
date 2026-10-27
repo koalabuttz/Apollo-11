@@ -32,9 +32,9 @@ radar and optics drives, displays and meters, downlink) gets one row:
 
 A window matches when the run is ok with status 0, every REU DMA stayed
 inside the layout, it ended with every input row applied, its end and
-every checkpoint were paired and compared with no skips and no
-differences, its last compared checkpoint is its end, it covered at least
-the window's centiseconds, and it is from this commit.
+every checkpoint were paired and compared with no skips, no masked dead
+superbanks and no differences, its last compared checkpoint is its end, it
+covered at least the window's centiseconds, and it is from this commit.
 
 Result FAIL (exit 1), the doc still written, when an adapter or make
 target is missing, a host scenario is missing, stale or not clean, a role
@@ -560,6 +560,11 @@ def not_matched(r, asked, commit):
         why.append(f"{lone} checkpoints not compared")
     if r.get('replay_skipped'):
         why.append('skipped ' + '; '.join(r['replay_skipped']))
+    # As program_acceptance (#837): a superbank masked at ADVAN
+    # (flight_scenario_vice.DEAD_SUPERBANK) is a word left out of the
+    # compare, like a skipped one.
+    if r.get('masked_dead_superbank'):
+        why.append(f"{r['masked_dead_superbank']} dead superbanks masked at ADVAN (run --replay-exact)")
     if r.get('replay_differences') != 0:
         why.append('differs: ' + first_diff(r))
     done = r.get('replay_matched_cs') or []
@@ -647,8 +652,8 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
              'the C64 adapter of every input role in a window), and must end every checkpoint in the host\'s state: '
              'erasable words, TIME1-6, output channels 5, 6, 10-14, 34, 35 and the superbank. A window matches only '
              'when the run is ok with status 0, every REU DMA stayed in the layout, every input row was applied, '
-             'the end and every checkpoint were paired and compared with no skips and no differences, the last '
-             'compared checkpoint is the end, and the run covers the window and is from this commit. '
+             'the end and every checkpoint were paired and compared with no skips, no masked dead superbanks and no '
+             'differences, the last compared checkpoint is the end, and the run covers the window and is from this commit. '
              'A window exercises an input role when its host rows touch the role; an output role when the role\'s '
              'channel bits or words changed in the host\'s states over the window (a held bit counts only as an enable '
              'gate, such as TVC or cross-pointer enable).', '',

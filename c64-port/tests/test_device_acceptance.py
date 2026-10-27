@@ -73,6 +73,7 @@ class Match(unittest.TestCase):
         for kw in [dict(ok=False), dict(status=5), dict(reu_bounds=dict(ok=False, dma_outside=4)), dict(reu_bounds=None),
                    dict(replay_ended=False), dict(replay_applied=3), dict(replay_end_paired=False),
                    dict(replay_end_paired=None), dict(replay_unpaired_count=1), dict(replay_skipped=['TIME5']),
+                   dict(masked_dead_superbank=1),
                    dict(replay_differences=2), dict(replay_differences=None), dict(replay_matched_cs=[]),
                    dict(replay_matched_cs=[60]), dict(requested_cs=3, replay_matched_cs=[3]), dict(commit='0123456789ab'),
                    dict(commit=HEAD + ' (dirty)'), dict(error=['FAIL: no snapshot'])]:
