@@ -1,0 +1,39 @@
+{
+ "sn1_poly": {
+  "lm_call": "3557",
+  "cm_call": "3556",
+  "same_table": true,
+  "table": [
+   "00003",
+   "14441",
+   "37325",
+   "53250",
+   "60764",
+   "12146",
+   "21276",
+   "75466",
+   "71471",
+   "00236",
+   "32757"
+  ],
+  "cm_polish": "03557",
+  "cm_polyret": "03572"
+ },
+ "rope_differences": [
+  {
+   "address": "34,3215",
+   "original": "05e0",
+   "fixture": "05de",
+   "file": "P20-P25.agc",
+   "listing": "025960,001104: 34,3215           01360                                    ALTVAR                        \t# BACKUP OPTICS"
+  },
+  {
+   "address": "34,3765",
+   "original": "a9ce",
+   "fixture": "a9d0",
+   "file": null,
+   "listing": "bank checksum (bugger) word"
+  }
+ ],
+ "ok": true
+}

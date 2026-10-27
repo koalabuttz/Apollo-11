@@ -3169,7 +3169,16 @@
             "sha256": "940e54bb21270ba4dbc39c46f694578560c720e84533969f68090923738c9603"
           }
         },
-        "review_scope": "Complete original MYSUBS algorithms and declarations within original bank21/E6 fixed-code caller domain; no whole-application claim."
+        "review_scope": "Complete original MYSUBS algorithms and declarations within original bank21/E6 fixed-code caller domain; no whole-application claim.",
+        "qualification_notes": [
+          {
+            "note": "#25: the proof (evidence/cm-mysubs-proof.json) ran on the indentation-repaired fixture rope 2ba31de9, not the byte-original 6e3150ae. tools/cm_trig_rope_check.py shows the two ropes differ only at 34,3215 (an ALTVAR operand in P20-P25) and 34,3765 (bank 34's checksum word), outside this file's code (20,3612-21,2104), so the proof holds for the byte-original rope.",
+            "evidence": {
+              "path": "evidence/cm-trig-rope-check/result.json",
+              "sha256": "64299829c7d6a385a47f2a9e82310010b1ce2a59ba4787af9760de957e5d824b"
+            }
+          }
+        ]
       }
     },
     {
@@ -4660,7 +4669,16 @@
             "path": "evidence/cm-powered-subs/cm-powered-subs-closure.json",
             "sha256": "475c25713b3c52edbd02c630940456692df1c88f314eac7ae91bc23f61f689bf"
           }
-        }
+        },
+        "qualification_notes": [
+          {
+            "note": "#25: src/cm_powered_trig.c (and src/sband_trig.c on the CM) run the LM P66 trig kernel for interpretive SIN/COS and store POLISH 03557 and TEM1 (POLYRET) 03572. tools/cm_trig_rope_check.py shows the kernel is the CM polynomial (Comanche055 and Luminary099 SN1 have the same TC POLY table) and that 03557 and 03572 are the CM SN1 call's own POLY table and return addresses (TC POLY at 00,3556), so every CM SIN/COS leaves exactly these words; they are not register debris.",
+            "evidence": {
+              "path": "evidence/cm-trig-rope-check/result.json",
+              "sha256": "64299829c7d6a385a47f2a9e82310010b1ce2a59ba4787af9760de957e5d824b"
+            }
+          }
+        ]
       }
     },
     {
@@ -5636,7 +5654,16 @@
             "path": "evidence/cm-single-return-proof.json",
             "sha256": "6ab9d7a1b700592a38dc64b2a7c416cd64d2004a23771eb8909f0974c9aa3a80"
           }
-        }
+        },
+        "qualification_notes": [
+          {
+            "note": "#25: the proof (evidence/cm-single-return-proof.json) ran on the indentation-repaired fixture rope 2ba31de9, not the byte-original 6e3150ae. tools/cm_trig_rope_check.py shows the two ropes differ only at 34,3215 (an ALTVAR operand in P20-P25) and 34,3765 (bank 34's checksum word), outside this file's code (02,5074-5133), so the proof holds for the byte-original rope.",
+            "evidence": {
+              "path": "evidence/cm-trig-rope-check/result.json",
+              "sha256": "64299829c7d6a385a47f2a9e82310010b1ce2a59ba4787af9760de957e5d824b"
+            }
+          }
+        ]
       }
     },
     {
