@@ -163,11 +163,13 @@ def generators(root):
 
 
 def images(root, m, store_only=False):
-    """sha256 of each image a boot or a store check names, as built now."""
+    """sha256 of each image a boot or a store check names, as built now. The
+    LM's also include the check disk, test-*.d81, built from its store: its
+    bootable doc lists it (#950)."""
     out = {}
     pats = [('flight-store', f'{m}.reu')] + ([] if store_only else [
         ('flight-disk', f'{m}-*.d81'), ('flight-disk', f'{m}-*.d64'), ('flight-disk', f'{m}-loader.prg'),
-        ('flight-disk', f'{m}-resident.prg')])
+        ('flight-disk', f'{m}-resident.prg')] + ([('flight-disk', 'test-*.d81')] if m == 'lm' else []))
     for d, pat in pats:
         for f in sorted((root / 'build' / d).glob(pat)):
             out[f'{d}/{f.name}'] = sha(f)
