@@ -298,8 +298,8 @@ static unsigned due_steps(void){unsigned n=0;
  * leaves it to the table, as another holder takes it on the C64. So the
  * host takes interrupts between the same two words as the C64, not after
  * a whole chain of them. core_mct: the slots' charge; core_ran: whether
- * the core ran the routine (core_misses: its charge was not the words
- * yaAGC fetched over it, word_mct). */
+ * the core ran the routine (core_misses, on the work clock only: its
+ * charge was not the words yaAGC fetched over it, word_mct). */
 #if RK_LM
 #define CORE lm_interp_core
 #define CORE_MCT lm_interp_core_mct
@@ -320,6 +320,13 @@ static unsigned long core_fit,core_yaagc,core_err,core_spans;
 static void core_charge_report(void){
  if(core_spans)printf("interpreter charge: fitted %lu MCT, yaAGC %lu MCT (%+.1f%%) over %lu routines; mean |error| %.1f MCT per routine\n",
   core_fit,core_yaagc,core_yaagc?100.0*((double)core_fit-(double)core_yaagc)/(double)core_yaagc:0.0,core_spans,(double)core_err/(double)core_spans);}
+/* core_misses compares with word_mct, which lockstep counts only on the
+ * work clock (word_fetch); off it the line says n/a, not a miss for every
+ * routine. */
+static void core_module_report(void){
+ printf("interpreter module: %lu routines, %lu slots; ",core_routines,core_slots);
+ if(work)printf("%lu charged other than yaAGC's words\n",core_misses);else printf("words charged vs yaAGC's: n/a (work clock only)\n");
+ core_charge_report();}
 static int core_ran;
 static enum exec_status core_run(const agc_native_program *p,apollo_overlay_state *s,void *x){
  /* As platform/c64/interp_module.c: the clock starts at 0x8000 less the
@@ -1925,7 +1932,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     while(rp_next<=now(s.words)-rp_t0)rp_next+=rp_every;}
    if(rp_after==~0ul&&rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
     rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);fclose(rp_outs);rp_outs=0;printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
-    if(core_routines){printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);core_charge_report();}
+    if(core_routines){core_module_report();}
     if(++rp_win>=rp_chain){char b[640];rp_after=rp_after_last=now(s.words)-rp_t0;
      snprintf(b,sizeof b,"%s.after-replay",rp_win>1u?rp_path:rp_base);rp_out=fopen(b,"wb");
      snprintf(b,sizeof b,"%s.after",rp_win>1u?rp_path:rp_base);rp_ends=fopen(b,"wb");
@@ -2089,7 +2096,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     if(st==EXEC_OK){
      if(core_ran){++core_routines;
       if(n>=0){core_fit+=core_mct;core_yaagc+=span_mct;core_err+=core_mct>span_mct?core_mct-span_mct:span_mct-core_mct;++core_spans;}
-      if(n>=0&&core_mct!=word_mct){++core_misses;
+      if(n>=0&&work&&core_mct!=word_mct){++core_misses;
        if(getenv("FLIGHT_CORE_LOG"))printf("core charge %lu, yaAGC's words %lu: Z %05o LOC %05o to Z %05o LOC %05o, %s\n",core_mct,word_mct,
         (unsigned)before.words[5],(unsigned)before.words[0164],(unsigned)s.words[5],(unsigned)s.words[0164],e->name);}}
      if(scaled){const int rp_on=rp_out&&!snap_path;const entry *ce=work&&rp_on&&!core_ran&&weight(e)!=FLIGHT_PER_WORD?charged(before.words,io0.superbank,e,charge_last):e;unsigned w=!weight(e)||weight(ce)==FLIGHT_PER_WORD||!weight(ce)?weight(e):weight(ce);
@@ -2137,7 +2144,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule (%lu with the native rule armed); yaAGC's own alarm inside %lu spans\n",wm_alarms,wm_stuck,wm_windows,wm_disagree,wm_missed,wm_ya_tripped);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
- if(core_routines){printf("interpreter module: %lu routines, %lu slots; %lu charged other than yaAGC's words\n",core_routines,core_slots,core_misses);core_charge_report();}
+ if(core_routines){core_module_report();}
  printf("native routines yaAGC did not match (%u):\n",nmisses);
  for(i=0;i<nmisses;++i){unsigned k,d=0;printf("  %s %02o,%04o %s: %lu times;",misses[i].in?"interp":"basic ",misses[i].key/1024u,misses[i].key%1024u+02000u,misses[i].name,misses[i].count);
   if(!misses[i].arrived)printf(" yaAGC never reached the native continuation Z %05o\n",(unsigned)misses[i].word[5]);
