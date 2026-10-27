@@ -133,9 +133,9 @@ module's weight (the host index lists the table again with that module,
 slot 5). The LM's `lm_q_r_axis` carries the jet writes
 (`lm_t6rupt_jets_hot_routines`): P66's attitude-hold pass runs CHEKSTIK
 there, and its WRITEV -1 loaded the 01E4 wrapper and then the excursion
-again for NOROTAT +5. `lm-landing-ascent-nassp` from 126000 cs (1000 cs)
-went from 26.291x to 25.687x real time, 2,938 to 2,745 loads; P63 from
-17500 cs is unchanged.
+again for NOROTAT +5. On 66afd4c2, `lm-landing-ascent-nassp` from
+126000 cs (1000 cs) went from 26.325x to 25.720x real time, 2,940 to 2,745
+loads; P63 from 17500 cs is unchanged (21.826x, 21.827x).
 
 A DOWNRUPT runs in one resident step. It used to take three: the lead-in
 wrapper (vector 04040 to DODOWNTM), the down-telemetry module (DODOWNTM,
