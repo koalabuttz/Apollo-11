@@ -1483,9 +1483,11 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
   if(n&&(quiet()||(m.SubstituteInstruction&&!m.PendFlag&&!m.ExtraDelay&&!m.IndexValue&&!m.ExtraCode))
      &&(((at=point(view(),(agc_word)m.OutputChannel7,&in))==target&&in==tin)||goto_seam(target,tin,after,at,in,superbank))){
    /* An interpretive step (SWITCH's TS Q) may leave yaAGC's Q with bit 16,
-    * a copy of bit 15, where the native frontier holds 15 bits (#409). */
-   for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&!cdu_counter(i)
-                          &&(i==2u&&interp?(mword(2)^after->words[2])&077777u:mword(i)!=after->words[i]))break;
+    * a copy of bit 15, where the native frontier holds 15 bits (#409): Q
+    * also matches the native word sign-extended from bit 15, and a real
+    * overflow (bit 16 not a copy of bit 15) still differs (#512). */
+   for(i=0;i<2048u;++i)if((scaled||!(i>=024u&&i<=031u))&&i!=5u&&!cdu_counter(i)&&mword(i)!=after->words[i]
+                          &&!(i==2u&&interp&&mword(2)==(agc_word)(after->words[2]|((after->words[2]&040000u)<<1))))break;
    int words_agree=i==2048u;
    if(words_agree&&!channels_differ(hw)){adopt(after,hw);*pending|=got;substitute=m.SubstituteInstruction;span_mct=(unsigned long)(m.CycleCounter-c0);word_mct=words;return n;}
    if(first[5]==077777u){for(i=0;i<2048u;++i)first[i]=mword(i);first_mct=(unsigned long)(m.CycleCounter-c0);first_words=words;timed=*after;timed_hw=*hw;adopt(&timed,&timed_hw);got_first=got;}
