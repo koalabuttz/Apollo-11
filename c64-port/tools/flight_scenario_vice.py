@@ -952,7 +952,9 @@ def main():
                         f"{hold['time1']}{hold['stolen_note']}")
                 steal = 'work_mct' in hold
                 if steal:
-                    # An overload window gates the hold without its stolen MCT.
+                    # Under FLIGHT_STEAL the host also logs its work hold (the hold
+                    # without its stolen MCT): an overload window gates on it, a
+                    # window at the flight's steal on the elapsed hold (below).
                     r.update(hold_host_work_mct=hold['work_mct'], hold_host_work_stolen=hold['work_stolen'])
                     line += (f"; work max {hold['work_mct']} MCT at TIME1 {hold['work_time1']} "
                              f"({hold['work_stolen']} stolen)")
