@@ -1,8 +1,15 @@
 {
  "Luminary099": {
-  "since": "#969 B8 (restart verdicts tightened by #951 after the L run; window M regenerates the doc)",
+  "since": "#961 (P66 jet writes ride in lm_q_r_axis; moves lm.reu and disks) and #969 B8; window M re-accepts both",
   "criteria": {
    "recovery_and_restart_tests": "#969 B8: #951 fails a host row with no sample_problems record; lm-p00 and lm-v69 at L have none (a record gap: the host gives [] at the tip)"
+  },
+  "files": {
+   "flight-disk/lm-1.d81": "4d21c3e550e808b6171e7e375d3f70107eb1d7bb53dfed6ab0cdd9d4742a7ba8",
+   "flight-store/lm.reu": "1703ed873137a9bb6a7cdbb3b845617a6aa8303e2714b328c04bdd348bb99e50",
+   "flight-disk/lm-1.d64": "6aa378dcf5b157307e6935ba41a78c9310222700ab14e40eb06d272de82b4457",
+   "flight-disk/lm-4.d64": "0e0c071e7ddce87426eb02de76d5c95fe19d280ff0b47bf32b929e2d8d772fc6",
+   "flight-disk/lm-5.d64": "d9561750589d1b4c66ed7f2990270c43b4b48464c14042851124875095271749"
   }
  },
  "Comanche055": {
