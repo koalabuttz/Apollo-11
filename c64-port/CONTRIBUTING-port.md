@@ -114,7 +114,10 @@ hash and deletes the branch. Commit only `evidence/<id>/SHA256.json`,
 
 - shared-ledger guard, milestone files render, and published evidence for the
   milestones a PR touches;
-- `tools/port_coverage.py` (the inventory and immutable-source audit);
+- `tools/port_coverage.py` (the inventory and immutable-source audit). A new
+  `src/*.c` or `*.inc` must be named in its AGC file's `native_files` or
+  source-to-native map, or listed in `docs/unmapped-native-sources.txt` as
+  shared code; drop a listed file's line once it is mapped or deleted (#22);
 - host and sanitizer targets the change can affect (`tools/ci_affected.py`,
   following `#include "..."` from each target's sources), or the whole suite
   when shared plumbing changes;
