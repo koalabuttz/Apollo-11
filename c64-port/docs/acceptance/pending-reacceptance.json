@@ -19,7 +19,7 @@
    "flight-store/cm.reu": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275"
   },
   "criteria": {
-   "device_adapter_tests": "#992 (#942 B3): cm-p20-vhf-dropout's VHFCNT check now shows its host_only reason instead of the generic host-only text; verdict unchanged"
+   "device_adapter_tests": "#992 (#942 B3): cm-p20-vhf-dropout's VHFCNT check now shows its host_only reason instead of the generic host-only text; verdict unchanged; #1001: the optics-drive and TVC roles also count the host's trace of the drive counters 050-054, so their role text and doc line change; verdict unchanged (PASS)"
   }
  }
 }
