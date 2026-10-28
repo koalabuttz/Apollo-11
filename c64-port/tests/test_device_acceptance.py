@@ -391,6 +391,62 @@ class Doc(unittest.TestCase):
         self.assertIn('## Failures', text)
 
 
+class Rescore(unittest.TestCase):
+    """rescore() re-judges a committed doc from its stored evidence (review-1028 B2')."""
+
+    def run_rescore(self, tab_written, tab_now, mutate=None):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            ev = root / 'evidence/lm-acceptance-devices'
+            ev.mkdir(parents=True)
+            run = {k: v for k, v in window().items() if not k.startswith('_')}
+            (ev / 'lm-a-100.json').write_text(json.dumps(run))
+            (ev / 'host-summary.json').write_text(json.dumps([host_row()]))
+            targets = da.make_targets()  # read from the real tree before ROOT moves
+            with mock.patch.object(da, 'ROOT', root), \
+                    mock.patch.object(da, 'make_targets', lambda: targets), mock.patch.object(fhd, 'FLIGHT', FLIGHT), \
+                    mock.patch.object(da, 'windows', lambda m: [('lm-a', 100, 120, 60)]), \
+                    mock.patch.dict(da.offnom.ROWS, {'lm': []}), mock.patch.object(da.offnom, 'symbols', lambda m: {}):
+                r = dict(run, _evidence=da.cite(ev / 'lm-a-100.json'), _env={})
+                r['_why'] = da.not_matched(r, 120, HEAD)
+                out, bad = da.assess('lm', tab_written, [r], [host_row()], HEAD)
+                off_lines, off_bad = da.offnom.section([], [r], da.first_diff, da.busy_note)
+                da.write_doc('lm', out, bad + off_bad, [r], da.cite(ev / 'host-summary.json'), '0' * 64, HEAD,
+                             off_lines)
+                if mutate:
+                    mutate(root, ev)
+                with mock.patch.object(da, 'roles', lambda m: tab_now):
+                    return da.rescore('lm')
+
+    def test_doc_rejudges_to_itself(self):
+        same, why = self.run_rescore(table(), table())
+        self.assertTrue(same, why)
+        self.assertIn('(1 windows, ', why)  # the two-role table fails coverage; it still re-judges to itself
+
+    def test_criteria_text_change_is_stale(self):
+        # A role's criteria text changed (as #984/#995 did) but no store byte moved.
+        same, why = self.run_rescore(table(), table(jets_name='Jets and engine'))
+        self.assertFalse(same)
+        self.assertIn('lines differ', why)
+
+    def test_edited_doc_or_run_is_stale(self):
+        def doc(root, ev):
+            f = root / 'docs/acceptance/Luminary099-device_adapter_tests.md'
+            f.write_text(f.read_text().replace('Jets', 'Thrusters', 1))
+        self.assertFalse(self.run_rescore(table(), table(), doc)[0])
+
+        def run(root, ev):
+            f = ev / 'lm-a-100.json'
+            f.write_text(json.dumps(dict(json.loads(f.read_text()), replay_differences=3)))
+        self.assertFalse(self.run_rescore(table(), table(), run)[0])
+
+        def gone(root, ev):
+            (ev / 'lm-a-100.json').unlink()
+        same, why = self.run_rescore(table(), table(), gone)
+        self.assertFalse(same)
+        self.assertIn('is not stored', why)
+
+
 class OffNominal(unittest.TestCase):
     """The Off-nominal inputs section (tools/device_offnominal.py)."""
 

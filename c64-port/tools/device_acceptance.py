@@ -650,6 +650,13 @@ def assess(m, table, runs, host, commit):
 
 
 def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
+    path = ROOT / 'docs/acceptance' / f'{PROGRAM[m]}-device_adapter_tests.md'
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(doc_text(m, assessed, bad, runs, host_cite, store, commit, off_lines))
+    return path
+
+
+def doc_text(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
     p = PROGRAM[m]
     store_line = (f"The C64 windows run the store `flight-store/{m}.reu` (sha256 `{store}`), each with its own "
                   'resident PRG linked by tools/flight_scenario_vice.py.' if store else
@@ -731,10 +738,69 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
               f'python3 tools/device_acceptance.py {m}   # host differential + the windows above',
               '# one window: python3 tools/flight_scenario_vice.py --scenario <scenario> --snap-cs <cs> --cs <n> --replay --replay-every <every>',
               '```', '']
-    path = ROOT / 'docs/acceptance' / f'{p}-device_adapter_tests.md'
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text('\n'.join(lines))
-    return path
+    return '\n'.join(lines)
+
+
+def cite(path):
+    """How the doc names a stored evidence file."""
+    return f'`{path.relative_to(ROOT)}` (sha256 `{sha(path)[:16]}...`)'
+
+
+RUN_ROW = re.compile(r'^\| [^|]+ \| [^|]+ \| [^|]+ \| [^|]* \| [^|]+ \| '
+                     r'`(evidence/[^`]+\.json)` \(sha256 `[0-9a-f]+\.\.\.`\) \|$', re.M)
+
+
+def rescore(m):
+    """(same, text): re-judge the committed device doc from the evidence it
+    stores (host summary, window results, off-nominal host logs) with this
+    tool and its roles, and compare it with the doc as it stands. A change to
+    the roles, windows or verdict text leaves the store bytes alone, so
+    freshness by bytes would call an older doc current (#942 B2,
+    review-1028 B2'). The off-nominal host logs are re-read, not re-run;
+    a stored log is taken as exit 0, since a run that exits otherwise prints
+    no summary lines and fails its row either way."""
+    path = ROOT / 'docs/acceptance' / f'{PROGRAM[m]}-device_adapter_tests.md'
+    doc = path.read_text()
+    commit = re.search(r'at commit `([^`]+)`', doc)
+    store = re.search(rf'`flight-store/{m}\.reu` \(sha256 `([0-9a-f]{{64}})`\)', doc)
+    ev = ROOT / 'evidence' / f'{m}-acceptance-devices'
+    summary = ev / 'host-summary.json'
+    if not (commit and summary.is_file()):
+        return False, 'the device doc has no commit, or its host summary is not stored'
+    commit = commit[1]
+    try:
+        table = offnom.symbols(m)
+    except OSError:
+        return False, 'not re-judged: no build/fixed-data assembly listing (run make flight-store)'
+    host = json.loads(summary.read_text())
+    asked = {(sc, snap): cs for sc, snap, cs, _ in windows(m)}
+    runs = []
+    for rel in RUN_ROW.findall(doc):
+        f = ROOT / rel
+        if not f.is_file():
+            return False, f'{rel} (a window the doc lists) is not stored'
+        r = json.loads(f.read_text())
+        r['_evidence'] = cite(f)
+        r['_env'] = env_of(r['scenario'])
+        r['_why'] = not_matched(r, asked.get((r['scenario'], r.get('snap_cs'))), commit)
+        runs.append(r)
+    off = []
+    for row in offnom.ROWS[m]:
+        log = ev / f"{row['scenario']}.log"
+        if not log.is_file():
+            return False, f'{log.relative_to(ROOT)} (an off-nominal host log) is not stored'
+        res = offnom.judge(row, table, log.read_text(errors='replace'), 0, log)
+        res['evidence'] = cite(log)
+        off.append(dict(row=row, host=res))
+    assessed, bad = assess(m, roles(m), runs, host, commit)
+    off_lines, off_bad = offnom.section(off, runs, first_diff, busy_note)
+    text = doc_text(m, assessed, bad + off_bad, runs, cite(summary), store[1] if store else None, commit, off_lines)
+    if text == doc:
+        return True, f"re-judges to the doc ({len(runs)} windows, {'FAIL' if bad + off_bad else 'PASS'})"
+    old = [x for x in doc.splitlines() if x not in set(text.splitlines())]
+    was, now = 'Result: **PASS**' in doc[:600], not (bad + off_bad)
+    return False, ('re-judged with this tool, ' + (f"result {'PASS' if was else 'FAIL'} -> {'PASS' if now else 'FAIL'}, "
+                   if was != now else '') + f'{len(old)} lines differ, first: {old[0][:120] if old else "(order)"}')
 
 
 def run_window(scenario, snap, cs, every, out):

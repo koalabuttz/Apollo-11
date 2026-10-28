@@ -40,7 +40,9 @@ the scoring in program_acceptance.py decide what the integrated doc
 credits. So each program's integrated doc is also re-scored from the
 evidence it cites with the current map and tool (program_acceptance.py
 --rescore), and so is each recovery and restart doc, re-judged with
-restart_acceptance.py's verdicts (#969 B8). A doc whose counts or result
+restart_acceptance.py's verdicts (#969 B8), and each device doc, rebuilt
+from its stored windows and host logs with device_acceptance.py's roles and
+text (review-1028 B2'). A doc whose counts or result
 would change is CRITERIA STALE and fails like a byte move (#942 B2). A
 pending entry with a "criteria" reason reports it without failing, the
 same way: a string covers every re-scored doc, a dict maps each category
@@ -58,6 +60,7 @@ import time
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import program_acceptance  # noqa: E402
 import restart_acceptance  # noqa: E402
+import device_acceptance  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PROGRAMS = {'Luminary099': 'lm', 'Comanche055': 'cm'}
@@ -230,7 +233,8 @@ def head():
 # re-scoring function, and the run that regenerates the doc.
 RESCORE = (('integrated_program_tests', program_acceptance.rescore,
             'program_acceptance.py {m} (--no-run when the results exist)'),
-           ('recovery_and_restart_tests', restart_acceptance.rescore, 'restart_acceptance.py {m}'))
+           ('recovery_and_restart_tests', restart_acceptance.rescore, 'restart_acceptance.py {m}'),
+           ('device_adapter_tests', device_acceptance.rescore, 'device_acceptance.py {m}'))
 
 
 def criteria(entry, category):
