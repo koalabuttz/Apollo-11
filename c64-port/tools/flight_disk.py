@@ -804,6 +804,7 @@ def vice(a, m, info):
         mon.go()
         t0 = time.time()
         state = 0
+        attached = 1  # disk 1 is in the drive at the start
         budget = int(a.load_c64 * PAL_HZ)
         while time.time() - t0 < a.timeout:
             time.sleep(2)
@@ -820,7 +821,12 @@ def vice(a, m, info):
                 # in the drive) or READ ERROR.
                 rows = [r for r in screen_text(mon.mem(0x0400, 0x0400 + 999), 25) if r.strip()]
                 result.setdefault('swap_prompts', []).append(' '.join(r.strip() for r in rows[-2:]))
-                mon.cmd(f'attach "{disks[d - 1]}" 8')
+                # Asked again for the disk already in the drive (a 1541 not
+                # yet ready after the swap): RETURN only, as a person would.
+                # Attaching it again would restart VICE's disk change.
+                if attached != d:
+                    mon.cmd(f'attach "{disks[d - 1]}" 8')
+                    attached = d
                 # RETURN into the keyboard buffer.
                 mon.cmd('> 0277 0d')
                 mon.cmd('> 00c6 01')
