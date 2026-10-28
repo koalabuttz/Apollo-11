@@ -982,13 +982,13 @@ def _tmp(path):
     return path.with_name(f'{path.name}.{os.getpid()}.{threading.get_ident()}.tmp')
 
 
-def scaled_watchman_bad(watchman):
+def scaled_watchman_bad(watchman, sched):
     """A scaled row's night watchman fails when the native rule and yaAGC's
     NEWJOB accesses disagree at any check, on any schedule (#912 item 5).
     The alarm may sound only where yaAGC's accesses would sound it too: a
-    job starved by interrupts on the wall-clock schedules. No summary line
-    fails too."""
-    return not watchman or bool(watchman['disagree'])
+    job starved by interrupts on the wall-clock schedules. On the work clock
+    (W) it must not sound at all (#997 R4). No summary line fails too."""
+    return not watchman or bool(watchman['disagree']) or (sched == 'W' and bool(watchman['alarms']))
 
 
 RUPT_LOCK_LINE = re.compile(
@@ -1026,9 +1026,8 @@ def scaled_rupt_lock_bad(rupt_lock):
 # Each row must sound only its own flag, first at 1526 cs (the first check
 # after the poke), with the native flags agreeing with yaAGC's at every
 # check. Neither loop reaches a boundary outside an interrupt, where the
-# harness stops at the row's 1600 cs: rupt-lock runs to the scaled cap
-# (1000 cs more); no-rupt's single bridged span hides its NEWJOB reads
-# from the night watchman's native rule, which restarts it at 1664 cs.
+# harness stops at the row's 1600 cs, so both run to the scaled cap (1000
+# cs more). Both loops read NEWJOB, so the night watchman stays silent.
 FORCED_AT = 1500
 _ADVAN = {'lm': 0o3214, 'cm': 0o3231}       # Luminary099 01,3214; Comanche055 01,3231
 _LST2, _TIME3, _BBCON = 0o1410, 0o26, 0o2063  # both programs; BBCON: bank 01, E3
@@ -1307,7 +1306,7 @@ def main():
                       r'.*?\((\d+) with the native rule armed\)', text, re.M)
         watchman = dict(alarms=int(w[1]), stuck_steps=int(w[2]), checks=int(w[3]), disagree=int(w[4]),
                         native_armed=int(w[5])) if w else None
-        if scaled_watchman_bad(watchman):
+        if scaled_watchman_bad(watchman, sched):
             watchman_bad.append(name)
         rupt_lock = rupt_lock_summary(text)
         if scaled_rupt_lock_bad(rupt_lock) or ('-forced-' in name and forced_rupt_lock_bad(name, text, rupt_lock)):
@@ -1336,7 +1335,7 @@ def main():
               f"routine by routine from yaAGC's MCT in: {', '.join(charge_over)}")
     if watchman_bad:
         print(f"FAIL: the night watchman's native rule disagreed with yaAGC's NEWJOB accesses at a check "
-              f"(or printed no summary), in: {', '.join(watchman_bad)}")
+              f"(or sounded on the work clock, or printed no summary), in: {', '.join(watchman_bad)}")
     if rupt_lock_bad:
         print(f"FAIL: the rupt lock alarm's native flags disagreed with yaAGC's at a check (or channel 77 bit 4 "
               f"was set in a span, a forced row did not sound only its own flag, or no summary), in: {', '.join(rupt_lock_bad)}")
