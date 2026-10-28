@@ -289,7 +289,8 @@ static uint16_t replay_now CASSETTE;
 #define DP_SCREEN_TEXT(name) __attribute__((noinline, section(".dp.screen." name)))
 #endif
 #define LOW_DATA __attribute__((section(".dsky.text.dp_steps")))
-LOW_DATA static const uint8_t phase_step[9] = {2, 3, 1, 2, 3, 1, 2, 3, 1};
+LOW_DATA const uint8_t dp_phase_step[9] = {2, 3, 1, 2, 3, 1, 2, 3, 1};
+#define phase_step dp_phase_step
 LOW_TEXT("dp_early") static uint8_t row_early(void)
 {
     uint8_t at = row.where >> 1 & 3u, step = phase_step[rk_tick_phase];
@@ -297,7 +298,8 @@ LOW_TEXT("dp_early") static uint8_t row_early(void)
 }
 /* (Set by load_snapshot: in the cassette buffer, not the resident's .data.) */
 static uint16_t rows_left CASSETTE;
-static uint8_t row_ready CASSETTE;
+uint8_t dp_row_ready CASSETTE; /* (by name in dp_budget) */
+#define row_ready dp_row_ready
 static uint32_t row_at CASSETTE, state_at CASSETTE;
 #ifdef DP_BUSY
 static uint16_t busy_last CASSETTE;
@@ -330,6 +332,9 @@ static uint16_t replay_cs(void)
  * it the run stops at the routine that reaches the row's place. A
  * boundary row (where bits 1-2) caps only in its own step. */
 uint16_t rk_phase_budget(void);
+/* (The sweep has resident room, and the hardware check disk keeps its
+ * accepted bytes: both keep the C.) */
+#if defined(DP_SWEEP) || defined(DP_HW_CHECK)
 __attribute__((noinline)) uint16_t dp_budget(void)
 {
     uint16_t now = replay_cs();
@@ -345,6 +350,38 @@ __attribute__((noinline)) uint16_t dp_budget(void)
     }
     return b;
 }
+#else
+/* The same in 6502, for the resident's room (#990: the LM busy harness had
+ * 26 bytes): the clock is read first, as the C read it (dp_window_cs keeps
+ * replay_now), then the row's place is tested against it: row.cs ($03F2)
+ * <= now, where ($03F5) bits 1-2 0 or rk_tick_phase's step, row.work
+ * ($03FA) > rk_work. The cap, row.work - rk_work - 1 and at least 1
+ * (an idle run charges its whole budget, and a 0 would stall the work
+ * clock short of the row), wins if below rk_phase_budget. Out: A low, X
+ * high. Uses Y and __rc4-__rc6 (rk_limit keeps its own across the call). */
+_Static_assert(__builtin_offsetof(dp_row, where) == 3u && __builtin_offsetof(dp_row, work) == 8u,
+               "dp_budget reads the row's where at $03F5 and work at $03FA");
+__asm__(".section .text.dp_budget,\"ax\",@progbits\n"
+        ".globl dp_budget\n"
+        ".type dp_budget,@function\n"
+        "dp_budget:\n"
+        "  jsr dp_window_cs\n" /* A:X now */
+        "  ldy dp_row_ready\n  beq 9f\n"
+        "  cmp $03f2\n  txa\n  sbc $03f3\n  bcc 9f\n" /* now < row.cs */
+        "  lda $03f5\n  lsr a\n  and #3\n  beq 1f\n"
+        "  ldy rk_tick_phase\n  cmp dp_phase_step,y\n  bne 9f\n"
+        "1:\n  sec\n  lda $03fa\n  sbc rk_work\n  sta __rc4\n"
+        "  lda $03fb\n  sbc rk_work+1\n  sta __rc5\n  bcc 9f\n" /* row.work < rk_work */
+        "  ora __rc4\n  beq 9f\n"                               /* equal */
+        "  lda __rc4\n  bne 2f\n  dec __rc5\n2:\n  dec __rc4\n" /* cap - 1 */
+        "  lda __rc4\n  ora __rc5\n  bne 3f\n  inc __rc4\n3:\n" /* at least 1 */
+        "  jsr rk_phase_budget\n  sta __rc6\n"
+        "  cmp __rc4\n  txa\n  sbc __rc5\n  bcc 4f\n" /* budget < cap: the budget */
+        "  lda __rc4\n  ldx __rc5\n  rts\n"
+        "4:\n  lda __rc6\n  rts\n"
+        "9:\n  jmp rk_phase_budget\n"
+        ".text\n");
+#endif
 static uint8_t sample_point(uint16_t t)
 {
     if (rk_pending || rk_hardware.in_interrupt) return 0;
