@@ -36,6 +36,14 @@ class CodeOf(unittest.TestCase):
         # A string continued over a line keeps the next line's indentation.
         self.assertNotEqual(code_of('a.c', 'char *s = "a\\\n  b";'), code_of('a.c', 'char *s = "a\\\nb";'))
 
+    def test_backslash_space_newline_is_joined(self):
+        for tail in (' ', '\t', ' \t '):
+            self.assertEqual(code_of('a.c', f'// c \\{tail}\nint y = 1;\nint z;'),
+                             code_of('a.c', f'// c \\{tail}\nint y = 2;\nint z;'))
+
+    def test_trigraph_backslash_is_not_compared(self):
+        self.assertIsNone(code_of('a.c', '// note ??/\nint b;'))
+
     def test_python(self):
         self.assertEqual(code_of('a.py', 'x=1  # a\n'), code_of('a.py', 'x = 1\n# b\n'))
         self.assertNotEqual(code_of('a.py', 'x = 1'), code_of('a.py', 'x = 2'))
