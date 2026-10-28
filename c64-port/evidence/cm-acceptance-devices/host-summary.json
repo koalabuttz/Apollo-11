@@ -2,720 +2,720 @@
  {
   "scenario": "cm-entry-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 1389253,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 7100524,
+   "fitted": 6959696,
    "yaagc": 6902210,
-   "percent": 2.9,
+   "percent": 0.8,
    "routines": 29376,
-   "mean_abs_error": 34.3,
-   "abs_percent": 14.6,
+   "mean_abs_error": 25.4,
+   "abs_percent": 10.8,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge +2.9% net, 14.6% routine by routine, from yaAGC's MCT over 29376 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge +0.8% net, 10.8% routine by routine, from yaAGC's MCT over 29376 routines; within 20% net and 45% routine by routine"
   }
  },
  {
   "scenario": "cm-p52-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 1209437,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 1024436,
+   "fitted": 982792,
    "yaagc": 989248,
-   "percent": 3.6,
+   "percent": -0.7,
    "routines": 5194,
-   "mean_abs_error": 49.1,
-   "abs_percent": 25.8,
+   "mean_abs_error": 24.1,
+   "abs_percent": 12.7,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge +3.6% net, 25.8% routine by routine, from yaAGC's MCT over 5194 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge -0.7% net, 12.7% routine by routine, from yaAGC's MCT over 5194 routines; within 20% net and 45% routine by routine"
   }
  },
  {
   "scenario": "cm-p23-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 1870738,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 851516,
+   "fitted": 806760,
    "yaagc": 794959,
-   "percent": 7.1,
+   "percent": 1.5,
    "routines": 4691,
-   "mean_abs_error": 49.2,
-   "abs_percent": 29.0,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +7.1% net, 29.0% routine by routine, from yaAGC's MCT over 4691 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p40-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 3657377,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 4187520,
-   "yaagc": 4088096,
-   "percent": 2.4,
-   "routines": 17851,
-   "mean_abs_error": 56.6,
-   "abs_percent": 24.7,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +2.4% net, 24.7% routine by routine, from yaAGC's MCT over 17851 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p11-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 4444179,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 20220248,
-   "yaagc": 17168875,
-   "percent": 17.8,
-   "routines": 140033,
-   "mean_abs_error": 48.2,
-   "abs_percent": 39.3,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +17.8% net, 39.3% routine by routine, from yaAGC's MCT over 140033 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-tli-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 3859235,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 4638508,
-   "yaagc": 4721610,
-   "percent": -1.8,
-   "routines": 22460,
-   "mean_abs_error": 48.6,
-   "abs_percent": 23.1,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge -1.8% net, 23.1% routine by routine, from yaAGC's MCT over 22460 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p22-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1189461,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 3919720,
-   "yaagc": 3877106,
-   "percent": 1.1,
-   "routines": 22017,
-   "mean_abs_error": 49.2,
-   "abs_percent": 27.9,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +1.1% net, 27.9% routine by routine, from yaAGC's MCT over 22017 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-tei-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 2871690,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 2565772,
-   "yaagc": 2512482,
-   "percent": 2.1,
-   "routines": 11637,
-   "mean_abs_error": 52.6,
-   "abs_percent": 24.4,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +2.1% net, 24.4% routine by routine, from yaAGC's MCT over 11637 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p37-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 2159815,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 16253992,
-   "yaagc": 15617678,
-   "percent": 4.1,
-   "routines": 85741,
-   "mean_abs_error": 47.8,
-   "abs_percent": 26.2,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +4.1% net, 26.2% routine by routine, from yaAGC's MCT over 85741 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p20-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 663334,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 12676268,
-   "yaagc": 12605657,
-   "percent": 0.6,
-   "routines": 75165,
-   "mean_abs_error": 45.7,
-   "abs_percent": 27.2,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +0.6% net, 27.2% routine by routine, from yaAGC's MCT over 75165 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-csi-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1270648,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 3791120,
-   "yaagc": 3653154,
-   "percent": 3.8,
-   "routines": 19554,
-   "mean_abs_error": 46.6,
-   "abs_percent": 24.9,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +3.8% net, 24.9% routine by routine, from yaAGC's MCT over 19554 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-cdh-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 598054,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 10194724,
-   "yaagc": 10026449,
-   "percent": 1.7,
-   "routines": 50559,
-   "mean_abs_error": 40.3,
-   "abs_percent": 20.3,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +1.7% net, 20.3% routine by routine, from yaAGC's MCT over 50559 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-cdh-csm-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 553167,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 10830024,
-   "yaagc": 10627072,
-   "percent": 1.9,
-   "routines": 53770,
-   "mean_abs_error": 40.8,
-   "abs_percent": 20.6,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +1.9% net, 20.6% routine by routine, from yaAGC's MCT over 53770 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-rendezvous-tpm-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 2391162,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 36177008,
-   "yaagc": 35053971,
-   "percent": 3.2,
-   "routines": 203105,
-   "mean_abs_error": 46.0,
-   "abs_percent": 26.7,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +3.2% net, 26.7% routine by routine, from yaAGC's MCT over 203105 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-stable-orbit-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1533542,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 44124448,
-   "yaagc": 43259697,
-   "percent": 2.0,
-   "routines": 237095,
-   "mean_abs_error": 43.2,
-   "abs_percent": 23.7,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +2.0% net, 23.7% routine by routine, from yaAGC's MCT over 237095 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-stable-orbit-lm-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1499263,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 44601780,
-   "yaagc": 43751560,
-   "percent": 1.9,
-   "routines": 239325,
-   "mean_abs_error": 43.1,
-   "abs_percent": 23.6,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +1.9% net, 23.6% routine by routine, from yaAGC's MCT over 239325 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-tpi-search-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1036735,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 24058224,
-   "yaagc": 23464034,
-   "percent": 2.5,
-   "routines": 139279,
-   "mean_abs_error": 46.9,
-   "abs_percent": 27.8,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +2.5% net, 27.8% routine by routine, from yaAGC's MCT over 139279 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p20-vhf-dropout-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 803965,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 16798152,
-   "yaagc": 16601356,
-   "percent": 1.2,
-   "routines": 98173,
-   "mean_abs_error": 46.5,
-   "abs_percent": 27.5,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +1.2% net, 27.5% routine by routine, from yaAGC's MCT over 98173 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-uplink-accept-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 900162,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 4200,
-   "yaagc": 1761,
-   "percent": 138.5,
-   "routines": 30,
-   "mean_abs_error": 112.7,
-   "abs_percent": 192.0,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "few",
-   "text": "interpretive charge +138.5% net, 192.0% routine by routine, from yaAGC's MCT over 30 routines; fewer than 1000 routines, not bounded"
-  }
- },
- {
-  "scenario": "cm-uplink-reject-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 585205,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 24460,
-   "yaagc": 24550,
-   "percent": -0.4,
-   "routines": 183,
-   "mean_abs_error": 68.4,
-   "abs_percent": 51.0,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "few",
-   "text": "interpretive charge -0.4% net, 51.0% routine by routine, from yaAGC's MCT over 183 routines; fewer than 1000 routines, not bounded"
-  }
- },
- {
-  "scenario": "cm-p52-imu-fail-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1209426,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 1024436,
-   "yaagc": 989248,
-   "percent": 3.6,
-   "routines": 5194,
-   "mean_abs_error": 49.1,
-   "abs_percent": 25.8,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +3.6% net, 25.8% routine by routine, from yaAGC's MCT over 5194 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p52-imu-cage-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1212735,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 983960,
-   "yaagc": 941699,
-   "percent": 4.5,
-   "routines": 4948,
-   "mean_abs_error": 49.7,
-   "abs_percent": 26.1,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +4.5% net, 26.1% routine by routine, from yaAGC's MCT over 4948 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p52-gimbal-lock-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1274700,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 1024436,
-   "yaagc": 989248,
-   "percent": 3.6,
-   "routines": 5194,
-   "mean_abs_error": 49.1,
-   "abs_percent": 25.8,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +3.6% net, 25.8% routine by routine, from yaAGC's MCT over 5194 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p20-crew-verbs-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1011780,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 14028292,
-   "yaagc": 13957862,
-   "percent": 0.5,
-   "routines": 82215,
-   "mean_abs_error": 45.6,
-   "abs_percent": 26.9,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +0.5% net, 26.9% routine by routine, from yaAGC's MCT over 82215 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-p23-attached-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 1870197,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 856432,
-   "yaagc": 799019,
-   "percent": 7.2,
-   "routines": 4724,
-   "mean_abs_error": 49.4,
-   "abs_percent": 29.2,
-   "bound": {
-    "net": 20.0,
-    "routine": 45.0
-   },
-   "state": "ok",
-   "text": "interpretive charge +7.2% net, 29.2% routine by routine, from yaAGC's MCT over 4724 routines; within 20% net and 45% routine by routine"
-  }
- },
- {
-  "scenario": "cm-v49-maneuver-scaled-x1",
-  "mission": "cm",
-  "commit": "bab6fab33581",
-  "exit": 0,
-  "native_routines": 910781,
-  "routine_mismatches": [],
-  "unregistered": [],
-  "interpretive_charge": {
-   "fitted": 862132,
-   "yaagc": 865743,
-   "percent": -0.4,
-   "routines": 3766,
-   "mean_abs_error": 33.3,
+   "mean_abs_error": 24.5,
    "abs_percent": 14.5,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge -0.4% net, 14.5% routine by routine, from yaAGC's MCT over 3766 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge +1.5% net, 14.5% routine by routine, from yaAGC's MCT over 4691 routines; within 20% net and 45% routine by routine"
   }
  },
  {
-  "scenario": "cm-v49-att-scaled-x1",
+  "scenario": "cm-p40-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
-  "native_routines": 1283366,
+  "native_routines": 3657377,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 759824,
-   "yaagc": 758531,
-   "percent": 0.2,
-   "routines": 3322,
-   "mean_abs_error": 33.4,
+   "fitted": 3986320,
+   "yaagc": 4088096,
+   "percent": -2.5,
+   "routines": 17851,
+   "mean_abs_error": 26.2,
+   "abs_percent": 11.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge -2.5% net, 11.4% routine by routine, from yaAGC's MCT over 17851 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p11-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 4444179,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 17567200,
+   "yaagc": 17168875,
+   "percent": 2.3,
+   "routines": 140033,
+   "mean_abs_error": 22.8,
+   "abs_percent": 18.6,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +2.3% net, 18.6% routine by routine, from yaAGC's MCT over 140033 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-tli-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 3859235,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 4471380,
+   "yaagc": 4721610,
+   "percent": -5.3,
+   "routines": 22460,
+   "mean_abs_error": 26.4,
+   "abs_percent": 12.6,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge -5.3% net, 12.6% routine by routine, from yaAGC's MCT over 22460 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p22-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1189461,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3897216,
+   "yaagc": 3877106,
+   "percent": 0.5,
+   "routines": 22017,
+   "mean_abs_error": 23.3,
+   "abs_percent": 13.2,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +0.5% net, 13.2% routine by routine, from yaAGC's MCT over 22017 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-tei-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 2871690,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 2482084,
+   "yaagc": 2512482,
+   "percent": -1.2,
+   "routines": 11637,
+   "mean_abs_error": 26.0,
+   "abs_percent": 12.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge -1.2% net, 12.0% routine by routine, from yaAGC's MCT over 11637 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p37-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 2159815,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 16379768,
+   "yaagc": 15617678,
+   "percent": 4.9,
+   "routines": 85741,
+   "mean_abs_error": 29.9,
+   "abs_percent": 16.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +4.9% net, 16.4% routine by routine, from yaAGC's MCT over 85741 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p20-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 663334,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 12683376,
+   "yaagc": 12605657,
+   "percent": 0.6,
+   "routines": 75165,
+   "mean_abs_error": 23.5,
+   "abs_percent": 14.0,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +0.6% net, 14.0% routine by routine, from yaAGC's MCT over 75165 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-csi-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1270648,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 3734568,
+   "yaagc": 3653154,
+   "percent": 2.2,
+   "routines": 19554,
+   "mean_abs_error": 27.0,
+   "abs_percent": 14.5,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +2.2% net, 14.5% routine by routine, from yaAGC's MCT over 19554 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-cdh-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 598054,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 10271964,
+   "yaagc": 10026449,
+   "percent": 2.4,
+   "routines": 50559,
+   "mean_abs_error": 25.1,
+   "abs_percent": 12.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +2.4% net, 12.7% routine by routine, from yaAGC's MCT over 50559 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-cdh-csm-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 553167,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 10884256,
+   "yaagc": 10627072,
+   "percent": 2.4,
+   "routines": 53770,
+   "mean_abs_error": 25.2,
+   "abs_percent": 12.8,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +2.4% net, 12.8% routine by routine, from yaAGC's MCT over 53770 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-rendezvous-tpm-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 2391162,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 35394560,
+   "yaagc": 35053971,
+   "percent": 1.0,
+   "routines": 203105,
+   "mean_abs_error": 24.9,
+   "abs_percent": 14.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.0% net, 14.4% routine by routine, from yaAGC's MCT over 203105 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-stable-orbit-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1533542,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 43937568,
+   "yaagc": 43259697,
+   "percent": 1.6,
+   "routines": 237095,
+   "mean_abs_error": 24.4,
+   "abs_percent": 13.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.6% net, 13.4% routine by routine, from yaAGC's MCT over 237095 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-stable-orbit-lm-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1499263,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 44457216,
+   "yaagc": 43751560,
+   "percent": 1.6,
+   "routines": 239325,
+   "mean_abs_error": 24.4,
+   "abs_percent": 13.3,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.6% net, 13.3% routine by routine, from yaAGC's MCT over 239325 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-tpi-search-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1036735,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 23611864,
+   "yaagc": 23464034,
+   "percent": 0.6,
+   "routines": 139279,
+   "mean_abs_error": 24.6,
    "abs_percent": 14.6,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge +0.2% net, 14.6% routine by routine, from yaAGC's MCT over 3322 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge +0.6% net, 14.6% routine by routine, from yaAGC's MCT over 139279 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p20-vhf-dropout-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 803965,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 16697652,
+   "yaagc": 16601356,
+   "percent": 0.6,
+   "routines": 98173,
+   "mean_abs_error": 24.2,
+   "abs_percent": 14.3,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +0.6% net, 14.3% routine by routine, from yaAGC's MCT over 98173 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-uplink-accept-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 900162,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 1836,
+   "yaagc": 1761,
+   "percent": 4.3,
+   "routines": 30,
+   "mean_abs_error": 5.5,
+   "abs_percent": 9.4,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +4.3% net, 9.4% routine by routine, from yaAGC's MCT over 30 routines; fewer than 1000 routines, not bounded"
+  }
+ },
+ {
+  "scenario": "cm-uplink-reject-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 585205,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 25284,
+   "yaagc": 24550,
+   "percent": 3.0,
+   "routines": 183,
+   "mean_abs_error": 32.3,
+   "abs_percent": 24.1,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "few",
+   "text": "interpretive charge +3.0% net, 24.1% routine by routine, from yaAGC's MCT over 183 routines; fewer than 1000 routines, not bounded"
+  }
+ },
+ {
+  "scenario": "cm-p52-imu-fail-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1209426,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 982792,
+   "yaagc": 989248,
+   "percent": -0.7,
+   "routines": 5194,
+   "mean_abs_error": 24.1,
+   "abs_percent": 12.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge -0.7% net, 12.7% routine by routine, from yaAGC's MCT over 5194 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p52-imu-cage-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1212735,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 940588,
+   "yaagc": 941699,
+   "percent": -0.1,
+   "routines": 4948,
+   "mean_abs_error": 24.1,
+   "abs_percent": 12.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge -0.1% net, 12.7% routine by routine, from yaAGC's MCT over 4948 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p52-gimbal-lock-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1274700,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 982792,
+   "yaagc": 989248,
+   "percent": -0.7,
+   "routines": 5194,
+   "mean_abs_error": 24.1,
+   "abs_percent": 12.7,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge -0.7% net, 12.7% routine by routine, from yaAGC's MCT over 5194 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p20-crew-verbs-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1011780,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 14046216,
+   "yaagc": 13957862,
+   "percent": 0.6,
+   "routines": 82215,
+   "mean_abs_error": 23.6,
+   "abs_percent": 13.9,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +0.6% net, 13.9% routine by routine, from yaAGC's MCT over 82215 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-p23-attached-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1870197,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 810864,
+   "yaagc": 799019,
+   "percent": 1.5,
+   "routines": 4724,
+   "mean_abs_error": 24.5,
+   "abs_percent": 14.5,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge +1.5% net, 14.5% routine by routine, from yaAGC's MCT over 4724 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-v49-maneuver-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 910781,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 823164,
+   "yaagc": 865743,
+   "percent": -4.9,
+   "routines": 3766,
+   "mean_abs_error": 21.2,
+   "abs_percent": 9.2,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge -4.9% net, 9.2% routine by routine, from yaAGC's MCT over 3766 routines; within 20% net and 45% routine by routine"
+  }
+ },
+ {
+  "scenario": "cm-v49-att-scaled-x1",
+  "mission": "cm",
+  "commit": "78dcfd1c5f33",
+  "exit": 0,
+  "native_routines": 1283366,
+  "routine_mismatches": [],
+  "unregistered": [],
+  "interpretive_charge": {
+   "fitted": 725280,
+   "yaagc": 758531,
+   "percent": -4.4,
+   "routines": 3322,
+   "mean_abs_error": 21.1,
+   "abs_percent": 9.2,
+   "bound": {
+    "net": 20.0,
+    "routine": 45.0
+   },
+   "state": "ok",
+   "text": "interpretive charge -4.4% net, 9.2% routine by routine, from yaAGC's MCT over 3322 routines; within 20% net and 45% routine by routine"
   }
  },
  {
   "scenario": "cm-p21-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 1463448,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 1962660,
+   "fitted": 1949040,
    "yaagc": 1949476,
-   "percent": 0.7,
+   "percent": -0.0,
    "routines": 10351,
-   "mean_abs_error": 49.7,
-   "abs_percent": 26.4,
+   "mean_abs_error": 27.1,
+   "abs_percent": 14.4,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge +0.7% net, 26.4% routine by routine, from yaAGC's MCT over 10351 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge -0.0% net, 14.4% routine by routine, from yaAGC's MCT over 10351 routines; within 20% net and 45% routine by routine"
   }
  },
  {
   "scenario": "cm-p52-coarse-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 895599,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 194124,
+   "fitted": 197812,
    "yaagc": 195507,
-   "percent": -0.7,
+   "percent": 1.2,
    "routines": 1115,
-   "mean_abs_error": 53.3,
-   "abs_percent": 30.4,
+   "mean_abs_error": 31.3,
+   "abs_percent": 17.9,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge -0.7% net, 30.4% routine by routine, from yaAGC's MCT over 1115 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge +1.2% net, 17.9% routine by routine, from yaAGC's MCT over 1115 routines; within 20% net and 45% routine by routine"
   }
  },
  {
   "scenario": "cm-p52-optics-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 1209434,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 1024436,
+   "fitted": 982792,
    "yaagc": 989248,
-   "percent": 3.6,
+   "percent": -0.7,
    "routines": 5194,
-   "mean_abs_error": 49.1,
-   "abs_percent": 25.8,
+   "mean_abs_error": 24.1,
+   "abs_percent": 12.7,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge +3.6% net, 25.8% routine by routine, from yaAGC's MCT over 5194 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge -0.7% net, 12.7% routine by routine, from yaAGC's MCT over 5194 routines; within 20% net and 45% routine by routine"
   }
  },
  {
   "scenario": "cm-p41-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 3066616,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 2068272,
+   "fitted": 1945008,
    "yaagc": 2001125,
-   "percent": 3.4,
+   "percent": -2.8,
    "routines": 12532,
-   "mean_abs_error": 53.3,
-   "abs_percent": 33.4,
+   "mean_abs_error": 21.1,
+   "abs_percent": 13.2,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge +3.4% net, 33.4% routine by routine, from yaAGC's MCT over 12532 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge -2.8% net, 13.2% routine by routine, from yaAGC's MCT over 12532 routines; within 20% net and 45% routine by routine"
   }
  },
  {
   "scenario": "cm-v48-dap-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 757384,
   "routine_mismatches": [],
@@ -725,47 +725,47 @@
  {
   "scenario": "cm-p40-sps-fail-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 2208892,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 1007592,
+   "fitted": 982552,
    "yaagc": 976395,
-   "percent": 3.2,
+   "percent": 0.6,
    "routines": 5095,
-   "mean_abs_error": 48.5,
-   "abs_percent": 25.3,
+   "mean_abs_error": 25.9,
+   "abs_percent": 13.5,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge +3.2% net, 25.3% routine by routine, from yaAGC's MCT over 5095 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge +0.6% net, 13.5% routine by routine, from yaAGC's MCT over 5095 routines; within 20% net and 45% routine by routine"
   }
  },
  {
   "scenario": "cm-entry-overload-scaled-x1",
   "mission": "cm",
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "native_routines": 1172342,
   "routine_mismatches": [],
   "unregistered": [],
   "interpretive_charge": {
-   "fitted": 6407056,
+   "fitted": 6278832,
    "yaagc": 6234339,
-   "percent": 2.8,
+   "percent": 0.7,
    "routines": 26182,
-   "mean_abs_error": 34.4,
-   "abs_percent": 14.4,
+   "mean_abs_error": 25.3,
+   "abs_percent": 10.6,
    "bound": {
     "net": 20.0,
     "routine": 45.0
    },
    "state": "ok",
-   "text": "interpretive charge +2.8% net, 14.4% routine by routine, from yaAGC's MCT over 26182 routines; within 20% net and 45% routine by routine"
+   "text": "interpretive charge +0.7% net, 10.6% routine by routine, from yaAGC's MCT over 26182 routines; within 20% net and 45% routine by routine"
   }
  }
 ]

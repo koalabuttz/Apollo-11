@@ -73,7 +73,7 @@
   "pre_snapshot": "build/flight-restart/lm-p00-doi-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -194,12 +194,12 @@
   "requested_cs": 300,
   "host_holes": [],
   "downrupt": false,
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "log": "lm-p00-doi-restart-c64.log",
-  "log_sha256": "76c80547aea6224ab7d20cf7b9f2ed8ae2058eb3929c126cf5b48c4bc2f19643",
-  "store_sha256": "1703ed873137a9bb6a7cdbb3b845617a6aa8303e2714b328c04bdd348bb99e50",
-  "manifest_sha256": "7decef9389db0b4330f7e4b48d34012f2925b216f944a5217ed9b9b1e200d416",
+  "log_sha256": "f35f52ea5f3b0200daf19a51406ffbbdedea58995b4d6aa9d21bfc0b38854055",
+  "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
+  "manifest_sha256": "0eb9be88c871914934e4e5bdccebfe32f54f8dcc3df55070f00f03ea637de376",
   "prg_sha256": "40ae359dbabd85db05c17cd62c9eb758094978c7e7047d22a9325e387a4b3ba4"
  },
  "gojam_on_c64": null

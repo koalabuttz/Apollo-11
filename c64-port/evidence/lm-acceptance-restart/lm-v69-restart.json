@@ -71,7 +71,7 @@
   "pre_snapshot": "build/flight-restart/lm-v69-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -221,7 +221,7 @@
    },
    "ok": true
   },
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "log": "gojam-on-c64.log",
   "log_sha256": "e7f23ba73a6b46dcdb3136ec2acca320ec261f962c7cc640676d4229c7b90bd0"
  }

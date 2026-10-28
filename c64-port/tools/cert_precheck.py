@@ -959,7 +959,9 @@ def check_dsky_sweep(report, label, mission, name, accepted):
     tools/dsky_sweep_vice.py, docs/DSKY-SWEEP.md) for its mission: the full
     sweep's result committed as evidence/dsky-sweep/dsky-sweep.json
     (--cases all), with no failure but the clock class, and no entry but the
-    clock class in tools/dsky_sweep_known.json (the CI sample's ratchet).
+    clock class in tools/dsky_sweep_known.json (the CI sample's ratchet),
+    run with --replay-exact and no case left out of the compare, and with
+    the sweep's own item6 flag set unless a clock-class case explains it.
     The class is the sweep tool's (each known entry's signature, which the
     run checks), not the entry's reason. FAIL on a draft, WARN on a
     certificate already accepted complete. The clock class (only the
@@ -1011,12 +1013,20 @@ def check_dsky_sweep(report, label, mission, name, accepted):
     if stale:
         report.add(level, label, f"{src}'s {m} {' and '.join(stale)} hash is not "
                    'the current one (the full sweep ran on another build)', 'rerun the full sweep and commit it')
-    if not sweep.get('replay_exact') or sweep.get('skipped_cases'):
-        report.add('WARN', label, f"{src} was not run with --replay-exact or leaves words of "
+    loose = not sweep.get('replay_exact') or sweep.get('skipped_cases')
+    if loose:
+        report.add(level, label, f"{src} was not run with --replay-exact or leaves words of "
                    f"{sweep.get('skipped_cases', 0)} cases out of the compare: acceptance item 6 is not met",
                    'rerun the full sweep with --replay-exact')
     failed = [r for r in sweep.get('results', []) if r['m'] == m and not r['ok']]
     bad = [r for r in failed if r.get('class') != 'clock']
+    # The sweep's own item 6 flag (tools/dsky_sweep_vice.py) must agree: a
+    # report without it, or one that says false with nothing above to explain
+    # it, is not the full both-mission sweep this check reads it as (#862).
+    if sweep.get('item6') is not True and not loose and not bad and \
+            not any(r.get('class') == 'clock' for r in sweep.get('results', []) if not r['ok']):
+        report.add(level, label, f"{src} records item6 {sweep.get('item6')!r}: the sweep tool does not count it "
+                   'as acceptance item 6', 'rerun the full sweep on both missions with --replay-exact')
     if bad:
         report.add(level, label, f'{len(bad)} of the full DSKY sweep\'s {m} cases do not match the host on the C64 '
                    f"({', '.join(r['keys'] for r in bad[:6])}{' ...' if len(bad) > 6 else ''})",

@@ -72,6 +72,9 @@ RRU = 'src/resident_rupt.c'
 # The C64 replay windows a bare run takes (scenario, snapshot cs, window cs,
 # checkpoint every cs), each chosen for the roles whose inputs or outputs
 # move in it.
+# The optics-drive window's checkpoint spacing (cs): at most half the ~20 cs
+# an OPTDRIVE command holds, so a few percent of timing shift keeps one in it.
+OPTICS_EVERY = 10
 WINDOWS = {
     'lm': [('lm-p63-descent-thrust', 17500, 120, 120),   # PIPAs and THRUST under descent thrust
            ('lm-landing-ascent-nassp', 140000, 150, 50),   # touchdown, engine arm, PROCEED
@@ -99,7 +102,11 @@ WINDOWS = {
            ('cm-entry', 15100, 300, 50),                    # entry DAP: jets (channel 5)
            ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
            ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
-           ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
+           # optics drive: CDUT/CDUS follow 053/054. The roles see output words
+           # only at checkpoints, and OPTDRIVE's commands hold for about 20 cs
+           # (12280-12300 at 72c04f4d), so a checkpoint every 10 cs always lands
+           # in one; every 50 cs met them only when a checkpoint fell in by luck.
+           ('cm-p52-optics', 12250, 150, OPTICS_EVERY),
            ('cm-p52-optics', 17100, 100, 25),               # gyro torquing: CDUX-Z follow
            ('cm-v49-att', 13000, 700, 100)],                # the jets turn the CSM (FLIGHT_ATT): CDUX-Z follow
 }
@@ -146,6 +153,16 @@ def outputs(r):
 
 def any_window(r):
     return True
+
+
+def checkpoints(t, runs):
+    """How many checkpoints of runs show an output role on their own (its
+    window test on the start and that one checkpoint's host state), or None
+    for an input role, a role any window covers, or a run that recorded no
+    per-checkpoint outputs. A role one checkpoint shows hangs on timing."""
+    if t['dir'] != 'out' or t['window'] is any_window or any('states' not in outputs(r) for r in runs):
+        return None
+    return sum(1 for r in runs for st in outputs(r)['states'] if t['window']({**r, 'replay_outputs': st}))
 
 
 def erasable(*addrs):
@@ -625,6 +642,9 @@ def assess(m, table, runs, host, commit):
             bad.append(f"{t['key']}: no C64 window that exercises it matches the host")
         else:
             status = 'covered, with open items' if t['gap'] else 'covered'
+        t['checkpoints'] = checkpoints(t, matched) if matched else None
+        if t['checkpoints'] == 1:
+            print(f"warning: {t['key']}: one checkpoint shows it; a timing shift can lose the role", flush=True)
         out.append((t, status, ads, hrows, wins, matched))
     return out, bad
 
@@ -678,7 +698,11 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
             ['| host | none | | | NO |']
         d += ['', 'Host scenarios that drive it:', '']
         d += [f'- {n}: {state} ({x})' for n, state, x in hrows] or ['- none']
-        d += ['', f"C64 windows that exercise it ({t['how']}):", '']
+        n = t.get('checkpoints')
+        d += ['', f"C64 windows that exercise it ({t['how']})"
+              + (f"; {n} checkpoint{'s' if n != 1 else ''} of the matching windows show it on their own"
+                 + (' (**warning:** only one, so a timing shift can lose the role)' if n == 1 else '')
+                 if n is not None else '') + ':', '']
         d += [f"- {r['scenario']} {r['snap_cs']}+{r.get('requested_cs')}: "
               + ('matches the host at ' + ', '.join(map(str, r.get('replay_matched_cs') or [])) + ' cs'
                  + busy_note(r) if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \

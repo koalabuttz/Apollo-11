@@ -16,7 +16,7 @@
  "schedule": "1,1,2",
  "chunked": true,
  "exit": 0,
- "commit": "bab6fab33581",
+ "commit": "78dcfd1c5f33",
  "cia_interrupts": 25036,
  "periods_taken": 25036,
  "periods_dropped": 0,
@@ -26,18 +26,18 @@
  "routine_mismatches": [],
  "unregistered": [],
  "interpretive_charge": {
-  "fitted": 12676268,
+  "fitted": 12683376,
   "yaagc": 12605657,
   "percent": 0.6,
   "routines": 75165,
-  "mean_abs_error": 45.7,
-  "abs_percent": 27.2,
+  "mean_abs_error": 23.5,
+  "abs_percent": 14.0,
   "bound": {
    "net": 20.0,
    "routine": 45.0
   },
   "state": "ok",
-  "text": "interpretive charge +0.6% net, 27.2% routine by routine, from yaAGC's MCT over 75165 routines; within 20% net and 45% routine by routine"
+  "text": "interpretive charge +0.6% net, 14.0% routine by routine, from yaAGC's MCT over 75165 routines; within 20% net and 45% routine by routine"
  },
  "night_watchman": {
   "alarms": 0,
@@ -155,5 +155,5 @@
    6310
   ]
  },
- "log_sha256": "e7388dd5a07269325a149ff511d91d5fd1c26a2677a0ec29f7b9ec01d67b9700"
+ "log_sha256": "77a053fbe468aaf1641bb689cac39792a986519ee08b9fb11a48350966ce73d7"
 }

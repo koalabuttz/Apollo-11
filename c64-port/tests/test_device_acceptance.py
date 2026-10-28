@@ -170,6 +170,26 @@ class Adapters(unittest.TestCase):
                 for f, s, _ in t['host'] + t['c64']:
                     self.assertTrue(da.adapter_ok(f, s), f'{m} {t["key"]}: {f} {s}')
 
+    def test_the_optics_drive_window_checks_often_enough(self):
+        # OPTDRIVE's commands hold about 20 cs; the window's checkpoints must
+        # land in one whatever the timing (#993 moved them off 50 cs ones).
+        w = [x for x in da.WINDOWS['cm'] if x[:2] == ('cm-p52-optics', 12250)]
+        self.assertEqual(len(w), 1)
+        self.assertLessEqual(w[0][3], 10)
+
+    def test_checkpoints_count_the_states_that_show_an_output_role(self):
+        t = next(x for x in da.roles('cm') if x['key'] == 'optics-drive')
+        quiet = dict(channel_set={'channel 12': 2}, channel_changed={}, nonzero=[], changed=[])
+        moved = dict(quiet, nonzero=['0053'], changed=['0053'])
+        run = dict(replay_outputs=dict(moved, states=[dict(quiet, cs=50), dict(moved, cs=100), dict(quiet, cs=150)]))
+        self.assertEqual(da.checkpoints(t, [run]), 1)
+        two = dict(replay_outputs=dict(moved, states=[dict(moved, cs=10), dict(moved, cs=20)]))
+        self.assertEqual(da.checkpoints(t, [run, two]), 3)
+        self.assertIsNone(da.checkpoints(t, [dict(replay_outputs=moved)]))  # recorded before per-checkpoint outputs
+        tvc_on = dict(moved, channel_set={'channel 12': 0o200})
+        self.assertEqual(da.checkpoints(t, [dict(replay_outputs=dict(moved, states=[tvc_on]))]), 0)
+        self.assertIsNone(da.checkpoints(next(x for x in da.roles('cm') if x['dir'] == 'in'), [run]))
+
 
 class Roles(unittest.TestCase):
     def status(self, runs, host=None, tab=None):

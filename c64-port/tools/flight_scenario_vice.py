@@ -581,18 +581,23 @@ def channel_bits(rows, start):
 OUTPUT_WORDS = range(0o42, 0o61)
 
 
-def outputs_seen(start, host_states):
+def outputs_seen(start, host_states, per_state=True):
     """What the program's outputs did over a window, from the host's start
     state and its states at the checkpoints: per output channel (END_CHANNELS
     name) the bits set at any of them and the bits that changed from the
     start, and the output words (OUTPUT_WORDS, octal) that were non-zero or
-    changed."""
+    changed. states: the same, from the start and one checkpoint alone,
+    with its cs, for each checkpoint (tools/device_acceptance.py counts the
+    checkpoints that show a role)."""
     every = [start] + [w for _, w in host_states]
     chans = {name: 2048 + k for k, name in enumerate(END_CHANNELS)}
-    return dict(channel_set={n: _or(w[i] for w in every) for n, i in chans.items()},
-                channel_changed={n: _or(w[i] ^ start[i] for w in every) for n, i in chans.items()},
-                nonzero=[f'{a:04o}' for a in OUTPUT_WORDS if any(w[a] for w in every)],
-                changed=[f'{a:04o}' for a in OUTPUT_WORDS if any(w[a] != start[a] for w in every)])
+    out = dict(channel_set={n: _or(w[i] for w in every) for n, i in chans.items()},
+               channel_changed={n: _or(w[i] ^ start[i] for w in every) for n, i in chans.items()},
+               nonzero=[f'{a:04o}' for a in OUTPUT_WORDS if any(w[a] for w in every)],
+               changed=[f'{a:04o}' for a in OUTPUT_WORDS if any(w[a] != start[a] for w in every)])
+    if per_state:
+        out['states'] = [dict(outputs_seen(start, [(cs, w)], False), cs=cs) for cs, w in host_states]
+    return out
 
 
 def _or(values):

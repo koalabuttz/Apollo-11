@@ -1,25 +1,35 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""What an interpretive word costs the AGC: run flight scenarios on yaAGC
-alone (tools/flight_host_run.c FLIGHT_WORD_OUT, the reference run) and
-write, per mission, the interpretive words run and the machine cycles they
-spent in the interpreter's banks (00 and 03, outside interrupts) to
-docs/flight-interp-mct.json. The interpreter's work clock weight is the
-mean per word:
-- the C64 compact interpreter runs one word per call and charges it
-  RK_INTERP_MCT (tools/resident_flight_build.py);
-- the host's compiled interpretive routines are one per word, and a table
-  with no calibrated runs in docs/flight-routine-mct.json gets this mean.
-Time a word spends outside those banks (an RTB's routine, the basic code
-after EXIT) is the other modules' and is charged where they run.
-Its "word" entry is a least-squares fit per order code (slots in units of
-4 MCT, rmse in MCT): a fitted average, not each word's exact MCT. A host
-flight run prints how far the fitted charge lands from yaAGC's
-("interpreter charge:"), and flight_host_differential.py bounds it.
+"""What an interpretive word costs the AGC, for the work clock's charge
+(include/interp_word_mct.h, the C64 compact interpreter and the host
+alike): a table per order code and store kind, in units of 4 MCT.
 
+The table comes from --spans: every flight scenario runs scaled
+(tools/flight_host_run.c FLIGHT_SPAN_OUT), and each interpreter routine
+the core ran and yaAGC matched gives one row, its words' slots against
+yaAGC's machine cycles over the span less those charged to other tables
+inside it. That is what the core charges, so the fit's error is the
+"interpreter charge" error each host run reports, and
+flight_host_differential.py bounds it. A span ends where the core hands
+back: an EXIT word's span is its dispatch only, and the basic code after
+it is a routine of its own, charged by its table. The fit prints each
+scenario's error before and after, the error over the rows of 1000+
+spans, and a held-out check (fitted on half the scenarios, measured on
+the other half, both ways). Without --write it changes nothing.
+
+Without --spans it runs scenarios on yaAGC alone (FLIGHT_WORD_OUT, the
+reference run) and fits whole words: the machine cycles each spent in
+the interpreter's banks (00 and 03, outside interrupts). That counts
+the basic code after an EXIT in those banks as the word's, which the
+C64 charges again as its own routine (#765), so the table no longer
+comes from it; docs/flight-interp-mct.json keeps its per-mission word
+means.
+
+  interp_word_mct.py --spans [--skip-build] [--write] [--jobs N]
   interp_word_mct.py [--skip-build] [--keep DIR]   (DIR keeps the word lists)
 """
 import argparse, json, os, subprocess, sys, tempfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -90,6 +100,145 @@ def fit(rows):
     return c, float(np.sqrt((e * e).mean())), float(np.sqrt(((y - y.mean()) ** 2).mean()))
 
 
+def span_rows(path, rows, exact=None):
+    """Add a FLIGHT_SPAN_OUT file's spans to rows ({slot counts: [MCT sum,
+    spans]}), keyed by the slots the span's words are charged, and to exact
+    ({(slot counts, MCT): spans}, for the absolute error) if given; returns
+    the file's span count."""
+    n = 0
+    for line in Path(path).read_text().splitlines():
+        f = line.split()
+        counts = [0] * (SLOTS + 1)
+        for c in f[2:]:
+            for k in word_slots(int(c, 8)):
+                counts[SLOTS if k is None else k] += 1
+        key, mct = tuple(counts), int(f[0]) - int(f[1])
+        r = rows.setdefault(key, [0, 0])
+        r[0] += mct
+        r[1] += 1
+        if exact is not None:
+            exact[key, mct] = exact.get((key, mct), 0) + 1
+        n += 1
+    return n
+
+
+def fit_spans(rows):
+    """fit() over aggregated spans: each distinct slot vector once, at its
+    mean MCT, weighted by its span count (least squares over every span)."""
+    import numpy as np
+    keys = list(rows)
+    a = np.array(keys, dtype=float)
+    w = np.sqrt(np.array([rows[k][1] for k in keys], dtype=float))
+    y = np.array([rows[k][0] / rows[k][1] for k in keys])
+    free = [j for j in range(SLOTS + 1) if a[:, j].any()]
+    while True:
+        c = np.zeros(SLOTS + 1)
+        c[free] = np.linalg.lstsq(a[:, free] * w[:, None], y * w, rcond=None)[0]
+        neg = [j for j in free if c[j] < 0]
+        if not neg:
+            break
+        free = [j for j in free if j not in neg]
+    return c
+
+
+def charge_error(exact, units):
+    """(net, absolute) error of the charge at the given units over exact
+    spans, in percent of yaAGC's MCT: the absolute error sums |charge -
+    yaAGC| span by span, so over- and under-charges do not cancel."""
+    net = ab = yaagc = 0
+    for (k, mct), n in exact.items():
+        d = 4 * sum(units[j] * k[j] for j in range(SLOTS + 1)) - mct
+        net += n * d
+        ab += n * abs(d)
+        yaagc += n * mct
+    return (100.0 * net / yaagc, 100.0 * ab / yaagc) if yaagc else (0.0, 0.0)
+
+
+def span_units(total):
+    """The table's units fitted to total (span_rows rows): least squares,
+    each slot rounded to 4 MCT, then the base set (the other slots held) so
+    the charge over every span sums to yaAGC's. Spans with no word (a
+    resumed word: DANZIG after an RTB or a job switch, charged nothing)
+    count in that sum, so the base carries their time."""
+    units = [int(round(v / 4)) for v in fit_spans(total)]
+    num = den = 0.0
+    for k, (mct, n) in total.items():
+        num += mct - n * 4 * sum(units[j] * k[j] for j in range(SLOTS))
+        den += n * k[SLOTS]
+    if den:
+        units[SLOTS] = max(1, min(255, int(round(num / den / 4))))
+    return units
+
+
+def merge(into, rows):
+    for k, (mct, n) in rows.items():
+        t = into.setdefault(k, [0, 0])
+        t[0] += mct
+        t[1] += n
+
+
+def spans_main(a):
+    old = json.loads(OUT.read_text())['word']
+    old_units = old['slots'] + [old['base']]
+    per = {}
+    with tempfile.TemporaryDirectory() as tmp:
+        def run(row):
+            name, m, cs, keys, env = row
+            out = Path(tmp) / f'{name}.spans'
+            subprocess.run([str(fhd.OUT / f'flight-host-run-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []),
+                           cwd=ROOT, check=True, stdout=subprocess.DEVNULL,
+                           env={**os.environ, **env, 'FLIGHT_SCALED': '1,1,2', 'FLIGHT_SPAN_OUT': str(out)})
+            return name, out
+        with ThreadPoolExecutor(a.jobs) as ex:
+            for name, out in ex.map(run, fhd.FLIGHT):
+                rows, exact = {}, {}
+                if span_rows(out, rows, exact):
+                    per[name] = (rows, exact)
+                out.unlink()
+    total = {}
+    for rows, _ in per.values():
+        merge(total, rows)
+    units = span_units(total)
+    big = [n for n, (rows, _) in per.items() if sum(c for _, c in rows.values()) >= 1000]
+    print(f"{sum(n for _, n in total.values())} spans, {len(total)} distinct, {len(per)} scenarios "
+          f"({len(big)} of 1000+ spans)")
+    print('scenario: spans; charge error net, routine by routine: before -> after')
+    after = {}
+    for name, (rows, exact) in per.items():
+        b, after[name] = charge_error(exact, old_units), charge_error(exact, units)
+        spans = sum(n for _, n in rows.values())
+        print(f"  {name}: {spans}; {b[0]:+.1f}%, {b[1]:.1f}% -> {after[name][0]:+.1f}%, {after[name][1]:.1f}%")
+
+    def spread(errs):
+        ab = [e[1] for e in errs]
+        net = [e[0] for e in errs]
+        return (f"routine by routine mean {sum(ab) / len(ab):.1f}% (max {max(ab):.1f}%), "
+                f"net {min(net):+.1f}..{max(net):+.1f}%")
+    print(f"rows of 1000+ spans, before: {spread([charge_error(per[n][1], old_units) for n in big])}")
+    print(f"rows of 1000+ spans, after:  {spread([after[n] for n in big])}")
+    # Held out: fit on every other scenario (by name), measure on the rest,
+    # both ways, so the fit is not judged on its own data.
+    names = sorted(per)
+    for half in (names[0::2], names[1::2]):
+        train = {}
+        for n in half:
+            merge(train, per[n][0])
+        held = span_units(train)
+        test = [n for n in big if n not in half]
+        print(f"held out ({len(test)} rows of 1000+ spans, fitted on the other {len(half)} scenarios): "
+              f"{spread([charge_error(per[n][1], held) for n in test])}; "
+              f"today's table on them: {spread([charge_error(per[n][1], old_units) for n in test])}")
+    print(f"base {4 * old_units[SLOTS]} -> {4 * units[SLOTS]} MCT")
+    if a.write:
+        data = json.loads(OUT.read_text())
+        data['word'] = dict(base=units[SLOTS], slots=units[:SLOTS], unit=4, spans=sum(n for _, n in total.values()),
+                            fit='spans')
+        OUT.write_text(json.dumps(data, indent=1, sort_keys=True) + '\n')
+        write_header(units)
+        print(f'wrote {OUT.relative_to(ROOT)}, {HEADER.relative_to(ROOT)}')
+    return 0
+
+
 def write_header(units):
     """include/interp_word_mct_table.h from the fitted units (the slots, then
     the base)."""
@@ -115,6 +264,9 @@ def main():
     p.add_argument('--skip-build', action='store_true', help='reuse build/flight-store/flight-host-run-<m>')
     p.add_argument('--keep', help='directory to keep each scenario\'s word list in')
     p.add_argument('--header', action='store_true', help='only rewrite the header from docs/flight-interp-mct.json')
+    p.add_argument('--spans', action='store_true', help='fit to whole spans over every flight scenario (above)')
+    p.add_argument('--write', action='store_true', help='with --spans: write the fitted table')
+    p.add_argument('--jobs', type=int, default=os.cpu_count() or 1, help='with --spans: scenarios run at once')
     a = p.parse_args()
     if a.header:
         w = json.loads(OUT.read_text())['word']
@@ -126,6 +278,8 @@ def main():
         engine = fhd.frozen_engine(a.host_cc)
         for m in ('lm', 'cm'):
             fhd.build(a.host_cc, m, engine)
+    if a.spans:
+        return spans_main(a)
     data, rows = {}, []
     with tempfile.TemporaryDirectory() as tmp:
         keep = Path(a.keep) if a.keep else Path(tmp)
@@ -151,12 +305,11 @@ def main():
     # 4 MCT: a byte each, a word's charge at most 255 units.
     c, rmse, flat = fit(rows)
     units = [int(round(v / 4)) for v in c]
-    data['word'] = dict(base=units[SLOTS], slots=units[:SLOTS], unit=4, words=len(rows),
-                        rmse=round(rmse, 1), rmse_flat=round(flat, 1))
-    print(f"per word: base {4 * units[SLOTS]} MCT, RMSE {rmse:.0f} MCT ({flat:.0f} for one mean) over {len(rows)} words")
+    print(f"per word (not written; the table comes from --spans): base {4 * units[SLOTS]} MCT, "
+          f"RMSE {rmse:.0f} MCT ({flat:.0f} for one mean) over {len(rows)} words")
+    data['word'] = json.loads(OUT.read_text())['word']
     OUT.write_text(json.dumps(data, indent=1, sort_keys=True) + '\n')
-    write_header(units)
-    print(f'wrote {OUT.relative_to(ROOT)}, {HEADER.relative_to(ROOT)}')
+    print(f'wrote {OUT.relative_to(ROOT)} (word means)')
     return 0
 
 
