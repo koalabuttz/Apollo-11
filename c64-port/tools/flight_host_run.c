@@ -58,6 +58,11 @@
  * FLIGHT_WORD_OUT=PATH: the reference run (yaAGC alone) writes one line per
  * interpretive word it runs (word_out, below), for the interpreter's work
  * clock weight (tools/interp_word_mct.py), and the run ends there.
+ * FLIGHT_SPAN_OUT=PATH: a scaled run writes one line per interpreter
+ * routine the core ran and yaAGC matched: yaAGC's machine cycles over the
+ * span, those charged to other tables inside it (an RTB's routine), then
+ * the code word of each interpretive word fetched, in octal
+ * (tools/interp_word_mct.py --spans fits the per-order charge to them).
  * FLIGHT_CHAN=CS:CH=VALUE,...: an input channel set at a time (below);
  * keys M and J are the CM's MARK and MARK REJECT buttons.
  *
@@ -1478,6 +1483,13 @@ static void adopt(apollo_overlay_state *after,agc_hardware *hw){unsigned i;
  * counts nothing until its first FETCH: native fixed-fixed code (KILLTASK
  * 06027 on to KILLTSK2) is the routine's own, as on the C64. */
 static unsigned long word_mct;
+/* FLIGHT_SPAN_OUT (above): the span's code words and other tables' charge;
+ * span_n past SPAN_MAX drops the line. */
+#define SPAN_MAX 1024u
+static FILE *span_out;
+static agc_word span_codes[SPAN_MAX];
+static unsigned span_n;
+static unsigned long span_other;
 static void word_fetch(unsigned long *words,int *in){agc_word fb=(agc_word)(*cell(4)&077777),sb=(agc_word)m.OutputChannel7;
  uint16_t at;int now;agc_routine call;const entry *t;unsigned w;
  /* At a RESUME point yaAGC runs BRUPT, the word at Z an interrupt
@@ -1485,10 +1497,12 @@ static void word_fetch(unsigned long *words,int *in){agc_word fb=(agc_word)(*cel
  if(m.InIsr||!(quiet()||(m.SubstituteInstruction&&!m.PendFlag&&!m.ExtraDelay&&!m.IndexValue&&!m.ExtraCode)))return;
  at=agc_fixed_physical((agc_word)(*cell(5)&07777),fb,sb);
  if(*in==-2&&at!=FETCH)return;
- if(at==FETCH)*words+=4ul*interp_word_units_of(rope_word((agc_word)(*cell(0164)&077777),fb,sb));
+ if(at==FETCH){agc_word code=rope_word((agc_word)(*cell(0164)&077777),fb,sb);*words+=4ul*interp_word_units_of(code);
+  if(span_n<SPAN_MAX){span_codes[span_n]=code;}
+  ++span_n;}
  now=at!=AGC_TRANSFER_NONE&&(at/1024u==0u||at/1024u==3u);
  if(*in==1&&!now&&at!=AGC_TRANSFER_NONE&&(t=holder(view(),sb,&call))&&(w=weight(t))!=FLIGHT_PER_WORD)
-  *words+=w&~FLIGHT_PLUS_WORDS;
+  {*words+=w&~FLIGHT_PLUS_WORDS;span_other+=w&~FLIGHT_PLUS_WORDS;}
  *in=now;}
 /* The output channels a routine must also leave as yaAGC does (channel 13
  * as the CPU can write it, 043777): a routine that drops a channel write
@@ -1520,7 +1534,7 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
                      agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first,int interp){
  static apollo_overlay_state timed;static agc_hardware timed_hw;
  long n;int in,tin;uint16_t at,target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0,words=0,first_words=0;int in_interp=interp?-1:-2;
- first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);m.NightWatchman=1;m.RuptLock=1;m.NoRupt=1;c0=m.CycleCounter;
+ first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);m.NightWatchman=1;m.RuptLock=1;m.NoRupt=1;c0=m.CycleCounter;span_n=0;span_other=0;
  for(n=0;n<limit;++n){
   /* After RESUME, yaAGC is at ZRUPT with BRUPT substituted for the next
    * instruction: the native continuation is that point. */
@@ -1537,6 +1551,7 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
    if(first[5]==077777u){for(i=0;i<2048u;++i)first[i]=mword(i);first_mct=(unsigned long)(m.CycleCounter-c0);first_words=words;timed=*after;timed_hw=*hw;adopt(&timed,&timed_hw);got_first=got;}
    if(words_agree)break;}   /* the words agree, a channel does not: no later arrival will do better */
   if(work)word_fetch(&words,&in_interp);
+  else if(span_out){unsigned long unused=0;word_fetch(&unused,&in_interp);}
   if(step(&got))return -1;}
  /* A miss: the routine took as long as yaAGC to its first arrival there
   * (none when it never arrived). */
@@ -1792,6 +1807,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
  if(!steal_parse(getenv("FLIGHT_STEAL"))){fprintf(stderr,"FLIGHT_STEAL=T0-T1:MCT[,T0-T1:MCT...]\n");return 2;}
  atexit(hold_report);atexit(rupt_report);
  if(getenv("FLIGHT_MCT_OUT")&&!(mct_out=fopen(getenv("FLIGHT_MCT_OUT"),"a"))){perror("FLIGHT_MCT_OUT");return 2;}
+ if(getenv("FLIGHT_SPAN_OUT")&&!(span_out=fopen(getenv("FLIGHT_SPAN_OUT"),"w"))){perror("FLIGHT_SPAN_OUT");return 2;}
  if(getenv("FLIGHT_WORD_OUT")&&!(word_out=fopen(getenv("FLIGHT_WORD_OUT"),"w"))){perror("FLIGHT_WORD_OUT");return 2;}
  if(getenv("FLIGHT_CH30"))chan30=strtoul(getenv("FLIGHT_CH30"),0,8)&077777u;
  if(getenv("FLIGHT_CH31"))chan31=strtoul(getenv("FLIGHT_CH31"),0,8)&077777u;
@@ -2123,7 +2139,10 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
      if(st==EXEC_OK)n=lockstep(&before,&io0,&hw0,&s,io.superbank,&hw,&pending,50000l,first,interp);}
     if(st==EXEC_OK){
      if(core_ran){++core_routines;
-      if(n>=0){core_fit+=core_mct;core_yaagc+=span_mct;core_err+=core_mct>span_mct?core_mct-span_mct:span_mct-core_mct;++core_spans;}
+      if(n>=0){core_fit+=core_mct;core_yaagc+=span_mct;core_err+=core_mct>span_mct?core_mct-span_mct:span_mct-core_mct;++core_spans;
+       if(span_out&&span_n<=SPAN_MAX){unsigned i;fprintf(span_out,"%lu %lu",span_mct,span_other);
+        for(i=0;i<span_n;++i){fprintf(span_out," %o",(unsigned)span_codes[i]);}
+        fputc('\n',span_out);}}
       if(n>=0&&work&&core_mct!=word_mct){++core_misses;
        if(getenv("FLIGHT_CORE_LOG"))printf("core charge %lu, yaAGC's words %lu: Z %05o LOC %05o to Z %05o LOC %05o, %s\n",core_mct,word_mct,
         (unsigned)before.words[5],(unsigned)before.words[0164],(unsigned)s.words[5],(unsigned)s.words[0164],e->name);}}

@@ -170,6 +170,13 @@ class Adapters(unittest.TestCase):
                 for f, s, _ in t['host'] + t['c64']:
                     self.assertTrue(da.adapter_ok(f, s), f'{m} {t["key"]}: {f} {s}')
 
+    def test_the_optics_drive_window_checks_often_enough(self):
+        # OPTDRIVE's commands hold about 20 cs; the window's checkpoints must
+        # land in one whatever the timing (#993 moved them off 50 cs ones).
+        w = [x for x in da.WINDOWS['cm'] if x[:2] == ('cm-p52-optics', 12250)]
+        self.assertEqual(len(w), 1)
+        self.assertLessEqual(w[0][3], 10)
+
 
 class Roles(unittest.TestCase):
     def status(self, runs, host=None, tab=None):

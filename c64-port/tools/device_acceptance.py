@@ -72,6 +72,9 @@ RRU = 'src/resident_rupt.c'
 # The C64 replay windows a bare run takes (scenario, snapshot cs, window cs,
 # checkpoint every cs), each chosen for the roles whose inputs or outputs
 # move in it.
+# The optics-drive window's checkpoint spacing (cs): at most half the ~20 cs
+# an OPTDRIVE command holds, so a few percent of timing shift keeps one in it.
+OPTICS_EVERY = 10
 WINDOWS = {
     'lm': [('lm-p63-descent-thrust', 17500, 120, 120),   # PIPAs and THRUST under descent thrust
            ('lm-landing-ascent-nassp', 140000, 150, 50),   # touchdown, engine arm, PROCEED
@@ -99,7 +102,11 @@ WINDOWS = {
            ('cm-entry', 15100, 300, 50),                    # entry DAP: jets (channel 5)
            ('cm-p20', 12200, 300, 50),                      # R22: the first VHF range (RNRAD)
            ('cm-p20', 18300, 400, 50),                      # R22: the second VHF range
-           ('cm-p52-optics', 12250, 150, 50),               # optics drive: CDUT/CDUS follow 053/054
+           # optics drive: CDUT/CDUS follow 053/054. The roles see output words
+           # only at checkpoints, and OPTDRIVE's commands hold for about 20 cs
+           # (12280-12300 at 72c04f4d), so a checkpoint every 10 cs always lands
+           # in one; every 50 cs met them only when a checkpoint fell in by luck.
+           ('cm-p52-optics', 12250, 150, OPTICS_EVERY),
            ('cm-p52-optics', 17100, 100, 25),               # gyro torquing: CDUX-Z follow
            ('cm-v49-att', 13000, 700, 100)],                # the jets turn the CSM (FLIGHT_ATT): CDUX-Z follow
 }
