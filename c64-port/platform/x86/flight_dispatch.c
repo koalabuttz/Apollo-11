@@ -172,7 +172,12 @@ uint8_t fd_boundary(fd_state *st)
         if (st->phase == RK_PHASE_T5) drives(st);
         rk_timer_phase(&st->s, &st->hw, &st->pending, st->phase);
         rk_hand_due(&st->hw, &st->io.trap31a, &st->pending);
-        if (st->phase == RK_PHASE_T5 && nw_period(&st->wm, ++st->periods)) st->wm_fire = 1u;
+        if (st->phase == RK_PHASE_T5) {
+            ++st->periods;
+            if (nw_period(&st->wm, st->periods)) st->wm_fire = 1u;
+            if (rl_period(&st->rl, st->periods, 0) && ++st->rl_alarms <= 8ul)
+                printf("rupt lock would sound at %lu cs\n", fd_centiseconds(st));
+        }
         st->phase = st->phase == RK_PHASE_T5 ? RK_PHASE_T4 : (uint8_t)(st->phase + 1u);
         ++st->clock_steps;
         st->next_period = st->work ? step_at(st->clock_steps)
@@ -330,6 +335,7 @@ static void watch_step(fd_state *st, fd_ran *ran, const agc_word *before, int in
     int fresh = cycled && !(st->wm.hung && st->wm.z == before[5] && st->wm.fb == before[4] &&
                             st->wm.loc == before[0164]);
     double end;
+    rl_step(&st->rl, rl_kind(in_interrupt, st->hw.in_interrupt != 0u));
     /* Each point a cycle starts at, so no exit(3) passes unseen. */
     if (fresh)
         printf("erasable CADR cycle at Z %05o FB %05o LOC %05o, %lu cs\n", (unsigned)before[5],

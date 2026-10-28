@@ -188,6 +188,48 @@ GOTO SAVQR52 loops in GOTOERS:
   the C64 hangs there instead of restarting. This is listed as a known gap
   in the restart acceptance docs. Nominal flight never trips it.
 
+## The rupt lock
+
+On the AGC (yaAGC `agc_engine.c`) the rupt lock alarm arms every 160 ms, at
+scaler phase 0400 of 0777, and checks 140 ms later, at 0300. It is armed
+twice over. RUPT LOCK is cleared by any instruction that ends outside an
+interrupt, so by each RESUME; still set, the AGC was held in interrupts.
+NO RUPT is cleared by any instruction that ends inside one; still set, no
+interrupt came for 140 ms. Either one sounds the alarm, sets channel 77 bit
+4 and restarts the AGC.
+
+`platform/x86/night_watchman.h` (`rupt_lock`, #989) takes it on the clock
+period count, as the watchman does: arm 8 periods into each 16, check at 6.
+A step ran inside an interrupt if it started or ended in one, and outside
+one if it started or ended outside. An interrupt step that ends at RESUME
+does both. Clock periods are taken at the boundary after the steps that ran
+in them, and a long step runs over several. So each period counts every
+step since the last period, or the last step, still running, when none ran.
+
+- **Checked against yaAGC.** The harness sets yaAGC's two flags at the
+  start of every lockstep and bridge span and reads them back. A bridged
+  span is yaAGC's code, so it counts for the native rule as it counts for
+  yaAGC. At every check, on every scaled row, the native rule must sound
+  exactly where yaAGC's flags would, and no span may leave channel 77 bit 4
+  set. `tools/flight_host_differential.py` fails the row otherwise. Each
+  row's summary records the alarms and the longest runs of clock periods
+  with nothing inside an interrupt and nothing outside one.
+- **Results.** On the 81 flight rows the alarm never sounds. The longest run
+  without an interrupt step is 12 periods (`cm-p52-scaled-x1`, T4RUPT's
+  period), and the longest without a step outside one is 8. With
+  `FLIGHT_DOWNRUPT` (on the work clock), `cm-p11`, `cm-cdh-csm` and
+  `cm-stable-orbit-lm` go at most 2 periods without an interrupt; without
+  it, 11. The alarm sounds only on the boot rows under the C64 tick
+  schedules, where yaAGC's flags agree at every check. There the LM boot is
+  starved by interrupts, as for the watchman, and the CM P06 boot holds
+  INHINT past 140 ms with interrupts pending. On the work clock neither
+  happens.
+- **No restart yet.** The harness and the x86 program count and print where
+  it would sound ("rupt lock would sound at"), but restart nothing. As a
+  restart, the CM boot rows on x1 and overrun restart over 200 times, and
+  the watchman's check then disagrees on one of them. The C64 waits for
+  #990.
+
 ## Scenarios (`make flight-restart-check`)
 
 `tools/flight_restart_check.py` runs each scenario twice, once without the
@@ -421,7 +463,8 @@ restart.
   and the resident should spin there as at VERB69. The night watchman (NEWJOB not
   tested for 0.64 s) is modelled on the host and the x86 program, not on
   the C64 (The night watchman, above). The rupt lock (an interrupt held too
-  long) is not modelled yet. The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
+  long, or none for 140 ms) is counted and checked against yaAGC on the
+  host and the x86 program, but restarts nothing yet (The rupt lock, above). The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
   so a stack overflow is never taken for a TC trap. `rk_gojam` also lights
   the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF5),
   the hardware flip-flop ERROR RESET's `WRITE 77` clears. Pinball's

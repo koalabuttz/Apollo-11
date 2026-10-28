@@ -113,6 +113,42 @@ int main(void)
     after[0] = 1u;
     check(!nw_step(&n, before, after, 0, 0, 0, 0u) && !n.hung,
           "a step at the hung point that is not stuck frees the job");
+    {
+        rupt_lock r;
+        unsigned k;
+        memset(&r, 0, sizeof r);
+        check(rl_kind(1, 1) == RL_IN && rl_kind(0, 0) == RL_OUT &&
+                  rl_kind(1, 0) == (RL_IN | RL_OUT) && rl_kind(0, 1) == (RL_IN | RL_OUT),
+              "an interrupt step ending at RESUME runs both in and outside one");
+        /* Armed 8 periods into each 16, checked 14 periods later. */
+        for (p = 1; p < RL_ARM; ++p)
+            check(!rl_period(&r, p, 0), "rupt lock silent before its first arming");
+        check(!rl_period(&r, RL_ARM, 0) && r.lock && r.norupt, "rupt lock armed at period 8");
+        rl_step(&r, RL_OUT);
+        rl_step(&r, RL_IN);
+        check(!rl_period(&r, RL_ARM + 1u, &k) && k == (RL_IN | RL_OUT) && !r.lock && !r.norupt,
+              "a period counts every step since the last one");
+        for (p = RL_ARM + 2u; p < RL_PERIODS + RL_CHECK; ++p)
+            check(!rl_period(&r, p, 0), "rupt lock waits for its check");
+        check(!rl_period(&r, RL_PERIODS + RL_CHECK, 0), "both kinds of step: no alarm");
+        rl_step(&r, RL_IN);
+        check(!rl_period(&r, RL_PERIODS + RL_ARM, 0) && r.lock && r.norupt,
+              "rupt lock armed again");
+        for (p = RL_PERIODS + RL_ARM + 1u; p < 2u * RL_PERIODS + RL_CHECK; ++p)
+            (void)rl_period(&r, p, &k);
+        check(k == RL_IN && r.lock && !r.norupt, "a long interrupt step runs on in each period");
+        check(rl_period(&r, 2u * RL_PERIODS + RL_CHECK, 0),
+              "only inside an interrupt: RUPT LOCK sounds");
+        rl_step(&r, RL_OUT);
+        for (p = 2u * RL_PERIODS + RL_CHECK + 1u; p < 3u * RL_PERIODS + RL_CHECK; ++p)
+            (void)rl_period(&r, p, 0);
+        check(!r.lock && r.norupt, "only outside: NO RUPT still armed");
+        check(rl_period(&r, 3u * RL_PERIODS + RL_CHECK, 0), "no interrupt step: NO RUPT sounds");
+        rl_step(&r, RL_IN | RL_OUT);
+        check(!rl_period(&r, 3u * RL_PERIODS + RL_ARM, 0) &&
+                  !rl_period(&r, 4u * RL_PERIODS + RL_CHECK, 0),
+              "an interrupt with its RESUME in each window: silent");
+    }
     printf("night watchman: %s\n", failures ? "checks failed" : "all checks pass");
     return failures != 0;
 }

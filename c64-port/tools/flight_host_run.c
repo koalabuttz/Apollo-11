@@ -268,6 +268,24 @@ static night_watchman wm,wm_ya;static int wm_fire;static unsigned long wm_alarms
 /* yaAGC's own alarm inside a span (its scaler is frozen there, so never
  * expected): counted, and cleared so the span's GOJAM bit does not stay. */
 static void ya_tripped(void){if(m.NightWatchmanTripped){++wm_ya_tripped;m.NightWatchmanTripped=0;}}
+/* The rupt lock alarm (platform/x86/night_watchman.h, #989) under scaled
+ * time: rl by the native rule (what each step ran, in or outside an
+ * interrupt, from where it started and ended), rl_ya by yaAGC's own two
+ * flags over the same spans (lockstep and bridge set them and read them
+ * back). A bridged span is yaAGC's code, so it runs for the native rule
+ * what it ran for yaAGC. rl_checks counts the checks where either would
+ * sound, rl_disagree those where only one would; rl_ya_ch77 the spans that left
+ * channel 77 bit 4 set (its scaler is frozen there, so never expected).
+ * rl_no_in and rl_no_out: the longest runs of clock periods in which nothing
+ * ran inside an interrupt, and nothing outside one. */
+static rupt_lock rl,rl_ya;static int rl_fire;
+static unsigned long rl_alarms,rl_checks,rl_disagree,rl_ya_ch77,rl_in_at,rl_out_at,rl_no_in,rl_no_in_at,rl_no_out,rl_no_out_at;
+static void rl_span(int bridged,unsigned native){unsigned ya=(m.NoRupt?0u:RL_IN)|(m.RuptLock?0u:RL_OUT);
+ rl_step(&rl_ya,ya);rl_step(&rl,bridged?ya:native);
+ if(m.InputChannel[077]&CH77_RUPT_LOCK){++rl_ya_ch77;m.InputChannel[077]&=~CH77_RUPT_LOCK;}}
+static void rl_gap(unsigned k){
+ if(k&RL_IN)rl_in_at=taken;else if(taken-rl_in_at>rl_no_in){rl_no_in=taken-rl_in_at;rl_no_in_at=taken;}
+ if(k&RL_OUT)rl_out_at=taken;else if(taken-rl_out_at>rl_no_out){rl_no_out=taken-rl_out_at;rl_no_out_at=taken;}}
 static void period_end(void){++taken;
  if(!scaled)return;
  if(taken%NW_PERIODS==0u&&(wm.armed||wm_ya.armed)){++wm_windows;
@@ -275,7 +293,12 @@ static void period_end(void){++taken;
   if(wm.armed!=wm_ya.armed&&++wm_disagree<=8ul)printf("night watchman: at period %lu the native rule has it %s, yaAGC's NEWJOB accesses %s\n",
    taken,wm.armed?"armed":"disarmed",wm_ya.armed?"armed":"disarmed");}
  (void)nw_period(&wm_ya,taken);
- if(nw_period(&wm,taken))wm_fire=1;}
+ if(nw_period(&wm,taken))wm_fire=1;
+ {unsigned k;rupt_lock nat=rl,ya=rl_ya;int sound=rl_period(&rl,taken,&k),ya_sound=rl_period(&rl_ya,taken,0);rl_gap(k);
+  if(taken%RL_PERIODS==RL_CHECK&&(sound||ya_sound)){++rl_checks;
+   if(sound!=ya_sound&&++rl_disagree<=8ul)printf("rupt lock: at period %lu the native rule has RUPT LOCK %d NO RUPT %d, yaAGC %d %d (before the period's steps)\n",
+    taken,nat.lock,nat.norupt,ya.lock,ya.norupt);}
+  if(sound)rl_fire=1;}}
 /* rk_rupts: the CIA1 interrupts since the last boundary, at most lag of
  * them as clock periods, the rest dropped. */
 static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
@@ -1407,7 +1430,7 @@ static int step(uint16_t *pending){unsigned i;reach();if(agc_engine(&m))return -
  * before it ran other instructions. */
 static int trapped;
 static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16_t *pending,long limit){long n;unsigned i;agc_routine call;
- load(s,io,hw);m.NightWatchman=1;
+ load(s,io,hw);m.NightWatchman=1;m.RuptLock=1;m.NoRupt=1;
  for(i=1;i<=NUM_INTERRUPT_TYPES;++i)m.InterruptRequests[i]=(int8_t)((*pending&RK_RUPT_BIT(i))!=0u);
  m.TCTrap=0;m.NoTC=0;m.InputChannel[077]&=~CH77_TC_TRAP;trapped=0;
  for(n=0;n<limit;++n){
@@ -1497,7 +1520,7 @@ static long lockstep(const apollo_overlay_state *before,const flight_io *io0,agc
                      agc_word superbank,agc_hardware *hw,uint16_t *pending,long limit,agc_word *first,int interp){
  static apollo_overlay_state timed;static agc_hardware timed_hw;
  long n;int in,tin;uint16_t at,target=point(after->words,superbank,&tin),got=0,got_first=0;unsigned i;uint64_t c0;unsigned long first_mct=0,words=0,first_words=0;int in_interp=interp?-1:-2;
- first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);m.NightWatchman=1;c0=m.CycleCounter;
+ first[5]=077777u;chan_diff[0]=0;cdu_driven=(agc_word)((hw0->channel14|hw->channel14)&070000u);load(before,io0,hw0);m.NightWatchman=1;m.RuptLock=1;m.NoRupt=1;c0=m.CycleCounter;
  for(n=0;n<limit;++n){
   /* After RESUME, yaAGC is at ZRUPT with BRUPT substituted for the next
    * instruction: the native continuation is that point. */
@@ -2026,6 +2049,11 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    * point the AGC was at (night_watchman.h). */
   if(wm_fire){wm_fire=0;spin=0;++wm_alarms;printf("night watchman at %lu cs (Q %05o)\n",now(s.words),(unsigned)s.words[5]);
    gojam_native(s.words,&io,&hw,&pending);wm.hung=0;substitute=0;continue;}
+  /* The rupt lock alarm sounded at the last period's end. It is counted
+   * and checked against yaAGC, but restarts nothing yet (#989): on the
+   * C64 tick schedules the CM P06 boot rows hold INHINT past 140 ms. */
+  if(rl_fire){rl_fire=0;++rl_alarms;if(rl_alarms<=8ul)printf("rupt lock would sound at %lu cs (Z %05o FB %05o, interrupts %s)\n",
+   now(s.words),(unsigned)s.words[5],(unsigned)s.words[4],io.interrupt_enabled?"enabled":"inhibited");}
   if(spin){int armed=spin==2;spin=0;
    if(armed&&!hw.in_interrupt){trap_gojam(&s,&io,&hw,&pending);substitute=0;continue;}}
   v69=!hw.in_interrupt&&!substitute&&verb69(s.words,io.superbank);
@@ -2105,7 +2133,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
       * period's end, interrupts taken, until the night watchman. */
      {int stuck=nw_stuck(before.words,s.words,isr0,interp);if(nw_step(&wm,before.words,s.words,isr0,stuck,interp,MISSION))wm.armed=0;
       if(!m.NightWatchman)wm_ya.armed=0;
-      ya_tripped();
+      ya_tripped();rl_span(0,rl_kind(isr0,hw.in_interrupt!=0u));
       /* The C64's boundary words hold no stuck point (GOTO), so no
        * interrupt could come there: the AGC and the x86 program take them
        * (night_watchman.h), and so does the next boundary here. */
@@ -2133,7 +2161,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if((n=bridge(&s,&io,&hw,&pending,5000000l))==-2)return 3;
    if(n<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
    dl_bridged(w);
-   {int in,stuck;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);if(nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck,in,MISSION))wm.armed=0;if(!m.NightWatchman)wm_ya.armed=0;ya_tripped();}
+   {int in,stuck;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);if(nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck,in,MISSION))wm.armed=0;if(!m.NightWatchman)wm_ya.armed=0;ya_tripped();rl_span(1,0u);}
    hole(w,io.superbank,(unsigned long)n,e&&e!=&core_entry?e->name:0);bridged+=(unsigned long)n;
    if(trapped){trap_gojam(&s,&io,&hw,&pending);substitute=0;}}}
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
@@ -2142,6 +2170,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   slow,divisor,lag,seed,work?consumed/3ul:consumed,taken,dropped,now(s.words));   /* work: whole periods' steps */
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
  if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule (%lu with the native rule armed); yaAGC's own alarm inside %lu spans\n",wm_alarms,wm_stuck,wm_windows,wm_disagree,wm_missed,wm_ya_tripped);
+ if(scaled)printf("rupt lock: %lu alarms; %lu checks where a flag was still set, %lu where yaAGC's flags differ from the native rule; channel 77 bit 4 inside %lu spans; "
+  "longest without an interrupt step %lu periods (to period %lu), without a step outside one %lu (to period %lu)\n",
+  rl_alarms,rl_checks,rl_disagree,rl_ya_ch77,rl_no_in,rl_no_in_at,rl_no_out,rl_no_out_at);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
  if(core_routines){core_module_report();}

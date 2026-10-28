@@ -991,6 +991,27 @@ def scaled_watchman_bad(watchman):
     return not watchman or bool(watchman['disagree'])
 
 
+RUPT_LOCK_LINE = re.compile(
+    r'^rupt lock: (\d+) alarms; (\d+) checks where a flag was still set, (\d+) where yaAGC\'s flags differ from the native rule; '
+    r'channel 77 bit 4 inside (\d+) spans; longest without an interrupt step (\d+) periods \(to period (\d+)\), '
+    r'without a step outside one (\d+) \(to period (\d+)\)', re.M)
+
+
+def rupt_lock_summary(text):
+    """The rupt lock line of a scaled run (#989), or None."""
+    r = RUPT_LOCK_LINE.search(text)
+    return dict(alarms=int(r[1]), checks=int(r[2]), disagree=int(r[3]), ya_channel77=int(r[4]),
+                no_interrupt_periods=int(r[5]), no_interrupt_to=int(r[6]),
+                no_background_periods=int(r[7]), no_background_to=int(r[8])) if r else None
+
+
+def scaled_rupt_lock_bad(rupt_lock):
+    """A scaled row's rupt lock alarm fails as its night watchman does: the
+    native flags must agree with yaAGC's at every check, and no span may
+    leave yaAGC's channel 77 bit 4 set. No summary line fails too."""
+    return not rupt_lock or bool(rupt_lock['disagree']) or bool(rupt_lock['ya_channel77'])
+
+
 def frozen_engine(cc):
     """build/agc_engine_hardware_dv.c with AgcFrozenClock: when set, the
     scaler (and with it every counter timer and the cycles they take) and
@@ -1165,7 +1186,7 @@ def main():
     lanes = flight_holes.lanes()
     summary, failed = [], 0
     commit = flight_holes.source_commit()
-    charge_over, watchman_bad = [], []
+    charge_over, watchman_bad, rupt_lock_bad = [], [], []
     for m, cs, keys in SCENARIOS if exe else ():
         name, env = f'{m}-{keys or "p00-idle"}', {}
         r = subprocess.run([str(exe[m]), ROPE[m], str(cs)] + ([keys] if keys else []), cwd=ROOT,
@@ -1239,12 +1260,15 @@ def main():
                         native_armed=int(w[5])) if w else None
         if scaled_watchman_bad(watchman):
             watchman_bad.append(name)
+        rupt_lock = rupt_lock_summary(text)
+        if scaled_rupt_lock_bad(rupt_lock):
+            rupt_lock_bad.append(name)
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, chunked=chunk_row or listed[m], exit=r.returncode,
                    commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
                    periods_dropped=int(t[3]) if t else None, agc_centiseconds=int(t[4]) if t else None,
                    native_routines=int(n[1]) if n else None, bridged_instructions=int(n[3]) if n else None,
                    routine_mismatches=[dict(point=x[0], table=x[1], times=int(x[2]), detail=x[3]) for x in misses],
-                   unregistered=holes, interpretive_charge=charge, night_watchman=watchman,
+                   unregistered=holes, interpretive_charge=charge, night_watchman=watchman, rupt_lock=rupt_lock,
                    reached={x[0]: int(x[1].split()[0]) if x[1] else None for x in arrivals},
                    arrivals={x[0]: [int(c) for c in x[1].split()] for x in arrivals})
         summary.append(row)
@@ -1264,7 +1288,10 @@ def main():
     if watchman_bad:
         print(f"FAIL: the night watchman's native rule disagreed with yaAGC's NEWJOB accesses at a check "
               f"(or printed no summary), in: {', '.join(watchman_bad)}")
-    return 1 if failed or charge_over or watchman_bad or chunk_misses else 0
+    if rupt_lock_bad:
+        print(f"FAIL: the rupt lock alarm's native flags disagreed with yaAGC's at a check (or channel 77 bit 4 "
+              f"was set in a span, or no summary), in: {', '.join(rupt_lock_bad)}")
+    return 1 if failed or charge_over or watchman_bad or rupt_lock_bad or chunk_misses else 0
 
 
 if __name__ == '__main__':
