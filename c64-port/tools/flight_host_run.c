@@ -1445,6 +1445,10 @@ static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16
    if(scaled&&!m.InIsr&&self_loop(v,sb)){fprintf(stderr,"FLIGHT: bridged code at a TC or TCF to itself, Z %05o FB %05o (not VERB69)\n",(unsigned)v[5],(unsigned)v[4]);return -2;}}
   reach();
   if(scaled){uint64_t c=m.CycleCounter;unsigned k;if(agc_engine(&m))return -1;spend((unsigned long)(m.CycleCounter-c));
+   /* A NEWJOB access in the span disarms both rules before the clock
+    * periods it takes: one span can run over watchman checks (a bridged
+    * loop in erasable). */
+   if(!m.NightWatchman){wm.armed=0;wm_ya.armed=0;m.NightWatchman=1;}
    if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));steal_run();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
    continue;}
   if(agc_engine(&m))return -1;
