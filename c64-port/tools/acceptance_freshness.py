@@ -44,9 +44,20 @@ restart_acceptance.py's verdicts (#969 B8), and each device doc, rebuilt
 from its stored windows and host logs with device_acceptance.py's roles and
 text (review-1028 B2'). A doc whose counts or result
 would change is CRITERIA STALE and fails like a byte move (#942 B2). A
-pending entry with a "criteria" reason reports it without failing, the
-same way: a string covers every re-scored doc, a dict maps each category
-it covers to its reason.
+pending entry's "criteria" maps each category it covers to its reason and
+a pin of the re-judged doc (review-1028b M2):
+
+    "criteria": {"device_adapter_tests": {"reason": "...", "result": "PASS",
+                                          "rescore_sha256": "<sha256 of the re-judge text>"}}
+
+The doc reports CRITERIA STALE, pending, without failing only while it
+re-judges to exactly the pinned text and the pinned result is PASS: any
+further change in that category, or a re-judged FAIL, fails as usual. The
+failure prints the pin to write. A reason with no pin fails.
+
+Every run log in a program's acceptance evidence (evidence/<m>-acceptance-
+*/*.log) must be pinned by a JSON record beside it or cited by a doc
+(review-1028b m5).
 """
 import json
 import argparse
@@ -172,7 +183,7 @@ def logs_agree(m, commit):
       logs, boot vice and monitor logs), so an edited log body fails;
     - an evidence file a doc cites whose sha256 no longer starts with the
       cited one (device and check-disk logs are pinned only there)."""
-    stale = []
+    stale, pinned = [], set()
     base = ROOT / 'evidence'
     for log in sorted(base.glob(f'{m}-acceptance-*/*.log')):
         named = set(c.lower() for c in LOG_COMMIT.findall(log.read_text(errors='replace')))
@@ -191,6 +202,7 @@ def logs_agree(m, commit):
         if isinstance(record, dict):
             record = dict(record, _name=path.stem)
         for log, want in record_logs(record, path.parent):
+            pinned.add(log.resolve())
             if not log.is_file():
                 stale.append(f'{log.relative_to(ROOT)} missing (pinned by {path.name})')
             elif sha_file(log) != want:
@@ -199,10 +211,14 @@ def logs_agree(m, commit):
     for doc in sorted((ROOT / 'docs/acceptance').glob(f'{program}-*.md')):
         for cited, prefix in sorted(set(CITE.findall(doc.read_text()))):
             f = ROOT / cited
+            pinned.add(f.resolve())
             if not f.is_file():
                 stale.append(f'{cited} missing (cited by {doc.name})')
             elif not sha_file(f).startswith(prefix):
                 stale.append(f'{cited} differs from the sha256 {doc.name} cites')
+    for log in sorted(base.glob(f'{m}-acceptance-*/*.log')):
+        if log.resolve() not in pinned:
+            stale.append(f'{log.relative_to(ROOT)} is pinned by no record and cited by no doc (review-1028b m5)')
     return stale
 
 
@@ -238,10 +254,30 @@ RESCORE = (('integrated_program_tests', program_acceptance.rescore,
 
 
 def criteria(entry, category):
-    """A pending entry's "criteria" reason for this category: a string covers
-    every re-scored doc, a dict names each category it covers."""
+    """A pending entry's "criteria" record for this category: {reason,
+    result, rescore_sha256}, or the bare reason an older entry gave (a
+    string for the category, or one for every category), which is unpinned
+    and so fails."""
     reason = entry.get('criteria')
     return reason.get(category) if isinstance(reason, dict) else reason
+
+
+def pin_of(text, result):
+    return dict(result=result, rescore_sha256=hashlib.sha256(text.encode()).hexdigest())
+
+
+def pending_ok(record, text, result):
+    """None when a pending criteria record covers this re-judge (its pin
+    matches and the pinned result is PASS), else why not."""
+    want = pin_of(text, result)
+    if not isinstance(record, dict) or not record.get('reason'):
+        return 'its pending reason is not pinned; pin it with ' + json.dumps(want)
+    if result != 'PASS':
+        return f're-judges to {result}; a pending entry excuses only a PASS'
+    if {k: record.get(k) for k in want} != want:
+        return 'it re-judges to other than its pending pin (a later change in the category); re-pin with ' \
+            + json.dumps(want) + ' if that change is intended'
+    return None
 
 
 def main():
@@ -285,14 +321,19 @@ def main():
             print(f'{program}: note: the doc lists no check disk (test-*.d81); a bootable doc written by '
                   'tools/boot_acceptance.py since #942 B7 does, and then a moved check disk is STALE')
         for category, rescore, rerun in RESCORE:
-            same, text = rescore(m)
-            reason = criteria(pending.get(program, {}), category)
-            if not same and reason:
-                print(f'{program}: CRITERIA STALE, pending re-acceptance ({reason}): the {category} doc {text}')
+            same, text, result = rescore(m)
+            record = criteria(pending.get(program, {}), category)
+            why = pending_ok(record, text, result) if record and not same else None
+            if not same and record and not why:
+                print(f'{program}: CRITERIA STALE, pending re-acceptance ({record["reason"]}): the {category} doc {text}')
+            elif not same and record:
+                bad = True
+                print(f'{program}: CRITERIA STALE: the {category} doc {text}; {why}')
             elif not same:
                 bad = True
                 print(f'{program}: CRITERIA STALE: the {category} doc {text}. Re-run {rerun.format(m=m)} in a '
-                      're-acceptance PR, or add a "criteria" pending entry.')
+                      're-acceptance PR, or add a pinned "criteria" pending entry: '
+                      + json.dumps({category: dict(reason='...', **pin_of(text, result))}))
     return 1 if bad and args.require_fresh else 0
 
 

@@ -776,15 +776,21 @@ RUN_ROW = re.compile(r'^\| [^|]+ \| [^|]+ \| [^|]+ \| [^|]* \| [^|]+ \| '
                      r'`(evidence/[^`]+\.json)` \(sha256 `[0-9a-f]+\.\.\.`\) \|$', re.M)
 
 
+EXITS = 'offnominal-exits.json'
+
+
 def rescore(m):
-    """(same, text): re-judge the committed device doc from the evidence it
+    """(same, text, result): re-judge the committed device doc from the evidence it
     stores (host summary, window results, off-nominal host logs) with this
     tool and its roles, and compare it with the doc as it stands. A change to
     the roles, windows or verdict text leaves the store bytes alone, so
     freshness by bytes would call an older doc current (#942 B2,
     review-1028 B2'). The off-nominal host logs are re-read, not re-run;
-    a stored log is taken as exit 0, since a run that exits otherwise prints
-    no summary lines and fails its row either way."""
+    each stored log is judged with the exit code offnominal-exits.json pins
+    beside it (review-1028b m6). Evidence written before that record existed
+    is judged as exit 0 and reads as changed, so its doc needs regenerating.
+    result is the re-judged doc's PASS or FAIL, None when it could not be
+    re-judged."""
     path = ROOT / 'docs/acceptance' / f'{PROGRAM[m]}-device_adapter_tests.md'
     doc = path.read_text()
     commit = re.search(r'at commit `([^`]+)`', doc)
@@ -792,41 +798,53 @@ def rescore(m):
     ev = ROOT / 'evidence' / f'{m}-acceptance-devices'
     summary = ev / 'host-summary.json'
     if not (commit and summary.is_file()):
-        return False, 'the device doc has no commit, or its host summary is not stored'
+        return False, 'the device doc has no commit, or its host summary is not stored', None
     commit = commit[1]
     try:
         table = offnom.symbols(m)
     except OSError:
-        return False, 'not re-judged: no build/fixed-data assembly listing (run make flight-store)'
+        return False, 'not re-judged: no build/fixed-data assembly listing (run make flight-store)', None
     host = json.loads(summary.read_text())
     asked = {(sc, snap): cs for sc, snap, cs, _ in windows(m)}
     runs = []
     for rel in RUN_ROW.findall(doc):
         f = ROOT / rel
         if not f.is_file():
-            return False, f'{rel} (a window the doc lists) is not stored'
+            return False, f'{rel} (a window the doc lists) is not stored', None
         r = json.loads(f.read_text())
         r['_evidence'] = cite(f)
         r['_env'] = env_of(r['scenario'])
         r['_why'] = not_matched(r, asked.get((r['scenario'], r.get('snap_cs'))), commit)
         runs.append(r)
-    off = []
+    off, unrecorded = [], []
+    exits = json.loads((ev / EXITS).read_text()) if (ev / EXITS).is_file() else {}
     for row in offnom.ROWS[m]:
         log = ev / f"{row['scenario']}.log"
         if not log.is_file():
-            return False, f'{log.relative_to(ROOT)} (an off-nominal host log) is not stored'
-        res = offnom.judge(row, table, log.read_text(errors='replace'), 0, log)
+            return False, f'{log.relative_to(ROOT)} (an off-nominal host log) is not stored', None
+        rec = exits.get(row['scenario'])
+        if not isinstance(rec, dict) or not isinstance(rec.get('exit'), int):
+            unrecorded.append(row['scenario'])
+            rec = dict(exit=0)
+        elif rec.get('log') != log.name or rec.get('log_sha256') != sha(log):
+            return False, f'{EXITS} does not pin {log.relative_to(ROOT)} as stored', None
+        res = offnom.judge(row, table, log.read_text(errors='replace'), rec['exit'], log)
         res['evidence'] = cite(log)
         off.append(dict(row=row, host=res))
     assessed, bad = assess(m, roles(m), runs, host, commit)
     off_lines, off_bad = offnom.section(off, runs, first_diff, busy_note)
     text = doc_text(m, assessed, bad + off_bad, runs, cite(summary), store[1] if store else None, commit, off_lines)
-    if text == doc:
-        return True, f"re-judges to the doc ({len(runs)} windows, {'FAIL' if bad + off_bad else 'PASS'})"
+    result = 'FAIL' if bad + off_bad else 'PASS'
+    if text == doc and not unrecorded:
+        return True, f"re-judges to the doc ({len(runs)} windows, {result})", result
     old = [x for x in doc.splitlines() if x not in set(text.splitlines())]
-    was, now = 'Result: **PASS**' in doc[:600], not (bad + off_bad)
-    return False, ('re-judged with this tool, ' + (f"result {'PASS' if was else 'FAIL'} -> {'PASS' if now else 'FAIL'}, "
-                   if was != now else '') + f'{len(old)} lines differ, first: {old[0][:120] if old else "(order)"}')
+    was = 'Result: **PASS**' in doc[:600]
+    # The re-judged doc's own sha256, so a pin on this text covers every line.
+    return False, ('re-judged with this tool' + (f", result {'PASS' if was else 'FAIL'} -> {result}" if was != (result == 'PASS')
+                                                else '')
+                   + (f", {len(old)} lines differ, first: {old[0][:120] if old else '(order)'}" if text != doc else '')
+                   + (f", no exit code stored for {', '.join(unrecorded)} (judged as exit 0)" if unrecorded else '')
+                   + f' (re-judged doc sha256 {hashlib.sha256(text.encode()).hexdigest()[:16]})'), result
 
 
 def run_window(scenario, snap, cs, every, out):
@@ -913,6 +931,13 @@ def main(argv=None):
     off = offnom.check(m, dest)
     for res in off:
         res['host']['evidence'] = stored(res['host']['log'])
+    # Each off-nominal run's exit code, pinned beside its log (review-1028b
+    # m6): rescore re-judges a stored log with the exit it really had.
+    exits = dest / EXITS
+    exits.write_text(json.dumps({res['row']['scenario']: dict(
+        log=res['host']['log'].name, log_sha256=sha(res['host']['log']), exit=res['host']['exit'])
+        for res in off}, indent=1, sort_keys=True) + '\n')
+    stored(exits)
     shutil.rmtree(ROOT / 'evidence' / eid, ignore_errors=True)  # this generator's alone: no stale runs
     # evidence/<id>/ is flat, with its SHA256.json (tools/ci_guard.py).
     subprocess.run([sys.executable, 'tools/evidence.py', 'add', eid, *map(str, copies), '--tree'], cwd=ROOT, check=True)

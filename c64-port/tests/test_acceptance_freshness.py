@@ -89,9 +89,10 @@ class Freshness(unittest.TestCase):
         (ev / 'host.log').write_text('no commit named here\n')
         (ev / 'cm-p20-restart-c64.log').write_text(
             f'cm-p20-restart: commit {self.first} with local changes; store cm.reu sha256 ab\n')
-        self.assertEqual(af.logs_agree('cm', self.first[:12]), [])
+        named = lambda: [x for x in af.logs_agree('cm', self.first[:12]) if 'names commit' in x]
+        self.assertEqual(named(), [])
         (ev / 'cm-p22-restart-c64.log').write_text(f'cm-p22-restart: commit {self.side} with local changes\n')
-        stale = af.logs_agree('cm', self.first[:12])
+        stale = named()
         self.assertEqual(len(stale), 1)
         self.assertIn('cm-p22-restart-c64.log', stale[0])
         self.assertIn(self.side[:12], stale[0])
@@ -147,6 +148,15 @@ class Freshness(unittest.TestCase):
         (bt / 'cm-1581-monitor.log').unlink()
         self.assertIn('missing', af.logs_agree('cm', self.first[:12])[0])
 
+    def test_every_log_is_pinned_or_cited(self):
+        """review-1028b m5: a log no record pins and no doc cites fails."""
+        rs, bt, dv = self.evidence()
+        self.assertEqual(af.logs_agree('cm', self.first[:12]), [])
+        (dv / 'cm-stray.log').write_text('nobody pins this\n')
+        stale = af.logs_agree('cm', self.first[:12])
+        self.assertEqual(len(stale), 1, stale)
+        self.assertIn('cm-stray.log is pinned by no record and cited by no doc', stale[0])
+
     def test_check_disk_row_is_compared(self):
         build = self.repo / 'build'
         (build / 'flight-store').mkdir(parents=True)
@@ -194,6 +204,16 @@ class Rescore(unittest.TestCase):
         self.assertIsNone(af.criteria(entry, 'integrated_program_tests'))
         self.assertIsNone(af.criteria({}, 'integrated_program_tests'))
 
+    def test_pending_entry_is_pinned(self):
+        """review-1028b M2: a pending criteria entry excuses only the PASS it pins."""
+        pin = af.pin_of('text', 'PASS')
+        self.assertIsNone(af.pending_ok(dict(pin, reason='r'), 'text', 'PASS'))
+        self.assertIn('not pinned', af.pending_ok('r', 'text', 'PASS'))
+        self.assertIn('not pinned', af.pending_ok(dict(pin), 'text', 'PASS'))
+        self.assertIn('other than its pending pin', af.pending_ok(dict(pin, reason='r'), 'later text', 'PASS'))
+        self.assertIn('re-judges to FAIL', af.pending_ok(dict(af.pin_of('text', 'FAIL'), reason='r'), 'text', 'FAIL'))
+        self.assertIn('re-judges to None', af.pending_ok(dict(pin, reason='r'), 'text', None))
+
     def test_restart_rescore(self):
         import json
         import restart_acceptance as ra
@@ -219,7 +239,7 @@ class Rescore(unittest.TestCase):
                 doc('pass', dict(host, sample_problems=[]))
                 self.assertTrue(ra.rescore('lm')[0])
                 doc('pass', host)   # no sample_problems record: the tip's verdict fails it
-                same, text = ra.rescore('lm')
+                same, text, _ = ra.rescore('lm')
                 self.assertFalse(same)
                 self.assertIn('lm-p00-restart pass -> FAIL', text)
 
