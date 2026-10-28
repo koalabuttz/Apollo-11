@@ -452,7 +452,8 @@ class OffNominal(unittest.TestCase):
 
     def results(self, ok=True):
         row = da.offnom.ROWS['lm'][0]
-        checks = [dict(check='alarm', ok=ok, at_cs=100 if ok else None)]
+        # At a time the row's first window holds: an uncovered timed check fails (#942 B3).
+        checks = [dict(check='alarm', ok=ok, at_cs=row['windows'][0][0] + 100 if ok else None)]
         return row, [dict(row=row, host=dict(ok=ok, mismatches=0, bridged=0, checks=checks, evidence='`e`'))]
 
     def test_windows_are_window_tuples(self):
@@ -498,9 +499,12 @@ class OffNominal(unittest.TestCase):
                      _why=[]) for s, c in row['windows']]
         res[0]['host']['checks'] = [dict(check='lamp', kind='word', ok=True, at_cs=snap + 100),
                                     dict(check='late', kind='word', ok=True, at_cs=snap + cs + 5000)]
-        text = '\n'.join(da.offnom.section(res, runs, da.first_diff)[0])
+        lines, bad = da.offnom.section(res, runs, da.first_diff)
+        text = '\n'.join(lines)
         self.assertIn(f'lamp: yes, at {snap + 100} cs (C64 window {snap}+{cs})', text)
         self.assertIn('(host only: no C64 window holds it)', text)
+        self.assertEqual(len(bad), 1)  # the late check, with no host_only reason (#942 B3)
+        self.assertIn('late happened at', bad[0])
         self.assertIn(f'{snap}+{cs} (ran {snap + 5}-{snap + 5 + cs + 8})', text)
 
 

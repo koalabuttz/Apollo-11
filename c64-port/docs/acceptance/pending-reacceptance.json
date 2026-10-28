@@ -1,0 +1,8 @@
+{
+ "Comanche055": {
+  "since": "#992 (#942 B3: an off-nominal check no C64 window holds needs a host_only reason; window O regenerates the doc)",
+  "criteria": {
+   "device_adapter_tests": "#992 (#942 B3): cm-p20-vhf-dropout's VHFCNT check now shows its host_only reason instead of the generic host-only text; verdict unchanged"
+  }
+ }
+}

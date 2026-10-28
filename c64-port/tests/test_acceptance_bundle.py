@@ -143,6 +143,8 @@ class Bundle(unittest.TestCase):
         git(self.root, 'add', '.')
         git(self.root, 'commit', '-qm', 'layout')
         self.assertFalse(self.run_bundle('check-only')['consistent'])
+        # --check-docs leaves later commits to acceptance_freshness.py (#942 B7).
+        self.assertTrue(self.run_bundle('check-docs')['consistent'])
         t = self.run_bundle(fake=Fake(write=False))
         self.assertFalse(t['accepted'])
         self.assertIn('the generator did not rewrite its doc', self.problems(t))
@@ -211,6 +213,7 @@ class Bundle(unittest.TestCase):
         write_doc(self.root, CATS[1], head(self.root)[:12])
         self.commit_docs()
         self.assertTrue(any('commits' in e for e in self.run_bundle('check-only')['errors']))
+        self.assertTrue(any('commits' in e for e in self.run_bundle('check-docs')['errors']))
         disk = built(self.root, D81, b'disk')
         t = self.run_bundle(fake=Fake(d81=disk))
         self.assertTrue(t['accepted'], self.problems(t))
