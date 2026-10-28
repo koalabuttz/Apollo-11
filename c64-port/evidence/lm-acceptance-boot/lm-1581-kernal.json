@@ -12,58 +12,58 @@
  "resident_staged": "0x1f6b00",
  "bytes_loaded": 1931366,
  "data_bytes": [
-  795520
+  795514
  ],
  "vice": {
   "mission": "lm",
   "ok": true,
   "fast_loader": false,
-  "load_cycles": 1268745768,
-  "load_s": 1287.7,
+  "load_cycles": 1268763245,
+  "load_s": 1287.8,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80684,
-  "boot_cycles": 111860194,
+  "handoff_cycles": 80726,
+  "boot_cycles": 111860084,
   "boot_s": 113.5,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 41751759,
-    "time1": "00732",
-    "z": "04674",
+    "cycles": 41105230,
+    "time1": "00720",
+    "z": "03446",
     "fb": "34000",
     "modreg": "77777"
    },
    {
-    "cycles": 83481448,
-    "time1": "01716",
+    "cycles": 81950398,
+    "time1": "01674",
+    "z": "03214",
+    "fb": "02000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 121223087,
+    "time1": "02626",
     "z": "02000",
     "fb": "14000",
     "modreg": "77777"
    },
    {
-    "cycles": 127157081,
-    "time1": "02740",
-    "z": "04010",
+    "cycles": 161149608,
+    "time1": "03570",
+    "z": "04040",
     "fb": "02000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 167687751,
-    "time1": "03710",
-    "z": "05270",
-    "fb": "12000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "549e",
-   "5077",
-   "f1d6",
-   "0200",
-   "5a60",
-   "350d",
-   "5bff",
-   "a636"
+   "5e67",
+   "8b5d",
+   "3b09",
+   "81fc",
+   "856d",
+   "0851",
+   "0b73",
+   "5917"
   ],
   "key_ch32": [
    "7f",
@@ -85,7 +85,7 @@
    "36040",
    "36040"
   ],
-  "pc": "5c2f",
+  "pc": "5241",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -111,8 +111,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "02000",
-  "z": "04040",
+  "fb": "14000",
+  "z": "02000",
   "screenshot": "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -181,7 +181,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 33,
+   "dma_unchecked": 42,
    "trace_errors": [],
    "trace_ok": true
   }

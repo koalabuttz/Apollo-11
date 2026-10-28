@@ -85,7 +85,20 @@ WORDS = range(0o61, 0o4000)
 # V25s' redisplays, the rendezvous marks, the Pinball rows) fly as the
 # harness does.
 KNOWN = {}
-UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL', 'FLIGHT_GYRO', 'FLIGHT_OPTICS')
+# Harness inputs the x86 program has no model for yet (docs/X86-FLIGHT.md,
+# Gaps): their scenarios are left out.
+UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL', 'FLIGHT_GYRO', 'FLIGHT_OPTICS', 'FLIGHT_ATT', 'FLIGHT_ISS',
+               'FLIGHT_TRIM')
+# The inputs it reads (platform/x86/flight_scenario.h). FLIGHT_SWAP_MCT
+# is the harness's 1,1,2 clock only; the work clock charges no swap. A
+# scenario with any other FLIGHT_ input stops the tool, so a new harness
+# model is never ignored without notice (lm-rhc-att-hold flew without its
+# hand controller until the drift outgrew its word limit).
+HANDLED = ('FLIGHT_CH30', 'FLIGHT_CH31', 'FLIGHT_CH32', 'FLIGHT_CH33', 'FLIGHT_POKE', 'FLIGHT_LOAD', 'FLIGHT_GOJAM',
+           'FLIGHT_DOWNRUPT', 'FLIGHT_CHAN', 'FLIGHT_ENGINE', 'FLIGHT_ENGINE_LAG', 'FLIGHT_TOUCHDOWN', 'FLIGHT_PILOT',
+           'FLIGHT_ASCENT', 'FLIGHT_STAGE', 'FLIGHT_RCS', 'FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_IMU', 'FLIGHT_SATURN',
+           'FLIGHT_SIVB', 'FLIGHT_RR', 'FLIGHT_RR_DROP', 'FLIGHT_LR', 'FLIGHT_LR_POS2', 'FLIGHT_LR_DROP', 'FLIGHT_RHC',
+           'FLIGHT_BUSY_SAMPLE', 'FLIGHT_CORE', 'FLIGHT_SWAP_MCT')
 # A FLIGHT_CORE scenario starts from a yaAGC core dump, which the x86
 # program never reads: the harness loads it and writes its state at the
 # first sample point (FLIGHT_SNAPSHOT=0), and the x86 program starts from
@@ -142,6 +155,9 @@ WORD_CAP = {'lm-stable-orbit-wait': 100, 'lm-stable-orbit-lm-wait': 100}
 def supported():
     rows = [row for row in fhd.FLIGHT + fhd.RESTART_FLIGHT + fhd.V69_FLIGHT + fhd.WATCHMAN_FLIGHT
             if not any(k in row[4] for k in UNSUPPORTED)]
+    unknown = sorted({k for row in rows for k in row[4] if k not in HANDLED})
+    if unknown:
+        sys.exit(f'x86_flight_scenarios: no x86 model or UNSUPPORTED entry for {", ".join(unknown)}')
     return rows + [(f'{name}-wait', m, cs, keys.replace('V33E', '!V33E'), env)
                    for name, m, cs, keys, env in fhd.FLIGHT if name in WAIT]
 

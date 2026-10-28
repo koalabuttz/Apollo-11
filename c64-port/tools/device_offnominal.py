@@ -191,7 +191,12 @@ def host_run(m, row, table, logs):
                             'FLIGHT_WATCH': ','.join(f'{a:o}' for a in watched)})
     log = logs / f"{row['scenario']}.log"
     log.write_text(r.stdout + r.stderr)
-    text = r.stdout
+    return judge(row, table, r.stdout, r.returncode, log)
+
+
+def judge(row, table, text, exit_code, log):
+    """A row's host result from the run's output: device_acceptance.rescore
+    re-judges a stored log with it, the run with host_run."""
     misses = re.search(r'native routines yaAGC did not match \((\d+)\)', text)
     holes = re.search(r'unregistered or refused points \((\d+)\)', text)
     words = [(int(t), int(a, 8), int(v, 8)) for t, a, v in re.findall(r'^watch (\d+) cs: ([0-7]+) ([0-7]+)$', text, re.M)]
@@ -221,9 +226,9 @@ def host_run(m, row, table, logs):
             _, pattern, t0, t1, what = c
             hit = [t for t, d in shown if t0 <= t <= t1 and re.search(pattern, d)]
         results.append(dict(check=what, kind=c[0], ok=bool(hit), at_cs=hit[0] if hit else None))
-    return dict(scenario=row['scenario'], exit=r.returncode, mismatches=int(misses[1]) if misses else None,
+    return dict(scenario=row['scenario'], exit=exit_code, mismatches=int(misses[1]) if misses else None,
                 bridged=int(holes[1]) if holes else None, checks=results, log=log,
-                ok=r.returncode == 0 and misses is not None and holes is not None
+                ok=exit_code == 0 and misses is not None and holes is not None
                 and int(misses[1]) == 0 and int(holes[1]) == 0 and all(x['ok'] for x in results))
 
 

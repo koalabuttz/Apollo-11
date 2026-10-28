@@ -20,7 +20,7 @@
   168310,
   168310,
   168323,
-  132475
+  132470
  ],
  "vice": {
   "mission": "cm",
@@ -28,64 +28,62 @@
   "swap_prompts": [
    "READING DISK 1 INSERT DISK 2 OF 5 AND PRESS RETURN",
    "READING DISK 2 INSERT DISK 3 OF 5 AND PRESS RETURN",
-   "INSERT DISK 3 OF 5 AND PRESS RETURN INSERT DISK 3 OF 5 AND PRESS RETURN",
    "READING DISK 3 INSERT DISK 4 OF 5 AND PRESS RETURN",
    "READING DISK 4 INSERT DISK 5 OF 5 AND PRESS RETURN"
   ],
   "swaps": [
    2,
    3,
-   3,
    4,
    5
   ],
   "fast_loader": false,
-  "load_cycles": 2167417754,
-  "load_s": 2199.9,
+  "load_cycles": 2167795462,
+  "load_s": 2200.3,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80741,
-  "boot_cycles": 107748826,
+  "handoff_cycles": 80614,
+  "boot_cycles": 107748947,
   "boot_s": 109.4,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 42053001,
-    "time1": "01550",
+    "cycles": 36763425,
+    "time1": "01367",
+    "z": "04740",
+    "fb": "14000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 74011037,
+    "time1": "03025",
     "z": "03306",
-    "fb": "66000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 82485392,
-    "time1": "03312",
-    "z": "05333",
     "fb": "02000",
     "modreg": "77777"
    },
    {
-    "cycles": 125512376,
-    "time1": "05144",
-    "z": "04701",
-    "fb": "66000",
+    "cycles": 105716169,
+    "time1": "04273",
+    "z": "02765",
+    "fb": "14000",
     "modreg": "77777"
    },
    {
-    "cycles": 166514792,
-    "time1": "06722",
-    "z": "04040",
-    "fb": "02000",
+    "cycles": 141520274,
+    "time1": "05673",
+    "z": "02765",
+    "fb": "14000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "5db9",
-   "46e9",
-   "39b3",
-   "359c",
-   "0b95",
-   "3a6c",
-   "5d12",
-   "98c4"
+   "0200",
+   "313e",
+   "125d",
+   "0200",
+   "5dc3",
+   "34be",
+   "0963",
+   "570a"
   ],
   "key_ch32": [
    "7f",
@@ -107,7 +105,7 @@
    "36000",
    "36000"
   ],
-  "pc": "8486",
+  "pc": "8fdf",
   "screen": [
    " APOLLO 11 CM DSKY",
    "",
@@ -133,8 +131,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "66000",
-  "z": "04701",
+  "fb": "12000",
+  "z": "05333",
   "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -192,7 +190,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 41,
+   "dma_unchecked": 33,
    "trace_errors": [],
    "trace_ok": true
   }

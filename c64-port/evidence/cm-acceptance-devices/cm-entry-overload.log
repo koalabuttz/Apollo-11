@@ -153,8 +153,8 @@ CM: 1172342 native routines (23719810 yaAGC instructions of time), 0 bridged yaA
 scaled time: K 1.00, divisor 1, lag 2, seed 0: 32015 CIA interrupts, 32015 clock periods taken, 0 dropped (rk_dilation); AGC time 32015 cs
 night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule (0 with the native rule armed); yaAGC's own alarm inside 0 spans
 major mode (MODREG 01011) at 32000 cs: native 103, yaAGC 00; FAILREG 01107/00000
-interpreter module: 26182 routines, 26182 slots; 25737 charged other than yaAGC's words
-interpreter charge: fitted 6407056 MCT, yaAGC 6234339 MCT (+2.8%) over 26182 routines; mean |error| 34.4 MCT per routine
+interpreter module: 26182 routines, 26182 slots; words charged vs yaAGC's: n/a (work clock only)
+interpreter charge: fitted 6278832 MCT, yaAGC 6234339 MCT (+0.7%) over 26182 routines; mean |error| 25.3 MCT per routine
 native routines yaAGC did not match (0):
 unregistered or refused points (0):
 module loads (23540 in 32015 cs):

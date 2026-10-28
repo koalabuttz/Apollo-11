@@ -262,18 +262,24 @@ instead a work clock: AGC time advances by the work the resident ran.
   compute them. The resident's weight leaves out the Executive idle table
   (LM 35, CM 73). The compact interpreter charges each interpretive word
   it runs from a table fitted per order and store kind to yaAGC's MCT
-  over the CM entry and LM P63 scenarios (`include/interp_word_mct.h`,
-  `docs/flight-interp-mct.json`, `tools/interp_word_mct.py`; RMS error
-  102 MCT a word). It is a fitted charge, not yaAGC's count for the word:
+  over the spans the core runs in every flight scenario
+  (`include/interp_word_mct.h`, `docs/flight-interp-mct.json`,
+  `tools/interp_word_mct.py --spans`). A span ends where the core hands
+  back: an EXIT word's span is its dispatch (22 MCT), and an RTB word's
+  ends at the routine it calls; the basic code after them is charged as
+  its own routine. It is a fitted charge, not yaAGC's count for the word:
   the host and the C64 share it, so "C64 matches host" says nothing about
   it. Each scaled host run prints its sum against yaAGC's MCT over the
   same spans ("interpreter charge"). For a run of 1,000 routines or more,
   `tools/flight_host_differential.py` fails the run, and program and
   device acceptance mark its row failed, when the net error is over 20% or
   the error summed routine by routine (so over- and under-charges cannot
-  cancel) is over 45% of yaAGC's MCT. On da027bee the 58 such runs are
-  -0.7..+17.8% net (CM P11 highest) and 14.4..39.3% routine by routine;
-  the second bound guards against regressions and is not an accuracy
+  cancel) is over 45% of yaAGC's MCT. Over the 65 such runs the span fit
+  is -5.3..+4.9% net and 12.9% routine by routine on average (worst
+  18.6%, CM P11); fitted on half the scenarios, the other half measure
+  13.3% and 12.8%. The earlier fit to whole words (two scenarios, which
+  counted the basic code after EXIT as the word's) measured 24.0%, worst
+  39.3%. The bounds guard against regressions and are not an accuracy
   claim. Smaller runs are reported, not bounded (issue #765). The host's
   interpretive tables with no calibrated runs get the mean per word. The interrupt wrappers report their weight in
   `rk_module_env.scale`, and a module reports its routine count in

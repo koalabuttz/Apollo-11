@@ -170,6 +170,26 @@ class Adapters(unittest.TestCase):
                 for f, s, _ in t['host'] + t['c64']:
                     self.assertTrue(da.adapter_ok(f, s), f'{m} {t["key"]}: {f} {s}')
 
+    def test_the_optics_drive_window_checks_often_enough(self):
+        # OPTDRIVE's commands hold about 20 cs; the window's checkpoints must
+        # land in one whatever the timing (#993 moved them off 50 cs ones).
+        w = [x for x in da.WINDOWS['cm'] if x[:2] == ('cm-p52-optics', 12250)]
+        self.assertEqual(len(w), 1)
+        self.assertLessEqual(w[0][3], 10)
+
+    def test_checkpoints_count_the_states_that_show_an_output_role(self):
+        t = next(x for x in da.roles('cm') if x['key'] == 'optics-drive')
+        quiet = dict(channel_set={'channel 12': 2}, channel_changed={}, nonzero=[], changed=[])
+        moved = dict(quiet, nonzero=['0053'], changed=['0053'])
+        run = dict(replay_outputs=dict(moved, states=[dict(quiet, cs=50), dict(moved, cs=100), dict(quiet, cs=150)]))
+        self.assertEqual(da.checkpoints(t, [run]), 1)
+        two = dict(replay_outputs=dict(moved, states=[dict(moved, cs=10), dict(moved, cs=20)]))
+        self.assertEqual(da.checkpoints(t, [run, two]), 3)
+        self.assertIsNone(da.checkpoints(t, [dict(replay_outputs=moved)]))  # recorded before per-checkpoint outputs
+        tvc_on = dict(moved, channel_set={'channel 12': 0o200})
+        self.assertEqual(da.checkpoints(t, [dict(replay_outputs=dict(moved, states=[tvc_on]))]), 0)
+        self.assertIsNone(da.checkpoints(next(x for x in da.roles('cm') if x['dir'] == 'in'), [run]))
+
 
 class Roles(unittest.TestCase):
     def status(self, runs, host=None, tab=None):
@@ -369,6 +389,62 @@ class Doc(unittest.TestCase):
         (_, _, _, problems), text = self.write([window(ok=False)])
         self.assertEqual(problems, ['the doc says FAIL'])
         self.assertIn('## Failures', text)
+
+
+class Rescore(unittest.TestCase):
+    """rescore() re-judges a committed doc from its stored evidence (review-1028 B2')."""
+
+    def run_rescore(self, tab_written, tab_now, mutate=None):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            ev = root / 'evidence/lm-acceptance-devices'
+            ev.mkdir(parents=True)
+            run = {k: v for k, v in window().items() if not k.startswith('_')}
+            (ev / 'lm-a-100.json').write_text(json.dumps(run))
+            (ev / 'host-summary.json').write_text(json.dumps([host_row()]))
+            targets = da.make_targets()  # read from the real tree before ROOT moves
+            with mock.patch.object(da, 'ROOT', root), \
+                    mock.patch.object(da, 'make_targets', lambda: targets), mock.patch.object(fhd, 'FLIGHT', FLIGHT), \
+                    mock.patch.object(da, 'windows', lambda m: [('lm-a', 100, 120, 60)]), \
+                    mock.patch.dict(da.offnom.ROWS, {'lm': []}), mock.patch.object(da.offnom, 'symbols', lambda m: {}):
+                r = dict(run, _evidence=da.cite(ev / 'lm-a-100.json'), _env={})
+                r['_why'] = da.not_matched(r, 120, HEAD)
+                out, bad = da.assess('lm', tab_written, [r], [host_row()], HEAD)
+                off_lines, off_bad = da.offnom.section([], [r], da.first_diff, da.busy_note)
+                da.write_doc('lm', out, bad + off_bad, [r], da.cite(ev / 'host-summary.json'), '0' * 64, HEAD,
+                             off_lines)
+                if mutate:
+                    mutate(root, ev)
+                with mock.patch.object(da, 'roles', lambda m: tab_now):
+                    return da.rescore('lm')
+
+    def test_doc_rejudges_to_itself(self):
+        same, why = self.run_rescore(table(), table())
+        self.assertTrue(same, why)
+        self.assertIn('(1 windows, ', why)  # the two-role table fails coverage; it still re-judges to itself
+
+    def test_criteria_text_change_is_stale(self):
+        # A role's criteria text changed (as #984/#995 did) but no store byte moved.
+        same, why = self.run_rescore(table(), table(jets_name='Jets and engine'))
+        self.assertFalse(same)
+        self.assertIn('lines differ', why)
+
+    def test_edited_doc_or_run_is_stale(self):
+        def doc(root, ev):
+            f = root / 'docs/acceptance/Luminary099-device_adapter_tests.md'
+            f.write_text(f.read_text().replace('Jets', 'Thrusters', 1))
+        self.assertFalse(self.run_rescore(table(), table(), doc)[0])
+
+        def run(root, ev):
+            f = ev / 'lm-a-100.json'
+            f.write_text(json.dumps(dict(json.loads(f.read_text()), replay_differences=3)))
+        self.assertFalse(self.run_rescore(table(), table(), run)[0])
+
+        def gone(root, ev):
+            (ev / 'lm-a-100.json').unlink()
+        same, why = self.run_rescore(table(), table(), gone)
+        self.assertFalse(same)
+        self.assertIn('is not stored', why)
 
 
 class OffNominal(unittest.TestCase):

@@ -9,7 +9,7 @@
  "replay_rows": 34,
  "replay_ended": true,
  "replay_differences": 0,
- "commit": "bab6fab33581",
+ "commit": "78dcfd1c5f33",
  "reu_bounds": {
   "ok": true,
   "dma_outside": 0,
@@ -71,7 +71,7 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 1000,
-   "wall_per_agc": 10.229,
+   "wall_per_agc": 10.228,
    "replay_skipped": [],
    "outputs_matched": null,
    "outputs_first_diff": null

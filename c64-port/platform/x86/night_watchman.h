@@ -131,4 +131,70 @@ static __attribute__((unused)) int nw_step(night_watchman *n, const agc_word *be
         if (before[NW_PRIORITY + NW_CORE_SET * k] != after[NW_PRIORITY + NW_CORE_SET * k]) return 1;
     return 0;
 }
+
+/* The rupt lock alarm (#989), as the native x86_64 flight program and the
+ * host harness take it. On the AGC (yaAGC agc_engine.c) it arms every
+ * 160 ms at scaler phase 0400 (of 0777) and checks 140 ms later, at 0300:
+ * still armed, it sounds and the AGC restarts (GOJAM) with channel 77 bit 4
+ * set. It is armed twice over: RUPT LOCK, cleared by any instruction that
+ * ends outside an interrupt (so by each RESUME), and NO RUPT, cleared by any
+ * instruction that ends inside one (no interrupt for 140 ms).
+ *
+ * Here the scaler is the clock period count again (32 scaler counts a
+ * period): arm at RL_ARM periods into each RL_PERIODS, check at RL_CHECK.
+ * A step ran inside an interrupt if it started or ended in one, and outside
+ * one if it started or ended outside (an interrupt step ending at RESUME
+ * does both). Clock periods are taken at the boundary after the steps that
+ * ran in them, and a long step runs over several, so each period counts
+ * what ran in it: the steps since the last period, and the last step,
+ * still running, when none did. The host harness checks both flags
+ * against yaAGC's over the same spans, at every check. Neither the harness
+ * nor the x86 program restarts on it yet: they count where it would sound. */
+enum { RL_PERIODS = 16u, RL_ARM = 8u, RL_CHECK = 6u, RL_IN = 1u, RL_OUT = 2u };
+
+/* Which flag sounded (rl_period's result). */
+enum { RL_LOCK = 1u, RL_NORUPT = 2u };
+
+/* lock: nothing ran outside an interrupt since it armed; norupt: nothing
+ * inside. ran: what ran since the last period (RL_IN, RL_OUT); last: what
+ * the last step ran. */
+typedef struct {
+    uint8_t lock, norupt, ran, last;
+} rupt_lock;
+
+/* What a step ran: in_before, in_after whether it started and ended in an
+ * interrupt. */
+static __attribute__((unused)) unsigned rl_kind(int in_before, int in_after)
+{
+    return (in_before || in_after ? RL_IN : 0u) | (!in_before || !in_after ? RL_OUT : 0u);
+}
+
+/* A step that ran kind (rl_kind). */
+static __attribute__((unused)) void rl_step(rupt_lock *r, unsigned kind)
+{
+    r->ran = (uint8_t)(r->ran | kind);
+    r->last = (uint8_t)kind;
+}
+
+/* At the end of clock period number periods: the flags that sound the
+ * alarm (RL_LOCK, RL_NORUPT), 0 when it is silent. *kind (if given): what
+ * ran in the period. */
+static __attribute__((unused)) int rl_period(rupt_lock *r, unsigned long periods, unsigned *kind)
+{
+    unsigned p = (unsigned)(periods % RL_PERIODS), k = r->ran ? r->ran : r->last;
+    int sound = 0;
+    r->ran = 0u;
+    if (kind) *kind = k;
+    if (k & RL_IN) r->norupt = 0u;
+    if (k & RL_OUT) r->lock = 0u;
+    if (p == RL_CHECK && (r->lock || r->norupt)) {
+        sound = (r->lock ? (int)RL_LOCK : 0) | (r->norupt ? (int)RL_NORUPT : 0);
+        r->lock = 0u;
+        r->norupt = 0u;
+    } else if (p == RL_ARM) {
+        r->lock = 1u;
+        r->norupt = 1u;
+    }
+    return sound;
+}
 #endif
