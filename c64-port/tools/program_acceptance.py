@@ -463,7 +463,7 @@ CITED = re.compile(r'`(evidence/[a-z]+-acceptance-program/((?:host|replay)-[^`]+
 
 
 def rescore(m, map_path=None):
-    """(same, text): re-score the committed integrated doc from the evidence it
+    """(same, text, result): re-score the committed integrated doc from the evidence it
     cites, with this tool and the current map. A map edit or a scoring change
     that would turn the doc's counts or result leaves the store bytes alone,
     so freshness by bytes alone would call such a doc current (#942 B2)."""
@@ -471,7 +471,7 @@ def rescore(m, map_path=None):
     doc = (ROOT / f'docs/acceptance/{p}-integrated_program_tests.md').read_text()
     claimed = COUNTS.search(doc)
     if not claimed:
-        return False, 'no counts table in the doc'
+        return False, 'no counts table in the doc', None
     claimed = dict(zip(('rows', 'mapped', 'not_exercised', 'unexplained', 'tbd', 'host_clean', 'c64_match'),
                        map(int, claimed.groups())))
     claimed['ok'] = 'Result: **PASS**' in doc[:600]
@@ -488,15 +488,16 @@ def rescore(m, map_path=None):
             replays.setdefault(r['scenario'], []).append(r)
     if bad:
         return False, f"{len(bad)} cited evidence files missing or changed (run tools/evidence.py fetch --coverage): " \
-            + ', '.join(bad[:3])
+            + ', '.join(bad[:3]), None
     for runs in replays.values():
         runs.sort(key=lambda r: r.get('snap_cs') or 0)
     plan = json.loads((map_path or ROOT / f'docs/acceptance/{p}-program-map.json').read_text())
     _, counts = assess(plan['rows'], host, replays)
     diff = [f'{k} {claimed[k]} -> {counts[k]}' for k in claimed if claimed[k] != counts[k]]
+    result = 'PASS' if counts['ok'] else 'FAIL'
     if diff:
-        return False, 're-scored with this map and tool: ' + ', '.join(diff)
-    return True, f"re-scores to the doc's counts ({counts['c64_match']} of {counts['mapped']} mapped rows on the C64)"
+        return False, 're-scored with this map and tool: ' + ', '.join(diff), result
+    return True, f"re-scores to the doc's counts ({counts['c64_match']} of {counts['mapped']} mapped rows on the C64)", result
 
 
 def window_cmd(w):
@@ -547,7 +548,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     m, p = a.mission, PROGRAM[a.mission]
     if a.rescore:
-        same, text = rescore(m, a.map)
+        same, text, _ = rescore(m, a.map)
         print(f'{p} integrated_program_tests: {text}')
         return 0 if same else 1
     plan = json.loads((a.map or ROOT / f'docs/acceptance/{p}-program-map.json').read_text())

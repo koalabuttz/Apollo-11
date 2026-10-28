@@ -425,7 +425,7 @@ ROW = re.compile(r'^\| (\S+) \|.*\| (pass|FAIL) \| `(evidence/[^`]+\.json)` \(sh
 
 
 def rescore(m):
-    """(same, text): re-judge the committed restart doc's rows from the
+    """(same, text, result): re-judge the committed restart doc's rows from the
     evidence it cites, with this tool (#969 B8). A change to the verdicts
     leaves the store bytes alone, so freshness by bytes alone would call a
     doc current that this tool would now write as FAIL (#942 B2)."""
@@ -434,7 +434,7 @@ def rescore(m):
     store = re.search(r'`flight-store/\w+\.reu` sha256 `([0-9a-f]{64})`', doc)
     cited = ROW.findall(doc)
     if not (commit and store and cited):
-        return False, 'the restart doc has no commit, store image or rows'
+        return False, 'the restart doc has no commit, store image or rows', None
     rows, claimed, bad = [], {}, []
     for name, verdict, path, prefix in cited:
         f = ROOT / path
@@ -444,15 +444,16 @@ def rescore(m):
         rows.append(json.loads(f.read_text()))
         claimed[name] = verdict == 'pass'
     if bad:
-        return False, f"{len(bad)} cited restart evidence files missing or changed: {', '.join(bad[:3])}"
+        return False, f"{len(bad)} cited restart evidence files missing or changed: {', '.join(bad[:3])}", None
     _, problems = assess(m, rows, commit[1], commit[1], store[1])
     turned = [f"{r['name']} {'pass' if claimed[r['name']] else 'FAIL'} -> {'pass' if r['ok'] else 'FAIL'}"
               for r in rows if r['ok'] != claimed[r['name']]]
     ok, was = not problems, 'Result: **PASS**' in doc[:600]
     if turned or ok != was:
         return False, ('re-judged with this tool: ' + ', '.join(turned or [])
-                       + ('' if ok == was else f"; result {'PASS' if was else 'FAIL'} -> {'PASS' if ok else 'FAIL'}"))
-    return True, f're-judges to the doc ({len(rows)} rows, {"PASS" if ok else "FAIL"})'
+                       + ('' if ok == was else f"; result {'PASS' if was else 'FAIL'} -> {'PASS' if ok else 'FAIL'}")), \
+            'PASS' if ok else 'FAIL'
+    return True, f're-judges to the doc ({len(rows)} rows, {"PASS" if ok else "FAIL"})', 'PASS' if ok else 'FAIL'
 
 
 def main(argv=None):

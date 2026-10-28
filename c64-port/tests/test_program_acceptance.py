@@ -271,7 +271,7 @@ class ProgramAcceptance(unittest.TestCase):
                 moved = json.loads(json.dumps(rows))
                 moved[1]['reach'] = [['40,3000', 'later']]
                 plan.write_text(json.dumps(dict(rows=moved)))
-                same, text = pa.rescore('lm')
+                same, text, _ = pa.rescore('lm')
                 self.assertFalse(same)
                 self.assertIn('c64_match 2 -> 1', text)
                 # A cited file that changed is reported, not scored.
