@@ -496,6 +496,42 @@ class Rescore(unittest.TestCase):
         self.assertIn('no exit code stored for lm-x', why)
 
 
+class BackfillExits(unittest.TestCase):
+    """--backfill-exits: exit 0 for each stored off-nominal log, only from a PASS doc."""
+
+    def run_backfill(self, result='PASS', clean=True, existing=False):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            ev = root / 'evidence/lm-acceptance-devices'
+            ev.mkdir(parents=True)
+            (root / 'docs/acceptance').mkdir(parents=True)
+            (root / 'docs/acceptance/Luminary099-device_adapter_tests.md').write_text(f'# x\n\nResult: **{result}**\n')
+            (ev / 'lm-x.log').write_text('host log\n')
+            if existing:
+                (ev / da.EXITS).write_text('{}')
+            added = []
+
+            def run(cmd, **kw):
+                added.append(json.loads(pathlib.Path(cmd[4]).read_text()))
+            with mock.patch.object(da, 'ROOT', root), mock.patch.dict(da.offnom.ROWS, {'lm': [dict(scenario='lm-x')]}), \
+                    mock.patch.object(da.offnom, 'symbols', lambda m: {}), \
+                    mock.patch.object(da.offnom, 'judge', lambda row, t, text, rc, log: dict(ok=clean and rc == 0)), \
+                    mock.patch.object(da.subprocess, 'run', run):
+                return da.backfill_exits('lm'), added, da.sha(ev / 'lm-x.log')
+
+    def test_pass_doc_records_exit_zero(self):
+        bad, added, sha = self.run_backfill()
+        self.assertEqual(bad, [])
+        self.assertEqual(added, [{'lm-x': dict(log='lm-x.log', log_sha256=sha, exit=0)}])
+
+    def test_refuses(self):
+        for kw, why in ((dict(result='FAIL'), 'does not say PASS'), (dict(clean=False), 'not clean at exit 0'),
+                        (dict(existing=True), 'already exists')):
+            bad, added, _ = self.run_backfill(**kw)
+            self.assertEqual(added, [])
+            self.assertIn(why, bad[0])
+
+
 class OffNominal(unittest.TestCase):
     """The Off-nominal inputs section (tools/device_offnominal.py)."""
 
