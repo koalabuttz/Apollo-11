@@ -459,38 +459,63 @@ void dp_rows_after_rupts(void);
 #define RK_STEAL_AT(name)
 #endif
 /* A period's RK_STEAL MCT over its steps, by where each ends (the host's
- * steal_share): 3n of every 2560 MCT. A byte each while they fit. */
+ * steal_share): 3n of every 2560 MCT. */
 #define RK_STEAL_CUM(e) (3ul * (RK_STEAL) * (e) / 2560ul)
-#if RK_STEAL_CUM(1707u) - RK_STEAL_CUM(1280u) < 256u
-typedef uint8_t rk_steal_mct;
-#else
-typedef uint16_t rk_steal_mct;
-#endif
 RK_STEAL_AT("rk_steal_share")
-static const rk_steal_mct rk_steal_share[9] = {RK_STEAL_CUM(214u),
-                                               RK_STEAL_CUM(427u) - RK_STEAL_CUM(214u),
-                                               RK_STEAL_CUM(854u) - RK_STEAL_CUM(427u),
-                                               RK_STEAL_CUM(1067u) - RK_STEAL_CUM(854u),
-                                               RK_STEAL_CUM(1280u) - RK_STEAL_CUM(1067u),
-                                               RK_STEAL_CUM(1707u) - RK_STEAL_CUM(1280u),
-                                               RK_STEAL_CUM(1920u) - RK_STEAL_CUM(1707u),
-                                               RK_STEAL_CUM(2134u) - RK_STEAL_CUM(1920u),
-                                               RK_STEAL_CUM(2560u) - RK_STEAL_CUM(2134u)};
+__attribute__((used))
+const uint16_t rk_steal_share[9] = {RK_STEAL_CUM(214u),
+                                    RK_STEAL_CUM(427u) - RK_STEAL_CUM(214u),
+                                    RK_STEAL_CUM(854u) - RK_STEAL_CUM(427u),
+                                    RK_STEAL_CUM(1067u) - RK_STEAL_CUM(854u),
+                                    RK_STEAL_CUM(1280u) - RK_STEAL_CUM(1067u),
+                                    RK_STEAL_CUM(1707u) - RK_STEAL_CUM(1280u),
+                                    RK_STEAL_CUM(1920u) - RK_STEAL_CUM(1707u),
+                                    RK_STEAL_CUM(2134u) - RK_STEAL_CUM(1920u),
+                                    RK_STEAL_CUM(2560u) - RK_STEAL_CUM(2134u)};
 #undef RK_STEAL_CUM
-/* rk_phase_mct less 200, a byte each. */
-RK_STEAL_AT("rk_steal_step")
-static const uint8_t rk_steal_step[9] = {14u, 13u, 227u, 13u, 13u, 227u, 13u, 14u, 226u};
-uint16_t rk_steal_end = 214u;
-uint8_t rk_steal_q;
-RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(uint8_t steal)
+__attribute__((used)) uint16_t rk_steal_end = 214u;
+__attribute__((used)) uint8_t rk_steal_q;
+_Static_assert((RK_STEAL_FROM) < (1ul << 28) && (RK_STEAL_TO) < (1ul << 28),
+               "RK_STEAL_FROM/TO: TIME2:TIME1, 28 bits");
+/* The bytes of a TIME2:TIME1 count as the 6502 compares it: TIME1's low
+ * 14 bits, then TIME2's. */
+#define RK_STEAL_B0(cs) ((uint8_t)((cs) & 0xffu))
+#define RK_STEAL_B1(cs) ((uint8_t)(((cs) >> 8) & 0x3fu))
+#define RK_STEAL_B2(cs) ((uint8_t)(((cs) >> 14) & 0xffu))
+#define RK_STEAL_B3(cs) ((uint8_t)((cs) >> 22))
+/* From the time as the boundary starts (TIME2 $7028, TIME1 $702A, 14 bits
+ * each, compared as one 28-bit count from TIME1's low byte up): the steal
+ * is on from RK_STEAL_FROM up to RK_STEAL_TO. Then each step's share, at
+ * the step's end, for every step that ended by rk_work. rk_steal_q is
+ * twice the step's phase (rk_phase_mct and rk_steal_share are words). In
+ * 6502: the C took 330 bytes. */
+RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(void)
 {
-    uint8_t q = rk_steal_q;
-    while (rk_steal_end <= rk_work) {
-        if (steal) rk_work += rk_steal_share[q];
-        if (++q == 9u) q = 0;
-        rk_steal_end += 200u + rk_steal_step[q];
-    }
-    rk_steal_q = q;
+    /* clang-format off */
+    __asm__ volatile(
+        "  ldy #0\n"
+        "  lda $702a\n  cmp #%0\n  lda $702b\n  and #$3f\n  sbc #%1\n"
+        "  lda $7028\n  sbc #%2\n  lda $7029\n  and #$3f\n  sbc #%3\n  bcc 1f\n"
+        "  lda $702a\n  cmp #%4\n  lda $702b\n  and #$3f\n  sbc #%5\n"
+        "  lda $7028\n  sbc #%6\n  lda $7029\n  and #$3f\n  sbc #%7\n  bcs 1f\n"
+        "  iny\n"
+        "1:\n  ldx rk_steal_q\n"
+        "2:\n  lda rk_work\n  cmp rk_steal_end\n  lda rk_work+1\n  sbc rk_steal_end+1\n  bcc 9f\n"
+        "  tya\n  beq 3f\n"
+        "  clc\n  lda rk_work\n  adc rk_steal_share,x\n  sta rk_work\n"
+        "  lda rk_work+1\n  adc rk_steal_share+1,x\n  sta rk_work+1\n"
+        "3:\n  inx\n  inx\n  cpx #18\n  bne 4f\n  ldx #0\n"
+        "4:\n  clc\n  lda rk_steal_end\n  adc rk_phase_mct,x\n  sta rk_steal_end\n"
+        "  lda rk_steal_end+1\n  adc rk_phase_mct+1,x\n  sta rk_steal_end+1\n"
+        "  bcc 2b\n" /* (rk_steal_end never carries out) */
+        "9:\n  stx rk_steal_q\n"
+        :
+        : "i"(RK_STEAL_B0(RK_STEAL_FROM)), "i"(RK_STEAL_B1(RK_STEAL_FROM)),
+          "i"(RK_STEAL_B2(RK_STEAL_FROM)), "i"(RK_STEAL_B3(RK_STEAL_FROM)),
+          "i"(RK_STEAL_B0(RK_STEAL_TO)), "i"(RK_STEAL_B1(RK_STEAL_TO)),
+          "i"(RK_STEAL_B2(RK_STEAL_TO)), "i"(RK_STEAL_B3(RK_STEAL_TO))
+        : "a", "x", "y", "p", "memory");
+    /* clang-format on */
 }
 #endif
 #ifdef RK_WORK_CLOCK
@@ -599,15 +624,7 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
      * the step's end, also when the end fell inside the routine that just
      * ran, which the steal stretches (issue #912 item 3). The time as the
      * boundary starts, where the host reads it. Replay builds only. */
-    /* (TIME2 and TIME1 compared as a pair, not as one 28-bit count: the
-     * same test in 16-bit compares, which the overload harness has room for.) */
-    const uint16_t t2 = IMAGE->words[024] & 037777u, t1 = IMAGE->words[025] & 037777u;
-#define RK_STEAL_AT_OR_PAST(cs)                                                                    \
-    (t2 > (uint16_t)((cs) >> 14) ||                                                                \
-     (t2 == (uint16_t)((cs) >> 14) && t1 >= (uint16_t)((cs) & 037777u)))
-    const uint8_t steal = RK_STEAL_AT_OR_PAST(RK_STEAL_FROM) && !RK_STEAL_AT_OR_PAST(RK_STEAL_TO);
-#undef RK_STEAL_AT_OR_PAST
-    rk_steal_run(steal);
+    rk_steal_run();
 #endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
