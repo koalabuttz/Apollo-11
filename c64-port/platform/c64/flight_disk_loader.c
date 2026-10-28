@@ -190,6 +190,21 @@ static void fd_start(uint8_t t, uint8_t s, uint8_t max)
     err = 0;
 }
 
+/* The drive's status on its command channel: 0 for "00, OK", else the
+ * error number (a 1541 always answers on channel 15). */
+static uint8_t drive_status(void)
+{
+    uint8_t a, b;
+    cbm_k_talk(8);
+    cbm_k_tksa(0x6f);
+    a = cbm_k_acptr();
+    b = cbm_k_acptr();
+    while (!(cbm_k_readst() & 0xc2)) cbm_k_acptr(); /* to EOI, or a timeout */
+    cbm_k_untlk();
+    if (a < '0' || a > '9' || b < '0' || b > '9') return 0xfc;
+    return (uint8_t)((a - '0') * 10 + (b - '0'));
+}
+
 /* The KERNAL path: open file "<mission> DISK d" (data 0) or "<mission>
  * DATA d" (data 1) for reading. */
 static void kernal_start(uint8_t data, uint8_t d)
@@ -203,10 +218,13 @@ static void kernal_start(uint8_t data, uint8_t d)
     cbm_k_setnam(name);
     cbm_k_setlfs(2, 8, 2);
     cbm_k_open();
-    cbm_k_chkin(2);
     pos = len = 0;
-    err = 0;
-    eof = 0;
+    err = drive_status();
+    eof = err != 0;
+    /* Only an open file is read: a 1541 that failed the open (no disk yet
+     * after a swap, 74 DRIVE NOT READY) may never take the bus as talker
+     * for it, and the KERNAL's TKSA waits for that with no timeout. */
+    if (!err) cbm_k_chkin(2);
 }
 
 static void fd_end(void)
@@ -227,7 +245,7 @@ static uint8_t kernal_sector(void)
 {
     uint8_t n = 0, b, st;
     if (eof) {
-        err = 0xfd;
+        if (!err) err = 0xfd;
         return 0;
     }
     do {
@@ -274,6 +292,14 @@ static uint32_t fd_word(uint8_t n)
     uint8_t i;
     for (i = 0; i < n; ++i) v |= (uint32_t)fd_byte() << (8 * i);
     return v;
+}
+
+/* About n/60 s on the KERNAL's jiffy clock (its IRQ runs on this path). */
+static void wait_jiffies(uint8_t n)
+{
+    uint8_t t0 = PEEK(0xA2);
+    while ((uint8_t)(PEEK(0xA2) - t0) < n) {
+    }
 }
 
 static void wait_return(void)
@@ -388,12 +414,19 @@ static uint16_t start_len, start_at;
  * none); 1: read. */
 static uint8_t read_disk(uint8_t d)
 {
-    uint8_t t, s, tag, ok;
+    uint8_t t, s, tag, ok, tries;
     if (fast) {
         upload_drive_code();
         fd_start(1, 0, 1);
     } else
-        kernal_start(0, d);
+        for (tries = 0;;) {
+            kernal_start(0, d);
+            /* 74 DRIVE NOT READY: a 1541 just after a swap has not yet
+             * seen the new disk. Give it a second before asking again. */
+            if (err != 74 || ++tries == 5) break;
+            fd_end();
+            wait_jiffies(60);
+        }
     ok = fd_sector() && len >= 13 && !memcmp(buf, "APOLLO11", 8) && buf[8] == FD_MISSION &&
          buf[9] == d && buf[10] == FD_DISKS;
     /* The drive sent the one sector and let go of the bus (the KERNAL
