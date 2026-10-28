@@ -637,6 +637,7 @@
   "display_control-sanitize": 9,
   "fixed-data-sanitize": 0,
   "fixed-data-test": 1,
+  "flight-restart-check": 737,
   "goplay-host": 0,
   "goplay-sanitize": 25,
   "hardware_divide-host": 1,

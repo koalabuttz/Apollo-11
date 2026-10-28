@@ -514,6 +514,17 @@ def target_weights(targets, weights):
     return out
 
 
+def target_timeouts(targets, weights, factor):
+    """How long each measured target may run: factor x its seconds, at
+    least TIMEOUT_FLOOR. A target never measured (alone or as a part of a
+    measured whole) has no limit: the median it is weighted at says nothing
+    about how long it takes (flight-restart-check, about 12 minutes, was
+    stopped at the floor on #1016)."""
+    seconds = target_weights(targets, weights)
+    measured = {t for t in targets if t in weights or (PART.match(t) and PART.match(t)[1] in weights)}
+    return {t: max(TIMEOUT_FLOOR, factor * s) for t, s in seconds.items() if t in measured}
+
+
 # A PR's c64 job gets another runner for each RUNNER_SECONDS of measured
 # target time (4 targets run at once on a runner, so about 15 minutes of
 # wall time each), up to --count-shards.
@@ -622,8 +633,7 @@ def main():
         print('nothing to run')
         return 0
     if args.timeout_factor > 0:
-        seconds = target_weights(targets, load_weights(args.weights))
-        TIMEOUTS.update({t: max(TIMEOUT_FLOOR, args.timeout_factor * s) for t, s in seconds.items()})
+        TIMEOUTS.update(target_timeouts(targets, load_weights(args.weights), args.timeout_factor))
     args.log_dir.mkdir(parents=True, exist_ok=True)
     (ROOT / 'build').mkdir(exist_ok=True)
     # VICE exits 1 at startup when its XDG cache/config directory is missing;
