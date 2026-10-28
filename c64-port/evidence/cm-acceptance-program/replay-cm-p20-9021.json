@@ -7,7 +7,7 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 112087613,
+ "wall_cycles": 112085914,
  "agc_cs": 451,
  "dropped_ticks": 0,
  "steps": 1959,
@@ -16,6 +16,9 @@
  "mission": "cm",
  "snap_cs": 9021,
  "replay": true,
+ "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
+ "harness_sha256": "1fc1df9643455bfdf852bdb4b7c58e0044328d92946e6af0b91a0038ac356d67",
+ "prg_sha256": "5dc299711360de11ba387637e72155662dc9946ae5ea8a66fbd2b90cc9951184",
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -93,7 +96,356 @@
    "radar gate": 0
   },
   "nonzero": [],
-  "changed": []
+  "changed": [],
+  "states": [
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 2,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 2,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 147
+   },
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 2,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 2,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 247
+   },
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 304
+   },
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 0,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 351
+   },
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 444
+   }
+  ],
+  "trace": [
+   [
+    43,
+    "0053",
+    "00006"
+   ],
+   [
+    43,
+    "0054",
+    "00001"
+   ],
+   [
+    44,
+    "0053",
+    "00000"
+   ],
+   [
+    44,
+    "0054",
+    "00000"
+   ],
+   [
+    92,
+    "0053",
+    "00006"
+   ],
+   [
+    92,
+    "0054",
+    "00001"
+   ],
+   [
+    93,
+    "0053",
+    "00000"
+   ],
+   [
+    93,
+    "0054",
+    "00000"
+   ],
+   [
+    141,
+    "0053",
+    "00006"
+   ],
+   [
+    141,
+    "0054",
+    "00001"
+   ],
+   [
+    142,
+    "0053",
+    "00000"
+   ],
+   [
+    142,
+    "0054",
+    "00000"
+   ],
+   [
+    190,
+    "0053",
+    "00011"
+   ],
+   [
+    190,
+    "0054",
+    "00001"
+   ],
+   [
+    190,
+    "0053",
+    "00000"
+   ],
+   [
+    190,
+    "0054",
+    "00000"
+   ],
+   [
+    237,
+    "0053",
+    "00011"
+   ],
+   [
+    237,
+    "0054",
+    "00001"
+   ],
+   [
+    238,
+    "0053",
+    "00000"
+   ],
+   [
+    238,
+    "0054",
+    "00000"
+   ],
+   [
+    285,
+    "0053",
+    "77763"
+   ],
+   [
+    285,
+    "0054",
+    "77777"
+   ],
+   [
+    286,
+    "0053",
+    "00000"
+   ],
+   [
+    286,
+    "0054",
+    "00000"
+   ],
+   [
+    333,
+    "0053",
+    "00004"
+   ],
+   [
+    333,
+    "0054",
+    "00001"
+   ],
+   [
+    334,
+    "0053",
+    "00000"
+   ],
+   [
+    334,
+    "0054",
+    "00000"
+   ],
+   [
+    382,
+    "0053",
+    "00005"
+   ],
+   [
+    382,
+    "0054",
+    "00001"
+   ],
+   [
+    382,
+    "0053",
+    "00000"
+   ],
+   [
+    382,
+    "0054",
+    "00000"
+   ],
+   [
+    430,
+    "0053",
+    "00005"
+   ],
+   [
+    430,
+    "0054",
+    "00001"
+   ],
+   [
+    430,
+    "0053",
+    "00000"
+   ],
+   [
+    430,
+    "0054",
+    "00000"
+   ]
+  ]
  },
  "replay_unpaired": [],
  "replay_unpaired_count": 0,
@@ -119,5 +471,5 @@
  "requested_cs": 444,
  "host_holes": [],
  "downrupt": false,
- "commit": "78dcfd1c5f33"
+ "commit": "d0732f811067"
 }

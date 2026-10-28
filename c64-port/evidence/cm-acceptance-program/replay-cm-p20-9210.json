@@ -7,15 +7,18 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 58152864,
+ "wall_cycles": 58161633,
  "agc_cs": 308,
  "dropped_ticks": 0,
  "steps": 1136,
- "wall_per_agc": 19.163,
+ "wall_per_agc": 19.166,
  "lost": false,
  "mission": "cm",
  "snap_cs": 9210,
  "replay": true,
+ "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
+ "harness_sha256": "1fc1df9643455bfdf852bdb4b7c58e0044328d92946e6af0b91a0038ac356d67",
+ "prg_sha256": "813f838adeef929cdee8d97d19968559d636d01e611beb11fe304a4573a2e4ef",
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -26,7 +29,7 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 11
+  "dma_unchecked": 6
  },
  "hold_host_mct": 709,
  "hold_host_time1": 9617,
@@ -79,7 +82,283 @@
    "radar gate": 0
   },
   "nonzero": [],
-  "changed": []
+  "changed": [],
+  "states": [
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 0,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 0,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 0,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 139
+   },
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 0,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 151
+   },
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 0,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 0,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 0,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 276
+   },
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 32,
+     "channel 12": 2,
+     "channel 13": 0,
+     "channel 14": 3072,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 0,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 64,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [],
+    "changed": [],
+    "cs": 301
+   }
+  ],
+  "trace": [
+   [
+    8,
+    "0053",
+    "00005"
+   ],
+   [
+    8,
+    "0054",
+    "00001"
+   ],
+   [
+    9,
+    "0053",
+    "00000"
+   ],
+   [
+    9,
+    "0054",
+    "00000"
+   ],
+   [
+    56,
+    "0053",
+    "00007"
+   ],
+   [
+    56,
+    "0054",
+    "00001"
+   ],
+   [
+    57,
+    "0053",
+    "00000"
+   ],
+   [
+    57,
+    "0054",
+    "00000"
+   ],
+   [
+    104,
+    "0053",
+    "00007"
+   ],
+   [
+    104,
+    "0054",
+    "00001"
+   ],
+   [
+    105,
+    "0053",
+    "00000"
+   ],
+   [
+    105,
+    "0054",
+    "00000"
+   ],
+   [
+    152,
+    "0053",
+    "00005"
+   ],
+   [
+    152,
+    "0054",
+    "77776"
+   ],
+   [
+    153,
+    "0053",
+    "00000"
+   ],
+   [
+    153,
+    "0054",
+    "00000"
+   ],
+   [
+    201,
+    "0053",
+    "00007"
+   ],
+   [
+    201,
+    "0054",
+    "77776"
+   ],
+   [
+    201,
+    "0053",
+    "00000"
+   ],
+   [
+    201,
+    "0054",
+    "00000"
+   ],
+   [
+    249,
+    "0053",
+    "00007"
+   ],
+   [
+    249,
+    "0054",
+    "77776"
+   ],
+   [
+    249,
+    "0053",
+    "00000"
+   ],
+   [
+    249,
+    "0054",
+    "00000"
+   ],
+   [
+    296,
+    "0053",
+    "00004"
+   ],
+   [
+    296,
+    "0054",
+    "77777"
+   ],
+   [
+    297,
+    "0053",
+    "00000"
+   ],
+   [
+    297,
+    "0054",
+    "00000"
+   ]
+  ]
  },
  "replay_unpaired": [],
  "replay_unpaired_count": 0,
@@ -104,5 +383,5 @@
  "requested_cs": 301,
  "host_holes": [],
  "downrupt": false,
- "commit": "78dcfd1c5f33"
+ "commit": "d0732f811067"
 }

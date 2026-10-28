@@ -4,118 +4,118 @@
   "release": "evidence-lm-acceptance-outputs",
   "files": {
     "downlink.json": {
-      "sha256": "c258a82e79ee7a56fc06105901353986d2078a78d4ee0be4260bb82bd33d5cb6",
+      "sha256": "082bf6f456d9bedfc5edc52eb78775accf223d22cc899ffb5b6361e229cb02fc",
       "bytes": 12194,
       "store": "tree"
     },
     "dsky-sweep-summary.json": {
-      "sha256": "11489208eacaa4953c5b96d960c4f8cc89b4a4334e1f93097c132497c7ab42c9",
+      "sha256": "e5bb1805dda52416721570b861d77c7885be4ac7a1fdf394a8df701e243d5707",
       "bytes": 1098,
       "store": "tree"
     },
     "replay-lm-abort-p70-nassp-115000.json": {
-      "sha256": "0ae3670c5dc13728566209253a4a5b1607cda5f92b701874799f08dd05809817",
-      "bytes": 2265,
+      "sha256": "4b3073b46a7d92e480f721d3033f4bc5532ccd28d89e6f49536f4a4ac31f3ddf",
+      "bytes": 14821,
       "store": "tree"
     },
     "replay-lm-coast-r04-4100.json": {
-      "sha256": "f5dc87d092837c72c07bb28481bb443b517e699f586b76d00cfca036bf8754f8",
-      "bytes": 2287,
+      "sha256": "69c76b54d51b26996c43dbb3d31e7fcbc03bffd5c482ae5482223bb75efa3db6",
+      "bytes": 22823,
       "store": "tree"
     },
     "replay-lm-coast-verbs-2700.json": {
-      "sha256": "3d8a9a6e4490bef36c3d584bd8743ebed9d31c933a2bd7f606dcc1c277e6990e",
-      "bytes": 2191,
+      "sha256": "572bfeb0cd4c384e12c580d912950d933240189636172d7732fe94bb7716833a",
+      "bytes": 22336,
       "store": "tree"
     },
     "replay-lm-doi-nassp-48800.json": {
-      "sha256": "34746c43a8f652a6e7bcff81555b9027a92e7f5b25c35d14de2a3bfd3a52d7bd",
-      "bytes": 2249,
+      "sha256": "14c0c9237b4e1fc4e23bf5a15a6e168224565e9a05083d46fdb5943808c447fd",
+      "bytes": 23168,
       "store": "tree"
     },
     "replay-lm-landing-ascent-nassp-128000.json": {
-      "sha256": "f7ae7108da9aeadf1979585fd23cccc0c1ffd5044eb090f136ccf5e5e50b84c2",
-      "bytes": 2243,
+      "sha256": "b4a6a2fa2c1584f44ffd0744f30d541b47cb82599ca93a4d4afc4fbaf03ac6ee",
+      "bytes": 36693,
       "store": "tree"
     },
     "replay-lm-landing-ascent-nassp-140000.json": {
-      "sha256": "391af842285fbc8918c09ab652a5b3c4785fc908b70fd0e08accd6576a1f1793",
-      "bytes": 2308,
+      "sha256": "4fdb9295cc27dd88c6ac383273210297fd9494f0a0fbc25db367ea4a36590e53",
+      "bytes": 36587,
       "store": "tree"
     },
     "replay-lm-landing-ascent-nassp-156000.json": {
-      "sha256": "456aa1eacfa46cd10913fc2f45a9e492734d739ecf8ec0b08fa0fac0e1970e03",
-      "bytes": 2188,
+      "sha256": "4cf17be73162faecf2d923f2b0a5986fbcc641f8138df401f003d1a3816d7388",
+      "bytes": 22963,
       "store": "tree"
     },
     "replay-lm-p41-nassp-49000.json": {
-      "sha256": "8c200860da6807e47c78b8815c35b39f0b47e456bd6ad73e3f386d81bb0b438a",
-      "bytes": 2214,
+      "sha256": "ce1fd375cc1bd3f48c1c013a54897cf5a5db772fe755fdfbd3270c0894fc660f",
+      "bytes": 23066,
       "store": "tree"
     },
     "replay-lm-p42-nassp-48800.json": {
-      "sha256": "b6af7000abc4ccb1bb3cfcac7cdcf1916d8cb5486b270e979ae85a6fa8423eac",
-      "bytes": 2264,
+      "sha256": "5ae0659db672d37b2fea7e1b6780001f340160ee245166b438929ab1786c830a",
+      "bytes": 23144,
       "store": "tree"
     },
     "replay-lm-p47-nassp-2950.json": {
-      "sha256": "7c81d161ea275eb7430815ee84b340d1f5476d63bfde48b744ec06ddd02f4caf",
-      "bytes": 2273,
+      "sha256": "8abb419dd2d31aca07b768fdbc16f26d73faf8917c7bae77cbcc84c2b23fd58a",
+      "bytes": 23088,
       "store": "tree"
     },
     "replay-lm-p52-imu-cage-2950.json": {
-      "sha256": "1a6d457a8c10d7012fecfa974d96e65b3bdd75b9bccb6e551c5d907953e8191d",
-      "bytes": 2460,
+      "sha256": "24b154a8feb04c5ba1c1ed4d3ef058ee981ca77cf834153303c423248c053b69",
+      "bytes": 12108,
       "store": "tree"
     },
     "replay-lm-p57-42300.json": {
-      "sha256": "474adc46eeb5b51fd60e537aed8f8ba4ebb9b7785d44f702f393b0b4597b1d2c",
-      "bytes": 2065,
+      "sha256": "7f403593871135452b785ac2288e782a8d0b790b6eedabbf683c06b63496af78",
+      "bytes": 22401,
       "store": "tree"
     },
     "replay-lm-p63-descent-14500.json": {
-      "sha256": "6c6628ba61639d55e12c107f25cc4b1e1b49306f3bed1d06f5d725e340a4541f",
-      "bytes": 2066,
+      "sha256": "2f00e222dc8ee35bcbed5fad62c91dd4ed921a0cd918cc580203a89e4f7ccddc",
+      "bytes": 8352,
       "store": "tree"
     },
     "replay-lm-p63-descent-2300.json": {
-      "sha256": "043f82ca67445fa3a291be4ac1916f8005d406bf0cabf7e2e6a1b7869fa9dd39",
-      "bytes": 2183,
+      "sha256": "253a083d2a86f6d0fffa4dd0ce0e2f2d14088ca946005b94426ed46a19b72873",
+      "bytes": 19786,
       "store": "tree"
     },
     "replay-lm-p63-descent-thrust-17500.json": {
-      "sha256": "166021c9bee5c529de2f6f1938772f06e0b4616e49bca756514362108246a914",
-      "bytes": 2086,
+      "sha256": "2b5d7a14e89100d866c5bdc81a6db6973ca4990bdcb36eca39f97469a0ff73b3",
+      "bytes": 5764,
       "store": "tree"
     },
     "replay-lm-p63-overload-9550.json": {
-      "sha256": "d527df75c3ac71dbdcd9974057df85b086b8711c92885b00c6d1f742924700ee",
-      "bytes": 2143,
+      "sha256": "f010755235040c449a8277542b4c9f0aaea3d37baf419dac287977a11b958ffa",
+      "bytes": 10439,
       "store": "tree"
     },
     "replay-lm-rendezvous-5300.json": {
-      "sha256": "ab814846b47d938b6c392f48faec15ec1c8334dac61552c118f123dc76e2d34b",
-      "bytes": 2353,
+      "sha256": "c2e0cc527a42b38369271499ecf5d966c507fa9885d620bc8618752d13edb840",
+      "bytes": 22900,
       "store": "tree"
     },
     "replay-lm-rendezvous-8000.json": {
-      "sha256": "8d3a9d0ffdae9ae61d736bb9e0f81c90edd8dde93152bda8cf9871b6201c7d83",
-      "bytes": 2198,
+      "sha256": "a5ac236eb6dc3e303ab64dc019a27b6c3a6bf7a56d92e591baec4c728531e3d1",
+      "bytes": 22822,
       "store": "tree"
     },
     "replay-lm-stable-orbit-8800.json": {
-      "sha256": "dc30e35db1e183e1b940d9eaf150910d9c202dbbd64a38375dda61fce4443c7d",
-      "bytes": 2270,
+      "sha256": "1af51197389329b9865b9d5d5207f62bcb179196f6c8d80b866184507b86e61b",
+      "bytes": 22778,
       "store": "tree"
     },
     "replay-lm-uplink-accept-12010.json": {
-      "sha256": "6bc792146c5f5ddecb1ee5ae54cfbf2300b9a19c2c1686eddbabf4ea853d2e55",
-      "bytes": 2062,
+      "sha256": "47eb029f9cac3a33ead2373b01ec4930a7b553e1b508e6fe232a1eade606077b",
+      "bytes": 6339,
       "store": "tree"
     },
     "replay-lm-uplink-accept-1950.json": {
-      "sha256": "7903f9d15d647af52df6f6f28c6157c2a85124f7d4f2d1725f642cba4e82d35c",
-      "bytes": 2145,
+      "sha256": "3621c2b9e36ea698447b58563782576ba4e45a62561bcb81cfd269a89d719077",
+      "bytes": 9083,
       "store": "tree"
     }
   }

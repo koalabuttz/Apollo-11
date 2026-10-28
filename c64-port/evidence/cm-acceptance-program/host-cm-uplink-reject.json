@@ -10,7 +10,7 @@
  "schedule": "1,1,2",
  "chunked": true,
  "exit": 0,
- "commit": "78dcfd1c5f33",
+ "commit": "d0732f811067",
  "cia_interrupts": 9000,
  "periods_taken": 9000,
  "periods_dropped": 0,
@@ -40,6 +40,18 @@
   "disagree": 0,
   "native_armed": 0
  },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 11,
+  "no_interrupt_to": 27,
+  "no_background_periods": 0,
+  "no_background_to": 0
+ },
  "reached": {
   "27,3512": null,
   "27,3624": null
@@ -48,5 +60,5 @@
   "27,3512": [],
   "27,3624": []
  },
- "log_sha256": "27abb4bbce46c898ff0242658d976ea8f902976c2f3185a914205f1a96daaff3"
+ "log_sha256": "89038c52df7fec097086df03f69d14e5c85965dd68f0b6fa6ef60d49f4a19544"
 }

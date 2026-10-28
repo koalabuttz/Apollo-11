@@ -6,64 +6,64 @@
  "loader_bytes": 6392,
  "resident_bytes": 38019,
  "resident_start": 2061,
- "boot_return": 2887,
+ "boot_return": 3035,
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
  "bytes_loaded": 1863151,
  "data_bytes": [
-  792103
+  792185
  ],
  "vice": {
   "mission": "cm",
   "ok": true,
   "fast_loader": true,
-  "load_cycles": 260772877,
+  "load_cycles": 260788572,
   "load_s": 264.7,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80784,
-  "boot_cycles": 107747812,
+  "handoff_cycles": 80827,
+  "boot_cycles": 107758140,
   "boot_s": 109.4,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 37044309,
-    "time1": "01374",
-    "z": "04040",
-    "fb": "66000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 70891942,
-    "time1": "02723",
-    "z": "04701",
-    "fb": "66000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 107589694,
-    "time1": "04344",
-    "z": "03536",
-    "fb": "12000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 143253298,
-    "time1": "05737",
+    "cycles": 31279078,
+    "time1": "01177",
     "z": "02174",
     "fb": "14000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 64517374,
+    "time1": "02504",
+    "z": "03306",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 95947317,
+    "time1": "03743",
+    "z": "05333",
+    "fb": "14000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 122227390,
+    "time1": "05027",
+    "z": "04020",
+    "fb": "02000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "3146",
-   "4c86",
-   "5993",
-   "02b3",
-   "4a59",
-   "55f2",
-   "0200",
-   "ecbe"
+   "495a",
+   "9527",
+   "4d30",
+   "5490",
+   "5c00",
+   "0f16",
+   "0eff",
+   "9caa"
   ],
   "key_ch32": [
    "7f",
@@ -85,7 +85,7 @@
    "36000",
    "36000"
   ],
-  "pc": "56ba",
+  "pc": "9665",
   "screen": [
    " APOLLO 11 CM DSKY",
    "",
@@ -111,8 +111,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "02000",
-  "z": "03231",
+  "fb": "12000",
+  "z": "03536",
   "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -170,7 +170,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 32,
+   "dma_unchecked": 33,
    "trace_errors": [],
    "trace_ok": true
   }

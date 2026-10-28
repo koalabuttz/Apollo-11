@@ -68,6 +68,7 @@ DSKY 9106 cs: P52 V37 N   R1        R2        R3
 LM: 528112 native routines (8536824 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
 scaled time: K 1.00, divisor 1, lag 2, seed 0: 10004 CIA interrupts, 10002 clock periods taken, 2 dropped (rk_dilation); AGC time 10002 cs
 night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule (0 with the native rule armed); yaAGC's own alarm inside 0 spans
+rupt lock: 0 alarms (0 RUPT LOCK, 0 NO RUPT); 0 checks where a flag was still set, 0 where yaAGC's flags differ from the native rule; channel 77 bit 4 inside 0 spans; longest without an interrupt step 10 periods (to period 10), without a step outside one 1 (to period 512)
 major mode (MODREG 01011) at 10000 cs: native 64, yaAGC 00; FAILREG 01520/00000
 interpreter module: 775 routines, 775 slots; words charged vs yaAGC's: n/a (work clock only)
 interpreter charge: fitted 143820 MCT, yaAGC 141778 MCT (+1.4%) over 775 routines; mean |error| 17.4 MCT per routine

@@ -14,7 +14,7 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 27247264,
+ "wall_cycles": 27246324,
  "agc_cs": 308,
  "dropped_ticks": 0,
  "steps": 1417,
@@ -22,24 +22,24 @@
  "by_request": {
   "background": {
    "count": 68,
-   "cycles": 18306071,
-   "max_cycles": 581519,
+   "cycles": 18318374,
+   "max_cycles": 581557,
    "steps": 1045,
    "job_loads": 70,
    "task_loads": 0
   },
   "T5RUPT": {
    "count": 31,
-   "cycles": 4149897,
-   "max_cycles": 147259,
+   "cycles": 4143456,
+   "max_cycles": 146873,
    "steps": 155,
    "job_loads": 48,
    "task_loads": 0
   },
   "T4RUPT": {
    "count": 36,
-   "cycles": 4784165,
-   "max_cycles": 206371,
+   "cycles": 4777442,
+   "max_cycles": 206274,
    "steps": 217,
    "job_loads": 70,
    "task_loads": 0
@@ -52,7 +52,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 45749
+   "cycles": 46198
   },
   {
    "request": "T5RUPT",
@@ -60,7 +60,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 139070
+   "cycles": 138892
   },
   {
    "request": "background",
@@ -68,7 +68,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 117206
+   "cycles": 117141
   },
   {
    "request": "T4RUPT",
@@ -76,7 +76,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 92127
+   "cycles": 91361
   },
   {
    "request": "background",
@@ -84,7 +84,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 399388
+   "cycles": 399543
   },
   {
    "request": "T4RUPT",
@@ -92,7 +92,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 84209
+   "cycles": 83841
   },
   {
    "request": "background",
@@ -100,7 +100,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 38461
+   "cycles": 38577
   },
   {
    "request": "T4RUPT",
@@ -108,7 +108,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 58570
+   "cycles": 58459
   },
   {
    "request": "background",
@@ -116,7 +116,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 38342
+   "cycles": 38642
   },
   {
    "request": "T4RUPT",
@@ -124,7 +124,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 49233
+   "cycles": 48673
   },
   {
    "request": "background",
@@ -132,7 +132,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 38687
+   "cycles": 38862
   },
   {
    "request": "T4RUPT",
@@ -140,7 +140,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 10,
-   "cycles": 184273
+   "cycles": 184591
   },
   {
    "request": "background",
@@ -148,7 +148,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 24023
+   "cycles": 24038
   },
   {
    "request": "T5RUPT",
@@ -156,7 +156,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 124398
+   "cycles": 124016
   },
   {
    "request": "background",
@@ -164,7 +164,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 128280
+   "cycles": 128598
   },
   {
    "request": "T4RUPT",
@@ -172,7 +172,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 79374
+   "cycles": 79104
   },
   {
    "request": "background",
@@ -180,7 +180,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 391012
+   "cycles": 390484
   },
   {
    "request": "T4RUPT",
@@ -188,7 +188,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 91570
+   "cycles": 91011
   },
   {
    "request": "background",
@@ -196,7 +196,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 38652
+   "cycles": 38818
   },
   {
    "request": "T4RUPT",
@@ -204,7 +204,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 48618
+   "cycles": 48787
   },
   {
    "request": "background",
@@ -212,7 +212,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 38373
+   "cycles": 38543
   },
   {
    "request": "T4RUPT",
@@ -220,7 +220,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 56316
+   "cycles": 56113
   },
   {
    "request": "background",
@@ -228,7 +228,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 38521
+   "cycles": 38599
   },
   {
    "request": "T4RUPT",
@@ -236,7 +236,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 49183
+   "cycles": 49186
   },
   {
    "request": "background",
@@ -244,7 +244,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 24779
+   "cycles": 24536
   },
   {
    "request": "T5RUPT",
@@ -252,7 +252,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 141177
+   "cycles": 140978
   },
   {
    "request": "background",
@@ -260,7 +260,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 117211
+   "cycles": 117133
   },
   {
    "request": "T4RUPT",
@@ -268,7 +268,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 118819
+   "cycles": 118590
   },
   {
    "request": "background",
@@ -276,7 +276,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 390564
+   "cycles": 390025
   },
   {
    "request": "T4RUPT",
@@ -284,7 +284,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 3,
-   "cycles": 83769
+   "cycles": 83728
   },
   {
    "request": "background",
@@ -292,7 +292,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 6,
-   "cycles": 38469
+   "cycles": 38684
   },
   {
    "request": "T4RUPT",
@@ -300,7 +300,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 54729
+   "cycles": 54386
   },
   {
    "request": "background",
@@ -308,7 +308,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 12,
-   "cycles": 79929
+   "cycles": 80288
   },
   {
    "request": "T5RUPT",
@@ -316,7 +316,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 123983
+   "cycles": 123928
   },
   {
    "request": "background",
@@ -324,7 +324,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 18,
-   "cycles": 484731
+   "cycles": 484092
   },
   {
    "request": "T4RUPT",
@@ -332,7 +332,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 201673
+   "cycles": 201627
   },
   {
    "request": "background",
@@ -340,7 +340,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 106978
+   "cycles": 107571
   },
   {
    "request": "T5RUPT",
@@ -348,7 +348,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 141434
+   "cycles": 140822
   },
   {
    "request": "background",
@@ -356,7 +356,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 22,
-   "cycles": 500749
+   "cycles": 500768
   },
   {
    "request": "T4RUPT",
@@ -364,7 +364,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 124829
+   "cycles": 124357
   },
   {
    "request": "background",
@@ -372,7 +372,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 12,
-   "cycles": 79933
+   "cycles": 80303
   },
   {
    "request": "T5RUPT",
@@ -380,7 +380,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 135216
+   "cycles": 134902
   },
   {
    "request": "background",
@@ -388,7 +388,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 26,
-   "cycles": 539570
+   "cycles": 539262
   },
   {
    "request": "T4RUPT",
@@ -396,7 +396,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 206371
+   "cycles": 206274
   },
   {
    "request": "background",
@@ -404,7 +404,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 51309
+   "cycles": 51555
   },
   {
    "request": "T5RUPT",
@@ -412,7 +412,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 141297
+   "cycles": 141028
   },
   {
    "request": "background",
@@ -420,7 +420,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 30,
-   "cycles": 556368
+   "cycles": 556379
   },
   {
    "request": "T4RUPT",
@@ -428,7 +428,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 114818
+   "cycles": 114496
   },
   {
    "request": "background",
@@ -436,7 +436,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 24824
+   "cycles": 24922
   },
   {
    "request": "T5RUPT",
@@ -444,7 +444,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 124802
+   "cycles": 124384
   },
   {
    "request": "background",
@@ -452,7 +452,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 32,
-   "cycles": 581519
+   "cycles": 581557
   },
   {
    "request": "T5RUPT",
@@ -460,7 +460,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 142120
+   "cycles": 141779
   },
   {
    "request": "background",
@@ -468,7 +468,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 117204
+   "cycles": 117173
   },
   {
    "request": "T4RUPT",
@@ -476,7 +476,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 198594
+   "cycles": 198306
   },
   {
    "request": "background",
@@ -484,7 +484,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 28,
-   "cycles": 472131
+   "cycles": 472150
   },
   {
    "request": "T5RUPT",
@@ -492,7 +492,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 124963
+   "cycles": 124604
   },
   {
    "request": "background",
@@ -500,7 +500,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 18,
-   "cycles": 483274
+   "cycles": 482832
   },
   {
    "request": "T4RUPT",
@@ -508,7 +508,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 130229
+   "cycles": 129912
   },
   {
    "request": "background",
@@ -516,7 +516,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 104715
+   "cycles": 105347
   },
   {
    "request": "T5RUPT",
@@ -524,7 +524,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 146990
+   "cycles": 146783
   },
   {
    "request": "background",
@@ -532,7 +532,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 22,
-   "cycles": 497563
+   "cycles": 497806
   },
   {
    "request": "T4RUPT",
@@ -540,7 +540,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 204304
+   "cycles": 204316
   },
   {
    "request": "background",
@@ -548,7 +548,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 12,
-   "cycles": 77029
+   "cycles": 77541
   },
   {
    "request": "T5RUPT",
@@ -556,7 +556,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 123386
+   "cycles": 123194
   },
   {
    "request": "background",
@@ -564,7 +564,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 26,
-   "cycles": 535430
+   "cycles": 535770
   },
   {
    "request": "T4RUPT",
@@ -572,7 +572,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 114128
+   "cycles": 113893
   },
   {
    "request": "background",
@@ -580,7 +580,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 51142
+   "cycles": 51374
   },
   {
    "request": "T5RUPT",
@@ -588,7 +588,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 140886
+   "cycles": 140707
   },
   {
    "request": "background",
@@ -596,7 +596,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 30,
-   "cycles": 551222
+   "cycles": 551553
   },
   {
    "request": "T4RUPT",
@@ -604,7 +604,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 200387
+   "cycles": 200434
   },
   {
    "request": "background",
@@ -612,7 +612,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 23227
+   "cycles": 23358
   },
   {
    "request": "T5RUPT",
@@ -620,7 +620,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 123634
+   "cycles": 123405
   },
   {
    "request": "background",
@@ -628,7 +628,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 32,
-   "cycles": 575415
+   "cycles": 575918
   },
   {
    "request": "T5RUPT",
@@ -636,7 +636,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 141273
+   "cycles": 141195
   },
   {
    "request": "background",
@@ -644,7 +644,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 116869
+   "cycles": 116865
   },
   {
    "request": "T4RUPT",
@@ -652,7 +652,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 119455
+   "cycles": 119167
   },
   {
    "request": "background",
@@ -660,7 +660,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 31,
-   "cycles": 487322
+   "cycles": 487725
   },
   {
    "request": "T5RUPT",
@@ -668,7 +668,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 130250
+   "cycles": 130070
   },
   {
    "request": "background",
@@ -676,7 +676,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 18,
-   "cycles": 480206
+   "cycles": 480179
   },
   {
    "request": "T4RUPT",
@@ -684,7 +684,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 204870
+   "cycles": 204850
   },
   {
    "request": "background",
@@ -692,7 +692,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 103899
+   "cycles": 104509
   },
   {
    "request": "T5RUPT",
@@ -700,7 +700,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 140247
+   "cycles": 140069
   },
   {
    "request": "background",
@@ -708,7 +708,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 22,
-   "cycles": 497267
+   "cycles": 497569
   },
   {
    "request": "T4RUPT",
@@ -716,7 +716,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 114174
+   "cycles": 113909
   },
   {
    "request": "background",
@@ -724,7 +724,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 12,
-   "cycles": 77751
+   "cycles": 78169
   },
   {
    "request": "T5RUPT",
@@ -732,7 +732,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 124293
+   "cycles": 124267
   },
   {
    "request": "background",
@@ -740,7 +740,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 26,
-   "cycles": 535545
+   "cycles": 535773
   },
   {
    "request": "T4RUPT",
@@ -748,7 +748,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 200355
+   "cycles": 200106
   },
   {
    "request": "background",
@@ -756,7 +756,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 49943
+   "cycles": 50323
   },
   {
    "request": "T5RUPT",
@@ -764,7 +764,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 140319
+   "cycles": 140151
   },
   {
    "request": "background",
@@ -772,7 +772,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 30,
-   "cycles": 551316
+   "cycles": 551756
   },
   {
    "request": "T4RUPT",
@@ -780,7 +780,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 120297
+   "cycles": 120067
   },
   {
    "request": "background",
@@ -788,7 +788,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 23911
+   "cycles": 23944
   },
   {
    "request": "T5RUPT",
@@ -796,7 +796,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 123882
+   "cycles": 123867
   },
   {
    "request": "background",
@@ -804,7 +804,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 32,
-   "cycles": 575844
+   "cycles": 576371
   },
   {
    "request": "T5RUPT",
@@ -812,7 +812,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 147259
+   "cycles": 146873
   },
   {
    "request": "background",
@@ -820,7 +820,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 116916
+   "cycles": 116957
   },
   {
    "request": "T4RUPT",
@@ -828,7 +828,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 201332
+   "cycles": 201330
   },
   {
    "request": "background",
@@ -836,7 +836,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 28,
-   "cycles": 467689
+   "cycles": 467948
   },
   {
    "request": "T5RUPT",
@@ -844,7 +844,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 123921
+   "cycles": 123825
   },
   {
    "request": "background",
@@ -852,7 +852,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 18,
-   "cycles": 480896
+   "cycles": 480745
   },
   {
    "request": "T4RUPT",
@@ -860,7 +860,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 114042
+   "cycles": 113904
   },
   {
    "request": "background",
@@ -868,7 +868,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 104731
+   "cycles": 105159
   },
   {
    "request": "T5RUPT",
@@ -876,7 +876,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 141024
+   "cycles": 140806
   },
   {
    "request": "background",
@@ -884,7 +884,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 22,
-   "cycles": 497409
+   "cycles": 497678
   },
   {
    "request": "T4RUPT",
@@ -892,7 +892,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 200381
+   "cycles": 200207
   },
   {
    "request": "background",
@@ -900,7 +900,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 12,
-   "cycles": 76906
+   "cycles": 77347
   },
   {
    "request": "T5RUPT",
@@ -908,7 +908,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 123636
+   "cycles": 123460
   },
   {
    "request": "background",
@@ -916,7 +916,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 26,
-   "cycles": 535265
+   "cycles": 535388
   },
   {
    "request": "T4RUPT",
@@ -924,7 +924,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 120159
+   "cycles": 119996
   },
   {
    "request": "background",
@@ -932,7 +932,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 51148
+   "cycles": 51541
   },
   {
    "request": "T5RUPT",
@@ -940,7 +940,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 141120
+   "cycles": 140789
   },
   {
    "request": "background",
@@ -948,7 +948,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 30,
-   "cycles": 551193
+   "cycles": 551610
   },
   {
    "request": "T4RUPT",
@@ -956,7 +956,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 204476
+   "cycles": 204557
   },
   {
    "request": "background",
@@ -964,7 +964,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 29318
+   "cycles": 29227
   },
   {
    "request": "T5RUPT",
@@ -972,7 +972,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 123134
+   "cycles": 123031
   },
   {
    "request": "background",
@@ -980,7 +980,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 32,
-   "cycles": 575620
+   "cycles": 576360
   },
   {
    "request": "T5RUPT",
@@ -988,7 +988,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 141494
+   "cycles": 141321
   },
   {
    "request": "background",
@@ -996,7 +996,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 2,
-   "cycles": 116870
+   "cycles": 116879
   },
   {
    "request": "T4RUPT",
@@ -1004,7 +1004,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 113135
+   "cycles": 112930
   },
   {
    "request": "background",
@@ -1012,7 +1012,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 30,
-   "cycles": 482328
+   "cycles": 482506
   },
   {
    "request": "T5RUPT",
@@ -1020,7 +1020,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 123746
+   "cycles": 123771
   },
   {
    "request": "background",
@@ -1028,7 +1028,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 18,
-   "cycles": 480611
+   "cycles": 480665
   },
   {
    "request": "T4RUPT",
@@ -1036,7 +1036,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 200303
+   "cycles": 200105
   },
   {
    "request": "background",
@@ -1044,7 +1044,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 16,
-   "cycles": 103629
+   "cycles": 104105
   },
   {
    "request": "T5RUPT",
@@ -1052,7 +1052,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 140297
+   "cycles": 140333
   },
   {
    "request": "background",
@@ -1060,7 +1060,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 22,
-   "cycles": 497539
+   "cycles": 497643
   },
   {
    "request": "T4RUPT",
@@ -1068,7 +1068,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 4,
-   "cycles": 120346
+   "cycles": 120100
   },
   {
    "request": "background",
@@ -1076,7 +1076,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 12,
-   "cycles": 77678
+   "cycles": 78118
   },
   {
    "request": "T5RUPT",
@@ -1084,7 +1084,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 124405
+   "cycles": 123944
   },
   {
    "request": "background",
@@ -1092,7 +1092,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 26,
-   "cycles": 535223
+   "cycles": 535738
   },
   {
    "request": "T4RUPT",
@@ -1100,7 +1100,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 11,
-   "cycles": 204717
+   "cycles": 204769
   },
   {
    "request": "background",
@@ -1108,7 +1108,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 8,
-   "cycles": 50107
+   "cycles": 50206
   },
   {
    "request": "T5RUPT",
@@ -1116,7 +1116,7 @@
    "task_loads": 0,
    "status": 0,
    "steps": 5,
-   "cycles": 146241
+   "cycles": 146262
   },
   {
    "request": "background",
@@ -1124,13 +1124,16 @@
    "task_loads": 0,
    "status": 0,
    "steps": 28,
-   "cycles": 573143
+   "cycles": 573431
   }
  ],
  "lost": false,
  "mission": "lm",
  "snap_cs": 4400,
  "replay": true,
+ "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
+ "harness_sha256": "8dd72f5feb6eb0678841b9900e2ed7995c71b96e71ad2b8d684e655714582852",
+ "prg_sha256": "1ceea6bc253e14c836a8c6a58e0c4e8949c97f69ef74a880249b70565ae1cbce",
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -1141,7 +1144,7 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 10
+  "dma_unchecked": 8
  },
  "hold_host_mct": 26,
  "hold_host_time1": 15526,
@@ -1205,7 +1208,689 @@
    "0054",
    "0055"
   ],
-  "changed": []
+  "changed": [],
+  "states": [
+   {
+    "channel_set": {
+     "channel 5": 150,
+     "channel 6": 85,
+     "channel 11": 8225,
+     "channel 12": 32,
+     "channel 13": 0,
+     "channel 14": 28704,
+     "channel 34": 32767,
+     "channel 35": 32480,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 0,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [
+     "0046",
+     "0053",
+     "0054",
+     "0055"
+    ],
+    "changed": [],
+    "cs": 50
+   },
+   {
+    "channel_set": {
+     "channel 5": 150,
+     "channel 6": 85,
+     "channel 11": 8225,
+     "channel 12": 32,
+     "channel 13": 0,
+     "channel 14": 28704,
+     "channel 34": 32767,
+     "channel 35": 32480,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 1,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [
+     "0046",
+     "0053",
+     "0054",
+     "0055"
+    ],
+    "changed": [],
+    "cs": 100
+   },
+   {
+    "channel_set": {
+     "channel 5": 150,
+     "channel 6": 85,
+     "channel 11": 8225,
+     "channel 12": 32,
+     "channel 13": 0,
+     "channel 14": 28704,
+     "channel 34": 32767,
+     "channel 35": 32480,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 1,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [
+     "0046",
+     "0053",
+     "0054",
+     "0055"
+    ],
+    "changed": [],
+    "cs": 150
+   },
+   {
+    "channel_set": {
+     "channel 5": 150,
+     "channel 6": 85,
+     "channel 11": 8225,
+     "channel 12": 32,
+     "channel 13": 0,
+     "channel 14": 28704,
+     "channel 34": 32767,
+     "channel 35": 32480,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 1,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [
+     "0046",
+     "0053",
+     "0054",
+     "0055"
+    ],
+    "changed": [],
+    "cs": 200
+   },
+   {
+    "channel_set": {
+     "channel 5": 150,
+     "channel 6": 85,
+     "channel 11": 8225,
+     "channel 12": 32,
+     "channel 13": 0,
+     "channel 14": 28704,
+     "channel 34": 32767,
+     "channel 35": 32480,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 1,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [
+     "0046",
+     "0053",
+     "0054",
+     "0055"
+    ],
+    "changed": [],
+    "cs": 250
+   },
+   {
+    "channel_set": {
+     "channel 5": 150,
+     "channel 6": 85,
+     "channel 11": 8225,
+     "channel 12": 32,
+     "channel 13": 0,
+     "channel 14": 28704,
+     "channel 34": 32767,
+     "channel 35": 32480,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 1,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [
+     "0046",
+     "0053",
+     "0054",
+     "0055"
+    ],
+    "changed": [],
+    "cs": 300
+   }
+  ],
+  "trace": [
+   [
+    1,
+    "0050",
+    "77777"
+   ],
+   [
+    1,
+    "0051",
+    "77777"
+   ],
+   [
+    1,
+    "0052",
+    "77777"
+   ],
+   [
+    2,
+    "0050",
+    "00000"
+   ],
+   [
+    2,
+    "0051",
+    "00000"
+   ],
+   [
+    2,
+    "0052",
+    "00000"
+   ],
+   [
+    21,
+    "0050",
+    "77777"
+   ],
+   [
+    21,
+    "0051",
+    "77777"
+   ],
+   [
+    21,
+    "0052",
+    "77777"
+   ],
+   [
+    22,
+    "0050",
+    "00000"
+   ],
+   [
+    22,
+    "0051",
+    "00000"
+   ],
+   [
+    22,
+    "0052",
+    "00000"
+   ],
+   [
+    41,
+    "0050",
+    "77777"
+   ],
+   [
+    41,
+    "0051",
+    "77777"
+   ],
+   [
+    41,
+    "0052",
+    "77777"
+   ],
+   [
+    42,
+    "0050",
+    "00000"
+   ],
+   [
+    42,
+    "0051",
+    "00000"
+   ],
+   [
+    42,
+    "0052",
+    "00000"
+   ],
+   [
+    61,
+    "0050",
+    "77777"
+   ],
+   [
+    61,
+    "0051",
+    "77777"
+   ],
+   [
+    61,
+    "0052",
+    "77777"
+   ],
+   [
+    62,
+    "0050",
+    "00000"
+   ],
+   [
+    62,
+    "0051",
+    "00000"
+   ],
+   [
+    62,
+    "0052",
+    "00000"
+   ],
+   [
+    81,
+    "0050",
+    "77777"
+   ],
+   [
+    81,
+    "0051",
+    "77777"
+   ],
+   [
+    81,
+    "0052",
+    "77777"
+   ],
+   [
+    82,
+    "0050",
+    "00000"
+   ],
+   [
+    82,
+    "0051",
+    "00000"
+   ],
+   [
+    82,
+    "0052",
+    "00000"
+   ],
+   [
+    101,
+    "0050",
+    "77777"
+   ],
+   [
+    101,
+    "0051",
+    "77777"
+   ],
+   [
+    101,
+    "0052",
+    "77777"
+   ],
+   [
+    102,
+    "0050",
+    "00000"
+   ],
+   [
+    102,
+    "0051",
+    "00000"
+   ],
+   [
+    102,
+    "0052",
+    "00000"
+   ],
+   [
+    121,
+    "0050",
+    "77777"
+   ],
+   [
+    121,
+    "0051",
+    "77777"
+   ],
+   [
+    121,
+    "0052",
+    "77777"
+   ],
+   [
+    122,
+    "0050",
+    "00000"
+   ],
+   [
+    122,
+    "0051",
+    "00000"
+   ],
+   [
+    122,
+    "0052",
+    "00000"
+   ],
+   [
+    141,
+    "0050",
+    "77777"
+   ],
+   [
+    141,
+    "0051",
+    "77777"
+   ],
+   [
+    141,
+    "0052",
+    "77777"
+   ],
+   [
+    142,
+    "0050",
+    "00000"
+   ],
+   [
+    142,
+    "0051",
+    "00000"
+   ],
+   [
+    142,
+    "0052",
+    "00000"
+   ],
+   [
+    161,
+    "0050",
+    "77777"
+   ],
+   [
+    161,
+    "0051",
+    "77777"
+   ],
+   [
+    161,
+    "0052",
+    "77777"
+   ],
+   [
+    162,
+    "0050",
+    "00000"
+   ],
+   [
+    162,
+    "0051",
+    "00000"
+   ],
+   [
+    162,
+    "0052",
+    "00000"
+   ],
+   [
+    181,
+    "0050",
+    "77777"
+   ],
+   [
+    181,
+    "0051",
+    "77777"
+   ],
+   [
+    181,
+    "0052",
+    "77777"
+   ],
+   [
+    182,
+    "0050",
+    "00000"
+   ],
+   [
+    182,
+    "0051",
+    "00000"
+   ],
+   [
+    182,
+    "0052",
+    "00000"
+   ],
+   [
+    201,
+    "0050",
+    "77777"
+   ],
+   [
+    201,
+    "0051",
+    "77777"
+   ],
+   [
+    201,
+    "0052",
+    "77777"
+   ],
+   [
+    202,
+    "0050",
+    "00000"
+   ],
+   [
+    202,
+    "0051",
+    "00000"
+   ],
+   [
+    202,
+    "0052",
+    "00000"
+   ],
+   [
+    221,
+    "0050",
+    "77777"
+   ],
+   [
+    221,
+    "0051",
+    "77777"
+   ],
+   [
+    221,
+    "0052",
+    "77777"
+   ],
+   [
+    222,
+    "0050",
+    "00000"
+   ],
+   [
+    222,
+    "0051",
+    "00000"
+   ],
+   [
+    222,
+    "0052",
+    "00000"
+   ],
+   [
+    241,
+    "0050",
+    "77777"
+   ],
+   [
+    241,
+    "0051",
+    "77777"
+   ],
+   [
+    241,
+    "0052",
+    "77777"
+   ],
+   [
+    242,
+    "0050",
+    "00000"
+   ],
+   [
+    242,
+    "0051",
+    "00000"
+   ],
+   [
+    242,
+    "0052",
+    "00000"
+   ],
+   [
+    261,
+    "0050",
+    "77777"
+   ],
+   [
+    261,
+    "0051",
+    "77777"
+   ],
+   [
+    261,
+    "0052",
+    "77777"
+   ],
+   [
+    262,
+    "0050",
+    "00000"
+   ],
+   [
+    262,
+    "0051",
+    "00000"
+   ],
+   [
+    262,
+    "0052",
+    "00000"
+   ],
+   [
+    281,
+    "0050",
+    "77777"
+   ],
+   [
+    281,
+    "0051",
+    "77777"
+   ],
+   [
+    281,
+    "0052",
+    "77777"
+   ],
+   [
+    282,
+    "0050",
+    "00000"
+   ],
+   [
+    282,
+    "0051",
+    "00000"
+   ],
+   [
+    282,
+    "0052",
+    "00000"
+   ]
+  ]
  },
  "replay_unpaired": [],
  "replay_unpaired_count": 0,
@@ -1232,6 +1917,6 @@
  "requested_cs": 300,
  "host_holes": [],
  "downrupt": false,
- "commit": "78dcfd1c5f33",
+ "commit": "d0732f811067",
  "replay_every": 50
 }

@@ -1,6 +1,6 @@
 {
  "mission": "cm",
- "commit": "78dcfd1c5f332b785acd0ddf25f98a2d60e5b497",
+ "commit": "d0732f811067a343b1e27c8aec4639c76a89baca",
  "dirty": false,
  "drive": "1581",
  "keys": "RV37E00E",
@@ -13,16 +13,16 @@
   "00000",
   "00000"
  ],
- "load_s": 1281.4,
+ "load_s": 1281.5,
  "boot_s": 109.4,
  "sha256": {
-  "flight-disk/cm-1.d81": "c27bdd0080d2e91fd1bfadbd088d425c7116b0a1ad82ffc3a4be0cbe1343ad06",
+  "flight-disk/cm-1.d81": "b9d944fdcc69d080261e0d9539ef515584a16edf27acfa19f64352d21ca7049b",
   "flight-disk/cm-loader.prg": "033ad42a6be71eaf09b0170efe1272e81e80623716bbf34f28c70dc05adb9e8a",
-  "flight-disk/cm-resident.prg": "043b1bf811dbdb1ccfc4606965bb19a0dbdc7ac01d34cb8c5808730512c16ede",
+  "flight-disk/cm-resident.prg": "8e3667a7d62836c6827d575134e1d67ff94f128d9cedc21fa80c09ad47d56257",
   "flight-store/cm.reu": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275"
  },
- "vice_log_sha256": "805e2dfda8427333f22574e760e67986df000409f945af86dd399c280dfc1a7d",
- "monitor_log_sha256": "8ecbb57914e7047bc9d48b44ae11ab9c6f1d399a573ca77fa2284ee36875d0b0",
+ "vice_log_sha256": "13463592c36720ba0e09090284d905e72713265b9abe8b166330cb0b9e4a3700",
+ "monitor_log_sha256": "f840921d8ddbdfaa64a7fcfe6044a808cef586b7166b6a7ad80a2f8ded92adf5",
  "reu_bounds_ok": true,
  "screen_sha256": "2af4a287541ddb1a8b5b95f77837045970a086c2bc6b56f26fe2f63275f188cd",
  "screen": [

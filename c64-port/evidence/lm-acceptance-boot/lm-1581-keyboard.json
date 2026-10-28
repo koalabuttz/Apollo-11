@@ -6,56 +6,56 @@
  "loader_bytes": 6392,
  "resident_bytes": 38054,
  "resident_start": 2061,
- "boot_return": 2871,
+ "boot_return": 3019,
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
  "bytes_loaded": 1931366,
  "data_bytes": [
-  795514
+  795621
  ],
  "vice": {
   "mission": "lm",
   "ok": true,
   "fast_loader": true,
-  "load_cycles": 263172667,
+  "load_cycles": 263205563,
   "load_s": 267.1,
   "reu_clear_s": 2.26,
   "handoff_cycles": 80854,
-  "boot_cycles": 111859820,
+  "boot_cycles": 111860100,
   "boot_s": 113.5,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 34311678,
-    "time1": "00600",
-    "z": "04674",
-    "fb": "34000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 66718868,
-    "time1": "01406",
-    "z": "02626",
-    "fb": "36000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 103202680,
-    "time1": "02276",
-    "z": "02161",
-    "fb": "34000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 140291276,
-    "time1": "03174",
+    "cycles": 31482398,
+    "time1": "00534",
     "z": "03214",
+    "fb": "02000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 62696123,
+    "time1": "01324",
+    "z": "02024",
+    "fb": "34000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 94342283,
+    "time1": "02120",
+    "z": "03446",
+    "fb": "34000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 123780030,
+    "time1": "02656",
+    "z": "04040",
     "fb": "02000",
     "modreg": "77777"
    }
   ],
-  "pc": "486e",
+  "pc": "4b66",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -81,8 +81,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "34000",
-  "z": "04707",
+  "fb": "02000",
+  "z": "03214",
   "screenshot": "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -151,7 +151,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 39,
+   "dma_unchecked": 47,
    "trace_errors": [],
    "trace_ok": true
   }

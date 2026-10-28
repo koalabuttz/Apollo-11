@@ -1,15 +1,15 @@
 build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
-cm-p20-restart: commit 78dcfd1c5f332b785acd0ddf25f98a2d60e5b497 with local changes; store cm.reu sha256 ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275
+cm-p20-restart: commit d0732f811067a343b1e27c8aec4639c76a89baca with local changes; store cm.reu sha256 ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275
 cm-p20-restart: the host run to 22302 cs bridges 0 points, each a stop on the C64
 cm-p20-restart: snapshot at 22002 cs (asked 22002, +0 cs)
 cm-p20-restart: 12 host input rows (12 on the C64) in the window at REU 0x1d5a00 (0 PIPA counts, 12 erasable words, 0 channels, 0 interrupt requests), then 1 past the host's end
 cm-p20-restart: REU writes inside the cm layout (changed: pinball save, replay states, scratch)
-cm-p20-restart: 15 DMAs seen only after they ran (last byte checked)
+cm-p20-restart: 14 DMAs seen only after they ran (last byte checked)
 cm-p20-restart: every DMA inside the cm REU layout
 cm-p20-restart: interrupt hold: host max 737 MCT at TIME1 13345
 cm-p20-restart: the C64 matches the host at 100, 200, 255, 301 cs: it ends the window (304 cs, all 12 input rows) in the host's state
-cm-p20-restart from 22002 cs: 79440144 cycles for 304 AGC cs (26.523 x real time), 0 ticks dropped, 1343 steps, status 0 at 01,3231 (Z 03231 FB 02000 superbank 0100)
-  T3RUPT: 1 x, mean 45613 cycles (max 45613), 3 steps, 0 job and 0 task loads
-  T4RUPT: 46 x, mean 112412 cycles (max 259272), 175 steps, 37 job and 93 task loads
-  T5RUPT: 1 x, mean 85603 cycles (max 85603), 3 steps, 1 job and 0 task loads
-  background: 49 x, mean 1512863 cycles (max 12076303), 1162 steps, 493 job and 3 task loads
+cm-p20-restart from 22002 cs: 79436578 cycles for 304 AGC cs (26.522 x real time), 0 ticks dropped, 1343 steps, status 0 at 01,3231 (Z 03231 FB 02000 superbank 0100)
+  T3RUPT: 1 x, mean 45557 cycles (max 45557), 3 steps, 0 job and 0 task loads
+  T4RUPT: 46 x, mean 112238 cycles (max 258679), 175 steps, 37 job and 93 task loads
+  T5RUPT: 1 x, mean 85590 cycles (max 85590), 3 steps, 1 job and 0 task loads
+  background: 49 x, mean 1512956 cycles (max 12062067), 1162 steps, 493 job and 3 task loads
