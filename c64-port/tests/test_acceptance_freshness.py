@@ -3,7 +3,8 @@
 """tools/acceptance_freshness.py and the bootable doc's hash table
 (tools/boot_acceptance.py image_hashes) on made-up docs in a scratch git
 repository: the six docs must name one commit that is an ancestor of HEAD
-(#942 B7), run logs must name that commit (#979 B14), and the LM doc lists the check disk so a moved one is STALE."""
+(#942 B7), run logs must name that commit and match the sha256 their records and
+docs pin (#979 B14, review-1028 R1), and the LM doc lists the check disk so a moved one is STALE."""
 import hashlib
 import pathlib
 import subprocess
@@ -95,6 +96,56 @@ class Freshness(unittest.TestCase):
         self.assertIn('cm-p22-restart-c64.log', stale[0])
         self.assertIn(self.side[:12], stale[0])
         self.assertEqual(af.logs_agree('lm', self.first[:12]), [])
+
+    def evidence(self):
+        """A restart record pinning its log, a boot record pinning its vice and
+        monitor logs, and a device log pinned only by the doc's citation."""
+        import json
+        rs = self.repo / 'evidence/cm-acceptance-restart'
+        bt = self.repo / 'evidence/cm-acceptance-boot'
+        dv = self.repo / 'evidence/cm-acceptance-devices'
+        for d in (rs, bt, dv):
+            d.mkdir(parents=True, exist_ok=True)
+        files = {rs / 'cm-p20-restart-c64.log': f'cm-p20-restart: commit {self.first} with local changes\nbody\n',
+                 bt / 'cm-1581-vice.log': 'vice\n', bt / 'cm-1581-monitor.log': 'monitor\n',
+                 dv / 'cm-uplink-reject.log': 'device\n'}
+        for f, text in files.items():
+            f.write_text(text)
+        sha = {f: hashlib.sha256(f.read_bytes()).hexdigest() for f in files}
+        (rs / 'cm-p20-restart.json').write_text(json.dumps(
+            {'name': 'cm-p20-restart', 'c64': {'log': 'cm-p20-restart-c64.log', 'log_sha256': sha[rs / 'cm-p20-restart-c64.log']}}))
+        (bt / 'cm-1581-boot.json').write_text(json.dumps(
+            {'vice_log_sha256': sha[bt / 'cm-1581-vice.log'], 'monitor_log_sha256': sha[bt / 'cm-1581-monitor.log']}))
+        (self.repo / 'docs/acceptance/Comanche055-device_adapter_tests.md').write_text(
+            f'Generated at commit `{self.first[:12]}`. Result: **PASS**\n\n- (`evidence/cm-acceptance-devices/cm-uplink-reject.log` '
+            f'(sha256 `{sha[dv / "cm-uplink-reject.log"][:16]}...`)): yes\n')
+        return rs, bt, dv
+
+    def test_review_1028_r1_mutations_fail(self):
+        """Each mutation in review-1028's table fails; the untouched run passes."""
+        rs, bt, dv = self.evidence()
+        self.assertEqual(af.logs_agree('cm', self.first[:12]), [])
+        log = rs / 'cm-p20-restart-c64.log'
+        good = log.read_text()
+        for mutated in (good.replace(self.first, self.side),           # another commit
+                        good.replace(self.first, self.side[:12]),      # short other commit
+                        good.replace(f'commit {self.first}', 'built'),  # commit line gone
+                        good.replace('commit ', 'commit: ').replace(self.first, self.side),
+                        good.replace('commit ', 'Commit ').replace(self.first, self.side),
+                        good.replace(self.first, self.first + 'a'),     # 41 hex digits
+                        good.replace('body', 'edited')):                # body edited, same commit
+            log.write_text(mutated)
+            self.assertNotEqual(af.logs_agree('cm', self.first[:12]), [], mutated)
+        log.write_text(good)
+        for f in (bt / 'cm-1581-vice.log', bt / 'cm-1581-monitor.log', dv / 'cm-uplink-reject.log'):
+            keep = f.read_text()
+            f.write_text(keep + 'edited\n')
+            stale = af.logs_agree('cm', self.first[:12])
+            self.assertEqual(len(stale), 1, stale)
+            self.assertIn(f.name, stale[0])
+            f.write_text(keep)
+        (bt / 'cm-1581-monitor.log').unlink()
+        self.assertIn('missing', af.logs_agree('cm', self.first[:12])[0])
 
     def test_check_disk_row_is_compared(self):
         build = self.repo / 'build'

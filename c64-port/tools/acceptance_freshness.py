@@ -18,8 +18,10 @@ port_coverage.py --require-complete checks that acceptance exists; this
 checks that it is current. It also requires the six category docs of each
 program to name one commit and PASS, and that commit to be an ancestor of the
 checkout's HEAD, and every run log under the program's acceptance evidence
-(evidence/<m>-acceptance-*/*.log) that names a commit to name that one (a log
-left over from an earlier run fails, #979 B14). --require-fresh exits 1 on any STALE or
+(evidence/<m>-acceptance-*/*.log) that names a commit to name that one, each
+log a JSON record pins (log_sha256, vice_log_sha256, monitor_log_sha256) and
+each evidence file a doc cites to still have its sha256 (a log left over
+from an earlier run, or an edited one, fails: #979 B14, review-1028 R1). --require-fresh exits 1 on any STALE or
 MIXED program or missing build file. port-ci runs it (job acceptance-fresh,
 1541 and 1581 sets) on every PR and port-branch push that changes more than
 prose or evidence, so a PR that moves an accepted program's bytes must
@@ -122,20 +124,82 @@ def docs_agree(program):
     return agree, seen
 
 
-LOG_COMMIT = re.compile(r'(?:^|[ :])commit ([0-9a-f]{7,40})\b', re.M)
+# "commit <sha>" in a run log, any case, with or without a colon. A token
+# longer than 40 hex digits is kept so it can be refused rather than skipped.
+LOG_COMMIT = re.compile(r'(?:^|[\s:])commit:?\s+([0-9a-f]{7,})', re.M | re.I)
+# A doc's citation of an evidence file: `path` (sha256 `prefix...`).
+CITE = re.compile(r'`(evidence/[^`]+)` \(sha256 `([0-9a-f]{16,64})(?:\.\.\.)?`\)')
+
+
+def sha_file(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def record_logs(record, folder):
+    """(log file, sha256 the record holds) for each log a record pins: a
+    restart record's "log" beside its "log_sha256" (at any depth), and a boot
+    record's vice and monitor logs (<run>-boot.json pins <run>-vice.log and
+    <run>-monitor.log)."""
+    out = []
+
+    def walk(o):
+        if isinstance(o, dict):
+            if isinstance(o.get('log'), str) and o.get('log_sha256'):
+                out.append((folder / o['log'], o['log_sha256']))
+            for v in o.values():
+                walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+    walk(record)
+    if folder.name.endswith('-acceptance-boot'):
+        run = record.get('_name', '')[:-len('-boot')] if record.get('_name', '').endswith('-boot') else None
+        for key, suffix in (('vice_log_sha256', 'vice'), ('monitor_log_sha256', 'monitor')):
+            if run and record.get(key):
+                out.append((folder / f'{run}-{suffix}.log', record[key]))
+    return out
 
 
 def logs_agree(m, commit):
-    """Run logs in the program's acceptance evidence that name a commit must
-    name the docs' commit: the docs cite JSON records, so a log copied in
-    from an older run would otherwise pass unnoticed (#979 B14). Returns
-    the logs that name another commit, each with what it names."""
+    """The program's acceptance evidence must be the run the docs describe
+    (#979 B14, review-1028 R1). Returns each disagreement:
+    - a run log that names another commit than the docs (any case, "commit:"
+      too; a token longer than a sha is refused);
+    - a log whose sha256 differs from the one its JSON record pins (restart
+      logs, boot vice and monitor logs), so an edited log body fails;
+    - an evidence file a doc cites whose sha256 no longer starts with the
+      cited one (device and check-disk logs are pinned only there)."""
     stale = []
-    for log in sorted((ROOT / 'evidence').glob(f'{m}-acceptance-*/*.log')):
-        named = set(LOG_COMMIT.findall(log.read_text(errors='replace')))
-        other = sorted(c[:12] for c in named if not (c.startswith(commit) or commit.startswith(c)))
+    base = ROOT / 'evidence'
+    for log in sorted(base.glob(f'{m}-acceptance-*/*.log')):
+        named = set(c.lower() for c in LOG_COMMIT.findall(log.read_text(errors='replace')))
+        other = sorted(c[:12] + ('...' if len(c) > 40 else '') for c in named
+                       if len(c) > 40 or not (c.startswith(commit) or commit.startswith(c)))
         if other:
-            stale.append(f'{log.relative_to(ROOT)} ({", ".join(other)})')
+            stale.append(f'{log.relative_to(ROOT)} names commit {", ".join(other)}')
+    for path in sorted(base.glob(f'{m}-acceptance-*/*.json')):
+        if path.name == 'SHA256.json':
+            continue
+        try:
+            record = json.loads(path.read_text())
+        except ValueError:
+            stale.append(f'{path.relative_to(ROOT)} is not JSON')
+            continue
+        if isinstance(record, dict):
+            record = dict(record, _name=path.stem)
+        for log, want in record_logs(record, path.parent):
+            if not log.is_file():
+                stale.append(f'{log.relative_to(ROOT)} missing (pinned by {path.name})')
+            elif sha_file(log) != want:
+                stale.append(f'{log.relative_to(ROOT)} differs from the sha256 {path.name} pins')
+    program = next(p for p, v in PROGRAMS.items() if v == m)
+    for doc in sorted((ROOT / 'docs/acceptance').glob(f'{program}-*.md')):
+        for cited, prefix in sorted(set(CITE.findall(doc.read_text()))):
+            f = ROOT / cited
+            if not f.is_file():
+                stale.append(f'{cited} missing (cited by {doc.name})')
+            elif not sha_file(f).startswith(prefix):
+                stale.append(f'{cited} differs from the sha256 {doc.name} cites')
     return stale
 
 
@@ -196,8 +260,8 @@ def main():
                   + ', '.join(f'{c} {v}' for c, v in seen.items()))
         elif logs := logs_agree(m, next(iter(seen.values()))):
             bad = True
-            print(f'{program}: MIXED evidence: run logs name another commit than the docs\' {next(iter(seen.values()))} '
-                  f'(re-run the category or restore its own logs): {"; ".join(logs)}')
+            print(f'{program}: MIXED evidence: not the run the docs at {next(iter(seen.values()))} describe '
+                  f'(re-run the category or restore its own files): {"; ".join(logs)}')
         elif missing:
             bad = True
             print(f'{program}: UNKNOWN (accepted at {commit}); missing: {", ".join(missing)}')
