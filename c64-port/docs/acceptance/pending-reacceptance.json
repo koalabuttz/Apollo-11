@@ -11,12 +11,15 @@
   }
  },
  "Comanche055": {
-  "since": "#1006 (#990 plan B: the C64 night watchman; moves the LM and CM flight residents, disks and check disks); window O re-accepts both",
+  "since": "#1006 (#990 plan B: the C64 night watchman; moves the LM and CM flight residents, disks and check disks); window O re-accepts both; #992 (#942 B3: an off-nominal check no C64 window holds needs a host_only reason; window O regenerates the doc)",
   "files": {
    "flight-disk/cm-1.d81": "b9d944fdcc69d080261e0d9539ef515584a16edf27acfa19f64352d21ca7049b",
    "flight-disk/cm-5.d64": "123829a6fcd0ccd0a8ba72c982622aa5e86b73c1dd256f081bb69717d1465dd2",
    "flight-disk/cm-resident.prg": "8e3667a7d62836c6827d575134e1d67ff94f128d9cedc21fa80c09ad47d56257",
    "flight-store/cm.reu": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275"
+  },
+  "criteria": {
+   "device_adapter_tests": "#992 (#942 B3): cm-p20-vhf-dropout's VHFCNT check now shows its host_only reason instead of the generic host-only text; verdict unchanged"
   }
  }
 }

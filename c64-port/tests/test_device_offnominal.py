@@ -2,11 +2,9 @@
 # SPDX-License-Identifier: MIT
 """tools/device_offnominal.py: every off-nominal check that happens at a
 time has a C64 window over that time (issue #925 A2), and the doc says
-which window, or host only.
-
-HOST_AT is when each check happened on the host (the device docs at
-7dd3db43, Response checks). A row whose answer moves needs its windows
-moved with it.
+which window. A timed check that no window holds fails the section
+unless its row gives a host_only reason (#942 B3). The section judges the
+run's own times, so nothing here freezes host times.
 """
 import pathlib
 import sys
@@ -16,41 +14,43 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import device_offnominal as off  # noqa: E402
 
-HOST_AT = {
-    'lm-rendezvous-rr-dropout': [20030, 21156],
-    'lm-p63-lr-dropout': [88206, 95205],
-    'lm-uplink-reject': [2124, 5000, 6500, 7158],
-    'lm-p52-imu-fail': [3014, 3014, 4503],
-    'lm-p52-imu-cage': [3014, 3542],
-    'lm-p63-overload-nomon': [19646],
-    'cm-p20-vhf-dropout': [None, 31680],
-    'cm-uplink-reject': [2124, 5000, 6500, 7157],
-    'cm-p52-imu-fail': [6015, 6015, 7023],
-    'cm-p52-imu-cage': [6015, 6543],
-    'cm-p52-gimbal-lock': [3039, 3615, 19014],
-    'cm-entry-overload': [22195],
-}
-# Checks no window covers, on purpose: VHFCNT's last mark comes 140 s after
-# the dropout.
-HOST_ONLY = {('cm-p20-vhf-dropout', 1)}
-# A snapshot lands on the next native sample point, so it can start a few
-# centiseconds late: an event this close to a window's start may fall
-# before the run.
-SLIDE = 40
+
+def section(at, host_only=None):
+    """The off-nominal section for one row whose second check happened at at cs."""
+    row = dict(scenario='x-row', owner='D1', failure='f', response='r', windows=[(1900, 800)],
+               checks=[off.quiet('W', 0, 10, 'quiet'), off.final('W', 1, 'final')])
+    if host_only:
+        row['host_only'] = host_only
+    host = dict(ok=True, mismatches=0, bridged=0, evidence='e',
+                checks=[dict(check='quiet', kind='quiet', ok=True, at_cs=None),
+                        dict(check='final', kind='final', ok=True, at_cs=at)])
+    runs = [dict(scenario='x-row', snap_cs=1900, snap_at=1907, agc_cs=808, _why=[], replay_matched_cs=[2715])]
+    return off.section([dict(row=row, host=host)], runs, lambda w: '')
 
 
 class Windows(unittest.TestCase):
-    def test_every_timed_check_has_a_window(self):
+    def test_a_covered_check_passes_and_names_its_window(self):
+        lines, bad = section(2000)
+        self.assertEqual(bad, [])
+        self.assertIn('final: yes, at 2000 cs (C64 window 1900+800)', '\n'.join(lines))
+
+    def test_an_uncovered_check_fails(self):
+        lines, bad = section(3000)
+        self.assertEqual(len(bad), 1)
+        self.assertIn('final happened at 3000 cs, in no C64 window', bad[0])
+
+    def test_a_host_only_reason_excuses_it_and_shows(self):
+        lines, bad = section(3000, {1: 'too late for a window'})
+        self.assertEqual(bad, [])
+        self.assertIn('(host only: too late for a window)', '\n'.join(lines))
+
+    def test_host_only_names_timed_checks(self):
         for m, rows in off.ROWS.items():
             for row in rows:
-                times = HOST_AT[row['scenario']]
-                self.assertEqual(len(times), len(row['checks']), row['scenario'])
-                for i, t in enumerate(times):
-                    if t is None or (row['scenario'], i) in HOST_ONLY:
-                        continue
-                    with self.subTest(scenario=row['scenario'], check=i, at=t):
-                        self.assertTrue(any(snap + SLIDE <= t <= snap + cs for snap, cs in row['windows']),
-                                        f"{t} cs is in no window of {row['windows']}")
+                for i, reason in row.get('host_only', {}).items():
+                    with self.subTest(scenario=row['scenario'], check=i):
+                        self.assertNotEqual(row['checks'][i][0], 'quiet')
+                        self.assertTrue(reason)
 
     def test_windows_fit_the_replay_states(self):
         # 50 cs checkpoints over 800 cs is the most below the rope (tools/device_acceptance.py windows).

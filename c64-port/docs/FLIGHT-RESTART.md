@@ -143,7 +143,9 @@ The host harness and the x86 program model it the same way
   from the Executive do not read NEWJOB. A hung job's steps are stuck.
 - **Checked against yaAGC.** Each lockstep and bridge span sets yaAGC's own
   NightWatchman flag and reads it back, so the harness also tracks the
-  watchman by yaAGC's own NEWJOB accesses. Its summary line counts the
+  watchman by yaAGC's own NEWJOB accesses. A bridged span is yaAGC's code:
+  its NEWJOB accesses disarm both rules as they happen, before any clock
+  period the span takes. Its summary line counts the
   checks where the two disagree. `tools/flight_host_differential.py` fails
   a scaled row with any disagreement, on every schedule. So the alarm
   sounds exactly where yaAGC's accesses would sound it.
@@ -155,12 +157,15 @@ The host harness and the x86 program model it the same way
   reaches the Executive. A real AGC this slow would sound the night watchman
   and restart. The harness does the same, at the same checks as yaAGC's
   accesses. On lm x1 and overrun the restart starves again, so the AGC
-  restarts every 1.28 s and V37 never runs. A scaled run that never idles
+  restarts every 2.56 s on x1 (every other check) and every 1.28 s on
+  overrun, and V37 never runs. A scaled run that never idles
   takes no sample point, so it also ends 10 s of AGC time past its end. The
   unscaled run never restarts, because yaAGC at AGC speed is not starved.
   The `-dap` boot rows (`FLIGHT_SWAP_MCT=0`) and the flight rows on x1
   never sound it. The work clock, which the C64 flight build and the x86
-  program run, does not starve the job: its rows never sound the alarm.
+  program run, does not starve the job: its rows never sound the alarm,
+  and `tools/flight_host_differential.py` fails a work-clock row that does.
+  The wall-clock rows only report it.
   Before #912 item 5, the native rule counted every step outside an
   interrupt as an access. That missed these alarms, and the doc blamed
   yaAGC reads outside the spans.
@@ -234,6 +239,17 @@ step since the last period, or the last step, still running, when none ran.
   starved by interrupts, as for the watchman, and the CM P06 boot holds
   INHINT past 140 ms with interrupts pending. On the work clock neither
   happens.
+- **Forced rows.** Four rows hold one flag on purpose, on idle P00 on the
+  work clock: `lm-forced-rupt-lock`, `lm-forced-no-rupt` and the CM pair.
+  At 15 s every waitlist task slot (LST2) is poked to one task and TIME3
+  to 37777, so T3RUPT dispatches it at once. For RUPT LOCK the task is the
+  Executive's idle loop past its RELINT (ADVAN), which loops inside the
+  interrupt with no RESUME. For NO RUPT it is a few words poked into VAC5
+  that INHINT and RESUME into a loop, so no interrupt runs at all. yaAGC
+  runs those words (a bridged span). Each row must sound only its own
+  flag, first at 15.26 s, with the native flags agreeing with yaAGC's at
+  every check. The alarm prints which flag sounded, and the summary counts
+  each. Both loops read NEWJOB, so the night watchman stays silent.
 - **No restart yet.** The harness and the x86 program count and print where
   it would sound ("rupt lock would sound at"), but restart nothing. As a
   restart, the CM boot rows on x1 and overrun restart over 200 times, and

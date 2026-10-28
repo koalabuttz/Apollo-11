@@ -284,6 +284,7 @@ static void ya_tripped(void){if(m.NightWatchmanTripped){++wm_ya_tripped;m.NightW
  * rl_no_in and rl_no_out: the longest runs of clock periods in which nothing
  * ran inside an interrupt, and nothing outside one. */
 static rupt_lock rl,rl_ya;static int rl_fire;
+static unsigned long rl_lock_alarms,rl_norupt_alarms;   /* by flag; both can sound at one check */
 static unsigned long rl_alarms,rl_checks,rl_disagree,rl_ya_ch77,rl_in_at,rl_out_at,rl_no_in,rl_no_in_at,rl_no_out,rl_no_out_at;
 static void rl_span(int bridged,unsigned native){unsigned ya=(m.NoRupt?0u:RL_IN)|(m.RuptLock?0u:RL_OUT);
  rl_step(&rl_ya,ya);rl_step(&rl,bridged?ya:native);
@@ -303,7 +304,7 @@ static void period_end(void){++taken;
   if(taken%RL_PERIODS==RL_CHECK&&(sound||ya_sound)){++rl_checks;
    if(sound!=ya_sound&&++rl_disagree<=8ul)printf("rupt lock: at period %lu the native rule has RUPT LOCK %d NO RUPT %d, yaAGC %d %d (before the period's steps)\n",
     taken,nat.lock,nat.norupt,ya.lock,ya.norupt);}
-  if(sound)rl_fire=1;}}
+  if(sound)rl_fire=sound;}}
 /* rk_rupts: the CIA1 interrupts since the last boundary, at most lag of
  * them as clock periods, the rest dropped. */
 static unsigned due(void){unsigned long now=(unsigned long)(wall/(85333.0/100.0*divisor));unsigned n=0;
@@ -1447,6 +1448,10 @@ static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16
    if(scaled&&!m.InIsr&&self_loop(v,sb)){fprintf(stderr,"FLIGHT: bridged code at a TC or TCF to itself, Z %05o FB %05o (not VERB69)\n",(unsigned)v[5],(unsigned)v[4]);return -2;}}
   reach();
   if(scaled){uint64_t c=m.CycleCounter;unsigned k;if(agc_engine(&m))return -1;spend((unsigned long)(m.CycleCounter-c));
+   /* A NEWJOB access in the span disarms both rules before the clock
+    * periods it takes: one span can run over watchman checks (a bridged
+    * loop in erasable). */
+   if(!m.NightWatchman){wm.armed=0;wm_ya.armed=0;m.NightWatchman=1;}
    if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));steal_run();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
    continue;}
   if(agc_engine(&m))return -1;
@@ -2071,8 +2076,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   /* The rupt lock alarm sounded at the last period's end. It is counted
    * and checked against yaAGC, but restarts nothing yet (#989): on the
    * C64 tick schedules the CM P06 boot rows hold INHINT past 140 ms. */
-  if(rl_fire){rl_fire=0;++rl_alarms;if(rl_alarms<=8ul)printf("rupt lock would sound at %lu cs (Z %05o FB %05o, interrupts %s)\n",
-   now(s.words),(unsigned)s.words[5],(unsigned)s.words[4],io.interrupt_enabled?"enabled":"inhibited");}
+  if(rl_fire){unsigned f=(unsigned)rl_fire;rl_fire=0;++rl_alarms;rl_lock_alarms+=(f&RL_LOCK)!=0u;rl_norupt_alarms+=(f&RL_NORUPT)!=0u;
+   if(rl_alarms<=8ul)printf("rupt lock would sound at %lu cs (%s, Z %05o FB %05o, interrupts %s)\n",
+   now(s.words),f==RL_LOCK?"RUPT LOCK":f==RL_NORUPT?"NO RUPT":"RUPT LOCK and NO RUPT",(unsigned)s.words[5],(unsigned)s.words[4],io.interrupt_enabled?"enabled":"inhibited");}
   if(spin){int armed=spin==2;spin=0;
    if(armed&&!hw.in_interrupt){trap_gojam(&s,&io,&hw,&pending);substitute=0;continue;}}
   v69=!hw.in_interrupt&&!substitute&&verb69(s.words,io.superbank);
@@ -2192,9 +2198,9 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   slow,divisor,lag,seed,work?consumed/3ul:consumed,taken,dropped,now(s.words));   /* work: whole periods' steps */
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
  if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule (%lu with the native rule armed); yaAGC's own alarm inside %lu spans\n",wm_alarms,wm_stuck,wm_windows,wm_disagree,wm_missed,wm_ya_tripped);
- if(scaled)printf("rupt lock: %lu alarms; %lu checks where a flag was still set, %lu where yaAGC's flags differ from the native rule; channel 77 bit 4 inside %lu spans; "
+ if(scaled)printf("rupt lock: %lu alarms (%lu RUPT LOCK, %lu NO RUPT); %lu checks where a flag was still set, %lu where yaAGC's flags differ from the native rule; channel 77 bit 4 inside %lu spans; "
   "longest without an interrupt step %lu periods (to period %lu), without a step outside one %lu (to period %lu)\n",
-  rl_alarms,rl_checks,rl_disagree,rl_ya_ch77,rl_no_in,rl_no_in_at,rl_no_out,rl_no_out_at);
+  rl_alarms,rl_lock_alarms,rl_norupt_alarms,rl_checks,rl_disagree,rl_ya_ch77,rl_no_in,rl_no_in_at,rl_no_out,rl_no_out_at);
  if(refs){const agc_word *r=ref[refs<sizeof ref/sizeof ref[0]?refs:0u];   /* scaled: no reference, refs may pass its end */
   printf("major mode (MODREG 01011) at %lu cs: native %02o, yaAGC %02o; FAILREG %05o/%05o\n",refs,(unsigned)s.words[01011],(unsigned)r[01011],(unsigned)s.words[0375],(unsigned)r[0375]);}
  if(core_routines){core_module_report();}

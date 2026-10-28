@@ -982,17 +982,17 @@ def _tmp(path):
     return path.with_name(f'{path.name}.{os.getpid()}.{threading.get_ident()}.tmp')
 
 
-def scaled_watchman_bad(watchman):
+def scaled_watchman_bad(watchman, sched):
     """A scaled row's night watchman fails when the native rule and yaAGC's
     NEWJOB accesses disagree at any check, on any schedule (#912 item 5).
     The alarm may sound only where yaAGC's accesses would sound it too: a
-    job starved by interrupts on the wall-clock schedules. No summary line
-    fails too."""
-    return not watchman or bool(watchman['disagree'])
+    job starved by interrupts on the wall-clock schedules. On the work clock
+    (W) it must not sound at all (#997 R4). No summary line fails too."""
+    return not watchman or bool(watchman['disagree']) or (sched == 'W' and bool(watchman['alarms']))
 
 
 RUPT_LOCK_LINE = re.compile(
-    r'^rupt lock: (\d+) alarms; (\d+) checks where a flag was still set, (\d+) where yaAGC\'s flags differ from the native rule; '
+    r'^rupt lock: (\d+) alarms \((\d+) RUPT LOCK, (\d+) NO RUPT\); (\d+) checks where a flag was still set, (\d+) where yaAGC\'s flags differ from the native rule; '
     r'channel 77 bit 4 inside (\d+) spans; longest without an interrupt step (\d+) periods \(to period (\d+)\), '
     r'without a step outside one (\d+) \(to period (\d+)\)', re.M)
 
@@ -1000,9 +1000,9 @@ RUPT_LOCK_LINE = re.compile(
 def rupt_lock_summary(text):
     """The rupt lock line of a scaled run (#989), or None."""
     r = RUPT_LOCK_LINE.search(text)
-    return dict(alarms=int(r[1]), checks=int(r[2]), disagree=int(r[3]), ya_channel77=int(r[4]),
-                no_interrupt_periods=int(r[5]), no_interrupt_to=int(r[6]),
-                no_background_periods=int(r[7]), no_background_to=int(r[8])) if r else None
+    return dict(alarms=int(r[1]), rupt_lock_alarms=int(r[2]), no_rupt_alarms=int(r[3]), checks=int(r[4]),
+                disagree=int(r[5]), ya_channel77=int(r[6]), no_interrupt_periods=int(r[7]), no_interrupt_to=int(r[8]),
+                no_background_periods=int(r[9]), no_background_to=int(r[10])) if r else None
 
 
 def scaled_rupt_lock_bad(rupt_lock):
@@ -1010,6 +1010,52 @@ def scaled_rupt_lock_bad(rupt_lock):
     native flags must agree with yaAGC's at every check, and no span may
     leave yaAGC's channel 77 bit 4 set. No summary line fails too."""
     return not rupt_lock or bool(rupt_lock['disagree']) or bool(rupt_lock['ya_channel77'])
+
+
+# Forced rupt lock rows (#989 step 3): idle P00 on the work clock, where
+# no flight row sounds the alarm, with one flag held from 15 s. At 1500 cs
+# every LST2 task slot is poked to a 2CADR and TIME3 to 37777, so T3RUPT
+# dispatches it at once and never returns:
+# - rupt-lock: the task is the Executive's idle loop, ADVAN (CCS NEWJOB),
+#   past DUMMYJOB's RELINT, so it loops inside the interrupt with no
+#   RESUME: RUPT LOCK stays set.
+# - no-rupt: the task is a few erasable words (VAC5, free in P00) that
+#   INHINT, point ZRUPT and BRUPT at a CA NEWJOB, TC loop and RESUME: the
+#   loop runs outside any interrupt with interrupts inhibited, so no
+#   interrupt step clears NO RUPT. yaAGC runs these words (bridged).
+# Each row must sound only its own flag, first at 1526 cs (the first check
+# after the poke), with the native flags agreeing with yaAGC's at every
+# check. Neither loop reaches a boundary outside an interrupt, where the
+# harness stops at the row's 1600 cs, so both run to the scaled cap (1000
+# cs more). Both loops read NEWJOB, so the night watchman stays silent.
+FORCED_AT = 1500
+_ADVAN = {'lm': 0o3214, 'cm': 0o3231}       # Luminary099 01,3214; Comanche055 01,3231
+_LST2, _TIME3, _BBCON = 0o1410, 0o26, 0o2063  # both programs; BBCON: bank 01, E3
+_NO_RUPT_WORDS = (0o00004, 0o30710, 0o54015, 0o30711, 0o54017, 0o50017,  # INHINT; CA, TS ZRUPT; CA, TS BRUPT; RESUME
+                  0o30067, 0o00706, 0o00707, 0o30067)                    # 706: CA NEWJOB; TC 706; ZRUPT, BRUPT
+
+
+def forced_poke(m, flag):
+    """FLIGHT_POKE for a forced row: flag 'rupt-lock' or 'no-rupt'."""
+    words = [] if flag == 'rupt-lock' else [(0o700 + i, w) for i, w in enumerate(_NO_RUPT_WORDS)]
+    task = _ADVAN[m] if flag == 'rupt-lock' else 0o700
+    words += [w for i in range(9) for w in ((_LST2 + 2 * i, task), (_LST2 + 2 * i + 1, _BBCON))]
+    words.append((_TIME3, 0o37777))
+    return ','.join(f'{FORCED_AT}:{a:o}={v:05o}' for a, v in words)
+
+
+FORCED = [(f'{m}-forced-{flag}', m, 1600, '', {'FLIGHT_POKE': forced_poke(m, flag)}, 'W')
+          for m in ('lm', 'cm') for flag in ('rupt-lock', 'no-rupt')]
+
+
+def forced_rupt_lock_bad(name, text, rupt_lock):
+    """A forced row fails unless the alarm sounds, only for its own flag,
+    and first at or after the poke."""
+    if not rupt_lock:
+        return True
+    own, other = ('rupt_lock_alarms', 'no_rupt_alarms') if name.endswith('rupt-lock') else ('no_rupt_alarms', 'rupt_lock_alarms')
+    first = re.search(r'^rupt lock would sound at (\d+) cs', text, re.M)
+    return not rupt_lock[own] or bool(rupt_lock[other]) or not first or int(first[1]) < FORCED_AT
 
 
 def frozen_engine(cc):
@@ -1228,6 +1274,7 @@ def main():
              if sched == 'W' and m in chunked]
     rows += [] if a.chunked_only else [(f'{name}-scaled-x1', m, cs, keys, env, '1,1,2')
                                        for name, m, cs, keys, env in FLIGHT]
+    rows += [] if a.chunked_only else FORCED
     chunk_misses = []
     for name, m, cs, keys, env, sched in rows:
         points = reach.get(name[:-len('-scaled-x1')], []) if name.endswith('-scaled-x1') else []
@@ -1259,10 +1306,10 @@ def main():
                       r'.*?\((\d+) with the native rule armed\)', text, re.M)
         watchman = dict(alarms=int(w[1]), stuck_steps=int(w[2]), checks=int(w[3]), disagree=int(w[4]),
                         native_armed=int(w[5])) if w else None
-        if scaled_watchman_bad(watchman):
+        if scaled_watchman_bad(watchman, sched):
             watchman_bad.append(name)
         rupt_lock = rupt_lock_summary(text)
-        if scaled_rupt_lock_bad(rupt_lock):
+        if scaled_rupt_lock_bad(rupt_lock) or ('-forced-' in name and forced_rupt_lock_bad(name, text, rupt_lock)):
             rupt_lock_bad.append(name)
         row = dict(scenario=name, mission=m, centiseconds=cs, keys=keys, inputs=env, schedule=sched, chunked=chunk_row or listed[m], exit=r.returncode,
                    commit=commit, cia_interrupts=int(t[1]) if t else None, periods_taken=int(t[2]) if t else None,
@@ -1288,10 +1335,10 @@ def main():
               f"routine by routine from yaAGC's MCT in: {', '.join(charge_over)}")
     if watchman_bad:
         print(f"FAIL: the night watchman's native rule disagreed with yaAGC's NEWJOB accesses at a check "
-              f"(or printed no summary), in: {', '.join(watchman_bad)}")
+              f"(or sounded on the work clock, or printed no summary), in: {', '.join(watchman_bad)}")
     if rupt_lock_bad:
         print(f"FAIL: the rupt lock alarm's native flags disagreed with yaAGC's at a check (or channel 77 bit 4 "
-              f"was set in a span, or no summary), in: {', '.join(rupt_lock_bad)}")
+              f"was set in a span, a forced row did not sound only its own flag, or no summary), in: {', '.join(rupt_lock_bad)}")
     return 1 if failed or charge_over or watchman_bad or rupt_lock_bad or chunk_misses else 0
 
 
