@@ -1,0 +1,32 @@
+{
+ "cm-entry-overload": {
+  "exit": 0,
+  "log": "cm-entry-overload.log",
+  "log_sha256": "c91adc9991b113a6dca6bfc3742f2119f1aa714f10a0322e1d38b7de60523145"
+ },
+ "cm-p20-vhf-dropout": {
+  "exit": 0,
+  "log": "cm-p20-vhf-dropout.log",
+  "log_sha256": "645834a75963141f30257bb7d8b5b8189f0a1929841812e05245156272bbf3c6"
+ },
+ "cm-p52-gimbal-lock": {
+  "exit": 0,
+  "log": "cm-p52-gimbal-lock.log",
+  "log_sha256": "86ce8f7b64f3ecc53838f193a5b6bf0d09403886468fb3fe5d3af01656e116a6"
+ },
+ "cm-p52-imu-cage": {
+  "exit": 0,
+  "log": "cm-p52-imu-cage.log",
+  "log_sha256": "bfa815cd3962aa99850475a8e1a5b7cc2588f95e41f209864f151ea18730aab2"
+ },
+ "cm-p52-imu-fail": {
+  "exit": 0,
+  "log": "cm-p52-imu-fail.log",
+  "log_sha256": "7415ea448a473d4a3ba4cac971c7f922511235a89afa526b55341c3a12070bee"
+ },
+ "cm-uplink-reject": {
+  "exit": 0,
+  "log": "cm-uplink-reject.log",
+  "log_sha256": "33db0f110d3b05429978fd126f9ffd138e1ae265dfb95cca645f7c00f62dd278"
+ }
+}

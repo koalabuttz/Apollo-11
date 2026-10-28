@@ -152,6 +152,11 @@
       "sha256": "7adc01daf3a5dc5607ee745ea400a02a8c45941220ee0fd1443707290f594556",
       "bytes": 19226,
       "store": "tree"
+    },
+    "offnominal-exits.json": {
+      "sha256": "5678aea3569c8007d04241168cf992a8288ab10843745bdd26e7099ec9c73090",
+      "bytes": 945,
+      "store": "tree"
     }
   }
 }
