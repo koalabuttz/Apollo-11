@@ -72,6 +72,11 @@ typedef struct {
      * sounded at the last period's end, for the next fd_run's GOJAM. */
     night_watchman wm;
     uint8_t wm_fire;
+    /* The rupt lock alarm (night_watchman.h): armed and checked by the
+     * period count, its flags cleared by steps in and outside interrupts.
+     * It restarts nothing yet (#989): rl_alarms counts its alarms. */
+    rupt_lock rl;
+    unsigned long rl_alarms;
     /* The work clock (fd_work_clock): clock steps at whole cycles, as the
      * harness's FLIGHT_SCALED=W; clock_steps counts the steps taken. */
     uint8_t work;
