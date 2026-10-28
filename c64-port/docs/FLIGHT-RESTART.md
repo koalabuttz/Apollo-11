@@ -183,10 +183,19 @@ GOTO SAVQR52 loops in GOTOERS:
   the harness. The watchman comes at 35.85 s, within the TC trap rows'
   limit of the harness's 35.84 s. The x86 run ends with the same major
   mode, REDOCTR and state vector, and 11 words differ (limit 34).
-- **The C64.** The resident does not model the watchman yet. Its boundary
-  words hold no GOTO, so no interrupt is taken at the stuck point either:
-  the C64 hangs there instead of restarting. This is listed as a known gap
-  in the restart acceptance docs. Nominal flight never trips it.
+- **The C64.** The resident counts the watchman on its work clock
+  (`include/flight_watchman.h`, `rk_nw`): a period at each T5 step, armed
+  at 64 and sounding at 128, then `rk_gojam` at the next step, in or out
+  of an interrupt. Its access rule is coarser than the host's, to fit the
+  resident: the kernel's CCS and TS of NEWJOB (`k_newjob8`), an idle memo
+  hit, and any step that starts at DANZIG up to NEWOPS. It does not read
+  PRIORITY changes and has no hung state. A step from GOTO that ends at
+  GOTO is stuck and charges the rest of the period (`rk_rest`), and on the
+  C64 `lmi_goto_any` hands back at GOTO after 64 hops, as the core does.
+  Each host snapshot carries the watchman (`SNAP_NW`), so a replay window
+  goes on with the host's count. The replay of `lm-p52-watchman` from
+  3200 cs (700 cs) restarts at 35.84 s and matches the host at every
+  checkpoint to its end. The LM resident grew 73 bytes, the CM 68.
 
 ## Scenarios (`make flight-restart-check`)
 
@@ -419,8 +428,8 @@ restart.
   routine's entry, with Z not at the trap and the routine's earlier writes
   kept. If a reachable one appears, the compiler should leave Z at the trap
   and the resident should spin there as at VERB69. The night watchman (NEWJOB not
-  tested for 0.64 s) is modelled on the host and the x86 program, not on
-  the C64 (The night watchman, above). The rupt lock (an interrupt held too
+  tested for 0.64 s) is modelled on the host, the x86 program and the C64
+  (The night watchman, above). The rupt lock (an interrupt held too
   long) is not modelled yet. The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,
   so a stack overflow is never taken for a TC trap. `rk_gojam` also lights
   the DSKY RESTART lamp (`rk_restart_lamp` at `RK_RESTART_LAMP`, $6FF5),

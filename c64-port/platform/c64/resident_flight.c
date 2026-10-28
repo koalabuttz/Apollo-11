@@ -5,6 +5,27 @@
 #include "sp_routines.h"
 #include "resident_rupt.h"
 #include "resident_cdu.h"
+#include "flight_watchman.h"
+/* The interpreter's NEWOPS, DANZIG and GOTO (fixed-fixed Z). */
+#if RK_LM
+#define RK_NEWOPS 06070u
+#define RK_DANZIG 06061u
+#define RK_GOTO 06646u
+#define RK_GOTO_HI 0x0d /* (for rk_watch's 6502; checked below) */
+#define RK_GOTO_LO 0xa6
+#define RK_DANZIG_HI 0x0c
+#define RK_DANZIG_LO 0x31
+#else
+#define RK_NEWOPS 06037u
+#define RK_DANZIG 06030u
+#define RK_GOTO 06615u
+#define RK_GOTO_HI 0x0d
+#define RK_GOTO_LO 0x8d
+#define RK_DANZIG_HI 0x0c
+#define RK_DANZIG_LO 0x18
+#endif
+_Static_assert(RK_GOTO == (RK_GOTO_HI << 8 | RK_GOTO_LO) && RK_DANZIG == (RK_DANZIG_HI << 8 | RK_DANZIG_LO),
+               "rk_watch's constants");
 /* The output drives, once a period: the 6502 version of resident_cdu.c's
  * rk_cdu_drive (platform/c64/resident_cdu.S, checked against the C and
  * yaAGC's vectors by tools/resident_cdu_asm_check.c), which stays the host
@@ -88,12 +109,15 @@ __attribute__((used,section(".bss.rk_dilation"))) uint32_t rk_dilation;
 uint16_t rk_work;
 uint8_t rk_tick_phase;
 const uint16_t rk_phase_mct[9] = {214u, 213u, 427u, 213u, 213u, 427u, 213u, 214u, 426u};
-/* From each step's start to its period's end. */
-static const uint16_t rk_phase_rest[9] = {854u, 640u, 427u, 853u, 640u, 427u, 853u, 640u, 426u};
+/* From each step's start to its period's end (by name in rk_rest). */
+__attribute__((used)) const uint16_t rk_phase_rest[9] = {854u, 640u, 427u, 853u, 640u, 427u, 853u, 640u, 426u};
 const uint8_t rk_phase_step[9] = {RK_PHASE_T4, RK_PHASE_T3, RK_PHASE_T5, RK_PHASE_T4, RK_PHASE_T3,
                                   RK_PHASE_T5, RK_PHASE_T4, RK_PHASE_T3, RK_PHASE_T5};
 /* Set by the idle loop's charge, cleared by rk_rupts (platform/c64/rk_clock.S). */
 uint8_t rk_idle;
+/* The night watchman (include/flight_watchman.h): the clock period count
+ * mod 128 and the armed bit. */
+uint8_t rk_nw;
 __attribute__((used)) uint8_t rk_cap; /* read by name in rk_realtime_cap */
 /* The MCT left before the next step (at least 1: rk_rupts drained the
  * whole steps at the step's start), in platform/c64/rk_clock.S. */
@@ -116,6 +140,9 @@ static uint8_t rk_point_lo; /* and its low byte, for an interrupt's lead-in */
  * is a weight, at most 255, and 1 for a module that reports MCT), or for
  * the idle loop (RK_MCT_IDLE), the rest of the period, which rk_rupts
  * drops if an interrupt request ends the idle first. */
+/* The rest of the period, the idle loop's charge: rk_rupts drops it if an
+ * interrupt request ends the idle first (6502, below). */
+void rk_rest(void);
 __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
     uint16_t w=rk_work;
     /* rk_part_steps: a part going on with the routine the previous step's
@@ -140,8 +167,7 @@ __attribute__((noinline)) static void rk_charge(uint16_t n,uint8_t mct) {
          * it within a few MCT) is no idle; the host charges it nothing
          * (idle_weight in tools/flight_host_run.c; issue #912 item 1). */
         if (IMAGE->words[067u] != 077777u) return;
-        rk_work = rk_phase_rest[rk_tick_phase & 15u]; /* 0-8: a byte index */
-        rk_idle = 1;
+        rk_rest();
         return;
     }
     do w+=n; while(--mct);
@@ -467,6 +493,63 @@ RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(u
     rk_steal_q = q;
 }
 #endif
+#ifdef RK_WORK_CLOCK
+/* The night watchman (include/flight_watchman.h), in 6502: the C took 137
+ * bytes, these 101.
+ *
+ * rk_watch, before a flight step, from the step's Z ($700A, IMAGE->words[5]):
+ * a step from an interpretive point (DANZIG to NEWOPS: DANZIG, NOIBNKSW at
+ * DANZIG +2, NEWOPS) goes round DANZIG, which reads NEWJOB, so it clears the
+ * armed bit. That is coarser than the host's rule (docs/FLIGHT-RESTART.md).
+ * rk_watch_goto: the step is from GOTO, where the interpreter hands back an
+ * erasable CADR cycle after its hops (rk_step_run).
+ *
+ * rk_watch_period, at each period's end (the T5 step, rk_rupts_due): the
+ * count goes on by FLIGHT_WATCHMAN_PERIOD. At 64 periods it arms; at 128
+ * (the byte wraps) it sounds if still armed, setting rk_spin bit 2 for the
+ * GOJAM at the next step.
+ *
+ * rk_rest: the rest of the period, the idle loop's charge (rk_charge): rk_rupts
+ * drops it if an interrupt request ends the idle first. */
+void rk_watch(void);
+void rk_watch_period(void);
+uint8_t rk_watch_goto;
+_Static_assert((RK_GOTO >> 8) != (RK_DANZIG >> 8) && (RK_DANZIG >> 8) == (RK_NEWOPS >> 8) &&
+                   RK_NEWOPS - RK_DANZIG < 8u,
+               "rk_watch's Z ranges");
+_Static_assert(FLIGHT_WATCHMAN_ARMED == 1u && FLIGHT_WATCHMAN_PERIOD == 2u &&
+                   FLIGHT_WATCHMAN_ARM == 0x80u,
+               "rk_watch_period's byte");
+#define RK_STR2(x) #x
+#define RK_STR(x) RK_STR2(x)
+__asm__(".section .text.rk_watch,\"ax\",@progbits\n"
+        ".globl rk_watch\n"
+        "rk_watch:\n"
+        "  ldx #0\n  lda $700b\n  ldy $700a\n"
+        "  cmp #" RK_STR(RK_GOTO_HI) "\n  bne 1f\n"
+        "  cpy #" RK_STR(RK_GOTO_LO) "\n  bne 9f\n  inx\n  bne 9f\n"
+        "1:\n  cmp #" RK_STR(RK_DANZIG_HI) "\n  bne 9f\n"
+        "  tya\n  sec\n  sbc #" RK_STR(RK_DANZIG_LO) "\n  cmp #8\n  bcs 9f\n"
+        "  lsr rk_nw\n  asl rk_nw\n"
+        "9:\n  stx rk_watch_goto\n  rts\n"
+        ".section .text.rk_watch_period,\"ax\",@progbits\n"
+        ".globl rk_watch_period\n"
+        "rk_watch_period:\n"
+        "  lda rk_nw\n  clc\n  adc #2\n  bcc 1f\n"
+        "  lsr a\n  bcc 2f\n"
+        "  lda #4\n  ora rk_spin\n  sta rk_spin\n  lda #0\n  beq 2f\n"
+        "1:\n  tax\n  and #$fe\n  cmp #$80\n  bne 3f\n  ldx #$81\n"
+        "3:\n  txa\n"
+        "2:\n  sta rk_nw\n  rts\n"
+        ".section .text.rk_rest,\"ax\",@progbits\n"
+        ".globl rk_rest\n"
+        "rk_rest:\n"
+        "  lda rk_tick_phase\n  asl a\n  tay\n"
+        "  lda rk_phase_rest,y\n  sta rk_work\n"
+        "  lda rk_phase_rest+1,y\n  sta rk_work+1\n"
+        "  lda #1\n  sta rk_idle\n  rts\n"
+        ".text\n");
+#endif
 __attribute__((noinline, used)) void rk_rupts_due(void) {
     uint8_t got;
 #ifdef RK_STEAL
@@ -510,6 +593,7 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
         if (t == RK_PHASE_T5) {
             rk_realtime_cap();
             RK_CDU_DRIVE();
+            rk_watch_period();
         }
         rk_work -= RK_PHASE_MCT(p);
 #ifdef RK_STEAL
@@ -827,6 +911,11 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     if(rk_run_module(at)!=APOLLO_OV2_OK) return EXEC_UNMAPPED;
 #ifdef RK_WORK_CLOCK
     rk_charge(rk_env.work,rk_env.scale);
+    /* From GOTO back to GOTO (the interpreter's module): stuck in an
+     * erasable CADR cycle, it would run again and again from the same
+     * state. It spins to the period's end, as the idle loop's charge, and
+     * reads no NEWJOB, so the night watchman restarts the AGC. */
+    if (rk_watch_goto && IMAGE->words[5] == RK_GOTO) rk_rest();
 #endif
     RK_PROF(9);
 #ifndef RK_NO_DIRECT
@@ -891,6 +980,9 @@ __attribute__((noinline)) static enum exec_status rk_memo_run(uint16_t stop_phys
         for (i = 0; i < sizeof rk_memo.in; ++i)
             if (rk_memo.in[i] != rk_memo_now[i]) goto run;
         for (i = 0; i < RK_MEMO_WORDS; ++i) *rk_memo_at[i] = ((const agc_word *)rk_memo.out)[i];
+        /* The pass and ADVAN, which reads NEWJOB (the kernel's own run of
+         * it would clear the watchman's armed bit). */
+        FLIGHT_WATCHMAN_ACCESS();
         if (rk_memo.idle) {
             rk_charge(0u, RK_MCT_IDLE);
 #ifdef RK_DSKY
@@ -953,8 +1045,11 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
         uint8_t spin = rk_spin;
         const agc_word *w = IMAGE->words;
         rk_spin = 0;
-        if (!rk_hardware.in_interrupt) {
-            if (spin & 2u) return rk_gojam() ? EXEC_OUT_OF_SCOPE : EXEC_OK;
+        /* Bit 2: the night watchman sounded at the last period's end
+         * (rk_watch_period): the GOJAM, in or out of an interrupt, as the
+         * host's. */
+        if ((spin & 4u) || !rk_hardware.in_interrupt) {
+            if (spin & 6u) return rk_gojam() ? EXEC_OUT_OF_SCOPE : EXEC_OK;
             if (w[5] == 02037u && w[4] == 066000u && (rk_device.superbank & 0100u)) {
                 IMAGE->words[2] = 02040u; /* Q: TC VERB69's */
 #ifdef RK_WORK_CLOCK
@@ -986,6 +1081,9 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
             goto out;
         }
     }
+#endif
+#ifdef RK_WORK_CLOCK
+    rk_watch();
 #endif
     st = rk_step_run(stop_physical);
 out:

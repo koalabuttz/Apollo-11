@@ -697,7 +697,10 @@ static void snapshot(const char *path,const apollo_overlay_state *s,const flight
  fprintf(f,"\n#define SNAP_CDU(c) ");
  for(i=0;i<5u;++i)fprintf(f,"(c).owed[%u]=%d;",i,(int)rk_cdu.owed[i]);
  fprintf(f,"(c).elapsed=%uu;(c).active=%uu;",(unsigned)rk_cdu.elapsed,(unsigned)rk_cdu.active);
- fprintf(f,"\n");fclose(f);}
+ /* The night watchman (include/flight_watchman.h): the period count mod
+  * 128 and the armed bit, in the C64 resident's byte. */
+ fprintf(f,"\n#define SNAP_NW %uu\n",(unsigned)(taken%NW_PERIODS)*2u|(wm.armed?1u:0u));
+ fclose(f);}
 /* FLIGHT_REPLAY=CS (with FLIGHT_SNAPSHOT): the C64 window's inputs and
  * its end state (tools/flight_scenario_vice.py --replay). After the
  * snapshot the run goes on, on the work clock from its first step (the
