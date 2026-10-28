@@ -7,11 +7,11 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 29932208,
- "agc_cs": 308,
+ "wall_cycles": 29792703,
+ "agc_cs": 307,
  "dropped_ticks": 0,
- "steps": 943,
- "wall_per_agc": 9.864,
+ "steps": 938,
+ "wall_per_agc": 9.85,
  "lost": false,
  "mission": "cm",
  "snap_cs": 11750,
@@ -27,13 +27,13 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 13
+  "dma_unchecked": 12
  },
- "hold_host_mct": 791,
- "hold_host_time1": 11814,
+ "hold_host_mct": 1178,
+ "hold_host_time1": 11821,
  "replay_rows": 3,
  "replay_applied": 3,
- "replay_end_cs": 308,
+ "replay_end_cs": 307,
  "replay_ended": true,
  "replay_after_rows": 0,
  "replay_inputs": {
@@ -68,7 +68,7 @@
    "channel 34": 0,
    "channel 35": 0,
    "superbank": 64,
-   "channel 10": 0,
+   "channel 10": 6099,
    "interrupts enabled": 1,
    "radar gate": 0
   },
@@ -82,7 +82,7 @@
    "channel 34": 0,
    "channel 35": 0,
    "superbank": 64,
-   "channel 10": 0,
+   "channel 10": 6099,
    "interrupts enabled": 0,
    "radar gate": 0
   },
@@ -101,8 +101,8 @@
   50,
   112,
   150,
-  201,
-  251,
+  200,
+  250,
   300
  ],
  "replay_differences": 0,
@@ -114,5 +114,5 @@
  "requested_cs": 300,
  "host_holes": [],
  "downrupt": false,
- "commit": "bab6fab33581"
+ "commit": "78dcfd1c5f33"
 }

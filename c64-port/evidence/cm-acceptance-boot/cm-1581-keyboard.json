@@ -12,50 +12,50 @@
  "resident_staged": "0x1f6b00",
  "bytes_loaded": 1863151,
  "data_bytes": [
-  792108
+  792103
  ],
  "vice": {
   "mission": "cm",
   "ok": true,
   "fast_loader": true,
-  "load_cycles": 260773740,
+  "load_cycles": 260772877,
   "load_s": 264.7,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80785,
-  "boot_cycles": 107747965,
+  "handoff_cycles": 80784,
+  "boot_cycles": 107747812,
   "boot_s": 109.4,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 40541975,
-    "time1": "01510",
-    "z": "03536",
+    "cycles": 33290015,
+    "time1": "01256",
+    "z": "04701",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 68710128,
+    "time1": "02643",
+    "z": "04701",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 105172005,
+    "time1": "04257",
+    "z": "05333",
+    "fb": "14000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 139117920,
+    "time1": "05610",
+    "z": "03521",
     "fb": "12000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 80345376,
-    "time1": "03236",
-    "z": "03306",
-    "fb": "66000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 121111921,
-    "time1": "05006",
-    "z": "04040",
-    "fb": "66000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 156001318,
-    "time1": "06360",
-    "z": "03231",
-    "fb": "02000",
     "modreg": "77777"
    }
   ],
-  "pc": "34fb",
+  "pc": "0850",
   "screen": [
    " APOLLO 11 CM DSKY",
    "",
@@ -81,7 +81,7 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "12000",
+  "fb": "14000",
   "z": "05333",
   "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
   "p00": true,
@@ -140,7 +140,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 43,
+   "dma_unchecked": 29,
    "trace_errors": [],
    "trace_ok": true
   }

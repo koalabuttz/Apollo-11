@@ -2641,6 +2641,6 @@
  "requested_cs": 800,
  "host_holes": [],
  "downrupt": false,
- "commit": "bab6fab33581",
- "store_sha256": "1703ed873137a9bb6a7cdbb3b845617a6aa8303e2714b328c04bdd348bb99e50"
+ "commit": "78dcfd1c5f33",
+ "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712"
 }

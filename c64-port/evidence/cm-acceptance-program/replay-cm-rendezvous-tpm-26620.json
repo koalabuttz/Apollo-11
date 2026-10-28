@@ -7,11 +7,11 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 62368181,
- "agc_cs": 309,
+ "wall_cycles": 62572955,
+ "agc_cs": 307,
  "dropped_ticks": 0,
- "steps": 1251,
- "wall_per_agc": 20.486,
+ "steps": 1281,
+ "wall_per_agc": 20.687,
  "lost": false,
  "mission": "cm",
  "snap_cs": 26620,
@@ -29,16 +29,16 @@
   "dma_hits": [],
   "dma_unchecked": 11
  },
- "hold_host_mct": 677,
- "hold_host_time1": 10813,
- "replay_rows": 26,
- "replay_applied": 26,
- "replay_end_cs": 309,
+ "hold_host_mct": 229,
+ "hold_host_time1": 10669,
+ "replay_rows": 27,
+ "replay_applied": 27,
+ "replay_end_cs": 307,
  "replay_ended": true,
  "replay_after_rows": 1,
  "replay_inputs": {
   "counts": {
-   "0": 16,
+   "0": 17,
    "2": 2,
    "3": 6
   },
@@ -103,10 +103,10 @@
  "masked_dead_superbank": 0,
  "masked_dead_superbank_at": [],
  "replay_matched_cs": [
-  141,
+  138,
   151,
-  281,
-  301
+  276,
+  300
  ],
  "replay_differences": 0,
  "replay_differ_at_cs": null,
@@ -114,8 +114,8 @@
  "replay_first": [],
  "snap_at": 26924,
  "snap_slid": true,
- "requested_cs": 301,
+ "requested_cs": 300,
  "host_holes": [],
  "downrupt": false,
- "commit": "bab6fab33581"
+ "commit": "78dcfd1c5f33"
 }
