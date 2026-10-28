@@ -155,6 +155,16 @@ def any_window(r):
     return True
 
 
+def checkpoints(t, runs):
+    """How many checkpoints of runs show an output role on their own (its
+    window test on the start and that one checkpoint's host state), or None
+    for an input role, a role any window covers, or a run that recorded no
+    per-checkpoint outputs. A role one checkpoint shows hangs on timing."""
+    if t['dir'] != 'out' or t['window'] is any_window or any('states' not in outputs(r) for r in runs):
+        return None
+    return sum(1 for r in runs for st in outputs(r)['states'] if t['window']({**r, 'replay_outputs': st}))
+
+
 def erasable(*addrs):
     return lambda r: bool(set(inputs(r).get('erasable', [])) & {f'{a:04o}' for a in addrs})
 
@@ -632,6 +642,9 @@ def assess(m, table, runs, host, commit):
             bad.append(f"{t['key']}: no C64 window that exercises it matches the host")
         else:
             status = 'covered, with open items' if t['gap'] else 'covered'
+        t['checkpoints'] = checkpoints(t, matched) if matched else None
+        if t['checkpoints'] == 1:
+            print(f"warning: {t['key']}: one checkpoint shows it; a timing shift can lose the role", flush=True)
         out.append((t, status, ads, hrows, wins, matched))
     return out, bad
 
@@ -685,7 +698,11 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
             ['| host | none | | | NO |']
         d += ['', 'Host scenarios that drive it:', '']
         d += [f'- {n}: {state} ({x})' for n, state, x in hrows] or ['- none']
-        d += ['', f"C64 windows that exercise it ({t['how']}):", '']
+        n = t.get('checkpoints')
+        d += ['', f"C64 windows that exercise it ({t['how']})"
+              + (f"; {n} checkpoint{'s' if n != 1 else ''} of the matching windows show it on their own"
+                 + (' (**warning:** only one, so a timing shift can lose the role)' if n == 1 else '')
+                 if n is not None else '') + ':', '']
         d += [f"- {r['scenario']} {r['snap_cs']}+{r.get('requested_cs')}: "
               + ('matches the host at ' + ', '.join(map(str, r.get('replay_matched_cs') or [])) + ' cs'
                  + busy_note(r) if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \
