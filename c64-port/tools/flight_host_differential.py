@@ -1020,7 +1020,7 @@ def scaled_rupt_lock_bad(rupt_lock):
 #   past DUMMYJOB's RELINT, so it loops inside the interrupt with no
 #   RESUME: RUPT LOCK stays set.
 # - no-rupt: the task is a few erasable words (VAC5, free in P00) that
-#   INHINT, point ZRUPT and BRUPT at a CA NEWJOB, TCF loop and RESUME: the
+#   INHINT, point ZRUPT and BRUPT at a CA NEWJOB, TC loop and RESUME: the
 #   loop runs outside any interrupt with interrupts inhibited, so no
 #   interrupt step clears NO RUPT. yaAGC runs these words (bridged).
 # Each row must sound only its own flag, first at 1526 cs (the first check
@@ -1033,7 +1033,7 @@ FORCED_AT = 1500
 _ADVAN = {'lm': 0o3214, 'cm': 0o3231}       # Luminary099 01,3214; Comanche055 01,3231
 _LST2, _TIME3, _BBCON = 0o1410, 0o26, 0o2063  # both programs; BBCON: bank 01, E3
 _NO_RUPT_WORDS = (0o00004, 0o30710, 0o54015, 0o30711, 0o54017, 0o50017,  # INHINT; CA, TS ZRUPT; CA, TS BRUPT; RESUME
-                  0o30067, 0o10706, 0o00707, 0o30067)                    # 706: CA NEWJOB; TCF 706; ZRUPT, BRUPT
+                  0o30067, 0o00706, 0o00707, 0o30067)                    # 706: CA NEWJOB; TC 706; ZRUPT, BRUPT
 
 
 def forced_poke(m, flag):
