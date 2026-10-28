@@ -60,7 +60,7 @@ def snapshot(exe, name, cs, tag, replay=0, every=0, chain=1, downrupt=False):
     header = dp.WORK / f'{tag}-snap.h'
     header.unlink(missing_ok=True)
     for n in range(chain):
-        for x in ('', '.replay', '.end', '.seam', '.after', '.after-replay', '.outputs'):
+        for x in ('', '.replay', '.end', '.seam', '.after', '.after-replay', '.outputs', '.words'):
             if n or x:
                 pathlib.Path(f'{header}{f"-{n}" if n else ""}{x}').unlink(missing_ok=True)
     # The host takes the snapshot at the first point at or after cs with no
@@ -883,6 +883,12 @@ def main():
                                  channels=[f'{a:o}' for a in sorted(touched[2])], requests=touched[3],
                                  **channel_bits(rows, snap_channels(header)))
             replay_outputs = outputs_seen(snap_state(header), states(host_end, n_states))
+            # The host's drive counters (050-054) at every routine boundary
+            # (flight_host_run.c PATH.words): a command shorter than the
+            # checkpoint spacing shows here, not in the states.
+            words = pathlib.Path(f'{header}.words')
+            if words.exists():
+                replay_outputs['trace'] = [[cs, f'{w:04o}', f'{v:05o}'] for cs, w, v in OUTPUT.iter_unpack(words.read_bytes())]
             print(f'{a.scenario}: {len(rows) // ROW.size} host input rows ({n_c64} on the C64) in the window at REU 0x{at:x} '
                   f"({kinds.get(1, 0)} PIPA counts, {kinds.get(0, 0)} erasable words, {kinds.get(2, 0)} channels, "
                   f'{kinds.get(3, 0)} interrupt requests)'

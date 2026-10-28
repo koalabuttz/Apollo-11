@@ -212,6 +212,22 @@ def words(*addrs):
     return lambda r: bool(want & set(outputs(r).get('changed', [])))
 
 
+def traced(*addrs):
+    """The host's trace (flight_host_run.c PATH.words) has one of these
+    words non-zero in the window: a command, however short."""
+    want = {f'{a:04o}' for a in addrs}
+    return lambda r: any(w in want and int(v, 8) for _, w, v in outputs(r).get('trace', []))
+
+
+def commands(t, runs):
+    """How many non-zero values of the role's trace words the host's traces
+    of runs hold, or None when the role has none or a run has no trace."""
+    want = {f'{a:04o}' for a in t['trace']}
+    if not want or any('trace' not in outputs(r) for r in runs):
+        return None
+    return sum(1 for r in runs for _, w, v in outputs(r)['trace'] if w in want and int(v, 8))
+
+
 def scenario_env(*names, without=()):
     """The window's scenario runs with one of these FLIGHT_* inputs (and none of without)."""
     return lambda r: bool(set(r.get('_env', {})) & set(names)) and not set(r.get('_env', {})) & set(without)
@@ -242,15 +258,16 @@ def pressed(chars):
 
 
 def role(key, name, direction, agc, host, c64, env, window, units, gap=None, closes=None, blocking=False,
-         elsewhere=None, how=None):
+         elsewhere=None, how=None, trace=()):
     """host/c64: [(file, symbol, what)], each symbol defined in file; env:
     which host scenarios drive the role, f(env, keys) (None: every one);
     window: which replay windows exercise it, f(run); gap: an open item;
     blocking: the gap keeps the role from being covered at all; elsewhere:
     the acceptance doc that covers the role instead; how: what the window
-    predicate looks for, for the doc."""
+    predicate looks for, for the doc; trace: output words the host's
+    per-boundary trace (replay_outputs trace) also shows the role by."""
     return dict(key=key, name=name, dir=direction, agc=agc, host=host, c64=c64, env=env, window=window,
-                units=units, gap=gap, closes=closes, blocking=blocking, elsewhere=elsewhere, how=how)
+                units=units, gap=gap, closes=closes, blocking=blocking, elsewhere=elsewhere, how=how, trace=trace)
 
 
 def roles(m):
@@ -415,8 +432,11 @@ def roles(m):
                  'bits 11-12', [host_end, (FHR, 'drives', 'the output drives once a period after the timers: rk_cdu_drive (src/resident_cdu.c)'),
                                 (FHR, 'optics_due', 'the optics: with TVC off, CDUT/CDUS follow the 053/054 pulses sent, 4 counts a pulse')],
                  [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives: 053/054 pulses')],
-                 uses('FLIGHT_OPTICS'), both(either(words(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
-                 unit(m, 'sxtmark'), how='OPTXCMD or OPTYCMD, or channel 14 bit 11 or 12, changed with TVC off (channel 12 bit 8 clear)',
+                 uses('FLIGHT_OPTICS'),
+                 both(either(words(0o53, 0o54), traced(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
+                 unit(m, 'sxtmark'), trace=(0o53, 0o54),
+                 how='OPTXCMD or OPTYCMD, or channel 14 bit 11 or 12, changed with TVC off (channel 12 bit 8 clear); '
+                     'OPTXCMD/OPTYCMD at every routine boundary in the host\'s trace, not only at checkpoints',
                  gap='the optics are a perfect servo at OPTDRIVE\'s scale (4 CDU counts a pulse, from its (DESOPT - CDU) / 4 '
                      'command); FLIGHT_LOAD still sets CDUS/CDUT for the marks'),
         ]
@@ -453,8 +473,10 @@ def roles(m):
                                        'bit 8 is set, and the thrust turns the CM in pitch and yaw')],
                  [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives: 053/054 pulses')],
                  uses('FLIGHT_SPS'),
-                 both(words(0o53, 0o54), steady(0o12, 0o200)), unit(m, 'tvc-roll'),
-                 how='TVCPITCH or TVCYAW changed with channel 12 bit 8 set throughout the window',
+                 both(either(words(0o53, 0o54), traced(0o53, 0o54)), steady(0o12, 0o200)), unit(m, 'tvc-roll'),
+                 trace=(0o53, 0o54),
+                 how='TVCPITCH or TVCYAW changed with channel 12 bit 8 set throughout the window (at every routine '
+                     'boundary in the host\'s trace, not only at checkpoints)',
                  gap='roll does not move under TVC (no RCS jet model)'),
         ]
     out += [
@@ -643,7 +665,8 @@ def assess(m, table, runs, host, commit):
         else:
             status = 'covered, with open items' if t['gap'] else 'covered'
         t['checkpoints'] = checkpoints(t, matched) if matched else None
-        if t['checkpoints'] == 1:
+        t['commands'] = commands(t, matched) if matched else None
+        if t['checkpoints'] == 1 and not (t['commands'] or 0) > 1:
             print(f"warning: {t['key']}: one checkpoint shows it; a timing shift can lose the role", flush=True)
         out.append((t, status, ads, hrows, wins, matched))
     return out, bad
@@ -701,8 +724,11 @@ def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
         n = t.get('checkpoints')
         d += ['', f"C64 windows that exercise it ({t['how']})"
               + (f"; {n} checkpoint{'s' if n != 1 else ''} of the matching windows show it on their own"
-                 + (' (**warning:** only one, so a timing shift can lose the role)' if n == 1 else '')
-                 if n is not None else '') + ':', '']
+                 + (' (**warning:** only one, so a timing shift can lose the role)'
+                    if n == 1 and not (t.get('commands') or 0) > 1 else '')
+                 if n is not None else '')
+              + (f"; the host's trace holds {t['commands']} command{'s' if t['commands'] != 1 else ''} in them"
+                 if t.get('commands') is not None else '') + ':', '']
         d += [f"- {r['scenario']} {r['snap_cs']}+{r.get('requested_cs')}: "
               + ('matches the host at ' + ', '.join(map(str, r.get('replay_matched_cs') or [])) + ' cs'
                  + busy_note(r) if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \
