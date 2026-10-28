@@ -20,6 +20,7 @@ import lzma
 import os
 import pathlib
 import re
+import signal
 import subprocess
 import sys
 import threading
@@ -374,6 +375,37 @@ def log_path(target, log_dir):
     return log_dir / (re.sub(r'[^A-Za-z0-9._-]', '_', target) + '.log')
 
 
+# A target that runs far past its measured time is stuck (a VICE run waiting
+# on a disk, say). It is stopped and fails with the output it printed so far,
+# so the job log shows where it sat instead of the job hitting its own limit
+# with nothing printed. --timeout-factor 0 turns this off.
+TIMEOUT_FACTOR = 2
+TIMEOUT_FLOOR = 900
+TIMEOUTS = {}
+TIMED_OUT = -1000
+
+
+def make(cmd, timeout):
+    """subprocess.run for a make command, stopping its whole process group
+    after timeout seconds (None: no limit); returncode TIMED_OUT then."""
+    with subprocess.Popen(cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                          env=dict(os.environ, ASAN_OPTIONS='detect_leaks=0'), start_new_session=True) as p:
+        try:
+            out, _ = p.communicate(timeout=timeout)
+            code = p.returncode
+        except subprocess.TimeoutExpired:
+            for sig, wait in ((signal.SIGTERM, 10), (signal.SIGKILL, None)):
+                with contextlib.suppress(ProcessLookupError):
+                    os.killpg(p.pid, sig)
+                try:
+                    out, _ = p.communicate(timeout=wait)
+                    break
+                except subprocess.TimeoutExpired:
+                    continue
+            code = TIMED_OUT
+    return subprocess.CompletedProcess(cmd, code, out or '')
+
+
 def run(target, log_dir, make_args, attempts, stack=()):
     log = log_path(target, log_dir)
     start = time.monotonic()
@@ -382,10 +414,13 @@ def run(target, log_dir, make_args, attempts, stack=()):
         with contextlib.ExitStack() as held:
             for name in recipe_scripts(target):
                 held.enter_context(script_lock(name))
-            proc = subprocess.run(['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, target],
-                                  cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                                  env=dict(os.environ, ASAN_OPTIONS='detect_leaks=0'))
+            proc = make(['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, target],
+                        TIMEOUTS.get(target))
         log.write_text(proc.stdout)
+        if proc.returncode == TIMED_OUT:
+            return target, False, time.monotonic() - start, proc.stdout[-3000:] + (
+                f'\n  {target}: stopped after {TIMEOUTS[target]:.0f}s, far over its measured time;'
+                ' the output above is where it sat')
         if proc.returncode == 0:
             # A passing target's `summary:` lines (its per-case counts) go
             # into the CI log under its PASS line.
@@ -565,6 +600,9 @@ def main():
                         help='run only shard K (0-based) of N, balanced by --weights')
     parser.add_argument('--weights', type=pathlib.Path, default=WEIGHTS,
                         help='per-target seconds from earlier runs (default %(default)s)')
+    parser.add_argument('--timeout-factor', type=float, default=TIMEOUT_FACTOR,
+                        help='stop a target after this many times its weight, at least '
+                             f'{TIMEOUT_FLOOR}s (0: never; default %(default)s)')
     parser.add_argument('--count-shards', type=int, metavar='MAX',
                         help='print how many shards (1 to MAX) the targets need, and run nothing')
     args = parser.parse_args()
@@ -583,6 +621,9 @@ def main():
     if not targets:
         print('nothing to run')
         return 0
+    if args.timeout_factor > 0:
+        seconds = target_weights(targets, load_weights(args.weights))
+        TIMEOUTS.update({t: max(TIMEOUT_FLOOR, args.timeout_factor * s) for t, s in seconds.items()})
     args.log_dir.mkdir(parents=True, exist_ok=True)
     (ROOT / 'build').mkdir(exist_ok=True)
     # VICE exits 1 at startup when its XDG cache/config directory is missing;
