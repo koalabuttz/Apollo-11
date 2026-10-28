@@ -190,8 +190,9 @@ GOTO SAVQR52 loops in GOTOERS:
   resident: the kernel's CCS and TS of NEWJOB (`k_newjob8`), an idle memo
   hit, and any step that starts at DANZIG up to NEWOPS. It does not read
   PRIORITY changes and has no hung state. A step from GOTO that ends at
-  GOTO is stuck and charges the rest of the period (`rk_rest`), and on the
-  C64 `lmi_goto_any` hands back at GOTO after 64 hops, as the core does.
+  GOTO is stuck and charges the rest of the period (`rk_rest_ahead`, never
+  moving the clock back), and on the C64 `lmi_goto_any` hands back at GOTO
+  after 64 hops, as the core does.
   Each host snapshot carries the watchman (`SNAP_NW`), so a replay window
   goes on with the host's count. The replay of `lm-p52-watchman` from
   3200 cs (700 cs) restarts at 35.84 s and matches the host at every

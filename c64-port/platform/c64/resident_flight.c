@@ -510,7 +510,10 @@ RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(u
  * GOJAM at the next step.
  *
  * rk_rest: the rest of the period, the idle loop's charge (rk_charge): rk_rupts
- * drops it if an interrupt request ends the idle first. */
+ * drops it if an interrupt request ends the idle first. rk_rest_ahead does
+ * the same only if the clock is short of the period's end, so a stuck step
+ * whose charge already passed it never moves the clock back. */
+void rk_rest_ahead(void);
 void rk_watch(void);
 void rk_watch_period(void);
 uint8_t rk_watch_goto;
@@ -522,33 +525,62 @@ _Static_assert(FLIGHT_WATCHMAN_ARMED == 1u && FLIGHT_WATCHMAN_PERIOD == 2u &&
                "rk_watch_period's byte");
 #define RK_STR2(x) #x
 #define RK_STR(x) RK_STR2(x)
-__asm__(".section .text.rk_watch,\"ax\",@progbits\n"
-        ".globl rk_watch\n"
-        "rk_watch:\n"
-        "  ldx #0\n  lda $700b\n  ldy $700a\n"
-        "  cmp #" RK_STR(RK_GOTO_HI) "\n  bne 1f\n"
-        "  cpy #" RK_STR(RK_GOTO_LO) "\n  bne 9f\n  inx\n  bne 9f\n"
-        "1:\n  cmp #" RK_STR(RK_DANZIG_HI) "\n  bne 9f\n"
-        "  tya\n  sec\n  sbc #" RK_STR(RK_DANZIG_LO) "\n  cmp #8\n  bcs 9f\n"
-        "  lsr rk_nw\n  asl rk_nw\n"
-        "9:\n  stx rk_watch_goto\n  rts\n"
-        ".section .text.rk_watch_period,\"ax\",@progbits\n"
-        ".globl rk_watch_period\n"
-        "rk_watch_period:\n"
-        "  lda rk_nw\n  clc\n  adc #2\n  bcc 1f\n"
-        "  lsr a\n  bcc 2f\n"
-        "  lda #4\n  ora rk_spin\n  sta rk_spin\n  lda #0\n  beq 2f\n"
-        "1:\n  tax\n  and #$fe\n  cmp #$80\n  bne 3f\n  ldx #$81\n"
-        "3:\n  txa\n"
-        "2:\n  sta rk_nw\n  rts\n"
-        ".section .text.rk_rest,\"ax\",@progbits\n"
-        ".globl rk_rest\n"
-        "rk_rest:\n"
-        "  lda rk_tick_phase\n  asl a\n  tay\n"
-        "  lda rk_phase_rest,y\n  sta rk_work\n"
-        "  lda rk_phase_rest+1,y\n  sta rk_work+1\n"
-        "  lda #1\n  sta rk_idle\n  rts\n"
-        ".text\n");
+__asm__(
+    ".section .text.rk_watch,\"ax\",@progbits\n"
+    ".globl rk_watch\n"
+    "rk_watch:\n"
+    "  ldx #0\n  lda $700b\n  ldy $700a\n"
+    "  cmp #" RK_STR(
+        RK_GOTO_HI) "\n  bne 1f\n"
+                    "  cpy #" RK_STR(
+                        RK_GOTO_LO) "\n  bne 9f\n  inx\n  bne 9f\n"
+                                    "1:\n  cmp #" RK_STR(
+                                        RK_DANZIG_HI) "\n  bne 9f\n"
+                                                      "  tya\n  sec\n  sbc #" RK_STR(
+                                                          RK_DANZIG_LO) "\n  cmp #8\n  bcs 9f\n"
+                                                                        "  lsr rk_nw\n  asl rk_nw\n"
+                                                                        "9:\n  stx rk_watch_goto\n "
+                                                                        " rts\n"
+                                                                        ".section "
+                                                                        ".text.rk_watch_period,"
+                                                                        "\"ax\",@progbits\n"
+                                                                        ".globl rk_watch_period\n"
+                                                                        "rk_watch_period:\n"
+                                                                        "  lda rk_nw\n  clc\n  adc "
+                                                                        "#2\n  bcc 1f\n"
+                                                                        "  lsr a\n  bcc 2f\n"
+                                                                        "  lda #4\n  ora rk_spin\n "
+                                                                        " sta rk_spin\n  lda #0\n  "
+                                                                        "beq 2f\n"
+                                                                        "1:\n  tax\n  and #$fe\n  "
+                                                                        "cmp #$80\n  bne 3f\n  ldx "
+                                                                        "#$81\n"
+                                                                        "3:\n  txa\n"
+                                                                        "2:\n  sta rk_nw\n  rts\n"
+                                                                        ".section "
+                                                                        ".text.rk_rest,\"ax\",@"
+                                                                        "progbits\n"
+                                                                        ".globl rk_rest\n"
+                                                                        ".globl rk_rest_ahead\n"
+                                                                        "rk_rest_ahead:\n"
+                                                                        "  lda rk_tick_phase\n  "
+                                                                        "asl a\n  tay\n"
+                                                                        "  lda rk_work\n  cmp "
+                                                                        "rk_phase_rest,y\n"
+                                                                        "  lda rk_work+1\n  sbc "
+                                                                        "rk_phase_rest+1,y\n  bcc "
+                                                                        "1f\n  rts\n"
+                                                                        "rk_rest:\n"
+                                                                        "  lda rk_tick_phase\n  "
+                                                                        "asl a\n  tay\n"
+                                                                        "1:\n  lda "
+                                                                        "rk_phase_rest,y\n  sta "
+                                                                        "rk_work\n"
+                                                                        "  lda rk_phase_rest+1,y\n "
+                                                                        " sta rk_work+1\n"
+                                                                        "  lda #1\n  sta rk_idle\n "
+                                                                        " rts\n"
+                                                                        ".text\n");
 #endif
 __attribute__((noinline, used)) void rk_rupts_due(void) {
     uint8_t got;
@@ -915,7 +947,7 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
      * erasable CADR cycle, it would run again and again from the same
      * state. It spins to the period's end, as the idle loop's charge, and
      * reads no NEWJOB, so the night watchman restarts the AGC. */
-    if (rk_watch_goto && IMAGE->words[5] == RK_GOTO) rk_rest();
+    if (rk_watch_goto && IMAGE->words[5] == RK_GOTO) rk_rest_ahead();
 #endif
     RK_PROF(9);
 #ifndef RK_NO_DIRECT
