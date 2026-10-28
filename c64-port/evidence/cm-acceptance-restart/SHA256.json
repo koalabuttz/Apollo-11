@@ -4,67 +4,67 @@
   "release": "evidence-cm-acceptance-restart",
   "files": {
     "cm-entry-restart-c64.log": {
-      "sha256": "76f191821fa1309a4892fcdce861f391c6337ba6398131cc14961a798678f744",
-      "bytes": 1509,
+      "sha256": "4291132a2be58b008c5928541dd685e2200b7bd5993f181ac46215331a0871cd",
+      "bytes": 1508,
       "store": "tree"
     },
     "cm-entry-restart.json": {
-      "sha256": "c8757ed54bad03762a5ca3077aa775b0180ccc31bb27bbd0a78f659bc267c1a9",
-      "bytes": 7498,
+      "sha256": "936942324f2d6ab8e0d00823ca4856e1f8998a5e664f5fdd4cb279b8bb01d48a",
+      "bytes": 15520,
       "store": "tree"
     },
     "cm-p00-p40-restart-c64.log": {
-      "sha256": "9bb531dac84ca370b45f3c5000ff144e55348c72c759174330b90c48df881bc1",
-      "bytes": 1565,
+      "sha256": "b102b3a94d90249c8605686d21d734741f94308b213923599bc9141a161bd6fa",
+      "bytes": 1566,
       "store": "tree"
     },
     "cm-p00-p40-restart.json": {
-      "sha256": "712b5bb0492f2bae218c9fe3db961351dfbe1bfaae1d1e39e071a53c8b8834a5",
-      "bytes": 4234,
+      "sha256": "5be7732c9e072d2e1ef21093a064e23ce172eb08c1b0e341ec5e0646a6b4b111",
+      "bytes": 12493,
       "store": "tree"
     },
     "cm-p00-restart.json": {
-      "sha256": "3cdc7cb5aa62611bf33da10cd2c5e624434d7517906c8e98c76c1ba8cbaccf24",
+      "sha256": "05763d407b7d6fed69d91610a1fc088db307870b2ed6eeba9b782374a561722e",
       "bytes": 1214,
       "store": "tree"
     },
     "cm-p20-restart-c64.log": {
-      "sha256": "f9025fdb32512e0b149ca1344931b67e51a2b0a64ec0d297b8c72d6919552164",
+      "sha256": "ed8c972a4d342adef9bbe89e30ad18abd4f58b86d47725c056a2c45ded5a15fe",
       "bytes": 1465,
       "store": "tree"
     },
     "cm-p20-restart.json": {
-      "sha256": "c21c5734dc149c47263479d0db2e1a923243068f52f2d9f1f5cf22aa419a3152",
-      "bytes": 4406,
+      "sha256": "5c164d433e816ecf9f5bf9bf5ccd1479b8732e4089917fd1da740d807d08953f",
+      "bytes": 8629,
       "store": "tree"
     },
     "cm-p22-restart-c64.log": {
-      "sha256": "6bab77b4aad1ea25e5cb748a66644af4caba0d046ec666b3bf157641124254bb",
-      "bytes": 1438,
+      "sha256": "35687e991b612ecbebafacd177510bd6d42b1ee52fe9c4d51bfe29009977c4cd",
+      "bytes": 1437,
       "store": "tree"
     },
     "cm-p22-restart.json": {
-      "sha256": "e8feed4c86dffab1c867ed80cd28b48724dfa363fc416d946221613744e32d2b",
-      "bytes": 4204,
+      "sha256": "6365a318100b8929fa406a9688c3749f0a818d94dab1b78aae1c002d1be5f7dd",
+      "bytes": 8496,
       "store": "tree"
     },
     "cm-p40-burn-restart-c64.log": {
-      "sha256": "3eefc443d42e6a345485a14fde5319992e7dba0f42cdcb45fa3430b1341aef78",
+      "sha256": "aae3bbf4e4061029b944157fe50f78e1cffbf1a47194ecd1626e26ae759102d1",
       "bytes": 1618,
       "store": "tree"
     },
     "cm-p40-burn-restart.json": {
-      "sha256": "9fa3ad2ec898b94c45313d55da0256ee71224f9e9c0fa3da91f70afadb82f312",
-      "bytes": 4419,
+      "sha256": "de459b242a443939ba4cbcaa1ebf8650c97066921024e9a30c39e2be17a44a99",
+      "bytes": 16541,
       "store": "tree"
     },
     "cm-p52-restart.json": {
-      "sha256": "8213d6e1b4d5cb61d6e2124270975e4163f3dfe952eb2204e19e5b92684d4a39",
+      "sha256": "dd4055a1ab156070325a99e366512c0d2eba86489517df59b1ad78308ca0c46d",
       "bytes": 5216,
       "store": "tree"
     },
     "cm-v69-restart.json": {
-      "sha256": "8523640a1c80ea0c0f87b931547537c6d328a98c1cce53d7d7cbb024ef8d2b66",
+      "sha256": "a9b0e6627502c0f3061376161fd4466cf7b9eef83929a4301cdaa1e0751be44e",
       "bytes": 4556,
       "store": "tree"
     },

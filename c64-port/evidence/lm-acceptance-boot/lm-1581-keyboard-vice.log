@@ -6,7 +6,7 @@ No PCI HardSID boards found.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
 Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
-VSP Bug: safe channels are: 01456. Emulation of memory corruption is disabled.
+VSP Bug: safe channels are: 13467. Emulation of memory corruption is disabled.
 c64cartridge_reset changed: 1
 set_cartridge_type: -1
 512KiB unit installed.
@@ -15,6 +15,8 @@ set_cartridge_type: -1
 Reading REU image /tmp/x/fresh/c64-port/build/flight-disk/vice-lm/image.reu.
  
 *** VICE Version 3.7.1 ***
+(x64sc:4283): dconf-WARNING **: 18:16:07.436: failed to commit changes to dconf: Failed to execute child process “dbus-launch
+” (No such file or directory)
  
 Welcome to x64sc, the free portable C64 Emulator.
  
@@ -27,10 +29,8 @@ Empathic Qubit, Roberto Muscedere, June Tate-Gans, Pablo Roldan.
 This is free software with ABSOLUTELY NO WARRANTY.
 See the "About VICE" command for more info.
  
-random seed was: 0x6ae152bb
-command line was: /usr/bin/x64sc -default -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64 -drive8truedrive +virtualdev8 -drive8type 1581 -8 /tmp/x/fresh/c64-port/build/flight-disk/lm-1.d81 -reu -reusize 2048 -reuimage /tmp/x/fresh/c64-port/build/flight-disk/vice-lm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6986 -monlogname /tmp/x/fresh/c64-port/build/flight-disk/vice-lm/monitor.log -monlog -keybuf load"*",8,1\nrun\n
-
-(x64sc:3592): dconf-WARNING **: 01:41:15.649: failed to commit changes to dconf: Failed to execute child process “dbus-launch” (No such file or directory)
+random seed was: 0x6ae23be7
+command line was: /usr/bin/x64sc -default -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64 -drive8truedrive +virtualdev8 -drive8type 1581 -8 /tmp/x/fresh/c64-port/build/flight-disk/lm-1.d81 -reu -reusize 2048 -reuimage /tmp/x/fresh/c64-port/build/flight-disk/vice-lm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6736 -monlogname /tmp/x/fresh/c64-port/build/flight-disk/vice-lm/monitor.log -monlog -keybuf load"*",8,1\nrun\n
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin'.
@@ -151,10 +151,12 @@ Sync reset
 Sync reset
 Sync reset
 Sync reset
+Sync reset
+Sync reset
 VICE thread initiating shutdown
+VICE thread is exiting
 Initiating render thread 0 shutdown
 Joining render thread 0 ...
-VICE thread is exiting
 Joined render thread 0.
 
 Resources with non default values:
@@ -173,14 +175,14 @@ REU=1
 Drive8Type=1581
 MonitorLogFileName="/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/monitor.log"
 MonitorLogEnabled=1
-MonitorServerAddress="ip4://127.0.0.1:6986"
+MonitorServerAddress="ip4://127.0.0.1:6736"
 MonitorServer=1
 
 reconstructed commandline options (might be incomplete):
--default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64" -monlogname "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/monitor.log" -monlog +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -drive8type "1581" -reu -reusize "2048" -reuimage "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6986"
+-default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64" -monlogname "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/monitor.log" -monlog +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -drive8type "1581" -reu -reusize "2048" -reuimage "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6736"
 
 VICE thread has been joined.
 REU: Writing REU image /tmp/x/fresh/c64-port/build/flight-disk/vice-lm/image.reu.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
-VIC-II: VSP Bug: safe channels are: 01356. Emulation of memory corruption is disabled.
+VIC-II: VSP Bug: safe channels are: 01. Emulation of memory corruption is disabled.

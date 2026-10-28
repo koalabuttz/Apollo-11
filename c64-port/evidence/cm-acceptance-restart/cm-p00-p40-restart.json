@@ -71,7 +71,7 @@
   "pre_snapshot": "build/flight-restart/cm-p00-p40-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "78dcfd1c5f33",
+  "commit": "d0732f811067",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -84,15 +84,18 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 31020006,
+  "wall_cycles": 31089635,
   "agc_cs": 308,
   "dropped_ticks": 0,
   "steps": 1250,
-  "wall_per_agc": 10.222,
+  "wall_per_agc": 10.245,
   "lost": false,
   "mission": "cm",
   "snap_cs": 73000,
   "replay": true,
+  "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
+  "harness_sha256": "1fbb82790bc79347c4cd4998f2b5bcb319c4f60b2737d892fa652b55a6efed34",
+  "prg_sha256": "e1bfec8d923c251ba55eead9ed20fbc46de97dd7d8a87b645e9663aa58a360c8",
   "reu_bounds": {
    "ok": true,
    "touched": [
@@ -104,7 +107,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 8
+   "dma_unchecked": 11
   },
   "hold_host_mct": 73,
   "hold_host_time1": 7466,
@@ -161,6 +164,606 @@
     "0050",
     "0051",
     "0052"
+   ],
+   "states": [
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [
+      "0050",
+      "0051",
+      "0052"
+     ],
+     "changed": [
+      "0050",
+      "0051",
+      "0052"
+     ],
+     "cs": 50
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 101
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 4096,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 4096,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 150
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 4096,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 4096,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 200
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 4096,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 4096,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 250
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 4096,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 4096,
+      "channel 11": 0,
+      "channel 12": 32,
+      "channel 13": 0,
+      "channel 14": 28672,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 300
+    }
+   ],
+   "trace": [
+    [
+     14,
+     "0050",
+     "77777"
+    ],
+    [
+     14,
+     "0051",
+     "77777"
+    ],
+    [
+     14,
+     "0052",
+     "77777"
+    ],
+    [
+     55,
+     "0050",
+     "00000"
+    ],
+    [
+     55,
+     "0051",
+     "00000"
+    ],
+    [
+     55,
+     "0052",
+     "00000"
+    ],
+    [
+     74,
+     "0050",
+     "77777"
+    ],
+    [
+     74,
+     "0051",
+     "77777"
+    ],
+    [
+     74,
+     "0052",
+     "77777"
+    ],
+    [
+     75,
+     "0050",
+     "00000"
+    ],
+    [
+     75,
+     "0051",
+     "00000"
+    ],
+    [
+     75,
+     "0052",
+     "00000"
+    ],
+    [
+     94,
+     "0050",
+     "77777"
+    ],
+    [
+     94,
+     "0051",
+     "77777"
+    ],
+    [
+     94,
+     "0052",
+     "77777"
+    ],
+    [
+     95,
+     "0050",
+     "00000"
+    ],
+    [
+     95,
+     "0051",
+     "00000"
+    ],
+    [
+     95,
+     "0052",
+     "00000"
+    ],
+    [
+     114,
+     "0050",
+     "77777"
+    ],
+    [
+     114,
+     "0051",
+     "77777"
+    ],
+    [
+     114,
+     "0052",
+     "77777"
+    ],
+    [
+     115,
+     "0050",
+     "00000"
+    ],
+    [
+     115,
+     "0051",
+     "00000"
+    ],
+    [
+     115,
+     "0052",
+     "00000"
+    ],
+    [
+     134,
+     "0050",
+     "77777"
+    ],
+    [
+     134,
+     "0051",
+     "77777"
+    ],
+    [
+     134,
+     "0052",
+     "77777"
+    ],
+    [
+     135,
+     "0050",
+     "00000"
+    ],
+    [
+     135,
+     "0051",
+     "00000"
+    ],
+    [
+     135,
+     "0052",
+     "00000"
+    ],
+    [
+     154,
+     "0050",
+     "77777"
+    ],
+    [
+     154,
+     "0051",
+     "77777"
+    ],
+    [
+     154,
+     "0052",
+     "77777"
+    ],
+    [
+     155,
+     "0050",
+     "00000"
+    ],
+    [
+     155,
+     "0051",
+     "00000"
+    ],
+    [
+     155,
+     "0052",
+     "00000"
+    ],
+    [
+     174,
+     "0050",
+     "77777"
+    ],
+    [
+     174,
+     "0051",
+     "77777"
+    ],
+    [
+     174,
+     "0052",
+     "77777"
+    ],
+    [
+     175,
+     "0050",
+     "00000"
+    ],
+    [
+     175,
+     "0051",
+     "00000"
+    ],
+    [
+     175,
+     "0052",
+     "00000"
+    ],
+    [
+     194,
+     "0050",
+     "77777"
+    ],
+    [
+     194,
+     "0051",
+     "77777"
+    ],
+    [
+     194,
+     "0052",
+     "77777"
+    ],
+    [
+     195,
+     "0050",
+     "00000"
+    ],
+    [
+     195,
+     "0051",
+     "00000"
+    ],
+    [
+     195,
+     "0052",
+     "00000"
+    ],
+    [
+     214,
+     "0050",
+     "77777"
+    ],
+    [
+     214,
+     "0051",
+     "77777"
+    ],
+    [
+     214,
+     "0052",
+     "77777"
+    ],
+    [
+     215,
+     "0050",
+     "00000"
+    ],
+    [
+     215,
+     "0051",
+     "00000"
+    ],
+    [
+     215,
+     "0052",
+     "00000"
+    ],
+    [
+     234,
+     "0050",
+     "77777"
+    ],
+    [
+     234,
+     "0051",
+     "77777"
+    ],
+    [
+     234,
+     "0052",
+     "77777"
+    ],
+    [
+     235,
+     "0050",
+     "00000"
+    ],
+    [
+     235,
+     "0051",
+     "00000"
+    ],
+    [
+     235,
+     "0052",
+     "00000"
+    ],
+    [
+     254,
+     "0050",
+     "77777"
+    ],
+    [
+     254,
+     "0051",
+     "77777"
+    ],
+    [
+     254,
+     "0052",
+     "77777"
+    ],
+    [
+     255,
+     "0050",
+     "00000"
+    ],
+    [
+     255,
+     "0051",
+     "00000"
+    ],
+    [
+     255,
+     "0052",
+     "00000"
+    ],
+    [
+     274,
+     "0050",
+     "77777"
+    ],
+    [
+     274,
+     "0051",
+     "77777"
+    ],
+    [
+     274,
+     "0052",
+     "77777"
+    ],
+    [
+     275,
+     "0050",
+     "00000"
+    ],
+    [
+     275,
+     "0051",
+     "00000"
+    ],
+    [
+     275,
+     "0052",
+     "00000"
+    ],
+    [
+     294,
+     "0050",
+     "77777"
+    ],
+    [
+     294,
+     "0051",
+     "77777"
+    ],
+    [
+     294,
+     "0052",
+     "77777"
+    ],
+    [
+     295,
+     "0050",
+     "00000"
+    ],
+    [
+     295,
+     "0051",
+     "00000"
+    ],
+    [
+     295,
+     "0052",
+     "00000"
+    ]
    ]
   },
   "replay_unpaired": [],
@@ -188,13 +791,11 @@
   "requested_cs": 300,
   "host_holes": [],
   "downrupt": false,
-  "commit": "78dcfd1c5f33",
+  "commit": "d0732f811067",
   "exit": 0,
   "log": "cm-p00-p40-restart-c64.log",
-  "log_sha256": "9bb531dac84ca370b45f3c5000ff144e55348c72c759174330b90c48df881bc1",
-  "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
-  "manifest_sha256": "0b70b0db263c0d83c8d7f2ffdc3d58e8c2a1e570b5b852c5f9cfc8608bac9b05",
-  "prg_sha256": "0fc58bdf2335838970ef8714ee917b89dba1758ef589499947427193b5de6826"
+  "log_sha256": "b102b3a94d90249c8605686d21d734741f94308b213923599bc9141a161bd6fa",
+  "manifest_sha256": "0b70b0db263c0d83c8d7f2ffdc3d58e8c2a1e570b5b852c5f9cfc8608bac9b05"
  },
  "gojam_on_c64": null
 }

@@ -9,7 +9,9 @@
  "replay_rows": 28,
  "replay_ended": true,
  "replay_differences": 0,
- "commit": "78dcfd1c5f33",
+ "commit": "d0732f811067",
+ "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
+ "harness_sha256": "a7fb544f14507f685b2614a23c5b226315f180a8b3a04c7f41bbe1aa51c07db6",
  "reu_bounds": {
   "ok": true,
   "dma_outside": 0,
@@ -41,7 +43,7 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 1000,
-   "wall_per_agc": 10.919,
+   "wall_per_agc": 10.938,
    "replay_skipped": [],
    "outputs_matched": null,
    "outputs_first_diff": null
@@ -71,7 +73,7 @@
    "replay_end_paired": true,
    "replay_unpaired_count": 0,
    "requested_cs": 1000,
-   "wall_per_agc": 10.662,
+   "wall_per_agc": 10.681,
    "replay_skipped": [],
    "outputs_matched": null,
    "outputs_first_diff": null

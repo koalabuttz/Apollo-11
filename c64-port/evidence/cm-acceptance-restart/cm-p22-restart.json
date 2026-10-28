@@ -70,7 +70,7 @@
   "pre_snapshot": "build/flight-restart/cm-p22-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "78dcfd1c5f33",
+  "commit": "d0732f811067",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -83,15 +83,18 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 17807991,
+  "wall_cycles": 17852529,
   "agc_cs": 309,
   "dropped_ticks": 0,
   "steps": 921,
-  "wall_per_agc": 5.849,
+  "wall_per_agc": 5.864,
   "lost": false,
   "mission": "cm",
   "snap_cs": 14000,
   "replay": true,
+  "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
+  "harness_sha256": "1fbb82790bc79347c4cd4998f2b5bcb319c4f60b2737d892fa652b55a6efed34",
+  "prg_sha256": "565485105a4318fc54779de30550a4164d9defb0246834bb83b59253ae8a9e32",
   "reu_bounds": {
    "ok": true,
    "touched": [
@@ -103,7 +106,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 11
+   "dma_unchecked": 7
   },
   "hold_host_mct": 162,
   "hold_host_time1": 14004,
@@ -152,7 +155,208 @@
     "radar gate": 0
    },
    "nonzero": [],
-   "changed": []
+   "changed": [],
+   "states": [
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 50
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 100
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 151
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 201
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 251
+    },
+    {
+     "channel_set": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 64,
+      "channel 10": 0,
+      "interrupts enabled": 1,
+      "radar gate": 0
+     },
+     "channel_changed": {
+      "channel 5": 0,
+      "channel 6": 0,
+      "channel 11": 32,
+      "channel 12": 0,
+      "channel 13": 0,
+      "channel 14": 0,
+      "channel 34": 0,
+      "channel 35": 0,
+      "superbank": 0,
+      "channel 10": 0,
+      "interrupts enabled": 0,
+      "radar gate": 0
+     },
+     "nonzero": [],
+     "changed": [],
+     "cs": 301
+    }
+   ],
+   "trace": []
   },
   "replay_unpaired": [],
   "replay_unpaired_count": 0,
@@ -179,13 +383,11 @@
   "requested_cs": 301,
   "host_holes": [],
   "downrupt": false,
-  "commit": "78dcfd1c5f33",
+  "commit": "d0732f811067",
   "exit": 0,
   "log": "cm-p22-restart-c64.log",
-  "log_sha256": "6bab77b4aad1ea25e5cb748a66644af4caba0d046ec666b3bf157641124254bb",
-  "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
-  "manifest_sha256": "0b70b0db263c0d83c8d7f2ffdc3d58e8c2a1e570b5b852c5f9cfc8608bac9b05",
-  "prg_sha256": "1e53e15f14e296e1dbf2473ec178719d8d6aecb6e83c4fc803178b8e4cceeabd"
+  "log_sha256": "35687e991b612ecbebafacd177510bd6d42b1ee52fe9c4d51bfe29009977c4cd",
+  "manifest_sha256": "0b70b0db263c0d83c8d7f2ffdc3d58e8c2a1e570b5b852c5f9cfc8608bac9b05"
  },
  "gojam_on_c64": null
 }

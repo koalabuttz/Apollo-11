@@ -4,152 +4,152 @@
   "release": "evidence-cm-acceptance-devices",
   "files": {
     "cm-entry-15100.json": {
-      "sha256": "c031a2d0ce470add223d3192ceace4b975c04aa2d4612427b4f6e680223af2c5",
-      "bytes": 30622,
+      "sha256": "8486fb0ec92592285b5a417b06a7da8405220ce3e9afbf550736c7c478e6c9f9",
+      "bytes": 39388,
       "store": "tree"
     },
     "cm-entry-overload-20900.json": {
-      "sha256": "4bed807fcb522d27d6c21cc7867778adb2494365d527268a4fbb8307b8d251b2",
-      "bytes": 44017,
+      "sha256": "019dec0156f6910dd583fc0ff4463a758fa0446dfa5b42474641e3385ac6d922",
+      "bytes": 60050,
       "store": "tree"
     },
     "cm-entry-overload-22000.json": {
-      "sha256": "fbe1817e4e2dcd00b58d7065b44da5fde9d126f5b9573150ca63a23345bb80ed",
-      "bytes": 31491,
+      "sha256": "5caff87460b255f4b67ee0a3f2c81818f6d62a7491d024ae6c0fc1ddbfc19765",
+      "bytes": 42735,
       "store": "tree"
     },
     "cm-entry-overload.log": {
-      "sha256": "802a7ed93db1dfccea2eca2248d3066c84477c618590d2d5075cc58a4a7e98ef",
-      "bytes": 34140,
+      "sha256": "c91adc9991b113a6dca6bfc3742f2119f1aa714f10a0322e1d38b7de60523145",
+      "bytes": 34415,
       "store": "tree"
     },
     "cm-p20-12200.json": {
-      "sha256": "a2e6d67d5a83f0e97968fcfd880d9756c80addddbf00dff416c0c118985ef488",
-      "bytes": 10103,
+      "sha256": "a6394a0b677c7afa2aeebe04107e4ce12e1dbc1dd6fc3b9d830a7703dd5fb2a6",
+      "bytes": 13535,
       "store": "tree"
     },
     "cm-p20-18300.json": {
-      "sha256": "eea18e1639fd6a3ea75c63925a5d2d3a875e1b3a860dfda565cbcb40d2044ca8",
-      "bytes": 12644,
+      "sha256": "ff54764ecf64cd84902d9249fc24e28e9d751a77c5376f9ff3c68d32c5c2d7f0",
+      "bytes": 17788,
       "store": "tree"
     },
     "cm-p20-vhf-dropout-17900.json": {
-      "sha256": "e8361a8375e400f243d6d2d077375e31ee5f90c59e519a8718f955d972b5efe3",
-      "bytes": 17814,
+      "sha256": "a8c31f6daa5908b8f08766ea218079a0e46a3fe4d09133c99179bd546e2d1d2c",
+      "bytes": 25681,
       "store": "tree"
     },
     "cm-p20-vhf-dropout.log": {
-      "sha256": "6909e91accc479377d9bc1e06f5cdca8ce9564c9f4c6328890e8b68a9cf3d89f",
-      "bytes": 28009,
+      "sha256": "645834a75963141f30257bb7d8b5b8189f0a1929841812e05245156272bbf3c6",
+      "bytes": 28285,
       "store": "tree"
     },
     "cm-p40-44000.json": {
-      "sha256": "8e062c2217477e7d66bd7d78104bd8205727bc3fe5fe4af1486dff3e06c07ca4",
-      "bytes": 39175,
+      "sha256": "67eccfbd407a54d17545906c5cb54d4144bec1e938185488a68026469a9de33e",
+      "bytes": 51637,
       "store": "tree"
     },
     "cm-p40-70660.json": {
-      "sha256": "050c7b00d8b1d8237c02d9edceef85bea883b7b7200e9167475687a551be7195",
-      "bytes": 18379,
+      "sha256": "2cd7d660ae3c09b0fdaa875f0501063be466d39b43b0e2bdbcf98cd3e66ac8ab",
+      "bytes": 21303,
       "store": "tree"
     },
     "cm-p52-9950.json": {
-      "sha256": "ef1f43340f2a849d087d8007639c01c88b08fcdd66bca9db5b3f10a315599171",
-      "bytes": 15566,
+      "sha256": "0d47bf38c88980696250b3854593daae29a7a2026652d2342c20ed2beaddb718",
+      "bytes": 17847,
       "store": "tree"
     },
     "cm-p52-gimbal-lock-18900.json": {
-      "sha256": "a50eea510d6eebb8d50afb5d2067c5dd7b364c085eb2b71da26fee47cbc086dc",
-      "bytes": 9937,
+      "sha256": "5bc163fc88fa4ed3a5217d5126f21bb8bb7764c928830a7707afcb31b62312d2",
+      "bytes": 14345,
       "store": "tree"
     },
     "cm-p52-gimbal-lock-2900.json": {
-      "sha256": "6d0a7abdb721e39ae783f0743b7e405fefc84be70ecae94c21c2b4da2f95cb13",
-      "bytes": 21872,
+      "sha256": "7a9ef9ef0779d376a18f851a87e56c08dc389e0031cbfab7f1871f3e7fce7b11",
+      "bytes": 32727,
       "store": "tree"
     },
     "cm-p52-gimbal-lock.log": {
-      "sha256": "41009de1fc9a24483b7095e97a6cdcff4d07123b7d5b4902d3dbedacb09f6898",
-      "bytes": 21830,
+      "sha256": "86ce8f7b64f3ecc53838f193a5b6bf0d09403886468fb3fe5d3af01656e116a6",
+      "bytes": 22106,
       "store": "tree"
     },
     "cm-p52-imu-cage-5900.json": {
-      "sha256": "583116e2a73f8b8a36747f15e464e9ebc7ca3e9ff3b9f0f25bb915306ff54352",
-      "bytes": 21345,
+      "sha256": "ed3b1d560d3de436650701c35eb3fb14e833f5869bd9c8a760c15bf46a1f9cea",
+      "bytes": 32368,
       "store": "tree"
     },
     "cm-p52-imu-cage.log": {
-      "sha256": "84bc118fcdbd8f769d62a2b57bd365f2c550e5d86b1db3de3c660a7979d17b6b",
-      "bytes": 21518,
+      "sha256": "bfa815cd3962aa99850475a8e1a5b7cc2588f95e41f209864f151ea18730aab2",
+      "bytes": 21792,
       "store": "tree"
     },
     "cm-p52-imu-fail-5900.json": {
-      "sha256": "8bb3393570d4ac3e467211690a64007eddfa527772cca5583b0a6f8aff612c07",
-      "bytes": 16095,
+      "sha256": "c701e71569c567a8d8cc0041341420f7d32e4b6015e55b8fe84841c862333c1a",
+      "bytes": 24914,
       "store": "tree"
     },
     "cm-p52-imu-fail-6900.json": {
-      "sha256": "a3679e5497b44389a75f837b253b80e4393cc9b0362188b484ce1c59c306a9b0",
-      "bytes": 9100,
+      "sha256": "e9ffb6ec2f9982b5957a66c2dd3544dd934f20daf990dad49e1d3e834189579c",
+      "bytes": 13533,
       "store": "tree"
     },
     "cm-p52-imu-fail.log": {
-      "sha256": "18c49473827fb11c9d73d96fae78ed9e55b012320a12f6cc32d813b58d8df29c",
-      "bytes": 21718,
+      "sha256": "7415ea448a473d4a3ba4cac971c7f922511235a89afa526b55341c3a12070bee",
+      "bytes": 21994,
       "store": "tree"
     },
     "cm-p52-optics-12250.json": {
-      "sha256": "065a7dd5975b29f1cc927459d3d0ba0d6d5385efec94f589fcf630101bfec27c",
-      "bytes": 9528,
+      "sha256": "be8f4850fca9d42d60462234e78addc2ab5c5055c140e81bd8b2abf1303ddf8d",
+      "bytes": 19120,
       "store": "tree"
     },
     "cm-p52-optics-17100.json": {
-      "sha256": "dd6800fe6ea2993059ec0d7b037eb2efef347ca95f6722557ef5f5ad5e045a1d",
-      "bytes": 11367,
+      "sha256": "13526c85a076a6ef2bf2774449040168afa9f28424cb5e5e08984ff4771efe22",
+      "bytes": 14314,
       "store": "tree"
     },
     "cm-tei-4450.json": {
-      "sha256": "295cb24c67e33f1f08469a1756df6038db434268dc26b24b3c9eb2023848715b",
-      "bytes": 16552,
+      "sha256": "34b55181624e2cae9be201cc3d3f7c8c6cb1f6a66f74b795cbadb0a535b54d5d",
+      "bytes": 18823,
       "store": "tree"
     },
     "cm-tei-52000.json": {
-      "sha256": "2a4d933022cb02d4136a8987379513bb30a323187271f58d7ad7c01625f84814",
-      "bytes": 39822,
+      "sha256": "a1665637331635af1d075e1351ec5d9c73be5f41d6d6cb62b5e191879bc035c8",
+      "bytes": 48052,
       "store": "tree"
     },
     "cm-uplink-reject-1900.json": {
-      "sha256": "b17e9c111e880d3b802e3da2d5264887ff611ac91eaf090400e0d9f10b613f3c",
-      "bytes": 21314,
+      "sha256": "d27b896fd9553d0ad1dc4f7848c01114bf9cc3715bd2d928746576144d3cdc0a",
+      "bytes": 32187,
       "store": "tree"
     },
     "cm-uplink-reject-4900.json": {
-      "sha256": "139ee0dc68ac6853e9ce1032c6ede959add73747ddb5e31c94928ebfb52a0806",
-      "bytes": 9194,
+      "sha256": "432b5bbb02d3594675bfeb3d7c6e50aca7e67c99160a6f8f073f118631d1baa6",
+      "bytes": 13440,
       "store": "tree"
     },
     "cm-uplink-reject-6400.json": {
-      "sha256": "a81b94990152af64ce0e7cd52422742487218b992f50b1987b0017f4bb8ab3aa",
-      "bytes": 10437,
+      "sha256": "3814a3c336d546ebaca75291e47527364002feeb999d21dcde08f00d7ab7a69f",
+      "bytes": 14701,
       "store": "tree"
     },
     "cm-uplink-reject-7000.json": {
-      "sha256": "4c022770e7290882b48a9fed4ed2b851a399d751f677402e0338cf76b3024f36",
-      "bytes": 10471,
+      "sha256": "155b3b28f0a4dd92aa7cc971a95240d4f68a02dde88c07075d5bb05a04df52bb",
+      "bytes": 14742,
       "store": "tree"
     },
     "cm-uplink-reject.log": {
-      "sha256": "92d51672287e3f2e608ea29b94a25e1e3f9a9b1e62716d94509eb75020422dfc",
-      "bytes": 10280,
+      "sha256": "33db0f110d3b05429978fd126f9ffd138e1ae265dfb95cca645f7c00f62dd278",
+      "bytes": 10551,
       "store": "tree"
     },
     "cm-v49-att-13000.json": {
-      "sha256": "13de3ea78680c8a52d5f9a0c7787d08a5201c5d35917269d857816dd395af45c",
-      "bytes": 92032,
+      "sha256": "ec453cd25774df6f189eac173c94b1689d6d8d129cdd4602fa7c589866e36542",
+      "bytes": 106692,
       "store": "tree"
     },
     "host-summary.json": {
-      "sha256": "ae7e2e863283bed636b706b9d5264b6daa94d33ad31590472b1502996f1df8e6",
+      "sha256": "7adc01daf3a5dc5607ee745ea400a02a8c45941220ee0fd1443707290f594556",
       "bytes": 19226,
       "store": "tree"
     }
