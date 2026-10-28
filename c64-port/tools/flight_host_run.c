@@ -272,6 +272,20 @@ static void idle_tick(void){wall=step_at(consumed+2ul-consumed%3ul);idling=1;}
 static night_watchman wm,wm_ya;static int wm_fire;static unsigned long wm_alarms,wm_windows,wm_disagree,wm_missed,wm_stuck,wm_ya_tripped;
 /* yaAGC's own alarm inside a span (its scaler is frozen there, so never
  * expected): counted, and cleared so the span's GOJAM bit does not stay. */
+/* The C64 flight resident's coarser rule (include/flight_watchman.h,
+ * platform/c64/resident_flight.c rk_watch), beside the native one: a step
+ * that starts at DANZIG up to NEWOPS, or one in which the kernel ran CCS or
+ * TS of NEWJOB (k_newjob_seen, src/resident_kernel_body.inc), accesses
+ * NEWJOB; a bridged span counts as for the native rule (the C64 bridges
+ * nothing). wm_c64_disagree counts the checks where it would sound and the
+ * native rule would not, or the other way round; on the work clock the
+ * host differential fails a row with any. */
+static night_watchman wm_c64;static int c64_seen;static unsigned long wm_c64_checks,wm_c64_disagree,wm_c64_only;
+void k_newjob_seen(void);
+void k_newjob_seen(void){c64_seen=1;}
+static void c64_step(const agc_word *before,int bridged_access){agc_word z=(agc_word)(before[5]&07777u);
+ if(bridged_access||c64_seen||(z>=nw_fixed_readers[MISSION][10]&&z<=nw_newops[MISSION]))wm_c64.armed=0;
+ c64_seen=0;}
 static void ya_tripped(void){if(m.NightWatchmanTripped){++wm_ya_tripped;m.NightWatchmanTripped=0;}}
 /* The rupt lock alarm (platform/x86/night_watchman.h, #989) under scaled
  * time: rl by the native rule (what each step ran, in or outside an
@@ -298,7 +312,11 @@ static void period_end(void){++taken;
   if(wm.armed&&!wm_ya.armed)++wm_missed;
   if(wm.armed!=wm_ya.armed&&++wm_disagree<=8ul)printf("night watchman: at period %lu the native rule has it %s, yaAGC's NEWJOB accesses %s\n",
    taken,wm.armed?"armed":"disarmed",wm_ya.armed?"armed":"disarmed");}
- (void)nw_period(&wm_ya,taken);
+ if(taken%NW_PERIODS==0u&&(wm.armed||wm_c64.armed)){++wm_c64_checks;
+  if(wm.armed!=wm_c64.armed){if(wm_c64.armed)++wm_c64_only;
+   if(++wm_c64_disagree<=8ul)printf("night watchman: at period %lu the C64 rule has it %s, the native rule %s\n",
+    taken,wm_c64.armed?"armed":"disarmed",wm.armed?"armed":"disarmed");}}
+ (void)nw_period(&wm_ya,taken);(void)nw_period(&wm_c64,taken);
  if(nw_period(&wm,taken))wm_fire=1;
  {unsigned k;rupt_lock nat=rl,ya=rl_ya;int sound=rl_period(&rl,taken,&k),ya_sound=rl_period(&rl_ya,taken,0);rl_gap(k);
   if(taken%RL_PERIODS==RL_CHECK&&(sound||ya_sound)){++rl_checks;
@@ -1458,7 +1476,7 @@ static long bridge(apollo_overlay_state *s,flight_io *io,agc_hardware *hw,uint16
    /* A NEWJOB access in the span disarms both rules before the clock
     * periods it takes: one span can run over watchman checks (a bridged
     * loop in erasable). */
-   if(!m.NightWatchman){wm.armed=0;wm_ya.armed=0;m.NightWatchman=1;}
+   if(!m.NightWatchman){wm.armed=0;wm_ya.armed=0;wm_c64.armed=0;m.NightWatchman=1;}
    if(quiet()){if(work){unsigned long j=consumed;for(k=due_steps();k;--k,++j){ref_tick((int)(j%3ul));steal_run();}}else for(k=due();k;--k){ref_tick(-1);steal();}}
    continue;}
   if(agc_engine(&m))return -1;
@@ -2167,12 +2185,12 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
       charge_last=core_ran||weight(e)==FLIGHT_PER_WORD||kernel_table(ce)?0:ce;if(core_ran&&work)spend(core_mct);else if(work&&w==FLIGHT_PER_WORD)spend(word_mct);else if(work&&(w&FLIGHT_PLUS_WORDS))spend((w&~FLIGHT_PLUS_WORDS)+word_mct);else if(work&&!w&&(!rp_on||(w=idle_weight(before.words,io0.superbank,isr0))==FLIGHT_IDLE_TICK))idle_tick();else spend(work?w:span_mct);}
      /* A stuck step (an erasable CADR cycle in GOTO) spins to the
       * period's end, interrupts taken, until the night watchman. */
-     {int stuck=nw_stuck(before.words,s.words,isr0,interp);if(nw_step(&wm,before.words,s.words,isr0,stuck,interp,MISSION))wm.armed=0;
+     {int stuck=nw_stuck(before.words,s.words,isr0,interp);if(nw_step(&wm,before.words,s.words,isr0,stuck,interp,MISSION))wm.armed=0;c64_step(before.words,0);
       if(!m.NightWatchman)wm_ya.armed=0;
       ya_tripped();rl_span(0,rl_kind(isr0,hw.in_interrupt!=0u));
-      /* The C64's boundary words hold no stuck point (GOTO), so no
-       * interrupt could come there: the AGC and the x86 program take them
-       * (night_watchman.h), and so does the next boundary here. */
+      /* Interrupts come at the boundary after a stuck step, as on the AGC,
+       * the x86 program (night_watchman.h) and the C64, whose step ends at
+       * GOTO and spins to the period's end too (resident_flight.c rk_stuck). */
       /* Only for the boundary after it: the next routine sets fixed_data again. */
       if(stuck){++wm_stuck;p.fixed_data=rope_data;if(work)idle_tick();}}
      dl_routine(e->name,n,&before,&s,&io0,&io,&hw);
@@ -2197,7 +2215,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if((n=bridge(&s,&io,&hw,&pending,5000000l))==-2)return 3;
    if(n<0){printf("bridge did not reach a registered point after 5000000 instructions\n");where(w,io.superbank,"from");where(s.words,io.superbank,"at");break;}
    dl_bridged(w);
-   {int in,stuck;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);if(nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck,in,MISSION))wm.armed=0;if(!m.NightWatchman)wm_ya.armed=0;ya_tripped();rl_span(1,0u);}
+   {int in,stuck,acc;(void)point(w,io.superbank,&in);stuck=nw_stuck(w,s.words,hw.in_interrupt!=0u,in);acc=nw_step(&wm,w,s.words,hw.in_interrupt!=0u,stuck,in,MISSION);if(acc)wm.armed=0;c64_step(w,acc);if(!m.NightWatchman)wm_ya.armed=0;ya_tripped();rl_span(1,0u);}
    hole(w,io.superbank,(unsigned long)n,e&&e!=&core_entry?e->name:0);bridged+=(unsigned long)n;
    if(trapped){trap_gojam(&s,&io,&hw,&pending);substitute=0;}}}
  printf("%s: %lu native routines (%lu yaAGC instructions of time), %lu bridged yaAGC instructions; %lu samples: %lu equal, %lu differ\n",
@@ -2206,6 +2224,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
   slow,divisor,lag,seed,work?consumed/3ul:consumed,taken,dropped,now(s.words));   /* work: whole periods' steps */
  if(lost_brupt)printf("%lu interrupts at a RESUME point replaced BRUPT\n",lost_brupt);
  if(scaled)printf("night watchman: %lu alarms, %lu stuck steps; %lu checks while armed, %lu where yaAGC's NEWJOB accesses differ from the native rule (%lu with the native rule armed); yaAGC's own alarm inside %lu spans\n",wm_alarms,wm_stuck,wm_windows,wm_disagree,wm_missed,wm_ya_tripped);
+ if(scaled)printf("night watchman, C64 rule: %lu checks while either rule is armed, %lu where the C64 rule differs from the native rule (%lu with only the C64 rule armed)\n",wm_c64_checks,wm_c64_disagree,wm_c64_only);
  if(scaled)printf("rupt lock: %lu alarms (%lu RUPT LOCK, %lu NO RUPT); %lu checks where a flag was still set, %lu where yaAGC's flags differ from the native rule; channel 77 bit 4 inside %lu spans; "
   "longest without an interrupt step %lu periods (to period %lu), without a step outside one %lu (to period %lu)\n",
   rl_alarms,rl_lock_alarms,rl_norupt_alarms,rl_checks,rl_disagree,rl_ya_ch77,rl_no_in,rl_no_in_at,rl_no_out,rl_no_out_at);
