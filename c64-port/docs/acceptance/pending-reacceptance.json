@@ -1,6 +1,6 @@
 {
  "Luminary099": {
-  "since": "#1006 (#990 plan B: the C64 night watchman; moves the LM and CM flight residents, disks and check disks); window O re-accepts both",
+  "since": "#1006 (#990 plan B: the C64 night watchman; moves the LM and CM flight residents, disks and check disks); window O re-accepts both; review-1028b m6 (device exit codes pinned; window O regenerates the device doc)",
   "files": {
    "flight-disk/lm-1.d81": "b43b124bb4e88911af70e9b39ecd2a0ed63c46add1aec0ba062a68d1a5138ba0",
    "flight-disk/lm-5.d64": "84e3aa4695f1da04045cde6d15bbc271ff86618d191a9c6ea9ee5bb547fa31e9",
@@ -8,6 +8,13 @@
    "flight-disk/test-1.d81": "ec2915c00fd248b6adfc2e7892a41066c9e85b004611d00a8eda383ebb5f84e2",
    "flight-disk/test-2.d81": "8b1bd327cbe1f88af9b97af431cafa8f311b3dcfbb89f07df2742e59d8e062a2",
    "flight-store/lm.reu": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712"
+  },
+  "criteria": {
+   "device_adapter_tests": {
+    "reason": "review-1028b m6: the stored off-nominal logs have no exit-code record yet (window O writes offnominal-exits.json); verdict unchanged (PASS)",
+    "result": "PASS",
+    "rescore_sha256": "fb923046b505b02d2119fcee4f3a2657f5ee9a2d43ff4cf5a557bd0b3d52487a"
+   }
   }
  },
  "Comanche055": {
@@ -19,7 +26,11 @@
    "flight-store/cm.reu": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275"
   },
   "criteria": {
-   "device_adapter_tests": "#992 (#942 B3): cm-p20-vhf-dropout's VHFCNT check now shows its host_only reason instead of the generic host-only text; verdict unchanged; #1001: the optics-drive and TVC roles also count the host's trace of the drive counters 050-054, so their role text and doc line change; verdict unchanged (PASS)"
+   "device_adapter_tests": {
+    "reason": "#992 (#942 B3): cm-p20-vhf-dropout's VHFCNT check now shows its host_only reason instead of the generic host-only text; verdict unchanged; #1001: the optics-drive and TVC roles also count the host's trace of the drive counters 050-054, so their role text and doc line change; verdict unchanged (PASS); review-1028b m6: the stored off-nominal logs have no exit-code record yet (window O writes offnominal-exits.json)",
+    "result": "PASS",
+    "rescore_sha256": "f64371437d835db449adcbc45d2d81df2373172aff49293159f6538c0ade57ba"
+   }
   }
  }
 }

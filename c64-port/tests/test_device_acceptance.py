@@ -407,7 +407,7 @@ class Doc(unittest.TestCase):
 class Rescore(unittest.TestCase):
     """rescore() re-judges a committed doc from its stored evidence (review-1028 B2')."""
 
-    def run_rescore(self, tab_written, tab_now, mutate=None):
+    def run_rescore(self, tab_written, tab_now, mutate=None, offnom_exits=None):
         with tempfile.TemporaryDirectory() as d:
             root = pathlib.Path(d)
             ev = root / 'evidence/lm-acceptance-devices'
@@ -428,17 +428,33 @@ class Rescore(unittest.TestCase):
                              off_lines)
                 if mutate:
                     mutate(root, ev)
-                with mock.patch.object(da, 'roles', lambda m: tab_now):
-                    return da.rescore('lm')
+                if offnom_exits is None:
+                    with mock.patch.object(da, 'roles', lambda m: tab_now):
+                        return da.rescore('lm')
+                # One stored off-nominal log; judge() records the exit code it is handed.
+                log = ev / 'lm-x.log'
+                log.write_text('host log\n')
+                if offnom_exits != 'none':
+                    (ev / da.EXITS).write_text(json.dumps(offnom_exits(log)))
+                seen = []
+
+                def judge(row, table, text, rc, path):
+                    seen.append(rc)
+                    return dict(ok=True)
+                with mock.patch.object(da, 'roles', lambda m: tab_now), \
+                        mock.patch.dict(da.offnom.ROWS, {'lm': [dict(scenario='lm-x')]}), \
+                        mock.patch.object(da.offnom, 'judge', judge), \
+                        mock.patch.object(da.offnom, 'section', lambda off, *a, real=da.offnom.section: real([], *a)):
+                    return da.rescore('lm') + (seen,)
 
     def test_doc_rejudges_to_itself(self):
-        same, why = self.run_rescore(table(), table())
+        same, why, _ = self.run_rescore(table(), table())
         self.assertTrue(same, why)
         self.assertIn('(1 windows, ', why)  # the two-role table fails coverage; it still re-judges to itself
 
     def test_criteria_text_change_is_stale(self):
         # A role's criteria text changed (as #984/#995 did) but no store byte moved.
-        same, why = self.run_rescore(table(), table(jets_name='Jets and engine'))
+        same, why, _ = self.run_rescore(table(), table(jets_name='Jets and engine'))
         self.assertFalse(same)
         self.assertIn('lines differ', why)
 
@@ -455,9 +471,65 @@ class Rescore(unittest.TestCase):
 
         def gone(root, ev):
             (ev / 'lm-a-100.json').unlink()
-        same, why = self.run_rescore(table(), table(), gone)
+        same, why, _ = self.run_rescore(table(), table(), gone)
         self.assertFalse(same)
         self.assertIn('is not stored', why)
+
+
+    def test_offnominal_exit_code_is_stored_and_pinned(self):
+        """review-1028b m6: a stored off-nominal log is judged with the exit code
+        offnominal-exits.json pins, not an assumed 0."""
+        pin = lambda log, **kw: {'lm-x': dict(dict(log=log.name, log_sha256=da.sha(log), exit=3), **kw)}
+        same, why, result, seen = self.run_rescore(table(), table(), offnom_exits=pin)
+        self.assertEqual(seen, [3])
+        self.assertTrue(same, why)
+        self.assertIn(f', {result})', why)  # the two-role table fails coverage: FAIL, re-judged to itself
+        # A record for another log body fails closed.
+        same, why, result, seen = self.run_rescore(table(), table(), offnom_exits=lambda log: pin(log, log_sha256='0' * 64))
+        self.assertFalse(same)
+        self.assertIn('does not pin', why)
+        self.assertEqual((seen, result), ([], None))
+        # No record: judged as exit 0 and reported, so the doc reads as stale.
+        same, why, result, seen = self.run_rescore(table(), table(), offnom_exits='none')
+        self.assertEqual(seen, [0])
+        self.assertFalse(same)
+        self.assertIn('no exit code stored for lm-x', why)
+
+
+class BackfillExits(unittest.TestCase):
+    """--backfill-exits: exit 0 for each stored off-nominal log, only from a PASS doc."""
+
+    def run_backfill(self, result='PASS', clean=True, existing=False):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            ev = root / 'evidence/lm-acceptance-devices'
+            ev.mkdir(parents=True)
+            (root / 'docs/acceptance').mkdir(parents=True)
+            (root / 'docs/acceptance/Luminary099-device_adapter_tests.md').write_text(f'# x\n\nResult: **{result}**\n')
+            (ev / 'lm-x.log').write_text('host log\n')
+            if existing:
+                (ev / da.EXITS).write_text('{}')
+            added = []
+
+            def run(cmd, **kw):
+                added.append(json.loads(pathlib.Path(cmd[4]).read_text()))
+            with mock.patch.object(da, 'ROOT', root), mock.patch.dict(da.offnom.ROWS, {'lm': [dict(scenario='lm-x')]}), \
+                    mock.patch.object(da.offnom, 'symbols', lambda m: {}), \
+                    mock.patch.object(da.offnom, 'judge', lambda row, t, text, rc, log: dict(ok=clean and rc == 0)), \
+                    mock.patch.object(da.subprocess, 'run', run):
+                return da.backfill_exits('lm'), added, da.sha(ev / 'lm-x.log')
+
+    def test_pass_doc_records_exit_zero(self):
+        bad, added, sha = self.run_backfill()
+        self.assertEqual(bad, [])
+        self.assertEqual(added, [{'lm-x': dict(log='lm-x.log', log_sha256=sha, exit=0)}])
+
+    def test_refuses(self):
+        for kw, why in ((dict(result='FAIL'), 'does not say PASS'), (dict(clean=False), 'not clean at exit 0'),
+                        (dict(existing=True), 'already exists')):
+            bad, added, _ = self.run_backfill(**kw)
+            self.assertEqual(added, [])
+            self.assertIn(why, bad[0])
 
 
 class OffNominal(unittest.TestCase):
