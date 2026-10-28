@@ -4,7 +4,7 @@
   "release": "evidence-cm-acceptance-boot",
   "files": {
     "cm-1541-boot.json": {
-      "sha256": "c21bc32eafe755a99c301f0d08794d7c49dd13bd07da06ed1f85cbd01647d306",
+      "sha256": "8850202d2833760dead874c2419732deb303468de1936d73dbe4b0bc223dc2e2",
       "bytes": 1786,
       "store": "tree"
     },
@@ -14,22 +14,22 @@
       "store": "tree"
     },
     "cm-1541-monitor.log": {
-      "sha256": "62e0f96dbb157da1a34115013e74593b0a093ce096572ae12538642387ad1611",
-      "bytes": 85791,
+      "sha256": "d2c31a062a2fad8dfbb0dff8bb22d4f514bc090ad923d7263ea0feed53eef44e",
+      "bytes": 82163,
       "store": "tree"
     },
     "cm-1541-vice.log": {
-      "sha256": "88350f72a2c788d3e724367cf94c7a1f6665108661e4fb8275d4f61d70be03a9",
-      "bytes": 9711,
+      "sha256": "0a247487a9320d97fdd6037c2f371efcbd47f131507da8d13cb0ac02b11065ed",
+      "bytes": 9899,
       "store": "tree"
     },
     "cm-1541.json": {
-      "sha256": "4041d8aff17fb28e4877b06ab8f42b70b091999188a8528c7a23ba7a4358fc1e",
-      "bytes": 3420,
+      "sha256": "a026db037919af8977829ae307211b5ec11851a60c2699e235edbd2ab39b1fa0",
+      "bytes": 3336,
       "store": "tree"
     },
     "cm-1581-boot.json": {
-      "sha256": "55cbb26f25894ff5634202bc0d4f9f28cd96fc20a96aebe24a48ef6b965b6ee4",
+      "sha256": "fb7bc32855871758da3dcef68601203b4fd8b3f4f1f1926499f3eeec6bba7af5",
       "bytes": 1409,
       "store": "tree"
     },
@@ -39,7 +39,7 @@
       "store": "tree"
     },
     "cm-1581-kernal-boot.json": {
-      "sha256": "f47e8ff12d4696740d883b4af717de5fe3b6fbf00d7a028f6535cd09b064600a",
+      "sha256": "03fbef541d5979c9e03507ca3c1ed829939465c279851aa36f05ad7e57680621",
       "bytes": 1410,
       "store": "tree"
     },
@@ -49,22 +49,22 @@
       "store": "tree"
     },
     "cm-1581-kernal-monitor.log": {
-      "sha256": "92b61b70c43c42f1d231012ebf399011deaba4c18ca4cee8f518ae4dd3203974",
-      "bytes": 51876,
+      "sha256": "8ecbb57914e7047bc9d48b44ae11ab9c6f1d399a573ca77fa2284ee36875d0b0",
+      "bytes": 52535,
       "store": "tree"
     },
     "cm-1581-kernal-vice.log": {
-      "sha256": "7316a0a08a66a094cc217d37d6bf202e8e3f9dd9594dd76ac65bc492ac917a9f",
-      "bytes": 9227,
+      "sha256": "805e2dfda8427333f22574e760e67986df000409f945af86dd399c280dfc1a7d",
+      "bytes": 9338,
       "store": "tree"
     },
     "cm-1581-kernal.json": {
-      "sha256": "501e3d482cceb008297c8411c00c10ae601a9798c89b3a98fc4e8ebf22998ab4",
+      "sha256": "dc2b8afba837836c4f073cec072b385fc9b976b24ffd89c12f39e6896a2767fb",
       "bytes": 2947,
       "store": "tree"
     },
     "cm-1581-keyboard-boot.json": {
-      "sha256": "bf71a3e484e517194aaa9ad10fe0c8f0a1b99120419a74cf0434e70d801d34bd",
+      "sha256": "e8e99a5a528130652af7408cbeabf7f38209488280f10ec57ae767f362621630",
       "bytes": 1409,
       "store": "tree"
     },
@@ -74,42 +74,42 @@
       "store": "tree"
     },
     "cm-1581-keyboard-monitor.log": {
-      "sha256": "b2f868a440a8a1548582e2b5378e291df7579a017060c49cdbc73e1739008391",
-      "bytes": 40225,
+      "sha256": "1b50b42e10a571ef89192bda05b7e2d45dce2cc9d344e846bfdd5e0cad4e4576",
+      "bytes": 38841,
       "store": "tree"
     },
     "cm-1581-keyboard-vice.log": {
-      "sha256": "bfdc195eb69283c9bf5a4d33309555f0c62626c4665cc9364064d52c61e0716b",
-      "bytes": 10329,
+      "sha256": "ad2650a8a4e8ae91afb5e739db9ba9443f9f11b3f6eb3298f0faba85fb3525dd",
+      "bytes": 10353,
       "store": "tree"
     },
     "cm-1581-keyboard.json": {
-      "sha256": "57f9d357580819e38904c9507434da8fe4c737eff31b7d294039c82d2430172d",
+      "sha256": "6c9cd801298c0386633312c89ddca93888e010223a32303a4e7b7ecbe76bbffe",
       "bytes": 2625,
       "store": "tree"
     },
     "cm-1581-monitor.log": {
-      "sha256": "99ca5dfc82f5bfe7dd645b51702afe0971cfc335c83bf47b7fd91729ee6042db",
-      "bytes": 45280,
+      "sha256": "e18ac0536f500f51a1deb14b8ff4c5e0f431b4f9e3ecd900827a94ed7ee514bc",
+      "bytes": 44543,
       "store": "tree"
     },
     "cm-1581-vice.log": {
-      "sha256": "ab2856f99c2d2562c3d0f71f32f490d102eea049b58d97be72e4f010201ebde0",
-      "bytes": 8595,
+      "sha256": "680993c777c5d27cfee1e312550ce2fc0df5cf4bf7304aa8293622a2ff0e8c1d",
+      "bytes": 8623,
       "store": "tree"
     },
     "cm-1581.json": {
-      "sha256": "2a73f50e9038bb44227468a9f8b22b092a837b15f7f16084f1f6d9cf3620ed83",
+      "sha256": "1d696931d5a75e518b09f2ff038f0d8c6fc565b734f9da1375e1c08256e1c580",
       "bytes": 2944,
       "store": "tree"
     },
     "cm-check-disk-vice.log": {
-      "sha256": "5cda5cc1108621425963f406731e29197a7e7fc95d8b25b6c347551e4bb65363",
-      "bytes": 6820,
+      "sha256": "be3e694620bb44a7632a055d2662180eee780cd4669855b8f5337b9292839702",
+      "bytes": 6843,
       "store": "tree"
     },
     "cm-check-disk.json": {
-      "sha256": "fabce21462c260759d200616da11a526d1eaa9431190008757fe0de992ddc4cf",
+      "sha256": "724155ee12ee5561dff6feae8f817f760408069e5da5ea9bae8d45ce447d7372",
       "bytes": 1951,
       "store": "tree"
     }

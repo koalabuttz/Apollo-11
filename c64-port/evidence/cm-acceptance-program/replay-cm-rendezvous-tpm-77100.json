@@ -7,11 +7,11 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 14082377,
- "agc_cs": 309,
+ "wall_cycles": 14066263,
+ "agc_cs": 308,
  "dropped_ticks": 0,
  "steps": 793,
- "wall_per_agc": 4.626,
+ "wall_per_agc": 4.635,
  "lost": false,
  "mission": "cm",
  "snap_cs": 77100,
@@ -33,7 +33,7 @@
  "hold_host_time1": 0,
  "replay_rows": 31,
  "replay_applied": 31,
- "replay_end_cs": 309,
+ "replay_end_cs": 308,
  "replay_ended": true,
  "replay_after_rows": 1,
  "replay_inputs": {
@@ -71,7 +71,7 @@
    "channel 34": 0,
    "channel 35": 0,
    "superbank": 64,
-   "channel 10": 4096,
+   "channel 10": 0,
    "interrupts enabled": 1,
    "radar gate": 0
   },
@@ -85,7 +85,7 @@
    "channel 34": 0,
    "channel 35": 0,
    "superbank": 0,
-   "channel 10": 4096,
+   "channel 10": 0,
    "interrupts enabled": 0,
    "radar gate": 0
   },
@@ -105,10 +105,10 @@
  "replay_matched_cs": [
   51,
   100,
-  150,
-  200,
+  151,
+  201,
   250,
-  301
+  300
  ],
  "replay_differences": 0,
  "replay_differ_at_cs": null,
@@ -116,8 +116,8 @@
  "replay_first": [],
  "snap_at": 77100,
  "snap_slid": false,
- "requested_cs": 301,
+ "requested_cs": 300,
  "host_holes": [],
  "downrupt": false,
- "commit": "bab6fab33581"
+ "commit": "78dcfd1c5f33"
 }

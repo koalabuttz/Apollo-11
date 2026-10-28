@@ -1,5 +1,5 @@
 build/flight-store: up to date (.stamp-lm-cm; --force rebuilds)
-lm-p00-doi-restart: commit bab6fab33581bc838eebe048ef420a199692abf8 with local changes; store lm.reu sha256 1703ed873137a9bb6a7cdbb3b845617a6aa8303e2714b328c04bdd348bb99e50
+lm-p00-doi-restart: commit 78dcfd1c5f332b785acd0ddf25f98a2d60e5b497 with local changes; store lm.reu sha256 61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712
 lm-p00-doi-restart: the host run to 64300 cs bridges 0 points, each a stop on the C64
 lm-p00-doi-restart: snapshot at 64000 cs (asked 64000, +0 cs)
 lm-p00-doi-restart: 0 host input rows (0 on the C64) in the window at REU 0x1d0900 (0 PIPA counts, 0 erasable words, 0 channels, 0 interrupt requests)

@@ -11,14 +11,14 @@
  "dsky_queue": null,
  "hardware": null,
  "resident_staged": "0x1f4e00",
- "bytes_loaded": 1940392,
+ "bytes_loaded": 1940472,
  "data_bytes": [
-  795592,
-  6460
+  795771,
+  6326
  ],
- "check_expect": "c4d5",
- "check_host": "c4d5",
- "done": 2729,
+ "check_expect": "5939",
+ "check_host": "5939",
+ "done": 2731,
  "vice": {
   "mission": "test",
   "ok": true,
@@ -29,17 +29,17 @@
    2
   ],
   "fast_loader": true,
-  "load_cycles": 265389087,
-  "load_s": 269.4,
+  "load_cycles": 265513884,
+  "load_s": 269.5,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 96474,
-  "run_s": 159.7,
-  "check_crc": "c4d5",
-  "check_expect": "c4d5",
+  "handoff_cycles": 96593,
+  "run_s": 159.8,
+  "check_crc": "5939",
+  "check_expect": "5939",
   "check_pass": true,
   "window_cs": 200,
-  "window_steps": 1218,
-  "window_x": 22.05,
+  "window_steps": 1242,
+  "window_x": 22.13,
   "screen": [
    "APOLLO 11 ON THE C64: HARDWARE CHECK",
    "",
@@ -50,11 +50,11 @@
    "",
    "RUNNING LM P63 FROM 17532 CS...",
    "",
-   "AGC TIME: 200 CS IN 1218 STEPS",
-   "C64 TIME: 44.09 S, 22.04 X REAL TIME",
+   "AGC TIME: 200 CS IN 1242 STEPS",
+   "C64 TIME: 44.25 S, 22.12 X REAL TIME",
    "",
-   "END STATE CRC C4D5 (VICE C4D5)",
-   "HOST RUN'S CRC C4D5 (THE SAME)",
+   "END STATE CRC 5939 (VICE 5939)",
+   "HOST RUN'S CRC 5939 (THE SAME)",
    "",
    "PASS: THIS C64 COMPUTES WHAT VICE DOES",
    "",
@@ -68,11 +68,11 @@
    ""
   ]
  },
- "commit": "bab6fab33581bc838eebe048ef420a199692abf8",
+ "commit": "78dcfd1c5f332b785acd0ddf25f98a2d60e5b497",
  "dirty": false,
  "sha256": {
-  "flight-disk/test-1.d81": "8d0ac49429af19116860a18b1d5d90fd2e6a668153002daf936751dec58f0ead",
-  "flight-disk/test-2.d81": "4629cae07b267405559e39ac333e43c764044f639f11f6b846314ae861c28d13",
+  "flight-disk/test-1.d81": "59a8c2d481804126378914ffdfb49cb0acbb5c87bee719e273b5589c92023d9a",
+  "flight-disk/test-2.d81": "45f7578827c8647adb5ecb9dddbc04a37c247b89d555265d94a0a126fa5fbcdb",
   "flight-disk/test-loader.prg": "9b187bcf29162fcd24664be1fc2d50b23f2940c235ad7905e7776a511f86c608"
  }
 }

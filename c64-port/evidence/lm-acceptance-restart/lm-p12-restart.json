@@ -78,7 +78,7 @@
   "pre_snapshot": "build/flight-restart/lm-p12-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -91,11 +91,11 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3214",
-  "wall_cycles": 81657456,
-  "agc_cs": 376,
+  "wall_cycles": 81478414,
+  "agc_cs": 371,
   "dropped_ticks": 0,
-  "steps": 2285,
-  "wall_per_agc": 22.043,
+  "steps": 2296,
+  "wall_per_agc": 22.291,
   "lost": false,
   "mission": "lm",
   "snap_cs": 185000,
@@ -114,17 +114,17 @@
    "dma_hits": [],
    "dma_unchecked": 13
   },
-  "hold_host_mct": 508,
-  "hold_host_time1": 16218,
-  "replay_rows": 762,
-  "replay_applied": 762,
-  "replay_end_cs": 376,
+  "hold_host_mct": 755,
+  "hold_host_time1": 15995,
+  "replay_rows": 753,
+  "replay_applied": 753,
+  "replay_end_cs": 371,
   "replay_ended": true,
-  "replay_after_rows": 17,
+  "replay_after_rows": 16,
   "replay_inputs": {
    "counts": {
-    "0": 20,
-    "1": 742
+    "0": 21,
+    "1": 732
    },
    "erasable": [
     "0033"
@@ -151,7 +151,7 @@
     "channel 34": 0,
     "channel 35": 0,
     "superbank": 112,
-    "channel 10": 11939,
+    "channel 10": 16379,
     "interrupts enabled": 1,
     "radar gate": 0
    },
@@ -165,7 +165,7 @@
     "channel 34": 0,
     "channel 35": 0,
     "superbank": 112,
-    "channel 10": 11939,
+    "channel 10": 16379,
     "interrupts enabled": 0,
     "radar gate": 0
    },
@@ -194,10 +194,10 @@
   "masked_dead_superbank_at": [],
   "replay_matched_cs": [
    50,
-   168,
+   163,
    200,
    250,
-   368
+   363
   ],
   "replay_differences": 0,
   "replay_differ_at_cs": null,
@@ -205,16 +205,16 @@
   "replay_first": [],
   "snap_at": 185000,
   "snap_slid": false,
-  "requested_cs": 368,
+  "requested_cs": 363,
   "host_holes": [],
   "downrupt": false,
-  "commit": "bab6fab33581",
+  "commit": "78dcfd1c5f33",
   "exit": 0,
   "log": "lm-p12-restart-c64.log",
-  "log_sha256": "24c66c78e8a72276cf5bfe52d2276e707a10afccb1bdd97fb688ca4160d9a55b",
-  "store_sha256": "1703ed873137a9bb6a7cdbb3b845617a6aa8303e2714b328c04bdd348bb99e50",
-  "manifest_sha256": "7decef9389db0b4330f7e4b48d34012f2925b216f944a5217ed9b9b1e200d416",
-  "prg_sha256": "c527c4fcdc0be1257941fe29ff248c30205ba43b3571217047525aa4ff4cd2cd"
+  "log_sha256": "a7782027dea39e396684ffeb3c69e63b88e43c6463716fbc1072ed85de60729c",
+  "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
+  "manifest_sha256": "0eb9be88c871914934e4e5bdccebfe32f54f8dcc3df55070f00f03ea637de376",
+  "prg_sha256": "7ceb93f2b5a94f9bb902451e98c4f7cc5d52a8805735b606907ebaca2233a5fc"
  },
  "gojam_on_c64": null
 }
