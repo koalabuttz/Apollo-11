@@ -19,7 +19,12 @@ DOWNRUPT_DEFINES), so the two cannot drift apart. Profiles:
   overload  DP_REPLAY, DP_BUSY and RK_STEAL, without an output list:
             lm-p63-overload, lm-p63-overload-nomon, cm-entry-overload
             (FLIGHT_STEAL; no FLIGHT_STEAL run takes --replay-outputs, and
-            the LM's output list does not fit beside RK_STEAL)
+            the LM's output list does not fit beside RK_STEAL). The steal
+            count is the largest any FLIGHT_STEAL scenario asks for and the
+            window's clock values fill every byte: llvm-mos folds small
+            constants, and RK_STEAL=4 linked about 95 B smaller in the CM
+            than cm-entry-overload's own build (600 cycles), so #1016 was
+            6 B over there while this profile linked.
 Every option at once has never fitted (RK_STEAL and DP_KEYS alone are about
 330 bytes in the LM), and no scenario turns them all on.
 
@@ -33,9 +38,18 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import dap_pass_vice as dp  # noqa: E402
+import flight_host_differential as fhd  # noqa: E402
 import flight_scenario_vice as fsv  # noqa: E402
 
 SNAP = 'tests/dp_replay_link_snap.h'
+# TIME2:TIME1 centiseconds with no zero byte, so no compare or store folds.
+STEAL_FROM, STEAL_TO = 0x1f4a3c, 0x1f9b2d
+
+
+def steal_max():
+    """The most cycles a step any FLIGHT_STEAL scenario steals."""
+    specs = [s[4].get('FLIGHT_STEAL') for s in fhd.STEAL_FLIGHT + fhd.FLIGHT]
+    return max(int(x.rsplit(':', 1)[1]) for x in specs if x)
 
 
 def main():
@@ -60,7 +74,7 @@ def main():
         keys = fsv.keys_header(work / f'{m}-keys.h', [(100 * (i + 1), 0o21) for i in range(8)])
         defines += fsv.DOWNRUPT_DEFINES
     elif a.profile == 'overload':
-        defines += fsv.steal_flags(4, 1000, 2000)
+        defines += fsv.steal_flags(steal_max(), STEAL_FROM, STEAL_TO)
     out = a.out.resolve()
     dp.link(a.cc, out.stem, ROOT / SNAP, 2500, 0x1f8000, m=m, keys=keys, defines=defines,
             services=work / 'overlay_v2_services.S', out=out)
