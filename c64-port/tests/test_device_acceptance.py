@@ -190,6 +190,19 @@ class Adapters(unittest.TestCase):
         self.assertEqual(da.checkpoints(t, [dict(replay_outputs=dict(moved, states=[tvc_on]))]), 0)
         self.assertIsNone(da.checkpoints(next(x for x in da.roles('cm') if x['dir'] == 'in'), [run]))
 
+    def test_the_host_trace_shows_a_command_no_checkpoint_holds(self):
+        t = next(x for x in da.roles('cm') if x['key'] == 'optics-drive')
+        quiet = dict(channel_set={'channel 12': 2}, channel_changed={}, nonzero=[], changed=[])
+        trace = [[30, '0053', '00003'], [30, '0054', '77532'], [31, '0053', '00000'], [31, '0054', '00000']]
+        run = dict(replay_outputs=dict(quiet, trace=trace, states=[dict(quiet, cs=50)]))
+        self.assertTrue(t['window'](run))
+        self.assertEqual(da.checkpoints(t, [run]), 0)
+        self.assertEqual(da.commands(t, [run]), 2)
+        self.assertFalse(t['window'](dict(replay_outputs=dict(quiet, trace=trace[2:]))))  # zeros only
+        self.assertIsNone(da.commands(t, [dict(replay_outputs=quiet)]))  # recorded before the trace
+        tvc_on = dict(quiet, channel_set={'channel 12': 0o200})
+        self.assertFalse(t['window'](dict(replay_outputs=dict(tvc_on, trace=trace))))
+
 
 class Roles(unittest.TestCase):
     def status(self, runs, host=None, tab=None):

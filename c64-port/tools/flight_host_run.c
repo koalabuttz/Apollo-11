@@ -826,10 +826,17 @@ static void rp_end(unsigned long d,const agc_word *w,const flight_io *io,const a
  * (little-endian: centiseconds since the snapshot, channel, value), the
  * list dap_pass_check.c DP_OUTPUTS keeps on the C64
  * (tools/flight_scenario_vice.py --replay-outputs). log 0 takes the values
- * the window starts from. */
-static FILE *rp_outs;static agc_word rp_ov[6];
-static void rp_outputs(unsigned long t,const agc_hardware *hw,int log){static const unsigned char ch[6]={05u,06u,011u,012u,013u,014u};
+ * the window starts from. PATH.words: the same rows (address in place of
+ * the channel) for the drive counters CDUXCMD-CDUZCMD and OPTXCMD/OPTYCMD
+ * (050-054), host only: a command a few cs long that no checkpoint holds
+ * still shows there (tools/device_acceptance.py, optics-drive). */
+static FILE *rp_outs,*rp_wds;static agc_word rp_ov[6],rp_wv[5];
+static void rp_outputs(unsigned long t,const agc_hardware *hw,const agc_word *w,int log){static const unsigned char ch[6]={05u,06u,011u,012u,013u,014u};
  agc_word v[6];unsigned i;
+ for(i=0;i<5u;++i){agc_word x=w[050u+i];
+  if(log&&rp_wds&&x!=rp_wv[i]){unsigned long d=t-rp_t0;
+   unsigned char b[6]={(unsigned char)d,(unsigned char)(d>>8),(unsigned char)(050u+i),0u,(unsigned char)x,(unsigned char)(x>>8)};fwrite(b,1,6,rp_wds);}
+  rp_wv[i]=x;}
  v[0]=hw->channel5;v[1]=hw->channel6;v[2]=hw->channel11;v[3]=hw->channel12;v[4]=hw->channel13;v[5]=hw->channel14;
  for(i=0;i<6u;++i){
   if(log&&rp_outs&&v[i]!=rp_ov[i]){unsigned long d=t-rp_t0;
@@ -1834,7 +1841,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    snprintf(rp_base,sizeof rp_base,"%s",snap_path);
    snprintf(rp_buf,sizeof rp_buf,"%s.replay",snap_path);if(!rp_cs||!(rp_out=fopen(rp_buf,"wb"))){fprintf(stderr,"FLIGHT_REPLAY=CS[,SEED[,EVERY]] (with FLIGHT_SNAPSHOT)\n");return 2;}
    snprintf(rp_buf,sizeof rp_buf,"%s.end",snap_path);if(!(rp_ends=fopen(rp_buf,"wb"))){perror(rp_buf);return 2;}
-   snprintf(rp_buf,sizeof rp_buf,"%s.outputs",snap_path);if(!(rp_outs=fopen(rp_buf,"wb"))){perror(rp_buf);return 2;}}}
+   snprintf(rp_buf,sizeof rp_buf,"%s.outputs",snap_path);if(!(rp_outs=fopen(rp_buf,"wb"))){perror(rp_buf);return 2;}
+   snprintf(rp_buf,sizeof rp_buf,"%s.words",snap_path);if(!(rp_wds=fopen(rp_buf,"wb"))){perror(rp_buf);return 2;}}}
  if(!load_parse(getenv("FLIGHT_LOAD")))return 2;
  if(!gojam_parse(getenv("FLIGHT_GOJAM"))){fprintf(stderr,"FLIGHT_GOJAM=CS[,CS...]\n");return 2;}
  dl_parse();
@@ -1978,7 +1986,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    else if(rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_next&&now(s.words)-rp_t0<rp_cs){rp_end(now(s.words)-rp_t0,s.words,&io,&hw);
     while(rp_next<=now(s.words)-rp_t0)rp_next+=rp_every;}
    if(rp_after==~0ul&&rp_out&&!snap_path&&now(s.words)-rp_t0>=rp_cs&&(rp_win+1u>=rp_chain||!pending)){
-    rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);fclose(rp_outs);rp_outs=0;printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
+    rp_end(now(s.words)-rp_t0,s.words,&io,&hw);fclose(rp_out);fclose(rp_ends);fclose(rp_outs);rp_outs=0;fclose(rp_wds);rp_wds=0;printf("replay end at %lu cs (%lu cs after the snapshot): %lu input rows\n",now(s.words),now(s.words)-rp_t0,rp_rows);
     if(core_routines){core_module_report();}
     if(++rp_win>=rp_chain){char b[640];rp_after=rp_after_last=now(s.words)-rp_t0;
      snprintf(b,sizeof b,"%s.after-replay",rp_win>1u?rp_path:rp_base);rp_out=fopen(b,"wb");
@@ -1988,8 +1996,8 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
     /* CHAIN: the next window starts here (FLIGHT_REPLAY above). */
     snprintf(rp_path,sizeof rp_path,"%s-%u",rp_base,rp_win);snap_path=rp_path;snap_cs=now(s.words);snap_any=0;
     {char b[640];snprintf(b,sizeof b,"%s.replay",rp_path);rp_out=fopen(b,"wb");snprintf(b,sizeof b,"%s.end",rp_path);rp_ends=fopen(b,"wb");
-     snprintf(b,sizeof b,"%s.outputs",rp_path);rp_outs=fopen(b,"wb");
-     snprintf(b,sizeof b,"%s.seam",rp_path);rp_seam=fopen(b,"wb");if(!rp_out||!rp_ends||!rp_outs||!rp_seam){perror(b);return 2;}}
+     snprintf(b,sizeof b,"%s.outputs",rp_path);rp_outs=fopen(b,"wb");snprintf(b,sizeof b,"%s.words",rp_path);rp_wds=fopen(b,"wb");
+     snprintf(b,sizeof b,"%s.seam",rp_path);rp_seam=fopen(b,"wb");if(!rp_out||!rp_ends||!rp_outs||!rp_wds||!rp_seam){perror(b);return 2;}}
     rp_mark(s.words,&hw,io.channel16,pending);}}
    if(rp_out&&!snap_path)rp_mark(s.words,&hw,io.channel16,pending);
    /* A key is pressed at the first sample point at or after its time, on
@@ -2029,7 +2037,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    if(snap_path&&now(s.words)>=snap_cs&&(!pending||snap_any)){snapshot(snap_path,&s,&io,&hw);printf("snapshot at %lu cs\n",now(s.words));
     if(!rp_out)return 0;
     /* FLIGHT_REPLAY: on, on the C64 window's work clock. */
-    snap_path=0;rp_t0=now(s.words);rp_outputs(now(s.words),&hw,0);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;steal_j=0;
+    snap_path=0;rp_t0=now(s.words);rp_outputs(now(s.words),&hw,s.words,0);scaled=1;AgcFrozenClock=1;work=1;lag=~0u;slow=1.0;seed=rp_seed;jit_lo=0.8;jit_span=1.5625;consumed=0;wall=0.0;idling=0;charge_last=0;steal_j=0;
     core_fit=core_yaagc=core_err=core_spans=0;}}
   {agc_word brupt=s.words[017];uint8_t got;
    if(scaled&&work){
@@ -2087,7 +2095,7 @@ int main(int argc,char **argv){static apollo_overlay_state s,undo,before;static 
    * TC VERB69's; unscaled, yaAGC's bridged code, to its own trap. */
   if(v69&&scaled){if(!work){fprintf(stderr,"FLIGHT: VERB69 under FLIGHT_SCALED=K,D,LAG: the TC trap needs the work clock or unscaled time\n");return 3;}
    s.words[2]=02040u;spin=consumed%3ul==2ul?1:2;idle_tick();continue;}
-  if(rp_out&&!snap_path)rp_outputs(now(s.words),&hw,1);
+  if(rp_out&&!snap_path)rp_outputs(now(s.words),&hw,s.words,1);
   e=v69?0:holder(s.words,io.superbank,&call);
   if(!e&&!v69)e=&core_entry;
   /* FLIGHT_REPLAY_TRACE: each routine's Z, FB, TIME1, work clock (step,
