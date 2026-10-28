@@ -53,6 +53,7 @@ import pathlib
 import re
 import shutil
 import subprocess
+import tempfile
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -880,13 +881,57 @@ def env_of(name):
         return {}
 
 
+def backfill_exits(m):
+    """Write offnominal-exits.json for a device pack stored before the
+    record existed (window O packs, generated at d0732f81). Nothing is
+    re-run: the committed doc already implies every exit. A doc reads PASS
+    only when every off-nominal host row is clean (device_offnominal.section),
+    and judge() calls a row clean only at exit 0. So: refuse unless the doc
+    says PASS and each stored log re-judges clean at exit 0, then record exit
+    0 against each log's sha256. Returns the problems (empty when written)."""
+    eid = f'{m}-acceptance-devices'
+    ev = ROOT / 'evidence' / eid
+    doc = ROOT / 'docs/acceptance' / f'{PROGRAM[m]}-device_adapter_tests.md'
+    if (ev / EXITS).exists():
+        return [f'evidence/{eid}/{EXITS} already exists']
+    if 'Result: **PASS**' not in doc.read_text()[:600]:
+        return [f'{doc.name} does not say PASS, so it implies no exit codes; regenerate the device pack']
+    table = offnom.symbols(m)
+    exits, bad = {}, []
+    for row in offnom.ROWS[m]:
+        log = ev / f"{row['scenario']}.log"
+        if not log.is_file():
+            bad.append(f'{log.relative_to(ROOT)} is not stored')
+            continue
+        if not offnom.judge(row, table, log.read_text(errors='replace'), 0, log)['ok']:
+            bad.append(f"{log.relative_to(ROOT)} is not clean at exit 0, yet the doc says PASS; regenerate the pack")
+            continue
+        exits[row['scenario']] = dict(log=log.name, log_sha256=sha(log), exit=0)
+    if bad:
+        return bad
+    with tempfile.TemporaryDirectory() as tmp:
+        out = pathlib.Path(tmp) / EXITS
+        out.write_text(json.dumps(exits, indent=1, sort_keys=True) + '\n')
+        subprocess.run([sys.executable, 'tools/evidence.py', 'add', eid, str(out), '--tree'], cwd=ROOT, check=True)
+    return []
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('mission', choices=sorted(PROGRAM))
     ap.add_argument('--host', help="tools/flight_host_differential.py's summary.json")
     ap.add_argument('--run', action='append', default=[], help='a flight_scenario_vice.py --replay result JSON')
+    ap.add_argument('--backfill-exits', action='store_true',
+                    help=f'only write {EXITS} for the stored pack, from its PASS doc (see backfill_exits)')
     a = ap.parse_args(argv)
     m = a.mission
+    if a.backfill_exits:
+        bad = backfill_exits(m)
+        for b in bad:
+            print(f'FAIL: {b}')
+        if not bad:
+            print(f'evidence/{m}-acceptance-devices/{EXITS}: written; {rescore(m)[1]}')
+        return 1 if bad else 0
     commit = flight_holes.source_commit()
     eid = f'{m}-acceptance-devices'
     dest = ROOT / 'build' / eid  # staged here, then stored flat by tools/evidence.py add --tree
