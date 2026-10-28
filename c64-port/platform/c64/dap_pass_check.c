@@ -332,9 +332,8 @@ static uint16_t replay_cs(void)
  * it the run stops at the routine that reaches the row's place. A
  * boundary row (where bits 1-2) caps only in its own step. */
 uint16_t rk_phase_budget(void);
-/* (The sweep has resident room, and the hardware check disk keeps its
- * accepted bytes: both keep the C.) */
-#if defined(DP_SWEEP) || defined(DP_HW_CHECK)
+/* (The sweep has resident room: it keeps the C.) */
+#ifdef DP_SWEEP
 __attribute__((noinline)) uint16_t dp_budget(void)
 {
     uint16_t now = replay_cs();
@@ -626,6 +625,10 @@ static void BOOT load_snapshot(void){
  /* The host's replay runs on the work clock from its first step. */
  rk_work = 0;
  rk_tick_phase = 0;
+#ifdef SNAP_NW
+ /* And with the host's night watchman (include/flight_watchman.h). */
+ rk_nw = SNAP_NW;
+#endif
 #ifdef RK_STEAL
  RK_STEAL_START();
 #endif

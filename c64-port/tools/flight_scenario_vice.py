@@ -735,6 +735,10 @@ def main():
                            capture_output=True, text=True).stdout.strip()
     print(f'{a.scenario}: commit {head or "unknown"}{" with local changes" if dirty else ""}; '
           f'store {m}.reu sha256 {hashlib.sha256(reu).hexdigest()}')
+    # Recorded in each result too (#942 P1): the store, and the host harness
+    # whose run the window replays; each window adds its own PRG's.
+    provenance = dict(store_sha256=hashlib.sha256(reu).hexdigest(),
+                      harness_sha256=hashlib.sha256(pathlib.Path(exe).read_bytes()).hexdigest())
     holes = host_holes(exe, a.scenario, a.snap_cs + a.cs * a.chain, tag)
     # A core-start point (tools/flight_holes.py CORE_START) is bridged only
     # because the scenario's core starts mid-way through code, before any
@@ -914,7 +918,8 @@ def main():
             if x[0] != a.reu_check_drop]
         r = dp.vice(a, tag, prg, pinned, m, patch, [reu_layout.dma_trace(regions)]
                     + ([flight_load_profile.monitor()] if a.load_trace else []))
-        r.update(mission=m, snap_cs=a.snap_cs, replay=bool(a.replay))
+        r.update(mission=m, snap_cs=a.snap_cs, replay=bool(a.replay), **provenance,
+                 prg_sha256=hashlib.sha256(pathlib.Path(prg).read_bytes()).hexdigest())
         after = dp.WORK / f'vice-{tag}' / 'image.reu'
         if r.get('status') is not None and after.exists():
             before = bytearray(reu)
@@ -1125,7 +1130,7 @@ def main():
         (dp.WORK / f'{a.scenario}-{a.snap_cs}-chain{a.chain}.json').write_text(json.dumps(dict(
             scenario=a.scenario, snap_cs=a.snap_cs, snap_at=first.get('snap_at'), requested_cs=a.cs, chain=a.chain,
             ok=ok, status=next((x.get('status') for x in results if x.get('status')), 0), replay_rows=sum(x.get('replay_rows', 0) for x in results),
-            replay_ended=ok, replay_differences=0 if ok else None, commit=flight_holes.source_commit(),
+            replay_ended=ok, replay_differences=0 if ok else None, commit=flight_holes.source_commit(), **provenance,
             # A window with no bounds record fails the chain's (#766).
             reu_bounds=dict(ok=bool(results) and all((x.get('reu_bounds') or {}).get('ok') is True for x in results),
                             dma_outside=sum((x.get('reu_bounds') or {}).get('dma_outside') or 0 for x in results),

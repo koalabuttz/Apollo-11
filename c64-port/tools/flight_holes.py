@@ -68,10 +68,14 @@ def listing(mission):
 
 
 def source_commit():
-    """HEAD's short hash, with ' (dirty)' when the port's sources differ from
-    it: the commit a run's results belong to."""
+    """HEAD's short hash, with ' (dirty)' when an input differs from
+    it: the commit a run's results belong to. Every file in the
+    repository counts (docs/*.json maps, the Makefile, the AGC sources),
+    except what acceptance runs write: docs/acceptance/ and evidence/
+    (#942 P1)."""
     git = lambda *a: subprocess.run(['git', *a], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-    dirty = git('status', '--porcelain', '--', 'src', 'include', 'platform', 'tools', 'tests')
+    dirty = git('status', '--porcelain', '--', ':/', ':(exclude)docs/acceptance',
+                ':(exclude)evidence')
     return git('rev-parse', '--short=12', 'HEAD') + (' (dirty)' if dirty else '')
 
 

@@ -1,0 +1,25 @@
+{
+ "Luminary099": {
+  "since": "#1006 (#990 plan B: the C64 night watchman; moves the LM and CM flight residents, disks and check disks); window O re-accepts both",
+  "files": {
+   "flight-disk/lm-1.d81": "b43b124bb4e88911af70e9b39ecd2a0ed63c46add1aec0ba062a68d1a5138ba0",
+   "flight-disk/lm-5.d64": "84e3aa4695f1da04045cde6d15bbc271ff86618d191a9c6ea9ee5bb547fa31e9",
+   "flight-disk/lm-resident.prg": "7f4a99b8e104f53ed2608fdf514155181ec2d16f9f6c3550cb59dd5a73effc69",
+   "flight-disk/test-1.d81": "ec2915c00fd248b6adfc2e7892a41066c9e85b004611d00a8eda383ebb5f84e2",
+   "flight-disk/test-2.d81": "8b1bd327cbe1f88af9b97af431cafa8f311b3dcfbb89f07df2742e59d8e062a2",
+   "flight-store/lm.reu": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712"
+  }
+ },
+ "Comanche055": {
+  "since": "#1006 (#990 plan B: the C64 night watchman; moves the LM and CM flight residents, disks and check disks); window O re-accepts both; #992 (#942 B3: an off-nominal check no C64 window holds needs a host_only reason; window O regenerates the doc)",
+  "files": {
+   "flight-disk/cm-1.d81": "b9d944fdcc69d080261e0d9539ef515584a16edf27acfa19f64352d21ca7049b",
+   "flight-disk/cm-5.d64": "123829a6fcd0ccd0a8ba72c982622aa5e86b73c1dd256f081bb69717d1465dd2",
+   "flight-disk/cm-resident.prg": "8e3667a7d62836c6827d575134e1d67ff94f128d9cedc21fa80c09ad47d56257",
+   "flight-store/cm.reu": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275"
+  },
+  "criteria": {
+   "device_adapter_tests": "#992 (#942 B3): cm-p20-vhf-dropout's VHFCNT check now shows its host_only reason instead of the generic host-only text; verdict unchanged"
+  }
+ }
+}

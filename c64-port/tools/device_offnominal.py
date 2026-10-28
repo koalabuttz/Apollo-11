@@ -118,7 +118,10 @@ ROWS = {
              checks=[quiet('VHFCNT', 18000, 25000, 'no VHF mark from 180 s to 250 s (cm-p20 marks its second '
                                                          'range at 204 s)'),
                      final('VHFCNT', 3, 'the next ranges mark on their own: VHFCNT 3 by 320 s')],
-             windows=[(17900, 600)]),
+             windows=[(17900, 600)],
+             # Check index -> why no C64 window holds it (#942 B3: any other uncovered timed check fails).
+             host_only={1: "VHFCNT's last mark comes about 140 s after the dropout, past any 800 cs window "
+                           "over it; the window covers the dropout and BADEND"}),
         dict(scenario='cm-uplink-reject', owner='D2',
              failure='Uplink: a V71 block of 25 components (over the limit of 20), then a garbled word at 50 s '
                      '(`FLIGHT_UPLINK`)',
@@ -309,12 +312,20 @@ def section(results, runs, first_diff, busy_note=lambda win: ''):
             bad.append(f"off-nominal {row['scenario']}: host {h['mismatches']} mismatches, {h['bridged']} bridged, "
                        f"failed checks {[x['check'] for x in h['checks'] if not x['ok']]}")
 
-        def where(x):
+        def where(i, x):
             w = covered(x, spans)
-            return '' if x.get('kind') == 'quiet' or x['at_cs'] is None else \
-                f' (C64 window {w})' if w else ' (host only: no C64 window holds it)'
+            if x.get('kind') == 'quiet' or x['at_cs'] is None:
+                return ''
+            if w:
+                return f' (C64 window {w})'
+            reason = row.get('host_only', {}).get(i)
+            if not reason:
+                bad.append(f"off-nominal {row['scenario']}: {x['check']} happened at {x['at_cs']} cs, in no C64 "
+                           f"window (add one, or a host_only reason in the row)")
+            return f' (host only: {reason})' if reason else ' (host only: no C64 window holds it)'
         detail.append(f"- **{row['scenario']}** ({h['evidence']}): "
-                      + ('; '.join(f"{x['check']}: {held(x)}{where(x)}" for x in h['checks']) or 'host match only'))
+                      + ('; '.join(f"{x['check']}: {held(x)}{where(i, x)}" for i, x in enumerate(h['checks']))
+                         or 'host match only'))
     lines += ['', 'A window that differs is an open item on the shared replay mismatch list, as in Runs.', '',
               '### Response checks', ''] + detail + ['']
     return lines, bad

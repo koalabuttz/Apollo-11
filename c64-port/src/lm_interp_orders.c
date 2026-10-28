@@ -1329,14 +1329,21 @@ void lmi_goto_any(apollo_overlay_state *s){
  /* GOTO CA POLISH; MASK HIGH4; BZF GOTOERS (an erasable CADR is fetched,
   * through the work area or the EBANK it names, until a fixed one). A cycle
   * of erasable CADRs never ends (the AGC loops until the night watchman
-  * restarts it); host builds stop with a message rather than hang. */
+  * restarts it); host builds stop with a message rather than hang. On the
+  * C64, after 64 hops the job is handed back at GOTO with the current
+  * POLISH, as the interpreter core does (src/lm_interp_core.c): the next
+  * step goes on looping there, so interrupts and the night watchman run. */
 #ifndef __mos__
  unsigned long n=0;
+#else
+ uint8_t n=64u;
 #endif
  for(;;){
   uint8_t c;
 #ifndef __mos__
   if(++n>0x10000ul){fprintf(stderr,"lmi_goto_any: erasable CADR cycle (POLISH %05o)\n",(unsigned)(W[rPOLISH]&077777u));exit(3);}
+#else
+  if(!--n){W[5]=IF_(06646,06615);return;}
 #endif
   CA(rPOLISH);MASKF(074000u);
   if(!ai_bzf(s))break;

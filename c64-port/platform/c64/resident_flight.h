@@ -84,6 +84,8 @@ extern const uint8_t rk_phase_step[9];
 #endif
 extern uint16_t rk_work;
 extern uint8_t rk_tick_phase;
+/* The night watchman's byte (include/flight_watchman.h). */
+extern uint8_t rk_nw;
 #ifdef RK_STEAL
 /* The steal's clock (resident_flight.c rk_rupts_due): where the first step
  * whose share is not yet charged ends, from the current step's start, and

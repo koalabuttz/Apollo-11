@@ -379,6 +379,9 @@ jobs:
             echo "Merge it in a steward re-acceptance window, whose PR re-cites docs/acceptance at its head"
             echo "(c64-port/CONTRIBUTING-port.md, section After acceptance)."
             exit 1; }
+          # The docs' own rules too (one commit, PASS, each cite as recorded,
+          # one sha256 per image): acceptance_bundle.py --check-docs (#942 B7).
+          for m in lm cm; do python3 tools/acceptance_bundle.py "$m" --check-docs || exit 1; done
 
   # On every push to the port branch (where the c64 job is skipped), link
   # every C64 PRG (no VICE) and check each map. Two PRs can each fit and still push another lane's PRG past
