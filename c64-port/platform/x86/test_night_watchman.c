@@ -137,13 +137,14 @@ int main(void)
         for (p = RL_PERIODS + RL_ARM + 1u; p < 2u * RL_PERIODS + RL_CHECK; ++p)
             (void)rl_period(&r, p, &k);
         check(k == RL_IN && r.lock && !r.norupt, "a long interrupt step runs on in each period");
-        check(rl_period(&r, 2u * RL_PERIODS + RL_CHECK, 0),
+        check(rl_period(&r, 2u * RL_PERIODS + RL_CHECK, 0) == RL_LOCK,
               "only inside an interrupt: RUPT LOCK sounds");
         rl_step(&r, RL_OUT);
         for (p = 2u * RL_PERIODS + RL_CHECK + 1u; p < 3u * RL_PERIODS + RL_CHECK; ++p)
             (void)rl_period(&r, p, 0);
         check(!r.lock && r.norupt, "only outside: NO RUPT still armed");
-        check(rl_period(&r, 3u * RL_PERIODS + RL_CHECK, 0), "no interrupt step: NO RUPT sounds");
+        check(rl_period(&r, 3u * RL_PERIODS + RL_CHECK, 0) == RL_NORUPT,
+              "no interrupt step: NO RUPT sounds");
         rl_step(&r, RL_IN | RL_OUT);
         check(!rl_period(&r, 3u * RL_PERIODS + RL_ARM, 0) &&
                   !rl_period(&r, 4u * RL_PERIODS + RL_CHECK, 0),

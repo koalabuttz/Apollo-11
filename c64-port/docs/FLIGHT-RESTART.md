@@ -224,6 +224,19 @@ step since the last period, or the last step, still running, when none ran.
   starved by interrupts, as for the watchman, and the CM P06 boot holds
   INHINT past 140 ms with interrupts pending. On the work clock neither
   happens.
+- **Forced rows.** Four rows hold one flag on purpose, on idle P00 on the
+  work clock: `lm-forced-rupt-lock`, `lm-forced-no-rupt` and the CM pair.
+  At 15 s every waitlist task slot (LST2) is poked to one task and TIME3
+  to 37777, so T3RUPT dispatches it at once. For RUPT LOCK the task is the
+  Executive's idle loop past its RELINT (ADVAN), which loops inside the
+  interrupt with no RESUME. For NO RUPT it is a few words poked into VAC5
+  that INHINT and RESUME into a loop, so no interrupt runs at all. yaAGC
+  runs those words (a bridged span). Each row must sound only its own
+  flag, first at 15.26 s, with the native flags agreeing with yaAGC's at
+  every check. The alarm prints which flag sounded, and the summary counts
+  each. In the NO RUPT rows the night watchman also restarts the program
+  at 16.64 s. The loop reads NEWJOB, but one bridged span hides those
+  reads from the watchman's native rule.
 - **No restart yet.** The harness and the x86 program count and print where
   it would sound ("rupt lock would sound at"), but restart nothing. As a
   restart, the CM boot rows on x1 and overrun restart over 200 times, and

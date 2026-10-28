@@ -175,8 +175,14 @@ uint8_t fd_boundary(fd_state *st)
         if (st->phase == RK_PHASE_T5) {
             ++st->periods;
             if (nw_period(&st->wm, st->periods)) st->wm_fire = 1u;
-            if (rl_period(&st->rl, st->periods, 0) && ++st->rl_alarms <= 8ul)
-                printf("rupt lock would sound at %lu cs\n", fd_centiseconds(st));
+            {
+                int rl = rl_period(&st->rl, st->periods, 0);
+                if (rl && ++st->rl_alarms <= 8ul)
+                    printf("rupt lock would sound at %lu cs (%s)\n", fd_centiseconds(st),
+                           rl == RL_LOCK     ? "RUPT LOCK"
+                           : rl == RL_NORUPT ? "NO RUPT"
+                                             : "RUPT LOCK and NO RUPT");
+            }
         }
         st->phase = st->phase == RK_PHASE_T5 ? RK_PHASE_T4 : (uint8_t)(st->phase + 1u);
         ++st->clock_steps;
