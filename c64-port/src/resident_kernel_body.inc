@@ -27,6 +27,14 @@
  * SVCT3, at LONGCYCL or WAITLIST in the LONGCALL chain, or where RESUME
  * ends the interrupt. */
 #include "agc_image_ops.h"
+/* The C64 flight resident's night watchman, on the work clock (the kernel
+ * marks its NEWJOB accesses); no other build has its byte. */
+#if defined(__mos__) && RK_FIXED_IMAGE && RK_SEAMS && !defined(RK_RUNS_ONLY) && !defined(RK_WALL_CLOCK)
+#include "flight_watchman.h"
+#define K_WATCHMAN 1
+#else
+#define K_WATCHMAN 0
+#endif
 #define W ks->words
 /* Overlay ABI 2 seams follow their job (include/resident_kernel.h): with
  * RK_SEAMS the kernel reports CHANJOB's core-set exchange (NEWJOB names
@@ -73,7 +81,24 @@ K_EXPORT __attribute__((noinline)) uint8_t k_bzmf(void){return ai_bzmf(ks);}
 /* An erasable operand below 0400 (most of them) is passed in one byte. */
 #define K_OP8(n) static __attribute__((noinline)) void k_##n##8(uint8_t a){k_##n(a);}
 #define K_OPS8(n) static __attribute__((noinline)) uint8_t k_##n##8(uint8_t a){return k_##n(a);}
-K_OP8(ca) K_OP8(cs) K_OP8(ad) K_OP8(mask) K_OPS8(ts) K_OP8(xch) K_OP8(lxch) K_OP8(qxch) K_OP8(ads) K_OP8(dxch) K_OPS8(ccs)
+/* The night watchman (include/flight_watchman.h): the kernel's CCS NEWJOB
+ * and TS NEWJOB access NEWJOB, as on the AGC, so they clear its armed bit
+ * (in 6502: 27 bytes, the C's 38). */
+#if K_WATCHMAN
+_Static_assert(K_NEWJOB == 067u && FLIGHT_WATCHMAN_ARMED == 1u, "k_newjob8's NEWJOB and bit");
+uint8_t k_ccs8(uint8_t a);
+uint8_t k_ts8(uint8_t a);
+__asm__(".section .text.k_newjob8,\"ax\",@progbits\n"
+        ".globl k_ccs8\n.globl k_ts8\n"
+        "k_ccs8:\n  jsr k_newjob8\n  ldx #0\n  jmp k_ccs\n"
+        "k_ts8:\n  jsr k_newjob8\n  ldx #0\n  jmp k_ts\n"
+        "k_newjob8:\n  cmp #$37\n  bne 1f\n  lsr rk_nw\n  asl rk_nw\n1:\n  rts\n"
+        ".text\n");
+#define K_OPS8_NEWJOB(n)
+#else
+#define K_OPS8_NEWJOB(n) K_OPS8(n)
+#endif
+K_OP8(ca) K_OP8(cs) K_OP8(ad) K_OP8(mask) K_OPS8_NEWJOB(ts) K_OP8(xch) K_OP8(lxch) K_OP8(qxch) K_OP8(ads) K_OP8(dxch) K_OPS8_NEWJOB(ccs)
 K_OP8(caf) K_OP8(adf) K_OP8(csf)
 #define K_SMALL(n,a) (__builtin_constant_p(a)&&(unsigned)(a)<0400u?k_##n##8((uint8_t)(a)):k_##n(a))
 #define CA(a) K_SMALL(ca,a)
