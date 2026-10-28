@@ -198,9 +198,13 @@ def code_of(path, text):
         return None
     # Only C-style comments are stripped (an assembly ; comment counts as
     # code).
+    # A ??/ trigraph is a backslash to some compilers; don't guess.
+    if '??/' in text:
+        return None
     # Join backslash-newline first, as the compiler does, so a // comment
-    # ending in a backslash also swallows the next line here.
-    text = re.sub(r'\\\r?\n', '', text)
+    # ending in a backslash also swallows the next line here. Spaces or tabs
+    # after the backslash still splice in gcc and clang.
+    text = re.sub(r'\\[ \t]*\r?\n', '', text)
     literals = []
     code = C_COMMENT.sub(lambda m: (literals.append(m.group(0)), m.group(0))[1]
                          if m.group(0)[0] in '"\'' else ' ', text)

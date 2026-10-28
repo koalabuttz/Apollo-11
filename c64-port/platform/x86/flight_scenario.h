@@ -28,6 +28,7 @@
  *                   ranging and sextant (platform/x86/radar_models.h)
  *   FLIGHT_LR, FLIGHT_LR_POS2, FLIGHT_LR_DROP: the LM's landing radar
  *                   (platform/x86/landing_radar.h)
+ *   FLIGHT_RHC      the LM's hand controller (platform/x86/hand_controller.h)
  *   FLIGHT_BUSY_SAMPLE  CS: also a sample point at a routine boundary
  *                   outside interrupts when none has come for CS
  *                   centiseconds, so inputs reach a job that busy waits
@@ -39,7 +40,7 @@
  *                   x86 program reads no yaAGC core itself.
  * At the first sample point (an idle pass through ADVAN) at or after their
  * time, in this order: pokes, the vehicle models (the radar after the
- * SPS), channel changes, then a restart or a key. With FLIGHT_ENGINE_LAG
+ * SPS), channel changes, the hand controller, then a restart or a key. With FLIGHT_ENGINE_LAG
  * the engine also runs after every routine, as do the RCS jets and a radar
  * read that starts between sample points (fs_after_routine). */
 #include <stdio.h>
@@ -50,6 +51,7 @@
 #include "vehicle_models.h"
 #include "radar_models.h"
 #include "landing_radar.h"
+#include "hand_controller.h"
 #if RK_LM
 #define FS_ADVAN 03214u
 #else
@@ -90,6 +92,7 @@ typedef struct {
 } fs_inputs;
 static rm_rr_config rm_rr_cfg;
 static lr_config lr_cfg;
+static hc_config hc_cfg;
 /* The landing radar's true trajectory takes the engine's and the jets'
  * velocity changes (vm_dv_hook has no context: one fs_inputs a program). */
 static lr_state *fs_lr;
@@ -181,6 +184,16 @@ static int fs_parse_models(void)
     }
 #endif
     lr_cfg.trace = getenv("FLIGHT_LR_TRACE") != 0;
+    if (!hc_parse(&hc_cfg, getenv("FLIGHT_RHC"))) {
+        fprintf(stderr, "FLIGHT_RHC=FROM-TO:P,Q,R[;FROM-TO:P,Q,R...] (counts at most 42)\n");
+        return 0;
+    }
+#if !RK_LM
+    if (hc_cfg.n) {
+        fprintf(stderr, "FLIGHT_RHC is the LM's\n");
+        return 0;
+    }
+#endif
     if (getenv("FLIGHT_CORE") && !getenv("X86_START")) {
         fprintf(stderr,
                 "FLIGHT_CORE needs X86_START: the host differential's FLIGHT_SNAPSHOT of it\n");
@@ -377,6 +390,7 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
               : c == 031u ? &st->hw.channel31
                           : &st->hw.channel32) = v;
     }
+    hc_step(&hc_cfg, t, w, st->hw.channel13, &st->hw.channel31);
     if (in->gojams < in->ngojams && t >= in->gojam_at[in->gojams]) {
         while (in->gojams < in->ngojams && t >= in->gojam_at[in->gojams]) ++in->gojams;
         fd_gojam(st); /* as yaAGC's GOJAM and tools/flight_gojam.h */
