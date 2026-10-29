@@ -54,6 +54,9 @@ RUNS = {
     '1581-kernal': (['--slow'], "D81 set, KERNAL load through VICE's virtual drive (no true drive emulation)",
                     'DSKY key queue (VICE monitor)'),
 }
+# A run that fails is run once more; the failed attempt's files are kept
+# as <m>-<run>-try1-* and the doc lists it (#1021).
+ATTEMPTS = 2
 # The source the runs build from: a change here makes the doc stale.
 SOURCES = ['src', 'include', 'platform', 'tools', 'tests', 'Makefile']
 
@@ -103,21 +106,29 @@ def run_all(m, skip, stage):
     for name, (extra, _, _) in RUNS.items():
         if name in skip:
             continue
-        (OUT / f'vice-{m}' / 'vice.log').unlink(missing_ok=True)
-        (OUT / f'boot-{m}.json').unlink(missing_ok=True)  # never a stale one from an earlier make
-        report = flight_disk(['--missions', m, '--p00', *extra], xvfb='--xtest' in extra)
-        (stage / f'{m}-{name}.json').write_text(json.dumps(report, indent=1) + '\n')
-        boot = OUT / f'boot-{m}.json'
-        if boot.exists():  # removed after each run, so never a stale one
-            shutil.copy(boot, stage / f'{m}-{name}-boot.json')
-        for log in ('vice', 'monitor'):  # monitor.log: the REU bounds trace
-            if (OUT / f'vice-{m}' / f'{log}.log').exists():
-                shutil.copy(OUT / f'vice-{m}' / f'{log}.log', stage / f'{m}-{name}-{log}.log')
-        shot = OUT / f'vice-{m}' / f'{m}-dsky.png'
-        if shot.exists():
-            shutil.copy(shot, stage / f'{m}-{name}-dsky.png')
-            shot.unlink()
-        boot.unlink(missing_ok=True)
+        for attempt in range(1, ATTEMPTS + 1):
+            for log in ('vice', 'monitor'):
+                (OUT / f'vice-{m}' / f'{log}.log').unlink(missing_ok=True)
+            (OUT / f'boot-{m}.json').unlink(missing_ok=True)  # never a stale one from an earlier make
+            report = flight_disk(['--missions', m, '--p00', *extra], xvfb='--xtest' in extra)
+            passed = bool(report['vice'].get('ok')) and bool(report['vice'].get('p00'))
+            tag = f'{m}-{name}' if passed or attempt == ATTEMPTS else f'{m}-{name}-try{attempt}'
+            (stage / f'{tag}.json').write_text(json.dumps(report, indent=1) + '\n')
+            boot = OUT / f'boot-{m}.json'
+            if boot.exists():  # removed after each run, so never a stale one
+                shutil.copy(boot, stage / f'{tag}-boot.json')
+            for log in ('vice', 'monitor'):  # monitor.log: the REU bounds trace
+                if (OUT / f'vice-{m}' / f'{log}.log').exists():
+                    shutil.copy(OUT / f'vice-{m}' / f'{log}.log', stage / f'{tag}-{log}.log')
+            shot = OUT / f'vice-{m}' / f'{m}-dsky.png'
+            if shot.exists():
+                if tag == f'{m}-{name}':
+                    shutil.copy(shot, stage / f'{tag}-dsky.png')
+                shot.unlink()
+            boot.unlink(missing_ok=True)
+            if passed:
+                break
+            print(f'{name}: attempt {attempt} failed: {report["vice"].get("error") or "P00 not reached"}', flush=True)
     if 'test' not in skip:
         (OUT / 'vice-test' / 'vice.log').unlink(missing_ok=True)
         report = flight_disk(['--missions', 'test'])
@@ -238,6 +249,9 @@ def write_doc(m, commit):
     lines += ['', '## Boot to P00', '',
               '| Run | Disks and load | Keys entered through | Load | Store check (rk_boot) | Boot status | '
               'MODREG | FAILREG | P00 | REU bounds | Result | Evidence |', '|---|---|---|---|---|---|---|---|---|---|---|---|']
+    tries = {n: [(ev / f'{m}-{n}-try{k}.json', json.loads((ev / f'{m}-{n}-try{k}.json').read_text()))
+                 for k in range(1, ATTEMPTS) if (ev / f'{m}-{n}-try{k}.json').exists()] for n in RUNS}
+    retried = lambda n: f' (attempt {len(tries[n]) + 1})' if tries[n] else ''  # noqa: E731
     for n, (_, how, keys) in RUNS.items():
         r = runs.get(n)
         if not r:
@@ -255,12 +269,17 @@ def write_doc(m, commit):
                   + (f"; {'; '.join(trace_errors[n])}" if trace_errors.get(n) else ''))
         lines.append(f"| {n} | {how}{swaps} | {keys} | {v.get('load_s')} s | {v.get('boot_s')} s | "
                      f"{v.get('boot_status')} | {v.get('modreg')} | {' '.join(v.get('failreg') or [])} | "
-                     f"{'yes' if v.get('p00') else 'no'} | {bounds} | {'pass' if oks[n] else 'FAIL'} | "
+                     f"{'yes' if v.get('p00') else 'no'} | {bounds} | {'pass' if oks[n] else 'FAIL'}{retried(n)} | "
                      f"{'<br>'.join(digest(f) for f in files)} |")
     lines += ['', 'Load is the loader reading and expanding the disks into the REU (from its own CIA count, '
               'PAL cycles); the store check is the flight resident verifying every module header and CRC, the '
               'resolver and the rope\'s site words before the GOJAM. The KERNAL\'s own load of the 6 KB loader '
-              'adds about 10 s. A disk asked for twice means the loader did not take the first try: the run attaches the next image and presses RETURN at once, and the loader asks again when the id sector it reads is not the new disk\'s or the read fails, as it would on real hardware; the second try loads. The loader\'s message at each ask is in the run\'s JSON (`swap_prompts`). Boot status 0 means every store check passed. Each boot record '
+              'adds about 10 s. A disk asked for twice means the loader did not take the first try: the run attaches the '
+              'next image and presses RETURN at once, as a person might. The KERNAL loader (the 1541 and '
+              '1581-kernal runs) reads the drive\'s status after opening the disk\'s id file; while a 1541 '
+              'that has not yet seen the new disk reports 74 DRIVE NOT READY it waits a second and opens it '
+              'again, up to five times (#1012, #1015). On any other error, or an id that is not the new disk\'s, '
+              'the loader asks for the disk again, as it would on real hardware. The loader\'s message at each ask is in the run\'s JSON (`swap_prompts`). Boot status 0 means every store check passed. Each boot record '
               f'(`{m}-<run>-boot.json`, written by `flight_disk.py --p00`) binds the commit, the disk images, '
               'the loader and resident PRGs, the REU store image and the VICE log by SHA-256.', '',
               'REU bounds is the check of acceptance item 9 (tools/reu_layout.py, #681) on each boot. The '
@@ -275,6 +294,25 @@ def write_doc(m, commit):
               'clean, the trace\'s three checkpoints set as VICE numbered them and at least one DMA seen, '
               'which this tool checks again from the monitor log. The run\'s JSON lists the regions it '
               'checked against.', '']
+    lines += ['## Attempts that failed', '']
+    failed = [(n, k, f, t) for n in RUNS for k, (f, t) in enumerate(tries[n], 1)]
+    if failed:
+        lines += [f'A run that fails is run once more from the same build ({ATTEMPTS} attempts at most), and the '
+                  'failed attempt\'s files are kept. The table above shows the last attempt; these came before it:',
+                  '', '| Run | Attempt | What happened | Disks asked for | Last loader message | Evidence |',
+                  '|---|---|---|---|---|---|']
+        for n, k, f, t in failed:
+            v = t['vice']
+            what = v.get('error') or ('P00 not reached' if v.get('ok') else 'failed')
+            asks = ', '.join(map(str, v.get('swaps') or [])) or '-'
+            msg = (v.get('swap_prompts') or ['-'])[-1]
+            files = [f] + [x for x in (ev / f'{m}-{n}-try{k}-{s}' for s in ('vice.log', 'monitor.log', 'boot.json'))
+                           if x.exists()]
+            lines.append(f"| {n} | {k} | {what} | {asks} | `{msg}` | {'<br>'.join(digest(x) for x in files)} |")
+        lines += ['']
+    else:
+        lines += [f'None: every run reached P00 on its first attempt. A run that fails is run once more ({ATTEMPTS} '
+                  'attempts at most), and the failed attempt is kept in the evidence and listed here.', '']
     b = boots.get('1581') or next(iter(boots.values()), None)
     if b and b.get('screen'):
         shot = ev / f'{m}-1581-dsky.png'
