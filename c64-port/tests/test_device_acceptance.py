@@ -115,6 +115,25 @@ class Host(unittest.TestCase):
         self.assertEqual(row[1], 'clean')
         self.assertIn('fewer than 1000 routines, not bounded', row[2])
 
+    def test_night_watchman(self):
+        # (review-1029b M1) the C64 rule must sound where the native rule
+        # does; a run with no watchman line fails; host evidence stored
+        # before the field existed is judged without it.
+        ok = dict(alarms=0, stuck_steps=0, checks=40, disagree=0, native_armed=3, c64_checks=41, c64_disagree=0,
+                  c64_only=0)
+        row = self.rows([host_row(night_watchman=ok)])[0]
+        self.assertEqual(row[1], 'clean')
+        self.assertIn('the C64 rule differs from it at 0 of 41', row[2])
+        self.assertEqual(self.rows([host_row(night_watchman=dict(ok, c64_disagree=1, c64_only=1))])[0][1],
+                         'NOT CLEAN')
+        self.assertEqual(self.rows([host_row(night_watchman=dict(ok, disagree=2))])[0][1], 'NOT CLEAN')
+        no_c64 = {k: v for k, v in ok.items() if not k.startswith('c64_')}
+        self.assertEqual(self.rows([host_row(night_watchman=no_c64)])[0][1], 'NOT CLEAN')
+        row = self.rows([host_row(night_watchman=None)])[0]
+        self.assertEqual(row[1], 'NOT CLEAN')
+        self.assertIn('night watchman: no summary line', row[2])
+        self.assertNotIn('night watchman', self.rows([host_row()])[0][2])
+
     def test_unregistered_counted(self):
         self.assertIn('9 unregistered', self.rows([host_row(unregistered=[{}] * 9)])[0][2])
 
@@ -130,7 +149,10 @@ class Host(unittest.TestCase):
         over = dict(fitted=10100, yaagc=10000, percent=1.0, routines=2000, mean_abs_error=2.5)
         cases = [host_row(**bulk), host_row(commit='0123456789ab', **bulk), host_row(exit=1, **bulk),
                  host_row(routine_mismatches=[dict(point='01,2000')], **bulk),
-                 host_row(unregistered=[{}] * 9, **bulk), host_row(interpretive_charge=over, **bulk)]
+                 host_row(unregistered=[{}] * 9, **bulk), host_row(interpretive_charge=over, **bulk),
+                 host_row(night_watchman=dict(alarms=0, stuck_steps=0, checks=4, disagree=0, native_armed=0,
+                                              c64_checks=4, c64_disagree=1, c64_only=1), **bulk),
+                 host_row(night_watchman=None, **bulk)]
         others = [host_row('lm-a-scaled-x0.5'), dict(host_row(), mission='cm', scenario='cm-a-scaled-x1')]
         for row in cases:
             summary = others + [row]
