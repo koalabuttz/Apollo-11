@@ -1,0 +1,14 @@
+python3 tools/differential.py --reference "/workspace/Apollo-11/c64-port/deps/fixture"
+PASS: 26 original-assembly scenarios; 323 AGC state words plus alarm and status per scenario agree
+Boundaries: ENDFIND / BAILOUT1 / CHANJOB-2 / DUMMYJOB entry; no restart or dispatch claim
+PASS: 32768 sign extensions, 65536 overflow corrections, 524288 accumulator additions against Virtual AGC helper API
+Arithmetic binary stream SHA256: a96b7101bbd6394b7eeb6a33bc4c3f9ba255cda419f448d3120a29e019401fe1
+PASS: 53 dispatch cases / 109 checkpoints, including 8 sequential two-job native executions
+Full saved state and selected 2CADR match original basic dispatch; BBANK and SUPERBNK checked independently
+Dispatch snapshot SHA256: 97906753f385b75ce8847696d18f15b5d995ad6dc1fea938f1b065cd6f8a15bb
+PASS: 81 sleep/wake/priority cases / 115 checkpoints, including 5 native lifecycle sequences
+Full saved state and actual bank-qualified transfer match original JOBSLEEP/JOBWAKE/PRIOCHNG
+Lifecycle snapshot SHA256: 6e5c7afa4a31a2d7fde7b981d89f9ccecb1a6896866ef505432927ab3623c00b
+PASS: 196 WAITLIST cases / 306 checkpoints, including 10 actual native task sequences
+TIME3/LST1/LST2/RUPTAGN, retained 1203/1204 boundaries and physical task transfers match original assembly
+WAITLIST snapshot SHA256: bd71aad75050b3df0fb7753b9519599bda9ca2b22abcecdbd41984001841182b

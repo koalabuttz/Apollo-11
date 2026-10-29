@@ -1,0 +1,194 @@
+{
+ "milestone": "lm-r63",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 15360,
+ "cases_sha256": "e008737058c5f3621253a94323e88f860ee2927383f6e2f9d388e43374ebefe9",
+ "oracle_sha256": "ade1373e062c90cc7dd8458b913961706fda4e0836b71d39d0d554766c8db50d",
+ "frozen_vectors": 960,
+ "c64_vectors": [
+  {
+   "mission": "lm",
+   "keep": "0x3fffffff",
+   "cases": 35,
+   "case_ids": [
+    0,
+    536,
+    1028,
+    1548,
+    2068,
+    2596,
+    3152,
+    3636,
+    4100,
+    4708,
+    4612,
+    5120,
+    5636,
+    6320,
+    6195,
+    6327,
+    6668,
+    7172,
+    7180,
+    7696,
+    8284,
+    8824,
+    9256,
+    9740,
+    9732,
+    10264,
+    10760,
+    11276,
+    11784,
+    12288,
+    12916,
+    13320,
+    13832,
+    14436,
+    14876
+   ]
+  }
+ ],
+ "c64_gcov_branches": {
+  "host_taken": 416,
+  "c64_taken": 416,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/lm_r63.c",
+   "src/rtb_angles.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/lm_r63_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "stops": {
+  "LM 26,2022 V89CALL": {
+   "04616": 512
+  },
+  "LM 26,2024 ": {
+   "04616": 512
+  },
+  "LM 26,2033 ": {
+   "05472": 512
+  },
+  "LM 26,2034 ": {
+   "06070": 397,
+   "05126": 115
+  },
+  "LM 26,2035 ": {
+   "04616": 512
+  },
+  "LM 26,2036 V89RECL": {
+   "06070": 377,
+   "05126": 135
+  },
+  "LM 26,2037 ": {
+   "06070": 402,
+   "05126": 110
+  },
+  "LM 26,2042 ": {
+   "06070": 389,
+   "05126": 123
+  },
+  "LM 26,2043 ": {
+   "06070": 512
+  },
+  "LM 26,2045 ": {
+   "06070": 395,
+   "05126": 117
+  },
+  "LM 26,2047 ": {
+   "05126": 116,
+   "06070": 396
+  },
+  "LM 26,2051 ": {
+   "06070": 512
+  },
+  "LM 26,2053 ": {
+   "05126": 124,
+   "03726": 388
+  },
+  "LM 26,2056 ": {
+   "03726": 512
+  },
+  "LM 26,2061 ": {
+   "06070": 377,
+   "05126": 135
+  },
+  "LM 26,2062 ": {
+   "05126": 114,
+   "06070": 398
+  },
+  "LM 26,2063 ": {
+   "06070": 456,
+   "05126": 56
+  },
+  "LM 26,2070 ": {
+   "06070": 380,
+   "05126": 132
+  },
+  "LM 26,2072 V89CALL1": {
+   "06070": 512
+  },
+  "LM 26,2074 ": {
+   "04616": 381,
+   "05126": 131
+  },
+  "LM 26,2075 ": {
+   "04616": 512
+  },
+  "LM 26,2076 ": {
+   "04616": 512
+  },
+  "LM 26,2100 ": {
+   "04616": 512
+  },
+  "LM 26,2103 ": {
+   "05472": 512
+  },
+  "LM 26,2104 ": {
+   "05516": 512
+  },
+  "LM 26,2105 ": {
+   "06070": 394,
+   "05126": 118
+  },
+  "LM 26,2106 ": {
+   "05516": 512
+  },
+  "LM 26,2110 ": {
+   "04616": 512
+  },
+  "LM 26,2112 ": {
+   "05472": 512
+  },
+  "LM 26,2114 ": {
+   "06070": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (lm: BANKCALL, CHANG2, DOWNFLAG, ENDMARK, RTB NORMUNIT)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 15360,
+ "host_branch_arcs": 445,
+ "c64_rows": 35,
+ "c64_branch_arcs": 445,
+ "host_branches_missing_on_c64": []
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-jet-select",
+  "release": "evidence-cm-jet-select",
+  "files": {
+    "cm-jet-select-differential.log": {
+      "sha256": "d04d619c8b4aa9770738c4591a275f0a1822fd5f2606782c09e5f5b6888955a6",
+      "bytes": 196,
+      "store": "tree"
+    },
+    "cm-jet-select-host.log": {
+      "sha256": "86d5131843762525364dd3f4442614cd07cc65a647b5fd9421f1ffd18c80e64c",
+      "bytes": 1072,
+      "store": "tree"
+    },
+    "cm-jet-select-proof.json": {
+      "sha256": "9b3dacec780046f7ef2bd42157c9bf2a75eab0193f834de496ec68e1f043798c",
+      "bytes": 3257,
+      "store": "tree"
+    },
+    "cm-jet-select-source-map.json": {
+      "sha256": "79c27762f7de19db5003ba82f85320f4f53a91920b841b2fcb2bf16f0214dc06",
+      "bytes": 91484,
+      "store": "tree"
+    },
+    "cm-jet-select-vice.log": {
+      "sha256": "28a7a50d254ec42f3e2267d2c5c339498a62d494a5ce611978c3aa02fe1f85a5",
+      "bytes": 967,
+      "store": "tree"
+    }
+  }
+}

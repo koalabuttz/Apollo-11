@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete monitor-paste original-assembly states; retained memory unchanged
+Mailbox: a500002000
+PRG bytes: 6976
+dsky_monitor_paste_0-hardware-stack.bin: measured stack extent 16 bytes
+dsky_monitor_paste_0-software-stack.bin: measured stack extent 31 bytes

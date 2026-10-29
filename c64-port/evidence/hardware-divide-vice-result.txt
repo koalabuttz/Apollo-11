@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 255 complete hardware_divide group original-assembly states; retained memory unchanged
+Mailbox: a50000ff00
+PRG bytes: 3517
+hardware_divide-hardware-stack.bin: measured stack extent 14 bytes
+hardware_divide-software-stack.bin: measured stack extent 8 bytes

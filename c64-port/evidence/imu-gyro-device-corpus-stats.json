@@ -1,0 +1,68 @@
+{
+  "lm0": {
+    "mission": 0,
+    "mode": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "761e19b9e62285e1bee9ddbad4be64cf522c4e99120a5deb89137619c1cc3c82",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1297,
+    "event_counts": {
+      "0": 24580,
+      "2": 4096,
+      "1": 8188,
+      "3": 4092,
+      "4": 4096,
+      "5": 4092,
+      "6": 4096,
+      "7": 4092,
+      "8": 4096,
+      "9": 4092,
+      "10": 16
+    }
+  },
+  "lm1": {
+    "mission": 0,
+    "mode": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "cd878773fb9835102ffb63554b624d710e33ac28a1b6676f17a3c00de64a7632",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1243,
+    "event_counts": {
+      "0": 2048,
+      "1": 63488
+    }
+  },
+  "cm0": {
+    "mission": 1,
+    "mode": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "3a92a1855a79b80ae13e726bac80df4e39b5f76e91cf26770a4cde5ed360ae47",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1297,
+    "event_counts": {
+      "0": 24580,
+      "2": 4096,
+      "1": 8188,
+      "3": 4092,
+      "4": 4096,
+      "5": 4092,
+      "6": 4096,
+      "7": 4092,
+      "8": 4096,
+      "9": 4092,
+      "10": 16
+    }
+  },
+  "cm1": {
+    "mission": 1,
+    "mode": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "58c20dafd94370224b997de575cc7fb55e8a0ad921b049a44750d7f7d7f5d0e9",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1243,
+    "event_counts": {
+      "0": 2048,
+      "1": 63488
+    }
+  }
+}

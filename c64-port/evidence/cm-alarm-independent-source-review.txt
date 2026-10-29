@@ -1,0 +1,25 @@
+Independent read-only source review by /root/frozen_storage.
+Scope: original Comanche055 ALARM_AND_ABORT local bodies and the proposed whole-file mapping, within the explicit source-produced compiled-caller contracts. This is source inspection; it does not repeat or replace the retained original-engine/strict/SAN/C64 acceptance proofs.
+
+Conclusion: no concrete local control/body mismatch or unassigned emitted instruction/data word was found in the inspected mapping. Whole-file qualification is defensible within the documented ordinary compiled descriptor, normal alarm-code producer, coherent image, ownership and genuine hardware-frame domains. It does not establish entire applications or all external selected bodies.
+
+Checked: all four CCS FAILREG sign/zero routes; FAIL3 POSMAX masking; LXCH source L normalization; first-alarm ADS lamp update; MULTFAIL AD/TS overflow skip into POODOO; normal BORTENT return PC05721 versus true signed-one TS overflow; ALARM2 surviving-A store before live inline-alias reread; ERRORS Q data versus the later genuine TC return descriptor; PRIOLARM raw-A TS skip and external PRIODSPR frontier; BAILOUT/POODOO/CCSHOLE actual VAC5/SWRETURN and alarm-word frontiers; three source DOWNFLAG descriptors; MR.KLEAN return; WHIMPER-1 INHINT versus direct WHIMPER IRQ preservation, BRUPT substitution and external ENEMA handoff; CURTAINS and VARALARM inline-data skips and original caller returns; non-emitting DOALARM/ABORT aliases.
+
+Contract limits retained: ordinary TC/inline descriptors are0100..07775 and physical code storage>=0100; raw overflowing VARALARM/BORTENT inputs are excluded by the reviewed original producers rather than generalized as supported arbitrary entries. Normal15 diagnostic values may include low/negative/-0 data because they are not dispatched. External upstream mission bodies, queued MAKEPLAY/astronaut bodies and ENEMA-selected payloads remain explicit separate work. Frame exclusion is required across composed native stages/overlays. The review generator leaves complete_file_qualified false for coordinator certification and does not itself turn data words into algorithm credit.
+
+Reviewed immutable identities (SHA256):
+ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f  ../Comanche055/ALARM_AND_ABORT.agc
+69069d3417e687356ae1431eca8a9ce39663e5b7a8433bdf02635eafc81a35f5  tools/cm_alarm_wholefile_review.py
+6bf31c60df3f45409faf262782c3c3d75c7271246f3fbd6c716db6d5e5bf2830  evidence/cm-alarm-wholefile-review.json
+34e2c7429cf62ab459ab8935e14def10f3ade37a3306a20cdc88a8ac8b876174  src/cm_alarm_record.c
+6b1509d481bddefc4273d72a0782ddd4bcc99da15cd4cf554e667b3a62dc78d3  src/cm_alarm_image.c
+454330f8202276ce5446d4896537c3737870a87900f578bfaef11830dce14f0e  src/cm_alarm_complete.c
+4d9d995516d4057da321dcadd04498e42e802b90afdf68d138d5df0366a23732  src/cm_alarm2_image.c
+6ebd916a96665c1d875bcac4a7285aa649753c727a3e7de14bf1b45cbb036fe5  src/cm_priolarm.c
+b6c7f500a5d08cb8f3189349eea2f82f929581c2cde398d54cddb0b9899a0d2a  src/cm_abort_snapshot.c
+02b94423be195ec60714200edbae2fac6778bb8f1a8affe0f110769960003056  src/cm_abort_word.c
+a78bee43a4696538019747b66297fb5f8f3821f04ffcb213ecee40648bd37ba1  src/cm_abort_recovery.c
+266992ffe741edd2e9a6ab15c31a9fae3884fdeb879811b9095e4e5d48bc7312  src/cm_abort_whimper.c
+a6eb7cfc90fc3426a61eb3d29b5fd95858b6cfc1bd8ddd8235fba8cbcbe64f3e  src/cm_abort_lifecycle.c
+1163ae3c47630f207eee901b1026f8333bd4b47de1c9712610221c2d3df7c8c9  src/cm_enema_image.c
+f85abec19d015adc1b95a17e2b4be06c2b138a1ad3a957e124a81320610b6064  src/cm_r52_priority_alarm.c

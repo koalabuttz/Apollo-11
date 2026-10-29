@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-context-change-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-context-change-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-CONTEXT-CHANGE.PRG' as `RESIDENT' to unit 8
+writing file `CM-CONTEXT-CHANGE-211.PRG' as `G211' to unit 8
+writing file `CM-CONTEXT-CHANGE-246.PRG' as `G246' to unit 8
+writing file `CM-CONTEXT-CHANGE-247.PRG' as `G247' to unit 8
+211 5766 loaded bytes
+246 6006 loaded bytes
+247 10574 loaded bytes

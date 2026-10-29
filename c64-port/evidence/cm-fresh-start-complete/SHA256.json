@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-fresh-start-complete",
+  "release": "evidence-cm-fresh-start-complete",
+  "files": {
+    "cm-fresh-start-complete-c64-cover.json": {
+      "sha256": "d0d6ebdd90589e1359c8f9424baf177b17d71f4e235894286a2009cbcc5fbb3c",
+      "bytes": 4340,
+      "store": "tree"
+    },
+    "cm-fresh-start-complete-c64.json": {
+      "sha256": "6218790c90da44e8fd44d223d33c9d8d14529f1998e921ad86dfc71d3f8aad2d",
+      "bytes": 1427,
+      "store": "tree"
+    },
+    "cm-fresh-start-complete-comparison.json": {
+      "sha256": "07638878316911d8fba6fb17546c59100cda393e99aabd28703649bcf121716f",
+      "bytes": 1688,
+      "store": "tree"
+    },
+    "cm-fresh-start-complete-host.json": {
+      "sha256": "5c78fd6c8ec1f76bb8de50637630c20c373b2e3b785c9ad277d7ba8073451eca",
+      "bytes": 1404,
+      "store": "tree"
+    },
+    "cm-fresh-start-complete-line-map.json": {
+      "sha256": "e6d1b4eb3d7a06394b68361266c13166a7960fa2e94d2cf240ef424ef2d0da5b",
+      "bytes": 218752,
+      "store": "tree"
+    },
+    "cm-fresh-start-complete-source-map.json": {
+      "sha256": "ca701c42744aa362983fa3456f377c8dfd44256d69001451f7f3af6095e30421",
+      "bytes": 1760,
+      "store": "tree"
+    }
+  }
+}

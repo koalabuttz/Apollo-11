@@ -1,0 +1,16 @@
+{
+  "changed_file": "docs/DELCOMP.md",
+  "old_sha256": "96c829e0f0481da8df02b2e6226ec16ee20f56b1aa20f34c8364aabdbd153175",
+  "new_sha256": "b5dc3c7dac3d6d9cb74009830b4bb20faef07010bf71cdfe401858c30a5df716",
+  "scope": "Text correction: existing constructors/proofs cover all eight SUPER latch forms, not four. Runtime source and qualification artifacts unchanged.",
+  "latch_forms_octal": [
+    "000",
+    "020",
+    "040",
+    "060",
+    "100",
+    "120",
+    "140",
+    "160"
+  ]
+}

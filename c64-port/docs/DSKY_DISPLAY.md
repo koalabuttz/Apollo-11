@@ -1,0 +1,7 @@
+# Native C64 DSKY output adapter
+
+The adapter consumes actual channel10 relay words, latching eleven numeric/sign rows and selector12 caution state. Channel11 supplies lights and verb/noun blink. Native flash timing accepts elapsed centiseconds and follows the source128cs cycle with32off/96on; KEY REL and OPR ERR follow that phase. No guidance image is duplicated.
+
+Host and sanitizer checks cover latches, decimal/sign/blank rows, lights, flash boundaries and clock wrap. The actual PAL C64 screen0400 and colorD800 are independently read back in VICE. Source-native mode66 runs DSPMMJB then DSPOUTSB and reaches screen66; additional wiring cases show noun79, verb01, R1+12345, blank and light/color behavior. Mailbox `a500000101`, PRG4,675bytes, text4,407, rodata254, BSS4,130, noinit0, additional zero page0, hardware/software stacks16/30bytes. The diagnostic includes a whole source image for the source-to-screen path; production owns the established canonical allocation.
+
+The adapter expects standard KERNAL text mode. A live application must feed actual relay events and channel11 latches, supply real elapsed-centisecond flash phase, and integrate keyboard/device producers. These are separate whole-application requirements, not established by this bounded screen proof. Reproduce with the dsky_display host/sanitizer/C64 targets and tools/dsky_display_vice_test.py; retained evidence includes actual screen/color RAM.

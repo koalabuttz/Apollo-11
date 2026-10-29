@@ -1,0 +1,70 @@
+{
+  "source_files": {
+    "include/cm_basic_wake.h": "71ef291e259d20ca55990844c25d1be7dbb88dc1cdb628dada4d8dbbd8889b9b",
+    "src/cm_basic_wake.c": "4cb62726c6ec07d283e463ca508b27642365b60344e387fb985416f81f5b7979",
+    "docs/COMANCHE-BASIC-WAKE.md": "353a0e72eba6cfd85bbdcbdc6ba8b3bcc5a96c7c08c2dfa0a4c6693ec06fc916",
+    "tests/cm_wake_check.h": "f07f68841bf5cae61fe5d69471771e4c2f3a414cd75c13a8c3cafff1af6168c3",
+    "tests/cm_wake_cases.c": "fb2930799a00e0bbd2c3185c5969f7d4002da355d4620e88b712f3d3db0dbdc5",
+    "tests/cm_wake_vectors.h": "2e170f37317b6bfc842a3741a10db5c83bca443029e2382d972d268cb629ffe2",
+    "tests/cm_wake_check.c": "f6df4f74050c3d536a0e2c07af719c5ed4cfb54be6f6af1c359aa1ef17479267",
+    "tests/cm_wake_cases.h": "5f8e9f7a8c4ff649be5bc8adda522eb91d58a88cba29948741bd9d17b88cae25",
+    "tests/test_cm_wake.c": "b9e1544b95283cdbfd0050944ec507241d7c9e8de46eba6b772e144e0ae5adae",
+    "tools/cm_wake_inputs.c": "a29fbfb3a933b947ffb6238a1e0abfa709c768bd47983d91a73be974c07a8965",
+    "tools/cm_wake_diagnostic.c": "f956ab0ebe8d81b939bad6dbac634bcf4cd9228ad9860a117bcf1381e2f8d7c5",
+    "tools/freeze_cm_wake.py": "ae267d61b834dea2858a7cb8afdc6812094f983c8370818e72894a2e990c4da1",
+    "tools/cm_wake_differential.py": "9d43415f4d0f8134eeb9938c9fc54466c3e4e525c4a6b4343ab08ec4e7a25cbd",
+    "tools/cm_wake_reference.c": "46dd80410b350c5ae841d25b59cbff711a056cee16cb3c19feb1125db2b0ea74",
+    "tools/cm_wake_vice_test.py": "3faaaa71db2d3e320f40b124df9ec1c0accca3277e82d25d2b7df87ace79e21a",
+    "tools/cm_wake_sanitize_stream.py": "ca3d8624ec63b9c71a9fb0b1278569465b9029934bb0f44c3e30df328daf9676",
+    "tools/cm_wake.mk": "46947654e573e67658a91206c49d85f33ba61dcbeabb01ebc9e08e2cb9004a3b",
+    "tools/cm_wake_snapshot.c": "7480a2209e5b2637339c82316e35a1c36ee4c7bc8e6679949e53cfc529198ddc"
+  },
+  "native_dependencies": {
+    "src/cm_dispatch.c": "d418ad5c0027ea1432c6ba03b4492c017d8c3e7b9575b8454127731943dad5b2",
+    "src/cm_executive.c": "131d7d1621498aba42fd4d74d1326806683f5b0d53d73715db4c16a0fd8f697c",
+    "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "tests/cm_clockjob_cases.c": "d8bd07bfee1a77f57a660dcac5395f5a832db6bbcba43c700f95efd34713b66e",
+    "tests/cm_trig_cases.c": "b39716b836fe437dfac5087f862445620548b89f95ff1b6c29dd04186eaf60c2"
+  },
+  "original_sources": {
+    "../Comanche055/EXECUTIVE.agc": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "deps/cm-services-fixture/MAIN.agc.bin": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  },
+  "artifacts": {
+    "evidence/cm-wake-native.snapshots.xz": "2e40606bbf7b29e82a70f57182eb30d930de2b2808d023ba8e42534182559817",
+    "evidence/cm-wake-reference.snapshots.xz": "2e40606bbf7b29e82a70f57182eb30d930de2b2808d023ba8e42534182559817",
+    "evidence/cm-wake-sanitize.snapshots.xz": "2e40606bbf7b29e82a70f57182eb30d930de2b2808d023ba8e42534182559817",
+    "evidence/cm-wake-stream-sha.json": "7c91e6eae044a6a830784aaded3044b7649c726eb6985933629dee8672ac9e1c",
+    "evidence/cm-wake-differential.log": "65db1e501f33d49025c1090582591ee56c641e24fe5b0ebbc81d57095d5ff189",
+    "evidence/cm-wake-freeze.log": "392f21adb3f74d3470a25f4c3c2f4c0552bb4e320be32d8661e37752bf3fe0a7",
+    "evidence/cm-wake-validation.log": "955e0b9a06a1ced2085d5242de2950be44dc84f98ae9c2a6678f0a2382395728",
+    "evidence/cm-wake-c64-result.log": "ac2a68babcd692ab3588df1c6a45da02160a1904483ad42e08c46d9570b78a09",
+    "evidence/cm_wake.prg": "85cecd85daa5e1b2344dfd33fac7f7776ce073eab8522e48cb8a011b56903906",
+    "evidence/cm_wake.map": "ff20e6b2fdf305ade444d52f680fdbe64b0e4dbda02e7204687a6f1f09922001",
+    "evidence/cm_wake-vice-mailbox.bin": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5",
+    "evidence/cm_wake-hardware-stack.bin": "2fbba989b49e7e60f2931db754a276d1b9cb42752ff5f76a1d3f6afff904b2a4",
+    "evidence/cm_wake-software-stack.bin": "0a9bab4fce29a9996e516ac857ebac55b21b87297b2c636ea52191269cc69127",
+    "evidence/cm_wake-vice.log": "735e57fb776163c51063d84b391e76586e76babf927d5e1d038c2ac8300e0372",
+    "evidence/cm_wake-vice-monitor.log": "56e985051edf6bad62379c8badb977fceb7c304745d1fb074d86065c74917943",
+    "evidence/cm_wake-vice.mon": "0e8ce5ff46310f065bca6cbf0c4d7ad7a594aa98006bb0d08a78fc9a100496fd"
+  },
+  "states": {
+    "complete_original_states": 8192,
+    "state_words": 2050,
+    "frozen": 64,
+    "invalid_boundaries": 19,
+    "uncompressed_SHA256": "6416525e5b41aafb661b3f4d70d716cebd350d54cb5de419c3abd5fbcc8cf73c",
+    "strict_and_SAN": "all complete source outputs byte-identical"
+  },
+  "target": {
+    "mailbox": "a500004000",
+    "prg_bytes": 11931,
+    "hardware_stack_bytes": 18,
+    "rom_stack_bytes": 14,
+    "software_stack_bytes": 736,
+    "extra_zero_page_bytes": 0
+  },
+  "boundary": "actual ordinary basic caller entry; no subsequent consumer or scheduler exchange"
+}

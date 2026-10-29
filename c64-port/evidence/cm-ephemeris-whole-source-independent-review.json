@@ -1,0 +1,40 @@
+{
+  "reviewer": "general_division",
+  "read_only": true,
+  "recommendation": "All71 distinct local emitted words are implemented under the explicitly documented producer/caller domains. Recommend local containing-source closure only with the unqualified actual LUNPOS caller returns explicitly retained as a frontier. No whole application acceptance recommendation.",
+  "hashes": {
+    "src/cm_ephemeris_time.c": "4858f2178e26266690db588111af8514d4ebc98f48c7531952f7489c800ec9cf",
+    "src/cm_ephemeris_moon.c": "80cb368bbb60ae6a55570c059f39fe0f443a3509a29756e08830e9b0671e0c64",
+    "src/cm_ephemeris_velocity.c": "5ea4e366d89c56b4bcc537502eb0217d2e44427c2b52088c05def2f84e7ef6b6",
+    "src/cm_ephemeris_solar.c": "92ef9830c2ef5a7b354721dd4f974856b611aff833dad846ef96d706c6feef5b",
+    "src/cm_ephemeris_positions.c": "bd1bafd6ef8101661e81072fd2661543aef18c362f7c20f92a266fa580de1da7",
+    "include/cm_ephemeris_time.h": "34efd4491164ffb0b8def37812d2e62d277661be1d68abcf4593f37135cf36dd",
+    "include/cm_ephemeris_moon.h": "935f0ed2e898940906fecaca491911b90f569d115dbada2521b1e949e122c69e",
+    "include/cm_ephemeris_velocity.h": "fe8cf17af22e0dc85e75a13fdb341f5806d4f1c602c3b084fc2e238de1e25fdd",
+    "include/cm_ephemeris_solar.h": "401a6e33570c87edac78de24a857ed637670fa6bfbcbff54e8cab6fd0fdbd3ec",
+    "include/cm_ephemeris_positions.h": "228ac4e0ffa9c87f39645d824112d5289214c42b9dcba4229aedeaa362a3f7ad",
+    "build/cm-ephemeris-time-source-map.json": "0236a2c48403871d8f18430c54f9f066a5a4c32c5e5ba6f4b61579d598965160",
+    "build/cm-ephemeris-moon-source-map.json": "edda3652c93914d63afa1c85785acd006fc7cc3d195abc3709b34a1e86e2ab43",
+    "build/cm-ephemeris-velocity-source-map.json": "21150efce3e5a3b4cd8b70c2dc193e5cee2231adab3fee023019ba98e4cc278e",
+    "build/cm-ephemeris-solar-source-map.json": "67d72976c534b30f65d1a10e3dc31a71f4920cd2a3c2ebb1582e633e2f727762",
+    "build/cm-ephemeris-positions-source-map.json": "0463648cf2dfba1052320885d43bb8132a53acfbc60ca3c096f316e394e0347e",
+    "../Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b"
+  },
+  "local_distinct_words": 71,
+  "every_local_word_original_rope_exact": true,
+  "checks": [
+    "Read entire198-line original containing source and all five native bodies, including time shift/TAD/COMP, scalar trig and stack exchanges, both UNIT/cross paths, lunar and derivative Horner loops, terminal TIX/VSL/RVQ and all four data words.",
+    "NINEB4 raw022000/0 and ONEB4 raw002000/0 match original2DEC and exact rope bytes.",
+    "Two actual LSPOS returns022557/030231, sole actual LUNVEL023377 and S-band LUNPOS065673 are explicit guarded source frames.",
+    "Public SOLPOS has no original callers and remains declared23377, rather than arbitrary return claim.",
+    "Original documentation requires user restart handling and15-day prelaunch polynomial validity; native raw arithmetic qualification does not broaden physical ephemeris validity."
+  ],
+  "concrete_remaining_frontiers": [
+    "Original ORBITAL_INTEGRATION line552 and P20-P25 line3028 also CALL LUNPOS; frozen cm_ephemeris_moon only supports saved return065673. Those actual caller return frames are not qualified by this packet.",
+    "Caller entry/resume services, scheduler observation/restart policy, recurring application runtime and physical timing remain external."
+  ],
+  "limits": [
+    "Independent review checks source/control and all71 original rope word identities, not a repeat of the owners complete corpus or stock C64 runs."
+  ]
+}

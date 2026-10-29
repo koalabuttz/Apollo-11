@@ -1,0 +1,24 @@
+{
+  "scope": "Additional explicit ordinary-compiled-caller ABI clarification; no frozen native/source/proof bytes changed",
+  "prior_domain_audit_sha256": "340f24816391fe1a1d9db14cc6bd1290633d0f4e8efe89ced02721381fb6f0d1",
+  "qualified_extended_source_Q": "0705",
+  "qualified_extended_source_saved_TC_descriptor": "0710",
+  "frozen_mechanical_predicate": "Ordinary entry Q <=07775 and saved return descriptor <=07777; no lower bound in frozen helper",
+  "remaining_domain_gap": "Reserved low CPU/editing/counter words are mechanically admitted by the frozen helper, but are not certified ordinary compiled caller code. In particular saved descriptor2/3/4/6 fetches RETURN/RELINT/INHINT/EXTEND rather than an ordinary TC caller descriptor. The existing qualified cohort does not cover these values.",
+  "action": "Retain frozen executable and existing evidence byte identities; complete source caller closure requires legitimate compiled-program ownership and independently qualified lower guards or explicit source fault frontiers.",
+  "whole_file_qualified": false,
+  "immutable_dependencies": [
+    {
+      "path": "include/cm_interbank_extended.h",
+      "sha256": "03f9fe42e11966a2b4e0d0f498d71ffdc550f78e44409d263e94b4fb19b6a981"
+    },
+    {
+      "path": "src/cm_interbank_extended.c",
+      "sha256": "3671b9fb193c745d67992bc5dbc381b2daf1b01fd00ef99144aa951ca5a6877c"
+    },
+    {
+      "path": "evidence/cm-interbank-domain-audit.json",
+      "sha256": "340f24816391fe1a1d9db14cc6bd1290633d0f4e8efe89ced02721381fb6f0d1"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_input_time-lm.prg from 0801 to 356D (2D6D bytes)
+WATCH: 1  C:$5576  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 5576)   76/$04c,  28/$1c
+.C:27db  8E 76 55    STX $5576      - A:40 X:A5 Y:00 SP:f1 N.-....C  154245448
+>C:5576  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_time-lm-vice-mailbox.bin' from $5576 to $557a
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_time-lm-vice-difference.bin' from $356e to $3575
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_time-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_time-lm-vice-software-stack.bin' from $c100 to $cfff

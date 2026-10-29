@@ -1,0 +1,464 @@
+{
+  "LM": {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": 0,
+    "source_words": 1,
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 174,
+        "label": "SBANDEX",
+        "op": "EXIT",
+        "arguments": "",
+        "assembled_address": "42,3745",
+        "physical_fixed_word": 35813,
+        "physical_erasable_word": null,
+        "words": [
+          32766
+        ]
+      }
+    ],
+    "interpreter_source_path": "Luminary099/INTERPRETER.agc",
+    "interpreter_source_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "interpreter_controls": [
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 87,
+        "label": "NEWOPS",
+        "op": "INDEX",
+        "arguments": "LOC",
+        "assembled_address": "6070",
+        "physical_fixed_word": 3128,
+        "physical_erasable_word": null,
+        "words": [
+          20596
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 88,
+        "label": "",
+        "op": "CA",
+        "arguments": "0",
+        "assembled_address": "6071",
+        "physical_fixed_word": 3129,
+        "physical_erasable_word": null,
+        "words": [
+          12288
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 89,
+        "label": "",
+        "op": "CCS",
+        "arguments": "A",
+        "assembled_address": "6072",
+        "physical_fixed_word": 3130,
+        "physical_erasable_word": null,
+        "words": [
+          4096
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 90,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DOSTORE",
+        "assembled_address": "6073",
+        "physical_fixed_word": 3131,
+        "physical_erasable_word": null,
+        "words": [
+          7410
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 92,
+        "label": "LOW7",
+        "op": "OCT",
+        "arguments": "177",
+        "assembled_address": "6074",
+        "physical_fixed_word": 3132,
+        "physical_erasable_word": null,
+        "words": [
+          127
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 94,
+        "label": "",
+        "op": "TS",
+        "arguments": "EDOP",
+        "assembled_address": "6075",
+        "physical_fixed_word": 3133,
+        "physical_erasable_word": null,
+        "words": [
+          22547
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 95,
+        "label": "",
+        "op": "MASK",
+        "arguments": "LOW7",
+        "assembled_address": "6076",
+        "physical_fixed_word": 3134,
+        "physical_erasable_word": null,
+        "words": [
+          31804
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 97,
+        "label": "OPJUMP",
+        "op": "TS",
+        "arguments": "CYR",
+        "assembled_address": "6077",
+        "physical_fixed_word": 3135,
+        "physical_erasable_word": null,
+        "words": [
+          22544
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 98,
+        "label": "",
+        "op": "CCS",
+        "arguments": "CYR",
+        "assembled_address": "6100",
+        "physical_fixed_word": 3136,
+        "physical_erasable_word": null,
+        "words": [
+          4112
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 99,
+        "label": "",
+        "op": "TCF",
+        "arguments": "OPJUMP2",
+        "assembled_address": "6101",
+        "physical_fixed_word": 3137,
+        "physical_erasable_word": null,
+        "words": [
+          7335
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 101,
+        "label": "",
+        "op": "TCF",
+        "arguments": "EXIT",
+        "assembled_address": "6102",
+        "physical_fixed_word": 3138,
+        "physical_erasable_word": null,
+        "words": [
+          7651
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 755,
+        "label": "EXIT",
+        "op": "CA",
+        "arguments": "BANKSET",
+        "assembled_address": "6743",
+        "physical_fixed_word": 3555,
+        "physical_erasable_word": null,
+        "words": [
+          12405
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 756,
+        "label": "",
+        "op": "TS",
+        "arguments": "BBANK",
+        "assembled_address": "6744",
+        "physical_fixed_word": 3556,
+        "physical_erasable_word": null,
+        "words": [
+          22534
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 757,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "LOC",
+        "assembled_address": "6745",
+        "physical_fixed_word": 3557,
+        "physical_erasable_word": null,
+        "words": [
+          20596
+        ]
+      },
+      {
+        "path": "Luminary099/INTERPRETER.agc",
+        "line": 758,
+        "label": "",
+        "op": "TC",
+        "arguments": "1",
+        "assembled_address": "6746",
+        "physical_fixed_word": 3558,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      }
+    ],
+    "bindings": {
+      "NEWOPS": "6070",
+      "EXIT": "6743",
+      "BANKSET": "0165",
+      "LOC": "0164",
+      "CYR": "0000020",
+      "EDOP": "0000023"
+    },
+    "endpoint": "0o3746",
+    "domain": "Actual original pending antenna EXIT, MODE0 or-1, coherent originalFB/BANKSET64 plusEB, ZERO0/NEWJOB0, ordinaryRAM/Q andraw16A/L, exclusive ownership, all four bank42SUPER forms andbothIRQ. No display/scheduler body."
+  },
+  "CM": {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": 0,
+    "source_words": 1,
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 104,
+        "label": "",
+        "op": "EXIT",
+        "arguments": "",
+        "assembled_address": "42,3750",
+        "physical_fixed_word": 35816,
+        "physical_erasable_word": null,
+        "words": [
+          32766
+        ]
+      }
+    ],
+    "interpreter_source_path": "Comanche055/INTERPRETER.agc",
+    "interpreter_source_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "interpreter_controls": [
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 91,
+        "label": "NEWOPS",
+        "op": "INDEX",
+        "arguments": "LOC",
+        "assembled_address": "6037",
+        "physical_fixed_word": 3103,
+        "physical_erasable_word": null,
+        "words": [
+          20596
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 92,
+        "label": "",
+        "op": "CA",
+        "arguments": "0",
+        "assembled_address": "6040",
+        "physical_fixed_word": 3104,
+        "physical_erasable_word": null,
+        "words": [
+          12288
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 93,
+        "label": "",
+        "op": "CCS",
+        "arguments": "A",
+        "assembled_address": "6041",
+        "physical_fixed_word": 3105,
+        "physical_erasable_word": null,
+        "words": [
+          4096
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 94,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DOSTORE",
+        "assembled_address": "6042",
+        "physical_fixed_word": 3106,
+        "physical_erasable_word": null,
+        "words": [
+          7385
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 96,
+        "label": "LOW7",
+        "op": "OCT",
+        "arguments": "177",
+        "assembled_address": "6043",
+        "physical_fixed_word": 3107,
+        "physical_erasable_word": null,
+        "words": [
+          127
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 98,
+        "label": "",
+        "op": "TS",
+        "arguments": "EDOP",
+        "assembled_address": "6044",
+        "physical_fixed_word": 3108,
+        "physical_erasable_word": null,
+        "words": [
+          22547
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 99,
+        "label": "",
+        "op": "MASK",
+        "arguments": "LOW7",
+        "assembled_address": "6045",
+        "physical_fixed_word": 3109,
+        "physical_erasable_word": null,
+        "words": [
+          31779
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 101,
+        "label": "OPJUMP",
+        "op": "TS",
+        "arguments": "CYR",
+        "assembled_address": "6046",
+        "physical_fixed_word": 3110,
+        "physical_erasable_word": null,
+        "words": [
+          22544
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 102,
+        "label": "",
+        "op": "CCS",
+        "arguments": "CYR",
+        "assembled_address": "6047",
+        "physical_fixed_word": 3111,
+        "physical_erasable_word": null,
+        "words": [
+          4112
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 103,
+        "label": "",
+        "op": "TCF",
+        "arguments": "OPJUMP2",
+        "assembled_address": "6050",
+        "physical_fixed_word": 3112,
+        "physical_erasable_word": null,
+        "words": [
+          7310
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 105,
+        "label": "",
+        "op": "TCF",
+        "arguments": "EXIT",
+        "assembled_address": "6051",
+        "physical_fixed_word": 3113,
+        "physical_erasable_word": null,
+        "words": [
+          7626
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 762,
+        "label": "EXIT",
+        "op": "CA",
+        "arguments": "BANKSET",
+        "assembled_address": "6712",
+        "physical_fixed_word": 3530,
+        "physical_erasable_word": null,
+        "words": [
+          12405
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 763,
+        "label": "",
+        "op": "TS",
+        "arguments": "BBANK",
+        "assembled_address": "6713",
+        "physical_fixed_word": 3531,
+        "physical_erasable_word": null,
+        "words": [
+          22534
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 764,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "LOC",
+        "assembled_address": "6714",
+        "physical_fixed_word": 3532,
+        "physical_erasable_word": null,
+        "words": [
+          20596
+        ]
+      },
+      {
+        "path": "Comanche055/INTERPRETER.agc",
+        "line": 765,
+        "label": "",
+        "op": "TC",
+        "arguments": "1",
+        "assembled_address": "6715",
+        "physical_fixed_word": 3533,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      }
+    ],
+    "bindings": {
+      "NEWOPS": "6037",
+      "EXIT": "6712",
+      "BANKSET": "0165",
+      "LOC": "0164",
+      "CYR": "0000020",
+      "EDOP": "0000023"
+    },
+    "endpoint": "0o3751",
+    "domain": "Actual original pending antenna EXIT, MODE0 or-1, coherent originalFB/BANKSET64 plusEB, ZERO0/NEWJOB0, ordinaryRAM/Q andraw16A/L, exclusive ownership, all four bank42SUPER forms andbothIRQ. No display/scheduler body."
+  }
+}

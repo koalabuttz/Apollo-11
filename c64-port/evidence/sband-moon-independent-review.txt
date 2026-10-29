@@ -1,0 +1,11 @@
+Independent source review by peer /root/p66_source_map; retained by /root/frozen_storage.
+
+Reviewed identities:
+src/sband_moon.c SHA256 81caf6480a5fbbe8797a580ff068ed1a6370c6207fa7fad36402948e96ec9faf
+include/sband_moon.h SHA256 c3d416b01d6a28f456adc00fb9e20be15898b844def0b1da8ce33e4e9f9ba64e
+../Luminary099/S-BAND_ANTENNA_FOR_LM.agc SHA256 db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2
+../Comanche055/S-BAND_ANTENNA_FOR_CM.agc SHA256 0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061
+
+Peer conclusion: No concrete discrepancy in declared actual returned-LUNPOS contexts. LM VLOAD reads all six VMOON words before arithmetic, old Z minor debris/initial banked-load Q3 retained; immutable REMDIST uses only its original DP words. VXSC/VSL1 retain pending VAD0122, true EB4 RLM add then GOTO/SETPD restores original EB/PUSH/VAC before actual UNIT. CM VAD RCM preserves incoming Q unless overflow helper, VCOMP keeps pre-complement Z low in L and true EISOI+2/SETPD dispatch reaches REFSMMAT MXV. No callee edits or LUNPOS-body credit.
+
+Source inspection is independent of retained execution proof. Following inactive REMDIST padding words are passive, never decoded/executed or credited as translated control. Both containing files remain partial.

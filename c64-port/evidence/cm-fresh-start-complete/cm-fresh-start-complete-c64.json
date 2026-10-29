@@ -1,0 +1,60 @@
+{
+ "category": "c64_execution_results",
+ "aggregates": {
+  "cm-fresh-start": {
+   "record": "evidence/cm-fresh-start/cm-fresh-start-vice.log",
+   "sha256": "a213d1f8b712f497cf9f6ea806af960a30047ef4cd6a4e565047994cb5ddd00b",
+   "pass_lines": [
+    "PASS: VICE PAL cm-fresh-start.prg: 259 checks, 0 failures"
+   ],
+   "checks": [
+    259
+   ],
+   "failures": 0,
+   "result": "PASS",
+   "prg_sha256": [
+    {
+     "prg": null,
+     "sha256": "0c860e5eabeee4b895e2fe44c4cae8a059140905d2410b169f1c7bf51574834b"
+    }
+   ]
+  },
+  "cm-v37": {
+   "record": "evidence/cm-v37/cm-v37-vice.log",
+   "sha256": "c78d156cb0a2c337af0865d8f92f15cb97c861b3b18c1d22f794e1529c94c856",
+   "pass_lines": [
+    "PASS: VICE PAL cm-v37.prg: 169 checks, 0 failures"
+   ],
+   "checks": [
+    169
+   ],
+   "failures": 0,
+   "result": "PASS",
+   "prg_sha256": [
+    {
+     "prg": null,
+     "sha256": "11ea3625da68dd659e78b2ebec4956acb8a91ba997dfce2f399d5169bf740885"
+    }
+   ]
+  },
+  "cm-stateup": {
+   "record": "evidence/cm-stateup/cm-stateup-vice.log",
+   "sha256": "b3ae69419bf5b7c5879f250bd59af9a42dc84c983b54a5ec68a7d70f7b84591e",
+   "pass_lines": [
+    "PASS: VICE PAL cm-stateup.prg: 242 checks, 0 failures"
+   ],
+   "checks": [
+    242
+   ],
+   "failures": 0,
+   "result": "PASS",
+   "prg_sha256": [
+    {
+     "prg": null,
+     "sha256": "4a51f5eeb36f48b8275e67fbb245a5a7f87d86c9de17120a2d829efefa6f1ee0"
+    }
+   ]
+  }
+ },
+ "result": "PASS"
+}

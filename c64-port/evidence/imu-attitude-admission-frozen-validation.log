@@ -1,0 +1,11 @@
+for mission in 0 1; do for entry in $(seq 0 4); do gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DIMUA_MISSION=$mission -DIMUA_ENTRY=$entry tests/test_imu_attitude_admission.c tests/frozen_words.c src/imu_attitude_admission.c src/imu_mode_control.c src/imu_coarse.c src/agc_word.c src/agc_multiword.c tests/imu_attitude_admission_cases.c tests/imu_mode_control_cases.c tests/imu_coarse_cases.c tests/imu_pulse_cases.c -o build/test-imu-attitude-admission-$mission-$entry; build/test-imu-attitude-admission-$mission-$entry; done; done
+32 complete coarse original states + 12 immutable guards mission0 entry0: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry1: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry2: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry3: PASS
+32 complete coarse original states + 12 immutable guards mission0 entry4: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry0: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry1: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry2: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry3: PASS
+32 complete coarse original states + 12 immutable guards mission1 entry4: PASS

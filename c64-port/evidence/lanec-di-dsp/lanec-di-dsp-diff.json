@@ -1,0 +1,7 @@
+{
+  "suite": "di-dsp",
+  "cases": 3264,
+  "differing": 0,
+  "native_sha256": "b8c7b944eeac4888d965a09feaf59a7a3941b160e2246f15779ca8329fb597d8",
+  "oracle_sha256": "b8c7b944eeac4888d965a09feaf59a7a3941b160e2246f15779ca8329fb597d8"
+}

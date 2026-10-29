@@ -1,0 +1,16 @@
+{
+  "virtualagc_pin": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "original_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_source_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+  "entry": "01,3032",
+  "original_local_lines": [
+    290,
+    300
+  ],
+  "branches": [
+    "positive NEWJOB to CHANJOB+4 and source ENDPRCHG",
+    "NEWJOB+0 after earlierADVANpositive observation to RELINT/ADVAN+2/NUDIRECT"
+  ],
+  "external_entry_contract": "After positive pending observation, source admission/wake leaves typed positive NEWJOB or+0; -0 does not meet this entry producer contract",
+  "source_return": "actual TC L then ordinary compiled TC descriptor, Q2, no instruction decoder in native"
+}

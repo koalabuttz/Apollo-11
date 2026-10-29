@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_nv_key.prg from 0801 to 2BCA (23CA bytes)
+WATCH: 1  C:$4bcb  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 4bcb)  263/$107,  29/$1d
+.C:0d92  8E CB 4B    STX $4BCB      - A:00 X:A5 Y:00 SP:f1 NV-....C  302031038
+>C:4bcb  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_nv_key-vice-mailbox.bin' from $4bcb to $4bcf
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_nv_key-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_nv_key-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_nv_key.prg from 0801 to 2BA1 (23A1 bytes)
+WATCH: 1  C:$4ba2  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 4ba2)   38/$026,  14/$0e
+.C:0d69  8E A2 4B    STX $4BA2      - A:00 X:A5 Y:00 SP:f1 NV-....C  302016848
+>C:4ba2  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_nv_key-vice-mailbox.bin' from $4ba2 to $4ba6
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_nv_key-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_nv_key-vice-software-stack.bin' from $c100 to $cfff

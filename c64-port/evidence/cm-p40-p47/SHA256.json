@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p40-p47",
+  "release": "evidence-cm-p40-p47",
+  "files": {
+    "cm-p40-p47-differential.log": {
+      "sha256": "59d7f7d69a7081929f5212fe5499079b53f3b76f47a1153ac3a8c1dfa871e810",
+      "bytes": 54553,
+      "store": "tree"
+    },
+    "cm-p40-p47-host.log": {
+      "sha256": "e4720bdeaa15df573fb40bc7f22d79399f4e2dd2f03e868b51153393b18ef8e4",
+      "bytes": 1066,
+      "store": "tree"
+    },
+    "cm-p40-p47-proof.json": {
+      "sha256": "96d473fcb1f0ef268497e6c2a16ffdf20b7d2131eadd6c79b556cc0131284dd9",
+      "bytes": 79276,
+      "store": "tree"
+    },
+    "cm-p40-p47-source-map.json": {
+      "sha256": "f1eb5518e1d7514eb77e12c53b0fb539e57c28f55166ecf259cea19fc115277f",
+      "bytes": 236942,
+      "store": "tree"
+    },
+    "cm-p40-p47-vice.log": {
+      "sha256": "77de36e0a969cf12744fece94d557b7fc5d32c5b0895b1c60f13a3dc43ee7ca0",
+      "bytes": 49952,
+      "store": "tree"
+    }
+  }
+}

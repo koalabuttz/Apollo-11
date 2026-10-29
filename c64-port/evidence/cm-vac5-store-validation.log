@@ -1,0 +1,39 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_vac5_store_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original VAC5STOR complete image and actual SWRETURN entry
+{
+  "cases": 8192,
+  "checkpoints": 8192,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "VAC5STOR20,2000 through GENTRAN to SWRETURN4675"
+  ],
+  "context_cohorts": "8192 randomized complete images, all entry Ebank/SUPER/IRQ and raw A/L domains",
+  "binary_bytes": 33652736,
+  "snapshot_sha256": "8c01b70eea25e4eef62bb960699b6febc19c76aac85660ca4a8e822dfda287f7",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual VAC5STOR complete body including GENTRAN, through genuine SWRETURN entry; following caller recovery remains separate"
+}

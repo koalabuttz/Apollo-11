@@ -1,0 +1,5 @@
+make: Entering directory '/workspace/Apollo-11/c64-port'
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_goplay.c tests/goplay_check.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/test-goplay
+build/test-goplay
+64 complete GOPLAY boundary images;24 invalid inputs: PASS
+make: Leaving directory '/workspace/Apollo-11/c64-port'

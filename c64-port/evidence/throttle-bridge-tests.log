@@ -1,0 +1,10 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_throttle_bridge.c tests/throttle_bridge_check.c src/agc_word.c src/p66_throttle_bridge.c tests/throttle_bridge_cases.c -o build/test-throttle-bridge
+build/test-throttle-bridge
+64 complete throttle bridge images and26 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_throttle_bridge.c tests/throttle_bridge_check.c src/agc_word.c src/p66_throttle_bridge.c tests/throttle_bridge_cases.c -o build/test-throttle-bridge-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-throttle-bridge-sanitize
+64 complete throttle bridge images and26 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/throttle_bridge_snapshot.c src/agc_word.c src/p66_throttle_bridge.c tests/throttle_bridge_cases.c -o build/throttle-bridge-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/throttle-bridge-native-sanitize > build/throttle-bridge-sanitize.snapshots
+cmp build/throttle-bridge-sanitize.snapshots build/throttle-bridge-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/throttle_bridge_diagnostic.c tests/throttle_bridge_check.c src/agc_word.c src/p66_throttle_bridge.c tests/throttle_bridge_cases.c -Wl,-Map,build/throttle_bridge.map -o build/throttle_bridge.prg

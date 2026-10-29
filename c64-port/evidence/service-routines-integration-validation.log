@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tools/service_routines_snapshot.c src/service_routines.c src/agc_word.c tests/service_routines_cases.c -o build/service-routines-integrated-stream
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_service_routines.c tests/service_routines_target.c tests/frozen_words.c src/service_routines.c src/agc_word.c tests/service_routines_cases.c -o build/test-service-routines-integrated
+./build/test-service-routines-integrated
+PASS416 exact original states, unchanged invalid guards, full/chunked native transfer continuation and missing passive resolver preflight
+python3 tools/qualified_stream_host.py --binary build/service-routines-integrated-stream --archive evidence/service-routines-reference.snapshots.bin.xz --sha256 860235bc19064c6d945c0afff223ce2e9cc9e5a2cfa4df273cdb6fc010877a8f --bytes 437485568
+PASS all retained source-state bytes: 437485568 SHA256 860235bc19064c6d945c0afff223ce2e9cc9e5a2cfa4df273cdb6fc010877a8f
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_service_routines.c tests/service_routines_target.c tests/frozen_words.c src/service_routines.c src/agc_word.c tests/service_routines_cases.c -o build/test-service-routines-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-service-routines-integrated-san
+PASS416 exact original states, unchanged invalid guards, full/chunked native transfer continuation and missing passive resolver preflight
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/service_routines_snapshot.c src/service_routines.c src/agc_word.c tests/service_routines_cases.c -o build/service-routines-integrated-stream-san
+python3 tools/qualified_stream_host.py --binary build/service-routines-integrated-stream-san --archive evidence/service-routines-reference.snapshots.bin.xz --sha256 860235bc19064c6d945c0afff223ce2e9cc9e5a2cfa4df273cdb6fc010877a8f --bytes 437485568
+PASS all retained source-state bytes: 437485568 SHA256 860235bc19064c6d945c0afff223ce2e9cc9e5a2cfa4df273cdb6fc010877a8f

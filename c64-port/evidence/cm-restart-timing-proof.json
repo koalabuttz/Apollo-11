@@ -1,0 +1,10 @@
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3573 FINDTIME",
+    "01,3701 ITSLGCL2"
+  ],
+  "boundary": "0704 GOLOC-1",
+  "snapshot_sha256": "10dff4b83861388a33312d91a2b589257c8d991d5a8801a046113d93d221adf3"
+}

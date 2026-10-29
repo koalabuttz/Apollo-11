@@ -1,0 +1,52 @@
+{
+  "lm0": {
+    "mission": 0,
+    "stage": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "7cefd91e8df66c443e237c42400ab626aef68978218cf40564f8e8c8b2913e5a",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 819,
+    "source_branches": {
+      "0": 32768,
+      "1": 32768
+    }
+  },
+  "lm1": {
+    "mission": 0,
+    "stage": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "824ec7ffd631b2063e51885a87dfaf471d68f08fa02d984adf0b22975d81e4a0",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 2436,
+    "source_branches": {
+      "0": 32768,
+      "3": 16384,
+      "2": 16384
+    }
+  },
+  "cm0": {
+    "mission": 1,
+    "stage": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "360559b3aab8addb904aa2cbbc266a7e0e3de2bdeac0ee7351e932023f5c8f9d",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 819,
+    "source_branches": {
+      "0": 32768,
+      "1": 32768
+    }
+  },
+  "cm1": {
+    "mission": 1,
+    "stage": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "478bc218961c1c3a78581c362b10325aecf7eb075ef9d93d3b26f4825735be9a",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 2436,
+    "source_branches": {
+      "0": 32768,
+      "3": 16384,
+      "2": 16384
+    }
+  }
+}

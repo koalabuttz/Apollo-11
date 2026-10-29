@@ -1,0 +1,9 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_makeplay_sleep.c tests/cm_makeplay_sleep_check.c src/agc_word.c src/cm_makeplay_sleep.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_sleep_cases.c -o build/test-cm-makeplay-sleep
+build/test-cm-makeplay-sleep
+64 complete CM display sleep states and39 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_makeplay_sleep.c tests/cm_makeplay_sleep_check.c src/agc_word.c src/cm_makeplay_sleep.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_sleep_cases.c -o build/test-cm-makeplay-sleep-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-makeplay-sleep-sanitize
+64 complete CM display sleep states and39 unchanged invalid boundaries: PASS
+python3 tools/cm_makeplay_sleep_sanitize_stream.py
+PASS: ASAN/UBSAN all6144 complete original CM MAKEPLAY states, SHA256 fa1b35a32a571822a1adc6372a494b009c57e575b28a60bd146a6dfa4ff27f0d
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tools/cm_makeplay_sleep_diagnostic.c tests/cm_makeplay_sleep_check.c src/agc_word.c src/cm_makeplay_sleep.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_sleep_cases.c -Wl,-Map,build/cm_makeplay_sleep.map -o build/cm_makeplay_sleep.prg

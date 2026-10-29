@@ -1,0 +1,16 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-alarm-image-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-alarm-image-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-ALARM-IMAGE.PRG' as `RESIDENT' to unit 8
+writing file `CM-ALARM-IMAGE-227.PRG' as `G227' to unit 8
+writing file `CM-ALARM-IMAGE-254.PRG' as `G254' to unit 8
+writing file `CM-ALARM-IMAGE-255.PRG' as `G255' to unit 8
+writing file `CM-FIXED-COMPAT-200.PRG' as `F200' to unit 8
+writing file `CM-FIXED-COMPAT-201.PRG' as `F201' to unit 8
+writing file `CM-FIXED-COMPAT-202.PRG' as `F202' to unit 8
+writing file `CM-FIXED-COMPAT-203.PRG' as `F203' to unit 8
+writing file `CM-FIXED-COMPAT-204.PRG' as `F204' to unit 8
+writing file `CM-FIXED-COMPAT-205.PRG' as `F205' to unit 8
+227 3097 loaded bytes
+254 5058 loaded bytes
+255 9981 loaded bytes

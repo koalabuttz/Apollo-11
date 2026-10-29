@@ -1,0 +1,8 @@
+Independent whole CM RT8 read-only source closure review by /root/general_division, 2026-10-11.
+
+No concrete discrepancy found within declared canonical/fixed-return/VAC/excluded-producer domains. Read entire byte-original Comanche055/RT8_OP_CODES.agc, including CM READPIPS/INCRCDUS, transpose constants and QUALITY bodies, closure documentation and additive ledger. Independently verified206 distinct physical local emitted words and all206 raw values against unchanged original declaration rope6e3150…, original fileSHA ca3b0388… exact. Owner counts97angles+38agreement+45vector+1pulse_return+25QUALITY close all206 words without overlap. Sole trailing PULSEIMU line200/bank22,3657 raw16030 belongs to return packet. Both original XNB ECADR constants, UNIT+1 composition and mandatory bank07/FB016000 erratum included. All authoritative proof/native-source pins match final current bytes. Typed DANZIG/IMUPULSE/NBRANCH/QUALITY3 frontiers remain external; no arbitrary opcode or complete orbital/application claim. No edits by reviewer.
+
+Reviewed closure identities:
+c8adcdb731ce592a3499b18cd350d91b061174adccf3d2e89440dbc107fe4739  docs/CM-RT8-WHOLE-SOURCE.md
+16ee52cbd29a68a6bbeaf7e1d7966f4d2656d491deb73d71156173a4015f9c99  evidence/cm-rtb-whole-source-map.json
+0c1d3249956fe7890d08372055640ba97433af6aeae416772f9255028095ab6d  tools/cm_rtb_closure.py

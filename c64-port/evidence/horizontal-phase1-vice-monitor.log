@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/horizontal-phase0.prg from 0801 to 604A (584A bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  311/$137,  16/$10
+.C:234d  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    7194049
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal_phase-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/horizontal-phase1.prg from 0801 to 68BC (60BC bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   80/$050,  61/$3d
+.C:22bc  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C    8575117
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal_phase-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal_phase-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/horizontal_phase-software-stack.bin' from $c100 to $cfff

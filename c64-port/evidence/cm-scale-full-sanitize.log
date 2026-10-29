@@ -1,0 +1,2 @@
+PASS: full4096-case ASan/UBSan snapshot stream byte-identical to original assembly
+Snapshot SHA256: 10bd36aa4fee086c81a3227964b3d38c276c90658cc2e36408298c043d21f3c5

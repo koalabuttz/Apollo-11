@@ -1,0 +1,5 @@
+PASS: 512 cm-jet-select cases equal the original programs (76 routines)
+  CM 17,2552 JETSLECT: 05333 x256
+  CM 17,3617 T6START: 05333 x256
+froze 16 vectors to tests/cm_jet_select_vectors.h
+exit 0

@@ -1,0 +1,3889 @@
+{
+ "sources": {
+  "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc": "13da16e475f7d0610ee90d73b5676d2ff0704fb8b79f7651c97e0a32e16b256a"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_trim_gimbal.c",
+ "native_sha256": "68c7ed5617069d586faf2b4f70f89bf244453a48281ee6436b7d025e03b8d303",
+ "source_words": 388,
+ "source_lines": 387,
+ "indentation_only_repairs": {
+  "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc": [
+   382
+  ]
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 45,
+   "address": "21,3077",
+   "source": "GTS CAF NEGONE",
+   "words": [
+    "37747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 46,
+   "address": "21,3100",
+   "source": "TS COTROLER",
+   "words": [
+    "55631"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 47,
+   "address": "21,3101",
+   "source": "CAF FOUR",
+   "words": [
+    "34751"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 48,
+   "address": "21,3102",
+   "source": "TS SKIPU",
+   "words": [
+    "55535"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 49,
+   "address": "21,3103",
+   "source": "TS SKIPV",
+   "words": [
+    "55536"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 51,
+   "address": "21,3104",
+   "source": "CAF TWO",
+   "words": [
+    "34752"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 52,
+   "address": "21,3105",
+   "source": "TS INGTS",
+   "words": [
+    "55633"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 53,
+   "address": "21,3106",
+   "source": "TS QGIMTIMR",
+   "words": [
+    "55632"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 54,
+   "address": "21,3107",
+   "source": "TS RGIMTIMR",
+   "words": [
+    "55634"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 64,
+   "address": "21,3110",
+   "source": "CA SR",
+   "words": [
+    "30021"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 65,
+   "address": "21,3111",
+   "source": "AD A",
+   "words": [
+    "60000"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 66,
+   "address": "21,3112",
+   "source": "TS SAVESR",
+   "words": [
+    "55505"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 68,
+   "address": "21,3113",
+   "source": "GTSGO+ON CAF TWO",
+   "words": [
+    "34752"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 69,
+   "address": "21,3114",
+   "source": "TCF GOQTRIMG +1",
+   "words": [
+    "13116"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 71,
+   "address": "21,3115",
+   "source": "GOQTRIMG CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 72,
+   "address": "21,3116",
+   "source": "TS QRCNTR",
+   "words": [
+    "55750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 79,
+   "address": "21,3117",
+   "source": "INDEX QRCNTR",
+   "words": [
+    "51750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 80,
+   "address": "21,3120",
+   "source": "CA AOSQ",
+   "words": [
+    "31537"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 81,
+   "address": "21,3121",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 82,
+   "address": "21,3122",
+   "source": "MP BIT2",
+   "words": [
+    "74752"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 83,
+   "address": "21,3123",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 84,
+   "address": "21,3124",
+   "source": "BZF GTSQAXIS -3",
+   "words": [
+    "13130"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 86,
+   "address": "21,3125",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 87,
+   "address": "21,3126",
+   "source": "CS LIMITS",
+   "words": [
+    "44734"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 88,
+   "address": "21,3127",
+   "source": "XCH L",
+   "words": [
+    "56001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 90,
+   "address": "21,3130",
+   "source": "CCS QRCNTR",
+   "words": [
+    "11750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 91,
+   "address": "21,3131",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 92,
+   "address": "21,3132",
+   "source": "CA EDOTQ",
+   "words": [
+    "31436"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 93,
+   "address": "21,3133",
+   "source": "GTSQAXIS DXCH WCENTRAL",
+   "words": [
+    "53744"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 95,
+   "address": "21,3134",
+   "source": "INDEX QRCNTR",
+   "words": [
+    "51750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 96,
+   "address": "21,3135",
+   "source": "CA KQ",
+   "words": [
+    "31504"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 97,
+   "address": "21,3136",
+   "source": "TS KCENTRAL",
+   "words": [
+    "55741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 99,
+   "address": "21,3137",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 100,
+   "address": "21,3140",
+   "source": "BZF POSDRIVE +1",
+   "words": [
+    "13576"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 102,
+   "address": "21,3141",
+   "source": "INDEX QRCNTR",
+   "words": [
+    "51750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 103,
+   "address": "21,3142",
+   "source": "CAE QDIFF",
+   "words": [
+    "31450"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 105,
+   "address": "21,3143",
+   "source": "ALGORTHM EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 106,
+   "address": "21,3144",
+   "source": "MP KCENTRAL",
+   "words": [
+    "71741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 107,
+   "address": "21,3145",
+   "source": "LXCH K2THETA",
+   "words": [
+    "23737"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 108,
+   "address": "21,3146",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 109,
+   "address": "21,3147",
+   "source": "MP BIT5",
+   "words": [
+    "74747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 110,
+   "address": "21,3150",
+   "source": "DXCH K2THETA",
+   "words": [
+    "53740"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 111,
+   "address": "21,3151",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 112,
+   "address": "21,3152",
+   "source": "MP BIT5",
+   "words": [
+    "74747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 113,
+   "address": "21,3153",
+   "source": "ADS K2THETA +1",
+   "words": [
+    "27740"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 115,
+   "address": "21,3154",
+   "source": "CS ACENTRAL",
+   "words": [
+    "41744"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 116,
+   "address": "21,3155",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 117,
+   "address": "21,3156",
+   "source": "MP BIT14",
+   "words": [
+    "74736"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 118,
+   "address": "21,3157",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 119,
+   "address": "21,3160",
+   "source": "MP ACENTRAL",
+   "words": [
+    "71744"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 120,
+   "address": "21,3161",
+   "source": "AD KCENTRAL",
+   "words": [
+    "61741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 121,
+   "address": "21,3162",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 122,
+   "address": "21,3163",
+   "source": "BZMF HUGEQUOT",
+   "words": [
+    "63200"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 124,
+   "address": "21,3164",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 125,
+   "address": "21,3165",
+   "source": "DCS A",
+   "words": [
+    "40001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 126,
+   "address": "21,3166",
+   "source": "AD KCENTRAL",
+   "words": [
+    "61741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 128,
+   "address": "21,3167",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 129,
+   "address": "21,3170",
+   "source": "DV KCENTRAL",
+   "words": [
+    "11741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 130,
+   "address": "21,3171",
+   "source": "XCH A2CNTRAL",
+   "words": [
+    "57746"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 131,
+   "address": "21,3172",
+   "source": "CA L",
+   "words": [
+    "30001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 132,
+   "address": "21,3173",
+   "source": "LXCH 7",
+   "words": [
+    "22007"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 133,
+   "address": "21,3174",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 135,
+   "address": "21,3175",
+   "source": "DV KCENTRAL",
+   "words": [
+    "11741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 136,
+   "address": "21,3176",
+   "source": "XCH A2CNTRAL +1",
+   "words": [
+    "57747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 137,
+   "address": "21,3177",
+   "source": "TCF HAVEQUOT",
+   "words": [
+    "13203"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 139,
+   "address": "21,3200",
+   "source": "HUGEQUOT CA POSMAX",
+   "words": [
+    "34733"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 140,
+   "address": "21,3201",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 141,
+   "address": "21,3202",
+   "source": "DXCH A2CNTRAL",
+   "words": [
+    "53747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 143,
+   "address": "21,3203",
+   "source": "HAVEQUOT CA WCENTRAL",
+   "words": [
+    "31743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 144,
+   "address": "21,3204",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 145,
+   "address": "21,3205",
+   "source": "MP BIT9",
+   "words": [
+    "74743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 146,
+   "address": "21,3206",
+   "source": "DXCH K2CNTRAL",
+   "words": [
+    "53743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 148,
+   "address": "21,3207",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 149,
+   "address": "21,3210",
+   "source": "DCA K2CNTRAL",
+   "words": [
+    "31743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 150,
+   "address": "21,3211",
+   "source": "DXCH FUNCTION",
+   "words": [
+    "53752"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 152,
+   "address": "21,3212",
+   "source": "CA ACENTRAL",
+   "words": [
+    "31744"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 153,
+   "address": "21,3213",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 154,
+   "address": "21,3214",
+   "source": "BZMF +4",
+   "words": [
+    "63220"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 156,
+   "address": "21,3215",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 157,
+   "address": "21,3216",
+   "source": "DCA A2CNTRAL",
+   "words": [
+    "31747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 158,
+   "address": "21,3217",
+   "source": "TCF +3",
+   "words": [
+    "13222"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 160,
+   "address": "21,3220",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 161,
+   "address": "21,3221",
+   "source": "DCS A2CNTRAL",
+   "words": [
+    "41747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 163,
+   "address": "21,3222",
+   "source": "DAS FUNCTION",
+   "words": [
+    "21752"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 165,
+   "address": "21,3223",
+   "source": "CCS FUNCTION",
+   "words": [
+    "11751"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 166,
+   "address": "21,3224",
+   "source": "TCF POSFNCT1",
+   "words": [
+    "13230"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 167,
+   "address": "21,3225",
+   "source": "TCF +2",
+   "words": [
+    "13227"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 168,
+   "address": "21,3226",
+   "source": "TCF NEGFNCT1",
+   "words": [
+    "13232"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 170,
+   "address": "21,3227",
+   "source": "CCS FUNCTION +1",
+   "words": [
+    "11752"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 171,
+   "address": "21,3230",
+   "source": "POSFNCT1 CAF BIT1",
+   "words": [
+    "34753"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 172,
+   "address": "21,3231",
+   "source": "TCF +2",
+   "words": [
+    "13233"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 173,
+   "address": "21,3232",
+   "source": "NEGFNCT1 CS BIT1",
+   "words": [
+    "44753"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 174,
+   "address": "21,3233",
+   "source": "TS DEL",
+   "words": [
+    "55745"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 176,
+   "address": "21,3234",
+   "source": "CCS DEL",
+   "words": [
+    "11745"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 177,
+   "address": "21,3235",
+   "source": "TCF FUNCT2",
+   "words": [
+    "13247"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 178,
+   "address": "21,3236",
+   "source": "TCF DEFUNCT",
+   "words": [
+    "13240"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 179,
+   "address": "21,3237",
+   "source": "TCF NEGFNCT2",
+   "words": [
+    "13244"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 181,
+   "address": "21,3240",
+   "source": "DEFUNCT TS K2CNTRAL",
+   "words": [
+    "55742"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 182,
+   "address": "21,3241",
+   "source": "TS K2CNTRAL +1",
+   "words": [
+    "55743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 183,
+   "address": "21,3242",
+   "source": "TCF FUNCT2",
+   "words": [
+    "13247"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 186,
+   "address": "21,3243",
+   "source": "NEG1/3 DEC -.33333",
+   "words": [
+    "65252"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 188,
+   "address": "21,3244",
+   "source": "NEGFNCT2 EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 189,
+   "address": "21,3245",
+   "source": "DCS K2CNTRAL",
+   "words": [
+    "41743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 190,
+   "address": "21,3246",
+   "source": "DXCH K2CNTRAL",
+   "words": [
+    "53743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 192,
+   "address": "21,3247",
+   "source": "FUNCT2 EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 193,
+   "address": "21,3250",
+   "source": "DCA A2CNTRAL",
+   "words": [
+    "31747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 194,
+   "address": "21,3251",
+   "source": "DAS K2CNTRAL",
+   "words": [
+    "21743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 196,
+   "address": "21,3252",
+   "source": "FUNCT3 CA A2CNTRAL",
+   "words": [
+    "31746"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 197,
+   "address": "21,3253",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 198,
+   "address": "21,3254",
+   "source": "MP NEG1/3",
+   "words": [
+    "73243"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 199,
+   "address": "21,3255",
+   "source": "DXCH A2CNTRAL",
+   "words": [
+    "53747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 200,
+   "address": "21,3256",
+   "source": "CA L",
+   "words": [
+    "30001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 201,
+   "address": "21,3257",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 202,
+   "address": "21,3260",
+   "source": "MP NEG1/3",
+   "words": [
+    "73243"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 203,
+   "address": "21,3261",
+   "source": "ADS A2CNTRAL +1",
+   "words": [
+    "27747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 204,
+   "address": "21,3262",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 205,
+   "address": "21,3263",
+   "source": "TCF +2",
+   "words": [
+    "13265"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 206,
+   "address": "21,3264",
+   "source": "ADS A2CNTRAL",
+   "words": [
+    "27746"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 208,
+   "address": "21,3265",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 209,
+   "address": "21,3266",
+   "source": "DCA K2CNTRAL",
+   "words": [
+    "31743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 210,
+   "address": "21,3267",
+   "source": "DAS A2CNTRAL",
+   "words": [
+    "21747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 212,
+   "address": "21,3270",
+   "source": "CA A2CNTRAL",
+   "words": [
+    "31746"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 213,
+   "address": "21,3271",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 214,
+   "address": "21,3272",
+   "source": "MP ACENTRAL",
+   "words": [
+    "71744"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 215,
+   "address": "21,3273",
+   "source": "DAS K2THETA",
+   "words": [
+    "21740"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 216,
+   "address": "21,3274",
+   "source": "CA A2CNTRAL +1",
+   "words": [
+    "31747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 217,
+   "address": "21,3275",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 218,
+   "address": "21,3276",
+   "source": "MP ACENTRAL",
+   "words": [
+    "71744"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 219,
+   "address": "21,3277",
+   "source": "ADS K2THETA +1",
+   "words": [
+    "27740"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 220,
+   "address": "21,3300",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 221,
+   "address": "21,3301",
+   "source": "TCF +2",
+   "words": [
+    "13303"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 222,
+   "address": "21,3302",
+   "source": "ADS K2THETA",
+   "words": [
+    "27737"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 224,
+   "address": "21,3303",
+   "source": "GETROOT CA K2CNTRAL",
+   "words": [
+    "31742"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 225,
+   "address": "21,3304",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 226,
+   "address": "21,3305",
+   "source": "MP KCENTRAL",
+   "words": [
+    "71741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 227,
+   "address": "21,3306",
+   "source": "DXCH FUNCTION",
+   "words": [
+    "53752"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 228,
+   "address": "21,3307",
+   "source": "CA K2CNTRAL +1",
+   "words": [
+    "31743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 229,
+   "address": "21,3310",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 230,
+   "address": "21,3311",
+   "source": "MP KCENTRAL",
+   "words": [
+    "71741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 231,
+   "address": "21,3312",
+   "source": "ADS FUNCTION +1",
+   "words": [
+    "27752"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 232,
+   "address": "21,3313",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 233,
+   "address": "21,3314",
+   "source": "TCF +2",
+   "words": [
+    "13316"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 234,
+   "address": "21,3315",
+   "source": "ADS FUNCTION",
+   "words": [
+    "27751"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 236,
+   "address": "21,3316",
+   "source": "CCS DEL",
+   "words": [
+    "11745"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 237,
+   "address": "21,3317",
+   "source": "TCF RSTOFGTS",
+   "words": [
+    "13524"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 238,
+   "address": "21,3320",
+   "source": "TCF NEGUSUM",
+   "words": [
+    "13566"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 239,
+   "address": "21,3321",
+   "source": "TCF NEGATE",
+   "words": [
+    "13323"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 240,
+   "address": "21,3322",
+   "source": "TCF NEGUSUM",
+   "words": [
+    "13566"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 242,
+   "address": "21,3323",
+   "source": "NEGATE EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 243,
+   "address": "21,3324",
+   "source": "DCS K2CNTRAL",
+   "words": [
+    "41743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 244,
+   "address": "21,3325",
+   "source": "DXCH K2CNTRAL",
+   "words": [
+    "53743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 245,
+   "address": "21,3326",
+   "source": "TCF RSTOFGTS",
+   "words": [
+    "13524"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 257,
+   "address": "16,3735",
+   "source": "BGIM OCTAL 07400",
+   "words": [
+    "07400"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 259,
+   "address": "16,3736",
+   "source": "ACDT+C12 CS NEGUQ",
+   "words": [
+    "41501"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 260,
+   "address": "16,3737",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 261,
+   "address": "16,3740",
+   "source": "MP ACCDOTQ",
+   "words": [
+    "71507"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 262,
+   "address": "16,3741",
+   "source": "LXCH QACCDOT",
+   "words": [
+    "23510"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 263,
+   "address": "16,3742",
+   "source": "CS NEGUR",
+   "words": [
+    "41503"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 264,
+   "address": "16,3743",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 265,
+   "address": "16,3744",
+   "source": "MP ACCDOTR",
+   "words": [
+    "71511"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 266,
+   "address": "16,3745",
+   "source": "LXCH RACCDOT",
+   "words": [
+    "23512"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 268,
+   "address": "16,3746",
+   "source": "CCS NEGUQ",
+   "words": [
+    "11501"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 269,
+   "address": "16,3747",
+   "source": "CAF BIT10",
+   "words": [
+    "34742"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 270,
+   "address": "16,3750",
+   "source": "TCF +2",
+   "words": [
+    "13752"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 271,
+   "address": "16,3751",
+   "source": "CAF BIT9",
+   "words": [
+    "34743"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 272,
+   "address": "16,3752",
+   "source": "TS CHNL12",
+   "words": [
+    "54066"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 274,
+   "address": "16,3753",
+   "source": "CCS NEGUR",
+   "words": [
+    "11503"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 275,
+   "address": "16,3754",
+   "source": "CAF BIT12",
+   "words": [
+    "34740"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 276,
+   "address": "16,3755",
+   "source": "TCF +2",
+   "words": [
+    "13757"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 277,
+   "address": "16,3756",
+   "source": "CAF BIT11",
+   "words": [
+    "34741"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 278,
+   "address": "16,3757",
+   "source": "ADS CHNL12",
+   "words": [
+    "26066"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 280,
+   "address": "16,3760",
+   "source": "CS BGIM",
+   "words": [
+    "43735"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 281,
+   "address": "16,3761",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 282,
+   "address": "16,3762",
+   "source": "RAND CHAN12",
+   "words": [
+    "02012"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 283,
+   "address": "16,3763",
+   "source": "AD CHNL12",
+   "words": [
+    "60066"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 284,
+   "address": "16,3764",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 285,
+   "address": "16,3765",
+   "source": "WRITE CHAN12",
+   "words": [
+    "01012"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 287,
+   "address": "16,3766",
+   "source": "CS CALLGMBL",
+   "words": [
+    "44747"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 288,
+   "address": "16,3767",
+   "source": "MASK RCSFLAGS",
+   "words": [
+    "71273"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 289,
+   "address": "16,3770",
+   "source": "TS RCSFLAGS",
+   "words": [
+    "55273"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 291,
+   "address": "16,3771",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "native": "acdtc12"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 337,
+   "address": "21,3327",
+   "source": "OCT23146 OCTAL 23146",
+   "words": [
+    "23146"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 340,
+   "address": "21,3330",
+   "source": "TIMEGMBL CAF ONE",
+   "words": [
+    "34753"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 341,
+   "address": "21,3331",
+   "source": "TS ALLOWGTS",
+   "words": [
+    "55502"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 343,
+   "address": "21,3332",
+   "source": "CAF TWO",
+   "words": [
+    "34752"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 344,
+   "address": "21,3333",
+   "source": "LXCH Q",
+   "words": [
+    "22002"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 345,
+   "address": "21,3334",
+   "source": "LXCH RUPTREG2",
+   "words": [
+    "22071"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 347,
+   "address": "21,3335",
+   "source": "TCF +2",
+   "words": [
+    "13337"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 348,
+   "address": "21,3336",
+   "source": "TIMQGMBL CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 349,
+   "address": "21,3337",
+   "source": "TS QRNDXER",
+   "words": [
+    "54066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 350,
+   "address": "21,3340",
+   "source": "INDEX QRNDXER",
+   "words": [
+    "50066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 351,
+   "address": "21,3341",
+   "source": "CA ACCDOTQ",
+   "words": [
+    "31507"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 352,
+   "address": "21,3342",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 353,
+   "address": "21,3343",
+   "source": "BZMF TGOFFNOW",
+   "words": [
+    "63413"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 354,
+   "address": "21,3344",
+   "source": "TS NZACCDOT",
+   "words": [
+    "54063"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 356,
+   "address": "21,3345",
+   "source": "ALPHATRY INDEX QRNDXER",
+   "words": [
+    "50066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 357,
+   "address": "21,3346",
+   "source": "CS AOSQ",
+   "words": [
+    "41537"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 358,
+   "address": "21,3347",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 359,
+   "address": "21,3350",
+   "source": "BZF TGOFFNOW",
+   "words": [
+    "13413"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 361,
+   "address": "21,3351",
+   "source": "TS Q",
+   "words": [
+    "54002"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 362,
+   "address": "21,3352",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 363,
+   "address": "21,3353",
+   "source": "MP OCT23146",
+   "words": [
+    "73327"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 364,
+   "address": "21,3354",
+   "source": "AD Q",
+   "words": [
+    "60002"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 365,
+   "address": "21,3355",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 366,
+   "address": "21,3356",
+   "source": "TCF SETNEGU",
+   "words": [
+    "13363"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 368,
+   "address": "21,3357",
+   "source": "CS A",
+   "words": [
+    "40000"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 369,
+   "address": "21,3360",
+   "source": "INDEX QRNDXER",
+   "words": [
+    "50066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 370,
+   "address": "21,3361",
+   "source": "XCH NEGUQ",
+   "words": [
+    "57501"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 371,
+   "address": "21,3362",
+   "source": "TCF NOTALLOW",
+   "words": [
+    "13417"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 373,
+   "address": "21,3363",
+   "source": "SETNEGU EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 374,
+   "address": "21,3364",
+   "source": "BZMF POSALPH",
+   "words": [
+    "63371"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 376,
+   "address": "21,3365",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 377,
+   "address": "21,3366",
+   "source": "TS ITEMP2",
+   "words": [
+    "54062"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 378,
+   "address": "21,3367",
+   "source": "CS BIT1",
+   "words": [
+    "44753"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 379,
+   "address": "21,3370",
+   "source": "TCF POSALPH +2",
+   "words": [
+    "13373"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 380,
+   "address": "21,3371",
+   "source": "POSALPH TS ITEMP2",
+   "words": [
+    "54062"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 381,
+   "address": "21,3372",
+   "source": "CA BIT1",
+   "words": [
+    "34753"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 382,
+   "address": "21,3373",
+   "source": "+2 INDEX QRNDXER",
+   "words": [
+    "50066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 383,
+   "address": "21,3374",
+   "source": "TS NEGUQ",
+   "words": [
+    "55501"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 385,
+   "address": "21,3375",
+   "source": "CA NZACCDOT",
+   "words": [
+    "30063"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 386,
+   "address": "21,3376",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 387,
+   "address": "21,3377",
+   "source": "MP BIT12",
+   "words": [
+    "74740"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 388,
+   "address": "21,3400",
+   "source": "AD ITEMP2",
+   "words": [
+    "60062"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 389,
+   "address": "21,3401",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 390,
+   "address": "21,3402",
+   "source": "BZMF NOTALLOW",
+   "words": [
+    "63417"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 391,
+   "address": "21,3403",
+   "source": "CS ITEMP2",
+   "words": [
+    "40062"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 392,
+   "address": "21,3404",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 393,
+   "address": "21,3405",
+   "source": "MP OCT00240",
+   "words": [
+    "73440"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 394,
+   "address": "21,3406",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 395,
+   "address": "21,3407",
+   "source": "DV NZACCDOT",
+   "words": [
+    "10063"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 397,
+   "address": "21,3410",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 398,
+   "address": "21,3411",
+   "source": "BZF TGOFFNOW",
+   "words": [
+    "13413"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 400,
+   "address": "21,3412",
+   "source": "TCF DRIVEON",
+   "words": [
+    "13425"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 402,
+   "address": "21,3413",
+   "source": "TGOFFNOW CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 403,
+   "address": "21,3414",
+   "source": "INDEX QRNDXER",
+   "words": [
+    "50066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 404,
+   "address": "21,3415",
+   "source": "TS NEGUQ",
+   "words": [
+    "55501"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 406,
+   "address": "21,3416",
+   "source": "TCF DONEYET",
+   "words": [
+    "13427"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 408,
+   "address": "21,3417",
+   "source": "NOTALLOW CAF OCT31",
+   "words": [
+    "36010"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 409,
+   "address": "21,3420",
+   "source": "INDEX QRNDXER",
+   "words": [
+    "50066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 410,
+   "address": "21,3421",
+   "source": "TS QGIMTIMR",
+   "words": [
+    "55632"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 411,
+   "address": "21,3422",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 412,
+   "address": "21,3423",
+   "source": "TS ALLOWGTS",
+   "words": [
+    "55502"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 414,
+   "address": "21,3424",
+   "source": "TCF DONEYET",
+   "words": [
+    "13427"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 416,
+   "address": "21,3425",
+   "source": "DRIVEON INDEX QRNDXER",
+   "words": [
+    "50066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 417,
+   "address": "21,3426",
+   "source": "TS QGIMTIMR",
+   "words": [
+    "55632"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 419,
+   "address": "21,3427",
+   "source": "DONEYET CCS QRNDXER",
+   "words": [
+    "10066"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 420,
+   "address": "21,3430",
+   "source": "TCF TIMQGMBL",
+   "words": [
+    "13336"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 422,
+   "address": "21,3431",
+   "source": "DXCH RUPTREG3",
+   "words": [
+    "52073"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 423,
+   "address": "21,3432",
+   "source": "DXCH ITEMP2",
+   "words": [
+    "52063"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 425,
+   "address": "21,3433",
+   "source": "TC IBNKCALL",
+   "words": [
+    "04674"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 426,
+   "address": "21,3434",
+   "source": "CADR ACDT+C12",
+   "words": [
+    "35736"
+   ],
+   "native": "lm_interbank_sites"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 428,
+   "address": "21,3435",
+   "source": "DXCH ITEMP2",
+   "words": [
+    "52063"
+   ],
+   "native": "timeret"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 429,
+   "address": "21,3436",
+   "source": "DXCH RUPTREG3",
+   "words": [
+    "52073"
+   ],
+   "native": "timeret"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 431,
+   "address": "21,3437",
+   "source": "TC RUPTREG2",
+   "words": [
+    "00071"
+   ],
+   "native": "timeret"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 433,
+   "address": "21,3440",
+   "source": "OCT00240 OCTAL 00240",
+   "words": [
+    "00240"
+   ],
+   "native": "timegmbl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 447,
+   "address": "21,3441",
+   "source": "GTSQRT CCS FUNCTION",
+   "words": [
+    "11751"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 448,
+   "address": "21,3442",
+   "source": "TCF GOODARG",
+   "words": [
+    "13460"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 449,
+   "address": "21,3443",
+   "source": "TCF +2",
+   "words": [
+    "13445"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 450,
+   "address": "21,3444",
+   "source": "TCF ZEROOT",
+   "words": [
+    "13451"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 452,
+   "address": "21,3445",
+   "source": "CA FUNCTION +1",
+   "words": [
+    "31752"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 453,
+   "address": "21,3446",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 454,
+   "address": "21,3447",
+   "source": "BZMF ZEROOT",
+   "words": [
+    "63451"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 456,
+   "address": "21,3450",
+   "source": "TCF ZEROHIGH",
+   "words": [
+    "13454"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 457,
+   "address": "21,3451",
+   "source": "ZEROOT CA ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 458,
+   "address": "21,3452",
+   "source": "TS SHFTFLAG",
+   "words": [
+    "55741"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 459,
+   "address": "21,3453",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 461,
+   "address": "21,3454",
+   "source": "ZEROHIGH XCH FUNCTION",
+   "words": [
+    "57751"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 462,
+   "address": "21,3455",
+   "source": "XCH FUNCTION +1",
+   "words": [
+    "57752"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 463,
+   "address": "21,3456",
+   "source": "CA SEVEN",
+   "words": [
+    "34757"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 464,
+   "address": "21,3457",
+   "source": "TCF GOODARG +1",
+   "words": [
+    "13461"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 466,
+   "address": "21,3460",
+   "source": "GOODARG CA ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 467,
+   "address": "21,3461",
+   "source": "TS SHFTFLAG",
+   "words": [
+    "55741"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 468,
+   "address": "21,3462",
+   "source": "CA TWELVE",
+   "words": [
+    "35751"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 469,
+   "address": "21,3463",
+   "source": "TS ININDEX",
+   "words": [
+    "55744"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 470,
+   "address": "21,3464",
+   "source": "TCF SCALLOOP",
+   "words": [
+    "13473"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 472,
+   "address": "21,3465",
+   "source": "SCALSTRT CA FUNCTION",
+   "words": [
+    "31751"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 473,
+   "address": "21,3466",
+   "source": "TCF SCALDONE",
+   "words": [
+    "13507"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 475,
+   "address": "21,3467",
+   "source": "MULBUSH CA NEG2",
+   "words": [
+    "37746"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 476,
+   "address": "21,3470",
+   "source": "ADS ININDEX",
+   "words": [
+    "27744"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 477,
+   "address": "21,3471",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 478,
+   "address": "21,3472",
+   "source": "BZMF SCALSTRT",
+   "words": [
+    "63465"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 480,
+   "address": "21,3473",
+   "source": "SCALLOOP CS FUNCTION",
+   "words": [
+    "41751"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 481,
+   "address": "21,3474",
+   "source": "INDEX ININDEX",
+   "words": [
+    "51744"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 482,
+   "address": "21,3475",
+   "source": "AD BIT15",
+   "words": [
+    "64735"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 483,
+   "address": "21,3476",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 484,
+   "address": "21,3477",
+   "source": "BZMF MULBUSH",
+   "words": [
+    "63467"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 487,
+   "address": "21,3500",
+   "source": "INDEX ININDEX",
+   "words": [
+    "51744"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 488,
+   "address": "21,3501",
+   "source": "CA BIT15",
+   "words": [
+    "34735"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 489,
+   "address": "21,3502",
+   "source": "XCH HALFARG",
+   "words": [
+    "57747"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 490,
+   "address": "21,3503",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 491,
+   "address": "21,3504",
+   "source": "DCA FUNCTION",
+   "words": [
+    "31752"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 492,
+   "address": "21,3505",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 493,
+   "address": "21,3506",
+   "source": "DV HALFARG",
+   "words": [
+    "11747"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 496,
+   "address": "21,3507",
+   "source": "SCALDONE EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 497,
+   "address": "21,3510",
+   "source": "QXCH FUNCTION +1",
+   "words": [
+    "23752"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 498,
+   "address": "21,3511",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 499,
+   "address": "21,3512",
+   "source": "MP BIT14",
+   "words": [
+    "74736"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 500,
+   "address": "21,3513",
+   "source": "TS HALFARG",
+   "words": [
+    "55747"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 501,
+   "address": "21,3514",
+   "source": "MASK BIT13",
+   "words": [
+    "74737"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 502,
+   "address": "21,3515",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 503,
+   "address": "21,3516",
+   "source": "CA OCT11276",
+   "words": [
+    "33634"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 504,
+   "address": "21,3517",
+   "source": "AD ROOTHALF",
+   "words": [
+    "63632"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 505,
+   "address": "21,3520",
+   "source": "TC ROOTCYCL",
+   "words": [
+    "03636"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 506,
+   "address": "21,3521",
+   "source": "TC ROOTCYCL",
+   "words": [
+    "03636"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 507,
+   "address": "21,3522",
+   "source": "TC ROOTCYCL",
+   "words": [
+    "03636"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 508,
+   "address": "21,3523",
+   "source": "TC FUNCTION +1",
+   "words": [
+    "01752"
+   ],
+   "native": "gtsqrt"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 511,
+   "address": "21,3524",
+   "source": "RSTOFGTS TC GTSQRT",
+   "words": [
+    "03441"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 512,
+   "address": "21,3525",
+   "source": "PRODUCT XCH K2CNTRAL",
+   "words": [
+    "57742"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 513,
+   "address": "21,3526",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 514,
+   "address": "21,3527",
+   "source": "MP K2CNTRAL",
+   "words": [
+    "71742"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 515,
+   "address": "21,3530",
+   "source": "DXCH K2CNTRAL",
+   "words": [
+    "53743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 516,
+   "address": "21,3531",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 517,
+   "address": "21,3532",
+   "source": "MP L",
+   "words": [
+    "70001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 518,
+   "address": "21,3533",
+   "source": "ADS K2CNTRAL +1",
+   "words": [
+    "27743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 519,
+   "address": "21,3534",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 520,
+   "address": "21,3535",
+   "source": "TCF +2",
+   "words": [
+    "13537"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 521,
+   "address": "21,3536",
+   "source": "ADS K2CNTRAL",
+   "words": [
+    "27742"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 524,
+   "address": "21,3537",
+   "source": "DOSHIFT CA ININDEX",
+   "words": [
+    "31744"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 525,
+   "address": "21,3540",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 526,
+   "address": "21,3541",
+   "source": "MP BIT14",
+   "words": [
+    "74736"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 527,
+   "address": "21,3542",
+   "source": "ADS SHFTFLAG",
+   "words": [
+    "27741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 528,
+   "address": "21,3543",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 529,
+   "address": "21,3544",
+   "source": "BZF ADDITIN",
+   "words": [
+    "13563"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 530,
+   "address": "21,3545",
+   "source": "INDEX SHFTFLAG",
+   "words": [
+    "51741"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 531,
+   "address": "21,3546",
+   "source": "CA BIT15",
+   "words": [
+    "34735"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 533,
+   "address": "21,3547",
+   "source": "XCH K2CNTRAL",
+   "words": [
+    "57742"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 534,
+   "address": "21,3550",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 535,
+   "address": "21,3551",
+   "source": "MP K2CNTRAL",
+   "words": [
+    "71742"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 536,
+   "address": "21,3552",
+   "source": "DAS K2THETA",
+   "words": [
+    "21740"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 537,
+   "address": "21,3553",
+   "source": "XCH K2CNTRAL",
+   "words": [
+    "57742"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 538,
+   "address": "21,3554",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 539,
+   "address": "21,3555",
+   "source": "MP K2CNTRAL +1",
+   "words": [
+    "71743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 540,
+   "address": "21,3556",
+   "source": "ADS K2THETA +1",
+   "words": [
+    "27740"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 541,
+   "address": "21,3557",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 542,
+   "address": "21,3560",
+   "source": "TCF +2",
+   "words": [
+    "13562"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 543,
+   "address": "21,3561",
+   "source": "ADS K2THETA",
+   "words": [
+    "27737"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 545,
+   "address": "21,3562",
+   "source": "TCF NEGUSUM",
+   "words": [
+    "13566"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 547,
+   "address": "21,3563",
+   "source": "ADDITIN EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 548,
+   "address": "21,3564",
+   "source": "DCA K2CNTRAL",
+   "words": [
+    "31743"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 549,
+   "address": "21,3565",
+   "source": "DAS K2THETA",
+   "words": [
+    "21740"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 550,
+   "address": "21,3566",
+   "source": "NEGUSUM CCS K2THETA",
+   "words": [
+    "11737"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 551,
+   "address": "21,3567",
+   "source": "TCF NEGDRIVE",
+   "words": [
+    "13573"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 552,
+   "address": "21,3570",
+   "source": "TCF +2",
+   "words": [
+    "13572"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 553,
+   "address": "21,3571",
+   "source": "TCF POSDRIVE",
+   "words": [
+    "13575"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 555,
+   "address": "21,3572",
+   "source": "CCS K2THETA +1",
+   "words": [
+    "11740"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 556,
+   "address": "21,3573",
+   "source": "NEGDRIVE CA BIT1",
+   "words": [
+    "34753"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 557,
+   "address": "21,3574",
+   "source": "TCF +2",
+   "words": [
+    "13576"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 558,
+   "address": "21,3575",
+   "source": "POSDRIVE CS BIT1",
+   "words": [
+    "44753"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 559,
+   "address": "21,3576",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 560,
+   "address": "21,3577",
+   "source": "INDEX QRCNTR",
+   "words": [
+    "51750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 561,
+   "address": "21,3600",
+   "source": "XCH NEGUQ",
+   "words": [
+    "57501"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 563,
+   "address": "21,3601",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 564,
+   "address": "21,3602",
+   "source": "MP L",
+   "words": [
+    "70001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 565,
+   "address": "21,3603",
+   "source": "CCS L",
+   "words": [
+    "10001"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 566,
+   "address": "21,3604",
+   "source": "TCF LOUPE",
+   "words": [
+    "13621"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 568,
+   "address": "21,3605",
+   "source": "TCF ZEROLOUP",
+   "words": [
+    "13616"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 570,
+   "address": "21,3606",
+   "source": "TCF REVERSAL",
+   "words": [
+    "13610"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 571,
+   "address": "21,3607",
+   "source": "TCF ZEROLOUP",
+   "words": [
+    "13616"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 573,
+   "address": "21,3610",
+   "source": "REVERSAL INDEX QRCNTR",
+   "words": [
+    "51750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 574,
+   "address": "21,3611",
+   "source": "TS QACCDOT",
+   "words": [
+    "55510"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 575,
+   "address": "21,3612",
+   "source": "INDEX QRCNTR",
+   "words": [
+    "51750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 576,
+   "address": "21,3613",
+   "source": "CS GMBLBITA",
+   "words": [
+    "43633"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 577,
+   "address": "21,3614",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 578,
+   "address": "21,3615",
+   "source": "WAND CHAN12",
+   "words": [
+    "03012"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 580,
+   "address": "21,3616",
+   "source": "ZEROLOUP CS RCSFLAGS",
+   "words": [
+    "41273"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 581,
+   "address": "21,3617",
+   "source": "MASK CALLGMBL",
+   "words": [
+    "74747"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 582,
+   "address": "21,3620",
+   "source": "ADS RCSFLAGS",
+   "words": [
+    "27273"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 584,
+   "address": "21,3621",
+   "source": "LOUPE CCS QRCNTR",
+   "words": [
+    "11750"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 585,
+   "address": "21,3622",
+   "source": "TCF GOQTRIMG",
+   "words": [
+    "13115"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 587,
+   "address": "21,3623",
+   "source": "CA SAVESR",
+   "words": [
+    "31505"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 588,
+   "address": "21,3624",
+   "source": "TS SR",
+   "words": [
+    "54021"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 590,
+   "address": "21,3625",
+   "source": "GOCLOSE EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 591,
+   "address": "21,3626",
+   "source": "DCA CLOSEADR",
+   "words": [
+    "33631"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 592,
+   "address": "21,3627",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 595,
+   "address": "21,3630",
+   "source": "CLOSEADR 2CADR CLOSEOUT",
+   "words": [
+    "03236",
+    "36106"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 598,
+   "address": "21,3632",
+   "source": "ROOTHALF OCTAL 26501",
+   "words": [
+    "26501"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 599,
+   "address": "21,3633",
+   "source": "GMBLBITA OCTAL 01400",
+   "words": [
+    "01400"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 600,
+   "address": "21,3634",
+   "source": "OCT11276 OCTAL 11276",
+   "words": [
+    "11276"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 601,
+   "address": "21,3635",
+   "source": "GMBLBITB OCTAL 06000",
+   "words": [
+    "06000"
+   ],
+   "native": "gts"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 610,
+   "address": "21,3636",
+   "source": "ROOTCYCL TS SCRATCH",
+   "words": [
+    "55746"
+   ],
+   "native": "rootcycl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 611,
+   "address": "21,3637",
+   "source": "TS SR",
+   "words": [
+    "54021"
+   ],
+   "native": "rootcycl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 612,
+   "address": "21,3640",
+   "source": "CA HALFARG",
+   "words": [
+    "31747"
+   ],
+   "native": "rootcycl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 613,
+   "address": "21,3641",
+   "source": "ZL",
+   "words": [
+    "22007"
+   ],
+   "native": "rootcycl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 614,
+   "address": "21,3642",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "rootcycl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 615,
+   "address": "21,3643",
+   "source": "DV SCRATCH",
+   "words": [
+    "11746"
+   ],
+   "native": "rootcycl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 616,
+   "address": "21,3644",
+   "source": "AD SR",
+   "words": [
+    "60021"
+   ],
+   "native": "rootcycl"
+  },
+  {
+   "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+   "line": 617,
+   "address": "21,3645",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "native": "rootcycl"
+  }
+ ],
+ "note": "Fresh yaYUL assembly of the file (with the indentation-only repair of its +2 location field) reproduces the certified rope; every assembled word of TRIM_GIMBAL_CONTROL_SYSTEM has one native owner holding its erasable address (the indexed base for INDEX orders), the rope value of its fixed operand, its branch target (or composes it inline), its channel or its constant; the IBNKCALL CADR is the compiled site operand."
+}

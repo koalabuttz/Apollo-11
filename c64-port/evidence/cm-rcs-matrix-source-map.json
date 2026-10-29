@@ -1,0 +1,278 @@
+{
+  "source_file": "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
+  "original_sha256": "b38c7eb94508538436094e2b8f1b7271a5cb733a80a6f1b522548a43695cd688",
+  "emitted_words": 33,
+  "words": [
+    {
+      "original_line": 51,
+      "bank": "22",
+      "address": "3447",
+      "physical_fixed_word": 19239,
+      "raw_octal": "30102",
+      "native_group": "RCS_gates"
+    },
+    {
+      "original_line": 52,
+      "bank": "22",
+      "address": "3450",
+      "physical_fixed_word": 19240,
+      "raw_octal": "00006",
+      "native_group": "RCS_gates"
+    },
+    {
+      "original_line": 53,
+      "bank": "22",
+      "address": "3451",
+      "physical_fixed_word": 19241,
+      "raw_octal": "65217",
+      "native_group": "RCS_gates"
+    },
+    {
+      "original_line": 54,
+      "bank": "22",
+      "address": "3452",
+      "physical_fixed_word": 19242,
+      "raw_octal": "75002",
+      "native_group": "RCS_gates"
+    },
+    {
+      "original_line": 55,
+      "bank": "22",
+      "address": "3453",
+      "physical_fixed_word": 19243,
+      "raw_octal": "00006",
+      "native_group": "RCS_gates"
+    },
+    {
+      "original_line": 56,
+      "bank": "22",
+      "address": "3454",
+      "physical_fixed_word": 19244,
+      "raw_octal": "15217",
+      "native_group": "RCS_gates"
+    },
+    {
+      "original_line": 58,
+      "bank": "22",
+      "address": "3455",
+      "physical_fixed_word": 19245,
+      "raw_octal": "30034",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 59,
+      "bank": "22",
+      "address": "3456",
+      "physical_fixed_word": 19246,
+      "raw_octal": "05075",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 60,
+      "bank": "22",
+      "address": "3457",
+      "physical_fixed_word": 19247,
+      "raw_octal": "55640",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 61,
+      "bank": "22",
+      "address": "3460",
+      "physical_fixed_word": 19248,
+      "raw_octal": "30034",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 62,
+      "bank": "22",
+      "address": "3461",
+      "physical_fixed_word": 19249,
+      "raw_octal": "05074",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 63,
+      "bank": "22",
+      "address": "3462",
+      "physical_fixed_word": 19250,
+      "raw_octal": "55645",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 64,
+      "bank": "22",
+      "address": "3463",
+      "physical_fixed_word": 19251,
+      "raw_octal": "33507",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 65,
+      "bank": "22",
+      "address": "3464",
+      "physical_fixed_word": 19252,
+      "raw_octal": "00006",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 66,
+      "bank": "22",
+      "address": "3465",
+      "physical_fixed_word": 19253,
+      "raw_octal": "20032",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 67,
+      "bank": "22",
+      "address": "3466",
+      "physical_fixed_word": 19254,
+      "raw_octal": "40000",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 68,
+      "bank": "22",
+      "address": "3467",
+      "physical_fixed_word": 19255,
+      "raw_octal": "05074",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 69,
+      "bank": "22",
+      "address": "3470",
+      "physical_fixed_word": 19256,
+      "raw_octal": "55644",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 70,
+      "bank": "22",
+      "address": "3471",
+      "physical_fixed_word": 19257,
+      "raw_octal": "00006",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 71,
+      "bank": "22",
+      "address": "3472",
+      "physical_fixed_word": 19258,
+      "raw_octal": "71645",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 72,
+      "bank": "22",
+      "address": "3473",
+      "physical_fixed_word": 19259,
+      "raw_octal": "55641",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 73,
+      "bank": "22",
+      "address": "3474",
+      "physical_fixed_word": 19260,
+      "raw_octal": "33507",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 74,
+      "bank": "22",
+      "address": "3475",
+      "physical_fixed_word": 19261,
+      "raw_octal": "00006",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 75,
+      "bank": "22",
+      "address": "3476",
+      "physical_fixed_word": 19262,
+      "raw_octal": "20032",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 76,
+      "bank": "22",
+      "address": "3477",
+      "physical_fixed_word": 19263,
+      "raw_octal": "40000",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 77,
+      "bank": "22",
+      "address": "3500",
+      "physical_fixed_word": 19264,
+      "raw_octal": "05075",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 78,
+      "bank": "22",
+      "address": "3501",
+      "physical_fixed_word": 19265,
+      "raw_octal": "55642",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 79,
+      "bank": "22",
+      "address": "3502",
+      "physical_fixed_word": 19266,
+      "raw_octal": "00006",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 80,
+      "bank": "22",
+      "address": "3503",
+      "physical_fixed_word": 19267,
+      "raw_octal": "71645",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 81,
+      "bank": "22",
+      "address": "3504",
+      "physical_fixed_word": 19268,
+      "raw_octal": "40000",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 83,
+      "bank": "22",
+      "address": "3505",
+      "physical_fixed_word": 19269,
+      "raw_octal": "55643",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 84,
+      "bank": "22",
+      "address": "3506",
+      "physical_fixed_word": 19270,
+      "raw_octal": "15217",
+      "native_group": "source_matrix_update"
+    },
+    {
+      "original_line": 85,
+      "bank": "22",
+      "address": "3507",
+      "physical_fixed_word": 19271,
+      "raw_octal": "01224",
+      "native_group": "source_quad_constant"
+    }
+  ],
+  "external_trig_aliases": {
+    "SPSIN1": "SPSIN",
+    "SPSIN2": "SPSIN",
+    "SPCOS1": "SPCOS",
+    "SPCOS2": "SPCOS"
+  },
+  "source_return": "All three source exits reach actual ENDOFJOB05217 with source A/L/Q/banks retained; this module stops before external Executive job completion."
+}

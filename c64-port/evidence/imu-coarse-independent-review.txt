@@ -1,0 +1,14 @@
+Independent read-only review of original LM/CM IMU coarse-alignment stages.
+No discrepancy found in the declared bounded stages.
+Checked both original containing bodies and LM listing: CHECK begins CAF TWO3072, not internal CHKCORS3073. MSU difference conversion includes required negative diminution. Quarter product plus low DOUBLE/TS carry preserves source command rounding including signed zero. COMMAND segmentation uses CCS magnitude-1 plus literal -191, and sends at most192 per axis. Settled tolerance077511 is -182; the CCS diminution admits absolute delta<=183 and alarms at184.
+Raw16-bit BZMF sign/zeros, source branch Q, and LXCH oldCOMMAND L agree. SET uses actual AD/ADS lamp/flag overflow through agc_add_register, clears channel12 BIT6 then sets BIT4, clears channel14 gyro activity and applies mission flag masks. Early source A7 and final TCQ debris agree.
+Idle signed-zero counter qualification is appropriate: SETCOARS literally stores GYROCMD=-0, so excluding it would reject the actual following CALCULATE context. Gyroactivity-clear requirement, producer exclusion and independent original-device replay are material.
+Read passive six-literal accessor: DEC150/inline alarm211/COARSTOL/OCT40010/-191/-192 values and mission physical addresses agree with the original mapped data. No arithmetic or caller body is inferred from the data accessor.
+Quiet counters/producers, coherent bank07/EB3, legal fixed Q and external VARDELAY/FIXDELAY/SENDPULS/ALARM/ENDIMU frontiers remain material. No whole-file/application completion claim. This review did not rerun the full corpus; independently reported source/SAN/target evidence remains separately authoritative.
+Exact reviewed bytes:
+include/imu_coarse.h SHA256 f3da4a810eead277c82ab5d17b409d545513ba864e02ed093352e4cc041f4bad
+src/imu_coarse.c SHA256 6bd450e3934a8fe4f5805492e47632afc0850a729d50e872086b89ca263668fc
+tests/imu_coarse_cases.c SHA256 12d2ce726888506b75eb23e77b0a22add2e7772a6e1d9839033576839af66ecd
+build/imu-coarse-source-map.json SHA256 9dbaf012a3d5384f6a8b7ed96574524337c4d01b41ba01b34198d28d6787099c
+../Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc SHA256 351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb
+../Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc SHA256 bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb

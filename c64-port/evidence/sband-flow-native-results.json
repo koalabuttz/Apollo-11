@@ -1,0 +1,7 @@
+{
+  "states": 32768,
+  "start": 0,
+  "end": 40960,
+  "record_bytes": 4106,
+  "decoded_sha256": "e727d88186e37d8aadded891b639ada5e738734b173146fbd304d65394334fe6"
+}

@@ -1,0 +1,67 @@
+{
+  "source_files": {
+    "include/cm_basic_sleep.h": "e07027a867d64da6278b5fa975e9919fcaf56fba6781e239df7ea106215af4c3",
+    "src/cm_basic_sleep.c": "858706154bf882b780f770f370b07350c0da137e298661e39e206f135fda3333",
+    "docs/COMANCHE-BASIC-SLEEP.md": "1b151b4e1d2743d6fd24a5fdfefcf0b5ab7989c92b60e148f8b54d444835de73",
+    "tests/cm_sleep_check.c": "9d574622def872fa17237ba5ffaf2c1252eecd3abaadf20fbec78607994e9a43",
+    "tests/test_cm_sleep.c": "647cf6b3680e8c350ffc131b89b99980bd8844814d1388d7acf146caf8c25a25",
+    "tests/cm_sleep_check.h": "d6a2c23ab5edb4de121c81e9851326f488bfa88be6dc0804dc1711d7859a699b",
+    "tests/cm_sleep_cases.c": "d218889ed72f113342ab1cc85dd2dc6ad596d3899b5c9c8673880c00b01ef41b",
+    "tests/cm_sleep_cases.h": "6ae087ce36770521a4f5057980e1b94b00194a355d239aaff1025c4ba8e893c1",
+    "tests/cm_sleep_vectors.h": "b7d7d8bf3561ade4e3f9bd045329e2a80dede17bc56911fc1f458f07e192e11a",
+    "tools/freeze_cm_sleep.py": "bfbf7ffe31b59c9cc2ca3c7529dda47601460406734d0e612e466bc843c5c9af",
+    "tools/cm_sleep_diagnostic.c": "cdf4c23a7e8ef79b1e93631034ca96f4126757a1d3649aa00be75a1ecc89f689",
+    "tools/cm_sleep_inputs.c": "63a29f6d0ddb55b4be74ed7fbcdf2854ab102e5d8d5c83f73cd36c88013c73b6",
+    "tools/cm_sleep_sanitize_stream.py": "e436ac9591ad7b6674eebb502569dad56bd9737cc455b81c60aa1a0702fcefd2",
+    "tools/cm_sleep_snapshot.c": "6a17f4f9f3ef0743ada9c977dbd816eadfc4caccebbd9d32800987ca24912ded",
+    "tools/cm_sleep.mk": "10e91e5e0881c819aaf4e827d5ac48c514e5b4e07ca52ef22ecb0db0bb7c07b8",
+    "tools/cm_sleep_vice_test.py": "372334226fc3d79910eda8a99e72742896ea8d5bc003f9caf30b88a099ad5e5d",
+    "tools/cm_sleep_differential.py": "5171751ea0d10a5233277476e299cd8706e430c804944070f698dc1209aeb719",
+    "tools/cm_sleep_reference.c": "4c39a58528e36d83603150338a77cfe6eb26022f9b6026e892a872cf87af1c5a"
+  },
+  "native_dependencies": {
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/cm_dispatch.c": "d418ad5c0027ea1432c6ba03b4492c017d8c3e7b9575b8454127731943dad5b2",
+    "src/cm_executive.c": "131d7d1621498aba42fd4d74d1326806683f5b0d53d73715db4c16a0fd8f697c",
+    "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d",
+    "tests/cm_basic_finish_cases.c": "2d0740b7c089fa03be416e6a781d1b4e0b3d82d724cc41e7d73ecb719316dcdb"
+  },
+  "original_sources": {
+    "../Comanche055/EXECUTIVE.agc": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "deps/cm-services-fixture/MAIN.agc.bin": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  },
+  "artifacts": {
+    "evidence/cm-sleep-reference.snapshots.xz": "426fe44ea3e30c24ceb398821c006a0c6e93b49702845c2732fed3259da6de25",
+    "evidence/cm-sleep-stream-sha.json": "6d04524571ca9db1b0cf072c7843db1fd8a6dffc681fde2613084e109ba0e893",
+    "evidence/cm-sleep-differential.log": "50ee75f05cd546624a6e2c1ae273046101cd1f80fb47464ff88b387c3fef932a",
+    "evidence/cm-sleep-freeze.log": "eaab339a3811b77d8d07605410f02e075cda3d9230cdfc3d3e219b95834b20d2",
+    "evidence/cm-sleep-validation.log": "a2e48d3bed4a349f672824dbd0409dcaa64f589ea3314c42926ebfe99d3974e3",
+    "evidence/cm-sleep-c64-result.log": "e229b92186510dc61bc78d4a3c5579419c2da50533522d592554b8b7c74a9b06",
+    "evidence/cm_sleep.prg": "a84d9323feed4adeb614c8667af4677fa3fa159c12316ce70245102a4fd5faee",
+    "evidence/cm_sleep.map": "fd97f4abca40e57f489382cc924d98709345fac16eb31c7536c0d37ab4c09554",
+    "evidence/cm_sleep-vice-mailbox.bin": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5",
+    "evidence/cm_sleep-hardware-stack.bin": "29ae11c8ca94a015fd6822624164169bacf95de5ee4e01705590cac1c944213d",
+    "evidence/cm_sleep-software-stack.bin": "88e13ee00c9ec301015511331952800f9fba1613b5787142e7fcb871e449a911",
+    "evidence/cm_sleep-vice.log": "43643396097af49ee5fe46e41417a1e1fb9b27f9cc6f364777fbd7456f1f23ca",
+    "evidence/cm_sleep-vice-monitor.log": "e9d5e0791484eb5cbb2abbb2df294762b8657dde396472b4d0a029f40e913c64",
+    "evidence/cm_sleep-vice.mon": "718df5435f827872a178cc489b182ed515812fd1ea17050ad60b7796d8972c9c"
+  },
+  "states": {
+    "complete_original_states": 16384,
+    "state_words": 2051,
+    "frozen": 64,
+    "invalid_boundaries": 23,
+    "uncompressed_SHA256": "c2e5493b3678d4a52f34fc36d0bba252a40fffe485455544b0ff6a7422913fde",
+    "strict_and_SAN": "all complete source outputs byte-identical; frozen tests also check explicit transfer against source continuation"
+  },
+  "target": {
+    "mailbox": "a500004000",
+    "prg_bytes": 16652,
+    "hardware_stack_bytes": 18,
+    "rom_stack_bytes": 14,
+    "software_stack_bytes": 728,
+    "additional_zero_page_bytes": 0
+  },
+  "scope": "Actual JOBSLEEP05175, retained dormant core/VAC, EJSCAN and source basic/interpreted/idle dispatch; selected job body not executed"
+}

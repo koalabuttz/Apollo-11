@@ -1,0 +1,17 @@
+Independent read-only whole Luminary INTER-BANK_COMMUNICATION source review
+Reviewer: comanche_executive; conclusions delivered through team coordination and retained by frozen_storage.
+
+Reviewed original76 emitted words and all14 explicit source entries against native control code. No control mismatch found within the documented compiled-caller ABI. Checked raw L normalization; post-store erasable inline aliases; USPRCADR EDOP editing and TS overflow skips; SUPDACAL overflow FB/SUPER restoration; and allfour fixed CCS1777 successors into MAKECADR.
+
+Negative-overflow BANKJUMP PC2/rawQ0177776 is a precise fault frontier, not an ordinary RETURN. Original engine TC Q first reaches registerQ then fetches its word. Native code correctly stops before that invalid external register word executes. This review does not claim an arbitrary instruction decoder or complete caller/fault-continuation body.
+
+Final guard review confirms saved descriptors0100..07777 and banked erasable inline physical>=0100 close reserved-register admission without changing qualified ordinary-caller rows. Mapped valid-body controls remain unchanged and align with original LM source. Ordinary caller/saved-descriptor storage and quiesced-producer domains remain explicit in the whole-file recommendation.
+
+Full numerical comparison and sanitizer/target execution are independently retained in the module proof:921088 complete original source states and448 native C64 states; no numerical test run was duplicated by the reviewer.
+
+Reviewed final identities:
+b1653fe51d0c1ef5d0df7feedf3dabbf7a99b028273c624b62087cdb97d29838  src/lm_interbank.c
+9eae04a5f77310085c91b4a5f39fb37f5d780d7c81539afeb5548e721157c064  include/lm_interbank.h
+2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced  ../Luminary099/INTER-BANK_COMMUNICATION.agc
+927a763f86480d66a87fd9a3d7d46d5eeae22ea2cbdd0243080cf300d1d636d0  build/lm-interbank-source-audit.json
+4eb31aab156d3528b3136f78a8754dd2e3b4d7853096f1a11609f705b6b39e14  docs/LUMINARY-INTERBANK.md

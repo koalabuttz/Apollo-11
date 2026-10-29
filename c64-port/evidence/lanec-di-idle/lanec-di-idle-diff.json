@@ -1,0 +1,8 @@
+{
+  "suite": "di-idle",
+  "cases": 4480,
+  "differing": 0,
+  "refused_unchanged": 122,
+  "native_sha256": "b10d2a861070f127bb8aa5745832ad6526210ff30361b6cf9b9c7f3c9db889db",
+  "oracle_sha256": "80c1301ff395ed9651d77cc940bd58b779a2b36240e158dab12092f7bee5e6dd"
+}

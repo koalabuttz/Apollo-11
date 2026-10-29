@@ -1,0 +1,6425 @@
+{
+ "Luminary099/P32-P35_P72-P75.agc": {
+  "native_file": "src/lm_p32_p35.c",
+  "words": 923,
+  "untranslated_words": 0,
+  "routines": 421,
+  "map": [
+   {
+    "address": "35,2027",
+    "word": "02347",
+    "source": "P32 TC AVFLAGA",
+    "routine": "35,2027",
+    "function": "r72027"
+   },
+   {
+    "address": "35,2030",
+    "word": "02032",
+    "source": " TC P32STRT",
+    "routine": "35,2027",
+    "function": "r72027"
+   },
+   {
+    "address": "35,2031",
+    "word": "02354",
+    "source": "P72 TC AVFLAGP",
+    "routine": "35,2031",
+    "function": "r72031"
+   },
+   {
+    "address": "35,2032",
+    "word": "00006",
+    "source": "P32STRT EXTEND ",
+    "routine": "35,2031",
+    "function": "r72031"
+   },
+   {
+    "address": "35,2033",
+    "word": "32420",
+    "source": " DCA P30ZERO",
+    "routine": "35,2031",
+    "function": "r72031"
+   },
+   {
+    "address": "35,2034",
+    "word": "53621",
+    "source": " DXCH CENTANG",
+    "routine": "35,2031",
+    "function": "r72031"
+   },
+   {
+    "address": "35,2035",
+    "word": "02053",
+    "source": " TC P32/P72A",
+    "routine": "35,2031",
+    "function": "r72031"
+   },
+   {
+    "address": "35,2036",
+    "word": "77734",
+    "source": "ALMXITA SXA,2 ",
+    "routine": "35,2036",
+    "function": "r72036"
+   },
+   {
+    "address": "35,2037",
+    "word": "03613",
+    "source": "  CSIALRM",
+    "routine": "35,2036",
+    "function": "r72036"
+   },
+   {
+    "address": "35,2040",
+    "word": "77740",
+    "source": "ALMXIT LXC,1 ",
+    "routine": "35,2040",
+    "function": "r72040"
+   },
+   {
+    "address": "35,2041",
+    "word": "03613",
+    "source": "  CSIALRM",
+    "routine": "35,2040",
+    "function": "r72040"
+   },
+   {
+    "address": "35,2042",
+    "word": "77533",
+    "source": " SLOAD* EXIT",
+    "routine": "35,2042",
+    "function": "r72042"
+   },
+   {
+    "address": "35,2043",
+    "word": "32423",
+    "source": "  ALARM/TB   -1,1",
+    "routine": "35,2042",
+    "function": "r72042"
+   },
+   {
+    "address": "35,2044",
+    "word": "30154",
+    "source": " CA MPAC",
+    "routine": "35,2044",
+    "function": "r72044"
+   },
+   {
+    "address": "35,2045",
+    "word": "05744",
+    "source": " TC VARALARM",
+    "routine": "35,2044",
+    "function": "r72044"
+   },
+   {
+    "address": "35,2046",
+    "word": "35006",
+    "source": " CAF V05N09",
+    "routine": "35,2046",
+    "function": "r72046"
+   },
+   {
+    "address": "35,2047",
+    "word": "04616",
+    "source": " TC BANKCALL",
+    "routine": "35,2046",
+    "function": "r72046"
+   },
+   {
+    "address": "35,2050",
+    "word": "20476",
+    "source": " CADR GOFLASH",
+    "routine": "35,2046",
+    "function": "r72046"
+   },
+   {
+    "address": "35,2051",
+    "word": "06001",
+    "source": " TC GOTOPOOH",
+    "routine": "35,2051",
+    "function": "r72051"
+   },
+   {
+    "address": "35,2052",
+    "word": "02046",
+    "source": " TC -4",
+    "routine": "35,2052",
+    "function": "r72052"
+   },
+   {
+    "address": "35,2053",
+    "word": "02361",
+    "source": "P32/P72A TC P20FLGON",
+    "routine": "35,2053",
+    "function": "r72053"
+   },
+   {
+    "address": "35,2054",
+    "word": "32417",
+    "source": " CAF P30ZERO",
+    "routine": "35,2053",
+    "function": "r72053"
+   },
+   {
+    "address": "35,2055",
+    "word": "55467",
+    "source": " TS NN         +1",
+    "routine": "35,2053",
+    "function": "r72053"
+   },
+   {
+    "address": "35,2056",
+    "word": "55633",
+    "source": " TS TCSI",
+    "routine": "35,2053",
+    "function": "r72053"
+   },
+   {
+    "address": "35,2057",
+    "word": "55634",
+    "source": " TS TCSI       +1",
+    "routine": "35,2053",
+    "function": "r72053"
+   },
+   {
+    "address": "35,2060",
+    "word": "32410",
+    "source": "VN0611 CAF V06N11",
+    "routine": "35,2053",
+    "function": "r72053"
+   },
+   {
+    "address": "35,2061",
+    "word": "03712",
+    "source": " TC VNPOOH",
+    "routine": "35,2053",
+    "function": "r72053"
+   },
+   {
+    "address": "35,2062",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "35,2062",
+    "function": "r72062"
+   },
+   {
+    "address": "35,2063",
+    "word": "57545",
+    "source": " DLOAD DCOMP",
+    "routine": "35,2063",
+    "function": "r72063"
+   },
+   {
+    "address": "35,2064",
+    "word": "03634",
+    "source": "  TCSI",
+    "routine": "35,2063",
+    "function": "r72063"
+   },
+   {
+    "address": "35,2065",
+    "word": "71240",
+    "source": " BMN DLOAD",
+    "routine": "35,2065",
+    "function": "r72065"
+   },
+   {
+    "address": "35,2066",
+    "word": "72113",
+    "source": "  VN0655",
+    "routine": "35,2065",
+    "function": "r72065"
+   },
+   {
+    "address": "35,2067",
+    "word": "01643",
+    "source": "  TETLEM",
+    "routine": "35,2065",
+    "function": "r72065"
+   },
+   {
+    "address": "35,2070",
+    "word": "34041",
+    "source": " STCALL TDEC1",
+    "routine": "35,2070",
+    "function": "r72070"
+   },
+   {
+    "address": "35,2071",
+    "word": "46360",
+    "source": "  PRECSET",
+    "routine": "35,2070",
+    "function": "r72070"
+   },
+   {
+    "address": "35,2072",
+    "word": "53775",
+    "source": " VLOAD VSR*",
+    "routine": "35,2072",
+    "function": "r72072"
+   },
+   {
+    "address": "35,2073",
+    "word": "03536",
+    "source": "  RACT3",
+    "routine": "35,2072",
+    "function": "r72072"
+   },
+   {
+    "address": "35,2074",
+    "word": "57176",
+    "source": "  0,2",
+    "routine": "35,2072",
+    "function": "r72072"
+   },
+   {
+    "address": "35,2075",
+    "word": "26655",
+    "source": " STOVL RVEC",
+    "routine": "35,2075",
+    "function": "r72075"
+   },
+   {
+    "address": "35,2076",
+    "word": "03544",
+    "source": "  VACT3",
+    "routine": "35,2075",
+    "function": "r72075"
+   },
+   {
+    "address": "35,2077",
+    "word": "43057",
+    "source": " VSR* SET",
+    "routine": "35,2077",
+    "function": "r72077"
+   },
+   {
+    "address": "35,2100",
+    "word": "57176",
+    "source": "  0,2",
+    "routine": "35,2077",
+    "function": "r72077"
+   },
+   {
+    "address": "35,2101",
+    "word": "03466",
+    "source": "  RVSW",
+    "routine": "35,2077",
+    "function": "r72077"
+   },
+   {
+    "address": "35,2102",
+    "word": "16744",
+    "source": " STODL VVEC",
+    "routine": "35,2102",
+    "function": "r72102"
+   },
+   {
+    "address": "35,2103",
+    "word": "06530",
+    "source": "  DPPOSMAX",
+    "routine": "35,2102",
+    "function": "r72102"
+   },
+   {
+    "address": "35,2104",
+    "word": "36756",
+    "source": " STCALL RDESIRED",
+    "routine": "35,2104",
+    "function": "r72104"
+   },
+   {
+    "address": "35,2105",
+    "word": "25547",
+    "source": "  TIMERAD",
+    "routine": "35,2104",
+    "function": "r72104"
+   },
+   {
+    "address": "35,2106",
+    "word": "77615",
+    "source": " DAD ",
+    "routine": "35,2106",
+    "function": "r72106"
+   },
+   {
+    "address": "35,2107",
+    "word": "03574",
+    "source": "  TDEC2",
+    "routine": "35,2106",
+    "function": "r72106"
+   },
+   {
+    "address": "35,2110",
+    "word": "03634",
+    "source": " STORE TCSI",
+    "routine": "35,2110",
+    "function": "r72110"
+   },
+   {
+    "address": "35,2111",
+    "word": "77776",
+    "source": " EXIT ",
+    "routine": "35,2111",
+    "function": "r72111"
+   },
+   {
+    "address": "35,2112",
+    "word": "02060",
+    "source": " TC VN0611",
+    "routine": "35,2112",
+    "function": "r72112"
+   },
+   {
+    "address": "35,2113",
+    "word": "77776",
+    "source": "VN0655 EXIT ",
+    "routine": "35,2113",
+    "function": "r72113"
+   },
+   {
+    "address": "35,2114",
+    "word": "33724",
+    "source": " CAF V06N55",
+    "routine": "35,2114",
+    "function": "r72114"
+   },
+   {
+    "address": "35,2115",
+    "word": "04616",
+    "source": " TC BANKCALL",
+    "routine": "35,2114",
+    "function": "r72114"
+   },
+   {
+    "address": "35,2116",
+    "word": "20476",
+    "source": " CADR GOFLASH",
+    "routine": "35,2114",
+    "function": "r72114"
+   },
+   {
+    "address": "35,2117",
+    "word": "06001",
+    "source": " TC GOTOPOOH",
+    "routine": "35,2117",
+    "function": "r72117"
+   },
+   {
+    "address": "35,2120",
+    "word": "02122",
+    "source": " TC +2",
+    "routine": "35,2120",
+    "function": "r72120"
+   },
+   {
+    "address": "35,2121",
+    "word": "02114",
+    "source": " TC -5",
+    "routine": "35,2121",
+    "function": "r72121"
+   },
+   {
+    "address": "35,2122",
+    "word": "33723",
+    "source": " CAF V06N37",
+    "routine": "35,2121",
+    "function": "r72121"
+   },
+   {
+    "address": "35,2123",
+    "word": "03712",
+    "source": " TC VNPOOH",
+    "routine": "35,2121",
+    "function": "r72121"
+   },
+   {
+    "address": "35,2124",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "35,2124",
+    "function": "r72124"
+   },
+   {
+    "address": "35,2125",
+    "word": "77745",
+    "source": " DLOAD ",
+    "routine": "35,2125",
+    "function": "r72125"
+   },
+   {
+    "address": "35,2126",
+    "word": "03634",
+    "source": "  TCSI",
+    "routine": "35,2125",
+    "function": "r72125"
+   },
+   {
+    "address": "35,2127",
+    "word": "37442",
+    "source": " STCALL TIG",
+    "routine": "35,2127",
+    "function": "r72127"
+   },
+   {
+    "address": "35,2130",
+    "word": "20000",
+    "source": "  SELECTMU",
+    "routine": "35,2127",
+    "function": "r72127"
+   },
+   {
+    "address": "35,2131",
+    "word": "77624",
+    "source": "P32/P72B CALL ",
+    "routine": "35,2131",
+    "function": "r72131"
+   },
+   {
+    "address": "35,2132",
+    "word": "71016",
+    "source": "  ADVANCE",
+    "routine": "35,2131",
+    "function": "r72131"
+   },
+   {
+    "address": "35,2133",
+    "word": "77201",
+    "source": " SETPD VLOAD",
+    "routine": "35,2133",
+    "function": "r72133"
+   },
+   {
+    "address": "35,2134",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "35,2133",
+    "function": "r72133"
+   },
+   {
+    "address": "35,2135",
+    "word": "03506",
+    "source": "  VPASS1",
+    "routine": "35,2133",
+    "function": "r72133"
+   },
+   {
+    "address": "35,2136",
+    "word": "65315",
+    "source": " PDVL PDDL",
+    "routine": "35,2136",
+    "function": "r72136"
+   },
+   {
+    "address": "35,2137",
+    "word": "03500",
+    "source": "  RPASS1",
+    "routine": "35,2136",
+    "function": "r72136"
+   },
+   {
+    "address": "35,2140",
+    "word": "03634",
+    "source": "  TCSI",
+    "routine": "35,2136",
+    "function": "r72136"
+   },
+   {
+    "address": "35,2141",
+    "word": "65325",
+    "source": " PDDL PDDL",
+    "routine": "35,2141",
+    "function": "r72141"
+   },
+   {
+    "address": "35,2142",
+    "word": "03636",
+    "source": "  TTPI",
+    "routine": "35,2141",
+    "function": "r72141"
+   },
+   {
+    "address": "35,2143",
+    "word": "33732",
+    "source": "  TWOPI",
+    "routine": "35,2141",
+    "function": "r72141"
+   },
+   {
+    "address": "35,2144",
+    "word": "45006",
+    "source": " PUSH CALL",
+    "routine": "35,2144",
+    "function": "r72144"
+   },
+   {
+    "address": "35,2145",
+    "word": "73466",
+    "source": "  INTINT",
+    "routine": "35,2144",
+    "function": "r72144"
+   },
+   {
+    "address": "35,2146",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "35,2146",
+    "function": "r72146"
+   },
+   {
+    "address": "35,2147",
+    "word": "46412",
+    "source": "  PASSIVE",
+    "routine": "35,2146",
+    "function": "r72146"
+   },
+   {
+    "address": "35,2150",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "35,2150",
+    "function": "r72150"
+   },
+   {
+    "address": "35,2151",
+    "word": "70113",
+    "source": "  CSI/A",
+    "routine": "35,2150",
+    "function": "r72150"
+   },
+   {
+    "address": "35,2152",
+    "word": "43014",
+    "source": "P32/P72C BON SET",
+    "routine": "35,2152",
+    "function": "r72152"
+   },
+   {
+    "address": "35,2153",
+    "word": "01311",
+    "source": "  FINALFLG",
+    "routine": "35,2152",
+    "function": "r72152"
+   },
+   {
+    "address": "35,2154",
+    "word": "72156",
+    "source": "  P32/P72D",
+    "routine": "35,2152",
+    "function": "r72152"
+   },
+   {
+    "address": "35,2155",
+    "word": "00470",
+    "source": "  UPDATFLG",
+    "routine": "35,2152",
+    "function": "r72152"
+   },
+   {
+    "address": "35,2156",
+    "word": "77745",
+    "source": "P32/P72D DLOAD ",
+    "routine": "35,2156",
+    "function": "r72156"
+   },
+   {
+    "address": "35,2157",
+    "word": "02253",
+    "source": "  T1TOT2",
+    "routine": "35,2156",
+    "function": "r72156"
+   },
+   {
+    "address": "35,2160",
+    "word": "02253",
+    "source": "P32/P72E STORE T1TOT2",
+    "routine": "35,2160",
+    "function": "r72160"
+   },
+   {
+    "address": "35,2161",
+    "word": "51025",
+    "source": " DSU BPL",
+    "routine": "35,2161",
+    "function": "r72161"
+   },
+   {
+    "address": "35,2162",
+    "word": "32422",
+    "source": "  60MIN",
+    "routine": "35,2161",
+    "function": "r72161"
+   },
+   {
+    "address": "35,2163",
+    "word": "72160",
+    "source": "  P32/P72E",
+    "routine": "35,2161",
+    "function": "r72161"
+   },
+   {
+    "address": "35,2164",
+    "word": "77745",
+    "source": " DLOAD ",
+    "routine": "35,2164",
+    "function": "r72164"
+   },
+   {
+    "address": "35,2165",
+    "word": "02255",
+    "source": "  T2TOT3",
+    "routine": "35,2164",
+    "function": "r72164"
+   },
+   {
+    "address": "35,2166",
+    "word": "02255",
+    "source": "P32/P72F STORE T2TOT3",
+    "routine": "35,2166",
+    "function": "r72166"
+   },
+   {
+    "address": "35,2167",
+    "word": "51025",
+    "source": " DSU BPL",
+    "routine": "35,2167",
+    "function": "r72167"
+   },
+   {
+    "address": "35,2170",
+    "word": "32422",
+    "source": "  60MIN",
+    "routine": "35,2167",
+    "function": "r72167"
+   },
+   {
+    "address": "35,2171",
+    "word": "72166",
+    "source": "  P32/P72F",
+    "routine": "35,2167",
+    "function": "r72167"
+   },
+   {
+    "address": "35,2172",
+    "word": "77776",
+    "source": " EXIT ",
+    "routine": "35,2172",
+    "function": "r72172"
+   },
+   {
+    "address": "35,2173",
+    "word": "32412",
+    "source": " CAF V06N75",
+    "routine": "35,2173",
+    "function": "r72173"
+   },
+   {
+    "address": "35,2174",
+    "word": "03712",
+    "source": " TC VNPOOH",
+    "routine": "35,2173",
+    "function": "r72173"
+   },
+   {
+    "address": "35,2175",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "35,2175",
+    "function": "r72175"
+   },
+   {
+    "address": "35,2176",
+    "word": "45175",
+    "source": " VLOAD CALL",
+    "routine": "35,2176",
+    "function": "r72176"
+   },
+   {
+    "address": "35,2177",
+    "word": "02267",
+    "source": "  DELVEET1",
+    "routine": "35,2176",
+    "function": "r72176"
+   },
+   {
+    "address": "35,2200",
+    "word": "71100",
+    "source": "  S32/33.1",
+    "routine": "35,2176",
+    "function": "r72176"
+   },
+   {
+    "address": "35,2201",
+    "word": "26267",
+    "source": " STOVL DELVEET1",
+    "routine": "35,2201",
+    "function": "r72201"
+   },
+   {
+    "address": "35,2202",
+    "word": "02311",
+    "source": "  RACT2",
+    "routine": "35,2201",
+    "function": "r72201"
+   },
+   {
+    "address": "35,2203",
+    "word": "26303",
+    "source": " STOVL RACT1",
+    "routine": "35,2203",
+    "function": "r72203"
+   },
+   {
+    "address": "35,2204",
+    "word": "02275",
+    "source": "  DELVEET2",
+    "routine": "35,2203",
+    "function": "r72203"
+   },
+   {
+    "address": "35,2205",
+    "word": "45170",
+    "source": " AXT,1 CALL",
+    "routine": "35,2205",
+    "function": "r72205"
+   },
+   {
+    "address": "35,2206",
+    "word": "01522",
+    "source": " VN 0682",
+    "routine": "35,2205",
+    "function": "r72205"
+   },
+   {
+    "address": "35,2207",
+    "word": "72370",
+    "source": "  DISDVLVC",
+    "routine": "35,2205",
+    "function": "r72205"
+   },
+   {
+    "address": "35,2210",
+    "word": "77745",
+    "source": " DLOAD ",
+    "routine": "35,2210",
+    "function": "r72210"
+   },
+   {
+    "address": "35,2211",
+    "word": "03636",
+    "source": "  TTPI",
+    "routine": "35,2210",
+    "function": "r72210"
+   },
+   {
+    "address": "35,2212",
+    "word": "37640",
+    "source": " STCALL TTPI0",
+    "routine": "35,2212",
+    "function": "r72212"
+   },
+   {
+    "address": "35,2213",
+    "word": "73606",
+    "source": "  VN1645",
+    "routine": "35,2212",
+    "function": "r72212"
+   },
+   {
+    "address": "35,2214",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "35,2214",
+    "function": "r72214"
+   },
+   {
+    "address": "35,2215",
+    "word": "72131",
+    "source": "  P32/P72B",
+    "routine": "35,2214",
+    "function": "r72214"
+   },
+   {
+    "address": "35,2216",
+    "word": "02347",
+    "source": "P33 TC AVFLAGA",
+    "routine": "35,2216",
+    "function": "r72216"
+   },
+   {
+    "address": "35,2217",
+    "word": "02221",
+    "source": " TC P33/P73A",
+    "routine": "35,2216",
+    "function": "r72216"
+   },
+   {
+    "address": "35,2220",
+    "word": "02354",
+    "source": "P73 TC AVFLAGP",
+    "routine": "35,2220",
+    "function": "r72220"
+   },
+   {
+    "address": "35,2221",
+    "word": "02361",
+    "source": "P33/P73A TC P20FLGON",
+    "routine": "35,2220",
+    "function": "r72220"
+   },
+   {
+    "address": "35,2222",
+    "word": "32411",
+    "source": " CAF V06N13",
+    "routine": "35,2220",
+    "function": "r72220"
+   },
+   {
+    "address": "35,2223",
+    "word": "03712",
+    "source": " TC VNPOOH",
+    "routine": "35,2220",
+    "function": "r72220"
+   },
+   {
+    "address": "35,2224",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "35,2224",
+    "function": "r72224"
+   },
+   {
+    "address": "35,2225",
+    "word": "77745",
+    "source": " DLOAD ",
+    "routine": "35,2225",
+    "function": "r72225"
+   },
+   {
+    "address": "35,2226",
+    "word": "03640",
+    "source": "  TTPI0",
+    "routine": "35,2225",
+    "function": "r72225"
+   },
+   {
+    "address": "35,2227",
+    "word": "17636",
+    "source": " STODL TTPI",
+    "routine": "35,2227",
+    "function": "r72227"
+   },
+   {
+    "address": "35,2230",
+    "word": "01777",
+    "source": "  TCDH",
+    "routine": "35,2227",
+    "function": "r72227"
+   },
+   {
+    "address": "35,2231",
+    "word": "37442",
+    "source": " STCALL TIG",
+    "routine": "35,2231",
+    "function": "r72231"
+   },
+   {
+    "address": "35,2232",
+    "word": "20000",
+    "source": "  SELECTMU",
+    "routine": "35,2231",
+    "function": "r72231"
+   },
+   {
+    "address": "35,2233",
+    "word": "77624",
+    "source": "P33/P73B CALL ",
+    "routine": "35,2233",
+    "function": "r72233"
+   },
+   {
+    "address": "35,2234",
+    "word": "71016",
+    "source": "  ADVANCE",
+    "routine": "35,2233",
+    "function": "r72233"
+   },
+   {
+    "address": "35,2235",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "35,2235",
+    "function": "r72235"
+   },
+   {
+    "address": "35,2236",
+    "word": "71133",
+    "source": "  CDHMVR",
+    "routine": "35,2235",
+    "function": "r72235"
+   },
+   {
+    "address": "35,2237",
+    "word": "77201",
+    "source": " SETPD VLOAD",
+    "routine": "35,2237",
+    "function": "r72237"
+   },
+   {
+    "address": "35,2240",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "35,2237",
+    "function": "r72237"
+   },
+   {
+    "address": "35,2241",
+    "word": "03544",
+    "source": "  VACT3",
+    "routine": "35,2237",
+    "function": "r72237"
+   },
+   {
+    "address": "35,2242",
+    "word": "45115",
+    "source": " PDVL CALL",
+    "routine": "35,2242",
+    "function": "r72242"
+   },
+   {
+    "address": "35,2243",
+    "word": "02311",
+    "source": "  RACT2",
+    "routine": "35,2242",
+    "function": "r72242"
+   },
+   {
+    "address": "35,2244",
+    "word": "71071",
+    "source": "  INTINT3P",
+    "routine": "35,2242",
+    "function": "r72242"
+   },
+   {
+    "address": "35,2245",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "35,2245",
+    "function": "r72245"
+   },
+   {
+    "address": "35,2246",
+    "word": "46402",
+    "source": "  ACTIVE",
+    "routine": "35,2245",
+    "function": "r72245"
+   },
+   {
+    "address": "35,2247",
+    "word": "77201",
+    "source": " SETPD VLOAD",
+    "routine": "35,2247",
+    "function": "r72247"
+   },
+   {
+    "address": "35,2250",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "35,2247",
+    "function": "r72247"
+   },
+   {
+    "address": "35,2251",
+    "word": "03530",
+    "source": "  VPASS2",
+    "routine": "35,2247",
+    "function": "r72247"
+   },
+   {
+    "address": "35,2252",
+    "word": "45115",
+    "source": " PDVL CALL",
+    "routine": "35,2252",
+    "function": "r72252"
+   },
+   {
+    "address": "35,2253",
+    "word": "03522",
+    "source": "  RPASS2",
+    "routine": "35,2252",
+    "function": "r72252"
+   },
+   {
+    "address": "35,2254",
+    "word": "71071",
+    "source": "  INTINT3P",
+    "routine": "35,2252",
+    "function": "r72252"
+   },
+   {
+    "address": "35,2255",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "35,2255",
+    "function": "r72255"
+   },
+   {
+    "address": "35,2256",
+    "word": "46412",
+    "source": "  PASSIVE",
+    "routine": "35,2255",
+    "function": "r72255"
+   },
+   {
+    "address": "35,2257",
+    "word": "43145",
+    "source": " DLOAD SET",
+    "routine": "35,2257",
+    "function": "r72257"
+   },
+   {
+    "address": "35,2260",
+    "word": "32420",
+    "source": "  P30ZERO",
+    "routine": "35,2257",
+    "function": "r72257"
+   },
+   {
+    "address": "35,2261",
+    "word": "03460",
+    "source": "  ITSWICH",
+    "routine": "35,2257",
+    "function": "r72257"
+   },
+   {
+    "address": "35,2262",
+    "word": "36317",
+    "source": " STCALL NOMTPI",
+    "routine": "35,2262",
+    "function": "r72262"
+   },
+   {
+    "address": "35,2263",
+    "word": "72764",
+    "source": "  S33/34.1",
+    "routine": "35,2262",
+    "function": "r72262"
+   },
+   {
+    "address": "35,2264",
+    "word": "77454",
+    "source": " BZE EXIT",
+    "routine": "35,2264",
+    "function": "r72264"
+   },
+   {
+    "address": "35,2265",
+    "word": "72302",
+    "source": "  P33/P73C",
+    "routine": "35,2264",
+    "function": "r72264"
+   },
+   {
+    "address": "35,2266",
+    "word": "05567",
+    "source": " TC ALARM",
+    "routine": "35,2266",
+    "function": "r72266"
+   },
+   {
+    "address": "35,2267",
+    "word": "00611",
+    "source": " OCT 611",
+    "routine": "35,2266",
+    "function": "r72266"
+   },
+   {
+    "address": "35,2270",
+    "word": "35006",
+    "source": " CAF V05N09",
+    "routine": "35,2270",
+    "function": "r72270"
+   },
+   {
+    "address": "35,2271",
+    "word": "04616",
+    "source": " TC BANKCALL",
+    "routine": "35,2270",
+    "function": "r72270"
+   },
+   {
+    "address": "35,2272",
+    "word": "20476",
+    "source": " CADR GOFLASH",
+    "routine": "35,2270",
+    "function": "r72270"
+   },
+   {
+    "address": "35,2273",
+    "word": "06001",
+    "source": " TC GOTOPOOH",
+    "routine": "35,2273",
+    "function": "r72273"
+   },
+   {
+    "address": "35,2274",
+    "word": "02276",
+    "source": " TC +2",
+    "routine": "35,2274",
+    "function": "r72274"
+   },
+   {
+    "address": "35,2275",
+    "word": "02221",
+    "source": " TC P33/P73A",
+    "routine": "35,2275",
+    "function": "r72275"
+   },
+   {
+    "address": "35,2276",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "35,2275",
+    "function": "r72275"
+   },
+   {
+    "address": "35,2277",
+    "word": "77745",
+    "source": " DLOAD ",
+    "routine": "35,2277",
+    "function": "r72277"
+   },
+   {
+    "address": "35,2300",
+    "word": "32420",
+    "source": "  P30ZERO",
+    "routine": "35,2277",
+    "function": "r72277"
+   },
+   {
+    "address": "35,2301",
+    "word": "02317",
+    "source": " STORE NOMTPI",
+    "routine": "35,2301",
+    "function": "r72301"
+   },
+   {
+    "address": "35,2302",
+    "word": "43014",
+    "source": "P33/P73C BON SET",
+    "routine": "35,2302",
+    "function": "r72302"
+   },
+   {
+    "address": "35,2303",
+    "word": "01311",
+    "source": "  FINALFLG",
+    "routine": "35,2302",
+    "function": "r72302"
+   },
+   {
+    "address": "35,2304",
+    "word": "72306",
+    "source": "  P33/P73D",
+    "routine": "35,2302",
+    "function": "r72302"
+   },
+   {
+    "address": "35,2305",
+    "word": "00470",
+    "source": "  UPDATFLG",
+    "routine": "35,2302",
+    "function": "r72302"
+   },
+   {
+    "address": "35,2306",
+    "word": "43345",
+    "source": "P33/P73D DLOAD DAD",
+    "routine": "35,2306",
+    "function": "r72306"
+   },
+   {
+    "address": "35,2307",
+    "word": "02317",
+    "source": "  NOMTPI",
+    "routine": "35,2306",
+    "function": "r72306"
+   },
+   {
+    "address": "35,2310",
+    "word": "03636",
+    "source": "  TTPI",
+    "routine": "35,2306",
+    "function": "r72306"
+   },
+   {
+    "address": "35,2311",
+    "word": "03636",
+    "source": " STORE TTPI",
+    "routine": "35,2311",
+    "function": "r72311"
+   },
+   {
+    "address": "35,2312",
+    "word": "77625",
+    "source": " DSU ",
+    "routine": "35,2312",
+    "function": "r72312"
+   },
+   {
+    "address": "35,2313",
+    "word": "01777",
+    "source": "  TCDH",
+    "routine": "35,2312",
+    "function": "r72312"
+   },
+   {
+    "address": "35,2314",
+    "word": "51025",
+    "source": "P33/P73E DSU BPL",
+    "routine": "35,2314",
+    "function": "r72314"
+   },
+   {
+    "address": "35,2315",
+    "word": "32422",
+    "source": "  60MIN",
+    "routine": "35,2314",
+    "function": "r72314"
+   },
+   {
+    "address": "35,2316",
+    "word": "72314",
+    "source": "  P33/P73E",
+    "routine": "35,2314",
+    "function": "r72314"
+   },
+   {
+    "address": "35,2317",
+    "word": "77615",
+    "source": " DAD ",
+    "routine": "35,2317",
+    "function": "r72317"
+   },
+   {
+    "address": "35,2320",
+    "word": "32422",
+    "source": "  60MIN",
+    "routine": "35,2317",
+    "function": "r72317"
+   },
+   {
+    "address": "35,2321",
+    "word": "16253",
+    "source": " STODL T1TOT2",
+    "routine": "35,2321",
+    "function": "r72321"
+   },
+   {
+    "address": "35,2322",
+    "word": "03636",
+    "source": "  TTPI",
+    "routine": "35,2321",
+    "function": "r72321"
+   },
+   {
+    "address": "35,2323",
+    "word": "41425",
+    "source": " DSU PUSH",
+    "routine": "35,2323",
+    "function": "r72323"
+   },
+   {
+    "address": "35,2324",
+    "word": "03640",
+    "source": "  TTPI0",
+    "routine": "35,2323",
+    "function": "r72323"
+   },
+   {
+    "address": "35,2325",
+    "word": "45246",
+    "source": "P33/P73F ABS DSU",
+    "routine": "35,2325",
+    "function": "r72325"
+   },
+   {
+    "address": "35,2326",
+    "word": "32422",
+    "source": "  60MIN",
+    "routine": "35,2325",
+    "function": "r72325"
+   },
+   {
+    "address": "35,2327",
+    "word": "43244",
+    "source": " BPL DAD",
+    "routine": "35,2327",
+    "function": "r72327"
+   },
+   {
+    "address": "35,2330",
+    "word": "72325",
+    "source": "  P33/P73F",
+    "routine": "35,2327",
+    "function": "r72327"
+   },
+   {
+    "address": "35,2331",
+    "word": "32422",
+    "source": "  60MIN",
+    "routine": "35,2327",
+    "function": "r72327"
+   },
+   {
+    "address": "35,2332",
+    "word": "45565",
+    "source": " SIGN STADR",
+    "routine": "35,2332",
+    "function": "r72332"
+   },
+   {
+    "address": "35,2333",
+    "word": "75522",
+    "source": " STORE T2TOT3",
+    "routine": "35,2332",
+    "function": "r72332"
+   },
+   {
+    "address": "35,2334",
+    "word": "77776",
+    "source": " EXIT ",
+    "routine": "35,2334",
+    "function": "r72334"
+   },
+   {
+    "address": "35,2335",
+    "word": "32412",
+    "source": " CAF V06N75",
+    "routine": "35,2335",
+    "function": "r72335"
+   },
+   {
+    "address": "35,2336",
+    "word": "03712",
+    "source": " TC VNPOOH",
+    "routine": "35,2335",
+    "function": "r72335"
+   },
+   {
+    "address": "35,2337",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "35,2337",
+    "function": "r72337"
+   },
+   {
+    "address": "35,2340",
+    "word": "45175",
+    "source": " VLOAD CALL",
+    "routine": "35,2340",
+    "function": "r72340"
+   },
+   {
+    "address": "35,2341",
+    "word": "02275",
+    "source": "  DELVEET2",
+    "routine": "35,2340",
+    "function": "r72340"
+   },
+   {
+    "address": "35,2342",
+    "word": "71100",
+    "source": "  S32/33.1",
+    "routine": "35,2340",
+    "function": "r72340"
+   },
+   {
+    "address": "35,2343",
+    "word": "36275",
+    "source": " STCALL DELVEET2",
+    "routine": "35,2343",
+    "function": "r72343"
+   },
+   {
+    "address": "35,2344",
+    "word": "73606",
+    "source": "  VN1645",
+    "routine": "35,2343",
+    "function": "r72343"
+   },
+   {
+    "address": "35,2345",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "35,2345",
+    "function": "r72345"
+   },
+   {
+    "address": "35,2346",
+    "word": "72233",
+    "source": "  P33/P73B",
+    "routine": "35,2345",
+    "function": "r72345"
+   },
+   {
+    "address": "35,2347",
+    "word": "00006",
+    "source": "AVFLAGA EXTEND ",
+    "routine": "35,2347",
+    "function": "r72347"
+   },
+   {
+    "address": "35,2350",
+    "word": "23470",
+    "source": " QXCH SUBEXIT",
+    "routine": "35,2347",
+    "function": "r72347"
+   },
+   {
+    "address": "35,2351",
+    "word": "05504",
+    "source": " TC UPFLAG",
+    "routine": "35,2347",
+    "function": "r72347"
+   },
+   {
+    "address": "35,2352",
+    "word": "00050",
+    "source": " ADRES AVFLAG",
+    "routine": "35,2347",
+    "function": "r72347"
+   },
+   {
+    "address": "35,2353",
+    "word": "01470",
+    "source": " TC SUBEXIT",
+    "routine": "35,2353",
+    "function": "r72353"
+   },
+   {
+    "address": "35,2354",
+    "word": "00006",
+    "source": "AVFLAGP EXTEND ",
+    "routine": "35,2354",
+    "function": "r72354"
+   },
+   {
+    "address": "35,2355",
+    "word": "23470",
+    "source": " QXCH SUBEXIT",
+    "routine": "35,2354",
+    "function": "r72354"
+   },
+   {
+    "address": "35,2356",
+    "word": "05516",
+    "source": " TC DOWNFLAG",
+    "routine": "35,2354",
+    "function": "r72354"
+   },
+   {
+    "address": "35,2357",
+    "word": "00050",
+    "source": " ADRES AVFLAG",
+    "routine": "35,2354",
+    "function": "r72354"
+   },
+   {
+    "address": "35,2360",
+    "word": "01470",
+    "source": " TC SUBEXIT",
+    "routine": "35,2360",
+    "function": "r72360"
+   },
+   {
+    "address": "35,2361",
+    "word": "00006",
+    "source": "P20FLGON EXTEND ",
+    "routine": "35,2361",
+    "function": "r72361"
+   },
+   {
+    "address": "35,2362",
+    "word": "23470",
+    "source": " QXCH SUBEXIT",
+    "routine": "35,2361",
+    "function": "r72361"
+   },
+   {
+    "address": "35,2363",
+    "word": "05504",
+    "source": " TC UPFLAG",
+    "routine": "35,2361",
+    "function": "r72361"
+   },
+   {
+    "address": "35,2364",
+    "word": "00027",
+    "source": " ADRES UPDATFLG",
+    "routine": "35,2361",
+    "function": "r72361"
+   },
+   {
+    "address": "35,2365",
+    "word": "05504",
+    "source": " TC UPFLAG",
+    "routine": "35,2365",
+    "function": "r72365"
+   },
+   {
+    "address": "35,2366",
+    "word": "00031",
+    "source": " ADRES TRACKFLG",
+    "routine": "35,2365",
+    "function": "r72365"
+   },
+   {
+    "address": "35,2367",
+    "word": "01470",
+    "source": " TC SUBEXIT",
+    "routine": "35,2367",
+    "function": "r72367"
+   },
+   {
+    "address": "35,2370",
+    "word": "03434",
+    "source": "DISDVLVC STORE DELVLVC",
+    "routine": "35,2370",
+    "function": "r72370"
+   },
+   {
+    "address": "35,2371",
+    "word": "45020",
+    "source": " STQ CALL",
+    "routine": "35,2371",
+    "function": "r72371"
+   },
+   {
+    "address": "35,2372",
+    "word": "03463",
+    "source": "  NORMEX",
+    "routine": "35,2371",
+    "function": "r72371"
+   },
+   {
+    "address": "35,2373",
+    "word": "71120",
+    "source": "  S32/33.X",
+    "routine": "35,2371",
+    "function": "r72371"
+   },
+   {
+    "address": "35,2374",
+    "word": "64375",
+    "source": " VLOAD MXV",
+    "routine": "35,2374",
+    "function": "r72374"
+   },
+   {
+    "address": "35,2375",
+    "word": "03434",
+    "source": "  DELVLVC",
+    "routine": "35,2374",
+    "function": "r72374"
+   },
+   {
+    "address": "35,2376",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "35,2374",
+    "function": "r72374"
+   },
+   {
+    "address": "35,2377",
+    "word": "66172",
+    "source": " VSL1 SXA,1",
+    "routine": "35,2377",
+    "function": "r72377"
+   },
+   {
+    "address": "35,2400",
+    "word": "03615",
+    "source": "  VERBNOUN",
+    "routine": "35,2377",
+    "function": "r72377"
+   },
+   {
+    "address": "35,2401",
+    "word": "03434",
+    "source": " STORE DELVLVC",
+    "routine": "35,2401",
+    "function": "r72401"
+   },
+   {
+    "address": "35,2402",
+    "word": "77776",
+    "source": " EXIT ",
+    "routine": "35,2402",
+    "function": "r72402"
+   },
+   {
+    "address": "35,2403",
+    "word": "31615",
+    "source": " CA VERBNOUN",
+    "routine": "35,2403",
+    "function": "r72403"
+   },
+   {
+    "address": "35,2404",
+    "word": "03712",
+    "source": " TC VNPOOH",
+    "routine": "35,2403",
+    "function": "r72403"
+   },
+   {
+    "address": "35,2405",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "35,2405",
+    "function": "r72405"
+   },
+   {
+    "address": "35,2406",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "35,2406",
+    "function": "r72406"
+   },
+   {
+    "address": "35,2407",
+    "word": "03463",
+    "source": "  NORMEX",
+    "routine": "35,2406",
+    "function": "r72406"
+   },
+   {
+    "address": "35,2410",
+    "word": "01413",
+    "source": "V06N11 VN 0611",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "35,2411",
+    "word": "01415",
+    "source": "V06N13 VN 0613",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "35,2412",
+    "word": "01513",
+    "source": "V06N75 VN 0675",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "35,2413",
+    "word": "77776",
+    "source": "SN359+ 2DEC -.000086601",
+    "constant": "K72413"
+   },
+   {
+    "address": "35,2414",
+    "word": "62460",
+    "source": "(+1)",
+    "constant": "K72413"
+   },
+   {
+    "address": "35,2415",
+    "word": "17777",
+    "source": "CS359+ 2DEC +.499999992",
+    "constant": "K72413"
+   },
+   {
+    "address": "35,2416",
+    "word": "37776",
+    "source": "(+1)",
+    "constant": "K72413"
+   },
+   {
+    "address": "35,2417",
+    "word": "00000",
+    "source": "P30ZERO 2DEC 0          B-28",
+    "constant": "K72417"
+   },
+   {
+    "address": "35,2420",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K72417"
+   },
+   {
+    "address": "35,2421",
+    "word": "00025",
+    "source": "60MIN 2DEC 360000     B-28",
+    "constant": "K72417"
+   },
+   {
+    "address": "35,2422",
+    "word": "37100",
+    "source": "(+1)",
+    "constant": "K72417"
+   },
+   {
+    "address": "35,2423",
+    "word": "00600",
+    "source": "ALARM/TB OCT 00600",
+    "constant": "K72417"
+   },
+   {
+    "address": "35,2424",
+    "word": "00601",
+    "source": " OCT 00601",
+    "constant": "K72417"
+   },
+   {
+    "address": "35,2425",
+    "word": "00602",
+    "source": " OCT 00602",
+    "constant": "K72421"
+   },
+   {
+    "address": "35,2426",
+    "word": "00603",
+    "source": " OCT 00603",
+    "constant": "K72421"
+   },
+   {
+    "address": "35,2427",
+    "word": "00604",
+    "source": " OCT 00604",
+    "constant": "K72427"
+   },
+   {
+    "address": "35,2430",
+    "word": "00605",
+    "source": " OCT 00605",
+    "constant": "K72430"
+   },
+   {
+    "address": "35,2431",
+    "word": "00606",
+    "source": " OCT 00606",
+    "constant": "K72431"
+   },
+   {
+    "address": "34,2057",
+    "word": "00000",
+    "source": "LOOPMX 2DEC 16         B-28",
+    "constant": "K70057"
+   },
+   {
+    "address": "34,2060",
+    "word": "00020",
+    "source": "(+1)",
+    "constant": "K70057"
+   },
+   {
+    "address": "34,2061",
+    "word": "00003",
+    "source": "INITST 2DEC .03048     B-7",
+    "constant": "K70061"
+   },
+   {
+    "address": "34,2062",
+    "word": "34661",
+    "source": "(+1)",
+    "constant": "K70061"
+   },
+   {
+    "address": "34,2063",
+    "word": "00606",
+    "source": "DVMAX1 2DEC 3.0480     B-7",
+    "constant": "K70061"
+   },
+   {
+    "address": "34,2064",
+    "word": "04467",
+    "source": "(+1)",
+    "constant": "K70061"
+   },
+   {
+    "address": "34,2065",
+    "word": "00601",
+    "source": "DVMAX2 2DEC 3.014472   B-7",
+    "constant": "K70061"
+   },
+   {
+    "address": "34,2066",
+    "word": "33216",
+    "source": "(+1)",
+    "constant": "K70061"
+   },
+   {
+    "address": "34,2067",
+    "word": "10000",
+    "source": "1DPB2 2DEC 1.0        B-2",
+    "constant": "K70067"
+   },
+   {
+    "address": "34,2070",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K70067"
+   },
+   {
+    "address": "34,2071",
+    "word": "00000",
+    "source": "1DPB28 2DEC 1          B-28",
+    "constant": "K70067"
+   },
+   {
+    "address": "34,2072",
+    "word": "00001",
+    "source": "(+1)",
+    "constant": "K70067"
+   },
+   {
+    "address": "34,2073",
+    "word": "00004",
+    "source": "PMINE 2DEC 157420     B-29",
+    "constant": "K70067"
+   },
+   {
+    "address": "34,2074",
+    "word": "31566",
+    "source": "(+1)",
+    "constant": "K70067"
+   },
+   {
+    "address": "34,2075",
+    "word": "00000",
+    "source": "EPSILN1 2DEC .0003048   B-7",
+    "constant": "K70071"
+   },
+   {
+    "address": "34,2076",
+    "word": "01177",
+    "source": "(+1)",
+    "constant": "K70071"
+   },
+   {
+    "address": "34,2077",
+    "word": "00002",
+    "source": "NICKELDP 2DEC .021336    B-7",
+    "constant": "K70075"
+   },
+   {
+    "address": "34,2100",
+    "word": "27311",
+    "source": "(+1)",
+    "constant": "K70075"
+   },
+   {
+    "address": "34,2101",
+    "word": "77754",
+    "source": "FIFPSDP 2DEC -.152400   B-7",
+    "constant": "K70101"
+   },
+   {
+    "address": "34,2102",
+    "word": "57611",
+    "source": "(+1)",
+    "constant": "K70101"
+   },
+   {
+    "address": "34,2103",
+    "word": "00000",
+    "source": "PMINM 2DEC 10668      B-29",
+    "constant": "K70101"
+   },
+   {
+    "address": "34,2104",
+    "word": "12326",
+    "source": "(+1)",
+    "constant": "K70101"
+   },
+   {
+    "address": "34,2105",
+    "word": "00116",
+    "source": "DELMAX1 2DEC .6096000   B-7",
+    "constant": "K70101"
+   },
+   {
+    "address": "34,2106",
+    "word": "00730",
+    "source": "(+1)",
+    "constant": "K70101"
+   },
+   {
+    "address": "34,2107",
+    "word": "00000",
+    "source": "ONETHTH 2DEC .0001      B-3",
+    "constant": "K70105"
+   },
+   {
+    "address": "34,2110",
+    "word": "06433",
+    "source": "(+1)",
+    "constant": "K70105"
+   },
+   {
+    "address": "34,2111",
+    "word": "00003",
+    "source": "TMIN 2DEC 60000      B-28",
+    "constant": "K70105"
+   },
+   {
+    "address": "34,2112",
+    "word": "25140",
+    "source": "(+1)",
+    "constant": "K70105"
+   },
+   {
+    "address": "34,2113",
+    "word": "43014",
+    "source": "CSI/A CLEAR SET",
+    "routine": "34,2113",
+    "function": "r70113"
+   },
+   {
+    "address": "34,2114",
+    "word": "03260",
+    "source": "  S32.1F1",
+    "routine": "34,2113",
+    "function": "r70113"
+   },
+   {
+    "address": "34,2115",
+    "word": "03061",
+    "source": "  S32.1F2",
+    "routine": "34,2113",
+    "function": "r70113"
+   },
+   {
+    "address": "34,2116",
+    "word": "43014",
+    "source": " CLEAR SET",
+    "routine": "34,2116",
+    "function": "r70116"
+   },
+   {
+    "address": "34,2117",
+    "word": "03262",
+    "source": "  S32.1F3A",
+    "routine": "34,2116",
+    "function": "r70116"
+   },
+   {
+    "address": "34,2120",
+    "word": "03063",
+    "source": "  S32.1F3B",
+    "routine": "34,2116",
+    "function": "r70116"
+   },
+   {
+    "address": "34,2121",
+    "word": "77745",
+    "source": " DLOAD ",
+    "routine": "34,2121",
+    "function": "r70121"
+   },
+   {
+    "address": "34,2122",
+    "word": "32420",
+    "source": "  P30ZERO",
+    "routine": "34,2121",
+    "function": "r70121"
+   },
+   {
+    "address": "34,2123",
+    "word": "03606",
+    "source": " STORE LOOPCT",
+    "routine": "34,2123",
+    "function": "r70123"
+   },
+   {
+    "address": "34,2124",
+    "word": "03614",
+    "source": " STORE CSIALRM",
+    "routine": "34,2124",
+    "function": "r70124"
+   },
+   {
+    "address": "34,2125",
+    "word": "77201",
+    "source": "CSI/B SETPD VLOAD",
+    "routine": "34,2125",
+    "function": "r70125"
+   },
+   {
+    "address": "34,2126",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "34,2125",
+    "function": "r70125"
+   },
+   {
+    "address": "34,2127",
+    "word": "02303",
+    "source": "  RACT1",
+    "routine": "34,2125",
+    "function": "r70125"
+   },
+   {
+    "address": "34,2130",
+    "word": "41446",
+    "source": " ABVAL PUSH",
+    "routine": "34,2130",
+    "function": "r70130"
+   },
+   {
+    "address": "34,2131",
+    "word": "70501",
+    "source": " NORM SR1",
+    "routine": "34,2131",
+    "function": "r70131"
+   },
+   {
+    "address": "34,2132",
+    "word": "00050",
+    "source": "  X2",
+    "routine": "34,2131",
+    "function": "r70131"
+   },
+   {
+    "address": "34,2133",
+    "word": "51515",
+    "source": " PDVL ABVAL",
+    "routine": "34,2133",
+    "function": "r70133"
+   },
+   {
+    "address": "34,2134",
+    "word": "03552",
+    "source": "  RPASS3",
+    "routine": "34,2133",
+    "function": "r70133"
+   },
+   {
+    "address": "34,2135",
+    "word": "55301",
+    "source": " NORM BDDV",
+    "routine": "34,2135",
+    "function": "r70135"
+   },
+   {
+    "address": "34,2136",
+    "word": "00047",
+    "source": "  X1",
+    "routine": "34,2135",
+    "function": "r70135"
+   },
+   {
+    "address": "34,2137",
+    "word": "53664",
+    "source": " XSU,2 SR*",
+    "routine": "34,2137",
+    "function": "r70137"
+   },
+   {
+    "address": "34,2140",
+    "word": "00046",
+    "source": "  X1",
+    "routine": "34,2137",
+    "function": "r70137"
+   },
+   {
+    "address": "34,2141",
+    "word": "57175",
+    "source": "  1,2",
+    "routine": "34,2137",
+    "function": "r70137"
+   },
+   {
+    "address": "34,2142",
+    "word": "41215",
+    "source": " DAD DMP",
+    "routine": "34,2142",
+    "function": "r70142"
+   },
+   {
+    "address": "34,2143",
+    "word": "30070",
+    "source": "  1DPB2",
+    "routine": "34,2142",
+    "function": "r70142"
+   },
+   {
+    "address": "34,2144",
+    "word": "65301",
+    "source": " NORM PDDL",
+    "routine": "34,2144",
+    "function": "r70144"
+   },
+   {
+    "address": "34,2145",
+    "word": "00047",
+    "source": "  X1",
+    "routine": "34,2144",
+    "function": "r70144"
+   },
+   {
+    "address": "34,2146",
+    "word": "02321",
+    "source": "  RTMU",
+    "routine": "34,2144",
+    "function": "r70144"
+   },
+   {
+    "address": "34,2147",
+    "word": "56342",
+    "source": " SR1 DDV",
+    "routine": "34,2147",
+    "function": "r70147"
+   },
+   {
+    "address": "34,2150",
+    "word": "75457",
+    "source": " SL* SQRT",
+    "routine": "34,2150",
+    "function": "r70150"
+   },
+   {
+    "address": "34,2151",
+    "word": "20172",
+    "source": "  0          -7,1",
+    "routine": "34,2150",
+    "function": "r70150"
+   },
+   {
+    "address": "34,2152",
+    "word": "53515",
+    "source": " PDVL UNIT",
+    "routine": "34,2152",
+    "function": "r70152"
+   },
+   {
+    "address": "34,2153",
+    "word": "02303",
+    "source": "  RACT1",
+    "routine": "34,2152",
+    "function": "r70152"
+   },
+   {
+    "address": "34,2154",
+    "word": "47315",
+    "source": " PDVL VXV",
+    "routine": "34,2154",
+    "function": "r70154"
+   },
+   {
+    "address": "34,2155",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,2154",
+    "function": "r70154"
+   },
+   {
+    "address": "34,2156",
+    "word": "77656",
+    "source": " UNIT ",
+    "routine": "34,2156",
+    "function": "r70156"
+   },
+   {
+    "address": "34,2157",
+    "word": "72441",
+    "source": " DOT SL1",
+    "routine": "34,2157",
+    "function": "r70157"
+   },
+   {
+    "address": "34,2160",
+    "word": "03472",
+    "source": "  VACT1",
+    "routine": "34,2157",
+    "function": "r70157"
+   },
+   {
+    "address": "34,2161",
+    "word": "45421",
+    "source": " BDSU STADR",
+    "routine": "34,2161",
+    "function": "r70161"
+   },
+   {
+    "address": "34,2162",
+    "word": "60203",
+    "source": " STODL DELVCSI",
+    "routine": "34,2161",
+    "function": "r70161"
+   },
+   {
+    "address": "34,2163",
+    "word": "30062",
+    "source": "  INITST",
+    "routine": "34,2161",
+    "function": "r70161"
+   },
+   {
+    "address": "34,2164",
+    "word": "03612",
+    "source": " STORE DELDV",
+    "routine": "34,2164",
+    "function": "r70164"
+   },
+   {
+    "address": "34,2165",
+    "word": "43345",
+    "source": "CSI/B1 DLOAD DAD",
+    "routine": "34,2165",
+    "function": "r70165"
+   },
+   {
+    "address": "34,2166",
+    "word": "03606",
+    "source": "  LOOPCT",
+    "routine": "34,2165",
+    "function": "r70165"
+   },
+   {
+    "address": "34,2167",
+    "word": "30072",
+    "source": "  1DPB28",
+    "routine": "34,2165",
+    "function": "r70165"
+   },
+   {
+    "address": "34,2170",
+    "word": "03606",
+    "source": " STORE LOOPCT",
+    "routine": "34,2170",
+    "function": "r70170"
+   },
+   {
+    "address": "34,2171",
+    "word": "77025",
+    "source": " DSU AXT,2",
+    "routine": "34,2171",
+    "function": "r70171"
+   },
+   {
+    "address": "34,2172",
+    "word": "30060",
+    "source": "  LOOPMX",
+    "routine": "34,2171",
+    "function": "r70171"
+   },
+   {
+    "address": "34,2173",
+    "word": "00006",
+    "source": "  6",
+    "routine": "34,2171",
+    "function": "r70171"
+   },
+   {
+    "address": "34,2174",
+    "word": "77644",
+    "source": " BPL ",
+    "routine": "34,2174",
+    "function": "r70174"
+   },
+   {
+    "address": "34,2175",
+    "word": "70776",
+    "source": "  SCNDSOL",
+    "routine": "34,2174",
+    "function": "r70174"
+   },
+   {
+    "address": "34,2176",
+    "word": "77601",
+    "source": "CSI/B2 SETPD ",
+    "routine": "34,2176",
+    "function": "r70176"
+   },
+   {
+    "address": "34,2177",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "34,2176",
+    "function": "r70176"
+   },
+   {
+    "address": "34,2200",
+    "word": "51545",
+    "source": " DLOAD ABS",
+    "routine": "34,2200",
+    "function": "r70200"
+   },
+   {
+    "address": "34,2201",
+    "word": "03574",
+    "source": "  DELVCSI",
+    "routine": "34,2200",
+    "function": "r70200"
+   },
+   {
+    "address": "34,2202",
+    "word": "50025",
+    "source": " DSU BMN",
+    "routine": "34,2202",
+    "function": "r70202"
+   },
+   {
+    "address": "34,2203",
+    "word": "30064",
+    "source": "  DVMAX1",
+    "routine": "34,2202",
+    "function": "r70202"
+   },
+   {
+    "address": "34,2204",
+    "word": "70224",
+    "source": "  CSI/B23",
+    "routine": "34,2202",
+    "function": "r70202"
+   },
+   {
+    "address": "34,2205",
+    "word": "43174",
+    "source": " AXT,2 BON",
+    "routine": "34,2205",
+    "function": "r70205"
+   },
+   {
+    "address": "34,2206",
+    "word": "00007",
+    "source": "  7",
+    "routine": "34,2205",
+    "function": "r70205"
+   },
+   {
+    "address": "34,2207",
+    "word": "03300",
+    "source": "  S32.1F1",
+    "routine": "34,2205",
+    "function": "r70205"
+   },
+   {
+    "address": "34,2210",
+    "word": "70776",
+    "source": "  SCNDSOL",
+    "routine": "34,2205",
+    "function": "r70205"
+   },
+   {
+    "address": "34,2211",
+    "word": "43014",
+    "source": " BOFF BON",
+    "routine": "34,2211",
+    "function": "r70211"
+   },
+   {
+    "address": "34,2212",
+    "word": "03342",
+    "source": "  S32.1F3A",
+    "routine": "34,2211",
+    "function": "r70211"
+   },
+   {
+    "address": "34,2213",
+    "word": "70216",
+    "source": "  CSI/B22",
+    "routine": "34,2211",
+    "function": "r70211"
+   },
+   {
+    "address": "34,2214",
+    "word": "03303",
+    "source": "  S32.1F3B",
+    "routine": "34,2211",
+    "function": "r70211"
+   },
+   {
+    "address": "34,2215",
+    "word": "70776",
+    "source": "  SCNDSOL",
+    "routine": "34,2211",
+    "function": "r70211"
+   },
+   {
+    "address": "34,2216",
+    "word": "71214",
+    "source": "CSI/B22 SET DLOAD",
+    "routine": "34,2216",
+    "function": "r70216"
+   },
+   {
+    "address": "34,2217",
+    "word": "03060",
+    "source": "  S32.1F1",
+    "routine": "34,2216",
+    "function": "r70216"
+   },
+   {
+    "address": "34,2220",
+    "word": "30066",
+    "source": "  DVMAX2",
+    "routine": "34,2216",
+    "function": "r70216"
+   },
+   {
+    "address": "34,2221",
+    "word": "77765",
+    "source": " SIGN ",
+    "routine": "34,2221",
+    "function": "r70221"
+   },
+   {
+    "address": "34,2222",
+    "word": "03574",
+    "source": "  DELVCSI",
+    "routine": "34,2221",
+    "function": "r70221"
+   },
+   {
+    "address": "34,2223",
+    "word": "03574",
+    "source": " STORE DELVCSI",
+    "routine": "34,2223",
+    "function": "r70223"
+   },
+   {
+    "address": "34,2224",
+    "word": "41575",
+    "source": "CSI/B23 VLOAD PUSH",
+    "routine": "34,2224",
+    "function": "r70224"
+   },
+   {
+    "address": "34,2225",
+    "word": "02303",
+    "source": "  RACT1",
+    "routine": "34,2224",
+    "function": "r70224"
+   },
+   {
+    "address": "34,2226",
+    "word": "63256",
+    "source": " UNIT PDVL",
+    "routine": "34,2226",
+    "function": "r70226"
+   },
+   {
+    "address": "34,2227",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,2226",
+    "function": "r70226"
+   },
+   {
+    "address": "34,2230",
+    "word": "53435",
+    "source": " VXV UNIT",
+    "routine": "34,2230",
+    "function": "r70230"
+   },
+   {
+    "address": "34,2231",
+    "word": "76561",
+    "source": " VXSC VSL1",
+    "routine": "34,2231",
+    "function": "r70231"
+   },
+   {
+    "address": "34,2232",
+    "word": "03574",
+    "source": "  DELVCSI",
+    "routine": "34,2231",
+    "function": "r70231"
+   },
+   {
+    "address": "34,2233",
+    "word": "02267",
+    "source": " STORE DELVEET1",
+    "routine": "34,2233",
+    "function": "r70233"
+   },
+   {
+    "address": "34,2234",
+    "word": "40055",
+    "source": " VAD BOV",
+    "routine": "34,2234",
+    "function": "r70234"
+   },
+   {
+    "address": "34,2235",
+    "word": "03472",
+    "source": "  VACT1",
+    "routine": "34,2234",
+    "function": "r70234"
+   },
+   {
+    "address": "34,2236",
+    "word": "70237",
+    "source": "  CSI/B23D",
+    "routine": "34,2234",
+    "function": "r70234"
+   },
+   {
+    "address": "34,2237",
+    "word": "37566",
+    "source": "CSI/B23D STCALL VACT4",
+    "routine": "34,2237",
+    "function": "r70237"
+   },
+   {
+    "address": "34,2240",
+    "word": "46416",
+    "source": "  VECSHIFT",
+    "routine": "34,2237",
+    "function": "r70237"
+   },
+   {
+    "address": "34,2241",
+    "word": "26744",
+    "source": " STOVL VVEC",
+    "routine": "34,2241",
+    "function": "r70241"
+   },
+   {
+    "address": "34,2242",
+    "word": "77614",
+    "source": " SET ",
+    "routine": "34,2242",
+    "function": "r70242"
+   },
+   {
+    "address": "34,2243",
+    "word": "03466",
+    "source": "  RVSW",
+    "routine": "34,2242",
+    "function": "r70242"
+   },
+   {
+    "address": "34,2244",
+    "word": "26655",
+    "source": " STOVL RVEC",
+    "routine": "34,2244",
+    "function": "r70244"
+   },
+   {
+    "address": "34,2245",
+    "word": "32414",
+    "source": "  SN359+",
+    "routine": "34,2244",
+    "function": "r70244"
+   },
+   {
+    "address": "34,2246",
+    "word": "36730",
+    "source": " STCALL SNTH",
+    "routine": "34,2246",
+    "function": "r70246"
+   },
+   {
+    "address": "34,2247",
+    "word": "24732",
+    "source": "  TIMETHET",
+    "routine": "34,2246",
+    "function": "r70246"
+   },
+   {
+    "address": "34,2250",
+    "word": "72142",
+    "source": " SR1 LXA,1",
+    "routine": "34,2250",
+    "function": "r70250"
+   },
+   {
+    "address": "34,2251",
+    "word": "02776",
+    "source": "  RTX1",
+    "routine": "34,2250",
+    "function": "r70250"
+   },
+   {
+    "address": "34,2252",
+    "word": "37604",
+    "source": " STCALL HAFPA1",
+    "routine": "34,2252",
+    "function": "r70252"
+   },
+   {
+    "address": "34,2253",
+    "word": "46326",
+    "source": "  PERIAPO",
+    "routine": "34,2252",
+    "function": "r70252"
+   },
+   {
+    "address": "34,2254",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,2254",
+    "function": "r70254"
+   },
+   {
+    "address": "34,2255",
+    "word": "46426",
+    "source": "  SHIFTR1",
+    "routine": "34,2254",
+    "function": "r70254"
+   },
+   {
+    "address": "34,2256",
+    "word": "17602",
+    "source": " STODL POSTCSI",
+    "routine": "34,2256",
+    "function": "r70256"
+   },
+   {
+    "address": "34,2257",
+    "word": "03621",
+    "source": "  CENTANG",
+    "routine": "34,2256",
+    "function": "r70256"
+   },
+   {
+    "address": "34,2260",
+    "word": "52054",
+    "source": " BZE GOTO",
+    "routine": "34,2260",
+    "function": "r70260"
+   },
+   {
+    "address": "34,2261",
+    "word": "70263",
+    "source": "  +2",
+    "routine": "34,2260",
+    "function": "r70260"
+   },
+   {
+    "address": "34,2262",
+    "word": "70372",
+    "source": "  CIRCL",
+    "routine": "34,2260",
+    "function": "r70260"
+   },
+   {
+    "address": "34,2263",
+    "word": "77745",
+    "source": " DLOAD ",
+    "routine": "34,2263",
+    "function": "r70263"
+   },
+   {
+    "address": "34,2264",
+    "word": "02752",
+    "source": "  ECC",
+    "routine": "34,2263",
+    "function": "r70263"
+   },
+   {
+    "address": "34,2265",
+    "word": "50025",
+    "source": " DSU BMN",
+    "routine": "34,2265",
+    "function": "r70265"
+   },
+   {
+    "address": "34,2266",
+    "word": "30110",
+    "source": "  ONETHTH",
+    "routine": "34,2265",
+    "function": "r70265"
+   },
+   {
+    "address": "34,2267",
+    "word": "70372",
+    "source": "  CIRCL",
+    "routine": "34,2265",
+    "function": "r70265"
+   },
+   {
+    "address": "34,2270",
+    "word": "45145",
+    "source": " DLOAD CALL",
+    "routine": "34,2270",
+    "function": "r70270"
+   },
+   {
+    "address": "34,2271",
+    "word": "00041",
+    "source": "  R1",
+    "routine": "34,2270",
+    "function": "r70270"
+   },
+   {
+    "address": "34,2272",
+    "word": "46426",
+    "source": "  SHIFTR1",
+    "routine": "34,2270",
+    "function": "r70270"
+   },
+   {
+    "address": "34,2273",
+    "word": "60201",
+    "source": " SETPD NORM",
+    "routine": "34,2273",
+    "function": "r70273"
+   },
+   {
+    "address": "34,2274",
+    "word": "00003",
+    "source": "  2D",
+    "routine": "34,2273",
+    "function": "r70273"
+   },
+   {
+    "address": "34,2275",
+    "word": "00047",
+    "source": "  X1",
+    "routine": "34,2273",
+    "function": "r70273"
+   },
+   {
+    "address": "34,2276",
+    "word": "50315",
+    "source": " PDVL DOT",
+    "routine": "34,2276",
+    "function": "r70276"
+   },
+   {
+    "address": "34,2277",
+    "word": "02303",
+    "source": "  RACT1",
+    "routine": "34,2276",
+    "function": "r70276"
+   },
+   {
+    "address": "34,2300",
+    "word": "03566",
+    "source": "  VACT4",
+    "routine": "34,2276",
+    "function": "r70276"
+   },
+   {
+    "address": "34,2301",
+    "word": "56246",
+    "source": " ABS DDV",
+    "routine": "34,2301",
+    "function": "r70301"
+   },
+   {
+    "address": "34,2302",
+    "word": "00003",
+    "source": "  02D",
+    "routine": "34,2301",
+    "function": "r70301"
+   },
+   {
+    "address": "34,2303",
+    "word": "45257",
+    "source": " SL* DSU",
+    "routine": "34,2303",
+    "function": "r70303"
+   },
+   {
+    "address": "34,2304",
+    "word": "20201",
+    "source": "  0,1",
+    "routine": "34,2303",
+    "function": "r70303"
+   },
+   {
+    "address": "34,2305",
+    "word": "30100",
+    "source": "  NICKELDP",
+    "routine": "34,2303",
+    "function": "r70303"
+   },
+   {
+    "address": "34,2306",
+    "word": "71240",
+    "source": " BMN DLOAD",
+    "routine": "34,2306",
+    "function": "r70306"
+   },
+   {
+    "address": "34,2307",
+    "word": "70372",
+    "source": "  CIRCL",
+    "routine": "34,2306",
+    "function": "r70306"
+   },
+   {
+    "address": "34,2310",
+    "word": "02740",
+    "source": "  P",
+    "routine": "34,2306",
+    "function": "r70306"
+   },
+   {
+    "address": "34,2311",
+    "word": "45312",
+    "source": " SL2 DSU",
+    "routine": "34,2311",
+    "function": "r70311"
+   },
+   {
+    "address": "34,2312",
+    "word": "30070",
+    "source": "  1DPB2",
+    "routine": "34,2311",
+    "function": "r70311"
+   },
+   {
+    "address": "34,2313",
+    "word": "14017",
+    "source": " STODL 14D",
+    "routine": "34,2313",
+    "function": "r70313"
+   },
+   {
+    "address": "34,2314",
+    "word": "02317",
+    "source": "  RTSR1/MU",
+    "routine": "34,2313",
+    "function": "r70313"
+   },
+   {
+    "address": "34,2315",
+    "word": "56342",
+    "source": " SR1 DDV",
+    "routine": "34,2315",
+    "function": "r70315"
+   },
+   {
+    "address": "34,2316",
+    "word": "41325",
+    "source": " PDDL DMP",
+    "routine": "34,2316",
+    "function": "r70316"
+   },
+   {
+    "address": "34,2317",
+    "word": "02740",
+    "source": "  P",
+    "routine": "34,2316",
+    "function": "r70316"
+   },
+   {
+    "address": "34,2320",
+    "word": "00041",
+    "source": "  R1",
+    "routine": "34,2316",
+    "function": "r70316"
+   },
+   {
+    "address": "34,2321",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,2321",
+    "function": "r70321"
+   },
+   {
+    "address": "34,2322",
+    "word": "46426",
+    "source": "  SHIFTR1",
+    "routine": "34,2321",
+    "function": "r70321"
+   },
+   {
+    "address": "34,2323",
+    "word": "72412",
+    "source": " SL4 SL1",
+    "routine": "34,2323",
+    "function": "r70323"
+   },
+   {
+    "address": "34,2324",
+    "word": "41366",
+    "source": " SQRT DMP",
+    "routine": "34,2324",
+    "function": "r70324"
+   },
+   {
+    "address": "34,2325",
+    "word": "52414",
+    "source": " BOFF SL3",
+    "routine": "34,2325",
+    "function": "r70325"
+   },
+   {
+    "address": "34,2326",
+    "word": "04343",
+    "source": "  CMOONFLG",
+    "routine": "34,2325",
+    "function": "r70325"
+   },
+   {
+    "address": "34,2327",
+    "word": "70330",
+    "source": "  CSI/B3",
+    "routine": "34,2325",
+    "function": "r70325"
+   },
+   {
+    "address": "34,2330",
+    "word": "50315",
+    "source": "CSI/B3 PDVL DOT",
+    "routine": "34,2330",
+    "function": "r70330"
+   },
+   {
+    "address": "34,2331",
+    "word": "02303",
+    "source": "  RACT1",
+    "routine": "34,2330",
+    "function": "r70330"
+   },
+   {
+    "address": "34,2332",
+    "word": "03566",
+    "source": "  VACT4",
+    "routine": "34,2330",
+    "function": "r70330"
+   },
+   {
+    "address": "34,2333",
+    "word": "03617",
+    "source": " STORE RDOTV",
+    "routine": "34,2333",
+    "function": "r70333"
+   },
+   {
+    "address": "34,2334",
+    "word": "77646",
+    "source": " ABS ",
+    "routine": "34,2334",
+    "function": "r70334"
+   },
+   {
+    "address": "34,2335",
+    "word": "41301",
+    "source": " NORM DMP",
+    "routine": "34,2335",
+    "function": "r70335"
+   },
+   {
+    "address": "34,2336",
+    "word": "00050",
+    "source": "  X2",
+    "routine": "34,2335",
+    "function": "r70335"
+   },
+   {
+    "address": "34,2337",
+    "word": "53660",
+    "source": " XSU,1 SL*",
+    "routine": "34,2337",
+    "function": "r70337"
+   },
+   {
+    "address": "34,2340",
+    "word": "00047",
+    "source": "  X2",
+    "routine": "34,2337",
+    "function": "r70337"
+   },
+   {
+    "address": "34,2341",
+    "word": "20204",
+    "source": "  3,1",
+    "routine": "34,2337",
+    "function": "r70337"
+   },
+   {
+    "address": "34,2342",
+    "word": "14015",
+    "source": " STODL 12D",
+    "routine": "34,2342",
+    "function": "r70342"
+   },
+   {
+    "address": "34,2343",
+    "word": "32420",
+    "source": "  P30ZERO",
+    "routine": "34,2342",
+    "function": "r70342"
+   },
+   {
+    "address": "34,2344",
+    "word": "00021",
+    "source": " STORE 16D",
+    "routine": "34,2344",
+    "function": "r70344"
+   },
+   {
+    "address": "34,2345",
+    "word": "53575",
+    "source": " VLOAD UNIT",
+    "routine": "34,2345",
+    "function": "r70345"
+   },
+   {
+    "address": "34,2346",
+    "word": "00015",
+    "source": "  12D",
+    "routine": "34,2345",
+    "function": "r70345"
+   },
+   {
+    "address": "34,2347",
+    "word": "26730",
+    "source": " STOVL SNTH",
+    "routine": "34,2347",
+    "function": "r70347"
+   },
+   {
+    "address": "34,2350",
+    "word": "02303",
+    "source": "  RACT1",
+    "routine": "34,2347",
+    "function": "r70347"
+   },
+   {
+    "address": "34,2351",
+    "word": "75315",
+    "source": " PDVL SIGN",
+    "routine": "34,2351",
+    "function": "r70351"
+   },
+   {
+    "address": "34,2352",
+    "word": "03566",
+    "source": "  VACT4",
+    "routine": "34,2351",
+    "function": "r70351"
+   },
+   {
+    "address": "34,2353",
+    "word": "03617",
+    "source": "  RDOTV",
+    "routine": "34,2351",
+    "function": "r70351"
+   },
+   {
+    "address": "34,2354",
+    "word": "45076",
+    "source": " VCOMP CALL",
+    "routine": "34,2354",
+    "function": "r70354"
+   },
+   {
+    "address": "34,2355",
+    "word": "46416",
+    "source": "  VECSHIFT",
+    "routine": "34,2354",
+    "function": "r70354"
+   },
+   {
+    "address": "34,2356",
+    "word": "26744",
+    "source": " STOVL VVEC",
+    "routine": "34,2356",
+    "function": "r70356"
+   },
+   {
+    "address": "34,2357",
+    "word": "77614",
+    "source": " SET ",
+    "routine": "34,2357",
+    "function": "r70357"
+   },
+   {
+    "address": "34,2360",
+    "word": "03466",
+    "source": "  RVSW",
+    "routine": "34,2357",
+    "function": "r70357"
+   },
+   {
+    "address": "34,2361",
+    "word": "36655",
+    "source": " STCALL RVEC",
+    "routine": "34,2361",
+    "function": "r70361"
+   },
+   {
+    "address": "34,2362",
+    "word": "24732",
+    "source": "  TIMETHET",
+    "routine": "34,2361",
+    "function": "r70361"
+   },
+   {
+    "address": "34,2363",
+    "word": "51125",
+    "source": " PDDL BPL",
+    "routine": "34,2363",
+    "function": "r70363"
+   },
+   {
+    "address": "34,2364",
+    "word": "03617",
+    "source": "  RDOTV",
+    "routine": "34,2363",
+    "function": "r70363"
+   },
+   {
+    "address": "34,2365",
+    "word": "70376",
+    "source": "  NTP/2",
+    "routine": "34,2363",
+    "function": "r70363"
+   },
+   {
+    "address": "34,2366",
+    "word": "45345",
+    "source": " DLOAD DSU",
+    "routine": "34,2366",
+    "function": "r70366"
+   },
+   {
+    "address": "34,2367",
+    "word": "03604",
+    "source": "  HAFPA1",
+    "routine": "34,2366",
+    "function": "r70366"
+   },
+   {
+    "address": "34,2370",
+    "word": "52006",
+    "source": " PUSH GOTO",
+    "routine": "34,2370",
+    "function": "r70370"
+   },
+   {
+    "address": "34,2371",
+    "word": "70376",
+    "source": "  NTP/2",
+    "routine": "34,2370",
+    "function": "r70370"
+   },
+   {
+    "address": "34,2372",
+    "word": "71201",
+    "source": "CIRCL SETPD DLOAD",
+    "routine": "34,2372",
+    "function": "r70372"
+   },
+   {
+    "address": "34,2373",
+    "word": "00001",
+    "source": "  00D",
+    "routine": "34,2372",
+    "function": "r70372"
+   },
+   {
+    "address": "34,2374",
+    "word": "32420",
+    "source": "  P30ZERO",
+    "routine": "34,2372",
+    "function": "r70372"
+   },
+   {
+    "address": "34,2375",
+    "word": "77606",
+    "source": " PUSH ",
+    "routine": "34,2375",
+    "function": "r70375"
+   },
+   {
+    "address": "34,2376",
+    "word": "41345",
+    "source": "NTP/2 DLOAD DMP",
+    "routine": "34,2376",
+    "function": "r70376"
+   },
+   {
+    "address": "34,2377",
+    "word": "03467",
+    "source": "  NN",
+    "routine": "34,2376",
+    "function": "r70376"
+   },
+   {
+    "address": "34,2400",
+    "word": "03604",
+    "source": "  HAFPA1",
+    "routine": "34,2376",
+    "function": "r70376"
+   },
+   {
+    "address": "34,2401",
+    "word": "45261",
+    "source": " SL DSU",
+    "routine": "34,2401",
+    "function": "r70401"
+   },
+   {
+    "address": "34,2402",
+    "word": "20217",
+    "source": "  14D",
+    "routine": "34,2401",
+    "function": "r70401"
+   },
+   {
+    "address": "34,2403",
+    "word": "77615",
+    "source": " DAD ",
+    "routine": "34,2403",
+    "function": "r70403"
+   },
+   {
+    "address": "34,2404",
+    "word": "03634",
+    "source": "  TCSI",
+    "routine": "34,2403",
+    "function": "r70403"
+   },
+   {
+    "address": "34,2405",
+    "word": "01777",
+    "source": " STORE TCDH",
+    "routine": "34,2405",
+    "function": "r70405"
+   },
+   {
+    "address": "34,2406",
+    "word": "77021",
+    "source": " BDSU AXT,2",
+    "routine": "34,2406",
+    "function": "r70406"
+   },
+   {
+    "address": "34,2407",
+    "word": "03636",
+    "source": "  TTPI",
+    "routine": "34,2406",
+    "function": "r70406"
+   },
+   {
+    "address": "34,2410",
+    "word": "00005",
+    "source": "  5D",
+    "routine": "34,2406",
+    "function": "r70406"
+   },
+   {
+    "address": "34,2411",
+    "word": "40240",
+    "source": " BMN SETPD",
+    "routine": "34,2411",
+    "function": "r70411"
+   },
+   {
+    "address": "34,2412",
+    "word": "70776",
+    "source": "  SCNDSOL",
+    "routine": "34,2411",
+    "function": "r70411"
+   },
+   {
+    "address": "34,2413",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "34,2411",
+    "function": "r70411"
+   },
+   {
+    "address": "34,2414",
+    "word": "63375",
+    "source": " VLOAD PDVL",
+    "routine": "34,2414",
+    "function": "r70414"
+   },
+   {
+    "address": "34,2415",
+    "word": "03566",
+    "source": "  VACT4",
+    "routine": "34,2414",
+    "function": "r70414"
+   },
+   {
+    "address": "34,2416",
+    "word": "02303",
+    "source": "  RACT1",
+    "routine": "34,2414",
+    "function": "r70414"
+   },
+   {
+    "address": "34,2417",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,2417",
+    "function": "r70417"
+   },
+   {
+    "address": "34,2420",
+    "word": "71062",
+    "source": "  INTINT2C",
+    "routine": "34,2417",
+    "function": "r70417"
+   },
+   {
+    "address": "34,2421",
+    "word": "26311",
+    "source": " STOVL RACT2",
+    "routine": "34,2421",
+    "function": "r70421"
+   },
+   {
+    "address": "34,2422",
+    "word": "00007",
+    "source": "  VATT",
+    "routine": "34,2421",
+    "function": "r70421"
+   },
+   {
+    "address": "34,2423",
+    "word": "27514",
+    "source": " STOVL VACT2",
+    "routine": "34,2423",
+    "function": "r70423"
+   },
+   {
+    "address": "34,2424",
+    "word": "03506",
+    "source": "  VPASS1",
+    "routine": "34,2423",
+    "function": "r70423"
+   },
+   {
+    "address": "34,2425",
+    "word": "63201",
+    "source": " SETPD PDVL",
+    "routine": "34,2425",
+    "function": "r70425"
+   },
+   {
+    "address": "34,2426",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "34,2425",
+    "function": "r70425"
+   },
+   {
+    "address": "34,2427",
+    "word": "03500",
+    "source": "  RPASS1",
+    "routine": "34,2425",
+    "function": "r70425"
+   },
+   {
+    "address": "34,2430",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,2430",
+    "function": "r70430"
+   },
+   {
+    "address": "34,2431",
+    "word": "71062",
+    "source": "  INTINT2C",
+    "routine": "34,2430",
+    "function": "r70430"
+   },
+   {
+    "address": "34,2432",
+    "word": "27522",
+    "source": " STOVL RPASS2",
+    "routine": "34,2432",
+    "function": "r70432"
+   },
+   {
+    "address": "34,2433",
+    "word": "00007",
+    "source": "  VATT",
+    "routine": "34,2432",
+    "function": "r70432"
+   },
+   {
+    "address": "34,2434",
+    "word": "37530",
+    "source": " STCALL VPASS2",
+    "routine": "34,2434",
+    "function": "r70434"
+   },
+   {
+    "address": "34,2435",
+    "word": "71133",
+    "source": "  CDHMVR",
+    "routine": "34,2434",
+    "function": "r70434"
+   },
+   {
+    "address": "34,2436",
+    "word": "40375",
+    "source": " VLOAD SETPD",
+    "routine": "34,2436",
+    "function": "r70436"
+   },
+   {
+    "address": "34,2437",
+    "word": "02311",
+    "source": "  RACT2",
+    "routine": "34,2436",
+    "function": "r70436"
+   },
+   {
+    "address": "34,2440",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "34,2436",
+    "function": "r70436"
+   },
+   {
+    "address": "34,2441",
+    "word": "45115",
+    "source": " PDVL CALL",
+    "routine": "34,2441",
+    "function": "r70441"
+   },
+   {
+    "address": "34,2442",
+    "word": "03544",
+    "source": "  VACT3",
+    "routine": "34,2441",
+    "function": "r70441"
+   },
+   {
+    "address": "34,2443",
+    "word": "46316",
+    "source": "  PERIAPO1",
+    "routine": "34,2441",
+    "function": "r70441"
+   },
+   {
+    "address": "34,2444",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,2444",
+    "function": "r70444"
+   },
+   {
+    "address": "34,2445",
+    "word": "46426",
+    "source": "  SHIFTR1",
+    "routine": "34,2444",
+    "function": "r70444"
+   },
+   {
+    "address": "34,2446",
+    "word": "27604",
+    "source": " STOVL POSTCDH",
+    "routine": "34,2446",
+    "function": "r70446"
+   },
+   {
+    "address": "34,2447",
+    "word": "03544",
+    "source": "  VACT3",
+    "routine": "34,2446",
+    "function": "r70446"
+   },
+   {
+    "address": "34,2450",
+    "word": "63201",
+    "source": " SETPD PDVL",
+    "routine": "34,2450",
+    "function": "r70450"
+   },
+   {
+    "address": "34,2451",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "34,2450",
+    "function": "r70450"
+   },
+   {
+    "address": "34,2452",
+    "word": "02311",
+    "source": "  RACT2",
+    "routine": "34,2450",
+    "function": "r70450"
+   },
+   {
+    "address": "34,2453",
+    "word": "65325",
+    "source": " PDDL PDDL",
+    "routine": "34,2453",
+    "function": "r70453"
+   },
+   {
+    "address": "34,2454",
+    "word": "01777",
+    "source": "  TCDH",
+    "routine": "34,2453",
+    "function": "r70453"
+   },
+   {
+    "address": "34,2455",
+    "word": "03636",
+    "source": "  TTPI",
+    "routine": "34,2453",
+    "function": "r70453"
+   },
+   {
+    "address": "34,2456",
+    "word": "41525",
+    "source": " PDDL PUSH",
+    "routine": "34,2456",
+    "function": "r70456"
+   },
+   {
+    "address": "34,2457",
+    "word": "33732",
+    "source": "  TWOPI",
+    "routine": "34,2456",
+    "function": "r70456"
+   },
+   {
+    "address": "34,2460",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,2460",
+    "function": "r70460"
+   },
+   {
+    "address": "34,2461",
+    "word": "73466",
+    "source": "  INTINT",
+    "routine": "34,2460",
+    "function": "r70460"
+   },
+   {
+    "address": "34,2462",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,2462",
+    "function": "r70462"
+   },
+   {
+    "address": "34,2463",
+    "word": "46402",
+    "source": "  ACTIVE",
+    "routine": "34,2462",
+    "function": "r70462"
+   },
+   {
+    "address": "34,2464",
+    "word": "77745",
+    "source": " DLOAD ",
+    "routine": "34,2464",
+    "function": "r70464"
+   },
+   {
+    "address": "34,2465",
+    "word": "02257",
+    "source": "  ELEV",
+    "routine": "34,2464",
+    "function": "r70464"
+   },
+   {
+    "address": "34,2466",
+    "word": "73401",
+    "source": " SETPD SINE",
+    "routine": "34,2466",
+    "function": "r70466"
+   },
+   {
+    "address": "34,2467",
+    "word": "00007",
+    "source": "  6D",
+    "routine": "34,2466",
+    "function": "r70466"
+   },
+   {
+    "address": "34,2470",
+    "word": "53515",
+    "source": " PDVL UNIT",
+    "routine": "34,2470",
+    "function": "r70470"
+   },
+   {
+    "address": "34,2471",
+    "word": "03536",
+    "source": "  RACT3",
+    "routine": "34,2470",
+    "function": "r70470"
+   },
+   {
+    "address": "34,2472",
+    "word": "00001",
+    "source": " STORE 00D",
+    "routine": "34,2472",
+    "function": "r70472"
+   },
+   {
+    "address": "34,2473",
+    "word": "47315",
+    "source": " PDVL VXV",
+    "routine": "34,2473",
+    "function": "r70473"
+   },
+   {
+    "address": "34,2474",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,2473",
+    "function": "r70473"
+   },
+   {
+    "address": "34,2475",
+    "word": "77656",
+    "source": " UNIT ",
+    "routine": "34,2475",
+    "function": "r70475"
+   },
+   {
+    "address": "34,2476",
+    "word": "71525",
+    "source": " PDDL COSINE",
+    "routine": "34,2476",
+    "function": "r70476"
+   },
+   {
+    "address": "34,2477",
+    "word": "02257",
+    "source": "  ELEV",
+    "routine": "34,2476",
+    "function": "r70476"
+   },
+   {
+    "address": "34,2500",
+    "word": "45561",
+    "source": " VXSC STADR",
+    "routine": "34,2500",
+    "function": "r70500"
+   },
+   {
+    "address": "34,2501",
+    "word": "77754",
+    "source": " STORE 18D",
+    "routine": "34,2500",
+    "function": "r70500"
+   },
+   {
+    "address": "34,2502",
+    "word": "74345",
+    "source": " DLOAD VXSC",
+    "routine": "34,2502",
+    "function": "r70502"
+   },
+   {
+    "address": "34,2503",
+    "word": "76455",
+    "source": " VAD VSL1",
+    "routine": "34,2503",
+    "function": "r70503"
+   },
+   {
+    "address": "34,2504",
+    "word": "00023",
+    "source": "  18D",
+    "routine": "34,2503",
+    "function": "r70503"
+   },
+   {
+    "address": "34,2505",
+    "word": "50206",
+    "source": " PUSH DOT",
+    "routine": "34,2505",
+    "function": "r70505"
+   },
+   {
+    "address": "34,2506",
+    "word": "03536",
+    "source": "  RACT3",
+    "routine": "34,2505",
+    "function": "r70505"
+   },
+   {
+    "address": "34,2507",
+    "word": "41552",
+    "source": " SL1 PUSH",
+    "routine": "34,2507",
+    "function": "r70507"
+   },
+   {
+    "address": "34,2510",
+    "word": "72316",
+    "source": " DSQ TLOAD",
+    "routine": "34,2510",
+    "function": "r70510"
+   },
+   {
+    "address": "34,2511",
+    "word": "00155",
+    "source": "  MPAC",
+    "routine": "34,2510",
+    "function": "r70510"
+   },
+   {
+    "address": "34,2512",
+    "word": "50315",
+    "source": " PDVL DOT",
+    "routine": "34,2512",
+    "function": "r70512"
+   },
+   {
+    "address": "34,2513",
+    "word": "03536",
+    "source": "  RACT3",
+    "routine": "34,2512",
+    "function": "r70512"
+   },
+   {
+    "address": "34,2514",
+    "word": "03536",
+    "source": "  RACT3",
+    "routine": "34,2512",
+    "function": "r70512"
+   },
+   {
+    "address": "34,2515",
+    "word": "57551",
+    "source": " TLOAD DCOMP",
+    "routine": "34,2515",
+    "function": "r70515"
+   },
+   {
+    "address": "34,2516",
+    "word": "00155",
+    "source": "  MPAC",
+    "routine": "34,2515",
+    "function": "r70515"
+   },
+   {
+    "address": "34,2517",
+    "word": "50315",
+    "source": " PDVL DOT",
+    "routine": "34,2517",
+    "function": "r70517"
+   },
+   {
+    "address": "34,2520",
+    "word": "03552",
+    "source": "  RPASS3",
+    "routine": "34,2517",
+    "function": "r70517"
+   },
+   {
+    "address": "34,2521",
+    "word": "03552",
+    "source": "  RPASS3",
+    "routine": "34,2517",
+    "function": "r70517"
+   },
+   {
+    "address": "34,2522",
+    "word": "76371",
+    "source": " TAD TAD",
+    "routine": "34,2522",
+    "function": "r70522"
+   },
+   {
+    "address": "34,2523",
+    "word": "71244",
+    "source": " BPL DLOAD",
+    "routine": "34,2523",
+    "function": "r70523"
+   },
+   {
+    "address": "34,2524",
+    "word": "70542",
+    "source": "  K1ORK2",
+    "routine": "34,2523",
+    "function": "r70523"
+   },
+   {
+    "address": "34,2525",
+    "word": "03606",
+    "source": "  LOOPCT",
+    "routine": "34,2523",
+    "function": "r70523"
+   },
+   {
+    "address": "34,2526",
+    "word": "77025",
+    "source": " DSU AXT,2",
+    "routine": "34,2526",
+    "function": "r70526"
+   },
+   {
+    "address": "34,2527",
+    "word": "30072",
+    "source": "  1DPB28",
+    "routine": "34,2526",
+    "function": "r70526"
+   },
+   {
+    "address": "34,2530",
+    "word": "00001",
+    "source": "  1D",
+    "routine": "34,2526",
+    "function": "r70526"
+   },
+   {
+    "address": "34,2531",
+    "word": "77654",
+    "source": " BZE ",
+    "routine": "34,2531",
+    "function": "r70531"
+   },
+   {
+    "address": "34,2532",
+    "word": "72036",
+    "source": "  ALMXITA",
+    "routine": "34,2531",
+    "function": "r70531"
+   },
+   {
+    "address": "34,2533",
+    "word": "70545",
+    "source": " DLOAD SR1",
+    "routine": "34,2533",
+    "function": "r70533"
+   },
+   {
+    "address": "34,2534",
+    "word": "03612",
+    "source": "  DELDV",
+    "routine": "34,2533",
+    "function": "r70533"
+   },
+   {
+    "address": "34,2535",
+    "word": "03612",
+    "source": " STORE DELDV",
+    "routine": "34,2535",
+    "function": "r70535"
+   },
+   {
+    "address": "34,2536",
+    "word": "77621",
+    "source": " BDSU ",
+    "routine": "34,2536",
+    "function": "r70536"
+   },
+   {
+    "address": "34,2537",
+    "word": "03576",
+    "source": "  DVPREV",
+    "routine": "34,2536",
+    "function": "r70536"
+   },
+   {
+    "address": "34,2540",
+    "word": "37574",
+    "source": " STCALL DELVCSI",
+    "routine": "34,2540",
+    "function": "r70540"
+   },
+   {
+    "address": "34,2541",
+    "word": "70165",
+    "source": "  CSI/B1",
+    "routine": "34,2540",
+    "function": "r70540"
+   },
+   {
+    "address": "34,2542",
+    "word": "41566",
+    "source": "K1ORK2 SQRT PUSH",
+    "routine": "34,2542",
+    "function": "r70542"
+   },
+   {
+    "address": "34,2543",
+    "word": "45276",
+    "source": " DCOMP DSU",
+    "routine": "34,2543",
+    "function": "r70543"
+   },
+   {
+    "address": "34,2544",
+    "word": "00007",
+    "source": "  06D",
+    "routine": "34,2543",
+    "function": "r70543"
+   },
+   {
+    "address": "34,2545",
+    "word": "14013",
+    "source": " STODL 10D",
+    "routine": "34,2545",
+    "function": "r70545"
+   },
+   {
+    "address": "34,2546",
+    "word": "45425",
+    "source": " DSU STADR",
+    "routine": "34,2546",
+    "function": "r70546"
+   },
+   {
+    "address": "34,2547",
+    "word": "77762",
+    "source": " STORE 12D",
+    "routine": "34,2546",
+    "function": "r70546"
+   },
+   {
+    "address": "34,2550",
+    "word": "77646",
+    "source": " ABS ",
+    "routine": "34,2550",
+    "function": "r70550"
+   },
+   {
+    "address": "34,2551",
+    "word": "14017",
+    "source": " STODL 14D",
+    "routine": "34,2551",
+    "function": "r70551"
+   },
+   {
+    "address": "34,2552",
+    "word": "00013",
+    "source": "  10D",
+    "routine": "34,2551",
+    "function": "r70551"
+   },
+   {
+    "address": "34,2553",
+    "word": "45246",
+    "source": " ABS DSU",
+    "routine": "34,2553",
+    "function": "r70553"
+   },
+   {
+    "address": "34,2554",
+    "word": "00017",
+    "source": "  14D",
+    "routine": "34,2553",
+    "function": "r70553"
+   },
+   {
+    "address": "34,2555",
+    "word": "71240",
+    "source": " BMN DLOAD",
+    "routine": "34,2555",
+    "function": "r70555"
+   },
+   {
+    "address": "34,2556",
+    "word": "70561",
+    "source": "  K2.",
+    "routine": "34,2555",
+    "function": "r70555"
+   },
+   {
+    "address": "34,2557",
+    "word": "00015",
+    "source": "  12D",
+    "routine": "34,2555",
+    "function": "r70555"
+   },
+   {
+    "address": "34,2560",
+    "word": "00013",
+    "source": " STORE 10D",
+    "routine": "34,2560",
+    "function": "r70560"
+   },
+   {
+    "address": "34,2561",
+    "word": "77745",
+    "source": "K2. DLOAD ",
+    "routine": "34,2561",
+    "function": "r70561"
+   },
+   {
+    "address": "34,2562",
+    "word": "00013",
+    "source": "  10D",
+    "routine": "34,2561",
+    "function": "r70561"
+   },
+   {
+    "address": "34,2563",
+    "word": "76561",
+    "source": " VXSC VSL1",
+    "routine": "34,2563",
+    "function": "r70563"
+   },
+   {
+    "address": "34,2564",
+    "word": "53455",
+    "source": " VAD UNIT",
+    "routine": "34,2564",
+    "function": "r70564"
+   },
+   {
+    "address": "34,2565",
+    "word": "03536",
+    "source": "  RACT3",
+    "routine": "34,2564",
+    "function": "r70564"
+   },
+   {
+    "address": "34,2566",
+    "word": "53515",
+    "source": " PDVL UNIT",
+    "routine": "34,2566",
+    "function": "r70566"
+   },
+   {
+    "address": "34,2567",
+    "word": "03552",
+    "source": "  RPASS3",
+    "routine": "34,2566",
+    "function": "r70566"
+   },
+   {
+    "address": "34,2570",
+    "word": "53515",
+    "source": " PDVL UNIT",
+    "routine": "34,2570",
+    "function": "r70570"
+   },
+   {
+    "address": "34,2571",
+    "word": "03560",
+    "source": "  VPASS3",
+    "routine": "34,2570",
+    "function": "r70570"
+   },
+   {
+    "address": "34,2572",
+    "word": "63235",
+    "source": " VXV PDVL",
+    "routine": "34,2572",
+    "function": "r70572"
+   },
+   {
+    "address": "34,2573",
+    "word": "00007",
+    "source": "  06D",
+    "routine": "34,2572",
+    "function": "r70572"
+   },
+   {
+    "address": "34,2574",
+    "word": "00007",
+    "source": "  06D",
+    "routine": "34,2572",
+    "function": "r70572"
+   },
+   {
+    "address": "34,2575",
+    "word": "50235",
+    "source": " VXV DOT",
+    "routine": "34,2575",
+    "function": "r70575"
+   },
+   {
+    "address": "34,2576",
+    "word": "00001",
+    "source": "  00D",
+    "routine": "34,2575",
+    "function": "r70575"
+   },
+   {
+    "address": "34,2577",
+    "word": "77626",
+    "source": " STADR ",
+    "routine": "34,2577",
+    "function": "r70577"
+   },
+   {
+    "address": "34,2600",
+    "word": "53762",
+    "source": " STOVL 12D",
+    "routine": "34,2577",
+    "function": "r70577"
+   },
+   {
+    "address": "34,2601",
+    "word": "72441",
+    "source": " DOT SL1",
+    "routine": "34,2601",
+    "function": "r70601"
+   },
+   {
+    "address": "34,2602",
+    "word": "75326",
+    "source": " ARCCOS SIGN",
+    "routine": "34,2602",
+    "function": "r70602"
+   },
+   {
+    "address": "34,2603",
+    "word": "00015",
+    "source": "  12D",
+    "routine": "34,2602",
+    "function": "r70602"
+   },
+   {
+    "address": "34,2604",
+    "word": "41542",
+    "source": " SR1 PUSH",
+    "routine": "34,2604",
+    "function": "r70604"
+   },
+   {
+    "address": "34,2605",
+    "word": "71214",
+    "source": " BON DLOAD",
+    "routine": "34,2605",
+    "function": "r70605"
+   },
+   {
+    "address": "34,2606",
+    "word": "03301",
+    "source": "  S32.1F2",
+    "routine": "34,2605",
+    "function": "r70605"
+   },
+   {
+    "address": "34,2607",
+    "word": "70644",
+    "source": "  FRSTPAS",
+    "routine": "34,2605",
+    "function": "r70605"
+   },
+   {
+    "address": "34,2610",
+    "word": "00001",
+    "source": "  00D",
+    "routine": "34,2605",
+    "function": "r70605"
+   },
+   {
+    "address": "34,2611",
+    "word": "65225",
+    "source": " DSU PDDL",
+    "routine": "34,2611",
+    "function": "r70611"
+   },
+   {
+    "address": "34,2612",
+    "word": "03610",
+    "source": "  GAMPREV",
+    "routine": "34,2611",
+    "function": "r70611"
+   },
+   {
+    "address": "34,2613",
+    "word": "03574",
+    "source": "  DELVCSI",
+    "routine": "34,2611",
+    "function": "r70611"
+   },
+   {
+    "address": "34,2614",
+    "word": "60225",
+    "source": " DSU NORM",
+    "routine": "34,2614",
+    "function": "r70614"
+   },
+   {
+    "address": "34,2615",
+    "word": "03576",
+    "source": "  DVPREV",
+    "routine": "34,2614",
+    "function": "r70614"
+   },
+   {
+    "address": "34,2616",
+    "word": "00047",
+    "source": "  X1",
+    "routine": "34,2614",
+    "function": "r70614"
+   },
+   {
+    "address": "34,2617",
+    "word": "65265",
+    "source": " BDDV PDDL",
+    "routine": "34,2617",
+    "function": "r70617"
+   },
+   {
+    "address": "34,2620",
+    "word": "00003",
+    "source": "  02D",
+    "routine": "34,2617",
+    "function": "r70617"
+   },
+   {
+    "address": "34,2621",
+    "word": "03574",
+    "source": "  DELVCSI",
+    "routine": "34,2617",
+    "function": "r70617"
+   },
+   {
+    "address": "34,2622",
+    "word": "03576",
+    "source": " STORE DVPREV",
+    "routine": "34,2622",
+    "function": "r70622"
+   },
+   {
+    "address": "34,2623",
+    "word": "43014",
+    "source": " BOFF BOFF",
+    "routine": "34,2623",
+    "function": "r70623"
+   },
+   {
+    "address": "34,2624",
+    "word": "03342",
+    "source": "  S32.1F3A",
+    "routine": "34,2623",
+    "function": "r70623"
+   },
+   {
+    "address": "34,2625",
+    "word": "70656",
+    "source": "  THRDCHK",
+    "routine": "34,2623",
+    "function": "r70623"
+   },
+   {
+    "address": "34,2626",
+    "word": "03343",
+    "source": "  S32.1F3B",
+    "routine": "34,2623",
+    "function": "r70623"
+   },
+   {
+    "address": "34,2627",
+    "word": "70656",
+    "source": "  THRDCHK",
+    "routine": "34,2623",
+    "function": "r70623"
+   },
+   {
+    "address": "34,2630",
+    "word": "41345",
+    "source": " DLOAD DMP",
+    "routine": "34,2630",
+    "function": "r70630"
+   },
+   {
+    "address": "34,2631",
+    "word": "00003",
+    "source": "  02D",
+    "routine": "34,2630",
+    "function": "r70630"
+   },
+   {
+    "address": "34,2632",
+    "word": "03610",
+    "source": "  GAMPREV",
+    "routine": "34,2630",
+    "function": "r70630"
+   },
+   {
+    "address": "34,2633",
+    "word": "71244",
+    "source": " BPL DLOAD",
+    "routine": "34,2633",
+    "function": "r70633"
+   },
+   {
+    "address": "34,2634",
+    "word": "70663",
+    "source": "  FIFTYFPS",
+    "routine": "34,2633",
+    "function": "r70633"
+   },
+   {
+    "address": "34,2635",
+    "word": "30062",
+    "source": "  INITST",
+    "routine": "34,2633",
+    "function": "r70633"
+   },
+   {
+    "address": "34,2636",
+    "word": "77765",
+    "source": " SIGN ",
+    "routine": "34,2636",
+    "function": "r70636"
+   },
+   {
+    "address": "34,2637",
+    "word": "03612",
+    "source": "  DELDV",
+    "routine": "34,2636",
+    "function": "r70636"
+   },
+   {
+    "address": "34,2640",
+    "word": "03612",
+    "source": " STORE DELDV",
+    "routine": "34,2640",
+    "function": "r70640"
+   },
+   {
+    "address": "34,2641",
+    "word": "43014",
+    "source": " SET CLEAR",
+    "routine": "34,2641",
+    "function": "r70641"
+   },
+   {
+    "address": "34,2642",
+    "word": "03062",
+    "source": "  S32.1F3A",
+    "routine": "34,2641",
+    "function": "r70641"
+   },
+   {
+    "address": "34,2643",
+    "word": "03263",
+    "source": "  S32.1F3B",
+    "routine": "34,2641",
+    "function": "r70641"
+   },
+   {
+    "address": "34,2644",
+    "word": "77745",
+    "source": "FRSTPAS DLOAD ",
+    "routine": "34,2644",
+    "function": "r70644"
+   },
+   {
+    "address": "34,2645",
+    "word": "00001",
+    "source": "  00D",
+    "routine": "34,2644",
+    "function": "r70644"
+   },
+   {
+    "address": "34,2646",
+    "word": "17610",
+    "source": " STODL GAMPREV",
+    "routine": "34,2646",
+    "function": "r70646"
+   },
+   {
+    "address": "34,2647",
+    "word": "03574",
+    "source": "  DELVCSI",
+    "routine": "34,2646",
+    "function": "r70646"
+   },
+   {
+    "address": "34,2650",
+    "word": "03576",
+    "source": " STORE DVPREV",
+    "routine": "34,2650",
+    "function": "r70650"
+   },
+   {
+    "address": "34,2651",
+    "word": "43025",
+    "source": " DSU CLEAR",
+    "routine": "34,2651",
+    "function": "r70651"
+   },
+   {
+    "address": "34,2652",
+    "word": "03612",
+    "source": "  DELDV",
+    "routine": "34,2651",
+    "function": "r70651"
+   },
+   {
+    "address": "34,2653",
+    "word": "03261",
+    "source": "  S32.1F2",
+    "routine": "34,2651",
+    "function": "r70651"
+   },
+   {
+    "address": "34,2654",
+    "word": "37574",
+    "source": " STCALL DELVCSI",
+    "routine": "34,2654",
+    "function": "r70654"
+   },
+   {
+    "address": "34,2655",
+    "word": "70165",
+    "source": "  CSI/B1",
+    "routine": "34,2654",
+    "function": "r70654"
+   },
+   {
+    "address": "34,2656",
+    "word": "43014",
+    "source": "THRDCHK BON BON",
+    "routine": "34,2656",
+    "function": "r70656"
+   },
+   {
+    "address": "34,2657",
+    "word": "03302",
+    "source": "  S32.1F3A",
+    "routine": "34,2656",
+    "function": "r70656"
+   },
+   {
+    "address": "34,2660",
+    "word": "70702",
+    "source": "  NEWTN",
+    "routine": "34,2656",
+    "function": "r70656"
+   },
+   {
+    "address": "34,2661",
+    "word": "03303",
+    "source": "  S32.1F3B",
+    "routine": "34,2656",
+    "function": "r70656"
+   },
+   {
+    "address": "34,2662",
+    "word": "70702",
+    "source": "  NEWTN",
+    "routine": "34,2656",
+    "function": "r70656"
+   },
+   {
+    "address": "34,2663",
+    "word": "75345",
+    "source": "FIFTYFPS DLOAD SIGN",
+    "routine": "34,2663",
+    "function": "r70663"
+   },
+   {
+    "address": "34,2664",
+    "word": "30102",
+    "source": "  FIFPSDP",
+    "routine": "34,2663",
+    "function": "r70663"
+   },
+   {
+    "address": "34,2665",
+    "word": "00005",
+    "source": "  04D",
+    "routine": "34,2663",
+    "function": "r70663"
+   },
+   {
+    "address": "34,2666",
+    "word": "77765",
+    "source": " SIGN ",
+    "routine": "34,2666",
+    "function": "r70666"
+   },
+   {
+    "address": "34,2667",
+    "word": "03610",
+    "source": "  GAMPREV",
+    "routine": "34,2666",
+    "function": "r70666"
+   },
+   {
+    "address": "34,2670",
+    "word": "03612",
+    "source": " STORE DELDV",
+    "routine": "34,2670",
+    "function": "r70670"
+   },
+   {
+    "address": "34,2671",
+    "word": "43276",
+    "source": " DCOMP DAD",
+    "routine": "34,2671",
+    "function": "r70671"
+   },
+   {
+    "address": "34,2672",
+    "word": "03574",
+    "source": "  DELVCSI",
+    "routine": "34,2671",
+    "function": "r70671"
+   },
+   {
+    "address": "34,2673",
+    "word": "17574",
+    "source": " STODL DELVCSI",
+    "routine": "34,2673",
+    "function": "r70673"
+   },
+   {
+    "address": "34,2674",
+    "word": "00001",
+    "source": "  00D",
+    "routine": "34,2673",
+    "function": "r70673"
+   },
+   {
+    "address": "34,2675",
+    "word": "43014",
+    "source": " SET SET",
+    "routine": "34,2675",
+    "function": "r70675"
+   },
+   {
+    "address": "34,2676",
+    "word": "03063",
+    "source": "  S32.1F3B",
+    "routine": "34,2675",
+    "function": "r70675"
+   },
+   {
+    "address": "34,2677",
+    "word": "03062",
+    "source": "  S32.1F3A",
+    "routine": "34,2675",
+    "function": "r70675"
+   },
+   {
+    "address": "34,2700",
+    "word": "37610",
+    "source": " STCALL GAMPREV",
+    "routine": "34,2700",
+    "function": "r70700"
+   },
+   {
+    "address": "34,2701",
+    "word": "70176",
+    "source": "  CSI/B2",
+    "routine": "34,2700",
+    "function": "r70700"
+   },
+   {
+    "address": "34,2702",
+    "word": "60345",
+    "source": "NEWTN DLOAD NORM",
+    "routine": "34,2702",
+    "function": "r70702"
+   },
+   {
+    "address": "34,2703",
+    "word": "00005",
+    "source": "  04D",
+    "routine": "34,2702",
+    "function": "r70702"
+   },
+   {
+    "address": "34,2704",
+    "word": "00050",
+    "source": "  X2",
+    "routine": "34,2702",
+    "function": "r70702"
+   },
+   {
+    "address": "34,2705",
+    "word": "54065",
+    "source": " BDDV XSU,1",
+    "routine": "34,2705",
+    "function": "r70705"
+   },
+   {
+    "address": "34,2706",
+    "word": "00001",
+    "source": "  00D",
+    "routine": "34,2705",
+    "function": "r70705"
+   },
+   {
+    "address": "34,2707",
+    "word": "00047",
+    "source": "  X2",
+    "routine": "34,2705",
+    "function": "r70705"
+   },
+   {
+    "address": "34,2710",
+    "word": "77657",
+    "source": " SR* ",
+    "routine": "34,2710",
+    "function": "r70710"
+   },
+   {
+    "address": "34,2711",
+    "word": "20601",
+    "source": "  0,1",
+    "routine": "34,2710",
+    "function": "r70710"
+   },
+   {
+    "address": "34,2712",
+    "word": "17612",
+    "source": " STODL DELDV",
+    "routine": "34,2712",
+    "function": "r70712"
+   },
+   {
+    "address": "34,2713",
+    "word": "00001",
+    "source": "  00D",
+    "routine": "34,2712",
+    "function": "r70712"
+   },
+   {
+    "address": "34,2714",
+    "word": "03610",
+    "source": " STORE GAMPREV",
+    "routine": "34,2714",
+    "function": "r70714"
+   },
+   {
+    "address": "34,2715",
+    "word": "51545",
+    "source": " DLOAD ABS",
+    "routine": "34,2715",
+    "function": "r70715"
+   },
+   {
+    "address": "34,2716",
+    "word": "03612",
+    "source": "  DELDV",
+    "routine": "34,2715",
+    "function": "r70715"
+   },
+   {
+    "address": "34,2717",
+    "word": "45206",
+    "source": " PUSH DSU",
+    "routine": "34,2717",
+    "function": "r70717"
+   },
+   {
+    "address": "34,2720",
+    "word": "30076",
+    "source": "  EPSILN1",
+    "routine": "34,2717",
+    "function": "r70717"
+   },
+   {
+    "address": "34,2721",
+    "word": "71240",
+    "source": " BMN DLOAD",
+    "routine": "34,2721",
+    "function": "r70721"
+   },
+   {
+    "address": "34,2722",
+    "word": "70737",
+    "source": "  CSI/SOL",
+    "routine": "34,2721",
+    "function": "r70721"
+   },
+   {
+    "address": "34,2723",
+    "word": "50025",
+    "source": " DSU BMN",
+    "routine": "34,2723",
+    "function": "r70723"
+   },
+   {
+    "address": "34,2724",
+    "word": "30106",
+    "source": "  DELMAX1",
+    "routine": "34,2723",
+    "function": "r70723"
+   },
+   {
+    "address": "34,2725",
+    "word": "70732",
+    "source": "  CSISTEP",
+    "routine": "34,2723",
+    "function": "r70723"
+   },
+   {
+    "address": "34,2726",
+    "word": "75345",
+    "source": " DLOAD SIGN",
+    "routine": "34,2726",
+    "function": "r70726"
+   },
+   {
+    "address": "34,2727",
+    "word": "30106",
+    "source": "  DELMAX1",
+    "routine": "34,2726",
+    "function": "r70726"
+   },
+   {
+    "address": "34,2730",
+    "word": "03612",
+    "source": "  DELDV",
+    "routine": "34,2726",
+    "function": "r70726"
+   },
+   {
+    "address": "34,2731",
+    "word": "03612",
+    "source": " STORE DELDV",
+    "routine": "34,2731",
+    "function": "r70731"
+   },
+   {
+    "address": "34,2732",
+    "word": "45345",
+    "source": "CSISTEP DLOAD DSU",
+    "routine": "34,2732",
+    "function": "r70732"
+   },
+   {
+    "address": "34,2733",
+    "word": "03574",
+    "source": "  DELVCSI",
+    "routine": "34,2732",
+    "function": "r70732"
+   },
+   {
+    "address": "34,2734",
+    "word": "03612",
+    "source": "  DELDV",
+    "routine": "34,2732",
+    "function": "r70732"
+   },
+   {
+    "address": "34,2735",
+    "word": "37574",
+    "source": " STCALL DELVCSI",
+    "routine": "34,2735",
+    "function": "r70735"
+   },
+   {
+    "address": "34,2736",
+    "word": "70165",
+    "source": "  CSI/B1",
+    "routine": "34,2735",
+    "function": "r70735"
+   },
+   {
+    "address": "34,2737",
+    "word": "77145",
+    "source": "CSI/SOL DLOAD AXT,2",
+    "routine": "34,2737",
+    "function": "r70737"
+   },
+   {
+    "address": "34,2740",
+    "word": "03602",
+    "source": "  POSTCSI",
+    "routine": "34,2737",
+    "function": "r70737"
+   },
+   {
+    "address": "34,2741",
+    "word": "00002",
+    "source": "  2",
+    "routine": "34,2737",
+    "function": "r70737"
+   },
+   {
+    "address": "34,2742",
+    "word": "77750",
+    "source": " LXA,1 ",
+    "routine": "34,2742",
+    "function": "r70742"
+   },
+   {
+    "address": "34,2743",
+    "word": "02776",
+    "source": "  RTX1",
+    "routine": "34,2742",
+    "function": "r70742"
+   },
+   {
+    "address": "34,2744",
+    "word": "50023",
+    "source": " DSU* BMN",
+    "routine": "34,2744",
+    "function": "r70744"
+   },
+   {
+    "address": "34,2745",
+    "word": "30072",
+    "source": "  PMINE      -2,1",
+    "routine": "34,2744",
+    "function": "r70744"
+   },
+   {
+    "address": "34,2746",
+    "word": "70776",
+    "source": "  SCNDSOL",
+    "routine": "34,2744",
+    "function": "r70744"
+   },
+   {
+    "address": "34,2747",
+    "word": "71374",
+    "source": " AXT,2 DLOAD",
+    "routine": "34,2747",
+    "function": "r70747"
+   },
+   {
+    "address": "34,2750",
+    "word": "00003",
+    "source": "  3",
+    "routine": "34,2747",
+    "function": "r70747"
+   },
+   {
+    "address": "34,2751",
+    "word": "03604",
+    "source": "  POSTCDH",
+    "routine": "34,2747",
+    "function": "r70747"
+   },
+   {
+    "address": "34,2752",
+    "word": "50023",
+    "source": " DSU* BMN",
+    "routine": "34,2752",
+    "function": "r70752"
+   },
+   {
+    "address": "34,2753",
+    "word": "30072",
+    "source": "  PMINE      -2,1",
+    "routine": "34,2752",
+    "function": "r70752"
+   },
+   {
+    "address": "34,2754",
+    "word": "70776",
+    "source": "  SCNDSOL",
+    "routine": "34,2752",
+    "function": "r70752"
+   },
+   {
+    "address": "34,2755",
+    "word": "45345",
+    "source": " DLOAD DSU",
+    "routine": "34,2755",
+    "function": "r70755"
+   },
+   {
+    "address": "34,2756",
+    "word": "01777",
+    "source": "  TCDH",
+    "routine": "34,2755",
+    "function": "r70755"
+   },
+   {
+    "address": "34,2757",
+    "word": "03634",
+    "source": "  TCSI",
+    "routine": "34,2755",
+    "function": "r70755"
+   },
+   {
+    "address": "34,2760",
+    "word": "02253",
+    "source": " STORE T1TOT2",
+    "routine": "34,2760",
+    "function": "r70760"
+   },
+   {
+    "address": "34,2761",
+    "word": "45374",
+    "source": " AXT,2 DSU",
+    "routine": "34,2761",
+    "function": "r70761"
+   },
+   {
+    "address": "34,2762",
+    "word": "00004",
+    "source": "  4",
+    "routine": "34,2761",
+    "function": "r70761"
+   },
+   {
+    "address": "34,2763",
+    "word": "30112",
+    "source": "  TMIN",
+    "routine": "34,2761",
+    "function": "r70761"
+   },
+   {
+    "address": "34,2764",
+    "word": "77040",
+    "source": " BMN AXT,2",
+    "routine": "34,2764",
+    "function": "r70764"
+   },
+   {
+    "address": "34,2765",
+    "word": "70776",
+    "source": "  SCNDSOL",
+    "routine": "34,2764",
+    "function": "r70764"
+   },
+   {
+    "address": "34,2766",
+    "word": "00005",
+    "source": "  5",
+    "routine": "34,2764",
+    "function": "r70764"
+   },
+   {
+    "address": "34,2767",
+    "word": "45345",
+    "source": " DLOAD DSU",
+    "routine": "34,2767",
+    "function": "r70767"
+   },
+   {
+    "address": "34,2770",
+    "word": "03636",
+    "source": "  TTPI",
+    "routine": "34,2767",
+    "function": "r70767"
+   },
+   {
+    "address": "34,2771",
+    "word": "01777",
+    "source": "  TCDH",
+    "routine": "34,2767",
+    "function": "r70767"
+   },
+   {
+    "address": "34,2772",
+    "word": "02255",
+    "source": " STORE T2TOT3",
+    "routine": "34,2772",
+    "function": "r70772"
+   },
+   {
+    "address": "34,2773",
+    "word": "51025",
+    "source": " DSU BPL",
+    "routine": "34,2773",
+    "function": "r70773"
+   },
+   {
+    "address": "34,2774",
+    "word": "30112",
+    "source": "  TMIN",
+    "routine": "34,2773",
+    "function": "r70773"
+   },
+   {
+    "address": "34,2775",
+    "word": "72152",
+    "source": "  P32/P72C",
+    "routine": "34,2773",
+    "function": "r70773"
+   },
+   {
+    "address": "34,2776",
+    "word": "43014",
+    "source": "SCNDSOL BON BOFF",
+    "routine": "34,2776",
+    "function": "r70776"
+   },
+   {
+    "address": "34,2777",
+    "word": "03302",
+    "source": "  S32.1F3A",
+    "routine": "34,2776",
+    "function": "r70776"
+   },
+   {
+    "address": "34,3000",
+    "word": "72040",
+    "source": "  ALMXIT",
+    "routine": "34,2776",
+    "function": "r70776"
+   },
+   {
+    "address": "34,3001",
+    "word": "03343",
+    "source": "  S32.1F3B",
+    "routine": "34,2776",
+    "function": "r70776"
+   },
+   {
+    "address": "34,3002",
+    "word": "72040",
+    "source": "  ALMXIT",
+    "routine": "34,2776",
+    "function": "r70776"
+   },
+   {
+    "address": "34,3003",
+    "word": "71334",
+    "source": " SXA,2 DLOAD",
+    "routine": "34,3003",
+    "function": "r71003"
+   },
+   {
+    "address": "34,3004",
+    "word": "03613",
+    "source": "  CSIALRM",
+    "routine": "34,3003",
+    "function": "r71003"
+   },
+   {
+    "address": "34,3005",
+    "word": "32420",
+    "source": "  P30ZERO",
+    "routine": "34,3003",
+    "function": "r71003"
+   },
+   {
+    "address": "34,3006",
+    "word": "43014",
+    "source": " CLEAR SET",
+    "routine": "34,3006",
+    "function": "r71006"
+   },
+   {
+    "address": "34,3007",
+    "word": "03260",
+    "source": "  S32.1F1",
+    "routine": "34,3006",
+    "function": "r71006"
+   },
+   {
+    "address": "34,3010",
+    "word": "03061",
+    "source": "  S32.1F2",
+    "routine": "34,3006",
+    "function": "r71006"
+   },
+   {
+    "address": "34,3011",
+    "word": "43014",
+    "source": " CLEAR CLEAR",
+    "routine": "34,3011",
+    "function": "r71011"
+   },
+   {
+    "address": "34,3012",
+    "word": "03262",
+    "source": "  S32.1F3A",
+    "routine": "34,3011",
+    "function": "r71011"
+   },
+   {
+    "address": "34,3013",
+    "word": "03263",
+    "source": "  S32.1F3B",
+    "routine": "34,3011",
+    "function": "r71011"
+   },
+   {
+    "address": "34,3014",
+    "word": "37606",
+    "source": " STCALL LOOPCT",
+    "routine": "34,3014",
+    "function": "r71014"
+   },
+   {
+    "address": "34,3015",
+    "word": "70125",
+    "source": "  CSI/B",
+    "routine": "34,3014",
+    "function": "r71014"
+   },
+   {
+    "address": "34,3016",
+    "word": "71220",
+    "source": "ADVANCE STQ DLOAD",
+    "routine": "34,3016",
+    "function": "r71016"
+   },
+   {
+    "address": "34,3017",
+    "word": "03470",
+    "source": "  SUBEXIT",
+    "routine": "34,3016",
+    "function": "r71016"
+   },
+   {
+    "address": "34,3020",
+    "word": "03442",
+    "source": "  TIG",
+    "routine": "34,3016",
+    "function": "r71016"
+   },
+   {
+    "address": "34,3021",
+    "word": "34041",
+    "source": " STCALL TDEC1",
+    "routine": "34,3021",
+    "function": "r71021"
+   },
+   {
+    "address": "34,3022",
+    "word": "46360",
+    "source": "  PRECSET",
+    "routine": "34,3021",
+    "function": "r71021"
+   },
+   {
+    "address": "34,3023",
+    "word": "77214",
+    "source": " SET VLOAD",
+    "routine": "34,3023",
+    "function": "r71023"
+   },
+   {
+    "address": "34,3024",
+    "word": "01067",
+    "source": "  XDELVFLG",
+    "routine": "34,3023",
+    "function": "r71023"
+   },
+   {
+    "address": "34,3025",
+    "word": "03560",
+    "source": "  VPASS3",
+    "routine": "34,3023",
+    "function": "r71023"
+   },
+   {
+    "address": "34,3026",
+    "word": "03530",
+    "source": " STORE VPASS2",
+    "routine": "34,3026",
+    "function": "r71026"
+   },
+   {
+    "address": "34,3027",
+    "word": "27506",
+    "source": " STOVL VPASS1",
+    "routine": "34,3027",
+    "function": "r71027"
+   },
+   {
+    "address": "34,3030",
+    "word": "03552",
+    "source": "  RPASS3",
+    "routine": "34,3027",
+    "function": "r71027"
+   },
+   {
+    "address": "34,3031",
+    "word": "03522",
+    "source": " STORE RPASS2",
+    "routine": "34,3031",
+    "function": "r71031"
+   },
+   {
+    "address": "34,3032",
+    "word": "03500",
+    "source": " STORE RPASS1",
+    "routine": "34,3032",
+    "function": "r71032"
+   },
+   {
+    "address": "34,3033",
+    "word": "47256",
+    "source": " UNIT VXV",
+    "routine": "34,3033",
+    "function": "r71033"
+   },
+   {
+    "address": "34,3034",
+    "word": "03506",
+    "source": "  VPASS1",
+    "routine": "34,3033",
+    "function": "r71033"
+   },
+   {
+    "address": "34,3035",
+    "word": "77656",
+    "source": " UNIT ",
+    "routine": "34,3035",
+    "function": "r71035"
+   },
+   {
+    "address": "34,3036",
+    "word": "26261",
+    "source": " STOVL UP1",
+    "routine": "34,3036",
+    "function": "r71036"
+   },
+   {
+    "address": "34,3037",
+    "word": "03536",
+    "source": "  RACT3",
+    "routine": "34,3036",
+    "function": "r71036"
+   },
+   {
+    "address": "34,3040",
+    "word": "37642",
+    "source": " STCALL RTIG",
+    "routine": "34,3040",
+    "function": "r71040"
+   },
+   {
+    "address": "34,3041",
+    "word": "71052",
+    "source": "  ROTATE",
+    "routine": "34,3040",
+    "function": "r71040"
+   },
+   {
+    "address": "34,3042",
+    "word": "02311",
+    "source": " STORE RACT2",
+    "routine": "34,3042",
+    "function": "r71042"
+   },
+   {
+    "address": "34,3043",
+    "word": "26303",
+    "source": " STOVL RACT1",
+    "routine": "34,3043",
+    "function": "r71043"
+   },
+   {
+    "address": "34,3044",
+    "word": "03544",
+    "source": "  VACT3",
+    "routine": "34,3043",
+    "function": "r71043"
+   },
+   {
+    "address": "34,3045",
+    "word": "37650",
+    "source": " STCALL VTIG",
+    "routine": "34,3045",
+    "function": "r71045"
+   },
+   {
+    "address": "34,3046",
+    "word": "71052",
+    "source": "  ROTATE",
+    "routine": "34,3045",
+    "function": "r71045"
+   },
+   {
+    "address": "34,3047",
+    "word": "03514",
+    "source": " STORE VACT2",
+    "routine": "34,3047",
+    "function": "r71047"
+   },
+   {
+    "address": "34,3050",
+    "word": "37472",
+    "source": " STCALL VACT1",
+    "routine": "34,3050",
+    "function": "r71050"
+   },
+   {
+    "address": "34,3051",
+    "word": "03470",
+    "source": "  SUBEXIT",
+    "routine": "34,3050",
+    "function": "r71050"
+   },
+   {
+    "address": "34,3052",
+    "word": "41406",
+    "source": "ROTATE PUSH PUSH",
+    "routine": "34,3052",
+    "function": "r71052"
+   },
+   {
+    "address": "34,3053",
+    "word": "74241",
+    "source": " DOT VXSC",
+    "routine": "34,3053",
+    "function": "r71053"
+   },
+   {
+    "address": "34,3054",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,3053",
+    "function": "r71053"
+   },
+   {
+    "address": "34,3055",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,3053",
+    "function": "r71053"
+   },
+   {
+    "address": "34,3056",
+    "word": "51352",
+    "source": " VSL2 BVSU",
+    "routine": "34,3056",
+    "function": "r71056"
+   },
+   {
+    "address": "34,3057",
+    "word": "63256",
+    "source": " UNIT PDVL",
+    "routine": "34,3057",
+    "function": "r71057"
+   },
+   {
+    "address": "34,3060",
+    "word": "74246",
+    "source": " ABVAL VXSC",
+    "routine": "34,3060",
+    "function": "r71060"
+   },
+   {
+    "address": "34,3061",
+    "word": "43572",
+    "source": " VSL1 RVQ",
+    "routine": "34,3061",
+    "function": "r71061"
+   },
+   {
+    "address": "34,3062",
+    "word": "65325",
+    "source": "INTINT2C PDDL PDDL",
+    "routine": "34,3062",
+    "function": "r71062"
+   },
+   {
+    "address": "34,3063",
+    "word": "03634",
+    "source": "  TCSI",
+    "routine": "34,3062",
+    "function": "r71062"
+   },
+   {
+    "address": "34,3064",
+    "word": "01777",
+    "source": "  TCDH",
+    "routine": "34,3062",
+    "function": "r71062"
+   },
+   {
+    "address": "34,3065",
+    "word": "41525",
+    "source": " PDDL PUSH",
+    "routine": "34,3065",
+    "function": "r71065"
+   },
+   {
+    "address": "34,3066",
+    "word": "33732",
+    "source": "  TWOPI",
+    "routine": "34,3065",
+    "function": "r71065"
+   },
+   {
+    "address": "34,3067",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "34,3067",
+    "function": "r71067"
+   },
+   {
+    "address": "34,3070",
+    "word": "73466",
+    "source": "  INTINT",
+    "routine": "34,3067",
+    "function": "r71067"
+   },
+   {
+    "address": "34,3071",
+    "word": "65325",
+    "source": "INTINT3P PDDL PDDL",
+    "routine": "34,3071",
+    "function": "r71071"
+   },
+   {
+    "address": "34,3072",
+    "word": "01777",
+    "source": "  TCDH",
+    "routine": "34,3071",
+    "function": "r71071"
+   },
+   {
+    "address": "34,3073",
+    "word": "03636",
+    "source": "  TTPI",
+    "routine": "34,3071",
+    "function": "r71071"
+   },
+   {
+    "address": "34,3074",
+    "word": "41525",
+    "source": " PDDL PUSH",
+    "routine": "34,3074",
+    "function": "r71074"
+   },
+   {
+    "address": "34,3075",
+    "word": "32420",
+    "source": "  P30ZERO",
+    "routine": "34,3074",
+    "function": "r71074"
+   },
+   {
+    "address": "34,3076",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "34,3076",
+    "function": "r71076"
+   },
+   {
+    "address": "34,3077",
+    "word": "73466",
+    "source": "  INTINT",
+    "routine": "34,3076",
+    "function": "r71076"
+   },
+   {
+    "address": "34,3100",
+    "word": "76020",
+    "source": "S32/33.1 STQ AXT,1",
+    "routine": "34,3100",
+    "function": "r71100"
+   },
+   {
+    "address": "34,3101",
+    "word": "03470",
+    "source": "  SUBEXIT",
+    "routine": "34,3100",
+    "function": "r71100"
+   },
+   {
+    "address": "34,3102",
+    "word": "01521",
+    "source": " VN 0681",
+    "routine": "34,3100",
+    "function": "r71100"
+   },
+   {
+    "address": "34,3103",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,3103",
+    "function": "r71103"
+   },
+   {
+    "address": "34,3104",
+    "word": "72370",
+    "source": "  DISDVLVC",
+    "routine": "34,3103",
+    "function": "r71103"
+   },
+   {
+    "address": "34,3105",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,3105",
+    "function": "r71105"
+   },
+   {
+    "address": "34,3106",
+    "word": "71120",
+    "source": "  S32/33.X",
+    "routine": "34,3105",
+    "function": "r71105"
+   },
+   {
+    "address": "34,3107",
+    "word": "61375",
+    "source": " VLOAD VXM",
+    "routine": "34,3107",
+    "function": "r71107"
+   },
+   {
+    "address": "34,3110",
+    "word": "03434",
+    "source": "  DELVLVC",
+    "routine": "34,3107",
+    "function": "r71107"
+   },
+   {
+    "address": "34,3111",
+    "word": "00001",
+    "source": "  0D",
+    "routine": "34,3107",
+    "function": "r71107"
+   },
+   {
+    "address": "34,3112",
+    "word": "77772",
+    "source": " VSL1 ",
+    "routine": "34,3112",
+    "function": "r71112"
+   },
+   {
+    "address": "34,3113",
+    "word": "03656",
+    "source": " STORE DELVSIN",
+    "routine": "34,3113",
+    "function": "r71113"
+   },
+   {
+    "address": "34,3114",
+    "word": "51406",
+    "source": " PUSH ABVAL",
+    "routine": "34,3114",
+    "function": "r71114"
+   },
+   {
+    "address": "34,3115",
+    "word": "27664",
+    "source": " STOVL DELVSAB",
+    "routine": "34,3115",
+    "function": "r71115"
+   },
+   {
+    "address": "34,3116",
+    "word": "77650",
+    "source": " GOTO ",
+    "routine": "34,3116",
+    "function": "r71116"
+   },
+   {
+    "address": "34,3117",
+    "word": "03470",
+    "source": "  SUBEXIT",
+    "routine": "34,3116",
+    "function": "r71116"
+   },
+   {
+    "address": "34,3120",
+    "word": "77201",
+    "source": "S32/33.X SETPD VLOAD",
+    "routine": "34,3120",
+    "function": "r71120"
+   },
+   {
+    "address": "34,3121",
+    "word": "00007",
+    "source": "  6D",
+    "routine": "34,3120",
+    "function": "r71120"
+   },
+   {
+    "address": "34,3122",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,3120",
+    "function": "r71120"
+   },
+   {
+    "address": "34,3123",
+    "word": "63276",
+    "source": " VCOMP PDVL",
+    "routine": "34,3123",
+    "function": "r71123"
+   },
+   {
+    "address": "34,3124",
+    "word": "02303",
+    "source": "  RACT1",
+    "routine": "34,3123",
+    "function": "r71123"
+   },
+   {
+    "address": "34,3125",
+    "word": "57456",
+    "source": " UNIT VCOMP",
+    "routine": "34,3125",
+    "function": "r71125"
+   },
+   {
+    "address": "34,3126",
+    "word": "47206",
+    "source": " PUSH VXV",
+    "routine": "34,3126",
+    "function": "r71126"
+   },
+   {
+    "address": "34,3127",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,3126",
+    "function": "r71126"
+   },
+   {
+    "address": "34,3130",
+    "word": "77772",
+    "source": " VSL1 ",
+    "routine": "34,3130",
+    "function": "r71130"
+   },
+   {
+    "address": "34,3131",
+    "word": "00001",
+    "source": " STORE 0D",
+    "routine": "34,3131",
+    "function": "r71131"
+   },
+   {
+    "address": "34,3132",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "34,3132",
+    "function": "r71132"
+   },
+   {
+    "address": "34,3133",
+    "word": "77220",
+    "source": "CDHMVR STQ VLOAD",
+    "routine": "34,3133",
+    "function": "r71133"
+   },
+   {
+    "address": "34,3134",
+    "word": "03470",
+    "source": "  SUBEXIT",
+    "routine": "34,3133",
+    "function": "r71133"
+   },
+   {
+    "address": "34,3135",
+    "word": "02311",
+    "source": "  RACT2",
+    "routine": "34,3133",
+    "function": "r71133"
+   },
+   {
+    "address": "34,3136",
+    "word": "53406",
+    "source": " PUSH UNIT",
+    "routine": "34,3136",
+    "function": "r71136"
+   },
+   {
+    "address": "34,3137",
+    "word": "27544",
+    "source": " STOVL UNVEC",
+    "routine": "34,3137",
+    "function": "r71137"
+   },
+   {
+    "address": "34,3140",
+    "word": "03522",
+    "source": "  RPASS2",
+    "routine": "34,3137",
+    "function": "r71137"
+   },
+   {
+    "address": "34,3141",
+    "word": "50256",
+    "source": " UNIT DOT",
+    "routine": "34,3141",
+    "function": "r71141"
+   },
+   {
+    "address": "34,3142",
+    "word": "03544",
+    "source": "  UNVEC",
+    "routine": "34,3141",
+    "function": "r71141"
+   },
+   {
+    "address": "34,3143",
+    "word": "72406",
+    "source": " PUSH SL1",
+    "routine": "34,3143",
+    "function": "r71143"
+   },
+   {
+    "address": "34,3144",
+    "word": "16732",
+    "source": " STODL CSTH",
+    "routine": "34,3144",
+    "function": "r71144"
+   },
+   {
+    "address": "34,3145",
+    "word": "65316",
+    "source": " DSQ PDDL",
+    "routine": "34,3145",
+    "function": "r71145"
+   },
+   {
+    "address": "34,3146",
+    "word": "06512",
+    "source": "  DP1/4TH",
+    "routine": "34,3145",
+    "function": "r71145"
+   },
+   {
+    "address": "34,3147",
+    "word": "45302",
+    "source": " SR2 DSU",
+    "routine": "34,3147",
+    "function": "r71147"
+   },
+   {
+    "address": "34,3150",
+    "word": "72566",
+    "source": " SQRT SL1",
+    "routine": "34,3150",
+    "function": "r71150"
+   },
+   {
+    "address": "34,3151",
+    "word": "57515",
+    "source": " PDVL VCOMP",
+    "routine": "34,3151",
+    "function": "r71151"
+   },
+   {
+    "address": "34,3152",
+    "word": "77635",
+    "source": " VXV ",
+    "routine": "34,3152",
+    "function": "r71152"
+   },
+   {
+    "address": "34,3153",
+    "word": "03522",
+    "source": "  RPASS2",
+    "routine": "34,3152",
+    "function": "r71152"
+   },
+   {
+    "address": "34,3154",
+    "word": "65241",
+    "source": " DOT PDDL",
+    "routine": "34,3154",
+    "function": "r71154"
+   },
+   {
+    "address": "34,3155",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,3154",
+    "function": "r71154"
+   },
+   {
+    "address": "34,3156",
+    "word": "45565",
+    "source": " SIGN STADR",
+    "routine": "34,3156",
+    "function": "r71156"
+   },
+   {
+    "address": "34,3157",
+    "word": "51047",
+    "source": " STOVL SNTH",
+    "routine": "34,3156",
+    "function": "r71156"
+   },
+   {
+    "address": "34,3160",
+    "word": "03522",
+    "source": "  RPASS2",
+    "routine": "34,3156",
+    "function": "r71156"
+   },
+   {
+    "address": "34,3161",
+    "word": "45115",
+    "source": " PDVL CALL",
+    "routine": "34,3161",
+    "function": "r71161"
+   },
+   {
+    "address": "34,3162",
+    "word": "03530",
+    "source": "  VPASS2",
+    "routine": "34,3161",
+    "function": "r71161"
+   },
+   {
+    "address": "34,3163",
+    "word": "46416",
+    "source": "  VECSHIFT",
+    "routine": "34,3161",
+    "function": "r71161"
+   },
+   {
+    "address": "34,3164",
+    "word": "26744",
+    "source": " STOVL VVEC",
+    "routine": "34,3164",
+    "function": "r71164"
+   },
+   {
+    "address": "34,3165",
+    "word": "77614",
+    "source": " CLEAR ",
+    "routine": "34,3165",
+    "function": "r71165"
+   },
+   {
+    "address": "34,3166",
+    "word": "03666",
+    "source": "  RVSW",
+    "routine": "34,3165",
+    "function": "r71165"
+   },
+   {
+    "address": "34,3167",
+    "word": "36655",
+    "source": " STCALL RVEC",
+    "routine": "34,3167",
+    "function": "r71167"
+   },
+   {
+    "address": "34,3170",
+    "word": "24732",
+    "source": "  TIMETHET",
+    "routine": "34,3167",
+    "function": "r71167"
+   },
+   {
+    "address": "34,3171",
+    "word": "53754",
+    "source": " LXA,2 VSL*",
+    "routine": "34,3171",
+    "function": "r71171"
+   },
+   {
+    "address": "34,3172",
+    "word": "02777",
+    "source": "  RTX2",
+    "routine": "34,3171",
+    "function": "r71171"
+   },
+   {
+    "address": "34,3173",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "34,3171",
+    "function": "r71171"
+   },
+   {
+    "address": "34,3174",
+    "word": "00023",
+    "source": " STORE 18D",
+    "routine": "34,3174",
+    "function": "r71174"
+   },
+   {
+    "address": "34,3175",
+    "word": "76441",
+    "source": " DOT SL1R",
+    "routine": "34,3175",
+    "function": "r71175"
+   },
+   {
+    "address": "34,3176",
+    "word": "03544",
+    "source": "  UNVEC",
+    "routine": "34,3175",
+    "function": "r71175"
+   },
+   {
+    "address": "34,3177",
+    "word": "51515",
+    "source": " PDVL ABVAL",
+    "routine": "34,3177",
+    "function": "r71177"
+   },
+   {
+    "address": "34,3200",
+    "word": "63257",
+    "source": " SL* PDVL",
+    "routine": "34,3200",
+    "function": "r71200"
+   },
+   {
+    "address": "34,3201",
+    "word": "57576",
+    "source": "  0,2",
+    "routine": "34,3200",
+    "function": "r71200"
+   },
+   {
+    "address": "34,3202",
+    "word": "02311",
+    "source": "  RACT2",
+    "routine": "34,3200",
+    "function": "r71200"
+   },
+   {
+    "address": "34,3203",
+    "word": "65246",
+    "source": " ABVAL PDDL",
+    "routine": "34,3203",
+    "function": "r71203"
+   },
+   {
+    "address": "34,3204",
+    "word": "77625",
+    "source": " DSU ",
+    "routine": "34,3204",
+    "function": "r71204"
+   },
+   {
+    "address": "34,3205",
+    "word": "00003",
+    "source": "  02D",
+    "routine": "34,3204",
+    "function": "r71204"
+   },
+   {
+    "address": "34,3206",
+    "word": "17600",
+    "source": " STODL DIFFALT",
+    "routine": "34,3206",
+    "function": "r71206"
+   },
+   {
+    "address": "34,3207",
+    "word": "02742",
+    "source": "  R1A",
+    "routine": "34,3206",
+    "function": "r71206"
+   },
+   {
+    "address": "34,3210",
+    "word": "65301",
+    "source": " NORM PDDL",
+    "routine": "34,3210",
+    "function": "r71210"
+   },
+   {
+    "address": "34,3211",
+    "word": "00047",
+    "source": "  X1",
+    "routine": "34,3210",
+    "function": "r71210"
+   },
+   {
+    "address": "34,3212",
+    "word": "00041",
+    "source": "  R1",
+    "routine": "34,3210",
+    "function": "r71210"
+   },
+   {
+    "address": "34,3213",
+    "word": "77624",
+    "source": " CALL ",
+    "routine": "34,3213",
+    "function": "r71213"
+   },
+   {
+    "address": "34,3214",
+    "word": "46426",
+    "source": "  SHIFTR1",
+    "routine": "34,3213",
+    "function": "r71213"
+   },
+   {
+    "address": "34,3215",
+    "word": "56362",
+    "source": " SR1R DDV",
+    "routine": "34,3215",
+    "function": "r71215"
+   },
+   {
+    "address": "34,3216",
+    "word": "41457",
+    "source": " SL* PUSH",
+    "routine": "34,3216",
+    "function": "r71216"
+   },
+   {
+    "address": "34,3217",
+    "word": "20174",
+    "source": "  0          -5,1",
+    "routine": "34,3216",
+    "function": "r71216"
+   },
+   {
+    "address": "34,3220",
+    "word": "65225",
+    "source": " DSU PDDL",
+    "routine": "34,3220",
+    "function": "r71220"
+   },
+   {
+    "address": "34,3221",
+    "word": "03600",
+    "source": "  DIFFALT",
+    "routine": "34,3220",
+    "function": "r71220"
+   },
+   {
+    "address": "34,3222",
+    "word": "56302",
+    "source": " SR2 DDV",
+    "routine": "34,3222",
+    "function": "r71222"
+   },
+   {
+    "address": "34,3223",
+    "word": "00005",
+    "source": "  04D",
+    "routine": "34,3222",
+    "function": "r71222"
+   },
+   {
+    "address": "34,3224",
+    "word": "75406",
+    "source": " PUSH SQRT",
+    "routine": "34,3224",
+    "function": "r71224"
+   },
+   {
+    "address": "34,3225",
+    "word": "41275",
+    "source": " DMPR DMP",
+    "routine": "34,3225",
+    "function": "r71225"
+   },
+   {
+    "address": "34,3226",
+    "word": "00007",
+    "source": "  06D",
+    "routine": "34,3225",
+    "function": "r71225"
+   },
+   {
+    "address": "34,3227",
+    "word": "00001",
+    "source": "  00D",
+    "routine": "34,3225",
+    "function": "r71225"
+   },
+   {
+    "address": "34,3230",
+    "word": "65272",
+    "source": " SL3R PDDL",
+    "routine": "34,3230",
+    "function": "r71230"
+   },
+   {
+    "address": "34,3231",
+    "word": "00003",
+    "source": "  02D",
+    "routine": "34,3230",
+    "function": "r71230"
+   },
+   {
+    "address": "34,3232",
+    "word": "65301",
+    "source": " NORM PDDL",
+    "routine": "34,3232",
+    "function": "r71232"
+   },
+   {
+    "address": "34,3233",
+    "word": "00047",
+    "source": "  X1",
+    "routine": "34,3232",
+    "function": "r71232"
+   },
+   {
+    "address": "34,3234",
+    "word": "02321",
+    "source": "  RTMU",
+    "routine": "34,3232",
+    "function": "r71232"
+   },
+   {
+    "address": "34,3235",
+    "word": "56342",
+    "source": " SR1 DDV",
+    "routine": "34,3235",
+    "function": "r71235"
+   },
+   {
+    "address": "34,3236",
+    "word": "65257",
+    "source": " SL* PDDL",
+    "routine": "34,3236",
+    "function": "r71236"
+   },
+   {
+    "address": "34,3237",
+    "word": "20174",
+    "source": "  0          -5,1",
+    "routine": "34,3236",
+    "function": "r71236"
+   },
+   {
+    "address": "34,3240",
+    "word": "00005",
+    "source": "  04D",
+    "routine": "34,3236",
+    "function": "r71236"
+   },
+   {
+    "address": "34,3241",
+    "word": "65301",
+    "source": " NORM PDDL",
+    "routine": "34,3241",
+    "function": "r71241"
+   },
+   {
+    "address": "34,3242",
+    "word": "00050",
+    "source": "  X2",
+    "routine": "34,3241",
+    "function": "r71241"
+   },
+   {
+    "address": "34,3243",
+    "word": "02321",
+    "source": "  RTMU",
+    "routine": "34,3241",
+    "function": "r71241"
+   },
+   {
+    "address": "34,3244",
+    "word": "56342",
+    "source": " SR1 DDV",
+    "routine": "34,3244",
+    "function": "r71244"
+   },
+   {
+    "address": "34,3245",
+    "word": "44257",
+    "source": " SL* BDSU",
+    "routine": "34,3245",
+    "function": "r71245"
+   },
+   {
+    "address": "34,3246",
+    "word": "57604",
+    "source": "  0          -6,2",
+    "routine": "34,3245",
+    "function": "r71245"
+   },
+   {
+    "address": "34,3247",
+    "word": "63525",
+    "source": " PDDL DSQ",
+    "routine": "34,3247",
+    "function": "r71247"
+   },
+   {
+    "address": "34,3250",
+    "word": "00011",
+    "source": "  08D",
+    "routine": "34,3247",
+    "function": "r71247"
+   },
+   {
+    "address": "34,3251",
+    "word": "75421",
+    "source": " BDSU SQRT",
+    "routine": "34,3251",
+    "function": "r71251"
+   },
+   {
+    "address": "34,3252",
+    "word": "47315",
+    "source": " PDVL VXV",
+    "routine": "34,3252",
+    "function": "r71252"
+   },
+   {
+    "address": "34,3253",
+    "word": "02261",
+    "source": "  UP1",
+    "routine": "34,3252",
+    "function": "r71252"
+   },
+   {
+    "address": "34,3254",
+    "word": "03544",
+    "source": "  UNVEC",
+    "routine": "34,3252",
+    "function": "r71252"
+   },
+   {
+    "address": "34,3255",
+    "word": "74256",
+    "source": " UNIT VXSC",
+    "routine": "34,3255",
+    "function": "r71255"
+   },
+   {
+    "address": "34,3256",
+    "word": "00013",
+    "source": "  10D",
+    "routine": "34,3255",
+    "function": "r71255"
+   },
+   {
+    "address": "34,3257",
+    "word": "74315",
+    "source": " PDVL VXSC",
+    "routine": "34,3257",
+    "function": "r71257"
+   },
+   {
+    "address": "34,3260",
+    "word": "03544",
+    "source": "  UNVEC",
+    "routine": "34,3257",
+    "function": "r71257"
+   },
+   {
+    "address": "34,3261",
+    "word": "00011",
+    "source": "  08D",
+    "routine": "34,3257",
+    "function": "r71257"
+   },
+   {
+    "address": "34,3262",
+    "word": "76455",
+    "source": " VAD VSL1",
+    "routine": "34,3262",
+    "function": "r71262"
+   },
+   {
+    "address": "34,3263",
+    "word": "77626",
+    "source": " STADR ",
+    "routine": "34,3263",
+    "function": "r71263"
+   },
+   {
+    "address": "34,3264",
+    "word": "74233",
+    "source": " STORE VACT3",
+    "routine": "34,3263",
+    "function": "r71263"
+   },
+   {
+    "address": "34,3265",
+    "word": "77651",
+    "source": " VSU ",
+    "routine": "34,3265",
+    "function": "r71265"
+   },
+   {
+    "address": "34,3266",
+    "word": "03514",
+    "source": "  VACT2",
+    "routine": "34,3265",
+    "function": "r71265"
+   },
+   {
+    "address": "34,3267",
+    "word": "36275",
+    "source": " STCALL DELVEET2",
+    "routine": "34,3267",
+    "function": "r71267"
+   },
+   {
+    "address": "34,3270",
+    "word": "03470",
+    "source": "  SUBEXIT",
+    "routine": "34,3267",
+    "function": "r71267"
+   },
+   {
+    "address": "35,2432",
+    "word": "00006",
+    "source": "COMPTGO EXTEND ",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2433",
+    "word": "23465",
+    "source": " QXCH RTRN",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2434",
+    "word": "34755",
+    "source": " CAF ZERO",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2435",
+    "word": "55163",
+    "source": " TS DISPDEX",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2436",
+    "word": "34752",
+    "source": " CAF BIT2",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2437",
+    "word": "00004",
+    "source": " INHINT ",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2440",
+    "word": "05203",
+    "source": " TC WAITLIST",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2441",
+    "word": "02717",
+    "source": " 2CADR CLOKTASK",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2442",
+    "word": "74067",
+    "source": "(+1)",
+    "routine": "35,2432",
+    "function": "r72432"
+   },
+   {
+    "address": "35,2443",
+    "word": "05327",
+    "source": " TC 2PHSCHNG",
+    "routine": "35,2443",
+    "function": "r72443"
+   },
+   {
+    "address": "35,2444",
+    "word": "40036",
+    "source": " OCT 40036",
+    "routine": "35,2443",
+    "function": "r72443"
+   },
+   {
+    "address": "35,2445",
+    "word": "05024",
+    "source": " OCT 05024",
+    "routine": "35,2443",
+    "function": "r72443"
+   },
+   {
+    "address": "35,2446",
+    "word": "13000",
+    "source": " OCT 13000",
+    "routine": "35,2443",
+    "function": "r72443"
+   },
+   {
+    "address": "35,2447",
+    "word": "01465",
+    "source": " TC RTRN",
+    "routine": "35,2447",
+    "function": "r72447"
+   }
+  ]
+ }
+}

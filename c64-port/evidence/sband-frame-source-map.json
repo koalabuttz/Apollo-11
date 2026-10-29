@@ -1,0 +1,169 @@
+{
+  "LM": {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_frame.c",
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 104,
+        "label": "CONV5",
+        "op": "SETPD",
+        "arguments": "UNIT",
+        "assembled_address": "42,3640",
+        "physical_fixed_word": 35744,
+        "physical_erasable_word": null,
+        "words": [
+          22273
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 105,
+        "label": "",
+        "op": "0D",
+        "arguments": "",
+        "assembled_address": "42,3641",
+        "physical_fixed_word": 35745,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 106,
+        "label": "",
+        "op": "VCOMP",
+        "arguments": "CALL",
+        "assembled_address": "42,3642",
+        "physical_fixed_word": 35746,
+        "physical_erasable_word": null,
+        "words": [
+          19006
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 107,
+        "label": "",
+        "op": "CDUTRIG",
+        "arguments": "",
+        "assembled_address": "42,3643",
+        "physical_fixed_word": 35747,
+        "physical_erasable_word": null,
+        "words": [
+          20319
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 108,
+        "label": "",
+        "op": "MXV",
+        "arguments": "VSL1",
+        "assembled_address": "42,3644",
+        "physical_fixed_word": 35748,
+        "physical_erasable_word": null,
+        "words": [
+          32081
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 109,
+        "label": "",
+        "op": "REFSMMAT",
+        "arguments": "",
+        "assembled_address": "42,3645",
+        "physical_fixed_word": 35749,
+        "physical_erasable_word": null,
+        "words": [
+          988
+        ]
+      }
+    ],
+    "entry_bindings": {
+      "UNIT": "00,3023",
+      "CDUTRIG": "23,3537",
+      "MXV": "7334",
+      "REFSMMAT": "E3,1733",
+      "NEWOPS": "6070",
+      "DANZIG": "6061",
+      "SHORTV": "00,2121"
+    },
+    "scope": "LM actual UNIT; LM VCOMP/CALL plus complete original CDUTRIG and genuine RVQ; both actual eighteen-word REFSMMAT MXV followed by original VSL1 selection. Helpers are separate qualified compiled native APIs; no arbitrary decoded dispatch.",
+    "external_continuations": [
+      "Actual UNIT 1302 alarm frontier, before handler",
+      "Pending actual DANZIG, before next source pair or Executive check"
+    ],
+    "unmapped_remaining": "Moon-return vector math, following pushes/body transformations and pitch/yaw calculations, and display lifecycle."
+  },
+  "CM": {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_frame.c",
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 65,
+        "label": "",
+        "op": "2D",
+        "arguments": "",
+        "assembled_address": "42,3702",
+        "physical_fixed_word": 35778,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 66,
+        "label": "",
+        "op": "REFSMMAT",
+        "arguments": "",
+        "assembled_address": "42,3703",
+        "physical_fixed_word": 35779,
+        "physical_erasable_word": null,
+        "words": [
+          990
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 67,
+        "label": "",
+        "op": "VSL1",
+        "arguments": "PDDL",
+        "assembled_address": "42,3704",
+        "physical_fixed_word": 35780,
+        "physical_erasable_word": null,
+        "words": [
+          27386
+        ]
+      }
+    ],
+    "entry_bindings": {
+      "UNIT": "00,3023",
+      "CDUTRIG": "23,3477",
+      "MXV": "7303",
+      "REFSMMAT": "E3,1735",
+      "NEWOPS": "6037",
+      "DANZIG": "6030",
+      "SHORTV": "00,2121"
+    },
+    "scope": "LM actual UNIT; LM VCOMP/CALL plus complete original CDUTRIG and genuine RVQ; both actual eighteen-word REFSMMAT MXV followed by original VSL1 selection. Helpers are separate qualified compiled native APIs; no arbitrary decoded dispatch.",
+    "external_continuations": [
+      "Actual UNIT 1302 alarm frontier, before handler",
+      "Pending actual DANZIG, before next source pair or Executive check"
+    ],
+    "unmapped_remaining": "Moon-return vector math, following pushes/body transformations and pitch/yaw calculations, and display lifecycle."
+  }
+}

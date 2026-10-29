@@ -1,0 +1,27 @@
+build/interp-core-fuzz build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin 100000 11
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00126)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+100000 cases, 210391 slots compared, 16838 refused, 13 abandoned, 33553 left the frame, 0 differ
+build/interp-core-fuzz-kops build/fixed-data/Luminary099/MAIN.agc.bin build/fixed-data/Comanche055/MAIN.agc.bin 100000 12
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+lmi_goto_any: erasable CADR cycle (POLISH 00117)
+100000 cases, 212891 slots compared, 16653 refused, 9 abandoned, 33848 left the frame, 0 differ
+exit 0

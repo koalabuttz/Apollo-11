@@ -1,0 +1,14 @@
+{
+  "LM": {
+    "archive": "evidence/ephemeris-time-scale-LM-reference.snapshots.bin.xz",
+    "decoded_sha256": "818faba14b5591d383581b4ba0f989877b5bb16745b05b318fda8a73cfcc752e",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  },
+  "CM": {
+    "archive": "evidence/ephemeris-time-scale-CM-reference.snapshots.bin.xz",
+    "decoded_sha256": "9e14a9e2afbe06bf43f914d6c3cb15a634166fa849eed9c60f38fd664d7b3c61",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  }
+}

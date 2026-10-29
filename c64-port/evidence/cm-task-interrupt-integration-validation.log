@@ -1,0 +1,5 @@
+./build/test-cm-task-interrupt
+1024 original CM automatic interrupt/RESUME full-image states and deferral guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_task_interrupt.c src/cm_native_image.c src/agc_word.c tests/cm_task_interrupt_cases.c tests/cm_task_interrupt_check.c tests/test_cm_task_interrupt.c -o build/test-cm-task-interrupt-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-task-interrupt-sanitize
+1024 original CM automatic interrupt/RESUME full-image states and deferral guards: PASS

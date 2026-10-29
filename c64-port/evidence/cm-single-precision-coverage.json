@@ -1,0 +1,46 @@
+{
+  "source_file": "Comanche055/SINGLE_PRECISION_SUBROUTINES.agc",
+  "source_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+  "reviewed_all_source_paths": true,
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "public_entries": [
+    "SPCOS",
+    "SPSIN"
+  ],
+  "internal_paths": [
+    "SPT",
+    "POLLEY",
+    "ARG90"
+  ],
+  "absent_historical_routines": [
+    "SPROOT deleted in original source comment"
+  ],
+  "native_services": [
+    "cm_single_trig",
+    "cm_single_return"
+  ],
+  "caller_domain": "Original fixed-code saved TC caller02000..07777; unsupported synthetic erasable return code unchanged rejection",
+  "numerical_dependency": {
+    "path": "evidence/cm-trig-proof.json",
+    "sha256": "8f6cc5b3e0e48db0720cfc22b7c9219a259e1351e5bb18aab5dea6fdedd0900c"
+  },
+  "evidence": {
+    "source_to_native_map": {
+      "path": "docs/COMANCHE-SINGLE-PRECISION.md",
+      "sha256": "3e8b196e4eb80f578a2bd623b3079bd2e81d4780a0749b5bad582e0f5a5dccfb"
+    },
+    "independent_assembly_comparison": {
+      "path": "evidence/cm-single-return-proof.json",
+      "sha256": "6ab9d7a1b700592a38dc64b2a7c416cd64d2004a23771eb8909f0974c9aa3a80"
+    },
+    "host_and_sanitizer_results": {
+      "path": "evidence/cm-single-return-final-validation.log",
+      "sha256": "2a29f944ac9b9202fc77a5c42de44b988e914b0a21f363d70dc7defea1a86e63"
+    },
+    "c64_execution_results": {
+      "path": "evidence/cm-single-return-proof.json",
+      "sha256": "6ab9d7a1b700592a38dc64b2a7c416cd64d2004a23771eb8909f0974c9aa3a80"
+    }
+  },
+  "integrated_application_complete": false
+}

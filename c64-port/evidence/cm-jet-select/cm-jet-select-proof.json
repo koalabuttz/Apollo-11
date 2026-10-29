@@ -1,0 +1,93 @@
+{
+ "milestone": "cm-jet-select",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 512,
+ "cases_sha256": "65a45b5a9ac87862db53e0718d9b6084cb362255d8a60454f9b072c234a792ac",
+ "oracle_sha256": "4152d8f40525ab97fe863c01c62ca739432b8fab1502a2bf4937dc37f10672c6",
+ "frozen_vectors": 16,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0xdb5c6bcad2fa5c070eb",
+   "cases": 27,
+   "case_ids": [
+    11,
+    84,
+    249,
+    15,
+    36,
+    79,
+    117,
+    255,
+    44,
+    32,
+    215,
+    194,
+    104,
+    93,
+    100,
+    237,
+    189,
+    78,
+    459,
+    267,
+    268,
+    319,
+    449,
+    358,
+    433,
+    310,
+    457
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 555,
+  "c64_labels": 555,
+  "host_edges": 1010,
+  "c64_edges": 1010,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 756,
+  "c64_taken": 756,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_jet_select.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_jet_select_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "stops": {
+  "CM 17,2552 JETSLECT": {
+   "05333": 256
+  },
+  "CM 17,3617 T6START": {
+   "05333": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: RESUME); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 05, 06, 13, 31 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

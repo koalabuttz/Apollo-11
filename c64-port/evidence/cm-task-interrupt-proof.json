@@ -1,0 +1,18 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "automatic T3 interrupt at06030 DANZIG",
+    "05341 hardware RESUME"
+  ],
+  "boundary": "actual lead-in to01,3423 and compiled suspended DANZIG return",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "control_metadata": [
+    "InIsr",
+    "pending_DANZIG"
+  ],
+  "snapshot_sha256": "7c836b2ffcf27e16c2d41ec54ab44f47ea48ad976e4351ee39b30fbaf8d4d35f"
+}

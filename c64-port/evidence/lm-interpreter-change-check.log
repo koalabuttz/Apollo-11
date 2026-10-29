@@ -1,0 +1,5 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: 16384 original-source CHANG2 transitions, all 2052 raw canonical/external words; basic and interpretive returns
+Snapshot SHA256: 376bc4b403a955b1cf6f78563dc483ae09f7d5d666a94067c00859d039e57b54

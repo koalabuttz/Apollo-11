@@ -1,0 +1,156 @@
+{
+  "complete_states": 262144,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "CHAN11",
+    "CHAN12",
+    "CHAN14"
+  ],
+  "source_group_words": {
+    "lm": 40,
+    "cm": 38
+  },
+  "containing_file_status": "partial",
+  "source_map": "evidence/imu-pulse-end-source-map.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-end-lm0-complete.states.xz",
+        "decoded_sha256": "5451bbd01c762ce0099d62d5cc0517f215ae6a6797f9c81fb33c0afbc3c68436",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-end-lm0-complete.states.xz",
+        "decoded_sha256": "5451bbd01c762ce0099d62d5cc0517f215ae6a6797f9c81fb33c0afbc3c68436",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-end-lm0-complete.states.xz",
+        "decoded_sha256": "5451bbd01c762ce0099d62d5cc0517f215ae6a6797f9c81fb33c0afbc3c68436",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-end-lm1-complete.states.xz",
+        "decoded_sha256": "4e10581d6282955c9dde660b5e4bbf59a36b74170c9037d45b78c7fffd991298",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-end-lm1-complete.states.xz",
+        "decoded_sha256": "4e10581d6282955c9dde660b5e4bbf59a36b74170c9037d45b78c7fffd991298",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-end-lm1-complete.states.xz",
+        "decoded_sha256": "4e10581d6282955c9dde660b5e4bbf59a36b74170c9037d45b78c7fffd991298",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-end-cm0-complete.states.xz",
+        "decoded_sha256": "51113230f787dae409d83a0a537457b359318c6b5d590c3961e83f329629760b",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-end-cm0-complete.states.xz",
+        "decoded_sha256": "51113230f787dae409d83a0a537457b359318c6b5d590c3961e83f329629760b",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-end-cm0-complete.states.xz",
+        "decoded_sha256": "51113230f787dae409d83a0a537457b359318c6b5d590c3961e83f329629760b",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-end-cm1-complete.states.xz",
+        "decoded_sha256": "c6e7d140d67e2d01a055cf6d6941d6a0b76a2a46e91b9cbc9cb7cad8168f030d",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-end-cm1-complete.states.xz",
+        "decoded_sha256": "c6e7d140d67e2d01a055cf6d6941d6a0b76a2a46e91b9cbc9cb7cad8168f030d",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-end-cm1-complete.states.xz",
+        "decoded_sha256": "c6e7d140d67e2d01a055cf6d6941d6a0b76a2a46e91b9cbc9cb7cad8168f030d",
+        "decoded_bytes": 269484032
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 10796,
+      "loaded_end": "0x322a",
+      "hardware_stack": 20,
+      "software_stack": 756,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 10307,
+      "loaded_end": "0x3041",
+      "hardware_stack": 20,
+      "software_stack": 755,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "mailbox": "a500002020",
+      "PRG_bytes": 11308,
+      "loaded_end": "0x342a",
+      "hardware_stack": 25,
+      "software_stack": 762,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "mailbox": "a500002021",
+      "PRG_bytes": 10870,
+      "loaded_end": "0x3274",
+      "hardware_stack": 24,
+      "software_stack": 762,
+      "compiler_ZP": 0
+    }
+  },
+  "source_branches": {
+    "lm0": {
+      "0": 65536
+    },
+    "lm1": {
+      "0": 65536
+    },
+    "cm0": {
+      "0": 65536
+    },
+    "cm1": {
+      "0": 65536
+    }
+  },
+  "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+  "source_fixture_tool": "tools/imu_pulse_prepare_reference.py",
+  "independent_review": {
+    "path": "evidence/imu-pulse-end-independent-review.txt",
+    "sha256": "1679453901fb18efce32c048b3c4dc50f489805a537a121410b39d7f695552a5"
+  },
+  "immutable_service_dependencies": {
+    "src/lm_basic_wake.c": "7f5028de5a13a63448dd2d35d6eb45042876b5835d5dcba5594ea646a260e355",
+    "src/cm_basic_wake.c": "4cb62726c6ec07d283e463ca508b27642365b60344e387fb985416f81f5b7979",
+    "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
+    "src/cm_executive.c": "131d7d1621498aba42fd4d74d1326806683f5b0d53d73715db4c16a0fd8f697c",
+    "src/cm_dispatch.c": "d418ad5c0027ea1432c6ba03b4492c017d8c3e7b9575b8454127731943dad5b2",
+    "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d"
+  },
+  "qualification": "Both original JOBWAKE/NORESET/IMUFINED/ENDIMU and direct IMUBAD through complete IMU device0 BADEND/GOODEND/ENDMODE bodies, composing source-exact basic Executive wake. Stops at literal TASKOVER entry. Valid basic wake arena, current positivecore0, ordinary coherent banks/SUPER, positive/+0/-0/-1 MODECADR; device counters quiescent, producer exclusion. No scheduler/interrupt restoration or asynchronous physical pulse consumption; containing-file partial.",
+  "target_warning_exception": "Frozen basic-wake helper enum status signedness warnings remain visible under -Wno-error=sign-conversion; all host warnings remain errors.",
+  "decoded_stream_identity": "Each of four originals is retained once as deterministic XZ. Strict-native and full-sanitized streams compared directly against decoded original bytes with pipefail; no duplicate raw full streams retained."
+}

@@ -1,0 +1,4 @@
+PASS: 10,272 direct DOTs; all 100 modeled words match unchanged assembly
+32 explicit signed-zero/mixed-sign/half/max/cancellation cases; all 4096 six-word raw corners against same/opposite vector; 2048 deterministic independent random vectors
+Unrounded TP accumulation, both intermediate/final overflow corrections, MODE/MPAC exchange debris, scratch aliases, retained VAC/operands and excluded IRQ state verified
+DOT snapshot SHA256: 0a4638514865244d92a22331253a946794fdf3461991d59dbb6c46c39597ae15

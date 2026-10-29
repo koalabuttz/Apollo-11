@@ -1,0 +1,3 @@
+PASS: every uint16_t value; exact real/random fixtures; 768-word runs; malformed/truncated bounds
+PASS: every uint16_t value; exact real/random fixtures; 768-word runs; malformed/truncated bounds
+156 complete 93-word states: 29016 -> 18101 bytes including dictionary and row offsets

@@ -1,0 +1,6 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/sband_orbit_inputs.c tests/sband_orbit_cases.c src/agc_word.c -o build/sband-orbit-inputs
+python3 tools/freeze_sband_orbit.py
+PASS 64 frozen states; 3785 fixture bytes
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_sband_orbit.c tests/sband_orbit_target.c tests/frozen_words.c tests/sband_orbit_cases.c src/agc_word.c src/sband_orbit.c -o build/test-sband-orbit
+./build/test-sband-orbit
+PASS original orbital caller full-image fixtures and unchanged unsupported images

@@ -1,0 +1,18 @@
+{
+  "reviewer": "general_division independent read-only source review",
+  "result": "No issue found within declared producer-free five-stage domain.",
+  "file_hashes": {
+    "src/imu_attitude_admission.c": "cfee88f839370f4b1c32aebea77b5b7a677bc4f5032a86864e9c7978fd56aa11",
+    "include/imu_attitude_admission.h": "7e98eab7b062edc4d7fa8c3d0aace1ef062a574965716a8ce818d7905521915a",
+    "build/imu-attitude-admission-source-map.json": "64c9591689aeb3225ecb84af2fd52754867d12167ba3cffdee3a2a1b8753246e",
+    "../Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "../Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb"
+  },
+  "findings": [
+    "GOMANUR source BZF accepts both signed zeros; other signs reach actual POODOO. DXCH retains old attitude minor in L; saved bank and EB sum, priority mask037000, mission KALEBCON03276/03261 select EB6 exactly.",
+    "R02 REFSM bit13 CCS path preserves source diminished07777 and actual UPFLAG. Without reference, IMODES bit9 selects original210/220 alarms and VARALARM/GOTOPOOH frontiers. LM bank04 differs CM bank07.",
+    "FLAG_RETURN TCF SWRETURN retains Q; SET_USE enters actual UPFLAG. All six passive literals agree with selected original words.",
+    "Saved fixed BUF2 caller and aligned bank plus quiet device activity guards correctly bound domains. Local source bodies do not execute external scheduler/alarm/flag services."
+  ],
+  "verification_limit": "Independent source/math/control read and final immutable identity verification only; exhaustive source/SAN/C64 evidence is owned by the implementation agent."
+}

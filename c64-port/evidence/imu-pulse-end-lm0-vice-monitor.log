@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/imu-pulse-end-lm0.prg from 0801 to 322A (2A2A bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  287/$11f,  30/$1e
+.C:131e  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   27516855
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/imu-pulse-end-lm0-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/imu-pulse-end-lm0-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/imu-pulse-end-lm0-software-stack.bin' from $c100 to $cfff

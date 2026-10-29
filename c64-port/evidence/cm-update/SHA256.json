@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-update",
+  "release": "evidence-cm-update",
+  "files": {
+    "cm-update-c64-cover.json": {
+      "sha256": "b71809f632ecba177417a912eb26010e6db761df4647ff364f20202dc773517b",
+      "bytes": 6286,
+      "store": "tree"
+    },
+    "cm-update-data.json": {
+      "sha256": "13f3e5c3d1a2a8a9f4cc3e93d64a96396038d99b5015f60c9726f0f10268d854",
+      "bytes": 2595,
+      "store": "release"
+    },
+    "cm-update-host.log": {
+      "sha256": "e313557abf875326ec43d2f561f819a706cccd6f8cc9b9d5d509a6915bf2dbe1",
+      "bytes": 1943,
+      "store": "release"
+    },
+    "cm-update-proof.json": {
+      "sha256": "c1cf3894eebe933aa938089922d5e501a15171bf4aa28da840cd44ebc2da0f5b",
+      "bytes": 1921,
+      "store": "tree"
+    },
+    "cm-update-vice.log": {
+      "sha256": "65b94133fff63d860fc1e24a41d0d87058a9e789196ec6d8f9ec7a3ab6cea8a0",
+      "bytes": 688,
+      "store": "release"
+    }
+  }
+}

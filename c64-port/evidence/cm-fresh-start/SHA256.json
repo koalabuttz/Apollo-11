@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-fresh-start",
+  "release": "evidence-cm-fresh-start",
+  "files": {
+    "cm-fresh-start-c64-cover.json": {
+      "sha256": "7fff5e2e49fd3053bf3a1dc73d92bc6a2449aae8f8da43b81be78d7d850e9aef",
+      "bytes": 4493,
+      "store": "tree"
+    },
+    "cm-fresh-start-host.log": {
+      "sha256": "9e4f1cd43e59666633a2912ad1e11a4d50ac242e144bf7d48a3e88de7262cea4",
+      "bytes": 1905,
+      "store": "release"
+    },
+    "cm-fresh-start-proof.json": {
+      "sha256": "f4f49842d8c79fdb659ce8f631d6a4368c0175136aaa118f8d2daf2805179414",
+      "bytes": 2220,
+      "store": "tree"
+    },
+    "cm-fresh-start-vice.log": {
+      "sha256": "a213d1f8b712f497cf9f6ea806af960a30047ef4cd6a4e565047994cb5ddd00b",
+      "bytes": 202,
+      "store": "release"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "actual_executed_source_states": 96720,
+  "source_stream_sha256": "4d790089a4b358e367c1a6333c90715344cea06bf053df7c2917b5b988490b0b",
+  "target_contexts": 64,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004000",
+  "software_stack_bytes": 718,
+  "modules": [
+    {
+      "id": 228,
+      "filename": "G228",
+      "byte_count": 1181,
+      "crc16": 1502,
+      "sha256": "4855f6c8b329cc35d3828a7f2a6957d0583e8b33e9a77cf7f692a202eee9dc7b",
+      "prg": "cm-abort-word-228.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 5337,
+      "crc16": 48010,
+      "sha256": "eae9b193d19ea2f30c8cd54acaa1a45a24c2e7fe6a1426eab1a62eb1d9cbe060",
+      "prg": "cm-abort-word-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 9981,
+      "crc16": 28758,
+      "sha256": "c59c4c4715759a8215282bbfd729acb40154336ac6f0cdf55ec97f69b68aa9da",
+      "prg": "cm-abort-word-255.prg",
+      "native_control": false
+    },
+    {
+      "id": 200,
+      "filename": "F200",
+      "byte_count": 14483,
+      "crc16": 62851,
+      "sha256": "cfbe4d32f919538cd398724f3ef12f1091de4011e77c53bf814f17ae4b4c8c56",
+      "prg": "cm-fixed-compat-200.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 201,
+      "filename": "F201",
+      "byte_count": 14528,
+      "crc16": 35387,
+      "sha256": "1762287da00769644de30e2475de96b85043af151065bf260c02fcbd6a87b51c",
+      "prg": "cm-fixed-compat-201.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 202,
+      "filename": "F202",
+      "byte_count": 14528,
+      "crc16": 21478,
+      "sha256": "723cfa924ffb4f40dee347a59162d12e7dbaabd11f4346ec1dc1f0d7e01a86ff",
+      "prg": "cm-fixed-compat-202.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 203,
+      "filename": "F203",
+      "byte_count": 14528,
+      "crc16": 34880,
+      "sha256": "4471ce302f6794acf1f0987f6d9880f5cb6221dc6bccd795a58fe4d2b8e27a82",
+      "prg": "cm-fixed-compat-203.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 204,
+      "filename": "F204",
+      "byte_count": 14528,
+      "crc16": 39848,
+      "sha256": "fb94aaabc7201fef2265e7798f4dc6c01a55b574c14ff513d935dd101950d082",
+      "prg": "cm-fixed-compat-204.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 205,
+      "filename": "F205",
+      "byte_count": 2207,
+      "crc16": 14101,
+      "sha256": "012b224cdfc38657720d34852b9cbc2d9fcaa30eca845d2a827a0b0cd2e11025",
+      "prg": "cm-fixed-compat-205.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual post-snapshot INDEX ALMCADR/CAF0 and CCS1103 through genuine BORTENT; no decoder or fixed-word executable credit, selected recovery/display bodies separate"
+}

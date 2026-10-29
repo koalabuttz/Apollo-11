@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/radial-phase8.prg from 0801 to 4D53 (4553 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  233/$0e9,  42/$2a
+.C:1503  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    6678105
+>C:c080  a5 00 00 20  08                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/radial_phase8-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/radial_phase8-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/radial_phase8-software-stack.bin' from $c100 to $cfff

@@ -1,0 +1,62 @@
+{
+ "category": "source_to_native_map",
+ "source_path": "Comanche055/FRESH_START_AND_RESTART.agc",
+ "source_sha256": "31a65512645178e14dd150d2f56128f31a374697e2af4d69c87204e5df775ff7",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "aggregates": {
+  "cm-fresh-start": {
+   "record": "docs/CM-FRESH-START.md",
+   "sha256": "21a5376314d06fddc1eeff9ea9242dfcbc4427965b88fd16666220d87c2fe77f",
+   "native": "src/cm_fresh_start.c",
+   "native_sha256": "61ddf3a89c0f6f5ff7e67fd8847abc0c4031969f9d9a686faa0ca81810c95127",
+   "owns": [
+    "05,2342-2344",
+    "05,2351-3217",
+    "FF,4106-4113"
+   ]
+  },
+  "cm-v37": {
+   "record": "docs/CM-V37.md",
+   "sha256": "fcdc653c97311f58c95aae971c3ef39f4e62fcd5b802e4e94e732b92d0d0fd79",
+   "native": "src/cm_v37.c",
+   "native_sha256": "ed769e6ce9e192f8f555e754815eb1ccc5919da8f4abcc2f68e539c831ce4a0f",
+   "owns": [
+    "04,2000-2130",
+    "04,2134-2565",
+    "20,2000-2064"
+   ]
+  },
+  "cm-stateup": {
+   "record": "docs/CM-STATEUP.md",
+   "sha256": "970dcb8fe0104b087817fc24ed2fafdf3872beed109791b9dfa1099570a7b678",
+   "native": "src/cm_stateup.c",
+   "native_sha256": "21486fc0c1adca8de86f4f60203866e8af4da4717f0a08ba71c885d863d47603",
+   "owns": [
+    "13,2000-2035",
+    "04,2131-2133"
+   ]
+  }
+ },
+ "excluded": {
+  "STARTSIM": [
+   "05,2345-2350"
+  ],
+  "why": "runs only if STARTSW is patched to TCF STARTSIM; the rope has TCF SKIPSIM"
+ },
+ "ownership_check": {
+  "source_words": 893,
+  "owned_words": 889,
+  "excluded_words": 4,
+  "gaps": 0,
+  "overlaps": 0,
+  "result": "PASS"
+ },
+ "execution_check": {
+  "instructions": 667,
+  "not_executed": [],
+  "result": "PASS"
+ },
+ "line_map": {
+  "record": "evidence/cm-fresh-start-complete/cm-fresh-start-complete-line-map.json"
+ }
+}

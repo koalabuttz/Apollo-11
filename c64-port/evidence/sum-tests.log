@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tests/frozen_words.c tests/sum_check.c tests/test_sum.c -o build/test-sum
+./build/test-sum
+PASS: 256 complete original DAD/DSU/BDSU/BVSU states and overflow paths; all unsupported MODEs reject unchanged
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tools/sum_snapshot.c -o build/sum-snapshot
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tests/frozen_words.c tests/sum_check.c tests/test_sum.c -o build/test-sum-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sum-sanitize
+PASS: 256 complete original DAD/DSU/BDSU/BVSU states and overflow paths; all unsupported MODEs reject unchanged
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tools/sum_snapshot.c -o build/sum-snapshot-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/sum-snapshot-sanitize > build/sum-sanitize.snapshots
+./build/sum-snapshot > build/sum-native.snapshots
+cmp build/sum-sanitize.snapshots build/sum-native.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/sum.map src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tests/frozen_words.c tests/sum_check.c platform/c64/sum_diagnostic.c -o build/sum.prg

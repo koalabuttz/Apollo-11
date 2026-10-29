@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections tests/test_lm_interbank.c tests/lm_interbank_target.c tests/lm_interbank_cases.c tests/frozen_words.c src/lm_interbank.c src/agc_word.c -o build/test-lm-interbank-integrated
+./build/test-lm-interbank-integrated
+PASS448 full-source frozen states and unchanged-image/latch preflight rejection checks
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -ffunction-sections -Wl,--gc-sections -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_interbank.c tests/lm_interbank_target.c tests/lm_interbank_cases.c tests/frozen_words.c src/lm_interbank.c src/agc_word.c -o build/test-lm-interbank-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-interbank-integrated-san
+PASS448 full-source frozen states and unchanged-image/latch preflight rejection checks

@@ -1,0 +1,56 @@
+{
+  "status": "qualified returned-conic antenna sphere/orbital caller; both complete files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 131072,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 131072,
+    "start": 0,
+    "end": 131072,
+    "record_bytes": 4106,
+    "decoded_sha256": "5bbf1737bfe0a2d119f843d4b9fd35a4d37801feea265263d69e2e0a44ba8d54",
+    "decoded_bytes": 538181632,
+    "canonical_original_archive": "evidence/sband-orbit-source.snapshots.bin.xz",
+    "compressed_sha256": "ea040c89d776dd9bfb1ef45ec4f7fa7d78d87b47ec15558a22789c92c51549e0",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 64,
+    "prg_bytes": 8621,
+    "load_end": 10668,
+    "bss_end": 18860,
+    "mailbox": "a5400000",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "groups": [
+    "LM Earth259/Moon65277",
+    "CM Earth259/Moon65277"
+  ],
+  "source_map": "evidence/sband-orbit-source-map.json",
+  "original_sources": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061"
+  },
+  "native_source_sha256": "9de811065a17f7fdc12b91d25d21b5e8e67737207d0a37f9a6a3fdf60721abcd",
+  "native_header_sha256": "f69161dc0dcc45493e7d30fb9bccf9204a45ce9991b4a7685ecdda35f10f059d",
+  "independent_review": {
+    "path": "evidence/sband-orbit-independent-review.txt",
+    "sha256": "29a6f1298dc4913e5838825c0071c36dfc48a29a484f18d51fc233038c9eb2e0"
+  },
+  "limitations": [
+    "Conic, LUNPOS, UNIT and MXV bodies not executed; full antenna coordinate/angle sequence remains pending.",
+    "NEWJOB+0, five valid VAC bases, ordinary RAM/Q and raw16 A/L, producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ]
+}

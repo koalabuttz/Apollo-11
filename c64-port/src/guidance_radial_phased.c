@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: MIT */
+#include "guidance_radial_phased.h"
+#include "guidance_dot.h"
+#include "guidance_shift.h"
+#include "guidance_product.h"
+#include "guidance_sum.h"
+static uint8_t valid(const p66_preparation *s,const p66_pushdown *p,agc_word mode){return (uint8_t)(s->mpac[7]==mode&&p->base>=0401&&p->base<=0661&&(uint16_t)(p->base-0401u)%054u==0&&p->pushloc==p->base);}
+static void store_load(p66_preparation *s,agc_dp *dest,const agc_dp *source){agc_word old_low=s->mpac[1];dest->high=s->mpac[0];dest->low=old_low;s->mpac[0]=source->high;s->mpac[1]=source->low;s->mpac[2]=0;s->mpac[7]=0;s->rate.registers.a=0;s->rate.registers.l=agc_extend(old_low);}
+enum p66_radial_status p66_radial_store_unit(p66_preparation *s,p66_norm_scratch *n,p66_pushdown *p){static const uint8_t at[3]={0,3,5};agc_word old_hi,old_lo;uint8_t i;if(!valid(s,p,077776))return P66_RADIAL_OUT_OF_SCOPE;old_hi=p->words[18];old_lo=p->words[19];for(i=0;i<3u;++i){p->words[14u+2u*i]=s->mpac[at[i]];p->words[15u+2u*i]=s->mpac[at[i]+1u];}s->rate.registers.a=agc_extend(old_hi);s->rate.registers.l=agc_extend(old_lo);n->addrwd=(agc_word)(p->base+14u);return P66_RADIAL_OK;}
+enum p66_radial_status p66_radial_dot_velocity(p66_preparation *s,p66_scale_scratch *sc,p66_elapsed_state *el,p66_divide_scratch *d,p66_norm_scratch *n,p66_pushdown *p){agc_word velocity[6];uint8_t i;if(!valid(s,p,077776))return P66_RADIAL_OUT_OF_SCOPE;for(i=0;i<6u;++i)velocity[i]=p->words[24u+i];(void)p66_dot(s,sc,el,d,&n->buf_third,velocity);(void)p66_scalar_shift_left(s,sc,1,1);n->sr=0;n->addrwd=(agc_word)(p->base+28u);return P66_RADIAL_OK;}
+enum p66_radial_status p66_radial_store_rate(p66_preparation *s,p66_norm_scratch *n,p66_pushdown *p,p66_radial_state *out){agc_dp elapsed;if(!valid(s,p,0))return P66_RADIAL_OUT_OF_SCOPE;elapsed.high=p->words[30];elapsed.low=p->words[31];store_load(s,&out->hdotdisp,&elapsed);n->addrwd=(agc_word)(p->base+30u);return P66_RADIAL_OK;}
+enum p66_radial_status p66_radial_predict_distance(p66_preparation *s,p66_scale_scratch *sc,p66_norm_scratch *n,p66_pushdown *p,const p66_radial_state *out){if(!valid(s,p,0))return P66_RADIAL_OUT_OF_SCOPE;(void)p66_scalar_shift_left(s,sc,11,0);(void)p66_scalar_product(s,sc,&out->hdotdisp);n->addrwd=01473;return P66_RADIAL_OK;}
+enum p66_radial_status p66_radial_subtract_radius(p66_preparation *s,p66_scale_scratch *sc,p66_elapsed_state *el,p66_norm_scratch *n,p66_pushdown *p,const agc_dp *land){agc_dp length;if(!valid(s,p,0))return P66_RADIAL_OUT_OF_SCOPE;length.high=p->words[36];length.low=p->words[37];(void)p66_scalar_add(s,sc,el,&length);(void)p66_scalar_subtract(s,sc,el,land);n->addrwd=01732;return P66_RADIAL_OK;}
+enum p66_radial_status p66_radial_store_altitude(p66_preparation *s,p66_norm_scratch *n,p66_pushdown *p,p66_radial_state *out){if(!valid(s,p,0))return P66_RADIAL_OUT_OF_SCOPE;store_load(s,&out->hcalc1,&out->hdotdisp);n->addrwd=01473;return P66_RADIAL_OK;}

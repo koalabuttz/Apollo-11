@@ -1,0 +1,8 @@
+{
+  "frozen_recommendation": "evidence/lm-service-routines-coverage.json",
+  "frozen_recommendation_sha256": "0411c9719e341163fafe810082da821a57d2eb5c0c476df70baec697af87afdf",
+  "recommendation_snapshot_revision": "b13fd665a4f1253d90fc2694280c2841510a5979",
+  "certified_original_source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
+  "explanation": "Recommendation records the native work snapshot. Original source is byte-identical to the immutable historical baseline used by this certificate."
+}

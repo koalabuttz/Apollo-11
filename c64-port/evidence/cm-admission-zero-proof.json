@@ -1,0 +1,22 @@
+{
+  "cases": 86016,
+  "checkpoints": 86016,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "NOVAC05134",
+    "FINDVAC05147",
+    "SPVAC05160",
+    "SPVACIN05154"
+  ],
+  "resource_cohorts": "all7 positions overwritten with +0 \u00d7 all8 prior first-free-core outcomes \u00d7 all6 VAC outcomes \u00d764 source banks/priorities/background sets",
+  "binary_bytes": 353353728,
+  "snapshot_sha256": "e59ca10fabf23d895a3ea4803d696f30e44ae4d39347199fc2a708337eaedb48",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "defined CCS+0\u2192numeric NO.CORES EXTEND\u2192BZF NEXTCORE scan, genuine successful return or resource BAILOUT; ordinary compiled callers and legal underlying VAC/NEWJOB ownership contract retained"
+}

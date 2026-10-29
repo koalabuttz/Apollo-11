@@ -1,0 +1,20 @@
+{
+  "scope": "Root integration wrapper argument ordering only; frozen native service and proof bytes unchanged.",
+  "producer_arguments": [
+    "mission",
+    "case_count",
+    "stage"
+  ],
+  "incorrect_arguments": [
+    "0",
+    "0"
+  ],
+  "corrected_arguments": [
+    "mission",
+    "65536",
+    "stage"
+  ],
+  "initial_failure": "No states emitted because stage0 was passed as case_count0; complete-stream checker detected missing bytes at offset0.",
+  "frozen_proof_sha256": "7111af2eb513fb169beca561be7157e01ed6ac4b86cda2ad182a148e489ec27b",
+  "native_body_changed": false
+}

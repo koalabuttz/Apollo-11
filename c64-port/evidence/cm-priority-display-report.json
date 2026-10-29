@@ -1,0 +1,42 @@
+{
+  "actual_executed_source_states": 22362,
+  "source_stream_sha256": "61f60b717c463b94a240aa93ade06e134c317da0cd63d4a26bc60dda3c7b9807",
+  "target_contexts": 32,
+  "target_checkpoints": 70,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004600",
+  "software_stack_bytes": 717,
+  "modules": [
+    {
+      "id": 226,
+      "filename": "G226",
+      "byte_count": 7455,
+      "crc16": 42874,
+      "sha256": "b25cb1db4140fe57007f8a86c92671998104e145ebaaeb4cecb08b21e97c8b10",
+      "prg": "cm-priority-display-226.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 4741,
+      "crc16": 11063,
+      "sha256": "54ae6a7b966326fca40b04d4e95ad4f92725cde63483260117c87eabb1219d9c",
+      "prg": "cm-priority-display-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10228,
+      "crc16": 6802,
+      "sha256": "d2c639101d555116606e91ee1637c6c638177b76f57498ad4d0883b6e5e8b18a",
+      "prg": "cm-priority-display-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "target_stdout_caption": "Original diagnostic stdout says32 complete checkpoints;32 are paths and actual mailbox/sourcecounts establish70 checkpoints. Original stdout retained unchanged.",
+  "scope": "actual PRIODSPR admission and immediate caller return; queued MAKEPLAY and selected abort recovery bodies remain separate"
+}

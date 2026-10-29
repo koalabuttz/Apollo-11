@@ -1,0 +1,85 @@
+{
+  "mission": "cm",
+  "decoded_sha256": "9aca46783addb332b5d14f8f8be17cde348bae1c2a76c31907c367cd84c9b890",
+  "complete_states": 158320,
+  "phase_counts": [
+    65536,
+    30928,
+    30928,
+    30928
+  ],
+  "status_counts": {
+    "1": 31752,
+    "0": 92784,
+    "2": 33784
+  },
+  "source_audit": "evidence/inverse-trig-source-audit.json",
+  "original_source_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+  "support_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "calls": 65536,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "decoded_bytes": 650378560,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/inverse-trig-cm-complete.snapshots.xz",
+      "decoded_sha256": "9aca46783addb332b5d14f8f8be17cde348bae1c2a76c31907c367cd84c9b890"
+    },
+    "strict_native": {
+      "object": "evidence/inverse-trig-cm-complete.snapshots.xz",
+      "decoded_sha256": "9aca46783addb332b5d14f8f8be17cde348bae1c2a76c31907c367cd84c9b890"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/inverse-trig-cm-complete.snapshots.xz",
+      "decoded_sha256": "9aca46783addb332b5d14f8f8be17cde348bae1c2a76c31907c367cd84c9b890"
+    }
+  },
+  "target_images": [
+    {
+      "selector": 4,
+      "source_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "PRG_bytes": 5161,
+      "loaded_end": "0x1c27",
+      "hardware_stack": 14,
+      "software_stack": 51,
+      "compiler_ZP": 0
+    },
+    {
+      "selector": 5,
+      "source_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "PRG_bytes": 12757,
+      "loaded_end": "0x39d3",
+      "hardware_stack": 24,
+      "software_stack": 186,
+      "compiler_ZP": 0
+    },
+    {
+      "selector": 6,
+      "source_phase": 2,
+      "complete_states": 32,
+      "mailbox": "a500002006",
+      "PRG_bytes": 15241,
+      "loaded_end": "0x4387",
+      "hardware_stack": 24,
+      "software_stack": 199,
+      "compiler_ZP": 0
+    },
+    {
+      "selector": 7,
+      "source_phase": 3,
+      "complete_states": 32,
+      "mailbox": "a500002007",
+      "PRG_bytes": 16054,
+      "loaded_end": "0x46b4",
+      "hardware_stack": 24,
+      "software_stack": 217,
+      "compiler_ZP": 0
+    }
+  ],
+  "constants_checked_on_every_target": 36,
+  "scope": "Explicit source ARCSIN/ARCCOS stages through math/zero/clamp DANZIG entry, and pre1301 alarm service boundary. Basic internal returns retain ownership; no invented source Executive check. The source alarm handler and post-alarm continuation, arbitrary erasable code dispatch, and entire INTERPRETER/application are outside this packet. SQRT1302 status is exposed for boundary-compatible invalid arguments but no produced case reaches it. Every native canonical phase accepts only its stated source continuation and ordinary coherent bank registers. Raw overflow/signedzero/TPthird scratch effects remain source exact."
+}

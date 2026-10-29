@@ -1,0 +1,22 @@
+{
+  "cases": 128960,
+  "checkpoints": 128960,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "ALARM5650",
+    "VARALARM5764",
+    "CURTAINS5757",
+    "BORTENT5655"
+  ],
+  "context_cohorts": "all ordinary Q0100..7775, all eightEB with banked CPU/editing/counter registers excluded as compiled inline program storage, fixed-bank/SUPER choices, all source FAILREG corner classes, post-ALMCADR-store erasable inline aliases, passive original fixed reads, both incoming IRQ including BORTENT overflow handoff",
+  "binary_bytes": 532604800,
+  "snapshot_sha256": "20469071c694ccc82694f9278f300cdddd9a7be79b98c2c79ab834b3b33738cf",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase0,status,2048physicalwords,13 cm_native_io latches",
+  "scope": "actual nonaborting record entries through real caller return or overflow POODOO source frontier; subsequent abort/display bodies separate. Original fixed words are data only and confer no executable algorithm coverage."
+}

@@ -1,0 +1,21 @@
+{
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+  "original_sources": {
+    "POWERED_FLIGHT_SUBROUTINES.agc": {
+      "original_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+      "normalized_sha256": "9ba2de499bfa468f7d3fc8e428661b6572f8545d6d3b9eea75904e23540404ca",
+      "normalized_lines": 1
+    },
+    "SINGLE_PRECISION_SUBROUTINES.agc": {
+      "original_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+      "normalized_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+      "normalized_lines": 0
+    },
+    "P40-P47.agc": {
+      "original_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+      "normalized_sha256": "edc27c44808626b1aa725abf34cce723fc300a149d9a162162dee5fc6b7eccf6",
+      "normalized_lines": 7
+    }
+  },
+  "erasable_domain": "Pinned-support assignments; translated groups do not use ALTVAR/R53FLBIT."
+}

@@ -1,0 +1,7 @@
+1e32f5dcb2e26660ae4b5c724c6d85ca4dd16bcecd37565399615008575d35e5  evidence/cm-scan-zero-strict-cast-original-commit-files.txt
+bd6241746bd2098db2bc65c45e634ed69826866fd91b4ef249b0f6dac246e0d6  evidence/cm-scan-zero-strict-cast-original-diagnostic.log
+29c1a5e6b0f9a270c7d41c308aa251e4134f62cf3638786b11788ce7a0faeeae  evidence/cm-scan-zero-strict-cast-original.c
+93578e65fe8440b87bc20154d0102b8f16d1ed5cf99040dc9a45bc2a2b3d8779  evidence/cm-scan-zero-strict-cast-original.sha256
+b8514107667ce6009f2193d766d745694b7f372fe14511dcda07fcbeabfcc8d9  evidence/cm-scan-zero-strict-cast-proof.json
+f948fa6faa3c753cab066b3c25bfb3471a0d6ae22113abd7b2c5edc915c36036  src/cm_scan_zero.c
+d88009ea4dc907937c9267087c07bb25b7f40e8a00cae4384c0dbaf4093404bf  tools/cm_scan_zero_strict_cast.py

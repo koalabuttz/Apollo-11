@@ -1,0 +1,1397 @@
+[
+  {
+    "source_path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+    "source_sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_words": 32,
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 30,
+        "label": "",
+        "op": "EBANK=",
+        "arguments": "XSM",
+        "assembled_address": "22,3242",
+        "physical_fixed_word": 19106,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 32,
+        "label": "",
+        "op": "BANK",
+        "arguments": "33",
+        "assembled_address": "33,2045",
+        "physical_fixed_word": 27685,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 33,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "E/PROG",
+        "assembled_address": "04,2000",
+        "physical_fixed_word": 4096,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 34,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "04,2000",
+        "physical_fixed_word": 4096,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 36,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/P07",
+        "assembled_address": "04,2576",
+        "physical_fixed_word": 4478,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 59,
+        "label": "E/BKCALL",
+        "op": "DXCH",
+        "arguments": "BUF2",
+        "assembled_address": "04,2576",
+        "physical_fixed_word": 4478,
+        "physical_erasable_word": null,
+        "words": [
+          21596
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 60,
+        "label": "",
+        "op": "DXCH",
+        "arguments": "EBUF2",
+        "assembled_address": "04,2577",
+        "physical_fixed_word": 4479,
+        "physical_erasable_word": null,
+        "words": [
+          22136
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 61,
+        "label": "",
+        "op": "INCR",
+        "arguments": "EBUF2",
+        "assembled_address": "04,2600",
+        "physical_fixed_word": 4480,
+        "physical_erasable_word": null,
+        "words": [
+          10871
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 62,
+        "label": "",
+        "op": "CA",
+        "arguments": "BBANK",
+        "assembled_address": "04,2601",
+        "physical_fixed_word": 4481,
+        "physical_erasable_word": null,
+        "words": [
+          12294
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 63,
+        "label": "",
+        "op": "MASK",
+        "arguments": "LOW10",
+        "assembled_address": "04,2602",
+        "physical_fixed_word": 4482,
+        "physical_erasable_word": null,
+        "words": [
+          31242
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 64,
+        "label": "",
+        "op": "ADS",
+        "arguments": "EBUF2 +1",
+        "assembled_address": "04,2603",
+        "physical_fixed_word": 4483,
+        "physical_erasable_word": null,
+        "words": [
+          11896
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 65,
+        "label": "",
+        "op": "NDX",
+        "arguments": "EBUF2",
+        "assembled_address": "04,2604",
+        "physical_fixed_word": 4484,
+        "physical_erasable_word": null,
+        "words": [
+          21111
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 66,
+        "label": "",
+        "op": "CA",
+        "arguments": "0 -1",
+        "assembled_address": "04,2605",
+        "physical_fixed_word": 4485,
+        "physical_erasable_word": null,
+        "words": [
+          12287
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 67,
+        "label": "",
+        "op": "TC",
+        "arguments": "SWCALL",
+        "assembled_address": "04,2606",
+        "physical_fixed_word": 4486,
+        "physical_erasable_word": null,
+        "words": [
+          2450
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 69,
+        "label": "",
+        "op": "TC",
+        "arguments": "+4",
+        "assembled_address": "04,2607",
+        "physical_fixed_word": 4487,
+        "physical_erasable_word": null,
+        "words": [
+          1419
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 70,
+        "label": "",
+        "op": "TC",
+        "arguments": "+2",
+        "assembled_address": "04,2610",
+        "physical_fixed_word": 4488,
+        "physical_erasable_word": null,
+        "words": [
+          1418
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 71,
+        "label": "",
+        "op": "INCR",
+        "arguments": "EBUF2",
+        "assembled_address": "04,2611",
+        "physical_fixed_word": 4489,
+        "physical_erasable_word": null,
+        "words": [
+          10871
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 72,
+        "label": "",
+        "op": "INCR",
+        "arguments": "EBUF2",
+        "assembled_address": "04,2612",
+        "physical_fixed_word": 4490,
+        "physical_erasable_word": null,
+        "words": [
+          10871
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 73,
+        "label": "E/SWITCH",
+        "op": "DXCH",
+        "arguments": "EBUF2",
+        "assembled_address": "04,2613",
+        "physical_fixed_word": 4491,
+        "physical_erasable_word": null,
+        "words": [
+          22136
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 74,
+        "label": "",
+        "op": "DTCB",
+        "arguments": "",
+        "assembled_address": "04,2614",
+        "physical_fixed_word": 4492,
+        "physical_erasable_word": null,
+        "words": [
+          21510
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 86,
+        "label": "E/CALL",
+        "op": "LXCH",
+        "arguments": "LOC",
+        "assembled_address": "04,2615",
+        "physical_fixed_word": 4493,
+        "physical_erasable_word": null,
+        "words": [
+          9332
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 87,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "L",
+        "assembled_address": "04,2616",
+        "physical_fixed_word": 4494,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 88,
+        "label": "",
+        "op": "CA",
+        "arguments": "L",
+        "assembled_address": "04,2617",
+        "physical_fixed_word": 4495,
+        "physical_erasable_word": null,
+        "words": [
+          12289
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 89,
+        "label": "",
+        "op": "INCR",
+        "arguments": "L",
+        "assembled_address": "04,2620",
+        "physical_fixed_word": 4496,
+        "physical_erasable_word": null,
+        "words": [
+          10241
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 90,
+        "label": "",
+        "op": "INCR",
+        "arguments": "L",
+        "assembled_address": "04,2621",
+        "physical_fixed_word": 4497,
+        "physical_erasable_word": null,
+        "words": [
+          10241
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 91,
+        "label": "",
+        "op": "DXCH",
+        "arguments": "EBUF2",
+        "assembled_address": "04,2622",
+        "physical_fixed_word": 4498,
+        "physical_erasable_word": null,
+        "words": [
+          22136
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 92,
+        "label": "",
+        "op": "TC",
+        "arguments": "INTPRET",
+        "assembled_address": "04,2623",
+        "physical_fixed_word": 4499,
+        "physical_erasable_word": null,
+        "words": [
+          3103
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 93,
+        "label": "",
+        "op": "CALL",
+        "arguments": "",
+        "assembled_address": "04,2624",
+        "physical_fixed_word": 4500,
+        "physical_erasable_word": null,
+        "words": [
+          32660
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 94,
+        "label": "",
+        "op": "EBUF2",
+        "arguments": "",
+        "assembled_address": "04,2625",
+        "physical_fixed_word": 4501,
+        "physical_erasable_word": null,
+        "words": [
+          631
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 95,
+        "label": "",
+        "op": "EXIT",
+        "arguments": "",
+        "assembled_address": "04,2626",
+        "physical_fixed_word": 4502,
+        "physical_erasable_word": null,
+        "words": [
+          32766
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 96,
+        "label": "",
+        "op": "LXCH",
+        "arguments": "EBUF2 +1",
+        "assembled_address": "04,2627",
+        "physical_fixed_word": 4503,
+        "physical_erasable_word": null,
+        "words": [
+          9848
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 97,
+        "label": "",
+        "op": "TCF",
+        "arguments": "INTPRET +2",
+        "assembled_address": "04,2630",
+        "physical_fixed_word": 4504,
+        "physical_erasable_word": null,
+        "words": [
+          7201
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 114,
+        "label": "",
+        "op": "BANK",
+        "arguments": "33",
+        "assembled_address": "33,2045",
+        "physical_fixed_word": 27685,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 115,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "E/PROG",
+        "assembled_address": "04,2000",
+        "physical_fixed_word": 4096,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 116,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "04,2000",
+        "physical_fixed_word": 4096,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 118,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/P07",
+        "assembled_address": "04,2631",
+        "physical_fixed_word": 4505,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 120,
+        "label": "E/JOBWAK",
+        "op": "TC",
+        "arguments": "JOBWAKE",
+        "assembled_address": "04,2631",
+        "physical_fixed_word": 4505,
+        "physical_erasable_word": null,
+        "words": [
+          2655
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 121,
+        "label": "",
+        "op": "CS",
+        "arguments": "BIT11",
+        "assembled_address": "04,2632",
+        "physical_fixed_word": 4506,
+        "physical_erasable_word": null,
+        "words": [
+          18913
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 122,
+        "label": "",
+        "op": "NDX",
+        "arguments": "LOCCTR",
+        "assembled_address": "04,2633",
+        "physical_fixed_word": 4507,
+        "physical_erasable_word": null,
+        "words": [
+          20532
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 123,
+        "label": "",
+        "op": "ADS",
+        "arguments": "LOC",
+        "assembled_address": "04,2634",
+        "physical_fixed_word": 4508,
+        "physical_erasable_word": null,
+        "words": [
+          11380
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 124,
+        "label": "",
+        "op": "TC",
+        "arguments": "RUPTREG3",
+        "assembled_address": "04,2635",
+        "physical_fixed_word": 4509,
+        "physical_erasable_word": null,
+        "words": [
+          58
+        ],
+        "native_control": "wake"
+      }
+    ],
+    "original_control_support": [
+      {
+        "source_path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "source_sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
+        "fixture_sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+        "source_sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+        "fixture_sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Luminary099/EXECUTIVE.agc",
+        "source_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+        "fixture_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Luminary099/INTERPRETER.agc",
+        "source_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+        "fixture_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",
+        "source_sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293",
+        "fixture_sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+        "source_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+        "fixture_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Luminary099/RTB_OP_CODES.agc",
+        "source_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+        "fixture_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      }
+    ],
+    "whole_file_translation_status": "reviewed native controls and original placement; external routine/caller continuations explicit",
+    "instruction_decoder": false
+  },
+  {
+    "source_path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+    "source_sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_words": 36,
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 32,
+        "label": "",
+        "op": "EBANK=",
+        "arguments": "XSM",
+        "assembled_address": "22,3151",
+        "physical_fixed_word": 19049,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 34,
+        "label": "",
+        "op": "BANK",
+        "arguments": "33",
+        "assembled_address": "33,2000",
+        "physical_fixed_word": 27648,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 35,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "E/PROG1",
+        "assembled_address": "13,2000",
+        "physical_fixed_word": 11264,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 36,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "13,2000",
+        "physical_fixed_word": 11264,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 38,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/P07",
+        "assembled_address": "13,2036",
+        "physical_fixed_word": 11294,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 61,
+        "label": "E/BKCALL",
+        "op": "DXCH",
+        "arguments": "BUF2",
+        "assembled_address": "13,2036",
+        "physical_fixed_word": 11294,
+        "physical_erasable_word": null,
+        "words": [
+          21596
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 62,
+        "label": "",
+        "op": "DXCH",
+        "arguments": "EBUF2",
+        "assembled_address": "13,2037",
+        "physical_fixed_word": 11295,
+        "physical_erasable_word": null,
+        "words": [
+          21749
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 63,
+        "label": "",
+        "op": "INCR",
+        "arguments": "EBUF2",
+        "assembled_address": "13,2040",
+        "physical_fixed_word": 11296,
+        "physical_erasable_word": null,
+        "words": [
+          10484
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 64,
+        "label": "",
+        "op": "CA",
+        "arguments": "BBANK",
+        "assembled_address": "13,2041",
+        "physical_fixed_word": 11297,
+        "physical_erasable_word": null,
+        "words": [
+          12294
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 65,
+        "label": "",
+        "op": "MASK",
+        "arguments": "LOW10",
+        "assembled_address": "13,2042",
+        "physical_fixed_word": 11298,
+        "physical_erasable_word": null,
+        "words": [
+          31276
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 66,
+        "label": "",
+        "op": "ADS",
+        "arguments": "EBUF2 +1",
+        "assembled_address": "13,2043",
+        "physical_fixed_word": 11299,
+        "physical_erasable_word": null,
+        "words": [
+          11509
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 67,
+        "label": "",
+        "op": "NDX",
+        "arguments": "EBUF2",
+        "assembled_address": "13,2044",
+        "physical_fixed_word": 11300,
+        "physical_erasable_word": null,
+        "words": [
+          20724
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 68,
+        "label": "",
+        "op": "CA",
+        "arguments": "0 -1",
+        "assembled_address": "13,2045",
+        "physical_fixed_word": 11301,
+        "physical_erasable_word": null,
+        "words": [
+          12287
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 69,
+        "label": "",
+        "op": "TC",
+        "arguments": "SWCALL",
+        "assembled_address": "13,2046",
+        "physical_fixed_word": 11302,
+        "physical_erasable_word": null,
+        "words": [
+          2486
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 71,
+        "label": "",
+        "op": "TC",
+        "arguments": "+4",
+        "assembled_address": "13,2047",
+        "physical_fixed_word": 11303,
+        "physical_erasable_word": null,
+        "words": [
+          1067
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 72,
+        "label": "",
+        "op": "TC",
+        "arguments": "+2",
+        "assembled_address": "13,2050",
+        "physical_fixed_word": 11304,
+        "physical_erasable_word": null,
+        "words": [
+          1066
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 73,
+        "label": "",
+        "op": "INCR",
+        "arguments": "EBUF2",
+        "assembled_address": "13,2051",
+        "physical_fixed_word": 11305,
+        "physical_erasable_word": null,
+        "words": [
+          10484
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 74,
+        "label": "",
+        "op": "INCR",
+        "arguments": "EBUF2",
+        "assembled_address": "13,2052",
+        "physical_fixed_word": 11306,
+        "physical_erasable_word": null,
+        "words": [
+          10484
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 75,
+        "label": "E/SWITCH",
+        "op": "DXCH",
+        "arguments": "EBUF2",
+        "assembled_address": "13,2053",
+        "physical_fixed_word": 11307,
+        "physical_erasable_word": null,
+        "words": [
+          21749
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 76,
+        "label": "",
+        "op": "DTCB",
+        "arguments": "",
+        "assembled_address": "13,2054",
+        "physical_fixed_word": 11308,
+        "physical_erasable_word": null,
+        "words": [
+          21510
+        ],
+        "native_control": "bank"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 88,
+        "label": "E/CALL",
+        "op": "LXCH",
+        "arguments": "LOC",
+        "assembled_address": "13,2055",
+        "physical_fixed_word": 11309,
+        "physical_erasable_word": null,
+        "words": [
+          9332
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 89,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "L",
+        "assembled_address": "13,2056",
+        "physical_fixed_word": 11310,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 90,
+        "label": "",
+        "op": "CA",
+        "arguments": "L",
+        "assembled_address": "13,2057",
+        "physical_fixed_word": 11311,
+        "physical_erasable_word": null,
+        "words": [
+          12289
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 91,
+        "label": "",
+        "op": "INCR",
+        "arguments": "L",
+        "assembled_address": "13,2060",
+        "physical_fixed_word": 11312,
+        "physical_erasable_word": null,
+        "words": [
+          10241
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 92,
+        "label": "",
+        "op": "INCR",
+        "arguments": "L",
+        "assembled_address": "13,2061",
+        "physical_fixed_word": 11313,
+        "physical_erasable_word": null,
+        "words": [
+          10241
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 93,
+        "label": "",
+        "op": "DXCH",
+        "arguments": "EBUF2",
+        "assembled_address": "13,2062",
+        "physical_fixed_word": 11314,
+        "physical_erasable_word": null,
+        "words": [
+          21749
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 94,
+        "label": "",
+        "op": "TC",
+        "arguments": "INTPRET",
+        "assembled_address": "13,2063",
+        "physical_fixed_word": 11315,
+        "physical_erasable_word": null,
+        "words": [
+          3078
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 95,
+        "label": "",
+        "op": "CALL",
+        "arguments": "",
+        "assembled_address": "13,2064",
+        "physical_fixed_word": 11316,
+        "physical_erasable_word": null,
+        "words": [
+          32660
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 96,
+        "label": "",
+        "op": "EBUF2",
+        "arguments": "",
+        "assembled_address": "13,2065",
+        "physical_fixed_word": 11317,
+        "physical_erasable_word": null,
+        "words": [
+          244
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 97,
+        "label": "",
+        "op": "EXIT",
+        "arguments": "",
+        "assembled_address": "13,2066",
+        "physical_fixed_word": 11318,
+        "physical_erasable_word": null,
+        "words": [
+          32766
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 98,
+        "label": "",
+        "op": "LXCH",
+        "arguments": "EBUF2 +1",
+        "assembled_address": "13,2067",
+        "physical_fixed_word": 11319,
+        "physical_erasable_word": null,
+        "words": [
+          9461
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 99,
+        "label": "",
+        "op": "TCF",
+        "arguments": "INTPRET +2",
+        "assembled_address": "13,2070",
+        "physical_fixed_word": 11320,
+        "physical_erasable_word": null,
+        "words": [
+          7176
+        ],
+        "native_control": "interp"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 119,
+        "label": "",
+        "op": "BANK",
+        "arguments": "33",
+        "assembled_address": "33,2000",
+        "physical_fixed_word": 27648,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 120,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "E/PROG",
+        "assembled_address": "04,2000",
+        "physical_fixed_word": 4096,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 121,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "04,2000",
+        "physical_fixed_word": 4096,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 123,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/P07",
+        "assembled_address": "04,2606",
+        "physical_fixed_word": 4486,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 125,
+        "label": "E/JOBWAK",
+        "op": "TC",
+        "arguments": "JOBWAKE",
+        "assembled_address": "04,2606",
+        "physical_fixed_word": 4486,
+        "physical_erasable_word": null,
+        "words": [
+          2689
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 126,
+        "label": "",
+        "op": "CS",
+        "arguments": "BIT11",
+        "assembled_address": "04,2607",
+        "physical_fixed_word": 4487,
+        "physical_erasable_word": null,
+        "words": [
+          18949
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 127,
+        "label": "",
+        "op": "NDX",
+        "arguments": "LOCCTR",
+        "assembled_address": "04,2610",
+        "physical_fixed_word": 4488,
+        "physical_erasable_word": null,
+        "words": [
+          20532
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 128,
+        "label": "",
+        "op": "ADS",
+        "arguments": "LOC",
+        "assembled_address": "04,2611",
+        "physical_fixed_word": 4489,
+        "physical_erasable_word": null,
+        "words": [
+          11380
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 129,
+        "label": "",
+        "op": "TC",
+        "arguments": "RUPTREG3",
+        "assembled_address": "04,2612",
+        "physical_fixed_word": 4490,
+        "physical_erasable_word": null,
+        "words": [
+          58
+        ],
+        "native_control": "wake"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 136,
+        "label": "",
+        "op": "BANK",
+        "arguments": "33",
+        "assembled_address": "33,2000",
+        "physical_fixed_word": 27648,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 137,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "TESTLEAD",
+        "assembled_address": "33,2000",
+        "physical_fixed_word": 27648,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 138,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "33,2000",
+        "physical_fixed_word": 27648,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 140,
+        "label": "",
+        "op": "COUNT",
+        "arguments": "33/COMST",
+        "assembled_address": "33,2000",
+        "physical_fixed_word": 27648,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 142,
+        "label": "",
+        "op": "EBANK=",
+        "arguments": "QPLACE",
+        "assembled_address": "33,2000",
+        "physical_fixed_word": 27648,
+        "physical_erasable_word": null,
+        "words": [],
+        "native_control": "original source placement directive"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 144,
+        "label": "COMPVER",
+        "op": "TC",
+        "arguments": "GCOMPVER",
+        "assembled_address": "33,2000",
+        "physical_fixed_word": 27648,
+        "physical_erasable_word": null,
+        "words": [
+          1822
+        ],
+        "native_control": "external_compver"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 146,
+        "label": "GTSCPSS1",
+        "op": "TC",
+        "arguments": "GTSCPSS",
+        "assembled_address": "33,2001",
+        "physical_fixed_word": 27649,
+        "physical_erasable_word": null,
+        "words": [
+          1625
+        ],
+        "native_control": "external_gtscpss"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 148,
+        "label": "REDO",
+        "op": "TC",
+        "arguments": "NEWMODEX",
+        "assembled_address": "33,2002",
+        "physical_fixed_word": 27650,
+        "physical_erasable_word": null,
+        "words": [
+          2796
+        ],
+        "native_control": "mode_admission"
+      },
+      {
+        "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "line": 149,
+        "label": "",
+        "op": "MM",
+        "arguments": "07",
+        "assembled_address": "33,2003",
+        "physical_fixed_word": 27651,
+        "physical_erasable_word": null,
+        "words": [
+          7
+        ],
+        "native_control": "mode_admission"
+      }
+    ],
+    "original_control_support": [
+      {
+        "source_path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+        "source_sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
+        "fixture_sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+        "source_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+        "fixture_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Comanche055/EXECUTIVE.agc",
+        "source_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+        "fixture_sha256": "12827288def51cab29ff591dd2febb7a652237a8b2786c42ea7dc6bafa2e5356",
+        "indentation_only_repair_lines": [
+          83,
+          209,
+          210,
+          215,
+          488
+        ],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Comanche055/INTERPRETER.agc",
+        "source_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+        "fixture_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+        "indentation_only_repair_lines": [
+          51,
+          207,
+          247,
+          542,
+          588,
+          678,
+          681,
+          908,
+          941,
+          1376,
+          1504,
+          1551,
+          1553,
+          1600,
+          1735,
+          1739,
+          1830,
+          1921,
+          1940,
+          1986,
+          2002,
+          2014,
+          2028,
+          2058,
+          2561,
+          2646,
+          2661,
+          2901,
+          3018,
+          3023,
+          3028,
+          3034,
+          3042,
+          3047,
+          3054,
+          3062
+        ],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
+        "source_sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
+        "fixture_sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+        "source_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+        "fixture_sha256": "9ba2de499bfa468f7d3fc8e428661b6572f8545d6d3b9eea75904e23540404ca",
+        "indentation_only_repair_lines": [
+          132
+        ],
+        "numerical_edits": 0
+      },
+      {
+        "source_path": "Comanche055/RT8_OP_CODES.agc",
+        "source_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+        "fixture_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+        "indentation_only_repair_lines": [],
+        "numerical_edits": 0
+      }
+    ],
+    "whole_file_translation_status": "reviewed native controls and original placement; external routine/caller continuations explicit",
+    "instruction_decoder": false
+  }
+]

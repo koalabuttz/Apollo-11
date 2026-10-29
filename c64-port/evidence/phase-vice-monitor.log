@@ -1,0 +1,27 @@
+Loading /workspace/Apollo-11/c64-port/build/phase.prg from 0801 to 61FB (59FB bytes)
+WATCH: 1  C:$6278  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 6278)  129/$081,  26/$1a
+.C:162d  8E 78 62    STX $6278      - A:00 X:A5 Y:00 SP:f1 NV-....C   16853345
+>C:6278  a5 00 00 80  38                                      ....8
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-mailbox.bin' from $6278 to $627c
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/phase.prg from 0801 to 6218 (5A18 bytes)
+WATCH: 1  C:$6295  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 6295)   94/$05e,   0/$00
+.C:164a  8E 95 62    STX $6295      - A:00 X:A5 Y:00 SP:f1 NV-....C   16851114
+>C:6295  a5 00 00 80  38                                      ....8
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-mailbox.bin' from $6295 to $6299
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/phase.prg from 0801 to 6218 (5A18 bytes)
+WATCH: 1  C:$6295  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 6295)   94/$05e,   0/$00
+.C:164a  8E 95 62    STX $6295      - A:00 X:A5 Y:00 SP:f1 NV-....C   16851114
+>C:6295  a5 00 00 80  38                                      ....8
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-mailbox.bin' from $6295 to $6299
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/phase-vice-software-stack.bin' from $c100 to $cfff

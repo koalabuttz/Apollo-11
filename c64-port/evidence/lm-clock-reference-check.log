@@ -1,0 +1,1 @@
+PASS:32768 hardware PINC raw signed-word transitions; 1024 complete2048-word TIME1/TIME2 carry/TIME3 latch sequences, 0..65535 pulses; rejected domains unchanged

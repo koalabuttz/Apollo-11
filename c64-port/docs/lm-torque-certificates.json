@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "parent_inventory_merge_required": true,
+  "recommendations": [
+    {
+      "source_path": "Luminary099/KALMAN_FILTER.agc",
+      "source_sha256": "f5f4df8e50c47d5fa54c7e51b756303ad484cb7b0aaa54fefa2e05b395588c8e",
+      "recommendation": "complete native translation within original documented caller domain",
+      "complete_file_kind": "all torque integration executable paths, -160 data literal and placement/counter declarations",
+      "entry_points": [
+        "RATELOOP"
+      ],
+      "all_source_paths_reviewed": true,
+      "native_source": "src/lm_torque.c",
+      "native_data": "include/lm_torque.h",
+      "source_line_and_address_map": "evidence/lm-torque-audit.json.gz",
+      "supported_domain": "source bank16, all consistent EB0..7 aliases, ordinary15-bit words and raw16-bit A/L/Q, excluded producers and disabled IRQ; include/lm_torque.h",
+      "host_source_states": 36864,
+      "c64_source_states": 2048,
+      "verification": "all 2048 physical words and SUPER/IRQ match independently assembled byte-original source; strict/sanitized host and stock-ROM native C64 execution",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "continuations": [
+        {
+          "label": "BACKP",
+          "source_path": "Luminary099/P-AXIS_RCS_AUTOPILOT.agc",
+          "logical_pc": "02316",
+          "bank": "16",
+          "body_translated_by_this_certificate": false
+        }
+      ],
+      "out_of_domain_behavior": "rejected transactionally; not an assertion of source invalid-context behavior",
+      "application_completion_claim": false
+    }
+  ]
+}

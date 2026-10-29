@@ -1,0 +1,15 @@
+{
+  "cases": 1536,
+  "full_physical_words": 2048,
+  "entries": [
+    "24,2574 TIG-5",
+    "24,2600 after WAITLIST",
+    "24,2611 TASKOVER continuation"
+  ],
+  "boundary": "actual WAITLIST/FINDVAC/TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "7cba69981a6c9c5c79f4097d9d7fb6e776049e93222094bcb8523d0d0d1991d7"
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 215,
+    "filename": "G215",
+    "byte_count": 1227,
+    "crc16": 19249,
+    "sha256": "8e97e623f67dcf6249df453a781ff368f4ece37bdaef3586c96e991b331e60d3",
+    "prg": "cm-vac5-store-215.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 4710,
+    "crc16": 2375,
+    "sha256": "d2b55bf1c2ac881cb51a43aaea653e4ab4215ef74089da43565a6fc54567b704",
+    "prg": "cm-vac5-store-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10052,
+    "crc16": 3675,
+    "sha256": "28fc8a4621db93ffd60d1085b7e3341ebb13c56ac20b0354932fcf8db87ab817",
+    "prg": "cm-vac5-store-255.prg",
+    "native_control": false
+  }
+]

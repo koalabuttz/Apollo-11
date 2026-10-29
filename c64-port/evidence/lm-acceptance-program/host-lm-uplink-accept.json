@@ -1,0 +1,91 @@
+{
+ "scenario": "lm-uplink-accept-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 14000,
+ "keys": "",
+ "inputs": {
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_DOWNRUPT": "1",
+  "FLIGHT_UPLINK": "2000:V71E;2400:4E;2800:3635E;3200:0E;3600:12000E;4200:V33E;5000:V72E;5400:3E;5800:3635E;6200:1E;6600:V33E;7200:V73E;7600:0E;8000:144E;8400:V33E;9200:V70E;9600:0E;10000:144E;10400:V33E;11200:V06N37E;12000:V74E"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 14000,
+ "periods_taken": 14000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 14000,
+ "native_routines": 890291,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 1836,
+  "yaagc": 1761,
+  "percent": 4.3,
+  "routines": 30,
+  "mean_abs_error": 5.5,
+  "abs_percent": 9.4,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "few",
+  "text": "interpretive charge +4.3% net, 9.4% routine by routine, from yaAGC's MCT over 30 routines; fewer than 1000 routines, not bounded"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 2,
+  "no_interrupt_to": 7,
+  "no_background_periods": 0,
+  "no_background_to": 0
+ },
+ "reached": {
+  "04,3401": 2060,
+  "04,3723": 10462,
+  "04,3632": 4262,
+  "04,3664": 6662,
+  "04,3536": 8461,
+  "43,3045": 12060
+ },
+ "arrivals": {
+  "04,3401": [
+   2060,
+   5060,
+   7260,
+   9260
+  ],
+  "04,3723": [
+   10462
+  ],
+  "04,3632": [
+   4262
+  ],
+  "04,3664": [
+   6662
+  ],
+  "04,3536": [
+   8461
+  ],
+  "43,3045": [
+   12060
+  ]
+ },
+ "log_sha256": "34f5a9849de1571209c68913df2bcbd832034a0ceeb81d8aa65b8cb310312cf3"
+}

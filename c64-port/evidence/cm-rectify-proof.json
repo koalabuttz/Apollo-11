@@ -1,0 +1,153 @@
+{
+  "scope": "ORBITAL_INTEGRATION RECTIFY/MINIRECT, twelve explicit source groups. This is not the complete Comanche application or complete orbital integrator.",
+  "binary_format": "Little-endian uint16 case, phase, complete2048-word erasable image; phase12 is independent input; phases0..11 are source returns.",
+  "source_audit": {
+    "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+    "original_sources": {
+      "INTERPRETER.agc": {
+        "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+        "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+        "normalized_lines": 36
+      },
+      "INTEGRATION_INITIALIZATION.agc": {
+        "original_sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
+        "normalized_sha256": "19aa53ca81e4e499882d144edb56501047775107ad0dcd840b5741758ecf54f9",
+        "normalized_lines": 1
+      },
+      "ORBITAL_INTEGRATION.agc": {
+        "original_sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+        "normalized_sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+        "normalized_lines": 0
+      }
+    }
+  },
+  "cases": 2048,
+  "checkpoints": 24064,
+  "complete_state_words": 2048,
+  "sha256": "7b93fc96fd7e845b9fec26c64cbfd48e96ba80dc472e1990cd21590381faee23",
+  "input_constructor_sha256": "ce85d41ab9694362becd7aa1b3ceb2ca49e069762962b2343859b097eec96a63",
+  "sanitizers": "Entire complete-image corpus ASAN/UBSAN equals unchanged source",
+  "c64": [
+    {
+      "phase": 0,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002000",
+      "image_end": "3cd3",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 1,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002001",
+      "image_end": "513e",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 169
+      }
+    },
+    {
+      "phase": 2,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002002",
+      "image_end": "40b8",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 3,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002003",
+      "image_end": "4540",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 4,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002004",
+      "image_end": "557c",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 169
+      }
+    },
+    {
+      "phase": 5,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002005",
+      "image_end": "4263",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 6,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002006",
+      "image_end": "46cf",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 7,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002007",
+      "image_end": "46dc",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 8,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002008",
+      "image_end": "489a",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 9,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a500002009",
+      "image_end": "4821",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 10,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a50000200a",
+      "image_end": "4805",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    },
+    {
+      "phase": 11,
+      "complete_entry_exit_pairs": 32,
+      "mailbox": "a50000200b",
+      "image_end": "4a2c",
+      "stack_extent_bytes": {
+        "hardware": 20,
+        "software": 45
+      }
+    }
+  ],
+  "compressed_snapshot_bytes": 9701404
+}

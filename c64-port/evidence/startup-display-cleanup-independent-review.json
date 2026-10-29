@@ -1,0 +1,10 @@
+{
+  "audits": [
+    "evidence/startup-recurrence-inactive-build-cleanup.json",
+    "evidence/inactive-owned-display-stream-cleanup-20261012.json"
+  ],
+  "unique_archives_independently_decoded": 23,
+  "reported_removed_build_bytes": 1675110320,
+  "original_archives_retained": true,
+  "inactive_duplicates_absent": true
+}

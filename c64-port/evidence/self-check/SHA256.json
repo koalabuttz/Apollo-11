@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "self-check",
+  "release": "evidence-self-check",
+  "files": {
+    "self-check-cm-c64-cover.json": {
+      "sha256": "ce083a84972ae6b6a975219cbf06082bb6b6ec8a47885762e949333e00184f06",
+      "bytes": 3603,
+      "store": "tree"
+    },
+    "self-check-cm-rope-c64-cover.json": {
+      "sha256": "704bfdb2ca09b3d79a82056bd1de1fd5da56016d797076d7b67f9cb8123b0115",
+      "bytes": 2575,
+      "store": "tree"
+    },
+    "self-check-host.log": {
+      "sha256": "e981f143ec0509905841bc8c21f8bbc7536df7c0fa4d9413187f18607da8518d",
+      "bytes": 2519,
+      "store": "release"
+    },
+    "self-check-lm-c64-cover.json": {
+      "sha256": "cc2288f2737bf9f521832da729d0a11eb6e160fd25fd9ebb8785eb842bb6e5be",
+      "bytes": 3573,
+      "store": "tree"
+    },
+    "self-check-lm-rope-c64-cover.json": {
+      "sha256": "109d7e315bc6ac53c851a692819d2bbabd8d383798f05b586600b708332ffd76",
+      "bytes": 2545,
+      "store": "tree"
+    },
+    "self-check-proof.json": {
+      "sha256": "9df80cf4f416fc5ffa743dfb0a540cbb246167f3fc9c8455f960672ea40b7acf",
+      "bytes": 9716,
+      "store": "tree"
+    },
+    "self-check-vice.log": {
+      "sha256": "45db4563438a7bec56b88accd711452d2deaacd1f33d98fb8f3c3d2e42e80a92",
+      "bytes": 1373,
+      "store": "release"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/p66_native_cases.c platform/host/p66_native_snapshot.c -o build/p66-native-snapshot
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: 1155 source inputs, 5775 complete117-word arithmetic snapshots through five compiled native callbacks
+Snapshot SHA256: 135ddf4e43a96963dfa5447a9cf4572f29a5a30bc4b33931be8d1d6635fdd3c6
+PASS: 16 two-P66-job preemptions, 112 complete442-word arithmetic/core/VAC checkpoints
+Preempted lower MPAC/MODE/PUSH/OVFIND encoded state survives while higher executes real arithmetic; both SUPERBNK forms
+Mixed SHA256: e6bdd25f2bf1bff96d2dbdca0a650b80cf3beff9b21e714d05a3d7914772bd46

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 246,
+    "filename": "G246",
+    "byte_count": 1352,
+    "crc16": 23610,
+    "sha256": "d4c6d60b805b8a5f8e60f9cfba71af752bbd0003037951cef097ba9eeb6bf4fa",
+    "prg": "cm-idle-interrupt-246.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 1698,
+    "crc16": 44077,
+    "sha256": "5581bb507559c8e1ce59dd05ca10ed4be270004dd7324e9d6abb8a55c1715a4d",
+    "prg": "cm-idle-interrupt-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10217,
+    "crc16": 52249,
+    "sha256": "dda3e993054056338a5e73b23c607007def9451085f63f4d414030dac28b6778",
+    "prg": "cm-idle-interrupt-255.prg",
+    "native_control": false
+  }
+]

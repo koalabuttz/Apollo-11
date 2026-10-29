@@ -1,0 +1,8 @@
+# make test-lm-r63 sanitize-lm-r63 at fc4f2c8f5f5fc3012f2313ed1bada0701ba3aafb
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/lm_r63.c tests/lm_r63_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/test_lm_r63.c -o build/test-lm-r63
+./build/test-lm-r63
+lm-r63: 960 checks, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/lm_r63.c tests/lm_r63_target.c src/lm_interp_orders.c src/lm_interp_steps.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/test_lm_r63.c -o build/test-lm-r63-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-r63-sanitize
+lm-r63: 960 checks, 0 failures
+exit 0

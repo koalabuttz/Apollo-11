@@ -1,0 +1,131 @@
+{
+ "method": "tools/lanec/diff.py: every case run through the native routines and through the unchanged original program (pinned ropes) in Virtual AGC; complete results compared (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, interrupt state). With --refusals, a case the native routine refuses must leave the image and I/O unchanged and is counted instead of compared.",
+ "suites": {
+  "ev-front": {
+   "suite": "ev-front",
+   "cases": 5760,
+   "differing": 0,
+   "native_sha256": "2b5bb97cb1e23a8d62fc356bac124a46b733f80e3c07acce38f16571390f3724",
+   "oracle_sha256": "2b5bb97cb1e23a8d62fc356bac124a46b733f80e3c07acce38f16571390f3724",
+   "oracle_crc_sha256": "e10f992c2c2ce6954ac7c9188ef4334533b66cfc2737e17d7b9649908b76533a",
+   "accepted_cases_by_mission": {
+    "CM": 2400,
+    "LM": 3360
+   }
+  },
+  "ev-short": {
+   "suite": "ev-short",
+   "cases": 6368,
+   "differing": 0,
+   "native_sha256": "f88074561cb1adb6d4d82a178a8697f1aa06442468d152e86d607b9552dea82b",
+   "oracle_sha256": "f88074561cb1adb6d4d82a178a8697f1aa06442468d152e86d607b9552dea82b",
+   "oracle_crc_sha256": "070935f7c5d8e65c2846ee16412c8c8ee03f945aea5c528871e8f37a1f49a87e",
+   "accepted_cases_by_mission": {
+    "CM": 3680,
+    "LM": 2688
+   }
+  },
+  "ev-align": {
+   "suite": "ev-align",
+   "cases": 5056,
+   "differing": 0,
+   "native_sha256": "641493b6e333c06033dbdad683a329cc347e9f2c447a2cb4b1242f063a68f4cb",
+   "oracle_sha256": "641493b6e333c06033dbdad683a329cc347e9f2c447a2cb4b1242f063a68f4cb",
+   "oracle_crc_sha256": "378f5410c430555c92fbb07b6e0aee50db82d283a4c767e992c3e7e14713c2aa",
+   "accepted_cases_by_mission": {
+    "CM": 2016,
+    "LM": 3040
+   }
+  },
+  "ev-radar": {
+   "suite": "ev-radar",
+   "cases": 2448,
+   "differing": 0,
+   "native_sha256": "3144c65adf203b58c7a186dd5c08123a95c9d99496260380fa2762543aa2bc60",
+   "oracle_sha256": "3144c65adf203b58c7a186dd5c08123a95c9d99496260380fa2762543aa2bc60",
+   "oracle_crc_sha256": "b5100add1ccf9ac7083d2baa6fa2235c15b61f70feef8d54d2b5152ad4ad8adc",
+   "accepted_cases_by_mission": {
+    "LM": 2448
+   }
+  },
+  "ev-dap": {
+   "suite": "ev-dap",
+   "cases": 2832,
+   "differing": 0,
+   "native_sha256": "59144c6badf4c9b455243bfe91303c36e232f171a444574bf0a05ff12b619f1a",
+   "oracle_sha256": "59144c6badf4c9b455243bfe91303c36e232f171a444574bf0a05ff12b619f1a",
+   "oracle_crc_sha256": "42ea99319e5148007056ff19df76bc415512b149bbc1e11bb4590d496efd6c29",
+   "accepted_cases_by_mission": {
+    "CM": 1056,
+    "LM": 1776
+   }
+  },
+  "ev-time": {
+   "suite": "ev-time",
+   "cases": 1152,
+   "differing": 0,
+   "native_sha256": "ad0c350ed9be32822c501a6aef29596cbc00fb8f620342a3d6bc93e1a3ff2515",
+   "oracle_sha256": "ad0c350ed9be32822c501a6aef29596cbc00fb8f620342a3d6bc93e1a3ff2515",
+   "oracle_crc_sha256": "a5abffd3ef651619ae9376f009f39b211055eed29e4784fda5b6e26018a14bb6",
+   "accepted_cases_by_mission": {
+    "CM": 512,
+    "LM": 640
+   }
+  },
+  "ev-track": {
+   "suite": "ev-track",
+   "cases": 2304,
+   "differing": 0,
+   "native_sha256": "55e6f1563ee4e28002731a6ba8da9ea2757599d74adb5d2212d992bb6a3f4afc",
+   "oracle_sha256": "55e6f1563ee4e28002731a6ba8da9ea2757599d74adb5d2212d992bb6a3f4afc",
+   "oracle_crc_sha256": "ac1825087b33a6e85cfc253272e1ac0a9683e7045a9b5f2bd5632e4f492f23c1",
+   "accepted_cases_by_mission": {
+    "CM": 1104,
+    "LM": 1200
+   }
+  },
+  "ev-lmi": {
+   "suite": "ev-lmi",
+   "cases": 1856,
+   "differing": 0,
+   "native_sha256": "8b7246bce5d5af86227e7c659e02e9d76f7ee637e980e68656eec795bc9e47af",
+   "oracle_sha256": "8b7246bce5d5af86227e7c659e02e9d76f7ee637e980e68656eec795bc9e47af",
+   "oracle_crc_sha256": "1d668062c483b653e249a0dab032e6277aadcc0255f9e8d20038c624d09bcfaf",
+   "accepted_cases_by_mission": {
+    "LMI": 1856
+   }
+  },
+  "ev-transfer": {
+   "suite": "ev-transfer",
+   "cases": 468,
+   "differing": 0,
+   "native_sha256": "7ec225fe0524d5def2815cf957fb5caf199add2f4e800e2dcedaa7ac92bc7d80",
+   "oracle_sha256": "7ec225fe0524d5def2815cf957fb5caf199add2f4e800e2dcedaa7ac92bc7d80",
+   "oracle_crc_sha256": "5b5628962cdc436e6089c23cae1574e0ee373c29167de896f3e1bb3b5ea1811c",
+   "accepted_cases_by_mission": {
+    "CM": 180,
+    "LM": 288
+   }
+  },
+  "ev-transfer-c64": {
+   "suite": "ev-transfer-c64",
+   "cases": 64,
+   "differing": 0,
+   "native_sha256": "56ae8f9e31359186f3b2e531dcf4ff021cddb09b600f8cca89479ee73b7b815b",
+   "oracle_sha256": "56ae8f9e31359186f3b2e531dcf4ff021cddb09b600f8cca89479ee73b7b815b",
+   "oracle_crc_sha256": "3b4a09528438fd4cc722a0a13a37a2ba48c751dd06d9f276af7a1564ee8894c0",
+   "accepted_cases_by_mission": {
+    "LM": 64
+   }
+  },
+  "ev-refuse": {
+   "suite": "ev-refuse",
+   "cases": 512,
+   "refused_unchanged": 512,
+   "native_sha256": "a3069567801cc3af5f6505275a40012324ca30f8265cfc9f7927e01f317f6dac"
+  }
+ },
+ "total_cases": 28820,
+ "total_differing": 0,
+ "total_refused_unchanged": 512
+}

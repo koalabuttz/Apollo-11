@@ -1,0 +1,1 @@
+PASS224 complete original/native states on stock-ROM C64; every2048word plusSUPER/IRQ exact; {'states': 224, 'prg_bytes': 26178, 'load_end': 28225, 'bss_end': 36417, 'mailbox': 'a5e00000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}

@@ -1,0 +1,258 @@
+[
+  {
+    "id": 160,
+    "filename": "R0",
+    "byte_count": 9263,
+    "crc16": 17324,
+    "sha256": "664de129ceb8e70edcf967a442ccfcb2d93dcb87936b4ece803bae411d165d2e",
+    "prg": "lm-recurrence-bridge-0.prg"
+  },
+  {
+    "id": 161,
+    "filename": "R1",
+    "byte_count": 9263,
+    "crc16": 21977,
+    "sha256": "0670cf69deca14a20a052d4f2814850b9f2862756dd9e0e21e2a366f980faccf",
+    "prg": "lm-recurrence-bridge-1.prg"
+  },
+  {
+    "id": 162,
+    "filename": "R2",
+    "byte_count": 9263,
+    "crc16": 13129,
+    "sha256": "d7acee08cf9535f38278e8f3e49f302cd614e3d1a9c3f67af4d7712bab1dfcb2",
+    "prg": "lm-recurrence-bridge-2.prg"
+  },
+  {
+    "id": 163,
+    "filename": "R3",
+    "byte_count": 9263,
+    "crc16": 46924,
+    "sha256": "aa514cc08ec1fc65f4b0a004aa410d047cd57d551ec7b2030911b537fd0bf290",
+    "prg": "lm-recurrence-bridge-3.prg"
+  },
+  {
+    "id": 164,
+    "filename": "R4",
+    "byte_count": 9263,
+    "crc16": 63620,
+    "sha256": "f168d04fae57190c925609631afb93d12a2769361080174342e1fd70a1bce3d8",
+    "prg": "lm-recurrence-bridge-4.prg"
+  },
+  {
+    "id": 165,
+    "filename": "R5",
+    "byte_count": 9263,
+    "crc16": 59875,
+    "sha256": "2eaa45f7aaa3408c4235a4d759b5670f16001051e205e7b18fc36eb3720e8c4d",
+    "prg": "lm-recurrence-bridge-5.prg"
+  },
+  {
+    "id": 166,
+    "filename": "R6",
+    "byte_count": 9263,
+    "crc16": 23207,
+    "sha256": "dbfa5312e1419b3cb8a890c65f0079fa30a92e16a6b9f568550bb5c83533f210",
+    "prg": "lm-recurrence-bridge-6.prg"
+  },
+  {
+    "id": 167,
+    "filename": "R7",
+    "byte_count": 9263,
+    "crc16": 42998,
+    "sha256": "8e6d042b7501c99d0116e61aea1ba2344dbcdb7c6cc8a7a6c56e0128d1af924a",
+    "prg": "lm-recurrence-bridge-7.prg"
+  },
+  {
+    "id": 168,
+    "filename": "R8",
+    "byte_count": 9263,
+    "crc16": 17242,
+    "sha256": "3cbef8dec02fad850adea95804bc09db7069e1a900042c3ebb22f87377379660",
+    "prg": "lm-recurrence-bridge-8.prg"
+  },
+  {
+    "id": 169,
+    "filename": "R9",
+    "byte_count": 9263,
+    "crc16": 50280,
+    "sha256": "fc88cdab0506d0603d4dc3e7e3eea9e4b1b7459031ab388c78280baba79b2fe9",
+    "prg": "lm-recurrence-bridge-9.prg"
+  },
+  {
+    "id": 170,
+    "filename": "R10",
+    "byte_count": 9263,
+    "crc16": 37277,
+    "sha256": "e9f8e7dfe87dd340b62ca771d114078d22dc6c3a041d217d6c04c2609bf7ae40",
+    "prg": "lm-recurrence-bridge-10.prg"
+  },
+  {
+    "id": 171,
+    "filename": "R11",
+    "byte_count": 9263,
+    "crc16": 35254,
+    "sha256": "e050526ed4ac014bf7fd6d7630c87c4049a53c09ab877b7001b31058b524bb39",
+    "prg": "lm-recurrence-bridge-11.prg"
+  },
+  {
+    "id": 172,
+    "filename": "R12",
+    "byte_count": 9263,
+    "crc16": 41842,
+    "sha256": "857c5b56399bc722dc7519b0ac0f8421c6ac57370551c2a4ce93ab6c4658be0b",
+    "prg": "lm-recurrence-bridge-12.prg"
+  },
+  {
+    "id": 173,
+    "filename": "R13",
+    "byte_count": 9263,
+    "crc16": 34854,
+    "sha256": "676a686989b7017582784decc7b3fd8aa4a75d9cc3214ef58adc935845624b5a",
+    "prg": "lm-recurrence-bridge-13.prg"
+  },
+  {
+    "id": 174,
+    "filename": "R14",
+    "byte_count": 9263,
+    "crc16": 44699,
+    "sha256": "166409d31949f047ade3a719167ac7528a4f4921d03994e99f1678782f1568fe",
+    "prg": "lm-recurrence-bridge-14.prg"
+  },
+  {
+    "id": 175,
+    "filename": "R15",
+    "byte_count": 9263,
+    "crc16": 14795,
+    "sha256": "cb011943693e5ca89133c75c109b08433e2971652dbae81d1c6bc8dfb284c692",
+    "prg": "lm-recurrence-bridge-15.prg"
+  },
+  {
+    "id": 176,
+    "filename": "R16",
+    "byte_count": 9263,
+    "crc16": 6754,
+    "sha256": "f8e92739b3733c732c5511ad628810fc3816ef02a4bffd585cd17e8d0619dd9f",
+    "prg": "lm-recurrence-bridge-16.prg"
+  },
+  {
+    "id": 177,
+    "filename": "R17",
+    "byte_count": 9263,
+    "crc16": 28892,
+    "sha256": "27de62f039258cf1ade1acbaa4b581091134fd127b74c8c1c52bbec858cec044",
+    "prg": "lm-recurrence-bridge-17.prg"
+  },
+  {
+    "id": 178,
+    "filename": "R18",
+    "byte_count": 9263,
+    "crc16": 3032,
+    "sha256": "97ec23397de813ac08c5c1360b87b8a78a61cf7ec8e657783e69c3c146b55e2c",
+    "prg": "lm-recurrence-bridge-18.prg"
+  },
+  {
+    "id": 179,
+    "filename": "R19",
+    "byte_count": 9263,
+    "crc16": 41162,
+    "sha256": "073b122490e4817dba73234a040635a1e7c182cf3810accbbd4be70e8dd2732f",
+    "prg": "lm-recurrence-bridge-19.prg"
+  },
+  {
+    "id": 180,
+    "filename": "R20",
+    "byte_count": 9263,
+    "crc16": 47794,
+    "sha256": "ebd5cf573d4119d882a77ecd02598db5f09331d90ae209e7569b7cab9f026de1",
+    "prg": "lm-recurrence-bridge-20.prg"
+  },
+  {
+    "id": 181,
+    "filename": "R21",
+    "byte_count": 9263,
+    "crc16": 12875,
+    "sha256": "673d8296b23b84fc9549220204cbcfbd872d7c8b284ba0602311b782602ecea1",
+    "prg": "lm-recurrence-bridge-21.prg"
+  },
+  {
+    "id": 182,
+    "filename": "R22",
+    "byte_count": 9263,
+    "crc16": 10454,
+    "sha256": "647512181a40dfaabce26b11b65e234730599ea5991a41ef4f28c56098c3fed1",
+    "prg": "lm-recurrence-bridge-22.prg"
+  },
+  {
+    "id": 183,
+    "filename": "R23",
+    "byte_count": 9263,
+    "crc16": 19971,
+    "sha256": "c03f8fab56cb4a1f13a2fd097d4b3e4c10742f504a3566c79498feb93b37fff8",
+    "prg": "lm-recurrence-bridge-23.prg"
+  },
+  {
+    "id": 184,
+    "filename": "R24",
+    "byte_count": 9263,
+    "crc16": 40901,
+    "sha256": "422fdce68397ab56bc0968270105302005eb0d36ed41a7a666fb493cd26b576c",
+    "prg": "lm-recurrence-bridge-24.prg"
+  },
+  {
+    "id": 185,
+    "filename": "R25",
+    "byte_count": 9263,
+    "crc16": 7673,
+    "sha256": "0189ec00d3638f4aa6313bd17c3da5241cffc017f773e8b56f911e066ab481b6",
+    "prg": "lm-recurrence-bridge-25.prg"
+  },
+  {
+    "id": 186,
+    "filename": "R26",
+    "byte_count": 9263,
+    "crc16": 6511,
+    "sha256": "5cc58e5acb03b68a222742b24bd342f8e1c0cd16ddc9e000c1fb21244d44d889",
+    "prg": "lm-recurrence-bridge-26.prg"
+  },
+  {
+    "id": 187,
+    "filename": "R27",
+    "byte_count": 9263,
+    "crc16": 4041,
+    "sha256": "0c580d580b37aa89416dea0cd9d6a115dac74f50d205512c076d4c19d950750d",
+    "prg": "lm-recurrence-bridge-27.prg"
+  },
+  {
+    "id": 188,
+    "filename": "R28",
+    "byte_count": 9263,
+    "crc16": 13170,
+    "sha256": "11a51091c914eaed4371d38a17d8754edac502b9802540e6a18603f108496129",
+    "prg": "lm-recurrence-bridge-28.prg"
+  },
+  {
+    "id": 189,
+    "filename": "R29",
+    "byte_count": 9263,
+    "crc16": 5452,
+    "sha256": "bc46fa9a0141b5f809e9792c57070081f7d48e96770d0a80569c5929c2a24836",
+    "prg": "lm-recurrence-bridge-29.prg"
+  },
+  {
+    "id": 190,
+    "filename": "R30",
+    "byte_count": 9263,
+    "crc16": 47994,
+    "sha256": "789cc6e1919be13754dd44e619de07b512d8e81b9977aeee7141407a4de94bd2",
+    "prg": "lm-recurrence-bridge-30.prg"
+  },
+  {
+    "id": 191,
+    "filename": "R31",
+    "byte_count": 9263,
+    "crc16": 21497,
+    "sha256": "fd6606a78760a8a8510cd470997bfc6b7d00686afbe4952781affc49ae7d3c31",
+    "prg": "lm-recurrence-bridge-31.prg"
+  }
+]

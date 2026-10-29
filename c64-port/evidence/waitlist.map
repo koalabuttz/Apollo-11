@@ -1,0 +1,280 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     766b     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/waitlist.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       53     1         /tmp/timer_gate-b4ac04.o:(.text.c64_timer_gate)
+     830      830       53     1                 c64_timer_gate
+     883      883       8a     1         /tmp/timer_gate-b4ac04.o:(.text.c64_timer_register_probe)
+     883      883       8a     1                 c64_timer_register_probe
+     90d      90d       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     90d      90d       13     1                 __zero_bss
+     920      920        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     920      920        0     1                 __call_indir
+     923      923      119     1         build/waitlist.prg.lto.o:(.text.exec_init)
+     923      923      119     1                 exec_init
+     a3c      a3c      73e     1         build/waitlist.prg.lto.o:(.text.exec_admit)
+     a3c      a3c      73e     1                 exec_admit
+    117a     117a      180     1         build/waitlist.prg.lto.o:(.text.exec_change_basic)
+    117a     117a      180     1                 exec_change_basic
+    12fa     12fa       ba     1         build/waitlist.prg.lto.o:(.text.basic_slot)
+    12fa     12fa       ba     1                 basic_slot
+    13b4     13b4      37c     1         build/waitlist.prg.lto.o:(.text.exchange_basic)
+    13b4     13b4      37c     1                 exchange_basic
+    1730     1730      364     1         build/waitlist.prg.lto.o:(.text.exec_complete_basic)
+    1730     1730      364     1                 exec_complete_basic
+    1a94     1a94      31f     1         build/waitlist.prg.lto.o:(.text.exec_sleep_basic)
+    1a94     1a94      31f     1                 exec_sleep_basic
+    1db3     1db3       7a     1         build/waitlist.prg.lto.o:(.text.lifecycle_candidate)
+    1db3     1db3       7a     1                 lifecycle_candidate
+    1e2d     1e2d      301     1         build/waitlist.prg.lto.o:(.text.exec_priority_basic)
+    1e2d     1e2d      301     1                 exec_priority_basic
+    212e     212e      1d4     1         build/waitlist.prg.lto.o:(.text.start_locked)
+    212e     212e      1d4     1                 start_locked
+    2302     2302       b8     1         build/waitlist.prg.lto.o:(.text.settle)
+    2302     2302       b8     1                 settle
+    23ba     23ba      1b3     1         build/waitlist.prg.lto.o:(.text.exec_native_admit)
+    23ba     23ba      1b3     1                 exec_native_admit
+    256d     256d      712     1         build/waitlist.prg.lto.o:(.text.exec_native_step)
+    256d     256d      712     1                 exec_native_step
+    2c7f     2c7f      232     1         build/waitlist.prg.lto.o:(.text.exec_irq_service_locked)
+    2c7f     2c7f      232     1                 exec_irq_service_locked
+    2eb1     2eb1       53     1         build/waitlist.prg.lto.o:(.text.wl_init)
+    2eb1     2eb1       53     1                 wl_init
+    2f04     2f04      70d     1         build/waitlist.prg.lto.o:(.text.wl_schedule)
+    2f04     2f04      70d     1                 wl_schedule
+    3611     3611       51     1         build/waitlist.prg.lto.o:(.text.reg_class)
+    3611     3611       51     1                 reg_class
+    3662     3662      2d1     1         build/waitlist.prg.lto.o:(.text.wl_begin)
+    3662     3662      2d1     1                 wl_begin
+    3933     3933       ad     1         build/waitlist.prg.lto.o:(.text.wl_taskover)
+    3933     3933       ad     1                 wl_taskover
+    39e0     39e0      2f8     1         build/waitlist.prg.lto.o:(.text.wl_native_init)
+    39e0     39e0      2f8     1                 wl_native_init
+    3cd8     3cd8      2d2     1         build/waitlist.prg.lto.o:(.text.wl_native_schedule)
+    3cd8     3cd8      2d2     1                 wl_native_schedule
+    3faa     3faa      3a5     1         build/waitlist.prg.lto.o:(.text.wl_native_advance)
+    3faa     3faa      3a5     1                 wl_native_advance
+    434f     434f      1ca     1         build/waitlist.prg.lto.o:(.text.wl_native_start)
+    434f     434f      1ca     1                 wl_native_start
+    4519     4519      1bc     1         build/waitlist.prg.lto.o:(.text.start_locked.7)
+    4519     4519      1bc     1                 start_locked.7
+    46d5     46d5      5ca     1         build/waitlist.prg.lto.o:(.text.wl_native_step)
+    46d5     46d5      5ca     1                 wl_native_step
+    4c9f     4c9f      353     1         build/waitlist.prg.lto.o:(.text.wait_prepare)
+    4c9f     4c9f      353     1                 wait_prepare
+    4ff2     4ff2      3ca     1         build/waitlist.prg.lto.o:(.text.wait_event_prepare)
+    4ff2     4ff2      3ca     1                 wait_event_prepare
+    53bc     53bc      137     1         build/waitlist.prg.lto.o:(.text.wait_apply)
+    53bc     53bc      137     1                 wait_apply
+    54f3     54f3      35e     1         build/waitlist.prg.lto.o:(.text.wait_digest)
+    54f3     54f3      35e     1                 wait_digest
+    5851     5851       3b     1         build/waitlist.prg.lto.o:(.text.task_a)
+    5851     5851       3b     1                 task_a
+    588c     588c      178     1         build/waitlist.prg.lto.o:(.text.task_b)
+    588c     588c      178     1                 task_b
+    5a04     5a04       42     1         build/waitlist.prg.lto.o:(.text.task_c)
+    5a04     5a04       42     1                 task_c
+    5a46     5a46       40     1         build/waitlist.prg.lto.o:(.text.task_d)
+    5a46     5a46       40     1                 task_d
+    5a86     5a86      153     1         build/waitlist.prg.lto.o:(.text.observe)
+    5a86     5a86      153     1                 observe
+    5bd9     5bd9     11cf     1         build/waitlist.prg.lto.o:(.text.main)
+    5bd9     5bd9     11cf     1                 main
+    6da8     6da8       85     1         build/waitlist.prg.lto.o:(.text.sleeper)
+    6da8     6da8       85     1                 sleeper
+    6e2d     6e2d       92     1         build/waitlist.prg.lto.o:(.text.awakened)
+    6e2d     6e2d       92     1                 awakened
+    6ebf     6ebf       44     1         build/waitlist.prg.lto.o:(.text.worker)
+    6ebf     6ebf       44     1                 worker
+    6f03     6f03      8a6     1         build/waitlist.prg.lto.o:(.text.waking_task)
+    6f03     6f03      8a6     1                 waking_task
+    77a9     77a9       12     1         build/waitlist.prg.lto.o:(.text.noop)
+    77a9     77a9       12     1                 noop
+    77bb     77bb       bc     1         build/waitlist.prg.lto.o:(.text.c64_timer_install)
+    77bb     77bb       bc     1                 c64_timer_install
+    7877     7877       41     1         build/waitlist.prg.lto.o:(.text.c64_timer_remove)
+    7877     7877       41     1                 c64_timer_remove
+    78b8     78b8       c0     1         build/waitlist.prg.lto.o:(.text.c64_timer_producer)
+    78b8     78b8       c0     1                 c64_timer_producer
+    7978     7978        4     1         build/waitlist.prg.lto.o:(.text.enter)
+    7978     7978        4     1                 enter
+    797c     797c        8     1         build/waitlist.prg.lto.o:(.text.leave)
+    797c     797c        8     1                 leave
+    7984     7984        6     1         build/waitlist.prg.lto.o:(.text.exit)
+    7984     7984        6     1                 exit
+    798a     798a       4d     1         build/waitlist.prg.lto.o:(.text.putchar)
+    798a     798a       4d     1                 putchar
+    79d7     79d7       65     1         build/waitlist.prg.lto.o:(.text.puts)
+    79d7     79d7       65     1                 puts
+    7a3c     7a3c       34     1         build/waitlist.prg.lto.o:(.text.memcpy)
+    7a3c     7a3c       34     1                 memcpy
+    7a70     7a70       ac     1         build/waitlist.prg.lto.o:(.text.memmove)
+    7a70     7a70       ac     1                 memmove
+    7b1c     7b1c       47     1         build/waitlist.prg.lto.o:(.text.memcmp)
+    7b1c     7b1c       47     1                 memcmp
+    7b63     7b63       22     1         build/waitlist.prg.lto.o:(.text.__memset)
+    7b63     7b63       22     1                 __memset
+    7b85     7b85       5d     1         build/waitlist.prg.lto.o:(.text.__udivqi3)
+    7b85     7b85       5d     1                 __udivqi3
+    7be2     7be2       c4     1         build/waitlist.prg.lto.o:(.text.__udivhi3)
+    7be2     7be2       c4     1                 __udivhi3
+    7ca6     7ca6       40     1         build/waitlist.prg.lto.o:(.text.__umodqi3)
+    7ca6     7ca6       40     1                 __umodqi3
+    7ce6     7ce6       ae     1         build/waitlist.prg.lto.o:(.text.__umodhi3)
+    7ce6     7ce6       ae     1                 __umodhi3
+    7d94     7d94       7d     1         build/waitlist.prg.lto.o:(.text.__udivmodqi4)
+    7d94     7d94       7d     1                 __udivmodqi4
+    7e11     7e11       67     1         build/waitlist.prg.lto.o:(.text.__mulsi3)
+    7e11     7e11       67     1                 __mulsi3
+    7e78     7e78        0     1         __init_array_start = .
+    7e78     7e78        0     1         __init_array_end = .
+    7e78     7e78        0     1         __fini_array_start = .
+    7e78     7e78        0     1         __fini_array_end = .
+    7e78     7e78      5c3     1 .rodata
+    7e78     7e78        8     1         build/waitlist.prg.lto.o:(.rodata.wl_schedule)
+    7e80     7e80        e     1         build/waitlist.prg.lto.o:(.rodata.wait_prepare)
+    7e8e     7e8e       1a     1         build/waitlist.prg.lto.o:(.rodata.wait_event_prepare)
+    7ea8     7ea8        c     1         build/waitlist.prg.lto.o:(.rodata.timer_cases)
+    7ea8     7ea8        c     1                 timer_cases
+    7eb4     7eb4       10     1         <internal>:(.rodata.cst16)
+    7ec4     7ec4        a     1         build/waitlist.prg.lto.o:(.rodata.wait_event_prepare.ticks)
+    7ec4     7ec4        a     1                 wait_event_prepare.ticks
+    7ece     7ece        a     1         build/waitlist.prg.lto.o:(.rodata.wait_event_prepare.delay)
+    7ece     7ece        a     1                 wait_event_prepare.delay
+    7ed8     7ed8        8     1         <internal>:(.rodata.cst8)
+    7ee0     7ee0       18     1         build/waitlist.prg.lto.o:(.rodata.task_mapping)
+    7ee0     7ee0       18     1                 task_mapping
+    7ef8     7ef8       57     1         <internal>:(.rodata.str1.1)
+    7f4f     7f4f      4c8     1         build/waitlist.prg.lto.o:(.rodata.waitlist_reference_digest.8)
+    7f4f     7f4f      4c8     1                 waitlist_reference_digest.8
+    8417     8417        c     1         build/waitlist.prg.lto.o:(.rodata.task_mapping.9)
+    8417     8417        c     1                 task_mapping.9
+    8423     8423       12     1         build/waitlist.prg.lto.o:(.rodata.job_mapping)
+    8423     8423       12     1                 job_mapping
+    8435     8435        6     1         build/waitlist.prg.lto.o:(.rodata.c64_timer_exclusion)
+    8435     8435        6     1                 c64_timer_exclusion
+    843b     843b        0     1 .data
+    843b     843b        0     1         __data_start = .
+    843b     843b        0     1         __data_end = .
+    843b     843b        0     1 __data_load_start = LOADADDR(.data)
+    843b     843b        0     1 __data_size = SIZEOF(.data)
+    843b     843b      701     1 .bss
+    843b     843b        0     1         __bss_start = .
+    843b     843b       21     1         /tmp/timer_gate-b4ac04.o:(.bss.c64_timer_saved)
+    845c     845c        3     1         /tmp/timer_gate-b4ac04.o:(.bss.c64_probe)
+    845f     845f        2     1         build/waitlist.prg.lto.o:(.bss.failures)
+    845f     845f        2     1                 failures
+    8461     8461       3a     1         build/waitlist.prg.lto.o:(.bss.tasks)
+    8461     8461       3a     1                 tasks
+    849b     849b        2     1         build/waitlist.prg.lto.o:(.bss.trace)
+    849b     849b        2     1                 trace
+    849d     849d        3     1         build/waitlist.prg.lto.o:(.bss.clock)
+    849d     849d        3     1                 clock
+    84a0     84a0      288     1         build/waitlist.prg.lto.o:(.bss.jobs)
+    84a0     84a0      288     1                 jobs
+    8728     8728       3a     1         build/waitlist.prg.lto.o:(.bss.task_before)
+    8728     8728       3a     1                 task_before
+    8762     8762      288     1         build/waitlist.prg.lto.o:(.bss.job_before)
+    8762     8762      288     1                 job_before
+    89ea     89ea       20     1         build/waitlist.prg.lto.o:(.bss.requests)
+    89ea     89ea       20     1                 requests
+    8a0a     8a0a       12     1         build/waitlist.prg.lto.o:(.bss.task_runtime)
+    8a0a     8a0a       12     1                 task_runtime
+    8a1c     8a1c       15     1         build/waitlist.prg.lto.o:(.bss.job_runtime)
+    8a1c     8a1c       15     1                 job_runtime
+    8a31     8a31        1     1         build/waitlist.prg.lto.o:(.bss.installed)
+    8a31     8a31        1     1                 installed
+    8a32     8a32        2     1         build/waitlist.prg.lto.o:(.bss.c64_timer_previous)
+    8a32     8a32        2     1                 c64_timer_previous
+    8a34     8a34        1     1         build/waitlist.prg.lto.o:(.bss.step)
+    8a34     8a34        1     1                 step
+    8a35     8a35        1     1         build/waitlist.prg.lto.o:(.bss.remaining)
+    8a35     8a35        1     1                 remaining
+    8a36     8a36        1     1         build/waitlist.prg.lto.o:(.bss.finite)
+    8a36     8a36        1     1                 finite
+    8a37     8a37        1     1         build/waitlist.prg.lto.o:(.bss.c64_timer_poison)
+    8a37     8a37        1     1                 c64_timer_poison
+    8a38     8a38        1     1         build/waitlist.prg.lto.o:(.bss.c64_timer_stack_fault)
+    8a38     8a38        1     1                 c64_timer_stack_fault
+    8a39     8a39        1     1         build/waitlist.prg.lto.o:(.bss.c64_timer_count)
+    8a39     8a39        1     1                 c64_timer_count
+    8a3a     8a3a        1     1         build/waitlist.prg.lto.o:(.bss.c64_timer_done)
+    8a3a     8a3a        1     1                 c64_timer_done
+    8a3b     8a3b        1     1         build/waitlist.prg.lto.o:(.bss.c64_timer_fault)
+    8a3b     8a3b        1     1                 c64_timer_fault
+    8a3c     8a3c      100     1         build/waitlist.prg.lto.o:(.bss.c64_timer_stack)
+    8a3c     8a3c      100     1                 c64_timer_stack
+    8b3c     8b3c        0     1         __bss_end = .
+    8b3c     8b3c        0     1 __bss_size = SIZEOF(.bss)
+    8b3c     8b3c        1     1 .noinit
+    8b3c     8b3c        1     1         build/waitlist.prg.lto.o:(.noinit..Lstatic_stack)
+    8b3d     8b3d        0     1         __heap_start = ALIGN(., 2)
+    8b3d     8b3d        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0        f     1 .llvm_sympart
+       0        0        f     1         build/waitlist.prg.lto.o:(.llvm_sympart)
+       0        0      fd0     4 .symtab
+       0        0      fd0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      9fd     1 .strtab
+       0        0      9fd     1         <internal>:(.strtab)

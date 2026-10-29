@@ -1,0 +1,148 @@
+{
+ "mission": "cm",
+ "disks": [
+  "cm-1.d81"
+ ],
+ "loader_bytes": 6535,
+ "resident_bytes": 38019,
+ "resident_start": 2061,
+ "boot_return": 3077,
+ "dsky_queue": 1921,
+ "hardware": 28606,
+ "resident_staged": "0x1f6b00",
+ "bytes_loaded": 1863151,
+ "data_bytes": [
+  792206
+ ],
+ "vice": {
+  "mission": "cm",
+  "ok": true,
+  "fast_loader": true,
+  "load_cycles": 261267036,
+  "load_s": 265.2,
+  "reu_clear_s": 2.26,
+  "handoff_cycles": 80614,
+  "boot_cycles": 107749323,
+  "boot_s": 109.4,
+  "boot_status": 0,
+  "samples": [
+   {
+    "cycles": 60131402,
+    "time1": "02346",
+    "z": "04040",
+    "fb": "02000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 119885644,
+    "time1": "04740",
+    "z": "04701",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 179345042,
+    "time1": "07326",
+    "z": "03231",
+    "fb": "02000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 239217218,
+    "time1": "11724",
+    "z": "04040",
+    "fb": "02000",
+    "modreg": "77777"
+   }
+  ],
+  "pc": "5915",
+  "screen": [
+   " APOLLO 11 CM DSKY",
+   "",
+   " UPLINK ACTY  TEMP         COMP ACTY",
+   " NO ATT       GIMBAL LOCK  PROG",
+   " KEY REL      RESTART      TRACKER",
+   " OPR ERR      ALT          VEL",
+   "",
+   "        VERB    NOUN    PROG",
+   "                         00",
+   "",
+   "            R1",
+   "            R2",
+   "            R3",
+   "",
+   " V VERB  N NOUN  RETURN ENTR  C CLR",
+   " R RSET  K KEY REL  P PRO  0-9 + -",
+   ""
+  ],
+  "failreg": [
+   "00000",
+   "00000",
+   "00000"
+  ],
+  "modreg": "00000",
+  "fb": "66000",
+  "z": "04701",
+  "screenshot": "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/cm-dsky.png",
+  "p00": true,
+  "reu_blocks_changed": [
+   "0x1df000",
+   "0x1df100",
+   "0x1df200",
+   "0x1df300",
+   "0x1df400",
+   "0x1df500",
+   "0x1df600",
+   "0x1dfd00"
+  ],
+  "reu_bounds": {
+   "ok": true,
+   "touched": [
+    "pinball save"
+   ],
+   "outside": [],
+   "regions": [
+    {
+     "name": "store",
+     "start": "0x0",
+     "end": "0x1b5e00",
+     "writable": false
+    },
+    {
+     "name": "pinball save",
+     "start": "0x1df000",
+     "end": "0x1e0000",
+     "writable": true
+    },
+    {
+     "name": "rope",
+     "start": "0x1e0000",
+     "end": "0x1f2000",
+     "writable": false
+    },
+    {
+     "name": "undo",
+     "start": "0x1f2000",
+     "end": "0x1f3000",
+     "writable": true
+    },
+    {
+     "name": "resident stage",
+     "start": "0x1f6b00",
+     "end": "0x1fff83",
+     "writable": false
+    }
+   ],
+   "traces": [
+    3,
+    4,
+    5
+   ],
+   "dma_outside": 0,
+   "dma_hits": [],
+   "dma_unchecked": 51,
+   "trace_errors": [],
+   "trace_ok": true
+  }
+ }
+}

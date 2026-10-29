@@ -1,0 +1,100 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS65536 original LSPOS/LUNVEL oracle states equal native 2053-word rows c3617d869ff44fc782f71184975346d6edc90c298c03d01600df756efda5c466",
+  "PASS 16 frozen original LSPOS/LUNVEL states, 21 admission guards and 54 frozen phase steps",
+  "PASS 65536 LSPOS/LUNVEL entries through the transfer trampoline equal the certified composition (65536 to the caller's native continuation, 0 at the UNIT abort frontier, 0 refused unchanged; 1024 out-of-domain entries refused unchanged) digest fc0ad4c439a86e4d",
+  "PASS all retained source-state bytes: 269090816 SHA256 c3617d869ff44fc782f71184975346d6edc90c298c03d01600df756efda5c466",
+  "PASS65536 original LSPOS/LUNVEL states strict native",
+  "PASS 16 frozen original LSPOS/LUNVEL states, 21 admission guards and 54 frozen phase steps",
+  "PASS 65536 LSPOS/LUNVEL entries through the transfer trampoline equal the certified composition (65536 to the caller's native continuation, 0 at the UNIT abort frontier, 0 refused unchanged; 1024 out-of-domain entries refused unchanged) digest fc0ad4c439a86e4d",
+  "PASS all retained source-state bytes: 269090816 SHA256 c3617d869ff44fc782f71184975346d6edc90c298c03d01600df756efda5c466",
+  "PASS65536 original LSPOS/LUNVEL states full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-ephemeris-1.prg: 12 checks, 0 failures",
+   "PASS: VICE PAL lm-ephemeris-2.prg: 30 checks, 0 failures",
+   "PASS: VICE PAL lm-ephemeris-3.prg: 6 checks, 0 failures",
+   "PASS: VICE PAL lm-ephemeris-4.prg: 6 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 42928,
+    "prg_sha256": "f1acbb66df95e2b54ac302337e09c8fdeac17c07f6db1835a1202c07e6e0512f",
+    "sections": {
+     "text": 38433,
+     "rodata": 4481,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$afb1",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     0,
+     1
+    ],
+    "steps": 12
+   },
+   "2": {
+    "prg_bytes": 37592,
+    "prg_sha256": "036f1a72cce90824ada31bf7a961d2b6615c2796f861e4016301856b89e15659",
+    "sections": {
+     "text": 28986,
+     "rodata": 8592,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$9ad7",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     2,
+     3,
+     4,
+     6,
+     7
+    ],
+    "steps": 30
+   },
+   "3": {
+    "prg_bytes": 44456,
+    "prg_sha256": "b0cd54d9aa1cbe1a6efc25c882bbea34af3db0ae4ad49949037512a4c5400d3f",
+    "sections": {
+     "text": 39505,
+     "rodata": 4937,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$b5a9",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     5
+    ],
+    "steps": 6
+   },
+   "4": {
+    "prg_bytes": 45254,
+    "prg_sha256": "6ace6a9edcf030723d8624c143a6b885d26033b3295d44381fd1b7e479b3358d",
+    "sections": {
+     "text": 39998,
+     "rodata": 5242,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$b8c7",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     8
+    ],
+    "steps": 6
+   }
+  },
+  "whole_routine_note": "The whole routine links to about 51 KB of 6502 code (-Oz), more than one PRG beside two images, so the C64 check runs each phase in one of four PRGs; the host runs the same phase steps and the whole chain. Each C64 step goes through the control-transfer trampoline (agc_transfer_run): the PRG's interpretive table holds its group's phase routines keyed by their frontier LOCs, the trampoline must select the step's own routine and stop at the frozen next frontier after exactly one call."
+ },
+ "source_audit": [
+  "PASS 74 assembled words on 74 source lines map to native literals in 8 functions"
+ ],
+ "transfer_abi": [
+  "PASS 65536 LSPOS/LUNVEL entries through the transfer trampoline equal the certified composition (65536 to the caller's native continuation, 0 at the UNIT abort frontier, 0 refused unchanged; 1024 out-of-domain entries refused unchanged) digest fc0ad4c439a86e4d"
+ ]
+}

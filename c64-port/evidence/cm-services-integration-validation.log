@@ -1,0 +1,5 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_phase.c tests/cm_phase_cases.c tests/cm_phase_check.c tests/test_cm_phase.c -o build/test-cm-phase
+./build/test-cm-phase
+PASS: 128 original assembly full-state phase vectors; all 8,192 invalid group words retain state
+./build/test-cm-restart
+PASS:1280 CM original cleanup/startsub/phase/variablejob states,18 complete vectors and fail-closed inputs

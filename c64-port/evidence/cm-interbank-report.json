@@ -1,0 +1,63 @@
+{
+  "cases": 7168,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entries": [
+    "BANKCALL",
+    "SWCALL",
+    "SWRETURN",
+    "POSTJUMP",
+    "BANKJUMP",
+    "MAKECADR",
+    "SUPDACAL",
+    "IBNKCALL",
+    "ISWCALL",
+    "ISWRETRN",
+    "USPRCADR",
+    "SUPERSW",
+    "Q+10000",
+    "PRIO12"
+  ],
+  "boundaries": [
+    "actual compiled target",
+    "actual source return"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "24ccdc52b0a11ec6fba29668131e2f8763e32b86fe015aa876adcbbe3f46211f",
+  "data_scope": "certified immutable fixed spans; all100 CM NNTYPTAB words directly exercised",
+  "hardware_stack_bytes": 10,
+  "software_stack_bytes": 93,
+  "c64_cases": 112,
+  "mailbox_hex": "a500007000",
+  "target": {
+    "prg_bytes": 16856,
+    ".text": {
+      "address": 2061,
+      "bytes": 5148
+    },
+    ".rodata": {
+      "address": 7209,
+      "bytes": 11694
+    },
+    ".data": {
+      "address": 18903,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 18903,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 23025,
+      "bytes": 0
+    },
+    "image_end": 23025
+  }
+}

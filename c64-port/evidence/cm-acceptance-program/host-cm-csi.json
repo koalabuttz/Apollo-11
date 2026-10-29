@@ -1,0 +1,76 @@
+{
+ "scenario": "cm-csi-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 24000,
+ "keys": "@2200V37E72E@3000V25E+00000E+00010E+02010E@4200V33E@4800V25E+00001E+02660E+00000E@5800V33E@6400V33E@7000V33E@10500V33E@11300V33E@12100V33E@13000V37E32E@13800V25E+00000E+00010E+02010E@15000V33E@15600V25E+00001E+20660E+00000E@16600V33E@17200V33E@17800V33E@21300V33E@22100V33E@22900V33E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH31": "037777",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-csi.load",
+  "FLIGHT_RR": "2000:-259681.119,1759068.734,371336.732,1576.461,307.349,-276.315:34932.422,1820802.682,320471.671,1594.204,27.571,-330.419",
+  "FLIGHT_BUSY_SAMPLE": "100"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 24000,
+ "periods_taken": 24000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 24000,
+ "native_routines": 1270648,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 3734568,
+  "yaagc": 3653154,
+  "percent": 2.2,
+  "routines": 19554,
+  "mean_abs_error": 27.0,
+  "abs_percent": 14.5,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +2.2% net, 14.5% routine by routine, from yaAGC's MCT over 19554 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 12,
+  "no_interrupt_to": 8284,
+  "no_background_periods": 1,
+  "no_background_to": 8955
+ },
+ "reached": {
+  "04,3305": 2504,
+  "04,3303": 13305
+ },
+ "arrivals": {
+  "04,3305": [
+   2504
+  ],
+  "04,3303": [
+   13305
+  ]
+ },
+ "log_sha256": "7793a3144fedebe197fd21f59dce27adc899dbe2e05f6944de27305938bd15d0"
+}

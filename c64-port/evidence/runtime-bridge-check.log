@@ -1,0 +1,10 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_bridge.c tests/runtime_bridge_check.c src/agc_word.c src/p66_runtime_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c -o build/test-runtime-bridge
+build/test-runtime-bridge
+64 complete runtime bridge images and56 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_bridge.c tests/runtime_bridge_check.c src/agc_word.c src/p66_runtime_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c -o build/test-runtime-bridge-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-runtime-bridge-sanitize
+64 complete runtime bridge images and56 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_bridge_snapshot.c src/agc_word.c src/p66_runtime_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c -o build/runtime-bridge-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/runtime-bridge-native-sanitize > build/runtime-bridge-sanitize.snapshots
+cmp build/runtime-bridge-sanitize.snapshots build/runtime-bridge-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_bridge_diagnostic.c tests/runtime_bridge_check.c src/agc_word.c src/p66_runtime_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c -Wl,-Map,build/runtime_bridge.map -o build/runtime_bridge.prg

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete cm_display_control group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 5241
+cm_display_control-hardware-stack.bin: measured stack extent 14 bytes
+cm_display_control-software-stack.bin: measured stack extent 75 bytes

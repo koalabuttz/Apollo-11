@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete throttle_bridge group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 5491
+throttle_bridge-hardware-stack.bin: measured stack extent 14 bytes
+throttle_bridge-software-stack.bin: measured stack extent 12 bytes

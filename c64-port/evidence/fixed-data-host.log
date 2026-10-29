@@ -1,0 +1,8 @@
+host: PASS: independent noun60 source values, both missions, table bounds and unchanged failure outputs
+lm: PASS: independent noun60 source values, both missions, table bounds and unchanged failure outputs
+cm: PASS: independent noun60 source values, both missions, table bounds and unchanged failure outputs
+sanitize: PASS: independent noun60 source values, both missions, table bounds and unchanged failure outputs
+PASS: all 2871 native data words match independently decoded original ropes; all 131072 address probes and six tables per mission obey coverage/bounds
+PASS: 4894 source label/alias bindings; compile-time assertions preserve original physical ALTVAR01357 and fixed R53FLBIT05010
+PASS: all249 immutable CM restart-prefix words equal existing source-qualified selector dataset
+Sanitizer: AddressSanitizer+UndefinedBehaviorSanitizer; leak detector disabled because managed executor uses ptrace; API has no heap allocations.

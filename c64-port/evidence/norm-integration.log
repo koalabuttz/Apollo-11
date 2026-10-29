@@ -1,0 +1,3 @@
+./build/test-norm
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+make: Nothing to be done for 'c64-norm'.

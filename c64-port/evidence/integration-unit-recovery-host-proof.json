@@ -1,0 +1,19 @@
+{
+  "exact_git_snapshot": "69975cb4258b52e6cdcb56d291bdb0622cee9aff",
+  "copied_committed_files": 14235,
+  "all_and_test_exit_code": 0,
+  "invocation": [
+    "make",
+    "-j4",
+    "all",
+    "test"
+  ],
+  "source_baseline": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "uncommitted_source_excluded": true,
+  "complete_source_files": 39,
+  "remaining_source_files": 136,
+  "full_port_completion_gate_exit_code": 1,
+  "full_port_completion_certified": false,
+  "log_sha256": "c21bbf7719899dd3900c83e181d5ea38edd4b34a86b3fc65966f40d9f6a3eeec",
+  "scope": "Clean isolated portable host build and all registered host checks through both whole interbank and service routine certificates, actual P66 recurrence, full RTB UNIT numerical callers, positive zero Executive admission, operator request composition and uninterrupted Comanche abort lifecycle; newer commits retain separate milestone checks."
+}

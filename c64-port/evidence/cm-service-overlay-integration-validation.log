@@ -1,0 +1,27 @@
+python3 tools/cm_service_overlay_build.py --cc "/workspace/toolchains/llvm-mos/bin/mos-c64-clang" --c1541 "/workspace/toolchains/vice/usr/bin/c1541"
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-service-overlay-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-service-overlay-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-SERVICE-OVERLAY.PRG' as `RESIDENT' to unit 8
+writing file `CM-SERVICE-OVERLAY-1.PRG' as `C1' to unit 8
+writing file `CM-SERVICE-OVERLAY-2.PRG' as `C2' to unit 8
+writing file `CM-SERVICE-OVERLAY-3.PRG' as `C3' to unit 8
+writing file `CM-SERVICE-OVERLAY-4.PRG' as `C4' to unit 8
+writing file `CM-SERVICE-OVERLAY-250.PRG' as `C250' to unit 8
+writing file `CM-SERVICE-OVERLAY-251.PRG' as `C251' to unit 8
+1 3015 loaded bytes
+2 7768 loaded bytes
+3 5353 loaded bytes
+4 4215 loaded bytes
+250 3338 loaded bytes
+251 7351 loaded bytes
+Built sole-image CM resident and four actual native service/body modules plus proof overlays
+Byte-identical reproducible C64 artifact cm-service-overlay.prg c0bb794cd130ec6ec248721e35e5c6c70f78794bcd0409a7fbbd030da83d4e1b
+Byte-identical reproducible C64 artifact cm-service-overlay.map e68e811574a3397337d729c0b5380c10bdb3e5ee1e3c9d4ce5635a5926381eac
+Byte-identical reproducible C64 artifact cm-service-overlay.d64 0dfa21b0212ff067afaf24408ade523d1c43b248f385cb0cfaaa35b257fea374
+Byte-identical reproducible C64 artifact cm-service-overlay-1.prg a3a90ded9a410f73247ea1a62dee4bcc7fc317aba14d95c0b10a242e5daedb62
+Byte-identical reproducible C64 artifact cm-service-overlay-2.prg 0b3781224bde1e80fab84b3dc704299a4454a5469f34ff3379388e06ed405396
+Byte-identical reproducible C64 artifact cm-service-overlay-3.prg 453c1e9580851e615ceb6b33d1507a88ab57ca5d531b7ca1ddc10e5ec1e2471c
+Byte-identical reproducible C64 artifact cm-service-overlay-4.prg b32734506076c49a0739553b8bbc43847b40486ea93a01f6804a219eba28f4d2
+Byte-identical reproducible C64 artifact cm-service-overlay-250.prg 48b8bda5fc8cdcf8920f657101dabf2c148734b238b2540e42324e0ae017a22f
+Byte-identical reproducible C64 artifact cm-service-overlay-251.prg f0fb4246d80e016252ba223c2e8a1f0ed6ab29eba7ac7cd9110b3d59472c2cae

@@ -1,0 +1,6 @@
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/overlay_runtime.c src/native_module_registry.c tests/test_native_module_registry.c -o build/test-native-module-registry
+build/test-native-module-registry
+PASS: all111 frozen descriptors; bounded resident copies, unknown/stale/error/IRQ-state seams and unchanged2048-word source image
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -g -O1 -no-pie -fsanitize=address,undefined src/overlay_runtime.c src/native_module_registry.c tests/test_native_module_registry.c -o build/test-native-module-registry-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-native-module-registry-sanitize
+PASS: all111 frozen descriptors; bounded resident copies, unknown/stale/error/IRQ-state seams and unchanged2048-word source image

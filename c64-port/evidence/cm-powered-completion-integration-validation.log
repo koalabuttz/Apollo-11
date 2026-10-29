@@ -1,0 +1,26 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_smcdure.c src/cm_smcdure.c src/guidance_product.c src/guidance_dp_divide.c src/guidance_sum.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_smcdure_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-smcdure-port
+./build/test-cm-smcdure-port
+576 complete2048-word original CM SMCDURES source operation states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_smcdure.c src/cm_smcdure.c src/guidance_product.c src/guidance_dp_divide.c src/guidance_sum.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_smcdure_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-smcdure-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-smcdure-port-sanitize
+576 complete2048-word original CM SMCDURES source operation states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_nbsm.c src/cm_nbsm.c src/cm_powered_interface.c src/cm_powered_axis.c src/cm_powered_trig.c src/guidance_trig.c src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_nbsm_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-nbsm-port
+./build/test-cm-nbsm-port
+192 complete2048-word original CM legacy NBSM source states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_nbsm.c src/cm_nbsm.c src/cm_powered_interface.c src/cm_powered_axis.c src/cm_powered_trig.c src/guidance_trig.c src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_nbsm_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-nbsm-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-nbsm-port-sanitize
+192 complete2048-word original CM legacy NBSM source states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_powered_quick.c src/cm_powered_constants.c tests/test_cm_powered_constants.c src/cm_powered_quick_return.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_powered_quick_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-quick-port
+./build/test-cm-powered-quick-port
+64 complete2048-word original CM QUICTRIG+TC A source states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_powered_quick.c src/cm_powered_constants.c tests/test_cm_powered_constants.c src/cm_powered_quick_return.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_powered_quick_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-quick-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-powered-quick-port-sanitize
+64 complete2048-word original CM QUICTRIG+TC A source states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_powered_fixed_return.c src/cm_powered_fixed_return.c src/agc_word.c tests/cm_powered_fixed_return_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-fixed-return-port
+./build/test-cm-powered-fixed-return-port
+128 complete2048-word original CM fixed RVQ source states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_powered_fixed_return.c src/cm_powered_fixed_return.c src/agc_word.c tests/cm_powered_fixed_return_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-fixed-return-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-powered-fixed-return-port-sanitize
+128 complete2048-word original CM fixed RVQ source states: PASS
+5 original POWERED fixed constants: PASS
+All 187 original emitted words mapped to native groups.

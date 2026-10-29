@@ -1,0 +1,73 @@
+{
+  "platform": "VICE 3.7.1 PAL C64",
+  "clock_hz": 985248,
+  "prg_file_bytes": 46651,
+  "loaded_bytes": 46649,
+  "load_address": 2049,
+  "sections": {
+    "text": {
+      "address": 2061,
+      "bytes": 14792
+    },
+    "rodata": {
+      "address": 16853,
+      "bytes": 31845
+    },
+    "bss": {
+      "address": 48698,
+      "bytes": 178
+    },
+    "noinit": {
+      "address": 48876,
+      "bytes": 1
+    },
+    "data": {
+      "address": 48698,
+      "bytes": 0
+    }
+  },
+  "modeled_words": 89,
+  "state_bytes": 178,
+  "additional_store_state_bytes": 0,
+  "expectation_word_bytes": 31328,
+  "expectation_path_bytes": 176,
+  "mailbox": "a50000b00003b25924",
+  "samples": [
+    {
+      "case": 0,
+      "name": "direct STORE case 0",
+      "cycles": 279,
+      "milliseconds": 0.283
+    },
+    {
+      "case": 1,
+      "name": "direct STORE case 1",
+      "cycles": 317,
+      "milliseconds": 0.322
+    },
+    {
+      "case": 15,
+      "name": "direct STORE case 15",
+      "cycles": 236,
+      "milliseconds": 0.24
+    },
+    {
+      "case": 18,
+      "name": "direct STORE case 18",
+      "cycles": 314,
+      "milliseconds": 0.319
+    },
+    {
+      "case": 160,
+      "name": "complete RODCOMP through STORE",
+      "cycles": 21841,
+      "milliseconds": 22.168
+    }
+  ],
+  "hardware_stack_below_entry": 44,
+  "hardware_stack_including_rom_frame": 58,
+  "software_stack_sentinel_extent": 498,
+  "compiler_zp_register_bytes": 32,
+  "extra_compiler_zp_bytes": 0,
+  "measurement_limit": "Finite guarded samples include marker/call and VIC bus costs; no WCET or live producer-rate/flight-deadline proof."
+}

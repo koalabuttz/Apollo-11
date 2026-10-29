@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm_single_return group original-assembly states; retained memory unchanged
+Mailbox: a500002001
+PRG bytes: 4437
+cm_single_return-hardware-stack.bin: measured stack extent 20 bytes
+cm_single_return-software-stack.bin: measured stack extent 50 bytes

@@ -1,0 +1,21 @@
+{
+  "cases": 8192,
+  "checkpoints": 22362,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "PRIODSPR10,2726\u2192SPVAC5160",
+    "genuine SPVAC\u2192BOTHJOBS10,3107 or BAILOUT7755",
+    "BOTHJOBS\u2192SAVELOCS/SAVELOCR\u2192BANKJUMP4704\u2192actual caller"
+  ],
+  "context_cohorts": "all seven core scan positions, fiveVAC/full resource exhaustion, +0 unavailable occupied cores, allEB/SUPER/physicalFB savedcaller groups, savedcaller descriptor corners and actual source carry/TSoverflow, source NEWJOB ownership; all13 external latches compared",
+  "binary_bytes": 92355060,
+  "snapshot_sha256": "61f60b717c463b94a240aa93ade06e134c317da0cd63d4a26bc60dda3c7b9807",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase,status,2048physicalwords,13 cm_native_io latches",
+  "scope": "actual flashing priority-display immediate-return control; queued MAKEPLAY and abort recovery bodies remain separately qualified; admission alarm metadata is read from original selected inline literal"
+}

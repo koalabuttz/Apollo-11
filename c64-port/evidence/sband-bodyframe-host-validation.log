@@ -1,0 +1,5 @@
+python3 tools/sband_bodyframe_compare.py
+PASS {'states': 131072, 'start': 0, 'end': 131072, 'record_bytes': 4106, 'decoded_sha256': '142cd9b8645868683883d044360830fdbd09319bc46e1547ae71eccc48727b34'}
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_bodyframe_snapshot.c tests/sband_bodyframe_cases.c src/agc_word.c src/sband_bodyframe.c src/lm_powered_interface.c src/lm_powered_axis.c src/cm_powered_interface.c src/cm_powered_axis.c src/guidance_rotation.c src/cm_rotation.c src/guidance_product.c src/agc_multiword.c -o build/sband-bodyframe-sanitize
+python3 tools/sband_bodyframe_compare.py sanitize
+PASS {'states': 131072, 'start': 0, 'end': 131072, 'record_bytes': 4106, 'decoded_sha256': '142cd9b8645868683883d044360830fdbd09319bc46e1547ae71eccc48727b34'}

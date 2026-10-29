@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_input_select-lm.prg from 0801 to 1CB5 (14B5 bytes)
+WATCH: 1  C:$3cbe  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 3cbe)  133/$085,  21/$15
+.C:148c  8E BE 3C    STX $3CBE      - A:40 X:A5 Y:00 SP:f1 N.-....C  149708496
+>C:3cbe  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_select-lm-vice-mailbox.bin' from $3cbe to $3cc2
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_select-lm-vice-difference.bin' from $1cb6 to $1cbd
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_select-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_input_select-lm-vice-software-stack.bin' from $c100 to $cfff

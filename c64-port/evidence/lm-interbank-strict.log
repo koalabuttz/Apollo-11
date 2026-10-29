@@ -1,0 +1,15 @@
+PASS lm-interbank-native-v3 65536 complete source states
+PASS lm-interbank-native-v3 131072 complete source states
+PASS lm-interbank-native-v3 196608 complete source states
+PASS lm-interbank-native-v3 262144 complete source states
+PASS lm-interbank-native-v3 327680 complete source states
+PASS lm-interbank-native-v3 393216 complete source states
+PASS lm-interbank-native-v3 458752 complete source states
+PASS lm-interbank-native-v3 524288 complete source states
+PASS lm-interbank-native-v3 589824 complete source states
+PASS lm-interbank-native-v3 655360 complete source states
+PASS lm-interbank-native-v3 720896 complete source states
+PASS lm-interbank-native-v3 786432 complete source states
+PASS lm-interbank-native-v3 851968 complete source states
+PASS lm-interbank-native-v3 917504 complete source states
+{"binary": "lm-interbank-native-v3", "states": 921088, "record_bytes": 4108, "decoded_sha256": "e8b88d7c729a249635a0a997a88e82944be89624c249886b4be58c96bad3cd4c"}

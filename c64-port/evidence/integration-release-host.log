@@ -1,0 +1,695 @@
+mkdir -p build
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/guidance_product.c src/guidance_sum.c src/cm_difeq.c tests/cm_difeq_cases.c tools/cm_difeq_snapshot.c -o build/cm-difeq-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_orbital_initial.c tests/cm_orbital_initial_cases.c tools/cm_orbital_initial_snapshot.c -o build/cm-orbital-initial-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_orbital_initial.c tests/cm_orbital_initial_cases.c tools/cm_orbital_initial_snapshot.c -o build/cm-orbital-initial-native
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_rows_snapshot.c src/agc_word.c src/p66_nv_rows.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c -o build/nv-rows-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_rows.c tests/nv_rows_check.c src/agc_word.c src/p66_nv_rows.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c -o build/test-nv-rows
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_render_full_snapshot.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/nv-render-full-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_render.c tests/nv_render_check.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/test-nv-render
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/goplay_snapshot.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/goplay-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_goplay.c tests/goplay_check.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/test-goplay
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_priority_snapshot.c src/agc_word.c src/lm_basic_priority.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c -o build/lm-priority-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_priority.c tests/lm_priority_check.c src/agc_word.c src/lm_basic_priority.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c -o build/test-lm-priority
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_bridge_snapshot.c src/agc_word.c src/p66_runtime_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c -o build/runtime-bridge-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_bridge.c tests/runtime_bridge_check.c src/agc_word.c src/p66_runtime_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c -o build/test-runtime-bridge
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/fixed_data.c tests/test_fixed_data.c -o build/test-fixed-data
+make -f tools/throttle_feedback_pairs.mk build/throttle-feedback-pairs-native
+make[1]: Entering directory '/tmp/apollo-host-latest/c64-port'
+gcc -O2 -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/throttle_feedback_pairs_snapshot.c src/guidance_feedback_pairs.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_pairs_cases.c -o build/throttle-feedback-pairs-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c  src/dsky_pinball.c src/dsky_nv_key.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_nv_key_check.c tests/test_dsky_nv_key.c -o build/test-dsky-nv-key
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c  src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_nv_cases.c tests/dsky_charin_nv_check.c tests/test_dsky_charin_nv.c -o build/test-dsky-charin-nv
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/dsky_keycom.c tests/dsky_keycom_cases.c tests/dsky_keycom_check.c tests/test_dsky_keycom.c -o build/test-dsky-keycom
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/dsky_keycom.c src/dsky_keyrupt.c tests/dsky_keyrupt_cases.c tests/dsky_keyrupt_check.c tests/test_dsky_keyrupt.c -o build/test-dsky-keyrupt
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_tig5.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_tig5_cases.c platform/host/cm_tig5_snapshot.c -o build/cm-tig5-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_tig5.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_tig5_cases.c tests/cm_tig5_check.c tests/test_cm_tig5.c -o build/test-cm-tig5
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_entry_tasks.c src/cm_phase.c src/cm_native_image.c src/cm_waitlist.c src/cm_waitlist_native.c src/agc_word.c tests/cm_entry_tasks_cases.c platform/host/cm_entry_tasks_snapshot.c -o build/cm-entry-tasks-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_entry_tasks.c src/cm_phase.c src/cm_native_image.c src/cm_waitlist.c src/cm_waitlist_native.c src/agc_word.c tests/cm_entry_tasks_cases.c tests/cm_entry_tasks_check.c tests/test_cm_entry_tasks.c -o build/test-cm-entry-tasks
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_regodspr_snapshot.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/runtime_regodspr-native
+make[1]: Leaving directory '/tmp/apollo-host-latest/c64-port'
+make -f tools/horizontal_phased.mk build/horizontal-phased-native
+make[1]: Entering directory '/tmp/apollo-host-latest/c64-port'
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/horizontal_phased_snapshot.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_vector.c src/guidance_sum.c src/guidance_shift.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_horizontal.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/horizontal_cases.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_horizontal_phased.c tests/horizontal_phased_cases.c -o build/horizontal-phased-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_regodspr.c tests/runtime_regodspr_check.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/test-runtime_regodspr
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_fetch_snapshot.c src/agc_word.c src/p66_runtime_bridge.c src/p66_runtime_fetch_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c tests/runtime_fetch_cases.c -o build/runtime-fetch-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_fetch.c tests/runtime_fetch_check.c src/agc_word.c src/p66_runtime_bridge.c src/p66_runtime_fetch_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c tests/runtime_fetch_cases.c -o build/test-runtime-fetch
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_wake_snapshot.c src/agc_word.c src/lm_basic_wake.c src/executive.c tests/throttle_bridge_cases.c tests/lm_wake_cases.c -o build/lm-wake-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_wake.c tests/lm_wake_check.c src/agc_word.c src/lm_basic_wake.c src/executive.c tests/throttle_bridge_cases.c tests/lm_wake_cases.c -o build/test-lm-wake
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/makeplay_snapshot.c src/agc_word.c src/p66_makeplay.c tests/throttle_bridge_cases.c tests/makeplay_cases.c -o build/makeplay-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_makeplay.c tests/makeplay_check.c src/agc_word.c src/p66_makeplay.c tests/throttle_bridge_cases.c tests/makeplay_cases.c -o build/test-makeplay
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_timing_cases.c platform/host/cm_restart_timing_snapshot.c -o build/cm-restart-timing-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_timing_cases.c tests/cm_restart_timing_check.c tests/test_cm_restart_timing.c -o build/test-cm-restart-timing
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_longcall.c src/agc_word.c src/agc_multiword.c tests/cm_longcall_cases.c platform/host/cm_longcall_snapshot.c -o build/cm-longcall-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_longcall.c src/agc_word.c src/agc_multiword.c tests/cm_longcall_cases.c tests/cm_longcall_check.c tests/test_cm_longcall.c -o build/test-cm-longcall
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_restart_select.c src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_select_cases.c platform/host/cm_restart_select_snapshot.c -o build/cm-restart-select-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_restart_select.c src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_select_cases.c tests/cm_restart_select_check.c tests/test_cm_restart_select.c -o build/test-cm-restart-select
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_clocktask.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_clocktask_cases.c platform/host/cm_clocktask_snapshot.c -o build/cm-clocktask-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_clocktask.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_clocktask_cases.c tests/cm_clocktask_check.c tests/test_cm_clocktask.c -o build/test-cm-clocktask
+make[1]: Leaving directory '/tmp/apollo-host-latest/c64-port'
+touch build/p66-fine-phases-host.stamp
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_waitlist_image.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_waitlist_image_cases.c platform/host/cm_waitlist_image_snapshot.c -o build/cm-waitlist-image-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_waitlist_image.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_waitlist_image_cases.c tests/cm_waitlist_image_check.c tests/test_cm_waitlist_image.c -o build/test-cm-waitlist-image
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_task_transfer.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_task_transfer_cases.c platform/host/cm_task_transfer_snapshot.c -o build/cm-task-transfer-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_task_transfer.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_task_transfer_cases.c tests/cm_task_transfer_check.c tests/test_cm_task_transfer.c -o build/test-cm-task-transfer
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_admission_image.c src/cm_executive.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_admission_image_cases.c platform/host/cm_admission_image_snapshot.c -o build/cm-admission-image-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_admission_image.c src/cm_executive.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_admission_image_cases.c tests/cm_admission_image_check.c tests/test_cm_admission_image.c -o build/test-cm-admission-image
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_svct3.c src/cm_native_image.c src/agc_word.c tests/cm_svct3_cases.c platform/host/cm_svct3_snapshot.c -o build/cm-svct3-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_svct3.c src/cm_native_image.c src/agc_word.c tests/cm_svct3_cases.c tests/cm_svct3_check.c tests/test_cm_svct3.c -o build/test-cm-svct3
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_delay_image.c src/cm_waitlist_image.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c tests/cm_delay_image_cases.c platform/host/cm_delay_image_snapshot.c -o build/cm-delay-image-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_delay_image.c src/cm_waitlist_image.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c tests/cm_delay_image_cases.c tests/cm_delay_image_check.c tests/test_cm_delay_image.c -o build/test-cm-delay-image
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_trig.c tests/frozen_words.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_trig_cases.c -o build/test-cm-trig
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DCM_SINGLE_RETURN_COMPLETE tests/test_cm_single_return.c tests/frozen_words.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c src/cm_quictrig.c src/agc_multiword.c -o build/test-cm-single-return
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_sleep_snapshot.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/lm-sleep-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_sleep.c tests/lm_sleep_check.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/test-lm-sleep
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/makeplay_sleep_snapshot.c src/agc_word.c src/p66_makeplay.c src/p66_makeplay_sleep.c tests/throttle_bridge_cases.c tests/makeplay_cases.c tests/makeplay_sleep_cases.c -o build/makeplay-sleep-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_makeplay_sleep.c tests/makeplay_sleep_check.c src/agc_word.c src/p66_makeplay.c src/p66_makeplay_sleep.c tests/throttle_bridge_cases.c tests/makeplay_cases.c tests/makeplay_sleep_cases.c -o build/test-makeplay-sleep
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_busy_snapshot.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/lm-busy-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_busy.c tests/lm_busy_check.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/test-lm-busy
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_display.c tests/cm_display_check.c src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_image.c src/cm_basic_priority.c src/cm_init_display.c tests/cm_display_cases.c -o build/test-cm-display
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_pinball.c tests/cm_pinball_check.c src/agc_word.c src/dsky_pinball.c src/cm_pinball.c tests/cm_pinball_cases.c -o build/test-cm-pinball
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_formatter.c tests/cm_formatter_check.c src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_two_digit.c src/dsky_decimal.c src/cm_formatter.c tests/cm_pinball_cases.c tests/cm_formatter_cases.c -o build/test-cm-formatter
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/fixed_data.c src/noun_reader.c tests/noun_reader_cases.c tests/test_noun_reader.c -o build/test-noun-reader
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/layout.c tests/layout_check.c tests/test_layout.c -o build/test-layout
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_single_trig.c tests/frozen_words.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_single_trig_cases.c -o build/test-lm-single-trig
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_finish_snapshot.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/lm-finish-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_finish.c tests/lm_finish_check.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/test-lm-finish
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_mysubs.c tests/frozen_words.c src/cm_mysubs.c src/agc_word.c src/agc_multiword.c tests/cm_mysubs_cases.c -o build/test-cm-mysubs
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_task_interrupt.c src/cm_native_image.c src/agc_word.c tests/cm_task_interrupt_cases.c platform/host/cm_task_interrupt_snapshot.c -o build/cm-task-interrupt-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_task_interrupt.c src/cm_native_image.c src/agc_word.c tests/cm_task_interrupt_cases.c tests/cm_task_interrupt_check.c tests/test_cm_task_interrupt.c -o build/test-cm-task-interrupt
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c platform/host/cm_service_loop_snapshot.c -o build/cm-service-loop-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c tests/cm_service_loop_check.c tests/test_cm_service_loop.c -o build/test-cm-service-loop
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_relay.c tests/cm_relay_check.c src/agc_word.c src/dsky_relay.c src/dsky_display.c src/cm_relay.c tests/cm_pinball_cases.c tests/cm_relay_cases.c -o build/test-cm-relay
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_scale.c tests/cm_scale_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/dsky_scale.c src/cm_scale.c tests/p66_bias_cases.c tests/dsky_scale_cases.c tests/cm_scale_cases.c -o build/test-cm-scale
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/lm_torque.c tests/lm_torque_cases.c tests/test_lm_torque.c -o build/test-lm-torque
+python3 tools/native_source_adoption_test.py
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_basic_finish.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_basic_finish_cases.c platform/host/cm_basic_finish_snapshot.c -o build/cm-basic-finish-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c  src/dsky_pinball.c src/agc_multiword.c src/dsky_charin_number.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_number_cases.c tests/dsky_charin_number_check.c tests/test_dsky_charin_number.c -o build/test-dsky-charin-number
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_clockjob_snapshot.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -o build/cm-clockjob-native
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_display_control_snapshot.c src/agc_word.c src/cm_display_control.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c -o build/cm-display-control-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/dsky_keycom.c src/dsky_keyrupt.c src/dsky_key_irq.c tests/dsky_key_irq_cases.c tests/dsky_key_irq_check.c tests/test_dsky_key_irq.c -o build/test-dsky-key-irq
+PASS256 complete original priority/sleep dispatch transitions, deferred IRQ requests and4 domain guards
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_basic.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/dsky_keycom.c src/dsky_keyrupt.c src/dsky_key_irq.c src/dsky_keyboard.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_keyboard_flow_cases.c tests/dsky_keyboard_flow_check.c tests/test_dsky_keyboard_flow.c -o build/test-dsky-keyboard-flow
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_basic.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/dsky_keycom.c src/dsky_keyrupt.c src/dsky_key_irq.c src/dsky_keyboard.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_keyboard_irq_flow_cases.c tests/dsky_keyboard_irq_flow_check.c tests/test_dsky_keyboard_irq_flow.c -o build/test-dsky-keyboard-irq-flow
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -Wl,--gc-sections tools/display_job_snapshot.c src/p66_nv_render.c src/dsky_scale.c src/guidance_product.c src/p66_nv_words.c src/p66_nv_rows.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/dsky_decimal.c src/agc_multiword.c src/p66_goplay.c src/p66_makeplay.c src/p66_makeplay_sleep.c src/lm_basic_priority.c src/lm_basic_wake.c src/lm_basic_sleep.c src/lm_basic_finish.c src/lm_pinball_busy.c src/p66_display_job.c src/p66_native.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/agc_word.c tests/throttle_bridge_cases.c tests/makeplay_cases.c tests/display_job_cases.c -o build/display-job-native
+PASS128 complete original ENDOFJOB basic/interpreter/idle adoptions, retained IRQ requests and7 domain guards
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -Wl,--gc-sections tools/display_job_lifecycle_snapshot.c tests/display_job_lifecycle_cases.c src/p66_nv_render.c src/dsky_scale.c src/guidance_product.c src/p66_nv_words.c src/p66_nv_rows.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/dsky_decimal.c src/agc_multiword.c src/p66_goplay.c src/p66_makeplay.c src/p66_makeplay_sleep.c src/lm_basic_priority.c src/lm_basic_wake.c src/lm_basic_sleep.c src/lm_basic_finish.c src/lm_pinball_busy.c src/p66_display_job.c src/p66_native.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/agc_word.c tests/throttle_bridge_cases.c tests/makeplay_cases.c tests/display_job_cases.c -o build/display-job-lifecycle-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_basic.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/dsky_keycom.c src/dsky_keyrupt.c src/dsky_key_irq.c src/dsky_keyboard.c src/dsky_charin_number.c src/dsky_keyboard_number.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_keyboard_number_flow_cases.c tests/dsky_keyboard_number_flow_check.c tests/test_dsky_keyboard_number_flow.c -o build/test-dsky-keyboard-number-flow
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_danzig.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_danzig_cases.c tests/cm_basic_finish_cases.c platform/host/cm_danzig_snapshot.c -o build/cm-danzig-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_powered_trig.c src/cm_powered_trig.c src/guidance_trig.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-trig-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_gimbal.c src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/gimbal_stage.c tests/gimbal_cases.c -o build/test-gimbal-port
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_charin_number.c src/cm_charin_number.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_number_cases.c tests/cm_charin_number_cases.c tests/test_cm_charin_number.c tests/cm_charin_number_check.c -o build/test-cm-charin-number
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c src/cm_mission_loop.c src/cm_mission_builtin.c src/cm_task_interrupt.c src/cm_danzig.c src/cm_basic_finish.c tests/cm_mission_loop_cases.c platform/host/cm_mission_loop_snapshot.c -o build/cm-mission-loop-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_powered_axis.c src/cm_powered_axis.c src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-axis-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_powered_interface.c src/cm_powered_interface.c src/cm_powered_axis.c src/cm_powered_trig.c src/guidance_trig.c src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-interface-port
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tools/cm_makeplay_snapshot.c src/agc_word.c src/cm_makeplay.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_cases.c -o build/cm-makeplay-native
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tools/cm_wake_snapshot.c src/agc_word.c src/cm_basic_wake.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c -o build/cm-wake-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/cm_executive.c src/cm_native_image.c src/cm_admission_image.c src/cm_keyboard_irq.c tests/cm_keyboard_irq_cases.c tests/test_cm_keyboard_irq.c tests/cm_keyboard_irq_check.c -o build/test-cm-keyboard-irq
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/cm_charin_nv.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_nv_cases.c tests/cm_charin_nv_cases.c tests/test_cm_charin_nv.c tests/cm_charin_nv_check.c -o build/test-cm-charin-nv
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_waitlist_extended.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c tests/cm_waitlist_extended_cases.c tests/cm_waitlist_image_cases.c platform/host/cm_waitlist_extended_snapshot.c -o build/cm-waitlist-extended-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_waitlist_extended.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c tests/cm_waitlist_extended_cases.c tests/cm_waitlist_image_cases.c tests/cm_waitlist_extended_check.c tests/test_cm_waitlist_extended.c -o build/test-cm-waitlist-extended
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_delcomp.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c src/guidance_sum.c src/guidance_trig.c src/delcomp.c tests/delcomp_cases.c -o build/test-delcomp-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_idle_dispatch.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_idle_dispatch_cases.c tests/cm_basic_finish_cases.c platform/host/cm_idle_dispatch_snapshot.c -o build/cm-idle-dispatch-native
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tools/cm_makeplay_sleep_snapshot.c src/agc_word.c src/cm_makeplay_sleep.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_sleep_cases.c -o build/cm-makeplay-sleep-native
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tools/cm_sleep_snapshot.c src/agc_word.c src/cm_basic_sleep.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_basic_finish_cases.c tests/cm_sleep_cases.c -o build/cm-sleep-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections src/agc_word.c src/agc_multiword.c src/guidance_product.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c src/p66_initialization.c src/p66_bias.c src/p66_major_mode.c src/p66_vertical_start.c src/p66_launch.c src/p66_direct_launch.c src/p66_native.c src/native_dispatch.c src/irq_delivery.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_launch_cases.c tests/p66_direct_launch_cases.c tests/p66_direct_launch_check.c tests/test_p66_direct_launch.c -Wl,--gc-sections -o build/test-p66-direct-launch
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -ffunction-sections -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/cm_executive.c src/cm_dispatch.c src/cm_native_image.c src/cm_admission_image.c src/cm_keyboard_irq.c src/cm_idle_dispatch.c src/cm_basic_finish.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/dsky_charin_number.c src/cm_charin_nv.c src/cm_charin_number.c src/cm_keyboard_runtime.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_nv_cases.c tests/dsky_charin_number_cases.c tests/cm_charin_nv_cases.c tests/cm_charin_number_cases.c tests/cm_keyboard_runtime_cases.c tests/cm_keyboard_runtime_check.c tests/test_cm_keyboard_runtime.c -Wl,--gc-sections -o build/test-cm-keyboard-runtime
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_gimbal_complete.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_shift.c src/guidance_sum.c src/guidance_trig.c src/guidance_dot.c src/guidance_dp_divide.c src/delcomp.c src/gimbal_stage.c src/gimbal_complete.c tests/delcomp_cases.c tests/gimbal_complete_cases.c -o build/test-gimbal-complete-port
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tools/cm_display_sleep_lifecycle_snapshot.c src/agc_word.c src/cm_makeplay_sleep.c src/cm_basic_wake.c src/cm_basic_sleep.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c tests/cm_display_sleep_lifecycle_cases.c -o build/cm-display-sleep-lifecycle-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_smcdure.c src/cm_smcdure.c src/guidance_product.c src/guidance_dp_divide.c src/guidance_sum.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c tests/cm_smcdure_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-smcdure-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_nbsm.c src/cm_nbsm.c src/cm_powered_interface.c src/cm_powered_axis.c src/cm_powered_trig.c src/guidance_trig.c src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_nbsm_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-nbsm-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_powered_quick.c src/cm_powered_constants.c tests/test_cm_powered_constants.c src/cm_powered_quick_return.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_powered_quick_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-quick-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_powered_fixed_return.c src/cm_powered_fixed_return.c src/agc_word.c tests/cm_powered_fixed_return_cases.c tests/cm_powered_interface_cases.c tests/cm_powered_axis_cases.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-fixed-return-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/lm_interpreter_change.c tests/lm_interpreter_change_cases.c tests/test_lm_interpreter_change.c -o build/test-lm-interpreter-change
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -ffunction-sections -DP66_NATIVE_DISPATCH_ONLY -DP66_DIRECT_LAUNCH_DISPATCH_ONLY src/agc_word.c src/agc_multiword.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c src/p66_initialization.c src/p66_vertical_start.c src/p66_direct_launch.c src/p66_native.c src/native_dispatch.c src/irq_delivery.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_launch_cases.c tests/p66_direct_launch_cases.c tests/p66_direct_pending_check.c tests/test_p66_direct_pending.c -Wl,--gc-sections -o build/test-p66-direct-pending
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_pinball.c src/dsky_charin_sign.c tests/p66_bias_cases.c tests/dsky_charin_sign_cases.c tests/dsky_charin_sign_check.c tests/test_dsky_charin_sign.c -o build/test-dsky-charin-sign
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_product.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c src/p66_initialization.c src/p66_bias.c src/p66_major_mode.c src/p66_vertical_start.c src/p66_launch.c src/p66_launch_phased.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_launch_cases.c tools/p66_launch_phased_snapshot.c -o build/p66-launch-phased-port
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/matrix_snapshot.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/matrix_native.c tests/matrix_cases.c -o build/matrix-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_pinball.c src/dsky_charin_clear.c src/dsky_two_digit.c src/agc_multiword.c src/cm_formatter.c src/dsky_decimal.c tests/p66_bias_cases.c tests/dsky_charin_clear_cases.c tests/dsky_charin_clear_check.c tests/test_dsky_charin_clear.c -o build/test-dsky-charin-clear
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPASSIVE_STORAGE_LM tests/passive_storage_host.c src/lm_fixed_compat.c -o build/passive-storage-lm-host
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/passive_storage_host.c src/cm_fixed_compat.c -o build/passive-storage-cm-host
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration.c tests/frozen_words.c src/guidance_acceleration.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c -o build/test-acceleration
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c tests/waitlist_zero_cases.c tests/waitlist_zero_check.c tests/test_waitlist_zero.c -o build/test-waitlist-zero
+./build/test-waitlist-zero
+WAITLIST ZERO: 256 FULL STATES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c tests/p66_startup_cases.c tests/p66_startup_check.c tests/test_p66_startup.c -o build/test-p66-startup
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_rotation.c tests/frozen_words.c src/guidance_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/rotation_cases.c -o build/test-rotation
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_hardware_divide.c src/agc_word.c src/agc_hardware_divide.c tests/hardware_divide_cases.c -o build/test-hardware-divide
+build/test-hardware-divide
+255 complete hardware-DV register states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/p66_initialization.c tests/p66_initialization_cases.c tests/p66_initialization_check.c tests/test_p66_initialization.c -o build/test-p66-initialization
+./build/test-p66-initialization
+P66 INITIALIZATION: 128 FULL STATES, 0 FAILURES
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_feedback.c tests/frozen_words.c src/guidance_throttle.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c -o build/test-throttle_feedback
+./build/test-p66-startup
+P66 STARTUP: 128 FULL STATES, 0 FAILURES
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_service.c tests/frozen_words.c src/guidance_throttle.c src/guidance_throttle_service.c src/agc_hardware_divide.c src/p66_initialization.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_service_cases.c -o build/test-throttle_service
+build/test-rotation
+128 complete rotation states, unsupported direction/return unchanged: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_product.c src/p66_bias.c tests/p66_bias_cases.c tests/p66_bias_check.c tests/test_p66_bias.c -o build/test-p66-bias
+build/test-acceleration
+96 complete acceleration states, unsupported MODE/VAC/pointer unchanged: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c src/p66_initialization.c src/p66_vertical_start.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_vertical_start_check.c tests/test_p66_vertical_start.c -o build/test-p66-vertical-start
+./build/test-p66-bias
+P66 BIAS: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/p66_major_mode.c tests/p66_bias_cases.c tests/p66_major_mode_cases.c tests/p66_major_mode_check.c tests/test_p66_major_mode.c -o build/test-p66-major-mode
+./build/test-p66-vertical-start
+P66 VERTICAL START: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_product.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c src/p66_initialization.c src/p66_bias.c src/p66_major_mode.c src/p66_vertical_start.c src/p66_launch.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_launch_cases.c tests/p66_launch_check.c tests/test_p66_launch.c -o build/test-p66-launch
+build/test-throttle_feedback
+64 complete throttle_feedback states, unsupported MODE/VAC/pointer unchanged: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_throttle_bridge.c tests/throttle_bridge_check.c src/agc_word.c src/p66_throttle_bridge.c tests/throttle_bridge_cases.c -o build/test-throttle-bridge
+./build/test-p66-major-mode
+P66 MAJOR MODE: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/p66_mode_display.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_mode_display_check.c tests/test_p66_mode_display.c -o build/test-p66-mode-display
+build/test-throttle-bridge
+64 complete throttle bridge images and26 invalid boundaries: PASS
+make guidance-phased-host KIND=unit
+make[1]: Entering directory '/tmp/apollo-host-latest/c64-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -DPROJECTION_INPUT_ONLY -DRADIAL_INPUT_ONLY -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_norm.c src/guidance_unit_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/unit_phased_cases.c tests/frozen_words.c tests/test_unit_phased.c -o build/test-unit-phased
+./build/test-p66-mode-display
+P66 MODE DISPLAY: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/dsky_relay.c tests/p66_bias_cases.c tests/dsky_relay_cases.c tests/dsky_relay_check.c tests/test_dsky_relay.c -o build/test-dsky-relay
+build/test-throttle_service
+96 complete throttle_service states, unsupported Q/SUPER/BB/IRQ unchanged: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c tests/dsky_display_check.c tests/test_dsky_display.c -o build/test-dsky-display
+./build/test-dsky-relay
+DSKY RELAY: 64 FULL 2052-WORD IMAGES, 0 FAILURES
+gcc -O2 -Wconversion -pedantic -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration_phased.c tests/frozen_words.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/test-acceleration-phased
+./build/test-p66-launch
+P66 LAUNCH: 32 FULL 2050-WORD IMAGES, 0 FAILURES
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_control_observer.c src/guidance_control_observer.c src/agc_word.c src/agc_multiword.c -o build/test-control-observer
+./build/test-dsky-display
+DSKY NATIVE SCREEN: SOURCE MODE66, RELAY WIRING/SIGNS/BLANK/FLASH/LAMPS, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/velocity_phased_cases.c tests/frozen_words.c tests/test_velocity_phased.c -o build/test-velocity-phased
+build/test-control-observer
+65 complete original arithmetic Q states: PASS
+gcc -O2 -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_feedback_phased.c tests/frozen_words.c src/guidance_throttle_phased.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_phased_cases.c -o build/test-throttle_feedback_phased
+build/test-unit-phased
+96 complete source unit phase entry/exit states: PASS
+make[1]: Leaving directory '/tmp/apollo-host-latest/c64-port'
+make guidance-phased-host KIND=radial
+make[1]: Entering directory '/tmp/apollo-host-latest/c64-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -DPROJECTION_INPUT_ONLY -DRADIAL_INPUT_ONLY -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_norm.c src/guidance_unit_phased.c src/guidance_dot.c src/guidance_shift.c src/guidance_sum.c src/guidance_radial_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/radial_cases.c tests/radial_phased_cases.c tests/frozen_words.c tests/test_radial_phased.c -o build/test-radial-phased
+build/test-velocity-phased
+96 complete source velocity phase entry/exit states: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_display_control.c tests/display_control_check.c src/agc_word.c src/p66_display_control.c tests/throttle_bridge_cases.c tests/display_control_cases.c -o build/test-display-control
+build/test-acceleration-phased
+build/test-display-control
+64 complete display control images and14 invalid boundaries: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_regodspr.c tests/regodspr_check.c src/agc_word.c src/p66_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c -o build/test-regodspr
+128 original acceleration phase entry/exit states;131068 bad MODE states unchanged: PASS
+gcc -O2 -Wconversion -pedantic -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration_store.c tests/frozen_words.c src/guidance_acceleration_store.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/test-acceleration-store
+build/test-throttle_feedback_phased
+build/test-radial-phased
+288 complete source radial phase entry/exit states: PASS
+make[1]: Leaving directory '/tmp/apollo-host-latest/c64-port'
+make guidance-phased-host KIND=projection
+192 original feedback phase entry/exit states;196602 bad MODE states unchanged: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_entry.c tests/nv_entry_check.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/test-nv-entry
+build/test-regodspr
+64 complete REGODSPR images and18 invalid boundaries: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_words.c tests/nv_words_check.c src/agc_word.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c -o build/test-nv-words
+make[1]: Entering directory '/tmp/apollo-host-latest/c64-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -DPROJECTION_INPUT_ONLY -DRADIAL_INPUT_ONLY -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/guidance_dot.c src/guidance_rotation.c src/guidance_projection_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tests/projection_cases.c tests/projection_phased_cases.c tests/frozen_words.c tests/test_projection_phased.c -o build/test-projection-phased
+build/test-nv-entry
+64 complete NVMONOPT images and13 invalid boundaries: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/dsky_pinball.c tests/p66_bias_cases.c tests/dsky_pinball_cases.c tests/dsky_pinball_check.c tests/test_dsky_pinball.c -o build/test-dsky-pinball
+build/test-nv-words
+64 complete verb/noun images and20 invalid boundaries: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_decimal.c tests/p66_bias_cases.c tests/dsky_decimal_cases.c tests/dsky_decimal_check.c tests/test_dsky_decimal.c -o build/test-dsky-decimal
+./build/test-dsky-pinball
+DSKY PINBALL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_product.c src/dsky_scale.c tests/p66_bias_cases.c tests/dsky_scale_cases.c tests/dsky_scale_check.c tests/test_dsky_scale.c -o build/test-dsky-scale
+./build/test-dsky-decimal
+DSKY DECIMAL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_two_digit.c tests/p66_bias_cases.c tests/dsky_two_digit_cases.c tests/dsky_two_digit_check.c tests/test_dsky_two_digit.c -o build/test-dsky-two-digit
+./build/test-dsky-scale
+DSKY SCALE: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/cm_rectify.c tests/cm_rectify_cases.c tests/frozen_words.c tests/test_cm_rectify.c -o build/test-cm-rectify
+build/test-acceleration-store
+64 original acceleration phase entry/exit states;65534 bad MODE states unchanged: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/guidance_product.c src/guidance_sum.c src/cm_difeq.c tests/cm_difeq_cases.c tests/frozen_words.c tests/test_cm_difeq.c -o build/test-cm-difeq
+./build/test-dsky-two-digit
+DSKY DSPDECVN: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_orbital_initial.c tests/cm_orbital_initial_cases.c tests/frozen_words.c tests/test_cm_orbital_initial.c -o build/test-cm-orbital-initial
+build/test-projection-phased
+96 complete source projection phase entry/exit states: PASS
+make[1]: Leaving directory '/tmp/apollo-host-latest/c64-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/dsky_pinball.c tests/p66_bias_cases.c tests/dsky_pinball_cases.c tests/dsky_pinball_zero_cases.c tests/dsky_pinball_zero_check.c tests/test_dsky_pinball_zero.c -o build/test-dsky-pinball-zero
+build/test-cm-rectify
+384 complete2048word source RECTIFY phase entry/exit pairs: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/p66_mode_display.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_mode_zero_cases.c tests/p66_mode_zero_check.c tests/test_p66_mode_zero.c -o build/test-p66-mode-zero
+./build/test-dsky-pinball-zero
+DSKY PINBALL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DP66_NATIVE_DISPATCH_ONLY -O2 -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/p66_status_check.c tests/test_p66_status.c -o build/test-p66-status
+build/test-cm-orbital-initial
+128 complete2048word+IRQ source DIFEQ0 phase entry/exit pairs: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_rows.c tests/nv_rows_check.c src/agc_word.c src/p66_nv_rows.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c -o build/test-nv-rows
+./build/test-p66-mode-zero
+P66 MODE DISPLAY: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_render.c tests/nv_render_check.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/test-nv-render
+build/test-cm-difeq
+960 complete2048word original DIFEQ phase entry/exit pairs and unchanged scope rejections: PASS
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_goplay.c tests/goplay_check.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/test-goplay
+build/test-p66-status
+P66 full-width status: 0 failures; five raw results, committed alarm payload and fault retention
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_priority.c tests/lm_priority_check.c src/agc_word.c src/lm_basic_priority.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c -o build/test-lm-priority
+build/test-nv-rows
+64 complete data preparation images and10 invalid boundaries: PASS
+build/test-runtime-bridge
+64 complete runtime bridge images and56 invalid boundaries: PASS
+./build/test-fixed-data
+PASS: independent noun60 source values, both missions, table bounds and unchanged failure outputs
+python3 tests/test_fixed_data.py
+build/test-goplay
+64 complete GOPLAY boundary images;24 invalid inputs: PASS
+make -f tools/throttle_feedback_pairs.mk check-host length-check-host
+make[1]: Entering directory '/tmp/apollo-host-latest/c64-port'
+gcc -O2 -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_feedback_pairs.c tests/frozen_words.c src/guidance_feedback_pairs.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_pairs_cases.c -o build/test-feedback-pairs
+PASS: all 2871 native data words match independently decoded original ropes; all 131072 address probes and six tables per mission obey coverage/bounds
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_basic_check.c tests/test_p66_basic.c -o build/test-p66-basic
+build/test-nv-render
+64 original rendering boundary images and30 invalid inputs: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c src/guidance_product.c src/p66_initialization.c src/p66_bias.c src/p66_major_mode.c src/p66_vertical_start.c src/p66_launch.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_launch_cases.c tests/test_p66_basic_launch.c -o build/test-p66-basic-launch
+build/test-lm-priority
+64 complete original PRIOCHNG images;16 invalid inputs: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c tests/p66_basic_task_cases.c tests/p66_basic_task_check.c tests/test_p66_basic_task.c -o build/test-p66-basic-task
+./build/test-p66-basic
+P66 BASIC: 64 full original display checkpoints, real ENDJOB/relay and 100cs RODTASK admission: 0 failures
+./build/test-dsky-nv-key
+DSKY VERB/NOUN: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+./build/test-dsky-charin-nv
+DSKY VERB/NOUN: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+./build/test-dsky-keycom
+DSKY KEYCOM: 64 complete2050word original images, 0 failures
+gcc -O2 -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_feedback_length.c tests/frozen_words.c src/guidance_length_phased.c src/guidance_feedback_pairs.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_pairs_cases.c -o build/test-feedback-length
+./build/test-p66-basic-task
+P66 BASIC RODTASK:64 complete2050word original source images, 0 failures
+./build/test-dsky-keyrupt
+DSKY KEYRUPT1: 64 complete2050word original images, 0 failures
+./build/test-cm-tig5
+1536 original CM TIG-5 full-image states and guards: PASS
+./build/test-cm-entry-tasks
+1024 original SETJTAG full-image states, actual C callbacks and guards: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_regodspr.c tests/runtime_regodspr_check.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/test-runtime_regodspr
+build/test-feedback-pairs
+640 complete original feedback pair entries/exits: PASS
+build/test-runtime-fetch
+64 complete runtime fetch images and26 invalid boundaries: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_wake.c tests/lm_wake_check.c src/agc_word.c src/lm_basic_wake.c src/executive.c tests/throttle_bridge_cases.c tests/lm_wake_cases.c -o build/test-lm-wake
+./build/test-p66-basic-launch
+P66 BASIC LAUNCH: real STARTP66, full original2050word checkpoint, actual queued display/task and RODCOMP transfer: 0 failures
+build/test-makeplay
+64 complete MAKEPLAY images and45 invalid boundaries: PASS
+./build/test-cm-restart-timing
+4096 original CM full-image timing states and guards: PASS
+./build/test-cm-longcall
+4096 original CM long-call full-image states and guards: PASS
+./build/test-cm-restart-select
+build/test-runtime_regodspr
+64 complete RUNTIME_REGODSPR images and21 invalid boundaries: PASS
+./build/test-cm-clocktask
+1536 original CM CLOKTASK full-image states and guards: PASS
+./build/test-cm-waitlist-image
+1024 original CM WAITLIST full-image states: PASS
+./build/test-cm-task-transfer
+6144 original CM restart selection full-image states and guards: PASS
+./build/test-cm-admission-image
+build/test-lm-wake
+64 complete JOBWAKE images and20 invalid boundaries: PASS
+./build/test-cm-svct3
+1024 original CM task transfer full-image states: PASS
+./build/test-cm-delay-image
+1024 original CM admission full-image states: PASS
+./build/test-cm-trig
+1024 original CM FIXDELAY/VARDELAY full-image states and guards: PASS
+./build/test-cm-single-return
+128 complete2048word original SPSIN/SPCOS/QUICTRIG states including CLOCKJOB caller: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_sleep.c tests/lm_sleep_check.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/test-lm-sleep
+64 complete2048word source SPSIN/SPCOS TCQ return states: PASS
+1536 original CM SVCT3 full-image states and guards: PASS
+build/test-makeplay-sleep
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_busy.c tests/lm_busy_check.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/test-lm-busy
+64 complete MAKEPLAY sleep images and52 invalid boundaries: PASS
+build/test-cm-display
+CM display restart/priority: 64 complete2050-field original states, 0 failures
+build/test-cm-pinball
+CM source relay writes: 64 complete2050-field original states, 0 failures
+build/test-cm-formatter
+CM decimal formatters: 64 complete2050-field original states, 0 failures
+./build/test-noun-reader
+PASS: 58368 supported noun-reader contexts; 100 unsupported contexts preserve every word and I/O
+./build/test-layout
+PASS: 4232 original bindings, 8192 bank contexts, 79 fixed metadata words; raw single-image aliases and original CM emission
+./build/test-lm-single-trig
+128 complete2048-word original LM SPSIN/SPCOS numerical/full-return states: PASS
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_finish.c tests/lm_finish_check.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/test-lm-finish
+build/test-lm-busy
+64 complete NVSUBUSY images and13 invalid boundaries: PASS
+./build/test-cm-mysubs
+128 complete2048-word original CM SMALLMP/DPADD numerical/full-return states: PASS
+./build/test-cm-task-interrupt
+1024 original CM automatic interrupt/RESUME full-image states and deferral guards: PASS
+./build/test-cm-service-loop
+384 continuous original CM ISR task cases/1856 full-image states and callback guards: PASS
+build/test-cm-relay
+CM relay channel10:64 complete2052-field states and real MODE89 screen, 0 failures
+build/test-cm-scale
+CM fresh decimal output scaling: 64 complete2050-field original states, 0 failures
+./build/test-lm-torque
+PASS: rejected contexts preserve the full image and external latches
+python3 tests/test_documentation_coverage.py
+..build/test-lm-finish
+64 complete ENDOFJOB states and21 unchanged invalid boundaries: PASS
+build/test-lm-sleep
+64 complete JOBSLEEP images and17 invalid boundaries: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_basic_finish.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_basic_finish_cases.c tests/cm_basic_finish_check.c tests/test_cm_basic_finish.c -o build/test-cm-basic-finish
+./build/test-dsky-charin-number
+DSKY numeric entry:64 complete2052-field states, 0 failures
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_clockjob.c tests/cm_clockjob_check.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -o build/test-cm-clockjob
+.
+----------------------------------------------------------------------
+Ran 3 tests in 0.565s
+
+OK
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_display_control.c tests/cm_display_control_check.c src/agc_word.c src/cm_display_control.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c -o build/test-cm-display-control
+build/test-cm-clockjob
+64 complete CM CLOCKJOB states and31 unchanged invalid boundaries: PASS
+./build/test-dsky-key-irq
+DSKY key IRQ: 64 complete2051-field original images, 0 failures
+./build/test-dsky-keyboard-flow
+DSKY KEYBOARD:32 queued native jobs/96 complete2051word source images, 0 failures
+./build/test-dsky-keyboard-irq-flow
+DSKY KEYBOARD:16 queued native jobs/48 complete2051word source images, 0 failures
+./build/test-dsky-keyboard-number-flow
+DSKY KEYBOARD:16 queued native jobs/48 complete2051word source images, 0 failures
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_danzig.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_danzig_cases.c tests/cm_basic_finish_cases.c tests/cm_danzig_check.c tests/test_cm_danzig.c -o build/test-cm-danzig
+build/test-cm-display-control
+64 complete CM display entry states and42 unchanged invalid boundaries: PASS
+./build/test-cm-powered-trig-port
+320 complete2048-word original CM CDU trig phase states: PASS
+./build/test-gimbal-port
+PASS: unsupported entries preserve image/latches; 131072 fixed-read probes expose exactly40 qualified words
+build/test-cm-charin-number
+CM numeric entry:64 complete2052-field source states,0 failures
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c src/cm_mission_loop.c src/cm_mission_builtin.c src/cm_task_interrupt.c src/cm_danzig.c src/cm_basic_finish.c tests/cm_mission_loop_cases.c tests/cm_mission_loop_check.c tests/test_cm_mission_loop.c -o build/test-cm-mission-loop
+build/test-feedback-length
+128 complete original feedback length entries/exits: PASS
+make[1]: Leaving directory '/tmp/apollo-host-latest/c64-port'
+make -f tools/horizontal_phased.mk check-host
+make[1]: Entering directory '/tmp/apollo-host-latest/c64-port'
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_horizontal_phased.c tests/frozen_words.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_vector.c src/guidance_sum.c src/guidance_shift.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_horizontal.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/horizontal_cases.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_horizontal_phased.c tests/horizontal_phased_cases.c -o build/test-horizontal-phased
+./build/test-cm-powered-axis-port
+64 complete2048-word original CM axis numeric/return states: PASS
+./build/test-cm-powered-interface-port
+256 complete2048-word original CM interpreted interface return states: PASS
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_makeplay.c tests/cm_makeplay_check.c src/agc_word.c src/cm_makeplay.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_cases.c -o build/test-cm-makeplay
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_wake.c tests/cm_wake_check.c src/agc_word.c src/cm_basic_wake.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c -o build/test-cm-wake
+build/test-cm-makeplay
+64 complete CM MAKEPLAY states and34 unchanged invalid boundaries: PASS
+build/test-cm-keyboard-irq
+CM keyboard IRQ:64 complete2051-field original states,0 failures
+build/test-cm-charin-nv
+CM VERB/NOUN entry:64 complete2052-field source states,0 failures
+./build/test-cm-waitlist-extended
+2048 original CM WAITLIST/TWIDDLE/alarm-entry full-image states and guards: PASS
+./build/test-delcomp-port
+PASS: 25 unsupported DELCOMP contexts preserve the complete image and latches
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DAPOLLO_FIXED_CM_ONLY src/cm_interbank.c src/fixed_data.c src/cm_native_image.c src/cm_waitlist.c src/agc_word.c tests/cm_interbank_cases.c tests/cm_waitlist_image_cases.c tests/cm_interbank_check.c tests/test_cm_interbank.c -o build/test-cm-interbank
+build/test-cm-wake
+64 complete CM JOBWAKE states and19 unchanged invalid boundaries: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_idle_dispatch.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_idle_dispatch_cases.c tests/cm_basic_finish_cases.c tests/cm_idle_dispatch_check.c tests/test_cm_idle_dispatch.c -o build/test-cm-idle-dispatch
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_makeplay_sleep.c tests/cm_makeplay_sleep_check.c src/agc_word.c src/cm_makeplay_sleep.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_sleep_cases.c -o build/test-cm-makeplay-sleep
+build/test-cm-makeplay-sleep
+64 complete CM display sleep states and39 unchanged invalid boundaries: PASS
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_sleep.c tests/cm_sleep_check.c src/agc_word.c src/cm_basic_sleep.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_basic_finish_cases.c tests/cm_sleep_cases.c -o build/test-cm-sleep
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c src/cm_mission_loop.c src/cm_mission_builtin.c src/cm_task_interrupt.c src/cm_danzig.c src/cm_basic_finish.c tests/cm_mission_loop_cases.c tests/cm_clock_mission_cases.c src/cm_clock_mission.c src/cm_clock_mission_builtin.c src/cm_clockjob.c src/cm_quictrig.c src/cm_display_control.c src/cm_idle_dispatch.c tests/cm_clock_mission_check.c tests/test_cm_clock_mission.c -o build/test-cm-clock-mission
+build/test-p66-direct-launch
+P66 DIRECT:24 complete original images, real adoption, pending NEWJOB/IRQ:0 failures
+build/test-cm-keyboard-runtime
+CM keyboard8 genuine lifecycles32 full source states:0 failures
+./build/test-gimbal-complete-port
+PASS: 25 unsupported complete gimbal entries preserve the entire image and latches
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/cm_display_sleep_lifecycle_host.c tests/cm_display_sleep_lifecycle_check.c src/agc_word.c src/cm_makeplay_sleep.c src/cm_basic_wake.c src/cm_basic_sleep.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c tests/cm_display_sleep_lifecycle_cases.c -o build/test-cm-display-sleep-lifecycle
+build/test-horizontal-phased
+416 complete original horizontal phase entries/exits: PASS
+make[1]: Leaving directory '/tmp/apollo-host-latest/c64-port'
+./build/test-cm-smcdure-port
+576 complete2048-word original CM SMCDURES source operation states: PASS
+./build/test-cm-nbsm-port
+192 complete2048-word original CM legacy NBSM source states: PASS
+./build/test-cm-powered-quick-port
+64 complete2048-word original CM QUICTRIG+TC A source states: PASS
+./build/test-cm-powered-fixed-return-port
+128 complete2048-word original CM fixed RVQ source states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/lm_interpreter_change.c tests/lm_interpreter_change_cases.c tests/test_lm_interpreter_change.c -o build/test-lm-interpreter-change
+./build/test-lm-interpreter-change
+PASS:16384 transfer payloads,27 unchanged invalid contexts,3 null guards
+build/test-p66-direct-pending
+P66 pending higher-priority NEWJOB+IRQ: full original2050-field source image:0 failures
+build/test-dsky-charin-sign
+LM+CM CHARIN +/-:64 full source states,0 failures
+python3 tools/p66_launch_phased_differential.py
+build/test-cm-sleep
+64 complete CM JOBSLEEP states and23 unchanged invalid boundaries: PASS
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_matrix.c tests/matrix_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/matrix_native.c tests/matrix_cases.c -o build/test-matrix
+build/test-cm-display-sleep-lifecycle
+64 complete original CM display sleep lifecycle checkpoints: PASS
+build/test-dsky-charin-clear
+LM+CM CHARIN CLEAR:64 full source states,0 failures
+python3 tools/passive_storage_differential.py
+build/test-matrix
+128 complete LM/CM matrix checkpoints and66 unchanged invalid boundaries: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c tests/waitlist_check.c tests/test_waitlist.c -o build/test-waitlist
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c platform/host/waitlist_snapshot.c -o build/waitlist-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/test_irq.c -o build/test-irq
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/test_host.c -o build/test-host
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/lifecycle_cases.c tests/lifecycle_check.c tests/test_lifecycle.c -o build/test-lifecycle
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/snapshot.c -o build/snapshot
+PASS: 2816 complete2050-word startup source seams
+Snapshot SHA256: 5fbd97c1e816257da3411c71c78938b0246198329a371e85bd1f66887a15b935
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c tests/arithmetic_dump.c -o build/arithmetic-dump
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/dispatch_snapshot.c -o build/dispatch-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/lifecycle_cases.c platform/host/lifecycle_snapshot.c -o build/lifecycle-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/restart.c tests/restart_cases.c platform/host/restart_snapshot.c -o build/restart-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/restart.c tests/restart_cases.c tests/restart_check.c tests/test_restart.c -o build/test-restart
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c tests/guidance_cases.c platform/host/guidance_snapshot.c -o build/guidance-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c tests/guidance_cases.c tests/guidance_check.c tests/test_guidance.c -o build/test-guidance
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c tests/prepare_cases.c platform/host/prepare_snapshot.c -o build/prepare-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c tests/prepare_cases.c tests/prepare_check.c tests/test_prepare.c -o build/test-prepare
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c tests/prepare_cases.c tests/scale_cases.c platform/host/scale_snapshot.c -o build/scale-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c tests/prepare_cases.c tests/scale_cases.c tests/scale_check.c tests/test_scale.c -o build/test-scale
+PASS: both original source sets, all73728 data bytes per mission; full and each group all65536 addresses, null/bounds/output preservation, strict host + ASAN/UBSAN
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c platform/host/push_snapshot.c -o build/push-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/push_check.c tests/test_push.c -o build/test-push
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c platform/host/elapsed_snapshot.c -o build/elapsed-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/elapsed_check.c tests/test_elapsed.c -o build/test-elapsed
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c platform/host/store_snapshot.c -o build/store-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/store_check.c tests/test_store.c -o build/test-store
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c platform/host/divide_snapshot.c -o build/divide-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/divide_check.c tests/test_divide.c -o build/test-divide
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c platform/host/gravity_snapshot.c -o build/gravity-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/gravity_check.c tests/frozen_words.c tests/test_gravity.c -o build/test-gravity
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_vector.c tests/prepare_cases.c tests/vector_cases.c platform/host/vector_snapshot.c -o build/vector-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_vector.c tests/prepare_cases.c tests/vector_cases.c tests/vector_check.c tests/test_vector.c -o build/test-vector
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c tests/scenarios.c tests/executive_service_cases.c tests/state_digest.c tests/executive_service_check.c tests/test_executive_services.c -o build/test-executive-services
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c tests/scenarios.c tests/executive_service_cases.c platform/host/executive_service_snapshot.c -o build/executive-service-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/phase.c tests/phase_cases.c platform/host/phase_snapshot.c -o build/phase-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/phase.c tests/phase_cases.c tests/phase_check.c tests/test_phase.c -o build/test-phase
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPREPARE_INPUT_ONLY -DVECTOR_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c tests/prepare_cases.c tests/vector_cases.c tests/product_cases.c platform/host/product_snapshot.c -o build/product-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPREPARE_INPUT_ONLY -DVECTOR_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c tests/prepare_cases.c tests/vector_cases.c tests/product_cases.c tests/product_check.c tests/test_product.c -o build/test-product
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_shift.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/shift_cases.c tests/frozen_words.c tests/shift_check.c tests/test_shift.c -o build/test-shift
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_shift.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/shift_cases.c tools/shift_snapshot.c -o build/shift-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c tests/dp_divide_snapshot.c -o build/dp-divide-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c tests/test_dp_divide.c tests/frozen_words.c -o build/test-dp-divide
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c platform/host/velocity_snapshot.c -o build/velocity-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/velocity_check.c tests/frozen_words.c tests/test_velocity.c -o build/test-velocity
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_norm.c tests/norm_snapshot.c -o build/norm-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_norm.c tests/test_norm.c tests/frozen_words.c -o build/test-norm
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/recovery.c tests/recovery_cases.c platform/host/recovery_snapshot.c -o build/recovery-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/recovery.c tests/recovery_cases.c tests/recovery_check.c tests/test_recovery.c -o build/test-recovery
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_dot.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/dot_cases.c tests/frozen_words.c tests/dot_check.c tests/test_dot.c -o build/test-dot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_dot.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/dot_cases.c tools/dot_snapshot.c -o build/dot-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tests/frozen_words.c tests/sum_check.c tests/test_sum.c -o build/test-sum
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tools/sum_snapshot.c -o build/sum-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/interpreter_native_cases.c platform/host/interpreter_native_snapshot.c -o build/interpreter-native-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/interpreter_native_cases.c tests/interpreter_native_check.c tests/state_digest.c tests/test_interpreter_native.c -o build/test-interpreter-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/restart.c src/enema.c tests/restart_cases.c tests/enema_cases.c platform/host/enema_snapshot.c -o build/enema-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/restart.c src/enema.c tests/restart_cases.c tests/enema_cases.c tests/enema_check.c tests/test_enema.c -o build/test-enema
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c tests/cm_executive_cases.c tests/cm_executive_check.c tests/test_cm_executive.c -o build/test-cm-executive
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c tests/cm_executive_cases.c platform/host/cm_executive_snapshot.c -o build/cm-executive-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/unit_snapshot.c -o build/unit-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/test_unit.c tests/frozen_words.c -o build/test-unit
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_dot.c src/guidance_sum.c src/guidance_radial.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/radial_cases.c tools/radial_snapshot.c -o build/radial-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_dot.c src/guidance_sum.c src/guidance_radial.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/radial_cases.c tests/radial_check.c tests/frozen_words.c tests/test_radial.c -o build/test-radial
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/acceleration_snapshot.c src/guidance_acceleration.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c -o build/acceleration-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration.c tests/frozen_words.c src/guidance_acceleration.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c -o build/test-acceleration
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Wconversion -pedantic src/overlay_runtime.c tests/test_overlay.c -o build/test-overlay
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c tests/waitlist_zero_cases.c tests/waitlist_zero_check.c tests/test_waitlist_zero.c -o build/test-waitlist-zero
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_lifecycle_cases.c tests/cm_interpreter_cases.c tests/cm_mixed_cases.c platform/host/cm_dispatch_snapshot.c -o build/cm-dispatch-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_lifecycle_cases.c tests/cm_interpreter_cases.c tests/cm_mixed_cases.c platform/host/cm_lifecycle_snapshot.c -o build/cm-lifecycle-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_lifecycle_cases.c tests/cm_interpreter_cases.c tests/cm_mixed_cases.c platform/host/cm_interpreter_snapshot.c -o build/cm-interpreter-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_lifecycle_cases.c tests/cm_interpreter_cases.c tests/cm_mixed_cases.c platform/host/cm_mixed_snapshot.c -o build/cm-mixed-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_lifecycle_cases.c tests/cm_interpreter_cases.c tests/cm_mixed_cases.c tests/cm_dispatch_check.c tests/test_cm_dispatch.c -o build/test-cm-dispatch
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/phase.c src/p66_startup.c tests/p66_startup_cases.c tests/p66_startup_check.c tests/test_p66_startup.c -o build/test-p66-startup
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tests/trig_check.c tests/frozen_words.c tests/test_trig.c -o build/test-trig
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tools/trig_snapshot.c -o build/trig-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/p66_native_cases.c platform/host/p66_native_snapshot.c -o build/p66-native-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/p66_native_cases.c tests/p66_native_check.c tests/test_p66_native.c -o build/test-p66-native
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/rotation_snapshot.c src/guidance_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/rotation_cases.c -o build/rotation-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_rotation.c tests/frozen_words.c src/guidance_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/rotation_cases.c -o build/test-rotation
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/guidance_dot.c src/guidance_dp_divide.c src/guidance_rotation.c src/guidance_projection.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tests/projection_cases.c tests/projection_check.c tests/frozen_words.c tests/test_projection.c -o build/test-projection
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/guidance_dot.c src/guidance_dp_divide.c src/guidance_rotation.c src/guidance_projection.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tests/projection_cases.c tools/projection_snapshot.c -o build/projection-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_dot.c src/guidance_sum.c src/guidance_radial.c src/guidance_acceleration.c src/guidance_trig.c src/guidance_rotation.c src/guidance_projection.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/radial_cases.c tests/unit_cases.c tests/trig_cases.c tests/projection_cases.c tools/projection_prefix_snapshot.c -o build/projection-prefix-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_waitlist.c src/cm_waitlist_native.c tests/cm_waitlist_cases.c platform/host/cm_waitlist_snapshot.c -o build/cm-waitlist-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_waitlist.c src/cm_waitlist_native.c tests/cm_waitlist_cases.c tests/cm_waitlist_check.c tests/test_cm_waitlist.c -o build/test-cm-waitlist
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_irq.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_irq_cases.c tests/cm_irq_sequence.c platform/host/cm_irq_snapshot.c -o build/cm-irq-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_irq.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_irq_cases.c tests/cm_irq_sequence.c platform/host/cm_irq_sequence_snapshot.c -o build/cm-irq-sequence-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_irq.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_irq_cases.c tests/cm_irq_sequence.c tests/cm_irq_check.c tests/test_cm_irq.c -o build/test-cm-irq
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_vector.c src/guidance_sum.c src/guidance_shift.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_horizontal.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/horizontal_cases.c tests/horizontal_check.c tests/frozen_words.c tests/test_horizontal.c -o build/test-horizontal
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_vector.c src/guidance_sum.c src/guidance_shift.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_horizontal.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/horizontal_cases.c tools/horizontal_snapshot.c -o build/horizontal-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_phase.c tests/cm_phase_cases.c platform/host/cm_phase_snapshot.c -o build/cm-phase-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_phase.c tests/cm_phase_cases.c tests/cm_phase_check.c tests/test_cm_phase.c -o build/test-cm-phase
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_restart.c tests/cm_restart_cases.c platform/host/cm_restart_snapshot.c -o build/cm-restart-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_restart.c tests/cm_restart_cases.c tests/cm_restart_check.c tests/test_cm_restart.c -o build/test-cm-restart
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_restart.c src/cm_restart_native.c tests/cm_restart_cases.c tests/cm_restart_native_cases.c platform/host/cm_restart_native_snapshot.c -o build/cm-restart-native-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_restart.c src/cm_restart_native.c tests/cm_restart_cases.c tests/cm_restart_native_cases.c tests/cm_restart_native_check.c tests/test_cm_restart_native.c -o build/test-cm-restart-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_restart.c src/cm_restart_native.c src/cm_native_image.c tests/cm_restart_cases.c tests/cm_restart_native_cases.c tests/cm_native_image_check.c tests/test_cm_native_image.c -o build/test-cm-native-image
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_waitlist.c src/cm_restart.c src/cm_enema.c tests/cm_restart_cases.c tests/cm_enema_cases.c platform/host/cm_enema_snapshot.c -o build/cm-enema-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_waitlist.c src/cm_restart.c src/cm_enema.c tests/cm_restart_cases.c tests/cm_enema_cases.c tests/cm_enema_check.c tests/test_cm_enema.c -o build/test-cm-enema
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_norm.c src/guidance_unit_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/unit_phased_cases.c tools/unit_phased_snapshot.c -o build/unit-phased-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_dot.c src/guidance_sum.c src/guidance_radial.c src/guidance_unit_phased.c src/guidance_radial_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/radial_cases.c tests/radial_phased_cases.c tools/radial_phased_snapshot.c -o build/radial-phased-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPROJECTION_INPUT_ONLY -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/guidance_dot.c src/guidance_rotation.c src/guidance_projection_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tests/projection_cases.c tests/projection_phased_cases.c tools/projection_phased_snapshot.c -o build/projection-phased-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_restart.c src/cm_native_image.c src/cm_startup.c tests/cm_startup_cases.c platform/host/cm_startup_snapshot.c -o build/cm-startup-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_restart.c src/cm_native_image.c src/cm_startup.c tests/cm_startup_cases.c tests/cm_startup_check.c tests/test_cm_startup.c -o build/test-cm-startup
+cc -O2 -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/acceleration_phased_snapshot.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/acceleration-phased-native
+cc -O2 -Wconversion -pedantic -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration_phased.c tests/frozen_words.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/test-acceleration-phased
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/guidance_velocity_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/velocity_phased_cases.c tools/velocity_phased_snapshot.c -o build/velocity-phased-snapshot
+cc -O2 -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/throttle_feedback_phased_snapshot.c src/guidance_throttle_phased.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_phased_cases.c -o build/throttle_feedback_phased-native
+cc -O2 -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_feedback_phased.c tests/frozen_words.c src/guidance_throttle_phased.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_phased_cases.c -o build/test-throttle_feedback_phased
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/display_control_snapshot.c src/agc_word.c src/p66_display_control.c tests/throttle_bridge_cases.c tests/display_control_cases.c -o build/display-control-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_display_control.c tests/display_control_check.c src/agc_word.c src/p66_display_control.c tests/throttle_bridge_cases.c tests/display_control_cases.c -o build/test-display-control
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/regodspr_snapshot.c src/agc_word.c src/p66_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c -o build/regodspr-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_regodspr.c tests/regodspr_check.c src/agc_word.c src/p66_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c -o build/test-regodspr
+cc -O2 -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/acceleration_store_snapshot.c src/guidance_acceleration_store.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/acceleration-store-native
+cc -O2 -Wconversion -pedantic -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration_store.c tests/frozen_words.c src/guidance_acceleration_store.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/test-acceleration-store
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_entry_snapshot.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/nv-entry-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_entry.c tests/nv_entry_check.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/test-nv-entry
+cc -O2 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_words_snapshot.c src/agc_word.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c -o build/nv-words-native
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_words.c tests/nv_words_check.c src/agc_word.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c -o build/test-nv-words
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic  src/agc_word.c src/agc_multiword.c src/guidance_norm.c  tests/test_norm.c tests/frozen_words.c -o build/test-cm-norm
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic  src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c  tests/test_dp_divide.c tests/frozen_words.c -o build/test-cm-dp-divide
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_unit.c src/guidance_norm.c src/guidance_dp_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/test_unit.c tests/frozen_words.c -o build/test-cm-unit
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DROTATION_INPUT_ONLY -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/rotation_cases.c tests/cm_rotation_cases.c platform/host/cm_rotation_snapshot.c -o build/cm-rotation-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DROTATION_INPUT_ONLY -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/rotation_cases.c tests/cm_rotation_cases.c tests/test_cm_rotation.c tests/frozen_words.c -o build/test-cm-rotation
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/cm_rectify.c tests/cm_rectify_cases.c tools/cm_rectify_snapshot.c -o build/cm-rectify-snapshot
+./build/test-restart
+PASS: 226 assembly fingerprints, recovery/resumption, phase/resource failures and restoring exclusion
+./build/test-guidance
+PASS: 568 complete original-assembly checkpoints; all 65536 SP/memory-zero products; carry and overflow contracts
+./build/test-prepare
+PASS: 324 complete preparation states, all TS-skip masks, snapshot debris, MODE alias, retained scratch and composed histories
+./build/test-scale
+PASS: 292 complete scaling states, signed-zero/mixed-sign DP pairs, all integrated TS-skip inputs, three retained four-step histories
+./build/test-push
+PASS: 200 complete PDDL states, five VAC mappings, retained exchange debris, composed four-push histories; invalid scope leaves both objects unchanged
+./build/test-elapsed
+PASS: 172 complete elapsed-time states and skip paths, signed zeros, overflow realignment and retained OVFIND, preserved VAC/vector histories
+./build/test-store
+PASS: 176 complete STORE states/paths; signed-zero source/destination corners, overlapping slots, retained histories; unchanged-on-scope-rejection and unused PUSHLOC
+./build/test-divide
+PASS: 156 complete DDV states/paths; signed zero, raw sign agreement, quotient/overflow and retained histories; all unsupported modes reject unchanged
+./build/test-gravity
+PASS: 156 complete PDVL states; all unsupported modes, VAC bases and push pointers reject unchanged
+./build/test-vector
+PASS: 128 complete original-assembly VAD/VSU states; all 32767 unsupported MODE words preserve complete state for both operations
+./build/test-executive-services
+PASS: 768 original-derived SPVAC/CHANG2 state checks and unsupported safe-point rejection
+./build/test-phase
+PASS: 128 original assembly full-state phase vectors; all 8,192 invalid group words retain state
+./build/test-product
+PASS: 128 complete original-assembly DMP1/VXSC states; all 32767 unsupported MODE words preserve complete state for both operations
+./build/test-shift
+PASS: 168 complete original scalar/vector shift states; all unsupported MODEs and count boundaries reject unchanged
+./build/test-dp-divide
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+./build/test-velocity
+PASS: 156 complete original-assembly velocity-group states; all unsupported MODE/base/pointer ordinary words preserve all 117 state/input words
+./build/test-norm
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+./build/test-recovery
+PASS: 128 complete original assembly abort-cleanup states; unsupported routes retain state
+./build/test-dot
+PASS: 96 complete unrounded original DOT states and exact scratch/overflow exchanges; all unsupported MODEs reject unchanged
+./build/test-sum
+PASS: 256 complete original DAD/DSU/BDSU/BVSU states and overflow paths; all unsupported MODEs reject unchanged
+./build/test-interpreter-native
+PASS: 140 mixed native/assembly state checkpoints, frame/payload/guard and typed mapping fault checks
+./build/test-enema
+PASS:128 whole457word original assembly ENEMA states; unsupported inputs retain state
+./build/test-cm-executive
+PASS: 1536 CM state fingerprints, 40 complete-state samples, unsupported/pending boundaries
+./build/test-unit
+118 complete ABS/ABVAL/UNIT states, unsupported MODE/VAC unchanged: PASS
+./build/test-radial
+PASS: complete original radial states, source errors and all unsupported MODE/VAC/pointer words unchanged
+./build/test-overlay
+PASS: bounded native overlay loader; exact header/CRC; short/long/I/O failures preserve all2048words; cache, BSS reload, nested-call rejection and slot guards
+./build/test-cm-dispatch
+PASS: 876 CM full-state fingerprints, 16 complete samples, 20 actual callback sequences, invalid/pending boundaries
+./build/test-trig
+./build/test-p66-native
+P66 native driver: 0 failures, 160 original-source fingerprints
+./build/test-projection
+PASS128 complete original trig states and all unsupported MODE words reject unchanged
+./build/test-cm-waitlist
+PASS144 complete original phased projection states; unsupported MODE/VAC/pointer shapes reject unchanged
+./build/test-cm-irq
+PASS: CM IRQ: 512 source admissions, 32 actual callback sequences / 240 checkpoints, FIFO wrap, overflow, retained head, typed maps and restoring guards
+./build/test-horizontal
+./build/test-cm-phase
+PASS: 128 original assembly full-state phase vectors; all 8,192 invalid group words retain state
+./build/test-cm-restart
+PASS:1280 CM original cleanup/startsub/phase/variablejob states,18 complete vectors and fail-closed inputs
+./build/test-cm-restart-native
+PASS:64CMrestart sequences/320source checkpoints;192actualCcallbacks;unsupported maps/types/reentry retain state
+./build/test-cm-native-image
+PASS:sole2048wordCMimage;64restart sequences/320source states;poison/regather each boundary;rawA/L, physicalbanks and scratch aliases
+./build/test-cm-enema
+PASS:4096 CM original ENEMA states,8 full boundary vectors, unsupported inputs retain state
+./build/test-cm-startup
+PASS:640originalCMstartup/cleanup whole-image states; all2047image words+15I/O values;5fullsamples andinvalid-entry/bank preservation
+./build/test-cm-norm
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+./build/test-cm-dp-divide
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+./build/test-cm-unit
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests
+./build/test-cm-basic-finish
+118 complete ABS/ABVAL/UNIT states, unsupported MODE/VAC unchanged: PASS
+./build/test-cm-danzig
+./build/test-cm-mission-loop
+PASS256 complete original phased horizontal states; unsupported MODE/VAC/pointer shapes reject unchanged
+./build/test-cm-interbank
+384 original complete IRQ/ISR/RESUME/DANZIG continuous sequences: PASS
+./build/test-cm-idle-dispatch
+4096 original CM DANZIG complete basic/interpreted/idle states and guards: PASS
+./build/test-cm-clock-mission
+448 original continuous CM mission cases /3392 complete states: PASS
+./build/test-cm-rotation
+4096 original CM idle adoption complete basic/interpreted/idle states and guards: PASS
+16384 original CM ENDJOB complete basic/interpreted/idle states and guards: PASS
+7168 original CM interbank full states and guards: PASS
+128 complete rotation states, unsupported direction/return unchanged: PASS
+./build/test-host
+PASS: 53 dispatch cases, 109 assembly-derived checkpoints, 8 native two-job sequences; dispatch fault checks
+PASS: 32768 word encodings, 65536 register encodings, 524288 addition pairs, 26 Executive scenarios
+sizeof(executive)=648 bytes; sizeof(scenario)=664 bytes (host)
+./build/test-irq
+PASS: IRQ safe points, nested exclusion, idle startup, FIFO/wrap (600 cases), overflow, bailout and unmapped-request faults
+./build/test-lifecycle
+PASS: 81 lifecycle cases / 115 assembly-derived checkpoints, 5 native sequences, guarded/masked delivery and lifecycle fault boundaries
+./build/test-waitlist
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests

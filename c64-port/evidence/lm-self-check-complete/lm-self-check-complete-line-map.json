@@ -1,0 +1,3462 @@
+{
+ "source_path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "line_map": [
+  {
+   "line": 129,
+   "address": "43,3232",
+   "source": "ERASCON1 OCTAL 00061",
+   "words": [
+    "00061"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 130,
+   "address": "43,3233",
+   "source": "ERASCON2 OCTAL 01373",
+   "words": [
+    "01373"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 132,
+   "address": "43,3234",
+   "source": "ERASCON3 OCTAL 01461",
+   "words": [
+    "01461"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 133,
+   "address": "43,3235",
+   "source": "ERASCON4 OCTAL 01773",
+   "words": [
+    "01773"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 137,
+   "address": "43,3236",
+   "source": "SIXTY OCTAL 00060",
+   "words": [
+    "00060"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 138,
+   "address": "43,3237",
+   "source": "SUPRCON OCTAL 60017",
+   "words": [
+    "60017"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 139,
+   "address": "43,3240",
+   "source": "S13BITS OCTAL 17777",
+   "words": [
+    "17777"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 140,
+   "address": "43,3241",
+   "source": "CONC+S1 OCTAL 25252",
+   "words": [
+    "25252"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 141,
+   "address": "43,3242",
+   "source": "CONC+S2 OCTAL 52400",
+   "words": [
+    "52400"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 142,
+   "address": "43,3243",
+   "source": "ERASCON5 OCTAL 76777",
+   "words": [
+    "76777"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 151,
+   "address": "43,3244",
+   "source": "ADRS1 ADRES SKEEP1",
+   "words": [
+    "01371"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 152,
+   "address": "43,3245",
+   "source": "SELFADRS ADRES SELFCHK",
+   "words": [
+    "03336"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 157,
+   "address": "43,3246",
+   "source": "PRERRORS CA ERESTORE",
+   "words": [
+    "31360"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 158,
+   "address": "43,3247",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 159,
+   "address": "43,3250",
+   "source": "BZF ERRORS",
+   "words": [
+    "13257"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 160,
+   "address": "43,3251",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 161,
+   "address": "43,3252",
+   "source": "DCA SKEEP5",
+   "words": [
+    "31376"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 162,
+   "address": "43,3253",
+   "source": "INDEX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 163,
+   "address": "43,3254",
+   "source": "DXCH 0000",
+   "words": [
+    "52001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 164,
+   "address": "43,3255",
+   "source": "CA S+ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 165,
+   "address": "43,3256",
+   "source": "TS ERESTORE",
+   "words": [
+    "55360"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3250, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 166,
+   "address": "43,3257",
+   "source": "ERRORS INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3261, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 167,
+   "address": "43,3260",
+   "source": "CA Q",
+   "words": [
+    "30002"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3261, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 168,
+   "address": "43,3261",
+   "source": "TS SFAIL",
+   "words": [
+    "55357"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3261, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 169,
+   "address": "43,3262",
+   "source": "TS ALMCADR",
+   "words": [
+    "55363"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3261, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 170,
+   "address": "43,3263",
+   "source": "INCR ERCOUNT",
+   "words": [
+    "25365"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3261, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 171,
+   "address": "43,3264",
+   "source": "TCALARM2 TC ALARM2",
+   "words": [
+    "05571"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3261, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 172,
+   "address": "43,3265",
+   "source": "OCT 01102",
+   "words": [
+    "01102"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 173,
+   "address": "43,3266",
+   "source": "CCS SMODE",
+   "words": [
+    "11362"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3270, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 174,
+   "address": "43,3267",
+   "source": "SIDLOOP CA S+ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3271, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 175,
+   "address": "43,3270",
+   "source": "TS SMODE",
+   "words": [
+    "55362"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3272, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 177,
+   "address": "43,3271",
+   "source": "TC SELFCHK",
+   "words": [
+    "03336"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3273, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 178,
+   "address": "43,3272",
+   "source": "TC SFAIL",
+   "words": [
+    "01357"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3274, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 180,
+   "address": "43,3273",
+   "source": "-1CHK CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3275, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 181,
+   "address": "43,3274",
+   "source": "TCF PRERRORS",
+   "words": [
+    "13246"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3275, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 182,
+   "address": "43,3275",
+   "source": "TCF PRERRORS",
+   "words": [
+    "13246"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3275, Comanche055 numbering)",
+   "executed_by_oracle": false,
+   "unreachable": "CCS A +0 at -1CHK"
+  },
+  {
+   "line": 183,
+   "address": "43,3276",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3275, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 184,
+   "address": "43,3277",
+   "source": "TCF PRERRORS",
+   "words": [
+    "13246"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3275, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 185,
+   "address": "43,3300",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3275, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 187,
+   "address": "43,3301",
+   "source": "SMODECHK EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3303, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 188,
+   "address": "43,3302",
+   "source": "QXCH SKEEP1",
+   "words": [
+    "23371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3303, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 189,
+   "address": "43,3303",
+   "source": "TC CHECKNJ",
+   "words": [
+    "03332"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3305, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 190,
+   "address": "43,3304",
+   "source": "CCS SMODE",
+   "words": [
+    "11362"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3306, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 191,
+   "address": "43,3305",
+   "source": "TC SOPTIONS",
+   "words": [
+    "03312"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3307, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 192,
+   "address": "43,3306",
+   "source": "TC SMODECHK   +2",
+   "words": [
+    "03303"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3310, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 193,
+   "address": "43,3307",
+   "source": "TC SOPTIONS",
+   "words": [
+    "03312"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3311, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 194,
+   "address": "43,3310",
+   "source": "INCR SCOUNT",
+   "words": [
+    "25366"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3312, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 195,
+   "address": "43,3311",
+   "source": "TC SKEEP1",
+   "words": [
+    "01371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3313, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 197,
+   "address": "43,3312",
+   "source": "SOPTIONS AD S-7",
+   "words": [
+    "65660"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 198,
+   "address": "43,3313",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 199,
+   "address": "43,3314",
+   "source": "BZMF +2",
+   "words": [
+    "63316"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 200,
+   "address": "43,3315",
+   "source": "BNKOPTN TC SIDLOOP",
+   "words": [
+    "03267"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 201,
+   "address": "43,3316",
+   "source": "INCR SCOUNT",
+   "words": [
+    "25366"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 202,
+   "address": "43,3317",
+   "source": "AD S+7",
+   "words": [
+    "64757"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 204,
+   "address": "43,3320",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 205,
+   "address": "43,3321",
+   "source": "TC SOPTION1",
+   "words": [
+    "03322"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 206,
+   "address": "43,3322",
+   "source": "SOPTION1 TC SKEEP1",
+   "words": [
+    "01371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 207,
+   "address": "43,3323",
+   "source": "SOPTION2 TC SKEEP1",
+   "words": [
+    "01371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 208,
+   "address": "43,3324",
+   "source": "SOPTION3 TC SKEEP1",
+   "words": [
+    "01371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 209,
+   "address": "43,3325",
+   "source": "SOPTION4 TC ERASCHK",
+   "words": [
+    "03337"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 210,
+   "address": "43,3326",
+   "source": "SOPTION5 TC ROPECHK",
+   "words": [
+    "03520"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 211,
+   "address": "43,3327",
+   "source": "SOPTION6 TC SKEEP1",
+   "words": [
+    "01371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 212,
+   "address": "43,3330",
+   "source": "SOPTION7 TC SKEEP1",
+   "words": [
+    "01371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 213,
+   "address": "43,3331",
+   "source": "SOPTON10 TC SKEEP1",
+   "words": [
+    "01371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3314, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 215,
+   "address": "43,3332",
+   "source": "CHECKNJ EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3334, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 216,
+   "address": "43,3333",
+   "source": "QXCH SELFRET",
+   "words": [
+    "23361"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3334, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 217,
+   "address": "43,3334",
+   "source": "TC POSTJUMP",
+   "words": [
+    "04635"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3336, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 218,
+   "address": "43,3335",
+   "source": "CADR ADVAN",
+   "words": [
+    "03214"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  },
+  {
+   "line": 220,
+   "address": "43,3336",
+   "source": "SELFCHK TC SMODECHK",
+   "words": [
+    "03301"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3340, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 231,
+   "address": "43,3337",
+   "source": "ERASCHK CA S+1",
+   "words": [
+    "34753"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 232,
+   "address": "43,3340",
+   "source": "TS SKEEP2",
+   "words": [
+    "55372"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 233,
+   "address": "43,3341",
+   "source": "0EBANK CA S+ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 234,
+   "address": "43,3342",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 235,
+   "address": "43,3343",
+   "source": "CA ERASCON3",
+   "words": [
+    "33234"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 236,
+   "address": "43,3344",
+   "source": "TS SKEEP7",
+   "words": [
+    "55377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 237,
+   "address": "43,3345",
+   "source": "CA S10BITS",
+   "words": [
+    "35012"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 238,
+   "address": "43,3346",
+   "source": "TS SKEEP3",
+   "words": [
+    "55373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 239,
+   "address": "43,3347",
+   "source": "TC ERASLOOP",
+   "words": [
+    "03367"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3341, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 241,
+   "address": "43,3350",
+   "source": "E134567B CA ERASCON6",
+   "words": [
+    "35007"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3352, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 242,
+   "address": "43,3351",
+   "source": "TS SKEEP7",
+   "words": [
+    "55377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3352, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 243,
+   "address": "43,3352",
+   "source": "CA S10BITS",
+   "words": [
+    "35012"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3352, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 244,
+   "address": "43,3353",
+   "source": "TS SKEEP3",
+   "words": [
+    "55373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3352, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 245,
+   "address": "43,3354",
+   "source": "TC ERASLOOP",
+   "words": [
+    "03367"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3352, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 247,
+   "address": "43,3355",
+   "source": "2EBANK CA ERASCON6",
+   "words": [
+    "35007"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3357, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 248,
+   "address": "43,3356",
+   "source": "TS SKEEP7",
+   "words": [
+    "55377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3357, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 249,
+   "address": "43,3357",
+   "source": "CA ERASCON4",
+   "words": [
+    "33235"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3357, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 250,
+   "address": "43,3360",
+   "source": "TS SKEEP3",
+   "words": [
+    "55373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3357, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 251,
+   "address": "43,3361",
+   "source": "TC ERASLOOP",
+   "words": [
+    "03367"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3357, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 253,
+   "address": "43,3362",
+   "source": "NOEBANK TS SKEEP2",
+   "words": [
+    "55372"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3364, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 254,
+   "address": "43,3363",
+   "source": "CA ERASCON1",
+   "words": [
+    "33232"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3364, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 255,
+   "address": "43,3364",
+   "source": "TS SKEEP7",
+   "words": [
+    "55377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3364, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 256,
+   "address": "43,3365",
+   "source": "CA ERASCON2",
+   "words": [
+    "33233"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3364, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 257,
+   "address": "43,3366",
+   "source": "TS SKEEP3",
+   "words": [
+    "55373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3364, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 259,
+   "address": "43,3367",
+   "source": "ERASLOOP INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 260,
+   "address": "43,3370",
+   "source": "CA EBANK",
+   "words": [
+    "30003"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 261,
+   "address": "43,3371",
+   "source": "TS SKEEP4",
+   "words": [
+    "55374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 262,
+   "address": "43,3372",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 263,
+   "address": "43,3373",
+   "source": "NDX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 264,
+   "address": "43,3374",
+   "source": "DCA 0000",
+   "words": [
+    "30001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 265,
+   "address": "43,3375",
+   "source": "DXCH SKEEP5",
+   "words": [
+    "53376"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 266,
+   "address": "43,3376",
+   "source": "CA SKEEP7",
+   "words": [
+    "31377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 267,
+   "address": "43,3377",
+   "source": "TS ERESTORE",
+   "words": [
+    "55360"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 268,
+   "address": "43,3400",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 269,
+   "address": "43,3401",
+   "source": "INCR L",
+   "words": [
+    "24001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 270,
+   "address": "43,3402",
+   "source": "NDX A",
+   "words": [
+    "50000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 271,
+   "address": "43,3403",
+   "source": "DXCH 0000",
+   "words": [
+    "52001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 272,
+   "address": "43,3404",
+   "source": "NDX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 273,
+   "address": "43,3405",
+   "source": "CS 0001",
+   "words": [
+    "40001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 274,
+   "address": "43,3406",
+   "source": "NDX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 275,
+   "address": "43,3407",
+   "source": "AD 0000",
+   "words": [
+    "60000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 276,
+   "address": "43,3410",
+   "source": "TC -1CHK",
+   "words": [
+    "03273"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3371, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 277,
+   "address": "43,3411",
+   "source": "CA ERESTORE",
+   "words": [
+    "31360"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 278,
+   "address": "43,3412",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 280,
+   "address": "43,3413",
+   "source": "BZF ELOOPFIN",
+   "words": [
+    "13437"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 281,
+   "address": "43,3414",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 282,
+   "address": "43,3415",
+   "source": "NDX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 283,
+   "address": "43,3416",
+   "source": "DCS 0000",
+   "words": [
+    "40001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 284,
+   "address": "43,3417",
+   "source": "NDX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 285,
+   "address": "43,3420",
+   "source": "DXCH 0000",
+   "words": [
+    "52001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 286,
+   "address": "43,3421",
+   "source": "NDX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 287,
+   "address": "43,3422",
+   "source": "CS 0000",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 288,
+   "address": "43,3423",
+   "source": "NDX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 289,
+   "address": "43,3424",
+   "source": "AD 0001",
+   "words": [
+    "60001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 290,
+   "address": "43,3425",
+   "source": "TC -1CHK",
+   "words": [
+    "03273"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3413, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 291,
+   "address": "43,3426",
+   "source": "CA ERESTORE",
+   "words": [
+    "31360"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 292,
+   "address": "43,3427",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 293,
+   "address": "43,3430",
+   "source": "BZF ELOOPFIN",
+   "words": [
+    "13437"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 294,
+   "address": "43,3431",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 295,
+   "address": "43,3432",
+   "source": "DCA SKEEP5",
+   "words": [
+    "31376"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 296,
+   "address": "43,3433",
+   "source": "NDX SKEEP7",
+   "words": [
+    "51377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 297,
+   "address": "43,3434",
+   "source": "DXCH 0000",
+   "words": [
+    "52001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 298,
+   "address": "43,3435",
+   "source": "CA S+ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 299,
+   "address": "43,3436",
+   "source": "TS ERESTORE",
+   "words": [
+    "55360"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3430, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 300,
+   "address": "43,3437",
+   "source": "ELOOPFIN RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3441, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 301,
+   "address": "43,3440",
+   "source": "TC CHECKNJ",
+   "words": [
+    "03332"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3441, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 302,
+   "address": "43,3441",
+   "source": "CA SKEEP4",
+   "words": [
+    "31374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 303,
+   "address": "43,3442",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 304,
+   "address": "43,3443",
+   "source": "INCR SKEEP7",
+   "words": [
+    "25377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 305,
+   "address": "43,3444",
+   "source": "CS SKEEP7",
+   "words": [
+    "41377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 306,
+   "address": "43,3445",
+   "source": "AD SKEEP3",
+   "words": [
+    "61373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 307,
+   "address": "43,3446",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 308,
+   "address": "43,3447",
+   "source": "BZF +2",
+   "words": [
+    "13451"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 309,
+   "address": "43,3450",
+   "source": "TC ERASLOOP",
+   "words": [
+    "03367"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 310,
+   "address": "43,3451",
+   "source": "CCS SKEEP2",
+   "words": [
+    "11372"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 311,
+   "address": "43,3452",
+   "source": "TC NOEBANK",
+   "words": [
+    "03362"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3443, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 312,
+   "address": "43,3453",
+   "source": "INCR SKEEP2",
+   "words": [
+    "25372"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3455, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 313,
+   "address": "43,3454",
+   "source": "CA EBANK",
+   "words": [
+    "30003"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3456, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 314,
+   "address": "43,3455",
+   "source": "AD SBIT9",
+   "words": [
+    "64743"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3457, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 315,
+   "address": "43,3456",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3457, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 316,
+   "address": "43,3457",
+   "source": "AD ERASCON5",
+   "words": [
+    "63243"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3457, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 317,
+   "address": "43,3460",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3457, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 318,
+   "address": "43,3461",
+   "source": "BZF 2EBANK",
+   "words": [
+    "13355"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3457, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 319,
+   "address": "43,3462",
+   "source": "CCS EBANK",
+   "words": [
+    "10003"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3457, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 320,
+   "address": "43,3463",
+   "source": "TC E134567B",
+   "words": [
+    "03350"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3457, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 321,
+   "address": "43,3464",
+   "source": "CA ERASCON6",
+   "words": [
+    "35007"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3466, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 322,
+   "address": "43,3465",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3467, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 327,
+   "address": "43,3466",
+   "source": "CNTRCHK CA CNTRCON",
+   "words": [
+    "34771"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3470, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 328,
+   "address": "43,3467",
+   "source": "CNTRLOOP TS SKEEP2",
+   "words": [
+    "55372"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3471, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 329,
+   "address": "43,3470",
+   "source": "AD SBIT4",
+   "words": [
+    "64750"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3471, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 330,
+   "address": "43,3471",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3471, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 331,
+   "address": "43,3472",
+   "source": "CS 0000",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3471, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 333,
+   "address": "43,3473",
+   "source": "CCS SKEEP2",
+   "words": [
+    "11372"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3471, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 334,
+   "address": "43,3474",
+   "source": "TC CNTRLOOP",
+   "words": [
+    "03467"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3471, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 338,
+   "address": "43,3475",
+   "source": "CYCLSHFT CA CONC+S1",
+   "words": [
+    "33241"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3477, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 339,
+   "address": "43,3476",
+   "source": "TS CYR",
+   "words": [
+    "54020"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3500, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 340,
+   "address": "43,3477",
+   "source": "TS CYL",
+   "words": [
+    "54022"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 341,
+   "address": "43,3500",
+   "source": "TS SR",
+   "words": [
+    "54021"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 342,
+   "address": "43,3501",
+   "source": "TS EDOP",
+   "words": [
+    "54023"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 343,
+   "address": "43,3502",
+   "source": "AD CYR",
+   "words": [
+    "60020"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 344,
+   "address": "43,3503",
+   "source": "AD CYL",
+   "words": [
+    "60022"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 345,
+   "address": "43,3504",
+   "source": "AD SR",
+   "words": [
+    "60021"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 346,
+   "address": "43,3505",
+   "source": "AD EDOP",
+   "words": [
+    "60023"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 347,
+   "address": "43,3506",
+   "source": "AD CONC+S2",
+   "words": [
+    "63242"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 348,
+   "address": "43,3507",
+   "source": "TC -1CHK",
+   "words": [
+    "03273"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3501, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 349,
+   "address": "43,3510",
+   "source": "AD CYR",
+   "words": [
+    "60020"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3512, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 350,
+   "address": "43,3511",
+   "source": "AD CYL",
+   "words": [
+    "60022"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3512, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 351,
+   "address": "43,3512",
+   "source": "AD SR",
+   "words": [
+    "60021"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3512, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 352,
+   "address": "43,3513",
+   "source": "AD EDOP",
+   "words": [
+    "60023"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3512, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 353,
+   "address": "43,3514",
+   "source": "AD S+1",
+   "words": [
+    "64753"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3512, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 354,
+   "address": "43,3515",
+   "source": "TC -1CHK",
+   "words": [
+    "03273"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3512, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 356,
+   "address": "43,3516",
+   "source": "INCR SCOUNT     +1",
+   "words": [
+    "25367"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3520, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 357,
+   "address": "43,3517",
+   "source": "TC SMODECHK",
+   "words": [
+    "03301"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3520, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 370,
+   "address": "43,3520",
+   "source": "ROPECHK CA S-ZERO",
+   "words": [
+    "34754"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3522, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 371,
+   "address": "43,3521",
+   "source": "TS SKEEP6",
+   "words": [
+    "55376"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3522, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 372,
+   "address": "43,3522",
+   "source": "STSHOSUM CA S+ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3524, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 374,
+   "address": "43,3523",
+   "source": "TS SKEEP4",
+   "words": [
+    "55374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3524, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 375,
+   "address": "43,3524",
+   "source": "CA S+1",
+   "words": [
+    "34753"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3524, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 376,
+   "address": "43,3525",
+   "source": "COMMFX TS SKEEP7",
+   "words": [
+    "55377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3527, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 377,
+   "address": "43,3526",
+   "source": "CA S+ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3527, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 378,
+   "address": "43,3527",
+   "source": "TS SKEEP1",
+   "words": [
+    "55371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3527, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 379,
+   "address": "43,3530",
+   "source": "TS SKEEP3",
+   "words": [
+    "55373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3527, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 380,
+   "address": "43,3531",
+   "source": "CA S+1",
+   "words": [
+    "34753"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3527, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 381,
+   "address": "43,3532",
+   "source": "TS SKEEP5",
+   "words": [
+    "55375"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3527, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 382,
+   "address": "43,3533",
+   "source": "COMADRS CA SKEEP4",
+   "words": [
+    "31374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3535, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 383,
+   "address": "43,3534",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3535, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 384,
+   "address": "43,3535",
+   "source": "MASK HI5",
+   "words": [
+    "74350"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3535, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 386,
+   "address": "43,3536",
+   "source": "AD SKEEP3",
+   "words": [
+    "61373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3535, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 387,
+   "address": "43,3537",
+   "source": "TC SUPDACAL",
+   "words": [
+    "04651"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3535, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 388,
+   "address": "43,3540",
+   "source": "TC ADSUM",
+   "words": [
+    "03563"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3542, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 389,
+   "address": "43,3541",
+   "source": "AD SBIT11",
+   "words": [
+    "64741"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3543, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 390,
+   "address": "43,3542",
+   "source": "TC ADRSCHK",
+   "words": [
+    "03574"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3543, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 392,
+   "address": "43,3543",
+   "source": "FXFX CS A",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3545, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 393,
+   "address": "43,3544",
+   "source": "TS SKEEP7",
+   "words": [
+    "55377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3545, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 394,
+   "address": "43,3545",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3545, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 395,
+   "address": "43,3546",
+   "source": "BZF +3",
+   "words": [
+    "13551"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3545, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 396,
+   "address": "43,3547",
+   "source": "CA SBIT12",
+   "words": [
+    "34740"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3545, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 397,
+   "address": "43,3550",
+   "source": "TC +2",
+   "words": [
+    "03552"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3545, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 398,
+   "address": "43,3551",
+   "source": "CA SBNK03",
+   "words": [
+    "35020"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3553, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 399,
+   "address": "43,3552",
+   "source": "TS SKEEP3",
+   "words": [
+    "55373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3554, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 400,
+   "address": "43,3553",
+   "source": "CA S+ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3554, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 401,
+   "address": "43,3554",
+   "source": "TS SKEEP1",
+   "words": [
+    "55371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3554, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 402,
+   "address": "43,3555",
+   "source": "CA S+1",
+   "words": [
+    "34753"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3554, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 403,
+   "address": "43,3556",
+   "source": "TS SKEEP5",
+   "words": [
+    "55375"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3554, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 404,
+   "address": "43,3557",
+   "source": "FXADRS INDEX SKEEP3",
+   "words": [
+    "51373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3561, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 405,
+   "address": "43,3560",
+   "source": "CA 0000",
+   "words": [
+    "30000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3561, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 406,
+   "address": "43,3561",
+   "source": "TC ADSUM",
+   "words": [
+    "03563"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3561, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 407,
+   "address": "43,3562",
+   "source": "TC ADRSCHK",
+   "words": [
+    "03574"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3564, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 409,
+   "address": "43,3563",
+   "source": "ADSUM TS SKEEP2",
+   "words": [
+    "55372"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3565, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 410,
+   "address": "43,3564",
+   "source": "AD SKEEP1",
+   "words": [
+    "61371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3565, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 411,
+   "address": "43,3565",
+   "source": "TS SKEEP1",
+   "words": [
+    "55371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3567, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 412,
+   "address": "43,3566",
+   "source": "CAF S+ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3567, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 413,
+   "address": "43,3567",
+   "source": "AD SKEEP1",
+   "words": [
+    "61371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3571, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 414,
+   "address": "43,3570",
+   "source": "TS SKEEP1",
+   "words": [
+    "55371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3571, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 415,
+   "address": "43,3571",
+   "source": "CS SKEEP2",
+   "words": [
+    "41372"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3571, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 416,
+   "address": "43,3572",
+   "source": "AD SKEEP3",
+   "words": [
+    "61373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3574, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 417,
+   "address": "43,3573",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3574, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 419,
+   "address": "43,3574",
+   "source": "ADRSCHK LXCH A",
+   "words": [
+    "22000"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 420,
+   "address": "43,3575",
+   "source": "CA SKEEP3",
+   "words": [
+    "31373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 421,
+   "address": "43,3576",
+   "source": "MASK LOW10",
+   "words": [
+    "75012"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 422,
+   "address": "43,3577",
+   "source": "AD -MAXADRS",
+   "words": [
+    "64350"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 423,
+   "address": "43,3600",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 424,
+   "address": "43,3601",
+   "source": "BZF SOPTION",
+   "words": [
+    "13670"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 425,
+   "address": "43,3602",
+   "source": "CCS SKEEP5",
+   "words": [
+    "11375"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 426,
+   "address": "43,3603",
+   "source": "TC +3",
+   "words": [
+    "03606"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 427,
+   "address": "43,3604",
+   "source": "TC +2",
+   "words": [
+    "03606"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 428,
+   "address": "43,3605",
+   "source": "TC SOPTION",
+   "words": [
+    "03670"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3576, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 429,
+   "address": "43,3606",
+   "source": "CCS L",
+   "words": [
+    "10001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3610, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 430,
+   "address": "43,3607",
+   "source": "TC CONTINU",
+   "words": [
+    "03616"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3610, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 431,
+   "address": "43,3610",
+   "source": "TC CONTINU",
+   "words": [
+    "03616"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3610, Comanche055 numbering)",
+   "executed_by_oracle": false,
+   "unreachable": "CCS L +0 at ADRSCHK"
+  },
+  {
+   "line": 432,
+   "address": "43,3611",
+   "source": "TC CONTINU",
+   "words": [
+    "03616"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3610, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 433,
+   "address": "43,3612",
+   "source": "CCS SKEEP5",
+   "words": [
+    "11375"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3610, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 434,
+   "address": "43,3613",
+   "source": "TC CONTINU    +1",
+   "words": [
+    "03617"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3610, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 435,
+   "address": "43,3614",
+   "source": "CA S-1",
+   "words": [
+    "37747"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3616, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 437,
+   "address": "43,3615",
+   "source": "TC CONTINU    +1",
+   "words": [
+    "03617"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3616, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 438,
+   "address": "43,3616",
+   "source": "CONTINU CA S+1",
+   "words": [
+    "34753"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3620, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 439,
+   "address": "43,3617",
+   "source": "TS SKEEP5",
+   "words": [
+    "55375"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3621, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 440,
+   "address": "43,3620",
+   "source": "CCS SKEEP6",
+   "words": [
+    "11376"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3621, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 441,
+   "address": "43,3621",
+   "source": "CCS NEWJOB",
+   "words": [
+    "10067"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3621, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 442,
+   "address": "43,3622",
+   "source": "TC CHANG1",
+   "words": [
+    "05122"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3624, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 443,
+   "address": "43,3623",
+   "source": "TC +2",
+   "words": [
+    "03625"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3625, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 444,
+   "address": "43,3624",
+   "source": "TC CHECKNJ",
+   "words": [
+    "03332"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3625, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 446,
+   "address": "43,3625",
+   "source": "ADRS+1 INCR SKEEP3",
+   "words": [
+    "25373"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3627, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 447,
+   "address": "43,3626",
+   "source": "CCS SKEEP7",
+   "words": [
+    "11377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3627, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 448,
+   "address": "43,3627",
+   "source": "TC COMADRS",
+   "words": [
+    "03533"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3627, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 449,
+   "address": "43,3630",
+   "source": "TC COMADRS",
+   "words": [
+    "03533"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3627, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 450,
+   "address": "43,3631",
+   "source": "TC FXADRS",
+   "words": [
+    "03557"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3627, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 451,
+   "address": "43,3632",
+   "source": "TC FXADRS",
+   "words": [
+    "03557"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3627, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 453,
+   "address": "43,3633",
+   "source": "NXTBNK CS SKEEP4",
+   "words": [
+    "41374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3635, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 454,
+   "address": "43,3634",
+   "source": "AD LSTBNKCH",
+   "words": [
+    "63723"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3635, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 455,
+   "address": "43,3635",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3635, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 456,
+   "address": "43,3636",
+   "source": "BZF ENDSUMS",
+   "words": [
+    "13131"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3635, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 457,
+   "address": "43,3637",
+   "source": "CA SKEEP4",
+   "words": [
+    "31374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3635, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 458,
+   "address": "43,3640",
+   "source": "AD SBIT11",
+   "words": [
+    "64741"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3635, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 459,
+   "address": "43,3641",
+   "source": "TS SKEEP4",
+   "words": [
+    "55374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3635, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 460,
+   "address": "43,3642",
+   "source": "TC CHKSUPR",
+   "words": [
+    "03646"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3635, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 461,
+   "address": "43,3643",
+   "source": "17TO20 CA SBIT15",
+   "words": [
+    "34735"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3645, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 462,
+   "address": "43,3644",
+   "source": "ADS SKEEP4",
+   "words": [
+    "27374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3645, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 463,
+   "address": "43,3645",
+   "source": "TC GONXTBNK",
+   "words": [
+    "03662"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3645, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 464,
+   "address": "43,3646",
+   "source": "CHKSUPR MASK HI5",
+   "words": [
+    "74350"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 465,
+   "address": "43,3647",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 466,
+   "address": "43,3650",
+   "source": "BZF NXTSUPR",
+   "words": [
+    "13660"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 467,
+   "address": "43,3651",
+   "source": "27TO30 AD S13BITS",
+   "words": [
+    "63240"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 468,
+   "address": "43,3652",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 469,
+   "address": "43,3653",
+   "source": "BZF +2",
+   "words": [
+    "13655"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 470,
+   "address": "43,3654",
+   "source": "TC GONXTBNK",
+   "words": [
+    "03662"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 471,
+   "address": "43,3655",
+   "source": "CA SIXTY",
+   "words": [
+    "33236"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 472,
+   "address": "43,3656",
+   "source": "ADS SKEEP4",
+   "words": [
+    "27374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 473,
+   "address": "43,3657",
+   "source": "TC GONXTBNK",
+   "words": [
+    "03662"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3650, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 474,
+   "address": "43,3660",
+   "source": "NXTSUPR AD SUPRCON",
+   "words": [
+    "63237"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3662, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 475,
+   "address": "43,3661",
+   "source": "ADS SKEEP4",
+   "words": [
+    "27374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3662, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 476,
+   "address": "43,3662",
+   "source": "GONXTBNK CCS SKEEP7",
+   "words": [
+    "11377"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3664, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 477,
+   "address": "43,3663",
+   "source": "TC COMMFX",
+   "words": [
+    "03525"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3664, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 478,
+   "address": "43,3664",
+   "source": "CA S+1",
+   "words": [
+    "34753"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3664, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 479,
+   "address": "43,3665",
+   "source": "TC FXFX",
+   "words": [
+    "03543"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3664, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 480,
+   "address": "43,3666",
+   "source": "CA SBIT7",
+   "words": [
+    "34745"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3664, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 481,
+   "address": "43,3667",
+   "source": "TC COMMFX",
+   "words": [
+    "03525"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3664, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 483,
+   "address": "43,3670",
+   "source": "SOPTION CA SKEEP4",
+   "words": [
+    "31374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3672, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 484,
+   "address": "43,3671",
+   "source": "MASK HI5",
+   "words": [
+    "74350"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3672, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 485,
+   "address": "43,3672",
+   "source": "TC LEFT5",
+   "words": [
+    "04331"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3672, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 486,
+   "address": "43,3673",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 488,
+   "address": "43,3674",
+   "source": "CA SKEEP4",
+   "words": [
+    "31374"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 489,
+   "address": "43,3675",
+   "source": "MASK S8BITS",
+   "words": [
+    "74357"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 490,
+   "address": "43,3676",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 491,
+   "address": "43,3677",
+   "source": "BZF SOPT",
+   "words": [
+    "13705"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 492,
+   "address": "43,3700",
+   "source": "TS SR",
+   "words": [
+    "54021"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 493,
+   "address": "43,3701",
+   "source": "CA L",
+   "words": [
+    "30001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 494,
+   "address": "43,3702",
+   "source": "MASK SEVEN",
+   "words": [
+    "74757"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 495,
+   "address": "43,3703",
+   "source": "AD SR",
+   "words": [
+    "60021"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 496,
+   "address": "43,3704",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 497,
+   "address": "43,3705",
+   "source": "SOPT CA SKEEP6",
+   "words": [
+    "31376"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 498,
+   "address": "43,3706",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 499,
+   "address": "43,3707",
+   "source": "BZF +2",
+   "words": [
+    "13711"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 500,
+   "address": "43,3710",
+   "source": "TC SDISPLAY",
+   "words": [
+    "03113"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3675, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 501,
+   "address": "43,3711",
+   "source": "CCS SKEEP1",
+   "words": [
+    "11371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3713, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 502,
+   "address": "43,3712",
+   "source": "TC +2",
+   "words": [
+    "03714"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3713, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 503,
+   "address": "43,3713",
+   "source": "TC +2",
+   "words": [
+    "03715"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3713, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 504,
+   "address": "43,3714",
+   "source": "AD S+1",
+   "words": [
+    "64753"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3716, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 505,
+   "address": "43,3715",
+   "source": "TS SKEEP1",
+   "words": [
+    "55371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3717, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 506,
+   "address": "43,3716",
+   "source": "BNKCHK CS L",
+   "words": [
+    "40001"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3717, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 507,
+   "address": "43,3717",
+   "source": "AD SKEEP1",
+   "words": [
+    "61371"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3721, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 508,
+   "address": "43,3720",
+   "source": "AD S-1",
+   "words": [
+    "67747"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3721, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 509,
+   "address": "43,3721",
+   "source": "TC -1CHK",
+   "words": [
+    "03273"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3721, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 510,
+   "address": "43,3722",
+   "source": "TC NXTBNK",
+   "words": [
+    "03633"
+   ],
+   "kind": "instruction",
+   "native": "src/self_check_body.inc (L3724, Comanche055 numbering)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 513,
+   "address": "43,3723",
+   "source": "LSTBNKCH BBCON*",
+   "words": [
+    "66100"
+   ],
+   "kind": "data",
+   "native": "compiled from the listing (src/lm_self_check_operands.inc, checked against the rope)",
+   "executed_by_oracle": null
+  }
+ ]
+}

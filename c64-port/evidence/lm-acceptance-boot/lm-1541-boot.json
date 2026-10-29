@@ -1,0 +1,51 @@
+{
+ "mission": "lm",
+ "commit": "d7abace4fc66b40c79c429bfc457701fb2b6042d",
+ "dirty": false,
+ "drive": "1541",
+ "keys": "RV37E00E",
+ "ok": true,
+ "p00": true,
+ "boot_status": 0,
+ "modreg": "00000",
+ "failreg": [
+  "00000",
+  "00000",
+  "00000"
+ ],
+ "load_s": 2210.1,
+ "boot_s": 113.5,
+ "sha256": {
+  "flight-disk/lm-1.d64": "3ee3eb4c6d6fc2e1adea9c41dfcc8d61426a366a6c198eaa6eace7766aa9cab9",
+  "flight-disk/lm-2.d64": "c9afd951e6f03fb9f8b18980a427aff5ab76b4d78fa0bc29fb0c697efc4911ac",
+  "flight-disk/lm-3.d64": "47fd2a29ae45980cf64eb1eec39b540b142cea7192145157b64fc3c8269f120f",
+  "flight-disk/lm-4.d64": "12b67d8a7b939845929a9a310bb7722917b4952bea9fb8f8409b039239b85bea",
+  "flight-disk/lm-5.d64": "494d782e29b788f57de12766f75d1fe36d880af1e619b7e340846c4a92e0ea8a",
+  "flight-disk/lm-loader.prg": "4194698f562abffff3624621e26437c6f042de33d4b50004a0b4e9e752454a39",
+  "flight-disk/lm-resident.prg": "09c71187ca896d250e080db1343b30e8e7e9732b966d6b806fe61862f9cf8bc6",
+  "flight-store/lm.reu": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712"
+ },
+ "vice_log_sha256": "a32ef089dc2f88574692fbbd3e90cba5739bd00893751d18f2c202f7bc659d67",
+ "monitor_log_sha256": "7bb380165c521abc0834fd9bb2f841bf29d455cbfba2193a94f296e8c1609448",
+ "reu_bounds_ok": true,
+ "screen_sha256": "eced2f8f3a809820483fdba0214bdcc45928892ebc8ee8a044e0b5de9e7839b9",
+ "screen": [
+  " APOLLO 11 LM DSKY",
+  "",
+  " UPLINK ACTY  TEMP         COMP ACTY",
+  " NO ATT       GIMBAL LOCK  PROG",
+  " KEY REL      RESTART      TRACKER",
+  " OPR ERR      ALT          VEL",
+  "",
+  "        VERB    NOUN    PROG",
+  "                         00",
+  "",
+  "            R1",
+  "            R2",
+  "            R3",
+  "",
+  " V VERB  N NOUN  RETURN ENTR  C CLR",
+  " R RSET  K KEY REL  P PRO  0-9 + -",
+  ""
+ ]
+}

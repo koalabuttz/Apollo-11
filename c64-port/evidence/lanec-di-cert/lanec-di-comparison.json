@@ -1,0 +1,126 @@
+{
+ "method": "tools/lanec/diff.py: every case run through the native routines and through the unchanged original program (pinned ropes) in Virtual AGC; complete results compared (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, interrupt state). With --refusals, a case the native routine refuses must leave the image and I/O unchanged and is counted instead of compared.",
+ "suites": {
+  "di-dsp": {
+   "suite": "di-dsp",
+   "cases": 3264,
+   "differing": 0,
+   "native_sha256": "b8c7b944eeac4888d965a09feaf59a7a3941b160e2246f15779ca8329fb597d8",
+   "oracle_sha256": "b8c7b944eeac4888d965a09feaf59a7a3941b160e2246f15779ca8329fb597d8",
+   "oracle_crc_sha256": "0179d1c946c8908222bc6449a5ee6c3f17a286a3d3f19c69368a92d1a802b3aa",
+   "accepted_cases_by_mission": {
+    "CM": 1632,
+    "LM": 1632
+   }
+  },
+  "di-mark": {
+   "suite": "di-mark",
+   "cases": 2944,
+   "differing": 0,
+   "native_sha256": "82a84af3126548737ab0b8ebdc308569fadddea08579ad7109464910f77e3740",
+   "oracle_sha256": "82a84af3126548737ab0b8ebdc308569fadddea08579ad7109464910f77e3740",
+   "oracle_crc_sha256": "a170f77d9e12d96609eb3fb12f1b633f9255087c3c8a22a821aa0741ea5288ac",
+   "accepted_cases_by_mission": {
+    "CM": 1472,
+    "LM": 1472
+   }
+  },
+  "di-play": {
+   "suite": "di-play",
+   "cases": 2208,
+   "differing": 0,
+   "native_sha256": "7e3d6da856c989cc4f82f9d745f0ddfcd1e3a36b28c16f1b24703d9c39fa73c0",
+   "oracle_sha256": "7e3d6da856c989cc4f82f9d745f0ddfcd1e3a36b28c16f1b24703d9c39fa73c0",
+   "oracle_crc_sha256": "f8e8e72203d6b1c3003448c507358f8d7e1cc16777d63404341b99c7e9f1d21d",
+   "accepted_cases_by_mission": {
+    "CM": 1104,
+    "LM": 1104
+   }
+  },
+  "di-sleep": {
+   "suite": "di-sleep",
+   "cases": 2176,
+   "differing": 0,
+   "native_sha256": "cd182485d82202f150e3f8bc398c7a7a23175aac5bec73ac1eb14c9792049783",
+   "oracle_sha256": "cd182485d82202f150e3f8bc398c7a7a23175aac5bec73ac1eb14c9792049783",
+   "oracle_crc_sha256": "a9f032758f5ddfe4e29b2d5da27ab37359ebe01a42340f3199091f9289b9ef60",
+   "accepted_cases_by_mission": {
+    "CM": 1088,
+    "LM": 1088
+   }
+  },
+  "di-idle": {
+   "suite": "di-idle",
+   "cases": 4480,
+   "differing": 0,
+   "refused_unchanged": 122,
+   "native_sha256": "b10d2a861070f127bb8aa5745832ad6526210ff30361b6cf9b9c7f3c9db889db",
+   "oracle_sha256": "80c1301ff395ed9651d77cc940bd58b779a2b36240e158dab12092f7bee5e6dd",
+   "oracle_crc_sha256": "7b3da75ef7878fd65935e79f23cad4e2ff5625fbcc352be999f354f0d7ca14d2",
+   "accepted_cases_by_mission": {
+    "CM": 2180,
+    "LM": 2178
+   }
+  },
+  "di-nvdsp": {
+   "suite": "di-nvdsp",
+   "cases": 3600,
+   "differing": 0,
+   "refused_unchanged": 114,
+   "native_sha256": "7a837a683a09623a6583328d8b60ee77ee2f06113165ae84d38836b9612e8dbd",
+   "oracle_sha256": "cec0a5cc3f90e80709a26e2dbb92b7fb0e03240406a0fa8e90ee32e8cc8ee0ee",
+   "oracle_crc_sha256": "7c22c4e789b0cfd22876a097f5c7078b6e212a45813acbc66082b81298e379b2",
+   "accepted_cases_by_mission": {
+    "CM": 1744,
+    "LM": 1742
+   }
+  },
+  "di-transfer": {
+   "suite": "di-transfer",
+   "cases": 996,
+   "differing": 0,
+   "native_sha256": "ed64a3968f77d0b6812363f8fc412d9aca4791eb79e2275fb9088e5a37767a27",
+   "oracle_sha256": "ed64a3968f77d0b6812363f8fc412d9aca4791eb79e2275fb9088e5a37767a27",
+   "oracle_crc_sha256": "18161b3c6294b83bb9981fcec83e7a0fa01f0f995d7616e1850ea2d7959e90c3",
+   "accepted_cases_by_mission": {
+    "CM": 500,
+    "LM": 496
+   }
+  },
+  "di-transfer-c64": {
+   "suite": "di-transfer-c64",
+   "cases": 1164,
+   "differing": 0,
+   "refused_unchanged": 28,
+   "native_sha256": "0aabddfabfd648a8bee941874442de5c249680e633f496486b6da932fd484f82",
+   "oracle_sha256": "d2c2cc066bb30a03fbdc519c770023f9488f65fec9c501adf33598248a783516",
+   "oracle_crc_sha256": "e97403365051d256165982af2e07279079b4cabdfa756b5be64996e5bc737c3f",
+   "accepted_cases_by_mission": {
+    "CM": 574,
+    "LM": 562
+   }
+  },
+  "di-transfer-c64m": {
+   "suite": "di-transfer-c64m",
+   "cases": 1148,
+   "differing": 0,
+   "refused_unchanged": 38,
+   "native_sha256": "24181333fc5781c31eda4b9946d8f64b8d1fa6b0c5d544ee6b99253954f85579",
+   "oracle_sha256": "3fc04b287118383572dbd8c67cddebc443954bdcf41f8150e5d78f881d753578",
+   "oracle_crc_sha256": "8849fc4766d714d44ba610cdc5d84d90a5f210f2114e6a4dd1fccb4fce46d433",
+   "accepted_cases_by_mission": {
+    "CM": 548,
+    "LM": 562
+   }
+  },
+  "di-refuse": {
+   "suite": "di-refuse",
+   "cases": 384,
+   "refused_unchanged": 384,
+   "native_sha256": "016149d4a1ca7be45eb2f9fe9799e73a1e33e5f6ffaf141be5c0c00aa7e47698"
+  }
+ },
+ "total_cases": 22364,
+ "total_differing": 0,
+ "total_refused_unchanged": 686
+}

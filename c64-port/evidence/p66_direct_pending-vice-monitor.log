@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/p66_direct_pending.prg from 0801 to 580A (500A bytes)
+WATCH: 1  C:$7af8  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 7af8)   52/$034,  61/$3d
+.C:5472  8E F8 7A    STX $7AF8      - A:00 X:A5 Y:0E SP:f1 N.-.....    6941905
+>C:7af8  a5 00 00 01  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_direct_pending-vice-mailbox.bin' from $7af8 to $7afc
+Saving file `/workspace/Apollo-11/c64-port/build/p66_direct_pending-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_direct_pending-vice-software-stack.bin' from $c100 to $cfff

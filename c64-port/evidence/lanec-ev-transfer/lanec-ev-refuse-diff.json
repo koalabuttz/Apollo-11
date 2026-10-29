@@ -1,0 +1,6 @@
+{
+  "suite": "ev-refuse",
+  "cases": 512,
+  "refused_unchanged": 512,
+  "native_sha256": "a3069567801cc3af5f6505275a40012324ca30f8265cfc9f7927e01f317f6dac"
+}

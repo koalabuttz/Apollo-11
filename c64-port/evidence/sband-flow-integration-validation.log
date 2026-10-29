@@ -1,0 +1,14 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tools/sband_flow_snapshot.c tests/sband_flow_cases.c src/agc_word.c src/sband_flow.c src/lm_interbank.c src/cm_interbank_complete.c src/rtb_angles.c src/cm_powered_interface.c src/cm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/sband-flow-integrated-stream
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_sband_flow.c tests/sband_flow_target.c tests/frozen_words.c tests/sband_flow_cases.c src/agc_word.c src/sband_flow.c src/lm_interbank.c src/cm_interbank_complete.c src/rtb_angles.c src/cm_powered_interface.c src/cm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/test-sband-flow-integrated
+./build/test-sband-flow-integrated
+PASS original flow full-image fixtures and unchanged unsupported stages/pipelines
+python3 tools/sband_flow_port_host.py --binary build/sband-flow-integrated-stream
+PASS all retained source-state bytes: 134545408 SHA256 e727d88186e37d8aadded891b639ada5e738734b173146fbd304d65394334fe6
+PASS all 32,768 original antenna time/CDU caller states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_flow.c tests/sband_flow_target.c tests/frozen_words.c tests/sband_flow_cases.c src/agc_word.c src/sband_flow.c src/lm_interbank.c src/cm_interbank_complete.c src/rtb_angles.c src/cm_powered_interface.c src/cm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/test-sband-flow-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-flow-integrated-san
+PASS original flow full-image fixtures and unchanged unsupported stages/pipelines
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_flow_snapshot.c tests/sband_flow_cases.c src/agc_word.c src/sband_flow.c src/lm_interbank.c src/cm_interbank_complete.c src/rtb_angles.c src/cm_powered_interface.c src/cm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/sband-flow-integrated-stream-san
+python3 tools/sband_flow_port_host.py --binary build/sband-flow-integrated-stream-san
+PASS all retained source-state bytes: 134545408 SHA256 e727d88186e37d8aadded891b639ada5e738734b173146fbd304d65394334fe6
+PASS all 32,768 original antenna time/CDU caller states

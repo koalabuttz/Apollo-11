@@ -1,0 +1,7 @@
+# Original +ON/-ON data-row sign output
+
+`dsky_sign_output` implements the original LM and CM source entry. Actual source +ON/-ON for data rows accepts DSPCOUNT0..14, ordinary caller Q0100..7777, coherent bank40/anyEB, selecting SUPER100/120/140/160, legal IRQ, raw A/L and ordinary RAM. The helper preserves source SGNON/SGNOFF/CODE, INREL, MPAC/relay and register debris and stops before the actual caller instruction or selected clean-relay CCSHOLE body. The reference waits for the actual final TC L before recording a caller return, including caller addresses that also occur inside the routine.
+
+Caller excludes producers and supplies distinct canonical image/IO/output objects. Invalid declared control inputs preserve those objects. Native arithmetic uses integer operations without an instruction decoder, heap or floating point. The original engine is a host-only reference.
+
+All16,384 complete original states match strict native and full ASAN/UBSAN, raw SHA256 `c6b38cdb46bc0a42b4dcf050b19b5b2122f56b3521e2cfdaaa0d546733191be6`. Frozen tests retain128 complete states plus32 unchanged invalid guards. Stock PAL C64 passes128, mailbox `a500008000`; PRG11113 bytes, hardware stack18 including14 ROM bytes, software stack26, no extra zero-page allocation. Exact dependencies and artifacts are recorded in `evidence/dsky-sign-output-proof.json`. External callers/recovery bodies and whole Pinball/application completion are unclaimed.

@@ -1,0 +1,11 @@
+{
+  "complete_states": 131072,
+  "decoded_sha256": "fb3e066ac3eae8c1efb637825a649f739956d56e7cca44ee12ef4983fdc793ac",
+  "branch_counts": {
+    "negative_or_zero": 32770,
+    "non_RCS": 16382,
+    "RCS_update": 81920
+  },
+  "frozen_states": 64,
+  "frozen_storage_bytes": 1729
+}

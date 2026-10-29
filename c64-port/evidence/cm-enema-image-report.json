@@ -1,0 +1,40 @@
+{
+  "actual_executed_source_states": 4096,
+  "source_stream_sha256": "cf5e45baa06b836b97f38a957ad4275cf5857b36136344a1803767d57af61dfb",
+  "target_contexts": 32,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500002000",
+  "software_stack_bytes": 1112,
+  "modules": [
+    {
+      "id": 219,
+      "filename": "G219",
+      "byte_count": 7028,
+      "crc16": 4180,
+      "sha256": "9b2c64b45ec469c4daefb3720d88b0402c7ba17112786725338a0558e0718016",
+      "prg": "cm-enema-image-219.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 9495,
+      "crc16": 45188,
+      "sha256": "60cee3e8231d8ba9a5f6271691ed882850f665c5c3cbe367f9ebf46e03f45501",
+      "prg": "cm-enema-image-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 9725,
+      "crc16": 32228,
+      "sha256": "f1c54fe6161440b6569c1b3d63652eb5f5a4ad39b190b57406b907e755974be3",
+      "prg": "cm-enema-image-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "canonical original ENEMA through actual MMDSPLAY/PTBAD/DOFSTART entry; selected subsequent application body remains separate"
+}

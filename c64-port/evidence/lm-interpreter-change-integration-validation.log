@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/lm_interpreter_change.c tests/lm_interpreter_change_cases.c tests/test_lm_interpreter_change.c -o build/test-lm-interpreter-change
+./build/test-lm-interpreter-change
+PASS:16384 transfer payloads,27 unchanged invalid contexts,3 null guards
+cc -Iinclude -Itests -std=c99 -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie src/agc_word.c src/lm_interpreter_change.c tests/lm_interpreter_change_cases.c tests/test_lm_interpreter_change.c -o build/test-lm-interpreter-change-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-interpreter-change-san
+PASS:16384 transfer payloads,27 unchanged invalid contexts,3 null guards

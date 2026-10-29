@@ -1,0 +1,6 @@
+load "/workspace/Apollo-11/c64-port/build/noun-reader.prg" 0
+watch store c000
+ignore 1 1
+g 080d
+bsave "/workspace/Apollo-11/c64-port/build/noun-reader-mailbox.bin" 0 c000 c002
+quit

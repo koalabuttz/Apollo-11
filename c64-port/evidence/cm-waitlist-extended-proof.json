@@ -1,0 +1,24 @@
+{
+  "cases": 2048,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entries": [
+    "05245 WAITLIST",
+    "05235 TWIDDLE"
+  ],
+  "boundaries": [
+    "caller return",
+    "07755 BAILOUT",
+    "05721 POODOO"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "alarm_body": "later actual continuation, not executed by this helper",
+  "snapshot_sha256": "2fc54133599c61714b8a7ce2966cfaf3e76ec3eb6f06b5773f089f55a7b35e56"
+}

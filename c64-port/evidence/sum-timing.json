@@ -1,0 +1,11 @@
+{
+  "pal_clock_hz": 985248,
+  "samples": {
+    "DAD_resolved_overflow": 1476,
+    "DSU_overflow": 1480,
+    "BDSU_overflow": 1319,
+    "BVSU_overflow": 3807,
+    "BVSU_independent_random": 2816
+  },
+  "scope": "Finite excluded-call samples include marker overhead and VIC/IRQ effects; no WCET or live guidance deadline proof."
+}

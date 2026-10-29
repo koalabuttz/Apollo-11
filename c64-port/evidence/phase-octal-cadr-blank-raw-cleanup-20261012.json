@@ -1,0 +1,96 @@
+{
+  "verified_head": "2ec94d991f0aa6ccb897b8e12361072d93dcec18",
+  "total_reclaimed_bytes": 851918058,
+  "records": [
+    {
+      "removed_raw": "build/dsky-octal-display-native.snapshots",
+      "retained_committed": "evidence/dsky-octal-display-native.snapshots.gz",
+      "archive_git_blob": "082fd2dd1675d699a1486df7cf5429575d60e7cf",
+      "archive_sha256": "fd79af33be081897b945d63aa34307fcc2f53d71d14d427fb8fe1fb7271b64c4",
+      "archive_bytes": 41292610,
+      "decoded_sha256": "574623fe69e9484407b00f237f2eb0204c3ac298d11671cd8eef1c48a784b3f6",
+      "decoded_bytes": 94681534,
+      "reclaimed_bytes": 94681534
+    },
+    {
+      "removed_raw": "build/dsky-octal-display-reference.snapshots",
+      "retained_committed": "evidence/dsky-octal-display-reference.snapshots.gz",
+      "archive_git_blob": "082fd2dd1675d699a1486df7cf5429575d60e7cf",
+      "archive_sha256": "fd79af33be081897b945d63aa34307fcc2f53d71d14d427fb8fe1fb7271b64c4",
+      "archive_bytes": 41292610,
+      "decoded_sha256": "574623fe69e9484407b00f237f2eb0204c3ac298d11671cd8eef1c48a784b3f6",
+      "decoded_bytes": 94681534,
+      "reclaimed_bytes": 94681534
+    },
+    {
+      "removed_raw": "build/dsky-octal-display-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-octal-display-sanitize.snapshots.gz",
+      "archive_git_blob": "082fd2dd1675d699a1486df7cf5429575d60e7cf",
+      "archive_sha256": "fd79af33be081897b945d63aa34307fcc2f53d71d14d427fb8fe1fb7271b64c4",
+      "archive_bytes": 41292610,
+      "decoded_sha256": "574623fe69e9484407b00f237f2eb0204c3ac298d11671cd8eef1c48a784b3f6",
+      "decoded_bytes": 94681534,
+      "reclaimed_bytes": 94681534
+    },
+    {
+      "removed_raw": "build/dsky-machine-cadr-native.snapshots",
+      "retained_committed": "evidence/dsky-machine-cadr-native.snapshots.gz",
+      "archive_git_blob": "d8846d621c9f7329a7343c9c89d97c0af3eb235a",
+      "archive_sha256": "0dd83da462c2f7fe6187e214b7d49d6c5364bd13221e9282193a9f418da2027e",
+      "archive_bytes": 41305001,
+      "decoded_sha256": "95854b1c0d3949d984ca34647dc6c27f287ab6b002b3fab2c6139d553df93505",
+      "decoded_bytes": 94694646,
+      "reclaimed_bytes": 94694646
+    },
+    {
+      "removed_raw": "build/dsky-machine-cadr-reference.snapshots",
+      "retained_committed": "evidence/dsky-machine-cadr-reference.snapshots.gz",
+      "archive_git_blob": "d8846d621c9f7329a7343c9c89d97c0af3eb235a",
+      "archive_sha256": "0dd83da462c2f7fe6187e214b7d49d6c5364bd13221e9282193a9f418da2027e",
+      "archive_bytes": 41305001,
+      "decoded_sha256": "95854b1c0d3949d984ca34647dc6c27f287ab6b002b3fab2c6139d553df93505",
+      "decoded_bytes": 94694646,
+      "reclaimed_bytes": 94694646
+    },
+    {
+      "removed_raw": "build/dsky-machine-cadr-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-machine-cadr-sanitize.snapshots.gz",
+      "archive_git_blob": "d8846d621c9f7329a7343c9c89d97c0af3eb235a",
+      "archive_sha256": "0dd83da462c2f7fe6187e214b7d49d6c5364bd13221e9282193a9f418da2027e",
+      "archive_bytes": 41305001,
+      "decoded_sha256": "95854b1c0d3949d984ca34647dc6c27f287ab6b002b3fab2c6139d553df93505",
+      "decoded_bytes": 94694646,
+      "reclaimed_bytes": 94694646
+    },
+    {
+      "removed_raw": "build/dsky-five-blank-native.snapshots",
+      "retained_committed": "evidence/dsky-five-blank-native.snapshots.gz",
+      "archive_git_blob": "9b0879170896aee0751785d8028b67ad3ac36e88",
+      "archive_sha256": "5bdd4e054ac237cbe7f9d3ec96113a3ac2166437e2d1f50510ed32eae6c0b443",
+      "archive_bytes": 41292199,
+      "decoded_sha256": "e49fae93b230364bbdfbafdb459b0ed4140eb161f4ef800f43a5a9b7e65443b2",
+      "decoded_bytes": 94596506,
+      "reclaimed_bytes": 94596506
+    },
+    {
+      "removed_raw": "build/dsky-five-blank-reference.snapshots",
+      "retained_committed": "evidence/dsky-five-blank-reference.snapshots.gz",
+      "archive_git_blob": "9b0879170896aee0751785d8028b67ad3ac36e88",
+      "archive_sha256": "5bdd4e054ac237cbe7f9d3ec96113a3ac2166437e2d1f50510ed32eae6c0b443",
+      "archive_bytes": 41292199,
+      "decoded_sha256": "e49fae93b230364bbdfbafdb459b0ed4140eb161f4ef800f43a5a9b7e65443b2",
+      "decoded_bytes": 94596506,
+      "reclaimed_bytes": 94596506
+    },
+    {
+      "removed_raw": "build/dsky-five-blank-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-five-blank-sanitize.snapshots.gz",
+      "archive_git_blob": "9b0879170896aee0751785d8028b67ad3ac36e88",
+      "archive_sha256": "5bdd4e054ac237cbe7f9d3ec96113a3ac2166437e2d1f50510ed32eae6c0b443",
+      "archive_bytes": 41292199,
+      "decoded_sha256": "e49fae93b230364bbdfbafdb459b0ed4140eb161f4ef800f43a5a9b7e65443b2",
+      "decoded_bytes": 94596506,
+      "reclaimed_bytes": 94596506
+    }
+  ]
+}

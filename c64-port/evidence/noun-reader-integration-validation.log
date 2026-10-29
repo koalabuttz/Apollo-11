@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/fixed_data.c src/noun_reader.c tests/noun_reader_cases.c tests/test_noun_reader.c -o build/test-noun-reader
+./build/test-noun-reader
+PASS: 58368 supported noun-reader contexts; 100 unsupported contexts preserve every word and I/O
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/fixed_data.c src/noun_reader.c tests/noun_reader_cases.c tests/test_noun_reader.c -o build/test-noun-reader-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-noun-reader-sanitize
+PASS: 58368 supported noun-reader contexts; 100 unsupported contexts preserve every word and I/O

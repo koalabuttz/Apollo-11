@@ -1,0 +1,274 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     7043     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/native-exchange-mixed.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       4e     1         /tmp/irq_gate-631e1a.o:(.text.c64_irq_gate)
+     830      830       4e     1                 c64_irq_gate
+     87e      87e       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     87e      87e       13     1                 __zero_bss
+     891      891        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     891      891        0     1                 __call_indir
+     894      894      1ae     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_endjob_select)
+     894      894      1ae     1                 exec_endjob_select
+     a42      a42      180     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_change_basic)
+     a42      a42      180     1                 exec_change_basic
+     bc2      bc2       ba     1         build/native-exchange-mixed.prg.lto.o:(.text.basic_slot)
+     bc2      bc2       ba     1                 basic_slot
+     c7c      c7c      37c     1         build/native-exchange-mixed.prg.lto.o:(.text.exchange_basic)
+     c7c      c7c      37c     1                 exchange_basic
+     ff8      ff8      464     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_change_interpretive)
+     ff8      ff8      464     1                 exec_change_interpretive
+    145c     145c      243     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_complete_basic)
+    145c     145c      243     1                 exec_complete_basic
+    169f     169f      31f     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_sleep_basic)
+    169f     169f      31f     1                 exec_sleep_basic
+    19be     19be       7a     1         build/native-exchange-mixed.prg.lto.o:(.text.lifecycle_candidate)
+    19be     19be       7a     1                 lifecycle_candidate
+    1a38     1a38      314     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_priority_basic)
+    1a38     1a38      314     1                 exec_priority_basic
+    1d4c     1d4c      134     1         build/native-exchange-mixed.prg.lto.o:(.text.lookup_kind)
+    1d4c     1d4c      134     1                 lookup_kind
+    1e80     1e80      396     1         build/native-exchange-mixed.prg.lto.o:(.text.start_locked)
+    1e80     1e80      396     1                 start_locked
+    2216     2216      1ba     1         build/native-exchange-mixed.prg.lto.o:(.text.saved_target)
+    2216     2216      1ba     1                 saved_target
+    23d0     23d0      3cf     1         build/native-exchange-mixed.prg.lto.o:(.text.exchange_saved)
+    23d0     23d0      3cf     1                 exchange_saved
+    279f     279f       57     1         build/native-exchange-mixed.prg.lto.o:(.text.settle)
+    279f     279f       57     1                 settle
+    27f6     27f6       ff     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_native_poll)
+    27f6     27f6       ff     1                 exec_native_poll
+    28f5     28f5      9e1     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_native_finish)
+    28f5     28f5      9e1     1                 exec_native_finish
+    32d6     32d6      22c     1         build/native-exchange-mixed.prg.lto.o:(.text.complete_mixed)
+    32d6     32d6      22c     1                 complete_mixed
+    3502     3502      1dc     1         build/native-exchange-mixed.prg.lto.o:(.text.change_mixed_basic)
+    3502     3502      1dc     1                 change_mixed_basic
+    36de     36de      2ad     1         build/native-exchange-mixed.prg.lto.o:(.text.sleep_mixed)
+    36de     36de      2ad     1                 sleep_mixed
+    398b     398b      335     1         build/native-exchange-mixed.prg.lto.o:(.text.priority_mixed)
+    398b     398b      335     1                 priority_mixed
+    3cc0     3cc0      4af     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_native_step)
+    3cc0     3cc0      4af     1                 exec_native_step
+    416f     416f      15e     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_irq_post)
+    416f     416f      15e     1                 exec_irq_post
+    42cd     42cd      92c     1         build/native-exchange-mixed.prg.lto.o:(.text.exec_irq_service_locked)
+    42cd     42cd      92c     1                 exec_irq_service_locked
+    4bf9     4bf9      6ff     1         build/native-exchange-mixed.prg.lto.o:(.text.in_run_init)
+    4bf9     4bf9      6ff     1                 in_run_init
+    52f8     52f8       1b     1         build/native-exchange-mixed.prg.lto.o:(.text.enter)
+    52f8     52f8       1b     1                 enter
+    5313     5313       14     1         build/native-exchange-mixed.prg.lto.o:(.text.leave)
+    5313     5313       14     1                 leave
+    5327     5327       16     1         build/native-exchange-mixed.prg.lto.o:(.text.low_entry)
+    5327     5327       16     1                 low_entry
+    533d     533d       24     1         build/native-exchange-mixed.prg.lto.o:(.text.low_a)
+    533d     533d       24     1                 low_a
+    5361     5361       18     1         build/native-exchange-mixed.prg.lto.o:(.text.low_b)
+    5361     5361       18     1                 low_b
+    5379     5379       18     1         build/native-exchange-mixed.prg.lto.o:(.text.low_sleep)
+    5379     5379       18     1                 low_sleep
+    5391     5391       18     1         build/native-exchange-mixed.prg.lto.o:(.text.low_wake)
+    5391     5391       18     1                 low_wake
+    53a9     53a9       18     1         build/native-exchange-mixed.prg.lto.o:(.text.low_c)
+    53a9     53a9       18     1                 low_c
+    53c1     53c1       21     1         build/native-exchange-mixed.prg.lto.o:(.text.low_finish)
+    53c1     53c1       21     1                 low_finish
+    53e2     53e2       18     1         build/native-exchange-mixed.prg.lto.o:(.text.high_entry)
+    53e2     53e2       18     1                 high_entry
+    53fa     53fa       26     1         build/native-exchange-mixed.prg.lto.o:(.text.high_a)
+    53fa     53fa       26     1                 high_a
+    5420     5420       1a     1         build/native-exchange-mixed.prg.lto.o:(.text.high_b)
+    5420     5420       1a     1                 high_b
+    543a     543a       17     1         build/native-exchange-mixed.prg.lto.o:(.text.high_finish)
+    543a     543a       17     1                 high_finish
+    5451     5451       24     1         build/native-exchange-mixed.prg.lto.o:(.text.high_bridge)
+    5451     5451       24     1                 high_bridge
+    5475     5475       18     1         build/native-exchange-mixed.prg.lto.o:(.text.high_sleep)
+    5475     5475       18     1                 high_sleep
+    548d     548d      267     1         build/native-exchange-mixed.prg.lto.o:(.text.high_priority)
+    548d     548d      267     1                 high_priority
+    56f4     56f4      401     1         build/native-exchange-mixed.prg.lto.o:(.text.action)
+    56f4     56f4      401     1                 action
+    5af5     5af5      c38     1         build/native-exchange-mixed.prg.lto.o:(.text.in_run_step)
+    5af5     5af5      c38     1                 in_run_step
+    672d     672d      571     1         build/native-exchange-mixed.prg.lto.o:(.text.in_checkpoint)
+    672d     672d      571     1                 in_checkpoint
+    6c9e     6c9e      67d     1         build/native-exchange-mixed.prg.lto.o:(.text.main)
+    6c9e     6c9e      67d     1                 main
+    731b     731b        3     1         build/native-exchange-mixed.prg.lto.o:(.text.c64_irq_status)
+    731b     731b        3     1                 c64_irq_status
+    731e     731e       aa     1         build/native-exchange-mixed.prg.lto.o:(.text.c64_irq_producer)
+    731e     731e       aa     1                 c64_irq_producer
+    73c8     73c8        4     1         build/native-exchange-mixed.prg.lto.o:(.text.enter.25)
+    73c8     73c8        4     1                 enter.25
+    73cc     73cc        8     1         build/native-exchange-mixed.prg.lto.o:(.text.leave.26)
+    73cc     73cc        8     1                 leave.26
+    73d4     73d4        6     1         build/native-exchange-mixed.prg.lto.o:(.text.exit)
+    73d4     73d4        6     1                 exit
+    73da     73da       4d     1         build/native-exchange-mixed.prg.lto.o:(.text.putchar)
+    73da     73da       4d     1                 putchar
+    7427     7427       65     1         build/native-exchange-mixed.prg.lto.o:(.text.puts)
+    7427     7427       65     1                 puts
+    748c     748c       34     1         build/native-exchange-mixed.prg.lto.o:(.text.memcpy)
+    748c     748c       34     1                 memcpy
+    74c0     74c0       47     1         build/native-exchange-mixed.prg.lto.o:(.text.memcmp)
+    74c0     74c0       47     1                 memcmp
+    7507     7507       22     1         build/native-exchange-mixed.prg.lto.o:(.text.__memset)
+    7507     7507       22     1                 __memset
+    7529     7529       5d     1         build/native-exchange-mixed.prg.lto.o:(.text.__udivqi3)
+    7529     7529       5d     1                 __udivqi3
+    7586     7586       c4     1         build/native-exchange-mixed.prg.lto.o:(.text.__udivhi3)
+    7586     7586       c4     1                 __udivhi3
+    764a     764a       40     1         build/native-exchange-mixed.prg.lto.o:(.text.__umodqi3)
+    764a     764a       40     1                 __umodqi3
+    768a     768a       ae     1         build/native-exchange-mixed.prg.lto.o:(.text.__umodhi3)
+    768a     768a       ae     1                 __umodhi3
+    7738     7738       7d     1         build/native-exchange-mixed.prg.lto.o:(.text.__udivmodqi4)
+    7738     7738       7d     1                 __udivmodqi4
+    77b5     77b5       34     1         build/native-exchange-mixed.prg.lto.o:(.text.__mulhi3)
+    77b5     77b5       34     1                 __mulhi3
+    77e9     77e9       67     1         build/native-exchange-mixed.prg.lto.o:(.text.__mulsi3)
+    77e9     77e9       67     1                 __mulsi3
+    7850     7850        0     1         __init_array_start = .
+    7850     7850        0     1         __init_array_end = .
+    7850     7850        0     1         __fini_array_start = .
+    7850     7850        0     1         __fini_array_end = .
+    7850     7850      33e     1 .rodata
+    7850     7850        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    7850     7850        0     1                 __set_v
+    7851     7851       14     1         build/native-exchange-mixed.prg.lto.o:(.rodata.exec_native_finish)
+    7865     7865       10     1         <internal>:(.rodata.cst16)
+    7875     7875       20     1         <internal>:(.rodata.cst32)
+    7895     7895       69     1         build/native-exchange-mixed.prg.lto.o:(.rodata.mappings)
+    7895     7895       69     1                 mappings
+    78fe     78fe      230     1         build/native-exchange-mixed.prg.lto.o:(.rodata.interpreter_native_vectors)
+    78fe     78fe      230     1                 interpreter_native_vectors
+    7b2e     7b2e       53     1         <internal>:(.rodata.str1.1)
+    7b81     7b81        7     1         build/native-exchange-mixed.prg.lto.o:(.rodata.high)
+    7b81     7b81        7     1                 high
+    7b88     7b88        6     1         build/native-exchange-mixed.prg.lto.o:(.rodata.c64_exclusion)
+    7b88     7b88        6     1                 c64_exclusion
+    7b8e     7b8e        0     1 .data
+    7b8e     7b8e        0     1         __data_start = .
+    7b8e     7b8e        0     1         __data_end = .
+    7b8e     7b8e        0     1 __data_load_start = LOADADDR(.data)
+    7b8e     7b8e        0     1 __data_size = SIZEOF(.data)
+    7b8e     7b8e      6a2     1 .bss
+    7b8e     7b8e        0     1         __bss_start = .
+    7b8e     7b8e       20     1         /tmp/irq_gate-631e1a.o:(.bss.c64_irq_saved)
+    7b8e     7b8e        0     1                 c64_irq_saved
+    7bae     7bae        2     1         build/native-exchange-mixed.prg.lto.o:(.bss.failures)
+    7bae     7bae        2     1                 failures
+    7bb0     7bb0        2     1         build/native-exchange-mixed.prg.lto.o:(.bss.caseno)
+    7bb0     7bb0        2     1                 caseno
+    7bb2     7bb2      2dd     1         build/native-exchange-mixed.prg.lto.o:(.bss.run)
+    7bb2     7bb2      2dd     1                 run
+    7e8f     7e8f        2     1         build/native-exchange-mixed.prg.lto.o:(.bss.stepno)
+    7e8f     7e8f        2     1                 stepno
+    7e91     7e91      288     1         build/native-exchange-mixed.prg.lto.o:(.bss.before)
+    7e91     7e91      288     1                 before
+    8119     8119        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.reason)
+    8119     8119        1     1                 reason
+    811a     811a        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.installed)
+    811a     811a        1     1                 installed
+    811b     811b        2     1         build/native-exchange-mixed.prg.lto.o:(.bss.destination)
+    811b     811b        2     1                 destination
+    811d     811d        7     1         build/native-exchange-mixed.prg.lto.o:(.bss.source)
+    811d     811d        7     1                 source
+    8124     8124        2     1         build/native-exchange-mixed.prg.lto.o:(.bss.c64_irq_previous)
+    8124     8124        2     1                 c64_irq_previous
+    8126     8126        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.old_mask)
+    8126     8126        1     1                 old_mask
+    8127     8127        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.old_d011)
+    8127     8127        1     1                 old_d011
+    8128     8128        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.c64_irq_poison)
+    8128     8128        1     1                 c64_irq_poison
+    8129     8129        2     1         build/native-exchange-mixed.prg.lto.o:(.bss.c64_irq_arithmetic)
+    8129     8129        2     1                 c64_irq_arithmetic
+    812b     812b        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.c64_irq_stack_fault)
+    812b     812b        1     1                 c64_irq_stack_fault
+    812c     812c        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.c64_irq_count)
+    812c     812c        1     1                 c64_irq_count
+    812d     812d        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.c64_irq_done)
+    812d     812d        1     1                 c64_irq_done
+    812e     812e        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.c64_irq_last_status)
+    812e     812e        1     1                 c64_irq_last_status
+    812f     812f        1     1         build/native-exchange-mixed.prg.lto.o:(.bss.remaining)
+    812f     812f        1     1                 remaining
+    8130     8130      100     1         build/native-exchange-mixed.prg.lto.o:(.bss.c64_irq_stack)
+    8130     8130      100     1                 c64_irq_stack
+    8230     8230        0     1         __bss_end = .
+    8230     8230        0     1 __bss_size = SIZEOF(.bss)
+    8230     8230        1     1 .noinit
+    8230     8230        1     1         build/native-exchange-mixed.prg.lto.o:(.noinit..Lstatic_stack)
+    8231     8231        0     1         __heap_start = ALIGN(., 2)
+    8231     8231        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0        f     1 .llvm_sympart
+       0        0        f     1         build/native-exchange-mixed.prg.lto.o:(.llvm_sympart)
+       0        0      fc0     4 .symtab
+       0        0      fc0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      9c2     1 .strtab
+       0        0      9c2     1         <internal>:(.strtab)

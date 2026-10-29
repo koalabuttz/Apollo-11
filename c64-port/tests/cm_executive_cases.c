@@ -1,0 +1,118 @@
+/* SPDX-License-Identifier: MIT
+ * Manually constructed CM initial states and deterministic raw-word corpus.
+ * Input data only; no native initialization or scheduler functions are called. */
+#include "cm_executive_cases.h"
+static void occupy(cm_scenario *s, uint8_t i, agc_word p) {
+    s->state.core[i][CM_EXEC_PRIORITY]=(agc_word)(p+CM_EXEC_FAKEPRET);
+    s->state.core[i][CM_EXEC_PUSH]=CM_EXEC_FAKEPRET;
+    s->state.core[i][CM_EXEC_LOC]=(agc_word)(02000+i);
+    s->state.core[i][CM_EXEC_BANK]=06000;
+}
+void cm_case_base(cm_scenario *s, uint16_t n) {
+    uint8_t i,j;
+    /* Explicit initial state independent of exec_init. */
+    for (i=0;i<CM_EXEC_CORE_COUNT;++i) {
+        for(j=0;j<CM_EXEC_CORE_WORDS;++j) s->state.core[i][j]=0;
+        s->state.core[i][CM_EXEC_PRIORITY]=AGC_NEG_ZERO;
+    }
+    for(i=0;i<CM_EXEC_VAC_COUNT;++i) {
+        for(j=0;j<CM_EXEC_VAC_WORDS;++j) s->state.vac[i][j]=0;
+        s->state.vac[i][0]=(agc_word)(CM_EXEC_VAC1USE+i*CM_EXEC_VAC_WORDS);
+    }
+    s->state.newjob=AGC_NEG_ZERO; s->state.newprio=0;
+    s->state.newloc[0]=0; s->state.newloc[1]=0; s->state.locctr=0;
+    s->state.fixloc=0; s->state.ovfind=0; s->state.alarm=0;
+    s->priority=02000; s->location=02345; s->bank=06000;
+    s->needs_vac=0; s->complete=0; s->name="admission";
+    if(n==0) s->name="idle-novac";
+    else if(n>=1 && n<=5) {
+        s->name="vac-scan"; s->needs_vac=1;
+        for(i=0;i<n-1;++i) s->state.vac[i][0]=0;
+    } else if(n==6) {
+        s->name="vac-1201"; s->needs_vac=1;
+        for(i=0;i<CM_EXEC_VAC_COUNT;++i) s->state.vac[i][0]=0;
+    } else if(n>=7 && n<=10) {
+        s->name="priority-selection";
+        occupy(s,0,04000); occupy(s,1,02000); s->state.newjob=0;
+        s->priority=n==7 ? 03000 : n==8 ? 04000 : n==9 ? 05000 : 037000;
+        s->needs_vac=n==10;
+    } else if(n==11) {
+        s->name="queued-highest";
+        occupy(s,0,02000); occupy(s,1,06000); s->state.newjob=12;
+        s->priority=05000;
+    } else if(n==12 || n==13) {
+        s->name=n==12 ? "seventh-core-admission" : "seventh-core-vac";
+        for(i=0;i<6;++i) occupy(s,i,02000);
+        s->state.newjob=0; s->needs_vac=n==13;
+    } else if(n==14) {
+        s->name="negative-and-minus-zero-core-scan";
+        occupy(s,0,02000); occupy(s,1,01000);
+        s->state.core[1][CM_EXEC_PRIORITY]^=AGC_MASK;
+        s->state.newjob=0; s->priority=03000;
+    } else if(n==15) {
+        s->name="last-admission-slot";
+        for(i=0;i<6;++i) occupy(s,i,02000);
+        s->state.newjob=0; s->priority=03000;
+    } else if(n>=16 && n<=21) {
+        s->name="endjob-selection"; s->complete=1;
+        occupy(s,0,02000);
+        if(n>=17) { s->state.core[0][CM_EXEC_PRIORITY]=02401;
+                    s->state.core[0][CM_EXEC_PUSH]=0401; s->state.vac[0][0]=0; }
+        if(n>=18) occupy(s,1,03000);
+        if(n>=19) occupy(s,2,03000);
+        if(n==20) occupy(s,6,04000);
+        if(n==21) s->state.core[1][CM_EXEC_PRIORITY]=(03110 ^ AGC_MASK);
+        s->state.newjob=0;
+    } else if(n==22) {
+        s->name="core-zero-with-queued-newjob";
+        occupy(s,1,05000); s->state.newjob=12; s->priority=04000;
+    } else if(n==23) {
+        s->name="reuse-stale-location";
+        s->state.core[0][CM_EXEC_LOC]=07777; s->state.core[0][CM_EXEC_BANK]=01234;
+        s->state.core[0][CM_EXEC_MPAC]=07654; s->state.vac[0][1]=04321;
+        s->state.newloc[0]=05555; s->state.newloc[1]=0454;
+    } else if(n==24 || n==25) {
+        s->name=n==24 ? "core-1202" : "vac-reserved-on-1202";
+        for(i=0;i<CM_EXEC_ADMISSION_COUNT;++i) occupy(s,i,02000);
+        s->state.newjob=0; s->needs_vac=n==25;
+    }
+}
+
+static uint32_t rng;
+static uint16_t draw(void) {
+ rng=rng*UINT32_C(1664525)+UINT32_C(1013904223);
+ return (uint16_t)((rng>>16)&AGC_MASK);
+}
+void cm_case_prepare(cm_scenario *s,uint16_t n) {
+ uint8_t i,j;
+ cm_case_base(s,n<26?n:0);
+ if(n<26) return;
+ rng=UINT32_C(0x55c09900)+n;
+ for(i=0;i<CM_EXEC_CORE_COUNT;++i) {
+  for(j=0;j<CM_EXEC_CORE_WORDS;++j) s->state.core[i][j]=draw();
+  switch(draw()%4) {
+  case 0: s->state.core[i][CM_EXEC_PRIORITY]=AGC_NEG_ZERO; break;
+  case 1: s->state.core[i][CM_EXEC_PRIORITY]=(agc_word)(AGC_MASK ^ (((draw()%31)+1)*01000+CM_EXEC_FAKEPRET)); break;
+  default: s->state.core[i][CM_EXEC_PRIORITY]=(agc_word)(((draw()%31)+1)*01000+CM_EXEC_FAKEPRET); break;
+  }
+ }
+ for(i=0;i<CM_EXEC_VAC_COUNT;++i) {
+  for(j=0;j<CM_EXEC_VAC_WORDS;++j) s->state.vac[i][j]=draw();
+  s->state.vac[i][0]=(draw()&1)?0:(agc_word)(CM_EXEC_VAC1USE+i*CM_EXEC_VAC_WORDS);
+ }
+ s->state.newjob=AGC_NEG_ZERO;
+ if(s->state.core[0][CM_EXEC_PRIORITY]!=AGC_NEG_ZERO && (draw()&1))
+  s->state.newjob=(agc_word)((draw()%CM_EXEC_CORE_COUNT)*CM_EXEC_CORE_WORDS);
+ s->state.newprio=draw(); s->state.newloc[0]=draw(); s->state.newloc[1]=draw();
+ s->state.locctr=draw(); s->state.fixloc=draw(); s->state.ovfind=draw();
+ s->priority=(agc_word)(((draw()%31)+1)*01000); s->location=draw(); s->bank=draw();
+ s->needs_vac=(uint8_t)(draw()&1); s->complete=(uint8_t)(n%3==0);
+ if(s->complete) {
+  s->state.core[0][CM_EXEC_PRIORITY]=(agc_word)(02000+CM_EXEC_FAKEPRET);
+  if(n&1) {
+   i=(uint8_t)(draw()%CM_EXEC_VAC_COUNT);
+   s->state.core[0][CM_EXEC_PRIORITY]=(agc_word)(02000+CM_EXEC_VAC1USE+i*CM_EXEC_VAC_WORDS+1);
+   s->state.vac[i][0]=0;
+  }
+ }
+}

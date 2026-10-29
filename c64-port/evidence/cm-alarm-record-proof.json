@@ -1,0 +1,22 @@
+{
+  "cases": 16384,
+  "checkpoints": 16384,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "ALARM05650",
+    "VARALARM05764",
+    "CURTAINS05757",
+    "BORTENT05655"
+  ],
+  "context_cohorts": "four entries \u00d7 all signedzero/positive/negative FAILREG corner combinations, alarm codes and bank/lamp restoration states",
+  "binary_bytes": 67305472,
+  "snapshot_sha256": "fc35d6b6420ed71181814d05dd5d25ef9e8e9d8ee79ed95f1f907fec312abde2",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual alarm record body and genuine ordinary caller return or MULTFAIL overflow POODOO entry; abort recovery body remains separate"
+}

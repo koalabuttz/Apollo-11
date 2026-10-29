@@ -1,0 +1,50 @@
+Read-only independent review by /root/frozen_storage
+
+Reviewed native inverse_trig_prepare/root/polynomial/finish against byte-original
+Luminary099/INTERPRETER lines2705..2812 and Comanche055 lines2708..2805, including
+original BRANCH, DCS/DXCH, SQRTSUB, VSHRRND, POLY and DMPSUB source helper controls.
+No concrete arithmetic or source-control discrepancy was found within the
+documented valid canonical context and ordinary15-bit memory contracts.
+
+Checked triple-sign selection including both signed zeros, preservation of the
+third word through source DCS operations, magnitude CCS diminished-absolute and
+one-unit clamp, exact ESCAPE/ESCAPE2 encoded source words, retained MODE, normalized
+root followed by unnormalization through VSHRRND, all seven POLY DMPSUB/DAS
+iterations without intermediate rounding, final DMPSUB and negative/arcsine
+epilogues. Source alarm1301 stops before its external alarm service. The exposed
+synthetic root1302 entry is explicitly not separately qualified by this packet.
+Completed controls stop at actual DANZIG; no additional Executive poll is
+introduced. No arbitrary source-word instruction decoder or whole-INTERPRETER
+coverage is claimed.
+
+Independently reconstructed every inverse-group emitted word using the generic
+fixed_data_generate.listing_records parser rather than the owner's group regex:
+LM85 and CM83 exact source lines/physical addresses/raw words match the original
+assembled ropes and retained source audit. Independently compiled the readonly
+constant accessor against all36 original assembled degree/coefficient/NEG12
+words and exhausted both65536-address domains, including null output and
+unchanged unsupported output. All8 actual retained C64 mailboxes match their
+expected32 complete-state selectors. Full arithmetic source/SAN streams remain
+the owner's retained acceptance evidence, not a duplicate execution by this
+reviewer.
+
+One concrete coverage-wording discrepancy was found and reported to owner/root:
+inverse_trig_cases.c overrides every n<4096 MPAC.high with16 edge values, replacing
+the normal highword sweep0..2047. Thus the original65536-input cohort does not
+cover every ordinary high word for each routine, despite the original document's
+exhaustive wording. It retains0,1,2 from that low range and omits2045 other high
+values per routine; each routine samples30723 distinct ordinary high words.
+Owner acknowledged the finding and plans an independently qualified supplementary
+exhaustive sweep while preserving original frozen packet identities. The old
+158320-state proof per mission remains accurate for its actual constructor;
+broader exhaustive-input wording requires that supplement or explicit correction.
+
+Reviewed immutable identities:
+src/inverse_trig.c edf4d568d834fc50757575dd097adc8568039d4a31ee4c7ce771d6f68bcb8f30
+include/inverse_trig.h 134c7b612c5d457279af0ff661d7d7c2c08b3eb7229e4a82bf326f4d4c6735c5
+evidence/inverse-trig-source-audit.json 9b86e63641f74216e67df6993066076241c0ff6bdcdbf5ef614d03449996cf83
+evidence/inverse-trig-lm-proof.json 5b9db8c7763b5ef538a8fdfe905d7887c507ca82c3a659bfc3082d61587a20d5
+evidence/inverse-trig-cm-proof.json 66221eed58a2760be1f6d9a81122a1e38c4e3d6f2f708b0dfd91b275c4708079
+
+Independent parser results and constant-reader harness are retained in build/
+inverse-trig-independent-word-review.json and inverse-trig-independent-reader.c.

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 210,
+    "filename": "G210",
+    "byte_count": 5704,
+    "crc16": 12512,
+    "sha256": "5ce23db531682ab20f77b03084d3566c1c710471e3e48e046f6691023d7292dd",
+    "prg": "cm-admission-complete-210.prg",
+    "native_control": false
+  },
+  {
+    "id": 244,
+    "filename": "G244",
+    "byte_count": 4658,
+    "crc16": 33547,
+    "sha256": "1983439d6e3636069b1f1b094f7267196b29c81410c415732a4c7e62d4c16224",
+    "prg": "cm-admission-complete-244.prg",
+    "native_control": false
+  },
+  {
+    "id": 245,
+    "filename": "G245",
+    "byte_count": 11091,
+    "crc16": 24032,
+    "sha256": "486bba2dd0a509dff076855e539a5fadd95def9981e57932938ad049573dacd4",
+    "prg": "cm-admission-complete-245.prg",
+    "native_control": false
+  }
+]

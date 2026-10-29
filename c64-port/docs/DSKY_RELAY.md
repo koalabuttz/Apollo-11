@@ -1,0 +1,5 @@
+# Actual source DSKY relay drain
+
+The native DSPOUTSB scans the original two passes, clears the selected dirty sign, decrements NOUT and returns at the actual caller2070 without a write or2071 with a real channel10 relay word. All2,048erasable words, SUPER/IRQ and actual channel10 write flag/value are checked. Entry bank06/EB2/Q2070, source A=NOUT-1 and supported DSPCNT0..10/-0 remain explicit; original CCS-hole inputs are excluded.
+
+All1,024 complete2,052-field original checkpoints agree, SHA256 `372fd25b51263aad8ac75f9ff75c7d2fffcbccf0318afb7e84a860d15bb60b7c`. Strict and ASan/UBSan64 complete frozen states and unsupported clean+0 guards pass. The C64 compares all64 full images and output events, mailbox `a500004002`, PRG9,890bytes, text7,257, rodata2,619, BSS8,197, static78bytes, zero additional zero page, hardware/software stacks10/29bytes. Source fixture assembly and immutable evidence are retained. Native screen output consumes these relay words in the separate C64 adapter; complete flight application wiring remains an integration requirement.

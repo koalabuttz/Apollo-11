@@ -1,0 +1,6 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: 132096 SQRT/SQRTSUB cases, all 20 modeled raw words, normal and pre-1302 boundaries match original assembly/hardware DV
+Paths root/pre-alarm1302: {0: 66406, 1: 65690}
+Snapshot SHA256: cb141db0803cd747bc022b65f779e71df0590eace82af5fe037ffb0fa0b311d2

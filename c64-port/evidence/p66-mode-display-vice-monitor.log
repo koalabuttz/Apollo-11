@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/p66_mode_display.prg from 0801 to 3ABA (32BA bytes)
+WATCH: 1  C:$5abb  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 5abb)   14/$00e,  40/$28
+.C:16de  8E BB 5A    STX $5ABB      - A:00 X:A5 Y:00 SP:f1 NV-....C  301445338
+>C:5abb  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_display-vice-mailbox.bin' from $5abb to $5abf
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_display-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_mode_display-vice-software-stack.bin' from $c100 to $cfff

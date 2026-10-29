@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_octal_verb.c src/agc_word.c src/dsky_octal_verb.c tests/dsky_octal_verb_cases.c tests/dsky_octal_verb_check.c -o build/test-dsky-octal-verb-integrated
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_octal_verb_snapshot.c src/agc_word.c src/dsky_octal_verb.c tests/dsky_octal_verb_cases.c tests/dsky_octal_verb_check.c -o build/dsky-octal-verb-integrated-stream
+./build/test-dsky-octal-verb-integrated
+128 complete original octal verb states + 72 unchanged invalid guards: PASS
+python3 tools/qualified_stream_host.py --archive evidence/dsky-octal-verb-reference.snapshots.xz --sha256 ad099cc1be0f840394294fe64c1a083f9ea4ae8891caf847e2f3417a650423c4 --binary build/dsky-octal-verb-integrated-stream
+PASS all retained source-state bytes: 189384944 SHA256 ad099cc1be0f840394294fe64c1a083f9ea4ae8891caf847e2f3417a650423c4
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_dsky_octal_verb.c src/agc_word.c src/dsky_octal_verb.c tests/dsky_octal_verb_cases.c tests/dsky_octal_verb_check.c -o build/test-dsky-octal-verb-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-octal-verb-integrated-san
+128 complete original octal verb states + 72 unchanged invalid guards: PASS
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/dsky_octal_verb_snapshot.c src/agc_word.c src/dsky_octal_verb.c tests/dsky_octal_verb_cases.c tests/dsky_octal_verb_check.c -o build/dsky-octal-verb-integrated-stream-san
+python3 tools/qualified_stream_host.py --archive evidence/dsky-octal-verb-reference.snapshots.xz --sha256 ad099cc1be0f840394294fe64c1a083f9ea4ae8891caf847e2f3417a650423c4 --binary build/dsky-octal-verb-integrated-stream-san
+PASS all retained source-state bytes: 189384944 SHA256 ad099cc1be0f840394294fe64c1a083f9ea4ae8891caf847e2f3417a650423c4

@@ -1,0 +1,11 @@
+{
+  "pal_clock_hz": 985248,
+  "samples": {
+    "explicit_raw_edge": 15200,
+    "positive_raw_edge": 20620,
+    "same_corner_vector": 31575,
+    "opposite_corner_vector": 31974,
+    "independent_random_vectors": 28551
+  },
+  "scope": "Finite excluded-call samples include marker overhead and VIC/IRQ effects; no WCET or live guidance deadline proof."
+}

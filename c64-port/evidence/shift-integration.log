@@ -1,0 +1,3 @@
+./build/test-shift
+PASS: 168 complete original scalar/vector shift states; all unsupported MODEs and count boundaries reject unchanged
+make: Nothing to be done for 'c64-shift'.

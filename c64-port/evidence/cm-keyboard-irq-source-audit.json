@@ -1,0 +1,15 @@
+{
+  "KEYRUPT_UPRUPT.agc": {
+    "original_sha256": "237b42cd68c12d5b5772371667db864ae4ebc21b0c5b0aee6d74788855802c4a",
+    "indentation_repairs": 0
+  },
+  "INTERRUPT_LEAD_INS.agc": {
+    "original_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+    "indentation_repairs": 0
+  },
+  "EXECUTIVE.agc": {
+    "original_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "indentation_repairs": 5
+  },
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}

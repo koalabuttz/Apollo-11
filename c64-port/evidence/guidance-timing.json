@@ -1,0 +1,21 @@
+{
+  "clock": "PAL",
+  "cycles_per_second": 985248,
+  "samples": {
+    "MP positive max": 1711,
+    "MP negative max": 1920,
+    "DAS low carry": 478,
+    "DAS high overflow": 345,
+    "ROD zero count/scale": 553,
+    "ROD negative max count/scale": 2108
+  },
+  "includes": "operation selection, marker overhead and VIC bus effects; excludes input setup, guards and state comparisons",
+  "worst_case_bound": false,
+  "state_bytes": 12,
+  "case_bytes": 13,
+  "prg_file_bytes": 10902,
+  "loaded_bytes": 10900,
+  "image_plus_bss_noinit_bytes": 10914,
+  "hardware_stack_extent_below_01f2": 23,
+  "software_stack_extent_bytes": 26
+}

@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_mode_admit-lm.prg from 0801 to 3033 (2833 bytes)
+WATCH: 1  C:$503c  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 503c)  240/$0f0,  20/$14
+.C:18b4  8E 3C 50    STX $503C      - A:0D X:A5 Y:01 SP:f1 N.-....C  155395820
+>C:503c  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_admit-lm-vice-mailbox.bin' from $503c to $5040
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_admit-lm-vice-difference.bin' from $3034 to $303b
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_admit-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_admit-lm-vice-software-stack.bin' from $c100 to $cfff

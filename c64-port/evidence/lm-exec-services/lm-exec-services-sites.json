@@ -1,0 +1,2286 @@
+{
+ "mission": "Luminary099",
+ "callees": [
+  "NOVAC",
+  "FINDVAC",
+  "WAITLIST",
+  "LONGCALL",
+  "TWIDDLE",
+  "FIXDELAY"
+ ],
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "sites": [
+  {
+   "physical": 1232,
+   "word": 1679,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "EXTENDED_VERBS.agc:1466",
+   "operand": "2CADR TRIMGIMB"
+  },
+  {
+   "physical": 1233,
+   "word": 23606,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "EXTENDED_VERBS.agc:1466",
+   "operand": "2CADR TRIMGIMB +1"
+  },
+  {
+   "physical": 1860,
+   "word": 1870,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "WAITLIST.agc:538",
+   "operand": "2CADR GETCADR"
+  },
+  {
+   "physical": 1861,
+   "word": 1075,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "WAITLIST.agc:538",
+   "operand": "2CADR GETCADR +1"
+  },
+  {
+   "physical": 1867,
+   "word": 1846,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "WAITLIST.agc:547",
+   "operand": "2CADR LONGCYCL"
+  },
+  {
+   "physical": 1868,
+   "word": 1075,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "WAITLIST.agc:547",
+   "operand": "2CADR LONGCYCL +1"
+  },
+  {
+   "physical": 1894,
+   "word": 1567,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "RESTARTS_ROUTINE.agc:55",
+   "operand": "2CADR INITDSP"
+  },
+  {
+   "physical": 1895,
+   "word": 8259,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "RESTARTS_ROUTINE.agc:55",
+   "operand": "2CADR INITDSP +1"
+  },
+  {
+   "physical": 2731,
+   "word": 1901,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "WAITLIST.agc:188",
+   "operand": "2CADR NBDONLY"
+  },
+  {
+   "physical": 2732,
+   "word": 6195,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "WAITLIST.agc:188",
+   "operand": "2CADR NBDONLY +1"
+  },
+  {
+   "physical": 2735,
+   "word": 500,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "WAITLIST.agc:194",
+   "operand": "DEC 500        B-14"
+  },
+  {
+   "physical": 4515,
+   "word": 1884,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:3281",
+   "operand": "2CADR DSPMMJB"
+  },
+  {
+   "physical": 4516,
+   "word": 24641,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:3281",
+   "operand": "2CADR DSPMMJB +1"
+  },
+  {
+   "physical": 4809,
+   "word": 1087,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "KEYRUPT_UPRUPT.agc:48",
+   "operand": "2CADR CHARIN"
+  },
+  {
+   "physical": 4810,
+   "word": 24641,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "KEYRUPT_UPRUPT.agc:48",
+   "operand": "2CADR CHARIN +1"
+  },
+  {
+   "physical": 4966,
+   "word": 1897,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "UPDATE_PROGRAM.agc:342",
+   "operand": "2CADR UPJOB"
+  },
+  {
+   "physical": 4967,
+   "word": 4163,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "UPDATE_PROGRAM.agc:342",
+   "operand": "2CADR UPJOB +1"
+  },
+  {
+   "physical": 5420,
+   "word": 32767,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "FRESH_START_AND_RESTART.agc:43",
+   "operand": "OCT 77777"
+  },
+  {
+   "physical": 5421,
+   "word": 32767,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "FRESH_START_AND_RESTART.agc:43",
+   "operand": "OCT 77777"
+  },
+  {
+   "physical": 6220,
+   "word": 1834,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "T4RUPT_PROGRAM.agc:168",
+   "operand": "2CADR PROCKEY"
+  },
+  {
+   "physical": 6221,
+   "word": 24641,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "T4RUPT_PROGRAM.agc:168",
+   "operand": "2CADR PROCKEY +1"
+  },
+  {
+   "physical": 6321,
+   "word": 1206,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:394",
+   "operand": "2CADR ENDTNON"
+  },
+  {
+   "physical": 6322,
+   "word": 6214,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:394",
+   "operand": "2CADR ENDTNON +1"
+  },
+  {
+   "physical": 6372,
+   "word": 1708,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:463",
+   "operand": "2CADR PFAILOK"
+  },
+  {
+   "physical": 6373,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:463",
+   "operand": "2CADR PFAILOK +1"
+  },
+  {
+   "physical": 6393,
+   "word": 1227,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:491",
+   "operand": "2CADR UNZ2"
+  },
+  {
+   "physical": 6394,
+   "word": 6214,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:491",
+   "operand": "2CADR UNZ2 +1"
+  },
+  {
+   "physical": 6448,
+   "word": 1632,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:615",
+   "operand": "2CADR CA+ECE"
+  },
+  {
+   "physical": 6449,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:615",
+   "operand": "2CADR CA+ECE +1"
+  },
+  {
+   "physical": 6680,
+   "word": 1074,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:1132",
+   "operand": "2CADR RRTURNON"
+  },
+  {
+   "physical": 6681,
+   "word": 21575,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:1132",
+   "operand": "2CADR RRTURNON +1"
+  },
+  {
+   "physical": 6740,
+   "word": 1111,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:1276",
+   "operand": "2CADR DORREPOS"
+  },
+  {
+   "physical": 6741,
+   "word": 21575,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "T4RUPT_PROGRAM.agc:1276",
+   "operand": "2CADR DORREPOS +1"
+  },
+  {
+   "physical": 6816,
+   "word": 1324,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "RCS_FAILURE_MONITOR.agc:146",
+   "operand": "2CADR 1/ACCJOB"
+  },
+  {
+   "physical": 6817,
+   "word": 16454,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "RCS_FAILURE_MONITOR.agc:146",
+   "operand": "2CADR 1/ACCJOB +1"
+  },
+  {
+   "physical": 6888,
+   "word": 1863,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "IMU_COMPENSATION_PACKAGE.agc:108",
+   "operand": "2CADR 1/GYRO"
+  },
+  {
+   "physical": 6889,
+   "word": 6195,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "IMU_COMPENSATION_PACKAGE.agc:108",
+   "operand": "2CADR 1/GYRO +1"
+  },
+  {
+   "physical": 7200,
+   "word": 1075,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "AOTMARK.agc:73",
+   "operand": "2CADR GETDAT"
+  },
+  {
+   "physical": 7201,
+   "word": 7223,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "AOTMARK.agc:73",
+   "operand": "2CADR GETDAT +1"
+  },
+  {
+   "physical": 7378,
+   "word": 1063,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "AOTMARK.agc:405",
+   "operand": "2CADR MKRELEAS"
+  },
+  {
+   "physical": 7379,
+   "word": 7223,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "AOTMARK.agc:405",
+   "operand": "2CADR MKRELEAS +1"
+  },
+  {
+   "physical": 7558,
+   "word": 1417,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "AOTMARK.agc:631",
+   "operand": "2CADR CHANGEVB"
+  },
+  {
+   "physical": 7559,
+   "word": 7223,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "AOTMARK.agc:631",
+   "operand": "2CADR CHANGEVB +1"
+  },
+  {
+   "physical": 7653,
+   "word": 1519,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:91",
+   "operand": "2CADR IMUZERO2"
+  },
+  {
+   "physical": 7654,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:91",
+   "operand": "2CADR IMUZERO2 +1"
+  },
+  {
+   "physical": 7685,
+   "word": 1544,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:138",
+   "operand": "2CADR COARS"
+  },
+  {
+   "physical": 7686,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:138",
+   "operand": "2CADR COARS +1"
+  },
+  {
+   "physical": 7737,
+   "word": 150,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:204",
+   "operand": "DEC 150        B-14"
+  },
+  {
+   "physical": 7827,
+   "word": 1692,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:326",
+   "operand": "2CADR IFAILOK"
+  },
+  {
+   "physical": 7828,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:326",
+   "operand": "2CADR IFAILOK +1"
+  },
+  {
+   "physical": 7831,
+   "word": 1690,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:331",
+   "operand": "2CADR IMUFINED"
+  },
+  {
+   "physical": 7832,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:331",
+   "operand": "2CADR IMUFINED +1"
+  },
+  {
+   "physical": 7901,
+   "word": 1797,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:436",
+   "operand": "2CADR STRTGYRO"
+  },
+  {
+   "physical": 7902,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:436",
+   "operand": "2CADR STRTGYRO +1"
+  },
+  {
+   "physical": 8029,
+   "word": 1797,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:600",
+   "operand": "2CADR STRTGYRO"
+  },
+  {
+   "physical": 8030,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:600",
+   "operand": "2CADR STRTGYRO +1"
+  },
+  {
+   "physical": 8044,
+   "word": 1903,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:618",
+   "operand": "2CADR 8192AUG"
+  },
+  {
+   "physical": 8045,
+   "word": 7235,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "IMU_MODE_SWITCHING_ROUTINES.agc:618",
+   "operand": "2CADR 8192AUG +1"
+  },
+  {
+   "physical": 8335,
+   "word": 1884,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "PHASE_TABLE_MAINTENANCE.agc:69",
+   "operand": "2CADR DSPMMJOB"
+  },
+  {
+   "physical": 8336,
+   "word": 24642,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "PHASE_TABLE_MAINTENANCE.agc:69",
+   "operand": "2CADR DSPMMJOB +1"
+  },
+  {
+   "physical": 8620,
+   "word": 1382,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "DISPLAY_INTERFACE_ROUTINES.agc:845",
+   "operand": "2CADR MAKEPLAY"
+  },
+  {
+   "physical": 8621,
+   "word": 8247,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "DISPLAY_INTERFACE_ROUTINES.agc:845",
+   "operand": "2CADR MAKEPLAY +1"
+  },
+  {
+   "physical": 8861,
+   "word": 2201,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "DISPLAY_INTERFACE_ROUTINES.agc:1172",
+   "operand": "2CADR JAMTERM"
+  },
+  {
+   "physical": 8862,
+   "word": 2096,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "DISPLAY_INTERFACE_ROUTINES.agc:1172",
+   "operand": "2CADR JAMTERM +1"
+  },
+  {
+   "physical": 9001,
+   "word": 1421,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "DISPLAY_INTERFACE_ROUTINES.agc:1365",
+   "operand": "2CADR PLAYJUM1"
+  },
+  {
+   "physical": 9002,
+   "word": 8240,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "DISPLAY_INTERFACE_ROUTINES.agc:1365",
+   "operand": "2CADR PLAYJUM1 +1"
+  },
+  {
+   "physical": 9420,
+   "word": 1233,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:1146",
+   "operand": "ADRES REDESMON"
+  },
+  {
+   "physical": 11656,
+   "word": 1419,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "INTEGRATION_INITIALIZATION.agc:278",
+   "operand": "2CADR STATINT1"
+  },
+  {
+   "physical": 11657,
+   "word": 11315,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "INTEGRATION_INITIALIZATION.agc:278",
+   "operand": "2CADR STATINT1 +1"
+  },
+  {
+   "physical": 11681,
+   "word": 1412,
+   "callee": "LONGCALL",
+   "callee_address": 2751,
+   "caller": "INTEGRATION_INITIALIZATION.agc:305",
+   "operand": "2CADR STATEINT"
+  },
+  {
+   "physical": 11682,
+   "word": 11315,
+   "callee": "LONGCALL",
+   "callee_address": 2751,
+   "caller": "INTEGRATION_INITIALIZATION.agc:305",
+   "operand": "2CADR STATEINT +1"
+  },
+  {
+   "physical": 12542,
+   "word": 1288,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "ASCENT_GUIDANCE.agc:488",
+   "operand": "ADRES ENGOFF1"
+  },
+  {
+   "physical": 12556,
+   "word": 1300,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "ASCENT_GUIDANCE.agc:505",
+   "operand": "2CADR CUTOFF"
+  },
+  {
+   "physical": 12557,
+   "word": 12343,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "ASCENT_GUIDANCE.agc:505",
+   "operand": "2CADR CUTOFF +1"
+  },
+  {
+   "physical": 13783,
+   "word": 1497,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P51-P53.agc:1738",
+   "operand": "ADRES GRABGRAV"
+  },
+  {
+   "physical": 13789,
+   "word": 1504,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P51-P53.agc:1746",
+   "operand": "2CADR ADDGRAV"
+  },
+  {
+   "physical": 13790,
+   "word": 13365,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P51-P53.agc:1746",
+   "operand": "2CADR ADDGRAV +1"
+  },
+  {
+   "physical": 14367,
+   "word": 1319,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "DAPIDLER_PROGRAM.agc:79",
+   "operand": "2CADR 1/ACCSET"
+  },
+  {
+   "physical": 14368,
+   "word": 16454,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "DAPIDLER_PROGRAM.agc:79",
+   "operand": "2CADR 1/ACCSET +1"
+  },
+  {
+   "physical": 15362,
+   "word": 1697,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:553",
+   "operand": "2CADR TIGNOW"
+  },
+  {
+   "physical": 15363,
+   "word": 30775,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:553",
+   "operand": "2CADR TIGNOW +1"
+  },
+  {
+   "physical": 16477,
+   "word": 1324,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "DAP_INTERFACE_SUBROUTINES.agc:93",
+   "operand": "2CADR 1/ACCJOB"
+  },
+  {
+   "physical": 16478,
+   "word": 16454,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "DAP_INTERFACE_SUBROUTINES.agc:93",
+   "operand": "2CADR 1/ACCJOB +1"
+  },
+  {
+   "physical": 17424,
+   "word": 1030,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P70-P71.agc:48",
+   "operand": "ADRES R10,R11"
+  },
+  {
+   "physical": 17510,
+   "word": 1998,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "SERVICER.agc:680",
+   "operand": "2CADR LRHJOB"
+  },
+  {
+   "physical": 17511,
+   "word": 28727,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "SERVICER.agc:680",
+   "operand": "2CADR LRHJOB +1"
+  },
+  {
+   "physical": 17651,
+   "word": 1269,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "LANDING_ANALOG_DISPLAYS.agc:176",
+   "operand": "ADRES INTLZE"
+  },
+  {
+   "physical": 18911,
+   "word": 1692,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "ATTITUDE_MANEUVER_ROUTINE.agc:1018",
+   "operand": "2CADR GOODMANU"
+  },
+  {
+   "physical": 18912,
+   "word": 18486,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "ATTITUDE_MANEUVER_ROUTINE.agc:1018",
+   "operand": "2CADR GOODMANU +1"
+  },
+  {
+   "physical": 19001,
+   "word": 1675,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "KALCMANU_STEERING.agc:97",
+   "operand": "2CADR MANUSTOP"
+  },
+  {
+   "physical": 19002,
+   "word": 18486,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "KALCMANU_STEERING.agc:97",
+   "operand": "2CADR MANUSTOP +1"
+  },
+  {
+   "physical": 19073,
+   "word": 1670,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "KALCMANU_STEERING.agc:178",
+   "operand": "2CADR UPDTCALL"
+  },
+  {
+   "physical": 19074,
+   "word": 18486,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "KALCMANU_STEERING.agc:178",
+   "operand": "2CADR UPDTCALL +1"
+  },
+  {
+   "physical": 19080,
+   "word": 1539,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "KALCMANU_STEERING.agc:187",
+   "operand": "2CADR NEWDELHI"
+  },
+  {
+   "physical": 19081,
+   "word": 18486,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "KALCMANU_STEERING.agc:187",
+   "operand": "2CADR NEWDELHI +1"
+  },
+  {
+   "physical": 19124,
+   "word": 1816,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "R30.agc:114",
+   "operand": "2CADR TICKTEST"
+  },
+  {
+   "physical": 19125,
+   "word": 18484,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "R30.agc:114",
+   "operand": "2CADR TICKTEST +1"
+  },
+  {
+   "physical": 19133,
+   "word": 1745,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "R30.agc:125",
+   "operand": "2CADR V82GOFF1"
+  },
+  {
+   "physical": 19134,
+   "word": 18484,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "R30.agc:125",
+   "operand": "2CADR V82GOFF1 +1"
+  },
+  {
+   "physical": 19230,
+   "word": 2874,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "R30.agc:235",
+   "operand": "2CADR ENDEXT"
+  },
+  {
+   "physical": 19231,
+   "word": 2098,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "R30.agc:235",
+   "operand": "2CADR ENDEXT +1"
+  },
+  {
+   "physical": 19235,
+   "word": 1816,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "R30.agc:241",
+   "operand": "2CADR TICKTEST"
+  },
+  {
+   "physical": 19236,
+   "word": 18484,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "R30.agc:241",
+   "operand": "2CADR TICKTEST +1"
+  },
+  {
+   "physical": 19256,
+   "word": 1859,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "R30.agc:267",
+   "operand": "2CADR V82GON1"
+  },
+  {
+   "physical": 19257,
+   "word": 18484,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "R30.agc:267",
+   "operand": "2CADR V82GON1 +1"
+  },
+  {
+   "physical": 19624,
+   "word": 1194,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P20-P25.agc:1378",
+   "operand": "ADRES R61C+L2"
+  },
+  {
+   "physical": 19628,
+   "word": 1111,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:1382",
+   "operand": "2CADR R61C+L01"
+  },
+  {
+   "physical": 19629,
+   "word": 19511,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:1382",
+   "operand": "2CADR R61C+L01 +1"
+  },
+  {
+   "physical": 20636,
+   "word": 1188,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P20-P25.agc:383",
+   "operand": "ADRES P20LEMC1"
+  },
+  {
+   "physical": 20654,
+   "word": 1431,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:403",
+   "operand": "2CADR R22LEM42"
+  },
+  {
+   "physical": 20655,
+   "word": 20535,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:403",
+   "operand": "2CADR R22LEM42 +1"
+  },
+  {
+   "physical": 20658,
+   "word": 1500,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:409",
+   "operand": "DEC 1500       B-14"
+  },
+  {
+   "physical": 20662,
+   "word": 1208,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P20-P25.agc:415",
+   "operand": "ADRES P20LEMD1"
+  },
+  {
+   "physical": 20669,
+   "word": 1500,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:423",
+   "operand": "DEC 1500       B-14"
+  },
+  {
+   "physical": 20673,
+   "word": 1161,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:428",
+   "operand": "2CADR P20LEMC3"
+  },
+  {
+   "physical": 20674,
+   "word": 20535,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:428",
+   "operand": "2CADR P20LEMC3 +1"
+  },
+  {
+   "physical": 20769,
+   "word": 1315,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P20-P25.agc:582",
+   "operand": "ADRES P25LEM2"
+  },
+  {
+   "physical": 20773,
+   "word": 1294,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:586",
+   "operand": "2CADR P25LEM1"
+  },
+  {
+   "physical": 20774,
+   "word": 20535,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:586",
+   "operand": "2CADR P25LEM1 +1"
+  },
+  {
+   "physical": 20865,
+   "word": 1444,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P20-P25.agc:736",
+   "operand": "2CADR N49DSP"
+  },
+  {
+   "physical": 20866,
+   "word": 20535,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P20-P25.agc:736",
+   "operand": "2CADR N49DSP +1"
+  },
+  {
+   "physical": 21050,
+   "word": 1597,
+   "callee": "LONGCALL",
+   "callee_address": 2751,
+   "caller": "P20-P25.agc:992",
+   "operand": "2CADR R21LEM9"
+  },
+  {
+   "physical": 21051,
+   "word": 20535,
+   "callee": "LONGCALL",
+   "callee_address": 2751,
+   "caller": "P20-P25.agc:992",
+   "operand": "2CADR R21LEM9 +1"
+  },
+  {
+   "physical": 21058,
+   "word": 1493,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:1001",
+   "operand": "2CADR R21LEM10"
+  },
+  {
+   "physical": 21059,
+   "word": 20535,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:1001",
+   "operand": "2CADR R21LEM10 +1"
+  },
+  {
+   "physical": 21232,
+   "word": 1383,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P20-P25.agc:4627",
+   "operand": "2CADR R29DODES"
+  },
+  {
+   "physical": 21233,
+   "word": 26675,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P20-P25.agc:4627",
+   "operand": "2CADR R29DODES +1"
+  },
+  {
+   "physical": 21250,
+   "word": 1803,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P20-P25.agc:4864",
+   "operand": "2CADR R29RDJOB"
+  },
+  {
+   "physical": 21251,
+   "word": 20535,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P20-P25.agc:4864",
+   "operand": "2CADR R29RDJOB +1"
+  },
+  {
+   "physical": 21511,
+   "word": 1027,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "RADAR_LEADIN_ROUTINES.agc:43",
+   "operand": "2CADR RADSAMP"
+  },
+  {
+   "physical": 21512,
+   "word": 21556,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "RADAR_LEADIN_ROUTINES.agc:43",
+   "operand": "2CADR RADSAMP +1"
+  },
+  {
+   "physical": 21515,
+   "word": 1043,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "RADAR_LEADIN_ROUTINES.agc:48",
+   "operand": "2CADR DORSAMP"
+  },
+  {
+   "physical": 21516,
+   "word": 21556,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "RADAR_LEADIN_ROUTINES.agc:48",
+   "operand": "2CADR DORSAMP +1"
+  },
+  {
+   "physical": 21556,
+   "word": 100,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:1641",
+   "operand": "DEC 100        B-14"
+  },
+  {
+   "physical": 21567,
+   "word": 2,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:1689",
+   "operand": "DEC 2          B-14"
+  },
+  {
+   "physical": 21575,
+   "word": 1000,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:1698",
+   "operand": "DEC 1000       B-14"
+  },
+  {
+   "physical": 21593,
+   "word": 2,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:1777",
+   "operand": "DEC 2          B-14"
+  },
+  {
+   "physical": 21675,
+   "word": 50,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:1972",
+   "operand": "DEC 50         B-14"
+  },
+  {
+   "physical": 21742,
+   "word": 1272,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:2100",
+   "operand": "2CADR RRZ2"
+  },
+  {
+   "physical": 21743,
+   "word": 21559,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:2100",
+   "operand": "2CADR RRZ2 +1"
+  },
+  {
+   "physical": 21796,
+   "word": 1403,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:2266",
+   "operand": "2CADR BEGDES"
+  },
+  {
+   "physical": 21797,
+   "word": 21559,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:2266",
+   "operand": "2CADR BEGDES +1"
+  },
+  {
+   "physical": 21889,
+   "word": 50,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:2438",
+   "operand": "DEC 50         B-14"
+  },
+  {
+   "physical": 21914,
+   "word": 1438,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:2469",
+   "operand": "2CADR DODES"
+  },
+  {
+   "physical": 21915,
+   "word": 21559,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:2469",
+   "operand": "2CADR DODES +1"
+  },
+  {
+   "physical": 22343,
+   "word": 1891,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:3080",
+   "operand": "2CADR LRPOSCAN"
+  },
+  {
+   "physical": 22344,
+   "word": 21559,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:3080",
+   "operand": "2CADR LRPOSCAN +1"
+  },
+  {
+   "physical": 22348,
+   "word": 100,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P20-P25.agc:3087",
+   "operand": "DEC 100        B-14"
+  },
+  {
+   "physical": 22362,
+   "word": 1901,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:3105",
+   "operand": "2CADR RGOODEND"
+  },
+  {
+   "physical": 22363,
+   "word": 21559,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:3105",
+   "operand": "2CADR RGOODEND +1"
+  },
+  {
+   "physical": 23342,
+   "word": 1955,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4219",
+   "operand": "2CADR CALLDGCH"
+  },
+  {
+   "physical": 23343,
+   "word": 22583,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4219",
+   "operand": "2CADR CALLDGCH +1"
+  },
+  {
+   "physical": 23465,
+   "word": 1964,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:4357",
+   "operand": "2CADR DATGDCHK"
+  },
+  {
+   "physical": 23466,
+   "word": 22583,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P20-P25.agc:4357",
+   "operand": "2CADR DATGDCHK +1"
+  },
+  {
+   "physical": 24216,
+   "word": 6000,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P40-P47.agc:1382",
+   "operand": "DEC 6000       B-14"
+  },
+  {
+   "physical": 24225,
+   "word": 1712,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P40-P47.agc:1391",
+   "operand": "ADRES PITCHOFF"
+  },
+  {
+   "physical": 24237,
+   "word": 1235,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P40-P47.agc:1404",
+   "operand": "2CADR TRIMDONE"
+  },
+  {
+   "physical": 24238,
+   "word": 1079,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P40-P47.agc:1404",
+   "operand": "2CADR TRIMDONE +1"
+  },
+  {
+   "physical": 27126,
+   "word": 1792,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4837",
+   "operand": "2CADR R29READ"
+  },
+  {
+   "physical": 27127,
+   "word": 20535,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4837",
+   "operand": "2CADR R29READ +1"
+  },
+  {
+   "physical": 27317,
+   "word": 1725,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:935",
+   "operand": "2CADR RODCOMP"
+  },
+  {
+   "physical": 27318,
+   "word": 26679,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:935",
+   "operand": "2CADR RODCOMP +1"
+  },
+  {
+   "physical": 27324,
+   "word": 1715,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "LUNAR_LANDING_GUIDANCE_EQUATIONS.agc:945",
+   "operand": "ADRES RODTASK"
+  },
+  {
+   "physical": 27708,
+   "word": 1099,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P20-P25.agc:4511",
+   "operand": "2CADR R29REMOJ"
+  },
+  {
+   "physical": 27709,
+   "word": 27703,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "P20-P25.agc:4511",
+   "operand": "2CADR R29REMOJ +1"
+  },
+  {
+   "physical": 27718,
+   "word": 1921,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4523",
+   "operand": "2CADR PREPOS29"
+  },
+  {
+   "physical": 27719,
+   "word": 21559,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4523",
+   "operand": "2CADR PREPOS29 +1"
+  },
+  {
+   "physical": 27725,
+   "word": 1145,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4535",
+   "operand": "2CADR REMODE"
+  },
+  {
+   "physical": 27726,
+   "word": 21559,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4535",
+   "operand": "2CADR REMODE +1"
+  },
+  {
+   "physical": 27771,
+   "word": 1774,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4608",
+   "operand": "2CADR BEGDES29"
+  },
+  {
+   "physical": 27772,
+   "word": 20535,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P20-P25.agc:4608",
+   "operand": "2CADR BEGDES29 +1"
+  },
+  {
+   "physical": 27891,
+   "word": 1401,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "SERVICER.agc:311",
+   "operand": "2CADR COMFAIL"
+  },
+  {
+   "physical": 27892,
+   "word": 30775,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "SERVICER.agc:311",
+   "operand": "2CADR COMFAIL +1"
+  },
+  {
+   "physical": 27950,
+   "word": 1976,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "SERVICER.agc:708",
+   "operand": "2CADR HIGATJOB"
+  },
+  {
+   "physical": 27951,
+   "word": 27703,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "SERVICER.agc:708",
+   "operand": "2CADR HIGATJOB +1"
+  },
+  {
+   "physical": 28505,
+   "word": 1934,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "SERVICER.agc:1390",
+   "operand": "2CADR LRVJOB"
+  },
+  {
+   "physical": 28506,
+   "word": 27703,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "SERVICER.agc:1390",
+   "operand": "2CADR LRVJOB +1"
+  },
+  {
+   "physical": 28560,
+   "word": 2031,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "SERVICER.agc:1472",
+   "operand": "2CADR RDGIMS"
+  },
+  {
+   "physical": 28561,
+   "word": 28724,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "SERVICER.agc:1472",
+   "operand": "2CADR RDGIMS +1"
+  },
+  {
+   "physical": 29985,
+   "word": 1487,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P32-P35_P72-P75.agc:1385",
+   "operand": "2CADR CLOKTASK"
+  },
+  {
+   "physical": 29986,
+   "word": 30775,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P32-P35_P72-P75.agc:1385",
+   "operand": "2CADR CLOKTASK +1"
+  },
+  {
+   "physical": 30865,
+   "word": 1184,
+   "callee": "LONGCALL",
+   "callee_address": 2751,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:229",
+   "operand": "2CADR TIG-35"
+  },
+  {
+   "physical": 30866,
+   "word": 30775,
+   "callee": "LONGCALL",
+   "callee_address": 2751,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:229",
+   "operand": "2CADR TIG-35 +1"
+  },
+  {
+   "physical": 30882,
+   "word": 1214,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:251",
+   "operand": "ADRES TIG-30"
+  },
+  {
+   "physical": 30893,
+   "word": 1206,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:265",
+   "operand": "ADRES TIG-30.1"
+  },
+  {
+   "physical": 30896,
+   "word": 1203,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:269",
+   "operand": "2CADR P41BLANK"
+  },
+  {
+   "physical": 30897,
+   "word": 30775,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:269",
+   "operand": "2CADR P41BLANK +1"
+  },
+  {
+   "physical": 30904,
+   "word": 1211,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:280",
+   "operand": "2CADR TIG-30A"
+  },
+  {
+   "physical": 30905,
+   "word": 30775,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:280",
+   "operand": "2CADR TIG-30A +1"
+  },
+  {
+   "physical": 30912,
+   "word": 1258,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:293",
+   "operand": "ADRES TIG-5"
+  },
+  {
+   "physical": 30921,
+   "word": 1254,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:304",
+   "operand": "ADRES ULLGTASK"
+  },
+  {
+   "physical": 30959,
+   "word": 1283,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:359",
+   "operand": "ADRES TIG-0"
+  },
+  {
+   "physical": 30970,
+   "word": 1376,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:374",
+   "operand": "2CADR S40.13"
+  },
+  {
+   "physical": 30971,
+   "word": 23607,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:374",
+   "operand": "2CADR S40.13 +1"
+  },
+  {
+   "physical": 30987,
+   "word": 1031,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:398",
+   "operand": "2CADR P63ZOOM"
+  },
+  {
+   "physical": 30988,
+   "word": 15415,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:398",
+   "operand": "2CADR P63ZOOM +1"
+  },
+  {
+   "physical": 31050,
+   "word": 1037,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:477",
+   "operand": "2CADR P40ZOOM"
+  },
+  {
+   "physical": 31051,
+   "word": 15415,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:477",
+   "operand": "2CADR P40ZOOM +1"
+  },
+  {
+   "physical": 31089,
+   "word": 50,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:530",
+   "operand": "DEC 50         B-14"
+  },
+  {
+   "physical": 31139,
+   "word": 1258,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:643",
+   "operand": "ADRES TIG-5"
+  },
+  {
+   "physical": 31176,
+   "word": 1487,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:695",
+   "operand": "ADRES CLOKTASK"
+  },
+  {
+   "physical": 31190,
+   "word": 1503,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:712",
+   "operand": "2CADR CLOKJOB"
+  },
+  {
+   "physical": 31191,
+   "word": 30775,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:712",
+   "operand": "2CADR CLOKJOB +1"
+  },
+  {
+   "physical": 31193,
+   "word": 100,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:716",
+   "operand": "DEC 100        B-14"
+  },
+  {
+   "physical": 31262,
+   "word": 1672,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:810",
+   "operand": "2CADR ASTNRET"
+  },
+  {
+   "physical": 31263,
+   "word": 26677,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:810",
+   "operand": "2CADR ASTNRET +1"
+  },
+  {
+   "physical": 31273,
+   "word": 1683,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:826",
+   "operand": "2CADR POSTBURN"
+  },
+  {
+   "physical": 31274,
+   "word": 30775,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:826",
+   "operand": "2CADR POSTBURN +1"
+  },
+  {
+   "physical": 31284,
+   "word": 1300,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:841",
+   "operand": "2CADR CUTOFF"
+  },
+  {
+   "physical": 31285,
+   "word": 12343,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:841",
+   "operand": "2CADR CUTOFF +1"
+  },
+  {
+   "physical": 31305,
+   "word": 1302,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc:866",
+   "operand": "ADRES IGNITION"
+  },
+  {
+   "physical": 31455,
+   "word": 1777,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P40-P47.agc:261",
+   "operand": "2CADR DYNMDISP"
+  },
+  {
+   "physical": 31456,
+   "word": 30775,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P40-P47.agc:261",
+   "operand": "2CADR DYNMDISP +1"
+  },
+  {
+   "physical": 31525,
+   "word": 1831,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P40-P47.agc:360",
+   "operand": "ADRES STARTP47"
+  },
+  {
+   "physical": 31535,
+   "word": 1867,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P40-P47.agc:373",
+   "operand": "2CADR P47BODY"
+  },
+  {
+   "physical": 31536,
+   "word": 30775,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P40-P47.agc:373",
+   "operand": "2CADR P47BODY +1"
+  },
+  {
+   "physical": 31573,
+   "word": 1890,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P40-P47.agc:423",
+   "operand": "ADRES ENGOFTSK"
+  },
+  {
+   "physical": 31583,
+   "word": 50,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "P40-P47.agc:434",
+   "operand": "DEC 50         B-14"
+  },
+  {
+   "physical": 31591,
+   "word": 1683,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P40-P47.agc:446",
+   "operand": "2CADR POSTBURN"
+  },
+  {
+   "physical": 31592,
+   "word": 30775,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P40-P47.agc:446",
+   "operand": "2CADR POSTBURN +1"
+  },
+  {
+   "physical": 31595,
+   "word": 1926,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P40-P47.agc:451",
+   "operand": "2CADR COASTSET"
+  },
+  {
+   "physical": 31596,
+   "word": 30774,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "P40-P47.agc:451",
+   "operand": "2CADR COASTSET +1"
+  },
+  {
+   "physical": 31649,
+   "word": 1479,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P40-P47.agc:515",
+   "operand": "2CADR S40.9"
+  },
+  {
+   "physical": 31650,
+   "word": 23607,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "P40-P47.agc:515",
+   "operand": "2CADR S40.9 +1"
+  },
+  {
+   "physical": 31704,
+   "word": 1890,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "P40-P47.agc:582",
+   "operand": "ADRES ENGOFTSK"
+  },
+  {
+   "physical": 31815,
+   "word": 1099,
+   "callee": "LONGCALL",
+   "callee_address": 2751,
+   "caller": "IMU_PERFORMANCE_TEST_2.agc:120",
+   "operand": "2CADR GOESTIMS"
+  },
+  {
+   "physical": 31816,
+   "word": 31797,
+   "callee": "LONGCALL",
+   "callee_address": 2751,
+   "caller": "IMU_PERFORMANCE_TEST_2.agc:120",
+   "operand": "2CADR GOESTIMS +1"
+  },
+  {
+   "physical": 31847,
+   "word": 1129,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "IMU_PERFORMANCE_TEST_2.agc:155",
+   "operand": "ADRES PIPATASK"
+  },
+  {
+   "physical": 31856,
+   "word": 1129,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "IMU_PERFORMANCE_TEST_2.agc:166",
+   "operand": "ADRES PIPATASK"
+  },
+  {
+   "physical": 31859,
+   "word": 1142,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "IMU_PERFORMANCE_TEST_2.agc:170",
+   "operand": "2CADR PIPJOBB"
+  },
+  {
+   "physical": 31860,
+   "word": 31797,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "IMU_PERFORMANCE_TEST_2.agc:170",
+   "operand": "2CADR PIPJOBB +1"
+  },
+  {
+   "physical": 32067,
+   "word": 1374,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "IMU_PERFORMANCE_TESTS_4.agc:69",
+   "operand": "ADRES ALLOOP"
+  },
+  {
+   "physical": 32112,
+   "word": 1374,
+   "callee": "TWIDDLE",
+   "callee_address": 2683,
+   "caller": "IMU_PERFORMANCE_TESTS_4.agc:117",
+   "operand": "ADRES ALLOOP"
+  },
+  {
+   "physical": 32124,
+   "word": 1407,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "IMU_PERFORMANCE_TESTS_4.agc:130",
+   "operand": "2CADR ALFLT"
+  },
+  {
+   "physical": 32125,
+   "word": 31797,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "IMU_PERFORMANCE_TESTS_4.agc:130",
+   "operand": "2CADR ALFLT +1"
+  },
+  {
+   "physical": 32524,
+   "word": 1971,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "SERVICER.agc:45",
+   "operand": "2CADR LASTBIAS"
+  },
+  {
+   "physical": 32525,
+   "word": 6195,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "SERVICER.agc:45",
+   "operand": "2CADR LASTBIAS +1"
+  },
+  {
+   "physical": 32539,
+   "word": 1329,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "SERVICER.agc:67",
+   "operand": "2CADR NORMLIZE"
+  },
+  {
+   "physical": 32540,
+   "word": 19511,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "SERVICER.agc:67",
+   "operand": "2CADR NORMLIZE +1"
+  },
+  {
+   "physical": 32559,
+   "word": 1158,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "SERVICER.agc:98",
+   "operand": "2CADR SERVICER"
+  },
+  {
+   "physical": 32560,
+   "word": 27703,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "SERVICER.agc:98",
+   "operand": "2CADR SERVICER +1"
+  },
+  {
+   "physical": 32587,
+   "word": 1030,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "SERVICER.agc:134",
+   "operand": "2CADR R10,R11"
+  },
+  {
+   "physical": 32588,
+   "word": 17463,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "SERVICER.agc:134",
+   "operand": "2CADR R10,R11 +1"
+  },
+  {
+   "physical": 32770,
+   "word": 1039,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1611",
+   "operand": "2CADR RRLOSDSP"
+  },
+  {
+   "physical": 32771,
+   "word": 24644,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1611",
+   "operand": "2CADR RRLOSDSP +1"
+  },
+  {
+   "physical": 33726,
+   "word": 1617,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "R31.agc:37",
+   "operand": "2CADR V83CALL"
+  },
+  {
+   "physical": 33727,
+   "word": 31799,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "R31.agc:37",
+   "operand": "2CADR V83CALL +1"
+  },
+  {
+   "physical": 33729,
+   "word": 100,
+   "callee": "FIXDELAY",
+   "callee_address": 2705,
+   "caller": "R31.agc:41",
+   "operand": "DEC 100        B-14"
+  },
+  {
+   "physical": 33736,
+   "word": 1611,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "R31.agc:49",
+   "operand": "2CADR DISPN5X"
+  },
+  {
+   "physical": 33737,
+   "word": 31799,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "R31.agc:49",
+   "operand": "2CADR DISPN5X +1"
+  },
+  {
+   "physical": 34487,
+   "word": 1725,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:2364",
+   "operand": "2CADR MONREQ"
+  },
+  {
+   "physical": 34488,
+   "word": 25665,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:2364",
+   "operand": "2CADR MONREQ +1"
+  },
+  {
+   "physical": 34501,
+   "word": 1725,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:2380",
+   "operand": "2CADR MONREQ"
+  },
+  {
+   "physical": 34502,
+   "word": 25665,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:2380",
+   "operand": "2CADR MONREQ +1"
+  },
+  {
+   "physical": 34505,
+   "word": 1745,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:2385",
+   "operand": "2CADR MONDO"
+  },
+  {
+   "physical": 34506,
+   "word": 25665,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:2385",
+   "operand": "2CADR MONDO +1"
+  },
+  {
+   "physical": 34729,
+   "word": 1970,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:3653",
+   "operand": "2CADR TSTLTS2"
+  },
+  {
+   "physical": 34730,
+   "word": 25666,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:3653",
+   "operand": "2CADR TSTLTS2 +1"
+  },
+  {
+   "physical": 34740,
+   "word": 1975,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:3674",
+   "operand": "2CADR TSTLTS3"
+  },
+  {
+   "physical": 34741,
+   "word": 25666,
+   "callee": "NOVAC",
+   "callee_address": 2618,
+   "caller": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc:3674",
+   "operand": "2CADR TSTLTS3 +1"
+  },
+  {
+   "physical": 36013,
+   "word": 1201,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:335",
+   "operand": "2CADR RRDESK2"
+  },
+  {
+   "physical": 36014,
+   "word": 27719,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:335",
+   "operand": "2CADR RRDESK2 +1"
+  },
+  {
+   "physical": 36090,
+   "word": 1029,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:522",
+   "operand": "2CADR AGSINIT"
+  },
+  {
+   "physical": 36091,
+   "word": 26676,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:522",
+   "operand": "2CADR AGSINIT +1"
+  },
+  {
+   "physical": 36171,
+   "word": 1027,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "EXTENDED_VERBS.agc:682",
+   "operand": "2CADR RADSAMP"
+  },
+  {
+   "physical": 36172,
+   "word": 21572,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "EXTENDED_VERBS.agc:682",
+   "operand": "2CADR RADSAMP +1"
+  },
+  {
+   "physical": 36292,
+   "word": 1926,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:833",
+   "operand": "2CADR SBANDANT"
+  },
+  {
+   "physical": 36293,
+   "word": 26692,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:833",
+   "operand": "2CADR SBANDANT +1"
+  },
+  {
+   "physical": 36322,
+   "word": 1053,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "EXTENDED_VERBS.agc:879",
+   "operand": "2CADR ATTCK2"
+  },
+  {
+   "physical": 36323,
+   "word": 26688,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "EXTENDED_VERBS.agc:879",
+   "operand": "2CADR ATTCK2 +1"
+  },
+  {
+   "physical": 36337,
+   "word": 1980,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "EXTENDED_VERBS.agc:969",
+   "operand": "2CADR R31CALL"
+  },
+  {
+   "physical": 36338,
+   "word": 24647,
+   "callee": "WAITLIST",
+   "callee_address": 2691,
+   "caller": "EXTENDED_VERBS.agc:969",
+   "operand": "2CADR R31CALL +1"
+  },
+  {
+   "physical": 36344,
+   "word": 1042,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1008",
+   "operand": "2CADR V89CALL"
+  },
+  {
+   "physical": 36345,
+   "word": 22596,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1008",
+   "operand": "2CADR V89CALL +1"
+  },
+  {
+   "physical": 36350,
+   "word": 1454,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1028",
+   "operand": "2CADR R36"
+  },
+  {
+   "physical": 36351,
+   "word": 4164,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1028",
+   "operand": "2CADR R36 +1"
+  },
+  {
+   "physical": 36369,
+   "word": 1091,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1088",
+   "operand": "2CADR R62DISP"
+  },
+  {
+   "physical": 36370,
+   "word": 19526,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1088",
+   "operand": "2CADR R62DISP +1"
+  },
+  {
+   "physical": 36408,
+   "word": 1026,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1231",
+   "operand": "2CADR REDO"
+  },
+  {
+   "physical": 36409,
+   "word": 31797,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1231",
+   "operand": "2CADR REDO +1"
+  },
+  {
+   "physical": 36452,
+   "word": 1639,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1510",
+   "operand": "2CADR ATTACHIT"
+  },
+  {
+   "physical": 36453,
+   "word": 27715,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1510",
+   "operand": "2CADR ATTACHIT +1"
+  },
+  {
+   "physical": 36494,
+   "word": 1031,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1572",
+   "operand": "2CADR V67CALL"
+  },
+  {
+   "physical": 36495,
+   "word": 25652,
+   "callee": "FINDVAC",
+   "callee_address": 2629,
+   "caller": "EXTENDED_VERBS.agc:1572",
+   "operand": "2CADR V67CALL +1"
+  }
+ ]
+}

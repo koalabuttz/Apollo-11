@@ -1,0 +1,193 @@
+PASS: 17920 cm-body-attitude cases equal the original programs (70 routines)
+  CM 37,3470 CM/POSE: 05170 x58, 06037 x198
+  CM 37,3471 : 05170 x58, 06037 x198
+  CM 37,3474 : 05170 x63, 06037 x193
+  CM 37,3477 : 05170 x52, 06037 x204
+  CM 37,3502 : 05170 x62, 06037 x194
+  CM 37,3504 : 05170 x76, 06037 x180
+  CM 37,3506 : 05170 x58, 06037 x198
+  CM 37,3507 : 05170 x68, 06037 x188
+  CM 37,3511 : 05170 x65, 06037 x191
+  CM 37,3514 : 05170 x47, 06037 x209
+  CM 37,3517 CM/POSE2: 05170 x71, 06037 x185
+  CM 37,3520 : 05170 x66, 06037 x190
+  CM 37,3521 : 05170 x52, 06037 x204
+  CM 37,3523 : 05170 x74, 06037 x182
+  CM 37,3524 : 05170 x68, 06037 x188
+  CM 37,3525 : 05170 x72, 06037 x184
+  CM 37,3527 CM/TRIO: 05170 x62, 06037 x194
+  CM 37,3531 : 05170 x72, 06037 x184
+  CM 37,3533 : 05170 x59, 06037 x197
+  CM 37,3534 : 05170 x54, 06037 x202
+  CM 37,3535 : 05170 x66, 06037 x190
+  CM 37,3536 : 05170 x52, 06037 x204
+  CM 37,3540 : 05170 x74, 06037 x182
+  CM 37,3542 : 05170 x61, 06037 x195
+  CM 37,3543 : 05170 x65, 06037 x191
+  CM 37,3545 : 05170 x52, 06037 x204
+  CM 37,3547 : 05170 x68, 06037 x188
+  CM 37,3550 : 05170 x69, 06037 x187
+  CM 37,3552 : 05170 x56, 06037 x200
+  CM 37,3554 : 05170 x64, 06037 x192
+  CM 37,3556 : 05170 x62, 06037 x194
+  CM 37,3557 : 05170 x71, 06037 x185
+  CM 37,3561 : 05170 x51, 06037 x205
+  CM 37,3563 : 05170 x69, 06037 x187
+  CM 37,3565 : 05170 x66, 06037 x190
+  CM 37,3567 : 05170 x72, 06037 x184
+  CM 37,3570 : 05170 x61, 06037 x195
+  CM 37,3573 : 05170 x79, 06037 x177
+  CM 37,3575 : 05170 x73, 06037 x183
+  CM 37,3577 : 05170 x70, 06037 x186
+  CM 37,3600 : 05170 x70, 06037 x186
+  CM 37,3602 : 05170 x63, 06037 x193
+  CM 37,3603 : 05170 x64, 06037 x192
+  CM 37,3606 : 05170 x62, 06037 x194
+  CM 37,3610 : 05170 x57, 06037 x199
+  CM 37,3611 : 05170 x63, 06037 x193
+  CM 37,3613 : 05170 x57, 06037 x199
+  CM 37,3615 : 05170 x58, 06037 x198
+  CM 37,3617 : 05170 x59, 06037 x197
+  CM 37,3621 : 05170 x70, 06037 x186
+  CM 37,3623 : 05170 x70, 06037 x186
+  CM 37,3625 : 06037 x256
+  CM 37,3627 : 05170 x70, 05650 x30, 06037 x156
+  CM 37,3631 : 05170 x56, 05650 x60, 06037 x140
+  CM 37,3633 : 05170 x31, 05650 x143, 06037 x82
+  CM 37,3634 : 05170 x67, 06037 x189
+  CM 37,3636 : 05170 x69, 06037 x187
+  CM 37,3640 : 05170 x56, 06037 x200
+  CM 37,3641 : 05170 x76, 06037 x180
+  CM 37,3643 : 06037 x256
+  CM 37,3645 : 05170 x61, 05650 x22, 06037 x173
+  CM 37,3647 : 05170 x68, 05650 x63, 06037 x125
+  CM 37,3651 : 05170 x28, 05650 x129, 06037 x99
+  CM 37,3652 : 05170 x69, 06037 x187
+  CM 37,3653 : 05170 x60, 06037 x196
+  CM 37,3655 CM/ATUP: 05170 x55, 06037 x201
+  CM 37,3744 REDOPOSE: 05170 x72, 06037 x184
+  CM 37,3753 CM/POSE3: 05170 x70, 06037 x186
+  CM 37,3755 : 05170 x86, 06037 x170
+  CM 37,3756 : 06037 x256
+case 1 (32568) does not fit one C64 diagnostic: host only
+case 2 (32568) does not fit one C64 diagnostic: host only
+case 4 (32568) does not fit one C64 diagnostic: host only
+case 5 (32568) does not fit one C64 diagnostic: host only
+case 7 (32568) does not fit one C64 diagnostic: host only
+case 8 (32568) does not fit one C64 diagnostic: host only
+case 11 (32568) does not fit one C64 diagnostic: host only
+case 13 (32568) does not fit one C64 diagnostic: host only
+case 14 (32568) does not fit one C64 diagnostic: host only
+case 19 (32568) does not fit one C64 diagnostic: host only
+case 20 (32568) does not fit one C64 diagnostic: host only
+case 22 (32568) does not fit one C64 diagnostic: host only
+case 23 (32568) does not fit one C64 diagnostic: host only
+case 25 (32568) does not fit one C64 diagnostic: host only
+case 28 (32568) does not fit one C64 diagnostic: host only
+case 29 (32568) does not fit one C64 diagnostic: host only
+case 31 (32568) does not fit one C64 diagnostic: host only
+case 32 (32568) does not fit one C64 diagnostic: host only
+case 34 (32568) does not fit one C64 diagnostic: host only
+case 35 (32568) does not fit one C64 diagnostic: host only
+case 37 (32568) does not fit one C64 diagnostic: host only
+case 38 (32568) does not fit one C64 diagnostic: host only
+case 40 (32568) does not fit one C64 diagnostic: host only
+case 43 (32568) does not fit one C64 diagnostic: host only
+case 50 (32568) does not fit one C64 diagnostic: host only
+case 53 (32568) does not fit one C64 diagnostic: host only
+case 56 (32568) does not fit one C64 diagnostic: host only
+case 58 (32568) does not fit one C64 diagnostic: host only
+case 61 (32568) does not fit one C64 diagnostic: host only
+case 64 (32568) does not fit one C64 diagnostic: host only
+case 65 (32568) does not fit one C64 diagnostic: host only
+case 68 (32568) does not fit one C64 diagnostic: host only
+case 70 (32568) does not fit one C64 diagnostic: host only
+case 71 (32568) does not fit one C64 diagnostic: host only
+case 73 (32568) does not fit one C64 diagnostic: host only
+case 76 (32568) does not fit one C64 diagnostic: host only
+case 77 (32568) does not fit one C64 diagnostic: host only
+case 79 (32568) does not fit one C64 diagnostic: host only
+case 82 (32568) does not fit one C64 diagnostic: host only
+case 83 (32568) does not fit one C64 diagnostic: host only
+case 85 (32568) does not fit one C64 diagnostic: host only
+case 88 (32568) does not fit one C64 diagnostic: host only
+case 89 (32568) does not fit one C64 diagnostic: host only
+case 91 (32568) does not fit one C64 diagnostic: host only
+case 92 (32568) does not fit one C64 diagnostic: host only
+case 94 (32568) does not fit one C64 diagnostic: host only
+case 97 (32568) does not fit one C64 diagnostic: host only
+case 98 (32568) does not fit one C64 diagnostic: host only
+case 101 (32568) does not fit one C64 diagnostic: host only
+case 103 (32568) does not fit one C64 diagnostic: host only
+case 104 (32568) does not fit one C64 diagnostic: host only
+case 109 (32568) does not fit one C64 diagnostic: host only
+case 112 (32568) does not fit one C64 diagnostic: host only
+case 113 (32568) does not fit one C64 diagnostic: host only
+case 115 (32568) does not fit one C64 diagnostic: host only
+case 116 (32568) does not fit one C64 diagnostic: host only
+case 118 (32568) does not fit one C64 diagnostic: host only
+case 119 (32568) does not fit one C64 diagnostic: host only
+case 122 (32568) does not fit one C64 diagnostic: host only
+case 124 (32568) does not fit one C64 diagnostic: host only
+case 125 (32568) does not fit one C64 diagnostic: host only
+case 133 (32568) does not fit one C64 diagnostic: host only
+case 134 (32568) does not fit one C64 diagnostic: host only
+case 136 (32568) does not fit one C64 diagnostic: host only
+case 137 (32568) does not fit one C64 diagnostic: host only
+case 139 (32568) does not fit one C64 diagnostic: host only
+case 145 (32568) does not fit one C64 diagnostic: host only
+case 146 (32568) does not fit one C64 diagnostic: host only
+case 148 (32568) does not fit one C64 diagnostic: host only
+case 149 (32568) does not fit one C64 diagnostic: host only
+case 151 (32568) does not fit one C64 diagnostic: host only
+case 152 (32568) does not fit one C64 diagnostic: host only
+case 154 (32568) does not fit one C64 diagnostic: host only
+case 155 (32568) does not fit one C64 diagnostic: host only
+case 157 (32568) does not fit one C64 diagnostic: host only
+case 158 (32568) does not fit one C64 diagnostic: host only
+case 160 (32568) does not fit one C64 diagnostic: host only
+case 161 (32568) does not fit one C64 diagnostic: host only
+case 163 (32568) does not fit one C64 diagnostic: host only
+case 166 (32568) does not fit one C64 diagnostic: host only
+case 167 (32568) does not fit one C64 diagnostic: host only
+case 169 (32568) does not fit one C64 diagnostic: host only
+case 172 (32568) does not fit one C64 diagnostic: host only
+case 173 (32568) does not fit one C64 diagnostic: host only
+case 179 (32568) does not fit one C64 diagnostic: host only
+case 181 (32568) does not fit one C64 diagnostic: host only
+case 182 (32568) does not fit one C64 diagnostic: host only
+case 187 (32568) does not fit one C64 diagnostic: host only
+case 190 (32568) does not fit one C64 diagnostic: host only
+case 191 (32568) does not fit one C64 diagnostic: host only
+case 193 (32568) does not fit one C64 diagnostic: host only
+case 197 (32568) does not fit one C64 diagnostic: host only
+case 200 (32568) does not fit one C64 diagnostic: host only
+case 202 (32568) does not fit one C64 diagnostic: host only
+case 203 (32568) does not fit one C64 diagnostic: host only
+case 205 (32568) does not fit one C64 diagnostic: host only
+case 208 (32568) does not fit one C64 diagnostic: host only
+case 209 (32568) does not fit one C64 diagnostic: host only
+case 211 (32568) does not fit one C64 diagnostic: host only
+case 212 (32568) does not fit one C64 diagnostic: host only
+case 214 (32568) does not fit one C64 diagnostic: host only
+case 215 (32568) does not fit one C64 diagnostic: host only
+case 217 (32568) does not fit one C64 diagnostic: host only
+case 220 (32568) does not fit one C64 diagnostic: host only
+case 221 (32568) does not fit one C64 diagnostic: host only
+case 223 (32568) does not fit one C64 diagnostic: host only
+case 224 (32568) does not fit one C64 diagnostic: host only
+case 226 (32568) does not fit one C64 diagnostic: host only
+case 227 (32568) does not fit one C64 diagnostic: host only
+case 229 (32568) does not fit one C64 diagnostic: host only
+case 233 (32568) does not fit one C64 diagnostic: host only
+case 235 (32568) does not fit one C64 diagnostic: host only
+case 236 (32568) does not fit one C64 diagnostic: host only
+case 238 (32568) does not fit one C64 diagnostic: host only
+case 241 (32568) does not fit one C64 diagnostic: host only
+case 242 (32568) does not fit one C64 diagnostic: host only
+case 245 (32568) does not fit one C64 diagnostic: host only
+case 248 (32568) does not fit one C64 diagnostic: host only
+case 250 (32568) does not fit one C64 diagnostic: host only
+case 251 (32568) does not fit one C64 diagnostic: host only
+froze 560 vectors to tests/cm_body_attitude_vectors.h
+exit 0

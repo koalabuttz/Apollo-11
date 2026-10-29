@@ -1,0 +1,7 @@
+{
+  "archive": "evidence/cm-quality-original.states.xz",
+  "decoded_sha256": "286454d2d8be71e0b77a9cf9b802df5beec6e9b2067d7bd56dff76e3300498d3",
+  "decoded_bytes": 2826829824,
+  "states": 688128,
+  "inputs": 65536
+}

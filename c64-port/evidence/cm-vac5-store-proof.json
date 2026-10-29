@@ -1,0 +1,19 @@
+{
+  "cases": 8192,
+  "checkpoints": 8192,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "VAC5STOR20,2000 through GENTRAN to SWRETURN4675"
+  ],
+  "context_cohorts": "8192 randomized complete images, all entry Ebank/SUPER/IRQ and raw A/L domains",
+  "binary_bytes": 33652736,
+  "snapshot_sha256": "8c01b70eea25e4eef62bb960699b6febc19c76aac85660ca4a8e822dfda287f7",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual VAC5STOR complete body including GENTRAN, through genuine SWRETURN entry; following caller recovery remains separate"
+}

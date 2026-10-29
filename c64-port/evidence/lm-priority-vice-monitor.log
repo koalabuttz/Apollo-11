@@ -1,0 +1,28 @@
+Loading /workspace/Apollo-11/c64-port/build/lm_priority.prg from 0801 to 3F2F (372F bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  221/$0dd,  13/$0d
+.C:145c  8C 80 C0    STY $C080      - A:4D X:00 Y:A5 SP:ed NV-....C  306863752
+>C:c080  a5 4d 00 40  00                                      .M.@.
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm_priority-debug.prg from 0801 to 4011 (3811 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  186/$0ba,  45/$2d
+.C:1540  8C 80 C0    STY $C080      - A:4D X:00 Y:A5 SP:ed NV-....C  309023739
+>C:c080  a5 4d 00 40  00                                      .M.@.
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-software-stack.bin' from $c100 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/lm-priority-debug-diffs.bin' from $c085 to $c0fc
+Loading /workspace/Apollo-11/c64-port/build/lm_priority.prg from 0801 to 3FC4 (37C4 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  146/$092,   1/$01
+.C:143b  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed NV-....C  306760735
+>C:c080  a5 00 00 40  00                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_priority-software-stack.bin' from $c100 to $cfff

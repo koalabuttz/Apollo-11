@@ -1,0 +1,10 @@
+{
+  "archive": "build/lm-p76-reference.snapshots.bin.xz",
+  "decoded_sha256": "3dd445f01ae4e5d28028d5ea2fbaa91e3204893e1e983783fc58a7f057078cfe",
+  "decoded_bytes": 58863616,
+  "cases": 14336,
+  "tag_counts": {
+    "1": 14336
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

@@ -1,0 +1,38 @@
+{
+  "source_files": {
+    "src/native_overlay_dispatch.c": "f1d961b7f37569cd623a5c6c5154ae8fcbec998b5aac9e54b8fa6a1e04a5e1f6",
+    "tests/test_native_scheduler.c": "d9ec8c2a344133b72a5c2fba4a89c487b9c2a850f89540562aa37bcb8d65c4be",
+    "tools/native_scheduler_exchange_regression.py": "7e7bd93812fb5f040071b00d9e353ed651d2e93018d9cc2c646953f85ab35e87",
+    "docs/NATIVE-SCHEDULER-EXCHANGE.md": "17aa3b3681e68adf3ab0638e10c555858412bcb541db056304b700310913afde"
+  },
+  "shared_scheduler_files": {
+    "include/native_dispatch.h": "81f85b7fa0e73424eed478a1b131a7942affedcd659f469b4b9448fe5a2e676b",
+    "src/native_dispatch.c": "dbd17f738647480e47f3bb1d57353101e7a8259834ed89af0bb5c97f5bdebc13"
+  },
+  "native_dependencies": {
+    "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
+    "src/irq_delivery.c": "83a2fab0989f7a8e88c5a8b972f276f76a09c3eb3fba4f9625814c3448fe8609",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "include/native_overlay_dispatch.h": "015b126e4bce875c87cfd7d09a6a0e0f5ed59c20d9d5ceb7874a02be960f09ea",
+    "tools/native_scheduler_overlay_build.py": "ff7ec68c3800f68d579897c8c5095682db6494d92f72946aa22f80144605bb7a",
+    "platform/c64/native_scheduler_payload.c": "35008af675d7bdb3f21d673d97974ea2d416f317781d76b7563e6da9bf6ef9b9"
+  },
+  "artifacts": {
+    "evidence/native-scheduler-exchange-validation.log": "4832dda7c6155006a9c1d853f46953e37d6c921b80161a1be70440ba0a527606",
+    "evidence/native-scheduler-exchange-regression.log": "0df05a80123aecf714076dc441df29c4bd9264d0b5ff24d8590f8bb8f814fdaf",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-modules.json": "f7700944d20d990b8ef1c8432c6c49c9925786b646e24b1602799ef845792be1",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-150.prg": "4098ac77e6320ab4c258294612971fa37d2a3a91098d6d13f11978388359aa2f",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-150.map": "a6d4f5010e636286af950a19bfafb1be175799fb9901f16d8efeff146fc64dd2",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-151.prg": "c21ea8ee9cef83a0e56dabf84299a43151417b35ef86fea624ecd368ee77c7f7",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-151.map": "949ef6c2e1bbd217d0f64024a26db6075fdce7f43c5489a684e89d325303258b",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-152.prg": "171990007a7c7d22a90b3c19ae05f6467b461ef56782b360738696b253319081",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-152.map": "9a5f09ee0e72172f74523d0ef2f339eac70dbef7c32d2bd786f2b3ca0fff631f",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-153.prg": "ad0d7803ed7cd278816df19586858a01ab7b43d17c44fa9221613dfad91cecef",
+    "evidence/native-scheduler-exchange-overlay-native-scheduler-153.map": "0188f94ca20a01c116de8e601de3170e483c2480e031969e29622416fbf7a8b8"
+  },
+  "old_proof": "evidence/native-scheduler-proof.json",
+  "old_proof_sha256": "dead28ccc6def2d093da7b7ede38bae4915bc14e87509d1d81151ce4f78f6bf1",
+  "regression_states": 29184,
+  "strict_and_full_asan_ubsan": true,
+  "new_action_semantics": "Executive-owned canonical source and disk proof; this packet only adapter routing, regression and linkage"
+}

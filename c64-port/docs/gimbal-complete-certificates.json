@@ -1,0 +1,158 @@
+{
+  "schema": 1,
+  "parent_inventory_merge_required": true,
+  "recommendations": [
+    {
+      "source_path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
+      "source_sha256": "5013aab57862f7f29ec2518223d61b879dfa7a2f87f4deb9e70385d69f3044b3",
+      "recommendation": "complete native translation within original checked caller domain",
+      "complete_file_kind": "all original gimbal executable paths, compile-time placement/aliases and immutable file data",
+      "entry_points": [
+        "NOGIMLOC",
+        "WCALC",
+        "LOCSKIRT"
+      ],
+      "all_source_paths_reviewed": true,
+      "native_source": "src/gimbal_complete.c",
+      "native_dependencies": [
+        "src/gimbal_stage.c",
+        "src/delcomp.c",
+        "src/guidance_product.c",
+        "src/guidance_dot.c",
+        "src/guidance_dp_divide.c",
+        "src/guidance_shift.c"
+      ],
+      "native_data": "src/gimbal_data.inc",
+      "source_line_and_address_map": "evidence/gimbal-complete-source-audit.json.gz",
+      "supported_domain": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h",
+      "host_source_states": 5120,
+      "c64_source_states": 80,
+      "verification": "all2048 physical words and SUPER/IRQ match original source; strict+ASAN/UBSAN host and actual stock-ROM PAL C64 execution; all original file constants read on target",
+      "original_source_repairs": [],
+      "helper_support_repairs": [
+        {
+          "source_path": "Luminary099/INTERPRETER.agc",
+          "source_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+          "normalized_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+          "indentation_repair_lines": [],
+          "numerical_source_edits": 0
+        },
+        {
+          "source_path": "Luminary099/RTB_OP_CODES.agc",
+          "source_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+          "normalized_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+          "indentation_repair_lines": [],
+          "numerical_source_edits": 0
+        }
+      ],
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "continuations": [
+        {
+          "label": "NEWANGL +1",
+          "source_path": "Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc",
+          "logical_pc": "03010",
+          "bank": "22",
+          "body_translated_by_this_certificate": false
+        }
+      ],
+      "out_of_domain_behavior": "rejected transactionally; not an assertion of source invalid-context behavior",
+      "live_scheduling_completion_claim": false,
+      "application_completion_claim": false
+    },
+    {
+      "source_path": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
+      "source_sha256": "f870ac2ba6f231a42d59459db8d027171f6b2a00e61e84f6da66e4b4856cd3f0",
+      "recommendation": "complete native translation within original checked caller domain",
+      "complete_file_kind": "all original gimbal executable paths, compile-time placement/aliases and immutable file data",
+      "entry_points": [
+        "WCALC",
+        "LOCSKIRT"
+      ],
+      "all_source_paths_reviewed": true,
+      "native_source": "src/gimbal_complete.c",
+      "native_dependencies": [
+        "src/gimbal_stage.c",
+        "src/delcomp.c",
+        "src/guidance_product.c",
+        "src/guidance_dot.c",
+        "src/guidance_dp_divide.c",
+        "src/guidance_shift.c"
+      ],
+      "native_data": "src/gimbal_data.inc",
+      "source_line_and_address_map": "evidence/gimbal-complete-source-audit.json.gz",
+      "supported_domain": "original NEWOPS/LOC entry in bank22; RATEINDX0/2/4/6, all coherent EB0..7, all five VAC bases, ordinary15-bit words/raw16-bit A/L/Q, producer exclusion and NEWJOB0/EDOP0; include/gimbal_complete.h and include/gimbal_stage.h",
+      "host_source_states": 5120,
+      "c64_source_states": 80,
+      "verification": "all2048 physical words and SUPER/IRQ match original source; strict+ASAN/UBSAN host and actual stock-ROM PAL C64 execution; all original file constants read on target",
+      "original_source_repairs": [],
+      "helper_support_repairs": [
+        {
+          "source_path": "Comanche055/INTERPRETER.agc",
+          "source_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+          "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+          "indentation_repair_lines": [
+            51,
+            207,
+            247,
+            542,
+            588,
+            678,
+            681,
+            908,
+            941,
+            1376,
+            1504,
+            1551,
+            1553,
+            1600,
+            1735,
+            1739,
+            1830,
+            1921,
+            1940,
+            1986,
+            2002,
+            2014,
+            2028,
+            2058,
+            2561,
+            2646,
+            2661,
+            2901,
+            3018,
+            3023,
+            3028,
+            3034,
+            3042,
+            3047,
+            3054,
+            3062
+          ],
+          "numerical_source_edits": 0
+        },
+        {
+          "source_path": "Comanche055/RT8_OP_CODES.agc",
+          "source_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+          "normalized_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+          "indentation_repair_lines": [],
+          "numerical_source_edits": 0
+        }
+      ],
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "continuations": [
+        {
+          "label": "NEWANGL +1",
+          "source_path": "Comanche055/ANGLFIND.agc",
+          "logical_pc": "03032",
+          "bank": "22",
+          "body_translated_by_this_certificate": false
+        }
+      ],
+      "out_of_domain_behavior": "rejected transactionally; not an assertion of source invalid-context behavior",
+      "live_scheduling_completion_claim": false,
+      "application_completion_claim": false
+    }
+  ]
+}

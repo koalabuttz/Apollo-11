@@ -1,0 +1,103 @@
+{
+ "scenario": "lm-landing-ascent-nassp",
+ "snap_cs": 136501,
+ "snap_at": 136501,
+ "requested_cs": 1000,
+ "chain": 3,
+ "ok": true,
+ "status": 0,
+ "replay_rows": 4422,
+ "replay_ended": true,
+ "replay_differences": 0,
+ "commit": "d7abace4fc66",
+ "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
+ "harness_sha256": "6e9fa7c9c79bde86c01e62dec39c99dfdea7aaaa3840906348624487143ee745",
+ "reu_bounds": {
+  "ok": true,
+  "dma_outside": 0,
+  "dma_trace_armed": true
+ },
+ "windows": [
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3214",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    2384
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 2384,
+   "wall_per_agc": 27.176,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
+  },
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3214",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 1000,
+   "wall_per_agc": 7.787,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
+  },
+  {
+   "ok": true,
+   "status": 0,
+   "at": "01,3214",
+   "seam": null,
+   "error": null,
+   "replay_differences": 0,
+   "replay_differ_at_cs": null,
+   "replay_first": [],
+   "replay_matched_cs": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000
+   ],
+   "replay_end_shift_cs": 0,
+   "replay_end_paired": true,
+   "replay_unpaired_count": 0,
+   "requested_cs": 1000,
+   "wall_per_agc": 7.721,
+   "replay_skipped": [],
+   "outputs_matched": null,
+   "outputs_first_diff": null
+  }
+ ]
+}

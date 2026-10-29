@@ -1,0 +1,46 @@
+{
+  "lm0": {
+    "mission": 0,
+    "entry": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "5451bbd01c762ce0099d62d5cc0517f215ae6a6797f9c81fb33c0afbc3c68436",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1536,
+    "source_branches": {
+      "0": 65536
+    }
+  },
+  "lm1": {
+    "mission": 0,
+    "entry": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "4e10581d6282955c9dde660b5e4bbf59a36b74170c9037d45b78c7fffd991298",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1143,
+    "source_branches": {
+      "0": 65536
+    }
+  },
+  "cm0": {
+    "mission": 1,
+    "entry": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "51113230f787dae409d83a0a537457b359318c6b5d590c3961e83f329629760b",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1552,
+    "source_branches": {
+      "0": 65536
+    }
+  },
+  "cm1": {
+    "mission": 1,
+    "entry": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "c6e7d140d67e2d01a055cf6d6941d6a0b76a2a46e91b9cbc9cb7cad8168f030d",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1196,
+    "source_branches": {
+      "0": 65536
+    }
+  }
+}

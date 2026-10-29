@@ -1,0 +1,112 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS65536 original TIMETHET oracle entries equal native 2053-word rows ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf",
+  "PASS 8 frozen original TIMETHET entries, 22 admission guards and 90 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf",
+  "PASS65536 original TIMETHET entries strict native",
+  "PASS 8 frozen original TIMETHET entries, 22 admission guards and 90 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf",
+  "PASS65536 original TIMETHET entries full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-conic-timethet-1.prg: 22 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-timethet-2.prg: 21 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-timethet-3.prg: 23 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-timethet-4.prg: 24 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 46613,
+    "prg_sha256": "16d87e847c70c1eae1e6fef6864c08fe2eea4174e105e5f466bfef6e7f06df7f",
+    "sections": {
+     "text": 37448,
+     "rodata": 9151,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$be14",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     6
+    ],
+    "steps": 22
+   },
+   "2": {
+    "prg_bytes": 38774,
+    "prg_sha256": "d263bfddc83a3743250315b8307380df51506369ee0996ab4e569910137a5102",
+    "sections": {
+     "text": 31481,
+     "rodata": 7279,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$9f75",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     7,
+     8,
+     9,
+     10,
+     11,
+     26
+    ],
+    "steps": 21
+   },
+   "3": {
+    "prg_bytes": 41362,
+    "prg_sha256": "7a304829fa71c7006b8e469eb7dfe010427ed4e6bf7b6afd7387b75283d0412d",
+    "sections": {
+     "text": 33247,
+     "rodata": 8101,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$a991",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18
+    ],
+    "steps": 23
+   },
+   "4": {
+    "prg_bytes": 45221,
+    "prg_sha256": "8dd228799105566bed2c17e4ac101a88062dc3520d63d3a2e0c64bf17cea76d8",
+    "sections": {
+     "text": 35747,
+     "rodata": 9460,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$b8a4",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25
+    ],
+    "steps": 24
+   }
+  },
+  "whole_routine_note": "The whole routine is too big for one PRG beside two images, so the C64 check runs each phase in one of four PRGs from a debris-only base state; the host runs the same phase steps and the whole chain."
+ },
+ "source_audit": [
+  "PASS 290 assembled TIMETHET words on 283 source lines map to native literals in 24 functions"
+ ]
+}

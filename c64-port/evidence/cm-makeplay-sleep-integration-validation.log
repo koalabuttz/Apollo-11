@@ -1,0 +1,6 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_makeplay_sleep.c tests/cm_makeplay_sleep_check.c src/agc_word.c src/cm_makeplay_sleep.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_sleep_cases.c -o build/test-cm-makeplay-sleep
+build/test-cm-makeplay-sleep
+64 complete CM display sleep states and39 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_makeplay_sleep.c tests/cm_makeplay_sleep_check.c src/agc_word.c src/cm_makeplay_sleep.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c tests/cm_makeplay_sleep_cases.c -o build/test-cm-makeplay-sleep-frozen-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-makeplay-sleep-frozen-sanitize
+64 complete CM display sleep states and39 unchanged invalid boundaries: PASS

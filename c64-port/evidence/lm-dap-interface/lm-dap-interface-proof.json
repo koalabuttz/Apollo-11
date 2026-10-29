@@ -1,0 +1,36 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 7168,
+ "snapshot_sha256": "059b63ec57cffe158905f25a0f56d610a9e9321692626f67104d17238e859fdd",
+ "outcomes": {
+  "ALLCOAST:alarm": 128,
+  "ALLCOAST:returned": 896,
+  "PFLITEDB:alarm": 128,
+  "PFLITEDB:returned": 896,
+  "RESTORDB:alarm": 128,
+  "RESTORDB:returned": 896,
+  "SETMAXDB:alarm": 128,
+  "SETMAXDB:returned": 896,
+  "SETMINDB:alarm": 128,
+  "SETMINDB:returned": 896,
+  "STOPRATE:returned": 1024,
+  "ZATTEROR:returned": 1024
+ },
+ "entries": [
+  "20,2123 RESTORDB",
+  "20,2124 RESTORDB+1",
+  "20,2127 SETMAXDB",
+  "20,2137 CALLACCS+4",
+  "20,2140 SETMINDB",
+  "20,2142 PFLITEDB",
+  "20,2145 PFLITEDB+3",
+  "20,2153 ZATTEROR",
+  "20,2165 STOPRATE",
+  "20,2204 ALLCOAST",
+  "20,2207 ALLCOAST+3",
+  "20,2225 ALLCOAST+17"
+ ],
+ "boundary": "each entry from a random image (FB bank 20, random EB, superbank and DAPBOOLS) to the caller's return in Q (SWRETURN, fixed-fixed or bank 20), through the native NOVAC for 1/ACCJOB; alarm: BAILOUT1 entry (1202, no core set)",
+ "full_physical_words": 2048
+}

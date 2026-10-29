@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p30-p37",
+  "release": "evidence-cm-p30-p37",
+  "files": {
+    "cm-p30-p37-c64-cover.json": {
+      "sha256": "4bbe36704917a4cb3f927e432713364e9d7ed9736554da7665ec0aa5ec9f1eaf",
+      "bytes": 4080,
+      "store": "tree"
+    },
+    "cm-p30-p37-differential.log": {
+      "sha256": "a7792b32ff2f514c96a3b5a0eaf4ae9fe4b2eb6c06d1026397929a3fa33e5dc5",
+      "bytes": 32512,
+      "store": "release"
+    },
+    "cm-p30-p37-host.log": {
+      "sha256": "7d8e9e2fa887da0d520d18be43d372257aae1580cdd94381bc082a77432d42c4",
+      "bytes": 942,
+      "store": "release"
+    },
+    "cm-p30-p37-proof.json": {
+      "sha256": "22db90399badd2da201a16a097fe852015cede78e9bd13868f937ebc77323220",
+      "bytes": 52609,
+      "store": "tree"
+    },
+    "cm-p30-p37-source-map.json": {
+      "sha256": "ee49323558c2b74f2e8d208bffc04796e0950bacd0c5d77af2b54ee374880a21",
+      "bytes": 50373,
+      "store": "tree"
+    },
+    "cm-p30-p37-vice.log": {
+      "sha256": "32bc062553d8b4f07bd91a74b8c8e4af58469588caa5ee99afc6e9f57afc71f1",
+      "bytes": 4567,
+      "store": "release"
+    }
+  }
+}

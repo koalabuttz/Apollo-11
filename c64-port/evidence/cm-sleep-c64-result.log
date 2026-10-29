@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete cm_sleep group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 16652
+cm_sleep-hardware-stack.bin: measured stack extent 18 bytes
+cm_sleep-software-stack.bin: measured stack extent 728 bytes

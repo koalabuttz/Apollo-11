@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-di-mark",
+  "release": "evidence-lanec-di-mark",
+  "files": {
+    "lanec-di-mark-diff.json": {
+      "sha256": "9920f67e05e35fe18ba8cc2af00c141c8e622918d2e276e477fba2371124ebfc",
+      "bytes": 234,
+      "store": "tree"
+    },
+    "lanec-di-mark-oracle.crc": {
+      "sha256": "a170f77d9e12d96609eb3fb12f1b633f9255087c3c8a22a821aa0741ea5288ac",
+      "bytes": 40106,
+      "store": "tree"
+    },
+    "lanec-di-mark-sanitize.txt": {
+      "sha256": "8bab96d30ba092a97629ba139a2b0b4cf926c9b3cc04d9ecbf2a385977a244e3",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-di-mark-vice.txt": {
+      "sha256": "cb8105a1499e0f5518560b71b48c0cc2bda650dccf05c7e214b52f5c2121c92e",
+      "bytes": 56,
+      "store": "tree"
+    }
+  }
+}

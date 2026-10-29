@@ -1,0 +1,1 @@
+PASS: VICE PAL lanec-ev-align.prg: 97 checks, 0 failures

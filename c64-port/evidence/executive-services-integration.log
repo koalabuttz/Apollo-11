@@ -1,0 +1,4 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c tests/scenarios.c tests/executive_service_cases.c tests/state_digest.c tests/executive_service_check.c tests/test_executive_services.c -o build/test-executive-services
+./build/test-executive-services
+PASS: 768 original-derived SPVAC/CHANG2 state checks and unsupported safe-point rejection
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/executive-services.map src/agc_word.c src/executive.c tests/scenarios.c tests/executive_service_cases.c tests/state_digest.c tests/executive_service_check.c platform/c64/executive_service_diagnostic.c -o build/executive-services.prg

@@ -1,0 +1,11 @@
+PASS: VICE PAL, 96 complete original-assembly DOT states; signed-zero/TP accumulation/overflow cases; restoring I
+Mailbox: a50000600003c86424
+Target state bytes / modeled words: 200 100
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/dot-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/dot-vice-monitor.log -monlog -limitcycles 1000000000
+explicit raw edge: 15200 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+positive raw edge: 20620 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+same-corner vector: 31575 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+opposite-corner vector: 31974 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+independent random vectors: 28551 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+dot-vice-hardware-stack.bin: measured sentinel extent 29 bytes
+dot-vice-software-stack.bin: measured sentinel extent 294 bytes

@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -Itools -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_alarm_record.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_alarm_record_cases.c tests/cm_admission_complete_cases.c platform/host/cm_alarm_record_snapshot.c -o build/cm-alarm-record-sanitize
+python3 tools/cm_alarm_record_sanitize.py
+PASS: full ASAN/UBSAN alarm recording corpus, all16384 actual source states

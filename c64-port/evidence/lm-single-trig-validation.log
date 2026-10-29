@@ -1,0 +1,7 @@
+gcc -O2 -std=c99 -Iinclude -Itests -Ideps/virtualagc/yaAGC tools/lm_single_trig_reference.c tests/lm_single_trig_cases.c tests/scenarios.c src/executive.c src/agc_word.c build/agc_engine_hardware_dv.o deps/virtualagc/yaAGC/agc_engine_init.o deps/virtualagc/yaAGC/rfopen.o -o build/lm-single-trig-reference
+build/lm-single-trig-reference deps/lm-single-trig-fixture/MAIN.agc.bin > build/lm-single-trig-reference.snapshots
+build/lm-single-trig-native > build/lm-single-trig-native.snapshots
+cmp build/lm-single-trig-reference.snapshots build/lm-single-trig-native.snapshots
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_single_trig_snapshot.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_single_trig_cases.c -o build/lm-single-trig-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-single-trig-sanitize > build/lm-single-trig-sanitize.snapshots
+cmp build/lm-single-trig-reference.snapshots build/lm-single-trig-sanitize.snapshots

@@ -1,0 +1,7 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_mysubs_snapshot.c src/cm_mysubs.c src/agc_word.c src/agc_multiword.c tests/cm_mysubs_cases.c -o build/cm-mysubs-native
+build/cm-mysubs-reference deps/cm-mysubs-fixture/MAIN.agc.bin 2> build/cm-mysubs-reference.trace | gzip -n -9 > build/cm-mysubs-reference.snapshots.gz
+build/cm-mysubs-native | gzip -n -9 > build/cm-mysubs-native.snapshots.gz
+cmp build/cm-mysubs-reference.snapshots.gz build/cm-mysubs-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_mysubs_snapshot.c src/cm_mysubs.c src/agc_word.c src/agc_multiword.c tests/cm_mysubs_cases.c -o build/cm-mysubs-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-mysubs-sanitize | gzip -n -9 > build/cm-mysubs-sanitize.snapshots.gz
+cmp build/cm-mysubs-reference.snapshots.gz build/cm-mysubs-sanitize.snapshots.gz

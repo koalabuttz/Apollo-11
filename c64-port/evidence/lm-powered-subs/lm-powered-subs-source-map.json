@@ -1,0 +1,1868 @@
+{
+ "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc": {
+  "native_file": "src/lm_powered_subs.c",
+  "words": 267,
+  "untranslated_words": 0,
+  "routines": 39,
+  "map": [
+   {
+    "address": "23,3537",
+    "word": "77776",
+    "source": "CDUTRIG EXIT ",
+    "routine": "23,3537",
+    "function": "r47537"
+   },
+   {
+    "address": "23,3540",
+    "word": "03547",
+    "source": " TC CDUTRIGS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3541",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3542",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "23,3542",
+    "function": "r47542"
+   },
+   {
+    "address": "23,3543",
+    "word": "77776",
+    "source": "CD*TR*G EXIT ",
+    "routine": "23,3543",
+    "function": "r47543"
+   },
+   {
+    "address": "23,3544",
+    "word": "03555",
+    "source": " TC CD*TR*GS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3545",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3546",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "23,3546",
+    "function": "r47546"
+   },
+   {
+    "address": "23,3547",
+    "word": "30032",
+    "source": "CDUTRIGS CA CDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3550",
+    "word": "54772",
+    "source": " TS CDUSPOT    +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3551",
+    "word": "30033",
+    "source": " CA CDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3552",
+    "word": "54766",
+    "source": " TS CDUSPOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3553",
+    "word": "30034",
+    "source": " CA CDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3554",
+    "word": "54770",
+    "source": " TS CDUSPOT    +2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3555",
+    "word": "00006",
+    "source": "CD*TR*GS EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3556",
+    "word": "22142",
+    "source": " QXCH TEM2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3557",
+    "word": "34751",
+    "source": " CAF FOUR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3560",
+    "word": "76242",
+    "source": "TR*GL**P MASK SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3561",
+    "word": "54143",
+    "source": " TS TEM3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3562",
+    "word": "50143",
+    "source": " INDEX TEM3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3563",
+    "word": "30766",
+    "source": " CA CDUSPOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3564",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3565",
+    "word": "52127",
+    "source": " DXCH VBUF       +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3566",
+    "word": "04713",
+    "source": " TC USPRCADR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3567",
+    "word": "21576",
+    "source": " CADR CDULOGIC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3570",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3571",
+    "word": "30155",
+    "source": " DCA MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3572",
+    "word": "50143",
+    "source": " INDEX TEM3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3573",
+    "word": "52767",
+    "source": " DXCH CDUSPOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3574",
+    "word": "04713",
+    "source": " TC USPRCADR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3575",
+    "word": "01517",
+    "source": " CADR COSINE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3576",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3577",
+    "word": "50143",
+    "source": " INDEX TEM3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3600",
+    "word": "52745",
+    "source": " DXCH COSCDU",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3601",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3602",
+    "word": "50143",
+    "source": " INDEX TEM3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3603",
+    "word": "30767",
+    "source": " DCA CDUSPOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3604",
+    "word": "04713",
+    "source": " TC USPRCADR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3605",
+    "word": "01531",
+    "source": " CADR SINE       +1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3606",
+    "word": "52127",
+    "source": " DXCH VBUF       +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3607",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3610",
+    "word": "50143",
+    "source": " INDEX TEM3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3611",
+    "word": "52737",
+    "source": " DXCH SINCDU",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3612",
+    "word": "10143",
+    "source": " CCS TEM3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3613",
+    "word": "13560",
+    "source": " TCF TR*GL**P",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3614",
+    "word": "00142",
+    "source": " TC TEM2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3615",
+    "word": "00004",
+    "source": "QUICTRIG INHINT ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3616",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3617",
+    "word": "22061",
+    "source": " QXCH ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3620",
+    "word": "34751",
+    "source": " CAF FOUR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3621",
+    "word": "76242",
+    "source": "+4 MASK SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3622",
+    "word": "54062",
+    "source": " TS ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3623",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3624",
+    "word": "30766",
+    "source": " CA CDUSPOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3625",
+    "word": "05033",
+    "source": " TC SPSIN",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3626",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3627",
+    "word": "74736",
+    "source": " MP BIT14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3630",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3631",
+    "word": "52737",
+    "source": " DXCH SINCDU",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3632",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3633",
+    "word": "30766",
+    "source": " CA CDUSPOT",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3634",
+    "word": "05032",
+    "source": " TC SPCOS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3635",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3636",
+    "word": "74736",
+    "source": " MP BIT14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3637",
+    "word": "50062",
+    "source": " INDEX ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3640",
+    "word": "52745",
+    "source": " DXCH COSCDU",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3641",
+    "word": "10062",
+    "source": " CCS ITEMP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3642",
+    "word": "13621",
+    "source": " TCF QUICTRIG   +4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3643",
+    "word": "30061",
+    "source": " CA ITEMP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3644",
+    "word": "00003",
+    "source": " RELINT ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3645",
+    "word": "00000",
+    "source": " TC A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3646",
+    "word": "77776",
+    "source": "CDU*SMNB EXIT ",
+    "routine": "23,3646",
+    "function": "r47646"
+   },
+   {
+    "address": "23,3647",
+    "word": "03547",
+    "source": " TC CDUTRIGS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3650",
+    "word": "13653",
+    "source": " TCF C*MM*N1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3651",
+    "word": "77776",
+    "source": "TRG*SMNB EXIT ",
+    "routine": "23,3651",
+    "function": "r47651"
+   },
+   {
+    "address": "23,3652",
+    "word": "03555",
+    "source": " TC CD*TR*GS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3653",
+    "word": "07532",
+    "source": "C*MM*N1 TC MPACVBUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3654",
+    "word": "46245",
+    "source": " CS THREE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3655",
+    "word": "03675",
+    "source": "C*MM*N2 TC AX*SR*T",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3656",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3657",
+    "word": "43575",
+    "source": " VLOAD RVQ",
+    "routine": "23,3657",
+    "function": "r47657"
+   },
+   {
+    "address": "23,3660",
+    "word": "00123",
+    "source": "  VBUF",
+    "routine": "23,3657",
+    "function": "r47657"
+   },
+   {
+    "address": "23,3661",
+    "word": "77776",
+    "source": "CDU*NBSM EXIT ",
+    "routine": "23,3661",
+    "function": "r47661"
+   },
+   {
+    "address": "23,3662",
+    "word": "03547",
+    "source": " TC CDUTRIGS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3663",
+    "word": "13666",
+    "source": " TCF C*MM*N3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3664",
+    "word": "77776",
+    "source": "TRG*NBSM EXIT ",
+    "routine": "23,3664",
+    "function": "r47664"
+   },
+   {
+    "address": "23,3665",
+    "word": "03555",
+    "source": " TC CD*TR*GS",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3666",
+    "word": "07532",
+    "source": "C*MM*N3 TC MPACVBUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3667",
+    "word": "36245",
+    "source": " CA THREE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3670",
+    "word": "13655",
+    "source": " TCF C*MM*N2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3671",
+    "word": "77776",
+    "source": "*SMNB* EXIT ",
+    "routine": "23,3671",
+    "function": "r47671"
+   },
+   {
+    "address": "23,3672",
+    "word": "13653",
+    "source": " TCF C*MM*N1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3673",
+    "word": "77776",
+    "source": "*NBSM* EXIT ",
+    "routine": "23,3673",
+    "function": "r47673"
+   },
+   {
+    "address": "23,3674",
+    "word": "13666",
+    "source": " TCF C*MM*N3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3675",
+    "word": "54142",
+    "source": "AX*SR*T TS DEXDEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3676",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3677",
+    "word": "22145",
+    "source": " QXCH RTNSAVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3700",
+    "word": "10142",
+    "source": "R*TL**P CCS DEXDEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3701",
+    "word": "40142",
+    "source": " CS DEXDEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3702",
+    "word": "66245",
+    "source": " AD THREE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3703",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3704",
+    "word": "50000",
+    "source": " INDEX A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3705",
+    "word": "33764",
+    "source": " DCA INDEXI",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3706",
+    "word": "52144",
+    "source": " DXCH DEXI",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3707",
+    "word": "34753",
+    "source": " CA ONE",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3710",
+    "word": "54130",
+    "source": " TS BUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3711",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3712",
+    "word": "50143",
+    "source": " INDEX DEX1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3713",
+    "word": "40123",
+    "source": " DCS VBUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3714",
+    "word": "13716",
+    "source": " TCF LOOP1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3715",
+    "word": "52131",
+    "source": "LOOP2 DXCH BUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3716",
+    "word": "52155",
+    "source": "LOOP1 DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3717",
+    "word": "33762",
+    "source": " CA SINESLOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3720",
+    "word": "60143",
+    "source": " AD DEX1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3721",
+    "word": "54116",
+    "source": " TS ADDRWD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3722",
+    "word": "07107",
+    "source": " TC DMPSUB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3723",
+    "word": "10142",
+    "source": " CCS DEXDEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3724",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3725",
+    "word": "13730",
+    "source": " TCF +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3726",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3727",
+    "word": "40155",
+    "source": " DCS MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3730",
+    "word": "52160",
+    "source": " DXCH TERM1TMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3731",
+    "word": "36242",
+    "source": " CA SIX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3732",
+    "word": "26116",
+    "source": " ADS ADDRWD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3733",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3734",
+    "word": "50130",
+    "source": " INDEX BUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3735",
+    "word": "50143",
+    "source": " INDEX DEX1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3736",
+    "word": "30123",
+    "source": " DCA VBUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3737",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3740",
+    "word": "07107",
+    "source": " TC DMPSUB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3741",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3742",
+    "word": "20160",
+    "source": " DAS TERM1TMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3743",
+    "word": "52160",
+    "source": " DXCH TERM1TMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3744",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3745",
+    "word": "50130",
+    "source": " INDEX BUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3746",
+    "word": "50143",
+    "source": " INDEX DEX1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3747",
+    "word": "52123",
+    "source": " DXCH VBUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3750",
+    "word": "52131",
+    "source": " DXCH BUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3751",
+    "word": "10000",
+    "source": " CCS A",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3752",
+    "word": "13715",
+    "source": " TCF LOOP2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3753",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3754",
+    "word": "26142",
+    "source": " DIM DEXDEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3755",
+    "word": "10142",
+    "source": "TSTPOINT CCS DEXDEX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3756",
+    "word": "13700",
+    "source": " TCF R*TL**P",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3757",
+    "word": "00145",
+    "source": " TC RTNSAVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3760",
+    "word": "13700",
+    "source": " TCF R*TL**P",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3761",
+    "word": "00145",
+    "source": " TC RTNSAVER",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "23,3762",
+    "word": "00736",
+    "source": "SINESLOC ADRES SINCDU",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "23,3763",
+    "word": "00004",
+    "source": "INDEXI DEC 4          B-14",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "23,3764",
+    "word": "00002",
+    "source": " DEC 2          B-14",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "23,3765",
+    "word": "00000",
+    "source": " DEC 0          B-14",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "23,3766",
+    "word": "00004",
+    "source": " DEC 4          B-14",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "10,2030",
+    "word": "77776",
+    "source": "CALCSMSC EXIT ",
+    "routine": "10,2030",
+    "function": "r20030"
+   },
+   {
+    "address": "10,2031",
+    "word": "04616",
+    "source": " TC BANKCALL",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2032",
+    "word": "20036",
+    "source": " CADR FLESHPOT   -1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2033",
+    "word": "06037",
+    "source": " TC INTPRET",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2034",
+    "word": "77616",
+    "source": " RVQ ",
+    "routine": "10,2034",
+    "function": "r20034"
+   },
+   {
+    "address": "10,2035",
+    "word": "02664",
+    "source": "XNBECADR ECADR XNB",
+    "constant": "basic operand (inline)"
+   },
+   {
+    "address": "10,2036",
+    "word": "32035",
+    "source": "-1 CAF XNBECADR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2037",
+    "word": "54142",
+    "source": "FLESHPOT TS TEM2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2040",
+    "word": "56003",
+    "source": " XCH EBANK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2041",
+    "word": "56142",
+    "source": " XCH TEM2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2042",
+    "word": "74357",
+    "source": " MASK LOW8",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2043",
+    "word": "65007",
+    "source": " AD OCT1400",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2044",
+    "word": "54141",
+    "source": " TS TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2045",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2046",
+    "word": "30745",
+    "source": " DCA COSCDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2047",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2050",
+    "word": "07103",
+    "source": " TC DMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2051",
+    "word": "00746",
+    "source": " ADRES COSCDUZ",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "10,2052",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2053",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2054",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2055",
+    "word": "52001",
+    "source": " DXCH 0",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2056",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2057",
+    "word": "30741",
+    "source": " DCA SINCDUZ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2060",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2061",
+    "word": "52003",
+    "source": " DXCH 2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2062",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2063",
+    "word": "40737",
+    "source": " DCS SINCDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2064",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2065",
+    "word": "07107",
+    "source": " TC DMPSUB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2066",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2067",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2070",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2071",
+    "word": "52005",
+    "source": " DXCH 4",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2072",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2073",
+    "word": "40743",
+    "source": " DCS SINCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2074",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2075",
+    "word": "07107",
+    "source": " TC DMPSUB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2076",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2077",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2100",
+    "word": "52160",
+    "source": " DXCH MPAC       +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2101",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2102",
+    "word": "40743",
+    "source": " DCS SINCDUX",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2103",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2104",
+    "word": "07103",
+    "source": " TC DMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2105",
+    "word": "00740",
+    "source": " ADRES SINCDUZ",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "10,2106",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2107",
+    "word": "40155",
+    "source": " DCS MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2110",
+    "word": "52162",
+    "source": " DXCH MPAC       +5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2111",
+    "word": "07103",
+    "source": " TC DMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2112",
+    "word": "00736",
+    "source": " ADRES SINCDUY",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "10,2113",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2114",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2115",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2116",
+    "word": "52162",
+    "source": " DXCH MPAC       +5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2117",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2120",
+    "word": "07103",
+    "source": " TC DMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2121",
+    "word": "00744",
+    "source": " ADRES COSCDUY",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "10,2122",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2123",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2124",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2125",
+    "word": "52131",
+    "source": " DXCH BUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2126",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2127",
+    "word": "30745",
+    "source": " DCA COSCDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2130",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2131",
+    "word": "07103",
+    "source": " TC DMP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2132",
+    "word": "00750",
+    "source": " ADRES COSCDUX",
+    "constant": "data no instruction of the file reads (another file or an interrupt table may)"
+   },
+   {
+    "address": "10,2133",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2134",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2135",
+    "word": "20162",
+    "source": " DAS MPAC       +5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2136",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2137",
+    "word": "30737",
+    "source": " DCA SINCDUY",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2140",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2141",
+    "word": "07107",
+    "source": " TC DMPSUB",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2142",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2143",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2144",
+    "word": "20131",
+    "source": " DAS BUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2145",
+    "word": "52131",
+    "source": " DXCH BUF",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2146",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2147",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2150",
+    "word": "30155",
+    "source": " DCA MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2151",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2152",
+    "word": "52015",
+    "source": " DXCH 14",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2153",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2154",
+    "word": "30160",
+    "source": " DCA MPAC       +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2155",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2156",
+    "word": "52017",
+    "source": " DXCH 16",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2157",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2160",
+    "word": "30162",
+    "source": " DCA MPAC       +5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2161",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2162",
+    "word": "52021",
+    "source": " DXCH 20",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2163",
+    "word": "30141",
+    "source": " CA TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2164",
+    "word": "54116",
+    "source": " TS ADDRWD",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2165",
+    "word": "00006",
+    "source": " EXTEND ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2166",
+    "word": "30006",
+    "source": " DCA Z",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2167",
+    "word": "64751",
+    "source": " AD FOUR",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2170",
+    "word": "52165",
+    "source": " DXCH LOC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2171",
+    "word": "34744",
+    "source": " CAF BIT8",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2172",
+    "word": "54023",
+    "source": " TS EDOP",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2173",
+    "word": "17460",
+    "source": " TCF VXV",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2174",
+    "word": "52155",
+    "source": " DXCH MPAC",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2175",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2176",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2177",
+    "word": "52007",
+    "source": " DXCH 6",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2200",
+    "word": "52160",
+    "source": " DXCH MPAC       +3",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2201",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2202",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2203",
+    "word": "52011",
+    "source": " DXCH 10",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2204",
+    "word": "52162",
+    "source": " DXCH MPAC       +5",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2205",
+    "word": "20001",
+    "source": " DDOUBL ",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2206",
+    "word": "50141",
+    "source": " INDEX TEM1",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2207",
+    "word": "52013",
+    "source": " DXCH 12",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2210",
+    "word": "30142",
+    "source": " CA TEM2",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2211",
+    "word": "54003",
+    "source": " TS EBANK",
+    "routine": "basic code",
+    "function": "basic_run"
+   },
+   {
+    "address": "10,2212",
+    "word": "14631",
+    "source": " TCF SWRETURN",
+    "routine": "basic code",
+    "function": "basic_run"
+   }
+  ]
+ }
+}

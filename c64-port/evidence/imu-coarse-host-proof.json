@@ -1,0 +1,66 @@
+[
+  {
+    "mission": 0,
+    "stage": 0,
+    "states": 65536,
+    "bytes": 269484032,
+    "sha256": "19396c6a6f394c8be4aa54942c3bca96658bf11e50e3e63b4c71b3926f67cfaf",
+    "archive": "build/imu-coarse-0-0.snapshots.xz"
+  },
+  {
+    "mission": 0,
+    "stage": 1,
+    "states": 65536,
+    "bytes": 269484032,
+    "sha256": "f7ca1c0ad68c77387513306727a028966766857e9f1ac6506684ae26adf51de6",
+    "archive": "build/imu-coarse-0-1.snapshots.xz"
+  },
+  {
+    "mission": 0,
+    "stage": 2,
+    "states": 65536,
+    "bytes": 269484032,
+    "sha256": "37e59f72ed2056be4e3982a5b070c43f6f5d892a136f0e5dfe209bbe29c90003",
+    "archive": "build/imu-coarse-0-2.snapshots.xz"
+  },
+  {
+    "mission": 0,
+    "stage": 3,
+    "states": 65536,
+    "bytes": 269484032,
+    "sha256": "511cb1a2b76aa42f3e2c3f786b6dc368efe151ff7276e2ea38aea1964756c2b1",
+    "archive": "build/imu-coarse-0-3.snapshots.xz"
+  },
+  {
+    "mission": 1,
+    "stage": 0,
+    "states": 65536,
+    "bytes": 269484032,
+    "sha256": "d943243e22c33a2c8165552ef0708453ec1f198e99c7b13767d7465401036a91",
+    "archive": "build/imu-coarse-1-0.snapshots.xz"
+  },
+  {
+    "mission": 1,
+    "stage": 1,
+    "states": 65536,
+    "bytes": 269484032,
+    "sha256": "8186bd99d0bd8e7367100af34f689980cf654eea107cdb25db9749c488eb7663",
+    "archive": "build/imu-coarse-1-1.snapshots.xz"
+  },
+  {
+    "mission": 1,
+    "stage": 2,
+    "states": 65536,
+    "bytes": 269484032,
+    "sha256": "586d0ee0d405582893f2c52c40e88fac23c0bd1a0ca4261dba81b7609d6d2114",
+    "archive": "build/imu-coarse-1-2.snapshots.xz"
+  },
+  {
+    "mission": 1,
+    "stage": 3,
+    "states": 65536,
+    "bytes": 269484032,
+    "sha256": "7607fa05eeb44613d2840690a3b537d20b51f8eb7c0c24978ab34e41619e4658",
+    "archive": "build/imu-coarse-1-3.snapshots.xz"
+  }
+]

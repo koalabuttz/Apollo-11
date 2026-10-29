@@ -1,0 +1,2 @@
+./build/test-cm-native-image
+PASS:sole2048wordCMimage;64restart sequences/320source states;poison/regather each boundary;rawA/L, physicalbanks and scratch aliases

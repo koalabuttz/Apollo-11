@@ -1,0 +1,8 @@
+{
+  "CM": {
+    "archive": "evidence/cm-ephemeris-velocity-reference.snapshots.bin.xz",
+    "decoded_sha256": "f2c3bc5523c28de6737ac8bf3b358e06c1eaeaf55d96ae3c8d8f7f704ca11572",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  }
+}

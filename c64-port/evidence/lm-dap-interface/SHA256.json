@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-dap-interface",
+  "release": "evidence-lm-dap-interface",
+  "files": {
+    "lm-dap-interface-host.log": {
+      "sha256": "a56d3f5bb054dd829a858c3b089a15eb48813849bd013d8b8378e025b660e4f1",
+      "bytes": 379,
+      "store": "tree"
+    },
+    "lm-dap-interface-proof.json": {
+      "sha256": "c5ba9e553f88abbe612c244c62e7a1ef533130bb7054e6325de45f001cba251d",
+      "bytes": 1121,
+      "store": "tree"
+    },
+    "lm-dap-interface-source-map.json": {
+      "sha256": "af193ce6fd4ce22f8618e34fa3f2b0f9af527e96c46791c5c9a44331e24ac9bd",
+      "bytes": 9747,
+      "store": "tree"
+    },
+    "lm-dap-interface-vice.log": {
+      "sha256": "962d4d1e6776a6b9052c5b0d95f654852cbed99ee3500412ad81ee84f1b140d8",
+      "bytes": 60,
+      "store": "tree"
+    }
+  }
+}

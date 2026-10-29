@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-admission-complete-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-admission-complete-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-ADMISSION-COMPLETE.PRG' as `RESIDENT' to unit 8
+writing file `CM-ADMISSION-COMPLETE-210.PRG' as `G210' to unit 8
+writing file `CM-ADMISSION-COMPLETE-244.PRG' as `G244' to unit 8
+writing file `CM-ADMISSION-COMPLETE-245.PRG' as `G245' to unit 8
+210 5704 loaded bytes
+244 4274 loaded bytes
+245 10339 loaded bytes

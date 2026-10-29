@@ -1,0 +1,2 @@
+./build/test-cm-longcall
+4096 original CM long-call full-image states and guards: PASS

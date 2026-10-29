@@ -1,0 +1,1821 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "oracle_engine": "yaAGC with the hardware divide (build/agc_engine_hardware_dv.o); scalers frozen",
+ "cases": 40336,
+ "compared": 35113,
+ "refused": {
+  "23,2461": 10,
+  "23,2462": 15,
+  "33,2266": 16,
+  "33,2267": 16,
+  "33,2352": 1,
+  "33,2403": 62,
+  "33,2411": 63,
+  "33,2415": 46,
+  "33,2423": 21,
+  "33,2440": 23,
+  "33,2573": 37,
+  "33,2575": 37,
+  "33,2576": 42,
+  "33,2602": 13,
+  "33,2604": 12,
+  "33,2606": 16,
+  "33,2610": 13,
+  "33,2612": 16,
+  "33,2614": 13,
+  "33,2616": 13,
+  "33,2620": 15,
+  "33,2622": 32,
+  "33,2623": 26,
+  "33,2664": 16,
+  "33,2730": 43,
+  "33,2731": 60,
+  "33,2732": 58,
+  "33,2735": 107,
+  "33,2737": 108,
+  "33,2742": 108,
+  "33,2743": 105,
+  "33,2745": 108,
+  "33,2750": 109,
+  "33,2751": 109,
+  "33,2753": 105,
+  "33,2755": 110,
+  "33,2760": 111,
+  "33,2762": 109,
+  "33,2764": 110,
+  "33,2765": 57,
+  "33,2770": 122,
+  "33,2773": 36,
+  "33,2775": 3,
+  "33,2776": 36,
+  "33,3001": 43,
+  "33,3003": 81,
+  "33,3004": 72,
+  "33,3005": 84,
+  "33,3007": 100,
+  "33,3012": 109,
+  "33,3014": 106,
+  "33,3017": 106,
+  "33,3021": 57,
+  "33,3022": 5,
+  "33,3024": 5,
+  "33,3034": 61,
+  "33,3037": 74,
+  "33,3041": 41,
+  "33,3043": 40,
+  "33,3045": 22,
+  "33,3071": 51,
+  "33,3073": 75,
+  "33,3075": 98,
+  "33,3100": 106,
+  "33,3101": 84,
+  "33,3103": 83,
+  "33,3105": 47,
+  "33,3130": 6,
+  "33,3131": 4,
+  "33,3133": 3,
+  "33,3136": 3,
+  "33,3141": 8,
+  "33,3142": 8,
+  "33,3173": 7,
+  "33,3175": 20,
+  "33,3200": 16,
+  "33,3210": 35,
+  "33,3211": 35,
+  "33,3214": 38,
+  "33,3307": 16,
+  "33,3336": 7,
+  "33,3341": 117,
+  "33,3344": 7,
+  "33,3347": 118,
+  "33,3351": 16,
+  "33,3370": 12,
+  "33,3373": 57,
+  "33,3376": 53,
+  "33,3400": 54,
+  "33,3402": 31,
+  "33,3404": 36,
+  "33,3405": 60,
+  "33,3407": 56,
+  "33,3410": 11,
+  "33,3417": 7,
+  "33,3420": 5,
+  "33,3423": 18,
+  "33,3431": 19,
+  "33,3435": 39,
+  "33,3466": 62,
+  "33,3472": 54,
+  "33,3504": 59,
+  "33,3513": 16,
+  "33,3534": 38,
+  "33,3552": 17,
+  "33,3575": 8,
+  "33,3607": 6,
+  "33,3633": 19,
+  "33,3740": 16,
+  "33,3774": 29,
+  "33,3775": 28,
+  "34,3723": 21,
+  "37,3525": 7,
+  "37,3531": 4,
+  "37,3541": 6,
+  "37,3544": 5,
+  "37,3557": 6,
+  "37,3565": 3,
+  "37,3570": 21,
+  "37,3571": 6,
+  "37,3614": 26,
+  "37,3641": 6
+ },
+ "snapshot_sha256": "78ce92e67b8005922fb0a13231039f5e3e522fbfda067dec2ebe91fd7ec43790",
+ "stops": {
+  "21,2130": {
+   "NOVAC": 14,
+   "TCF R10,R11A": 114
+  },
+  "21,2150": {
+   "TCF R10,R11A": 128
+  },
+  "22,3661": {
+   "UPFLAG": 128
+  },
+  "22,3665": {
+   "BANKCALL": 128
+  },
+  "22,3667": {
+   "2PHSCHNG": 128
+  },
+  "22,3676": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 112
+  },
+  "22,3677": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 112
+  },
+  "22,3702": {
+   "NEWOPS outside the file (a CALL)": 128
+  },
+  "22,3705": {
+   "BANKJUMP": 128
+  },
+  "22,3707": {
+   "BANKJUMP": 128
+  },
+  "23,2461": {
+   "CHANG2": 16,
+   "ENDOFJOB": 46,
+   "POSTJUMP": 56
+  },
+  "23,2462": {
+   "CHANG2": 16,
+   "ENDOFJOB": 40,
+   "POSTJUMP": 57
+  },
+  "23,2466": {
+   "CHANG2": 16,
+   "POSTJUMP": 112
+  },
+  "23,2470": {
+   "CHANG2": 16,
+   "POSTJUMP": 112
+  },
+  "23,2472": {
+   "CHANG2": 16,
+   "POSTJUMP": 112
+  },
+  "23,2474": {
+   "CHANG2": 16,
+   "POSTJUMP": 112
+  },
+  "23,2476": {
+   "CHANG2": 16,
+   "POSTJUMP": 112
+  },
+  "23,2500": {
+   "CHANG2": 16,
+   "POSTJUMP": 112
+  },
+  "23,2502": {
+   "CHANG2": 16,
+   "POSTJUMP": 112
+  },
+  "23,2503": {
+   "POSTJUMP": 128
+  },
+  "27,3321": {
+   "WHIMPER": 128
+  },
+  "32,3770": {
+   "PHASCHNG": 128
+  },
+  "32,3772": {
+   "ENDOFJOB": 128
+  },
+  "33,2206": {
+   "PHASCHNG": 128
+  },
+  "33,2213": {
+   "BANKCALL": 128
+  },
+  "33,2217": {
+   "CHANG2": 16,
+   "SHORTMP": 112
+  },
+  "33,2220": {
+   "CHANG2": 16,
+   "SHORTMP": 112
+  },
+  "33,2222": {
+   "SHORTMP": 128
+  },
+  "33,2233": {
+   "SHORTMP": 128
+  },
+  "33,2254": {
+   "SHORTMP": 128
+  },
+  "33,2256": {
+   "BANKCALL": 128
+  },
+  "33,2261": {
+   "BANKCALL": 128
+  },
+  "33,2263": {
+   "BANKCALL": 128
+  },
+  "33,2266": {
+   "ALARM": 3,
+   "BANKCALL": 53,
+   "CHANG2": 16,
+   "FINDVAC": 2,
+   "IBNKCALL": 4,
+   "NEWOPS outside the file (a CALL)": 5,
+   "SGNAGREE (through RTB, in the RTB bank)": 28,
+   "SHORTMP": 1
+  },
+  "33,2267": {
+   "ALARM": 3,
+   "BANKCALL": 59,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "NEWOPS outside the file (a CALL)": 4,
+   "SGNAGREE (through RTB, in the RTB bank)": 28,
+   "SHORTMP": 1
+  },
+  "33,2273": {
+   "BANKCALL": 123,
+   "IBNKCALL": 3,
+   "PHASCHNG": 2
+  },
+  "33,2274": {
+   "BANKCALL": 124,
+   "IBNKCALL": 3,
+   "PHASCHNG": 1
+  },
+  "33,2275": {
+   "BANKCALL": 119,
+   "IBNKCALL": 5,
+   "PHASCHNG": 4
+  },
+  "33,2276": {
+   "BANKCALL": 109,
+   "IBNKCALL": 15,
+   "NOVAC": 1,
+   "PHASCHNG": 3
+  },
+  "33,2314": {
+   "BANKCALL": 88,
+   "IBNKCALL": 29,
+   "NOVAC": 1,
+   "PHASCHNG": 10
+  },
+  "33,2323": {
+   "BANKCALL": 128
+  },
+  "33,2336": {
+   "BANKCALL": 128
+  },
+  "33,2342": {
+   "BANKCALL": 128
+  },
+  "33,2346": {
+   "BANKCALL": 128
+  },
+  "33,2352": {
+   "BANKCALL": 62,
+   "IBNKCALL": 47,
+   "NOVAC": 4,
+   "PHASCHNG": 14
+  },
+  "33,2353": {
+   "BANKCALL": 60,
+   "IBNKCALL": 49,
+   "NOVAC": 4,
+   "PHASCHNG": 15
+  },
+  "33,2361": {
+   "NOVAC": 128
+  },
+  "33,2365": {
+   "BANKCALL": 128
+  },
+  "33,2366": {
+   "IBNKCALL": 128
+  },
+  "33,2370": {
+   "IBNKCALL": 128
+  },
+  "33,2375": {
+   "BANKCALL": 128
+  },
+  "33,2400": {
+   "BANKCALL": 128
+  },
+  "33,2403": {
+   "BANKCALL": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 65
+  },
+  "33,2411": {
+   "BANKCALL": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 64
+  },
+  "33,2415": {
+   "CHANG2": 16,
+   "ENDOFJOB": 66
+  },
+  "33,2417": {
+   "ENDOFJOB": 128
+  },
+  "33,2420": {
+   "ENDOFJOB": 128
+  },
+  "33,2422": {
+   "ENDOFJOB": 128
+  },
+  "33,2423": {
+   "BANKCALL": 22,
+   "CHANG2": 2,
+   "DOWNFLAG": 3,
+   "ENDOFJOB": 6,
+   "FINDVAC": 1,
+   "GOTOPOOH": 1,
+   "IBNKCALL": 6,
+   "MAKECADR": 1,
+   "NEWOPS outside the file (a CALL)": 2,
+   "NOVAC": 8,
+   "PHASCHNG": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 4,
+   "SHORTMP": 1,
+   "UPFLAG": 5,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 44
+  },
+  "33,2440": {
+   "BANKCALL": 21,
+   "BANKJUMP": 3,
+   "BRANCH": 1,
+   "CHANG2": 2,
+   "DOWNFLAG": 7,
+   "ENDOFJOB": 1,
+   "FINDVAC": 1,
+   "IBNKCALL": 8,
+   "NEWOPS outside the file (a CALL)": 2,
+   "NOVAC": 10,
+   "POODOO1 (alarm 1302)": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 3,
+   "SHORTMP": 1,
+   "UPFLAG": 2,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 42
+  },
+  "33,2447": {
+   "FINDVAC": 128
+  },
+  "33,2460": {
+   "IBNKCALL": 128
+  },
+  "33,2461": {
+   "ALARM": 4,
+   "BANKCALL": 51,
+   "CHANG2": 9,
+   "FINDVAC": 1,
+   "IBNKCALL": 5,
+   "SGNAGREE (through RTB, in the RTB bank)": 56,
+   "TCF R29": 1,
+   "UPFLAG": 1
+  },
+  "33,2476": {
+   "ALARM": 30,
+   "ALSIGNAG": 1,
+   "BANKCALL": 5,
+   "BRANCH": 6,
+   "CHANG2": 3,
+   "FINDVAC": 21,
+   "IBNKCALL": 48,
+   "NOVAC": 5,
+   "SHORTMP": 7,
+   "UPFLAG": 2
+  },
+  "33,2502": {
+   "ALARM": 27,
+   "ALSIGNAG": 4,
+   "BANKCALL": 11,
+   "BRANCH": 4,
+   "CHANG2": 4,
+   "IBNKCALL": 71,
+   "NOVAC": 4,
+   "SHORTMP": 2,
+   "UPFLAG": 1
+  },
+  "33,2515": {
+   "ALARM": 43,
+   "ALSIGNAG": 4,
+   "BANKCALL": 8,
+   "BRANCH": 3,
+   "CHANG2": 2,
+   "FINDVAC": 38,
+   "IBNKCALL": 21,
+   "NOVAC": 3,
+   "SHORTMP": 3,
+   "UPFLAG": 3
+  },
+  "33,2531": {
+   "ALARM": 62,
+   "ALSIGNAG": 2,
+   "BANKCALL": 11,
+   "BRANCH": 4,
+   "CHANG2": 2,
+   "IBNKCALL": 34,
+   "NOVAC": 4,
+   "SHORTMP": 7,
+   "UPFLAG": 2
+  },
+  "33,2536": {
+   "ALARM": 128
+  },
+  "33,2540": {
+   "IBNKCALL": 128
+  },
+  "33,2546": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 109,
+   "TCF R29": 3
+  },
+  "33,2547": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 110,
+   "TCF R29": 2
+  },
+  "33,2564": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 112
+  },
+  "33,2570": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 112
+  },
+  "33,2571": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 112
+  },
+  "33,2573": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 75
+  },
+  "33,2575": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 75
+  },
+  "33,2576": {
+   "CHANG2": 11,
+   "SGNAGREE (through RTB, in the RTB bank)": 75
+  },
+  "33,2577": {
+   "SGNAGREE (through RTB, in the RTB bank)": 128
+  },
+  "33,2602": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 99
+  },
+  "33,2604": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 100
+  },
+  "33,2606": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 96
+  },
+  "33,2610": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 99
+  },
+  "33,2612": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 96
+  },
+  "33,2614": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 99
+  },
+  "33,2616": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 99
+  },
+  "33,2620": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 97
+  },
+  "33,2622": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 80
+  },
+  "33,2623": {
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 86
+  },
+  "33,2624": {
+   "SGNAGREE (through RTB, in the RTB bank)": 128
+  },
+  "33,2627": {
+   "BANKCALL": 126,
+   "IBNKCALL": 2
+  },
+  "33,2664": {
+   "BRANCH +4": 112
+  },
+  "33,2674": {
+   "SWRETURN": 128
+  },
+  "33,2675": {
+   "SWRETURN": 128
+  },
+  "33,2676": {
+   "SWRETURN": 128
+  },
+  "33,2710": {
+   "BANKCALL": 128
+  },
+  "33,2713": {
+   "ALARM": 41,
+   "ALSIGNAG": 1,
+   "BANKCALL": 4,
+   "BRANCH": 7,
+   "CHANG2": 1,
+   "FINDVAC": 16,
+   "IBNKCALL": 45,
+   "NOVAC": 1,
+   "SHORTMP": 8,
+   "UPFLAG": 4
+  },
+  "33,2714": {
+   "UPFLAG": 128
+  },
+  "33,2716": {
+   "UPFLAG": 128
+  },
+  "33,2720": {
+   "ALARM": 45,
+   "BANKCALL": 7,
+   "BRANCH": 2,
+   "CHANG2": 2,
+   "FINDVAC": 18,
+   "IBNKCALL": 39,
+   "NOVAC": 4,
+   "SHORTMP": 11
+  },
+  "33,2721": {
+   "BANKCALL": 128
+  },
+  "33,2724": {
+   "IBNKCALL": 128
+  },
+  "33,2725": {
+   "UPFLAG": 128
+  },
+  "33,2727": {
+   "IBNKCALL": 128
+  },
+  "33,2730": {
+   "BANKCALL": 1,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "NEWOPS outside the file (a CALL)": 70,
+   "SGNAGREE (through RTB, in the RTB bank)": 1
+  },
+  "33,2731": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 52
+  },
+  "33,2732": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 54
+  },
+  "33,2735": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 5
+  },
+  "33,2737": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 4
+  },
+  "33,2742": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 4
+  },
+  "33,2743": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 7
+  },
+  "33,2745": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 4
+  },
+  "33,2750": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 3
+  },
+  "33,2751": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 3
+  },
+  "33,2753": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 7
+  },
+  "33,2755": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 2
+  },
+  "33,2760": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 1
+  },
+  "33,2762": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 3
+  },
+  "33,2764": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 2
+  },
+  "33,2765": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 62
+  },
+  "33,2770": {
+   "CHANG2": 1,
+   "NEWOPS outside the file (a CALL)": 5
+  },
+  "33,2773": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 76
+  },
+  "33,2775": {
+   "NEWOPS outside the file (a CALL)": 125
+  },
+  "33,2776": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 76
+  },
+  "33,3001": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 69
+  },
+  "33,3003": {
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 30
+  },
+  "33,3004": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 40
+  },
+  "33,3005": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 28
+  },
+  "33,3007": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 12
+  },
+  "33,3012": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 3
+  },
+  "33,3014": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 6
+  },
+  "33,3017": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 7
+  },
+  "33,3021": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 58
+  },
+  "33,3022": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 107
+  },
+  "33,3024": {
+   "NEWOPS outside the file (a CALL)": 122,
+   "POSTJUMP": 1
+  },
+  "33,3032": {
+   "ALARM": 4,
+   "BANKCALL": 43,
+   "CHANG2": 16,
+   "FINDVAC": 2,
+   "IBNKCALL": 3,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 57,
+   "SHORTMP": 1,
+   "TCF R29": 1
+  },
+  "33,3034": {
+   "ALARM": 1,
+   "BANKCALL": 22,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 2,
+   "SGNAGREE (through RTB, in the RTB bank)": 24,
+   "SHORTMP": 1
+  },
+  "33,3037": {
+   "ALARM": 2,
+   "BANKCALL": 14,
+   "CHANG2": 16,
+   "FINDVAC": 2,
+   "IBNKCALL": 4,
+   "SGNAGREE (through RTB, in the RTB bank)": 16
+  },
+  "33,3041": {
+   "ALARM": 2,
+   "ALSIGNAG": 1,
+   "BANKCALL": 28,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 5,
+   "SGNAGREE (through RTB, in the RTB bank)": 34
+  },
+  "33,3043": {
+   "ALARM": 4,
+   "BANKCALL": 23,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 43
+  },
+  "33,3045": {
+   "ALARM": 3,
+   "BANKCALL": 36,
+   "CHANG2": 16,
+   "FINDVAC": 3,
+   "IBNKCALL": 2,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 43,
+   "SHORTMP": 1,
+   "TCF R29": 1
+  },
+  "33,3047": {
+   "ALARM": 4,
+   "BANKCALL": 45,
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "IBNKCALL": 6,
+   "SGNAGREE (through RTB, in the RTB bank)": 55,
+   "SHORTMP": 1
+  },
+  "33,3051": {
+   "ALARM": 5,
+   "BANKCALL": 44,
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "FINDVAC": 2,
+   "IBNKCALL": 1,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 55,
+   "SHORTMP": 2,
+   "TCF R29": 1
+  },
+  "33,3053": {
+   "ALARM": 5,
+   "BANKCALL": 40,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 6,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 58,
+   "TCF R29": 1
+  },
+  "33,3054": {
+   "ALARM": 3,
+   "BANKCALL": 46,
+   "CHANG2": 16,
+   "FINDVAC": 3,
+   "IBNKCALL": 6,
+   "SGNAGREE (through RTB, in the RTB bank)": 53,
+   "TCF R29": 1
+  },
+  "33,3056": {
+   "ALARM": 2,
+   "BANKCALL": 44,
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "FINDVAC": 4,
+   "IBNKCALL": 5,
+   "SGNAGREE (through RTB, in the RTB bank)": 55,
+   "TCF R29": 1
+  },
+  "33,3060": {
+   "ALARM": 4,
+   "BANKCALL": 39,
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "FINDVAC": 4,
+   "IBNKCALL": 5,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 58
+  },
+  "33,3062": {
+   "ALARM": 4,
+   "BANKCALL": 45,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 5,
+   "SGNAGREE (through RTB, in the RTB bank)": 55,
+   "TCF R29": 2
+  },
+  "33,3063": {
+   "ALARM": 3,
+   "ALSIGNAG": 1,
+   "BANKCALL": 45,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 3,
+   "NOVAC": 3,
+   "SGNAGREE (through RTB, in the RTB bank)": 53,
+   "SHORTMP": 3
+  },
+  "33,3065": {
+   "ALARM": 5,
+   "BANKCALL": 43,
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 4,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 54,
+   "SHORTMP": 2,
+   "TCF R29": 1
+  },
+  "33,3066": {
+   "ALARM": 5,
+   "BANKCALL": 43,
+   "CHANG2": 16,
+   "FINDVAC": 2,
+   "IBNKCALL": 5,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 54,
+   "SHORTMP": 1,
+   "TCF R29": 1
+  },
+  "33,3071": {
+   "ALARM": 2,
+   "BANKCALL": 22,
+   "CHANG2": 16,
+   "IBNKCALL": 4,
+   "SGNAGREE (through RTB, in the RTB bank)": 30,
+   "SHORTMP": 2,
+   "TCF R29": 1
+  },
+  "33,3073": {
+   "ALARM": 2,
+   "BANKCALL": 11,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 3,
+   "SGNAGREE (through RTB, in the RTB bank)": 20
+  },
+  "33,3075": {
+   "BANKCALL": 7,
+   "CHANG2": 16,
+   "IBNKCALL": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 6
+  },
+  "33,3100": {
+   "BANKCALL": 2,
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 4
+  },
+  "33,3101": {
+   "BANKCALL": 12,
+   "CHANG2": 16,
+   "IBNKCALL": 2,
+   "SGNAGREE (through RTB, in the RTB bank)": 14
+  },
+  "33,3103": {
+   "BANKCALL": 15,
+   "CHANG2": 16,
+   "SGNAGREE (through RTB, in the RTB bank)": 13,
+   "TCF R29": 1
+  },
+  "33,3105": {
+   "ALARM": 3,
+   "BANKCALL": 23,
+   "CHANG2": 16,
+   "IBNKCALL": 2,
+   "SGNAGREE (through RTB, in the RTB bank)": 36,
+   "TCF R29": 1
+  },
+  "33,3106": {
+   "ALARM": 6,
+   "BANKCALL": 41,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 5,
+   "SGNAGREE (through RTB, in the RTB bank)": 58,
+   "SHORTMP": 1
+  },
+  "33,3110": {
+   "ALARM": 2,
+   "BANKCALL": 42,
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "FINDVAC": 3,
+   "IBNKCALL": 6,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 54,
+   "SHORTMP": 1,
+   "TCF R29": 2
+  },
+  "33,3111": {
+   "ALARM": 7,
+   "ALSIGNAG": 1,
+   "BANKCALL": 41,
+   "CHANG2": 16,
+   "IBNKCALL": 6,
+   "SGNAGREE (through RTB, in the RTB bank)": 55,
+   "TCF R29": 2
+  },
+  "33,3112": {
+   "ALARM": 5,
+   "BANKCALL": 45,
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "FINDVAC": 2,
+   "IBNKCALL": 2,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 53,
+   "SHORTMP": 1,
+   "TCF R29": 1,
+   "UPFLAG": 1
+  },
+  "33,3114": {
+   "ALARM": 5,
+   "BANKCALL": 46,
+   "CHANG2": 16,
+   "IBNKCALL": 5,
+   "SGNAGREE (through RTB, in the RTB bank)": 55,
+   "SHORTMP": 1
+  },
+  "33,3116": {
+   "ALARM": 7,
+   "BANKCALL": 40,
+   "BRANCH": 1,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 4,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 58
+  },
+  "33,3120": {
+   "ALARM": 4,
+   "BANKCALL": 38,
+   "CHANG2": 16,
+   "FINDVAC": 3,
+   "IBNKCALL": 8,
+   "SGNAGREE (through RTB, in the RTB bank)": 58,
+   "SHORTMP": 1
+  },
+  "33,3122": {
+   "ALARM": 3,
+   "ALSIGNAG": 1,
+   "BANKCALL": 46,
+   "CHANG2": 16,
+   "FINDVAC": 2,
+   "IBNKCALL": 4,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 55
+  },
+  "33,3124": {
+   "ALARM": 5,
+   "BANKCALL": 44,
+   "BRANCH": 3,
+   "CHANG2": 16,
+   "FINDVAC": 1,
+   "IBNKCALL": 4,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 53,
+   "TCF R29": 1
+  },
+  "33,3126": {
+   "ALARM": 4,
+   "BANKCALL": 52,
+   "CHANG2": 8,
+   "FINDVAC": 1,
+   "IBNKCALL": 5,
+   "NOVAC": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 54,
+   "SHORTMP": 1,
+   "TCF R29": 2
+  },
+  "33,3130": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 106
+  },
+  "33,3131": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 108
+  },
+  "33,3133": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 109
+  },
+  "33,3136": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 109
+  },
+  "33,3141": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 104
+  },
+  "33,3142": {
+   "NEWOPS outside the file (a CALL)": 119,
+   "SGNAGREE (through RTB, in the RTB bank)": 1
+  },
+  "33,3155": {
+   "ALSIGNAG": 3,
+   "BANKCALL": 16,
+   "BRANCH": 7,
+   "CHANG2": 4,
+   "IBNKCALL": 71,
+   "NOVAC": 11,
+   "SHORTMP": 15,
+   "UPFLAG": 1
+  },
+  "33,3165": {
+   "ALSIGNAG": 11,
+   "BANKCALL": 6,
+   "BRANCH": 31,
+   "CHANG2": 16,
+   "NOVAC": 3,
+   "SHORTMP": 57,
+   "UPFLAG": 4
+  },
+  "33,3170": {
+   "ALSIGNAG": 14,
+   "BANKCALL": 8,
+   "BRANCH": 28,
+   "CHANG2": 16,
+   "IBNKCALL": 3,
+   "NOVAC": 1,
+   "SHORTMP": 55,
+   "UPFLAG": 3
+  },
+  "33,3173": {
+   "ALSIGNAG": 13,
+   "BANKCALL": 8,
+   "BRANCH": 22,
+   "CHANG2": 16,
+   "IBNKCALL": 2,
+   "NOVAC": 3,
+   "SHORTMP": 56,
+   "UPFLAG": 1
+  },
+  "33,3175": {
+   "ALSIGNAG": 10,
+   "BANKCALL": 5,
+   "BRANCH": 18,
+   "CHANG2": 16,
+   "NOVAC": 2,
+   "SHORTMP": 56,
+   "UPFLAG": 1
+  },
+  "33,3200": {
+   "ALSIGNAG": 10,
+   "BANKCALL": 2,
+   "BRANCH": 22,
+   "CHANG2": 8,
+   "IBNKCALL": 1,
+   "NOVAC": 3,
+   "SHORTMP": 64,
+   "UPFLAG": 2
+  },
+  "33,3210": {
+   "ALSIGNAG": 18,
+   "BANKCALL": 12,
+   "BRANCH": 37,
+   "CHANG2": 16,
+   "IBNKCALL": 3,
+   "NOVAC": 4,
+   "UPFLAG": 3
+  },
+  "33,3211": {
+   "ALSIGNAG": 16,
+   "BANKCALL": 10,
+   "BRANCH": 39,
+   "CHANG2": 16,
+   "IBNKCALL": 5,
+   "NOVAC": 4,
+   "UPFLAG": 3
+  },
+  "33,3214": {
+   "ALSIGNAG": 19,
+   "BANKCALL": 7,
+   "BRANCH": 35,
+   "CHANG2": 16,
+   "IBNKCALL": 4,
+   "NOVAC": 9
+  },
+  "33,3216": {
+   "ALSIGNAG": 24,
+   "BANKCALL": 17,
+   "BRANCH": 55,
+   "CHANG2": 16,
+   "IBNKCALL": 2,
+   "NOVAC": 7,
+   "UPFLAG": 7
+  },
+  "33,3221": {
+   "ALSIGNAG": 27,
+   "BANKCALL": 15,
+   "BRANCH": 56,
+   "CHANG2": 16,
+   "IBNKCALL": 3,
+   "NOVAC": 7,
+   "UPFLAG": 4
+  },
+  "33,3222": {
+   "ALSIGNAG": 26,
+   "BANKCALL": 15,
+   "BRANCH": 56,
+   "CHANG2": 13,
+   "IBNKCALL": 5,
+   "NOVAC": 10,
+   "UPFLAG": 3
+  },
+  "33,3230": {
+   "BRANCH": 112,
+   "CHANG2": 16
+  },
+  "33,3232": {
+   "BRANCH": 112,
+   "CHANG2": 16
+  },
+  "33,3234": {
+   "BRANCH": 128
+  },
+  "33,3237": {
+   "BANKCALL": 59,
+   "IBNKCALL": 13,
+   "NOVAC": 30,
+   "UPFLAG": 26
+  },
+  "33,3240": {
+   "BANKCALL": 55,
+   "IBNKCALL": 11,
+   "NOVAC": 26,
+   "UPFLAG": 36
+  },
+  "33,3241": {
+   "DOWNFLAG": 128
+  },
+  "33,3243": {
+   "ALSIGNAG": 55,
+   "BANKCALL": 33,
+   "CHANG2": 10,
+   "IBNKCALL": 8,
+   "NOVAC": 13,
+   "UPFLAG": 9
+  },
+  "33,3250": {
+   "ALSIGNAG": 112,
+   "CHANG2": 16
+  },
+  "33,3252": {
+   "ALSIGNAG": 128
+  },
+  "33,3257": {
+   "BANKCALL": 55,
+   "IBNKCALL": 17,
+   "NOVAC": 28,
+   "SHORTMP2": 17,
+   "UPFLAG": 11
+  },
+  "33,3275": {
+   "BANKCALL": 58,
+   "CHANG2": 16,
+   "IBNKCALL": 15,
+   "NOVAC": 26,
+   "UPFLAG": 13
+  },
+  "33,3276": {
+   "BANKCALL": 57,
+   "CHANG2": 16,
+   "IBNKCALL": 13,
+   "NOVAC": 27,
+   "UPFLAG": 15
+  },
+  "33,3277": {
+   "BANKCALL": 58,
+   "CHANG2": 16,
+   "IBNKCALL": 13,
+   "NOVAC": 26,
+   "UPFLAG": 15
+  },
+  "33,3302": {
+   "BANKCALL": 56,
+   "CHANG2": 16,
+   "IBNKCALL": 11,
+   "NOVAC": 29,
+   "UPFLAG": 16
+  },
+  "33,3304": {
+   "BANKCALL": 65,
+   "IBNKCALL": 14,
+   "NOVAC": 31,
+   "UPFLAG": 18
+  },
+  "33,3306": {
+   "BANKCALL": 66,
+   "IBNKCALL": 14,
+   "NOVAC": 32,
+   "UPFLAG": 16
+  },
+  "33,3307": {
+   "BANKCALL": 57,
+   "IBNKCALL": 16,
+   "NOVAC": 25,
+   "UPFLAG": 14
+  },
+  "33,3310": {
+   "BANKCALL": 64,
+   "IBNKCALL": 16,
+   "NOVAC": 33,
+   "UPFLAG": 15
+  },
+  "33,3311": {
+   "BANKCALL": 63,
+   "IBNKCALL": 16,
+   "NOVAC": 33,
+   "UPFLAG": 16
+  },
+  "33,3315": {
+   "BANKCALL": 128
+  },
+  "33,3336": {
+   "NEWOPS outside the file (a CALL)": 121
+  },
+  "33,3341": {
+   "NEWOPS outside the file (a CALL)": 11
+  },
+  "33,3344": {
+   "BRANCH": 105,
+   "CHANG2": 16
+  },
+  "33,3347": {
+   "BRANCH": 9,
+   "CHANG2": 1
+  },
+  "33,3351": {
+   "BRANCH": 96,
+   "CHANG2": 16
+  },
+  "33,3370": {
+   "BRANCH": 100,
+   "CHANG2": 16
+  },
+  "33,3373": {
+   "BRANCH": 55,
+   "CHANG2": 16
+  },
+  "33,3376": {
+   "BRANCH": 59,
+   "CHANG2": 16
+  },
+  "33,3400": {
+   "BRANCH": 58,
+   "CHANG2": 16
+  },
+  "33,3402": {
+   "BRANCH": 81,
+   "CHANG2": 16
+  },
+  "33,3404": {
+   "BRANCH": 76,
+   "CHANG2": 16
+  },
+  "33,3405": {
+   "BRANCH": 52,
+   "CHANG2": 16
+  },
+  "33,3407": {
+   "BRANCH": 56,
+   "CHANG2": 16
+  },
+  "33,3410": {
+   "BRANCH": 101,
+   "CHANG2": 16
+  },
+  "33,3412": {
+   "BRANCH": 112,
+   "CHANG2": 16
+  },
+  "33,3413": {
+   "BRANCH": 128
+  },
+  "33,3417": {
+   "IBNKCALL": 23,
+   "NOVAC": 40,
+   "UPFLAG": 58
+  },
+  "33,3420": {
+   "IBNKCALL": 14,
+   "NOVAC": 34,
+   "UPFLAG": 75
+  },
+  "33,3421": {
+   "DOWNFLAG": 128
+  },
+  "33,3423": {
+   "CHANG2": 4,
+   "DOWNFLAG": 62,
+   "IBNKCALL": 10,
+   "NOVAC": 22,
+   "UPFLAG": 12
+  },
+  "33,3431": {
+   "CHANG2": 7,
+   "IBNKCALL": 22,
+   "NOVAC": 49,
+   "UPFLAG": 31
+  },
+  "33,3435": {
+   "CHANG2": 7,
+   "IBNKCALL": 18,
+   "NOVAC": 41,
+   "UPFLAG": 23
+  },
+  "33,3466": {
+   "CHANG2": 15,
+   "IBNKCALL": 12,
+   "NOVAC": 26,
+   "UPFLAG": 13
+  },
+  "33,3472": {
+   "CHANG2": 16,
+   "IBNKCALL": 19,
+   "NOVAC": 27,
+   "UPFLAG": 13
+  },
+  "33,3504": {
+   "CHANG2": 16,
+   "IBNKCALL": 15,
+   "NOVAC": 27,
+   "UPFLAG": 11
+  },
+  "33,3505": {
+   "CHANG2": 16,
+   "IBNKCALL": 24,
+   "NOVAC": 56,
+   "UPFLAG": 32
+  },
+  "33,3507": {
+   "CHANG2": 16,
+   "IBNKCALL": 27,
+   "NOVAC": 59,
+   "UPFLAG": 26
+  },
+  "33,3510": {
+   "IBNKCALL": 32,
+   "NOVAC": 64,
+   "UPFLAG": 32
+  },
+  "33,3512": {
+   "IBNKCALL": 36,
+   "NOVAC": 62,
+   "UPFLAG": 30
+  },
+  "33,3513": {
+   "IBNKCALL": 28,
+   "NOVAC": 57,
+   "UPFLAG": 27
+  },
+  "33,3514": {
+   "IBNKCALL": 31,
+   "NOVAC": 63,
+   "UPFLAG": 34
+  },
+  "33,3515": {
+   "IBNKCALL": 26,
+   "NOVAC": 65,
+   "UPFLAG": 37
+  },
+  "33,3527": {
+   "NOVAC": 128
+  },
+  "33,3533": {
+   "IBNKCALL": 128
+  },
+  "33,3534": {
+   "ALARM": 1,
+   "BANKCALL": 13,
+   "BANKJUMP": 3,
+   "BRANCH": 2,
+   "BRANCH +4": 1,
+   "CHANG2": 1,
+   "DOWNFLAG": 3,
+   "ENDOFJOB": 4,
+   "FINDVAC": 1,
+   "IBNKCALL": 2,
+   "NEWOPS outside the file (a CALL)": 1,
+   "NOVAC": 3,
+   "PHASCHNG": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 5,
+   "UPFLAG": 6,
+   "WAITLIST": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 42
+  },
+  "33,3552": {
+   "ALARM": 1,
+   "BANKCALL": 23,
+   "BANKJUMP": 6,
+   "BRANCH": 1,
+   "CHANG2": 2,
+   "DOWNFLAG": 1,
+   "ENDOFJOB": 6,
+   "FINDVAC": 2,
+   "IBNKCALL": 7,
+   "NEWOPS outside the file (a CALL)": 1,
+   "NOVAC": 8,
+   "SGNAGREE (through RTB, in the RTB bank)": 4,
+   "SHORTMP": 1,
+   "UPFLAG": 5,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 43
+  },
+  "33,3560": {
+   "BANKCALL": 55,
+   "IBNKCALL": 12,
+   "NOVAC": 31,
+   "UPFLAG": 30
+  },
+  "33,3572": {
+   "BANKCALL": 63,
+   "IBNKCALL": 17,
+   "NOVAC": 33,
+   "UPFLAG": 15
+  },
+  "33,3575": {
+   "IBNKCALL": 21,
+   "NOVAC": 34,
+   "UPFLAG": 65
+  },
+  "33,3607": {
+   "IBNKCALL": 18,
+   "NOVAC": 40,
+   "UPFLAG": 64
+  },
+  "33,3615": {
+   "IBNKCALL": 29,
+   "NOVAC": 65,
+   "UPFLAG": 34
+  },
+  "33,3616": {
+   "WAITLIST": 128
+  },
+  "33,3622": {
+   "BANKCALL": 128
+  },
+  "33,3630": {
+   "BANKCALL": 128
+  },
+  "33,3632": {
+   "ENDOFJOB": 128
+  },
+  "33,3633": {
+   "ENDOFJOB": 109
+  },
+  "33,3660": {
+   "ENDOFJOB": 128
+  },
+  "33,3665": {
+   "ENDOFJOB": 128
+  },
+  "33,3666": {
+   "BANKCALL": 16,
+   "ENDOFJOB": 112
+  },
+  "33,3670": {
+   "BANKCALL": 128
+  },
+  "33,3672": {
+   "BANKCALL": 128
+  },
+  "33,3674": {
+   "BANKCALL": 128
+  },
+  "33,3675": {
+   "PRIOCHNG": 128
+  },
+  "33,3677": {
+   "NEWOPS outside the file (a CALL)": 128
+  },
+  "33,3700": {
+   "DOWNFLAG": 128
+  },
+  "33,3702": {
+   "ENDOFJOB": 128
+  },
+  "33,3703": {
+   "BANKCALL": 128
+  },
+  "33,3706": {
+   "GOTOPOOH": 128
+  },
+  "33,3707": {
+   "BANKCALL": 66,
+   "PRIOCHNG": 62
+  },
+  "33,3710": {
+   "ENDOFJOB": 128
+  },
+  "33,3711": {
+   "ENDOFJOB": 128
+  },
+  "33,3712": {
+   "BANKCALL": 65,
+   "PRIOCHNG": 63
+  },
+  "33,3721": {
+   "MAKECADR": 128
+  },
+  "33,3722": {
+   "NEWOPS outside the file (a CALL)": 128
+  },
+  "33,3735": {
+   "BANKJUMP": 128
+  },
+  "33,3737": {
+   "NEWOPS outside the file (a CALL)": 128
+  },
+  "33,3740": {
+   "NEWOPS outside the file (a CALL)": 112
+  },
+  "33,3756": {
+   "NEWOPS outside the file (a CALL)": 128
+  },
+  "33,3761": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 112
+  },
+  "33,3763": {
+   "NEWOPS outside the file (a CALL)": 128
+  },
+  "33,3765": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 112
+  },
+  "33,3766": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 112
+  },
+  "33,3770": {
+   "CHANG2": 16,
+   "NEWOPS outside the file (a CALL)": 112
+  },
+  "33,3772": {
+   "NEWOPS outside the file (a CALL)": 128
+  },
+  "33,3774": {
+   "BANKCALL": 29,
+   "BANKJUMP": 8,
+   "CHANG2": 16,
+   "DOWNFLAG": 3,
+   "ENDOFJOB": 4,
+   "IBNKCALL": 10,
+   "NOVAC": 13,
+   "PHASCHNG": 2,
+   "SGNAGREE (through RTB, in the RTB bank)": 5,
+   "SHORTMP": 1,
+   "UPFLAG": 7,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 1
+  },
+  "33,3775": {
+   "ALARM": 1,
+   "BANKCALL": 31,
+   "BANKJUMP": 3,
+   "CHANG2": 1,
+   "DOWNFLAG": 2,
+   "ENDOFJOB": 4,
+   "IBNKCALL": 16,
+   "NOVAC": 18,
+   "PHASCHNG": 1,
+   "SGNAGREE (through RTB, in the RTB bank)": 8,
+   "SHORTMP": 1,
+   "UPFLAG": 8,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 6
+  },
+  "34,3716": {
+   "BANKCALL": 128
+  },
+  "34,3720": {
+   "BANKCALL": 128
+  },
+  "34,3722": {
+   "DOWNFLAG": 64,
+   "ENDOFJOB": 64
+  },
+  "34,3723": {
+   "ENDOFJOB": 107
+  },
+  "34,3744": {
+   "ENDOFJOB": 128
+  },
+  "34,3745": {
+   "DOWNFLAG": 65,
+   "ENDOFJOB": 63
+  },
+  "34,3753": {
+   "ENDOFJOB": 128
+  },
+  "34,3754": {
+   "ENDOFJOB": 128
+  },
+  "34,3755": {
+   "ENDOFJOB": 112,
+   "TASKOVER": 16
+  },
+  "34,3757": {
+   "TASKOVER": 128
+  },
+  "37,3410": {
+   "NOVAC": 128
+  },
+  "37,3412": {
+   "NOVAC": 128
+  },
+  "37,3416": {
+   "FINDVAC": 128
+  },
+  "37,3417": {
+   "FINDVAC": 128
+  },
+  "37,3435": {
+   "VARDELAY": 128
+  },
+  "37,3436": {
+   "VARDELAY": 128
+  },
+  "37,3437": {
+   "VARDELAY": 128
+  },
+  "37,3441": {
+   "FINDVAC": 128
+  },
+  "37,3451": {
+   "FINDVAC": 128
+  },
+  "37,3453": {
+   "FINDVAC": 128
+  },
+  "37,3461": {
+   "TASKOVER": 64,
+   "VARDELAY": 44,
+   "WAITLIST": 20
+  },
+  "37,3515": {
+   "VARDELAY": 128
+  },
+  "37,3517": {
+   "TASKOVER": 128
+  },
+  "37,3524": {
+   "TASKOVER": 128
+  },
+  "37,3525": {
+   "FINDVAC": 11,
+   "IBNKCALL": 1,
+   "NOVAC": 2,
+   "VARDELAY": 1,
+   "WAITLIST": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 105
+  },
+  "37,3531": {
+   "ENDOFJOB": 1,
+   "FINDVAC": 8,
+   "NOVAC": 3,
+   "WAITLIST": 2,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 110
+  },
+  "37,3541": {
+   "FINDVAC": 12,
+   "NOVAC": 1,
+   "TASKOVER": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 108
+  },
+  "37,3544": {
+   "BANKJUMP": 1,
+   "FINDVAC": 10,
+   "NOVAC": 4,
+   "VARDELAY": 1,
+   "WAITLIST": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 106
+  },
+  "37,3557": {
+   "FINDVAC": 15,
+   "NOVAC": 2,
+   "VARDELAY": 4,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 101
+  },
+  "37,3565": {
+   "FINDVAC": 14,
+   "NOVAC": 3,
+   "PHASCHNG": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 107
+  },
+  "37,3570": {
+   "FINDVAC": 9,
+   "NOVAC": 3,
+   "PRIOCHNG": 1,
+   "SWRETURN": 1,
+   "TASKOVER": 2,
+   "WAITLIST": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 90
+  },
+  "37,3571": {
+   "FINDVAC": 6,
+   "NOVAC": 2,
+   "WAITLIST": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 113
+  },
+  "37,3614": {
+   "FINDVAC": 68,
+   "POODOO1 (alarm 1302)": 1,
+   "PRIOCHNG": 1,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 32
+  },
+  "37,3641": {
+   "FINDVAC": 10,
+   "NOVAC": 5,
+   "the caller's return (TC Q, TC A, TC LRADRET, DTCB through AVGEXIT, BANKJUMP's CADR)": 107
+  }
+ },
+ "boundary": "from each routine key to the first instruction outside SERVICER and the interpreter (lmsv_leaves)",
+ "c64_segment_groups": {
+  "1": {
+   "keys": 150,
+   "cases": 19200,
+   "compared": 18754,
+   "refused": 446
+  },
+  "2": {
+   "keys": 20,
+   "cases": 2564,
+   "compared": 2226,
+   "refused": 338
+  },
+  "3": {
+   "keys": 18,
+   "cases": 2311,
+   "compared": 1586,
+   "refused": 725
+  },
+  "4": {
+   "keys": 31,
+   "cases": 3968,
+   "compared": 3758,
+   "refused": 210
+  },
+  "5": {
+   "keys": 26,
+   "cases": 3328,
+   "compared": 3159,
+   "refused": 169
+  },
+  "6": {
+   "keys": 21,
+   "cases": 2688,
+   "compared": 2502,
+   "refused": 186
+  },
+  "7": {
+   "keys": 49,
+   "cases": 6277,
+   "compared": 5950,
+   "refused": 327
+  }
+ },
+ "compared_words": "2048 erasable words (A, L 16-bit) and channels 11, 12, 32 and 33 and the interrupt-enable state"
+}

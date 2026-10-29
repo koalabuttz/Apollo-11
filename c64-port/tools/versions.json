@@ -1,0 +1,55 @@
+{
+  "apollo_upstream": {
+    "repository": "https://github.com/chrislgarry/Apollo-11",
+    "commit": "911e5c0283c629c50cb97666f34065e8c07d71a5"
+  },
+  "virtualagc": {
+    "repository": "https://github.com/virtualagc/virtualagc",
+    "commit": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+    "executive_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+    "fixture_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "waitlist_sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
+    "interrupt_lead_ins_sha256": "ed6f44b59b2e16743ff53c6c9ed72661040a83d846a61054a31e5c61957290c3",
+    "alarm_and_abort_sha256": "74236d3b94048b14efb776d7fff5ae66acac2f950e5bc03ca375d4b90b4484a8",
+    "fresh_start_and_restart_sha256": "bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a",
+    "restarts_routine_sha256": "42f22e578939222d5b0645e85d4c89b578b5200fb998db7dd95938feeb20eb61",
+    "restart_tables_sha256": "1993b5da5ab382eaba5647a0dd07c09e52e25c36f624418ed125159c1eac7d59",
+    "phase_table_maintenance_sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293",
+    "lunar_landing_guidance_equations_sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
+    "interpreter_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "controlled_constants_sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc",
+    "fixed_fixed_constant_pool_sha256": "7f139c2b553ce60f8c0ab8cf6242abef390c6a28858e45a4f1d80f0ff2c646b7",
+    "servicer_constant_source_sha256": "4e3798d5dabcc7ecca813d762824f7dfc41ad352a9869a7526565fc3a05f4415"
+  },
+  "llvm_mos_sdk": {
+    "version": "v23.3.0",
+    "url": "https://github.com/llvm-mos/llvm-mos-sdk/releases/download/v23.3.0/llvm-mos-linux.tar.xz",
+    "sha256": "9f694497bc93a7c876d8c62325c7d74e7860346d80fbcd0555e19ba6856658c8",
+    "compiler_commit": "cd9145597347753c7cabd1c34d24722d4d8a8f96",
+    "compiler_version": "24.0.0git"
+  },
+  "vice": {
+    "version": "3.7.1",
+    "ubuntu_package": "3.7.1+dfsg1-2build3",
+    "rom_repository": "https://github.com/VICE-Team/svn-mirror",
+    "rom_commit": "e9dd3c16934a661abd83e4589b44d60240e84191",
+    "rom_sha256": {
+      "kernal-901227-03.bin": "83c60d47047d7beab8e5b7bf6f67f80daa088b7a6a27de0d7e016f6484042721",
+      "basic-901226-01.bin": "89878cea0a268734696de11c4bae593eaaa506465d2029d619c0e0cbccdfa62d",
+      "chargen-901225-01.bin": "fd0d53b8480e86163ac98998976c72cc58d5dd8eb824ed7b829774e74213b420"
+    }
+  },
+  "host": {
+    "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "make": "GNU Make 4.4.1",
+    "python": "Python 3.12.14"
+  },
+  "hardware_dv_oracle": {
+    "base_virtualagc_commit": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+    "pinned_engine_sha256": "9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef",
+    "generated_engine_sha256": "3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242",
+    "patch_sha256": "614df203d2fe85deb7e5b4fbe79aacc767af3c385a2981dc22f4c18d22536e8d",
+    "generator": "tools/prepare_hardware_dv.py",
+    "scope": "DDV oracle only; use existing SimulateDV for every DV; original engine checkout and earlier oracles unchanged"
+  }
+}

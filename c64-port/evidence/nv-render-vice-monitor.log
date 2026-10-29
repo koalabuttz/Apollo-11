@@ -1,0 +1,36 @@
+Loading /workspace/Apollo-11/c64-port/build/nv_render0.prg from 0801 to 2A89 (2289 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  277/$115,  25/$19
+.C:126c  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   77167276
+>C:c080  a5 00 00 10  00                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/nv_render1.prg from 0801 to 3690 (2E90 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  247/$0f7,  11/$0b
+.C:1276  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   76261196
+>C:c080  a5 00 00 10  01                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/nv_render2.prg from 0801 to 3806 (3006 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  285/$11d,  37/$25
+.C:12ea  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   77816440
+>C:c080  a5 00 00 10  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/nv_render3.prg from 0801 to 2B69 (2369 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  114/$072,  12/$0c
+.C:129d  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   77825298
+>C:c080  a5 00 00 10  03                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/nv_render-software-stack.bin' from $c100 to $cfff

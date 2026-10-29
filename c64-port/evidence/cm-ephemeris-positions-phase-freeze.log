@@ -1,0 +1,1 @@
+PASS source-only phase checkpoint freeze [{'stage': 0, 'cohort': 0, 'states': 32, 'max_input': 57, 'max_output': 25, 'frozen_bytes': 6610}, {'stage': 0, 'cohort': 1, 'states': 32, 'max_input': 57, 'max_output': 25, 'frozen_bytes': 7583}]

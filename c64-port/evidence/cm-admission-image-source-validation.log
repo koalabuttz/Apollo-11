@@ -1,0 +1,17 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_admission_image.c src/cm_executive.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_admission_image_cases.c platform/host/cm_admission_image_snapshot.c -o build/cm-admission-image-native
+python3 tools/cm_admission_image_differential.py
+PASS: 1024 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "05147 FINDVAC",
+    "05134 NOVAC"
+  ],
+  "boundary": "actual source Q+2 return",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "47268d6b996f2e21105eaaa0490b61d83ba2bae289ce581fcee5965f22d83ec5"
+}

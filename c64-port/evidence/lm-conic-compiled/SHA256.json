@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-conic-compiled",
+  "release": "evidence-lm-conic-compiled",
+  "files": {
+    "lm-conic-compiled-c64-cover.json": {
+      "sha256": "91f4b1d8b98424eb6c2abc01a1a8b8769759f431deac86e2516e5c4ac070f9e2",
+      "bytes": 7056,
+      "store": "tree"
+    },
+    "lm-conic-compiled-differential.log": {
+      "sha256": "57c776485f2c5a4ba948f0b7fdc4ea4662ec265167fc6875d2db1fac00ac3c6a",
+      "bytes": 20550,
+      "store": "release"
+    },
+    "lm-conic-compiled-host.log": {
+      "sha256": "ce90fae719cfcbe06f90265054449d881b360678ce31bd4a70a602ab2f6d2b25",
+      "bytes": 1070,
+      "store": "release"
+    },
+    "lm-conic-compiled-proof.json": {
+      "sha256": "0ba74734f7987248b588f7c6df6fc3d20167e0da696166248c843964b9da04b6",
+      "bytes": 42047,
+      "store": "tree"
+    },
+    "lm-conic-compiled-source-map.json": {
+      "sha256": "ff323ab48be51189b09086d36d6447ae5a4a3cbb8e47c7735917977441e339c4",
+      "bytes": 145175,
+      "store": "tree"
+    },
+    "lm-conic-compiled-vice.log": {
+      "sha256": "26f57c81376cffd869833e674e145e658ea3e8c3d1974d98ed2c692dd1334a3d",
+      "bytes": 26181,
+      "store": "release"
+    }
+  }
+}

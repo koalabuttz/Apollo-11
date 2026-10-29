@@ -1,0 +1,279 @@
+{
+ "category": "c64_branch_outcomes",
+ "method": "per milestone, gcov -b branch arcs of every linked source for every host case and for the C64 rows (tools/a2_c64_rows.py); the rows run on VICE against their frozen digests",
+ "aggregates": {
+  "lm-fresh-start": {
+   "record": "evidence/lm-fresh-start/lm-fresh-start-c64-cover.json",
+   "sha256": "0fd782dd1eade5db367a77b272be615bb9ce69b3d0a163977caa4c4823f62de7",
+   "host_cases": 4096,
+   "c64_rows": 259,
+   "host_branch_arcs": 392,
+   "c64_branch_arcs": 392,
+   "host_branches_missing_on_c64": 0
+  },
+  "lm-v37": {
+   "record": "evidence/lm-v37/lm-v37-c64-cover.json",
+   "sha256": "1ae9bfa87c2bf2381cfe819692e089ee75913ac47991b9be7269804df14b94c7",
+   "host_cases": 4096,
+   "c64_rows": 136,
+   "host_branch_arcs": 494,
+   "c64_branch_arcs": 494,
+   "host_branches_missing_on_c64": 0
+  },
+  "lm-stateup": {
+   "record": "evidence/lm-stateup/lm-stateup-c64-cover.json",
+   "sha256": "29ed43d0d8df6289a3661735e7392459dc3fbfbb9e21f3e516d70b79f6848428",
+   "host_cases": 4096,
+   "c64_rows": 256,
+   "host_branch_arcs": 224,
+   "c64_branch_arcs": 224,
+   "host_branches_missing_on_c64": 0
+  }
+ },
+ "linked_sources": {
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/lm_fresh_start.c": "68e5f209eee4a99ca7179e48e5fce903802b9b7f6ca4299aabd95f9dab58c078",
+  "src/lm_interbank.c": "9c649677bfe8bdb4724ea5c88a185701cfae8b44203384f623c3c17433371a2e",
+  "src/lm_interbank_idle.c": "021083bb31184b943adca23b24d25f270813a2f8c2edea259bd9f43ed1514302",
+  "src/lm_interbank_routines.c": "10ba9f22b3e445a958fe874d7cd96e74834def56ac7e4fb5b8ba27fd102d875b",
+  "src/lm_interp_orders.c": "4a20c5f00731e0aa473715e0a1db2fc09979f67efae3759c248e42f8e04ab533",
+  "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
+  "src/lm_stateup.c": "088fd45e8d5b453323039493f7708917c8e5aaaf089a0a135b40df15eb8eceb8",
+  "src/lm_v37.c": "a5fc62a858df898bd6767ef438dbaa1141bd933483b5b4be9976b39bc8d3a6e4",
+  "tests/lm_fresh_start_cases.c": "1c3aa10776d879aeb09281d4f1be129098db95cae62ec21db0affdd29088b89b",
+  "tests/lm_stateup_cases.c": "37b5b7ef693fb0f4faebcfe72286f00ac2ea420161021f69d1e8949c3c8ac9d4",
+  "tests/lm_v37_cases.c": "227cc97c892b243bf97ab78f16f5397c104db7cc373ae6ad0dc83dd104379053"
+ },
+ "host_branches_missing_on_c64": [],
+ "entry_slots_host_c64": [
+  [
+   373,
+   24
+  ],
+  [
+   373,
+   23
+  ],
+  [
+   373,
+   23
+  ],
+  [
+   373,
+   23
+  ],
+  [
+   372,
+   24
+  ],
+  [
+   372,
+   24
+  ],
+  [
+   372,
+   23
+  ],
+  [
+   372,
+   23
+  ],
+  [
+   372,
+   25
+  ],
+  [
+   372,
+   23
+  ],
+  [
+   372,
+   24
+  ],
+  [
+   128,
+   43
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   8
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   3
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   43
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   3
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   10
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   128,
+   1
+  ],
+  [
+   316,
+   20
+  ],
+  [
+   315,
+   19
+  ],
+  [
+   315,
+   20
+  ],
+  [
+   315,
+   20
+  ],
+  [
+   315,
+   19
+  ],
+  [
+   315,
+   20
+  ],
+  [
+   315,
+   20
+  ],
+  [
+   315,
+   19
+  ],
+  [
+   315,
+   20
+  ],
+  [
+   315,
+   20
+  ],
+  [
+   315,
+   19
+  ],
+  [
+   315,
+   20
+  ],
+  [
+   315,
+   20
+  ]
+ ],
+ "result": "PASS"
+}

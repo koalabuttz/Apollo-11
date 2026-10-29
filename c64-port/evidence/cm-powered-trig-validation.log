@@ -1,0 +1,5 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_powered_trig_snapshot.c src/cm_powered_trig.c src/guidance_trig.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_powered_trig_cases.c -o build/cm-powered-trig-native
+gcc -O2 -std=c99 -Iinclude -Itests -Ideps/virtualagc/yaAGC tools/cm_powered_trig_reference.c tests/cm_powered_trig_cases.c tests/cm_executive_cases.c src/agc_word.c build/agc_engine_hardware_dv.o deps/virtualagc/yaAGC/agc_engine_init.o deps/virtualagc/yaAGC/rfopen.o -o build/cm-powered-trig-reference
+build/cm-powered-trig-reference deps/cm-powered-fixture/MAIN.agc.bin | gzip -n -9 > build/cm-powered-trig-reference.snapshots.gz
+build/cm-powered-trig-native | gzip -n -9 > build/cm-powered-trig-native.snapshots.gz
+cmp build/cm-powered-trig-reference.snapshots.gz build/cm-powered-trig-native.snapshots.gz

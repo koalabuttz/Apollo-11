@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "dsky_minutes_output_check.h"
+static apollo_overlay_state s,before;
+int main(void){uint16_t n,fail=0;unsigned m,g;for(n=0;n<192u;++n)fail=(uint16_t)(fail+dsky_minutes_output_checkpoint(n,&s,&before));for(m=0;m<2u;++m)for(g=0;g<15u;++g){p66_bias_io io,old;enum dsky_nv_mission mission;enum dsky_minutes_stage stage=DSKY_MINUTES_FRESH;dsky_minutes_output_input(&s,&io,(uint16_t)(m*4096u),&mission);switch(g){case 0:mission=(enum dsky_nv_mission)2;break;case 1:stage=(enum dsky_minutes_stage)6;break;case 2:s.words[5]=0;break;case 3:s.words[4]=0;break;case 4:s.words[3]=1;break;case 5:s.words[6]^=1;break;case 6:s.words[7]=1;break;case 7:io.superbank=0;break;case 8:io.interrupt_enabled=2;break;case 9:s.words[0117]=3;break;case 10:s.words[0140]=0;break;case 11:s.words[0145]=03777;break;case 12:s.words[0200]=0100000;break;case 13:s.words[0145]=07;break;default:stage=DSKY_MINUTES_SECONDS_DISPLAY;s.words[5]=mission==DSKY_NV_LM?03347u:03262u;s.words[0777]=11;s.words[01023]=0;break;}before=s;old=io;if(dsky_minutes_output(&s,&io,mission,stage)!=P66_BIAS_OUT_OF_SCOPE||memcmp(&s,&before,sizeof s)||memcmp(&io,&old,sizeof io))++fail;}printf("192 original minutes/seconds stages +30 unchanged invalid guards: %s\n",fail?"FAIL":"PASS");return fail?1:0;}

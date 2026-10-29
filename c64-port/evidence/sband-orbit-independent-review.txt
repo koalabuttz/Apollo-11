@@ -1,0 +1,15 @@
+Independent read-only inspection by the scalar/source-map owner against both
+byte-original antenna SLOAD/BHIZ and the following sphere/caller paths.
+
+No discrepancy found within the stated ordinary canonical/source context.
+Both signed-zero sphere words select Earth. All six VLOAD slots are loaded
+before the CM overlapping RCM=VAC+2 stores. Earth CM VCOMP retains loaded
+Zminor debris in L; LM VLOAD retains the old MPAC Zminor through the UNIT
+front. SETPD index/base, actual REFSMMAT E3 bank selection and MXV entry,
+LM's true UNIT entry, and Moon STORE/STODL followed by TAT DLOAD and
+QPRET/compiled LUNPOS NEWOPS controls agree with source.
+
+Guard and preserved external IRQ ownership are explicit. No files were edited;
+this is source inspection, not an independent proof rerun, and it does not
+claim a conic/ephemerides or UNIT/MXV callee body. Exact final native and source
+identities are retained in sband-orbit-proof.json and its SHA ledger.

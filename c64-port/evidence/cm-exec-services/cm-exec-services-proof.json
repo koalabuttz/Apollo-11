@@ -1,0 +1,41 @@
+{
+ "mission": "Comanche055",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "cases": 7648,
+ "snapshot_sha256": "4c37eff1f3d31caf18dfda4ce5da691858f463660af6a4d391f41f049d734995",
+ "outcomes": {
+  "dispatch:returned": 1024,
+  "fixdelay:alarm": 129,
+  "fixdelay:refused": 3,
+  "fixdelay:returned": 316,
+  "longtask:alarm": 174,
+  "longtask:refused": 49,
+  "longtask:returned": 801,
+  "resume:returned": 512,
+  "site:alarm": 1223,
+  "site:refused": 58,
+  "site:returned": 2847,
+  "vardelay:alarm": 78,
+  "vardelay:refused": 16,
+  "vardelay:returned": 418
+ },
+ "entries": [
+  "04014 T3RUPT vector",
+  "05134 NOVAC",
+  "05147 FINDVAC",
+  "05235 TWIDDLE",
+  "05245 WAITLIST",
+  "05267 FIXDELAY",
+  "05272 VARDELAY",
+  "05324 TASKOVER",
+  "05342 LONGCALL",
+  "01,3461 LNGCALL2",
+  "01,3465 LONGCYCL",
+  "01,3505 LONGRTRN",
+  "01,3514 TCF LONGRTRN",
+  "01,3515 GETCADR"
+ ],
+ "boundary": "site: every genuine call site to the caller return; longtask: LONGCYCL to TASKOVER, GETCADR to the task; fixdelay/vardelay: to TASKOVER; resume: TASKOVER RUPTAGN -0 to the end of the interrupt; dispatch: T3RUPT vector or TASKOVER RUPTAGN +1 to the next task; alarm: BAILOUT/POODOO entry; refused: LONGCYCL reaching the constant DPBIT14",
+ "compared": "outcome kind; unless refused, all 2048 erasable words, SUPERBNK, interrupt enable, InIsr",
+ "full_physical_words": 2048
+}

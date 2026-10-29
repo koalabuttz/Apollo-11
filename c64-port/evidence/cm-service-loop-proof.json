@@ -1,0 +1,25 @@
+{
+  "cases": 384,
+  "checkpoints": 1856,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3423 T3RUPT2"
+  ],
+  "actual_tasks": [
+    "15,3207 SETJTAG",
+    "24,3260 CLOKTASK",
+    "05306 SVCT3"
+  ],
+  "actual_services": [
+    "WAITLIST",
+    "NOVAC",
+    "FIXDELAY",
+    "TASKOVER"
+  ],
+  "boundary": "continuous original ISR to05341 before hardware RESUME",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "fd6a0f1cdefdaa0e3d201e763976dd47c2e374a234bd018de6447ddd97284033"
+}

@@ -1,0 +1,33 @@
+{
+    "mission": "Luminary099",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "select_cases": 7168,
+    "compose_cases": 4096,
+    "select_snapshot_sha256": "844a3a1a5cf7543b9411caf50306b21e27c5c0ca661229dd74466e9319cf33e0",
+    "compose_snapshot_sha256": "2cc63c69540dfaeedb59c6d8f5968e4252a737fd01be2de83750fb2486cb291c",
+    "entries": [
+        "01,3526 RESTARTS",
+        "01,3541 GETPART2",
+        "01,3763 PHSPART2"
+    ],
+    "boundary": "select: TC GOLOC-1 (Z 0704) or X.1 TC FINDVAC; compose: RESTARTS to SWRETURN with each selected service recorded and returned to Q+2",
+    "full_physical_words": 2048,
+    "host_strict_and_sanitizer": [
+        "lm-restart-select: 7168 selection and 4096 composition cases, 40 table entries, 13727 checks, 0 failures",
+        "lm-restart-select: 7168 selection and 4096 composition cases, 40 table entries, 13727 checks, 0 failures"
+    ],
+    "c64_vice": "PASS: VICE PAL lm-restart-select.prg: 704 checks, 0 failures",
+    "native_files": {
+        "src/lm_restart_select.c": "82cae1520796da54f4f2bc8f147da22770a64a449e08be1488a6d4b9d6d8b6fd",
+        "src/lm_restart_routines.c": "08f14be017ac5db4e55c7de0bcccdebd46fea7b4328235687de915949ac6d6f8",
+        "src/lm_restart_table_data.inc": "d7fbcf8bf9d75629280c4fc1e182ac122afa203a27a22905710dda5155c41de4",
+        "src/agc_transfer.c": "8d0546b895f7406b11de80a4cdd22492212ad557d4a1b96468fdb99e51067b97"
+    },
+    "table_entries_selected": 40,
+    "targeted_select_cases": {
+        "first": 6144,
+        "count": 1024,
+        "issue": 29,
+        "covers": "CHKNOVAC priority 0 and 077777; FINDTIME TBASE = complement of TIME1, both +0, both -0, positive and negative overflow, direct and indirect deltas; LONGCALL time left with every +,+0,-,-0 pair of high and low words"
+    }
+}

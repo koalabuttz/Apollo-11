@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-front",
+  "release": "evidence-lanec-ev-front",
+  "files": {
+    "lanec-ev-front-diff.json": {
+      "sha256": "6a33b920c51d12bd4e802b0a0d8cb786a82e369d27afa69ba842c1eeab322554",
+      "bytes": 235,
+      "store": "tree"
+    },
+    "lanec-ev-front-oracle.crc": {
+      "sha256": "e10f992c2c2ce6954ac7c9188ef4334533b66cfc2737e17d7b9649908b76533a",
+      "bytes": 79530,
+      "store": "tree"
+    },
+    "lanec-ev-front-sanitize.txt": {
+      "sha256": "5bb2631811a2f7b522ace62faa863746a911183f226592ff438c0dc390e5fd96",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-ev-front-vice.txt": {
+      "sha256": "471e6ddb76ac0b8e7ad8c10f786c3a4659aab1e107d5e0a4e2b9cb35abc4a5e7",
+      "bytes": 57,
+      "store": "tree"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_wake.c tests/cm_wake_check.c src/agc_word.c src/cm_basic_wake.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c -o build/test-cm-wake
+build/test-cm-wake
+64 complete CM JOBWAKE states and19 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_wake.c tests/cm_wake_check.c src/agc_word.c src/cm_basic_wake.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c -o build/test-cm-wake-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-wake-sanitize
+64 complete CM JOBWAKE states and19 unchanged invalid boundaries: PASS
+python3 tools/cm_wake_sanitize_stream.py
+PASS: ASAN/UBSAN all8192 complete original CM JOBWAKE states, SHA256 6416525e5b41aafb661b3f4d70d716cebd350d54cb5de419c3abd5fbcc8cf73c
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tools/cm_wake_diagnostic.c tests/cm_wake_check.c src/agc_word.c src/cm_basic_wake.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c -Wl,-Map,build/cm_wake.map -o build/cm_wake.prg

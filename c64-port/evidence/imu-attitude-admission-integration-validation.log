@@ -1,0 +1,44 @@
+python3 tools/imu_attitude_admission_port_host.py --cc "cc"
+32 complete coarse original states + 12 immutable guards mission0 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 92a0f224e9fb776556cb37e1bbaae7a2d34597f01ed89c12e3bd83d399407da5
+32 complete coarse original states + 12 immutable guards mission0 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 8f2bf9e961c9e124952639c2e481a9b277cc290a73b5aba20fa6d86038f4e807
+32 complete coarse original states + 12 immutable guards mission0 entry2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 70802ae3fcdbdc83117fc7909cfef5c1097f8100c521e9f7060e5744562a8578
+32 complete coarse original states + 12 immutable guards mission0 entry3: PASS
+PASS all retained source-state bytes: 269484032 SHA256 9894001aa5907988a061423846c4074609169fe58c8642ec3d76a0bc07522ae1
+32 complete coarse original states + 12 immutable guards mission0 entry4: PASS
+PASS all retained source-state bytes: 269484032 SHA256 12cfae744581cad454d80d81eca3919b22f90f2b7747f18c6a2cbbf0e4b1cf7e
+32 complete coarse original states + 12 immutable guards mission1 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 2b038fb64f46dbea116662df445e64de106ddd7d7b787d111568c9907af81ef2
+32 complete coarse original states + 12 immutable guards mission1 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 58555b4cb3fcc6f4dbf3c79b307e73b410981b415e6405f1720182536c8de252
+32 complete coarse original states + 12 immutable guards mission1 entry2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 2a6891973f63787a1a773182e8d03672fcdd8a7adc52cdcef982f01f2f0d46d5
+32 complete coarse original states + 12 immutable guards mission1 entry3: PASS
+PASS all retained source-state bytes: 269484032 SHA256 2eabc70f0ca14f25f69ddcbc3139b6fbc7eee276f2cf54158fb3dc2b7ab3cb8b
+32 complete coarse original states + 12 immutable guards mission1 entry4: PASS
+PASS all retained source-state bytes: 269484032 SHA256 4d92bbed83d99b0c661253dc13c55c3baaebf3a488e0da9dd3e74029e8dc311d
+PASS full retained original source states and frozen states
+python3 tools/imu_attitude_admission_port_host.py --cc "cc" --sanitize
+32 complete coarse original states + 12 immutable guards mission0 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 92a0f224e9fb776556cb37e1bbaae7a2d34597f01ed89c12e3bd83d399407da5
+32 complete coarse original states + 12 immutable guards mission0 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 8f2bf9e961c9e124952639c2e481a9b277cc290a73b5aba20fa6d86038f4e807
+32 complete coarse original states + 12 immutable guards mission0 entry2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 70802ae3fcdbdc83117fc7909cfef5c1097f8100c521e9f7060e5744562a8578
+32 complete coarse original states + 12 immutable guards mission0 entry3: PASS
+PASS all retained source-state bytes: 269484032 SHA256 9894001aa5907988a061423846c4074609169fe58c8642ec3d76a0bc07522ae1
+32 complete coarse original states + 12 immutable guards mission0 entry4: PASS
+PASS all retained source-state bytes: 269484032 SHA256 12cfae744581cad454d80d81eca3919b22f90f2b7747f18c6a2cbbf0e4b1cf7e
+32 complete coarse original states + 12 immutable guards mission1 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 2b038fb64f46dbea116662df445e64de106ddd7d7b787d111568c9907af81ef2
+32 complete coarse original states + 12 immutable guards mission1 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 58555b4cb3fcc6f4dbf3c79b307e73b410981b415e6405f1720182536c8de252
+32 complete coarse original states + 12 immutable guards mission1 entry2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 2a6891973f63787a1a773182e8d03672fcdd8a7adc52cdcef982f01f2f0d46d5
+32 complete coarse original states + 12 immutable guards mission1 entry3: PASS
+PASS all retained source-state bytes: 269484032 SHA256 2eabc70f0ca14f25f69ddcbc3139b6fbc7eee276f2cf54158fb3dc2b7ab3cb8b
+32 complete coarse original states + 12 immutable guards mission1 entry4: PASS
+PASS all retained source-state bytes: 269484032 SHA256 4d92bbed83d99b0c661253dc13c55c3baaebf3a488e0da9dd3e74029e8dc311d
+PASS full retained original source states and frozen states under full ASAN/UBSAN

@@ -1,0 +1,48 @@
+{
+  "qualification": "Source-oracle pre-UNIT input states; native radial stage output checked directly, full prefix host-only",
+  "total_states": 203,
+  "records": [
+    {
+      "image": "a",
+      "rows": 35,
+      "mailbox": "a500002300030c8624",
+      "prg_bytes": 38690,
+      "ram_end": "0xa02f"
+    },
+    {
+      "image": "b",
+      "rows": 35,
+      "mailbox": "a500002300030c8624",
+      "prg_bytes": 38612,
+      "ram_end": "0x9fe1"
+    },
+    {
+      "image": "c",
+      "rows": 35,
+      "mailbox": "a500002300030c8624",
+      "prg_bytes": 38626,
+      "ram_end": "0x9fef"
+    },
+    {
+      "image": "d",
+      "rows": 35,
+      "mailbox": "a500002300030c8624",
+      "prg_bytes": 38618,
+      "ram_end": "0x9fe7"
+    },
+    {
+      "image": "e",
+      "rows": 44,
+      "mailbox": "a500002c00030c8624",
+      "prg_bytes": 42593,
+      "ram_end": "0xaf6e"
+    },
+    {
+      "image": "f",
+      "rows": 19,
+      "mailbox": "a500001300030c8624",
+      "prg_bytes": 33899,
+      "ram_end": "0x8d78"
+    }
+  ]
+}

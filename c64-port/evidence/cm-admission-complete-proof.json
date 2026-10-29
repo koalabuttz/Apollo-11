@@ -1,0 +1,22 @@
+{
+  "cases": 12288,
+  "checkpoints": 12288,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "NOVAC05134",
+    "FINDVAC05147",
+    "SPVAC05160",
+    "SPVACIN05154"
+  ],
+  "resource_cohorts": "all8 first-free-core outcomes including exhaustion \u00d7 all6 first-free-VAC outcomes including exhaustion,64 banks/priorities/background sets",
+  "binary_bytes": 50479104,
+  "snapshot_sha256": "d5791aa9a0204191d463cd192875e9fad306e0b2a4a1fc2911ba2467b0f73a33",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "successful source returns and exact BAILOUT entry with resource reservations preserved; no alarm-body execution; caller-valid positive priority and ordinary source addresses"
+}

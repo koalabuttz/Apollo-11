@@ -1,0 +1,91 @@
+{
+  "status": "qualified actual antenna vector store, LM body-axis mixing and complete UNIT caller; both containing antenna files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 131072,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 131072,
+    "start": 0,
+    "end": 131072,
+    "record_bytes": 4106,
+    "decoded_sha256": "e4eadc33249608b6fe174d9aaef85abd7292b83276b5367166fb21a35de25767",
+    "decoded_bytes": 538181632,
+    "canonical_original_archive": "evidence/sband-navframe-source.snapshots.bin.xz",
+    "compressed_sha256": "cdc47662df66f036885a0af0282f37cdfc0e51df78da43b0b1646bf0506beb23",
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 128,
+    "groups": [
+      {
+        "group": 0,
+        "states": 64,
+        "prg_bytes": 32305,
+        "load_end": 34352,
+        "bss_end": 42544,
+        "static_storage_end": 42752,
+        "mailbox": "a5400000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      },
+      {
+        "group": 1,
+        "states": 64,
+        "prg_bytes": 31536,
+        "load_end": 33583,
+        "bss_end": 41775,
+        "static_storage_end": 41983,
+        "mailbox": "a5400000",
+        "words_each": 2048,
+        "external_fields": [
+          "superbank",
+          "interrupt_enabled"
+        ]
+      }
+    ]
+  },
+  "groups": [
+    "LM original vectorstore/full body-axis mixing and completeUNIT",
+    "CM original vectorstore and completeUNIT"
+  ],
+  "source_map": "evidence/sband-navframe-source-map.json",
+  "original_sources": {
+    "Luminary099/S-BAND_ANTENNA_FOR_LM.agc": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "Comanche055/S-BAND_ANTENNA_FOR_CM.agc": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061"
+  },
+  "native_source_sha256": "709fe923a845fbe34939ea3ca5f6a009fae9c58639a0c9f9c3800d27eb77c6cb",
+  "native_header_sha256": "552d4d4860f1910338d2e63f72990b27aaebf12f520890de34dc5ff5c09a34e8",
+  "independent_review": {
+    "path": "evidence/sband-navframe-independent-review.txt",
+    "sha256": "3a7f04d9fbf50f2a3c608b69b76d582cd1434d61df4d0cf51f389d8f0439eeb8"
+  },
+  "limitations": [
+    "Following original PDVL/projection/angle/display bodies not executed here.",
+    "NEWJOB+0, five valid VAC bases, ordinary RAM/Q and raw16 A/L, producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ],
+  "dependencies": [
+    {
+      "path": "evidence/rtb-unit-proof.json",
+      "sha256": "fcc5a0f782d7fa6d2788ada03e7363c94e211db751f411f6471601f88c5b906a"
+    },
+    {
+      "path": "evidence/sband-scalar-proof.json",
+      "sha256": "083f01d6efa5ed5733fdf7059dee80c50062bafee52ff17a8edcf5f93b45caad"
+    },
+    {
+      "path": "evidence/sband-bodyframe-proof.json",
+      "sha256": "565f3089638731bb70e073569fa9f8d7f707ee9c407cc24779f4e25820696061"
+    }
+  ]
+}

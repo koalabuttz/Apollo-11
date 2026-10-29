@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/executive.c src/dsky_keycom.c src/dsky_keyrupt.c tests/dsky_keyrupt_cases.c tests/dsky_keyrupt_check.c tests/test_dsky_keyrupt.c -o build/test-dsky-keyrupt-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-keyrupt-san
+DSKY KEYRUPT1: 64 complete2050word original images, 0 failures

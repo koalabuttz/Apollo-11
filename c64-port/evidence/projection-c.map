@@ -1,0 +1,165 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     5aa9     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/projection-c.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843       ca     1         build/projection-c.prg.lto.o:(.text.agc_multiply)
+     843      843       ca     1                 agc_multiply
+     90d      90d      1bc     1         build/projection-c.prg.lto.o:(.text.agc_double_add)
+     90d      90d      1bc     1                 agc_double_add
+     ac9      ac9      317     1         build/projection-c.prg.lto.o:(.text.p66_scalar_product)
+     ac9      ac9      317     1                 p66_scalar_product
+     de0      de0      639     1         build/projection-c.prg.lto.o:(.text.p66_sine)
+     de0      de0      639     1                 p66_sine
+    1419     1419       d9     1         build/projection-c.prg.lto.o:(.text.doubled)
+    1419     1419       d9     1                 doubled
+    14f2     14f2      159     1         build/projection-c.prg.lto.o:(.text.triple_double)
+    14f2     14f2      159     1                 triple_double
+    164b     164b      4fe     1         build/projection-c.prg.lto.o:(.text.p66_cdu_trig)
+    164b     164b      4fe     1                 p66_cdu_trig
+    1b49     1b49      603     1         build/projection-c.prg.lto.o:(.text.p66_dot)
+    1b49     1b49      603     1                 p66_dot
+    214c     214c      fd5     1         build/projection-c.prg.lto.o:(.text.p66_dp_divide)
+    214c     214c      fd5     1                 p66_dp_divide
+    3121     3121      10b     1         build/projection-c.prg.lto.o:(.text.canonical_positive)
+    3121     3121      10b     1                 canonical_positive
+    322c     322c      283     1         build/projection-c.prg.lto.o:(.text.ratio)
+    322c     322c      283     1                 ratio
+    34af     34af      6c2     1         build/projection-c.prg.lto.o:(.text.p66_axis_rotate)
+    34af     34af      6c2     1                 p66_axis_rotate
+    3b71     3b71      4ab     1         build/projection-c.prg.lto.o:(.text.pj_apply)
+    3b71     3b71      4ab     1                 pj_apply
+    401c     401c      c7e     1         build/projection-c.prg.lto.o:(.text.pj_seed)
+    401c     401c      c7e     1                 pj_seed
+    4c9a     4c9a      cd0     1         build/projection-c.prg.lto.o:(.text.pj_compare)
+    4c9a     4c9a      cd0     1                 pj_compare
+    596a     596a      224     1         build/projection-c.prg.lto.o:(.text.frozen_words_next)
+    596a     596a      224     1                 frozen_words_next
+    5b8e     5b8e      295     1         build/projection-c.prg.lto.o:(.text.main)
+    5b8e     5b8e      295     1                 main
+    5e23     5e23        6     1         build/projection-c.prg.lto.o:(.text.exit)
+    5e23     5e23        6     1                 exit
+    5e29     5e29       4d     1         build/projection-c.prg.lto.o:(.text.putchar)
+    5e29     5e29       4d     1                 putchar
+    5e76     5e76       65     1         build/projection-c.prg.lto.o:(.text.puts)
+    5e76     5e76       65     1                 puts
+    5edb     5edb       40     1         build/projection-c.prg.lto.o:(.text.__umodqi3)
+    5edb     5edb       40     1                 __umodqi3
+    5f1b     5f1b      2de     1         build/projection-c.prg.lto.o:(.text.__divmodsi4)
+    5f1b     5f1b      2de     1                 __divmodsi4
+    61f9     61f9       34     1         build/projection-c.prg.lto.o:(.text.memcpy)
+    61f9     61f9       34     1                 memcpy
+    622d     622d       22     1         build/projection-c.prg.lto.o:(.text.__memset)
+    622d     622d       22     1                 __memset
+    624f     624f       67     1         build/projection-c.prg.lto.o:(.text.__mulsi3)
+    624f     624f       67     1                 __mulsi3
+    62b6     62b6        0     1         __init_array_start = .
+    62b6     62b6        0     1         __init_array_end = .
+    62b6     62b6        0     1         __fini_array_start = .
+    62b6     62b6        0     1         __fini_array_end = .
+    62b6     62b6     2d27     1 .rodata
+    62b6     62b6        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    62b6     62b6        0     1                 __set_v
+    62b7     62b7       14     1         build/projection-c.prg.lto.o:(.rodata.p66_sine.coefficient)
+    62b7     62b7       14     1                 p66_sine.coefficient
+    62cb     62cb       59     1         <internal>:(.rodata.str1.1)
+    6324     6324        3     1         build/projection-c.prg.lto.o:(.rodata.p66_cdu_trig.axis)
+    6324     6324        3     1                 p66_cdu_trig.axis
+    6327     6327        4     1         <internal>:(.rodata.cst4)
+    632b     632b       fa     1         build/projection-c.prg.lto.o:(.rodata.projection_reference_dictionary)
+    632b     632b       fa     1                 projection_reference_dictionary
+    6425     6425       4a     1         build/projection-c.prg.lto.o:(.rodata.projection_reference_offsets)
+    6425     6425       4a     1                 projection_reference_offsets
+    646f     646f     1f0a     1         build/projection-c.prg.lto.o:(.rodata.projection_reference_stream)
+    646f     646f     1f0a     1                 projection_reference_stream
+    8379     8379       16     1         build/projection-c.prg.lto.o:(.rodata.projection_input_reference_dictionary)
+    8379     8379       16     1                 projection_input_reference_dictionary
+    838f     838f       1a     1         build/projection-c.prg.lto.o:(.rodata.projection_input_reference_offsets)
+    838f     838f       1a     1                 projection_input_reference_offsets
+    83a9     83a9      c34     1         build/projection-c.prg.lto.o:(.rodata.projection_input_reference_stream)
+    83a9     83a9      c34     1                 projection_input_reference_stream
+    8fdd     8fdd        0     1 .data
+    8fdd     8fdd        0     1         __data_start = .
+    8fdd     8fdd        0     1         __data_end = .
+    8fdd     8fdd        0     1 __data_load_start = LOADADDR(.data)
+    8fdd     8fdd        0     1 __data_size = SIZEOF(.data)
+    8fdd     8fdd      10c     1 .bss
+    8fdd     8fdd        0     1         __bss_start = .
+    8fdd     8fdd      10c     1         build/projection-c.prg.lto.o:(.bss.c)
+    8fdd     8fdd      10c     1                 c
+    90e9     90e9        0     1         __bss_end = .
+    90e9     90e9        0     1 __bss_size = SIZEOF(.bss)
+    90e9     90e9        2     1 .noinit
+    90e9     90e9        2     1         build/projection-c.prg.lto.o:(.noinit..Lstatic_stack)
+    90eb     90eb        0     1         __heap_start = ALIGN(., 2)
+    90eb     90eb        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/projection-c.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/projection-c.prg.lto.o:(.llvm_sympart)
+       0        0      c60     4 .symtab
+       0        0      c60     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      79c     1 .strtab
+       0        0      79c     1         <internal>:(.strtab)

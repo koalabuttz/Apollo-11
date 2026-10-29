@@ -1,0 +1,29 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 9208,
+ "snapshot_sha256": "f1791d74479ba1e0d894b640bf1989ef6997bea2c2cd57d73319bdaab4859b0b",
+ "outcomes": {
+  "restart:alarm": 856,
+  "restart:returned": 3240,
+  "site:alarm": 1288,
+  "site:returned": 2800,
+  "task:alarm": 242,
+  "task:refused": 38,
+  "task:returned": 744
+ },
+ "entries": [
+  "05072 NOVAC",
+  "05105 FINDVAC",
+  "05173 TWIDDLE",
+  "05203 WAITLIST",
+  "05277 LONGCALL",
+  "01,3452 LNGCALL2",
+  "01,3466 LONGCYCL",
+  "01,3506 LONGRTRN",
+  "01,3515 TCF LONGRTRN",
+  "01,3516 GETCADR"
+ ],
+ "boundary": "restart: RESTARTS to SWRETURN through the selected services; site: every genuine call site to the caller return; task: LONGCYCL to TASKOVER, GETCADR to the task; alarm: BAILOUT1/POODOO1 entry; refused: LONGCYCL reaching the constant DPBIT14",
+ "full_physical_words": 2048
+}

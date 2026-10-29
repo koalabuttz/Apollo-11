@@ -1,0 +1,26 @@
+{
+  "stages": [
+    "BEGIN actualDSPA/B/C/AB/ABC",
+    "CHANNEL actualCHANDSP2504",
+    "FORMAT actualDSPOCTWD3363 savedQ2422",
+    "RETURN actual2422 XCH DISTEM"
+  ],
+  "boundaries": {
+    "NEXT": [
+      "DSPOCTWD3363",
+      "CHANDSP2504",
+      "formatter caller2422"
+    ],
+    "ENTRET": "0136 before saved instruction",
+    "ALARM": "GODSPALM2351 before body",
+    "RECOVERY": {
+      "LM": "bank40 PC5705 Q3354 IRQ0",
+      "CM": "bank40 PC5747 Q3261 IRQ0"
+    }
+  },
+  "whole_file_claim": false,
+  "native_instruction_decoder": false,
+  "continuous_original_inputs": 4096,
+  "full_checkpoints": 8544,
+  "target_kind": "four independent compiled stage fixtures, not continuous resident application"
+}

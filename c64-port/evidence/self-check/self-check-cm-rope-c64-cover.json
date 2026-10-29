@@ -1,0 +1,100 @@
+{
+ "milestone": "self-check-cm-rope",
+ "method": "gcov -b branch arcs (file:line branch N) of a host runner built at -O0 --coverage over every linked source, which calls the digest function the C64 diagnostic calls per row; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/a2_c64_rows.py, tools/c64_row_cover.py)",
+ "linked_sources": {
+  "src/cm_self_check.c": "83b337d63987f88e223599b5d840f36fc5a009e26bbb471c50f6391420be7b79",
+  "src/cm_self_check_idle.c": "e48f12f322bc8e55e495e103bac062bc47b462b759d4cee842f139b3e992c6da",
+  "src/cm_interbank_routines.c": "4d32b047e9bd683285c39b02e51331579aa55991cee3672f23fd1258900ec218",
+  "src/cm_interbank_idle.c": "9f4b1b11e5e37356ceb7cbe384f6fd0e6f1f511a1f5a8249efada9991b0f221c",
+  "src/cm_interbank_complete.c": "726f49876220b06f05a1ad6217bc8cf530bb1c90504762cdff5ea9cc8c533bb0",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "src/agc_transfer.c": "739acafb93002dac452b0c072201bf023312fd41742afbd7b7287b1c2a5c7fe1",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "tests/self_check_cases.c": "93af1186f3cd31c1c0fe03f4490f967949540d33543c852fff47ceaf537c8cb7",
+  "src/rope_image_host.c": "30560c2ba778a1421576d8ba4bbc9f6cb20aefc91fa34cbb7e9298ae9e6e1625"
+ },
+ "included_sources": {},
+ "compiler_flags": [
+  "-std=c99",
+  "-Iinclude",
+  "-Itests",
+  "-Isrc",
+  "-DSELF_CHECK_CM_ONLY"
+ ],
+ "host_cases": 43,
+ "c64_rows": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  6,
+  11,
+  12,
+  14
+ ],
+ "c64_row_seed_stride": 64,
+ "host_branch_arcs": 416,
+ "c64_branch_arcs": 416,
+ "arcs_by_source_host_c64": {
+  "build/self-check-cm-rope-cover/runner.c": [
+   2,
+   2
+  ],
+  "src/agc_hardware_divide.c": [
+   0,
+   0
+  ],
+  "src/agc_image_ops.c": [
+   58,
+   58
+  ],
+  "src/agc_multiword.c": [
+   0,
+   0
+  ],
+  "src/agc_transfer.c": [
+   47,
+   47
+  ],
+  "src/agc_word.c": [
+   2,
+   2
+  ],
+  "src/cm_interbank_complete.c": [
+   68,
+   68
+  ],
+  "src/cm_interbank_idle.c": [
+   9,
+   9
+  ],
+  "src/cm_interbank_routines.c": [
+   11,
+   11
+  ],
+  "src/cm_self_check.c": [
+   0,
+   0
+  ],
+  "src/cm_self_check_idle.c": [
+   0,
+   0
+  ],
+  "src/rope_image_host.c": [
+   15,
+   15
+  ],
+  "src/self_check_body.inc": [
+   101,
+   101
+  ],
+  "tests/self_check_cases.c": [
+   103,
+   103
+  ]
+ },
+ "host_branches_missing_on_c64": []
+}

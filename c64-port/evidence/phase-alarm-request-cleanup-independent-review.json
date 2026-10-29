@@ -1,0 +1,9 @@
+{
+  "owner_audit": "evidence/phase-alarm-request-raw-cleanup-20261012.json",
+  "owner_audit_sha256": "3cd0cbdba8245f59905668a2e974e8205ae58327045ea6a4ea84e72ef0fda7c6",
+  "unique_git_archives_independently_decoded": 6,
+  "records_reviewed": 18,
+  "verified_reclaimed_bytes": 1705982502,
+  "all_committed_archives_retained": true,
+  "all_removed_duplicates_absent": true
+}

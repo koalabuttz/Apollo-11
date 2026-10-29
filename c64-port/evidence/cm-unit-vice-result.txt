@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 118 complete CM-qualified ABS/ABVAL/UNIT original-assembly states; retained memory unchanged
+Mailbox: a500007600
+PRG bytes: 44655
+cm-unit-hardware-stack.bin: measured stack extent 30 bytes
+cm-unit-software-stack.bin: measured stack extent 293 bytes

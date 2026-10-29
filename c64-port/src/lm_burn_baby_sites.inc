@@ -1,0 +1,7 @@
+/* SPDX-License-Identifier: MIT */
+/* The CADR after every TC KILLTASK in Luminary099, sorted by physical
+ * address (checked against the rope by tools/lm_burn_baby_source.py):
+ * 24,3023 CADR BEGDES; 24,3076 CADR STDESIG; 24,3231 and 24,3237 CADR
+ * CALLDGCH; 24,3305, 25,3056, 26,3575 and 26,3673 CADR DESLOOP +2; 26,3701
+ * CADR CALLDGCH; 36,2627 CADR ZOOM; 36,3022 CADR ULLGTASK. */
+{21011u,052573u},{21054u,052602u},{21145u,055643u},{21151u,055643u},{21189u,052602u},{22062u,052602u},{23421u,052602u},{23483u,052602u},{23489u,055643u},{31127u,036022u},{31250u,074346u}

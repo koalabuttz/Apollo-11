@@ -1,0 +1,6 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/cm_charin_nv.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_nv_cases.c tests/cm_charin_nv_cases.c tests/test_cm_charin_nv.c tests/cm_charin_nv_check.c -o build/test-cm-charin-nv
+build/test-cm-charin-nv
+CM VERB/NOUN entry:64 complete2052-field source states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/cm_charin_nv.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_nv_cases.c tests/cm_charin_nv_cases.c tests/test_cm_charin_nv.c tests/cm_charin_nv_check.c -o build/test-cm-charin-nv-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-charin-nv-sanitize
+CM VERB/NOUN entry:64 complete2052-field source states,0 failures

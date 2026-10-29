@@ -1,0 +1,240 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     2ca0     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_monitor_consumer_1.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843     1009     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.main)
+     843      843     1009     1                 main
+    184c     184c       ca     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.agc_multiply)
+    184c     184c       ca     1                 agc_multiply
+    1916     1916      1bc     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.agc_double_add)
+    1916     1916      1bc     1                 agc_double_add
+    1ad2     1ad2      431     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.dsky_monitor_consumer_entry)
+    1ad2     1ad2      431     1                 dsky_monitor_consumer_entry
+    1f03     1f03      c8f     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.wide_decimal)
+    1f03     1f03      c8f     1                 wide_decimal
+    2b92     2b92      17f     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.apollo_noun_table_read)
+    2b92     2b92      17f     1                 apollo_noun_table_read
+    2d11     2d11      652     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.apollo_noun_reader)
+    2d11     2d11      652     1                 apollo_noun_reader
+    3363     3363        6     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.exit)
+    3363     3363        6     1                 exit
+    3369     3369       13     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.__ashlhi3)
+    3369     3369       13     1                 __ashlhi3
+    337c     337c       40     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.__umodqi3)
+    337c     337c       40     1                 __umodqi3
+    33bc     33bc       34     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.memcpy)
+    33bc     33bc       34     1                 memcpy
+    33f0     33f0       22     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.__memset)
+    33f0     33f0       22     1                 __memset
+    3412     3412       34     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.__mulhi3)
+    3412     3412       34     1                 __mulhi3
+    3446     3446       67     1         build/dsky_monitor_consumer_1.prg.lto.o:(.text.__mulsi3)
+    3446     3446       67     1                 __mulsi3
+    34ad     34ad        0     1         __init_array_start = .
+    34ad     34ad        0     1         __init_array_end = .
+    34ad     34ad        0     1         __fini_array_start = .
+    34ad     34ad        0     1         __fini_array_end = .
+    34ad     34ad     2043     1 .rodata
+    34ad     34ad        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    34ad     34ad        0     1                 __set_v
+    34ae     34ae        8     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.main)
+    34b6     34b6       18     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.dsky_monitor_consumer_entry.scalar)
+    34b6     34b6       18     1                 dsky_monitor_consumer_entry.scalar
+    34ce     34ce        c     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.dsky_monitor_consumer_entry.dp)
+    34ce     34ce        c     1                 dsky_monitor_consumer_entry.dp
+    34da     34da       14     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.wide_decimal.codes)
+    34da     34da       14     1                 wide_decimal.codes
+    34ee     34ee        8     1         <internal>:(.rodata.cst8)
+    34f6     34f6       18     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_nouns)
+    34f6     34f6       18     1                 fixed_data_lm_nouns
+    350e     350e       18     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_nouns)
+    350e     350e       18     1                 fixed_data_cm_nouns
+    3526     3526       d8     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_spans)
+    3526     3526       d8     1                 fixed_data_lm_spans
+    35fe     35fe       30     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_spans)
+    35fe     35fe       30     1                 fixed_data_cm_spans
+    362e     362e       20     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_0)
+    362e     362e       20     1                 fixed_data_lm_0
+    364e     364e       24     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_1)
+    364e     364e       24     1                 fixed_data_lm_1
+    3672     3672        4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_2)
+    3672     3672        4     1                 fixed_data_lm_2
+    3676     3676        4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_3)
+    3676     3676        4     1                 fixed_data_lm_3
+    367a     367a        4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_4)
+    367a     367a        4     1                 fixed_data_lm_4
+    367e     367e        4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_5)
+    367e     367e        4     1                 fixed_data_lm_5
+    3682     3682        2     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_6)
+    3682     3682        2     1                 fixed_data_lm_6
+    3684     3684        a     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_7)
+    3684     3684        a     1                 fixed_data_lm_7
+    368e     368e        2     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_8)
+    368e     368e        2     1                 fixed_data_lm_8
+    3690     3690        6     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_9)
+    3690     3690        6     1                 fixed_data_lm_9
+    3696     3696        8     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_10)
+    3696     3696        8     1                 fixed_data_lm_10
+    369e     369e       2e     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_11)
+    369e     369e       2e     1                 fixed_data_lm_11
+    36cc     36cc        c     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_12)
+    36cc     36cc        c     1                 fixed_data_lm_12
+    36d8     36d8        2     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_13)
+    36d8     36d8        2     1                 fixed_data_lm_13
+    36da     36da        2     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_14)
+    36da     36da        2     1                 fixed_data_lm_14
+    36dc     36dc        4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_15)
+    36dc     36dc        4     1                 fixed_data_lm_15
+    36e0     36e0        6     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_16)
+    36e0     36e0        6     1                 fixed_data_lm_16
+    36e6     36e6        4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_17)
+    36e6     36e6        4     1                 fixed_data_lm_17
+    36ea     36ea        8     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_18)
+    36ea     36ea        8     1                 fixed_data_lm_18
+    36f2     36f2        c     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_19)
+    36f2     36f2        c     1                 fixed_data_lm_19
+    36fe     36fe       18     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_20)
+    36fe     36fe       18     1                 fixed_data_lm_20
+    3716     3716       10     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_21)
+    3716     3716       10     1                 fixed_data_lm_21
+    3726     3726       28     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_22)
+    3726     3726       28     1                 fixed_data_lm_22
+    374e     374e       2c     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_23)
+    374e     374e       2c     1                 fixed_data_lm_23
+    377a     377a        4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_24)
+    377a     377a        4     1                 fixed_data_lm_24
+    377e     377e        4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_25)
+    377e     377e        4     1                 fixed_data_lm_25
+    3782     3782      1be     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_26)
+    3782     3782      1be     1                 fixed_data_lm_26
+    3940     3940       68     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_27)
+    3940     3940       68     1                 fixed_data_lm_27
+    39a8     39a8       24     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_28)
+    39a8     39a8       24     1                 fixed_data_lm_28
+    39cc     39cc      1e4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_29)
+    39cc     39cc      1e4     1                 fixed_data_lm_29
+    3bb0     3bb0      108     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_30)
+    3bb0     3bb0      108     1                 fixed_data_lm_30
+    3cb8     3cb8       80     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_31)
+    3cb8     3cb8       80     1                 fixed_data_lm_31
+    3d38     3d38       40     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_32)
+    3d38     3d38       40     1                 fixed_data_lm_32
+    3d78     3d78       20     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_33)
+    3d78     3d78       20     1                 fixed_data_lm_33
+    3d98     3d98       26     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_34)
+    3d98     3d98       26     1                 fixed_data_lm_34
+    3dbe     3dbe      458     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_lm_35)
+    3dbe     3dbe      458     1                 fixed_data_lm_35
+    4216     4216      1c4     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_0)
+    4216     4216      1c4     1                 fixed_data_cm_0
+    43da     43da       7c     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_1)
+    43da     43da       7c     1                 fixed_data_cm_1
+    4456     4456       40     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_2)
+    4456     4456       40     1                 fixed_data_cm_2
+    4496     4496       20     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_3)
+    4496     4496       20     1                 fixed_data_cm_3
+    44b6     44b6       26     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_4)
+    44b6     44b6       26     1                 fixed_data_cm_4
+    44dc     44dc      1be     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_5)
+    44dc     44dc      1be     1                 fixed_data_cm_5
+    469a     469a      1f2     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_6)
+    469a     469a      1f2     1                 fixed_data_cm_6
+    488c     488c      410     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.fixed_data_cm_7)
+    488c     488c      410     1                 fixed_data_cm_7
+    4c9c     4c9c       10     1         <internal>:(.rodata.cst16)
+    4cac     4cac       20     1         <internal>:(.rodata.cst32)
+    4ccc     4ccc       22     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.dsky_monitor_consumer_1_ioff)
+    4ccc     4ccc       22     1                 dsky_monitor_consumer_1_ioff
+    4cee     4cee       22     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.dsky_monitor_consumer_1_ooff)
+    4cee     4cee       22     1                 dsky_monitor_consumer_1_ooff
+    4d10     4d10       e0     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.dsky_monitor_consumer_1_in)
+    4d10     4d10       e0     1                 dsky_monitor_consumer_1_in
+    4df0     4df0      700     1         build/dsky_monitor_consumer_1.prg.lto.o:(.rodata.dsky_monitor_consumer_1_out)
+    4df0     4df0      700     1                 dsky_monitor_consumer_1_out
+    54f0     54f0        0     1 .data
+    54f0     54f0        0     1         __data_start = .
+    54f0     54f0        0     1         __data_end = .
+    54f0     54f0        0     1 __data_load_start = LOADADDR(.data)
+    54f0     54f0        0     1 __data_size = SIZEOF(.data)
+    54f0     54f0     2000     1 .bss
+    54f0     54f0        0     1         __bss_start = .
+    54f0     54f0     1000     1         build/dsky_monitor_consumer_1.prg.lto.o:(.bss.s)
+    54f0     54f0     1000     1                 s
+    64f0     64f0     1000     1         build/dsky_monitor_consumer_1.prg.lto.o:(.bss.before)
+    64f0     64f0     1000     1                 before
+    74f0     74f0        0     1         __bss_end = .
+    74f0     74f0        0     1 __bss_size = SIZEOF(.bss)
+    74f0     74f0        0     1 .noinit
+    74f0     74f0        0     1         __heap_start = ALIGN(., 2)
+    74f0     74f0        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_monitor_consumer_1.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_monitor_consumer_1.prg.lto.o:(.llvm_sympart)
+       0        0      ec0     4 .symtab
+       0        0      ec0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      a7b     1 .strtab
+       0        0      a7b     1         <internal>:(.strtab)

@@ -1,0 +1,7 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: 3865 cases / 5218 checkpoints; all 99 modeled words match unchanged PDVL GDT/2 and integrated RODCOMP using pinned hardware DV
+All 210 DP push positions, 180 full-prefix positions, 256 raw corners, 128 integrated skip inputs, three retained four-step histories; 2048 direct and 1024 integrated random inputs
+Stops before VSU; original banks, MODE, pointer and guard words verified
+Gravity snapshot SHA256: 53b5f8e8bb3655d198aebea6b9e231ff78ea245472096fb7f64ba1f032ec669e

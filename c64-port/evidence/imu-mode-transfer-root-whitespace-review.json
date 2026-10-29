@@ -1,0 +1,5 @@
+{
+  "scope": "Cosmetic frozen-source trailing blank line only; packet retained byte-identically. Default diff --check marked one new blank line at EOF. Explicit whitespace check disables only blank-at-eof; all strict/full-source/full-sanitizer/actual-C64 checks remain unchanged and passed.",
+  "frozen_file": "tools/imu_mode_transfer_source.py",
+  "sha256": "32a54d7efad472b99d5a8309b8ddbdb4ebe47199c197c91be62532992d351361"
+}

@@ -1,0 +1,7 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_pinball.c src/dsky_major_request.c tests/p66_bias_cases.c tests/dsky_major_request_cases.c tests/dsky_major_request_check.c tests/test_dsky_major_request.c -o build/test-dsky-major-request
+build/test-dsky-major-request
+LM+CM major-mode request:64 full source states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_pinball.c src/dsky_major_request.c tests/p66_bias_cases.c tests/dsky_major_request_cases.c tests/dsky_major_request_check.c tests/test_dsky_major_request.c -o build/test-dsky-major-request-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-major-request-sanitize
+LM+CM major-mode request:64 full source states,0 failures
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/dsky_pinball.c src/dsky_major_request.c tests/p66_bias_cases.c tests/dsky_major_request_cases.c tests/dsky_major_request_check.c tools/dsky_major_request_diagnostic.c -Wl,-Map,build/dsky_major_request.map -o build/dsky_major_request.prg

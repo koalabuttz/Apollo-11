@@ -1,0 +1,51 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_fixed_compat.c src/cm_fixed_callers.c src/agc_word.c tests/cm_fixed_compat_cases.c platform/host/cm_fixed_compat_snapshot.c -o build/cm-fixed-compat-native
+python3 tools/cm_fixed_compat_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original DSPFMEM/COMADRS/SUPDACAL complete original fixed-word domain
+{
+  "cases": 81920,
+  "checkpoints": 163840,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "40960 actual DSPFMEM41,3353 entries",
+    "40960 actual COMADRS43,3535 entries"
+  ],
+  "data_domain": "every physical original fixed word in banks0..35 plus all unpopulated bank36..39 zero words, both actual callers",
+  "boundaries": [
+    "actual SUPDACAL04715 entry",
+    "actual caller return3361 or3542 after original SUPDACAL"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "binary_record_format": "2054 little-endian uint16: case low/high,phase,status,2048 physical words,SUPERBNK,IRQ",
+  "binary_bytes": 673054720,
+  "snapshot_sha256": "3d1f53fedcc1c1cd107c16b9034609552bfe4f7a17d9451d45d21b0f7a14fd0c",
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": "caller lead-ins and SUPDACAL control only; fixed words remain data; later octal-display/checksum bodies not executed"
+}
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_fixed_compat.c src/cm_fixed_callers.c src/agc_word.c tests/cm_fixed_compat_cases.c platform/host/cm_fixed_compat_snapshot.c -o build/cm-fixed-compat-sanitize
+python3 tools/cm_fixed_compat_sanitize.py
+PASS: ASAN/UBSAN all81920 actual caller sequences /163840 complete original-layout source checkpoints

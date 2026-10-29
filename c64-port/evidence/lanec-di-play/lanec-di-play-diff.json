@@ -1,0 +1,7 @@
+{
+  "suite": "di-play",
+  "cases": 2208,
+  "differing": 0,
+  "native_sha256": "7e3d6da856c989cc4f82f9d745f0ddfcd1e3a36b28c16f1b24703d9c39fa73c0",
+  "oracle_sha256": "7e3d6da856c989cc4f82f9d745f0ddfcd1e3a36b28c16f1b24703d9c39fa73c0"
+}

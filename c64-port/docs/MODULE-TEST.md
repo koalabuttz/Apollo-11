@@ -1,0 +1,102 @@
+# C64 module-test harness
+
+`tools/module_test.py` runs a suite's cases on the C64, in VICE, through
+flight modules that the flight resident loads from the REU store
+(`make flight-store`, docs/FLIGHT-STORE.md). Each complete result is compared
+with the host's result for the same case.
+
+It exists for code that a stand-alone C64 diagnostic cannot hold. A
+`tools/lanec/c64_diag.c` program links the suite's case generator, the
+module and its frozen rows into one 38 KB program. The harness keeps only
+the flight resident and a small runner in memory. The module sits in its
+16 KB slot, as in flight, and the cases come from the REU, so the
+generators are never linked.
+
+## What a run does
+
+The host side (`tools/module_test.py`) works in four steps:
+
+1. It reads three files of rows for one suite:
+   - `--states`: each case's entry state (`n LM|CM`, the image's 2048 words,
+     channels 0-077, superbank and IRQ enable). For Lane C suites,
+     `tools/lanec/native.c --states SUITE` writes this.
+   - `--oracle` and `--native`: the host results in the oracle's row format.
+2. It keeps the cases of the requested mission (or the `--cases` list). The
+   expected result is the oracle row. For a case the native code refused
+   (status 1), it is the native row, which is the unchanged state. This
+   follows `tools/lanec/freeze.py`.
+3. It writes the case records into the store image's unused gap below the
+   rope. The gap holds about 195 LM or 100 CM cases, so more cases run in
+   batches, one VICE run each.
+4. It links `tools/module_test.c` against the flight resident, like the
+   flight-store load check.
+
+The C64 side (`tools/module_test.c`) boots the flight resident on the store
+(`rk_boot`). Then, for each case:
+
+1. It fetches the record into the image and a device record of the modules'
+   io kind (`lm_dntm_io` or `cm_dntm_io` so far).
+2. It runs routines one at a time from the entry point, through the table
+   lists of the loaded modules under test.
+   - At a point no loaded module holds, it asks the store's resolver which
+     module holds it. A module under test is loaded with an ABI 2 run from
+     a point no table holds, then the point is tried again. Any other
+     module ends the case.
+   - The case also ends at its stop point or at its routine limit
+     (`--limit`).
+3. An entry point no module under test holds, or a first routine that
+   refuses, gives status 1, and the state must be unchanged. A routine
+   that refuses after others have run gives status 2, which matches no
+   host row.
+4. It computes the CRC-32 of the image, channels, superbank, IRQ and status,
+   and compares it with the host's.
+
+The mailbox at `$c000` holds the counts, the first failing step and up to
+32 failing case numbers. Results go to `build/module-test/<name>-<m>.json`.
+
+## Using it
+
+A lane hooks a target into `module-test` (`tools/mk/module-test.mk`). Lane
+C's `module-test-lanec-pin-keys` (`tools/mk/lanec-pin-keys.mk`) runs every
+case of the `pin-keys` and `pin-key-labels` suites, in both missions,
+through the five keypress modules (docs/LANEC-PIN-KEYS.md), one routine per
+case. Every case matches the host: 1408 per suite and mission, 5632 in
+all. The keypress routines run through the Pinball trampoline, which takes a
+TC it ends at in a register or return cell; `--tc-cells` names those cells
+so the host row is advanced the same way.
+
+A stem the store builder split into chunks (`lanec_pin_routines`: one
+Pinball try-list per chunk, docs/FLIGHT-STORE.md) is named once; every chunk
+is under test. A store whose pinned class-3 module is copied to `$c000` at
+boot (the DAP pins) overwrites the mailbox page: the runner clears it after
+`rk_boot`, and VICE ignores that copy's first write.
+
+`vice-lanec-pin-flight-1` (LM) and `-2` (CM) (`tools/mk/lanec-pin-heads.mk`;
+`lanec-pin-flight-vice` runs both) run the frozen C64
+rows of the ten `pin-head-*` suites and `pw-fixed-display` (whose rows
+read the rope, which only the store carries) in both missions with
+`--limit 1 --flight-rows`. The expected rows come from
+`tools/lanec/native.c --flight SUITE`: the try-list registered at the case's
+entry, run once on the host. Where the suite's own module refuses a state,
+the next module of that try-list runs it, here as in flight.
+
+`vice-lanec-pin-keys-1` to `-4` (`tools/mk/lanec-pin-keys.mk`: `pin-keys`
+LM and CM, then `pin-key-labels` LM and CM; `module-test-lanec-pin-keys`
+and `lanec-pin-keys-vice` run all four) run every case of `pin-keys` and
+`pin-key-labels` through the five keypress modules with `--limit 1`, each
+part on its own mission's store.
+
+`vice-lanec-pin-chains` (`tools/mk/lanec-pin-transfer.mk`) runs whole
+chains: the frozen C64 rows of `pin-transfer-flight`,
+`pin-decdsp3-flight` and `pin-refuse-flight` through the INTER-BANK,
+Pinball and keypress modules with `--limit 64 --flight-rows`. Those suites
+are the cases of `pin-transfer`, `pin-decdsp3` and `pin-refuse` run on the
+host the way this harness runs them (`run_flight` in
+`tests/lanec_pin_transfer_cases.c`): one routine at a time through those
+modules' tables until a point none of them holds. A first routine that
+refuses gives a refused case; one that refuses later ends the case where
+it stands (status 2). The host suites compare the same cases with the
+original program.
+
+A suite whose modules take another io kind needs that device record added
+to `tools/module_test.c`, mapping the case's channels in and out.

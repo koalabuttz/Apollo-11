@@ -1,0 +1,37 @@
+Independent read-only review: complete original Luminary099 POWERED_FLIGHT_SUBROUTINES.agc
+Reviewer: frozen_storage, independent of implementing source_map agent.
+
+Conclusion: no concrete source/native discrepancy found within the published ordinary canonical caller, fixed-return, scratch ownership and producer-exclusion contracts. The entire containing numerical/control file is mapped; this does not establish a completed resident application or live producer/scheduler integration.
+
+Independent verification:
+* Used generic listing_records (separate from lm_powered_file_review's regex) on deps/lm-powered-fixture/assembly.lst with the byte-original source. Every one of267 emitted words/source lines/physical addresses matches the final source map and independently equals the original1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e rope word. All physical addresses unique.
+* Independently exhaustive strict-C99 test of all65536 constants-access arguments, null output and unchanged invalid outputs. All six original literals match: SINSLOC/INDEXI at physical20466..20470 values00736,4,2,0,4; XNBECADR at8221 value02664.
+* Verified all seven proof dependency SHA256 identities and every one of537 final manifest entries. Summed38 retained target images/1216 complete states. Read each actual target mailbox, checked its exact recorded bytes, PRG size and physical loaded extent.
+* Read original POWERED interfaces, trig, quick/axis and whole FLESHPOT/CALCSMSC source against the native code, and original VXV/OVERFLOW/DMP helper source for the fixed FLESHPOT composition. Existing 1,982,464 source/native/full-SAN checkpoint proofs were inspected and identities verified; their large numerical suites were not repeated by this review.
+
+Source/control boundaries:
+* CDU register ordering Y/Z/X, original scalar basic helper MODE preservation, all three loop positions, ordinary stored bank/caller return and pendingEDOP phases agree with source.
+* AX documented +3/-3 DIM preserves sign and reaches negative zero. Source line288 positive-zero return is therefore unreachable in that domain; actual line290 saved return is mapped, including TC RTNSAVER itself.
+* QUICTRIG source excludes interrupts during the shared basic trigonometric work, restores RELINT and executes actual TC A. Fixed basic saved code addresses02000..07777 remain its stated caller domain.
+* Permanent interfaces compose actual EXIT, trigonometric/axis callbacks, MPACVBUF, reentry, VLOAD and RVQ. Direct RVQ enters GOTO+4, so all ordinary fixed FCADR000000..077777 are supported, including low banks; no generic erasable indirect classification is inferred.
+* FLESHPOT ECADR banking, TEM1 banked subaddress and TEM2 oldEB are preserved. Its eighteen-word within-bank destination excludes the stable source-angle region, and transient native contexts do not create another authoritative RAM image. All six original VXV products and source exchanges are retained; BUF/L/OVFIND overflow actions match original OVERFLOW routing. Scalar DMPSUB does not modify OVFIND; vector component correction does. This qualifies only this containing fixed composition, not a genericVXV API.
+* Pending EXIT restores BANKSET and source A before the final DXCH/doubling stores, then restores EB and executes SWRETURN. CALCSMSC uses original default XNB E5,1664 and the actual BANKCALL/BUF2 saved frame, returns through SWRETURN and performs real INTPRET reentry before fixedRVQ.
+* The reviewed final documentation/header explicitly restrict standalone FLESHPOT bank_return to FLESHPOT_FINISH's already normalized A/L output. Generic raw overflow register inputs admitted by its shape guard alone are outside that source boundary. This resolves the earlier review observation without broadening the saved-return claim.
+* Original helpers and declarations assemble without numerical edits; original whole-file bytes and rope identity are retained. Executable words use explicitly compiled native algorithms/control continuations, not passive word decoding. GenuineEDOP0 scheduling and producer exclusion remain external ownership requirements, distinct from complete file arithmetic/control proof.
+
+Reviewed final SHA256 identities:
+379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1  ../Luminary099/POWERED_FLIGHT_SUBROUTINES.agc
+e03f530322dd36d26442a9813c26624364d0c4bcb711cb0624baee7b48f12923  src/lm_powered_trig.c
+1eef462950da4573d2d2483052fe2d84f28083c9c5b998254d17292a38115728  src/lm_powered_axis.c
+9f395662fedc6ed9df0b4fc7ab2467a8921a207f82b4806eb07a489d1f5d2c57  src/lm_powered_quick.c
+e345dd1a99f169cb638bb1a7ec5a944a86738f3bb19ccecf6492d97a059a8998  src/lm_powered_interface.c
+9835c883364f2d0451495d10f524f8f373ffaa7a261baf7ca4703dcfb6e1e7ad  src/lm_powered_fixed_return.c
+c7f9637467cf4fe6e93df6816bb620b72d15b1253944003715e5b17d02598a9b  src/lm_powered_constants.c
+4fb100219b7ada721efd81c1d5e829fda74e26ee16e01baecdbccc13f6e57ed6  src/lm_fleshpot.c
+033ec7f30c1ac0bb2c2dc3d1d17cad2ceebd49bd3530c6f9286e00da071984a6  src/lm_fleshpot_interface.c
+1eb2c06dc20a242f4124f5bbe213579530c82bd4a6dff17a78f2079e1b74dd05  include/lm_fleshpot_interface.h
+e6b98bf5058d7cabdffa2473494ba1218bffb5f78cc965f21071361af1bac064  docs/LUMINARY-POWERED-FLIGHT.md
+0577babb2cf7db2df65070e8d5b3cdae9cf2c4bb682773b9f3109691e23e658c  docs/LM-FLESHPOT-INTERFACE.md
+1e7e81ea7807499271faf437e844c363c73bfaa709249667eb55a1e456a0e2fb  evidence/lm-powered-file-source-map.json
+ee46cc3445b7b53450e9420c25f88a078deff01c100b26e25b46c0f86199dab9  evidence/lm-powered-file-proof.json
+154c72b2390fd3eb60908a726fa0cb4d2e9b0b2ba6f8022968ddce0c0e928f6c  evidence/lm-powered-evidence.sha256

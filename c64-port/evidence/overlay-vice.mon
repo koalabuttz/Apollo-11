@@ -1,0 +1,12 @@
+fill c800 cfff cd
+load "/workspace/Apollo-11/c64-port/build/overlay-resident.prg" 0
+watch store c080
+ignore 1 1
+g 080d
+m c080 c08a
+m c090 c093
+bsave "/workspace/Apollo-11/c64-port/build/overlay-vice-mailbox.bin" 0 c080 c08a
+bsave "/workspace/Apollo-11/c64-port/build/overlay-vice-shared.bin" 0 7000 7fff
+bsave "/workspace/Apollo-11/c64-port/build/overlay-vice-stack.bin" 0 c800 cfff
+screen
+quit

@@ -1,0 +1,31 @@
+{
+  "peripheral_source": "deps/virtualagc/yaAGC/agc_engine.c",
+  "source_sha256": "9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef",
+  "source_lines": [
+    2323,
+    2390
+  ],
+  "host_only_license": "GPL-2.0-or-later; no engine implementation linked to native target",
+  "instruction_source_dependency": "evidence/imu-pulse-source-audit.json",
+  "unchanged_ropes": {
+    "lm": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "cm": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "source_engine_compilation": {
+    "burst": "-Dunix original default backend",
+    "timed": "-Dunix -DGYRO_TIMING_SIMULATED original alternative"
+  },
+  "oracle_observation": "One original CAFZERO engine invocation reaches instruction pending phase; explicitassert PendFlag and unchangedPC; no instruction completes/canonicalCPUwrite. Source IRQ observed0/1; independent private device globals reset percase. This isolates peripheralbehavior and does not prove sourceinstruction timing.",
+  "native_const_domain": {
+    "gyro_counter_octal": "047",
+    "activity_octal": "01000",
+    "selection_octal": "0740",
+    "timed_phase_boundary": 160,
+    "phase_increment": 6,
+    "burst_phase_boundary": 128000,
+    "old_flush_max": 2047,
+    "new_batch_max": 1024,
+    "event_buffer_capacity": 18
+  },
+  "AGC_containing_source_words_credited": 0
+}

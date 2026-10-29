@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "parent_inventory_merge_required": true,
+  "recommendations": [
+    {
+      "source_path": "Luminary099/ERASABLE_ASSIGNMENTS.agc",
+      "source_sha256": "29d4d6d4c16b3ea2c00f6d29bc77ee6dbd7a236eaefb5d4384a0168ba0196139",
+      "recommendation": "complete original declaration/layout translation",
+      "complete_file_kind": "typed aliases, allocation intervals and original declaration metadata/data; no executable algorithm",
+      "all_source_paths_reviewed": true,
+      "native_source": "src/layout.c",
+      "native_bindings": "include/fixed_data_symbols.h",
+      "source_line_and_address_map": "evidence/layout-audit.json.gz",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "startup_initialization_claim": false,
+      "continuations": []
+    },
+    {
+      "source_path": "Luminary099/FLAGWORD_ASSIGNMENTS.agc",
+      "source_sha256": "a863fbb2aebd05b98dd15773ad24f370a8efd7ace6a3e8f44ee35300e3613332",
+      "recommendation": "complete original declaration/layout translation",
+      "complete_file_kind": "typed aliases, allocation intervals and original declaration metadata/data; no executable algorithm",
+      "all_source_paths_reviewed": true,
+      "native_source": "src/layout.c",
+      "native_bindings": "include/fixed_data_symbols.h",
+      "source_line_and_address_map": "evidence/layout-audit.json.gz",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "startup_initialization_claim": false,
+      "continuations": []
+    },
+    {
+      "source_path": "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+      "source_sha256": "cbffb67643bfefe4b19f5d9f7e800ec9a60bf3cf9dce9ce096e2f4effe641f5d",
+      "recommendation": "complete original declaration/layout translation",
+      "complete_file_kind": "typed aliases, allocation intervals and original declaration metadata/data; no executable algorithm",
+      "all_source_paths_reviewed": true,
+      "native_source": "src/layout.c",
+      "native_bindings": "include/fixed_data_symbols.h",
+      "source_line_and_address_map": "evidence/layout-audit.json.gz",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "startup_initialization_claim": false,
+      "continuations": []
+    },
+    {
+      "source_path": "Comanche055/ERASABLE_ASSIGNMENTS.agc",
+      "source_sha256": "f62df826c0cd678f4788ca7275d8ffccec229f9859c02839f1d944359c01ee58",
+      "recommendation": "complete original declaration/layout translation",
+      "complete_file_kind": "typed aliases, allocation intervals and original declaration metadata/data; no executable algorithm",
+      "all_source_paths_reviewed": true,
+      "native_source": "src/layout.c",
+      "native_bindings": "include/fixed_data_symbols.h",
+      "source_line_and_address_map": "evidence/layout-audit.json.gz",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "startup_initialization_claim": false,
+      "continuations": []
+    },
+    {
+      "source_path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+      "source_sha256": "c62e691808a6cbaa72d4f7850df8c943d77dee33e78c002ed88c944de2c01054",
+      "recommendation": "complete original declaration/layout translation",
+      "complete_file_kind": "typed aliases, allocation intervals and original declaration metadata/data; no executable algorithm",
+      "all_source_paths_reviewed": true,
+      "native_source": "src/layout.c",
+      "native_bindings": "include/fixed_data_symbols.h",
+      "source_line_and_address_map": "evidence/layout-audit.json.gz",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "startup_initialization_claim": false,
+      "continuations": []
+    }
+  ]
+}

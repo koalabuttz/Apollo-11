@@ -1,0 +1,74 @@
+[
+  {
+    "id": 247,
+    "filename": "G247",
+    "byte_count": 5535,
+    "crc16": 4180,
+    "sha256": "d5632f897e64546e75b944dbc13a626ab9c9be140756d06f581d8bcc2c4c9973",
+    "prg": "cm-idle-wake-247.prg",
+    "native_control": true
+  },
+  {
+    "id": 246,
+    "filename": "G246",
+    "byte_count": 1349,
+    "crc16": 9748,
+    "sha256": "22d430541ef698a1807d072d9ce9f2134f8fd9a4870467f17668b7eb9301d0b8",
+    "prg": "cm-idle-wake-246.prg",
+    "native_control": true
+  },
+  {
+    "id": 248,
+    "filename": "G248",
+    "byte_count": 3015,
+    "crc16": 31156,
+    "sha256": "d7304d9054e5cf4c36391580d2e319bd11b803b3855ec68b747e66d6d8145cdd",
+    "prg": "cm-idle-wake-248.prg",
+    "native_control": true
+  },
+  {
+    "id": 249,
+    "filename": "G249",
+    "byte_count": 849,
+    "crc16": 28411,
+    "sha256": "304be3a6fac7ffe3f485c0cea51e3cd6d388c64a6cb92e9e10f8702c473e18a9",
+    "prg": "cm-idle-wake-249.prg",
+    "native_control": true
+  },
+  {
+    "id": 250,
+    "filename": "G250",
+    "byte_count": 3155,
+    "crc16": 27943,
+    "sha256": "92796673aa8924091641d7b3c95ed49b53cdb0b1f9770f035a4cf466fd22fd08",
+    "prg": "cm-idle-wake-250.prg",
+    "native_control": true
+  },
+  {
+    "id": 251,
+    "filename": "G251",
+    "byte_count": 4899,
+    "crc16": 42491,
+    "sha256": "f27e7dae00f692d09b7836dde2337306a8ada469ebabd86caa44017fa4f78fad",
+    "prg": "cm-idle-wake-251.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 2102,
+    "crc16": 3367,
+    "sha256": "2e992cb1b111503609f04141c6708bd21dc1043adabf65220b8241f4139bf4e4",
+    "prg": "cm-idle-wake-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10038,
+    "crc16": 53144,
+    "sha256": "5ebec19428bb52ab1d9679c8eea64dae1cd71d9e7e9e0495f23a19d2940493b2",
+    "prg": "cm-idle-wake-255.prg",
+    "native_control": false
+  }
+]

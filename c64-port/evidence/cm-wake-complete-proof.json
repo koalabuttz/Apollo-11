@@ -1,0 +1,10 @@
+{
+  "cases": 32768,
+  "checkpoints": 32768,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 135331840,
+  "snapshot_sha256": "4c6d09ba01f808bee93be9c47b6036d6a95936f798538462cd95199af502e825",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "scope": "actual JOBWAKE with core0/SPECTEST, ordinary source caller, +0COREINC fault frontier or CCSHOLE; external program separate"
+}

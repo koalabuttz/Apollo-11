@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-short",
+  "release": "evidence-lanec-ev-short",
+  "files": {
+    "lanec-ev-short-diff.json": {
+      "sha256": "6b5d4016319f5987d8609ac50a9f20e3104c4f13fe34d71e25f54b30e96cb34a",
+      "bytes": 235,
+      "store": "tree"
+    },
+    "lanec-ev-short-oracle.crc": {
+      "sha256": "74ff962e226184f755a736fb0f47167330e30a5b1ab132fb8badec3e397b0dca",
+      "bytes": 88042,
+      "store": "tree"
+    },
+    "lanec-ev-short-sanitize.txt": {
+      "sha256": "c9d6a17e5bbb2172e331fa875fc6cde1b1ff0170a248e769378af08705228eee",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-ev-short-vice.txt": {
+      "sha256": "28f8ff5052ddb2bb0b2352535c5c002c73491d20d90607b98b1b4581adf6ad0c",
+      "bytes": 58,
+      "store": "tree"
+    }
+  }
+}

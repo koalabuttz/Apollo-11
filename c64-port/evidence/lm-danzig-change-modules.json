@@ -1,0 +1,258 @@
+[
+  {
+    "id": 160,
+    "filename": "R0",
+    "byte_count": 9199,
+    "crc16": 8117,
+    "sha256": "02c030500ac7d9003e64fcdb73c614b18aa2aa9104c718aab145029629ef2f4f",
+    "prg": "lm-danzig-change-0.prg"
+  },
+  {
+    "id": 161,
+    "filename": "R1",
+    "byte_count": 9199,
+    "crc16": 39426,
+    "sha256": "e408b3bb3d2eed5dd231b7b6ef31814929ff9e9768ab60e92e636da9ec45408e",
+    "prg": "lm-danzig-change-1.prg"
+  },
+  {
+    "id": 162,
+    "filename": "R2",
+    "byte_count": 9199,
+    "crc16": 19023,
+    "sha256": "b6aa26abbd9bdfe5f765dda458c1816b375f87b36d5e0fe2ece8056821ad7a16",
+    "prg": "lm-danzig-change-2.prg"
+  },
+  {
+    "id": 163,
+    "filename": "R3",
+    "byte_count": 9199,
+    "crc16": 24061,
+    "sha256": "40b2622717b885588031902a337106a88d261276bd0ec69a21a3de2117b758c4",
+    "prg": "lm-danzig-change-3.prg"
+  },
+  {
+    "id": 164,
+    "filename": "R4",
+    "byte_count": 9199,
+    "crc16": 50510,
+    "sha256": "4bc10a571605f5c2b3598ab6c58a0744662208e77e42f747ea3004ad41014ea7",
+    "prg": "lm-danzig-change-4.prg"
+  },
+  {
+    "id": 165,
+    "filename": "R5",
+    "byte_count": 9199,
+    "crc16": 41645,
+    "sha256": "1c754f0fca328bf85a9b3fabe9241012b0d153ac532779efd69fcb35820a0191",
+    "prg": "lm-danzig-change-5.prg"
+  },
+  {
+    "id": 166,
+    "filename": "R6",
+    "byte_count": 9199,
+    "crc16": 40067,
+    "sha256": "8095aa01157a864036cc0dcfd33b57fe25db49b5dcb71ba8a1e123df3bd7b8f6",
+    "prg": "lm-danzig-change-6.prg"
+  },
+  {
+    "id": 167,
+    "filename": "R7",
+    "byte_count": 9199,
+    "crc16": 32099,
+    "sha256": "7874fefd0e10409487d5d2da61c1274e68418ace4b73b2a13c11e30deb2dc3c6",
+    "prg": "lm-danzig-change-7.prg"
+  },
+  {
+    "id": 168,
+    "filename": "R8",
+    "byte_count": 9199,
+    "crc16": 15343,
+    "sha256": "40be34fe57415cc621a8f114b6435cea705b261c1c963aa1223afa0ef03020fc",
+    "prg": "lm-danzig-change-8.prg"
+  },
+  {
+    "id": 169,
+    "filename": "R9",
+    "byte_count": 9199,
+    "crc16": 14498,
+    "sha256": "3c92b1db821fb0ec7424af8da558948bf32eddf049fd37f93e06c1eb1bb4d2c4",
+    "prg": "lm-danzig-change-9.prg"
+  },
+  {
+    "id": 170,
+    "filename": "R10",
+    "byte_count": 9199,
+    "crc16": 11259,
+    "sha256": "edf999d8ddd6f179ed377a3c24367087e0f684cb9b0b338e57c29fb730d52a4c",
+    "prg": "lm-danzig-change-10.prg"
+  },
+  {
+    "id": 171,
+    "filename": "R11",
+    "byte_count": 9199,
+    "crc16": 2746,
+    "sha256": "4033cb3c4be34ca304f27ae17ee039fcc509ce7f479e1d362c2610d6af5b9db4",
+    "prg": "lm-danzig-change-11.prg"
+  },
+  {
+    "id": 172,
+    "filename": "R12",
+    "byte_count": 9199,
+    "crc16": 49757,
+    "sha256": "8114524f9ec87adc92b758962582fc1496fbb03b60c273d45aa5f8b9064b271b",
+    "prg": "lm-danzig-change-12.prg"
+  },
+  {
+    "id": 173,
+    "filename": "R13",
+    "byte_count": 9199,
+    "crc16": 32140,
+    "sha256": "7e848d8a65f7df6f1ace07611f981abae89c0fd3c3f9d1de8f555deb1a152d6d",
+    "prg": "lm-danzig-change-13.prg"
+  },
+  {
+    "id": 174,
+    "filename": "R14",
+    "byte_count": 9199,
+    "crc16": 25453,
+    "sha256": "bd8f46adf4c07406a31b8e35fce61aeb2a13de4a5bc43ee984f62c4fc9fd8fe9",
+    "prg": "lm-danzig-change-14.prg"
+  },
+  {
+    "id": 175,
+    "filename": "R15",
+    "byte_count": 9199,
+    "crc16": 62358,
+    "sha256": "ae6c4182cf4ff671b51a3a591c7fbf9bc27cf04af61950ea641239a33d6073df",
+    "prg": "lm-danzig-change-15.prg"
+  },
+  {
+    "id": 176,
+    "filename": "R16",
+    "byte_count": 9199,
+    "crc16": 25456,
+    "sha256": "0246671362499c995f5db5820bdc2a0083d28bed2be3b332b4a81fe37ff5dcc6",
+    "prg": "lm-danzig-change-16.prg"
+  },
+  {
+    "id": 177,
+    "filename": "R17",
+    "byte_count": 9199,
+    "crc16": 54268,
+    "sha256": "036242e9357aa6f895a9703c3545c4328580b2acc791e5ec6280ff4f919e3825",
+    "prg": "lm-danzig-change-17.prg"
+  },
+  {
+    "id": 178,
+    "filename": "R18",
+    "byte_count": 9199,
+    "crc16": 49387,
+    "sha256": "ba9e5cfa7eb534e25731123682a290c747103b60267ce4ce733a5a7b85c3ff42",
+    "prg": "lm-danzig-change-18.prg"
+  },
+  {
+    "id": 179,
+    "filename": "R19",
+    "byte_count": 9199,
+    "crc16": 48887,
+    "sha256": "14f2b68edcdd3bd4950b6f96ee8829145e7227831029ba7763d92a12b7ca598e",
+    "prg": "lm-danzig-change-19.prg"
+  },
+  {
+    "id": 180,
+    "filename": "R20",
+    "byte_count": 9199,
+    "crc16": 24022,
+    "sha256": "00237cf17656d4bfe5e92f1d7a2a92c08eacad333c79846d5ab557b21dba49af",
+    "prg": "lm-danzig-change-20.prg"
+  },
+  {
+    "id": 181,
+    "filename": "R21",
+    "byte_count": 9199,
+    "crc16": 16088,
+    "sha256": "2192864a67818aa57db048ddab8da2750933657c8276dce205146ea5b3db0ab6",
+    "prg": "lm-danzig-change-21.prg"
+  },
+  {
+    "id": 182,
+    "filename": "R22",
+    "byte_count": 9199,
+    "crc16": 53920,
+    "sha256": "c7d332e6624b42e52153c28dce9ab5c6e2462eb3b293cc8b8d3b73c90976a9ed",
+    "prg": "lm-danzig-change-22.prg"
+  },
+  {
+    "id": 183,
+    "filename": "R23",
+    "byte_count": 9199,
+    "crc16": 41347,
+    "sha256": "af6f77578e127eb8f0f296f84ae786f6659cbdd1cc69dbe6a7a5bf6be625e842",
+    "prg": "lm-danzig-change-23.prg"
+  },
+  {
+    "id": 184,
+    "filename": "R24",
+    "byte_count": 9199,
+    "crc16": 48280,
+    "sha256": "3e33f416d3b76e486ecb3f52a52b75fb1ba513d64bd0cbca608fc975f3d3f72d",
+    "prg": "lm-danzig-change-24.prg"
+  },
+  {
+    "id": 185,
+    "filename": "R25",
+    "byte_count": 9199,
+    "crc16": 30924,
+    "sha256": "9e9a4007d15622113dfa2625b9d0fb39cb49ae4928ca11365a3b96584e1250ac",
+    "prg": "lm-danzig-change-25.prg"
+  },
+  {
+    "id": 186,
+    "filename": "R26",
+    "byte_count": 9199,
+    "crc16": 48822,
+    "sha256": "57798f5a0488b9827599335e8918a9b1efffb7cd71afc1eda98bfe8d6e1708d6",
+    "prg": "lm-danzig-change-26.prg"
+  },
+  {
+    "id": 187,
+    "filename": "R27",
+    "byte_count": 9199,
+    "crc16": 25329,
+    "sha256": "e30fdf897079b01705a4496f7824211e29f360c1b74436a8816a18c646340433",
+    "prg": "lm-danzig-change-27.prg"
+  },
+  {
+    "id": 188,
+    "filename": "R28",
+    "byte_count": 9199,
+    "crc16": 1835,
+    "sha256": "c985b336b55b61c5a82975a2bea805ebf4d5a61d60ce93201e26a7491419cc33",
+    "prg": "lm-danzig-change-28.prg"
+  },
+  {
+    "id": 189,
+    "filename": "R29",
+    "byte_count": 9199,
+    "crc16": 45807,
+    "sha256": "9b8f18d11ee2ffe6d563f92f0afc905a91bd22386223b0d45135fd6be4e5c735",
+    "prg": "lm-danzig-change-29.prg"
+  },
+  {
+    "id": 190,
+    "filename": "R30",
+    "byte_count": 9199,
+    "crc16": 3563,
+    "sha256": "d00a1a6b35383a85d4ea47223c202ae6931774582c6385ade222587d27c38a10",
+    "prg": "lm-danzig-change-30.prg"
+  },
+  {
+    "id": 191,
+    "filename": "R31",
+    "byte_count": 9199,
+    "crc16": 18066,
+    "sha256": "d7adc1990d042e0d148de6cd1644b43aadac8fcaf0d6655fb004b4f361225795",
+    "prg": "lm-danzig-change-31.prg"
+  }
+]

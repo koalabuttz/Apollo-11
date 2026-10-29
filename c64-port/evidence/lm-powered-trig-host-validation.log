@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_lm_powered_trig.c tests/frozen_words.c src/lm_powered_trig.c src/guidance_trig.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_trig_cases.c -o build/test-lm-powered-trig
+build/test-lm-powered-trig
+320 complete2048-word original LM CDU trig phase states: PASS

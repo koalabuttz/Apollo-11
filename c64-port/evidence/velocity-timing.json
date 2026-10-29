@@ -1,0 +1,72 @@
+{
+  "clock_hz": 985248,
+  "diagnostics": {
+    "velocity-a": {
+      "prg_bytes": 38340,
+      "sections": {
+        ".text": {
+          "address": 2061,
+          "bytes": 24206
+        },
+        ".rodata": {
+          "address": 26267,
+          "bytes": 14120
+        },
+        ".data": {
+          "address": 40387,
+          "bytes": 0
+        },
+        ".bss": {
+          "address": 40387,
+          "bytes": 234
+        },
+        ".noinit": {
+          "address": 40621,
+          "bytes": 1
+        }
+      },
+      "cycles": [
+        27606,
+        27941,
+        28114,
+        27947,
+        75952
+      ]
+    },
+    "velocity-b": {
+      "prg_bytes": 37395,
+      "sections": {
+        ".text": {
+          "address": 2061,
+          "bytes": 24269
+        },
+        ".rodata": {
+          "address": 26330,
+          "bytes": 13112
+        },
+        ".data": {
+          "address": 39442,
+          "bytes": 0
+        },
+        ".bss": {
+          "address": 39442,
+          "bytes": 234
+        },
+        ".noinit": {
+          "address": 39676,
+          "bytes": 1
+        }
+      },
+      "cycles": [
+        47657,
+        45951,
+        46226,
+        48741,
+        73151
+      ]
+    }
+  },
+  "hardware_stack_bytes": 50,
+  "software_stack_bytes": 412,
+  "scope": "finite samples; marker/VIC effects included; no WCET or flight-deadline proof"
+}

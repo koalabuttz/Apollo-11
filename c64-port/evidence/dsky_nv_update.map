@@ -1,0 +1,233 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     238e     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_nv_update.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      95c     1         build/dsky_nv_update.prg.lto.o:(.text.main)
+     843      843      95c     1                 main
+    119f     119f       ca     1         build/dsky_nv_update.prg.lto.o:(.text.agc_multiply)
+    119f     119f       ca     1                 agc_multiply
+    1269     1269      1bc     1         build/dsky_nv_update.prg.lto.o:(.text.agc_double_add)
+    1269     1269      1bc     1                 agc_double_add
+    1425     1425      169     1         build/dsky_nv_update.prg.lto.o:(.text.cm_two_digit)
+    1425     1425      169     1                 cm_two_digit
+    158e     158e      51d     1         build/dsky_nv_update.prg.lto.o:(.text.dsky_two_digit)
+    158e     158e      51d     1                 dsky_two_digit
+    1aab     1aab      325     1         build/dsky_nv_update.prg.lto.o:(.text.shortmp)
+    1aab     1aab      325     1                 shortmp
+    1dd0     1dd0      455     1         build/dsky_nv_update.prg.lto.o:(.text.dsky_pinball_write)
+    1dd0     1dd0      455     1                 dsky_pinball_write
+    2225     2225      652     1         build/dsky_nv_update.prg.lto.o:(.text.apollo_noun_reader)
+    2225     2225      652     1                 apollo_noun_reader
+    2877     2877      17f     1         build/dsky_nv_update.prg.lto.o:(.text.apollo_noun_table_read)
+    2877     2877      17f     1                 apollo_noun_table_read
+    29f6     29f6        6     1         build/dsky_nv_update.prg.lto.o:(.text.exit)
+    29f6     29f6        6     1                 exit
+    29fc     29fc       ae     1         build/dsky_nv_update.prg.lto.o:(.text.__umodhi3)
+    29fc     29fc       ae     1                 __umodhi3
+    2aaa     2aaa       34     1         build/dsky_nv_update.prg.lto.o:(.text.memcpy)
+    2aaa     2aaa       34     1                 memcpy
+    2ade     2ade       22     1         build/dsky_nv_update.prg.lto.o:(.text.__memset)
+    2ade     2ade       22     1                 __memset
+    2b00     2b00       34     1         build/dsky_nv_update.prg.lto.o:(.text.__mulhi3)
+    2b00     2b00       34     1                 __mulhi3
+    2b34     2b34       67     1         build/dsky_nv_update.prg.lto.o:(.text.__mulsi3)
+    2b34     2b34       67     1                 __mulsi3
+    2b9b     2b9b        0     1         __init_array_start = .
+    2b9b     2b9b        0     1         __init_array_end = .
+    2b9b     2b9b        0     1         __fini_array_start = .
+    2b9b     2b9b        0     1         __fini_array_end = .
+    2b9b     2b9b     4bbd     1 .rodata
+    2b9b     2b9b        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    2b9b     2b9b        0     1                 __set_v
+    2b9c     2b9c       14     1         build/dsky_nv_update.prg.lto.o:(.rodata.dsky_two_digit.codes)
+    2b9c     2b9c       14     1                 dsky_two_digit.codes
+    2bb0     2bb0       10     1         <internal>:(.rodata.cst8)
+    2bc0     2bc0       18     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_nouns)
+    2bc0     2bc0       18     1                 fixed_data_lm_nouns
+    2bd8     2bd8       18     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_nouns)
+    2bd8     2bd8       18     1                 fixed_data_cm_nouns
+    2bf0     2bf0       d8     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_spans)
+    2bf0     2bf0       d8     1                 fixed_data_lm_spans
+    2cc8     2cc8       30     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_spans)
+    2cc8     2cc8       30     1                 fixed_data_cm_spans
+    2cf8     2cf8       20     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_0)
+    2cf8     2cf8       20     1                 fixed_data_lm_0
+    2d18     2d18       24     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_1)
+    2d18     2d18       24     1                 fixed_data_lm_1
+    2d3c     2d3c        4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_2)
+    2d3c     2d3c        4     1                 fixed_data_lm_2
+    2d40     2d40        4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_3)
+    2d40     2d40        4     1                 fixed_data_lm_3
+    2d44     2d44        4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_4)
+    2d44     2d44        4     1                 fixed_data_lm_4
+    2d48     2d48        4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_5)
+    2d48     2d48        4     1                 fixed_data_lm_5
+    2d4c     2d4c        2     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_6)
+    2d4c     2d4c        2     1                 fixed_data_lm_6
+    2d4e     2d4e        a     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_7)
+    2d4e     2d4e        a     1                 fixed_data_lm_7
+    2d58     2d58        2     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_8)
+    2d58     2d58        2     1                 fixed_data_lm_8
+    2d5a     2d5a        6     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_9)
+    2d5a     2d5a        6     1                 fixed_data_lm_9
+    2d60     2d60        8     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_10)
+    2d60     2d60        8     1                 fixed_data_lm_10
+    2d68     2d68       2e     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_11)
+    2d68     2d68       2e     1                 fixed_data_lm_11
+    2d96     2d96        c     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_12)
+    2d96     2d96        c     1                 fixed_data_lm_12
+    2da2     2da2        2     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_13)
+    2da2     2da2        2     1                 fixed_data_lm_13
+    2da4     2da4        2     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_14)
+    2da4     2da4        2     1                 fixed_data_lm_14
+    2da6     2da6        4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_15)
+    2da6     2da6        4     1                 fixed_data_lm_15
+    2daa     2daa        6     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_16)
+    2daa     2daa        6     1                 fixed_data_lm_16
+    2db0     2db0        4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_17)
+    2db0     2db0        4     1                 fixed_data_lm_17
+    2db4     2db4        8     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_18)
+    2db4     2db4        8     1                 fixed_data_lm_18
+    2dbc     2dbc        c     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_19)
+    2dbc     2dbc        c     1                 fixed_data_lm_19
+    2dc8     2dc8       18     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_20)
+    2dc8     2dc8       18     1                 fixed_data_lm_20
+    2de0     2de0       10     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_21)
+    2de0     2de0       10     1                 fixed_data_lm_21
+    2df0     2df0       28     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_22)
+    2df0     2df0       28     1                 fixed_data_lm_22
+    2e18     2e18       2c     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_23)
+    2e18     2e18       2c     1                 fixed_data_lm_23
+    2e44     2e44        4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_24)
+    2e44     2e44        4     1                 fixed_data_lm_24
+    2e48     2e48        4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_25)
+    2e48     2e48        4     1                 fixed_data_lm_25
+    2e4c     2e4c      1be     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_26)
+    2e4c     2e4c      1be     1                 fixed_data_lm_26
+    300a     300a       68     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_27)
+    300a     300a       68     1                 fixed_data_lm_27
+    3072     3072       24     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_28)
+    3072     3072       24     1                 fixed_data_lm_28
+    3096     3096      1e4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_29)
+    3096     3096      1e4     1                 fixed_data_lm_29
+    327a     327a      108     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_30)
+    327a     327a      108     1                 fixed_data_lm_30
+    3382     3382       80     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_31)
+    3382     3382       80     1                 fixed_data_lm_31
+    3402     3402       40     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_32)
+    3402     3402       40     1                 fixed_data_lm_32
+    3442     3442       20     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_33)
+    3442     3442       20     1                 fixed_data_lm_33
+    3462     3462       26     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_34)
+    3462     3462       26     1                 fixed_data_lm_34
+    3488     3488      458     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_lm_35)
+    3488     3488      458     1                 fixed_data_lm_35
+    38e0     38e0      1c4     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_0)
+    38e0     38e0      1c4     1                 fixed_data_cm_0
+    3aa4     3aa4       7c     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_1)
+    3aa4     3aa4       7c     1                 fixed_data_cm_1
+    3b20     3b20       40     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_2)
+    3b20     3b20       40     1                 fixed_data_cm_2
+    3b60     3b60       20     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_3)
+    3b60     3b60       20     1                 fixed_data_cm_3
+    3b80     3b80       26     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_4)
+    3b80     3b80       26     1                 fixed_data_cm_4
+    3ba6     3ba6      1be     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_5)
+    3ba6     3ba6      1be     1                 fixed_data_cm_5
+    3d64     3d64      1f2     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_6)
+    3d64     3d64      1f2     1                 fixed_data_cm_6
+    3f56     3f56      410     1         build/dsky_nv_update.prg.lto.o:(.rodata.fixed_data_cm_7)
+    3f56     3f56      410     1                 fixed_data_cm_7
+    4366     4366      100     1         build/dsky_nv_update.prg.lto.o:(.rodata.dsky_nv_update_numbers)
+    4366     4366      100     1                 dsky_nv_update_numbers
+    4466     4466      102     1         build/dsky_nv_update.prg.lto.o:(.rodata.dsky_nv_update_after_offsets)
+    4466     4466      102     1                 dsky_nv_update_after_offsets
+    4568     4568     31f0     1         build/dsky_nv_update.prg.lto.o:(.rodata.dsky_nv_update_after_patch)
+    4568     4568     31f0     1                 dsky_nv_update_after_patch
+    7758     7758        0     1 .data
+    7758     7758        0     1         __data_start = .
+    7758     7758        0     1         __data_end = .
+    7758     7758        0     1 __data_load_start = LOADADDR(.data)
+    7758     7758        0     1 __data_size = SIZEOF(.data)
+    7758     7758     2000     1 .bss
+    7758     7758        0     1         __bss_start = .
+    7758     7758     1000     1         build/dsky_nv_update.prg.lto.o:(.bss.s)
+    7758     7758     1000     1                 s
+    8758     8758     1000     1         build/dsky_nv_update.prg.lto.o:(.bss.before)
+    8758     8758     1000     1                 before
+    9758     9758        0     1         __bss_end = .
+    9758     9758        0     1 __bss_size = SIZEOF(.bss)
+    9758     9758        0     1 .noinit
+    9758     9758        0     1         __heap_start = ALIGN(., 2)
+    9758     9758        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_nv_update.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_nv_update.prg.lto.o:(.llvm_sympart)
+       0        0      e90     4 .symtab
+       0        0      e90     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      9f1     1 .strtab
+       0        0      9f1     1         <internal>:(.strtab)

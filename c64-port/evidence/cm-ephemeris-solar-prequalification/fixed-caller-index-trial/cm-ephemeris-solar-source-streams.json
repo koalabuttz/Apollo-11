@@ -1,0 +1,8 @@
+{
+  "CM": {
+    "archive": "evidence/cm-ephemeris-solar-reference.snapshots.bin.xz",
+    "decoded_sha256": "f23e1b3ce78fc892c208b867958d144b40783fca37b7e122deaac689c07edb3a",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  }
+}

@@ -1,0 +1,6 @@
+PASS: 4,096 original ENEMA checkpoints, all457 words including register/channel state
+Boundaries: MMDSPLAY, PTBAD or fresh-start STARTSUB entry; subsequent services excluded
+Real original ENEMA entry, STARTSB1/LIGHTSET/RSFLGBTS mask and phase agreement; native composition verified
+ALARM_AND_ABORT.agc SHA256: 74236d3b94048b14efb776d7fff5ae66acac2f950e5bc03ca375d4b90b4484a8
+FRESH_START_AND_RESTART.agc SHA256: bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a
+Snapshot SHA256: 00d940ed957277e8ca71543042000e34ae99cf6ced5404fecf2bd67bdc6594c0

@@ -1,0 +1,228 @@
+DSKY 0 cs: P   V   N   R1        R2        R3       
+watch 0 cs: 0103 00100
+watch 0 cs: 0375 01107
+watch 0 cs: 0376 00000
+watch 0 cs: 0377 00000
+DSKY 2020 cs: P   V7  N   R1        R2        R3       
+DSKY 2040 cs: P   V71 N   R1        R2        R3       
+DSKY 2064 cs: P27 V21 N01 R1        R2        R3  01174
+DSKY 2080 cs: P27 V21 N01 R1  2     R2        R3  01174
+DSKY 2100 cs: P27 V21 N01 R1  25    R2        R3  01174
+DSKY 2124 cs: P27 V21 N01 R1        R2        R3  01174
+DSKY 3500 cs: P27 V   N01 R1        R2        R3  01174
+DSKY 3520 cs: P27 V3  N01 R1        R2        R3  01174
+DSKY 3540 cs: P27 V34 N01 R1        R2        R3  01174
+DSKY 3561 cs: P   V   N   R1        R2        R3       
+watch 5000 cs: 0103 00110
+watch 6500 cs: 0103 00100
+watch 6500 cs: 0375 00000
+DSKY 7020 cs: P   V3  N   R1        R2        R3       
+DSKY 7040 cs: P   V37 N   R1        R2        R3       
+DSKY 7080 cs: P   V37 N0  R1        R2        R3       
+DSKY 7100 cs: P   V37 N00 R1        R2        R3       
+DSKY 7158 cs: P00 V   N   R1        R2        R3       
+LM: 578810 native routines (7680006 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
+scaled time: K 1.00, divisor 1, lag 2, seed 0: 9000 CIA interrupts, 9000 clock periods taken, 0 dropped (rk_dilation); AGC time 9000 cs
+night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule (0 with the native rule armed); yaAGC's own alarm inside 0 spans
+night watchman, C64 rule: 0 checks while either rule is armed, 0 where the C64 rule differs from the native rule (0 with only the C64 rule armed)
+rupt lock: 0 alarms (0 RUPT LOCK, 0 NO RUPT); 0 checks where a flag was still set, 0 where yaAGC's flags differ from the native rule; channel 77 bit 4 inside 0 spans; longest without an interrupt step 9 periods (to period 64), without a step outside one 0 (to period 0)
+major mode (MODREG 01011) at 9000 cs: native 00, yaAGC 00; FAILREG 00000/00000
+interpreter module: 178 routines, 178 slots; words charged vs yaAGC's: n/a (work clock only)
+interpreter charge: fitted 24780 MCT, yaAGC 24151 MCT (+2.6%) over 178 routines; mean |error| 32.4 MCT per routine
+native routines yaAGC did not match (0):
+unregistered or refused points (0):
+module loads (12246 in 9000 cs):
+  load lm_lead_in_routines slot 0 basic  02,2000: 1
+  load lm_fresh_start slot 0 basic  05,2667: 1
+  load lm_alarm slot 0 basic  02,3567: 1
+  load lm_fresh_start slot 0 basic  05,3056: 1
+  load lm_interbank_routines slot 0 basic  02,2635: 235
+  load lm_self_check_idle slot 0 basic  43,3336: 2
+  load lm_lead_in_routines slot 0 basic  02,2020: 752
+  load t4rupt slot 0 basic  06,2000: 752
+  load lm_dapidler slot 0 basic  16,2024: 900
+  load lm_interbank_routines slot 0 basic  02,2674: 1805
+  load lm_q_r_axis slot 0 basic  17,2626: 900
+  load lm_interbank_routines slot 0 basic  02,2707: 1805
+  load lm_dapidler slot 0 basic  16,2161: 900
+  load lm_p_axis slot 0 basic  16,3446: 900
+  load lm_dapidler slot 0 basic  16,2163: 900
+  load lm_aostask slot 0 basic  20,2447: 1
+  load lm_interbank_routines slot 0 basic  02,2616: 3
+  load lm_aostask slot 0 basic  20,2461: 1
+  load lm_interbank_routines slot 0 basic  02,2645: 3
+  load lm_aostask slot 0 basic  20,2462: 1
+  load lm_q_r_axis slot 0 basic  17,3146: 1
+  load lm_aostask slot 0 basic  20,3250: 1
+  load service_transfer slot 0 basic  02,3545: 2
+  load lm_aostask slot 0 basic  20,3577: 1
+  load lm_aostask slot 0 basic  20,3620: 1
+  load lm_interbank_routines slot 0 basic  02,2640: 6
+  load lm_aostask slot 0 basic  20,2456: 1
+  load lm_self_check_idle slot 0 basic  43,3304: 1137
+  load lm_t4rupt_imu slot 0 basic  06,2172: 188
+  load lm_lead_in_routines slot 0 basic  02,2010: 534
+  load lm_rcsmon slot 0 basic  06,3156: 187
+  load lm_keyrupt_routines slot 0 basic  04,3317: 24
+  load lanec_pin_routines slot 0 basic  02,2400: 24
+  load lm_keyrupt_routines slot 0 basic  04,3323: 24
+  load lanec_pin_keys_num_routines slot 0 basic  40,2077: 19
+  load lanec_pin_keys_cmd_routines slot 0 basic  40,2354: 3
+  load lm_lead_in_routines slot 0 basic  02,2034: 16
+  load lanec_pin_keys_cmd_routines slot 0 basic  40,2157: 5
+  load lanec_pin_routines slot 0 basic  41,2035: 5
+  load lanec_pin_routines slot 0 basic  41,2133: 5
+  load lanec_pin_routines slot 0 basic  02,2457: 3
+  load lm_update slot 0 basic  43,3726: 1
+  load lanec_ev_routines slot 0 basic  43,2076: 1
+  load lanec_pin_routines slot 0 basic  02,2154: 3
+  load lanec_pin_routines slot 0 basic  02,2204: 3
+  load lanec_pin_routines slot 0 basic  41,3516: 3
+  load lanec_ev_routines slot 0 basic  43,2113: 1
+  load lm_update slot 0 basic  43,3735: 1
+  load lm_update slot 0 basic  04,3401: 1
+  load lm_phase_table slot 0 basic  02,3353: 9
+  load lm_update slot 0 basic  04,3406: 1
+  load lm_phase_table slot 0 basic  02,3311: 1
+  load lm_phase_table slot 0 basic  10,2213: 3
+  load lm_update slot 0 basic  04,3412: 1
+  load lanec_di_routines slot 0 basic  10,2334: 2
+  load lanec_di_routines slot 0 basic  10,2731: 2
+  load lanec_pin_routines slot 0 basic  02,2155: 2
+  load lanec_pin_routines slot 0 basic  41,2337: 2
+  load lanec_pin_routines slot 0 basic  41,3602: 2
+  load lanec_pin_routines slot 0 basic  41,2317: 2
+  load lanec_pin_routines slot 0 basic  41,3604: 2
+  load lanec_pin_routines slot 0 basic  41,2064: 2
+  load lanec_pin_routines slot 0 basic  41,2732: 2
+  load lanec_pin_routines slot 0 basic  41,2303: 2
+  load lanec_pin_routines slot 0 basic  02,2202: 2
+  load lanec_di_routines slot 0 basic  10,3122: 2
+  load lanec_pin_routines slot 0 basic  02,2433: 2
+  load lanec_di_routines slot 0 basic  10,3123: 2
+  load service_transfer slot 0 basic  02,3516: 10
+  load lanec_di_routines slot 0 basic  10,3126: 2
+  load lanec_di_routines slot 0 basic  10,3130: 2
+  load lanec_di_routines slot 0 basic  10,3132: 2
+  load lanec_pin_routines slot 0 basic  02,2255: 2
+  load lanec_di_routines slot 0 basic  10,3135: 2
+  load lanec_pin_routines slot 0 basic  02,2427: 2
+  load lanec_di_routines slot 0 basic  10,3261: 2
+  load service_transfer slot 0 basic  10,3544: 2
+  load lanec_di_routines slot 0 basic  10,3267: 2
+  load lanec_pin_routines slot 0 basic  02,2207: 2
+  load lanec_pin_routines slot 0 basic  40,3534: 3
+  load lanec_pin_routines slot 0 basic  41,2733: 1
+  load lanec_pin_routines slot 0 basic  41,3075: 1
+  load lanec_pin_routines slot 0 basic  41,2740: 1
+  load lanec_pin_routines slot 0 basic  41,2775: 1
+  load lanec_pin_routines slot 0 basic  41,3002: 1
+  load lanec_pin_routines slot 0 basic  40,3547: 1
+  load lanec_pin_routines slot 0 basic  40,3552: 1
+  load lanec_di_routines slot 0 basic  10,3303: 1
+  load service_transfer slot 0 basic  10,3554: 2
+  load lanec_di_routines slot 0 basic  10,3350: 2
+  load lanec_di_routines slot 0 basic  10,3353: 2
+  load lm_update slot 0 basic  04,3431: 1
+  load lanec_pin_routines slot 0 basic  40,3450: 1
+  load lanec_pin_routines slot 0 basic  40,3443: 1
+  load lanec_di_routines slot 0 basic  10,3301: 1
+  load lm_update slot 0 basic  04,3427: 1
+  load lm_phase_table slot 0 basic  02,3314: 1
+  load lm_update slot 0 basic  04,3714: 1
+  load lanec_di_routines slot 0 basic  02,3472: 1
+  load lanec_di_routines slot 0 basic  10,2326: 1
+  load lanec_pin_keys_sign_routines slot 0 basic  40,3603: 1
+  load lanec_pin_routines slot 0 basic  41,3430: 1
+  load lanec_pin_routines slot 0 basic  41,3431: 1
+  load lm_v37 slot 0 basic  04,2040: 1
+  load lm_v37 slot 0 basic  04,2143: 1
+  load lm_interp_core slot 0 basic  03,2037: 1
+  load lm_stateup slot 0 interp 04,2144: 1
+  load lm_integration_init slot 0 interp 13,3414: 2
+  load lm_stateup slot 0 interp 04,2146: 1
+  load lm_v37 slot 0 basic  04,2147: 1
+  load lm_v37 slot 0 basic  04,2151: 1
+  load lm_v37 slot 0 basic  04,2155: 1
+  load lm_v37 slot 0 basic  04,2157: 1
+  load lm_v37 slot 0 basic  04,2161: 1
+  load lm_v37 slot 0 basic  04,2164: 1
+  load lm_p20_p25 slot 0 basic  03,2011: 1
+  load lm_v37 slot 0 basic  04,2167: 1
+  load lm_p40_p47 slot 0 basic  36,3555: 1
+  load lm_burn_baby slot 0 basic  36,2653: 1
+  load lm_p40_p47 slot 0 basic  36,3561: 1
+  load lm_v37 slot 0 basic  04,2206: 1
+  load lm_dap_interface slot 0 basic  20,2204: 1
+  load lm_v37 slot 0 basic  04,2210: 1
+  load lm_fresh_start slot 0 basic  05,2652: 1
+  load lm_v37 slot 0 basic  04,2216: 1
+  load lm_fresh_start slot 0 basic  05,2647: 1
+  load lm_v37 slot 0 basic  04,2222: 1
+  load lm_fresh_start slot 0 basic  05,2770: 1
+  load lm_phase_table slot 0 basic  02,3315: 1
+  load lm_fresh_start slot 0 basic  05,3015: 1
+  load lm_interbank_routines slot 0 basic  02,2622: 1
+  load lm_restart_routines slot 0 basic  01,3526: 1
+  load lm_interbank_routines slot 0 basic  02,2631: 1
+  load lm_fresh_start slot 0 basic  05,3043: 1
+  load lm_integration_init slot 0 basic  13,2613: 1
+  load lm_rtb_op_codes slot 0 basic  10,3573: 1
+  load lm_interpreter slot 0 basic  03,2055: 1
+  load lm_interp_core slot 0 basic  03,2061: 1
+  load lm_integration_init slot 0 interp 13,2620: 1
+  load lm_integration_init slot 0 interp 13,2623: 1
+  load lm_stateup slot 0 interp 13,2026: 1
+  load lm_integration_init slot 0 interp 13,3134: 2
+  load lm_rtb_op_codes slot 0 basic  10,3612: 2
+  load lm_interpreter slot 0 basic  03,3257: 2
+  load lm_rtb_op_codes slot 0 basic  10,3613: 2
+  load lm_integration_init slot 0 interp 13,3326: 2
+  load lm_integration_init slot 0 basic  13,3164: 2
+  load service_transfer slot 0 basic  02,3504: 2
+  load lm_integration_init slot 0 basic  13,3166: 2
+  load lm_integration_init slot 0 interp 13,2661: 1
+  load lm_geometry slot 0 interp 13,2114: 1
+  load lm_geometry slot 0 interp 13,2122: 1
+  load lm_integration_init slot 0 interp 13,2667: 1
+  load lm_integration_init slot 0 basic  04,3250: 2
+  load lm_orbital_integration slot 0 interp 11,3441: 2
+  load lm_integration_init slot 0 interp 13,3203: 2
+  load lm_integration_init slot 0 basic  13,3436: 2
+  load lm_stateup slot 0 interp 13,2041: 1
+  load lm_stateup slot 0 interp 13,2047: 1
+  load lm_integration_init slot 0 interp 13,2644: 1
+  load lm_stateup slot 0 interp 13,2052: 1
+  load lm_integration_init slot 0 interp 13,3264: 1
+  load lm_geometry slot 0 interp 13,2070: 1
+  load lm_integration_init slot 0 interp 13,2742: 1
+  load lm_orbital_integration slot 0 interp 11,3456: 1
+  load lm_integration_init slot 0 interp 13,3221: 1
+  load lm_stateup slot 0 interp 13,2063: 1
+  load lm_integration_init slot 0 interp 13,2632: 1
+  load lm_integration_init slot 0 basic  13,2636: 1
+last routines:
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 04635 FB 66000 lm_interbank_postjump_hot_routines
+  Z 03304 FB 66000 lm_self_check_idle_routines
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 04635 FB 66000 lm_interbank_postjump_hot_routines
+  Z 03304 FB 66000 lm_self_check_idle_routines
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 04635 FB 66000 lm_interbank_postjump_hot_routines
+  Z 03304 FB 66000 lm_self_check_idle_routines
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 04635 FB 66000 lm_interbank_postjump_hot_routines
+  Z 03304 FB 66000 lm_self_check_idle_routines
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 04635 FB 66000 lm_interbank_postjump_hot_routines
+  Z 03304 FB 66000 lm_self_check_idle_routines
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 04635 FB 66000 lm_interbank_postjump_hot_routines
+  Z 03304 FB 66000 lm_self_check_idle_routines
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 04635 FB 66000 lm_interbank_postjump_hot_routines
+  Z 03304 FB 66000 lm_self_check_idle_routines
+  Z 03214 FB 02000 lm_kernel_idle_routines
+  Z 04635 FB 66000 lm_interbank_postjump_hot_routines
+  Z 03304 FB 66000 lm_self_check_idle_routines

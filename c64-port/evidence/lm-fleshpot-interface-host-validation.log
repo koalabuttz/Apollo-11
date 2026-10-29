@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_lm_fleshpot_interface.c tests/frozen_words.c src/lm_fleshpot_interface.c src/lm_fleshpot.c src/lm_powered_fixed_return.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_fleshpot_interface_cases.c tests/lm_powered_interface_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c -o build/test-lm-fleshpot-interface
+build/test-lm-fleshpot-interface
+256 complete2048-word original LM FLESHPOT source states: PASS

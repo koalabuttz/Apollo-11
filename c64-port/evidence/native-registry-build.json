@@ -1,0 +1,51 @@
+{
+  "original_registry_count": 111,
+  "bootstrap": {
+    "id": 148,
+    "filename": "MINFO",
+    "byte_count": 1987,
+    "crc16": 43740,
+    "sha256": "f416f666f16bf500c271030df42b58e751793d1fec2397ed51d328a64f4418ad",
+    "prg": "native-registry-148.prg",
+    "mission_translation": false
+  },
+  "descriptor_crc16": 44621,
+  "lease_address": 50688,
+  "lease_bytes": 64,
+  "sources": [
+    "src/agc_word.c",
+    "src/executive.c",
+    "src/native_dispatch.c",
+    "src/irq_delivery.c",
+    "src/p66_native.c",
+    "src/p66_native_guidance.c",
+    "src/p66_guidance_invoke.c",
+    "src/p66_basic.c",
+    "src/p66_descent_invoke.c",
+    "src/p66_descent_runtime.c",
+    "src/p66_descent_prefix_control.c",
+    "src/guidance_control_observer.c",
+    "src/native_overlay_dispatch.c",
+    "src/p66_display_job.c",
+    "src/overlay_runtime.c",
+    "platform/c64/overlay_platform.c",
+    "src/p66_application.c",
+    "src/p66_application_recurrence.c",
+    "src/lm_clock.c",
+    "src/p66_length_return_control.c",
+    "src/p66_direct_launch.c",
+    "src/dsky_display.c",
+    "src/native_module_registry.c",
+    "platform/c64/native_registry_recurrence_diagnostic.c"
+  ],
+  "defines": [
+    "P66_NATIVE_DISPATCH_ONLY",
+    "P66_GUIDANCE_DISPATCH_ONLY",
+    "P66_BASIC_DISPATCH_ONLY",
+    "P66_DISPLAY_JOB_DISPATCH_ONLY",
+    "P66_APPLICATION_DISPATCH_ONLY",
+    "P66_RECURRENCE_DISPATCH_ONLY",
+    "P66_DIRECT_LAUNCH_DISPATCH_ONLY",
+    "EXEC_NATIVE_RESIDENT_SERVICES"
+  ]
+}

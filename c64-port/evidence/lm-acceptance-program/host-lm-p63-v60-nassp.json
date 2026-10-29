@@ -1,0 +1,73 @@
+{
+ "scenario": "lm-p63-v60-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 115000,
+ "keys": "@200V37E63E@6000V33E@6400E@6800E@7200E@7600E@64500V33E@100000V60E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036733",
+  "FLIGHT_LR_POS2": "500",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_LR": "60000"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 115029,
+ "periods_taken": 115029,
+ "periods_dropped": 0,
+ "agc_centiseconds": 115029,
+ "native_routines": 4727351,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 13243608,
+  "yaagc": 13666941,
+  "percent": -3.1,
+  "routines": 61204,
+  "mean_abs_error": 26.5,
+  "abs_percent": 11.9,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge -3.1% net, 11.9% routine by routine, from yaAGC's MCT over 61204 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 10,
+  "no_interrupt_to": 10,
+  "no_background_periods": 1,
+  "no_background_to": 631
+ },
+ "reached": {
+  "25,3471": 100205
+ },
+ "arrivals": {
+  "25,3471": [
+   100205,
+   111727
+  ]
+ },
+ "log_sha256": "ce53948b52ff12448fb5f88c51b7e8b3e1bdaced67fe6e66a2147670355fbd2e"
+}

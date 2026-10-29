@@ -1,0 +1,11 @@
+--- pinned/agc_engine.c
++++ cm-hardware-dv/agc_engine.c
+@@ -3136,7 +3136,7 @@
+ 
+ 	  // Fetch the values;
+ 	  AbsK = AbsSP(OverflowCorrected(Div16));
+-	  if (AbsA > AbsK || (AbsA == AbsK && AbsL != AGC_P0) || ValueOverflowed(Div16) != AGC_P0)
++	  if (1 || AbsA > AbsK || (AbsA == AbsK && AbsL != AGC_P0) || ValueOverflowed(Div16) != AGC_P0)
+ 	    {
+ 	      // The divisor is smaller than the dividend, or the divisor has
+ 	      // overflow. In both cases, we fall back on a slower simulation

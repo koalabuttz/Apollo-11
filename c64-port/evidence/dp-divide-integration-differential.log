@@ -1,0 +1,7 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: 163840 generic DDV/BDDV cases, all 17 modeled words and paths match original assembly with hardware DV
+Paths zero/quotient/overflow: {0: 481, 1: 79917, 2: 83442}
+Near-one flag quotient cases: 8555
+Snapshot SHA256: 43f40a751558ac2f30deb014d24925940f91c449c5f0e1c3fa74f043ac8c9c42

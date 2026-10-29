@@ -1,0 +1,13 @@
+fill 0100 01f1 cd
+fill c800 cfff cd
+load "/workspace/Apollo-11/c64-port/build/p66_basic.prg" 0
+watch store bfd3
+ignore 1 1
+g 080d
+m bfd3 bfd7
+bsave "/workspace/Apollo-11/c64-port/build/p66_basic-vice-mailbox.bin" 0 bfd3 bfd7
+bsave "/workspace/Apollo-11/c64-port/build/p66_basic-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/p66_basic-vice-software-stack.bin" 0 c800 cfff
+bsave "/workspace/Apollo-11/c64-port/build/p66_basic-vice-screen.bin" 0 0400 07e7
+bsave "/workspace/Apollo-11/c64-port/build/p66_basic-vice-color.bin" 0 d800 dbe7
+quit

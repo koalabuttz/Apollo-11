@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-burn-baby",
+  "release": "evidence-lm-burn-baby",
+  "files": {
+    "lm-burn-baby-c64-cover.json": {
+      "sha256": "ad08de7a8f0758ee7a232d3239b5d1b50f6216a6446b95433c93e140215c1e1d",
+      "bytes": 3217,
+      "store": "tree"
+    },
+    "lm-burn-baby-host.log": {
+      "sha256": "eb85938db7336e80a9e73ebc2c56a46f5cb084370858849a445de2855307af4b",
+      "bytes": 1028,
+      "store": "tree"
+    },
+    "lm-burn-baby-proof.json": {
+      "sha256": "f0a4a6b800ae73f1e0c7ae20d80a446244c1cc77c1f179933059adfeb48b20a3",
+      "bytes": 10894,
+      "store": "tree"
+    },
+    "lm-burn-baby-source-map.json": {
+      "sha256": "3c82d5289c91e5a1fadd5f41f244d3d074073119951c0a1d0159e6dd51cdebb1",
+      "bytes": 23321,
+      "store": "tree"
+    },
+    "lm-burn-baby-vice.log": {
+      "sha256": "e6870cca2162d3855b00774989a2cac6c94f38bb0b9e987a1767247a256ab422",
+      "bytes": 547,
+      "store": "tree"
+    }
+  }
+}

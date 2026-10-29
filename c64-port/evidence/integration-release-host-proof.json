@@ -1,0 +1,17 @@
+{
+  "commit": "e4ccffc60021adbba56474ced0ab6a6369768e5f",
+  "copied_files": 8174,
+  "uncommitted_core_excluded": true,
+  "shared_read_only_oracle_dependencies": "/workspace/Apollo-11/c64-port/deps",
+  "isolated_checkout": true,
+  "commands": [
+    "make -j4 all test"
+  ],
+  "outcome": "PASS",
+  "log_sha256": "343aedc2d1ebe734820af6fa0b8a129aa43372c763219ab99099337db0ad0ecc",
+  "additional_exact_certificate_artifacts_copied": [
+    "evidence/lm-torque-reference.snapshots.xz",
+    "evidence/lm-torque-native.snapshots.xz"
+  ],
+  "scope": "All committed portable host build and test recipes through the passive-storage milestone, with uncommitted exchange-action changes excluded; no complete application acceptance claim."
+}

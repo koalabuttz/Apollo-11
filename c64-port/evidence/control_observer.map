@@ -1,0 +1,99 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d      e14     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        5     1         build/control_observer.prg.lto.o:(.init.250)
+     81d      81d        0     1                 shift
+     822      822        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     825      825        0     1                 __after_main
+     828      828        0     1         _fini = .
+     828      828        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82c      82c        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     82d      82d      4ad     1         build/control_observer.prg.lto.o:(.text.main)
+     82d      82d      4ad     1                 main
+     cda      cda      812     1         build/control_observer.prg.lto.o:(.text.p66_ddv_return_q)
+     cda      cda      812     1                 p66_ddv_return_q
+    14ec     14ec      12f     1         build/control_observer.prg.lto.o:(.text.canonical)
+    14ec     14ec      12f     1                 canonical
+    161b     161b        6     1         build/control_observer.prg.lto.o:(.text.exit)
+    161b     161b        6     1                 exit
+    1621     1621        0     1         __init_array_start = .
+    1621     1621        0     1         __init_array_end = .
+    1621     1621        0     1         __fini_array_start = .
+    1621     1621        0     1         __fini_array_end = .
+    1621     1621      59e     1 .rodata
+    1621     1621        8     1         build/control_observer.prg.lto.o:(.rodata.main)
+    1629     1629      596     1         build/control_observer.prg.lto.o:(.rodata.control_observer_vectors)
+    1629     1629      596     1                 control_observer_vectors
+    1bbf     1bbf        0     1 .data
+    1bbf     1bbf        0     1         __data_start = .
+    1bbf     1bbf        0     1         __data_end = .
+    1bbf     1bbf        0     1 __data_load_start = LOADADDR(.data)
+    1bbf     1bbf        0     1 __data_size = SIZEOF(.data)
+    1bbf     1bbf        0     1 .bss
+    1bbf     1bbf        0     1         __bss_start = .
+    1bbf     1bbf        0     1         __bss_end = .
+    1bbf     1bbf        0     1 __bss_size = SIZEOF(.bss)
+    1bbf     1bbf        0     1 .noinit
+    1bbf     1bbf        0     1         __heap_start = ALIGN(., 2)
+    1bbf     1bbf        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/control_observer.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/control_observer.prg.lto.o:(.llvm_sympart)
+       0        0      a30     4 .symtab
+       0        0      a30     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      588     1 .strtab
+       0        0      588     1         <internal>:(.strtab)

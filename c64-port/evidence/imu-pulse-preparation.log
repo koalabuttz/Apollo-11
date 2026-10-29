@@ -1,0 +1,27 @@
+{
+  "lm": {
+    "source_file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "assembled_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "indentation_repairs": [],
+    "semantic_edits": 0,
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "support_source_audit": "evidence/rtb-angles-source-audit.json",
+    "indentation_patch": ""
+  },
+  "cm": {
+    "source_file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "assembled_sha256": "93f871dc8ba8fcda0c2129f81e86f119026a3aa1562067f63eb32d01c7bcd622",
+    "indentation_repairs": [
+      178,
+      523,
+      596,
+      850
+    ],
+    "semantic_edits": 0,
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "support_source_audit": "evidence/rtb-angles-source-audit.json",
+    "indentation_patch": "--- Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc\n+++ fixture/IMU_MODE_SWITCHING_ROUTINES.agc\n@@ -175,7 +175,7 @@\n COARS2\t\tTC\tCAGETEST\t# DONT CONTINUE IF CAGED.\n \t\tTS\tITEMP1\t\t# SET TO +0.\n \t\tCAF\tTWO\t\t# SET CDU INDICATOR\n-\t+3\tTS\tCDUIND\n+ +3\t\tTS\tCDUIND\n \n \t\tINDEX\tCDUIND\n \t\tCCS\tCOMMAND\t\t# NUMBER OF PULSES REQUIRED\n@@ -520,7 +520,7 @@\n \n NORESET\t\tTCF\tIMUFINED\t# DO NOT RESET POWER SUPPLY\n # Page 1433\n-\t-2\tCS\tFOUR\t\t# SPECIAL ENTRY TO REGRESS LGYRO FOR X.\n+ -2\t\tCS\tFOUR\t\t# SPECIAL ENTRY TO REGRESS LGYRO FOR X.\n \t\tADS\tLGYRO\n \n GSELECT\t\tINDEX\tQ\t\t# SELECT GYRO.\n@@ -593,7 +593,7 @@\n \t\tADS\tITEMP2\n \t\tCAF\tZERO\n \n-\t+4\tINDEX\tITEMP1\n+ +4\t\tINDEX\tITEMP1\n \t\tDXCH\t1400\n # Page 1435\n \t\tCA\tITEMP2\t\t# ENTIRE COMMAND.\n@@ -847,7 +847,7 @@\n \t\tTC\tPOODOO\t\t# NO\n \t\tOCT\t1210\t\t# 2 TRYING TO USE SAME DEVICE\n \n-\t+3\tEXTEND\n+ +3\t\tEXTEND\n \t\tDCA\tBUF2\n \t\tDXCH\tATTCADR\t\t# SAVE FINAL RETURN FOR KALCMAN3\n \n"
+  }
+}

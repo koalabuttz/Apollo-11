@@ -1,0 +1,17 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_task_transfer.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_task_transfer_cases.c platform/host/cm_task_transfer_snapshot.c -o build/cm-task-transfer-native
+python3 tools/cm_task_transfer_differential.py
+PASS: 1024 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3423 T3RUPT2",
+    "05324 TASKOVER"
+  ],
+  "boundary": "actual selected task DTCB transfer or05341 RESUME",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "f8c40a7278e11db040e58bc2fc012848df5e9c510e3fba2025120db4ebcec48b"
+}

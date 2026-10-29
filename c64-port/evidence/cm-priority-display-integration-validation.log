@@ -1,0 +1,44 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_priority_display_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: uninterrupted original PRIODSPR admission/caller return, complete image and all13 external latches
+{
+  "cases": 8192,
+  "checkpoints": 22362,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "PRIODSPR10,2726\u2192SPVAC5160",
+    "genuine SPVAC\u2192BOTHJOBS10,3107 or BAILOUT7755",
+    "BOTHJOBS\u2192SAVELOCS/SAVELOCR\u2192BANKJUMP4704\u2192actual caller"
+  ],
+  "context_cohorts": "all seven core scan positions, fiveVAC/full resource exhaustion, +0 unavailable occupied cores, allEB/SUPER/physicalFB savedcaller groups, savedcaller descriptor corners and actual source carry/TSoverflow, source NEWJOB ownership; all13 external latches compared",
+  "binary_bytes": 92355060,
+  "snapshot_sha256": "61f60b717c463b94a240aa93ade06e134c317da0cd63d4a26bc60dda3c7b9807",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase,status,2048physicalwords,13 cm_native_io latches",
+  "scope": "actual flashing priority-display immediate-return control; queued MAKEPLAY and abort recovery bodies remain separately qualified; admission alarm metadata is read from original selected inline literal"
+}
+cc -Iinclude -Itests -Itools -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_priority_display.c src/cm_admission_zero.c src/cm_native_image.c src/cm_executive.c src/agc_word.c tests/cm_priority_display_cases.c tests/cm_admission_complete_cases.c platform/host/cm_priority_display_snapshot.c -o build/cm-priority-display-sanitize
+python3 tools/cm_priority_display_sanitize.py
+PASS: full ASAN/UBSAN PRIODSPR corpus, all22362 actual source states

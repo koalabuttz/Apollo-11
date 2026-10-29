@@ -1,0 +1,20 @@
+python3 tools/imu_gyro_device_port_host.py --cc "cc"
+32 complete gyro peripheral states mission0 mode0: PASS
+PASS all retained source-state bytes: 272367616 SHA256 761e19b9e62285e1bee9ddbad4be64cf522c4e99120a5deb89137619c1cc3c82
+32 complete gyro peripheral states mission0 mode1: PASS
+PASS all retained source-state bytes: 272367616 SHA256 cd878773fb9835102ffb63554b624d710e33ac28a1b6676f17a3c00de64a7632
+32 complete gyro peripheral states mission1 mode0: PASS
+PASS all retained source-state bytes: 272367616 SHA256 3a92a1855a79b80ae13e726bac80df4e39b5f76e91cf26770a4cde5ed360ae47
+32 complete gyro peripheral states mission1 mode1: PASS
+PASS all retained source-state bytes: 272367616 SHA256 58c20dafd94370224b997de575cc7fb55e8a0ad921b049a44750d7f7d7f5d0e9
+PASS full retained original source states and frozen states
+python3 tools/imu_gyro_device_port_host.py --cc "cc" --sanitize
+32 complete gyro peripheral states mission0 mode0: PASS
+PASS all retained source-state bytes: 272367616 SHA256 761e19b9e62285e1bee9ddbad4be64cf522c4e99120a5deb89137619c1cc3c82
+32 complete gyro peripheral states mission0 mode1: PASS
+PASS all retained source-state bytes: 272367616 SHA256 cd878773fb9835102ffb63554b624d710e33ac28a1b6676f17a3c00de64a7632
+32 complete gyro peripheral states mission1 mode0: PASS
+PASS all retained source-state bytes: 272367616 SHA256 3a92a1855a79b80ae13e726bac80df4e39b5f76e91cf26770a4cde5ed360ae47
+32 complete gyro peripheral states mission1 mode1: PASS
+PASS all retained source-state bytes: 272367616 SHA256 58c20dafd94370224b997de575cc7fb55e8a0ad921b049a44750d7f7d7f5d0e9
+PASS full retained original source states and frozen states under full ASAN/UBSAN

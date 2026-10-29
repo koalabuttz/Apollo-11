@@ -1,0 +1,3 @@
+/* SPDX-License-Identifier: MIT */
+#include "cm_rcs_matrix_cases.h"
+void cm_rcs_matrix_input(apollo_overlay_state *m,agc_word *irq,uint32_t n){uint32_t seed=UINT32_C(0x93a1c134)+((n>>15)*UINT32_C(0x728641));unsigned i;for(i=0;i<2048u;++i){seed^=seed<<13;seed^=seed>>17;seed^=seed<<5;m->words[i]=(agc_word)(seed&AGC_MASK);}m->words[0]=(agc_word)(n*71u);m->words[1]=(agc_word)(n*103u);m->words[2]=(agc_word)((n*31u)&AGC_MASK);m->words[3]=03000;m->words[4]=044000;m->words[5]=03447;m->words[6]=044006;m->words[7]=0;m->words[0102]=(agc_word)(n<65536u?(020000u|((n>>2)&017777u)):(n&AGC_MASK));m->words[032]=(agc_word)(n&AGC_MASK);m->words[034]=(agc_word)((n*3u+17u)&AGC_MASK);m->words[0163]=(agc_word)((n>>2)&AGC_MASK);*irq=(agc_word)((n>>3)&1u);}

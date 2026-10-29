@@ -1,0 +1,5 @@
+lm-burn-baby-1.prg sha256 f66f815d345841a5b301ce11076a9bdbaa4b4b5bb15366deceabaf1fcf1932ff heap_start $bcf5
+lm-burn-baby-2.prg sha256 359c246afdf532296456abf1e4e38e204ebe8d02c45b3a75bb3fb18ab9b4fe12 heap_start $3396
+lm-burn-baby: 267 C64 rows in 2 PRGs (each takes every entry, outcome, branch and edge of every linked source its runnable cases take; together the 585 branches of the whole module; 0 cases reach another PRG's code)
+PASS: VICE PAL lm-burn-baby-1.prg: 246 checks, 0 failures
+PASS: VICE PAL lm-burn-baby-2.prg: 21 checks, 0 failures

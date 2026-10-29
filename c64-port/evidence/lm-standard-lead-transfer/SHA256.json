@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-standard-lead-transfer",
+  "release": "evidence-lm-standard-lead-transfer",
+  "files": {
+    "lm-standard-lead-transfer-host.log": {
+      "sha256": "018916445907b4d297fedd769788f892188161e8d307d02d3b5decff52eba7e5",
+      "bytes": 1030,
+      "store": "release"
+    },
+    "lm-standard-lead-transfer-proof.json": {
+      "sha256": "b409f3f3d3175ebca780db93644e398390315f64e6fb2ea0bcc9ddcf3b9ce8bf",
+      "bytes": 1146,
+      "store": "tree"
+    },
+    "lm-standard-lead-transfer-vice.log": {
+      "sha256": "e46d263bd310cbf370cafe4bc2cb61e6e4cf15ff49e8f985134fd26a63ddea04",
+      "bytes": 984,
+      "store": "release"
+    }
+  }
+}

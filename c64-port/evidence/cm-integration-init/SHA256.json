@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-integration-init",
+  "release": "evidence-cm-integration-init",
+  "files": {
+    "cm-integration-init-differential.log": {
+      "sha256": "c219d84fc89d75e5454afa06a25760aa377703ebe7dd84b3e1aa9dfd7f5c2856",
+      "bytes": 10425,
+      "store": "tree"
+    },
+    "cm-integration-init-host.log": {
+      "sha256": "38ccc8554b06ce92ef623b1cd6d68d4a35ec3d5c92d7eb5a6a10dfdc90c76310",
+      "bytes": 1158,
+      "store": "tree"
+    },
+    "cm-integration-init-proof.json": {
+      "sha256": "c7de58f717822daae723c26f54c04ef38816a5d41231c9d150a2935912a1f50a",
+      "bytes": 22694,
+      "store": "tree"
+    },
+    "cm-integration-init-source-map.json": {
+      "sha256": "c6cb65ccbf82aaa4f255d4c4e4a2f75d8e05cb843c5d9975d9d482a7dde71762",
+      "bytes": 94590,
+      "store": "tree"
+    },
+    "cm-integration-init-vice.log": {
+      "sha256": "2c3c031caf0d6f8fabf26784b260c08e56ae2bd7b29d713ef60ae2ebc1010d62",
+      "bytes": 1966,
+      "store": "tree"
+    }
+  }
+}

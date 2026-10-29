@@ -1,0 +1,369 @@
+{
+  "throttle-feedback-pairs": {
+    "inputs": 16384,
+    "checkpoints": 296644,
+    "modeled_words": 137,
+    "corpus_sha256": "f8c34844eb9b287abdd82fc9b17d171802f8261344f0daf9f9de45c3d0b0f48f",
+    "whole_sanitizer_corpus_exact": true,
+    "target_images": [
+      {
+        "selector": 0,
+        "rows": 32,
+        "prg_bytes": 26829,
+        "loaded_end": 29149,
+        "hardware_stack": 23,
+        "software_stack": 389,
+        "mailbox": "a500002000"
+      },
+      {
+        "selector": 1,
+        "rows": 32,
+        "prg_bytes": 31289,
+        "loaded_end": 33611,
+        "hardware_stack": 30,
+        "software_stack": 400,
+        "mailbox": "a500002001"
+      },
+      {
+        "selector": 2,
+        "rows": 32,
+        "prg_bytes": 24744,
+        "loaded_end": 27064,
+        "hardware_stack": 14,
+        "software_stack": 369,
+        "mailbox": "a500002002"
+      },
+      {
+        "selector": 3,
+        "rows": 32,
+        "prg_bytes": 25510,
+        "loaded_end": 27830,
+        "hardware_stack": 14,
+        "software_stack": 478,
+        "mailbox": "a500002003"
+      },
+      {
+        "selector": 4,
+        "rows": 32,
+        "prg_bytes": 29671,
+        "loaded_end": 31993,
+        "hardware_stack": 30,
+        "software_stack": 388,
+        "mailbox": "a500002004"
+      },
+      {
+        "selector": 5,
+        "rows": 32,
+        "prg_bytes": 24865,
+        "loaded_end": 27185,
+        "hardware_stack": 23,
+        "software_stack": 384,
+        "mailbox": "a500002005"
+      },
+      {
+        "selector": 6,
+        "rows": 32,
+        "prg_bytes": 29327,
+        "loaded_end": 31649,
+        "hardware_stack": 30,
+        "software_stack": 387,
+        "mailbox": "a500002006"
+      },
+      {
+        "selector": 7,
+        "rows": 32,
+        "prg_bytes": 24382,
+        "loaded_end": 26702,
+        "hardware_stack": 14,
+        "software_stack": 365,
+        "mailbox": "a500002007"
+      },
+      {
+        "selector": 8,
+        "rows": 32,
+        "prg_bytes": 30795,
+        "loaded_end": 33117,
+        "hardware_stack": 30,
+        "software_stack": 396,
+        "mailbox": "a500002008"
+      },
+      {
+        "selector": 9,
+        "rows": 32,
+        "prg_bytes": 25469,
+        "loaded_end": 27789,
+        "hardware_stack": 23,
+        "software_stack": 385,
+        "mailbox": "a500002009"
+      },
+      {
+        "selector": 10,
+        "rows": 32,
+        "prg_bytes": 29784,
+        "loaded_end": 32106,
+        "hardware_stack": 30,
+        "software_stack": 389,
+        "mailbox": "a50000200a"
+      },
+      {
+        "selector": 11,
+        "rows": 32,
+        "prg_bytes": 29685,
+        "loaded_end": 32007,
+        "hardware_stack": 30,
+        "software_stack": 389,
+        "mailbox": "a50000200b"
+      },
+      {
+        "selector": 12,
+        "rows": 32,
+        "prg_bytes": 24269,
+        "loaded_end": 26589,
+        "hardware_stack": 14,
+        "software_stack": 364,
+        "mailbox": "a50000200c"
+      },
+      {
+        "selector": 13,
+        "rows": 32,
+        "prg_bytes": 25234,
+        "loaded_end": 27554,
+        "hardware_stack": 14,
+        "software_stack": 477,
+        "mailbox": "a50000200d"
+      },
+      {
+        "selector": 14,
+        "rows": 32,
+        "prg_bytes": 24144,
+        "loaded_end": 26464,
+        "hardware_stack": 14,
+        "software_stack": 426,
+        "mailbox": "a50000200e"
+      },
+      {
+        "selector": 15,
+        "rows": 32,
+        "prg_bytes": 24505,
+        "loaded_end": 26825,
+        "hardware_stack": 14,
+        "software_stack": 365,
+        "mailbox": "a50000200f"
+      },
+      {
+        "selector": 16,
+        "rows": 32,
+        "prg_bytes": 24967,
+        "loaded_end": 27287,
+        "hardware_stack": 14,
+        "software_stack": 478,
+        "mailbox": "a500002010"
+      },
+      {
+        "selector": 17,
+        "rows": 32,
+        "prg_bytes": 24943,
+        "loaded_end": 27263,
+        "hardware_stack": 14,
+        "software_stack": 478,
+        "mailbox": "a500002011"
+      },
+      {
+        "selector": 18,
+        "rows": 32,
+        "prg_bytes": 25215,
+        "loaded_end": 27535,
+        "hardware_stack": 14,
+        "software_stack": 478,
+        "mailbox": "a500002012"
+      },
+      {
+        "selector": 19,
+        "rows": 32,
+        "prg_bytes": 25224,
+        "loaded_end": 27544,
+        "hardware_stack": 14,
+        "software_stack": 478,
+        "mailbox": "a500002013"
+      }
+    ]
+  },
+  "feedback-length": {
+    "inputs": 16384,
+    "checkpoints": 81920,
+    "modeled_words": 137,
+    "corpus_sha256": "489ec98e5a3371217b8ed9735f40e184c2980ed18d96a9ae836d9a7ce1ef5b41",
+    "whole_sanitizer_corpus_exact": true,
+    "target_images": [
+      {
+        "selector": 0,
+        "rows": 32,
+        "prg_bytes": 26021,
+        "loaded_end": 28341,
+        "hardware_stack": 23,
+        "software_stack": 380,
+        "mailbox": "a500002000"
+      },
+      {
+        "selector": 1,
+        "rows": 32,
+        "prg_bytes": 27177,
+        "loaded_end": 29499,
+        "hardware_stack": 24,
+        "software_stack": 380,
+        "mailbox": "a500002001"
+      },
+      {
+        "selector": 2,
+        "rows": 32,
+        "prg_bytes": 26031,
+        "loaded_end": 28351,
+        "hardware_stack": 17,
+        "software_stack": 476,
+        "mailbox": "a500002002"
+      },
+      {
+        "selector": 3,
+        "rows": 32,
+        "prg_bytes": 24619,
+        "loaded_end": 26939,
+        "hardware_stack": 14,
+        "software_stack": 427,
+        "mailbox": "a500002003"
+      }
+    ]
+  },
+  "horizontal-phased": {
+    "inputs": 8192,
+    "checkpoints": 113993,
+    "modeled_words": 132,
+    "corpus_sha256": "404340479f2acb8b25524626f654b314eba385605ec050ed88a5e58d91ecde6d",
+    "whole_sanitizer_corpus_exact": true,
+    "target_images": [
+      {
+        "selector": 0,
+        "rows": 32,
+        "prg_bytes": 22604,
+        "loaded_end": 24918,
+        "hardware_stack": 14,
+        "software_stack": 425,
+        "mailbox": "a500002000"
+      },
+      {
+        "selector": 1,
+        "rows": 32,
+        "prg_bytes": 24766,
+        "loaded_end": 27080,
+        "hardware_stack": 20,
+        "software_stack": 423,
+        "mailbox": "a500002001"
+      },
+      {
+        "selector": 2,
+        "rows": 32,
+        "prg_bytes": 23809,
+        "loaded_end": 26123,
+        "hardware_stack": 17,
+        "software_stack": 366,
+        "mailbox": "a500002002"
+      },
+      {
+        "selector": 3,
+        "rows": 32,
+        "prg_bytes": 24597,
+        "loaded_end": 26911,
+        "hardware_stack": 23,
+        "software_stack": 317,
+        "mailbox": "a500002003"
+      },
+      {
+        "selector": 4,
+        "rows": 32,
+        "prg_bytes": 25361,
+        "loaded_end": 27677,
+        "hardware_stack": 24,
+        "software_stack": 319,
+        "mailbox": "a500002004"
+      },
+      {
+        "selector": 5,
+        "rows": 32,
+        "prg_bytes": 27216,
+        "loaded_end": 29532,
+        "hardware_stack": 24,
+        "software_stack": 422,
+        "mailbox": "a500002005"
+      },
+      {
+        "selector": 6,
+        "rows": 32,
+        "prg_bytes": 23098,
+        "loaded_end": 25412,
+        "hardware_stack": 17,
+        "software_stack": 311,
+        "mailbox": "a500002006"
+      },
+      {
+        "selector": 7,
+        "rows": 32,
+        "prg_bytes": 23225,
+        "loaded_end": 25539,
+        "hardware_stack": 20,
+        "software_stack": 308,
+        "mailbox": "a500002007"
+      },
+      {
+        "selector": 8,
+        "rows": 32,
+        "prg_bytes": 23754,
+        "loaded_end": 26068,
+        "hardware_stack": 23,
+        "software_stack": 317,
+        "mailbox": "a500002008"
+      },
+      {
+        "selector": 9,
+        "rows": 32,
+        "prg_bytes": 25344,
+        "loaded_end": 27660,
+        "hardware_stack": 24,
+        "software_stack": 319,
+        "mailbox": "a500002009"
+      },
+      {
+        "selector": 10,
+        "rows": 32,
+        "prg_bytes": 23884,
+        "loaded_end": 26198,
+        "hardware_stack": 17,
+        "software_stack": 415,
+        "mailbox": "a50000200a"
+      },
+      {
+        "selector": 11,
+        "rows": 32,
+        "prg_bytes": 21836,
+        "loaded_end": 24150,
+        "hardware_stack": 14,
+        "software_stack": 423,
+        "mailbox": "a50000200b"
+      },
+      {
+        "selector": 12,
+        "rows": 32,
+        "prg_bytes": 21696,
+        "loaded_end": 24010,
+        "hardware_stack": 14,
+        "software_stack": 424,
+        "mailbox": "a50000200c"
+      }
+    ]
+  },
+  "source": {
+    "original_luminary_interpreter_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "original_luminary_landing_sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
+    "fixture_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "pinned_engine_sha256": "9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef",
+    "oracle_DV": "Existing pinned SimulateDV selected for every DV; one host-only branch change, native arithmetic contains no instruction engine."
+  }
+}

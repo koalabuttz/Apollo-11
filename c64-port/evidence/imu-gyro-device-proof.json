@@ -1,0 +1,174 @@
+{
+  "complete_states": 262144,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "CHAN11",
+    "CHAN12",
+    "CHAN14",
+    "phase32",
+    "pending",
+    "selection",
+    "event_count",
+    "events18"
+  ],
+  "source_groups_credited": 0,
+  "peripheral_source_audit": "evidence/imu-gyro-device-source-audit.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/imu-gyro-device-lm0-complete.states.xz",
+        "decoded_sha256": "761e19b9e62285e1bee9ddbad4be64cf522c4e99120a5deb89137619c1cc3c82",
+        "decoded_bytes": 272367616
+      },
+      "strict_native": {
+        "object": "evidence/imu-gyro-device-lm0-complete.states.xz",
+        "decoded_sha256": "761e19b9e62285e1bee9ddbad4be64cf522c4e99120a5deb89137619c1cc3c82",
+        "decoded_bytes": 272367616
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-gyro-device-lm0-complete.states.xz",
+        "decoded_sha256": "761e19b9e62285e1bee9ddbad4be64cf522c4e99120a5deb89137619c1cc3c82",
+        "decoded_bytes": 272367616
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/imu-gyro-device-lm1-complete.states.xz",
+        "decoded_sha256": "cd878773fb9835102ffb63554b624d710e33ac28a1b6676f17a3c00de64a7632",
+        "decoded_bytes": 272367616
+      },
+      "strict_native": {
+        "object": "evidence/imu-gyro-device-lm1-complete.states.xz",
+        "decoded_sha256": "cd878773fb9835102ffb63554b624d710e33ac28a1b6676f17a3c00de64a7632",
+        "decoded_bytes": 272367616
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-gyro-device-lm1-complete.states.xz",
+        "decoded_sha256": "cd878773fb9835102ffb63554b624d710e33ac28a1b6676f17a3c00de64a7632",
+        "decoded_bytes": 272367616
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/imu-gyro-device-cm0-complete.states.xz",
+        "decoded_sha256": "3a92a1855a79b80ae13e726bac80df4e39b5f76e91cf26770a4cde5ed360ae47",
+        "decoded_bytes": 272367616
+      },
+      "strict_native": {
+        "object": "evidence/imu-gyro-device-cm0-complete.states.xz",
+        "decoded_sha256": "3a92a1855a79b80ae13e726bac80df4e39b5f76e91cf26770a4cde5ed360ae47",
+        "decoded_bytes": 272367616
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-gyro-device-cm0-complete.states.xz",
+        "decoded_sha256": "3a92a1855a79b80ae13e726bac80df4e39b5f76e91cf26770a4cde5ed360ae47",
+        "decoded_bytes": 272367616
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/imu-gyro-device-cm1-complete.states.xz",
+        "decoded_sha256": "58c20dafd94370224b997de575cc7fb55e8a0ad921b049a44750d7f7d7f5d0e9",
+        "decoded_bytes": 272367616
+      },
+      "strict_native": {
+        "object": "evidence/imu-gyro-device-cm1-complete.states.xz",
+        "decoded_sha256": "58c20dafd94370224b997de575cc7fb55e8a0ad921b049a44750d7f7d7f5d0e9",
+        "decoded_bytes": 272367616
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-gyro-device-cm1-complete.states.xz",
+        "decoded_sha256": "58c20dafd94370224b997de575cc7fb55e8a0ad921b049a44750d7f7d7f5d0e9",
+        "decoded_bytes": 272367616
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 9135,
+      "loaded_end": "0x2bad",
+      "hardware_stack": 20,
+      "software_stack": 175,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 8200,
+      "loaded_end": "0x2806",
+      "hardware_stack": 20,
+      "software_stack": 179,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "mailbox": "a500002020",
+      "PRG_bytes": 9133,
+      "loaded_end": "0x2bab",
+      "hardware_stack": 20,
+      "software_stack": 175,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "mailbox": "a500002021",
+      "PRG_bytes": 8187,
+      "loaded_end": "0x27f9",
+      "hardware_stack": 20,
+      "software_stack": 180,
+      "compiler_ZP": 0
+    }
+  },
+  "event_counts": {
+    "lm0": {
+      "0": 24580,
+      "2": 4096,
+      "1": 8188,
+      "3": 4092,
+      "4": 4096,
+      "5": 4092,
+      "6": 4096,
+      "7": 4092,
+      "8": 4096,
+      "9": 4092,
+      "10": 16
+    },
+    "lm1": {
+      "0": 2048,
+      "1": 63488
+    },
+    "cm0": {
+      "0": 24580,
+      "2": 4096,
+      "1": 8188,
+      "3": 4092,
+      "4": 4096,
+      "5": 4092,
+      "6": 4096,
+      "7": 4092,
+      "8": 4096,
+      "9": 4092,
+      "10": 16
+    },
+    "cm1": {
+      "0": 2048,
+      "1": 63488
+    }
+  },
+  "rejection_invariants_per_context": 6,
+  "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+  "source_fixture_tool": "tools/imu_pulse_prepare_reference.py",
+  "independent_review": {
+    "path": "evidence/imu-gyro-device-independent-review.txt",
+    "sha256": "0a2530a8d68a16a33444e9794fafbcdb4573cb8e7d2d941d56f4377f2fea1152"
+  },
+  "host_only_reference_dependency": {
+    "deps/virtualagc/yaAGC/agc_engine.c": "9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef"
+  },
+  "qualification": "Native simulated gyro peripheral transport; one eligible reference-peripheral step, explicit pending/selection/phase and eventbuffer. Timed and defaultburst backend modes match unchanged reference with originalCAFZERO pending CPU observation and noCPU canonicalwrites. Ordinary positivecounter0..037777, legalmode state, callerproducer exclusion/clock ownership. No decoder/privatepersistentstate, source instruction/wallclock timeline or physical output claim; no containingfile sourcecredit.",
+  "decoded_stream_identity": "Each of four originals is retained once as deterministic XZ. Strict-native and full-sanitized streams compared directly against decoded original bytes with pipefail; no duplicate raw full streams retained."
+}

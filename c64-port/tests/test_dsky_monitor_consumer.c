@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "dsky_monitor_consumer_check.h"
+static apollo_overlay_state s,before;
+int main(void){static const uint8_t stages[]={0,1,2,3,4,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};uint16_t fail=0,n;unsigned i,m,g;for(i=0;i<sizeof stages;++i)for(n=0;n<((stages[i]==23u||stages[i]==13u)?8u:16u);++n)fail=(uint16_t)(fail+dsky_monitor_consumer_checkpoint(stages[i],n,&s,&before));for(m=0;m<2u;++m)for(g=0;g<8u;++g){enum dsky_nv_mission mission;enum dsky_monitor_consumer_stage stage=DSKY_MONC_DISPLAY,next=(enum dsky_monitor_consumer_stage)99;dsky_charin_io io,old;agc_word channel;dsky_monitor_consumer_input(&s,&io,(uint16_t)(m*128u),&mission,&channel);switch(g){case 0:mission=(enum dsky_nv_mission)2;break;case 1:stage=DSKY_MONC_FRONTIER;break;case 2:s.words[5]=0;break;case 3:channel=0100000;break;case 4:io.channel11=0100000;break;case 5:io.wrote_channel11=2;break;case 6:io.control.interrupt_enabled=2;break;default:s.words[6]^=1;break;}before=s;old=io;if(dsky_monitor_consumer(&s,&io,mission,stage,channel,&next)!=P66_BIAS_OUT_OF_SCOPE||memcmp(&s,&before,sizeof s)||memcmp(&io,&old,sizeof io)||next!=(enum dsky_monitor_consumer_stage)99)++fail;}printf("336 complete original monitor source incoming/output states +16 unchanged guards: %s\n",fail?"FAIL":"PASS");return fail?1:0;}

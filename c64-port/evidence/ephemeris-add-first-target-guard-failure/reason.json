@@ -1,0 +1,39 @@
+{
+  "failure": "Harness guard6 set BBANK to0, identical to valid inputcase0; native correctly admitted it. All72 original full image states passed before guard failure status7.",
+  "mailbox": "ee480007",
+  "correction": "Set incoherent BBANK to1 in isolated guard. Runtime/source cases unchanged.",
+  "records": {
+    "ephemeris_add_target.c": {
+      "original_path": "tests/ephemeris_add_target.c",
+      "sha256": "34f8e3186b0b209007a6d486f5271715b0346315525a7957ed9cb60e82a81697"
+    },
+    "ephemeris-add.prg": {
+      "original_path": "build/ephemeris-add.prg",
+      "sha256": "24d4d8cb4949c141fc1786c023375e466e3e8bbe35db521dea83708b271515d6"
+    },
+    "ephemeris-add.map": {
+      "original_path": "build/ephemeris-add.map",
+      "sha256": "7a2d7a4218c16d01152978195c48c0754afda5a775292d4b7aa90934b25cf789"
+    },
+    "ephemeris-add-mailbox.bin": {
+      "original_path": "build/ephemeris-add-mailbox.bin",
+      "sha256": "1fc92edd1b1fd0f1357c260422c386ddeb9928f41629822b9083eff0934c0343"
+    },
+    "ephemeris-add-vice.mon": {
+      "original_path": "build/ephemeris-add-vice.mon",
+      "sha256": "cdeb13da061d8832b9c5ed1cb377cf1bb1af6010d20954f98b0da6d4d3a497bb"
+    },
+    "ephemeris-add-monitor.log": {
+      "original_path": "build/ephemeris-add-monitor.log",
+      "sha256": "8aef7aabfde6cffba475d225972df5001f8c5e891e7532ec306f9bb3ffb9387b"
+    },
+    "ephemeris-add-vice.log": {
+      "original_path": "build/ephemeris-add-vice.log",
+      "sha256": "057482e5a28534ac242c0bb33d11da1d2c81578a8a59c9842bf8176cd16032d1"
+    },
+    "ephemeris-add-c64-validation.log": {
+      "original_path": "build/ephemeris-add-c64-validation.log",
+      "sha256": "17fadc72a293d43ede2f0829ff713b50cff4840af300f0be19989220bc0762d4"
+    }
+  }
+}

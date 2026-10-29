@@ -1,0 +1,6 @@
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_nv_admission.c src/agc_word.c src/dsky_nv_admission.c tests/dsky_nv_admission_cases.c tests/dsky_nv_admission_check.c -o build/test-dsky-nv-admission-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-nv-admission-sanitize
+64 full LM/CM NVSUB source states and80 unchanged invalid guards: PASS
+python3 tools/dsky_nv_admission_sanitize.py
+PASS all8192 complete original LM/CM NVSUB/NVMONOPT/NVSUB1/2 source states under ASAN/UBSAN, SHA256 6f5e35295a2e05aaf29058e032e0db5830b64f5b77e2e117a9565f5e899b0eee
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_nv_admission_snapshot.c src/agc_word.c src/dsky_nv_admission.c tests/dsky_nv_admission_cases.c tests/dsky_nv_admission_check.c -o build/dsky-nv-admission-route-port

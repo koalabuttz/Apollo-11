@@ -1,0 +1,41 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_phase_cleanup_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original source phase cleanup bodies and ordinary return
+{
+  "cases": 12288,
+  "checkpoints": 12288,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "MR.KLEAN05,2501",
+    "P00KLEAN05,2505",
+    "V37KLEAN05,2513"
+  ],
+  "context_cohorts": "three entries \u00d74096 randomized wholeimages, entry Ebank/SUPER/IRQ and rawregister domains",
+  "binary_bytes": 50479104,
+  "snapshot_sha256": "90642a1ec96733723fa3e586a86522e0a5e099513c9b073b5c8e0389ee8a472b",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual MR/P00/V37 cleanup, exact inactive phase(+0)/complement(-0) pairs and genuine ordinary return; selected recovery caller remains separate"
+}

@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_restart.c src/cm_restart_native.c tests/cm_restart_cases.c tests/cm_restart_native_cases.c platform/host/cm_restart_native_snapshot.c -o build/cm-restart-native-snapshot
+python3 tools/cm_restart_native_differential.py
+PASS:64 CM restart-selected callback sequences;320complete434-word checkpoints;192actualnativeCcallbacks
+Original STARTSB2/GOPROG3 phase check/RESTARTS admission/Executive; explicit erasable INCR MPAC+2 / TC ENDJOB caller fixtures;16guards intact
+Snapshot SHA256: 0fc55bb17cc785f54a944917685917feff3dee8e3b4af53db10be1b924707de8
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_restart.c src/cm_restart_native.c tests/cm_restart_cases.c tests/cm_restart_native_cases.c tests/cm_restart_native_check.c tests/test_cm_restart_native.c -o build/test-cm-restart-native
+./build/test-cm-restart-native
+PASS:64CMrestart sequences/320source checkpoints;192actualCcallbacks;unsupported maps/types/reentry retain state
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_restart.c src/cm_restart_native.c tests/cm_restart_cases.c tests/cm_restart_native_cases.c tests/cm_restart_native_check.c tests/test_cm_restart_native.c -o build/test-cm-restart-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-restart-native-sanitize
+PASS:64CMrestart sequences/320source checkpoints;192actualCcallbacks;unsupported maps/types/reentry retain state
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-restart-native.map src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_restart.c src/cm_restart_native.c tests/cm_restart_cases.c tests/cm_restart_native_cases.c tests/cm_restart_native_check.c platform/c64/cm_restart_native_diagnostic.c -o build/cm-restart-native.prg

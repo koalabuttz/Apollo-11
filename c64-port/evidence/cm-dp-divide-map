@@ -1,0 +1,151 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     2bd7     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm-dp-divide.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      10b     1         build/cm-dp-divide.prg.lto.o:(.text.canonical_positive)
+     843      843      10b     1                 canonical_positive
+     94e      94e       f9     1         build/cm-dp-divide.prg.lto.o:(.text.double_pair)
+     94e      94e       f9     1                 double_pair
+     a47      a47      283     1         build/cm-dp-divide.prg.lto.o:(.text.ratio)
+     a47      a47      283     1                 ratio
+     cca      cca     225a     1         build/cm-dp-divide.prg.lto.o:(.text.main)
+     cca      cca     225a     1                 main
+    2f24     2f24        6     1         build/cm-dp-divide.prg.lto.o:(.text.exit)
+    2f24     2f24        6     1                 exit
+    2f2a     2f2a       34     1         build/cm-dp-divide.prg.lto.o:(.text.memcpy)
+    2f2a     2f2a       34     1                 memcpy
+    2f5e     2f5e       47     1         build/cm-dp-divide.prg.lto.o:(.text.memcmp)
+    2f5e     2f5e       47     1                 memcmp
+    2fa5     2fa5       22     1         build/cm-dp-divide.prg.lto.o:(.text.__memset)
+    2fa5     2fa5       22     1                 __memset
+    2fc7     2fc7       13     1         build/cm-dp-divide.prg.lto.o:(.text.__ashlhi3)
+    2fc7     2fc7       13     1                 __ashlhi3
+    2fda     2fda       17     1         build/cm-dp-divide.prg.lto.o:(.text.__lshrsi3)
+    2fda     2fda       17     1                 __lshrsi3
+    2ff1     2ff1       ae     1         build/cm-dp-divide.prg.lto.o:(.text.__umodhi3)
+    2ff1     2ff1       ae     1                 __umodhi3
+    309f     309f      2de     1         build/cm-dp-divide.prg.lto.o:(.text.__divmodsi4)
+    309f     309f      2de     1                 __divmodsi4
+    337d     337d       67     1         build/cm-dp-divide.prg.lto.o:(.text.__mulsi3)
+    337d     337d       67     1                 __mulsi3
+    33e4     33e4        0     1         __init_array_start = .
+    33e4     33e4        0     1         __init_array_end = .
+    33e4     33e4        0     1         __fini_array_start = .
+    33e4     33e4        0     1         __fini_array_end = .
+    33e4     33e4     46a3     1 .rodata
+    33e4     33e4        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    33e4     33e4        0     1                 __set_v
+    33e5     33e5        a     1         build/cm-dp-divide.prg.lto.o:(.rodata.main)
+    33ef     33ef       6e     1         build/cm-dp-divide.prg.lto.o:(.rodata.dp_divide_reference_dictionary)
+    33ef     33ef       6e     1                 dp_divide_reference_dictionary
+    345d     345d      47c     1         build/cm-dp-divide.prg.lto.o:(.rodata.dp_divide_reference_offsets)
+    345d     345d      47c     1                 dp_divide_reference_offsets
+    38d9     38d9     38aa     1         build/cm-dp-divide.prg.lto.o:(.rodata.dp_divide_reference_stream)
+    38d9     38d9     38aa     1                 dp_divide_reference_stream
+    7183     7183      8f4     1         build/cm-dp-divide.prg.lto.o:(.rodata.dp_divide_reference_cases)
+    7183     7183      8f4     1                 dp_divide_reference_cases
+    7a77     7a77       10     1         <internal>:(.rodata.cst16)
+    7a87     7a87        0     1 .data
+    7a87     7a87        0     1         __data_start = .
+    7a87     7a87        0     1         __data_end = .
+    7a87     7a87        0     1 __data_load_start = LOADADDR(.data)
+    7a87     7a87        0     1 __data_size = SIZEOF(.data)
+    7a87     7a87       b4     1 .bss
+    7a87     7a87        0     1         __bss_start = .
+    7a87     7a87       4e     1         build/cm-dp-divide.prg.lto.o:(.bss.s)
+    7a87     7a87       4e     1                 s
+    7ad5     7ad5        6     1         build/cm-dp-divide.prg.lto.o:(.bss.el)
+    7ad5     7ad5        6     1                 el
+    7adb     7adb        2     1         build/cm-dp-divide.prg.lto.o:(.bss.d.0)
+    7adb     7adb        2     1                 d.0
+    7add     7add        2     1         build/cm-dp-divide.prg.lto.o:(.bss.d.1)
+    7add     7add        2     1                 d.1
+    7adf     7adf        2     1         build/cm-dp-divide.prg.lto.o:(.bss.d.2)
+    7adf     7adf        2     1                 d.2
+    7ae1     7ae1        2     1         build/cm-dp-divide.prg.lto.o:(.bss.d.3)
+    7ae1     7ae1        2     1                 d.3
+    7ae3     7ae3        2     1         build/cm-dp-divide.prg.lto.o:(.bss.sc.0)
+    7ae3     7ae3        2     1                 sc.0
+    7ae5     7ae5        2     1         build/cm-dp-divide.prg.lto.o:(.bss.sc.1)
+    7ae5     7ae5        2     1                 sc.1
+    7ae7     7ae7       4e     1         build/cm-dp-divide.prg.lto.o:(.bss.before)
+    7ae7     7ae7       4e     1                 before
+    7b35     7b35        6     1         build/cm-dp-divide.prg.lto.o:(.bss.old_elapsed)
+    7b35     7b35        6     1                 old_elapsed
+    7b3b     7b3b        0     1         __bss_end = .
+    7b3b     7b3b        0     1 __bss_size = SIZEOF(.bss)
+    7b3b     7b3b        2     1 .noinit
+    7b3b     7b3b        2     1         build/cm-dp-divide.prg.lto.o:(.noinit..Lstatic_stack)
+    7b3d     7b3d        0     1         __heap_start = ALIGN(., 2)
+    7b3d     7b3d        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm-dp-divide.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm-dp-divide.prg.lto.o:(.llvm_sympart)
+       0        0      be0     4 .symtab
+       0        0      be0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      6a6     1 .strtab
+       0        0      6a6     1         <internal>:(.strtab)

@@ -1,0 +1,36 @@
+Loading /workspace/Apollo-11/c64-port/build/feedback-length0.prg from 0801 to 6DA3 (65A3 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  276/$114,   2/$02
+.C:2c8c  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    8115662
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-length1.prg from 0801 to 7227 (6A27 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  299/$12b,   7/$07
+.C:2798  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    8156428
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-length2.prg from 0801 to 6DAD (65AD bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   62/$03e,  29/$1d
+.C:2e32  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    7571495
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/feedback-length3.prg from 0801 to 6829 (6029 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   61/$03d,  25/$19
+.C:2b6f  8E 80 C0    STX $C080      - A:00 X:A5 Y:00 SP:ed N.-....C    7512460
+>C:c080  a5 00 00 20  03                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/feedback_length-software-stack.bin' from $c100 to $cfff

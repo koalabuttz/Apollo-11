@@ -1,0 +1,447 @@
+{
+  "Luminary099": {
+    "original_source_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "assembled_source_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "support_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/lm-powered-source-audit.json",
+    "source_edits": 0,
+    "indentation_repairs": [],
+    "sign_source_lines": [
+      1423,
+      1453
+    ],
+    "emitted_words": 27,
+    "words": [
+      {
+        "line": 1423,
+        "bank": "03",
+        "address": "7655",
+        "physical_fixed_word": 4013,
+        "raw": "50116"
+      },
+      {
+        "line": 1424,
+        "bank": "03",
+        "address": "7656",
+        "physical_fixed_word": 4014,
+        "raw": "10000"
+      },
+      {
+        "line": 1425,
+        "bank": "03",
+        "address": "7657",
+        "physical_fixed_word": 4015,
+        "raw": "16061"
+      },
+      {
+        "line": 1426,
+        "bank": "03",
+        "address": "7660",
+        "physical_fixed_word": 4016,
+        "raw": "17662"
+      },
+      {
+        "line": 1427,
+        "bank": "03",
+        "address": "7661",
+        "physical_fixed_word": 4017,
+        "raw": "17670"
+      },
+      {
+        "line": 1429,
+        "bank": "03",
+        "address": "7662",
+        "physical_fixed_word": 4018,
+        "raw": "50116"
+      },
+      {
+        "line": 1430,
+        "bank": "03",
+        "address": "7663",
+        "physical_fixed_word": 4019,
+        "raw": "10001"
+      },
+      {
+        "line": 1431,
+        "bank": "03",
+        "address": "7664",
+        "physical_fixed_word": 4020,
+        "raw": "16061"
+      },
+      {
+        "line": 1432,
+        "bank": "03",
+        "address": "7665",
+        "physical_fixed_word": 4021,
+        "raw": "16061"
+      },
+      {
+        "line": 1433,
+        "bank": "03",
+        "address": "7666",
+        "physical_fixed_word": 4022,
+        "raw": "17670"
+      },
+      {
+        "line": 1434,
+        "bank": "03",
+        "address": "7667",
+        "physical_fixed_word": 4023,
+        "raw": "16061"
+      },
+      {
+        "line": 1435,
+        "bank": "03",
+        "address": "7670",
+        "physical_fixed_word": 4024,
+        "raw": "00006"
+      },
+      {
+        "line": 1436,
+        "bank": "03",
+        "address": "7671",
+        "physical_fixed_word": 4025,
+        "raw": "40155"
+      },
+      {
+        "line": 1437,
+        "bank": "03",
+        "address": "7672",
+        "physical_fixed_word": 4026,
+        "raw": "52155"
+      },
+      {
+        "line": 1439,
+        "bank": "03",
+        "address": "7673",
+        "physical_fixed_word": 4027,
+        "raw": "10163"
+      },
+      {
+        "line": 1440,
+        "bank": "03",
+        "address": "7674",
+        "physical_fixed_word": 4028,
+        "raw": "17705"
+      },
+      {
+        "line": 1441,
+        "bank": "03",
+        "address": "7675",
+        "physical_fixed_word": 4029,
+        "raw": "17705"
+      },
+      {
+        "line": 1443,
+        "bank": "03",
+        "address": "7676",
+        "physical_fixed_word": 4030,
+        "raw": "00006"
+      },
+      {
+        "line": 1444,
+        "bank": "03",
+        "address": "7677",
+        "physical_fixed_word": 4031,
+        "raw": "40160"
+      },
+      {
+        "line": 1445,
+        "bank": "03",
+        "address": "7700",
+        "physical_fixed_word": 4032,
+        "raw": "52160"
+      },
+      {
+        "line": 1446,
+        "bank": "03",
+        "address": "7701",
+        "physical_fixed_word": 4033,
+        "raw": "00006"
+      },
+      {
+        "line": 1447,
+        "bank": "03",
+        "address": "7702",
+        "physical_fixed_word": 4034,
+        "raw": "40162"
+      },
+      {
+        "line": 1448,
+        "bank": "03",
+        "address": "7703",
+        "physical_fixed_word": 4035,
+        "raw": "52162"
+      },
+      {
+        "line": 1449,
+        "bank": "03",
+        "address": "7704",
+        "physical_fixed_word": 4036,
+        "raw": "16061"
+      },
+      {
+        "line": 1451,
+        "bank": "03",
+        "address": "7705",
+        "physical_fixed_word": 4037,
+        "raw": "40156"
+      },
+      {
+        "line": 1452,
+        "bank": "03",
+        "address": "7706",
+        "physical_fixed_word": 4038,
+        "raw": "54156"
+      },
+      {
+        "line": 1453,
+        "bank": "03",
+        "address": "7707",
+        "physical_fixed_word": 4039,
+        "raw": "16061"
+      }
+    ]
+  },
+  "Comanche055": {
+    "original_source_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "assembled_source_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+    "support_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/cm-powered-trig-source-audit.json",
+    "source_edits": 0,
+    "indentation_repairs": [
+      51,
+      207,
+      247,
+      542,
+      588,
+      678,
+      681,
+      908,
+      941,
+      1376,
+      1504,
+      1551,
+      1553,
+      1600,
+      1735,
+      1739,
+      1830,
+      1921,
+      1940,
+      1986,
+      2002,
+      2014,
+      2028,
+      2058,
+      2561,
+      2646,
+      2661,
+      2901,
+      3018,
+      3023,
+      3028,
+      3034,
+      3042,
+      3047,
+      3054,
+      3062
+    ],
+    "sign_source_lines": [
+      1431,
+      1461
+    ],
+    "emitted_words": 27,
+    "words": [
+      {
+        "line": 1431,
+        "bank": "03",
+        "address": "7624",
+        "physical_fixed_word": 3988,
+        "raw": "50116"
+      },
+      {
+        "line": 1432,
+        "bank": "03",
+        "address": "7625",
+        "physical_fixed_word": 3989,
+        "raw": "10000"
+      },
+      {
+        "line": 1433,
+        "bank": "03",
+        "address": "7626",
+        "physical_fixed_word": 3990,
+        "raw": "16030"
+      },
+      {
+        "line": 1434,
+        "bank": "03",
+        "address": "7627",
+        "physical_fixed_word": 3991,
+        "raw": "17631"
+      },
+      {
+        "line": 1435,
+        "bank": "03",
+        "address": "7630",
+        "physical_fixed_word": 3992,
+        "raw": "17637"
+      },
+      {
+        "line": 1437,
+        "bank": "03",
+        "address": "7631",
+        "physical_fixed_word": 3993,
+        "raw": "50116"
+      },
+      {
+        "line": 1438,
+        "bank": "03",
+        "address": "7632",
+        "physical_fixed_word": 3994,
+        "raw": "10001"
+      },
+      {
+        "line": 1439,
+        "bank": "03",
+        "address": "7633",
+        "physical_fixed_word": 3995,
+        "raw": "16030"
+      },
+      {
+        "line": 1440,
+        "bank": "03",
+        "address": "7634",
+        "physical_fixed_word": 3996,
+        "raw": "16030"
+      },
+      {
+        "line": 1441,
+        "bank": "03",
+        "address": "7635",
+        "physical_fixed_word": 3997,
+        "raw": "17637"
+      },
+      {
+        "line": 1442,
+        "bank": "03",
+        "address": "7636",
+        "physical_fixed_word": 3998,
+        "raw": "16030"
+      },
+      {
+        "line": 1443,
+        "bank": "03",
+        "address": "7637",
+        "physical_fixed_word": 3999,
+        "raw": "00006"
+      },
+      {
+        "line": 1444,
+        "bank": "03",
+        "address": "7640",
+        "physical_fixed_word": 4000,
+        "raw": "40155"
+      },
+      {
+        "line": 1445,
+        "bank": "03",
+        "address": "7641",
+        "physical_fixed_word": 4001,
+        "raw": "52155"
+      },
+      {
+        "line": 1447,
+        "bank": "03",
+        "address": "7642",
+        "physical_fixed_word": 4002,
+        "raw": "10163"
+      },
+      {
+        "line": 1448,
+        "bank": "03",
+        "address": "7643",
+        "physical_fixed_word": 4003,
+        "raw": "17654"
+      },
+      {
+        "line": 1449,
+        "bank": "03",
+        "address": "7644",
+        "physical_fixed_word": 4004,
+        "raw": "17654"
+      },
+      {
+        "line": 1451,
+        "bank": "03",
+        "address": "7645",
+        "physical_fixed_word": 4005,
+        "raw": "00006"
+      },
+      {
+        "line": 1452,
+        "bank": "03",
+        "address": "7646",
+        "physical_fixed_word": 4006,
+        "raw": "40160"
+      },
+      {
+        "line": 1453,
+        "bank": "03",
+        "address": "7647",
+        "physical_fixed_word": 4007,
+        "raw": "52160"
+      },
+      {
+        "line": 1454,
+        "bank": "03",
+        "address": "7650",
+        "physical_fixed_word": 4008,
+        "raw": "00006"
+      },
+      {
+        "line": 1455,
+        "bank": "03",
+        "address": "7651",
+        "physical_fixed_word": 4009,
+        "raw": "40162"
+      },
+      {
+        "line": 1456,
+        "bank": "03",
+        "address": "7652",
+        "physical_fixed_word": 4010,
+        "raw": "52162"
+      },
+      {
+        "line": 1457,
+        "bank": "03",
+        "address": "7653",
+        "physical_fixed_word": 4011,
+        "raw": "16030"
+      },
+      {
+        "line": 1459,
+        "bank": "03",
+        "address": "7654",
+        "physical_fixed_word": 4012,
+        "raw": "40156"
+      },
+      {
+        "line": 1460,
+        "bank": "03",
+        "address": "7655",
+        "physical_fixed_word": 4013,
+        "raw": "54156"
+      },
+      {
+        "line": 1461,
+        "bank": "03",
+        "address": "7656",
+        "physical_fixed_word": 4014,
+        "raw": "16030"
+      }
+    ]
+  }
+}

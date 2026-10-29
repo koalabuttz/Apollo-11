@@ -1,0 +1,78 @@
+{
+ "scenario": "cm-p23-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 30000,
+ "keys": "@4500V37E23E@5500V25E00002E00000E00110E@7000V33E@9000E@11000M@13000V33E@17000M@19000V33E@20500V33E@25000V33E@27000V37E00E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_CHAN": "4000:033=077757,10000:033=077777,12000:033=077757,16000:033=077777",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p23.load,10500:tools/flight_scenarios/cm-p23-cal.load,16500:tools/flight_scenarios/cm-p23-mark.load"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 30003,
+ "periods_taken": 30000,
+ "periods_dropped": 3,
+ "agc_centiseconds": 30000,
+ "native_routines": 1870738,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 806760,
+  "yaagc": 794959,
+  "percent": 1.5,
+  "routines": 4691,
+  "mean_abs_error": 24.5,
+  "abs_percent": 14.5,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +1.5% net, 14.5% routine by routine, from yaAGC's MCT over 4691 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 11,
+  "no_interrupt_to": 27,
+  "no_background_periods": 1,
+  "no_background_to": 13156
+ },
+ "reached": {
+  "31,2403": 4804,
+  "37,2413": 9001,
+  "43,2275": 9000
+ },
+ "arrivals": {
+  "31,2403": [
+   4804
+  ],
+  "37,2413": [
+   9001
+  ],
+  "43,2275": [
+   9000
+  ]
+ },
+ "log_sha256": "03039a5eedc34cb4a0daf1e8cb8ae908a3dbe03b9d0f36e80c6afe1ff954484f"
+}

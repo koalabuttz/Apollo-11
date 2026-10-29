@@ -1,0 +1,2 @@
+./build/test-cm-startup
+PASS:640originalCMstartup/cleanup whole-image states; all2047image words+15I/O values;5fullsamples andinvalid-entry/bank preservation

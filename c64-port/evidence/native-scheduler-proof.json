@@ -1,0 +1,46 @@
+{
+  "source_files": {
+    "include/native_overlay_dispatch.h": "015b126e4bce875c87cfd7d09a6a0e0f5ed59c20d9d5ceb7874a02be960f09ea",
+    "src/native_overlay_dispatch.c": "7f49429ba5a74e54ab6414f084486041d8f7740242b4d3fc6110a623c3d5f1ae",
+    "platform/c64/native_scheduler_payload.c": "35008af675d7bdb3f21d673d97974ea2d416f317781d76b7563e6da9bf6ef9b9",
+    "tools/native_scheduler_overlay_build.py": "ff7ec68c3800f68d579897c8c5095682db6494d92f72946aa22f80144605bb7a",
+    "tools/native_scheduler.mk": "4150f0d679747410d1cef8123e0e2e2c2d4a9bc5256f41379eef73a9f65bf4e6",
+    "tools/display_job_scheduler_snapshot.c": "3789820140034d0a20ae7727e139f74bccf9fa7a9bcb373fa5d331b2c94209e7",
+    "tests/test_native_scheduler.c": "af581babd05cd754ed6eb39bae9fca3d369bbcc362a7108a61eca2edd32fe691",
+    "docs/NATIVE-SCHEDULER-OVERLAYS.md": "734cf7f87a7359172a9458911fe6fc76e1b5e8eb2f50b12148a51ea688747960"
+  },
+  "shared_scheduler_files": {
+    "include/native_dispatch.h": "b2d3dadaed326c7b6d5bc7ecec1174c237620664ad8ea4d0a1db383559c98738",
+    "src/native_dispatch.c": "4f30df266be218f19637760ada628cd7e2da37a1d92f93f1324d87961c1fe94d",
+    "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
+    "src/irq_delivery.c": "83a2fab0989f7a8e88c5a8b972f276f76a09c3eb3fba4f9625814c3448fe8609"
+  },
+  "artifacts": {
+    "evidence/overlay-native-scheduler-modules.json": "f08ab17c2eae34b2f976eca8cd93d6e01811fc7629dee7f5ac1910bff2307bb4",
+    "evidence/overlay-native-scheduler-150.prg": "4098ac77e6320ab4c258294612971fa37d2a3a91098d6d13f11978388359aa2f",
+    "evidence/overlay-native-scheduler-150.map": "d87dd7ab3dc1c95e4d90bff8bcdb8050d8c7983af1d80c6dd6a5ff22dc6df4ea",
+    "evidence/overlay-native-scheduler-151.prg": "7d51c5b87e71cd74f34129f496855f18c3f735e13ab001e75542a04ef2e98b9f",
+    "evidence/overlay-native-scheduler-151.map": "858d652fb7c2b2db71f34e8f3e7104459bb61264ed98c31cf8551b483c14f378",
+    "evidence/overlay-native-scheduler-152.prg": "3cceb4ebe81f4dd5ce16743d8341b9591cf1ae464643440251d56c51e42fcbab",
+    "evidence/overlay-native-scheduler-152.map": "6e45a87faa099f8dae1d1a54ca20c97b3fdcbd83242fe62da73685141f65f640",
+    "evidence/overlay-native-scheduler-153.prg": "53b549e4680e44baf5014cfd94257bf1cdb3bc4481654de4797949ce591e3635",
+    "evidence/overlay-native-scheduler-153.map": "acc73b1b8fe82573d06e16c7fb08ac3153491ce908e20ab72e759a146de32d8e"
+  },
+  "raw_streams": {
+    "build/display-job-scheduler.snapshots": "e581375ef1d84cc4051252bcaa83db25314dca33c56b74304d9d0cf3ac059b3f",
+    "build/display-job-scheduler-sanitize.snapshots": "e581375ef1d84cc4051252bcaa83db25314dca33c56b74304d9d0cf3ac059b3f",
+    "build/display-job-lifecycle-scheduler.snapshots": "17579a6e2eca791ebb58ea491c47adf360978eec5ff8286e384e38fefc13b65e",
+    "build/display-job-lifecycle-scheduler-sanitize.snapshots": "17579a6e2eca791ebb58ea491c47adf360978eec5ff8286e384e38fefc13b65e",
+    "build/display-job-final-scheduler.snapshots": "bac3af9e32c2978387ab18a7decc408b8d2da72f1d8dd4f0bd9e448346ff515f",
+    "build/display-job-final-scheduler-sanitize.snapshots": "bac3af9e32c2978387ab18a7decc408b8d2da72f1d8dd4f0bd9e448346ff515f"
+  },
+  "states": {
+    "before_END": 11776,
+    "sleep_busy_duplicate": 5120,
+    "actual_END": 12288,
+    "state_words": 2051,
+    "all_strict_SAN": "byte-identical to original assembly references"
+  },
+  "guards": "6 loader/adoption seams plus missing-lock rejection; strict and SAN PASS",
+  "target": "four linked native scheduler images150..153; real combined disk execution is a separate integration proof"
+}

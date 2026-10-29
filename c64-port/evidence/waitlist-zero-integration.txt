@@ -1,0 +1,14 @@
+Commit this correctness fix separately before startup:
+ src/waitlist.c
+ tests/waitlist_zero_cases.h/.c waitlist_zero_check.h/.c waitlist_zero_vectors.h test_waitlist_zero.c
+ tools/waitlist_zero_reference.c waitlist_zero_snapshot.c waitlist_zero_differential.py waitlist_zero_diagnostic.c waitlist_zero_vice_test.py
+
+Exact source WAITLIST.agc WTLST5 control flow: early CCS+0 skips AD LST1 and continues at next CCS; final CCS+0 skips FILLED via NOOP/AD ONE then inserts slot8; final -0 skips AD ONE. Previous native code added skipped intervals and rejected final +0 as1203.
+256 complete29word independent-original checkpoints: eightCCSpositions, +0/-0/-1/+1 inputs, end-marker/live discardedtail, four taskBBCONs. Unmodified original assembly linked only input constructors/engine; no native Waitlist implementation.
+SHA256 snapshot 83344e2046c4c6b53583bf9246dc3486e91356e7f26637b3c3af3c09c0daaa83
+Before-fix native binary gives688 field failures; fixed zero.
+Existing196cases/306checkpoints exact complete-state original differential and frozen checks still pass; saved new build/waitlist-zero-retained-* files and preserved old evidence.
+GCC strict+ASan/UBSan all256 full states pass.
+LLVM-MOS nativeC64/VICE all256 full29word frozen states pass mailboxa50000001d.
+PRG22120 loaded22118; text6632 ro15474 BSS63 noinit78; hardware/software sentinel12/6bytes. No extraZP.
+Makefile lines build/waitlist-zero-integration.mk; VICEcommand python3 tools/waitlist_zero_vice_test.py --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice

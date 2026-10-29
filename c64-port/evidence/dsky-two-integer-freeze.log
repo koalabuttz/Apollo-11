@@ -1,0 +1,6 @@
+tests/dsky_two_integer_vectors_0.h 32 states 0 before/ 462 after patches
+tests/dsky_two_integer_vectors_1.h 32 states 462 before/ 320 after patches
+tests/dsky_two_integer_vectors_2.h 32 states 558 before/ 570 after patches
+tests/dsky_two_integer_vectors_3.h 32 states 776 before/ 380 after patches
+tests/dsky_two_integer_vectors_4.h 32 states 874 before/ 128 after patches
+tests/dsky_two_integer_vectors_all.h 160 states 2670 before/ 1860 after patches

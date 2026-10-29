@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_gimbal.c src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/gimbal_stage.c tests/gimbal_cases.c -o build/test-gimbal-port
+./build/test-gimbal-port
+PASS: unsupported entries preserve image/latches; 131072 fixed-read probes expose exactly40 qualified words
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_gimbal.c src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/gimbal_stage.c tests/gimbal_cases.c -o build/test-gimbal-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-gimbal-port-sanitize
+PASS: unsupported entries preserve image/latches; 131072 fixed-read probes expose exactly40 qualified words

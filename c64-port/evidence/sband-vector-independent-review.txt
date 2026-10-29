@@ -1,0 +1,15 @@
+Independent read-only source review by /root/p66_source_map, retained by /root/frozen_storage.
+
+Reviewed original LM/CM VXV, VPROJ, DMPSUB, PREDOT/DOTSUB, VROUND, overflow and VMODE sequences against src/sband_vector.c and include/sband_vector.h. No concrete discrepancy found in the declared ordinary descriptor/vector-MODE domain.
+
+Product fetches minor first, performs partial MP/DAS exchanges, then rereads major after MPTEMP/MPAC writes; erasable operand aliases remain live. Three VBUF/MPAC rotations and component order Z -> Y -> X agree. OVERFLOW limit/AUG low/high carry chains preserve BUF/L/OVFIND and actual literal helper returns.
+
+Projection retains vector MODE through DOT, restores the original vector base through the source ADDRWD backstep, exchanges scalar/X/Y/Z in the original order, and follows each VROUND carry branch. It ends explicit VMODE A=-1/MODE=-1 at pending DANZIG. Fixed descriptors bind six ordinary immutable words without crossing a selected fixed-bank boundary, leave FB/SUPER unchanged, and carry an explicit non-aliasing caller precondition.
+
+This review is source inspection, not an independent execution run or an exhaustive numerical-domain proof. The retained source-PC cohort leaves the no-final-carry OVERFLOW TC Q exit unexecuted; the containing INTERPRETER and antenna files remain partial. Production caller composition and external callee execution are not certified by this helper packet.
+
+Reviewed identities:
+src/sband_vector.c SHA256 80a3a44a341f6c8821ea60449d654d3ecda771d52a63f5f6f91cd52bd416f5e9
+include/sband_vector.h SHA256 2c04a6c05db875d726fd7066a762b230d3d7d08216f1216c5e1a60beb941e648
+../Luminary099/INTERPRETER.agc SHA256 26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e
+../Comanche055/INTERPRETER.agc SHA256 724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b

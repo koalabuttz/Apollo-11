@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "dsky_fraction_pair_check.h"
+static apollo_overlay_state s,before;
+int main(void){uint8_t n;unsigned g,m;uint16_t fail=0;for(n=0;n<128u;++n)fail=(uint16_t)(fail+dsky_fraction_pair_checkpoint(n,&s,&before));for(m=0;m<2u;++m)for(g=0;g<14u;++g){p66_bias_io io,old;enum dsky_nv_mission mission;enum dsky_decimal_general_route route=(enum dsky_decimal_general_route)2;dsky_fraction_pair_input(&s,&io,(uint16_t)(m*8192u),&mission);switch(g){case 0:mission=(enum dsky_nv_mission)2;break;case 1:s.words[5]=0;break;case 2:s.words[4]=0;break;case 3:s.words[3]=1;break;case 4:s.words[6]^=1;break;case 5:s.words[7]=1;break;case 6:io.superbank=0;break;case 7:io.interrupt_enabled=2;break;case 8:s.words[0777]=0;break;case 9:s.words[0777]=12;break;case 10:s.words[2]=077;break;case 11:s.words[2]=010000;break;case 12:s.words[0154]=0100000;break;default:s.words[0156]=0100000;break;}before=s;old=io;if(dsky_fraction_pair(&s,&io,mission,&route)!=P66_BIAS_OUT_OF_SCOPE||memcmp(&s,&before,sizeof s)||memcmp(&io,&old,sizeof io)||route!=(enum dsky_decimal_general_route)2)++fail;}printf("128 original signed fractional pairs +28 unchanged invalid guards: %s\n",fail?"FAIL":"PASS");return fail?1:0;}

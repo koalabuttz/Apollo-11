@@ -1,0 +1,27 @@
+{
+  "reviewer": "general_division",
+  "read_only": true,
+  "conclusion": "No source arithmetic or control discrepancy found within declared actual LSPOS caller and canonical input domains.",
+  "hashes": {
+    "include/cm_ephemeris_positions.h": "228ac4e0ffa9c87f39645d824112d5289214c42b9dcba4229aedeaa362a3f7ad",
+    "src/cm_ephemeris_positions.c": "bd1bafd6ef8101661e81072fd2661543aef18c362f7c20f92a266fa580de1da7",
+    "tools/cm_ephemeris_positions_reference.c": "8f4fb695fd454c5f659cbd854e884167b39268b76b1e86cb0f613748c6f2fa4c",
+    "tools/cm_ephemeris_positions_snapshot.c": "7fd61981adb9e61d52e91541332a2b6daa1a3683a90ec6aa0c6e4f39fe14a978",
+    "tools/cm_ephemeris_positions_phase_reference.c": "0d778081577dbd45e2947b89da6b90a37538fb1c2b027b773d7d49a77c3bb78c",
+    "tests/cm_ephemeris_time_cases.c": "b95e1d617ae96815f6e2956dd57b8c4ee6b3666b57c4063428980a4051457d38",
+    "build/cm-ephemeris-positions-source-map.json": "0463648cf2dfba1052320885d43bb8132a53acfbc60ca3c096f316e394e0347e",
+    "../Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b"
+  },
+  "checks": [
+    "RESA/STODL preserves solar six words in VAC+2..7 and pops original VAC0/1 time, clearing third scalar limb and restoring MODE0/PUSHLOC.",
+    "PDVL pushes original time and retains old MPAC+6 Z minor in raw L before loading E4 VECOEM at physical02036.",
+    "Nine VXSC/VAD Horner iterations select VECOEM coefficients at physical02044+6*i; source AXT54D decrement6 leaves X1=6 after terminal TIX BZMF because zero route bypasses XCH X1.",
+    "Final VSL2 retains third product limb and restores actual QPRET caller banks: 022557->LOC02557 and030231->LOC02231, NEWOPS06037, CYR7, EDOP0, source Q3.",
+    "Read complete new module, source reference/snapshot/phase controls, original LSPOS body and original TIX control branch; helpers remain immutable independently qualified arithmetic."
+  ],
+  "limits": [
+    "No independently repeated 65536-state corpus or target execution by reviewer; owner reports and retains these.",
+    "No public SOLPOS arbitrary caller, whole ephemerides certificate, scheduler, or application acceptance claim from this review."
+  ]
+}

@@ -1,0 +1,14 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tools/sband_orbit_snapshot.c tests/sband_orbit_cases.c src/agc_word.c src/sband_orbit.c -o build/sband-orbit-integrated-stream
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_sband_orbit.c tests/sband_orbit_target.c tests/frozen_words.c tests/sband_orbit_cases.c src/agc_word.c src/sband_orbit.c -o build/test-sband-orbit-integrated
+./build/test-sband-orbit-integrated
+PASS original orbital caller full-image fixtures and unchanged unsupported images
+python3 tools/sband_orbit_port_host.py --binary build/sband-orbit-integrated-stream
+PASS all retained source-state bytes: 538181632 SHA256 5bbf1737bfe0a2d119f843d4b9fd35a4d37801feea265263d69e2e0a44ba8d54
+PASS all 131,072 original returned-conic antenna caller states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_orbit.c tests/sband_orbit_target.c tests/frozen_words.c tests/sband_orbit_cases.c src/agc_word.c src/sband_orbit.c -o build/test-sband-orbit-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-orbit-integrated-san
+PASS original orbital caller full-image fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_orbit_snapshot.c tests/sband_orbit_cases.c src/agc_word.c src/sband_orbit.c -o build/sband-orbit-integrated-stream-san
+python3 tools/sband_orbit_port_host.py --binary build/sband-orbit-integrated-stream-san
+PASS all retained source-state bytes: 538181632 SHA256 5bbf1737bfe0a2d119f843d4b9fd35a4d37801feea265263d69e2e0a44ba8d54
+PASS all 131,072 original returned-conic antenna caller states

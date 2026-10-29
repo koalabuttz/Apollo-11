@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm_powered_fixed_return group original-assembly states; retained memory unchanged
+Mailbox: a500002003
+PRG bytes: 5406
+cm_powered_fixed_return-hardware-stack.bin: measured stack extent 14 bytes
+cm_powered_fixed_return-software-stack.bin: measured stack extent 59 bytes

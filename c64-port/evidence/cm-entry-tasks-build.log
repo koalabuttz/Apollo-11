@@ -1,0 +1,36 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_entry_tasks.c src/cm_phase.c src/cm_native_image.c src/cm_waitlist.c src/cm_waitlist_native.c src/agc_word.c tests/cm_entry_tasks_cases.c platform/host/cm_entry_tasks_snapshot.c -o build/cm-entry-tasks-native
+python3 tools/cm_entry_tasks_differential.py
+{
+  "sources": {
+    "CM_ENTRY_DIGITAL_AUTOPILOT.agc": {
+      "original_sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
+      "normalized_sha256": "82aef32507d8b595667877ff2375883f8187bfc04b726ebde728a8842074b24a",
+      "indentation_repairs": 1
+    },
+    "P40-P47.agc": {
+      "original_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+      "normalized_sha256": "edc27c44808626b1aa725abf34cce723fc300a149d9a162162dee5fc6b7eccf6",
+      "indentation_repairs": 7
+    }
+  },
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: 1024 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "15,3207 SETJTAG"
+  ],
+  "boundary": "actual 05324 TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "07cbe21373f1da5cc0bd13e1ed5ff3beac6f9c4da5c37c555d16c2611f1a1c0b"
+}
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_entry_tasks.c src/cm_phase.c src/cm_native_image.c src/cm_waitlist.c src/cm_waitlist_native.c src/agc_word.c tests/cm_entry_tasks_cases.c tests/cm_entry_tasks_check.c tests/test_cm_entry_tasks.c -o build/test-cm-entry-tasks
+./build/test-cm-entry-tasks
+1024 original SETJTAG full-image states, actual C callbacks and guards: FAIL
+make: *** [tools/cm_entry_tasks.mk:15: test-cm-entry-tasks] Error 1

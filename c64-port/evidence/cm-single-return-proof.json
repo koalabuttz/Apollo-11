@@ -1,0 +1,91 @@
+{
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_file": "Comanche055/SINGLE_PRECISION_SUBROUTINES.agc",
+  "source_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+  "numerical_proof_dependency": {
+    "path": "evidence/cm-trig-proof.json",
+    "sha256": "8f6cc5b3e0e48db0720cfc22b7c9219a259e1351e5bb18aab5dea6fdedd0900c"
+  },
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "calls": 6144,
+  "reference_entry_exit_states": 12288,
+  "fixed_caller_addresses_per_entry": 3072,
+  "reference_stream": {
+    "object": "evidence/cm-single-return-reference.snapshots.gz",
+    "sha256": "09a3b3a38a1065ebe5045d5896b26079aa983f88206e28a9ed651fab0a80b37b"
+  },
+  "logical_output_streams": {
+    "reference_exit": {
+      "object": "evidence/cm-single-return-native-complete-sanitize.snapshots.gz",
+      "sha256": "c422cb8f6c20eefe2be81d47d3c9baf38edf85a373e808565ce951193e66846f"
+    },
+    "native_return": {
+      "object": "evidence/cm-single-return-native-complete-sanitize.snapshots.gz",
+      "sha256": "c422cb8f6c20eefe2be81d47d3c9baf38edf85a373e808565ce951193e66846f"
+    },
+    "sanitize_return": {
+      "object": "evidence/cm-single-return-native-complete-sanitize.snapshots.gz",
+      "sha256": "c422cb8f6c20eefe2be81d47d3c9baf38edf85a373e808565ce951193e66846f"
+    },
+    "native_composed": {
+      "object": "evidence/cm-single-return-native-complete-sanitize.snapshots.gz",
+      "sha256": "c422cb8f6c20eefe2be81d47d3c9baf38edf85a373e808565ce951193e66846f"
+    },
+    "sanitize_composed": {
+      "object": "evidence/cm-single-return-native-complete-sanitize.snapshots.gz",
+      "sha256": "c422cb8f6c20eefe2be81d47d3c9baf38edf85a373e808565ce951193e66846f"
+    }
+  },
+  "all_whole_host_and_sanitizer_streams_equal": true,
+  "target_images": [
+    {
+      "selector": 0,
+      "mode": "return_only",
+      "states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 4400,
+      "loaded_end_hex": "0x392f",
+      "hardware_stack_bytes": 20,
+      "software_stack_bytes": 50,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 1,
+      "mode": "return_only",
+      "states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 4437,
+      "loaded_end_hex": "0x3954",
+      "hardware_stack_bytes": 20,
+      "software_stack_bytes": 50,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 2,
+      "mode": "composed_numerical_and_return",
+      "states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 5352,
+      "loaded_end_hex": "0x3ce7",
+      "hardware_stack_bytes": 20,
+      "software_stack_bytes": 50,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 3,
+      "mode": "composed_numerical_and_return",
+      "states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 5366,
+      "loaded_end_hex": "0x3cf5",
+      "hardware_stack_bytes": 20,
+      "software_stack_bytes": 49,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "entry_domain": "source-produced PC05130/05133, savedQ02000..07777, REGZERO0; source fixed-code callers; arbitrary ordinary bank contexts retained",
+  "scheduling": "No Executive check in basic SPSIN/SPCOS or return; same canonical owner and producer exclusion retained",
+  "scope": "Whole Comanche SINGLE_PRECISION_SUBROUTINES source numerical paths plus fixed-code caller return; not complete resident CM/LM application acceptance"
+}

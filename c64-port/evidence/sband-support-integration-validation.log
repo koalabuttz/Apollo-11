@@ -1,0 +1,26 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tools/sband_control_snapshot.c tests/sband_control_cases.c src/agc_word.c src/sband_control.c src/lm_interbank.c src/cm_interbank_complete.c src/service_routines.c -o build/sband-support-control-stream
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tools/sband_trig_snapshot.c tests/sband_trig_cases.c src/agc_word.c src/sband_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/sband-support-trig-stream
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_sband_control.c tests/sband_control_target.c tests/frozen_words.c tests/sband_control_cases.c src/agc_word.c src/sband_control.c src/lm_interbank.c src/cm_interbank_complete.c src/service_routines.c -o build/test-sband-support-control
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_sband_trig.c tests/sband_trig_target.c tests/frozen_words.c tests/sband_trig_cases.c src/agc_word.c src/sband_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/test-sband-support-trig
+./build/test-sband-support-control
+PASS original control full-image fixtures and unchanged unsupported images
+./build/test-sband-support-trig
+PASS canonical original trig full-image fixtures and unchanged unsupported images
+python3 tools/sband_support_port_host.py --control build/sband-support-control-stream --trig build/sband-support-trig-stream
+PASS all retained source-state bytes: 319545344 SHA256 46c0a6a19b96a4a29fb7798359d651d5d3e26b21edd0fb013aae0ba99686674c
+PASS all retained source-state bytes: 538181632 SHA256 b76666013fa3ae38f4fefa778095f7543422bb3fc4ca8d1e9ba948c9b078d828
+PASS all retained source-state bytes: 538181632 SHA256 63345397946159eda20ae93508ec55f86616b7a6d250513092089881476196d2
+PASS all 339,968 complete original antenna control/trig source states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_control.c tests/sband_control_target.c tests/frozen_words.c tests/sband_control_cases.c src/agc_word.c src/sband_control.c src/lm_interbank.c src/cm_interbank_complete.c src/service_routines.c -o build/test-sband-support-control-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-support-control-san
+PASS original control full-image fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_trig.c tests/sband_trig_target.c tests/frozen_words.c tests/sband_trig_cases.c src/agc_word.c src/sband_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/test-sband-support-trig-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-support-trig-san
+PASS canonical original trig full-image fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_control_snapshot.c tests/sband_control_cases.c src/agc_word.c src/sband_control.c src/lm_interbank.c src/cm_interbank_complete.c src/service_routines.c -o build/sband-support-control-stream-san
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_trig_snapshot.c tests/sband_trig_cases.c src/agc_word.c src/sband_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c -o build/sband-support-trig-stream-san
+python3 tools/sband_support_port_host.py --control build/sband-support-control-stream-san --trig build/sband-support-trig-stream-san
+PASS all retained source-state bytes: 319545344 SHA256 46c0a6a19b96a4a29fb7798359d651d5d3e26b21edd0fb013aae0ba99686674c
+PASS all retained source-state bytes: 538181632 SHA256 b76666013fa3ae38f4fefa778095f7543422bb3fc4ca8d1e9ba948c9b078d828
+PASS all retained source-state bytes: 538181632 SHA256 63345397946159eda20ae93508ec55f86616b7a6d250513092089881476196d2
+PASS all 339,968 complete original antenna control/trig source states

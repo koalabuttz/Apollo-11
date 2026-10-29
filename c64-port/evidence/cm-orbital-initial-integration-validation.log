@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_orbital_initial.c tests/cm_orbital_initial_cases.c tests/frozen_words.c tests/test_cm_orbital_initial.c -o build/test-cm-orbital-initial
+build/test-cm-orbital-initial
+128 complete2048word+IRQ source DIFEQ0 phase entry/exit pairs: PASS

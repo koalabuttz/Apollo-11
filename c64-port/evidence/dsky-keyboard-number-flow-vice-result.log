@@ -1,0 +1,5 @@
+PASS: VICE PAL, 8 real KERNAL GETIN/native queued CHARIN IRQ/RESUME jobs, 24 complete original assembly dsky_keyboard_number_flow states, zero failures
+Mailbox: a500000803
+PRG file/loaded bytes: 40419 40417
+hardware stack sentinel extent: 22
+software stack sentinel extent: 869

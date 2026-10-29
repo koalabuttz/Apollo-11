@@ -1,0 +1,21 @@
+# make vice-cm-integration-init at e159f0de7b2750a758eaaf083aac10f9fd73340a
+for p in build/cm-integration-init-1.prg build/cm-integration-init-2.prg build/cm-integration-init-3.prg build/cm-integration-init-4.prg build/cm-integration-init-5.prg build/cm-integration-init-6.prg build/cm-integration-init-7.prg build/cm-integration-init-8.prg build/cm-integration-init-9.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-integration-init-1.prg: 17 checks, 0 failures
+PRG sha256: e2e7aef452e49a1a01aee0e5ac1beb7c71a06c6e77c85bf582cbb881d2d84e7b cm-integration-init-1.prg
+PASS: VICE PAL cm-integration-init-2.prg: 68 checks, 0 failures
+PRG sha256: 01122ad111904872f71aa7a2215a22b0783348c2075ddb0a2befcc632e422233 cm-integration-init-2.prg
+PASS: VICE PAL cm-integration-init-3.prg: 1 checks, 0 failures
+PRG sha256: d1a2a48932616099eeba8c88ba22a69473263c6a64e61575cccd51898d16368a cm-integration-init-3.prg
+PASS: VICE PAL cm-integration-init-4.prg: 48 checks, 0 failures
+PRG sha256: 0e85fa3efcf1f2e0488874e70edc19b76afe343fdadae1ef73d91420f9ba5471 cm-integration-init-4.prg
+PASS: VICE PAL cm-integration-init-5.prg: 30 checks, 0 failures
+PRG sha256: 9d2d9dbc23615d3ea438d6e73a2e6c36c1a83369916ada8addfca8703d865e22 cm-integration-init-5.prg
+PASS: VICE PAL cm-integration-init-6.prg: 59 checks, 0 failures
+PRG sha256: e3c1a63a7340e00690c4e545df6c75b1a15078915aa4df3becc90a8e3a57db7a cm-integration-init-6.prg
+PASS: VICE PAL cm-integration-init-7.prg: 54 checks, 0 failures
+PRG sha256: 1f377f987235f33971aa6e703f902e9cf8f722c3c64faa7463242cb37b0df2f2 cm-integration-init-7.prg
+PASS: VICE PAL cm-integration-init-8.prg: 38 checks, 0 failures
+PRG sha256: 7050048c79d4e625e5b1db979b365012eeb5a3c8c72b4ff39af33304c38fd68c cm-integration-init-8.prg
+PASS: VICE PAL cm-integration-init-9.prg: 21 checks, 0 failures
+PRG sha256: cd18bec348f89a7eaafa0f02d5b787d14ebfd1de649395496a9f09f269a2674d cm-integration-init-9.prg
+exit 0

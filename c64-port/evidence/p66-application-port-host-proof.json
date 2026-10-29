@@ -1,0 +1,13 @@
+{
+  "scope": "Fresh-workspace native fullword comparison against retained original XZ archives; no generated snapshots/AGC engine/target tools required",
+  "states": 16586,
+  "strict": "PASS",
+  "asan_ubsan": "PASS",
+  "files": {
+    "tools/p66_application_port_host.py": "970d211da8d12c5c6ebd0838a73e3356622cc638bbd9cb96e281ed337e5728aa",
+    "tools/p66_application_port_host.mk": "f70cc514d0554b42b173e774f4799326a3649826659de05c6409b82a0e664e0c",
+    "evidence/p66-application-port-host.log": "f6372575d41413031d42b388ce5614c5c897c0e23aecd86ba36d655bd5353a55",
+    "evidence/p66-application-port-host-sanitize.log": "f6372575d41413031d42b388ce5614c5c897c0e23aecd86ba36d655bd5353a55"
+  },
+  "frozen_proof_sha256": "bd5088a95e4979b1d7469a1fe9425768570d68dff9407fa865f8d954cea5aea7"
+}

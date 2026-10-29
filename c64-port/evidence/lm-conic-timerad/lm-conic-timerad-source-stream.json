@@ -1,0 +1,12 @@
+{
+  "archive": "build/lm-conic-timerad-reference.snapshots.bin.xz",
+  "decoded_sha256": "6207be44393d515d9b3305406d29bc77a4d9e10178691bb75ab4dabc6f4bf266",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "1": 57812,
+    "2": 571,
+    "3": 7153
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

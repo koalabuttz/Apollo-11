@@ -1,0 +1,1 @@
+PASS: VICE PAL lanec-di-mark.prg: 36 checks, 0 failures

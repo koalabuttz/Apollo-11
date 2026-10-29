@@ -1,0 +1,7 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+#define main cm_reference_main
+#include "cm_executive_reference.c"
+#undef main
+#include "cm_sleep_cases.h"
+static apollo_overlay_state s;static agc_t pristine;
+int main(int argc,char **argv){unsigned n,i,cycles,pc;if(argc!=2||agc_load_binfile(&pristine,argv[1]))return 2;InhibitAlarms=1;for(n=0;n<CM_SLEEP_CASES;++n){cm_native_io io;cm_sleep_input(&s,&io,(uint16_t)n);unsigned high=0,target=03231,bank=0;for(i=1;i<7u;++i){unsigned priority=s.words[0167u+12u*i];if(priority>1u&&priority<040000u&&priority-1u>high){high=priority-1u;target=s.words[0164u+12u*i];bank=s.words[0165u+12u*i]&076000u;}}if(target&040000u)target=06037;machine=pristine;for(i=0;i<APOLLO_SHARED_WORDS;++i)*memory(i)=(int16_t)s.words[i];machine.OutputChannel7=machine.InputChannel[7]=io.superbank;machine.AllowInterrupt=io.interrupt_enabled;machine.InputChannel[011]=io.channel11;for(cycles=0;cycles<2000;++cycles){pc=get(RegZ);if(!machine.PendFlag&&!machine.ExtraDelay&&pc==target&&(target==06037u||target==03231u||get(RegFB)==bank))break;machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}if(cycles==2000){fprintf(stderr,"case%u timeout%05o\n",n,pc);return 2;}printf("%u %u",n,(unsigned)(pc==03231u?EXEC_IDLE:EXEC_OK));for(i=0;i<APOLLO_SHARED_WORDS;++i)printf(" %u",(unsigned)*memory(i)&(i<=2u?0177777u:077777u));printf(" %u %u %u\n",(unsigned)machine.OutputChannel7,(unsigned)machine.AllowInterrupt,(unsigned)machine.InputChannel[011]);}return 0;}

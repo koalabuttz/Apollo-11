@@ -1,0 +1,35 @@
+{
+  "source_unchanged_from_baseline": true,
+  "source_sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
+  "original_lines_checked": 230,
+  "unique_emitted_words_checked": 108,
+  "instruction_words": 94,
+  "data_words": 14,
+  "classification_counts": {
+    "comment/blank": 105,
+    "assembler directive": 17,
+    "compiled instruction": 94,
+    "immutable data": 14
+  },
+  "frozen_dependencies_checked": 1501,
+  "independent_peer_review_sha256": "ec314b7846fad490f7de7b1583229fbc0212fabc48704b38677d958acc634d61",
+  "complete_local_source": true,
+  "complete_application": false,
+  "compiled_caller_contract": {
+    "sole_persistent_state": "2048 canonical physical erasable words; A/L/Q raw16, other words15, coherent EB/FB/BB and ZERO=0",
+    "ordinary_TC_inline_or_return": "Q0100..7775, banked physical code storage>=0100. These are compiled program descriptors; no decoder/reserved CPU word execution. Caller owns frame/producer exclusion across internal overlay swaps.",
+    "alarm_codes": "normal15-bit codes from inline original words, CA MPAC, T4 CCS result, or actual R02 BIT4/OCT220 arithmetic. Raw overflowing VARALARM/BORTENT A would skip source caller-save and target reserved CPU descriptors; no original mission producer supplies it. PRIOLARM broader raw16 behavior separately proved.",
+    "fixed_read_domain": "all40 physical banks/40960 addresses through original-layout passive immutable reader, including zero unpopulated banks. No executable credit from those words.",
+    "ISR_metadata": "ALARM entries preserve separate caller ISR metadata; full original complete-entry/directALARM2 oracles assert both contexts where applicable. WHIMPER explicitly clears actualISR via passed metadata and preserves real RESUME frame semantics.",
+    "diagnostic_failure_locations": "ALARM2 surviving A is recorded data, all normal15 values certified. Actual selfcheck ERRORS producer independently records all normal15 oldQ register values including low descriptors/negative/-0, then genuineTC overwritesQ3267 before returning. The old data is never program dispatch.",
+    "priority_display_caller": "actualBANKCALL PRIOLARM pair with ordinary saved fixed caller and coherent saved bank; genuine sourceP51 CAF404 caller accepts immediate2202return and actualEND admission, including resource failure. Its upstream mission and queued payload bodies are external to this file.",
+    "resume_frame": "WHIMPER ZRUPT is a genuine source12-bit interruptedPC<=7777; source BRUPT substitution and InISR clearing are explicitly modeled. Malformed hardware frames outside normal source execution excluded."
+  },
+  "external_program_boundaries": [
+    "full P51/P32/P37/T4/selfcheck upstream algorithms",
+    "queued flashing MAKEPLAY and all astronaut callbacks after PRIODSPR",
+    "ENEMA selected MMDSPLAY/PTBAD/DOFSTART bodies beyond their genuine entry",
+    "final resident mission registry, recurring time/control/event processing and both complete applications",
+    "arbitrary asynchronous interruption outside compiled source safepoints or malformed hardware/code-storage execution"
+  ]
+}

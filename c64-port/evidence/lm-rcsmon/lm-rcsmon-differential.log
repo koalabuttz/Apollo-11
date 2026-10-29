@@ -1,0 +1,8 @@
+# make lm-rcsmon-differential at ea9873f9633856aa16e1d3f9ff99fd700ee97f71
+python3 tools/interp_routine_differential.py lm-rcsmon --cases 512 --freeze
+PASS: 1024 lm-rcsmon cases equal the original programs (2 routines)
+  LM 06,3156 RCSMON: 05072 x510, 05270 x2
+  LM 06,3242 : 05270 x512
+froze 72 vectors to tests/lm_rcsmon_vectors.h
+git diff --exit-code -- tests/lm_rcsmon_vectors.h tests/lm_rcsmon_c64_vectors.h tools/mk/lm-rcsmon.groups
+exit 0

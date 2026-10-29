@@ -1,0 +1,6 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_matrix.c tests/matrix_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/matrix_native.c tests/matrix_cases.c -o build/test-matrix
+build/test-matrix
+128 complete LM/CM matrix checkpoints and66 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_matrix.c tests/matrix_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/matrix_native.c tests/matrix_cases.c -o build/test-matrix-frozen-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-matrix-frozen-sanitize
+128 complete LM/CM matrix checkpoints and66 unchanged invalid boundaries: PASS

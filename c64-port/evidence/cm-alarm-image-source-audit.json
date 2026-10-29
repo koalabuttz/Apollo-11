@@ -1,0 +1,3386 @@
+{
+  "mission": "Comanche055",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "complete_file_qualified": false,
+  "files": [
+    {
+      "file": "ALARM_AND_ABORT.agc",
+      "original_sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
+      "source_lines": 230,
+      "support_sha256": "18ca3b8c644e24b2fef4da5371fb95c6af5648efc83713c042902b1a0c1ed695",
+      "support_code_tokens_exact": true,
+      "source_statement_count": 125,
+      "emitted_source_lines": 108,
+      "bounded_proof_files": [
+        {
+          "path": "evidence/cm-abort-recovery-proof.json",
+          "sha256": "4f4a94a969da4a6557a04d0e800399fc2c73a7cafa51ae3fa36d5fe0bf2467e0"
+        },
+        {
+          "path": "evidence/cm-abort-snapshot-proof.json",
+          "sha256": "9b30bb6007dd5fce11214977bb01c0b6f2d8558635bf449d1543aa7df502f59e"
+        },
+        {
+          "path": "evidence/cm-abort-whimper-proof.json",
+          "sha256": "d7b602a49ff54e210f123b5d49bb9c1c6c3186014fc4b1a9c2f692f8020dbb4c"
+        },
+        {
+          "path": "evidence/cm-alarm-image-proof.json",
+          "sha256": "9b6f77efaf8034b55762769165f886e24609d962db42f78164feee46053e070d"
+        },
+        {
+          "path": "evidence/cm-priolarm-proof.json",
+          "sha256": "a5a7c5c983a1f6a9e8572c5ebbbfb20789b8b04cb0532bda30c18617a6cdb698"
+        }
+      ],
+      "emitted_words": 108,
+      "lines": [
+        {
+          "line": 1,
+          "original_text": "# Copyright:    Public domain.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 2,
+          "original_text": "# Filename:     ALARM_AND_ABORT.agc",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 3,
+          "original_text": "# Purpose:      Part of the source code for Comanche, build 055. It",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 4,
+          "original_text": "#               is part of the source code for the Command Module's",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 5,
+          "original_text": "#               (CM) Apollo Guidance Computer (AGC), Apollo 11.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 6,
+          "original_text": "# Assembler:    yaYUL",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 7,
+          "original_text": "# Reference:    pp. 1493-1496",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 8,
+          "original_text": "# Contact:      Ron Burkey <info@sandroid.org>",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 9,
+          "original_text": "# Website:      http://www.ibiblio.org/apollo.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 10,
+          "original_text": "# Mod history:  2009-05-07 RSB\tAdapted from Colossus249 file of the same",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 11,
+          "original_text": "#\t\t\t\tname, and page images. Corrected various",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 12,
+          "original_text": "#\t\t\t\ttypos in the transcription of program",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 13,
+          "original_text": "#\t\t\t\tcomments, and these should be back-ported",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 14,
+          "original_text": "#\t\t\t\tto Colossus249.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 15,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 16,
+          "original_text": "# The contents of the \"Comanche055\" files, in general, are transcribed",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 17,
+          "original_text": "# from scanned documents.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 18,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 19,
+          "original_text": "#       Assemble revision 055 of AGC program Comanche by NASA",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 20,
+          "original_text": "#       2021113-051.  April 1, 1969.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 21,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 22,
+          "original_text": "#       This AGC program shall also be referred to as Colossus 2A",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 23,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 24,
+          "original_text": "#       Prepared by",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 25,
+          "original_text": "#                       Massachusetts Institute of Technology",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 26,
+          "original_text": "#                       75 Cambridge Parkway",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 27,
+          "original_text": "#                       Cambridge, Massachusetts",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 28,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 29,
+          "original_text": "#       under NASA contract NAS 9-4065.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 30,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 31,
+          "original_text": "# Refer directly to the online document mentioned above for further",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 32,
+          "original_text": "# information.  Please report any errors to info@sandroid.org.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 33,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 34,
+          "original_text": "# Page 1493",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 35,
+          "original_text": "# \tTHE FOLLOWING SUBROUTINE MAY BE CALLED TO DISPLAY A NON-ABORTIVE ALARM CONDITION. IT MAY BE CALLED",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 36,
+          "original_text": "# EITHER IN INTERRUPT OR UNDER EXECUTIVE CONTROL.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 37,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 38,
+          "original_text": "# \tCALLING SEQUENCE IS AS FOLLOWS:",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 39,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 40,
+          "original_text": "#\t\tTC\tALARM",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 41,
+          "original_text": "#\t\tOCT\tNNNNN",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 42,
+          "original_text": "#\t\t\t\t\t# (RETURNS HERE)",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 43,
+          "original_text": "\t\tBLOCK\t02",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 44,
+          "original_text": "\t\tSETLOC\tFFTAG7",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 45,
+          "original_text": "\t\tBANK",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 46,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 47,
+          "original_text": "\t\tEBANK=\tFAILREG",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 48,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 49,
+          "original_text": "\t\tCOUNT\t02/ALARM",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 50,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 51,
+          "original_text": "# ALARM TURNS ON THE PROGRAM ALARM LIGHT, BUT DOES NOT DISPLAY.",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 52,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 53,
+          "original_text": "ALARM\t\tINHINT",
+          "support_source_line": 57,
+          "address_octal": "5650",
+          "assembled_words_octal": [
+            "00004"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 54,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 55,
+          "original_text": "\t\tCA\tQ",
+          "support_source_line": 59,
+          "address_octal": "5651",
+          "assembled_words_octal": [
+            "30002"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 56,
+          "original_text": "ALARM2\t\tTS\tALMCADR",
+          "support_source_line": 60,
+          "address_octal": "5652",
+          "assembled_words_octal": [
+            "55363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 57,
+          "original_text": "\t\tINDEX\tQ",
+          "support_source_line": 61,
+          "address_octal": "5653",
+          "assembled_words_octal": [
+            "50002"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 58,
+          "original_text": "\t\tCA\t0",
+          "support_source_line": 62,
+          "address_octal": "5654",
+          "assembled_words_octal": [
+            "30000"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 59,
+          "original_text": "BORTENT\t\tTS\tL",
+          "support_source_line": 63,
+          "address_octal": "5655",
+          "assembled_words_octal": [
+            "54001"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 60,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 61,
+          "original_text": "PRIOENT\t\tCA\tBBANK",
+          "support_source_line": 65,
+          "address_octal": "5656",
+          "assembled_words_octal": [
+            "30006"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 62,
+          "original_text": " +1\t\tEXTEND",
+          "support_source_line": 66,
+          "address_octal": "5657",
+          "assembled_words_octal": [
+            "00006"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 63,
+          "original_text": "\t\tROR\tSUPERBNK\t# ADD SUPER BITS.",
+          "support_source_line": 67,
+          "address_octal": "5660",
+          "assembled_words_octal": [
+            "04007"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 64,
+          "original_text": "\t\tTS\tALMCADR +1",
+          "support_source_line": 68,
+          "address_octal": "5661",
+          "assembled_words_octal": [
+            "55364"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 65,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 66,
+          "original_text": "LARMENT\t\tCA\tQ\t\t# STORE RETURN FOR ALARM",
+          "support_source_line": 70,
+          "address_octal": "5662",
+          "assembled_words_octal": [
+            "30002"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 67,
+          "original_text": "\t\tTS\tITEMP1",
+          "support_source_line": 71,
+          "address_octal": "5663",
+          "assembled_words_octal": [
+            "54061"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 68,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 69,
+          "original_text": "\t\tCA\tLOC",
+          "support_source_line": 73,
+          "address_octal": "5664",
+          "assembled_words_octal": [
+            "30164"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 70,
+          "original_text": "\t\tTS\tLOCALARM",
+          "support_source_line": 74,
+          "address_octal": "5665",
+          "assembled_words_octal": [
+            "54057"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 71,
+          "original_text": "\t\tCA\tBANKSET",
+          "support_source_line": 75,
+          "address_octal": "5666",
+          "assembled_words_octal": [
+            "30165"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 72,
+          "original_text": "\t\tTS\tBANKALRM",
+          "support_source_line": 76,
+          "address_octal": "5667",
+          "assembled_words_octal": [
+            "54060"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 73,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 74,
+          "original_text": "CHKFAIL1\tCCS\tFAILREG\t\t# IS ANYTHING IN FAILREG",
+          "support_source_line": 78,
+          "address_octal": "5670",
+          "assembled_words_octal": [
+            "10375"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 75,
+          "original_text": "\t\tTCF\tCHKFAIL2\t# YES TRY NEXT REG",
+          "support_source_line": 79,
+          "address_octal": "5671",
+          "assembled_words_octal": [
+            "15674"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 76,
+          "original_text": "\t\tLXCH\tFAILREG",
+          "support_source_line": 80,
+          "address_octal": "5672",
+          "assembled_words_octal": [
+            "22375"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 77,
+          "original_text": "\t\tTCF\tPROGLARM\t# TURN ALARM LIGHT ON FOR FIRST ALARM",
+          "support_source_line": 81,
+          "address_octal": "5673",
+          "assembled_words_octal": [
+            "15706"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 78,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 79,
+          "original_text": "CHKFAIL2\tCCS\tFAILREG +1",
+          "support_source_line": 83,
+          "address_octal": "5674",
+          "assembled_words_octal": [
+            "10376"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 80,
+          "original_text": "\t\tTCF\tFAIL3",
+          "support_source_line": 84,
+          "address_octal": "5675",
+          "assembled_words_octal": [
+            "15700"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 81,
+          "original_text": "\t\tLXCH\tFAILREG +1",
+          "support_source_line": 85,
+          "address_octal": "5676",
+          "assembled_words_octal": [
+            "22376"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 82,
+          "original_text": "\t\tTCF\tMULTEXIT",
+          "support_source_line": 86,
+          "address_octal": "5677",
+          "assembled_words_octal": [
+            "15711"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 83,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 84,
+          "original_text": "FAIL3\t\tCA\tFAILREG +2",
+          "support_source_line": 88,
+          "address_octal": "5700",
+          "assembled_words_octal": [
+            "30377"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 85,
+          "original_text": "# Page 1494",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 86,
+          "original_text": "\t\tMASK\tPOSMAX",
+          "support_source_line": 90,
+          "address_octal": "5701",
+          "assembled_words_octal": [
+            "74777"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 87,
+          "original_text": "\t\tCCS\tA",
+          "support_source_line": 91,
+          "address_octal": "5702",
+          "assembled_words_octal": [
+            "10000"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 88,
+          "original_text": "\t\tTCF\tMULTFAIL",
+          "support_source_line": 92,
+          "address_octal": "5703",
+          "assembled_words_octal": [
+            "15715"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 89,
+          "original_text": "\t\tLXCH\tFAILREG +2",
+          "support_source_line": 93,
+          "address_octal": "5704",
+          "assembled_words_octal": [
+            "22377"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 90,
+          "original_text": "\t\tTCF\tMULTEXIT",
+          "support_source_line": 94,
+          "address_octal": "5705",
+          "assembled_words_octal": [
+            "15711"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 91,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 92,
+          "original_text": "PROGLARM\tCS\tDSPTAB +11D",
+          "support_source_line": 96,
+          "address_octal": "5706",
+          "assembled_words_octal": [
+            "41036"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 93,
+          "original_text": "\t\tMASK\tOCT40400",
+          "support_source_line": 97,
+          "address_octal": "5707",
+          "assembled_words_octal": [
+            "77765"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 94,
+          "original_text": "\t\tADS\tDSPTAB +11D",
+          "support_source_line": 98,
+          "address_octal": "5710",
+          "assembled_words_octal": [
+            "27036"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 95,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 96,
+          "original_text": "MULTEXIT\tXCH\tITEMP1\t\t# OBTAIN RETURN ADDRESS IN A",
+          "support_source_line": 100,
+          "address_octal": "5711",
+          "assembled_words_octal": [
+            "56061"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 97,
+          "original_text": "\t\tRELINT",
+          "support_source_line": 101,
+          "address_octal": "5712",
+          "assembled_words_octal": [
+            "00003"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 98,
+          "original_text": "\t\tINDEX\tA",
+          "support_source_line": 102,
+          "address_octal": "5713",
+          "assembled_words_octal": [
+            "50000"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 99,
+          "original_text": "\t\tTC\t1",
+          "support_source_line": 103,
+          "address_octal": "5714",
+          "assembled_words_octal": [
+            "00001"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 100,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 101,
+          "original_text": "MULTFAIL\tCA\tL",
+          "support_source_line": 105,
+          "address_octal": "5715",
+          "assembled_words_octal": [
+            "30001"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 102,
+          "original_text": "\t\tAD\tBIT15",
+          "support_source_line": 106,
+          "address_octal": "5716",
+          "assembled_words_octal": [
+            "65001"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 103,
+          "original_text": "\t\tTS\tFAILREG +2",
+          "support_source_line": 107,
+          "address_octal": "5717",
+          "assembled_words_octal": [
+            "54377"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 104,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 105,
+          "original_text": "\t\tTCF\tMULTEXIT",
+          "support_source_line": 109,
+          "address_octal": "5720",
+          "assembled_words_octal": [
+            "15711"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "alarm record and inline data read",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 106,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 107,
+          "original_text": "# PRIOLARM DISPLAYS V05N09 VIA PRIODSPR WITH 3 RETURNS TO THE USER FROM THE ASTRONAUT AT CALL LOC +1,+2,+3 AND",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 108,
+          "original_text": "# AN IMMEDIATE RETURN TO THE USER AT CALL LOC +4. EXAMPLE FOLLOWS,",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 109,
+          "original_text": "#\t\tCAF\tOCTXX\t\t# ALARM CODE",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 110,
+          "original_text": "#\t\tTC\tBANKCALL",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 111,
+          "original_text": "#\t\tCADR\tPRIOLARM",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 112,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 113,
+          "original_text": "#\t\t...\t...",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 114,
+          "original_text": "#\t\t...\t...",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 115,
+          "original_text": "#\t\t...\t...\t\t# ASTRONAUT RETURN",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 116,
+          "original_text": "#\t\tTC\tPHASCHNG\t# IMMEDIATE RETURN TO USER. RESTART",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 117,
+          "original_text": "#\t\tOCT\tX.1\t\t# PHASE CHANGE FOR PRIO DISPLAY",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 118,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 119,
+          "original_text": "\t\tBANK\t10",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 120,
+          "original_text": "\t\tSETLOC\tDISPLAYS",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 121,
+          "original_text": "\t\tBANK",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 122,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 123,
+          "original_text": "\t\tCOUNT\t10/DSPLA",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 124,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 125,
+          "original_text": "PRIOLARM\tINHINT\t\t\t# * * * KEEP IN DISPLAY ROUTINES BANK",
+          "support_source_line": 128,
+          "address_octal": "10,3766",
+          "assembled_words_octal": [
+            "00004"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 126,
+          "original_text": "\t\tTS\tL\t\t# SAVE ALARM CODE",
+          "support_source_line": 129,
+          "address_octal": "10,3767",
+          "assembled_words_octal": [
+            "54001"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 127,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 128,
+          "original_text": "\t\tCA\tBUF2\t\t# 2 CADR OF PRIOLARM USER",
+          "support_source_line": 131,
+          "address_octal": "10,3770",
+          "assembled_words_octal": [
+            "30133"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 129,
+          "original_text": "\t\tTS\tALMCADR",
+          "support_source_line": 132,
+          "address_octal": "10,3771",
+          "assembled_words_octal": [
+            "55363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 130,
+          "original_text": "\t\tCA\tBUF2 +1",
+          "support_source_line": 133,
+          "address_octal": "10,3772",
+          "assembled_words_octal": [
+            "30134"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 131,
+          "original_text": "\t\tTC\tPRIOENT +1\t# * LEAVE L ALONE",
+          "support_source_line": 134,
+          "address_octal": "10,3773",
+          "assembled_words_octal": [
+            "05657"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 132,
+          "original_text": "-2SEC\t\tDEC\t-200\t\t# *** DONT MOVE",
+          "support_source_line": 135,
+          "address_octal": "10,3774",
+          "assembled_words_octal": [
+            "77467"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 133,
+          "original_text": "\t\tCAF\tV05N09",
+          "support_source_line": 136,
+          "address_octal": "10,3775",
+          "assembled_words_octal": [
+            "35050"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 134,
+          "original_text": "\t\tTCF\tPRIODSPR",
+          "support_source_line": 137,
+          "address_octal": "10,3776",
+          "assembled_words_octal": [
+            "12726"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "priority alarm lead-in and -2SEC literal",
+          "proof_prefix": "cm-priolarm",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 135,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 136,
+          "original_text": "# Page 1495",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 137,
+          "original_text": "\t\tBLOCK\t02",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 138,
+          "original_text": "\t\tSETLOC\tFFTAG13",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 139,
+          "original_text": "\t\tBANK",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 140,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 141,
+          "original_text": "\t\tCOUNT\t02/ALARM",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 142,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 143,
+          "original_text": "BAILOUT\t\tINHINT",
+          "support_source_line": 147,
+          "address_octal": "7755",
+          "assembled_words_octal": [
+            "00004"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 144,
+          "original_text": "\t\tCA\tQ",
+          "support_source_line": 148,
+          "address_octal": "7756",
+          "assembled_words_octal": [
+            "30002"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 145,
+          "original_text": "\t\tTS\tALMCADR",
+          "support_source_line": 149,
+          "address_octal": "7757",
+          "assembled_words_octal": [
+            "55363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 146,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 147,
+          "original_text": "\t\tTC\tBANKCALL",
+          "support_source_line": 151,
+          "address_octal": "7760",
+          "assembled_words_octal": [
+            "04662"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 148,
+          "original_text": "\t\tCADR\tVAC5STOR",
+          "support_source_line": 152,
+          "address_octal": "7761",
+          "assembled_words_octal": [
+            "40000"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 149,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 150,
+          "original_text": "\t\tINDEX\tALMCADR",
+          "support_source_line": 154,
+          "address_octal": "7762",
+          "assembled_words_octal": [
+            "51363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 151,
+          "original_text": "\t\tCAF\t0",
+          "support_source_line": 155,
+          "address_octal": "7763",
+          "assembled_words_octal": [
+            "30000"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 152,
+          "original_text": "\t\tTC\tBORTENT",
+          "support_source_line": 156,
+          "address_octal": "7764",
+          "assembled_words_octal": [
+            "05655"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 153,
+          "original_text": "OCT40400\tOCT\t40400",
+          "support_source_line": 157,
+          "address_octal": "7765",
+          "assembled_words_octal": [
+            "40400"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "BAILOUT snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 154,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 155,
+          "original_text": "\t\tINHINT",
+          "support_source_line": 159,
+          "address_octal": "7766",
+          "assembled_words_octal": [
+            "00004"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "WHIMPER-1 and WHIMPER through actual ENEMA",
+          "proof_prefix": "cm-abort-whimper",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 156,
+          "original_text": "WHIMPER\t\tCA\tTWO",
+          "support_source_line": 160,
+          "address_octal": "7767",
+          "assembled_words_octal": [
+            "35016"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "WHIMPER-1 and WHIMPER through actual ENEMA",
+          "proof_prefix": "cm-abort-whimper",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 157,
+          "original_text": "\t\tAD\tZ",
+          "support_source_line": 161,
+          "address_octal": "7770",
+          "assembled_words_octal": [
+            "60005"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "WHIMPER-1 and WHIMPER through actual ENEMA",
+          "proof_prefix": "cm-abort-whimper",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 158,
+          "original_text": "\t\tTS\tBRUPT",
+          "support_source_line": 162,
+          "address_octal": "7771",
+          "assembled_words_octal": [
+            "54017"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "WHIMPER-1 and WHIMPER through actual ENEMA",
+          "proof_prefix": "cm-abort-whimper",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 159,
+          "original_text": "\t\tRESUME",
+          "support_source_line": 163,
+          "address_octal": "7772",
+          "assembled_words_octal": [
+            "50017"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "WHIMPER-1 and WHIMPER through actual ENEMA",
+          "proof_prefix": "cm-abort-whimper",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 160,
+          "original_text": "\t\tTC\tPOSTJUMP\t# RESUME SENDS CONTROL HERE",
+          "support_source_line": 164,
+          "address_octal": "7773",
+          "assembled_words_octal": [
+            "04701"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "WHIMPER-1 and WHIMPER through actual ENEMA",
+          "proof_prefix": "cm-abort-whimper",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 161,
+          "original_text": "\t\tCADR\tENEMA",
+          "support_source_line": 165,
+          "address_octal": "7774",
+          "assembled_words_octal": [
+            "12651"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "WHIMPER-1 and WHIMPER through actual ENEMA",
+          "proof_prefix": "cm-abort-whimper",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 162,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 163,
+          "original_text": "\t\tSETLOC\tFFTAG7",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 164,
+          "original_text": "\t\tBANK",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 165,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 166,
+          "original_text": "POODOO\t\tINHINT",
+          "support_source_line": 170,
+          "address_octal": "5721",
+          "assembled_words_octal": [
+            "00004"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 167,
+          "original_text": "\t\tCA\tQ",
+          "support_source_line": 171,
+          "address_octal": "5722",
+          "assembled_words_octal": [
+            "30002"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 168,
+          "original_text": "\t\tTS\tALMCADR",
+          "support_source_line": 172,
+          "address_octal": "5723",
+          "assembled_words_octal": [
+            "55363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 169,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 170,
+          "original_text": "\t\tTC\tBANKCALL",
+          "support_source_line": 174,
+          "address_octal": "5724",
+          "assembled_words_octal": [
+            "04662"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 171,
+          "original_text": "\t\tCADR\tVAC5STOR\t# STORE ERASABLES FOR DEBUGGING PURPOSES.",
+          "support_source_line": 175,
+          "address_octal": "5725",
+          "assembled_words_octal": [
+            "40000"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "POODOO snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 172,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 173,
+          "original_text": "\t\tINDEX\tALMCADR",
+          "support_source_line": 177,
+          "address_octal": "5726",
+          "assembled_words_octal": [
+            "51363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 174,
+          "original_text": "\t\tCAF\t0",
+          "support_source_line": 178,
+          "address_octal": "5727",
+          "assembled_words_octal": [
+            "30000"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 175,
+          "original_text": "ABORT2\t\tTC\tBORTENT",
+          "support_source_line": 179,
+          "address_octal": "5730",
+          "assembled_words_octal": [
+            "05655"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO snapshot and BORTENT admission",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 176,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 177,
+          "original_text": "OCT77770\tOCT\t77770\t\t# DONT MOVE",
+          "support_source_line": 180,
+          "address_octal": "5731",
+          "assembled_words_octal": [
+            "77770"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 178,
+          "original_text": "\t\tCA\tV37FLBIT\t# IS AVERAGE G ON",
+          "support_source_line": 181,
+          "address_octal": "5732",
+          "assembled_words_octal": [
+            "35012"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 179,
+          "original_text": "\t\tMASK\tFLAGWRD7",
+          "support_source_line": 182,
+          "address_octal": "5733",
+          "assembled_words_octal": [
+            "70103"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 180,
+          "original_text": "\t\tCCS\tA",
+          "support_source_line": 183,
+          "address_octal": "5734",
+          "assembled_words_octal": [
+            "10000"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 181,
+          "original_text": "\t\tTC\tWHIMPER -1\t# YES.  DONT DO POODOO.  DO BAILOUT.",
+          "support_source_line": 184,
+          "address_octal": "5735",
+          "assembled_words_octal": [
+            "07766"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 182,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 183,
+          "original_text": "\t\tTC\tDOWNFLAG",
+          "support_source_line": 186,
+          "address_octal": "5736",
+          "assembled_words_octal": [
+            "05560"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 184,
+          "original_text": "\t\tADRES\tSTATEFLG",
+          "support_source_line": 187,
+          "address_octal": "5737",
+          "assembled_words_octal": [
+            "00067"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 185,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 186,
+          "original_text": "\t\tTC\tDOWNFLAG",
+          "support_source_line": 189,
+          "address_octal": "5740",
+          "assembled_words_octal": [
+            "05560"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 187,
+          "original_text": "# Page 1496",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 188,
+          "original_text": "\t\tADRES\tREINTFLG",
+          "support_source_line": 192,
+          "address_octal": "5741",
+          "assembled_words_octal": [
+            "00236"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 189,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 190,
+          "original_text": "\t\tTC\tDOWNFLAG",
+          "support_source_line": 194,
+          "address_octal": "5742",
+          "assembled_words_octal": [
+            "05560"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 191,
+          "original_text": "\t\tADRES\tNODOFLAG",
+          "support_source_line": 195,
+          "address_octal": "5743",
+          "assembled_words_octal": [
+            "00054"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 192,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 193,
+          "original_text": "\t\tTC\tBANKCALL",
+          "support_source_line": 197,
+          "address_octal": "5744",
+          "assembled_words_octal": [
+            "04662"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 194,
+          "original_text": "\t\tCADR\tMR.KLEAN",
+          "support_source_line": 198,
+          "address_octal": "5745",
+          "assembled_words_octal": [
+            "12501"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 195,
+          "original_text": "\t\tTC\tWHIMPER",
+          "support_source_line": 199,
+          "address_octal": "5746",
+          "assembled_words_octal": [
+            "07767"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "POODOO flag/restart recovery",
+          "proof_prefix": "cm-abort-recovery",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 196,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 197,
+          "original_text": "CCSHOLE\t\tINHINT",
+          "support_source_line": 201,
+          "address_octal": "5747",
+          "assembled_words_octal": [
+            "00004"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CCSHOLE snapshot and 1103 literal",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 198,
+          "original_text": "\t\tCA\tQ",
+          "support_source_line": 202,
+          "address_octal": "5750",
+          "assembled_words_octal": [
+            "30002"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CCSHOLE snapshot and 1103 literal",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 199,
+          "original_text": "\t\tTS\tALMCADR",
+          "support_source_line": 203,
+          "address_octal": "5751",
+          "assembled_words_octal": [
+            "55363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CCSHOLE snapshot and 1103 literal",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 200,
+          "original_text": "\t\tTC\tBANKCALL",
+          "support_source_line": 204,
+          "address_octal": "5752",
+          "assembled_words_octal": [
+            "04662"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CCSHOLE snapshot and 1103 literal",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 201,
+          "original_text": "\t\tCADR\tVAC5STOR",
+          "support_source_line": 205,
+          "address_octal": "5753",
+          "assembled_words_octal": [
+            "40000"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "CCSHOLE snapshot and 1103 literal",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 202,
+          "original_text": "\t\tCA\tOCT1103",
+          "support_source_line": 206,
+          "address_octal": "5754",
+          "assembled_words_octal": [
+            "35756"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CCSHOLE snapshot and 1103 literal",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 203,
+          "original_text": "\t\tTC\tABORT2",
+          "support_source_line": 207,
+          "address_octal": "5755",
+          "assembled_words_octal": [
+            "05730"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CCSHOLE snapshot and 1103 literal",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 204,
+          "original_text": "OCT1103\t\tOCT\t1103",
+          "support_source_line": 208,
+          "address_octal": "5756",
+          "assembled_words_octal": [
+            "01103"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "CCSHOLE snapshot and 1103 literal",
+          "proof_prefix": "cm-abort-snapshot",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 205,
+          "original_text": "CURTAINS\tINHINT",
+          "support_source_line": 209,
+          "address_octal": "5757",
+          "assembled_words_octal": [
+            "00004"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 206,
+          "original_text": "\t\tCA\tQ",
+          "support_source_line": 210,
+          "address_octal": "5760",
+          "assembled_words_octal": [
+            "30002"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 207,
+          "original_text": "\t\tTC\tALARM2",
+          "support_source_line": 211,
+          "address_octal": "5761",
+          "assembled_words_octal": [
+            "05652"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 208,
+          "original_text": "OCT217\t\tOCT\t00217",
+          "support_source_line": 212,
+          "address_octal": "5762",
+          "assembled_words_octal": [
+            "00217"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 209,
+          "original_text": "\t\tTC\tALMCADR\t\t# RETURN TO USER",
+          "support_source_line": 213,
+          "address_octal": "5763",
+          "assembled_words_octal": [
+            "01363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 210,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 211,
+          "original_text": "DOALARM\t\tEQUALS\tENDOFJOB",
+          "classification": "assembler directive"
+        },
+        {
+          "line": 212,
+          "original_text": "# CALLING SEQUENCE FOR VARALARM",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 213,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 214,
+          "original_text": "#\t\tCAF\t(ALARM)",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 215,
+          "original_text": "#\t\tTC\tVARALARM",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 216,
+          "original_text": "#",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 217,
+          "original_text": "# VARALARM TURNS ON PROGRAM ALARM LIGHT BUT DOES NOT DISPLAY",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 218,
+          "original_text": "VARALARM\tINHINT",
+          "support_source_line": 224,
+          "address_octal": "5764",
+          "assembled_words_octal": [
+            "00004"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 219,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 220,
+          "original_text": "\t\tTS\tL\t\t# SAVE USERS ALARM CODE",
+          "support_source_line": 226,
+          "address_octal": "5765",
+          "assembled_words_octal": [
+            "54001"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 221,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 222,
+          "original_text": "\t\tCA\tQ\t\t# SAVE USERS Q",
+          "support_source_line": 228,
+          "address_octal": "5766",
+          "assembled_words_octal": [
+            "30002"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 223,
+          "original_text": "\t\tTS\tALMCADR",
+          "support_source_line": 229,
+          "address_octal": "5767",
+          "assembled_words_octal": [
+            "55363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 224,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 225,
+          "original_text": "\t\tTC\tPRIOENT",
+          "support_source_line": 231,
+          "address_octal": "5770",
+          "assembled_words_octal": [
+            "05656"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 226,
+          "original_text": "OCT14\t\tOCT\t14\t\t# DONT MOVE",
+          "support_source_line": 232,
+          "address_octal": "5771",
+          "assembled_words_octal": [
+            "00014"
+          ],
+          "classification": "immutable data",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 227,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 228,
+          "original_text": "\t\tTC\tALMCADR\t\t# RETURN TO USER",
+          "support_source_line": 234,
+          "address_octal": "5772",
+          "assembled_words_octal": [
+            "01363"
+          ],
+          "classification": "compiled instruction",
+          "native_source_group": "CURTAINS/VARALARM and aliases",
+          "proof_prefix": "cm-alarm-image",
+          "qualification": "bounded primitive source domains; no complete-file valid-caller certificate"
+        },
+        {
+          "line": 229,
+          "original_text": "",
+          "classification": "comment/blank"
+        },
+        {
+          "line": 230,
+          "original_text": "ABORT\t\tEQUALS\tBAILOUT\t\t# *** TEMPORARY UNTIL ABORT CALLS OUT",
+          "classification": "assembler directive"
+        }
+      ]
+    }
+  ],
+  "open_domains": [
+    "normal-code and compiled caller contracts beyond the source corpus; no raw overflow VARALARM/BORTENT reserved-register execution claim",
+    "raw/high Q/index/return caller closure beyond each explicit compiled ABI",
+    "all actual application/task bodies selected by these services and a final resident registry",
+    "arbitrary interrupt timing outside certified compiled source safepoints",
+    "source state combinations outside each retained corpus/predicate"
+  ],
+  "scope": "whole-line/instruction/data/directive inventory only; bounded helper presence does not imply full original file qualification",
+  "whimper_minus_one_producers": [
+    {
+      "file": "ALARM_AND_ABORT.agc",
+      "line": 181,
+      "address_octal": "5735",
+      "native_group": "cm-abort-recovery phase0",
+      "contract": "actual original masked V37FLBIT inFLAGWRD7 nonzero; source TC producesQ5736 then WHIMPER-1 executesINHINT; uninterrupted lifecycle proof includesbothflagbranches"
+    }
+  ],
+  "literal_return_arcs": [
+    {
+      "literal": "-2SEC",
+      "address_octal": "10,3774",
+      "word_octal": "77467",
+      "real_return": "PRIOENT+1 viaMULTEXIT indexedTC1\u21923775",
+      "role": "original immutable -200 numeric data skipped by genuine return"
+    },
+    {
+      "literal": "OCT40400",
+      "address_octal": "7765",
+      "word_octal": "40400",
+      "real_return": "BORTENT viaMULTEXIT indexedTC1\u2192WHIMPER-1 at7766",
+      "role": "original lamp mask data skipped by genuine return"
+    },
+    {
+      "literal": "OCT77770",
+      "address_octal": "5731",
+      "word_octal": "77770",
+      "real_return": "BORTENT viaMULTEXIT indexedTC1\u21925732",
+      "role": "original flag mask data skipped by genuine return"
+    },
+    {
+      "literal": "OCT217",
+      "address_octal": "5762",
+      "word_octal": "00217",
+      "real_return": "ALARM2 viaMULTEXIT indexedTC1\u2192TCALMCADR5763",
+      "role": "original CURTAINS alarm code skipped by genuine return"
+    },
+    {
+      "literal": "OCT14",
+      "address_octal": "5771",
+      "word_octal": "00014",
+      "real_return": "PRIOENT viaMULTEXIT indexedTC1\u2192TCALMCADR5772",
+      "role": "original bit3+4 constant skipped by genuine return"
+    }
+  ],
+  "original_direct_callers": [
+    {
+      "source_file": "AGC_BLOCK_TWO_SELF-CHECK.agc",
+      "original_line": 175,
+      "statement": "TCALARM2 TC ALARM2",
+      "target": "ALARM2",
+      "preceding_original_lines": [
+        "\t\tCA\tQ",
+        "\t\tTS\tSFAIL\t\t# SAVE Q FOR FAILURE LOCATION",
+        "\t\tTS\tALMCADR\t\t# FOR DISPLAY WITH BBANK AND ERCOUNT",
+        "\t\tINCR\tERCOUNT\t\t# KEEP TRACK OF NUMBER OF MALFUNCTIONS."
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ALARM_AND_ABORT.agc",
+      "original_line": 131,
+      "statement": "TC PRIOENT +1",
+      "target": "PRIOENT",
+      "preceding_original_lines": [
+        "",
+        "\t\tCA\tBUF2\t\t# 2 CADR OF PRIOLARM USER",
+        "\t\tTS\tALMCADR",
+        "\t\tCA\tBUF2 +1"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ALARM_AND_ABORT.agc",
+      "original_line": 152,
+      "statement": "TC BORTENT",
+      "target": "BORTENT",
+      "preceding_original_lines": [
+        "\t\tCADR\tVAC5STOR",
+        "",
+        "\t\tINDEX\tALMCADR",
+        "\t\tCAF\t0"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ALARM_AND_ABORT.agc",
+      "original_line": 175,
+      "statement": "ABORT2 TC BORTENT",
+      "target": "BORTENT",
+      "preceding_original_lines": [
+        "\t\tCADR\tVAC5STOR\t# STORE ERASABLES FOR DEBUGGING PURPOSES.",
+        "",
+        "\t\tINDEX\tALMCADR",
+        "\t\tCAF\t0"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ALARM_AND_ABORT.agc",
+      "original_line": 181,
+      "statement": "TC WHIMPER -1",
+      "target": "WHIMPER",
+      "preceding_original_lines": [
+        "OCT77770\tOCT\t77770\t\t# DONT MOVE",
+        "\t\tCA\tV37FLBIT\t# IS AVERAGE G ON",
+        "\t\tMASK\tFLAGWRD7",
+        "\t\tCCS\tA"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ALARM_AND_ABORT.agc",
+      "original_line": 195,
+      "statement": "TC WHIMPER",
+      "target": "WHIMPER",
+      "preceding_original_lines": [
+        "\t\tADRES\tNODOFLAG",
+        "",
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tMR.KLEAN"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ALARM_AND_ABORT.agc",
+      "original_line": 207,
+      "statement": "TC ALARM2",
+      "target": "ALARM2",
+      "preceding_original_lines": [
+        "\t\tTC\tABORT2",
+        "OCT1103\t\tOCT\t1103",
+        "CURTAINS\tINHINT",
+        "\t\tCA\tQ"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ALARM_AND_ABORT.agc",
+      "original_line": 225,
+      "statement": "TC PRIOENT",
+      "target": "PRIOENT",
+      "preceding_original_lines": [
+        "",
+        "\t\tCA\tQ\t\t# SAVE USERS Q",
+        "\t\tTS\tALMCADR",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "CONIC_SUBROUTINES.agc",
+      "original_line": 1752,
+      "statement": "TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\t\tRTNAPSE\t\t# THAT PL IS AT 0.",
+        "",
+        "# Page 1304",
+        "ABTCONIC\tEXIT"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "DISPLAY_INTERFACE_ROUTINES.agc",
+      "original_line": 801,
+      "statement": "PRIOBORT TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\tMASK\tNBUSMASK\t# ARE ANY NORMS ASLEEP",
+        "\t\tEXTEND",
+        "\t\tBZF\tOKTOPLAY\t# NO",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 145,
+      "statement": "TC BAILOUT",
+      "target": "BAILOUT",
+      "preceding_original_lines": [
+        "\t\tCCS\tVAC4USE",
+        "\t\tTCF\tVACFOUND",
+        "\t\tCCS\tVAC5USE",
+        "\t\tTCF\tVACFOUND"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 181,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tTS\tFIXLOC",
+        "",
+        "SPECTEST\tCCS\tNEWJOB\t\t# SEE IF ANY ACTIVE JOBS WAITING (RARE).",
+        "\t\tTCF\tSETLOC\t\t# MUST BE AWAKENED BUT UNCHANGED JOB."
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 182,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "",
+        "SPECTEST\tCCS\tNEWJOB\t\t# SEE IF ANY ACTIVE JOBS WAITING (RARE).",
+        "\t\tTCF\tSETLOC\t\t# MUST BE AWAKENED BUT UNCHANGED JOB.",
+        "\t\tTC\tCCSHOLE"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 204,
+      "statement": "TC BAILOUT",
+      "target": "BAILOUT",
+      "preceding_original_lines": [
+        "NEXTCORE\tCAF\tCOREINC",
+        "\t\tADS\tLOCCTR",
+        "\t\tCCS\tEXECTEM2",
+        "\t\tTCF\tNOVAC3"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 387,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tTS\t0",
+        "",
+        "EJSCAN\t\tCCS\tPRIORITY +12D",
+        "\t\tTC\tEJ1"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 392,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tTCF\t+1",
+        "",
+        "\t\tCCS\tPRIORITY +24D\t# EXAMINE EACH PRIORITY REGISTER TO FIND",
+        "\t\tTC\tEJ1\t\t# THE JOB OF HIGHEST ACTIVE PRIORITY."
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 402,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tTCF\t+1",
+        "",
+        "\t\tCCS\tPRIORITY +48D",
+        "\t\tTC\tEJ1"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 407,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tTCF\t+1",
+        "",
+        "\t\tCCS\tPRIORITY +60D",
+        "\t\tTC\tEJ1"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 412,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tTCF\t+1",
+        "",
+        "\t\tCCS\tPRIORITY +72D",
+        "\t\tTC\tEJ1"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 419,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "# Page 1219",
+        "# EVALUATE THE RESULTS OF THE SCAN.",
+        "",
+        "\t\tCCS\tBUF +1\t\t# SEE IF THERE ARE ANY ACTIVE JOBS WAITING"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXECUTIVE.agc",
+      "original_line": 420,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "# EVALUATE THE RESULTS OF THE SCAN.",
+        "",
+        "\t\tCCS\tBUF +1\t\t# SEE IF THERE ARE ANY ACTIVE JOBS WAITING",
+        "\t\tTC\tCCSHOLE"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXTENDED_VERBS.agc",
+      "original_line": 274,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tCCS\tSWSAMPLE\t\t# SEE IF SWITCH AT COMPUTER",
+        "\t\tTC\t+5\t\t\t# SWITCH AT COMPUTER",
+        "\t\tTC\t+1\t\t\t# NOT ON COMPUTER",
+        "\t\tTC\tFALTON\t\t\t# TURN ON OPERATOR ERR"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXTENDED_VERBS.agc",
+      "original_line": 282,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tTC\tOPTC1\t\t\t# IN USE",
+        "\t\tTC\tOPTC1\t\t\t# IN USE",
+        "\t\tTC\tOPTC1\t\t\t# IN USE",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXTENDED_VERBS.agc",
+      "original_line": 470,
+      "statement": "TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\tCA\tFLAGWRD1\t# IS NODOP01 FLAGBIT ON? (SET BY P11)",
+        "\t\tMASK\tNOP01BIT",
+        "\t\tEXTEND",
+        "\t\tBZF\tV92CONT\t\t# IF IT'S NOT YET SET, CONTINUE"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "EXTENDED_VERBS.agc",
+      "original_line": 891,
+      "statement": "R22ALARM TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tEBANK=\tMRKBUF1",
+        "\t\t2CADR\tR21CSM",
+        "",
+        "\t\tTC\tENDOFJOB"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "FRESH_START_AND_RESTART.agc",
+      "original_line": 467,
+      "statement": "PTBAD TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tMASK\tMODREG",
+        "\t\tEXTEND",
+        "\t\tBZF\tGOTOPOOH\t# NO",
+        "\t\tTCF\tENDRSTRT\t# YES"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "FRESH_START_AND_RESTART.agc",
+      "original_line": 871,
+      "statement": "CANTR00 TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tCS\tFLAGWRD2\t\t# NO, IS NODO V37 FLAG SET",
+        "\t\tMASK\tNODOBIT",
+        "\t\tCCS\tA",
+        "\t\tTCF\tCHECKTAB\t\t# NO"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_CALIBRATION_AND_ALIGNMENT.agc",
+      "original_line": 833,
+      "statement": "SOMEERRR TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tEXIT",
+        "\t\tTC\tTORQUE\t\t# GO TO IMU2 FOR A PIPA TEST AND DISPLAY",
+        "",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_CALIBRATION_AND_ALIGNMENT.agc",
+      "original_line": 836,
+      "statement": "SOMERR2 TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "",
+        "SOMEERRR\tTC\tALARM",
+        "\t\tOCT\t1600",
+        "\t\tTC\t+3"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_CALIBRATION_AND_ALIGNMENT.agc",
+      "original_line": 874,
+      "statement": "TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\tMASK\tNOP01BIT",
+        "# Page 443",
+        "\t\tEXTEND",
+        "\t\tBZF\tGTSCPSSA"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_CALIBRATION_AND_ALIGNMENT.agc",
+      "original_line": 1248,
+      "statement": "GTSOPTCS TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tTC\tPHASCHNG",
+        "\t\tOCT\t00004",
+        "\t\tTC\tENDOFJOB",
+        "V06N93S\t\tVN\t0693"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+      "original_line": 65,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tMASK\tBITS4&6\t\t# COARSE ALIGN (GIMBAL RUNAWAY PROTECTION)",
+        "\t\tCCS\tA",
+        "\t\tTCF\tIMUZEROA",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+      "original_line": 101,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tMASK\tBIT9",
+        "\t\tCCS\tA",
+        "\t\tTCF\tMODEEXIT",
+        "# Page 1422"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+      "original_line": 230,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "COARSERR\tAD\tCOARSTOL\t# 2 DEGREES.",
+        "\t\tEXTEND",
+        "\t\tBZMF\tCORSCHK2",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+      "original_line": 414,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tMASK\tBIT10\t\t# IF PIP FAIL ON, DO PROG ALSRM AND RESET",
+        "\t\tCCS\tA\t\t# ISS WARNING.",
+        "\t\tTCF\tMODEEXIT",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+      "original_line": 830,
+      "statement": "MODABORT TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\tINDEX\tRUPTREG2",
+        "\t\tTS\tMODECADR",
+        "\t\tTCF\tJOBSLEEP",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+      "original_line": 847,
+      "statement": "TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "IMUFIN20\t=\tIMUFINE",
+        "GOMANUR\t\tCA\tATTCADR\t\t# IS KALCMANU FREE",
+        "\t\tEXTEND",
+        "\t\tBZF\t+3"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "IMU_MODE_SWITCHING_ROUTINES.agc",
+      "original_line": 916,
+      "statement": "TC VARALARM",
+      "target": "VARALARM",
+      "preceding_original_lines": [
+        "\t\tEXTEND",
+        "\t\tBZF\t+2",
+        "\t\tCS\tBIT4\t\t# SEND IMU ALARM CODE 210",
+        "\t\tAD\tOCT220\t\t# SEND REFSMM ALARM"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "INFLIGHT_ALIGNMENT_ROUTINES.agc",
+      "original_line": 205,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tSTCALL\tTHETAD",
+        "\t\t\tS2",
+        "",
+        "GIMLOCK1\tEXIT"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "INTEGRATION_INITIALIZATION.agc",
+      "original_line": 1084,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\t\tTIMEINC",
+        "NOTIME\t\tCLEAR\tEXIT\t\t# TOO LATE",
+        "\t\t\tMID1FLAG",
+        "\t\tINCR\tIRETURN1\t# SET ERROR EXIT (CALLOC +2)"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "INTERPRETER.agc",
+      "original_line": 2540,
+      "statement": "SQRTABRT TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\tTCF\tFIXROOT",
+        "\t\tTCF\tSQRTABRT",
+        "\t\tTCF\tFIXROOT",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "INTERPRETER.agc",
+      "original_line": 2795,
+      "statement": "ACOSABRT TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "",
+        "ACOSOVF\t\tEXTEND\t\t\t# IF MAJOR PART WAS ONLY 1 MORE THAN .5,",
+        "\t\tBZF\tACOS=0\t\t# CALL ANSWER ZERO.",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "INTERPRETER.agc",
+      "original_line": 2966,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "",
+        "CALL/ITA\tCCS\tCYR",
+        "\t\tTCF\tCALL",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "INTERPRETER.agc",
+      "original_line": 3051,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t+5\tTCF\tSWBRANCH\t# 01 -- GO TO.",
+        "",
+        "\t\tTCF\tSWSKIP\t\t# HERE ONLY ON BIT 15.",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "INTERPRETER.agc",
+      "original_line": 3052,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "",
+        "\t\tTCF\tSWSKIP\t\t# HERE ONLY ON BIT 15.",
+        "",
+        "\t\tTC\tCCSHOLE"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ORBITAL_INTEGRATION.agc",
+      "original_line": 321,
+      "statement": "TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\t\tRPQFLAG",
+        "\t\t\tTESTLOOP",
+        "",
+        "INT-ABRT\tEXIT"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "ORBITAL_INTEGRATION.agc",
+      "original_line": 790,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tCLEAR",
+        "\t\t\tRENDWFLG",
+        "\t\tSET\tEXIT",
+        "\t\t\tSTATEFLG\t# PICK UP STATE VECTOR UPDATE"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P20-P25.agc",
+      "original_line": 489,
+      "statement": "P23ABRT TC BAILOUT",
+      "target": "BAILOUT",
+      "preceding_original_lines": [
+        "",
+        "\t\tTC\tINTPRET",
+        "\t\tGOTO",
+        "\t\t\tEGRESS"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P32-P33_P72-P73.agc",
+      "original_line": 227,
+      "statement": "TC VARALARM",
+      "target": "VARALARM",
+      "preceding_original_lines": [
+        "\t\t\tCSIALRM",
+        "\t\tSLOAD*\tEXIT",
+        "\t\t\tALARM/TB -1,1",
+        "\t\tCA\tMPAC"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P32-P33_P72-P73.agc",
+      "original_line": 514,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tSTCALL\tNOMTPI",
+        "\t\t\tS33/34.1",
+        "\t\tBZE\tEXIT",
+        "\t\t\tP33/P73C"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P34-35_P74-75.agc",
+      "original_line": 224,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tCALL",
+        "\t\t\tS33/34.1",
+        "\t\tBZE\tEXIT",
+        "\t\t\tSWCHCLR"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P37_P70.agc",
+      "original_line": 512,
+      "statement": "TC VARALARM",
+      "target": "VARALARM",
+      "preceding_original_lines": [
+        "",
+        "P370ALRM\tSTQ\tEXIT",
+        "\t\t\tSPRTEX",
+        "\t\tCA\tMPAC"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P37_P70.agc",
+      "original_line": 1305,
+      "statement": "TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\t\tR(T1)",
+        "\t\tBMN",
+        "\t\t\tV2T101",
+        "V2TERROR\tEXIT\t\t\t#\tOR IF LAMBDA LESS THAN ONE"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P40-P47.agc",
+      "original_line": 1772,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tCLEAR\tGOTO",
+        "\t\t\tSTEERSW\t\t# RESTARTS OK",
+        "\t\t\tQTEMP",
+        "INCRSVG\t\tEXIT\t\t\t# ALARM INDICATING THAT THRUST IS POINTING"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 248,
+      "statement": "P52I TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\t\tR51",
+        "ENDP50S\t\tEXIT",
+        "\t\tTC\tGOTOPOOH",
+        "# Page 741"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 290,
+      "statement": "TC CURTAINS",
+      "target": "CURTAINS",
+      "preceding_original_lines": [
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUPULSE",
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUSTALL"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 511,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "",
+        "R52J\t\tTC\tDOWNFLAG\t# CLEAR TRUNFLAG",
+        "\t\tADRES\tTRUNFLAG\t# BIT 4 FLAG 0",
+        "# Page 746"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 545,
+      "statement": "CADR PRIOLARM",
+      "target": "PRIOLARM",
+      "preceding_original_lines": [
+        "\t\tCCS\tA",
+        "\t\tTC\tR52J\t\t# YES",
+        "\t\tCAF\tOCT404",
+        "\t\tTC\tBANKCALL"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 1070,
+      "statement": "TC CURTAINS",
+      "target": "CURTAINS",
+      "preceding_original_lines": [
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUPULSE",
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUSTALL"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 1201,
+      "statement": "TC CURTAINS",
+      "target": "CURTAINS",
+      "preceding_original_lines": [
+        "\t\tCADR\tIMUCOARS\t# PERFORM COARSE ALIGNMENT",
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUSTALL\t# REQUEST MODE SWITCH",
+        "# Page 762"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 1206,
+      "statement": "TC CURTAINS",
+      "target": "CURTAINS",
+      "preceding_original_lines": [
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUFIN20",
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUSTALL"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 1453,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tMASK\tBIT9",
+        "\t\tCCS\tA",
+        "# Page 767",
+        "\t\tTC\tP51A"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 1481,
+      "statement": "TC CURTAINS",
+      "target": "CURTAINS",
+      "preceding_original_lines": [
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUCOARS",
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tIMUSTALL"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 1486,
+      "statement": "TC CURTAINS",
+      "target": "CURTAINS",
+      "preceding_original_lines": [
+        "\t\tTC\tBANKCALL\t# SCHEDULE IFAILOK AND IMUFINED TASKS, IN 5",
+        "\t\tCADR\tIMUFIN20\t# AND 20 SECS. DIRECT RETURN AND NO STALL,",
+        "\t\tTC\tBANKCALL\t# IF CAGING, BUT T4 WILL ZERO C/A ENABLE.",
+        "\t\tCADR\tIMUSTALL\t# IF PUT TO SLEEP, IMUFINED WILL WAKE US"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P51-P53.agc",
+      "original_line": 1683,
+      "statement": "TC CURTAINS",
+      "target": "CURTAINS",
+      "preceding_original_lines": [
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tSXTMARK",
+        "\t\tTC\tBANKCALL",
+        "\t\tCADR\tOPTSTALL"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P61-P67.agc",
+      "original_line": 626,
+      "statement": "RETRN3 TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\t\tC(30)LIM\t# = 1.0 - .5 COS(30)",
+        "\t\tBOVB\tEXIT",
+        "\t\t\tRETRN2",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "P61-P67.agc",
+      "original_line": 630,
+      "statement": "RETRN2 TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "RETRN3\t\tTC\tALARM",
+        "\t\tOCT\t01426\t\t# IMU UNSATISFACTORY",
+        "\t\tTC\tRETRN2 +2",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 596,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tOCT\t2\t\t# R1D4\t\t =(11D)",
+        "\t\tOCT\t2\t\t# R1D3\t\t =(12D)",
+        "\t\tOCT\t2\t\t# R1D2\t\t =(13D)",
+        "\t\tOCT\t2\t\t# R1D1\t\t =(14D)"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 735,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tTC\t5BLANK +2",
+        "LEGALTST\tAD\tNEG2",
+        "\t\tCCS\tA",
+        "\t\tTC\tQ\t\t# LEGAL  INREL G/ 2"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 1207,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "# Page 332",
+        "\t\tAD\tSFTEMP1\t\t# NOUN COMP - VERB COMP",
+        "\t\tCCS\tA",
+        "\t\tTC\tL\t\t# NOUN COMP G/ VERB COMP"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 1388,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "NEGOPT\t\tXCH\tMPAC\t\t# NEGATIVE CASE",
+        "\t\tAD\t20BIAS",
+        "\t\tCCS\tA",
+        "\t\tTC\tBIASCOM\t\t# IF POS THEN SUBTRACT 1 BECASUE OF 2SCOM"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 2073,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "\t\tTC\tSGNTO1\t\t# IF OVERFLOW",
+        "\t\tTC\tENDSCALE\t# NO OVERFLOW/UNDERFLOW",
+        "# Page 350",
+        "\t\tCCS\tMPAC\t\t# IF UF FORCE SIGN TO 0 EXCEPT -180"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 2682,
+      "statement": "TC CCSHOLE",
+      "target": "CCSHOLE",
+      "preceding_original_lines": [
+        "DSPIN1\t\tINHINT",
+        "\t\tINDEX\tDSREL",
+        "\t\tCCS\tDSPTAB",
+        "\t\tTC\t+2\t\t# IF +"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 2747,
+      "statement": "TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "\t\tTC\tFALTON",
+        "\t\tTC\tPASTEVB\t\t# PUT MONITOR VERB BACK IN VERBREG",
+        "CHARALRM\tTC\tFALTON\t\t# NOT NVSUB INITATED TURN ON OPR ERROR",
+        "\t\tTC\tENDOFJOB"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_line": 3172,
+      "statement": "DSPABORT TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "",
+        "ISLIST+0\tCCS\tDSPLIST\t\t# ABORTS (CODE 01206) IF DSPLIST NOT= +0.",
+        "\t\tTC\tDSPABORT\t# RETURNS IF DSPLIST = +0.",
+        "\t\tTC\tQ"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SERVICER207.agc",
+      "original_line": 461,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tAD\t-MAXDELV\t# DO PIPA-SATURATION TEST BEFORE",
+        "\t\tEXTEND",
+        "\t\tBZMF\tPIPLOOP\t\t# COMPENSATION.",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SERVICE_ROUTINES.agc",
+      "original_line": 169,
+      "statement": "TC BAILOUT",
+      "target": "BAILOUT",
+      "preceding_original_lines": [
+        "",
+        "\t\tCCS\tRUPTREG1\t# NO, TRY NEXT DELAYLOC",
+        "\t\tTCF\tDELLOOP",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SXTMARK.agc",
+      "original_line": 87,
+      "statement": "MKABORT TC BAILOUT",
+      "target": "BAILOUT",
+      "preceding_original_lines": [
+        "\t\tCAF\tBIT2\t\t\t# NOT SET",
+        "\t\tADS\tEXTVBACT\t\t# SET IT, RESET IN ENDMARK",
+        "\t\tTC\tMARKOK\t\t\t# YES, FIND VAC AREA",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SXTMARK.agc",
+      "original_line": 99,
+      "statement": "TC BAILOUT",
+      "target": "BAILOUT",
+      "preceding_original_lines": [
+        "\t\tCCS\tVAC4USE",
+        "\t\tTC\tMKVACFND",
+        "\t\tCCS\tVAC5USE",
+        "\t\tTC\tMKVACFND"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SXTMARK.agc",
+      "original_line": 255,
+      "statement": "+3 TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tBZF\t+3\t\t\t# IF NO INBITS",
+        "\t\tTC\tPOSTJUMP",
+        "\t\tCADR\tKEYCOM\t\t\t# IT,S A KEY CODE, NOT A MARK.",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SXTMARK.agc",
+      "original_line": 353,
+      "statement": "MARKET3 TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tTC\tGENTRAN\t\t\t# TRANSFER MARK DATA TO MRKBUF1 FOR",
+        "\t\tADRES\tMKT2T1\t\t\t# SPECIAL DISPLAY OF SHAFT AND TRUNNION",
+        "\t\tADRES\tMRKBUF1\t\t\t# IF V59 ACTING",
+        "\t\tTCF\tTASKOVER"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SXTMARK.agc",
+      "original_line": 356,
+      "statement": "114ALM TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tTCF\tTASKOVER",
+        "MARKET3\t\tTC\tALARM",
+        "\t\tOCT\t122\t\t\t# MARKING NOT CALLED FOR",
+        "\t\tTCF\tTASKOVER"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SXTMARK.agc",
+      "original_line": 456,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tTS\tMRKBUF1\t\t\t# -0 IN TIME IS FLAG TO R22 SIGNIFYING A",
+        "\t\tTC\tRESUME\t\t\t# REJECTED MARK",
+        "MRKREJCT\tCCS\tMARKSTAT\t\t# SEE IF MARKS BEING ACCEPTED",
+        "\t\tTC\tREJECT2"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SXTMARK.agc",
+      "original_line": 468,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tMASK\tBIT10",
+        "\t\tCCS\tA",
+        "\t\tTC\tREJECT3",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "SXTMARK.agc",
+      "original_line": 656,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tAD\tNEG2\t\t\t# SEE IF DIFFERENCE GREATER THAN 3 BITS",
+        "\t\tEXTEND",
+        "\t\tBZMF\t-3\t\t\t# NOT GREATER",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 393,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\t\tMASK\tBIT9\t\t# OPERATE.",
+        "\t\t\tCCS\tA",
+        "\t\t\tTCF\t+3",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 739,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tTCF\tNXTIFAIL",
+        "",
+        "\t\tCAF\tBIT2\t\t# IF NOT, SET BIT TO INDICATE REQUEST NOT",
+        "\t\tADS\tIMODES30\t# PRESENT FOR FULL DURATION."
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 845,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tMASK\tIMUSEFLG",
+        "\t\tCCS\tA",
+        "\t\tTCF\tNXTIFAIL",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 895,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tMASK\tOCT1720",
+        "\t\tCCS\tA",
+        "\t\tTCF\tNXTFL33\t\t\t# ABOVE CONDITION NOT MET.",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 925,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "",
+        "DNTMFAST\tCCS\tA\t\t\t# DO PROG ALARM IF TM TOO FAST.",
+        "\t\tTCF\tNXTFL33",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 932,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "",
+        "UPTMFAST\tCCS\tA\t\t\t# SAME AS DNLINK TOO FAST WITH DIFFERENT",
+        "\t\tTCF\tNXTFL33\t\t\t# ALARM CODE.",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 989,
+      "statement": "TC VARALARM",
+      "target": "VARALARM",
+      "preceding_original_lines": [
+        "",
+        "ISSWON\t\tEXTEND",
+        "# Page 158",
+        "\t\tQXCH\tITEMP6"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 1110,
+      "statement": "ZOPALARM TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "",
+        "ZTOMAN\t\tTC\tZOPFIN1\t\t\t# ZOP TO MANUAL-IS ZOPT DONE\t\t// Should be TC ZOPFINI",
+        "\t\tTC\tSETDESMD\t\t# YES-NORMAL EXIT",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 1121,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tTC\tSETDESMD",
+        "",
+        "ZTOCSC\t\tTC\tZOPFIN1\t\t\t# SEE IF ZOPT PROCESSING\t\t// Should be TC ZOPFINI",
+        "\t\tTC\tMANTOCSC +3\t\t# NO-CHECK RETURN TO COARS OPT"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "T4RUPT_PROGRAM.agc",
+      "original_line": 1338,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tCAF\tBIT10\t\t\t# SEE IF OCDUS ZEROED SINCE LAST FSTART",
+        "\t\tMASK\tOPTMODES",
+        "\t\tCCS\tA",
+        "\t\tTC\t+3"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "TPI_SEARCH.agc",
+      "original_line": 547,
+      "statement": "TC ALARM",
+      "target": "ALARM",
+      "preceding_original_lines": [
+        "\t\tBZF\tP17.1",
+        "\t\tTC\tVNCOMP17 +3",
+        "ALARUMS\t\tSET\tEXIT",
+        "\t\t\tUPDATFLG"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "WAITLIST.agc",
+      "original_line": 151,
+      "statement": "WATLST0- TC POODOO",
+      "target": "POODOO",
+      "preceding_original_lines": [
+        "DLY2\t\tCAF\tWAITBB\t\t# ENTRY FROM FIXDELAY AND VARDELAY.",
+        "\t\tXCH\tBBANK",
+        "\t\tTCF\tWAIT2",
+        ""
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    },
+    {
+      "source_file": "WAITLIST.agc",
+      "original_line": 339,
+      "statement": "WTABORT TC BAILOUT",
+      "target": "BAILOUT",
+      "preceding_original_lines": [
+        "\t\tTC\tWTLST2",
+        "\t\tOCT\t7",
+        "",
+        "\t+4\tCCS\tA"
+      ],
+      "qualification": "source producer inventory only; actual application/body acceptance and caller contract independently required"
+    }
+  ],
+  "caller_inventory_source_set_sha256": "4400a3ee1a36ddbcfb5c56c0b32174365138bb7d0cd92dbd6969ad18f7600f22"
+}

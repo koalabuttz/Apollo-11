@@ -1,0 +1,69 @@
+{
+ "scenario": "lm-uplink-reject-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 9000,
+ "keys": "",
+ "inputs": {
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_UPLINK": "2000:V71E25E;3500:V34E;5000:#00001;5500:V37E;6500:R;7000:V37E00E"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 9000,
+ "periods_taken": 9000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 9000,
+ "native_routines": 578810,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 24780,
+  "yaagc": 24151,
+  "percent": 2.6,
+  "routines": 178,
+  "mean_abs_error": 32.4,
+  "abs_percent": 23.9,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "few",
+  "text": "interpretive charge +2.6% net, 23.9% routine by routine, from yaAGC's MCT over 178 routines; fewer than 1000 routines, not bounded"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 9,
+  "no_interrupt_to": 64,
+  "no_background_periods": 0,
+  "no_background_to": 0
+ },
+ "reached": {
+  "04,3401": 2060,
+  "04,3632": null
+ },
+ "arrivals": {
+  "04,3401": [
+   2060
+  ],
+  "04,3632": []
+ },
+ "log_sha256": "2b17656cdafd5cb173122afc798e41b2f5bfff66fe75e82cb02ffaab94ce5795"
+}

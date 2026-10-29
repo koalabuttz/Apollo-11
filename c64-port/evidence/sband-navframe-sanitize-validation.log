@@ -1,0 +1,3 @@
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_navframe_snapshot.c tests/sband_navframe_cases.c src/agc_word.c src/sband_navframe.c src/sband_scalar.c src/rtb_unit.c src/rtb_vector.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/agc_multiword.c -o build/sband-navframe-sanitize
+python3 tools/sband_navframe_compare.py sanitize
+PASS {'states': 131072, 'start': 0, 'end': 131072, 'record_bytes': 4106, 'decoded_sha256': 'e4eadc33249608b6fe174d9aaef85abd7292b83276b5367166fb21a35de25767'}

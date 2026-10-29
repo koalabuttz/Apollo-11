@@ -1,0 +1,7 @@
+# make vice-lm-r63 at fc4f2c8f5f5fc3012f2313ed1bada0701ba3aafb
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -DIRC_GROUP=1 -DIRC_LM_ONLY -DLM_R63_KEEP0=0x3fffffff -Wl,-Map,build/lm-r63-1.map src/lm_r63.c src/lm_interp_orders.c src/lm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c src/rtb_angles.c tests/interp_case.c tests/lm_r63_target.c platform/c64/lm_r63_diagnostic.c -o build/lm-r63-1.prg
+for p in build/lm-r63-1.prg; do echo "PRG $(basename $p) sha256 $(sha256sum $p | cut -c1-64)"; python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PRG lm-r63-1.prg sha256 8b1a5f85b7cdb9274802ed6e5d7e68b8bab7f395c06fed1487556dc62c5628f7
+PASS: VICE PAL lm-r63-1.prg: 35 checks, 0 failures
+PRG sha256: 8b1a5f85b7cdb9274802ed6e5d7e68b8bab7f395c06fed1487556dc62c5628f7 lm-r63-1.prg
+exit 0

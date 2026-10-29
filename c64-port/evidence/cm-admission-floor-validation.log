@@ -1,0 +1,18 @@
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+PASS: original complete JOBWAKE/core0 paths, complete image and all13 external latches
+{
+  "cases": 49152,
+  "checkpoints": 49152,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 202997760,
+  "snapshot_sha256": "16b5c4884edf0492ab80e43594050ea04b585217ed5814befe9c43ab54505a20",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "NOVAC",
+    "FINDVAC",
+    "SPVAC",
+    "SPVACIN"
+  ],
+  "scope": "source bare priority+0 admission becomes positive packed FAKEPRET/VAC resource priority, all core+0 unavailable positions/resource outcomes; actual external job or BAILOUT handoff"
+}

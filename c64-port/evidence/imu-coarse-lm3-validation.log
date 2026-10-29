@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete imu_coarse group original-assembly states; retained memory unchanged
+Mailbox: a500002003
+PRG bytes: 7396
+imu-coarse-lm3-hardware-stack.bin: measured stack extent 20 bytes
+imu-coarse-lm3-software-stack.bin: measured stack extent 85 bytes

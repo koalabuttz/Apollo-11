@@ -1,0 +1,11 @@
+Independent read-only RTB agreement review
+Reviewer: /root/general_division
+
+Reviewed original LM RTB_OP_CODES.agc and CM RT8_OP_CODES.agc selected bodies against the native API.
+Conclusion: No defect within the declared domain. SGNAGREE preserves the source limit/carry chain, including all-zero clearing and the nonoverflow fallthrough store. SIGNMPAC follows the raw major sign including signed zeros and preserves branch-specific L/Q effects. CM TRANSP1/2 preserve the six exchanges, ECADR/A, normalized L and EB5 bank effects. MODE and source return/debris agree with original routines. This review covers only these stated entries, not remaining RTB coverage. Reviewer made no edits.
+
+Reviewed byte identities:
+e16fd87024d17a94cd44abcbca449f3c6ee894497fb491823c333403a87f7c25  include/rtb_agreement.h
+1b5a434bdcb5ade9579495d1d24936b08681965b8d2ca195b8b288c71c556be8  src/rtb_agreement.c
+b20b257aa1c79950bebc9a51baf6677233db5019ae3f43d36a532db0a239c595  tests/rtb_agreement_cases.c
+821a526a08e24107ccb2ecc9b1365e2210e0a572f24d56ab01e1e5e5c565a77a  build/rtb-agreement-source-map.json

@@ -1,0 +1,7 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_svct3.c src/cm_native_image.c src/agc_word.c tests/cm_svct3_cases.c tests/cm_svct3_check.c tests/test_cm_svct3.c -o build/test-cm-svct3
+./build/test-cm-svct3
+1536 original CM SVCT3 full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_svct3.c src/cm_native_image.c src/agc_word.c tests/cm_svct3_cases.c tests/cm_svct3_check.c tests/test_cm_svct3.c -o build/test-cm-svct3-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-svct3-sanitize
+1536 original CM SVCT3 full-image states and guards: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-svct3.map src/cm_svct3.c src/cm_native_image.c src/agc_word.c tests/cm_svct3_cases.c tests/cm_svct3_check.c platform/c64/cm_svct3_diagnostic.c -o build/cm-svct3.prg

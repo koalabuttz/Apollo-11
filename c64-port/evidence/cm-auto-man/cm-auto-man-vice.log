@@ -1,0 +1,6 @@
+# make vice-cm-auto-man at 9e9281ef1a21739da09c2dbee1eded9c18e3b5b6
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Oz -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -fno-inline -DIRC_CHANNELS -DAGC_CHANNELS_HW=irc_cm_hw -DIRC_GROUP=1 -DIRC_CM_ONLY -DCM_AUTO_MAN_KEEP0=0x2ec3ff23ef -Wl,-Map,build/cm-auto-man-1.map src/cm_auto_man.c src/cm_interp_orders.c src/cm_interp_steps.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/interp_case.c tests/cm_auto_man_target.c platform/c64/cm_auto_man_diagnostic.c -o build/cm-auto-man-1.prg
+for p in build/cm-auto-man-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-auto-man-1.prg: 38 checks, 0 failures
+PRG sha256: 8475dc3b3bc461c2b9dc62bfac09a8496965286f394ae3fb512a39a41ff709af cm-auto-man-1.prg
+exit 0

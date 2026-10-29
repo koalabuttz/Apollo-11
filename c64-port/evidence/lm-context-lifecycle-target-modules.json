@@ -1,0 +1,290 @@
+[
+  {
+    "id": 1,
+    "filename": "L1",
+    "byte_count": 8916,
+    "crc16": 54227,
+    "prg": "lm-context-lifecycle-fixture-1.prg",
+    "sha256": "a60b0001b78bffd5d00e6ed06d762ad256178bdf208faabff29fc8c66a58e1b9",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-1.prg"
+  },
+  {
+    "id": 2,
+    "filename": "L2",
+    "byte_count": 8916,
+    "crc16": 34464,
+    "prg": "lm-context-lifecycle-fixture-2.prg",
+    "sha256": "70c13bc4ec4e0b1cde672260b43169aba7409758290a42c13db375818b7b0d69",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-2.prg"
+  },
+  {
+    "id": 3,
+    "filename": "L3",
+    "byte_count": 8916,
+    "crc16": 50841,
+    "prg": "lm-context-lifecycle-fixture-3.prg",
+    "sha256": "42f2bc35e1976212432af0eb11c1d744aa14866cc8b5d969d301d52a6c0bcd18",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-3.prg"
+  },
+  {
+    "id": 4,
+    "filename": "L4",
+    "byte_count": 8916,
+    "crc16": 13963,
+    "prg": "lm-context-lifecycle-fixture-4.prg",
+    "sha256": "fe29d0c7e7810fb25cbb0139a5548ef2f5e2566a1375714838fff07aeccdfbd7",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-4.prg"
+  },
+  {
+    "id": 5,
+    "filename": "L5",
+    "byte_count": 8916,
+    "crc16": 15641,
+    "prg": "lm-context-lifecycle-fixture-5.prg",
+    "sha256": "f5d9d3e8ee10923da509f1e3696c026e4c69294bc80a9fad8b9343098a1dc2d9",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-5.prg"
+  },
+  {
+    "id": 6,
+    "filename": "L6",
+    "byte_count": 8916,
+    "crc16": 24568,
+    "prg": "lm-context-lifecycle-fixture-6.prg",
+    "sha256": "7729d26ce9d70ad7cbdaef3e4a7bdecfea99cba49dff246bec562991501beeb2",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-6.prg"
+  },
+  {
+    "id": 7,
+    "filename": "L7",
+    "byte_count": 8916,
+    "crc16": 30120,
+    "prg": "lm-context-lifecycle-fixture-7.prg",
+    "sha256": "2ea44006abbbed5d05e1055d2517bb7c477f6b483a9309c5346cfd9f24c7c616",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-7.prg"
+  },
+  {
+    "id": 8,
+    "filename": "L8",
+    "byte_count": 8916,
+    "crc16": 28477,
+    "prg": "lm-context-lifecycle-fixture-8.prg",
+    "sha256": "56a662d75dc377bfaa9c8fab8489eeb2207f50f213eb7702c5eb5718f67cd29f",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-8.prg"
+  },
+  {
+    "id": 9,
+    "filename": "L9",
+    "byte_count": 8916,
+    "crc16": 55376,
+    "prg": "lm-context-lifecycle-fixture-9.prg",
+    "sha256": "17cb2a6d40872639d543876bf1b44e112ec00202370231935afaf7124a8d1540",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-9.prg"
+  },
+  {
+    "id": 10,
+    "filename": "L10",
+    "byte_count": 8916,
+    "crc16": 64928,
+    "prg": "lm-context-lifecycle-fixture-10.prg",
+    "sha256": "dd940b306c6d0e80ad1e92c9d4eb271b5995a893bde7276ca2b0c59afeb6bf69",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-10.prg"
+  },
+  {
+    "id": 11,
+    "filename": "L11",
+    "byte_count": 8916,
+    "crc16": 3248,
+    "prg": "lm-context-lifecycle-fixture-11.prg",
+    "sha256": "dd043170cb9304d8a6323fec3a4dcfe45defac8a044d2c331828ce058b6d1c79",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-11.prg"
+  },
+  {
+    "id": 12,
+    "filename": "L12",
+    "byte_count": 8916,
+    "crc16": 63428,
+    "prg": "lm-context-lifecycle-fixture-12.prg",
+    "sha256": "c19b31af75bbfda6e20b0243bb88e43bba5a58cf8a1a3540526dd50e44e7fef3",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-12.prg"
+  },
+  {
+    "id": 13,
+    "filename": "L13",
+    "byte_count": 8916,
+    "crc16": 26570,
+    "prg": "lm-context-lifecycle-fixture-13.prg",
+    "sha256": "2c96ef472371e128d5c04b8a01e169351aaeb50358771df85a5f7be1d8ba96b3",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-13.prg"
+  },
+  {
+    "id": 14,
+    "filename": "L14",
+    "byte_count": 8916,
+    "crc16": 47707,
+    "prg": "lm-context-lifecycle-fixture-14.prg",
+    "sha256": "6a4f7c7a2930d44e797fee2e36e2e770c65f5a3a1b31884187a82eb1ee09f0b3",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-14.prg"
+  },
+  {
+    "id": 15,
+    "filename": "L15",
+    "byte_count": 8916,
+    "crc16": 10684,
+    "prg": "lm-context-lifecycle-fixture-15.prg",
+    "sha256": "c627d712e41cb20db98d60fd57b6f6c1550855bf80925c4e476f33972f96d8bc",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-15.prg"
+  },
+  {
+    "id": 16,
+    "filename": "L16",
+    "byte_count": 8916,
+    "crc16": 4723,
+    "prg": "lm-context-lifecycle-fixture-16.prg",
+    "sha256": "e8bacf09fe86afdd9bef06efa9f266fe16bf4ee3fcfbcb268a85b8851874f0cc",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-16.prg"
+  },
+  {
+    "id": 17,
+    "filename": "L17",
+    "byte_count": 8916,
+    "crc16": 49668,
+    "prg": "lm-context-lifecycle-fixture-17.prg",
+    "sha256": "d898eb3f25d08a770d8150d137f494769d30fd1fa0a18198639e3e5ec5b1cb66",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-17.prg"
+  },
+  {
+    "id": 18,
+    "filename": "L18",
+    "byte_count": 8916,
+    "crc16": 11280,
+    "prg": "lm-context-lifecycle-fixture-18.prg",
+    "sha256": "4384c782638b3a68736dbc886807fbf300fb46a823bef5f548e3a3fc1993b622",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-18.prg"
+  },
+  {
+    "id": 19,
+    "filename": "L19",
+    "byte_count": 8916,
+    "crc16": 40605,
+    "prg": "lm-context-lifecycle-fixture-19.prg",
+    "sha256": "26dcbb88ded674627a5b27ad5747ea84c18de229022d72e4f7668d3b6cc8ea55",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-19.prg"
+  },
+  {
+    "id": 20,
+    "filename": "L20",
+    "byte_count": 8916,
+    "crc16": 1643,
+    "prg": "lm-context-lifecycle-fixture-20.prg",
+    "sha256": "2cd12af95629554ccf73dd0c55a9e1f0c79712185bf699496aef9684a164f3ce",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-20.prg"
+  },
+  {
+    "id": 21,
+    "filename": "L21",
+    "byte_count": 8913,
+    "crc16": 47041,
+    "prg": "lm-context-lifecycle-fixture-21.prg",
+    "sha256": "c4332df40077db37b973f4a4d5d7a536221ca6e436b51065ac6083df7591589c",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-21.prg"
+  },
+  {
+    "id": 22,
+    "filename": "L22",
+    "byte_count": 8913,
+    "crc16": 18126,
+    "prg": "lm-context-lifecycle-fixture-22.prg",
+    "sha256": "e674f3dbcbe16540a6827ccc569ef76080d34a32e293978463504df80a429fa7",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-22.prg"
+  },
+  {
+    "id": 23,
+    "filename": "L23",
+    "byte_count": 8913,
+    "crc16": 26969,
+    "prg": "lm-context-lifecycle-fixture-23.prg",
+    "sha256": "97322ac7388c4eedb38c60807b5d975e9f110fa0f929f62a88d46453705c5c9d",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-23.prg"
+  },
+  {
+    "id": 24,
+    "filename": "L24",
+    "byte_count": 8913,
+    "crc16": 4579,
+    "prg": "lm-context-lifecycle-fixture-24.prg",
+    "sha256": "799b8d2a9a0d40070909cd763149f47eeb0f401d736968fb130b1dfdc1caeda7",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-24.prg"
+  },
+  {
+    "id": 25,
+    "filename": "L25",
+    "byte_count": 8913,
+    "crc16": 38740,
+    "prg": "lm-context-lifecycle-fixture-25.prg",
+    "sha256": "4640873c3659cc1337e718916af2d3236e211e3017ce41bb18d4bbef33020da9",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-25.prg"
+  },
+  {
+    "id": 26,
+    "filename": "L26",
+    "byte_count": 8913,
+    "crc16": 9141,
+    "prg": "lm-context-lifecycle-fixture-26.prg",
+    "sha256": "1ea24b9e42801b5fe5006be29d07369147daf2b617ca60f23f0975a255535fbb",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-26.prg"
+  },
+  {
+    "id": 27,
+    "filename": "L27",
+    "byte_count": 8913,
+    "crc16": 38776,
+    "prg": "lm-context-lifecycle-fixture-27.prg",
+    "sha256": "128ca10c8cf41e85547000455f6553bf2f8a135f3bc690786b5fd883b423d387",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-27.prg"
+  },
+  {
+    "id": 28,
+    "filename": "L28",
+    "byte_count": 8913,
+    "crc16": 4881,
+    "prg": "lm-context-lifecycle-fixture-28.prg",
+    "sha256": "e7c852e51fea0731a3fd7c3b55ee88c18970ed229ca319f86fd5b8f3ad5a2cb9",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-28.prg"
+  },
+  {
+    "id": 29,
+    "filename": "L29",
+    "byte_count": 8913,
+    "crc16": 59166,
+    "prg": "lm-context-lifecycle-fixture-29.prg",
+    "sha256": "a435b69f85aabc719d8283e69f82f2cd83ba3ac2738c3221b917ae5112ab2307",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-29.prg"
+  },
+  {
+    "id": 30,
+    "filename": "L30",
+    "byte_count": 8913,
+    "crc16": 59262,
+    "prg": "lm-context-lifecycle-fixture-30.prg",
+    "sha256": "c1f5f769acd74ff3dd37d2947345156cf2b08e204292de2156864ff91475eba9",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-30.prg"
+  },
+  {
+    "id": 31,
+    "filename": "L31",
+    "byte_count": 8913,
+    "crc16": 16829,
+    "prg": "lm-context-lifecycle-fixture-31.prg",
+    "sha256": "f9c631809fdba1837567352231001de6a11f0abf125d520cfb0e83488361f077",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-31.prg"
+  },
+  {
+    "id": 32,
+    "filename": "L32",
+    "byte_count": 8913,
+    "crc16": 17032,
+    "prg": "lm-context-lifecycle-fixture-32.prg",
+    "sha256": "1856b60d8ae923717c17bccec56e7ea9797c26250ad9900262fbe11140cc8201",
+    "retained_prg": "evidence/lm-context-lifecycle-fixture-32.prg"
+  }
+]

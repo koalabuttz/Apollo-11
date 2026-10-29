@@ -1,0 +1,2278 @@
+{
+ "schema_version": 1,
+ "abi": 2,
+ "expansion_bytes_per_word": {
+  "low": 16,
+  "mid": 25,
+  "high": 40
+ },
+ "resident_bytes_per_word": {
+  "low": 12,
+  "mid": 16,
+  "high": 20
+ },
+ "data_bytes_per_word": 2.5,
+ "slot_bytes": {
+  "job": 16384,
+  "task": 8186
+ },
+ "slot_fill": 0.75,
+ "reu_store_limit": 1835008,
+ "lane_module_id_high_byte": {
+  "A": 1,
+  "B": 2,
+  "C": 3,
+  "D1": 4,
+  "D2": 5,
+  "E": 6,
+  "F": 7,
+  "G": 8,
+  "H": 9,
+  "proof": 15
+ },
+ "missions": [
+  {
+   "mission": "Luminary099",
+   "total_words": 35026,
+   "placements": {
+    "job": {
+     "files": 60,
+     "words": 26005,
+     "bytes": {
+      "low": 416080,
+      "mid": 650125,
+      "high": 1040200
+     }
+    },
+    "declarations": {
+     "files": 5,
+     "words": 0,
+     "bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    "data": {
+     "files": 5,
+     "words": 1534,
+     "bytes": {
+      "low": 3836,
+      "mid": 3836,
+      "high": 3836
+     }
+    },
+    "task": {
+     "files": 12,
+     "words": 4025,
+     "bytes": {
+      "low": 64400,
+      "mid": 100625,
+      "high": 161000
+     }
+    },
+    "resident": {
+     "files": 3,
+     "words": 710,
+     "bytes": {
+      "low": 8520,
+      "mid": 11360,
+      "high": 14200
+     }
+    },
+    "resident-data": {
+     "files": 1,
+     "words": 96,
+     "bytes": {
+      "low": 240,
+      "mid": 240,
+      "high": 240
+     }
+    },
+    "mechanism": {
+     "files": 2,
+     "words": 148,
+     "bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    "library": {
+     "files": 2,
+     "words": 2508,
+     "bytes": {
+      "low": 40128,
+      "mid": 62700,
+      "high": 100320
+     }
+    }
+   },
+   "lanes": {
+    "A": {
+     "files": 24,
+     "words": 7006,
+     "job_modules_mid": 5.0,
+     "task_modules_mid": 5.0
+    },
+    "F": {
+     "files": 21,
+     "words": 8808,
+     "job_modules_mid": 13.0,
+     "task_modules_mid": 11.0
+    },
+    "D2": {
+     "files": 5,
+     "words": 4204,
+     "job_modules_mid": 9.0,
+     "task_modules_mid": 0.0
+    },
+    "D1": {
+     "files": 13,
+     "words": 4620,
+     "job_modules_mid": 9.0,
+     "task_modules_mid": 2.0
+    },
+    "H": {
+     "files": 6,
+     "words": 464,
+     "job_modules_mid": 1.0,
+     "task_modules_mid": 0.0
+    },
+    "B": {
+     "files": 9,
+     "words": 3027,
+     "job_modules_mid": 7.0,
+     "task_modules_mid": 0.0
+    },
+    "C": {
+     "files": 4,
+     "words": 4714,
+     "job_modules_mid": 9.0,
+     "task_modules_mid": 0.0
+    },
+    "E": {
+     "files": 8,
+     "words": 2183,
+     "job_modules_mid": 5.0,
+     "task_modules_mid": 0.0
+    }
+   },
+   "store_bytes": {
+    "low": 524444,
+    "mid": 817286,
+    "high": 1305356
+   },
+   "resident_bytes": {
+    "low": 18619,
+    "mid": 21459,
+    "high": 24299
+   },
+   "resident_capacity": 26367,
+   "resident_measured": {
+    "source": "evidence/resident-kernel/resident-flight-sizes.json",
+    "resident_bytes": 24253,
+    "free_bytes": 2114,
+    "boot_only_bytes": 4216,
+    "components": {
+     "kernel": 10493,
+     "ABI 2 runtime and REU store": 5235,
+     "transfer ABI trampoline and Executive call sites": 3501,
+     "resident state and step": 1512,
+     "single-precision subroutines": 1307,
+     "AGC timers and interrupt entry": 1183,
+     "service table exports": 637,
+     "C runtime and library": 361,
+     "IRQ entry": 24,
+     "BASIC header and alignment": 0
+    }
+   },
+   "files": [
+    {
+     "path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 328,
+     "estimated_native_bytes": {
+      "low": 5248,
+      "mid": 8200,
+      "high": 13120
+     }
+    },
+    {
+     "path": "Luminary099/AGS_INITIALIZATION.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 131,
+     "estimated_native_bytes": {
+      "low": 2096,
+      "mid": 3275,
+      "high": 5240
+     }
+    },
+    {
+     "path": "Luminary099/ALARM_AND_ABORT.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 139,
+     "estimated_native_bytes": {
+      "low": 2224,
+      "mid": 3475,
+      "high": 5560
+     }
+    },
+    {
+     "path": "Luminary099/AOSTASK_AND_AOSJOB.agc",
+     "lane": "D2",
+     "placement": "job",
+     "estimated_words": 758,
+     "estimated_native_bytes": {
+      "low": 12128,
+      "mid": 18950,
+      "high": 30320
+     }
+    },
+    {
+     "path": "Luminary099/AOTMARK.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 494,
+     "estimated_native_bytes": {
+      "low": 7904,
+      "mid": 12350,
+      "high": 19760
+     }
+    },
+    {
+     "path": "Luminary099/ASCENT_GUIDANCE.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 441,
+     "estimated_native_bytes": {
+      "low": 7056,
+      "mid": 11025,
+      "high": 17640
+     }
+    },
+    {
+     "path": "Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 413,
+     "estimated_native_bytes": {
+      "low": 6608,
+      "mid": 10325,
+      "high": 16520
+     }
+    },
+    {
+     "path": "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 732,
+     "estimated_native_bytes": {
+      "low": 11712,
+      "mid": 18300,
+      "high": 29280
+     }
+    },
+    {
+     "path": "Luminary099/CONIC_SUBROUTINES.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 826,
+     "estimated_native_bytes": {
+      "low": 13216,
+      "mid": 20650,
+      "high": 33040
+     }
+    },
+    {
+     "path": "Luminary099/CONTROLLED_CONSTANTS.agc",
+     "lane": "H",
+     "placement": "data",
+     "estimated_words": 464,
+     "estimated_native_bytes": {
+      "low": 1160,
+      "mid": 1160,
+      "high": 1160
+     }
+    },
+    {
+     "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+     "lane": "F",
+     "placement": "task",
+     "estimated_words": 294,
+     "estimated_native_bytes": {
+      "low": 4704,
+      "mid": 7350,
+      "high": 11760
+     }
+    },
+    {
+     "path": "Luminary099/DAP_INTERFACE_SUBROUTINES.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 68,
+     "estimated_native_bytes": {
+      "low": 1088,
+      "mid": 1700,
+      "high": 2720
+     }
+    },
+    {
+     "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+     "lane": "C",
+     "placement": "job",
+     "estimated_words": 674,
+     "estimated_native_bytes": {
+      "low": 10784,
+      "mid": 16850,
+      "high": 26960
+     }
+    },
+    {
+     "path": "Luminary099/DOWNLINK_LISTS.agc",
+     "lane": "A",
+     "placement": "data",
+     "estimated_words": 310,
+     "estimated_native_bytes": {
+      "low": 775,
+      "mid": 775,
+      "high": 775
+     }
+    },
+    {
+     "path": "Luminary099/DOWN_TELEMETRY_PROGRAM.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 186,
+     "estimated_native_bytes": {
+      "low": 2976,
+      "mid": 4650,
+      "high": 7440
+     }
+    },
+    {
+     "path": "Luminary099/ERASABLE_ASSIGNMENTS.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Luminary099/EXECUTIVE.agc",
+     "lane": "A",
+     "placement": "resident",
+     "estimated_words": 374,
+     "estimated_native_bytes": {
+      "low": 4488,
+      "mid": 5984,
+      "high": 7480
+     }
+    },
+    {
+     "path": "Luminary099/EXTENDED_VERBS.agc",
+     "lane": "C",
+     "placement": "job",
+     "estimated_words": 986,
+     "estimated_native_bytes": {
+      "low": 15776,
+      "mid": 24650,
+      "high": 39440
+     }
+    },
+    {
+     "path": "Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 434,
+     "estimated_native_bytes": {
+      "low": 6944,
+      "mid": 10850,
+      "high": 17360
+     }
+    },
+    {
+     "path": "Luminary099/FIXED_FIXED_CONSTANT_POOL.agc",
+     "lane": "A",
+     "placement": "resident-data",
+     "estimated_words": 96,
+     "estimated_native_bytes": {
+      "low": 240,
+      "mid": 240,
+      "high": 240
+     }
+    },
+    {
+     "path": "Luminary099/FLAGWORD_ASSIGNMENTS.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Luminary099/FRESH_START_AND_RESTART.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 864,
+     "estimated_native_bytes": {
+      "low": 13824,
+      "mid": 21600,
+      "high": 34560
+     }
+    },
+    {
+     "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 45,
+     "estimated_native_bytes": {
+      "low": 720,
+      "mid": 1125,
+      "high": 1800
+     }
+    },
+    {
+     "path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 26,
+     "estimated_native_bytes": {
+      "low": 416,
+      "mid": 650,
+      "high": 1040
+     }
+    },
+    {
+     "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 86,
+     "estimated_native_bytes": {
+      "low": 1376,
+      "mid": 2150,
+      "high": 3440
+     }
+    },
+    {
+     "path": "Luminary099/IMU_COMPENSATION_PACKAGE.agc",
+     "lane": "D1",
+     "placement": "task",
+     "estimated_words": 312,
+     "estimated_native_bytes": {
+      "low": 4992,
+      "mid": 7800,
+      "high": 12480
+     }
+    },
+    {
+     "path": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 693,
+     "estimated_native_bytes": {
+      "low": 11088,
+      "mid": 17325,
+      "high": 27720
+     }
+    },
+    {
+     "path": "Luminary099/IMU_PERFORMANCE_TESTS_4.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 258,
+     "estimated_native_bytes": {
+      "low": 4128,
+      "mid": 6450,
+      "high": 10320
+     }
+    },
+    {
+     "path": "Luminary099/IMU_PERFORMANCE_TEST_2.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 320,
+     "estimated_native_bytes": {
+      "low": 5120,
+      "mid": 8000,
+      "high": 12800
+     }
+    },
+    {
+     "path": "Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 143,
+     "estimated_native_bytes": {
+      "low": 2288,
+      "mid": 3575,
+      "high": 5720
+     }
+    },
+    {
+     "path": "Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Luminary099/INTEGRATION_INITIALIZATION.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 476,
+     "estimated_native_bytes": {
+      "low": 7616,
+      "mid": 11900,
+      "high": 19040
+     }
+    },
+    {
+     "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+     "lane": "A",
+     "placement": "mechanism",
+     "estimated_words": 80,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Luminary099/INTERPRETER.agc",
+     "lane": "A",
+     "placement": "library",
+     "estimated_words": 2363,
+     "estimated_native_bytes": {
+      "low": 37808,
+      "mid": 59075,
+      "high": 94520
+     }
+    },
+    {
+     "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+     "lane": "A",
+     "placement": "data",
+     "estimated_words": 35,
+     "estimated_native_bytes": {
+      "low": 88,
+      "mid": 88,
+      "high": 88
+     }
+    },
+    {
+     "path": "Luminary099/INTERRUPT_LEAD_INS.agc",
+     "lane": "A",
+     "placement": "mechanism",
+     "estimated_words": 68,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Luminary099/KALCMANU_STEERING.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 163,
+     "estimated_native_bytes": {
+      "low": 2608,
+      "mid": 4075,
+      "high": 6520
+     }
+    },
+    {
+     "path": "Luminary099/KALMAN_FILTER.agc",
+     "lane": "D2",
+     "placement": "job",
+     "estimated_words": 60,
+     "estimated_native_bytes": {
+      "low": 960,
+      "mid": 1500,
+      "high": 2400
+     }
+    },
+    {
+     "path": "Luminary099/KEYRUPT_UPRUPT.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 69,
+     "estimated_native_bytes": {
+      "low": 1104,
+      "mid": 1725,
+      "high": 2760
+     }
+    },
+    {
+     "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 481,
+     "estimated_native_bytes": {
+      "low": 7696,
+      "mid": 12025,
+      "high": 19240
+     }
+    },
+    {
+     "path": "Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 118,
+     "estimated_native_bytes": {
+      "low": 1888,
+      "mid": 2950,
+      "high": 4720
+     }
+    },
+    {
+     "path": "Luminary099/LEM_GEOMETRY.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 98,
+     "estimated_native_bytes": {
+      "low": 1568,
+      "mid": 2450,
+      "high": 3920
+     }
+    },
+    {
+     "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 65,
+     "estimated_native_bytes": {
+      "low": 1040,
+      "mid": 1625,
+      "high": 2600
+     }
+    },
+    {
+     "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 988,
+     "estimated_native_bytes": {
+      "low": 15808,
+      "mid": 24700,
+      "high": 39520
+     }
+    },
+    {
+     "path": "Luminary099/MAIN.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Luminary099/MEASUREMENT_INCORPORATION.agc",
+     "lane": "D2",
+     "placement": "job",
+     "estimated_words": 323,
+     "estimated_native_bytes": {
+      "low": 5168,
+      "mid": 8075,
+      "high": 12920
+     }
+    },
+    {
+     "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 657,
+     "estimated_native_bytes": {
+      "low": 10512,
+      "mid": 16425,
+      "high": 26280
+     }
+    },
+    {
+     "path": "Luminary099/P-AXIS_RCS_AUTOPILOT.agc",
+     "lane": "F",
+     "placement": "task",
+     "estimated_words": 828,
+     "estimated_native_bytes": {
+      "low": 13248,
+      "mid": 20700,
+      "high": 33120
+     }
+    },
+    {
+     "path": "Luminary099/P12.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 155,
+     "estimated_native_bytes": {
+      "low": 2480,
+      "mid": 3875,
+      "high": 6200
+     }
+    },
+    {
+     "path": "Luminary099/P20-P25.agc",
+     "lane": "D2",
+     "placement": "job",
+     "estimated_words": 3014,
+     "estimated_native_bytes": {
+      "low": 48224,
+      "mid": 75350,
+      "high": 120560
+     }
+    },
+    {
+     "path": "Luminary099/P30_P37.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 54,
+     "estimated_native_bytes": {
+      "low": 864,
+      "mid": 1350,
+      "high": 2160
+     }
+    },
+    {
+     "path": "Luminary099/P32-P35_P72-P75.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 721,
+     "estimated_native_bytes": {
+      "low": 11536,
+      "mid": 18025,
+      "high": 28840
+     }
+    },
+    {
+     "path": "Luminary099/P34-35_P74-75.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 823,
+     "estimated_native_bytes": {
+      "low": 13168,
+      "mid": 20575,
+      "high": 32920
+     }
+    },
+    {
+     "path": "Luminary099/P40-P47.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 792,
+     "estimated_native_bytes": {
+      "low": 12672,
+      "mid": 19800,
+      "high": 31680
+     }
+    },
+    {
+     "path": "Luminary099/P51-P53.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 1364,
+     "estimated_native_bytes": {
+      "low": 21824,
+      "mid": 34100,
+      "high": 54560
+     }
+    },
+    {
+     "path": "Luminary099/P70-P71.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 292,
+     "estimated_native_bytes": {
+      "low": 4672,
+      "mid": 7300,
+      "high": 11680
+     }
+    },
+    {
+     "path": "Luminary099/P76.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 78,
+     "estimated_native_bytes": {
+      "low": 1248,
+      "mid": 1950,
+      "high": 3120
+     }
+    },
+    {
+     "path": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 178,
+     "estimated_native_bytes": {
+      "low": 2848,
+      "mid": 4450,
+      "high": 7120
+     }
+    },
+    {
+     "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+     "lane": "C",
+     "placement": "job",
+     "estimated_words": 2447,
+     "estimated_native_bytes": {
+      "low": 39152,
+      "mid": 61175,
+      "high": 97880
+     }
+    },
+    {
+     "path": "Luminary099/PINBALL_NOUN_TABLES.agc",
+     "lane": "C",
+     "placement": "data",
+     "estimated_words": 607,
+     "estimated_native_bytes": {
+      "low": 1518,
+      "mid": 1518,
+      "high": 1518
+     }
+    },
+    {
+     "path": "Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 133,
+     "estimated_native_bytes": {
+      "low": 2128,
+      "mid": 3325,
+      "high": 5320
+     }
+    },
+    {
+     "path": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 334,
+     "estimated_native_bytes": {
+      "low": 5344,
+      "mid": 8350,
+      "high": 13360
+     }
+    },
+    {
+     "path": "Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc",
+     "lane": "F",
+     "placement": "task",
+     "estimated_words": 643,
+     "estimated_native_bytes": {
+      "low": 10288,
+      "mid": 16075,
+      "high": 25720
+     }
+    },
+    {
+     "path": "Luminary099/R30.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 218,
+     "estimated_native_bytes": {
+      "low": 3488,
+      "mid": 5450,
+      "high": 8720
+     }
+    },
+    {
+     "path": "Luminary099/R31.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 158,
+     "estimated_native_bytes": {
+      "low": 2528,
+      "mid": 3950,
+      "high": 6320
+     }
+    },
+    {
+     "path": "Luminary099/R60_62.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 246,
+     "estimated_native_bytes": {
+      "low": 3936,
+      "mid": 6150,
+      "high": 9840
+     }
+    },
+    {
+     "path": "Luminary099/R63.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 56,
+     "estimated_native_bytes": {
+      "low": 896,
+      "mid": 1400,
+      "high": 2240
+     }
+    },
+    {
+     "path": "Luminary099/RADAR_LEADIN_ROUTINES.agc",
+     "lane": "D2",
+     "placement": "job",
+     "estimated_words": 49,
+     "estimated_native_bytes": {
+      "low": 784,
+      "mid": 1225,
+      "high": 1960
+     }
+    },
+    {
+     "path": "Luminary099/RCS_FAILURE_MONITOR.agc",
+     "lane": "F",
+     "placement": "task",
+     "estimated_words": 69,
+     "estimated_native_bytes": {
+      "low": 1104,
+      "mid": 1725,
+      "high": 2760
+     }
+    },
+    {
+     "path": "Luminary099/RESTARTS_ROUTINE.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 197,
+     "estimated_native_bytes": {
+      "low": 3152,
+      "mid": 4925,
+      "high": 7880
+     }
+    },
+    {
+     "path": "Luminary099/RESTART_TABLES.agc",
+     "lane": "A",
+     "placement": "data",
+     "estimated_words": 118,
+     "estimated_native_bytes": {
+      "low": 295,
+      "mid": 295,
+      "high": 295
+     }
+    },
+    {
+     "path": "Luminary099/RTB_OP_CODES.agc",
+     "lane": "A",
+     "placement": "library",
+     "estimated_words": 145,
+     "estimated_native_bytes": {
+      "low": 2320,
+      "mid": 3625,
+      "high": 5800
+     }
+    },
+    {
+     "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 90,
+     "estimated_native_bytes": {
+      "low": 1440,
+      "mid": 2250,
+      "high": 3600
+     }
+    },
+    {
+     "path": "Luminary099/SERVICER.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 1230,
+     "estimated_native_bytes": {
+      "low": 19680,
+      "mid": 30750,
+      "high": 49200
+     }
+    },
+    {
+     "path": "Luminary099/SERVICE_ROUTINES.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 99,
+     "estimated_native_bytes": {
+      "low": 1584,
+      "mid": 2475,
+      "high": 3960
+     }
+    },
+    {
+     "path": "Luminary099/SINGLE_PRECISION_SUBROUTINES.agc",
+     "lane": "A",
+     "placement": "resident",
+     "estimated_words": 32,
+     "estimated_native_bytes": {
+      "low": 384,
+      "mid": 512,
+      "high": 640
+     }
+    },
+    {
+     "path": "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 82,
+     "estimated_native_bytes": {
+      "low": 1312,
+      "mid": 2050,
+      "high": 3280
+     }
+    },
+    {
+     "path": "Luminary099/STABLE_ORBIT.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 194,
+     "estimated_native_bytes": {
+      "low": 3104,
+      "mid": 4850,
+      "high": 7760
+     }
+    },
+    {
+     "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 36,
+     "estimated_native_bytes": {
+      "low": 576,
+      "mid": 900,
+      "high": 1440
+     }
+    },
+    {
+     "path": "Luminary099/T4RUPT_PROGRAM.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 634,
+     "estimated_native_bytes": {
+      "low": 10144,
+      "mid": 15850,
+      "high": 25360
+     }
+    },
+    {
+     "path": "Luminary099/T6-RUPT_PROGRAMS.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 55,
+     "estimated_native_bytes": {
+      "low": 880,
+      "mid": 1375,
+      "high": 2200
+     }
+    },
+    {
+     "path": "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Luminary099/THE_LUNAR_LANDING.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 187,
+     "estimated_native_bytes": {
+      "low": 2992,
+      "mid": 4675,
+      "high": 7480
+     }
+    },
+    {
+     "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+     "lane": "F",
+     "placement": "job",
+     "estimated_words": 148,
+     "estimated_native_bytes": {
+      "low": 2368,
+      "mid": 3700,
+      "high": 5920
+     }
+    },
+    {
+     "path": "Luminary099/TIME_OF_FREE_FALL.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 224,
+     "estimated_native_bytes": {
+      "low": 3584,
+      "mid": 5600,
+      "high": 8960
+     }
+    },
+    {
+     "path": "Luminary099/TJET_LAW.agc",
+     "lane": "F",
+     "placement": "task",
+     "estimated_words": 329,
+     "estimated_native_bytes": {
+      "low": 5264,
+      "mid": 8225,
+      "high": 13160
+     }
+    },
+    {
+     "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+     "lane": "F",
+     "placement": "task",
+     "estimated_words": 428,
+     "estimated_native_bytes": {
+      "low": 6848,
+      "mid": 10700,
+      "high": 17120
+     }
+    },
+    {
+     "path": "Luminary099/UPDATE_PROGRAM.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 296,
+     "estimated_native_bytes": {
+      "low": 4736,
+      "mid": 7400,
+      "high": 11840
+     }
+    },
+    {
+     "path": "Luminary099/WAITLIST.agc",
+     "lane": "A",
+     "placement": "resident",
+     "estimated_words": 304,
+     "estimated_native_bytes": {
+      "low": 3648,
+      "mid": 4864,
+      "high": 6080
+     }
+    }
+   ]
+  },
+  {
+   "mission": "Comanche055",
+   "total_words": 34210,
+   "placements": {
+    "job": {
+     "files": 57,
+     "words": 24768,
+     "bytes": {
+      "low": 396288,
+      "mid": 619200,
+      "high": 990720
+     }
+    },
+    "declarations": {
+     "files": 5,
+     "words": 7,
+     "bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    "task": {
+     "files": 10,
+     "words": 4556,
+     "bytes": {
+      "low": 72896,
+      "mid": 113900,
+      "high": 182240
+     }
+    },
+    "data": {
+     "files": 5,
+     "words": 1355,
+     "bytes": {
+      "low": 3389,
+      "mid": 3389,
+      "high": 3389
+     }
+    },
+    "resident": {
+     "files": 3,
+     "words": 684,
+     "bytes": {
+      "low": 8208,
+      "mid": 10944,
+      "high": 13680
+     }
+    },
+    "resident-data": {
+     "files": 1,
+     "words": 94,
+     "bytes": {
+      "low": 235,
+      "mid": 235,
+      "high": 235
+     }
+    },
+    "mechanism": {
+     "files": 2,
+     "words": 152,
+     "bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    "library": {
+     "files": 2,
+     "words": 2594,
+     "bytes": {
+      "low": 41504,
+      "mid": 64850,
+      "high": 103760
+     }
+    }
+   },
+   "lanes": {
+    "A": {
+     "files": 23,
+     "words": 7359,
+     "job_modules_mid": 5.0,
+     "task_modules_mid": 6.0
+    },
+    "D1": {
+     "files": 14,
+     "words": 4959,
+     "job_modules_mid": 10.0,
+     "task_modules_mid": 2.0
+    },
+    "H": {
+     "files": 4,
+     "words": 7,
+     "job_modules_mid": 0.0,
+     "task_modules_mid": 0.0
+    },
+    "G": {
+     "files": 19,
+     "words": 8156,
+     "job_modules_mid": 11.0,
+     "task_modules_mid": 13.0
+    },
+    "B": {
+     "files": 10,
+     "words": 2980,
+     "job_modules_mid": 7.0,
+     "task_modules_mid": 0.0
+    },
+    "C": {
+     "files": 4,
+     "words": 4392,
+     "job_modules_mid": 8.0,
+     "task_modules_mid": 0.0
+    },
+    "E": {
+     "files": 9,
+     "words": 3831,
+     "job_modules_mid": 8.0,
+     "task_modules_mid": 0.0
+    },
+    "D2": {
+     "files": 2,
+     "words": 2526,
+     "job_modules_mid": 6.0,
+     "task_modules_mid": 0.0
+    }
+   },
+   "store_bytes": {
+    "low": 514077,
+    "mid": 801339,
+    "high": 1280109
+   },
+   "resident_bytes": {
+    "low": 18302,
+    "mid": 21038,
+    "high": 23774
+   },
+   "resident_capacity": 26367,
+   "resident_measured": {
+    "source": "evidence/resident-kernel/resident-flight-sizes.json",
+    "resident_bytes": 23966,
+    "free_bytes": 2401,
+    "boot_only_bytes": 4195,
+    "components": {
+     "kernel": 10256,
+     "ABI 2 runtime and REU store": 5235,
+     "transfer ABI trampoline and Executive call sites": 3433,
+     "resident state and step": 1530,
+     "single-precision subroutines": 1307,
+     "AGC timers and interrupt entry": 1183,
+     "service table exports": 637,
+     "C runtime and library": 361,
+     "IRQ entry": 24,
+     "BASIC header and alignment": 0
+    }
+   },
+   "files": [
+    {
+     "path": "Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 328,
+     "estimated_native_bytes": {
+      "low": 5248,
+      "mid": 8200,
+      "high": 13120
+     }
+    },
+    {
+     "path": "Comanche055/ALARM_AND_ABORT.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 108,
+     "estimated_native_bytes": {
+      "low": 1728,
+      "mid": 2700,
+      "high": 4320
+     }
+    },
+    {
+     "path": "Comanche055/ANGLFIND.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 396,
+     "estimated_native_bytes": {
+      "low": 6336,
+      "mid": 9900,
+      "high": 15840
+     }
+    },
+    {
+     "path": "Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/AUTOMATIC_MANEUVERS.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 373,
+     "estimated_native_bytes": {
+      "low": 5968,
+      "mid": 9325,
+      "high": 14920
+     }
+    },
+    {
+     "path": "Comanche055/CM_BODY_ATTITUDE.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 190,
+     "estimated_native_bytes": {
+      "low": 3040,
+      "mid": 4750,
+      "high": 7600
+     }
+    },
+    {
+     "path": "Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc",
+     "lane": "G",
+     "placement": "task",
+     "estimated_words": 839,
+     "estimated_native_bytes": {
+      "low": 13424,
+      "mid": 20975,
+      "high": 33560
+     }
+    },
+    {
+     "path": "Comanche055/CONIC_SUBROUTINES.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 838,
+     "estimated_native_bytes": {
+      "low": 13408,
+      "mid": 20950,
+      "high": 33520
+     }
+    },
+    {
+     "path": "Comanche055/CONTRACT_AND_APPROVALS.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/CSM_GEOMETRY.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 215,
+     "estimated_native_bytes": {
+      "low": 3440,
+      "mid": 5375,
+      "high": 8600
+     }
+    },
+    {
+     "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+     "lane": "C",
+     "placement": "job",
+     "estimated_words": 671,
+     "estimated_native_bytes": {
+      "low": 10736,
+      "mid": 16775,
+      "high": 26840
+     }
+    },
+    {
+     "path": "Comanche055/DOWN-TELEMETRY_PROGRAM.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 178,
+     "estimated_native_bytes": {
+      "low": 2848,
+      "mid": 4450,
+      "high": 7120
+     }
+    },
+    {
+     "path": "Comanche055/DOWNLINK_LISTS.agc",
+     "lane": "A",
+     "placement": "data",
+     "estimated_words": 290,
+     "estimated_native_bytes": {
+      "low": 725,
+      "mid": 725,
+      "high": 725
+     }
+    },
+    {
+     "path": "Comanche055/ENTRY_LEXICON.agc",
+     "lane": "G",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/ERASABLE_ASSIGNMENTS.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/EXECUTIVE.agc",
+     "lane": "A",
+     "placement": "resident",
+     "estimated_words": 366,
+     "estimated_native_bytes": {
+      "low": 4392,
+      "mid": 5856,
+      "high": 7320
+     }
+    },
+    {
+     "path": "Comanche055/EXTENDED_VERBS.agc",
+     "lane": "C",
+     "placement": "job",
+     "estimated_words": 702,
+     "estimated_native_bytes": {
+      "low": 11232,
+      "mid": 17550,
+      "high": 28080
+     }
+    },
+    {
+     "path": "Comanche055/FIXED_FIXED_CONSTANT_POOL.agc",
+     "lane": "A",
+     "placement": "resident-data",
+     "estimated_words": 94,
+     "estimated_native_bytes": {
+      "low": 235,
+      "mid": 235,
+      "high": 235
+     }
+    },
+    {
+     "path": "Comanche055/FRESH_START_AND_RESTART.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 918,
+     "estimated_native_bytes": {
+      "low": 14688,
+      "mid": 22950,
+      "high": 36720
+     }
+    },
+    {
+     "path": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 48,
+     "estimated_native_bytes": {
+      "low": 768,
+      "mid": 1200,
+      "high": 1920
+     }
+    },
+    {
+     "path": "Comanche055/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 82,
+     "estimated_native_bytes": {
+      "low": 1312,
+      "mid": 2050,
+      "high": 3280
+     }
+    },
+    {
+     "path": "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 1026,
+     "estimated_native_bytes": {
+      "low": 16416,
+      "mid": 25650,
+      "high": 41040
+     }
+    },
+    {
+     "path": "Comanche055/IMU_COMPENSATION_PACKAGE.agc",
+     "lane": "D1",
+     "placement": "task",
+     "estimated_words": 277,
+     "estimated_native_bytes": {
+      "low": 4432,
+      "mid": 6925,
+      "high": 11080
+     }
+    },
+    {
+     "path": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 688,
+     "estimated_native_bytes": {
+      "low": 11008,
+      "mid": 17200,
+      "high": 27520
+     }
+    },
+    {
+     "path": "Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 144,
+     "estimated_native_bytes": {
+      "low": 2304,
+      "mid": 3600,
+      "high": 5760
+     }
+    },
+    {
+     "path": "Comanche055/INTEGRATION_INITIALIZATION.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 526,
+     "estimated_native_bytes": {
+      "low": 8416,
+      "mid": 13150,
+      "high": 21040
+     }
+    },
+    {
+     "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+     "lane": "A",
+     "placement": "mechanism",
+     "estimated_words": 80,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/INTERPRETER.agc",
+     "lane": "A",
+     "placement": "library",
+     "estimated_words": 2358,
+     "estimated_native_bytes": {
+      "low": 37728,
+      "mid": 58950,
+      "high": 94320
+     }
+    },
+    {
+     "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+     "lane": "A",
+     "placement": "data",
+     "estimated_words": 35,
+     "estimated_native_bytes": {
+      "low": 88,
+      "mid": 88,
+      "high": 88
+     }
+    },
+    {
+     "path": "Comanche055/INTERRUPT_LEAD_INS.agc",
+     "lane": "A",
+     "placement": "mechanism",
+     "estimated_words": 72,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/JET_SELECTION_LOGIC.agc",
+     "lane": "G",
+     "placement": "task",
+     "estimated_words": 640,
+     "estimated_native_bytes": {
+      "low": 10240,
+      "mid": 16000,
+      "high": 25600
+     }
+    },
+    {
+     "path": "Comanche055/KALCMANU_STEERING.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 188,
+     "estimated_native_bytes": {
+      "low": 3008,
+      "mid": 4700,
+      "high": 7520
+     }
+    },
+    {
+     "path": "Comanche055/KEYRUPT_UPRUPT.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 68,
+     "estimated_native_bytes": {
+      "low": 1088,
+      "mid": 1700,
+      "high": 2720
+     }
+    },
+    {
+     "path": "Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 122,
+     "estimated_native_bytes": {
+      "low": 1952,
+      "mid": 3050,
+      "high": 4880
+     }
+    },
+    {
+     "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 55,
+     "estimated_native_bytes": {
+      "low": 880,
+      "mid": 1375,
+      "high": 2200
+     }
+    },
+    {
+     "path": "Comanche055/LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/MAIN.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 0,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/MEASUREMENT_INCORPORATION.agc",
+     "lane": "D2",
+     "placement": "job",
+     "estimated_words": 324,
+     "estimated_native_bytes": {
+      "low": 5184,
+      "mid": 8100,
+      "high": 12960
+     }
+    },
+    {
+     "path": "Comanche055/MYSUBS.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 37,
+     "estimated_native_bytes": {
+      "low": 592,
+      "mid": 925,
+      "high": 1480
+     }
+    },
+    {
+     "path": "Comanche055/ORBITAL_INTEGRATION.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 644,
+     "estimated_native_bytes": {
+      "low": 10304,
+      "mid": 16100,
+      "high": 25760
+     }
+    },
+    {
+     "path": "Comanche055/P11.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 521,
+     "estimated_native_bytes": {
+      "low": 8336,
+      "mid": 13025,
+      "high": 20840
+     }
+    },
+    {
+     "path": "Comanche055/P20-P25.agc",
+     "lane": "D2",
+     "placement": "job",
+     "estimated_words": 2202,
+     "estimated_native_bytes": {
+      "low": 35232,
+      "mid": 55050,
+      "high": 88080
+     }
+    },
+    {
+     "path": "Comanche055/P30-P37.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 320,
+     "estimated_native_bytes": {
+      "low": 5120,
+      "mid": 8000,
+      "high": 12800
+     }
+    },
+    {
+     "path": "Comanche055/P32-P33_P72-P73.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 681,
+     "estimated_native_bytes": {
+      "low": 10896,
+      "mid": 17025,
+      "high": 27240
+     }
+    },
+    {
+     "path": "Comanche055/P34-35_P74-75.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 820,
+     "estimated_native_bytes": {
+      "low": 13120,
+      "mid": 20500,
+      "high": 32800
+     }
+    },
+    {
+     "path": "Comanche055/P37_P70.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 1110,
+     "estimated_native_bytes": {
+      "low": 17760,
+      "mid": 27750,
+      "high": 44400
+     }
+    },
+    {
+     "path": "Comanche055/P40-P47.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 1547,
+     "estimated_native_bytes": {
+      "low": 24752,
+      "mid": 38675,
+      "high": 61880
+     }
+    },
+    {
+     "path": "Comanche055/P51-P53.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 1178,
+     "estimated_native_bytes": {
+      "low": 18848,
+      "mid": 29450,
+      "high": 47120
+     }
+    },
+    {
+     "path": "Comanche055/P61-P67.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 440,
+     "estimated_native_bytes": {
+      "low": 7040,
+      "mid": 11000,
+      "high": 17600
+     }
+    },
+    {
+     "path": "Comanche055/P76.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 77,
+     "estimated_native_bytes": {
+      "low": 1232,
+      "mid": 1925,
+      "high": 3080
+     }
+    },
+    {
+     "path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 173,
+     "estimated_native_bytes": {
+      "low": 2768,
+      "mid": 4325,
+      "high": 6920
+     }
+    },
+    {
+     "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+     "lane": "C",
+     "placement": "job",
+     "estimated_words": 2448,
+     "estimated_native_bytes": {
+      "low": 39168,
+      "mid": 61200,
+      "high": 97920
+     }
+    },
+    {
+     "path": "Comanche055/PINBALL_NOUN_TABLES.agc",
+     "lane": "C",
+     "placement": "data",
+     "estimated_words": 571,
+     "estimated_native_bytes": {
+      "low": 1428,
+      "mid": 1428,
+      "high": 1428
+     }
+    },
+    {
+     "path": "Comanche055/PLANETARY_INERTIAL_ORIENTATION.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 150,
+     "estimated_native_bytes": {
+      "low": 2400,
+      "mid": 3750,
+      "high": 6000
+     }
+    },
+    {
+     "path": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 200,
+     "estimated_native_bytes": {
+      "low": 3200,
+      "mid": 5000,
+      "high": 8000
+     }
+    },
+    {
+     "path": "Comanche055/R30.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 238,
+     "estimated_native_bytes": {
+      "low": 3808,
+      "mid": 5950,
+      "high": 9520
+     }
+    },
+    {
+     "path": "Comanche055/R31.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 161,
+     "estimated_native_bytes": {
+      "low": 2576,
+      "mid": 4025,
+      "high": 6440
+     }
+    },
+    {
+     "path": "Comanche055/R60_62.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 190,
+     "estimated_native_bytes": {
+      "low": 3040,
+      "mid": 4750,
+      "high": 7600
+     }
+    },
+    {
+     "path": "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 33,
+     "estimated_native_bytes": {
+      "low": 528,
+      "mid": 825,
+      "high": 1320
+     }
+    },
+    {
+     "path": "Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc",
+     "lane": "G",
+     "placement": "task",
+     "estimated_words": 647,
+     "estimated_native_bytes": {
+      "low": 10352,
+      "mid": 16175,
+      "high": 25880
+     }
+    },
+    {
+     "path": "Comanche055/REENTRY_CONTROL.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 938,
+     "estimated_native_bytes": {
+      "low": 15008,
+      "mid": 23450,
+      "high": 37520
+     }
+    },
+    {
+     "path": "Comanche055/RESTARTS_ROUTINE.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 197,
+     "estimated_native_bytes": {
+      "low": 3152,
+      "mid": 4925,
+      "high": 7880
+     }
+    },
+    {
+     "path": "Comanche055/RESTART_TABLES.agc",
+     "lane": "A",
+     "placement": "data",
+     "estimated_words": 236,
+     "estimated_native_bytes": {
+      "low": 590,
+      "mid": 590,
+      "high": 590
+     }
+    },
+    {
+     "path": "Comanche055/RT8_OP_CODES.agc",
+     "lane": "A",
+     "placement": "library",
+     "estimated_words": 236,
+     "estimated_native_bytes": {
+      "low": 3776,
+      "mid": 5900,
+      "high": 9440
+     }
+    },
+    {
+     "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 64,
+     "estimated_native_bytes": {
+      "low": 1024,
+      "mid": 1600,
+      "high": 2560
+     }
+    },
+    {
+     "path": "Comanche055/SERVICER207.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 379,
+     "estimated_native_bytes": {
+      "low": 6064,
+      "mid": 9475,
+      "high": 15160
+     }
+    },
+    {
+     "path": "Comanche055/SERVICE_ROUTINES.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 125,
+     "estimated_native_bytes": {
+      "low": 2000,
+      "mid": 3125,
+      "high": 5000
+     }
+    },
+    {
+     "path": "Comanche055/SINGLE_PRECISION_SUBROUTINES.agc",
+     "lane": "A",
+     "placement": "resident",
+     "estimated_words": 32,
+     "estimated_native_bytes": {
+      "low": 384,
+      "mid": 512,
+      "high": 640
+     }
+    },
+    {
+     "path": "Comanche055/STABLE_ORBIT.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 182,
+     "estimated_native_bytes": {
+      "low": 2912,
+      "mid": 4550,
+      "high": 7280
+     }
+    },
+    {
+     "path": "Comanche055/STAR_TABLES.agc",
+     "lane": "D1",
+     "placement": "data",
+     "estimated_words": 223,
+     "estimated_native_bytes": {
+      "low": 558,
+      "mid": 558,
+      "high": 558
+     }
+    },
+    {
+     "path": "Comanche055/SXTMARK.agc",
+     "lane": "D1",
+     "placement": "job",
+     "estimated_words": 322,
+     "estimated_native_bytes": {
+      "low": 5152,
+      "mid": 8050,
+      "high": 12880
+     }
+    },
+    {
+     "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 40,
+     "estimated_native_bytes": {
+      "low": 640,
+      "mid": 1000,
+      "high": 1600
+     }
+    },
+    {
+     "path": "Comanche055/T4RUPT_PROGRAM.agc",
+     "lane": "A",
+     "placement": "task",
+     "estimated_words": 833,
+     "estimated_native_bytes": {
+      "low": 13328,
+      "mid": 20825,
+      "high": 33320
+     }
+    },
+    {
+     "path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+     "lane": "H",
+     "placement": "declarations",
+     "estimated_words": 7,
+     "estimated_native_bytes": {
+      "low": 0,
+      "mid": 0,
+      "high": 0
+     }
+    },
+    {
+     "path": "Comanche055/TIME_OF_FREE_FALL.agc",
+     "lane": "B",
+     "placement": "job",
+     "estimated_words": 226,
+     "estimated_native_bytes": {
+      "low": 3616,
+      "mid": 5650,
+      "high": 9040
+     }
+    },
+    {
+     "path": "Comanche055/TPI_SEARCH.agc",
+     "lane": "E",
+     "placement": "job",
+     "estimated_words": 342,
+     "estimated_native_bytes": {
+      "low": 5472,
+      "mid": 8550,
+      "high": 13680
+     }
+    },
+    {
+     "path": "Comanche055/TVCDAPS.agc",
+     "lane": "G",
+     "placement": "task",
+     "estimated_words": 619,
+     "estimated_native_bytes": {
+      "low": 9904,
+      "mid": 15475,
+      "high": 24760
+     }
+    },
+    {
+     "path": "Comanche055/TVCEXECUTIVE.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 164,
+     "estimated_native_bytes": {
+      "low": 2624,
+      "mid": 4100,
+      "high": 6560
+     }
+    },
+    {
+     "path": "Comanche055/TVCINITIALIZE.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 285,
+     "estimated_native_bytes": {
+      "low": 4560,
+      "mid": 7125,
+      "high": 11400
+     }
+    },
+    {
+     "path": "Comanche055/TVCMASSPROP.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 94,
+     "estimated_native_bytes": {
+      "low": 1504,
+      "mid": 2350,
+      "high": 3760
+     }
+    },
+    {
+     "path": "Comanche055/TVCRESTARTS.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 92,
+     "estimated_native_bytes": {
+      "low": 1472,
+      "mid": 2300,
+      "high": 3680
+     }
+    },
+    {
+     "path": "Comanche055/TVCROLLDAP.agc",
+     "lane": "G",
+     "placement": "task",
+     "estimated_words": 282,
+     "estimated_native_bytes": {
+      "low": 4512,
+      "mid": 7050,
+      "high": 11280
+     }
+    },
+    {
+     "path": "Comanche055/TVCSTROKETEST.agc",
+     "lane": "G",
+     "placement": "job",
+     "estimated_words": 73,
+     "estimated_native_bytes": {
+      "low": 1168,
+      "mid": 1825,
+      "high": 2920
+     }
+    },
+    {
+     "path": "Comanche055/UPDATE_PROGRAM.agc",
+     "lane": "A",
+     "placement": "job",
+     "estimated_words": 306,
+     "estimated_native_bytes": {
+      "low": 4896,
+      "mid": 7650,
+      "high": 12240
+     }
+    },
+    {
+     "path": "Comanche055/WAITLIST.agc",
+     "lane": "A",
+     "placement": "resident",
+     "estimated_words": 286,
+     "estimated_native_bytes": {
+      "low": 3432,
+      "mid": 4576,
+      "high": 5720
+     }
+    }
+   ]
+  }
+ ]
+}

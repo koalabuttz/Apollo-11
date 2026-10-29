@@ -1,0 +1,3 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_finish.c tests/lm_finish_check.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/test-lm-finish
+build/test-lm-finish
+64 complete ENDOFJOB states and21 unchanged invalid boundaries: PASS

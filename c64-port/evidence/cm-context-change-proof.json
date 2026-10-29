@@ -1,0 +1,20 @@
+{
+  "cases": 12288,
+  "checkpoints": 12288,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "CHANG105164",
+    "CHANG205170"
+  ],
+  "context_cohorts": "all6 selectedcore slots \u00d7 basic/interpreter outgoing \u00d7 basic/interpreter incoming \u00d7512 raw register,bank,OVFIND/PUSH cases",
+  "binary_bytes": 50479104,
+  "snapshot_sha256": "391ef82792a479b4762f0487c81f3a262240b88ceb0a50f0c73ece0036ad5319",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual source context change through basicDTCB or interpretedINTRSM NEWOPS; no selected application body execution"
+}

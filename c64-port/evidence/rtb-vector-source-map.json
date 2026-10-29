@@ -1,0 +1,1359 @@
+{
+  "lm": {
+    "source_file": "Luminary099/RTB_OP_CODES.agc",
+    "original_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "qualified_containing_words": 45,
+    "words": [
+      {
+        "original_line": 153,
+        "bank": "10",
+        "address": "3705",
+        "physical_fixed_word": 9157,
+        "raw_octal": "50120",
+        "native_group": "PULSEIMU_to_IMUPULSE",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 154,
+        "bank": "10",
+        "address": "3706",
+        "physical_fixed_word": 9158,
+        "raw_octal": "30046",
+        "native_group": "PULSEIMU_to_IMUPULSE",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 155,
+        "bank": "10",
+        "address": "3707",
+        "physical_fixed_word": 9159,
+        "raw_octal": "04616",
+        "native_group": "PULSEIMU_to_IMUPULSE",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 156,
+        "bank": "10",
+        "address": "3710",
+        "physical_fixed_word": 9160,
+        "raw_octal": "17323",
+        "native_group": "PULSEIMU_to_IMUPULSE",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 188,
+        "bank": "10",
+        "address": "3724",
+        "physical_fixed_word": 9172,
+        "raw_octal": "34753",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 189,
+        "bank": "10",
+        "address": "3725",
+        "physical_fixed_word": 9173,
+        "raw_octal": "13727",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 190,
+        "bank": "10",
+        "address": "3726",
+        "physical_fixed_word": 9174,
+        "raw_octal": "34755",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 191,
+        "bank": "10",
+        "address": "3727",
+        "physical_fixed_word": 9175,
+        "raw_octal": "60120",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 192,
+        "bank": "10",
+        "address": "3730",
+        "physical_fixed_word": 9176,
+        "raw_octal": "54156",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 193,
+        "bank": "10",
+        "address": "3731",
+        "physical_fixed_word": 9177,
+        "raw_octal": "04616",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 194,
+        "bank": "10",
+        "address": "3732",
+        "physical_fixed_word": 9178,
+        "raw_octal": "01010",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 195,
+        "bank": "10",
+        "address": "3733",
+        "physical_fixed_word": 9179,
+        "raw_octal": "10154",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 196,
+        "bank": "10",
+        "address": "3734",
+        "physical_fixed_word": 9180,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 197,
+        "bank": "10",
+        "address": "3735",
+        "physical_fixed_word": 9181,
+        "raw_octal": "13737",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 198,
+        "bank": "10",
+        "address": "3736",
+        "physical_fixed_word": 9182,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 199,
+        "bank": "10",
+        "address": "3737",
+        "physical_fixed_word": 9183,
+        "raw_octal": "10157",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 200,
+        "bank": "10",
+        "address": "3740",
+        "physical_fixed_word": 9184,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 201,
+        "bank": "10",
+        "address": "3741",
+        "physical_fixed_word": 9185,
+        "raw_octal": "13743",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 202,
+        "bank": "10",
+        "address": "3742",
+        "physical_fixed_word": 9186,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 203,
+        "bank": "10",
+        "address": "3743",
+        "physical_fixed_word": 9187,
+        "raw_octal": "10161",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 204,
+        "bank": "10",
+        "address": "3744",
+        "physical_fixed_word": 9188,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 205,
+        "bank": "10",
+        "address": "3745",
+        "physical_fixed_word": 9189,
+        "raw_octal": "13747",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 206,
+        "bank": "10",
+        "address": "3746",
+        "physical_fixed_word": 9190,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 208,
+        "bank": "10",
+        "address": "3747",
+        "physical_fixed_word": 9191,
+        "raw_octal": "30155",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 209,
+        "bank": "10",
+        "address": "3750",
+        "physical_fixed_word": 9192,
+        "raw_octal": "00006",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 210,
+        "bank": "10",
+        "address": "3751",
+        "physical_fixed_word": 9193,
+        "raw_octal": "74736",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 211,
+        "bank": "10",
+        "address": "3752",
+        "physical_fixed_word": 9194,
+        "raw_octal": "20155",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 212,
+        "bank": "10",
+        "address": "3753",
+        "physical_fixed_word": 9195,
+        "raw_octal": "30160",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 213,
+        "bank": "10",
+        "address": "3754",
+        "physical_fixed_word": 9196,
+        "raw_octal": "00006",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 214,
+        "bank": "10",
+        "address": "3755",
+        "physical_fixed_word": 9197,
+        "raw_octal": "74736",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 215,
+        "bank": "10",
+        "address": "3756",
+        "physical_fixed_word": 9198,
+        "raw_octal": "20160",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 216,
+        "bank": "10",
+        "address": "3757",
+        "physical_fixed_word": 9199,
+        "raw_octal": "30162",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 217,
+        "bank": "10",
+        "address": "3760",
+        "physical_fixed_word": 9200,
+        "raw_octal": "00006",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 218,
+        "bank": "10",
+        "address": "3761",
+        "physical_fixed_word": 9201,
+        "raw_octal": "74736",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 219,
+        "bank": "10",
+        "address": "3762",
+        "physical_fixed_word": 9202,
+        "raw_octal": "20162",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 220,
+        "bank": "10",
+        "address": "3763",
+        "physical_fixed_word": 9203,
+        "raw_octal": "34761",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 221,
+        "bank": "10",
+        "address": "3764",
+        "physical_fixed_word": 9204,
+        "raw_octal": "50156",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 222,
+        "bank": "10",
+        "address": "3765",
+        "physical_fixed_word": 9205,
+        "raw_octal": "54045",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 223,
+        "bank": "10",
+        "address": "3766",
+        "physical_fixed_word": 9206,
+        "raw_octal": "04635",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 224,
+        "bank": "10",
+        "address": "3767",
+        "physical_fixed_word": 9207,
+        "raw_octal": "01024",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 226,
+        "bank": "10",
+        "address": "3770",
+        "physical_fixed_word": 9208,
+        "raw_octal": "34755",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 227,
+        "bank": "10",
+        "address": "3771",
+        "physical_fixed_word": 9209,
+        "raw_octal": "13764",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 231,
+        "bank": "10",
+        "address": "3772",
+        "physical_fixed_word": 9210,
+        "raw_octal": "04616",
+        "native_group": "VECSGNAG",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 232,
+        "bank": "10",
+        "address": "3773",
+        "physical_fixed_word": 9211,
+        "raw_octal": "01010",
+        "native_group": "VECSGNAG",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 233,
+        "bank": "10",
+        "address": "3774",
+        "physical_fixed_word": 9212,
+        "raw_octal": "06061",
+        "native_group": "VECSGNAG",
+        "status": "qualified_vector_frontier"
+      }
+    ],
+    "containing_status": "partial",
+    "interpreter_helpers": {
+      "source_file": "Luminary099/INTERPRETER.agc",
+      "original_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "assembled_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "audit_dependency": "evidence/lm-powered-source-audit.json",
+      "indentation_repairs": [],
+      "words": [
+        {
+          "original_line": 1324,
+          "bank": "03",
+          "address": "7544",
+          "physical_fixed_word": 3940,
+          "raw_octal": "10000"
+        },
+        {
+          "original_line": 1325,
+          "bank": "03",
+          "address": "7545",
+          "physical_fixed_word": 3941,
+          "raw_octal": "17551"
+        },
+        {
+          "original_line": 1326,
+          "bank": "03",
+          "address": "7546",
+          "physical_fixed_word": 3942,
+          "raw_octal": "00002"
+        },
+        {
+          "original_line": 1327,
+          "bank": "03",
+          "address": "7547",
+          "physical_fixed_word": 3943,
+          "raw_octal": "17561"
+        },
+        {
+          "original_line": 1328,
+          "bank": "03",
+          "address": "7550",
+          "physical_fixed_word": 3944,
+          "raw_octal": "00002"
+        },
+        {
+          "original_line": 1330,
+          "bank": "03",
+          "address": "7551",
+          "physical_fixed_word": 3945,
+          "raw_octal": "56001"
+        },
+        {
+          "original_line": 1331,
+          "bank": "03",
+          "address": "7552",
+          "physical_fixed_word": 3946,
+          "raw_octal": "64736"
+        },
+        {
+          "original_line": 1332,
+          "bank": "03",
+          "address": "7553",
+          "physical_fixed_word": 3947,
+          "raw_octal": "64736"
+        },
+        {
+          "original_line": 1333,
+          "bank": "03",
+          "address": "7554",
+          "physical_fixed_word": 3948,
+          "raw_octal": "54000"
+        },
+        {
+          "original_line": 1334,
+          "bank": "03",
+          "address": "7555",
+          "physical_fixed_word": 3949,
+          "raw_octal": "17557"
+        },
+        {
+          "original_line": 1335,
+          "bank": "03",
+          "address": "7556",
+          "physical_fixed_word": 3950,
+          "raw_octal": "24001"
+        },
+        {
+          "original_line": 1336,
+          "bank": "03",
+          "address": "7557",
+          "physical_fixed_word": 3951,
+          "raw_octal": "56001"
+        },
+        {
+          "original_line": 1337,
+          "bank": "03",
+          "address": "7560",
+          "physical_fixed_word": 3952,
+          "raw_octal": "00002"
+        },
+        {
+          "original_line": 1339,
+          "bank": "03",
+          "address": "7561",
+          "physical_fixed_word": 3953,
+          "raw_octal": "56001"
+        },
+        {
+          "original_line": 1340,
+          "bank": "03",
+          "address": "7562",
+          "physical_fixed_word": 3954,
+          "raw_octal": "64735"
+        },
+        {
+          "original_line": 1341,
+          "bank": "03",
+          "address": "7563",
+          "physical_fixed_word": 3955,
+          "raw_octal": "67747"
+        },
+        {
+          "original_line": 1342,
+          "bank": "03",
+          "address": "7564",
+          "physical_fixed_word": 3956,
+          "raw_octal": "54000"
+        },
+        {
+          "original_line": 1343,
+          "bank": "03",
+          "address": "7565",
+          "physical_fixed_word": 3957,
+          "raw_octal": "17567"
+        },
+        {
+          "original_line": 1344,
+          "bank": "03",
+          "address": "7566",
+          "physical_fixed_word": 3958,
+          "raw_octal": "24001"
+        },
+        {
+          "original_line": 1345,
+          "bank": "03",
+          "address": "7567",
+          "physical_fixed_word": 3959,
+          "raw_octal": "56001"
+        },
+        {
+          "original_line": 1346,
+          "bank": "03",
+          "address": "7570",
+          "physical_fixed_word": 3960,
+          "raw_octal": "40000"
+        },
+        {
+          "original_line": 1347,
+          "bank": "03",
+          "address": "7571",
+          "physical_fixed_word": 3961,
+          "raw_octal": "00002"
+        },
+        {
+          "original_line": 2179,
+          "bank": "00",
+          "address": "3010",
+          "physical_fixed_word": 520,
+          "raw_octal": "56002"
+        },
+        {
+          "original_line": 2180,
+          "bank": "00",
+          "address": "3011",
+          "physical_fixed_word": 521,
+          "raw_octal": "52155"
+        },
+        {
+          "original_line": 2181,
+          "bank": "00",
+          "address": "3012",
+          "physical_fixed_word": 522,
+          "raw_octal": "07544"
+        },
+        {
+          "original_line": 2182,
+          "bank": "00",
+          "address": "3013",
+          "physical_fixed_word": 523,
+          "raw_octal": "52155"
+        },
+        {
+          "original_line": 2183,
+          "bank": "00",
+          "address": "3014",
+          "physical_fixed_word": 524,
+          "raw_octal": "52160"
+        },
+        {
+          "original_line": 2184,
+          "bank": "00",
+          "address": "3015",
+          "physical_fixed_word": 525,
+          "raw_octal": "07544"
+        },
+        {
+          "original_line": 2185,
+          "bank": "00",
+          "address": "3016",
+          "physical_fixed_word": 526,
+          "raw_octal": "52160"
+        },
+        {
+          "original_line": 2186,
+          "bank": "00",
+          "address": "3017",
+          "physical_fixed_word": 527,
+          "raw_octal": "52162"
+        },
+        {
+          "original_line": 2187,
+          "bank": "00",
+          "address": "3020",
+          "physical_fixed_word": 528,
+          "raw_octal": "07544"
+        },
+        {
+          "original_line": 2188,
+          "bank": "00",
+          "address": "3021",
+          "physical_fixed_word": 529,
+          "raw_octal": "52162"
+        },
+        {
+          "original_line": 2189,
+          "bank": "00",
+          "address": "3022",
+          "physical_fixed_word": 530,
+          "raw_octal": "00000"
+        }
+      ]
+    },
+    "actual_boundaries": {
+      "VECAGREE": "TC A before fixed caller",
+      "VECSGNAG": "DANZIG entry; Q03775",
+      "NORMUNIT": "UNIT+1 PC03024, FB0 Q01024",
+      "PULSEIMU": "IMUPULSE PC03323 LM /03206 CM, FB014000; helper remains external"
+    }
+  },
+  "cm": {
+    "source_file": "Comanche055/RT8_OP_CODES.agc",
+    "original_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "qualified_containing_words": 45,
+    "words": [
+      {
+        "original_line": 196,
+        "bank": "22",
+        "address": "3653",
+        "physical_fixed_word": 19371,
+        "raw_octal": "50120",
+        "native_group": "PULSEIMU_to_IMUPULSE",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 197,
+        "bank": "22",
+        "address": "3654",
+        "physical_fixed_word": 19372,
+        "raw_octal": "30046",
+        "native_group": "PULSEIMU_to_IMUPULSE",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 198,
+        "bank": "22",
+        "address": "3655",
+        "physical_fixed_word": 19373,
+        "raw_octal": "04662",
+        "native_group": "PULSEIMU_to_IMUPULSE",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 199,
+        "bank": "22",
+        "address": "3656",
+        "physical_fixed_word": 19374,
+        "raw_octal": "17206",
+        "native_group": "PULSEIMU_to_IMUPULSE",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 274,
+        "bank": "22",
+        "address": "3724",
+        "physical_fixed_word": 19412,
+        "raw_octal": "35017",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 275,
+        "bank": "22",
+        "address": "3725",
+        "physical_fixed_word": 19413,
+        "raw_octal": "13727",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 276,
+        "bank": "22",
+        "address": "3726",
+        "physical_fixed_word": 19414,
+        "raw_octal": "35021",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 277,
+        "bank": "22",
+        "address": "3727",
+        "physical_fixed_word": 19415,
+        "raw_octal": "60120",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 278,
+        "bank": "22",
+        "address": "3730",
+        "physical_fixed_word": 19416,
+        "raw_octal": "54156",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 279,
+        "bank": "22",
+        "address": "3731",
+        "physical_fixed_word": 19417,
+        "raw_octal": "04662",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 280,
+        "bank": "22",
+        "address": "3732",
+        "physical_fixed_word": 19418,
+        "raw_octal": "01010",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 281,
+        "bank": "22",
+        "address": "3733",
+        "physical_fixed_word": 19419,
+        "raw_octal": "10154",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 282,
+        "bank": "22",
+        "address": "3734",
+        "physical_fixed_word": 19420,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 283,
+        "bank": "22",
+        "address": "3735",
+        "physical_fixed_word": 19421,
+        "raw_octal": "13737",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 284,
+        "bank": "22",
+        "address": "3736",
+        "physical_fixed_word": 19422,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 285,
+        "bank": "22",
+        "address": "3737",
+        "physical_fixed_word": 19423,
+        "raw_octal": "10157",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 286,
+        "bank": "22",
+        "address": "3740",
+        "physical_fixed_word": 19424,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 287,
+        "bank": "22",
+        "address": "3741",
+        "physical_fixed_word": 19425,
+        "raw_octal": "13743",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 288,
+        "bank": "22",
+        "address": "3742",
+        "physical_fixed_word": 19426,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 289,
+        "bank": "22",
+        "address": "3743",
+        "physical_fixed_word": 19427,
+        "raw_octal": "10161",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 290,
+        "bank": "22",
+        "address": "3744",
+        "physical_fixed_word": 19428,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 291,
+        "bank": "22",
+        "address": "3745",
+        "physical_fixed_word": 19429,
+        "raw_octal": "13747",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 292,
+        "bank": "22",
+        "address": "3746",
+        "physical_fixed_word": 19430,
+        "raw_octal": "13770",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 294,
+        "bank": "22",
+        "address": "3747",
+        "physical_fixed_word": 19431,
+        "raw_octal": "30155",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 295,
+        "bank": "22",
+        "address": "3750",
+        "physical_fixed_word": 19432,
+        "raw_octal": "00006",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 296,
+        "bank": "22",
+        "address": "3751",
+        "physical_fixed_word": 19433,
+        "raw_octal": "75002",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 297,
+        "bank": "22",
+        "address": "3752",
+        "physical_fixed_word": 19434,
+        "raw_octal": "20155",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 298,
+        "bank": "22",
+        "address": "3753",
+        "physical_fixed_word": 19435,
+        "raw_octal": "30160",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 299,
+        "bank": "22",
+        "address": "3754",
+        "physical_fixed_word": 19436,
+        "raw_octal": "00006",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 300,
+        "bank": "22",
+        "address": "3755",
+        "physical_fixed_word": 19437,
+        "raw_octal": "75002",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 301,
+        "bank": "22",
+        "address": "3756",
+        "physical_fixed_word": 19438,
+        "raw_octal": "20160",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 302,
+        "bank": "22",
+        "address": "3757",
+        "physical_fixed_word": 19439,
+        "raw_octal": "30162",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 303,
+        "bank": "22",
+        "address": "3760",
+        "physical_fixed_word": 19440,
+        "raw_octal": "00006",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 304,
+        "bank": "22",
+        "address": "3761",
+        "physical_fixed_word": 19441,
+        "raw_octal": "75002",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 305,
+        "bank": "22",
+        "address": "3762",
+        "physical_fixed_word": 19442,
+        "raw_octal": "20162",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 306,
+        "bank": "22",
+        "address": "3763",
+        "physical_fixed_word": 19443,
+        "raw_octal": "35025",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 307,
+        "bank": "22",
+        "address": "3764",
+        "physical_fixed_word": 19444,
+        "raw_octal": "50156",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 308,
+        "bank": "22",
+        "address": "3765",
+        "physical_fixed_word": 19445,
+        "raw_octal": "54045",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 309,
+        "bank": "22",
+        "address": "3766",
+        "physical_fixed_word": 19446,
+        "raw_octal": "04701",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 310,
+        "bank": "22",
+        "address": "3767",
+        "physical_fixed_word": 19447,
+        "raw_octal": "01024",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 312,
+        "bank": "22",
+        "address": "3770",
+        "physical_fixed_word": 19448,
+        "raw_octal": "35021",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 313,
+        "bank": "22",
+        "address": "3771",
+        "physical_fixed_word": 19449,
+        "raw_octal": "13764",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 317,
+        "bank": "22",
+        "address": "3772",
+        "physical_fixed_word": 19450,
+        "raw_octal": "04662",
+        "native_group": "VECSGNAG",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 318,
+        "bank": "22",
+        "address": "3773",
+        "physical_fixed_word": 19451,
+        "raw_octal": "01010",
+        "native_group": "VECSGNAG",
+        "status": "qualified_vector_frontier"
+      },
+      {
+        "original_line": 319,
+        "bank": "22",
+        "address": "3774",
+        "physical_fixed_word": 19452,
+        "raw_octal": "06030",
+        "native_group": "VECSGNAG",
+        "status": "qualified_vector_frontier"
+      }
+    ],
+    "containing_status": "partial",
+    "interpreter_helpers": {
+      "source_file": "Comanche055/INTERPRETER.agc",
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "assembled_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+      "audit_dependency": "evidence/cm-powered-trig-source-audit.json",
+      "indentation_repairs": [
+        51,
+        207,
+        247,
+        542,
+        588,
+        678,
+        681,
+        908,
+        941,
+        1376,
+        1504,
+        1551,
+        1553,
+        1600,
+        1735,
+        1739,
+        1830,
+        1921,
+        1940,
+        1986,
+        2002,
+        2014,
+        2028,
+        2058,
+        2561,
+        2646,
+        2661,
+        2901,
+        3018,
+        3023,
+        3028,
+        3034,
+        3042,
+        3047,
+        3054,
+        3062
+      ],
+      "words": [
+        {
+          "original_line": 1332,
+          "bank": "03",
+          "address": "7513",
+          "physical_fixed_word": 3915,
+          "raw_octal": "10000"
+        },
+        {
+          "original_line": 1333,
+          "bank": "03",
+          "address": "7514",
+          "physical_fixed_word": 3916,
+          "raw_octal": "17520"
+        },
+        {
+          "original_line": 1334,
+          "bank": "03",
+          "address": "7515",
+          "physical_fixed_word": 3917,
+          "raw_octal": "00002"
+        },
+        {
+          "original_line": 1335,
+          "bank": "03",
+          "address": "7516",
+          "physical_fixed_word": 3918,
+          "raw_octal": "17530"
+        },
+        {
+          "original_line": 1336,
+          "bank": "03",
+          "address": "7517",
+          "physical_fixed_word": 3919,
+          "raw_octal": "00002"
+        },
+        {
+          "original_line": 1338,
+          "bank": "03",
+          "address": "7520",
+          "physical_fixed_word": 3920,
+          "raw_octal": "56001"
+        },
+        {
+          "original_line": 1339,
+          "bank": "03",
+          "address": "7521",
+          "physical_fixed_word": 3921,
+          "raw_octal": "65002"
+        },
+        {
+          "original_line": 1340,
+          "bank": "03",
+          "address": "7522",
+          "physical_fixed_word": 3922,
+          "raw_octal": "65002"
+        },
+        {
+          "original_line": 1341,
+          "bank": "03",
+          "address": "7523",
+          "physical_fixed_word": 3923,
+          "raw_octal": "54000"
+        },
+        {
+          "original_line": 1342,
+          "bank": "03",
+          "address": "7524",
+          "physical_fixed_word": 3924,
+          "raw_octal": "17526"
+        },
+        {
+          "original_line": 1343,
+          "bank": "03",
+          "address": "7525",
+          "physical_fixed_word": 3925,
+          "raw_octal": "24001"
+        },
+        {
+          "original_line": 1344,
+          "bank": "03",
+          "address": "7526",
+          "physical_fixed_word": 3926,
+          "raw_octal": "56001"
+        },
+        {
+          "original_line": 1345,
+          "bank": "03",
+          "address": "7527",
+          "physical_fixed_word": 3927,
+          "raw_octal": "00002"
+        },
+        {
+          "original_line": 1347,
+          "bank": "03",
+          "address": "7530",
+          "physical_fixed_word": 3928,
+          "raw_octal": "56001"
+        },
+        {
+          "original_line": 1348,
+          "bank": "03",
+          "address": "7531",
+          "physical_fixed_word": 3929,
+          "raw_octal": "65001"
+        },
+        {
+          "original_line": 1349,
+          "bank": "03",
+          "address": "7532",
+          "physical_fixed_word": 3930,
+          "raw_octal": "67716"
+        },
+        {
+          "original_line": 1350,
+          "bank": "03",
+          "address": "7533",
+          "physical_fixed_word": 3931,
+          "raw_octal": "54000"
+        },
+        {
+          "original_line": 1351,
+          "bank": "03",
+          "address": "7534",
+          "physical_fixed_word": 3932,
+          "raw_octal": "17536"
+        },
+        {
+          "original_line": 1352,
+          "bank": "03",
+          "address": "7535",
+          "physical_fixed_word": 3933,
+          "raw_octal": "24001"
+        },
+        {
+          "original_line": 1353,
+          "bank": "03",
+          "address": "7536",
+          "physical_fixed_word": 3934,
+          "raw_octal": "56001"
+        },
+        {
+          "original_line": 1354,
+          "bank": "03",
+          "address": "7537",
+          "physical_fixed_word": 3935,
+          "raw_octal": "40000"
+        },
+        {
+          "original_line": 1355,
+          "bank": "03",
+          "address": "7540",
+          "physical_fixed_word": 3936,
+          "raw_octal": "00002"
+        },
+        {
+          "original_line": 2188,
+          "bank": "00",
+          "address": "3010",
+          "physical_fixed_word": 520,
+          "raw_octal": "56002"
+        },
+        {
+          "original_line": 2189,
+          "bank": "00",
+          "address": "3011",
+          "physical_fixed_word": 521,
+          "raw_octal": "52155"
+        },
+        {
+          "original_line": 2190,
+          "bank": "00",
+          "address": "3012",
+          "physical_fixed_word": 522,
+          "raw_octal": "07513"
+        },
+        {
+          "original_line": 2191,
+          "bank": "00",
+          "address": "3013",
+          "physical_fixed_word": 523,
+          "raw_octal": "52155"
+        },
+        {
+          "original_line": 2192,
+          "bank": "00",
+          "address": "3014",
+          "physical_fixed_word": 524,
+          "raw_octal": "52160"
+        },
+        {
+          "original_line": 2193,
+          "bank": "00",
+          "address": "3015",
+          "physical_fixed_word": 525,
+          "raw_octal": "07513"
+        },
+        {
+          "original_line": 2194,
+          "bank": "00",
+          "address": "3016",
+          "physical_fixed_word": 526,
+          "raw_octal": "52160"
+        },
+        {
+          "original_line": 2195,
+          "bank": "00",
+          "address": "3017",
+          "physical_fixed_word": 527,
+          "raw_octal": "52162"
+        },
+        {
+          "original_line": 2196,
+          "bank": "00",
+          "address": "3020",
+          "physical_fixed_word": 528,
+          "raw_octal": "07513"
+        },
+        {
+          "original_line": 2197,
+          "bank": "00",
+          "address": "3021",
+          "physical_fixed_word": 529,
+          "raw_octal": "52162"
+        },
+        {
+          "original_line": 2198,
+          "bank": "00",
+          "address": "3022",
+          "physical_fixed_word": 530,
+          "raw_octal": "00000"
+        }
+      ]
+    },
+    "actual_boundaries": {
+      "VECAGREE": "TC A before fixed caller",
+      "VECSGNAG": "DANZIG entry; Q03775",
+      "NORMUNIT": "UNIT+1 PC03024, FB0 Q01024",
+      "PULSEIMU": "IMUPULSE PC03323 LM /03206 CM, FB014000; helper remains external"
+    }
+  }
+}

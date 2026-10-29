@@ -1,0 +1,15 @@
+{
+  "entries": {
+    "LM": {
+      "positive": "40,2413",
+      "negative": "40,2433"
+    },
+    "CM": {
+      "positive": "40,2314",
+      "negative": "40,2334"
+    }
+  },
+  "boundary": "actual ordinary caller or clean-relay CCSHOLE",
+  "whole_file_claim": false,
+  "native_decoder": false
+}

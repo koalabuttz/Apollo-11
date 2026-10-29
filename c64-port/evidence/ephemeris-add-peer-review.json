@@ -1,0 +1,9 @@
+{
+  "reviewer": "/root/p66_source_map",
+  "scope": "Read-only original TAD SETOVF OVERFLOW SETOVF2 review in declared ordinary erasable triple domain",
+  "review": "No discrepancy found. Minor DCA and DAS use unchanged agc_double_add. Major operand reread after minor writes preserves live aliases. Limit and carry correction, signed zero, OVFIND, actual TC Q=3 debris, raw A/L and pending DANZIG frontier match source. Unsupported register editing operands are excluded explicitly. No full ephemerides or interpreter claim.",
+  "reviewed_files": {
+    "src/ephemeris_add.c": "0fc97b7b80d3bf94bcdc59a27219f88280071b96e4cbaacb92caeff652964265",
+    "include/ephemeris_add.h": "eed1163529bf8ae9e1a4111e9dc91e81807346dce3a9852df946b4977f460a1d"
+  }
+}

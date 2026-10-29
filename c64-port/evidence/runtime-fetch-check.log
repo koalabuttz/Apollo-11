@@ -1,0 +1,10 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_fetch.c tests/runtime_fetch_check.c src/agc_word.c src/p66_runtime_bridge.c src/p66_runtime_fetch_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c tests/runtime_fetch_cases.c -o build/test-runtime-fetch
+build/test-runtime-fetch
+64 complete runtime fetch images and26 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_fetch.c tests/runtime_fetch_check.c src/agc_word.c src/p66_runtime_bridge.c src/p66_runtime_fetch_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c tests/runtime_fetch_cases.c -o build/test-runtime-fetch-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-runtime-fetch-sanitize
+64 complete runtime fetch images and26 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_fetch_snapshot.c src/agc_word.c src/p66_runtime_bridge.c src/p66_runtime_fetch_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c tests/runtime_fetch_cases.c -o build/runtime-fetch-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/runtime-fetch-native-sanitize > build/runtime-fetch-sanitize.snapshots
+cmp build/runtime-fetch-sanitize.snapshots build/runtime-fetch-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_fetch_diagnostic.c tests/runtime_fetch_check.c src/agc_word.c src/p66_runtime_bridge.c src/p66_runtime_fetch_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c tests/runtime_fetch_cases.c -Wl,-Map,build/runtime_fetch.map -o build/runtime_fetch.prg

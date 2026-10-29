@@ -1,0 +1,7 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -DRTB_UNIT_CHECK_ONLY -DRTBU_MISSION=1 -DRTBU_CALLER=2 -DRTBU_PHASE=0 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_rtb_unit.c tests/frozen_words.c tools/rtb_unit_diagnostic.c src/rtb_unit.c src/rtb_vector.c src/agc_word.c src/agc_multiword.c src/guidance_norm.c src/guidance_unit_phased.c src/guidance_length_phased.c tests/rtb_unit_cases.c tests/rtb_vector_cases.c -Wl,-Map,build/rtb-unit-cm20.map -o build/rtb-unit-cm20.prg
+python tools/rtb_unit_vice_test.py --mission 1 --caller 2 --phase 0 --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice | tee build/rtb-unit-cm20-validation.log
+PASS: VICE PAL C64, 32 complete rtb_unit group original-assembly states; retained memory unchanged
+Mailbox: a500002028
+PRG bytes: 12843
+rtb-unit-cm20-hardware-stack.bin: measured stack extent 29 bytes
+rtb-unit-cm20-software-stack.bin: measured stack extent 356 bytes

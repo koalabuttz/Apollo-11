@@ -1,0 +1,580 @@
+{
+ "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc": {
+  "native_file": "src/lm_gimbal_lock.c",
+  "words": 31,
+  "untranslated_words": 0,
+  "routines": 9,
+  "map": [
+   {
+    "address": "22,2744",
+    "word": "77614",
+    "source": "NOGIMLOC SET ",
+    "routine": "22,2744",
+    "function": "r44744"
+   },
+   {
+    "address": "22,2745",
+    "word": "01074",
+    "source": "  CALCMAN3",
+    "routine": "22,2744",
+    "function": "r44744"
+   },
+   {
+    "address": "22,2746",
+    "word": "70740",
+    "source": "WCALC LXC,1 DLOAD*",
+    "routine": "22,2746",
+    "function": "r44746"
+   },
+   {
+    "address": "22,2747",
+    "word": "01325",
+    "source": "  RATEINDX",
+    "routine": "22,2746",
+    "function": "r44746"
+   },
+   {
+    "address": "22,2750",
+    "word": "04772",
+    "source": "  ARATE,1",
+    "routine": "22,2746",
+    "function": "r44746"
+   },
+   {
+    "address": "22,2751",
+    "word": "45002",
+    "source": " SR4 CALL",
+    "routine": "22,2751",
+    "function": "r44751"
+   },
+   {
+    "address": "22,2752",
+    "word": "44527",
+    "source": "  DELCOMP",
+    "routine": "22,2751",
+    "function": "r44751"
+   },
+   {
+    "address": "22,2753",
+    "word": "74343",
+    "source": " DLOAD* VXSC",
+    "routine": "22,2753",
+    "function": "r44753"
+   },
+   {
+    "address": "22,2754",
+    "word": "04772",
+    "source": "  ARATE,1",
+    "routine": "22,2753",
+    "function": "r44753"
+   },
+   {
+    "address": "22,2755",
+    "word": "03271",
+    "source": "  COF",
+    "routine": "22,2753",
+    "function": "r44753"
+   },
+   {
+    "address": "22,2756",
+    "word": "17326",
+    "source": " STODL BRATE",
+    "routine": "22,2756",
+    "function": "r44756"
+   },
+   {
+    "address": "22,2757",
+    "word": "03336",
+    "source": "  AM",
+    "routine": "22,2756",
+    "function": "r44756"
+   },
+   {
+    "address": "22,2760",
+    "word": "55605",
+    "source": " DMP DDV*",
+    "routine": "22,2760",
+    "function": "r44760"
+   },
+   {
+    "address": "22,2761",
+    "word": "05002",
+    "source": "  ANGLTIME",
+    "routine": "22,2760",
+    "function": "r44760"
+   },
+   {
+    "address": "22,2762",
+    "word": "04772",
+    "source": "  ARATE,1",
+    "routine": "22,2760",
+    "function": "r44760"
+   },
+   {
+    "address": "22,2763",
+    "word": "77661",
+    "source": " SR ",
+    "routine": "22,2763",
+    "function": "r44763"
+   },
+   {
+    "address": "22,2764",
+    "word": "20606",
+    "source": "  5",
+    "routine": "22,2763",
+    "function": "r44763"
+   },
+   {
+    "address": "22,2765",
+    "word": "03334",
+    "source": " STORE TM",
+    "routine": "22,2765",
+    "function": "r44765"
+   },
+   {
+    "address": "22,2766",
+    "word": "77614",
+    "source": " SETGO ",
+    "routine": "22,2766",
+    "function": "r44766"
+   },
+   {
+    "address": "22,2767",
+    "word": "01035",
+    "source": "  CALCMAN2",
+    "routine": "22,2766",
+    "function": "r44766"
+   },
+   {
+    "address": "22,2770",
+    "word": "45010",
+    "source": "  NEWANGL    +1",
+    "routine": "22,2766",
+    "function": "r44766"
+   },
+   {
+    "address": "22,2771",
+    "word": "00221",
+    "source": "ARATE 2DEC .0088888888",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2772",
+    "word": "24255",
+    "source": "(+1)",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2773",
+    "word": "00554",
+    "source": " 2DEC .0222222222",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2774",
+    "word": "02660",
+    "source": "(+1)",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2775",
+    "word": "02660",
+    "source": " 2DEC .0888888888",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2776",
+    "word": "13301",
+    "source": "(+1)",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2777",
+    "word": "16161",
+    "source": " 2DEC .4444444444",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,3000",
+    "word": "30707",
+    "source": "(+1)",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,3001",
+    "word": "00003",
+    "source": "ANGLTIME 2DEC .0001907349",
+    "constant": "K45001"
+   },
+   {
+    "address": "22,3002",
+    "word": "04000",
+    "source": "(+1)",
+    "constant": "K45001"
+   }
+  ]
+ },
+ "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc": {
+  "native_file": "src/cm_gimbal_lock.c",
+  "words": 55,
+  "untranslated_words": 0,
+  "routines": 11,
+  "map": [
+   {
+    "address": "22,2737",
+    "word": "70740",
+    "source": "WCALC LXC,1 DLOAD*",
+    "routine": "22,2737",
+    "function": "r44737"
+   },
+   {
+    "address": "22,2740",
+    "word": "01130",
+    "source": "  RATEINDX",
+    "routine": "22,2737",
+    "function": "r44737"
+   },
+   {
+    "address": "22,2741",
+    "word": "04771",
+    "source": "  ARATE,1",
+    "routine": "22,2737",
+    "function": "r44737"
+   },
+   {
+    "address": "22,2742",
+    "word": "45002",
+    "source": " SR4 CALL",
+    "routine": "22,2742",
+    "function": "r44742"
+   },
+   {
+    "address": "22,2743",
+    "word": "44530",
+    "source": "  DELCOMP",
+    "routine": "22,2742",
+    "function": "r44742"
+   },
+   {
+    "address": "22,2744",
+    "word": "74343",
+    "source": " DLOAD* VXSC",
+    "routine": "22,2744",
+    "function": "r44744"
+   },
+   {
+    "address": "22,2745",
+    "word": "04771",
+    "source": "  ARATE,1",
+    "routine": "22,2744",
+    "function": "r44744"
+   },
+   {
+    "address": "22,2746",
+    "word": "03343",
+    "source": "  COF",
+    "routine": "22,2744",
+    "function": "r44744"
+   },
+   {
+    "address": "22,2747",
+    "word": "77721",
+    "source": " MXV ",
+    "routine": "22,2747",
+    "function": "r44747"
+   },
+   {
+    "address": "22,2750",
+    "word": "05003",
+    "source": "  QUADROT",
+    "routine": "22,2747",
+    "function": "r44747"
+   },
+   {
+    "address": "22,2751",
+    "word": "17311",
+    "source": " STODL BRATE",
+    "routine": "22,2751",
+    "function": "r44751"
+   },
+   {
+    "address": "22,2752",
+    "word": "03365",
+    "source": "  AM",
+    "routine": "22,2751",
+    "function": "r44751"
+   },
+   {
+    "address": "22,2753",
+    "word": "55605",
+    "source": " DMP DDV*",
+    "routine": "22,2753",
+    "function": "r44753"
+   },
+   {
+    "address": "22,2754",
+    "word": "05001",
+    "source": "  ANGLTIME",
+    "routine": "22,2753",
+    "function": "r44753"
+   },
+   {
+    "address": "22,2755",
+    "word": "04771",
+    "source": "  ARATE,1",
+    "routine": "22,2753",
+    "function": "r44753"
+   },
+   {
+    "address": "22,2756",
+    "word": "77661",
+    "source": " SR ",
+    "routine": "22,2756",
+    "function": "r44756"
+   },
+   {
+    "address": "22,2757",
+    "word": "20606",
+    "source": "  5",
+    "routine": "22,2756",
+    "function": "r44756"
+   },
+   {
+    "address": "22,2760",
+    "word": "27317",
+    "source": " STOVL TM",
+    "routine": "22,2760",
+    "function": "r44760"
+   },
+   {
+    "address": "22,2761",
+    "word": "03311",
+    "source": "  BRATE",
+    "routine": "22,2760",
+    "function": "r44760"
+   },
+   {
+    "address": "22,2762",
+    "word": "77761",
+    "source": " VXSC ",
+    "routine": "22,2762",
+    "function": "r44762"
+   },
+   {
+    "address": "22,2763",
+    "word": "05025",
+    "source": "  BIASCALE",
+    "routine": "22,2762",
+    "function": "r44762"
+   },
+   {
+    "address": "22,2764",
+    "word": "03275",
+    "source": " STORE BIASTEMP",
+    "routine": "22,2764",
+    "function": "r44764"
+   },
+   {
+    "address": "22,2765",
+    "word": "77614",
+    "source": " SETGO ",
+    "routine": "22,2765",
+    "function": "r44765"
+   },
+   {
+    "address": "22,2766",
+    "word": "01035",
+    "source": "  CALCMAN2",
+    "routine": "22,2765",
+    "function": "r44765"
+   },
+   {
+    "address": "22,2767",
+    "word": "45032",
+    "source": "  NEWANGL    +1",
+    "routine": "22,2765",
+    "function": "r44765"
+   },
+   {
+    "address": "22,2770",
+    "word": "00044",
+    "source": "ARATE 2DEC .0022222222",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2771",
+    "word": "15053",
+    "source": "(+1)",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2772",
+    "word": "00221",
+    "source": " 2DEC .0088888889",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2773",
+    "word": "24255",
+    "source": "(+1)",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2774",
+    "word": "00554",
+    "source": " 2DEC .0222222222",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2775",
+    "word": "02660",
+    "source": "(+1)",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2776",
+    "word": "02660",
+    "source": " 2DEC .0888888889",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,2777",
+    "word": "13301",
+    "source": "(+1)",
+    "constant": "data word (no instruction in the file reads it)"
+   },
+   {
+    "address": "22,3000",
+    "word": "00003",
+    "source": "ANGLTIME 2DEC .000190735",
+    "constant": "K45000"
+   },
+   {
+    "address": "22,3001",
+    "word": "04000",
+    "source": "(+1)",
+    "constant": "K45000"
+   },
+   {
+    "address": "22,3002",
+    "word": "03146",
+    "source": "QUADROT 2DEC .1",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3003",
+    "word": "14632",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3004",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3005",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3006",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3007",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3010",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3011",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3012",
+    "word": "03131",
+    "source": " 2DEC .099200",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3013",
+    "word": "11275",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3014",
+    "word": "77461",
+    "source": " 2DEC -.012620",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3015",
+    "word": "47370",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3016",
+    "word": "00000",
+    "source": " 2DEC 0          B-28",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3017",
+    "word": "00000",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3020",
+    "word": "00316",
+    "source": " 2DEC .012620",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3021",
+    "word": "30407",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3022",
+    "word": "03131",
+    "source": " 2DEC .099200",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3023",
+    "word": "11275",
+    "source": "(+1)",
+    "constant": "K45002"
+   },
+   {
+    "address": "22,3024",
+    "word": "00004",
+    "source": "BIASCALE 2DEC .0002543132",
+    "constant": "K45024"
+   },
+   {
+    "address": "22,3025",
+    "word": "05253",
+    "source": "(+1)",
+    "constant": "K45024"
+   }
+  ]
+ }
+}

@@ -1,0 +1,35 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DAPOLLO_FIXED_CM_ONLY src/cm_interbank.c src/fixed_data.c src/cm_native_image.c src/cm_waitlist.c src/agc_word.c tests/cm_interbank_cases.c tests/cm_waitlist_image_cases.c platform/host/cm_interbank_snapshot.c -o build/cm-interbank-native
+python3 tools/cm_interbank_differential.py
+{
+  "source": "INTER-BANK_COMMUNICATION.agc",
+  "original_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+  "normalized_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+  "indentation_repairs": 0,
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: 2048 original CM complete WAITLIST/TWIDDLE/alarm-entry states
+{
+  "cases": 7168,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entries": [
+    "05245 WAITLIST",
+    "05235 TWIDDLE"
+  ],
+  "boundaries": [
+    "caller return",
+    "07755 BAILOUT",
+    "05721 POODOO"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "alarm_body": "later actual continuation, not executed by this helper",
+  "snapshot_sha256": "24ccdc52b0a11ec6fba29668131e2f8763e32b86fe015aa876adcbbe3f46211f"
+}

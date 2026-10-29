@@ -1,0 +1,5 @@
+./build/test-interpreter-native
+PASS: 140 mixed native/assembly state checkpoints, frame/payload/guard and typed mapping fault checks
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/interpreter_native_cases.c tests/interpreter_native_check.c tests/state_digest.c tests/test_interpreter_native.c -o build/test-interpreter-native-sanitize
+./build/test-interpreter-native-sanitize
+PASS: 140 mixed native/assembly state checkpoints, frame/payload/guard and typed mapping fault checks

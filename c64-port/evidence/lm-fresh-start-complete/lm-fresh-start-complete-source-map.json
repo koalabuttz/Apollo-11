@@ -1,0 +1,61 @@
+{
+ "category": "source_to_native_map",
+ "source_path": "Luminary099/FRESH_START_AND_RESTART.agc",
+ "source_sha256": "47308a301d91326f58c42342cf4e80e8f7ec4b50d82a320bd45d49f7bda09869",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "aggregates": {
+  "lm-fresh-start": {
+   "record": "docs/LM-FRESH-START.md",
+   "sha256": "ff82ad0339d1940c3b9153538aad3168d245151b4a641645e1bca5461dd593b7",
+   "native": "src/lm_fresh_start.c",
+   "native_sha256": "68e5f209eee4a99ca7179e48e5fce903802b9b7f6ca4299aabd95f9dab58c078",
+   "owns": [
+    "05,2447-2451",
+    "05,2456-3401",
+    "FF,6001-6010"
+   ]
+  },
+  "lm-v37": {
+   "record": "docs/LM-V37.md",
+   "sha256": "aae1141bbb6e806da00b9c239c63fe8ed2d93c041efdcda6e7ee7b69a0fc9310",
+   "native": "src/lm_v37.c",
+   "native_sha256": "a5fc62a858df898bd6767ef438dbaa1141bd933483b5b4be9976b39bc8d3a6e4",
+   "owns": [
+    "04,2024-2143",
+    "04,2147-2535"
+   ]
+  },
+  "lm-stateup": {
+   "record": "docs/LM-STATEUP.md",
+   "sha256": "6637987d6453069c4b78fd7c7b6fc30047854a88657c334fc461929b96235d1d",
+   "native": "src/lm_stateup.c",
+   "native_sha256": "088fd45e8d5b453323039493f7708917c8e5aaaf089a0a135b40df15eb8eceb8",
+   "owns": [
+    "13,2026-2067",
+    "04,2144-2146"
+   ]
+  }
+ },
+ "excluded": {
+  "STARTSIM": [
+   "05,2452-2455"
+  ],
+  "why": "runs only if STARTSW is patched to TCF STARTSIM; the rope has TCF SKIPSIM"
+ },
+ "ownership_check": {
+  "source_words": 847,
+  "owned_words": 843,
+  "excluded_words": 4,
+  "gaps": 0,
+  "overlaps": 0,
+  "result": "PASS"
+ },
+ "execution_check": {
+  "instructions": 655,
+  "not_executed": [],
+  "result": "PASS"
+ },
+ "line_map": {
+  "record": "evidence/lm-fresh-start-complete/lm-fresh-start-complete-line-map.json"
+ }
+}

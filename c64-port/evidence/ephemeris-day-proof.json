@@ -1,0 +1,96 @@
+{
+  "scope": "Original literal CSTODAY DDV basic body only; no ephemerides program or whole interpreter credit",
+  "source_states": 131072,
+  "state_words": 2053,
+  "strict_native": "PASS",
+  "full_ASAN_UBSAN": "PASS",
+  "source_streams": {
+    "LM": {
+      "archive": "evidence/ephemeris-day-LM-reference.snapshots.bin.xz",
+      "decoded_sha256": "77aef043825ce5b54e18883f118a38d2f5a8d2cd03b420c5782bac67a0dcb562",
+      "decoded_bytes": 269090816,
+      "states": 65536
+    },
+    "CM": {
+      "archive": "evidence/ephemeris-day-CM-reference.snapshots.bin.xz",
+      "decoded_sha256": "5f445d22fce2dae5334456446dee86657d02b00a95f71eef9a9b00f3834bb253",
+      "decoded_bytes": 269090816,
+      "states": 65536
+    }
+  },
+  "c64": {
+    "measured_stack_bytes": {
+      "hardware": 24,
+      "software": 224
+    },
+    "additional_zero_page": 0,
+    "invalid_image_guards": 13,
+    "null_guard": 1,
+    "states": 64,
+    "prg_bytes": 13847,
+    "load_end": 15894,
+    "bss_end": 24086,
+    "mailbox": "a5400000",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "source_map": "evidence/ephemeris-day-source-map.json",
+  "whole_containing_files_certified": false,
+  "native_instruction_decoder": false,
+  "dependencies": {
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "src/guidance_dp_divide.c": "52d855b3787bc2908a17cf8d6e9ab198cbb84837237372978a939e8751647ae6",
+    "tests/frozen_words.c": "f8ca1264ddd12de6768c7e148dbe5b02c39cda2a0fad905d536ea534b8a2b834",
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "include/agc_multiword.h": "102bb860395c3bdc2293d7846fa08a4b9d191515ccdaa0af7ca7eb4980e91795",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "tools/qualified_stream_host.py": "76a0e8ac50e1914cc4c7f58e00ec23afdde271632ad2a924848ff4e16a655abd",
+    "tools/frozen_words.py": "542338895352036113578bad37a79e49a43f61dcef2834cbfb0fd7841f573724",
+    "evidence/ephemeris-source-map.json": "34833e26a0f5f915288f8eaa6d0c44f23d8a6cdbb608056a01c09c822a432f55"
+  },
+  "files": {
+    "docs/NATIVE-EPHEMERIS-DAY.md": "bb47bcbfc803c664650c5cf07d466b8c72be5a5ba8657cc29c92e77bba499bd8",
+    "evidence/ephemeris-day-CM-reference.snapshots.bin.xz": "a72e9077807365f861931e436550ef14769e625435c81bcd0fedefac75fb69c9",
+    "evidence/ephemeris-day-LM-reference.snapshots.bin.xz": "2a7163a727cac2029d1b546094d425d9f6a6b54603ad2eefa0dd38cd0330cb3b",
+    "evidence/ephemeris-day-c64.log": "1c60949d4bd28d5bcba1b3d9f3be525238892cf509b265417fda87fb5a0abf8d",
+    "evidence/ephemeris-day-hardware-stack.bin": "9e87758a4822636ac12df7667e75e6b031a705db655ef21d440877948ef179e2",
+    "evidence/ephemeris-day-mailbox.bin": "84f5afa7698faa66a1295472852ee63e55174a088e90c8ecaf245117f1d6c525",
+    "evidence/ephemeris-day-monitor.log": "268c0544f5afca4b4bdc7019447e7018235b3e297f6fa6146f13841e8c844b10",
+    "evidence/ephemeris-day-peer-review.json": "76d6e8fd52fa05d478534f351a50afa943912d929d06a7b7dceec05be1c495e3",
+    "evidence/ephemeris-day-sanitize.log": "f79cbc3829c5d04a0652d52414ced52fd9d9643223e0b67fe6e54b70ddc12743",
+    "evidence/ephemeris-day-software-stack.bin": "8d9383d775e97bc4bba2e8e19aadbe0a88e309032e29220d8c20624602fafddf",
+    "evidence/ephemeris-day-source-audit.log": "fd2c69adf4a1b4e11f58bfd3394cd66ad35ff7da76738a1fc5e144364f0302a3",
+    "evidence/ephemeris-day-source-map.json": "ac1336081824668a89b222cbe29bad9c4675999eb67b2990a3f0b22d84a0f15b",
+    "evidence/ephemeris-day-source-streams.json": "33c947054d08ecc189ae08fb070c813d785181ba32fbb01cc8754e48c728d8d1",
+    "evidence/ephemeris-day-strict.log": "1a428bebb6b89e58949e4374db8b480fc6ac365cec3d4e101fe2b38043e6d09b",
+    "evidence/ephemeris-day-target-results.json": "19b5e2ab97c385e2ee557c5c98e2873d66294addf7ce4e48d8426c57ea4cd1aa",
+    "evidence/ephemeris-day-target-source.snapshots.bin.xz": "b72c12bbc1850fb30251ab39cda0ff62bbd20228e47f5d56ce54678bf64c6b28",
+    "evidence/ephemeris-day-vice-results.json": "5d570b4bee653a85f4ce1aa0bdfb3361e359b4f92429b0cc26d1d6b7233f655c",
+    "evidence/ephemeris-day-vice.log": "024639652f976de2c8e5f79b01d9ded6580cae1f1caaf0d72f073b5cd49755f9",
+    "evidence/ephemeris-day-vice.mon": "f20303b96ca2c214639b7de47821579a5639e56babec52251a0b52ce5e0a9893",
+    "evidence/ephemeris-day.map": "6cc62fcc3567fa0ea43b5ba68f32427592f005e4f1541dc2aa3bf6db950ffad9",
+    "evidence/ephemeris-day.prg": "a2ebff8d84c810351b4b545886479a4a4b7e040ca505809b2c2b1e35c0f9ef00",
+    "include/ephemeris_day.h": "57096f39bea3f5f0793c1043c7a62a61f83f64871a8db10177fdf11dd0e54c78",
+    "platform/c64/ephemeris_day_diagnostic.c": "d417cdb5d085c98a343dbf561c8eeccd6b12ffc31449cc79a2fac2787d4d5150",
+    "src/ephemeris_day.c": "c7973a41702dcedf8d57f82c150dd68488febab33d763e84cfcf708700d57ce9",
+    "tests/ephemeris_day_cases.c": "23a57b1e11164127ef99be2c5c1a0ada9e8e31df2175bc074bbf0090ca8924bc",
+    "tests/ephemeris_day_cases.h": "88b7564ba85e026566faf1159794ff506adc9dc490fc65ef796c3aa196cc5a82",
+    "tests/ephemeris_day_target.c": "12d729722d0cff5bcdfd238dd043ff099758de10ae73626f860d715cd8c9db9d",
+    "tests/ephemeris_day_target.h": "824a75ae6b02bbfe56cbf11f488a4dca3f648a207ee0b60d71121e6a362407f4",
+    "tests/ephemeris_day_vectors.h": "9de99f6b51bf0ec7b797ad7be11ae1d1504a05efd259c6d6254ad80bd3fb81e8",
+    "tests/test_ephemeris_day.c": "94d6835765522ee78f20060de04b6b0b211e542672a28dd2eca3b441a4d44d2b",
+    "tools/ephemeris_day_host.py": "8777df8bf857997c2c06bfdac2089168ff9a3db3fef5b3d393a8de3e02c87d18",
+    "tools/ephemeris_day_inputs.c": "95349eb5be9346088b44747dcb9efb4f27627f460227ec0c9c3a4cbef1c77e56",
+    "tools/ephemeris_day_integration.mk": "613d3114f45a32a883d4fa9f8557c6f839b3f0ef12c69fc21ebbe21ff91224ce",
+    "tools/ephemeris_day_reference.c": "f23904459dee80a231d775376205b06e97a1414463294ec2b27637f5b273f9e7",
+    "tools/ephemeris_day_snapshot.c": "8fddea67ee222edeaba4e73e76ade6bb788baf4f606c01402e78fde0f9adb3aa",
+    "tools/ephemeris_day_source.py": "f98dac422086f4ac27c1d7d25ce331c18cf754b1f27731d7f45e16249f9aeecd",
+    "tools/ephemeris_day_vice_test.py": "b344212d86c94af61f4cbf88cb033e4cea96d9589b8fde119914975c66ba4b85",
+    "tools/freeze_ephemeris_day.py": "3dc5c01b8907d3b5e5127c0fdc32da67df9839e701f6e0e6b35043861eef51f4",
+    "tools/package_ephemeris_day.py": "ec02b92ddec03d0348a886c0f95c01d33db0fafad8e129e79d708add6dd2f840"
+  }
+}

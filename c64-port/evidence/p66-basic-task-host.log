@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c tests/p66_basic_task_cases.c tests/p66_basic_task_check.c tests/test_p66_basic_task.c -o build/test-p66-basic-task
+./build/test-p66-basic-task
+P66 BASIC RODTASK:64 complete2050word original source images, 0 failures

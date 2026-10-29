@@ -1,0 +1,6 @@
+Loading /workspace/Apollo-11/c64-port/build/sband-lm-pitch-3.prg from 0801 to 994B (914B bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  305/$131,  61/$3d
+.C:8025  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:f1 ..-..IZC   33237916
+Saving file `/workspace/Apollo-11/c64-port/build/sband-lm-pitch-3-mailbox.bin' from $c000 to $c003

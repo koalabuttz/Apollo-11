@@ -1,0 +1,15 @@
+PASS group 0 65536 states
+PASS group 1 131072 states
+PASS group 2 196608 states
+PASS group 3 262144 states
+PASS group 4 327680 states
+PASS group 5 393216 states
+PASS group 6 458752 states
+PASS group 7 524288 states
+PASS group 8 589824 states
+PASS group 9 655360 states
+PASS group 10 720896 states
+PASS group 11 786432 states
+PASS group 12 851968 states
+PASS group 13 917504 states
+{"states": 921088, "start": 0, "end": 921088, "record_bytes": 4108, "decoded_sha256": "ea316c318b96d980e7d95dc875e1955ad78c7c5bd93174d01ac49bd21beb26ad"}

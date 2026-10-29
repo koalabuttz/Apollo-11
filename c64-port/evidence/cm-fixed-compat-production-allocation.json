@@ -1,0 +1,154 @@
+{
+  "original_data_bytes": 73728,
+  "data_payload_loaded_bytes": 74802,
+  "data_overlay_overhead_bytes": 1074,
+  "production_control_payload_bytes": 1164,
+  "production_catalog": [
+    {
+      "id": 1,
+      "filename": "C1",
+      "byte_count": 3015,
+      "crc16": 31152,
+      "sha256": "3e612b012682f77a77f588390dc166f14b7e2ec95c33bac44f1ef7f7041d2fc3",
+      "prg": "cm-clock-mission-overlay-1.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 2,
+      "filename": "C2",
+      "byte_count": 7768,
+      "crc16": 40172,
+      "sha256": "e5da47c54ba569677c2408eed43084a146e58845efac2d5d01a8858c5e328360",
+      "prg": "cm-clock-mission-overlay-2.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 3,
+      "filename": "C3",
+      "byte_count": 5353,
+      "crc16": 34745,
+      "sha256": "b18ddf6fb23a08b8d5d8d8cd8ca5deaf273d2e2340a63b90938aacd779f38465",
+      "prg": "cm-clock-mission-overlay-3.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 4,
+      "filename": "C4",
+      "byte_count": 4215,
+      "crc16": 8646,
+      "sha256": "756025375825895523c7c0f8efc39ed8672bf3eef3bd21b41927c2a7bc1455fb",
+      "prg": "cm-clock-mission-overlay-4.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 5,
+      "filename": "C5",
+      "byte_count": 9671,
+      "crc16": 19863,
+      "sha256": "080a2c4283270ada897ee90f460b9bc23420412bff4a6f1e01c5601e5f2c418b",
+      "prg": "cm-clock-mission-overlay-5.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 6,
+      "filename": "C6",
+      "byte_count": 5129,
+      "crc16": 13730,
+      "sha256": "091af271d121306250d1d9c177a58d802a3d3bb6edc08a4f2145c57bfa2c24b6",
+      "prg": "cm-clock-mission-overlay-6.prg",
+      "mission_translation": true
+    },
+    {
+      "id": 250,
+      "filename": "C250",
+      "byte_count": 4618,
+      "crc16": 51034,
+      "sha256": "a11cd083672a03f6fdff6345b6687f66833d544b1c02835e4da1da07c8f36a58",
+      "prg": "cm-clock-mission-overlay-250.prg",
+      "mission_translation": false
+    },
+    {
+      "id": 251,
+      "filename": "C251",
+      "byte_count": 6444,
+      "crc16": 14591,
+      "sha256": "e78074647dec5fc0e3f393f2e977921ec86718966e923f5a41fbfdfb0ba1b926",
+      "prg": "cm-clock-mission-overlay-251.prg",
+      "mission_translation": false
+    },
+    {
+      "id": 200,
+      "filename": "F200",
+      "byte_count": 14483,
+      "crc16": 62851,
+      "sha256": "cfbe4d32f919538cd398724f3ef12f1091de4011e77c53bf814f17ae4b4c8c56",
+      "prg": "cm-fixed-compat-200.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 201,
+      "filename": "F201",
+      "byte_count": 14528,
+      "crc16": 35387,
+      "sha256": "1762287da00769644de30e2475de96b85043af151065bf260c02fcbd6a87b51c",
+      "prg": "cm-fixed-compat-201.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 202,
+      "filename": "F202",
+      "byte_count": 14528,
+      "crc16": 21478,
+      "sha256": "723cfa924ffb4f40dee347a59162d12e7dbaabd11f4346ec1dc1f0d7e01a86ff",
+      "prg": "cm-fixed-compat-202.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 203,
+      "filename": "F203",
+      "byte_count": 14528,
+      "crc16": 34880,
+      "sha256": "4471ce302f6794acf1f0987f6d9880f5cb6221dc6bccd795a58fe4d2b8e27a82",
+      "prg": "cm-fixed-compat-203.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 204,
+      "filename": "F204",
+      "byte_count": 14528,
+      "crc16": 39848,
+      "sha256": "fb94aaabc7201fef2265e7798f4dc6c01a55b574c14ff513d935dd101950d082",
+      "prg": "cm-fixed-compat-204.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 205,
+      "filename": "F205",
+      "byte_count": 2207,
+      "crc16": 14101,
+      "sha256": "012b224cdfc38657720d34852b9cbc2d9fcaa30eca845d2a827a0b0cd2e11025",
+      "prg": "cm-fixed-compat-205.prg",
+      "passive_fixed_word_data": true,
+      "actual_native_caller_control": false
+    },
+    {
+      "id": 206,
+      "filename": "F206",
+      "byte_count": 1164,
+      "crc16": 56225,
+      "sha256": "5a2a149f7b38fa81d7ba0f1e141666ba8ae14ec22a50169f52eb5c564e3e1355",
+      "prg": "cm-fixed-compat-206.prg",
+      "passive_fixed_word_data": false,
+      "actual_native_caller_control": true
+    }
+  ],
+  "production_raw_file_bytes": 130903,
+  "estimated_directory_file_blocks": 526,
+  "disk_allocated": "build/cm-fixed-compat-production.d64",
+  "existing_resident_scope": "actual CLOCKJOB mission resident registry unchanged; new files allocated for future reader/control registration; allocation adds no executable algorithm coverage"
+}

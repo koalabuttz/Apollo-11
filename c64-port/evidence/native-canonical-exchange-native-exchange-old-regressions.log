@@ -1,0 +1,19 @@
+PASS: 140 mixed native/assembly state checkpoints, frame/payload/guard and typed mapping fault checks
+PASS: 140 mixed native/assembly state checkpoints, frame/payload/guard and typed mapping fault checks
+PASS: PAL C64 140 original-derived mixed contexts + 16 masked checkpoints + real IRQ admission
+Mailbox: a500008c100191000000 stack sentinel extents: {'hardware': 33, 'software': 87, 'isolated': 16}
+DSKY KEYBOARD:16 queued native jobs/48 complete2051word source images, 0 failures
+DSKY KEYBOARD:16 queued native jobs/48 complete2051word source images, 0 failures
+PASS: VICE PAL, 16 real KERNAL GETIN/native queued CHARIN IRQ/RESUME jobs, 48 complete original assembly native-exchange-keyboard-irq states, zero failures
+Mailbox: a500001003
+PRG file/loaded bytes: 36638 36636
+hardware stack sentinel extent: 22
+software stack sentinel extent: 808
+DSKY KEYBOARD:16 queued native jobs/48 complete2051word source images, 0 failures
+DSKY KEYBOARD:16 queued native jobs/48 complete2051word source images, 0 failures
+PASS: VICE PAL, 8 real KERNAL GETIN/native queued CHARIN IRQ/RESUME jobs, 24 complete original assembly native-exchange-keyboard-number states, zero failures
+Mailbox: a500000803
+PRG file/loaded bytes: 40417 40415
+hardware stack sentinel extent: 22
+software stack sentinel extent: 869
+PASS:old mixed,wholeKEYIRQ/CHARIN anddigitflow host/SAN/current-coreC64 supplementarytargets

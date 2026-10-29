@@ -1,0 +1,6 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_sleep.c tests/cm_sleep_check.c src/agc_word.c src/cm_basic_sleep.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_basic_finish_cases.c tests/cm_sleep_cases.c -o build/test-cm-sleep
+build/test-cm-sleep
+64 complete CM JOBSLEEP states and23 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/test_cm_sleep.c tests/cm_sleep_check.c src/agc_word.c src/cm_basic_sleep.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_basic_finish_cases.c tests/cm_sleep_cases.c -o build/test-cm-sleep-frozen-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-sleep-frozen-sanitize
+64 complete CM JOBSLEEP states and23 unchanged invalid boundaries: PASS

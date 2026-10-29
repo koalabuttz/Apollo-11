@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_decimal_load.c src/agc_word.c src/dsky_decimal_load.c tests/dsky_decimal_load_cases.c tests/dsky_decimal_load_check.c -o build/test-dsky-decimal-load-integrated
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_decimal_load_snapshot.c src/agc_word.c src/dsky_decimal_load.c tests/dsky_decimal_load_cases.c tests/dsky_decimal_load_check.c -o build/dsky-decimal-load-integrated-stream
+./build/test-dsky-decimal-load-integrated
+128 full LM/CM DECDSP fresh-load source states and26 unchanged invalid guards: PASS
+python3 tools/qualified_stream_host.py --archive evidence/dsky-decimal-load-reference.snapshots.xz --sha256 bd726f3516b38148a8bd445206fdb75a4e6538ba95add0e71d037fcb44573fea --binary build/dsky-decimal-load-integrated-stream
+PASS all retained source-state bytes: 94923126 SHA256 bd726f3516b38148a8bd445206fdb75a4e6538ba95add0e71d037fcb44573fea
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_dsky_decimal_load.c src/agc_word.c src/dsky_decimal_load.c tests/dsky_decimal_load_cases.c tests/dsky_decimal_load_check.c -o build/test-dsky-decimal-load-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-decimal-load-integrated-san
+128 full LM/CM DECDSP fresh-load source states and26 unchanged invalid guards: PASS
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/dsky_decimal_load_snapshot.c src/agc_word.c src/dsky_decimal_load.c tests/dsky_decimal_load_cases.c tests/dsky_decimal_load_check.c -o build/dsky-decimal-load-integrated-stream-san
+python3 tools/qualified_stream_host.py --archive evidence/dsky-decimal-load-reference.snapshots.xz --sha256 bd726f3516b38148a8bd445206fdb75a4e6538ba95add0e71d037fcb44573fea --binary build/dsky-decimal-load-integrated-stream-san
+PASS all retained source-state bytes: 94923126 SHA256 bd726f3516b38148a8bd445206fdb75a4e6538ba95add0e71d037fcb44573fea

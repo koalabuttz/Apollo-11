@@ -1,0 +1,66 @@
+{
+  "original_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "passive_source_words": [
+    {
+      "physical_bank": 2,
+      "location": 2060,
+      "word": 21513
+    },
+    {
+      "physical_bank": 2,
+      "location": 2061,
+      "word": 14381
+    },
+    {
+      "physical_bank": 2,
+      "location": 2062,
+      "word": 23558
+    },
+    {
+      "physical_bank": 2,
+      "location": 2063,
+      "word": 5902
+    },
+    {
+      "physical_bank": 1,
+      "location": 1806,
+      "word": 6
+    },
+    {
+      "physical_bank": 1,
+      "location": 1807,
+      "word": 2055
+    },
+    {
+      "physical_bank": 1,
+      "location": 1808,
+      "word": 22542
+    },
+    {
+      "physical_bank": 1,
+      "location": 1809,
+      "word": 6
+    },
+    {
+      "physical_bank": 1,
+      "location": 1810,
+      "word": 9226
+    },
+    {
+      "physical_bank": 1,
+      "location": 1689,
+      "word": 4151
+    },
+    {
+      "physical_bank": 2,
+      "location": 2785,
+      "word": 20495
+    }
+  ],
+  "original_sources": {
+    "INTERRUPT_LEAD_INS.agc": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+    "WAITLIST.agc": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+    "EXECUTIVE.agc": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b"
+  },
+  "role": "Fresh byte-original hardware/lead-in source address identity. Retained words are audit data only; native control does not decode any of them."
+}

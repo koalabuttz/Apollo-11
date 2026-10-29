@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-llge",
+  "release": "evidence-lm-llge",
+  "files": {
+    "lm-llge-c64-cover.json": {
+      "sha256": "d8ca325b1812651d839ebff061b26a383560f268c5276cd199643ae3ec82ef69",
+      "bytes": 21933,
+      "store": "tree"
+    },
+    "lm-llge-differential.log": {
+      "sha256": "601b773163a9eac503784c5e089109ecb27d8448fe03d5970f0ff228723b0b38",
+      "bytes": 14113,
+      "store": "tree"
+    },
+    "lm-llge-host.log": {
+      "sha256": "6cc08c008c7b17d2e324803b762bb8849aef9968a5e1cfadfd451b21b80af740",
+      "bytes": 95,
+      "store": "tree"
+    },
+    "lm-llge-proof.json": {
+      "sha256": "8fb1f9991a75024dd2d779aef20623f9ad62d62ecec96359ed41930df453fc43",
+      "bytes": 32489,
+      "store": "tree"
+    },
+    "lm-llge-source-map.json": {
+      "sha256": "51054b05630949e97d7b9bbeb7a7213c4b6fd7f0c6598f528509c67cfcf0f28c",
+      "bytes": 136597,
+      "store": "tree"
+    },
+    "lm-llge-vice.log": {
+      "sha256": "765555d5245e9555b320b626e2635ef262809cd6427f80547db54c8d7f35fb1d",
+      "bytes": 6544,
+      "store": "tree"
+    }
+  }
+}

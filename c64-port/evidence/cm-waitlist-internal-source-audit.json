@@ -1,0 +1,27 @@
+{
+  "original_source_file": "Comanche055/WAITLIST.agc",
+  "original_source_sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+  "original_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "virtualagc_pin": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "entries": {
+    "DLY2-1": "05255",
+    "VARDELAY": "05272",
+    "FIXDELAY": "05267"
+  },
+  "actual_fixed_source_caller": {
+    "source": "WAITLIST.agc:211",
+    "caller_Q": "07720",
+    "literal_octal": "00764",
+    "literal_decimal": 500,
+    "queued_resume": "07721"
+  },
+  "source_groups": [
+    "delay source task continuation/WAITEXIT literal",
+    "WAIT2 complete delta conversion/insertion/list shift",
+    "WTLST5 including actuallast+0 immutable01203->TC1203 frontierQ3377",
+    "WTLST2 TS WAITTEMP positive-overflow skips INDEXQ, CAF0 reads A1 -> realindex1; corrected scratchword used for ADS",
+    "WTABORT BAILOUT resource or LVWTLIST originalDTCB caller/TASKOVER return"
+  ],
+  "delay_contract": "original positive normal dt1..037777, called under WAITLIST exclusion/IRQ0. Actual source docs assume deltaT>=1; zero/negative internal input is rejected unchanged, public WAIT bad delay handled separately",
+  "complete_file_qualified": false
+}

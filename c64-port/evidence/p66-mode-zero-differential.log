@@ -1,0 +1,3 @@
+PASS: 1,024 complete DSPMMJB zero source-entry checkpoints, all2,048erasablewords plusSUPERBNK/IRQ
+Original DSPDECVN/SHORTMP/DSPIN/2BLANK; stops actual ENDOFJOB entry
+Snapshot SHA256: be2d6a15565c27dd66d0dd1726c36ad543f9e8b1e57ec24673c6d5d17e11268e

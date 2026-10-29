@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete rtb_vector group original-assembly states; retained memory unchanged
+Mailbox: a500002004
+PRG bytes: 4687
+rtb-vector-lm4-hardware-stack.bin: measured stack extent 14 bytes
+rtb-vector-lm4-software-stack.bin: measured stack extent 45 bytes

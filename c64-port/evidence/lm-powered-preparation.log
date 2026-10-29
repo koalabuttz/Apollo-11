@@ -1,0 +1,27 @@
+{
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "original_sources": {
+    "POWERED_FLIGHT_SUBROUTINES.agc": {
+      "original_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+      "assembled_source_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+      "source_edits": 0
+    },
+    "INTERPRETER.agc": {
+      "original_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "assembled_source_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "source_edits": 0
+    },
+    "RTB_OP_CODES.agc": {
+      "original_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+      "assembled_source_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+      "source_edits": 0
+    },
+    "SINGLE_PRECISION_SUBROUTINES.agc": {
+      "original_sha256": "bebe6cbf186bed7fcc35f9aad8a392ccbe3cb31154ad8267d01a4926cc0dd3e4",
+      "assembled_source_sha256": "bebe6cbf186bed7fcc35f9aad8a392ccbe3cb31154ad8267d01a4926cc0dd3e4",
+      "source_edits": 0
+    }
+  },
+  "declaration_data_domain": "Byte-original LM ERASABLE_ASSIGNMENTS and fixed-data source baseline",
+  "historical_source_edits": 0
+}

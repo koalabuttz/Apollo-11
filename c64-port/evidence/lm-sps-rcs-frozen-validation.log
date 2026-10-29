@@ -1,0 +1,1 @@
+{'complete_states': 196608, 'decoded_sha256': 'c156b4aff49857039bfeed47e2c33942a4aeed2bad84a5dbe164ceb8bd4c3c05', 'old_sense_counts': {'0': 1545, '1': 96114, '32766': 98949}, 'final_jet_counts': {'plus_zero': 100767, 'positive': 48996, 'negative': 46845}, 'frozen_states': 96, 'frozen_storage_bytes': 2003}

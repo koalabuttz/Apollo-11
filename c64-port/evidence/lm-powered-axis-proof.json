@@ -1,0 +1,51 @@
+{
+  "source_file": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+  "source_audit_dependency": "evidence/lm-powered-source-audit.json",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "native_group": "AX*SR*T",
+  "calls": 65536,
+  "complete_states": 131072,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "header_words": 4,
+  "decoded_state_bytes": 537919488,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-powered-axis-complete.snapshots.xz",
+      "decoded_sha256": "babd0b007d8fcf523f63895d73b6b1ee43c07699a7e511564fe1c68202a6813f"
+    },
+    "strict_native": {
+      "object": "evidence/lm-powered-axis-complete.snapshots.xz",
+      "decoded_sha256": "babd0b007d8fcf523f63895d73b6b1ee43c07699a7e511564fe1c68202a6813f"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-powered-axis-complete.snapshots.xz",
+      "decoded_sha256": "babd0b007d8fcf523f63895d73b6b1ee43c07699a7e511564fe1c68202a6813f"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 12106,
+      "loaded_end_hex": "0x3748",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 298,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 12297,
+      "loaded_end_hex": "0x3807",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 297,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "The source three-plane axis transformation accepts the documented +3/-3 directions, arbitrary raw vector/trig words and ordinary MODE. LM TERM1TMP aliases MPAC+3/+4 rather than the CM BUF2 pair. The source saved-return TC is separately executed. DIM preserves sign and reaches negative zero from either direction, so the positive-zero TC RTNSAVER alternate cannot execute under this entry contract."
+}

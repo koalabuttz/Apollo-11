@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_operator_release-lm.prg from 0801 to 3CE2 (34E2 bytes)
+WATCH: 1  C:$5ceb  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 5ceb)  311/$137,  61/$3d
+.C:2ef0  8E EB 5C    STX $5CEB      - A:0D X:A5 Y:01 SP:f1 N.-....C  155695174
+>C:5ceb  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_release-lm-vice-mailbox.bin' from $5ceb to $5cef
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_release-lm-vice-difference.bin' from $3ce3 to $3cea
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_release-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_release-lm-vice-software-stack.bin' from $c100 to $cfff

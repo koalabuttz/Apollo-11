@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-conics",
+  "release": "evidence-cm-conics",
+  "files": {
+    "cm-conics-differential.log": {
+      "sha256": "76cc5d9e6952be10b2a69cc0a0e2108dbaa618c018fe8f938dc7ee958a1e8a57",
+      "bytes": 75053,
+      "store": "tree"
+    },
+    "cm-conics-host.log": {
+      "sha256": "3426c64a361fc3930d7120a83c1617bf2e1b9985cdd21a391f146ff0811623e0",
+      "bytes": 928,
+      "store": "tree"
+    },
+    "cm-conics-proof.json": {
+      "sha256": "a7741fb957331dc4d479963ec6bf57ad1b6f5155940c99ec179651df40a3e626",
+      "bytes": 85065,
+      "store": "tree"
+    },
+    "cm-conics-source-map.json": {
+      "sha256": "1d6e0976a125409b4f2796d53a854b1b890a1dba37be120bfb901e585e3981ff",
+      "bytes": 146560,
+      "store": "tree"
+    },
+    "cm-conics-vice.log": {
+      "sha256": "ac047b8183fee843403d9eeede24bd3576c5f2f9adfe991e7e3705e52a833e8d",
+      "bytes": 4586,
+      "store": "tree"
+    }
+  }
+}

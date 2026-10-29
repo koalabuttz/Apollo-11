@@ -1,0 +1,23 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-clock-display-overlay-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-clock-display-overlay-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-CLOCK-DISPLAY-OVERLAY.PRG' as `RESIDENT' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-1.PRG' as `C1' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-2.PRG' as `C2' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-3.PRG' as `C3' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-4.PRG' as `C4' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-5.PRG' as `C5' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-6.PRG' as `C6' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-7.PRG' as `C7' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-250.PRG' as `C250' to unit 8
+writing file `CM-CLOCK-DISPLAY-OVERLAY-251.PRG' as `C251' to unit 8
+1 3015 loaded bytes
+2 7768 loaded bytes
+3 5353 loaded bytes
+4 4215 loaded bytes
+5 9671 loaded bytes
+6 5129 loaded bytes
+7 15661 loaded bytes
+250 5464 loaded bytes
+251 15078 loaded bytes
+Built sole-image CM resident and seven actual native control/service/body modules plus proof overlays

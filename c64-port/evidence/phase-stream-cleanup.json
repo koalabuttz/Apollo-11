@@ -1,0 +1,308 @@
+[
+  {
+    "removed_raw": "build/cm-display-sanitize.snapshots",
+    "retained_committed": "evidence/cm-display-sanitize.snapshots.gz",
+    "decoded_sha256": "6f22da4fc6ac14cd25cba3047aea85b162d1d35a892a436166b46f42dbea57f1",
+    "reclaimed_bytes": 142141468
+  },
+  {
+    "removed_raw": "build/cm-display-reference.snapshots",
+    "retained_committed": "evidence/cm-display-reference.snapshots.gz",
+    "decoded_sha256": "6f22da4fc6ac14cd25cba3047aea85b162d1d35a892a436166b46f42dbea57f1",
+    "reclaimed_bytes": 142141468
+  },
+  {
+    "removed_raw": "build/cm-display-native.snapshots",
+    "retained_committed": "evidence/cm-display-native.snapshots.gz",
+    "decoded_sha256": "6f22da4fc6ac14cd25cba3047aea85b162d1d35a892a436166b46f42dbea57f1",
+    "reclaimed_bytes": 142141468
+  },
+  {
+    "removed_raw": "build/cm-formatter-sanitize.snapshots",
+    "retained_committed": "evidence/cm-formatter-sanitize.snapshots.gz",
+    "decoded_sha256": "af601b37ca463041eb2bad3686d56aadc834e78a5049bde2117012bdf3dd467c",
+    "reclaimed_bytes": 142086713
+  },
+  {
+    "removed_raw": "build/cm-formatter-native.snapshots",
+    "retained_committed": "evidence/cm-formatter-native.snapshots.gz",
+    "decoded_sha256": "af601b37ca463041eb2bad3686d56aadc834e78a5049bde2117012bdf3dd467c",
+    "reclaimed_bytes": 142086713
+  },
+  {
+    "removed_raw": "build/cm-formatter-reference.snapshots",
+    "retained_committed": "evidence/cm-formatter-reference.snapshots.gz",
+    "decoded_sha256": "af601b37ca463041eb2bad3686d56aadc834e78a5049bde2117012bdf3dd467c",
+    "reclaimed_bytes": 142086713
+  },
+  {
+    "removed_raw": "build/cm-pinball-sanitize.snapshots",
+    "retained_committed": "evidence/cm-pinball-sanitize.snapshots.gz",
+    "decoded_sha256": "5a7eb68f798fe4e8c5269492b065de94a4bc63e8bde94d7cc6641430e95fe5dd",
+    "reclaimed_bytes": 94848878
+  },
+  {
+    "removed_raw": "build/cm-pinball-reference.snapshots",
+    "retained_committed": "evidence/cm-pinball-reference.snapshots.gz",
+    "decoded_sha256": "5a7eb68f798fe4e8c5269492b065de94a4bc63e8bde94d7cc6641430e95fe5dd",
+    "reclaimed_bytes": 94848878
+  },
+  {
+    "removed_raw": "build/cm-pinball-native.snapshots",
+    "retained_committed": "evidence/cm-pinball-native.snapshots.gz",
+    "decoded_sha256": "5a7eb68f798fe4e8c5269492b065de94a4bc63e8bde94d7cc6641430e95fe5dd",
+    "reclaimed_bytes": 94848878
+  },
+  {
+    "removed_raw": "build/cm-keyboard-irq-reference.snapshots",
+    "retained_committed": "evidence/cm-keyboard-irq-reference.snapshots.gz",
+    "decoded_sha256": "59712879c3108ac651181b69674b6145aec996b4b09fb59077048395f0f8da2c",
+    "reclaimed_bytes": 141701888
+  },
+  {
+    "removed_raw": "build/cm-keyboard-irq-native.snapshots",
+    "retained_committed": "evidence/cm-keyboard-irq-native.snapshots.gz",
+    "decoded_sha256": "59712879c3108ac651181b69674b6145aec996b4b09fb59077048395f0f8da2c",
+    "reclaimed_bytes": 141701888
+  },
+  {
+    "removed_raw": "build/cm-keyboard-irq-sanitize.snapshots",
+    "retained_committed": "evidence/cm-keyboard-irq-sanitize.snapshots.gz",
+    "decoded_sha256": "59712879c3108ac651181b69674b6145aec996b4b09fb59077048395f0f8da2c",
+    "reclaimed_bytes": 141701888
+  },
+  {
+    "removed_raw": "build/cm-charin-nv-sanitize.snapshots",
+    "retained_committed": "evidence/cm-charin-nv-sanitize.snapshots.gz",
+    "decoded_sha256": "7a3704304f8cc0d3aeff9e733d745ef95807b52b6b0c517a98b9d855a88a4e51",
+    "reclaimed_bytes": 47374163
+  },
+  {
+    "removed_raw": "build/cm-charin-nv-reference.snapshots",
+    "retained_committed": "evidence/cm-charin-nv-reference.snapshots.gz",
+    "decoded_sha256": "7a3704304f8cc0d3aeff9e733d745ef95807b52b6b0c517a98b9d855a88a4e51",
+    "reclaimed_bytes": 47374163
+  },
+  {
+    "removed_raw": "build/cm-charin-nv-native.snapshots",
+    "retained_committed": "evidence/cm-charin-nv-native.snapshots.gz",
+    "decoded_sha256": "7a3704304f8cc0d3aeff9e733d745ef95807b52b6b0c517a98b9d855a88a4e51",
+    "reclaimed_bytes": 47374163
+  },
+  {
+    "removed_raw": "build/cm-charin-number-reference.snapshots",
+    "retained_committed": "evidence/cm-charin-number-reference.snapshots.gz",
+    "decoded_sha256": "cec4c49aa161ac1d644592329a0f34ce552dd58240548ae5a3dd78196b9775cc",
+    "reclaimed_bytes": 94573130
+  },
+  {
+    "removed_raw": "build/cm-charin-number-native.snapshots",
+    "retained_committed": "evidence/cm-charin-number-native.snapshots.gz",
+    "decoded_sha256": "cec4c49aa161ac1d644592329a0f34ce552dd58240548ae5a3dd78196b9775cc",
+    "reclaimed_bytes": 94573130
+  },
+  {
+    "removed_raw": "build/cm-charin-number-sanitize.snapshots",
+    "retained_committed": "evidence/cm-charin-number-sanitize.snapshots.gz",
+    "decoded_sha256": "cec4c49aa161ac1d644592329a0f34ce552dd58240548ae5a3dd78196b9775cc",
+    "reclaimed_bytes": 94573130
+  },
+  {
+    "removed_raw": "build/cm-relay-native.snapshots",
+    "retained_committed": "evidence/cm-relay-native.snapshots.gz",
+    "decoded_sha256": "2597ce3724b0e690186e0fba733a88d6dd8032226075917d5520f483c18052fe",
+    "reclaimed_bytes": 47441731
+  },
+  {
+    "removed_raw": "build/cm-relay-sanitize.snapshots",
+    "retained_committed": "evidence/cm-relay-sanitize.snapshots.gz",
+    "decoded_sha256": "2597ce3724b0e690186e0fba733a88d6dd8032226075917d5520f483c18052fe",
+    "reclaimed_bytes": 47441731
+  },
+  {
+    "removed_raw": "build/cm-relay-reference.snapshots",
+    "retained_committed": "evidence/cm-relay-reference.snapshots.gz",
+    "decoded_sha256": "2597ce3724b0e690186e0fba733a88d6dd8032226075917d5520f483c18052fe",
+    "reclaimed_bytes": 47441731
+  },
+  {
+    "removed_raw": "build/cm-scale-native.snapshots",
+    "retained_committed": "evidence/cm-scale-native.snapshots.gz",
+    "decoded_sha256": "10bd36aa4fee086c81a3227964b3d38c276c90658cc2e36408298c043d21f3c5",
+    "reclaimed_bytes": 47355579
+  },
+  {
+    "removed_raw": "build/cm-scale-reference.snapshots",
+    "retained_committed": "evidence/cm-scale-reference.snapshots.gz",
+    "decoded_sha256": "10bd36aa4fee086c81a3227964b3d38c276c90658cc2e36408298c043d21f3c5",
+    "reclaimed_bytes": 47355579
+  },
+  {
+    "removed_raw": "build/cm-scale-sanitize.snapshots",
+    "retained_committed": "evidence/cm-scale-sanitize.snapshots.gz",
+    "decoded_sha256": "10bd36aa4fee086c81a3227964b3d38c276c90658cc2e36408298c043d21f3c5",
+    "reclaimed_bytes": 47355579
+  },
+  {
+    "removed_raw": "build/dsky-charin-nv-native.snapshots",
+    "retained_committed": "evidence/dsky-charin-nv-native.snapshots.gz",
+    "decoded_sha256": "1da3e57b4e13f039c3276c5c15f2de18e174d6f7a9acc03fa8a1607f3f400714",
+    "reclaimed_bytes": 47369186
+  },
+  {
+    "removed_raw": "build/dsky-charin-nv-reference.snapshots",
+    "retained_committed": "evidence/dsky-charin-nv-reference.snapshots.gz",
+    "decoded_sha256": "1da3e57b4e13f039c3276c5c15f2de18e174d6f7a9acc03fa8a1607f3f400714",
+    "reclaimed_bytes": 47369186
+  },
+  {
+    "removed_raw": "build/dsky-charin-nv-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-charin-nv-sanitize.snapshots.gz",
+    "decoded_sha256": "1da3e57b4e13f039c3276c5c15f2de18e174d6f7a9acc03fa8a1607f3f400714",
+    "reclaimed_bytes": 47369186
+  },
+  {
+    "removed_raw": "build/dsky-nv-key-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-nv-key-sanitize.snapshots.gz",
+    "decoded_sha256": "d5afe6f4954a46f3de2108f7222fa5b8127edc4a34d4b1924603fb42a1a3dd87",
+    "reclaimed_bytes": 47374190
+  },
+  {
+    "removed_raw": "build/dsky-nv-key-native.snapshots",
+    "retained_committed": "evidence/dsky-nv-key-native.snapshots.gz",
+    "decoded_sha256": "d5afe6f4954a46f3de2108f7222fa5b8127edc4a34d4b1924603fb42a1a3dd87",
+    "reclaimed_bytes": 47374190
+  },
+  {
+    "removed_raw": "build/dsky-nv-key-reference.snapshots",
+    "retained_committed": "evidence/dsky-nv-key-reference.snapshots.gz",
+    "decoded_sha256": "d5afe6f4954a46f3de2108f7222fa5b8127edc4a34d4b1924603fb42a1a3dd87",
+    "reclaimed_bytes": 47374190
+  },
+  {
+    "removed_raw": "build/dsky-keycom-native.snapshots",
+    "retained_committed": "evidence/dsky-keycom-native.snapshots.gz",
+    "decoded_sha256": "d8270091330ef32a00ccb1eccff54ad8e76b685a0edcd96a81efa9cd824b6e4e",
+    "reclaimed_bytes": 47395345
+  },
+  {
+    "removed_raw": "build/dsky-keycom-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-keycom-sanitize.snapshots.gz",
+    "decoded_sha256": "d8270091330ef32a00ccb1eccff54ad8e76b685a0edcd96a81efa9cd824b6e4e",
+    "reclaimed_bytes": 47395345
+  },
+  {
+    "removed_raw": "build/dsky-keycom-reference.snapshots",
+    "retained_committed": "evidence/dsky-keycom-reference.snapshots.gz",
+    "decoded_sha256": "d8270091330ef32a00ccb1eccff54ad8e76b685a0edcd96a81efa9cd824b6e4e",
+    "reclaimed_bytes": 47395345
+  },
+  {
+    "removed_raw": "build/dsky-keyrupt-native.snapshots",
+    "retained_committed": "evidence/dsky-keyrupt-native.snapshots.gz",
+    "decoded_sha256": "5d1f8f6c0f8d208f2029f42c2860687cb398e44e1a2f9c8b8de3d97a33b3a491",
+    "reclaimed_bytes": 47392115
+  },
+  {
+    "removed_raw": "build/dsky-keyrupt-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-keyrupt-sanitize.snapshots.gz",
+    "decoded_sha256": "5d1f8f6c0f8d208f2029f42c2860687cb398e44e1a2f9c8b8de3d97a33b3a491",
+    "reclaimed_bytes": 47392115
+  },
+  {
+    "removed_raw": "build/dsky-keyrupt-reference.snapshots",
+    "retained_committed": "evidence/dsky-keyrupt-reference.snapshots.gz",
+    "decoded_sha256": "5d1f8f6c0f8d208f2029f42c2860687cb398e44e1a2f9c8b8de3d97a33b3a491",
+    "reclaimed_bytes": 47392115
+  },
+  {
+    "removed_raw": "build/dsky-key-irq-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-key-irq-sanitize.snapshots.gz",
+    "decoded_sha256": "4e48dfee836a46424bd98df938bba3c00a0f3555f3c6bd09670428d5e2c135a1",
+    "reclaimed_bytes": 47411161
+  },
+  {
+    "removed_raw": "build/dsky-key-irq-reference.snapshots",
+    "retained_committed": "evidence/dsky-key-irq-reference.snapshots.gz",
+    "decoded_sha256": "4e48dfee836a46424bd98df938bba3c00a0f3555f3c6bd09670428d5e2c135a1",
+    "reclaimed_bytes": 47411161
+  },
+  {
+    "removed_raw": "build/dsky-key-irq-native.snapshots",
+    "retained_committed": "evidence/dsky-key-irq-native.snapshots.gz",
+    "decoded_sha256": "4e48dfee836a46424bd98df938bba3c00a0f3555f3c6bd09670428d5e2c135a1",
+    "reclaimed_bytes": 47411161
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-flow-reference.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-flow-reference.snapshots.gz",
+    "decoded_sha256": "1963f92ce42148a081b655becc32948971e9d5c93787b7e233f7d6a424c50ffe",
+    "reclaimed_bytes": 35518050
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-flow-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-flow-sanitize.snapshots.gz",
+    "decoded_sha256": "1963f92ce42148a081b655becc32948971e9d5c93787b7e233f7d6a424c50ffe",
+    "reclaimed_bytes": 35518050
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-flow-native.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-flow-native.snapshots.gz",
+    "decoded_sha256": "1963f92ce42148a081b655becc32948971e9d5c93787b7e233f7d6a424c50ffe",
+    "reclaimed_bytes": 35518050
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-irq-flow-reference.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-irq-flow-reference.snapshots.gz",
+    "decoded_sha256": "6435feca91228c46aae2f6faf0bd64517757e4b5cbfd91baeed72496bd64176e",
+    "reclaimed_bytes": 35510273
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-irq-flow-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-irq-flow-sanitize.snapshots.gz",
+    "decoded_sha256": "6435feca91228c46aae2f6faf0bd64517757e4b5cbfd91baeed72496bd64176e",
+    "reclaimed_bytes": 35510273
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-irq-flow-native.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-irq-flow-native.snapshots.gz",
+    "decoded_sha256": "6435feca91228c46aae2f6faf0bd64517757e4b5cbfd91baeed72496bd64176e",
+    "reclaimed_bytes": 35510273
+  },
+  {
+    "removed_raw": "build/dsky-charin-number-reference.snapshots",
+    "retained_committed": "evidence/dsky-charin-number-reference.snapshots.gz",
+    "decoded_sha256": "b730d2bac2aabbf112e1a330d6cfb784813d051e043d6954e2807903cc371079",
+    "reclaimed_bytes": 94573130
+  },
+  {
+    "removed_raw": "build/dsky-charin-number-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-charin-number-sanitize.snapshots.gz",
+    "decoded_sha256": "b730d2bac2aabbf112e1a330d6cfb784813d051e043d6954e2807903cc371079",
+    "reclaimed_bytes": 94573130
+  },
+  {
+    "removed_raw": "build/dsky-charin-number-native.snapshots",
+    "retained_committed": "evidence/dsky-charin-number-native.snapshots.gz",
+    "decoded_sha256": "b730d2bac2aabbf112e1a330d6cfb784813d051e043d6954e2807903cc371079",
+    "reclaimed_bytes": 94573130
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-number-flow-reference.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-number-flow-reference.snapshots.gz",
+    "decoded_sha256": "124d83e5b58f9117ec611b567bbcffb1ed9cd1e9232d42acd3755002ce09d53f",
+    "reclaimed_bytes": 35449377
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-number-flow-native.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-number-flow-native.snapshots.gz",
+    "decoded_sha256": "124d83e5b58f9117ec611b567bbcffb1ed9cd1e9232d42acd3755002ce09d53f",
+    "reclaimed_bytes": 35449377
+  },
+  {
+    "removed_raw": "build/dsky-keyboard-number-flow-sanitize.snapshots",
+    "retained_committed": "evidence/dsky-keyboard-number-flow-sanitize.snapshots.gz",
+    "decoded_sha256": "124d83e5b58f9117ec611b567bbcffb1ed9cd1e9232d42acd3755002ce09d53f",
+    "reclaimed_bytes": 35449377
+  }
+]

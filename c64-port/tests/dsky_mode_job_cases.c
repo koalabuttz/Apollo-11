@@ -1,0 +1,4 @@
+/* SPDX-License-Identifier: MIT */
+#include "dsky_mode_job_cases.h"
+#include "p66_bias_cases.h"
+void dsky_mode_job_input(apollo_overlay_state *s,p66_bias_io *io,uint16_t n){static const uint16_t raw[]={0,077777,037777,040000,0100000,0177777,0140000,1},old[]={0,077777,037777,040000,1,077776,073777,04001},negative[]={077777,077776,040000,077000};uint16_t cm=(uint16_t)(n>=4096u),j=(uint16_t)(n%4096u);p66_bias_prepare(s,n);s->words[3]=(uint16_t)((j/8u)%8u*0400u);s->words[4]=060000;s->words[6]=(uint16_t)(060000u|(s->words[3]>>8));s->words[5]=cm ? 03441u : 03534u;s->words[0]=raw[(j/32u)%8u];s->words[1]=raw[(j/64u)%8u];s->words[2]=raw[(j/128u)%8u];s->words[01011]=j%3u ? (uint16_t)((j/3u)%100u) : negative[(j/16u)%4u];s->words[01035]=old[(j/4u)%8u];s->words[01016]=old[(j/32u)%8u];s->words[0777]=old[(j/64u)%8u];io->superbank=(uint16_t)(0100u+(j/256u)%4u*020u);io->interrupt_enabled=(uint16_t)((j/128u)%2u);}

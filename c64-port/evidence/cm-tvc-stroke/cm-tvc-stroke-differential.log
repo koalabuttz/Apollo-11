@@ -1,0 +1,7 @@
+PASS: 1024 cm-tvc-stroke cases equal the original programs (4 routines)
+  CM 20,3501 STRKTSTI: 05217 x256
+  CM 20,3533 HACK: 05245 x256
+  CM 20,3541 : 02541 x59, 02543 x64, 02743 x38, 02745 x49, 05324 x46
+  CM 20,3542 HACKWLST: 05324 x256
+froze 32 vectors to tests/cm_tvc_stroke_vectors.h
+exit 0

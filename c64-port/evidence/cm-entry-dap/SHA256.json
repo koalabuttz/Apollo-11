@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-entry-dap",
+  "release": "evidence-cm-entry-dap",
+  "files": {
+    "cm-entry-dap-differential.log": {
+      "sha256": "698b68c1baa0e3950d164d7839d53dfd5d970857e2bf5f6b861c09db5a9af31b",
+      "bytes": 1094,
+      "store": "tree"
+    },
+    "cm-entry-dap-host.log": {
+      "sha256": "57a5c3cff039815cf383efd584e3386aedf481ee734fb41fdc3af444704855de",
+      "bytes": 1098,
+      "store": "tree"
+    },
+    "cm-entry-dap-proof.json": {
+      "sha256": "d09dd8cb2e8139718cb5ba20fdb369cd2939e09923846bf4cfd06de2dfdf5aad",
+      "bytes": 5565,
+      "store": "tree"
+    },
+    "cm-entry-dap-source-map.json": {
+      "sha256": "5f8762889e6ec862477c2b81d353a08f7975d0477ab5c9f14923ead93753c527",
+      "bytes": 119221,
+      "store": "tree"
+    },
+    "cm-entry-dap-vice.log": {
+      "sha256": "4e960888d3f73b6d2aff3ed0846caedb98e805448e0e0e2c18d7278c1b855e69",
+      "bytes": 1049,
+      "store": "tree"
+    }
+  }
+}

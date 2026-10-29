@@ -1,0 +1,152 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     25bf     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_decimal.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843       ca     1         build/dsky_decimal.prg.lto.o:(.text.agc_multiply)
+     843      843       ca     1                 agc_multiply
+     90d      90d      1bc     1         build/dsky_decimal.prg.lto.o:(.text.agc_double_add)
+     90d      90d      1bc     1                 agc_double_add
+     ac9      ac9      3d4     1         build/dsky_decimal.prg.lto.o:(.text.dsky_pinball_write)
+     ac9      ac9      3d4     1                 dsky_pinball_write
+     e9d      e9d      c60     1         build/dsky_decimal.prg.lto.o:(.text.main)
+     e9d      e9d      c60     1                 main
+    1afd     1afd        6     1         build/dsky_decimal.prg.lto.o:(.text.exit)
+    1afd     1afd        6     1                 exit
+    1b03     1b03       c9     1         build/dsky_decimal.prg.lto.o:(.text.vfprintf)
+    1b03     1b03       c9     1                 vfprintf
+    1bcc     1bcc      cc3     1         build/dsky_decimal.prg.lto.o:(.text._ZN12_GLOBAL__N_15printEPKcP6Status)
+    1bcc     1bcc      cc3     1                 (anonymous namespace)::print(char const*, Status*)
+    288f     288f       ed     1         build/dsky_decimal.prg.lto.o:(.text._ZN12_GLOBAL__N_13putEcP6Status)
+    288f     288f       ed     1                 (anonymous namespace)::put(char, Status*)
+    297c     297c      162     1         build/dsky_decimal.prg.lto.o:(.text._ZN12_GLOBAL__N_112print_stringEPKcP6Status)
+    297c     297c      162     1                 (anonymous namespace)::print_string(char const*, Status*)
+    2ade     2ade       18     1         build/dsky_decimal.prg.lto.o:(.text.printf)
+    2ade     2ade       18     1                 printf
+    2af6     2af6       4d     1         build/dsky_decimal.prg.lto.o:(.text.putchar)
+    2af6     2af6       4d     1                 putchar
+    2b43     2b43       13     1         build/dsky_decimal.prg.lto.o:(.text.__ashlhi3)
+    2b43     2b43       13     1                 __ashlhi3
+    2b56     2b56       13     1         build/dsky_decimal.prg.lto.o:(.text.__lshrhi3)
+    2b56     2b56       13     1                 __lshrhi3
+    2b69     2b69       c4     1         build/dsky_decimal.prg.lto.o:(.text.__udivhi3)
+    2b69     2b69       c4     1                 __udivhi3
+    2c2d     2c2d       ae     1         build/dsky_decimal.prg.lto.o:(.text.__umodhi3)
+    2c2d     2c2d       ae     1                 __umodhi3
+    2cdb     2cdb       34     1         build/dsky_decimal.prg.lto.o:(.text.memcpy)
+    2cdb     2cdb       34     1                 memcpy
+    2d0f     2d0f       22     1         build/dsky_decimal.prg.lto.o:(.text.__memset)
+    2d0f     2d0f       22     1                 __memset
+    2d31     2d31       34     1         build/dsky_decimal.prg.lto.o:(.text.__mulhi3)
+    2d31     2d31       34     1                 __mulhi3
+    2d65     2d65       67     1         build/dsky_decimal.prg.lto.o:(.text.__mulsi3)
+    2d65     2d65       67     1                 __mulsi3
+    2dcc     2dcc        0     1         __init_array_start = .
+    2dcc     2dcc        0     1         __init_array_end = .
+    2dcc     2dcc        0     1         __fini_array_start = .
+    2dcc     2dcc        0     1         __fini_array_end = .
+    2dcc     2dcc     18e6     1 .rodata
+    2dcc     2dcc        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    2dcc     2dcc        0     1                 __set_v
+    2dcd     2dcd       3a     1         build/dsky_decimal.prg.lto.o:(.rodata._ZN12_GLOBAL__N_15printEPKcP6Status)
+    2e07     2e07       10     1         <internal>:(.rodata.cst8)
+    2e17     2e17       14     1         build/dsky_decimal.prg.lto.o:(.rodata.dsky_decimal_display.codes)
+    2e17     2e17       14     1                 dsky_decimal_display.codes
+    2e2b     2e2b        4     1         <internal>:(.rodata.cst4)
+    2e2f     2e2f       20     1         <internal>:(.rodata.cst32)
+    2e4f     2e4f       80     1         build/dsky_decimal.prg.lto.o:(.rodata.dsky_decimal_numbers)
+    2e4f     2e4f       80     1                 dsky_decimal_numbers
+    2ecf     2ecf       82     1         build/dsky_decimal.prg.lto.o:(.rodata.dsky_decimal_offsets)
+    2ecf     2ecf       82     1                 dsky_decimal_offsets
+    2f51     2f51     1734     1         build/dsky_decimal.prg.lto.o:(.rodata.dsky_decimal_patch)
+    2f51     2f51     1734     1                 dsky_decimal_patch
+    4685     4685       2d     1         <internal>:(.rodata.str1.1)
+    46b2     46b2        0     1 .data
+    46b2     46b2        0     1         __data_start = .
+    46b2     46b2        0     1         __data_end = .
+    46b2     46b2        0     1 __data_load_start = LOADADDR(.data)
+    46b2     46b2        0     1 __data_size = SIZEOF(.data)
+    46b2     46b2     2005     1 .bss
+    46b2     46b2        0     1         __bss_start = .
+    46b2     46b2     1000     1         build/dsky_decimal.prg.lto.o:(.bss.state)
+    46b2     46b2     1000     1                 state
+    56b2     56b2     1000     1         build/dsky_decimal.prg.lto.o:(.bss.before)
+    56b2     56b2     1000     1                 before
+    66b2     66b2        5     1         build/dsky_decimal.prg.lto.o:(.bss.dsky_decimal_mailbox)
+    66b2     66b2        5     1                 dsky_decimal_mailbox
+    66b7     66b7        0     1         __bss_end = .
+    66b7     66b7        0     1 __bss_size = SIZEOF(.bss)
+    66b7     66b7       4e     1 .noinit
+    66b7     66b7       4e     1         build/dsky_decimal.prg.lto.o:(.noinit..Lstatic_stack)
+    6705     6705        0     1         __heap_start = ALIGN(., 2)
+    6705     6705        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_decimal.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_decimal.prg.lto.o:(.llvm_sympart)
+       0        0      bf0     4 .symtab
+       0        0      bf0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      74a     1 .strtab
+       0        0      74a     1         <internal>:(.strtab)

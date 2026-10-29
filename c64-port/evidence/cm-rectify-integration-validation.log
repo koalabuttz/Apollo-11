@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/cm_rectify.c tests/cm_rectify_cases.c tests/frozen_words.c tests/test_cm_rectify.c -o build/test-cm-rectify
+build/test-cm-rectify
+384 complete2048word source RECTIFY phase entry/exit pairs: PASS

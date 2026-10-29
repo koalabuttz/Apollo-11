@@ -1,0 +1,290 @@
+[
+  {
+    "id": 160,
+    "filename": "R0",
+    "byte_count": 9180,
+    "crc16": 56958,
+    "sha256": "5abf682101d8bae8eaf7dcc94a4ef0fb943a0a72fe2fc0a41595b49bf88b2465",
+    "prg": "lm-scan-exception-0.prg",
+    "retained_prg": "evidence/lm-scan-exception-0.prg"
+  },
+  {
+    "id": 161,
+    "filename": "R1",
+    "byte_count": 9180,
+    "crc16": 12590,
+    "sha256": "c0486b34e7af76c30a64f4911efeb84724f2d03bf3446fa94d27c92c91a49960",
+    "prg": "lm-scan-exception-1.prg",
+    "retained_prg": "evidence/lm-scan-exception-1.prg"
+  },
+  {
+    "id": 162,
+    "filename": "R2",
+    "byte_count": 9180,
+    "crc16": 38365,
+    "sha256": "b05add950e7b817a83148288b9d05f2fc8f6aec2ff8b0cff80ee9b0b0346d279",
+    "prg": "lm-scan-exception-2.prg",
+    "retained_prg": "evidence/lm-scan-exception-2.prg"
+  },
+  {
+    "id": 163,
+    "filename": "R3",
+    "byte_count": 9180,
+    "crc16": 48588,
+    "sha256": "87f9ba5976e6af5295f831ccbf438bd46f2fc6aeb947d01bcd4c369c56f4af07",
+    "prg": "lm-scan-exception-3.prg",
+    "retained_prg": "evidence/lm-scan-exception-3.prg"
+  },
+  {
+    "id": 164,
+    "filename": "R4",
+    "byte_count": 9180,
+    "crc16": 25004,
+    "sha256": "14197017d6dd3093601b1ad2bc1e8b720658033eec0eeaefb95656c2e001da34",
+    "prg": "lm-scan-exception-4.prg",
+    "retained_prg": "evidence/lm-scan-exception-4.prg"
+  },
+  {
+    "id": 165,
+    "filename": "R5",
+    "byte_count": 9180,
+    "crc16": 29089,
+    "sha256": "7fb96b243ef8a7cc7f29c9fc40f1b93fb2ef297c772319cd2b54ddf29b5f9ca3",
+    "prg": "lm-scan-exception-5.prg",
+    "retained_prg": "evidence/lm-scan-exception-5.prg"
+  },
+  {
+    "id": 166,
+    "filename": "R6",
+    "byte_count": 9180,
+    "crc16": 65220,
+    "sha256": "dbc53d48c19dfbfe9ac39e6199a3b64767b7245a9362817ad19fcc6229c236af",
+    "prg": "lm-scan-exception-6.prg",
+    "retained_prg": "evidence/lm-scan-exception-6.prg"
+  },
+  {
+    "id": 167,
+    "filename": "R7",
+    "byte_count": 9180,
+    "crc16": 11752,
+    "sha256": "dc8585ad1fb495cc567e5f8119bf410ec704053ed58af2d6c8e797d4e6a0a13f",
+    "prg": "lm-scan-exception-7.prg",
+    "retained_prg": "evidence/lm-scan-exception-7.prg"
+  },
+  {
+    "id": 168,
+    "filename": "R8",
+    "byte_count": 9180,
+    "crc16": 4768,
+    "sha256": "9e3a7ac6f91c73f09f35070225bfeca25b0d357f07b901f05060060a9ac89ee0",
+    "prg": "lm-scan-exception-8.prg",
+    "retained_prg": "evidence/lm-scan-exception-8.prg"
+  },
+  {
+    "id": 169,
+    "filename": "R9",
+    "byte_count": 9180,
+    "crc16": 27160,
+    "sha256": "74aa25835afb8837a797ce9833f2fd4fc1524ffe8f66310ce6af4a824d98f580",
+    "prg": "lm-scan-exception-9.prg",
+    "retained_prg": "evidence/lm-scan-exception-9.prg"
+  },
+  {
+    "id": 170,
+    "filename": "R10",
+    "byte_count": 9180,
+    "crc16": 2689,
+    "sha256": "4ba99b3b1743f2b375d6f361f5fd13c13dddc26ef37fce5c84f8775e4e81df6d",
+    "prg": "lm-scan-exception-10.prg",
+    "retained_prg": "evidence/lm-scan-exception-10.prg"
+  },
+  {
+    "id": 171,
+    "filename": "R11",
+    "byte_count": 9180,
+    "crc16": 9190,
+    "sha256": "ceb10716d5246d8e953539ea754eb9c0297c6a4f04e9ecfc57662f4430066910",
+    "prg": "lm-scan-exception-11.prg",
+    "retained_prg": "evidence/lm-scan-exception-11.prg"
+  },
+  {
+    "id": 172,
+    "filename": "R12",
+    "byte_count": 9180,
+    "crc16": 22943,
+    "sha256": "0c324daa6b881685c07bda8f89a2d6f816fbffe0c844480b521aa69e999a0962",
+    "prg": "lm-scan-exception-12.prg",
+    "retained_prg": "evidence/lm-scan-exception-12.prg"
+  },
+  {
+    "id": 173,
+    "filename": "R13",
+    "byte_count": 9180,
+    "crc16": 8066,
+    "sha256": "e0453b928375ba0bbd8197c793151698801f284a86624295272575442ce650fa",
+    "prg": "lm-scan-exception-13.prg",
+    "retained_prg": "evidence/lm-scan-exception-13.prg"
+  },
+  {
+    "id": 174,
+    "filename": "R14",
+    "byte_count": 9180,
+    "crc16": 58204,
+    "sha256": "6cf0c354981fced84f9cc611e18b0fcdfddbddb944490f12431aca7d29e4bb00",
+    "prg": "lm-scan-exception-14.prg",
+    "retained_prg": "evidence/lm-scan-exception-14.prg"
+  },
+  {
+    "id": 175,
+    "filename": "R15",
+    "byte_count": 9180,
+    "crc16": 55490,
+    "sha256": "e4ede8b0507607b346fec89f4e2920c02d4f2afdccbd7168daac309493073c29",
+    "prg": "lm-scan-exception-15.prg",
+    "retained_prg": "evidence/lm-scan-exception-15.prg"
+  },
+  {
+    "id": 176,
+    "filename": "R16",
+    "byte_count": 9180,
+    "crc16": 21988,
+    "sha256": "228c67dde49df9e85e4cadc683a582d6e31988fadf3c60507f77c4cdcac8b79d",
+    "prg": "lm-scan-exception-16.prg",
+    "retained_prg": "evidence/lm-scan-exception-16.prg"
+  },
+  {
+    "id": 177,
+    "filename": "R17",
+    "byte_count": 9180,
+    "crc16": 61381,
+    "sha256": "dfbbf0fe9b481711ace77d7d5d179b7d698c8eb0a6000000374b8b9ee2b46c15",
+    "prg": "lm-scan-exception-17.prg",
+    "retained_prg": "evidence/lm-scan-exception-17.prg"
+  },
+  {
+    "id": 178,
+    "filename": "R18",
+    "byte_count": 9180,
+    "crc16": 22300,
+    "sha256": "d47bd52991e09a013b050725b07658d619c0e6ca2815e4a8d0849d31545e757f",
+    "prg": "lm-scan-exception-18.prg",
+    "retained_prg": "evidence/lm-scan-exception-18.prg"
+  },
+  {
+    "id": 179,
+    "filename": "R19",
+    "byte_count": 9180,
+    "crc16": 45099,
+    "sha256": "37d3dc9b3f4a84d49584b7fd9fa6aaa3fc9cad0a8d8603c7c66f29cb72de84fc",
+    "prg": "lm-scan-exception-19.prg",
+    "retained_prg": "evidence/lm-scan-exception-19.prg"
+  },
+  {
+    "id": 180,
+    "filename": "R20",
+    "byte_count": 9180,
+    "crc16": 48104,
+    "sha256": "08efe9263e63311dd51f3d7b3a9c205a70a7c45dd335dd2be07597d5189e9939",
+    "prg": "lm-scan-exception-20.prg",
+    "retained_prg": "evidence/lm-scan-exception-20.prg"
+  },
+  {
+    "id": 181,
+    "filename": "R21",
+    "byte_count": 9180,
+    "crc16": 21870,
+    "sha256": "8acf9d5251488d4a0daedd9c02d29f98019031c23d97f8ca0f7745ee332e1557",
+    "prg": "lm-scan-exception-21.prg",
+    "retained_prg": "evidence/lm-scan-exception-21.prg"
+  },
+  {
+    "id": 182,
+    "filename": "R22",
+    "byte_count": 9180,
+    "crc16": 43482,
+    "sha256": "19031a350984d8379257e71e7973dff2ecf4be8e84bf7849565798fbe4ae1867",
+    "prg": "lm-scan-exception-22.prg",
+    "retained_prg": "evidence/lm-scan-exception-22.prg"
+  },
+  {
+    "id": 183,
+    "filename": "R23",
+    "byte_count": 9180,
+    "crc16": 52495,
+    "sha256": "a01705fd78081ed3fc42929461cb1661f94dbd37b7742f1437b10422533e168d",
+    "prg": "lm-scan-exception-23.prg",
+    "retained_prg": "evidence/lm-scan-exception-23.prg"
+  },
+  {
+    "id": 184,
+    "filename": "R24",
+    "byte_count": 9180,
+    "crc16": 25049,
+    "sha256": "a925bc3f05e43bc32f3f999444d94208902693b241bb428d186f1ebd304dc195",
+    "prg": "lm-scan-exception-24.prg",
+    "retained_prg": "evidence/lm-scan-exception-24.prg"
+  },
+  {
+    "id": 185,
+    "filename": "R25",
+    "byte_count": 9180,
+    "crc16": 42903,
+    "sha256": "a2dda5d32d12fdd062f923c59e047b11baab8dd082b34f28eb0859e980ba3ad4",
+    "prg": "lm-scan-exception-25.prg",
+    "retained_prg": "evidence/lm-scan-exception-25.prg"
+  },
+  {
+    "id": 186,
+    "filename": "R26",
+    "byte_count": 9180,
+    "crc16": 40555,
+    "sha256": "431bab1be4fb2dc0cfc9902aae779d3b08e175b2b6df6567f8fa89a29bffcc7f",
+    "prg": "lm-scan-exception-26.prg",
+    "retained_prg": "evidence/lm-scan-exception-26.prg"
+  },
+  {
+    "id": 187,
+    "filename": "R27",
+    "byte_count": 9180,
+    "crc16": 16906,
+    "sha256": "6091defb0ab96f0cd41763ae4cebd2975f003934a970125707c8fbfcd74a0f40",
+    "prg": "lm-scan-exception-27.prg",
+    "retained_prg": "evidence/lm-scan-exception-27.prg"
+  },
+  {
+    "id": 188,
+    "filename": "R28",
+    "byte_count": 9180,
+    "crc16": 62947,
+    "sha256": "726efb8d6cfe7aeae744d9a44d68e05370c8bbc20dc35a541e1201e395c5f1a9",
+    "prg": "lm-scan-exception-28.prg",
+    "retained_prg": "evidence/lm-scan-exception-28.prg"
+  },
+  {
+    "id": 189,
+    "filename": "R29",
+    "byte_count": 9180,
+    "crc16": 44015,
+    "sha256": "64bd9bf95f5276f04f8e02f375f19d5febc9de80d9f7b9e08f868068cc2be302",
+    "prg": "lm-scan-exception-29.prg",
+    "retained_prg": "evidence/lm-scan-exception-29.prg"
+  },
+  {
+    "id": 190,
+    "filename": "R30",
+    "byte_count": 9180,
+    "crc16": 8345,
+    "sha256": "56f803267656be23a62b838af99c0a7759741751a5386517a4f882a38f81cc92",
+    "prg": "lm-scan-exception-30.prg",
+    "retained_prg": "evidence/lm-scan-exception-30.prg"
+  },
+  {
+    "id": 191,
+    "filename": "R31",
+    "byte_count": 9180,
+    "crc16": 5521,
+    "sha256": "9671072f8c5bf023d7321b737a63f89dfc60fe3ef215c2c0604897af02cd113e",
+    "prg": "lm-scan-exception-31.prg",
+    "retained_prg": "evidence/lm-scan-exception-31.prg"
+  }
+]

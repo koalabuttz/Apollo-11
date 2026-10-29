@@ -1,0 +1,2507 @@
+{
+  "lm": {
+    "source_file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "assembled_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [],
+    "source_group_words": 153,
+    "words": [
+      {
+        "original_line": 492,
+        "bank": "07",
+        "address": "3405",
+        "physical_fixed_word": 7941,
+        "raw_octal": "43626",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 493,
+        "bank": "07",
+        "address": "3406",
+        "physical_fixed_word": 7942,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 494,
+        "bank": "07",
+        "address": "3407",
+        "physical_fixed_word": 7943,
+        "raw_octal": "03014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 496,
+        "bank": "07",
+        "address": "3410",
+        "physical_fixed_word": 7944,
+        "raw_octal": "03641",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 498,
+        "bank": "07",
+        "address": "3411",
+        "physical_fixed_word": 7945,
+        "raw_octal": "31314",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 499,
+        "bank": "07",
+        "address": "3412",
+        "physical_fixed_word": 7946,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 500,
+        "bank": "07",
+        "address": "3413",
+        "physical_fixed_word": 7947,
+        "raw_octal": "74750",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 501,
+        "bank": "07",
+        "address": "3414",
+        "physical_fixed_word": 7948,
+        "raw_octal": "50000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 502,
+        "bank": "07",
+        "address": "3415",
+        "physical_fixed_word": 7949,
+        "raw_octal": "13416",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 503,
+        "bank": "07",
+        "address": "3416",
+        "physical_fixed_word": 7950,
+        "raw_octal": "03433",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 504,
+        "bank": "07",
+        "address": "3417",
+        "physical_fixed_word": 7951,
+        "raw_octal": "00202",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 506,
+        "bank": "07",
+        "address": "3420",
+        "physical_fixed_word": 7952,
+        "raw_octal": "03433",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 507,
+        "bank": "07",
+        "address": "3421",
+        "physical_fixed_word": 7953,
+        "raw_octal": "00302",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 509,
+        "bank": "07",
+        "address": "3422",
+        "physical_fixed_word": 7954,
+        "raw_octal": "03431",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 510,
+        "bank": "07",
+        "address": "3423",
+        "physical_fixed_word": 7955,
+        "raw_octal": "00100",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 512,
+        "bank": "07",
+        "address": "3424",
+        "physical_fixed_word": 7956,
+        "raw_octal": "34755",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 513,
+        "bank": "07",
+        "address": "3425",
+        "physical_fixed_word": 7957,
+        "raw_octal": "55314",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 514,
+        "bank": "07",
+        "address": "3426",
+        "physical_fixed_word": 7958,
+        "raw_octal": "33404",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 515,
+        "bank": "07",
+        "address": "3427",
+        "physical_fixed_word": 7959,
+        "raw_octal": "05137",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 517,
+        "bank": "07",
+        "address": "3430",
+        "physical_fixed_word": 7960,
+        "raw_octal": "13232",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 519,
+        "bank": "07",
+        "address": "3431",
+        "physical_fixed_word": 7961,
+        "raw_octal": "44751",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 520,
+        "bank": "07",
+        "address": "3432",
+        "physical_fixed_word": 7962,
+        "raw_octal": "27314",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 522,
+        "bank": "07",
+        "address": "3433",
+        "physical_fixed_word": 7963,
+        "raw_octal": "50002",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 523,
+        "bank": "07",
+        "address": "3434",
+        "physical_fixed_word": 7964,
+        "raw_octal": "30000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 524,
+        "bank": "07",
+        "address": "3435",
+        "physical_fixed_word": 7965,
+        "raw_octal": "54064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 525,
+        "bank": "07",
+        "address": "3436",
+        "physical_fixed_word": 7966,
+        "raw_octal": "74757",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 526,
+        "bank": "07",
+        "address": "3437",
+        "physical_fixed_word": 7967,
+        "raw_octal": "64737",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 527,
+        "bank": "07",
+        "address": "3440",
+        "physical_fixed_word": 7968,
+        "raw_octal": "27314",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 528,
+        "bank": "07",
+        "address": "3441",
+        "physical_fixed_word": 7969,
+        "raw_octal": "54003",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 529,
+        "bank": "07",
+        "address": "3442",
+        "physical_fixed_word": 7970,
+        "raw_octal": "74357",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 530,
+        "bank": "07",
+        "address": "3443",
+        "physical_fixed_word": 7971,
+        "raw_octal": "54061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 532,
+        "bank": "07",
+        "address": "3444",
+        "physical_fixed_word": 7972,
+        "raw_octal": "44757",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 533,
+        "bank": "07",
+        "address": "3445",
+        "physical_fixed_word": 7973,
+        "raw_octal": "70064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 534,
+        "bank": "07",
+        "address": "3446",
+        "physical_fixed_word": 7974,
+        "raw_octal": "54064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 536,
+        "bank": "07",
+        "address": "3447",
+        "physical_fixed_word": 7975,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 537,
+        "bank": "07",
+        "address": "3450",
+        "physical_fixed_word": 7976,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 538,
+        "bank": "07",
+        "address": "3451",
+        "physical_fixed_word": 7977,
+        "raw_octal": "31401",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 539,
+        "bank": "07",
+        "address": "3452",
+        "physical_fixed_word": 7978,
+        "raw_octal": "52071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 541,
+        "bank": "07",
+        "address": "3453",
+        "physical_fixed_word": 7979,
+        "raw_octal": "10070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 542,
+        "bank": "07",
+        "address": "3454",
+        "physical_fixed_word": 7980,
+        "raw_octal": "13467",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 543,
+        "bank": "07",
+        "address": "3455",
+        "physical_fixed_word": 7981,
+        "raw_octal": "13457",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 544,
+        "bank": "07",
+        "address": "3456",
+        "physical_fixed_word": 7982,
+        "raw_octal": "13607",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 546,
+        "bank": "07",
+        "address": "3457",
+        "physical_fixed_word": 7983,
+        "raw_octal": "10071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 547,
+        "bank": "07",
+        "address": "3460",
+        "physical_fixed_word": 7984,
+        "raw_octal": "13464",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 548,
+        "bank": "07",
+        "address": "3461",
+        "physical_fixed_word": 7985,
+        "raw_octal": "13411",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 549,
+        "bank": "07",
+        "address": "3462",
+        "physical_fixed_word": 7986,
+        "raw_octal": "13604",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 550,
+        "bank": "07",
+        "address": "3463",
+        "physical_fixed_word": 7987,
+        "raw_octal": "13411",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 553,
+        "bank": "07",
+        "address": "3464",
+        "physical_fixed_word": 7988,
+        "raw_octal": "63520",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 554,
+        "bank": "07",
+        "address": "3465",
+        "physical_fixed_word": 7989,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 555,
+        "bank": "07",
+        "address": "3466",
+        "physical_fixed_word": 7990,
+        "raw_octal": "63411",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 557,
+        "bank": "07",
+        "address": "3467",
+        "physical_fixed_word": 7991,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 558,
+        "bank": "07",
+        "address": "3470",
+        "physical_fixed_word": 7992,
+        "raw_octal": "33630",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 559,
+        "bank": "07",
+        "address": "3471",
+        "physical_fixed_word": 7993,
+        "raw_octal": "20071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 561,
+        "bank": "07",
+        "address": "3472",
+        "physical_fixed_word": 7994,
+        "raw_octal": "30064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 562,
+        "bank": "07",
+        "address": "3473",
+        "physical_fixed_word": 7995,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 563,
+        "bank": "07",
+        "address": "3474",
+        "physical_fixed_word": 7996,
+        "raw_octal": "05014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 565,
+        "bank": "07",
+        "address": "3475",
+        "physical_fixed_word": 7997,
+        "raw_octal": "36074",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 566,
+        "bank": "07",
+        "address": "3476",
+        "physical_fixed_word": 7998,
+        "raw_octal": "70071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 567,
+        "bank": "07",
+        "address": "3477",
+        "physical_fixed_word": 7999,
+        "raw_octal": "56071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 568,
+        "bank": "07",
+        "address": "3500",
+        "physical_fixed_word": 8000,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 569,
+        "bank": "07",
+        "address": "3501",
+        "physical_fixed_word": 8001,
+        "raw_octal": "74744",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 570,
+        "bank": "07",
+        "address": "3502",
+        "physical_fixed_word": 8002,
+        "raw_octal": "54062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 571,
+        "bank": "07",
+        "address": "3503",
+        "physical_fixed_word": 8003,
+        "raw_octal": "30070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 572,
+        "bank": "07",
+        "address": "3504",
+        "physical_fixed_word": 8004,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 573,
+        "bank": "07",
+        "address": "3505",
+        "physical_fixed_word": 8005,
+        "raw_octal": "74743",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 574,
+        "bank": "07",
+        "address": "3506",
+        "physical_fixed_word": 8006,
+        "raw_octal": "54070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 575,
+        "bank": "07",
+        "address": "3507",
+        "physical_fixed_word": 8007,
+        "raw_octal": "30001",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 576,
+        "bank": "07",
+        "address": "3510",
+        "physical_fixed_word": 8008,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 577,
+        "bank": "07",
+        "address": "3511",
+        "physical_fixed_word": 8009,
+        "raw_octal": "74736",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 578,
+        "bank": "07",
+        "address": "3512",
+        "physical_fixed_word": 8010,
+        "raw_octal": "26062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 580,
+        "bank": "07",
+        "address": "3513",
+        "physical_fixed_word": 8011,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 581,
+        "bank": "07",
+        "address": "3514",
+        "physical_fixed_word": 8012,
+        "raw_octal": "30071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 582,
+        "bank": "07",
+        "address": "3515",
+        "physical_fixed_word": 8013,
+        "raw_octal": "67747",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 583,
+        "bank": "07",
+        "address": "3516",
+        "physical_fixed_word": 8014,
+        "raw_octal": "10000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 584,
+        "bank": "07",
+        "address": "3517",
+        "physical_fixed_word": 8015,
+        "raw_octal": "13543",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 585,
+        "bank": "07",
+        "address": "3520",
+        "physical_fixed_word": 8016,
+        "raw_octal": "77601",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 586,
+        "bank": "07",
+        "address": "3521",
+        "physical_fixed_word": 8017,
+        "raw_octal": "13525",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 588,
+        "bank": "07",
+        "address": "3522",
+        "physical_fixed_word": 8018,
+        "raw_octal": "34736",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 589,
+        "bank": "07",
+        "address": "3523",
+        "physical_fixed_word": 8019,
+        "raw_octal": "26062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 590,
+        "bank": "07",
+        "address": "3524",
+        "physical_fixed_word": 8020,
+        "raw_octal": "34755",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 592,
+        "bank": "07",
+        "address": "3525",
+        "physical_fixed_word": 8021,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 593,
+        "bank": "07",
+        "address": "3526",
+        "physical_fixed_word": 8022,
+        "raw_octal": "53401",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 595,
+        "bank": "07",
+        "address": "3527",
+        "physical_fixed_word": 8023,
+        "raw_octal": "30062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 596,
+        "bank": "07",
+        "address": "3530",
+        "physical_fixed_word": 8024,
+        "raw_octal": "54047",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 597,
+        "bank": "07",
+        "address": "3531",
+        "physical_fixed_word": 8025,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 598,
+        "bank": "07",
+        "address": "3532",
+        "physical_fixed_word": 8026,
+        "raw_octal": "74742",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 599,
+        "bank": "07",
+        "address": "3533",
+        "physical_fixed_word": 8027,
+        "raw_octal": "66245",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 600,
+        "bank": "07",
+        "address": "3534",
+        "physical_fixed_word": 8028,
+        "raw_octal": "05203",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 602,
+        "bank": "07",
+        "address": "3535",
+        "physical_fixed_word": 8029,
+        "raw_octal": "03405",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 602,
+        "bank": "07",
+        "address": "3536",
+        "physical_fixed_word": 8030,
+        "raw_octal": "16103",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 604,
+        "bank": "07",
+        "address": "3537",
+        "physical_fixed_word": 8031,
+        "raw_octal": "34742",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 605,
+        "bank": "07",
+        "address": "3540",
+        "physical_fixed_word": 8032,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 606,
+        "bank": "07",
+        "address": "3541",
+        "physical_fixed_word": 8033,
+        "raw_octal": "05014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 607,
+        "bank": "07",
+        "address": "3542",
+        "physical_fixed_word": 8034,
+        "raw_octal": "15261",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 609,
+        "bank": "07",
+        "address": "3543",
+        "physical_fixed_word": 8035,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 610,
+        "bank": "07",
+        "address": "3544",
+        "physical_fixed_word": 8036,
+        "raw_octal": "53401",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 611,
+        "bank": "07",
+        "address": "3545",
+        "physical_fixed_word": 8037,
+        "raw_octal": "34736",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 612,
+        "bank": "07",
+        "address": "3546",
+        "physical_fixed_word": 8038,
+        "raw_octal": "60062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 613,
+        "bank": "07",
+        "address": "3547",
+        "physical_fixed_word": 8039,
+        "raw_octal": "54047",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 615,
+        "bank": "07",
+        "address": "3550",
+        "physical_fixed_word": 8040,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 616,
+        "bank": "07",
+        "address": "3551",
+        "physical_fixed_word": 8041,
+        "raw_octal": "74742",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 617,
+        "bank": "07",
+        "address": "3552",
+        "physical_fixed_word": 8042,
+        "raw_octal": "67745",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 618,
+        "bank": "07",
+        "address": "3553",
+        "physical_fixed_word": 8043,
+        "raw_octal": "05203",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 620,
+        "bank": "07",
+        "address": "3554",
+        "physical_fixed_word": 8044,
+        "raw_octal": "03557",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 620,
+        "bank": "07",
+        "address": "3555",
+        "physical_fixed_word": 8045,
+        "raw_octal": "16103",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 622,
+        "bank": "07",
+        "address": "3556",
+        "physical_fixed_word": 8046,
+        "raw_octal": "13537",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 624,
+        "bank": "07",
+        "address": "3557",
+        "physical_fixed_word": 8047,
+        "raw_octal": "03641",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 626,
+        "bank": "07",
+        "address": "3560",
+        "physical_fixed_word": 8048,
+        "raw_octal": "34750",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 627,
+        "bank": "07",
+        "address": "3561",
+        "physical_fixed_word": 8049,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 628,
+        "bank": "07",
+        "address": "3562",
+        "physical_fixed_word": 8050,
+        "raw_octal": "02012",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 629,
+        "bank": "07",
+        "address": "3563",
+        "physical_fixed_word": 8051,
+        "raw_octal": "10000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 630,
+        "bank": "07",
+        "address": "3564",
+        "physical_fixed_word": 8052,
+        "raw_octal": "13637",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 631,
+        "bank": "07",
+        "address": "3565",
+        "physical_fixed_word": 8053,
+        "raw_octal": "31314",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 632,
+        "bank": "07",
+        "address": "3566",
+        "physical_fixed_word": 8054,
+        "raw_octal": "54003",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 633,
+        "bank": "07",
+        "address": "3567",
+        "physical_fixed_word": 8055,
+        "raw_octal": "74357",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 634,
+        "bank": "07",
+        "address": "3570",
+        "physical_fixed_word": 8056,
+        "raw_octal": "54061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 636,
+        "bank": "07",
+        "address": "3571",
+        "physical_fixed_word": 8057,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 637,
+        "bank": "07",
+        "address": "3572",
+        "physical_fixed_word": 8058,
+        "raw_octal": "11400",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 638,
+        "bank": "07",
+        "address": "3573",
+        "physical_fixed_word": 8059,
+        "raw_octal": "13577",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 640,
+        "bank": "07",
+        "address": "3574",
+        "physical_fixed_word": 8060,
+        "raw_octal": "34736",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 641,
+        "bank": "07",
+        "address": "3575",
+        "physical_fixed_word": 8061,
+        "raw_octal": "26047",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 642,
+        "bank": "07",
+        "address": "3576",
+        "physical_fixed_word": 8062,
+        "raw_octal": "13531",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 645,
+        "bank": "07",
+        "address": "3577",
+        "physical_fixed_word": 8063,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 646,
+        "bank": "07",
+        "address": "3600",
+        "physical_fixed_word": 8064,
+        "raw_octal": "55400",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 647,
+        "bank": "07",
+        "address": "3601",
+        "physical_fixed_word": 8065,
+        "raw_octal": "34736",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 648,
+        "bank": "07",
+        "address": "3602",
+        "physical_fixed_word": 8066,
+        "raw_octal": "26047",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 649,
+        "bank": "07",
+        "address": "3603",
+        "physical_fixed_word": 8067,
+        "raw_octal": "13550",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 652,
+        "bank": "07",
+        "address": "3604",
+        "physical_fixed_word": 8068,
+        "raw_octal": "63520",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 653,
+        "bank": "07",
+        "address": "3605",
+        "physical_fixed_word": 8069,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 654,
+        "bank": "07",
+        "address": "3606",
+        "physical_fixed_word": 8070,
+        "raw_octal": "63411",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 656,
+        "bank": "07",
+        "address": "3607",
+        "physical_fixed_word": 8071,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 657,
+        "bank": "07",
+        "address": "3610",
+        "physical_fixed_word": 8072,
+        "raw_octal": "43630",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 658,
+        "bank": "07",
+        "address": "3611",
+        "physical_fixed_word": 8073,
+        "raw_octal": "20071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 660,
+        "bank": "07",
+        "address": "3612",
+        "physical_fixed_word": 8074,
+        "raw_octal": "30064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 661,
+        "bank": "07",
+        "address": "3613",
+        "physical_fixed_word": 8075,
+        "raw_octal": "64743",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 662,
+        "bank": "07",
+        "address": "3614",
+        "physical_fixed_word": 8076,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 663,
+        "bank": "07",
+        "address": "3615",
+        "physical_fixed_word": 8077,
+        "raw_octal": "05014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 665,
+        "bank": "07",
+        "address": "3616",
+        "physical_fixed_word": 8078,
+        "raw_octal": "40070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 666,
+        "bank": "07",
+        "address": "3617",
+        "physical_fixed_word": 8079,
+        "raw_octal": "54070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 667,
+        "bank": "07",
+        "address": "3620",
+        "physical_fixed_word": 8080,
+        "raw_octal": "40071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 668,
+        "bank": "07",
+        "address": "3621",
+        "physical_fixed_word": 8081,
+        "raw_octal": "76074",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 669,
+        "bank": "07",
+        "address": "3622",
+        "physical_fixed_word": 8082,
+        "raw_octal": "40000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 670,
+        "bank": "07",
+        "address": "3623",
+        "physical_fixed_word": 8083,
+        "raw_octal": "56071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 671,
+        "bank": "07",
+        "address": "3624",
+        "physical_fixed_word": 8084,
+        "raw_octal": "40000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 672,
+        "bank": "07",
+        "address": "3625",
+        "physical_fixed_word": 8085,
+        "raw_octal": "13500",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 674,
+        "bank": "07",
+        "address": "3626",
+        "physical_fixed_word": 8086,
+        "raw_octal": "01700",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 676,
+        "bank": "07",
+        "address": "3627",
+        "physical_fixed_word": 8087,
+        "raw_octal": "00000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 676,
+        "bank": "07",
+        "address": "3630",
+        "physical_fixed_word": 8088,
+        "raw_octal": "00034",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 692,
+        "bank": "07",
+        "address": "3641",
+        "physical_fixed_word": 8097,
+        "raw_octal": "34746",
+        "native_group": "CAGETEST"
+      },
+      {
+        "original_line": 693,
+        "bank": "07",
+        "address": "3642",
+        "physical_fixed_word": 8098,
+        "raw_octal": "71302",
+        "native_group": "CAGETEST"
+      },
+      {
+        "original_line": 694,
+        "bank": "07",
+        "address": "3643",
+        "physical_fixed_word": 8099,
+        "raw_octal": "10000",
+        "native_group": "CAGETEST"
+      },
+      {
+        "original_line": 695,
+        "bank": "07",
+        "address": "3644",
+        "physical_fixed_word": 8100,
+        "raw_octal": "13637",
+        "native_group": "CAGETEST"
+      },
+      {
+        "original_line": 696,
+        "bank": "07",
+        "address": "3645",
+        "physical_fixed_word": 8101,
+        "raw_octal": "00002",
+        "native_group": "CAGETEST"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "STRTGYRO": "03405",
+      "augment8192": "03557",
+      "WAITLIST": "05203",
+      "JOBWAKE": "05137",
+      "IMUBAD": "03637",
+      "literal_TCF_TASKOVER": "03542"
+    },
+    "remaining": [
+      "JOBWAKE wake/lifecycle and IMUFINED/GOODEND/BADEND/ENDMODE continuations",
+      "literal TASKOVER scheduler/interrupt continuation",
+      "asynchronous gyro pulse delivery and active-channel augmentation backend",
+      "other containing-file entries"
+    ]
+  },
+  "cm": {
+    "source_file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "assembled_sha256": "93f871dc8ba8fcda0c2129f81e86f119026a3aa1562067f63eb32d01c7bcd622",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [
+      178,
+      523,
+      596,
+      850
+    ],
+    "source_group_words": 153,
+    "words": [
+      {
+        "original_line": 496,
+        "bank": "07",
+        "address": "3270",
+        "physical_fixed_word": 7864,
+        "raw_octal": "43511",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 497,
+        "bank": "07",
+        "address": "3271",
+        "physical_fixed_word": 7865,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 498,
+        "bank": "07",
+        "address": "3272",
+        "physical_fixed_word": 7866,
+        "raw_octal": "03014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 500,
+        "bank": "07",
+        "address": "3273",
+        "physical_fixed_word": 7867,
+        "raw_octal": "03524",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 502,
+        "bank": "07",
+        "address": "3274",
+        "physical_fixed_word": 7868,
+        "raw_octal": "31304",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 503,
+        "bank": "07",
+        "address": "3275",
+        "physical_fixed_word": 7869,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 504,
+        "bank": "07",
+        "address": "3276",
+        "physical_fixed_word": 7870,
+        "raw_octal": "75014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 505,
+        "bank": "07",
+        "address": "3277",
+        "physical_fixed_word": 7871,
+        "raw_octal": "50000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 506,
+        "bank": "07",
+        "address": "3300",
+        "physical_fixed_word": 7872,
+        "raw_octal": "13301",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 507,
+        "bank": "07",
+        "address": "3301",
+        "physical_fixed_word": 7873,
+        "raw_octal": "03316",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 508,
+        "bank": "07",
+        "address": "3302",
+        "physical_fixed_word": 7874,
+        "raw_octal": "00202",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 510,
+        "bank": "07",
+        "address": "3303",
+        "physical_fixed_word": 7875,
+        "raw_octal": "03316",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 511,
+        "bank": "07",
+        "address": "3304",
+        "physical_fixed_word": 7876,
+        "raw_octal": "00302",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 513,
+        "bank": "07",
+        "address": "3305",
+        "physical_fixed_word": 7877,
+        "raw_octal": "03314",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 514,
+        "bank": "07",
+        "address": "3306",
+        "physical_fixed_word": 7878,
+        "raw_octal": "00100",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 516,
+        "bank": "07",
+        "address": "3307",
+        "physical_fixed_word": 7879,
+        "raw_octal": "35021",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 517,
+        "bank": "07",
+        "address": "3310",
+        "physical_fixed_word": 7880,
+        "raw_octal": "55304",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 518,
+        "bank": "07",
+        "address": "3311",
+        "physical_fixed_word": 7881,
+        "raw_octal": "33267",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 519,
+        "bank": "07",
+        "address": "3312",
+        "physical_fixed_word": 7882,
+        "raw_octal": "05201",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 521,
+        "bank": "07",
+        "address": "3313",
+        "physical_fixed_word": 7883,
+        "raw_octal": "13115",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 523,
+        "bank": "07",
+        "address": "3314",
+        "physical_fixed_word": 7884,
+        "raw_octal": "45015",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 524,
+        "bank": "07",
+        "address": "3315",
+        "physical_fixed_word": 7885,
+        "raw_octal": "27304",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 526,
+        "bank": "07",
+        "address": "3316",
+        "physical_fixed_word": 7886,
+        "raw_octal": "50002",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 527,
+        "bank": "07",
+        "address": "3317",
+        "physical_fixed_word": 7887,
+        "raw_octal": "30000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 528,
+        "bank": "07",
+        "address": "3320",
+        "physical_fixed_word": 7888,
+        "raw_octal": "54064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 529,
+        "bank": "07",
+        "address": "3321",
+        "physical_fixed_word": 7889,
+        "raw_octal": "75023",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 530,
+        "bank": "07",
+        "address": "3322",
+        "physical_fixed_word": 7890,
+        "raw_octal": "65003",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 531,
+        "bank": "07",
+        "address": "3323",
+        "physical_fixed_word": 7891,
+        "raw_octal": "27304",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 532,
+        "bank": "07",
+        "address": "3324",
+        "physical_fixed_word": 7892,
+        "raw_octal": "54003",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 533,
+        "bank": "07",
+        "address": "3325",
+        "physical_fixed_word": 7893,
+        "raw_octal": "74373",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 534,
+        "bank": "07",
+        "address": "3326",
+        "physical_fixed_word": 7894,
+        "raw_octal": "54061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 536,
+        "bank": "07",
+        "address": "3327",
+        "physical_fixed_word": 7895,
+        "raw_octal": "45023",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 537,
+        "bank": "07",
+        "address": "3330",
+        "physical_fixed_word": 7896,
+        "raw_octal": "70064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 538,
+        "bank": "07",
+        "address": "3331",
+        "physical_fixed_word": 7897,
+        "raw_octal": "54064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 540,
+        "bank": "07",
+        "address": "3332",
+        "physical_fixed_word": 7898,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 541,
+        "bank": "07",
+        "address": "3333",
+        "physical_fixed_word": 7899,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 542,
+        "bank": "07",
+        "address": "3334",
+        "physical_fixed_word": 7900,
+        "raw_octal": "31401",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 543,
+        "bank": "07",
+        "address": "3335",
+        "physical_fixed_word": 7901,
+        "raw_octal": "52071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 545,
+        "bank": "07",
+        "address": "3336",
+        "physical_fixed_word": 7902,
+        "raw_octal": "10070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 546,
+        "bank": "07",
+        "address": "3337",
+        "physical_fixed_word": 7903,
+        "raw_octal": "13352",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 547,
+        "bank": "07",
+        "address": "3340",
+        "physical_fixed_word": 7904,
+        "raw_octal": "13342",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 548,
+        "bank": "07",
+        "address": "3341",
+        "physical_fixed_word": 7905,
+        "raw_octal": "13472",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 550,
+        "bank": "07",
+        "address": "3342",
+        "physical_fixed_word": 7906,
+        "raw_octal": "10071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 551,
+        "bank": "07",
+        "address": "3343",
+        "physical_fixed_word": 7907,
+        "raw_octal": "13347",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 552,
+        "bank": "07",
+        "address": "3344",
+        "physical_fixed_word": 7908,
+        "raw_octal": "13274",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 553,
+        "bank": "07",
+        "address": "3345",
+        "physical_fixed_word": 7909,
+        "raw_octal": "13467",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 554,
+        "bank": "07",
+        "address": "3346",
+        "physical_fixed_word": 7910,
+        "raw_octal": "13274",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 557,
+        "bank": "07",
+        "address": "3347",
+        "physical_fixed_word": 7911,
+        "raw_octal": "63403",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 558,
+        "bank": "07",
+        "address": "3350",
+        "physical_fixed_word": 7912,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 559,
+        "bank": "07",
+        "address": "3351",
+        "physical_fixed_word": 7913,
+        "raw_octal": "63274",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 561,
+        "bank": "07",
+        "address": "3352",
+        "physical_fixed_word": 7914,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 562,
+        "bank": "07",
+        "address": "3353",
+        "physical_fixed_word": 7915,
+        "raw_octal": "33513",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 563,
+        "bank": "07",
+        "address": "3354",
+        "physical_fixed_word": 7916,
+        "raw_octal": "20071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 565,
+        "bank": "07",
+        "address": "3355",
+        "physical_fixed_word": 7917,
+        "raw_octal": "30064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 566,
+        "bank": "07",
+        "address": "3356",
+        "physical_fixed_word": 7918,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 567,
+        "bank": "07",
+        "address": "3357",
+        "physical_fixed_word": 7919,
+        "raw_octal": "05014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 569,
+        "bank": "07",
+        "address": "3360",
+        "physical_fixed_word": 7920,
+        "raw_octal": "36043",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 570,
+        "bank": "07",
+        "address": "3361",
+        "physical_fixed_word": 7921,
+        "raw_octal": "70071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 571,
+        "bank": "07",
+        "address": "3362",
+        "physical_fixed_word": 7922,
+        "raw_octal": "56071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 572,
+        "bank": "07",
+        "address": "3363",
+        "physical_fixed_word": 7923,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 573,
+        "bank": "07",
+        "address": "3364",
+        "physical_fixed_word": 7924,
+        "raw_octal": "75010",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 574,
+        "bank": "07",
+        "address": "3365",
+        "physical_fixed_word": 7925,
+        "raw_octal": "54062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 575,
+        "bank": "07",
+        "address": "3366",
+        "physical_fixed_word": 7926,
+        "raw_octal": "30070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 576,
+        "bank": "07",
+        "address": "3367",
+        "physical_fixed_word": 7927,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 577,
+        "bank": "07",
+        "address": "3370",
+        "physical_fixed_word": 7928,
+        "raw_octal": "75007",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 578,
+        "bank": "07",
+        "address": "3371",
+        "physical_fixed_word": 7929,
+        "raw_octal": "54070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 579,
+        "bank": "07",
+        "address": "3372",
+        "physical_fixed_word": 7930,
+        "raw_octal": "30001",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 580,
+        "bank": "07",
+        "address": "3373",
+        "physical_fixed_word": 7931,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 581,
+        "bank": "07",
+        "address": "3374",
+        "physical_fixed_word": 7932,
+        "raw_octal": "75002",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 582,
+        "bank": "07",
+        "address": "3375",
+        "physical_fixed_word": 7933,
+        "raw_octal": "26062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 584,
+        "bank": "07",
+        "address": "3376",
+        "physical_fixed_word": 7934,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 585,
+        "bank": "07",
+        "address": "3377",
+        "physical_fixed_word": 7935,
+        "raw_octal": "30071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 586,
+        "bank": "07",
+        "address": "3400",
+        "physical_fixed_word": 7936,
+        "raw_octal": "67716",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 587,
+        "bank": "07",
+        "address": "3401",
+        "physical_fixed_word": 7937,
+        "raw_octal": "10000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 588,
+        "bank": "07",
+        "address": "3402",
+        "physical_fixed_word": 7938,
+        "raw_octal": "13426",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 589,
+        "bank": "07",
+        "address": "3403",
+        "physical_fixed_word": 7939,
+        "raw_octal": "77601",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 590,
+        "bank": "07",
+        "address": "3404",
+        "physical_fixed_word": 7940,
+        "raw_octal": "13410",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 592,
+        "bank": "07",
+        "address": "3405",
+        "physical_fixed_word": 7941,
+        "raw_octal": "35002",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 593,
+        "bank": "07",
+        "address": "3406",
+        "physical_fixed_word": 7942,
+        "raw_octal": "26062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 594,
+        "bank": "07",
+        "address": "3407",
+        "physical_fixed_word": 7943,
+        "raw_octal": "35021",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 596,
+        "bank": "07",
+        "address": "3410",
+        "physical_fixed_word": 7944,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 597,
+        "bank": "07",
+        "address": "3411",
+        "physical_fixed_word": 7945,
+        "raw_octal": "53401",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 599,
+        "bank": "07",
+        "address": "3412",
+        "physical_fixed_word": 7946,
+        "raw_octal": "30062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 600,
+        "bank": "07",
+        "address": "3413",
+        "physical_fixed_word": 7947,
+        "raw_octal": "54047",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 601,
+        "bank": "07",
+        "address": "3414",
+        "physical_fixed_word": 7948,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 602,
+        "bank": "07",
+        "address": "3415",
+        "physical_fixed_word": 7949,
+        "raw_octal": "75006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 603,
+        "bank": "07",
+        "address": "3416",
+        "physical_fixed_word": 7950,
+        "raw_octal": "66214",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 604,
+        "bank": "07",
+        "address": "3417",
+        "physical_fixed_word": 7951,
+        "raw_octal": "05245",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 606,
+        "bank": "07",
+        "address": "3420",
+        "physical_fixed_word": 7952,
+        "raw_octal": "03270",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 606,
+        "bank": "07",
+        "address": "3421",
+        "physical_fixed_word": 7953,
+        "raw_octal": "16063",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 608,
+        "bank": "07",
+        "address": "3422",
+        "physical_fixed_word": 7954,
+        "raw_octal": "35006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 609,
+        "bank": "07",
+        "address": "3423",
+        "physical_fixed_word": 7955,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 610,
+        "bank": "07",
+        "address": "3424",
+        "physical_fixed_word": 7956,
+        "raw_octal": "05014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 611,
+        "bank": "07",
+        "address": "3425",
+        "physical_fixed_word": 7957,
+        "raw_octal": "15324",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 613,
+        "bank": "07",
+        "address": "3426",
+        "physical_fixed_word": 7958,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 614,
+        "bank": "07",
+        "address": "3427",
+        "physical_fixed_word": 7959,
+        "raw_octal": "53401",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 615,
+        "bank": "07",
+        "address": "3430",
+        "physical_fixed_word": 7960,
+        "raw_octal": "35002",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 616,
+        "bank": "07",
+        "address": "3431",
+        "physical_fixed_word": 7961,
+        "raw_octal": "60062",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 617,
+        "bank": "07",
+        "address": "3432",
+        "physical_fixed_word": 7962,
+        "raw_octal": "54047",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 619,
+        "bank": "07",
+        "address": "3433",
+        "physical_fixed_word": 7963,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 620,
+        "bank": "07",
+        "address": "3434",
+        "physical_fixed_word": 7964,
+        "raw_octal": "75006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 621,
+        "bank": "07",
+        "address": "3435",
+        "physical_fixed_word": 7965,
+        "raw_octal": "67714",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 622,
+        "bank": "07",
+        "address": "3436",
+        "physical_fixed_word": 7966,
+        "raw_octal": "05245",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 624,
+        "bank": "07",
+        "address": "3437",
+        "physical_fixed_word": 7967,
+        "raw_octal": "03442",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 624,
+        "bank": "07",
+        "address": "3440",
+        "physical_fixed_word": 7968,
+        "raw_octal": "16063",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 626,
+        "bank": "07",
+        "address": "3441",
+        "physical_fixed_word": 7969,
+        "raw_octal": "13422",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 628,
+        "bank": "07",
+        "address": "3442",
+        "physical_fixed_word": 7970,
+        "raw_octal": "03524",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 630,
+        "bank": "07",
+        "address": "3443",
+        "physical_fixed_word": 7971,
+        "raw_octal": "35014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 631,
+        "bank": "07",
+        "address": "3444",
+        "physical_fixed_word": 7972,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 632,
+        "bank": "07",
+        "address": "3445",
+        "physical_fixed_word": 7973,
+        "raw_octal": "02012",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 633,
+        "bank": "07",
+        "address": "3446",
+        "physical_fixed_word": 7974,
+        "raw_octal": "10000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 634,
+        "bank": "07",
+        "address": "3447",
+        "physical_fixed_word": 7975,
+        "raw_octal": "13522",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 635,
+        "bank": "07",
+        "address": "3450",
+        "physical_fixed_word": 7976,
+        "raw_octal": "31304",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 636,
+        "bank": "07",
+        "address": "3451",
+        "physical_fixed_word": 7977,
+        "raw_octal": "54003",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 637,
+        "bank": "07",
+        "address": "3452",
+        "physical_fixed_word": 7978,
+        "raw_octal": "74373",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 638,
+        "bank": "07",
+        "address": "3453",
+        "physical_fixed_word": 7979,
+        "raw_octal": "54061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 640,
+        "bank": "07",
+        "address": "3454",
+        "physical_fixed_word": 7980,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 641,
+        "bank": "07",
+        "address": "3455",
+        "physical_fixed_word": 7981,
+        "raw_octal": "11400",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 642,
+        "bank": "07",
+        "address": "3456",
+        "physical_fixed_word": 7982,
+        "raw_octal": "13462",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 644,
+        "bank": "07",
+        "address": "3457",
+        "physical_fixed_word": 7983,
+        "raw_octal": "35002",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 645,
+        "bank": "07",
+        "address": "3460",
+        "physical_fixed_word": 7984,
+        "raw_octal": "26047",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 646,
+        "bank": "07",
+        "address": "3461",
+        "physical_fixed_word": 7985,
+        "raw_octal": "13414",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 649,
+        "bank": "07",
+        "address": "3462",
+        "physical_fixed_word": 7986,
+        "raw_octal": "50061",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 650,
+        "bank": "07",
+        "address": "3463",
+        "physical_fixed_word": 7987,
+        "raw_octal": "55400",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 651,
+        "bank": "07",
+        "address": "3464",
+        "physical_fixed_word": 7988,
+        "raw_octal": "35002",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 652,
+        "bank": "07",
+        "address": "3465",
+        "physical_fixed_word": 7989,
+        "raw_octal": "26047",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 653,
+        "bank": "07",
+        "address": "3466",
+        "physical_fixed_word": 7990,
+        "raw_octal": "13433",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 656,
+        "bank": "07",
+        "address": "3467",
+        "physical_fixed_word": 7991,
+        "raw_octal": "63403",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 657,
+        "bank": "07",
+        "address": "3470",
+        "physical_fixed_word": 7992,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 658,
+        "bank": "07",
+        "address": "3471",
+        "physical_fixed_word": 7993,
+        "raw_octal": "63274",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 660,
+        "bank": "07",
+        "address": "3472",
+        "physical_fixed_word": 7994,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 661,
+        "bank": "07",
+        "address": "3473",
+        "physical_fixed_word": 7995,
+        "raw_octal": "43513",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 662,
+        "bank": "07",
+        "address": "3474",
+        "physical_fixed_word": 7996,
+        "raw_octal": "20071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 664,
+        "bank": "07",
+        "address": "3475",
+        "physical_fixed_word": 7997,
+        "raw_octal": "30064",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 665,
+        "bank": "07",
+        "address": "3476",
+        "physical_fixed_word": 7998,
+        "raw_octal": "65007",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 666,
+        "bank": "07",
+        "address": "3477",
+        "physical_fixed_word": 7999,
+        "raw_octal": "00006",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 667,
+        "bank": "07",
+        "address": "3500",
+        "physical_fixed_word": 8000,
+        "raw_octal": "05014",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 669,
+        "bank": "07",
+        "address": "3501",
+        "physical_fixed_word": 8001,
+        "raw_octal": "40070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 670,
+        "bank": "07",
+        "address": "3502",
+        "physical_fixed_word": 8002,
+        "raw_octal": "54070",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 671,
+        "bank": "07",
+        "address": "3503",
+        "physical_fixed_word": 8003,
+        "raw_octal": "40071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 672,
+        "bank": "07",
+        "address": "3504",
+        "physical_fixed_word": 8004,
+        "raw_octal": "76043",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 673,
+        "bank": "07",
+        "address": "3505",
+        "physical_fixed_word": 8005,
+        "raw_octal": "40000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 674,
+        "bank": "07",
+        "address": "3506",
+        "physical_fixed_word": 8006,
+        "raw_octal": "56071",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 675,
+        "bank": "07",
+        "address": "3507",
+        "physical_fixed_word": 8007,
+        "raw_octal": "40000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 676,
+        "bank": "07",
+        "address": "3510",
+        "physical_fixed_word": 8008,
+        "raw_octal": "13363",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 678,
+        "bank": "07",
+        "address": "3511",
+        "physical_fixed_word": 8009,
+        "raw_octal": "01700",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 680,
+        "bank": "07",
+        "address": "3512",
+        "physical_fixed_word": 8010,
+        "raw_octal": "00000",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 680,
+        "bank": "07",
+        "address": "3513",
+        "physical_fixed_word": 8011,
+        "raw_octal": "00034",
+        "native_group": "STRTGYRO/GSELECT/GMERGE/LASTSEG/LONGGYRO/8192AUG/GYROEXIT/constants"
+      },
+      {
+        "original_line": 696,
+        "bank": "07",
+        "address": "3524",
+        "physical_fixed_word": 8020,
+        "raw_octal": "35012",
+        "native_group": "CAGETEST"
+      },
+      {
+        "original_line": 697,
+        "bank": "07",
+        "address": "3525",
+        "physical_fixed_word": 8021,
+        "raw_octal": "71320",
+        "native_group": "CAGETEST"
+      },
+      {
+        "original_line": 698,
+        "bank": "07",
+        "address": "3526",
+        "physical_fixed_word": 8022,
+        "raw_octal": "10000",
+        "native_group": "CAGETEST"
+      },
+      {
+        "original_line": 699,
+        "bank": "07",
+        "address": "3527",
+        "physical_fixed_word": 8023,
+        "raw_octal": "13522",
+        "native_group": "CAGETEST"
+      },
+      {
+        "original_line": 700,
+        "bank": "07",
+        "address": "3530",
+        "physical_fixed_word": 8024,
+        "raw_octal": "00002",
+        "native_group": "CAGETEST"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "STRTGYRO": "03270",
+      "augment8192": "03442",
+      "WAITLIST": "05245",
+      "JOBWAKE": "05201",
+      "IMUBAD": "03522",
+      "literal_TCF_TASKOVER": "03425"
+    },
+    "remaining": [
+      "JOBWAKE wake/lifecycle and IMUFINED/GOODEND/BADEND/ENDMODE continuations",
+      "literal TASKOVER scheduler/interrupt continuation",
+      "asynchronous gyro pulse delivery and active-channel augmentation backend",
+      "other containing-file entries"
+    ]
+  }
+}

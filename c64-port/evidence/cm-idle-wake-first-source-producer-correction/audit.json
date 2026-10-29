@@ -1,0 +1,59 @@
+{
+  "scope": "First unpublished lifecycle constructor supplied03332 as wake FCADR but this omits CLOCKJOB fixedbank050000 bits. Original/native first8 groups agreed, final native/source continuation was not the desired CLOCKJOB bank; oracle timed out waiting actual050006. Constructor corrected to051332 in both JOBSLEEP A and original delay slot, no native module code change, no source/target acceptance claimed for this initial corpus.",
+  "files": [
+    {
+      "original_path": "tests/cm_idle_wake_cases.c",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm_idle_wake_cases.c",
+      "sha256": "ebbf55bf7ae46ede5a5f579b71571da2d1d726e8322f0da158b53e3ab8bc34cb",
+      "bytes": 816
+    },
+    {
+      "original_path": "tools/cm_idle_wake_reference.c",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm_idle_wake_reference.c",
+      "sha256": "ba5ddfa2a5867a6afa49b3746379c7c6afa77282c2e6507df69ee0f02bce0113",
+      "bytes": 1637
+    },
+    {
+      "original_path": "src/cm_idle_wake.c",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm_idle_wake.c",
+      "sha256": "dfe886efe1f72bfe83695d914261cace6c6db54e7e844b35a06b7c7631d6e8fe",
+      "bytes": 1262
+    },
+    {
+      "original_path": "build/cm-idle-wake-reference.trace",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm-idle-wake-reference.trace",
+      "sha256": "f2561f096741ef15d2c6d2849ea1bba74d3ace6f89ca68ca87a66378f2e29bf1",
+      "bytes": 54
+    },
+    {
+      "original_path": "build/cm-idle-wake-reference.snapshots.bin.gz",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm-idle-wake-reference.snapshots.bin.gz",
+      "sha256": "aee36e2627dee5f919b0ba93012a0dc2b6de9474fbd10b7caf13fcfceb690e5f",
+      "bytes": 4637
+    },
+    {
+      "original_path": "build/cm-idle-wake-native.trace",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm-idle-wake-native.trace",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original_path": "build/cm-idle-wake-native.snapshots.bin.gz",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm-idle-wake-native.snapshots.bin.gz",
+      "sha256": "f9574accbbd11e283e091a1412f4ed6159c3f696e82cafcaffaa7a943b321889",
+      "bytes": 2386750
+    },
+    {
+      "original_path": "build/cm-idle-wake-validation.log",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm-idle-wake-validation.log",
+      "sha256": "8c765c17741f82971f17dff534cbacf337bdfc7a8422f862a100fac8819d6f3a",
+      "bytes": 127
+    },
+    {
+      "original_path": "build/cm-idle-wake-native.stream.json",
+      "retained": "evidence/cm-idle-wake-first-source-producer-correction/cm-idle-wake-native.stream.json",
+      "sha256": "591a134947846c4a1d6b670d9549be5098012dbaab2bb1382b90ee64d224b6aa",
+      "bytes": 98
+    }
+  ]
+}

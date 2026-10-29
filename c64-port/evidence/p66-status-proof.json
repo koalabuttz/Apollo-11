@@ -1,0 +1,31 @@
+{
+  "scope": "Resident callback-result transport; numerical alarm state was independently qualified in the live guidance milestone.",
+  "status_bytes": 2,
+  "raw_results_octal": [
+    "01302",
+    "01202"
+  ],
+  "raw_results_hex": [
+    "8003",
+    "ffff",
+    "0004"
+  ],
+  "host": "Five results preserve committed MPAC and source PC/Q, block later callbacks, and retain fault metadata; strict and ASAN/UBSAN pass.",
+  "c64": "Ten checks on stock PAL C64 ROMs, I enabled and masked, preserve caller I and $01.",
+  "mailbox": "a500000a02",
+  "hardware_stack_extent": 30,
+  "software_stack_extent": 99,
+  "source_regression": {
+    "prefix_fingerprints": 160,
+    "live_checkpoints": 2944,
+    "mixed_checkpoints": 400,
+    "pending_checkpoints": 704,
+    "live_sha256": "7b96007dec941c9dd2dbaa7948e8bc96e1e33bcf5897b5b7b0edaf1360d63eee",
+    "mixed_sha256": "46d33f2753d474198bc25f5cf95c676292739acbc777ce63538fae4c73753776",
+    "pending_sha256": "3bfaec3084a82dbd57a10cf7a53031aa3aa0986ed68a1102369c38194c9e1de1"
+  },
+  "files": {
+    "p66-status.map": "4ed986ded4090d90a9ffac3ae08ad3927e1e6f838667d3e71839c6fffe2dc5eb",
+    "p66-status.prg": "494fd628903a7629e3f58fa71046722569bb2714e3a4db6e733c69eef2bac45f"
+  }
+}

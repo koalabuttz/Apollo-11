@@ -1,0 +1,88 @@
+{
+  "original_source": "Luminary099/SINGLE_PRECISION_SUBROUTINES.agc",
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_audit": {
+    "original_source": "Luminary099/SINGLE_PRECISION_SUBROUTINES.agc",
+    "original_sha256": "bebe6cbf186bed7fcc35f9aad8a392ccbe3cb31154ad8267d01a4926cc0dd3e4",
+    "assembled_source_sha256": "bebe6cbf186bed7fcc35f9aad8a392ccbe3cb31154ad8267d01a4926cc0dd3e4",
+    "source_edits": 0,
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "pinned_support_fixture": "deps/fixture"
+  },
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "calls": 131072,
+  "complete_states": 262144,
+  "raw16bit_A_per_entry": 65536,
+  "fixed_saved_Q_addresses_per_entry": 3072,
+  "source_pre_return_PC_counts": {
+    "(0, 0, '0o5066')": 64724,
+    "(0, 0, '0o5071')": 812,
+    "(1, 0, '0o5071')": 813,
+    "(1, 0, '0o5066')": 64723
+  },
+  "logical_output_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-single-trig-complete.snapshots.gz",
+      "sha256": "48222b46a09e4d6fe71e08b6cc77891b4f113b69b9e9a42b3e9b508067d99703"
+    },
+    "native": {
+      "object": "evidence/lm-single-trig-complete.snapshots.gz",
+      "sha256": "48222b46a09e4d6fe71e08b6cc77891b4f113b69b9e9a42b3e9b508067d99703"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-single-trig-complete.snapshots.gz",
+      "sha256": "48222b46a09e4d6fe71e08b6cc77891b4f113b69b9e9a42b3e9b508067d99703"
+    }
+  },
+  "all_whole_strict_and_sanitizer_streams_equal": true,
+  "target_images": [
+    {
+      "selector": 0,
+      "states": 32,
+      "mode": "numerical",
+      "mailbox": "a500002000",
+      "prg_bytes": 4280,
+      "loaded_end_hex": "0x38b7",
+      "hardware_stack_bytes": 17,
+      "software_stack_bytes": 43,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 1,
+      "states": 32,
+      "mode": "numerical",
+      "mailbox": "a500002001",
+      "prg_bytes": 4286,
+      "loaded_end_hex": "0x38bd",
+      "hardware_stack_bytes": 17,
+      "software_stack_bytes": 42,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 2,
+      "states": 32,
+      "mode": "numerical_plus_actual_return",
+      "mailbox": "a500002002",
+      "prg_bytes": 4380,
+      "loaded_end_hex": "0x391b",
+      "hardware_stack_bytes": 17,
+      "software_stack_bytes": 45,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "selector": 3,
+      "states": 32,
+      "mode": "numerical_plus_actual_return",
+      "mailbox": "a500002003",
+      "prg_bytes": 4378,
+      "loaded_end_hex": "0x3919",
+      "hardware_stack_bytes": 17,
+      "software_stack_bytes": 44,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "caller_domain": "Original fixed-code saved TC address02000..07777; numerical result accepts any ordinary Q until explicitreturn",
+  "scheduling": "No Executivecheck inbasic service; caller owns canonical image andexcludes producers throughout",
+  "scope": "Whole original LM SINGLE_PRECISION numerical and fixed-code return paths; complete resident Apollo applications still incomplete"
+}

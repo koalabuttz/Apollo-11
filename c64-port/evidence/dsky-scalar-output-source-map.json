@@ -1,0 +1,40 @@
+{
+  "entry_pcs": {
+    "LM": [
+      "02615 DEGOUTSF",
+      "02677 ARTOUTSF",
+      "02704 AROUT1SF",
+      "02623 360-CDUO",
+      "02635 LRPOSOUT"
+    ],
+    "CM": [
+      "02516 DEGOUTSF",
+      "02603 ARTOUTSF",
+      "02610 AROUT1SF",
+      "02524 OPDEGOUT",
+      "02653 DPFRACOT"
+    ]
+  },
+  "entry_bank": "40",
+  "return_bank": "41",
+  "return_pc": "02566 DSPDCEND",
+  "source_helpers": [
+    "FIXRANGE",
+    "SETAUG",
+    "DEGCOM",
+    "SHORTMP",
+    "DMPSUB2",
+    "PRSHRTMP",
+    "L14/OUT",
+    "READLO",
+    "SCOUTEND",
+    "POSTJUMP"
+  ],
+  "literal_degree_pairs": [
+    "05605 03656",
+    "16314 31463"
+  ],
+  "cm_optical_bias": "16040",
+  "whole_file_claim": false,
+  "native_instruction_decoder": false
+}

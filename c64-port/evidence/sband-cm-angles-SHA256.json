@@ -1,0 +1,250 @@
+{
+  "docs/NATIVE-SBAND-CM-ANGLES.md": {
+    "sha256": "1a5812b52cdeb90e2213d31ec62aa6d340589882470213386b36408ad5a25505",
+    "bytes": 3618
+  },
+  "evidence/sband-cm-angles-0-mailbox.bin": {
+    "sha256": "8f277e0cd82c70babc54f804f42dbc4130996a619bb63cc024babffe3be92ccd",
+    "bytes": 4
+  },
+  "evidence/sband-cm-angles-0-monitor.log": {
+    "sha256": "1498f03453ad23e195ad69bc1cef1c5aa76e55b065c119771d9d86d0723abce7",
+    "bytes": 399
+  },
+  "evidence/sband-cm-angles-0-vice-results.json": {
+    "sha256": "16f8f29f3df081228e7eb9e24365f9085e2f927feeb3a5135d8f8ebb65fc51bc",
+    "bytes": 243
+  },
+  "evidence/sband-cm-angles-0-vice.log": {
+    "sha256": "0f96439df17874616a3438c24efa2fcf044d694546d242710529e9204af96670",
+    "bytes": 6541
+  },
+  "evidence/sband-cm-angles-0.map": {
+    "sha256": "6a22171ab5e0e6fb9cf3d659aa0f8313bffab8281ce1fc987bb3d89e67ba93e5",
+    "bytes": 14297
+  },
+  "evidence/sband-cm-angles-0.prg": {
+    "sha256": "8a242a0b37e29576a7a6b5dc3d1d4def6409c537ae839c7ddbd6aa886a32d73c",
+    "bytes": 27578
+  },
+  "evidence/sband-cm-angles-1-mailbox.bin": {
+    "sha256": "8f277e0cd82c70babc54f804f42dbc4130996a619bb63cc024babffe3be92ccd",
+    "bytes": 4
+  },
+  "evidence/sband-cm-angles-1-monitor.log": {
+    "sha256": "1464f431f74bc9c18aa1b4927bfc3eb9933d5dbee508612ccc3b4f3aef2494fa",
+    "bytes": 399
+  },
+  "evidence/sband-cm-angles-1-vice-results.json": {
+    "sha256": "dd7f2d25a86aa60969a4936c0831f5f0e1df693bf63dcfd6ac3d96b5ee1be48c",
+    "bytes": 243
+  },
+  "evidence/sband-cm-angles-1-vice.log": {
+    "sha256": "030ed9c0a253551313feb3ba1c4ce9972d372267e0b6f4f927674afab6257035",
+    "bytes": 6539
+  },
+  "evidence/sband-cm-angles-1.map": {
+    "sha256": "185326bd0a7af965167679d790524ab6bf452d4d354cdbb28d1fd2d969c60115",
+    "bytes": 14297
+  },
+  "evidence/sband-cm-angles-1.prg": {
+    "sha256": "622cb3f4da73a8aa481bd8299dca25191657e92ffa03778ba485b20fd96bc793",
+    "bytes": 27553
+  },
+  "evidence/sband-cm-angles-2-mailbox.bin": {
+    "sha256": "8f277e0cd82c70babc54f804f42dbc4130996a619bb63cc024babffe3be92ccd",
+    "bytes": 4
+  },
+  "evidence/sband-cm-angles-2-monitor.log": {
+    "sha256": "50ba9004daab999828dda70b6d99e5dec0d4ad4cc33c18ebfbb2026595e3d8cc",
+    "bytes": 399
+  },
+  "evidence/sband-cm-angles-2-vice-results.json": {
+    "sha256": "b0cb7812f6a51c5ac06150f6eae47e97825cb09b96e0f8ee2c0c1ed3129b57cd",
+    "bytes": 243
+  },
+  "evidence/sband-cm-angles-2-vice.log": {
+    "sha256": "f4ef6cd7b6f3ba5a3af3b55168c9d7a7b30954e6ac49864b3b5281f1669d51bf",
+    "bytes": 6540
+  },
+  "evidence/sband-cm-angles-2.map": {
+    "sha256": "65106141295aec4df157a8d72446aeaf62ff02968396bfcddaaa320b21616b8c",
+    "bytes": 14297
+  },
+  "evidence/sband-cm-angles-2.prg": {
+    "sha256": "aa9a107304f16a511ca707a0c9fdee3048371989a4888169681715644c2899cf",
+    "bytes": 26598
+  },
+  "evidence/sband-cm-angles-3-mailbox.bin": {
+    "sha256": "8f277e0cd82c70babc54f804f42dbc4130996a619bb63cc024babffe3be92ccd",
+    "bytes": 4
+  },
+  "evidence/sband-cm-angles-3-monitor.log": {
+    "sha256": "0a762fd4a1de9b678ed98e3052fdbcbfdc4ed44db126416d7d8523f152d6b099",
+    "bytes": 399
+  },
+  "evidence/sband-cm-angles-3-vice-results.json": {
+    "sha256": "879b78cdf3ebb6bef3a44c94040a447c5f595a2a5557d8b726d035c90aa365cb",
+    "bytes": 243
+  },
+  "evidence/sband-cm-angles-3-vice.log": {
+    "sha256": "f8ff0f6890f380e91eda1ba0b105a8a00a9a281e28cc2f3b4d0f6f200345d8eb",
+    "bytes": 6542
+  },
+  "evidence/sband-cm-angles-3.map": {
+    "sha256": "099cdefabff8712c2d61a9397475725afe0f2b331255593e490a64804c2d95f7",
+    "bytes": 14297
+  },
+  "evidence/sband-cm-angles-3.prg": {
+    "sha256": "ee8fb89baf84662e5ecbbc3823ad64a1cb392a758c912c505bac8764aedda3f5",
+    "bytes": 26926
+  },
+  "evidence/sband-cm-angles-frozen-validation.log": {
+    "sha256": "11b5b5e369d2c9b86adf3488ec1a0dc5913dbe82c7c6b04438eeec4eb52237d2",
+    "bytes": 190
+  },
+  "evidence/sband-cm-angles-host-validation.log": {
+    "sha256": "ea49dbf7853d96c2f01edf2a8f843a0fee7d2fd5de982fd775f1b7fed9bac3e8",
+    "bytes": 200
+  },
+  "evidence/sband-cm-angles-independent-review.txt": {
+    "sha256": "ab594691376c3f37b95844bb7f16c4e621dbf6b61fd6454e908d595b1f089095",
+    "bytes": 935
+  },
+  "evidence/sband-cm-angles-native-results.json": {
+    "sha256": "50801628632ae6cef4724cec03956b40545ec09e0fd9471ed77cf4f59e225d8b",
+    "bytes": 166
+  },
+  "evidence/sband-cm-angles-proof.json": {
+    "sha256": "ca8579f9f8e282e173bd77d85ee6037382c9235742712432f981c322ec546f6d",
+    "bytes": 3825
+  },
+  "evidence/sband-cm-angles-sanitize-results.json": {
+    "sha256": "50801628632ae6cef4724cec03956b40545ec09e0fd9471ed77cf4f59e225d8b",
+    "bytes": 166
+  },
+  "evidence/sband-cm-angles-sanitize-validation.log": {
+    "sha256": "572ea20c534ab4be857a14e31b61f9ea0fa4a679a917b233859b9d6f97f0b8c4",
+    "bytes": 624
+  },
+  "evidence/sband-cm-angles-source-map.json": {
+    "sha256": "fd5dc215dceb770d69fc4df5c931c8a4c35c2d8b7e16f3a275304a106cfd8df3",
+    "bytes": 13302
+  },
+  "evidence/sband-cm-angles-source.snapshots.bin.xz": {
+    "sha256": "ab265f6ee89a2948df365a17ed1d22bd22b18621cff295719b8b4dd03c778327",
+    "bytes": 34700136
+  },
+  "evidence/sband-cm-angles-target-results.json": {
+    "sha256": "b984628500c5727cca7935f81f61468905b453fdd3c1744966de88af564fae8d",
+    "bytes": 1436
+  },
+  "evidence/sband-cm-angles-target-source.snapshots.bin.xz": {
+    "sha256": "eba1a1aab9d663171040fc4ca78f6ce11528eb72344bd7665d6c1a59c9edaa74",
+    "bytes": 121980
+  },
+  "evidence/sband-cm-angles-target-validation.log": {
+    "sha256": "2bfbae2ea08d98d9068750d77bc77dddcd3230060b479dcd492095830d059cdd",
+    "bytes": 986
+  },
+  "evidence/sband-cm-angles-vice-results.json": {
+    "sha256": "e23721b7645b04fce4c27c194c5ff996202e596851b7d244928317d2a2a2573d",
+    "bytes": 1238
+  },
+  "include/sband_cm_angles.h": {
+    "sha256": "f3528fc283a48c0b44c93ab34381c8920450df9966dd3532a3dc410a7cc8af47",
+    "bytes": 743
+  },
+  "platform/c64/sband_cm_angles_diagnostic.c": {
+    "sha256": "98aec0e87f79ede21851b069b8fae041522e6ff02ba985fef8a83b9e151b619e",
+    "bytes": 444
+  },
+  "src/sband_cm_angles.c": {
+    "sha256": "7d14d6f3d702392698c0e893472eee46c58e54d746c4c9d48eb399b1555892f3",
+    "bytes": 6499
+  },
+  "tests/sband_cm_angles_cases.c": {
+    "sha256": "0f63af0bb0448970497085ad03ed3444baf5cb1f2a0468e5980cb3025e3b2299",
+    "bytes": 1946
+  },
+  "tests/sband_cm_angles_cases.h": {
+    "sha256": "295e7945d464f19c804cf09ae62118456a141d3d2d90f2f6b6761be9e61bf5c4",
+    "bytes": 238
+  },
+  "tests/sband_cm_angles_target.c": {
+    "sha256": "62e7a5cf555154efc16420855fccee91f01657cb20c756787e7e605de8362c40",
+    "bytes": 1819
+  },
+  "tests/sband_cm_angles_target.h": {
+    "sha256": "d1c4045269ba1921f5851960163d2a5a1251bc0fec054c2c675d283fcc99c83f",
+    "bytes": 153
+  },
+  "tests/sband_cm_angles_vectors.h": {
+    "sha256": "84fa37cf5c8d7fbb898594a32afc2288e3009e0e84ca5433a732a471f4fdfe19",
+    "bytes": 38250
+  },
+  "tests/sband_cm_angles_vectors_0.h": {
+    "sha256": "c1ff5de38b1f28d6fc0a53e1be2877d4a8c7f73188460254df0f4f5efa9100c5",
+    "bytes": 11631
+  },
+  "tests/sband_cm_angles_vectors_1.h": {
+    "sha256": "d9d2a752218fdf4830b9c59b48d6a613c43482b5694d5efe9f7212e3dd8b113d",
+    "bytes": 11881
+  },
+  "tests/sband_cm_angles_vectors_2.h": {
+    "sha256": "6080c100b8ed2d19185132db5cef6fe43d55e5333e16a61c900895610752e888",
+    "bytes": 8160
+  },
+  "tests/sband_cm_angles_vectors_3.h": {
+    "sha256": "821ac1bddc76dbd894972db522f8a324768ef148399d929d9dc867ffdc951598",
+    "bytes": 9667
+  },
+  "tests/test_sband_cm_angles.c": {
+    "sha256": "84f3bd1078930491abe1074cefbafc1f17829e7e119f0077f635d3e979681552",
+    "bytes": 1642
+  },
+  "tools/freeze_sband_cm_angles.py": {
+    "sha256": "98fbf63ce0fd5aa4a263a6fe0e048814405f2508fdf21dcb08ef951c80df62f5",
+    "bytes": 2519
+  },
+  "tools/package_sband_cm_angles.py": {
+    "sha256": "257a834a7723c237f19d3bbe66a5c632481ae46df4d7b8c8501ef85c167bffb4",
+    "bytes": 4447
+  },
+  "tools/sband_cm_angles.mk": {
+    "sha256": "36aa895987003fc5af1d27876cfcc91e22f9ced3f5e7601b779739fbe6224db7",
+    "bytes": 1159
+  },
+  "tools/sband_cm_angles_compare.py": {
+    "sha256": "2749af708a7dba68920a55207fcefb9e4901b69a335291e394cec917e05cd998",
+    "bytes": 1874
+  },
+  "tools/sband_cm_angles_inputs.c": {
+    "sha256": "7c88bceb82fdf13af643f7c11690112e7fb7f28390196910a287b8856117c973",
+    "bytes": 502
+  },
+  "tools/sband_cm_angles_integration.mk": {
+    "sha256": "47d5938492c021a607450b0a68e284e878b5a97bccce3c59e47604cb420266e3",
+    "bytes": 1735
+  },
+  "tools/sband_cm_angles_port_host.py": {
+    "sha256": "8ecb6c354203c612d7cdafdfd10d3482b20af1a489cde072281f8c25bad34459",
+    "bytes": 591
+  },
+  "tools/sband_cm_angles_reference.c": {
+    "sha256": "9c4d23ad4dd0e391550b3d8e367120742c21629117b73aec03c93adc356d50f8",
+    "bytes": 1814
+  },
+  "tools/sband_cm_angles_snapshot.c": {
+    "sha256": "4aa60daf871eb813ae5427c37769526f7453d9d52708619eee4538aefd99568c",
+    "bytes": 699
+  },
+  "tools/sband_cm_angles_source.py": {
+    "sha256": "d43af255de32e4055c38cddfa1be49741f78b9aea7ab0fad84f3d4eccb0dfa37",
+    "bytes": 3351
+  },
+  "tools/sband_cm_angles_vice_test.py": {
+    "sha256": "d7b3f75b7d93bf09ceae9aa0a33fdfef3cee6c9e22dbb9f6355a6f5044233b65",
+    "bytes": 3159
+  }
+}

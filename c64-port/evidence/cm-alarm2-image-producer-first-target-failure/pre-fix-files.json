@@ -1,0 +1,242 @@
+[
+  {
+    "source": "platform/c64/cm_alarm2_image_check.c",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/platform/c64/cm_alarm2_image_check.c",
+    "sha256": "a1148f5a04273c110552926ab1ae2affc203bd75a13541680450633fcb6faf17"
+  },
+  {
+    "source": "platform/c64/cm_alarm2_image_binding.h",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/platform/c64/cm_alarm2_image_binding.h",
+    "sha256": "a9104a3477879b7eafd257e2be86af9e4e8fe0ef27f05de6824e70d7d05583cb"
+  },
+  {
+    "source": "platform/c64/cm_alarm2_image_input.c",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/platform/c64/cm_alarm2_image_input.c",
+    "sha256": "471e1848f92c0cc89d1a31fc87150257903c218d3eb48fdca69a9016ae28445e"
+  },
+  {
+    "source": "platform/c64/cm_alarm2_image_diagnostic.c",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/platform/c64/cm_alarm2_image_diagnostic.c",
+    "sha256": "966c7b4865b67a790510e8ad5509c41bce3a79eadbc9eb4acc1994dbcc054031"
+  },
+  {
+    "source": "platform/c64/cm_alarm2_image_control.c",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/platform/c64/cm_alarm2_image_control.c",
+    "sha256": "945ff2de061ab02aec7f2e41471d3a4e1da163c6cdd0820761b78d78f02d8bb0"
+  },
+  {
+    "source": "tools/cm_alarm2_image_build.py",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tools/cm_alarm2_image_build.py",
+    "sha256": "e04420bb3d6956108b4783c1dbc71c25d0716dec37a2b1a6f38f6ce79b297440"
+  },
+  {
+    "source": "tools/cm_alarm2_image_reference.c",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tools/cm_alarm2_image_reference.c",
+    "sha256": "3909331f3c0f4ef7569026b22af788245eee37f61cb8cb6a12e1af243f54489f"
+  },
+  {
+    "source": "tools/cm_alarm2_image_vice_test.py",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tools/cm_alarm2_image_vice_test.py",
+    "sha256": "38e2a609a08d9241b75642eeef6f175bf21143c769eb6477d432db1b1f28141b"
+  },
+  {
+    "source": "tools/cm_alarm2_image_dump.h",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tools/cm_alarm2_image_dump.h",
+    "sha256": "6ca6f02577f7dbf0938fa07c8ec11c5bc92977eb1edb6e78f66e113d1dc63779"
+  },
+  {
+    "source": "tools/cm_alarm2_image.mk",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tools/cm_alarm2_image.mk",
+    "sha256": "da788e80e35ca1d24676b94fb6d48d98727e5442135209fe8b58e3e074e99a86"
+  },
+  {
+    "source": "tools/cm_alarm2_image_sanitize.py",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tools/cm_alarm2_image_sanitize.py",
+    "sha256": "7b450d06d4a9726eb2577f1882da092dab5c4efd8ef4a30f132e3cd295d6d02d"
+  },
+  {
+    "source": "tools/cm_alarm2_image_differential.py",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tools/cm_alarm2_image_differential.py",
+    "sha256": "377b7d5ad195208ae3bc8c3bf1e0a39c5d941e6022f0a963cd7ead9c5243c5e6"
+  },
+  {
+    "source": "tools/cm_freeze_alarm2_image.py",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tools/cm_freeze_alarm2_image.py",
+    "sha256": "de1ba8c35a52c99a29ff62b38f034cfb69f485d1d9ceddc59fd19e9f14b8f3a7"
+  },
+  {
+    "source": "src/cm_alarm2_image.c",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/src/cm_alarm2_image.c",
+    "sha256": "252fe32b101ee51ce76a85f2065f1d6b114abaa2e1abc8cc790d971ded72dad0"
+  },
+  {
+    "source": "tests/cm_alarm2_image_cases.c",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tests/cm_alarm2_image_cases.c",
+    "sha256": "0b9da7a265093567282ba8567179b9a72f85df3bc4f4dec073117a05b3734297"
+  },
+  {
+    "source": "tests/cm_alarm2_image_cases.h",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tests/cm_alarm2_image_cases.h",
+    "sha256": "91d666605b474217057217f43f12c27669edfdc126227001ea8493826a9f4216"
+  },
+  {
+    "source": "tests/cm_alarm2_image_vectors.h",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/tests/cm_alarm2_image_vectors.h",
+    "sha256": "b16f85d59517beb2deee5140c5c77cca4392082c9d78650cbfc3e416a72827dd"
+  },
+  {
+    "source": "include/cm_alarm2_image.h",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/include/cm_alarm2_image.h",
+    "sha256": "7cbfee01bb8124d7159c4de7889e8df571b5b7a78227c1f56bb0d81f9317d3e4"
+  },
+  {
+    "source": "build/cm-alarm2-image.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image.prg",
+    "sha256": "4fce745e498401a9c18281192c2b50224d4893fec4248a336d6a8a4045ac1337"
+  },
+  {
+    "source": "build/cm-alarm2-image.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image.map",
+    "sha256": "b74117fb32a708cea11f1538e2dcf905c3236fe64c73a719bd6caef7d9398fe6"
+  },
+  {
+    "source": "build/cm-alarm2-image.d64",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image.d64",
+    "sha256": "30e1da5eef6ab1ee6a8352314475613ed99b17670723327b3a0956fe1b4d385a"
+  },
+  {
+    "source": "build/cm-alarm2-image-modules.json",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-modules.json",
+    "sha256": "03db24735ff78d80d17ab9b6b3193d38ad4e67266ad8b63d45d2b32bab23e583"
+  },
+  {
+    "source": "build/cm-alarm2-image-proof.json",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-proof.json",
+    "sha256": "4f749e94bfa643dca615cfefa1cf6185914023f80c1433ff38f9be08d257c55c"
+  },
+  {
+    "source": "build/cm-alarm2-image-validation.log",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-validation.log",
+    "sha256": "57318bb8d6959c1c3fdc1a2327d1c74a66f3e7d06277b3b3a5486f8921c4b0da"
+  },
+  {
+    "source": "build/cm-alarm2-image-sanitize-validation.log",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-sanitize-validation.log",
+    "sha256": "d4d241c86f106d8b3152a23f686d6917b727a4b4525b39e0adaf94003bf1777c"
+  },
+  {
+    "source": "build/cm-alarm2-image-freeze.log",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-freeze.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "source": "build/cm-alarm2-image-native.trace",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-native.trace",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "source": "build/cm-alarm2-image-native.stream.json",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-native.stream.json",
+    "sha256": "3eecce965bb1d8ecfe03b4df0d7d4d53358f8e4fea2c2d0dda1c382a2a6ef57f"
+  },
+  {
+    "source": "build/cm-alarm2-image-reference.stream.json",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-reference.stream.json",
+    "sha256": "3eecce965bb1d8ecfe03b4df0d7d4d53358f8e4fea2c2d0dda1c382a2a6ef57f"
+  },
+  {
+    "source": "build/cm_alarm2_image_modules.h",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm_alarm2_image_modules.h",
+    "sha256": "38cd890bccf9c27564b6dcf9c5715aae0e364a185c9ec66016b35018e1a72c1d"
+  },
+  {
+    "source": "build/cm-alarm2-image-232.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-232.prg",
+    "sha256": "385c59da497083e21985b3cdd76c2142250e86d993e233801b5ed6cce524ca9d"
+  },
+  {
+    "source": "build/cm-alarm2-image-232.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-232.map",
+    "sha256": "65ec8cd30da806b6490a1faa82a74063220de833226353bfdce97623591e9cc6"
+  },
+  {
+    "source": "build/cm-alarm2-image-254.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-254.prg",
+    "sha256": "5b2744af43722c0e6a6f6c240998d3491c8d9c66f83d007ffa1dce40d57a81e3"
+  },
+  {
+    "source": "build/cm-alarm2-image-254.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-254.map",
+    "sha256": "fe0cfdf8d6a702efd1fbb6d7943277dd85d7c937756fe047dc352ae089799741"
+  },
+  {
+    "source": "build/cm-alarm2-image-255.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-255.prg",
+    "sha256": "f4f30690de2fa95337b01bd430057b23e90935d050c93ae7efe98c940445e04c"
+  },
+  {
+    "source": "build/cm-alarm2-image-255.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-alarm2-image-255.map",
+    "sha256": "10c37e91412246228eef4c984b6ae443dfc5b393167f31e63b8bdadbff4f3ec4"
+  },
+  {
+    "source": "build/cm-fixed-compat-200.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-200.prg",
+    "sha256": "cfbe4d32f919538cd398724f3ef12f1091de4011e77c53bf814f17ae4b4c8c56"
+  },
+  {
+    "source": "build/cm-fixed-compat-200.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-200.map",
+    "sha256": "fc324b2f56eaf50b734d61c7b33800cc19a61bccc3783f17bc9cc5d69f664252"
+  },
+  {
+    "source": "build/cm-fixed-compat-201.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-201.prg",
+    "sha256": "1762287da00769644de30e2475de96b85043af151065bf260c02fcbd6a87b51c"
+  },
+  {
+    "source": "build/cm-fixed-compat-201.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-201.map",
+    "sha256": "5161a0977225d14fc97eaf97f9841b12cae23009aa09ccc210d5ada82641b72c"
+  },
+  {
+    "source": "build/cm-fixed-compat-202.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-202.prg",
+    "sha256": "723cfa924ffb4f40dee347a59162d12e7dbaabd11f4346ec1dc1f0d7e01a86ff"
+  },
+  {
+    "source": "build/cm-fixed-compat-202.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-202.map",
+    "sha256": "b98aaecec673f36701d25739c935b30e845f07f391d6b2f5eb5d7c6445d73ec5"
+  },
+  {
+    "source": "build/cm-fixed-compat-203.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-203.prg",
+    "sha256": "4471ce302f6794acf1f0987f6d9880f5cb6221dc6bccd795a58fe4d2b8e27a82"
+  },
+  {
+    "source": "build/cm-fixed-compat-203.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-203.map",
+    "sha256": "ef5be8ba9fab74e0a0163c3a572c86871624c162cba180e35ea42cf8a714a595"
+  },
+  {
+    "source": "build/cm-fixed-compat-204.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-204.prg",
+    "sha256": "fb94aaabc7201fef2265e7798f4dc6c01a55b574c14ff513d935dd101950d082"
+  },
+  {
+    "source": "build/cm-fixed-compat-204.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-204.map",
+    "sha256": "76e23d66087606c0967dd1dd72a8f8c23550b121fb208a17c04af48125a6986f"
+  },
+  {
+    "source": "build/cm-fixed-compat-205.prg",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-205.prg",
+    "sha256": "012b224cdfc38657720d34852b9cbc2d9fcaa30eca845d2a827a0b0cd2e11025"
+  },
+  {
+    "source": "build/cm-fixed-compat-205.map",
+    "retained": "evidence/cm-alarm2-image-producer-first-target-failure/build/cm-fixed-compat-205.map",
+    "sha256": "56ae23c63debe4fc9c2b39fb129d2e47af1d64aad642ec3127cb8efa27d57dcf"
+  }
+]

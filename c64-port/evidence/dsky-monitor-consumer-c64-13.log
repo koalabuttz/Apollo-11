@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, source-incoming complete monitor-consumer original-assembly states; retained memory unchanged
+Mailbox: a50000080d
+PRG bytes: 9915
+dsky_monitor_consumer_13-hardware-stack.bin: measured stack extent 15 bytes
+dsky_monitor_consumer_13-software-stack.bin: measured stack extent 54 bytes

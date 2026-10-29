@@ -1,0 +1,5 @@
+PASS: VICE PAL, 128 complete original assembly phase states, zero failures
+Mailbox: a500008038
+PRG file/loaded bytes: 23066 23064
+hardware stack sentinel extent: 10
+software stack sentinel extent: 13

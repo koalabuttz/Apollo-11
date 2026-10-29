@@ -1,0 +1,76 @@
+{
+  "source_files": {
+    "docs/COMANCHE-DISPLAY-SLEEP-LIFECYCLE.md": "e9a35a6fd8f6f2c71ce99e83b7518c1f5ceab30ba5714e36cd31b1e9b1492aa9",
+    "tests/cm_display_sleep_lifecycle_vectors.h": "6d21b6fc12193e533fa98cbae70967d219a0be44f760ba60720f6c598f3b10aa",
+    "tests/cm_display_sleep_lifecycle_cases.h": "c516e739db7c89971a240df2916fb439618f570b899a3b08b4b5083bfb713cce",
+    "tests/cm_display_sleep_lifecycle_cases.c": "f8e4924d3ea66a9c9f289b7ae8fa6bb483a5de31cdee904b7a590f5453868112",
+    "tests/cm_display_sleep_lifecycle_check.c": "ab20c7e36234b70a4e891c48307379b6e0a6140ada5a10e43bf710d0e4ef4a97",
+    "tests/cm_display_sleep_lifecycle_check.h": "a9fd0431466b9a1118bfce539cd469ee83b22dedc0369525116a0feec2333481",
+    "tests/cm_display_sleep_lifecycle_host.c": "010e30de5d74c3a59438c49b91a53cc770bba19d380b52c83f687f012b542306",
+    "tools/cm_display_sleep_lifecycle_vice_test.py": "85bfa339351205b17d091834482cf5c8783660b071343c52ec6ceb026382c5d7",
+    "tools/cm_display_sleep_lifecycle_sanitize_stream.py": "9ecac60a801a4dbeb9a7201efbb37a917516a0fba0bbbab551261ff670172bb0",
+    "tools/cm_display_sleep_lifecycle.mk": "845802e58b1c96806f008cf990161fb7d62deffd4b2964e6f54fbde33d8cee75",
+    "tools/cm_display_sleep_lifecycle_snapshot.c": "e6a46c335874dc0e2a8f79ffa48820f810d09e645708a893ee303d3fedf82621",
+    "tools/cm_display_sleep_lifecycle_inputs.c": "93f828a339ce2ad99c44575708ac3fdea6d258336f427f4eabc635b5629960ca",
+    "tools/cm_display_sleep_lifecycle_reference.c": "c45d390ccd401857d2988a3b4c016ef9f9ebf740b2136a7e0acc9ec93c377e77",
+    "tools/cm_display_sleep_lifecycle_diagnostic.c": "1649128a9fc06a4ab05a0dbbde5359ef6cbffa198ae0e26eccdbae51fa765e0b",
+    "tools/cm_display_sleep_lifecycle_differential.py": "737ab95c80972b8a18b21bac22764bb9624fe7c48a9875679b913ace7df2fd21",
+    "tools/freeze_cm_display_sleep_lifecycle.py": "8cb50caa71d4dadbbea34bbba3bb1a07ba0c06c4647d08fee99252dc62be3168"
+  },
+  "native_dependencies": {
+    "include/cm_makeplay_sleep.h": "417184722767a70f5260425b0880be4800aebaf47126a1da81cf58bc3eaf1842",
+    "include/cm_basic_wake.h": "71ef291e259d20ca55990844c25d1be7dbb88dc1cdb628dada4d8dbbd8889b9b",
+    "include/cm_basic_sleep.h": "e07027a867d64da6278b5fa975e9919fcaf56fba6781e239df7ea106215af4c3",
+    "src/cm_makeplay_sleep.c": "328ee7d893b0114ffd1d6f91204a96b9ef96ff5bd82bbe72483a73ce7fc64e22",
+    "src/cm_basic_wake.c": "4cb62726c6ec07d283e463ca508b27642365b60344e387fb985416f81f5b7979",
+    "src/cm_basic_sleep.c": "858706154bf882b780f770f370b07350c0da137e298661e39e206f135fda3333",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/cm_dispatch.c": "d418ad5c0027ea1432c6ba03b4492c017d8c3e7b9575b8454127731943dad5b2",
+    "src/cm_executive.c": "131d7d1621498aba42fd4d74d1326806683f5b0d53d73715db4c16a0fd8f697c",
+    "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d",
+    "tests/cm_wake_cases.c": "fb2930799a00e0bbd2c3185c5969f7d4002da355d4620e88b712f3d3db0dbdc5",
+    "tests/cm_clockjob_cases.c": "d8bd07bfee1a77f57a660dcac5395f5a832db6bbcba43c700f95efd34713b66e",
+    "tests/cm_trig_cases.c": "b39716b836fe437dfac5087f862445620548b89f95ff1b6c29dd04186eaf60c2"
+  },
+  "original_sources": {
+    "../Comanche055/EXECUTIVE.agc": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "../Comanche055/DISPLAY_INTERFACE_ROUTINES.agc": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+    "../Comanche055/SERVICE_ROUTINES.agc": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+    "deps/cm-services-fixture/MAIN.agc.bin": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  },
+  "artifacts": {
+    "evidence/cm-display-sleep-lifecycle-reference.snapshots.xz": "0fa138961c64942a1518aa41316dbd7ec26532cc6f6fb7563f54975a2ffda69a",
+    "evidence/cm-display-sleep-lifecycle-stream-sha.json": "5c71aa00874cc2fc9eeba6726e749f859ed752d4a63724683e59ad4d0c623dec",
+    "evidence/cm-display-sleep-lifecycle-differential.log": "e5277235f7db92f5539613e7e1e89ef95c76992d0110eefc3c774e326b4e68fb",
+    "evidence/cm-display-sleep-lifecycle-freeze.log": "f25a46505b7997fc801f7ff48164e96ebb3df1acec879b30a692ad09b0ce4f0b",
+    "evidence/cm-display-sleep-lifecycle-validation.log": "b442305ad2f6e5047bfbb378f1fb23a3f5b919830c048be773706e43f824e602",
+    "evidence/cm-display-sleep-lifecycle-c64-result.log": "7fe5934df1335888ef189156ba766719e18db4a2826a3e3ef0b6d40daa535656",
+    "evidence/cm_display_sleep_lifecycle.prg": "695a88e5b64baac19c9e3570401afdc5fe6486c50f7c74520fea054af5c4a433",
+    "evidence/cm_display_sleep_lifecycle.map": "4d909052d46a810e0dad61a81f1a2ca3c85e56ad72cc528704b6f2689b230eb6",
+    "evidence/cm_display_sleep_lifecycle-vice-mailbox.bin": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5",
+    "evidence/cm_display_sleep_lifecycle-hardware-stack.bin": "d4bd7af4e80f34b114467732f831447031cba96b19d9ba4ae8c2a09fc1674dab",
+    "evidence/cm_display_sleep_lifecycle-software-stack.bin": "2c39ee8465e436fde3cb56a7a40684145f28f2f522558c86a79db8857b0b6720",
+    "evidence/cm_display_sleep_lifecycle-vice.log": "2175f1c558d2b0eb72d75f69a7d0cc6c1a94b0a17de55cb3553a8265483627ee",
+    "evidence/cm_display_sleep_lifecycle-vice-monitor.log": "eadfd31026d21d285c4860a078aa1f0767ee37157c71c8722171a26ab697b756",
+    "evidence/cm_display_sleep_lifecycle-vice.mon": "7b298cec4a554ee65c469055c9a8f8e39e4d99158f7a9afd66b98a057db4d192"
+  },
+  "states": {
+    "continuous_original_inputs": 512,
+    "complete_original_checkpoints": 2048,
+    "state_words": 2051,
+    "frozen_complete_checkpoints": 64,
+    "frozen_continuous_paths": 16,
+    "uncompressed_SHA256": "13205f47100ee40271ff6f8c116966ad73e02d275c6f4b282da4a0e5babbbada",
+    "strict_and_SAN": "all complete source outputs byte-identical"
+  },
+  "target": {
+    "mailbox": "a500004000",
+    "prg_bytes": 18800,
+    "hardware_stack_bytes": 18,
+    "rom_stack_bytes": 14,
+    "software_stack_bytes": 737,
+    "additional_zero_page_bytes": 0
+  },
+  "scope": "Actual normal GOSLEEPS\u2192JOBWAKE\u2192XCHTOEND/XCHSLEEP\u2192JOBSLEEP source dispatch; selected job body is outside this composition"
+}

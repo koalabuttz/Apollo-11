@@ -1,0 +1,6 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/executive.c src/lm_basic_wake.c src/cm_basic_wake.c src/cm_native_image.c src/cm_executive.c src/cm_dispatch.c src/dsky_charin_release.c tests/p66_bias_cases.c tests/dsky_charin_release_cases.c tests/dsky_charin_release_check.c tests/test_dsky_charin_release.c -o build/test-dsky-charin-release
+build/test-dsky-charin-release
+LM+CM CHARIN KEYREL:64 full source states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/executive.c src/lm_basic_wake.c src/cm_basic_wake.c src/cm_native_image.c src/cm_executive.c src/cm_dispatch.c src/dsky_charin_release.c tests/p66_bias_cases.c tests/dsky_charin_release_cases.c tests/dsky_charin_release_check.c tests/test_dsky_charin_release.c -o build/test-dsky-charin-release-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-charin-release-sanitize
+LM+CM CHARIN KEYREL:64 full source states,0 failures

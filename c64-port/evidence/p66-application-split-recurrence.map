@@ -1,0 +1,261 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     5f7d     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/p66-application-split-recurrence.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        9     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_chkin.s.obj):(.text)
+     830      830        0     1                 cbm_k_chkin
+     838      838        0     1                 some_error
+     839      839        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_open.s.obj):(.text)
+     839      839        0     1                 cbm_k_open
+     840      840        0     1                 some_error
+     841      841        5     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setlfs.s.obj):(.text)
+     841      841        0     1                 cbm_k_setlfs
+     846      846       14     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libc.a(cbm_k_setnam.s.obj):(.text)
+     846      846        0     1                 cbm_k_setnam
+     85a      85a        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     85a      85a        0     1                 __call_indir
+     85d      85d       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     85d      85d       13     1                 __zero_bss
+     870      870       a4     1         build/p66-application-split-recurrence.prg.lto.o:(.text.exec_native_resolver_init)
+     870      870       a4     1                 exec_native_resolver_init
+     914      914      49e     1         build/p66-application-split-recurrence.prg.lto.o:(.text.exec_native_step)
+     914      914      49e     1                 exec_native_step
+     db2      db2       73     1         build/p66-application-split-recurrence.prg.lto.o:(.text.p66_native_export_executive)
+     db2      db2       73     1                 p66_native_export_executive
+     e25      e25       28     1         build/p66-application-split-recurrence.prg.lto.o:(.text.source_copy)
+     e25      e25       28     1                 source_copy
+     e4d      e4d       9c     1         build/p66-application-split-recurrence.prg.lto.o:(.text.scalar_exchange)
+     e4d      e4d       9c     1                 scalar_exchange
+     ee9      ee9       73     1         build/p66-application-split-recurrence.prg.lto.o:(.text.p66_native_import_executive)
+     ee9      ee9       73     1                 p66_native_import_executive
+     f5c      f5c      45e     1         build/p66-application-split-recurrence.prg.lto.o:(.text.p66_native_run_group)
+     f5c      f5c      45e     1                 p66_native_run_group
+    13ba     13ba       c1     1         build/p66-application-split-recurrence.prg.lto.o:(.text.continuation)
+    13ba     13ba       c1     1                 continuation
+    147b     147b      37e     1         build/p66-application-split-recurrence.prg.lto.o:(.text.p66_basic_step)
+    147b     147b      37e     1                 p66_basic_step
+    17f9     17f9      484     1         build/p66-application-split-recurrence.prg.lto.o:(.text.basic)
+    17f9     17f9      484     1                 basic
+    1c7d     1c7d      207     1         build/p66-application-split-recurrence.prg.lto.o:(.text.p66_descent_resolve)
+    1c7d     1c7d      207     1                 p66_descent_resolve
+    1e84     1e84      482     1         build/p66-application-split-recurrence.prg.lto.o:(.text.continuation.5)
+    1e84     1e84      482     1                 continuation.5
+    2306     2306       8e     1         build/p66-application-split-recurrence.prg.lto.o:(.text.control)
+    2306     2306       8e     1                 control
+    2394     2394      a49     1         build/p66-application-split-recurrence.prg.lto.o:(.text.arithmetic)
+    2394     2394      a49     1                 arithmetic
+    2ddd     2ddd      229     1         build/p66-application-split-recurrence.prg.lto.o:(.text.observe_source)
+    2ddd     2ddd      229     1                 observe_source
+    3006     3006      144     1         build/p66-application-split-recurrence.prg.lto.o:(.text.canonical)
+    3006     3006      144     1                 canonical
+    314a     314a      16b     1         build/p66-application-split-recurrence.prg.lto.o:(.text.prepare)
+    314a     314a      16b     1                 prepare
+    32b5     32b5      131     1         build/p66-application-split-recurrence.prg.lto.o:(.text.finish)
+    32b5     32b5      131     1                 finish
+    33e6     33e6        9     1         build/p66-application-split-recurrence.prg.lto.o:(.text.p66_display_job_finish)
+    33e6     33e6        9     1                 p66_display_job_finish
+    33ef     33ef      7a9     1         build/p66-application-split-recurrence.prg.lto.o:(.text.execute)
+    33ef     33ef      7a9     1                 execute
+    3b98     3b98      19a     1         build/p66-application-split-recurrence.prg.lto.o:(.text.continuation.10)
+    3b98     3b98      19a     1                 continuation.10
+    3d32     3d32       2d     1         build/p66-application-split-recurrence.prg.lto.o:(.text.apollo_overlay_crc16)
+    3d32     3d32       2d     1                 apollo_overlay_crc16
+    3d5f     3d5f      a46     1         build/p66-application-split-recurrence.prg.lto.o:(.text.apollo_overlay_call)
+    3d5f     3d5f      a46     1                 apollo_overlay_call
+    47a5     47a5       e4     1         build/p66-application-split-recurrence.prg.lto.o:(.text.open_file)
+    47a5     47a5       e4     1                 open_file
+    4889     4889       59     1         build/p66-application-split-recurrence.prg.lto.o:(.text.read_byte)
+    4889     4889       59     1                 read_byte
+    48e2     48e2       3a     1         build/p66-application-split-recurrence.prg.lto.o:(.text.close_file)
+    48e2     48e2       3a     1                 close_file
+    491c     491c       49     1         build/p66-application-split-recurrence.prg.lto.o:(.text.invoke.11)
+    491c     491c       49     1                 invoke.11
+    4965     4965      2f3     1         build/p66-application-split-recurrence.prg.lto.o:(.text.p66_application_basic)
+    4965     4965      2f3     1                 p66_application_basic
+    4c58     4c58      28f     1         build/p66-application-split-recurrence.prg.lto.o:(.text.native_registry_call)
+    4c58     4c58      28f     1                 native_registry_call
+    4ee7     4ee7       92     1         build/p66-application-split-recurrence.prg.lto.o:(.text.p66_application_split_resolve)
+    4ee7     4ee7       92     1                 p66_application_split_resolve
+    4f79     4f79      4b5     1         build/p66-application-split-recurrence.prg.lto.o:(.text.body)
+    4f79     4f79      4b5     1                 body
+    542e     542e       8e     1         build/p66-application-split-recurrence.prg.lto.o:(.text.bridge)
+    542e     542e       8e     1                 bridge
+    54bc     54bc       65     1         build/p66-application-split-recurrence.prg.lto.o:(.text.display)
+    54bc     54bc       65     1                 display
+    5521     5521      12a     1         build/p66-application-split-recurrence.prg.lto.o:(.text.main)
+    5521     5521      12a     1                 main
+    564b     564b      85f     1         build/p66-application-split-recurrence.prg.lto.o:(.text.run)
+    564b     564b      85f     1                 run
+    5eaa     5eaa       82     1         build/p66-application-split-recurrence.prg.lto.o:(.text.observe)
+    5eaa     5eaa       82     1                 observe
+    5f2c     5f2c       df     1         build/p66-application-split-recurrence.prg.lto.o:(.text.control.14)
+    5f2c     5f2c       df     1                 control.14
+    600b     600b      11d     1         build/p66-application-split-recurrence.prg.lto.o:(.text.display.15)
+    600b     600b      11d     1                 display.15
+    6128     6128      223     1         build/p66-application-split-recurrence.prg.lto.o:(.text.application)
+    6128     6128      223     1                 application
+    634b     634b      195     1         build/p66-application-split-recurrence.prg.lto.o:(.text.recurrence)
+    634b     634b      195     1                 recurrence
+    64e0     64e0       95     1         build/p66-application-split-recurrence.prg.lto.o:(.text.scheduler)
+    64e0     64e0       95     1                 scheduler
+    6575     6575      19d     1         build/p66-application-split-recurrence.prg.lto.o:(.text.invoke.16)
+    6575     6575      19d     1                 invoke.16
+    6712     6712        4     1         build/p66-application-split-recurrence.prg.lto.o:(.text.enter)
+    6712     6712        4     1                 enter
+    6716     6716        8     1         build/p66-application-split-recurrence.prg.lto.o:(.text.leave)
+    6716     6716        8     1                 leave
+    671e     671e        6     1         build/p66-application-split-recurrence.prg.lto.o:(.text.exit)
+    671e     671e        6     1                 exit
+    6724     6724        3     1         build/p66-application-split-recurrence.prg.lto.o:(.text.cbm_k_chrin)
+    6724     6724        3     1                 cbm_k_chrin
+    6727     6727        5     1         build/p66-application-split-recurrence.prg.lto.o:(.text.cbm_k_close)
+    6727     6727        5     1                 cbm_k_close
+    672c     672c        3     1         build/p66-application-split-recurrence.prg.lto.o:(.text.cbm_k_clrch)
+    672c     672c        3     1                 cbm_k_clrch
+    672f     672f        3     1         build/p66-application-split-recurrence.prg.lto.o:(.text.cbm_k_readst)
+    672f     672f        3     1                 cbm_k_readst
+    6732     6732       36     1         build/p66-application-split-recurrence.prg.lto.o:(.text.strlen)
+    6732     6732       36     1                 strlen
+    6768     6768       22     1         build/p66-application-split-recurrence.prg.lto.o:(.text.__memset)
+    6768     6768       22     1                 __memset
+    678a     678a        0     1         __init_array_start = .
+    678a     678a        0     1         __init_array_end = .
+    678a     678a        0     1         __fini_array_start = .
+    678a     678a        0     1         __fini_array_end = .
+    678a     678a      444     1 .rodata
+    678a     678a        c     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.arithmetic)
+    6796     6796       5c     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.observe_source)
+    67f2     67f2       28     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.execute)
+    681a     681a       1c     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.executive_fields)
+    681a     681a       1c     1                 executive_fields
+    6836     6836       17     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.selectors)
+    6836     6836       17     1                 selectors
+    684d     684d        3     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.p66_guidance_invoke.unit)
+    684d     684d        3     1                 p66_guidance_invoke.unit
+    6850     6850        3     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.p66_guidance_invoke.projection)
+    6850     6850        3     1                 p66_guidance_invoke.projection
+    6853     6853        8     1         <internal>:(.rodata.cst4)
+    685b     685b        3     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.p66_descent_invoke.length)
+    685b     685b        3     1                 p66_descent_invoke.length
+    685e     685e      150     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.p66_native_guidance_mappings)
+    685e     685e      150     1                 p66_native_guidance_mappings
+    69ae     69ae       28     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.feedback_entries)
+    69ae     69ae       28     1                 feedback_entries
+    69d6     69d6       10     1         <internal>:(.rodata.cst16)
+    69e6     69e6       15     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.p66_basic_mappings)
+    69e6     69e6       15     1                 p66_basic_mappings
+    69fb     69fb        8     1         <internal>:(.rodata.cst8)
+    6a03     6a03        4     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.exec_overlay_services)
+    6a03     6a03        4     1                 exec_overlay_services
+    6a07     6a07        a     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata..Lswitch.table.exec_overlay_module)
+    6a11     6a11      1a4     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.p66_display_job_mappings)
+    6a11     6a11      1a4     1                 p66_display_job_mappings
+    6bb5     6bb5        7     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.native_registry_bootstrap)
+    6bb5     6bb5        7     1                 native_registry_bootstrap
+    6bbc     6bbc        6     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.guard)
+    6bbc     6bbc        6     1                 guard
+    6bc2     6bc2        6     1         <internal>:(.rodata.str1.1)
+    6bc8     6bc8        4     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.services)
+    6bc8     6bc8        4     1                 services
+    6bcc     6bcc        2     1         build/p66-application-split-recurrence.prg.lto.o:(.rodata.prl_counts)
+    6bcc     6bcc        2     1                 prl_counts
+    6bce     6bce        a     1 .data
+    6bce     6bce        0     1         __data_start = .
+    6bce     6bce        6     1         build/p66-application-split-recurrence.prg.lto.o:(.data.io)
+    6bce     6bce        6     1                 io
+    6bd4     6bd4        4     1         build/p66-application-split-recurrence.prg.lto.o:(.data.modules)
+    6bd4     6bd4        4     1                 modules
+    6bd8     6bd8        0     1         __data_end = .
+    6bd8     6bd8        0     1 __data_load_start = LOADADDR(.data)
+    6bd8     6bd8        0     1 __data_size = SIZEOF(.data)
+    6bd8     6bd8       1e     1 .bss
+    6bd8     6bd8        0     1         __bss_start = .
+    6bd8     6bd8       13     1         build/p66-application-split-recurrence.prg.lto.o:(.bss.loader)
+    6bd8     6bd8       13     1                 loader
+    6beb     6beb        2     1         build/p66-application-split-recurrence.prg.lto.o:(.bss.registry.0)
+    6beb     6beb        2     1                 registry.0
+    6bed     6bed        2     1         build/p66-application-split-recurrence.prg.lto.o:(.bss.registry.1)
+    6bed     6bed        2     1                 registry.1
+    6bef     6bef        2     1         build/p66-application-split-recurrence.prg.lto.o:(.bss.registry.2)
+    6bef     6bef        2     1                 registry.2
+    6bf1     6bf1        1     1         build/p66-application-split-recurrence.prg.lto.o:(.bss.registry.4)
+    6bf1     6bf1        1     1                 registry.4
+    6bf2     6bf2        2     1         build/p66-application-split-recurrence.prg.lto.o:(.bss.failures)
+    6bf2     6bf2        2     1                 failures
+    6bf4     6bf4        2     1         build/p66-application-split-recurrence.prg.lto.o:(.bss.checkpoints)
+    6bf4     6bf4        2     1                 checkpoints
+    6bf6     6bf6        0     1         __bss_end = .
+    6bf6     6bf6        0     1 __bss_size = SIZEOF(.bss)
+    6bf6     6bf6        0     1 .noinit
+    6bf6     6bf6        0     1         __heap_start = ALIGN(., 2)
+    6bf6     6bf6        0     1 __stack = 0xd000
+    6bf6     6bf6        0     1 
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/p66-application-split-recurrence.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/p66-application-split-recurrence.prg.lto.o:(.llvm_sympart)
+       0        0      f60     4 .symtab
+       0        0      f60     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      a18     1 .strtab
+       0        0      a18     1         <internal>:(.strtab)

@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-rectify-phase9.prg from 0801 to 27C0 (1FC0 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   13/$00d,   2/$02
+.C:1190  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44816501
+>C:c080  a5 00 00 20  09                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm-rectify_phase9-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm-rectify_phase9-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-rectify_phase9-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-rectify-phase9.prg from 0801 to 2820 (2020 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  254/$0fe,  37/$25
+.C:11e2  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   45244495
+>C:c080  a5 00 00 20  09                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm-rectify_phase9-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm-rectify_phase9-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-rectify_phase9-software-stack.bin' from $c100 to $cfff

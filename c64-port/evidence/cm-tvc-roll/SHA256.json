@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tvc-roll",
+  "release": "evidence-cm-tvc-roll",
+  "files": {
+    "cm-tvc-roll-differential.log": {
+      "sha256": "368d591f3df56a7a9a2a7226a9a61b8fa53db952bf52dff692889f1ea4875bf1",
+      "bytes": 190,
+      "store": "tree"
+    },
+    "cm-tvc-roll-host.log": {
+      "sha256": "2e80b3975d9d1bffe825eed78aeea92c86e55aaa4d94d01b8239493732933d73",
+      "bytes": 1000,
+      "store": "tree"
+    },
+    "cm-tvc-roll-proof.json": {
+      "sha256": "ccd07515dec9e47de598b730056d744decc82843e515c742471261282326f985",
+      "bytes": 3136,
+      "store": "tree"
+    },
+    "cm-tvc-roll-source-map.json": {
+      "sha256": "a489bc54589895e680920c9380e9a707d973b66465f20ce6d5dc692799051828",
+      "bytes": 40052,
+      "store": "tree"
+    },
+    "cm-tvc-roll-vice.log": {
+      "sha256": "e1944382f1668dac0544a7f5417bfc76efd4deea657423cf9791a80c7c601677",
+      "bytes": 502,
+      "store": "tree"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+Independent read-only source review of both complete SERVICE_ROUTINES bodies
+Reviewers: /root/comanche_executive and /root/p66_source_map.
+Retained by /root/frozen_storage after the final accessor target rebuild.
+
+Comanche Executive owner found no concrete source-body mismatch in requested
+LM/CM groups. DEBIT preserves descriptor-dependent ITEMP1/2 and old flag word
+in ITEMP3; actual TC L returns Q=2/PC=caller+1. CM raw TS L overflow uses signed
+one INDEX rather than the low3 mask. Negative DELAYJOB, TCGETCAD overflow into
+real WAKER (clear indexed DELAYLOC/Q=WAKER+4), and GENTRAN negative/-0 scratch
+fallthrough are explicitly compiled. Older VAC5 and bounded helpers unchanged.
+
+Scalar/source owner independently found no concrete discrepancy against both
+byte-original files. GENTRAN resolves source after TS ITEMP1, including inline
+scratch aliases, then resolves destination after source load; CCS rereads the
+actual possibly-overwritten ITEMP1. Positive takes the genuine +1 backedge;
++0 returns through Q+2, negative uses CS BIT5/B5OFF, and minus zero skips CS and
+masks with CCS A=0. Block driver follows only that compiled backedge, maps
+fixed-fixed physical addresses directly and banked fixed data through FB/SUPER,
+retaining producer exclusion. LM/CM UPENT differences and CM tracker
+complement/mask/ADS agree with the original source. External WAITLIST/JOBWAKE/
+JOBSLEEP/BAILOUT/END bodies remain explicit compiled handoffs.
+
+The scalar/source owner separately reviewed the added five-line literal getter:
+bank0 physical offsets correctly subtract02000; mission alarm offsets014LM/
+013CM identify original OCT01104, and TCSLEEP/WAKECAD use original bindings.
+Invalid mission/null/unsupported address preserve the output word. No further
+issue was found; original source/body review remains final for this addition.
+
+Reviews are source inspection, not claims of independent exhaustive execution.
+Acceptance evidence is fresh unchanged original-rope execution:106496 complete
+2048+SUPER/IRQ states, full sanitizer replay, and416 exact original C64 states.
+Whole GENTRAN calls/overlap/banked ordinary operands complement iteration/alias
+proofs. Context products are sampled, not exhaustive arbitrary mission images.
+The typed ordinary-data/compiled-caller contract, producer exclusion, precise
+error continuations and external scheduler bodies remain explicit. This does
+not certify production overlay allocation or finished flight applications.
+
+Final reviewed source and retained scope identities (SHA256):
+85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef  ../Luminary099/SERVICE_ROUTINES.agc
+8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd  ../Comanche055/SERVICE_ROUTINES.agc
+7c83da729581fecbd3f87bcb237827069fcdbd548a4fe558f8dc127c792c80ee  src/service_routines.c
+dd4081134958dea76d905caf4d1f19504181e56a1d96a3ef0a6d3fbefb007084  include/service_routines.h
+1505d2cc0fd9a321517c1a6824be429ab114e54f4accfa9543d3e5416fc824eb  include/service_routines_source.h
+861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6  build/service-routines-source/audit.json
+7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194  docs/NATIVE-SERVICE-ROUTINES.md

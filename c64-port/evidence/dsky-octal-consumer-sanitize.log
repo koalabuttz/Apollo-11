@@ -1,0 +1,5 @@
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_octal_consumer.c src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_octal_display.c src/dsky_octal_verb.c src/dsky_octal_consumer.c tests/dsky_octal_verb_cases.c tests/dsky_octal_consumer_cases.c tests/dsky_octal_consumer_check.c -o build/test-dsky-octal-consumer-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-octal-consumer-sanitize
+128 full original octal consumer stages plus13 unchanged invalid guards: PASS
+python3 tools/dsky_octal_consumer_sanitize.py
+PASS all8544 complete original LM/CM uninterrupted octal consumer checkpoints source states under ASAN/UBSAN, SHA256 46f199fe0f15f16f92097ab16a7aee2efc682af9f5297259d9215a43e66066ac

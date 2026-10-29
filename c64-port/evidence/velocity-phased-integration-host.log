@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVELOCITY_INPUT_ONLY -DGRAVITY_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/velocity_phased_cases.c tests/frozen_words.c tests/test_velocity_phased.c -o build/test-velocity-phased
+build/test-velocity-phased
+96 complete source velocity phase entry/exit states: PASS

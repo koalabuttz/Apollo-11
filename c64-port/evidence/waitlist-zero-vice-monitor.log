@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/waitlist_zero.prg from 0801 to 5E66 (5666 bytes)
+WATCH: 1  C:$5ea1  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 5ea1)   96/$060,  30/$1e
+.C:0ef1  8E A1 5E    STX $5EA1      - A:00 X:A5 Y:00 SP:f1 N.-....C    4409022
+>C:5ea1  a5 00 00 00  1d                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/waitlist_zero-vice-mailbox.bin' from $5ea1 to $5ea5
+Saving file `/workspace/Apollo-11/c64-port/build/waitlist_zero-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/waitlist_zero-vice-software-stack.bin' from $c100 to $cfff

@@ -1,0 +1,11 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_fleshpot_snapshot.c src/lm_fleshpot.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_fleshpot_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c -o build/lm-fleshpot-native
+build/lm-fleshpot-reference deps/lm-powered-fixture/MAIN.agc.bin | gzip -n -9 > build/lm-fleshpot-reference.snapshots.gz
+phase0 PC2072 Q3 A140321 L37166 EB2400 FB20000 BB20005 LOC61624 BANKSET30026 EDOP0 CYR53101 ADDRWD746 MODE0
+phase1 PC7460 Q3 A200 L30026 EB2400 FB20000 BB20005 LOC2173 BANKSET20005 EDOP1 CYR53101 ADDRWD1664 MODE0
+phase2 PC6061 Q3 A0 L0 EB2400 FB20000 BB20005 LOC2173 BANKSET20005 EDOP1 CYR53101 ADDRWD1670 MODE0
+phase3 PC4631 Q6747 A0 L175001 EB0 FB20000 BB20000 LOC2173 BANKSET20005 EDOP0 CYR0 ADDRWD1670 MODE0
+build/lm-fleshpot-native | gzip -n -9 > build/lm-fleshpot-native.snapshots.gz
+cmp build/lm-fleshpot-reference.snapshots.gz build/lm-fleshpot-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/lm_fleshpot_snapshot.c src/lm_fleshpot.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_fleshpot_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c -o build/lm-fleshpot-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-fleshpot-sanitize | gzip -n -9 > build/lm-fleshpot-sanitize.snapshots.gz
+cmp build/lm-fleshpot-reference.snapshots.gz build/lm-fleshpot-sanitize.snapshots.gz

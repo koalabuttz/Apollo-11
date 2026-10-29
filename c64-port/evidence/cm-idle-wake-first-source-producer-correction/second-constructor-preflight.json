@@ -1,0 +1,4 @@
+{
+  "scope": "Native preflight rejected unextended negative FCADR051332 in raw16 A; constructor corrected to agc_extend(051332). No native behavior changed. Native runner exited2 before any source state accepted.",
+  "constructor_sha256": "fa45222076f1de08bef0626b1706c6ae9deca55e013a3f658efb63a55b3bc59f"
+}

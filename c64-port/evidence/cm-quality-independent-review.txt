@@ -1,0 +1,8 @@
+Independent read-only source review by /root/general_division, 2026-10-11.
+
+No concrete discrepancy found within the declared CM QUALITY source caller/data domain.
+Actual URPV=VAC+016 (pairs+016/+020/+022), E3J22R2M physical01776 with E3 lead-in, factor5/8{024000,0}, saved QUALITY3 FCADR023146 match original RT8 source/listing. DVXSC performs DMPSUB/VROUND X/Y/Z with exact exchange order; carry/OVF math agrees with immutable product helper and final vector-mode debris. PDDL advances push2 versus6 according to old MODE and retains displaced stack/MPAC aliases. Terminal RVQ and clear-MOONFLAG NBRANCH are actual NEWOPS without an invented check. Legal VACs keep operands separate from MPAC stores. External orbital algorithm and scheduling bodies remain outside the claim. No edits made by reviewer.
+
+Reviewed runtime identities:
+29fa1aee31c61ba40bcd9c47bb78920ffb50399898a2c67846c95b373ebfe68b  src/cm_quality.c
+ba6a95d2cd117883543ae402e395bb2e26670c731e61016dbebeb575532a8266  include/cm_quality.h

@@ -1,0 +1,41 @@
+{
+  "actual_executed_source_states": 24576,
+  "source_stream_sha256": "6587e4ac93aeeac4c831455533b352c31275a3124368f132ec1958ae98f74d89",
+  "target_contexts": 64,
+  "target_full_samples": 2,
+  "target_full_sample_fields": 2061,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004000",
+  "software_stack_bytes": 148,
+  "modules": [
+    {
+      "id": 239,
+      "filename": "G239",
+      "byte_count": 6739,
+      "crc16": 4207,
+      "sha256": "edb6142315ea653877fe0d5a187796d4697a2268e284d7286f1374f579bc0001",
+      "prg": "cm-waitlist-internal-239.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 3166,
+      "crc16": 48687,
+      "sha256": "1af884a3ab5a377f7e64f687a6830a061f4ec31b66bc3ef066d152e93da5533b",
+      "prg": "cm-waitlist-internal-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 9981,
+      "crc16": 56425,
+      "sha256": "4c689f28629df67c04be3b2e40488ba16ba170833716bc59bd4992c8391989db",
+      "prg": "cm-waitlist-internal-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual internal DLY2-1/VARDELAY/FIXDELAY and complete WAIT2 insertion, unusual interval/TS overflow and genuine caller/TASKOVER/BAILOUT/TC1203 frontiers; selected task/recovery body external"
+}

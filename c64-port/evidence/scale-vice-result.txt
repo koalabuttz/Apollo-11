@@ -1,0 +1,11 @@
+PASS: VICE PAL, 292 complete original-assembly checkpoints; DP corners, all integrated skip inputs and three four-step histories; restoring I
+Mailbox: a50000240103522924
+Target state bytes / modeled words: 82 41
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/scale-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/scale-vice-monitor.log -monlog -limitcycles 1000000000
+below-half rounding: 23415 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+exact-half rounding: 24297 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+positive low-word propagation: 24799 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+negative low-word propagation: 25737 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+complete RODCOMP prefix plus scaling: 19838 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+scale-vice-hardware-stack.bin: measured sentinel extent 26 bytes
+scale-vice-software-stack.bin: measured sentinel extent 187 bytes

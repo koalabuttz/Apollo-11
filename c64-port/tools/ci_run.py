@@ -1,0 +1,687 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+"""Run make targets in parallel for CI, fetching skipped legacy evidence on demand.
+
+Lean checkouts (tools/ci_checkout.sh) leave legacy evidence blobs over 1 MB out
+of the tree. When a target fails because one of them is missing, this pulls
+that blob from git (or a release-stored file through tools/evidence.py) and
+reruns the target, so the suite needs only the evidence it actually reads.
+
+  python3 tools/ci_run.py [-j N] [--log-dir build/ci-logs] TARGET...
+  python3 tools/ci_run.py --group test        # every prerequisite of `make test`
+  python3 tools/ci_run.py --count-shards 4 TARGET...  # runners a PR's targets need
+"""
+import argparse
+import concurrent.futures
+import contextlib
+import gzip
+import json
+import lzma
+import os
+import pathlib
+import re
+import signal
+import subprocess
+import sys
+import threading
+import time
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+MISSING = re.compile(r"(?:No such file or directory|cannot open|not found)[^\n]*?(evidence/[A-Za-z0-9._/+-]+)"
+                     r"|(evidence/[A-Za-z0-9._/+-]+)[^\n]*?(?:No such file or directory|not found)")
+BUILD_OUTPUT = re.compile(r"No such file or directory: '[^']*?/c64-port/(build/[^']+)'|"
+                          r"cmp: (build/[^:]+): No such file|"
+                          r"cannot open (build/[^:\s]+): No such file|"
+                          # generated headers included from build/ (-Ibuild)
+                          r"fatal error: '([A-Za-z0-9_.-]+\.h)' file not found")
+# A failure that two make processes sharing build/ can cause: a file another
+# target is rewriting or has not finished writing. Only these get the serial
+# rerun; a check that ran and reported wrong results fails the same way alone.
+RACE = re.compile(r'Text file busy|No such file or directory|File exists|Directory not empty|'
+                  r'Resource temporarily unavailable|\[Errno|Killed|Segmentation fault|Bus error|'
+                  r'truncated|unexpected end of file|file format not recognized|file not found|'
+                  # gcov: another make process rebuilt the .gcno under a running cover check
+                  r'stamp mismatch with notes file|'
+                  # make: a tool binary another target is relinking can't be run yet
+                  r'Error 126')
+
+
+def missing_build(output):
+    """The build/ inputs a failed command names, headers mapped into build/."""
+    found = {next(filter(None, m)) for m in BUILD_OUTPUT.findall(output)}
+    return {p if p.startswith('build/') else 'build/' + p for p in found}
+LOCK = threading.Lock()
+# Build scripts write fixed build/ paths (module manifests, generated headers).
+# Two targets running one at once, or a target's recipe and another target's
+# producer, interleave those writes (nightly c64-legacy 5: p66_guidance_build.py
+# ran twice at once and vice-legacy-p66-outlined linked a mixed header). One
+# lock per script name; a target holds the locks of the scripts its recipe
+# runs, in name order, and a producer holds its own, so no thread waits on
+# a second lock while holding one.
+_SCRIPT_LOCKS = {}
+
+
+def script_lock(name):
+    with LOCK:
+        return _SCRIPT_LOCKS.setdefault(name, threading.RLock())
+
+
+def recipe_scripts(target):
+    recipe = ci_rules().get(target, ((), ''))[1]
+    return sorted(set(re.findall(r'tools/([A-Za-z0-9_]+_build\.py)', recipe)))
+# Recipe text that writes the path that follows it.
+WRITES = r'(>|-o|-Map[,=])\s*'
+TOOL_ARGS = {'--cc': 'MOS_CC', '--mos-cc': 'MOS_CC', '--c1541': 'C1541'}
+
+
+def tool_args(script, make_args):
+    """Toolchain options a producer script accepts, from make args or the environment."""
+    values = dict(arg.split('=', 1) for arg in make_args if '=' in arg)
+    text = script.read_text(errors='replace')
+    argv = []
+    for option, variable in TOOL_ARGS.items():
+        value = values.get(variable) or os.environ.get(variable)
+        if value and f"'{option}'" in text:
+            argv += [option, value]
+    return argv
+
+
+def group_targets(group):
+    sys.path.insert(0, str(ROOT / 'tools'))
+    import ci_affected
+    rules = ci_affected.database()
+    core = {'test': ['test-core'], 'sanitize': ['sanitize-core']}.get(group, [])
+    return core + sorted(t for t in rules.get(group, (set(), ''))[0] if t != 'all')
+
+
+def restore(path):
+    """Materialize one evidence file skipped by the lean checkout."""
+    target = ROOT / path
+    if target.exists():
+        return False
+    parts = pathlib.PurePosixPath(path).parts
+    if len(parts) == 3 and (ROOT / 'evidence' / parts[1] / 'SHA256.json').is_file():
+        result = subprocess.run([sys.executable, 'tools/evidence.py', 'fetch', parts[1]], cwd=ROOT)
+        return result.returncode == 0 and target.exists()
+    blob = subprocess.run(['git', 'cat-file', 'blob', f'HEAD:c64-port/{path}'], cwd=ROOT,
+                          stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    if blob.returncode:
+        return False
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(blob.stdout)
+    for sibling in siblings(path):
+        restore(sibling)
+    return True
+
+
+def siblings(path):
+    """Skipped files that differ from `path` only in their numbers.
+
+    Chunked evidence (`foo-source-11.snapshots.bin.xz`) is read part by part,
+    so one missing chunk means the rest are missing too; fetch them together
+    instead of one failing rerun per chunk."""
+    sparse = ROOT.parent / '.git' / 'info' / 'sparse-checkout'
+    if not sparse.is_file():
+        return []
+    shape = re.compile(re.sub(r'\\d+|\d+', r'\\d+', re.escape(path)) + '$')
+    found = []
+    for line in sparse.read_text().splitlines():
+        if line.startswith('!/c64-port/'):
+            other = line[len('!/c64-port/'):]
+            if other != path and shape.match(other) and not (ROOT / other).exists():
+                found.append(other)
+    return found
+
+
+def evidence_names():
+    """Every evidence path, checked out or not: git's index plus release manifests."""
+    names = subprocess.run(['git', 'ls-files', 'evidence'], cwd=ROOT, stdout=subprocess.PIPE,
+                           text=True).stdout.split()
+    for manifest in (ROOT / 'evidence').glob('*/SHA256.json'):
+        files = json.loads(manifest.read_text()).get('files', {})
+        names += [manifest.parent.relative_to(ROOT).as_posix() + '/' + name for name in files]
+    return names
+
+
+# Earlier attempts kept beside a milestone's final evidence; never expected values.
+ARCHIVED = re.compile(r'-(failure|first-|timeout|prequalification)[^/]*/|/build/')
+
+
+def frozen(path):
+    """Copy a build/ input from its frozen copy under evidence/, if there is one.
+
+    Expected values (final-source samples, target results, reference
+    snapshots) were frozen into evidence/ when each milestone closed; the
+    build/ copy the old serial loop left behind is the same bytes. Build
+    products (PRGs, maps, disk images, headers, binaries) are never copied:
+    a test must run what the current source builds."""
+    name = pathlib.PurePosixPath(path).name
+    if pathlib.PurePosixPath(name).suffix in ('', '.prg', '.map', '.d64', '.d81', '.h', '.o', '.elf'):
+        return None
+    if name.endswith('-modules.json'):
+        return None  # a disk manifest: its build script also writes the PRGs it lists
+    # build/x.bin matches evidence/**/x.bin; build/dir/x.json needs evidence/**/dir/x.json.
+    tail = '/' + path[len('build/'):]
+    for suffix, opener in (('', open), ('.gz', gzip.open), ('.xz', lzma.open)):
+        for source in sorted((n for n in evidence_names()
+                              if n.endswith(tail + suffix) and (tail.count('/') > 1 or n.count('/') <= 2)
+                              and not ARCHIVED.search(n)),
+                             key=lambda n: (n.count('/'), n)):
+            with LOCK:
+                restore(source)
+            if not (ROOT / source).is_file():
+                continue
+            with opener(ROOT / source, 'rb') as data:
+                (ROOT / path).parent.mkdir(parents=True, exist_ok=True)
+                (ROOT / path).write_bytes(data.read())
+            return source
+    return None
+
+
+MAKE_VAR = re.compile(r'\$\(if \$\(([A-Z_]+)\),\$\(\1\),[^)]*\)|\$\(([A-Z_]+)\)')
+
+
+DERIVED = re.compile(r'^([A-Z_]+)\s*:?=\s*\$\(if \$\(filter ([^,]+),\$\(([A-Z_]+)\)\),([^,)]*),([^,)]*)\)\s*$', re.M)
+
+
+def submake_writes(line, path, text=''):
+    """The VAR=value assignments under which a recipe line writes `path`, or None.
+
+    Per-variant sub-makefile rules name outputs like
+    build/x$(if $(SELECTOR),$(SELECTOR),0).map; match those against the
+    missing file and pass the variant back as a make variable. A name built
+    from a derived variable (TREE = $(if $(filter 1,$(MISSION)),cm,lm), in
+    the makefile `text`) is passed back as the variable it derives from."""
+    for *_, out in re.findall(WRITES + r'"?(build/(?:\$\((?:[^()]|\([^()]*\))*\)|[^\s"$])+)', line):
+        pattern, names, last = '', [], 0
+        for var in MAKE_VAR.finditer(out):
+            name = var[1] or var[2]
+            pattern += re.escape(out[last:var.start()])
+            pattern += f'(?P={name})' if name in names else f'(?P<{name}>[A-Za-z0-9_]+)'
+            names.append(name)
+            last = var.end()
+        match = re.fullmatch(pattern + re.escape(out[last:]), path)
+        if match:
+            assigned = []
+            derived = {d[0]: d[1:] for d in DERIVED.findall(text)}
+            for name, value in match.groupdict().items():
+                if name in derived:
+                    when, source, then, other = derived[name]
+                    default = re.search(r'^' + source + r'\s*\?=\s*(\S+)', text, re.M)
+                    unless = default[1] if default and default[1] != when else '1' if when == '0' else '0'
+                    name, value = source, when if value == then else unless if value == other else None
+                    if value is None:
+                        break
+                assigned.append(f'{name}={value}')
+            else:
+                return assigned
+    return None
+
+
+_TEXT = None
+
+
+def makefile_text():
+    """The Makefile and every tools/*.mk, for derived-variable lookups."""
+    global _TEXT
+    if _TEXT is None:
+        _TEXT = '\n'.join(p.read_text(errors='replace')
+                           for p in [ROOT / 'Makefile', *sorted((ROOT / 'tools').glob('*.mk'))])
+    return _TEXT
+
+
+def produce(path, target, log_dir, make_args, attempts, stack=()):
+    """Recreate a build/ input that the old serial loop left behind.
+
+    Legacy targets read streams written by the oracle differentials
+    (`make differential`), by their own module's differential target, or by
+    another target's recipe. Try those producers in that order."""
+    if (ROOT / path).exists():
+        return True
+    source = frozen(path)
+    if source:
+        print(f'  {target}: copied {path} from {source}', flush=True)
+        return True
+    rules = ci_rules()
+    candidates = []
+    if path in rules:
+        candidates.append(('make', path))
+    if path.endswith('.map'):
+        # A map linked beside a PRG from a pattern rule (build/x-%.prg):
+        # make the PRG some rule depends on, and make links the map with it.
+        prg = path[:-len('.map')] + '.prg'
+        if prg in rules or any(prg in deps for deps, _ in rules.values()):
+            candidates.append(('make', prg))
+    for name, (_, recipe) in rules.items():
+        if name != target and re.search(WRITES + re.escape(path) + r'(\s|$)', recipe):
+            candidates.append(('make', name))
+        elif name != target and '$(' in recipe:
+            # Included per-variant rules (build/x-phase$(PHASE).map) run
+            # with the variables that name the missing file.
+            for line in recipe.splitlines():
+                assigned = submake_writes(line, path, makefile_text())
+                if assigned:
+                    candidates.append(('submake', ('Makefile', name, *assigned)))
+                    break
+    name = pathlib.PurePosixPath(path).name
+    stem = re.sub(r'(-(native|reference|sanitize|live|target|inputs))?(\.snapshots|\.json|\.trace)?(\.gz|\.xz)?$', '',
+                  name)
+    script = ROOT / 'tools' / (stem.replace('-', '_') + '_differential.py')
+    scripts = [script] if script.is_file() else []
+    scripts += sorted(s for s in (ROOT / 'tools').glob('*_differential.py')
+                      if s != script and s.name != 'differential.py'
+                      and path[len('build/'):] in s.read_text(errors='replace'))
+    candidates += [('script', s) for s in scripts]
+    # Sub-makefiles run through `make -f tools/<x>.mk` are not in the main
+    # database; find the rule whose recipe writes the file.
+    included = set(re.findall(r'^-?include\s+(tools/\S+\.mk)', (ROOT / 'Makefile').read_text(), re.M))
+    for mk in sorted((ROOT / 'tools').glob('*.mk')):
+        if mk.relative_to(ROOT).as_posix() in included:
+            continue
+        rule, text = None, mk.read_text(errors='replace')
+        for line in text.splitlines():
+            head = re.match(r'([A-Za-z0-9_.-]+)\s*:(?!=)', line)
+            if head:
+                rule = head[1]
+            elif rule and line.startswith('\t'):
+                assigned = submake_writes(line, path, text)
+                if assigned is not None:
+                    candidates.append(('submake', (mk.relative_to(ROOT).as_posix(), rule, *assigned)))
+                    break
+    # Build and freeze scripts that write the file under its literal name
+    # (module manifests, frozen samples, PRGs linked with -Map).
+    writers = [s for s in sorted((ROOT / 'tools').glob('*.py'))
+               if s not in scripts and not s.name.endswith(('_vice_test.py', '_differential.py'))
+               and s.name not in ('ci_run.py', 'ci_affected.py', 'legacy_vice.py')
+               and re.search(r"^.*['/]" + re.escape(name) + r"['\s].*(write_(text|bytes)|'-o'|-Map)"
+                             r"|^.*(write_(text|bytes)|'-o'|-Map).*['/]" + re.escape(name) + r"['\s]",
+                             s.read_text(errors='replace'), re.M)]
+    # Build scripts named after the file they write under a computed name
+    # (lm_interpreter_change_target_build.py writes stem+'-target-modules.json').
+    flat = name.replace('-', '_')
+    writers += sorted((s for s in (ROOT / 'tools').glob('*_build.py')
+                       if s not in writers and '_' in s.name[:-len('_build.py')]
+                       and flat.startswith(s.name[:-len('_build.py')] + '_')),
+                      key=lambda s: -len(s.name))
+    writers.sort(key=lambda s: (not s.name.endswith('_build.py'), not s.name.startswith('freeze'), s.name))
+    candidates += [('script', s) for s in writers[:4]]
+    module = target
+    for prefix in ('c64-', 'sanitize-', 'test-'):
+        module = module[len(prefix):] if module.startswith(prefix) else module
+    for rule in (f'differential-{module}', f'test-{module}'):
+        if rule in rules and rule != target:
+            candidates.append(('make', rule))
+    for kind, what in candidates:
+        if (kind == 'make' and what in stack) or (kind == 'script' and what.name in stack):
+            continue
+        label = what.name if kind == 'script' else ' '.join(what) if kind == 'submake' else what
+        print(f'  {target}: producing {path} via {label}', flush=True)
+        if kind == 'make':
+            ok = run(what, log_dir, make_args, attempts, stack)[1]
+        else:
+            if kind == 'script':
+                argv = [str(ROOT / 'deps/fixture')] if 'sys.argv[1]' in what.read_text(errors='replace') else []
+                argv += tool_args(what, make_args)
+                cmd, log = [sys.executable, str(what), *argv], log_dir / (what.stem + '.log')
+            else:
+                cmd = ['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, '-f', *what]
+                log = log_dir / '-'.join([pathlib.Path(what[0]).stem, *what[1:]]).replace('=', '')
+                log = log.with_name(log.name + '.log')
+            if kind == 'script':
+                with script_lock(what.name):
+                    # Another target's producer may have written it meanwhile.
+                    ok = (ROOT / path).exists() or produce_with(cmd, log, label, log_dir, make_args,
+                                                                attempts, stack)
+            else:
+                ok = produce_with(cmd, log, label, log_dir, make_args, attempts, stack)
+        if (ROOT / path).exists():
+            if ok:
+                return True
+            (ROOT / path).unlink()  # a failed producer may leave a truncated stream
+    return False
+
+
+def produce_with(cmd, log, label, log_dir, make_args, attempts, stack):
+    """Run a producer, first producing any build/ input it turns out to need."""
+    tried = set()
+    for _ in range(attempts):
+        proc = subprocess.run(cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        log.write_text(proc.stdout)
+        if proc.returncode == 0:
+            return True
+        built = sorted(missing_build(proc.stdout) - tried)
+        if label in stack or not built:
+            return False
+        tried.update(built)
+        if not any([produce(path, label, log_dir, make_args, attempts, stack + (label,)) for path in built]):
+            return False
+    return False
+
+
+_RULES = None
+
+
+def ci_rules():
+    global _RULES
+    with LOCK:
+        if _RULES is None:
+            sys.path.insert(0, str(ROOT / 'tools'))
+            import ci_affected
+            _RULES = ci_affected.database()
+    return _RULES
+
+
+def log_path(target, log_dir):
+    return log_dir / (re.sub(r'[^A-Za-z0-9._-]', '_', target) + '.log')
+
+
+# A target that runs far past its measured time is stuck (a VICE run waiting
+# on a disk, say). It is stopped and fails with the output it printed so far,
+# so the job log shows where it sat instead of the job hitting its own limit
+# with nothing printed. --timeout-factor 0 turns this off. The limit is
+# loose (at least an hour): a target's time also covers building shared
+# prerequisites such as flight-store (about 30 minutes) and sharing the
+# runner's cores, and a stuck one only has to stop before the job's limit.
+TIMEOUT_FACTOR = 3
+TIMEOUT_FLOOR = 3600
+TIMEOUTS = {}
+TIMED_OUT = -1000
+
+
+def make(cmd, timeout):
+    """subprocess.run for a make command, stopping its whole process group
+    after timeout seconds (None: no limit); returncode TIMED_OUT then."""
+    with subprocess.Popen(cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                          env=dict(os.environ, ASAN_OPTIONS='detect_leaks=0'), start_new_session=True) as p:
+        try:
+            out, _ = p.communicate(timeout=timeout)
+            code = p.returncode
+        except subprocess.TimeoutExpired:
+            for sig, wait in ((signal.SIGTERM, 10), (signal.SIGKILL, None)):
+                with contextlib.suppress(ProcessLookupError):
+                    os.killpg(p.pid, sig)
+                try:
+                    out, _ = p.communicate(timeout=wait)
+                    break
+                except subprocess.TimeoutExpired:
+                    continue
+            code = TIMED_OUT
+    return subprocess.CompletedProcess(cmd, code, out or '')
+
+
+def run(target, log_dir, make_args, attempts, stack=()):
+    log = log_path(target, log_dir)
+    start = time.monotonic()
+    tried = set()
+    for _ in range(attempts):
+        with contextlib.ExitStack() as held:
+            for name in recipe_scripts(target):
+                held.enter_context(script_lock(name))
+            proc = make(['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, target],
+                        TIMEOUTS.get(target))
+        log.write_text(proc.stdout)
+        if proc.returncode == TIMED_OUT:
+            return target, False, time.monotonic() - start, proc.stdout[-3000:] + (
+                f'\n  {target}: stopped after {TIMEOUTS[target]:.0f}s, far over its measured time;'
+                ' the output above is where it sat')
+        if proc.returncode == 0:
+            # A passing target's `summary:` lines (its per-case counts) go
+            # into the CI log under its PASS line.
+            return target, True, time.monotonic() - start, '\n'.join(
+                '  ' + line for line in proc.stdout.splitlines() if line.startswith('summary: '))
+        built = sorted(missing_build(proc.stdout) - tried)
+        if built:
+            tried.update(built)
+            ran = [produce(path, target, log_dir, make_args, attempts, stack + (target,)) for path in built]
+            if any(ran):
+                continue
+        if 'missing/outside evidence file' in proc.stdout and '--coverage' not in tried:
+            # The coverage audit names categories, not paths: fetch every
+            # release-stored file that a coverage certificate cites.
+            tried.add('--coverage')
+            with LOCK:
+                fetch = subprocess.run([sys.executable, 'tools/evidence.py', 'fetch', '--coverage'], cwd=ROOT)
+            if fetch.returncode == 0:
+                print(f'  {target}: fetched coverage evidence, rerunning', flush=True)
+                continue
+        wanted = {(a or b).rstrip("'.,:)") for a, b in MISSING.findall(proc.stdout)} - tried
+        tried |= wanted
+        with LOCK:
+            # Another target may have restored the file meanwhile; that counts.
+            fetched = [p for p in sorted(wanted) if restore(p) or (ROOT / p).exists()]
+        if not fetched:
+            break
+        print(f'  {target}: fetched {len(fetched)} skipped evidence file(s), rerunning', flush=True)
+    return target, False, time.monotonic() - start, proc.stdout[-3000:]
+
+
+# Per-target seconds measured on CI runners (tools/ci_target_seconds.py
+# rebuilds it from a run's logs). --shard balances the shards by them.
+# A PR that adds or retimes targets puts their seconds in a file of its own
+# under tools/ci_target_seconds.d/ (same shape, read after the main file),
+# so two PRs never edit the same lines; the next refresh folds them in.
+WEIGHTS = ROOT / 'tools/ci_target_seconds.json'
+
+
+def covered_by_vice(targets):
+    """c64-<x> targets whose vice-<x> is also listed and does all their work:
+    a prerequisite of vice-<x> (its make runs c64-<x>'s recipe), or no
+    recipe of their own and every prerequisite (the PRGs) also one of
+    vice-<x>'s. Run as a separate make process beside vice-<x>, they only
+    build the same PRGs again, and the two can race writing them."""
+    listed, rules = set(targets), ci_rules()
+    covered = set()
+    for target in targets:
+        vice = 'vice-' + target[len('c64-'):]
+        if target.startswith('c64-') and vice in listed and target in rules and vice in rules:
+            prereqs, recipe = rules[target]
+            if target in rules[vice][0] or (not recipe.strip() and set(prereqs) <= set(rules[vice][0])):
+                covered.add(target)
+    return covered
+
+
+def overlay_paths(weights_path):
+    """The per-PR timing files beside the main one, in name order."""
+    return sorted(weights_path.with_suffix('.d').glob('*.json'))
+
+
+def load_weights(weights_path):
+    weights = {}
+    for path in [weights_path, *overlay_paths(weights_path)]:
+        for table in json.loads(path.read_text()).values():
+            if isinstance(table, dict):
+                weights.update({t: float(v) for t, v in table.items() if isinstance(v, (int, float))})
+    return weights
+
+
+PART = re.compile(r'^(.+)-(\d+)$')
+
+
+def target_weights(targets, weights):
+    """Seconds for each target. A part never measured (<name>-<k>) whose
+    whole <name> was measured gets an even share of it, so splitting a
+    target needs no timing edit; any other unmeasured target counts as the
+    median."""
+    parts = {}
+    for t in targets:
+        m = PART.match(t)
+        if t not in weights and m and m[1] in weights:
+            parts[m[1]] = max(parts.get(m[1], 0), int(m[2]))
+    known = sorted(weights[t] for t in targets if t in weights)
+    default = known[len(known) // 2] if known else 1.0
+    out = {}
+    for t in targets:
+        m = PART.match(t)
+        out[t] = (weights[t] if t in weights else
+                  weights[m[1]] / parts[m[1]] if m and m[1] in parts else default)
+    return out
+
+
+def target_timeouts(targets, weights, factor):
+    """How long each measured target may run: factor x its seconds, at
+    least TIMEOUT_FLOOR. A target never measured (alone or as a part of a
+    measured whole) has no limit: the median it is weighted at says nothing
+    about how long it takes (flight-restart-check, about 12 minutes, was
+    stopped at the floor on #1016)."""
+    seconds = target_weights(targets, weights)
+    measured = {t for t in targets if t in weights or (PART.match(t) and PART.match(t)[1] in weights)}
+    return {t: max(TIMEOUT_FLOOR, factor * s) for t, s in seconds.items() if t in measured}
+
+
+# A PR's c64 job gets another runner for each RUNNER_SECONDS of measured
+# target time (4 targets run at once on a runner, so about 15 minutes of
+# wall time each), up to --count-shards.
+RUNNER_SECONDS = 3600
+
+
+def count_shards(targets, most, weights_path):
+    """Runners for these targets: enough that each has about RUNNER_SECONDS of
+    measured work, between 1 and most."""
+    try:
+        weights = load_weights(weights_path)
+    except (OSError, ValueError):
+        return 1
+    total = sum(target_weights(targets, weights).values())
+    # Never more runners than targets: an empty shard has nothing to build.
+    return max(1, min(most, len(targets), -(-int(total) // RUNNER_SECONDS)))
+
+
+# A target whose run took more than STALE_RATIO times its weight, or
+# STALE_SECONDS more, unbalances the shards it lands on (a weight is only
+# refreshed by hand, tools/ci_target_seconds.py), so the run says so.
+STALE_RATIO = 2
+STALE_SECONDS = 1200
+
+
+def stale_weights(results, weights_path):
+    """A warning line for each result that ran well over its weight, naming
+    the timing file to put its new seconds in."""
+    try:
+        weights = load_weights(weights_path)
+    except (OSError, ValueError):
+        return []
+    weight = target_weights([r['target'] for r in results], weights)
+    source = {}
+    for path in [weights_path, *overlay_paths(weights_path)]:
+        for table in json.loads(path.read_text()).values():
+            if isinstance(table, dict):
+                source.update({t: path for t in table})
+    lines = []
+    for r in sorted(results, key=lambda r: r['target']):
+        t, seconds, w = r['target'], r['seconds'], weight[r['target']]
+        if seconds <= max(STALE_RATIO * w, w + STALE_SECONDS):
+            continue
+        file = source.get(t)
+        where = (f'update {file.relative_to(ROOT)}' if file and file != weights_path else
+                 f'put it in tools/ci_target_seconds.d/{t}.json (or refresh {weights_path.relative_to(ROOT)})')
+        lines.append(f"{t} took {seconds:.0f}s against its weight of {w:.0f}s"
+                     f"{'' if t in weights else ' (unmeasured)'}: {where}")
+    return lines
+
+
+def shard_targets(targets, k, n, weights_path):
+    """Shard k of n: longest target first onto the least loaded shard, by
+    measured seconds (a target never measured counts as the median). Without
+    a weights file, every Nth target from the Kth, as before."""
+    try:
+        weights = load_weights(weights_path)
+    except (OSError, ValueError):
+        return targets[k::n]
+    weight = target_weights(targets, weights)
+    loads = [0.0] * n
+    mine = []
+    for target in sorted(targets, key=lambda t: (-weight[t], t)):
+        shard = min(range(n), key=lambda i: (loads[i], i))
+        loads[shard] += weight[target]
+        if shard == k:
+            mine.append(target)
+    # Longest first, so a long VICE run starts as soon as the shard does
+    # rather than after the short ones that happen to sort before it.
+    return mine
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('targets', nargs='*')
+    parser.add_argument('--group', action='append', default=[])
+    parser.add_argument('-j', '--jobs', type=int, default=os.cpu_count() or 2)
+    parser.add_argument('--log-dir', type=pathlib.Path, default=ROOT / 'build/ci-logs')
+    parser.add_argument('--attempts', type=int, default=30)
+    parser.add_argument('--make-arg', action='append', default=[])
+    parser.add_argument('--summary', type=pathlib.Path)
+    parser.add_argument('--shard', metavar='K/N',
+                        help='run only shard K (0-based) of N, balanced by --weights')
+    parser.add_argument('--weights', type=pathlib.Path, default=WEIGHTS,
+                        help='per-target seconds from earlier runs (default %(default)s)')
+    parser.add_argument('--timeout-factor', type=float, default=TIMEOUT_FACTOR,
+                        help='stop a target after this many times its weight, at least '
+                             f'{TIMEOUT_FLOOR}s (0: never; default %(default)s)')
+    parser.add_argument('--count-shards', type=int, metavar='MAX',
+                        help='print how many shards (1 to MAX) the targets need, and run nothing')
+    args = parser.parse_args()
+    targets = list(dict.fromkeys(args.targets + [t for g in args.group for t in group_targets(g)]))
+    covered = covered_by_vice(targets)
+    if covered:
+        print(f'{len(covered)} c64- targets run as part of their vice- target:', ' '.join(sorted(covered)),
+              flush=True)
+        targets = [t for t in targets if t not in covered]
+    if args.count_shards:
+        print(count_shards(targets, args.count_shards, args.weights))
+        return 0
+    if args.shard:
+        k, n = (int(x) for x in args.shard.split('/'))
+        targets = shard_targets(targets, k, n, args.weights)
+    if not targets:
+        print('nothing to run')
+        return 0
+    if args.timeout_factor > 0:
+        TIMEOUTS.update(target_timeouts(targets, load_weights(args.weights), args.timeout_factor))
+    args.log_dir.mkdir(parents=True, exist_ok=True)
+    (ROOT / 'build').mkdir(exist_ok=True)
+    # VICE exits 1 at startup when its XDG cache/config directory is missing;
+    # some *_vice_test.py scripts point XDG there without creating it, and on
+    # a c64 shard no earlier target may have.
+    for name in ('vice-cache', 'vice-config'):
+        (ROOT / 'build' / name).mkdir(exist_ok=True)
+    results = []
+    with concurrent.futures.ThreadPoolExecutor(args.jobs) as pool:
+        futures = [pool.submit(run, t, args.log_dir, args.make_arg, args.attempts) for t in targets]
+        for future in concurrent.futures.as_completed(futures):
+            target, ok, seconds, tail = future.result()
+            results.append({'target': target, 'ok': ok, 'seconds': round(seconds, 1)})
+            print(f"{'PASS' if ok else 'FAIL'} {target} ({seconds:.0f}s)", flush=True)
+            if tail:
+                print(tail, flush=True)
+    failed = sorted(r['target'] for r in results if not r['ok'])
+    # Separate make processes can race on a shared intermediate; a real
+    # failure fails again when run alone. A failure with no sign of a race
+    # is not rerun (a 10-minute VICE check that reported wrong words would
+    # only report them again).
+    raced = [t for t in failed if RACE.search(log_path(t, args.log_dir).read_text(errors='replace'))]
+    if failed != raced:
+        print('not rerun, no sign of a race:', ' '.join(t for t in failed if t not in raced), flush=True)
+    if raced:
+        print('rerunning failed targets one at a time:', ' '.join(raced), flush=True)
+        for target in raced:
+            _, ok, seconds, tail = run(target, args.log_dir, args.make_arg, args.attempts)
+            print(f"{'PASS' if ok else 'FAIL'} {target} (serial, {seconds:.0f}s)", flush=True)
+            if not ok:
+                print(tail, flush=True)
+            for r in results:
+                if r['target'] == target:
+                    r.update(ok=ok, serial=True)
+        failed = sorted(r['target'] for r in results if not r['ok'])
+    if args.summary:
+        args.summary.write_text(json.dumps({'failed': failed, 'results': results}, indent=1) + '\n')
+    # A warning, not a failure: the shards still ran, only unevenly.
+    for line in stale_weights(results, args.weights):
+        print(f"{'::warning title=stale CI weight::' if os.environ.get('GITHUB_ACTIONS') else 'warning: '}{line}",
+              flush=True)
+    print(f'{len(results) - len(failed)}/{len(results)} targets passed' +
+          (': failed ' + ' '.join(failed) if failed else ''))
+    return 1 if failed else 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -1,0 +1,8 @@
+PASS: 16384 full original/native2055-value states; snapshot bc9551d9da8468e9339ad3e707981c13c38615bdb44aeb93506e95f79f97246a\n{
+  "source": "INTERPRETER.agc",
+  "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+  "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+  "indentation_repairs": 36,
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}

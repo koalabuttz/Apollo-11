@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete cm_makeplay_sleep group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 5141
+cm_makeplay_sleep-hardware-stack.bin: measured stack extent 14 bytes
+cm_makeplay_sleep-software-stack.bin: measured stack extent 73 bytes

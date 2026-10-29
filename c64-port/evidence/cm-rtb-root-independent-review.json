@@ -1,0 +1,22 @@
+{
+  "original_source_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "unique_original_local_words": 206,
+  "word_ownership": {
+    "evidence/rtb-angles-proof.json": 97,
+    "evidence/rtb-agreement-proof.json": 38,
+    "evidence/rtb-vector-proof.json": 45,
+    "evidence/rtb-pulse-return-proof.json": 1,
+    "evidence/cm-quality-proof.json": 25
+  },
+  "source_unchanged_from_baseline": true,
+  "dependency_hashes_verified": true,
+  "whole_local_source_translation": true,
+  "whole_application_translation": false,
+  "reviewed_boundaries": [
+    "Actual DANZIG Executive/interpreter continuation outside containing source",
+    "Actual bank07 IMUPULSE service/device backend",
+    "Actual ORBITAL_INTEGRATION NBRANCH/QUALITY3 continuation after local QUALITY body"
+  ],
+  "qualification": "All original containing-file local entry/instruction/data words have source-qualified native ownership within stated ordinary canonical, fixed-return, legalVAC and excluded-producer domains. QUALITY1/2 uses actual ORBITAL_INTEGRATION caller QPRET023146 and exposes every pending/genuine source return. UNIT+1 is independently composed; actual IMUPULSE callee and DANZIG services remain explicit external boundaries."
+}

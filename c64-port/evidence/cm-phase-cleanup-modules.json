@@ -1,0 +1,29 @@
+[
+  {
+    "id": 218,
+    "filename": "G218",
+    "byte_count": 733,
+    "crc16": 49723,
+    "sha256": "2d9ad9eb8d2381ca315de51054635997ab0df3216bb4b9d6ba176eb7f3fdedc7",
+    "prg": "cm-phase-cleanup-218.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 5261,
+    "crc16": 62853,
+    "sha256": "b6dcd90ac157010b8d240014d70863ba1fd05be8552b7c11c488ce10c08d1788",
+    "prg": "cm-phase-cleanup-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 9924,
+    "crc16": 48530,
+    "sha256": "ab90587eb54bff9023d0af683b11ca1a03914eb18b6f053292e4242aa21ef3ad",
+    "prg": "cm-phase-cleanup-255.prg",
+    "native_control": false
+  }
+]

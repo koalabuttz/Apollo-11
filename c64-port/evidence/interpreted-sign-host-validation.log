@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_interpreted_sign.c tests/frozen_words.c src/interpreted_sign.c src/agc_word.c src/agc_multiword.c tests/interpreted_sign_cases.c -o build/test-interpreted-sign
+build/test-interpreted-sign
+256 complete original LM/CM COMP/SIGN states: PASS

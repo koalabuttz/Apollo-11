@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_decimal.prg from 0801 to 45F7 (3DF7 bytes)
+WATCH: 1  C:$65f8  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 65f8)  181/$0b5,  43/$2b
+.C:1a92  8E F8 65    STX $65F8      - A:00 X:A5 Y:00 SP:f1 NV-....C  304797382
+>C:65f8  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal-vice-mailbox.bin' from $65f8 to $65fc
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal-vice-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/dsky_decimal.prg from 0801 to 46B1 (3EB1 bytes)
+WATCH: 1  C:$66b2  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 66b2)  192/$0c0,  28/$1c
+.C:1ae5  8E B2 66    STX $66B2      - A:00 X:A5 Y:00 SP:f1 NV-....C  305250148
+>C:66b2  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal-vice-mailbox.bin' from $66b2 to $66b6
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal-vice-software-stack.bin' from $c100 to $cfff

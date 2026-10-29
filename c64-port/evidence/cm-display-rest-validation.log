@@ -1,0 +1,10 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_display_rest.c src/agc_word.c src/cm_display_rest.c tests/cm_display_rest_cases.c tests/cm_display_rest_check.c -o build/test-cm-display-rest
+build/test-cm-display-rest
+60 full CM display REST source states and30 unchanged invalid guards: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_display_rest.c src/agc_word.c src/cm_display_rest.c tests/cm_display_rest_cases.c tests/cm_display_rest_check.c -o build/test-cm-display-rest-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-display-rest-sanitize
+60 full CM display REST source states and30 unchanged invalid guards: PASS
+python3 tools/cm_display_rest_sanitize.py
+PASS all3072 complete original LM/CM NVDSP/REST/RESTSLEP source states under ASAN/UBSAN, SHA256 b50aeba703c0b9e1cf5b04bf8c9ee8099c38b2663e0026e8e9b86a40dc7e315f
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_display_rest_snapshot.c src/agc_word.c src/cm_display_rest.c tests/cm_display_rest_cases.c tests/cm_display_rest_check.c -o build/cm-display-rest-route-port
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_display_rest_diagnostic.c src/agc_word.c src/cm_display_rest.c tests/cm_display_rest_cases.c tests/cm_display_rest_check.c -Wl,-Map,build/cm_display_rest.map -o build/cm_display_rest.prg

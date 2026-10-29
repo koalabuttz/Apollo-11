@@ -1,0 +1,96 @@
+{
+ "scenario": "lm-p42-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 57000,
+ "keys": "@200V48E@600V21E11002E@1400V33E@2000V21E+10776E@2800V33E@3200V37E30E@4000V25E+00102E+00034E+00000E@5000V33E@5600V25E-00764E+00000E+00000E@6600V33E@7400V33E@9000V37E42E@10200E@48500V33E@52000V33E@53000V33E@54000V37E00E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036673",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_ENGINE_LAG": "0.2",
+  "FLIGHT_LOAD": "100:tools/flight_scenarios/lm-doi.load",
+  "FLIGHT_POKE": "10000:032=77776,10000:033=60216,10000:034=74211,10000:3235=77776,10000:3236=60216,10000:3237=74211",
+  "FLIGHT_STAGE": "150",
+  "FLIGHT_ASCENT": "4888"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 57000,
+ "periods_taken": 57000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 57000,
+ "native_routines": 2724490,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 2787300,
+  "yaagc": 2755935,
+  "percent": 1.1,
+  "routines": 13875,
+  "mean_abs_error": 24.8,
+  "abs_percent": 12.5,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +1.1% net, 12.5% routine by routine, from yaAGC's MCT over 13875 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 10,
+  "no_interrupt_to": 10,
+  "no_background_periods": 1,
+  "no_background_to": 3511
+ },
+ "reached": {
+  "36,3666": 46110,
+  "20,2004": 352
+ },
+ "arrivals": {
+  "36,3666": [
+   46110,
+   46310,
+   46510,
+   46710,
+   46910,
+   47110,
+   47310,
+   47510,
+   47710,
+   47910,
+   48110,
+   48310,
+   48514,
+   48714,
+   48910,
+   49110,
+   49314,
+   49514
+  ],
+  "20,2004": [
+   352
+  ]
+ },
+ "log_sha256": "288a05cb60c0773212865927ea7e44cc8e4a0ce699b45e5004bbe6b529cd0868"
+}

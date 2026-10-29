@@ -1,0 +1,380 @@
+{
+  "LM": {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_plane.c",
+    "source_words": 8,
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 130,
+        "label": "",
+        "op": "RLM",
+        "arguments": "",
+        "assembled_address": "42,3671",
+        "physical_fixed_word": 35769,
+        "physical_erasable_word": null,
+        "words": [
+          1157
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 131,
+        "label": "",
+        "op": "VPROJ",
+        "arguments": "VSL2",
+        "assembled_address": "42,3672",
+        "physical_fixed_word": 35770,
+        "physical_erasable_word": null,
+        "words": [
+          29977
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 132,
+        "label": "",
+        "op": "HIUNITY",
+        "arguments": "",
+        "assembled_address": "42,3673",
+        "physical_fixed_word": 35771,
+        "physical_erasable_word": null,
+        "words": [
+          3406
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 133,
+        "label": "",
+        "op": "BVSU",
+        "arguments": "BOV",
+        "assembled_address": "42,3674",
+        "physical_fixed_word": 35772,
+        "physical_erasable_word": null,
+        "words": [
+          16421
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 134,
+        "label": "",
+        "op": "RLM",
+        "arguments": "",
+        "assembled_address": "42,3675",
+        "physical_fixed_word": 35773,
+        "physical_erasable_word": null,
+        "words": [
+          1157
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 135,
+        "label": "",
+        "op": "COVCNV",
+        "arguments": "",
+        "assembled_address": "42,3676",
+        "physical_fixed_word": 35774,
+        "physical_erasable_word": null,
+        "words": [
+          27583
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 136,
+        "label": "COVCNV",
+        "op": "UNIT",
+        "arguments": "BOV",
+        "assembled_address": "42,3677",
+        "physical_fixed_word": 35775,
+        "physical_erasable_word": null,
+        "words": [
+          16430
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 137,
+        "label": "",
+        "op": "SBANDEX",
+        "arguments": "",
+        "assembled_address": "42,3700",
+        "physical_fixed_word": 35776,
+        "physical_erasable_word": null,
+        "words": [
+          27621
+        ]
+      }
+    ],
+    "literal": {
+      "label": "HIUNITY",
+      "address": "23,2515",
+      "physical_fixed_word": 19789,
+      "words": [
+        0,
+        0,
+        8192,
+        0,
+        0,
+        0
+      ],
+      "source_path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+      "source_sha256": "30f22813f6d6f33f8202b65fa5895ebf535232e0437aaa9d02aec5b81e08d627",
+      "source_line_word_map": [
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 38,
+          "label": "UNITY",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2515",
+          "physical_fixed_word": 19789,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 40,
+          "label": "UNITX",
+          "op": "2DEC",
+          "arguments": ".5",
+          "assembled_address": "23,2517",
+          "physical_fixed_word": 19791,
+          "physical_erasable_word": null,
+          "words": [
+            8192,
+            0
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 42,
+          "label": "ZEROVECS",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2521",
+          "physical_fixed_word": 19793,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        }
+      ],
+      "usage": "All six original immutable vector words consumed by actual VPROJ; no padded instruction data."
+    },
+    "bindings": {
+      "NEWOPS": "6070",
+      "DANZIG": "6061",
+      "UNIT": "00,3023",
+      "SQRTABRT": "00,3402",
+      "PDVL": "6557",
+      "VPROJ": "7425",
+      "BVSU": "7036",
+      "BOV(B)": "01,2457"
+    },
+    "scope": "Actual pending PDVL followed by VPROJ/VSL2/BVSU/BOV and full UNIT/BOV; stops before next actual NEWOPS operator or before SQRTABRT. Null LM EXIT and CM pitch DOT remain pending.",
+    "alias_contract": "Actual PDVL stack exchange preserves old destination Z minor in L; R and stack are distinct in these exact caller layouts. Private compiled BVSU reads stable R in Y/Z/X source order and preserves DAS/OVERFLOW scratch. All arithmetic uses one canonical2048-word image.",
+    "caller_controls": "Original pendingDANZIG LOC3670LM/3713CM EDOP062; sourceBANKSET064000+EB; FB0 and coherentEBBB, MODE-1, fiveVAC/PUSHbaseLM/base+010CM, NEWJOB+0, SUPER100/120/140/160 and producer exclusion.",
+    "coverage": "65536inputs per mission: raw16A/L, ordinaryQ and ordinary initialOVFIND marginals; fiveVAC/eightEB/fourSUPERforms/bothIRQ; 4080 additional modest coherent R vectors plus axis/signedzero cases. 4090LM/4089CM normal,61446LM/61447CM null-exit,zero1302 samples. Not exhaustive Cartesian or all alarm edges."
+  },
+  "CM": {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_plane.c",
+    "source_words": 8,
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 75,
+        "label": "",
+        "op": "R",
+        "arguments": "",
+        "assembled_address": "42,3714",
+        "physical_fixed_word": 35788,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 76,
+        "label": "",
+        "op": "VPROJ",
+        "arguments": "VSL2",
+        "assembled_address": "42,3715",
+        "physical_fixed_word": 35789,
+        "physical_erasable_word": null,
+        "words": [
+          29977
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 77,
+        "label": "",
+        "op": "HIUNITZ",
+        "arguments": "",
+        "assembled_address": "42,3716",
+        "physical_fixed_word": 35790,
+        "physical_erasable_word": null,
+        "words": [
+          6871
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 78,
+        "label": "",
+        "op": "BVSU",
+        "arguments": "BOV",
+        "assembled_address": "42,3717",
+        "physical_fixed_word": 35791,
+        "physical_erasable_word": null,
+        "words": [
+          16421
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 79,
+        "label": "",
+        "op": "R",
+        "arguments": "",
+        "assembled_address": "42,3720",
+        "physical_fixed_word": 35792,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 80,
+        "label": "",
+        "op": "COVCNV",
+        "arguments": "",
+        "assembled_address": "42,3721",
+        "physical_fixed_word": 35793,
+        "physical_erasable_word": null,
+        "words": [
+          27602
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 81,
+        "label": "COVCNV",
+        "op": "UNIT",
+        "arguments": "BOV",
+        "assembled_address": "42,3722",
+        "physical_fixed_word": 35794,
+        "physical_erasable_word": null,
+        "words": [
+          16430
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 82,
+        "label": "",
+        "op": "NOADJUST",
+        "arguments": "",
+        "assembled_address": "42,3723",
+        "physical_fixed_word": 35795,
+        "physical_erasable_word": null,
+        "words": [
+          27615
+        ]
+      }
+    ],
+    "literal": {
+      "label": "HIUNITZ",
+      "address": "26,3326",
+      "physical_fixed_word": 23254,
+      "words": [
+        0,
+        0,
+        0,
+        0,
+        8192,
+        0
+      ],
+      "source_path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+      "source_sha256": "494c6ae0e8fc59eb6d896e51f3af791aae13bb66fbf55a798cb6e2b3c807570f",
+      "source_line_word_map": [
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 38,
+          "label": "UNITZ",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3326",
+          "physical_fixed_word": 23254,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 40,
+          "label": "UNITY",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3330",
+          "physical_fixed_word": 23256,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 42,
+          "label": "UNITX",
+          "op": "2DEC",
+          "arguments": ".5",
+          "assembled_address": "26,3332",
+          "physical_fixed_word": 23258,
+          "physical_erasable_word": null,
+          "words": [
+            8192,
+            0
+          ]
+        }
+      ],
+      "usage": "All six original immutable vector words consumed by actual VPROJ; no padded instruction data."
+    },
+    "bindings": {
+      "NEWOPS": "6037",
+      "DANZIG": "6030",
+      "UNIT": "00,3023",
+      "SQRTABRT": "00,3402",
+      "PDVL": "6526",
+      "VPROJ": "7374",
+      "BVSU": "7005",
+      "BOV(B)": "01,2504"
+    },
+    "scope": "Actual pending PDVL followed by VPROJ/VSL2/BVSU/BOV and full UNIT/BOV; stops before next actual NEWOPS operator or before SQRTABRT. Null LM EXIT and CM pitch DOT remain pending.",
+    "alias_contract": "Actual PDVL stack exchange preserves old destination Z minor in L; R and stack are distinct in these exact caller layouts. Private compiled BVSU reads stable R in Y/Z/X source order and preserves DAS/OVERFLOW scratch. All arithmetic uses one canonical2048-word image.",
+    "caller_controls": "Original pendingDANZIG LOC3670LM/3713CM EDOP062; sourceBANKSET064000+EB; FB0 and coherentEBBB, MODE-1, fiveVAC/PUSHbaseLM/base+010CM, NEWJOB+0, SUPER100/120/140/160 and producer exclusion.",
+    "coverage": "65536inputs per mission: raw16A/L, ordinaryQ and ordinary initialOVFIND marginals; fiveVAC/eightEB/fourSUPERforms/bothIRQ; 4080 additional modest coherent R vectors plus axis/signedzero cases. 4090LM/4089CM normal,61446LM/61447CM null-exit,zero1302 samples. Not exhaustive Cartesian or all alarm edges."
+  }
+}

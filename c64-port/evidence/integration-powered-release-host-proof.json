@@ -1,0 +1,12 @@
+{
+  "commit": "3140fc1ae49e92cdae48ae66d5eef65bb95592f1",
+  "copied_files": 9057,
+  "uncommitted_core_excluded": true,
+  "shared_read_only_oracle_dependencies": "/workspace/Apollo-11/c64-port/deps",
+  "outcome": "PASS",
+  "commands": [
+    "make -j4 all test"
+  ],
+  "scope": "All committed portable host build and test recipes through complete Luminary powered-flight certification, including canonical native exchange and the corrected fresh original-Comanche assembly prerequisites; full resident applications remain unverified.",
+  "log_sha256": "aacae6729e2504fb44cd1a4e6d37103e260710acaf8230fba9ce1ac1630e0701"
+}

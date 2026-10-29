@@ -1,0 +1,365 @@
+pin-gaps strict: PASS: 15224 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 392 out-of-domain cases refused with the state unchanged
+pin-gaps sanitize: PASS: 15224 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 392 out-of-domain cases refused with the state unchanged
+pw-address-request strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-address-request sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-alarm-cycle strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-alarm-cycle sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-alarm-recycle strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-alarm-recycle sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-blank strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-blank sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-blanksub strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-blanksub sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-alarm strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-alarm sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-clear strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-clear sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-number strict: PASS: 2056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-number sanitize: PASS: 2056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-nv strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-nv sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-release strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-release sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-reset strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-reset sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-sign strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-charin-sign sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-charin-number strict: PASS: 1032 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-charin-number sanitize: PASS: 1032 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-charin-nv strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-charin-nv sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-decimal-pair strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-decimal-pair sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-formatter strict: PASS: 1536 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-formatter sanitize: PASS: 1536 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-pinball strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-pinball sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-cm-scale strict: PASS: 4144 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 16 out-of-domain cases refused with the state unchanged
+pw-cm-scale sanitize: PASS: 4144 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 16 out-of-domain cases refused with the state unchanged
+pw-decimal-general strict: PASS: 2056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-general sanitize: PASS: 2056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-load strict: PASS: 1104 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-load sanitize: PASS: 1104 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-raw strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-raw sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-row strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-row sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-select strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-decimal-select sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-display-release strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-display-release sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-enter strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-enter sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-enter-zero strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-enter-zero sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-extended-dispatch strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-extended-dispatch sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-five-blank strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-five-blank sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-fixed-display strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-fixed-display sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-fraction-pair strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-fraction-pair sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-hours-output strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-hours-output sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-angle strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-angle sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-arithmetic strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-arithmetic sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-factor strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-factor sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-mode strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-mode sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-scale strict: PASS: 1072 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 16 out-of-domain cases refused with the state unchanged
+pw-input-scale sanitize: PASS: 1072 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 16 out-of-domain cases refused with the state unchanged
+pw-input-select strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-select sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-store strict: PASS: 1088 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-store sanitize: PASS: 1088 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-input-time strict: PASS: 1057 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 33 out-of-domain cases refused with the state unchanged
+pw-input-time sanitize: PASS: 1057 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 33 out-of-domain cases refused with the state unchanged
+pw-jam-control strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-jam-control sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-lamp-release strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-lamp-release sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-lamp-test strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-lamp-test sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-lm-pinball-busy strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-lm-pinball-busy sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-load-store strict: PASS: 1020 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 4 out-of-domain cases refused with the state unchanged
+pw-load-store sanitize: PASS: 1020 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 4 out-of-domain cases refused with the state unchanged
+pw-machine-cadr strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-machine-cadr sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-major-request strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-major-request sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-mixed-noun strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-mixed-noun sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-mode-admit strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-mode-admit sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-mode-job strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-mode-job sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-monitor strict: PASS: 2080 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-monitor sanitize: PASS: 2080 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-monitor-paste strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-monitor-paste sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-noun-check strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-noun-check sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-admission strict: PASS: 1031 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-admission sanitize: PASS: 1031 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-blank strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-blank sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-busy strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-busy sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-continuation strict: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-continuation sanitize: PASS: 2048 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-key strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-key sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-return strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-return sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-update-general strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-nv-update-general sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-octal-consumer strict: PASS: 1075 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 13 out-of-domain cases refused with the state unchanged
+pw-octal-consumer sanitize: PASS: 1075 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 13 out-of-domain cases refused with the state unchanged
+pw-octal-display strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-octal-display sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-octal-verb strict: PASS: 1100 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 4 out-of-domain cases refused with the state unchanged
+pw-octal-verb sanitize: PASS: 1100 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 4 out-of-domain cases refused with the state unchanged
+pw-operator-release strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-operator-release sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-operator-response strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-operator-response sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-pinball strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-pinball sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-read-pair strict: PASS: 1019 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 5 out-of-domain cases refused with the state unchanged
+pw-read-pair sanitize: PASS: 1019 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 5 out-of-domain cases refused with the state unchanged
+pw-request-control strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-request-control sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-response-recall strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-response-recall sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-scalar-output strict: PASS: 2113 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-scalar-output sanitize: PASS: 2113 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-scale strict: PASS: 1072 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 16 out-of-domain cases refused with the state unchanged
+pw-scale sanitize: PASS: 1072 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 16 out-of-domain cases refused with the state unchanged
+pw-sign-output strict: PASS: 1011 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 13 out-of-domain cases refused with the state unchanged
+pw-sign-output sanitize: PASS: 1011 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 13 out-of-domain cases refused with the state unchanged
+pw-source-alarm strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-source-alarm sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-test-noun strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-test-noun sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-two-digit strict: PASS: 1056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-two-digit sanitize: PASS: 1056 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-two-integer strict: PASS: 1136 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 16 out-of-domain cases refused with the state unchanged
+pw-two-integer sanitize: PASS: 1136 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 16 out-of-domain cases refused with the state unchanged
+pw-verb-dispatch strict: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pw-verb-dispatch sanitize: PASS: 1024 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-decount strict: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-decount sanitize: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-dpout strict: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-dpout sanitize: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-lamp strict: PASS: 570 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 6 out-of-domain cases refused with the state unchanged
+pin-head-lamp sanitize: PASS: 570 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 6 out-of-domain cases refused with the state unchanged
+pin-head-load strict: PASS: 1344 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-load sanitize: PASS: 1344 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-minsec strict: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-minsec sanitize: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-nvsub strict: PASS: 768 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-nvsub sanitize: PASS: 768 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-proceed strict: PASS: 947 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 13 out-of-domain cases refused with the state unchanged
+pin-head-proceed sanitize: PASS: 947 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 13 out-of-domain cases refused with the state unchanged
+pin-head-release strict: PASS: 1000 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 24 out-of-domain cases refused with the state unchanged
+pin-head-release sanitize: PASS: 1000 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 24 out-of-domain cases refused with the state unchanged
+pin-head-request strict: PASS: 512 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-request sanitize: PASS: 512 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-twoint strict: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-head-twoint sanitize: PASS: 8192 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC
+pin-transfer strict: PASS: 1265 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1067 out-of-domain cases refused with the state unchanged
+pin-transfer sanitize: PASS: 1265 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1067 out-of-domain cases refused with the state unchanged
+pin-transfer-c64 strict: PASS: 734 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1590 out-of-domain cases refused with the state unchanged
+pin-transfer-c64 sanitize: PASS: 734 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 1590 out-of-domain cases refused with the state unchanged
+pin-decdsp3 strict: PASS: 619 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 149 out-of-domain cases refused with the state unchanged
+pin-decdsp3 sanitize: PASS: 619 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC; 149 out-of-domain cases refused with the state unchanged
+pin-refuse strict: PASS: 1530 out-of-domain cases refused with the image and I/O unchanged
+pin-refuse sanitize: PASS: 1530 out-of-domain cases refused with the image and I/O unchanged
+PASS LM Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2378 assembled words; 2101 executed, 65 call arguments, 199 constants, 11 instructions read as data, 2 unreachable; owners {'constants': 210, 'lanec-pin-gaps': 120, 'lanec-pin-heads': 101, 'lanec-pin-keys': 49, 'lanec-pw': 1898}
+PASS CM Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: 2379 assembled words; 2098 executed, 65 call arguments, 202 constants, 11 instructions read as data, 3 unreachable; owners {'constants': 213, 'lanec-pin-gaps': 121, 'lanec-pin-heads': 84, 'lanec-pin-keys': 46, 'lanec-pw': 1915}
+pin-gaps C64: PASS: VICE PAL lanec-pin-gaps.prg: 63 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-address-request.prg: 16 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-alarm-cycle.prg: 4 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-alarm-recycle.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-blank.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-charin-alarm.prg: 10 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-charin-clear.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-charin-release.prg: 15 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-charin-reset.prg: 4 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-charin-sign.prg: 4 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-decimal-consumer.prg: 15 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-decimal-general.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-decimal-load.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-decimal-raw.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-decimal-row.prg: 5 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-decimal-select.prg: 4 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-display-release.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-enter.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-enter-zero.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-1: 18 programs, 141 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-extended-dispatch.prg: 120 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-five-blank.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-fraction-pair.prg: 10 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-hours-output.prg: 5 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-input-angle.prg: 20 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-input-arithmetic.prg: 13 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-input-factor.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-input-mode.prg: 9 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-input-scale.prg: 16 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-input-select.prg: 13 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-input-store.prg: 16 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-input-time.prg: 21 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-jam-control.prg: 11 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-lamp-release.prg: 12 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-lamp-test.prg: 15 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-load-complete.prg: 11 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-load-control.prg: 13 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-load-request.prg: 11 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-2: 18 programs, 330 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-load-store.prg: 21 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-machine-cadr.prg: 5 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-major-request.prg: 10 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-minutes-output.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-mixed-noun.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-mode-admit.prg: 9 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-mode-job.prg: 9 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-monitor.prg: 28 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-monitor-paste.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-noun-check.prg: 15 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-admission.prg: 10 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-blank.prg: 4 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-busy.prg: 9 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-consumer.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-continuation.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-return.prg: 4 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-update-general.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-update.prg: 5 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-3: 18 programs, 171 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-octal-consumer.prg: 19 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-octal-display.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-octal-verb.prg: 24 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-operator-release.prg: 16 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-operator-request.prg: 11 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-operator-response.prg: 12 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-read-pair.prg: 9 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-request-control.prg: 12 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-response-recall.prg: 13 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-scalar-output.prg: 14 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-sign-output.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-source-alarm.prg: 11 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-test-noun.prg: 5 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-two-integer.prg: 6 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-verb-dispatch.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-cm-pinball.prg: 9 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-cm-charin-number.prg: 11 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-cm-charin-nv.prg: 3 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-4: 18 programs, 194 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-cm-formatter.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-cm-decimal-pair.prg: 8 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-cm-scale.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-cm-minutes-seconds.prg: 11 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-lm-pinball-busy.prg: 4 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-charin-number.prg: 11 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-charin-nv.prg: 3 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-nv-key.prg: 3 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-pinball.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-scale.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-decimal.prg: 5 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-two-digit.prg: 4 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-operator-schedule.prg: 26 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-blanksub.prg: 7 checks, 0 failures
+pw C64: PASS: VICE PAL lanec-pw-5: 14 programs, 111 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_alarm_cycle_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_alarm_cycle_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_blank_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_blank_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_blanksub_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_blanksub_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_cm_decimal_pair_cm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_cm_formatter_cm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_cm_pinball_cm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_decimal_general_lm.prg: 6 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_decimal_load_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_decimal_row_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_decimal_select_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_decimal_select_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_display_release_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_display_release_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_enter_zero_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_enter_zero_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_extended_dispatch_cm.prg: 4 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_extended_dispatch_lm.prg: 4 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_five_blank_cm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_five_blank_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-1: 22 programs, 46 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_fraction_pair_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_angle_cm.prg: 4 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_angle_lm.prg: 7 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_arithmetic_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_arithmetic_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_factor_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_factor_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_mode_cm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_mode_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_scale_cm.prg: 4 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_scale_lm.prg: 9 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_select_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_select_lm.prg: 10 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_store_cm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_store_lm.prg: 5 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_time_cm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_input_time_lm.prg: 5 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_lamp_test_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_lamp_test_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_lm_pinball_busy_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_machine_cadr_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_machine_cadr_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-2: 22 programs, 74 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_major_request_cm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_major_request_lm.prg: 5 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_mixed_noun_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_mixed_noun_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_mode_admit_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_mode_admit_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_mode_job_cm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_mode_job_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_monitor_paste_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_monitor_paste_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_noun_check_cm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_noun_check_lm.prg: 5 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_nv_admission_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_nv_blank_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_nv_busy_cm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_nv_busy_lm.prg: 5 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_nv_continuation_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_nv_return_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_nv_return_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_nv_update_general_lm.prg: 4 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_octal_consumer_cm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_octal_consumer_lm.prg: 7 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-3: 22 programs, 55 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_octal_display_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_octal_display_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_octal_verb_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_pinball_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_read_pair_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_read_pair_lm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_request_control_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_request_control_lm.prg: 4 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_scalar_output_cm.prg: 6 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_scalar_output_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_sign_output_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_sign_output_lm.prg: 3 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_source_alarm_cm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_source_alarm_lm.prg: 4 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_test_noun_cm.prg: 2 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_test_noun_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_two_digit_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_verb_dispatch_cm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-pw_verb_dispatch_lm.prg: 1 checks, 0 failures
+pin-transfer-c64 C64: PASS: VICE PAL lanec-pin-transfer-4: 19 programs, 41 checks, 0 failures

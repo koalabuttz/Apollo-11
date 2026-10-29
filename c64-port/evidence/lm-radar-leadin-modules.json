@@ -1,0 +1,258 @@
+[
+  {
+    "id": 160,
+    "filename": "R0",
+    "byte_count": 8997,
+    "crc16": 60004,
+    "sha256": "e50811108845c660e8f29a2abae9b06b0ea779daf7f97c2947345d1e79671de3",
+    "prg": "lm-radar-leadin-0.prg"
+  },
+  {
+    "id": 161,
+    "filename": "R1",
+    "byte_count": 8997,
+    "crc16": 35364,
+    "sha256": "16ab3ea7a4aebf95ccc1afb8768ff30d5673a46f629d6ab7bc8ced01505a147e",
+    "prg": "lm-radar-leadin-1.prg"
+  },
+  {
+    "id": 162,
+    "filename": "R2",
+    "byte_count": 8997,
+    "crc16": 30228,
+    "sha256": "e25c8e793e3eba5ac0a70cbb4a6ead9b3985a6a94e2e263611bb20249240910c",
+    "prg": "lm-radar-leadin-2.prg"
+  },
+  {
+    "id": 163,
+    "filename": "R3",
+    "byte_count": 8997,
+    "crc16": 15888,
+    "sha256": "e5fb1577a11ea603b044866be77ce7680a474e22f398c73eb3f468f35aa35c10",
+    "prg": "lm-radar-leadin-3.prg"
+  },
+  {
+    "id": 164,
+    "filename": "R4",
+    "byte_count": 8997,
+    "crc16": 41868,
+    "sha256": "20737cbacee37442770333046f82de09bc1a4fdcd9fd40aceba55cb8707a2431",
+    "prg": "lm-radar-leadin-4.prg"
+  },
+  {
+    "id": 165,
+    "filename": "R5",
+    "byte_count": 8997,
+    "crc16": 43639,
+    "sha256": "fe0e003e698c449f02882ef390df70ff927f37d08ea70b2431b840f7842d3580",
+    "prg": "lm-radar-leadin-5.prg"
+  },
+  {
+    "id": 166,
+    "filename": "R6",
+    "byte_count": 8997,
+    "crc16": 54509,
+    "sha256": "d445dc963124a8f9ffbf74d77e23411fb681f82f968b6fe65afd70afef79c98c",
+    "prg": "lm-radar-leadin-6.prg"
+  },
+  {
+    "id": 167,
+    "filename": "R7",
+    "byte_count": 8997,
+    "crc16": 7694,
+    "sha256": "159b63c6b0db3917d5c5203ab448bf9dc4f78e4dc1a3c61e4320a726d69e67d0",
+    "prg": "lm-radar-leadin-7.prg"
+  },
+  {
+    "id": 168,
+    "filename": "R8",
+    "byte_count": 8997,
+    "crc16": 19193,
+    "sha256": "a284a6433d81807dc315484a78d95bd41243390de2e85113b6756396169a03dd",
+    "prg": "lm-radar-leadin-8.prg"
+  },
+  {
+    "id": 169,
+    "filename": "R9",
+    "byte_count": 8997,
+    "crc16": 26755,
+    "sha256": "7f06596d316ec2cc54c18c0984f331665cfba367b68c6740843ae12e2f2eaadf",
+    "prg": "lm-radar-leadin-9.prg"
+  },
+  {
+    "id": 170,
+    "filename": "R10",
+    "byte_count": 8997,
+    "crc16": 32260,
+    "sha256": "4a130d3c6ff7549ee2e650e960f4f4da0bbb9f1f101474047320d80448c415ee",
+    "prg": "lm-radar-leadin-10.prg"
+  },
+  {
+    "id": 171,
+    "filename": "R11",
+    "byte_count": 8997,
+    "crc16": 48425,
+    "sha256": "646eca4e4fc770fc985620a51c952ce79c4fc341d36bc94db7245271436442e9",
+    "prg": "lm-radar-leadin-11.prg"
+  },
+  {
+    "id": 172,
+    "filename": "R12",
+    "byte_count": 8997,
+    "crc16": 37969,
+    "sha256": "cce4c59b763455646588c705a4f735427837eb7f32284a01699731bea371f870",
+    "prg": "lm-radar-leadin-12.prg"
+  },
+  {
+    "id": 173,
+    "filename": "R13",
+    "byte_count": 8997,
+    "crc16": 4020,
+    "sha256": "cbeacaa079a7d7ab2d242b1c8f51d9e13dca5124672d05855050ace8e4432937",
+    "prg": "lm-radar-leadin-13.prg"
+  },
+  {
+    "id": 174,
+    "filename": "R14",
+    "byte_count": 8997,
+    "crc16": 4923,
+    "sha256": "b5f0ae2854f95f0b0d645f80d1bdabe59b3ca3dda97e0656912e6b0d144c9b7b",
+    "prg": "lm-radar-leadin-14.prg"
+  },
+  {
+    "id": 175,
+    "filename": "R15",
+    "byte_count": 8997,
+    "crc16": 64653,
+    "sha256": "43f2750bb7a95b18e90a08c88b2c186a8580fc129f25389ff8320cde52e91b55",
+    "prg": "lm-radar-leadin-15.prg"
+  },
+  {
+    "id": 176,
+    "filename": "R16",
+    "byte_count": 8997,
+    "crc16": 41744,
+    "sha256": "5e63108e93f3f763e0678faaf0b734d5392ff4a467dc8ad7dd298d6c710c0ecc",
+    "prg": "lm-radar-leadin-16.prg"
+  },
+  {
+    "id": 177,
+    "filename": "R17",
+    "byte_count": 8997,
+    "crc16": 31175,
+    "sha256": "898b97ed52e5dcbb95dd673fcaeb63e9dd6d5861d4450b62173bfbb2b9690ea0",
+    "prg": "lm-radar-leadin-17.prg"
+  },
+  {
+    "id": 178,
+    "filename": "R18",
+    "byte_count": 8997,
+    "crc16": 7942,
+    "sha256": "eca3ff3d9734c1f50c38c913d3111814ba6cd90e7a13ed4a84386524143df107",
+    "prg": "lm-radar-leadin-18.prg"
+  },
+  {
+    "id": 179,
+    "filename": "R19",
+    "byte_count": 8997,
+    "crc16": 48647,
+    "sha256": "aa43f85a015f6509a4e94ccc2031a10c4cdb2998de3e18379bf3061e9c34fd10",
+    "prg": "lm-radar-leadin-19.prg"
+  },
+  {
+    "id": 180,
+    "filename": "R20",
+    "byte_count": 8997,
+    "crc16": 5708,
+    "sha256": "0140e1bb1afea74dffd42e29b85fdda857495241c0b862b1b77aec27d46fe02b",
+    "prg": "lm-radar-leadin-20.prg"
+  },
+  {
+    "id": 181,
+    "filename": "R21",
+    "byte_count": 8997,
+    "crc16": 60920,
+    "sha256": "417cf00f31aecbcd70271c4fc3dd07b54a2531e22733bfbaf39fbae0846f30a1",
+    "prg": "lm-radar-leadin-21.prg"
+  },
+  {
+    "id": 182,
+    "filename": "R22",
+    "byte_count": 8997,
+    "crc16": 2897,
+    "sha256": "3637b65f42e4270d5f290076d03035fab7f4b210765e741783c2e2b5a0b5961e",
+    "prg": "lm-radar-leadin-22.prg"
+  },
+  {
+    "id": 183,
+    "filename": "R23",
+    "byte_count": 8997,
+    "crc16": 13150,
+    "sha256": "df571c1a8fc6130323beeccb97e1286e82708583510304e5831f6ca8606a5fbf",
+    "prg": "lm-radar-leadin-23.prg"
+  },
+  {
+    "id": 184,
+    "filename": "R24",
+    "byte_count": 8997,
+    "crc16": 20058,
+    "sha256": "a7a87a668cc0a6db51c74a9b140e83e695f110fd8085adfcda969785a9201ff0",
+    "prg": "lm-radar-leadin-24.prg"
+  },
+  {
+    "id": 185,
+    "filename": "R25",
+    "byte_count": 8997,
+    "crc16": 8277,
+    "sha256": "6cd22c2c1bef79327edd5b6d70471a80741f93c2481dd46133744f1557f03ff4",
+    "prg": "lm-radar-leadin-25.prg"
+  },
+  {
+    "id": 186,
+    "filename": "R26",
+    "byte_count": 8997,
+    "crc16": 29256,
+    "sha256": "0edbb05ae2171b3b827d349e125ff7bdaa7a5a2145f1aeb741727d2035c35b8a",
+    "prg": "lm-radar-leadin-26.prg"
+  },
+  {
+    "id": 187,
+    "filename": "R27",
+    "byte_count": 8997,
+    "crc16": 32735,
+    "sha256": "a7cedae1d09106030bcb06e5fd9d3ff2ad47299eabab675863c898b5fb99fbc4",
+    "prg": "lm-radar-leadin-27.prg"
+  },
+  {
+    "id": 188,
+    "filename": "R28",
+    "byte_count": 8997,
+    "crc16": 25419,
+    "sha256": "b92676957068ad50766db0bf08dcde697c083baf0e2fa7bd4b86a749db500770",
+    "prg": "lm-radar-leadin-28.prg"
+  },
+  {
+    "id": 189,
+    "filename": "R29",
+    "byte_count": 8997,
+    "crc16": 13961,
+    "sha256": "2094b86bd7ac70f3927ae64a85e0317871dbf64341fe03943b6943c89c28be01",
+    "prg": "lm-radar-leadin-29.prg"
+  },
+  {
+    "id": 190,
+    "filename": "R30",
+    "byte_count": 8997,
+    "crc16": 19227,
+    "sha256": "45b1a97324b730e350456033a19008dae61a0e8ab831a4ff5615eeff32b6ee58",
+    "prg": "lm-radar-leadin-30.prg"
+  },
+  {
+    "id": 191,
+    "filename": "R31",
+    "byte_count": 8997,
+    "crc16": 54647,
+    "sha256": "ad4cc069d9f1cbee5bcd9e44e187892ee331e20463887781a020d22b8db4b716",
+    "prg": "lm-radar-leadin-31.prg"
+  }
+]

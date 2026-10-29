@@ -1,0 +1,195 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+      22       22       6e     1 .zp
+      22       22       6e     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.zp.noinit)
+     80d      80d     6b8f     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843       c0     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.agc_multiply)
+     843      843       c0     1                 agc_multiply
+     903      903      1bc     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.agc_double_add)
+     903      903      1bc     1                 agc_double_add
+     abf      abf      2be     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.p66_scalar_shift_left)
+     abf      abf      2be     1                 p66_scalar_shift_left
+     d7d      d7d      1d0     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.p66_scalar_shift_right)
+     d7d      d7d      1d0     1                 p66_scalar_shift_right
+     f4d      f4d      2e5     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.p66_scalar_product)
+     f4d      f4d      2e5     1                 p66_scalar_product
+    1232     1232      44e     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.component)
+    1232     1232      44e     1                 component
+    1680     1680      890     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.p66_sine)
+    1680     1680      890     1                 p66_sine
+    1f10     1f10       d9     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.doubled)
+    1f10     1f10       d9     1                 doubled
+    1fe9     1fe9      1b4     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.triple_double)
+    1fe9     1fe9      1b4     1                 triple_double
+    219d     219d      13b     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.p66_cosine)
+    219d     219d      13b     1                 p66_cosine
+    22d8     22d8      10b     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.canonical_positive)
+    22d8     22d8      10b     1                 canonical_positive
+    23e3     23e3      1f8     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.ratio)
+    23e3     23e3      1f8     1                 ratio
+    25db     25db      139     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.overflow_branch)
+    25db     25db      139     1                 overflow_branch
+    2714     2714      298     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.square)
+    2714     2714      298     1                 square
+    29ac     29ac      ad7     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.off_diagonal)
+    29ac     29ac      ad7     1                 off_diagonal
+    3483     3483     1f99     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.gimbal_complete)
+    3483     3483     1f99     1                 gimbal_complete
+    541c     541c      218     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.read_state)
+    541c     541c      218     1                 read_state
+    5634     5634       ab     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.load)
+    5634     5634       ab     1                 load
+    56df     56df      1f3     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.scalar_vector)
+    56df     56df      1f3     1                 scalar_vector
+    58d2     58d2       92     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.vector_store)
+    58d2     58d2       92     1                 vector_store
+    5964     5964       8b     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.scalar_store)
+    5964     5964       8b     1                 scalar_store
+    59ef     59ef      202     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.write_state)
+    59ef     59ef      202     1                 write_state
+    5bf1     5bf1      242     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.round_product)
+    5bf1     5bf1      242     1                 round_product
+    5e33     5e33      224     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.frozen_words_next)
+    5e33     5e33      224     1                 frozen_words_next
+    6057     6057      dd7     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.main)
+    6057     6057      dd7     1                 main
+    6e2e     6e2e        6     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.exit)
+    6e2e     6e2e        6     1                 exit
+    6e34     6e34       13     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.__lshrhi3)
+    6e34     6e34       13     1                 __lshrhi3
+    6e47     6e47       c4     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.__udivhi3)
+    6e47     6e47       c4     1                 __udivhi3
+    6f0b     6f0b       40     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.__umodqi3)
+    6f0b     6f0b       40     1                 __umodqi3
+    6f4b     6f4b       ae     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.__umodhi3)
+    6f4b     6f4b       ae     1                 __umodhi3
+    6ff9     6ff9      2b2     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.__divmodsi4)
+    6ff9     6ff9      2b2     1                 __divmodsi4
+    72ab     72ab       34     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.memcpy)
+    72ab     72ab       34     1                 memcpy
+    72df     72df       22     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.__memset)
+    72df     72df       22     1                 __memset
+    7301     7301       34     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.__mulhi3)
+    7301     7301       34     1                 __mulhi3
+    7335     7335       67     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.text.__mulsi3)
+    7335     7335       67     1                 __mulsi3
+    739c     739c        0     1         __init_array_start = .
+    739c     739c        0     1         __init_array_end = .
+    739c     739c        0     1         __fini_array_start = .
+    739c     739c        0     1         __fini_array_end = .
+    739c     739c     21a0     1 .rodata
+    739c     739c        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    739c     739c        0     1                 __set_v
+    739d     739d        a     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.main)
+    73a7     73a7       14     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.p66_sine.coefficient)
+    73a7     73a7       14     1                 p66_sine.coefficient
+    73bb     73bb        6     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.vector_load.map)
+    73bb     73bb        6     1                 vector_load.map
+    73c1     73c1       40     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.delcomp_prepare.angles)
+    73c1     73c1       40     1                 delcomp_prepare.angles
+    7401     7401        8     1         <internal>:(.rodata.cst8)
+    7409     7409       c0     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.directions)
+    7409     7409       c0     1                 directions
+    74c9     74c9       fa     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.gimbal_complete_reference_dictionary)
+    74c9     74c9       fa     1                 gimbal_complete_reference_dictionary
+    75c3     75c3       a2     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.gimbal_complete_reference_offsets)
+    75c3     75c3       a2     1                 gimbal_complete_reference_offsets
+    7665     7665     1ddd     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.gimbal_complete_reference_stream)
+    7665     7665     1ddd     1                 gimbal_complete_reference_stream
+    9442     9442       a0     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.gimbal_complete_target_ids)
+    9442     9442       a0     1                 gimbal_complete_target_ids
+    94e2     94e2       46     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.gimbal_complete_changed)
+    94e2     94e2       46     1                 gimbal_complete_changed
+    9528     9528       14     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.rodata.gimbal_complete_constant_words)
+    9528     9528       14     1                 gimbal_complete_constant_words
+    953c     953c        0     1 .data
+    953c     953c        0     1         __data_start = .
+    953c     953c        0     1         __data_end = .
+    953c     953c        0     1 __data_load_start = LOADADDR(.data)
+    953c     953c        0     1 __data_size = SIZEOF(.data)
+    953c     953c     10ae     1 .bss
+    953c     953c        0     1         __bss_start = .
+    953c     953c     1000     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.bss.state)
+    953c     953c     1000     1                 state
+    a53c     a53c       10     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.bss.input_exceptions)
+    a53c     a53c       10     1                 input_exceptions
+    a54c     a54c       9e     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.bss.expected_words)
+    a54c     a54c       9e     1                 expected_words
+    a5ea     a5ea        0     1         __bss_end = .
+    a5ea     a5ea        0     1 __bss_size = SIZEOF(.bss)
+    a5ea     a5ea      15f     1 .noinit
+    a5ea     a5ea      15f     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.noinit..Lstatic_stack)
+    a749     a749        0     1         __heap_start = ALIGN(., 2)
+    a749     a749        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/gimbal-complete-lm.prg.lto.o:(.llvm_sympart)
+       0        0      d30     4 .symtab
+       0        0      d30     4         <internal>:(.symtab)
+       0        0       76     1 .shstrtab
+       0        0       76     1         <internal>:(.shstrtab)
+       0        0      854     1 .strtab
+       0        0      854     1         <internal>:(.strtab)

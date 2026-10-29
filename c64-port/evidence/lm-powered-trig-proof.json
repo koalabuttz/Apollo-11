@@ -1,0 +1,131 @@
+{
+  "source_file": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_file_sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+  "source_audit_dependency": "evidence/lm-powered-source-audit.json",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "native_group": "CDUTRIGS and CD*TR*GS",
+  "calls": 65536,
+  "complete_states": 655360,
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "header_words": 4,
+  "decoded_state_bytes": 2689597440,
+  "whole_strict_and_sanitizer_streams_match": true,
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-powered-trig-complete.snapshots.xz",
+      "decoded_sha256": "ccd35cfa9b838783d296193861f712f8d57ad69db4128b9a79dbe56a6f077ab3"
+    },
+    "strict_native": {
+      "object": "evidence/lm-powered-trig-complete.snapshots.xz",
+      "decoded_sha256": "ccd35cfa9b838783d296193861f712f8d57ad69db4128b9a79dbe56a6f077ab3"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-powered-trig-complete.snapshots.xz",
+      "decoded_sha256": "ccd35cfa9b838783d296193861f712f8d57ad69db4128b9a79dbe56a6f077ab3"
+    }
+  },
+  "target_images": [
+    {
+      "native_phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 5221,
+      "loaded_end_hex": "0x1c63",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 52,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 11520,
+      "loaded_end_hex": "0x34fe",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 190,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 13790,
+      "loaded_end_hex": "0x3ddc",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 327,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 14319,
+      "loaded_end_hex": "0x3fed",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 318,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 4,
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "prg_bytes": 14631,
+      "loaded_end_hex": "0x4125",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 318,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 5,
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "prg_bytes": 14798,
+      "loaded_end_hex": "0x41cc",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 318,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 6,
+      "complete_states": 32,
+      "mailbox": "a500002006",
+      "prg_bytes": 14927,
+      "loaded_end_hex": "0x424d",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 318,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 7,
+      "complete_states": 32,
+      "mailbox": "a500002007",
+      "prg_bytes": 15005,
+      "loaded_end_hex": "0x429b",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 318,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 8,
+      "complete_states": 32,
+      "mailbox": "a500002008",
+      "prg_bytes": 15158,
+      "loaded_end_hex": "0x4334",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 318,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "native_phase": 9,
+      "complete_states": 32,
+      "mailbox": "a500002009",
+      "prg_bytes": 14923,
+      "loaded_end_hex": "0x4249",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 318,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "scope": "The canonical native basic trig loop computes all three CDU sine/cosine pairs, including source two-complement conversion and preservation of incoming MPAC. Original LM SINE/COSINE and CDULOGIC scratch/control addresses are retained. All 32768 CDU words occur for both live-CDU and stored-angle entry. Internal polynomial and basic-call returns retain the same owner; pending second operations do not create Executive checks."
+}

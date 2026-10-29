@@ -1,0 +1,3068 @@
+{
+ "program": "Comanche055",
+ "mission": "cm",
+ "about": "One row per entry of the Comanche055 coverage map (acceptance item 2: every major mode and routine the program uses), taken as they are from D1b's /mnt/project-files/acceptance/comanche055-coverage-map.md (130 code-derived rows; host runs on base 08bc7cfb; reviewer 2 ruled the not-exercised rows). status is mapped (scenarios names the tools/flight_host_differential.py FLIGHT entries whose host run reaches the entry), not exercised (note gives the reason) or TBD (a gap with an owner, or mapped only in an open PR). D1b keeps the markdown map; Lane G keeps this file and the C64 results. replay_windows lists the C64 --replay windows (scenario, start cs, length cs, K for a --chain of K windows, checkpoint every cs): one 300 cs window from 50 cs before each mapped row's first arrival in its scenario, merged where one window holds several, plus the two CM chains that held. A row's windows are the ones holding its arrivals. cm-p11 rows use the scenario clock before liftoff; its P11 window starts at 15100, past the AGC clock reset at liftoff.",
+ "replay_windows": [
+  [
+   "cm-cdh",
+   2450,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-cdh-csm",
+   2450,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-csi",
+   2450,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-csi",
+   13250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-entry",
+   2450,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-entry",
+   6100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-entry",
+   9850,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-entry",
+   30580,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-entry-overload",
+   20370,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p11",
+   2250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p11",
+   4340,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p11",
+   15050,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p11",
+   84100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20",
+   4750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20",
+   5370,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20",
+   6260,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20",
+   9210,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20-crew-verbs",
+   21100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20-crew-verbs",
+   26190,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20-crew-verbs",
+   27100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20-crew-verbs",
+   28100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20-crew-verbs",
+   29100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20-crew-verbs",
+   30100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p21",
+   20600,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p22",
+   4750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p23",
+   4750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p23",
+   8950,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p23-attached",
+   28600,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p37",
+   4750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p37",
+   46100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p40",
+   4750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p40",
+   11750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p40",
+   14950,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p40",
+   17900,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p41",
+   11750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   4750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   8150,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   8970,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   15180,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   16110,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   18750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52-coarse",
+   9600,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   21100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   23600,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   26620,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   42250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   50250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   64250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   72250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   77100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-stable-orbit",
+   21250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-stable-orbit",
+   57250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-stable-orbit-lm",
+   21250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-stable-orbit-lm",
+   57250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tei",
+   4750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tei",
+   11750,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tei",
+   14950,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tei",
+   17900,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tei",
+   51100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tli",
+   3250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tli",
+   67100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tpi-search",
+   21250,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tpi-search",
+   32320,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   2010,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   5010,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   9210,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   12010,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-reject",
+   2010,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-v49-maneuver",
+   2100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-v49-maneuver",
+   3100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   5400,
+   320,
+   3,
+   50
+  ],
+  [
+   "cm-tei",
+   45000,
+   320,
+   3,
+   50
+  ],
+  [
+   "cm-p40",
+   29000,
+   1000,
+   1,
+   100
+  ],
+  [
+   "cm-p40-sps-fail",
+   30170,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p40-sps-fail",
+   32100,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tei",
+   29000,
+   1000,
+   1,
+   100
+  ],
+  [
+   "cm-p52",
+   4000,
+   1000,
+   1,
+   100
+  ],
+  [
+   "cm-v48-dap",
+   2450,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-v48-dap",
+   7450,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-tpi-search",
+   32090,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   25843,
+   900,
+   1,
+   50
+  ],
+  [
+   "cm-p21",
+   19704,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   8361,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   10362,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-entry",
+   30532,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20",
+   9021,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-rendezvous-tpm",
+   23438,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   7609,
+   700,
+   1,
+   50
+  ],
+  [
+   "cm-p11",
+   88000,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   4136,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-uplink-accept",
+   6537,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p52",
+   15123,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20-crew-verbs",
+   26082,
+   300,
+   1,
+   50
+  ],
+  [
+   "cm-p20",
+   6030,
+   400,
+   1,
+   50
+  ],
+  [
+   "cm-entry-overload",
+   20301,
+   300,
+   1,
+   50
+  ]
+ ],
+ "rows": [
+  {
+   "row": "P79",
+   "section": "V37 major modes",
+   "entry": "P79",
+   "status": "mapped",
+   "scenarios": [
+    "cm-stable-orbit-lm"
+   ],
+   "note": "mapped: cm-stable-orbit-lm P79 (04,3204 native from #711) (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-stable-orbit-lm",
+     57250
+    ]
+   ],
+   "reach": [
+    [
+     "04,3172",
+     "P79"
+    ]
+   ]
+  },
+  {
+   "row": "P78",
+   "section": "V37 major modes",
+   "entry": "P78",
+   "status": "mapped",
+   "scenarios": [
+    "cm-stable-orbit-lm"
+   ],
+   "note": "mapped: cm-stable-orbit-lm P78 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-stable-orbit-lm",
+     21250
+    ]
+   ],
+   "reach": [
+    [
+     "04,2744",
+     "P78"
+    ]
+   ]
+  },
+  {
+   "row": "P77",
+   "section": "V37 major modes",
+   "entry": "P77",
+   "status": "mapped",
+   "scenarios": [
+    "cm-tpi-search"
+   ],
+   "note": "mapped: cm-tpi-search P77 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-tpi-search",
+     32090
+    ]
+   ],
+   "reach": [
+    [
+     "35,3153",
+     "P77"
+    ]
+   ]
+  },
+  {
+   "row": "P76",
+   "section": "V37 major modes",
+   "entry": "P76",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm P76 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     72250
+    ]
+   ],
+   "reach": [
+    [
+     "13,2071",
+     "P76"
+    ]
+   ]
+  },
+  {
+   "row": "P75",
+   "section": "V37 major modes",
+   "entry": "P75",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm P75 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     64250
+    ]
+   ],
+   "reach": [
+    [
+     "35,2163",
+     "P75"
+    ]
+   ]
+  },
+  {
+   "row": "P74",
+   "section": "V37 major modes",
+   "entry": "P74",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm P74 (ELEV 26.6) (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     50250
+    ]
+   ],
+   "reach": [
+    [
+     "35,2002",
+     "P74"
+    ]
+   ]
+  },
+  {
+   "row": "P73",
+   "section": "V37 major modes",
+   "entry": "P73",
+   "status": "mapped",
+   "scenarios": [
+    "cm-cdh"
+   ],
+   "note": "mapped: cm-cdh P73 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-cdh",
+     2450
+    ]
+   ],
+   "reach": [
+    [
+     "04,3441",
+     "P73"
+    ]
+   ]
+  },
+  {
+   "row": "P72",
+   "section": "V37 major modes",
+   "entry": "P72",
+   "status": "mapped",
+   "scenarios": [
+    "cm-csi"
+   ],
+   "note": "mapped: cm-csi P72 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-csi",
+     2450
+    ]
+   ],
+   "reach": [
+    [
+     "04,3305",
+     "P72"
+    ]
+   ]
+  },
+  {
+   "row": "P62",
+   "section": "V37 major modes",
+   "entry": "P62",
+   "status": "mapped",
+   "scenarios": [
+    "cm-entry"
+   ],
+   "note": "mapped: SB 13, cm-entry, P62 separation request V50N25 00041 (FHD:56-58, 120)",
+   "owner": "G",
+   "windows": [
+    [
+     "cm-entry",
+     6100
+    ]
+   ],
+   "reach": [
+    [
+     "26,2320",
+     "P62"
+    ]
+   ]
+  },
+  {
+   "row": "P61",
+   "section": "V37 major modes",
+   "entry": "P61",
+   "status": "mapped",
+   "scenarios": [
+    "cm-entry"
+   ],
+   "note": "mapped: SB 13, cm-entry V37E61E (FHD:120; cm_entry.py:5)",
+   "owner": "G",
+   "windows": [
+    [
+     "cm-entry",
+     2450
+    ]
+   ],
+   "reach": [
+    [
+     "26,2217",
+     "P61"
+    ]
+   ]
+  },
+  {
+   "row": "P54",
+   "section": "V37 major modes",
+   "entry": "P54",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: backup P52 (`P54 = PROG52`): the same entry code as P52, which runs (SB 1); a separate mode only for the backup optics path. Apollo 11 aligned with the sextant (inferred) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "P53",
+   "section": "V37 major modes",
+   "entry": "P53",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: backup P51 (`P53 EQUALS P51`); backup optics only (inferred) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "P52",
+   "section": "V37 major modes",
+   "entry": "PROG52",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p52"
+   ],
+   "note": "mapped: SB 1, cm-p52 V37E52E option 3 (FHD:138; cm-p52-stops.md). Restart: cm-p52-restart, GOJAM at 171 s (SB 12, cm-restart-stops.md)",
+   "owner": "D1 (A2 for the restart)",
+   "windows": [
+    [
+     "cm-p52",
+     4000
+    ],
+    [
+     "cm-p52",
+     4750
+    ]
+   ],
+   "reach": [
+    [
+     "15,2000",
+     "PROG52"
+    ]
+   ]
+  },
+  {
+   "row": "P51",
+   "section": "V37 major modes",
+   "entry": "P51",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: IMU orientation from no REFSMMAT: the platform was aligned on the pad (P02, cm-p11) and never lost on Apollo 11 (inferred). If the bar wants one, a cm-p51 run also covers R50 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "P47",
+   "section": "V37 major modes",
+   "entry": "P47CSM",
+   "status": "mapped",
+   "scenarios": [
+    "cm-tli"
+   ],
+   "note": "mapped: SB 0b, cm-tli V37E47E over the S-IVB burn (FHD:268; cm-tli-stops.md)",
+   "owner": "E",
+   "windows": [
+    [
+     "cm-tli",
+     3250
+    ]
+   ],
+   "reach": [
+    [
+     "24,2463",
+     "P47CSM"
+    ]
+   ]
+  },
+  {
+   "row": "P41",
+   "section": "V37 major modes",
+   "entry": "P41CSM",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p41"
+   ],
+   "note": "mapped: 5 ft/s DV keyed through P30 (V25 on N33/N81), P41's R60, V06N85, average G, V16N85 at TIG, P00; host matches yaAGC. No CM RCS translation model, so VG holds (thrust not covered)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p41",
+     11750
+    ]
+   ],
+   "reach": [
+    [
+     "27,2614",
+     "P41CSM"
+    ]
+   ]
+  },
+  {
+   "row": "P40",
+   "section": "V37 major modes",
+   "entry": "P40CSM",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p40",
+    "cm-tei"
+   ],
+   "note": "mapped: SB 3, cm-p40 LOI-1 (FHD:172) and SB 15, cm-tei (FHD:300). cm-p40-stops.md, cm-tei-stops.md",
+   "owner": "D1 (P40), E (TEI)",
+   "windows": [
+    [
+     "cm-p40",
+     11750
+    ],
+    [
+     "cm-tei",
+     11750
+    ]
+   ],
+   "reach": [
+    [
+     "24,2073",
+     "P40CSM"
+    ]
+   ]
+  },
+  {
+   "row": "P39",
+   "section": "V37 major modes",
+   "entry": "P39",
+   "status": "mapped",
+   "scenarios": [
+    "cm-stable-orbit"
+   ],
+   "note": "mapped: cm-stable-orbit P39 (04,3204 native from #711) (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-stable-orbit",
+     57250
+    ]
+   ],
+   "reach": [
+    [
+     "04,3166",
+     "P39"
+    ]
+   ]
+  },
+  {
+   "row": "P38",
+   "section": "V37 major modes",
+   "entry": "P38",
+   "status": "mapped",
+   "scenarios": [
+    "cm-stable-orbit"
+   ],
+   "note": "mapped: cm-stable-orbit P38 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-stable-orbit",
+     21250
+    ]
+   ],
+   "reach": [
+    [
+     "04,2742",
+     "P38"
+    ]
+   ]
+  },
+  {
+   "row": "P37",
+   "section": "V37 major modes",
+   "entry": "P37",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p37"
+   ],
+   "note": "mapped: (PR only): cm-p37 V37E37E (cm-p37-stops.md; loader cm_p37.py in PR #654, not on 835f6232)",
+   "owner": "E",
+   "windows": [
+    [
+     "cm-p37",
+     4750
+    ]
+   ],
+   "reach": [
+    [
+     "36,2466",
+     "P37"
+    ]
+   ]
+  },
+  {
+   "row": "P35",
+   "section": "V37 major modes",
+   "entry": "P35",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm P35 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     42250
+    ]
+   ],
+   "reach": [
+    [
+     "35,2157",
+     "P35"
+    ]
+   ]
+  },
+  {
+   "row": "P34",
+   "section": "V37 major modes",
+   "entry": "P34",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm P34 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     25843
+    ]
+   ],
+   "reach": [
+    [
+     "35,2000",
+     "P34"
+    ]
+   ]
+  },
+  {
+   "row": "P33",
+   "section": "V37 major modes",
+   "entry": "P33",
+   "status": "mapped",
+   "scenarios": [
+    "cm-cdh-csm"
+   ],
+   "note": "mapped: cm-cdh-csm P33 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-cdh-csm",
+     2450
+    ]
+   ],
+   "reach": [
+    [
+     "04,3437",
+     "P33"
+    ]
+   ]
+  },
+  {
+   "row": "P32",
+   "section": "V37 major modes",
+   "entry": "P32",
+   "status": "mapped",
+   "scenarios": [
+    "cm-csi"
+   ],
+   "note": "mapped: cm-csi P32 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-csi",
+     13250
+    ]
+   ],
+   "reach": [
+    [
+     "04,3303",
+     "P32"
+    ]
+   ]
+  },
+  {
+   "row": "P31",
+   "section": "V37 major modes",
+   "entry": "P31",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: not used on Apollo 11: burns were targeted by P30 from ground pads Reviewer 2: accepted (ruling 07:40).",
+   "owner": "E"
+  },
+  {
+   "row": "P30",
+   "section": "V37 major modes",
+   "entry": "P30",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p40",
+    "cm-tei"
+   ],
+   "note": "mapped: SB 3, cm-p40 V37E30E (FHD:172), SB 15, cm-tei V37E30E with V25 pads (FHD:300)",
+   "owner": "D1 / E",
+   "windows": [
+    [
+     "cm-p40",
+     4750
+    ],
+    [
+     "cm-tei",
+     4750
+    ]
+   ],
+   "reach": [
+    [
+     "35,3323",
+     "P30"
+    ]
+   ]
+  },
+  {
+   "row": "P23",
+   "section": "V37 major modes",
+   "entry": "P23",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p23"
+   ],
+   "note": "mapped: SB 2, cm-p23 V37E23E (FHD:157; cm-p23-stops.md)",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p23",
+     4750
+    ]
+   ],
+   "reach": [
+    [
+     "31,2403",
+     "P23"
+    ]
+   ]
+  },
+  {
+   "row": "P22",
+   "section": "V37 major modes",
+   "entry": "PROG22",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p22"
+   ],
+   "note": "mapped: cm-p22 V37E22E (FHD:285, 311; cm-p22-stops.md)",
+   "owner": "E",
+   "windows": [
+    [
+     "cm-p22",
+     4750
+    ]
+   ],
+   "reach": [
+    [
+     "30,2000",
+     "PROG22"
+    ]
+   ]
+  },
+  {
+   "row": "P21",
+   "section": "V37 major modes",
+   "entry": "PROG21",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p21"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-p21, cm-p52 on to P21 (V06N34 now, V06N43 -7.40, +111.70, 97.1 nmi). Reviewer 2 rejected \"not exercised\" (ruling 07:40)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p21",
+     19704
+    ]
+   ],
+   "reach": [
+    [
+     "37,2001",
+     "PROG21"
+    ]
+   ]
+  },
+  {
+   "row": "P20",
+   "section": "V37 major modes",
+   "entry": "PROG20",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20"
+   ],
+   "note": "mapped: SB 11, cm-p20 V37E20E (FHD:240; cm-p20-stops.md)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20",
+     4750
+    ]
+   ],
+   "reach": [
+    [
+     "37,2261",
+     "PROG20"
+    ]
+   ]
+  },
+  {
+   "row": "P17",
+   "section": "V37 major modes",
+   "entry": "P17",
+   "status": "mapped",
+   "scenarios": [
+    "cm-tpi-search"
+   ],
+   "note": "mapped: cm-tpi-search P17 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-tpi-search",
+     21250
+    ]
+   ],
+   "reach": [
+    [
+     "35,3151",
+     "P17"
+    ]
+   ]
+  },
+  {
+   "row": "P06",
+   "section": "V37 major modes",
+   "entry": "P06",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: CMC standby: no mission phase needs it; power-down/up is covered by the restart runs Reviewer 2: accepted (ruling 07:40).",
+   "owner": "\u2014"
+  },
+  {
+   "row": "P01",
+   "section": "V37 major modes",
+   "entry": "GTSCPSS1",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p11"
+   ],
+   "note": "mapped: SB 0, cm-p11 V37E01E (FHD:222; cm-p11-stops.md)",
+   "owner": "E",
+   "windows": [
+    [
+     "cm-p11",
+     2250
+    ]
+   ],
+   "reach": [
+    [
+     "33,2001",
+     "GTSCPSS1"
+    ]
+   ]
+  },
+  {
+   "row": "P00",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "POOH",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p52"
+   ],
+   "note": "mapped: V37E00E in cm-p11, cm-tli, cm-p52, cm-p23, cm-p40, cm-p22, cm-tei (FHD:222, 268, 138, 157, 172, 285, 300). cm-p52-restart ends in P00",
+   "owner": "C?",
+   "windows": [
+    [
+     "cm-p52",
+     18750
+    ]
+   ],
+   "reach": [
+    [
+     "04,2161",
+     "POOH"
+    ]
+   ]
+  },
+  {
+   "row": "P02",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "MODREG",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p11"
+   ],
+   "note": "mapped: SB 0, cm-p11 gyrocompass after P01 (FHD:210-222; cm-p11-stops.md)",
+   "owner": "E",
+   "windows": [
+    [
+     "cm-p11",
+     4340
+    ]
+   ],
+   "reach": [
+    [
+     "33,2522",
+     "SLEEPIE"
+    ]
+   ]
+  },
+  {
+   "row": "P03",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "MODREG",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: prelaunch optical verification of gyrocompassing (via V65); cm-p11 goes P01 \u2192 P02 \u2192 P11 (MODREG 1, 2, 11) and never P03 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "E"
+  },
+  {
+   "row": "P07",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "REDO",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: ground IMU test (V92 SYSTEST) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "\u2014"
+  },
+  {
+   "row": "P11",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "P11",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p11"
+   ],
+   "note": "mapped: SB 0, cm-p11, liftoff at 100 s (FLIGHT_SATURN) to orbit (FHD:210-222; cm-p11-stops.md) Reach is VHHDOT (34,2307), the P11 body every 2 s after liftoff: the entry (34,2002, host 10023 cs) runs just before P11 zeroes TIME2:TIME1 at liftoff, and no replay window can span that zeroing (the window clock counts AGC time), so the window (88000+400) covers a late VHHDOT arrival (88212).",
+   "owner": "E",
+   "windows": [
+    [
+     "cm-p11",
+     88000
+    ]
+   ],
+   "reach": [
+    [
+     "34,2307",
+     "VHHDOT (P11 body: every 2 s after liftoff)"
+    ]
+   ]
+  },
+  {
+   "row": "P15",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "\u2014",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: not in this program (no label, no MM 15, no NEWMODEX 15) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "\u2014"
+  },
+  {
+   "row": "P27",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "UPDATE",
+   "status": "mapped",
+   "scenarios": [
+    "cm-uplink-accept",
+    "cm-uplink-reject"
+   ],
+   "note": "mapped: V70-V73 accepted loads + a rejected V71 block (#737, f22a31dc)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-uplink-accept",
+     4136
+    ],
+    [
+     "cm-uplink-reject",
+     2010
+    ]
+   ],
+   "reach": [
+    [
+     "27,3512",
+     "UPSTORE"
+    ]
+   ]
+  },
+  {
+   "row": "P63",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "P63",
+   "status": "mapped",
+   "scenarios": [
+    "cm-entry"
+   ],
+   "note": "mapped: SB 13, cm-entry waits for 0.05 g (FHD:56-58; cm_entry.py:5-7)",
+   "owner": "G",
+   "windows": [
+    [
+     "cm-entry",
+     9850
+    ]
+   ],
+   "reach": [
+    [
+     "26,2405",
+     "P63"
+    ]
+   ]
+  },
+  {
+   "row": "P64",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "P64",
+   "status": "mapped",
+   "scenarios": [
+    "cm-entry-overload"
+   ],
+   "note": "mapped: SB 13, P64 at about 204 s (FHD:56-58). Restart: cm-entry-restart GOJAM in P64 (cm-restart-stops.md)",
+   "owner": "G / A2",
+   "windows": [
+    [
+     "cm-entry-overload",
+     20301
+    ]
+   ],
+   "reach": [
+    [
+     "26,2433",
+     "P64"
+    ]
+   ]
+  },
+  {
+   "row": "P65",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "P65",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: upcontrol: Apollo 11's entry went P64 \u2192 P67 (cm-entry MODREG 100 \u2192 103 octal); a longer-range target would be needed Reviewer 2: accepted (ruling 07:40).",
+   "owner": "G"
+  },
+  {
+   "row": "P66",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "P66",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: ballistic phase: not reached on an Apollo 11-range entry Reviewer 2: accepted (ruling 07:40).",
+   "owner": "G"
+  },
+  {
+   "row": "P67",
+   "section": "P00 and auto-started / non-V37 modes",
+   "entry": "P67",
+   "status": "mapped",
+   "scenarios": [
+    "cm-entry"
+   ],
+   "note": "mapped: SB 13, P67 at about 306 s to drogue (FHD:56-58; cm-entry-stops.md)",
+   "owner": "G",
+   "windows": [
+    [
+     "cm-entry",
+     30532
+    ]
+   ],
+   "reach": [
+    [
+     "26,2500",
+     "P67"
+    ]
+   ]
+  },
+  {
+   "row": "R03 (V48)",
+   "section": "R routines",
+   "entry": "DAPDISP",
+   "status": "mapped",
+   "scenarios": [
+    "cm-v48-dap"
+   ],
+   "note": "mapped (#745, 2d1b2e64): V48 from cm-p40's load, crew loads N46 21112 (wide deadband), proceeds on N46/N47/N48; S41.2 sets ADB 455, RATEINDX 4; host matches yaAGC",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-v48-dap",
+     2450
+    ]
+   ],
+   "reach": [
+    [
+     "42,2000",
+     "DAPDISP1"
+    ]
+   ]
+  },
+  {
+   "row": "R05 (V64)",
+   "section": "R routines",
+   "entry": "VB64",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: S-band antenna angles: a comm aid with no flight logic downstream; one key in any orbit run if wanted Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "R21 (V57)",
+   "section": "R routines",
+   "entry": "GOTOR21",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20"
+   ],
+   "note": "mapped: SB 11, cm-p20 V57E and MARK (FHD:240)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20",
+     9021
+    ]
+   ],
+   "reach": [
+    [
+     "37,2466",
+     "R21CSM"
+    ]
+   ]
+  },
+  {
+   "row": "R22",
+   "section": "R routines",
+   "entry": "R22",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20"
+   ],
+   "note": "mapped: SB 11, cm-p20 VHF ranges on V06N49 (FHD:226-240; cm-p20-stops.md)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20",
+     5370
+    ]
+   ],
+   "reach": [
+    [
+     "34,2630",
+     "R22"
+    ]
+   ]
+  },
+  {
+   "row": "R23 (V54)",
+   "section": "R routines",
+   "entry": "GOTOR23",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: COAS backup mark, used only if the sextant fails. Note: the label R23CSM (shared code after R21CSM) runs in the rendezvous runs; GOTOR23 (V54) does not Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "R30 (V82)",
+   "section": "R routines",
+   "entry": "V82PERF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p11",
+    "cm-p37",
+    "cm-tei",
+    "cm-tli"
+   ],
+   "note": "mapped: cm-p11, cm-tli, cm-tei V82E (FHD:222, 268, 300), cm-p37 (PR #654)",
+   "owner": "E",
+   "windows": [
+    [
+     "cm-p11",
+     84100
+    ],
+    [
+     "cm-p37",
+     46100
+    ],
+    [
+     "cm-tei",
+     51100
+    ],
+    [
+     "cm-tli",
+     67100
+    ]
+   ],
+   "reach": [
+    [
+     "23,2332",
+     "V82CALL"
+    ]
+   ]
+  },
+  {
+   "row": "R31 (V83)",
+   "section": "R routines",
+   "entry": "V83PERF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm V83 (R31 display loop bridged, Lane E any_fixloc fix) (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     21100
+    ]
+   ],
+   "reach": [
+    [
+     "43,2570",
+     "V83PERF +1"
+    ],
+    [
+     "31,2000",
+     "R31CALL"
+    ]
+   ]
+  },
+  {
+   "row": "R32 (V85)",
+   "section": "R routines",
+   "entry": "V85PERF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm V85 (R34ANG, R34LOS reached). Code name: the code calls V85 R34 (R31.agc:53-58, EV:847), not R32 (EV:101 comment)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     23438
+    ]
+   ],
+   "reach": [
+    [
+     "43,2602",
+     "V85PERF +1"
+    ],
+    [
+     "31,2000",
+     "R31CALL"
+    ]
+   ]
+  },
+  {
+   "row": "R36 (V90)",
+   "section": "R routines",
+   "entry": "V90PERF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20-crew-verbs"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-p20-crew-verbs V90 at 210 s (V04N12, V06N16, V06N90)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20-crew-verbs",
+     21100
+    ]
+   ],
+   "reach": [
+    [
+     "20,2164",
+     "R36"
+    ]
+   ]
+  },
+  {
+   "row": "R40",
+   "section": "R routines",
+   "entry": "LOTHRUST",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p40-sps-fail"
+   ],
+   "note": "mapped (#753, dfd7ac46): cm-p40-sps-fail, the SPS fails to light at TIG; R40 (LOTHRUST) finds the thrust low (first at 30220 cs)",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p40-sps-fail",
+     30170
+    ]
+   ],
+   "reach": [
+    [
+     "20,2230",
+     "LOTHRUST +6"
+    ]
+   ]
+  },
+  {
+   "row": "R41",
+   "section": "R routines",
+   "entry": "MIDTOAV1",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p40",
+    "cm-tei"
+   ],
+   "note": "mapped: the normal path: P40 calls MIDTOAV1 (cm-p40, cm-tei). The TIG-slip alarm 1703 path (INTEGRATION_INITIALIZATION.agc:1085) is not run",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p40",
+     17900
+    ],
+    [
+     "cm-tei",
+     17900
+    ]
+   ],
+   "reach": [
+    [
+     "13,3443",
+     "INTSTALL +1 (MIDTOAV1 is interpretive: its first basic word)"
+    ]
+   ]
+  },
+  {
+   "row": "R50",
+   "section": "R routines",
+   "entry": "CAL53A",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p52-coarse"
+   ],
+   "note": "mapped: P52 option 2 (nominal) coarse aligns through CAL53A (CDUY 314.7 to 111.0 degrees), then V50N25 00015; host matches yaAGC",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p52-coarse",
+     9600
+    ]
+   ],
+   "reach": [
+    [
+     "15,2324",
+     "RDCDUS (CAL53A is interpretive: its first basic call)"
+    ]
+   ]
+  },
+  {
+   "row": "R51",
+   "section": "R routines",
+   "entry": "R51",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p52"
+   ],
+   "note": "mapped: cm-p52 fine align after the marks (R51, R51DSP, R51K reached; draft TBD)",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p52",
+     7609
+    ]
+   ],
+   "reach": [
+    [
+     "14,2533",
+     "R51 +1"
+    ]
+   ]
+  },
+  {
+   "row": "R52",
+   "section": "R routines",
+   "entry": "R52",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20"
+   ],
+   "note": "mapped: SB 1 (cm-p52-stops.md), SB 2 (cm-p23-stops.md), cm-p22 (cm-p22-stops.md)",
+   "owner": "D1 / E",
+   "windows": [
+    [
+     "cm-p20",
+     5370
+    ]
+   ],
+   "reach": [
+    [
+     "14,2015",
+     "R52VRB +1"
+    ]
+   ]
+  },
+  {
+   "row": "R53",
+   "section": "R routines",
+   "entry": "R53",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p52"
+   ],
+   "note": "mapped: SB 1 (cm-p52-stops.md), SB 2 (cm-p23-stops.md)",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p52",
+     8970
+    ]
+   ],
+   "reach": [
+    [
+     "14,3304",
+     "R53A"
+    ]
+   ]
+  },
+  {
+   "row": "R54",
+   "section": "R routines",
+   "entry": "CHKSDATA",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p52"
+   ],
+   "note": "mapped: SB 1, N05 star-angle difference (FHD:126-137; cm-p52-stops.md)",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p52",
+     15123
+    ]
+   ],
+   "reach": [
+    [
+     "14,2750",
+     "CHKSD EXIT +1 (CHKSDATA is interpretive: its first basic word)"
+    ]
+   ]
+  },
+  {
+   "row": "R55",
+   "section": "R routines",
+   "entry": "R55",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p52"
+   ],
+   "note": "mapped: SB 1, N93 torquing (FHD:126-137). cm-p52-restart GOJAMs in N93 (cm-restart-stops.md)",
+   "owner": "D1 / A2",
+   "windows": [
+    [
+     "cm-p52",
+     16110
+    ]
+   ],
+   "reach": [
+    [
+     "15,2276",
+     "R55.1"
+    ]
+   ]
+  },
+  {
+   "row": "R56",
+   "section": "R routines",
+   "entry": "R56",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: alternate LOS sighting mark: a backup to R53 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "R57",
+   "section": "R routines",
+   "entry": "R57",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p23"
+   ],
+   "note": "mapped: SB 2, cm-p23 V59 calibration mark (FHD:143-157; cm-p23-stops.md)",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p23",
+     8950
+    ]
+   ],
+   "reach": [
+    [
+     "37,2413",
+     "R57A"
+    ]
+   ]
+  },
+  {
+   "row": "R60",
+   "section": "R routines",
+   "entry": "R60CSM",
+   "status": "mapped",
+   "scenarios": [
+    "cm-tei"
+   ],
+   "note": "mapped: SB 3, SB 15 (a nil R60 maneuver; cm-p40-stops.md:5, cm-tei-stops.md)",
+   "owner": "D1 / E",
+   "windows": [
+    [
+     "cm-tei",
+     11750
+    ]
+   ],
+   "reach": [
+    [
+     "27,2000",
+     "R60CSM"
+    ]
+   ]
+  },
+  {
+   "row": "R61",
+   "section": "R routines",
+   "entry": "R61CSM",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20"
+   ],
+   "note": "mapped: SB 11, cm-p20 (cm-p20-stops.md; FHD:226-240)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20",
+     5370
+    ]
+   ],
+   "reach": [
+    [
+     "37,2557",
+     "R61CSM"
+    ]
+   ]
+  },
+  {
+   "row": "R62 (V49)",
+   "section": "R routines",
+   "entry": "CREWMANU",
+   "status": "mapped",
+   "scenarios": [
+    "cm-v49-maneuver"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-v49-maneuver V49 from cm-p40's start, 180 degree roll; R60's KALCMANU steering runs (no CM attitude model, so it does not finish)",
+   "owner": "unassigned",
+   "windows": [
+    [
+     "cm-v49-maneuver",
+     3100
+    ]
+   ],
+   "reach": [
+    [
+     "27,2330",
+     "R62DISP"
+    ]
+   ]
+  },
+  {
+   "row": "R63 (V89)",
+   "section": "R routines",
+   "entry": "V89PERF",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: align an axis to the LOS: a rendezvous crew aid (the label R63 that runs in the P20 runs is a CDU-angle subroutine, P20-P25.agc:1692, not V89) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "R64 (V94)",
+   "section": "R routines",
+   "entry": "VERB94",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: R64 into P23 cislunar navigation: a crew aid; one key in cm-p23 if wanted Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1"
+  },
+  {
+   "row": "R00 / R02 (extra)",
+   "section": "R routines",
+   "entry": "R02BOTH",
+   "status": "mapped",
+   "scenarios": [
+    "cm-entry"
+   ],
+   "note": "mapped: R02BOTH (the IMU status check) runs in 16 runs. R00TOP00 (FRS:835) is not reached: P00 comes from V37E00E (POOH) in every run",
+   "owner": "unassigned",
+   "windows": [
+    [
+     "cm-entry",
+     2450
+    ]
+   ],
+   "reach": [
+    [
+     "07,3653",
+     "R02BOTH"
+    ]
+   ]
+  },
+  {
+   "row": "V40 zero CDU (N20)",
+   "section": "extended verbs",
+   "entry": "VBZERO",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: manual IMU zero, a crew backup (IMUZERO itself runs in cm-p11) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1"
+  },
+  {
+   "row": "V41 coarse align (N20/N91)",
+   "section": "extended verbs",
+   "entry": "VBCOARK",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: manual coarse align, a crew backup to P51/P52 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1"
+  },
+  {
+   "row": "V42 fine align",
+   "section": "extended verbs",
+   "entry": "IMUFINEK",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: manual fine align, a crew backup Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1"
+  },
+  {
+   "row": "V43 load attitude error needles",
+   "section": "extended verbs",
+   "entry": "IMUATTCK",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: display only (FDAI needles), no flight logic Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V44 set surface flag",
+   "section": "extended verbs",
+   "entry": "SETSURF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20-crew-verbs"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-p20-crew-verbs V44 at 260 s (R61 asks for a new attitude, V50N18)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20-crew-verbs",
+     26082
+    ]
+   ],
+   "reach": [
+    [
+     "43,3207",
+     "SETSURF"
+    ]
+   ]
+  },
+  {
+   "row": "V45 reset surface flag",
+   "section": "extended verbs",
+   "entry": "RESTSRF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20-crew-verbs"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-p20-crew-verbs V45 at 270 s",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20-crew-verbs",
+     27100
+    ]
+   ],
+   "reach": [
+    [
+     "43,3212",
+     "RESTSRF"
+    ]
+   ]
+  },
+  {
+   "row": "V46 establish G&C control (DAP)",
+   "section": "extended verbs",
+   "entry": "STABLISH",
+   "status": "mapped",
+   "scenarios": [
+    "cm-v48-dap"
+   ],
+   "note": "mapped (#745, 2d1b2e64): V46 after the V48 load establishes the RCS DAP; host matches yaAGC",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-v48-dap",
+     7450
+    ]
+   ],
+   "reach": [
+    [
+     "42,3606",
+     "DAPFIG"
+    ]
+   ]
+  },
+  {
+   "row": "V47 move LM state vector into CM",
+   "section": "extended verbs",
+   "entry": "LMTOCMSV",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: docked state-vector transfer, a backup to uplink (inferred) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "V48 load DAP data (R03)",
+   "section": "extended verbs",
+   "entry": "DAPDISP",
+   "status": "mapped",
+   "scenarios": [
+    "cm-v48-dap"
+   ],
+   "note": "mapped (#745, 2d1b2e64): V48 from cm-p40's load, crew loads N46 21112 (wide deadband), proceeds on N46/N47/N48; S41.2 sets ADB 455, RATEINDX 4; host matches yaAGC",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-v48-dap",
+     2450
+    ]
+   ],
+   "reach": [
+    [
+     "42,2000",
+     "DAPDISP1"
+    ]
+   ]
+  },
+  {
+   "row": "V49 crew-defined maneuver (R62)",
+   "section": "extended verbs",
+   "entry": "CREWMANU",
+   "status": "mapped",
+   "scenarios": [
+    "cm-v49-maneuver"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): same as R62",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-v49-maneuver",
+     3100
+    ]
+   ],
+   "reach": [
+    [
+     "27,2330",
+     "R62DISP"
+    ]
+   ]
+  },
+  {
+   "row": "V50 please perform",
+   "section": "extended verbs",
+   "entry": "GOLOADLV` (shared flash/mode entry)",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p23",
+    "cm-p40",
+    "cm-tei"
+   ],
+   "note": "mapped: V50N25/V50N18 in cm-p52, cm-p23, cm-p40, cm-tei, cm-entry (FHD:126-138, 143-157, 160-172, 288-300, 56-58)",
+   "owner": "C?",
+   "windows": [
+    [
+     "cm-p23",
+     8950
+    ],
+    [
+     "cm-p40",
+     14950
+    ],
+    [
+     "cm-tei",
+     14950
+    ]
+   ],
+   "reach": [
+    [
+     "43,2275",
+     "GOLOADLV"
+    ]
+   ]
+  },
+  {
+   "row": "V51 please mark",
+   "section": "extended verbs",
+   "entry": "GOLOADLV` (shared flash/mode entry)",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p23"
+   ],
+   "note": "mapped: cm-p20 R21's V51 (FHD:226-240), cm-p22 \"proceed on V51\" (FHD:271-285)",
+   "owner": "D1b / E",
+   "windows": [
+    [
+     "cm-p23",
+     8950
+    ]
+   ],
+   "reach": [
+    [
+     "43,2275",
+     "GOLOADLV"
+    ]
+   ]
+  },
+  {
+   "row": "V52 set P22 offset number",
+   "section": "extended verbs",
+   "entry": "V52",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: P22 landmark offset; cm-p22 uses the default Reviewer 2: accepted (ruling 07:40).",
+   "owner": "E"
+  },
+  {
+   "row": "V53 please perform COAS mark",
+   "section": "extended verbs",
+   "entry": "GOLOADLV` (shared flash/mode entry)",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: the COAS backup mark flash (R23 path), used only if the sextant fails Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "V54 please mark, R21 backup (R23)",
+   "section": "extended verbs",
+   "entry": "GOTOR23",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: same as R23 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "V55 align time",
+   "section": "extended verbs",
+   "entry": "ALINTIME",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: clock fix (R33, EV:418), a ground-support aid; uplinks do it in flight (V73) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V56 terminate tracking (P20/P25)",
+   "section": "extended verbs",
+   "entry": "TRACKTRM",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm V56 at 77000 (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     77100
+    ]
+   ],
+   "reach": [
+    [
+     "43,2657",
+     "TRACKTRM +4 (DOWNFLAG RNDVZFLG)"
+    ]
+   ]
+  },
+  {
+   "row": "V57 start R21",
+   "section": "extended verbs",
+   "entry": "GOTOR21",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20"
+   ],
+   "note": "mapped: SB 11, cm-p20 V57E (FHD:240)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20",
+     9021
+    ]
+   ],
+   "reach": [
+    [
+     "37,2466",
+     "R21CSM"
+    ]
+   ]
+  },
+  {
+   "row": "V58 enable auto maneuver",
+   "section": "extended verbs",
+   "entry": "ENATMA",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20-crew-verbs"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-p20-crew-verbs V58 at 290 s",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20-crew-verbs",
+     29100
+    ]
+   ],
+   "reach": [
+    [
+     "43,2510",
+     "ENATMA"
+    ]
+   ]
+  },
+  {
+   "row": "V59 please calibrate",
+   "section": "extended verbs",
+   "entry": "GOLOADLV` (shared flash/mode entry)",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p23"
+   ],
+   "note": "mapped: cm-p23 R57's V59 (FHD:143-157)",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p23",
+     8950
+    ]
+   ],
+   "reach": [
+    [
+     "43,2275",
+     "GOLOADLV"
+    ]
+   ]
+  },
+  {
+   "row": "V60 set CPHIX = CDU",
+   "section": "extended verbs",
+   "entry": "V60",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: needle display mode, no flight logic Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V61 needle mode I",
+   "section": "extended verbs",
+   "entry": "V61",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: needle display mode Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V62 needle mode II",
+   "section": "extended verbs",
+   "entry": "V62",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: needle display mode Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V63 needle mode III",
+   "section": "extended verbs",
+   "entry": "V63",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: needle display mode Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V64 S-band antenna angles (R05)",
+   "section": "extended verbs",
+   "entry": "VB64",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: same as R05 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V65 prelaunch optical verification (P03)",
+   "section": "extended verbs",
+   "entry": "CKOPTVB",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: prelaunch only (P03) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "E"
+  },
+  {
+   "row": "V66 vehicles attached",
+   "section": "extended verbs",
+   "entry": "ATTACHED",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p23-attached"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-p23-attached V66 after P00 (ATTACHIT)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p23-attached",
+     28600
+    ]
+   ],
+   "reach": [
+    [
+     "43,3034",
+     "ATTACHED"
+    ]
+   ]
+  },
+  {
+   "row": "V67 W-matrix monitor",
+   "section": "extended verbs",
+   "entry": "V67",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: W-matrix display; the V67 routines are certified (cm-p20-p25) and no flight logic depends on the display Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "V68 CSM stroke test on",
+   "section": "extended verbs",
+   "entry": "STROKON",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: TVC stroke test for checkout Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1"
+  },
+  {
+   "row": "V69 cause restart",
+   "section": "extended verbs",
+   "entry": "VERB69",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised in an integrated flight run: V69 (VERB69, a TC to itself) restarts the computer through the TC trap, so it runs in the restart scenarios instead (cm-v69-restart on the host against yaAGC, cm-v69 on the C64 from 2300 cs; #752, 01f050d6), which recovery_and_restart_tests covers",
+   "owner": "A2",
+   "windows": []
+  },
+  {
+   "row": "V70 update liftoff time",
+   "section": "extended verbs",
+   "entry": "V70UPDAT",
+   "status": "mapped",
+   "scenarios": [
+    "cm-uplink-accept"
+   ],
+   "note": "mapped: 0,144 octal, V33 (#737, f22a31dc)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-uplink-accept",
+     10362
+    ]
+   ],
+   "reach": [
+    [
+     "27,3715",
+     "UPEND70"
+    ]
+   ]
+  },
+  {
+   "row": "V71 universal update, block",
+   "section": "extended verbs",
+   "entry": "V71UPDAT",
+   "status": "mapped",
+   "scenarios": [
+    "cm-uplink-accept",
+    "cm-uplink-reject"
+   ],
+   "note": "mapped: TTPI block load; over-limit block rejected (#737, f22a31dc)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-uplink-accept",
+     4136
+    ],
+    [
+     "cm-uplink-reject",
+     2010
+    ]
+   ],
+   "reach": [
+    [
+     "27,3624",
+     "UPEND71"
+    ]
+   ]
+  },
+  {
+   "row": "V72 universal update, single",
+   "section": "extended verbs",
+   "entry": "V72UPDAT",
+   "status": "mapped",
+   "scenarios": [
+    "cm-uplink-accept"
+   ],
+   "note": "mapped: TTPI high word (#737, f22a31dc)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-uplink-accept",
+     6537
+    ]
+   ],
+   "reach": [
+    [
+     "27,3656",
+     "UPEND72"
+    ]
+   ]
+  },
+  {
+   "row": "V73 update AGC time",
+   "section": "extended verbs",
+   "entry": "V73UPDAT",
+   "status": "mapped",
+   "scenarios": [
+    "cm-uplink-accept"
+   ],
+   "note": "mapped: +100 cs (#737, f22a31dc)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-uplink-accept",
+     8361
+    ]
+   ],
+   "reach": [
+    [
+     "27,3530",
+     "UPEND73"
+    ]
+   ]
+  },
+  {
+   "row": "V74 erasable dump downlink",
+   "section": "extended verbs",
+   "entry": "DNEDUMP",
+   "status": "mapped",
+   "scenarios": [
+    "cm-uplink-accept"
+   ],
+   "note": "mapped: FLIGHT_DOWNRUPT on: list 01777, 14,000 downlink words match yaAGC (#737, f22a31dc)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-uplink-accept",
+     12010
+    ]
+   ],
+   "reach": [
+    [
+     "43,2721",
+     "DNEDUMP"
+    ]
+   ]
+  },
+  {
+   "row": "V75 set liftoff flag (backup liftoff)",
+   "section": "extended verbs",
+   "entry": "LFTFLGON",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: backup for the liftoff discrete; cm-p11 uses the discrete Reviewer 2: accepted (ruling 07:40).",
+   "owner": "E"
+  },
+  {
+   "row": "V76 set preferred attitude flag",
+   "section": "extended verbs",
+   "entry": "SETPRFLG",
+   "status": "mapped",
+   "scenarios": [
+    "cm-v49-maneuver"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-v49-maneuver V76 at 20 s, before V49 (reviewer 2 had accepted \"not exercised\")",
+   "owner": "unassigned",
+   "windows": [
+    [
+     "cm-v49-maneuver",
+     2100
+    ]
+   ],
+   "reach": [
+    [
+     "43,3015",
+     "SETPRFLG"
+    ]
+   ]
+  },
+  {
+   "row": "V77 reset preferred attitude flag",
+   "section": "extended verbs",
+   "entry": "RESETPRF",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: as V76 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V78 change gyrocompass azimuth",
+   "section": "extended verbs",
+   "entry": "CHAZFOGC",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: prelaunch only (P02) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "E"
+  },
+  {
+   "row": "V79",
+   "section": "extended verbs",
+   "entry": "ALM/END",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: spare (ALM/END in LST2FAN) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "\u2014"
+  },
+  {
+   "row": "V80 update LM state vector",
+   "section": "extended verbs",
+   "entry": "LEMVEC",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: crew state-vector load, a backup to uplink (P27) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "V81 update CSM state vector",
+   "section": "extended verbs",
+   "entry": "CSMVEC",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: as V80 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "V82 orbit parameters (R30)",
+   "section": "extended verbs",
+   "entry": "V82PERF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p37"
+   ],
+   "note": "mapped: SB 0, 0b, 15 (FHD:222, 268, 300), cm-p37 (PR #654)",
+   "owner": "E",
+   "windows": [
+    [
+     "cm-p37",
+     46100
+    ]
+   ],
+   "reach": [
+    [
+     "23,2332",
+     "V82CALL"
+    ]
+   ]
+  },
+  {
+   "row": "V83 range, range rate (R31)",
+   "section": "extended verbs",
+   "entry": "V83PERF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm V83 (R31 bridged, Lane E fix) (#712, a2bd2ff7)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     21100
+    ]
+   ],
+   "reach": [
+    [
+     "43,2570",
+     "V83PERF +1"
+    ],
+    [
+     "31,2000",
+     "R31CALL"
+    ]
+   ]
+  },
+  {
+   "row": "V84",
+   "section": "extended verbs",
+   "entry": "ALM/END",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: spare (ALM/END). The AOI verb list still names V84 \"start target delta V (R32)\", but LST2FAN has no V84 routine Reviewer 2: accepted (ruling 07:40).",
+   "owner": "\u2014"
+  },
+  {
+   "row": "V85 range, range rate, SLOS (R32)",
+   "section": "extended verbs",
+   "entry": "V85PERF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-rendezvous-tpm"
+   ],
+   "note": "mapped: cm-rendezvous-tpm V85 (R34ANG reached). The code calls it R34 (R31.agc:53-58)",
+   "owner": "D2",
+   "windows": [
+    [
+     "cm-rendezvous-tpm",
+     23438
+    ]
+   ],
+   "reach": [
+    [
+     "43,2602",
+     "V85PERF +1"
+    ],
+    [
+     "31,2000",
+     "R31CALL"
+    ]
+   ]
+  },
+  {
+   "row": "V86 backup mark reject (R23)",
+   "section": "extended verbs",
+   "entry": "V86PERF",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: with R23 (COAS backup) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "V87 set VHF range flag",
+   "section": "extended verbs",
+   "entry": "SETVHFLG",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20"
+   ],
+   "note": "mapped: SB 11, cm-p20 V87E (FHD:240; cm-p20-stops.md:21)",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20",
+     6030
+    ]
+   ],
+   "reach": [
+    [
+     "43,3023",
+     "SETVHFLG"
+    ]
+   ]
+  },
+  {
+   "row": "V88 reset VHF range flag",
+   "section": "extended verbs",
+   "entry": "RESETVHF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20-crew-verbs"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-p20-crew-verbs V88 at 280 s",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20-crew-verbs",
+     28100
+    ]
+   ],
+   "reach": [
+    [
+     "43,3027",
+     "RESETVHF"
+    ]
+   ]
+  },
+  {
+   "row": "V89 align axis to LOS (R63)",
+   "section": "extended verbs",
+   "entry": "V89PERF",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: same as R63 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1b"
+  },
+  {
+   "row": "V90 out-of-plane parameters (R36)",
+   "section": "extended verbs",
+   "entry": "V90PERF",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20-crew-verbs"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): same as R36",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20-crew-verbs",
+     21100
+    ]
+   ],
+   "reach": [
+    [
+     "20,2164",
+     "R36"
+    ]
+   ]
+  },
+  {
+   "row": "V91 bank sum",
+   "section": "extended verbs",
+   "entry": "GOSHOSUM",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: rope checksum display for checkout (the DSKY sweep does not key it: tools/dsky_sweep_cases.py keys V01-V39 and V82/V83) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "C"
+  },
+  {
+   "row": "V92 IMU performance test",
+   "section": "extended verbs",
+   "entry": "SYSTEST",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: ground IMU test (P07) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "\u2014"
+  },
+  {
+   "row": "V93 clear RENDWFLG",
+   "section": "extended verbs",
+   "entry": "WMATRXNG",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p20-crew-verbs"
+   ],
+   "note": "mapped (#732, merged 0fc7157d): cm-p20-crew-verbs V93 at 300 s (reviewer 2 had accepted \"not exercised\")",
+   "owner": "D1b",
+   "windows": [
+    [
+     "cm-p20-crew-verbs",
+     30100
+    ]
+   ],
+   "reach": [
+    [
+     "43,2755",
+     "WMATRXNG"
+    ]
+   ]
+  },
+  {
+   "row": "V94 do R64",
+   "section": "extended verbs",
+   "entry": "VERB94",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: same as R64 Reviewer 2: accepted (ruling 07:40).",
+   "owner": "D1"
+  },
+  {
+   "row": "V95",
+   "section": "extended verbs",
+   "entry": "ALM/END",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: spare (ALM/END) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "\u2014"
+  },
+  {
+   "row": "V96 stop integration",
+   "section": "extended verbs",
+   "entry": "VERB96",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: crew aid; one key in any orbit run if wanted Reviewer 2: accepted (ruling 07:40).",
+   "owner": "unassigned"
+  },
+  {
+   "row": "V97 please perform engine fail (R40/R41)",
+   "section": "extended verbs",
+   "entry": "GOLOADLV` (shared flash/mode entry)",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p40-sps-fail"
+   ],
+   "note": "mapped (#753, dfd7ac46): cm-p40-sps-fail, FAILDSP flashes V97N40 (first at 32152 cs); the crew terminates (V97T) and goes to P00",
+   "owner": "D1",
+   "windows": [
+    [
+     "cm-p40-sps-fail",
+     30170
+    ]
+   ],
+   "reach": [
+    [
+     "24,3347",
+     "FAILDSP"
+    ]
+   ]
+  },
+  {
+   "row": "V98",
+   "section": "extended verbs",
+   "entry": "ALM/END",
+   "status": "not exercised",
+   "scenarios": [],
+   "note": "not exercised: spare (ALM/END) Reviewer 2: accepted (ruling 07:40).",
+   "owner": "\u2014"
+  },
+  {
+   "row": "V99 please enable engine",
+   "section": "extended verbs",
+   "entry": "GOLOADLV` (shared flash/mode entry)",
+   "status": "mapped",
+   "scenarios": [
+    "cm-p40",
+    "cm-tei"
+   ],
+   "note": "mapped: V99N40 at TIG-5 in cm-p40 and cm-tei (FHD:160-172, 288-300; cm-p40-stops.md:5)",
+   "owner": "D1 / E",
+   "windows": [
+    [
+     "cm-p40",
+     29000
+    ],
+    [
+     "cm-tei",
+     29000
+    ]
+   ],
+   "reach": [
+    [
+     "24,3410",
+     "V99P"
+    ]
+   ]
+  }
+ ]
+}

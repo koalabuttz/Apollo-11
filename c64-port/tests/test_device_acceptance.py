@@ -1,0 +1,630 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+"""tools/device_acceptance.py on made-up host summaries and replay
+results: what makes a window a match, a host scenario clean, an adapter
+defined, and a role covered, and the doc's form (tools/acceptance_bundle.py
+read_doc)."""
+import hashlib
+import json
+import pathlib
+import sys
+import tempfile
+import unittest
+from unittest import mock
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'tools'))
+import acceptance_bundle as ab  # noqa: E402
+import device_acceptance as da  # noqa: E402
+import flight_host_differential as fhd  # noqa: E402
+
+HEAD = 'abc123def456'
+FHR = da.FHR
+
+
+def window(**kw):
+    """A replay result that matches the host over a 120 cs window and
+    touches channel 15 (a key) and drives channel 5 (a jet)."""
+    r = dict(scenario='lm-a', mission='lm', snap_cs=100, requested_cs=120, ok=True, status=0, reu_bounds=dict(ok=True),
+             replay_rows=4, replay_applied=4, replay_ended=True, replay_end_paired=True, replay_unpaired_count=0,
+             replay_skipped=[], replay_differences=0, replay_matched_cs=[60, 120], commit=HEAD,
+             replay_inputs=dict(counts={'2': 4}, erasable=[], pipas=[], channels=['15'], requests=0,
+                                channel_set={'15': 0o21}, channel_clear={'15': 0o77756}, channel_changed={'15': 0o21}),
+             replay_outputs=dict(channel_set={'channel 5': 0o20}, channel_changed={'channel 5': 0o20},
+                                 nonzero=[], changed=[]),
+             _evidence='`evidence/lm-acceptance-devices/lm-a-100.json`', _env={})
+    r.update(kw)
+    return r
+
+
+def host_row(name='lm-a', **kw):
+    r = dict(scenario=f'{name}-scaled-x1', mission='lm', exit=0, routine_mismatches=[], unregistered=[],
+             native_routines=10, commit=HEAD)
+    r.update(kw)
+    return r
+
+
+FLIGHT = [('lm-a', 'lm', 1000, '@100V37E', {'FLIGHT_ENGINE': '1'})]
+
+
+def table(**over):
+    """A key role and a jets role whose adapters are defined in the tree."""
+    keys = da.role('keys', 'Keys', 'in', 'channel 15', [(FHR, 'key_due', 'keys')], [(da.DPC, 'replay_rows', 'rows')],
+                   da.pressed('0-9A-Z'), da.either(da.channel(0o15, how='channel_set'), da.requests('KEY1')), [])
+    jets = da.role('jets', 'Jets', 'out', 'channels 5, 6', [(FHR, 'rp_end', 'end')], [(da.DPC, 'replay_state', 'end')],
+                   da.uses('FLIGHT_ENGINE'), da.either(da.moved(5), da.moved(6)), [])
+    for k, v in over.items():
+        (keys if k.startswith('keys_') else jets)[k.split('_', 1)[1]] = v
+    return [keys, jets]
+
+
+def assess(runs, host, tab=None):
+    for r in runs:
+        r['_why'] = da.not_matched(r, 120, HEAD)
+    with mock.patch.object(fhd, 'FLIGHT', FLIGHT):
+        return da.assess('lm', tab or table(), runs, host, HEAD)
+
+
+class Match(unittest.TestCase):
+    def test_baseline(self):
+        self.assertEqual(da.not_matched(window(), 120, HEAD), [])
+
+    def test_each_flag_breaks_it(self):
+        for kw in [dict(ok=False), dict(status=5), dict(reu_bounds=dict(ok=False, dma_outside=4)), dict(reu_bounds=None),
+                   dict(replay_ended=False), dict(replay_applied=3), dict(replay_end_paired=False),
+                   dict(replay_end_paired=None), dict(replay_unpaired_count=1), dict(replay_skipped=['TIME5']),
+                   dict(masked_dead_superbank=1),
+                   dict(replay_differences=2), dict(replay_differences=None), dict(replay_matched_cs=[]),
+                   dict(replay_matched_cs=[60]), dict(requested_cs=3, replay_matched_cs=[3]), dict(commit='0123456789ab'),
+                   dict(commit=HEAD + ' (dirty)'), dict(error=['FAIL: no snapshot'])]:
+            with self.subTest(kw=kw):
+                self.assertNotEqual(da.not_matched(window(**kw), 120, HEAD), [])
+
+    def test_busy_apart_checkpoint_is_a_note(self):
+        # #892: both sides busy at different places mid-window; the end still compares
+        w = window(replay_unpaired_count=1, replay_busy_apart_count=1, replay_busy_apart=[60])
+        self.assertEqual(da.not_matched(w, 120, HEAD), [])
+        self.assertIn('busy at different places at 60 cs', da.busy_note(w))
+        self.assertNotEqual(da.not_matched(window(replay_unpaired_count=2, replay_busy_apart_count=1), 120, HEAD), [])
+
+    def test_not_a_program_window(self):
+        self.assertIn("not one of the program's windows", da.not_matched(window(), None, HEAD))
+
+
+class Host(unittest.TestCase):
+    def rows(self, summary, env=None):
+        with mock.patch.object(fhd, 'FLIGHT', FLIGHT):
+            return da.host_rows('lm', summary, env, HEAD)
+
+    def test_states(self):
+        self.assertEqual(self.rows([host_row()])[0][1], 'clean')
+        self.assertEqual(self.rows([])[0][1], 'MISSING')
+        self.assertEqual(self.rows([host_row(commit='0123456789ab')])[0][1], 'STALE')
+        self.assertEqual(self.rows([host_row(exit=1)])[0][1], 'NOT CLEAN')
+        self.assertEqual(self.rows([host_row(routine_mismatches=[dict(point='01,2000')])])[0][1], 'NOT CLEAN')
+
+    def test_charge(self):
+        # (#765) an interpretive charge over the bound is NOT CLEAN; a run
+        # with few routines is reported in the detail, still clean.
+        over = dict(fitted=10100, yaagc=10000, percent=1.0, routines=2000, mean_abs_error=2.5)
+        few = dict(fitted=2385, yaagc=1000, percent=138.5, routines=30, mean_abs_error=46.2)
+        row = self.rows([host_row(interpretive_charge=over)])[0]
+        self.assertEqual(row[1], 'NOT CLEAN')
+        self.assertIn('OVER the bound (20% net, 45% routine by routine)', row[2])
+        row = self.rows([host_row(interpretive_charge=few)])[0]
+        self.assertEqual(row[1], 'clean')
+        self.assertIn('fewer than 1000 routines, not bounded', row[2])
+
+    def test_unregistered_counted(self):
+        self.assertIn('9 unregistered', self.rows([host_row(unregistered=[{}] * 9)])[0][2])
+
+    def test_env_selects(self):
+        self.assertEqual(self.rows([host_row()], da.uses('FLIGHT_RR')), [])
+        self.assertEqual(len(self.rows([host_row()], da.uses('FLIGHT_ENGINE'))), 1)
+
+    def test_trimmed_evidence_gives_the_same_rows(self):
+        # The stored host-summary.json keeps only m's scaled-x1 flight rows
+        # and the fields host_rows reads (the whole LM summary is over the
+        # 256 KiB in-tree limit, L 11cab8d3); each state reads the same.
+        bulk = dict(arrivals={str(i): i for i in range(500)}, loads_by_point={'01,2000': 7}, inputs={'A': 1})
+        over = dict(fitted=10100, yaagc=10000, percent=1.0, routines=2000, mean_abs_error=2.5)
+        cases = [host_row(**bulk), host_row(commit='0123456789ab', **bulk), host_row(exit=1, **bulk),
+                 host_row(routine_mismatches=[dict(point='01,2000')], **bulk),
+                 host_row(unregistered=[{}] * 9, **bulk), host_row(interpretive_charge=over, **bulk)]
+        others = [host_row('lm-a-scaled-x0.5'), dict(host_row(), mission='cm', scenario='cm-a-scaled-x1')]
+        for row in cases:
+            summary = others + [row]
+            with mock.patch.object(fhd, 'FLIGHT', FLIGHT):
+                kept = da.host_evidence('lm', summary)
+            self.assertEqual([r['scenario'] for r in kept], ['lm-a-scaled-x1'])
+            self.assertFalse(set(kept[0]) - set(da.HOST_FIELDS))
+            for env in (None, da.uses('FLIGHT_ENGINE'), da.uses('FLIGHT_RR')):
+                self.assertEqual(self.rows(kept, env), self.rows([row], env))
+
+
+class Adapters(unittest.TestCase):
+    def check(self, text, symbol, suffix='.c'):
+        with tempfile.TemporaryDirectory() as d:
+            f = pathlib.Path(d) / f'x{suffix}'
+            f.write_text(text)
+            return da.adapter_ok(f, symbol)
+
+    def test_definitions(self):
+        self.assertTrue(self.check('static void lr_due(unsigned long t,\n  int x){', 'lr_due'))
+        self.assertTrue(self.check('static __attribute__((noinline)) void radar(int *p)\n{', 'radar'))
+        self.assertTrue(self.check('LOW_TEXT("dp_state") static void replay_state(uint16_t t)\n{', 'replay_state'))
+        self.assertTrue(self.check('#define PRO $40\n', 'PRO', '.S'))
+        self.assertTrue(self.check('rk_dsky_keys:\n  .byte 0\n', 'rk_dsky_keys', '.S'))
+
+    def test_not_definitions(self):
+        self.assertFalse(self.check('/* static void lr_due(int x){} */', 'lr_due'))
+        self.assertFalse(self.check('// static void lr_due(int x){}', 'lr_due'))
+        self.assertFalse(self.check('const char *s = "PROG";', 'PRO'))
+        self.assertFalse(self.check('void f(void){ if(lr_due(1)){ } }', 'lr_due'))
+        self.assertFalse(self.check('lr_due(1);', 'lr_due'))
+        self.assertFalse(self.check('x: ; rk_dsky_keys:\n', 'rk_dsky_keys', '.S'))
+
+    def test_every_role_defined_in_tree(self):
+        for m in da.PROGRAM:
+            for t in da.roles(m):
+                for f, s, _ in t['host'] + t['c64']:
+                    self.assertTrue(da.adapter_ok(f, s), f'{m} {t["key"]}: {f} {s}')
+
+    def test_the_optics_drive_window_checks_often_enough(self):
+        # OPTDRIVE's commands hold about 20 cs; the window's checkpoints must
+        # land in one whatever the timing (#993 moved them off 50 cs ones).
+        w = [x for x in da.WINDOWS['cm'] if x[:2] == ('cm-p52-optics', 12250)]
+        self.assertEqual(len(w), 1)
+        self.assertLessEqual(w[0][3], 10)
+
+    def test_checkpoints_count_the_states_that_show_an_output_role(self):
+        t = next(x for x in da.roles('cm') if x['key'] == 'optics-drive')
+        quiet = dict(channel_set={'channel 12': 2}, channel_changed={}, nonzero=[], changed=[])
+        moved = dict(quiet, nonzero=['0053'], changed=['0053'])
+        run = dict(replay_outputs=dict(moved, states=[dict(quiet, cs=50), dict(moved, cs=100), dict(quiet, cs=150)]))
+        self.assertEqual(da.checkpoints(t, [run]), 1)
+        two = dict(replay_outputs=dict(moved, states=[dict(moved, cs=10), dict(moved, cs=20)]))
+        self.assertEqual(da.checkpoints(t, [run, two]), 3)
+        self.assertIsNone(da.checkpoints(t, [dict(replay_outputs=moved)]))  # recorded before per-checkpoint outputs
+        tvc_on = dict(moved, channel_set={'channel 12': 0o200})
+        self.assertEqual(da.checkpoints(t, [dict(replay_outputs=dict(moved, states=[tvc_on]))]), 0)
+        self.assertIsNone(da.checkpoints(next(x for x in da.roles('cm') if x['dir'] == 'in'), [run]))
+
+    def test_the_host_trace_shows_a_command_no_checkpoint_holds(self):
+        t = next(x for x in da.roles('cm') if x['key'] == 'optics-drive')
+        quiet = dict(channel_set={'channel 12': 2}, channel_changed={}, nonzero=[], changed=[])
+        trace = [[30, '0053', '00003'], [30, '0054', '77532'], [31, '0053', '00000'], [31, '0054', '00000']]
+        run = dict(replay_outputs=dict(quiet, trace=trace, states=[dict(quiet, cs=50)]))
+        self.assertTrue(t['window'](run))
+        self.assertEqual(da.checkpoints(t, [run]), 0)
+        self.assertEqual(da.commands(t, [run]), 2)
+        self.assertFalse(t['window'](dict(replay_outputs=dict(quiet, trace=trace[2:]))))  # zeros only
+        self.assertIsNone(da.commands(t, [dict(replay_outputs=quiet)]))  # recorded before the trace
+        tvc_on = dict(quiet, channel_set={'channel 12': 0o200})
+        self.assertFalse(t['window'](dict(replay_outputs=dict(tvc_on, trace=trace))))
+
+    def test_a_window_only_the_host_trace_shows_is_not_a_c64_window(self):
+        # #1020: the C64 matches the host only at checkpoints, so a window whose
+        # drive only the host's trace shows counts as host evidence.
+        t = next(x for x in da.roles('cm') if x['key'] == 'optics-drive')
+        quiet = dict(channel_set={'channel 12': 2}, channel_changed={}, nonzero=[], changed=[])
+        trace = [[30, '0053', '00003'], [31, '0053', '00000']]
+        traced = dict(replay_outputs=dict(quiet, trace=trace, states=[dict(quiet, cs=50)]), _why=[])
+        shown = dict(replay_outputs=dict(quiet, changed=['0053'], trace=trace), _why=[])
+        self.assertTrue(t['window'](traced))
+        self.assertFalse(t['shown'](traced))
+        self.assertTrue(t['shown'](shown))
+        self.assertEqual(da.c64_count(t, [shown], [shown]), '1 of 1 windows match')
+        self.assertEqual(da.c64_count(t, [shown, traced], [shown, traced]),
+                         "1 of 1 windows match on C64 checkpoints; 2 of 2 with the host's trace")
+        self.assertEqual(da.c64_count(t, [traced], [traced]),
+                         "0 of 0 windows match on C64 checkpoints; 1 of 1 with the host's trace")
+        tvc = next(x for x in da.roles('cm') if x['key'] == 'tvc')
+        on = dict(channel_set={'channel 12': 0o200}, channel_changed={}, nonzero=[], changed=[])
+        self.assertTrue(tvc['window'](dict(replay_outputs=dict(on, trace=trace))))
+        self.assertFalse(tvc['shown'](dict(replay_outputs=dict(on, trace=trace))))
+
+
+class Roles(unittest.TestCase):
+    def status(self, runs, host=None, tab=None):
+        out, bad = assess(runs, [host_row()] if host is None else host, tab)
+        return {t['key']: s for t, s, *_ in out}, bad
+
+    def test_baseline_covered(self):
+        s, bad = self.status([window()])
+        self.assertEqual(s, dict(keys='covered', jets='covered'))
+        self.assertEqual(bad, [])
+
+    def test_window_that_does_not_match(self):
+        for kw in [dict(ok=False), dict(replay_end_paired=False), dict(replay_skipped=['TIME5']), dict(commit='x')]:
+            with self.subTest(kw=kw):
+                s, bad = self.status([window(**kw)])
+                self.assertEqual(s, dict(keys='GAP', jets='GAP'))
+                self.assertTrue(bad)
+
+    def test_input_role_needs_its_rows(self):
+        w = window(replay_inputs=dict(counts={}, erasable=[], pipas=[], channels=[], requests=0))
+        s, bad = self.status([w])
+        self.assertEqual(s['keys'], 'GAP')
+        self.assertEqual(s['jets'], 'covered')
+
+    def test_output_role_needs_its_output_to_move(self):
+        w = window(replay_outputs=dict(channel_set={'channel 5': 0, 'channel 6': 0},
+                                       channel_changed={'channel 5': 0, 'channel 6': 0}, nonzero=[], changed=[]))
+        s, bad = self.status([w])
+        self.assertEqual(s['jets'], 'GAP')
+        self.assertEqual(s['keys'], 'covered')
+
+    def test_a_static_output_is_not_driven(self):
+        w = window(replay_outputs=dict(channel_set={'channel 5': 0o20}, channel_changed={'channel 5': 0},
+                                       nonzero=['0055'], changed=[]))
+        s, _ = self.status([w])
+        self.assertEqual(s['jets'], 'GAP')
+        self.assertFalse(da.words(0o55)(w))
+        self.assertTrue(da.words(0o55)(window(replay_outputs=dict(changed=['0055']))))
+        self.assertTrue(da.held(5, 0o20)(w))
+
+    def test_host_gates(self):
+        for host in [[], [host_row(commit='0123456789ab')], [host_row(exit=1)]]:
+            with self.subTest(host=host):
+                _, bad = self.status([window()], host)
+                self.assertTrue(any('host scenario lm-a' in b for b in bad), bad)
+
+    def test_no_host_scenario(self):
+        _, bad = self.status([window()], tab=table(jets_env=da.uses('FLIGHT_RHC')))
+        self.assertIn('jets: no host scenario drives it', bad)
+
+    def test_no_host_adapter(self):
+        _, bad = self.status([window()], tab=table(jets_host=[]))
+        self.assertIn('jets: no host adapter', bad)
+
+    def test_missing_symbol(self):
+        _, bad = self.status([window()], tab=table(jets_host=[(FHR, 'rp_gone', 'end')]))
+        self.assertTrue(any('defines no rp_gone' in b for b in bad), bad)
+
+    def test_blocking_gap(self):
+        s, bad = self.status([window()], tab=table(jets_gap='not linked', jets_blocking=True))
+        self.assertEqual(s['jets'], 'GAP')
+        self.assertIn('jets: not linked', bad)
+        s, bad = self.status([window()], tab=table(jets_gap='a note'))
+        self.assertEqual(s['jets'], 'covered, with open items')
+        self.assertEqual(bad, [])
+
+    def test_missing_make_target(self):
+        _, bad = self.status([window()], tab=table(jets_units=['no-such-target']))
+        self.assertIn('jets: no make target no-such-target', bad)
+
+
+def outs(changed=(), held=None, moved=None):
+    """A window whose host states changed the words changed, held the
+    channel bits held ({channel: bits}) and changed the bits moved."""
+    held, moved = held or {}, moved or {}
+    return window(replay_outputs=dict(
+        channel_set={f'channel {c:o}': b for c, b in {**held, **moved}.items()},
+        channel_changed={f'channel {c:o}': b for c, b in moved.items()},
+        nonzero=[f'{a:04o}' for a in changed], changed=[f'{a:04o}' for a in changed]))
+
+
+def static(*words, held=None):
+    """Words that sit non-zero and bits that are held, nothing changing."""
+    r = outs(held=held)
+    r['replay_outputs']['nonzero'] = [f'{a:04o}' for a in words]
+    return r
+
+
+class RealRoles(unittest.TestCase):
+    """The predicates and flags of the real role table (roles())."""
+    def role(self, m, key):
+        return {t['key']: t for t in da.roles(m)}[key]
+
+    def hits(self, m, key, r):
+        return self.role(m, key)['window'](r)
+
+    def test_jets_need_a_change(self):
+        for m in da.PROGRAM:
+            with self.subTest(m=m):
+                self.assertFalse(self.hits(m, 'jets', static(held={5: 0o20, 6: 0o4000})))
+                self.assertTrue(self.hits(m, 'jets', outs(moved={5: 0o20})))
+                self.assertTrue(self.hits(m, 'jets', outs(moved={6: 0o4000})))
+        self.assertTrue(self.hits('lm', 'jets', outs(moved={0o11: 0o20000})))
+        self.assertTrue(self.hits('cm', 'jets', outs(moved={0o11: 0o10000})))
+
+    def test_throttle_needs_a_change(self):
+        self.assertFalse(self.hits('lm', 'thrust', static(0o55, held={0o14: 0o10})))
+        self.assertTrue(self.hits('lm', 'thrust', outs(changed=[0o55])))
+        self.assertTrue(self.hits('lm', 'thrust', outs(moved={0o14: 0o10})))
+
+    def test_static_jets_and_throttle_are_gap(self):
+        tab = [self.role('lm', 'jets'), self.role('lm', 'thrust')]
+        out, bad = assess([static(0o55, held={5: 0o20, 6: 0o4000, 0o14: 0o10})], [host_row()], tab)
+        self.assertEqual({t['key']: s for t, s, *_ in out}, dict(jets='GAP', thrust='GAP'))
+        self.assertTrue(bad)
+
+    def test_static_outputs_drive_no_output_role(self):
+        """Every output channel bit set and every output word non-zero, none
+        of them changing: no output role counts the window."""
+        r = static(*range(0o42, 0o61), held={c: 0o77777 for c in (5, 6, 0o10, 0o11, 0o12, 0o13, 0o14, 0o34, 0o35)})
+        for m in da.PROGRAM:
+            for t in da.roles(m):
+                if t['dir'] == 'out' and not t['elsewhere']:
+                    with self.subTest(m=m, role=t['key']):
+                        self.assertFalse(t['window'](r))
+
+    def test_enable_must_hold_through_the_window(self):
+        toggled = outs(changed=[0o53], moved={0o12: 0o200})
+        self.assertFalse(self.hits('cm', 'tvc', toggled))
+        self.assertFalse(self.hits('lm', 'landing-displays', toggled))
+        self.assertFalse(self.hits('lm', 'rr-drive', toggled))
+        self.assertFalse(self.hits('cm', 'optics-drive', toggled))
+
+    def test_tvc_needs_its_enable(self):
+        self.assertTrue(self.hits('cm', 'tvc', outs(changed=[0o53], held={0o12: 0o200})))
+        self.assertFalse(self.hits('cm', 'tvc', outs(changed=[0o53])))
+        self.assertFalse(self.hits('cm', 'tvc', static(0o53, held={0o12: 0o200})))
+
+    def test_optics_drive_needs_tvc_off(self):
+        self.assertTrue(self.hits('cm', 'optics-drive', outs(changed=[0o54])))
+        self.assertTrue(self.hits('cm', 'optics-drive', outs(moved={0o14: 0o2000})))
+        self.assertFalse(self.hits('cm', 'optics-drive', outs(changed=[0o54], held={0o12: 0o200})))
+
+    def test_rr_drive_and_cross_pointers(self):
+        self.assertTrue(self.hits('lm', 'rr-drive', outs(changed=[0o53])))
+        self.assertFalse(self.hits('lm', 'rr-drive', outs(changed=[0o53], held={0o12: 0o200})))
+        self.assertTrue(self.hits('lm', 'landing-displays', outs(changed=[0o53], held={0o12: 0o200})))
+        self.assertFalse(self.hits('lm', 'landing-displays', outs(changed=[0o53])))
+        self.assertTrue(self.hits('lm', 'landing-displays', outs(changed=[0o60])))
+        self.assertFalse(self.hits('lm', 'landing-displays', static(0o60)))
+
+    def test_channel_33_discretes(self):
+        def ch33(bits):
+            return window(replay_inputs=dict(channel_changed={'33': bits}))
+        for m in da.PROGRAM:
+            with self.subTest(m=m):
+                for bit in (0o1000, 0o2000, 0o4000, 0o10000, 0o20000, 0o40000):
+                    self.assertTrue(self.hits(m, 'discretes', ch33(bit)), oct(bit))
+                self.assertFalse(self.hits(m, 'discretes', ch33(0o10)))
+
+    def test_blocking_flags(self):
+        blocking = dict(lm=set(), cm=set())
+        for m in da.PROGRAM:
+            with self.subTest(m=m):
+                self.assertEqual({t['key'] for t in da.roles(m) if t['blocking']}, blocking[m])
+                for t in da.roles(m):
+                    if t['blocking']:
+                        self.assertTrue(t['gap'], t['key'])
+
+
+class Doc(unittest.TestCase):
+    def write(self, runs, bad=None):
+        out, failed = assess(runs, [host_row()])
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            ev = root / 'evidence/lm-acceptance-devices'
+            ev.mkdir(parents=True)
+            f = ev / 'lm-a-100.json'
+            f.write_text('{}\n')
+            digest = hashlib.sha256(f.read_bytes()).hexdigest()
+            (ev / 'SHA256.json').write_text(json.dumps(dict(files={'lm-a-100.json': dict(sha256=digest)})))
+            for r in runs:
+                r['_evidence'] = f'`evidence/lm-acceptance-devices/lm-a-100.json` (sha256 `{digest[:16]}...`)'
+            with mock.patch.object(da, 'ROOT', root):
+                da.write_doc('lm', out, failed if bad is None else bad, runs, None, '0' * 64, HEAD)
+            return ab.read_doc(root, 'lm', 'device_adapter_tests', 'tools/device_acceptance.py'), \
+                (root / 'docs/acceptance/Luminary099-device_adapter_tests.md').read_text()
+
+    def test_pass_doc_reads_clean(self):
+        (commit, images, cites, problems), text = self.write([window()])
+        self.assertEqual(problems, [])
+        self.assertEqual(commit, HEAD)
+        self.assertEqual(images, {'flight-store/lm.reu': '0' * 64})
+        self.assertEqual(len(cites), 1)
+
+    def test_fail_doc(self):
+        (_, _, _, problems), text = self.write([window(ok=False)])
+        self.assertEqual(problems, ['the doc says FAIL'])
+        self.assertIn('## Failures', text)
+
+
+class Rescore(unittest.TestCase):
+    """rescore() re-judges a committed doc from its stored evidence (review-1028 B2')."""
+
+    def run_rescore(self, tab_written, tab_now, mutate=None, offnom_exits=None):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            ev = root / 'evidence/lm-acceptance-devices'
+            ev.mkdir(parents=True)
+            run = {k: v for k, v in window().items() if not k.startswith('_')}
+            (ev / 'lm-a-100.json').write_text(json.dumps(run))
+            (ev / 'host-summary.json').write_text(json.dumps([host_row()]))
+            targets = da.make_targets()  # read from the real tree before ROOT moves
+            with mock.patch.object(da, 'ROOT', root), \
+                    mock.patch.object(da, 'make_targets', lambda: targets), mock.patch.object(fhd, 'FLIGHT', FLIGHT), \
+                    mock.patch.object(da, 'windows', lambda m: [('lm-a', 100, 120, 60)]), \
+                    mock.patch.dict(da.offnom.ROWS, {'lm': []}), mock.patch.object(da.offnom, 'symbols', lambda m: {}):
+                r = dict(run, _evidence=da.cite(ev / 'lm-a-100.json'), _env={})
+                r['_why'] = da.not_matched(r, 120, HEAD)
+                out, bad = da.assess('lm', tab_written, [r], [host_row()], HEAD)
+                off_lines, off_bad = da.offnom.section([], [r], da.first_diff, da.busy_note)
+                da.write_doc('lm', out, bad + off_bad, [r], da.cite(ev / 'host-summary.json'), '0' * 64, HEAD,
+                             off_lines)
+                if mutate:
+                    mutate(root, ev)
+                if offnom_exits is None:
+                    with mock.patch.object(da, 'roles', lambda m: tab_now):
+                        return da.rescore('lm')
+                # One stored off-nominal log; judge() records the exit code it is handed.
+                log = ev / 'lm-x.log'
+                log.write_text('host log\n')
+                if offnom_exits != 'none':
+                    (ev / da.EXITS).write_text(json.dumps(offnom_exits(log)))
+                seen = []
+
+                def judge(row, table, text, rc, path):
+                    seen.append(rc)
+                    return dict(ok=True)
+                with mock.patch.object(da, 'roles', lambda m: tab_now), \
+                        mock.patch.dict(da.offnom.ROWS, {'lm': [dict(scenario='lm-x')]}), \
+                        mock.patch.object(da.offnom, 'judge', judge), \
+                        mock.patch.object(da.offnom, 'section', lambda off, *a, real=da.offnom.section: real([], *a)):
+                    return da.rescore('lm') + (seen,)
+
+    def test_doc_rejudges_to_itself(self):
+        same, why, _ = self.run_rescore(table(), table())
+        self.assertTrue(same, why)
+        self.assertIn('(1 windows, ', why)  # the two-role table fails coverage; it still re-judges to itself
+
+    def test_criteria_text_change_is_stale(self):
+        # A role's criteria text changed (as #984/#995 did) but no store byte moved.
+        same, why, _ = self.run_rescore(table(), table(jets_name='Jets and engine'))
+        self.assertFalse(same)
+        self.assertIn('lines differ', why)
+
+    def test_edited_doc_or_run_is_stale(self):
+        def doc(root, ev):
+            f = root / 'docs/acceptance/Luminary099-device_adapter_tests.md'
+            f.write_text(f.read_text().replace('Jets', 'Thrusters', 1))
+        self.assertFalse(self.run_rescore(table(), table(), doc)[0])
+
+        def run(root, ev):
+            f = ev / 'lm-a-100.json'
+            f.write_text(json.dumps(dict(json.loads(f.read_text()), replay_differences=3)))
+        self.assertFalse(self.run_rescore(table(), table(), run)[0])
+
+        def gone(root, ev):
+            (ev / 'lm-a-100.json').unlink()
+        same, why, _ = self.run_rescore(table(), table(), gone)
+        self.assertFalse(same)
+        self.assertIn('is not stored', why)
+
+
+    def test_offnominal_exit_code_is_stored_and_pinned(self):
+        """review-1028b m6: a stored off-nominal log is judged with the exit code
+        offnominal-exits.json pins, not an assumed 0."""
+        pin = lambda log, **kw: {'lm-x': dict(dict(log=log.name, log_sha256=da.sha(log), exit=3), **kw)}
+        same, why, result, seen = self.run_rescore(table(), table(), offnom_exits=pin)
+        self.assertEqual(seen, [3])
+        self.assertTrue(same, why)
+        self.assertIn(f', {result})', why)  # the two-role table fails coverage: FAIL, re-judged to itself
+        # A record for another log body fails closed.
+        same, why, result, seen = self.run_rescore(table(), table(), offnom_exits=lambda log: pin(log, log_sha256='0' * 64))
+        self.assertFalse(same)
+        self.assertIn('does not pin', why)
+        self.assertEqual((seen, result), ([], None))
+        # No record: judged as exit 0 and reported, so the doc reads as stale.
+        same, why, result, seen = self.run_rescore(table(), table(), offnom_exits='none')
+        self.assertEqual(seen, [0])
+        self.assertFalse(same)
+        self.assertIn('no exit code stored for lm-x', why)
+
+
+class BackfillExits(unittest.TestCase):
+    """--backfill-exits: exit 0 for each stored off-nominal log, only from a PASS doc."""
+
+    def run_backfill(self, result='PASS', clean=True, existing=False):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            ev = root / 'evidence/lm-acceptance-devices'
+            ev.mkdir(parents=True)
+            (root / 'docs/acceptance').mkdir(parents=True)
+            (root / 'docs/acceptance/Luminary099-device_adapter_tests.md').write_text(f'# x\n\nResult: **{result}**\n')
+            (ev / 'lm-x.log').write_text('host log\n')
+            if existing:
+                (ev / da.EXITS).write_text('{}')
+            added = []
+
+            def run(cmd, **kw):
+                added.append(json.loads(pathlib.Path(cmd[4]).read_text()))
+            with mock.patch.object(da, 'ROOT', root), mock.patch.dict(da.offnom.ROWS, {'lm': [dict(scenario='lm-x')]}), \
+                    mock.patch.object(da.offnom, 'symbols', lambda m: {}), \
+                    mock.patch.object(da.offnom, 'judge', lambda row, t, text, rc, log: dict(ok=clean and rc == 0)), \
+                    mock.patch.object(da.subprocess, 'run', run):
+                return da.backfill_exits('lm'), added, da.sha(ev / 'lm-x.log')
+
+    def test_pass_doc_records_exit_zero(self):
+        bad, added, sha = self.run_backfill()
+        self.assertEqual(bad, [])
+        self.assertEqual(added, [{'lm-x': dict(log='lm-x.log', log_sha256=sha, exit=0)}])
+
+    def test_refuses(self):
+        for kw, why in ((dict(result='FAIL'), 'does not say PASS'), (dict(clean=False), 'not clean at exit 0'),
+                        (dict(existing=True), 'already exists')):
+            bad, added, _ = self.run_backfill(**kw)
+            self.assertEqual(added, [])
+            self.assertIn(why, bad[0])
+
+
+class OffNominal(unittest.TestCase):
+    """The Off-nominal inputs section (tools/device_offnominal.py)."""
+
+    def results(self, ok=True):
+        row = da.offnom.ROWS['lm'][0]
+        # At a time the row's first window holds: an uncovered timed check fails (#942 B3).
+        checks = [dict(check='alarm', ok=ok, at_cs=row['windows'][0][0] + 100 if ok else None)]
+        return row, [dict(row=row, host=dict(ok=ok, mismatches=0, bridged=0, checks=checks, evidence='`e`'))]
+
+    def test_windows_are_window_tuples(self):
+        for m in ('lm', 'cm'):
+            for s, snap, cs, every in da.offnom.windows(m):
+                self.assertTrue(s.startswith(f'{m}-'))
+                self.assertGreater(cs, 0)
+                self.assertGreater(every, 0)
+
+    def test_host_failure_fails_the_doc(self):
+        _, res = self.results(ok=False)
+        lines, bad = da.offnom.section(res, [], da.first_diff)
+        row = res[0]['row']
+        self.assertEqual(len(bad), 1 + len(row['windows']))  # the host row, and each window not run
+        self.assertIn('not run', '\n'.join(lines))
+
+    def test_window_match_and_difference(self):
+        row, res = self.results()
+        (snap, cs), *rest = row['windows']
+        good = dict(window(scenario=row['scenario'], snap_cs=snap, requested_cs=cs), _why=[])
+        others = [dict(window(scenario=row['scenario'], snap_cs=s, requested_cs=c), _why=[]) for s, c in rest]
+        lines, bad = da.offnom.section(res, [good] + others, da.first_diff)
+        self.assertEqual(bad, [])
+        self.assertIn('matches the host at 60, 120 cs', '\n'.join(lines))
+        diff = dict(good, _why=['differs'], replay_differences=2, replay_differ_at_cs=50,
+                    replay_first=[dict(at='0035', host='00001', c64='00002')])
+        lines, bad = da.offnom.section(res, [diff] + others, da.first_diff)
+        self.assertEqual(bad, [])  # a differing window is an open item, not a failure
+        self.assertIn('differs: 2 words by 50 cs', '\n'.join(lines))
+        skipped = dict(good, _why=['6 checkpoints not compared'])
+        lines, _ = da.offnom.section(res, [skipped] + others, da.first_diff)
+        self.assertIn('no match: 6 checkpoints not compared', '\n'.join(lines))
+        shared = dict(good, replay_every=100)  # the device window's run at the same snapshot
+        lines, _ = da.offnom.section(res, [shared] + others, da.first_diff)
+        self.assertIn("(the device window's run, checkpoints every 100 cs)", '\n'.join(lines))
+        lines, _ = da.offnom.section(res, [dict(good, replay_every=50)] + others, da.first_diff)
+        self.assertNotIn("device window's run", '\n'.join(lines))
+
+    def test_check_names_its_window(self):
+        row, res = self.results()
+        (snap, cs), *rest = row['windows']
+        runs = [dict(window(scenario=row['scenario'], snap_cs=s, requested_cs=c), snap_at=s + 5, agc_cs=c + 8,
+                     _why=[]) for s, c in row['windows']]
+        res[0]['host']['checks'] = [dict(check='lamp', kind='word', ok=True, at_cs=snap + 100),
+                                    dict(check='late', kind='word', ok=True, at_cs=snap + cs + 5000)]
+        lines, bad = da.offnom.section(res, runs, da.first_diff)
+        text = '\n'.join(lines)
+        self.assertIn(f'lamp: yes, at {snap + 100} cs (C64 window {snap}+{cs})', text)
+        self.assertIn('(host only: no C64 window holds it)', text)
+        self.assertEqual(len(bad), 1)  # the late check, with no host_only reason (#942 B3)
+        self.assertIn('late happened at', bad[0])
+        self.assertIn(f'{snap}+{cs} (ran {snap + 5}-{snap + 5 + cs + 8})', text)
+
+
+class Windows(unittest.TestCase):
+    def test_one_run_per_snapshot(self):
+        # Runs are named <scenario>-<snapshot>: a repeat would overwrite the first.
+        for m in da.PROGRAM:
+            keys = [w[:2] for w in da.windows(m)]
+            self.assertEqual(len(keys), len(set(keys)), m)
+            self.assertEqual(set(keys), {w[:2] for w in da.WINDOWS[m] + da.offnom.windows(m)}, m)
+
+    def test_first_entry_kept(self):
+        self.assertIn(('lm-uplink-reject', 1900, 800, 100), da.windows('lm'))
+
+
+if __name__ == '__main__':
+    unittest.main()

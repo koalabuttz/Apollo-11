@@ -1,0 +1,40 @@
+cc -Iinclude -Itests -DCM_RESTART_INPUT_ONLY -Itools -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_enema_image.c src/cm_enema.c src/cm_restart.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c tests/cm_enema_image_cases.c tests/cm_enema_cases.c tests/cm_restart_cases.c src/cm_executive.c platform/host/cm_enema_image_snapshot.c -o build/cm-enema-image-native
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_enema_image_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original canonical ENEMA complete image and all13 external latches
+{
+  "cases": 4096,
+  "checkpoints": 4096,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "ENEMA05,2651 through actualMMDSPLAY/PTBAD/DOFSTART entry"
+  ],
+  "context_cohorts": "4096 randomized complete images, fresh/ordinary/TVC/phase-fault routes, all entry Ebank/SUPER/IRQ/rawregisters and13 external latches",
+  "binary_bytes": 16916480,
+  "snapshot_sha256": "cf5e45baa06b836b97f38a957ad4275cf5857b36136344a1803767d57af61dfb",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase,status,2048 physical words,13 cm_native_io latches",
+  "scope": "actual canonical ENEMA through source-selected MMDSPLAY/PTBAD/DOFSTART entry; selected subsequent display/recovery body remains separate"
+}

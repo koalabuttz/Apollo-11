@@ -1,0 +1,12 @@
+./build/test-sband-length-integrated
+PASS original canonical vector ABVAL full-image fixtures and unchanged unsupported images
+python3 tools/sband_length_port_host.py --binary build/sband-length-integrated-stream
+PASS all retained source-state bytes: 1345454080 SHA256 2bcfaa5669b9eb09c87278861bb48116bcba344ecedb1c9ce8365c69ebe8cb2c
+PASS all 327,680 original canonical vector ABVAL states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_length.c tests/sband_length_target.c tests/frozen_words.c tests/sband_length_cases.c src/agc_word.c src/sband_length.c src/guidance_length_phased.c src/guidance_norm.c src/agc_multiword.c -o build/test-sband-length-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-length-integrated-san
+PASS original canonical vector ABVAL full-image fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_length_snapshot.c tests/sband_length_cases.c src/agc_word.c src/sband_length.c src/guidance_length_phased.c src/guidance_norm.c src/agc_multiword.c -o build/sband-length-integrated-stream-san
+python3 tools/sband_length_port_host.py --binary build/sband-length-integrated-stream-san
+PASS all retained source-state bytes: 1345454080 SHA256 2bcfaa5669b9eb09c87278861bb48116bcba344ecedb1c9ce8365c69ebe8cb2c
+PASS all 327,680 original canonical vector ABVAL states

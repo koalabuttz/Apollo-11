@@ -1,0 +1,33 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_idle_dispatch.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_idle_dispatch_cases.c tests/cm_basic_finish_cases.c platform/host/cm_idle_dispatch_snapshot.c -o build/cm-idle-dispatch-native
+python3 tools/cm_idle_dispatch_differential.py
+{
+  "source": "INTERPRETER.agc",
+  "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+  "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+  "indentation_repairs": 36,
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: 4096 original CM full-image basic/interpreted/idle ENDJOB states
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entry": "05217 ENDOFJOB",
+  "boundaries": [
+    "selected basic DTCB",
+    "06037 NEWOPS after interpreted INTRSM",
+    "03231 ADVAN idle"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ",
+    "channel11"
+  ],
+  "selected_native_continuation": "actual basic/interpreted pair or idle",
+  "snapshot_sha256": "9a7693e6159056f89a624255e96ce997d34120aabdd3f9e1eabd2bf4bc3a40e6"
+}

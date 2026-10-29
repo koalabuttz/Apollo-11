@@ -1,0 +1,6 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_service_routines.c tests/service_routines_target.c tests/service_routines_cases.c tests/frozen_words.c src/service_routines.c src/agc_word.c -o build/test-service-routines
+./build/test-service-routines
+PASS416 exact original states, unchanged invalid guards, full/chunked native transfer continuation and missing passive resolver preflight
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer tests/test_service_routines.c tests/service_routines_target.c tests/service_routines_cases.c tests/frozen_words.c src/service_routines.c src/agc_word.c -o build/test-service-routines-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-service-routines-sanitize
+PASS416 exact original states, unchanged invalid guards, full/chunked native transfer continuation and missing passive resolver preflight

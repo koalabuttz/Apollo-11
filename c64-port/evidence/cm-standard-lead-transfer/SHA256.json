@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-standard-lead-transfer",
+  "release": "evidence-cm-standard-lead-transfer",
+  "files": {
+    "cm-standard-lead-transfer-host.log": {
+      "sha256": "5a3233bccc0679cb13174b7cb74ccdf9af9be293bb615d8368db36cd8ae27274",
+      "bytes": 1045,
+      "store": "release"
+    },
+    "cm-standard-lead-transfer-proof.json": {
+      "sha256": "a784add92f43a1763ce30c103b46f931a9ac612c356fb4b0eb30085a9f373c66",
+      "bytes": 1054,
+      "store": "tree"
+    },
+    "cm-standard-lead-transfer-vice.log": {
+      "sha256": "4841368d4e1f4d462b62dfc730435df6b8807068a1bee1dab3b7269312f8652f",
+      "bytes": 984,
+      "store": "release"
+    }
+  }
+}

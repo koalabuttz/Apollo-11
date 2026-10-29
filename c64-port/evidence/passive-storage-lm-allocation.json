@@ -1,0 +1,79 @@
+{
+  "mission": "lm",
+  "original_data_bytes": 73728,
+  "loaded_data_payload_bytes": 74802,
+  "overlay_overhead_bytes": 1074,
+  "resident_prg_bytes": 3540,
+  "modules": [
+    {
+      "id": 200,
+      "filename": "F200",
+      "byte_count": 14483,
+      "crc16": 6835,
+      "sha256": "76d0d04a084d3b535b2bd351c2057fdc7f3ecf8920cb6c3158e66138c38aac37",
+      "prg": "passive-storage-lm-200.prg",
+      "first_word": 0,
+      "present_words": 7168,
+      "passive_data_only": true
+    },
+    {
+      "id": 201,
+      "filename": "F201",
+      "byte_count": 14528,
+      "crc16": 26677,
+      "sha256": "909015b5368563be359def85e13e8b55bf702c92afe1041b51879ddf6b7ad0f8",
+      "prg": "passive-storage-lm-201.prg",
+      "first_word": 7168,
+      "present_words": 7168,
+      "passive_data_only": true
+    },
+    {
+      "id": 202,
+      "filename": "F202",
+      "byte_count": 14528,
+      "crc16": 24134,
+      "sha256": "00c4b50005b0347b3dbb80517f1fbc4c152fdf5decc92e362f3c87298bcfa7e6",
+      "prg": "passive-storage-lm-202.prg",
+      "first_word": 14336,
+      "present_words": 7168,
+      "passive_data_only": true
+    },
+    {
+      "id": 203,
+      "filename": "F203",
+      "byte_count": 14528,
+      "crc16": 28702,
+      "sha256": "dbdae0a2f0fac148a793955c9c710eebfbfd6a82101a653d9ea25eb6593e152d",
+      "prg": "passive-storage-lm-203.prg",
+      "first_word": 21504,
+      "present_words": 7168,
+      "passive_data_only": true
+    },
+    {
+      "id": 204,
+      "filename": "F204",
+      "byte_count": 14528,
+      "crc16": 49814,
+      "sha256": "169bd117b57af62c9c6edb0ee009fdf059d9d8315da36172e42a8d93c9172a7c",
+      "prg": "passive-storage-lm-204.prg",
+      "first_word": 28672,
+      "present_words": 7168,
+      "passive_data_only": true
+    },
+    {
+      "id": 205,
+      "filename": "F205",
+      "byte_count": 2207,
+      "crc16": 65136,
+      "sha256": "9587e16b0f551ebb6dd828a29ed02c8ab2037a3ca4023eb6f91bc7fd02871bab",
+      "prg": "passive-storage-lm-205.prg",
+      "first_word": 35840,
+      "present_words": 1024,
+      "passive_data_only": true
+    }
+  ],
+  "separate_mission_disk": "build/passive-storage-lm.d64",
+  "production_registry_modified": false,
+  "original_instruction_execution": false,
+  "disk_sha256": "4c621785e0ba8e320814631df021aa8df2f6b6d9ec5d8dcf3968ad0a13112ecc"
+}

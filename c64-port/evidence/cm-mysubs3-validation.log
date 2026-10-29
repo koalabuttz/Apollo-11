@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm_mysubs group original-assembly states; retained memory unchanged
+Mailbox: a500002003
+PRG bytes: 4868
+cm_mysubs-hardware-stack.bin: measured stack extent 14 bytes
+cm_mysubs-software-stack.bin: measured stack extent 49 bytes

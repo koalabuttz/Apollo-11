@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include "cm_display_sleep_lifecycle_cases.h"
+#include "cm_wake_cases.h"
+void cm_display_sleep_lifecycle_input(apollo_overlay_state *s,cm_native_io *io,uint16_t n){uint8_t i;agc_word old;cm_wake_input(s,io,(uint16_t)(n+256u));old=agc_correct(s->words[0]);s->words[4]=020000;s->words[6]=(agc_word)(020000u|(s->words[3]>>8));s->words[5]=03176;s->words[0164]=2;s->words[0167]=022110;io->channel11=(agc_word)(((uint32_t)n*977u)&AGC_MASK);for(i=1;i<7u;++i){uint16_t a=(uint16_t)(0154u+i*12u);if(s->words[a+8u]==old)s->words[a+8u]=021037;else s->words[a+8u]=(agc_word)((n&1u&&i%2u)?agc_negate((agc_word)(03360u+i)):(agc_word)(02000u+i));if(n<8u)s->words[a+11u]=AGC_NEG_ZERO;}}
+uint16_t cm_display_sleep_lifecycle_apply(apollo_overlay_state *s,cm_native_io *io,uint8_t phase){exec_transfer transfer;if(phase==0)return(uint16_t)cm_makeplay_sleep_enter(s,io);if(phase==1)return(uint16_t)cm_basic_wake(s,io);if(phase==2)return(uint16_t)cm_makeplay_sleep_return(s,io);return(uint16_t)cm_basic_sleep(s,io,&transfer);}

@@ -1,0 +1,70 @@
+{
+  "source_file": "Comanche055/SERVICE_ROUTINES.agc",
+  "source_sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+  "source_revision": "b13fd665a4f1253d90fc2694280c2841510a5979",
+  "reviewed_all_source_paths": true,
+  "emitted_words": 123,
+  "source_edits": 0,
+  "caller_domain": "ordinaryRAM15/rawA,L16; ZERO0/coherentEB,FB,BB/SUPERmask0160/IRQ0,1; compiledQ0100..07775; ordinaryerasable namedflagDVdescriptor0..14459; GENTRANnonnegativeN-1<=01777 and validordinarydata/inlinephysical>=030 orfixedsource; bank0delayentries/RUPTREG1allocatedslot/WAKERBB0..7; producersquiescedthroughcall,loopandhandoff",
+  "public_entries": [
+    "UPENT2",
+    "DOWNENT2",
+    "UPFLAG",
+    "DOWNFLAG",
+    "DELAYJOB",
+    "TCGETCAD",
+    "WAKER",
+    "GENTRAN",
+    "GENTRAN+1",
+    "B5OFF",
+    "TRFAILOF",
+    "TRFAILON"
+  ],
+  "internal_paths": [
+    "DEBIT/COMFLAG",
+    "LMJOINorCMREQ",
+    "DELAYJOBallslotsandalarm/exactoverflowbranches",
+    "MAKECADRsaveoverflowfallthroughWAKER",
+    "WAKERreturnedTASKOVER",
+    "GENTRANloop/overlap/ITEMP1alias/allfourCCSoutcomes/actualQ+2helper"
+  ],
+  "passive_data": [
+    "OCT01104",
+    "TCSLEEP",
+    "WAKECAD"
+  ],
+  "declarations": "OCT7alias/placementdirectivesauditedwithoutclaiminginstructiontranslation",
+  "external_continuations": [
+    "DLY2-1WAITLIST",
+    "JOBSLEEP",
+    "JOBWAKE",
+    "TASKOVER",
+    "BAILOUT1/BAILOUT",
+    "ENDOFJOB",
+    "negativeoverflowCMdelayPC01104beforeexternalcalleeexec",
+    "originalcallers"
+  ],
+  "evidence": {
+    "source_to_native_map": {
+      "path": "docs/NATIVE-SERVICE-ROUTINES.md",
+      "sha256": "7daa3812ee2c996fc1199dce38604dfc3aca110c24f1f27f9684e73fb9f17194"
+    },
+    "independent_assembly_comparison": {
+      "path": "evidence/service-routines-source-audit.json",
+      "sha256": "861e83758022e1fb3d702c44d1cece9ee47ac6fa5c711dd150a3dc2f7ba33ed6"
+    },
+    "host_and_sanitizer_results": {
+      "path": "evidence/service-routines-proof.json",
+      "sha256": "146549f90e0d973a15d45940a1e05289d43583508a167c7c0d6908626e5f1ac2"
+    },
+    "c64_execution_results": {
+      "path": "evidence/service-routines-vice-results.json",
+      "sha256": "c48020170761956c06ac379f39c6e12fed9471f7f693edb4c8197e4e4a94dde4"
+    },
+    "independent_review": {
+      "path": "evidence/service-routines-independent-review.txt",
+      "sha256": "532535473f1084c40212298152f0b65da04d2e99fb329209e35c90947a9f5ddb"
+    }
+  },
+  "integrated_application_complete": false
+}

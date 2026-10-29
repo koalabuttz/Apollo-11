@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-ev-cert",
+  "release": "evidence-lanec-ev-cert",
+  "files": {
+    "lanec-ev-c64-cover.json": {
+      "sha256": "8217e0e6ff22d80ad4e509e7cdd47d58fa7b728200cb1329c43f048979f88755",
+      "bytes": 7968,
+      "store": "tree"
+    },
+    "lanec-ev-c64-results.json": {
+      "sha256": "21be20b434ab94e3b8715cd11d0d692d8c48579ea1d1c6bc23c4d105c462007b",
+      "bytes": 1516,
+      "store": "tree"
+    },
+    "lanec-ev-checks.log": {
+      "sha256": "80317a33665e40fecf2ece7dbbcfe0de8eb2b61e0ad32f2ffc2b0f0fe1c540aa",
+      "bytes": 4464,
+      "store": "tree"
+    },
+    "lanec-ev-comparison.json": {
+      "sha256": "db0ff10e7bcf9494f244a61b20f7e729217a6af1a5e0430db9dfa697d9ae3880",
+      "bytes": 4820,
+      "store": "tree"
+    },
+    "lanec-ev-lm-source-map.json": {
+      "sha256": "72a30e6f7efd55449d5efdc03e72b46b0f33166ff9eb125a00b1d91036a90880",
+      "bytes": 243031,
+      "store": "tree"
+    },
+    "lanec-ev-v56-lm-rendezvous-tpm.log": {
+      "sha256": "0af8ef7a87a9f1724ae51239c48ddac005e49dddb5ee35409430103f11b9084a",
+      "bytes": 26430,
+      "store": "tree"
+    }
+  }
+}

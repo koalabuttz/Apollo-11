@@ -1,0 +1,13 @@
+PASS 12 frozen original TIMERAD/APSIDES entries, 25 admission guards and 108 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 6207be44393d515d9b3305406d29bc77a4d9e10178691bb75ab4dabc6f4bf266
+PASS65536 original TIMERAD/APSIDES entries strict native
+PASS 12 frozen original TIMERAD/APSIDES entries, 25 admission guards and 108 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 6207be44393d515d9b3305406d29bc77a4d9e10178691bb75ab4dabc6f4bf266
+PASS65536 original TIMERAD/APSIDES entries full ASAN/UBSAN
+PASS: VICE PAL lm-conic-timerad-1.prg: 28 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-2.prg: 9 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-3.prg: 13 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-4.prg: 17 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-5.prg: 21 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-6.prg: 20 checks, 0 failures
+PASS 123 assembled TIMERAD/APSIDES words on 123 source lines map to native literals in 9 functions

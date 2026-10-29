@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-t4rupt-imu",
+  "release": "evidence-lm-t4rupt-imu",
+  "files": {
+    "lm-t4rupt-imu-host.log": {
+      "sha256": "15b7a3d694fffb78e3eb9dd59ab9baebd371393f1fd3e71074764be0ef96e6b5",
+      "bytes": 1322,
+      "store": "release"
+    },
+    "lm-t4rupt-imu-proof.json": {
+      "sha256": "1b151f84d9e2dbab7f9416bdac488c358f78f33eeea64a968421c6e526dc1c15",
+      "bytes": 4137,
+      "store": "tree"
+    },
+    "lm-t4rupt-imu-source-map.json": {
+      "sha256": "7b50a5e2f4b2e32dbdef42d227c11059d6fc355633ced82219612d5c539a8cdf",
+      "bytes": 79913,
+      "store": "tree"
+    },
+    "lm-t4rupt-imu-vice.log": {
+      "sha256": "f5ac268f8a9bfc690d5c35ab83f9c4a92baf7b9bd6b4fa1325f21496d29c77dc",
+      "bytes": 212,
+      "store": "release"
+    }
+  }
+}

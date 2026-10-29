@@ -1,0 +1,3 @@
+./build/test-dot
+PASS: 96 complete unrounded original DOT states and exact scratch/overflow exchanges; all unsupported MODEs reject unchanged
+make: Nothing to be done for 'c64-dot'.

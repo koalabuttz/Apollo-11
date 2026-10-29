@@ -1,0 +1,3 @@
+./build/test-vector
+PASS: 128 complete original-assembly VAD/VSU states; all 32767 unsupported MODE words preserve complete state for both operations
+make: Nothing to be done for 'c64-vector'.

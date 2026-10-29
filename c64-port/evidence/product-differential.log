@@ -1,0 +1,4 @@
+PASS: 4096 inputs x scalar DMP1 / vector VXSC = 8192 complete 50-word checkpoints match unchanged assembly
+Both signed zeros, mixed signs, corner partial products, rounding carry, exact MPTEMP/OVFIND/A/L and MODE preservation
+Boundary: VXSC 7401 / DMP1 7572 -> DANZIG 6061
+Snapshot SHA256: c361603c0682599e61e606db217305f9ae3b8b44d09432554cf1f343456ab35d

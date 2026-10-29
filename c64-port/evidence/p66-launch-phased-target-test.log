@@ -1,0 +1,5 @@
+PASS: stock PAL C64 ROMs +16 frozen input modules+3 actual startup modules;88 startup source seams
+88 original-source2050-word fingerprints: STARTP66setup,STRTP66Abias,VRTSTARTvertical
+32 source contexts, source IRQ/SUPER variants; native Ienabled/masked and $01 restored; no state normalization
+Mailbox: a50000580002 softwarestack measured extent: 752 hardwarestack extent: 32
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms +drive8truedrive -virtualdev8 -iecdevice8 -device8 1 -drive8type 1581 -8 /workspace/Apollo-11/c64-port/build/p66-launch-phased-target.d81 -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/p66-launch-phased-target-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/p66-launch-phased-target-vice-monitor.log -monlog -limitcycles 16000000000

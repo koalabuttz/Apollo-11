@@ -1,0 +1,1 @@
+PASS: VICE PAL lanec-ev-short.prg: 110 checks, 0 failures

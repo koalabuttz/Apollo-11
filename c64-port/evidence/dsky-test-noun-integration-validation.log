@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_test_noun.c src/agc_word.c src/dsky_test_noun.c src/noun_reader.c src/fixed_data.c tests/dsky_test_noun_cases.c tests/dsky_test_noun_check.c -o build/test-dsky-test-noun-integrated
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_test_noun_snapshot.c src/agc_word.c src/dsky_test_noun.c src/noun_reader.c src/fixed_data.c tests/dsky_test_noun_cases.c -o build/dsky-test-noun-integrated-stream
+./build/test-dsky-test-noun-integrated
+256 full original direct TESTNN states +22 unchanged invalid guards: PASS
+python3 tools/qualified_stream_host.py --archive evidence/dsky-test-noun-reference.snapshots.xz --sha256 aad2039802f35066b224e47777dea37b6054d892a98103679bcd530f28b3d069 --binary build/dsky-test-noun-integrated-stream
+PASS all retained source-state bytes: 189856056 SHA256 aad2039802f35066b224e47777dea37b6054d892a98103679bcd530f28b3d069
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_dsky_test_noun.c src/agc_word.c src/dsky_test_noun.c src/noun_reader.c src/fixed_data.c tests/dsky_test_noun_cases.c tests/dsky_test_noun_check.c -o build/test-dsky-test-noun-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-test-noun-integrated-san
+256 full original direct TESTNN states +22 unchanged invalid guards: PASS
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/dsky_test_noun_snapshot.c src/agc_word.c src/dsky_test_noun.c src/noun_reader.c src/fixed_data.c tests/dsky_test_noun_cases.c -o build/dsky-test-noun-integrated-stream-san
+python3 tools/qualified_stream_host.py --archive evidence/dsky-test-noun-reference.snapshots.xz --sha256 aad2039802f35066b224e47777dea37b6054d892a98103679bcd530f28b3d069 --binary build/dsky-test-noun-integrated-stream-san
+PASS all retained source-state bytes: 189856056 SHA256 aad2039802f35066b224e47777dea37b6054d892a98103679bcd530f28b3d069

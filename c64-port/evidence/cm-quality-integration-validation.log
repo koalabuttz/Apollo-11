@@ -1,0 +1,48 @@
+python3 tools/cm_quality_host.py
+PASS all retained source-state bytes: 2826829824 SHA256 286454d2d8be71e0b77a9cf9b802df5beec6e9b2067d7bd56dff76e3300498d3
+PASS688128 original QUALITY checkpoint states strict native
+for phase in $(seq 0 19); do cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DCMQ_PHASE=$phase tests/test_cm_quality.c tests/frozen_words.c tests/cm_quality_cases.c src/cm_quality.c src/interpreted_square.c src/guidance_product.c src/guidance_sum.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c -o build/test-cm-quality-integrated-$phase; build/test-cm-quality-integrated-$phase || exit $?; done
+32 complete QUALITY phase0 original states: PASS
+32 complete QUALITY phase1 original states: PASS
+32 complete QUALITY phase2 original states: PASS
+32 complete QUALITY phase3 original states: PASS
+32 complete QUALITY phase4 original states: PASS
+32 complete QUALITY phase5 original states: PASS
+32 complete QUALITY phase6 original states: PASS
+32 complete QUALITY phase7 original states: PASS
+32 complete QUALITY phase8 original states: PASS
+32 complete QUALITY phase9 original states: PASS
+32 complete QUALITY phase10 original states: PASS
+32 complete QUALITY phase11 original states: PASS
+32 complete QUALITY phase12 original states: PASS
+32 complete QUALITY phase13 original states: PASS
+32 complete QUALITY phase14 original states: PASS
+32 complete QUALITY phase15 original states: PASS
+32 complete QUALITY phase16 original states: PASS
+32 complete QUALITY phase17 original states: PASS
+32 complete QUALITY phase18 original states: PASS
+32 complete QUALITY phase19 original states: PASS
+python3 tools/cm_quality_host.py --sanitize
+PASS all retained source-state bytes: 2826829824 SHA256 286454d2d8be71e0b77a9cf9b802df5beec6e9b2067d7bd56dff76e3300498d3
+PASS688128 original QUALITY checkpoint states full ASAN/UBSAN
+for phase in $(seq 0 19); do cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -DCMQ_PHASE=$phase tests/test_cm_quality.c tests/frozen_words.c tests/cm_quality_cases.c src/cm_quality.c src/interpreted_square.c src/guidance_product.c src/guidance_sum.c src/guidance_shift.c src/agc_word.c src/agc_multiword.c -o build/test-cm-quality-integrated-$phase-san; ASAN_OPTIONS=detect_leaks=0 build/test-cm-quality-integrated-$phase-san || exit $?; done
+32 complete QUALITY phase0 original states: PASS
+32 complete QUALITY phase1 original states: PASS
+32 complete QUALITY phase2 original states: PASS
+32 complete QUALITY phase3 original states: PASS
+32 complete QUALITY phase4 original states: PASS
+32 complete QUALITY phase5 original states: PASS
+32 complete QUALITY phase6 original states: PASS
+32 complete QUALITY phase7 original states: PASS
+32 complete QUALITY phase8 original states: PASS
+32 complete QUALITY phase9 original states: PASS
+32 complete QUALITY phase10 original states: PASS
+32 complete QUALITY phase11 original states: PASS
+32 complete QUALITY phase12 original states: PASS
+32 complete QUALITY phase13 original states: PASS
+32 complete QUALITY phase14 original states: PASS
+32 complete QUALITY phase15 original states: PASS
+32 complete QUALITY phase16 original states: PASS
+32 complete QUALITY phase17 original states: PASS
+32 complete QUALITY phase18 original states: PASS
+32 complete QUALITY phase19 original states: PASS

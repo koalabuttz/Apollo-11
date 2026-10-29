@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/restart.prg from 0801 to 5D22 (5522 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)  294/$126,  30/$1e
+.C:54bf  8D 88 C0    STA $C088      - A:10 X:83 Y:00 SP:ed ..-..I.C  397954272
+Stopwatch reset to 0.
+#1 (Stop on store c088)  299/$12b,  47/$2f
+.C:54d1  8C 88 C0    STY $C088      - A:00 X:00 Y:20 SP:ed ..-..I..        332
+Stopwatch:        332
+#1 (Stop on store c088)   77/$04d,  14/$0e
+.C:54bf  8D 88 C0    STA $C088      - A:11 X:02 Y:00 SP:ed ..-..I.C    1755353
+Stopwatch reset to 0.
+#1 (Stop on store c088)  136/$088,  32/$20
+.C:54d1  8C 88 C0    STY $C088      - A:00 X:00 Y:21 SP:ed ..-..I.C       3735
+Stopwatch:       3735
+#1 (Stop on store c088)  238/$0ee,  44/$2c
+.C:54bf  8D 88 C0    STA $C088      - A:12 X:7D Y:00 SP:ed ..-..I.C    1759557
+Stopwatch reset to 0.
+#1 (Stop on store c088)  253/$0fd,  55/$37
+.C:54d1  8C 88 C0    STY $C088      - A:00 X:00 Y:22 SP:ed ..-..I.C        956
+Stopwatch:        956
+#1 (Stop on store c088)   40/$028,  28/$1c
+.C:54bf  8D 88 C0    STA $C088      - A:13 X:01 Y:00 SP:ed ..-..I.C    1756550
+Stopwatch reset to 0.
+#1 (Stop on store c088)  106/$06a,  61/$3d
+.C:54d1  8C 88 C0    STY $C088      - A:00 X:00 Y:23 SP:ed ..-..I..       4191
+Stopwatch:       4191
+#1 (Stop on store c088)  223/$0df,   6/$06
+.C:54e3  8E 88 C0    STX $C088      - A:08 X:14 Y:24 SP:ed ..-....C    1721579
+Stopwatch reset to 0.
+#1 (Stop on store c088)  183/$0b7,  44/$2c
+.C:54ee  8E 88 C0    STX $C088      - A:00 X:24 Y:00 SP:ed ..-.....     135110
+Stopwatch:     135110
+#2 (Stop on store c080)  217/$0d9,   8/$08
+.C:558e  8E 80 C0    STX $C080      - A:00 X:A5 Y:06 SP:ed N.-.....     294464
+>C:c080  a5 00 00 be  e2 06 82 3c  24 86 03 82  02            .......<$....
+Saving file `/workspace/Apollo-11/c64-port/build/restart-vice-mailbox.bin' from $c080 to $c08c
+Saving file `/workspace/Apollo-11/c64-port/build/restart-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/restart-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE ALARM / RESTART           
+0518  226 ASSEMBLY CHECKPOINTS PASS           
+0540  SIX RECOVERED NATIVE JOBS PASS          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/p66_initialization.c tests/p66_initialization_cases.c tests/p66_initialization_check.c tests/test_p66_initialization.c -o build/test-p66-initialization
+./build/test-p66-initialization
+P66 INITIALIZATION: 128 FULL STATES, 0 FAILURES

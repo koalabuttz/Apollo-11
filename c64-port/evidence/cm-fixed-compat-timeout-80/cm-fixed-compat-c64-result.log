@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/cm_fixed_compat_vice_test.py", line 74, in <module>
+    main()
+  File "/workspace/Apollo-11/c64-port/tools/cm_fixed_compat_vice_test.py", line 56, in main
+    subprocess.run(command, stdout=log, stderr=subprocess.STDOUT,
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 2141, in _communicate
+    self.wait(timeout=self._remaining_time(endtime))
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 2045, in _wait
+    raise TimeoutExpired(self.args, timeout)
+subprocess.TimeoutExpired: Command '['/workspace/toolchains/vice/usr/bin/x64sc', '-default', '-console', '-pal', '-warp', '+sound', '-kernal', '/workspace/toolchains/roms/C64/kernal-901227-03.bin', '-basic', '/workspace/toolchains/roms/C64/basic-901226-01.bin', '-chargen', '/workspace/toolchains/roms/C64/chargen-901225-01.bin', '-directory', '/workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms', '+drive8truedrive', '-virtualdev8', '-iecdevice8', '-device8', '1', '-8', '/workspace/Apollo-11/c64-port/build/cm-fixed-compat.d64', '-initbreak', 'ready', '-moncommands', '/workspace/Apollo-11/c64-port/build/cm-fixed-compat-vice.mon', '-monlogname', '/workspace/Apollo-11/c64-port/build/cm-fixed-compat-vice-monitor.log', '-monlog', '-limitcycles', '16000000000']' timed out after 599.9999914869986 seconds

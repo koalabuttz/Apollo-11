@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm.prg from 0801 to 6FE0 (67E0 bytes)
+WATCH: 1  C:$8fe9  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 8fe9)   38/$026,   4/$04
+.C:3d25  8E E9 8F    STX $8FE9      - A:0D X:A5 Y:01 SP:f1 N.-....C  164955550
+>C:8fe9  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm-vice-mailbox.bin' from $8fe9 to $8fed
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm-vice-difference.bin' from $6fe1 to $6fe8
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-lm-vice-software-stack.bin' from $c100 to $cfff

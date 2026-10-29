@@ -1,0 +1,6 @@
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie src/agc_word.c src/waitlist.c src/lm_waitlist_image.c tests/lm_waitlist_image_cases.c tests/test_lm_waitlist_image.c -o build/test-lm-waitlist-image-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-waitlist-image-sanitize
+PASS:17 invalid WAITLIST domains and2 null interfaces preserve complete canonical image and I/O
+python3 tools/lm_waitlist_image_differential.py --retained --sanitize
+PASS:16384 original WAITLIST/TWIDDLE complete2050-word insertion/caller-return/1203/1204 states
+Snapshot SHA256: 2b5fdf2322cb20c8e8917d23f775a24dfaeeef7743d7a003e1f2b06986f24ffb

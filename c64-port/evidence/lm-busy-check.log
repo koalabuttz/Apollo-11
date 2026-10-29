@@ -1,0 +1,12 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_busy.c tests/lm_busy_check.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/test-lm-busy
+build/test-lm-busy
+64 complete NVSUBUSY images and13 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_busy.c tests/lm_busy_check.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/test-lm-busy-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-busy-sanitize
+64 complete NVSUBUSY images and13 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_busy_snapshot.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/lm-busy-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-busy-native-sanitize > build/lm-busy-sanitize.snapshots
+cmp build/lm-busy-sanitize.snapshots build/lm-busy-reference.snapshots
+mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_busy_diagnostic.c tests/lm_busy_check.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -Wl,-Map,build/lm_busy.map -o build/lm_busy.prg
+make: mos-c64-clang: No such file or directory
+make: *** [tools/lm_busy.mk:14: lm_busy-c64] Error 127

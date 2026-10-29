@@ -1,0 +1,11 @@
+{
+  "archive": "build/lm-time-free-fall-reference.snapshots.bin.xz",
+  "decoded_sha256": "4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2",
+  "decoded_bytes": 269090816,
+  "states": 65536,
+  "status_counts": {
+    "1": 64825,
+    "2": 711
+  },
+  "oracle": "pinned yaAGC hardware-DV variant, deps/lm-rtb-fixture/MAIN.agc.bin (unchanged Luminary099)"
+}

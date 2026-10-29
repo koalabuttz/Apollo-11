@@ -1,0 +1,12 @@
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O2 src/agc_word.c src/lm_interpreter_change.c src/lm_danzig_change.c tests/lm_interpreter_change_cases.c tests/lm_danzig_change_cases.c tests/test_lm_danzig_change.c -o build/test-lm-danzig-change-integrated
+./build/test-lm-danzig-change-integrated
+PASS:25 invalid DANZIG/NOIBNKSW domains and3 null interfaces preserve complete canonical image/I/O/transfer
+python3 tools/lm_danzig_change_differential.py --retained
+PASS:16384 original DANZIG/NOIBNKSW→CHANG2 complete2053-word basic/interpreter exchanges
+Snapshot SHA256: 37ed28cb77a6f04401f69f16d9bd214e20061d2956501a9ed8c6e2eea35e58ef
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie src/agc_word.c src/lm_interpreter_change.c src/lm_danzig_change.c tests/lm_interpreter_change_cases.c tests/lm_danzig_change_cases.c tests/test_lm_danzig_change.c -o build/test-lm-danzig-change-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-danzig-change-integrated-san
+PASS:25 invalid DANZIG/NOIBNKSW domains and3 null interfaces preserve complete canonical image/I/O/transfer
+python3 tools/lm_danzig_change_differential.py --retained --sanitize
+PASS:16384 original DANZIG/NOIBNKSW→CHANG2 complete2053-word basic/interpreter exchanges
+Snapshot SHA256: 37ed28cb77a6f04401f69f16d9bd214e20061d2956501a9ed8c6e2eea35e58ef

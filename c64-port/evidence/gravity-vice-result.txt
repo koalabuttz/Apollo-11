@@ -1,0 +1,11 @@
+PASS: VICE PAL, 156 complete original-assembly final states and quotient push/vector load; all integrated skip inputs and three retained histories; restoring I
+Mailbox: a500009c0003c66324
+Target state bytes / modeled words: 198 99
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/gravity-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/gravity-vice-monitor.log -monlog -limitcycles 1000000000
+zero gravity vector: 619 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+positive-zero corners: 736 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+signed-zero corners: 696 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+raw limit corners: 615 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+complete RODCOMP through PDVL: 28164 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+gravity-vice-hardware-stack.bin: measured sentinel extent 50 bytes
+gravity-vice-software-stack.bin: measured sentinel extent 371 bytes

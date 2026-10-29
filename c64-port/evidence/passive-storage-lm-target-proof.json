@@ -1,0 +1,19 @@
+{
+  "mission": "lm",
+  "exact_returned_word_comparisons": 81920,
+  "ordinary_and_masked_IRQ_restored": true,
+  "canonical_2048_word_image_preserved": true,
+  "native_RO_mapping_preserved": true,
+  "word_stream_sha256_each_IRQ_run": [
+    "f0b2c45a7b9b9ae7fa7adfa49ace9d30689a1138bb36495ce33dd1740e695afd",
+    "f0b2c45a7b9b9ae7fa7adfa49ace9d30689a1138bb36495ce33dd1740e695afd"
+  ],
+  "software_stack_extent": 43,
+  "mailbox": "5a00002701",
+  "prg_sha256": "20799431d73885cb9923b260050ed476dfc8609c584999d6f94c17fbbe23e213",
+  "map_sha256": "2f1ca69baccdf27bc77a5facc68107c94206574d5b60d69aa71cc85914bdd00e",
+  "source_instructions_decoded": false,
+  "retained_return_stream": "evidence/passive-storage-lm-returned.words.bin.xz",
+  "retained_return_stream_decoded_bytes": 163840,
+  "retained_return_stream_decoded_sha256": "81994c1e239f86cf359ffea5be3bb8fc329a00458ae96b91f56e0bc70e7846fa"
+}

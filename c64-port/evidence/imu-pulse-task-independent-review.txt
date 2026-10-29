@@ -1,0 +1,20 @@
+Independent read-only review by /root/general_division, 2026-10-11.
+Compared both byte-original deferred STRTGYRO/GSELECT/GMERGE/LASTSEG/
+LONGGYRO/8192AUG/GYROEXIT routines with imu_pulse_task.c/register.c.
+No discrepancy found in declared isolated domains.
+X-phase CS FOUR regression, packed LGYRO increment, minor threshold CCS/BZMF,
+signed GYROFRAC/DAS rounding, truncated fractional merge, negative-zero last
+segment branch, augmentation CCS decrement and +/-3 timing match instructions.
+Original successful WAITLIST continuation sets activity BIT10 then stops BEFORE
+literal TCF TASKOVER, as the header says. Augment requires quiescent command
+counter and activity01000 clear. This proves native segmentation/control only,
+not asynchronous physical pulse consumption or arbitrary active-channel
+augmentation. Scheduler/alarm/JOBWAKE bodies remain explicit handoffs.
+No edits requested; review applies the current activity-bit guard.
+
+Reviewed source identities:
+74b20b8f9ea251f23f6d841d2a3da523be516e16ebb4df708e595fd8ced7e509  include/imu_pulse_task.h
+5f1b565aa4226439324b33ed0f39db2b499b8d0ffa1e7a286612a55525ab444c  src/imu_pulse_task.c
+7a15c0c789ff3411da11494125af24bccb67272c9c7d4e06388e1f0b41400fa3  src/imu_pulse_task_register.c
+351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb  ../Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc
+bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb  ../Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc

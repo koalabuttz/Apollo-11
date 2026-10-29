@@ -1,0 +1,167 @@
+{
+  "complete_states": 262144,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER",
+    "CHAN11",
+    "CHAN12",
+    "CHAN14"
+  ],
+  "source_group_words": {
+    "lm": 9,
+    "cm": 9
+  },
+  "containing_file_status": "partial",
+  "source_map": "evidence/imu-pulse-wake-source-map.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-wake-lm0-complete.states.xz",
+        "decoded_sha256": "7cefd91e8df66c443e237c42400ab626aef68978218cf40564f8e8c8b2913e5a",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-wake-lm0-complete.states.xz",
+        "decoded_sha256": "7cefd91e8df66c443e237c42400ab626aef68978218cf40564f8e8c8b2913e5a",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-wake-lm0-complete.states.xz",
+        "decoded_sha256": "7cefd91e8df66c443e237c42400ab626aef68978218cf40564f8e8c8b2913e5a",
+        "decoded_bytes": 269484032
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-wake-lm1-complete.states.xz",
+        "decoded_sha256": "824ec7ffd631b2063e51885a87dfaf471d68f08fa02d984adf0b22975d81e4a0",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-wake-lm1-complete.states.xz",
+        "decoded_sha256": "824ec7ffd631b2063e51885a87dfaf471d68f08fa02d984adf0b22975d81e4a0",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-wake-lm1-complete.states.xz",
+        "decoded_sha256": "824ec7ffd631b2063e51885a87dfaf471d68f08fa02d984adf0b22975d81e4a0",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-wake-cm0-complete.states.xz",
+        "decoded_sha256": "360559b3aab8addb904aa2cbbc266a7e0e3de2bdeac0ee7351e932023f5c8f9d",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-wake-cm0-complete.states.xz",
+        "decoded_sha256": "360559b3aab8addb904aa2cbbc266a7e0e3de2bdeac0ee7351e932023f5c8f9d",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-wake-cm0-complete.states.xz",
+        "decoded_sha256": "360559b3aab8addb904aa2cbbc266a7e0e3de2bdeac0ee7351e932023f5c8f9d",
+        "decoded_bytes": 269484032
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/imu-pulse-wake-cm1-complete.states.xz",
+        "decoded_sha256": "478bc218961c1c3a78581c362b10325aecf7eb075ef9d93d3b26f4825735be9a",
+        "decoded_bytes": 269484032
+      },
+      "strict_native": {
+        "object": "evidence/imu-pulse-wake-cm1-complete.states.xz",
+        "decoded_sha256": "478bc218961c1c3a78581c362b10325aecf7eb075ef9d93d3b26f4825735be9a",
+        "decoded_bytes": 269484032
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/imu-pulse-wake-cm1-complete.states.xz",
+        "decoded_sha256": "478bc218961c1c3a78581c362b10325aecf7eb075ef9d93d3b26f4825735be9a",
+        "decoded_bytes": 269484032
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 5415,
+      "loaded_end": "0x1d25",
+      "hardware_stack": 14,
+      "software_stack": 70,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 14304,
+      "loaded_end": "0x3fde",
+      "hardware_stack": 19,
+      "software_stack": 739,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "mailbox": "a500002020",
+      "PRG_bytes": 5333,
+      "loaded_end": "0x1cd3",
+      "hardware_stack": 14,
+      "software_stack": 73,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "mailbox": "a500002021",
+      "PRG_bytes": 15091,
+      "loaded_end": "0x42f1",
+      "hardware_stack": 22,
+      "software_stack": 742,
+      "compiler_ZP": 0
+    }
+  },
+  "source_branches": {
+    "lm0": {
+      "0": 32768,
+      "1": 32768
+    },
+    "lm1": {
+      "0": 32768,
+      "3": 16384,
+      "2": 16384
+    },
+    "cm0": {
+      "0": 32768,
+      "1": 32768
+    },
+    "cm1": {
+      "0": 32768,
+      "3": 16384,
+      "2": 16384
+    }
+  },
+  "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+  "source_fixture_tool": "tools/imu_pulse_prepare_reference.py",
+  "independent_review": {
+    "path": "evidence/imu-pulse-wake-independent-review.txt",
+    "sha256": "41541aa18581aeaa2efb7c00fd01bbee6086278c9b29beb5e9f1077862d89936"
+  },
+  "immutable_service_dependencies": {
+    "src/lm_basic_sleep.c": "d7ad6b83618968bf5943307b9b4f54c12bab0e326c06b1965f8abeab6969edc2",
+    "src/cm_basic_sleep.c": "858706154bf882b780f770f370b07350c0da137e298661e39e206f135fda3333",
+    "src/imu_pulse_service.c": "174ce483ff6f24823d6e1282986012dbe136fd556c40240ba6997a4a816178cf",
+    "src/lm_waitlist_image.c": "cb71a02a022487ab647188310765da3f7ca75def5e563918d02f07da6c286fbf",
+    "src/cm_waitlist_image.c": "f8d1e9a4ec972803ff9cb71fbbdfc65138637fdabae41ed5acb80ec5d23df080",
+    "src/executive.c": "bb3f6f0b9fa6e557e1a20bd3e0f2aeaed80710542342db30c302101c89ecfee3",
+    "src/cm_executive.c": "131d7d1621498aba42fd4d74d1326806683f5b0d53d73715db4c16a0fd8f697c",
+    "src/cm_dispatch.c": "d418ad5c0027ea1432c6ba03b4492c017d8c3e7b9575b8454127731943dad5b2",
+    "src/cm_native_image.c": "2fe06e34438f166565b45d360be9265566e7291aaae2fcdc4fd37fb0c5249d3d",
+    "src/waitlist.c": "f714a30118227cd6f9d4dd4f613694cfcb89b089c504666903906a7a9f651d51",
+    "src/cm_waitlist.c": "ff80e11e7934a3d494a3a85144925335af0234d1f036be6f072c778d05b45d45"
+  },
+  "qualification": "Original GWAKE initialized LGYRO>=+0 resleep/free restoration body, plus actual basic Executive JOBSLEEP or WAITLIST registration through selected basic/idleADVAN/free reservation return boundaries. Valid source helper arenas/queues, ordinary coherent banks/SUPER, rawA/L, quiescent output counters and producer exclusion. No selected job body, idle loop, scheduler RESUME or physical pulse delivery; containing-file partial.",
+  "target_warning_exception": "Frozen basic-wake helper enum status signedness warnings remain visible under -Wno-error=sign-conversion; all host warnings remain errors.",
+  "decoded_stream_identity": "Each of four originals is retained once as deterministic XZ. Strict-native and full-sanitized streams compared directly against decoded original bytes with pipefail; no duplicate raw full streams retained."
+}

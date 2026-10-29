@@ -1,0 +1,367 @@
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_control_observer.c src/guidance_control_observer.c src/agc_word.c src/agc_multiword.c -o build/test-control-observer-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-control-observer-sanitize
+65 complete original arithmetic Q states: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/acceleration_control_observer_snapshot.c src/guidance_control_observer.c src/agc_word.c src/agc_multiword.c -o build/control-observer-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/control-observer-native-sanitize < build/acceleration-control-inputs.snapshots > build/control-observer-sanitize.snapshots
+cmp build/control-observer-sanitize.snapshots build/acceleration-control-observer.snapshots
+PASS retained-stream comparison ['build/control-observer-sanitize.snapshots', 'build/acceleration-control-observer.snapshots'] 189889 bytes 217608c6f09909f94b43efa34d7f1c4eb63f743176680cb0b2d00c8c3ed9ba99
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c src/guidance_velocity_phased.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/velocity_phased_cases.c tools/velocity_phased_snapshot.c -o build/velocity-phased-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/velocity-phased-sanitize > build/velocity-phased-sanitize.snapshots
+cmp build/velocity-phased-reference.snapshots build/velocity-phased-sanitize.snapshots
+PASS retained-stream comparison ['build/velocity-phased-reference.snapshots', 'build/velocity-phased-sanitize.snapshots'] 9118695 bytes 977279d21f48ea76643d805554338b2d4fb8fb9b8da9f72a80952c9a2d6c912d
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_throttle_feedback_phased.c tests/frozen_words.c src/guidance_throttle_phased.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_phased_cases.c -o build/test-throttle_feedback_phased-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-throttle_feedback_phased-sanitize
+192 original feedback phase entry/exit states;196602 bad MODE states unchanged: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/throttle_feedback_phased_snapshot.c src/guidance_throttle_phased.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_phased_cases.c -o build/throttle_feedback_phased-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/throttle_feedback_phased-native-sanitize > build/throttle_feedback_phased-sanitize.snapshots
+cmp build/throttle_feedback_phased-sanitize.snapshots build/throttle_feedback_phased-reference.snapshots
+PASS retained-stream comparison ['build/throttle_feedback_phased-sanitize.snapshots', 'build/throttle_feedback_phased-reference.snapshots'] 64356110 bytes 2681746eff8644b4b4ff08531cc7cc9d4d1eddd11d8cc943ce30d98a7c76bd76
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_display_control.c tests/display_control_check.c src/agc_word.c src/p66_display_control.c tests/throttle_bridge_cases.c tests/display_control_cases.c -o build/test-display-control-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-display-control-sanitize
+64 complete display control images and14 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/display_control_snapshot.c src/agc_word.c src/p66_display_control.c tests/throttle_bridge_cases.c tests/display_control_cases.c -o build/display-control-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/display-control-native-sanitize > build/display-control-sanitize.snapshots
+cmp build/display-control-sanitize.snapshots build/display-control-reference.snapshots
+PASS retained-stream comparison ['build/display-control-sanitize.snapshots', 'build/display-control-reference.snapshots'] 94813847 bytes b77721d0f877bf7d71452a34837d05cc72914aadc78fbc8dc22759d0a251571b
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_regodspr.c tests/regodspr_check.c src/agc_word.c src/p66_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c -o build/test-regodspr-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-regodspr-sanitize
+64 complete REGODSPR images and18 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/regodspr_snapshot.c src/agc_word.c src/p66_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c -o build/regodspr-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/regodspr-native-sanitize > build/regodspr-sanitize.snapshots
+cmp build/regodspr-sanitize.snapshots build/regodspr-reference.snapshots
+PASS retained-stream comparison ['build/regodspr-sanitize.snapshots', 'build/regodspr-reference.snapshots'] 94618004 bytes d1d8bd7dea68056cc34531153360729db463ee886ee7999014e2b61a8ee62fba
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tests/test_acceleration_store.c tests/frozen_words.c src/guidance_acceleration_store.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/test-acceleration-store-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-acceleration-store-sanitize
+64 original acceleration phase entry/exit states;65534 bad MODE states unchanged: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -DACCELERATION_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/acceleration_store_snapshot.c src/guidance_acceleration_store.c src/guidance_acceleration_phased.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/acceleration_cases.c tests/acceleration_phased_cases.c -o build/acceleration-store-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/acceleration-store-native-sanitize > build/acceleration-store-sanitize.snapshots
+cmp build/acceleration-store-sanitize.snapshots build/acceleration-store-reference.snapshots
+PASS retained-stream comparison ['build/acceleration-store-sanitize.snapshots', 'build/acceleration-store-reference.snapshots'] 48820961 bytes d0b4c030a35450fb4ea75dbc906600ad163b041b004060473d4430fab002788d
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_entry.c tests/nv_entry_check.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/test-nv-entry-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-nv-entry-sanitize
+64 complete NVMONOPT images and13 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_entry_snapshot.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/nv-entry-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/nv-entry-native-sanitize > build/nv-entry-sanitize.snapshots
+cmp build/nv-entry-sanitize.snapshots build/nv-entry-reference.snapshots
+PASS retained-stream comparison ['build/nv-entry-sanitize.snapshots', 'build/nv-entry-reference.snapshots'] 94802029 bytes 188f356b2c434205fc424a1eca0b54097d83576087b8209ea8f253276155c8fe
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_words.c tests/nv_words_check.c src/agc_word.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c -o build/test-nv-words-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-nv-words-sanitize
+64 complete verb/noun images and20 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_words_snapshot.c src/agc_word.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c -o build/nv-words-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/nv-words-native-sanitize > build/nv-words-sanitize.snapshots
+cmp build/nv-words-sanitize.snapshots build/nv-words-reference.snapshots
+PASS retained-stream comparison ['build/nv-words-sanitize.snapshots', 'build/nv-words-reference.snapshots'] 94472853 bytes 29c140f45d7a4d5ff1c2d3f2b18759bdc6e584c1370d196e9b6f071af3b4ece9
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/dsky_pinball.c tests/p66_bias_cases.c tests/dsky_pinball_cases.c tests/dsky_pinball_check.c tests/test_dsky_pinball.c -o build/test-dsky-pinball-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-pinball-san
+DSKY PINBALL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_decimal.c tests/p66_bias_cases.c tests/dsky_decimal_cases.c tests/dsky_decimal_check.c tests/test_dsky_decimal.c -o build/test-dsky-decimal-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-decimal-san
+DSKY DECIMAL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_product.c src/dsky_scale.c tests/p66_bias_cases.c tests/dsky_scale_cases.c tests/dsky_scale_check.c tests/test_dsky_scale.c -o build/test-dsky-scale-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-scale-san
+DSKY SCALE: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_two_digit.c tests/p66_bias_cases.c tests/dsky_two_digit_cases.c tests/dsky_two_digit_check.c tests/test_dsky_two_digit.c -o build/test-dsky-two-digit-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-two-digit-san
+DSKY DSPDECVN: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests  -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_norm.c  tests/test_norm.c tests/frozen_words.c -o build/test-cm-norm-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-norm-sanitize
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+cc -Iinclude -Itests  -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c  tests/test_dp_divide.c tests/frozen_words.c -o build/test-cm-dp-divide-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-dp-divide-sanitize
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+cc -Iinclude -Itests -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_unit.c src/guidance_norm.c src/guidance_dp_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/test_unit.c tests/frozen_words.c -o build/test-cm-unit-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-unit-sanitize
+118 complete ABS/ABVAL/UNIT states, unsupported MODE/VAC unchanged: PASS
+cc -Iinclude -Itests -DROTATION_INPUT_ONLY -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/rotation_cases.c tests/cm_rotation_cases.c tests/test_cm_rotation.c tests/frozen_words.c -o build/test-cm-rotation-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-rotation-sanitize
+128 complete rotation states, unsupported direction/return unchanged: PASS
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/cm_rectify.c tests/cm_rectify_cases.c tools/cm_rectify_snapshot.c -o build/cm-rectify-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-rectify-sanitize > build/cm-rectify-sanitize.snapshots
+cmp build/cm-rectify-reference.snapshots build/cm-rectify-sanitize.snapshots
+PASS retained-stream comparison ['build/cm-rectify-reference.snapshots', 'build/cm-rectify-sanitize.snapshots'] 98662400 bytes 7b93fc96fd7e845b9fec26c64cbfd48e96ba80dc472e1990cd21590381faee23
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/guidance_product.c src/guidance_sum.c src/cm_difeq.c tests/cm_difeq_cases.c tools/cm_difeq_snapshot.c -o build/cm-difeq-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-difeq-sanitize > build/cm-difeq-sanitize.snapshots
+cmp build/cm-difeq-reference.snapshots build/cm-difeq-sanitize.snapshots
+PASS retained-stream comparison ['build/cm-difeq-reference.snapshots', 'build/cm-difeq-sanitize.snapshots'] 81344000 bytes 9b8b544ee7eac53ad9ac77fa6f27e4d980a23b0e3dcf22d7843e9ff4607a3ecf
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/cm_orbital_initial.c tests/cm_orbital_initial_cases.c tools/cm_orbital_initial_snapshot.c -o build/cm-orbital-initial-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-orbital-initial-sanitize > build/cm-orbital-initial-sanitize.snapshots
+cmp build/cm-orbital-initial-reference.snapshots build/cm-orbital-initial-sanitize.snapshots
+PASS retained-stream comparison ['build/cm-orbital-initial-reference.snapshots', 'build/cm-orbital-initial-sanitize.snapshots'] 21002240 bytes 5a0688f511a9c6097a5aeafe9b8ac628c6ff9598345b029c40e0471e0d1cb37c
+make: Nothing to be done for 'cm-orbital-initial-sanitize'.
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/dsky_pinball.c tests/p66_bias_cases.c tests/dsky_pinball_cases.c tests/dsky_pinball_zero_cases.c tests/dsky_pinball_zero_check.c tests/test_dsky_pinball_zero.c -o build/test-dsky-pinball-zero-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-pinball-zero-san
+DSKY PINBALL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/p66_mode_display.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_mode_zero_cases.c tests/p66_mode_zero_check.c tests/test_p66_mode_zero.c -o build/test-p66-mode-zero-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-p66-mode-zero-san
+P66 MODE DISPLAY: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DP66_NATIVE_DISPATCH_ONLY -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/p66_native.c tests/p66_status_check.c tests/test_p66_status.c -o build/test-p66-status-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-p66-status-sanitize
+P66 full-width status: 0 failures; five raw results, committed alarm payload and fault retention
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_rows.c tests/nv_rows_check.c src/agc_word.c src/p66_nv_rows.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c -o build/test-nv-rows-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-nv-rows-sanitize
+64 complete data preparation images and10 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_rows_snapshot.c src/agc_word.c src/p66_nv_rows.c src/p66_nv_words.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_multiword.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c -o build/nv-rows-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/nv-rows-native-sanitize > build/nv-rows-sanitize.snapshots
+cmp build/nv-rows-sanitize.snapshots build/nv-rows-reference.snapshots
+PASS retained-stream comparison ['build/nv-rows-sanitize.snapshots', 'build/nv-rows-reference.snapshots'] 47154012 bytes a6f0742ccbc774a0c5eb3e66b62289b6832efcbdfd1c3f6424aeffe53bfd0089
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_render.c tests/nv_render_check.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/test-nv-render-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-nv-render-sanitize
+64 original rendering boundary images and30 invalid inputs: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_render_full_snapshot.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/nv-render-full-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/nv-render-full-native-sanitize > build/nv-render-full-sanitize.snapshots
+cmp build/nv-render-full-sanitize.snapshots build/nv-render-full-reference.snapshots
+PASS retained-stream comparison ['build/nv-render-full-sanitize.snapshots', 'build/nv-render-full-reference.snapshots'] 141389455 bytes 2ecaa7528c4f5ae8281952543f146c7390eb9a281d610fbdef49fbc25f819a58
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_goplay.c tests/goplay_check.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/test-goplay-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-goplay-sanitize
+64 complete GOPLAY boundary images;24 invalid inputs: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/goplay_snapshot.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/goplay-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/goplay-native-sanitize > build/goplay-sanitize.snapshots
+cmp build/goplay-sanitize.snapshots build/goplay-reference.snapshots
+PASS retained-stream comparison ['build/goplay-sanitize.snapshots', 'build/goplay-reference.snapshots'] 94762945 bytes e291c7b650412a3cf3e27f46a74315104fcba180dedba38c785dd8f97ced23f1
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/goplay_full_snapshot.c src/p66_nv_render.c src/dsky_scale.c src/guidance_product.c src/p66_nv_words.c src/p66_nv_rows.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/dsky_decimal.c src/agc_multiword.c src/agc_word.c src/p66_goplay.c tests/throttle_bridge_cases.c tests/goplay_cases.c -o build/goplay-full-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/goplay-full-native-sanitize > build/goplay-full-sanitize.snapshots
+cmp build/goplay-full-sanitize.snapshots build/goplay-full-reference.snapshots
+PASS retained-stream comparison ['build/goplay-full-sanitize.snapshots', 'build/goplay-full-reference.snapshots'] 212213775 bytes aa9fae39cf9cd916ce565bfb73ad771b41a91606a335c87505258a79d66044e4
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_priority.c tests/lm_priority_check.c src/agc_word.c src/lm_basic_priority.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c -o build/test-lm-priority-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-priority-sanitize
+64 complete original PRIOCHNG images;16 invalid inputs: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_priority_snapshot.c src/agc_word.c src/lm_basic_priority.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c -o build/lm-priority-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-priority-native-sanitize > build/lm-priority-sanitize.snapshots
+cmp build/lm-priority-sanitize.snapshots build/lm-priority-reference.snapshots
+PASS retained-stream comparison ['build/lm-priority-sanitize.snapshots', 'build/lm-priority-reference.snapshots'] 94683344 bytes 122aad0dbd56103883bb071825718a19f3a25b54e373616bee474e55b96a58d3
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_bridge.c tests/runtime_bridge_check.c src/agc_word.c src/p66_runtime_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c -o build/test-runtime-bridge-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-runtime-bridge-sanitize
+64 complete runtime bridge images and56 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_bridge_snapshot.c src/agc_word.c src/p66_runtime_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c -o build/runtime-bridge-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/runtime-bridge-native-sanitize > build/runtime-bridge-sanitize.snapshots
+cmp build/runtime-bridge-sanitize.snapshots build/runtime-bridge-reference.snapshots
+PASS retained-stream comparison ['build/runtime-bridge-sanitize.snapshots', 'build/runtime-bridge-reference.snapshots'] 189815316 bytes e9855784cd6054b430f8745d452ecb6a5a4eef304ea0c7e327ed7288cc094f01
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/fixed_data.c tests/test_fixed_data.c -o build/test-fixed-data-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-fixed-data-san
+PASS: independent noun60 source values, both missions, table bounds and unchanged failure outputs
+make -f tools/throttle_feedback_pairs.mk sanitize length-sanitize
+make[1]: Entering directory '/tmp/apollo-host-current/c64-port'
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/throttle_feedback_pairs_snapshot.c src/guidance_feedback_pairs.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_pairs_cases.c -o build/throttle-feedback-pairs-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/throttle-feedback-pairs-sanitize > build/throttle-feedback-pairs-sanitize.snapshots
+cmp build/throttle-feedback-pairs-reference.snapshots build/throttle-feedback-pairs-sanitize.snapshots
+PASS retained-stream comparison ['build/throttle-feedback-pairs-reference.snapshots', 'build/throttle-feedback-pairs-sanitize.snapshots'] 83060320 bytes f8c34844eb9b287abdd82fc9b17d171802f8261344f0daf9f9de45c3d0b0f48f
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -Wconversion -pedantic -DTHROTTLE_FEEDBACK_INPUT_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/feedback_length_snapshot.c src/guidance_length_phased.c src/guidance_feedback_pairs.c src/guidance_product.c src/guidance_vector.c src/guidance_unit.c src/guidance_sum.c src/guidance_shift.c src/guidance_gravity.c src/guidance_norm.c src/guidance_dp_divide.c src/agc_word.c src/agc_multiword.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/throttle_feedback_cases.c tests/throttle_feedback_pairs_cases.c -o build/feedback-length-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/feedback-length-sanitize > build/feedback-length-sanitize.snapshots
+cmp build/feedback-length-reference.snapshots build/feedback-length-sanitize.snapshots
+PASS retained-stream comparison ['build/feedback-length-reference.snapshots', 'build/feedback-length-sanitize.snapshots'] 22937600 bytes 489ec98e5a3371217b8ed9735f40e184c2980ed18d96a9ae836d9a7ce1ef5b41
+make[1]: Leaving directory '/tmp/apollo-host-current/c64-port'
+make -f tools/horizontal_phased.mk sanitize
+make[1]: Entering directory '/tmp/apollo-host-current/c64-port'
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY tools/horizontal_phased_snapshot.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_vector.c src/guidance_sum.c src/guidance_shift.c src/guidance_dp_divide.c src/guidance_norm.c src/guidance_unit.c src/guidance_horizontal.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/horizontal_cases.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_horizontal_phased.c tests/horizontal_phased_cases.c -o build/horizontal-phased-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/horizontal-phased-sanitize > build/horizontal-phased-sanitize.snapshots
+cmp build/horizontal-phased-reference.snapshots build/horizontal-phased-sanitize.snapshots
+PASS retained-stream comparison ['build/horizontal-phased-reference.snapshots', 'build/horizontal-phased-sanitize.snapshots'] 30778110 bytes 404340479f2acb8b25524626f654b314eba385605ec050ed88a5e58d91ecde6d
+make[1]: Leaving directory '/tmp/apollo-host-current/c64-port'
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_basic_check.c tests/test_p66_basic.c -o build/test-p66-basic-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-p66-basic-san
+P66 BASIC: 64 full original display checkpoints, real ENDJOB/relay and 100cs RODTASK admission: 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -DP66_NATIVE_DISPATCH_ONLY src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c src/guidance_product.c src/p66_initialization.c src/p66_bias.c src/p66_major_mode.c src/p66_vertical_start.c src/p66_launch.c tests/p66_bias_cases.c tests/p66_vertical_start_cases.c tests/p66_launch_cases.c tests/test_p66_basic_launch.c -o build/test-p66-basic-launch-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-p66-basic-launch-san
+P66 BASIC LAUNCH: real STARTP66, full original2050word checkpoint, actual queued display/task and RODCOMP transfer: 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/p66_basic.c tests/p66_basic_task_cases.c tests/p66_basic_task_check.c tests/test_p66_basic_task.c -o build/test-p66-basic-task-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-p66-basic-task-san
+P66 BASIC RODTASK:64 complete2050word original source images, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c  src/dsky_pinball.c src/dsky_nv_key.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_nv_key_check.c tests/test_dsky_nv_key.c -o build/test-dsky-nv-key-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-nv-key-san
+DSKY VERB/NOUN: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c  src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_nv_cases.c tests/dsky_charin_nv_check.c tests/test_dsky_charin_nv.c -o build/test-dsky-charin-nv-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-charin-nv-san
+DSKY VERB/NOUN: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/executive.c src/dsky_keycom.c tests/dsky_keycom_cases.c tests/dsky_keycom_check.c tests/test_dsky_keycom.c -o build/test-dsky-keycom-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-keycom-san
+DSKY KEYCOM: 64 complete2050word original images, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/executive.c src/dsky_keycom.c src/dsky_keyrupt.c tests/dsky_keyrupt_cases.c tests/dsky_keyrupt_check.c tests/test_dsky_keyrupt.c -o build/test-dsky-keyrupt-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-keyrupt-san
+DSKY KEYRUPT1: 64 complete2050word original images, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_tig5.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_tig5_cases.c tests/cm_tig5_check.c tests/test_cm_tig5.c -o build/test-cm-tig5-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-tig5-sanitize
+1536 original CM TIG-5 full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_entry_tasks.c src/cm_phase.c src/cm_native_image.c src/cm_waitlist.c src/cm_waitlist_native.c src/agc_word.c tests/cm_entry_tasks_cases.c tests/cm_entry_tasks_check.c tests/test_cm_entry_tasks.c -o build/test-cm-entry-tasks-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-entry-tasks-sanitize
+1024 original SETJTAG full-image states, actual C callbacks and guards: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_regodspr.c tests/runtime_regodspr_check.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/test-runtime_regodspr-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-runtime_regodspr-sanitize
+64 complete RUNTIME_REGODSPR images and21 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_regodspr_snapshot.c src/agc_word.c src/p66_runtime_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c tests/runtime_regodspr_cases.c -o build/runtime_regodspr-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/runtime_regodspr-native-sanitize > build/runtime_regodspr-sanitize.snapshots
+cmp build/runtime_regodspr-sanitize.snapshots build/runtime_regodspr-reference.snapshots
+PASS retained-stream comparison ['build/runtime_regodspr-sanitize.snapshots', 'build/runtime_regodspr-reference.snapshots'] 94600672 bytes 31494a11128e07a1e7cdb583e1e51baa2fad829a8ffbcf4ef4b1816dc3f37e2f
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_runtime_fetch.c tests/runtime_fetch_check.c src/agc_word.c src/p66_runtime_bridge.c src/p66_runtime_fetch_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c tests/runtime_fetch_cases.c -o build/test-runtime-fetch-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-runtime-fetch-sanitize
+64 complete runtime fetch images and26 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/runtime_fetch_snapshot.c src/agc_word.c src/p66_runtime_bridge.c src/p66_runtime_fetch_bridge.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/runtime_bridge_cases.c tests/runtime_fetch_cases.c -o build/runtime-fetch-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/runtime-fetch-native-sanitize > build/runtime-fetch-sanitize.snapshots
+cmp build/runtime-fetch-sanitize.snapshots build/runtime-fetch-reference.snapshots
+PASS retained-stream comparison ['build/runtime-fetch-sanitize.snapshots', 'build/runtime-fetch-reference.snapshots'] 94901852 bytes 5e221fa7faa96b304b5654a513a09c839137949a16840cf37c680c7d449f4de4
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_wake.c tests/lm_wake_check.c src/agc_word.c src/lm_basic_wake.c src/executive.c tests/throttle_bridge_cases.c tests/lm_wake_cases.c -o build/test-lm-wake-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-wake-sanitize
+64 complete JOBWAKE images and20 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_wake_snapshot.c src/agc_word.c src/lm_basic_wake.c src/executive.c tests/throttle_bridge_cases.c tests/lm_wake_cases.c -o build/lm-wake-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-wake-native-sanitize > build/lm-wake-sanitize.snapshots
+cmp build/lm-wake-sanitize.snapshots build/lm-wake-reference.snapshots
+PASS retained-stream comparison ['build/lm-wake-sanitize.snapshots', 'build/lm-wake-reference.snapshots'] 94719637 bytes 0afd4d95a2421662a4937ba6af41e4272f0e5fc11b068664b0e5d607adce2fb6
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_makeplay.c tests/makeplay_check.c src/agc_word.c src/p66_makeplay.c tests/throttle_bridge_cases.c tests/makeplay_cases.c -o build/test-makeplay-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-makeplay-sanitize
+64 complete MAKEPLAY images and45 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/makeplay_snapshot.c src/agc_word.c src/p66_makeplay.c tests/throttle_bridge_cases.c tests/makeplay_cases.c -o build/makeplay-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/makeplay-native-sanitize > build/makeplay-sanitize.snapshots
+cmp build/makeplay-sanitize.snapshots build/makeplay-reference.snapshots
+PASS retained-stream comparison ['build/makeplay-sanitize.snapshots', 'build/makeplay-reference.snapshots'] 142231287 bytes 64e5ec904a0bb5bda6c58a919ef96effa7914b05065b543b8dd54de5d6be722a
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_timing_cases.c tests/cm_restart_timing_check.c tests/test_cm_restart_timing.c -o build/test-cm-restart-timing-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-restart-timing-sanitize
+4096 original CM full-image timing states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_longcall.c src/agc_word.c src/agc_multiword.c tests/cm_longcall_cases.c tests/cm_longcall_check.c tests/test_cm_longcall.c -o build/test-cm-longcall-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-longcall-sanitize
+4096 original CM long-call full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_restart_select.c src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_select_cases.c tests/cm_restart_select_check.c tests/test_cm_restart_select.c -o build/test-cm-restart-select-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-restart-select-sanitize
+6144 original CM restart selection full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_clocktask.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_clocktask_cases.c tests/cm_clocktask_check.c tests/test_cm_clocktask.c -o build/test-cm-clocktask-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-clocktask-sanitize
+1536 original CM CLOKTASK full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_waitlist_image.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_waitlist_image_cases.c tests/cm_waitlist_image_check.c tests/test_cm_waitlist_image.c -o build/test-cm-waitlist-image-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-waitlist-image-sanitize
+1024 original CM WAITLIST full-image states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_task_transfer.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_task_transfer_cases.c tests/cm_task_transfer_check.c tests/test_cm_task_transfer.c -o build/test-cm-task-transfer-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-task-transfer-sanitize
+1024 original CM task transfer full-image states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_admission_image.c src/cm_executive.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_admission_image_cases.c tests/cm_admission_image_check.c tests/test_cm_admission_image.c -o build/test-cm-admission-image-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-admission-image-sanitize
+1024 original CM admission full-image states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_svct3.c src/cm_native_image.c src/agc_word.c tests/cm_svct3_cases.c tests/cm_svct3_check.c tests/test_cm_svct3.c -o build/test-cm-svct3-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-svct3-sanitize
+1536 original CM SVCT3 full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_delay_image.c src/cm_waitlist_image.c src/cm_waitlist.c src/cm_native_image.c src/agc_word.c tests/cm_delay_image_cases.c tests/cm_delay_image_check.c tests/test_cm_delay_image.c -o build/test-cm-delay-image-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-delay-image-sanitize
+1024 original CM FIXDELAY/VARDELAY full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_trig.c tests/frozen_words.c src/cm_quictrig.c src/agc_word.c src/agc_multiword.c tests/cm_trig_cases.c -o build/test-cm-trig-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-trig-port-sanitize
+128 complete2048word original SPSIN/SPCOS/QUICTRIG states including CLOCKJOB caller: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DCM_SINGLE_RETURN_COMPLETE tests/test_cm_single_return.c tests/frozen_words.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c src/cm_quictrig.c src/agc_multiword.c -o build/test-cm-single-return-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-single-return-port-sanitize
+64 complete2048word source SPSIN/SPCOS TCQ return states: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_sleep.c tests/lm_sleep_check.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/test-lm-sleep-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-sleep-sanitize
+64 complete JOBSLEEP images and17 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_sleep_snapshot.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/lm-sleep-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-sleep-native-sanitize > build/lm-sleep-sanitize.snapshots
+cmp build/lm-sleep-sanitize.snapshots build/lm-sleep-reference.snapshots
+PASS retained-stream comparison ['build/lm-sleep-sanitize.snapshots', 'build/lm-sleep-reference.snapshots'] 94728417 bytes 91b04ca61fbab8c32c94aaa40b4f54e9dcaff418aa5367b58a6dfa27ad457f0d
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_makeplay_sleep.c tests/makeplay_sleep_check.c src/agc_word.c src/p66_makeplay.c src/p66_makeplay_sleep.c tests/throttle_bridge_cases.c tests/makeplay_cases.c tests/makeplay_sleep_cases.c -o build/test-makeplay-sleep-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-makeplay-sleep-sanitize
+64 complete MAKEPLAY sleep images and52 invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/makeplay_sleep_snapshot.c src/agc_word.c src/p66_makeplay.c src/p66_makeplay_sleep.c tests/throttle_bridge_cases.c tests/makeplay_cases.c tests/makeplay_sleep_cases.c -o build/makeplay-sleep-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/makeplay-sleep-native-sanitize > build/makeplay-sleep-sanitize.snapshots
+cmp build/makeplay-sleep-sanitize.snapshots build/makeplay-sleep-reference.snapshots
+PASS retained-stream comparison ['build/makeplay-sleep-sanitize.snapshots', 'build/makeplay-sleep-reference.snapshots'] 189522062 bytes e6a0591338811835b2788e312d8caf39aa2e0bb028a5494b00235c63ed2b5f1b
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_busy.c tests/lm_busy_check.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/test-lm-busy-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-busy-sanitize
+64 complete NVSUBUSY images and13 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_busy_snapshot.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/lm-busy-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-busy-native-sanitize > build/lm-busy-sanitize.snapshots
+cmp build/lm-busy-sanitize.snapshots build/lm-busy-reference.snapshots
+PASS retained-stream comparison ['build/lm-busy-sanitize.snapshots', 'build/lm-busy-reference.snapshots'] 94962115 bytes 3cb4e414f2622d2265a267605e2e5e8791a0851125a25865a29acc820b365bcc
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_display.c tests/cm_display_check.c src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_image.c src/cm_basic_priority.c src/cm_init_display.c tests/cm_display_cases.c -o build/test-cm-display-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-display-sanitize
+CM display restart/priority: 64 complete2050-field original states, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_pinball.c tests/cm_pinball_check.c src/agc_word.c src/dsky_pinball.c src/cm_pinball.c tests/cm_pinball_cases.c -o build/test-cm-pinball-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-pinball-sanitize
+CM source relay writes: 64 complete2050-field original states, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_formatter.c tests/cm_formatter_check.c src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_two_digit.c src/dsky_decimal.c src/cm_formatter.c tests/cm_pinball_cases.c tests/cm_formatter_cases.c -o build/test-cm-formatter-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-formatter-sanitize
+CM decimal formatters: 64 complete2050-field original states, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/fixed_data.c src/noun_reader.c tests/noun_reader_cases.c tests/test_noun_reader.c -o build/test-noun-reader-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-noun-reader-sanitize
+PASS: 58368 supported noun-reader contexts; 100 unsupported contexts preserve every word and I/O
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/layout.c tests/layout_check.c tests/test_layout.c -o build/test-layout-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-layout-sanitize
+PASS: 4232 original bindings, 8192 bank contexts, 79 fixed metadata words; raw single-image aliases and original CM emission
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_lm_single_trig.c tests/frozen_words.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_single_trig_cases.c -o build/test-lm-single-trig-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-single-trig-port-sanitize
+128 complete2048-word original LM SPSIN/SPCOS numerical/full-return states: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_finish.c tests/lm_finish_check.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/test-lm-finish-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-finish-sanitize
+64 complete ENDOFJOB states and21 unchanged invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_finish_snapshot.c src/agc_word.c src/lm_basic_finish.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c tests/lm_finish_cases.c -o build/lm-finish-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/lm-finish-native-sanitize > build/lm-finish-sanitize.snapshots
+cmp build/lm-finish-sanitize.snapshots build/lm-finish-reference.snapshots
+PASS retained-stream comparison ['build/lm-finish-sanitize.snapshots', 'build/lm-finish-reference.snapshots'] 189527571 bytes e4c3eebee9c76eef5c54c5badad7efec475ba0f7ccaa2e55546e60d6336b8500
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_mysubs.c tests/frozen_words.c src/cm_mysubs.c src/agc_word.c src/agc_multiword.c tests/cm_mysubs_cases.c -o build/test-cm-mysubs-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-mysubs-port-sanitize
+128 complete2048-word original CM SMALLMP/DPADD numerical/full-return states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_task_interrupt.c src/cm_native_image.c src/agc_word.c tests/cm_task_interrupt_cases.c tests/cm_task_interrupt_check.c tests/test_cm_task_interrupt.c -o build/test-cm-task-interrupt-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-task-interrupt-sanitize
+1024 original CM automatic interrupt/RESUME full-image states and deferral guards: PASS
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c tests/cm_service_loop_check.c tests/test_cm_service_loop.c -o build/test-cm-service-loop-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-service-loop-sanitize
+384 continuous original CM ISR task cases/1856 full-image states and callback guards: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_relay.c tests/cm_relay_check.c src/agc_word.c src/dsky_relay.c src/dsky_display.c src/cm_relay.c tests/cm_pinball_cases.c tests/cm_relay_cases.c -o build/test-cm-relay-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-relay-sanitize
+CM relay channel10:64 complete2052-field states and real MODE89 screen, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_scale.c tests/cm_scale_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/dsky_scale.c src/cm_scale.c tests/p66_bias_cases.c tests/dsky_scale_cases.c tests/cm_scale_cases.c -o build/test-cm-scale-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-scale-sanitize
+CM fresh decimal output scaling: 64 complete2050-field original states, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/lm_torque.c tests/lm_torque_cases.c tests/test_lm_torque.c -o build/test-lm-torque-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-torque-sanitize
+PASS: rejected contexts preserve the full image and external latches
+python3 tools/native_source_adoption_test.py --sanitize
+PASS256 complete original priority/sleep dispatch transitions, deferred IRQ requests and4 domain guards
+PASS128 complete original ENDOFJOB basic/interpreter/idle adoptions, retained IRQ requests and7 domain guards
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_basic_finish.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_basic_finish_cases.c tests/cm_basic_finish_check.c tests/test_cm_basic_finish.c -o build/test-cm-basic-finish-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-basic-finish-sanitize
+16384 original CM ENDJOB complete basic/interpreted/idle states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c  src/dsky_pinball.c src/agc_multiword.c src/dsky_charin_number.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_number_cases.c tests/dsky_charin_number_check.c tests/test_dsky_charin_number.c -o build/test-dsky-charin-number-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-charin-number-san
+DSKY numeric entry:64 complete2052-field states, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_clockjob.c tests/cm_clockjob_check.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -o build/test-cm-clockjob-frozen-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-clockjob-frozen-sanitize
+64 complete CM CLOCKJOB states and31 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_display_control.c tests/cm_display_control_check.c src/agc_word.c src/cm_display_control.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c -o build/test-cm-display-control-frozen-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-display-control-frozen-sanitize
+64 complete CM display entry states and42 unchanged invalid boundaries: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/executive.c src/dsky_keycom.c src/dsky_keyrupt.c src/dsky_key_irq.c tests/dsky_key_irq_cases.c tests/dsky_key_irq_check.c tests/test_dsky_key_irq.c -o build/test-dsky-key-irq-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-key-irq-san
+DSKY key IRQ: 64 complete2051-field original images, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_basic.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/dsky_keycom.c src/dsky_keyrupt.c src/dsky_key_irq.c src/dsky_keyboard.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_keyboard_flow_cases.c tests/dsky_keyboard_flow_check.c tests/test_dsky_keyboard_flow.c -o build/test-dsky-keyboard-flow-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-keyboard-flow-san
+DSKY KEYBOARD:32 queued native jobs/96 complete2051word source images, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_basic.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/dsky_keycom.c src/dsky_keyrupt.c src/dsky_key_irq.c src/dsky_keyboard.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_keyboard_irq_flow_cases.c tests/dsky_keyboard_irq_flow_check.c tests/test_dsky_keyboard_irq_flow.c -o build/test-dsky-keyboard-irq-flow-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-keyboard-irq-flow-san
+DSKY KEYBOARD:16 queued native jobs/48 complete2051word source images, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined -DP66_NATIVE_DISPATCH_ONLY -DP66_BASIC_NO_LAUNCH src/agc_word.c src/agc_multiword.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/native_tasks.c src/phase.c src/p66_startup.c src/p66_native.c src/p66_basic.c src/p66_mode_display.c src/dsky_relay.c src/dsky_display.c src/dsky_pinball.c src/dsky_nv_key.c src/dsky_charin_nv.c src/dsky_keycom.c src/dsky_keyrupt.c src/dsky_key_irq.c src/dsky_keyboard.c src/dsky_charin_number.c src/dsky_keyboard_number.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_keyboard_number_flow_cases.c tests/dsky_keyboard_number_flow_check.c tests/test_dsky_keyboard_number_flow.c -o build/test-dsky-keyboard-number-flow-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-keyboard-number-flow-san
+DSKY KEYBOARD:16 queued native jobs/48 complete2051word source images, 0 failures
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_danzig.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_danzig_cases.c tests/cm_basic_finish_cases.c tests/cm_danzig_check.c tests/test_cm_danzig.c -o build/test-cm-danzig-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-danzig-sanitize
+4096 original CM DANZIG complete basic/interpreted/idle states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_cm_powered_trig.c src/cm_powered_trig.c src/guidance_trig.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_powered_trig_cases.c tests/frozen_words.c -o build/test-cm-powered-trig-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-powered-trig-port-sanitize
+320 complete2048-word original CM CDU trig phase states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined tests/test_gimbal.c src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/gimbal_stage.c tests/gimbal_cases.c -o build/test-gimbal-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-gimbal-port-sanitize
+PASS: unsupported entries preserve image/latches; 131072 fixed-read probes expose exactly40 qualified words
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_charin_number.c src/cm_charin_number.c tests/p66_bias_cases.c tests/dsky_nv_key_cases.c tests/dsky_charin_number_cases.c tests/cm_charin_number_cases.c tests/test_cm_charin_number.c tests/cm_charin_number_check.c -o build/test-cm-charin-number-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-charin-number-sanitize
+CM numeric entry:64 complete2052-field source states,0 failures
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_service_loop.c src/cm_service_builtin.c src/cm_task_transfer.c src/cm_entry_tasks.c src/cm_clocktask.c src/cm_tig5.c src/cm_svct3.c src/cm_waitlist_image.c src/cm_admission_image.c src/cm_delay_image.c src/cm_longcall.c src/cm_restart_select.c src/cm_restart_timing.c src/cm_init_display.c src/cm_basic_priority.c src/cm_dispatch.c src/cm_executive.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_service_loop_cases.c src/cm_mission_loop.c src/cm_mission_builtin.c src/cm_task_interrupt.c src/cm_danzig.c src/cm_basic_finish.c tests/cm_mission_loop_cases.c tests/cm_mission_loop_check.c tests/test_cm_mission_loop.c -o build/test-cm-mission-loop-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-mission-loop-sanitize
+384 original complete IRQ/ISR/RESUME/DANZIG continuous sequences: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/test_host.c -o build/test-sanitize
+./build/test-sanitize
+PASS: 53 dispatch cases, 109 assembly-derived checkpoints, 8 native two-job sequences; dispatch fault checks
+PASS: 32768 word encodings, 65536 register encodings, 524288 addition pairs, 26 Executive scenarios
+sizeof(executive)=648 bytes; sizeof(scenario)=664 bytes (host)
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/test_irq.c -o build/test-irq-sanitize
+./build/test-irq-sanitize
+PASS: IRQ safe points, nested exclusion, idle startup, FIFO/wrap (600 cases), overflow, bailout and unmapped-request faults
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/lifecycle_cases.c tests/lifecycle_check.c tests/test_lifecycle.c -o build/test-lifecycle-sanitize
+./build/test-lifecycle-sanitize
+PASS: 81 lifecycle cases / 115 assembly-derived checkpoints, 5 native sequences, guarded/masked delivery and lifecycle fault boundaries
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c tests/waitlist_check.c tests/test_waitlist.c -o build/test-waitlist-sanitize
+./build/test-waitlist-sanitize
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests

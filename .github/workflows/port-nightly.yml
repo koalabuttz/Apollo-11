@@ -1,6 +1,4 @@
-# Nightly full suite for the native C64 port (c64-port/ on port/c64-native-c).
-# Schedules only fire from the default branch, so this trigger lives here and
-# runs the port branch's own port-ci workflow.
+# Nightly full suite for the native C64 port (c64-port/ on main).
 name: port-nightly
 on:
   schedule:
@@ -12,7 +10,7 @@ permissions:
 
 jobs:
   full-suite:
-    uses: koalabuttz/Apollo-11/.github/workflows/port-ci.yml@port/c64-native-c
+    uses: ./.github/workflows/port-ci.yml
     with:
-      ref: port/c64-native-c
+      ref: main
       full: true

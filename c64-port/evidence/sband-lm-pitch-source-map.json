@@ -1,0 +1,390 @@
+{
+  "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+  "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "source_edits": 0,
+  "containing_file_status": "partial",
+  "native_source": "src/sband_lm_pitch.c",
+  "source_words": 18,
+  "source_line_word_map": [
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 138,
+      "label": "",
+      "op": "PUSH",
+      "arguments": "VXV",
+      "assembled_address": "42,3701",
+      "physical_fixed_word": 35777,
+      "physical_erasable_word": null,
+      "words": [
+        20102
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 139,
+      "label": "",
+      "op": "HIUNITZ",
+      "arguments": "",
+      "assembled_address": "42,3702",
+      "physical_fixed_word": 35778,
+      "physical_erasable_word": null,
+      "words": [
+        3404
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 140,
+      "label": "",
+      "op": "VSL1",
+      "arguments": "VCOMP",
+      "assembled_address": "42,3703",
+      "physical_fixed_word": 35779,
+      "physical_erasable_word": null,
+      "words": [
+        24442
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 141,
+      "label": "",
+      "op": "STORE",
+      "arguments": "RLM",
+      "assembled_address": "42,3704",
+      "physical_fixed_word": 35780,
+      "physical_erasable_word": null,
+      "words": [
+        1157
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 142,
+      "label": "",
+      "op": "DOT",
+      "arguments": "PDVL",
+      "assembled_address": "42,3705",
+      "physical_fixed_word": 35781,
+      "physical_erasable_word": null,
+      "words": [
+        26273
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 143,
+      "label": "",
+      "op": "HIUNITY",
+      "arguments": "",
+      "assembled_address": "42,3706",
+      "physical_fixed_word": 35782,
+      "physical_erasable_word": null,
+      "words": [
+        3406
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 144,
+      "label": "",
+      "op": "RLM",
+      "arguments": "",
+      "assembled_address": "42,3707",
+      "physical_fixed_word": 35783,
+      "physical_erasable_word": null,
+      "words": [
+        1157
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 145,
+      "label": "",
+      "op": "ABVAL",
+      "arguments": "SIGN",
+      "assembled_address": "42,3710",
+      "physical_fixed_word": 35784,
+      "physical_erasable_word": null,
+      "words": [
+        31398
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 146,
+      "label": "",
+      "op": "ASIN",
+      "arguments": "",
+      "assembled_address": "42,3711",
+      "physical_fixed_word": 35785,
+      "physical_erasable_word": null,
+      "words": [
+        32734
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 147,
+      "label": "",
+      "op": "STOVL",
+      "arguments": "PITCHANG",
+      "assembled_address": "42,3712",
+      "physical_fixed_word": 35786,
+      "physical_erasable_word": null,
+      "words": [
+        11393
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 148,
+      "label": "",
+      "op": "URP",
+      "arguments": "",
+      "assembled_address": "42,3713",
+      "physical_fixed_word": 35787,
+      "physical_erasable_word": null,
+      "words": [
+        7
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 149,
+      "label": "",
+      "op": "DOT",
+      "arguments": "BPL",
+      "assembled_address": "42,3714",
+      "physical_fixed_word": 35788,
+      "physical_erasable_word": null,
+      "words": [
+        21025
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 150,
+      "label": "",
+      "op": "HIUNITZ",
+      "arguments": "",
+      "assembled_address": "42,3715",
+      "physical_fixed_word": 35789,
+      "physical_erasable_word": null,
+      "words": [
+        3404
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 151,
+      "label": "",
+      "op": "NOADJUST",
+      "arguments": "",
+      "assembled_address": "42,3716",
+      "physical_fixed_word": 35790,
+      "physical_erasable_word": null,
+      "words": [
+        27603
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 152,
+      "label": "",
+      "op": "DLOAD",
+      "arguments": "DSU",
+      "assembled_address": "42,3717",
+      "physical_fixed_word": 35791,
+      "physical_erasable_word": null,
+      "words": [
+        19173
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 153,
+      "label": "",
+      "op": "HIDPHALF",
+      "arguments": "",
+      "assembled_address": "42,3720",
+      "physical_fixed_word": 35792,
+      "physical_erasable_word": null,
+      "words": [
+        3408
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 154,
+      "label": "",
+      "op": "PITCHANG",
+      "arguments": "",
+      "assembled_address": "42,3721",
+      "physical_fixed_word": 35793,
+      "physical_erasable_word": null,
+      "words": [
+        1153
+      ]
+    },
+    {
+      "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+      "line": 155,
+      "label": "",
+      "op": "STORE",
+      "arguments": "PITCHANG",
+      "assembled_address": "42,3722",
+      "physical_fixed_word": 35794,
+      "physical_erasable_word": null,
+      "words": [
+        1153
+      ]
+    }
+  ],
+  "constants": {
+    "HIUNITY": {
+      "address": "23,2515",
+      "physical_fixed_word": 19789,
+      "words": [
+        0,
+        0,
+        8192,
+        0,
+        0,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 38,
+          "label": "UNITY",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2515",
+          "physical_fixed_word": 19789,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 40,
+          "label": "UNITX",
+          "op": "2DEC",
+          "arguments": ".5",
+          "assembled_address": "23,2517",
+          "physical_fixed_word": 19791,
+          "physical_erasable_word": null,
+          "words": [
+            8192,
+            0
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 42,
+          "label": "ZEROVECS",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2521",
+          "physical_fixed_word": 19793,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "HIUNITZ": {
+      "address": "23,2513",
+      "physical_fixed_word": 19787,
+      "words": [
+        0,
+        0,
+        0,
+        0,
+        8192,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 36,
+          "label": "UNITZ",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2513",
+          "physical_fixed_word": 19787,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 38,
+          "label": "UNITY",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2515",
+          "physical_fixed_word": 19789,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 40,
+          "label": "UNITX",
+          "op": "2DEC",
+          "arguments": ".5",
+          "assembled_address": "23,2517",
+          "physical_fixed_word": 19791,
+          "physical_erasable_word": null,
+          "words": [
+            8192,
+            0
+          ]
+        }
+      ]
+    },
+    "HIDPHALF": {
+      "address": "23,2517",
+      "physical_fixed_word": 19791,
+      "words": [
+        8192,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 40,
+          "label": "UNITX",
+          "op": "2DEC",
+          "arguments": ".5",
+          "assembled_address": "23,2517",
+          "physical_fixed_word": 19791,
+          "physical_erasable_word": null,
+          "words": [
+            8192,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "constant_source_path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+  "constant_source_sha256": "30f22813f6d6f33f8202b65fa5895ebf535232e0437aaa9d02aec5b81e08d627",
+  "scope": "Complete original LM pitch calculation from normal-plane NEWOPS3701; ends before original NOADJUST yaw atNEWOPS3723 or source1301/1302 service. Original remaining antenna file remainspartial.",
+  "alias_contract": "PUSH savesURP; vector-cross/shift/complement storesRLM; DOT/PDVL pushes signpair and reloadsRLM, SIGN implicitpop restores originalstack; STOVL pitch reloadsURP. Negative pitch HALF-DSU/store retainsold destinationminorL. Onecanonical image only.",
+  "caller_controls": "ActualNEWOPS FB/BANKSET064000+EB, SUPER100/120/140/160, coherentEBBB, NEWJOB+0, ordinaryRAM/Q/rawA/L, MODE-1 fiveVAC and PUSHbase+6.",
+  "coverage": "65536inputs with complete rawA/L/ordinaryQ marginals, variedvectors/signedzeros, fiveVAC/eightEB/fourSUPERforms/bothIRQ. NotexhaustiveCartesian.",
+  "branch": "Original BRANCH TCQpositive returnsQ3 after actualregisterQfetch, INDEXQTC1zeroQ06741, TC2negativeQ06743; actual fixedcontrols compiled."
+}

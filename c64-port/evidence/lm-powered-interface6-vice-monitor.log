@@ -1,0 +1,63 @@
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-interface0.prg from 0801 to 4B27 (4327 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   16/$010,  29/$1d
+.C:1557  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   58870757
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-interface1.prg from 0801 to 4ABA (42BA bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  206/$0ce,  26/$1a
+.C:1516  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   58902380
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-interface2.prg from 0801 to 63C8 (5BC8 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  158/$09e,  62/$3e
+.C:1591  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   64383416
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-interface3.prg from 0801 to 6373 (5B73 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   10/$00a,  13/$0d
+.C:1553  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   64413355
+>C:c080  a5 00 00 20  03                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-interface4.prg from 0801 to 63C2 (5BC2 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  183/$0b7,  56/$38
+.C:158a  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   64424297
+>C:c080  a5 00 00 20  04                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-interface5.prg from 0801 to 6360 (5B60 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  283/$11b,  41/$29
+.C:154c  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   64410926
+>C:c080  a5 00 00 20  05                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/lm-powered-interface6.prg from 0801 to 3CCE (34CE bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  239/$0ef,   6/$06
+.C:1f7d  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   48919191
+>C:c080  a5 00 00 20  06                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/lm_powered_interface-software-stack.bin' from $c100 to $cfff

@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_operator_schedule-cm.prg from 0801 to 71CC (69CC bytes)
+WATCH: 1  C:$91d5  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 91d5)  124/$07c,  53/$35
+.C:401b  8E D5 91    STX $91D5      - A:40 X:A5 Y:00 SP:f1 N.-....C  165511385
+>C:91d5  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-cm-vice-mailbox.bin' from $91d5 to $91d9
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-cm-vice-difference.bin' from $71cd to $71d4
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_schedule-cm-vice-software-stack.bin' from $c100 to $cfff

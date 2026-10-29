@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/cm_ephemeris_solar_phases_vice_test.py", line 24, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/Apollo-11/c64-port/tools/cm_ephemeris_solar_phases_vice_test.py", line 12, in main
+    image=prg.read_bytes();assert int.from_bytes(image[:2],'little')==0x801;end=0x801+len(image)-2;bss=int(re.search(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+0\s+1\s+__bss_end =',mapfile.read_text(),re.M)[1],16);assert max(end,bss)<0xc000
+                                                                                                                                                                                                                  ^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,11 @@
+# Native hardware divide arithmetic
+
+`agc_hardware_divide` evaluates the historical hardware-DV fixed-point residual recurrence using integer arithmetic. Inputs are the two full 16-bit one's-complement register words and an already resolved full 16-bit divisor. L receives its physical register overflow correction at entry and exit. The caller resolves register operand aliases; this module contains no instruction decoding, CPU state, memory model, dispatch, floating point, or heap use.
+
+The quotient has fourteen digit trials. For each trial, the residual magnitude is reduced modulo 16384, doubled, and receives the next dividend bit when its representation is negative. A one's-complement trial addition of the divisor accepts digit one when the trial representation stays negative. Sign bits and both zero representations remain explicit. Integer values are bounded by 65535; the end-around carry helper uses 32-bit intermediates. The recurrence intentionally returns the original hardware results for quotient overflow and zero divisors rather than imposing a mathematical saturation policy.
+
+The host-only adapter feeds an isolated unchanged EXTEND/DV-Q instruction pair to the pinned yaAGC engine's hardware SimulateDV path. All 327,680 register-pair results agree, spanning raw overflow words, both zero signs, mixed limb signs, equality boundaries and deterministic full-word inputs. This is instruction-level arithmetic evidence, not a claim that a full historical program was run. The THROTTLE milestone separately compares unchanged historical assembly. Reference snapshot SHA256: `54786d89def2ea21d8bd990d6ed9966b87a08f8c150bc6d5cfdd03c246648edc`.
+
+Strict C99 host checks pass 255 frozen states. Address/undefined-behavior sanitizers reproduce all 327,680 reference states. The same 255 frozen states pass on a PAL C64 in VICE with zero additional zero-page storage. Native source is independently authored MIT code; the GPL oracle adapter and engine are host-only.
+
+Reproduce with `python3 tools/hardware_divide_differential.py`, `python3 tools/freeze_hardware_divide.py`, and the standalone `tools/hardware_divide.mk` host, sanitizer and C64 targets. Run `tools/hardware_divide_vice_test.py` with the installed VICE/ROM/data paths.

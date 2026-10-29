@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_mode_job-cm.prg from 0801 to 37E6 (2FE6 bytes)
+WATCH: 1  C:$57ef  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 57ef)   40/$028,  61/$3d
+.C:26de  8E EF 57    STX $57EF      - A:40 X:A5 Y:00 SP:f1 N.-....C  151727245
+>C:57ef  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm-vice-mailbox.bin' from $57ef to $57f3
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm-vice-difference.bin' from $37e7 to $37ee
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_job-cm-vice-software-stack.bin' from $c100 to $cfff

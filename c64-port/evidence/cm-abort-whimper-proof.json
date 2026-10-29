@@ -1,0 +1,22 @@
+{
+  "cases": 8192,
+  "checkpoints": 8192,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "INHINT7766",
+    "WHIMPER7767",
+    "explicit knownTC7773 afterRESUME",
+    "POSTJUMP toENEMA02651"
+  ],
+  "context_cohorts": "8192 randomized fullimages, allbanks/rawregisters, bothentry prefixes/ISR-active, savedZRUPT and incomingIRQ",
+  "binary_bytes": 33652736,
+  "snapshot_sha256": "176abac930129c46ef6b99863482a79fafe58ba2fabe0906bd1aa1464779fe27",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual WHIMPER/RESUME known compiledTC7773 andPOSTJUMP toENEMA; actual ISR metadata clears, ENEMA body remains separate"
+}

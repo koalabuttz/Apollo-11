@@ -1,0 +1,12 @@
+Loading /workspace/Apollo-11/c64-port/build/sband-plane-1.prg from 0801 to 9A1B (921B bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  231/$0e7,  41/$29
+.C:7aca  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:f1 ..-..IZC   56859746
+Saving file `/workspace/Apollo-11/c64-port/build/sband-plane-1-mailbox.bin' from $c000 to $c003
+Loading /workspace/Apollo-11/c64-port/build/sband-plane-1.prg from 0801 to 9C0B (940B bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)   52/$034,  56/$38
+.C:7c5b  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:f1 ..-..IZC   57123668
+Saving file `/workspace/Apollo-11/c64-port/build/sband-plane-1-mailbox.bin' from $c000 to $c003

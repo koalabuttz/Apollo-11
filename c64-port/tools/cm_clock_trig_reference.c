@@ -1,0 +1,8 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+#define main cm_reference_main
+#include "cm_executive_reference.c"
+#undef main
+#include "cm_trig_cases.h"
+static agc_t baseline;
+static void row(uint16_t n,uint8_t selector){uint16_t w[2051];unsigned i;w[0]=n;w[1]=selector;w[2]=(uint16_t)machine.AllowInterrupt;for(i=0;i<2048u;++i)w[i+3u]=(uint16_t)((unsigned)*memory(i)&(i<2u?0177777u:077777u));if(fwrite(w,sizeof w,1,stdout)!=1)exit(2);}
+int main(int argc,char **argv){uint8_t selector;if(argc!=2)return 2;memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1]))return 2;baseline=machine;InhibitAlarms=1;for(selector=3;selector<4u;++selector){uint32_t n;for(n=0;n<512u;++n){apollo_overlay_state m;agc_word irq;unsigned i,cycles,pc=0,entered=0;cm_trig_input(&m,&irq,(uint16_t)n,2);m.words[032]=m.words[0772];m.words[033]=m.words[0766];m.words[034]=m.words[0770];m.words[3]=03000;m.words[4]=050000;m.words[5]=03332;m.words[6]=050006;machine=baseline;for(i=0;i<2048u;++i)*memory(i)=(int16_t)m.words[i];machine.AllowInterrupt=irq;for(cycles=0;cycles<2000u;++cycles){pc=get(RegZ);if(!machine.PendFlag&&!machine.ExtraDelay){if(!entered&&pc==03555u&&get(RegFB)==046000u){row((uint16_t)n,3);entered=1;if(n<4u)fprintf(stderr,"entrycase%u PC%o Q%o BB%o EB%o BUF2%o/%o IRQ%u\n",(unsigned)n,pc,get(2),get(6),get(3),get(0133),get(0134),machine.AllowInterrupt);}if(entered&&pc==03605u&&get(RegFB)==046000u){row((uint16_t)n,4);if(n<4u)fprintf(stderr,"endcase%u PC%o Q%o A%o L%o IRQ%u\n",(unsigned)n,pc,get(2),(unsigned)*memory(0)&0177777u,(unsigned)*memory(1)&0177777u,machine.AllowInterrupt);break;}}machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}if(cycles==2000u)return 2;}}return 0;}

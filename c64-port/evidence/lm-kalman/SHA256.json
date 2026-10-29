@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-kalman",
+  "release": "evidence-lm-kalman",
+  "files": {
+    "lm-kalman-differential.log": {
+      "sha256": "0e9f2f4ae5517a189781aa7e85a7d9070f8231098be088cd226d2595a5a2dcdf",
+      "bytes": 149,
+      "store": "tree"
+    },
+    "lm-kalman-host.log": {
+      "sha256": "123f86ba297307801fa46ab75d5ef413b9e4852972cd05b85276bbaca49925b4",
+      "bytes": 1006,
+      "store": "tree"
+    },
+    "lm-kalman-proof.json": {
+      "sha256": "104f00ebdd041cd405f8ac427085197e5e8427a4dde9b34da35b4b32f8067d47",
+      "bytes": 2960,
+      "store": "tree"
+    },
+    "lm-kalman-source-map.json": {
+      "sha256": "bf004885fcf4ca42404d0034f54f01fda3fc0a3602b50d77e25ec4d207b329f2",
+      "bytes": 8807,
+      "store": "tree"
+    },
+    "lm-kalman-vice.log": {
+      "sha256": "d42fd8f34d79bc84eb723e76564638557cccc62fa099d2fad32efa3968e9926c",
+      "bytes": 141,
+      "store": "tree"
+    }
+  }
+}

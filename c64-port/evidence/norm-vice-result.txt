@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 637 complete SQRT/SQRTSUB original-assembly states; retained memory unchanged
+Mailbox: a500007d02
+PRG bytes: 35536
+norm-hardware-stack.bin: measured stack extent 30 bytes
+norm-software-stack.bin: measured stack extent 158 bytes

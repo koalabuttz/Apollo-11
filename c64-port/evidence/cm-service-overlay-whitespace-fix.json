@@ -1,0 +1,6 @@
+{
+  "source": "tools/cm_service_overlay_vice_test.py",
+  "before_sha256": "0062d6eacce3e1b030908531aabf17e2a64ee9943d9a05baab5eef0618215a27",
+  "after_sha256": "1564cc7558b6ac35946111b96cccbb664fac823ed7ebea5a4235dadaf548cffa",
+  "change": "Trim trailing whitespace only; token sequence identical. Existing source and C64 proof artifacts and tested behavior unchanged."
+}

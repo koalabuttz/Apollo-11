@@ -1,0 +1,20 @@
+{
+  "adaptation": "Identical restoring LLVM-MOS/KERNAL gate with separate CM typed queue producer. No Executive state or decoder in ISR.",
+  "files": {
+    "cm_irq_gate.S": {
+      "source_sha256": "011371a9b1dc5e9b73688875543f0f3261e3f18fe6b9ed58d92b5563789385d6",
+      "adapted_sha256": "7218050edcfa8fddbcd549dcf3a99bcab6dce5d2472cc66cc19f3be6edde73cd",
+      "inverse_symbols_and_queue_types_equal": true
+    },
+    "cm_irq_platform.c": {
+      "source_sha256": "d32f2e6197725002008b5abaecc48e019bd11bc13b69408b5d1c704d63144960",
+      "adapted_sha256": "99f0ec7d951034a3fe85463457f020a26caf13ec61ec3c14790a890d5d8e8f95",
+      "inverse_symbols_and_queue_types_equal": true
+    },
+    "cm_irq_platform.h": {
+      "source_sha256": "d5dd431b14bfe4a686cf20ffa59bf0996c61096329f3eb3edb4b542a9680da9f",
+      "adapted_sha256": "1d0ee18790b4b02dcf44d5563180642cecead88b372ec4fad4f6d347d5ba01b7",
+      "inverse_symbols_and_queue_types_equal": true
+    }
+  }
+}

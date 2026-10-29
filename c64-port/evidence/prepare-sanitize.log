@@ -1,0 +1,23 @@
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/restart.c tests/restart_cases.c tests/restart_check.c tests/test_restart.c -o build/test-restart-sanitize
+./build/test-restart-sanitize
+PASS: 226 assembly fingerprints, recovery/resumption, phase/resource failures and restoring exclusion
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c tests/guidance_cases.c tests/guidance_check.c tests/test_guidance.c -o build/test-guidance-sanitize
+./build/test-guidance-sanitize
+PASS: 568 complete original-assembly checkpoints; all 65536 SP/memory-zero products; carry and overflow contracts
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c tests/prepare_cases.c tests/prepare_check.c tests/test_prepare.c -o build/test-prepare-sanitize
+./build/test-prepare-sanitize
+PASS: 324 complete preparation states, all TS-skip masks, snapshot debris, MODE alias, retained scratch and composed histories
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/test_host.c -o build/test-sanitize
+./build/test-sanitize
+PASS: 53 dispatch cases, 109 assembly-derived checkpoints, 8 native two-job sequences; dispatch fault checks
+PASS: 32768 word encodings, 65536 register encodings, 524288 addition pairs, 26 Executive scenarios
+sizeof(executive)=648 bytes; sizeof(scenario)=664 bytes (host)
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/test_irq.c -o build/test-irq-sanitize
+./build/test-irq-sanitize
+PASS: IRQ safe points, nested exclusion, idle startup, FIFO/wrap (600 cases), overflow, bailout and unmapped-request faults
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/lifecycle_cases.c tests/lifecycle_check.c tests/test_lifecycle.c -o build/test-lifecycle-sanitize
+./build/test-lifecycle-sanitize
+PASS: 81 lifecycle cases / 115 assembly-derived checkpoints, 5 native sequences, guarded/masked delivery and lifecycle fault boundaries
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c tests/waitlist_check.c tests/test_waitlist.c -o build/test-waitlist-sanitize
+./build/test-waitlist-sanitize
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests

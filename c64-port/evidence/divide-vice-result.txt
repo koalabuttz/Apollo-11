@@ -1,0 +1,11 @@
+PASS: VICE PAL, 156 complete original-assembly final states and division paths; all integrated skip inputs and three retained histories; restoring I
+Mailbox: a500009c0003ba5d24
+Target state bytes / modeled words: 186 93
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/divide-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/divide-vice-monitor.log -monlog -limitcycles 1000000000
+zero DDV: 447 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+positive quotient: 6236 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+negative quotient: 6423 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+division overflow: 1222 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+complete RODCOMP through DDV: 27940 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+divide-vice-hardware-stack.bin: measured sentinel extent 44 bytes
+divide-vice-software-stack.bin: measured sentinel extent 324 bytes

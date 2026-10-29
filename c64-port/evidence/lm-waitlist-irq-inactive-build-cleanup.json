@@ -1,0 +1,23 @@
+{
+  "archive": "evidence/lm-waitlist-irq-dispatch-reference.snapshots.xz",
+  "archive_sha256": "f3ea5a06abb37cd7f62db2b7206e691a8a74d608fdfe4c16023456f9a62ea0ac",
+  "decoded_sha256": "28399982b6a4a2d694a1ee160e934c4f92afcfe49514864ff820fea432d492d3",
+  "removed": [
+    {
+      "path": "build/lm-waitlist-irq-dispatch-native.snapshots",
+      "size": 94924831,
+      "sha256": "28399982b6a4a2d694a1ee160e934c4f92afcfe49514864ff820fea432d492d3"
+    },
+    {
+      "path": "build/lm-waitlist-irq-dispatch-sanitize.snapshots",
+      "size": 94924831,
+      "sha256": "28399982b6a4a2d694a1ee160e934c4f92afcfe49514864ff820fea432d492d3"
+    },
+    {
+      "path": "build/lm-waitlist-irq-dispatch-reference.snapshots",
+      "size": 94924831,
+      "sha256": "28399982b6a4a2d694a1ee160e934c4f92afcfe49514864ff820fea432d492d3"
+    }
+  ],
+  "freed_bytes": 284774493
+}

@@ -1,0 +1,269 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     84f6     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm-irq.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       4e     1         /tmp/cm_irq_gate-fad86a.o:(.text.cm_c64_irq_gate)
+     830      830       4e     1                 cm_c64_irq_gate
+     87e      87e       8a     1         /tmp/cm_irq_gate-fad86a.o:(.text.cm_c64_register_probe)
+     87e      87e       8a     1                 cm_c64_register_probe
+     908      908       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     908      908       13     1                 __zero_bss
+     91b      91b        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     91b      91b        0     1                 __call_indir
+     91e      91e      73e     1         build/cm-irq.prg.lto.o:(.text.cm_exec_admit)
+     91e      91e      73e     1                 cm_exec_admit
+    105c     105c      1ae     1         build/cm-irq.prg.lto.o:(.text.cm_exec_endjob_select)
+    105c     105c      1ae     1                 cm_exec_endjob_select
+    120a     120a      191     1         build/cm-irq.prg.lto.o:(.text.cm_exec_change_basic)
+    120a     120a      191     1                 cm_exec_change_basic
+    139b     139b       ba     1         build/cm-irq.prg.lto.o:(.text.basic_slot)
+    139b     139b       ba     1                 basic_slot
+    1455     1455      37c     1         build/cm-irq.prg.lto.o:(.text.exchange_basic)
+    1455     1455      37c     1                 exchange_basic
+    17d1     17d1      4e3     1         build/cm-irq.prg.lto.o:(.text.cm_exec_change_interpretive)
+    17d1     17d1      4e3     1                 cm_exec_change_interpretive
+    1cb4     1cb4      296     1         build/cm-irq.prg.lto.o:(.text.cm_exec_complete_basic)
+    1cb4     1cb4      296     1                 cm_exec_complete_basic
+    1f4a     1f4a      363     1         build/cm-irq.prg.lto.o:(.text.cm_exec_sleep_basic)
+    1f4a     1f4a      363     1                 cm_exec_sleep_basic
+    22ad     22ad       7a     1         build/cm-irq.prg.lto.o:(.text.lifecycle_candidate)
+    22ad     22ad       7a     1                 lifecycle_candidate
+    2327     2327      35f     1         build/cm-irq.prg.lto.o:(.text.cm_exec_priority_basic)
+    2327     2327      35f     1                 cm_exec_priority_basic
+    2686     2686      124     1         build/cm-irq.prg.lto.o:(.text.lookup_kind)
+    2686     2686      124     1                 lookup_kind
+    27aa     27aa      2d2     1         build/cm-irq.prg.lto.o:(.text.cm_exec_native_init)
+    27aa     27aa      2d2     1                 cm_exec_native_init
+    2a7c     2a7c      409     1         build/cm-irq.prg.lto.o:(.text.start_owned)
+    2a7c     2a7c      409     1                 start_owned
+    2e85     2e85      1c7     1         build/cm-irq.prg.lto.o:(.text.saved_target)
+    2e85     2e85      1c7     1                 saved_target
+    304c     304c      438     1         build/cm-irq.prg.lto.o:(.text.exchange_saved)
+    304c     304c      438     1                 exchange_saved
+    3484     3484       ef     1         build/cm-irq.prg.lto.o:(.text.settle)
+    3484     3484       ef     1                 settle
+    3573     3573      26b     1         build/cm-irq.prg.lto.o:(.text.complete_mixed)
+    3573     3573      26b     1                 complete_mixed
+    37de     37de      210     1         build/cm-irq.prg.lto.o:(.text.change_mixed_basic)
+    37de     37de      210     1                 change_mixed_basic
+    39ee     39ee      2f3     1         build/cm-irq.prg.lto.o:(.text.sleep_mixed)
+    39ee     39ee      2f3     1                 sleep_mixed
+    3ce1     3ce1      372     1         build/cm-irq.prg.lto.o:(.text.priority_mixed)
+    3ce1     3ce1      372     1                 priority_mixed
+    4053     4053      4e9     1         build/cm-irq.prg.lto.o:(.text.cm_irq_bind)
+    4053     4053      4e9     1                 cm_irq_bind
+    453c     453c      37c     1         build/cm-irq.prg.lto.o:(.text.callback)
+    453c     453c      37c     1                 callback
+    48b8     48b8      38b     1         build/cm-irq.prg.lto.o:(.text.service)
+    48b8     48b8      38b     1                 service
+    4c43     4c43     117a     1         build/cm-irq.prg.lto.o:(.text.cm_irq_step)
+    4c43     4c43     117a     1                 cm_irq_step
+    5dbd     5dbd      18f     1         build/cm-irq.prg.lto.o:(.text.cm_dispatch_event_prepare)
+    5dbd     5dbd      18f     1                 cm_dispatch_event_prepare
+    5f4c     5f4c      113     1         build/cm-irq.prg.lto.o:(.text.cm_dispatch_touch)
+    5f4c     5f4c      113     1                 cm_dispatch_touch
+    605f     605f      42e     1         build/cm-irq.prg.lto.o:(.text.low)
+    605f     605f      42e     1                 low
+    648d     648d       8c     1         build/cm-irq.prg.lto.o:(.text.low_resume)
+    648d     648d       8c     1                 low_resume
+    6519     6519       2d     1         build/cm-irq.prg.lto.o:(.text.low_finish)
+    6519     6519       2d     1                 low_finish
+    6546     6546       51     1         build/cm-irq.prg.lto.o:(.text.high)
+    6546     6546       51     1                 high
+    6597     6597       2d     1         build/cm-irq.prg.lto.o:(.text.high_finish)
+    6597     6597       2d     1                 high_finish
+    65c4     65c4      19f     1         build/cm-irq.prg.lto.o:(.text.payload)
+    65c4     65c4      19f     1                 payload
+    6763     6763     1061     1         build/cm-irq.prg.lto.o:(.text.cm_irq_check_sequence)
+    6763     6763     1061     1                 cm_irq_check_sequence
+    77c4     77c4      5a7     1         build/cm-irq.prg.lto.o:(.text.observe)
+    77c4     77c4      5a7     1                 observe
+    7d6b     7d6b      51d     1         build/cm-irq.prg.lto.o:(.text.main)
+    7d6b     7d6b      51d     1                 main
+    8288     8288      1e6     1         build/cm-irq.prg.lto.o:(.text.publish)
+    8288     8288      1e6     1                 publish
+    846e     846e      13c     1         build/cm-irq.prg.lto.o:(.text.arithmetic)
+    846e     846e      13c     1                 arithmetic
+    85aa     85aa       11     1         build/cm-irq.prg.lto.o:(.text.noop)
+    85aa     85aa       11     1                 noop
+    85bb     85bb      148     1         build/cm-irq.prg.lto.o:(.text.cm_c64_irq_install)
+    85bb     85bb      148     1                 cm_c64_irq_install
+    8703     8703       3b     1         build/cm-irq.prg.lto.o:(.text.cm_c64_irq_remove)
+    8703     8703       3b     1                 cm_c64_irq_remove
+    873e     873e      1eb     1         build/cm-irq.prg.lto.o:(.text.cm_c64_irq_producer)
+    873e     873e      1eb     1                 cm_c64_irq_producer
+    8929     8929        4     1         build/cm-irq.prg.lto.o:(.text.enter)
+    8929     8929        4     1                 enter
+    892d     892d        8     1         build/cm-irq.prg.lto.o:(.text.leave)
+    892d     892d        8     1                 leave
+    8935     8935        6     1         build/cm-irq.prg.lto.o:(.text.exit)
+    8935     8935        6     1                 exit
+    893b     893b       4d     1         build/cm-irq.prg.lto.o:(.text.putchar)
+    893b     893b       4d     1                 putchar
+    8988     8988       65     1         build/cm-irq.prg.lto.o:(.text.puts)
+    8988     8988       65     1                 puts
+    89ed     89ed       34     1         build/cm-irq.prg.lto.o:(.text.memcpy)
+    89ed     89ed       34     1                 memcpy
+    8a21     8a21       47     1         build/cm-irq.prg.lto.o:(.text.memcmp)
+    8a21     8a21       47     1                 memcmp
+    8a68     8a68       22     1         build/cm-irq.prg.lto.o:(.text.__memset)
+    8a68     8a68       22     1                 __memset
+    8a8a     8a8a       5d     1         build/cm-irq.prg.lto.o:(.text.__udivqi3)
+    8a8a     8a8a       5d     1                 __udivqi3
+    8ae7     8ae7       c4     1         build/cm-irq.prg.lto.o:(.text.__udivhi3)
+    8ae7     8ae7       c4     1                 __udivhi3
+    8bab     8bab       40     1         build/cm-irq.prg.lto.o:(.text.__umodqi3)
+    8bab     8bab       40     1                 __umodqi3
+    8beb     8beb       7d     1         build/cm-irq.prg.lto.o:(.text.__udivmodqi4)
+    8beb     8beb       7d     1                 __udivmodqi4
+    8c68     8c68       34     1         build/cm-irq.prg.lto.o:(.text.__mulhi3)
+    8c68     8c68       34     1                 __mulhi3
+    8c9c     8c9c       67     1         build/cm-irq.prg.lto.o:(.text.__mulsi3)
+    8c9c     8c9c       67     1                 __mulsi3
+    8d03     8d03        0     1         __init_array_start = .
+    8d03     8d03        0     1         __init_array_end = .
+    8d03     8d03        0     1         __fini_array_start = .
+    8d03     8d03        0     1         __fini_array_end = .
+    8d03     8d03     1560     1 .rodata
+    8d03     8d03        8     1         build/cm-irq.prg.lto.o:(.rodata.cm_irq_step)
+    8d0b     8d0b        e     1         build/cm-irq.prg.lto.o:(.rodata.cm_dispatch_event_prepare)
+    8d19     8d19       23     1         build/cm-irq.prg.lto.o:(.rodata.typed)
+    8d19     8d19       23     1                 typed
+    8d3c     8d3c       1e     1         build/cm-irq.prg.lto.o:(.rodata.maps)
+    8d3c     8d3c       1e     1                 maps
+    8d5a     8d5a      100     1         build/cm-irq.prg.lto.o:(.rodata.cm_irq_sequence_hashes)
+    8d5a     8d5a      100     1                 cm_irq_sequence_hashes
+    8e5a     8e5a     13b0     1         build/cm-irq.prg.lto.o:(.rodata.cm_irq_sequence_full)
+    8e5a     8e5a     13b0     1                 cm_irq_sequence_full
+    a20a     a20a       46     1         <internal>:(.rodata.str1.1)
+    a250     a250        6     1         build/cm-irq.prg.lto.o:(.rodata.overflow.m)
+    a250     a250        6     1                 overflow.m
+    a256     a256        7     1         build/cm-irq.prg.lto.o:(.rodata..L__const.overflow.req)
+    a25d     a25d        6     1         build/cm-irq.prg.lto.o:(.rodata.cm_c64_exclusion)
+    a25d     a25d        6     1                 cm_c64_exclusion
+    a263     a263        0     1 .data
+    a263     a263        0     1         __data_start = .
+    a263     a263        0     1         __data_end = .
+    a263     a263        0     1 __data_load_start = LOADADDR(.data)
+    a263     a263        0     1 __data_size = SIZEOF(.data)
+    a263     a263      6d2     1 .bss
+    a263     a263        0     1         __bss_start = .
+    a263     a263       20     1         /tmp/cm_irq_gate-fad86a.o:(.bss.cm_c64_irq_saved)
+    a263     a263        0     1                 cm_c64_irq_saved
+    a283     a283        3     1         /tmp/cm_irq_gate-fad86a.o:(.bss.cm_c64_probe)
+    a286     a286        1     1         build/cm-irq.prg.lto.o:(.bss.mode)
+    a286     a286        1     1                 mode
+    a287     a287      270     1         build/cm-irq.prg.lto.o:(.bss.state)
+    a287     a287      270     1                 state
+    a4f7     a4f7        2     1         build/cm-irq.prg.lto.o:(.bss.failures)
+    a4f7     a4f7        2     1                 failures
+    a4f9     a4f9      270     1         build/cm-irq.prg.lto.o:(.bss.before)
+    a4f9     a4f9      270     1                 before
+    a769     a769       20     1         build/cm-irq.prg.lto.o:(.bss.overflow.q)
+    a769     a769       20     1                 overflow.q
+    a789     a789       18     1         build/cm-irq.prg.lto.o:(.bss.overflow.n)
+    a789     a789       18     1                 overflow.n
+    a7a1     a7a1       7e     1         build/cm-irq.prg.lto.o:(.bss.overflow.irq)
+    a7a1     a7a1       7e     1                 overflow.irq
+    a81f     a81f        1     1         build/cm-irq.prg.lto.o:(.bss.installed)
+    a81f     a81f        1     1                 installed
+    a820     a820        2     1         build/cm-irq.prg.lto.o:(.bss.destination)
+    a820     a820        2     1                 destination
+    a822     a822        7     1         build/cm-irq.prg.lto.o:(.bss.source)
+    a822     a822        7     1                 source
+    a829     a829        2     1         build/cm-irq.prg.lto.o:(.bss.cm_c64_irq_previous)
+    a829     a829        2     1                 cm_c64_irq_previous
+    a82b     a82b        1     1         build/cm-irq.prg.lto.o:(.bss.old_mask)
+    a82b     a82b        1     1                 old_mask
+    a82c     a82c        1     1         build/cm-irq.prg.lto.o:(.bss.old_d011)
+    a82c     a82c        1     1                 old_d011
+    a82d     a82d        1     1         build/cm-irq.prg.lto.o:(.bss.cm_c64_irq_poison)
+    a82d     a82d        1     1                 cm_c64_irq_poison
+    a82e     a82e        2     1         build/cm-irq.prg.lto.o:(.bss.cm_c64_irq_arithmetic)
+    a82e     a82e        2     1                 cm_c64_irq_arithmetic
+    a830     a830        1     1         build/cm-irq.prg.lto.o:(.bss.cm_c64_irq_stack_fault)
+    a830     a830        1     1                 cm_c64_irq_stack_fault
+    a831     a831        1     1         build/cm-irq.prg.lto.o:(.bss.cm_c64_irq_count)
+    a831     a831        1     1                 cm_c64_irq_count
+    a832     a832        1     1         build/cm-irq.prg.lto.o:(.bss.cm_c64_irq_done)
+    a832     a832        1     1                 cm_c64_irq_done
+    a833     a833        1     1         build/cm-irq.prg.lto.o:(.bss.cm_c64_irq_last_status)
+    a833     a833        1     1                 cm_c64_irq_last_status
+    a834     a834        1     1         build/cm-irq.prg.lto.o:(.bss.remaining)
+    a834     a834        1     1                 remaining
+    a835     a835      100     1         build/cm-irq.prg.lto.o:(.bss.cm_c64_irq_stack)
+    a835     a835      100     1                 cm_c64_irq_stack
+    a935     a935        0     1         __bss_end = .
+    a935     a935        0     1 __bss_size = SIZEOF(.bss)
+    a935     a935        1     1 .noinit
+    a935     a935        1     1         build/cm-irq.prg.lto.o:(.noinit..Lstatic_stack)
+    a936     a936        0     1         __heap_start = ALIGN(., 2)
+    a936     a936        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0        f     1 .llvm_sympart
+       0        0        f     1         build/cm-irq.prg.lto.o:(.llvm_sympart)
+       0        0      f70     4 .symtab
+       0        0      f70     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      9d7     1 .strtab
+       0        0      9d7     1         <internal>:(.strtab)

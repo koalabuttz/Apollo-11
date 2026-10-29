@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-interpreter",
+  "release": "evidence-lm-interpreter",
+  "files": {
+    "lm-interpreter-closure.json": {
+      "sha256": "0caa2b641a1b74649816acb27b0af8e9fac95319ed3481a861d37361093a2705",
+      "bytes": 322770,
+      "store": "release"
+    },
+    "lm-interpreter-differential.log": {
+      "sha256": "f109ab99e9a26674e10fc5621ceaa113cacc8153439c64e92e6d1df47cf35338",
+      "bytes": 118524,
+      "store": "tree"
+    },
+    "lm-interpreter-host.log": {
+      "sha256": "0d0f7bfe27d5e4e74759de87701c8258c2d97164442cd43791f2d191ff4f698f",
+      "bytes": 1047,
+      "store": "tree"
+    },
+    "lm-interpreter-proof.json": {
+      "sha256": "0dba8c479d44370eb3047a47ab8f27304a99dbf459a3163bb9e3cb4f6887154f",
+      "bytes": 179913,
+      "store": "tree"
+    },
+    "lm-interpreter-source-map.json": {
+      "sha256": "062265fe660a6315995d8993f06672dad0b9ce81971f4de61a235297e7f9956c",
+      "bytes": 323790,
+      "store": "release"
+    },
+    "lm-interpreter-vice.log": {
+      "sha256": "3cb5d4d542401890b2f4dc07aca06d6ca4f420f66e0ea45b1aec33d6e5172a72",
+      "bytes": 3441,
+      "store": "tree"
+    }
+  }
+}

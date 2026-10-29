@@ -1,0 +1,7 @@
+load "/workspace/Apollo-11/c64-port/build/fixed-data.prg" 0
+watch store c000
+ignore 1 1
+g 080d
+bsave "/workspace/Apollo-11/c64-port/build/fixed-data-mailbox.bin" 0 c000 c002
+bsave "/workspace/Apollo-11/c64-port/build/fixed-data-words.bin" 0 7000 866d
+quit

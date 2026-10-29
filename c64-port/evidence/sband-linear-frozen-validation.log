@@ -1,0 +1,4 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_sband_linear.c tests/sband_linear_target.c tests/frozen_words.c tests/sband_linear_cases.c src/agc_word.c src/sband_vector_linear.c src/agc_multiword.c -o build/test-sband-linear
+./build/test-sband-linear
+PASS exact original canonical vector multiply/add/subtract and unchanged unsupported images
+PASS exact original canonical vector multiply/add/subtract and unchanged unsupported images

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-imu-performance",
+  "release": "evidence-lm-imu-performance",
+  "files": {
+    "lm-imu-performance-c64-cover.json": {
+      "sha256": "3f67c2dfe2d386651d288a543bc9acee55e4ea52a70a1bf804ea41699dab8ff2",
+      "bytes": 84496,
+      "store": "tree"
+    },
+    "lm-imu-performance-host.log": {
+      "sha256": "581cc7d2dba7cf6c0c2240ca86910f194f6ee129207594786466395f5c25ca08",
+      "bytes": 1889,
+      "store": "release"
+    },
+    "lm-imu-performance-proof.json": {
+      "sha256": "ce73dd802c1b4f4a4ef1c6dd5db0aff6496040fbbb516401cd2368a9548ea744",
+      "bytes": 13618,
+      "store": "tree"
+    },
+    "lm-imu-performance-source-map.json": {
+      "sha256": "3203ab290d3d2466b00dc8eec35688d74b44e01ab9a7f665833e692d4d7b8137",
+      "bytes": 22722,
+      "store": "tree"
+    },
+    "lm-imu-performance-vice.log": {
+      "sha256": "b1dce881091c2f4a1e96ea49a058b3b1bbf62da4860616eeed775820a6d9c98a",
+      "bytes": 2129,
+      "store": "release"
+    }
+  }
+}

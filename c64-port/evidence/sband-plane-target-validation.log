@@ -1,0 +1,5 @@
+PASS group {'group': 0, 'states': 32, 'prg_bytes': 37446, 'load_end': 39493, 'bss_end': 47685, 'static_storage_end': 47936, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS group {'group': 1, 'states': 32, 'prg_bytes': 37901, 'load_end': 39948, 'bss_end': 48140, 'static_storage_end': 48391, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS group {'group': 2, 'states': 32, 'prg_bytes': 37475, 'load_end': 39522, 'bss_end': 47714, 'static_storage_end': 47965, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS group {'group': 3, 'states': 32, 'prg_bytes': 37912, 'load_end': 39959, 'bss_end': 48151, 'static_storage_end': 48402, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS128 complete exact original antenna plane/UNIT/BOV states across four stock-ROM C64 diagnostics

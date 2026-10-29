@@ -1,0 +1,87 @@
+{
+ "scenario": "lm-p57-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 56000,
+ "keys": "@3000V37E57E@4000V33E@5000V22E2E@6000V33E@12000V21E00012E@13000V33E@14000V33E@15000V33E@16000x@17000V21E+08608E@18000V22E+12128E@19000V33E@26000V21E00003E@27000V33E@28000V33E@29000V33E@30000x@31000V21E+01538E@32000V22E+13554E@33000V33E@40000V33E@42000V33E@48000E@50000V34E@52000V37E00E",
+ "inputs": {
+  "FLIGHT_CH30": "036357",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077737",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-p57.load,15900:tools/flight_scenarios/lm-p57-star1.load,29900:tools/flight_scenarios/lm-p57-star2.load"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 56002,
+ "periods_taken": 56000,
+ "periods_dropped": 2,
+ "agc_centiseconds": 56000,
+ "native_routines": 3034506,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 304196,
+  "yaagc": 300664,
+  "percent": 1.2,
+  "routines": 1475,
+  "mean_abs_error": 20.2,
+  "abs_percent": 9.9,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +1.2% net, 9.9% routine by routine, from yaAGC's MCT over 1475 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 9,
+  "no_interrupt_to": 64,
+  "no_background_periods": 1,
+  "no_background_to": 18505
+ },
+ "reached": {
+  "15,2245": 6481,
+  "04,2163": 52301,
+  "14,3672": null,
+  "14,3231": null,
+  "43,2014": 48000,
+  "07,2613": null
+ },
+ "arrivals": {
+  "15,2245": [
+   6481,
+   12451,
+   19179,
+   26451
+  ],
+  "04,2163": [
+   52301
+  ],
+  "14,3672": [],
+  "14,3231": [],
+  "43,2014": [
+   48000
+  ],
+  "07,2613": []
+ },
+ "log_sha256": "deaa8c8f0275d100e019d86026a8d4f874604f1140444cdca5e4bc68ac4ff9fb"
+}

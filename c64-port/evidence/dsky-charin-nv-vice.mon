@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_charin_nv.prg" 0
+watch store 5481
+ignore 1 1
+g 080d
+m 5481 5485
+bsave "/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-mailbox.bin" 0 5481 5485
+bsave "/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_charin_nv-vice-software-stack.bin" 0 c100 cfff
+quit

@@ -1,0 +1,3702 @@
+{
+  "schema_version": 1,
+  "native_overlay_abi": 1,
+  "placement_scope": "Explicit original BANK declarations plus architectural fixed-fixed02/03; no inferred symbol addresses",
+  "resident_source_api": "Canonical2048word erasable image; transient native views committed at ABI returns",
+  "module_slot": {
+    "address": 32768,
+    "capacity": 16384,
+    "entry": 32784
+  },
+  "proof_payloads_are_mission_translations": false,
+  "missions": [
+    {
+      "mission": "Luminary099",
+      "source_files": [
+        {
+          "path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
+          "sha256": "fce563bb8f9c943a3c90242491f002f2b2ebd0b7610d47105ecb669312fcaa9c",
+          "declared_banks": [
+            {
+              "line": 100,
+              "bank_octal": "25"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/AGS_INITIALIZATION.agc",
+          "sha256": "658648f1bdac76929efdfe98fc23676e467d167645310c685bf1479c97da77fa",
+          "declared_banks": [
+            {
+              "line": 70,
+              "bank_octal": "40"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/ALARM_AND_ABORT.agc",
+          "sha256": "74236d3b94048b14efb776d7fff5ae66acac2f950e5bc03ca375d4b90b4484a8",
+          "declared_banks": [
+            {
+              "line": 112,
+              "bank_octal": "10"
+            },
+            {
+              "line": 235,
+              "bank_octal": "13"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/AOSTASK_AND_AOSJOB.agc",
+          "sha256": "f6bf6c63faf9895681da9fecc7a0c8531644140cb71e15c331ff8a990e6bacbe",
+          "declared_banks": [
+            {
+              "line": 80,
+              "bank_octal": "20"
+            },
+            {
+              "line": 584,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/AOTMARK.agc",
+          "sha256": "2feea8e6e449cd1eb814a482dcdb75f4b0ff4364058095f28efd7ce1df5db25a",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "12"
+            },
+            {
+              "line": 207,
+              "bank_octal": "05"
+            },
+            {
+              "line": 255,
+              "bank_octal": "15"
+            },
+            {
+              "line": 302,
+              "bank_octal": "07"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/ASCENT_GUIDANCE.agc",
+          "sha256": "bfcd1300884bc8ab69748562fe287178f56bdfe9b7f13460b6ae73a1db3406a2",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "34"
+            },
+            {
+              "line": 85,
+              "bank_octal": "30"
+            },
+            {
+              "line": 420,
+              "bank_octal": "07"
+            },
+            {
+              "line": 450,
+              "bank_octal": "05"
+            },
+            {
+              "line": 458,
+              "bank_octal": "14"
+            },
+            {
+              "line": 540,
+              "bank_octal": "30"
+            },
+            {
+              "line": 567,
+              "bank_octal": "27"
+            },
+            {
+              "line": 580,
+              "bank_octal": "30"
+            },
+            {
+              "line": 596,
+              "bank_octal": "33"
+            },
+            {
+              "line": 609,
+              "bank_octal": "24"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+          "sha256": "b184fc58454158b607b9c5132ed88431603fe2617d2c56f80c22af49236eb0d6",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc",
+          "sha256": "ce059a77e621dc2b0df032410206e3da672d88d065114b533fa3e74a997f0443",
+          "declared_banks": [
+            {
+              "line": 419,
+              "bank_octal": "15"
+            },
+            {
+              "line": 648,
+              "bank_octal": "13"
+            },
+            {
+              "line": 699,
+              "bank_octal": "15"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+          "sha256": "7ed744d09332db172eaad0ca8432c243479d6d293ed387ee83eb0dd67c77f041",
+          "declared_banks": [
+            {
+              "line": 47,
+              "bank_octal": "36"
+            },
+            {
+              "line": 547,
+              "bank_octal": "31"
+            },
+            {
+              "line": 588,
+              "bank_octal": "36"
+            },
+            {
+              "line": 898,
+              "bank_octal": "31"
+            },
+            {
+              "line": 930,
+              "bank_octal": "36"
+            },
+            {
+              "line": 1007,
+              "bank_octal": "27"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/CONIC_SUBROUTINES.agc",
+          "sha256": "26409d71cdac421bef8dd11aa336abb0abda64f5ebf994c825eecfa866640581",
+          "declared_banks": [
+            {
+              "line": 1125,
+              "bank_octal": "04"
+            },
+            {
+              "line": 1202,
+              "bank_octal": "12"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/CONTROLLED_CONSTANTS.agc",
+          "sha256": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/DAPIDLER_PROGRAM.agc",
+          "sha256": "f86c480485f55088649ec83f35d950a5e8d95233ee480edc35fb5c4e8277b7e3",
+          "declared_banks": [
+            {
+              "line": 33,
+              "bank_octal": "16"
+            },
+            {
+              "line": 209,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/DAP_INTERFACE_SUBROUTINES.agc",
+          "sha256": "1156271d55ea1f47bf20602da2cefa9388a908b3dca5231650cc7f10895db776",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+          "sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da",
+          "declared_banks": [
+            {
+              "line": 499,
+              "bank_octal": "10"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/DOWNLINK_LISTS.agc",
+          "sha256": "def08f047f1c2930f7067fe9b8cf480eb7d5783f47de7850c623836380c93e63",
+          "declared_banks": [
+            {
+              "line": 28,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/DOWN_TELEMETRY_PROGRAM.agc",
+          "sha256": "34ee428bb987e1826148083af7c6879c33ed577a0eb415ae08ce4a7ad0453d9b",
+          "declared_banks": [
+            {
+              "line": 159,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/ERASABLE_ASSIGNMENTS.agc",
+          "sha256": "29d4d6d4c16b3ea2c00f6d29bc77ee6dbd7a236eaefb5d4384a0168ba0196139",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/EXECUTIVE.agc",
+          "sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+          "declared_banks": [
+            {
+              "line": 131,
+              "bank_octal": "01"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/EXTENDED_VERBS.agc",
+          "sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
+          "declared_banks": [
+            {
+              "line": 38,
+              "bank_octal": "07"
+            },
+            {
+              "line": 383,
+              "bank_octal": "23"
+            },
+            {
+              "line": 426,
+              "bank_octal": "43"
+            },
+            {
+              "line": 550,
+              "bank_octal": "42"
+            },
+            {
+              "line": 590,
+              "bank_octal": "42"
+            },
+            {
+              "line": 885,
+              "bank_octal": "42"
+            },
+            {
+              "line": 909,
+              "bank_octal": "07"
+            },
+            {
+              "line": 1296,
+              "bank_octal": "34"
+            },
+            {
+              "line": 1381,
+              "bank_octal": "01"
+            },
+            {
+              "line": 1501,
+              "bank_octal": "07"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc",
+          "sha256": "d749732ada1c3221d526fadcabf062a652dfb1d01e22bf6bab55bd02b8937d7f",
+          "declared_banks": [
+            {
+              "line": 101,
+              "bank_octal": "30"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/FIXED_FIXED_CONSTANT_POOL.agc",
+          "sha256": "7f139c2b553ce60f8c0ab8cf6242abef390c6a28858e45a4f1d80f0ff2c646b7",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/FLAGWORD_ASSIGNMENTS.agc",
+          "sha256": "a863fbb2aebd05b98dd15773ad24f370a8efd7ace6a3e8f44ee35300e3613332",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/FRESH_START_AND_RESTART.agc",
+          "sha256": "bc2d69173e60be4618ce39a1ab7e6f908d427c7edea1e79e09070d0931c55d9a",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "10"
+            },
+            {
+              "line": 652,
+              "bank_octal": "20"
+            },
+            {
+              "line": 1193,
+              "bank_octal": "13"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+          "sha256": "6e440a29d56167c2f48b7bc58c0d53491d596c61e8e7137dc3b349ad90c1dc10",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
+          "sha256": "5013aab57862f7f29ec2518223d61b879dfa7a2f87f4deb9e70385d69f3044b3",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "15"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+          "sha256": "97cba32a43d7de44db0db00e5785f2d9c4bebbc4a6d7f058c0c3c13113855140",
+          "declared_banks": [
+            {
+              "line": 87,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/IMU_COMPENSATION_PACKAGE.agc",
+          "sha256": "0b5c62e140514e58767ef3950fc3f3f381d607166f198f11348c3765c07f4ae8",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "07"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+          "sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+          "declared_banks": [
+            {
+              "line": 53,
+              "bank_octal": "11"
+            },
+            {
+              "line": 900,
+              "bank_octal": "34"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/IMU_PERFORMANCE_TESTS_4.agc",
+          "sha256": "5fb543ce6aebfbc6d2e83f576b78b1d61ece37e88a2229b734d5c094aef6ea56",
+          "declared_banks": [
+            {
+              "line": 60,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/IMU_PERFORMANCE_TEST_2.agc",
+          "sha256": "80d973122d8212c2a0d6dbedfc061b0b91b44467422abe8a487b85137fa4c490",
+          "declared_banks": [
+            {
+              "line": 44,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+          "sha256": "9d5e5d467f4eeedd9aee8a2f068e646a5d43ba3ec93a83cec565554b0c3fa52c",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",
+          "sha256": "3b7a410d9af5de25e1aed779dd499bb63e199c63be815970e8902a2a575b6ad7",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/INTEGRATION_INITIALIZATION.agc",
+          "sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe",
+          "declared_banks": [
+            {
+              "line": 270,
+              "bank_octal": "11"
+            },
+            {
+              "line": 1027,
+              "bank_octal": "27"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+          "sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+          "declared_banks": [
+            {
+              "line": 361,
+              "bank_octal": "00"
+            },
+            {
+              "line": 1473,
+              "bank_octal": "00"
+            },
+            {
+              "line": 2827,
+              "bank_octal": "01"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "sha256": "30f22813f6d6f33f8202b65fa5895ebf535232e0437aaa9d02aec5b81e08d627",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/INTERRUPT_LEAD_INS.agc",
+          "sha256": "ed6f44b59b2e16743ff53c6c9ed72661040a83d846a61054a31e5c61957290c3",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/KALCMANU_STEERING.agc",
+          "sha256": "6a330bb23cb8f6c15cd50ffe8550ffd7599d19fcd9b9c03f0b2fbe8f081c21da",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/KALMAN_FILTER.agc",
+          "sha256": "f5f4df8e50c47d5fa54c7e51b756303ad484cb7b0aaa54fefa2e05b395588c8e",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "16"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/KEYRUPT_UPRUPT.agc",
+          "sha256": "e7e1633ff1305e689451634bf6cba496219b63a4a12f3ae028c74e3b65d840c1",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "14"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+          "sha256": "c07d1ef6d1a83375b0aa0f7be87ef4d496d396621501298932aa46466d2db34c",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "21"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+          "sha256": "5781f21292603392fc38aec45edbf8905ac7471c17c51c6dfe77593ba695bd46",
+          "declared_banks": [
+            {
+              "line": 50,
+              "bank_octal": "30"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/LEM_GEOMETRY.agc",
+          "sha256": "6793dddb22af8b0ae7f73d735fabbc4336a0f6743c5d1965e5dab3350c1ce6d6",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "23"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+          "sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
+          "declared_banks": [
+            {
+              "line": 92,
+              "bank_octal": "04"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+          "sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
+          "declared_banks": [
+            {
+              "line": 1124,
+              "bank_octal": "11"
+            },
+            {
+              "line": 1218,
+              "bank_octal": "20"
+            },
+            {
+              "line": 1230,
+              "bank_octal": "31"
+            },
+            {
+              "line": 1461,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/MAIN.agc",
+          "sha256": "2e7d98ca917aa9d3b82024070e2fdbd2b9da5d478ca2c93d6113ab3b365f2d1c",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/MEASUREMENT_INCORPORATION.agc",
+          "sha256": "735aebaba4df4159e83d48b4cbe509479a9d29fb66ce05adf4bcb79076302fdc",
+          "declared_banks": [
+            {
+              "line": 56,
+              "bank_octal": "37"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/ORBITAL_INTEGRATION.agc",
+          "sha256": "5fc234cd27586bf25918a05692b3e6849a433e0b62bfb1327c96ae06e2231b14",
+          "declared_banks": [
+            {
+              "line": 36,
+              "bank_octal": "13"
+            },
+            {
+              "line": 908,
+              "bank_octal": "13"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P-AXIS_RCS_AUTOPILOT.agc",
+          "sha256": "6aa46513dcd7f1b77b41cbf847ce98dcdaec5a95bf4327d0a7c2df8adf937775",
+          "declared_banks": [
+            {
+              "line": 33,
+              "bank_octal": "16"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P12.agc",
+          "sha256": "92061c017abffeac794f349bee080dcb01186b1188d95679ace07fecf6bc85de",
+          "declared_banks": [
+            {
+              "line": 28,
+              "bank_octal": "24"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P20-P25.agc",
+          "sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f",
+          "declared_banks": [
+            {
+              "line": 92,
+              "bank_octal": "33"
+            },
+            {
+              "line": 130,
+              "bank_octal": "32"
+            },
+            {
+              "line": 241,
+              "bank_octal": "24"
+            },
+            {
+              "line": 1208,
+              "bank_octal": "24"
+            },
+            {
+              "line": 1634,
+              "bank_octal": "24"
+            },
+            {
+              "line": 3178,
+              "bank_octal": "23"
+            },
+            {
+              "line": 3320,
+              "bank_octal": "32"
+            },
+            {
+              "line": 3549,
+              "bank_octal": "13"
+            },
+            {
+              "line": 4475,
+              "bank_octal": "33"
+            },
+            {
+              "line": 4620,
+              "bank_octal": "24"
+            },
+            {
+              "line": 4660,
+              "bank_octal": "32"
+            },
+            {
+              "line": 4855,
+              "bank_octal": "24"
+            },
+            {
+              "line": 4950,
+              "bank_octal": "31"
+            },
+            {
+              "line": 5108,
+              "bank_octal": "25"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P30_P37.agc",
+          "sha256": "2ea604772395dcae064d0a23f4f475845cef39b3528d62d4adeac8e3aab9b573",
+          "declared_banks": [
+            {
+              "line": 56,
+              "bank_octal": "32"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P32-P35_P72-P75.agc",
+          "sha256": "0fc78a6c5bcfd461bf1e9e7ffd11e5e4f93950595daf275bb2df2a9a08f149ec",
+          "declared_banks": [
+            {
+              "line": 198,
+              "bank_octal": "35"
+            },
+            {
+              "line": 661,
+              "bank_octal": "34"
+            },
+            {
+              "line": 1371,
+              "bank_octal": "35"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P34-35_P74-75.agc",
+          "sha256": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
+          "declared_banks": [
+            {
+              "line": 1438,
+              "bank_octal": "10"
+            },
+            {
+              "line": 1662,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P40-P47.agc",
+          "sha256": "a030d323c75c05e3492e81522ab2a5c2ac493f7bc25c44686e6cb1c492c4540b",
+          "declared_banks": [
+            {
+              "line": 106,
+              "bank_octal": "36"
+            },
+            {
+              "line": 679,
+              "bank_octal": "14"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P51-P53.agc",
+          "sha256": "becc16af5767c23bc14bcce9f89456f3f93fe7c81a0e00455cd5ca757ca4b0c2",
+          "declared_banks": [
+            {
+              "line": 122,
+              "bank_octal": "33"
+            },
+            {
+              "line": 1309,
+              "bank_octal": "15"
+            },
+            {
+              "line": 2324,
+              "bank_octal": "04"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P70-P71.agc",
+          "sha256": "1b272b7f53446243cb55591a0fac77888b38b2c97525cfe97fc5a8452a26427a",
+          "declared_banks": [
+            {
+              "line": 29,
+              "bank_octal": "21"
+            },
+            {
+              "line": 121,
+              "bank_octal": "05"
+            },
+            {
+              "line": 214,
+              "bank_octal": "32"
+            },
+            {
+              "line": 371,
+              "bank_octal": "21"
+            },
+            {
+              "line": 397,
+              "bank_octal": "32"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/P76.agc",
+          "sha256": "b94d0907e3d64318a3fd225ac8d0106109182d40646e3dcbdcffa354e3f08925",
+          "declared_banks": [
+            {
+              "line": 49,
+              "bank_octal": "30"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",
+          "sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293",
+          "declared_banks": [
+            {
+              "line": 61,
+              "bank_octal": "14"
+            },
+            {
+              "line": 308,
+              "bank_octal": "14"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+          "sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+          "declared_banks": [
+            {
+              "line": 458,
+              "bank_octal": "40"
+            },
+            {
+              "line": 860,
+              "bank_octal": "41"
+            },
+            {
+              "line": 1541,
+              "bank_octal": "42"
+            },
+            {
+              "line": 3272,
+              "bank_octal": "07"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/PINBALL_NOUN_TABLES.agc",
+          "sha256": "ec5e14a2647763b0136fc012d2648803183737e1e386daba1548158905c9b2b3",
+          "declared_banks": [
+            {
+              "line": 150,
+              "bank_octal": "06"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc",
+          "sha256": "a107b96fddaa1ea7fbbee375705d071ab1800f40e02803aeda39b89e895a1128",
+          "declared_banks": [
+            {
+              "line": 208,
+              "bank_octal": "25"
+            },
+            {
+              "line": 305,
+              "bank_octal": "26"
+            },
+            {
+              "line": 353,
+              "bank_octal": "06"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+          "sha256": "379505fe1429c8b0d6ef20d85bad9d8fb991083fd7202dc89c46e584f0ba92b1",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "14"
+            },
+            {
+              "line": 302,
+              "bank_octal": "10"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc",
+          "sha256": "c79584213ddacc0bdf6ceebb0b9bfe84c85eac69c124e28c5554a5585e5cdf3f",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "17"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/R30.agc",
+          "sha256": "76b904d389476022d9c6dcef6788737385a4603cff81d1c9af1fd17d82dc76bd",
+          "declared_banks": [
+            {
+              "line": 90,
+              "bank_octal": "31"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/R31.agc",
+          "sha256": "cf6d473c416217944c5868907c26bdb1fa970b8020a3198cb0cbc991c0c0926f",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "40"
+            },
+            {
+              "line": 55,
+              "bank_octal": "37"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/R60_62.agc",
+          "sha256": "23cf6099c20b0dacdb54b377db1208214f8fb9fee1fb09a6e1ae0337d14c83f6",
+          "declared_banks": [
+            {
+              "line": 100,
+              "bank_octal": "34"
+            },
+            {
+              "line": 513,
+              "bank_octal": "35"
+            },
+            {
+              "line": 554,
+              "bank_octal": "34"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/R63.agc",
+          "sha256": "e67df75ca6b4ad422e875f2b7924266d09a675172c1fd626555455f5a6fd62c6",
+          "declared_banks": [
+            {
+              "line": 83,
+              "bank_octal": "32"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/RADAR_LEADIN_ROUTINES.agc",
+          "sha256": "f27f4f9372e56e41ad44a810945ce6247e1f931bfa4d3b5d114089732d80e0ad",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "25"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/RCS_FAILURE_MONITOR.agc",
+          "sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
+          "declared_banks": [
+            {
+              "line": 75,
+              "bank_octal": "23"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/RESTARTS_ROUTINE.agc",
+          "sha256": "42f22e578939222d5b0645e85d4c89b578b5200fb998db7dd95938feeb20eb61",
+          "declared_banks": [
+            {
+              "line": 28,
+              "bank_octal": "01"
+            },
+            {
+              "line": 115,
+              "bank_octal": "01"
+            },
+            {
+              "line": 235,
+              "bank_octal": "01"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/RESTART_TABLES.agc",
+          "sha256": "1993b5da5ab382eaba5647a0dd07c09e52e25c36f624418ed125159c1eac7d59",
+          "declared_banks": [
+            {
+              "line": 85,
+              "bank_octal": "01"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/RTB_OP_CODES.agc",
+          "sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+          "sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+          "declared_banks": [
+            {
+              "line": 71,
+              "bank_octal": "41"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/SERVICER.agc",
+          "sha256": "4e3798d5dabcc7ecca813d762824f7dfc41ad352a9869a7526565fc3a05f4415",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "37"
+            },
+            {
+              "line": 166,
+              "bank_octal": "33"
+            },
+            {
+              "line": 345,
+              "bank_octal": "32"
+            },
+            {
+              "line": 436,
+              "bank_octal": "32"
+            },
+            {
+              "line": 446,
+              "bank_octal": "23"
+            },
+            {
+              "line": 479,
+              "bank_octal": "33"
+            },
+            {
+              "line": 536,
+              "bank_octal": "37"
+            },
+            {
+              "line": 638,
+              "bank_octal": "33"
+            },
+            {
+              "line": 658,
+              "bank_octal": "21"
+            },
+            {
+              "line": 689,
+              "bank_octal": "33"
+            },
+            {
+              "line": 1527,
+              "bank_octal": "34"
+            },
+            {
+              "line": 1574,
+              "bank_octal": "34"
+            },
+            {
+              "line": 1604,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/SERVICE_ROUTINES.agc",
+          "sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "10"
+            },
+            {
+              "line": 118,
+              "bank_octal": "06"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/SINGLE_PRECISION_SUBROUTINES.agc",
+          "sha256": "bebe6cbf186bed7fcc35f9aad8a392ccbe3cb31154ad8267d01a4926cc0dd3e4",
+          "declared_banks": []
+        },
+        {
+          "path": "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc",
+          "sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
+          "declared_banks": [
+            {
+              "line": 95,
+              "bank_octal": "21"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/STABLE_ORBIT.agc",
+          "sha256": "d86512d6a5532e71b6ce9138aa1555dc6c8c367c7fa3726f4fdee3a4554e12d9",
+          "declared_banks": [
+            {
+              "line": 108,
+              "bank_octal": "04"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+          "sha256": "6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "33"
+            },
+            {
+              "line": 114,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/T4RUPT_PROGRAM.agc",
+          "sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
+          "declared_banks": [
+            {
+              "line": 29,
+              "bank_octal": "12"
+            },
+            {
+              "line": 75,
+              "bank_octal": "12"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/T6-RUPT_PROGRAMS.agc",
+          "sha256": "76f234ba5ac0e8e3516f935e674761cb4bba455b07543cd10e16c9d1f5caaa87",
+          "declared_banks": [
+            {
+              "line": 79,
+              "bank_octal": "17"
+            },
+            {
+              "line": 149,
+              "bank_octal": "17"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+          "sha256": "cbffb67643bfefe4b19f5d9f7e800ec9a60bf3cf9dce9ce096e2f4effe641f5d",
+          "declared_banks": [
+            {
+              "line": 54,
+              "bank_octal": "00"
+            },
+            {
+              "line": 58,
+              "bank_octal": "01"
+            },
+            {
+              "line": 63,
+              "bank_octal": "04"
+            },
+            {
+              "line": 76,
+              "bank_octal": "05"
+            },
+            {
+              "line": 86,
+              "bank_octal": "06"
+            },
+            {
+              "line": 94,
+              "bank_octal": "07"
+            },
+            {
+              "line": 100,
+              "bank_octal": "10"
+            },
+            {
+              "line": 108,
+              "bank_octal": "11"
+            },
+            {
+              "line": 114,
+              "bank_octal": "12"
+            },
+            {
+              "line": 121,
+              "bank_octal": "13"
+            },
+            {
+              "line": 133,
+              "bank_octal": "14"
+            },
+            {
+              "line": 139,
+              "bank_octal": "15"
+            },
+            {
+              "line": 144,
+              "bank_octal": "16"
+            },
+            {
+              "line": 148,
+              "bank_octal": "17"
+            },
+            {
+              "line": 153,
+              "bank_octal": "20"
+            },
+            {
+              "line": 159,
+              "bank_octal": "21"
+            },
+            {
+              "line": 168,
+              "bank_octal": "22"
+            },
+            {
+              "line": 177,
+              "bank_octal": "23"
+            },
+            {
+              "line": 193,
+              "bank_octal": "24"
+            },
+            {
+              "line": 198,
+              "bank_octal": "25"
+            },
+            {
+              "line": 207,
+              "bank_octal": "26"
+            },
+            {
+              "line": 217,
+              "bank_octal": "27"
+            },
+            {
+              "line": 229,
+              "bank_octal": "30"
+            },
+            {
+              "line": 239,
+              "bank_octal": "31"
+            },
+            {
+              "line": 245,
+              "bank_octal": "32"
+            },
+            {
+              "line": 255,
+              "bank_octal": "33"
+            },
+            {
+              "line": 261,
+              "bank_octal": "34"
+            },
+            {
+              "line": 271,
+              "bank_octal": "35"
+            },
+            {
+              "line": 281,
+              "bank_octal": "36"
+            },
+            {
+              "line": 285,
+              "bank_octal": "37"
+            },
+            {
+              "line": 294,
+              "bank_octal": "40"
+            },
+            {
+              "line": 301,
+              "bank_octal": "41"
+            },
+            {
+              "line": 305,
+              "bank_octal": "42"
+            },
+            {
+              "line": 310,
+              "bank_octal": "43"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/THE_LUNAR_LANDING.agc",
+          "sha256": "8c5c8b125bad79fdce8838bea3871481942d9b75694dc538bd032d54e63e952f",
+          "declared_banks": [
+            {
+              "line": 28,
+              "bank_octal": "32"
+            },
+            {
+              "line": 280,
+              "bank_octal": "31"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+          "sha256": "68a812f18e678248d64ea62a56284e6a8a415925ea41ab8e35293f94a0c22efe",
+          "declared_banks": [
+            {
+              "line": 28,
+              "bank_octal": "31"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/TIME_OF_FREE_FALL.agc",
+          "sha256": "e49235d5d0b1de4082524112a7dd7ac1df1d99e5ba9ee86e9e607ad54b15fa67",
+          "declared_banks": [
+            {
+              "line": 162,
+              "bank_octal": "33"
+            },
+            {
+              "line": 688,
+              "bank_octal": "32"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/TJET_LAW.agc",
+          "sha256": "10c99519ea474da9b969dd64652ea6a2a6f739be0cc3fdb6a30e3bb619b80e2c",
+          "declared_banks": [
+            {
+              "line": 77,
+              "bank_octal": "17"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc",
+          "sha256": "13da16e475f7d0610ee90d73b5676d2ff0704fb8b79f7651c97e0a32e16b256a",
+          "declared_banks": [
+            {
+              "line": 30,
+              "bank_octal": "21"
+            },
+            {
+              "line": 247,
+              "bank_octal": "16"
+            },
+            {
+              "line": 293,
+              "bank_octal": "21"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/UPDATE_PROGRAM.agc",
+          "sha256": "5f54e9c63cf0af039a8a435aa3ba86ad933e3b921366388ee115460da5c9f7f6",
+          "declared_banks": [
+            {
+              "line": 148,
+              "bank_octal": "07"
+            },
+            {
+              "line": 200,
+              "bank_octal": "04"
+            }
+          ]
+        },
+        {
+          "path": "Luminary099/WAITLIST.agc",
+          "sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
+          "declared_banks": [
+            {
+              "line": 201,
+              "bank_octal": "01"
+            },
+            {
+              "line": 498,
+              "bank_octal": "01"
+            }
+          ]
+        }
+      ],
+      "allocation_groups": [
+        {
+          "allocation_key": "Luminary099-bank-00",
+          "historical_bank_octal": "00",
+          "declares_placement": [
+            "Luminary099/INTERPRETER.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-01",
+          "historical_bank_octal": "01",
+          "declares_placement": [
+            "Luminary099/EXECUTIVE.agc",
+            "Luminary099/EXTENDED_VERBS.agc",
+            "Luminary099/INTERPRETER.agc",
+            "Luminary099/RESTARTS_ROUTINE.agc",
+            "Luminary099/RESTART_TABLES.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/WAITLIST.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-02",
+          "historical_bank_octal": "02",
+          "declares_placement": [],
+          "placement_provenance": "fixed-fixed architectural address range; full listing required for source membership",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-03",
+          "historical_bank_octal": "03",
+          "declares_placement": [],
+          "placement_provenance": "fixed-fixed architectural address range; full listing required for source membership",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-04",
+          "historical_bank_octal": "04",
+          "declares_placement": [
+            "Luminary099/CONIC_SUBROUTINES.agc",
+            "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+            "Luminary099/P51-P53.agc",
+            "Luminary099/STABLE_ORBIT.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/UPDATE_PROGRAM.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-05",
+          "historical_bank_octal": "05",
+          "declares_placement": [
+            "Luminary099/AOTMARK.agc",
+            "Luminary099/ASCENT_GUIDANCE.agc",
+            "Luminary099/P70-P71.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-06",
+          "historical_bank_octal": "06",
+          "declares_placement": [
+            "Luminary099/PINBALL_NOUN_TABLES.agc",
+            "Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc",
+            "Luminary099/SERVICE_ROUTINES.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-07",
+          "historical_bank_octal": "07",
+          "declares_placement": [
+            "Luminary099/AOTMARK.agc",
+            "Luminary099/ASCENT_GUIDANCE.agc",
+            "Luminary099/EXTENDED_VERBS.agc",
+            "Luminary099/IMU_COMPENSATION_PACKAGE.agc",
+            "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/UPDATE_PROGRAM.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-10",
+          "historical_bank_octal": "10",
+          "declares_placement": [
+            "Luminary099/ALARM_AND_ABORT.agc",
+            "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+            "Luminary099/FRESH_START_AND_RESTART.agc",
+            "Luminary099/P34-35_P74-75.agc",
+            "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+            "Luminary099/SERVICE_ROUTINES.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-11",
+          "historical_bank_octal": "11",
+          "declares_placement": [
+            "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+            "Luminary099/INTEGRATION_INITIALIZATION.agc",
+            "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-12",
+          "historical_bank_octal": "12",
+          "declares_placement": [
+            "Luminary099/AOTMARK.agc",
+            "Luminary099/CONIC_SUBROUTINES.agc",
+            "Luminary099/T4RUPT_PROGRAM.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-13",
+          "historical_bank_octal": "13",
+          "declares_placement": [
+            "Luminary099/ALARM_AND_ABORT.agc",
+            "Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc",
+            "Luminary099/FRESH_START_AND_RESTART.agc",
+            "Luminary099/ORBITAL_INTEGRATION.agc",
+            "Luminary099/P20-P25.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-14",
+          "historical_bank_octal": "14",
+          "declares_placement": [
+            "Luminary099/ASCENT_GUIDANCE.agc",
+            "Luminary099/KEYRUPT_UPRUPT.agc",
+            "Luminary099/P40-P47.agc",
+            "Luminary099/PHASE_TABLE_MAINTENANCE.agc",
+            "Luminary099/POWERED_FLIGHT_SUBROUTINES.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-15",
+          "historical_bank_octal": "15",
+          "declares_placement": [
+            "Luminary099/AOTMARK.agc",
+            "Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc",
+            "Luminary099/GIMBAL_LOCK_AVOIDANCE.agc",
+            "Luminary099/P51-P53.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-16",
+          "historical_bank_octal": "16",
+          "declares_placement": [
+            "Luminary099/DAPIDLER_PROGRAM.agc",
+            "Luminary099/KALMAN_FILTER.agc",
+            "Luminary099/P-AXIS_RCS_AUTOPILOT.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-17",
+          "historical_bank_octal": "17",
+          "declares_placement": [
+            "Luminary099/Q_R-AXIS_RCS_AUTOPILOT.agc",
+            "Luminary099/T6-RUPT_PROGRAMS.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/TJET_LAW.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-20",
+          "historical_bank_octal": "20",
+          "declares_placement": [
+            "Luminary099/AOSTASK_AND_AOSJOB.agc",
+            "Luminary099/DAPIDLER_PROGRAM.agc",
+            "Luminary099/DAP_INTERFACE_SUBROUTINES.agc",
+            "Luminary099/FRESH_START_AND_RESTART.agc",
+            "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+            "Luminary099/P34-35_P74-75.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-21",
+          "historical_bank_octal": "21",
+          "declares_placement": [
+            "Luminary099/LANDING_ANALOG_DISPLAYS.agc",
+            "Luminary099/P70-P71.agc",
+            "Luminary099/SERVICER.agc",
+            "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/TRIM_GIMBAL_CONTROL_SYSTEM.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-22",
+          "historical_bank_octal": "22",
+          "declares_placement": [
+            "Luminary099/DOWNLINK_LISTS.agc",
+            "Luminary099/DOWN_TELEMETRY_PROGRAM.agc",
+            "Luminary099/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+            "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+            "Luminary099/RTB_OP_CODES.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-23",
+          "historical_bank_octal": "23",
+          "declares_placement": [
+            "Luminary099/EXTENDED_VERBS.agc",
+            "Luminary099/LEM_GEOMETRY.agc",
+            "Luminary099/P20-P25.agc",
+            "Luminary099/RCS_FAILURE_MONITOR.agc",
+            "Luminary099/SERVICER.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-24",
+          "historical_bank_octal": "24",
+          "declares_placement": [
+            "Luminary099/ASCENT_GUIDANCE.agc",
+            "Luminary099/P12.agc",
+            "Luminary099/P20-P25.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-25",
+          "historical_bank_octal": "25",
+          "declares_placement": [
+            "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
+            "Luminary099/P20-P25.agc",
+            "Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc",
+            "Luminary099/RADAR_LEADIN_ROUTINES.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-26",
+          "historical_bank_octal": "26",
+          "declares_placement": [
+            "Luminary099/PLANETARY_INERTIAL_ORIENTATION.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-27",
+          "historical_bank_octal": "27",
+          "declares_placement": [
+            "Luminary099/ASCENT_GUIDANCE.agc",
+            "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+            "Luminary099/INTEGRATION_INITIALIZATION.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-30",
+          "historical_bank_octal": "30",
+          "declares_placement": [
+            "Luminary099/ASCENT_GUIDANCE.agc",
+            "Luminary099/FINDCDUW--GUIDAP_INTERFACE.agc",
+            "Luminary099/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+            "Luminary099/P76.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-31",
+          "historical_bank_octal": "31",
+          "declares_placement": [
+            "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+            "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+            "Luminary099/P20-P25.agc",
+            "Luminary099/R30.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/THE_LUNAR_LANDING.agc",
+            "Luminary099/THROTTLE_CONTROL_ROUTINES.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-32",
+          "historical_bank_octal": "32",
+          "declares_placement": [
+            "Luminary099/P20-P25.agc",
+            "Luminary099/P30_P37.agc",
+            "Luminary099/P70-P71.agc",
+            "Luminary099/R63.agc",
+            "Luminary099/SERVICER.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/THE_LUNAR_LANDING.agc",
+            "Luminary099/TIME_OF_FREE_FALL.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-33",
+          "historical_bank_octal": "33",
+          "declares_placement": [
+            "Luminary099/ASCENT_GUIDANCE.agc",
+            "Luminary099/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+            "Luminary099/IMU_PERFORMANCE_TESTS_4.agc",
+            "Luminary099/IMU_PERFORMANCE_TEST_2.agc",
+            "Luminary099/P20-P25.agc",
+            "Luminary099/P51-P53.agc",
+            "Luminary099/SERVICER.agc",
+            "Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Luminary099/TIME_OF_FREE_FALL.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-34",
+          "historical_bank_octal": "34",
+          "declares_placement": [
+            "Luminary099/ASCENT_GUIDANCE.agc",
+            "Luminary099/EXTENDED_VERBS.agc",
+            "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+            "Luminary099/P32-P35_P72-P75.agc",
+            "Luminary099/R60_62.agc",
+            "Luminary099/SERVICER.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-35",
+          "historical_bank_octal": "35",
+          "declares_placement": [
+            "Luminary099/P32-P35_P72-P75.agc",
+            "Luminary099/R60_62.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-36",
+          "historical_bank_octal": "36",
+          "declares_placement": [
+            "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+            "Luminary099/P40-P47.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-37",
+          "historical_bank_octal": "37",
+          "declares_placement": [
+            "Luminary099/MEASUREMENT_INCORPORATION.agc",
+            "Luminary099/R31.agc",
+            "Luminary099/SERVICER.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-40",
+          "historical_bank_octal": "40",
+          "declares_placement": [
+            "Luminary099/AGS_INITIALIZATION.agc",
+            "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+            "Luminary099/R31.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-41",
+          "historical_bank_octal": "41",
+          "declares_placement": [
+            "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+            "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-42",
+          "historical_bank_octal": "42",
+          "declares_placement": [
+            "Luminary099/EXTENDED_VERBS.agc",
+            "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Luminary099-bank-43",
+          "historical_bank_octal": "43",
+          "declares_placement": [
+            "Luminary099/EXTENDED_VERBS.agc",
+            "Luminary099/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        }
+      ],
+      "no_explicit_bank": [
+        "Luminary099/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+        "Luminary099/CONTROLLED_CONSTANTS.agc",
+        "Luminary099/ERASABLE_ASSIGNMENTS.agc",
+        "Luminary099/FIXED_FIXED_CONSTANT_POOL.agc",
+        "Luminary099/FLAGWORD_ASSIGNMENTS.agc",
+        "Luminary099/GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc",
+        "Luminary099/INPUT_OUTPUT_CHANNEL_BIT_DESCRIPTIONS.agc",
+        "Luminary099/INTER-BANK_COMMUNICATION.agc",
+        "Luminary099/INTERPRETIVE_CONSTANT.agc",
+        "Luminary099/INTERRUPT_LEAD_INS.agc",
+        "Luminary099/KALCMANU_STEERING.agc",
+        "Luminary099/MAIN.agc",
+        "Luminary099/SINGLE_PRECISION_SUBROUTINES.agc"
+      ]
+    },
+    {
+      "mission": "Comanche055",
+      "source_files": [
+        {
+          "path": "Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc",
+          "sha256": "f86f1a02856b29a2cd01186a1a807fe4455b576624f8c4cb5876408677c83868",
+          "declared_banks": [
+            {
+              "line": 100,
+              "bank_octal": "25"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/ALARM_AND_ABORT.agc",
+          "sha256": "ffa2e17087ed8029c2d56018114c4c947d9c3d03e6b15b0b17b11c8fc24a2d0f",
+          "declared_banks": [
+            {
+              "line": 119,
+              "bank_octal": "10"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/ANGLFIND.agc",
+          "sha256": "827f457bf6dd722ed1432991623dcb6165e4ddc74dcf2c8ce531f5c2d21c5487",
+          "declared_banks": [
+            {
+              "line": 34,
+              "bank_octal": "15"
+            },
+            {
+              "line": 333,
+              "bank_octal": "16"
+            },
+            {
+              "line": 426,
+              "bank_octal": "15"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+          "sha256": "45d86ebb0dfd5bc5a49f3be7abb8876cb66da6823311446bac58a6795fc6c101",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/AUTOMATIC_MANEUVERS.agc",
+          "sha256": "b7803a69b1702f90b89d8ae1510d646569cee23876bb113db51aec9c315f990e",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "21"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/CM_BODY_ATTITUDE.agc",
+          "sha256": "187481b79cf3ff3c911b724c34084b0471ab62e06b52726fbde7d0d59786475c",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "35"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc",
+          "sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
+          "declared_banks": [
+            {
+              "line": 40,
+              "bank_octal": "15"
+            },
+            {
+              "line": 143,
+              "bank_octal": "15"
+            },
+            {
+              "line": 160,
+              "bank_octal": "20"
+            },
+            {
+              "line": 300,
+              "bank_octal": "15"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/CONIC_SUBROUTINES.agc",
+          "sha256": "b71ca76c2835831676ed58e7708132fe30a239fedffaf8a17decea177569d6af",
+          "declared_banks": [
+            {
+              "line": 1141,
+              "bank_octal": "04"
+            },
+            {
+              "line": 1218,
+              "bank_octal": "12"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/CONTRACT_AND_APPROVALS.agc",
+          "sha256": "769c1db20e0a9cb511ee16987700db047996dbec46f1a57b3eec4919f81a321d",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/CSM_GEOMETRY.agc",
+          "sha256": "93414cefa5c6ed833b4bc0610c5055a2ded393aea6938dc65d13cf2b717bc101",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "22"
+            },
+            {
+              "line": 213,
+              "bank_octal": "23"
+            },
+            {
+              "line": 264,
+              "bank_octal": "14"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+          "sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+          "declared_banks": [
+            {
+              "line": 534,
+              "bank_octal": "10"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/DOWN-TELEMETRY_PROGRAM.agc",
+          "sha256": "d8babb9b0e0677f441411eed3ab6919a70a6aa95cbb49388813731e6c2348e74",
+          "declared_banks": [
+            {
+              "line": 162,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/DOWNLINK_LISTS.agc",
+          "sha256": "1a9814350cf0d8cd9bf3e4c5e6da3adfa617754c4c6d6efe7f1986644eba0e32",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/ENTRY_LEXICON.agc",
+          "sha256": "61dfe49679a2e60f45a737aeb1bbbc1114bbaee67d7ff30d47b9f35587f01e91",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/ERASABLE_ASSIGNMENTS.agc",
+          "sha256": "f62df826c0cd678f4788ca7275d8ffccec229f9859c02839f1d944359c01ee58",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/EXECUTIVE.agc",
+          "sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+          "declared_banks": [
+            {
+              "line": 131,
+              "bank_octal": "01"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/EXTENDED_VERBS.agc",
+          "sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
+          "declared_banks": [
+            {
+              "line": 40,
+              "bank_octal": "07"
+            },
+            {
+              "line": 712,
+              "bank_octal": "42"
+            },
+            {
+              "line": 779,
+              "bank_octal": "43"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/FIXED_FIXED_CONSTANT_POOL.agc",
+          "sha256": "1e2f7706589fb469347fed55f294c867ffa7c7cb46f7873c0cb11deef5d48be8",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/FRESH_START_AND_RESTART.agc",
+          "sha256": "d208d482531e01c2ffe48fca059117220d922c750b3936f0a046e9ea9499ae59",
+          "declared_banks": [
+            {
+              "line": 137,
+              "bank_octal": "10"
+            },
+            {
+              "line": 718,
+              "bank_octal": "10"
+            },
+            {
+              "line": 809,
+              "bank_octal": "27"
+            },
+            {
+              "line": 1438,
+              "bank_octal": "13"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
+          "sha256": "f870ac2ba6f231a42d59459db8d027171f6b2a00e61e84f6da66e4b4856cd3f0",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "15"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+          "sha256": "78875ef9f79433fa096eb975dd9658709cd2e4ea09cff47e2165c74251489f1b",
+          "declared_banks": [
+            {
+              "line": 89,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
+          "sha256": "0f912428b5bde06a8bae27432f9c56679cfe5cfc2d1ee5eeadf80a37cf98185c",
+          "declared_banks": [
+            {
+              "line": 48,
+              "bank_octal": "33"
+            },
+            {
+              "line": 498,
+              "bank_octal": "33"
+            },
+            {
+              "line": 1182,
+              "bank_octal": "33"
+            },
+            {
+              "line": 1253,
+              "bank_octal": "34"
+            },
+            {
+              "line": 1286,
+              "bank_octal": "33"
+            },
+            {
+              "line": 1336,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/IMU_COMPENSATION_PACKAGE.agc",
+          "sha256": "fe2e800173b6c7e607d03c0b06a58b517b4faae2f8400e74b98b36b54e10cf19",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "07"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+          "sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+          "declared_banks": [
+            {
+              "line": 53,
+              "bank_octal": "11"
+            },
+            {
+              "line": 899,
+              "bank_octal": "34"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+          "sha256": "91635bbc0cf874075cdeeb9c8f7da291f340f8114841c0f34c9d1067d250b440",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/INTEGRATION_INITIALIZATION.agc",
+          "sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579",
+          "declared_banks": [
+            {
+              "line": 269,
+              "bank_octal": "11"
+            },
+            {
+              "line": 1098,
+              "bank_octal": "27"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+          "sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+          "declared_banks": [
+            {
+              "line": 366,
+              "bank_octal": "00"
+            },
+            {
+              "line": 1481,
+              "bank_octal": "00"
+            },
+            {
+              "line": 2820,
+              "bank_octal": "01"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "sha256": "494c6ae0e8fc59eb6d896e51f3af791aae13bb66fbf55a798cb6e2b3c807570f",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/INTERRUPT_LEAD_INS.agc",
+          "sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/JET_SELECTION_LOGIC.agc",
+          "sha256": "e626c5273e96df95e3e0f243842bd32005537910554475e3dde3e2f48bdffbd4",
+          "declared_banks": [
+            {
+              "line": 31,
+              "bank_octal": "21"
+            },
+            {
+              "line": 823,
+              "bank_octal": "21"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/KALCMANU_STEERING.agc",
+          "sha256": "06e71db5a48ba879b3cf730693a7a6e4db3f433a2ed95dcfceaf23dee11487fa",
+          "declared_banks": [
+            {
+              "line": 35,
+              "bank_octal": "15"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/KEYRUPT_UPRUPT.agc",
+          "sha256": "237b42cd68c12d5b5772371667db864ae4ebc21b0c5b0aee6d74788855802c4a",
+          "declared_banks": [
+            {
+              "line": 35,
+              "bank_octal": "14"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+          "sha256": "4536be1087aa877bffde066a745cdd139e7a7edb5433647cff8a143923c143b2",
+          "declared_banks": [
+            {
+              "line": 53,
+              "bank_octal": "30"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+          "sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+          "declared_banks": [
+            {
+              "line": 121,
+              "bank_octal": "36"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+          "sha256": "e8c35fcbdcaa3692cac397e54ab92271ef47df137bc6b939f9fe243162ddf515",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/MAIN.agc",
+          "sha256": "99e7a79aafa8c68fc93131de7a698faf28a7d8cc2a8e7c0c4d3d79bc7ba674f6",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/MEASUREMENT_INCORPORATION.agc",
+          "sha256": "07939648f0f52a6b3dae03f6246acbbf28d66d36cf51c98936cc00b0d1e070a9",
+          "declared_banks": [
+            {
+              "line": 57,
+              "bank_octal": "37"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/MYSUBS.agc",
+          "sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/ORBITAL_INTEGRATION.agc",
+          "sha256": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b",
+          "declared_banks": [
+            {
+              "line": 36,
+              "bank_octal": "13"
+            },
+            {
+              "line": 884,
+              "bank_octal": "13"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P11.agc",
+          "sha256": "6e4354e10fb62c7db74c60293ae3442136d6886fd6301c24966b974846985a99",
+          "declared_banks": [
+            {
+              "line": 153,
+              "bank_octal": "42"
+            },
+            {
+              "line": 848,
+              "bank_octal": "43"
+            },
+            {
+              "line": 872,
+              "bank_octal": "32"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P20-P25.agc",
+          "sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5",
+          "declared_banks": [
+            {
+              "line": 86,
+              "bank_octal": "33"
+            },
+            {
+              "line": 183,
+              "bank_octal": "31"
+            },
+            {
+              "line": 434,
+              "bank_octal": "33"
+            },
+            {
+              "line": 701,
+              "bank_octal": "13"
+            },
+            {
+              "line": 835,
+              "bank_octal": "34"
+            },
+            {
+              "line": 1181,
+              "bank_octal": "31"
+            },
+            {
+              "line": 1510,
+              "bank_octal": "24"
+            },
+            {
+              "line": 1809,
+              "bank_octal": "13"
+            },
+            {
+              "line": 2702,
+              "bank_octal": "34"
+            },
+            {
+              "line": 2788,
+              "bank_octal": "31"
+            },
+            {
+              "line": 3389,
+              "bank_octal": "37"
+            },
+            {
+              "line": 3419,
+              "bank_octal": "40"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P30-P37.agc",
+          "sha256": "e758ec3710c3f82e7e243a85552f20b8ea25028d621b6f62276b88326869fc8d",
+          "declared_banks": [
+            {
+              "line": 33,
+              "bank_octal": "32"
+            },
+            {
+              "line": 388,
+              "bank_octal": "32"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P32-P33_P72-P73.agc",
+          "sha256": "60a18e541426e952deea775bd0ae625d2345c284ac9726a2647032ee9ce4ccc3",
+          "declared_banks": [
+            {
+              "line": 205,
+              "bank_octal": "35"
+            },
+            {
+              "line": 625,
+              "bank_octal": "34"
+            },
+            {
+              "line": 1409,
+              "bank_octal": "35"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P34-35_P74-75.agc",
+          "sha256": "d37b58d887c59bfaaca5506a13a9a7761d4e44ad7bcfeab34c8a59e47863f106",
+          "declared_banks": [
+            {
+              "line": 1585,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P37_P70.agc",
+          "sha256": "c91e95ca3befe5cf49b39c78af6f38758b115726a5fc7a3c28a3006abcfccf86",
+          "declared_banks": [
+            {
+              "line": 35,
+              "bank_octal": "31"
+            },
+            {
+              "line": 501,
+              "bank_octal": "32"
+            },
+            {
+              "line": 1890,
+              "bank_octal": "36"
+            },
+            {
+              "line": 1938,
+              "bank_octal": "35"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P40-P47.agc",
+          "sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+          "declared_banks": [
+            {
+              "line": 40,
+              "bank_octal": "31"
+            },
+            {
+              "line": 1197,
+              "bank_octal": "14"
+            },
+            {
+              "line": 1423,
+              "bank_octal": "24"
+            },
+            {
+              "line": 2080,
+              "bank_octal": "17"
+            },
+            {
+              "line": 2290,
+              "bank_octal": "42"
+            },
+            {
+              "line": 2335,
+              "bank_octal": "17"
+            },
+            {
+              "line": 2378,
+              "bank_octal": "31"
+            },
+            {
+              "line": 2389,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P51-P53.agc",
+          "sha256": "8ca37189556a5030fe1d42037a2c97a8e6b4163b185f8e1d663cad61ca234120",
+          "declared_banks": [
+            {
+              "line": 133,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P61-P67.agc",
+          "sha256": "49cc72bb29fceae82c5a40ffd2e8d1dd62264e9a55f920e81c8f3ae8d5d20172",
+          "declared_banks": [
+            {
+              "line": 61,
+              "bank_octal": "26"
+            },
+            {
+              "line": 356,
+              "bank_octal": "25"
+            },
+            {
+              "line": 473,
+              "bank_octal": "26"
+            },
+            {
+              "line": 559,
+              "bank_octal": "26"
+            },
+            {
+              "line": 723,
+              "bank_octal": "34"
+            },
+            {
+              "line": 1071,
+              "bank_octal": "27"
+            },
+            {
+              "line": 1174,
+              "bank_octal": "10"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/P76.agc",
+          "sha256": "7158438364f09c0e6a4788ab83a176ef0833760757df5dee27bbf4f4be43a68a",
+          "declared_banks": [
+            {
+              "line": 51,
+              "bank_octal": "30"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
+          "sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
+          "declared_banks": [
+            {
+              "line": 60,
+              "bank_octal": "14"
+            },
+            {
+              "line": 314,
+              "bank_octal": "14"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+          "sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+          "declared_banks": [
+            {
+              "line": 401,
+              "bank_octal": "40"
+            },
+            {
+              "line": 811,
+              "bank_octal": "41"
+            },
+            {
+              "line": 1516,
+              "bank_octal": "42"
+            },
+            {
+              "line": 3278,
+              "bank_octal": "07"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/PINBALL_NOUN_TABLES.agc",
+          "sha256": "d90a466da20a0811690c812b2af0a0c9338a589d2b18c2e0ef1054e9ce563e7f",
+          "declared_banks": [
+            {
+              "line": 128,
+              "bank_octal": "06"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/PLANETARY_INERTIAL_ORIENTATION.agc",
+          "sha256": "cea7b46a08c28f155428fbdfbc22a378fecdabed1390b053fa883d145cdcfef7",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+          "sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+          "declared_banks": [
+            {
+              "line": 33,
+              "bank_octal": "14"
+            },
+            {
+              "line": 338,
+              "bank_octal": "14"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/R30.agc",
+          "sha256": "412fbc54a7f99ea193e85c3ea739319eaf8ab489558ba5165a6482d6c51c6d9b",
+          "declared_banks": [
+            {
+              "line": 94,
+              "bank_octal": "31"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/R31.agc",
+          "sha256": "94af1db0793427cefee250133313bb00cdbf92274d01e67dafa7ae8b82d14118",
+          "declared_banks": [
+            {
+              "line": 33,
+              "bank_octal": "34"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/R60_62.agc",
+          "sha256": "d3357adf3da2436167e2db289813ad0411b206623c0117ba8679b998b7c81c6f",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "34"
+            },
+            {
+              "line": 341,
+              "bank_octal": "35"
+            },
+            {
+              "line": 360,
+              "bank_octal": "34"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
+          "sha256": "b38c7eb94508538436094e2b8f1b7271a5cb733a80a6f1b522548a43695cd688",
+          "declared_banks": [
+            {
+              "line": 45,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc",
+          "sha256": "9b4c9acb5836870ceb53a4203b8db334728e96b8ce2b1ea02da151d17b5f0966",
+          "declared_banks": [
+            {
+              "line": 35,
+              "bank_octal": "20"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/REENTRY_CONTROL.agc",
+          "sha256": "47788f4f2139d31f9f87f63c33518b49b193ff762f9b3c1259d76f2074dcf408",
+          "declared_banks": [
+            {
+              "line": 36,
+              "bank_octal": "25"
+            },
+            {
+              "line": 328,
+              "bank_octal": "26"
+            },
+            {
+              "line": 388,
+              "bank_octal": "25"
+            },
+            {
+              "line": 1470,
+              "bank_octal": "26"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/RESTARTS_ROUTINE.agc",
+          "sha256": "490811f02cb07b69e98d9c558ed156f82e95d8735f29827edf8fe2fd6366efcc",
+          "declared_banks": [
+            {
+              "line": 35,
+              "bank_octal": "01"
+            },
+            {
+              "line": 124,
+              "bank_octal": "01"
+            },
+            {
+              "line": 245,
+              "bank_octal": "01"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/RESTART_TABLES.agc",
+          "sha256": "4ed25b96c1e8582bf1656b433e0212eb6c9f5528348b40f5c7117a1964ab9994",
+          "declared_banks": [
+            {
+              "line": 91,
+              "bank_octal": "01"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/RT8_OP_CODES.agc",
+          "sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+          "declared_banks": [
+            {
+              "line": 33,
+              "bank_octal": "22"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+          "sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+          "declared_banks": [
+            {
+              "line": 34,
+              "bank_octal": "23"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/SERVICER207.agc",
+          "sha256": "35ca5c1acce244eabdca91039a121c13b7207a24433f860c0cb14878e8366fb2",
+          "declared_banks": [
+            {
+              "line": 218,
+              "bank_octal": "27"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/SERVICE_ROUTINES.agc",
+          "sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+          "declared_banks": [
+            {
+              "line": 76,
+              "bank_octal": "10"
+            },
+            {
+              "line": 148,
+              "bank_octal": "06"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/SINGLE_PRECISION_SUBROUTINES.agc",
+          "sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/STABLE_ORBIT.agc",
+          "sha256": "ced73fe04353aa9e58b875714fc8f4769e75b776622f7d6994e929b68374fc55",
+          "declared_banks": [
+            {
+              "line": 106,
+              "bank_octal": "04"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/STAR_TABLES.agc",
+          "sha256": "855789b2d7726487248812224bbe2edd4f6f6b1503e28aeb57254bf261111742",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "32"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/SXTMARK.agc",
+          "sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
+          "declared_banks": [
+            {
+              "line": 68,
+              "bank_octal": "13"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+          "sha256": "1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec",
+          "declared_banks": [
+            {
+              "line": 34,
+              "bank_octal": "33"
+            },
+            {
+              "line": 119,
+              "bank_octal": "33"
+            },
+            {
+              "line": 136,
+              "bank_octal": "33"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/T4RUPT_PROGRAM.agc",
+          "sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
+          "declared_banks": [
+            {
+              "line": 32,
+              "bank_octal": "12"
+            },
+            {
+              "line": 79,
+              "bank_octal": "12"
+            },
+            {
+              "line": 1300,
+              "bank_octal": "10"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+          "sha256": "c62e691808a6cbaa72d4f7850df8c943d77dee33e78c002ed88c944de2c01054",
+          "declared_banks": [
+            {
+              "line": 60,
+              "bank_octal": "00"
+            },
+            {
+              "line": 64,
+              "bank_octal": "01"
+            },
+            {
+              "line": 68,
+              "bank_octal": "04"
+            },
+            {
+              "line": 83,
+              "bank_octal": "05"
+            },
+            {
+              "line": 92,
+              "bank_octal": "06"
+            },
+            {
+              "line": 99,
+              "bank_octal": "07"
+            },
+            {
+              "line": 108,
+              "bank_octal": "10"
+            },
+            {
+              "line": 118,
+              "bank_octal": "11"
+            },
+            {
+              "line": 130,
+              "bank_octal": "12"
+            },
+            {
+              "line": 137,
+              "bank_octal": "13"
+            },
+            {
+              "line": 152,
+              "bank_octal": "14"
+            },
+            {
+              "line": 160,
+              "bank_octal": "15"
+            },
+            {
+              "line": 166,
+              "bank_octal": "16"
+            },
+            {
+              "line": 177,
+              "bank_octal": "17"
+            },
+            {
+              "line": 184,
+              "bank_octal": "20"
+            },
+            {
+              "line": 193,
+              "bank_octal": "21"
+            },
+            {
+              "line": 201,
+              "bank_octal": "22"
+            },
+            {
+              "line": 214,
+              "bank_octal": "23"
+            },
+            {
+              "line": 227,
+              "bank_octal": "24"
+            },
+            {
+              "line": 233,
+              "bank_octal": "25"
+            },
+            {
+              "line": 238,
+              "bank_octal": "26"
+            },
+            {
+              "line": 251,
+              "bank_octal": "27"
+            },
+            {
+              "line": 269,
+              "bank_octal": "30"
+            },
+            {
+              "line": 280,
+              "bank_octal": "31"
+            },
+            {
+              "line": 292,
+              "bank_octal": "32"
+            },
+            {
+              "line": 299,
+              "bank_octal": "33"
+            },
+            {
+              "line": 307,
+              "bank_octal": "34"
+            },
+            {
+              "line": 314,
+              "bank_octal": "35"
+            },
+            {
+              "line": 326,
+              "bank_octal": "36"
+            },
+            {
+              "line": 334,
+              "bank_octal": "37"
+            },
+            {
+              "line": 343,
+              "bank_octal": "40"
+            },
+            {
+              "line": 353,
+              "bank_octal": "41"
+            },
+            {
+              "line": 358,
+              "bank_octal": "42"
+            },
+            {
+              "line": 365,
+              "bank_octal": "43"
+            },
+            {
+              "line": 409,
+              "bank_octal": "07"
+            },
+            {
+              "line": 415,
+              "bank_octal": "24"
+            },
+            {
+              "line": 421,
+              "bank_octal": "34"
+            },
+            {
+              "line": 427,
+              "bank_octal": "37"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TIME_OF_FREE_FALL.agc",
+          "sha256": "f33bb7ec69f9d83aa2af7dadefc8e474632e73315d91133e5d4ac8f7825f9ff5",
+          "declared_banks": [
+            {
+              "line": 153,
+              "bank_octal": "33"
+            },
+            {
+              "line": 655,
+              "bank_octal": "32"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TPI_SEARCH.agc",
+          "sha256": "7e07913f963e312eb5145dfa71832012a2f9ab2d699ada4ddd397bde518e5ec2",
+          "declared_banks": [
+            {
+              "line": 61,
+              "bank_octal": "36"
+            },
+            {
+              "line": 411,
+              "bank_octal": "07"
+            },
+            {
+              "line": 467,
+              "bank_octal": "35"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TVCDAPS.agc",
+          "sha256": "21d54203ecc6dae03f693943305486215212989ff907250f04e16d850b47c633",
+          "declared_banks": [
+            {
+              "line": 118,
+              "bank_octal": "17"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TVCEXECUTIVE.agc",
+          "sha256": "db23079b9f12369d550b9658a5fb9a9adf52b798735c17e408cd36ff1aed5594",
+          "declared_banks": [
+            {
+              "line": 86,
+              "bank_octal": "16"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TVCINITIALIZE.agc",
+          "sha256": "ddc0ee4a00a30a7145d4204350833182658aacfbd38dccf84171a22adc81aee8",
+          "declared_banks": [
+            {
+              "line": 71,
+              "bank_octal": "17"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TVCMASSPROP.agc",
+          "sha256": "21b48d0bb13356fe66517c4210f3d45cdabb0a5e67c88ef6327de4b3e4da4b47",
+          "declared_banks": [
+            {
+              "line": 130,
+              "bank_octal": "25"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TVCRESTARTS.agc",
+          "sha256": "eb36e5be74c986022d1cb1adbab3da3de222d9e9675a13d75992f621e5738ac1",
+          "declared_banks": [
+            {
+              "line": 131,
+              "bank_octal": "16"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/TVCROLLDAP.agc",
+          "sha256": "e428b4f8811ab77ba4088c91dd170effb016b3dc9f46998ba59bb3ff48cf14c9",
+          "declared_banks": []
+        },
+        {
+          "path": "Comanche055/TVCSTROKETEST.agc",
+          "sha256": "7e604c406a0d05af10a021e2862384c15a23b95accaa04ce06c08426345703f1",
+          "declared_banks": [
+            {
+              "line": 136,
+              "bank_octal": "17"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/UPDATE_PROGRAM.agc",
+          "sha256": "d41dbe2cafed15061ac3744bd6fabc0da30aee43d0210c7d2011a0f07f75fe6d",
+          "declared_banks": [
+            {
+              "line": 143,
+              "bank_octal": "07"
+            },
+            {
+              "line": 204,
+              "bank_octal": "04"
+            }
+          ]
+        },
+        {
+          "path": "Comanche055/WAITLIST.agc",
+          "sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+          "declared_banks": [
+            {
+              "line": 218,
+              "bank_octal": "01"
+            },
+            {
+              "line": 505,
+              "bank_octal": "01"
+            }
+          ]
+        }
+      ],
+      "allocation_groups": [
+        {
+          "allocation_key": "Comanche055-bank-00",
+          "historical_bank_octal": "00",
+          "declares_placement": [
+            "Comanche055/INTERPRETER.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-01",
+          "historical_bank_octal": "01",
+          "declares_placement": [
+            "Comanche055/EXECUTIVE.agc",
+            "Comanche055/INTERPRETER.agc",
+            "Comanche055/RESTARTS_ROUTINE.agc",
+            "Comanche055/RESTART_TABLES.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/WAITLIST.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-02",
+          "historical_bank_octal": "02",
+          "declares_placement": [],
+          "placement_provenance": "fixed-fixed architectural address range; full listing required for source membership",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-03",
+          "historical_bank_octal": "03",
+          "declares_placement": [],
+          "placement_provenance": "fixed-fixed architectural address range; full listing required for source membership",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-04",
+          "historical_bank_octal": "04",
+          "declares_placement": [
+            "Comanche055/CONIC_SUBROUTINES.agc",
+            "Comanche055/STABLE_ORBIT.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/UPDATE_PROGRAM.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-05",
+          "historical_bank_octal": "05",
+          "declares_placement": [
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-06",
+          "historical_bank_octal": "06",
+          "declares_placement": [
+            "Comanche055/PINBALL_NOUN_TABLES.agc",
+            "Comanche055/SERVICE_ROUTINES.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-07",
+          "historical_bank_octal": "07",
+          "declares_placement": [
+            "Comanche055/EXTENDED_VERBS.agc",
+            "Comanche055/IMU_COMPENSATION_PACKAGE.agc",
+            "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/TPI_SEARCH.agc",
+            "Comanche055/UPDATE_PROGRAM.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-10",
+          "historical_bank_octal": "10",
+          "declares_placement": [
+            "Comanche055/ALARM_AND_ABORT.agc",
+            "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+            "Comanche055/FRESH_START_AND_RESTART.agc",
+            "Comanche055/P61-P67.agc",
+            "Comanche055/SERVICE_ROUTINES.agc",
+            "Comanche055/T4RUPT_PROGRAM.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-11",
+          "historical_bank_octal": "11",
+          "declares_placement": [
+            "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+            "Comanche055/INTEGRATION_INITIALIZATION.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-12",
+          "historical_bank_octal": "12",
+          "declares_placement": [
+            "Comanche055/CONIC_SUBROUTINES.agc",
+            "Comanche055/T4RUPT_PROGRAM.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-13",
+          "historical_bank_octal": "13",
+          "declares_placement": [
+            "Comanche055/FRESH_START_AND_RESTART.agc",
+            "Comanche055/ORBITAL_INTEGRATION.agc",
+            "Comanche055/P20-P25.agc",
+            "Comanche055/SXTMARK.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-14",
+          "historical_bank_octal": "14",
+          "declares_placement": [
+            "Comanche055/CSM_GEOMETRY.agc",
+            "Comanche055/KEYRUPT_UPRUPT.agc",
+            "Comanche055/P40-P47.agc",
+            "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
+            "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-15",
+          "historical_bank_octal": "15",
+          "declares_placement": [
+            "Comanche055/ANGLFIND.agc",
+            "Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc",
+            "Comanche055/GIMBAL_LOCK_AVOIDANCE.agc",
+            "Comanche055/KALCMANU_STEERING.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-16",
+          "historical_bank_octal": "16",
+          "declares_placement": [
+            "Comanche055/ANGLFIND.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/TVCEXECUTIVE.agc",
+            "Comanche055/TVCRESTARTS.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-17",
+          "historical_bank_octal": "17",
+          "declares_placement": [
+            "Comanche055/P40-P47.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/TVCDAPS.agc",
+            "Comanche055/TVCINITIALIZE.agc",
+            "Comanche055/TVCSTROKETEST.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-20",
+          "historical_bank_octal": "20",
+          "declares_placement": [
+            "Comanche055/CM_ENTRY_DIGITAL_AUTOPILOT.agc",
+            "Comanche055/MYSUBS.agc",
+            "Comanche055/P34-35_P74-75.agc",
+            "Comanche055/P40-P47.agc",
+            "Comanche055/RCS-CSM_DAP_EXECUTIVE_PROGRAMS.agc",
+            "Comanche055/RCS-CSM_DIGITAL_AUTOPILOT.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-21",
+          "historical_bank_octal": "21",
+          "declares_placement": [
+            "Comanche055/AUTOMATIC_MANEUVERS.agc",
+            "Comanche055/JET_SELECTION_LOGIC.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-22",
+          "historical_bank_octal": "22",
+          "declares_placement": [
+            "Comanche055/CSM_GEOMETRY.agc",
+            "Comanche055/DOWN-TELEMETRY_PROGRAM.agc",
+            "Comanche055/DOWNLINK_LISTS.agc",
+            "Comanche055/INFLIGHT_ALIGNMENT_ROUTINES.agc",
+            "Comanche055/RT8_OP_CODES.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-23",
+          "historical_bank_octal": "23",
+          "declares_placement": [
+            "Comanche055/CSM_GEOMETRY.agc",
+            "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-24",
+          "historical_bank_octal": "24",
+          "declares_placement": [
+            "Comanche055/P20-P25.agc",
+            "Comanche055/P40-P47.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-25",
+          "historical_bank_octal": "25",
+          "declares_placement": [
+            "Comanche055/AGC_BLOCK_TWO_SELF-CHECK.agc",
+            "Comanche055/P61-P67.agc",
+            "Comanche055/REENTRY_CONTROL.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/TVCMASSPROP.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-26",
+          "historical_bank_octal": "26",
+          "declares_placement": [
+            "Comanche055/P61-P67.agc",
+            "Comanche055/REENTRY_CONTROL.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-27",
+          "historical_bank_octal": "27",
+          "declares_placement": [
+            "Comanche055/FRESH_START_AND_RESTART.agc",
+            "Comanche055/INTEGRATION_INITIALIZATION.agc",
+            "Comanche055/P61-P67.agc",
+            "Comanche055/SERVICER207.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-30",
+          "historical_bank_octal": "30",
+          "declares_placement": [
+            "Comanche055/LATITUDE_LONGITUDE_SUBROUTINES.agc",
+            "Comanche055/P76.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-31",
+          "historical_bank_octal": "31",
+          "declares_placement": [
+            "Comanche055/P20-P25.agc",
+            "Comanche055/P37_P70.agc",
+            "Comanche055/P40-P47.agc",
+            "Comanche055/R30.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-32",
+          "historical_bank_octal": "32",
+          "declares_placement": [
+            "Comanche055/P11.agc",
+            "Comanche055/P30-P37.agc",
+            "Comanche055/P37_P70.agc",
+            "Comanche055/STAR_TABLES.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/TIME_OF_FREE_FALL.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-33",
+          "historical_bank_octal": "33",
+          "declares_placement": [
+            "Comanche055/GROUND_TRACKING_DETERMINATION_PROGRAM.agc",
+            "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
+            "Comanche055/P20-P25.agc",
+            "Comanche055/P51-P53.agc",
+            "Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/TIME_OF_FREE_FALL.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-34",
+          "historical_bank_octal": "34",
+          "declares_placement": [
+            "Comanche055/IMU_CALIBRATION_AND_ALIGNMENT.agc",
+            "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+            "Comanche055/P20-P25.agc",
+            "Comanche055/P32-P33_P72-P73.agc",
+            "Comanche055/P61-P67.agc",
+            "Comanche055/R31.agc",
+            "Comanche055/R60_62.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-35",
+          "historical_bank_octal": "35",
+          "declares_placement": [
+            "Comanche055/CM_BODY_ATTITUDE.agc",
+            "Comanche055/P32-P33_P72-P73.agc",
+            "Comanche055/P37_P70.agc",
+            "Comanche055/R60_62.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/TPI_SEARCH.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-36",
+          "historical_bank_octal": "36",
+          "declares_placement": [
+            "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+            "Comanche055/P37_P70.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc",
+            "Comanche055/TPI_SEARCH.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-37",
+          "historical_bank_octal": "37",
+          "declares_placement": [
+            "Comanche055/MEASUREMENT_INCORPORATION.agc",
+            "Comanche055/P20-P25.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-40",
+          "historical_bank_octal": "40",
+          "declares_placement": [
+            "Comanche055/P20-P25.agc",
+            "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-41",
+          "historical_bank_octal": "41",
+          "declares_placement": [
+            "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-42",
+          "historical_bank_octal": "42",
+          "declares_placement": [
+            "Comanche055/EXTENDED_VERBS.agc",
+            "Comanche055/P11.agc",
+            "Comanche055/P40-P47.agc",
+            "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        },
+        {
+          "allocation_key": "Comanche055-bank-43",
+          "historical_bank_octal": "43",
+          "declares_placement": [
+            "Comanche055/EXTENDED_VERBS.agc",
+            "Comanche055/P11.agc",
+            "Comanche055/TAGS_FOR_RELATIVE_SETLOC.agc"
+          ],
+          "placement_provenance": "explicit BANK declarations",
+          "native_translation": "unassigned",
+          "native_sources": [],
+          "native_continuations": []
+        }
+      ],
+      "no_explicit_bank": [
+        "Comanche055/ASSEMBLY_AND_OPERATION_INFORMATION.agc",
+        "Comanche055/CONTRACT_AND_APPROVALS.agc",
+        "Comanche055/ENTRY_LEXICON.agc",
+        "Comanche055/ERASABLE_ASSIGNMENTS.agc",
+        "Comanche055/FIXED_FIXED_CONSTANT_POOL.agc",
+        "Comanche055/INTER-BANK_COMMUNICATION.agc",
+        "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+        "Comanche055/INTERRUPT_LEAD_INS.agc",
+        "Comanche055/LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+        "Comanche055/MAIN.agc",
+        "Comanche055/PLANETARY_INERTIAL_ORIENTATION.agc",
+        "Comanche055/SINGLE_PRECISION_SUBROUTINES.agc",
+        "Comanche055/TVCROLLDAP.agc"
+      ]
+    }
+  ]
+}

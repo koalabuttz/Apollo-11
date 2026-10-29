@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "parent_inventory_merge_required": true,
+  "recommendations": [
+    {
+      "source_path": "Comanche055/LUNAR_LANDMARK_SELECTION_FOR_CM.agc",
+      "source_sha256": "e8c35fcbdcaa3692cac397e54ab92271ef47df137bc6b939f9fe243162ddf515",
+      "recommendation": "complete documentation preservation; no executable translation required",
+      "complete_file_kind": "comments and whitespace only, zero emitted code/data/declarations",
+      "all_source_paths_reviewed": true,
+      "source_documentation": "evidence/documentation-source-LUNAR_LANDMARK_SELECTION_FOR_CM.agc.original",
+      "source_line_and_address_map": "evidence/documentation-source-audit.json",
+      "entry_points": [],
+      "algorithms_translated": 0,
+      "native_code_words": 0,
+      "native_data_words": 0,
+      "verification": "independent full-line lexical audit, byte-exact retained original, and fresh whole-rope assembly equality",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "application_completion_claim": false
+    },
+    {
+      "source_path": "Comanche055/CONTRACT_AND_APPROVALS.agc",
+      "source_sha256": "769c1db20e0a9cb511ee16987700db047996dbec46f1a57b3eec4919f81a321d",
+      "recommendation": "complete documentation preservation; no executable translation required",
+      "complete_file_kind": "comments and whitespace only, zero emitted code/data/declarations",
+      "all_source_paths_reviewed": true,
+      "source_documentation": "evidence/documentation-source-CONTRACT_AND_APPROVALS.agc.original",
+      "source_line_and_address_map": "evidence/documentation-source-audit.json",
+      "entry_points": [],
+      "algorithms_translated": 0,
+      "native_code_words": 0,
+      "native_data_words": 0,
+      "verification": "independent full-line lexical audit, byte-exact retained original, and fresh whole-rope assembly equality",
+      "instruction_decoder": false,
+      "runtime_source_instruction_execution": false,
+      "application_completion_claim": false
+    }
+  ]
+}

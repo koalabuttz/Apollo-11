@@ -1,0 +1,5999 @@
+{
+ "source_path": "Luminary099/EXECUTIVE.agc",
+ "scope": "whole file",
+ "source_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "milestones": {
+  "exec-services": [
+   "src/lm_exec_routines.c"
+  ],
+  "exec-jobs": [
+   "src/lm_exec_jobs.c",
+   "src/lm_exec_tasks.c"
+  ],
+  "exec-idle": [
+   "src/lm_exec_idle.c"
+  ],
+  "rupt-lead-ins": [
+   "src/rupt_lead_ins.c"
+  ]
+ },
+ "source_words": 345,
+ "source_lines_with_words": 345,
+ "instruction_lines": 336,
+ "instruction_lines_executed_by_oracle": 326,
+ "unreached_instruction_lines": 10,
+ "pending_instruction_lines": 0,
+ "line_map": [
+  {
+   "line": 37,
+   "address": "FF,5072",
+   "label": "NOVAC",
+   "source": "NOVAC INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 38,
+   "address": "FF,5073",
+   "label": "NOVAC",
+   "source": "AD FAKEPRET",
+   "words": [
+    "65164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 39,
+   "address": "FF,5074",
+   "label": "NOVAC",
+   "source": "TS NEWPRIO",
+   "words": [
+    "54063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 41,
+   "address": "FF,5075",
+   "label": "NOVAC",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 42,
+   "address": "FF,5076",
+   "label": "NOVAC",
+   "source": "INDEX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 43,
+   "address": "FF,5077",
+   "label": "NOVAC",
+   "source": "DCA 0",
+   "words": [
+    "30001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 44,
+   "address": "FF,5100",
+   "label": "NOVAC",
+   "source": "DXCH NEWLOC",
+   "words": [
+    "52066"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 45,
+   "address": "FF,5101",
+   "label": "NOVAC",
+   "source": "CAF EXECBANK",
+   "words": [
+    "35163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 46,
+   "address": "FF,5102",
+   "label": "NOVAC",
+   "source": "XCH FBANK",
+   "words": [
+    "56004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 47,
+   "address": "FF,5103",
+   "label": "NOVAC",
+   "source": "TS EXECTEM1",
+   "words": [
+    "54061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 48,
+   "address": "FF,5104",
+   "label": "NOVAC",
+   "source": "TCF NOVAC2",
+   "words": [
+    "12625"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 52,
+   "address": "FF,5105",
+   "label": "FINDVAC",
+   "source": "FINDVAC INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 53,
+   "address": "FF,5106",
+   "label": "FINDVAC",
+   "source": "TS NEWPRIO",
+   "words": [
+    "54063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 54,
+   "address": "FF,5107",
+   "label": "FINDVAC",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 55,
+   "address": "FF,5110",
+   "label": "FINDVAC",
+   "source": "INDEX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 56,
+   "address": "FF,5111",
+   "label": "FINDVAC",
+   "source": "DCA 0",
+   "words": [
+    "30001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 57,
+   "address": "FF,5112",
+   "label": "SPVACIN",
+   "source": "SPVACIN DXCH NEWLOC",
+   "words": [
+    "52066"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 58,
+   "address": "FF,5113",
+   "label": "SPVACIN",
+   "source": "CAF EXECBANK",
+   "words": [
+    "35163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 59,
+   "address": "FF,5114",
+   "label": "SPVACIN",
+   "source": "XCH FBANK",
+   "words": [
+    "56004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 60,
+   "address": "FF,5115",
+   "label": "SPVACIN",
+   "source": "TCF FINDVAC2",
+   "words": [
+    "12601"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 65,
+   "address": "FF,5116",
+   "label": "SPVAC",
+   "source": "SPVAC XCH Q",
+   "words": [
+    "56002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 66,
+   "address": "FF,5117",
+   "label": "SPVAC",
+   "source": "AD NEG2",
+   "words": [
+    "67746"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 67,
+   "address": "FF,5120",
+   "label": "SPVAC",
+   "source": "XCH Q",
+   "words": [
+    "56002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 68,
+   "address": "FF,5121",
+   "label": "SPVAC",
+   "source": "TCF SPVACIN",
+   "words": [
+    "15112"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 72,
+   "address": "FF,5122",
+   "label": "CHANG1",
+   "source": "CHANG1 LXCH Q",
+   "words": [
+    "22002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 73,
+   "address": "FF,5123",
+   "label": "CHANG1",
+   "source": "CAF EXECBANK",
+   "words": [
+    "35163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 74,
+   "address": "FF,5124",
+   "label": "CHANG1",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 75,
+   "address": "FF,5125",
+   "label": "CHANG1",
+   "source": "TCF CHANJOB",
+   "words": [
+    "12706"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 79,
+   "address": "FF,5126",
+   "label": "CHANG2",
+   "source": "CHANG2 CS LOC",
+   "words": [
+    "40164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 81,
+   "address": "FF,5127",
+   "label": "CHANG2",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 83,
+   "address": "FF,5130",
+   "label": "CHANG2",
+   "source": "+2 CAF EXECBANK",
+   "words": [
+    "35163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 84,
+   "address": "FF,5131",
+   "label": "CHANG2",
+   "source": "TS BBANK",
+   "words": [
+    "54006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 85,
+   "address": "FF,5132",
+   "label": "CHANG2",
+   "source": "TCF CHANJOB -1",
+   "words": [
+    "12705"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 90,
+   "address": "FF,5133",
+   "label": "JOBSLEEP",
+   "source": "JOBSLEEP TS LOC",
+   "words": [
+    "54164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 91,
+   "address": "FF,5134",
+   "label": "JOBSLEEP",
+   "source": "CAF EXECBANK",
+   "words": [
+    "35163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 92,
+   "address": "FF,5135",
+   "label": "JOBSLEEP",
+   "source": "TS FBANK",
+   "words": [
+    "54004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 93,
+   "address": "FF,5136",
+   "label": "JOBSLEEP",
+   "source": "TCF JOBSLP1",
+   "words": [
+    "12776"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 97,
+   "address": "FF,5137",
+   "label": "JOBWAKE",
+   "source": "JOBWAKE INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 98,
+   "address": "FF,5140",
+   "label": "JOBWAKE",
+   "source": "TS NEWLOC",
+   "words": [
+    "54065"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 99,
+   "address": "FF,5141",
+   "label": "JOBWAKE",
+   "source": "CS TWO",
+   "words": [
+    "44752"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 100,
+   "address": "FF,5142",
+   "label": "JOBWAKE",
+   "source": "ADS Q",
+   "words": [
+    "26002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 101,
+   "address": "FF,5143",
+   "label": "JOBWAKE",
+   "source": "CAF EXECBANK",
+   "words": [
+    "35163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 102,
+   "address": "FF,5144",
+   "label": "JOBWAKE",
+   "source": "XCH FBANK",
+   "words": [
+    "56004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 103,
+   "address": "FF,5145",
+   "label": "JOBWAKE",
+   "source": "TCF JOBWAKE2",
+   "words": [
+    "13023"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 107,
+   "address": "FF,5146",
+   "label": "PRIOCHNG",
+   "source": "PRIOCHNG INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 108,
+   "address": "FF,5147",
+   "label": "PRIOCHNG",
+   "source": "TS NEWPRIO",
+   "words": [
+    "54063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 109,
+   "address": "FF,5150",
+   "label": "PRIOCHNG",
+   "source": "CAF EXECBANK",
+   "words": [
+    "35163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 110,
+   "address": "FF,5151",
+   "label": "PRIOCHNG",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 111,
+   "address": "FF,5152",
+   "label": "PRIOCHNG",
+   "source": "TS BANKSET",
+   "words": [
+    "54165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 112,
+   "address": "FF,5153",
+   "label": "PRIOCHNG",
+   "source": "CA Q",
+   "words": [
+    "30002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 113,
+   "address": "FF,5154",
+   "label": "PRIOCHNG",
+   "source": "TCF PRIOCH2",
+   "words": [
+    "13072"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 117,
+   "address": "FF,5155",
+   "label": "ENDOFJOB",
+   "source": "ENDOFJOB CAF EXECBANK",
+   "words": [
+    "35163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 118,
+   "address": "FF,5156",
+   "label": "ENDOFJOB",
+   "source": "TS FBANK",
+   "words": [
+    "54004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 119,
+   "address": "FF,5157",
+   "label": "ENDOFJOB",
+   "source": "TCF ENDJOB1",
+   "words": [
+    "13103"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 121,
+   "address": "FF,5160",
+   "label": "ENDFIND",
+   "source": "ENDFIND CA EXECTEM1",
+   "words": [
+    "30061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 122,
+   "address": "FF,5161",
+   "label": "ENDFIND",
+   "source": "TS FBANK",
+   "words": [
+    "54004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 123,
+   "address": "FF,5162",
+   "label": "ENDFIND",
+   "source": "TCF Q+2",
+   "words": [
+    "16741"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 124,
+   "address": "FF,5163",
+   "label": "EXECBANK",
+   "source": "EXECBANK CADR FINDVAC2",
+   "words": [
+    "02601"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 126,
+   "address": "FF,5164",
+   "label": "FAKEPRET",
+   "source": "FAKEPRET ADRES MPAC -36D",
+   "words": [
+    "00110"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 133,
+   "address": "01,2601",
+   "label": "FINDVAC2",
+   "source": "FINDVAC2 TS EXECTEM1",
+   "words": [
+    "54061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 134,
+   "address": "01,2602",
+   "label": "FINDVAC2",
+   "source": "CCS VAC1USE",
+   "words": [
+    "10400"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 135,
+   "address": "01,2603",
+   "label": "FINDVAC2",
+   "source": "TCF VACFOUND",
+   "words": [
+    "12620"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 136,
+   "address": "01,2604",
+   "label": "FINDVAC2",
+   "source": "CCS VAC2USE",
+   "words": [
+    "10454"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 137,
+   "address": "01,2605",
+   "label": "FINDVAC2",
+   "source": "TCF VACFOUND",
+   "words": [
+    "12620"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 138,
+   "address": "01,2606",
+   "label": "FINDVAC2",
+   "source": "CCS VAC3USE",
+   "words": [
+    "10530"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 139,
+   "address": "01,2607",
+   "label": "FINDVAC2",
+   "source": "TCF VACFOUND",
+   "words": [
+    "12620"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 140,
+   "address": "01,2610",
+   "label": "FINDVAC2",
+   "source": "CCS VAC4USE",
+   "words": [
+    "10604"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 141,
+   "address": "01,2611",
+   "label": "FINDVAC2",
+   "source": "TCF VACFOUND",
+   "words": [
+    "12620"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 142,
+   "address": "01,2612",
+   "label": "FINDVAC2",
+   "source": "CCS VAC5USE",
+   "words": [
+    "10660"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 143,
+   "address": "01,2613",
+   "label": "FINDVAC2",
+   "source": "TCF VACFOUND",
+   "words": [
+    "12620"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 144,
+   "address": "01,2614",
+   "label": "FINDVAC2",
+   "source": "LXCH EXECTEM1",
+   "words": [
+    "22061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 145,
+   "address": "01,2615",
+   "label": "FINDVAC2",
+   "source": "CA Q",
+   "words": [
+    "30002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 146,
+   "address": "01,2616",
+   "label": "FINDVAC2",
+   "source": "TC BAILOUT1",
+   "words": [
+    "05716"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 147,
+   "address": "01,2617",
+   "label": "FINDVAC2",
+   "source": "OCT 1201",
+   "words": [
+    "01201"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 149,
+   "address": "01,2620",
+   "label": "VACFOUND",
+   "source": "VACFOUND AD TWO",
+   "words": [
+    "64752"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 150,
+   "address": "01,2621",
+   "label": "VACFOUND",
+   "source": "ZL",
+   "words": [
+    "22007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 151,
+   "address": "01,2622",
+   "label": "VACFOUND",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 152,
+   "address": "01,2623",
+   "label": "VACFOUND",
+   "source": "LXCH 0 -1",
+   "words": [
+    "21777"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 153,
+   "address": "01,2624",
+   "label": "VACFOUND",
+   "source": "ADS NEWPRIO",
+   "words": [
+    "26063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 155,
+   "address": "01,2625",
+   "label": "NOVAC2",
+   "source": "NOVAC2 CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 156,
+   "address": "01,2626",
+   "label": "NOVAC2",
+   "source": "TS LOCCTR",
+   "words": [
+    "54064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 157,
+   "address": "01,2627",
+   "label": "NOVAC2",
+   "source": "CAF NO.CORES",
+   "words": [
+    "32634"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 158,
+   "address": "01,2630",
+   "label": "NOVAC3",
+   "source": "NOVAC3 TS EXECTEM2",
+   "words": [
+    "54062"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 159,
+   "address": "01,2631",
+   "label": "NOVAC3",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 160,
+   "address": "01,2632",
+   "label": "NOVAC3",
+   "source": "CCS PRIORITY",
+   "words": [
+    "10167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 161,
+   "address": "01,2633",
+   "label": "NOVAC3",
+   "source": "TCF NEXTCORE",
+   "words": [
+    "12674"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 162,
+   "address": "01,2634",
+   "label": "NO.CORES",
+   "source": "NO.CORES DEC 7",
+   "words": [
+    "00007"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 163,
+   "address": "01,2635",
+   "label": "NO.CORES",
+   "source": "TCF NEXTCORE",
+   "words": [
+    "12674"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 167,
+   "address": "01,2636",
+   "label": "CORFOUND",
+   "source": "CORFOUND CA NEWPRIO",
+   "words": [
+    "30063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 168,
+   "address": "01,2637",
+   "label": "CORFOUND",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 169,
+   "address": "01,2640",
+   "label": "CORFOUND",
+   "source": "TS PRIORITY",
+   "words": [
+    "54167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 170,
+   "address": "01,2641",
+   "label": "CORFOUND",
+   "source": "MASK LOW9",
+   "words": [
+    "75004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 171,
+   "address": "01,2642",
+   "label": "CORFOUND",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 172,
+   "address": "01,2643",
+   "label": "CORFOUND",
+   "source": "TS PUSHLOC",
+   "words": [
+    "54166"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 174,
+   "address": "01,2644",
+   "label": "CORFOUND",
+   "source": "CCS LOCCTR",
+   "words": [
+    "10064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 175,
+   "address": "01,2645",
+   "label": "CORFOUND",
+   "source": "TCF SETLOC",
+   "words": [
+    "12661"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 176,
+   "address": "01,2646",
+   "label": "CORFOUND",
+   "source": "TS OVFIND",
+   "words": [
+    "54121"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 177,
+   "address": "01,2647",
+   "label": "CORFOUND",
+   "source": "CA PUSHLOC",
+   "words": [
+    "30166"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 178,
+   "address": "01,2650",
+   "label": "CORFOUND",
+   "source": "TS FIXLOC",
+   "words": [
+    "54120"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 180,
+   "address": "01,2651",
+   "label": "SPECTEST",
+   "source": "SPECTEST CCS NEWJOB",
+   "words": [
+    "10067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 181,
+   "address": "01,2652",
+   "label": "SPECTEST",
+   "source": "TCF SETLOC",
+   "words": [
+    "12661"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 182,
+   "address": "01,2653",
+   "label": "SPECTEST",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap on CCS NEWJOB at SPECTEST: outside CHANJOB the Executive keeps NEWJOB -0 (no job waiting) or a core-set location (positive), so this class never reaches it"
+  },
+  {
+   "line": 183,
+   "address": "01,2654",
+   "label": "SPECTEST",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap on CCS NEWJOB at SPECTEST: outside CHANJOB the Executive keeps NEWJOB -0 (no job waiting) or a core-set location (positive), so this class never reaches it"
+  },
+  {
+   "line": 184,
+   "address": "01,2655",
+   "label": "SPECTEST",
+   "source": "TS NEWJOB",
+   "words": [
+    "54067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 185,
+   "address": "01,2656",
+   "label": "SPECTEST",
+   "source": "DXCH NEWLOC",
+   "words": [
+    "52066"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 186,
+   "address": "01,2657",
+   "label": "SPECTEST",
+   "source": "DXCH LOC",
+   "words": [
+    "52165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 187,
+   "address": "01,2660",
+   "label": "SPECTEST",
+   "source": "TCF ENDFIND",
+   "words": [
+    "15160"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 189,
+   "address": "01,2661",
+   "label": "SETLOC",
+   "source": "SETLOC DXCH NEWLOC",
+   "words": [
+    "52066"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 190,
+   "address": "01,2662",
+   "label": "SETLOC",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 191,
+   "address": "01,2663",
+   "label": "SETLOC",
+   "source": "DXCH LOC",
+   "words": [
+    "52165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 192,
+   "address": "01,2664",
+   "label": "SETLOC",
+   "source": "INDEX NEWJOB",
+   "words": [
+    "50067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 193,
+   "address": "01,2665",
+   "label": "SETLOC",
+   "source": "CS PRIORITY",
+   "words": [
+    "40167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 194,
+   "address": "01,2666",
+   "label": "SETLOC",
+   "source": "AD NEWPRIO",
+   "words": [
+    "60063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 195,
+   "address": "01,2667",
+   "label": "SETLOC",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 196,
+   "address": "01,2670",
+   "label": "SETLOC",
+   "source": "BZMF ENDFIND",
+   "words": [
+    "65160"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 197,
+   "address": "01,2671",
+   "label": "SETLOC",
+   "source": "CA LOCCTR",
+   "words": [
+    "30064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 198,
+   "address": "01,2672",
+   "label": "SETLOC",
+   "source": "TS NEWJOB",
+   "words": [
+    "54067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 199,
+   "address": "01,2673",
+   "label": "SETLOC",
+   "source": "TCF ENDFIND",
+   "words": [
+    "15160"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 201,
+   "address": "01,2674",
+   "label": "NEXTCORE",
+   "source": "NEXTCORE CAF COREINC",
+   "words": [
+    "33033"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 202,
+   "address": "01,2675",
+   "label": "NEXTCORE",
+   "source": "ADS LOCCTR",
+   "words": [
+    "26064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 203,
+   "address": "01,2676",
+   "label": "NEXTCORE",
+   "source": "CCS EXECTEM2",
+   "words": [
+    "10062"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 204,
+   "address": "01,2677",
+   "label": "NEXTCORE",
+   "source": "TCF NOVAC3",
+   "words": [
+    "12630"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 205,
+   "address": "01,2700",
+   "label": "NEXTCORE",
+   "source": "LXCH EXECTEM1",
+   "words": [
+    "22061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 206,
+   "address": "01,2701",
+   "label": "NEXTCORE",
+   "source": "CA Q",
+   "words": [
+    "30002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 207,
+   "address": "01,2702",
+   "label": "NEXTCORE",
+   "source": "TC BAILOUT1",
+   "words": [
+    "05716"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs",
+    "exec-services"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_routines.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 208,
+   "address": "01,2703",
+   "label": "NEXTCORE",
+   "source": "OCT 1202",
+   "words": [
+    "01202"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 212,
+   "address": "01,2704",
+   "label": "NEXTCORE",
+   "source": "-2 LXCH LOC",
+   "words": [
+    "22164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 213,
+   "address": "01,2705",
+   "label": "NEXTCORE",
+   "source": "-1 CAE BANKSET",
+   "words": [
+    "30165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 214,
+   "address": "01,2706",
+   "label": "CHANJOB",
+   "source": "CHANJOB INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 215,
+   "address": "01,2707",
+   "label": "CHANJOB",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 216,
+   "address": "01,2710",
+   "label": "CHANJOB",
+   "source": "ROR SUPERBNK",
+   "words": [
+    "04007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 217,
+   "address": "01,2711",
+   "label": "CHANJOB",
+   "source": "XCH L",
+   "words": [
+    "56001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 218,
+   "address": "01,2712",
+   "label": "CHANJOB",
+   "source": "+4 INDEX NEWJOB",
+   "words": [
+    "50067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 219,
+   "address": "01,2713",
+   "label": "CHANJOB",
+   "source": "DXCH LOC",
+   "words": [
+    "52165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 220,
+   "address": "01,2714",
+   "label": "CHANJOB",
+   "source": "DXCH LOC",
+   "words": [
+    "52165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 222,
+   "address": "01,2715",
+   "label": "CHANJOB",
+   "source": "CAE BANKSET",
+   "words": [
+    "30165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 223,
+   "address": "01,2716",
+   "label": "CHANJOB",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 224,
+   "address": "01,2717",
+   "label": "CHANJOB",
+   "source": "WRITE SUPERBNK",
+   "words": [
+    "01007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 225,
+   "address": "01,2720",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC",
+   "words": [
+    "52155"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 226,
+   "address": "01,2721",
+   "label": "CHANJOB",
+   "source": "INDEX NEWJOB",
+   "words": [
+    "50067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 227,
+   "address": "01,2722",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC",
+   "words": [
+    "52155"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 228,
+   "address": "01,2723",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC",
+   "words": [
+    "52155"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 229,
+   "address": "01,2724",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +2",
+   "words": [
+    "52157"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 230,
+   "address": "01,2725",
+   "label": "CHANJOB",
+   "source": "INDEX NEWJOB",
+   "words": [
+    "50067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 231,
+   "address": "01,2726",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +2",
+   "words": [
+    "52157"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 232,
+   "address": "01,2727",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +2",
+   "words": [
+    "52157"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 233,
+   "address": "01,2730",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +4",
+   "words": [
+    "52161"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 234,
+   "address": "01,2731",
+   "label": "CHANJOB",
+   "source": "INDEX NEWJOB",
+   "words": [
+    "50067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 235,
+   "address": "01,2732",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +4",
+   "words": [
+    "52161"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 236,
+   "address": "01,2733",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +4",
+   "words": [
+    "52161"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 237,
+   "address": "01,2734",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +6",
+   "words": [
+    "52163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 238,
+   "address": "01,2735",
+   "label": "CHANJOB",
+   "source": "INDEX NEWJOB",
+   "words": [
+    "50067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 239,
+   "address": "01,2736",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +6",
+   "words": [
+    "52163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 240,
+   "address": "01,2737",
+   "label": "CHANJOB",
+   "source": "DXCH MPAC +6",
+   "words": [
+    "52163"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 242,
+   "address": "01,2740",
+   "label": "CHANJOB",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 243,
+   "address": "01,2741",
+   "label": "CHANJOB",
+   "source": "XCH OVFIND",
+   "words": [
+    "56121"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 244,
+   "address": "01,2742",
+   "label": "CHANJOB",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 245,
+   "address": "01,2743",
+   "label": "CHANJOB",
+   "source": "BZF +3",
+   "words": [
+    "12746"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 246,
+   "address": "01,2744",
+   "label": "CHANJOB",
+   "source": "CS PUSHLOC",
+   "words": [
+    "40166"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 247,
+   "address": "01,2745",
+   "label": "CHANJOB",
+   "source": "TS PUSHLOC",
+   "words": [
+    "54166"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 249,
+   "address": "01,2746",
+   "label": "CHANJOB",
+   "source": "DXCH PUSHLOC",
+   "words": [
+    "52167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 250,
+   "address": "01,2747",
+   "label": "CHANJOB",
+   "source": "INDEX NEWJOB",
+   "words": [
+    "50067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 251,
+   "address": "01,2750",
+   "label": "CHANJOB",
+   "source": "DXCH PUSHLOC",
+   "words": [
+    "52167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 252,
+   "address": "01,2751",
+   "label": "CHANJOB",
+   "source": "DXCH PUSHLOC",
+   "words": [
+    "52167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 253,
+   "address": "01,2752",
+   "label": "CHANJOB",
+   "source": "CAF LOW9",
+   "words": [
+    "35004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 254,
+   "address": "01,2753",
+   "label": "CHANJOB",
+   "source": "MASK PRIORITY",
+   "words": [
+    "70167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 255,
+   "address": "01,2754",
+   "label": "CHANJOB",
+   "source": "TS FIXLOC",
+   "words": [
+    "54120"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 257,
+   "address": "01,2755",
+   "label": "CHANJOB",
+   "source": "CCS PUSHLOC",
+   "words": [
+    "10166"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 258,
+   "address": "01,2756",
+   "label": "CHANJOB",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 259,
+   "address": "01,2757",
+   "label": "CHANJOB",
+   "source": "TCF ENDPRCHG -1",
+   "words": [
+    "12764"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 262,
+   "address": "01,2760",
+   "label": "CHANJOB",
+   "source": "CS PUSHLOC",
+   "words": [
+    "40166"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 263,
+   "address": "01,2761",
+   "label": "CHANJOB",
+   "source": "TS PUSHLOC",
+   "words": [
+    "54166"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 264,
+   "address": "01,2762",
+   "label": "CHANJOB",
+   "source": "CAF ONE",
+   "words": [
+    "34753"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 265,
+   "address": "01,2763",
+   "label": "CHANJOB",
+   "source": "XCH OVFIND",
+   "words": [
+    "56121"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 266,
+   "address": "01,2764",
+   "label": "CHANJOB",
+   "source": "TS NEWJOB",
+   "words": [
+    "54067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 268,
+   "address": "01,2765",
+   "label": "ENDPRCHG",
+   "source": "ENDPRCHG RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 269,
+   "address": "01,2766",
+   "label": "ENDPRCHG",
+   "source": "DXCH LOC",
+   "words": [
+    "52165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 270,
+   "address": "01,2767",
+   "label": "ENDPRCHG",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 271,
+   "address": "01,2770",
+   "label": "ENDPRCHG",
+   "source": "BZMF +2",
+   "words": [
+    "62772"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 272,
+   "address": "01,2771",
+   "label": "ENDPRCHG",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 274,
+   "address": "01,2772",
+   "label": "ENDPRCHG",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 275,
+   "address": "01,2773",
+   "label": "ENDPRCHG",
+   "source": "AD ONE",
+   "words": [
+    "64753"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 276,
+   "address": "01,2774",
+   "label": "ENDPRCHG",
+   "source": "TS LOC",
+   "words": [
+    "54164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 277,
+   "address": "01,2775",
+   "label": "ENDPRCHG",
+   "source": "TCF INTRSM",
+   "words": [
+    "16050"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 281,
+   "address": "01,2776",
+   "label": "JOBSLP1",
+   "source": "JOBSLP1 INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 282,
+   "address": "01,2777",
+   "label": "JOBSLP1",
+   "source": "CS PRIORITY",
+   "words": [
+    "40167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 283,
+   "address": "01,3000",
+   "label": "JOBSLP1",
+   "source": "TS PRIORITY",
+   "words": [
+    "54167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 284,
+   "address": "01,3001",
+   "label": "JOBSLP1",
+   "source": "CAF LOW7",
+   "words": [
+    "36074"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 285,
+   "address": "01,3002",
+   "label": "JOBSLP1",
+   "source": "MASK BBANK",
+   "words": [
+    "70006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 286,
+   "address": "01,3003",
+   "label": "JOBSLP1",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 287,
+   "address": "01,3004",
+   "label": "JOBSLP1",
+   "source": "ROR SUPERBNK",
+   "words": [
+    "04007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 288,
+   "address": "01,3005",
+   "label": "JOBSLP1",
+   "source": "TS BANKSET",
+   "words": [
+    "54165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 289,
+   "address": "01,3006",
+   "label": "JOBSLP1",
+   "source": "CS ZERO",
+   "words": [
+    "44755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 290,
+   "address": "01,3007",
+   "label": "JOBSLP2",
+   "source": "JOBSLP2 TS BUF +1",
+   "words": [
+    "54131"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 291,
+   "address": "01,3010",
+   "label": "JOBSLP2",
+   "source": "TCF EJSCAN",
+   "words": [
+    "13120"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 293,
+   "address": "01,3011",
+   "label": "NUCHANG2",
+   "source": "NUCHANG2 INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 294,
+   "address": "01,3012",
+   "label": "NUCHANG2",
+   "source": "CCS NEWJOB",
+   "words": [
+    "10067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 295,
+   "address": "01,3013",
+   "label": "NUCHANG2",
+   "source": "TCF +3",
+   "words": [
+    "13016"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 296,
+   "address": "01,3014",
+   "label": "NUCHANG2",
+   "source": "RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 297,
+   "address": "01,3015",
+   "label": "NUCHANG2",
+   "source": "TCF ADVAN +2",
+   "words": [
+    "13216"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 299,
+   "address": "01,3016",
+   "label": "NUCHANG2",
+   "source": "CAF TWO",
+   "words": [
+    "34752"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 300,
+   "address": "01,3017",
+   "label": "NUCHANG2",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 301,
+   "address": "01,3020",
+   "label": "NUCHANG2",
+   "source": "WOR DSALMOUT",
+   "words": [
+    "05011"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 302,
+   "address": "01,3021",
+   "label": "NUCHANG2",
+   "source": "DXCH LOC",
+   "words": [
+    "52165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 303,
+   "address": "01,3022",
+   "label": "NUCHANG2",
+   "source": "TCF CHANJOB +4",
+   "words": [
+    "12712"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 310,
+   "address": "01,3023",
+   "label": "JOBWAKE2",
+   "source": "JOBWAKE2 TS EXECTEM1",
+   "words": [
+    "54061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 311,
+   "address": "01,3024",
+   "label": "JOBWAKE2",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 312,
+   "address": "01,3025",
+   "label": "JOBWAKE2",
+   "source": "TS LOCCTR",
+   "words": [
+    "54064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 313,
+   "address": "01,3026",
+   "label": "JOBWAKE2",
+   "source": "CAF NO.CORES",
+   "words": [
+    "32634"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 314,
+   "address": "01,3027",
+   "label": "JOBWAKE4",
+   "source": "JOBWAKE4 TS EXECTEM2",
+   "words": [
+    "54062"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 315,
+   "address": "01,3030",
+   "label": "JOBWAKE4",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 316,
+   "address": "01,3031",
+   "label": "JOBWAKE4",
+   "source": "CCS PRIORITY",
+   "words": [
+    "10167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 317,
+   "address": "01,3032",
+   "label": "JOBWAKE4",
+   "source": "TCF JOBWAKE3",
+   "words": [
+    "13035"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 318,
+   "address": "01,3033",
+   "label": "COREINC",
+   "source": "COREINC DEC 12",
+   "words": [
+    "00014"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 319,
+   "address": "01,3034",
+   "label": "COREINC",
+   "source": "TCF WAKETEST",
+   "words": [
+    "13044"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 321,
+   "address": "01,3035",
+   "label": "JOBWAKE3",
+   "source": "JOBWAKE3 CAF COREINC",
+   "words": [
+    "33033"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 322,
+   "address": "01,3036",
+   "label": "JOBWAKE3",
+   "source": "ADS LOCCTR",
+   "words": [
+    "26064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 323,
+   "address": "01,3037",
+   "label": "JOBWAKE3",
+   "source": "CCS EXECTEM2",
+   "words": [
+    "10062"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 324,
+   "address": "01,3040",
+   "label": "JOBWAKE3",
+   "source": "TCF JOBWAKE4",
+   "words": [
+    "13027"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 325,
+   "address": "01,3041",
+   "label": "JOBWAKE3",
+   "source": "CS ONE",
+   "words": [
+    "44753"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 326,
+   "address": "01,3042",
+   "label": "JOBWAKE3",
+   "source": "TS LOCCTR",
+   "words": [
+    "54064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 327,
+   "address": "01,3043",
+   "label": "JOBWAKE3",
+   "source": "TCF ENDFIND",
+   "words": [
+    "15160"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 329,
+   "address": "01,3044",
+   "label": "WAKETEST",
+   "source": "WAKETEST CS NEWLOC",
+   "words": [
+    "40065"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 330,
+   "address": "01,3045",
+   "label": "WAKETEST",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 331,
+   "address": "01,3046",
+   "label": "WAKETEST",
+   "source": "AD LOC",
+   "words": [
+    "60164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 332,
+   "address": "01,3047",
+   "label": "WAKETEST",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 333,
+   "address": "01,3050",
+   "label": "WAKETEST",
+   "source": "BZF +2",
+   "words": [
+    "13052"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 334,
+   "address": "01,3051",
+   "label": "WAKETEST",
+   "source": "TCF JOBWAKE3",
+   "words": [
+    "13035"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 336,
+   "address": "01,3052",
+   "label": "WAKETEST",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 337,
+   "address": "01,3053",
+   "label": "WAKETEST",
+   "source": "CS PRIORITY",
+   "words": [
+    "40167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 338,
+   "address": "01,3054",
+   "label": "WAKETEST",
+   "source": "TS NEWPRIO",
+   "words": [
+    "54063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 339,
+   "address": "01,3055",
+   "label": "WAKETEST",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 340,
+   "address": "01,3056",
+   "label": "WAKETEST",
+   "source": "TS PRIORITY",
+   "words": [
+    "54167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 342,
+   "address": "01,3057",
+   "label": "WAKETEST",
+   "source": "CS FBANKMSK",
+   "words": [
+    "44350"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 343,
+   "address": "01,3060",
+   "label": "WAKETEST",
+   "source": "MASK NEWLOC",
+   "words": [
+    "70065"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 344,
+   "address": "01,3061",
+   "label": "WAKETEST",
+   "source": "AD 2K",
+   "words": [
+    "64741"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 345,
+   "address": "01,3062",
+   "label": "WAKETEST",
+   "source": "XCH NEWLOC",
+   "words": [
+    "56065"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 346,
+   "address": "01,3063",
+   "label": "WAKETEST",
+   "source": "MASK FBANKMSK",
+   "words": [
+    "74350"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 347,
+   "address": "01,3064",
+   "label": "WAKETEST",
+   "source": "INDEX LOCCTR",
+   "words": [
+    "50064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 348,
+   "address": "01,3065",
+   "label": "WAKETEST",
+   "source": "AD BANKSET",
+   "words": [
+    "60165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 349,
+   "address": "01,3066",
+   "label": "WAKETEST",
+   "source": "TS NEWLOC +1",
+   "words": [
+    "54066"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 351,
+   "address": "01,3067",
+   "label": "WAKETEST",
+   "source": "CCS LOCCTR",
+   "words": [
+    "10064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 352,
+   "address": "01,3070",
+   "label": "WAKETEST",
+   "source": "TCF SETLOC",
+   "words": [
+    "12661"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 353,
+   "address": "01,3071",
+   "label": "WAKETEST",
+   "source": "TCF SPECTEST",
+   "words": [
+    "12651"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 358,
+   "address": "01,3072",
+   "label": "PRIOCH2",
+   "source": "PRIOCH2 TS LOC",
+   "words": [
+    "54164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 359,
+   "address": "01,3073",
+   "label": "PRIOCH2",
+   "source": "CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 360,
+   "address": "01,3074",
+   "label": "PRIOCH2",
+   "source": "TS BUF",
+   "words": [
+    "54130"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 361,
+   "address": "01,3075",
+   "label": "PRIOCH2",
+   "source": "CAF LOW9",
+   "words": [
+    "35004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 362,
+   "address": "01,3076",
+   "label": "PRIOCH2",
+   "source": "MASK PRIORITY",
+   "words": [
+    "70167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 363,
+   "address": "01,3077",
+   "label": "PRIOCH2",
+   "source": "AD NEWPRIO",
+   "words": [
+    "60063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 364,
+   "address": "01,3100",
+   "label": "PRIOCH2",
+   "source": "TS PRIORITY",
+   "words": [
+    "54167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 365,
+   "address": "01,3101",
+   "label": "PRIOCH2",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 366,
+   "address": "01,3102",
+   "label": "PRIOCH2",
+   "source": "TCF JOBSLP2",
+   "words": [
+    "13007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 371,
+   "address": "01,3103",
+   "label": "ENDJOB1",
+   "source": "ENDJOB1 INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 372,
+   "address": "01,3104",
+   "label": "ENDJOB1",
+   "source": "CS ZERO",
+   "words": [
+    "44755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 373,
+   "address": "01,3105",
+   "label": "ENDJOB1",
+   "source": "TS BUF +1",
+   "words": [
+    "54131"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 374,
+   "address": "01,3106",
+   "label": "ENDJOB1",
+   "source": "XCH PRIORITY",
+   "words": [
+    "56167"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 375,
+   "address": "01,3107",
+   "label": "ENDJOB1",
+   "source": "MASK LOW9",
+   "words": [
+    "75004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 376,
+   "address": "01,3110",
+   "label": "ENDJOB1",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 378,
+   "address": "01,3111",
+   "label": "ENDJOB1",
+   "source": "CS FAKEPRET",
+   "words": [
+    "45164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 379,
+   "address": "01,3112",
+   "label": "ENDJOB1",
+   "source": "AD L",
+   "words": [
+    "60001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 381,
+   "address": "01,3113",
+   "label": "ENDJOB1",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 382,
+   "address": "01,3114",
+   "label": "ENDJOB1",
+   "source": "BZMF EJSCAN",
+   "words": [
+    "63120"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 384,
+   "address": "01,3115",
+   "label": "ENDJOB1",
+   "source": "CCS L",
+   "words": [
+    "10001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 385,
+   "address": "01,3116",
+   "label": "ENDJOB1",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 386,
+   "address": "01,3117",
+   "label": "ENDJOB1",
+   "source": "TS 0",
+   "words": [
+    "54000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 388,
+   "address": "01,3120",
+   "label": "EJSCAN",
+   "source": "EJSCAN CCS PRIORITY +12D",
+   "words": [
+    "10203"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 389,
+   "address": "01,3121",
+   "label": "EJSCAN",
+   "source": "TC EJ1",
+   "words": [
+    "03171"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 390,
+   "address": "01,3122",
+   "label": "EJSCAN",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap for a +0 PRIORITY register: a core set's priority is -0 (free), positive (active) or negative (asleep), never +0"
+  },
+  {
+   "line": 391,
+   "address": "01,3123",
+   "label": "EJSCAN",
+   "source": "TCF +1",
+   "words": [
+    "13124"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 393,
+   "address": "01,3124",
+   "label": "EJSCAN",
+   "source": "CCS PRIORITY +24D",
+   "words": [
+    "10217"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 394,
+   "address": "01,3125",
+   "label": "EJSCAN",
+   "source": "TC EJ1",
+   "words": [
+    "03171"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 395,
+   "address": "01,3126",
+   "label": "EJSCAN",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap for a +0 PRIORITY register: a core set's priority is -0 (free), positive (active) or negative (asleep), never +0"
+  },
+  {
+   "line": 396,
+   "address": "01,3127",
+   "label": "EJSCAN",
+   "source": "TCF +1",
+   "words": [
+    "13130"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 398,
+   "address": "01,3130",
+   "label": "EJSCAN",
+   "source": "CCS PRIORITY +36D",
+   "words": [
+    "10233"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 399,
+   "address": "01,3131",
+   "label": "EJSCAN",
+   "source": "TC EJ1",
+   "words": [
+    "03171"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 400,
+   "address": "01,3132",
+   "label": "-CCSPR",
+   "source": "-CCSPR -CCS PRIORITY",
+   "words": [
+    "67610"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 401,
+   "address": "01,3133",
+   "label": "-CCSPR",
+   "source": "TCF +1",
+   "words": [
+    "13134"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 403,
+   "address": "01,3134",
+   "label": "-CCSPR",
+   "source": "CCS PRIORITY +48D",
+   "words": [
+    "10247"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 404,
+   "address": "01,3135",
+   "label": "-CCSPR",
+   "source": "TC EJ1",
+   "words": [
+    "03171"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 405,
+   "address": "01,3136",
+   "label": "-CCSPR",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap for a +0 PRIORITY register: a core set's priority is -0 (free), positive (active) or negative (asleep), never +0"
+  },
+  {
+   "line": 406,
+   "address": "01,3137",
+   "label": "-CCSPR",
+   "source": "TCF +1",
+   "words": [
+    "13140"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 408,
+   "address": "01,3140",
+   "label": "-CCSPR",
+   "source": "CCS PRIORITY +60D",
+   "words": [
+    "10263"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 409,
+   "address": "01,3141",
+   "label": "-CCSPR",
+   "source": "TC EJ1",
+   "words": [
+    "03171"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 410,
+   "address": "01,3142",
+   "label": "-CCSPR",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap for a +0 PRIORITY register: a core set's priority is -0 (free), positive (active) or negative (asleep), never +0"
+  },
+  {
+   "line": 411,
+   "address": "01,3143",
+   "label": "-CCSPR",
+   "source": "TCF +1",
+   "words": [
+    "13144"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 413,
+   "address": "01,3144",
+   "label": "-CCSPR",
+   "source": "CCS PRIORITY +72D",
+   "words": [
+    "10277"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 414,
+   "address": "01,3145",
+   "label": "-CCSPR",
+   "source": "TC EJ1",
+   "words": [
+    "03171"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 415,
+   "address": "01,3146",
+   "label": "-CCSPR",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap for a +0 PRIORITY register: a core set's priority is -0 (free), positive (active) or negative (asleep), never +0"
+  },
+  {
+   "line": 416,
+   "address": "01,3147",
+   "label": "-CCSPR",
+   "source": "TCF +1",
+   "words": [
+    "13150"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 418,
+   "address": "01,3150",
+   "label": "-CCSPR",
+   "source": "CCS PRIORITY +84D",
+   "words": [
+    "10313"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 420,
+   "address": "01,3151",
+   "label": "-CCSPR",
+   "source": "TC EJ1",
+   "words": [
+    "03171"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 421,
+   "address": "01,3152",
+   "label": "-CCSPR",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap for a +0 PRIORITY register: a core set's priority is -0 (free), positive (active) or negative (asleep), never +0"
+  },
+  {
+   "line": 422,
+   "address": "01,3153",
+   "label": "-CCSPR",
+   "source": "TCF +1",
+   "words": [
+    "13154"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 427,
+   "address": "01,3154",
+   "label": "-CCSPR",
+   "source": "CCS BUF +1",
+   "words": [
+    "10131"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 428,
+   "address": "01,3155",
+   "label": "-CCSPR",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap on CCS BUF +1 after the scan: BUF +1 holds -0 or the complement of the highest active priority, never a positive value or +0"
+  },
+  {
+   "line": 429,
+   "address": "01,3156",
+   "label": "-CCSPR",
+   "source": "TC CCSHOLE",
+   "words": [
+    "05705"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "The original's own CCSHOLE trap on CCS BUF +1 after the scan: BUF +1 holds -0 or the complement of the highest active priority, never a positive value or +0"
+  },
+  {
+   "line": 431,
+   "address": "01,3157",
+   "label": "-CCSPR",
+   "source": "TCF +2",
+   "words": [
+    "13161"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 432,
+   "address": "01,3160",
+   "label": "-CCSPR",
+   "source": "TCF DUMMYJOB",
+   "words": [
+    "13206"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 433,
+   "address": "01,3161",
+   "label": "-CCSPR",
+   "source": "CCS BUF",
+   "words": [
+    "10130"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 434,
+   "address": "01,3162",
+   "label": "-CCSPR",
+   "source": "TCF +2",
+   "words": [
+    "13164"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 435,
+   "address": "01,3163",
+   "label": "-CCSPR",
+   "source": "TCF ENDPRCHG -1",
+   "words": [
+    "12764"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 437,
+   "address": "01,3164",
+   "label": "-CCSPR",
+   "source": "INDEX A",
+   "words": [
+    "50000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 438,
+   "address": "01,3165",
+   "label": "-CCSPR",
+   "source": "CAF 0 -1",
+   "words": [
+    "27777"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 439,
+   "address": "01,3166",
+   "label": "-CCSPR",
+   "source": "AD -CCSPR",
+   "words": [
+    "63132"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 440,
+   "address": "01,3167",
+   "label": "-CCSPR",
+   "source": "TS NEWJOB",
+   "words": [
+    "54067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 441,
+   "address": "01,3170",
+   "label": "-CCSPR",
+   "source": "TCF CHANJOB -2",
+   "words": [
+    "12704"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 443,
+   "address": "01,3171",
+   "label": "EJ1",
+   "source": "EJ1 TS BUF +2",
+   "words": [
+    "54132"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 444,
+   "address": "01,3172",
+   "label": "EJ1",
+   "source": "AD BUF +1",
+   "words": [
+    "60131"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 445,
+   "address": "01,3173",
+   "label": "EJ1",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 446,
+   "address": "01,3174",
+   "label": "EJ1",
+   "source": "CS BUF +2",
+   "words": [
+    "40132"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 447,
+   "address": "01,3175",
+   "label": "EJ1",
+   "source": "TCF EJ2",
+   "words": [
+    "13201"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 448,
+   "address": "01,3176",
+   "label": "EJ1",
+   "source": "NOOP",
+   "words": [
+    "13177"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 449,
+   "address": "01,3177",
+   "label": "EJ1",
+   "source": "INDEX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 450,
+   "address": "01,3200",
+   "label": "EJ1",
+   "source": "TC 2",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 452,
+   "address": "01,3201",
+   "label": "EJ2",
+   "source": "EJ2 TS BUF +1",
+   "words": [
+    "54131"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 453,
+   "address": "01,3202",
+   "label": "EJ2",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 454,
+   "address": "01,3203",
+   "label": "EJ2",
+   "source": "QXCH BUF",
+   "words": [
+    "22130"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 455,
+   "address": "01,3204",
+   "label": "EJ2",
+   "source": "INDEX BUF",
+   "words": [
+    "50130"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 456,
+   "address": "01,3205",
+   "label": "EJ2",
+   "source": "TC 2",
+   "words": [
+    "00002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 464,
+   "address": "01,3206",
+   "label": "DUMMYJOB",
+   "source": "DUMMYJOB CS ZERO",
+   "words": [
+    "44755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 465,
+   "address": "01,3207",
+   "label": "DUMMYJOB",
+   "source": "TS NEWJOB",
+   "words": [
+    "54067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 466,
+   "address": "01,3210",
+   "label": "DUMMYJOB",
+   "source": "RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 467,
+   "address": "01,3211",
+   "label": "DUMMYJOB",
+   "source": "CS TWO",
+   "words": [
+    "44752"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 468,
+   "address": "01,3212",
+   "label": "DUMMYJOB",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 469,
+   "address": "01,3213",
+   "label": "DUMMYJOB",
+   "source": "WAND DSALMOUT",
+   "words": [
+    "03011"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "exec-jobs"
+   ],
+   "native": [
+    "src/lm_exec_idle.c",
+    "src/lm_exec_jobs.c",
+    "src/lm_exec_tasks.c"
+   ]
+  },
+  {
+   "line": 470,
+   "address": "01,3214",
+   "label": "ADVAN",
+   "source": "ADVAN CCS NEWJOB",
+   "words": [
+    "10067"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 471,
+   "address": "01,3215",
+   "label": "ADVAN",
+   "source": "TCF NUCHANG2",
+   "words": [
+    "13011"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 472,
+   "address": "01,3216",
+   "label": "ADVAN",
+   "source": "CAF TWO",
+   "words": [
+    "34752"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 473,
+   "address": "01,3217",
+   "label": "ADVAN",
+   "source": "TCF NUDIRECT",
+   "words": [
+    "13225"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 475,
+   "address": "01,3220",
+   "label": "ADVAN",
+   "source": "CA SELFRET",
+   "words": [
+    "31361"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 476,
+   "address": "01,3221",
+   "label": "ADVAN",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 477,
+   "address": "01,3222",
+   "label": "ADVAN",
+   "source": "CAF SELFBANK",
+   "words": [
+    "33224"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 478,
+   "address": "01,3223",
+   "label": "ADVAN",
+   "source": "TCF SUPDXCHZ +1",
+   "words": [
+    "15166"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 481,
+   "address": "01,3224",
+   "label": "SELFBANK",
+   "source": "SELFBANK BBCON SELFCHK",
+   "words": [
+    "66102"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 483,
+   "address": "01,3225",
+   "label": "NUDIRECT",
+   "source": "NUDIRECT EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 484,
+   "address": "01,3226",
+   "label": "NUDIRECT",
+   "source": "WOR DSALMOUT",
+   "words": [
+    "05011"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 485,
+   "address": "01,3227",
+   "label": "NUDIRECT",
+   "source": "DXCH LOC",
+   "words": [
+    "52165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 486,
+   "address": "01,3230",
+   "label": "NUDIRECT",
+   "source": "TCF SUPDXCHZ",
+   "words": [
+    "15165"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 496,
+   "address": "FF,5165",
+   "label": "SUPDXCHZ",
+   "source": "SUPDXCHZ XCH L",
+   "words": [
+    "56001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 497,
+   "address": "FF,5166",
+   "label": "SUPDXCHZ",
+   "source": "+1 EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 498,
+   "address": "FF,5167",
+   "label": "SUPDXCHZ",
+   "source": "WRITE SUPERBNK",
+   "words": [
+    "01007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 499,
+   "address": "FF,5170",
+   "label": "SUPDXCHZ",
+   "source": "TS BBANK",
+   "words": [
+    "54006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 500,
+   "address": "FF,5171",
+   "label": "SUPDXCHZ",
+   "source": "TC L",
+   "words": [
+    "00001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/lm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 502,
+   "address": "FF,5172",
+   "label": "NEG100",
+   "source": "NEG100 OCT 77677",
+   "words": [
+    "77677"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  }
+ ]
+}

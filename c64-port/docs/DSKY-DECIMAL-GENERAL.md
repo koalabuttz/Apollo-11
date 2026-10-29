@@ -1,0 +1,11 @@
+# Original decimal formatter caller and recovery routes
+
+`dsky_decimal_general` translates actual LM DSPDECWD40,3226/DSPDECNR40,3262 and CM40,3133/3167 through an ordinary caller or genuine CCSHOLE entry. Original DSPSIGN/+ON/-ON ordering, SHORTMP partial products, rounding clamp, five digit cycles, raw registers and canonical scratch are retained. Released bounded decimal and Pinball modules remain unchanged.
+
+Domain: sign-agreed DP MPAC0/1, ordinary third limb and relays including clean positive zero, DSPCOUNT14/9/4, coherent bank40/anyEB, SUPER100/120/140/160, legal IRQ and callerQ0100..7777. Raw incoming A/L are accepted. Caller excludes producers and supplies distinct route storage. Unsupported image/IO/route is unchanged.
+
+A clean selected relay executes original DSPIN/11DSPIN prelude and INHINT then stops BEFORE CCSHOLE: LMPC05705/Q03354 or CMPC05747/Q03261. DSMAG and unexecuted effects remain untouched. Successful completion returns PCoriginalcaller/Q0116/A0177754/L0 and DSPCOUNT077754. Mission-specific sign return addresses remain visible even on early clean-relay paths. Nonzero relay arithmetic reuses released Pinball via SUPER100 metadata; independent whole-image proof qualifies all four selecting values while actual SUPER is retained. No heap, floating point, source engine, added poll or recovery body runs in native code.
+
+All16,384 complete original LM/CM states equal strict native and full ASAN/UBSAN, raw SHA256 `9ba33183af2425b34d3dd1010c9f6a1729659e1c32c29c6c35f2fd13b85ede83`. Covers rounded/unrounded, all rows/banks/IO, signed zeros/limits, arbitrary third limbs, raw overflow A/L, clean first/second signs and digits, dirty blanks and NOUT increment wrap. Frozen128 complete states plus32 unchanged invalid guards pass. PAL C64128 passes mailbox `a500008000`, PRG19,839 bytes, hardware stack23 including14 ROM bytes, software stack69 and no additional zero page.
+
+`tools/dsky_decimal_general.mk` provides all/snapshot, frozen tests, full-stream sanitizer and target builds. Exact source/dependency/compressed-original/target identities appear in `evidence/dsky-decimal-general-proof.json`. This qualifies the formatter and caller/recovery handoffs, not following caller instructions, CCSHOLE, whole Pinball or application closure.

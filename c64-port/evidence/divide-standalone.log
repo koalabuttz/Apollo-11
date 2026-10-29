@@ -1,0 +1,11 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: two independent pinned DV paths audited over 8098 original-assembly checkpoints
+798 rows differ, only L/MPAC/MPAC+1; sign-extended negative-zero reproducer confirmed
+Fast SHA256: a525b5369dc806ab9f2ae605734e1fe1a802b7480fdc577e402e88f30f37efdc
+Hardware SHA256: ae9ad539cb822f1f36ab85ac4bc12ae3dc1e7bc5eae786b63c6ac65202a9bb70
+PASS: 6735 cases / 8098 checkpoints; all 93 modeled words and zero/quotient/overflow paths match original assembly using pinned hardware DV
+16 zero/carry/overflow boundaries, 256 raw corners, 190 VAC/push offsets, 128 integrated skip inputs, three four-step histories, 2048 direct / 1024 integrated random cases and -1024..1023 sweep plus 1022 mixed-sign boundary representations
+Stops after STORE / after DDV before PDVL; fixed divisor, banks, MODE, pointer, guards and all division exits verified
+Divide snapshot SHA256: ae9ad539cb822f1f36ab85ac4bc12ae3dc1e7bc5eae786b63c6ac65202a9bb70

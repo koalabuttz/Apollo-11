@@ -1,0 +1,2 @@
+./build/test-cm-restart-timing
+4096 original CM full-image timing states and guards: PASS

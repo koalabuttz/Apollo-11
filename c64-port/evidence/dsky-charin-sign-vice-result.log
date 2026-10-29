@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly dsky_charin_sign states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 8919 8917
+hardware stack sentinel extent: 16
+software stack sentinel extent: 35

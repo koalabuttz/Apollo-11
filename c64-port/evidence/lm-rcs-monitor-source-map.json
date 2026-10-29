@@ -1,0 +1,585 @@
+{
+  "source_file": "Luminary099/RCS_FAILURE_MONITOR.agc",
+  "original_sha256": "67c4190e4110b0dbdc476c1325fe0cbb9ae1b9d97b87d294d05ab4e6344231fc",
+  "emitted_words": 69,
+  "words": [
+    {
+      "original_line": 83,
+      "bank": "06",
+      "address": "3156",
+      "physical_fixed_word": 6766,
+      "raw_octal": "44755",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 84,
+      "bank": "06",
+      "address": "3157",
+      "physical_fixed_word": 6767,
+      "raw_octal": "00006",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 85,
+      "bank": "06",
+      "address": "3160",
+      "physical_fixed_word": 6768,
+      "raw_octal": "06032",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 86,
+      "bank": "06",
+      "address": "3161",
+      "physical_fixed_word": 6769,
+      "raw_octal": "74357",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 87,
+      "bank": "06",
+      "address": "3162",
+      "physical_fixed_word": 6770,
+      "raw_octal": "54002",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 89,
+      "bank": "06",
+      "address": "3163",
+      "physical_fixed_word": 6771,
+      "raw_octal": "41276",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 90,
+      "bank": "06",
+      "address": "3164",
+      "physical_fixed_word": 6772,
+      "raw_octal": "70002",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 91,
+      "bank": "06",
+      "address": "3165",
+      "physical_fixed_word": 6773,
+      "raw_octal": "54001",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 92,
+      "bank": "06",
+      "address": "3166",
+      "physical_fixed_word": 6774,
+      "raw_octal": "40002",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 93,
+      "bank": "06",
+      "address": "3167",
+      "physical_fixed_word": 6775,
+      "raw_octal": "71276",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 94,
+      "bank": "06",
+      "address": "3170",
+      "physical_fixed_word": 6776,
+      "raw_octal": "26001",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 96,
+      "bank": "06",
+      "address": "3171",
+      "physical_fixed_word": 6777,
+      "raw_octal": "00006",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 97,
+      "bank": "06",
+      "address": "3172",
+      "physical_fixed_word": 6778,
+      "raw_octal": "15270",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 99,
+      "bank": "06",
+      "address": "3173",
+      "physical_fixed_word": 6779,
+      "raw_octal": "00006",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 100,
+      "bank": "06",
+      "address": "3174",
+      "physical_fixed_word": 6780,
+      "raw_octal": "74745",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 101,
+      "bank": "06",
+      "address": "3175",
+      "physical_fixed_word": 6781,
+      "raw_octal": "56001",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 103,
+      "bank": "06",
+      "address": "3176",
+      "physical_fixed_word": 6782,
+      "raw_octal": "24001",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 104,
+      "bank": "06",
+      "address": "3177",
+      "physical_fixed_word": 6783,
+      "raw_octal": "60000",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 105,
+      "bank": "06",
+      "address": "3200",
+      "physical_fixed_word": 6784,
+      "raw_octal": "54000",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 106,
+      "bank": "06",
+      "address": "3201",
+      "physical_fixed_word": 6785,
+      "raw_octal": "13176",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 108,
+      "bank": "06",
+      "address": "3202",
+      "physical_fixed_word": 6786,
+      "raw_octal": "50001",
+      "native_group": "channel32_highest_change"
+    },
+    {
+      "original_line": 109,
+      "bank": "06",
+      "address": "3203",
+      "physical_fixed_word": 6787,
+      "raw_octal": "34743",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 110,
+      "bank": "06",
+      "address": "3204",
+      "physical_fixed_word": 6788,
+      "raw_octal": "54002",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 111,
+      "bank": "06",
+      "address": "3205",
+      "physical_fixed_word": 6789,
+      "raw_octal": "71276",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 112,
+      "bank": "06",
+      "address": "3206",
+      "physical_fixed_word": 6790,
+      "raw_octal": "10000",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 113,
+      "bank": "06",
+      "address": "3207",
+      "physical_fixed_word": 6791,
+      "raw_octal": "13223",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 115,
+      "bank": "06",
+      "address": "3210",
+      "physical_fixed_word": 6792,
+      "raw_octal": "41262",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 116,
+      "bank": "06",
+      "address": "3211",
+      "physical_fixed_word": 6793,
+      "raw_octal": "50001",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 117,
+      "bank": "06",
+      "address": "3212",
+      "physical_fixed_word": 6794,
+      "raw_octal": "73242",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 118,
+      "bank": "06",
+      "address": "3213",
+      "physical_fixed_word": 6795,
+      "raw_octal": "27262",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 120,
+      "bank": "06",
+      "address": "3214",
+      "physical_fixed_word": 6796,
+      "raw_octal": "41263",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 121,
+      "bank": "06",
+      "address": "3215",
+      "physical_fixed_word": 6797,
+      "raw_octal": "50001",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 122,
+      "bank": "06",
+      "address": "3216",
+      "physical_fixed_word": 6798,
+      "raw_octal": "73252",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 123,
+      "bank": "06",
+      "address": "3217",
+      "physical_fixed_word": 6799,
+      "raw_octal": "27263",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 125,
+      "bank": "06",
+      "address": "3220",
+      "physical_fixed_word": 6800,
+      "raw_octal": "30002",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 126,
+      "bank": "06",
+      "address": "3221",
+      "physical_fixed_word": 6801,
+      "raw_octal": "27276",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 128,
+      "bank": "06",
+      "address": "3222",
+      "physical_fixed_word": 6802,
+      "raw_octal": "13236",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 131,
+      "bank": "06",
+      "address": "3223",
+      "physical_fixed_word": 6803,
+      "raw_octal": "50001",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 132,
+      "bank": "06",
+      "address": "3224",
+      "physical_fixed_word": 6804,
+      "raw_octal": "43242",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 133,
+      "bank": "06",
+      "address": "3225",
+      "physical_fixed_word": 6805,
+      "raw_octal": "71262",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 134,
+      "bank": "06",
+      "address": "3226",
+      "physical_fixed_word": 6806,
+      "raw_octal": "55262",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 136,
+      "bank": "06",
+      "address": "3227",
+      "physical_fixed_word": 6807,
+      "raw_octal": "50001",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 137,
+      "bank": "06",
+      "address": "3230",
+      "physical_fixed_word": 6808,
+      "raw_octal": "43252",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 138,
+      "bank": "06",
+      "address": "3231",
+      "physical_fixed_word": 6809,
+      "raw_octal": "71263",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 139,
+      "bank": "06",
+      "address": "3232",
+      "physical_fixed_word": 6810,
+      "raw_octal": "55263",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 141,
+      "bank": "06",
+      "address": "3233",
+      "physical_fixed_word": 6811,
+      "raw_octal": "40002",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 142,
+      "bank": "06",
+      "address": "3234",
+      "physical_fixed_word": 6812,
+      "raw_octal": "71276",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 143,
+      "bank": "06",
+      "address": "3235",
+      "physical_fixed_word": 6813,
+      "raw_octal": "55276",
+      "native_group": "valve_mask_update"
+    },
+    {
+      "original_line": 145,
+      "bank": "06",
+      "address": "3236",
+      "physical_fixed_word": 6814,
+      "raw_octal": "37715",
+      "native_group": "NOVAC_admission_and_RESUME_handoff"
+    },
+    {
+      "original_line": 146,
+      "bank": "06",
+      "address": "3237",
+      "physical_fixed_word": 6815,
+      "raw_octal": "05072",
+      "native_group": "NOVAC_admission_and_RESUME_handoff"
+    },
+    {
+      "original_line": 148,
+      "bank": "06",
+      "address": "3240",
+      "physical_fixed_word": 6816,
+      "raw_octal": "02454",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 148,
+      "bank": "06",
+      "address": "3241",
+      "physical_fixed_word": 6817,
+      "raw_octal": "40106",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 150,
+      "bank": "06",
+      "address": "3242",
+      "physical_fixed_word": 6818,
+      "raw_octal": "15270",
+      "native_group": "NOVAC_admission_and_RESUME_handoff"
+    },
+    {
+      "original_line": 154,
+      "bank": "06",
+      "address": "3243",
+      "physical_fixed_word": 6819,
+      "raw_octal": "00040",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 155,
+      "bank": "06",
+      "address": "3244",
+      "physical_fixed_word": 6820,
+      "raw_octal": "00020",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 156,
+      "bank": "06",
+      "address": "3245",
+      "physical_fixed_word": 6821,
+      "raw_octal": "00100",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 157,
+      "bank": "06",
+      "address": "3246",
+      "physical_fixed_word": 6822,
+      "raw_octal": "00200",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 158,
+      "bank": "06",
+      "address": "3247",
+      "physical_fixed_word": 6823,
+      "raw_octal": "00010",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 159,
+      "bank": "06",
+      "address": "3250",
+      "physical_fixed_word": 6824,
+      "raw_octal": "00001",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 160,
+      "bank": "06",
+      "address": "3251",
+      "physical_fixed_word": 6825,
+      "raw_octal": "00004",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 161,
+      "bank": "06",
+      "address": "3252",
+      "physical_fixed_word": 6826,
+      "raw_octal": "00002",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 164,
+      "bank": "06",
+      "address": "3253",
+      "physical_fixed_word": 6827,
+      "raw_octal": "00010",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 165,
+      "bank": "06",
+      "address": "3254",
+      "physical_fixed_word": 6828,
+      "raw_octal": "00020",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 166,
+      "bank": "06",
+      "address": "3255",
+      "physical_fixed_word": 6829,
+      "raw_octal": "00004",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 167,
+      "bank": "06",
+      "address": "3256",
+      "physical_fixed_word": 6830,
+      "raw_octal": "00200",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 168,
+      "bank": "06",
+      "address": "3257",
+      "physical_fixed_word": 6831,
+      "raw_octal": "00001",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 169,
+      "bank": "06",
+      "address": "3260",
+      "physical_fixed_word": 6832,
+      "raw_octal": "00002",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 170,
+      "bank": "06",
+      "address": "3261",
+      "physical_fixed_word": 6833,
+      "raw_octal": "00040",
+      "native_group": "containing_fixed_data"
+    },
+    {
+      "original_line": 171,
+      "bank": "06",
+      "address": "3262",
+      "physical_fixed_word": 6834,
+      "raw_octal": "00100",
+      "native_group": "containing_fixed_data"
+    }
+  ],
+  "containing_constants": {
+    "6816": 1324,
+    "6817": 16454,
+    "6819": 32,
+    "6820": 16,
+    "6821": 64,
+    "6822": 128,
+    "6823": 8,
+    "6824": 1,
+    "6825": 4,
+    "6826": 2,
+    "6827": 8,
+    "6828": 16,
+    "6829": 4,
+    "6830": 128,
+    "6831": 1,
+    "6832": 2,
+    "6833": 32,
+    "6834": 64
+  },
+  "source_entry": "RCSMON06,3156 (RCSMONIT alias)",
+  "source_handoffs": {
+    "normal": "RESUME05270 entry, IRQ0 retained",
+    "resource_exhausted": "BAILOUT105716 entry before alarm1202 processing"
+  },
+  "native_external_dependency": "Source-qualified exec_admit NOVAC and actual fixed Q+2 helper return; no external RESUME/BAILOUT execution"
+}

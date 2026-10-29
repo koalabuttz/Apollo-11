@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete unit phase 0 original-assembly entry/exit states
+Mailbox: a500002000
+PRG bytes: 18486
+unit_phase0-hardware-stack.bin: measured stack extent 23 bytes
+unit_phase0-software-stack.bin: measured stack extent 48 bytes

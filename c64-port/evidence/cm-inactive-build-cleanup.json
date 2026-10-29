@@ -1,0 +1,22 @@
+{
+  "scope": "inactive committed CM basic-finish raw build duplicates only",
+  "removed": [
+    {
+      "removed": "build/cm-basic-finish-reference.snapshots",
+      "bytes": 189346920,
+      "uncompressed_sha256": "bc9551d9da8468e9339ad3e707981c13c38615bdb44aeb93506e95f79f97246a",
+      "retained": "evidence/cm-basic-finish-reference.snapshots.gz",
+      "retained_sha256": "f0022389857b495f0c404edafee9c261cc6907d71f806157bdf5a6e119297589",
+      "verification": "Exact decompressed archived bytes match removed inactive build duplicate; archive is committed"
+    },
+    {
+      "removed": "build/cm-basic-finish-native.snapshots",
+      "bytes": 189346920,
+      "uncompressed_sha256": "bc9551d9da8468e9339ad3e707981c13c38615bdb44aeb93506e95f79f97246a",
+      "retained": "evidence/cm-basic-finish-native.snapshots.gz",
+      "retained_sha256": "f0022389857b495f0c404edafee9c261cc6907d71f806157bdf5a6e119297589",
+      "verification": "Exact decompressed archived bytes match removed inactive build duplicate; archive is committed"
+    }
+  ],
+  "freed_bytes": 378693840
+}

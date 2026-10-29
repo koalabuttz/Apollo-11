@@ -1,0 +1,3 @@
+PASS: PAL C64 CM CLOKTASK: 192 source fingerprints plus 1 full 2051-value state sample; mailbox a50000c000
+hardware stack measured sentinel extent: 10 bytes
+software stack measured sentinel extent: 143 bytes

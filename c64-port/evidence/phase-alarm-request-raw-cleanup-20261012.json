@@ -1,0 +1,186 @@
+{
+  "verified_head": "03bb1b0392a0e0a5af94bff8b826f3d9095ecf0f",
+  "total_reclaimed_bytes": 1705982502,
+  "records": [
+    {
+      "removed_raw": "build/dsky-source-alarm-native.snapshots",
+      "retained_committed": "evidence/dsky-source-alarm-native.snapshots.gz",
+      "archive_git_blob": "9a8c78c44bf3e15618862fb80c056765c2bdcab1",
+      "archive_sha256": "e48215215926f24d9798548b20f745e044e9133a39ffd3723c2ca588d39894e5",
+      "archive_bytes": 41465269,
+      "decoded_sha256": "8b5ce01b749a03a6541cc0ed1c89c1012261f7deb3724986bd77f75491cde9a4",
+      "decoded_bytes": 94969367,
+      "reclaimed_bytes": 94969367
+    },
+    {
+      "removed_raw": "build/dsky-source-alarm-reference.snapshots",
+      "retained_committed": "evidence/dsky-source-alarm-reference.snapshots.gz",
+      "archive_git_blob": "9a8c78c44bf3e15618862fb80c056765c2bdcab1",
+      "archive_sha256": "e48215215926f24d9798548b20f745e044e9133a39ffd3723c2ca588d39894e5",
+      "archive_bytes": 41465269,
+      "decoded_sha256": "8b5ce01b749a03a6541cc0ed1c89c1012261f7deb3724986bd77f75491cde9a4",
+      "decoded_bytes": 94969367,
+      "reclaimed_bytes": 94969367
+    },
+    {
+      "removed_raw": "build/dsky-source-alarm-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-source-alarm-sanitize.snapshots.gz",
+      "archive_git_blob": "9a8c78c44bf3e15618862fb80c056765c2bdcab1",
+      "archive_sha256": "e48215215926f24d9798548b20f745e044e9133a39ffd3723c2ca588d39894e5",
+      "archive_bytes": 41465269,
+      "decoded_sha256": "8b5ce01b749a03a6541cc0ed1c89c1012261f7deb3724986bd77f75491cde9a4",
+      "decoded_bytes": 94969367,
+      "reclaimed_bytes": 94969367
+    },
+    {
+      "removed_raw": "build/dsky-load-control-native.snapshots",
+      "retained_committed": "evidence/dsky-load-control-native.snapshots.gz",
+      "archive_git_blob": "fe1962e6fc984525f765ad61245c6513ba8375a8",
+      "archive_sha256": "d0d99aea40add3d7d6ac181d72615bf058009d429e81299e025f891d740e24bf",
+      "archive_bytes": 41303999,
+      "decoded_sha256": "95cf7221ab900ae8de8a99853bbf9e06437788c62e45a6e4ad97f25c671946fa",
+      "decoded_bytes": 94741125,
+      "reclaimed_bytes": 94741125
+    },
+    {
+      "removed_raw": "build/dsky-load-control-reference.snapshots",
+      "retained_committed": "evidence/dsky-load-control-reference.snapshots.gz",
+      "archive_git_blob": "fe1962e6fc984525f765ad61245c6513ba8375a8",
+      "archive_sha256": "d0d99aea40add3d7d6ac181d72615bf058009d429e81299e025f891d740e24bf",
+      "archive_bytes": 41303999,
+      "decoded_sha256": "95cf7221ab900ae8de8a99853bbf9e06437788c62e45a6e4ad97f25c671946fa",
+      "decoded_bytes": 94741125,
+      "reclaimed_bytes": 94741125
+    },
+    {
+      "removed_raw": "build/dsky-load-control-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-load-control-sanitize.snapshots.gz",
+      "archive_git_blob": "fe1962e6fc984525f765ad61245c6513ba8375a8",
+      "archive_sha256": "d0d99aea40add3d7d6ac181d72615bf058009d429e81299e025f891d740e24bf",
+      "archive_bytes": 41303999,
+      "decoded_sha256": "95cf7221ab900ae8de8a99853bbf9e06437788c62e45a6e4ad97f25c671946fa",
+      "decoded_bytes": 94741125,
+      "reclaimed_bytes": 94741125
+    },
+    {
+      "removed_raw": "build/dsky-alarm-cycle-native.snapshots",
+      "retained_committed": "evidence/dsky-alarm-cycle-native.snapshots.gz",
+      "archive_git_blob": "da9baa8821708f3832d86ed1abc01540cb27f242",
+      "archive_sha256": "7faf6e2fc507b442728316f0cfd1da416e87afb0fe2563e83183dc1bb18dd2a5",
+      "archive_bytes": 41423416,
+      "decoded_sha256": "a8ac851dc2249fb04aff61efcfa02c532f0a6e11809deb80b5cacd00e4546336",
+      "decoded_bytes": 94926145,
+      "reclaimed_bytes": 94926145
+    },
+    {
+      "removed_raw": "build/dsky-alarm-cycle-reference.snapshots",
+      "retained_committed": "evidence/dsky-alarm-cycle-reference.snapshots.gz",
+      "archive_git_blob": "da9baa8821708f3832d86ed1abc01540cb27f242",
+      "archive_sha256": "7faf6e2fc507b442728316f0cfd1da416e87afb0fe2563e83183dc1bb18dd2a5",
+      "archive_bytes": 41423416,
+      "decoded_sha256": "a8ac851dc2249fb04aff61efcfa02c532f0a6e11809deb80b5cacd00e4546336",
+      "decoded_bytes": 94926145,
+      "reclaimed_bytes": 94926145
+    },
+    {
+      "removed_raw": "build/dsky-alarm-cycle-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-alarm-cycle-sanitize.snapshots.gz",
+      "archive_git_blob": "da9baa8821708f3832d86ed1abc01540cb27f242",
+      "archive_sha256": "7faf6e2fc507b442728316f0cfd1da416e87afb0fe2563e83183dc1bb18dd2a5",
+      "archive_bytes": 41423416,
+      "decoded_sha256": "a8ac851dc2249fb04aff61efcfa02c532f0a6e11809deb80b5cacd00e4546336",
+      "decoded_bytes": 94926145,
+      "reclaimed_bytes": 94926145
+    },
+    {
+      "removed_raw": "build/dsky-alarm-recycle-native.snapshots",
+      "retained_committed": "evidence/dsky-alarm-recycle-native.snapshots.gz",
+      "archive_git_blob": "30cac1fa4c43e9cb785402ca52259abf63ba6d4b",
+      "archive_sha256": "eb1b90fb0f8ab1c1edd9f337a1ec90c3b84e995e31a2fb88defe0976039a43fa",
+      "archive_bytes": 41252725,
+      "decoded_sha256": "49683b90648c8b0b0b61c6ab7dc46f70e5bc61be7757407d6739646d9b8f546b",
+      "decoded_bytes": 94630372,
+      "reclaimed_bytes": 94630372
+    },
+    {
+      "removed_raw": "build/dsky-alarm-recycle-reference.snapshots",
+      "retained_committed": "evidence/dsky-alarm-recycle-reference.snapshots.gz",
+      "archive_git_blob": "30cac1fa4c43e9cb785402ca52259abf63ba6d4b",
+      "archive_sha256": "eb1b90fb0f8ab1c1edd9f337a1ec90c3b84e995e31a2fb88defe0976039a43fa",
+      "archive_bytes": 41252725,
+      "decoded_sha256": "49683b90648c8b0b0b61c6ab7dc46f70e5bc61be7757407d6739646d9b8f546b",
+      "decoded_bytes": 94630372,
+      "reclaimed_bytes": 94630372
+    },
+    {
+      "removed_raw": "build/dsky-alarm-recycle-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-alarm-recycle-sanitize.snapshots.gz",
+      "archive_git_blob": "30cac1fa4c43e9cb785402ca52259abf63ba6d4b",
+      "archive_sha256": "eb1b90fb0f8ab1c1edd9f337a1ec90c3b84e995e31a2fb88defe0976039a43fa",
+      "archive_bytes": 41252725,
+      "decoded_sha256": "49683b90648c8b0b0b61c6ab7dc46f70e5bc61be7757407d6739646d9b8f546b",
+      "decoded_bytes": 94630372,
+      "reclaimed_bytes": 94630372
+    },
+    {
+      "removed_raw": "build/dsky-jam-control-native.snapshots",
+      "retained_committed": "evidence/dsky-jam-control-native.snapshots.gz",
+      "archive_git_blob": "b1adb97bf7a5af4f4316336d344fec98bc842163",
+      "archive_sha256": "a90e0f20b69a0d4fb6beb75cfad0cd6c6b9048bc88fc161f73655ecbf08fd5f2",
+      "archive_bytes": 41281721,
+      "decoded_sha256": "6461c3cd5dfe36f307d89bd18848598a7b7330425574b37e9617dd515c4a8317",
+      "decoded_bytes": 94737610,
+      "reclaimed_bytes": 94737610
+    },
+    {
+      "removed_raw": "build/dsky-jam-control-reference.snapshots",
+      "retained_committed": "evidence/dsky-jam-control-reference.snapshots.gz",
+      "archive_git_blob": "b1adb97bf7a5af4f4316336d344fec98bc842163",
+      "archive_sha256": "a90e0f20b69a0d4fb6beb75cfad0cd6c6b9048bc88fc161f73655ecbf08fd5f2",
+      "archive_bytes": 41281721,
+      "decoded_sha256": "6461c3cd5dfe36f307d89bd18848598a7b7330425574b37e9617dd515c4a8317",
+      "decoded_bytes": 94737610,
+      "reclaimed_bytes": 94737610
+    },
+    {
+      "removed_raw": "build/dsky-jam-control-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-jam-control-sanitize.snapshots.gz",
+      "archive_git_blob": "b1adb97bf7a5af4f4316336d344fec98bc842163",
+      "archive_sha256": "a90e0f20b69a0d4fb6beb75cfad0cd6c6b9048bc88fc161f73655ecbf08fd5f2",
+      "archive_bytes": 41281721,
+      "decoded_sha256": "6461c3cd5dfe36f307d89bd18848598a7b7330425574b37e9617dd515c4a8317",
+      "decoded_bytes": 94737610,
+      "reclaimed_bytes": 94737610
+    },
+    {
+      "removed_raw": "build/dsky-address-request-native.snapshots",
+      "retained_committed": "evidence/dsky-address-request-native.snapshots.gz",
+      "archive_git_blob": "859554f21992bb723e2e639a952a7d306bd538bb",
+      "archive_sha256": "fd4182ff3a5b7e538d626b2c31e26eac3abd8fd537495d15e36b3fd3c8dda71e",
+      "archive_bytes": 41322975,
+      "decoded_sha256": "d84afeb9770db1c369a7f30d021005ffb2e3d3484cef5022b9e13ccd01299140",
+      "decoded_bytes": 94656215,
+      "reclaimed_bytes": 94656215
+    },
+    {
+      "removed_raw": "build/dsky-address-request-reference.snapshots",
+      "retained_committed": "evidence/dsky-address-request-reference.snapshots.gz",
+      "archive_git_blob": "859554f21992bb723e2e639a952a7d306bd538bb",
+      "archive_sha256": "fd4182ff3a5b7e538d626b2c31e26eac3abd8fd537495d15e36b3fd3c8dda71e",
+      "archive_bytes": 41322975,
+      "decoded_sha256": "d84afeb9770db1c369a7f30d021005ffb2e3d3484cef5022b9e13ccd01299140",
+      "decoded_bytes": 94656215,
+      "reclaimed_bytes": 94656215
+    },
+    {
+      "removed_raw": "build/dsky-address-request-sanitize.snapshots",
+      "retained_committed": "evidence/dsky-address-request-sanitize.snapshots.gz",
+      "archive_git_blob": "859554f21992bb723e2e639a952a7d306bd538bb",
+      "archive_sha256": "fd4182ff3a5b7e538d626b2c31e26eac3abd8fd537495d15e36b3fd3c8dda71e",
+      "archive_bytes": 41322975,
+      "decoded_sha256": "d84afeb9770db1c369a7f30d021005ffb2e3d3484cef5022b9e13ccd01299140",
+      "decoded_bytes": 94656215,
+      "reclaimed_bytes": 94656215
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-admission-floor-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-admission-floor-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-ADMISSION-FLOOR.PRG' as `RESIDENT' to unit 8
+writing file `CM-ADMISSION-FLOOR-242.PRG' as `G242' to unit 8
+writing file `CM-ADMISSION-FLOOR-254.PRG' as `G254' to unit 8
+writing file `CM-ADMISSION-FLOOR-255.PRG' as `G255' to unit 8
+242 5466 loaded bytes
+254 5055 loaded bytes
+255 9981 loaded bytes

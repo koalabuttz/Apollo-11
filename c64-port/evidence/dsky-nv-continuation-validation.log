@@ -1,0 +1,10 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_nv_continuation.c src/agc_word.c src/dsky_nv_continuation.c src/dsky_nv_return.c tests/dsky_nv_continuation_cases.c tests/dsky_nv_continuation_check.c -o build/test-dsky-nv-continuation
+build/test-dsky-nv-continuation
+72 full LM/CM internal NVSUB source states and180 unchanged invalid guards: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_nv_continuation.c src/agc_word.c src/dsky_nv_continuation.c src/dsky_nv_return.c tests/dsky_nv_continuation_cases.c tests/dsky_nv_continuation_check.c -o build/test-dsky-nv-continuation-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-nv-continuation-sanitize
+72 full LM/CM internal NVSUB source states and180 unchanged invalid guards: PASS
+python3 tools/dsky_nv_continuation_sanitize.py
+PASS all18432 complete original LM/CM internalNVSUBcontinuations source states under ASAN/UBSAN, SHA256 f06687efb69ed25382e6bf538edc6ee0898e7992437416a876c167695f1063a5
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_nv_continuation_snapshot.c src/agc_word.c src/dsky_nv_continuation.c src/dsky_nv_return.c tests/dsky_nv_continuation_cases.c tests/dsky_nv_continuation_check.c -o build/dsky-nv-continuation-route-port
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_nv_continuation_diagnostic.c src/agc_word.c src/dsky_nv_continuation.c src/dsky_nv_return.c tests/dsky_nv_continuation_cases.c tests/dsky_nv_continuation_check.c -Wl,-Map,build/dsky_nv_continuation.map -o build/dsky_nv_continuation.prg

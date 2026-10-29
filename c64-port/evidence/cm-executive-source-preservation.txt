@@ -1,0 +1,4 @@
+Original Comanche055/EXECUTIVE.agc is byte-identical to fixture/EXECUTIVE.original.agc.
+Five pseudo-label indentations are repaired only in the generated assembly fixture.
+Generated complete rope equals pinned corrected Comanche Executive rope byte for byte.
+No file outside c64-port was written.

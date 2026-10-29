@@ -1,0 +1,71 @@
+{
+  "source_files": {
+    "include/dsky_read_pair.h": "bff0944bcfbc59942b04d70b0079d185d2bed4fe7cac76888fa5e9c5385d66fb",
+    "src/dsky_read_pair.c": "e2f0504e05eb3a8fe52f3ed2c4c1253f78c5285b84f296303e56421de13c873a",
+    "tests/dsky_read_pair_cases.c": "2c528be629f85cccb8b41fc15815bd649eacb39b4755ee4bd107a4e68d69deb6",
+    "tests/dsky_read_pair_cases.h": "157bdf8771a1b3734783971fbb79b7cdede1ba0e893568b0b1f45d40e2511b9e",
+    "tests/dsky_read_pair_check.c": "45a1051d3afb706f55923c1b3eb6e8c4c37df7cf7fd31b06f53c8a558ccbab91",
+    "tests/dsky_read_pair_check.h": "d56d32bdee2c9070b89d9bffe8f5bca7ee48d5f35a7c63bb87bf302b99e9faf6",
+    "tests/dsky_read_pair_vectors.h": "a48d36772d27bd27f0dbecf6ece1c8f23b600488495592a07ac176d6b6a1eceb",
+    "tests/test_dsky_read_pair.c": "0b4c15d1153da2fa9b1e2a13fe95594ce3a8887d45bc681b44af1612e8de3f5d",
+    "tools/dsky_read_pair.mk": "e9cc4740bcb60d8f8fa6162a6e734c468b98c0f1a21c0b54fae3770fd1a86772",
+    "tools/dsky_read_pair_diagnostic.c": "712c644067fab91e0e76a0a3701eca374dcfd68a96fbb3251ba38074a2bcf135",
+    "tools/dsky_read_pair_differential.py": "7fa7f3ad3e65ca4e796e3c3b6004fed43504c548dbe989d8dfe3501a2923c522",
+    "tools/dsky_read_pair_inputs.c": "98da858624934918d47cfd8453ba906ec4cd7e25156c9d9c36d816a23ab1d164",
+    "tools/dsky_read_pair_reference.c": "36e032ccebbd941102bd3b1271b93056a51542e739d8a65bf803ef88430d7e09",
+    "tools/dsky_read_pair_sanitize.py": "6cb138a30821eaf89aa2c53484b8bd417a1b5675fc319f3c2bd3c2a86f3c7213",
+    "tools/dsky_read_pair_snapshot.c": "2ff907c0974253bcf0784bdb4c630d287ee6266cdf7f7be7a4ad824e50ca4eb0",
+    "tools/dsky_read_pair_vice_test.py": "8190fdb6a8dfd4706894bb3a94141e4d7f59bbf7b3e3d2b39d607f54483e2cf7",
+    "tools/freeze_dsky_read_pair.py": "4ad4045eb9c8da32dce38374ab0602e086d789441d86b905af3124face49183c",
+    "docs/DSKY-READ-PAIR.md": "27e9a41f215d5c53471ea5b467d58d2b55b588bd880ca4bd5c63154ac9974a24"
+  },
+  "native_dependencies": {
+    "include/dsky_decimal_general.h": "a6f03a97e759a47071ddcb9a94a448d273941df384fe217450c5e0aa5ed9dca7",
+    "include/dsky_nv_admission.h": "cc6dbf21c7ed8ec1bae2a0ad30e4b1065f2821614ce23370e981ec5d47ab42e1",
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "include/p66_bias.h": "ed594570c8fa6831498bd65b27a1da136feb9d18404dc1e8db084585c23f5c77",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679"
+  },
+  "original_sources": {
+    "../Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+    "../Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+    "deps/lm-powered-fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "host_reference_dependencies": {
+    "tools/cm_executive_reference.c": "f623e869cc420126c15d27a5749a1e4a38df27deb91b7f83a2fc1c7be6e6e448"
+  },
+  "artifacts": {
+    "evidence/dsky-read-pair-differential.log": "0dd93d2e9e6752f446d1e028ac5e07f4e1b24f10c6f01a074d0e3f4b6fe0da8d",
+    "evidence/dsky-read-pair-sanitize.log": "44e481dab797f8b0ca8df48757b4bff17dca05dcbf789e39954702b4c589dc48",
+    "evidence/dsky-read-pair-freeze.log": "cb99c96e29794869349e4ad5ee4d6b485eef6d0b28f939f27b2c0fc4d2e5a297",
+    "evidence/dsky-read-pair-build.log": "cd877021f0a2966691d37056878b735139d26e3aec6f02e9175813ac0b6541f7",
+    "evidence/dsky-read-pair-c64-build.log": "d7dfb0a45d2a49107248971c5a5fb33dd5100eadd3edd4a2cc65244bb1aa6c4e",
+    "evidence/dsky-read-pair-c64.log": "3c90bff39b9dc5ab8f86b05292bae0dcddfacf8c1a4ac643e9e52696fe15ffca",
+    "evidence/dsky-read-pair-reference.snapshots.xz": "2f5fb89e439c64a693155cc04d1cd89e4f40e965ade40f900f4a68182abe7c00",
+    "evidence/dsky-read-pair-stream-sha.json": "a1816b1eb85cb8294293d407fdf218813869a2b394c670696c851e23964e5aff",
+    "evidence/dsky_read_pair-hardware-stack.bin": "206244c8230606d6fa029a1ca872362f6a91aa481be1fa3a6b16662f8c623eff",
+    "evidence/dsky_read_pair-software-stack.bin": "8c00ff7b0b81b88592f5f9fa304ee97c78916175e8557157f361e9fd867919b0",
+    "evidence/dsky_read_pair-vice-mailbox.bin": "f035b5cc6c9d7a00433597332e9daea3cfb4d96f8239747d61ccf7108e58ccea",
+    "evidence/dsky_read_pair-vice-monitor.log": "71e6deedf02f26d11aee647983add8d9bfecf0619bb9b244cb8d2635b41272b7",
+    "evidence/dsky_read_pair.map": "1abb2649d592ac33d7009635866bb59ff39d0b546c35746141b637478932ffda",
+    "evidence/dsky_read_pair.prg": "3fefe3f90e1fabdc131c1e884a300d351f15ae5d518f68a8a2023e2024f49bf3",
+    "evidence/dsky-read-pair-source-map.json": "346d10930176cbac5a4fd779d86d5f7908c742c0a5a381b461f950d5b9da0f65"
+  },
+  "complete_source_states": 16384,
+  "record_fields": 2051,
+  "raw_source_sha256": "e986d47143a7f3ea681bc3f1533ed885661fbbffd401604ca1661600e54d2155",
+  "full_sanitizer_states": 16384,
+  "frozen_complete_states": 128,
+  "unchanged_invalid_guards": 36,
+  "target": {
+    "prg_bytes": 7870,
+    "mailbox": "a500008000",
+    "hardware_stack_including_rom": 14,
+    "rom_stack_bytes": 14,
+    "software_stack": 12,
+    "additional_zero_page_bytes": 0
+  },
+  "qualification_boundary": "actual ordinary saved caller before instruction execution"
+}

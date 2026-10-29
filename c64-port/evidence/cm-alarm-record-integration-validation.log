@@ -1,0 +1,46 @@
+cc -Iinclude -Itests -Itools -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_alarm_record.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_alarm_record_cases.c tests/cm_admission_complete_cases.c platform/host/cm_alarm_record_snapshot.c -o build/cm-alarm-record-native
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_alarm_record_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original alarm recording full image and actual return/POODOO frontier
+{
+  "cases": 16384,
+  "checkpoints": 16384,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "ALARM05650",
+    "VARALARM05764",
+    "CURTAINS05757",
+    "BORTENT05655"
+  ],
+  "context_cohorts": "four entries \u00d7 all signedzero/positive/negative FAILREG corner combinations, alarm codes and bank/lamp restoration states",
+  "binary_bytes": 67305472,
+  "snapshot_sha256": "fc35d6b6420ed71181814d05dd5d25ef9e8e9d8ee79ed95f1f907fec312abde2",
+  "binary_record_format": "2054littleendian uint16: case low/high,entry,status,2048 physical words,SUPERBNK,IRQ",
+  "scope": "actual alarm record body and genuine ordinary caller return or MULTFAIL overflow POODOO entry; abort recovery body remains separate"
+}
+cc -Iinclude -Itests -Itools -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_alarm_record.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_alarm_record_cases.c tests/cm_admission_complete_cases.c platform/host/cm_alarm_record_snapshot.c -o build/cm-alarm-record-sanitize
+python3 tools/cm_alarm_record_sanitize.py
+PASS: full ASAN/UBSAN alarm recording corpus, all16384 actual source states

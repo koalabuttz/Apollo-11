@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 128 complete matrix group original-assembly states; retained memory unchanged
+Mailbox: a500008000
+PRG bytes: 24364
+matrix-hardware-stack.bin: measured stack extent 29 bytes
+matrix-software-stack.bin: measured stack extent 287 bytes

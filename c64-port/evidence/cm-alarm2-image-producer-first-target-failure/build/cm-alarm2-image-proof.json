@@ -1,0 +1,21 @@
+{
+  "cases": 40960,
+  "checkpoints": 40960,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "direct ALARM25652 actual surviving-A entry",
+    "actual SELF-CHECK ERRORS43,3261 through ALARM2 and real return"
+  ],
+  "context_cohorts": "all32768 normal incomingA15 directentry values, ordinaryQ0100..7775, allEB/SUPER/fixed-data pages, post-store ALMCADRalias, FAILREGbranches;8192actual selfcheck producers with sourceSFAIL/ERCOUNT and bit100SUPER physicalbank43",
+  "binary_bytes": 169164800,
+  "snapshot_sha256": "78c839a668ba4d764ac3c60a0152103554c641d234d48c7132adbc29fe61963e",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase0,status,2048physicalwords,13 cm_native_io latches",
+  "source_in_isr_invariance": "original direct ALARM2 exercised both ISR contexts and genuine selfcheck producer thread context; unchanged asserted; native wrapper does not own or write caller ISR metadata",
+  "scope": "actual ALARM2 TS ALMCADR using survivingA, inline data read and record/true return or POODOO frontier; ERRORS genuine producer included, full selfcheck algorithm separate. Original fixed words data only."
+}

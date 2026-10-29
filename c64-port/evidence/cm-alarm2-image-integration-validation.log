@@ -1,0 +1,44 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_alarm2_image_differential.py
+{
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_layout_source_set_sha256": "adf83e54e80bd6bcf457af65ff3e5637ed79490b031c47648d08becc88d842e1",
+  "original_packed_bytes": 73728,
+  "native_word_bytes": 73728,
+  "present_physical_banks": 36,
+  "unpopulated_zero_banks": 4,
+  "data_words": 36864,
+  "addressable_words": 40960,
+  "payload_groups": 6,
+  "words_per_full_payload_group": 7168,
+  "native_instruction_decoder": false,
+  "executable_coverage_claim": false,
+  "source_audit_artifact": "evidence/fixed-data-audit.json.gz",
+  "source_bank_file_permutation": "banks0..3 use file bank^2; banks4..35 unchanged; big-endian parity word>>1"
+}
+PASS: original ALARM caller-data aliases complete image and all13 external latches
+{
+  "cases": 65536,
+  "checkpoints": 65536,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "direct ALARM25652 actual surviving-A entry",
+    "actual SELF-CHECK ERRORS43,3261 through ALARM2 and real return"
+  ],
+  "context_cohorts": "all32768 normal incomingA15 directentry values, ordinaryQ0100..7775, allEB/SUPER/fixed-data pages, post-store ALMCADRalias, FAILREGbranches;all32768normal oldQ15 register values/failurelocations as recorded data in actual selfcheck producers with sourceSFAIL/ERCOUNT and bit100SUPER physicalbank43",
+  "binary_bytes": 270663680,
+  "snapshot_sha256": "e29ab0aa776a2f39db850fb087c8b8635d6d3a2b4483b501738cc892096ba134",
+  "binary_record_format": "2065littleendian uint16: case low/high,phase0,status,2048physicalwords,13 cm_native_io latches",
+  "source_in_isr_invariance": "original direct ALARM2 exercised both ISR contexts and genuine selfcheck producer thread context; unchanged asserted; native wrapper does not own or write caller ISR metadata",
+  "scope": "actual ALARM2 TS ALMCADR using survivingA, inline data read and record/true return or POODOO frontier; ERRORS genuine producer included, full selfcheck algorithm separate. Original fixed words data only."
+}
+cc -Iinclude -Itests -Itools -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_alarm2_image.c src/cm_alarm_image.c src/cm_alarm_record.c src/cm_fixed_compat.c src/cm_native_image.c src/agc_word.c tests/cm_alarm2_image_cases.c tests/cm_alarm_record_cases.c tests/cm_admission_complete_cases.c platform/host/cm_alarm2_image_snapshot.c -o build/cm-alarm2-image-sanitize
+python3 tools/cm_alarm2_image_sanitize.py
+PASS: full ASAN/UBSAN ALARM2 surviving-A and actualselfcheck corpus, all65536 actual source states

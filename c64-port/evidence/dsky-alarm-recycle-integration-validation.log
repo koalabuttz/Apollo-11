@@ -1,0 +1,5 @@
+build/test-dsky-alarm-recycle
+LM+CM continuous alarm recycle:64 full source states,0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_alarm_cycle.c src/dsky_nv_update_general.c src/fixed_data.c src/noun_reader.c src/dsky_alarm_recycle.c tests/p66_bias_cases.c tests/dsky_alarm_recycle_cases.c tests/dsky_alarm_recycle_check.c tests/test_dsky_alarm_recycle.c -o build/test-dsky-alarm-recycle-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-dsky-alarm-recycle-sanitize
+LM+CM continuous alarm recycle:64 full source states,0 failures

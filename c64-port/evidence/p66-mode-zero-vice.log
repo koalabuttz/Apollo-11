@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly p66_mode_zero states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 11456 11454
+hardware stack sentinel extent: 13
+software stack sentinel extent: 32

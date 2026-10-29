@@ -1,0 +1,16 @@
+fill 0100 01f1 cd
+fill c800 cfff cd
+load "/workspace/Apollo-11/c64-port/build/p66-pending-flight.prg" 0
+watch store c080
+ignore 1 1
+trace store c001
+command 2 "m c000 c003; m 0000 0007; m 6bce 6bf5; m c400 c63f; r"
+g 080d
+m c080 c085
+m c000 c003
+bsave "/workspace/Apollo-11/c64-port/build/p66-pending-flight-vice-mailbox.bin" 0 c080 c085
+bsave "/workspace/Apollo-11/c64-port/build/p66-pending-flight-vice-shared.bin" 0 7000 7fff
+bsave "/workspace/Apollo-11/c64-port/build/p66-pending-flight-vice-stack.bin" 0 c800 cfff
+bsave "/workspace/Apollo-11/c64-port/build/p66-pending-flight-vice-hardware-stack.bin" 0 0100 01f1
+screen
+quit

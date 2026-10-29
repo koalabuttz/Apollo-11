@@ -1,0 +1,56 @@
+{
+  "scope": "Complete passive original fixed-word datasets for both missions, no decoder or executable source coverage",
+  "original_ropes": {
+    "LM": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "CM": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "host_sanitizer_audit": "evidence/passive-storage-host-audit.json",
+  "source_data_words_each_mission": 36864,
+  "physical_words_each_mission": 40960,
+  "C64_word_comparisons_each_mission": 81920,
+  "exact_individual_word_comparison": true,
+  "canonical_image_authoritative_copies": 1,
+  "source_instructions_decoded": false,
+  "production_registry_changed": false,
+  "separate_passive_namespace": "F200..F205 do not reserve shared executable IDs; LM descent G200..G205 collision explicitly requires future distinct resolver allocation",
+  "LM_production_allocation": "evidence/passive-storage-lm-production-allocation.json",
+  "CM_production_allocation_owner": "comanche_executive CM fixed compatibility source-reader packet",
+  "dependencies": [
+    {
+      "path": "tools/cm_fixed_compat_generate.py",
+      "sha256": "9ae21a4231b3209bd39a95387ea55597d3d3d3cb9a0f599f91fea58656cb39df"
+    },
+    {
+      "path": "src/cm_fixed_compat_words.inc",
+      "sha256": "cc4d8391c8167396d2a0476d0873997a59fdd6607a2b80c944bc1c17827eaaf7"
+    },
+    {
+      "path": "src/cm_fixed_compat.c",
+      "sha256": "1d5881e12153a150587b3ea6b9caed707f105e0443f3fc919a95e05010c65752"
+    },
+    {
+      "path": "include/cm_fixed_compat.h",
+      "sha256": "7c807fd9982e53fc72d79f4a23edc15719ecf22e049e2c0cc1084b55a52845de"
+    },
+    {
+      "path": "platform/c64/cm_fixed_compat_data.c",
+      "sha256": "143944cb7afceea1b2cc3f8277967b464b013c56966cfb00f52dca331d942863"
+    },
+    {
+      "path": "evidence/fixed-data-audit.json.gz",
+      "sha256": "c2fff5d54134369259db04a5c5bb654e690563a4e6f9172cab1c425a7dbaa77d"
+    },
+    {
+      "path": "evidence/fixed-data-cm-original.rope.bin",
+      "sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+    },
+    {
+      "path": "evidence/fixed-data-lm-original.rope.bin",
+      "sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+    },
+    {
+      "path": "evidence/p66-native.d64",
+      "sha256": "376275fce7fa541ea9154981cc99971686813ffb82d29a8cd17c62b956731006"
+    }
+  ]
+}

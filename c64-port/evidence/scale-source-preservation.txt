@@ -1,0 +1,2 @@
+PASS: git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- ':!c64-port' from repository root produced no differences. All historical sources and non-port files unchanged.
+All 119 previous evidence files retained with identical SHA256 values.

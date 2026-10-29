@@ -1,0 +1,290 @@
+[
+  {
+    "id": 160,
+    "filename": "R0",
+    "byte_count": 9180,
+    "crc16": 58228,
+    "sha256": "86019d7e20c64986ef4a1ffb3101577d529c332ed23749ec5085bd88b907053d",
+    "prg": "lm-spectest-handoff-0.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-0.prg"
+  },
+  {
+    "id": 161,
+    "filename": "R1",
+    "byte_count": 9180,
+    "crc16": 47672,
+    "sha256": "33976dc9da7260d38ea47ce6e374f02056c4d0a0e732f78248f0e1aa51ffe3d1",
+    "prg": "lm-spectest-handoff-1.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-1.prg"
+  },
+  {
+    "id": 162,
+    "filename": "R2",
+    "byte_count": 9180,
+    "crc16": 115,
+    "sha256": "6fcaa03fa8e7620d5eaf2a7e6f3f7636cc2ff0f97e50ba95eb293beb1b3b8801",
+    "prg": "lm-spectest-handoff-2.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-2.prg"
+  },
+  {
+    "id": 163,
+    "filename": "R3",
+    "byte_count": 9180,
+    "crc16": 7795,
+    "sha256": "108308f55e4899db3e0f1ef9e680554f437a711452de3d453fdd8fba239187d0",
+    "prg": "lm-spectest-handoff-3.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-3.prg"
+  },
+  {
+    "id": 164,
+    "filename": "R4",
+    "byte_count": 9180,
+    "crc16": 52563,
+    "sha256": "443257a8d8dddea94bd2a3489ee50969a53836a48deca92ba573a6594600eeb9",
+    "prg": "lm-spectest-handoff-4.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-4.prg"
+  },
+  {
+    "id": 165,
+    "filename": "R5",
+    "byte_count": 9180,
+    "crc16": 50648,
+    "sha256": "dcf2246c6a732a442ee48b9ec0421be4ecad19d0fb26070b0b24fbc961513543",
+    "prg": "lm-spectest-handoff-5.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-5.prg"
+  },
+  {
+    "id": 166,
+    "filename": "R6",
+    "byte_count": 9180,
+    "crc16": 1127,
+    "sha256": "0c269707c9b636f129ea3364aa029884c5a76d334f16c38f0e7b19c17a7a6548",
+    "prg": "lm-spectest-handoff-6.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-6.prg"
+  },
+  {
+    "id": 167,
+    "filename": "R7",
+    "byte_count": 9180,
+    "crc16": 46199,
+    "sha256": "b9797f79cdacf40cfdfd8913b19c0f8641acac73056353d39fedb1207f490bc0",
+    "prg": "lm-spectest-handoff-7.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-7.prg"
+  },
+  {
+    "id": 168,
+    "filename": "R8",
+    "byte_count": 9180,
+    "crc16": 25975,
+    "sha256": "d0a742c6fd37b0decd53a9c6d88bd8d02106615bae54fb99e75467de05cae162",
+    "prg": "lm-spectest-handoff-8.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-8.prg"
+  },
+  {
+    "id": 169,
+    "filename": "R9",
+    "byte_count": 9180,
+    "crc16": 44976,
+    "sha256": "b5867912000f033d9fe7a39e13dde3f4d4d131ba350ae4c460f46438e6465176",
+    "prg": "lm-spectest-handoff-9.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-9.prg"
+  },
+  {
+    "id": 170,
+    "filename": "R10",
+    "byte_count": 9180,
+    "crc16": 16193,
+    "sha256": "5571d3358b66e12d46f0d4ed276466641215a4c7b5cf7e82b72d3569464bf67a",
+    "prg": "lm-spectest-handoff-10.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-10.prg"
+  },
+  {
+    "id": 171,
+    "filename": "R11",
+    "byte_count": 9180,
+    "crc16": 17094,
+    "sha256": "90af192a95304ff1fb433c3741e45ef6b9f81bfa1246291cea8f5b15a2af1c37",
+    "prg": "lm-spectest-handoff-11.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-11.prg"
+  },
+  {
+    "id": 172,
+    "filename": "R12",
+    "byte_count": 9180,
+    "crc16": 22986,
+    "sha256": "2975f16071b0374bb554afaa812a81d8271572b60ef04f633effbd7046937443",
+    "prg": "lm-spectest-handoff-12.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-12.prg"
+  },
+  {
+    "id": 173,
+    "filename": "R13",
+    "byte_count": 9180,
+    "crc16": 5105,
+    "sha256": "bf9e3a8c0e41bd75e2941c05ad985e1aa87f9179b1581d20994a5dc7f96e20e0",
+    "prg": "lm-spectest-handoff-13.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-13.prg"
+  },
+  {
+    "id": 174,
+    "filename": "R14",
+    "byte_count": 9180,
+    "crc16": 61004,
+    "sha256": "91bb20c1cce99933fa2060ed6ce30b54152d1a1a04833c5dca43359878eed035",
+    "prg": "lm-spectest-handoff-14.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-14.prg"
+  },
+  {
+    "id": 175,
+    "filename": "R15",
+    "byte_count": 9180,
+    "crc16": 61329,
+    "sha256": "f6ca522a76f7ff1c8f31731276310748c7065c8dff593cd0550762c5d7d2e3ca",
+    "prg": "lm-spectest-handoff-15.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-15.prg"
+  },
+  {
+    "id": 176,
+    "filename": "R16",
+    "byte_count": 9180,
+    "crc16": 20493,
+    "sha256": "7d8ae2e4d58555e9ad20d39907bf289029fd17d7b21b61b87545925be306157f",
+    "prg": "lm-spectest-handoff-16.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-16.prg"
+  },
+  {
+    "id": 177,
+    "filename": "R17",
+    "byte_count": 9180,
+    "crc16": 13687,
+    "sha256": "5a657144ed159ecf9b6f93482ac4ee0fd2f7aac0878ff9b3b05d58e02d4f5e65",
+    "prg": "lm-spectest-handoff-17.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-17.prg"
+  },
+  {
+    "id": 178,
+    "filename": "R18",
+    "byte_count": 9180,
+    "crc16": 20159,
+    "sha256": "f9751ad8f26f8fa3b2824a0aaed25a4e48483086ca216b805c0553d33afbdff5",
+    "prg": "lm-spectest-handoff-18.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-18.prg"
+  },
+  {
+    "id": 179,
+    "filename": "R19",
+    "byte_count": 9180,
+    "crc16": 23672,
+    "sha256": "fc8c45257f9825e4420072f423cec8c4013f1cd3b8b6f93d3f5c60165121fd0f",
+    "prg": "lm-spectest-handoff-19.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-19.prg"
+  },
+  {
+    "id": 180,
+    "filename": "R20",
+    "byte_count": 9180,
+    "crc16": 1217,
+    "sha256": "4a86133f9bdf59433ae00ef9f5309b0fb0dd9cec74fd977555e88aa8d07639ee",
+    "prg": "lm-spectest-handoff-20.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-20.prg"
+  },
+  {
+    "id": 181,
+    "filename": "R21",
+    "byte_count": 9180,
+    "crc16": 27928,
+    "sha256": "524a53997cc2f2b20e57e9339cbdcf894322d9f5077c1b1e96a89462782e91b0",
+    "prg": "lm-spectest-handoff-21.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-21.prg"
+  },
+  {
+    "id": 182,
+    "filename": "R22",
+    "byte_count": 9180,
+    "crc16": 51236,
+    "sha256": "75f9e68dd4169e25e89845cc3a95bb163523455e7534c389aa600c1606829cf8",
+    "prg": "lm-spectest-handoff-22.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-22.prg"
+  },
+  {
+    "id": 183,
+    "filename": "R23",
+    "byte_count": 9180,
+    "crc16": 23877,
+    "sha256": "cf69a37f895802dbe5ad82cec4a5d8e7486c7832f9609205b74564c6b13fdc47",
+    "prg": "lm-spectest-handoff-23.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-23.prg"
+  },
+  {
+    "id": 184,
+    "filename": "R24",
+    "byte_count": 9180,
+    "crc16": 28519,
+    "sha256": "9d512aedcbc56be9b7616b156d4ab706668d8b597eb04d59a6cdf1d8d6b07da1",
+    "prg": "lm-spectest-handoff-24.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-24.prg"
+  },
+  {
+    "id": 185,
+    "filename": "R25",
+    "byte_count": 9180,
+    "crc16": 40457,
+    "sha256": "63ae6b8deccb8e0b45fdaa688d02716bfeb1a9fde117ded5125bb85ccff1fb45",
+    "prg": "lm-spectest-handoff-25.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-25.prg"
+  },
+  {
+    "id": 186,
+    "filename": "R26",
+    "byte_count": 9180,
+    "crc16": 61006,
+    "sha256": "5f4101bdf202af859fb603abd107797b1f905a2a8bc79f1a4662e166ee12b03a",
+    "prg": "lm-spectest-handoff-26.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-26.prg"
+  },
+  {
+    "id": 187,
+    "filename": "R27",
+    "byte_count": 9180,
+    "crc16": 36714,
+    "sha256": "7f8b08470f61939c1e79dbb5f05e2a4d5dbf91fde1e7bc3c60edc5b44fa0ba0d",
+    "prg": "lm-spectest-handoff-27.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-27.prg"
+  },
+  {
+    "id": 188,
+    "filename": "R28",
+    "byte_count": 9180,
+    "crc16": 3103,
+    "sha256": "ca86a98406d4865ae03427c51a7a554bb7da530e8c15e99fc21d5185a6bdd215",
+    "prg": "lm-spectest-handoff-28.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-28.prg"
+  },
+  {
+    "id": 189,
+    "filename": "R29",
+    "byte_count": 9180,
+    "crc16": 64698,
+    "sha256": "3c12c8d30f8700c84128f27b6f95a0d374494e7b138a435114893a5565b3551f",
+    "prg": "lm-spectest-handoff-29.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-29.prg"
+  },
+  {
+    "id": 190,
+    "filename": "R30",
+    "byte_count": 9180,
+    "crc16": 2099,
+    "sha256": "e1f5e0b1546aaaad557c63509add9abd4dcf3aca058c0154ca769d38cec23c6f",
+    "prg": "lm-spectest-handoff-30.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-30.prg"
+  },
+  {
+    "id": 191,
+    "filename": "R31",
+    "byte_count": 9180,
+    "crc16": 27269,
+    "sha256": "de78960c84c87a3564353cf2b733cdc3e622149ad981860f434df067a28c32db",
+    "prg": "lm-spectest-handoff-31.prg",
+    "retained_prg": "evidence/lm-spectest-handoff-31.prg"
+  }
+]

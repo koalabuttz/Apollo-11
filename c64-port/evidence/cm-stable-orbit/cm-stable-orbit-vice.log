@@ -1,0 +1,9 @@
+# make vice-cm-stable-orbit at e159f0de7b2750a758eaaf083aac10f9fd73340a
+for p in build/cm-stable-orbit-1.prg build/cm-stable-orbit-2.prg build/cm-stable-orbit-3.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-stable-orbit-1.prg: 49 checks, 0 failures
+PRG sha256: 75607b385ebc02cee8395d594443dfecb7f9fde0211b9d77ff2c55115038bd78 cm-stable-orbit-1.prg
+PASS: VICE PAL cm-stable-orbit-2.prg: 54 checks, 0 failures
+PRG sha256: f7fcb94c95eeea58f4f7ff04e5fef0523607d26e210bbd10b828250cf2e3a34a cm-stable-orbit-2.prg
+PASS: VICE PAL cm-stable-orbit-3.prg: 37 checks, 0 failures
+PRG sha256: ece62e95237e2371c5e49058c53e0d155a9a7070d975e4815a00fea2fc71822c cm-stable-orbit-3.prg
+exit 0

@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/vector.prg from 0801 to 5861 (5061 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)  301/$12d,  58/$3a
+.C:1fa8  8D 88 C0    STA $C088      - A:10 X:03 Y:07 SP:ed ..-..I..   17689765
+Stopwatch reset to 0.
+#1 (Stop on store c088)   30/$01e,  60/$3c
+.C:1fbc  8D 88 C0    STA $C088      - A:20 X:01 Y:0A SP:ed ..-..I..       2585
+Stopwatch:       2585
+#1 (Stop on store c088)   21/$015,  62/$3e
+.C:1fa8  8D 88 C0    STA $C088      - A:11 X:03 Y:07 SP:ed ..-..I..     119956
+Stopwatch reset to 0.
+#1 (Stop on store c088)   58/$03a,  15/$0f
+.C:1fbc  8D 88 C0    STA $C088      - A:21 X:00 Y:0A SP:ed ..-..I..       2284
+Stopwatch:       2284
+#1 (Stop on store c088)   45/$02d,  17/$11
+.C:1fa8  8D 88 C0    STA $C088      - A:12 X:03 Y:07 SP:ed ..-..I..     119403
+Stopwatch reset to 0.
+#1 (Stop on store c088)   82/$052,  18/$12
+.C:1fbc  8D 88 C0    STA $C088      - A:22 X:00 Y:0A SP:ed ..-..I..       2332
+Stopwatch:       2332
+#1 (Stop on store c088)   70/$046,  40/$28
+.C:1fa8  8D 88 C0    STA $C088      - A:13 X:03 Y:07 SP:ed ..-..I..     119534
+Stopwatch reset to 0.
+#1 (Stop on store c088)  117/$075,   2/$02
+.C:1fbc  8D 88 C0    STA $C088      - A:23 X:00 Y:0A SP:ed ..-..I..       2923
+Stopwatch:       2923
+#1 (Stop on store c088)   85/$055,   9/$09
+.C:1fa8  8D 88 C0    STA $C088      - A:14 X:11 Y:07 SP:ed ..-..I..     118850
+Stopwatch reset to 0.
+#1 (Stop on store c088)  131/$083,   1/$01
+.C:1fbc  8D 88 C0    STA $C088      - A:24 X:00 Y:0A SP:ed ..-..I..       2890
+Stopwatch:       2890
+#2 (Stop on store c080)   77/$04d,  12/$0c
+.C:21ff  8E 80 C0    STX $C080      - A:00 X:A5 Y:B0 SP:ed N.-.....     137091
+>C:c080  a5 00 00 80  00 03 64 32  24                         ......d2$
+Saving file `/workspace/Apollo-11/c64-port/build/vector-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/vector-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/vector-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE P66 VAD / VSU             
+0518  128 COMPLETE ASSEMBLY STATES PASS       
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

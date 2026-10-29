@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm-rectify phase 2 original-assembly entry/exit states
+Mailbox: a500002002
+PRG bytes: 6329
+cm-rectify_phase2-hardware-stack.bin: measured stack extent 20 bytes
+cm-rectify_phase2-software-stack.bin: measured stack extent 45 bytes

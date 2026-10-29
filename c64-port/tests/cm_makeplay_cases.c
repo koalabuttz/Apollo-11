@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include "cm_makeplay_cases.h"
+#include "cm_display_control_cases.h"
+void cm_makeplay_input(apollo_overlay_state *s,cm_native_io *io,uint16_t n){uint16_t k=(uint16_t)(n%8192u);static const agc_word pc[3]={02770,02775,03036},edge[8]={0,077777,1,077776,037777,040000,012345,065432};cm_display_control_input(s,io,k);s->words[5]=pc[n/8192u];s->words[0167]=(agc_word)(((k%31u)+1u)*01000u+(k&0777u));s->words[0163]=(agc_word)(s->words[0167]&037000u);s->words[0160]=(agc_word)(k%3u==0?020000u:k%3u==1?024030u:010u);s->words[0164]=2;s->words[01012]=(agc_word)(k%8u);s->words[064]=(agc_word)(k%7u?12u*(k%7u):077776u);if(k%5u==0)s->words[0374]=s->words[0157];if(k%4u==0)s->words[0100]=0;if(n<8192u&&k<128u)s->words[0167]=edge[k%8u];if(n>=8192u&&n<16384u&&k<128u&&k%16u==0)s->words[0163]=0;if(n>=16384u&&k<128u&&k%8u==0)s->words[064]=0;}
+enum cm_makeplay_boundary cm_makeplay_apply(apollo_overlay_state *s,cm_native_io *io,uint16_t n){return n<8192u?cm_makeplay_priority(s,io):n<16384u?cm_makeplay_select(s,io):cm_makeplay_wake_return(s,io);}

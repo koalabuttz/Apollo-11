@@ -1,0 +1,11 @@
+Independent read-only review of actual original LM/CM antenna navigation-base and UNIT caller stage.
+Reviewer: /root/p66_source_map; retained by /root/frozen_storage.
+
+src/sband_navframe.c SHA256 709fe923a845fbe34939ea3ca5f6a009fae9c58639a0c9f9c3800d27eb77c6cb
+include/sband_navframe.h SHA256 552d4d4860f1910338d2e63f72990b27aaebf12f520890de34dc5ff5c09a34e8
+../Luminary099/S-BAND_ANTENNA_FOR_LM.agc SHA256 db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2
+../Comanche055/S-BAND_ANTENNA_FOR_CM.agc SHA256 0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061
+
+No concrete discrepancy found in the declared tuple/producer/NEWJOB+0 domain. LM STODL saves all six RLM words before Y reload. PUSH retains original Y; DSU/DMP then STODL pops that Y while retaining the old result minor L. DAD/DMP and STOVL reload the full RLM and preserve original Z-minor debris. Both words of fixed1OVSQRT2 {026501,007463} match the original constant. CM STORE retains old R destination Z-minor in L before UNIT.
+Scalar internal producers satisfy frozen ordinary/coherent entry guards. UNIT prologue and three phases retain actual pending PDVL, overflow or SQRTABRT frontier without an invented scheduling check. No helper bytes changed. No PDVL/later body, whole antenna file or arbitrary external callee credit inferred.
+This is independent source inspection; no full-corpus rerun is claimed.

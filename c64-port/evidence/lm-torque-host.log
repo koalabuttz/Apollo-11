@@ -1,0 +1,6 @@
+PASS: rejected contexts preserve the full image and external latches
+PASS: rejected contexts preserve the full image and external latches
+PASS: 256 frozen source rows, all eight EB contexts equivalent; all other 2029 words verified unchanged
+PASS: all 65 original noncomment lines, 59 executable words and one -160 literal mapped; every executable word reached in the source oracle
+PASS: 36864 complete original-source/native/sanitized images; all 2048 words and external latches match
+Uncompressed source/native SHA256: bb042b0dc1611c9b4a4d3476a22aca7798e7f3bf8df00c95a04a58117266ee00

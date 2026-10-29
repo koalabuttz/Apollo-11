@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/cm_keyboard_runtime.prg from 0801 to 6D18 (6518 bytes)
+WATCH: 1  C:$8d19  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 8d19)   11/$00b,  47/$2f
+.C:3585  8E 19 8D    STX $8D19      - A:00 X:A5 Y:2B SP:f1 N.-....C   44501924
+>C:8d19  a5 00 00 08  04                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/cm_keyboard_runtime-vice-mailbox.bin' from $8d19 to $8d1d
+Saving file `/workspace/Apollo-11/c64-port/build/cm_keyboard_runtime-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_keyboard_runtime-vice-software-stack.bin' from $c100 to $cfff

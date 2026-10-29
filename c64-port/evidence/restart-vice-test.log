@@ -1,0 +1,11 @@
+PASS: VICE PAL, 226 original-assembly fingerprints; six recovered native jobs; stale runtime remains stopped; restoring I
+Mailbox: a50000bee206823c2486038202
+Target record/phase/case sizes: 130 60 902
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/restart-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/restart-vice-monitor.log -monlog -limitcycles 1000000000
+fourth alarm record: 332 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+STARTSB1 cleanup: 3735 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+six protected phase pairs: 956 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+Type C NOVAC admission: 4191 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+recovery setup plus six native job completions: 135110 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+restart-vice-hardware-stack.bin: measured sentinel extent 29 bytes
+restart-vice-software-stack.bin: measured sentinel extent 146 bytes

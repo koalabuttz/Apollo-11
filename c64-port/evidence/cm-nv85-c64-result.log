@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 60 complete cm_nv85 group original-assembly states; retained memory unchanged
+Mailbox: a500003c00
+PRG bytes: 31656
+cm_nv85-hardware-stack.bin: measured stack extent 25 bytes
+cm_nv85-software-stack.bin: measured stack extent 102 bytes

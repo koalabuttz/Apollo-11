@@ -1,0 +1,984 @@
+[
+  {
+    "id": 1,
+    "filename": "P66G1",
+    "name": "prepare",
+    "selector": 1,
+    "boundary": "03275 -> before INTPRET at03353",
+    "byte_count": 5524,
+    "crc16": 31100,
+    "bss_size": 0,
+    "sha256": "06fd675b2653c35b923ce655d3349b8becc2d37b4306baa0d800eac25ce9e4ab",
+    "prg": "overlay-p66-1.prg",
+    "shared_state": "canonical2048word erasable image",
+    "mission_translation": true,
+    "native_sources": [
+      "platform/c64/p66_overlay_payload.c",
+      "src/agc_word.c",
+      "src/agc_multiword.c",
+      "src/p66_native.c",
+      "src/guidance.c",
+      "src/guidance_acceleration.c",
+      "src/guidance_divide.c",
+      "src/guidance_dot.c",
+      "src/guidance_dp_divide.c",
+      "src/guidance_elapsed.c",
+      "src/guidance_gravity.c",
+      "src/guidance_norm.c",
+      "src/guidance_prepare.c",
+      "src/guidance_product.c",
+      "src/guidance_projection.c",
+      "src/guidance_push.c",
+      "src/guidance_radial.c",
+      "src/guidance_rotation.c",
+      "src/guidance_scale.c",
+      "src/guidance_shift.c",
+      "src/guidance_store.c",
+      "src/guidance_sum.c",
+      "src/guidance_throttle.c",
+      "src/guidance_throttle_service.c",
+      "src/guidance_trig.c",
+      "src/guidance_unit.c",
+      "src/guidance_vector.c",
+      "src/guidance_velocity.c"
+    ],
+    "compile_defines": [
+      "P66_NATIVE_ARITH_ONLY",
+      "P66_NATIVE_ONLY_GROUP=1"
+    ],
+    "scope": "one bounded Luminary099 RODCOMP group; no complete-program claim"
+  },
+  {
+    "id": 2,
+    "filename": "P66G2",
+    "name": "scale-time",
+    "selector": 2,
+    "boundary": "VXSC/PDDL THISTPIP -> DANZIG03356",
+    "byte_count": 7772,
+    "crc16": 18737,
+    "bss_size": 0,
+    "sha256": "016c4c82a0dac4bfec5c227648b01c92381c8992af199b76a869fb0b9de84d88",
+    "prg": "overlay-p66-2.prg",
+    "shared_state": "canonical2048word erasable image",
+    "mission_translation": true,
+    "native_sources": [
+      "platform/c64/p66_overlay_payload.c",
+      "src/agc_word.c",
+      "src/agc_multiword.c",
+      "src/p66_native.c",
+      "src/guidance.c",
+      "src/guidance_acceleration.c",
+      "src/guidance_divide.c",
+      "src/guidance_dot.c",
+      "src/guidance_dp_divide.c",
+      "src/guidance_elapsed.c",
+      "src/guidance_gravity.c",
+      "src/guidance_norm.c",
+      "src/guidance_prepare.c",
+      "src/guidance_product.c",
+      "src/guidance_projection.c",
+      "src/guidance_push.c",
+      "src/guidance_radial.c",
+      "src/guidance_rotation.c",
+      "src/guidance_scale.c",
+      "src/guidance_shift.c",
+      "src/guidance_store.c",
+      "src/guidance_sum.c",
+      "src/guidance_throttle.c",
+      "src/guidance_throttle_service.c",
+      "src/guidance_trig.c",
+      "src/guidance_unit.c",
+      "src/guidance_vector.c",
+      "src/guidance_velocity.c"
+    ],
+    "compile_defines": [
+      "P66_NATIVE_ARITH_ONLY",
+      "P66_NATIVE_ONLY_GROUP=2"
+    ],
+    "scope": "one bounded Luminary099 RODCOMP group; no complete-program claim"
+  },
+  {
+    "id": 4,
+    "filename": "P66G4",
+    "name": "divide-gravity",
+    "selector": 4,
+    "boundary": "DDV4SEC(28)/PDVL GDT/2 -> DANZIG03364",
+    "byte_count": 7608,
+    "crc16": 62861,
+    "bss_size": 0,
+    "sha256": "21ab00ccd0f96f0866b50d592762e661c97cbd8eb337848b6b2aa37121e13289",
+    "prg": "overlay-p66-4.prg",
+    "shared_state": "canonical2048word erasable image",
+    "mission_translation": true,
+    "native_sources": [
+      "platform/c64/p66_overlay_payload.c",
+      "src/agc_word.c",
+      "src/agc_multiword.c",
+      "src/p66_native.c",
+      "src/guidance.c",
+      "src/guidance_acceleration.c",
+      "src/guidance_divide.c",
+      "src/guidance_dot.c",
+      "src/guidance_dp_divide.c",
+      "src/guidance_elapsed.c",
+      "src/guidance_gravity.c",
+      "src/guidance_norm.c",
+      "src/guidance_prepare.c",
+      "src/guidance_product.c",
+      "src/guidance_projection.c",
+      "src/guidance_push.c",
+      "src/guidance_radial.c",
+      "src/guidance_rotation.c",
+      "src/guidance_scale.c",
+      "src/guidance_shift.c",
+      "src/guidance_store.c",
+      "src/guidance_sum.c",
+      "src/guidance_throttle.c",
+      "src/guidance_throttle_service.c",
+      "src/guidance_trig.c",
+      "src/guidance_unit.c",
+      "src/guidance_vector.c",
+      "src/guidance_velocity.c"
+    ],
+    "compile_defines": [
+      "P66_NATIVE_ARITH_ONLY",
+      "P66_NATIVE_ONLY_GROUP=4"
+    ],
+    "scope": "one bounded Luminary099 RODCOMP group; no complete-program claim"
+  },
+  {
+    "id": 103,
+    "filename": "G103",
+    "byte_count": 3492,
+    "crc16": 840,
+    "prg": "overlay-p66-extended-103.prg",
+    "sha256": "68fdae46bb139d8df6266f595bfd04d27d8154eeed9a41bf36ad96738ce2755a"
+  },
+  {
+    "id": 113,
+    "filename": "G113",
+    "byte_count": 2555,
+    "crc16": 11815,
+    "prg": "overlay-p66-extended-113.prg",
+    "sha256": "dfdda97d1c9ebbeb505a95ff1088178aa1a55837e61739fcb26f50538c1fa350"
+  },
+  {
+    "id": 105,
+    "filename": "G105",
+    "byte_count": 6494,
+    "crc16": 50029,
+    "prg": "overlay-p66-extended-105.prg",
+    "sha256": "b8abfab4b0525afaca11f5ba5fa15a2bcb827a1321991773ea18ac216ed9a5ec"
+  },
+  {
+    "id": 115,
+    "filename": "G115",
+    "byte_count": 5576,
+    "crc16": 35896,
+    "prg": "overlay-p66-extended-115.prg",
+    "sha256": "698837a5126bd6c34d40c67165bd88b2247e41aa3d93a0579fbd53466fcc6bd0"
+  },
+  {
+    "id": 125,
+    "filename": "G125",
+    "byte_count": 5213,
+    "crc16": 48291,
+    "prg": "overlay-p66-extended-125.prg",
+    "sha256": "5fb4d312e466493845614f28f2eca843c017857924fa562f8c100d6e115c0a7a"
+  },
+  {
+    "id": 106,
+    "filename": "G106",
+    "byte_count": 7664,
+    "crc16": 25727,
+    "prg": "overlay-p66-extended-106.prg",
+    "sha256": "178e815ce2c4c404543183a9fde2e7a2850f25af606f225c63b39e69ca5bea97"
+  },
+  {
+    "id": 116,
+    "filename": "G116",
+    "byte_count": 9047,
+    "crc16": 14793,
+    "prg": "overlay-p66-extended-116.prg",
+    "sha256": "4b95c3e4e41d56f858ef26b8621fbaaecf5c294a3f91b95295235b5017e4f6bb"
+  },
+  {
+    "id": 126,
+    "filename": "G126",
+    "byte_count": 9139,
+    "crc16": 19888,
+    "prg": "overlay-p66-extended-126.prg",
+    "sha256": "1812ef84d7c001f547f2f072b06f6530386d7a45173123ae56e27cc889160782"
+  },
+  {
+    "id": 136,
+    "filename": "G136",
+    "byte_count": 2783,
+    "crc16": 14351,
+    "prg": "overlay-p66-extended-136.prg",
+    "sha256": "0cf4103928e6621f19bab32c837edb1dfdaf8a5574fd4a02287487ae2334412c"
+  },
+  {
+    "id": 146,
+    "filename": "G146",
+    "byte_count": 8452,
+    "crc16": 59668,
+    "prg": "overlay-p66-extended-146.prg",
+    "sha256": "d5366a6c9136abb17e79182671166d7ecacdd8fc6c94ffebbf410b915c4e23b0"
+  },
+  {
+    "id": 156,
+    "filename": "G156",
+    "byte_count": 2447,
+    "crc16": 17479,
+    "prg": "overlay-p66-extended-156.prg",
+    "sha256": "b702c910a70ee212c1ef5da0ccd3ef245e771e2b5f772dc6073da7c46bdfbb9f"
+  },
+  {
+    "id": 166,
+    "filename": "G166",
+    "byte_count": 4862,
+    "crc16": 59525,
+    "prg": "overlay-p66-extended-166.prg",
+    "sha256": "3f797b3a5eb58196a74723e2ac0ded2da5fbebb24e31f631cad9da71d6730fda"
+  },
+  {
+    "id": 176,
+    "filename": "G176",
+    "byte_count": 3629,
+    "crc16": 851,
+    "prg": "overlay-p66-extended-176.prg",
+    "sha256": "53c3ea3b03f55641110c58186bcb41ff659f4a5d4ca4ec7224489d1d98406667"
+  },
+  {
+    "id": 186,
+    "filename": "G186",
+    "byte_count": 2415,
+    "crc16": 60333,
+    "prg": "overlay-p66-extended-186.prg",
+    "sha256": "e2cc58cbb0276c578ae65bec8a566820c4c6d4465c83e109459b8c28afa86ce0"
+  },
+  {
+    "id": 107,
+    "filename": "G107",
+    "byte_count": 15301,
+    "crc16": 55756,
+    "prg": "overlay-p66-extended-107.prg",
+    "sha256": "a4d13346fbec362dc0435cb8127ef640c29e9768906ee2a3049c94fd5d451ff3"
+  },
+  {
+    "id": 117,
+    "filename": "G117",
+    "byte_count": 14555,
+    "crc16": 54471,
+    "prg": "overlay-p66-extended-117.prg",
+    "sha256": "21b492e04e537795009ec94691dc863d367921e970d8625550cd2dd723b1c0b6"
+  },
+  {
+    "id": 127,
+    "filename": "G127",
+    "byte_count": 11075,
+    "crc16": 60906,
+    "prg": "overlay-p66-extended-127.prg",
+    "sha256": "3729d8476f89567585780b1c5512da1d7428ea804e32144262a09370406a4cf2"
+  },
+  {
+    "id": 137,
+    "filename": "G137",
+    "byte_count": 2489,
+    "crc16": 61000,
+    "prg": "overlay-p66-extended-137.prg",
+    "sha256": "48ae69bddaa52c7101192cf63e0543f8928ba75a5bd1220c6ed9a32af8608b24"
+  },
+  {
+    "id": 147,
+    "filename": "G147",
+    "byte_count": 3556,
+    "crc16": 48364,
+    "prg": "overlay-p66-extended-147.prg",
+    "sha256": "b637b356aafb679ff5e99509561f4e54f2cd98e197ee0cb84eb082456ca28a57"
+  },
+  {
+    "id": 108,
+    "filename": "G108",
+    "byte_count": 10549,
+    "crc16": 65140,
+    "prg": "overlay-p66-extended-108.prg",
+    "sha256": "1500856b969ad1b5442ff88b790835d53d1392976e5a2e0d87e23fc362a94a20"
+  },
+  {
+    "id": 118,
+    "filename": "G118",
+    "byte_count": 7374,
+    "crc16": 29473,
+    "prg": "overlay-p66-extended-118.prg",
+    "sha256": "d661d0d584e1c56bf03d1b6279e4f234f2a45d8bbc00668db60abfb07b13bbda"
+  },
+  {
+    "id": 128,
+    "filename": "G128",
+    "byte_count": 7906,
+    "crc16": 27752,
+    "prg": "overlay-p66-extended-128.prg",
+    "sha256": "070facda11a3255601acf505ec61624e40b61d6a2a3e513827d4a6a3d5a82eb6"
+  },
+  {
+    "id": 9,
+    "filename": "G9",
+    "byte_count": 2490,
+    "crc16": 31896,
+    "prg": "overlay-p66-extended-9.prg",
+    "sha256": "f17de8c7b316d8eca15b4d992d2bfaa86e5e8b0e8dbdc26e19c159f6ac05f5f7"
+  },
+  {
+    "id": 10,
+    "filename": "G10",
+    "byte_count": 11088,
+    "crc16": 32720,
+    "prg": "overlay-p66-extended-10.prg",
+    "sha256": "38492d07d64f19053f17c650dd8662848c19cce311176de60cb23faebf09ec22"
+  },
+  {
+    "id": 190,
+    "filename": "G190",
+    "byte_count": 6485,
+    "crc16": 11077,
+    "sha256": "0463d3b87be7ddc3d0aeadbdc76f8cf9c8d35a90a47ce3daf6123ca02ee9ce81",
+    "prg": "overlay-p66-descent-190.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 192,
+    "filename": "G192",
+    "byte_count": 4131,
+    "crc16": 6486,
+    "sha256": "1113e23821b84566f965f06c900c00ee5c0ade0ee1c3897ea8169ae69d0801d2",
+    "prg": "overlay-p66-descent-192.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 193,
+    "filename": "G193",
+    "byte_count": 2807,
+    "crc16": 49971,
+    "sha256": "ed7b8f9a92a265a5f26ee4dc7ea748028455aea4872bbbf00aa498cde5834d73",
+    "prg": "overlay-p66-descent-193.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 194,
+    "filename": "G194",
+    "byte_count": 11200,
+    "crc16": 36306,
+    "sha256": "e74e3a24cfb72944263baf5516ed4f2513a038262cfabee24861a7cee315d4af",
+    "prg": "overlay-p66-descent-194.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 195,
+    "filename": "G195",
+    "byte_count": 4272,
+    "crc16": 59399,
+    "sha256": "d330bb9a2546bb950612f5041d66373fb5ed156f0d828efd80767fd570d472e3",
+    "prg": "overlay-p66-descent-195.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 196,
+    "filename": "G196",
+    "byte_count": 10764,
+    "crc16": 42981,
+    "sha256": "79b5a127fee1833ebfcbbb7c7068ab934ec69bb904512f7d3c383cd358ea8f5f",
+    "prg": "overlay-p66-descent-196.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 197,
+    "filename": "G197",
+    "byte_count": 4193,
+    "crc16": 36829,
+    "sha256": "cf90868574104ff5fe02e12e7e4903ad82644b4674ddac364d03f8503f2ffc83",
+    "prg": "overlay-p66-descent-197.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 198,
+    "filename": "G198",
+    "byte_count": 13100,
+    "crc16": 12505,
+    "sha256": "f91b02e35f65ca014100970ce9075bad6b0e02127a24c4115c8dcec075f3ed58",
+    "prg": "overlay-p66-descent-198.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 199,
+    "filename": "G199",
+    "byte_count": 5689,
+    "crc16": 29022,
+    "sha256": "f539a2369d73ef48780a946a6752cc438f6ebbd5645bbd7209ae8bea176fdd36",
+    "prg": "overlay-p66-descent-199.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 200,
+    "filename": "G200",
+    "byte_count": 11441,
+    "crc16": 26143,
+    "sha256": "a39a3911932e3664fc1fc8d0eb17235ff1b2e2a8ca12672f59382047f6f42660",
+    "prg": "overlay-p66-descent-200.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 201,
+    "filename": "G201",
+    "byte_count": 11446,
+    "crc16": 23723,
+    "sha256": "8d5c87a80577314b6de43bc1d4a4c96b609c3ebba6f63bb6b392e21951a19017",
+    "prg": "overlay-p66-descent-201.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 202,
+    "filename": "G202",
+    "byte_count": 4063,
+    "crc16": 58197,
+    "sha256": "6c08bf750bf5f3781c66129a7bd14f54b0902c18d4c4f91fa5e1a4ce34630dbc",
+    "prg": "overlay-p66-descent-202.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 203,
+    "filename": "G203",
+    "byte_count": 3064,
+    "crc16": 15862,
+    "sha256": "4177a13901a55229e5c8423d5f591f803129cb30fd9e51292feed0d3ce21816d",
+    "prg": "overlay-p66-descent-203.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 204,
+    "filename": "G204",
+    "byte_count": 2767,
+    "crc16": 59562,
+    "sha256": "c003e69f67241587c01860db01b4024b235a00d4e3aec7f10f36d93f27c9cd6e",
+    "prg": "overlay-p66-descent-204.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 205,
+    "filename": "G205",
+    "byte_count": 4409,
+    "crc16": 42931,
+    "sha256": "0ef951827a82fcf495ddfb5538eb1af6a986190890b3205aa88dc38647b8804b",
+    "prg": "overlay-p66-descent-205.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 206,
+    "filename": "G206",
+    "byte_count": 2714,
+    "crc16": 23656,
+    "sha256": "753911144ecc5af8af56574150c3ef55a588d621d87937697765388e6b85194e",
+    "prg": "overlay-p66-descent-206.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 207,
+    "filename": "G207",
+    "byte_count": 2714,
+    "crc16": 2328,
+    "sha256": "74327e1297e6d483c2c32dca053da975a86baa47d747a0e52e4fea1030273a06",
+    "prg": "overlay-p66-descent-207.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 208,
+    "filename": "G208",
+    "byte_count": 2412,
+    "crc16": 39844,
+    "sha256": "726e64a0146328b9ba5fe07107a3ff263f514897448511b731c65fefc452c0cc",
+    "prg": "overlay-p66-descent-208.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 209,
+    "filename": "G209",
+    "byte_count": 2877,
+    "crc16": 13231,
+    "sha256": "c3ce9e8d25ab7e53b50b9c0b6f35bd1865a0c7c560a9865e27617311e8626079",
+    "prg": "overlay-p66-descent-209.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 210,
+    "filename": "G210",
+    "byte_count": 6970,
+    "crc16": 34136,
+    "sha256": "a57f0302f6d3a67cbe0d546984e70cbff2af50f2ec78bfc7b92077f6565a8a19",
+    "prg": "overlay-p66-descent-210.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 211,
+    "filename": "G211",
+    "byte_count": 8689,
+    "crc16": 26174,
+    "sha256": "2259a3e9543ed502e0d91eebb6428b3626bf425793273db0a6e04229334efadb",
+    "prg": "overlay-p66-descent-211.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 212,
+    "filename": "G212",
+    "byte_count": 4073,
+    "crc16": 46073,
+    "sha256": "cc0cca8ada32b2a151682485d3991be2d85d6ecc188c38bbe3eb1a7160a497da",
+    "prg": "overlay-p66-descent-212.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 213,
+    "filename": "G213",
+    "byte_count": 2842,
+    "crc16": 18078,
+    "sha256": "8b20fa13c605bc059cce6812e1725fdd05c294d3f0eebaf4ba94d3d388d1d5e2",
+    "prg": "overlay-p66-descent-213.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 220,
+    "filename": "G220",
+    "byte_count": 2809,
+    "crc16": 37895,
+    "sha256": "add9be9c093a3b6feebda646452fb6467486314d12cedb8fc33547bb951daa3a",
+    "prg": "overlay-p66-descent-220.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 221,
+    "filename": "G221",
+    "byte_count": 5878,
+    "crc16": 64013,
+    "sha256": "b2a9de2723a5c6e696aca2a7e08db397fd9e6020a625e317ffc81761c5310fe8",
+    "prg": "overlay-p66-descent-221.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 222,
+    "filename": "G222",
+    "byte_count": 4338,
+    "crc16": 53056,
+    "sha256": "6941db177409639fbe09c550805d9b8d4404a8a2d64652d06a843395664bac1b",
+    "prg": "overlay-p66-descent-222.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 224,
+    "filename": "G224",
+    "byte_count": 6096,
+    "crc16": 41657,
+    "sha256": "ba1c4dc0555c1ba597f753c0236ebc7f2af822caa9e93be7c82a43b1ead16cfa",
+    "prg": "overlay-p66-descent-224.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 226,
+    "filename": "G226",
+    "byte_count": 2507,
+    "crc16": 40409,
+    "sha256": "0133de596e1f1f85b78fd0b5f3c7242b73a8b9fa41d61b4ca01179b16fa03bb6",
+    "prg": "overlay-p66-descent-226.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 227,
+    "filename": "G227",
+    "byte_count": 2335,
+    "crc16": 60094,
+    "sha256": "3f796bf6ec29d96d5df24c0afa7f20475ebf4c82c88578c387c0f2ed5221a70f",
+    "prg": "overlay-p66-descent-227.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 230,
+    "filename": "G230",
+    "byte_count": 7755,
+    "crc16": 64311,
+    "sha256": "16880a00a68e173bb38ae91f658ff094cf2a0658b8815e0688d0b07ed77f59ee",
+    "prg": "overlay-p66-descent-230.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 231,
+    "filename": "G231",
+    "byte_count": 9030,
+    "crc16": 21748,
+    "sha256": "a06e59c902ee33c4022468f1327201e557c30b6c014f741ffcc7f6e9189c9bd9",
+    "prg": "overlay-p66-descent-231.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 232,
+    "filename": "G232",
+    "byte_count": 9118,
+    "crc16": 39566,
+    "sha256": "a90ba51c919a24e5c885df6548a26c2bdfb911c76c8e988f7cf1ff78b6481480",
+    "prg": "overlay-p66-descent-232.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 233,
+    "filename": "G233",
+    "byte_count": 4691,
+    "crc16": 8470,
+    "sha256": "d470ecce46e6811f110e8b1ef45295b0c96620219700dd4ab92183c63840497c",
+    "prg": "overlay-p66-descent-233.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 234,
+    "filename": "G234",
+    "byte_count": 7136,
+    "crc16": 5052,
+    "sha256": "e0b8d33e4120f7c752fbcc1f5d0620fce2840d4425b1fc6d150d920db77e4109",
+    "prg": "overlay-p66-descent-234.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 235,
+    "filename": "G235",
+    "byte_count": 8759,
+    "crc16": 17642,
+    "sha256": "fb93a2c608da10d9f908803913e4a4e6a497e9ef256d338be395b561767ebddc",
+    "prg": "overlay-p66-descent-235.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 236,
+    "filename": "G236",
+    "byte_count": 3939,
+    "crc16": 53944,
+    "sha256": "33eb16374d49f51cd9dd79e5f7a065bdbd2e92c2f6c1ae7272b93f59881be7b6",
+    "prg": "overlay-p66-descent-236.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 90,
+    "filename": "C90",
+    "byte_count": 1097,
+    "crc16": 38614,
+    "sha256": "8c127e161a3c855eb620f96b27e3fba458cc8987f79056647f2b093c863e698c",
+    "prg": "overlay-p66-control-90.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 91,
+    "filename": "C91",
+    "byte_count": 11008,
+    "crc16": 57756,
+    "sha256": "aa7fce450da9394a943babec05a17a6c7e641beb6892e54e839fe358147d995a",
+    "prg": "overlay-p66-control-91.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 92,
+    "filename": "C92",
+    "byte_count": 856,
+    "crc16": 17428,
+    "sha256": "aa3b642d58d77754ec5597f58e6e63b9eb0adcc01d196395059a93e06ac63efa",
+    "prg": "overlay-p66-control-92.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 93,
+    "filename": "C93",
+    "byte_count": 947,
+    "crc16": 19917,
+    "sha256": "c1bd94bf08311bfacd56908acf0de4a114d7883d38ccdc717576844ed143dd09",
+    "prg": "overlay-p66-control-93.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 94,
+    "filename": "C94",
+    "byte_count": 5069,
+    "crc16": 57675,
+    "sha256": "c57e63b9b52dfd4a1e9a452269158a4beb6d62ef31ab92f2b73bab1b9d3defce",
+    "prg": "overlay-p66-control-94.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 150,
+    "filename": "S150",
+    "byte_count": 7464,
+    "crc16": 20188,
+    "sha256": "4098ac77e6320ab4c258294612971fa37d2a3a91098d6d13f11978388359aa2f",
+    "prg": "overlay-native-scheduler-150.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 151,
+    "filename": "S151",
+    "byte_count": 10202,
+    "crc16": 5063,
+    "sha256": "7d51c5b87e71cd74f34129f496855f18c3f735e13ab001e75542a04ef2e98b9f",
+    "prg": "overlay-native-scheduler-151.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 152,
+    "filename": "S152",
+    "byte_count": 12234,
+    "crc16": 59361,
+    "sha256": "3cceb4ebe81f4dd5ce16743d8341b9591cf1ae464643440251d56c51e42fcbab",
+    "prg": "overlay-native-scheduler-152.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 153,
+    "filename": "S153",
+    "byte_count": 4206,
+    "crc16": 54058,
+    "sha256": "53b549e4680e44baf5014cfd94257bf1cdb3bc4481654de4797949ce591e3635",
+    "prg": "overlay-native-scheduler-153.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 60,
+    "selector": 300,
+    "filename": "D60",
+    "byte_count": 620,
+    "crc16": 62120,
+    "sha256": "93b9fdea0acf73807977a9da7c226d55a526be1b4138b8248ab2a3e1922ae13c",
+    "prg": "overlay-p66-display-300.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 61,
+    "selector": 301,
+    "filename": "D61",
+    "byte_count": 4612,
+    "crc16": 942,
+    "sha256": "d125d77c2430e97a48a54ffbafea6a28e93ef669a781aa3c6ce5cea95b167a52",
+    "prg": "overlay-p66-display-301.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 62,
+    "selector": 302,
+    "filename": "D62",
+    "byte_count": 1355,
+    "crc16": 16790,
+    "sha256": "071b28e724a083b9770f513b1451b46c74cc2ad55dbb61a2fb59f4873cfbb026",
+    "prg": "overlay-p66-display-302.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 63,
+    "selector": 303,
+    "filename": "D63",
+    "byte_count": 4814,
+    "crc16": 24573,
+    "sha256": "160465b9a85372e4050cdcd0f5a53e88052c0076684d81d520886e784431b8e1",
+    "prg": "overlay-p66-display-303.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 64,
+    "selector": 304,
+    "filename": "D64",
+    "byte_count": 1156,
+    "crc16": 38101,
+    "sha256": "f777cd5cd3dc7a9f3b06efb0cf09ddbc5c2278c63b47f2c3538c7b54cdbadc5d",
+    "prg": "overlay-p66-display-304.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 65,
+    "selector": 305,
+    "filename": "D65",
+    "byte_count": 640,
+    "crc16": 20728,
+    "sha256": "7d8b988e5225acbb5e918df3d261adbb2b735a0464e04cb3552d59eb78ec1a69",
+    "prg": "overlay-p66-display-305.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 66,
+    "selector": 306,
+    "filename": "D66",
+    "byte_count": 1193,
+    "crc16": 52379,
+    "sha256": "5b2cf4c5879811ba4412e2ae2b9a0541221c7c7f5cc9b57f9808605c45732efa",
+    "prg": "overlay-p66-display-306.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 67,
+    "selector": 307,
+    "filename": "D67",
+    "byte_count": 5082,
+    "crc16": 31725,
+    "sha256": "c6e0e67c1c1f778517a25835e05ad9fbef1a6be8b1d15c23d25b250b9853598a",
+    "prg": "overlay-p66-display-307.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 68,
+    "selector": 308,
+    "filename": "D68",
+    "byte_count": 604,
+    "crc16": 57436,
+    "sha256": "957964df8e9032cad25c330e2c233c4bd0d6e8a24456b6fb2f4e650d9da52c39",
+    "prg": "overlay-p66-display-308.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 69,
+    "selector": 309,
+    "filename": "D69",
+    "byte_count": 653,
+    "crc16": 35916,
+    "sha256": "3913b153b990984ff88e0216e756c7d46ff83453c488a5a62ffa1f57a6ec3857",
+    "prg": "overlay-p66-display-309.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 70,
+    "selector": 310,
+    "filename": "D70",
+    "byte_count": 1059,
+    "crc16": 16233,
+    "sha256": "0d2ab0fb462ef6526876e504582fc4b134e9fba643581a45854c0b4b569558d9",
+    "prg": "overlay-p66-display-310.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 71,
+    "selector": 311,
+    "filename": "D71",
+    "byte_count": 4300,
+    "crc16": 32502,
+    "sha256": "13b841f01d9aad8a1489f22afee15c5b4cdba8f5949d27c06ffadf31bc7e7e60",
+    "prg": "overlay-p66-display-311.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 72,
+    "selector": 312,
+    "filename": "D72",
+    "byte_count": 4598,
+    "crc16": 40674,
+    "sha256": "7563878e3be0b76e964e57860becab644f0a2e7070b106dfe9467edcaab87dc3",
+    "prg": "overlay-p66-display-312.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 73,
+    "selector": 313,
+    "filename": "D73",
+    "byte_count": 1221,
+    "crc16": 31607,
+    "sha256": "be5097930801d9653e5bb1aa46f9c701721f92449bca3347c00089cff4e6ac00",
+    "prg": "overlay-p66-display-313.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 74,
+    "selector": 314,
+    "filename": "D74",
+    "byte_count": 1147,
+    "crc16": 5705,
+    "sha256": "d3b15434255f078687ec7c110300259d32725456e97a203a8a3655c865e96aad",
+    "prg": "overlay-p66-display-314.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 75,
+    "selector": 315,
+    "filename": "D75",
+    "byte_count": 4985,
+    "crc16": 50367,
+    "sha256": "548d07a5b590172d79f612338b6c2d3f4be56f40abb73d34f07441b563b014d4",
+    "prg": "overlay-p66-display-315.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 76,
+    "selector": 316,
+    "filename": "D76",
+    "byte_count": 5983,
+    "crc16": 49494,
+    "sha256": "3cff2c470a280af82cf1f9a97005faec02671b74537e04c27f93868f4b6f42fe",
+    "prg": "overlay-p66-display-316.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 77,
+    "selector": 317,
+    "filename": "D77",
+    "byte_count": 878,
+    "crc16": 21691,
+    "sha256": "09c76477d4bef5fa80aacc8633cf3bec852e293a00e1bf098a14339c05759757",
+    "prg": "overlay-p66-display-317.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 78,
+    "selector": 318,
+    "filename": "D78",
+    "byte_count": 826,
+    "crc16": 55518,
+    "sha256": "eaa45fdde69c264bccd587c0265b45bcf1b02e990605ca9054e0b4094f738109",
+    "prg": "overlay-p66-display-318.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 79,
+    "selector": 319,
+    "filename": "D79",
+    "byte_count": 897,
+    "crc16": 449,
+    "sha256": "266779e25a9411d8bf5a0384d12a9ac424960d2bfa5302f6747f9eedda6a0946",
+    "prg": "overlay-p66-display-319.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 80,
+    "selector": 320,
+    "filename": "D80",
+    "byte_count": 969,
+    "crc16": 38059,
+    "sha256": "0fe83f94451bbcdd85b8411de9f52e3a48adc1e38e4d8b95a07ecfa86d4dc656",
+    "prg": "overlay-p66-display-320.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 81,
+    "selector": 321,
+    "filename": "D81",
+    "byte_count": 5928,
+    "crc16": 29620,
+    "sha256": "5ea46b299234acfb2f0fbded1b4172ffe29a304ee3cb899af3c7c0f6a8645584",
+    "prg": "overlay-p66-display-321.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 248,
+    "filename": "P66INF",
+    "byte_count": 8784,
+    "crc16": 4011,
+    "sha256": "c8a1425c476c6d6a689f413c1339c177fe9950717918cdfd8c7ebf70d51c7c90",
+    "prg": "p66-complete-fixture-248.prg",
+    "mission_translation": false
+  },
+  {
+    "id": 249,
+    "filename": "P66CKF",
+    "byte_count": 1915,
+    "crc16": 44269,
+    "sha256": "85b48ead831e92ac7e0425df5579f997943175cf8faff0de414a62ba71255375",
+    "prg": "p66-complete-fixture-249.prg",
+    "mission_translation": false
+  }
+]

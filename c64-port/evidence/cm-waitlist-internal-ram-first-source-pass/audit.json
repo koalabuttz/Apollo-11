@@ -1,0 +1,45 @@
+{
+  "scope": "First correct complete original local body replay including RAM FIXDELAY literals and unusual interval frontiers; full target/SAN acceptance pending. Later adds actual original SVCT3X fixed callerQ7720/literal500 without altering kernel.",
+  "files": [
+    {
+      "path": "include/cm_waitlist_internal.h",
+      "bytes": 798,
+      "sha256": "5c10dba802cd3f0516d00075f5da96579ebf5e46b0a4e36c52eb2a14771f3dcb"
+    },
+    {
+      "path": "src/cm_waitlist_internal.c",
+      "bytes": 6657,
+      "sha256": "8c2ec138154ac91d117b3870d234d855ab6c1bc4f9f723175348f18e466c80da"
+    },
+    {
+      "path": "tests/cm_waitlist_internal_cases.c",
+      "bytes": 1232,
+      "sha256": "920d5bad82377f52977fb9dd18b3d379913990d50c68bf9c9fb450fbbbe37e10"
+    },
+    {
+      "path": "tools/cm_waitlist_internal_reference.c",
+      "bytes": 1477,
+      "sha256": "b8b75f983909e99010964b9793a32d3a3461f6c332381b4d2617d798524e47c1"
+    },
+    {
+      "path": "build/cm-waitlist-internal-proof.json",
+      "bytes": 506,
+      "sha256": "d222a9ad9c88bd0365d1415ba84d538e934cbb192b638301a9fbc0bc2a424c34"
+    },
+    {
+      "path": "build/cm-waitlist-internal-validation.log",
+      "bytes": 731,
+      "sha256": "4003bbe76da3b86cdbe3442017bcaf682be4b2fae7ac78dc733cabc2e1450524"
+    },
+    {
+      "path": "build/cm-waitlist-internal-reference.snapshots.bin.gz",
+      "bytes": 9158275,
+      "sha256": "b0dab29657c26a0327bc3ac6a5718587392f2d75d65b1adc1b2216fd8090f9d7"
+    },
+    {
+      "path": "build/cm-waitlist-internal-native.snapshots.bin.gz",
+      "bytes": 9158275,
+      "sha256": "b0dab29657c26a0327bc3ac6a5718587392f2d75d65b1adc1b2216fd8090f9d7"
+    }
+  ]
+}

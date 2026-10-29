@@ -1,0 +1,29 @@
+[
+  {
+    "id": 242,
+    "filename": "G242",
+    "byte_count": 5466,
+    "crc16": 14694,
+    "sha256": "df8e01046c8151621ce6ba34aee83bf32f49a90e2cfb7ee317858263e5962c26",
+    "prg": "cm-admission-floor-242.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 5055,
+    "crc16": 43046,
+    "sha256": "ba5fb341a2168b297c8a4817fb6d6e603cebabe8d3374b0eee1f25b3dbe59253",
+    "prg": "cm-admission-floor-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 9981,
+    "crc16": 52563,
+    "sha256": "0f3b013f62f750366e3bc4c54b98605d137a3ae7e1962aede8ac53b43dc79c32",
+    "prg": "cm-admission-floor-255.prg",
+    "native_control": false
+  }
+]

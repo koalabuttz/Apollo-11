@@ -1,0 +1,6 @@
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS:98304 throttle_feedback phase checkpoints, all124 complete modeled raw words and paths match unchanged assembly/hardware DV
+Paths: Counter({0: 16384, 1: 16384, 2: 16384, 3: 16384, 4: 16384, 5: 16384})
+Snapshot SHA256: 2681746eff8644b4b4ff08531cc7cc9d4d1eddd11d8cc943ce30d98a7c76bd76

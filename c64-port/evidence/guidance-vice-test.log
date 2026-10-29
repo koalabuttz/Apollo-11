@@ -1,0 +1,12 @@
+PASS: VICE PAL, 568 complete original-assembly checkpoints; three eight-step rate histories; restoring I
+Mailbox: a500003802030c0d25
+Target rate-state/case sizes: 12 13
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/guidance-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/guidance-vice-monitor.log -monlog -limitcycles 1000000000
+positive maximum MP: 1711 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+negative maximum MP: 1920 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+DAS low-word carry: 478 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+DAS high-word overflow: 345 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+zero-count P66 rate update: 553 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+maximum-count P66 rate update: 2108 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+guidance-vice-hardware-stack.bin: measured sentinel extent 23 bytes
+guidance-vice-software-stack.bin: measured sentinel extent 26 bytes

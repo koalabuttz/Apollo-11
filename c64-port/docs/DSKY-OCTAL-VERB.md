@@ -1,0 +1,11 @@
+# Original octal display verb staging
+
+`dsky_octal_verb_begin` translates actual DSPA/B/C/AB/ABC (verbs1..5), component-count and decimal-only tests, normal/mixed noun selection, source minor-part selection and BUF staging. It stops at actual DSPOCTWD41,3363, CHANDSP41,2504 or GODSPALM41,2351 before those external bodies. CM routine13 is double precision; LM routine13 is single precision, matching each original DPTEST.
+
+`dsky_octal_verb_channel` executes actual CHANDSP and row staging from a stable resolved ordinary channel word. Channels1/2 instead read canonical L/Q; channel7 reads retained SUPER. No native peripheral clock or output runs. `dsky_octal_verb_return` resumes actual formatter return2422, preserves XCH DISTEM effects and selects another row or actual saved ENTRET0136 before executing that saved instruction.
+
+Caller excludes producers and supplies ordinary RAM, coherent bank41/allEB, SUPER100/120/140/160, legal IRQ, matching source PC and VERBREG1..5, MIXBR1/2, and ordinary logical noun0100..1775 resolving to ordinary RAM at least0100. CPU/edit-register noun reads are excluded. Normal routine codes0..13 are supported. Standalone row return requires DISTEM0..2. Raw16-bit A/L/Q, signed zeros, noun/scratch aliases and source-indexed component checks are preserved. Invalid declared control inputs leave image, IO and route unchanged. Source test peripherals are quiescent, preventing unrelated hardware counters from changing during the host reference observations.
+
+All16,384 complete original LM/CM states match strict native and full ASAN/UBSAN, raw SHA256 `ad099cc1be0f840394294fe64c1a083f9ea4ae8891caf847e2f3417a650423c4`. Frozen tests retain128 full source states, including the signed saved-Q channel regression and channel7 case, plus72 unchanged invalid guards. Stock PAL C64 passes128, mailbox `a500008000`; PRG8,699 bytes, hardware stack14 including14 ROM bytes, software stack32, no additional zero-page allocation. The source formatter, alarm/recovery bodies and following saved return remain external to this stage packet.
+
+Exact source, dependency and target identities are in `evidence/dsky-octal-verb-proof.json`. The separate uninterrupted octal consumer proof composes the original formatter and row loop; this packet makes no whole Pinball/application claim.

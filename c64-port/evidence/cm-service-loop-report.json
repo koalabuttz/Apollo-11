@@ -1,0 +1,53 @@
+{
+  "cases": 384,
+  "checkpoints": 1856,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3423 T3RUPT2"
+  ],
+  "actual_tasks": [
+    "15,3207 SETJTAG",
+    "24,3260 CLOKTASK",
+    "05306 SVCT3"
+  ],
+  "actual_services": [
+    "WAITLIST",
+    "NOVAC",
+    "FIXDELAY",
+    "TASKOVER"
+  ],
+  "boundary": "continuous original ISR to05341 before hardware RESUME",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "fd6a0f1cdefdaa0e3d201e763976dd47c2e374a234bd018de6447ddd97284033",
+  "hardware_stack_bytes": 31,
+  "software_stack_bytes": 1488,
+  "c64_cases": 64,
+  "mailbox_hex": "a500004000",
+  "target": {
+    "prg_bytes": 32884,
+    ".text": {
+      "address": 2061,
+      "bytes": 26789
+    },
+    ".rodata": {
+      "address": 28850,
+      "bytes": 6081
+    },
+    ".data": {
+      "address": 34931,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 34931,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 39053,
+      "bytes": 0
+    },
+    "image_end": 39053
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "virtualagc_commit": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "owned_state_words": 312,
+  "host_checkpoints": 876,
+  "callback_sequences": {
+    "basic": 8,
+    "lifecycle": 5,
+    "mixed": 7
+  },
+  "full_target_samples": 16,
+  "native_runtime_scope": "Foreground CM continuations; caller owns IRQ coordination; no hardware IRQ queue delivery",
+  "source_sha256": {
+    "original_executive": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "original_interpreter": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "pinned_interpreter": "d6a0707c5e58a82516b4cbca7d8941b7a7fb610b82c3da3cfc6103c2214ffd99",
+    "rope": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  },
+  "snapshots": {
+    "dispatch": "4e47a03548287871901e08b0feefaa3a4bfa4be65d741b923a20b9d30ca4f2ae",
+    "lifecycle": "155f0beb9fccee22a885d7ffceadc9f2b1449d44dbe39178ca7462e1f70e4e95",
+    "interpreter": "c852a128cd217066aecd89188f5b06ed529dab7770c0e816332fc64499fe6227",
+    "mixed": "33f01e9117e0bee05d6b31687bbc4d40cf0ee0b69bb43fa4a6747e332fccdb30"
+  },
+  "c64": {
+    "basic": {
+      "checkpoints": 109,
+      "full_samples": 7,
+      "prg_file_bytes": 30001,
+      "loaded_bytes": 29999,
+      "last_loaded_address": "0x7d2f",
+      "sections": {
+        "text": {
+          "address": "80d",
+          "bytes": 24937
+        },
+        "rodata": {
+          "address": "6976",
+          "bytes": 5050
+        },
+        "noinit": {
+          "address": "7d30",
+          "bytes": 1
+        }
+      },
+      "mailbox": "a500006d00",
+      "stack_sentinel_extents": {
+        "hardware": 29,
+        "software": 1408
+      }
+    },
+    "lifecycle": {
+      "checkpoints": 115,
+      "full_samples": 4,
+      "prg_file_bytes": 36132,
+      "loaded_bytes": 36130,
+      "last_loaded_address": "0x9522",
+      "sections": {
+        "text": {
+          "address": "80d",
+          "bytes": 32925
+        },
+        "rodata": {
+          "address": "88aa",
+          "bytes": 3193
+        },
+        "noinit": {
+          "address": "9523",
+          "bytes": 1
+        }
+      },
+      "mailbox": "a500007300",
+      "stack_sentinel_extents": {
+        "hardware": 28,
+        "software": 1402
+      }
+    },
+    "interpreter": {
+      "checkpoints": 512,
+      "full_samples": 3,
+      "prg_file_bytes": 16866,
+      "loaded_bytes": 16864,
+      "last_loaded_address": "0x49e0",
+      "sections": {
+        "text": {
+          "address": "80d",
+          "bytes": 12522
+        },
+        "rodata": {
+          "address": "38f7",
+          "bytes": 4330
+        },
+        "noinit": {
+          "address": "49e1",
+          "bytes": 1
+        }
+      },
+      "mailbox": "a500000002",
+      "stack_sentinel_extents": {
+        "hardware": 23,
+        "software": 1420
+      }
+    },
+    "mixed": {
+      "checkpoints": 140,
+      "full_samples": 2,
+      "prg_file_bytes": 31611,
+      "loaded_bytes": 31609,
+      "last_loaded_address": "0x8379",
+      "sections": {
+        "text": {
+          "address": "80d",
+          "bytes": 29522
+        },
+        "rodata": {
+          "address": "7b5f",
+          "bytes": 2075
+        },
+        "noinit": {
+          "address": "837a",
+          "bytes": 1
+        }
+      },
+      "mailbox": "a500008c00",
+      "stack_sentinel_extents": {
+        "hardware": 24,
+        "software": 1450
+      }
+    }
+  }
+}

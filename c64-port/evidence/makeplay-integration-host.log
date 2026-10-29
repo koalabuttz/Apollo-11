@@ -1,0 +1,4 @@
+make: Entering directory '/workspace/Apollo-11/c64-port'
+build/test-makeplay
+64 complete MAKEPLAY images and45 invalid boundaries: PASS
+make: Leaving directory '/workspace/Apollo-11/c64-port'

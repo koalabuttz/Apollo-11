@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/cm_restart_timing_vice_test.py", line 21, in <module>
+    with (build/(name+'-vice.log')).open('w') as log: subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=2400,env=env)
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/workspace/toolchains/vice/usr/bin/x64sc', '-default', '-console', '-pal', '-warp', '+sound', '-kernal', '/workspace/toolchains/roms/C64/kernal-901227-03.bin', '-basic', '/workspace/toolchains/roms/C64/basic-901226-01.bin', '-chargen', '/workspace/toolchains/roms/C64/chargen-901225-01.bin', '-directory', '/workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms', '-initbreak', 'ready', '-moncommands', '/workspace/Apollo-11/c64-port/build/cm-restart-timing.mon', '-monlogname', '/workspace/Apollo-11/c64-port/build/cm-restart-timing-monitor.log', '-monlog', '-limitcycles', '30000000000']' died with <Signals.SIGTERM: 15>.

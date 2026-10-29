@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-orbital-initial-phase0.prg from 0801 to 1B06 (1306 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  229/$0e5,  57/$39
+.C:1158  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   42569724
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm-orbital-initial_phase0-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm-orbital-initial_phase0-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-orbital-initial_phase0-software-stack.bin' from $c100 to $cfff

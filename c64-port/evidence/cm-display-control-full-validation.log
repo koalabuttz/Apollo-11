@@ -1,0 +1,6 @@
+python3 tools/cm_display_control_full_differential.py
+PASS:2544 complete2048-word actual CM CLOCKJOB→display-entry source checkpoints, plus SUPER/IRQ
+Snapshot SHA256: 275c1bccb176f151873feb44b92a976be40170463589309e6df2b8b16ca37a71
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_display_control_full_snapshot.c src/agc_word.c src/cm_display_control.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c src/cm_quictrig.c src/agc_multiword.c -o build/cm-display-control-full-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-display-control-full-sanitize > build/cm-display-control-full-sanitize.snapshots
+cmp build/cm-display-control-full-sanitize.snapshots build/cm-display-control-full-reference.snapshots

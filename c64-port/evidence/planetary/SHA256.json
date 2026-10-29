@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "planetary",
+  "release": "evidence-planetary",
+  "files": {
+    "planetary-c64-cover.json": {
+      "sha256": "79e1f202b40a1dd5f51b96d35b1f7476ffdf46c527cf908a832ba6a1c48a5829",
+      "bytes": 4507,
+      "store": "tree"
+    },
+    "planetary-differential.log": {
+      "sha256": "3cf370dec26e6aa007e9f891c66a1ab0de0cef22bacee7119bf2efa7c4b3a7e4",
+      "bytes": 7154,
+      "store": "release"
+    },
+    "planetary-host.log": {
+      "sha256": "16ac5f7a453493796b084c52334ea7ec00e86d5945c5aa747c9ff6e5defea616",
+      "bytes": 970,
+      "store": "release"
+    },
+    "planetary-proof.json": {
+      "sha256": "b52a116b703111478bb83911dde9f319d6f168c00679821d258e34c73466adfb",
+      "bytes": 15495,
+      "store": "tree"
+    },
+    "planetary-source-map.json": {
+      "sha256": "fdfe992549cb7a9ade5ae7520bffd506cb6752738d10d32eb3e84273ee59547a",
+      "bytes": 53287,
+      "store": "tree"
+    },
+    "planetary-vice.log": {
+      "sha256": "ebad135e1602e685a9f4912613975d06ce769c4451c1f6c518d6a79cbc8f942c",
+      "bytes": 1611,
+      "store": "release"
+    }
+  }
+}

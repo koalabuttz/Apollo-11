@@ -1,0 +1,30 @@
+{
+  "reason": "First host oracle executed CCSHOLE frontier instruction instead of stopping before genuine external callee; no native mismatch or acceptance claim. Corrected source stop observes actual 05747 after PRIOCHNG start.",
+  "files": [
+    {
+      "path": "tools/cm_priority_full_reference.c",
+      "bytes": 1765,
+      "sha256": "8b1a1723ddbe623c919acfc2f1f9f29e00e6a6dbdbacef3d9403e048c4c010fb"
+    },
+    {
+      "path": "build/cm-priority-full-validation.log",
+      "bytes": 370,
+      "sha256": "2c45347064d8a882b195a2f1820d658425312edde4ce8eb3e34c5f7c65f1c2fa"
+    },
+    {
+      "path": "build/cm-priority-full-reference.trace",
+      "bytes": 43,
+      "sha256": "4e80da75f6dacd6f91ef27446893c03f4cab1e73904d763a1f49a8fbed1bdfdd"
+    },
+    {
+      "path": "build/cm-priority-full-native.stream.json",
+      "bytes": 99,
+      "sha256": "d40005501bb7769477d836ddd1466596a1d7caa56e6a3cbe4d3aabc2a01ac67e"
+    },
+    {
+      "path": "build/cm-priority-full-reference.snapshots.bin.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    }
+  ]
+}

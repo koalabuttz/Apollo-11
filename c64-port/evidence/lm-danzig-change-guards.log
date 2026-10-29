@@ -1,0 +1,2 @@
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O2 src/agc_word.c src/lm_interpreter_change.c src/lm_danzig_change.c tests/lm_interpreter_change_cases.c tests/lm_danzig_change_cases.c tests/test_lm_danzig_change.c -o build/test-lm-danzig-change
+PASS:25 invalid DANZIG/NOIBNKSW domains and3 null interfaces preserve complete canonical image/I/O/transfer

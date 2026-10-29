@@ -1,0 +1,65 @@
+{
+  "source_files": {
+    "docs/COMANCHE-DISPLAY-REST.md": "7d9a3ad264fb9860f3c9221f331a6168b9b7583e046bcd77ab5de9979466ee42",
+    "include/cm_display_rest.h": "01df3c477cf2039454568a25d4d74ffd07ab9a2c27a7ff21f82748bed031239b",
+    "src/cm_display_rest.c": "ea508a13d342de33350d5fdfe4c4273b0e03c46b27f3de69ad09e133d2851bc1",
+    "tests/cm_display_rest_cases.c": "6e7d83f7c0fdc25013f16372fb2b2f10fec6621776ff8bfe7509fe80bb966dd3",
+    "tests/cm_display_rest_cases.h": "6ddb6e429036ccd18ba171c059389fc91fbd562611a126e9ce3bd721359e788f",
+    "tests/cm_display_rest_check.c": "ed4d9ff5e3eb9dca719d20388f4cff0db7a7eec8deefa1ed4e8f6fa2252910c5",
+    "tests/cm_display_rest_check.h": "6a96a5c7e9f02bcee72cc18035ab8339bc4b7c93bdbeb053bfd75bc26a088ef6",
+    "tests/cm_display_rest_vectors.h": "874498e2c5b3fb0c94806609346dec1d9432ed9cc57b5372563a44a1704b4cda",
+    "tests/test_cm_display_rest.c": "99654dd18f24007bad212e0bd561921c71ecaf5a236b5e0d65c40b386e63be3b",
+    "tools/cm_display_rest.mk": "1a19abeca28bee0a91b14072e4523839e5e411121e30364fda365dce477b2f65",
+    "tools/cm_display_rest_diagnostic.c": "6ed4154495deeb69121ca9ce8bc6a692af96310bd7a48b75d4378f13a12c02ce",
+    "tools/cm_display_rest_differential.py": "180b54aab340fa172a4bb868be4ffdd432157be2e41749887ddd741d750dc08c",
+    "tools/cm_display_rest_inputs.c": "0d43d9e6e401f727492442c0da1453f3eb91cc81bf121665838c33ce2e92bf8f",
+    "tools/cm_display_rest_reference.c": "816350baa1e46d495b10de618115680d4ef0c68f4146f48528c52879404d02d7",
+    "tools/cm_display_rest_sanitize.py": "15cf0c8b5a8c401ad2a214e27ced6cdf86aa37c584f542b6291b7d99fa2435ee",
+    "tools/cm_display_rest_snapshot.c": "6f708ff0bbba3ec231a929373999fa2fc1cec34f771bc634526c09135e197996",
+    "tools/cm_display_rest_vice_test.py": "97fac71ece27612877fe6296de3734add9f0b1662421c332d402d12ce463c81a",
+    "tools/freeze_cm_display_rest.py": "f9fc8287c99832ff8abcb0461e262492d04c36b23b45a4480cd2f73e12faec12"
+  },
+  "native_dependencies": {
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "include/cm_native_image.h": "c4fb2a437c17831bb00ccbc3220fbbb794c0001eac251e74d4ce9d6828a3895b",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679"
+  },
+  "original_sources": {
+    "../Comanche055/DISPLAY_INTERFACE_ROUTINES.agc": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+    "../Comanche055/SERVICE_ROUTINES.agc": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "host_reference_dependencies": {
+    "tools/cm_executive_reference.c": "f623e869cc420126c15d27a5749a1e4a38df27deb91b7f83a2fc1c7be6e6e448"
+  },
+  "artifacts": {
+    "evidence/cm-display-rest-differential.log": "899e9ba6bc9a7cec91fbddb1e26f29cb944de725c0b60c24d9f42ae17668cdee",
+    "evidence/cm-display-rest-freeze.log": "042872fb76f9a08752bab6a20dadf243c07d6508cab3c4b1d66aa42334663883",
+    "evidence/cm-display-rest-reference.snapshots.xz": "974623eaf06fe7a25f9ed3832990aef326029e4af41218f83b979d7108ff450b",
+    "evidence/cm-display-rest-stream-sha.json": "538fc65abb09e531a0fcf8d405bf55a56d258b484d6a8c164b2952c597cf6185",
+    "evidence/cm-display-rest-validation.log": "eb1d2455d1d4328ba243f3558b8aa4542916ecf77b95de28dd0554c9de5641b4",
+    "evidence/cm-display-rest-vice-summary.log": "ec4c9fa26efa56d9af6dc037717fd7b4ab2dbed38a5b4b9ed707968b99daada0",
+    "evidence/cm_display_rest-hardware-stack.bin": "3cdc0923404630ac88f94e207c9bfe2b44f5aa5ae78759bda7b4780ee1a54ca5",
+    "evidence/cm_display_rest-software-stack.bin": "a466dda702870f96d2a20ee91489543608ec6be666a4f6e70400e8056e2ad28f",
+    "evidence/cm_display_rest-vice-mailbox.bin": "4b575c5df065a98d7e5279fb1cb461f59b1730d3679726b6b9df88c3c18dd0a2",
+    "evidence/cm_display_rest-vice-monitor.log": "8007820fa80aa438599d7dac68b99b5ff79598579cec5170165e363c23e69706",
+    "evidence/cm_display_rest.map": "da349d182b084fc6cc7fb0162a40f62ca7dc6c66e7f68aa5d3e7b82e23cc7874",
+    "evidence/cm_display_rest.prg": "6492b519e408285d7a34f252df34bb144a72bd911bd8a9bfb475082850b33a02"
+  },
+  "complete_source_states": 3072,
+  "record_fields": 2051,
+  "raw_source_sha256": "b50aeba703c0b9e1cf5b04bf8c9ee8099c38b2663e0026e8e9b86a40dc7e315f",
+  "full_sanitizer_states": 3072,
+  "frozen_complete_states": 60,
+  "unchanged_invalid_guards": 30,
+  "target": {
+    "prg_bytes": 4152,
+    "mailbox": "a500003c00",
+    "hardware_stack_including_rom": 14,
+    "rom_stack_bytes": 14,
+    "software_stack": 69,
+    "additional_zero_page_bytes": 0
+  },
+  "qualification_boundary": "Original CM NVDSP blocked return/REST/RESTSLEP plus complete UPENT2 alias effects through real ENDOFJOB or NVSUBUSY entry; selected lifecycle body excluded"
+}

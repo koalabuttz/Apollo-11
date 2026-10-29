@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/dsky_pinball.c tests/p66_bias_cases.c tests/dsky_pinball_cases.c tests/dsky_pinball_zero_cases.c tests/dsky_pinball_zero_check.c tests/test_dsky_pinball_zero.c -o build/test-dsky-pinball-zero
+./build/test-dsky-pinball-zero
+DSKY PINBALL: 64 FULL 2050-WORD IMAGES, 0 FAILURES
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/p66_mode_display.c tests/p66_bias_cases.c tests/p66_mode_display_cases.c tests/p66_mode_zero_cases.c tests/p66_mode_zero_check.c tests/test_p66_mode_zero.c -o build/test-p66-mode-zero
+./build/test-p66-mode-zero
+P66 MODE DISPLAY: 64 FULL 2050-WORD IMAGES, 0 FAILURES

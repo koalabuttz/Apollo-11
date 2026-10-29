@@ -1,0 +1,12 @@
+{
+  "mailbox": "a500008c100191000000",
+  "fingerprints": 140,
+  "masked_repeat": 16,
+  "real_irq_posts": 1,
+  "stack_sentinel_extents": {
+    "hardware": 27,
+    "software": 89,
+    "isolated": 16
+  },
+  "scope": "Native continuations; frame payload restoration; producer publication followed by guarded foreground admission; no guidance deadline claim"
+}

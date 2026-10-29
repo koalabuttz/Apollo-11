@@ -1,0 +1,72 @@
+{
+  "status": "qualified canonical DOT; both complete antenna and INTERPRETER files remain partial",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_states": 262144,
+  "words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "corpus": {
+    "states": 262144,
+    "start": 0,
+    "end": 262144,
+    "record_bytes": 4106,
+    "decoded_sha256": "a87ce12a75720f3b0e61416e58ff35ecb7ea9628e1e6ea85df1cebc1b5db3b52",
+    "decoded_bytes": 1076363264,
+    "canonical_original_archives": [
+      {
+        "path": "evidence/sband-dot-source-0.snapshots.bin.xz",
+        "compressed_sha256": "44a9198724b9fe89bc252bce26e1614b51d50819b2c3e04603823f5ff219dfb7",
+        "decoded_sha256": "900aeea4ff8afd81120ceca1ef89df6242efbb88f3e137fd4859ab69c3de8171",
+        "decoded_bytes": 538181632,
+        "states": 131072
+      },
+      {
+        "path": "evidence/sband-dot-source-1.snapshots.bin.xz",
+        "compressed_sha256": "97c7cdd8dde51692189069241a2c2408575c170a8568d0f19ab83c6f4903de56",
+        "decoded_sha256": "392f9c316249a6be8ecd45ba0e79860ffc1b8a4b5e1182595c2150a9fdbe7a36",
+        "decoded_bytes": 538181632,
+        "states": 131072
+      }
+    ],
+    "sanitizer_exact": true
+  },
+  "target": {
+    "states": 256,
+    "prg_bytes": 21011,
+    "load_end": 23058,
+    "bss_end": 31250,
+    "mailbox": "a5000100",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "groups": [
+    "LM ERA",
+    "LM fixed",
+    "CM ERA",
+    "CM fixed"
+  ],
+  "source_map": "evidence/sband-dot-source-map.json",
+  "original_sources": {
+    "Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b"
+  },
+  "native_source_sha256": "df82036fea2a87744669496549e0aff21ac0c6866aa5adc32d21504a1106237b",
+  "native_header_sha256": "cd83c710447be5ec6742ddabdc0643a8f37064944d87d68525d3b8af7036772c",
+  "independent_review": {
+    "path": "evidence/sband-dot-independent-review.txt",
+    "sha256": "98d2b99dced4a03bd4d7ea717b1aed32033e5503fe3dc5b3fc5741c7adeae49f"
+  },
+  "limitations": [
+    "Only explicit vector DOT plus numerical helpers; all later caller bodies/whole interpreter excluded.",
+    "VectorMODE-1, ordinary RAM/Q and raw16 A/L, coherent banks/ZERO and stable live ERA or nonaliasing immutable sixword fixed object; producer exclusion throughout each call.",
+    "Actual original helper/callee entry states retained; no arbitrary instruction dispatch.",
+    "Context coverage is varied, not exhaustive Cartesian.",
+    "Standalone diagnostic allocation is not whole-application memory."
+  ]
+}

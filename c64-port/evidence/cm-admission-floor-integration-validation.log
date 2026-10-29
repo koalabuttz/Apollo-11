@@ -1,0 +1,26 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_admission_floor_differential.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+PASS: original bare priority+0 admission paths, complete image and all13 external metadata fields
+{
+  "cases": 49152,
+  "checkpoints": 49152,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 202997760,
+  "snapshot_sha256": "16b5c4884edf0492ab80e43594050ea04b585217ed5814befe9c43ab54505a20",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "NOVAC",
+    "FINDVAC",
+    "SPVAC",
+    "SPVACIN"
+  ],
+  "scope": "source bare priority+0 admission becomes positive packed FAKEPRET/VAC resource priority, all core+0 unavailable positions/resource outcomes; actual external job or BAILOUT handoff"
+}
+./build/test-cm-admission-floor
+PASS: bare-priority admission rejected unsupported producers without changing canonical image/metadata
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/cm_admission_floor.c src/cm_native_image.c src/cm_executive.c src/agc_word.c tests/cm_admission_floor_cases.c tests/cm_admission_complete_cases.c tests/cm_executive_cases.c platform/host/cm_admission_floor_snapshot.c -o build/cm-admission-floor-sanitize
+python3 tools/cm_admission_floor_sanitize.py
+PASS: full ASAN/UBSAN complete bare source priority+0 admission/zero-core unavailable scans/resource failures, all49152 complete source states

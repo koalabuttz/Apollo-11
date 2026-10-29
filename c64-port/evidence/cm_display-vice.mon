@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/cm_display.prg" 0
+watch store 7724
+ignore 1 1
+g 080d
+m 7724 7728
+bsave "/workspace/Apollo-11/c64-port/build/cm_display-vice-mailbox.bin" 0 7724 7728
+bsave "/workspace/Apollo-11/c64-port/build/cm_display-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/cm_display-vice-software-stack.bin" 0 c100 cfff
+quit

@@ -1,0 +1,8 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-ephemeris-positions-0-1.prg from 0801 to 66B9 (5EB9 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  257/$101,  31/$1f
+.C:463a  8D 00 C0    STA $C000      - A:A5 X:00 Y:00 SP:f1 ..-..IZ.  112979254
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-positions-0-1-mailbox.bin' from $c000 to $c003
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-positions-0-1-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-ephemeris-positions-0-1-software-stack.bin' from $c100 to $cfff

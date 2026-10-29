@@ -1,0 +1,228 @@
+{
+ "name": "cm-v69-restart",
+ "gojam": 2501,
+ "asked": 2350,
+ "host": {
+  "scenario": "cm-v69-restart",
+  "mission": "cm",
+  "centiseconds": 4000,
+  "keys": "",
+  "inputs": {},
+  "gojam_cs": 2350,
+  "schedule": null,
+  "exit": 0,
+  "native_routines": 259716,
+  "bridged_instructions": 1004,
+  "agc_cs": null,
+  "samples": 4000,
+  "samples_equal": 3998,
+  "base_samples_equal": 3998,
+  "sample_problems": [],
+  "gojam": [
+   [
+    "2501",
+    "02040"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [
+   {
+    "kind": "basic",
+    "point": "43,2037",
+    "label": "VERB69",
+    "file": "EXTENDED_VERBS.agc",
+    "lane": "C",
+    "arrivals": 1,
+    "instructions": 1004,
+    "refused_by": null,
+    "core_start": false
+   }
+  ],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "02037",
+   "02037"
+  ],
+  "modreg": [
+   "77777",
+   "77777"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "00000",
+    "00000"
+   ],
+   [
+    "01107",
+    "00000",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {},
+  "active_phases_end": {},
+  "end_words_differing_from_base": 51,
+  "gojam_snapshot": "build/flight-restart/cm-v69-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/cm-v69-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "commit": "d7abace4fc66",
+  "log": "host.log",
+  "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
+ },
+ "c64": null,
+ "gojam_on_c64": {
+  "scenario": "cm-v69-restart",
+  "mission": "cm",
+  "centiseconds": 4000,
+  "keys": "",
+  "inputs": {},
+  "gojam_cs": 2350,
+  "schedule": null,
+  "exit": 0,
+  "native_routines": 259716,
+  "bridged_instructions": 1004,
+  "agc_cs": null,
+  "samples": 4000,
+  "samples_equal": 3998,
+  "base_samples_equal": 3998,
+  "sample_problems": [],
+  "gojam": [
+   [
+    "2501",
+    "02040"
+   ]
+  ],
+  "routine_mismatches": [],
+  "new_mismatches": [],
+  "new_holes": [
+   {
+    "kind": "basic",
+    "point": "43,2037",
+    "label": "VERB69",
+    "file": "EXTENDED_VERBS.agc",
+    "lane": "C",
+    "arrivals": 1,
+    "instructions": 1004,
+    "refused_by": null,
+    "core_start": false
+   }
+  ],
+  "restart_holes": [],
+  "redoctr": [
+   1,
+   2
+  ],
+  "rsbbq": [
+   "02037",
+   "02037"
+  ],
+  "modreg": [
+   "77777",
+   "77777"
+  ],
+  "failreg": [
+   [
+    "01107",
+    "00000",
+    "00000"
+   ],
+   [
+    "01107",
+    "00000",
+    "00000"
+   ]
+  ],
+  "active_phases_before": {},
+  "active_phases_end": {},
+  "end_words_differing_from_base": 51,
+  "gojam_snapshot": "build/flight-restart/cm-v69-restart-gojam.h",
+  "pre_snapshot": "build/flight-restart/cm-v69-restart-pre.h",
+  "ok": true,
+  "failures": [],
+  "c64_gojam": {
+   "module": {
+    "id": "0x01e5",
+    "slot": 1,
+    "bytes": 730
+   },
+   "gojam": {
+    "run_status": 0,
+    "env_status": 0,
+    "q": "02037",
+    "z": "04000",
+    "words_equal": 2048,
+    "words_differing": [],
+    "fields_compared": 28,
+    "fields_differing": {}
+   },
+   "burst": {
+    "ok": true,
+    "boot_failed": false,
+    "failed": 0,
+    "fail_class": 0,
+    "devices": {
+     "hw.channel11": 0,
+     "hw.in_interrupt": 0,
+     "hw.channel5": 0,
+     "hw.channel6": 0,
+     "hw.channel13": 0,
+     "hw.channel15": 28,
+     "hw.channel10": 0,
+     "hw.channel32": 32767,
+     "hw.channel12": 0,
+     "hw.channel14": 0,
+     "hw.channel30": 16383,
+     "hw.channel33": 32767,
+     "hw.channel31": 32767,
+     "hw.channel3": 4,
+     "hw.channel4": 14496,
+     "flight.superbank": 64,
+     "flight.interrupt_enabled": 1,
+     "flight.channel16": 0,
+     "flight.channel34": 0,
+     "flight.channel35": 0,
+     "flight.trap31a": 0,
+     "flight.trap31b": 0,
+     "flight.trap32": 0,
+     "flight.executive_alarm": 0,
+     "flight.waitlist_alarm": 0,
+     "flight.warning": 0,
+     "io.superbank": 64,
+     "io.interrupt_enabled": 1,
+     "run_status": 0,
+     "env_status": 0,
+     "rk_pending": 0,
+     "loaded_job": 0,
+     "loaded_task": 0,
+     "fault": 0
+    },
+    "steps": 19,
+    "start_cs": 2501,
+    "end_cs": 2501,
+    "z": "03231",
+    "fb": "02000",
+    "q": "03454",
+    "newjob": "77777",
+    "status": 0,
+    "superbank": "100",
+    "in_interrupt": 0,
+    "interrupt_enabled": 1,
+    "idle": true,
+    "reference": "reference: arrived after 1585 instructions: Z 03231 FB 02000 superbank 100, NEWJOB 77777, interrupts enabled",
+    "reference_arrived": true,
+    "words_differing": [],
+    "words_equal": 2048
+   },
+   "ok": true
+  },
+  "commit": "d7abace4fc66",
+  "log": "gojam-on-c64.log",
+  "log_sha256": "0c2bd0ed10e1c1124baee4e65204b8097cf6e52eba77305322802aacb7ff0ea3"
+ }
+}

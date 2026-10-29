@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-acceptance-restart",
+  "release": "evidence-cm-acceptance-restart",
+  "files": {
+    "cm-entry-restart-c64.log": {
+      "sha256": "2708c28fc04f1d04cdd89cbd81baa636b26b6d8448f60f38e1b3d0c447eddbc5",
+      "bytes": 1508,
+      "store": "tree"
+    },
+    "cm-entry-restart.json": {
+      "sha256": "5e4bdd184f14cfccd3484ffca5a59b9e025bee27ee2f8968371c037bd4519955",
+      "bytes": 15520,
+      "store": "tree"
+    },
+    "cm-p00-p40-restart-c64.log": {
+      "sha256": "cae5957ca7d0c748945120e9570e80b047ef8b1851e070ebaba43c5dd0044bb8",
+      "bytes": 1565,
+      "store": "tree"
+    },
+    "cm-p00-p40-restart.json": {
+      "sha256": "915c797695df58bb7d9973677e4437ba01f96e1304122d1ce97494ac1543b032",
+      "bytes": 12492,
+      "store": "tree"
+    },
+    "cm-p00-restart.json": {
+      "sha256": "7f69ad871db23d2161e1b46629ac843ca024de12849d69318b671c19b0a8b059",
+      "bytes": 1214,
+      "store": "tree"
+    },
+    "cm-p20-restart-c64.log": {
+      "sha256": "df1826952ab9e0165e98b4814917959fa6b75fb92aa01ab8038091e435b806db",
+      "bytes": 1465,
+      "store": "tree"
+    },
+    "cm-p20-restart.json": {
+      "sha256": "9c2e7eeee152844b7573b8cc13cf7fdd5af452b5dbffc24715de39b7493c5e29",
+      "bytes": 8629,
+      "store": "tree"
+    },
+    "cm-p22-restart-c64.log": {
+      "sha256": "beadf59fe0c390dd92bc172a1414dc2239848db213f42d644f5b9db7086c6cdf",
+      "bytes": 1438,
+      "store": "tree"
+    },
+    "cm-p22-restart.json": {
+      "sha256": "c441816b2aca7aa75af7dd493b4f752eeb55c01b82fcc9a804ccf87649ba9c75",
+      "bytes": 8497,
+      "store": "tree"
+    },
+    "cm-p40-burn-restart-c64.log": {
+      "sha256": "c3780547e3ca68aac73e9067c818dfd6ef646cca30c77d3327a1046435f03f07",
+      "bytes": 1618,
+      "store": "tree"
+    },
+    "cm-p40-burn-restart.json": {
+      "sha256": "777413088f1d19fb89e3d7075f591851da80a7ac8d27c28fc64459f651506728",
+      "bytes": 16541,
+      "store": "tree"
+    },
+    "cm-p52-restart.json": {
+      "sha256": "bf2508500d31e8e38e668388d21627e66c1b4e3847550642ebf3d8ceb0a7ad10",
+      "bytes": 5216,
+      "store": "tree"
+    },
+    "cm-v69-restart.json": {
+      "sha256": "6dc389fc62f26ca62375cf48902de6694940777c7118720a53a94c1579848d51",
+      "bytes": 4556,
+      "store": "tree"
+    },
+    "gojam-on-c64.log": {
+      "sha256": "0c2bd0ed10e1c1124baee4e65204b8097cf6e52eba77305322802aacb7ff0ea3",
+      "bytes": 1877,
+      "store": "tree"
+    },
+    "host.log": {
+      "sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c",
+      "bytes": 1640,
+      "store": "tree"
+    }
+  }
+}

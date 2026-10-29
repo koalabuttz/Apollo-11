@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 16 complete nv_render group original-assembly states; retained memory unchanged
+Mailbox: a500001000
+PRG bytes: 8843
+nv_render-hardware-stack.bin: measured stack extent 29 bytes
+nv_render-software-stack.bin: measured stack extent 45 bytes

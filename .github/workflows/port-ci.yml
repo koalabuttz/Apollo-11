@@ -1,0 +1,573 @@
+# Native C64 port CI. See c64-port/CONTRIBUTING-port.md.
+name: port-ci
+on:
+  push:
+    branches: [main]
+    paths: ['c64-port/**', 'Luminary099/**', 'Comanche055/**', '.github/workflows/port-*.yml']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      full:
+        description: Run every host, sanitizer and C64 target
+        type: boolean
+        default: true
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        default: main
+      full:
+        type: boolean
+        default: true
+
+# Full runs (dispatch, nightly) get their own group, so a merge's push run
+# never cancels a queued full run on the same branch, or waits behind one.
+concurrency:
+  group: port-ci-${{ github.event.pull_request.number || inputs.ref || github.ref }}-${{ inputs.full && 'full' || 'affected' }}
+  # A newer push supersedes a PR's affected run. Base (push) runs finish:
+  # merges land minutes apart, so cancelling left base with almost no
+  # completed run (1 of 20 on 10-15). GitHub keeps only the newest pending
+  # run per group, so base runs at most one behind. Full runs (nightly,
+  # manual) always finish, since the vice manifest comes from them.
+  cancel-in-progress: ${{ !inputs.full && github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  REF: ${{ inputs.ref || github.sha }}
+  FULL: ${{ inputs.full && '1' || '0' }}
+  SKIP_EVIDENCE_RESTORE: '1'
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      base: ${{ steps.plan.outputs.base }}
+      shared: ${{ steps.plan.outputs.shared }}
+      affected: ${{ steps.plan.outputs.affected }}
+      host: ${{ steps.plan.outputs.host }}
+      c64: ${{ steps.plan.outputs.c64 }}
+      fresh: ${{ steps.plan.outputs.fresh }}
+      full: ${{ steps.plan.outputs.full }}
+      c64_shards: ${{ steps.plan.outputs.c64_shards }}
+      host_shards: ${{ steps.plan.outputs.host_shards }}
+      c64_full: ${{ steps.plan.outputs.c64_full }}
+      c64_nshards: ${{ steps.plan.outputs.c64_nshards }}
+      sha: ${{ steps.sha.outputs.sha }}
+    steps:
+      - &checkout
+        name: Lean checkout
+        run: |
+          git init -q .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}"
+          git config http.https://github.com/.extraheader \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' '${{ github.token }}' | base64 -w0)"
+          git fetch -q --filter=blob:limit=1m --depth=1 origin "$REF"
+          git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
+      # A nightly calls this workflow with a branch name as ref: every later
+      # job checks out the commit plan resolved, not the branch tip at its own
+      # start (shards built different commits, and the manifest mixed them).
+      - id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - id: plan
+        working-directory: c64-port
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD_REF: ${{ github.head_ref || github.ref_name }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          # A PR's base is the merge ref's first parent: the event's base.sha can
+          # be older when the base moved before GitHub built the merge ref.
+          if [ "$EVENT" = pull_request ]; then base=$(git rev-parse -q --verify HEAD^1 || echo "$PR_BASE")
+          elif [ "$EVENT" = push ] && [ "$HEAD_REF" = main ] && [ -n "$BEFORE" ] \
+               && [ "$BEFORE" != 0000000000000000000000000000000000000000 ]; then base=$BEFORE
+          else base=$(git merge-base HEAD origin/main)
+          fi
+          # The 10-29 move to main (#1032): main did not hold the port yet, so the
+          # change is measured against the frozen port branch it came from.
+          # No-op once main contains that branch.
+          frozen=origin/port/c64-native-c
+          if git rev-parse -q --verify "$frozen" > /dev/null && git merge-base --is-ancestor "$frozen" HEAD \
+             && ! git merge-base --is-ancestor "$frozen" "$base"; then base=$(git rev-parse "$frozen"); fi
+          case "$HEAD_REF" in port/pipeline/*) shared=1 ;; *) shared=0 ;; esac
+          if [ "$FULL" = 1 ] || [ "$EVENT" = schedule ]; then
+            affected='{"full": true}'
+          else
+            affected=$(python3 tools/ci_affected.py --base "$base" | tr -d '\n')
+          fi
+          echo "$affected"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "shared=$shared" >> "$GITHUB_OUTPUT"
+          echo "affected=$affected" >> "$GITHUB_OUTPUT"
+          echo "host=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["test"] or a["sanitize"])))')" >> "$GITHUB_OUTPUT"
+          # A merge's push run on the port branch skips the C64/VICE shards: its PR
+          # already ran them, and the nightly runs every C64 check on the branch
+          # (David, 10-23). c64-maps still links every PRG on each push.
+          post_merge=0
+          if [ "$EVENT" = push ] && [ "$HEAD_REF" = main ] && [ "$FULL" != 1 ]; then post_merge=1; fi
+          c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')
+          [ "$post_merge" = 1 ] && c64=0
+          echo "c64=$c64" >> "$GITHUB_OUTPUT"
+          # acceptance-fresh runs unless every changed file is prose (.md outside
+          # docs/acceptance) or evidence other than acceptance evidence (whose run
+          # logs it checks, #979 B14): AGC source, docs/*.json and tools/*.json
+          # all reach the shipped bytes without counting as C64 code (#926).
+          fresh=1
+          if changed=$(git diff --name-only "$base" HEAD 2>/dev/null) && [ -n "$changed" ] \
+             && ! echo "$changed" | grep -qvE '^c64-port/evidence/|\.md$' \
+             && ! echo "$changed" | grep -qE '^c64-port/(docs/acceptance/|evidence/(lm|cm)-acceptance-)'; then fresh=0; fi
+          echo "fresh=$fresh" >> "$GITHUB_OUTPUT"
+          echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
+          # A full c64 run is over two hours of builds and VICE: split it.
+          c64_full=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a.get("c64_full", a["full"])))')
+          [ "$post_merge" = 1 ] && c64_full=0
+          echo "c64_full=$c64_full" >> "$GITHUB_OUTPUT"
+          # A PR's own c64 list gets a runner per hour of measured target time
+          # (tools/ci_target_seconds.json), up to 6: shared kernel PRs pick
+          # 9+ VICE targets of 5-25 minutes each. A full c64 run is about 34
+          # runner-hours of targets, 4 at a time: on 4 runners it took 2-3.5 h,
+          # on 6 it is about 85 min, which is the longest single target's time
+          # (vice-lanec-pin-keys-2), so more runners would not finish sooner.
+          # 6 c64 + 4 host + the small jobs stay well under the 20-job cap.
+          if [ "$c64_full" = 1 ]; then c64_n=6
+          else
+            c64_n=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))' \
+                    | xargs python3 tools/ci_run.py --count-shards 6 2>/dev/null | tail -1)
+            case "$c64_n" in [1-6]) ;; *) c64_n=1 ;; esac
+          fi
+          echo "c64_nshards=$c64_n" >> "$GITHUB_OUTPUT"
+          echo "c64_shards=$(python3 -c "print(list(range($c64_n)))")" >> "$GITHUB_OUTPUT"
+          # A full host run is about 1,000 targets and an hour on one runner.
+          full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')
+          echo "host_shards=$([ "$full" = 1 ] && echo '[0,1,2,3]' || echo '[0]')" >> "$GITHUB_OUTPUT"
+
+  ledgers-and-coverage:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    runs-on: ubuntu-24.04
+    steps:
+      - *checkout
+      - name: Shared-ledger guard
+        if: github.event_name == 'pull_request'
+        working-directory: c64-port
+        env:
+          GH_TOKEN: ${{ github.token }}   # reads the nightly vice-manifest artifact
+        run: |
+          python3 tools/ci_guard.py --base "${{ needs.plan.outputs.base }}" --remote \
+            ${{ needs.plan.outputs.shared == '1' && '--allow-shared' || '' }}
+      - name: Milestone files render
+        working-directory: c64-port
+        run: python3 tools/ledgers.py --validate
+      - name: Each make variable is assigned in one tools/mk file
+        working-directory: c64-port
+        run: python3 tools/mk_vars_check.py
+      # Every branch arm no frozen host case takes is triaged in
+      # tools/cert_arms_allow.py with a class and a reason; fails on an
+      # untriaged one or a stale record (a src change re-measures in the same PR, #834), warns on open flight gaps.
+      - name: Certificate arms are triaged
+        working-directory: c64-port
+        run: python3 tools/cert_arms.py check
+      - name: Differential step-cap loop classification
+        working-directory: c64-port
+        run: python3 tools/interp_loops_test.py
+      - name: Differential edge-value writes stay in erasable
+        working-directory: c64-port
+        run: python3 tools/interp_edges_test.py
+      - name: Coverage audit
+        working-directory: c64-port
+        run: |
+          python3 tools/evidence.py fetch --coverage
+          python3 tools/port_coverage.py
+
+  # Reports C lines a PR changed but left unformatted (tools/format_changed.py,
+  # .clang-format). Advisory while lanes install the hook (`make hooks`): it
+  # warns and passes.
+  format:
+    needs: plan
+    if: github.event_name == 'pull_request'
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    runs-on: ubuntu-24.04
+    steps:
+      - *checkout
+      - name: Toolchain cache (read only)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - name: Changed C lines are formatted
+        working-directory: c64-port
+        run: |
+          if [ ! -x deps/llvm-mos/bin/clang-format ]; then
+            echo "::warning::format check skipped: toolchain cache missed"; exit 0
+          fi
+          if ! python3 tools/format_changed.py --check --base "${{ needs.plan.outputs.base }}" > build-format.diff; then
+            cat build-format.diff
+            echo "::warning::changed C lines are not formatted; run 'make format' (installs the pre-commit hook)"
+          fi
+
+  host:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: needs.plan.outputs.host == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.host_shards) }}
+    steps:
+      - *checkout
+      - &deps
+        name: Toolchain cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - &setup
+        name: Install pinned toolchain
+        working-directory: c64-port
+        run: tools/setup_cloud.sh
+      - name: Host and sanitizer targets (shard ${{ matrix.shard }})
+        working-directory: c64-port
+        env:
+          AFFECTED: ${{ needs.plan.outputs.affected }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          source deps/env.sh
+          targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("test",[])+a.get("sanitize",[])))')
+          if echo "$AFFECTED" | grep -q '"full": true'; then
+            python3 tools/ci_run.py --group test --group sanitize --group ci-extra-host --shard "$SHARD/4" --summary build/ci-summary.json
+          else
+            python3 tools/ci_run.py $targets --summary build/ci-summary.json
+          fi
+      - &logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.job }}${{ matrix.shard }}-logs
+          path: |
+            c64-port/build/ci-logs
+            c64-port/build/ci-summary.json
+          if-no-files-found: ignore
+
+  c64:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: needs.plan.outputs.c64 == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 210
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.c64_shards) }}
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      # Module links of the flight store (tools/flight_store_build.py link
+      # cache), from the newest run that saved one: a store build relinks
+      # only the modules whose inputs changed.
+      - name: Restore the flight store link cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-${{ matrix.shard }}
+          restore-keys: flight-link-cache-
+      - name: Build C64 PRGs and run VICE checks (shard ${{ matrix.shard }})
+        working-directory: c64-port
+        env:
+          AFFECTED: ${{ needs.plan.outputs.affected }}
+          SHARD: ${{ matrix.shard }}
+          SHARDS: ${{ needs.plan.outputs.c64_nshards }}
+          C64_FULL: ${{ needs.plan.outputs.c64_full }}
+          # Full runs link every module afresh and check the cache's entries.
+          FLIGHT_LINK_CACHE: ${{ needs.plan.outputs.full == '1' && 'verify' || '' }}
+        run: |
+          source deps/env.sh
+          if [ "$C64_FULL" = 1 ]; then
+            # tools/mk/ci-extra.mk's C64 checks join the c64-/vice- targets.
+            targets=$( (make -pRrq __none__ 2>/dev/null | sed -n 's/^\(c64-[A-Za-z0-9_-]*\|vice-[A-Za-z0-9_-]*\):.*/\1/p' | grep -v '^vice-legacy-'
+                        make -pRrq __none__ 2>/dev/null | sed -n 's/^ci-extra-c64: *//p' | tr ' ' '\n') | sort -u)
+          else
+            targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))')
+          fi
+          # Shards balanced by measured seconds (tools/ci_target_seconds.json).
+          python3 tools/ci_run.py --make-arg "MOS_CC=$MOS_CC" $targets --shard "$SHARD/$SHARDS" --summary build/ci-summary.json
+          if [ "$SHARD" = 0 ]; then
+            make c64 MOS_CC="$MOS_CC" && python3 tools/vice_test.py --vice "$VICE" --rom-dir "$VICE_ROM_DIR" --data-dir "$VICE_DATA_DIR"
+          fi
+      - &map-check
+        name: Every PRG ends below the $c000 mailbox
+        if: always()
+        working-directory: c64-port
+        run: python3 tools/map_check.py
+      - *logs
+      - name: Save the flight store link cache
+        if: always() && hashFiles('c64-port/build/flight-link-cache/updated') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-${{ matrix.shard }}
+      - &piece
+        name: Vice manifest piece
+        if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+        working-directory: c64-port
+        env:
+          PIECE: ${{ github.job }}${{ matrix.shard }}
+        run: |
+          python3 tools/vice_manifest.py piece --name "$PIECE" --out "build/vice-manifest-$PIECE.json" \
+            ${{ github.job == 'c64' && matrix.shard == 0 && '--certificates' || '' }}
+      - &upload-piece
+        if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+        uses: actions/upload-artifact@v4
+        with:
+          name: vice-manifest-${{ github.job }}${{ matrix.shard }}
+          path: c64-port/build/vice-manifest-*.json
+          if-no-files-found: ignore
+
+  # Both programs are accepted (docs/acceptance/). A PR that changes the
+  # C64 bytes an accepted program ships (its REU store, resident, loader or
+  # disks) fails here unless the same PR re-cites that program's acceptance
+  # at its head, so a merge can't leave an acceptance describing an older
+  # build. It runs on pushes to the port branch too, so a merge of two
+  # green PRs that together move bytes shows on the merge commit.
+  # Changes that wait for a steward re-acceptance window ride in the
+  # window's one PR, which carries the regenerated docs.
+  acceptance-fresh:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: needs.plan.outputs.fresh == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Restore the flight store link cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-fresh
+          restore-keys: flight-link-cache-
+      - name: Accepted programs still match the build
+        working-directory: c64-port
+        run: |
+          source deps/env.sh
+          # The 1541 sets too (the docs list their d64s); each run rewrites the
+          # loaders, so the 1581 run goes last.
+          { make flight-disk MOS_CC="$MOS_CC" \
+            && python3 tools/flight_disk.py --missions lm,cm --drive 1541 \
+            && python3 tools/flight_disk.py --missions lm,cm; } > build/acceptance-fresh-build.log 2>&1 \
+            || { tail -40 build/acceptance-fresh-build.log; exit 1; }
+          # The docs' commit must be an ancestor of HEAD: fetch the commit
+          # history (commits only, no trees) that the lean checkout lacks.
+          if [ "$(git rev-parse --is-shallow-repository)" = true ]; then git fetch -q --filter=tree:0 --unshallow origin "$REF"; fi
+          python3 tools/acceptance_freshness.py --require-fresh || {
+            echo "FAIL: this PR changes the C64 bytes of an accepted program (above)."
+            echo "Merge it in a steward re-acceptance window, whose PR re-cites docs/acceptance at its head"
+            echo "(c64-port/CONTRIBUTING-port.md, section After acceptance)."
+            exit 1; }
+          # The docs' own rules too (one commit, PASS, each cite as recorded,
+          # one sha256 per image): acceptance_bundle.py --check-docs (#942 B7).
+          for m in lm cm; do python3 tools/acceptance_bundle.py "$m" --check-docs || exit 1; done
+
+  # On every push to the port branch (where the c64 job is skipped), link
+  # every C64 PRG (no VICE) and check each map. Two PRs can each fit and still push another lane's PRG past
+  # $c000 together; this shows it on the merge commit. Full runs check the
+  # maps in the c64 job instead.
+  c64-maps:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: github.event_name == 'push' && needs.plan.outputs.c64_full != '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1]
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Link every C64 PRG (shard ${{ matrix.shard }})
+        working-directory: c64-port
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          source deps/env.sh
+          targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(build\/[A-Za-z0-9_.-]*\.prg\):.*/\1/p' | sort -u \
+            | awk -v k="$SHARD" 'NF && (NR - 1) % 2 == k')
+          echo "$(echo "$targets" | wc -w) PRGs"
+          # A PRG that fails to link fails this job: on a push nothing else links it.
+          if ! make -k -j"$(nproc)" MOS_CC="$MOS_CC" $targets > build/c64-maps.log 2>&1; then
+            grep -E '^make: \*\*\*|error:' build/c64-maps.log | head -40
+            echo "FAIL: some PRGs did not link (build/c64-maps.log)"; exit 1
+          fi
+      - *map-check
+
+  # On every push to the port branch (where the c64 job is skipped), build
+  # the flight store and save its link cache, so PRs start from the base's
+  # links (a PR's own cache is visible only to that PR). Usually a few
+  # minutes: only modules the merge changed relink.
+  flight-link-cache:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Restore the flight store link cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-base
+          restore-keys: flight-link-cache-
+      - name: Build the flight store
+        working-directory: c64-port
+        run: |
+          source deps/env.sh
+          python3 tools/flight_store_build.py
+      - name: Save the flight store link cache
+        if: always() && hashFiles('c64-port/build/flight-link-cache/updated') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            c64-port/build/flight-link-cache
+            !c64-port/build/flight-link-cache/updated
+          key: flight-link-cache-${{ github.run_id }}-base
+
+  # The legacy tools/*_vice_test.py scripts, as tools/mk/legacy-vice.mk
+  # targets. Requested full runs only (nightly, dispatch): about 400 VICE
+  # minutes, so they are split across shards. A PR or push that touches shared
+  # files runs the full host and c64 jobs but not these, so shared-file PRs
+  # don't take every runner for hours; the nightly catches legacy breaks.
+  c64-legacy:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Legacy VICE checks (shard ${{ matrix.shard }} of 8)
+        working-directory: c64-port
+        run: |
+          source deps/env.sh
+          python3 tools/legacy_vice.py
+          targets=$(python3 tools/legacy_vice.py --shard ${{ matrix.shard }}/8)
+          python3 tools/ci_run.py -j 4 --make-arg "MOS_CC=$MOS_CC" --make-arg "VICE=$VICE" \
+            --make-arg "VICE_ROM_DIR=$VICE_ROM_DIR" --make-arg "VICE_DATA_DIR=$VICE_DATA_DIR" \
+            --make-arg "C1541=$C1541" $targets --summary build/ci-summary.json
+      - *map-check
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c64-legacy-${{ matrix.shard }}-logs
+          path: |
+            c64-port/build/ci-logs
+            c64-port/build/ci-summary.json
+          if-no-files-found: ignore
+      - *piece
+      - *upload-piece
+
+  # Requested full runs only: re-derive every C64 branch cover a certificate
+  # cites on the current sources (tools/cover_check.py, host only), as
+  # manifest pieces carrying c64_cover. It fails on a cover that misses host
+  # branches or cannot be re-derived; tools/cert_precheck.py also reads
+  # c64_cover for the certificates a change touches.
+  cover-check:
+    needs: plan
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1]
+    steps:
+      - *checkout
+      - *deps
+      - *setup
+      - name: Re-derive cited C64 branch covers (shard ${{ matrix.shard }} of 2)
+        working-directory: c64-port
+        run: |
+          source deps/env.sh
+          python3 tools/cover_check.py --shard "${{ matrix.shard }}/2" --name "cover-check${{ matrix.shard }}" \
+            --out "build/vice-manifest-cover-check${{ matrix.shard }}.json"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vice-manifest-cover-check${{ matrix.shard }}
+          path: c64-port/build/vice-manifest-cover-check*.json
+          if-no-files-found: ignore
+
+  # The vice manifest (tools/vice_manifest.py): every vice-* target of this
+  # full run, its PRG sha256, checks and result, as the `vice-manifest`
+  # artifact that tools/cert_precheck.py checks certificates' vice_targets
+  # against.
+  vice-manifest:
+    needs: [plan, c64, c64-legacy, cover-check]
+    env:
+      REF: ${{ needs.plan.outputs.sha }}
+    if: always() && needs.plan.outputs.full == '1' && (inputs.full || github.event_name == 'schedule')
+    runs-on: ubuntu-24.04
+    steps:
+      - *checkout
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: vice-manifest-*
+          path: c64-port/build/vice-pieces
+          merge-multiple: true
+      - name: Merge the vice manifest
+        working-directory: c64-port
+        env:
+          MANIFEST_REF: ${{ inputs.ref || github.ref_name }}
+        run: |
+          shopt -s nullglob
+          python3 tools/vice_manifest.py merge build/vice-pieces/*.json --expect 14 \
+            --job "c64=${{ needs.c64.result }}" --job "c64-legacy=${{ needs.c64-legacy.result }}" \
+            --job "cover-check=${{ needs.cover-check.result }}" \
+            --out build/vice-manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vice-manifest
+          path: c64-port/build/vice-manifest.json
+          retention-days: 30

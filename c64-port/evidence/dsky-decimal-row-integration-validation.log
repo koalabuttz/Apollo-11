@@ -1,0 +1,12 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_dsky_decimal_row.c src/agc_word.c src/dsky_decimal_row.c tests/dsky_decimal_row_cases.c tests/dsky_decimal_row_check.c -o build/test-dsky-decimal-row-integrated
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/dsky_decimal_row_snapshot.c src/agc_word.c src/dsky_decimal_row.c tests/dsky_decimal_row_cases.c tests/dsky_decimal_row_check.c -o build/dsky-decimal-row-integrated-stream
+./build/test-dsky-decimal-row-integrated
+128 full LM/CM DSPDCEND call/return source states and30 unchanged invalid guards: PASS
+python3 tools/qualified_stream_host.py --archive evidence/dsky-decimal-row-reference.snapshots.xz --sha256 031302d804284b6d9700a31c30505a6383c13b0b5d0dfa383016c764d7f176dd --binary build/dsky-decimal-row-integrated-stream
+PASS all retained source-state bytes: 94961837 SHA256 031302d804284b6d9700a31c30505a6383c13b0b5d0dfa383016c764d7f176dd
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_dsky_decimal_row.c src/agc_word.c src/dsky_decimal_row.c tests/dsky_decimal_row_cases.c tests/dsky_decimal_row_check.c -o build/test-dsky-decimal-row-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dsky-decimal-row-integrated-san
+128 full LM/CM DSPDCEND call/return source states and30 unchanged invalid guards: PASS
+cc -Iinclude -Itests -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/dsky_decimal_row_snapshot.c src/agc_word.c src/dsky_decimal_row.c tests/dsky_decimal_row_cases.c tests/dsky_decimal_row_check.c -o build/dsky-decimal-row-integrated-stream-san
+python3 tools/qualified_stream_host.py --archive evidence/dsky-decimal-row-reference.snapshots.xz --sha256 031302d804284b6d9700a31c30505a6383c13b0b5d0dfa383016c764d7f176dd --binary build/dsky-decimal-row-integrated-stream-san
+PASS all retained source-state bytes: 94961837 SHA256 031302d804284b6d9700a31c30505a6383c13b0b5d0dfa383016c764d7f176dd

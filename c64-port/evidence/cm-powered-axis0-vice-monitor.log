@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-powered-axis0.prg from 0801 to 3731 (2F31 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  183/$0b7,  10/$0a
+.C:159c  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   48306331
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_axis-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_axis-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_powered_axis-software-stack.bin' from $c100 to $cfff

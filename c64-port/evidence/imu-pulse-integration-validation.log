@@ -1,0 +1,28 @@
+python3 tools/imu_pulse_port_host.py --cc "cc"
+32 complete IMUPULSE original states mission0 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 9cbf8e1c0fd602ea6b5c7f31a874565fbf93e2536429099eb7cfd0edf08a4c7a
+32 complete IMUPULSE original states mission0 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 f1b1b50cdb849410638fa063f8ae1d3362a8248a228c3e7267ff06247f73a92a
+32 complete IMUPULSE original states mission0 stage2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 8d5e73d2174890caa45ca451aa6ca51d3e2128cf7a719909fe2f4aac88e826ee
+32 complete IMUPULSE original states mission1 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 0002a77d7d2a8d8480a09b74ec8832a48eafb990161a776e4072dc2f6f6cab7c
+32 complete IMUPULSE original states mission1 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 0cbaf0c81bfd0c02aae3dc8209e563b60dc28a0e4649f6b8d845e80e1f0f39dc
+32 complete IMUPULSE original states mission1 stage2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 04597f4a7e85df984e9b925d0cc528eff96e834ae27dfc80d873a8afb1b9f59b
+PASS all393216 complete RTB source states and192 frozen states
+python3 tools/imu_pulse_port_host.py --cc "cc" --sanitize
+32 complete IMUPULSE original states mission0 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 9cbf8e1c0fd602ea6b5c7f31a874565fbf93e2536429099eb7cfd0edf08a4c7a
+32 complete IMUPULSE original states mission0 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 f1b1b50cdb849410638fa063f8ae1d3362a8248a228c3e7267ff06247f73a92a
+32 complete IMUPULSE original states mission0 stage2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 8d5e73d2174890caa45ca451aa6ca51d3e2128cf7a719909fe2f4aac88e826ee
+32 complete IMUPULSE original states mission1 stage0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 0002a77d7d2a8d8480a09b74ec8832a48eafb990161a776e4072dc2f6f6cab7c
+32 complete IMUPULSE original states mission1 stage1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 0cbaf0c81bfd0c02aae3dc8209e563b60dc28a0e4649f6b8d845e80e1f0f39dc
+32 complete IMUPULSE original states mission1 stage2: PASS
+PASS all retained source-state bytes: 269484032 SHA256 04597f4a7e85df984e9b925d0cc528eff96e834ae27dfc80d873a8afb1b9f59b
+PASS all393216 complete RTB source states and192 frozen states under full ASAN/UBSAN

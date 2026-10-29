@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete cm_display_sleep_lifecycle group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 18800
+cm_display_sleep_lifecycle-hardware-stack.bin: measured stack extent 18 bytes
+cm_display_sleep_lifecycle-software-stack.bin: measured stack extent 737 bytes

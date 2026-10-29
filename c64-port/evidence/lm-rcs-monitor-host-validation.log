@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_lm_rcs_monitor.c tests/frozen_words.c src/lm_rcs_monitor.c src/executive.c src/agc_word.c tests/lm_rcs_monitor_cases.c -o build/test-lm-rcs-monitor
+build/test-lm-rcs-monitor
+192 complete original LM RCS monitor states and constants: PASS

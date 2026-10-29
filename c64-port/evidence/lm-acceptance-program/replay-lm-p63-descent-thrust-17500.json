@@ -1,0 +1,422 @@
+{
+ "scenario": "lm-p63-descent-thrust",
+ "ok": true,
+ "status": 0,
+ "z": "03214",
+ "fb": "02000",
+ "superbank": "0100",
+ "bank": "01",
+ "at": "01,3214",
+ "wall_cycles": 40794025,
+ "agc_cs": 172,
+ "dropped_ticks": 0,
+ "steps": 1092,
+ "wall_per_agc": 24.073,
+ "lost": false,
+ "mission": "lm",
+ "snap_cs": 17500,
+ "replay": true,
+ "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
+ "harness_sha256": "6e9fa7c9c79bde86c01e62dec39c99dfdea7aaaa3840906348624487143ee745",
+ "prg_sha256": "971fd693ad719e9c1a1964d42e55d6d5eae788ccf7dde74e95d952c99026851c",
+ "reu_bounds": {
+  "ok": true,
+  "touched": [
+   "pinball save",
+   "replay states",
+   "scratch",
+   "undo"
+  ],
+  "outside": [],
+  "dma_outside": 0,
+  "dma_trace_armed": true,
+  "dma_hits": [],
+  "dma_unchecked": 12
+ },
+ "hold_host_mct": 740,
+ "hold_host_time1": 1302,
+ "replay_rows": 123,
+ "replay_applied": 123,
+ "replay_end_cs": 172,
+ "replay_ended": true,
+ "replay_after_rows": 12,
+ "replay_inputs": {
+  "counts": {
+   "1": 123
+  },
+  "erasable": [],
+  "pipas": [
+   "0037",
+   "0041"
+  ],
+  "channels": [],
+  "requests": 0,
+  "channel_set": {},
+  "channel_clear": {},
+  "channel_changed": {}
+ },
+ "replay_outputs": {
+  "channel_set": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 4352,
+   "channel 12": 288,
+   "channel 13": 0,
+   "channel 14": 28680,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 1,
+   "radar gate": 0
+  },
+  "channel_changed": {
+   "channel 5": 0,
+   "channel 6": 0,
+   "channel 11": 0,
+   "channel 12": 0,
+   "channel 13": 0,
+   "channel 14": 0,
+   "channel 34": 0,
+   "channel 35": 0,
+   "superbank": 112,
+   "channel 10": 0,
+   "interrupts enabled": 0,
+   "radar gate": 0
+  },
+  "nonzero": [
+   "0055"
+  ],
+  "changed": [
+   "0055"
+  ],
+  "states": [
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 4352,
+     "channel 12": 288,
+     "channel 13": 0,
+     "channel 14": 28680,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 0,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 112,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [
+     "0055"
+    ],
+    "changed": [],
+    "cs": 100
+   },
+   {
+    "channel_set": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 4352,
+     "channel 12": 288,
+     "channel 13": 0,
+     "channel 14": 28680,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 48,
+     "channel 10": 0,
+     "interrupts enabled": 1,
+     "radar gate": 0
+    },
+    "channel_changed": {
+     "channel 5": 0,
+     "channel 6": 0,
+     "channel 11": 0,
+     "channel 12": 0,
+     "channel 13": 0,
+     "channel 14": 0,
+     "channel 34": 0,
+     "channel 35": 0,
+     "superbank": 0,
+     "channel 10": 0,
+     "interrupts enabled": 0,
+     "radar gate": 0
+    },
+    "nonzero": [
+     "0055"
+    ],
+    "changed": [
+     "0055"
+    ],
+    "cs": 164
+   }
+  ],
+  "trace": [
+   [
+    15,
+    "0050",
+    "77777"
+   ],
+   [
+    15,
+    "0051",
+    "77777"
+   ],
+   [
+    15,
+    "0052",
+    "77777"
+   ],
+   [
+    16,
+    "0050",
+    "00000"
+   ],
+   [
+    16,
+    "0051",
+    "00000"
+   ],
+   [
+    16,
+    "0052",
+    "00000"
+   ],
+   [
+    35,
+    "0050",
+    "77777"
+   ],
+   [
+    35,
+    "0052",
+    "77777"
+   ],
+   [
+    36,
+    "0050",
+    "00000"
+   ],
+   [
+    36,
+    "0052",
+    "00000"
+   ],
+   [
+    55,
+    "0050",
+    "77777"
+   ],
+   [
+    55,
+    "0051",
+    "77777"
+   ],
+   [
+    55,
+    "0052",
+    "77777"
+   ],
+   [
+    56,
+    "0050",
+    "00000"
+   ],
+   [
+    56,
+    "0051",
+    "00000"
+   ],
+   [
+    56,
+    "0052",
+    "00000"
+   ],
+   [
+    75,
+    "0050",
+    "77777"
+   ],
+   [
+    75,
+    "0051",
+    "77777"
+   ],
+   [
+    75,
+    "0052",
+    "77777"
+   ],
+   [
+    76,
+    "0050",
+    "00000"
+   ],
+   [
+    76,
+    "0051",
+    "00000"
+   ],
+   [
+    76,
+    "0052",
+    "00000"
+   ],
+   [
+    95,
+    "0050",
+    "77777"
+   ],
+   [
+    95,
+    "0051",
+    "77777"
+   ],
+   [
+    95,
+    "0052",
+    "77777"
+   ],
+   [
+    96,
+    "0050",
+    "00000"
+   ],
+   [
+    96,
+    "0051",
+    "00000"
+   ],
+   [
+    96,
+    "0052",
+    "00000"
+   ],
+   [
+    114,
+    "0050",
+    "77777"
+   ],
+   [
+    114,
+    "0051",
+    "77777"
+   ],
+   [
+    114,
+    "0052",
+    "77777"
+   ],
+   [
+    115,
+    "0050",
+    "00000"
+   ],
+   [
+    115,
+    "0051",
+    "00000"
+   ],
+   [
+    115,
+    "0052",
+    "00000"
+   ],
+   [
+    134,
+    "0050",
+    "77777"
+   ],
+   [
+    134,
+    "0051",
+    "77777"
+   ],
+   [
+    134,
+    "0052",
+    "77777"
+   ],
+   [
+    135,
+    "0050",
+    "00000"
+   ],
+   [
+    135,
+    "0051",
+    "00000"
+   ],
+   [
+    135,
+    "0052",
+    "00000"
+   ],
+   [
+    155,
+    "0050",
+    "77777"
+   ],
+   [
+    155,
+    "0051",
+    "77777"
+   ],
+   [
+    155,
+    "0052",
+    "77777"
+   ],
+   [
+    155,
+    "0050",
+    "00000"
+   ],
+   [
+    155,
+    "0051",
+    "00000"
+   ],
+   [
+    155,
+    "0052",
+    "00000"
+   ]
+  ]
+ },
+ "replay_unpaired": [],
+ "replay_unpaired_count": 0,
+ "replay_busy_apart": [],
+ "replay_busy_apart_count": 0,
+ "replay_end_shift_cs": 0,
+ "replay_end_paired": true,
+ "masked_dead_superbank": 0,
+ "masked_dead_superbank_at": [],
+ "replay_matched_cs": [
+  100,
+  164
+ ],
+ "replay_differences": 0,
+ "replay_differ_at_cs": null,
+ "replay_skipped": [],
+ "replay_first": [],
+ "snap_at": 17532,
+ "snap_slid": false,
+ "requested_cs": 164,
+ "host_holes": [],
+ "downrupt": false,
+ "commit": "d7abace4fc66"
+}

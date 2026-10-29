@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 128 complete dsky_octal_verb group original-assembly states; retained memory unchanged
+Mailbox: a500008000
+PRG bytes: 8699
+dsky_octal_verb-hardware-stack.bin: measured stack extent 14 bytes
+dsky_octal_verb-software-stack.bin: measured stack extent 32 bytes

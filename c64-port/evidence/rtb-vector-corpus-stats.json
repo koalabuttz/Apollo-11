@@ -1,0 +1,82 @@
+{
+  "lm0": {
+    "mission": 0,
+    "entry": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "adb8e5ad79cde8f207a524f4bcf6d7b0ebe562c9d9129a8ff789db08ea4da113",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 859
+  },
+  "lm1": {
+    "mission": 0,
+    "entry": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "b4ed7f53f5b99fb8ec13709d82b01ab6a4de6af086a9f2c560ea97109ee5de7b",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 950
+  },
+  "lm2": {
+    "mission": 0,
+    "entry": 2,
+    "complete_states": 65536,
+    "decoded_sha256": "a174a300d1c9533868988d1e8f72f900334fe72b1a0b38e1ecd15147ca804b89",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1327
+  },
+  "lm3": {
+    "mission": 0,
+    "entry": 3,
+    "complete_states": 65536,
+    "decoded_sha256": "d0d023dd18fd16d248443496a1f6681311f10a230e42c44479eae521df04f033",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1325
+  },
+  "lm4": {
+    "mission": 0,
+    "entry": 4,
+    "complete_states": 65536,
+    "decoded_sha256": "b6665bec1cef8c2a4593958ee86faa94d69ae4cccae4f66c02e047b4149688eb",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 840
+  },
+  "cm0": {
+    "mission": 1,
+    "entry": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "8c6f6a381065d4cb4b9964f9f3a295a526f2e4ec5b114f49a84e68c4660a3324",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 859
+  },
+  "cm1": {
+    "mission": 1,
+    "entry": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "aa58453e9da9d9002f3da6ed0bfbd00e35a222b53ac21be4608651f9a877e688",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 950
+  },
+  "cm2": {
+    "mission": 1,
+    "entry": 2,
+    "complete_states": 65536,
+    "decoded_sha256": "39f47e4c4dd8ce495807b76b3ee7390660dcb191277737bb24dae750a198d477",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1327
+  },
+  "cm3": {
+    "mission": 1,
+    "entry": 3,
+    "complete_states": 65536,
+    "decoded_sha256": "4496ad2a7d510e55125273d9d0f1bbaf6974c978e2d12fb72440114f756dae75",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 1325
+  },
+  "cm4": {
+    "mission": 1,
+    "entry": 4,
+    "complete_states": 65536,
+    "decoded_sha256": "a153e41f1e387360c37c5a0056834a120b59afb8d9db50b1f9e443b04395c9e7",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 840
+  }
+}

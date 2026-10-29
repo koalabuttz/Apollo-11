@@ -1,0 +1,23 @@
+{
+  "cases": 1536,
+  "checkpoints": 14848,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "entries": [
+    "BAILOUT7755/POODOO5721/CCSHOLE5747",
+    "VAC5STOR\u2192SWRETURN\u2192BORTENT",
+    "V37FLBIT/threeDOWNFLAG/MR.KLEAN",
+    "WHIMPER\u2192RESUME\u2192POSTJUMP",
+    "ENEMA\u2192actualMMDSPLAY/PTBAD/DOFSTART"
+  ],
+  "context_cohorts": "512 legal original ENEMA input cohorts \u00d73 actualabort entries, source FAILREG+0 baseline and V37 both branches, actual Executive alarm producers, ISR0/1; uninterrupted7/8/14 checkpoint paths",
+  "binary_bytes": 61351936,
+  "snapshot_sha256": "202dbbcf4cdf746728cfcc39326237684f15e9ddb6cd7ec904297dcba34a12cb",
+  "binary_record_format": "2066littleendian uint16: case low/high,phase,status,2048 physical words,13 cm_native_io latches and ISR",
+  "scope": "actual uninterrupted abort snapshot/alarm/flag/phase/WHIMPER/ENEMA chain through genuine selected program frontier; following selected application body remains separate"
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-self-check-complete",
+  "release": "evidence-lm-self-check-complete",
+  "files": {
+    "lm-self-check-complete-c64-cover.json": {
+      "sha256": "7a4ec27ade54db32ae26d45e814ebf05d5367ba14a0274863c67e4c7ecc31765",
+      "bytes": 2488,
+      "store": "tree"
+    },
+    "lm-self-check-complete-c64.json": {
+      "sha256": "dffd52d1e6c0fe8709c76b18126b062d6e6a26ae6492683ce0557a6d0f43fca3",
+      "bytes": 744,
+      "store": "tree"
+    },
+    "lm-self-check-complete-comparison.json": {
+      "sha256": "cfa349bbd4fe80231759b8767e455e3e8760767913d68973ad6206861cc2c44c",
+      "bytes": 1104,
+      "store": "tree"
+    },
+    "lm-self-check-complete-host.json": {
+      "sha256": "f55dabf9d3a2b4784464b9a31e8280ed149170d215df1738a84b2e7038042226",
+      "bytes": 645,
+      "store": "tree"
+    },
+    "lm-self-check-complete-line-map.json": {
+      "sha256": "ee1f3c7b6bc04c7f738c08641cc9ba1fbb8d92f28222823532e811c488822482",
+      "bytes": 74785,
+      "store": "tree"
+    },
+    "lm-self-check-complete-source-map.json": {
+      "sha256": "3235908915d7ae23e6b5220f015acb22ac72b4447e03511022953b4e6f154949",
+      "bytes": 1501,
+      "store": "tree"
+    }
+  }
+}

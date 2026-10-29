@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly dsky_mixed_noun states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 7670 7668
+hardware stack sentinel extent: 12
+software stack sentinel extent: 24

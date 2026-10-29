@@ -1,0 +1,4 @@
+fc98a658756fc005ed19ac5169cf79ad09b906876a8734fd2e97a5caeb077e63  docs/RTB-VECTOR-BANK-ERRATUM.md
+84fb06ed62bad265f3b2684871df641e36fab0fafb6c55de1ec0fd7ffa0cb7e2  evidence/rtb-vector-bank-erratum.json
+293b433dfdcc4d49004d883ca1bc72e671c702a0946d65584d62221c51178b61  evidence/rtb-vector-bank-erratum-independent-review.txt
+5b3a6e77a404a979ab7ce2154340711220baf52857887c7f2dc8f103fe77141a  tools/rtb_vector_bank_erratum.py

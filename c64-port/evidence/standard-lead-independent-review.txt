@@ -1,0 +1,51 @@
+Independent source reviews of final native SYSTEM_TEST_STANDARD_LEAD_INS controls
+
+Reviewer /root/p66_source_map inspected standard_lead.c, standard_lead_interp.c
+and the LM branch of standard_lead_bank.c against both original lead-in files
+and original CALL/RVQ/EXIT/INTPRET and SWCALL/SWRETURN source groups.
+
+One concrete standalone-control discrepancy was found and corrected before
+freeze: E/CALL's TCF INTPRET+2 skips EXTEND/RELINT, so FINISH must retain incoming
+IRQ. The composed CALL proof already had IRQ1 and could not expose this.
+The final wrapper/header retain incoming IRQ at FINISH. Separate original-source
+and complete ASAN/UBSAN epilogue corpora cover1024 states per mission under IRQ0
+and IRQ1; eight corresponding C64 frozen states per mission also pass.
+
+Final reviewer conclusion: no further concrete discrepancy within the documented
+contracts. Aliased EBUF2 inline reads occur after source stores. Fixed/erasable
+pointer mapping, CALL saved QPRET, direct fixed RVQ, EXIT BANKSET/Q, unextended
+INTPRET+2 LXCH LOC, EB/BB DTCB and SWCALL/SWRETURN exchanges align. The delegated
+CM SWCALL/SWRETURN helper changes neither SUPER nor IRQ, so its unchanged local
+metadata does not lose external latch effects. Arbitrary external routine bodies
+remain explicit caller-owned native continuations, with no decoder claim.
+
+Reviewer /root/comanche_executive inspected CM REDO admission/return controls
+against byte-original CM phase/Executive source. No issue was found within the
+seven-core admitted-context domain. REDO saves original BB and caller2004 before
+NEWMODEX/SETUPDSP. Success restores original physical caller banks while keeping
+transient20|oldL-low3 in final L and sourceA2451. No-core keeps Q2724, FB2000 and
+transient EB derived from oldL, preserves prior NEWLOC L debris, and stops before
+the external BAILOUT7755 body. The native admission preflight cannot return an
+unexpected status after alarm/NEWJOB guards and fixed030000/3441/060102 inputs.
+All eight resource outcomes are source qualified. Priority+0/CCSHOLE is outside
+the admitted domain; final native REDO explicitly rejects it before mutation.
+
+Reviewed final native SHA256 identities:
+src/standard_lead.c 9c6424c15aaaf69aba30c8686dda587a5fc178584504c42fb2b9a9d21a7856a7
+src/standard_lead_bank.c 080da0b2dfa6c35407ce3616d4e55909b0a6b23dec4f0b78bb7d0276b0e764e3
+src/standard_lead_cm.c ab20c3d77f1dfd4a25458281da2492e8e637a6b8a835f5de100fffb7dd567ddf
+src/standard_lead_interp.c 21265369e4e4b3ec19e60e5e97db75c3fddd54606659bc156082f225131e91f6
+src/standard_lead_wake.c 2e50af7784d5a2f223f04a4c80dfd31e2c1591e376ce4f8bec1bab2c6a725377
+include/standard_lead.h a79f196521dccfb4ac1ec4db4eb63b145d286838b439587a363de9668be46520
+include/standard_lead_bank.h e6181efaccf945d4459d49caad84dd15e801d4f8bf4a6f79fdc9a06134a01609
+include/standard_lead_cm.h f825f83054fe3d4f744e588b5a29d5a237f76fabed90df2f28cb36fcca561bf8
+include/standard_lead_wake.h 74b8191b6ad1eace1f79425a309eaeb2369027371250012b01ccbadf09d932e4
+
+Original lead-in SHA256:
+Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc 6984a991e8adcb1f48e9de6e2f6018b8f7494b51b8a5f2f96b98026ed3e844e8
+Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc 1cfc04b134e2f25a8039e0d210aa1e432147da9ef3c52e0a3d0dc301ba1b3cec
+
+The independent reviews address source controls/domain closure; the retained
+35328 complete host/source/sanitizer states and352 actual C64 states establish
+numerical/raw-word and unowned-image equality. This evidence does not certify
+execution of external callee/caller/recovery bodies or either whole application.

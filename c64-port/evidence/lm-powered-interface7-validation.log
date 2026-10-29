@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete lm_powered_interface group original-assembly states; retained memory unchanged
+Mailbox: a500002007
+PRG bytes: 13537
+lm_powered_interface-hardware-stack.bin: measured stack extent 23 bytes
+lm_powered_interface-software-stack.bin: measured stack extent 290 bytes

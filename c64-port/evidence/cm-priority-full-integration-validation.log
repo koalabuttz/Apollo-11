@@ -1,0 +1,21 @@
+python3 tools/prepare_cm_original_rope.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+python3 tools/cm_priority_full_differential.py
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+PASS: original PRIOCHNG complete image, all13 metadata fields and actual typed transfer
+{
+  "cases": 75264,
+  "checkpoints": 75264,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 311291904,
+  "snapshot_sha256": "68787a8266dbbef6c50db6ccbb4ddf7a40c61958a001eea36583ab678eacc69e",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "typed_transfer_words": 3,
+  "scope": "actual PRIOCHNG all32 bare levels including+0, six authentic resource fractions, basic/interpreter/no exchange and every+0candidate position; true source caller or CCSHOLE transfer"
+}
+./build/test-cm-priority-full
+PASS: invalid priority/compiled caller/resource contracts preserve all canonical objects
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/cm_priority_full.c src/cm_native_image.c src/cm_executive.c src/agc_word.c tests/cm_priority_full_cases.c tests/cm_context_change_cases.c tests/cm_admission_complete_cases.c tests/cm_executive_cases.c platform/host/cm_priority_full_snapshot.c -o build/cm-priority-full-sanitize
+python3 tools/cm_priority_full_sanitize.py
+PASS: full ASAN/UBSAN complete PRIOCHNG/packed priority/typed transfer/+0 scan states, all75264 complete source states

@@ -1,0 +1,40 @@
+{
+  "actual_executed_source_states": 32768,
+  "source_stream_sha256": "4c6d09ba01f808bee93be9c47b6036d6a95936f798538462cd95199af502e825",
+  "target_contexts": 64,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004000",
+  "software_stack_bytes": 74,
+  "modules": [
+    {
+      "id": 245,
+      "filename": "G245",
+      "byte_count": 3305,
+      "crc16": 30655,
+      "sha256": "f136a3dab3584ba103e71b156402f505eb53c8ebd4fbaaa4c830eeaad3622106",
+      "prg": "cm-wake-complete-245.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 2759,
+      "crc16": 1928,
+      "sha256": "66e0435e8bb6626fcc39ccf50a4ded0069e35bbe83aaeb90e15f0a6d48d84a2d",
+      "prg": "cm-wake-complete-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10145,
+      "crc16": 37153,
+      "sha256": "fee575c9d49524394a077e5ad6f90d0ce130881fa8ac1bf0903c7d6e0f89c5f8",
+      "prg": "cm-wake-complete-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual complete JOBWAKE/core0 body and true ordinary return, CCSHOLE or TC014 source fault frontier; external register code and selected application remain separate"
+}

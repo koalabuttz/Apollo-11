@@ -1,0 +1,65 @@
+{
+  "states": [
+    0,
+    1,
+    2,
+    4,
+    6,
+    8,
+    9,
+    32,
+    63,
+    383,
+    4095,
+    4096,
+    17000,
+    40000,
+    51234,
+    65471
+  ],
+  "frontiers_matched": 152,
+  "matched_oracle_rows_sha256": "8dc405482f83a503ece70e2a5ade0ed4f49b2ee3b8c0a9138a31ced12f4e62a3",
+  "groups": {
+    "1": {
+      "phases": [
+        0,
+        1
+      ],
+      "steps": 12,
+      "entry_changes": 23,
+      "exit_changes": 23,
+      "frozen_bytes": 1042
+    },
+    "2": {
+      "phases": [
+        2,
+        3,
+        4,
+        6,
+        7
+      ],
+      "steps": 30,
+      "entry_changes": 60,
+      "exit_changes": 20,
+      "frozen_bytes": 5167
+    },
+    "3": {
+      "phases": [
+        5
+      ],
+      "steps": 6,
+      "entry_changes": 44,
+      "exit_changes": 38,
+      "frozen_bytes": 1439
+    },
+    "4": {
+      "phases": [
+        8
+      ],
+      "steps": 6,
+      "entry_changes": 60,
+      "exit_changes": 41,
+      "frozen_bytes": 1744
+    }
+  }
+}

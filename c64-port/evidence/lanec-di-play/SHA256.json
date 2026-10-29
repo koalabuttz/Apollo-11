@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-di-play",
+  "release": "evidence-lanec-di-play",
+  "files": {
+    "lanec-di-play-diff.json": {
+      "sha256": "542d58fcf905d76116766b1bb42824741118f9d03326cd24c61ad4b2296cd997",
+      "bytes": 234,
+      "store": "tree"
+    },
+    "lanec-di-play-oracle.crc": {
+      "sha256": "f8e8e72203d6b1c3003448c507358f8d7e1cc16777d63404341b99c7e9f1d21d",
+      "bytes": 29802,
+      "store": "tree"
+    },
+    "lanec-di-play-sanitize.txt": {
+      "sha256": "3142f746059256e68e632f9d3fec45535c79c801df8a47a4cf9a3accda185001",
+      "bytes": 147,
+      "store": "tree"
+    },
+    "lanec-di-play-vice.txt": {
+      "sha256": "45db236b0cd8472edadec0a9aedf675b2935374bc2705cfc76c50d746157a6cd",
+      "bytes": 56,
+      "store": "tree"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-r52-priority-alarm-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-r52-priority-alarm-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-R52-PRIORITY-ALARM.PRG' as `RESIDENT' to unit 8
+writing file `CM-R52-PRIORITY-ALARM-229.PRG' as `G229' to unit 8
+writing file `CM-R52-PRIORITY-ALARM-230.PRG' as `G230' to unit 8
+writing file `CM-R52-PRIORITY-ALARM-231.PRG' as `G231' to unit 8
+writing file `CM-R52-PRIORITY-ALARM-254.PRG' as `G254' to unit 8
+writing file `CM-R52-PRIORITY-ALARM-255.PRG' as `G255' to unit 8
+229 10457 loaded bytes
+230 5349 loaded bytes
+231 6046 loaded bytes
+254 5095 loaded bytes
+255 10745 loaded bytes

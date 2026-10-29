@@ -1,0 +1,37 @@
+PASS: original Comanche queue/interrupt overlays; complete rope equals independently assembled pinned source
+{
+  "pin": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "sources": {
+    "EXECUTIVE.agc": {
+      "original_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+      "normalized_sha256": "12827288def51cab29ff591dd2febb7a652237a8b2786c42ea7dc6bafa2e5356",
+      "normalized_lines": 5
+    },
+    "WAITLIST.agc": {
+      "original_sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+      "normalized_sha256": "85335058feda6297569d28b8ca6e077fccb85d52eb5c14fd7e36db73aef4bb85",
+      "normalized_lines": 9
+    },
+    "INTERRUPT_LEAD_INS.agc": {
+      "original_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+      "normalized_sha256": "14f01c6f85b23b46421a7d6dd98e731bd48c5a42a19baa5b6fed182a020860e0",
+      "normalized_lines": 0
+    },
+    "PHASE_TABLE_MAINTENANCE.agc": {
+      "original_sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
+      "normalized_sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966",
+      "normalized_lines": 0
+    },
+    "RESTARTS_ROUTINE.agc": {
+      "original_sha256": "490811f02cb07b69e98d9c558ed156f82e95d8735f29827edf8fe2fd6366efcc",
+      "normalized_sha256": "490811f02cb07b69e98d9c558ed156f82e95d8735f29827edf8fe2fd6366efcc",
+      "normalized_lines": 0
+    },
+    "FRESH_START_AND_RESTART.agc": {
+      "original_sha256": "d208d482531e01c2ffe48fca059117220d922c750b3936f0a046e9ea9499ae59",
+      "normalized_sha256": "29fc1df77ee162532c2b2038df72c24095f76463c87873e60b83ee477c1c0dda",
+      "normalized_lines": 2
+    }
+  },
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}

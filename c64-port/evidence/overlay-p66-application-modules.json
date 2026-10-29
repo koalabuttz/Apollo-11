@@ -1,0 +1,74 @@
+[
+  {
+    "id": 50,
+    "filename": "A50",
+    "byte_count": 5057,
+    "crc16": 55882,
+    "sha256": "ce984296c55ec98a697d22cdccfbae10305f323bd8e568adec41b17bd432e7f1",
+    "prg": "overlay-p66-application-50.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 83,
+    "filename": "A83",
+    "byte_count": 4846,
+    "crc16": 16840,
+    "sha256": "e1c5227fa7b74981bb83743a073f96da0fed9f3d73293a8d7f2f96f9e1010c42",
+    "prg": "overlay-p66-application-83.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 51,
+    "filename": "A51",
+    "byte_count": 3615,
+    "crc16": 56651,
+    "sha256": "66942b9ca56a0d7250c73105949e14f89ee2c7ec3849cd8b845525ea3aebb828",
+    "prg": "overlay-p66-application-51.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 52,
+    "filename": "A52",
+    "byte_count": 9375,
+    "crc16": 10559,
+    "sha256": "6648b57e668a0a298d61ef73cbd99582e3943b3c5952fefd53a1a299cbb81cff",
+    "prg": "overlay-p66-application-52.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 53,
+    "filename": "A53",
+    "byte_count": 5838,
+    "crc16": 58905,
+    "sha256": "a3f12cbf448a606088689f28dfd0365af8118a534b10ee9d5488bb02021fb893",
+    "prg": "overlay-p66-application-53.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 54,
+    "filename": "A54",
+    "byte_count": 1167,
+    "crc16": 10184,
+    "sha256": "92f9fc20544326c2ca6f9b8ca58e2ea4f4be74253aa29ebd90f4ed9d622f7108",
+    "prg": "overlay-p66-application-54.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 55,
+    "filename": "A55",
+    "byte_count": 6889,
+    "crc16": 7560,
+    "sha256": "0e57907957d6727f1950542abee323b0cf791d0c45d336e3f7050a2fd165d728",
+    "prg": "overlay-p66-application-55.prg",
+    "mission_translation": true
+  },
+  {
+    "id": 56,
+    "filename": "A56",
+    "byte_count": 1343,
+    "crc16": 29287,
+    "sha256": "78381f3a6e04ec6d9a534fb4bba9aea75fc20d26c234c8c7458064ae7d1c81da",
+    "prg": "overlay-p66-application-56.prg",
+    "mission_translation": true
+  }
+]

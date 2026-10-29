@@ -1,0 +1,631 @@
+{
+  "lm": {
+    "source_file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "assembled_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [],
+    "source_group_words": 36,
+    "words": [
+      {
+        "original_line": 844,
+        "bank": "07",
+        "address": "3750",
+        "physical_fixed_word": 8168,
+        "raw_octal": "31307",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 845,
+        "bank": "07",
+        "address": "3751",
+        "physical_fixed_word": 8169,
+        "raw_octal": "00006",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 846,
+        "bank": "07",
+        "address": "3752",
+        "physical_fixed_word": 8170,
+        "raw_octal": "13755",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 848,
+        "bank": "07",
+        "address": "3753",
+        "physical_fixed_word": 8171,
+        "raw_octal": "05652",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 849,
+        "bank": "07",
+        "address": "3754",
+        "physical_fixed_word": 8172,
+        "raw_octal": "01210",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 851,
+        "bank": "07",
+        "address": "3755",
+        "physical_fixed_word": 8173,
+        "raw_octal": "00006",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 852,
+        "bank": "07",
+        "address": "3756",
+        "physical_fixed_word": 8174,
+        "raw_octal": "30134",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 853,
+        "bank": "07",
+        "address": "3757",
+        "physical_fixed_word": 8175,
+        "raw_octal": "53310",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 855,
+        "bank": "07",
+        "address": "3760",
+        "physical_fixed_word": 8176,
+        "raw_octal": "30006",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 856,
+        "bank": "07",
+        "address": "3761",
+        "physical_fixed_word": 8177,
+        "raw_octal": "74757",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 857,
+        "bank": "07",
+        "address": "3762",
+        "physical_fixed_word": 8178,
+        "raw_octal": "27310",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 859,
+        "bank": "07",
+        "address": "3763",
+        "physical_fixed_word": 8179,
+        "raw_octal": "30167",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 860,
+        "bank": "07",
+        "address": "3764",
+        "physical_fixed_word": 8180,
+        "raw_octal": "77725",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 861,
+        "bank": "07",
+        "address": "3765",
+        "physical_fixed_word": 8181,
+        "raw_octal": "55311",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 863,
+        "bank": "07",
+        "address": "3766",
+        "physical_fixed_word": 8182,
+        "raw_octal": "33772",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 864,
+        "bank": "07",
+        "address": "3767",
+        "physical_fixed_word": 8183,
+        "raw_octal": "54003",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 865,
+        "bank": "07",
+        "address": "3770",
+        "physical_fixed_word": 8184,
+        "raw_octal": "04635",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 866,
+        "bank": "07",
+        "address": "3771",
+        "physical_fixed_word": 8185,
+        "raw_octal": "44004",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 867,
+        "bank": "07",
+        "address": "3772",
+        "physical_fixed_word": 8186,
+        "raw_octal": "03276",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 904,
+        "bank": "04",
+        "address": "3253",
+        "physical_fixed_word": 4779,
+        "raw_octal": "00063",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 905,
+        "bank": "04",
+        "address": "3254",
+        "physical_fixed_word": 4780,
+        "raw_octal": "34737",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 906,
+        "bank": "04",
+        "address": "3255",
+        "physical_fixed_word": 4781,
+        "raw_octal": "70077",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 907,
+        "bank": "04",
+        "address": "3256",
+        "physical_fixed_word": 4782,
+        "raw_octal": "10000",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 908,
+        "bank": "04",
+        "address": "3257",
+        "physical_fixed_word": 4783,
+        "raw_octal": "03270",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 910,
+        "bank": "04",
+        "address": "3260",
+        "physical_fixed_word": 4784,
+        "raw_octal": "31302",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 911,
+        "bank": "04",
+        "address": "3261",
+        "physical_fixed_word": 4785,
+        "raw_octal": "74743",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 912,
+        "bank": "04",
+        "address": "3262",
+        "physical_fixed_word": 4786,
+        "raw_octal": "00006",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 913,
+        "bank": "04",
+        "address": "3263",
+        "physical_fixed_word": 4787,
+        "raw_octal": "13265",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 914,
+        "bank": "04",
+        "address": "3264",
+        "physical_fixed_word": 4788,
+        "raw_octal": "44750",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 915,
+        "bank": "04",
+        "address": "3265",
+        "physical_fixed_word": 4789,
+        "raw_octal": "63273",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 916,
+        "bank": "04",
+        "address": "3266",
+        "physical_fixed_word": 4790,
+        "raw_octal": "05744",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 918,
+        "bank": "04",
+        "address": "3267",
+        "physical_fixed_word": 4791,
+        "raw_octal": "06001",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 920,
+        "bank": "04",
+        "address": "3270",
+        "physical_fixed_word": 4792,
+        "raw_octal": "05504",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 922,
+        "bank": "04",
+        "address": "3271",
+        "physical_fixed_word": 4793,
+        "raw_octal": "00007",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 923,
+        "bank": "04",
+        "address": "3272",
+        "physical_fixed_word": 4794,
+        "raw_octal": "14631",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 924,
+        "bank": "04",
+        "address": "3273",
+        "physical_fixed_word": 4795,
+        "raw_octal": "00220",
+        "native_group": "R02 and data"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "UPFLAG": "05504",
+      "VARALARM": "05744",
+      "POODOO": "05652",
+      "POSTJUMP": "04635",
+      "SWRETURN": "04631",
+      "GOTOPOOH": "06001"
+    },
+    "remaining": [
+      "External KALCMAN3/UPFLAG/VARALARM/GOTOPOOH bodies",
+      "Standby scaler/time local groups"
+    ]
+  },
+  "cm": {
+    "source_file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "assembled_sha256": "93f871dc8ba8fcda0c2129f81e86f119026a3aa1562067f63eb32d01c7bcd622",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [
+      178,
+      523,
+      596,
+      850
+    ],
+    "source_group_words": 36,
+    "words": [
+      {
+        "original_line": 844,
+        "bank": "07",
+        "address": "3627",
+        "physical_fixed_word": 8087,
+        "raw_octal": "31325",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 845,
+        "bank": "07",
+        "address": "3630",
+        "physical_fixed_word": 8088,
+        "raw_octal": "00006",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 846,
+        "bank": "07",
+        "address": "3631",
+        "physical_fixed_word": 8089,
+        "raw_octal": "13634",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 847,
+        "bank": "07",
+        "address": "3632",
+        "physical_fixed_word": 8090,
+        "raw_octal": "05721",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 848,
+        "bank": "07",
+        "address": "3633",
+        "physical_fixed_word": 8091,
+        "raw_octal": "01210",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 850,
+        "bank": "07",
+        "address": "3634",
+        "physical_fixed_word": 8092,
+        "raw_octal": "00006",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 851,
+        "bank": "07",
+        "address": "3635",
+        "physical_fixed_word": 8093,
+        "raw_octal": "30134",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 852,
+        "bank": "07",
+        "address": "3636",
+        "physical_fixed_word": 8094,
+        "raw_octal": "53326",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 854,
+        "bank": "07",
+        "address": "3637",
+        "physical_fixed_word": 8095,
+        "raw_octal": "30006",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 855,
+        "bank": "07",
+        "address": "3640",
+        "physical_fixed_word": 8096,
+        "raw_octal": "75023",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 856,
+        "bank": "07",
+        "address": "3641",
+        "physical_fixed_word": 8097,
+        "raw_octal": "27326",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 858,
+        "bank": "07",
+        "address": "3642",
+        "physical_fixed_word": 8098,
+        "raw_octal": "30167",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 859,
+        "bank": "07",
+        "address": "3643",
+        "physical_fixed_word": 8099,
+        "raw_octal": "77674",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 860,
+        "bank": "07",
+        "address": "3644",
+        "physical_fixed_word": 8100,
+        "raw_octal": "55327",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 862,
+        "bank": "07",
+        "address": "3645",
+        "physical_fixed_word": 8101,
+        "raw_octal": "33651",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 863,
+        "bank": "07",
+        "address": "3646",
+        "physical_fixed_word": 8102,
+        "raw_octal": "54003",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 864,
+        "bank": "07",
+        "address": "3647",
+        "physical_fixed_word": 8103,
+        "raw_octal": "04701",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 865,
+        "bank": "07",
+        "address": "3650",
+        "physical_fixed_word": 8104,
+        "raw_octal": "44000",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 866,
+        "bank": "07",
+        "address": "3651",
+        "physical_fixed_word": 8105,
+        "raw_octal": "03261",
+        "native_group": "GOMANUR and data"
+      },
+      {
+        "original_line": 904,
+        "bank": "07",
+        "address": "3652",
+        "physical_fixed_word": 8106,
+        "raw_octal": "00063",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 905,
+        "bank": "07",
+        "address": "3653",
+        "physical_fixed_word": 8107,
+        "raw_octal": "35003",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 906,
+        "bank": "07",
+        "address": "3654",
+        "physical_fixed_word": 8108,
+        "raw_octal": "70077",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 907,
+        "bank": "07",
+        "address": "3655",
+        "physical_fixed_word": 8109,
+        "raw_octal": "10000",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 908,
+        "bank": "07",
+        "address": "3656",
+        "physical_fixed_word": 8110,
+        "raw_octal": "03667",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 910,
+        "bank": "07",
+        "address": "3657",
+        "physical_fixed_word": 8111,
+        "raw_octal": "31320",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 911,
+        "bank": "07",
+        "address": "3660",
+        "physical_fixed_word": 8112,
+        "raw_octal": "75007",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 912,
+        "bank": "07",
+        "address": "3661",
+        "physical_fixed_word": 8113,
+        "raw_octal": "00006",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 913,
+        "bank": "07",
+        "address": "3662",
+        "physical_fixed_word": 8114,
+        "raw_octal": "13664",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 914,
+        "bank": "07",
+        "address": "3663",
+        "physical_fixed_word": 8115,
+        "raw_octal": "45014",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 915,
+        "bank": "07",
+        "address": "3664",
+        "physical_fixed_word": 8116,
+        "raw_octal": "63672",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 916,
+        "bank": "07",
+        "address": "3665",
+        "physical_fixed_word": 8117,
+        "raw_octal": "05764",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 918,
+        "bank": "07",
+        "address": "3666",
+        "physical_fixed_word": 8118,
+        "raw_octal": "04106",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 921,
+        "bank": "07",
+        "address": "3667",
+        "physical_fixed_word": 8119,
+        "raw_octal": "05546",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 922,
+        "bank": "07",
+        "address": "3670",
+        "physical_fixed_word": 8120,
+        "raw_octal": "00007",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 923,
+        "bank": "07",
+        "address": "3671",
+        "physical_fixed_word": 8121,
+        "raw_octal": "14675",
+        "native_group": "R02 and data"
+      },
+      {
+        "original_line": 924,
+        "bank": "07",
+        "address": "3672",
+        "physical_fixed_word": 8122,
+        "raw_octal": "00220",
+        "native_group": "R02 and data"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "UPFLAG": "05546",
+      "VARALARM": "05764",
+      "POODOO": "05721",
+      "POSTJUMP": "04701",
+      "SWRETURN": "04675",
+      "GOTOPOOH": "04106"
+    },
+    "remaining": [
+      "External KALCMAN3/UPFLAG/VARALARM/GOTOPOOH bodies",
+      "Standby scaler/time local groups"
+    ]
+  }
+}

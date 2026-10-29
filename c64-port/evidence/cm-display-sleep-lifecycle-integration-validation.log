@@ -1,0 +1,6 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/cm_display_sleep_lifecycle_host.c tests/cm_display_sleep_lifecycle_check.c src/agc_word.c src/cm_makeplay_sleep.c src/cm_basic_wake.c src/cm_basic_sleep.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c tests/cm_display_sleep_lifecycle_cases.c -o build/test-cm-display-sleep-lifecycle
+build/test-cm-display-sleep-lifecycle
+64 complete original CM display sleep lifecycle checkpoints: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections -Iinclude -Itests tests/cm_display_sleep_lifecycle_host.c tests/cm_display_sleep_lifecycle_check.c src/agc_word.c src/cm_makeplay_sleep.c src/cm_basic_wake.c src/cm_basic_sleep.c src/cm_native_image.c src/cm_dispatch.c src/cm_executive.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_wake_cases.c tests/cm_display_sleep_lifecycle_cases.c -o build/test-cm-display-sleep-lifecycle-frozen-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-display-sleep-lifecycle-frozen-sanitize
+64 complete original CM display sleep lifecycle checkpoints: PASS

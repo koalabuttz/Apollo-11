@@ -1,0 +1,29 @@
+[
+  {
+    "id": 217,
+    "filename": "G217",
+    "byte_count": 893,
+    "crc16": 22991,
+    "sha256": "5f18349845d55a4bfcf1268908eac8537c48c00161997d2c0d1b0998a62588a9",
+    "prg": "cm-abort-whimper-217.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 4807,
+    "crc16": 39628,
+    "sha256": "72555f8d3a19e5adb7a467b20bcdb267cbf530d5220554680cd15edf37af0855",
+    "prg": "cm-abort-whimper-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10065,
+    "crc16": 13902,
+    "sha256": "bb96116aca97c2d7af2806bdcb28df86b10c3b577f667dff31b70eb0b7cd89d4",
+    "prg": "cm-abort-whimper-255.prg",
+    "native_control": false
+  }
+]

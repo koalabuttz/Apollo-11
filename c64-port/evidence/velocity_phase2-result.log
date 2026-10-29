@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete velocity phase 2 original-assembly entry/exit states
+Mailbox: a500002002
+PRG bytes: 16086
+velocity_phase2-hardware-stack.bin: measured stack extent 14 bytes
+velocity_phase2-software-stack.bin: measured stack extent 27 bytes

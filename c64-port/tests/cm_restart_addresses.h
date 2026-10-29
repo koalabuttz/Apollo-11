@@ -1,0 +1,37 @@
+/* SPDX-License-Identifier: MIT; source-derived absolute erasable maps. */
+static const unsigned cm_rs_addresses[CM_RS_WORD_COUNT]={
+ 027, /* TIME4 */
+ 030, /* TIME5 */
+ 0335, /* DNTMGOTO */
+ 076, /* FLAGWRD2 */
+ 01302, /* DSRUPTSW */
+ 01141, /* DELAYLOC */
+ 01142, /* DELAYLOC1 */
+ 01143, /* DELAYLOC2 */
+ 01144, /* DELAYLOC3 */
+ 01073, /* R1SAVE */
+ 045, /* INLINK */
+ 0776, /* DSPCNT */
+ 01042, /* CADRSTOR */
+ 01013, /* REQRET */
+ 01015, /* CLPASS */
+ 01012, /* DSPLOCK */
+ 01020, /* MONSAVE */
+ 01021, /* MONSAVE1 */
+ 01001, /* VERBREG */
+ 01002, /* NOUNREG */
+ 01043, /* DSPLIST */
+ 01330, /* MARKSTAT */
+ 01322, /* IMUCADR */
+ 01323, /* OPTCADR */
+ 01324, /* RADCADR */
+ 01325, /* ATTCADR */
+ 01304, /* LGYRO */
+ 0100, /* FLAGWRD4 */
+ 01016, /* NOUT */
+ 01044, /* EXTVBACT */
+ 01361, /* SELFRET */
+ 0777, /* DSPCOUNT */
+ 0102, /* FLAGWRD6 */
+ 0106, /* RASFLAG */
+};

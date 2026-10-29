@@ -1,0 +1,7 @@
+PASS group {'group': 0, 'states': 32, 'prg_bytes': 23193, 'load_end': 25240, 'bss_end': 33432, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS group {'group': 1, 'states': 32, 'prg_bytes': 18021, 'load_end': 20068, 'bss_end': 28260, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS group {'group': 2, 'states': 32, 'prg_bytes': 14958, 'load_end': 17005, 'bss_end': 25197, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS group {'group': 3, 'states': 32, 'prg_bytes': 14947, 'load_end': 16994, 'bss_end': 25186, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS group {'group': 4, 'states': 32, 'prg_bytes': 8740, 'load_end': 10787, 'bss_end': 18979, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS group {'group': 5, 'states': 32, 'prg_bytes': 8812, 'load_end': 10859, 'bss_end': 19051, 'mailbox': 'a5200000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}
+PASS192 exact complete original antenna frame states across six stock-ROM C64 diagnostics

@@ -1,0 +1,336 @@
+{
+ "milestone": "cm-powered-subs",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 25600,
+ "cases_sha256": "205934fc5286001c94125a0cd012e48bf05c521b337f3151029322215d673262",
+ "oracle_sha256": "0bac57486b942620033cfb2ac32976432e469fb9c6b8a1695d4c23db6c771973",
+ "frozen_vectors": 1605,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0x1fffffffff",
+   "cases": 54,
+   "case_ids": [
+    4,
+    85,
+    36,
+    920,
+    1028,
+    1596,
+    2320,
+    2564,
+    3176,
+    3716,
+    4100,
+    5072,
+    5224,
+    5188,
+    5268,
+    5572,
+    5280,
+    5140,
+    5172,
+    5356,
+    5908,
+    6652,
+    6748,
+    6716,
+    7288,
+    7384,
+    7736,
+    7780,
+    8200,
+    8920,
+    9064,
+    9216,
+    9852,
+    10244,
+    10992,
+    11268,
+    11864,
+    12424,
+    12800,
+    13368,
+    13868,
+    14368,
+    14980,
+    15716,
+    15896,
+    16568,
+    16900,
+    17588,
+    18220,
+    18376,
+    18652,
+    18556,
+    18892,
+    18492
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x3ffe000000000",
+   "cases": 32,
+   "case_ids": [
+    18955,
+    19296,
+    19437,
+    19308,
+    19056,
+    19380,
+    19292,
+    19256,
+    19052,
+    19180,
+    19376,
+    19268,
+    19200,
+    19143,
+    19195,
+    19636,
+    19676,
+    19559,
+    20022,
+    20276,
+    20900,
+    20868,
+    20517,
+    21076,
+    21628,
+    22260,
+    22812,
+    23168,
+    23740,
+    24124,
+    24684,
+    25088
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 122,
+  "c64_labels": 122,
+  "host_edges": 1309,
+  "c64_edges": 1309,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 701,
+  "c64_taken": 701,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_powered_subs.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_powered_subs_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 648,
+  "edges_host_vectors": 648,
+  "edges_c64": 648,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "CM 23,3477 CDUTRIG": {
+   "04757": 512
+  },
+  "CM 23,3500 ": {
+   "04757": 512
+  },
+  "CM 23,3502 ": {
+   "06037": 512
+  },
+  "CM 23,3503 CD*TR*G": {
+   "04757": 512
+  },
+  "CM 23,3504 ": {
+   "04757": 512
+  },
+  "CM 23,3506 ": {
+   "06037": 512
+  },
+  "CM 23,3527 ": {
+   "04757": 512
+  },
+  "CM 23,3530 ": {
+   "04757": 512
+  },
+  "CM 23,3535 ": {
+   "04757": 512
+  },
+  "CM 23,3536 ": {
+   "04757": 512
+  },
+  "CM 23,3545 ": {
+   "04757": 334,
+   "07501": 111,
+   "06037": 48,
+   "05000": 19
+  },
+  "CM 23,3546 ": {
+   "04757": 333,
+   "05000": 20,
+   "07501": 98,
+   "06037": 61
+  },
+  "CM 23,3555 QUICTRIG": {
+   "05075": 512
+  },
+  "CM 23,3566 ": {
+   "05074": 512
+  },
+  "CM 23,3575 ": {
+   "05000": 46,
+   "05075": 345,
+   "06000": 61,
+   "02356": 60
+  },
+  "CM 23,3606 NBSM": {
+   "04757": 385,
+   "05170": 127
+  },
+  "CM 23,3610 ": {
+   "04757": 379,
+   "05170": 133
+  },
+  "CM 23,3613 ": {
+   "04757": 375,
+   "05170": 137
+  },
+  "CM 23,3615 ": {
+   "04757": 512
+  },
+  "CM 23,3617 ": {
+   "06037": 512
+  },
+  "CM 23,3621 CDU*SMNB": {
+   "04757": 512
+  },
+  "CM 23,3622 ": {
+   "04757": 512
+  },
+  "CM 23,3624 TRG*SMNB": {
+   "04757": 512
+  },
+  "CM 23,3625 ": {
+   "04757": 512
+  },
+  "CM 23,3627 ": {
+   "07056": 512
+  },
+  "CM 23,3632 ": {
+   "06037": 512
+  },
+  "CM 23,3634 CDU*NBSM": {
+   "04757": 512
+  },
+  "CM 23,3635 ": {
+   "04757": 512
+  },
+  "CM 23,3637 TRG*NBSM": {
+   "04757": 512
+  },
+  "CM 23,3640 ": {
+   "04757": 512
+  },
+  "CM 23,3642 ": {
+   "07056": 512
+  },
+  "CM 23,3644 *SMNB*": {
+   "07501": 512
+  },
+  "CM 23,3645 ": {
+   "07501": 512
+  },
+  "CM 23,3646 *NBSM*": {
+   "07501": 512
+  },
+  "CM 23,3647 ": {
+   "07501": 512
+  },
+  "CM 23,3676 ": {
+   "07056": 512
+  },
+  "CM 23,3714 ": {
+   "07056": 425,
+   "06037": 39,
+   "05000": 48
+  },
+  "CM 23,3742 SMCDURES": {
+   "05170": 113,
+   "06037": 399
+  },
+  "CM 23,3745 ": {
+   "05170": 130,
+   "06037": 382
+  },
+  "CM 23,3750 ": {
+   "06037": 394,
+   "05170": 118
+  },
+  "CM 23,3751 ": {
+   "06037": 386,
+   "05170": 126
+  },
+  "CM 23,3753 ": {
+   "06037": 381,
+   "05170": 131
+  },
+  "CM 23,3754 ": {
+   "05170": 121,
+   "06037": 391
+  },
+  "CM 23,3756 ": {
+   "05170": 132,
+   "06037": 380
+  },
+  "CM 23,3760 ": {
+   "06037": 394,
+   "05170": 118
+  },
+  "CM 23,3762 ": {
+   "06037": 390,
+   "05170": 122
+  },
+  "CM 23,3765 ": {
+   "06037": 385,
+   "05170": 127
+  },
+  "CM 23,3767 ": {
+   "06037": 391,
+   "05170": 121
+  },
+  "CM 23,3770 ": {
+   "06037": 378,
+   "05170": 134
+  },
+  "CM 23,3771 ": {
+   "06037": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: CHANG2, DMPSUB, MPACVBUF, SPCOS, SPSIN, USPRCADR); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

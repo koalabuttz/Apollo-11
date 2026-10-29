@@ -1,0 +1,9 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_render.c tests/nv_render_check.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/test-nv-render
+build/test-nv-render
+64 original rendering boundary images and30 invalid inputs: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_render.c tests/nv_render_check.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/test-nv-render-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-nv-render-sanitize
+64 original rendering boundary images and30 invalid inputs: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_render_full_snapshot.c src/p66_nv_render.c src/dsky_decimal.c src/dsky_scale.c src/guidance_product.c src/p66_nv_rows.c src/p66_nv_words.c src/p66_nv_entry.c src/dsky_two_digit.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c tests/nv_words_cases.c tests/nv_rows_cases.c tests/nv_render_cases.c -o build/nv-render-full-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/nv-render-full-native-sanitize > build/nv-render-full-sanitize.snapshots
+cmp build/nv-render-full-sanitize.snapshots build/nv-render-full-reference.snapshots

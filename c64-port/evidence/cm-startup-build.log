@@ -1,0 +1,13 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_restart.c src/cm_native_image.c src/cm_startup.c tests/cm_startup_cases.c platform/host/cm_startup_snapshot.c -o build/cm-startup-snapshot
+python3 tools/cm_startup_differential.py
+PASS:640 CM original startup/cleanup checkpoints; every2047image word exceptZ +15externalI/O values exact
+SLAP1/DOFSTART throughENDRSTRT; MR.KLEAN/P00KLEAN/V37KLEAN throughTC Q; rawA/L andbank/IRQ included
+Peripheral drive counters held atzero and scaler frozen; no original flightword normalization; Z excluded because native hasnoAGCinstruction counter
+Snapshot SHA256: 663782ee79df657ba2ab0038cee83c740e1f2eba31aa638610689fe68f173ebd
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_restart.c src/cm_native_image.c src/cm_startup.c tests/cm_startup_cases.c tests/cm_startup_check.c tests/test_cm_startup.c -o build/test-cm-startup
+./build/test-cm-startup
+PASS:640originalCMstartup/cleanup whole-image states; all2047image words+15I/O values;5fullsamples andinvalid-entry/bank preservation
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/cm_executive.c src/cm_restart.c src/cm_native_image.c src/cm_startup.c tests/cm_startup_cases.c tests/cm_startup_check.c tests/test_cm_startup.c -o build/test-cm-startup-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-startup-sanitize
+PASS:640originalCMstartup/cleanup whole-image states; all2047image words+15I/O values;5fullsamples andinvalid-entry/bank preservation
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-startup.map src/agc_word.c src/cm_executive.c src/cm_restart.c src/cm_native_image.c src/cm_startup.c tests/cm_startup_cases.c tests/cm_startup_check.c platform/c64/cm_startup_diagnostic.c -o build/cm-startup.prg

@@ -1,0 +1,607 @@
+{
+ "source_path": "Luminary099/DAP_INTERFACE_SUBROUTINES.agc",
+ "source_sha256": "1156271d55ea1f47bf20602da2cefa9388a908b3dca5231650cc7f10895db776",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_dap_interface.c",
+ "native_sha256": "ddb05dfcbc3078a9a586021d5ce07b56b66fd5579d2f5b4e1be387b670dc77cd",
+ "source_words": 67,
+ "source_lines": 66,
+ "line_map": [
+  {
+   "line": 82,
+   "address": "20,2123",
+   "source": "RESTORDB CAE DAPBOOLS",
+   "words": [
+    "30111"
+   ],
+   "native": "restordb"
+  },
+  {
+   "line": 83,
+   "address": "20,2124",
+   "source": "MASK DBSELECT",
+   "words": [
+    "74750"
+   ],
+   "native": "restordb_a"
+  },
+  {
+   "line": 84,
+   "address": "20,2125",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "restordb_a"
+  },
+  {
+   "line": 85,
+   "address": "20,2126",
+   "source": "BZF SETMINDB",
+   "words": [
+    "12140"
+   ],
+   "native": "restordb_a"
+  },
+  {
+   "line": 87,
+   "address": "20,2127",
+   "source": "SETMAXDB CAF WIDEDB",
+   "words": [
+    "32151"
+   ],
+   "native": "setmaxdb"
+  },
+  {
+   "line": 88,
+   "address": "20,2130",
+   "source": "+1 TS DB",
+   "words": [
+    "55346"
+   ],
+   "native": "set_db"
+  },
+  {
+   "line": 90,
+   "address": "20,2131",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "set_db"
+  },
+  {
+   "line": 91,
+   "address": "20,2132",
+   "source": "QXCH RUPTREG1",
+   "words": [
+    "22070"
+   ],
+   "native": "set_db"
+  },
+  {
+   "line": 92,
+   "address": "20,2133",
+   "source": "CALLACCS CAF PRIO27",
+   "words": [
+    "37715"
+   ],
+   "native": "callaccs"
+  },
+  {
+   "line": 93,
+   "address": "20,2134",
+   "source": "TC NOVAC",
+   "words": [
+    "05072"
+   ],
+   "native": "callaccs"
+  },
+  {
+   "line": 95,
+   "address": "20,2135",
+   "source": "2CADR 1/ACCJOB",
+   "words": [
+    "02454",
+    "40106"
+   ],
+   "native": "lm_exec_sites"
+  },
+  {
+   "line": 97,
+   "address": "20,2137",
+   "source": "TC RUPTREG1",
+   "words": [
+    "00070"
+   ],
+   "native": "accreturn"
+  },
+  {
+   "line": 99,
+   "address": "20,2140",
+   "source": "SETMINDB CAF NARROWDB",
+   "words": [
+    "32150"
+   ],
+   "native": "setmindb"
+  },
+  {
+   "line": 100,
+   "address": "20,2141",
+   "source": "TCF SETMAXDB +1",
+   "words": [
+    "12130"
+   ],
+   "native": "setmindb"
+  },
+  {
+   "line": 102,
+   "address": "20,2142",
+   "source": "PFLITEDB EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "pflitedb"
+  },
+  {
+   "line": 103,
+   "address": "20,2143",
+   "source": "QXCH RUPTREG1",
+   "words": [
+    "22070"
+   ],
+   "native": "pflitedb"
+  },
+  {
+   "line": 104,
+   "address": "20,2144",
+   "source": "TC ZATTEROR",
+   "words": [
+    "02153"
+   ],
+   "native": "pflitedb"
+  },
+  {
+   "line": 105,
+   "address": "20,2145",
+   "source": "CAF POWERDB",
+   "words": [
+    "32152"
+   ],
+   "native": "pflite_return"
+  },
+  {
+   "line": 106,
+   "address": "20,2146",
+   "source": "TS DB",
+   "words": [
+    "55346"
+   ],
+   "native": "pflite_return"
+  },
+  {
+   "line": 107,
+   "address": "20,2147",
+   "source": "TCF CALLACCS",
+   "words": [
+    "12133"
+   ],
+   "native": "pflite_return"
+  },
+  {
+   "line": 108,
+   "address": "20,2150",
+   "source": "NARROWDB OCTAL 00155",
+   "words": [
+    "00155"
+   ],
+   "native": "setmindb"
+  },
+  {
+   "line": 110,
+   "address": "20,2151",
+   "source": "WIDEDB OCTAL 03434",
+   "words": [
+    "03434"
+   ],
+   "native": "setmaxdb"
+  },
+  {
+   "line": 111,
+   "address": "20,2152",
+   "source": "POWERDB DEC .02222",
+   "words": [
+    "00554"
+   ],
+   "native": "pflite_return"
+  },
+  {
+   "line": 113,
+   "address": "20,2153",
+   "source": "ZATTEROR CAF EBANK6",
+   "words": [
+    "35015"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 114,
+   "address": "20,2154",
+   "source": "XCH EBANK",
+   "words": [
+    "56003"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 115,
+   "address": "20,2155",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 116,
+   "address": "20,2156",
+   "source": "CAE CDUX",
+   "words": [
+    "30032"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 117,
+   "address": "20,2157",
+   "source": "TS CDUXD",
+   "words": [
+    "55635"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 118,
+   "address": "20,2160",
+   "source": "CAE CDUY",
+   "words": [
+    "30033"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 119,
+   "address": "20,2161",
+   "source": "TS CDUYD",
+   "words": [
+    "55636"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 120,
+   "address": "20,2162",
+   "source": "CAE CDUZ",
+   "words": [
+    "30034"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 121,
+   "address": "20,2163",
+   "source": "TS CDUZD",
+   "words": [
+    "55637"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 122,
+   "address": "20,2164",
+   "source": "TCF STOPRATE +3",
+   "words": [
+    "12170"
+   ],
+   "native": "zatteror"
+  },
+  {
+   "line": 124,
+   "address": "20,2165",
+   "source": "STOPRATE CAF EBANK6",
+   "words": [
+    "35015"
+   ],
+   "native": "save_eb"
+  },
+  {
+   "line": 125,
+   "address": "20,2166",
+   "source": "XCH EBANK",
+   "words": [
+    "56003"
+   ],
+   "native": "save_eb"
+  },
+  {
+   "line": 126,
+   "address": "20,2167",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "native": "save_eb"
+  },
+  {
+   "line": 127,
+   "address": "20,2170",
+   "source": "+3 CAF ZERO",
+   "words": [
+    "34755"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 128,
+   "address": "20,2171",
+   "source": "TS OMEGAPD",
+   "words": [
+    "55643"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 129,
+   "address": "20,2172",
+   "source": "TS OMEGAQD",
+   "words": [
+    "55644"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 130,
+   "address": "20,2173",
+   "source": "TS OMEGARD",
+   "words": [
+    "55645"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 131,
+   "address": "20,2174",
+   "source": "TS DELCDUX",
+   "words": [
+    "55640"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 132,
+   "address": "20,2175",
+   "source": "TS DELCDUY",
+   "words": [
+    "55641"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 133,
+   "address": "20,2176",
+   "source": "TS DELCDUZ",
+   "words": [
+    "55642"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 134,
+   "address": "20,2177",
+   "source": "TS DELPEROR",
+   "words": [
+    "55277"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 135,
+   "address": "20,2200",
+   "source": "TS DELQEROR",
+   "words": [
+    "55300"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 136,
+   "address": "20,2201",
+   "source": "TS DELREROR",
+   "words": [
+    "55301"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 137,
+   "address": "20,2202",
+   "source": "LXCH EBANK",
+   "words": [
+    "22003"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 138,
+   "address": "20,2203",
+   "source": "TC Q",
+   "words": [
+    "00002"
+   ],
+   "native": "clear_rates"
+  },
+  {
+   "line": 155,
+   "address": "20,2204",
+   "source": "ALLCOAST EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "allcoast"
+  },
+  {
+   "line": 156,
+   "address": "20,2205",
+   "source": "QXCH RUPTREG2",
+   "words": [
+    "22071"
+   ],
+   "native": "allcoast"
+  },
+  {
+   "line": 158,
+   "address": "20,2206",
+   "source": "TC STOPRATE",
+   "words": [
+    "02165"
+   ],
+   "native": "allcoast"
+  },
+  {
+   "line": 159,
+   "address": "20,2207",
+   "source": "LXCH EBANK",
+   "words": [
+    "22003"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 160,
+   "address": "20,2210",
+   "source": "TS AOSQ",
+   "words": [
+    "55537"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 161,
+   "address": "20,2211",
+   "source": "TS AOSQ +1",
+   "words": [
+    "55540"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 162,
+   "address": "20,2212",
+   "source": "TS AOSR",
+   "words": [
+    "55541"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 163,
+   "address": "20,2213",
+   "source": "TS AOSR +1",
+   "words": [
+    "55542"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 164,
+   "address": "20,2214",
+   "source": "TS ALPHAQ",
+   "words": [
+    "55424"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 165,
+   "address": "20,2215",
+   "source": "TS ALPHAR",
+   "words": [
+    "55425"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 166,
+   "address": "20,2216",
+   "source": "TS AOSQTERM",
+   "words": [
+    "55545"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 167,
+   "address": "20,2217",
+   "source": "TS AOSRTERM",
+   "words": [
+    "55546"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 168,
+   "address": "20,2220",
+   "source": "LXCH EBANK",
+   "words": [
+    "22003"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 170,
+   "address": "20,2221",
+   "source": "CS DAPBOOLS",
+   "words": [
+    "40111"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 171,
+   "address": "20,2222",
+   "source": "MASK DRIFTBIT",
+   "words": [
+    "74744"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 172,
+   "address": "20,2223",
+   "source": "ADS DAPBOOLS",
+   "words": [
+    "26111"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 173,
+   "address": "20,2224",
+   "source": "TC RESTORDB +1",
+   "words": [
+    "02124"
+   ],
+   "native": "allcoast_clear"
+  },
+  {
+   "line": 175,
+   "address": "20,2225",
+   "source": "TC RUPTREG2",
+   "words": [
+    "00071"
+   ],
+   "native": "allcoast_return"
+  }
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every assembled word has one native owner holding its erasable address, the rope value of its fixed operand, its branch target (or composes it inline) or its constant; the 1/ACCJOB 2CADR is the compiled NOVAC site operand."
+}

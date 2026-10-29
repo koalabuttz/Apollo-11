@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/sband-length.prg from 0801 to 5972 (5172 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  221/$0dd,  52/$34
+.C:33a5  8E 00 C0    STX $C000      - A:80 X:A5 Y:00 SP:f1 N.-..I.C  178431487
+Saving file `/workspace/Apollo-11/c64-port/build/sband-length-mailbox.bin' from $c000 to $c003
+Loading /workspace/Apollo-11/c64-port/build/sband-length.prg from 0801 to 5972 (5172 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  221/$0dd,  52/$34
+.C:33a5  8E 00 C0    STX $C000      - A:80 X:A5 Y:00 SP:f1 N.-..I.C  178431487
+Saving file `/workspace/Apollo-11/c64-port/build/sband-length-mailbox.bin' from $c000 to $c003
+Loading /workspace/Apollo-11/c64-port/build/sband-length.prg from 0801 to 6E40 (6640 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)    3/$003,  38/$26
+.C:3570  8E 00 C0    STX $C000      - A:00 X:A5 Y:E0 SP:f1 N.-..I.C  303744395
+Saving file `/workspace/Apollo-11/c64-port/build/sband-length-mailbox.bin' from $c000 to $c003

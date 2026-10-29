@@ -1,0 +1,13 @@
+PASS: fresh independently assembled original Comanche fixture 6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061
+PASS: original PRIOCHNG complete image, all13 metadata fields and actual typed transfer
+{
+  "cases": 75264,
+  "checkpoints": 75264,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 311291904,
+  "snapshot_sha256": "68787a8266dbbef6c50db6ccbb4ddf7a40c61958a001eea36583ab678eacc69e",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "typed_transfer_words": 3,
+  "scope": "actual PRIOCHNG all32 bare levels including+0, six authentic resource fractions, basic/interpreter/no exchange and every+0candidate position; true source caller or CCSHOLE transfer"
+}

@@ -1,0 +1,46 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "automatic T3 interrupt at06030 DANZIG",
+    "05341 hardware RESUME"
+  ],
+  "boundary": "actual lead-in to01,3423 and compiled suspended DANZIG return",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "control_metadata": [
+    "InIsr",
+    "pending_DANZIG"
+  ],
+  "snapshot_sha256": "7c836b2ffcf27e16c2d41ec54ab44f47ea48ad976e4351ee39b30fbaf8d4d35f",
+  "hardware_stack_bytes": 10,
+  "software_stack_bytes": 12,
+  "c64_cases": 128,
+  "mailbox_hex": "a500008000",
+  "target": {
+    "prg_bytes": 14922,
+    ".text": {
+      "address": 2061,
+      "bytes": 2580
+    },
+    ".rodata": {
+      "address": 4641,
+      "bytes": 12328
+    },
+    ".data": {
+      "address": 16969,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 16969,
+      "bytes": 4124
+    },
+    ".noinit": {
+      "address": 21093,
+      "bytes": 0
+    },
+    "image_end": 21093
+  }
+}

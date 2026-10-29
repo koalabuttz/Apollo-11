@@ -1,0 +1,3 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_busy.c tests/lm_busy_check.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -o build/test-lm-busy
+build/test-lm-busy
+64 complete NVSUBUSY images and13 invalid boundaries: PASS

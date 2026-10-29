@@ -1,0 +1,130 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     2f4b     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm-restart.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      4c7     1         build/cm-restart.prg.lto.o:(.text.cm_exec_admit)
+     843      843      4c7     1                 cm_exec_admit
+     d0a      d0a      158     1         build/cm-restart.prg.lto.o:(.text.cm_rs_cleanup)
+     d0a      d0a      158     1                 cm_rs_cleanup
+     e62      e62     2572     1         build/cm-restart.prg.lto.o:(.text.main)
+     e62      e62     2572     1                 main
+    33d4     33d4        6     1         build/cm-restart.prg.lto.o:(.text.exit)
+    33d4     33d4        6     1                 exit
+    33da     33da       4d     1         build/cm-restart.prg.lto.o:(.text.putchar)
+    33da     33da       4d     1                 putchar
+    3427     3427       65     1         build/cm-restart.prg.lto.o:(.text.puts)
+    3427     3427       65     1                 puts
+    348c     348c       13     1         build/cm-restart.prg.lto.o:(.text.__ashlhi3)
+    348c     348c       13     1                 __ashlhi3
+    349f     349f       c4     1         build/cm-restart.prg.lto.o:(.text.__udivhi3)
+    349f     349f       c4     1                 __udivhi3
+    3563     3563       40     1         build/cm-restart.prg.lto.o:(.text.__umodqi3)
+    3563     3563       40     1                 __umodqi3
+    35a3     35a3       f8     1         build/cm-restart.prg.lto.o:(.text.__udivmodhi4)
+    35a3     35a3       f8     1                 __udivmodhi4
+    369b     369b       22     1         build/cm-restart.prg.lto.o:(.text.__memset)
+    369b     369b       22     1                 __memset
+    36bd     36bd       34     1         build/cm-restart.prg.lto.o:(.text.__mulhi3)
+    36bd     36bd       34     1                 __mulhi3
+    36f1     36f1       67     1         build/cm-restart.prg.lto.o:(.text.__mulsi3)
+    36f1     36f1       67     1                 __mulsi3
+    3758     3758        0     1         __init_array_start = .
+    3758     3758        0     1         __init_array_end = .
+    3758     3758        0     1         __fini_array_start = .
+    3758     3758        0     1         __fini_array_end = .
+    3758     3758     50df     1 .rodata
+    3758     3758        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    3758     3758        0     1                 __set_v
+    3759     3759       24     1         build/cm-restart.prg.lto.o:(.rodata.cm_rs_indices)
+    3759     3759       24     1                 cm_rs_indices
+    377d     377d     3c78     1         build/cm-restart.prg.lto.o:(.rodata.cm_rs_full)
+    377d     377d     3c78     1                 cm_rs_full
+    73f5     73f5     1400     1         build/cm-restart.prg.lto.o:(.rodata.cm_rs_hashes)
+    73f5     73f5     1400     1                 cm_rs_hashes
+    87f5     87f5       42     1         <internal>:(.rodata.str1.1)
+    8837     8837        0     1 .data
+    8837     8837        0     1         __data_start = .
+    8837     8837        0     1         __data_end = .
+    8837     8837        0     1 __data_load_start = LOADADDR(.data)
+    8837     8837        0     1 __data_size = SIZEOF(.data)
+    8837     8837      35b     1 .bss
+    8837     8837        0     1         __bss_start = .
+    8837     8837      35b     1         build/cm-restart.prg.lto.o:(.bss.state)
+    8837     8837      35b     1                 state
+    8b92     8b92        0     1         __bss_end = .
+    8b92     8b92        0     1 __bss_size = SIZEOF(.bss)
+    8b92     8b92        1     1 .noinit
+    8b92     8b92        1     1         build/cm-restart.prg.lto.o:(.noinit..Lstatic_stack)
+    8b93     8b93        0     1         __heap_start = ALIGN(., 2)
+    8b93     8b93        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm-restart.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm-restart.prg.lto.o:(.llvm_sympart)
+       0        0      b30     4 .symtab
+       0        0      b30     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      61b     1 .strtab
+       0        0      61b     1         <internal>:(.strtab)

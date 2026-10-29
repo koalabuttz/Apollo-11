@@ -1,0 +1,8 @@
+{
+  "audit_commit": "3af87b32bf869ee3bda4cac91758e507b3563356",
+  "finding": "Committed display-job ABI required two omitted public descent headers. Exact qualified headers added; no source algorithm or ABI bytes changed.",
+  "source_files": {
+    "include/p66_descent_runtime.h": "f86cb4f7ddbb738c568f214b77b0bfbecb37e51dcbbb7b980c4d5b52d79a18eb",
+    "include/p66_descent_invoke.h": "7e63c3729e8cb35e295937397dc93f23fba45dccb75d16565ff07855bab2d25e"
+  }
+}

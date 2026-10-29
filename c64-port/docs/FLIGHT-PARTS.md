@@ -1,0 +1,189 @@
+# Flight parts of a compiled-routine file
+
+Pinball module split lane, for the steward's flight-store overflow list
+(`/mnt/project-files/pin-split/store-overflow.md`).
+
+Some files that `tools/interp_compile.py` generates have more basic code
+than one 16 KB flight job slot holds. Comanche055 P40-P47 is one: with
+basic tables only, its module was 61,830 bytes over the slot. 36 KB of that
+was the 190 per-key entry routines (`r<addr>_abi`, about 200 bytes each on
+the 6502); the rest was the six banks' basic code.
+
+A spec's `'flight_parts'` lists cuts: physical addresses, ascending. With
+`<SYM>_FLIGHT_PART=j`, the file builds part j of the C64 flight store:
+
+- **The banks it holds.** `<SYM>_BANKS` keeps only the banks with words
+  between the part's cuts, so the others' functions drop out.
+- **A word of another part.** In a bank a cut divides, every word is
+  guarded by `<SYM>_FP`. A run that reaches another part's word, or a
+  bank the part lacks, calls `<sym>_leave`. When the word is a key of
+  any part, that sets Z to it and returns `EXEC_OK`, so the transfer
+  engine goes on in the module that holds it. Any other word is refused.
+- **Its keys.** The part's keys are the file's basic routines between its
+  cuts, plus part keys. A part key is a word a goto across a cut
+  reaches, or any computed-transfer target. Part keys exist only in
+  flight builds.
+- **One entry routine.** All the part's keys share one entry,
+  `<sym>_flight_entry`, which finds the key from Z, FB and SUPERBNK. It
+  makes the same checks as the per-key routines, which are left out:
+  `basic_sane` with the key's bank FB, and `basic_sane_any_eb` (any EB)
+  for a key whose per-key routine has it, from the spec's
+  `'any_eb_entries'` or a routine that sets EB first. Comanche055 P06
+  calls FINETIME +1 under its own EB, not E5; with `basic_sane` alone the
+  C64 flight store refused it (CM V37E06E stopped at 02,2554).
+  `tests/test_flight_entry_any_eb.py` checks the generated entries, and
+  `tools/flight_parts_check.py` runs the differential's cases at those
+  keys again under EB 01000.
+
+Both missions and both basic layouts work: a `'basic_split'` file (one
+function per bank) and a `'basic': 'full'` file (one `basic_run`) get the
+same guards, part keys and entry. Luminary parts read channels through
+`AGC_CH_HW_SET`, Comanche parts through the native I/O hooks.
+
+Keys in fixed-fixed memory (banks 02 and 03) are allowed only in a spec
+with `'fixed_fixed_any_fb'`, whose per-key routines already run there under
+any FB and SUPERBNK: the flight entry does the same for those banks, and
+`<sym>_leave` sets Z to the key's physical address, which for banks 02 and
+03 is its fixed-fixed address.
+
+Without `<SYM>_FLIGHT_PART` the file compiles to the same tokens as before.
+That holds for the host build, the coverage build and the C64 diagnostic
+groups (KEEP and BANKS masks), so the certified tests and evidence don't
+change. The interpretive table is unchanged too: under the
+native-interpreter decision, the C64 flight store leaves interpretive code
+to the interpreter.
+
+## Comanche055 P40-P47
+
+The cuts are at bank 20, bank 21, and bank 24 `02300`, `03000` and `03300`.
+The parts' flight links, measured with `tools/flight_store_build.py`'s
+`link_module`:
+
+| Part | Basic words | Bytes |
+|---|---|---|
+| 1 | bank 16 | 7,911 |
+| 2 | bank 20 | 12,033 |
+| 3 | bank 21, bank 24 to `02277` | 11,297 |
+| 4 | bank 24 `02300`-`02777` | 15,319 |
+| 5 | bank 24 `03000`-`03277` | 12,510 |
+| 6 | bank 24 from `03300`, banks 27 and 42 | 15,205 |
+
+The flight store has to link the file once per part with
+`-DCM_P40_P47_FLIGHT_PART=j`. Each link exports `cm_p40_p47_basic` with
+that part's keys, which don't overlap with any other part's.
+
+## Luminary099 AOSTASK_AND_AOSJOB
+
+`'basic': 'full'`, cut at bank 20 `03010` and `03434`:
+
+| Part | Basic words | Bytes |
+|---|---|---|
+| 1 | bank 20 to `03007` | 11,264 |
+| 2 | bank 20 `03010`-`03433` | 11,046 |
+| 3 | bank 20 from `03434` | 11,955 |
+
+As one module it did not fit a 16 KB job slot.
+
+## Comanche055 EXTENDED_VERBS
+
+`'basic': 'full'`, cut at bank 43 `02600`. Chunked by routine, the file
+took 32 modules of about 15.8 KB, because each one linked the whole
+`basic_run`. With the flight entry, its two parts replace them.
+
+## Luminary099 and Comanche055 INTERPRETER
+
+`'basic': 'full'` with `'fixed_fixed_any_fb'`, cut at COSINE (00,3517) and
+fixed-fixed `07000`: part 1 is bank 00 up to SQRTSUB's end (DDV, UNIT and
+the square roots together), part 2 is COSINE to the end of bank 00 and
+`06000`-`06777`, part 3 is `07000` up. Chunked by routine,
+`lm_interpreter_basic` took 13 modules (212 KB) on the LM store with Lane C's
+chunk packing, each with its own `basic_run` of about 10.7 KB. With two parts
+(cut at `07000` only) it was 12,745 and 10,465 bytes on LM; once the
+interpreter's internal exits (COMP, BUFPOS, DSQSUB, ENDVXV, DDV's and
+SQRTSUB's paths) were compiled, bank 00 outgrew one part. The three parts
+are 14,958, 10,175 and 15,214 bytes on LM, 13,271, 10,453 and 11,518 on CM. The flight
+parts check needs the rope image the spec's target loads (DMP, POLY and
+the others read their callers' words from it); `tools/flight_parts_check.py`
+loads it whenever the spec's own target does.
+
+On the LM the cuts are now a part map (`'flight_part_map'`, below): an LM
+P63 background pass called the basic subroutines back and forth between
+parts 1 and 3. VECAGREE and UNIT's start (00,3000-3077) called ALSIGNAG,
+MPACVBUF, ENDDOT and 03,3420, and SGNAGREE's TPAGREE went through BRANCH's
+tail. Part 2 now holds 00,3000-3077, 03,2700-2777 (BRANCH's tail),
+03,3100-3277 (DMP to TPAGREE) and 03,3400-3577 (VXV to ALSIGNAG). Part 1 is
+the rest of bank 00, and part 3 the rest of bank 03. The parts are 15,378,
+13,597 and 9,428 bytes. Same store (#625's head), part map against the
+cuts above:
+
+| Window | Cuts | Part map |
+|---|---|---|
+| `lm-p63-nassp`, 90000 cs, 500 cs | 21.581x, 784 background job loads | 21.032x, 736 |
+| `lm-landing-ascent-nassp`, 123000 cs, 300 cs | 26.864x, 759 | 26.666x, 738 |
+
+P66 then bounced between SN1 (00,3553, part 1) and the POLY and DMP it
+calls (03,3222 and 03,3106, part 2): about 150 loads each way per 1000 cs
+(Lane D2, /mnt/project-files/d2/lm-load-profile.md). COSINE to SN1's end
+(00,3517-3607) is now in part 2 too. The parts are 14,054, 15,024 and 9,439
+bytes. Same store (33cb8e12), with `tools/flight_scenario_vice.py
+--load-trace`:
+
+| Window | Before | After |
+|---|---|---|
+| `lm-landing-ascent-nassp`, 126000 cs, 1000 cs | 27.085x, 3,120 loads | 26.291x, 2,938 |
+| `lm-p63-descent-thrust`, 17500 cs, 1000 cs | 21.755x, 2,236 loads | 21.795x, 2,236 |
+
+Larger hot parts (with more of UNIT, or VSQSUB and SQRTSUB) were slower:
+they moved the bounce to other words. Most of the remaining interpreter
+loads are calls from other files (FLESHPOT to DMP, SGNAGREE to TPAGREE,
+R12LITES to BRANCH), which no cut of this file removes.
+
+`'flight_part_map'` gives the part (1-based) of each range between the
+cuts, one entry per range. Without it range j is part j. With it, a part's
+`<SYM>_OUT` and `<SYM>_BANKS` cover all its ranges, and the part keys are
+the words a goto reaches from another part, as before.
+
+## Comanche055 IMU_CALIBRATION_AND_ALIGNMENT
+
+`'basic': 'full'`, cut at bank 33 `02400` and `03000`. As one module it
+was 10,237 bytes over a job slot, and the splitter left one-routine chunks
+that each linked the whole `basic_run`. The parts' flight links:
+
+| Part | Basic words | Bytes |
+|---|---|---|
+| 1 | banks 02 (FINETIME), 04 and 32, bank 33 to `02377` | 15,854 |
+| 2 | bank 33 `02400`-`02777` | 13,508 |
+| 3 | bank 33 from `03000` | 15,337 |
+
+A single cut at `03000` left a first part that crashes llvm-mos's linker
+(the greedy register allocator, in `basic_run` under LTO). The file is a
+`'fast_window'` spec, so its flight entry binds the E5 window
+(`AFR_BIND`) before it reads Z, as the per-key entries do. All 176,640
+cases (512 per routine) end the same over the 3 parts.
+
+## Store classification
+
+`tools/flight_store_build.py` uses `interpretive_table()` everywhere it
+used to test for `interpret` in a table's name. So `lm_interpreter_basic`
+and `cm_interpreter_basic` (INTERPRETER.agc basic code) are linked and
+chunked like other basic tables, rather than left whole in one module as
+interpretive. Every compiled interpretive table except the DANZIG markers
+goes to the interpreter (`to_interp`). Lane C's evidence `INTPRET` tables
+are in `INTERP_ONLY`.
+
+With those changes, both missions' stores fit every table except Lane C's
+Pinball routines (`lanec_pin_routines`), which Lane C's chunk packing fits.
+
+## Evidence
+
+`tools/flight_parts_check.py <spec>` (`make flight-parts-check`) first runs
+the file's differential (`tools/interp_routine_differential.py`), which
+checks the whole build against the original program. It then builds every
+part for the host and one runner with all the parts' tables, the way the
+store's modules work together. Every case must end exactly as it does in
+the whole build: Z, the 2048 erasable words and the interrupt state.
+
+For P40-P47, all 31,744 cases (64 per routine) end the same. 1,597 of
+them cross from one part to another at least once. For AOSTASK, all 704
+cases end the same over its 3 parts. For CM EXTENDED_VERBS, all 11,648
+cases end the same over its 2 parts.

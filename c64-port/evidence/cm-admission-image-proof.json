@@ -1,0 +1,14 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "05147 FINDVAC",
+    "05134 NOVAC"
+  ],
+  "boundary": "actual source Q+2 return",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "47268d6b996f2e21105eaaa0490b61d83ba2bae289ce581fcee5965f22d83ec5"
+}

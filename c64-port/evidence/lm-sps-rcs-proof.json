@@ -1,0 +1,54 @@
+{
+  "complete_states": 196608,
+  "decoded_sha256": "c156b4aff49857039bfeed47e2c33942a4aeed2bad84a5dbe164ceb8bd4c3c05",
+  "old_sense_counts": {
+    "0": 1545,
+    "1": 96114,
+    "32766": 98949
+  },
+  "final_jet_counts": {
+    "plus_zero": 100767,
+    "positive": 48996,
+    "negative": 46845
+  },
+  "frozen_states": 96,
+  "frozen_storage_bytes": 2003,
+  "original_source_file": "Luminary099/SPS_BACK-UP_RCS_CONTROL.agc",
+  "original_source_sha256": "9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d",
+  "whole_containing_emitted_words": 82,
+  "source_map": "evidence/lm-sps-rcs-source-map.json",
+  "source_audit": "evidence/lm-sps-rcs-source-audit.json",
+  "support_rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/lm-sps-rcs-complete.snapshots.xz",
+      "decoded_sha256": "c156b4aff49857039bfeed47e2c33942a4aeed2bad84a5dbe164ceb8bd4c3c05"
+    },
+    "strict_native": {
+      "object": "evidence/lm-sps-rcs-complete.snapshots.xz",
+      "decoded_sha256": "c156b4aff49857039bfeed47e2c33942a4aeed2bad84a5dbe164ceb8bd4c3c05"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/lm-sps-rcs-complete.snapshots.xz",
+      "decoded_sha256": "c156b4aff49857039bfeed47e2c33942a4aeed2bad84a5dbe164ceb8bd4c3c05"
+    }
+  },
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "decoded_bytes": 806486016,
+  "actual_C64": {
+    "complete_states": 96,
+    "mailbox": "a500006000",
+    "PRG_bytes": 6987,
+    "loaded_end": "0x2349",
+    "hardware_stack": 17,
+    "software_stack": 43,
+    "compiler_ZP": 0,
+    "containing_source_constants": 4
+  },
+  "scope": "All82 byte-original source words: SPSRCS public entry and complete source jet-sense, deadband, outer-rate, coast and inhibition paths plus4 constants. Fixed basic Q02000..07777, E6/coherentbanks, REGZERO0, axis-1/bothzeros/+1. Completes actual TCQ transfer with Q3. IRQ retained externally; no Executive check. Every raw ordinary TJ and supported axis is represented; sampled multidimensional combinations are not exhaustive Cartesian coverage. No complete resident docked DAP or complete flight application claimed.",
+  "independent_review": {
+    "path": "evidence/lm-sps-rcs-independent-review.txt",
+    "sha256": "609ff0fd243b801f7c25957a889f3d20aab6fc1362aa172a9463f59c70bf9fa3"
+  }
+}

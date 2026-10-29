@@ -1,0 +1,18 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_svct3.c src/cm_native_image.c src/agc_word.c tests/cm_svct3_cases.c platform/host/cm_svct3_snapshot.c -o build/cm-svct3-native
+python3 tools/cm_svct3_differential.py
+PASS: 1536 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 1536,
+  "full_physical_words": 2048,
+  "entries": [
+    "05306 SVCT3",
+    "05323 after NOVAC",
+    "07721 after FIXDELAY"
+  ],
+  "boundary": "actual NOVAC/FIXDELAY/TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "5159630a0228428e720113fb2482c41bb5a95a14c5211b95370e720368721b68"
+}

@@ -1,0 +1,23 @@
+{
+  "review_kind": "independent read-only source/arithmetic/control review; no rerun of reported exhaustive corpus",
+  "reviewer": "general_division",
+  "files": {
+    "include/imu_mode_control.h": "cd1fd8481972d634d6db0f66ff3aa4bfcc229b8fa2d1b637e652f9fe747cb134",
+    "src/imu_mode_control.c": "484b0133bff479b374bd1d8f61cd2bb4d1ac547f1c0a5043cbd743f89250bde7",
+    "include/imu_mode_control_literals.h": "5aa221cf4679ff4111e9faa47ce55bb99831423326e96758a9fb4377d0cf8794",
+    "build/imu-mode-control-source-map.json": "40d0e7c76844b95c43c61ad497b6f3ad3fd2b8d9d0b753de99cdf48f8d5894e2",
+    "../Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "../Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb"
+  },
+  "conclusion": "No source arithmetic/control discrepancy found within stated producer-free stage domain. External helpers remain typed handoffs; no whole containing-file claim.",
+  "findings": [
+    "ZERO runaway protection tests (~DSPTAB11)&050 before cage test; literal206 then actual CAGETSTJ+4 failure continuation.",
+    "SUPER011 is octal060; ZERO and ZERO3 set/clear the two literal IMODES33 bits.",
+    "CAGETSTQ applies CCS diminished BIT6 complement, source INCRQ skip and TCQ debris; caged task/bank returns preserve literal Q3.",
+    "PIPFREE follows literal BIT10-set MODEEXIT with A0777, BIT10-clear ALARM212 with A0; post-alarm INHINT then SETISSW continuation.",
+    "ZERO2 clears channel12 bit5; ZERO3 restores mode masks; NOATTOFF computes masked lamp plus BIT15 with register addition/correction.",
+    "IMUFINE preserves both real WAITLIST caller states and local MODEEXIT completion.",
+    "IMUCOARS accepted stronger quiet channel14 guard satisfies all frozen SETCOARS requirements before mutation; nested unsupported result unreachable for accepted inputs.",
+    "Literal getter matches containing source inline alarms, CADRs/2CADRs, BITS4-5; LM15 versus CM14 count excludes CM padding."
+  ]
+}

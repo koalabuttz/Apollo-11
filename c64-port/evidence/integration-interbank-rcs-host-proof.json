@@ -1,0 +1,19 @@
+{
+  "exact_git_snapshot": "fff603da6f1ce5168ac814a1dfbcd52595812229",
+  "copied_committed_files": 11292,
+  "all_and_test_exit_code": 0,
+  "invocation": [
+    "make",
+    "-j4",
+    "all",
+    "test"
+  ],
+  "source_baseline": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "uncommitted_source_excluded": true,
+  "complete_source_files": 36,
+  "remaining_source_files": 139,
+  "full_port_completion_gate_exit_code": 1,
+  "full_port_completion_certified": false,
+  "log_sha256": "988cf06ea1af7bf1d3f6ece392f40ed2ab11f14cdd9d7c91f4092d06d80a84da",
+  "scope": "Clean isolated portable host build and all registered host checks through whole Luminary interbank and RCS monitor certificates, shared display admission, load/recall controls and Comanche mixed initialization; newer commits retain separate milestone checks."
+}

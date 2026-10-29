@@ -1,0 +1,21 @@
+{
+  "measured_stack_bytes": {
+    "hardware": 29,
+    "software": 370
+  },
+  "additional_zero_page": 0,
+  "invalid_image_guards": 2,
+  "null_guard": 2,
+  "stage": 0,
+  "cohort": 1,
+  "states": 32,
+  "prg_bytes": 25789,
+  "load_end": 27836,
+  "bss_end": 36028,
+  "mailbox": "a5200000",
+  "words_each": 2048,
+  "external_fields": [
+    "superbank",
+    "interrupt_enabled"
+  ]
+}

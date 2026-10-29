@@ -1,0 +1,3 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_regodspr.c tests/regodspr_check.c src/agc_word.c src/p66_regodspr.c src/executive.c tests/throttle_bridge_cases.c tests/display_control_cases.c tests/regodspr_cases.c -o build/test-regodspr
+build/test-regodspr
+64 complete REGODSPR images and18 invalid boundaries: PASS

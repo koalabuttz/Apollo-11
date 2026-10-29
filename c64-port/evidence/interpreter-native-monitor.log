@@ -1,0 +1,138 @@
+Loading /workspace/Apollo-11/c64-port/build/interpreter-native.prg from 0801 to 7674 (6E74 bytes)
+WATCH: 1  C:$c046  (Stop on store)
+WATCH: 2  C:$c040  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+Stopwatch reset to 0.
+#1 (Stop on store c046)  133/$085,  18/$12
+.C:6c68  8E 46 C0    STX $C046      - A:04 X:90 Y:FA SP:ed N.-..I.C    4037875
+>C:c046  90                                                   .
+Stopwatch:    4037875
+#1 (Stop on store c046)  286/$11e,  23/$17
+.C:6b3e  8E 46 C0    STX $C046      - A:00 X:91 Y:FA SP:ed N.-....C    4047519
+>C:c046  91                                                   .
+Stopwatch:    4047519
+#2 (Stop on store c040)  120/$078,  28/$1c
+.C:6d3e  8E 40 C0    STX $C040      - A:00 X:A5 Y:02 SP:ed N.-.....  203466842
+>C:c040  a5 02 00 8c  10 01 91                                .......
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-mailbox.bin' from $c040 to $c046
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-software-stack.bin' from $c100 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-isolated-stack.bin' from $7c0a to $7d09
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO MIXED NATIVE CONTEXTS            
+0518  MIXED CONTEXT FAILED                    
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          
+Loading /workspace/Apollo-11/c64-port/build/interpreter-native.prg from 0801 to 7886 (7086 bytes)
+WATCH: 1  C:$c046  (Stop on store)
+WATCH: 2  C:$c040  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+Stopwatch reset to 0.
+#1 (Stop on store c046)  253/$0fd,  35/$23
+.C:6d40  8E 46 C0    STX $C046      - A:04 X:90 Y:FA SP:ed N.-..I.C    3986484
+>C:c046  90                                                   .
+Stopwatch:    3986484
+#1 (Stop on store c046)  290/$122,   8/$08
+.C:6b8a  8E 46 C0    STX $C046      - A:00 X:91 Y:FA SP:ed N.-....C    4008444
+>C:c046  91                                                   .
+Stopwatch:    4008444
+#2 (Stop on store c040)  101/$065,  44/$2c
+.C:6ea7  8E 40 C0    STX $C040      - A:00 X:A5 Y:02 SP:ed N.-.....  200851413
+>C:c040  a5 02 00 8c  10 01 91 00  03 04                      ..........
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-mailbox.bin' from $c040 to $c049
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-software-stack.bin' from $c100 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-isolated-stack.bin' from $7e21 to $7f20
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO MIXED NATIVE CONTEXTS            
+0518  MIXED CONTEXT FAILED                    
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          
+Loading /workspace/Apollo-11/c64-port/build/interpreter-native.prg from 0801 to 79AF (71AF bytes)
+WATCH: 1  C:$c046  (Stop on store)
+WATCH: 2  C:$c040  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+Stopwatch reset to 0.
+#1 (Stop on store c046)  252/$0fc,  54/$36
+.C:6e15  8E 46 C0    STX $C046      - A:04 X:90 Y:FA SP:ed N.-..I.C    3986440
+>C:c046  90                                                   .
+Stopwatch:    3986440
+#1 (Stop on store c046)  290/$122,   9/$09
+.C:6c57  8E 46 C0    STX $C046      - A:00 X:91 Y:FA SP:ed N.-....C    4008445
+>C:c046  91                                                   .
+Stopwatch:    4008445
+#2 (Stop on store c040)   49/$031,  23/$17
+.C:6f7c  8E 40 C0    STX $C040      - A:00 X:A5 Y:02 SP:ed N.-.....  200867772
+>C:c040  a5 00 00 8c  10 01 91 00  00 00                      ..........
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-mailbox.bin' from $c040 to $c049
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-software-stack.bin' from $c100 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/interpreter-native-isolated-stack.bin' from $7f4a to $8049
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO MIXED NATIVE CONTEXTS            
+0518  140 CONTEXTS + MASKED + IRQ PASS        
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

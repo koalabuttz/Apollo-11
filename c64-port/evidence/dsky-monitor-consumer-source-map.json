@@ -1,0 +1,51 @@
+{
+  "stages": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "new_local_emitted_words": 0,
+  "reused_local_dependencies": [
+    "dsky_monitor",
+    "dsky_nv_update_general",
+    "dsky_test_noun",
+    "dsky_mixed_noun",
+    "dsky_machine_cadr",
+    "dsky_verb_dispatch",
+    "dsky_octal_consumer",
+    "dsky_decimal_consumer",
+    "dsky_monitor_paste",
+    "dsky_blanksub"
+  ],
+  "actual_terminal_frontiers": [
+    "ENDO F JOB05155LM/05217CM",
+    "GODSPALM41,2351"
+  ],
+  "unsupported_external_frontiers": [
+    "HMS/M-S/two-integer scale entries including SAMPTIME013",
+    "request/alarm/release bodies",
+    "channel hardware delivery",
+    "actual ENDOFJOB lifecycle"
+  ],
+  "instruction_decoder": false,
+  "whole_file_claim": false
+}

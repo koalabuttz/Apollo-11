@@ -1,0 +1,4 @@
+/* SPDX-License-Identifier: MIT */
+#include "cm_idle_recheck_cases.h"
+#include "cm_context_change_cases.h"
+void cm_idle_recheck_input(apollo_overlay_state *s,cm_native_io *io,uint32_t n){unsigned kind=n/4096u,slot=n%6u+1u;agc_word bank=(agc_word)(((n>>3)&31u)*02000u+(n&7u)+((n>>8)&7u)*020u);cm_context_change_input(s,io,n&1u);s->words[5]=03032;s->words[3]=(agc_word)((n&7u)*0400u);s->words[4]=02000;s->words[6]=(agc_word)(02000u|(n&7u));io->superbank=(agc_word)(((n>>8)&7u)*020u);io->interrupt_enabled=(agc_word)(n&1u);s->words[0067]=(agc_word)(kind?slot*12u:0u);s->words[0164]=02001;s->words[0165]=bank;s->words[0167]=023110;s->words[0164u+slot*12u]=(agc_word)(kind==2u?agc_negate((agc_word)(03400u+slot)):02000u+slot);s->words[0165u+slot*12u]=bank;s->words[0167u+slot*12u]=030110;s->words[2]=(agc_word)(0100u+n%07700u);}

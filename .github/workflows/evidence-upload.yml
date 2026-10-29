@@ -1,0 +1,32 @@
+# Publishes milestone evidence pushed by `c64-port/tools/evidence.py push <id>`
+# as assets of the release evidence-<id>, then deletes the throwaway branch so
+# the bytes never enter the port branch history.
+name: evidence-upload
+on:
+  push:
+    branches: ['evidence-upload/**']
+
+concurrency:
+  group: ${{ github.ref }}
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .evidence-upload
+            c64-port/tools/evidence.py
+          sparse-checkout-cone-mode: false
+      - name: Publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 c64-port/tools/evidence.py publish-upload .evidence-upload \
+            --target "${{ github.event.repository.default_branch }}"
+      - name: Delete upload branch
+        run: git push origin --delete "${GITHUB_REF_NAME}"

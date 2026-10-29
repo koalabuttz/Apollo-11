@@ -1,0 +1,197 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     809d     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        5     1         build/cm-dispatch-lifecycle.prg.lto.o:(.init.250)
+     81d      81d        0     1                 shift
+     822      822        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     825      825        0     1                 __after_main
+     828      828        0     1         _fini = .
+     828      828        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82c      82c        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     82d      82d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     82d      82d        0     1                 __call_indir
+     830      830      73e     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_admit)
+     830      830      73e     1                 cm_exec_admit
+     f6e      f6e      1ae     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_endjob_select)
+     f6e      f6e      1ae     1                 cm_exec_endjob_select
+    111c     111c      18d     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_change_basic)
+    111c     111c      18d     1                 cm_exec_change_basic
+    12a9     12a9       ba     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.basic_slot)
+    12a9     12a9       ba     1                 basic_slot
+    1363     1363      37c     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.exchange_basic)
+    1363     1363      37c     1                 exchange_basic
+    16df     16df      4cf     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_change_interpretive)
+    16df     16df      4cf     1                 cm_exec_change_interpretive
+    1bae     1bae      282     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_complete_basic)
+    1bae     1bae      282     1                 cm_exec_complete_basic
+    1e30     1e30      1cb     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_start_basic)
+    1e30     1e30      1cb     1                 cm_exec_start_basic
+    1ffb     1ffb      34b     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_sleep_basic)
+    1ffb     1ffb      34b     1                 cm_exec_sleep_basic
+    2346     2346       7a     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.lifecycle_candidate)
+    2346     2346       7a     1                 lifecycle_candidate
+    23c0     23c0      666     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_wake_basic)
+    23c0     23c0      666     1                 cm_exec_wake_basic
+    2a26     2a26      349     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_priority_basic)
+    2a26     2a26      349     1                 cm_exec_priority_basic
+    2d6f     2d6f       94     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_native_start)
+    2d6f     2d6f       94     1                 cm_exec_native_start
+    2e03     2e03      2c5     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.start_owned)
+    2e03     2e03      2c5     1                 start_owned
+    30c8     30c8      1c7     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.saved_target)
+    30c8     30c8      1c7     1                 saved_target
+    328f     328f      438     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.exchange_saved)
+    328f     328f      438     1                 exchange_saved
+    36c7     36c7       ef     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.settle)
+    36c7     36c7       ef     1                 settle
+    37b6     37b6      124     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.lookup_kind)
+    37b6     37b6      124     1                 lookup_kind
+    38da     38da      1f4     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_native_admit)
+    38da     38da      1f4     1                 cm_exec_native_admit
+    3ace     3ace      f99     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_native_step)
+    3ace     3ace      f99     1                 cm_exec_native_step
+    4a67     4a67      26b     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.complete_mixed)
+    4a67     4a67      26b     1                 complete_mixed
+    4cd2     4cd2      210     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.change_mixed_basic)
+    4cd2     4cd2      210     1                 change_mixed_basic
+    4ee2     4ee2      2f3     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.sleep_mixed)
+    4ee2     4ee2      2f3     1                 sleep_mixed
+    51d5     51d5      372     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.priority_mixed)
+    51d5     51d5      372     1                 priority_mixed
+    5547     5547      1e8     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_exec_native_wake)
+    5547     5547      1e8     1                 cm_exec_native_wake
+    572f     572f      119     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_dispatch_touch)
+    572f     572f      119     1                 cm_dispatch_touch
+    5848     5848      ea4     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_lifecycle_prepare)
+    5848     5848      ea4     1                 cm_lifecycle_prepare
+    66ec     66ec      242     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.cm_lifecycle_event_prepare)
+    66ec     66ec      242     1                 cm_lifecycle_event_prepare
+    692e     692e       4e     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.low_entry)
+    692e     692e       4e     1                 low_entry
+    697c     697c      134     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.low_resume)
+    697c     697c      134     1                 low_resume
+    6ab0     6ab0       2d     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.low_finish)
+    6ab0     6ab0       2d     1                 low_finish
+    6add     6add      1dc     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.high_entry)
+    6add     6add      1dc     1                 high_entry
+    6cb9     6cb9       2d     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.high_finish)
+    6cb9     6cb9       2d     1                 high_finish
+    6ce6     6ce6      149     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.payload)
+    6ce6     6ce6      149     1                 payload
+    6e2f     6e2f      62d     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.observe)
+    6e2f     6e2f      62d     1                 observe
+    745c     745c     10fb     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.main)
+    745c     745c     10fb     1                 main
+    8557     8557        6     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.exit)
+    8557     8557        6     1                 exit
+    855d     855d       4d     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.putchar)
+    855d     855d       4d     1                 putchar
+    85aa     85aa       65     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.puts)
+    85aa     85aa       65     1                 puts
+    860f     860f       5d     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.__udivqi3)
+    860f     860f       5d     1                 __udivqi3
+    866c     866c       c4     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.__udivhi3)
+    866c     866c       c4     1                 __udivhi3
+    8730     8730       40     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.__umodqi3)
+    8730     8730       40     1                 __umodqi3
+    8770     8770       7d     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.__udivmodqi4)
+    8770     8770       7d     1                 __udivmodqi4
+    87ed     87ed       34     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.memcpy)
+    87ed     87ed       34     1                 memcpy
+    8821     8821       22     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.__memset)
+    8821     8821       22     1                 __memset
+    8843     8843       67     1         build/cm-dispatch-lifecycle.prg.lto.o:(.text.__mulsi3)
+    8843     8843       67     1                 __mulsi3
+    88aa     88aa        0     1         __init_array_start = .
+    88aa     88aa        0     1         __init_array_end = .
+    88aa     88aa        0     1         __fini_array_start = .
+    88aa     88aa        0     1         __fini_array_end = .
+    88aa     88aa      c79     1 .rodata
+    88aa     88aa        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    88aa     88aa        0     1                 __set_v
+    88ab     88ab        8     1         build/cm-dispatch-lifecycle.prg.lto.o:(.rodata.cm_exec_native_step)
+    88b3     88b3       2c     1         build/cm-dispatch-lifecycle.prg.lto.o:(.rodata.cm_lifecycle_prepare)
+    88df     88df        a     1         build/cm-dispatch-lifecycle.prg.lto.o:(.rodata.cm_lifecycle_event_prepare)
+    88e9     88e9        a     1         build/cm-dispatch-lifecycle.prg.lto.o:(.rodata.main)
+    88f3     88f3       1e     1         build/cm-dispatch-lifecycle.prg.lto.o:(.rodata.jobs)
+    88f3     88f3       1e     1                 jobs
+    8911     8911      1cc     1         build/cm-dispatch-lifecycle.prg.lto.o:(.rodata.cm_dispatch_hashes)
+    8911     8911      1cc     1                 cm_dispatch_hashes
+    8add     8add        8     1         <internal>:(.rodata.cst8)
+    8ae5     8ae5      9f0     1         build/cm-dispatch-lifecycle.prg.lto.o:(.rodata.cm_dispatch_full_words)
+    8ae5     8ae5      9f0     1                 cm_dispatch_full_words
+    94d5     94d5       4e     1         <internal>:(.rodata.str1.1)
+    9523     9523        0     1 .data
+    9523     9523        0     1         __data_start = .
+    9523     9523        0     1         __data_end = .
+    9523     9523        0     1 __data_load_start = LOADADDR(.data)
+    9523     9523        0     1 __data_size = SIZEOF(.data)
+    9523     9523        0     1 .bss
+    9523     9523        0     1         __bss_start = .
+    9523     9523        0     1         __bss_end = .
+    9523     9523        0     1 __bss_size = SIZEOF(.bss)
+    9523     9523        1     1 .noinit
+    9523     9523        1     1         build/cm-dispatch-lifecycle.prg.lto.o:(.noinit..Lstatic_stack)
+    9524     9524        0     1         __heap_start = ALIGN(., 2)
+    9524     9524        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm-dispatch-lifecycle.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm-dispatch-lifecycle.prg.lto.o:(.llvm_sympart)
+       0        0      d20     4 .symtab
+       0        0      d20     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      841     1 .strtab
+       0        0      841     1         <internal>:(.strtab)

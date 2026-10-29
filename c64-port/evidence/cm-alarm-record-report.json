@@ -1,0 +1,42 @@
+{
+  "actual_executed_source_states": 16384,
+  "source_stream_sha256": "fc35d6b6420ed71181814d05dd5d25ef9e8e9d8ee79ed95f1f907fec312abde2",
+  "target_contexts": 64,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004000",
+  "software_stack_bytes": 708,
+  "modules": [
+    {
+      "id": 214,
+      "filename": "G214",
+      "byte_count": 2232,
+      "crc16": 61287,
+      "sha256": "615e16f16131c962434a84fc5221a84a7c39985c44cdad41ca26741302a8e4d8",
+      "prg": "cm-alarm-record-214.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 4685,
+      "crc16": 53187,
+      "sha256": "ac3d813a52323474608c56b8f361a0bf1734083ad7835bc74e5fd2006d614baa",
+      "prg": "cm-alarm-record-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10052,
+      "crc16": 50794,
+      "sha256": "3effb7dff8c825e6748067f19dfc25f13c7f95dafb6f9922b27872aa038f42d0",
+      "prg": "cm-alarm-record-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "source_POODOO_frontiers": 1803,
+  "source_ordinary_returns": 14581,
+  "scope": "actual ALARM/VARALARM/CURTAINS/BORTENT complete record body, ordinary returns or source MULTFAIL-overflow POODOO entry; abort recovery and full original-file closure remain separate"
+}

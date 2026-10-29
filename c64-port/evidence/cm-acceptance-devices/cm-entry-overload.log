@@ -1,0 +1,699 @@
+DSKY 1 cs: P   V   N   R1        R2        R3       
+watch 1 cs: 0375 01107
+watch 1 cs: 0376 00000
+watch 1 cs: 0377 00000
+DSKY 2250 cs: P   V3  N   R1        R2        R3       
+DSKY 2300 cs: P   V37 N   R1        R2        R3       
+DSKY 2400 cs: P   V37 N6  R1        R2        R3       
+DSKY 2450 cs: P   V37 N61 R1        R2        R3       
+DSKY 2551 cs: P61 V   N   R1        R2        R3       
+DSKY 3773 cs: P61 V06 N61 R1 +02609 R2 +05353 R3 -00001
+DSKY 4800 cs: P61 V   N61 R1 +02609 R2 +05353 R3 -00001
+DSKY 4850 cs: P61 V3  N61 R1 +02609 R2 +05353 R3 -00001
+DSKY 4900 cs: P61 V33 N61 R1 +02609 R2 +05353 R3 -00001
+DSKY 5000 cs: P61 V   N   R1        R2        R3       
+DSKY 5100 cs: P61 V06 N60 R1        R2        R3 -00668
+DSKY 5102 cs: P61 V06 N60 R1 +00752 R2 +36174 R3 -00668
+DSKY 5400 cs: P61 V   N60 R1 +00752 R2 +36174 R3 -00668
+DSKY 5450 cs: P61 V3  N60 R1 +00752 R2 +36174 R3 -00668
+DSKY 5500 cs: P61 V33 N60 R1 +00752 R2 +36174 R3 -00668
+DSKY 5572 cs: P61 V06 N63 R1 +09395 R2 +36255 R3 -02 18
+DSKY 6000 cs: P61 V   N63 R1 +09395 R2 +36255 R3 -02 18
+DSKY 6050 cs: P61 V3  N63 R1 +09395 R2 +36255 R3 -02 18
+DSKY 6100 cs: P61 V33 N63 R1 +09395 R2 +36255 R3 -02 18
+DSKY 6200 cs: P62 V   N   R1        R2        R3       
+DSKY 6225 cs: P62 V50 N25 R1  00041 R2        R3       
+DSKY 6817 cs: P62 V   N25 R1  00041 R2        R3       
+DSKY 6850 cs: P62 V3  N25 R1  00041 R2        R3       
+DSKY 6900 cs: P62 V33 N25 R1  00041 R2        R3       
+DSKY 7000 cs: P62 V06 N61 R1 +02609 R2 +05353 R3 -00001
+DSKY 7424 cs: P62 V   N61 R1 +02609 R2 +05353 R3 -00001
+DSKY 7450 cs: P62 V3  N61 R1 +02609 R2 +05353 R3 -00001
+DSKY 7500 cs: P62 V33 N61 R1 +02609 R2 +05353 R3 -00001
+DSKY 7551 cs: P62 V   N   R1        R2        R3       
+DSKY 7631 cs: P62 V06 N22 R1 +00001 R2 +15801 R3 +35999
+DSKY 7830 cs: P62 V06 N22 R1 +00001 R2 +15791 R3 +35999
+DSKY 8029 cs: P62 V06 N22 R1 +00001 R2 +15782 R3 +35999
+DSKY 8229 cs: P62 V06 N22 R1 +00001 R2 +15772 R3 +35999
+DSKY 8429 cs: P62 V06 N22 R1 +00001 R2 +15763 R3 +35999
+DSKY 8629 cs: P62 V06 N22 R1 +00001 R2 +15753 R3 +35999
+DSKY 8829 cs: P62 V06 N22 R1 +00001 R2 +15745 R3 +35999
+DSKY 9029 cs: P62 V06 N22 R1 +00001 R2 +15735 R3 +35999
+DSKY 9229 cs: P62 V06 N22 R1 +00001 R2 +15726 R3 +35999
+DSKY 9429 cs: P62 V06 N22 R1 +00001 R2 +15716 R3 +35999
+DSKY 9629 cs: P62 V06 N22 R1 +00001 R2 +15706 R3 +35999
+DSKY 9829 cs: P62 V06 N22 R1 +00001 R2 +15697 R3 +35999
+DSKY 9908 cs: P63 V   N   R1        R2        R3       
+DSKY 10230 cs: P63 V06 N64 R1 +00000 R2 +35893 R3 -14756
+DSKY 10429 cs: P63 V06 N64 R1 +00000 R2 +35903 R3 -14643
+DSKY 10629 cs: P63 V06 N64 R1 +00000 R2 +35914 R3 -14531
+DSKY 10829 cs: P63 V06 N64 R1 +00000 R2 +35923 R3 -14418
+DSKY 11029 cs: P63 V06 N64 R1 +00000 R2 +35933 R3 -14305
+DSKY 11229 cs: P63 V06 N64 R1 +00000 R2 +35943 R3 -14192
+DSKY 11429 cs: P63 V06 N64 R1 +00000 R2 +35953 R3 -14079
+DSKY 11629 cs: P63 V06 N64 R1 +00000 R2 +35962 R3 -13966
+DSKY 11829 cs: P63 V06 N64 R1 +00000 R2 +35972 R3 -13853
+DSKY 12029 cs: P63 V06 N64 R1 +00000 R2 +35981 R3 -13740
+DSKY 12229 cs: P63 V06 N64 R1 +00000 R2 +35991 R3 -13626
+DSKY 12430 cs: P63 V06 N64 R1 +00000 R2 +36000 R3 -13512
+DSKY 12629 cs: P63 V06 N64 R1 +00000 R2 +36009 R3 -13399
+DSKY 12829 cs: P63 V06 N64 R1 +00000 R2 +36018 R3 -13285
+DSKY 13029 cs: P63 V06 N64 R1 +00000 R2 +36027 R3 -13171
+DSKY 13229 cs: P63 V06 N64 R1 +00000 R2 +36036 R3 -13057
+DSKY 13429 cs: P63 V06 N64 R1 +00000 R2 +36045 R3 -12943
+DSKY 13629 cs: P63 V06 N64 R1 +00000 R2 +36054 R3 -12829
+DSKY 13829 cs: P63 V06 N64 R1 +00000 R2 +36062 R3 -12714
+DSKY 14029 cs: P63 V06 N64 R1 +00000 R2 +36071 R3 -12600
+DSKY 14229 cs: P63 V06 N64 R1 +00000 R2 +36079 R3 -12485
+DSKY 14429 cs: P63 V06 N64 R1 +00000 R2 +36088 R3 -12370
+DSKY 14629 cs: P63 V06 N64 R1 +00000 R2 +36096 R3 -12256
+DSKY 14829 cs: P63 V06 N64 R1 +00000 R2 +36104 R3 -12141
+DSKY 15029 cs: P63 V06 N64 R1 +00000 R2 +36112 R3 -12026
+DSKY 15229 cs: P63 V06 N64 R1 +00000 R2 +36120 R3 -11911
+DSKY 15430 cs: P63 V06 N64 R1 +00000 R2 +36128 R3 -11795
+DSKY 15629 cs: P63 V06 N64 R1 +00000 R2 +36136 R3 -11680
+DSKY 15829 cs: P63 V06 N64 R1 +00000 R2 +36143 R3 -11565
+DSKY 16029 cs: P63 V06 N64 R1 +00000 R2 +36151 R3 -11449
+DSKY 16229 cs: P63 V06 N64 R1 +00000 R2 +36158 R3 -11334
+DSKY 16430 cs: P63 V06 N64 R1 +00000 R2 +36166 R3 -11218
+DSKY 16630 cs: P63 V06 N64 R1 +00000 R2 +36173 R3 -11102
+DSKY 16829 cs: P63 V06 N64 R1 +00000 R2 +36180 R3 -10986
+DSKY 17029 cs: P63 V06 N64 R1 +00000 R2 +36187 R3 -10871
+DSKY 17229 cs: P63 V06 N64 R1 +00000 R2 +36194 R3 -10755
+DSKY 17429 cs: P63 V06 N64 R1 +00000 R2 +36201 R3 -10638
+DSKY 17629 cs: P63 V06 N64 R1 +00000 R2 +36208 R3 -10522
+DSKY 17830 cs: P63 V06 N64 R1 +00000 R2 +36215 R3 -10406
+DSKY 18030 cs: P63 V06 N64 R1 +00000 R2 +36221 R3 -10290
+DSKY 18229 cs: P63 V06 N64 R1 +00000 R2 +36228 R3 -10173
+DSKY 18430 cs: P63 V06 N64 R1 +00000 R2 +36234 R3 -10057
+DSKY 18630 cs: P63 V06 N64 R1 +00000 R2 +36240 R3 -09940
+DSKY 18830 cs: P63 V06 N64 R1 +00001 R2 +36246 R3 -09823
+DSKY 19030 cs: P63 V06 N64 R1 +00001 R2 +36252 R3 -09707
+DSKY 19230 cs: P63 V06 N64 R1 +00001 R2 +36257 R3 -09590
+DSKY 19430 cs: P63 V06 N64 R1 +00001 R2 +36262 R3 -09473
+DSKY 19630 cs: P63 V06 N64 R1 +00002 R2 +36267 R3 -09356
+DSKY 19830 cs: P63 V06 N64 R1 +00003 R2 +36271 R3 -09239
+DSKY 20030 cs: P63 V06 N64 R1 +00004 R2 +36275 R3 -09122
+DSKY 20230 cs: P63 V06 N64 R1 +00005 R2 +36278 R3 -09005
+DSKY 20437 cs: P64 V06 N74 R1 +01520 R2 +36280 R3 +00006
+DSKY 20631 cs: P64 V06 N74 R1 +01520 R2 +36280 R3 +00008
+DSKY 20831 cs: P64 V06 N74 R1 +01520 R2 +36280 R3 +00011
+DSKY 21164 cs: P64 V06 N74 R1 +01520 R2 +36277 R3 +00015
+DSKY 22195 cs: P   V   N   R1        R2        R3       
+watch 22195 cs: 0376 01201
+DSKY 22250 cs: P64 V   N   R1        R2        R3       
+DSKY 23226 cs: P   V   N   R1        R2        R3       
+watch 23226 cs: 0377 01201
+DSKY 23278 cs: P64 V   N   R1        R2        R3       
+DSKY 24258 cs: P   V   N   R1        R2        R3       
+watch 24258 cs: 0377 41201
+DSKY 24310 cs: P64 V   N   R1        R2        R3       
+DSKY 25289 cs: P   V   N   R1        R2        R3       
+DSKY 25342 cs: P64 V   N   R1        R2        R3       
+DSKY 26325 cs: P   V   N   R1        R2        R3       
+DSKY 26379 cs: P64 V   N   R1        R2        R3       
+DSKY 27437 cs: P64 V06 N74 R1        R2        R3 +00469
+DSKY 27477 cs: P64 V06 N74 R1 +16480 R2 +29675 R3 +00469
+DSKY 27633 cs: P64 V06 N74 R1 +13483 R2 +29333 R3 +00541
+DSKY 27833 cs: P64 V06 N74 R1 +16480 R2 +29070 R3 +00414
+DSKY 28033 cs: P64 V06 N74 R1 +16480 R2 +28819 R3 +00397
+DSKY 28233 cs: P64 V06 N74 R1 +16480 R2 +28579 R3 +00383
+DSKY 28433 cs: P64 V06 N74 R1 +16480 R2 +28347 R3 +00371
+DSKY 28633 cs: P64 V06 N74 R1 +16480 R2 +28347 R3 +00361
+DSKY 28637 cs: P64 V06 N74 R1 +16480 R2 +28121 R3 +00361
+DSKY 28833 cs: P64 V06 N74 R1 +16480 R2 +28121 R3 +00354
+DSKY 28837 cs: P64 V06 N74 R1 +16480 R2 +27901 R3 +00354
+DSKY 29033 cs: P64 V06 N74 R1 +16480 R2 +27901 R3 +00348
+DSKY 29037 cs: P64 V06 N74 R1 +16480 R2 +27685 R3 +00348
+DSKY 29233 cs: P64 V06 N74 R1 +16480 R2 +27685 R3 +00344
+DSKY 29237 cs: P64 V06 N74 R1 +16480 R2 +27471 R3 +00344
+DSKY 29433 cs: P64 V06 N74 R1 +16480 R2 +27471 R3 +00342
+DSKY 29437 cs: P64 V06 N74 R1 +16480 R2 +27260 R3 +00342
+DSKY 29633 cs: P64 V06 N74 R1 +16480 R2 +27260 R3 +00341
+DSKY 29637 cs: P64 V06 N74 R1 +16480 R2 +27049 R3 +00341
+DSKY 29833 cs: P64 V06 N74 R1 +16480 R2 +27049 R3 +00342
+DSKY 29837 cs: P64 V06 N74 R1 +14020 R2 +26839 R3 +00342
+DSKY 30033 cs: P64 V06 N74 R1 +14020 R2 +26839 R3 +00345
+DSKY 30037 cs: P64 V06 N74 R1 +12565 R2 +26626 R3 +00345
+DSKY 30233 cs: P64 V06 N74 R1 +12565 R2 +26626 R3 +00349
+DSKY 30237 cs: P64 V06 N74 R1 +11474 R2 +26412 R3 +00349
+DSKY 30433 cs: P64 V06 N74 R1 +11474 R2 +26412 R3 +00354
+DSKY 30437 cs: P64 V06 N74 R1 +10586 R2 +26194 R3 +00354
+DSKY 30633 cs: P64 V06 N74 R1 +10586 R2 +26194 R3 +00359
+DSKY 30637 cs: P64 V06 N74 R1 +09868 R2 +25973 R3 +00359
+DSKY 30833 cs: P64 V06 N74 R1 +09868 R2 +25973 R3 +00365
+DSKY 30837 cs: P64 V06 N74 R1 +09298 R2 +25748 R3 +00365
+DSKY 31022 cs: P67 V06 N66 R1 +09436 R2 -00370 R3 +00765
+DSKY 31213 cs: P67 V06 N66 R1 +09308 R2 -00362 R3 +00740
+DSKY 31413 cs: P67 V06 N66 R1 +09176 R2 -00353 R3 +00714
+DSKY 31613 cs: P67 V06 N66 R1 +09039 R2 -00344 R3 +00687
+DSKY 31813 cs: P67 V06 N66 R1 +08912 R2 -00335 R3 +00662
+DSKY 32015 cs: P67 V06 N66 R1 +08796 R2 -00327 R3 +00639
+CM: 1172342 native routines (23719810 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
+scaled time: K 1.00, divisor 1, lag 2, seed 0: 32015 CIA interrupts, 32015 clock periods taken, 0 dropped (rk_dilation); AGC time 32015 cs
+night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule (0 with the native rule armed); yaAGC's own alarm inside 0 spans
+night watchman, C64 rule: 0 checks while either rule is armed, 0 where the C64 rule differs from the native rule (0 with only the C64 rule armed)
+rupt lock: 0 alarms (0 RUPT LOCK, 0 NO RUPT); 0 checks where a flag was still set, 0 where yaAGC's flags differ from the native rule; channel 77 bit 4 inside 0 spans; longest without an interrupt step 11 periods (to period 27), without a step outside one 8 (to period 23214)
+major mode (MODREG 01011) at 32000 cs: native 103, yaAGC 00; FAILREG 01107/00000
+interpreter module: 26182 routines, 26182 slots; words charged vs yaAGC's: n/a (work clock only)
+interpreter charge: fitted 6278832 MCT, yaAGC 6234339 MCT (+0.7%) over 26182 routines; mean |error| 25.3 MCT per routine
+native routines yaAGC did not match (0):
+unregistered or refused points (0):
+module loads (23540 in 32015 cs):
+  load cm_fresh_start slot 0 basic  05,2526: 1
+  load cm_interbank_routines slot 0 basic  02,2662: 253
+  load cm_v37 slot 0 basic  20,2000: 6
+  load service_transfer slot 0 basic  02,3606: 147
+  load cm_v37 slot 0 basic  20,2033: 6
+  load cm_interbank_routines slot 0 basic  02,2675: 345
+  load cm_fresh_start slot 0 basic  05,2535: 1
+  load cm_alarm slot 0 basic  02,3650: 1
+  load cm_fresh_start slot 0 basic  05,2750: 1
+  load cm_interbank_routines slot 0 basic  02,2701: 121
+  load cm_fresh_start slot 0 basic  05,3153: 1
+  load cm_t4rupt_imu slot 1 basic  06,2174: 650
+  load cm_t4rupt_optics slot 1 basic  06,2765: 650
+  load cm_interbank_routines slot 0 basic  02,2740: 1767
+  load imu_mode_switching slot 0 basic  07,3151: 1
+  load cm_interbank_routines slot 0 basic  02,2753: 1206
+  load imu_mode_switching slot 0 basic  02,3521: 2
+  load cm_t4rupt_imu slot 1 basic  06,2315: 1
+  load cm_t4rupt_imu slot 1 basic  06,2323: 1
+  load imu_mode_switching slot 0 basic  07,3137: 1
+  load cm_t4rupt_imu slot 1 basic  06,2665: 2
+  load imu_mode_switching slot 0 basic  07,3136: 1
+  load cm_t4rupt_optics slot 1 basic  10,2000: 381
+  load lanec_pin_routines slot 0 basic  02,2414: 27
+  load lanec_pin_keys_num_routines slot 0 basic  40,2000: 27
+  load lanec_pin_keys_cmd_routines slot 0 basic  40,2255: 6
+  load lanec_pin_keys_cmd_routines slot 0 basic  40,2060: 7
+  load lanec_pin_routines slot 0 basic  41,2035: 107
+  load lanec_pin_routines slot 0 basic  41,2133: 107
+  load lanec_pin_routines slot 0 basic  41,3430: 1
+  load lanec_pin_routines slot 0 basic  41,3431: 1
+  load cm_v37 slot 0 basic  04,2011: 1
+  load cm_phase_table slot 1 basic  02,3412: 691
+  load cm_interp_core slot 0 basic  03,2006: 1
+  load cm_stateup slot 0 interp 04,2131: 1
+  load cm_integration_init slot 0 interp 13,3442: 1
+  load cm_integration_init slot 0 basic  13,3443: 2
+  load cm_stateup slot 0 interp 04,2133: 1
+  load cm_v37 slot 0 basic  04,2134: 1
+  load cm_kalcmanu_steering slot 0 basic  02,2526: 1
+  load cm_v37 slot 0 basic  04,2336: 1
+  load cm_p40_p47 slot 0 basic  24,2304: 1
+  load cm_v37 slot 0 basic  04,2344: 1
+  load service_transfer slot 0 basic  02,3546: 5
+  load cm_v37 slot 0 basic  04,2364: 1
+  load lanec_di_routines slot 0 basic  02,3536: 2
+  load cm_v37 slot 0 basic  04,2147: 1
+  load service_transfer slot 0 basic  02,3560: 311
+  load cm_v37 slot 0 basic  04,2151: 1
+  load cm_update slot 0 basic  27,3757: 1
+  load cm_v37 slot 0 basic  04,2153: 1
+  load cm_v37 slot 0 basic  04,2155: 1
+  load cm_v37 slot 0 basic  04,2157: 1
+  load cm_v37 slot 0 basic  04,2266: 1
+  load cm_fresh_start slot 0 basic  05,2513: 1
+  load cm_v37 slot 0 basic  04,2207: 1
+  load cm_fresh_start slot 0 basic  05,2651: 6
+  load cm_interbank_routines slot 0 basic  02,2704: 117
+  load cm_fresh_start slot 0 basic  05,2707: 6
+  load cm_interbank_routines slot 0 basic  02,2666: 16
+  load cm_restart_routines slot 1 basic  01,3520: 6
+  load cm_fresh_start slot 0 basic  05,2735: 16
+  load lanec_pin_routines slot 0 basic  40,3441: 11
+  load lanec_di_routines slot 0 basic  10,3261: 1
+  load cm_interbank_routines slot 0 basic  02,2773: 1
+  load lanec_di_routines slot 0 basic  10,3265: 1
+  load cm_v37 slot 0 basic  04,2274: 1
+  load cm_phase_table slot 1 basic  02,3357: 1
+  load cm_v37 slot 0 basic  04,2326: 1
+  load lanec_pin_routines slot 0 basic  02,2473: 6
+  load cm_v37 slot 0 basic  04,2327: 1
+  load cm_p61_p67 slot 0 basic  26,2217: 1
+  load imu_mode_switching slot 0 basic  07,3653: 2
+  load imu_mode_switching slot 0 basic  07,3671: 2
+  load cm_p61_p67 slot 0 basic  26,2550: 2
+  load cm_integration_init slot 0 interp 13,3543: 1
+  load cm_rtb_op_codes slot 0 basic  22,3510: 3
+  load cm_interpreter slot 0 basic  03,2024: 3
+  load cm_integration_init slot 0 interp 13,3570: 1
+  load cm_stateup slot 0 interp 13,2034: 1
+  load cm_integration_init slot 0 interp 13,3576: 1
+  load cm_integration_init slot 0 basic  13,2747: 1
+  load cm_rtb_op_codes slot 0 basic  22,3544: 1
+  load cm_interpreter slot 0 basic  03,3226: 2
+  load cm_rtb_op_codes slot 0 basic  22,3545: 1
+  load cm_integration_init slot 0 interp 13,3352: 1
+  load cm_orbital_integration slot 0 interp 11,3240: 1
+  load cm_rtb_op_codes slot 0 interp 13,3770: 3
+  load cm_orbital_integration slot 0 interp 11,3220: 3
+  load cm_orbital_integration slot 0 interp 11,2436: 1
+  load cm_conics slot 0 interp 12,2042: 2
+  load cm_interpreter slot 0 basic  03,3171: 30
+  load cm_conics slot 0 basic  12,2462: 2
+  load cm_conics slot 0 basic  12,2514: 2
+  load cm_rtb_op_codes slot 0 basic  22,3565: 4
+  load cm_interpreter slot 0 basic  03,2027: 23
+  load cm_conics slot 0 interp 12,2524: 2
+  load cm_conics slot 0 interp 12,2533: 2
+  load cm_orbital_integration slot 0 interp 11,2512: 2
+  load cm_orbital_integration slot 0 interp 11,2503: 1
+  load cm_orbital_integration slot 0 interp 11,3126: 1
+  load cm_integration_init slot 0 interp 13,3633: 1
+  load cm_integration_init slot 0 interp 13,3662: 1
+  load cm_orbital_integration slot 0 interp 11,3421: 1
+  load cm_integration_init slot 0 interp 13,3231: 1
+  load cm_integration_init slot 0 basic  13,3265: 1
+  load cm_integration_init slot 0 basic  13,3624: 1
+  load cm_integration_init slot 0 basic  13,3631: 1
+  load cm_p61_p67 slot 0 basic  26,2555: 1
+  load cm_p61_p67 slot 0 basic  26,2565: 1
+  load cm_phase_table slot 1 basic  02,3372: 2
+  load cm_servicer slot 0 basic  37,2701: 1
+  load cm_restart_routines slot 1 basic  02,2114: 143
+  load cm_servicer slot 0 basic  37,3236: 1
+  load cm_servicer slot 0 basic  37,3242: 1
+  load imu_compensation slot 1 basic  06,3636: 1
+  load imu_mode_switching slot 0 basic  07,3156: 1
+  load imu_mode_switching slot 0 basic  07,3172: 1
+  load imu_compensation slot 1 basic  06,3640: 1
+  load cm_p61_p67 slot 0 basic  26,2603: 1
+  load cm_p61_p67 slot 0 basic  26,2224: 1
+  load lanec_di_routines slot 0 basic  10,3057: 1
+  load cm_interbank_routines slot 0 basic  02,2711: 200
+  load lanec_di_routines slot 0 basic  10,3153: 200
+  load cm_p61_p67 slot 0 basic  26,2232: 1
+  load lanec_di_routines slot 0 basic  10,2770: 94
+  load cm_interpreter slot 0 basic  03,2706: 5
+  load lanec_di_routines slot 0 basic  10,3007: 5
+  load lanec_pin_routines slot 0 basic  02,2171: 102
+  load lanec_pin_routines slot 0 basic  41,2337: 102
+  load lanec_pin_routines slot 0 basic  41,3602: 101
+  load lanec_pin_routines slot 0 basic  41,2317: 101
+  load lanec_pin_routines slot 0 basic  41,3604: 101
+  load lanec_pin_routines slot 0 basic  41,2523: 100
+  load lanec_pin_routines slot 0 basic  41,2537: 300
+  load lanec_pin_routines slot 0 basic  40,2603: 3
+  load lanec_pin_routines slot 0 basic  41,2566: 235
+  load lanec_pin_routines slot 0 basic  40,3133: 299
+  load lanec_pin_routines slot 0 basic  41,2570: 300
+  load lanec_pin_routines slot 0 basic  40,2621: 196
+  load lanec_pin_routines slot 0 basic  02,2216: 101
+  load lanec_di_routines slot 0 basic  10,3344: 102
+  load lanec_pin_routines slot 0 basic  02,2447: 107
+  load lanec_di_routines slot 0 basic  10,3345: 102
+  load lanec_di_routines slot 0 basic  10,3350: 102
+  load lanec_di_routines slot 0 basic  10,3352: 102
+  load lanec_di_routines slot 0 basic  10,3354: 102
+  load lanec_pin_routines slot 0 basic  02,2271: 102
+  load lanec_di_routines slot 0 basic  10,3357: 102
+  load lanec_pin_routines slot 0 basic  02,2443: 5
+  load lanec_di_routines slot 0 basic  10,3503: 5
+  load service_transfer slot 0 basic  03,3722: 6
+  load lanec_di_routines slot 0 basic  10,3511: 6
+  load lanec_pin_routines slot 0 basic  02,2223: 6
+  load cm_servicer slot 0 basic  37,2744: 140
+  load imu_compensation slot 1 basic  06,3262: 140
+  load cm_servicer slot 0 basic  37,3133: 140
+  load cm_servicer slot 0 basic  37,3157: 140
+  load cm_servicer slot 0 interp 37,3374: 18
+  load cm_servicer slot 0 basic  37,3151: 131
+  load cm_servicer slot 0 basic  37,3104: 40
+  load lanec_pin_routines slot 0 basic  40,3347: 5
+  load lanec_pin_routines slot 0 basic  02,2220: 11
+  load lanec_pin_routines slot 0 basic  40,3352: 5
+  load lanec_pin_routines slot 0 basic  40,3353: 5
+  load lanec_pin_routines slot 0 basic  40,3354: 5
+  load lanec_pin_routines slot 0 basic  40,3457: 5
+  load lanec_di_routines slot 0 basic  10,3524: 5
+  load service_transfer slot 0 basic  03,3740: 6
+  load lanec_di_routines slot 0 basic  10,3572: 6
+  load lanec_pin_routines slot 0 basic  02,2170: 6
+  load lanec_pin_routines slot 0 basic  41,3516: 6
+  load lanec_pin_routines slot 0 basic  41,3566: 6
+  load lanec_di_routines slot 0 basic  10,3575: 6
+  load cm_p61_p67 slot 0 basic  26,2230: 1
+  load cm_reentry slot 0 interp 25,2063: 2
+  load cm_lat_long slot 0 interp 13,2441: 3
+  load cm_lat_long slot 0 interp 13,2456: 1
+  load cm_lat_long slot 0 interp 13,2460: 1
+  load cm_planetary slot 0 interp 26,3344: 3
+  load cm_lat_long slot 0 interp 13,2475: 3
+  load cm_reentry slot 0 interp 25,2077: 3
+  load cm_geometry slot 0 interp 23,2215: 3
+  load cm_reentry slot 0 interp 25,2104: 3
+  load cm_p61_p67 slot 0 interp 26,2247: 2
+  load cm_p61_p67 slot 0 interp 26,2264: 1
+  load cm_time_free_fall slot 0 interp 27,2757: 1
+  load cm_p61_p67 slot 0 interp 26,2661: 1
+  load cm_time_free_fall slot 0 interp 27,3067: 3
+  load cm_time_free_fall slot 0 basic  27,3352: 3
+  load cm_p61_p67 slot 0 interp 26,2664: 1
+  load cm_lat_long slot 0 interp 13,2505: 3
+  load cm_lat_long slot 0 interp 13,2516: 1
+  load cm_p61_p67 slot 0 interp 26,2670: 1
+  load cm_p61_p67 slot 0 interp 26,2673: 1
+  load cm_p61_p67 slot 0 interp 26,2701: 1
+  load cm_geometry slot 0 interp 23,2225: 86
+  load cm_p61_p67 slot 0 interp 27,2660: 2
+  load cm_p61_p67 slot 0 interp 26,2755: 1
+  load cm_lat_long slot 0 interp 13,2511: 1
+  load cm_p61_p67 slot 0 interp 26,2761: 1
+  load cm_p61_p67 slot 0 basic  26,2267: 1
+  load cm_p61_p67 slot 0 basic  26,2270: 1
+  load lanec_di_routines slot 0 basic  10,2720: 3
+  load cm_p61_p67 slot 0 basic  26,2274: 1
+  load cm_p61_p67 slot 0 interp 26,2302: 1
+  load cm_p61_p67 slot 0 basic  26,2306: 1
+  load lanec_pin_routines slot 0 basic  42,3216: 1
+  load lanec_pin_routines slot 0 basic  42,3274: 1
+  load lanec_pin_routines slot 0 basic  40,2623: 64
+  load cm_servicer slot 0 basic  37,3153: 4
+  load cm_p61_p67 slot 0 basic  26,2312: 1
+  load cm_phase_table slot 1 basic  02,3354: 3
+  load cm_p61_p67 slot 0 basic  26,2316: 1
+  load cm_p61_p67 slot 0 interp 26,2607: 1
+  load cm_p61_p67 slot 0 interp 26,2617: 1
+  load cm_p61_p67 slot 0 basic  26,2641: 1
+  load cm_p61_p67 slot 0 basic  26,2321: 1
+  load cm_entry_dap slot 1 basic  20,3672: 1
+  load cm_entry_dap slot 1 basic  20,3732: 1
+  load cm_p61_p67 slot 0 basic  26,2326: 1
+  load lanec_di_routines slot 0 basic  10,3125: 1
+  load cm_p61_p67 slot 0 basic  26,2337: 1
+  load cm_entry slot 0 basic  15,2434: 1753
+  load cm_servicer slot 0 interp 37,3431: 12
+  load cm_body_attitude slot 0 basic  37,3470: 129
+  load cm_body_attitude slot 0 interp 37,3502: 15
+  load cm_rtb_op_codes slot 0 basic  22,3513: 387
+  load cm_body_attitude slot 0 interp 37,3533: 129
+  load cm_body_attitude slot 0 interp 37,3542: 129
+  load cm_body_attitude slot 0 interp 37,3556: 129
+  load cm_body_attitude slot 0 interp 37,3557: 7
+  load cm_inflight_align slot 0 interp 23,3256: 236
+  load cm_inflight_align slot 0 interp 23,3274: 43
+  load cm_body_attitude slot 0 interp 37,3627: 127
+  load cm_body_attitude slot 0 interp 37,3645: 104
+  load cm_body_attitude slot 0 interp 37,3652: 5
+  load cm_p61_p67 slot 0 interp 26,2401: 19
+  load cm_p61_p67 slot 0 interp 10,2405: 3
+  load cm_inflight_align slot 0 interp 23,3311: 19
+  load cm_rtb_op_codes slot 0 basic  22,3552: 19
+  load cm_inflight_align slot 0 interp 23,3367: 19
+  load cm_reentry slot 0 interp 25,3576: 21
+  load cm_servicer slot 0 basic  37,3227: 104
+  load lanec_pin_routines slot 0 basic  41,2365: 1
+  load cm_servicer slot 0 interp 37,3354: 35
+  load cm_body_attitude slot 0 interp 37,3506: 88
+  load cm_body_attitude slot 0 interp 37,3570: 9
+  load cm_body_attitude slot 0 interp 37,3633: 65
+  load cm_body_attitude slot 0 interp 37,3634: 17
+  load cm_p61_p67 slot 0 interp 10,2413: 12
+  load cm_inflight_align slot 0 interp 23,3271: 3
+  load cm_entry_dap slot 1 basic  15,3207: 127
+  load cm_entry_dap slot 1 basic  15,3215: 127
+  load cm_body_attitude slot 0 interp 37,3573: 6
+  load cm_body_attitude slot 0 interp 37,3577: 11
+  load cm_inflight_align slot 0 interp 23,3260: 3
+  load cm_body_attitude slot 0 interp 37,3523: 10
+  load cm_p61_p67 slot 0 interp 10,2430: 1
+  load cm_p61_p67 slot 0 interp 10,2432: 1
+  load cm_inflight_align slot 0 interp 23,3342: 1
+  load cm_p61_p67 slot 0 basic  26,2335: 1
+  load cm_entry_dap slot 1 basic  20,3612: 1
+  load cm_entry_dap slot 1 basic  03,2000: 1
+  load cm_entry_dap slot 1 basic  20,3627: 1
+  load cm_p61_p67 slot 0 basic  26,2342: 1
+  load cm_entry slot 0 basic  15,2665: 1158
+  load cm_servicer slot 0 interp 37,3136: 39
+  load cm_servicer slot 0 basic  37,3140: 39
+  load cm_servicer slot 0 interp 37,3364: 39
+  load cm_servicer slot 0 interp 37,3412: 9
+  load cm_rcs_dap slot 1 basic  21,2420: 1140
+  load cm_entry slot 0 basic  15,3717: 1206
+  load cm_servicer slot 0 interp 37,3415: 34
+  load cm_body_attitude slot 0 interp 37,3531: 6
+  load cm_body_attitude slot 0 interp 37,3534: 41
+  load cm_body_attitude slot 0 interp 37,3610: 12
+  load cm_rcs_dap slot 1 basic  21,2465: 1
+  load cm_body_attitude slot 0 interp 37,3613: 45
+  load cm_inflight_align slot 0 interp 23,3302: 1
+  load cm_servicer slot 0 basic  37,3067: 358
+  load cm_p61_p67 slot 0 interp 10,2422: 1
+  load cm_rcs-1 slot 0 basic  21,2471: 1204
+  load cm_p61_p67 slot 0 interp 10,2423: 2
+  load cm_inflight_align slot 0 interp 23,3354: 1
+  load cm_body_attitude slot 0 interp 37,3504: 7
+  load cm_body_attitude slot 0 interp 37,3561: 35
+  load cm_p61_p67 slot 0 interp 10,2403: 2
+  load cm_inflight_align slot 0 interp 23,3317: 2
+  load cm_inflight_align slot 0 interp 23,3326: 1
+  load cm_reentry slot 0 basic  25,3577: 2
+  load cm_p61_p67 slot 0 interp 10,2407: 13
+  load cm_p61_p67 slot 0 interp 10,2411: 12
+  load cm_servicer slot 0 basic  37,3231: 3
+  load cm_entry_dap slot 1 basic  15,3216: 55
+  load cm_p61_p67 slot 0 basic  26,2346: 1
+  load cm_p61_p67 slot 0 basic  26,2367: 1
+  load cm_entry_dap slot 1 basic  15,3131: 21
+  load cm_entry_dap slot 1 basic  15,3152: 21
+  load cm_entry_dap slot 1 basic  15,3101: 21
+  load cm_entry_dap slot 1 basic  15,3704: 21
+  load cm_servicer slot 0 interp 37,3355: 14
+  load cm_entry_dap slot 1 basic  15,2527: 1
+  load cm_servicer slot 0 interp 37,3362: 44
+  load cm_body_attitude slot 0 interp 37,3511: 64
+  load cm_inflight_align slot 0 interp 23,3273: 6
+  load cm_p61_p67 slot 0 interp 10,2401: 1
+  load cm_inflight_align slot 0 interp 23,3322: 1
+  load cm_inflight_align slot 0 interp 23,3276: 33
+  load lanec_di_routines slot 0 basic  10,2712: 96
+  load cm_reentry slot 0 basic  25,3606: 96
+  load lanec_pin_routines slot 0 basic  40,2516: 36
+  load cm_servicer slot 0 interp 37,3360: 67
+  load cm_body_attitude slot 0 interp 37,3563: 66
+  load cm_body_attitude slot 0 interp 37,3615: 10
+  load cm_body_attitude slot 0 interp 37,3631: 56
+  load cm_entry_dap slot 1 basic  15,3056: 1
+  load cm_body_attitude slot 0 interp 37,3507: 21
+  load cm_body_attitude slot 0 interp 37,3550: 11
+  load cm_body_attitude slot 0 interp 37,3565: 44
+  load cm_inflight_align slot 0 interp 23,3335: 10
+  load lanec_di_routines slot 0 basic  10,3312: 23
+  load cm_body_attitude slot 0 interp 37,3567: 24
+  load lanec_di_routines slot 0 basic  10,2775: 7
+  load cm_servicer slot 0 interp 37,3371: 10
+  load cm_p61_p67 slot 0 interp 10,2414: 3
+  load cm_body_attitude slot 0 interp 37,3625: 13
+  load cm_body_attitude slot 0 interp 37,3514: 16
+  load cm_servicer slot 0 interp 37,3425: 13
+  load cm_p61_p67 slot 0 basic  26,2374: 1
+  load cm_p61_p67 slot 0 basic  26,2407: 1
+  load lanec_di_routines slot 0 basic  10,2703: 1
+  load lanec_pin_routines slot 0 basic  02,2245: 1
+  load lanec_di_routines slot 0 basic  10,3523: 1
+  load lanec_di_routines slot 0 basic  10,3600: 1
+  load cm_p61_p67 slot 0 basic  26,2421: 1
+  load cm_reentry slot 0 interp 25,2000: 1
+  load cm_reentry slot 0 interp 25,2071: 1
+  load cm_reentry slot 0 interp 25,2073: 1
+  load cm_lat_long slot 0 interp 13,2450: 1
+  load cm_planetary slot 0 interp 26,3556: 1
+  load cm_planetary slot 0 interp 26,3561: 1
+  load cm_lat_long slot 0 interp 13,2502: 1
+  load cm_lat_long slot 0 interp 13,2503: 1
+  load cm_reentry slot 0 interp 25,2041: 1
+  load cm_reentry slot 0 interp 25,2043: 1
+  load cm_rtb_op_codes slot 0 basic  22,3712: 1
+  load cm_interpreter slot 0 basic  03,2026: 1
+  load cm_interp_core slot 0 basic  03,2030: 26
+  load cm_reentry slot 0 interp 25,2046: 1
+  load cm_reentry slot 0 interp 25,2115: 84
+  load cm_reentry slot 0 interp 25,2146: 26
+  load cm_reentry slot 0 interp 25,2152: 32
+  load cm_reentry slot 0 interp 25,2164: 19
+  load cm_geometry slot 0 interp 23,2243: 54
+  load cm_reentry slot 0 interp 25,2200: 84
+  load cm_reentry slot 0 interp 25,2150: 21
+  load cm_reentry slot 0 interp 25,2154: 19
+  load cm_reentry slot 0 interp 25,2166: 48
+  load cm_body_attitude slot 0 interp 37,3524: 3
+  load cm_reentry slot 0 interp 25,2203: 21
+  load cm_geometry slot 0 interp 23,2244: 7
+  load cm_reentry slot 0 interp 25,2226: 12
+  load cm_geometry slot 0 interp 23,2236: 6
+  load cm_body_attitude slot 0 interp 37,3606: 12
+  load cm_body_attitude slot 0 interp 37,3477: 23
+  load cm_reentry slot 0 basic  25,2122: 4
+  load cm_body_attitude slot 0 interp 37,3636: 6
+  load cm_reentry slot 0 interp 25,2260: 1
+  load cm_reentry slot 0 interp 25,2143: 10
+  load cm_reentry slot 0 interp 25,2162: 5
+  load cm_reentry slot 0 interp 25,2212: 4
+  load cm_body_attitude slot 0 interp 37,3545: 10
+  load cm_reentry slot 0 interp 25,2141: 5
+  load cm_reentry slot 0 interp 25,2160: 14
+  load cm_reentry slot 0 interp 25,2205: 7
+  load cm_reentry slot 0 interp 25,3530: 1
+  load cm_geometry slot 0 interp 23,2240: 7
+  load cm_inflight_align slot 0 interp 23,3300: 13
+  load cm_body_attitude slot 0 interp 37,3543: 19
+  load cm_reentry slot 0 interp 25,3532: 1
+  load cm_reentry slot 0 interp 25,2207: 5
+  load lanec_di_routines slot 0 basic  10,3313: 1
+  load cm_reentry slot 0 interp 25,2250: 2
+  load cm_p61_p67 slot 0 basic  26,2433: 1
+  load cm_p61_p67 slot 0 basic  26,2435: 1
+  load cm_reentry slot 0 interp 25,2275: 1
+  load cm_reentry slot 0 interp 25,2307: 1
+  load cm_reentry slot 0 interp 25,2321: 1
+  load cm_entry_dap slot 1 basic  15,3650: 33
+  load cm_reentry slot 0 interp 25,3572: 6
+  load cm_servicer slot 0 basic  37,3131: 10
+  load cm_reentry slot 0 interp 25,2156: 1
+  load cm_reentry slot 0 interp 26,3074: 1
+  load cm_reentry slot 0 interp 25,2176: 1
+  load cm_geometry slot 0 interp 23,2241: 2
+  load cm_reentry slot 0 interp 25,2222: 1
+  load cm_reentry slot 0 interp 25,2234: 8
+  load cm_reentry slot 0 interp 25,2237: 12
+  load cm_reentry slot 0 interp 25,2246: 2
+  load cm_reentry slot 0 interp 25,2362: 1
+  load cm_reentry slot 0 interp 25,2365: 1
+  load cm_reentry slot 0 interp 25,3535: 1
+  load cm_reentry slot 0 interp 25,3632: 2
+  load cm_reentry slot 0 interp 25,3635: 3
+  load lanec_pin_routines slot 0 basic  41,2221: 1
+  load cm_servicer slot 0 interp 37,3426: 4
+  load cm_servicer slot 0 interp 37,3150: 20
+  load cm_body_attitude slot 0 interp 37,3521: 12
+  load cm_body_attitude slot 0 interp 37,3535: 21
+  load cm_body_attitude slot 0 interp 37,3547: 11
+  load cm_body_attitude slot 0 interp 37,3600: 15
+  load cm_body_attitude slot 0 interp 37,3602: 16
+  load cm_body_attitude slot 0 interp 37,3617: 16
+  load cm_servicer slot 0 interp 37,3434: 15
+  load cm_servicer slot 0 interp 37,3376: 14
+  load cm_servicer slot 0 interp 37,3405: 12
+  load cm_servicer slot 0 interp 37,3407: 9
+  load cm_servicer slot 0 interp 37,3444: 12
+  load cm_body_attitude slot 0 interp 37,3474: 14
+  load cm_body_attitude slot 0 interp 37,3520: 14
+  load cm_body_attitude slot 0 interp 37,3536: 14
+  load cm_body_attitude slot 0 interp 37,3552: 10
+  load cm_body_attitude slot 0 interp 37,3611: 24
+  load cm_body_attitude slot 0 interp 37,3621: 21
+  load cm_body_attitude slot 0 interp 37,3623: 9
+  load cm_servicer slot 0 basic  37,3145: 11
+  load cm_servicer slot 0 interp 37,3423: 8
+  load cm_servicer slot 0 interp 37,3353: 3
+  load cm_servicer slot 0 interp 37,3417: 7
+  load cm_body_attitude slot 0 interp 37,3517: 6
+  load cm_body_attitude slot 0 interp 37,3575: 6
+  load cm_body_attitude slot 0 interp 37,3603: 10
+  load cm_body_attitude slot 0 interp 37,3640: 7
+  load cm_servicer slot 0 interp 37,3437: 5
+  load cm_servicer slot 0 interp 37,3366: 4
+  load cm_servicer slot 0 interp 37,3401: 6
+  load cm_servicer slot 0 interp 37,3403: 7
+  load cm_servicer slot 0 interp 37,3442: 11
+  load cm_body_attitude slot 0 interp 37,3471: 1
+  load cm_body_attitude slot 0 interp 37,3525: 3
+  load cm_body_attitude slot 0 interp 37,3527: 3
+  load cm_body_attitude slot 0 interp 37,3641: 8
+  load cm_body_attitude slot 0 interp 37,3554: 7
+  load cm_alarm slot 0 basic  03,3755: 5
+  load cm_alarm slot 0 basic  03,3762: 5
+  load cm_phase_table slot 1 basic  02,3360: 5
+  load cm_servicer slot 0 basic  37,3033: 5
+  load cm_servicer slot 0 interp 37,3441: 8
+  load cm_body_attitude slot 0 interp 37,3540: 3
+  load cm_servicer slot 0 interp 37,3134: 1
+  load cm_servicer slot 0 interp 37,3372: 5
+  load cm_servicer slot 0 interp 37,3427: 8
+  load cm_body_attitude slot 0 interp 37,3643: 4
+  load cm_servicer slot 0 interp 37,3420: 4
+  load cm_entry_dap slot 1 basic  15,2631: 5
+  load cm_body_attitude slot 0 interp 37,3753: 1
+  load cm_entry slot 0 basic  15,3677: 2
+  load cm_body_attitude slot 0 interp 37,3755: 1
+  load cm_reentry slot 0 interp 25,2515: 4
+  load cm_reentry slot 0 interp 25,2520: 12
+  load cm_reentry slot 0 interp 25,2562: 1
+  load cm_geometry slot 0 interp 23,2155: 23
+  load cm_geometry slot 0 interp 23,2160: 3
+  load cm_geometry slot 0 basic  23,2173: 23
+  load cm_reentry slot 0 interp 25,2633: 23
+  load cm_p61_p67 slot 0 basic  26,2506: 24
+  load cm_reentry slot 0 interp 25,3232: 23
+  load cm_reentry slot 0 interp 25,2441: 1
+  load cm_reentry slot 0 interp 25,2445: 1
+  load cm_reentry slot 0 interp 25,2466: 1
+  load cm_reentry slot 0 interp 25,2610: 12
+  load cm_reentry slot 0 interp 25,2613: 11
+  load cm_reentry slot 0 interp 25,3203: 1
+  load cm_reentry slot 0 interp 25,2225: 1
+  load cm_reentry slot 0 interp 25,2453: 1
+  load cm_reentry slot 0 interp 25,2457: 1
+  load cm_reentry slot 0 interp 25,2614: 3
+  load cm_reentry slot 0 interp 25,2623: 1
+  load cm_reentry slot 0 interp 25,3540: 8
+  load cm_reentry slot 0 interp 25,3542: 4
+  load cm_reentry slot 0 interp 25,3205: 1
+  load cm_body_attitude slot 0 interp 37,3647: 8
+  load cm_reentry slot 0 interp 26,3077: 24
+  load cm_reentry slot 0 interp 26,3104: 9
+  load cm_reentry slot 0 interp 25,2232: 12
+  load cm_reentry slot 0 interp 25,2450: 1
+  load cm_reentry slot 0 interp 25,2506: 1
+  load cm_reentry slot 0 interp 25,2513: 15
+  load cm_reentry slot 0 interp 25,2420: 1
+  load cm_reentry slot 0 interp 25,2423: 1
+  load cm_reentry slot 0 interp 25,2572: 1
+  load cm_reentry slot 0 interp 25,2576: 1
+  load cm_reentry slot 0 interp 25,3242: 1
+  load cm_reentry slot 0 interp 25,3245: 1
+  load cm_reentry slot 0 interp 25,3251: 1
+  load cm_reentry slot 0 interp 25,2242: 2
+  load cm_reentry slot 0 interp 25,2476: 1
+  load cm_reentry slot 0 interp 25,2502: 1
+  load cm_reentry slot 0 interp 25,2630: 2
+  load cm_reentry slot 0 interp 25,3253: 1
+  load cm_reentry slot 0 interp 26,3102: 15
+  load cm_reentry slot 0 interp 25,2511: 2
+  load cm_reentry slot 0 interp 25,2522: 4
+  load cm_geometry slot 0 interp 23,2210: 3
+  load cm_reentry slot 0 interp 25,2227: 5
+  load cm_reentry slot 0 interp 25,3575: 3
+  load cm_reentry slot 0 interp 25,3526: 1
+  load cm_reentry slot 0 interp 25,3545: 4
+  load cm_reentry slot 0 interp 25,2377: 1
+  load cm_reentry slot 0 interp 25,2615: 1
+  load cm_reentry slot 0 interp 25,3550: 2
+last routines:
+  Z 03231 FB 02000 cm_kernel_idle_routines
+  Z 05217 FB 20000 cm_kernel_job_routines
+  Z 03357 FB 20000 lanec_di_cm_nvdsp
+  Z 04271 FB 20000 lanec_pin_cm_routines
+  Z 03354 FB 20000 lanec_di_cm_nvdsp
+  Z 05560 FB 20000 cm_service_routines
+  Z 03352 FB 20000 lanec_di_cm_nvdsp
+  Z 05560 FB 20000 cm_service_routines
+  Z 03350 FB 20000 lanec_di_cm_nvdsp
+  Z 05560 FB 20000 cm_service_routines
+  Z 03346 FB 20000 lanec_di_cm_nvdsp
+  Z 02642 FB 20000 lanec_di_cm_mark
+  Z 03345 FB 20000 lanec_di_cm_nvdsp
+  Z 05333 FB 14000 cm_lead_in_routines
+  Z 02000 FB 14000 cm_t4rupt_core_routines
+  Z 04020 FB 20000 cm_lead_in_routines
+  Z 04447 FB 20000 lanec_pin_cm_routines
+  Z 03344 FB 20000 lanec_di_cm_nvdsp
+  Z 04216 FB 62000 lanec_pin_cm_routines
+  Z 02570 FB 62000 lanec_pin_cm_routines
+  Z 04675 FB 60000 cm_interbank_routines
+  Z 03133 FB 60000 lanec_pin_cm_routines
+  Z 02566 FB 62000 lanec_pin_cm_routines
+  Z 02621 FB 60000 lanec_pin_cm_routines

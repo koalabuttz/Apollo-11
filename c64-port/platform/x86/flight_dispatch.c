@@ -1,0 +1,764 @@
+/* SPDX-License-Identifier: MIT */
+/* The native x86_64 flight program's step (platform/x86/flight_dispatch.h,
+ * docs/X86-FLIGHT.md). Compiled with RK_LM=1 or RK_CM=1 and
+ * FLIGHT_HOST_TABLES, FLIGHT_HOST_SITES and FLIGHT_MCT naming the generated
+ * table index, operand sets and routine costs. */
+#include <setjmp.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "flight_dispatch.h"
+#include "resident_cdu.h"
+#include "tc_trap.h"
+#include "rope_image.h"
+#include "self_check.h"
+#include "standard_lead_routines.h"
+#if RK_LM
+#define MISSION 0u
+#define FETCH LM_INTERPRETER_FETCH
+#define DANZIG AGC_LM_DANZIG
+#define CORE lm_interp_core
+#define CORE_MCT        lm_interp_core_mct
+#define CORE_IO FLIGHT_IO_P66
+#define SELF_CHECK_ROPE lm_self_check_rope_data
+#else
+#include "cm_native_image.h"
+#define MISSION 1u
+#define FETCH CM_INTERPRETER_FETCH
+#define DANZIG AGC_CM_DANZIG
+#define CORE cm_interp_core
+#define CORE_MCT        cm_interp_core_mct
+#define CORE_IO FLIGHT_IO_CM_NATIVE
+#define SELF_CHECK_ROPE cm_self_check_rope_data
+#endif
+extern const agc_routine CORE;
+/* The core's work clock (src/lm_interp_core.c, built with
+ * INTERP_WORD_CHARGE): each word NEWOPS fetches adds its MCT. */
+extern uint16_t CORE_MCT;
+
+#include FLIGHT_HOST_SITES
+#define FLIGHT_TABLE(t,i,k,mod,slot,sites,n,also,fixed,mct) extern const agc_routine_table t;
+#include FLIGHT_HOST_TABLES
+#undef FLIGHT_TABLE
+#define FLIGHT_TABLE(t, i, k, mod, slot, sites, n, also, fixed, mct)                               \
+    {&t, #t, i, k, sites, n, fixed, mct, mod, slot, also},
+const fd_table fd_tables[]={
+#include FLIGHT_HOST_TABLES
+};
+#undef FLIGHT_TABLE
+const unsigned fd_table_count=sizeof fd_tables/sizeof fd_tables[0];
+static const struct { const char *name; char status; } status[]={
+#include FLIGHT_STATUS
+};
+char fd_table_status(unsigned table){unsigned i;
+ for(i=0;i<sizeof status/sizeof status[0];++i)if(!strcmp(status[i].name,fd_tables[table].name))return status[i].status;
+ return 'x';}
+
+/* Routine costs in machine cycles, by point (tools/x86_flight_mct.py: the
+ * median yaAGC took for the routine at that point over the flight
+ * scenarios). FD_MCT_BASIC and FD_MCT_INTERP are the medians over all
+ * points, for points the scenarios never reached. */
+typedef struct { uint16_t key; uint8_t interp; uint16_t mct; } fd_cost_entry;
+#include FLIGHT_MCT
+static double cost(uint16_t key,uint8_t interp){unsigned lo=0,hi=sizeof fd_mct/sizeof fd_mct[0],mid;
+ while(lo<hi){mid=lo+(hi-lo)/2u;
+  if(fd_mct[mid].interp==interp&&fd_mct[mid].key==key)return fd_mct[mid].mct;
+  if(fd_mct[mid].interp<interp||(fd_mct[mid].interp==interp&&fd_mct[mid].key<key))lo=mid+1u;else hi=mid;}
+ return interp?FD_MCT_INTERP:FD_MCT_BASIC;}
+
+/* Point indexes: table index + 1 and the routine, by physical key (the
+ * first table in resolution order that holds the key). */
+static uint16_t at[2][65536];
+#ifndef X86_CERTIFIED_ONLY
+#define X86_CERTIFIED_ONLY 0
+#endif
+static agc_routine call_at[2][65536];
+/* Keys several tables hold: 1 + the start of their holders in holders[], in
+ * resolution order, ended by an entry with table FD_NONE. fd_run searches
+ * them as the harness's holder does. */
+enum { FD_NONE = 0xFFFFu };
+typedef struct {
+    uint16_t table;
+    agc_routine call;
+} fd_holder;
+static uint32_t several_at[2][65536];
+static fd_holder *holders;
+static unsigned nholders;
+/* Each table's kernel_name (flight_host_run.c): the kernel's own tables,
+ * which rk_direct tries first at a basic point. */
+static uint8_t kernel[1024];
+
+static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return apollo_rope_read(MISSION,physical,word);}
+
+/* The work clock's steps (flight_host_run.c's step_at): step j ends at
+ * step_at(j) MCT, whole cycles, three to a period (TIME4, TIME1/TIME3,
+ * TIME5). */
+static double step_at(unsigned long j)
+{
+    static const unsigned end[9] = {214u, 427u, 854u, 1067u, 1280u, 1707u, 1920u, 2134u, 2560u};
+    return 2560.0 * (double)(j / 9u) + end[j % 9u];
+}
+
+/* Whether fd_init takes table i at all (the core mode's interpretive
+ * tables and, in a certified-only build, uncertified ones are left out). */
+static int taken(unsigned i, uint8_t mode)
+{
+    const fd_table *e = &fd_tables[i];
+    if (e->interp && mode == FD_INTERP_CORE && e->t != &agc_lm_danzig_marker &&
+        e->t != &agc_cm_danzig_marker)
+        return 0;
+#if X86_CERTIFIED_ONLY
+    if (fd_table_status(i) == 'u') return 0;
+#endif
+    return 1;
+}
+
+static int kernel_name(const char *n)
+{
+    return strstr(n, "_kernel_routines") || strstr(n, "_kernel_job_routines") ||
+           strstr(n, "_kernel_task_routines") || strstr(n, "_kernel_idle_routines") ||
+           (strstr(n, "_sp_routines") && !strstr(n, "_hot_"));
+}
+
+/* several_at and holders: every key at[] gives that another table holds too. */
+static void index_holders(uint8_t mode)
+{
+    static uint16_t count[2][65536];
+    unsigned i, j, k, n = 0;
+    memset(count, 0, sizeof count);
+    memset(several_at, 0, sizeof several_at);
+    if (fd_table_count > sizeof kernel) {
+        fprintf(stderr, "x86 flight: %u tables, room for %u\n", fd_table_count,
+                (unsigned)sizeof kernel);
+        exit(2);
+    }
+    for (i = 0; i < fd_table_count; ++i) {
+        kernel[i] = (uint8_t)(kernel_name(fd_tables[i].name) != 0);
+        if (!taken(i, mode)) continue;
+        for (j = 0; j < fd_tables[i].t->count; ++j) {
+            uint16_t *c = &count[fd_tables[i].interp][fd_tables[i].t->entries[j].physical];
+            if (*c < 0xFFFFu) ++*c;
+        }
+    }
+    for (k = 0; k < 2u * 65536u; ++k)
+        if (count[k >> 16][k & 0xFFFFu] > 1u) n += count[k >> 16][k & 0xFFFFu] + 1u;
+    free(holders);
+    holders = n ? malloc(n * sizeof *holders) : 0;
+    if (n && !holders) {
+        fprintf(stderr, "x86 flight: no memory for the holder index\n");
+        exit(2);
+    }
+    nholders = 0;
+    for (k = 0; k < 2u * 65536u; ++k)
+        if (count[k >> 16][k & 0xFFFFu] > 1u) {
+            several_at[k >> 16][k & 0xFFFFu] = nholders + 1u;
+            nholders += count[k >> 16][k & 0xFFFFu];
+            holders[nholders++].table = FD_NONE;
+            count[k >> 16][k & 0xFFFFu] = 0; /* now the next free place */
+        }
+    for (i = 0; i < fd_table_count; ++i) {
+        if (!taken(i, mode)) continue;
+        for (j = 0; j < fd_tables[i].t->count; ++j) {
+            uint8_t in = fd_tables[i].interp;
+            uint16_t key = fd_tables[i].t->entries[j].physical;
+            uint32_t at0 = several_at[in][key];
+            if (at0) {
+                fd_holder *h = &holders[at0 - 1u + count[in][key]++];
+                h->table = (uint16_t)i;
+                h->call = fd_tables[i].t->entries[j].call;
+            }
+        }
+    }
+}
+
+void fd_init(fd_state *st,uint8_t mode,agc_word ch30,agc_word ch31){static agc_routine_table basic[256],interp[256];unsigned i,j;uint8_t nb=0,ni=1;
+ memset(st,0,sizeof *st);st->mode=mode;
+ /* Power-up lights RESTART, as yaAGC's first cycle does. */
+ st->restart_light = 1u;
+ memset(at,0,sizeof at);
+ for(i=0;i<fd_table_count;++i){const fd_table *e=&fd_tables[i];
+  if(e->interp&&mode==FD_INTERP_CORE&&e->t!=&agc_lm_danzig_marker&&e->t!=&agc_cm_danzig_marker)continue;
+#if X86_CERTIFIED_ONLY
+  if(fd_table_status(i)=='u')continue;
+#endif
+  for(j=0;j<e->t->count;++j){uint16_t k=e->t->entries[j].physical;
+   if(!at[e->interp][k]){at[e->interp][k]=(uint16_t)(i+1u);call_at[e->interp][k]=e->t->entries[j].call;}}
+  /* The program a routine sees holds every table (DANZIG's marker first
+   * among the interpretive ones), for routines that resolve a continuation
+   * themselves. */
+  if(!e->interp)basic[nb++]=*e->t;
+  else if(e->t==&agc_lm_danzig_marker||e->t==&agc_cm_danzig_marker)interp[0]=*e->t;
+  else interp[ni++]=*e->t;}
+ index_holders(mode);
+ st->p.basic=basic;st->p.basic_count=nb;st->p.interpretive=interp;st->p.interpretive_count=ni;
+ st->p.hardware=&st->hw;st->p.fixed_data=rope_data;
+ st->io.undo=&st->undo;st->io.interrupt_enabled=1;st->s.words[5]=04000u;
+ st->hw.channel30=ch30;st->hw.channel31=ch31;st->hw.channel32=st->hw.channel33=077777u;
+ st->next_period = 85333.0 / 400.0;
+ memset(&rk_cdu, 0, sizeof rk_cdu);
+}
+
+static int interpreting(const fd_state *st){uint16_t z=agc_fixed_physical((agc_word)(st->s.words[5]&07777u),st->s.words[4],st->io.superbank);
+ agc_word edop=(agc_word)(st->s.words[AGC_EDOP]&077777u);
+ return z==FETCH||(z==DANZIG&&edop!=0u&&edop<040000u);}
+uint16_t fd_point(const fd_state *st,int *interp){const agc_word *w=st->s.words;agc_word z=(agc_word)(w[5]&07777u);
+ if((*interp=interpreting(st))!=0)return agc_fixed_physical(w[0164],w[0165],st->io.superbank);
+ return z<02000u?agc_erasable_point(z,w[3]):agc_fixed_physical(z,w[4],st->io.superbank);}
+unsigned long fd_centiseconds(const fd_state *st)
+{
+    return ((((unsigned long)(st->s.words[024] & 037777u) << 14) | (st->s.words[025] & 037777u)) -
+            st->t0);
+}
+
+#if RK_CM
+/* A ones-complement counter as a signed number. */
+static long ones(agc_word v)
+{
+    return (v & 040000u) ? -(long)((~v) & 037777u) : (long)(v & 037777u);
+}
+#endif
+
+/* The output drives, once each clock period at the TIME5 step, as the C64
+ * resident and the host differential run them (resident_cdu.h): the IMU
+ * CDU drive (CDUXCMD-CDUZCMD) and, in the CM, the optics drive, whose
+ * pulses the optics error counters take (the SPS gimbal commands in TVC
+ * mode; zeroed while channel 12 bit 2 is clear). */
+static void drives(fd_state *st)
+{
+#if RK_CM
+    long before[2];
+    unsigned k;
+    rk_cdu_count = 5u;
+    for (k = 0; k < 2u; ++k) before[k] = rk_cdu.owed[3u + k] + ones(st->s.words[053u + k]);
+#endif
+    rk_cdu_drive(&st->s, &st->hw);
+#if RK_CM
+    for (k = 0; k < 2u; ++k) {
+        long after = rk_cdu.owed[3u + k] + ones(st->s.words[053u + k]);
+        st->optics[k] = (st->hw.channel12 & 2u) ? st->optics[k] + before[k] - after : 0;
+    }
+#endif
+}
+
+void fd_work_clock(fd_state *st)
+{
+    st->work = 1u;
+    st->next_period = step_at(st->clock_steps);
+}
+
+uint8_t fd_boundary(fd_state *st)
+{
+    uint8_t got;
+    st->p.fixed_data = rope_data;
+    st->p.operands = 0;
+    st->p.operand_count = 0;
+    while (!(got = rk_rupt_take(&st->p, &st->s, st->io.superbank, st->io.interrupt_enabled,
+                                &st->pending)) &&
+           st->mct >= st->next_period) {
+        agc_word c = st->hw.channel4;
+        if (st->phase == RK_PHASE_T5) drives(st);
+        rk_timer_phase(&st->s, &st->hw, &st->pending, st->phase);
+        rk_hand_due(&st->hw, &st->io.trap31a, &st->pending);
+        if (st->phase == RK_PHASE_T5) {
+            ++st->periods;
+            if (nw_period(&st->wm, st->periods)) st->wm_fire = 1u;
+            {
+                int rl = rl_period(&st->rl, st->periods, 0);
+                if (rl && ++st->rl_alarms <= 8ul)
+                    printf("rupt lock would sound at %lu cs (%s)\n", fd_centiseconds(st),
+                           rl == RL_LOCK     ? "RUPT LOCK"
+                           : rl == RL_NORUPT ? "NO RUPT"
+                                             : "RUPT LOCK and NO RUPT");
+            }
+        }
+        st->phase = st->phase == RK_PHASE_T5 ? RK_PHASE_T4 : (uint8_t)(st->phase + 1u);
+        ++st->clock_steps;
+        st->next_period = st->work ? step_at(st->clock_steps)
+                                   : st->next_period + (st->phase == RK_PHASE_T5 ? 85333.0 / 200.0
+                                                                                 : 85333.0 / 400.0);
+        if (st->downrupt && ((c & 037777u) >> 6) != ((st->hw.channel4 & 037777u) >> 6))
+            st->pending |= RK_RUPT_BIT(RK_RUPT_DOWN);
+    }
+    /* A request taken in the VERB69 spin's period: the spin ends with the
+     * clock step just run, as the idle loop's does on the work clock. */
+    if (got && st->idling)
+        st->mct = st->work ? (st->clock_steps ? step_at(st->clock_steps - 1u) : 0.0)
+                           : st->next_period -
+                                 (st->phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0);
+    st->idling = 0;
+    return got;
+}
+
+static void gap(fd_state *st,uint16_t key,uint8_t interp,uint8_t refused,const char *by,int arrival){unsigned i;
+ for(i=0;i<st->ngaps;++i)if(st->gaps[i].key==key&&st->gaps[i].interp==interp&&st->gaps[i].by==by){st->gaps[i].arrivals+=(unsigned)arrival;++st->gaps[i].slots;return;}
+ if(st->ngaps<FD_GAPS){fd_gap *g=&st->gaps[st->ngaps++];g->key=key;g->interp=interp;g->refused=refused;g->by=by;g->arrivals=1;g->slots=1;}}
+
+/* A slot 5 table (a hot copy inside a module) holds its points only while
+ * that module is in slot 0, as flight_host_run.c's holder. */
+static int admits(const fd_state *st, const fd_table *e)
+{
+    return e->slot != 5u || (st->in_slot[0] && !strcmp(st->in_slot[0], e->module));
+}
+
+/* The module the table runs from goes into its slot, unless a table packed
+ * into the loaded module too runs there (flight_host_run.c's module_load). */
+/* The LM's interrupt body tables with no module of their own, which the
+ * C64 runs from wrapper modules loaded in the job slot (flight_host_run.c's
+ * wrapped_table): a wrapper run swaps out the job slot's module. The CM's
+ * wrappers keep the task slot. */
+static int ends(const char *n, const char *x)
+{
+    size_t l = strlen(n), k = strlen(x);
+    return l >= k && !strcmp(n + l - k, x);
+}
+static int wrapped(const fd_table *e)
+{
+#if RK_LM
+    return !*e->module &&
+           (ends(e->name, "_t6rupt_routines") || ends(e->name, "_lead_in_routines") ||
+            ends(e->name, "_t4rupt_core_routines") || ends(e->name, "_keyrupt_routines"));
+#else
+    (void)e;
+    (void)ends;
+    return 0;
+#endif
+}
+
+static void module_load(fd_state *st, const fd_table *e)
+{
+    const char *in, *a;
+    size_t n;
+    if (wrapped(e)) {
+        st->in_slot[0] = e->name;
+        return;
+    }
+    if (!*e->module || e->slot > 1u) return;
+    in = st->in_slot[e->slot];
+    if (in && !strcmp(in, e->module)) return;
+    if (in && *e->also && (a = strstr(e->also, in)) != 0 && (a == e->also || a[-1] == ' ') &&
+        (a[n = strlen(in)] == 0 || a[n] == ' '))
+        return;
+    st->in_slot[e->slot] = e->module;
+}
+
+/* The next table after index i (resolution order) that holds key, as fd_init
+ * admits tables, or 0: a compact copy pinned on the C64 (PIN_HOT in
+ * tools/flight_store_build.py) refuses other callers' points there, and the
+ * resident moves on to the table that takes them. */
+static unsigned next_holder(const fd_state *st, unsigned i, uint8_t interp, uint16_t key,
+                            agc_routine *call)
+{
+    unsigned j;
+    for (++i; i < fd_table_count; ++i) {
+        const fd_table *e = &fd_tables[i];
+        if (e->interp != interp || (e->interp && st->mode == FD_INTERP_CORE) || !admits(st, e))
+            continue;
+#if X86_CERTIFIED_ONLY
+        if (fd_table_status(i) == 'u') continue;
+#endif
+        for (j = 0; j < e->t->count; ++j)
+            if (e->t->entries[j].physical == key) {
+                *call = e->t->entries[j].call;
+                return i + 1u;
+            }
+    }
+    return 0;
+}
+
+/* A step's first holder of key, as the harness's holder (rk_direct): the
+ * kernel's tables at a basic point, then the pinned sets (slots 3 and 4),
+ * then the tables of the modules loaded in the job and task slots (the
+ * loaded module runs a key two modules hold), then resolution order. The
+ * table index + 1, or 0. */
+static unsigned first_holder(const fd_state *st, uint8_t interp, uint16_t key, agc_routine *call)
+{
+    const fd_holder *list = &holders[several_at[interp][key] - 1u], *h;
+    unsigned r;
+    for (r = 0; r < 4u; ++r)
+        for (h = list; h->table != FD_NONE; ++h) {
+            const fd_table *e = &fd_tables[h->table];
+            const char *in = r >= 2u ? st->in_slot[r - 2u] : 0;
+            if (!admits(st, e)) continue;
+            if (r == 0u   ? kernel[h->table] && !interp
+                : r == 1u ? e->slot == 3u || e->slot == 4u
+                          : in && !kernel[h->table] && e->slot != 3u && e->slot != 4u &&
+                                !strcmp(e->module, in)) {
+                *call = h->call;
+                return h->table + 1u;
+            }
+        }
+    for (h = list; h->table != FD_NONE; ++h)
+        if (admits(st, &fd_tables[h->table])) {
+            *call = h->call;
+            return h->table + 1u;
+        }
+    return 0;
+}
+
+/* lmi_goto_any (src/lm_interp_orders.c) stops a host build with exit(3)
+ * on an erasable CADR cycle, where the AGC loops in GOTOERS until the night
+ * watchman restarts it. The x86 program links with --wrap=exit
+ * (tools/x86_flight_build.py LINK): an exit(3) inside a routine comes back
+ * here, run reports it in fd_cycled, and fd_run puts the state back as the
+ * step found it, a stuck step (night_watchman.h). */
+void __real_exit(int code) __attribute__((noreturn));
+void __wrap_exit(int code) __attribute__((noreturn));
+static jmp_buf fd_cycle;
+static int fd_in_routine, fd_cycled;
+void __wrap_exit(int code)
+{
+    if (fd_in_routine && code == 3) {
+        fd_in_routine = 0;
+        longjmp(fd_cycle, 1);
+    }
+    __real_exit(code);
+}
+
+static enum exec_status run(fd_state *st,agc_routine call,enum flight_io_kind kind){flight_io_buffer b;void *x;enum exec_status r;
+    x = flight_io_enter(kind, &st->io, &st->hw, &b);
+    if (setjmp(fd_cycle)) {
+        fd_cycled = 1;
+        return EXEC_OK;
+    }
+    fd_in_routine = 1;
+    r = call(&st->p, &st->s, x);
+    fd_in_routine = 0;
+    flight_io_leave(kind, &st->io, &st->hw, &b);
+    return r;
+}
+
+void fd_gojam(fd_state *st)
+{
+    agc_word *w = st->s.words;
+    w[2] = w[5];
+    w[5] = 04000u;
+    st->io.interrupt_enabled = 1u;
+    st->hw.in_interrupt = 0u;
+    st->pending = 0u;
+    st->io.trap31a = st->io.trap31b = st->io.trap32 = 0u;
+    st->hw.channel5 = st->hw.channel6 = st->hw.channel10 = st->hw.channel11 = 0u;
+    st->hw.channel12 = st->hw.channel13 = st->hw.channel14 = 0u;
+    st->io.channel34 = st->io.channel35 = 0u;
+    st->hw.channel33 |= 02000u;
+    st->restart_light = 1u;
+    st->wm.hung = 0u;
+}
+
+void fd_key(fd_state *st, agc_word code)
+{
+    st->hw.channel15 = code;
+    st->pending |= RK_RUPT_BIT(RK_RUPT_KEY1);
+    /* RSET puts the RESTART lamp out directly, with no software. */
+    if (code == 022u) st->restart_light = 0u;
+}
+
+void fd_lamps(fd_state *st)
+{
+    /* Channel 11 bit 10 written with a 1 resets the RESTART lamp. */
+    if (st->hw.channel11 & 01000u) st->restart_light = 0u;
+}
+
+/* The end of this clock period's T5 step: the spin's end (tc_trap,
+ * watch_step). */
+static double period_end(const fd_state *st)
+{
+    double end;
+    uint8_t phase;
+    if (st->work) return step_at(st->clock_steps + 2u - st->clock_steps % 3u);
+    for (end = st->next_period, phase = st->phase; phase != RK_PHASE_T5;) {
+        phase = (uint8_t)(phase + 1u);
+        end += phase == RK_PHASE_T5 ? 85333.0 / 200.0 : 85333.0 / 400.0;
+    }
+    return end;
+}
+
+/* A step that ran from before (at an interpretive point or not): the night
+ * watchman's NEWJOB rule, and a stuck step (night_watchman.h, or cycled:
+ * an erasable CADR cycle, run) spins to the end of the clock period, as the
+ * AGC loops on with interrupts taken until the watchman sounds. */
+static void watch_step(fd_state *st, fd_ran *ran, const agc_word *before, int in_interrupt,
+                       int interpretive, int cycled)
+{
+    int stuck =
+        (cycled && !in_interrupt) || nw_stuck(before, st->s.words, in_interrupt, interpretive);
+    int fresh = cycled && !(st->wm.hung && st->wm.z == before[5] && st->wm.fb == before[4] &&
+                            st->wm.loc == before[0164]);
+    double end;
+    rl_step(&st->rl, rl_kind(in_interrupt, st->hw.in_interrupt != 0u));
+    /* Each point a cycle starts at, so no exit(3) passes unseen. */
+    if (fresh)
+        printf("erasable CADR cycle at Z %05o FB %05o LOC %05o, %lu cs\n", (unsigned)before[5],
+               (unsigned)before[4], (unsigned)before[0164], fd_centiseconds(st));
+    if (nw_step(&st->wm, before, st->s.words, in_interrupt, stuck, interpretive, MISSION))
+        st->wm.armed = 0u;
+    if (!stuck) return;
+    end = period_end(st);
+    if (end > st->mct) {
+        ran->mct += end - st->mct;
+        st->mct = end;
+    }
+    st->idling = 1u;
+}
+
+/* The TC trap (tc_trap.h): the spin at VERB69, to the end of the clock
+ * period, then the trap's GOJAM. */
+static int tc_trap(fd_state *st, fd_ran *ran)
+{
+    double end;
+    int step = tc_trap_step(st->s.words, st->io.superbank, st->hw.in_interrupt != 0u, st->phase,
+                            &st->spin);
+    if (step == TC_TRAP_NONE) return 0;
+    if (step == TC_TRAP_GOJAM) {
+        fd_gojam(st);
+        ran->trap = 2u;
+        return 1;
+    }
+    st->s.words[2] = 02040u;
+    end = period_end(st);
+    if (end > st->mct) {
+        ran->mct = end - st->mct;
+        st->mct = end;
+    }
+    st->idling = 1u;
+    ran->trap = 1u;
+    return 1;
+}
+
+/* The work clock's charge for a routine a table ran (flight_host_run.c's
+ * spend): the table's weight; the idle loop's (weight 0) to the end of the
+ * clock period, which the next boundary drops if it takes a request first;
+ * a FLIGHT_INTERP_STOP file's basic table its weight's low bits (the harness
+ * adds the interpretive words yaAGC ran, which this program cannot count);
+ * a table left to the interpreter whose core refused, the measured cost. */
+static double table_charge(fd_state *st, const fd_table *e, uint16_t key, uint8_t interp)
+{
+    double end;
+    if (e->weight == 0u) {
+        end = period_end(st);
+        st->idling = 1u;
+        return end > st->mct ? end - st->mct : 0.0;
+    }
+    if (e->weight == FD_PER_WORD) return cost(key, interp);
+    if (e->weight & FD_PLUS_WORDS) return (double)(e->weight & ~FD_PLUS_WORDS);
+    return (double)e->weight;
+}
+
+/* The interpreter core from this point. On the work clock, as
+ * flight_host_run.c's core_run: slot after slot until the words charged
+ * reach the next clock step (the C64's rk_budget), at most 64, the first
+ * always; a slot refused after one that ran is undone, and the next routine
+ * starts there. Otherwise one slot, its clock from 0 (left running, the
+ * clock's bit 15 makes the core skip NEWOPS, and it would never fetch a
+ * word again). *mct: the words' charge. *cycled: the first slot ran an
+ * erasable CADR cycle (run's fd_cycled); it is undone, its words uncharged;
+ * one after a slot that ran ends the step there. */
+static enum exec_status core_slots(fd_state *st, double *mct, int *cycled)
+{
+    apollo_overlay_state last;
+    flight_io io;
+    agc_hardware hw;
+    unsigned n = 0u, budget = 0u;
+    enum exec_status r;
+    uint16_t charged;
+    *cycled = 0;
+    st->p.operands = 0;
+    st->p.operand_count = 0;
+    st->p.fixed_data = rope_data;
+    if (st->work) {
+        double b = st->next_period - st->mct;
+        budget = b < 1.0 ? 1u : b >= 32767.0 ? 32767u : (unsigned)b + (b > (unsigned)b);
+    }
+    CORE_MCT = (uint16_t)(budget ? 0x8000u - budget : 0u);
+    for (;;) {
+        last = st->s;
+        io = st->io;
+        hw = st->hw;
+        charged = CORE_MCT;
+        r = run(st, CORE, CORE_IO);
+        if (fd_cycled) {
+            fd_cycled = 0;
+            st->s = last;
+            st->io = io;
+            st->hw = hw;
+            CORE_MCT = charged;
+            *cycled = !n;
+            r = EXEC_OK;
+            break;
+        }
+        if (r != EXEC_OK) {
+            if (n) {
+                st->s = last;
+                st->io = io;
+                st->hw = hw;
+                r = EXEC_OK;
+            }
+            break;
+        }
+        if (++n >= 64u || !st->work || (CORE_MCT & 0x8000u)) break;
+    }
+    st->slots += n ? n : 1u;
+    *mct = budget ? (double)(uint16_t)((CORE_MCT ^ 0x8000u) + budget) : (double)CORE_MCT;
+    return r;
+}
+
+/* A basic point no table holds: the harness runs it through the core
+ * (flight_host_run.c's core_entry). Here only a stuck step counts (the
+ * interpreter's GOTO, where the core stops after each hop of an erasable
+ * CADR cycle with the state unchanged); any other such point stays a gap.
+ * 1 when the core's step was stuck and is kept. */
+static int core_stuck(fd_state *st, fd_ran *ran)
+{
+    agc_word before[2048];
+    apollo_overlay_state s0 = st->s;
+    flight_io io0 = st->io;
+    agc_hardware hw0 = st->hw;
+    unsigned long slots0 = st->slots;
+    int isr = st->hw.in_interrupt != 0u, cycled;
+    double mct;
+    memcpy(before, st->s.words, sizeof before);
+    if (core_slots(st, &mct, &cycled) == EXEC_OK &&
+        (cycled || nw_stuck(before, st->s.words, isr, 0))) {
+        ran->mct = mct;
+        st->mct += mct;
+        watch_step(st, ran, before, isr, 0, cycled);
+        fd_lamps(st);
+        return 1;
+    }
+    st->s = s0;
+    st->io = io0;
+    st->hw = hw0;
+    st->slots = slots0;
+    return 0;
+}
+
+enum exec_status fd_run(fd_state *st, fd_ran *ran)
+{
+    int in;
+    uint16_t key = fd_point(st, &in);
+    uint16_t t = at[in][key];
+    agc_routine call;
+    int cycled;
+    static uint16_t core_key;
+    static uint8_t core_in;
+    ran->key = key;
+    ran->interp = (uint8_t)in;
+    ran->table = 0;
+    ran->mct = 0.0;
+    ran->trap = 0;
+    ++st->steps;
+    /* The night watchman sounded at the last period's end: GOJAM. */
+    if (st->wm_fire) {
+        st->wm_fire = 0u;
+        st->spin = 0u;
+        fd_gojam(st);
+        ran->trap = 3u;
+        return ran->status = EXEC_OK;
+    }
+    if (tc_trap(st, ran)) return ran->status = EXEC_OK;
+    /* The step's first holder, as the harness's holder, and its module goes
+  * into its slot. */
+    call = call_at[in][key];
+    if (several_at[in][key])
+        t = (uint16_t)first_holder(st, (uint8_t)in, key, &call);
+    else if (t && !admits(st, &fd_tables[t - 1u]))
+        t = (uint16_t)next_holder(st, t - 1u, (uint8_t)in, key, &call);
+    if (t) module_load(st, &fd_tables[t - 1u]);
+    /* On the work clock a table left to the interpreter module runs through the
+  * core, as the C64 runs it; refused at its first slot, the table runs it. */
+    if (t && st->work && fd_tables[t - 1u].weight == FD_PER_WORD) {
+        apollo_overlay_state before = st->s;
+        flight_io io0 = st->io;
+        agc_hardware hw0 = st->hw;
+        if (core_slots(st, &ran->mct, &cycled) == EXEC_OK) {
+            ran->table = &fd_tables[t - 1u];
+            if (t - 1u < 256u) ++st->uses[t - 1u];
+            st->mct += ran->mct;
+            watch_step(st, ran, before.words, hw0.in_interrupt != 0u, in, cycled);
+            core_in = 2;
+            fd_lamps(st);
+            return ran->status = EXEC_OK;
+        }
+        st->s = before;
+        st->io = io0;
+        st->hw = hw0;
+    }
+    if (t) {
+        const fd_table *e = &fd_tables[t - 1u];
+        apollo_overlay_state before = st->s;
+        flight_io io0 = st->io;
+        agc_hardware hw0 = st->hw;
+        st->p.operands = e->sites;
+        st->p.operand_count = e->nsites;
+        st->p.fixed_data = e->fixed == 1u ? SELF_CHECK_ROPE : rope_data;
+        ran->table = e;
+        ran->status = run(st, call, e->io);
+        {
+            unsigned n = t;
+            agc_routine c;
+            while (ran->status != EXEC_OK && !in &&
+                   (n = next_holder(st, n - 1u, 0, key, &c)) != 0) {
+                st->s = before;
+                st->io = io0;
+                st->hw = hw0;
+                e = &fd_tables[n - 1u];
+                t = (uint16_t)n;
+                module_load(st, e);
+                st->p.operands = e->sites;
+                st->p.operand_count = e->nsites;
+                st->p.fixed_data = e->fixed == 1u ? SELF_CHECK_ROPE : rope_data;
+                ran->table = e;
+                ran->status = run(st, c, e->io);
+            }
+        }
+        if (fd_cycled) {
+            fd_cycled = 0;
+            st->s = before;
+            st->io = io0;
+            st->hw = hw0;
+            watch_step(st, ran, before.words, hw0.in_interrupt != 0u, in, 1);
+            core_in = 2;
+            return ran->status = EXEC_OK;
+        }
+        if (ran->status == EXEC_OK) {
+            ran->mct = st->work ? table_charge(st, e, key, (uint8_t)in) : cost(key, (uint8_t)in);
+            st->mct += ran->mct;
+            watch_step(st, ran, before.words, hw0.in_interrupt != 0u, in, 0);
+            core_in = 2;
+            fd_lamps(st);
+            if (t - 1u < 256u) ++st->uses[t - 1u];
+            return EXEC_OK;
+        }
+        /* A refusal: undo it; an interpretive point goes to the core. */
+        st->s = before;
+        st->io = io0;
+        st->hw = hw0;
+        if (!in) {
+            ++st->unmapped;
+            gap(st, key, 0, 1, e->name, 1);
+            return ran->status = EXEC_UNMAPPED;
+        }
+        gap(st, key, 1, 1, e->name, !(core_in == 1 && core_key == key));
+    } else if (!in) {
+        if (core_stuck(st, ran)) return ran->status = EXEC_OK;
+        ++st->unmapped;
+        gap(st, key, 0, 0, 0, 1);
+        return ran->status = EXEC_UNMAPPED;
+    } else
+        gap(st, key, 1, 0, 0, !(core_in == 1 && core_key == key));
+    /* The interpreter core from this interpretive point. */
+    {
+        agc_word before[2048];
+        int isr = st->hw.in_interrupt != 0u;
+        memcpy(before, st->s.words, sizeof before);
+        ran->status = core_slots(st, &ran->mct, &cycled);
+        st->mct += ran->mct;
+        if (ran->status == EXEC_OK || ran->status == EXEC_UNMAPPED)
+            watch_step(st, ran, before, isr, in, cycled);
+    }
+    if (ran->status == EXEC_UNMAPPED)
+        ran->status = EXEC_OK; /* left the interpreter: the next step resolves Z */
+    core_key = fd_point(st, &in);
+    core_in = (uint8_t)in;
+    fd_lamps(st);
+    return ran->status;
+}

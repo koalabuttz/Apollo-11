@@ -1,0 +1,10 @@
+Independent read-only source review by /root/general_division, 2026-10-11.
+
+No discrepancy found in declared initialized nonnegative LGYRO/basic-sleep/WAITLIST domains. Original CCS LGYRO busy route CAF LGWAKE to JOBSLEEP preserves saved MPAC/BUF2. Free +0 stores MPAC2=0, DCA MPAC/DXCH BUF2 retains old BUF2.low in L, then CAF ONE enters exact GWAKE2 WAITLIST caller. Native addresses and retained Q agree in both missions. Helper composes unchanged source-qualified basic-sleep or successful WAITLIST reservation, reporting selected basic transfer/idle/free-return without executing jobs. Quiet command counters and valid complete Executive/queue domains are explicit. Negative sentinels, external pulse consumption and selected job/idle bodies are excluded. No edits requested.
+
+Reviewed identities:
+c8d11002eff82f050b7da0eaa8f2d2581744475c6c591c5e44d7b0e3f8be5af1  src/imu_pulse_wake.c
+90573614776357cc6fd63141a7d2796c3fbbff19f11f7195810d4e15a09d7e32  include/imu_pulse_wake.h
+18d862166d4eb0361113556958a121d6b9c8f9813194dfcbdb98f93f79315344  tests/imu_pulse_wake_cases.c
+c8e15dd321a7605b56c0b61c316ed742a210670c40b9637a321d0495cb40133d  tools/imu_pulse_wake_reference.c
+7f82c534de7fa58436d9479821f727de28be2cef11c8f7101b8ced68acc4cff7  build/imu-pulse-wake-source-map.json

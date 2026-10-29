@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_machine_cadr.prg" 0
+watch store 4c5a
+ignore 1 1
+g 080d
+m 4c5a 4c5e
+bsave "/workspace/Apollo-11/c64-port/build/dsky_machine_cadr-vice-mailbox.bin" 0 4c5a 4c5e
+bsave "/workspace/Apollo-11/c64-port/build/dsky_machine_cadr-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_machine_cadr-vice-software-stack.bin" 0 c100 cfff
+quit

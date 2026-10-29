@@ -1,0 +1,10 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tools/cm_minutes_seconds_snapshot.c src/cm_minutes_seconds.c src/cm_decimal_pair.c src/cm_pinball.c src/dsky_pinball.c src/cm_interbank.c src/fixed_data.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_minutes_seconds_cases.c -o build/cm-minutes-seconds-route-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tools/cm_decimal_pair_snapshot.c src/cm_decimal_pair.c src/cm_pinball.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/cm_decimal_pair_cases.c -o build/cm-decimal-pair-route-port
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_cm_minutes_seconds.c src/cm_minutes_seconds.c src/cm_decimal_pair.c src/cm_pinball.c src/dsky_pinball.c src/cm_interbank.c src/fixed_data.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_minutes_seconds_cases.c tests/cm_decimal_pair_cases.c tests/cm_minutes_seconds_check.c -o build/test-cm-minutes-seconds-port
+./build/test-cm-minutes-seconds-port
+112 full CM signed decimal/M-S states and 63 unchanged invalid guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_cm_minutes_seconds.c src/cm_minutes_seconds.c src/cm_decimal_pair.c src/cm_pinball.c src/dsky_pinball.c src/cm_interbank.c src/fixed_data.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/cm_minutes_seconds_cases.c tests/cm_decimal_pair_cases.c tests/cm_minutes_seconds_check.c -o build/test-cm-minutes-seconds-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-minutes-seconds-port-san
+112 full CM signed decimal/M-S states and 63 unchanged invalid guards: PASS
+PASS all1024 complete original cm_decimal_pair source states under ASAN/UBSAN, SHA256 83332c4c578a79af68653ad4b16395e3253406046d482e45fd177a0cf232bae7
+PASS all3072 complete original cm_minutes_seconds source states under ASAN/UBSAN, SHA256 ba081ba5b6885ae0578a8f178e2c505c15e8cc23cd547fbc206f5479992250d4

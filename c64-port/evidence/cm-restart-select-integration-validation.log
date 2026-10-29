@@ -1,0 +1,2 @@
+./build/test-cm-restart-select
+6144 original CM restart selection full-image states and guards: PASS

@@ -1,0 +1,7 @@
+for mission in 0 1; do for entry in {0..3}; do if [ $mission = 0 ] && [ $entry -ge 2 ]; then continue; fi; gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -DAGREE_MISSION=$mission -DAGREE_ENTRY=$entry tests/test_rtb_agreement.c tests/frozen_words.c src/rtb_agreement.c src/agc_word.c src/agc_multiword.c tests/rtb_agreement_cases.c -o build/test-rtb-agreement-$mission-$entry; build/test-rtb-agreement-$mission-$entry; done; done
+32 complete original RTB angle states mission0 entry0: PASS
+32 complete original RTB angle states mission0 entry1: PASS
+32 complete original RTB angle states mission1 entry0: PASS
+32 complete original RTB angle states mission1 entry1: PASS
+32 complete original RTB angle states mission1 entry2: PASS
+32 complete original RTB angle states mission1 entry3: PASS

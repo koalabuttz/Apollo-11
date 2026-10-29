@@ -1,0 +1,6 @@
+PASS:119 retained descriptors;112 historical stage identities unchanged; complete SHA/header/size/BSS/CRC checks
+PASS:16 original queued-mode→first legal CHANG2→mode END→P66 resumption→display→idle→T3/RODTASK recurrence paths; 2476 complete2053-word source states; SHA256 822b4b18d80e7cc4bf201b25862712bcc0a344d9b59c508e6d26a28a0dc5df48
+PASS:16 first-legal CHANG2 adoptions;64 complete2053-word original states, enabled/masked guard restoration, stale callback lookup and arriving IRQ ticket retained; SHA256 8074608bd0fa95ea4b11d90684662b7844a7afff5de220e81660bcff10a7c854
+PASS:2460 unchanged complete original recurrence states with additive resolver, elapsed observer and returned view stages; SHA256 d1aa5f4de9e02bf126731818227c4bc7592e62bddbbd66a425cc56346683f186
+PASS:pending service guards; import/export transport failures retain source bodies and restore enabled/masked exclusion
+PASS:pending P66 port strict;2476 pending-job,64 first-adoption and 2460 historical complete source states

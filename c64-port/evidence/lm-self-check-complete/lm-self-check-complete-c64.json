@@ -1,0 +1,30 @@
+{
+ "category": "c64_execution_results",
+ "aggregates": {
+  "self-check": {
+   "record": "evidence/self-check/self-check-vice.log",
+   "sha256": "45db4563438a7bec56b88accd711452d2deaacd1f33d98fb8f3c3d2e42e80a92",
+   "pass_lines": [
+    "PASS: VICE PAL self-check-lm.prg: 90 checks, 0 failures",
+    "PASS: VICE PAL self-check-cm.prg: 94 checks, 0 failures"
+   ],
+   "checks": [
+    90,
+    94
+   ],
+   "failures": 0,
+   "result": "PASS",
+   "prg_sha256": [
+    {
+     "prg": "self-check-lm.prg",
+     "sha256": "527faedc0bf6a036fa0ce18765c8fac0bbc9d75fc591e771a67d38e8f29a067c"
+    },
+    {
+     "prg": "self-check-cm.prg",
+     "sha256": "79d15d6c7cfd66f9d8a2f24b1e0704fc7f6587f7be552a711764dd907973e545"
+    }
+   ]
+  }
+ },
+ "result": "PASS"
+}

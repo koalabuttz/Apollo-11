@@ -1,0 +1,3 @@
+PASS: stock-ROM PAL C64 executes all three LM+CM noun readers; 1216 source states under all four SUPER latch forms
+Every physical word compared exactly, including unchanged words; SUPER/IRQ preserved
+Native PRG 19787 bytes; load end $554a; BSS end $754a; mailbox a5c004

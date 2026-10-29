@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_enter_zero.prg from 0801 to 41C3 (39C3 bytes)
+WATCH: 1  C:$61c4  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 61c4)   72/$048,  13/$0d
+.C:19e8  8E C4 61    STX $61C4      - A:80 X:A5 Y:00 SP:f1 NV-....C  299424397
+>C:61c4  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_enter_zero-vice-mailbox.bin' from $61c4 to $61c8
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_enter_zero-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_enter_zero-vice-software-stack.bin' from $c100 to $cfff

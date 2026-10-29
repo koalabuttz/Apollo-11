@@ -1,0 +1,24 @@
+{
+ "category": "independent_assembly_comparison",
+ "source_path": "Luminary099/AGC_BLOCK_TWO_SELF_CHECK.agc",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "method": "the milestone's random-state and whole-rope cases through the native routines and through the unmodified rope in yaAGC (host only); tools/self_check_freeze.py checked the outputs byte-identical and froze the snapshots; this tool reran the oracle with the coverage trace and compared",
+ "aggregates": {
+  "self-check": {
+   "record": "evidence/self-check/self-check-proof.json",
+   "sha256": "9df80cf4f416fc5ffa743dfb0a540cbb246167f3fc9c8455f960672ea40b7acf",
+   "cases": 4096,
+   "cases_rope": 43,
+   "snapshot_sha256": [
+    "12929e8e9ce446ea30ec6446a3ae5aecd80adbe7beb84b0252c7b0d045e6ec8f",
+    "5247b99154d043db1ed35efbd8aba40155610a4c255e75ef8704b1710ca9cadb"
+   ],
+   "rerun_snapshot_sha256": [
+    "12929e8e9ce446ea30ec6446a3ae5aecd80adbe7beb84b0252c7b0d045e6ec8f",
+    "5247b99154d043db1ed35efbd8aba40155610a4c255e75ef8704b1710ca9cadb"
+   ],
+   "result": "PASS"
+  }
+ },
+ "result": "PASS"
+}

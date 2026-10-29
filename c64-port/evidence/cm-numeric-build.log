@@ -1,0 +1,45 @@
+python3 tools/cm_numeric_differential.py
+{
+  "pin": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "sources": {
+    "INTERPRETER.agc": {
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+      "indentation_repairs": 36,
+      "source_original_byte_identical": true
+    },
+    "POWERED_FLIGHT_SUBROUTINES.agc": {
+      "original_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+      "normalized_sha256": "9ba2de499bfa468f7d3fc8e428661b6572f8545d6d3b9eea75904e23540404ca",
+      "indentation_repairs": 1,
+      "source_original_byte_identical": true
+    }
+  },
+  "semantic_source_edits": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: original CM interpreter/powered helpers, pseudo-label indentation only; complete rope equals independent pinned assembly and existing CM fixture
+PASS: CM norm: 132096 cases/all 20 modeled words; exact shared native kernel and existing lossless vectors; SHA256 cb141db0803cd747bc022b65f779e71df0590eace82af5fe037ffb0fa0b311d2
+PASS: CM dp-divide: 163840 cases/all 17 modeled words; exact shared native kernel and existing lossless vectors; SHA256 43f40a751558ac2f30deb014d24925940f91c449c5f0e1c3fa74f043ac8c9c42
+PASS: CM unit: 50736 cases/all 104 modeled words; exact shared native kernel and existing lossless vectors; SHA256 fdeebfdb5b7d2d1aeb707df1beb1bc5a538a2f7af1ef2ff0bf865db3e7f32e28
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic  src/agc_word.c src/agc_multiword.c src/guidance_norm.c  tests/test_norm.c tests/frozen_words.c -o build/test-cm-norm
+./build/test-cm-norm
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic  src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c  tests/test_dp_divide.c tests/frozen_words.c -o build/test-cm-dp-divide
+./build/test-cm-dp-divide
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_unit.c src/guidance_norm.c src/guidance_dp_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/test_unit.c tests/frozen_words.c -o build/test-cm-unit
+./build/test-cm-unit
+118 complete ABS/ABVAL/UNIT states, unsupported MODE/VAC unchanged: PASS
+cc -Iinclude -Itests  -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_norm.c  tests/test_norm.c tests/frozen_words.c -o build/test-cm-norm-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-norm-sanitize
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+cc -Iinclude -Itests  -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c  tests/test_dp_divide.c tests/frozen_words.c -o build/test-cm-dp-divide-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-dp-divide-sanitize
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+cc -Iinclude -Itests -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_unit.c src/guidance_norm.c src/guidance_dp_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/test_unit.c tests/frozen_words.c -o build/test-cm-unit-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-unit-sanitize
+118 complete ABS/ABVAL/UNIT states, unsupported MODE/VAC unchanged: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests  -DNORM_CHECK_ONLY -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-norm.map src/agc_word.c src/agc_multiword.c src/guidance_norm.c  tests/test_norm.c tests/frozen_words.c tools/norm_diagnostic.c -o build/cm-norm.prg
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests  -DDP_DIVIDE_CHECK_ONLY -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-dp-divide.map src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c  tests/test_dp_divide.c tests/frozen_words.c tools/dp_divide_diagnostic.c -o build/cm-dp-divide.prg
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY -DUNIT_CHECK_ONLY -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-unit.map src/agc_word.c src/agc_multiword.c src/guidance_unit.c src/guidance_norm.c src/guidance_dp_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/test_unit.c tests/frozen_words.c tools/unit_diagnostic.c -o build/cm-unit.prg

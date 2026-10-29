@@ -1,0 +1,8 @@
+{
+  "original_source": "Comanche055/MYSUBS.agc",
+  "original_sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+  "assembled_source_sha256": "eed144c40c1ea8d938c4cced7906f12662f2e9df6d11ba551a869f5a6a038c84",
+  "source_edits": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+  "pinned_support_fixture": "deps/cm-trig-fixture"
+}

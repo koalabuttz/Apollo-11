@@ -1,0 +1,12 @@
+{
+  "revision": "ce9f537",
+  "checkout": "isolated detached git worktree",
+  "command": "make -j2 all test",
+  "result": "PASS",
+  "shared_dependencies": "host-only independently assembled oracle dependency directory symlink; ordinary all/test target does not require MOS compiler or VICE",
+  "log": {
+    "path": "integration-reviewed-18-host.log",
+    "sha256": "4ee7fe7a48b29b44c247f32ba4ea611171e05deb975e571214de081af6d8c480"
+  },
+  "scope": "All committed portable host targets including eighteen reviewed complete original source domains and bounded modules; later uncommitted scheduler/keyboard changes excluded"
+}

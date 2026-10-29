@@ -1,0 +1,5 @@
+./build/test-cm-danzig
+4096 original CM DANZIG complete basic/interpreted/idle states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_danzig.c src/cm_dispatch.c src/cm_executive.c src/cm_native_image.c src/agc_word.c tests/cm_danzig_cases.c tests/cm_basic_finish_cases.c tests/cm_danzig_check.c tests/test_cm_danzig.c -o build/test-cm-danzig-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-danzig-sanitize
+4096 original CM DANZIG complete basic/interpreted/idle states and guards: PASS

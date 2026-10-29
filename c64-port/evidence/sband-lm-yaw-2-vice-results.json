@@ -1,0 +1,18 @@
+{
+  "group": 2,
+  "states": 16,
+  "prg_bytes": 45098,
+  "load_end": 47145,
+  "bss_end": 47145,
+  "static_storage_end": 47447,
+  "mailbox": "a5100000",
+  "words_each": 2048,
+  "external_fields": [
+    "superbank",
+    "interrupt_enabled"
+  ],
+  "canonical_image_address": 53248,
+  "expected_image_address": 57344,
+  "diagnostic_cpu_port_mask": 252,
+  "software_stack_top": 53248
+}

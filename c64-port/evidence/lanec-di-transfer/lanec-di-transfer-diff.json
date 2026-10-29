@@ -1,0 +1,7 @@
+{
+  "suite": "di-transfer",
+  "cases": 996,
+  "differing": 0,
+  "native_sha256": "ed64a3968f77d0b6812363f8fc412d9aca4791eb79e2275fb9088e5a37767a27",
+  "oracle_sha256": "ed64a3968f77d0b6812363f8fc412d9aca4791eb79e2275fb9088e5a37767a27"
+}

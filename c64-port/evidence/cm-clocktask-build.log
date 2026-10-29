@@ -1,0 +1,40 @@
+python3 tools/cm_clocktask_differential.py
+{
+  "sources": {
+    "CM_ENTRY_DIGITAL_AUTOPILOT.agc": {
+      "original_sha256": "14f76028ec691d72b326c551b4676da928c1c744eb3a2aff817b582d70df9e1d",
+      "normalized_sha256": "82aef32507d8b595667877ff2375883f8187bfc04b726ebde728a8842074b24a",
+      "indentation_repairs": 1
+    },
+    "P40-P47.agc": {
+      "original_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+      "normalized_sha256": "edc27c44808626b1aa725abf34cce723fc300a149d9a162162dee5fc6b7eccf6",
+      "indentation_repairs": 7
+    }
+  },
+  "semantic_repairs": 0,
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}
+PASS: 1536 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 1536,
+  "full_physical_words": 2048,
+  "entries": [
+    "24,3260 CLOKTASK",
+    "24,3301 after WAITLIST",
+    "24,3315 SETTB6"
+  ],
+  "boundary": "actual WAITLIST/NOVAC/FINDVAC/TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "cfe2235de2d341266cbd3f6e953221ff12c2f49296864402412b87e88b6470e3"
+}
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_clocktask.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_clocktask_cases.c tests/cm_clocktask_check.c tests/test_cm_clocktask.c -o build/test-cm-clocktask
+./build/test-cm-clocktask
+1536 original CM CLOKTASK full-image states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_clocktask.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_clocktask_cases.c tests/cm_clocktask_check.c tests/test_cm_clocktask.c -o build/test-cm-clocktask-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-clocktask-sanitize
+1536 original CM CLOKTASK full-image states and guards: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-clocktask.map src/cm_clocktask.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_clocktask_cases.c tests/cm_clocktask_check.c platform/c64/cm_clocktask_diagnostic.c -o build/cm-clocktask.prg

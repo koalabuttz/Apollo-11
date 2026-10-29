@@ -1,0 +1,3 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_throttle_bridge.c tests/throttle_bridge_check.c src/agc_word.c src/p66_throttle_bridge.c tests/throttle_bridge_cases.c -o build/test-throttle-bridge
+build/test-throttle-bridge
+64 complete throttle bridge images and26 invalid boundaries: PASS

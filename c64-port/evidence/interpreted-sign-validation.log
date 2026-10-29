@@ -1,0 +1,11 @@
+build/interpreted-sign-reference deps/lm-powered-fixture/MAIN.agc.bin 0 2> build/interpreted-sign-lm-reference.trace | gzip -n -9 > build/interpreted-sign-lm-reference.snapshots.gz
+build/interpreted-sign-native 0 | gzip -n -9 > build/interpreted-sign-lm-native.snapshots.gz
+cmp build/interpreted-sign-lm-reference.snapshots.gz build/interpreted-sign-lm-native.snapshots.gz
+build/interpreted-sign-reference deps/cm-powered-fixture/MAIN.agc.bin 1 2> build/interpreted-sign-cm-reference.trace | gzip -n -9 > build/interpreted-sign-cm-reference.snapshots.gz
+build/interpreted-sign-native 1 | gzip -n -9 > build/interpreted-sign-cm-native.snapshots.gz
+cmp build/interpreted-sign-cm-reference.snapshots.gz build/interpreted-sign-cm-native.snapshots.gz
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/interpreted_sign_snapshot.c src/interpreted_sign.c src/agc_word.c src/agc_multiword.c tests/interpreted_sign_cases.c -o build/interpreted-sign-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/interpreted-sign-sanitize 0 | gzip -n -9 > build/interpreted-sign-lm-sanitize.snapshots.gz
+cmp build/interpreted-sign-lm-reference.snapshots.gz build/interpreted-sign-lm-sanitize.snapshots.gz
+ASAN_OPTIONS=detect_leaks=0 build/interpreted-sign-sanitize 1 | gzip -n -9 > build/interpreted-sign-cm-sanitize.snapshots.gz
+cmp build/interpreted-sign-cm-reference.snapshots.gz build/interpreted-sign-cm-sanitize.snapshots.gz

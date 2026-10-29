@@ -1,0 +1,145 @@
+PASS: 20480 cm-servicer cases equal the original programs (80 routines)
+  CM 37,2701 PREREAD: 05134 x256
+  CM 37,2705 REDO5.31: 05147 x256
+  CM 37,2712 : 05245 x256
+  CM 37,2716 : 04114 x256
+  CM 37,2721 : 05324 x256
+  CM 37,2722 PREREAD1: 04753 x256
+  CM 37,2744 READACCS: 05147 x60, 05245 x196
+  CM 37,2745 PIPSDONE: 05147 x55, 05245 x201
+  CM 37,2751 REDO5.5: 05147 x64, 05245 x192
+  CM 37,3005 : 05245 x256
+  CM 37,3024 : 04114 x256
+  CM 37,3027 : 05147 x141, 05245 x115
+  CM 37,3033 CHEKAVEG: 05147 x139, 05245 x117
+  CM 37,3043 MAKESERV: 05147 x256
+  CM 37,3047 : 04114 x256
+  CM 37,3052 : 05324 x256
+  CM 37,3067 QUIKREAD: 05267 x110, 05324 x37, 05412 x65, 05650 x44
+  CM 37,3104 SERVICER: 05412 x141, 05650 x115
+  CM 37,3121 : 05412 x256
+  CM 37,3131 : 04662 x256
+  CM 37,3133 DVTOTUP: 05170 x57, 05412 x199
+  CM 37,3134 : 05170 x68, 05412 x188
+  CM 37,3136 : 05412 x256
+  CM 37,3140 : 05412 x256
+  CM 37,3145 : 05170 x68, 05412 x188
+  CM 37,3146 : 05170 x70, 05412 x186
+  CM 37,3150 : 05412 x256
+  CM 37,3151 : 05412 x256
+  CM 37,3153 : 05606 x256
+  CM 37,3157 : 05412 x256
+  CM 37,3162 : 05546 x256
+  CM 37,3165 AVGEND: 05546 x256
+  CM 37,3171 : 05372 x256
+  CM 37,3175 : 06037 x256
+  CM 37,3176 : 06037 x256
+  CM 37,3200 : 04662 x256
+  CM 37,3201 : 04662 x256
+  CM 37,3206 : 05560 x256
+  CM 37,3214 : 05560 x256
+  CM 37,3216 : 04701 x130, 05372 x126
+  CM 37,3225 : 04701 x256
+  CM 37,3227 SERVEXIT: 05412 x256
+  CM 37,3231 : 05217 x256
+  CM 37,3236 NORMLIZE: 05606 x256
+  CM 37,3242 : 05170 x52, 05217 x204
+  CM 37,3244 : 05170 x74, 05217 x182
+  CM 37,3247 : 05170 x65, 05217 x191
+  CM 37,3251 : 05170 x64, 05217 x192
+  CM 37,3252 : 05217 x256
+  CM 37,3253 : 05217 x256
+  CM 37,3305 REREADAC: 05147 x55, 05245 x162, 05324 x39
+  CM 37,3353 CALCGRAV: 05170 x52, 06037 x204
+  CM 37,3354 : 05170 x58, 06037 x198
+  CM 37,3355 : 05170 x81, 06037 x175
+  CM 37,3360 : 05170 x72, 06037 x184
+  CM 37,3362 : 05170 x65, 06037 x191
+  CM 37,3364 : 05170 x57, 06037 x199
+  CM 37,3366 : 05170 x61, 06037 x195
+  CM 37,3371 : 05170 x65, 06037 x191
+  CM 37,3372 : 05170 x63, 06037 x193
+  CM 37,3374 : 05170 x60, 06037 x196
+  CM 37,3376 : 05170 x65, 06037 x191
+  CM 37,3401 : 05170 x64, 06037 x192
+  CM 37,3403 : 05170 x64, 06037 x192
+  CM 37,3405 : 05170 x67, 06037 x189
+  CM 37,3407 ITISMOON: 05170 x60, 06037 x196
+  CM 37,3412 : 05170 x73, 06037 x183
+  CM 37,3415 : 05170 x61, 06037 x195
+  CM 37,3417 : 06037 x256
+  CM 37,3420 CALCRVG: 05170 x66, 06037 x190
+  CM 37,3423 : 05170 x61, 06037 x195
+  CM 37,3425 : 05170 x77, 06037 x179
+  CM 37,3426 : 05170 x60, 06037 x196
+  CM 37,3427 : 05170 x66, 06037 x190
+  CM 37,3431 : 05170 x55, 06037 x201
+  CM 37,3434 : 05170 x59, 06037 x197
+  CM 37,3437 : 05170 x68, 06037 x188
+  CM 37,3441 : 05170 x59, 06037 x197
+  CM 37,3442 : 05170 x71, 06037 x185
+  CM 37,3444 : 06037 x256
+case 6145 (32357) does not fit one C64 diagnostic: host only
+case 6146 (32357) does not fit one C64 diagnostic: host only
+case 6158 (32357) does not fit one C64 diagnostic: host only
+case 6181 (32357) does not fit one C64 diagnostic: host only
+case 6187 (32357) does not fit one C64 diagnostic: host only
+case 6188 (32357) does not fit one C64 diagnostic: host only
+case 6190 (32357) does not fit one C64 diagnostic: host only
+case 6193 (32357) does not fit one C64 diagnostic: host only
+case 6196 (32357) does not fit one C64 diagnostic: host only
+case 6208 (32357) does not fit one C64 diagnostic: host only
+case 6214 (32357) does not fit one C64 diagnostic: host only
+case 6218 (32357) does not fit one C64 diagnostic: host only
+case 6226 (32357) does not fit one C64 diagnostic: host only
+case 6229 (32357) does not fit one C64 diagnostic: host only
+case 6232 (32357) does not fit one C64 diagnostic: host only
+case 6233 (32357) does not fit one C64 diagnostic: host only
+case 6239 (32357) does not fit one C64 diagnostic: host only
+case 6242 (32357) does not fit one C64 diagnostic: host only
+case 6247 (32357) does not fit one C64 diagnostic: host only
+case 6256 (32357) does not fit one C64 diagnostic: host only
+case 6257 (32357) does not fit one C64 diagnostic: host only
+case 6259 (32357) does not fit one C64 diagnostic: host only
+case 6260 (32357) does not fit one C64 diagnostic: host only
+case 6263 (32357) does not fit one C64 diagnostic: host only
+case 6274 (32357) does not fit one C64 diagnostic: host only
+case 6275 (32357) does not fit one C64 diagnostic: host only
+case 6277 (32357) does not fit one C64 diagnostic: host only
+case 6281 (32357) does not fit one C64 diagnostic: host only
+case 6283 (32357) does not fit one C64 diagnostic: host only
+case 6289 (32357) does not fit one C64 diagnostic: host only
+case 6290 (32357) does not fit one C64 diagnostic: host only
+case 6292 (32357) does not fit one C64 diagnostic: host only
+case 6293 (32357) does not fit one C64 diagnostic: host only
+case 6299 (32357) does not fit one C64 diagnostic: host only
+case 6305 (32357) does not fit one C64 diagnostic: host only
+case 6308 (32357) does not fit one C64 diagnostic: host only
+case 6314 (32357) does not fit one C64 diagnostic: host only
+case 6316 (32357) does not fit one C64 diagnostic: host only
+case 6320 (32357) does not fit one C64 diagnostic: host only
+case 6322 (32357) does not fit one C64 diagnostic: host only
+case 6328 (32357) does not fit one C64 diagnostic: host only
+case 6331 (32357) does not fit one C64 diagnostic: host only
+case 6334 (32357) does not fit one C64 diagnostic: host only
+case 6337 (32357) does not fit one C64 diagnostic: host only
+case 6338 (32357) does not fit one C64 diagnostic: host only
+case 6340 (32357) does not fit one C64 diagnostic: host only
+case 6341 (32357) does not fit one C64 diagnostic: host only
+case 6343 (32357) does not fit one C64 diagnostic: host only
+case 6344 (32357) does not fit one C64 diagnostic: host only
+case 6346 (32357) does not fit one C64 diagnostic: host only
+case 6353 (32357) does not fit one C64 diagnostic: host only
+case 6356 (32357) does not fit one C64 diagnostic: host only
+case 6358 (32357) does not fit one C64 diagnostic: host only
+case 6368 (32357) does not fit one C64 diagnostic: host only
+case 6370 (32357) does not fit one C64 diagnostic: host only
+case 6373 (32357) does not fit one C64 diagnostic: host only
+case 6377 (32357) does not fit one C64 diagnostic: host only
+case 6380 (32357) does not fit one C64 diagnostic: host only
+case 6383 (32357) does not fit one C64 diagnostic: host only
+case 6385 (32357) does not fit one C64 diagnostic: host only
+case 6392 (32357) does not fit one C64 diagnostic: host only
+case 6398 (32357) does not fit one C64 diagnostic: host only
+froze 160 vectors to tests/cm_servicer_vectors.h
+exit 0

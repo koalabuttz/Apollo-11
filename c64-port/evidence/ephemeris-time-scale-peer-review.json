@@ -1,0 +1,18 @@
+{
+  "reviewer": "p66_source_map",
+  "result": "No concrete arithmetic/control discrepancy within declared GENSHIFT positive scalar SR14 domain.",
+  "reviewed_sha256": {
+    "src/ephemeris_time_scale.c": "f035a029a0f82fb6eaf2f53ae1bc874237f4f3e4e0587a54b53cb217a8e08107",
+    "include/ephemeris_time_scale.h": "20fcbec5ee6278882c589daa8bd150c0f3003ce38ea5cd4ad7c18e2756767c33",
+    "tools/ephemeris_time_scale_reference.c": "6e24b2a6d9850231b50f46e4580c46855204a847115fb82e2daa3d9721c5ed7d",
+    "tests/ephemeris_time_scale_cases.c": "b4a5dadd1e80f6353a337151775f7c5d76a37365f10b8496a2dbd9583c7bebd1"
+  },
+  "dependency": "Byte-original LM/CM INTERPRETER GENSHIFT/GENSHFT2/RIGHT/GENSCR scalar count14, unchanged original mission ropes.",
+  "domain": "A0177, descriptor020616, MODE+0, ordinary canonical RAM/raw A/L, coherent bank0, excluded producers. Stops before genuine DANZIG, no ephemerides completion credit.",
+  "findings": [
+    "Count14 decrements13; subtract12 then subtract1 produces source negative zero, whose CCS skips recursive TC and preserves incoming Q.",
+    "Source XCH chain moves old minor into third and old high into minor, clears major; final MPTEMP077777/A0/L03400 agree.",
+    "Source retains CYR/OVFIND/MODE/pending LOC/EDOP/bank controls and external IRQ/SUPER.",
+    "All guards reject before mutation."
+  ]
+}

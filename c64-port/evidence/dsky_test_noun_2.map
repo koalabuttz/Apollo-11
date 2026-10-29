@@ -1,0 +1,217 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     116d     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_test_noun_2.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      777     1         build/dsky_test_noun_2.prg.lto.o:(.text.main)
+     843      843      777     1                 main
+     fba      fba      652     1         build/dsky_test_noun_2.prg.lto.o:(.text.apollo_noun_reader)
+     fba      fba      652     1                 apollo_noun_reader
+    160c     160c      17f     1         build/dsky_test_noun_2.prg.lto.o:(.text.apollo_noun_table_read)
+    160c     160c      17f     1                 apollo_noun_table_read
+    178b     178b        6     1         build/dsky_test_noun_2.prg.lto.o:(.text.exit)
+    178b     178b        6     1                 exit
+    1791     1791       f8     1         build/dsky_test_noun_2.prg.lto.o:(.text.__udivmodhi4)
+    1791     1791       f8     1                 __udivmodhi4
+    1889     1889       34     1         build/dsky_test_noun_2.prg.lto.o:(.text.memcpy)
+    1889     1889       34     1                 memcpy
+    18bd     18bd       22     1         build/dsky_test_noun_2.prg.lto.o:(.text.__memset)
+    18bd     18bd       22     1                 __memset
+    18df     18df       34     1         build/dsky_test_noun_2.prg.lto.o:(.text.__mulhi3)
+    18df     18df       34     1                 __mulhi3
+    1913     1913       67     1         build/dsky_test_noun_2.prg.lto.o:(.text.__mulsi3)
+    1913     1913       67     1                 __mulsi3
+    197a     197a        0     1         __init_array_start = .
+    197a     197a        0     1         __init_array_end = .
+    197a     197a        0     1         __fini_array_start = .
+    197a     197a        0     1         __fini_array_end = .
+    197a     197a     4b28     1 .rodata
+    197a     197a       18     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_nouns)
+    197a     197a       18     1                 fixed_data_lm_nouns
+    1992     1992       18     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_nouns)
+    1992     1992       18     1                 fixed_data_cm_nouns
+    19aa     19aa       d8     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_spans)
+    19aa     19aa       d8     1                 fixed_data_lm_spans
+    1a82     1a82       30     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_spans)
+    1a82     1a82       30     1                 fixed_data_cm_spans
+    1ab2     1ab2       20     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_0)
+    1ab2     1ab2       20     1                 fixed_data_lm_0
+    1ad2     1ad2       24     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_1)
+    1ad2     1ad2       24     1                 fixed_data_lm_1
+    1af6     1af6        4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_2)
+    1af6     1af6        4     1                 fixed_data_lm_2
+    1afa     1afa        4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_3)
+    1afa     1afa        4     1                 fixed_data_lm_3
+    1afe     1afe        4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_4)
+    1afe     1afe        4     1                 fixed_data_lm_4
+    1b02     1b02        4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_5)
+    1b02     1b02        4     1                 fixed_data_lm_5
+    1b06     1b06        2     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_6)
+    1b06     1b06        2     1                 fixed_data_lm_6
+    1b08     1b08        a     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_7)
+    1b08     1b08        a     1                 fixed_data_lm_7
+    1b12     1b12        2     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_8)
+    1b12     1b12        2     1                 fixed_data_lm_8
+    1b14     1b14        6     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_9)
+    1b14     1b14        6     1                 fixed_data_lm_9
+    1b1a     1b1a        8     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_10)
+    1b1a     1b1a        8     1                 fixed_data_lm_10
+    1b22     1b22       2e     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_11)
+    1b22     1b22       2e     1                 fixed_data_lm_11
+    1b50     1b50        c     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_12)
+    1b50     1b50        c     1                 fixed_data_lm_12
+    1b5c     1b5c        2     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_13)
+    1b5c     1b5c        2     1                 fixed_data_lm_13
+    1b5e     1b5e        2     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_14)
+    1b5e     1b5e        2     1                 fixed_data_lm_14
+    1b60     1b60        4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_15)
+    1b60     1b60        4     1                 fixed_data_lm_15
+    1b64     1b64        6     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_16)
+    1b64     1b64        6     1                 fixed_data_lm_16
+    1b6a     1b6a        4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_17)
+    1b6a     1b6a        4     1                 fixed_data_lm_17
+    1b6e     1b6e        8     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_18)
+    1b6e     1b6e        8     1                 fixed_data_lm_18
+    1b76     1b76        c     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_19)
+    1b76     1b76        c     1                 fixed_data_lm_19
+    1b82     1b82       18     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_20)
+    1b82     1b82       18     1                 fixed_data_lm_20
+    1b9a     1b9a       10     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_21)
+    1b9a     1b9a       10     1                 fixed_data_lm_21
+    1baa     1baa       28     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_22)
+    1baa     1baa       28     1                 fixed_data_lm_22
+    1bd2     1bd2       2c     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_23)
+    1bd2     1bd2       2c     1                 fixed_data_lm_23
+    1bfe     1bfe        4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_24)
+    1bfe     1bfe        4     1                 fixed_data_lm_24
+    1c02     1c02        4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_25)
+    1c02     1c02        4     1                 fixed_data_lm_25
+    1c06     1c06      1be     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_26)
+    1c06     1c06      1be     1                 fixed_data_lm_26
+    1dc4     1dc4       68     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_27)
+    1dc4     1dc4       68     1                 fixed_data_lm_27
+    1e2c     1e2c       24     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_28)
+    1e2c     1e2c       24     1                 fixed_data_lm_28
+    1e50     1e50      1e4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_29)
+    1e50     1e50      1e4     1                 fixed_data_lm_29
+    2034     2034      108     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_30)
+    2034     2034      108     1                 fixed_data_lm_30
+    213c     213c       80     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_31)
+    213c     213c       80     1                 fixed_data_lm_31
+    21bc     21bc       40     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_32)
+    21bc     21bc       40     1                 fixed_data_lm_32
+    21fc     21fc       20     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_33)
+    21fc     21fc       20     1                 fixed_data_lm_33
+    221c     221c       26     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_34)
+    221c     221c       26     1                 fixed_data_lm_34
+    2242     2242      458     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_lm_35)
+    2242     2242      458     1                 fixed_data_lm_35
+    269a     269a      1c4     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_0)
+    269a     269a      1c4     1                 fixed_data_cm_0
+    285e     285e       7c     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_1)
+    285e     285e       7c     1                 fixed_data_cm_1
+    28da     28da       40     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_2)
+    28da     28da       40     1                 fixed_data_cm_2
+    291a     291a       20     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_3)
+    291a     291a       20     1                 fixed_data_cm_3
+    293a     293a       26     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_4)
+    293a     293a       26     1                 fixed_data_cm_4
+    2960     2960      1be     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_5)
+    2960     2960      1be     1                 fixed_data_cm_5
+    2b1e     2b1e      1f2     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_6)
+    2b1e     2b1e      1f2     1                 fixed_data_cm_6
+    2d10     2d10      410     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.fixed_data_cm_7)
+    2d10     2d10      410     1                 fixed_data_cm_7
+    3120     3120       10     1         <internal>:(.rodata.cst16)
+    3130     3130      200     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.dsky_test_noun_numbers)
+    3130     3130      200     1                 dsky_test_noun_numbers
+    3330     3330      202     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.dsky_test_noun_offsets)
+    3330     3330      202     1                 dsky_test_noun_offsets
+    3532     3532     2f70     1         build/dsky_test_noun_2.prg.lto.o:(.rodata.dsky_test_noun_patch)
+    3532     3532     2f70     1                 dsky_test_noun_patch
+    64a2     64a2        0     1 .data
+    64a2     64a2        0     1         __data_start = .
+    64a2     64a2        0     1         __data_end = .
+    64a2     64a2        0     1 __data_load_start = LOADADDR(.data)
+    64a2     64a2        0     1 __data_size = SIZEOF(.data)
+    64a2     64a2     2000     1 .bss
+    64a2     64a2        0     1         __bss_start = .
+    64a2     64a2     1000     1         build/dsky_test_noun_2.prg.lto.o:(.bss.s)
+    64a2     64a2     1000     1                 s
+    74a2     74a2     1000     1         build/dsky_test_noun_2.prg.lto.o:(.bss.before)
+    74a2     74a2     1000     1                 before
+    84a2     84a2        0     1         __bss_end = .
+    84a2     84a2        0     1 __bss_size = SIZEOF(.bss)
+    84a2     84a2        0     1 .noinit
+    84a2     84a2        0     1         __heap_start = ALIGN(., 2)
+    84a2     84a2        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_test_noun_2.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_test_noun_2.prg.lto.o:(.llvm_sympart)
+       0        0      e00     4 .symtab
+       0        0      e00     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      961     1 .strtab
+       0        0      961     1         <internal>:(.strtab)

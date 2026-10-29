@@ -1,0 +1,8 @@
+tools/inverse_trig_sweep_port.mk:11: warning: overriding recipe for target 'sanitize-inverse-trig-port'
+tools/inverse_trig_port.mk:11: warning: ignoring old recipe for target 'sanitize-inverse-trig-port'
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_inverse_trig_sweep.c src/inverse_trig.c src/guidance_norm.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/inverse_trig_sweep_cases.c tests/frozen_words.c -o build/test-inverse-trig-sweep-port
+./build/test-inverse-trig-sweep-port
+256 complete original LM/CM inverse-trig states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_inverse_trig_sweep.c src/inverse_trig.c src/guidance_norm.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/inverse_trig_sweep_cases.c tests/frozen_words.c -o build/test-inverse-trig-sweep-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-inverse-trig-sweep-port-san
+256 complete original LM/CM inverse-trig states: PASS

@@ -1,0 +1,20 @@
+{
+ "category": "host_and_sanitizer_results",
+ "aggregates": {
+  "self-check": {
+   "record": "evidence/self-check/self-check-host.log",
+   "sha256": "e981f143ec0509905841bc8c21f8bbc7536df7c0fa4d9413187f18607da8518d",
+   "pass_lines": [
+    "PASS: Luminary099: 4096 random-state and 43 whole-rope cases equal the original program; 83 + 7 C64 rows take all 448 + 412 host branch arcs",
+    "PASS: Comanche055: 4096 random-state and 43 whole-rope cases equal the original program; 85 + 9 C64 rows take all 448 + 416 host branch arcs"
+   ],
+   "checks": [
+    25171,
+    25171
+   ],
+   "failures": 0,
+   "result": "PASS"
+  }
+ },
+ "result": "PASS"
+}

@@ -1,0 +1,7 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_entry_tasks.c src/cm_phase.c src/cm_native_image.c src/cm_waitlist.c src/cm_waitlist_native.c src/agc_word.c tests/cm_entry_tasks_cases.c tests/cm_entry_tasks_check.c tests/test_cm_entry_tasks.c -o build/test-cm-entry-tasks
+./build/test-cm-entry-tasks
+1024 original SETJTAG full-image states, actual C callbacks and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_entry_tasks.c src/cm_phase.c src/cm_native_image.c src/cm_waitlist.c src/cm_waitlist_native.c src/agc_word.c tests/cm_entry_tasks_cases.c tests/cm_entry_tasks_check.c tests/test_cm_entry_tasks.c -o build/test-cm-entry-tasks-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-entry-tasks-sanitize
+1024 original SETJTAG full-image states, actual C callbacks and guards: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-entry-tasks.map src/cm_entry_tasks.c src/cm_phase.c src/cm_native_image.c src/cm_waitlist.c src/cm_waitlist_native.c src/agc_word.c tests/cm_entry_tasks_cases.c tests/cm_entry_tasks_check.c platform/c64/cm_entry_tasks_diagnostic.c -o build/cm-entry-tasks.prg

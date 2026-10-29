@@ -1,0 +1,39 @@
+{
+  "virtualagc_commit": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "scope": "Comanche055 NOVAC/FINDVAC through ENDFIND or BAILOUT entry; ENDJOB1 through CHANJOB-2 or DUMMYJOB entry",
+  "core_count": 7,
+  "vac_count": 5,
+  "owned_words_including_alarm": 312,
+  "cases": 1536,
+  "full_target_samples": 40,
+  "target_hash_cases": 1536,
+  "result_counts": {
+    "admitted": 885,
+    "no_vac": 15,
+    "no_core": 127,
+    "release_selected": 495,
+    "release_idle": 14
+  },
+  "source_sha256": {
+    "original_executive": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "normalized_executive": "12827288def51cab29ff591dd2febb7a652237a8b2786c42ea7dc6bafa2e5356",
+    "original_erasable": "f62df826c0cd678f4788ca7275d8ffccec229f9859c02839f1d944359c01ee58",
+    "pinned_erasable": "b3ac7e266a61300d3e432ab5ce9abceb5a75fe941ab62e8ecce96b150d1af4a3",
+    "rope": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79",
+    "indentation_patch": "0eda4d970554d37991bf8e755d42e37b54df4879a135f308e5da1d28bbf1c107",
+    "snapshots": "caa5ebe8349c9c3864274def9aeef4cc99cec545aae6aae90c11246097b488d2"
+  },
+  "c64": {
+    "vice_version": "3.7.1",
+    "mailbox": "a500000006",
+    "failures": 0,
+    "prg_file_bytes": 43004,
+    "loaded_bytes": 43002,
+    "load_address": "0801",
+    "last_loaded_address": "affa",
+    "last_noinit_address": "affb",
+    "text_bytes": 11393,
+    "rodata_bytes": 31597,
+    "diagnostic_cycle_budget": 6000000000
+  }
+}

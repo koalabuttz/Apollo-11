@@ -1,0 +1,764 @@
+{
+ "source_paths": [
+  "Luminary099/P34-35_P74-75.agc",
+  "Luminary099/R30.agc"
+ ],
+ "source_sha256": {
+  "Luminary099/P34-35_P74-75.agc": "72a77c305a1cf2787dee65cab48896017e14143111680c6aa0f3e78e372433ed",
+  "Luminary099/R30.agc": "76b904d389476022d9c6dcef6788737385a4603cff81d1c9af1fd17d82dc76bd"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_periapo.c",
+ "native_sha256": "c0ea8819836ed2e82843df0db1d0ecbe8bdc24e8fb52cd67b8c30cc50452e1bd",
+ "source_words": 73,
+ "source_lines": 71,
+ "symbols": {
+  "RPAD": "23,2314",
+  "PERIAPO1": "23,2316",
+  "PERIAPO": "23,2326",
+  "SETRAD": "23,2344",
+  "SETRADX": "23,2357",
+  "PRECSET": "23,2360",
+  "LEMSTORE": "23,2376",
+  "ACTIVE": "23,2402",
+  "CSMSTORE": "23,2406",
+  "PASSIVE": "23,2412",
+  "VECSHIFT": "23,2416",
+  "SHIFTR1": "23,2426",
+  "MAXCHK": "22,3636",
+  "MAXNM": "22,3645",
+  "APSIDES": "12,3674",
+  "NORMEX": "E7,1463",
+  "XXXALT": "E7,1670",
+  "RVEC": "E5,1654",
+  "VVEC": "E5,1743",
+  "RTX1": "E5,1776",
+  "RTX2": "E5,1777",
+  "RLS": "E4,1422",
+  "AVFLAG": "0000050",
+  "RACT3": "E7,1535",
+  "VACT3": "E7,1543",
+  "RPASS3": "E7,1551",
+  "VPASS3": "E7,1557"
+ },
+ "line_map": [
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1527,
+   "address": "23,2314",
+   "source": "RPAD 2DEC 6373338 B-29",
+   "words": [
+    "00302",
+    "17755"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1530,
+   "address": "23,2316",
+   "source": "PERIAPO1 LXA,2 VSR*",
+   "words": [
+    "53754"
+   ],
+   "native": "lpa_periapo1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1531,
+   "address": "23,2317",
+   "source": "RTX2",
+   "words": [
+    "02777"
+   ],
+   "native": "lpa_periapo1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1532,
+   "address": "23,2320",
+   "source": "0,2",
+   "words": [
+    "57176"
+   ],
+   "native": "lpa_periapo1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1533,
+   "address": "23,2321",
+   "source": "STOVL VVEC",
+   "words": [
+    "26744"
+   ],
+   "native": "lpa_periapo1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1534,
+   "address": "23,2322",
+   "source": "LXA,1 VSR*",
+   "words": [
+    "53750"
+   ],
+   "native": "lpa_periapo1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1535,
+   "address": "23,2323",
+   "source": "RTX1",
+   "words": [
+    "02776"
+   ],
+   "native": "lpa_periapo1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1536,
+   "address": "23,2324",
+   "source": "0,2",
+   "words": [
+    "57176"
+   ],
+   "native": "lpa_periapo1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1537,
+   "address": "23,2325",
+   "source": "STORE RVEC",
+   "words": [
+    "02655"
+   ],
+   "native": "lpa_periapo1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1538,
+   "address": "23,2326",
+   "source": "PERIAPO STQ CALL",
+   "words": [
+    "45020"
+   ],
+   "native": "lpa_periapo"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1539,
+   "address": "23,2327",
+   "source": "NORMEX",
+   "words": [
+    "03463"
+   ],
+   "native": "lpa_periapo"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1540,
+   "address": "23,2330",
+   "source": "SETRAD",
+   "words": [
+    "46344"
+   ],
+   "native": "lpa_periapo"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1541,
+   "address": "23,2331",
+   "source": "STCALL XXXALT",
+   "words": [
+    "37671"
+   ],
+   "native": "lpa_aftersetrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1542,
+   "address": "23,2332",
+   "source": "APSIDES",
+   "words": [
+    "25674"
+   ],
+   "native": "lpa_aftersetrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1543,
+   "address": "23,2333",
+   "source": "SETPD PUSH",
+   "words": [
+    "41401"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1544,
+   "address": "23,2334",
+   "source": "2D",
+   "words": [
+    "00003"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1545,
+   "address": "23,2335",
+   "source": "DSU PDDL",
+   "words": [
+    "65225"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1546,
+   "address": "23,2336",
+   "source": "XXXALT",
+   "words": [
+    "03671"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1547,
+   "address": "23,2337",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1548,
+   "address": "23,2340",
+   "source": "PUSH DSU",
+   "words": [
+    "45206"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1549,
+   "address": "23,2341",
+   "source": "XXXALT",
+   "words": [
+    "03671"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1550,
+   "address": "23,2342",
+   "source": "PUSH GOTO",
+   "words": [
+    "52006"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1551,
+   "address": "23,2343",
+   "source": "NORMEX",
+   "words": [
+    "03463"
+   ],
+   "native": "lpa_afterapsides"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1554,
+   "address": "23,2344",
+   "source": "SETRAD DLOAD PUSH",
+   "words": [
+    "41545"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1555,
+   "address": "23,2345",
+   "source": "RPAD",
+   "words": [
+    "06315"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1556,
+   "address": "23,2346",
+   "source": "SXA,1 INCR,2",
+   "words": [
+    "63130"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1557,
+   "address": "23,2347",
+   "source": "X2",
+   "words": [
+    "00047"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1558,
+   "address": "23,2350",
+   "source": "2D",
+   "words": [
+    "00002"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1559,
+   "address": "23,2351",
+   "source": "SLOAD BHIZ",
+   "words": [
+    "46135"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1560,
+   "address": "23,2352",
+   "source": "X2",
+   "words": [
+    "00050"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1561,
+   "address": "23,2353",
+   "source": "SETRADX",
+   "words": [
+    "46357"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1562,
+   "address": "23,2354",
+   "source": "VLOAD ABVAL",
+   "words": [
+    "51575"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1563,
+   "address": "23,2355",
+   "source": "RLS",
+   "words": [
+    "02023"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1564,
+   "address": "23,2356",
+   "source": "PDDL",
+   "words": [
+    "77725"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1565,
+   "address": "23,2357",
+   "source": "SETRADX DLOAD RVQ",
+   "words": [
+    "43545"
+   ],
+   "native": "lpa_setrad"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1582,
+   "address": "23,2376",
+   "source": "LEMSTORE VLOAD BOFF",
+   "words": [
+    "43175"
+   ],
+   "native": "lpa_lemstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1583,
+   "address": "23,2377",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "lpa_lemstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1584,
+   "address": "23,2400",
+   "source": "AVFLAG",
+   "words": [
+    "01352"
+   ],
+   "native": "lpa_lemstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1585,
+   "address": "23,2401",
+   "source": "PASSIVE",
+   "words": [
+    "46412"
+   ],
+   "native": "lpa_lemstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1586,
+   "address": "23,2402",
+   "source": "ACTIVE STOVL RACT3",
+   "words": [
+    "27536"
+   ],
+   "native": "lpa_lemstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1587,
+   "address": "23,2403",
+   "source": "VATT",
+   "words": [
+    "00007"
+   ],
+   "native": "lpa_lemstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1588,
+   "address": "23,2404",
+   "source": "STORE VACT3",
+   "words": [
+    "03544"
+   ],
+   "native": "lpa_lemstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1589,
+   "address": "23,2405",
+   "source": "RVQ",
+   "words": [
+    "77616"
+   ],
+   "native": "lpa_lemstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1590,
+   "address": "23,2406",
+   "source": "CSMSTORE VLOAD BOFF",
+   "words": [
+    "43175"
+   ],
+   "native": "lpa_csmstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1591,
+   "address": "23,2407",
+   "source": "RATT",
+   "words": [
+    "00001"
+   ],
+   "native": "lpa_csmstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1592,
+   "address": "23,2410",
+   "source": "AVFLAG",
+   "words": [
+    "01352"
+   ],
+   "native": "lpa_csmstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1593,
+   "address": "23,2411",
+   "source": "ACTIVE",
+   "words": [
+    "46402"
+   ],
+   "native": "lpa_csmstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1594,
+   "address": "23,2412",
+   "source": "PASSIVE STOVL RPASS3",
+   "words": [
+    "27552"
+   ],
+   "native": "lpa_csmstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1595,
+   "address": "23,2413",
+   "source": "VATT",
+   "words": [
+    "00007"
+   ],
+   "native": "lpa_csmstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1596,
+   "address": "23,2414",
+   "source": "STORE VPASS3",
+   "words": [
+    "03560"
+   ],
+   "native": "lpa_csmstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1597,
+   "address": "23,2415",
+   "source": "RVQ",
+   "words": [
+    "77616"
+   ],
+   "native": "lpa_csmstore"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1600,
+   "address": "23,2416",
+   "source": "VECSHIFT LXA,2 VSR*",
+   "words": [
+    "53754"
+   ],
+   "native": "lpa_vecshift"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1601,
+   "address": "23,2417",
+   "source": "RTX2",
+   "words": [
+    "02777"
+   ],
+   "native": "lpa_vecshift"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1602,
+   "address": "23,2420",
+   "source": "0,2",
+   "words": [
+    "57176"
+   ],
+   "native": "lpa_vecshift"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1603,
+   "address": "23,2421",
+   "source": "LXA,1 PDVL",
+   "words": [
+    "63350"
+   ],
+   "native": "lpa_vecshift"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1604,
+   "address": "23,2422",
+   "source": "RTX1",
+   "words": [
+    "02776"
+   ],
+   "native": "lpa_vecshift"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1605,
+   "address": "23,2423",
+   "source": "VSR* PDVL",
+   "words": [
+    "63257"
+   ],
+   "native": "lpa_vecshift"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1606,
+   "address": "23,2424",
+   "source": "0,2",
+   "words": [
+    "57176"
+   ],
+   "native": "lpa_vecshift"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1607,
+   "address": "23,2425",
+   "source": "RVQ",
+   "words": [
+    "77616"
+   ],
+   "native": "lpa_vecshift"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1610,
+   "address": "23,2426",
+   "source": "SHIFTR1 LXA,2 SL*",
+   "words": [
+    "53754"
+   ],
+   "native": "lpa_shiftr1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1611,
+   "address": "23,2427",
+   "source": "RTX2",
+   "words": [
+    "02777"
+   ],
+   "native": "lpa_shiftr1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1612,
+   "address": "23,2430",
+   "source": "0,2",
+   "words": [
+    "57576"
+   ],
+   "native": "lpa_shiftr1"
+  },
+  {
+   "path": "Luminary099/P34-35_P74-75.agc",
+   "line": 1613,
+   "address": "23,2431",
+   "source": "RVQ",
+   "words": [
+    "77616"
+   ],
+   "native": "lpa_shiftr1"
+  },
+  {
+   "path": "Luminary099/R30.agc",
+   "line": 454,
+   "address": "22,3636",
+   "source": "MAXCHK DSU BPL",
+   "words": [
+    "51025"
+   ],
+   "native": "lpa_maxchk"
+  },
+  {
+   "path": "Luminary099/R30.agc",
+   "line": 455,
+   "address": "22,3637",
+   "source": "MAXNM",
+   "words": [
+    "05646"
+   ],
+   "native": "lpa_maxchk"
+  },
+  {
+   "path": "Luminary099/R30.agc",
+   "line": 456,
+   "address": "22,3640",
+   "source": "+3",
+   "words": [
+    "45643"
+   ],
+   "native": "lpa_maxchk"
+  },
+  {
+   "path": "Luminary099/R30.agc",
+   "line": 457,
+   "address": "22,3641",
+   "source": "DAD RVQ",
+   "words": [
+    "43415"
+   ],
+   "native": "lpa_maxchk"
+  },
+  {
+   "path": "Luminary099/R30.agc",
+   "line": 458,
+   "address": "22,3642",
+   "source": "MAXNM",
+   "words": [
+    "05646"
+   ],
+   "native": "lpa_maxchk"
+  },
+  {
+   "path": "Luminary099/R30.agc",
+   "line": 459,
+   "address": "22,3643",
+   "source": "+3 DLOAD RVQ",
+   "words": [
+    "43545"
+   ],
+   "native": "lpa_maxchk"
+  },
+  {
+   "path": "Luminary099/R30.agc",
+   "line": 460,
+   "address": "22,3644",
+   "source": "MAXNM",
+   "words": [
+    "05646"
+   ],
+   "native": "lpa_maxchk"
+  },
+  {
+   "path": "Luminary099/R30.agc",
+   "line": 462,
+   "address": "22,3645",
+   "source": "MAXNM 2OCT 0106505603",
+   "words": [
+    "01065",
+    "05603"
+   ],
+   "native": "lpa_maxchk"
+  }
+ ],
+ "covered_ranges": [
+  "23,2314-23,2357",
+  "23,2376-23,2431",
+  "22,3636-22,3646"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged files reproduces the certified rope; every word of RPAD, PERIAPO1, PERIAPO, SETRAD, LEMSTORE/ACTIVE, CSMSTORE/PASSIVE, VECSHIFT, SHIFTR1, MAXCHK and MAXNM is a literal bookkeeping argument or constant of the native function owning its address. APSIDES and its conic steps are the lm-conic-timerad milestone's (src/lm_conic_timerad.c). PRECSET (23,2360-2375) calls LEMPREC/CSMPREC and is not yet ported; the rest of both files is not covered here."
+}

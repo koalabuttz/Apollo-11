@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-p61-p67",
+  "release": "evidence-cm-p61-p67",
+  "files": {
+    "cm-p61-p67-differential.log": {
+      "sha256": "1215b4a8f72caf3f183fc087f726f61583a93ea68091c1a065a56a380a739d1d",
+      "bytes": 7259,
+      "store": "tree"
+    },
+    "cm-p61-p67-host.log": {
+      "sha256": "0929d8ee61635604bb963a44a535c47eceda0a8616a78cb7bc5e3d9473255889",
+      "bytes": 1076,
+      "store": "tree"
+    },
+    "cm-p61-p67-proof.json": {
+      "sha256": "fc96a987eb538a29fb2353e21d32ce905e1fc212e14957575a07aa4c5b35d502",
+      "bytes": 17807,
+      "store": "tree"
+    },
+    "cm-p61-p67-source-map.json": {
+      "sha256": "5295e18defc5a94f7aae70302c24cca762e71c5f0df575affb5df5d8fe6cb33d",
+      "bytes": 68360,
+      "store": "tree"
+    },
+    "cm-p61-p67-vice.log": {
+      "sha256": "94e82aec956c2cae198846dd475ed7f8b919b737a73da2c6245f5ead7b6a0196",
+      "bytes": 2849,
+      "store": "tree"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+eb13d089db612413809486148edf2a4ffca5c75b6aa5b6eb82f43a34ba33489f  build/cm-tvc-init-1.prg
+
+$ make vice-cm-tvc-init
+for p in build/cm-tvc-init-1.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-tvc-init-1.prg: 15 checks, 0 failures
+PRG sha256: eb13d089db612413809486148edf2a4ffca5c75b6aa5b6eb82f43a34ba33489f cm-tvc-init-1.prg
+exit 0

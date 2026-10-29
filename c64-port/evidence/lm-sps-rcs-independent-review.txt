@@ -1,0 +1,23 @@
+Independent read-only review by /root/general_division, retained from the collaboration result.
+
+src/lm_sps_rcs.c and its public header follow every path in byte-original
+Luminary099/SPS_BACK-UP_RCS_CONTROL.agc. Raw16-bit BZMF includes overflow-sign
+and both zeros. Coast MP receives uncorrected AD; outer MP CCS uses corrected
+high word. Literal CTRCHECK inhibits both positive and negative nonzero
+counters despite the contrary source comment. Old-sense complement and
+classification, reversal counter4/12, signed L exchange and fixed TCQ
+saved-PC/Q3 effects agree. The domain/header retains external IRQ and scopes
+only actual SPSRCS public entry. No concrete defect found.
+
+Source-only full-state original comparisons, strict native and full ASAN/UBSAN
+match196608 complete2048-word-plus-IRQ states. Actual C64 diagnostic passes96
+complete source states and all4 containing constants. This review supports
+whole82-word containing-source certification under the declared canonical,
+coherentbank, producer-exclusion and fixed-return-Q contract; it does not
+certify complete docked autopilot or either complete flight application.
+
+Reviewed identities:
+ec96712e51592e21334641d62b1ebfdd7ee261ace4d806be5a0b750cd2a18b5e  src/lm_sps_rcs.c
+cfda98e57c1012086bbad249f03999413e63367a802d9116ef8dfcdb1f82e9b8  include/lm_sps_rcs.h
+a89dee780b008955d74a0167f3cd82bcffc2e7042e9a161a373cb7920722836c  tests/lm_sps_rcs_cases.c
+9f690baf2347c8ac3d35e48cd66aca755341d0f1058cab36889781b170e1231d  ../Luminary099/SPS_BACK-UP_RCS_CONTROL.agc

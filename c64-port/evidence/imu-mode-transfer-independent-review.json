@@ -1,0 +1,22 @@
+{
+  "review_kind": "Independent read-only original source/arithmetic/control review; no exhaustive replay claimed",
+  "reviewer": "general_division",
+  "files": {
+    "src/imu_mode_transfer.c": "de21ec5350e5d37909cfeece030578a4b50d6d952fba6823c613190cd30d76b3",
+    "include/imu_mode_transfer.h": "e5efa7042cc37f388d9f00c37ae5049c83609a4f404372f776d699d862cec64c",
+    "build/imu-mode-transfer-source-map.json": "ac8ca7582a055c5f4e7aa5fec2c801acbcfb7e9d694d1836d27ba8ee4baf8832",
+    "tools/imu_mode_transfer_literals.py": "fae89f806bcb7cf6fbc03d7928fff27b2a8786c410b1c857928e6e6a4232bd0d",
+    "../Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "../Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb"
+  },
+  "conclusion": "No arithmetic/control discrepancy in declared source stages. Producer-free SEND frontier, external delay/scheduler/alarm handoffs and no downstream-body claim are appropriate.",
+  "findings": [
+    "SENDPULS sets070000 and uses600MS=074 before real VARDELAY; command counters+0/activity quiet qualify peripheral boundary.",
+    "CA+ECE source WOR leaves updated channel12 in A and exact task Q.",
+    "STALL preserves all four CCS paths; MODEGOOD second CCS admits diminished0 and increments saved BUF2 before MG2; positive diminished values abort.",
+    "AOT TC STALL changes Q; RAD/IMU TCF/CAF keep incoming Q.",
+    "MAKECADR adds aligned saved bank and low FCADR, bounded domain avoids TS overflow, true TCQ returns Q3.",
+    "LM MODABORT exchanges BUF2 with normalized old A/L before BAILOUT1; CM plain TCPOODOO differs intentionally.",
+    "Passive literal getter600MS/abort1210 reads exact mapped source words."
+  ]
+}

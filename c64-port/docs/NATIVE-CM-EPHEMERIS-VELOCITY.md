@@ -1,0 +1,9 @@
+# Native Comanche lunar velocity
+
+`cm_ephemeris_velocity` implements original LUNVEL, VEM/VEMA, VSL2 and RVQ through the actual sole ORIGCHNG caller in orbital integration. NINEB4 starts the derivative coefficient at9/16. Eight Horner iterations multiply by saved time, store the partial vector, subtract ONEB4, multiply the next live VECOEM coefficient, and add the partial vector. The terminal TIX retains X1=6. All controls and arithmetic are compiled C, without decoding original instructions.
+
+The canonical2048-word image holds all persistent state. The declared original LUNVEL entry, ordinary prelaunch coefficients and time, coherent banks, five source VACs, excluded producers and actual ORIGCHNG return023377 are required. The return selects FB022000/NEWOPSLOC03377 and preserves source bank-sign debris. This is the orbital integration caller. Existing frozen arithmetic kernels remain unchanged. Unsupported entry/metadata contexts preserve the image.
+
+All65536 complete2053-word independently executed original states match strict native and full ASAN/UBSAN, decoded SHA256f2c3bc5523c28de6737ac8bf3b358e06c1eaeaf55d96ae3c8d8f7f704ca11572. Cases cover signed zeros, extrema, overflow, poisoned RAM, five VACs, allEB banks and both IRQ contexts; this is sampled coverage. Sixty-four complete frozen states pass stock-ROM PAL C64, mailboxa5400000, PRG33125bytes/load$8964/BSS$a964, hardware stack22/software244, compilerZP0. Nineteen invalid contexts and two null cases preserve the image.
+
+Fresh unchanged original assembly, the local derivative word map, source stream and independent caller/control review are retained. Host oracle code is excluded from the native target. Some inherited host log labels say LUNPOS; the frozen entry is explicitly02120 and the reference return is03377. The solar position and combined LSPOS composition, whole ephemerides file and both applications remain open.

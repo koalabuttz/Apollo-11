@@ -1,0 +1,108 @@
+{
+ "toolchain": "llvm-mos SDK (deps/llvm-mos), VICE x64sc PAL stock ROMs (tools/vice_run.py)",
+ "host_and_sanitizer": [
+  "PASS 8 frozen original KEPLERN entries, 21 admission guards and 90 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 501521398e5847c0dbb2e80b5232faaf4e7169b470ec08442c30663d5a5120e0",
+  "PASS65536 original KEPLERN entries strict native",
+  "PASS 8 frozen original KEPLERN entries, 21 admission guards and 90 frozen phase steps",
+  "PASS all retained source-state bytes: 269090816 SHA256 501521398e5847c0dbb2e80b5232faaf4e7169b470ec08442c30663d5a5120e0",
+  "PASS65536 original KEPLERN entries full ASAN/UBSAN"
+ ],
+ "c64": {
+  "results": [
+   "PASS: VICE PAL lm-conic-kepler-1.prg: 24 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-kepler-2.prg: 20 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-kepler-3.prg: 28 checks, 0 failures",
+   "PASS: VICE PAL lm-conic-kepler-4.prg: 18 checks, 0 failures"
+  ],
+  "groups": {
+   "1": {
+    "prg_bytes": 46317,
+    "prg_sha256": "6d07d722d94be9f60cecf0feb6992af38c30755fd1b93fdcf295d0815889d4fd",
+    "sections": {
+     "text": 36860,
+     "rodata": 9443,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$bcec",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "steps": 24
+   },
+   "2": {
+    "prg_bytes": 40930,
+    "prg_sha256": "da08700b03bcd756711399cfd697af84e5e4cc2f7d9959011f16dcc7d4abca11",
+    "sections": {
+     "text": 33762,
+     "rodata": 7154,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$a7e1",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "steps": 20
+   },
+   "3": {
+    "prg_bytes": 31647,
+    "prg_sha256": "4551d93a019aa8c245dfc7cbed2edd6799e8005dc916f161a80a78c0cd308e65",
+    "sections": {
+     "text": 19215,
+     "rodata": 12418,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$839e",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     6,
+     7,
+     13,
+     14,
+     15,
+     16,
+     17
+    ],
+    "steps": 28
+   },
+   "4": {
+    "prg_bytes": 36985,
+    "prg_sha256": "a42e3fe067077bc1fc473b6cba28558b4b042640f35928b38ae858f2ab4f4741",
+    "sections": {
+     "text": 30556,
+     "rodata": 6415,
+     "data": 0,
+     "bss": 0
+    },
+    "image_end": "$9878",
+    "images": "$e000/$f000 under KERNAL ROM ($01=$35)",
+    "phases": [
+     18,
+     19,
+     20,
+     21,
+     22
+    ],
+    "steps": 18
+   }
+  },
+  "whole_routine_note": "The whole routine is too big for one PRG beside two images, so the C64 check runs each phase in one of four PRGs from a debris-only base state; the host runs the same phase steps and the whole chain."
+ },
+ "source_audit": [
+  "PASS 338 assembled KEPLERN words on 318 source lines map to native literals in 23 functions"
+ ]
+}

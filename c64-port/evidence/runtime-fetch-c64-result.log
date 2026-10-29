@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete runtime_fetch group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 5201
+runtime_fetch-hardware-stack.bin: measured stack extent 14 bytes
+runtime_fetch-software-stack.bin: measured stack extent 13 bytes

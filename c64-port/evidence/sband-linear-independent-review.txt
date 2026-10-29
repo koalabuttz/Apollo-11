@@ -1,0 +1,11 @@
+Independent source review by peer /root/p66_source_map; retained by /root/frozen_storage.
+
+Reviewed identities:
+src/sband_vector_linear.c SHA256 4b9931a334d54f09aa0892e77187843935b7ef93317fc9c7cb018932281ad727
+include/sband_vector_linear.h SHA256 ab84842eae873f97cfdeeeef775a8602dfb55d6a00f35b5ab504e35dc64b4002
+../Luminary099/INTERPRETER.agc SHA256 26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e
+../Comanche055/INTERPRETER.agc SHA256 724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b
+
+Peer conclusion: No discrepancy found in the declared ordinary-descriptor/live ERA and immutable-fixed domains. Direct DMPSUB rereads major after minor writes; exact DVXSC scalar save/exchange order and VMODE -1 agree. VVXSC restores all pairs and source VROUND A/L. VAD/VSU encode distinct ADDRWD markers then read Y/Z/X in source order; overflow BUF/L/OVFIND and Q3 only on helper calls align. Guards exclude register/editing aliases and fixed bank crossing; six-word fixed object remains a caller-owned immutable precondition. No reviewer edits.
+
+This is independent source inspection. Exact original whole-state host/SAN and C64 execution evidence is separate. No entire containing file or arbitrary instruction dispatch is claimed.

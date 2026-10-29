@@ -1,0 +1,56 @@
+[
+  {
+    "name": "native-registry-148.prg",
+    "identical": true,
+    "tested_sha256": "f416f666f16bf500c271030df42b58e751793d1fec2397ed51d328a64f4418ad",
+    "rebuilt_sha256": "f416f666f16bf500c271030df42b58e751793d1fec2397ed51d328a64f4418ad"
+  },
+  {
+    "name": "native-registry-directory.prg",
+    "identical": true,
+    "tested_sha256": "8f2d8c4eecc46f8a34dd6b67787c550e82425433c1f521a285d0b9bbe179c408",
+    "rebuilt_sha256": "8f2d8c4eecc46f8a34dd6b67787c550e82425433c1f521a285d0b9bbe179c408"
+  },
+  {
+    "name": "native-registry-recurrence.prg",
+    "identical": true,
+    "tested_sha256": "c6151e2a08a980718ac8fc82ec88a25fa18fa9a43965b41ec81d365f46d7ec69",
+    "rebuilt_sha256": "c6151e2a08a980718ac8fc82ec88a25fa18fa9a43965b41ec81d365f46d7ec69"
+  },
+  {
+    "name": "native-registry-recurrence.d81",
+    "identical": true,
+    "tested_sha256": "233aa07d7db9c508c176b162b3860d110a0cf06026ef1c6313fa14a1e658e951",
+    "rebuilt_sha256": "233aa07d7db9c508c176b162b3860d110a0cf06026ef1c6313fa14a1e658e951"
+  },
+  {
+    "name": "p66-application-split-148.prg",
+    "identical": true,
+    "tested_sha256": "e6bee81f6772e343622a226087ef22966474c7319c0f89ccc75a405c0e12b5cd",
+    "rebuilt_sha256": "e6bee81f6772e343622a226087ef22966474c7319c0f89ccc75a405c0e12b5cd"
+  },
+  {
+    "name": "p66-application-split-155.prg",
+    "identical": true,
+    "tested_sha256": "80a90eb533792d246b1121c69da19014ab259d21dc9e223a55a53c74b3880be7",
+    "rebuilt_sha256": "80a90eb533792d246b1121c69da19014ab259d21dc9e223a55a53c74b3880be7"
+  },
+  {
+    "name": "p66-application-split-159.prg",
+    "identical": true,
+    "tested_sha256": "4f868005d3bb7e2d283ea832b63a2d3b5ee2024568a20d90c85b0753ec0deefd",
+    "rebuilt_sha256": "4f868005d3bb7e2d283ea832b63a2d3b5ee2024568a20d90c85b0753ec0deefd"
+  },
+  {
+    "name": "p66-application-split-recurrence.prg",
+    "identical": true,
+    "tested_sha256": "45d594d8ff34f6d09ac13a945f9f7db52dbdfad72f786ce65d93e817ce736e28",
+    "rebuilt_sha256": "45d594d8ff34f6d09ac13a945f9f7db52dbdfad72f786ce65d93e817ce736e28"
+  },
+  {
+    "name": "p66-application-split-recurrence.d81",
+    "identical": true,
+    "tested_sha256": "8c73d8c4c5c2a93c55c4e6a57ac20c1fc10bdf6eb18012c35f017bf330e31dd4",
+    "rebuilt_sha256": "8c73d8c4c5c2a93c55c4e6a57ac20c1fc10bdf6eb18012c35f017bf330e31dd4"
+  }
+]

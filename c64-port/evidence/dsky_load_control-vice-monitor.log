@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_load_control.prg from 0801 to 5C7A (547A bytes)
+WATCH: 1  C:$7c7b  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 7c7b)  297/$129,  34/$22
+.C:452a  8E 7B 7C    STX $7C7B      - A:80 X:A5 Y:40 SP:f1 NV-....C  309502465
+>C:7c7b  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_load_control-vice-mailbox.bin' from $7c7b to $7c7f
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_load_control-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_load_control-vice-software-stack.bin' from $c100 to $cfff

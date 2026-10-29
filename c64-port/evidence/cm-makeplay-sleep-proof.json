@@ -1,0 +1,66 @@
+{
+  "source_files": {
+    "include/cm_makeplay_sleep.h": "417184722767a70f5260425b0880be4800aebaf47126a1da81cf58bc3eaf1842",
+    "src/cm_makeplay_sleep.c": "328ee7d893b0114ffd1d6f91204a96b9ef96ff5bd82bbe72483a73ce7fc64e22",
+    "docs/COMANCHE-MAKEPLAY-SLEEP.md": "b9551554bd185fe9cbe17402bd7e394a85792d3ed6c104a9f569c8ac1d374bce",
+    "tests/cm_makeplay_sleep_cases.h": "d8a77607c0639e07876d674572a5e75002bd2a6517e7de1fd6ced50ac9287c3d",
+    "tests/cm_makeplay_sleep_check.h": "3356d9234b0242ea5d1cc2f3284d295aaea721954e8cfa1d3ec419122beaa5e6",
+    "tests/test_cm_makeplay_sleep.c": "efd649e790f3bf02388992c8974bc0c6ee4b8368f678f3d903ef8f8bae6356cc",
+    "tests/cm_makeplay_sleep_vectors.h": "355e7bff9b21808a1fc1091730327c95cf51b78b453d798f93677763bfe2c439",
+    "tests/cm_makeplay_sleep_check.c": "dc294da93389d933d17d478310a9facab350c732087c3caba4391c4811880862",
+    "tests/cm_makeplay_sleep_cases.c": "19ce1faf12ae5c370e2ffdc6a6276406153fa5bdb60c2481379fe26e5bee704f",
+    "tools/cm_makeplay_sleep_snapshot.c": "f2bf467e016632741b0298823293b090d902424000f153d33652b9e93d1a1e42",
+    "tools/freeze_cm_makeplay_sleep.py": "5c4f3fdcb9e5d38ececbbe95ebaaaea58957c7e0237030c7cba575331642b570",
+    "tools/cm_makeplay_sleep.mk": "241425d2b34e3bdf764543227713750768cc638e24ff38b4c43a7cdf14590ef9",
+    "tools/cm_makeplay_sleep_sanitize_stream.py": "983d42c976b96189dc8e0499d2570d748843ba89e568eddde9bcf0d9bc526367",
+    "tools/cm_makeplay_sleep_vice_test.py": "6e2a0354d84dfd28f0066129b39d066d503f57240a4f79ea31e091f5f25353cf",
+    "tools/cm_makeplay_sleep_reference.c": "6e8b711dcd418b4fed8156fd5f1d767589f20e3d806f2e8f8e761ecfd9d10ab1",
+    "tools/cm_makeplay_sleep_diagnostic.c": "c6efa4a3d4c5ca9265c6387e530d2a090af3eb82281acd9bbdaa8ded66cf9a16",
+    "tools/cm_makeplay_sleep_inputs.c": "79d57973b84b1cce86c37f36c289b5a70e77e97f8e604de83bbd0813a3a5bc50",
+    "tools/cm_makeplay_sleep_differential.py": "1bd5f0a340e914be96e784e85df137893cedd4cea78d3b32c68dc1cb6cd5b75f"
+  },
+  "native_dependencies": {
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "tests/cm_trig_cases.c": "b39716b836fe437dfac5087f862445620548b89f95ff1b6c29dd04186eaf60c2",
+    "tests/cm_clockjob_cases.c": "d8bd07bfee1a77f57a660dcac5395f5a832db6bbcba43c700f95efd34713b66e",
+    "tests/cm_display_control_cases.c": "124ce7b2ec4079f3f32f163fe6208b594342a6e58c509f02e47bfc6f7b615e20"
+  },
+  "original_sources": {
+    "../Comanche055/DISPLAY_INTERFACE_ROUTINES.agc": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+    "../Comanche055/SERVICE_ROUTINES.agc": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+    "deps/cm-services-fixture/MAIN.agc.bin": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  },
+  "artifacts": {
+    "evidence/cm-makeplay-sleep-reference.snapshots.xz": "3dd3974b5f16d21c91f99b114bad81ace72a304cc78d0d34890a05160ff5b161",
+    "evidence/cm-makeplay-sleep-stream-sha.json": "e92c304f08662d4c21189c25779af9a59331e9ba6810dac18f371c064f702762",
+    "evidence/cm-makeplay-sleep-differential.log": "81363089b2de6bf2f6f92bc69f73cb2f00ddde01522eb40d329f1737e513a26b",
+    "evidence/cm-makeplay-sleep-freeze.log": "5fbf5fc9661ec4cd9ca9b31c2f1c7b8f3944c58fab4b00845a32221b9733c1a4",
+    "evidence/cm-makeplay-sleep-validation.log": "b2446e0b63b6fcfc418b9769b483641463eedf211fd83ebf820c7557b9a67f17",
+    "evidence/cm-makeplay-sleep-c64-result.log": "717dcb5dbbab0e4e1d6b1dd989982aa175cb2d99f4bbc5d53a2784efcf32db36",
+    "evidence/cm_makeplay_sleep.prg": "8b1003447439fd3c5e9f54f4852ce41df52dde2948d5d11e54222628c89a408d",
+    "evidence/cm_makeplay_sleep.map": "0f17d41f303b99e71cdf5293cca4ab515329f51bb1219a8462406c4352bd6012",
+    "evidence/cm_makeplay_sleep-vice-mailbox.bin": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5",
+    "evidence/cm_makeplay_sleep-hardware-stack.bin": "9204a7333a6d026eb55dcae75aa077ddebadd9686d74a745f3732b7d02e2374c",
+    "evidence/cm_makeplay_sleep-software-stack.bin": "66351a0536d9bfae7538c304af6d705e98c1a5c219d5355fdb73285b6066b769",
+    "evidence/cm_makeplay_sleep-vice.log": "4d4776f9e0ccec7abe91a3d6b8e267b2ca27c2dbb7e54cb4f617fa6dbb71de96",
+    "evidence/cm_makeplay_sleep-vice-monitor.log": "68e5c2e942e3c6daaa0ad9c37a3b30b1738b995a4042fae6c500cb04bc456ca8",
+    "evidence/cm_makeplay_sleep-vice.mon": "cd854ccb95a1a24dffdbe6ba82b394af2f3ecf93eb3fde4f471d47e8d96c7295"
+  },
+  "states": {
+    "complete_original_states": 6144,
+    "state_words": 2051,
+    "frozen": 64,
+    "invalid_boundaries": 39,
+    "uncompressed_SHA256": "fa1b35a32a571822a1adc6372a494b009c57e575b28a60bd146a6dfa4ff27f0d",
+    "strict_and_SAN": "all complete source outputs byte-identical; only reference archive duplicated into evidence"
+  },
+  "target": {
+    "mailbox": "a500004000",
+    "prg_bytes": 5141,
+    "hardware_stack_bytes": 14,
+    "rom_stack_bytes": 14,
+    "software_stack_bytes": 73,
+    "additional_zero_page_bytes": 0
+  },
+  "scope": "Normal display GOSLEEPS, XCHTOEND/XCHSLEEP return, and PLAYJUM1; source services and Pinball consumer are separate native boundaries"
+}

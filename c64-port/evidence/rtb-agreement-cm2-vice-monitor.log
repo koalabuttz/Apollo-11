@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/rtb-agreement-cm2.prg from 0801 to 1D41 (1541 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  134/$086,  12/$0c
+.C:10f6  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   23477718
+>C:c080  a5 00 00 20  12                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/rtb-agreement-cm2-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/rtb-agreement-cm2-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/rtb-agreement-cm2-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/rtb-agreement-cm2.prg from 0801 to 1D72 (1572 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  102/$066,  32/$20
+.C:1129  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   23613314
+>C:c080  a5 00 00 20  12                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/rtb-agreement-cm2-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/rtb-agreement-cm2-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/rtb-agreement-cm2-software-stack.bin' from $c100 to $cfff

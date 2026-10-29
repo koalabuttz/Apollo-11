@@ -1,0 +1,1374 @@
+{
+ "sources": {
+  "Luminary099/THROTTLE_CONTROL_ROUTINES.agc": "68a812f18e678248d64ea62a56284e6a8a415925ea41ab8e35293f94a0c22efe",
+  "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2"
+ },
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_throttle.c",
+ "native_sha256": "566ec49287ea861e37fa29b4cfbc6913947a888c6323c1b28e967e5dbd7c537d",
+ "source_words": 136,
+ "source_lines": 136,
+ "line_map": [
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 37,
+   "address": "31,2216",
+   "source": "THROTTLE CA ABDELV",
+   "words": [
+    "31246"
+   ],
+   "native": "throttle"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 38,
+   "address": "31,2217",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "throttle"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 39,
+   "address": "31,2220",
+   "source": "MP /AF/CNST",
+   "words": [
+    "72417"
+   ],
+   "native": "throttle"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 40,
+   "address": "31,2221",
+   "source": "+3 EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "throttle3_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 41,
+   "address": "31,2222",
+   "source": "QXCH RTNHOLD",
+   "words": [
+    "23607"
+   ],
+   "native": "throttle3_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 42,
+   "address": "31,2223",
+   "source": "AFDUMP TC MASSMULT",
+   "words": [
+    "02400"
+   ],
+   "native": "throttle3_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 43,
+   "address": "31,2224",
+   "source": "DXCH FP",
+   "words": [
+    "53470"
+   ],
+   "native": "present"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 44,
+   "address": "31,2225",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "present"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 45,
+   "address": "31,2226",
+   "source": "DCA /AFC/",
+   "words": [
+    "31464"
+   ],
+   "native": "present"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 46,
+   "address": "31,2227",
+   "source": "TC MASSMULT",
+   "words": [
+    "02400"
+   ],
+   "native": "present"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 47,
+   "address": "31,2230",
+   "source": "TS FC",
+   "words": [
+    "55615"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 48,
+   "address": "31,2231",
+   "source": "DXCH FCODD",
+   "words": [
+    "53466"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 52,
+   "address": "31,2232",
+   "source": "CS TTHROT",
+   "words": [
+    "41617"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 53,
+   "address": "31,2233",
+   "source": "AD TIME1",
+   "words": [
+    "60025"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 54,
+   "address": "31,2234",
+   "source": "MASK POSMAX",
+   "words": [
+    "74733"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 55,
+   "address": "31,2235",
+   "source": "COM",
+   "words": [
+    "40000"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 56,
+   "address": "31,2236",
+   "source": "AD 3SECS",
+   "words": [
+    "65002"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 57,
+   "address": "31,2237",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 58,
+   "address": "31,2240",
+   "source": "BZMF WHERETO",
+   "words": [
+    "62244"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 59,
+   "address": "31,2241",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 60,
+   "address": "31,2242",
+   "source": "DCA FWEIGHT",
+   "words": [
+    "31611"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 61,
+   "address": "31,2243",
+   "source": "DAS FP",
+   "words": [
+    "21470"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 67,
+   "address": "31,2244",
+   "source": "WHERETO CA EBANK5",
+   "words": [
+    "35014"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 68,
+   "address": "31,2245",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 71,
+   "address": "31,2246",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 72,
+   "address": "31,2247",
+   "source": "DCA LOWCRIT",
+   "words": [
+    "31507"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 73,
+   "address": "31,2250",
+   "source": "DXCH L*WCR*T",
+   "words": [
+    "52131"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 74,
+   "address": "31,2251",
+   "source": "CA EBANK7",
+   "words": [
+    "35016"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 75,
+   "address": "31,2252",
+   "source": "TS EBANK",
+   "words": [
+    "54003"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 77,
+   "address": "31,2253",
+   "source": "CS ZERO",
+   "words": [
+    "44755"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 78,
+   "address": "31,2254",
+   "source": "TS PIFPSET",
+   "words": [
+    "55606"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 79,
+   "address": "31,2255",
+   "source": "CS H*GHCR*T",
+   "words": [
+    "40131"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 80,
+   "address": "31,2256",
+   "source": "AD FCOLD",
+   "words": [
+    "61620"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 81,
+   "address": "31,2257",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 82,
+   "address": "31,2260",
+   "source": "BZMF LOWFCOLD",
+   "words": [
+    "62272"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 83,
+   "address": "31,2261",
+   "source": "CS L*WCR*T",
+   "words": [
+    "40130"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 84,
+   "address": "31,2262",
+   "source": "AD FCODD",
+   "words": [
+    "61465"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 85,
+   "address": "31,2263",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 86,
+   "address": "31,2264",
+   "source": "BZMF FCOMPSET",
+   "words": [
+    "62267"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 87,
+   "address": "31,2265",
+   "source": "CA FP",
+   "words": [
+    "31467"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 88,
+   "address": "31,2266",
+   "source": "TCF FLATOUT1",
+   "words": [
+    "12277"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 90,
+   "address": "31,2267",
+   "source": "FCOMPSET CS FMAXODD",
+   "words": [
+    "42002"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 91,
+   "address": "31,2270",
+   "source": "AD FP",
+   "words": [
+    "61467"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 92,
+   "address": "31,2271",
+   "source": "TCF FLATOUT2",
+   "words": [
+    "12301"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 94,
+   "address": "31,2272",
+   "source": "LOWFCOLD CS H*GHCR*T",
+   "words": [
+    "40131"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 95,
+   "address": "31,2273",
+   "source": "AD FCODD",
+   "words": [
+    "61465"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 96,
+   "address": "31,2274",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 97,
+   "address": "31,2275",
+   "source": "BZMF DOPIF",
+   "words": [
+    "62302"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 99,
+   "address": "31,2276",
+   "source": "CA FMAXPOS",
+   "words": [
+    "32003"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 100,
+   "address": "31,2277",
+   "source": "FLATOUT1 DXCH FCODD",
+   "words": [
+    "53466"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 101,
+   "address": "31,2300",
+   "source": "CA FEXTRA",
+   "words": [
+    "34737"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 102,
+   "address": "31,2301",
+   "source": "FLATOUT2 TS PIFPSET",
+   "words": [
+    "55606"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 114,
+   "address": "31,2302",
+   "source": "DOPIF TC FASTCHNG",
+   "words": [
+    "03740"
+   ],
+   "native": "desired"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 115,
+   "address": "31,2303",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "pif"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 116,
+   "address": "31,2304",
+   "source": "DCA FCODD",
+   "words": [
+    "31466"
+   ],
+   "native": "pif"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 117,
+   "address": "31,2305",
+   "source": "TS FCOLD",
+   "words": [
+    "55620"
+   ],
+   "native": "pif"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 118,
+   "address": "31,2306",
+   "source": "DXCH PIF",
+   "words": [
+    "53613"
+   ],
+   "native": "pif"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 119,
+   "address": "31,2307",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "pif"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 121,
+   "address": "31,2310",
+   "source": "DCS FP",
+   "words": [
+    "41470"
+   ],
+   "native": "pif"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 122,
+   "address": "31,2311",
+   "source": "DAS PIF",
+   "words": [
+    "21613"
+   ],
+   "native": "pif"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 124,
+   "address": "31,2312",
+   "source": "DOIT CA PIF",
+   "words": [
+    "31612"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 125,
+   "address": "31,2313",
+   "source": "AD PIFPSET",
+   "words": [
+    "61606"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 126,
+   "address": "31,2314",
+   "source": "TS PSEUDO55",
+   "words": [
+    "55614"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 127,
+   "address": "31,2315",
+   "source": "TS THRUST",
+   "words": [
+    "54055"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 128,
+   "address": "31,2316",
+   "source": "CAF BIT4",
+   "words": [
+    "34750"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 129,
+   "address": "31,2317",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 130,
+   "address": "31,2320",
+   "source": "WOR CHAN14",
+   "words": [
+    "05014"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 131,
+   "address": "31,2321",
+   "source": "CA TIME1",
+   "words": [
+    "30025"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 132,
+   "address": "31,2322",
+   "source": "TS TTHROT",
+   "words": [
+    "55617"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 146,
+   "address": "31,2323",
+   "source": "CA THISTPIP +1",
+   "words": [
+    "31762"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 147,
+   "address": "31,2324",
+   "source": "TS BUF",
+   "words": [
+    "54130"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 149,
+   "address": "31,2325",
+   "source": "CS MODREG",
+   "words": [
+    "41011"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 150,
+   "address": "31,2326",
+   "source": "AD DEC66",
+   "words": [
+    "62501"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 151,
+   "address": "31,2327",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 152,
+   "address": "31,2330",
+   "source": "BZF FWCOMP",
+   "words": [
+    "12335"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 154,
+   "address": "31,2331",
+   "source": "CA PIPTIME +1",
+   "words": [
+    "31235"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 155,
+   "address": "31,2332",
+   "source": "TS BUF",
+   "words": [
+    "54130"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 156,
+   "address": "31,2333",
+   "source": "CAF 4SECS",
+   "words": [
+    "35003"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 157,
+   "address": "31,2334",
+   "source": "TCF FWCOMP +1",
+   "words": [
+    "12336"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 159,
+   "address": "31,2335",
+   "source": "FWCOMP CAF 2SECS",
+   "words": [
+    "35000"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 160,
+   "address": "31,2336",
+   "source": "+1 TS Q",
+   "words": [
+    "54002"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 161,
+   "address": "31,2337",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 162,
+   "address": "31,2340",
+   "source": "MP BIT6",
+   "words": [
+    "74746"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 163,
+   "address": "31,2341",
+   "source": "LXCH BUF +1",
+   "words": [
+    "22131"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 164,
+   "address": "31,2342",
+   "source": "CS BUF",
+   "words": [
+    "40130"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 165,
+   "address": "31,2343",
+   "source": "AD TIME1",
+   "words": [
+    "60025"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 166,
+   "address": "31,2344",
+   "source": "AD THROTLAG",
+   "words": [
+    "62004"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 167,
+   "address": "31,2345",
+   "source": "MASK LOW8",
+   "words": [
+    "74357"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 168,
+   "address": "31,2346",
+   "source": "ZL",
+   "words": [
+    "22007"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 169,
+   "address": "31,2347",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 171,
+   "address": "31,2350",
+   "source": "DV Q",
+   "words": [
+    "10002"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 172,
+   "address": "31,2351",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 173,
+   "address": "31,2352",
+   "source": "MP PIF",
+   "words": [
+    "71612"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 174,
+   "address": "31,2353",
+   "source": "DOUBLE",
+   "words": [
+    "60000"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 175,
+   "address": "31,2354",
+   "source": "DXCH FWEIGHT",
+   "words": [
+    "53611"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 176,
+   "address": "31,2355",
+   "source": "CCS PIF",
+   "words": [
+    "11612"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 177,
+   "address": "31,2356",
+   "source": "AD ONE",
+   "words": [
+    "64753"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 178,
+   "address": "31,2357",
+   "source": "TCF +2",
+   "words": [
+    "12361"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 179,
+   "address": "31,2360",
+   "source": "AD ONE",
+   "words": [
+    "64753"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 180,
+   "address": "31,2361",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 181,
+   "address": "31,2362",
+   "source": "MP PIF",
+   "words": [
+    "71612"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 182,
+   "address": "31,2363",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 183,
+   "address": "31,2364",
+   "source": "DV BUF +1",
+   "words": [
+    "10131"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 184,
+   "address": "31,2365",
+   "source": "ZL",
+   "words": [
+    "22007"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 185,
+   "address": "31,2366",
+   "source": "DAS FWEIGHT",
+   "words": [
+    "21611"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 187,
+   "address": "31,2367",
+   "source": "THDUMP TC RTNHOLD",
+   "words": [
+    "01607"
+   ],
+   "native": "doit"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 191,
+   "address": "31,2370",
+   "source": "FLATOUT CAF BIT13",
+   "words": [
+    "34737"
+   ],
+   "native": "flatout"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 192,
+   "address": "31,2371",
+   "source": "WHATOUT TS PIFPSET",
+   "words": [
+    "55606"
+   ],
+   "native": "whatout_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 193,
+   "address": "31,2372",
+   "source": "CS ZERO",
+   "words": [
+    "44755"
+   ],
+   "native": "whatout_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 194,
+   "address": "31,2373",
+   "source": "TS FCOLD",
+   "words": [
+    "55620"
+   ],
+   "native": "whatout_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 195,
+   "address": "31,2374",
+   "source": "TS PIF",
+   "words": [
+    "55612"
+   ],
+   "native": "whatout_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 196,
+   "address": "31,2375",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "whatout_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 197,
+   "address": "31,2376",
+   "source": "QXCH RTNHOLD",
+   "words": [
+    "23607"
+   ],
+   "native": "whatout_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 198,
+   "address": "31,2377",
+   "source": "TCF DOIT",
+   "words": [
+    "12312"
+   ],
+   "native": "whatout_body"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 202,
+   "address": "31,2400",
+   "source": "MASSMULT EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 203,
+   "address": "31,2401",
+   "source": "QXCH BUF",
+   "words": [
+    "22130"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 204,
+   "address": "31,2402",
+   "source": "DXCH MPAC",
+   "words": [
+    "52155"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 205,
+   "address": "31,2403",
+   "source": "TC DMP",
+   "words": [
+    "07103"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 206,
+   "address": "31,2404",
+   "source": "ADRES MASS",
+   "words": [
+    "01244"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 207,
+   "address": "31,2405",
+   "source": "TC DMP",
+   "words": [
+    "07103"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 208,
+   "address": "31,2406",
+   "source": "ADRES SCALEFAC",
+   "words": [
+    "02005"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 209,
+   "address": "31,2407",
+   "source": "TC TPAGREE",
+   "words": [
+    "07257"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 210,
+   "address": "31,2410",
+   "source": "CA MPAC",
+   "words": [
+    "30154"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 211,
+   "address": "31,2411",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 212,
+   "address": "31,2412",
+   "source": "BZF +3",
+   "words": [
+    "12415"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 213,
+   "address": "31,2413",
+   "source": "CAF POSMAX",
+   "words": [
+    "34733"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 214,
+   "address": "31,2414",
+   "source": "TC BUF",
+   "words": [
+    "00130"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 215,
+   "address": "31,2415",
+   "source": "DXCH MPAC +1",
+   "words": [
+    "52156"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 216,
+   "address": "31,2416",
+   "source": "TC BUF",
+   "words": [
+    "00130"
+   ],
+   "native": "massmult"
+  },
+  {
+   "path": "Luminary099/THROTTLE_CONTROL_ROUTINES.agc",
+   "line": 222,
+   "address": "31,2417",
+   "source": "/AF/CNST DEC .13107",
+   "words": [
+    "04143"
+   ],
+   "native": "throttle"
+  },
+  {
+   "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+   "line": 1423,
+   "address": "31,3740",
+   "source": "FASTCHNG CA EBANK3",
+   "words": [
+    "35007"
+   ],
+   "native": "fastchng"
+  },
+  {
+   "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+   "line": 1424,
+   "address": "31,3741",
+   "source": "XCH EBANK",
+   "words": [
+    "56003"
+   ],
+   "native": "fastchng"
+  },
+  {
+   "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+   "line": 1425,
+   "address": "31,3742",
+   "source": "DXCH L",
+   "words": [
+    "52002"
+   ],
+   "native": "fastchng"
+  },
+  {
+   "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+   "line": 1426,
+   "address": "31,3743",
+   "source": "TS PHSNAME3",
+   "words": [
+    "55442"
+   ],
+   "native": "fastchng"
+  },
+  {
+   "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+   "line": 1427,
+   "address": "31,3744",
+   "source": "LXCH EBANK",
+   "words": [
+    "22003"
+   ],
+   "native": "fastchng"
+  },
+  {
+   "path": "Luminary099/LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+   "line": 1429,
+   "address": "31,3745",
+   "source": "TC A",
+   "words": [
+    "00000"
+   ],
+   "native": "fastchng"
+  }
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged files reproduces the certified rope; every assembled word of THROTTLE_CONTROL_ROUTINES and of FASTCHNG has one native owner holding its erasable address, the rope value of its fixed operand, its branch target (or composes it inline), its channel or its constant."
+}

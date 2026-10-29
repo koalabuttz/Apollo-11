@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 28 continuous sequences/92 complete dsky_nv_consumer group original-assembly states; retained memory unchanged
+Mailbox: a500001c00
+PRG bytes: 29192
+dsky_nv_consumer-hardware-stack.bin: measured stack extent 38 bytes
+dsky_nv_consumer-software-stack.bin: measured stack extent 122 bytes

@@ -1,0 +1,10 @@
+Independent read-only RTB vector/frontier review
+Reviewer: /root/general_division
+
+No defect in the declared bounded domain. Pair agreement correctly models ALSIGNAG raw +040000 overflow value, high-word zero clearing and sign reversal. Three DXCH groups preserve source A/L and direct TC A return. NORMUNIT/NORMUNX1 retain actual VAC index, conditional minor-component MP/DAS prescale, count13/0 store and POSTJUMP UNIT+1 bank/Q effects. VECSGNAG and PULSEIMU preserve distinct literal BANKCALL/SWRETURN/selected-entry effects. UNIT and IMUPULSE bodies remain explicitly outside this packet. Reviewer made no edits.
+
+Reviewed byte identities:
+838a99c97aeb1728a7706bb8db2df407dd9d223fb6c7d5957a7b7bb9048618fa  include/rtb_vector.h
+d0cdd03869ffc05b7b1d5712b6bb28957c97c7944328bfca2eb3d6677daab70f  src/rtb_vector.c
+86b7ba208c4036568cd443b36d5cff842f44076777a35e4b31a0538450f07889  tests/rtb_vector_cases.c
+a710ded06af9ff7a0f451731c296e4db8ae725a2e2da8cfa2fe26b429ab8a62b  build/rtb-vector-source-map.json

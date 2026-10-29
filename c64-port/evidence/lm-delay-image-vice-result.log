@@ -1,0 +1,5 @@
+PASS: stock PAL C64 ROMs + D81 virtual IEC; resident fixed source bridges and32 frozen input/check disk modules
+64 full raw delay/internal-WAIT2/TASKOVER/caller-return/alarm states; TASKOVER body remains a separate qualified service
+64 frozen FIXDELAY/VARDELAY/WAIT2 entries; allSUPER forms, caller I/$01 restored; full canonical image and explicit I/O
+Mailbox: a50000400002 softwarestack measured extent: 120 hardwarestack extent: 29
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms +drive8truedrive -virtualdev8 -iecdevice8 -device8 1 -drive8type 1581 -8 /workspace/Apollo-11/c64-port/build/lm-delay-image.d81 -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/lm-delay-image-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/lm-delay-image-vice-monitor.log -monlog -limitcycles 16000000000

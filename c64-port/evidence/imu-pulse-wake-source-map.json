@@ -1,0 +1,201 @@
+{
+  "lm": {
+    "source_file": "Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "assembled_sha256": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [],
+    "source_group_words": 9,
+    "words": [
+      {
+        "original_line": 477,
+        "bank": "07",
+        "address": "3374",
+        "physical_fixed_word": 7932,
+        "raw_octal": "11314",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 478,
+        "bank": "07",
+        "address": "3375",
+        "physical_fixed_word": 7933,
+        "raw_octal": "13372",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 480,
+        "bank": "07",
+        "address": "3376",
+        "physical_fixed_word": 7934,
+        "raw_octal": "54156",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 481,
+        "bank": "07",
+        "address": "3377",
+        "physical_fixed_word": 7935,
+        "raw_octal": "00006",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 482,
+        "bank": "07",
+        "address": "3400",
+        "physical_fixed_word": 7936,
+        "raw_octal": "30155",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 483,
+        "bank": "07",
+        "address": "3401",
+        "physical_fixed_word": 7937,
+        "raw_octal": "52134",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 484,
+        "bank": "07",
+        "address": "3402",
+        "physical_fixed_word": 7938,
+        "raw_octal": "34753",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 485,
+        "bank": "07",
+        "address": "3403",
+        "physical_fixed_word": 7939,
+        "raw_octal": "13334",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 487,
+        "bank": "07",
+        "address": "3404",
+        "physical_fixed_word": 7940,
+        "raw_octal": "17374",
+        "native_group": "LGWAKE"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "GWAKE": "03374",
+      "JOBSLEEP": "05133",
+      "WAITLIST": "05203",
+      "WAITLIST_return": "03337",
+      "idle_ADVAN": "03214"
+    },
+    "remaining": [
+      "selected basic or interpreted job body",
+      "TASKOVER scheduler/interrupt continuation",
+      "asynchronous gyro pulse delivery and active-channel augmentation backend",
+      "other containing-file entries"
+    ]
+  },
+  "cm": {
+    "source_file": "Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc",
+    "original_sha256": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "assembled_sha256": "93f871dc8ba8fcda0c2129f81e86f119026a3aa1562067f63eb32d01c7bcd622",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_audit_dependency": "evidence/imu-pulse-source-audit.json",
+    "source_repairs": [
+      178,
+      523,
+      596,
+      850
+    ],
+    "source_group_words": 9,
+    "words": [
+      {
+        "original_line": 481,
+        "bank": "07",
+        "address": "3257",
+        "physical_fixed_word": 7855,
+        "raw_octal": "11304",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 482,
+        "bank": "07",
+        "address": "3260",
+        "physical_fixed_word": 7856,
+        "raw_octal": "13255",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 484,
+        "bank": "07",
+        "address": "3261",
+        "physical_fixed_word": 7857,
+        "raw_octal": "54156",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 485,
+        "bank": "07",
+        "address": "3262",
+        "physical_fixed_word": 7858,
+        "raw_octal": "00006",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 486,
+        "bank": "07",
+        "address": "3263",
+        "physical_fixed_word": 7859,
+        "raw_octal": "30155",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 487,
+        "bank": "07",
+        "address": "3264",
+        "physical_fixed_word": 7860,
+        "raw_octal": "52134",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 488,
+        "bank": "07",
+        "address": "3265",
+        "physical_fixed_word": 7861,
+        "raw_octal": "35017",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 489,
+        "bank": "07",
+        "address": "3266",
+        "physical_fixed_word": 7862,
+        "raw_octal": "13217",
+        "native_group": "GWAKE restore/resleep"
+      },
+      {
+        "original_line": 491,
+        "bank": "07",
+        "address": "3267",
+        "physical_fixed_word": 7863,
+        "raw_octal": "17257",
+        "native_group": "LGWAKE"
+      }
+    ],
+    "containing_file_status": "partial",
+    "compiled_boundaries": {
+      "GWAKE": "03257",
+      "JOBSLEEP": "05175",
+      "WAITLIST": "05245",
+      "WAITLIST_return": "03222",
+      "idle_ADVAN": "03231"
+    },
+    "remaining": [
+      "selected basic or interpreted job body",
+      "TASKOVER scheduler/interrupt continuation",
+      "asynchronous gyro pulse delivery and active-channel augmentation backend",
+      "other containing-file entries"
+    ]
+  }
+}

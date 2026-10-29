@@ -1,0 +1,1143 @@
+{
+ "source_path": "Luminary099/CONIC_SUBROUTINES.agc",
+ "source_sha256": "26409d71cdac421bef8dd11aa336abb0abda64f5ebf994c825eecfa866640581",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native_path": "src/lm_conic_timerad.c",
+ "native_sha256": "6fbf27f5eb63ef920132d87a584eed3e2df410f486b6011408683f03aa2d61d8",
+ "source_words": 123,
+ "source_lines": 123,
+ "symbols": {
+  "TIMERAD": "12,3547",
+  "TERMNVEC": "12,3630",
+  "CIRCULAR": "12,3660",
+  "BADR2": "12,3664",
+  "APSIDES": "12,3674",
+  "GETECC": "12,3710",
+  "INFINAPO": "12,3737",
+  "RTNTR": "E5,1710",
+  "RTNAPSE": "E5,1710",
+  "SGNRDOT": "E5,1754",
+  "RDESIRED": "E5,1755",
+  "ECC": "E5,1751",
+  "COSF": "0000030",
+  "SOLNSW": "0000127",
+  "APSESW": "0000202",
+  "LODPHALF": "12,2004",
+  "KEPZERO": "12,2006",
+  "LDPOSMAX": "12,2017",
+  "DP1/4": "12,3755"
+ },
+ "line_map": [
+  {
+   "line": 1597,
+   "address": "12,3547",
+   "source": "TIMERAD STQ SETPD",
+   "words": [
+    "40220"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1598,
+   "address": "12,3550",
+   "source": "RTNTR",
+   "words": [
+    "02710"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1599,
+   "address": "12,3551",
+   "source": "0",
+   "words": [
+    "00001"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1600,
+   "address": "12,3552",
+   "source": "BOV",
+   "words": [
+    "77600"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1601,
+   "address": "12,3553",
+   "source": "+1",
+   "words": [
+    "25554"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1602,
+   "address": "12,3554",
+   "source": "VLOAD PDVL",
+   "words": [
+    "63375"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1603,
+   "address": "12,3555",
+   "source": "RVEC",
+   "words": [
+    "02655"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1604,
+   "address": "12,3556",
+   "source": "VVEC",
+   "words": [
+    "02744"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1605,
+   "address": "12,3557",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1606,
+   "address": "12,3560",
+   "source": "PARAM",
+   "words": [
+    "11064"
+   ],
+   "native": "ltr_timerad"
+  },
+  {
+   "line": 1607,
+   "address": "12,3561",
+   "source": "BOV DLOAD",
+   "words": [
+    "71200"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1608,
+   "address": "12,3562",
+   "source": "COGAOVFL",
+   "words": [
+    "24764"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1609,
+   "address": "12,3563",
+   "source": "D1/32",
+   "words": [
+    "11043"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1610,
+   "address": "12,3564",
+   "source": "DSU DMP",
+   "words": [
+    "41225"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1611,
+   "address": "12,3565",
+   "source": "R1A",
+   "words": [
+    "02742"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1612,
+   "address": "12,3566",
+   "source": "P",
+   "words": [
+    "02740"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1613,
+   "address": "12,3567",
+   "source": "SQRT DMP",
+   "words": [
+    "41366"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1614,
+   "address": "12,3570",
+   "source": "COGA",
+   "words": [
+    "02766"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1615,
+   "address": "12,3571",
+   "source": "SL4 VXSC",
+   "words": [
+    "74212"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1616,
+   "address": "12,3572",
+   "source": "U2",
+   "words": [
+    "02712"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1617,
+   "address": "12,3573",
+   "source": "PDDL DSU",
+   "words": [
+    "45325"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1618,
+   "address": "12,3574",
+   "source": "D1/64",
+   "words": [
+    "11035"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1619,
+   "address": "12,3575",
+   "source": "R1A",
+   "words": [
+    "02742"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1620,
+   "address": "12,3576",
+   "source": "VXSC VSU",
+   "words": [
+    "52361"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1621,
+   "address": "12,3577",
+   "source": "UR1",
+   "words": [
+    "02722"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1622,
+   "address": "12,3600",
+   "source": "VSL4 UNIT",
+   "words": [
+    "53512"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1623,
+   "address": "12,3601",
+   "source": "BOV",
+   "words": [
+    "77600"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1624,
+   "address": "12,3602",
+   "source": "CIRCULAR",
+   "words": [
+    "25660"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1625,
+   "address": "12,3603",
+   "source": "PDDL NORM",
+   "words": [
+    "60325"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1626,
+   "address": "12,3604",
+   "source": "RDESIRED",
+   "words": [
+    "02756"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1627,
+   "address": "12,3605",
+   "source": "X1",
+   "words": [
+    "00047"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1628,
+   "address": "12,3606",
+   "source": "PDDL DMP",
+   "words": [
+    "41325"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1629,
+   "address": "12,3607",
+   "source": "R1",
+   "words": [
+    "00041"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1630,
+   "address": "12,3610",
+   "source": "P",
+   "words": [
+    "02740"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1631,
+   "address": "12,3611",
+   "source": "SL* DDV",
+   "words": [
+    "56257"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1632,
+   "address": "12,3612",
+   "source": "0,1",
+   "words": [
+    "20201"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1633,
+   "address": "12,3613",
+   "source": "DSU DDV",
+   "words": [
+    "56225"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1634,
+   "address": "12,3614",
+   "source": "D1/16",
+   "words": [
+    "11041"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1635,
+   "address": "12,3615",
+   "source": "36D",
+   "words": [
+    "00045"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1636,
+   "address": "12,3616",
+   "source": "STORE COSF",
+   "words": [
+    "00031"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1637,
+   "address": "12,3617",
+   "source": "BOV DSQ",
+   "words": [
+    "63400"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1638,
+   "address": "12,3620",
+   "source": "BADR2",
+   "words": [
+    "25664"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1639,
+   "address": "12,3621",
+   "source": "BDSU BMN",
+   "words": [
+    "50021"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1640,
+   "address": "12,3622",
+   "source": "D1/4",
+   "words": [
+    "11037"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1641,
+   "address": "12,3623",
+   "source": "BADR2",
+   "words": [
+    "25664"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1642,
+   "address": "12,3624",
+   "source": "SQRT SIGN",
+   "words": [
+    "75366"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1643,
+   "address": "12,3625",
+   "source": "SGNRDOT",
+   "words": [
+    "02755"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1644,
+   "address": "12,3626",
+   "source": "CLEAR",
+   "words": [
+    "77614"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1645,
+   "address": "12,3627",
+   "source": "APSESW",
+   "words": [
+    "04272"
+   ],
+   "native": "ltr_afterparam"
+  },
+  {
+   "line": 1647,
+   "address": "12,3630",
+   "source": "TERMNVEC VXSC VSL1",
+   "words": [
+    "76561"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1648,
+   "address": "12,3631",
+   "source": "UN",
+   "words": [
+    "02674"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1649,
+   "address": "12,3632",
+   "source": "VXV PDVL",
+   "words": [
+    "63235"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1650,
+   "address": "12,3633",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1651,
+   "address": "12,3634",
+   "source": "VXSC VAD",
+   "words": [
+    "53361"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1652,
+   "address": "12,3635",
+   "source": "COSF",
+   "words": [
+    "00031"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1653,
+   "address": "12,3636",
+   "source": "VSL1 PUSH",
+   "words": [
+    "41572"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1655,
+   "address": "12,3637",
+   "source": "DOT DDV",
+   "words": [
+    "56241"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1656,
+   "address": "12,3640",
+   "source": "UR1",
+   "words": [
+    "02722"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1657,
+   "address": "12,3641",
+   "source": "DP1/4",
+   "words": [
+    "25756"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1658,
+   "address": "12,3642",
+   "source": "SR1 BOV",
+   "words": [
+    "40142"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1659,
+   "address": "12,3643",
+   "source": "+1",
+   "words": [
+    "25644"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1660,
+   "address": "12,3644",
+   "source": "STOVL CSTH",
+   "words": [
+    "26732"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1661,
+   "address": "12,3645",
+   "source": "UR1",
+   "words": [
+    "02722"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1662,
+   "address": "12,3646",
+   "source": "VXV VSL1",
+   "words": [
+    "76435"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1663,
+   "address": "12,3647",
+   "source": "DOT SL1",
+   "words": [
+    "72441"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1664,
+   "address": "12,3650",
+   "source": "UN",
+   "words": [
+    "02674"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1665,
+   "address": "12,3651",
+   "source": "STODL SNTH",
+   "words": [
+    "16730"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1666,
+   "address": "12,3652",
+   "source": "P",
+   "words": [
+    "02740"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1667,
+   "address": "12,3653",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1668,
+   "address": "12,3654",
+   "source": "GETX",
+   "words": [
+    "24767"
+   ],
+   "native": "ltr_termnvec"
+  },
+  {
+   "line": 1669,
+   "address": "12,3655",
+   "source": "CLRGO",
+   "words": [
+    "77614"
+   ],
+   "native": "ltr_soln"
+  },
+  {
+   "line": 1670,
+   "address": "12,3656",
+   "source": "SOLNSW",
+   "words": [
+    "02634"
+   ],
+   "native": "ltr_soln"
+  },
+  {
+   "line": 1671,
+   "address": "12,3657",
+   "source": "COMMNOUT",
+   "words": [
+    "24747"
+   ],
+   "native": "ltr_soln"
+  },
+  {
+   "line": 1673,
+   "address": "12,3660",
+   "source": "CIRCULAR SETPD SETGO",
+   "words": [
+    "43001"
+   ],
+   "native": "ltr_circular"
+  },
+  {
+   "line": 1674,
+   "address": "12,3661",
+   "source": "0",
+   "words": [
+    "00001"
+   ],
+   "native": "ltr_circular"
+  },
+  {
+   "line": 1675,
+   "address": "12,3662",
+   "source": "SOLNSW",
+   "words": [
+    "02434"
+   ],
+   "native": "ltr_circular"
+  },
+  {
+   "line": 1676,
+   "address": "12,3663",
+   "source": "ABTCONIC",
+   "words": [
+    "25742"
+   ],
+   "native": "ltr_circular"
+  },
+  {
+   "line": 1678,
+   "address": "12,3664",
+   "source": "BADR2 DLOAD SIGN",
+   "words": [
+    "75345"
+   ],
+   "native": "ltr_badr2"
+  },
+  {
+   "line": 1679,
+   "address": "12,3665",
+   "source": "LODPHALF",
+   "words": [
+    "24005"
+   ],
+   "native": "ltr_badr2"
+  },
+  {
+   "line": 1680,
+   "address": "12,3666",
+   "source": "COSF",
+   "words": [
+    "00031"
+   ],
+   "native": "ltr_badr2"
+  },
+  {
+   "line": 1681,
+   "address": "12,3667",
+   "source": "STODL COSF",
+   "words": [
+    "14031"
+   ],
+   "native": "ltr_badr2"
+  },
+  {
+   "line": 1682,
+   "address": "12,3670",
+   "source": "KEPZERO",
+   "words": [
+    "24007"
+   ],
+   "native": "ltr_badr2"
+  },
+  {
+   "line": 1683,
+   "address": "12,3671",
+   "source": "SETGO",
+   "words": [
+    "77614"
+   ],
+   "native": "ltr_badr2"
+  },
+  {
+   "line": 1684,
+   "address": "12,3672",
+   "source": "APSESW",
+   "words": [
+    "04032"
+   ],
+   "native": "ltr_badr2"
+  },
+  {
+   "line": 1685,
+   "address": "12,3673",
+   "source": "TERMNVEC",
+   "words": [
+    "25630"
+   ],
+   "native": "ltr_badr2"
+  },
+  {
+   "line": 1688,
+   "address": "12,3674",
+   "source": "APSIDES STQ SETPD",
+   "words": [
+    "40220"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1689,
+   "address": "12,3675",
+   "source": "RTNAPSE",
+   "words": [
+    "02710"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1690,
+   "address": "12,3676",
+   "source": "0D",
+   "words": [
+    "00001"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1691,
+   "address": "12,3677",
+   "source": "BOV",
+   "words": [
+    "77600"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1692,
+   "address": "12,3700",
+   "source": "+1",
+   "words": [
+    "25701"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1693,
+   "address": "12,3701",
+   "source": "VLOAD PDVL",
+   "words": [
+    "63375"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1694,
+   "address": "12,3702",
+   "source": "RVEC",
+   "words": [
+    "02655"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1695,
+   "address": "12,3703",
+   "source": "VVEC",
+   "words": [
+    "02744"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1696,
+   "address": "12,3704",
+   "source": "CALL",
+   "words": [
+    "77624"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1697,
+   "address": "12,3705",
+   "source": "PARAM",
+   "words": [
+    "11064"
+   ],
+   "native": "ltr_apsides"
+  },
+  {
+   "line": 1698,
+   "address": "12,3706",
+   "source": "BOV",
+   "words": [
+    "77600"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1699,
+   "address": "12,3707",
+   "source": "GETECC",
+   "words": [
+    "25710"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1700,
+   "address": "12,3710",
+   "source": "GETECC DMP SL4",
+   "words": [
+    "42405"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1701,
+   "address": "12,3711",
+   "source": "R1A",
+   "words": [
+    "02742"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1702,
+   "address": "12,3712",
+   "source": "BDSU SQRT",
+   "words": [
+    "75421"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1703,
+   "address": "12,3713",
+   "source": "D1/64",
+   "words": [
+    "11035"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1704,
+   "address": "12,3714",
+   "source": "STORE ECC",
+   "words": [
+    "02752"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1705,
+   "address": "12,3715",
+   "source": "DAD PDDL",
+   "words": [
+    "65215"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1706,
+   "address": "12,3716",
+   "source": "D1/8",
+   "words": [
+    "11031"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1707,
+   "address": "12,3717",
+   "source": "R1",
+   "words": [
+    "00041"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1708,
+   "address": "12,3720",
+   "source": "DMP SL1",
+   "words": [
+    "72405"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1709,
+   "address": "12,3721",
+   "source": "P",
+   "words": [
+    "02740"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1710,
+   "address": "12,3722",
+   "source": "DDV",
+   "words": [
+    "77671"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1711,
+   "address": "12,3723",
+   "source": "PDDL NORM",
+   "words": [
+    "60325"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1712,
+   "address": "12,3724",
+   "source": "R1A",
+   "words": [
+    "02742"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1713,
+   "address": "12,3725",
+   "source": "X1",
+   "words": [
+    "00047"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1714,
+   "address": "12,3726",
+   "source": "PDDL SL*",
+   "words": [
+    "53725"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1715,
+   "address": "12,3727",
+   "source": "R1",
+   "words": [
+    "00041"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1716,
+   "address": "12,3730",
+   "source": "0 -5,1",
+   "words": [
+    "20174"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1717,
+   "address": "12,3731",
+   "source": "DDV DSU",
+   "words": [
+    "45271"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1718,
+   "address": "12,3732",
+   "source": "BOV BMN",
+   "words": [
+    "50000"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1719,
+   "address": "12,3733",
+   "source": "INFINAPO",
+   "words": [
+    "25737"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1720,
+   "address": "12,3734",
+   "source": "INFINAPO",
+   "words": [
+    "25737"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1721,
+   "address": "12,3735",
+   "source": "GOTO",
+   "words": [
+    "77650"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1722,
+   "address": "12,3736",
+   "source": "RTNAPSE",
+   "words": [
+    "02710"
+   ],
+   "native": "ltr_getecc"
+  },
+  {
+   "line": 1723,
+   "address": "12,3737",
+   "source": "INFINAPO DLOAD GOTO",
+   "words": [
+    "52145"
+   ],
+   "native": "ltr_infinapo"
+  },
+  {
+   "line": 1724,
+   "address": "12,3740",
+   "source": "LDPOSMAX",
+   "words": [
+    "24020"
+   ],
+   "native": "ltr_infinapo"
+  },
+  {
+   "line": 1725,
+   "address": "12,3741",
+   "source": "RTNAPSE",
+   "words": [
+    "02710"
+   ],
+   "native": "ltr_infinapo"
+  }
+ ],
+ "covered_ranges": [
+  "12,3547-12,3741"
+ ],
+ "note": "Fresh yaYUL assembly of the unchanged file reproduces the certified rope; every word of TIMERAD, TERMNVEC, CIRCULAR, BADR2, APSIDES, GETECC and INFINAPO is a literal bookkeeping argument or constant of the native function owning its address. PARAM/GEOM, GETX, COMMNOUT, COGAOVFL, ABTCONIC and DELTIME are the lm-conic-timethet and lm-conic-kepler milestones' (src/lm_conic_timethet.c, src/lm_conic_kepler.c). LODPHALF, KEPZERO and LDPOSMAX are read from the certified fixed-data table; the D1/n constants and DP1/4 are native literals. ITERATOR and LAMBERT are not yet ported."
+}

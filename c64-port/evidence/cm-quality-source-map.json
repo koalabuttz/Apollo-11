@@ -1,0 +1,245 @@
+{
+  "source_file": "Comanche055/RT8_OP_CODES.agc",
+  "original_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "source_audit_dependency": "evidence/rtb-angles-source-audit.json",
+  "source_group_words": 25,
+  "words": [
+    {
+      "original_line": 325,
+      "bank": "13",
+      "address": "3770",
+      "physical_fixed_word": 12280,
+      "raw_octal": "71214",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 326,
+      "bank": "13",
+      "address": "3771",
+      "physical_fixed_word": 12281,
+      "raw_octal": "00343",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 327,
+      "bank": "13",
+      "address": "3772",
+      "physical_fixed_word": 12282,
+      "raw_octal": "23220",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 328,
+      "bank": "13",
+      "address": "3773",
+      "physical_fixed_word": 12283,
+      "raw_octal": "00017",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 329,
+      "bank": "13",
+      "address": "3774",
+      "physical_fixed_word": 12284,
+      "raw_octal": "52116",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 330,
+      "bank": "13",
+      "address": "3775",
+      "physical_fixed_word": 12285,
+      "raw_octal": "25754",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 333,
+      "bank": "12",
+      "address": "3754",
+      "physical_fixed_word": 11244,
+      "raw_octal": "63525",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 334,
+      "bank": "12",
+      "address": "3755",
+      "physical_fixed_word": 11245,
+      "raw_octal": "00021",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 335,
+      "bank": "12",
+      "address": "3756",
+      "physical_fixed_word": 11246,
+      "raw_octal": "77625",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 336,
+      "bank": "12",
+      "address": "3757",
+      "physical_fixed_word": 11247,
+      "raw_octal": "74205",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 337,
+      "bank": "12",
+      "address": "3760",
+      "physical_fixed_word": 11248,
+      "raw_octal": "27755",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 338,
+      "bank": "12",
+      "address": "3761",
+      "physical_fixed_word": 11249,
+      "raw_octal": "00017",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 340,
+      "bank": "12",
+      "address": "3762",
+      "physical_fixed_word": 11250,
+      "raw_octal": "65332",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 341,
+      "bank": "12",
+      "address": "3763",
+      "physical_fixed_word": 11251,
+      "raw_octal": "00017",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 342,
+      "bank": "12",
+      "address": "3764",
+      "physical_fixed_word": 11252,
+      "raw_octal": "43342",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 343,
+      "bank": "12",
+      "address": "3765",
+      "physical_fixed_word": 11253,
+      "raw_octal": "00003",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 345,
+      "bank": "12",
+      "address": "3766",
+      "physical_fixed_word": 11254,
+      "raw_octal": "14003",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 346,
+      "bank": "12",
+      "address": "3767",
+      "physical_fixed_word": 11255,
+      "raw_octal": "00021",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 347,
+      "bank": "12",
+      "address": "3770",
+      "physical_fixed_word": 11256,
+      "raw_octal": "44342",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 348,
+      "bank": "12",
+      "address": "3771",
+      "physical_fixed_word": 11257,
+      "raw_octal": "00005",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 351,
+      "bank": "12",
+      "address": "3772",
+      "physical_fixed_word": 11258,
+      "raw_octal": "00005",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 352,
+      "bank": "12",
+      "address": "3773",
+      "physical_fixed_word": 11259,
+      "raw_octal": "74335",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 353,
+      "bank": "12",
+      "address": "3774",
+      "physical_fixed_word": 11260,
+      "raw_octal": "01777",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 354,
+      "bank": "12",
+      "address": "3775",
+      "physical_fixed_word": 11261,
+      "raw_octal": "43525",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    },
+    {
+      "original_line": 355,
+      "bank": "12",
+      "address": "3776",
+      "physical_fixed_word": 11262,
+      "raw_octal": "00023",
+      "native_group": "QUALITY1_QUALITY2",
+      "status": "qualified_native_source_phase"
+    }
+  ],
+  "external_immutable_operand": {
+    "5/8": {
+      "bank": "13",
+      "address": "3754",
+      "words": [
+        "24000",
+        "00000"
+      ]
+    }
+  },
+  "scope": "All local QUALITY1/QUALITY2 source words and literal inline operands; true saved ORBITAL QUALITY3 return023146. No external orbital algorithm or interpreter scheduling completion claim."
+}

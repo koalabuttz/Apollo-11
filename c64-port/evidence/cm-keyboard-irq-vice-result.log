@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly cm_keyboard_irq states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 13082 13080
+hardware stack sentinel extent: 21
+software stack sentinel extent: 697

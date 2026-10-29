@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete projection phase 1 original-assembly entry/exit states
+Mailbox: a500002001
+PRG bytes: 20852
+projection_phase1-hardware-stack.bin: measured stack extent 23 bytes
+projection_phase1-software-stack.bin: measured stack extent 60 bytes

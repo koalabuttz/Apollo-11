@@ -1,0 +1,1 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/lm_busy_diagnostic.c tests/lm_busy_check.c src/agc_word.c src/lm_pinball_busy.c tests/throttle_bridge_cases.c tests/lm_busy_cases.c -Wl,-Map,build/lm_busy.map -o build/lm_busy.prg

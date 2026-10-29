@@ -1,0 +1,74 @@
+{
+  "source_files": {
+    "docs/DSKY-SCALAR-OUTPUT.md": "3d63a365dcd3cbaae1d46521ac45d8aa7697e6a80f42bf3ffe39e75c618b11b5",
+    "include/dsky_scalar_output.h": "b0632cfe305b288ce85000eebdc83e52f03898ca9121b5be6991809fd7afa525",
+    "src/dsky_scalar_output.c": "61aba664cb0e4d3e726bb5e1903397344fee3937bba6d2699ad352965205c4a5",
+    "tests/dsky_scalar_output_cases.c": "5c3f1e8ac1ffe05cbdde9d990262b213bce51e900dda504e84294c8654425d62",
+    "tests/dsky_scalar_output_cases.h": "cf92ac4641665519288d4929ebb823008fb49a223ec72358ecc0ed8fd7e35777",
+    "tests/dsky_scalar_output_check.c": "9f452830180f08090e9eaf9ec4b10ce8826c2c48cbe43d192cd9e889cc621568",
+    "tests/dsky_scalar_output_check.h": "01a5d328fd89e560145493e6ea9255bbf6897bb74dee5c65d4ac3f33c3e1e2ea",
+    "tests/dsky_scalar_output_vectors.h": "6363510400608c840f06faae3a3a400e9816d1a4ae90d964da22150919e9e6c6",
+    "tests/test_dsky_scalar_output.c": "c276ff6218d23c8899c080344335b4f12f3cb1b89db704de8b7c2ed9ceadc2ad",
+    "tools/dsky_scalar_output.mk": "2115d7809998f444aa387e1ac010b8ff966ba9816e1d84fad671cc34dc34427a",
+    "tools/dsky_scalar_output_diagnostic.c": "01c6074f76348ccea36f65309ba7da9e3bd09b7db8ca46f5f59ff86c0fc82bc5",
+    "tools/dsky_scalar_output_differential.py": "d26e0ab60e997cee9dc0117057fc0ddf5c3b74f98138563d071b56731dbbb340",
+    "tools/dsky_scalar_output_inputs.c": "76b3316ae82ea9d4a06f7c145f9793a75bd8abbac346a6713ebeaf4d00f839d6",
+    "tools/dsky_scalar_output_reference.c": "c7deeb18caf5262c818d7431c63bfa24f388e5f209877b09d52daf0bb659e571",
+    "tools/dsky_scalar_output_sanitize.py": "819ac8c76b4d61276a53777cb31e82f98ec5155fe698268194a10cd9e5031c5a",
+    "tools/dsky_scalar_output_snapshot.c": "e0601b35e9fc656ced77345a173a879e0c3d6f94c5e7d90abdc0f0b3d69269f4",
+    "tools/dsky_scalar_output_vice_test.py": "b9340e236e9dd0c037cd3a9c14849fd7d9f5122e292a2310c24cf991dedbffd8",
+    "tools/freeze_dsky_scalar_output.py": "966736121664b14d842be90958542be65e7288b29bee0101d986a8eadafdc6a1"
+  },
+  "native_dependencies": {
+    "include/dsky_nv_admission.h": "cc6dbf21c7ed8ec1bae2a0ad30e4b1065f2821614ce23370e981ec5d47ab42e1",
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "include/agc_multiword.h": "102bb860395c3bdc2293d7846fa08a4b9d191515ccdaa0af7ca7eb4980e91795",
+    "include/p66_bias.h": "ed594570c8fa6831498bd65b27a1da136feb9d18404dc1e8db084585c23f5c77",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e"
+  },
+  "original_sources": {
+    "../Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+    "../Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+    "../Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "../Luminary099/INTER-BANK_COMMUNICATION.agc": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+    "../Comanche055/INTER-BANK_COMMUNICATION.agc": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+    "deps/lm-powered-fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "host_reference_dependencies": {
+    "tools/cm_executive_reference.c": "f623e869cc420126c15d27a5749a1e4a38df27deb91b7f83a2fc1c7be6e6e448"
+  },
+  "artifacts": {
+    "evidence/dsky-scalar-output-build.log": "c85abff5943bb7163a5885816720bc6267936a8d525d8f6986e896254a3b6d2d",
+    "evidence/dsky-scalar-output-c64.log": "c405e7db74bd7c5966b18c64bd20f54cbbe79a7dfc07e93756652defc0a7d256",
+    "evidence/dsky-scalar-output-differential.log": "83c7d4a403037062557e5823b386e1751d2d7168100b10231bd6ee78e0be4438",
+    "evidence/dsky-scalar-output-freeze.log": "40f92869238e93121f6d177d64a7acdd6ee551ac43283efbf8a4c971877fc0ff",
+    "evidence/dsky-scalar-output-reference.snapshots.xz": "f26985ca18039b8f6fdb8d85c00743ee4b8326b54bbcf58126c5b9530c949269",
+    "evidence/dsky-scalar-output-source-map.json": "6b2ca14971c2e11b794a8133fe1a8997a8bb6b4b86443e087625f6bc031e90e0",
+    "evidence/dsky-scalar-output-stream-sha.json": "4027c232f925954f0967bd1f95a429ae369f9f03ce24ab7447f84ed30d898cd7",
+    "evidence/dsky_scalar_output-hardware-stack.bin": "ab5a2b32ce4a9506c5f91ce0aa4907b640af18d56b133d91cbe3da64a8e0a698",
+    "evidence/dsky_scalar_output-software-stack.bin": "4088e40c545b1a7389729ace0da0c8f81c89fd8a9f88037240b3f05ef826558e",
+    "evidence/dsky_scalar_output-vice-mailbox.bin": "34934b6bf7d8c450af335379fa2c27304c8e6e17774837c5170aa684297dbb60",
+    "evidence/dsky_scalar_output-vice-monitor.log": "f0361546afe511cad6c63434746e8c26456614a8c83b9c2eab255ac7127a02c5",
+    "evidence/dsky_scalar_output.map": "d0cabd641763645a3cf8b37c8f26f1ac71569714e75affe9781ae86db511970b",
+    "evidence/dsky_scalar_output.prg": "b281523780b31721e8663534d488741816e0ffe936e33495be524cc0e824a2d3"
+  },
+  "complete_source_states": 20480,
+  "record_fields": 2051,
+  "raw_source_sha256": "883201fba7dd146a5cf1bd8534c9e1f866d4decfd194353200e04327595b00fa",
+  "full_sanitizer_states": 20480,
+  "frozen_complete_states": 160,
+  "unchanged_invalid_guards": 33,
+  "target": {
+    "prg_bytes": 14793,
+    "mailbox": "a50000a000",
+    "hardware_stack_including_rom": 29,
+    "rom_stack_bytes": 14,
+    "software_stack": 87,
+    "additional_zero_page_bytes": 0
+  },
+  "qualification_boundary": "Original both-mission scalar/angle output scales, LM360-CDUO/LRPOSOUT and CMOPDEGOUT/DPFRACOT through actual DSPDCEND41,2566; following formatter and whole Pinball not claimed"
+}

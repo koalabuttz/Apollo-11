@@ -1,0 +1,73 @@
+{
+  "platform": "VICE 3.7.1 PAL C64",
+  "clock_hz": 985248,
+  "prg_file_bytes": 46543,
+  "loaded_bytes": 46541,
+  "load_address": 2049,
+  "sections": {
+    "text": {
+      "address": 2061,
+      "bytes": 11925
+    },
+    "rodata": {
+      "address": 13986,
+      "bytes": 34604
+    },
+    "bss": {
+      "address": 48590,
+      "bytes": 172
+    },
+    "noinit": {
+      "address": 48762,
+      "bytes": 1
+    },
+    "data": {
+      "address": 48590,
+      "bytes": 0
+    }
+  },
+  "modeled_words": 86,
+  "state_bytes": 172,
+  "pushdown_state_bytes": 90,
+  "vac_payload_words": 43,
+  "expectation_bytes": 34400,
+  "mailbox": "a50000c80003ac5624",
+  "samples": [
+    {
+      "case": 0,
+      "name": "PDDL at VAC start",
+      "cycles": 912,
+      "milliseconds": 0.926
+    },
+    {
+      "case": 37,
+      "name": "PDDL at final six-word slot",
+      "cycles": 1028,
+      "milliseconds": 1.043
+    },
+    {
+      "case": 59,
+      "name": "PDDL in fifth VAC",
+      "cycles": 1051,
+      "milliseconds": 1.067
+    },
+    {
+      "case": 128,
+      "name": "PDDL after scaled skip input",
+      "cycles": 1033,
+      "milliseconds": 1.048
+    },
+    {
+      "case": 188,
+      "name": "full RODCOMP through PDDL",
+      "cycles": 20790,
+      "milliseconds": 21.101
+    }
+  ],
+  "hardware_stack_below_entry": 32,
+  "hardware_stack_including_rom_frame": 46,
+  "software_stack_sentinel_extent": 472,
+  "compiler_zp_register_bytes": 32,
+  "extra_compiler_zp_bytes": 0,
+  "measurement_limit": "Finite samples include marker/call and VIC bus costs; no WCET or live guidance/source-rate deadline proof."
+}

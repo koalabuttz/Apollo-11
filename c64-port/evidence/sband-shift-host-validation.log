@@ -1,0 +1,5 @@
+python3 tools/sband_shift_compare.py
+PASS {'states': 524288, 'start': 0, 'end': 524288, 'record_bytes': 4106, 'decoded_sha256': '577912addfd1b6fa6543a6a6ddebcedd87f379d1f13b05272f2c0e9ca3c609b4'}
+cc -O1 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_shift_snapshot.c tests/sband_shift_cases.c src/agc_word.c src/sband_shift.c src/agc_multiword.c src/guidance_shift.c -o build/sband-shift-sanitize
+python3 tools/sband_shift_compare.py sanitize
+PASS {'states': 524288, 'start': 0, 'end': 524288, 'record_bytes': 4106, 'decoded_sha256': '577912addfd1b6fa6543a6a6ddebcedd87f379d1f13b05272f2c0e9ca3c609b4'}

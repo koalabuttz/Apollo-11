@@ -1,0 +1,10 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_control_observer.c src/guidance_control_observer.c src/agc_word.c src/agc_multiword.c -o build/test-control-observer
+build/test-control-observer
+65 complete original arithmetic Q states: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_control_observer.c src/guidance_control_observer.c src/agc_word.c src/agc_multiword.c -o build/test-control-observer-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-control-observer-sanitize
+65 complete original arithmetic Q states: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/acceleration_control_observer_snapshot.c src/guidance_control_observer.c src/agc_word.c src/agc_multiword.c -o build/control-observer-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/control-observer-native-sanitize < build/acceleration-control-inputs.snapshots > build/control-observer-sanitize.snapshots
+cmp build/control-observer-sanitize.snapshots build/acceleration-control-observer.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -DCONTROL_OBSERVER_CHECK_ONLY -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/control_observer_diagnostic.c tests/test_control_observer.c src/guidance_control_observer.c src/agc_word.c src/agc_multiword.c -Wl,-Map,build/control_observer.map -o build/control_observer.prg

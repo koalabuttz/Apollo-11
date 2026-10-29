@@ -1,0 +1,202 @@
+{
+ "milestone": "lm-p12",
+ "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
+ "linked_sources": {
+  "src/lm_p12.c": "238be1dc7330c2810840c6a1a32a69d928d9b65560cf235970dddfbeff0b5e70",
+  "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
+  "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
+  "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
+  "src/cm_interp_orders.c": "a2ca5afab1dde9d2a30a0a490f6d6a9912b2a07b3f9c0f282b932e7bbab9e6ac",
+  "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
+  "src/agc_image_ops.c": "f2e7d09a3dd8c337ac342158cb6d562030c46c9622427ce8bc2196cc2df9d419",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "src/agc_transfer.c": "9bfb09b58608b5934933fff15c6c04999ac9ddc31d2e49e4052b9bd3b452914d",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "tests/interp_case.c": "64afac6c2fcc64acaf20d636f46f0971131623de44fe95da14905717e4ce062d",
+  "tests/lm_p12_target.c": "ae1245761d83496a969318a0fbfa14e574bd32e5c47094feb550a140508986a3"
+ },
+ "host_cases": 46592,
+ "host_case_stride": 1,
+ "c64_rows": [
+  28,
+  648,
+  1200,
+  1564,
+  2108,
+  2283,
+  2604,
+  3184,
+  3252,
+  3588,
+  4096,
+  4628,
+  5140,
+  5636,
+  6144,
+  6688,
+  7184,
+  7680,
+  8232,
+  8720,
+  9224,
+  9760,
+  10288,
+  10875,
+  11332,
+  11988,
+  12292,
+  12800,
+  12928,
+  13340,
+  13848,
+  13991,
+  14388,
+  14896,
+  15364,
+  15571,
+  15904,
+  16396,
+  16564,
+  16948,
+  17616,
+  18004,
+  18436,
+  18956,
+  19460,
+  20032,
+  20496,
+  21008,
+  21815,
+  22176,
+  22580,
+  23064,
+  23747,
+  23748,
+  24280,
+  24600,
+  25212,
+  25624,
+  26400,
+  26624,
+  27155,
+  27180,
+  27303,
+  27376,
+  27652,
+  27672,
+  28200,
+  28611,
+  29116,
+  29208,
+  29243,
+  29308,
+  29323,
+  29656,
+  30172,
+  30256,
+  30784,
+  31456,
+  31864,
+  32424,
+  32776,
+  33284,
+  33792,
+  34304,
+  34840,
+  35336,
+  35944,
+  36396,
+  36892,
+  37452,
+  37960,
+  38404,
+  38455,
+  39116,
+  39456,
+  39980,
+  40023,
+  40796,
+  40988,
+  41508,
+  42056,
+  42520,
+  43028,
+  43560,
+  43815,
+  44036,
+  44832,
+  45140,
+  45624,
+  46088
+ ],
+ "host_branch_arcs": 1053,
+ "c64_branch_arcs": 1053,
+ "arcs_by_source_host_c64": {
+  "src/agc_hardware_divide.c": [
+   21,
+   21
+  ],
+  "src/agc_image_ops.c": [
+   119,
+   119
+  ],
+  "src/agc_multiword.c": [
+   10,
+   10
+  ],
+  "src/agc_transfer.c": [
+   48,
+   48
+  ],
+  "src/agc_word.c": [
+   3,
+   3
+  ],
+  "src/cm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/cm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c@runner-lm_interp_orders": [
+   282,
+   282
+  ],
+  "src/lm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_steps.c@runner-lm_interp_steps": [
+   38,
+   38
+  ],
+  "src/lm_p12.c": [
+   440,
+   440
+  ],
+  "src/rtb_angles.c": [
+   25,
+   25
+  ],
+  "tests/interp_case.c": [
+   38,
+   38
+  ],
+  "tests/lm_p12_target.c": [
+   0,
+   0
+  ],
+  "tools/interp_routine_native.c": [
+   29,
+   29
+  ]
+ },
+ "host_branches_missing_on_c64": []
+}

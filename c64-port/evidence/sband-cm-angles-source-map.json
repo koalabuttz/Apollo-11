@@ -1,0 +1,509 @@
+{
+  "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+  "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "source_edits": 0,
+  "containing_file_status": "partial",
+  "native_source": "src/sband_cm_angles.c",
+  "source_words": 20,
+  "source_line_word_map": [
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 83,
+      "label": "",
+      "op": "PUSH",
+      "arguments": "DOT",
+      "assembled_address": "42,3724",
+      "physical_fixed_word": 35796,
+      "physical_erasable_word": null,
+      "words": [
+        20614
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 85,
+      "label": "",
+      "op": "HIUNITX",
+      "arguments": "",
+      "assembled_address": "42,3725",
+      "physical_fixed_word": 35797,
+      "physical_erasable_word": null,
+      "words": [
+        6875
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 86,
+      "label": "",
+      "op": "SL1",
+      "arguments": "ACOS",
+      "assembled_address": "42,3726",
+      "physical_fixed_word": 35798,
+      "physical_erasable_word": null,
+      "words": [
+        27498
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 87,
+      "label": "",
+      "op": "PDVL",
+      "arguments": "DOT",
+      "assembled_address": "42,3727",
+      "physical_fixed_word": 35799,
+      "physical_erasable_word": null,
+      "words": [
+        20685
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 88,
+      "label": "",
+      "op": "URP",
+      "arguments": "",
+      "assembled_address": "42,3730",
+      "physical_fixed_word": 35800,
+      "physical_erasable_word": null,
+      "words": [
+        15
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 89,
+      "label": "",
+      "op": "HIUNITY",
+      "arguments": "",
+      "assembled_address": "42,3731",
+      "physical_fixed_word": 35801,
+      "physical_erasable_word": null,
+      "words": [
+        6873
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 90,
+      "label": "",
+      "op": "SL1",
+      "arguments": "BPL",
+      "assembled_address": "42,3732",
+      "physical_fixed_word": 35802,
+      "physical_erasable_word": null,
+      "words": [
+        21098
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 91,
+      "label": "",
+      "op": "NOADJUST",
+      "arguments": "",
+      "assembled_address": "42,3733",
+      "physical_fixed_word": 35803,
+      "physical_erasable_word": null,
+      "words": [
+        27615
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 92,
+      "label": "",
+      "op": "DLOAD",
+      "arguments": "DSU",
+      "assembled_address": "42,3734",
+      "physical_fixed_word": 35804,
+      "physical_erasable_word": null,
+      "words": [
+        19173
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 93,
+      "label": "",
+      "op": "DPPOSMAX",
+      "arguments": "",
+      "assembled_address": "42,3735",
+      "physical_fixed_word": 35805,
+      "physical_erasable_word": null,
+      "words": [
+        6883
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 94,
+      "label": "",
+      "op": "PUSH",
+      "arguments": "",
+      "assembled_address": "42,3736",
+      "physical_fixed_word": 35806,
+      "physical_erasable_word": null,
+      "words": [
+        32646
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 95,
+      "label": "NOADJUST",
+      "op": "VLOAD",
+      "arguments": "DOT",
+      "assembled_address": "42,3737",
+      "physical_fixed_word": 35807,
+      "physical_erasable_word": null,
+      "words": [
+        20733
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 96,
+      "label": "",
+      "op": "UR",
+      "arguments": "",
+      "assembled_address": "42,3740",
+      "physical_fixed_word": 35808,
+      "physical_erasable_word": null,
+      "words": [
+        9
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 97,
+      "label": "",
+      "op": "HIUNITZ",
+      "arguments": "",
+      "assembled_address": "42,3741",
+      "physical_fixed_word": 35809,
+      "physical_erasable_word": null,
+      "words": [
+        6871
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 98,
+      "label": "",
+      "op": "SL1",
+      "arguments": "ACOS",
+      "assembled_address": "42,3742",
+      "physical_fixed_word": 35810,
+      "physical_erasable_word": null,
+      "words": [
+        27498
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 99,
+      "label": "",
+      "op": "DSU",
+      "arguments": "",
+      "assembled_address": "42,3743",
+      "physical_fixed_word": 35811,
+      "physical_erasable_word": null,
+      "words": [
+        32661
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 100,
+      "label": "",
+      "op": "HIDP1/4",
+      "arguments": "",
+      "assembled_address": "42,3744",
+      "physical_fixed_word": 35812,
+      "physical_erasable_word": null,
+      "words": [
+        6869
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 101,
+      "label": "",
+      "op": "STODL",
+      "arguments": "RHOSB",
+      "assembled_address": "42,3745",
+      "physical_fixed_word": 35813,
+      "physical_erasable_word": null,
+      "words": [
+        7377
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 102,
+      "label": "",
+      "op": "YAWANG",
+      "arguments": "",
+      "assembled_address": "42,3746",
+      "physical_fixed_word": 35814,
+      "physical_erasable_word": null,
+      "words": [
+        21
+      ]
+    },
+    {
+      "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+      "line": 103,
+      "label": "",
+      "op": "STORE",
+      "arguments": "GAMMASB",
+      "assembled_address": "42,3747",
+      "physical_fixed_word": 35815,
+      "physical_erasable_word": null,
+      "words": [
+        1235
+      ]
+    }
+  ],
+  "constants": {
+    "HIUNITX": {
+      "address": "26,3332",
+      "physical_fixed_word": 23258,
+      "words": [
+        8192,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 42,
+          "label": "UNITX",
+          "op": "2DEC",
+          "arguments": ".5",
+          "assembled_address": "26,3332",
+          "physical_fixed_word": 23258,
+          "physical_erasable_word": null,
+          "words": [
+            8192,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 44,
+          "label": "ZEROVECS",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3334",
+          "physical_fixed_word": 23260,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 46,
+          "label": "",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3336",
+          "physical_fixed_word": 23262,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "HIUNITY": {
+      "address": "26,3330",
+      "physical_fixed_word": 23256,
+      "words": [
+        0,
+        0,
+        8192,
+        0,
+        0,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 40,
+          "label": "UNITY",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3330",
+          "physical_fixed_word": 23256,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 42,
+          "label": "UNITX",
+          "op": "2DEC",
+          "arguments": ".5",
+          "assembled_address": "26,3332",
+          "physical_fixed_word": 23258,
+          "physical_erasable_word": null,
+          "words": [
+            8192,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 44,
+          "label": "ZEROVECS",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3334",
+          "physical_fixed_word": 23260,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "HIUNITZ": {
+      "address": "26,3326",
+      "physical_fixed_word": 23254,
+      "words": [
+        0,
+        0,
+        0,
+        0,
+        8192,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 38,
+          "label": "UNITZ",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3326",
+          "physical_fixed_word": 23254,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 40,
+          "label": "UNITY",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3330",
+          "physical_fixed_word": 23256,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 42,
+          "label": "UNITX",
+          "op": "2DEC",
+          "arguments": ".5",
+          "assembled_address": "26,3332",
+          "physical_fixed_word": 23258,
+          "physical_erasable_word": null,
+          "words": [
+            8192,
+            0
+          ]
+        }
+      ]
+    },
+    "DPPOSMAX": {
+      "address": "26,3342",
+      "physical_fixed_word": 23266,
+      "words": [
+        16383,
+        16383
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 51,
+          "label": "DPPOSMAX",
+          "op": "OCT",
+          "arguments": "37777",
+          "assembled_address": "26,3342",
+          "physical_fixed_word": 23266,
+          "physical_erasable_word": null,
+          "words": [
+            16383
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 52,
+          "label": "",
+          "op": "OCT",
+          "arguments": "37777",
+          "assembled_address": "26,3343",
+          "physical_fixed_word": 23267,
+          "physical_erasable_word": null,
+          "words": [
+            16383
+          ]
+        }
+      ]
+    },
+    "HIDP1/4": {
+      "address": "26,3324",
+      "physical_fixed_word": 23252,
+      "words": [
+        4096,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 36,
+          "label": "DP1/4TH",
+          "op": "2DEC",
+          "arguments": ".25",
+          "assembled_address": "26,3324",
+          "physical_fixed_word": 23252,
+          "physical_erasable_word": null,
+          "words": [
+            4096,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "constant_source_path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+  "constant_source_sha256": "494c6ae0e8fc59eb6d896e51f3af791aae13bb66fbf55a798cb6e2b3c807570f",
+  "scope": "Complete original CM yaw and pitch computation from normal-plane NEWOPS; separate actual null-plane NOADJUST entry. Ends before original EXIT or source1301/1302 service. Local body operators execute explicitly, not decoded.",
+  "alias_contract": "PUSH savesURP; PDVL pushesyaw and reloadsURP; negative yaw pops thenrepushes while retainingold destinationminorL. PitchSTODL/RHOSB and STORE/GAMMASB retainold destinationminorL. Canonical VAC/scratch aliases remain authoritative.",
+  "caller_controls": "Original NEWOPS FB/BANKSET064000+EB, SUPER100/120/140/160, coherentEBBB, NEWJOB+0, ordinaryRAM/Q/rawA/L; fiveVAC normalMODE-1/PUSHbase+016 or nullMODE-1/PUSHbase+016. Successful yaw producesMODE0/PUSHbase+026 forpitch.",
+  "coverage": "65536 normal-yaw and65536 null-pitch inputs, complete rawA/L/ordinaryQ marginals perentry; varied ordinaryvectors/flags andsignedzeros, fiveVAC/eightEB/fourSUPERforms/bothIRQ. NotexhaustiveCartesian.",
+  "private_shift": "ActualSL1 sourceSHORTT/TSSL/SR/CYR plusfrozen rawscalar shift; no generic shortshift APIclaim.",
+  "branch": "Original BRANCH TCQ positive returnsQ3 after actual register-Q fetch, INDEXQ TC1 zeroQ06710, TC2 negativeQ06712. Only these fixed source controls are compiled."
+}

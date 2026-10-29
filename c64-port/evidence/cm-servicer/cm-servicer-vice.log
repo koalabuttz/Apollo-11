@@ -1,0 +1,35 @@
+PRG sha256 (llvm-mos 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+981b762f8109308cdefbe0ce0f36edc471df174c0f5236b0943514026a37f061  build/cm-servicer-1.prg
+ff080655f481b3a29af37c021cab7a30d7a3d2b967822995b6f6cb8168852a2c  build/cm-servicer-10.prg
+f4c7f4fd4ab34b0c657ef3811decd80e447954114920104cc7a0d4f6acf406fb  build/cm-servicer-2.prg
+d6281123fad3725581f023ff0260276e1fd75a62f79adc8a010b29da5a80579f  build/cm-servicer-3.prg
+fae2d18c3ca8d2e33f5ee67d0c42572733ef157d2e1f583fa33b3ea9ed5feef2  build/cm-servicer-4.prg
+debfae1d0bcb595b723bce31de70ee71e4673b3543befc106454dc7eaa1432f5  build/cm-servicer-5.prg
+4676ea7dbdee32cbead5f0993aef79277ce8fa02ba18a907894e18b22a82d985  build/cm-servicer-6.prg
+02f1a9037624f6ab11d6d2f93a5141fb7e6708751a06e87a4ad543774ea6a426  build/cm-servicer-7.prg
+10cf3cd053ec8893b84f3eba6751f7d52c8dc39a3a3b498328a2eec05d103c99  build/cm-servicer-8.prg
+ce1ed84f8a9020b960690bf562871b1decd44e37fec36468bedb95bff0b3838b  build/cm-servicer-9.prg
+
+$ make vice-cm-servicer
+for p in build/cm-servicer-1.prg build/cm-servicer-2.prg build/cm-servicer-3.prg build/cm-servicer-4.prg build/cm-servicer-5.prg build/cm-servicer-6.prg build/cm-servicer-7.prg build/cm-servicer-8.prg build/cm-servicer-9.prg build/cm-servicer-10.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-servicer-1.prg: 37 checks, 0 failures
+PRG sha256: 981b762f8109308cdefbe0ce0f36edc471df174c0f5236b0943514026a37f061 cm-servicer-1.prg
+PASS: VICE PAL cm-servicer-2.prg: 1 checks, 0 failures
+PRG sha256: f4c7f4fd4ab34b0c657ef3811decd80e447954114920104cc7a0d4f6acf406fb cm-servicer-2.prg
+PASS: VICE PAL cm-servicer-3.prg: 1 checks, 0 failures
+PRG sha256: d6281123fad3725581f023ff0260276e1fd75a62f79adc8a010b29da5a80579f cm-servicer-3.prg
+PASS: VICE PAL cm-servicer-4.prg: 8 checks, 0 failures
+PRG sha256: fae2d18c3ca8d2e33f5ee67d0c42572733ef157d2e1f583fa33b3ea9ed5feef2 cm-servicer-4.prg
+PASS: VICE PAL cm-servicer-5.prg: 15 checks, 0 failures
+PRG sha256: debfae1d0bcb595b723bce31de70ee71e4673b3543befc106454dc7eaa1432f5 cm-servicer-5.prg
+PASS: VICE PAL cm-servicer-6.prg: 7 checks, 0 failures
+PRG sha256: 4676ea7dbdee32cbead5f0993aef79277ce8fa02ba18a907894e18b22a82d985 cm-servicer-6.prg
+PASS: VICE PAL cm-servicer-7.prg: 11 checks, 0 failures
+PRG sha256: 02f1a9037624f6ab11d6d2f93a5141fb7e6708751a06e87a4ad543774ea6a426 cm-servicer-7.prg
+PASS: VICE PAL cm-servicer-8.prg: 30 checks, 0 failures
+PRG sha256: 10cf3cd053ec8893b84f3eba6751f7d52c8dc39a3a3b498328a2eec05d103c99 cm-servicer-8.prg
+PASS: VICE PAL cm-servicer-9.prg: 10 checks, 0 failures
+PRG sha256: ce1ed84f8a9020b960690bf562871b1decd44e37fec36468bedb95bff0b3838b cm-servicer-9.prg
+PASS: VICE PAL cm-servicer-10.prg: 2 checks, 0 failures
+PRG sha256: ff080655f481b3a29af37c021cab7a30d7a3d2b967822995b6f6cb8168852a2c cm-servicer-10.prg
+exit 0

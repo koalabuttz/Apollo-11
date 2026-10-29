@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "filename": "OVLA",
+    "byte_count": 8324,
+    "crc16": 50190,
+    "sha256": "1376bc46d7f0bd2105b619cdfbb3eba3edc9982e98917a6911ac54b8a0defef8",
+    "prg": "overlay-a.prg",
+    "native_sources": [
+      "tests/overlay_payload_a.c"
+    ],
+    "mission_translation": false
+  },
+  {
+    "id": 2,
+    "filename": "OVLB",
+    "byte_count": 8334,
+    "crc16": 43359,
+    "sha256": "0185dfdc5dc9f365da6071ecda4ee14255c1fee6d58e6e1f5a0ba6d0fc0faf24",
+    "prg": "overlay-b.prg",
+    "native_sources": [
+      "tests/overlay_payload_b.c"
+    ],
+    "mission_translation": false
+  }
+]

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete inverse_trig group original-assembly states; retained memory unchanged
+Mailbox: a500002005
+PRG bytes: 12710
+inverse_trig_sweep-hardware-stack.bin: measured stack extent 24 bytes
+inverse_trig_sweep-software-stack.bin: measured stack extent 178 bytes

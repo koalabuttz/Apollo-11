@@ -1,0 +1,14 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-abort-lifecycle-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-abort-lifecycle-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-ABORT-LIFECYCLE.PRG' as `RESIDENT' to unit 8
+writing file `CM-ABORT-LIFECYCLE-222.PRG' as `G222' to unit 8
+writing file `CM-ABORT-LIFECYCLE-223.PRG' as `G223' to unit 8
+writing file `CM-ABORT-LIFECYCLE-224.PRG' as `G224' to unit 8
+writing file `CM-ABORT-LIFECYCLE-254.PRG' as `G254' to unit 8
+writing file `CM-ABORT-LIFECYCLE-255.PRG' as `G255' to unit 8
+222 6124 loaded bytes
+223 5423 loaded bytes
+224 6995 loaded bytes
+254 9961 loaded bytes
+255 10401 loaded bytes

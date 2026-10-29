@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/lm_torque.c tests/lm_torque_cases.c tests/test_lm_torque.c -o build/test-lm-torque
+./build/test-lm-torque
+PASS: rejected contexts preserve the full image and external latches
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/lm_torque.c tests/lm_torque_cases.c tests/test_lm_torque.c -o build/test-lm-torque-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-torque-sanitize
+PASS: rejected contexts preserve the full image and external latches

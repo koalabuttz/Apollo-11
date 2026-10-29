@@ -1,0 +1,84 @@
+{
+  "source_statements": "all exact after documented label/declaration spelling reconciliation; no instruction, operand value or output state rewritten",
+  "fixture_binary_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "files": [
+    {
+      "file": "EXECUTIVE.agc",
+      "original_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+      "fixture_sha256": "c0d9b157f4e517f949001f25e9f77887d1c6497cff7718f3d5b80ab7c1823f8d",
+      "source_statement_sha256": "eb09df47dce25d43af733b56229f97c4b9af2407d2a9263adabc1e868127f0ed",
+      "statements": 353,
+      "text_aliases": []
+    },
+    {
+      "file": "INTERPRETER.agc",
+      "original_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "fixture_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "source_statement_sha256": "8e302c4141c5cd395289957fd64d2d49c5a16458fd4233e72744a1f6df508d73",
+      "statements": 2087,
+      "text_aliases": []
+    },
+    {
+      "file": "LUNAR_LANDING_GUIDANCE_EQUATIONS.agc",
+      "original_sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
+      "fixture_sha256": "90485ec45c9d2cf835888fc0d252e9f1502bd92c74820f492d3cb337ffd1b1d2",
+      "source_statement_sha256": "e68028f05eadbdd953f679a2976409eb6badccd7394d2a85f5c1ea5aa914cfb2",
+      "statements": 1028,
+      "text_aliases": []
+    },
+    {
+      "file": "WAITLIST.agc",
+      "original_sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
+      "fixture_sha256": "ca0092971efa3cafcdd8f7dad06a0980f999993f9dbc2e1c68cc764c41f7f0f0",
+      "source_statement_sha256": "cefc93877f668604b9737afd970f854e1d4779d965a05e094d0d34bb05c854d6",
+      "statements": 279,
+      "text_aliases": []
+    },
+    {
+      "file": "DAP_INTERFACE_SUBROUTINES.agc",
+      "original_sha256": "1156271d55ea1f47bf20602da2cefa9388a908b3dca5231650cc7f10895db776",
+      "fixture_sha256": "864030dba1a3fe59ded1148b7d35368c5fbcf6dc4b90d01ccfb0c3022bdeba47",
+      "source_statement_sha256": "0fcbd467c31cb3e18e0cbc7aef94301be9c9c65f3f816118aaa5fdb4cce40c5c",
+      "statements": 72,
+      "text_aliases": []
+    },
+    {
+      "file": "SERVICE_ROUTINES.agc",
+      "original_sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
+      "fixture_sha256": "bee98cb60d862bd95f25879da6a5e7f52f207ea0308dd7b636cc78551ac1ef86",
+      "source_statement_sha256": "a084fb185945efcdf64b36df424404476bffae2e58fab01b8505a8c08fb7717c",
+      "statements": 115,
+      "text_aliases": []
+    },
+    {
+      "file": "INTER-BANK_COMMUNICATION.agc",
+      "original_sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+      "fixture_sha256": "a194c6bee7099cf9d028035d4b08748fd4960ca77575170d8d53af115c4b1778",
+      "source_statement_sha256": "1f36c3a96f1636cdb1b8c3e7fc51e9437f97b18452050cc1baf680481ba8c970",
+      "statements": 78,
+      "text_aliases": [
+        "ISWCALLL\u2192ISWCALL transcription label spelling"
+      ]
+    },
+    {
+      "file": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "original_sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+      "fixture_sha256": "2c7bf99f8ed6c82767ed8c03401877a44c0cd6455cba52e23c78a5a5bf7ece0c",
+      "source_statement_sha256": "f70bd7b5854b8d790da2775dc8b86eed8764038a5f5faf4a7efa86191c7745f8",
+      "statements": 2460,
+      "text_aliases": [
+        "DSPOCTWO\u2192DSPOCTWD transcription label spelling"
+      ]
+    },
+    {
+      "file": "DISPLAY_INTERFACE_ROUTINES.agc",
+      "original_sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da",
+      "fixture_sha256": "82c417fd8fcf7900d5fb806c3b812fb41fee4eac91ebb25bc29381a8b66caa71",
+      "source_statement_sha256": "18fe704d905e902e1b491fff56a4783ac4ff773bdf243a378023d7df3447d9f4",
+      "statements": 702,
+      "text_aliases": [
+        "redundant PRIOSAVE EQUALS R1SAVE declaration omitted in fixture"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+./build/test-cm-waitlist
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests

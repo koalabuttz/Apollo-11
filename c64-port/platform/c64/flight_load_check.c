@@ -1,0 +1,398 @@
+/* SPDX-License-Identifier: MIT */
+/* flight-store-vice: the flight resident booted on the whole-program flight
+ * store (tools/flight_store_build.py, docs/FLIGHT-STORE.md). The program
+ * boots like the flight resident (KERNAL out, the store opened and
+ * verified, the boundary-word table found at its tail), then
+ *
+ *  1. reads every resolver record from the store, resolves its key through
+ *     the resident's resolver and checks the module it names, and checks
+ *     the records' count and checksum against the build's resolver list
+ *     (FL_RECORDS, FL_RECORD_SUM; the list itself would overrun the
+ *     boot-only region);
+ *  2. runs every flight module twice from a point no table holds (FL_IDLE_Z):
+ *     the first run loads it from the REU into its slot, the second finds it
+ *     loaded. Each run must return to the resident with EXEC_UNMAPPED. Both
+ *     are timed in CPU cycles with CIA2's cascaded timers, interrupts off;
+ *  3. once a module is loaded, runs one of its resolver records' points
+ *     twice from the same state (the boot image and the module's slot, kept
+ *     in the REU at FL_SCRATCH): through the module's main (ABI 2 run) and
+ *     through the resident's direct call (rk_direct), with the module's
+ *     slot the only loaded one. Status, image and channels
+ *     (agc_hardware) must match; both are timed. A direct-only module's
+ *     main only builds its tables (EXEC_UNMAPPED, nothing written, step
+ *     12): its point runs through rk_direct alone;
+ *  0. before any of that, with a pinned module (slot class 3, FL_PINNED):
+ *     one of its points through the module packing the same table and
+ *     through rk_direct with only the pinned module present (steps 10-11);
+ *     the pinned module is then dropped, since the mailbox reuses its RAM.
+ *
+ * FL_DATA names the generated data header (records, modules, FL_IDLE_Z).
+ * For bisecting a crash, -DFL_FIRST=n -DFL_LIMIT=n run modules [FIRST,LIMIT)
+ * only and -DFL_NO_PROFILE skips profile(); $c006 holds the module index
+ * being run; -DFL_PROFILE_MARKS stores to $c007 and $c008 around each cached
+ * run, for a VICE monitor watch that profiles it. Mailbox (tools/flight_vice_load.py): $c001-2 failures, $c003-4 checks,
+ * $a5 at $c000; $c005 the first failing step; $c3f8 the timer's own cost
+ * (4 bytes), $c3f0-5 the call profile (profile()), $c3f6 the soft-stack peak, $c3fe the module count, $c400 one fl_timing per module (up to
+ * $cdff, FL_MODULES at most 256), $c3e0 the indices of up to 8 modules whose
+ * direct call differs from their main ($c3df their count). */
+#include <stdint.h>
+#include "resident_flight.h"
+#include "flight_undo.h"
+#define BOOT_DATA __attribute__((section(".boot.text.fl_data")))
+#define BOOT __attribute__((noinline,section(".boot.text.fl_check")))
+typedef struct { uint16_t id, bytes, bank, loc; } fl_module;   /* loc 0: no record to call */
+/* In fl_modules order (tools/flight_vice_load.py reads ids and sizes from
+ * the FL_DATA header). */
+/* point: what the record's point did, for tools/flight_vice_load.py's host
+ * reference (step 14): the image and channels sum after the run (sum_bytes
+ * over the words and the agc_hardware fields, not its padding), the routines
+ * rk_direct chained (steps, bit 8 in status bit 7) and the exec status. */
+typedef struct { uint16_t sum; uint8_t steps, status; } fl_point;
+typedef struct { uint32_t load; uint16_t cached, direct, main; fl_point point; } fl_timing;
+#include FL_DATA
+#ifndef FL_FIRST
+#define FL_FIRST 0u
+#endif
+#ifndef FL_LIMIT
+#define FL_LIMIT FL_MODULES
+#endif
+/* The timings at $C400 leave the soft stack (below $D000) 512 bytes, about
+ * three times its measured peak; stack_peak() fails the check if it reaches them. */
+_Static_assert(0xc400ul + FL_MODULES * sizeof(fl_timing) <= 0xce00ul,
+               "timings would reach the stack");
+#define FL_IMAGE_BYTES 4096ul
+_Static_assert(sizeof(apollo_overlay_state)<=FL_IMAGE_BYTES,"the image snapshot overruns its scratch");
+_Static_assert(FL_IMAGE_BYTES+16384u<=FL_SCRATCH_BYTES,"a slot snapshot overruns the REU scratch");
+/* fl_modules is boot data (the first module load overwrites it): boot
+ * stashes it in the REU scratch after the slot snapshot, and the loop
+ * fetches one entry at a time into module. */
+#define FL_MODULE_TABLE (FL_SCRATCH+FL_IMAGE_BYTES+16384ul)
+_Static_assert(FL_IMAGE_BYTES+16384ul+sizeof fl_modules<=FL_SCRATCH_BYTES-256u,"the module table overruns the REU scratch");
+static fl_module module;
+#define IMAGE ((apollo_overlay_state *)APOLLO_SHARED_ADDRESS)
+static volatile uint8_t *const mail=(volatile uint8_t *)0xc000;
+static fl_timing *const timing=(fl_timing *)0xc400;
+static uint16_t failures,checks;
+static uint8_t first_failure;   /* to $c005 at the end: the mailbox page is the pinned module's until then */
+static void expect(uint8_t ok,uint8_t step){++checks;if(!ok){++failures;if(!first_failure)first_failure=step;}}
+
+/* The checksum, as tools/flight_store_build.py computes it: Fletcher's sums
+ * over bank, loc and module of each record in key order, mod 65536. */
+static void BOOT resolve_records(void){apollo_reu_store *s=(apollo_reu_store *)rk_runtime.store.user;
+ uint16_t i,r[4],a=0,b=0;uint8_t j;apollo_ov2_cont at;
+ expect(s->resolver_count==FL_RECORDS,2);
+ for(i=0;i<s->resolver_count;++i){
+  if((apollo_reu_transfer(APOLLO_REU_FETCH,r,s->base+((uint32_t)s->resolver_page<<8)+(uint32_t)i*sizeof r,sizeof r)&
+      (APOLLO_REU_STATUS_END|APOLLO_REU_STATUS_FAULT))!=APOLLO_REU_STATUS_END){expect(0,2);return;}
+  for(j=0;j<3u;++j){a+=r[j];b+=a;}
+  expect(r[3]==0u&&rk_runtime.store.resolve(rk_runtime.store.user,r[0],r[1],&at)&&at.module==r[2]&&at.selector==0u,2);}
+ expect(a==(uint16_t)FL_RECORD_SUM&&b==(uint16_t)(FL_RECORD_SUM>>16),2);}
+
+/* The $D000 extension path (slot class 2): a pattern stashed in the REU
+ * scratch, fetched to $D000 and verified with I/O banked out (rk_hidden_dma),
+ * read back with I/O out, then CIA1 interrupts left on with I/O out: the IRQ
+ * entry must restore I/O to acknowledge them, or the CPU never returns. */
+extern volatile uint16_t ov2_irq_count;
+static uint16_t BOOT irq_count(void){uint16_t n;do n=ov2_irq_count;while(n!=ov2_irq_count);return n;}
+/* The boot loaded the real class-2 module ($0A02) at $D000: its first page
+ * waits in the slot snapshot area (unused until the module loop) and comes
+ * back after the test. */
+#define FIXED_SAVE (FL_SCRATCH+FL_IMAGE_BYTES)
+static void BOOT fixed_extension(void){uint8_t b[256];uint16_t i,bad=0,t;   /* on the stack: $C000 holds the pinned module */
+ expect(rk_hidden_dma(APOLLO_REU_STASH,(void *)APOLLO_OV2_FIXED_ADDRESS,FIXED_SAVE,256u),8);
+ for(i=0;i<256u;++i)b[i]=(uint8_t)(i^0x5au);
+ apollo_reu_transfer(APOLLO_REU_STASH,b,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u);
+ expect(rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u),8);
+ expect(rk_hidden_dma(APOLLO_REU_VERIFY,(void *)APOLLO_OV2_FIXED_ADDRESS,FL_SCRATCH+FL_SCRATCH_BYTES-256u,256u),8);
+ __asm__ volatile("sei");
+ *(volatile uint8_t *)1=0x34;
+ for(i=0;i<256u;++i)bad|=(uint8_t)(((volatile uint8_t *)APOLLO_OV2_FIXED_ADDRESS)[i]^(uint8_t)(i^0x5au));
+ t=irq_count();
+ __asm__ volatile("cli");
+ for(i=0;i<60000u&&(uint16_t)(irq_count()-t)<3u;++i){}
+ __asm__ volatile("sei");
+ *(volatile uint8_t *)1=0x35;
+ __asm__ volatile("cli");
+ expect(!bad,8);
+ expect((uint16_t)(irq_count()-t)>=3u,9);
+ expect(rk_hidden_dma(APOLLO_REU_FETCH,(void *)APOLLO_OV2_FIXED_ADDRESS,FIXED_SAVE,256u)&&
+        rk_hidden_dma(APOLLO_REU_VERIFY,(void *)APOLLO_OV2_FIXED_ADDRESS,FIXED_SAVE,256u),8);}
+
+/* CIA2 timer A counts cycles from $FFFF, timer B its underflows. */
+#define CIA2 ((volatile uint8_t *)0xdd00)
+static void timer_start(void){
+ CIA2[0x0e]=0;CIA2[0x0f]=0;
+ CIA2[0x04]=0xff;CIA2[0x05]=0xff;CIA2[0x06]=0xff;CIA2[0x07]=0xff;
+ CIA2[0x0f]=0x51;   /* B: force load, count A underflows, start */
+ CIA2[0x0e]=0x11;}  /* A: force load, count cycles, start */
+static uint32_t timer_stop(void){uint16_t a,b;
+ CIA2[0x0e]=0;CIA2[0x0f]=0;
+ a=(uint16_t)(CIA2[0x04]|CIA2[0x05]<<8);b=(uint16_t)(CIA2[0x06]|CIA2[0x07]<<8);
+ return ((uint32_t)(uint16_t)~b<<16)|(uint16_t)~a;}
+
+static uint32_t run(uint16_t id,uint8_t step){apollo_ov2_cont at={id,0},resume;uint16_t value;uint8_t action;
+ enum apollo_ov2_status status;uint32_t t;
+ IMAGE->words[5]=FL_IDLE_Z;IMAGE->words[4]=0;
+ value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;
+ timer_start();
+ status=apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume);
+ t=timer_stop();
+ expect(status==APOLLO_OV2_OK&&action==APOLLO_OV2_DONE&&rk_env.status==EXEC_UNMAPPED,step);
+ return t;}
+
+/* Where a cached call goes: the runtime alone (a cached run of the
+ * null module 0x01E0, whose main only returns), and the resident's own
+ * transfer point and resolve from FL_IDLE_Z, which every flight module
+ * repeats with its own copy. Cycles, timer cost included, at $c3f0-$c3f5. */
+static void profile(void){apollo_ov2_cont at={RK_MODULE_BOUNDARY,0},resume;uint16_t value;uint8_t action;
+ volatile uint16_t *out=(volatile uint16_t *)0xc3f0;
+ IMAGE->words[5]=FL_IDLE_Z;IMAGE->words[4]=0;
+ apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume);
+ timer_start();apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume);out[0]=(uint16_t)timer_stop();
+ timer_start();(void)agc_transfer_point(&rk_program,IMAGE,rk_device.superbank);out[1]=(uint16_t)timer_stop();
+ timer_start();(void)agc_transfer_resolve(&rk_program,IMAGE,rk_device.superbank);out[2]=(uint16_t)timer_stop();}
+
+/* A 16-bit sum of the image, the channels (rk_hardware) and the device
+ * record (rk_device, which holds the CM's channels 11-14), rotated per byte
+ * so moved words differ. The hardware record's bytes up to radar_gate: the
+ * host reference sums the same bytes (x86 pads the record). */
+static uint16_t sum_bytes(uint16_t h,const void *p,uint16_t n){const uint8_t *b=p;
+ while(n--)h=(uint16_t)((h<<1|h>>15)+*b++);
+ return h;}
+#define FL_HARDWARE_BYTES (offsetof(agc_hardware,radar_gate)+1u)
+static uint16_t image_sum(void){
+ return sum_bytes(sum_bytes(sum_bytes(0,IMAGE,sizeof *IMAGE),&rk_hardware,FL_HARDWARE_BYTES),&rk_device,sizeof rk_device);}
+static rk_io device;
+static agc_hardware hardware;
+/* The work clock's state at boot: each point starts from it, so its step
+ * limit (rk_limit) and charge do not depend on the modules run before it. */
+extern uint8_t rk_idle;
+extern uint16_t fl_direct_steps;
+extern uint8_t fl_direct_full;
+static uint16_t work, pending;
+static uint8_t phase, idle, part[2];
+static void clock_save(void){work=rk_work;pending=rk_pending;phase=rk_tick_phase;idle=rk_idle;
+ part[0]=rk_part_cont;part[1]=rk_part_prev;}
+static void clock_restore(void){rk_work=work;rk_pending=pending;rk_tick_phase=phase;rk_idle=idle;
+ rk_part_cont=part[0];rk_part_prev=part[1];}
+static void direct_state(const fl_module *m){
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
+ rk_device=device;rk_hardware=hardware;clock_restore();
+ IMAGE->words[4]=(agc_word)(m->bank&076000u);IMAGE->words[5]=m->loc;
+ rk_device.superbank=(agc_word)(m->bank&0100u);}
+static uint8_t differ;
+/* What a point did (fl_point): FL_POINT_MAIN marks a run through the module
+ * main (NOT_DIRECT tables: no step count), FL_POINT_NONE no run,
+ * FL_POINT_FULL a run that took its whole step limit (rk_limit). */
+#define FL_POINT_FULL 0x10u
+#define FL_POINT_MAIN 0x40u
+#define FL_POINT_NONE 0x20u
+static void point_record(fl_point *p,enum exec_status st,uint16_t steps,uint8_t flags){
+ p->sum=image_sum();p->steps=(uint8_t)steps;
+ /* The status as a code under 16: 0-7 as they are, 8 for 1201, 9 for 1202. */
+ uint8_t code=st==EXEC_NO_VAC?8u:st==EXEC_NO_CORE?9u:(uint8_t)st<8u?(uint8_t)st:15u;
+ p->status=(uint8_t)(code|flags|(uint8_t)(steps>>1&0x80u));}
+/* Every other resolver record of a direct module (tools/flight_vice_load.py
+ * writes them into its copy of the store, between the flight undo image and
+ * the scratch; docs/FLIGHT-STORE.md): at FL_POINTS_REU the point count, one
+ * count per module in fl_modules order, then each point's bank and loc, then
+ * room for each point's fl_point. Each runs as the module's own point does,
+ * from the same start state; the results go to the job slot at the end
+ * ($8000), which the tool saves. A store without the table holds zeros. */
+#define FL_POINTS_REU 0x1F3000ul
+#define FL_POINTS_END 0x1F8000ul
+_Static_assert(FL_POINTS_REU>=FLIGHT_UNDO_REU+FLIGHT_UNDO_BYTES&&FL_POINTS_END<=FLIGHT_UNDO_LIMIT,
+               "the points table overlaps the undo image or the scratch");
+static uint16_t points_total;
+static uint32_t points_at,points_out;
+static void point_run(const fl_module *m,uint8_t *slot,uint16_t bytes,fl_point *p){enum exec_status b;
+ direct_state(m);
+ apollo_reu_transfer(APOLLO_REU_FETCH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
+ fl_direct_steps=0u;fl_direct_full=0u;
+ b=rk_direct(AGC_TRANSFER_NONE,AGC_TRANSFER_NONE);
+ point_record(p,b,fl_direct_steps,fl_direct_full?FL_POINT_FULL:0u);
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;}
+/* Module k's other points: run when its own point ran directly, skipped
+ * (FL_POINT_NONE) when not. */
+static void more_points(uint16_t k,const fl_module *m,uint8_t run){uint16_t n,j,w[2];uint8_t *slot=0;uint16_t bytes=0;uint8_t i;
+ fl_module q=*m;fl_point p;
+ if(!points_total)return;
+ apollo_reu_transfer(APOLLO_REU_FETCH,&n,FL_POINTS_REU+2ul+2ul*k,2u);
+ for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]==m->id){slot=rk_runtime.slot[i];bytes=apollo_ov2_slot_bytes(i);}
+ for(j=0;j<n;++j,points_at+=4u,points_out+=4u){
+  p.sum=0;p.steps=0;p.status=FL_POINT_NONE;
+  if(run&&slot){apollo_reu_transfer(APOLLO_REU_FETCH,w,points_at,4u);q.bank=w[0];q.loc=w[1];point_run(&q,slot,bytes,&p);}
+  apollo_reu_transfer(APOLLO_REU_STASH,&p,points_out,sizeof p);}}
+
+static uint16_t direct(uint16_t k,const fl_module *m,fl_timing *tm){uint16_t *main_cycles=&tm->main;apollo_ov2_cont at={m->id,0},resume;uint16_t value,sum,t;
+ uint8_t ok;
+ uint8_t action,i;enum exec_status a,b;
+ uint8_t *slot=0;uint16_t bytes=0;
+ for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]==m->id){slot=rk_runtime.slot[i];bytes=apollo_ov2_slot_bytes(i);}
+ expect(slot!=0,7);
+ if(!slot)return 0;
+ /* The whole slot too: a module's own statics (device records, step state)
+  * must start both runs alike. */
+ apollo_reu_transfer(APOLLO_REU_STASH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
+ direct_state(m);value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;sum=image_sum();
+ timer_start();ok=apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume)==APOLLO_OV2_OK;*main_cycles=(uint16_t)timer_stop();
+ expect(ok,5);
+ a=rk_env.status;
+ /* A direct-only module's main only builds its tables: EXEC_UNMAPPED, the
+  * image and channels untouched. Its point then runs through rk_direct
+  * alone (timed; main 0 marks the module), as rk_resident_step runs it. */
+ /* Tables on another io record run only through the main (no direct call
+  * to compare). */
+ {const rk_module_tables *tb=(const rk_module_tables *)(uintptr_t)(slot[APOLLO_OV2_H_TABLES]|(uint16_t)slot[APOLLO_OV2_H_TABLES+1]<<8);
+  if(tb&&tb->ready==RK_TABLES_NOT_DIRECT){
+   point_record(&tm->point,a,0u,FL_POINT_MAIN);
+   apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
+   return 0;}}
+ if(a==EXEC_UNMAPPED){expect(image_sum()==sum,12);*main_cycles=0;}
+ sum=image_sum();
+ for(i=0;i<APOLLO_OV2_SLOTS;++i)if(rk_runtime.loaded[i]!=m->id)rk_runtime.loaded[i]=0;
+ direct_state(m);
+ apollo_reu_transfer(APOLLO_REU_FETCH,slot,FL_SCRATCH+FL_IMAGE_BYTES,bytes);
+ fl_direct_steps=0u;fl_direct_full=0u;
+ timer_start();
+ b = rk_direct(AGC_TRANSFER_NONE, AGC_TRANSFER_NONE);
+ t = (uint16_t)timer_stop();
+ point_record(&tm->point,b,fl_direct_steps,fl_direct_full?FL_POINT_FULL:0u);
+ ok=!*main_cycles||(a==b&&image_sum()==sum);expect(ok,6);
+ if(!ok&&differ<8u){((volatile uint16_t *)0xc3e0)[differ++]=k;mail[0x3df]=differ;}
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;
+ return t;}
+
+#ifdef FL_PINNED
+/* The pinned module (slot class 3): boot loaded it at $C000 and built its
+ * tables (rk_pinned), and the class-4 module, if any, at $E000. One of its points, from the boot state, through the
+ * module that packs the same table (its main, ABI 2 run) and then through
+ * rk_direct with no other module loaded: status, image and channels must
+ * match. Then it is dropped (rk_pinned 0): the mailbox and the timings
+ * reuse $C000-$CBFF. */
+static void pinned(void){static const fl_module p={FL_PINNED_MODULE,0,FL_PINNED_BANK,FL_PINNED_LOC};
+ apollo_ov2_cont at={FL_PINNED_MODULE,0},resume;uint16_t value,sum;uint8_t action,i;enum exec_status a;
+ expect(rk_pinned&&((const uint8_t *)APOLLO_OV2_PINNED_ADDRESS)[APOLLO_OV2_H_ID]==(uint8_t)FL_PINNED,10);
+#ifdef FL_PINNED_TASK
+ /* The pinned task region (slot class 4) at $E000, beside it. */
+ expect(((const uint8_t *)APOLLO_OV2_TASK_ADDRESS)[APOLLO_OV2_H_SLOT]==APOLLO_OV2_SLOT_PINNED_TASK&&
+        ((const uint8_t *)APOLLO_OV2_TASK_ADDRESS)[APOLLO_OV2_H_ID]==(uint8_t)FL_PINNED_TASK,10);
+#endif
+ const rk_module_tables *const pin=rk_pinned;
+ direct_state(&p);value=(uint16_t)(uintptr_t)&rk_env;rk_env.status=EXEC_OK;
+ expect(apollo_ov2_run(&rk_runtime,0,at,&value,&action,&resume)==APOLLO_OV2_OK,11);
+ a=rk_env.status;
+ /* A direct-only twin only built its tables: the reference run goes
+  * through them, without the pinned module. */
+ if (a == EXEC_UNMAPPED) {
+     direct_state(&p);
+     rk_pinned = 0;
+     a = rk_direct(AGC_TRANSFER_NONE, AGC_TRANSFER_NONE);
+     rk_pinned = pin;
+ }
+ sum=image_sum();
+ for(i=0;i<APOLLO_OV2_SLOTS;++i)rk_runtime.loaded[i]=0;
+ direct_state(&p);
+ expect(rk_pinned && rk_direct(AGC_TRANSFER_NONE, AGC_TRANSFER_NONE) == a && image_sum() == sum,
+        11);
+ rk_pinned=0;
+ apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);rk_device=device;rk_hardware=hardware;}
+#endif
+
+/* Soft-stack watermark: free stack below the timings is filled before the
+ * module runs and scanned after; $c3f6 gets the peak depth below $D000.
+ * Not inlined: the fill runs up to its own frame, which must lie below
+ * main's (inlined into main, it filled main's own frame slots below its
+ * local, such as the pointer apollo_ov2_run writes the run's value
+ * through, and that write then landed at $5A5A). */
+#define FL_STACK_FLOOR ((volatile uint8_t *)(0xc400u+FL_MODULES*sizeof(fl_timing)))
+__attribute__((noinline)) static void stack_fill(void)
+{
+    volatile uint8_t here, *p = FL_STACK_FLOOR;
+    while (p < &here - 16) *p++ = 0x5a;
+}
+static void stack_peak(void){volatile uint8_t *p=FL_STACK_FLOOR;
+    expect(*p == 0x5a, 13); /* no fill left at the floor: the stack ran into the timings */
+    while (*p == 0x5a) ++p;
+    *(volatile uint16_t *)0xc3f6 = (uint16_t)(0xd000u - (uintptr_t)p);
+}
+
+#ifdef FL_SNAP
+/* -DFL_SNAP="<header>" (tools/flight_vice_load.py --snap): every point
+ * starts from a host flight snapshot (tools/flight_host_run.c
+ * FLIGHT_SNAPSHOT) instead of the boot image, as the replay harness loads
+ * one (platform/c64/dap_pass_check.c load_snapshot), so more of them find
+ * the job and interrupt state their routines run in. */
+#include "resident_cdu.h"
+#define SNAP_DATA BOOT_DATA
+#include FL_SNAP
+static void BOOT snapshot(void){
+ memcpy(IMAGE->words,snap_words,sizeof snap_words);
+ SNAP_IO(rk_device)
+ SNAP_HW(rk_hardware)
+ SNAP_FLIGHT(rk_flight)
+ SNAP_CDU(rk_cdu)
+ rk_device_from_canonical();
+ rk_pending=0;rk_work=0;rk_tick_phase=0;rk_part_cont=rk_part_prev=0;}
+#endif
+
+int main(void){uint16_t i;
+ expect(rk_boot()==0,1);
+ if(!failures){
+  apollo_reu_transfer(APOLLO_REU_STASH,(void *)fl_modules,FL_MODULE_TABLE,sizeof fl_modules);
+  resolve_records();
+  fixed_extension();
+  __asm__ volatile("sei");
+#ifdef FL_SNAP
+  snapshot();
+#endif
+  apollo_reu_transfer(APOLLO_REU_STASH,IMAGE,FL_SCRATCH,sizeof *IMAGE);device=rk_device;hardware=rk_hardware;clock_save();
+#ifdef FL_PINNED
+  pinned();
+#endif
+  rk_pinned=0;
+  apollo_reu_transfer(APOLLO_REU_FETCH,&points_total,FL_POINTS_REU,2u);
+  /* Step 15: the points table fits its area and its results the job slot. */
+  if(FL_POINTS_REU+2ul+2ul*FL_MODULES+8ul*points_total>FL_POINTS_END||4ul*points_total>APOLLO_OV2_JOB_BYTES){expect(0,15);points_total=0;}
+  points_at=FL_POINTS_REU+2ul+2ul*FL_MODULES;points_out=points_at+4ul*points_total;
+  for(i=1;i<0x3e0u;++i)mail[i]=0;
+  timer_start();*(volatile uint32_t *)0xc3f8=timer_stop();
+  stack_fill();
+#ifndef FL_NO_PROFILE
+  profile();
+#endif
+  for(i=FL_FIRST;i<FL_LIMIT;++i){
+   *(volatile uint16_t *)0xc006=i;
+   apollo_reu_transfer(APOLLO_REU_FETCH,&module,FL_MODULE_TABLE+i*sizeof module,sizeof module);
+   timing[i].load=run(module.id,3);
+#ifdef FL_PROFILE_MARKS
+   mail[7]=1;   /* a monitor watch here can start VICE's profiler */
+#endif
+   timing[i].cached=(uint16_t)run(module.id,4);
+#ifdef FL_PROFILE_MARKS
+   mail[8]=1;
+#endif
+   timing[i].point.status=FL_POINT_NONE;
+   timing[i].direct=module.loc?direct(i,&module,&timing[i]):0u;
+   more_points(i,&module,!(timing[i].point.status&(FL_POINT_NONE|FL_POINT_MAIN)));
+  }
+  *(volatile uint16_t *)0xc3fe=FL_LIMIT;
+  /* Every point's start, for the host reference: the boot image back at
+   * IMAGE ($7000, which tools/flight_vice_load.py saves) and the device and
+   * hardware records at $c100, their sizes at $c0fe and $c0ff (the host
+   * checks them against its own layout). */
+  apollo_reu_transfer(APOLLO_REU_FETCH,IMAGE,FL_SCRATCH,sizeof *IMAGE);
+  memcpy((void *)0xc100,&device,sizeof device);
+  memcpy((void *)(0xc100+sizeof device),&hardware,FL_HARDWARE_BYTES);
+  /* The other points' results, for the host reference. */
+  if(points_total)apollo_reu_transfer(APOLLO_REU_FETCH,(void *)APOLLO_OV2_JOB_ADDRESS,FL_POINTS_REU+2ul+2ul*FL_MODULES+4ul*points_total,4u*points_total);
+  mail[0xfe]=(uint8_t)sizeof device;mail[0xff]=(uint8_t)FL_HARDWARE_BYTES;
+  stack_peak();
+  __asm__ volatile("cli");}
+ else for(i=1;i<0x3e0u;++i)mail[i]=0;
+ mail[5]=first_failure;
+ mail[1]=(uint8_t)failures;mail[2]=(uint8_t)(failures>>8);
+ mail[3]=(uint8_t)checks;mail[4]=(uint8_t)(checks>>8);
+ mail[0]=0xa5;
+ for(;;){}
+}

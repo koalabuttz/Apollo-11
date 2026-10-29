@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -Itools -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_admission_zero.c src/cm_native_image.c src/agc_word.c src/cm_executive.c tests/cm_admission_zero_cases.c tests/cm_admission_complete_cases.c platform/host/cm_admission_zero_snapshot.c -o build/cm-admission-zero-sanitize
+python3 tools/cm_admission_zero_sanitize.py
+PASS: full ASAN/UBSAN +0 core admission corpus, all86016 actual source states

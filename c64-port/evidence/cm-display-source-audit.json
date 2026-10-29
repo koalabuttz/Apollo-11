@@ -1,0 +1,15 @@
+{
+  "EXECUTIVE.agc": {
+    "original_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "indentation_repairs": 5
+  },
+  "DISPLAY_INTERFACE_ROUTINES.agc": {
+    "original_sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+    "indentation_repairs": 1
+  },
+  "INTER-BANK_COMMUNICATION.agc": {
+    "original_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+    "indentation_repairs": 0
+  },
+  "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+}

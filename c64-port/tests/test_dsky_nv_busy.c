@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "dsky_nv_busy_check.h"
+static apollo_overlay_state s,before;
+int main(void){p66_bias_io io,old;agc_word channel11,oldchannel;enum dsky_nv_mission mission;enum dsky_nv_busy_entry entry;enum dsky_nv_busy_route route;uint16_t failures=0;uint8_t n,g;for(n=0;n<80u;++n)failures=(uint16_t)(failures+dsky_nv_busy_checkpoint(n,&s,&before));for(n=0;n<10u;++n)for(g=0;g<12u;++g){if(!dsky_nv_busy_checkpoint_input((uint8_t)(n*8u),&s,&io,&channel11,&mission,&entry))return 2;switch(g){case 0:s.words[5]=0;break;case 1:s.words[4]=1;break;case 2:s.words[3]=1;break;case 3:s.words[6]^=1;break;case 4:s.words[7]=1;break;case 5:io.superbank=1;break;case 6:io.interrupt_enabled=2;break;case 7:channel11=0100000;break;case 8:s.words[01043]=AGC_NEG_ZERO;break;case 9:s.words[0]=040000;break;case 10:s.words[2]=01777;break;default:s.words[2]=04000;break;}before=s;old=io;oldchannel=channel11;route=DSKY_NV_AVAILABLE_ENTRY;if(dsky_nv_busy(&s,&io,&channel11,mission,entry,&route)!=P66_BIAS_OUT_OF_SCOPE||memcmp(&s,&before,sizeof s)||memcmp(&io,&old,sizeof io)||channel11!=oldchannel||route!=DSKY_NV_AVAILABLE_ENTRY)++failures;}printf("80 full LM/CM Pinball busy source states and120 unchanged invalid guards: %s\n",failures?"FAIL":"PASS");return failures?1:0;}

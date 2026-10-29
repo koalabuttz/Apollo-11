@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-acceptance-devices",
+  "release": "evidence-cm-acceptance-devices",
+  "files": {
+    "cm-entry-15100.json": {
+      "sha256": "0b9793c75be6ed7d2fa617acbbfdbe58e74edb1af32227c40411612e4bf5bf85",
+      "bytes": 39387,
+      "store": "tree"
+    },
+    "cm-entry-overload-20900.json": {
+      "sha256": "e494eea5bdf677ce419f0fe9fcdf81ed9db473c6cf5c1d6ebbac64a229d3a071",
+      "bytes": 60050,
+      "store": "tree"
+    },
+    "cm-entry-overload-22000.json": {
+      "sha256": "fce733ada7aeb8804819f13b583b186b25de912e1d32cf74eb02f514410d004d",
+      "bytes": 42736,
+      "store": "tree"
+    },
+    "cm-entry-overload.log": {
+      "sha256": "05e84bc23e43f19bd2c4c822e6b0d0d848e41fa6029add57438be6a9ad33e57b",
+      "bytes": 34561,
+      "store": "tree"
+    },
+    "cm-p20-12200.json": {
+      "sha256": "2580d81b90a14e4166349c3b9d79381f6967300e22d657f7b95e908eedfe4111",
+      "bytes": 13536,
+      "store": "tree"
+    },
+    "cm-p20-18300.json": {
+      "sha256": "9d52c117f8b1d5e5c04364116bd5fa5ea86189e103ae9b3d6fcc65cc2fc36ebb",
+      "bytes": 17787,
+      "store": "tree"
+    },
+    "cm-p20-vhf-dropout-17900.json": {
+      "sha256": "fcf98f41b24de5f0cac99646f6c1dfc787ec58199da966b1e492293d00cac40d",
+      "bytes": 25681,
+      "store": "tree"
+    },
+    "cm-p20-vhf-dropout.log": {
+      "sha256": "e493b772b28771e3803e0ebb2387a7ca09e1a155df1c5e999d0ed78747db4bc7",
+      "bytes": 28431,
+      "store": "tree"
+    },
+    "cm-p40-44000.json": {
+      "sha256": "c799db465221e75994306a4b4785b8cd8892091f4f839598e9ea5c5065225ddf",
+      "bytes": 51636,
+      "store": "tree"
+    },
+    "cm-p40-70660.json": {
+      "sha256": "582ebe451fcc689b02e1c4927b4b2b6566d26362f276ef160b1d20029196915c",
+      "bytes": 21302,
+      "store": "tree"
+    },
+    "cm-p52-9950.json": {
+      "sha256": "71142a3553dec7667d8ece2b1245821016c30ede3f611dabd43a3838b6bdc6b6",
+      "bytes": 17848,
+      "store": "tree"
+    },
+    "cm-p52-gimbal-lock-18900.json": {
+      "sha256": "ecdcfa3bfc2ae17625ba06c42f8213cdbac56229bd9eb6f5291826fd3bb4ec3f",
+      "bytes": 14345,
+      "store": "tree"
+    },
+    "cm-p52-gimbal-lock-2900.json": {
+      "sha256": "9535986c1b8fecc13306035231f4595396c53bb5eeaadf7dd8987bdd3baf6beb",
+      "bytes": 32726,
+      "store": "tree"
+    },
+    "cm-p52-gimbal-lock.log": {
+      "sha256": "74a5f576ac787b4aa8072f5bee6d00d1e243d51f0293157525f73a779d7ab494",
+      "bytes": 22252,
+      "store": "tree"
+    },
+    "cm-p52-imu-cage-5900.json": {
+      "sha256": "525f05c2a75dc782adcc3cdf87a46f8e8ef7c183887b7a0234d6407045b5432f",
+      "bytes": 32369,
+      "store": "tree"
+    },
+    "cm-p52-imu-cage.log": {
+      "sha256": "f17257b43e24f2834cab6d0b1bef2bc3dfccf821dbeea34ea57dbaee2a1b01a1",
+      "bytes": 21938,
+      "store": "tree"
+    },
+    "cm-p52-imu-fail-5900.json": {
+      "sha256": "1a60a675f65cf29be37b84f682d4082e8cc103be36b4fcea116baab8cec74c20",
+      "bytes": 24915,
+      "store": "tree"
+    },
+    "cm-p52-imu-fail-6900.json": {
+      "sha256": "b718434f0b3eb740bed94989d973e2b26e9bdf366a4a1f0752c62d1cd9fe74b7",
+      "bytes": 13533,
+      "store": "tree"
+    },
+    "cm-p52-imu-fail.log": {
+      "sha256": "855b70f534c469e538ff21112c61d2cbafb36b4ebf149e3751f15664eabb3f92",
+      "bytes": 22140,
+      "store": "tree"
+    },
+    "cm-p52-optics-12250.json": {
+      "sha256": "d99fa7829c6ee8092a4d6dd1d34d61ee92101ccdcf86a2663a103e86530fdb80",
+      "bytes": 19118,
+      "store": "tree"
+    },
+    "cm-p52-optics-17100.json": {
+      "sha256": "d950d3ff54cae202923a4f7c3697dde9b612d23100deba007ef3ebe0827fd632",
+      "bytes": 14314,
+      "store": "tree"
+    },
+    "cm-tei-4450.json": {
+      "sha256": "7c26bdc8d508c849b6ffdadff9a3ec44f548570cabc415e3ea3605d62b834a1c",
+      "bytes": 18821,
+      "store": "tree"
+    },
+    "cm-tei-52000.json": {
+      "sha256": "8d1d50facafea4042e58a785f7fa635ca596fb0f66f635332f425f37b21668c1",
+      "bytes": 48055,
+      "store": "tree"
+    },
+    "cm-uplink-reject-1900.json": {
+      "sha256": "b07cb46ff1f0170ef96952d08da6ffd00d1882d6bd2a6368610b905b6ada4993",
+      "bytes": 32186,
+      "store": "tree"
+    },
+    "cm-uplink-reject-4900.json": {
+      "sha256": "9c29c999a04482733dfa76211cc0e3a2a8741256eb5e3fcb0f1dfe3c3b877460",
+      "bytes": 13441,
+      "store": "tree"
+    },
+    "cm-uplink-reject-6400.json": {
+      "sha256": "a2322e9c66dd44087a2f0767c641ba8866d131de46499de0763061c238a397d3",
+      "bytes": 14700,
+      "store": "tree"
+    },
+    "cm-uplink-reject-7000.json": {
+      "sha256": "94709e3d7524e3da06562f77b5de4d258393a1f7fb4cc9955aab36b0c23ac812",
+      "bytes": 14741,
+      "store": "tree"
+    },
+    "cm-uplink-reject.log": {
+      "sha256": "3781c1c1c1bef29ebea88f087b300427fcc8e763b4656458a4a2fd96eae31855",
+      "bytes": 10697,
+      "store": "tree"
+    },
+    "cm-v49-att-13000.json": {
+      "sha256": "56230b18c654e924181232f0b142ecf80ba68f9dec0af14aff34ced7acf11ea3",
+      "bytes": 106695,
+      "store": "tree"
+    },
+    "host-summary.json": {
+      "sha256": "5d916abba1953f1c5d35eb6ff676120448683bf38540a492bc4ddb52ce4220d1",
+      "bytes": 19226,
+      "store": "tree"
+    },
+    "offnominal-exits.json": {
+      "sha256": "9c34c79909e89537c7d3e30c37e4afdb6d2323f30e427b400269748f654a4aa5",
+      "bytes": 945,
+      "store": "tree"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+./build/test-cm-single-return
+64 complete2048word source SPSIN/SPCOS TCQ return states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DCM_SINGLE_RETURN_COMPLETE tests/test_cm_single_return.c tests/frozen_words.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c src/cm_quictrig.c src/agc_multiword.c -o build/test-cm-single-return-port-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-single-return-port-sanitize
+64 complete2048word source SPSIN/SPCOS TCQ return states: PASS

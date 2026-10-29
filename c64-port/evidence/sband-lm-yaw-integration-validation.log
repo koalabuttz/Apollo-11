@@ -1,0 +1,12 @@
+./build/test-sband-lm-yaw-integrated
+PASS original antenna LM yaw caller full-image fixtures and unchanged unsupported images
+python3 tools/sband_lm_yaw_port_host.py --binary build/sband-lm-yaw-integrated-stream
+PASS all retained source-state bytes: 269090816 SHA256 65e29e136e79a854b28dc82850910101a77fbeb73a3b5567c34de80e70b7b1ff
+PASS all 65,536 original LM antenna full yaw calculation states
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_sband_lm_yaw.c tests/sband_lm_yaw_target.c tests/frozen_words.c tests/sband_lm_yaw_cases.c src/agc_word.c src/sband_lm_yaw.c src/sband_trig.c src/guidance_trig.c src/sband_vector_linear.c src/sband_vector.c src/sband_shift.c src/sband_length.c src/guidance_length_phased.c src/interpreted_sign.c src/sband_dot.c src/sband_scalar.c src/inverse_trig.c src/guidance_shift.c src/guidance_product.c src/guidance_norm.c src/agc_multiword.c -o build/test-sband-lm-yaw-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-lm-yaw-integrated-san
+PASS original antenna LM yaw caller full-image fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_lm_yaw_snapshot.c tests/sband_lm_yaw_cases.c src/agc_word.c src/sband_lm_yaw.c src/sband_trig.c src/guidance_trig.c src/sband_vector_linear.c src/sband_vector.c src/sband_shift.c src/sband_length.c src/guidance_length_phased.c src/interpreted_sign.c src/sband_dot.c src/sband_scalar.c src/inverse_trig.c src/guidance_shift.c src/guidance_product.c src/guidance_norm.c src/agc_multiword.c -o build/sband-lm-yaw-integrated-stream-san
+python3 tools/sband_lm_yaw_port_host.py --binary build/sband-lm-yaw-integrated-stream-san
+PASS all retained source-state bytes: 269090816 SHA256 65e29e136e79a854b28dc82850910101a77fbeb73a3b5567c34de80e70b7b1ff
+PASS all 65,536 original LM antenna full yaw calculation states

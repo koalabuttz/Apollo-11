@@ -1,0 +1,227 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+      22       22       6e     1 .zp
+      22       22       6e     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.zp.noinit)
+     80d      80d     af5f     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67      da3     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.inverse)
+     a67      a67      da3     1                 inverse
+    180a     180a      4ec     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.sband_trig)
+    180a     180a      4ec     1                 sband_trig
+    1cf6     1cf6      826     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.p66_sine)
+    1cf6     1cf6      826     1                 p66_sine
+    251c     251c       d9     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.doubled)
+    251c     251c       d9     1                 doubled
+    25f5     25f5      16c     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.triple_double)
+    25f5     25f5      16c     1                 triple_double
+    2761     2761      13b     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.p66_cosine)
+    2761     2761      13b     1                 p66_cosine
+    289c     289c      e10     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.sband_vector_linear)
+    289c     289c      e10     1                 sband_vector_linear
+    36ac     36ac       9b     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.exchange)
+    36ac     36ac       9b     1                 exchange
+    3747     3747      3c7     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.product)
+    3747     3747      3c7     1                 product
+    3b0e     3b0e      215     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.round_product)
+    3b0e     3b0e      215     1                 round_product
+    3d23     3d23       7a     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.advance)
+    3d23     3d23       7a     1                 advance
+    3d9d     3d9d       9b     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.load)
+    3d9d     3d9d       9b     1                 load
+    3e38     3e38      264     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.component_add)
+    3e38     3e38      264     1                 component_add
+    409c     409c      116     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.add_pair)
+    409c     409c      116     1                 add_pair
+    41b2     41b2      d8e     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.sband_vector_cross)
+    41b2     41b2      d8e     1                 sband_vector_cross
+    4f40     4f40      2ef     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.product.22)
+    4f40     4f40      2ef     1                 product.22
+    522f     522f      247     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.component_add.24)
+    522f     522f      247     1                 component_add.24
+    5476     5476       e2     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.add_pair.25)
+    5476     5476       e2     1                 add_pair.25
+    5558     5558      363     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.sband_shift_left)
+    5558     5558      363     1                 sband_shift_left
+    58bb     58bb      14c     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.invokes_overflow)
+    58bb     58bb      14c     1                 invokes_overflow
+    5a07     5a07      4d2     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.sband_length)
+    5a07     5a07      4d2     1                 sband_length
+    5ed9     5ed9      a3c     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.p66_length_square_phase)
+    5ed9     5ed9      a3c     1                 p66_length_square_phase
+    6915     6915      27e     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.square)
+    6915     6915      27e     1                 square
+    6b93     6b93      1b7     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.p66_length_root_phase)
+    6b93     6b93      1b7     1                 p66_length_root_phase
+    6d4a     6d4a      4c6     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.p66_length_finish_phase)
+    6d4a     6d4a      4c6     1                 p66_length_finish_phase
+    7210     7210      378     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.interpreted_sign)
+    7210     7210      378     1                 interpreted_sign
+    7588     7588      956     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.sband_dot)
+    7588     7588      956     1                 sband_dot
+    7ede     7ede      2ef     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.product.40)
+    7ede     7ede      2ef     1                 product.40
+    81cd     81cd       9b     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.exchange.41)
+    81cd     81cd       9b     1                 exchange.41
+    8268     8268       7a     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.add_address)
+    8268     8268       7a     1                 add_address
+    82e2     82e2      116     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.add_pair.42)
+    82e2     82e2      116     1                 add_pair.42
+    83f8     83f8       ac     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.valid.45)
+    83f8     83f8       ac     1                 valid.45
+    84a4     84a4       dd     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.epilogue)
+    84a4     84a4       dd     1                 epilogue
+    8581     8581       ef     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.subtract_from)
+    8581     8581       ef     1                 subtract_from
+    8670     8670       90     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.continuation)
+    8670     8670       90     1                 continuation
+    8700     8700      427     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.p66_vector_shift_left)
+    8700     8700      427     1                 p66_vector_shift_left
+    8b27     8b27      2e5     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.p66_scalar_product)
+    8b27     8b27      2e5     1                 p66_scalar_product
+    8e0c     8e0c      7fb     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.p66_normalized_square_root)
+    8e0c     8e0c      7fb     1                 p66_normalized_square_root
+    9607     9607      113     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.half_argument)
+    9607     9607      113     1                 half_argument
+    971a     971a      124     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.triple_left)
+    971a     971a      124     1                 triple_left
+    983e     983e      1f8     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.divide)
+    983e     983e      1f8     1                 divide
+    9a36     9a36       c0     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.agc_multiply)
+    9a36     9a36       c0     1                 agc_multiply
+    9af6     9af6      1bc     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.agc_double_add)
+    9af6     9af6      1bc     1                 agc_double_add
+    9cb2     9cb2     1610     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.main)
+    9cb2     9cb2     1610     1                 main
+    b2c2     b2c2        6     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.exit)
+    b2c2     b2c2        6     1                 exit
+    b2c8     b2c8       13     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.__lshrhi3)
+    b2c8     b2c8       13     1                 __lshrhi3
+    b2db     b2db       40     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.__umodqi3)
+    b2db     b2db       40     1                 __umodqi3
+    b31b     b31b       ae     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.__umodhi3)
+    b31b     b31b       ae     1                 __umodhi3
+    b3c9     b3c9      2b2     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.__divmodsi4)
+    b3c9     b3c9      2b2     1                 __divmodsi4
+    b67b     b67b       34     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.memcpy)
+    b67b     b67b       34     1                 memcpy
+    b6af     b6af       22     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.__memset)
+    b6af     b6af       22     1                 __memset
+    b6d1     b6d1       34     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.__mulhi3)
+    b6d1     b6d1       34     1                 __mulhi3
+    b705     b705       67     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.text.__mulsi3)
+    b705     b705       67     1                 __mulsi3
+    b76c     b76c        0     1         __init_array_start = .
+    b76c     b76c        0     1         __init_array_end = .
+    b76c     b76c        0     1         __fini_array_start = .
+    b76c     b76c        0     1         __fini_array_end = .
+    b76c     b76c      937     1 .rodata
+    b76c     b76c        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    b76c     b76c        0     1                 __set_v
+    b76d     b76d       fa     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.sband_lm_yaw_reference_dictionary)
+    b76d     b76d       fa     1                 sband_lm_yaw_reference_dictionary
+    b867     b867       22     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.sband_lm_yaw_reference_offsets)
+    b867     b867       22     1                 sband_lm_yaw_reference_offsets
+    b889     b889      74d     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.sband_lm_yaw_reference_stream)
+    b889     b889      74d     1                 sband_lm_yaw_reference_stream
+    bfd6     bfd6        8     1         <internal>:(.rodata.cst8)
+    bfde     bfde        c     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.sband_lm_yaw.uz)
+    bfde     bfde        c     1                 sband_lm_yaw.uz
+    bfea     bfea        c     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.sband_lm_yaw.ux)
+    bfea     bfea        c     1                 sband_lm_yaw.ux
+    bff6     bff6        6     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.pos)
+    bff6     bff6        6     1                 pos
+    bffc     bffc       14     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.p66_sine.coefficient)
+    bffc     bffc       14     1                 p66_sine.coefficient
+    c010     c010       70     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.fields)
+    c010     c010       70     1                 fields
+    c080     c080       20     1         <internal>:(.rodata.cst32)
+    c0a0     c0a0        3     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.rodata.p66_vector_shift_right.offsets)
+    c0a0     c0a0        3     1                 p66_vector_shift_right.offsets
+    c0a3     c0a3        0     1 .data
+    c0a3     c0a3        0     1         __data_start = .
+    c0a3     c0a3        0     1         __data_end = .
+    c0a3     c0a3        0     1 __data_load_start = LOADADDR(.data)
+    c0a3     c0a3        0     1 __data_size = SIZEOF(.data)
+    c0a3     c0a3     1000     1 .bss
+    c0a3     c0a3        0     1         __bss_start = .
+    c0a3     c0a3     1000     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.bss.state)
+    c0a3     c0a3     1000     1                 state
+    d0a3     d0a3        0     1         __bss_end = .
+    d0a3     d0a3        0     1 __bss_size = SIZEOF(.bss)
+    d0a3     d0a3       fe     1 .noinit
+    d0a3     d0a3       fe     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.noinit..Lstatic_stack)
+    d1a1     d1a1        0     1         __heap_start = ALIGN(., 2)
+    d1a1     d1a1        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg.lto.o:(.llvm_sympart)
+       0        0      e40     4 .symtab
+       0        0      e40     4         <internal>:(.symtab)
+       0        0       76     1 .shstrtab
+       0        0       76     1         <internal>:(.shstrtab)
+       0        0      90a     1 .strtab
+       0        0      90a     1         <internal>:(.strtab)

@@ -1,0 +1,67 @@
+{
+  "source_files": {
+    "include/cm_makeplay.h": "f24acb1bab80bde3bae7686e00dfb932dfa227fb0e8573d0f11b1f38bb92e29d",
+    "src/cm_makeplay.c": "750f9a9449cdea4a1d22606f8eb0e1f51c62f8de96076234ab09b78eac986f90",
+    "docs/COMANCHE-MAKEPLAY.md": "9c83cb6cc4ac34598ef34aeb2cfa5740ee4d17549f714b4a3126781132b1b598",
+    "tests/cm_makeplay_cases.h": "e96ca4a7a065173296a830e864330793c707b7ecc6a92fd81e211d5d234d8ceb",
+    "tests/cm_makeplay_vectors.h": "30051701d30a46add58be06aae6648f60ba3178ad6122ba2e242c7dbbf8b2634",
+    "tests/cm_makeplay_cases.c": "f394c4bd762288edf34c8faf39b3c87627a87ba282c0378e98364ee3df8d13ea",
+    "tests/cm_makeplay_check.c": "27c80c01941bebcf2b2f72c3f3a8401c04499ad8d2b6c7ea442ea014e2f5dae1",
+    "tests/test_cm_makeplay.c": "b02ee49f55fe275dcafd985986be822db5f3b4a29c89185cf492c3cd60c8f955",
+    "tests/cm_makeplay_check.h": "e17b248eb50fbd82b58dcc7acc6fa0e95b7045075342ee55ddcf5f0064f39b7a",
+    "tools/cm_makeplay_vice_test.py": "70255e41d4e19a305ab4cf32601619a26338c0f18eab3febb06b3590b3ca668d",
+    "tools/cm_makeplay.mk": "bafc3c7c0fe8d172d96b6d4bc11adb2236cbbec7bceb04ad9ce8798f35b25eed",
+    "tools/cm_makeplay_differential.py": "dfcb926a4d50a886492e0c698a6923b3cd2df5845f81ab43cb325ca7d157d593",
+    "tools/cm_makeplay_inputs.c": "83215a1b528e898ad4b73d2155d357c26c3cd7d606c76ed308620178fa8a00b0",
+    "tools/freeze_cm_makeplay.py": "c2a1e37d4dbb24b21557d788499a4a5a486acb9edaf10cea93d645df96193770",
+    "tools/cm_makeplay_reference.c": "ddc01dc2d065cf6cdf8779b078ca0976a1ddb4b1f89dd3e029db3e042fe699de",
+    "tools/cm_makeplay_snapshot.c": "9399ae9281b8ddeb4b05aac67166de4d95b754a87fe55789a5b703370af6137e",
+    "tools/cm_makeplay_sanitize_stream.py": "d25a66895c363f341f722034e9e43d3d5cc22011e63885a03ad570d5a3f27682",
+    "tools/cm_makeplay_diagnostic.c": "69c64c9c5308cf84a98d3fb7a215f81f5e627404b7afe895f18420017a1a3bb5"
+  },
+  "input_dependencies": {
+    "tests/cm_clockjob_cases.c": "d8bd07bfee1a77f57a660dcac5395f5a832db6bbcba43c700f95efd34713b66e",
+    "tests/cm_display_control_cases.c": "124ce7b2ec4079f3f32f163fe6208b594342a6e58c509f02e47bfc6f7b615e20",
+    "tests/cm_trig_cases.c": "b39716b836fe437dfac5087f862445620548b89f95ff1b6c29dd04186eaf60c2"
+  },
+  "original_sources": {
+    "../Comanche055/DISPLAY_INTERFACE_ROUTINES.agc": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a",
+    "../Comanche055/EXECUTIVE.agc": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+    "deps/cm-services-fixture/MAIN.agc.bin": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  },
+  "artifacts": {
+    "evidence/cm-makeplay-native.snapshots.xz": "30cdbb12dc17a6362fcb4053139737b1567cc80bbb807c6d1ab2985ff864d3bd",
+    "evidence/cm-makeplay-reference.snapshots.xz": "30cdbb12dc17a6362fcb4053139737b1567cc80bbb807c6d1ab2985ff864d3bd",
+    "evidence/cm-makeplay-sanitize.snapshots.xz": "30cdbb12dc17a6362fcb4053139737b1567cc80bbb807c6d1ab2985ff864d3bd",
+    "evidence/cm-makeplay-stream-sha.json": "b5df7dfea7049a8a6d40c2f614e31c5487f42ae799f65b8a635541ca08a1d6ed",
+    "evidence/cm-makeplay-differential.log": "2d4e7a7ca2ee3a78591e284fc85cb611fde208534c9dc1338e6431221214be5c",
+    "evidence/cm-makeplay-freeze.log": "55c0d2a89d0c53be538e2b9304d3b3441cb3cec29101a5f4e762dca955867223",
+    "evidence/cm-makeplay-validation.log": "266fbe0b5ee8e884ce732d75121a981f444a3ae1aafdc89117ec397a2f194e11",
+    "evidence/cm-makeplay-c64-result.log": "e07d986d43d0e5ca2076b4769a716050776b4eec7302682c65adefd841ff2a40",
+    "evidence/cm_makeplay.prg": "ed55d9b472977c21b15f795e6eae4e50b34d462a696b5643a70706e94aa8ff11",
+    "evidence/cm_makeplay.map": "369364f9a48350f934c58e2558bbc6fa49adcf53fbd114e3fee381d376fcdb93",
+    "evidence/cm_makeplay-vice-mailbox.bin": "113fd6c9345ba13d3286e7b3d66d8ad4dcb74ddc1231c8242443ed02a77e4cd5",
+    "evidence/cm_makeplay-hardware-stack.bin": "ffce52fb53d638c293dfdd7d4efd4a11358d04632be5a1a42451b72739c11122",
+    "evidence/cm_makeplay-software-stack.bin": "3a266ab4a77070e7279eb7f07b04239acb70b493fb7e662d27af54abf574fc9d",
+    "evidence/cm_makeplay-vice.log": "88188cbe0b8b9a4f9e4b0ac62c660db976cd3dcc9dee18356645e7809e24e179",
+    "evidence/cm_makeplay-vice-monitor.log": "84c6adcc614939328916a8e957bbba88635fadf80fa210bd851699f19b685b7b",
+    "evidence/cm_makeplay-vice.mon": "29b3cf9cd774a2c00aecfda247943bbe5df89aa8dbe6da7d98fd2365fbd6e853"
+  },
+  "states": {
+    "complete_original_states": 24576,
+    "state_words": 2051,
+    "frozen": 64,
+    "invalid_boundaries": 34,
+    "uncompressed_SHA256": "d01d3913843c726f378dba8ff82a33dbce76a1967dd0cf0ed6c9ceb3bf2f4857",
+    "strict_and_SAN": "all complete source outputs byte-identical"
+  },
+  "target": {
+    "mailbox": "a500004000",
+    "prg_bytes": 6535,
+    "hardware_stack_bytes": 14,
+    "rom_stack_bytes": 14,
+    "software_stack_bytes": 77,
+    "extra_zero_page_bytes": 0
+  },
+  "boundary": "actual PRIOCHNG/JOBWAKE/GOSLEEPS/END/POODOO/GOPLAY entrances; no consumer, scheduler service or alarm recovery inside these source groups"
+}

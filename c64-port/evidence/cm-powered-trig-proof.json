@@ -1,0 +1,202 @@
+{
+  "source_revision": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "source_file": "Comanche055/POWERED_FLIGHT_SUBROUTINES.agc",
+  "source_audit": {
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "original_sources": {
+      "POWERED_FLIGHT_SUBROUTINES.agc": {
+        "original_sha256": "dbf2f3db7c28220733b86b30b994cfccf29f4cfce0c4e59084c13bdbeccc5766",
+        "normalized_sha256": "9ba2de499bfa468f7d3fc8e428661b6572f8545d6d3b9eea75904e23540404ca",
+        "indentation_repair_lines": [
+          132
+        ]
+      },
+      "INTERPRETER.agc": {
+        "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+        "normalized_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+        "indentation_repair_lines": [
+          51,
+          207,
+          247,
+          542,
+          588,
+          678,
+          681,
+          908,
+          941,
+          1376,
+          1504,
+          1551,
+          1553,
+          1600,
+          1735,
+          1739,
+          1830,
+          1921,
+          1940,
+          1986,
+          2002,
+          2014,
+          2028,
+          2058,
+          2561,
+          2646,
+          2661,
+          2901,
+          3018,
+          3023,
+          3028,
+          3034,
+          3042,
+          3047,
+          3054,
+          3062
+        ]
+      },
+      "RT8_OP_CODES.agc": {
+        "original_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+        "normalized_sha256": "ca3b0388b70ca5e1f811f96912801e9feccf030ddafbd72970cceb69a9ae2988",
+        "indentation_repair_lines": []
+      },
+      "SINGLE_PRECISION_SUBROUTINES.agc": {
+        "original_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+        "normalized_sha256": "768303431e1f6f0d83b63b8d68663755167e9dd4c869f79d364b0e82ef9aea64",
+        "indentation_repair_lines": []
+      }
+    },
+    "declaration_data_domain": "Byte-original CM ERASABLE_ASSIGNMENTS and fixed data; ALTVAR01357/R53FLBITBIT8 preserved",
+    "declaration_dependency": "docs/FIXED_DATA.md",
+    "historical_source_edits": 0
+  },
+  "native_entries": [
+    "CDUTRIGS23,3507",
+    "CD*TR*GS23,3515"
+  ],
+  "model_words": 2048,
+  "external_IRQ_word": 1,
+  "calls": 65536,
+  "complete_states": 655360,
+  "CDU_word_cases_per_entry": 32768,
+  "every_ordinary_MODE_preserved": true,
+  "all8_EBANK_contexts": true,
+  "fixed_saved_Q_domain": "02000..07777",
+  "logical_complete_streams": {
+    "original_assembly": {
+      "object": "evidence/cm-powered-trig-complete.snapshots.xz",
+      "decoded_sha256": "f6adc3115163b9f79414a2089b6effdf32eea18913e26cfbbd559185435d3114"
+    },
+    "strict_native": {
+      "object": "evidence/cm-powered-trig-complete.snapshots.xz",
+      "decoded_sha256": "f6adc3115163b9f79414a2089b6effdf32eea18913e26cfbbd559185435d3114"
+    },
+    "whole_ASAN_UBSAN": {
+      "object": "evidence/cm-powered-trig-complete.snapshots.xz",
+      "decoded_sha256": "f6adc3115163b9f79414a2089b6effdf32eea18913e26cfbbd559185435d3114"
+    }
+  },
+  "whole_strict_and_sanitizer_streams_match": true,
+  "target_images": [
+    {
+      "phase": 0,
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "prg_bytes": 5223,
+      "loaded_end_hex": "0x1c65",
+      "hardware_stack_bytes": 14,
+      "software_stack_bytes": 52,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 1,
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "prg_bytes": 11516,
+      "loaded_end_hex": "0x34fa",
+      "hardware_stack_bytes": 23,
+      "software_stack_bytes": 190,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 2,
+      "complete_states": 32,
+      "mailbox": "a500002002",
+      "prg_bytes": 13662,
+      "loaded_end_hex": "0x3d5c",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 326,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 3,
+      "complete_states": 32,
+      "mailbox": "a500002003",
+      "prg_bytes": 14195,
+      "loaded_end_hex": "0x3f71",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 317,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 4,
+      "complete_states": 32,
+      "mailbox": "a500002004",
+      "prg_bytes": 14505,
+      "loaded_end_hex": "0x40a7",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 317,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 5,
+      "complete_states": 32,
+      "mailbox": "a500002005",
+      "prg_bytes": 14672,
+      "loaded_end_hex": "0x414e",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 317,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 6,
+      "complete_states": 32,
+      "mailbox": "a500002006",
+      "prg_bytes": 14803,
+      "loaded_end_hex": "0x41d1",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 317,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 7,
+      "complete_states": 32,
+      "mailbox": "a500002007",
+      "prg_bytes": 14879,
+      "loaded_end_hex": "0x421d",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 317,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 8,
+      "complete_states": 32,
+      "mailbox": "a500002008",
+      "prg_bytes": 15032,
+      "loaded_end_hex": "0x42b6",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 317,
+      "compiler_ZP_bytes": 0
+    },
+    {
+      "phase": 9,
+      "complete_states": 32,
+      "mailbox": "a500002009",
+      "prg_bytes": 14797,
+      "loaded_end_hex": "0x41cb",
+      "hardware_stack_bytes": 35,
+      "software_stack_bytes": 317,
+      "compiler_ZP_bytes": 0
+    }
+  ],
+  "continuation": "nine DANZIG06030 phases retain physicalEDOP1(pendingEXIT), then basicPC=savedQ/Q0143; no Executive jobcheck throughout call",
+  "scope": "CDUTRIGS/CD*TR*GS numerical and fixed-code basic return only; interpreted wrappers, transform interfaces, AX return and SMCDURES remain distinct pending proof; no whole-file/app completion claim"
+}

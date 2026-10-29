@@ -1,0 +1,12 @@
+{
+  "states": 448,
+  "prg_bytes": 18218,
+  "load_end": 20265,
+  "bss_end": 28457,
+  "mailbox": "a5c00100",
+  "words_each": 2048,
+  "external_fields": [
+    "superbank",
+    "interrupt_enabled"
+  ]
+}

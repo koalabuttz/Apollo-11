@@ -1,0 +1,73 @@
+{
+  "source_files": {
+    "include/cm_decimal_pair.h": "d54c6fd52e81fd2ec84d39188b78a8d7ce98a30f267684f29e9ecd2706dee2c1",
+    "include/cm_minutes_seconds.h": "c8703e617ed5b1273ad8e4604f630228f72e1bd9b544355908142219f9f60531",
+    "src/cm_decimal_pair.c": "afe24061ae1ea31a75a429ba20e1a85d60f9c1672d36e1f27e8e68d2a4a7f8a6",
+    "src/cm_minutes_seconds.c": "ab1ee6857612c95fc26521d33c8c41513a9f87ca25218d92fe6dad8c572f82e5",
+    "tests/cm_decimal_pair_cases.c": "fc0aedf1b6ee4cc21227b04f0a998102dd23f7792f5e4454280bc7e202f0de54",
+    "tests/cm_decimal_pair_cases.h": "6910824588fed53dbe5d5d7ccea25b7a3ba9f14c96fd9552bdcb4a89058c5b5b",
+    "tests/cm_minutes_seconds_cases.c": "57b716fe47f4fc66212345129f17068368d96e9f03e5aaf16a9a8c739981790f",
+    "tests/cm_minutes_seconds_cases.h": "937db362678424e9833689deb4713cd875f089d1bdcbc4361624b2c11c7106d1",
+    "tests/cm_minutes_seconds_check.c": "67e6db8690f699dd2f091b3cd6fa272c13cc1c6f07e88caefa7efab0a4c28138",
+    "tests/cm_minutes_seconds_check.h": "d597db4a5c4a5a987266d58ea45f972af663f238621e3c18d41dbc04ba1c4403",
+    "tests/cm_minutes_seconds_vectors.h": "4712f6c4a83bf2bc4ea7468ab7feadc38bf56fe30e85e6ad8482054bb6f3e101",
+    "tests/test_cm_minutes_seconds.c": "607cd9d92f316e88c7a6ab9a5addeca0bb3163da5e8312a0c768c52ebc95b67a",
+    "tools/cm_decimal_pair_differential.py": "20ea2a8b272825365d40a663cf18d4c506388167254f12e736d681fcbd31c19e",
+    "tools/cm_decimal_pair_reference.c": "099fd842598daa67bafdb57b6039d360d2cb4e307faf85de1f41d67660a39ae1",
+    "tools/cm_decimal_pair_sanitize_stream.py": "e2f66a81603e0bbfcada3081c966454682f216dd77daf5c4e0f75a8d09dfd736",
+    "tools/cm_decimal_pair_snapshot.c": "b55653bbe9e155659855c76009740f9f21efcea6aab8776766eb963c4fdc5de3",
+    "tools/cm_minutes_seconds.mk": "7a44b2775f7345db1d1b931af1b17273c4a77fbea3db2a21a6236b147de00192",
+    "tools/cm_minutes_seconds_diagnostic.c": "7daaf5fa64e1e026b33462d0ff6e2831084d0433493c0ae3fefffe8df5de0a54",
+    "tools/cm_minutes_seconds_differential.py": "5e689f97c77f309caec933e8c9550ad0b353a9a5e302262f598e3142cc12f613",
+    "tools/cm_minutes_seconds_inputs.c": "96de94c5237f7270017a36d00952c6fe3784d5b35ef8ba2cb2a482c45374eb66",
+    "tools/cm_minutes_seconds_reference.c": "d971ac7925e3950fd2851dc9844d92093f636af894d105abb0fb8353cd1a4b5a",
+    "tools/cm_minutes_seconds_sanitize_stream.py": "9e59fece7256cbb37efa388cd0a751e7e2a45aeeca858fdab56742aaeffcafad",
+    "tools/cm_minutes_seconds_snapshot.c": "3f87e7043c771bc0b6020544edbf10dd0a90712649a39fa5cd3ff5f2125e905a",
+    "tools/cm_minutes_seconds_vice_test.py": "5fe941d222ce0cd2c7bbe2252473c2932dc98f493155ec3d85ee402f6f422f75",
+    "tools/freeze_cm_minutes_seconds.py": "c926806e70aecdb3260980540d2cfef8c097f12ba50b466dc7285f2726d70f4a",
+    "docs/COMANCHE-MINUTES-SECONDS.md": "f1523c235529bdfbc4136e8349cb59b1dd80a8f66167e6876888b4c5f1c9d205"
+  },
+  "native_dependencies": {
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/cm_interbank.c": "b3fc2e12def8ac9193698eefb7e02b71cc68b755303134f8f2732a2d01119fd6",
+    "src/cm_pinball.c": "da5a05bdab5c6423487e08334088f04c29dc7312d82c58656f6b2b1ca44d1fb8",
+    "src/dsky_pinball.c": "c6385c6bfec99ad1c2ea9eac06d174592278b81250384180c35cfc177ee8de0d",
+    "src/fixed_data.c": "43927b9c8782e71389450861c27566e058c1ee0a26d2a6f3cde30a5111e4895d",
+    "src/guidance_product.c": "d2eb52ed11d6fe51d0810fd783b68de39fd6ea91d40d8002e093493166923d18"
+  },
+  "original_sources": {
+    "../Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "artifacts": {
+    "evidence/cm-decimal-pair-reference.snapshots.xz": "086a3df83f14bea954cb3f5d907a283ae483226601b3c87ad3951c71d2e94006",
+    "evidence/cm-decimal-pair-stream-sha.json": "49a042b6da76d7daa71145851487a47dae0621e6d193340f969b88b63f46674b",
+    "evidence/cm-decimal-pair-differential.log": "57be9930b3a634a1010b79a10536b6ae5f1bf70a554ac5968f9ec979456a3fd0",
+    "evidence/cm-minutes-seconds-reference.snapshots.xz": "4f4e776f76a416026d61acc26ac4e902547b2f4b09716c8f05a788e49cb11553",
+    "evidence/cm-minutes-seconds-stream-sha.json": "c1a226f3c863eed7d9a3fd6eb8face5bbf1de2d378f91f2635b813749be16bd3",
+    "evidence/cm-minutes-seconds-differential.log": "26f13eb92fb6d673939803dee828083d4697cd5c62d5847a436ec648863e13cb",
+    "evidence/cm-minutes-seconds-freeze.log": "aab160be07f984916876c4d272949836cd4abe604f08acaf5331fe1849bd0000",
+    "evidence/cm-minutes-seconds-validation.log": "9b702b01fdfd75125efe341f0172f256aafb75eff13c56f35784c9dc1ad8a30e",
+    "evidence/cm-minutes-seconds-c64-build.log": "77bc0a488cb883e7941ee4c3c45e074a9398fc3edc050e2f77933f06f7e578a9",
+    "evidence/cm-minutes-seconds-c64-result.log": "591aa202442c852e0de8c882de7f8681a914595d1455ca68dd0bd3c00afc9bf6",
+    "evidence/cm_minutes_seconds.prg": "1087beb8779f78379df0b14574a19df751bae6a2899b798171de90f03997824c",
+    "evidence/cm_minutes_seconds.map": "d970e44e8373ee1e1eb7a66aa305779da7599a70d81f2c25b131c8a5967a2529"
+  },
+  "signed_decimal_complete_states": 1024,
+  "minutes_seconds_paths": 512,
+  "minutes_seconds_complete_states": 3072,
+  "decimal_raw_source_sha256": "83332c4c578a79af68653ad4b16395e3253406046d482e45fd177a0cf232bae7",
+  "minutes_seconds_raw_source_sha256": "ba081ba5b6885ae0578a8f178e2c505c15e8cc23cd547fbc206f5479992250d4",
+  "frozen_complete_states": 112,
+  "unchanged_invalid_guards": 63,
+  "target": {
+    "prg_bytes": 28477,
+    "mailbox": "a500007000",
+    "hardware_stack_excluding_rom": 15,
+    "software_stack": 177,
+    "additional_zp_bytes": 0
+  },
+  "qualification_boundary": "Original generic M/SOUT through DSPDCEND+2 and signed two-character DSPDC2NR; no whole Pinball/N40 caller certificate"
+}

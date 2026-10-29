@@ -1,0 +1,12 @@
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O2 src/agc_word.c src/lm_basic_change.c tests/lm_basic_change_cases.c tests/test_lm_basic_change.c -o build/test-lm-basic-change-integrated
+./build/test-lm-basic-change-integrated
+PASS:25 invalid CHANG1/CHANJOB domains and3 null interfaces preserve complete canonical image/I/O/transfer
+python3 tools/lm_basic_change_differential.py --retained
+PASS:16384 original CHANG1/CHANJOB complete2053-word basic/interpreter exchanges
+Snapshot SHA256: ffb4bf5b82d4e07a1a377a3973bbad9d3ab5a2d6a8d49a22a1f64e828ac83329
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie src/agc_word.c src/lm_basic_change.c tests/lm_basic_change_cases.c tests/test_lm_basic_change.c -o build/test-lm-basic-change-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-basic-change-integrated-san
+PASS:25 invalid CHANG1/CHANJOB domains and3 null interfaces preserve complete canonical image/I/O/transfer
+python3 tools/lm_basic_change_differential.py --retained --sanitize
+PASS:16384 original CHANG1/CHANJOB complete2053-word basic/interpreter exchanges
+Snapshot SHA256: ffb4bf5b82d4e07a1a377a3973bbad9d3ab5a2d6a8d49a22a1f64e828ac83329

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 128 complete CM rotation group original-assembly states; retained memory unchanged
+Mailbox: a500008000
+PRG bytes: 45659
+cm-rotation-hardware-stack.bin: measured stack extent 23 bytes
+cm-rotation-software-stack.bin: measured stack extent 570 bytes

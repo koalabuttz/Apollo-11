@@ -1,0 +1,41 @@
+{
+  "actual_executed_source_states": 16384,
+  "source_stream_sha256": "00626b6308bc79fc2c29f7fc5bced43e7e6fc821f82f76cfe6e544b18cf3ba9b",
+  "target_contexts": 16,
+  "target_checkpoints": 64,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500004000",
+  "software_stack_bytes": 1120,
+  "modules": [
+    {
+      "id": 220,
+      "filename": "G220",
+      "byte_count": 5440,
+      "crc16": 5747,
+      "sha256": "48192bc6c6f0d478551b15117e26eb7087ccd67c2012eedc2265552b357de918",
+      "prg": "cm-abort-recovery-220.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 9505,
+      "crc16": 53997,
+      "sha256": "9b65111880b83f8dc1ddd156f05ae4927e5aeea633f8d7b49493d2c1c99f20ad",
+      "prg": "cm-abort-recovery-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10140,
+      "crc16": 15941,
+      "sha256": "dab0699f2e90b7a85547ca043fe1db6c89519be6e50214e2b66c82ccdaed0f40",
+      "prg": "cm-abort-recovery-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual continuous POODOO after BORTENT through V37FLBIT/three DOWNFLAG/MR.KLEAN and actual WHIMPER entry; following WHIMPER/ENEMA groups remain separate"
+}

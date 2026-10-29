@@ -1,0 +1,2 @@
+./build/test-cm-enema
+PASS:4096 CM original ENEMA states,8 full boundary vectors, unsupported inputs retain state

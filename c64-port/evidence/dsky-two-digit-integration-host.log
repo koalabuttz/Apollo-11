@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_two_digit.c tests/p66_bias_cases.c tests/dsky_two_digit_cases.c tests/dsky_two_digit_check.c tests/test_dsky_two_digit.c -o build/test-dsky-two-digit
+./build/test-dsky-two-digit
+DSKY DSPDECVN: 64 FULL 2050-WORD IMAGES, 0 FAILURES

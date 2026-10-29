@@ -1,0 +1,10 @@
+{
+  "cases": 12288,
+  "checkpoints": 12288,
+  "full_physical_words": 2048,
+  "external_latches": 13,
+  "binary_bytes": 50749440,
+  "snapshot_sha256": "a68efff6e6511723432b61cd56974c1e21f384a3819a7491c09b1a53ec9bf729",
+  "original_layout_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "scope": "actual END/JOBSLEEP/PRIOCHNG +0 candidate scan, source CCSHOLE frontier or real ordinary transfer; selected application body separate"
+}

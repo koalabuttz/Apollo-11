@@ -1,0 +1,110 @@
+{
+ "scenario": "lm-rendezvous-tpm-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 71000,
+ "keys": "@2200V37E20E@3000V33E@4700E@6100V33E@12000V85E@14000V34E@20000V83E@25000V34E@29000V37E34E@29400V33E@29700V33E@34000V33E@36700V33E@37500V33E@37800V33E@39000V33E@40000V37E35E@41000V33E@42000V33E@43000V33E@44000V33E@45000V37E74E@46000V25E+00000E+00012E+00000E@47500V33E@50000V25E+00000E+20660E+13000E@51200V33E@52500V33E@56000V33E@57000V33E@58000V33E@59000V33E@60000V37E75E@61000V33E@62000V33E@63000V33E@64000V33E@65000V33E@66000V37E76E@67000V25E+00010E+00000E+00000E@68000V33E@69000V33E@70000V56E",
+ "inputs": {
+  "FLIGHT_CH30": "036377",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077775",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-rendezvous.load",
+  "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+  "FLIGHT_BUSY_SAMPLE": "50"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 71000,
+ "periods_taken": 71000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 71000,
+ "native_routines": 2115962,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 22826184,
+  "yaagc": 22716908,
+  "percent": 0.5,
+  "routines": 123631,
+  "mean_abs_error": 25.9,
+  "abs_percent": 14.1,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +0.5% net, 14.1% routine by routine, from yaAGC's MCT over 123631 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 9,
+  "no_interrupt_to": 64,
+  "no_background_periods": 1,
+  "no_background_to": 2685
+ },
+ "reached": {
+  "13,2207": 66353,
+  "35,2731": 60308,
+  "35,2547": 45342,
+  "35,2725": 40308,
+  "40,3674": 20194,
+  "42,2054": 70151,
+  "40,2017": 12151
+ },
+ "arrivals": {
+  "13,2207": [
+   66353
+  ],
+  "35,2731": [
+   60308
+  ],
+  "35,2547": [
+   45342
+  ],
+  "35,2725": [
+   40308
+  ],
+  "40,3674": [
+   20194
+  ],
+  "42,2054": [
+   70151
+  ],
+  "40,2017": [
+   12151,
+   12412,
+   12527,
+   12640,
+   12753,
+   12869,
+   12990,
+   13182,
+   13299,
+   13412,
+   13527,
+   13640,
+   13753,
+   13948,
+   16290
+  ]
+ },
+ "log_sha256": "346dfd82f92d72b08f11772625781c83e2ad61402fba4c9d9e549766d87a22dc"
+}

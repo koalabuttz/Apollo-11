@@ -1,0 +1,104 @@
+{
+  "source_file": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+  "source_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+  "source_edits": 0,
+  "original_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "emitted_words": 76,
+  "complete_source_line_map": "evidence/cm-interbank-complete-source-audit.json",
+  "public_source_entries": 14,
+  "source_states": 921088,
+  "all_raw_A_L_per_entry": true,
+  "context_cross_products": "sampled; fixed and erasable callers, allEB/FB/SUPER/IRQ variants represented",
+  "negative_overflow_bankjump_excluded": false,
+  "negative_overflow_fault_frontier": {
+    "pc": 2,
+    "raw_Q": 65534,
+    "next_word_execution": "outside file, explicitly not decoded"
+  },
+  "aggregate_decoded_sha256": "ea316c318b96d980e7d95dc875e1955ad78c7c5bd93174d01ac49bd21beb26ad",
+  "source_corpora": [
+    {
+      "path": "evidence/cm-interbank-complete-source-base.snapshots.bin.xz",
+      "sha256": "26f3a4bf355c245f06dfd35a18959738e53a658c517572562ecff55de1e95cca"
+    },
+    {
+      "path": "evidence/cm-interbank-complete-source-extra.snapshots.bin.xz",
+      "sha256": "de2ee71bcfc3e5d920712d6d2147cc44d97289544ebdaaca952f4a4b17622bcb"
+    }
+  ],
+  "full_sanitizer_states": 921088,
+  "fresh_final_source_replay": {
+    "path": "evidence/cm-interbank-complete-final-source-results.json",
+    "sha256": "2f90382b45f5a7a7971c630b2048b6ac26ae64ede5a0a70dbe95cd72c7791f7e"
+  },
+  "preserved_unowned_cm_io_fields": 11,
+  "target": {
+    "states": 448,
+    "prg_bytes": 19534,
+    "load_end": 21581,
+    "bss_end": 29773,
+    "mailbox": "a5c00100",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "expected_state_comparison": "every2048 physical word plusSUPER/IRQ exactly; lossless sparse constructor/source delta retains untouched words",
+  "PRIO12": {
+    "physical_fixed_word": 2504,
+    "word": 5120,
+    "all_accessor_arguments": 65536
+  },
+  "runtime_domain": "ordinary canonicalRAM15, rawA/L16, ZERO0, coherentbanks, ordinarycompiled Q0100..07775/savedTC0100..07777, ordinaryinline physicalERA>=0100, scratch/operand/interruptproducersquiesced",
+  "external_continuations": "actual compiled callees/callers; source interpreted-code handoff; invalid registerQ fault frontier",
+  "instruction_decoder": false,
+  "runtime_AGC_emulator": false,
+  "integrated_application_complete": false,
+  "dependencies": [
+    {
+      "path": "include/agc_word.h",
+      "sha256": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191"
+    },
+    {
+      "path": "src/agc_word.c",
+      "sha256": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679"
+    },
+    {
+      "path": "include/cm_fixed_compat.h",
+      "sha256": "7c807fd9982e53fc72d79f4a23edc15719ecf22e049e2c0cc1084b55a52845de"
+    },
+    {
+      "path": "src/cm_fixed_compat.c",
+      "sha256": "1d5881e12153a150587b3ea6b9caed707f105e0443f3fc919a95e05010c65752"
+    },
+    {
+      "path": "src/cm_fixed_compat_words.inc",
+      "sha256": "cc4d8391c8167396d2a0476d0873997a59fdd6607a2b80c944bc1c17827eaaf7"
+    },
+    {
+      "path": "tests/frozen_words.h",
+      "sha256": "4479b7985267c69392024f96bd9c740c844817b10ad1636fb989db283ab7c704"
+    },
+    {
+      "path": "tests/frozen_words.c",
+      "sha256": "f8ca1264ddd12de6768c7e148dbe5b02c39cda2a0fad905d536ea534b8a2b834"
+    },
+    {
+      "path": "tools/frozen_words.py",
+      "sha256": "542338895352036113578bad37a79e49a43f61dcef2834cbfb0fd7841f573724"
+    },
+    {
+      "path": "evidence/passive-storage-proof.json",
+      "sha256": "fad72a695112ecfbdf843e3892200bc499bf9b1cae30d64b876d1e50a8cc85f8"
+    },
+    {
+      "path": "evidence/passive-storage-SHA256.json",
+      "sha256": "ac32402cfa612516f3800e59f8605ab6fd58f7155f18c9be3598bea781d2ab26"
+    },
+    {
+      "path": "evidence/standard-lead-source-audit.json",
+      "sha256": "2a13908c3e79310fae015547821fa15b9a3b903c7c8cd2acfbe7ba0bc0c4868a"
+    }
+  ]
+}

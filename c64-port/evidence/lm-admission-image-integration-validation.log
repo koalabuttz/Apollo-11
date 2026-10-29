@@ -1,0 +1,12 @@
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O2 src/agc_word.c src/executive.c src/p66_native.c src/lm_admission_image.c tests/lm_admission_image_cases.c tests/test_lm_admission_image.c -o build/test-lm-admission-image-integrated
+./build/test-lm-admission-image-integrated
+PASS:22 invalid admission domains and2 null interfaces preserve complete canonical state and external I/O
+python3 tools/lm_admission_image_differential.py --retained
+PASS:16384 original NOVAC/FINDVAC/SPVAC/SPVACIN complete2050-word success/caller-return/resource-alarm states
+Snapshot SHA256: 578771084570f6c3bf9c849443105d0307385cfe7c3b02ee551ac27e4e7a0ffe
+cc -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie src/agc_word.c src/executive.c src/p66_native.c src/lm_admission_image.c tests/lm_admission_image_cases.c tests/test_lm_admission_image.c -o build/test-lm-admission-image-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-admission-image-integrated-san
+PASS:22 invalid admission domains and2 null interfaces preserve complete canonical state and external I/O
+python3 tools/lm_admission_image_differential.py --retained --sanitize
+PASS:16384 original NOVAC/FINDVAC/SPVAC/SPVACIN complete2050-word success/caller-return/resource-alarm states
+Snapshot SHA256: 578771084570f6c3bf9c849443105d0307385cfe7c3b02ee551ac27e4e7a0ffe

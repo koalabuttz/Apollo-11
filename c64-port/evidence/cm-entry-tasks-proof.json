@@ -1,0 +1,13 @@
+{
+  "cases": 1024,
+  "full_physical_words": 2048,
+  "entries": [
+    "15,3207 SETJTAG"
+  ],
+  "boundary": "actual 05324 TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "07cbe21373f1da5cc0bd13e1ed5ff3beac6f9c4da5c37c555d16c2611f1a1c0b"
+}

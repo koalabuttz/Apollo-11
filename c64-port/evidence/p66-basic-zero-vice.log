@@ -1,0 +1,6 @@
+PASS: VICE PAL, eight complete original2048word display checkpoints plus metadata, real ENDJOB/100cs RODTASK, zero failures
+PASS: actual C64 screen0400/colorD800 receives mode66 through source DSPOUTSB
+Mailbox: a500000802
+PRG file/loaded bytes: 42386 42384
+hardware stack sentinel extent: 22
+software stack sentinel extent: 139

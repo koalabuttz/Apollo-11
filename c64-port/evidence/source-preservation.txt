@@ -1,0 +1,2 @@
+Command: git diff --exit-code 911e5c0283c629c50cb97666f34065e8c07d71a5 -- :!c64-port
+PASS: historical sources and all files outside c64-port remain unchanged.

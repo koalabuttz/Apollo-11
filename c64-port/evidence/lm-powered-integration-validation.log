@@ -1,0 +1,44 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_powered_trig.c src/lm_powered_trig.c src/guidance_trig.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-trig-port
+./build/test-lm-powered-trig-port
+320 complete2048-word original LM CDU trig phase states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_powered_trig.c src/lm_powered_trig.c src/guidance_trig.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-trig-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-powered-trig-port-san
+320 complete2048-word original LM CDU trig phase states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_powered_axis.c src/lm_powered_axis.c src/guidance_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-axis-port
+./build/test-lm-powered-axis-port
+64 complete2048-word original LM axis numeric/return states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_powered_axis.c src/lm_powered_axis.c src/guidance_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-axis-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-powered-axis-port-san
+64 complete2048-word original LM axis numeric/return states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_powered_quick.c src/lm_powered_constants.c tests/test_lm_powered_constants.c src/lm_powered_quick.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_powered_quick_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-quick-port
+./build/test-lm-powered-quick-port
+64 complete2048-word original LM QUICTRIG+TC A source states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_powered_quick.c src/lm_powered_constants.c tests/test_lm_powered_constants.c src/lm_powered_quick.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_powered_quick_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-quick-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-powered-quick-port-san
+64 complete2048-word original LM QUICTRIG+TC A source states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_powered_interface.c src/lm_powered_interface.c src/lm_powered_axis.c src/lm_powered_trig.c src/guidance_trig.c src/guidance_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_interface_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-interface-port
+./build/test-lm-powered-interface-port
+256 complete2048-word original LM interpreted interface return states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_powered_interface.c src/lm_powered_interface.c src/lm_powered_axis.c src/lm_powered_trig.c src/guidance_trig.c src/guidance_rotation.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_powered_interface_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-interface-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-powered-interface-port-san
+256 complete2048-word original LM interpreted interface return states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_powered_fixed_return.c src/lm_powered_fixed_return.c src/agc_word.c tests/lm_powered_fixed_return_cases.c tests/lm_powered_interface_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-fixed-return-port
+./build/test-lm-powered-fixed-return-port
+128 complete2048-word original LM fixed RVQ source states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_powered_fixed_return.c src/lm_powered_fixed_return.c src/agc_word.c tests/lm_powered_fixed_return_cases.c tests/lm_powered_interface_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-powered-fixed-return-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-powered-fixed-return-port-san
+128 complete2048-word original LM fixed RVQ source states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_fleshpot.c src/lm_fleshpot.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_fleshpot_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-fleshpot-port
+./build/test-lm-fleshpot-port
+128 complete2048-word original LM FLESHPOT source states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_fleshpot.c src/lm_fleshpot.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_fleshpot_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-fleshpot-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-fleshpot-port-san
+128 complete2048-word original LM FLESHPOT source states: PASS
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic tests/test_lm_fleshpot_interface.c src/lm_fleshpot_interface.c src/lm_fleshpot.c src/lm_powered_fixed_return.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_fleshpot_interface_cases.c tests/lm_powered_interface_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-fleshpot-interface-port
+./build/test-lm-fleshpot-interface-port
+256 complete2048-word original LM FLESHPOT source states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_fleshpot_interface.c src/lm_fleshpot_interface.c src/lm_fleshpot.c src/lm_powered_fixed_return.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/lm_fleshpot_interface_cases.c tests/lm_powered_interface_cases.c tests/lm_powered_axis_cases.c tests/lm_powered_trig_cases.c tests/frozen_words.c -o build/test-lm-fleshpot-interface-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-fleshpot-interface-port-san
+256 complete2048-word original LM FLESHPOT source states: PASS
+6 original POWERED fixed constants: PASS
+All 267 original emitted words mapped to native groups.

@@ -1,0 +1,104 @@
+{
+ "scenario": "cm-tei-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 56000,
+ "keys": "@4500V37E30E@5000V25E+00000E+00005E+00000E@6400V33E@6800V25E+32836E+00000E+00000E@8100V33E@9500V33E@10500V33E@11500V37E40E@14000V33E@15000E@16000V33E@29600V33E@47000V33E@48500V33E@50000V37E00E@51000V82E@53000V33E@55000V34E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH31": "037777",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_SPS": "16400,-0.3,0.2",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-tei.load"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 56000,
+ "periods_taken": 56000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 56000,
+ "native_routines": 2871690,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 2482084,
+  "yaagc": 2512482,
+  "percent": -1.2,
+  "routines": 11637,
+  "mean_abs_error": 26.0,
+  "abs_percent": 12.0,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge -1.2% net, 12.0% routine by routine, from yaAGC's MCT over 11637 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 11,
+  "no_interrupt_to": 27,
+  "no_background_periods": 1,
+  "no_background_to": 6208
+ },
+ "reached": {
+  "24,2073": 11804,
+  "35,3323": 4804,
+  "23,2332": 51150,
+  "13,3443": 4800,
+  "27,2000": 11840,
+  "43,2275": 15000,
+  "24,3410": 29751
+ },
+ "arrivals": {
+  "24,2073": [
+   11804
+  ],
+  "35,3323": [
+   4804
+  ],
+  "23,2332": [
+   51150
+  ],
+  "13,3443": [
+   4800,
+   8251,
+   11801,
+   17952,
+   50416,
+   50440,
+   50444,
+   50467,
+   53153,
+   53558
+  ],
+  "27,2000": [
+   11840
+  ],
+  "43,2275": [
+   15000
+  ],
+  "24,3410": [
+   29751
+  ]
+ },
+ "log_sha256": "4b2c38995514389eb2368044d231a7aa389999f1ceb7b04921d2b3301b2d0989"
+}

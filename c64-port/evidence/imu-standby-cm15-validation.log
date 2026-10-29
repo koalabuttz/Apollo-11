@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete imu_standby group original-assembly states; retained memory unchanged
+Mailbox: a50000202f
+PRG bytes: 8071
+imu-standby-cm15-hardware-stack.bin: measured stack extent 20 bytes
+imu-standby-cm15-software-stack.bin: measured stack extent 91 bytes

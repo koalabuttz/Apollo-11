@@ -1,0 +1,3 @@
+PASS: 73,728 original source-entry checkpoints: 65,536 DESCBITS, 4,096 RODTASK, 4,096 P66VERTA; every modeled word compared
+Boundaries RESUME/TASKOVER/RODCOMP or BAILOUT1; no STARTP66/vector bias/display completion claim
+Snapshot SHA256: ed7b3eb1eded2b573eaa8e9cf173e4115ba4da72eb22d5269c5472452fc21272

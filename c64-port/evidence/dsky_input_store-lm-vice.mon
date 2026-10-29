@@ -1,0 +1,12 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_input_store-lm.prg" 0
+watch store 4be1
+ignore 1 1
+g 080d
+m 4be1 4be5
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_store-lm-vice-mailbox.bin" 0 4be1 4be5
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_store-lm-vice-difference.bin" 0 2bd9 2be0
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_store-lm-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_input_store-lm-vice-software-stack.bin" 0 c100 cfff
+quit

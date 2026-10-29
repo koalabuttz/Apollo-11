@@ -1,0 +1,43 @@
+{
+  "cases": 1536,
+  "full_physical_words": 2048,
+  "entries": [
+    "05306 SVCT3",
+    "05323 after NOVAC",
+    "07721 after FIXDELAY"
+  ],
+  "boundary": "actual NOVAC/FIXDELAY/TASKOVER entry",
+  "external_words": [
+    "SUPERBNK",
+    "IRQ"
+  ],
+  "snapshot_sha256": "5159630a0228428e720113fb2482c41bb5a95a14c5211b95370e720368721b68",
+  "hardware_stack_bytes": 10,
+  "software_stack_bytes": 9,
+  "c64_cases": 192,
+  "mailbox_hex": "a50000c000",
+  "target": {
+    "prg_bytes": 16492,
+    ".text": {
+      "address": 2061,
+      "bytes": 2110
+    },
+    ".rodata": {
+      "address": 4171,
+      "bytes": 14368
+    },
+    ".data": {
+      "address": 18539,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 18539,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 22661,
+      "bytes": 0
+    },
+    "image_end": 22661
+  }
+}

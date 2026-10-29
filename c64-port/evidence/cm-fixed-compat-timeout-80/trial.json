@@ -1,0 +1,98 @@
+{
+  "outcome": "600second VICE walltime budget expired; no completion mailbox/no native failure verdict",
+  "source_corpus_unchanged": "all81920 actualcaller sequences/163840 complete source states",
+  "previous_target_plan": "160 actualcaller sequences320 state checkpoints plus40960 passive reads",
+  "accepted_representative_target_plan": "64 actualcaller sequences128 state checkpoints plus40960 passive reads; independent passive_storage target retains everyword underboth I states",
+  "files": [
+    {
+      "original_path": "build/cm-fixed-compat.prg",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat.prg",
+      "sha256": "e1af9d7c5709f4716bfc5b6e3ed49039028797e6746db1913d1faa36407f1782"
+    },
+    {
+      "original_path": "build/cm-fixed-compat.map",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat.map",
+      "sha256": "87843d51cb00ef536cab1282a1adac5211dc4e7c6a5bc4fec7f620d7357c2d06"
+    },
+    {
+      "original_path": "build/cm-fixed-compat.d64",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat.d64",
+      "sha256": "33a1c65154c9c7a2f5208692f8b29bf3fcff44042145884b1a26957060cf1d8f"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-240.prg",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-240.prg",
+      "sha256": "a9f9a3e6cff18d78405657393ca9df20229edf2ac0b1d46fa4cbb798c60ed418"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-240.map",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-240.map",
+      "sha256": "7a53fe59fc8a89098b9ab7799e4d0a02cc89ae900cedb38a528a6658929f0fd2"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-241.prg",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-241.prg",
+      "sha256": "e592ed2022b60f23845715b16ce1b3d59db9a89fb5aaaa2f7b735f8483cfe322"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-241.map",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-241.map",
+      "sha256": "94d5c79d030051c0020ec2c16ec7e2011527b75f7ff3e19c57b8534648bfb0d7"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-c64-result.log",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-c64-result.log",
+      "sha256": "376fcc2470238843b176ebc2ec631d3fc2bc65af06254f562409cc09e60a8046"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-vice.log",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-vice.log",
+      "sha256": "74e61de9dd3198bbd1f9602332f7753e28416376b071e43c44523ab179c26bb7"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-vice.mon",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-vice.mon",
+      "sha256": "3af2d04633c79cf6f85386924208f1632a4ac3f3eb27a286bef77990e51b89cf"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-vice-monitor.log",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-vice-monitor.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original_path": "build/cm-fixed-compat-modules.json",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm-fixed-compat-modules.json",
+      "sha256": "c594d2497520cb933b1c4ef2ab8892d3d43f1ba20c15349b49f3ab86ca6ad91a"
+    },
+    {
+      "original_path": "tests/cm_fixed_compat_vectors.h",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm_fixed_compat_vectors.h",
+      "sha256": "7c88795369bfaed26df6b706d8ce1ef640cf5467ecdc0d347548a328ab87a797"
+    },
+    {
+      "original_path": "tools/cm_freeze_fixed_compat.py",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm_freeze_fixed_compat.py",
+      "sha256": "a3bdf1d0cd289b70cc564fdab54dcaa57a6cbd43d84b646be772f4ef7c54046a"
+    },
+    {
+      "original_path": "tools/cm_fixed_compat_vice_test.py",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm_fixed_compat_vice_test.py",
+      "sha256": "fcc2cf50fe6672be28dd661cb34c22036b4eaca38776522cd78117e41c425134"
+    },
+    {
+      "original_path": "platform/c64/cm_fixed_compat_diagnostic.c",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm_fixed_compat_diagnostic.c",
+      "sha256": "c497007e92ba47ac28ea129819c2c3a46c1ac0c1358ab0499a2d5520d239ebab"
+    },
+    {
+      "original_path": "platform/c64/cm_fixed_compat_input.c",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm_fixed_compat_input.c",
+      "sha256": "73fc9bde70f5347780136bb44401813b22fd27839a7f41a9eb119f02cdaeb1d7"
+    },
+    {
+      "original_path": "platform/c64/cm_fixed_compat_check.c",
+      "retained_path": "evidence/cm-fixed-compat-timeout-80/cm_fixed_compat_check.c",
+      "sha256": "289bd83e2c8c4a35a41f3b0e1de3600f47276243717d19d0c86cd1aa3edb4a1e"
+    }
+  ]
+}

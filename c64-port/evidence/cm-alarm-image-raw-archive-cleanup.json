@@ -1,0 +1,14 @@
+{
+  "build/cm-alarm-image-native.snapshots.bin": {
+    "bytes": 532604800,
+    "sha256": "20469071c694ccc82694f9278f300cdddd9a7be79b98c2c79ab834b3b33738cf",
+    "retained_compressed_build_path": "build/cm-alarm-image-native.snapshots.bin.gz",
+    "reason": "inactive duplicate raw stream; full compressed original/native proof verified independently before removal"
+  },
+  "build/cm-alarm-image-reference.snapshots.bin": {
+    "bytes": 532604800,
+    "sha256": "20469071c694ccc82694f9278f300cdddd9a7be79b98c2c79ab834b3b33738cf",
+    "retained_compressed_build_path": "build/cm-alarm-image-reference.snapshots.bin.gz",
+    "reason": "inactive duplicate raw stream; full compressed original/native proof verified independently before removal"
+  }
+}

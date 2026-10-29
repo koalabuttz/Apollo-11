@@ -1,0 +1,34 @@
+{
+  "entry_bank": "40",
+  "entry_pcs": {
+    "LM": [
+      "03226 DSPDECWD",
+      "03262 DSPDECNR"
+    ],
+    "CM": [
+      "03133 DSPDECWD",
+      "03167 DSPDECNR"
+    ]
+  },
+  "clean_relay_handoff": {
+    "LM": "PC05705 Q03354 IRQ0",
+    "CM": "PC05747 Q03261 IRQ0"
+  },
+  "sign_relay_callers": {
+    "LM": [
+      "02426",
+      "02432"
+    ],
+    "CM": [
+      "02327",
+      "02333"
+    ]
+  },
+  "digit_caller": {
+    "LM": "03253",
+    "CM": "03160"
+  },
+  "complete_return": "PCoriginalcaller Q0116 A0177754 L0 DSPCOUNT077754",
+  "whole_file_claim": false,
+  "native_instruction_decoder": false
+}

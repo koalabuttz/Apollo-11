@@ -1,0 +1,29 @@
+[
+  {
+    "id": 220,
+    "filename": "G220",
+    "byte_count": 5440,
+    "crc16": 5747,
+    "sha256": "48192bc6c6f0d478551b15117e26eb7087ccd67c2012eedc2265552b357de918",
+    "prg": "cm-abort-recovery-220.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 9505,
+    "crc16": 53997,
+    "sha256": "9b65111880b83f8dc1ddd156f05ae4927e5aeea633f8d7b49493d2c1c99f20ad",
+    "prg": "cm-abort-recovery-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10140,
+    "crc16": 15941,
+    "sha256": "dab0699f2e90b7a85547ca043fe1db6c89519be6e50214e2b66c82ccdaed0f40",
+    "prg": "cm-abort-recovery-255.prg",
+    "native_control": false
+  }
+]

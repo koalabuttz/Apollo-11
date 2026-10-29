@@ -1,0 +1,9 @@
+{
+  "source_snapshot_sha256": "3d1f53fedcc1c1cd107c16b9034609552bfe4f7a17d9451d45d21b0f7a14fd0c",
+  "complete_checkpoints": 163840,
+  "record_bytes": 4108,
+  "compared_bytes": 673054720,
+  "native_reference_comparison": "direct every-byte decompressed stream equality",
+  "sanitizer_reference_comparison": "direct every-byte sanitizer stdout/decompressed source stream equality",
+  "outcome": "PASS"
+}

@@ -1,0 +1,139 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     3fa6     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/feedback-pair1.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         build/feedback-pair1.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67     2006     1         build/feedback-pair1.prg.lto.o:(.text.main)
+     a67      a67     2006     1                 main
+    2a6d     2a6d      f26     1         build/feedback-pair1.prg.lto.o:(.text.p66_vector_length)
+    2a6d     2a6d      f26     1                 p66_vector_length
+    3993     3993      2da     1         build/feedback-pair1.prg.lto.o:(.text.square)
+    3993     3993      2da     1                 square
+    3c6d     3c6d       b9     1         build/feedback-pair1.prg.lto.o:(.text.half_argument)
+    3c6d     3c6d       b9     1                 half_argument
+    3d26     3d26      190     1         build/feedback-pair1.prg.lto.o:(.text.triple_left)
+    3d26     3d26      190     1                 triple_left
+    3eb6     3eb6      283     1         build/feedback-pair1.prg.lto.o:(.text.divide)
+    3eb6     3eb6      283     1                 divide
+    4139     4139       ca     1         build/feedback-pair1.prg.lto.o:(.text.agc_multiply)
+    4139     4139       ca     1                 agc_multiply
+    4203     4203      1bc     1         build/feedback-pair1.prg.lto.o:(.text.agc_double_add)
+    4203     4203      1bc     1                 agc_double_add
+    43bf     43bf        6     1         build/feedback-pair1.prg.lto.o:(.text.exit)
+    43bf     43bf        6     1                 exit
+    43c5     43c5       13     1         build/feedback-pair1.prg.lto.o:(.text.__lshrhi3)
+    43c5     43c5       13     1                 __lshrhi3
+    43d8     43d8       40     1         build/feedback-pair1.prg.lto.o:(.text.__umodqi3)
+    43d8     43d8       40     1                 __umodqi3
+    4418     4418      2de     1         build/feedback-pair1.prg.lto.o:(.text.__divmodsi4)
+    4418     4418      2de     1                 __divmodsi4
+    46f6     46f6       34     1         build/feedback-pair1.prg.lto.o:(.text.memcpy)
+    46f6     46f6       34     1                 memcpy
+    472a     472a       22     1         build/feedback-pair1.prg.lto.o:(.text.__memset)
+    472a     472a       22     1                 __memset
+    474c     474c       67     1         build/feedback-pair1.prg.lto.o:(.text.__mulsi3)
+    474c     474c       67     1                 __mulsi3
+    47b3     47b3        0     1         __init_array_start = .
+    47b3     47b3        0     1         __init_array_end = .
+    47b3     47b3        0     1         __fini_array_start = .
+    47b3     47b3        0     1         __fini_array_end = .
+    47b3     47b3     3a85     1 .rodata
+    47b3     47b3        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    47b3     47b3        0     1                 __set_v
+    47b4     47b4       fa     1         build/feedback-pair1.prg.lto.o:(.rodata.feedback_pair1_reference_dictionary)
+    47b4     47b4       fa     1                 feedback_pair1_reference_dictionary
+    48ae     48ae       42     1         build/feedback-pair1.prg.lto.o:(.rodata.feedback_pair1_reference_offsets)
+    48ae     48ae       42     1                 feedback_pair1_reference_offsets
+    48f0     48f0     390c     1         build/feedback-pair1.prg.lto.o:(.rodata.feedback_pair1_reference_stream)
+    48f0     48f0     390c     1                 feedback_pair1_reference_stream
+    81fc     81fc       14     1         build/feedback-pair1.prg.lto.o:(.rodata.valid.offsets)
+    81fc     81fc       14     1                 valid.offsets
+    8210     8210       28     1         build/feedback-pair1.prg.lto.o:(.rodata.valid.locs)
+    8210     8210       28     1                 valid.locs
+    8238     8238        0     1 .data
+    8238     8238        0     1         __data_start = .
+    8238     8238        0     1         __data_end = .
+    8238     8238        0     1 __data_load_start = LOADADDR(.data)
+    8238     8238        0     1 __data_size = SIZEOF(.data)
+    8238     8238      111     1 .bss
+    8238     8238        0     1         __bss_start = .
+    8238     8238      111     1         build/feedback-pair1.prg.lto.o:(.bss.c)
+    8238     8238      111     1                 c
+    8349     8349        0     1         __bss_end = .
+    8349     8349        0     1 __bss_size = SIZEOF(.bss)
+    8349     8349        2     1 .noinit
+    8349     8349        2     1         build/feedback-pair1.prg.lto.o:(.noinit..Lstatic_stack)
+    834b     834b        0     1         __heap_start = ALIGN(., 2)
+    834b     834b        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/feedback-pair1.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/feedback-pair1.prg.lto.o:(.llvm_sympart)
+       0        0      b80     4 .symtab
+       0        0      b80     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      6a1     1 .strtab
+       0        0      6a1     1         <internal>:(.strtab)

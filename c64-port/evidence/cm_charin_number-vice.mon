@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/cm_charin_number.prg" 0
+watch store 6f4f
+ignore 1 1
+g 080d
+m 6f4f 6f53
+bsave "/workspace/Apollo-11/c64-port/build/cm_charin_number-vice-mailbox.bin" 0 6f4f 6f53
+bsave "/workspace/Apollo-11/c64-port/build/cm_charin_number-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/cm_charin_number-vice-software-stack.bin" 0 c100 cfff
+quit

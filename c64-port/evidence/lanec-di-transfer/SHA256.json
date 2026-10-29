@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "milestone": "lanec-di-transfer",
+  "release": "evidence-lanec-di-transfer",
+  "files": {
+    "lanec-di-refuse-diff.json": {
+      "sha256": "c50649c9c4a9fefa606f85c254be800c477bd3aafe593e45891cb2b159faf7a8",
+      "bytes": 158,
+      "store": "tree"
+    },
+    "lanec-di-transfer-c64-diff.json": {
+      "sha256": "f74676310dbc28a60cf44bd97497071e2cd9f1aca259bf16156dc896fe266c69",
+      "bytes": 269,
+      "store": "tree"
+    },
+    "lanec-di-transfer-c64-oracle.crc": {
+      "sha256": "e97403365051d256165982af2e07279079b4cabdfa756b5be64996e5bc737c3f",
+      "bytes": 15186,
+      "store": "tree"
+    },
+    "lanec-di-transfer-c64m-diff.json": {
+      "sha256": "ab0c571af6fb47fa40e2ecfe15a25d4c8629148b655687bc4db73629d14a0d76",
+      "bytes": 270,
+      "store": "tree"
+    },
+    "lanec-di-transfer-c64m-oracle.crc": {
+      "sha256": "8849fc4766d714d44ba610cdc5d84d90a5f210f2114e6a4dd1fccb4fce46d433",
+      "bytes": 14962,
+      "store": "tree"
+    },
+    "lanec-di-transfer-diff.json": {
+      "sha256": "215cb4acf38a256b925a2cebdad1e9da1c8d9afe7a6465ffc8d53f070d9f273e",
+      "bytes": 237,
+      "store": "tree"
+    },
+    "lanec-di-transfer-oracle.crc": {
+      "sha256": "18161b3c6294b83bb9981fcec83e7a0fa01f0f995d7616e1850ea2d7959e90c3",
+      "bytes": 12838,
+      "store": "tree"
+    },
+    "lanec-di-transfer-sanitize.txt": {
+      "sha256": "b7a57fefa6201920c235c900e40b189b014765f13ebdd8af171dffd10e985b15",
+      "bytes": 625,
+      "store": "tree"
+    },
+    "lanec-di-transfer-vice.txt": {
+      "sha256": "8fdc9f7b635db977ff4a9d012956d75e5dfbf6e5cb7f9debcb2a53cda6389007",
+      "bytes": 417,
+      "store": "tree"
+    }
+  }
+}

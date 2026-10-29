@@ -1,0 +1,243 @@
+{
+  "complete_source_inputs": 65536,
+  "complete_states": 688128,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER"
+  ],
+  "source_group_words": 25,
+  "source_map": "evidence/cm-quality-source-map.json",
+  "source_audit_dependency": "evidence/rtb-angles-source-audit.json",
+  "logical_complete_streams": {
+    "original_assembly": {
+      "archive": "evidence/cm-quality-original.states.xz",
+      "decoded_sha256": "286454d2d8be71e0b77a9cf9b802df5beec6e9b2067d7bd56dff76e3300498d3",
+      "decoded_bytes": 2826829824,
+      "states": 688128,
+      "inputs": 65536
+    },
+    "strict_native": {
+      "archive": "evidence/cm-quality-original.states.xz",
+      "decoded_sha256": "286454d2d8be71e0b77a9cf9b802df5beec6e9b2067d7bd56dff76e3300498d3",
+      "decoded_bytes": 2826829824,
+      "states": 688128,
+      "inputs": 65536
+    },
+    "whole_ASAN_UBSAN": {
+      "archive": "evidence/cm-quality-original.states.xz",
+      "decoded_sha256": "286454d2d8be71e0b77a9cf9b802df5beec6e9b2067d7bd56dff76e3300498d3",
+      "decoded_bytes": 2826829824,
+      "states": 688128,
+      "inputs": 65536
+    }
+  },
+  "actual_C64": {
+    "0": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002000",
+      "PRG_bytes": 8117,
+      "loaded_end": "0x27b3",
+      "hardware_stack": 20,
+      "software_stack": 71,
+      "compiler_ZP": 0
+    },
+    "1": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002001",
+      "PRG_bytes": 8820,
+      "loaded_end": "0x2a72",
+      "hardware_stack": 20,
+      "software_stack": 71,
+      "compiler_ZP": 0
+    },
+    "2": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002002",
+      "PRG_bytes": 11221,
+      "loaded_end": "0x33d3",
+      "hardware_stack": 23,
+      "software_stack": 117,
+      "compiler_ZP": 0
+    },
+    "3": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002003",
+      "PRG_bytes": 11037,
+      "loaded_end": "0x331b",
+      "hardware_stack": 20,
+      "software_stack": 161,
+      "compiler_ZP": 0
+    },
+    "4": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002004",
+      "PRG_bytes": 11571,
+      "loaded_end": "0x3531",
+      "hardware_stack": 23,
+      "software_stack": 117,
+      "compiler_ZP": 0
+    },
+    "5": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002005",
+      "PRG_bytes": 10868,
+      "loaded_end": "0x3272",
+      "hardware_stack": 20,
+      "software_stack": 185,
+      "compiler_ZP": 0
+    },
+    "6": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002006",
+      "PRG_bytes": 11249,
+      "loaded_end": "0x33ef",
+      "hardware_stack": 29,
+      "software_stack": 200,
+      "compiler_ZP": 0
+    },
+    "7": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002007",
+      "PRG_bytes": 13918,
+      "loaded_end": "0x3e5c",
+      "hardware_stack": 29,
+      "software_stack": 222,
+      "compiler_ZP": 0
+    },
+    "8": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002008",
+      "PRG_bytes": 11583,
+      "loaded_end": "0x353d",
+      "hardware_stack": 24,
+      "software_stack": 178,
+      "compiler_ZP": 0
+    },
+    "9": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002009",
+      "PRG_bytes": 12297,
+      "loaded_end": "0x3807",
+      "hardware_stack": 20,
+      "software_stack": 161,
+      "compiler_ZP": 0
+    },
+    "10": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a50000200a",
+      "PRG_bytes": 11839,
+      "loaded_end": "0x363d",
+      "hardware_stack": 29,
+      "software_stack": 179,
+      "compiler_ZP": 0
+    },
+    "11": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a50000200b",
+      "PRG_bytes": 11827,
+      "loaded_end": "0x3631",
+      "hardware_stack": 20,
+      "software_stack": 184,
+      "compiler_ZP": 0
+    },
+    "12": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a50000200c",
+      "PRG_bytes": 11051,
+      "loaded_end": "0x3329",
+      "hardware_stack": 20,
+      "software_stack": 169,
+      "compiler_ZP": 0
+    },
+    "13": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a50000200d",
+      "PRG_bytes": 11621,
+      "loaded_end": "0x3563",
+      "hardware_stack": 29,
+      "software_stack": 179,
+      "compiler_ZP": 0
+    },
+    "14": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a50000200e",
+      "PRG_bytes": 11863,
+      "loaded_end": "0x3655",
+      "hardware_stack": 20,
+      "software_stack": 188,
+      "compiler_ZP": 0
+    },
+    "15": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a50000200f",
+      "PRG_bytes": 10415,
+      "loaded_end": "0x30ad",
+      "hardware_stack": 20,
+      "software_stack": 162,
+      "compiler_ZP": 0
+    },
+    "16": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002010",
+      "PRG_bytes": 10164,
+      "loaded_end": "0x2fb2",
+      "hardware_stack": 20,
+      "software_stack": 71,
+      "compiler_ZP": 0
+    },
+    "17": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002011",
+      "PRG_bytes": 15079,
+      "loaded_end": "0x42e5",
+      "hardware_stack": 29,
+      "software_stack": 219,
+      "compiler_ZP": 0
+    },
+    "18": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002012",
+      "PRG_bytes": 12647,
+      "loaded_end": "0x3965",
+      "hardware_stack": 20,
+      "software_stack": 161,
+      "compiler_ZP": 0
+    },
+    "19": {
+      "complete_source_states": 32,
+      "rejected_calls": 9,
+      "mailbox": "a500002013",
+      "PRG_bytes": 10096,
+      "loaded_end": "0x2f6e",
+      "hardware_stack": 20,
+      "software_stack": 71,
+      "compiler_ZP": 0
+    }
+  },
+  "independent_review": {
+    "path": "evidence/cm-quality-independent-review.txt",
+    "sha256": "ad0dc43db61a4987bb32a6053c671703945869e6847e33f5236ab187baedca7b"
+  },
+  "qualification": "Twenty explicit original QUALITY1/2 canonical boundaries with actual fixed orbital caller023146, fiveVACs and producer exclusion; pendingEDOP retains ownership, only genuineDANZIG Executive checks. Constructor cohort only, no exhaustive Cartesian input or whole orbital/runtime claim.",
+  "decoded_stream_identity": "Single deterministicXZ original object; strict and fullASANUBSAN directly compare every decoded source byte. Source instruction and original declaration rope unchanged."
+}

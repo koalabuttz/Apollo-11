@@ -1,0 +1,93 @@
+{
+ "scenario": "cm-p20-crew-verbs-scaled-x1",
+ "mission": "cm",
+ "centiseconds": 32000,
+ "keys": "@4500V37E20E@6000V87E@9000V57E@10000M@10500V33E@14000V33E@20000V33E@21000V90E@22000V33E@23000V33E@24000V33E@25000V33E@26000V44E@27000V45E@28000V88E@29000V58E@30000V93E",
+ "inputs": {
+  "FLIGHT_CH30": "037377",
+  "FLIGHT_CH31": "037777",
+  "FLIGHT_CH33": "077767",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_CHAN": "4000:033=077757",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/cm-p20.load",
+  "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+  "FLIGHT_BUSY_SAMPLE": "100"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 32000,
+ "periods_taken": 32000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 32000,
+ "native_routines": 1011780,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 14046216,
+  "yaagc": 13957862,
+  "percent": 0.6,
+  "routines": 82215,
+  "mean_abs_error": 23.6,
+  "abs_percent": 13.9,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +0.6% net, 13.9% routine by routine, from yaAGC's MCT over 82215 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 12,
+  "no_interrupt_to": 5824,
+  "no_background_periods": 1,
+  "no_background_to": 5644
+ },
+ "reached": {
+  "20,2164": 21245,
+  "43,3207": 26202,
+  "43,3212": 27150,
+  "43,2510": 29150,
+  "43,3027": 28150,
+  "43,2755": 30150
+ },
+ "arrivals": {
+  "20,2164": [
+   21245
+  ],
+  "43,3207": [
+   26202
+  ],
+  "43,3212": [
+   27150
+  ],
+  "43,2510": [
+   29150
+  ],
+  "43,3027": [
+   28150
+  ],
+  "43,2755": [
+   30150
+  ]
+ },
+ "log_sha256": "7351cd07581af8d8dcf1856c8d56aa4664a13e2110a7267db6544f9d2467eb3f"
+}

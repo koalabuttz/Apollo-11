@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_five_blank.prg from 0801 to 2E29 (2629 bytes)
+WATCH: 1  C:$4e2a  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 4e2a)  297/$129,   9/$09
+.C:1c66  8E 2A 4E    STX $4E2A      - A:80 X:A5 Y:00 SP:f1 NV-....C  311644944
+>C:4e2a  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_five_blank-vice-mailbox.bin' from $4e2a to $4e2e
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_five_blank-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_five_blank-vice-software-stack.bin' from $c100 to $cfff

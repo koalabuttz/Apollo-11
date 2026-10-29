@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+"""tools/ci_affected.py: a comment-only change to a C or Python file is not a code change."""
+import pathlib
+import sys
+import unittest
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / 'tools'))
+import ci_affected  # noqa: E402
+
+code_of = ci_affected.code_of
+
+
+class CodeOf(unittest.TestCase):
+    def test_c_comment_rewrap_is_same_code(self):
+        a = 'int x; /* one\n two */\nint y = 1; // c\n'
+        b = 'int x; /* one two\n */\n\n   int y = 1;   // other\n'
+        self.assertEqual(code_of('a.h', a), code_of('a.h', b))
+
+    def test_c_code_change(self):
+        self.assertNotEqual(code_of('a.c', 'int y = 1;'), code_of('a.c', 'int y = 2;'))
+
+    def test_comment_marks_inside_strings_are_code(self):
+        self.assertNotEqual(code_of('a.c', 'char *s = "/* x */";'), code_of('a.c', 'char *s = "/* y */";'))
+
+    def test_line_sensitive_files_are_not_compared(self):
+        self.assertIsNone(code_of('a.c', 'assert(x); /* a */'))
+        self.assertIsNone(code_of('a.c', 'int l = __LINE__;'))
+
+    def test_backslash_newline_is_joined_first(self):
+        # A // comment ending in a backslash swallows the next line, so a
+        # change there is a comment change; and the reverse.
+        self.assertEqual(code_of('a.c', '// c \\\nint y = 1;\nint z;'),
+                         code_of('a.c', '// c \\\nint y = 2;\nint z;'))
+        self.assertNotEqual(code_of('a.c', '// c \\\nint y = 1;'), code_of('a.c', '// c\nint y = 1;'))
+        # A string continued over a line keeps the next line's indentation.
+        self.assertNotEqual(code_of('a.c', 'char *s = "a\\\n  b";'), code_of('a.c', 'char *s = "a\\\nb";'))
+
+    def test_backslash_space_newline_is_joined(self):
+        for tail in (' ', '\t', ' \t '):
+            self.assertEqual(code_of('a.c', f'// c \\{tail}\nint y = 1;\nint z;'),
+                             code_of('a.c', f'// c \\{tail}\nint y = 2;\nint z;'))
+
+    def test_trigraph_backslash_is_not_compared(self):
+        self.assertIsNone(code_of('a.c', '// note ??/\nint b;'))
+
+    def test_python(self):
+        self.assertEqual(code_of('a.py', 'x=1  # a\n'), code_of('a.py', 'x = 1\n# b\n'))
+        self.assertNotEqual(code_of('a.py', 'x = 1'), code_of('a.py', 'x = 2'))
+
+    def test_other_kinds_are_not_compared(self):
+        self.assertIsNone(code_of('a.mk', 'x'))
+
+
+if __name__ == '__main__':
+    unittest.main()

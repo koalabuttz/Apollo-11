@@ -1,0 +1,63 @@
+{
+  "status": "qualified_vector_dependency; antenna and interpreter files remain partial",
+  "native_api": "include/sband_vector.h",
+  "native_source": "src/sband_vector.c",
+  "instruction_decoder": false,
+  "authoritative_erasable_images": 1,
+  "source_map": "evidence/sband-vector-source-map.json",
+  "sband_file_audit": "evidence/sband-original-source-audit.json",
+  "independent_review": "evidence/sband-vector-independent-review.txt",
+  "source_states": 262144,
+  "complete_words_each": 2048,
+  "external_fields": [
+    "SUPER",
+    "IRQ"
+  ],
+  "target": {
+    "states": 384,
+    "prg_bytes": 29907,
+    "load_end": 31954,
+    "bss_end": 40146,
+    "mailbox": "a5800100",
+    "words_each": 2048,
+    "external_fields": [
+      "superbank",
+      "interrupt_enabled"
+    ]
+  },
+  "groups_each_mission": [
+    "erasable VXV32768",
+    "erasable VPROJ32768",
+    "fixed VXV32768",
+    "fixed VPROJ32768"
+  ],
+  "domain": "Ordinary15-bit RAM/Q, raw16 A/L, coherent banks, vectorMODE -1, ordinary six-word data argument and producer exclusion. Immutable fixed array cannot alias canonical RAM.",
+  "limitations": [
+    "Neither whole S-band nor whole INTERPRETER file completion. No external orbital/display callee execution.",
+    "Input state tuples and branch combinations are sampled, not exhaustively Cartesian. Source OVERFLOW no-final-carry TC Q is compiled/reviewed but not executed in this cohort.",
+    "Fixed groups first256 retain original HIUNIT axes; subsequent six ordinary input data words are injected into the passive argument region of the host oracle; original instruction/scalar constants remain unchanged.",
+    "Standalone C64 diagnostic allocation is not whole-application resident memory."
+  ],
+  "corpora": {
+    "LM": {
+      "mission": "LM",
+      "states": 131072,
+      "record_bytes": 4106,
+      "decoded_sha256": "72eb9cb1feecf267232bcfc266bcd4df0382da79f679eb1631a8442defffc753",
+      "sanitizer_exact": true,
+      "canonical_original_archive": "evidence/sband-vector-LM-source.snapshots.bin.xz",
+      "compressed_sha256": "2328e1524dc28b52eb753399d8254382f8c194e2087c11ec76729422bc97f237",
+      "decoded_bytes": 538181632
+    },
+    "CM": {
+      "mission": "CM",
+      "states": 131072,
+      "record_bytes": 4106,
+      "decoded_sha256": "41d4fe84d8c48eeca6ca9ca247dab4f83570e9c10348dc9ca36592f465d6e572",
+      "sanitizer_exact": true,
+      "canonical_original_archive": "evidence/sband-vector-CM-source.snapshots.bin.xz",
+      "compressed_sha256": "3fcdd8cb548679c26375b94f3712269e13d0d6bb4d544a5b5f0ba72e48da52d8",
+      "decoded_bytes": 538181632
+    }
+  }
+}

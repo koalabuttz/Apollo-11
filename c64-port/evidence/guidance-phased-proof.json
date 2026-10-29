@@ -1,0 +1,372 @@
+{
+  "scope": "Native UNIT/radial/projection numerical overlay phases. C64 entry fixtures are exact original-source phase states; this does not prove a complete flight application or independently schedule inside original pairs.",
+  "source": "Unchanged Luminary099 assembly, pinned original hardware-DV reference engine",
+  "phases": {
+    "unit": {
+      "checkpoints": 48324,
+      "complete_state_words": 104,
+      "sha256": "244e21a959d27d8746b8106b8e727a1cdadc85e180a4a369ecba9eea0e5e0327",
+      "sanitizers": "Entire matching corpus, ASAN and UBSAN",
+      "source_control_groups": [
+        {
+          "stage": 0,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC3031 Q140 LOC3363 BANKSET64007 EDOP0 IRQ0",
+          "count": 16912
+        },
+        {
+          "stage": 1,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC3043 Q3 LOC3363 BANKSET64007 EDOP0 IRQ0",
+          "count": 14244
+        },
+        {
+          "stage": 1,
+          "status": 1,
+          "raw_control": "FB0 EB3400 BB7 PC3402 Q3043 LOC3363 BANKSET64007 EDOP0 IRQ0",
+          "count": 255
+        },
+        {
+          "stage": 1,
+          "status": 3,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q2413 LOC3363 BANKSET64007 EDOP0 IRQ0",
+          "count": 2669
+        },
+        {
+          "stage": 2,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q3 LOC3363 BANKSET64007 EDOP0 IRQ0",
+          "count": 14044
+        },
+        {
+          "stage": 2,
+          "status": 3,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q2413 LOC3363 BANKSET64007 EDOP0 IRQ0",
+          "count": 200
+        }
+      ],
+      "c64": [
+        {
+          "phase": 0,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002000",
+          "image_end": "51d5",
+          "stack_extent_bytes": {
+            "hardware": 23,
+            "software": 48
+          }
+        },
+        {
+          "phase": 1,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002001",
+          "image_end": "541a",
+          "stack_extent_bytes": {
+            "hardware": 24,
+            "software": 48
+          }
+        },
+        {
+          "phase": 2,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002002",
+          "image_end": "5916",
+          "stack_extent_bytes": {
+            "hardware": 24,
+            "software": 137
+          }
+        }
+      ]
+    },
+    "radial": {
+      "checkpoints": 24658,
+      "complete_state_words": 134,
+      "sha256": "261dc5f2ddf7f9b01f5ee87fb373e98dafb864deea4abef67e6b16801ec0653a",
+      "sanitizers": "Entire matching corpus, ASAN and UBSAN",
+      "source_control_groups": [
+        {
+          "stage": 0,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q1030 LOC3373 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1312
+        },
+        {
+          "stage": 0,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3373 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 1,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC3031 Q140 LOC3374 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1312
+        },
+        {
+          "stage": 1,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC3031 Q140 LOC3374 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 2,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC3043 Q3 LOC3374 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1210
+        },
+        {
+          "stage": 2,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC3043 Q3 LOC3374 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 2,
+          "status": 3,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q2413 LOC3374 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 102
+        },
+        {
+          "stage": 3,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q3 LOC3374 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1208
+        },
+        {
+          "stage": 3,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q3 LOC3374 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 3,
+          "status": 3,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q2413 LOC3374 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 2
+        },
+        {
+          "stage": 4,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3375 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1312
+        },
+        {
+          "stage": 4,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3375 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 5,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q140 LOC3377 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1312
+        },
+        {
+          "stage": 5,
+          "status": 0,
+          "raw_control": "FB0 EB3400 BB7 PC6061 Q140 LOC3377 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 6,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3401 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1312
+        },
+        {
+          "stage": 6,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3401 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 7,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3404 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1312
+        },
+        {
+          "stage": 7,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3404 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 8,
+          "status": 0,
+          "raw_control": "FB64000 EB2000 BB64004 PC6061 Q3 LOC3407 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1312
+        },
+        {
+          "stage": 8,
+          "status": 0,
+          "raw_control": "FB64000 EB2000 BB64004 PC6061 Q3 LOC3407 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        },
+        {
+          "stage": 9,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3411 BANKSET64007 EDOP0 INTBIT1540000 IRQ0",
+          "count": 1312
+        },
+        {
+          "stage": 9,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q3 LOC3411 BANKSET64007 EDOP0 INTBIT1540000 IRQ1",
+          "count": 1164
+        }
+      ],
+      "c64": [
+        {
+          "phase": 0,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002000",
+          "image_end": "5cf3",
+          "stack_extent_bytes": {
+            "hardware": 23,
+            "software": 48
+          }
+        },
+        {
+          "phase": 1,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002001",
+          "image_end": "5f72",
+          "stack_extent_bytes": {
+            "hardware": 24,
+            "software": 48
+          }
+        },
+        {
+          "phase": 2,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002002",
+          "image_end": "658b",
+          "stack_extent_bytes": {
+            "hardware": 24,
+            "software": 138
+          }
+        },
+        {
+          "phase": 3,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002003",
+          "image_end": "5132",
+          "stack_extent_bytes": {
+            "hardware": 14,
+            "software": 115
+          }
+        },
+        {
+          "phase": 4,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002004",
+          "image_end": "5a8d",
+          "stack_extent_bytes": {
+            "hardware": 23,
+            "software": 59
+          }
+        },
+        {
+          "phase": 5,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002005",
+          "image_end": "4f9e",
+          "stack_extent_bytes": {
+            "hardware": 14,
+            "software": 115
+          }
+        },
+        {
+          "phase": 6,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002006",
+          "image_end": "543a",
+          "stack_extent_bytes": {
+            "hardware": 17,
+            "software": 35
+          }
+        },
+        {
+          "phase": 7,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002007",
+          "image_end": "50fd",
+          "stack_extent_bytes": {
+            "hardware": 14,
+            "software": 25
+          }
+        },
+        {
+          "phase": 8,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002008",
+          "image_end": "4f6c",
+          "stack_extent_bytes": {
+            "hardware": 14,
+            "software": 115
+          }
+        }
+      ]
+    },
+    "projection": {
+      "checkpoints": 24576,
+      "complete_state_words": 134,
+      "sha256": "776adf4ab370d6193c7b0d2cea3bdb50c802cb78d70599fb13f76c3ed1fccba7",
+      "sanitizers": "Entire matching corpus, ASAN and UBSAN",
+      "source_control_groups": [
+        {
+          "stage": 0,
+          "status": 0,
+          "raw_control": "FB46000 EB3400 BB46007 PC3663 Q143 LOC3605 BANKSET46007 EDOP0 IRQ0",
+          "count": 8192
+        },
+        {
+          "stage": 1,
+          "status": 0,
+          "raw_control": "FB46000 EB3400 BB46007 PC3656 Q146 LOC3605 BANKSET46007 EDOP0 IRQ0",
+          "count": 8192
+        },
+        {
+          "stage": 2,
+          "status": 0,
+          "raw_control": "FB64000 EB3400 BB64007 PC6061 Q140 LOC3427 BANKSET64007 EDOP0 IRQ1",
+          "count": 8192
+        }
+      ],
+      "c64": [
+        {
+          "phase": 0,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002000",
+          "image_end": "66af",
+          "stack_extent_bytes": {
+            "hardware": 29,
+            "software": 86
+          }
+        },
+        {
+          "phase": 1,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002001",
+          "image_end": "5b8b",
+          "stack_extent_bytes": {
+            "hardware": 23,
+            "software": 60
+          }
+        },
+        {
+          "phase": 2,
+          "complete_entry_exit_pairs": 32,
+          "mailbox": "a500002002",
+          "image_end": "5a53",
+          "stack_extent_bytes": {
+            "hardware": 23,
+            "software": 60
+          }
+        }
+      ]
+    }
+  }
+}

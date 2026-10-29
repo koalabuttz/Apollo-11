@@ -1,0 +1,18 @@
+{
+  "clock_hz": 985248,
+  "sample_names": [
+    "VAD corner 0",
+    "VSU corner 8",
+    "VAD corner 120",
+    "VSU corner 248",
+    "VAD random"
+  ],
+  "cycles": [
+    2585,
+    2284,
+    2332,
+    2923,
+    2890
+  ],
+  "scope": "finite samples; marker and VIC effects included; no WCET proof"
+}

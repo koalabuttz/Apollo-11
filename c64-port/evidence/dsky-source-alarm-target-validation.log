@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly dsky_source_alarm states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 6536 6534
+hardware stack sentinel extent: 14
+software stack sentinel extent: 47

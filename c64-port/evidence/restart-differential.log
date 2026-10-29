@@ -1,0 +1,4 @@
+PASS: 190 cases / 226 checkpoints; status and all 448 modeled state words agree
+Boundaries: ALARM1 return / WHIMPER / POODOO phase-write entry; STARTSB1 return; MMDSPLAY/PTBAD; ENDFIND/BAILOUT1
+Four sequential 1202 -> alarm record -> cleanup -> phase check -> six protected job admissions
+Restart snapshot SHA256: 81c884b026fbdd4ae8050cddc75f2d07a91a168ccf1d3cf324a8f60cc39631a8

@@ -1,0 +1,290 @@
+[
+  {
+    "id": 1,
+    "filename": "L1",
+    "byte_count": 8878,
+    "crc16": 43122,
+    "prg": "lm-idle-dispatch-fixture-1.prg",
+    "sha256": "73d70d9b804a8cb7d191be69d8a385206801886a2a40a82c2c62a3a8796ca6ae",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-1.prg"
+  },
+  {
+    "id": 2,
+    "filename": "L2",
+    "byte_count": 8878,
+    "crc16": 48305,
+    "prg": "lm-idle-dispatch-fixture-2.prg",
+    "sha256": "f448bf9e4d5b3ff423cafacd93f46aadcb3bca9cdd3c51ff98ce2863761ddd4c",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-2.prg"
+  },
+  {
+    "id": 3,
+    "filename": "L3",
+    "byte_count": 8878,
+    "crc16": 31388,
+    "prg": "lm-idle-dispatch-fixture-3.prg",
+    "sha256": "37143357e238b6da13240bbf580efae3e0d40292af3dff905bbd145c5fd39ee2",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-3.prg"
+  },
+  {
+    "id": 4,
+    "filename": "L4",
+    "byte_count": 8878,
+    "crc16": 28602,
+    "prg": "lm-idle-dispatch-fixture-4.prg",
+    "sha256": "1bf59491d45a5cb0c83e67a64a56cd32eadc602b00c8a82a874e299759e964dc",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-4.prg"
+  },
+  {
+    "id": 5,
+    "filename": "L5",
+    "byte_count": 8878,
+    "crc16": 58432,
+    "prg": "lm-idle-dispatch-fixture-5.prg",
+    "sha256": "e8cb0625706274c112a60541351769e17ccc081330510ca3d330dcee23efb9b5",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-5.prg"
+  },
+  {
+    "id": 6,
+    "filename": "L6",
+    "byte_count": 8878,
+    "crc16": 25769,
+    "prg": "lm-idle-dispatch-fixture-6.prg",
+    "sha256": "366ac24fa75fb68fe5f9fcadd1c6a9146c1ef0ba5209dbf84cf2522af3c441b3",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-6.prg"
+  },
+  {
+    "id": 7,
+    "filename": "L7",
+    "byte_count": 8878,
+    "crc16": 62791,
+    "prg": "lm-idle-dispatch-fixture-7.prg",
+    "sha256": "ea1f76626180218193eb92ace6f932e5ad0afcec89161307fb4c1353c19017c4",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-7.prg"
+  },
+  {
+    "id": 8,
+    "filename": "L8",
+    "byte_count": 8878,
+    "crc16": 56673,
+    "prg": "lm-idle-dispatch-fixture-8.prg",
+    "sha256": "1f359ee6d8f8d27ca7519ffbffd9581704129035d400ac83adf622ee6642cf64",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-8.prg"
+  },
+  {
+    "id": 9,
+    "filename": "L9",
+    "byte_count": 8878,
+    "crc16": 12184,
+    "prg": "lm-idle-dispatch-fixture-9.prg",
+    "sha256": "ed56594b1a4bdf27b43e3ab3b942e0578f0b57e0549835793e37aadaecff50b4",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-9.prg"
+  },
+  {
+    "id": 10,
+    "filename": "L10",
+    "byte_count": 8878,
+    "crc16": 26908,
+    "prg": "lm-idle-dispatch-fixture-10.prg",
+    "sha256": "c7c8b91d8aa17926564afaee51227ead68218ab9be6c407ff7cd146c36adfae6",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-10.prg"
+  },
+  {
+    "id": 11,
+    "filename": "L11",
+    "byte_count": 8878,
+    "crc16": 28405,
+    "prg": "lm-idle-dispatch-fixture-11.prg",
+    "sha256": "b05bc1b4dadc638b8ac16c33c4621bf5ddadbe6efd192dee1b46d565d25323f1",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-11.prg"
+  },
+  {
+    "id": 12,
+    "filename": "L12",
+    "byte_count": 8878,
+    "crc16": 40222,
+    "prg": "lm-idle-dispatch-fixture-12.prg",
+    "sha256": "23a20f300e0f77da1878a17c1e1b1cfb0638bd3f0ee1ffdb747906ce2cc14205",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-12.prg"
+  },
+  {
+    "id": 13,
+    "filename": "L13",
+    "byte_count": 8878,
+    "crc16": 59205,
+    "prg": "lm-idle-dispatch-fixture-13.prg",
+    "sha256": "97be7582b397f13cdef4c7eb428acef955da2eaf8c03affa1db7187faa63eac4",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-13.prg"
+  },
+  {
+    "id": 14,
+    "filename": "L14",
+    "byte_count": 8878,
+    "crc16": 45639,
+    "prg": "lm-idle-dispatch-fixture-14.prg",
+    "sha256": "543c9e0e1c313a1ec4b6f9b2dfa23f280ec6c1a0cdeeee0c069bd0c5bc134a42",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-14.prg"
+  },
+  {
+    "id": 15,
+    "filename": "L15",
+    "byte_count": 8878,
+    "crc16": 2375,
+    "prg": "lm-idle-dispatch-fixture-15.prg",
+    "sha256": "0a73322c871d512a3ba37c05dca437469e6979a2929c239fb2f719d91ea77d27",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-15.prg"
+  },
+  {
+    "id": 16,
+    "filename": "L16",
+    "byte_count": 8878,
+    "crc16": 55846,
+    "prg": "lm-idle-dispatch-fixture-16.prg",
+    "sha256": "1a1dd3e04895d980deb623b6607316b1a73e56061f4ef1d2100ac75aca7a91d4",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-16.prg"
+  },
+  {
+    "id": 17,
+    "filename": "L17",
+    "byte_count": 8880,
+    "crc16": 9570,
+    "prg": "lm-idle-dispatch-fixture-17.prg",
+    "sha256": "8eab2288ca4ed4636a512a6c74e3ae1756551affd4dbbfff8f7899b8a0f7e1e6",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-17.prg"
+  },
+  {
+    "id": 18,
+    "filename": "L18",
+    "byte_count": 8880,
+    "crc16": 45127,
+    "prg": "lm-idle-dispatch-fixture-18.prg",
+    "sha256": "7dbcc0e5b5272ca325109f8474a350c0284e3d3ffb6514ba630c3937cc705d18",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-18.prg"
+  },
+  {
+    "id": 19,
+    "filename": "L19",
+    "byte_count": 8880,
+    "crc16": 24055,
+    "prg": "lm-idle-dispatch-fixture-19.prg",
+    "sha256": "d9d09dda50e3e84c3078c2cae06223af09014ca1b89953b5a583cb7b8270e1e1",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-19.prg"
+  },
+  {
+    "id": 20,
+    "filename": "L20",
+    "byte_count": 8880,
+    "crc16": 40068,
+    "prg": "lm-idle-dispatch-fixture-20.prg",
+    "sha256": "6d5cdaccc68d44b912479c5d35f997a5cadc34bb9b4270013ce08c51b641892d",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-20.prg"
+  },
+  {
+    "id": 21,
+    "filename": "L21",
+    "byte_count": 8880,
+    "crc16": 48558,
+    "prg": "lm-idle-dispatch-fixture-21.prg",
+    "sha256": "3d10b2364d83872e1593e3eb40f572f4be62be5dbc91e2bcb6ddac9094387316",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-21.prg"
+  },
+  {
+    "id": 22,
+    "filename": "L22",
+    "byte_count": 8880,
+    "crc16": 24513,
+    "prg": "lm-idle-dispatch-fixture-22.prg",
+    "sha256": "ab410d5bf4b2e3762bf6dd9e40a409c9e9261616771ad7fdca9eaf730048d4f3",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-22.prg"
+  },
+  {
+    "id": 23,
+    "filename": "L23",
+    "byte_count": 8880,
+    "crc16": 26172,
+    "prg": "lm-idle-dispatch-fixture-23.prg",
+    "sha256": "53abdb2636743b534de36a4ac6118a15c3b7f05014ce5ce24a1bd7f78ad1477f",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-23.prg"
+  },
+  {
+    "id": 24,
+    "filename": "L24",
+    "byte_count": 8880,
+    "crc16": 51076,
+    "prg": "lm-idle-dispatch-fixture-24.prg",
+    "sha256": "98bd5d43f9cd083afd60364075d3167f60d7394b546db45a9dfcf833409a29dc",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-24.prg"
+  },
+  {
+    "id": 25,
+    "filename": "L25",
+    "byte_count": 8880,
+    "crc16": 17875,
+    "prg": "lm-idle-dispatch-fixture-25.prg",
+    "sha256": "dfdaf2ff3b3ddd3c8b8c9274cc65a2a30132720782dffaed9f91c289cb64ae4a",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-25.prg"
+  },
+  {
+    "id": 26,
+    "filename": "L26",
+    "byte_count": 8880,
+    "crc16": 39883,
+    "prg": "lm-idle-dispatch-fixture-26.prg",
+    "sha256": "2d8a48a9478807891b57d38530c50c1d9587790b88ff1c5eb2dc4601b66cc26e",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-26.prg"
+  },
+  {
+    "id": 27,
+    "filename": "L27",
+    "byte_count": 8880,
+    "crc16": 49440,
+    "prg": "lm-idle-dispatch-fixture-27.prg",
+    "sha256": "187240d58d22ceb09e52f84b67f9981dabb5aa0a28bb56598d0a8d5ffb597305",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-27.prg"
+  },
+  {
+    "id": 28,
+    "filename": "L28",
+    "byte_count": 8880,
+    "crc16": 11702,
+    "prg": "lm-idle-dispatch-fixture-28.prg",
+    "sha256": "4f2aa9a99371324513881c718eb4abeb169bda769e9439be7ad594bc33bdb83c",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-28.prg"
+  },
+  {
+    "id": 29,
+    "filename": "L29",
+    "byte_count": 8879,
+    "crc16": 54283,
+    "prg": "lm-idle-dispatch-fixture-29.prg",
+    "sha256": "58f225b311c0d3f5167666c741667239fe5b09d3e8799d4761cd2d6d7df868c6",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-29.prg"
+  },
+  {
+    "id": 30,
+    "filename": "L30",
+    "byte_count": 8879,
+    "crc16": 27713,
+    "prg": "lm-idle-dispatch-fixture-30.prg",
+    "sha256": "0d5bb7b3063f62b9dfd767a24b53936419ec2d3428885c7654715254fab8c2cb",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-30.prg"
+  },
+  {
+    "id": 31,
+    "filename": "L31",
+    "byte_count": 8879,
+    "crc16": 47581,
+    "prg": "lm-idle-dispatch-fixture-31.prg",
+    "sha256": "dae43d2ce9bd478a28be2030a8f97a2827c560af00970203620acd9f35babb0b",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-31.prg"
+  },
+  {
+    "id": 32,
+    "filename": "L32",
+    "byte_count": 8879,
+    "crc16": 59195,
+    "prg": "lm-idle-dispatch-fixture-32.prg",
+    "sha256": "b3beb19e456f40f08484de23f20970b577c470487bee07385dc98f348412bcdb",
+    "retained_prg": "evidence/lm-idle-dispatch-fixture-32.prg"
+  }
+]

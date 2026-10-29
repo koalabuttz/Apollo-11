@@ -1,0 +1,15 @@
+ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 163 bytes
+ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 417 bytes
+mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/sband_lm_yaw_vice_test.py", line 26, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/Apollo-11/c64-port/tools/sband_lm_yaw_vice_test.py", line 10, in main
+    results=[run(a,g)for g in range(4)]
+             ^^^^^^^^
+  File "/workspace/Apollo-11/c64-port/tools/sband_lm_yaw_vice_test.py", line 15, in run
+    subprocess.run([a.cc,'-Os',f'-DSBAND_LM_YAW_GROUP={group}','-std=c99','-Wall','-Wextra','-Werror','-Iinclude','-Itests',*CORE,f'-Wl,-Map={mapfile}','-o',str(prg)],cwd=R,check=True)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/workspace/toolchains/llvm-mos/bin/mos-c64-clang', '-Os', '-DSBAND_LM_YAW_GROUP=0', '-std=c99', '-Wall', '-Wextra', '-Werror', '-Iinclude', '-Itests', 'tests/sband_lm_yaw_target.c', 'tests/sband_lm_yaw_cases.c', 'tests/frozen_words.c', 'src/sband_lm_yaw.c', 'src/sband_trig.c', 'src/guidance_trig.c', 'src/sband_vector_linear.c', 'src/sband_vector.c', 'src/sband_shift.c', 'src/sband_length.c', 'src/guidance_length_phased.c', 'src/interpreted_sign.c', 'src/sband_dot.c', 'src/sband_scalar.c', 'src/inverse_trig.c', 'src/guidance_shift.c', 'src/guidance_product.c', 'src/guidance_norm.c', 'src/agc_word.c', 'src/agc_multiword.c', 'platform/c64/sband_lm_yaw_diagnostic.c', '-Wl,-Map=/workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.map', '-o', '/workspace/Apollo-11/c64-port/build/sband-lm-yaw-0.prg']' returned non-zero exit status 1.

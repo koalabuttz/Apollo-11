@@ -1,0 +1,16 @@
+Independent read-only source review of CM zero-priority Executive scans and SUPER dispatch.
+Reviewer: /root/frozen_storage.
+
+Reviewed final identities:
+src/cm_scan_zero.c SHA256 f948fa6faa3c753cab066b3c25bfb3471a0d6ae22113abd7b2c5edc915c36036
+include/cm_scan_zero.h SHA256 2692d6974210dd031287cb192c42a2303ac39a8fc6e064873ae4f593a0d52fb4
+src/cm_super_dispatch.c SHA256 7b830ebde669fed86f17819220ffe256478aaf37d6672a365e870948f64ccac2
+include/cm_super_dispatch.h SHA256 2439b4d93a894618529a2a58b9939b9c4d377ba18857ce5a85ceca3c76d81426
+../Comanche055/EXECUTIVE.agc SHA256 d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b
+../Comanche055/P20-P25.agc SHA256 5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5
+
+No concrete source-control discrepancy found in the documented compiled caller domains.
+END releases the selected VAC and sleeps the core; JOBSLEEP and PRIOCHNG preserve their actual saved PC/bank/SUPER fields. The slot3 +0 source branch executes its emitted -CCSPR AD before the next CCS overwrites A. The wrapper uses a producer-excluded transient dormant -0 to invoke the unchanged frozen ordinary scan, then restores the authoritative slot3 +0 before returning. Other +0 slots retain the actual CCSHOLE caller Q and fault handoff. Earlier cores/highest priority/BUF state agree with source.
+SUPDXCHZ/+1 exchanges or retains the original L, writes SUPER, stores BBANK, then returns via actual TC L with Q2, original PC and corrected raw A/L. The fixed GOTOV56 descriptor matches its actual source tuple. IRQ is preserved. Typed descriptor lower/upper bounds and BBCON mask are explicit preconditions; no arbitrary reserved-register caller is inferred.
+One build finding was reported before freeze: unsigned priority-1u assigned to agc_word needed an explicit safe narrowing cast in the positive-priority branch. Final src/cm_scan_zero.c includes that cast. The owner reports strict/full-SAN source equality and unchanged target payload bytes; this review independently checks the strict build and source, not a duplicate exhaustive rerun.
+These local source mappings do not certify queued external applications, arbitrary Executive core corruption, or a whole mission scheduler. No native runtime decoder or source engine is introduced.

@@ -1,0 +1,2 @@
+python3 tools/sband_flow_vice_test.py --cc /workspace/toolchains/llvm-mos/bin/mos-c64-clang --vice /workspace/toolchains/vice/usr/bin/x64sc --rom-dir /workspace/toolchains/roms/C64 --data-dir /workspace/toolchains/vice/usr/share/vice
+PASS128 complete original/native states on stock-ROM C64; every2048word plusSUPER/IRQ exact; {'states': 128, 'prg_bytes': 26900, 'load_end': 28947, 'bss_end': 37139, 'mailbox': 'a5800000', 'words_each': 2048, 'external_fields': ['superbank', 'interrupt_enabled']}

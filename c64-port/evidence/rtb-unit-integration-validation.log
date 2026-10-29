@@ -1,0 +1,77 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections tools/rtb_unit_snapshot.c src/rtb_unit.c src/rtb_vector.c src/agc_word.c src/agc_multiword.c src/guidance_norm.c src/guidance_unit_phased.c src/guidance_length_phased.c tests/rtb_unit_cases.c tests/rtb_vector_cases.c -o build/rtb-unit-integrated-stream
+python3 tools/rtb_unit_port_host.py --cc "cc"
+32 complete UNIT/NORM original states mission0 caller0 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 22cf5510e106f416089347c53f1362a3d275fe70599c69f3b021d3e08d67e31d
+32 complete UNIT/NORM original states mission0 caller0 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 a597842ae5fd4d341681361a8273dbc347a7a5abe0f0c372462187e8ecd42112
+32 complete UNIT/NORM original states mission0 caller0 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 c38d4f97083864d909fa297a5b40acc0a8b09a08c4207a7c43da654ff2905dbd
+32 complete UNIT/NORM original states mission0 caller1 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 a425df18f6353e7eb2ba65f44cdfcf20c32fbf413f726cc64dc92f4ef1e01a9c
+32 complete UNIT/NORM original states mission0 caller1 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 34a607c913209353d93a7ac93d570893c9c6b97610b9629d2d8021b916d74c7b
+32 complete UNIT/NORM original states mission0 caller1 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 9d6556d06c2139afd5aec5bdc7f08703f0fc3b9fcf4b7156f266663cfc80c503
+32 complete UNIT/NORM original states mission0 caller2 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 c8032e6d64b1f612eb5f0a8f5af75baf1afd29d5edc3b331f9baea42087f44b7
+32 complete UNIT/NORM original states mission0 caller2 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 1691c97100a37a3dce3e3bb63ba697bfa3ddbf205fb117ab974c367870af1e42
+32 complete UNIT/NORM original states mission0 caller2 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 8290d54d9dcaa12b8daa9004995a65fd157241e68798a6fb10d23bfd22a9fb1a
+32 complete UNIT/NORM original states mission1 caller0 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 90f247865dd8874dad67da2e1d04be56e1f271cc060d234d93b73faa4cfb7a9f
+32 complete UNIT/NORM original states mission1 caller0 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 52167df0e9f0b20c4a10410804d89e2bd0b1460ea58f26956a24186e6abf42e1
+32 complete UNIT/NORM original states mission1 caller0 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 8cc9879dd1018ccaa1082064ce2f2cb0fb0b7bbb2075fa1ba9006b28ecb5954b
+32 complete UNIT/NORM original states mission1 caller1 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 9c5b8126579e9a6146ea8ed2f134fe0ff6638c17f6efa50237befab779ab8c8f
+32 complete UNIT/NORM original states mission1 caller1 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 4956677ba98dafe5b710c50bffc6896fe3fd20b1920728a18f767edd76d76480
+32 complete UNIT/NORM original states mission1 caller1 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 e1fa32843a6a36b745278273fbfc213ad8395dd5a6ad4a39aca836f3ad220aad
+32 complete UNIT/NORM original states mission1 caller2 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 5373c1b1d0a54bca8b596dd0a80070b09326aa08675a563d39a548156a45bc47
+32 complete UNIT/NORM original states mission1 caller2 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 1885f5ed04e43681078c01a96d9e72e2657c769a7e69351af9136bfdbb3e8044
+32 complete UNIT/NORM original states mission1 caller2 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 77b2bb9900b8ddbdffe51654613722f3b770747ce132f153e203a2fece212cf3
+PASS all1179648 complete RTB source states and576 frozen states
+python3 tools/rtb_unit_port_host.py --cc "cc" --sanitize
+32 complete UNIT/NORM original states mission0 caller0 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 22cf5510e106f416089347c53f1362a3d275fe70599c69f3b021d3e08d67e31d
+32 complete UNIT/NORM original states mission0 caller0 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 a597842ae5fd4d341681361a8273dbc347a7a5abe0f0c372462187e8ecd42112
+32 complete UNIT/NORM original states mission0 caller0 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 c38d4f97083864d909fa297a5b40acc0a8b09a08c4207a7c43da654ff2905dbd
+32 complete UNIT/NORM original states mission0 caller1 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 a425df18f6353e7eb2ba65f44cdfcf20c32fbf413f726cc64dc92f4ef1e01a9c
+32 complete UNIT/NORM original states mission0 caller1 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 34a607c913209353d93a7ac93d570893c9c6b97610b9629d2d8021b916d74c7b
+32 complete UNIT/NORM original states mission0 caller1 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 9d6556d06c2139afd5aec5bdc7f08703f0fc3b9fcf4b7156f266663cfc80c503
+32 complete UNIT/NORM original states mission0 caller2 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 c8032e6d64b1f612eb5f0a8f5af75baf1afd29d5edc3b331f9baea42087f44b7
+32 complete UNIT/NORM original states mission0 caller2 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 1691c97100a37a3dce3e3bb63ba697bfa3ddbf205fb117ab974c367870af1e42
+32 complete UNIT/NORM original states mission0 caller2 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 8290d54d9dcaa12b8daa9004995a65fd157241e68798a6fb10d23bfd22a9fb1a
+32 complete UNIT/NORM original states mission1 caller0 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 90f247865dd8874dad67da2e1d04be56e1f271cc060d234d93b73faa4cfb7a9f
+32 complete UNIT/NORM original states mission1 caller0 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 52167df0e9f0b20c4a10410804d89e2bd0b1460ea58f26956a24186e6abf42e1
+32 complete UNIT/NORM original states mission1 caller0 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 8cc9879dd1018ccaa1082064ce2f2cb0fb0b7bbb2075fa1ba9006b28ecb5954b
+32 complete UNIT/NORM original states mission1 caller1 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 9c5b8126579e9a6146ea8ed2f134fe0ff6638c17f6efa50237befab779ab8c8f
+32 complete UNIT/NORM original states mission1 caller1 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 4956677ba98dafe5b710c50bffc6896fe3fd20b1920728a18f767edd76d76480
+32 complete UNIT/NORM original states mission1 caller1 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 e1fa32843a6a36b745278273fbfc213ad8395dd5a6ad4a39aca836f3ad220aad
+32 complete UNIT/NORM original states mission1 caller2 phase0: PASS
+PASS all retained source-state bytes: 269090816 SHA256 5373c1b1d0a54bca8b596dd0a80070b09326aa08675a563d39a548156a45bc47
+32 complete UNIT/NORM original states mission1 caller2 phase1: PASS
+PASS all retained source-state bytes: 269090816 SHA256 1885f5ed04e43681078c01a96d9e72e2657c769a7e69351af9136bfdbb3e8044
+32 complete UNIT/NORM original states mission1 caller2 phase2: PASS
+PASS all retained source-state bytes: 269090816 SHA256 77b2bb9900b8ddbdffe51654613722f3b770747ce132f153e203a2fece212cf3
+PASS all1179648 complete RTB source states and576 frozen states under full ASAN/UBSAN

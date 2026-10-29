@@ -1,0 +1,1 @@
+python3 tools/dsky_decimal_consumer_build.py --mos-cc /workspace/toolchains/llvm-mos/bin/mos-c64-clang

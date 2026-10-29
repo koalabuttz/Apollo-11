@@ -1,0 +1,9 @@
+make: 'build/cm-normal-display-route-port' is up to date.
+cc -O2 -DAPOLLO_FIXED_CM_ONLY -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_normal_display.c src/cm_normal_display.c src/fixed_data.c src/cm_formatter.c src/cm_pinball.c src/dsky_two_digit.c src/dsky_decimal.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/cm_normal_display_cases.c tests/cm_nv85_cases.c tests/cm_clockjob_cases.c tests/cm_trig_cases.c tests/cm_normal_display_check.c -o build/test-cm-normal-display
+build/test-cm-normal-display
+64 complete CM normal V06N40/N85 caller states and 108 unchanged invalid guards: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -DAPOLLO_FIXED_CM_ONLY -ffunction-sections -Wl,--gc-sections -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_normal_display.c src/cm_normal_display.c src/fixed_data.c src/cm_formatter.c src/cm_pinball.c src/dsky_two_digit.c src/dsky_decimal.c src/dsky_pinball.c src/agc_word.c src/agc_multiword.c tests/cm_normal_display_cases.c tests/cm_nv85_cases.c tests/cm_clockjob_cases.c tests/cm_trig_cases.c tests/cm_normal_display_check.c -o build/test-cm-normal-display-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-normal-display-sanitize
+64 complete CM normal V06N40/N85 caller states and 108 unchanged invalid guards: PASS
+python3 tools/cm_normal_display_sanitize_stream.py
+PASS all18688 complete original V06N40/N85 source states under ASAN/UBSAN, SHA256 8131b2d0e3d156996220b7f3f380d76e71295b66650771f8d67a680ed8c58a20

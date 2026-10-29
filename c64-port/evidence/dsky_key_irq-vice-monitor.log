@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_key_irq.prg from 0801 to 4AFA (42FA bytes)
+WATCH: 1  C:$6afb  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 6afb)   17/$011,  35/$23
+.C:2076  8E FB 6A    STX $6AFB      - A:00 X:A5 Y:00 SP:f1 NV-....C  311411114
+>C:6afb  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_key_irq-vice-mailbox.bin' from $6afb to $6aff
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_key_irq-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_key_irq-vice-software-stack.bin' from $c100 to $cfff

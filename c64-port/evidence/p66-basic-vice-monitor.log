@@ -1,0 +1,82 @@
+Loading /workspace/Apollo-11/c64-port/build/p66_basic.prg from 0801 to BAB5 (B2B5 bytes)
+WATCH: 1  C:$ce54  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+Loading /workspace/Apollo-11/c64-port/build/p66_basic.prg from 0801 to AD7A (A57A bytes)
+WATCH: 1  C:$be91  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store be91)  228/$0e4,  20/$14
+.C:9a5c  8E 91 BE    STX $BE91      - A:00 X:A5 Y:00 SP:f1 N.-....C   78913568
+>C:be91  a5 08 00 08  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-mailbox.bin' from $be91 to $be95
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-software-stack.bin' from $c800 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-color.bin' from $d800 to $dbe7
+Loading /workspace/Apollo-11/c64-port/build/p66_basic.prg from 0801 to AD1F (A51F bytes)
+WATCH: 1  C:$be36  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store be36)    9/$009,  15/$0f
+.C:9a21  8E 36 BE    STX $BE36      - A:00 X:A5 Y:00 SP:f1 N.-....C   79292886
+>C:be36  a5 08 00 08  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-mailbox.bin' from $be36 to $be3a
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-software-stack.bin' from $c800 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-color.bin' from $d800 to $dbe7
+Saving file `/workspace/Apollo-11/c64-port/build/p66-basic-debug.bin' from $c090 to $c097
+Loading /workspace/Apollo-11/c64-port/build/p66_basic.prg from 0801 to AD76 (A576 bytes)
+WATCH: 1  C:$be8d  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store be8d)  118/$076,  58/$3a
+.C:9a72  8E 8D BE    STX $BE8D      - A:00 X:A5 Y:00 SP:f1 N.-....C   78159748
+>C:be8d  a5 08 00 08  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-mailbox.bin' from $be8d to $be91
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-software-stack.bin' from $c800 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-color.bin' from $d800 to $dbe7
+Saving file `/workspace/Apollo-11/c64-port/build/p66-basic-debug.bin' from $c090 to $c09f
+Loading /workspace/Apollo-11/c64-port/build/p66_basic.prg from 0801 to AD86 (A586 bytes)
+WATCH: 1  C:$be9d  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store be9d)  225/$0e1,   0/$00
+.C:9a68  8E 9D BE    STX $BE9D      - A:00 X:A5 Y:00 SP:f1 N.-....C   78933015
+>C:be9d  a5 00 00 08  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-mailbox.bin' from $be9d to $bea1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-software-stack.bin' from $c800 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-color.bin' from $d800 to $dbe7
+Loading /workspace/Apollo-11/c64-port/build/p66_basic.prg from 0801 to AD87 (A587 bytes)
+WATCH: 1  C:$be9e  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store be9e)  228/$0e4,  32/$20
+.C:9a6d  8E 9E BE    STX $BE9E      - A:00 X:A5 Y:00 SP:f1 N.-....C   78933236
+>C:be9e  a5 00 00 08  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-mailbox.bin' from $be9e to $bea2
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-software-stack.bin' from $c800 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-color.bin' from $d800 to $dbe7
+Loading /workspace/Apollo-11/c64-port/build/p66_basic.prg from 0801 to AD90 (A590 bytes)
+WATCH: 1  C:$bea7  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store bea7)  109/$06d,  48/$30
+.C:9a76  8E A7 BE    STX $BEA7      - A:00 X:A5 Y:00 SP:f1 N.-....C   78945411
+>C:bea7  a5 00 00 08  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-mailbox.bin' from $bea7 to $beab
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-software-stack.bin' from $c800 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-color.bin' from $d800 to $dbe7
+Loading /workspace/Apollo-11/c64-port/build/p66_basic.prg from 0801 to AEBC (A6BC bytes)
+WATCH: 1  C:$bfd3  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store bfd3)  215/$0d7,   4/$04
+.C:9b9e  8E D3 BF    STX $BFD3      - A:00 X:A5 Y:00 SP:f1 N.-....C   78952045
+>C:bfd3  a5 00 00 08  02                                      .....
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-mailbox.bin' from $bfd3 to $bfd7
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-software-stack.bin' from $c800 to $cfff
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-screen.bin' from $0400 to $07e7
+Saving file `/workspace/Apollo-11/c64-port/build/p66_basic-vice-color.bin' from $d800 to $dbe7

@@ -1,0 +1,1955 @@
+{
+  "artifact": "evidence/cm-mission-overlay-report.json",
+  "source_snapshot_sha256": "3d56d8023cc2264d042a4bf08e1246c54e807feba422398a0094d2e4d98e3503",
+  "correction": "NVWORD=0 CLOKTASK reschedules and updates TBASE; it does not admit CLOCKJOB. Prior descriptive metadata incorrectly listed CLOCKJOB as exercised. All original/native/C64 artifacts and runtime/source files retain their exact frozen identities.",
+  "metadata_changes": {
+    "docs/COMANCHE_MISSION_LOOP.md": {
+      "old_sha256": "ffdffe14fe0c3062effc37f96fbcc081c042f4eb734768c0a92e9bb41d60d632",
+      "old_copy": "evidence/cm-mission-scope-prior-COMANCHE_MISSION_LOOP.md",
+      "new_sha256": "406fb31e7c97a97f639cb51dd5e89e6ba6121d5ad338312c17fbfdc9adaa2e80"
+    },
+    "evidence/cm-mission-loop-proof.json": {
+      "old_sha256": "53431c30e1e8ea3ad05e8863e322e30dd2f1c93b64f66df16577fa5c43d724ed",
+      "old_copy": "evidence/cm-mission-scope-prior-cm-mission-loop-proof.json",
+      "new_sha256": "06d5bc015d58822621add59f50fa4e8c1cd72755c83893dcdfbc3ccd2ac759f7"
+    },
+    "evidence/cm-mission-overlay-report.json": {
+      "old_sha256": "1406c222c436a745cff484232a6684c1db72d874ee5910682fa541e8dc38c39d",
+      "old_copy": "evidence/cm-mission-scope-prior-cm-mission-overlay-report.json",
+      "new_sha256": "f83a0e51076033601cb6720f458ea7ef5136593ac6cc04c117e14982bf45d2e2"
+    }
+  },
+  "unchanged_frozen_entries": 79,
+  "unchanged_identity_set_sha256": "b8fbbfb4fa8b573fd2caf1a32d156c8dcdeaf58866e5196b2e74c21851c3ffe4",
+  "observed_actual_foreground": [
+    {
+      "interpretive": 0,
+      "location_octal": "03542",
+      "bank_octal": "014063",
+      "cases": 64
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03001",
+      "bank_octal": "000000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03002",
+      "bank_octal": "000021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03003",
+      "bank_octal": "000042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03004",
+      "bank_octal": "000063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03005",
+      "bank_octal": "000104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03006",
+      "bank_octal": "000125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03007",
+      "bank_octal": "000146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03010",
+      "bank_octal": "000167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03011",
+      "bank_octal": "002000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03012",
+      "bank_octal": "002021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03013",
+      "bank_octal": "002042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03014",
+      "bank_octal": "002063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03015",
+      "bank_octal": "002104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03016",
+      "bank_octal": "002125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03017",
+      "bank_octal": "002146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03020",
+      "bank_octal": "002167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03021",
+      "bank_octal": "004000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03022",
+      "bank_octal": "004021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03023",
+      "bank_octal": "004042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03024",
+      "bank_octal": "004063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03025",
+      "bank_octal": "004104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03026",
+      "bank_octal": "004125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03027",
+      "bank_octal": "004146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03030",
+      "bank_octal": "004167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03031",
+      "bank_octal": "006000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03032",
+      "bank_octal": "006021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03033",
+      "bank_octal": "006042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03034",
+      "bank_octal": "006063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03035",
+      "bank_octal": "006104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03036",
+      "bank_octal": "006125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03037",
+      "bank_octal": "006146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03040",
+      "bank_octal": "006167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03041",
+      "bank_octal": "010000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03042",
+      "bank_octal": "010021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03043",
+      "bank_octal": "010042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03044",
+      "bank_octal": "010063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03045",
+      "bank_octal": "010104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03046",
+      "bank_octal": "010125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03047",
+      "bank_octal": "010146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03050",
+      "bank_octal": "010167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03051",
+      "bank_octal": "012000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03052",
+      "bank_octal": "012021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03053",
+      "bank_octal": "012042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03054",
+      "bank_octal": "012063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03055",
+      "bank_octal": "012104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03056",
+      "bank_octal": "012125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03057",
+      "bank_octal": "012146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03060",
+      "bank_octal": "012167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03061",
+      "bank_octal": "014000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03062",
+      "bank_octal": "014021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03063",
+      "bank_octal": "014042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03064",
+      "bank_octal": "014063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03065",
+      "bank_octal": "014104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03066",
+      "bank_octal": "014125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03067",
+      "bank_octal": "014146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03070",
+      "bank_octal": "014167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03071",
+      "bank_octal": "016000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03072",
+      "bank_octal": "016021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03073",
+      "bank_octal": "016042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03074",
+      "bank_octal": "016063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03075",
+      "bank_octal": "016104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03076",
+      "bank_octal": "016125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03077",
+      "bank_octal": "016146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03100",
+      "bank_octal": "016167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03101",
+      "bank_octal": "020000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03102",
+      "bank_octal": "020021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03103",
+      "bank_octal": "020042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03104",
+      "bank_octal": "020063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03105",
+      "bank_octal": "020104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03106",
+      "bank_octal": "020125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03107",
+      "bank_octal": "020146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03110",
+      "bank_octal": "020167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03111",
+      "bank_octal": "022000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03112",
+      "bank_octal": "022021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03113",
+      "bank_octal": "022042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03114",
+      "bank_octal": "022063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03115",
+      "bank_octal": "022104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03116",
+      "bank_octal": "022125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03117",
+      "bank_octal": "022146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03120",
+      "bank_octal": "022167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03121",
+      "bank_octal": "024000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03122",
+      "bank_octal": "024021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03123",
+      "bank_octal": "024042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03124",
+      "bank_octal": "024063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03125",
+      "bank_octal": "024104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03126",
+      "bank_octal": "024125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03127",
+      "bank_octal": "024146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03130",
+      "bank_octal": "024167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03131",
+      "bank_octal": "026000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03132",
+      "bank_octal": "026021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03133",
+      "bank_octal": "026042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03134",
+      "bank_octal": "026063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03135",
+      "bank_octal": "026104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03136",
+      "bank_octal": "026125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03137",
+      "bank_octal": "026146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03140",
+      "bank_octal": "026167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03141",
+      "bank_octal": "030000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03142",
+      "bank_octal": "030021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03143",
+      "bank_octal": "030042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03144",
+      "bank_octal": "030063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03145",
+      "bank_octal": "030104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03146",
+      "bank_octal": "030125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03147",
+      "bank_octal": "030146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03150",
+      "bank_octal": "030167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03151",
+      "bank_octal": "032000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03152",
+      "bank_octal": "032021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03153",
+      "bank_octal": "032042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03154",
+      "bank_octal": "032063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03155",
+      "bank_octal": "032104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03156",
+      "bank_octal": "032125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03157",
+      "bank_octal": "032146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03160",
+      "bank_octal": "032167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03161",
+      "bank_octal": "034000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03162",
+      "bank_octal": "034021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03163",
+      "bank_octal": "034042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03164",
+      "bank_octal": "034063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03165",
+      "bank_octal": "034104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03166",
+      "bank_octal": "034125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03167",
+      "bank_octal": "034146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03170",
+      "bank_octal": "034167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03171",
+      "bank_octal": "036000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03172",
+      "bank_octal": "036021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03173",
+      "bank_octal": "036042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03174",
+      "bank_octal": "036063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03175",
+      "bank_octal": "036104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03176",
+      "bank_octal": "036125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03177",
+      "bank_octal": "036146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03200",
+      "bank_octal": "036167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03201",
+      "bank_octal": "040000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03202",
+      "bank_octal": "040021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03203",
+      "bank_octal": "040042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03204",
+      "bank_octal": "040063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03205",
+      "bank_octal": "040104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03206",
+      "bank_octal": "040125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03207",
+      "bank_octal": "040146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03210",
+      "bank_octal": "040167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03211",
+      "bank_octal": "042000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03212",
+      "bank_octal": "042021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03213",
+      "bank_octal": "042042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03214",
+      "bank_octal": "042063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03215",
+      "bank_octal": "042104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03216",
+      "bank_octal": "042125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03217",
+      "bank_octal": "042146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03220",
+      "bank_octal": "042167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03221",
+      "bank_octal": "044000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03222",
+      "bank_octal": "044021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03223",
+      "bank_octal": "044042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03224",
+      "bank_octal": "044063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03225",
+      "bank_octal": "044104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03226",
+      "bank_octal": "044125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03227",
+      "bank_octal": "044146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03230",
+      "bank_octal": "044167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03231",
+      "bank_octal": "046000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03232",
+      "bank_octal": "046021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03233",
+      "bank_octal": "046042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03234",
+      "bank_octal": "046063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03235",
+      "bank_octal": "046104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03236",
+      "bank_octal": "046125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03237",
+      "bank_octal": "046146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03240",
+      "bank_octal": "046167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03241",
+      "bank_octal": "050000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03242",
+      "bank_octal": "050021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03243",
+      "bank_octal": "050042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03244",
+      "bank_octal": "050063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03245",
+      "bank_octal": "050104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03246",
+      "bank_octal": "050125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03247",
+      "bank_octal": "050146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03250",
+      "bank_octal": "050167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03251",
+      "bank_octal": "052000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03252",
+      "bank_octal": "052021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03253",
+      "bank_octal": "052042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03254",
+      "bank_octal": "052063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03255",
+      "bank_octal": "052104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03256",
+      "bank_octal": "052125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03257",
+      "bank_octal": "052146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03260",
+      "bank_octal": "052167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03261",
+      "bank_octal": "054000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03262",
+      "bank_octal": "054021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03263",
+      "bank_octal": "054042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03264",
+      "bank_octal": "054063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03265",
+      "bank_octal": "054104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03266",
+      "bank_octal": "054125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03267",
+      "bank_octal": "054146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03270",
+      "bank_octal": "054167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03271",
+      "bank_octal": "056000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03272",
+      "bank_octal": "056021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03273",
+      "bank_octal": "056042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03274",
+      "bank_octal": "056063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03275",
+      "bank_octal": "056104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03276",
+      "bank_octal": "056125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03277",
+      "bank_octal": "056146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03300",
+      "bank_octal": "056167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03301",
+      "bank_octal": "060000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03302",
+      "bank_octal": "060021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03303",
+      "bank_octal": "060042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03304",
+      "bank_octal": "060063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03305",
+      "bank_octal": "060104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03306",
+      "bank_octal": "060125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03307",
+      "bank_octal": "060146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03310",
+      "bank_octal": "060167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03311",
+      "bank_octal": "062000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03312",
+      "bank_octal": "062021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03313",
+      "bank_octal": "062042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03314",
+      "bank_octal": "062063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03315",
+      "bank_octal": "062104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03316",
+      "bank_octal": "062125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03317",
+      "bank_octal": "062146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03320",
+      "bank_octal": "062167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03321",
+      "bank_octal": "064000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03322",
+      "bank_octal": "064021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03323",
+      "bank_octal": "064042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03324",
+      "bank_octal": "064063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03325",
+      "bank_octal": "064104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03326",
+      "bank_octal": "064125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03327",
+      "bank_octal": "064146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03330",
+      "bank_octal": "064167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03331",
+      "bank_octal": "066000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03332",
+      "bank_octal": "066021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03333",
+      "bank_octal": "066042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03334",
+      "bank_octal": "066063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03335",
+      "bank_octal": "066104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03336",
+      "bank_octal": "066125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03337",
+      "bank_octal": "066146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03340",
+      "bank_octal": "066167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03341",
+      "bank_octal": "070000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03342",
+      "bank_octal": "070021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03343",
+      "bank_octal": "070042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03344",
+      "bank_octal": "070063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03345",
+      "bank_octal": "070104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03346",
+      "bank_octal": "070125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03347",
+      "bank_octal": "070146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03350",
+      "bank_octal": "070167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03351",
+      "bank_octal": "072000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03352",
+      "bank_octal": "072021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03353",
+      "bank_octal": "072042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03354",
+      "bank_octal": "072063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03355",
+      "bank_octal": "072104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03356",
+      "bank_octal": "072125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03357",
+      "bank_octal": "072146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03360",
+      "bank_octal": "072167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03361",
+      "bank_octal": "074000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03362",
+      "bank_octal": "074021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03363",
+      "bank_octal": "074042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03364",
+      "bank_octal": "074063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03365",
+      "bank_octal": "074104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03366",
+      "bank_octal": "074125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03367",
+      "bank_octal": "074146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03370",
+      "bank_octal": "074167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03371",
+      "bank_octal": "076000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03372",
+      "bank_octal": "076021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03373",
+      "bank_octal": "076042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03374",
+      "bank_octal": "076063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03375",
+      "bank_octal": "076104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03376",
+      "bank_octal": "076125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03377",
+      "bank_octal": "076146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03400",
+      "bank_octal": "076167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03501",
+      "bank_octal": "020000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03502",
+      "bank_octal": "020021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03503",
+      "bank_octal": "020042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03504",
+      "bank_octal": "020063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03505",
+      "bank_octal": "020104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03506",
+      "bank_octal": "020125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03507",
+      "bank_octal": "020146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03510",
+      "bank_octal": "020167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03511",
+      "bank_octal": "022000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03512",
+      "bank_octal": "022021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03513",
+      "bank_octal": "022042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03514",
+      "bank_octal": "022063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03515",
+      "bank_octal": "022104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03516",
+      "bank_octal": "022125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03517",
+      "bank_octal": "022146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03520",
+      "bank_octal": "022167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03521",
+      "bank_octal": "024000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03522",
+      "bank_octal": "024021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03523",
+      "bank_octal": "024042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03524",
+      "bank_octal": "024063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03525",
+      "bank_octal": "024104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03526",
+      "bank_octal": "024125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03527",
+      "bank_octal": "024146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03530",
+      "bank_octal": "024167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03531",
+      "bank_octal": "026000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03532",
+      "bank_octal": "026021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03533",
+      "bank_octal": "026042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03534",
+      "bank_octal": "026063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03535",
+      "bank_octal": "026104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03536",
+      "bank_octal": "026125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03537",
+      "bank_octal": "026146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03540",
+      "bank_octal": "026167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03541",
+      "bank_octal": "030000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03542",
+      "bank_octal": "030021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03543",
+      "bank_octal": "030042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03544",
+      "bank_octal": "030063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03545",
+      "bank_octal": "030104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03546",
+      "bank_octal": "030125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03547",
+      "bank_octal": "030146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03550",
+      "bank_octal": "030167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03551",
+      "bank_octal": "032000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03552",
+      "bank_octal": "032021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03553",
+      "bank_octal": "032042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03554",
+      "bank_octal": "032063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03555",
+      "bank_octal": "032104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03556",
+      "bank_octal": "032125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03557",
+      "bank_octal": "032146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03560",
+      "bank_octal": "032167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03561",
+      "bank_octal": "034000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03562",
+      "bank_octal": "034021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03563",
+      "bank_octal": "034042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03564",
+      "bank_octal": "034063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03565",
+      "bank_octal": "034104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03566",
+      "bank_octal": "034125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03567",
+      "bank_octal": "034146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03570",
+      "bank_octal": "034167",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03571",
+      "bank_octal": "036000",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03572",
+      "bank_octal": "036021",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03573",
+      "bank_octal": "036042",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03574",
+      "bank_octal": "036063",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03575",
+      "bank_octal": "036104",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03576",
+      "bank_octal": "036125",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03577",
+      "bank_octal": "036146",
+      "cases": 1
+    },
+    {
+      "interpretive": 1,
+      "location_octal": "03600",
+      "bank_octal": "036167",
+      "cases": 1
+    }
+  ],
+  "covered_cases": 384,
+  "clockjob_selected_cases": 0,
+  "actual_clockjob_body_execution_cases": 0
+}

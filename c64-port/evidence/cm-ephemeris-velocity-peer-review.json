@@ -1,0 +1,27 @@
+{
+  "reviewer": "p66_source_map",
+  "mode": "Independent read-only source, arithmetic, caller-control and oracle-constructor review; no corpus rerun claimed.",
+  "result": "No numerical/control discrepancy found within the explicit compiled original LUNVEL/ORIGCHNG caller domain.",
+  "files_read_sha256": {
+    "include/cm_ephemeris_velocity.h": "fe8cf17af22e0dc85e75a13fdb341f5806d4f1c602c3b084fc2e238de1e25fdd",
+    "src/cm_ephemeris_velocity.c": "5ea4e366d89c56b4bcc537502eb0217d2e44427c2b52088c05def2f84e7ef6b6",
+    "tools/cm_ephemeris_velocity_reference.c": "46f2c4c8c0545d06faa81a13abeb109b8ce2121dac67c4f52ba650818c6a9d18",
+    "tools/cm_ephemeris_velocity_snapshot.c": "5b3213f7d89ed6ab2f91847c954f8a8721cb4f0bbf841892ac35a527b2bc156f",
+    "tests/cm_ephemeris_time_cases.c": "b95e1d617ae96815f6e2956dd57b8c4ee6b3666b57c4063428980a4051457d38",
+    "include/cm_ephemeris_time.h": "34efd4491164ffb0b8def37812d2e62d277661be1d68abcf4593f37135cf36dd",
+    "src/cm_ephemeris_time.c": "4858f2178e26266690db588111af8514d4ebc98f48c7531952f7489c800ec9cf",
+    "src/sband_vector_linear.c": "4b9931a334d54f09aa0892e77187843935b7ef93317fc9c7cb018932281ad727",
+    "src/sband_scalar.c": "a808f24faeea93097242c60b7486fcc257154f44293bd1422bb3f4b1f82c3a47",
+    "src/sband_shift.c": "36207c8d688a66804e4c4a8f8914f153e7e07765dac7a09396a50d1c2e8a5506",
+    "../Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+    "../Comanche055/ORBITAL_INTEGRATION.agc": "51b8d71bb224528f35848d06cfbd552bb8da7874ed3ce87f3c023fbf9e05441b"
+  },
+  "findings": [
+    "Actual LUNVEL entry AXT/PDDL retains saved time VAC0/1, starts coefficient multiplier NINEB4=9/16 at VAC2/3 and vector VECOEM; source X1 initial48raw counts descends by6 across eight derivative Horner iterations.",
+    "Each source STODL4D exchanges six vector words before restoring DP multiplier, DSU ONEB4=1/16 then PUSH preserves bank54/source pending controls; fixed scalar descriptor02215 addresses the original immutable pair without staging RAM.",
+    "VXSC first multiplies prior derivative vector by saved time; indexed coefficient VXSC* then VAD4D accumulates original live VECOEM coefficients using source bankE4 and restores incoming EB. Terminal TIX BZMF skips final XCH, retaining X1=6.",
+    "VSL2 and actual RVQ join sole original ORIGCHNG bank11 caller: QPRET023377 selects FB022000/NEWOPS06037/LOC03377; returned BANKSET/A/L/POLISH/CYR source debris is retained. This is not an S-band LUNVEL caller.",
+    "Original reference executes unchanged rope and ordinary borrowed time cases with only actual entry/return configured, checks all2048RAM plus IRQ/SUPER. No numerical expected-output injection or target instruction decoder."
+  ],
+  "domain": "Canonical original fixed caller, five valid VAC bases, ordinary source RAM/raw16 A/L, coherent banks/IRQ/SUPER and excluded producers. Source-defined derivative result only; no solar/LSPOS derivative/containing-file or complete-application credit."
+}

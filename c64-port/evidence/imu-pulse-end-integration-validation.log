@@ -1,0 +1,21 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections tools/imu_pulse_end_snapshot.c src/imu_pulse_end.c src/lm_basic_wake.c src/executive.c src/cm_basic_wake.c src/cm_executive.c src/cm_dispatch.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/imu_pulse_end_cases.c tests/imu_pulse_cases.c -o build/imu-pulse-end-integrated-stream
+python3 tools/imu_pulse_end_port_host.py --cc "cc"
+32 complete IMUPULSE task original states mission0 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 5451bbd01c762ce0099d62d5cc0517f215ae6a6797f9c81fb33c0afbc3c68436
+32 complete IMUPULSE task original states mission0 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 4e10581d6282955c9dde660b5e4bbf59a36b74170c9037d45b78c7fffd991298
+32 complete IMUPULSE task original states mission1 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 51113230f787dae409d83a0a537457b359318c6b5d590c3961e83f329629760b
+32 complete IMUPULSE task original states mission1 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 c6e7d140d67e2d01a055cf6d6941d6a0b76a2a46e91b9cbc9cb7cad8168f030d
+PASS all262144 complete RTB source states and128 frozen states
+python3 tools/imu_pulse_end_port_host.py --cc "cc" --sanitize
+32 complete IMUPULSE task original states mission0 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 5451bbd01c762ce0099d62d5cc0517f215ae6a6797f9c81fb33c0afbc3c68436
+32 complete IMUPULSE task original states mission0 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 4e10581d6282955c9dde660b5e4bbf59a36b74170c9037d45b78c7fffd991298
+32 complete IMUPULSE task original states mission1 entry0: PASS
+PASS all retained source-state bytes: 269484032 SHA256 51113230f787dae409d83a0a537457b359318c6b5d590c3961e83f329629760b
+32 complete IMUPULSE task original states mission1 entry1: PASS
+PASS all retained source-state bytes: 269484032 SHA256 c6e7d140d67e2d01a055cf6d6941d6a0b76a2a46e91b9cbc9cb7cad8168f030d
+PASS all262144 complete RTB source states and128 frozen states under full ASAN/UBSAN

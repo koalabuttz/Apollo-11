@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/sum.prg from 0801 to 83D9 (7BD9 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)  197/$0c5,  10/$0a
+.C:25ee  8D 88 C0    STA $C088      - A:10 X:10 Y:07 SP:ed ..-..I..   35334253
+Stopwatch reset to 0.
+#1 (Stop on store c088)  220/$0dc,  37/$25
+.C:259a  8D 88 C0    STA $C088      - A:20 X:00 Y:00 SP:ed ..-..I..       1476
+Stopwatch:       1476
+#1 (Stop on store c088)   73/$049,  23/$17
+.C:25ee  8D 88 C0    STA $C088      - A:11 X:00 Y:07 SP:ed ..-..I..     110137
+Stopwatch reset to 0.
+#1 (Stop on store c088)   96/$060,  54/$36
+.C:259a  8D 88 C0    STA $C088      - A:21 X:00 Y:01 SP:ed ..-..I..       1480
+Stopwatch:       1480
+#1 (Stop on store c088)  275/$113,   2/$02
+.C:25ee  8D 88 C0    STA $C088      - A:12 X:00 Y:07 SP:ed ..-..I..     110985
+Stopwatch reset to 0.
+#1 (Stop on store c088)  295/$127,  61/$3d
+.C:259a  8D 88 C0    STA $C088      - A:22 X:00 Y:02 SP:ed ..-..I..       1319
+Stopwatch:       1319
+#1 (Stop on store c088)  169/$0a9,  14/$0e
+.C:25ee  8D 88 C0    STA $C088      - A:13 X:00 Y:07 SP:ed ..-..I..     111270
+Stopwatch reset to 0.
+#1 (Stop on store c088)  229/$0e5,  41/$29
+.C:259a  8D 88 C0    STA $C088      - A:23 X:00 Y:03 SP:ed ..-..I..       3807
+Stopwatch:       3807
+#1 (Stop on store c088)   29/$01d,  21/$15
+.C:25ee  8D 88 C0    STA $C088      - A:14 X:FE Y:07 SP:ed ..-..I..     109123
+Stopwatch reset to 0.
+#1 (Stop on store c088)   74/$04a,   2/$02
+.C:259a  8D 88 C0    STA $C088      - A:24 X:00 Y:04 SP:ed ..-..I..       2816
+Stopwatch:       2816
+#2 (Stop on store c080)  148/$094,   3/$03
+.C:268a  8E 80 C0    STX $C080      - A:00 X:A5 Y:B4 SP:ed N.-.....     125415
+>C:c080  a5 00 00 00  01 03 64 32  24                         ......d2$
+Saving file `/workspace/Apollo-11/c64-port/build/sum-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/sum-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/sum-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE SCALAR SUMS / VECTOR REVER
+0518  SE                                      
+0540  256 COMPLETE ASSEMBLY STATES PASS       
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

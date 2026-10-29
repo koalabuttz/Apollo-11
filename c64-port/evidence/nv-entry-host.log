@@ -1,0 +1,10 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_entry.c tests/nv_entry_check.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/test-nv-entry
+build/test-nv-entry
+64 complete NVMONOPT images and13 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_nv_entry.c tests/nv_entry_check.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/test-nv-entry-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-nv-entry-sanitize
+64 complete NVMONOPT images and13 invalid boundaries: PASS
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_entry_snapshot.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -o build/nv-entry-native-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/nv-entry-native-sanitize > build/nv-entry-sanitize.snapshots
+cmp build/nv-entry-sanitize.snapshots build/nv-entry-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tools/nv_entry_diagnostic.c tests/nv_entry_check.c src/agc_word.c src/p66_nv_entry.c tests/throttle_bridge_cases.c tests/nv_entry_cases.c -Wl,-Map,build/nv_entry.map -o build/nv_entry.prg

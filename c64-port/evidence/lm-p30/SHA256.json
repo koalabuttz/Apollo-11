@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-p30",
+  "release": "evidence-lm-p30",
+  "files": {
+    "lm-p30-1.map": {
+      "sha256": "6d1ea852014fe91d2dd1e89fb8e4a652faaf54f4805d355deeb4be469b6bf63f",
+      "bytes": 38423,
+      "store": "release"
+    },
+    "lm-p30-1.prg": {
+      "sha256": "b6e7569c366576946839ba64a5ad3c4148eb496ac7a9e66afa072d1442d7bd67",
+      "bytes": 43880,
+      "store": "release"
+    },
+    "lm-p30-2.map": {
+      "sha256": "0b1f68adc7ceee23f281dfc04d11d7a098618b69b992a13f936e3b7aef52d652",
+      "bytes": 28523,
+      "store": "release"
+    },
+    "lm-p30-2.prg": {
+      "sha256": "48c82b90605b2dc97fddfb842d3b4f894f16364aea82a00a142cc746095012da",
+      "bytes": 24241,
+      "store": "release"
+    },
+    "lm-p30-checks.log": {
+      "sha256": "e908da32a8190da06cd8c6b7336f78d158e9d35f46a8ebcc0b20f4a48c6d8f55",
+      "bytes": 596,
+      "store": "tree"
+    },
+    "lm-p30-proof.json": {
+      "sha256": "1ea7700f48ab6a329e4eb9532658a47c95e4fc8c148c588a8147dd973818659b",
+      "bytes": 4592,
+      "store": "tree"
+    },
+    "lm-p30-reference.snapshots.bin.xz": {
+      "sha256": "46366c38b3d350dbc92cab4af08f6a4ac63d0ac0ffd6d6887eddfe0d037cf5aa",
+      "bytes": 35346000,
+      "store": "release"
+    },
+    "lm-p30-results.json": {
+      "sha256": "c9cdb926380034c3d09dd8bb431d64f78aa3e241212727f3d1dd89369dec7878",
+      "bytes": 1424,
+      "store": "tree"
+    },
+    "lm-p30-source-map.json": {
+      "sha256": "eb59194de280a9938ccaa2b29e0a65bf53dd02781a1e627c615f2216caeb4edd",
+      "bytes": 13683,
+      "store": "tree"
+    },
+    "lm-p30-source-stream.json": {
+      "sha256": "2b24f0886a84a996f429568e83e5b6583bf19cb0c8c0b1618ec9e1ad66af9684",
+      "bytes": 336,
+      "store": "tree"
+    }
+  }
+}

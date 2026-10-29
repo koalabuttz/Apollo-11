@@ -1,0 +1,139 @@
+{
+ "milestone": "cm-t4rupt-optics",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 4096,
+ "cases_sha256": "4ce6a0e753845e9c0521f9ad0f6994520eb363e2ae2a4c55832c3c821bda8b1d",
+ "oracle_sha256": "83187be640a2e62060cb31bef23e9cb7c9435e008dc464c42d09c6b98d023996",
+ "frozen_vectors": 274,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0xff",
+   "cases": 46,
+   "case_ids": [
+    437,
+    326,
+    460,
+    295,
+    102,
+    490,
+    459,
+    114,
+    348,
+    66,
+    129,
+    246,
+    402,
+    6,
+    57,
+    84,
+    231,
+    297,
+    138,
+    270,
+    336,
+    112,
+    436,
+    271,
+    896,
+    1051,
+    1671,
+    2084,
+    2767,
+    3207,
+    3554,
+    3221,
+    3396,
+    3213,
+    3105,
+    3441,
+    3195,
+    3258,
+    3341,
+    3308,
+    3641,
+    3971,
+    4044,
+    4046,
+    3595,
+    4070
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 350,
+  "c64_labels": 350,
+  "host_edges": 620,
+  "c64_edges": 620,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 388,
+  "c64_taken": 388,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_t4rupt_optics.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_t4rupt_optics_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "outcome_cover": {
+  "method": "clang -fsanitize-coverage=trace-pc-guard edges (each branch outcome) over every linked source but the test harness, per case (tools/irc_edges.c)",
+  "edges_all_cases": 305,
+  "edges_host_vectors": 305,
+  "edges_c64": 305,
+  "edges_not_on_c64": []
+ },
+ "stops": {
+  "CM 06,2765 OPTMON": {
+   "05333": 474,
+   "05650": 37,
+   "05245": 1
+  },
+  "CM 06,3043 ": {
+   "05333": 512
+  },
+  "CM 06,3053 ": {
+   "05333": 512
+  },
+  "CM 06,3166 ": {
+   "05333": 512
+  },
+  "CM 06,3172 ENDZOPT": {
+   "05272": 512
+  },
+  "CM 06,3200 ": {
+   "05324": 512
+  },
+  "CM 10,2000 OPTDRIVE": {
+   "05333": 480,
+   "05650": 32
+  },
+  "CM 10,2036 ": {
+   "05333": 512
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: ALARM, RESUME, TASKOVER, VARDELAY, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 12, 14, 30, 33 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "host_branches_missing_on_c64": []
+}

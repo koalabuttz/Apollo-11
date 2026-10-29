@@ -1,0 +1,9 @@
+python3 tools/p66_launch_phased_differential.py
+Pinned engine SHA256: 9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef
+Hardware-DV variant SHA256: 3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242
+DV uses pinned SimulateDV in every case; one branch changed, checkout untouched
+PASS: 2816 complete2050-word startup source seams
+Snapshot SHA256: 5fbd97c1e816257da3411c71c78938b0246198329a371e85bd1f66887a15b935
+python3 tools/p66_launch_phased_differential.py --sanitize
+PASS: 2816 complete2050-word startup source seams
+Snapshot SHA256: 5fbd97c1e816257da3411c71c78938b0246198329a371e85bd1f66887a15b935

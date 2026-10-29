@@ -1,0 +1,27 @@
+{
+  "scope": "Additive clean host-only integration for the frozen native-registry/split packet; no target rebuild or new application coverage",
+  "qualified_targets": [
+    "native-resident-port-test",
+    "native-resident-port-sanitize"
+  ],
+  "strict": "PASS",
+  "asan_ubsan": "PASS",
+  "complete_original_states": 16998,
+  "retained_descriptors": 337,
+  "unchanged_original_modules": 111,
+  "source_reader_entries": 209,
+  "resolver_comparisons": 196656,
+  "temporary_build_ownership": "Per-invocation isolated build tree; source/evidence read-only symlinks; target binaries/disks untouched",
+  "frozen_packet_sha256": "8a34cb8d889e0b5521c0a1f09ed20ba38bfdb76802a07f02b62eac99b5a8ea47",
+  "original_stream_sha256": {
+    "job": "bab1ff892632cd9c90d139229a9af041913c697301567a7ee1ac7dc6690bb22e",
+    "live": "9ea8e8bc75b90a91ac5185b2546cf93ca47dc786b691633527df6959819e22dc",
+    "recurrence": "d1aa5f4de9e02bf126731818227c4bc7592e62bddbbd66a425cc56346683f186"
+  },
+  "files": {
+    "tools/native_resident_port_host.py": "f92fb6b2d87e5d59d5f557afbf2fd75167959be1cd9a0018843ebd101e150432",
+    "tools/native_resident_port_integration.mk": "2f3766283a2c03303ac3222afbd4a291a4ac69d331af76d216f5e26a918f2b55",
+    "evidence/native-resident-port-integration-strict.log": "e16ab6e793361ca9124c69c83d2be6ddce3c8c7e32843db36b3692ff4376e45d",
+    "evidence/native-resident-port-integration-sanitize.log": "54fd02bea5a4179045fb4cec3f9eca4c78369aa5d5638412aa1106c8284f256b"
+  }
+}

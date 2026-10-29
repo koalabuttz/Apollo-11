@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 128 complete dsky_read_pair group original-assembly states; retained memory unchanged
+Mailbox: a500008000
+PRG bytes: 7870
+dsky_read_pair-hardware-stack.bin: measured stack extent 14 bytes
+dsky_read_pair-software-stack.bin: measured stack extent 12 bytes

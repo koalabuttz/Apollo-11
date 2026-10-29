@@ -1,0 +1,11 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/dsky_pinball.prg" 0
+watch store 4e82
+ignore 1 1
+g 080d
+m 4e82 4e86
+bsave "/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-mailbox.bin" 0 4e82 4e86
+bsave "/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/dsky_pinball-vice-software-stack.bin" 0 c100 cfff
+quit

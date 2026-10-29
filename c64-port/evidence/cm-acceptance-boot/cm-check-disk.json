@@ -1,0 +1,78 @@
+{
+ "mission": "test",
+ "disks": [
+  "test-1.d81",
+  "test-2.d81"
+ ],
+ "loader_bytes": 6634,
+ "resident_bytes": 45485,
+ "resident_start": 2061,
+ "boot_return": null,
+ "dsky_queue": null,
+ "hardware": null,
+ "resident_staged": "0x1f4e00",
+ "bytes_loaded": 1940477,
+ "data_bytes": [
+  795435,
+  6731
+ ],
+ "check_expect": "5939",
+ "check_host": "5939",
+ "done": 3016,
+ "vice": {
+  "mission": "test",
+  "ok": true,
+  "swap_prompts": [
+   "READING DISK 1 INSERT DISK 2 OF 2 AND PRESS RETURN"
+  ],
+  "swaps": [
+   2
+  ],
+  "fast_loader": true,
+  "load_cycles": 265742468,
+  "load_s": 269.7,
+  "reu_clear_s": 2.26,
+  "handoff_cycles": 96444,
+  "run_s": 159.8,
+  "check_crc": "5939",
+  "check_expect": "5939",
+  "check_pass": true,
+  "window_cs": 200,
+  "window_steps": 1242,
+  "window_x": 22.13,
+  "screen": [
+   "APOLLO 11 ON THE C64: HARDWARE CHECK",
+   "",
+   "VIDEO: PAL, 985248 HZ",
+   "REU: 2048 KB OR MORE",
+   "REU DMA, BYTES/S: C64>REU 923472",
+   "                 REU>C64 928145",
+   "",
+   "RUNNING LM P63 FROM 17532 CS...",
+   "",
+   "AGC TIME: 200 CS IN 1242 STEPS",
+   "C64 TIME: 44.25 S, 22.12 X REAL TIME",
+   "",
+   "END STATE CRC 5939 (VICE 5939)",
+   "HOST RUN'S CRC 5939 (THE SAME)",
+   "",
+   "PASS: THIS C64 COMPUTES WHAT VICE DOES",
+   "",
+   ".D.)B.Z......S......F.PC..............G.",
+   ".....N...X.D....C....D.)..A.....J.\".....",
+   ".......H......A....8......C......G....E.",
+   ".D.-E..\"......BI........................",
+   ".....0U8....X...........P.0SX....X......",
+   ".....0O.........J....E.A.G....E..F...G..",
+   "...C..F.",
+   ""
+  ]
+ },
+ "commit": "d7abace4fc66b40c79c429bfc457701fb2b6042d",
+ "dirty": false,
+ "sha256": {
+  "flight-disk/test-1.d81": "1c83d7819c41cd3ac408951d216fd4b21ea063d843bc019d72211e98429d3ee0",
+  "flight-disk/test-2.d81": "bae6bae2f0dc138b432c86dc6abeb1ba547e9a35785b862a43d0941e1684e8a4",
+  "flight-disk/test-loader.prg": "dba0c32d757cd3e99498cb1461a14afd0aa1491a7efcc260170c299896cdb74a"
+ }
+}

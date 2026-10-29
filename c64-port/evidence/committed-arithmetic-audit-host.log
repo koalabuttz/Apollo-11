@@ -1,0 +1,102 @@
+make: Entering directory '/tmp/apollo-port-audit/c64-port'
+mkdir -p build
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c tests/waitlist_check.c tests/test_waitlist.c -o build/test-waitlist
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c platform/host/waitlist_snapshot.c -o build/waitlist-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/test_irq.c -o build/test-irq
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/test_host.c -o build/test-host
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/lifecycle_cases.c tests/lifecycle_check.c tests/test_lifecycle.c -o build/test-lifecycle
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/snapshot.c -o build/snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c tests/arithmetic_dump.c -o build/arithmetic-dump
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/dispatch_snapshot.c -o build/dispatch-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/lifecycle_cases.c platform/host/lifecycle_snapshot.c -o build/lifecycle-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/restart.c tests/restart_cases.c platform/host/restart_snapshot.c -o build/restart-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/restart.c tests/restart_cases.c tests/restart_check.c tests/test_restart.c -o build/test-restart
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c tests/guidance_cases.c platform/host/guidance_snapshot.c -o build/guidance-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c tests/guidance_cases.c tests/guidance_check.c tests/test_guidance.c -o build/test-guidance
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c tests/prepare_cases.c platform/host/prepare_snapshot.c -o build/prepare-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c tests/prepare_cases.c tests/prepare_check.c tests/test_prepare.c -o build/test-prepare
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c tests/prepare_cases.c tests/scale_cases.c platform/host/scale_snapshot.c -o build/scale-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c tests/prepare_cases.c tests/scale_cases.c tests/scale_check.c tests/test_scale.c -o build/test-scale
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c platform/host/push_snapshot.c -o build/push-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/push_check.c tests/test_push.c -o build/test-push
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c platform/host/elapsed_snapshot.c -o build/elapsed-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/elapsed_check.c tests/test_elapsed.c -o build/test-elapsed
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c platform/host/store_snapshot.c -o build/store-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/store_check.c tests/test_store.c -o build/test-store
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c platform/host/divide_snapshot.c -o build/divide-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/divide_check.c tests/test_divide.c -o build/test-divide
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c platform/host/gravity_snapshot.c -o build/gravity-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/gravity_check.c tests/frozen_words.c tests/test_gravity.c -o build/test-gravity
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_vector.c tests/prepare_cases.c tests/vector_cases.c platform/host/vector_snapshot.c -o build/vector-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_vector.c tests/prepare_cases.c tests/vector_cases.c tests/vector_check.c tests/test_vector.c -o build/test-vector
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c tests/scenarios.c tests/executive_service_cases.c tests/state_digest.c tests/executive_service_check.c tests/test_executive_services.c -o build/test-executive-services
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c tests/scenarios.c tests/executive_service_cases.c platform/host/executive_service_snapshot.c -o build/executive-service-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/phase.c tests/phase_cases.c platform/host/phase_snapshot.c -o build/phase-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/phase.c tests/phase_cases.c tests/phase_check.c tests/test_phase.c -o build/test-phase
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPREPARE_INPUT_ONLY -DVECTOR_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c tests/prepare_cases.c tests/vector_cases.c tests/product_cases.c platform/host/product_snapshot.c -o build/product-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DPREPARE_INPUT_ONLY -DVECTOR_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c tests/prepare_cases.c tests/vector_cases.c tests/product_cases.c tests/product_check.c tests/test_product.c -o build/test-product
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_shift.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/shift_cases.c tests/frozen_words.c tests/shift_check.c tests/test_shift.c -o build/test-shift
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_shift.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/shift_cases.c tools/shift_snapshot.c -o build/shift-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c tests/dp_divide_snapshot.c -o build/dp-divide-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c tests/test_dp_divide.c tests/frozen_words.c -o build/test-dp-divide
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c platform/host/velocity_snapshot.c -o build/velocity-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/velocity_check.c tests/frozen_words.c tests/test_velocity.c -o build/test-velocity
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_norm.c tests/norm_snapshot.c -o build/norm-native
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_norm.c tests/test_norm.c tests/frozen_words.c -o build/test-norm
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/recovery.c tests/recovery_cases.c platform/host/recovery_snapshot.c -o build/recovery-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/recovery.c tests/recovery_cases.c tests/recovery_check.c tests/test_recovery.c -o build/test-recovery
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_dot.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/dot_cases.c tests/frozen_words.c tests/dot_check.c tests/test_dot.c -o build/test-dot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_dot.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/dot_cases.c tools/dot_snapshot.c -o build/dot-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tests/frozen_words.c tests/sum_check.c tests/test_sum.c -o build/test-sum
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tools/sum_snapshot.c -o build/sum-snapshot
+./build/test-restart
+PASS: 226 assembly fingerprints, recovery/resumption, phase/resource failures and restoring exclusion
+./build/test-guidance
+PASS: 568 complete original-assembly checkpoints; all 65536 SP/memory-zero products; carry and overflow contracts
+./build/test-prepare
+PASS: 324 complete preparation states, all TS-skip masks, snapshot debris, MODE alias, retained scratch and composed histories
+./build/test-scale
+PASS: 292 complete scaling states, signed-zero/mixed-sign DP pairs, all integrated TS-skip inputs, three retained four-step histories
+./build/test-push
+PASS: 200 complete PDDL states, five VAC mappings, retained exchange debris, composed four-push histories; invalid scope leaves both objects unchanged
+./build/test-elapsed
+PASS: 172 complete elapsed-time states and skip paths, signed zeros, overflow realignment and retained OVFIND, preserved VAC/vector histories
+./build/test-store
+PASS: 176 complete STORE states/paths; signed-zero source/destination corners, overlapping slots, retained histories; unchanged-on-scope-rejection and unused PUSHLOC
+./build/test-divide
+PASS: 156 complete DDV states/paths; signed zero, raw sign agreement, quotient/overflow and retained histories; all unsupported modes reject unchanged
+./build/test-gravity
+PASS: 156 complete PDVL states; all unsupported modes, VAC bases and push pointers reject unchanged
+./build/test-vector
+PASS: 128 complete original-assembly VAD/VSU states; all 32767 unsupported MODE words preserve complete state for both operations
+./build/test-executive-services
+PASS: 768 original-derived SPVAC/CHANG2 state checks and unsupported safe-point rejection
+./build/test-phase
+PASS: 128 original assembly full-state phase vectors; all 8,192 invalid group words retain state
+./build/test-product
+PASS: 128 complete original-assembly DMP1/VXSC states; all 32767 unsupported MODE words preserve complete state for both operations
+./build/test-shift
+PASS: 168 complete original scalar/vector shift states; all unsupported MODEs and count boundaries reject unchanged
+./build/test-dp-divide
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+./build/test-velocity
+PASS: 156 complete original-assembly velocity-group states; all unsupported MODE/base/pointer ordinary words preserve all 117 state/input words
+./build/test-norm
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+./build/test-recovery
+PASS: 128 complete original assembly abort-cleanup states; unsupported routes retain state
+./build/test-dot
+PASS: 96 complete unrounded original DOT states and exact scratch/overflow exchanges; all unsupported MODEs reject unchanged
+./build/test-sum
+PASS: 256 complete original DAD/DSU/BDSU/BVSU states and overflow paths; all unsupported MODEs reject unchanged
+./build/test-host
+PASS: 53 dispatch cases, 109 assembly-derived checkpoints, 8 native two-job sequences; dispatch fault checks
+PASS: 32768 word encodings, 65536 register encodings, 524288 addition pairs, 26 Executive scenarios
+sizeof(executive)=648 bytes; sizeof(scenario)=664 bytes (host)
+./build/test-irq
+PASS: IRQ safe points, nested exclusion, idle startup, FIFO/wrap (600 cases), overflow, bailout and unmapped-request faults
+./build/test-lifecycle
+PASS: 81 lifecycle cases / 115 assembly-derived checkpoints, 5 native sequences, guarded/masked delivery and lifecycle fault boundaries
+./build/test-waitlist
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests
+make: Leaving directory '/tmp/apollo-port-audit/c64-port'

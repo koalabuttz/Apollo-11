@@ -1,0 +1,4 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c tests/cm_executive_cases.c platform/host/cm_executive_snapshot.c -o build/cm-executive-snapshot
+PASS: 1536 Comanche admission/release cases; 312 owned state words and result agree; 16 guards preserved
+Snapshot SHA256: caa5ebe8349c9c3864274def9aeef4cc99cec545aae6aae90c11246097b488d2
+Scope: ENDFIND / BAILOUT entry / CHANJOB-2 / DUMMYJOB entry; seven CM cores, five VACs

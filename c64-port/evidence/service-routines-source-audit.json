@@ -1,0 +1,4206 @@
+[
+  {
+    "source_path": "Luminary099/SERVICE_ROUTINES.agc",
+    "source_sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
+    "fixture_source_sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
+    "source_edits": 0,
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_words": 96,
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 30,
+        "label": "",
+        "op": "BANK",
+        "arguments": "10",
+        "assembled_address": "10,3544",
+        "physical_fixed_word": 9060,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 31,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "DISPLAYS",
+        "assembled_address": "10,2000",
+        "physical_fixed_word": 8192,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 32,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "10,2000",
+        "physical_fixed_word": 8192,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 33,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/DSPLA",
+        "assembled_address": "10,3544",
+        "physical_fixed_word": 9060,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 35,
+        "label": "UPENT2",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "10,3544",
+        "physical_fixed_word": 9060,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 36,
+        "label": "",
+        "op": "MASK",
+        "arguments": "OCT77770",
+        "assembled_address": "10,3545",
+        "physical_fixed_word": 9061,
+        "physical_erasable_word": null,
+        "words": [
+          31664
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 37,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "10,3546",
+        "physical_fixed_word": 9062,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 38,
+        "label": "",
+        "op": "CS",
+        "arguments": "FLAGWRD4",
+        "assembled_address": "10,3547",
+        "physical_fixed_word": 9063,
+        "physical_erasable_word": null,
+        "words": [
+          16448
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 39,
+        "label": "",
+        "op": "MASK",
+        "arguments": "L",
+        "assembled_address": "10,3550",
+        "physical_fixed_word": 9064,
+        "physical_erasable_word": null,
+        "words": [
+          28673
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 40,
+        "label": "",
+        "op": "ADS",
+        "arguments": "FLAGWRD4",
+        "assembled_address": "10,3551",
+        "physical_fixed_word": 9065,
+        "physical_erasable_word": null,
+        "words": [
+          11328
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 41,
+        "label": "JOIN",
+        "op": "RELINT",
+        "arguments": "",
+        "assembled_address": "10,3552",
+        "physical_fixed_word": 9066,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 42,
+        "label": "",
+        "op": "TCF",
+        "arguments": "Q+1",
+        "assembled_address": "10,3553",
+        "physical_fixed_word": 9067,
+        "physical_erasable_word": null,
+        "words": [
+          7647
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 44,
+        "label": "DOWNENT2",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "10,3554",
+        "physical_fixed_word": 9068,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 45,
+        "label": "",
+        "op": "MASK",
+        "arguments": "OCT77770",
+        "assembled_address": "10,3555",
+        "physical_fixed_word": 9069,
+        "physical_erasable_word": null,
+        "words": [
+          31664
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 46,
+        "label": "",
+        "op": "COM",
+        "arguments": "",
+        "assembled_address": "10,3556",
+        "physical_fixed_word": 9070,
+        "physical_erasable_word": null,
+        "words": [
+          16384
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 47,
+        "label": "",
+        "op": "MASK",
+        "arguments": "FLAGWRD4",
+        "assembled_address": "10,3557",
+        "physical_fixed_word": 9071,
+        "physical_erasable_word": null,
+        "words": [
+          28736
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 48,
+        "label": "",
+        "op": "TS",
+        "arguments": "FLAGWRD4",
+        "assembled_address": "10,3560",
+        "physical_fixed_word": 9072,
+        "physical_erasable_word": null,
+        "words": [
+          22592
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 49,
+        "label": "",
+        "op": "TCF",
+        "arguments": "JOIN",
+        "assembled_address": "10,3561",
+        "physical_fixed_word": 9073,
+        "physical_erasable_word": null,
+        "words": [
+          5994
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 51,
+        "label": "OCT7",
+        "op": "EQUALS",
+        "arguments": "SEVEN",
+        "assembled_address": "10,3562",
+        "physical_fixed_word": 9074,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 69,
+        "label": "",
+        "op": "BLOCK",
+        "arguments": "02",
+        "assembled_address": "5504",
+        "physical_fixed_word": 2884,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 70,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "FFTAG1",
+        "assembled_address": "4000",
+        "physical_fixed_word": 2048,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 71,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "4000",
+        "physical_fixed_word": 2048,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 72,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/FLAG",
+        "assembled_address": "5504",
+        "physical_fixed_word": 2884,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 74,
+        "label": "UPFLAG",
+        "op": "CA",
+        "arguments": "Q",
+        "assembled_address": "5504",
+        "physical_fixed_word": 2884,
+        "physical_erasable_word": null,
+        "words": [
+          12290
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 75,
+        "label": "",
+        "op": "TC",
+        "arguments": "DEBIT",
+        "assembled_address": "5505",
+        "physical_fixed_word": 2885,
+        "physical_erasable_word": null,
+        "words": [
+          2898
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 76,
+        "label": "",
+        "op": "COM",
+        "arguments": "",
+        "assembled_address": "5506",
+        "physical_fixed_word": 2886,
+        "physical_erasable_word": null,
+        "words": [
+          16384
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 77,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "5507",
+        "physical_fixed_word": 2887,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 78,
+        "label": "",
+        "op": "ROR",
+        "arguments": "LCHAN",
+        "assembled_address": "5510",
+        "physical_fixed_word": 2888,
+        "physical_erasable_word": null,
+        "words": [
+          2049
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 79,
+        "label": "COMFLAG",
+        "op": "INDEX",
+        "arguments": "ITEMP1",
+        "assembled_address": "5511",
+        "physical_fixed_word": 2889,
+        "physical_erasable_word": null,
+        "words": [
+          20529
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 80,
+        "label": "",
+        "op": "TS",
+        "arguments": "FLAGWRD0",
+        "assembled_address": "5512",
+        "physical_fixed_word": 2890,
+        "physical_erasable_word": null,
+        "words": [
+          22588
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 81,
+        "label": "",
+        "op": "LXCH",
+        "arguments": "ITEMP3",
+        "assembled_address": "5513",
+        "physical_fixed_word": 2891,
+        "physical_erasable_word": null,
+        "words": [
+          9267
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 82,
+        "label": "",
+        "op": "RELINT",
+        "arguments": "",
+        "assembled_address": "5514",
+        "physical_fixed_word": 2892,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 83,
+        "label": "",
+        "op": "TC",
+        "arguments": "L",
+        "assembled_address": "5515",
+        "physical_fixed_word": 2893,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 85,
+        "label": "DOWNFLAG",
+        "op": "CA",
+        "arguments": "Q",
+        "assembled_address": "5516",
+        "physical_fixed_word": 2894,
+        "physical_erasable_word": null,
+        "words": [
+          12290
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 86,
+        "label": "",
+        "op": "TC",
+        "arguments": "DEBIT",
+        "assembled_address": "5517",
+        "physical_fixed_word": 2895,
+        "physical_erasable_word": null,
+        "words": [
+          2898
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 87,
+        "label": "",
+        "op": "MASK",
+        "arguments": "L",
+        "assembled_address": "5520",
+        "physical_fixed_word": 2896,
+        "physical_erasable_word": null,
+        "words": [
+          28673
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 88,
+        "label": "",
+        "op": "TCF",
+        "arguments": "COMFLAG",
+        "assembled_address": "5521",
+        "physical_fixed_word": 2897,
+        "physical_erasable_word": null,
+        "words": [
+          6985
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 90,
+        "label": "DEBIT",
+        "op": "AD",
+        "arguments": "ONE",
+        "assembled_address": "5522",
+        "physical_fixed_word": 2898,
+        "physical_erasable_word": null,
+        "words": [
+          27115
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 91,
+        "label": "",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "5523",
+        "physical_fixed_word": 2899,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 92,
+        "label": "",
+        "op": "TS",
+        "arguments": "ITEMP3",
+        "assembled_address": "5524",
+        "physical_fixed_word": 2900,
+        "physical_erasable_word": null,
+        "words": [
+          22579
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 93,
+        "label": "",
+        "op": "CA",
+        "arguments": "LOW4",
+        "assembled_address": "5525",
+        "physical_fixed_word": 2901,
+        "physical_erasable_word": null,
+        "words": [
+          14834
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 94,
+        "label": "",
+        "op": "TS",
+        "arguments": "ITEMP1",
+        "assembled_address": "5526",
+        "physical_fixed_word": 2902,
+        "physical_erasable_word": null,
+        "words": [
+          22577
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 95,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ITEMP3",
+        "assembled_address": "5527",
+        "physical_fixed_word": 2903,
+        "physical_erasable_word": null,
+        "words": [
+          20531
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 96,
+        "label": "",
+        "op": "CA",
+        "arguments": "0 -1",
+        "assembled_address": "5530",
+        "physical_fixed_word": 2904,
+        "physical_erasable_word": null,
+        "words": [
+          12287
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 97,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "5531",
+        "physical_fixed_word": 2905,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 98,
+        "label": "",
+        "op": "CA",
+        "arguments": "ZERO",
+        "assembled_address": "5532",
+        "physical_fixed_word": 2906,
+        "physical_erasable_word": null,
+        "words": [
+          14829
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 100,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "5533",
+        "physical_fixed_word": 2907,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 101,
+        "label": "",
+        "op": "DV",
+        "arguments": "ITEMP1",
+        "assembled_address": "5534",
+        "physical_fixed_word": 2908,
+        "physical_erasable_word": null,
+        "words": [
+          4145
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 102,
+        "label": "",
+        "op": "DXCH",
+        "arguments": "ITEMP1",
+        "assembled_address": "5535",
+        "physical_fixed_word": 2909,
+        "physical_erasable_word": null,
+        "words": [
+          21554
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 103,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ITEMP1",
+        "assembled_address": "5536",
+        "physical_fixed_word": 2910,
+        "physical_erasable_word": null,
+        "words": [
+          20529
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 104,
+        "label": "",
+        "op": "CA",
+        "arguments": "FLAGWRD0",
+        "assembled_address": "5537",
+        "physical_fixed_word": 2911,
+        "physical_erasable_word": null,
+        "words": [
+          12348
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 105,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "5540",
+        "physical_fixed_word": 2912,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 106,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ITEMP2",
+        "assembled_address": "5541",
+        "physical_fixed_word": 2913,
+        "physical_erasable_word": null,
+        "words": [
+          20530
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 107,
+        "label": "",
+        "op": "CS",
+        "arguments": "BIT15",
+        "assembled_address": "5542",
+        "physical_fixed_word": 2914,
+        "physical_erasable_word": null,
+        "words": [
+          18909
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 108,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "5543",
+        "physical_fixed_word": 2915,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 118,
+        "label": "",
+        "op": "BANK",
+        "arguments": "06",
+        "assembled_address": "06,3764",
+        "physical_fixed_word": 7156,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 119,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "DLAYJOB",
+        "assembled_address": "00,2000",
+        "physical_fixed_word": 0,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 120,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "00,2000",
+        "physical_fixed_word": 0,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 124,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/DELAY",
+        "assembled_address": "00,3735",
+        "physical_fixed_word": 989,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 125,
+        "label": "DELAYJOB",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "00,3735",
+        "physical_fixed_word": 989,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 126,
+        "label": "",
+        "op": "TS",
+        "arguments": "Q",
+        "assembled_address": "00,3736",
+        "physical_fixed_word": 990,
+        "physical_erasable_word": null,
+        "words": [
+          22530
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 127,
+        "label": "",
+        "op": "CAF",
+        "arguments": "DELAYNUM",
+        "assembled_address": "00,3737",
+        "physical_fixed_word": 991,
+        "physical_erasable_word": null,
+        "words": [
+          14826
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 128,
+        "label": "DELLOOP",
+        "op": "TS",
+        "arguments": "RUPTREG1",
+        "assembled_address": "00,3740",
+        "physical_fixed_word": 992,
+        "physical_erasable_word": null,
+        "words": [
+          22584
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 129,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "A",
+        "assembled_address": "00,3741",
+        "physical_fixed_word": 993,
+        "physical_erasable_word": null,
+        "words": [
+          20480
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 130,
+        "label": "",
+        "op": "CA",
+        "arguments": "DELAYLOC",
+        "assembled_address": "00,3742",
+        "physical_fixed_word": 994,
+        "physical_erasable_word": null,
+        "words": [
+          13014
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 131,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "00,3743",
+        "physical_fixed_word": 995,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 132,
+        "label": "",
+        "op": "BZF",
+        "arguments": "OK2DELAY",
+        "assembled_address": "00,3744",
+        "physical_fixed_word": 996,
+        "physical_erasable_word": null,
+        "words": [
+          6122
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 134,
+        "label": "",
+        "op": "CCS",
+        "arguments": "RUPTREG1",
+        "assembled_address": "00,3745",
+        "physical_fixed_word": 997,
+        "physical_erasable_word": null,
+        "words": [
+          4152
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 135,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DELLOOP",
+        "assembled_address": "00,3746",
+        "physical_fixed_word": 998,
+        "physical_erasable_word": null,
+        "words": [
+          6112
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 137,
+        "label": "",
+        "op": "DXCH",
+        "arguments": "BUF2",
+        "assembled_address": "00,3747",
+        "physical_fixed_word": 999,
+        "physical_erasable_word": null,
+        "words": [
+          21596
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 138,
+        "label": "",
+        "op": "TC",
+        "arguments": "BAILOUT1",
+        "assembled_address": "00,3750",
+        "physical_fixed_word": 1000,
+        "physical_erasable_word": null,
+        "words": [
+          3022
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 139,
+        "label": "",
+        "op": "OCT",
+        "arguments": "1104",
+        "assembled_address": "00,3751",
+        "physical_fixed_word": 1001,
+        "physical_erasable_word": null,
+        "words": [
+          580
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 141,
+        "label": "OK2DELAY",
+        "op": "CA",
+        "arguments": "TCSLEEP",
+        "assembled_address": "00,3752",
+        "physical_fixed_word": 1002,
+        "physical_erasable_word": null,
+        "words": [
+          14330
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 142,
+        "label": "",
+        "op": "TS",
+        "arguments": "WAITEXIT",
+        "assembled_address": "00,3753",
+        "physical_fixed_word": 1003,
+        "physical_erasable_word": null,
+        "words": [
+          22577
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 144,
+        "label": "",
+        "op": "CA",
+        "arguments": "FBANK",
+        "assembled_address": "00,3754",
+        "physical_fixed_word": 1004,
+        "physical_erasable_word": null,
+        "words": [
+          12292
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 145,
+        "label": "",
+        "op": "AD",
+        "arguments": "RUPTREG1",
+        "assembled_address": "00,3755",
+        "physical_fixed_word": 1005,
+        "physical_erasable_word": null,
+        "words": [
+          24632
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 146,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "00,3756",
+        "physical_fixed_word": 1006,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 148,
+        "label": "",
+        "op": "CAF",
+        "arguments": "WAKECAD",
+        "assembled_address": "00,3757",
+        "physical_fixed_word": 1007,
+        "physical_erasable_word": null,
+        "words": [
+          14331
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 149,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DLY2 -1",
+        "assembled_address": "00,3760",
+        "physical_fixed_word": 1008,
+        "physical_erasable_word": null,
+        "words": [
+          6793
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 151,
+        "label": "TCGETCAD",
+        "op": "TC",
+        "arguments": "MAKECADR",
+        "assembled_address": "00,3761",
+        "physical_fixed_word": 1009,
+        "physical_erasable_word": null,
+        "words": [
+          2469
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 153,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "RUPTREG1",
+        "assembled_address": "00,3762",
+        "physical_fixed_word": 1010,
+        "physical_erasable_word": null,
+        "words": [
+          20536
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 154,
+        "label": "",
+        "op": "TS",
+        "arguments": "DELAYLOC",
+        "assembled_address": "00,3763",
+        "physical_fixed_word": 1011,
+        "physical_erasable_word": null,
+        "words": [
+          23254
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 156,
+        "label": "",
+        "op": "TC",
+        "arguments": "JOBSLEEP",
+        "assembled_address": "00,3764",
+        "physical_fixed_word": 1012,
+        "physical_erasable_word": null,
+        "words": [
+          2651
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 158,
+        "label": "WAKER",
+        "op": "CAF",
+        "arguments": "ZERO",
+        "assembled_address": "00,3765",
+        "physical_fixed_word": 1013,
+        "physical_erasable_word": null,
+        "words": [
+          14829
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 159,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "BBANK",
+        "assembled_address": "00,3766",
+        "physical_fixed_word": 1014,
+        "physical_erasable_word": null,
+        "words": [
+          20486
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 160,
+        "label": "",
+        "op": "XCH",
+        "arguments": "DELAYLOC",
+        "assembled_address": "00,3767",
+        "physical_fixed_word": 1015,
+        "physical_erasable_word": null,
+        "words": [
+          24278
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 162,
+        "label": "",
+        "op": "TC",
+        "arguments": "JOBWAKE",
+        "assembled_address": "00,3770",
+        "physical_fixed_word": 1016,
+        "physical_erasable_word": null,
+        "words": [
+          2655
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 164,
+        "label": "",
+        "op": "TC",
+        "arguments": "TASKOVER",
+        "assembled_address": "00,3771",
+        "physical_fixed_word": 1017,
+        "physical_erasable_word": null,
+        "words": [
+          2737
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 166,
+        "label": "TCSLEEP",
+        "op": "GENADR",
+        "arguments": "TCGETCAD -2",
+        "assembled_address": "00,3772",
+        "physical_fixed_word": 1018,
+        "physical_erasable_word": null,
+        "words": [
+          2031
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 167,
+        "label": "WAKECAD",
+        "op": "GENADR",
+        "arguments": "WAKER",
+        "assembled_address": "00,3773",
+        "physical_fixed_word": 1019,
+        "physical_erasable_word": null,
+        "words": [
+          2037
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 188,
+        "label": "",
+        "op": "BLOCK",
+        "arguments": "02",
+        "assembled_address": "5544",
+        "physical_fixed_word": 2916,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 189,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "FFTAG4",
+        "assembled_address": "4000",
+        "physical_fixed_word": 2048,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 190,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "4000",
+        "physical_fixed_word": 2048,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 192,
+        "label": "",
+        "op": "EBANK=",
+        "arguments": "ITEMP1",
+        "assembled_address": "5544",
+        "physical_fixed_word": 2916,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 194,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/TRAN",
+        "assembled_address": "5544",
+        "physical_fixed_word": 2916,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 196,
+        "label": "GENTRAN",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "5544",
+        "physical_fixed_word": 2916,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 197,
+        "label": "",
+        "op": "TS",
+        "arguments": "ITEMP1",
+        "assembled_address": "5545",
+        "physical_fixed_word": 2917,
+        "physical_erasable_word": null,
+        "words": [
+          22577
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 198,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "Q",
+        "assembled_address": "5546",
+        "physical_fixed_word": 2918,
+        "physical_erasable_word": null,
+        "words": [
+          20482
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 199,
+        "label": "",
+        "op": "AD",
+        "arguments": "0",
+        "assembled_address": "5547",
+        "physical_fixed_word": 2919,
+        "physical_erasable_word": null,
+        "words": [
+          24576
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 200,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "A",
+        "assembled_address": "5550",
+        "physical_fixed_word": 2920,
+        "physical_erasable_word": null,
+        "words": [
+          20480
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 201,
+        "label": "",
+        "op": "CA",
+        "arguments": "0",
+        "assembled_address": "5551",
+        "physical_fixed_word": 2921,
+        "physical_erasable_word": null,
+        "words": [
+          12288
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 202,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "5552",
+        "physical_fixed_word": 2922,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 203,
+        "label": "",
+        "op": "CA",
+        "arguments": "ITEMP1",
+        "assembled_address": "5553",
+        "physical_fixed_word": 2923,
+        "physical_erasable_word": null,
+        "words": [
+          12337
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 204,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "Q",
+        "assembled_address": "5554",
+        "physical_fixed_word": 2924,
+        "physical_erasable_word": null,
+        "words": [
+          20482
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 205,
+        "label": "",
+        "op": "AD",
+        "arguments": "1",
+        "assembled_address": "5555",
+        "physical_fixed_word": 2925,
+        "physical_erasable_word": null,
+        "words": [
+          24577
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 206,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "A",
+        "assembled_address": "5556",
+        "physical_fixed_word": 2926,
+        "physical_erasable_word": null,
+        "words": [
+          20480
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 207,
+        "label": "",
+        "op": "LXCH",
+        "arguments": "0",
+        "assembled_address": "5557",
+        "physical_fixed_word": 2927,
+        "physical_erasable_word": null,
+        "words": [
+          9216
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 208,
+        "label": "",
+        "op": "CCS",
+        "arguments": "ITEMP1",
+        "assembled_address": "5560",
+        "physical_fixed_word": 2928,
+        "physical_erasable_word": null,
+        "words": [
+          4145
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 209,
+        "label": "",
+        "op": "TCF",
+        "arguments": "GENTRAN +1",
+        "assembled_address": "5561",
+        "physical_fixed_word": 2929,
+        "physical_erasable_word": null,
+        "words": [
+          7013
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 210,
+        "label": "",
+        "op": "TCF",
+        "arguments": "Q+2",
+        "assembled_address": "5562",
+        "physical_fixed_word": 2930,
+        "physical_erasable_word": null,
+        "words": [
+          7649
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 216,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/EXTVB",
+        "assembled_address": "5563",
+        "physical_fixed_word": 2931,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 218,
+        "label": "B5OFF",
+        "op": "CS",
+        "arguments": "BIT5",
+        "assembled_address": "5563",
+        "physical_fixed_word": 2931,
+        "physical_erasable_word": null,
+        "words": [
+          18919
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 219,
+        "label": "",
+        "op": "MASK",
+        "arguments": "EXTVBACT",
+        "assembled_address": "5564",
+        "physical_fixed_word": 2932,
+        "physical_erasable_word": null,
+        "words": [
+          29220
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 220,
+        "label": "",
+        "op": "TS",
+        "arguments": "EXTVBACT",
+        "assembled_address": "5565",
+        "physical_fixed_word": 2933,
+        "physical_erasable_word": null,
+        "words": [
+          23076
+        ]
+      },
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 221,
+        "label": "",
+        "op": "TC",
+        "arguments": "ENDOFJOB",
+        "assembled_address": "5566",
+        "physical_fixed_word": 2934,
+        "physical_erasable_word": null,
+        "words": [
+          2669
+        ]
+      }
+    ],
+    "symbols": {
+      "UPENT2": "10,3544",
+      "DOWNENT2": "10,3554",
+      "UPFLAG": "5504",
+      "DOWNFLAG": "5516",
+      "DEBIT": "5522",
+      "COMFLAG": "5511",
+      "DELAYJOB": "00,3735",
+      "DELLOOP": "00,3740",
+      "OK2DELAY": "00,3752",
+      "TCGETCAD": "00,3761",
+      "WAKER": "00,3765",
+      "TCSLEEP": "00,3772",
+      "WAKECAD": "00,3773",
+      "GENTRAN": "5544",
+      "B5OFF": "5563",
+      "DELAYLOC": "1326",
+      "DELAYNUM": "4752",
+      "DLY2": "5212",
+      "BAILOUT": "5634",
+      "BAILOUT1": "5716",
+      "JOBSLEEP": "5133",
+      "JOBWAKE": "5137",
+      "TASKOVER": "5261",
+      "ENDOFJOB": "5155",
+      "Q+1": "6737",
+      "Q+2": "6741"
+    },
+    "original_gentran_callers": [
+      {
+        "path": "Luminary099/SERVICE_ROUTINES.agc",
+        "line": 209,
+        "source_sha256": "85369055c5261d1d778fbeba4463941a45aed96ef199adea707fe330bdb4d0ef",
+        "source_context": [
+          {
+            "line": 203,
+            "text": "\t\tCA\tITEMP1"
+          },
+          {
+            "line": 204,
+            "text": "\t\tINDEX\tQ"
+          },
+          {
+            "line": 205,
+            "text": "\t\tAD\t1\t\t# ADRES (M + N - 1)."
+          },
+          {
+            "line": 206,
+            "text": "\t\tINDEX\tA"
+          },
+          {
+            "line": 207,
+            "text": "\t\tLXCH\t0\t\t# STUFF IT."
+          },
+          {
+            "line": 208,
+            "text": "\t\tCCS\tITEMP1\t\t# LOOP UNTIL N-1 = 0."
+          },
+          {
+            "line": 209,
+            "text": "\t\tTCF\tGENTRAN +1"
+          },
+          {
+            "line": 210,
+            "text": "\t\tTCF\tQ+2\t\t# RETURN TO CALLER."
+          },
+          {
+            "line": 211,
+            "text": ""
+          },
+          {
+            "line": 212,
+            "text": "# Page 1380"
+          }
+        ]
+      },
+      {
+        "path": "Luminary099/AOSTASK_AND_AOSJOB.agc",
+        "line": 860,
+        "source_sha256": "f6bf6c63faf9895681da9fecc7a0c8531644140cb71e15c331ff8a990e6bacbe",
+        "source_context": [
+          {
+            "line": 854,
+            "text": "\t\tTCF\tSTORV\t\t# V AXIS \tSTORE V VALUES"
+          },
+          {
+            "line": 855,
+            "text": ""
+          },
+          {
+            "line": 856,
+            "text": "\t\tCA\tACCSW\t\t# U AXIS \tSTORE U VALUES"
+          },
+          {
+            "line": 857,
+            "text": "\t\tTS\tACCSWU"
+          },
+          {
+            "line": 858,
+            "text": ""
+          },
+          {
+            "line": 859,
+            "text": "\t\tCA\tNINE\t\t# TRANSFER 10 WORDS VIA GENTRAN"
+          },
+          {
+            "line": 860,
+            "text": "\t\tTC\tGENTRAN +1"
+          },
+          {
+            "line": 861,
+            "text": "\t\tADRES\t1/ATEM1\t\t# TEMPORARY BUFFER"
+          },
+          {
+            "line": 862,
+            "text": "\t\tADRES\t1/ANET1\t\t# THE REAL PLACE"
+          },
+          {
+            "line": 863,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "path": "Luminary099/AOSTASK_AND_AOSJOB.agc",
+        "line": 881,
+        "source_sha256": "f6bf6c63faf9895681da9fecc7a0c8531644140cb71e15c331ff8a990e6bacbe",
+        "source_context": [
+          {
+            "line": 875,
+            "text": "\t\tCA\tZERO"
+          },
+          {
+            "line": 876,
+            "text": "\t\tTCF\tBOTHAXES\t# AND DO IT AGAIN"
+          },
+          {
+            "line": 877,
+            "text": ""
+          },
+          {
+            "line": 878,
+            "text": "STORV\t\tCA\tACCSW\t\t# STORE V AXIS VALUES"
+          },
+          {
+            "line": 879,
+            "text": "\t\tTS\tACCSWV"
+          },
+          {
+            "line": 880,
+            "text": "\t\tCA\tNINE"
+          },
+          {
+            "line": 881,
+            "text": "\t\tTC\tGENTRAN +1"
+          },
+          {
+            "line": 882,
+            "text": "# Page 1503"
+          },
+          {
+            "line": 883,
+            "text": "\t\tADRES \t1/ATEM1\t\t# TEMPORARY BUFFER"
+          },
+          {
+            "line": 884,
+            "text": "\t\tADRES\t1/ANET1 +16D\t# THE REAL PLACE"
+          }
+        ]
+      },
+      {
+        "path": "Luminary099/EXTENDED_VERBS.agc",
+        "line": 1528,
+        "source_sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4",
+        "source_context": [
+          {
+            "line": 1522,
+            "text": "\t\t\tMOONTHIS"
+          },
+          {
+            "line": 1523,
+            "text": "\t\t\t+3"
+          },
+          {
+            "line": 1524,
+            "text": "\t\tCLEAR"
+          },
+          {
+            "line": 1525,
+            "text": "\t\t\tMOONOTH"
+          },
+          {
+            "line": 1526,
+            "text": "\t\tEXIT"
+          },
+          {
+            "line": 1527,
+            "text": "\t\tCAF\tOCT51"
+          },
+          {
+            "line": 1528,
+            "text": "\t\tTC\tGENTRAN"
+          },
+          {
+            "line": 1529,
+            "text": "\t\tADRES\tRRECTHIS\t# OUR STATE VECTOR INTO OTHER VIA GENTRAN"
+          },
+          {
+            "line": 1530,
+            "text": "\t\tADRES\tRRECTOTH"
+          },
+          {
+            "line": 1531,
+            "text": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source_path": "Comanche055/SERVICE_ROUTINES.agc",
+    "source_sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+    "fixture_source_sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+    "source_edits": 0,
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_words": 123,
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 35,
+        "label": "",
+        "op": "BLOCK",
+        "arguments": "3",
+        "assembled_address": "7722",
+        "physical_fixed_word": 4050,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 36,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "FFTAG6",
+        "assembled_address": "6000",
+        "physical_fixed_word": 3072,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 37,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "6000",
+        "physical_fixed_word": 3072,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 38,
+        "label": "",
+        "op": "COUNT",
+        "arguments": "03/FLAG",
+        "assembled_address": "7722",
+        "physical_fixed_word": 4050,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 40,
+        "label": "UPENT2",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "7722",
+        "physical_fixed_word": 4050,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 41,
+        "label": "",
+        "op": "MASK",
+        "arguments": "OCT7",
+        "assembled_address": "7723",
+        "physical_fixed_word": 4051,
+        "physical_erasable_word": null,
+        "words": [
+          31251
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 42,
+        "label": "",
+        "op": "XCH",
+        "arguments": "L",
+        "assembled_address": "7724",
+        "physical_fixed_word": 4052,
+        "physical_erasable_word": null,
+        "words": [
+          23553
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 44,
+        "label": "",
+        "op": "MASK",
+        "arguments": "OCT77770",
+        "assembled_address": "7725",
+        "physical_fixed_word": 4053,
+        "physical_erasable_word": null,
+        "words": [
+          31705
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 45,
+        "label": "",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "7726",
+        "physical_fixed_word": 4054,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 46,
+        "label": "",
+        "op": "TS",
+        "arguments": "ITEMP1",
+        "assembled_address": "7727",
+        "physical_fixed_word": 4055,
+        "physical_erasable_word": null,
+        "words": [
+          22577
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 48,
+        "label": "",
+        "op": "NDX",
+        "arguments": "L",
+        "assembled_address": "7730",
+        "physical_fixed_word": 4056,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 49,
+        "label": "",
+        "op": "CS",
+        "arguments": "FLAGWRD0",
+        "assembled_address": "7731",
+        "physical_fixed_word": 4057,
+        "physical_erasable_word": null,
+        "words": [
+          16444
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 50,
+        "label": "",
+        "op": "MASK",
+        "arguments": "ITEMP1",
+        "assembled_address": "7732",
+        "physical_fixed_word": 4058,
+        "physical_erasable_word": null,
+        "words": [
+          28721
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 51,
+        "label": "",
+        "op": "NDX",
+        "arguments": "L",
+        "assembled_address": "7733",
+        "physical_fixed_word": 4059,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 52,
+        "label": "",
+        "op": "ADS",
+        "arguments": "FLAGWRD0",
+        "assembled_address": "7734",
+        "physical_fixed_word": 4060,
+        "physical_erasable_word": null,
+        "words": [
+          11324
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 53,
+        "label": "",
+        "op": "RELINT",
+        "arguments": "",
+        "assembled_address": "7735",
+        "physical_fixed_word": 4061,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 55,
+        "label": "",
+        "op": "INCR",
+        "arguments": "Q",
+        "assembled_address": "7736",
+        "physical_fixed_word": 4062,
+        "physical_erasable_word": null,
+        "words": [
+          10242
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 56,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "7737",
+        "physical_fixed_word": 4063,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 58,
+        "label": "DOWNENT2",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "7740",
+        "physical_fixed_word": 4064,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 59,
+        "label": "",
+        "op": "MASK",
+        "arguments": "OCT7",
+        "assembled_address": "7741",
+        "physical_fixed_word": 4065,
+        "physical_erasable_word": null,
+        "words": [
+          31251
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 60,
+        "label": "",
+        "op": "XCH",
+        "arguments": "L",
+        "assembled_address": "7742",
+        "physical_fixed_word": 4066,
+        "physical_erasable_word": null,
+        "words": [
+          23553
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 62,
+        "label": "",
+        "op": "MASK",
+        "arguments": "OCT77770",
+        "assembled_address": "7743",
+        "physical_fixed_word": 4067,
+        "physical_erasable_word": null,
+        "words": [
+          31705
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 63,
+        "label": "",
+        "op": "COM",
+        "arguments": "",
+        "assembled_address": "7744",
+        "physical_fixed_word": 4068,
+        "physical_erasable_word": null,
+        "words": [
+          16384
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 65,
+        "label": "",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "7745",
+        "physical_fixed_word": 4069,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 66,
+        "label": "",
+        "op": "NDX",
+        "arguments": "L",
+        "assembled_address": "7746",
+        "physical_fixed_word": 4070,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 67,
+        "label": "",
+        "op": "MASK",
+        "arguments": "FLAGWRD0",
+        "assembled_address": "7747",
+        "physical_fixed_word": 4071,
+        "physical_erasable_word": null,
+        "words": [
+          28732
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 68,
+        "label": "",
+        "op": "NDX",
+        "arguments": "L",
+        "assembled_address": "7750",
+        "physical_fixed_word": 4072,
+        "physical_erasable_word": null,
+        "words": [
+          20481
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 69,
+        "label": "",
+        "op": "TS",
+        "arguments": "FLAGWRD0",
+        "assembled_address": "7751",
+        "physical_fixed_word": 4073,
+        "physical_erasable_word": null,
+        "words": [
+          22588
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 70,
+        "label": "",
+        "op": "RELINT",
+        "arguments": "",
+        "assembled_address": "7752",
+        "physical_fixed_word": 4074,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 72,
+        "label": "",
+        "op": "INCR",
+        "arguments": "Q",
+        "assembled_address": "7753",
+        "physical_fixed_word": 4075,
+        "physical_erasable_word": null,
+        "words": [
+          10242
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 73,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "7754",
+        "physical_fixed_word": 4076,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 75,
+        "label": "OCT7",
+        "op": "EQUALS",
+        "arguments": "SEVEN",
+        "assembled_address": "7755",
+        "physical_fixed_word": 4077,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 76,
+        "label": "",
+        "op": "BANK",
+        "arguments": "10",
+        "assembled_address": "10,3766",
+        "physical_fixed_word": 9206,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 97,
+        "label": "",
+        "op": "BLOCK",
+        "arguments": "02",
+        "assembled_address": "5546",
+        "physical_fixed_word": 2918,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 98,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "FFTAG1",
+        "assembled_address": "4000",
+        "physical_fixed_word": 2048,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 99,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "4000",
+        "physical_fixed_word": 2048,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 100,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/FLAG",
+        "assembled_address": "5546",
+        "physical_fixed_word": 2918,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 102,
+        "label": "UPFLAG",
+        "op": "CA",
+        "arguments": "Q",
+        "assembled_address": "5546",
+        "physical_fixed_word": 2918,
+        "physical_erasable_word": null,
+        "words": [
+          12290
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 103,
+        "label": "",
+        "op": "TC",
+        "arguments": "DEBIT",
+        "assembled_address": "5547",
+        "physical_fixed_word": 2919,
+        "physical_erasable_word": null,
+        "words": [
+          2932
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 104,
+        "label": "",
+        "op": "COM",
+        "arguments": "",
+        "assembled_address": "5550",
+        "physical_fixed_word": 2920,
+        "physical_erasable_word": null,
+        "words": [
+          16384
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 105,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "5551",
+        "physical_fixed_word": 2921,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 106,
+        "label": "",
+        "op": "ROR",
+        "arguments": "LCHAN",
+        "assembled_address": "5552",
+        "physical_fixed_word": 2922,
+        "physical_erasable_word": null,
+        "words": [
+          2049
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 107,
+        "label": "COMFLAG",
+        "op": "INDEX",
+        "arguments": "ITEMP1",
+        "assembled_address": "5553",
+        "physical_fixed_word": 2923,
+        "physical_erasable_word": null,
+        "words": [
+          20529
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 108,
+        "label": "",
+        "op": "TS",
+        "arguments": "FLAGWRD0",
+        "assembled_address": "5554",
+        "physical_fixed_word": 2924,
+        "physical_erasable_word": null,
+        "words": [
+          22588
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 109,
+        "label": "",
+        "op": "LXCH",
+        "arguments": "ITEMP3",
+        "assembled_address": "5555",
+        "physical_fixed_word": 2925,
+        "physical_erasable_word": null,
+        "words": [
+          9267
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 110,
+        "label": "",
+        "op": "RELINT",
+        "arguments": "",
+        "assembled_address": "5556",
+        "physical_fixed_word": 2926,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 111,
+        "label": "",
+        "op": "TC",
+        "arguments": "L",
+        "assembled_address": "5557",
+        "physical_fixed_word": 2927,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 114,
+        "label": "DOWNFLAG",
+        "op": "CA",
+        "arguments": "Q",
+        "assembled_address": "5560",
+        "physical_fixed_word": 2928,
+        "physical_erasable_word": null,
+        "words": [
+          12290
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 115,
+        "label": "",
+        "op": "TC",
+        "arguments": "DEBIT",
+        "assembled_address": "5561",
+        "physical_fixed_word": 2929,
+        "physical_erasable_word": null,
+        "words": [
+          2932
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 116,
+        "label": "",
+        "op": "MASK",
+        "arguments": "L",
+        "assembled_address": "5562",
+        "physical_fixed_word": 2930,
+        "physical_erasable_word": null,
+        "words": [
+          28673
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 117,
+        "label": "",
+        "op": "TCF",
+        "arguments": "COMFLAG",
+        "assembled_address": "5563",
+        "physical_fixed_word": 2931,
+        "physical_erasable_word": null,
+        "words": [
+          7019
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 120,
+        "label": "DEBIT",
+        "op": "AD",
+        "arguments": "ONE",
+        "assembled_address": "5564",
+        "physical_fixed_word": 2932,
+        "physical_erasable_word": null,
+        "words": [
+          27151
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 121,
+        "label": "",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "5565",
+        "physical_fixed_word": 2933,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 122,
+        "label": "",
+        "op": "TS",
+        "arguments": "ITEMP3",
+        "assembled_address": "5566",
+        "physical_fixed_word": 2934,
+        "physical_erasable_word": null,
+        "words": [
+          22579
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 123,
+        "label": "",
+        "op": "CA",
+        "arguments": "LOW4",
+        "assembled_address": "5567",
+        "physical_fixed_word": 2935,
+        "physical_erasable_word": null,
+        "words": [
+          14870
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 124,
+        "label": "",
+        "op": "TS",
+        "arguments": "ITEMP1",
+        "assembled_address": "5570",
+        "physical_fixed_word": 2936,
+        "physical_erasable_word": null,
+        "words": [
+          22577
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 125,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ITEMP3",
+        "assembled_address": "5571",
+        "physical_fixed_word": 2937,
+        "physical_erasable_word": null,
+        "words": [
+          20531
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 126,
+        "label": "",
+        "op": "CA",
+        "arguments": "0 -1",
+        "assembled_address": "5572",
+        "physical_fixed_word": 2938,
+        "physical_erasable_word": null,
+        "words": [
+          12287
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 127,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "5573",
+        "physical_fixed_word": 2939,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 128,
+        "label": "",
+        "op": "CA",
+        "arguments": "ZERO",
+        "assembled_address": "5574",
+        "physical_fixed_word": 2940,
+        "physical_erasable_word": null,
+        "words": [
+          14865
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 130,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "5575",
+        "physical_fixed_word": 2941,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 131,
+        "label": "",
+        "op": "DV",
+        "arguments": "ITEMP1",
+        "assembled_address": "5576",
+        "physical_fixed_word": 2942,
+        "physical_erasable_word": null,
+        "words": [
+          4145
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 132,
+        "label": "",
+        "op": "DXCH",
+        "arguments": "ITEMP1",
+        "assembled_address": "5577",
+        "physical_fixed_word": 2943,
+        "physical_erasable_word": null,
+        "words": [
+          21554
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 133,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ITEMP1",
+        "assembled_address": "5600",
+        "physical_fixed_word": 2944,
+        "physical_erasable_word": null,
+        "words": [
+          20529
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 134,
+        "label": "",
+        "op": "CA",
+        "arguments": "FLAGWRD0",
+        "assembled_address": "5601",
+        "physical_fixed_word": 2945,
+        "physical_erasable_word": null,
+        "words": [
+          12348
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 135,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "5602",
+        "physical_fixed_word": 2946,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 136,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "ITEMP2",
+        "assembled_address": "5603",
+        "physical_fixed_word": 2947,
+        "physical_erasable_word": null,
+        "words": [
+          20530
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 137,
+        "label": "",
+        "op": "CS",
+        "arguments": "BIT15",
+        "assembled_address": "5604",
+        "physical_fixed_word": 2948,
+        "physical_erasable_word": null,
+        "words": [
+          18945
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 138,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "5605",
+        "physical_fixed_word": 2949,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 148,
+        "label": "",
+        "op": "BANK",
+        "arguments": "06",
+        "assembled_address": "06,3770",
+        "physical_fixed_word": 7160,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 149,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "DLAYJOB",
+        "assembled_address": "00,2000",
+        "physical_fixed_word": 0,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 150,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "00,2000",
+        "physical_fixed_word": 0,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 154,
+        "label": "",
+        "op": "COUNT",
+        "arguments": "00/DELAY",
+        "assembled_address": "00,3732",
+        "physical_fixed_word": 986,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 156,
+        "label": "DELAYJOB",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "00,3732",
+        "physical_fixed_word": 986,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 157,
+        "label": "",
+        "op": "TS",
+        "arguments": "Q",
+        "assembled_address": "00,3733",
+        "physical_fixed_word": 987,
+        "physical_erasable_word": null,
+        "words": [
+          22530
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 159,
+        "label": "",
+        "op": "CAF",
+        "arguments": "DELAYNUM",
+        "assembled_address": "00,3734",
+        "physical_fixed_word": 988,
+        "physical_erasable_word": null,
+        "words": [
+          15500
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 160,
+        "label": "DELLOOP",
+        "op": "TS",
+        "arguments": "RUPTREG1",
+        "assembled_address": "00,3735",
+        "physical_fixed_word": 989,
+        "physical_erasable_word": null,
+        "words": [
+          22584
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 161,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "A",
+        "assembled_address": "00,3736",
+        "physical_fixed_word": 990,
+        "physical_erasable_word": null,
+        "words": [
+          20480
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 162,
+        "label": "",
+        "op": "CA",
+        "arguments": "DELAYLOC",
+        "assembled_address": "00,3737",
+        "physical_fixed_word": 991,
+        "physical_erasable_word": null,
+        "words": [
+          12897
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 163,
+        "label": "",
+        "op": "EXTEND",
+        "arguments": "",
+        "assembled_address": "00,3740",
+        "physical_fixed_word": 992,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 164,
+        "label": "",
+        "op": "BZF",
+        "arguments": "OK2DELAY",
+        "assembled_address": "00,3741",
+        "physical_fixed_word": 993,
+        "physical_erasable_word": null,
+        "words": [
+          6118
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 166,
+        "label": "",
+        "op": "CCS",
+        "arguments": "RUPTREG1",
+        "assembled_address": "00,3742",
+        "physical_fixed_word": 994,
+        "physical_erasable_word": null,
+        "words": [
+          4152
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 167,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DELLOOP",
+        "assembled_address": "00,3743",
+        "physical_fixed_word": 995,
+        "physical_erasable_word": null,
+        "words": [
+          6109
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 169,
+        "label": "",
+        "op": "TC",
+        "arguments": "BAILOUT",
+        "assembled_address": "00,3744",
+        "physical_fixed_word": 996,
+        "physical_erasable_word": null,
+        "words": [
+          4077
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 170,
+        "label": "",
+        "op": "OCT",
+        "arguments": "1104",
+        "assembled_address": "00,3745",
+        "physical_fixed_word": 997,
+        "physical_erasable_word": null,
+        "words": [
+          580
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 172,
+        "label": "OK2DELAY",
+        "op": "CA",
+        "arguments": "TCSLEEP",
+        "assembled_address": "00,3746",
+        "physical_fixed_word": 998,
+        "physical_erasable_word": null,
+        "words": [
+          14326
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 173,
+        "label": "",
+        "op": "TS",
+        "arguments": "WAITEXIT",
+        "assembled_address": "00,3747",
+        "physical_fixed_word": 999,
+        "physical_erasable_word": null,
+        "words": [
+          22577
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 175,
+        "label": "",
+        "op": "CA",
+        "arguments": "FBANK",
+        "assembled_address": "00,3750",
+        "physical_fixed_word": 1000,
+        "physical_erasable_word": null,
+        "words": [
+          12292
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 176,
+        "label": "",
+        "op": "AD",
+        "arguments": "RUPTREG1",
+        "assembled_address": "00,3751",
+        "physical_fixed_word": 1001,
+        "physical_erasable_word": null,
+        "words": [
+          24632
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 177,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "00,3752",
+        "physical_fixed_word": 1002,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 179,
+        "label": "",
+        "op": "CAF",
+        "arguments": "WAKECAD",
+        "assembled_address": "00,3753",
+        "physical_fixed_word": 1003,
+        "physical_erasable_word": null,
+        "words": [
+          14327
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 180,
+        "label": "",
+        "op": "TCF",
+        "arguments": "DLY2 -1",
+        "assembled_address": "00,3754",
+        "physical_fixed_word": 1004,
+        "physical_erasable_word": null,
+        "words": [
+          6829
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 182,
+        "label": "TCGETCAD",
+        "op": "TC",
+        "arguments": "MAKECADR",
+        "assembled_address": "00,3755",
+        "physical_fixed_word": 1005,
+        "physical_erasable_word": null,
+        "words": [
+          2505
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 184,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "RUPTREG1",
+        "assembled_address": "00,3756",
+        "physical_fixed_word": 1006,
+        "physical_erasable_word": null,
+        "words": [
+          20536
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 185,
+        "label": "",
+        "op": "TS",
+        "arguments": "DELAYLOC",
+        "assembled_address": "00,3757",
+        "physical_fixed_word": 1007,
+        "physical_erasable_word": null,
+        "words": [
+          23137
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 187,
+        "label": "",
+        "op": "TC",
+        "arguments": "JOBSLEEP",
+        "assembled_address": "00,3760",
+        "physical_fixed_word": 1008,
+        "physical_erasable_word": null,
+        "words": [
+          2685
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 189,
+        "label": "WAKER",
+        "op": "CAF",
+        "arguments": "ZERO",
+        "assembled_address": "00,3761",
+        "physical_fixed_word": 1009,
+        "physical_erasable_word": null,
+        "words": [
+          14865
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 190,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "BBANK",
+        "assembled_address": "00,3762",
+        "physical_fixed_word": 1010,
+        "physical_erasable_word": null,
+        "words": [
+          20486
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 191,
+        "label": "",
+        "op": "XCH",
+        "arguments": "DELAYLOC",
+        "assembled_address": "00,3763",
+        "physical_fixed_word": 1011,
+        "physical_erasable_word": null,
+        "words": [
+          24161
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 193,
+        "label": "",
+        "op": "TC",
+        "arguments": "JOBWAKE",
+        "assembled_address": "00,3764",
+        "physical_fixed_word": 1012,
+        "physical_erasable_word": null,
+        "words": [
+          2689
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 195,
+        "label": "",
+        "op": "TC",
+        "arguments": "TASKOVER",
+        "assembled_address": "00,3765",
+        "physical_fixed_word": 1013,
+        "physical_erasable_word": null,
+        "words": [
+          2772
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 197,
+        "label": "TCSLEEP",
+        "op": "GENADR",
+        "arguments": "TCGETCAD -2",
+        "assembled_address": "00,3766",
+        "physical_fixed_word": 1014,
+        "physical_erasable_word": null,
+        "words": [
+          2027
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 198,
+        "label": "WAKECAD",
+        "op": "GENADR",
+        "arguments": "WAKER",
+        "assembled_address": "00,3767",
+        "physical_fixed_word": 1015,
+        "physical_erasable_word": null,
+        "words": [
+          2033
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 223,
+        "label": "",
+        "op": "BLOCK",
+        "arguments": "02",
+        "assembled_address": "5606",
+        "physical_fixed_word": 2950,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 224,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "FFTAG4",
+        "assembled_address": "4000",
+        "physical_fixed_word": 2048,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 225,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "4000",
+        "physical_fixed_word": 2048,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 227,
+        "label": "",
+        "op": "EBANK=",
+        "arguments": "ITEMP1",
+        "assembled_address": "5606",
+        "physical_fixed_word": 2950,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 229,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/TRAN",
+        "assembled_address": "5606",
+        "physical_fixed_word": 2950,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 231,
+        "label": "GENTRAN",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "5606",
+        "physical_fixed_word": 2950,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 232,
+        "label": "",
+        "op": "TS",
+        "arguments": "ITEMP1",
+        "assembled_address": "5607",
+        "physical_fixed_word": 2951,
+        "physical_erasable_word": null,
+        "words": [
+          22577
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 233,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "Q",
+        "assembled_address": "5610",
+        "physical_fixed_word": 2952,
+        "physical_erasable_word": null,
+        "words": [
+          20482
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 234,
+        "label": "",
+        "op": "AD",
+        "arguments": "0",
+        "assembled_address": "5611",
+        "physical_fixed_word": 2953,
+        "physical_erasable_word": null,
+        "words": [
+          24576
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 235,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "A",
+        "assembled_address": "5612",
+        "physical_fixed_word": 2954,
+        "physical_erasable_word": null,
+        "words": [
+          20480
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 236,
+        "label": "",
+        "op": "CA",
+        "arguments": "0",
+        "assembled_address": "5613",
+        "physical_fixed_word": 2955,
+        "physical_erasable_word": null,
+        "words": [
+          12288
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 237,
+        "label": "",
+        "op": "TS",
+        "arguments": "L",
+        "assembled_address": "5614",
+        "physical_fixed_word": 2956,
+        "physical_erasable_word": null,
+        "words": [
+          22529
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 238,
+        "label": "",
+        "op": "CA",
+        "arguments": "ITEMP1",
+        "assembled_address": "5615",
+        "physical_fixed_word": 2957,
+        "physical_erasable_word": null,
+        "words": [
+          12337
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 239,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "Q",
+        "assembled_address": "5616",
+        "physical_fixed_word": 2958,
+        "physical_erasable_word": null,
+        "words": [
+          20482
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 240,
+        "label": "",
+        "op": "AD",
+        "arguments": "1",
+        "assembled_address": "5617",
+        "physical_fixed_word": 2959,
+        "physical_erasable_word": null,
+        "words": [
+          24577
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 241,
+        "label": "",
+        "op": "INDEX",
+        "arguments": "A",
+        "assembled_address": "5620",
+        "physical_fixed_word": 2960,
+        "physical_erasable_word": null,
+        "words": [
+          20480
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 242,
+        "label": "",
+        "op": "LXCH",
+        "arguments": "0",
+        "assembled_address": "5621",
+        "physical_fixed_word": 2961,
+        "physical_erasable_word": null,
+        "words": [
+          9216
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 243,
+        "label": "",
+        "op": "CCS",
+        "arguments": "ITEMP1",
+        "assembled_address": "5622",
+        "physical_fixed_word": 2962,
+        "physical_erasable_word": null,
+        "words": [
+          4145
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 244,
+        "label": "",
+        "op": "TCF",
+        "arguments": "GENTRAN +1",
+        "assembled_address": "5623",
+        "physical_fixed_word": 2963,
+        "physical_erasable_word": null,
+        "words": [
+          7047
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 245,
+        "label": "",
+        "op": "TCF",
+        "arguments": "Q+2",
+        "assembled_address": "5624",
+        "physical_fixed_word": 2964,
+        "physical_erasable_word": null,
+        "words": [
+          7624
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 252,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/EXTVB",
+        "assembled_address": "5625",
+        "physical_fixed_word": 2965,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 254,
+        "label": "B5OFF",
+        "op": "CS",
+        "arguments": "BIT5",
+        "assembled_address": "5625",
+        "physical_fixed_word": 2965,
+        "physical_erasable_word": null,
+        "words": [
+          18955
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 255,
+        "label": "",
+        "op": "MASK",
+        "arguments": "EXTVBACT",
+        "assembled_address": "5626",
+        "physical_fixed_word": 2966,
+        "physical_erasable_word": null,
+        "words": [
+          29220
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 256,
+        "label": "",
+        "op": "TS",
+        "arguments": "EXTVBACT",
+        "assembled_address": "5627",
+        "physical_fixed_word": 2967,
+        "physical_erasable_word": null,
+        "words": [
+          23076
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 257,
+        "label": "",
+        "op": "TC",
+        "arguments": "ENDOFJOB",
+        "assembled_address": "5630",
+        "physical_fixed_word": 2968,
+        "physical_erasable_word": null,
+        "words": [
+          2703
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 263,
+        "label": "TRFAILOF",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "5631",
+        "physical_fixed_word": 2969,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 264,
+        "label": "",
+        "op": "CS",
+        "arguments": "OCT40200",
+        "assembled_address": "5632",
+        "physical_fixed_word": 2970,
+        "physical_erasable_word": null,
+        "words": [
+          20420
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 265,
+        "label": "",
+        "op": "MASK",
+        "arguments": "DSPTAB +11D",
+        "assembled_address": "5633",
+        "physical_fixed_word": 2971,
+        "physical_erasable_word": null,
+        "words": [
+          29214
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 266,
+        "label": "",
+        "op": "AD",
+        "arguments": "BIT15",
+        "assembled_address": "5634",
+        "physical_fixed_word": 2972,
+        "physical_erasable_word": null,
+        "words": [
+          27137
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 267,
+        "label": "",
+        "op": "TS",
+        "arguments": "DSPTAB +11D",
+        "assembled_address": "5635",
+        "physical_fixed_word": 2973,
+        "physical_erasable_word": null,
+        "words": [
+          23070
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 268,
+        "label": "",
+        "op": "CS",
+        "arguments": "OPTMODES",
+        "assembled_address": "5636",
+        "physical_fixed_word": 2974,
+        "physical_erasable_word": null,
+        "words": [
+          17113
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 269,
+        "label": "",
+        "op": "MASK",
+        "arguments": "BIT7",
+        "assembled_address": "5637",
+        "physical_fixed_word": 2975,
+        "physical_erasable_word": null,
+        "words": [
+          31241
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 270,
+        "label": "",
+        "op": "ADS",
+        "arguments": "OPTMODES",
+        "assembled_address": "5640",
+        "physical_fixed_word": 2976,
+        "physical_erasable_word": null,
+        "words": [
+          11993
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 272,
+        "label": "REQ",
+        "op": "RELINT",
+        "arguments": "",
+        "assembled_address": "5641",
+        "physical_fixed_word": 2977,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 273,
+        "label": "",
+        "op": "TC",
+        "arguments": "Q",
+        "assembled_address": "5642",
+        "physical_fixed_word": 2978,
+        "physical_erasable_word": null,
+        "words": [
+          2
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 275,
+        "label": "TRFAILON",
+        "op": "INHINT",
+        "arguments": "",
+        "assembled_address": "5643",
+        "physical_fixed_word": 2979,
+        "physical_erasable_word": null,
+        "words": [
+          4
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 276,
+        "label": "",
+        "op": "CS",
+        "arguments": "DSPTAB +11D",
+        "assembled_address": "5644",
+        "physical_fixed_word": 2980,
+        "physical_erasable_word": null,
+        "words": [
+          16926
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 277,
+        "label": "",
+        "op": "MASK",
+        "arguments": "OCT40200",
+        "assembled_address": "5645",
+        "physical_fixed_word": 2981,
+        "physical_erasable_word": null,
+        "words": [
+          32708
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 278,
+        "label": "",
+        "op": "ADS",
+        "arguments": "DSPTAB +11D",
+        "assembled_address": "5646",
+        "physical_fixed_word": 2982,
+        "physical_erasable_word": null,
+        "words": [
+          11806
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 279,
+        "label": "",
+        "op": "TCF",
+        "arguments": "REQ",
+        "assembled_address": "5647",
+        "physical_fixed_word": 2983,
+        "physical_erasable_word": null,
+        "words": [
+          7073
+        ]
+      }
+    ],
+    "symbols": {
+      "UPENT2": "7722",
+      "DOWNENT2": "7740",
+      "UPFLAG": "5546",
+      "DOWNFLAG": "5560",
+      "DEBIT": "5564",
+      "COMFLAG": "5553",
+      "DELAYJOB": "00,3732",
+      "DELLOOP": "00,3735",
+      "OK2DELAY": "00,3746",
+      "TCGETCAD": "00,3755",
+      "WAKER": "00,3761",
+      "TCSLEEP": "00,3766",
+      "WAKECAD": "00,3767",
+      "GENTRAN": "5606",
+      "B5OFF": "5625",
+      "TRFAILOF": "5631",
+      "TRFAILON": "5643",
+      "REQ": "5641",
+      "DELAYLOC": "1141",
+      "DELAYNUM": "6214",
+      "DLY2": "5256",
+      "BAILOUT": "7755",
+      "JOBSLEEP": "5175",
+      "JOBWAKE": "5201",
+      "TASKOVER": "5324",
+      "ENDOFJOB": "5217",
+      "Q+1": "6706",
+      "Q+2": "6710"
+    },
+    "original_gentran_callers": [
+      {
+        "path": "Comanche055/SXTMARK.agc",
+        "line": 317,
+        "source_sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
+        "source_context": [
+          {
+            "line": 311,
+            "text": "# Page 228"
+          },
+          {
+            "line": 312,
+            "text": "MARKCONT\tCAF\tBIT14"
+          },
+          {
+            "line": 313,
+            "text": "\t\tMASK\tSTATE\t+2\t\t# R21 MARK (SPECIAL MARKING FOR R21)"
+          },
+          {
+            "line": 314,
+            "text": "\t\tEXTEND"
+          },
+          {
+            "line": 315,
+            "text": "\t\tBZF\tMARKET\t\t\t# NOT SET THEREFORE REGULAR MARKING"
+          },
+          {
+            "line": 316,
+            "text": "MARKIT1\t\tCAF\tSIX\t\t\t# SPECIAL FOR R21"
+          },
+          {
+            "line": 317,
+            "text": "\t\tTC\tGENTRAN\t\t\t# TRANSFER MRKBUF1 TO MRKBUF2"
+          },
+          {
+            "line": 318,
+            "text": "\t\tADRES\tMRKBUF1"
+          },
+          {
+            "line": 319,
+            "text": "\t\tADRES\tMRKBUF2"
+          },
+          {
+            "line": 320,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/SXTMARK.agc",
+        "line": 322,
+        "source_sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
+        "source_context": [
+          {
+            "line": 316,
+            "text": "MARKIT1\t\tCAF\tSIX\t\t\t# SPECIAL FOR R21"
+          },
+          {
+            "line": 317,
+            "text": "\t\tTC\tGENTRAN\t\t\t# TRANSFER MRKBUF1 TO MRKBUF2"
+          },
+          {
+            "line": 318,
+            "text": "\t\tADRES\tMRKBUF1"
+          },
+          {
+            "line": 319,
+            "text": "\t\tADRES\tMRKBUF2"
+          },
+          {
+            "line": 320,
+            "text": ""
+          },
+          {
+            "line": 321,
+            "text": "\t\tCAF\tSIX\t\t\t# TRANSFER CURRENT MARK DATA TO MARKBUF1"
+          },
+          {
+            "line": 322,
+            "text": "\t\tTC\tGENTRAN"
+          },
+          {
+            "line": 323,
+            "text": "\t\tADRES\tMKT2T1"
+          },
+          {
+            "line": 324,
+            "text": "\t\tADRES\tMRKBUF1"
+          },
+          {
+            "line": 325,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/SXTMARK.agc",
+        "line": 345,
+        "source_sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
+        "source_context": [
+          {
+            "line": 339,
+            "text": "\t\tCAF\tPRIO5\t\t\t# CALIBRATION MARK (SET) FOR P23"
+          },
+          {
+            "line": 340,
+            "text": "\t\tTC\tNOVAC\t\t\t# SPECIAL DISPLAY JOB"
+          },
+          {
+            "line": 341,
+            "text": "\t\tEBANK=\tMRKBUF1"
+          },
+          {
+            "line": 342,
+            "text": "\t\t2CADR\tMARKDISP"
+          },
+          {
+            "line": 343,
+            "text": ""
+          },
+          {
+            "line": 344,
+            "text": "\t\tCAF\tSIX"
+          },
+          {
+            "line": 345,
+            "text": "\t\tTC\tGENTRAN\t\t\t# TRANSFER MARK DATE TO MARKDOWN"
+          },
+          {
+            "line": 346,
+            "text": "\t\tADRES\tMKT2T1"
+          },
+          {
+            "line": 347,
+            "text": "\t\tADRES\tMARKDOWN"
+          },
+          {
+            "line": 348,
+            "text": "\t\tCAF\tSIX"
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/SXTMARK.agc",
+        "line": 349,
+        "source_sha256": "c66edb02d02b0528a761d21befb9ae0c95966291f4e25c34e17532c9e59e7540",
+        "source_context": [
+          {
+            "line": 343,
+            "text": ""
+          },
+          {
+            "line": 344,
+            "text": "\t\tCAF\tSIX"
+          },
+          {
+            "line": 345,
+            "text": "\t\tTC\tGENTRAN\t\t\t# TRANSFER MARK DATE TO MARKDOWN"
+          },
+          {
+            "line": 346,
+            "text": "\t\tADRES\tMKT2T1"
+          },
+          {
+            "line": 347,
+            "text": "\t\tADRES\tMARKDOWN"
+          },
+          {
+            "line": 348,
+            "text": "\t\tCAF\tSIX"
+          },
+          {
+            "line": 349,
+            "text": "\t\tTC\tGENTRAN\t\t\t# TRANSFER MARK DATA TO MRKBUF1 FOR"
+          },
+          {
+            "line": 350,
+            "text": "\t\tADRES\tMKT2T1\t\t\t# SPECIAL DISPLAY OF SHAFT AND TRUNNION"
+          },
+          {
+            "line": 351,
+            "text": "\t\tADRES\tMRKBUF1\t\t\t# IF V59 ACTING"
+          },
+          {
+            "line": 352,
+            "text": "\t\tTCF\tTASKOVER"
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/P20-P25.agc",
+        "line": 570,
+        "source_sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5",
+        "source_context": [
+          {
+            "line": 564,
+            "text": "R23CSM1\t\tCAF\tV53\t\t# PERFORM ALT LOST SIGHT MARK"
+          },
+          {
+            "line": 565,
+            "text": "\t\tTC\tBANKCALL"
+          },
+          {
+            "line": 566,
+            "text": "\t\tCADR\tGOMARK2"
+          },
+          {
+            "line": 567,
+            "text": "\t\tTC\tR21END\t\t# V34: TERMINATE R23"
+          },
+          {
+            "line": 568,
+            "text": "\t\tTCF\tR21CSMA\t\t# PROCEED: END BACK UP MARKING (R23)"
+          },
+          {
+            "line": 569,
+            "text": "\t\tCAF\tSIX\t\t# TRANSFER MRKBUF1 TO MRKBUF2"
+          },
+          {
+            "line": 570,
+            "text": "\t\tTC\tGENTRAN"
+          },
+          {
+            "line": 571,
+            "text": "\t\tADRES\tMRKBUF1"
+          },
+          {
+            "line": 572,
+            "text": "\t\tADRES\tMRKBUF2"
+          },
+          {
+            "line": 573,
+            "text": "\t\tEXTEND"
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/P20-P25.agc",
+        "line": 596,
+        "source_sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5",
+        "source_context": [
+          {
+            "line": 590,
+            "text": ""
+          },
+          {
+            "line": 591,
+            "text": "R21CSMA\t\tCA\tMRKBUF1\t\t# IF -1 NO MARK"
+          },
+          {
+            "line": 592,
+            "text": "\t\tAD\tONE"
+          },
+          {
+            "line": 593,
+            "text": "\t\tEXTEND"
+          },
+          {
+            "line": 594,
+            "text": "\t\tBZF\tR21END\t\t# ZERO = NO MARK"
+          },
+          {
+            "line": 595,
+            "text": "\t\tCAF\tSIX\t\t# MARK THEREFORE TRANSFER IT TO MRKBUF2"
+          },
+          {
+            "line": 596,
+            "text": "R21CSM1\t\tTC\tGENTRAN\t\t# TRANSFER MRKBUF1 TO MRKBUF2"
+          },
+          {
+            "line": 597,
+            "text": "\t\tADRES\tMRKBUF1"
+          },
+          {
+            "line": 598,
+            "text": "\t\tADRES\tMRKBUF2"
+          },
+          {
+            "line": 599,
+            "text": "\t\tRELINT"
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/P20-P25.agc",
+        "line": 861,
+        "source_sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5",
+        "source_context": [
+          {
+            "line": 855,
+            "text": "\t\tCA\tMRKBUF2"
+          },
+          {
+            "line": 856,
+            "text": "\t\tEXTEND"
+          },
+          {
+            "line": 857,
+            "text": "\t\tBZF\tREND2"
+          },
+          {
+            "line": 858,
+            "text": "\t\tEXTEND"
+          },
+          {
+            "line": 859,
+            "text": "\t\tBZMF\tREND3A"
+          },
+          {
+            "line": 860,
+            "text": "REND2\t\tCAF\tSIX"
+          },
+          {
+            "line": 861,
+            "text": "\t\tTC\tGENTRAN"
+          },
+          {
+            "line": 862,
+            "text": "\t\tADRES\tMRKBUF2"
+          },
+          {
+            "line": 863,
+            "text": "\t\tADRES\tMARKTIME\t# MARKTIME MUST BE CONTIGUOUS WITH VTEMP"
+          },
+          {
+            "line": 864,
+            "text": "\t\tCAF\tNEG3\t\t# NEG VALUE TO INDICATE VALUES USED"
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICER207.agc",
+        "line": 499,
+        "source_sha256": "35ca5c1acce244eabdca91039a121c13b7207a24433f860c0cb14878e8366fb2",
+        "source_context": [
+          {
+            "line": 493,
+            "text": "\t\tEXIT"
+          },
+          {
+            "line": 494,
+            "text": ""
+          },
+          {
+            "line": 495,
+            "text": "\t\tTC\tPHASCHNG"
+          },
+          {
+            "line": 496,
+            "text": "\t\tOCT\t10035"
+          },
+          {
+            "line": 497,
+            "text": ""
+          },
+          {
+            "line": 498,
+            "text": "\t\tCAF\tOCT31\t\t# COPY RN1,VN1,GOT102,GOBL1/2,PIPTIME1"
+          },
+          {
+            "line": 499,
+            "text": "\t\tTC\tGENTRAN\t\t# INTO RN ,VN ,GDT/12 ,GOBL/2 ,PIPTIME"
+          },
+          {
+            "line": 500,
+            "text": "\t\tADRES\tRN1"
+          },
+          {
+            "line": 501,
+            "text": "\t\tADRES\tRN"
+          },
+          {
+            "line": 502,
+            "text": "\t\tRELINT\t\t\t# GENTRAN DOES AN INHINT"
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICER207.agc",
+        "line": 580,
+        "source_sha256": "35ca5c1acce244eabdca91039a121c13b7207a24433f860c0cb14878e8366fb2",
+        "source_context": [
+          {
+            "line": 574,
+            "text": "# Page 831"
+          },
+          {
+            "line": 575,
+            "text": "# NORMLIZE PERFORMS THE INITIALIZATION REQUIRED PRIOR TO THE FIRST ENTRY TO AVERAGEG, AND SCALES RN SO THAT IT"
+          },
+          {
+            "line": 576,
+            "text": "# HAS 1 LEADING BINARY ZERO.  IN MOST MISSIONS, RN WILL BE SCALED AT 2(+29), BUT IN THE 206 MISSION, RN WILL BE"
+          },
+          {
+            "line": 577,
+            "text": "# SCALED AT 2(+24)M."
+          },
+          {
+            "line": 578,
+            "text": ""
+          },
+          {
+            "line": 579,
+            "text": "NORMLIZE\tCAF\tTHIRTEEN\t# SET UP TO COPY 14 REGS- RN1,VN1,PIPTIME1"
+          },
+          {
+            "line": 580,
+            "text": "\t\tTC\tGENTRAN\t\t# INTO RN,VN, PIPTIME"
+          },
+          {
+            "line": 581,
+            "text": "\t\tADRES\tRN1\t\t# FROM HERE"
+          },
+          {
+            "line": 582,
+            "text": "\t\tADRES\tRN\t\t# TO HERE"
+          },
+          {
+            "line": 583,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/P40-P47.agc",
+        "line": 427,
+        "source_sha256": "5861ed6fd0b6b773c6c0ee5ab0099fcf9509a8fa1263823609ad844ec263f834",
+        "source_context": [
+          {
+            "line": 421,
+            "text": "\t\t\tS11.1\t\t# CALC. VI, H, HDOT FOR NOUN 62"
+          },
+          {
+            "line": 422,
+            "text": "\t\tEXIT"
+          },
+          {
+            "line": 423,
+            "text": "\t\tTC\tPHASCHNG"
+          },
+          {
+            "line": 424,
+            "text": "\t\tOCT\t10035"
+          },
+          {
+            "line": 425,
+            "text": "# Page 692"
+          },
+          {
+            "line": 426,
+            "text": "\t\tCAF\tFIVE"
+          },
+          {
+            "line": 427,
+            "text": "\t\tTC\tGENTRAN"
+          },
+          {
+            "line": 428,
+            "text": "\t\tADRES\tDV47TEMP"
+          },
+          {
+            "line": 429,
+            "text": "\t\tADRES\tDELVCTL"
+          },
+          {
+            "line": 430,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/SERVICE_ROUTINES.agc",
+        "line": 244,
+        "source_sha256": "8e1230e91087a78e0e4728f8541f14bffce63854a7f8f61e712741dde83776bd",
+        "source_context": [
+          {
+            "line": 238,
+            "text": "\t\tCA\tITEMP1"
+          },
+          {
+            "line": 239,
+            "text": "\t\tINDEX\tQ"
+          },
+          {
+            "line": 240,
+            "text": "\t\tAD\t1\t\t# ADRES (M + N - 1)."
+          },
+          {
+            "line": 241,
+            "text": "\t\tINDEX\tA"
+          },
+          {
+            "line": 242,
+            "text": "\t\tLXCH\t0\t\t# STUFF IT."
+          },
+          {
+            "line": 243,
+            "text": "\t\tCCS\tITEMP1\t\t# LOOP UNTIL N-1 = 0."
+          },
+          {
+            "line": 244,
+            "text": "\t\tTCF\tGENTRAN +1"
+          },
+          {
+            "line": 245,
+            "text": "\t\tTCF\tQ+2\t\t# RETURN TO CALLER."
+          },
+          {
+            "line": 246,
+            "text": ""
+          },
+          {
+            "line": 247,
+            "text": "# Page 1491"
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/FRESH_START_AND_RESTART.agc",
+        "line": 1181,
+        "source_sha256": "d208d482531e01c2ffe48fca059117220d922c750b3936f0a046e9ea9499ae59",
+        "source_context": [
+          {
+            "line": 1175,
+            "text": ""
+          },
+          {
+            "line": 1176,
+            "text": "\t\tEBANK=\tPHSNAME1"
+          },
+          {
+            "line": 1177,
+            "text": "V5OUT1\t\tCA\tEBANK3\t\t\t# PHSNAME REGISTERS ARE IN EBANK3."
+          },
+          {
+            "line": 1178,
+            "text": "\t\tTS\tEBANK"
+          },
+          {
+            "line": 1179,
+            "text": ""
+          },
+          {
+            "line": 1180,
+            "text": "\t\tCA\tELEVEN\t\t\t# GET PHASE 2CADRS."
+          },
+          {
+            "line": 1181,
+            "text": "\t\tTC\tGENTRAN"
+          },
+          {
+            "line": 1182,
+            "text": "\t\tADRES\tPHSNAME1"
+          },
+          {
+            "line": 1183,
+            "text": "\t\tADRES\tVAC5 +21D"
+          },
+          {
+            "line": 1184,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/EXTENDED_VERBS.agc",
+        "line": 1170,
+        "source_sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
+        "source_context": [
+          {
+            "line": 1164,
+            "text": "\t\t\tMOONTHIS"
+          },
+          {
+            "line": 1165,
+            "text": "\t\t\t+3"
+          },
+          {
+            "line": 1166,
+            "text": "\t\tCLEAR"
+          },
+          {
+            "line": 1167,
+            "text": "\t\t\tMOONOTH"
+          },
+          {
+            "line": 1168,
+            "text": "\t\tEXIT"
+          },
+          {
+            "line": 1169,
+            "text": "\t\tCAF\tOCT51"
+          },
+          {
+            "line": 1170,
+            "text": "\t\tTC\tGENTRAN"
+          },
+          {
+            "line": 1171,
+            "text": "\t\tADRES\tRRECTHIS\t# OUR STATE VECTOR INTO OTHER VIA GENTRAN"
+          },
+          {
+            "line": 1172,
+            "text": "\t\tADRES\tRRECTOTH"
+          },
+          {
+            "line": 1173,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "path": "Comanche055/EXTENDED_VERBS.agc",
+        "line": 1219,
+        "source_sha256": "823f56eca59e7f5379a62b1c903b7bbc01a264aca420f9090a86e35c1f112195",
+        "source_context": [
+          {
+            "line": 1213,
+            "text": "\t\t\t+3"
+          },
+          {
+            "line": 1214,
+            "text": "\t\tCLEAR"
+          },
+          {
+            "line": 1215,
+            "text": "\t\t\tMOONTHIS"
+          },
+          {
+            "line": 1216,
+            "text": "\t\tEXIT"
+          },
+          {
+            "line": 1217,
+            "text": ""
+          },
+          {
+            "line": 1218,
+            "text": "\t\tCAF\tOCT51"
+          },
+          {
+            "line": 1219,
+            "text": "\t\tTC\tGENTRAN"
+          },
+          {
+            "line": 1220,
+            "text": "\t\tADRES\tRRECTOTH\t# LM STATE VECTOR INTO CM VIA GENTRAN"
+          },
+          {
+            "line": 1221,
+            "text": "\t\tADRES\tRRECTHIS"
+          },
+          {
+            "line": 1222,
+            "text": ""
+          }
+        ]
+      }
+    ]
+  }
+]

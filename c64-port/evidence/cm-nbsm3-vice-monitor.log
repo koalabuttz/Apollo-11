@@ -1,0 +1,36 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-nbsm0.prg from 0801 to 20AC (18AC bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  190/$0be,   3/$03
+.C:163e  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44021757
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-nbsm1.prg from 0801 to 23B0 (1BB0 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  145/$091,  49/$31
+.C:163c  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44156560
+>C:c080  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-nbsm2.prg from 0801 to 2618 (1E18 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)   44/$02c,  31/$1f
+.C:163e  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44445019
+>C:c080  a5 00 00 20  02                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-nbsm3.prg from 0801 to 2AB1 (22B1 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  169/$0a9,  30/$1e
+.C:162e  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44747733
+>C:c080  a5 00 00 20  03                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_nbsm-software-stack.bin' from $c100 to $cfff

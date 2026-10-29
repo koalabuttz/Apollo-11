@@ -1,0 +1,9 @@
+# Original CM blocked display continuation
+
+`cm_display_rest` executes original bank10 NVDSP's blocked return at03343, REST03467, or RESTSLEP03473 through the actual ENDOFJOB05217 or NVSUBUSY04456 entry. It preserves the canonical image, applies original CCS signed-zero branches, and executes the complete source UPENT2 alias effects: selected flag word, ITEMP1, L, Q and IRQ enable. The three indexed NVCADR literals retain actual REDOPRIO, MARKPLAY and PLAYJUM1 destinations. The selected lifecycle body remains separate.
+
+The domain requires bank10/coherent EB/BB, COPINDEX0..2, ordinary GENMASK/CADR/flags and legal explicit SUPER/IRQ. The incoming A/L/Q may retain raw register patterns. All unrelated external fields remain unchanged. Unsupported contexts preserve the complete image and IO; callers exclude producers. There is no opcode decoder, heap, floating point or additional NEWJOB poll.
+
+All 3,072 complete original-source states compare exactly with strict native and full ASAN/UBSAN streams: SHA256 `b50aeba703c0b9e1cf5b04bf8c9ee8099c38b2663e0026e8e9b86a40dc7e315f`. The corpus covers all three entries, signed CADRSTOR zero/nonzero classes, every COPINDEX, incoming raw registers, all EBs/SUPER and IRQ states. The frozen checker passes 60 whole states and 30 unchanged invalid guards, including preservation of every external IO field.
+
+PAL C64 in VICE passes all 60 source states: mailbox `a500003c00`, PRG4,152 bytes, hardware stack14 bytes including14 ROM bytes, software stack69 bytes, no extra zero-page allocation. Source and target identities appear in `evidence/cm-display-rest-proof.json`. This is a bounded source routine proof. The separate uninterrupted CLOCKJOB blocked-display composition verifies the real downstream JOBSLEEP behavior; no whole Display-interface certificate is claimed here.

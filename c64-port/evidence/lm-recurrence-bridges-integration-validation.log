@@ -1,0 +1,14 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -ffunction-sections -Wl,--gc-sections tests/test_lm_recurrence_bridge.c src/agc_word.c src/waitlist.c src/lm_idle_start.c src/lm_taskover_resume.c src/lm_waitlist_dispatch.c tests/lm_idle_start_cases.c tests/lm_taskover_resume_cases.c tests/lm_waitlist_dispatch_cases.c -o build/test-lm-recurrence-port
+./build/test-lm-recurrence-port
+PASS:38 unchanged source-domain guards and10 null interfaces; positive pending idle exchange remains separately owned
+python3 tools/lm_recurrence_port_host.py --cc "cc"
+PASS lm-idle-start: 8192 complete original states, SHA256 14f00f0c2a34da0ca9775f06adcdaa249f185d73ac867ba7bbfbeb9edc59cfa7
+PASS lm-taskover-resume: 8192 complete original states, SHA256 db52eeeac28448be12c8dfa8aecfa4f8fcbf3577efbcc67e90e4ea1847a2f141
+PASS lm-waitlist-dispatch: 8192 complete original states, SHA256 05552495e64b4df5f4cec63a77df444e95e46b56862e26e5745db51a18bb3017
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -ffunction-sections -Wl,--gc-sections -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_lm_recurrence_bridge.c src/agc_word.c src/waitlist.c src/lm_idle_start.c src/lm_taskover_resume.c src/lm_waitlist_dispatch.c tests/lm_idle_start_cases.c tests/lm_taskover_resume_cases.c tests/lm_waitlist_dispatch_cases.c -o build/test-lm-recurrence-port-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-lm-recurrence-port-san
+PASS:38 unchanged source-domain guards and10 null interfaces; positive pending idle exchange remains separately owned
+python3 tools/lm_recurrence_port_host.py --cc "cc" --sanitize
+PASS lm-idle-start: 8192 complete original states, SHA256 14f00f0c2a34da0ca9775f06adcdaa249f185d73ac867ba7bbfbeb9edc59cfa7
+PASS lm-taskover-resume: 8192 complete original states, SHA256 db52eeeac28448be12c8dfa8aecfa4f8fcbf3577efbcc67e90e4ea1847a2f141
+PASS lm-waitlist-dispatch: 8192 complete original states, SHA256 05552495e64b4df5f4cec63a77df444e95e46b56862e26e5745db51a18bb3017

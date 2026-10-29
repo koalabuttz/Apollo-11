@@ -1,0 +1,12 @@
+Loading /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg from 0801 to 69BC (61BC bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  141/$08d,  34/$22
+.C:440e  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:f1 N.-..I.C  111576373
+Saving file `/workspace/Apollo-11/c64-port/build/standard-lead-cm-mailbox.bin' from $c000 to $c002
+Loading /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg from 0801 to 6C28 (6428 bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  239/$0ef,   4/$04
+.C:43cd  8E 00 C0    STX $C000      - A:00 X:A5 Y:00 SP:f1 N.-..I.C  116280301
+Saving file `/workspace/Apollo-11/c64-port/build/standard-lead-cm-mailbox.bin' from $c000 to $c002

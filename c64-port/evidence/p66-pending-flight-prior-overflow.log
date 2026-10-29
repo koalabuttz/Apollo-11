@@ -1,0 +1,16 @@
+ld.lld: error: resident overlaps canonical source RAM
+ld.lld: error: section '.text' will not fit in region 'ram': overflowed by 23 bytes
+ld.lld: error: section '.rodata' will not fit in region 'ram': overflowed by 1119 bytes
+ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1129 bytes
+ld.lld: error: section '.data' will not fit in region 'ram': overflowed by 1129 bytes
+ld.lld: error: section '.bss' will not fit in region 'ram': overflowed by 1160 bytes
+ld.lld: error: section '.noinit' will not fit in region 'ram': overflowed by 1160 bytes
+mos-c64-clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/p66_pending_flight_build.py", line 123, in <module>
+    main()
+  File "/workspace/Apollo-11/c64-port/tools/p66_pending_flight_build.py", line 102, in main
+    subprocess.run(common + ['-D' + define for define in defines] +
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/workspace/toolchains/llvm-mos/bin/mos-c64-clang', '-I/workspace/Apollo-11/c64-port/build/p66-pending-flight', '-Iinclude', '-Itests', '-Iplatform/c64', '-Ibuild', '-std=c99', '-Oz', '-fno-static-stack', '-mlto-zp=0', '-Wall', '-Wextra', '-Werror', '-DP66_NATIVE_DISPATCH_ONLY', '-DP66_GUIDANCE_DISPATCH_ONLY', '-DP66_BASIC_DISPATCH_ONLY', '-DP66_DISPLAY_JOB_DISPATCH_ONLY', '-DP66_APPLICATION_DISPATCH_ONLY', '-DP66_RECURRENCE_DISPATCH_ONLY', '-DP66_DIRECT_LAUNCH_DISPATCH_ONLY', '-DEXEC_NATIVE_RESIDENT_SERVICES', '-DP66_APPLICATION_SPLIT_DISPATCH_ONLY', '-DP66_PENDING_DISPATCH_ONLY', '-T', 'platform/c64/overlay_resident.ld', '-Wl,-Map,build/p66-pending-flight.map', 'src/agc_word.c', 'src/executive.c', 'src/native_dispatch.c', 'src/irq_delivery.c', 'src/p66_native.c', 'src/p66_native_guidance.c', 'src/p66_guidance_invoke.c', 'src/p66_basic.c', 'src/p66_descent_invoke.c', 'src/p66_descent_runtime.c', 'src/p66_descent_prefix_control.c', 'src/guidance_control_observer.c', 'src/native_overlay_dispatch.c', 'src/p66_display_job.c', 'src/overlay_runtime.c', 'platform/c64/overlay_platform.c', 'src/p66_application.c', 'src/p66_application_recurrence.c', 'src/lm_clock.c', 'src/p66_length_return_control.c', 'src/dsky_display.c', 'src/native_module_registry.c', 'src/p66_application_split.c', 'src/p66_application_pending.c', 'platform/c64/p66_pending_flight_diagnostic.c', '-o', 'build/p66-pending-flight.prg']' returned non-zero exit status 1.

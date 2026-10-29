@@ -1,0 +1,153 @@
+/* SPDX-License-Identifier: MIT
+ * CIA1 ICR read acknowledges both sources. Stock EA31 updates the jiffy clock
+ * before its final ICR read: chain there iff A (or another unowned bit) fired.
+ * Requires dynamic frames and only the 32 preserved LLVM-MOS registers. */
+.zeropage __rc0
+.zeropage __rc1
+.section .bss.c64_timer_saved,"aw",@nobits
+.Lsaved: .space 32
+.Lflags: .space 1
+.section .text.c64_timer_gate,"ax",@progbits
+.globl c64_timer_gate
+.type c64_timer_gate,@function
+c64_timer_gate:
+    lda $dc0d
+    sta .Lflags
+    and #2
+    bne .Lowned
+    jmp (c64_timer_previous)
+.Lowned:
+    lda #$81
+    sta $c060
+    cld
+    ldx #31
+.Lsave:
+    lda __rc0,x
+    sta .Lsaved,x
+    dex
+    bpl .Lsave
+    lda #<(c64_timer_stack+256)
+    sta __rc0
+    lda #>(c64_timer_stack+256)
+    sta __rc1
+    jsr c64_timer_producer
+    lda c64_timer_poison
+    beq .Lrestore_begin
+    ldx #31
+.Lpoison:
+    txa
+    eor #$5a
+    sta __rc0,x
+    dex
+    bpl .Lpoison
+.Lrestore_begin:
+    ldx #31
+.Lrestore:
+    lda .Lsaved,x
+    sta __rc0,x
+    dex
+    bpl .Lrestore
+    lda #$82
+    sta $c060
+    lda .Lflags
+    and #$1d
+    beq .Lreturn
+    jmp (c64_timer_previous)
+.Lreturn:
+    jmp $ea81
+.size c64_timer_gate,.-c64_timer_gate
+
+/* Diagnostic assembly caller: verifies all 32 registers, A/X/Y, D and I.
+ * No C call occurs while registers contain canaries. IRQ deliberately poisons
+ * all 32 before its restore. Protect normal callee-saved rc20..31 on entry. */
+.section .bss.c64_probe,"aw",@nobits
+.Lprobe_sp: .space 2
+.Lprobe_bad: .space 1
+.section .text.c64_timer_register_probe,"ax",@progbits
+.globl c64_timer_register_probe
+.type c64_timer_register_probe,@function
+c64_timer_register_probe:
+    php
+    sei
+    lda __rc0
+    sta .Lprobe_sp
+    lda __rc1
+    sta .Lprobe_sp+1
+    ldx #20
+.Lpush:
+    lda __rc0,x
+    pha
+    inx
+    cpx #32
+    bne .Lpush
+    lda #0
+    sta .Lprobe_bad
+    ldx #2
+.Lseed:
+    txa
+    eor #$a5
+    sta __rc0,x
+    inx
+    cpx #32
+    bne .Lseed
+    sed
+    lda #$39
+    ldx #$62
+    ldy #$71
+    cli
+.Lwait:
+    bit c64_timer_done
+    bpl .Lwait
+    cmp #$39
+    beq .Lx
+    inc .Lprobe_bad
+.Lx:
+    cpx #$62
+    beq .Ly
+    inc .Lprobe_bad
+.Ly:
+    cpy #$71
+    beq .Lp
+    inc .Lprobe_bad
+.Lp:
+    php
+    pla
+    and #$0c
+    cmp #$08 /* Decimal restored, IRQ enabled by CLI. */
+    beq .Lregs
+    inc .Lprobe_bad
+.Lregs:
+    sei
+    cld
+    ldx #2
+.Lcheck:
+    txa
+    eor #$a5
+    cmp __rc0,x
+    beq .Lnext
+    inc .Lprobe_bad
+.Lnext:
+    inx
+    cpx #32
+    bne .Lcheck
+    lda __rc0
+    cmp .Lprobe_sp
+    beq .Lsp1
+    inc .Lprobe_bad
+.Lsp1:
+    lda __rc1
+    cmp .Lprobe_sp+1
+    beq .Lpop_begin
+    inc .Lprobe_bad
+.Lpop_begin:
+    ldx #31
+.Lpop:
+    pla
+    sta __rc0,x
+    dex
+    cpx #19
+    bne .Lpop
+    plp
+    lda .Lprobe_bad
+    rts
+.size c64_timer_register_probe,.-c64_timer_register_probe

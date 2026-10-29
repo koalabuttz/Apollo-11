@@ -1,0 +1,14 @@
+{
+  "scope": "GitHub refused two immutable compressed streams exceeding100MiB; local historical trees/archives remain unchanged. Remote publication uses bounded compressed-byte parts plus restoration. For affected commits remote tree hashes intentionally differ from local trees; all original proof paths reconstruct byte-identically. Earlier published exact trees remain unchanged.",
+  "failure": "GitHub GH001 pre-receive hook rejected cm-super-dispatch and cm-wake-complete native gzip files. No remote branch update occurred.",
+  "objects": 2,
+  "paths": 4,
+  "restored_sha256": {
+    "evidence/cm-super-dispatch-native.snapshots.bin.gz": "ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc",
+    "evidence/cm-super-dispatch-reference.snapshots.bin.gz": "ec573f56893d9512d5372aa5d6fc87a38ce51dd6c362cb22d04798ccfb73c1fc",
+    "evidence/cm-wake-complete-native.snapshots.bin.gz": "3f907ba84087273eaec56b6f177a82bf72adbea25f443133b80821789593521a",
+    "evidence/cm-wake-complete-reference.snapshots.bin.gz": "3f907ba84087273eaec56b6f177a82bf72adbea25f443133b80821789593521a"
+  },
+  "fresh_isolated_restore": "PASS byte-exact GitHub evidence transport 4 archives restored",
+  "source_and_algorithm_change": false
+}

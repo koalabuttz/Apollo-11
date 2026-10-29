@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_inverse_trig_sweep.c tests/frozen_words.c src/inverse_trig.c src/guidance_norm.c src/guidance_product.c src/agc_word.c src/agc_multiword.c tests/inverse_trig_sweep_cases.c -o build/test-inverse-trig-sweep
+build/test-inverse-trig-sweep
+256 complete original LM/CM inverse-trig states: PASS

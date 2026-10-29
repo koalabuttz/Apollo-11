@@ -1,0 +1,4 @@
+PASS:16384 original FIXDELAY/VARDELAY/WAIT2 complete2050-word TASKOVER/caller-return/1203/1204 states
+Snapshot SHA256: db525f941049a406c816e7a6c595184dcd3ce50f53bd2f4e42112ae2ca59f707
+PASS:16384 frozen WAITLIST/TWIDDLE body equivalences;31 all-object delay/WAIT2 mutation guards and4 null interfaces
+PASS:retained FIXDELAY/VARDELAY/internal WAIT2 sanitize;16384 whole original states,16384 prior WAITLIST/TWIDDLE body equivalences,32 checked PRGs

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "milestone": "cm-tvc-restarts",
+  "release": "evidence-cm-tvc-restarts",
+  "files": {
+    "cm-tvc-restarts-differential.log": {
+      "sha256": "d4587ad83845c83797de7cddd6cd6baecb29b0ceda5dcfe5fb29172a585338f8",
+      "bytes": 433,
+      "store": "tree"
+    },
+    "cm-tvc-restarts-host.log": {
+      "sha256": "2c91876d42872fbba05aaab66098676674d90b021467b6e01e076e53518df18c",
+      "bytes": 1056,
+      "store": "tree"
+    },
+    "cm-tvc-restarts-proof.json": {
+      "sha256": "9943220270c9ed69ed09972217412dcb8cdbe5054e26332f20705cba09abebaa",
+      "bytes": 3562,
+      "store": "tree"
+    },
+    "cm-tvc-restarts-source-map.json": {
+      "sha256": "f897ad0098c28cb846bb52aefbfa7e0882713e7608ed6342c368ff425ee059b7",
+      "bytes": 13118,
+      "store": "tree"
+    },
+    "cm-tvc-restarts-vice.log": {
+      "sha256": "8062508c8bb7323f994dbfd794c053ea5f418f9e13dbfcda9eb5a0164c9ddadd",
+      "bytes": 522,
+      "store": "tree"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+$ make vice-keyrupt-uprupt
+/home/claude/Apollo-11/c64-port/deps/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,-Map,build/keyrupt-uprupt.map src/keyrupt_uprupt.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_transfer.c src/agc_word.c src/agc_multiword.c tests/keyrupt_uprupt_cases.c platform/c64/keyrupt_uprupt_diagnostic.c -o build/keyrupt-uprupt.prg
+python3 tools/vice_run.py build/keyrupt-uprupt.prg --cycles 3000000000 --timeout 1200
+PASS: VICE PAL keyrupt-uprupt.prg: 192 checks, 0 failures
+PRG sha256: 96255ff54317c19e3058b6fade5d2c0e2c156a5f2bf87ed7193b415f1166ea5a keyrupt-uprupt.prg

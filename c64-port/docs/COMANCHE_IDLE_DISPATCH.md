@@ -1,0 +1,13 @@
+# Comanche canonical idle adoption and dispatch
+
+`cm_idle_dispatch` executes actual ADVAN01,3231 through core0 NUDIRECT adoption, NUCHANG2/CHANJOB dispatch of a waiting basic or interpreted job, or the genuine SELFRET selfcheck continuation. It returns the actual typed location/BBCON for the next compiled callback and executes no application payload. One canonical 2048-word image plus explicit SUPERBNK/IRQ/channel11 is authoritative.
+
+With NEWJOB +0, NUDIRECT activates channel11, transfers the admitted core0 pair via SUPDXCHZ, and retains source activity/L debris in LOC/BANKSET. A positive candidate displacement executes the genuine context exchange and interpreted INTRSM when necessary, retaining raw register and bank effects. NEWJOB -0 follows the actual selfcheck transfer: SELFBANK066102 selects physical FB066000, EB2, SUPER100 and the caller's SELFRET01361 continuation. The selfcheck body itself is a later source callback. This does not simulate an invented idle job or reuse Luminary's eight-core dispatcher.
+
+The qualified entry has source PC03231/physical FB02000, consistent source bank/I/O words, valid source candidate priority/LOC/BBCON and ordinary positive SELFRET for the selfcheck branch. Dormant/free slots are retained; no VAC is released during adoption. Unsupported guards preserve the complete image and I/O. Original source counters are zero and the scaler is frozen. No output normalization occurs.
+
+All4096 complete original/native2055-value states match SHA2569a7693e6159056f89a624255e96ce997d34120aabdd3f9e1eabd2bf4bc3a40e6. Four cohorts cover direct core0 adoption, waiting basic and interpreted transfers, and selfcheck. All seven CM cores, source physical banks/superbanks, both IRQ latches, rawQ corner patterns and source overflow/PUSH effects are represented. Strict host and ASAN/UBSAN pass. Stock PAL C64 passes128 full-state fingerprints and two complete samples, mailboxa500008000; stack extents16/666bytes.
+
+Original Comanche Executive is byte-preserved with five indentation-only pseudo-label repairs in the pinned source fixture; Interpreter has36 such repairs. Complete normalized rope SHA2562ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79 equals VirtualAGC1b5d6474841a7ab53237ead070f76f35f162f68d supporting baseline. Documented pinned ALTVAR/R53FLBIT differences are unused. Exact source hashes/repair patches and all target artifacts are retained.
+
+Use tools/cm_idle_dispatch.mk differential/test/sanitize/C64 targets and tools/cm_idle_dispatch_report.py to freeze the complete packet. Native code is MIT, host original-source oracle GPL only.

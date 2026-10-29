@@ -1,0 +1,12 @@
+fill c800 cfff cd
+load "/workspace/Apollo-11/c64-port/build/cm-scan-zero.prg" 0
+watch store c080
+ignore 1 1
+g 080d
+m c080 c084
+m c000 c025
+bsave "/workspace/Apollo-11/c64-port/build/cm-scan-zero-vice-mailbox.bin" 0 c080 c084
+bsave "/workspace/Apollo-11/c64-port/build/cm-scan-zero-vice-shared.bin" 0 7000 7fff
+bsave "/workspace/Apollo-11/c64-port/build/cm-scan-zero-vice-stack.bin" 0 c800 cfff
+screen
+quit

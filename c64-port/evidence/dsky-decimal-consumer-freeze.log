@@ -1,0 +1,8 @@
+tests/dsky_decimal_consumer_vectors_0.h 32 states 0 before/ 316 after patches
+tests/dsky_decimal_consumer_vectors_1.h 32 states 717 before/ 430 after patches
+tests/dsky_decimal_consumer_vectors_2.h 32 states 836 before/ 387 after patches
+tests/dsky_decimal_consumer_vectors_3.h 32 states 1008 before/ 404 after patches
+tests/dsky_decimal_consumer_vectors_4.h 32 states 864 before/ 206 after patches
+tests/dsky_decimal_consumer_vectors_5.h 32 states 950 before/ 666 after patches
+tests/dsky_decimal_consumer_vectors_6.h 32 states 1111 before/ 236 after patches
+tests/dsky_decimal_consumer_vectors_all.h 224 states 5486 before/ 2645 after patches

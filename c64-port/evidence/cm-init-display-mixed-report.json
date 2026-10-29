@@ -1,0 +1,41 @@
+{
+  "actual_executed_source_states": 15360,
+  "source_stream_sha256": "f3faa2f98ec421c7c868185bb19e4107d8a04a1bbbbe789f3d562d4a3e4ab15f",
+  "target_contexts": 56,
+  "target_checkpoints": 120,
+  "target_full_samples": 2,
+  "target_final_physical_words": 2048,
+  "mailbox_hex": "a500007800",
+  "software_stack_bytes": 721,
+  "modules": [
+    {
+      "id": 213,
+      "filename": "G213",
+      "byte_count": 6116,
+      "crc16": 10756,
+      "sha256": "f975828a5faf3e76f570830c214ed09a67a75f3210b8c1f84eb1579ef2570f88",
+      "prg": "cm-init-display-mixed-213.prg",
+      "native_control": true
+    },
+    {
+      "id": 254,
+      "filename": "G254",
+      "byte_count": 7213,
+      "crc16": 39698,
+      "sha256": "bc1cefacc0cade7232acd23843cf8930bdd6515e4d950dee6c67767b8c91b0b9",
+      "prg": "cm-init-display-mixed-254.prg",
+      "native_control": false
+    },
+    {
+      "id": 255,
+      "filename": "G255",
+      "byte_count": 10723,
+      "crc16": 9574,
+      "sha256": "188816983073d694af12754275a4fe6e6e70ace1c2ef2aadef6d9cb07518655a",
+      "prg": "cm-init-display-mixed-255.prg",
+      "native_control": false
+    }
+  ],
+  "complete_file_qualified": false,
+  "scope": "actual INITDSP restore prefix, mixed PRIOCHNG and genuine current INITDSP+6 BANKJUMP return; selected application/alarm bodies and full Executive caller domains remain later continuations"
+}

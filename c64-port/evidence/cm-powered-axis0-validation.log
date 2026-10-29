@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete cm_powered_axis group original-assembly states; retained memory unchanged
+Mailbox: a500002000
+PRG bytes: 12083
+cm_powered_axis-hardware-stack.bin: measured stack extent 23 bytes
+cm_powered_axis-software-stack.bin: measured stack extent 294 bytes

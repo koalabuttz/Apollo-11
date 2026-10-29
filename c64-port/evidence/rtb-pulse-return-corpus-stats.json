@@ -1,0 +1,16 @@
+{
+  "lm": {
+    "mission": 0,
+    "complete_states": 65536,
+    "decoded_sha256": "0cad3b032a3ef77b5958f32c54bb8a09c069bd457a07cfe500a749492d1b61d4",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 436
+  },
+  "cm": {
+    "mission": 1,
+    "complete_states": 65536,
+    "decoded_sha256": "00fd9cc64ce25ea8cb68c6c00b21760c754c343a908868dfd1b6d9eae97ef459",
+    "frozen_states": 32,
+    "frozen_storage_bytes": 436
+  }
+}

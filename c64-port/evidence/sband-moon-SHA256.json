@@ -1,0 +1,154 @@
+{
+  "docs/NATIVE-SBAND-MOON-RETURN.md": {
+    "sha256": "f4fab6a4bc8907abe424bae3777f3eb9974535b0ef1df7e683c77aa3e8923261",
+    "bytes": 2401
+  },
+  "evidence/sband-moon-frozen-validation.log": {
+    "sha256": "a7f91bbd1af33e1b6643f83daa1650b9de80cf5da669314701a8bbd3b8bcee43",
+    "bytes": 93
+  },
+  "evidence/sband-moon-host-validation.log": {
+    "sha256": "05dc6746708b5f09edea24ed5b9cb1dae4e5922caeca6e14f9ec8fc139d06927",
+    "bytes": 1017
+  },
+  "evidence/sband-moon-independent-review.txt": {
+    "sha256": "9c81416cf3edf8f97ff96f1d369ef46295050f821eeae34728b5300eb1718f45",
+    "bytes": 1281
+  },
+  "evidence/sband-moon-mailbox.bin": {
+    "sha256": "84f5afa7698faa66a1295472852ee63e55174a088e90c8ecaf245117f1d6c525",
+    "bytes": 4
+  },
+  "evidence/sband-moon-monitor.log": {
+    "sha256": "966a330c40a358697a03f90ed44ae1a25a52b2cfea820fda2393b8d3f8661917",
+    "bytes": 385
+  },
+  "evidence/sband-moon-native-results.json": {
+    "sha256": "c035dc55536ce37a70c25c924682143331f6ce4282a571974b4527698da119c1",
+    "bytes": 166
+  },
+  "evidence/sband-moon-proof.json": {
+    "sha256": "6e99ef05630f40146c490462999c1f1ea3193d2a47d7061da544fbcc181f7335",
+    "bytes": 2517
+  },
+  "evidence/sband-moon-sanitize-results.json": {
+    "sha256": "c035dc55536ce37a70c25c924682143331f6ce4282a571974b4527698da119c1",
+    "bytes": 166
+  },
+  "evidence/sband-moon-source-map.json": {
+    "sha256": "4d7995faa83e2ab42b63a2cd0142a11c60fe061ddaad53ddd2fc4190c7643d65",
+    "bytes": 8029
+  },
+  "evidence/sband-moon-source.snapshots.bin.xz": {
+    "sha256": "ce844c272e069efe91b30932891467a59e75eb4a295b674d36d1427a22a4740b",
+    "bytes": 17418188
+  },
+  "evidence/sband-moon-target-results.json": {
+    "sha256": "87e614530e34c8a0efbbddc37563190b3cdceabc75be061e942805e72b5ab534",
+    "bytes": 792
+  },
+  "evidence/sband-moon-target-source.snapshots.bin.xz": {
+    "sha256": "98c1d9637efde551bd102096456de9db699fd2aa85b571ab8dcb9bfe7b0b5051",
+    "bytes": 45028
+  },
+  "evidence/sband-moon-target-validation.log": {
+    "sha256": "decacf01a37bfd3c717786feb01a06aa962f812dc2242190363e930b7c4b95aa",
+    "bytes": 1168
+  },
+  "evidence/sband-moon-vice-results.json": {
+    "sha256": "c6960e5d526f318966b09a505bb7775430838b6c028efb826cd19a931a1d5c40",
+    "bytes": 198
+  },
+  "evidence/sband-moon-vice.log": {
+    "sha256": "37ef00f6b6f31260a5c485bfff237955cd96f2d86a998752f8dfd19c69da4163",
+    "bytes": 6488
+  },
+  "evidence/sband-moon.map": {
+    "sha256": "e82dcf1dc57bd740b55a0655356a22aab7efd00344f1753b1a106bab64f47ec6",
+    "bytes": 11673
+  },
+  "evidence/sband-moon.prg": {
+    "sha256": "e1ba8befc8e405407d127e83208c784339c8a1506b906732926b5671d5b929fa",
+    "bytes": 16646
+  },
+  "include/sband_moon.h": {
+    "sha256": "c3d416b01d6a28f456adc00fb9e20be15898b844def0b1da8ce33e4e9f9ba64e",
+    "bytes": 561
+  },
+  "platform/c64/sband_moon_diagnostic.c": {
+    "sha256": "b81049836228ca59230e44423fab6e39791d5c8b5e117cdaedcf6977715cdead",
+    "bytes": 434
+  },
+  "src/sband_moon.c": {
+    "sha256": "81caf6480a5fbbe8797a580ff068ed1a6370c6207fa7fad36402948e96ec9faf",
+    "bytes": 2844
+  },
+  "tests/sband_moon_cases.c": {
+    "sha256": "7ff8a20665ad22cbf42415cc8ce013ba2884f3744269d8d7d26578298e7f8efe",
+    "bytes": 1243
+  },
+  "tests/sband_moon_cases.h": {
+    "sha256": "1b24a4ad42c7a7cf13f93e4c5d997161835e3baa21547912bbec176c91cc4e17",
+    "bytes": 218
+  },
+  "tests/sband_moon_target.c": {
+    "sha256": "cdaaf08a29b58dca9f6421573af43d20d93cba54432d454b127a41c482db6cec",
+    "bytes": 1418
+  },
+  "tests/sband_moon_target.h": {
+    "sha256": "d640595581eea67e141df73cf8c0a550109f03c6cc1fd0a089d54a91ba568d37",
+    "bytes": 138
+  },
+  "tests/sband_moon_vectors.h": {
+    "sha256": "430d2a39baf43b87c8ed1384eb7e57e7e9b84f6c19ace1089d8b42553bdb4210",
+    "bytes": 11535
+  },
+  "tests/test_sband_moon.c": {
+    "sha256": "c6dfb7fd820cc5c14a88a89b77ea2b5b666337b48af0559d552773ae1fae0916",
+    "bytes": 945
+  },
+  "tools/freeze_sband_moon.py": {
+    "sha256": "b1b765e97be3a9daf20d0e5bf813321bde1e9a725683e39b318b3b4bddb6b300",
+    "bytes": 1848
+  },
+  "tools/package_sband_moon.py": {
+    "sha256": "ff178daa23e3ee7e70b39737fa76cb706d6bc079ba70c08651d502fccfa7e4f3",
+    "bytes": 3865
+  },
+  "tools/sband_moon.mk": {
+    "sha256": "6c867a618fd9528512e8b305bcc496d9da9fa466c8887e5b6ed33dcc4dd09d4c",
+    "bytes": 1652
+  },
+  "tools/sband_moon_compare.py": {
+    "sha256": "64366e5246493942634048c28debd27607641762eec39a5c02ba4c391d8e9e32",
+    "bytes": 1807
+  },
+  "tools/sband_moon_inputs.c": {
+    "sha256": "d95bffa41b8392f4b82dc761b5ab06fa3d6e9df1f503343d7c9a30304729fb03",
+    "bytes": 492
+  },
+  "tools/sband_moon_integration.mk": {
+    "sha256": "68a181319e176aadae31c6adbbc5efe3fe6fbdc6e864e9d674e920630c4a194f",
+    "bytes": 1532
+  },
+  "tools/sband_moon_port_host.py": {
+    "sha256": "e619b66da6deadf796fd27c9a9f0270ca1a0edbba3701abde21c0e96c9936627",
+    "bytes": 584
+  },
+  "tools/sband_moon_reference.c": {
+    "sha256": "34dcb6480a9d57204a6bb6fef6afd3962ffbe08d3935b1f9ca4a8325bb39823b",
+    "bytes": 1742
+  },
+  "tools/sband_moon_snapshot.c": {
+    "sha256": "27ee69ebe7db0d51601e60758ad8267844cb7e27982f5f94f8762bc63bc437f6",
+    "bytes": 651
+  },
+  "tools/sband_moon_source.py": {
+    "sha256": "73db3d3de3feea60836ed617ad04498cb5885563c91c02e843108804a78d71aa",
+    "bytes": 2916
+  },
+  "tools/sband_moon_vice_test.py": {
+    "sha256": "2874c9fcdab0f289260e01f53de7a0177cb3ec4bcc58dd422d500357cfb0bdd5",
+    "bytes": 2653
+  }
+}

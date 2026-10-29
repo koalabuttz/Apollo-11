@@ -1,0 +1,109 @@
+{
+  "local_source_words": {
+    "LM": [
+      {
+        "bank": "41",
+        "pc": "3353",
+        "word": "34317"
+      },
+      {
+        "bank": "41",
+        "pc": "3354",
+        "word": "54777"
+      },
+      {
+        "bank": "41",
+        "pc": "3355",
+        "word": "31047"
+      },
+      {
+        "bank": "41",
+        "pc": "3356",
+        "word": "54001"
+      },
+      {
+        "bank": "41",
+        "pc": "3357",
+        "word": "31017"
+      },
+      {
+        "bank": "41",
+        "pc": "3360",
+        "word": "04651"
+      },
+      {
+        "bank": "41",
+        "pc": "3361",
+        "word": "03363"
+      },
+      {
+        "bank": "41",
+        "pc": "3362",
+        "word": "05155"
+      }
+    ],
+    "CM": [
+      {
+        "bank": "41",
+        "pc": "3353",
+        "word": "34333"
+      },
+      {
+        "bank": "41",
+        "pc": "3354",
+        "word": "54777"
+      },
+      {
+        "bank": "41",
+        "pc": "3355",
+        "word": "31047"
+      },
+      {
+        "bank": "41",
+        "pc": "3356",
+        "word": "54001"
+      },
+      {
+        "bank": "41",
+        "pc": "3357",
+        "word": "31017"
+      },
+      {
+        "bank": "41",
+        "pc": "3360",
+        "word": "04715"
+      },
+      {
+        "bank": "41",
+        "pc": "3361",
+        "word": "03363"
+      },
+      {
+        "bank": "41",
+        "pc": "3362",
+        "word": "05217"
+      }
+    ]
+  },
+  "local_word_count_per_mission": 8,
+  "stages": [
+    "ENTER41,3353 ->SUPDACAL04651LM/04715CM",
+    "DATA actual SUPDACAL ->41,3361",
+    "FORMAT41,3361 DSPOCTWO +ENDSPF ->ENDO F JOB05155LM/05217CM orCCSHOLE05705LM/05747CM"
+  ],
+  "passive_data_physical_domain": [
+    0,
+    40959
+  ],
+  "original_populated_banks": [
+    0,
+    35
+  ],
+  "unpopulated_zero_banks": [
+    36,
+    39
+  ],
+  "data_page_load_between_returned_c_frames": true,
+  "whole_file_claim": false,
+  "native_instruction_decoder": false
+}

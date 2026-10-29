@@ -1,0 +1,20 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_timing_cases.c platform/host/cm_restart_timing_snapshot.c -o build/cm-restart-timing-native
+python3 tools/cm_restart_timing_differential.py
+PASS: 4096 original CM timing cases, every 2048 physical word and exit type exact
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3573 FINDTIME",
+    "01,3701 ITSLGCL2"
+  ],
+  "boundary": "0704 GOLOC-1",
+  "snapshot_sha256": "10dff4b83861388a33312d91a2b589257c8d991d5a8801a046113d93d221adf3"
+}
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_timing_cases.c tests/cm_restart_timing_check.c tests/test_cm_restart_timing.c -o build/test-cm-restart-timing
+./build/test-cm-restart-timing
+4096 original CM full-image timing states and guards: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_timing_cases.c tests/cm_restart_timing_check.c tests/test_cm_restart_timing.c -o build/test-cm-restart-timing-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-restart-timing-sanitize
+4096 original CM full-image timing states and guards: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-restart-timing.map src/cm_restart_timing.c src/agc_word.c src/agc_multiword.c tests/cm_restart_timing_cases.c tests/cm_restart_timing_check.c platform/c64/cm_restart_timing_diagnostic.c -o build/cm-restart-timing.prg

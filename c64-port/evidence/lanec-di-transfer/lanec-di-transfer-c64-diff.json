@@ -1,0 +1,8 @@
+{
+  "suite": "di-transfer-c64",
+  "cases": 1164,
+  "differing": 0,
+  "refused_unchanged": 28,
+  "native_sha256": "0aabddfabfd648a8bee941874442de5c249680e633f496486b6da932fd484f82",
+  "oracle_sha256": "d2c2cc066bb30a03fbdc519c770023f9488f65fec9c501adf33598248a783516"
+}

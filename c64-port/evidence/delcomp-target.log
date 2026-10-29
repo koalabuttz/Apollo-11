@@ -1,0 +1,3 @@
+PASS: stock-ROM PAL C64 executes LM+CM original DELCOMP; 320 full canonical source states
+Every physical word and source SUPER/IRQ result compared exactly; caller continuation remains external
+Native PRG 37152 bytes; load end $991f; BSS end $b987; mailbox a54001

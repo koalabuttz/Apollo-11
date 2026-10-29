@@ -1,0 +1,57 @@
+== lm-conic-kepler (KEPLERN, DELTIME, KEPLOOP)
+PASS 8 frozen original KEPLERN entries, 21 admission guards and 90 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 501521398e5847c0dbb2e80b5232faaf4e7169b470ec08442c30663d5a5120e0
+PASS65536 original KEPLERN entries strict native
+PASS 8 frozen original KEPLERN entries, 21 admission guards and 90 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 501521398e5847c0dbb2e80b5232faaf4e7169b470ec08442c30663d5a5120e0
+PASS65536 original KEPLERN entries full ASAN/UBSAN
+PASS: VICE PAL lm-conic-kepler-1.prg: 24 checks, 0 failures
+PASS: VICE PAL lm-conic-kepler-2.prg: 20 checks, 0 failures
+PASS: VICE PAL lm-conic-kepler-3.prg: 28 checks, 0 failures
+PASS: VICE PAL lm-conic-kepler-4.prg: 18 checks, 0 failures
+PASS 338 assembled KEPLERN words on 318 source lines map to native literals in 23 functions
+== lm-conic-timethet (TIMETHET, PARAM, GEOM, GETX and their tails)
+PASS65536 original TIMETHET oracle entries equal native 2053-word rows ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf
+PASS 8 frozen original TIMETHET entries, 22 admission guards and 90 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf
+PASS65536 original TIMETHET entries strict native
+PASS 290 assembled TIMETHET words on 283 source lines map to native literals in 24 functions
+PASS 8 frozen original TIMETHET entries, 22 admission guards and 90 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf
+PASS65536 original TIMETHET entries full ASAN/UBSAN
+PASS: VICE PAL lm-conic-timethet-1.prg: 22 checks, 0 failures
+PASS: VICE PAL lm-conic-timethet-2.prg: 21 checks, 0 failures
+PASS: VICE PAL lm-conic-timethet-3.prg: 23 checks, 0 failures
+PASS: VICE PAL lm-conic-timethet-4.prg: 24 checks, 0 failures
+== lm-conic-timerad (TIMERAD, APSIDES)
+PASS 12 frozen original TIMERAD/APSIDES entries, 25 admission guards and 108 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 6207be44393d515d9b3305406d29bc77a4d9e10178691bb75ab4dabc6f4bf266
+PASS65536 original TIMERAD/APSIDES entries strict native
+PASS 12 frozen original TIMERAD/APSIDES entries, 25 admission guards and 108 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 6207be44393d515d9b3305406d29bc77a4d9e10178691bb75ab4dabc6f4bf266
+PASS65536 original TIMERAD/APSIDES entries full ASAN/UBSAN
+PASS: VICE PAL lm-conic-timerad-1.prg: 28 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-2.prg: 9 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-3.prg: 13 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-4.prg: 17 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-5.prg: 21 checks, 0 failures
+PASS: VICE PAL lm-conic-timerad-6.prg: 20 checks, 0 failures
+PASS 123 assembled TIMERAD/APSIDES words on 123 source lines map to native literals in 9 functions
+== lm-conic-lambert (LAMBERT, ITERATOR, LAMENTER (and HAVENORM RVQ, CONICS1 constants))
+PASS65536 original LAMBERT oracle entries equal native 2053-word rows b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3
+PASS 11 frozen original LAMBERT entries, 24 admission guards and 176 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3
+PASS65536 original LAMBERT entries strict native
+PASS 316 assembled LAMBERT/ITERATOR words on 316 source lines map to native literals in 30 functions; whole file {'assembled_words': 1072, 'words_by_owner': {'CONICS1 constant tables': 29, 'lm-conic-kepler': 338, 'lm-conic-lambert': 316, 'lm-conic-timerad': 123, 'lm-conic-timethet': 265, 'lm-conic-timethet (ltt_havenorm)': 1}}
+PASS 11 frozen original LAMBERT entries, 24 admission guards and 176 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 b312345ded2a7b91d2514447891caa65959ed0ae4ba58ee147354dcb03ea06d3
+PASS65536 original LAMBERT entries full ASAN/UBSAN
+PASS: VICE PAL lm-conic-lambert-1.prg: 17 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-2.prg: 16 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-3.prg: 16 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-4.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-5.prg: 26 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-6.prg: 12 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-7.prg: 33 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-8.prg: 7 checks, 0 failures
+PASS: VICE PAL lm-conic-lambert-9.prg: 37 checks, 0 failures

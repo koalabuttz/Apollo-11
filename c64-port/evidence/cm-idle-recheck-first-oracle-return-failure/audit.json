@@ -1,0 +1,30 @@
+{
+  "reason": "First oracle stopped after TC L at rawPC1 before source saved compiled TC descriptor in L executed; also failed to recapture actual ch11 output. At case0 onlyQ/PC/ch11/tuple differed. Corrected oracle completes true source compiled return and records channel11; native unchanged. No acceptance claim for failed run.",
+  "files": [
+    {
+      "path": "tools/cm_idle_recheck_reference.c",
+      "bytes": 1745,
+      "sha256": "dfcd4668c255da85614f5d4f04fccb36a2c4caea21e4618db43673a3b19b86b6"
+    },
+    {
+      "path": "build/cm-idle-recheck-validation.log",
+      "bytes": 818,
+      "sha256": "aa8161342d29a799833ca0d399e850c97ee48a19bd5111609540e7d3a391241c"
+    },
+    {
+      "path": "build/cm-idle-recheck-reference.trace",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/cm-idle-recheck-reference.snapshots.bin.gz",
+      "bytes": 1660233,
+      "sha256": "6f850786d7f92a186032556605b8931d67d9d78d890bff5c02a9406e0de54a40"
+    },
+    {
+      "path": "build/cm-idle-recheck-native.snapshots.bin.gz",
+      "bytes": 1598039,
+      "sha256": "e88920245e87a3db9d1072661e8db9a683d9df5cf3ae05938a79ca0858b7fc30"
+    }
+  ]
+}

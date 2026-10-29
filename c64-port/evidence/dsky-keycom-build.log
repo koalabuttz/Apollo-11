@@ -1,0 +1,1 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror src/agc_word.c src/executive.c src/dsky_keycom.c tests/dsky_keycom_cases.c tests/dsky_keycom_check.c tools/dsky_keycom_diagnostic.c -Wl,-Map,build/dsky_keycom.map -o build/dsky_keycom.prg

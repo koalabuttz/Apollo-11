@@ -1,0 +1,36 @@
+{
+  "change": "One noinline C ABI exec_native_step shared by basic and arithmetic bindings; no source algorithm change.",
+  "target": {
+    "checkpoints": 192,
+    "words_each": 493,
+    "math_overlays": 27,
+    "proof_overlays": 2,
+    "mailbox": "a50000c00002",
+    "software_stack_extent": 736,
+    "capacity": 2048,
+    "resident": {
+      "text": 25398,
+      "rodata": 759,
+      "data": 26,
+      "bss": 23,
+      "end_address": "0x6e6b",
+      "bytes_before_shared_image": 405
+    }
+  },
+  "host_regression": {
+    "mixed_original_checkpoints": 140,
+    "live": 2944,
+    "two_job": 400,
+    "pending": 704,
+    "strict_and_ASAN_UBSAN": "pass"
+  },
+  "files": {
+    "p66-resident-outlined.map": "ae30bb072a619b144fc080b59e1cf9387d3e2b8ac6a2e6523c18d9d3d7c53369",
+    "p66-resident-outlined.prg": "1673bc0940bb1db34ce5a5410a5fa0d4eb5ef1eeffe2b3f1c00cfff2111d209b",
+    "p66-resident-outlined.d81": "9ab22fa55c3b96ac51af005c68a3550a917949453ffb35fb685b41e31f2b660c",
+    "p66-resident-outlined-vice-mailbox.bin": "80070d3bcbcc9f405c4b4bec5b22d46978b85c512b5758012805782660dd4cf2",
+    "p66-resident-outlined-vice-shared.bin": "4ed1502ffe461f7289663eeb9c66c61a806a5c266cbff0a8b70f218613674f1f",
+    "p66-resident-outlined-vice-stack.bin": "423d7b5b7b2d0bcd6be892722f3e103b037cf078657e7b6bafb6dbfbbdf0dd1d",
+    "p66-resident-outlined-vice-monitor.log": "718dcb2775918e0c578a982fd6ca247e59e7c0263f26f387ff02c4c0a40e840b"
+  }
+}

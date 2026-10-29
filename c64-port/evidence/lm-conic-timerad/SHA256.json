@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-conic-timerad",
+  "release": "evidence-lm-conic-timerad",
+  "files": {
+    "lm-conic-timerad-1.map": {
+      "sha256": "823d954aeaac0f7f9faaf21c6784d407ddee9b33bd49f2b0bc0172d1dc1eda85",
+      "bytes": 32366,
+      "store": "release"
+    },
+    "lm-conic-timerad-1.prg": {
+      "sha256": "93904c0d8895b8b0edb194fb58f2a9232d4a1d81b2e5f7588f9204de1c238dfb",
+      "bytes": 46959,
+      "store": "release"
+    },
+    "lm-conic-timerad-2.map": {
+      "sha256": "a924f76e4d07e8e22e27f0f60e5091d67dc9c20a659a0df0bdc8177ea43db4ae",
+      "bytes": 31025,
+      "store": "release"
+    },
+    "lm-conic-timerad-2.prg": {
+      "sha256": "9ed07c3c844e3f1994c03596061894d2f4e60598b2f625e6deb3bc2c05c824e3",
+      "bytes": 39140,
+      "store": "release"
+    },
+    "lm-conic-timerad-3.map": {
+      "sha256": "2b61b7d925c0aede9e497961445a927ce097fbc0c217b4da98361a4645c26da0",
+      "bytes": 30618,
+      "store": "release"
+    },
+    "lm-conic-timerad-3.prg": {
+      "sha256": "84d2ae27c7b4c29e327d37428af5bddbc14a2f1dcd6de70f00ce4543791cc158",
+      "bytes": 40854,
+      "store": "release"
+    },
+    "lm-conic-timerad-4.map": {
+      "sha256": "4aaf7bc816928fd8d2bff4ee0340ac612c40f236be1f1c48994fb3ecdc0160b6",
+      "bytes": 23510,
+      "store": "release"
+    },
+    "lm-conic-timerad-4.prg": {
+      "sha256": "03c7eb57bec006aaa77b0b3d5b3202b4ba6230dee29e0bf43b504c0112b2fa66",
+      "bytes": 37097,
+      "store": "release"
+    },
+    "lm-conic-timerad-5.map": {
+      "sha256": "af914426d7cc5f1b48c9c1cb54f37a2152dd6c3885d70c8f82eb02946261e0d6",
+      "bytes": 24834,
+      "store": "release"
+    },
+    "lm-conic-timerad-5.prg": {
+      "sha256": "56ec496214e30e79845fcca570838de7a76258f2f32cbbcf9d11fad423c3d63c",
+      "bytes": 40675,
+      "store": "release"
+    },
+    "lm-conic-timerad-6.map": {
+      "sha256": "c17bbfb9f28eccf4cafe3c7011611312062c5198d15cb09fbadde6feba46c29f",
+      "bytes": 21290,
+      "store": "release"
+    },
+    "lm-conic-timerad-6.prg": {
+      "sha256": "78b0a13c7f332694b970c655606d55a611418884a1dff2ec8211f5a3152f6b13",
+      "bytes": 27686,
+      "store": "release"
+    },
+    "lm-conic-timerad-checks.log": {
+      "sha256": "7aa7a9169e2c583c3f20e4a3121ac371a4864ef5b12cace0efb568c3cce030f9",
+      "bytes": 1012,
+      "store": "tree"
+    },
+    "lm-conic-timerad-phase-steps.json": {
+      "sha256": "a28b7a7b020c9a86d8deb9144750029e462a0ef4264ab69d10311febf9f8d08f",
+      "bytes": 1500,
+      "store": "tree"
+    },
+    "lm-conic-timerad-reference.snapshots.bin.xz": {
+      "sha256": "e1e42dc98bdeedc5a5c5d90518ba9416fc52e9d2126f643697dcf5809a7ca095",
+      "bytes": 35759820,
+      "store": "release"
+    },
+    "lm-conic-timerad-results.json": {
+      "sha256": "f25743d945abd410d7e7d4a6fe5a2854aac33d2246577b9ff1db529b0d7c3a9d",
+      "bytes": 3859,
+      "store": "tree"
+    },
+    "lm-conic-timerad-source-map.json": {
+      "sha256": "c8519269bef46e036f4fcd87cf613cc9a34766b4e966521e3acf0aa3c14e6d6c",
+      "bytes": 17986,
+      "store": "tree"
+    },
+    "lm-conic-timerad-source-stream.json": {
+      "sha256": "54b4be1197ba2dd361d384cc09097721a738ff9c3ec92064f3b36f3c44a89944",
+      "bytes": 382,
+      "store": "tree"
+    },
+    "lm-conic-timerad-target-states.json": {
+      "sha256": "fbd76d0b5d7cd8c0af0098ea1977bc70f80acb0fe8d27f93d3c42925e3558888",
+      "bytes": 279,
+      "store": "tree"
+    }
+  }
+}

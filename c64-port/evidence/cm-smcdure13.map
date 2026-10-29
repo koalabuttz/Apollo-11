@@ -1,0 +1,161 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     5028     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm-smcdure13.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      224     1         build/cm-smcdure13.prg.lto.o:(.text.frozen_words_next)
+     843      843      224     1                 frozen_words_next
+     a67      a67     1ddb     1         build/cm-smcdure13.prg.lto.o:(.text.main)
+     a67      a67     1ddb     1                 main
+    2842     2842      480     1         build/cm-smcdure13.prg.lto.o:(.text.p66_scalar_product)
+    2842     2842      480     1                 p66_scalar_product
+    2cc2     2cc2     1828     1         build/cm-smcdure13.prg.lto.o:(.text.p66_dp_divide)
+    2cc2     2cc2     1828     1                 p66_dp_divide
+    44ea     44ea      10b     1         build/cm-smcdure13.prg.lto.o:(.text.canonical_positive)
+    44ea     44ea      10b     1                 canonical_positive
+    45f5     45f5      283     1         build/cm-smcdure13.prg.lto.o:(.text.ratio)
+    45f5     45f5      283     1                 ratio
+    4878     4878      4ff     1         build/cm-smcdure13.prg.lto.o:(.text.component)
+    4878     4878      4ff     1                 component
+    4d77     4d77      2f1     1         build/cm-smcdure13.prg.lto.o:(.text.p66_scalar_shift_left)
+    4d77     4d77      2f1     1                 p66_scalar_shift_left
+    5068     5068       ca     1         build/cm-smcdure13.prg.lto.o:(.text.agc_multiply)
+    5068     5068       ca     1                 agc_multiply
+    5132     5132      1bc     1         build/cm-smcdure13.prg.lto.o:(.text.agc_double_add)
+    5132     5132      1bc     1                 agc_double_add
+    52ee     52ee        6     1         build/cm-smcdure13.prg.lto.o:(.text.exit)
+    52ee     52ee        6     1                 exit
+    52f4     52f4       34     1         build/cm-smcdure13.prg.lto.o:(.text.memcpy)
+    52f4     52f4       34     1                 memcpy
+    5328     5328       47     1         build/cm-smcdure13.prg.lto.o:(.text.memcmp)
+    5328     5328       47     1                 memcmp
+    536f     536f       22     1         build/cm-smcdure13.prg.lto.o:(.text.__memset)
+    536f     536f       22     1                 __memset
+    5391     5391       13     1         build/cm-smcdure13.prg.lto.o:(.text.__ashlhi3)
+    5391     5391       13     1                 __ashlhi3
+    53a4     53a4       13     1         build/cm-smcdure13.prg.lto.o:(.text.__lshrhi3)
+    53a4     53a4       13     1                 __lshrhi3
+    53b7     53b7       17     1         build/cm-smcdure13.prg.lto.o:(.text.__lshrsi3)
+    53b7     53b7       17     1                 __lshrsi3
+    53ce     53ce       40     1         build/cm-smcdure13.prg.lto.o:(.text.__umodqi3)
+    53ce     53ce       40     1                 __umodqi3
+    540e     540e       ae     1         build/cm-smcdure13.prg.lto.o:(.text.__umodhi3)
+    540e     540e       ae     1                 __umodhi3
+    54bc     54bc      2de     1         build/cm-smcdure13.prg.lto.o:(.text.__divmodsi4)
+    54bc     54bc      2de     1                 __divmodsi4
+    579a     579a       34     1         build/cm-smcdure13.prg.lto.o:(.text.__mulhi3)
+    579a     579a       34     1                 __mulhi3
+    57ce     57ce       67     1         build/cm-smcdure13.prg.lto.o:(.text.__mulsi3)
+    57ce     57ce       67     1                 __mulsi3
+    5835     5835        0     1         __init_array_start = .
+    5835     5835        0     1         __init_array_end = .
+    5835     5835        0     1         __fini_array_start = .
+    5835     5835        0     1         __fini_array_end = .
+    5835     5835      98d     1 .rodata
+    5835     5835        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    5835     5835        0     1                 __set_v
+    5836     5836       34     1         build/cm-smcdure13.prg.lto.o:(.rodata.main)
+    586a     586a       7e     1         build/cm-smcdure13.prg.lto.o:(.rodata.cm_smcdure13_reference_dictionary)
+    586a     586a       7e     1                 cm_smcdure13_reference_dictionary
+    58e8     58e8       42     1         build/cm-smcdure13.prg.lto.o:(.rodata.cm_smcdure13_reference_offsets)
+    58e8     58e8       42     1                 cm_smcdure13_reference_offsets
+    592a     592a      7ef     1         build/cm-smcdure13.prg.lto.o:(.rodata.cm_smcdure13_reference_stream)
+    592a     592a      7ef     1                 cm_smcdure13_reference_stream
+    6119     6119       11     1         build/cm-smcdure13.prg.lto.o:(.rodata.bank)
+    6119     6119       11     1                 bank
+    612a     612a       22     1         build/cm-smcdure13.prg.lto.o:(.rodata.loc)
+    612a     612a       22     1                 loc
+    614c     614c       22     1         build/cm-smcdure13.prg.lto.o:(.rodata.edop)
+    614c     614c       22     1                 edop
+    616e     616e       22     1         build/cm-smcdure13.prg.lto.o:(.rodata.cyr)
+    616e     616e       22     1                 cyr
+    6190     6190       22     1         build/cm-smcdure13.prg.lto.o:(.rodata.addr)
+    6190     6190       22     1                 addr
+    61b2     61b2       10     1         <internal>:(.rodata.cst16)
+    61c2     61c2        0     1 .data
+    61c2     61c2        0     1         __data_start = .
+    61c2     61c2        0     1         __data_end = .
+    61c2     61c2        0     1 __data_load_start = LOADADDR(.data)
+    61c2     61c2        0     1 __data_size = SIZEOF(.data)
+    61c2     61c2     2000     1 .bss
+    61c2     61c2        0     1         __bss_start = .
+    61c2     61c2     1000     1         build/cm-smcdure13.prg.lto.o:(.bss.image)
+    61c2     61c2     1000     1                 image
+    71c2     71c2     1000     1         build/cm-smcdure13.prg.lto.o:(.bss.expected)
+    71c2     71c2     1000     1                 expected
+    81c2     81c2        0     1         __bss_end = .
+    81c2     81c2        0     1 __bss_size = SIZEOF(.bss)
+    81c2     81c2        2     1 .noinit
+    81c2     81c2        2     1         build/cm-smcdure13.prg.lto.o:(.noinit..Lstatic_stack)
+    81c4     81c4        0     1         __heap_start = ALIGN(., 2)
+    81c4     81c4        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm-smcdure13.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm-smcdure13.prg.lto.o:(.llvm_sympart)
+       0        0      c30     4 .symtab
+       0        0      c30     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      70f     1 .strtab
+       0        0      70f     1         <internal>:(.strtab)

@@ -1,0 +1,144 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     2845     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/dsky_monitor_consumer_21.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      b74     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.main)
+     843      843      b74     1                 main
+    13b7     13b7      976     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.blank_body)
+    13b7     13b7      976     1                 blank_body
+    1d2d     1d2d      7c8     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.blanksub)
+    1d2d     1d2d      7c8     1                 blanksub
+    24f5     24f5      431     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.dsky_monitor_consumer_entry)
+    24f5     24f5      431     1                 dsky_monitor_consumer_entry
+    2926     2926      5e2     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.dsky_pinball_write)
+    2926     2926      5e2     1                 dsky_pinball_write
+    2f08     2f08        6     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.exit)
+    2f08     2f08        6     1                 exit
+    2f0e     2f0e       13     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.__ashlhi3)
+    2f0e     2f0e       13     1                 __ashlhi3
+    2f21     2f21       40     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.__umodqi3)
+    2f21     2f21       40     1                 __umodqi3
+    2f61     2f61       34     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.memcpy)
+    2f61     2f61       34     1                 memcpy
+    2f95     2f95       22     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.__memset)
+    2f95     2f95       22     1                 __memset
+    2fb7     2fb7       34     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.__mulhi3)
+    2fb7     2fb7       34     1                 __mulhi3
+    2feb     2feb       67     1         build/dsky_monitor_consumer_21.prg.lto.o:(.text.__mulsi3)
+    2feb     2feb       67     1                 __mulsi3
+    3052     3052        0     1         __init_array_start = .
+    3052     3052        0     1         __init_array_end = .
+    3052     3052        0     1         __fini_array_start = .
+    3052     3052        0     1         __fini_array_end = .
+    3052     3052      e48     1 .rodata
+    3052     3052        8     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.main)
+    305a     305a        6     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.blank_body.paired)
+    305a     305a        6     1                 blank_body.paired
+    3060     3060        6     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.blank_body.first)
+    3060     3060        6     1                 blank_body.first
+    3066     3066        6     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.blank_body.bit)
+    3066     3066        6     1                 blank_body.bit
+    306c     306c        6     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.blanksub.singular)
+    306c     306c        6     1                 blanksub.singular
+    3072     3072       18     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.dsky_monitor_consumer_entry.scalar)
+    3072     3072       18     1                 dsky_monitor_consumer_entry.scalar
+    308a     308a        c     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.dsky_monitor_consumer_entry.dp)
+    308a     308a        c     1                 dsky_monitor_consumer_entry.dp
+    3096     3096        8     1         <internal>:(.rodata.cst8)
+    309e     309e       10     1         <internal>:(.rodata.cst16)
+    30ae     30ae       20     1         <internal>:(.rodata.cst32)
+    30ce     30ce       22     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.dsky_monitor_consumer_21_ioff)
+    30ce     30ce       22     1                 dsky_monitor_consumer_21_ioff
+    30f0     30f0       22     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.dsky_monitor_consumer_21_ooff)
+    30f0     30f0       22     1                 dsky_monitor_consumer_21_ooff
+    3112     3112      c48     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.dsky_monitor_consumer_21_in)
+    3112     3112      c48     1                 dsky_monitor_consumer_21_in
+    3d5a     3d5a      140     1         build/dsky_monitor_consumer_21.prg.lto.o:(.rodata.dsky_monitor_consumer_21_out)
+    3d5a     3d5a      140     1                 dsky_monitor_consumer_21_out
+    3e9a     3e9a        0     1 .data
+    3e9a     3e9a        0     1         __data_start = .
+    3e9a     3e9a        0     1         __data_end = .
+    3e9a     3e9a        0     1 __data_load_start = LOADADDR(.data)
+    3e9a     3e9a        0     1 __data_size = SIZEOF(.data)
+    3e9a     3e9a     2000     1 .bss
+    3e9a     3e9a        0     1         __bss_start = .
+    3e9a     3e9a     1000     1         build/dsky_monitor_consumer_21.prg.lto.o:(.bss.s)
+    3e9a     3e9a     1000     1                 s
+    4e9a     4e9a     1000     1         build/dsky_monitor_consumer_21.prg.lto.o:(.bss.before)
+    4e9a     4e9a     1000     1                 before
+    5e9a     5e9a        0     1         __bss_end = .
+    5e9a     5e9a        0     1 __bss_size = SIZEOF(.bss)
+    5e9a     5e9a        0     1 .noinit
+    5e9a     5e9a        0     1         __heap_start = ALIGN(., 2)
+    5e9a     5e9a        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/dsky_monitor_consumer_21.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/dsky_monitor_consumer_21.prg.lto.o:(.llvm_sympart)
+       0        0      bc0     4 .symtab
+       0        0      bc0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      753     1 .strtab
+       0        0      753     1         <internal>:(.strtab)

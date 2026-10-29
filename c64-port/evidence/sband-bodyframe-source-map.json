@@ -1,0 +1,348 @@
+{
+  "LM": {
+    "source_path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+    "source_sha256": "db15cd65a127318e4a5df1cf3d3fb733d5f95c02566b1da28afd632b96307ab2",
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_bodyframe.c",
+    "scope": "Actual post-frame-shift PUSH/PDDL, zero angle STORE/STOVL, CALL *SMNB*, complete unchanged AX/interface/VLOAD/RVQ helpers; stops at original caller NEWOPS before following STORE/STODL.",
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 110,
+        "label": "",
+        "op": "PUSH",
+        "arguments": "DLOAD",
+        "assembled_address": "42,3646",
+        "physical_fixed_word": 35750,
+        "physical_erasable_word": null,
+        "words": [
+          29318
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 111,
+        "label": "",
+        "op": "HI6ZEROS",
+        "arguments": "",
+        "assembled_address": "42,3647",
+        "physical_fixed_word": 35751,
+        "physical_erasable_word": null,
+        "words": [
+          3410
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 112,
+        "label": "",
+        "op": "STORE",
+        "arguments": "PITCHANG",
+        "assembled_address": "42,3650",
+        "physical_fixed_word": 35752,
+        "physical_erasable_word": null,
+        "words": [
+          1153
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 113,
+        "label": "",
+        "op": "STOVL",
+        "arguments": "YAWANG",
+        "assembled_address": "42,3651",
+        "physical_fixed_word": 35753,
+        "physical_erasable_word": null,
+        "words": [
+          11395
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 114,
+        "label": "",
+        "op": "CALL",
+        "arguments": "",
+        "assembled_address": "42,3652",
+        "physical_fixed_word": 35754,
+        "physical_erasable_word": null,
+        "words": [
+          32660
+        ]
+      },
+      {
+        "path": "Luminary099/S-BAND_ANTENNA_FOR_LM.agc",
+        "line": 115,
+        "label": "",
+        "op": "*SMNB*",
+        "arguments": "",
+        "assembled_address": "42,3653",
+        "physical_fixed_word": 35755,
+        "physical_erasable_word": null,
+        "words": [
+          20409
+        ]
+      }
+    ],
+    "source_words": 6,
+    "constants": {
+      "source_path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+      "original_sha256": "30f22813f6d6f33f8202b65fa5895ebf535232e0437aaa9d02aec5b81e08d627",
+      "assembled_sha256": "30f22813f6d6f33f8202b65fa5895ebf535232e0437aaa9d02aec5b81e08d627",
+      "physical_fixed_word": 19793,
+      "words": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 42,
+          "label": "ZEROVECS",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2521",
+          "physical_fixed_word": 19793,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 44,
+          "label": "",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2523",
+          "physical_fixed_word": 19795,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETIVE_CONSTANT.agc",
+          "line": 46,
+          "label": "",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "23,2525",
+          "physical_fixed_word": 19797,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        }
+      ],
+      "fixture_filename": "INTERPRETIVE_CONSTANTS.agc; unchanged original content under fixture plural filename",
+      "usage": "Only first DPzero pair fetched as compiled native zero values. Remaining4 words retained passive source table provenance, no algorithm credit."
+    },
+    "bindings": {
+      "HI6ZEROS": "23,2521",
+      "*SMNB*": "23,3671",
+      "AX*SR*T": "23,3675",
+      "NEWOPS": "6070",
+      "DANZIG": "6061",
+      "SINCDU": "0736",
+      "COSCDU": "0744"
+    },
+    "push_counts": {
+      "source_path": "Luminary099/INTERPRETER.agc",
+      "original_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "physical_fixed_word": 3235,
+      "words": [
+        6,
+        2,
+        3
+      ],
+      "usage": "Vector6 used by these compiled PUSH/PDDL/pop tuples; adjacentDP2/TP3 table words retained passive only."
+    },
+    "alias_contract": "LM PUSH saves vector at VACbase then VLOAD pops it; final L is originalMPAC.Z-low. CM PDDL saves at VACbase+2 and loads zeroDP, moving old stackY intoMPAC.Z; subsequentRCM reload leaves oldstack+3 inL. Only canonical2048 image is authoritative.",
+    "caller_controls": "Valid5VAC and exact sourcePUSHLOC baseLM/base+2CM; bank0 pendingDANZIG, LOC3645LM/3704CM, EDOP0LM/052CM, sourceBANKSET64bank withSUPERbit100, MODE-1, NEWJOB+0, producer exclusion through all callee returns.",
+    "coverage": "65536cases/mission, everyraw16A/L and ordinaryQ marginal, all5VAC/all8EB/four bank42SUPERforms/bothIRQ, sampled vector/trig inputs and signed-zero corners. No Cartesian/allinstruction-edge/physicalprecision guarantee beyond original AXcontract."
+  },
+  "CM": {
+    "source_path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+    "source_sha256": "0941ac5d3aeb3f5788bc9a55e96a33e2cf7b58c16e4d0eef6a8c4134592de061",
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_edits": 0,
+    "containing_file_status": "partial",
+    "native_source": "src/sband_bodyframe.c",
+    "scope": "Actual post-frame-shift PUSH/PDDL, zero angle STORE/STOVL, CALL *SMNB*, complete unchanged AX/interface/VLOAD/RVQ helpers; stops at original caller NEWOPS before following STORE/STODL.",
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 67,
+        "label": "",
+        "op": "VSL1",
+        "arguments": "PDDL",
+        "assembled_address": "42,3704",
+        "physical_fixed_word": 35780,
+        "physical_erasable_word": null,
+        "words": [
+          27386
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 68,
+        "label": "",
+        "op": "HI6ZEROS",
+        "arguments": "",
+        "assembled_address": "42,3705",
+        "physical_fixed_word": 35781,
+        "physical_erasable_word": null,
+        "words": [
+          6877
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 69,
+        "label": "",
+        "op": "STOVL",
+        "arguments": "YAWANG",
+        "assembled_address": "42,3706",
+        "physical_fixed_word": 35782,
+        "physical_erasable_word": null,
+        "words": [
+          10261
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 70,
+        "label": "",
+        "op": "RCM",
+        "arguments": "",
+        "assembled_address": "42,3707",
+        "physical_fixed_word": 35783,
+        "physical_erasable_word": null,
+        "words": [
+          3
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 71,
+        "label": "",
+        "op": "CALL",
+        "arguments": "",
+        "assembled_address": "42,3710",
+        "physical_fixed_word": 35784,
+        "physical_erasable_word": null,
+        "words": [
+          32660
+        ]
+      },
+      {
+        "path": "Comanche055/S-BAND_ANTENNA_FOR_CM.agc",
+        "line": 72,
+        "label": "",
+        "op": "*SMNB*",
+        "arguments": "",
+        "assembled_address": "42,3711",
+        "physical_fixed_word": 35785,
+        "physical_erasable_word": null,
+        "words": [
+          20388
+        ]
+      }
+    ],
+    "source_words": 6,
+    "constants": {
+      "source_path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+      "original_sha256": "494c6ae0e8fc59eb6d896e51f3af791aae13bb66fbf55a798cb6e2b3c807570f",
+      "assembled_sha256": "494c6ae0e8fc59eb6d896e51f3af791aae13bb66fbf55a798cb6e2b3c807570f",
+      "physical_fixed_word": 23260,
+      "words": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "source_line_word_map": [
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 44,
+          "label": "ZEROVECS",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3334",
+          "physical_fixed_word": 23260,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 46,
+          "label": "",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3336",
+          "physical_fixed_word": 23262,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETIVE_CONSTANTS.agc",
+          "line": 48,
+          "label": "",
+          "op": "2DEC",
+          "arguments": "0",
+          "assembled_address": "26,3340",
+          "physical_fixed_word": 23264,
+          "physical_erasable_word": null,
+          "words": [
+            0,
+            0
+          ]
+        }
+      ],
+      "fixture_filename": "INTERPRETIVE_CONSTANTS.agc; unchanged original content under fixture plural filename",
+      "usage": "Only first DPzero pair fetched as compiled native zero values. Remaining4 words retained passive source table provenance, no algorithm credit."
+    },
+    "bindings": {
+      "HI6ZEROS": "26,3334",
+      "*SMNB*": "23,3644",
+      "AX*SR*T": "23,3650",
+      "NEWOPS": "6037",
+      "DANZIG": "6030",
+      "SINCDU": "0736",
+      "COSCDU": "0744"
+    },
+    "push_counts": {
+      "source_path": "Comanche055/INTERPRETER.agc",
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "physical_fixed_word": 3210,
+      "words": [
+        6,
+        2,
+        3
+      ],
+      "usage": "Vector6 used by these compiled PUSH/PDDL/pop tuples; adjacentDP2/TP3 table words retained passive only."
+    },
+    "alias_contract": "LM PUSH saves vector at VACbase then VLOAD pops it; final L is originalMPAC.Z-low. CM PDDL saves at VACbase+2 and loads zeroDP, moving old stackY intoMPAC.Z; subsequentRCM reload leaves oldstack+3 inL. Only canonical2048 image is authoritative.",
+    "caller_controls": "Valid5VAC and exact sourcePUSHLOC baseLM/base+2CM; bank0 pendingDANZIG, LOC3645LM/3704CM, EDOP0LM/052CM, sourceBANKSET64bank withSUPERbit100, MODE-1, NEWJOB+0, producer exclusion through all callee returns.",
+    "coverage": "65536cases/mission, everyraw16A/L and ordinaryQ marginal, all5VAC/all8EB/four bank42SUPERforms/bothIRQ, sampled vector/trig inputs and signed-zero corners. No Cartesian/allinstruction-edge/physicalprecision guarantee beyond original AXcontract."
+  }
+}

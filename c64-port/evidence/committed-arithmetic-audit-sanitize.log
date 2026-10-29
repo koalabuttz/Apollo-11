@@ -1,0 +1,88 @@
+make: Entering directory '/tmp/apollo-port-audit/c64-port'
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c src/waitlist.c src/restart.c tests/restart_cases.c tests/restart_check.c tests/test_restart.c -o build/test-restart-sanitize
+./build/test-restart-sanitize
+PASS: 226 assembly fingerprints, recovery/resumption, phase/resource failures and restoring exclusion
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c tests/guidance_cases.c tests/guidance_check.c tests/test_guidance.c -o build/test-guidance-sanitize
+./build/test-guidance-sanitize
+PASS: 568 complete original-assembly checkpoints; all 65536 SP/memory-zero products; carry and overflow contracts
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c tests/prepare_cases.c tests/prepare_check.c tests/test_prepare.c -o build/test-prepare-sanitize
+./build/test-prepare-sanitize
+PASS: 324 complete preparation states, all TS-skip masks, snapshot debris, MODE alias, retained scratch and composed histories
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c tests/prepare_cases.c tests/scale_cases.c tests/scale_check.c tests/test_scale.c -o build/test-scale-sanitize
+./build/test-scale-sanitize
+PASS: 292 complete scaling states, signed-zero/mixed-sign DP pairs, all integrated TS-skip inputs, three retained four-step histories
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/push_check.c tests/test_push.c -o build/test-push-sanitize
+./build/test-push-sanitize
+PASS: 200 complete PDDL states, five VAC mappings, retained exchange debris, composed four-push histories; invalid scope leaves both objects unchanged
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/elapsed_check.c tests/test_elapsed.c -o build/test-elapsed-sanitize
+./build/test-elapsed-sanitize
+PASS: 172 complete elapsed-time states and skip paths, signed zeros, overflow realignment and retained OVFIND, preserved VAC/vector histories
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/store_check.c tests/test_store.c -o build/test-store-sanitize
+./build/test-store-sanitize
+PASS: 176 complete STORE states/paths; signed-zero source/destination corners, overlapping slots, retained histories; unchanged-on-scope-rejection and unused PUSHLOC
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/divide_check.c tests/test_divide.c -o build/test-divide-sanitize
+./build/test-divide-sanitize
+PASS: 156 complete DDV states/paths; signed zero, raw sign agreement, quotient/overflow and retained histories; all unsupported modes reject unchanged
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/gravity_check.c tests/frozen_words.c tests/test_gravity.c -o build/test-gravity-sanitize
+./build/test-gravity-sanitize
+PASS: 156 complete PDVL states; all unsupported modes, VAC bases and push pointers reject unchanged
+cc -Iinclude -Itests -DPREPARE_INPUT_ONLY -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_vector.c tests/prepare_cases.c tests/vector_cases.c tests/vector_check.c tests/test_vector.c -o build/test-vector-sanitize
+./build/test-vector-sanitize
+PASS: 128 complete original-assembly VAD/VSU states; all 32767 unsupported MODE words preserve complete state for both operations
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c tests/scenarios.c tests/executive_service_cases.c tests/state_digest.c tests/executive_service_check.c tests/test_executive_services.c -o build/test-executive-services-sanitize
+./build/test-executive-services-sanitize
+PASS: 768 original-derived SPVAC/CHANG2 state checks and unsupported safe-point rejection
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/phase.c tests/phase_cases.c tests/phase_check.c tests/test_phase.c -o build/test-phase-sanitize
+./build/test-phase-sanitize
+PASS: 128 original assembly full-state phase vectors; all 8,192 invalid group words retain state
+cc -Iinclude -Itests -DPREPARE_INPUT_ONLY -DVECTOR_INPUT_ONLY -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_product.c tests/prepare_cases.c tests/vector_cases.c tests/product_cases.c tests/product_check.c tests/test_product.c -o build/test-product-sanitize
+./build/test-product-sanitize
+PASS: 128 complete original-assembly DMP1/VXSC states; all 32767 unsupported MODE words preserve complete state for both operations
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_shift.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/shift_cases.c tests/frozen_words.c tests/shift_check.c tests/test_shift.c -o build/test-shift-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-shift-sanitize
+PASS: 168 complete original scalar/vector shift states; all unsupported MODEs and count boundaries reject unchanged
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_shift.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/shift_cases.c tools/shift_snapshot.c -o build/shift-snapshot-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/shift-snapshot-sanitize > build/shift-sanitize.snapshots
+./build/shift-snapshot > build/shift-native.snapshots
+cmp build/shift-sanitize.snapshots build/shift-native.snapshots
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_dp_divide.c tests/test_dp_divide.c tests/frozen_words.c -o build/test-dp-divide-sanitize
+./build/test-dp-divide-sanitize
+573 complete DDV/BDDV states, untouched retained memory, 32767 MODE / 2 operand rejections: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c src/guidance_gravity.c src/guidance_vector.c src/guidance_product.c src/guidance_shift.c src/guidance_velocity.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/gravity_cases.c tests/velocity_cases.c tests/velocity_check.c tests/frozen_words.c tests/test_velocity.c -o build/test-velocity-sanitize
+./build/test-velocity-sanitize
+PASS: 156 complete original-assembly velocity-group states; all unsupported MODE/base/pointer ordinary words preserve all 117 state/input words
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/guidance_norm.c tests/test_norm.c tests/frozen_words.c -o build/test-norm-sanitize
+./build/test-norm-sanitize
+637 SQRT/SQRTSUB states, retained state and unsupported MODE: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/recovery.c tests/recovery_cases.c tests/recovery_check.c tests/test_recovery.c -o build/test-recovery-sanitize
+./build/test-recovery-sanitize
+PASS: 128 complete original assembly abort-cleanup states; unsupported routes retain state
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_dot.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/dot_cases.c tests/frozen_words.c tests/dot_check.c tests/test_dot.c -o build/test-dot-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-dot-sanitize
+PASS: 96 complete unrounded original DOT states and exact scratch/overflow exchanges; all unsupported MODEs reject unchanged
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_dot.c tests/scenarios.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/dot_cases.c tools/dot_snapshot.c -o build/dot-snapshot-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/dot-snapshot-sanitize > build/dot-sanitize.snapshots
+./build/dot-snapshot > build/dot-native.snapshots
+cmp build/dot-sanitize.snapshots build/dot-native.snapshots
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tests/frozen_words.c tests/sum_check.c tests/test_sum.c -o build/test-sum-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-sum-sanitize
+PASS: 256 complete original DAD/DSU/BDSU/BVSU states and overflow paths; all unsupported MODEs reject unchanged
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined -DVECTOR_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_sum.c tests/prepare_cases.c tests/vector_cases.c tests/sum_cases.c tools/sum_snapshot.c -o build/sum-snapshot-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/sum-snapshot-sanitize > build/sum-sanitize.snapshots
+./build/sum-snapshot > build/sum-native.snapshots
+cmp build/sum-sanitize.snapshots build/sum-native.snapshots
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/test_host.c -o build/test-sanitize
+./build/test-sanitize
+PASS: 53 dispatch cases, 109 assembly-derived checkpoints, 8 native two-job sequences; dispatch fault checks
+PASS: 32768 word encodings, 65536 register encodings, 524288 addition pairs, 26 Executive scenarios
+sizeof(executive)=648 bytes; sizeof(scenario)=664 bytes (host)
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/test_irq.c -o build/test-irq-sanitize
+./build/test-irq-sanitize
+PASS: IRQ safe points, nested exclusion, idle startup, FIFO/wrap (600 cases), overflow, bailout and unmapped-request faults
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/lifecycle_cases.c tests/lifecycle_check.c tests/test_lifecycle.c -o build/test-lifecycle-sanitize
+./build/test-lifecycle-sanitize
+PASS: 81 lifecycle cases / 115 assembly-derived checkpoints, 5 native sequences, guarded/masked delivery and lifecycle fault boundaries
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c tests/waitlist_check.c tests/test_waitlist.c -o build/test-waitlist-sanitize
+./build/test-waitlist-sanitize
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests
+make: Leaving directory '/tmp/apollo-port-audit/c64-port'

@@ -1,0 +1,5 @@
+# Canonical throttle service bridges
+
+Two native image APIs implement the fixed original EXIT/DXCH-MPAC/BANKCALL entrance from DANZIG LOC03507 to THROTTLE+3 PC02221, and the THDUMP PC02367 saved RTNHOLD/SWRETURN/INTPRET return to NEWOPS06070 with LOC03515. Both retain every original erasable scratch/register/bank effect. The caller excludes producers and owns the canonical image; unsupported boundary, MODE or IO state leaves both objects unchanged. The Executive owns scheduling around these source boundaries.
+
+All8,192 complete original2,048-word images plus SUPER/IRQ agree, SHA256 `13fc953760d4c8637370d50bec82aeb70ba590b8fb4a1567be93cb3a33bfe9da`. Strict64 frozen full-image cases and26 rejection cases pass; entire-corpus ASan/UBSan output matches. All64 full C64 images pass mailbox `a500004000`, PRG5,491bytes, additional zero page0, hardware/software stack extents14/12bytes excluding the separate ROM frame. This verifies the real control bridges without an instruction decoder; application-level cycle integration remains separate.

@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/cm_scale.prg from 0801 to 40F3 (38F3 bytes)
+WATCH: 1  C:$60f4  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 60f4)   57/$039,  15/$0f
+.C:1005  8E F4 60    STX $60F4      - A:00 X:A5 Y:00 SP:f1 NV-....C  295963998
+>C:60f4  a5 00 00 40  02                                      ...@.
+Saving file `/workspace/Apollo-11/c64-port/build/cm_scale-vice-mailbox.bin' from $60f4 to $60f8
+Saving file `/workspace/Apollo-11/c64-port/build/cm_scale-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm_scale-vice-software-stack.bin' from $c100 to $cfff

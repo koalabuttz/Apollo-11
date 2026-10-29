@@ -1,0 +1,14 @@
+{
+  "LM": {
+    "archive": "evidence/ephemeris-shift-LM-reference.snapshots.bin.xz",
+    "decoded_sha256": "85f780c3a912c6686c3ba16f08ff0770a854a42041e3b45f0da22699bbdf04f6",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  },
+  "CM": {
+    "archive": "evidence/ephemeris-shift-CM-reference.snapshots.bin.xz",
+    "decoded_sha256": "b3cfa25778d2371fff1b02e108fd63574662b6795ceb88f82a3c3c1219bfbb7b",
+    "decoded_bytes": 269090816,
+    "states": 65536
+  }
+}

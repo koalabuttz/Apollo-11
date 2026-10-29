@@ -1,0 +1,6 @@
+cc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_formatter.c tests/cm_formatter_check.c src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_two_digit.c src/dsky_decimal.c src/cm_formatter.c tests/cm_pinball_cases.c tests/cm_formatter_cases.c -o build/test-cm-formatter
+build/test-cm-formatter
+CM decimal formatters: 64 complete2050-field original states, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_formatter.c tests/cm_formatter_check.c src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_two_digit.c src/dsky_decimal.c src/cm_formatter.c tests/cm_pinball_cases.c tests/cm_formatter_cases.c -o build/test-cm-formatter-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-formatter-sanitize
+CM decimal formatters: 64 complete2050-field original states, 0 failures

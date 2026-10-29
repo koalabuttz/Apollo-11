@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 64 complete runtime_regodspr group original-assembly states; retained memory unchanged
+Mailbox: a500004000
+PRG bytes: 12807
+runtime_regodspr-hardware-stack.bin: measured stack extent 19 bytes
+runtime_regodspr-software-stack.bin: measured stack extent 689 bytes

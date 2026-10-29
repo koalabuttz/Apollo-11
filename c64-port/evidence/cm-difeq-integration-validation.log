@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance_shift.c src/guidance_vector.c src/guidance_product.c src/guidance_sum.c src/cm_difeq.c tests/cm_difeq_cases.c tests/frozen_words.c tests/test_cm_difeq.c -o build/test-cm-difeq
+build/test-cm-difeq
+960 complete2048word original DIFEQ phase entry/exit pairs and unchanged scope rejections: PASS

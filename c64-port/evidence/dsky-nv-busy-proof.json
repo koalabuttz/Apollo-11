@@ -1,0 +1,69 @@
+{
+  "source_files": {
+    "docs/DSKY-NV-BUSY.md": "4f1601843872a2216f4535ced27d36c2eff52cce2a4e36cf728064ed2df0b8a6",
+    "include/dsky_nv_busy.h": "8eaacb51a6e7456ec7cd7dde905c39f32d9f1f844c55bf0cde09efe9d779ab5b",
+    "src/dsky_nv_busy.c": "06e23b30b8040f68af4c019eaab8b590b51138fe2b4143f9b173780c0f68a089",
+    "tests/dsky_nv_busy_cases.c": "abe120969746ed4793d512ebfb12144029ccd3e96cf18858894e9ca69eba2b32",
+    "tests/dsky_nv_busy_cases.h": "195e9c41fd7071de285e7d4de24eab02e1ebb4ad2947df9249d97f0807135e57",
+    "tests/dsky_nv_busy_check.c": "fc8daa1fc51997a6659da15ef9eb811b99c2fccfd1d81fd3e9f743b5046335df",
+    "tests/dsky_nv_busy_check.h": "5c9311a43d4d7e82eae97bbe4028437ae84f970a0a01d427761b91f0fddc9a08",
+    "tests/dsky_nv_busy_vectors.h": "12d640666f3460bc6307e0589c7b3c129b2ec5b3e7bb282e820e75da17a4db0a",
+    "tests/test_dsky_nv_busy.c": "ebf13116a24fb56f2036db7aefea6b930813e8f339c990c7f7f38366e6f41aaa",
+    "tools/dsky_nv_busy.mk": "3cd2c86f8b0a14f858d0aecd1b6f0cc96c828c604f53d78305f2a790ab52c7aa",
+    "tools/dsky_nv_busy_diagnostic.c": "096f2e5be62d413d962c4e3c8cc842edc0319480463692a0cbd98b65bfe3659f",
+    "tools/dsky_nv_busy_differential.py": "9605f218b2199407fc9f2d15733ce873d7ce9f4fb732fe6216ee789e8cd287f7",
+    "tools/dsky_nv_busy_inputs.c": "d3fed3440e01624605f95427383956cd208660e83ee39a752be819d463077f20",
+    "tools/dsky_nv_busy_reference.c": "abcd5b1b0d20377a3b9c2a9b9743ea2ce0bb33dd4ab2df527c262573968b5487",
+    "tools/dsky_nv_busy_sanitize.py": "42ef49776b0eab71329d672ed40caf18d7ab1db678db5f51e20a943a2f83c567",
+    "tools/dsky_nv_busy_snapshot.c": "58ae00dc9f018d262439aa1ea24c678ddee192457adb167090bbd1ed05db51ac",
+    "tools/dsky_nv_busy_vice_test.py": "8521c2ecdc30581559fd0423664b4c3813c7421843382b393923db374d2ec69f",
+    "tools/freeze_dsky_nv_busy.py": "c9ad086cf66022bf3a828547139a562373db9b658ac23a5ec9012a811f0e01d3"
+  },
+  "native_dependencies": {
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "include/dsky_nv_admission.h": "cc6dbf21c7ed8ec1bae2a0ad30e4b1065f2821614ce23370e981ec5d47ab42e1",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "include/p66_bias.h": "ed594570c8fa6831498bd65b27a1da136feb9d18404dc1e8db084585c23f5c77",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679"
+  },
+  "original_sources": {
+    "../Comanche055/INTER-BANK_COMMUNICATION.agc": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+    "../Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+    "../Luminary099/INTER-BANK_COMMUNICATION.agc": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+    "../Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "deps/lm-powered-fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+  },
+  "host_reference_dependencies": {
+    "tools/cm_executive_reference.c": "f623e869cc420126c15d27a5749a1e4a38df27deb91b7f83a2fc1c7be6e6e448"
+  },
+  "artifacts": {
+    "evidence/dsky-nv-busy-differential.log": "a7a666d53d8630770b73d84c5cbca8f24820075e9d4defc5b1b0f699d1512d3d",
+    "evidence/dsky-nv-busy-freeze.log": "72c256ea2e2e743060dac4be948f8e8842fab7269518d7ac79027b222748e9e4",
+    "evidence/dsky-nv-busy-reference.snapshots.xz": "05c039f398daad5ec5dc743597f9e3029412e62ad69b0034f83a05a2b09dc7c9",
+    "evidence/dsky-nv-busy-stream-sha.json": "50683503bade85f4c98f6b70486e190cb6100ed9dac28671885c67c30650a59a",
+    "evidence/dsky-nv-busy-validation.log": "c20355e7be92af8f4ea12da969bc753727465a82dda1dbef0f297faf991aa098",
+    "evidence/dsky-nv-busy-vice-summary.log": "63179374dd00508275344fee33330edd0f2cff88523faa94f043dc76c6a7b1ee",
+    "evidence/dsky_nv_busy-hardware-stack.bin": "e46db8d0d6976bb3319a31e9725c9d3461f6b42402cd828df0a14d26f8a1d606",
+    "evidence/dsky_nv_busy-software-stack.bin": "7e88c4610f5cb6ef4f16cce4ebeab9c0be1e40a5367e9d201cd4aa91a8eed4f7",
+    "evidence/dsky_nv_busy-vice-mailbox.bin": "eb1ee2553508e00190fe18b80c4f4eaa7d92dbcb75febaccc249b6aa98887d5a",
+    "evidence/dsky_nv_busy-vice-monitor.log": "c6275cc5b60b1f8f04c2e4fef5debff2f4eb3814843de17bb19ad1d4c1573d8b",
+    "evidence/dsky_nv_busy.map": "a8a80b9ecb56e8a7a05dde2f34af729d7fed76de51bc915b6122b98f7e8af610",
+    "evidence/dsky_nv_busy.prg": "ee04b0554c3c4d16e8d9127f45610bcc1a021c1a613fe7c6c5f02529bf88517b"
+  },
+  "complete_source_states": 10240,
+  "record_fields": 2053,
+  "raw_source_sha256": "bb82322090522e0a3930ee9d2d94696c167fbfaa50964e06fd8596e8be8d7bd8",
+  "full_sanitizer_states": 10240,
+  "frozen_complete_states": 80,
+  "unchanged_invalid_guards": 120,
+  "target": {
+    "prg_bytes": 5672,
+    "mailbox": "a500005000",
+    "hardware_stack_including_rom": 14,
+    "rom_stack_bytes": 14,
+    "software_stack": 35,
+    "additional_zero_page_bytes": 0
+  },
+  "qualification_boundary": "Both original ENDIDLE/NVSUBUSY/PRENVBSY/NVSBWAIT/NVSUBSY1 bodies through actual JOBSLEEP/POODOO/NVSBCOM entry; excludes DSPLIST negative-zero which skips into inline alarm data and excludes selected service execution"
+}

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete lm_fleshpot group original-assembly states; retained memory unchanged
+Mailbox: a500002000
+PRG bytes: 8626
+lm_fleshpot-hardware-stack.bin: measured stack extent 23 bytes
+lm_fleshpot-software-stack.bin: measured stack extent 166 bytes

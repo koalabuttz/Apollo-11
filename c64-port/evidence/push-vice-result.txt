@@ -1,0 +1,11 @@
+PASS: VICE PAL, 200 complete original-assembly final states; all target integrated skip inputs and three four-push histories; restoring I
+Mailbox: a50000c80003ac5624
+Target state bytes / modeled words: 172 86
+VICE command: /workspace/toolchains/vice/usr/bin/x64sc -default -console -pal -warp +sound -kernal /workspace/toolchains/roms/C64/kernal-901227-03.bin -basic /workspace/toolchains/roms/C64/basic-901226-01.bin -chargen /workspace/toolchains/roms/C64/chargen-901225-01.bin -directory /workspace/toolchains/vice/usr/share/vice:/workspace/toolchains/roms -initbreak ready -moncommands /workspace/Apollo-11/c64-port/build/push-vice.mon -monlogname /workspace/Apollo-11/c64-port/build/push-vice-monitor.log -monlog -limitcycles 1000000000
+PDDL at VAC start: 912 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+PDDL at final six-word slot: 1028 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+PDDL in fifth VAC: 1051 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+PDDL after scaled skip input: 1033 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+complete RODCOMP through PDDL: 20790 PAL cycles (includes marker overhead and any IRQ/VIC bus effects)
+push-vice-hardware-stack.bin: measured sentinel extent 32 bytes
+push-vice-software-stack.bin: measured sentinel extent 472 bytes

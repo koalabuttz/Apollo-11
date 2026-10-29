@@ -1,0 +1,3 @@
+lm-ags-init.prg sha256 d358001b83d8a811a0b66947bede4dd76eb7253eae2cbe0d47db6c118c15ceef heap_start $ae33
+lm-ags-init: 128 C64 rows (46 cover every entry, outcome, the 90 counted paths and the 514 edges of every linked source the host takes)
+PASS: VICE PAL lm-ags-init.prg: 128 checks, 0 failures

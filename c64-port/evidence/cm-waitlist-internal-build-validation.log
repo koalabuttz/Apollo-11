@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-waitlist-internal-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-waitlist-internal-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-WAITLIST-INTERNAL.PRG' as `RESIDENT' to unit 8
+writing file `CM-WAITLIST-INTERNAL-239.PRG' as `G239' to unit 8
+writing file `CM-WAITLIST-INTERNAL-254.PRG' as `G254' to unit 8
+writing file `CM-WAITLIST-INTERNAL-255.PRG' as `G255' to unit 8
+239 6739 loaded bytes
+254 3166 loaded bytes
+255 9981 loaded bytes

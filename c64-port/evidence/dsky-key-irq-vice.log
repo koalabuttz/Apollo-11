@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly dsky_key_irq states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 17148 17146
+hardware stack sentinel extent: 26
+software stack sentinel extent: 698

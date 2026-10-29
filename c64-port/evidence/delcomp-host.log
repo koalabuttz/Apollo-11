@@ -1,0 +1,6 @@
+PASS: byte-original DELCOMP containing files reassemble with unchanged ropes; precise routine-only source maps
+PASS: 25 unsupported DELCOMP contexts preserve the complete image and latches
+PASS: 25 unsupported DELCOMP contexts preserve the complete image and latches
+PASS: 320 original-source target states; all52 potential modified words and1996 remaining words exact; lossless fixture 18128 bytes
+PASS: 10240 complete original-source/native/sanitized DELCOMP states, all2048 words andSUPER/IRQ exact
+Uncompressed source/native SHA256: 6555d43651cb1ffd3a3d1280de3c874260efeecb999d5dadea338541d1977f12

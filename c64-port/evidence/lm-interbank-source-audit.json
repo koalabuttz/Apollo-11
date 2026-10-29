@@ -1,0 +1,2082 @@
+{
+  "source_path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+  "source_sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+  "fixture_source_sha256": "2b97deaee6af861b72af9f00043e15b38c0901e16574fb9e2e97ef6a647e0ced",
+  "numerical_edits": 0,
+  "source_edits": 0,
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "source_words": 76,
+  "source_line_word_map": [
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 34,
+      "label": "",
+      "op": "BLOCK",
+      "arguments": "02",
+      "assembled_address": "4616",
+      "physical_fixed_word": 2446,
+      "physical_erasable_word": null,
+      "words": []
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 35,
+      "label": "",
+      "op": "COUNT*",
+      "arguments": "$$/BANK",
+      "assembled_address": "4616",
+      "physical_fixed_word": 2446,
+      "physical_erasable_word": null,
+      "words": []
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 36,
+      "label": "BANKCALL",
+      "op": "DXCH",
+      "arguments": "BUF2",
+      "assembled_address": "4616",
+      "physical_fixed_word": 2446,
+      "physical_erasable_word": null,
+      "words": [
+        21596
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 37,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4617",
+      "physical_fixed_word": 2447,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 38,
+      "label": "",
+      "op": "CA",
+      "arguments": "0",
+      "assembled_address": "4620",
+      "physical_fixed_word": 2448,
+      "physical_erasable_word": null,
+      "words": [
+        12288
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 39,
+      "label": "",
+      "op": "INCR",
+      "arguments": "Q",
+      "assembled_address": "4621",
+      "physical_fixed_word": 2449,
+      "physical_erasable_word": null,
+      "words": [
+        10242
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 43,
+      "label": "SWCALL",
+      "op": "TS",
+      "arguments": "L",
+      "assembled_address": "4622",
+      "physical_fixed_word": 2450,
+      "physical_erasable_word": null,
+      "words": [
+        22529
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 44,
+      "label": "",
+      "op": "LXCH",
+      "arguments": "FBANK",
+      "assembled_address": "4623",
+      "physical_fixed_word": 2451,
+      "physical_erasable_word": null,
+      "words": [
+        9220
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 45,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4624",
+      "physical_fixed_word": 2452,
+      "physical_erasable_word": null,
+      "words": [
+        31242
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 46,
+      "label": "",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4625",
+      "physical_fixed_word": 2453,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 47,
+      "label": "",
+      "op": "DXCH",
+      "arguments": "BUF2",
+      "assembled_address": "4626",
+      "physical_fixed_word": 2454,
+      "physical_erasable_word": null,
+      "words": [
+        21596
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 48,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4627",
+      "physical_fixed_word": 2455,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 49,
+      "label": "",
+      "op": "TC",
+      "arguments": "10000",
+      "assembled_address": "4630",
+      "physical_fixed_word": 2456,
+      "physical_erasable_word": null,
+      "words": [
+        1024
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 51,
+      "label": "SWRETURN",
+      "op": "XCH",
+      "arguments": "BUF2 +1",
+      "assembled_address": "4631",
+      "physical_fixed_word": 2457,
+      "physical_erasable_word": null,
+      "words": [
+        23644
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 52,
+      "label": "",
+      "op": "XCH",
+      "arguments": "FBANK",
+      "assembled_address": "4632",
+      "physical_fixed_word": 2458,
+      "physical_erasable_word": null,
+      "words": [
+        23556
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 53,
+      "label": "",
+      "op": "XCH",
+      "arguments": "BUF2 +1",
+      "assembled_address": "4633",
+      "physical_fixed_word": 2459,
+      "physical_erasable_word": null,
+      "words": [
+        23644
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 54,
+      "label": "",
+      "op": "TC",
+      "arguments": "BUF2",
+      "assembled_address": "4634",
+      "physical_fixed_word": 2460,
+      "physical_erasable_word": null,
+      "words": [
+        91
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 59,
+      "label": "POSTJUMP",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4635",
+      "physical_fixed_word": 2461,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 60,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "A",
+      "assembled_address": "4636",
+      "physical_fixed_word": 2462,
+      "physical_erasable_word": null,
+      "words": [
+        20480
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 61,
+      "label": "",
+      "op": "CA",
+      "arguments": "0",
+      "assembled_address": "4637",
+      "physical_fixed_word": 2463,
+      "physical_erasable_word": null,
+      "words": [
+        12288
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 65,
+      "label": "BANKJUMP",
+      "op": "TS",
+      "arguments": "FBANK",
+      "assembled_address": "4640",
+      "physical_fixed_word": 2464,
+      "physical_erasable_word": null,
+      "words": [
+        22532
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 66,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4641",
+      "physical_fixed_word": 2465,
+      "physical_erasable_word": null,
+      "words": [
+        31242
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 67,
+      "label": "",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4642",
+      "physical_fixed_word": 2466,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 68,
+      "label": "Q+10000",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4643",
+      "physical_fixed_word": 2467,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 69,
+      "label": "PRIO12",
+      "op": "TCF",
+      "arguments": "10000",
+      "assembled_address": "4644",
+      "physical_fixed_word": 2468,
+      "physical_erasable_word": null,
+      "words": [
+        5120
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 74,
+      "label": "MAKECADR",
+      "op": "CAF",
+      "arguments": "LOW10",
+      "assembled_address": "4645",
+      "physical_fixed_word": 2469,
+      "physical_erasable_word": null,
+      "words": [
+        14858
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 75,
+      "label": "",
+      "op": "MASK",
+      "arguments": "BUF2",
+      "assembled_address": "4646",
+      "physical_fixed_word": 2470,
+      "physical_erasable_word": null,
+      "words": [
+        28763
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 76,
+      "label": "",
+      "op": "AD",
+      "arguments": "BUF2 +1",
+      "assembled_address": "4647",
+      "physical_fixed_word": 2471,
+      "physical_erasable_word": null,
+      "words": [
+        24668
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 77,
+      "label": "",
+      "op": "TC",
+      "arguments": "Q",
+      "assembled_address": "4650",
+      "physical_fixed_word": 2472,
+      "physical_erasable_word": null,
+      "words": [
+        2
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 79,
+      "label": "SUPDACAL",
+      "op": "TS",
+      "arguments": "MPTEMP",
+      "assembled_address": "4651",
+      "physical_fixed_word": 2473,
+      "physical_erasable_word": null,
+      "words": [
+        22621
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 80,
+      "label": "",
+      "op": "XCH",
+      "arguments": "FBANK",
+      "assembled_address": "4652",
+      "physical_fixed_word": 2474,
+      "physical_erasable_word": null,
+      "words": [
+        23556
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 81,
+      "label": "",
+      "op": "EXTEND",
+      "arguments": "",
+      "assembled_address": "4653",
+      "physical_fixed_word": 2475,
+      "physical_erasable_word": null,
+      "words": [
+        6
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 82,
+      "label": "",
+      "op": "ROR",
+      "arguments": "SUPERBNK",
+      "assembled_address": "4654",
+      "physical_fixed_word": 2476,
+      "physical_erasable_word": null,
+      "words": [
+        2055
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 83,
+      "label": "",
+      "op": "XCH",
+      "arguments": "MPTEMP",
+      "assembled_address": "4655",
+      "physical_fixed_word": 2477,
+      "physical_erasable_word": null,
+      "words": [
+        23645
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 84,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4656",
+      "physical_fixed_word": 2478,
+      "physical_erasable_word": null,
+      "words": [
+        31242
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 85,
+      "label": "",
+      "op": "XCH",
+      "arguments": "L",
+      "assembled_address": "4657",
+      "physical_fixed_word": 2479,
+      "physical_erasable_word": null,
+      "words": [
+        23553
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 86,
+      "label": "",
+      "op": "INHINT",
+      "arguments": "",
+      "assembled_address": "4660",
+      "physical_fixed_word": 2480,
+      "physical_erasable_word": null,
+      "words": [
+        4
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 87,
+      "label": "",
+      "op": "EXTEND",
+      "arguments": "",
+      "assembled_address": "4661",
+      "physical_fixed_word": 2481,
+      "physical_erasable_word": null,
+      "words": [
+        6
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 88,
+      "label": "",
+      "op": "WRITE",
+      "arguments": "SUPERBNK",
+      "assembled_address": "4662",
+      "physical_fixed_word": 2482,
+      "physical_erasable_word": null,
+      "words": [
+        519
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 89,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "L",
+      "assembled_address": "4663",
+      "physical_fixed_word": 2483,
+      "physical_erasable_word": null,
+      "words": [
+        20481
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 90,
+      "label": "",
+      "op": "CA",
+      "arguments": "10000",
+      "assembled_address": "4664",
+      "physical_fixed_word": 2484,
+      "physical_erasable_word": null,
+      "words": [
+        13312
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 91,
+      "label": "",
+      "op": "XCH",
+      "arguments": "MPTEMP",
+      "assembled_address": "4665",
+      "physical_fixed_word": 2485,
+      "physical_erasable_word": null,
+      "words": [
+        23645
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 92,
+      "label": "",
+      "op": "EXTEND",
+      "arguments": "",
+      "assembled_address": "4666",
+      "physical_fixed_word": 2486,
+      "physical_erasable_word": null,
+      "words": [
+        6
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 93,
+      "label": "",
+      "op": "WRITE",
+      "arguments": "SUPERBNK",
+      "assembled_address": "4667",
+      "physical_fixed_word": 2487,
+      "physical_erasable_word": null,
+      "words": [
+        519
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 94,
+      "label": "",
+      "op": "RELINT",
+      "arguments": "",
+      "assembled_address": "4670",
+      "physical_fixed_word": 2488,
+      "physical_erasable_word": null,
+      "words": [
+        3
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 95,
+      "label": "",
+      "op": "TS",
+      "arguments": "FBANK",
+      "assembled_address": "4671",
+      "physical_fixed_word": 2489,
+      "physical_erasable_word": null,
+      "words": [
+        22532
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 96,
+      "label": "",
+      "op": "CA",
+      "arguments": "MPTEMP",
+      "assembled_address": "4672",
+      "physical_fixed_word": 2490,
+      "physical_erasable_word": null,
+      "words": [
+        12381
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 97,
+      "label": "",
+      "op": "RETURN",
+      "arguments": "",
+      "assembled_address": "4673",
+      "physical_fixed_word": 2491,
+      "physical_erasable_word": null,
+      "words": [
+        2
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 102,
+      "label": "IBNKCALL",
+      "op": "DXCH",
+      "arguments": "RUPTREG3",
+      "assembled_address": "4674",
+      "physical_fixed_word": 2492,
+      "physical_erasable_word": null,
+      "words": [
+        21563
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 103,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4675",
+      "physical_fixed_word": 2493,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 104,
+      "label": "",
+      "op": "CAF",
+      "arguments": "0",
+      "assembled_address": "4676",
+      "physical_fixed_word": 2494,
+      "physical_erasable_word": null,
+      "words": [
+        12288
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 105,
+      "label": "",
+      "op": "INCR",
+      "arguments": "Q",
+      "assembled_address": "4677",
+      "physical_fixed_word": 2495,
+      "physical_erasable_word": null,
+      "words": [
+        10242
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 107,
+      "label": "ISWCALLL",
+      "op": "TS",
+      "arguments": "L",
+      "assembled_address": "4700",
+      "physical_fixed_word": 2496,
+      "physical_erasable_word": null,
+      "words": [
+        22529
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 108,
+      "label": "",
+      "op": "LXCH",
+      "arguments": "FBANK",
+      "assembled_address": "4701",
+      "physical_fixed_word": 2497,
+      "physical_erasable_word": null,
+      "words": [
+        9220
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 109,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4702",
+      "physical_fixed_word": 2498,
+      "physical_erasable_word": null,
+      "words": [
+        31242
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 110,
+      "label": "",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4703",
+      "physical_fixed_word": 2499,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 111,
+      "label": "",
+      "op": "DXCH",
+      "arguments": "RUPTREG3",
+      "assembled_address": "4704",
+      "physical_fixed_word": 2500,
+      "physical_erasable_word": null,
+      "words": [
+        21563
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 112,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4705",
+      "physical_fixed_word": 2501,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 113,
+      "label": "",
+      "op": "TC",
+      "arguments": "10000",
+      "assembled_address": "4706",
+      "physical_fixed_word": 2502,
+      "physical_erasable_word": null,
+      "words": [
+        1024
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 115,
+      "label": "ISWRETRN",
+      "op": "XCH",
+      "arguments": "RUPTREG4",
+      "assembled_address": "4707",
+      "physical_fixed_word": 2503,
+      "physical_erasable_word": null,
+      "words": [
+        23611
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 116,
+      "label": "",
+      "op": "XCH",
+      "arguments": "FBANK",
+      "assembled_address": "4710",
+      "physical_fixed_word": 2504,
+      "physical_erasable_word": null,
+      "words": [
+        23556
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 117,
+      "label": "",
+      "op": "XCH",
+      "arguments": "RUPTREG4",
+      "assembled_address": "4711",
+      "physical_fixed_word": 2505,
+      "physical_erasable_word": null,
+      "words": [
+        23611
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 118,
+      "label": "",
+      "op": "TC",
+      "arguments": "RUPTREG3",
+      "assembled_address": "4712",
+      "physical_fixed_word": 2506,
+      "physical_erasable_word": null,
+      "words": [
+        58
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 126,
+      "label": "USPRCADR",
+      "op": "TS",
+      "arguments": "LOC",
+      "assembled_address": "4713",
+      "physical_fixed_word": 2507,
+      "physical_erasable_word": null,
+      "words": [
+        22644
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 127,
+      "label": "",
+      "op": "CA",
+      "arguments": "BIT8",
+      "assembled_address": "4714",
+      "physical_fixed_word": 2508,
+      "physical_erasable_word": null,
+      "words": [
+        14820
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 128,
+      "label": "",
+      "op": "TS",
+      "arguments": "EDOP",
+      "assembled_address": "4715",
+      "physical_fixed_word": 2509,
+      "physical_erasable_word": null,
+      "words": [
+        22547
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 129,
+      "label": "",
+      "op": "CA",
+      "arguments": "BBANK",
+      "assembled_address": "4716",
+      "physical_fixed_word": 2510,
+      "physical_erasable_word": null,
+      "words": [
+        12294
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 130,
+      "label": "",
+      "op": "TS",
+      "arguments": "BANKSET",
+      "assembled_address": "4717",
+      "physical_fixed_word": 2511,
+      "physical_erasable_word": null,
+      "words": [
+        22645
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 131,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4720",
+      "physical_fixed_word": 2512,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 132,
+      "label": "",
+      "op": "CA",
+      "arguments": "0",
+      "assembled_address": "4721",
+      "physical_fixed_word": 2513,
+      "physical_erasable_word": null,
+      "words": [
+        12288
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 133,
+      "label": "",
+      "op": "TS",
+      "arguments": "FBANK",
+      "assembled_address": "4722",
+      "physical_fixed_word": 2514,
+      "physical_erasable_word": null,
+      "words": [
+        22532
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 134,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4723",
+      "physical_fixed_word": 2515,
+      "physical_erasable_word": null,
+      "words": [
+        31242
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 135,
+      "label": "",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4724",
+      "physical_fixed_word": 2516,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 136,
+      "label": "",
+      "op": "XCH",
+      "arguments": "LOC",
+      "assembled_address": "4725",
+      "physical_fixed_word": 2517,
+      "physical_erasable_word": null,
+      "words": [
+        23668
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 137,
+      "label": "",
+      "op": "TCF",
+      "arguments": "Q+10000",
+      "assembled_address": "4726",
+      "physical_fixed_word": 2518,
+      "physical_erasable_word": null,
+      "words": [
+        6563
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 172,
+      "label": "SUPERSW",
+      "op": "EXTEND",
+      "arguments": "",
+      "assembled_address": "4727",
+      "physical_fixed_word": 2519,
+      "physical_erasable_word": null,
+      "words": [
+        6
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 173,
+      "label": "",
+      "op": "WRITE",
+      "arguments": "SUPERBNK",
+      "assembled_address": "4730",
+      "physical_fixed_word": 2520,
+      "physical_erasable_word": null,
+      "words": [
+        519
+      ]
+    },
+    {
+      "path": "Luminary099/INTER-BANK_COMMUNICATION.agc",
+      "line": 175,
+      "label": "",
+      "op": "TC",
+      "arguments": "Q",
+      "assembled_address": "4731",
+      "physical_fixed_word": 2521,
+      "physical_erasable_word": null,
+      "words": [
+        2
+      ]
+    }
+  ],
+  "bankjump_original_callers": [
+    {
+      "path": "Luminary099/SERVICER.agc",
+      "line": 379,
+      "immediate_producer": {
+        "label": "AVERTRN",
+        "op": "CA",
+        "arguments": "OUTROUTE"
+      },
+      "source_context": [
+        {
+          "line": 371,
+          "text": "\t\t\tSWANDISP\t# SHUT OFF R10 WHEN SERVICER ENDS."
+        },
+        {
+          "line": 372,
+          "text": "\t\tCLEAR\tCALL\t\t# RESET MUNFLAG."
+        },
+        {
+          "line": 373,
+          "text": "\t\t\tMUNFLAG"
+        },
+        {
+          "line": 374,
+          "text": "# Page 864"
+        },
+        {
+          "line": 375,
+          "text": "\t\t\tAVETOMID"
+        },
+        {
+          "line": 376,
+          "text": "\t\tCLEAR\tEXIT"
+        },
+        {
+          "line": 377,
+          "text": "\t\t\tV37FLAG"
+        },
+        {
+          "line": 378,
+          "text": "AVERTRN\t\tCA\tOUTROUTE\t# RETURN TO DESIRED POINT."
+        },
+        {
+          "line": 379,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "4e3798d5dabcc7ecca813d762824f7dfc41ad352a9869a7526565fc3a05f4415"
+    },
+    {
+      "path": "Luminary099/SERVICER.agc",
+      "line": 1673,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "LRADRET1"
+      },
+      "source_context": [
+        {
+          "line": 1665,
+          "text": "\t\tTS\tLRMCTR"
+        },
+        {
+          "line": 1666,
+          "text": "\t\tTS\tLRRCTR"
+        },
+        {
+          "line": 1667,
+          "text": "\t\tTS\tLRSCTR"
+        },
+        {
+          "line": 1668,
+          "text": "\t\tTS\tVSELECT\t\t# INITIALIZE VSELECT"
+        },
+        {
+          "line": 1669,
+          "text": ""
+        },
+        {
+          "line": 1670,
+          "text": "\t\tTC\tSETPOS\t\t# CONTINUE WITH COMPUTATIONS."
+        },
+        {
+          "line": 1671,
+          "text": ""
+        },
+        {
+          "line": 1672,
+          "text": "\t\tCA\tLRADRET1"
+        },
+        {
+          "line": 1673,
+          "text": "\t\tTC\tBANKJUMP\t# RETURN TO CALLER"
+        }
+      ],
+      "source_sha256": "4e3798d5dabcc7ecca813d762824f7dfc41ad352a9869a7526565fc3a05f4415"
+    },
+    {
+      "path": "Luminary099/R60_62.agc",
+      "line": 160,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAE",
+        "arguments": "TEMPR60"
+      },
+      "source_context": [
+        {
+          "line": 152,
+          "text": ""
+        },
+        {
+          "line": 153,
+          "text": "STARTMNV\tTC\tBANKCALL\t# PERFORM MANEUVER VIA KALCMANU"
+        },
+        {
+          "line": 154,
+          "text": "\t\tCADR\tGOMANUR"
+        },
+        {
+          "line": 155,
+          "text": ""
+        },
+        {
+          "line": 156,
+          "text": "ENDMANUV\tTCF\tTOBALLA\t\t# FINISHED MANEUVER."
+        },
+        {
+          "line": 157,
+          "text": "ENDMANU1\tTC\tDOWNFLAG\t# RESET 3-AXIS FLAG"
+        },
+        {
+          "line": 158,
+          "text": "\t\tADRES\t3AXISFLG"
+        },
+        {
+          "line": 159,
+          "text": "\t\tCAE\tTEMPR60"
+        },
+        {
+          "line": 160,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "23cf6099c20b0dacdb54b377db1208214f8fb9fee1fb09a6e1ae0337d14c83f6"
+    },
+    {
+      "path": "Luminary099/R60_62.agc",
+      "line": 340,
+      "immediate_producer": {
+        "label": "ENDBALL",
+        "op": "CA",
+        "arguments": "BALLEXIT"
+      },
+      "source_context": [
+        {
+          "line": 332,
+          "text": "\t\tRTB\t\t\t# VDEF MAKES V(MPAC) = ROLL, PITCH, YAW"
+        },
+        {
+          "line": 333,
+          "text": "\t\t\tV1STO2S"
+        },
+        {
+          "line": 334,
+          "text": "\t\tSTORE\tFDAIX\t\t# MODE IS TP"
+        },
+        {
+          "line": 335,
+          "text": "\t\tEXIT"
+        },
+        {
+          "line": 336,
+          "text": ""
+        },
+        {
+          "line": 337,
+          "text": "ENDBALL\t\tCA\tBALLEXIT"
+        },
+        {
+          "line": 338,
+          "text": ""
+        },
+        {
+          "line": 339,
+          "text": "# Page 479"
+        },
+        {
+          "line": 340,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "23cf6099c20b0dacdb54b377db1208214f8fb9fee1fb09a6e1ae0337d14c83f6"
+    },
+    {
+      "path": "Luminary099/P20-P25.agc",
+      "line": 1391,
+      "immediate_producer": {
+        "label": "R61C+L4",
+        "op": "CAE",
+        "arguments": "GENRET"
+      },
+      "source_context": [
+        {
+          "line": 1383,
+          "text": "\t\tEBANK=\tLOSCOUNT"
+        },
+        {
+          "line": 1384,
+          "text": "\t\t2CADR\tR61C+L01"
+        },
+        {
+          "line": 1385,
+          "text": ""
+        },
+        {
+          "line": 1386,
+          "text": "\t\tTC\tTASKOVER"
+        },
+        {
+          "line": 1387,
+          "text": "R61C+L04\tTC\tBANKCALL\t# TO CONVERT ANGLES TO FDAI"
+        },
+        {
+          "line": 1388,
+          "text": "\t\tCADR\tBALLANGS"
+        },
+        {
+          "line": 1389,
+          "text": "\t\tTC\tR61C+L06"
+        },
+        {
+          "line": 1390,
+          "text": "R61C+L4\t\tCAE\tGENRET"
+        },
+        {
+          "line": 1391,
+          "text": "\t\tTCF\tBANKJUMP\t# EXIT R61"
+        }
+      ],
+      "source_sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f"
+    },
+    {
+      "path": "Luminary099/P20-P25.agc",
+      "line": 2277,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "DESRET"
+      },
+      "source_context": [
+        {
+          "line": 2269,
+          "text": ""
+        },
+        {
+          "line": 2270,
+          "text": "DESRETRN\tCA\tRADCADR\t\t# FIRST PASS THRU DESIGNATE"
+        },
+        {
+          "line": 2271,
+          "text": "\t\tEXTEND"
+        },
+        {
+          "line": 2272,
+          "text": "\t\tBZF\tDESRTRN\t\t# YES\tSET EXIT"
+        },
+        {
+          "line": 2273,
+          "text": "\t\tTC\tENDOFJOB\t# NO"
+        },
+        {
+          "line": 2274,
+          "text": "DESRTRN\t\tRELINT"
+        },
+        {
+          "line": 2275,
+          "text": "\t\tINCR\tDESRET"
+        },
+        {
+          "line": 2276,
+          "text": "\t\tCA\tDESRET"
+        },
+        {
+          "line": 2277,
+          "text": "\t\tTCF\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f"
+    },
+    {
+      "path": "Luminary099/P20-P25.agc",
+      "line": 3433,
+      "immediate_producer": {
+        "label": "OUT22.1",
+        "op": "CAE",
+        "arguments": "LRS22.1X"
+      },
+      "source_context": [
+        {
+          "line": 3425,
+          "text": "\t\tCAF\tBIT2\t\t# SET ERROR CODE"
+        },
+        {
+          "line": 3426,
+          "text": "\t\tTS\tMPAC"
+        },
+        {
+          "line": 3427,
+          "text": "\t\tTCF\tOUT22.1"
+        },
+        {
+          "line": 3428,
+          "text": ""
+        },
+        {
+          "line": 3429,
+          "text": "NORMEXIT\tEXIT\t\t\t# NORMAL EXIT -- SET MPAC EQUAL ZERO"
+        },
+        {
+          "line": 3430,
+          "text": "\t\tCAF\tZERO"
+        },
+        {
+          "line": 3431,
+          "text": "\t\tTS\tMPAC"
+        },
+        {
+          "line": 3432,
+          "text": "OUT22.1\t\tCAE\tLRS22.1X\t# EXIT FROM LRS22.1"
+        },
+        {
+          "line": 3433,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f"
+    },
+    {
+      "path": "Luminary099/P20-P25.agc",
+      "line": 3494,
+      "immediate_producer": {
+        "label": "OUT22.2",
+        "op": "CAE",
+        "arguments": "LRS22.1X"
+      },
+      "source_context": [
+        {
+          "line": 3486,
+          "text": "\t\tTS\tMPAC"
+        },
+        {
+          "line": 3487,
+          "text": "\t\tTCF\tOUT22.2"
+        },
+        {
+          "line": 3488,
+          "text": "OKEXIT\t\tEXIT\t\t\t# NORMAL EXIT -- SET MPAC = ZERO"
+        },
+        {
+          "line": 3489,
+          "text": ""
+        },
+        {
+          "line": 3490,
+          "text": "# Page 573"
+        },
+        {
+          "line": 3491,
+          "text": "\t\tCAF\tZERO"
+        },
+        {
+          "line": 3492,
+          "text": "\t\tTS\tMPAC"
+        },
+        {
+          "line": 3493,
+          "text": "OUT22.2\t\tCAE\tLRS22.1X"
+        },
+        {
+          "line": 3494,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "6dc2a57a2294158f6f4097c2dfec2d3fab4a600025f0d7d4652967e080aec11f"
+    },
+    {
+      "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+      "line": 876,
+      "immediate_producer": {
+        "label": "",
+        "op": "RELINT",
+        "arguments": ""
+      },
+      "source_context": [
+        {
+          "line": 868,
+          "text": "\t\tDXCH\tMPAC \t+3"
+        },
+        {
+          "line": 869,
+          "text": ""
+        },
+        {
+          "line": 870,
+          "text": "\t\tCA\tLOCCTR"
+        },
+        {
+          "line": 871,
+          "text": "\t\tTS\tMPAC \t+5"
+        },
+        {
+          "line": 872,
+          "text": "# Page 1362"
+        },
+        {
+          "line": 873,
+          "text": "\t\tTC\tSAVELOCR"
+        },
+        {
+          "line": 874,
+          "text": "\t\tRELINT"
+        },
+        {
+          "line": 875,
+          "text": ""
+        },
+        {
+          "line": 876,
+          "text": "\t\tTCF\tBANKJUMP\t# CALL CADR +4"
+        }
+      ],
+      "source_sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da"
+    },
+    {
+      "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+      "line": 1024,
+      "immediate_producer": {
+        "label": "",
+        "op": "AD",
+        "arguments": "TEMPFLSH"
+      },
+      "source_context": [
+        {
+          "line": 1016,
+          "text": "\t\tCA\tRESTREG\t\t# SUPERBANK AND JOB PRIORITY"
+        },
+        {
+          "line": 1017,
+          "text": "\t\tTC\tSUPERSW\t\t# RESTORE SUPERBANK"
+        },
+        {
+          "line": 1018,
+          "text": ""
+        },
+        {
+          "line": 1019,
+          "text": "\t\tMASK\tPRIO37"
+        },
+        {
+          "line": 1020,
+          "text": "\t\tTC\tPRIOCHNG"
+        },
+        {
+          "line": 1021,
+          "text": ""
+        },
+        {
+          "line": 1022,
+          "text": "\t\tCS\tTHREE"
+        },
+        {
+          "line": 1023,
+          "text": "\t\tAD\tTEMPFLSH"
+        },
+        {
+          "line": 1024,
+          "text": "\t\tTCF\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da"
+    },
+    {
+      "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+      "line": 1280,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "MPAC +3"
+      },
+      "source_context": [
+        {
+          "line": 1272,
+          "text": "\t\tCS\tTHREE\t\t# BLANK EVERYTHING EXCEPT MM"
+        },
+        {
+          "line": 1273,
+          "text": "\t\tTC\tNVSUB"
+        },
+        {
+          "line": 1274,
+          "text": "\t\tTCF\t+1"
+        },
+        {
+          "line": 1275,
+          "text": ""
+        },
+        {
+          "line": 1276,
+          "text": "ENDIT\t\tCA\tUSERPRIO\t# RETURN TO USER'S PRIORITY"
+        },
+        {
+          "line": 1277,
+          "text": "\t\tMASK\tPRIO37"
+        },
+        {
+          "line": 1278,
+          "text": "\t\tTC\tPRIOCHNG"
+        },
+        {
+          "line": 1279,
+          "text": "\t\tCA\tMPAC \t+3"
+        },
+        {
+          "line": 1280,
+          "text": "\t\tTCF\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da"
+    },
+    {
+      "path": "Luminary099/DISPLAY_INTERFACE_ROUTINES.agc",
+      "line": 1294,
+      "immediate_producer": {
+        "label": "",
+        "op": "AD",
+        "arguments": "CADRFLSH"
+      },
+      "source_context": [
+        {
+          "line": 1286,
+          "text": "\t\tTS\tR1SAVE"
+        },
+        {
+          "line": 1287,
+          "text": ""
+        },
+        {
+          "line": 1288,
+          "text": "\t\tCAF\tZERO\t\t# *** 205 ONLY MARKBRAN USERS IN"
+        },
+        {
+          "line": 1289,
+          "text": "\t\tTC\tSUPERSW\t\t# SUPERBANK 0"
+        },
+        {
+          "line": 1290,
+          "text": ""
+        },
+        {
+          "line": 1291,
+          "text": " -1\t\tCAF\tTHREE\t\t# RETURN TO USER'S IMMEDIATE RETURN LOC"
+        },
+        {
+          "line": 1292,
+          "text": "IMMEDRET\tINDEX\tCOPINDEX"
+        },
+        {
+          "line": 1293,
+          "text": "\t\tAD\tCADRFLSH"
+        },
+        {
+          "line": 1294,
+          "text": "\t\tTCF\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "f4157c31239c14410fe9b74d416a08bf2f1f66f3fabe5a9c8a479e95fbe192da"
+    },
+    {
+      "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 984,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAF",
+        "arguments": "VERBTAB"
+      },
+      "source_context": [
+        {
+          "line": 976,
+          "text": "\t\tTS\tMPAC"
+        },
+        {
+          "line": 977,
+          "text": "\t\tTC\tRELDSP\t\t# RELEASE DISPLAY SYST"
+        },
+        {
+          "line": 978,
+          "text": "\t\tTC\tPOSTJUMP\t# GO TO GOEXTVB WITH VB=40 IN MPAC."
+        },
+        {
+          "line": 979,
+          "text": "\t\tCADR\tGOEXTVB"
+        },
+        {
+          "line": 980,
+          "text": "LST2CON\t\tDEC\t40\t\t# FIRST LIST2 VERB (EXTENDED VERB)"
+        },
+        {
+          "line": 981,
+          "text": ""
+        },
+        {
+          "line": 982,
+          "text": "VBFANDIR\tINDEX\tVERBREG"
+        },
+        {
+          "line": 983,
+          "text": "\t\tCAF\tVERBTAB"
+        },
+        {
+          "line": 984,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729"
+    },
+    {
+      "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 1369,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAF",
+        "arguments": "SFOUTABR"
+      },
+      "source_context": [
+        {
+          "line": 1361,
+          "text": "\t\tCCS\tDECOUNT"
+        },
+        {
+          "line": 1362,
+          "text": "\t\tTC\t+2"
+        },
+        {
+          "line": 1363,
+          "text": "\t\tTC\tENTEXIT"
+        },
+        {
+          "line": 1364,
+          "text": "\t\tTS\tDECOUNT"
+        },
+        {
+          "line": 1365,
+          "text": "\t\tTC\tDSPDCPUT\t# MORE TO DISPLAY"
+        },
+        {
+          "line": 1366,
+          "text": ""
+        },
+        {
+          "line": 1367,
+          "text": "DECDSP3\t\tINDEX\tA"
+        },
+        {
+          "line": 1368,
+          "text": "\t\tCAF\tSFOUTABR"
+        },
+        {
+          "line": 1369,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729"
+    },
+    {
+      "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 2033,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAF",
+        "arguments": "SFINTABR"
+      },
+      "source_context": [
+        {
+          "line": 2025,
+          "text": "\t\tTC\tPUTSFNOR"
+        },
+        {
+          "line": 2026,
+          "text": "\t\tTC\tSFRUTMIX"
+        },
+        {
+          "line": 2027,
+          "text": "\t\tTC\tPUTDCSF2"
+        },
+        {
+          "line": 2028,
+          "text": "PUTSFNOR\tTC\tSFRUTNOR"
+        },
+        {
+          "line": 2029,
+          "text": ""
+        },
+        {
+          "line": 2030,
+          "text": "PUTDCSF2\tINDEX\tA"
+        },
+        {
+          "line": 2031,
+          "text": "\t\tCAF\tSFINTABR"
+        },
+        {
+          "line": 2032,
+          "text": "# Page 431"
+        },
+        {
+          "line": 2033,
+          "text": "\t\tTC\tBANKJUMP\t# SWITCH BANKS FOR EXPANSION ROOM"
+        }
+      ],
+      "source_sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729"
+    },
+    {
+      "path": "Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 2720,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAF",
+        "arguments": "+2"
+      },
+      "source_context": [
+        {
+          "line": 2712,
+          "text": "\t\tCAF\tTWO"
+        },
+        {
+          "line": 2713,
+          "text": "\t\tTS\tCOUNT"
+        },
+        {
+          "line": 2714,
+          "text": "\t\tXCH\tQ\t\t# MUST USE SAME RETURN AS DSPIN"
+        },
+        {
+          "line": 2715,
+          "text": "\t\tTS\tDSEXIT"
+        },
+        {
+          "line": 2716,
+          "text": "\t\tTC\tDSPIN1"
+        },
+        {
+          "line": 2717,
+          "text": ""
+        },
+        {
+          "line": 2718,
+          "text": "DSPOCTIN\tTC\tDSPIN\t\t# SO DSPOCTWO DOESNT USE SWCALL"
+        },
+        {
+          "line": 2719,
+          "text": "\t\tCAF\t+2"
+        },
+        {
+          "line": 2720,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729"
+    },
+    {
+      "path": "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+      "line": 703,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "TBASE4"
+      },
+      "source_context": [
+        {
+          "line": 695,
+          "text": "\t\tTC\tTWIDDLE"
+        },
+        {
+          "line": 696,
+          "text": "\t\tADRES\tCLOKTASK"
+        },
+        {
+          "line": 697,
+          "text": "\t\tTC\t2PHSCHNG"
+        },
+        {
+          "line": 698,
+          "text": "\t\tOCT\t40036\t\t# 6.3SPOT FOR CLOKTASK"
+        },
+        {
+          "line": 699,
+          "text": "\t\tOCT\t05024"
+        },
+        {
+          "line": 700,
+          "text": "\t\tOCT\t13000"
+        },
+        {
+          "line": 701,
+          "text": ""
+        },
+        {
+          "line": 702,
+          "text": "\t\tCA\tTBASE4"
+        },
+        {
+          "line": 703,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "7ed744d09332db172eaad0ca8432c243479d6d293ed387ee83eb0dd67c77f041"
+    },
+    {
+      "path": "Luminary099/BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc",
+      "line": 925,
+      "immediate_producer": {
+        "label": "GOBACK",
+        "op": "CA",
+        "arguments": "TEMPR60"
+      },
+      "source_context": [
+        {
+          "line": 917,
+          "text": "\t\tEXTEND"
+        },
+        {
+          "line": 918,
+          "text": "\t\tBZF\tGOBACK\t\t# IN AUTO-THROTTLE MODE -- RETURN"
+        },
+        {
+          "line": 919,
+          "text": "TURNITON\tCAF\tP40A/PMD\t# DISPLAYS V50N25 R1=203 PLEASE PERFORM"
+        },
+        {
+          "line": 920,
+          "text": "\t\tTC\tBANKCALL\t# CHECKLIST 203 TURN ON PGNCS ETC."
+        },
+        {
+          "line": 921,
+          "text": "\t\tCADR\tGOPERF1"
+        },
+        {
+          "line": 922,
+          "text": "\t\tTCF\tGOTOPOOH\t# V34E TERMINATE"
+        },
+        {
+          "line": 923,
+          "text": "\t\tTCF\tP40A/P\t\t# RECYCLE"
+        },
+        {
+          "line": 924,
+          "text": "GOBACK\t\tCA\tTEMPR60"
+        },
+        {
+          "line": 925,
+          "text": "\t\tTC\tBANKJUMP\t# GOODBYE.  COME AGAIN SOON."
+        }
+      ],
+      "source_sha256": "7ed744d09332db172eaad0ca8432c243479d6d293ed387ee83eb0dd67c77f041"
+    },
+    {
+      "path": "Luminary099/AOSTASK_AND_AOSJOB.agc",
+      "line": 940,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "ACCRETRN"
+      },
+      "source_context": [
+        {
+          "line": 932,
+          "text": ""
+        },
+        {
+          "line": 933,
+          "text": "# Page 1504"
+        },
+        {
+          "line": 934,
+          "text": "1/ACCRET\tINHINT"
+        },
+        {
+          "line": 935,
+          "text": "\t\tCS\tDAPBOOLS\t# SET BIT TO INDICATE DATA GOOD."
+        },
+        {
+          "line": 936,
+          "text": "\t\tMASK\tACCSOKAY"
+        },
+        {
+          "line": 937,
+          "text": "\t\tADS\tDAPBOOLS"
+        },
+        {
+          "line": 938,
+          "text": "\t\tRELINT"
+        },
+        {
+          "line": 939,
+          "text": "\t\tCA\tACCRETRN"
+        },
+        {
+          "line": 940,
+          "text": "\t\tTC\tBANKJUMP\t# RETURN TO CALLER"
+        }
+      ],
+      "source_sha256": "f6bf6c63faf9895681da9fecc7a0c8531644140cb71e15c331ff8a990e6bacbe"
+    },
+    {
+      "path": "Luminary099/PHASE_TABLE_MAINTENANCE.agc",
+      "line": 47,
+      "immediate_producer": {
+        "label": "PREBJUMP",
+        "op": "LXCH",
+        "arguments": "BBANK"
+      },
+      "source_context": [
+        {
+          "line": 39,
+          "text": ""
+        },
+        {
+          "line": 40,
+          "text": "NEWMODEX\tINDEX\tQ\t\t# UPDATE MODREG.  ENTRY FOR MODE IN FIXED."
+        },
+        {
+          "line": 41,
+          "text": "\t\tCAF\t0"
+        },
+        {
+          "line": 42,
+          "text": "\t\tINCR\tQ"
+        },
+        {
+          "line": 43,
+          "text": ""
+        },
+        {
+          "line": 44,
+          "text": "NEWMODEA\tTS\tMODREG\t\t# ENTRY FOR MODE IN A."
+        },
+        {
+          "line": 45,
+          "text": "MMDSPLAY\tCAF\t+3\t\t# DISPLAY MAJOR MODE."
+        },
+        {
+          "line": 46,
+          "text": "PREBJUMP\tLXCH\tBBANK\t\t# PUTS BBANK IN L"
+        },
+        {
+          "line": 47,
+          "text": "\t\tTCF\tBANKJUMP\t# PUTS Q INTO A"
+        }
+      ],
+      "source_sha256": "2cd8a2fd825e4cb350d1b69f6d36cd6ac24bdfe4c495c02b7a5ef8f1c5757293"
+    },
+    {
+      "path": "Luminary099/INTEGRATION_INITIALIZATION.agc",
+      "line": 986,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "IRETURN1"
+      },
+      "source_context": [
+        {
+          "line": 978,
+          "text": ""
+        },
+        {
+          "line": 979,
+          "text": "\t\tINHINT"
+        },
+        {
+          "line": 980,
+          "text": "\t\tEXTEND"
+        },
+        {
+          "line": 981,
+          "text": "\t\tDCS\tTIME2"
+        },
+        {
+          "line": 982,
+          "text": "\t\tDAS\tMPAC"
+        },
+        {
+          "line": 983,
+          "text": "\t\tTC\tTPAGREE"
+        },
+        {
+          "line": 984,
+          "text": ""
+        },
+        {
+          "line": 985,
+          "text": "\t\tCA\tIRETURN1"
+        },
+        {
+          "line": 986,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "9e5db19ec31d6ea0eae45b34a98e500430ece23e546de8bcd83d0cd7275195fe"
+    },
+    {
+      "path": "Luminary099/EXTENDED_VERBS.agc",
+      "line": 421,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "DESRET"
+      },
+      "source_context": [
+        {
+          "line": 413,
+          "text": "NOLOKON\t\tTC\tDOWNFLAG\t\t# IF NO LOCK-ON, SET BIT15 OF RADMADES TO"
+        },
+        {
+          "line": 414,
+          "text": "\t\tADRES\tLOKONSW\t\t\t# INDICATE THAT CONTINUOUS DESIGNATION IS"
+        },
+        {
+          "line": 415,
+          "text": "\t\tTC\tUPFLAG\t\t\t# WANTED (TO BE TERMINATED BY V44.)"
+        },
+        {
+          "line": 416,
+          "text": "\t\tADRES\tCDESFLAG"
+        },
+        {
+          "line": 417,
+          "text": "\t\tTC\tUPFLAG\t\t\t# SET NO RR ANGLE MONITOR FLAG."
+        },
+        {
+          "line": 418,
+          "text": "\t\tADRES\tNORRMON\t\t\t# DISABLE R25 RR GIMBAL MONITOR IN T4RUPT"
+        },
+        {
+          "line": 419,
+          "text": "AURLKON1\tRELINT"
+        },
+        {
+          "line": 420,
+          "text": "\t\tCA\tDESRET"
+        },
+        {
+          "line": 421,
+          "text": "\t\tTCF\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "d6b54c7353ec90f84c467146d99e7da536ba7bea54fc31947031a97780b51eb4"
+    }
+  ],
+  "negative_overflow_excluded": false,
+  "negative_overflow_continuation": "fixed source CCS1777 and all4 MAKECADR successor stages; actual TC Q reachesPC2 with invalid -1 descriptor, before external register-word fetch; does not execute invalid arbitrary instruction data",
+  "instruction_decoder": false
+}

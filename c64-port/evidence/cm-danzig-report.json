@@ -1,0 +1,50 @@
+{
+  "cases": 4096,
+  "full_physical_words": 2048,
+  "raw_registers": [
+    "A",
+    "L",
+    "Q"
+  ],
+  "entry": "06030 DANZIG",
+  "boundaries": [
+    "selected basic DTCB",
+    "06037 NEWOPS after interpreted INTRSM",
+    "06037 ordinary continuation"
+  ],
+  "external_words": [
+    "SUPERBNK",
+    "IRQ",
+    "channel11"
+  ],
+  "selected_native_continuation": "actual basic/interpreted pair",
+  "snapshot_sha256": "45017c2116cac964c8309aef28c2f55792b2a139e6e0541e4abd52d60c8e03a4",
+  "hardware_stack_bytes": 18,
+  "software_stack_bytes": 683,
+  "c64_cases": 128,
+  "mailbox_hex": "a500008000",
+  "target": {
+    "prg_bytes": 17835,
+    ".text": {
+      "address": 2061,
+      "bytes": 8797
+    },
+    ".rodata": {
+      "address": 10858,
+      "bytes": 9024
+    },
+    ".data": {
+      "address": 19882,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 19882,
+      "bytes": 4122
+    },
+    ".noinit": {
+      "address": 24004,
+      "bytes": 0
+    },
+    "image_end": 24004
+  }
+}

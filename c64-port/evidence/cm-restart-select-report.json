@@ -1,0 +1,39 @@
+{
+  "cases": 6144,
+  "full_physical_words": 2048,
+  "entries": [
+    "01,3520 RESTARTS",
+    "01,3755 PHSPART2",
+    "01,3533 GETPART2"
+  ],
+  "boundary": "0704 GOLOC-1 or actual INITDSP FINDVAC service entry",
+  "snapshot_sha256": "17ba77cdbbe47d6c913c9a3ee3044d0cfc9dddbad8947d10570a0bc1a7468cc1",
+  "hardware_stack_bytes": 11,
+  "software_stack_bytes": 44,
+  "c64_cases": 192,
+  "mailbox_hex": "a50000c000",
+  "target": {
+    "prg_bytes": 41086,
+    ".text": {
+      "address": 2061,
+      "bytes": 7377
+    },
+    ".rodata": {
+      "address": 9438,
+      "bytes": 33695
+    },
+    ".data": {
+      "address": 43133,
+      "bytes": 0
+    },
+    ".bss": {
+      "address": 43133,
+      "bytes": 4096
+    },
+    ".noinit": {
+      "address": 47229,
+      "bytes": 0
+    },
+    "image_end": 47229
+  }
+}

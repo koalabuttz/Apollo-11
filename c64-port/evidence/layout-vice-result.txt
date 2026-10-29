@@ -1,0 +1,3 @@
+PASS: stock-ROM PAL C64 proves 4232 native original bindings and alias RAM reads/writes against sole canonical image at $7000
+All 8192 retained-bank address contexts and 79 original fixed metadata reads; complete 2048-word final image independently compared
+PRG 14690 bytes; loaded end $4161; mailbox a58810

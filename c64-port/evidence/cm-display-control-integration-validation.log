@@ -1,0 +1,6 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_display_control.c tests/cm_display_control_check.c src/agc_word.c src/cm_display_control.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c -o build/test-cm-display-control
+build/test-cm-display-control
+64 complete CM display entry states and42 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_display_control.c tests/cm_display_control_check.c src/agc_word.c src/cm_display_control.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c tests/cm_display_control_cases.c -o build/test-cm-display-control-frozen-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-display-control-frozen-sanitize
+64 complete CM display entry states and42 unchanged invalid boundaries: PASS

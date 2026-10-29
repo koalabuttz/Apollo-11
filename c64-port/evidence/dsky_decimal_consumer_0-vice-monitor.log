@@ -1,0 +1,9 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_decimal_consumer_0.prg from 0801 to 1BCE (13CE bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  181/$0b5,  13/$0d
+.C:110b  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C  159146392
+>C:c080  a5 00 00 20  00                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal_consumer_0-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal_consumer_0-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_decimal_consumer_0-software-stack.bin' from $c100 to $cfff

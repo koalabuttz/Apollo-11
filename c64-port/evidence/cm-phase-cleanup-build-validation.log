@@ -1,0 +1,10 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-phase-cleanup-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-phase-cleanup-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-PHASE-CLEANUP.PRG' as `RESIDENT' to unit 8
+writing file `CM-PHASE-CLEANUP-218.PRG' as `G218' to unit 8
+writing file `CM-PHASE-CLEANUP-254.PRG' as `G254' to unit 8
+writing file `CM-PHASE-CLEANUP-255.PRG' as `G255' to unit 8
+218 733 loaded bytes
+254 5261 loaded bytes
+255 9924 loaded bytes

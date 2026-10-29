@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_mode_admit-cm.prg from 0801 to 34AD (2CAD bytes)
+WATCH: 1  C:$54b6  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 54b6)    2/$002,  32/$20
+.C:1d1f  8E B6 54    STX $54B6      - A:0D X:A5 Y:00 SP:f1 N.-....C  154515974
+>C:54b6  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_admit-cm-vice-mailbox.bin' from $54b6 to $54ba
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_admit-cm-vice-difference.bin' from $34ae to $34b5
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_admit-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_mode_admit-cm-vice-software-stack.bin' from $c100 to $cfff

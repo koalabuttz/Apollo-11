@@ -1,0 +1,21 @@
+Independent read-only inspection by the scalar/source-map owner. No files were
+edited and no source comparison was rerun by the reviewer.
+
+No discrepancy found in TIME_FRONT/AFTER_TIME arithmetic and control against
+the actual original initial pairs and NEWOPS/SETPD/RTB/STCALL/CALL bodies.
+LM SETPD sets PUSHLOC/ADDRWD to FIXLOC. CM pending CALL remains EDOP0153.
+The genuine SWCALL restores old BUF2 exchanges. LM STCALL exchanges the DP
+destination FIXLOC+040; CALL writes QPRET via the complemented BANKMASK sum.
+Original location/bank changes and the CM after-CDU STCALL match the source.
+
+Extended review: TIME_PIPELINE joins actual RTB_LOAD_TIME pending DANZIG to
+compiled AFTER_TIME. CM_TIME_TRIG calls interface selector0, live CDU start1,
+exactly three cosine/sine/next groups, then genuine reentry and RVQ before
+AFTER_CDU. This matches the frozen interface contracts and original CM
+RTB/CALL then STCALL. Internal CDU DANZIG entries retain pending EXIT EDOP1,
+so the monolithic composition must retain ownership as documented. No concrete
+discrepancy found, and no callee edits were requested.
+
+Exact source/native identities appear in sband-flow-proof.json and its SHA
+ledger. This inspection does not establish complete antenna/orbital/display
+files, arbitrary caller admission, or live scheduling.

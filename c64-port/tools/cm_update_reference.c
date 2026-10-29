@@ -1,0 +1,42 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later; host-only original Comanche055 UPDATE_PROGRAM oracle. */
+#define main admission_reference_main
+#include "cm_executive_reference.c"
+#undef main
+#include "cm_update_cases.h"
+#include "case_trace.h"
+static agc_t baseline;
+static int quiet(void){return !machine.PendFlag&&!machine.ExtraDelay&&!machine.IndexValue&&!machine.ExtraCode&&!machine.SubstituteInstruction;}
+/* Points the native run owns: UPDATE_PROGRAM (bank 43 3726-3765, bank 27
+ * 3373-3762), INTER-BANK_COMMUNICATION (4662-4775) but SWRETURN (4675-4700,
+ * where UPACTOFF's TC Q leaves a BANKCALL with Q = 3), Z = 2 (TC Q executes
+ * the word in Q) and UPTEMP (TC UPTEMP executes the word stored there);
+ * in a case entering at one of UPJOB's interpretive words, also the
+ * interpreter (cm_up_interpreter). */
+static int interp;
+static int owned(unsigned z,unsigned fb){unsigned bank=fb>>10;
+ if(interp&&cm_up_interpreter((agc_word)z,(agc_word)fb,(agc_word)(machine.OutputChannel7&0160),(agc_word)get(CM_UP_LOC),(agc_word)get(CM_UP_BANKSET)))return 1;
+ if(z==2u||z==CM_UP_UPTEMP)return 1;
+ if(z>=04662u&&z<=04775u)return z<04675u||z>04700u;
+ if(bank>=030u&&(machine.OutputChannel7&0100))bank+=010u;
+ if(bank==043u&&z>=03726u&&z<=03765u)return 1;
+ if(bank==027u&&z>=03373u&&z<=03762u)return 1;
+ return 0;
+}
+/* From each case's entry, as tests/cm_update_cases.c sets it up, to the first
+ * point the native run does not own. Prints the interrupt-enable state,
+ * SUPERBNK, channel 11 and all 2048 erasable words. */
+int main(int argc,char **argv){unsigned n,i,cycles,pc=0;
+ if(argc!=2)return 2;memset(&machine,0,sizeof machine);if(agc_load_binfile(&machine,argv[1]))return 2;baseline=machine;InhibitAlarms=1;
+ for(n=0;n<CM_UP_CASES;++n){apollo_overlay_state s;cm_native_io io;agc_hardware hw;
+  cm_up_input(&s,&io,&hw,(uint16_t)n);interp=n%(CM_UP_ROUTINES+CM_UP_INTERPRETIVE)>=CM_UP_ROUTINES;
+  machine=baseline;for(i=0;i<2048u;++i)*memory(i)=(int16_t)s.words[i];
+  machine.InputChannel[7]=machine.OutputChannel7=io.superbank;machine.AllowInterrupt=io.interrupt_enabled;machine.InputChannel[011]=(int16_t)hw.channel11;
+  for(cycles=0;cycles<6000u;++cycles){
+   if(quiet()){pc=get(RegZ);if(!owned(pc,get(4))){if(cycles)break;}else CASE_MARK();}
+   machine.ScalerCounter=0;if(agc_engine(&machine))return 2;}
+  if(cycles==6000u){fprintf(stderr,"CM update %u timeout %05o\n",n,pc);return 2;}
+  CASE_END(n);
+  printf("%u %u %u %u",n,(unsigned)machine.AllowInterrupt,(unsigned)machine.OutputChannel7&0160u,(unsigned)machine.InputChannel[011]&077777u);
+  for(i=0;i<2048u;++i)printf(" %u",(unsigned)*memory(i)&(i==0||i==1?0177777u:077777u));putchar('\n');
+ }return 0;
+}

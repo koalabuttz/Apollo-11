@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/trig.prg from 0801 to BBDD (B3DD bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)   99/$063,   7/$07
+.C:42d6  8D 88 C0    STA $C088      - A:10 X:06 Y:16 SP:ed ..-..I..   59131492
+Stopwatch reset to 0.
+#1 (Stop on store c088)  130/$082,   7/$07
+.C:42fa  8D 88 C0    STA $C088      - A:20 X:00 Y:16 SP:ed ..-..I.C       1953
+Stopwatch:       1953
+#1 (Stop on store c088)  141/$08d,  44/$2c
+.C:42d6  8D 88 C0    STA $C088      - A:11 X:06 Y:16 SP:ed ..-..I..     356491
+Stopwatch reset to 0.
+#1 (Stop on store c088)  284/$11c,  16/$10
+.C:42fa  8D 88 C0    STA $C088      - A:21 X:01 Y:16 SP:ed ..-..I.C      28637
+Stopwatch:      28637
+#1 (Stop on store c088)    3/$003,  32/$20
+.C:42d6  8D 88 C0    STA $C088      - A:12 X:06 Y:16 SP:ed ..-..I..     384414
+Stopwatch reset to 0.
+#1 (Stop on store c088)   47/$02f,  43/$2b
+.C:42fa  8D 88 C0    STA $C088      - A:22 X:02 Y:16 SP:ed ..-..I.C      42095
+Stopwatch:      42095
+#1 (Stop on store c088)   95/$05f,  55/$37
+.C:42d6  8D 88 C0    STA $C088      - A:13 X:06 Y:16 SP:ed ..-..I..     398939
+Stopwatch reset to 0.
+#1 (Stop on store c088)  118/$076,  11/$0b
+.C:42fa  8D 88 C0    STA $C088      - A:23 X:03 Y:16 SP:ed ..-..I.C     217621
+Stopwatch:     217621
+#1 (Stop on store c088)  199/$0c7,  62/$3e
+.C:42d6  8D 88 C0    STA $C088      - A:14 X:04 Y:16 SP:ed ..-..I..     576583
+Stopwatch reset to 0.
+#1 (Stop on store c088)   77/$04d,   0/$00
+.C:42fa  8D 88 C0    STA $C088      - A:24 X:04 Y:16 SP:ed ..-..I.C     326404
+Stopwatch:     326404
+#2 (Stop on store c080)   71/$047,   9/$09
+.C:4383  8E 80 C0    STX $C080      - A:00 X:A5 Y:F4 SP:ed N.-.....     915715
+>C:c080  a5 00 00 80  00 03 04 82  24                         ........$
+Saving file `/workspace/Apollo-11/c64-port/build/trig-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/trig-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/trig-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE CDU TRIGONOMETRY          
+0518  128 COMPLETE ORIGINAL STATES PASS       
+0540                                          
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

@@ -1,0 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include "unit_phased_cases.h"
+#include "guidance_unit_phased.h"
+int main(int argc,char **argv){uint32_t n;for(n=0;n<UPH_CASES;++n){unit_case c;uint8_t phase;uph_input(&c,n);if(argc>1){uint16_t w[UNIT_WORDS];unsigned i;(void)argv;unit_words(&c,w);printf("%u 3 0",(unsigned)n);for(i=0;i<UNIT_WORDS;++i)printf(" %u",w[i]);puts("");continue;}for(phase=(uint8_t)(n>=UPH_NORMAL_CASES?1u:0u);phase<3u;++phase){uint16_t w[UNIT_WORDS];unsigned i,status;p66_preparation *s=&c.base.previous.previous.previous.preparation;p66_scale_scratch *sc=&c.base.previous.previous.previous.scratch;p66_elapsed_state *el=&c.base.previous.elapsed;p66_divide_scratch *d=&c.base.scratch;p66_norm_scratch *norm=&c.norm;p66_pushdown *p=&c.base.previous.previous.push;if(!phase)status=(unsigned)p66_unit_square_phase(s,sc,el,d,norm,p);else if(phase==1u)status=(unsigned)p66_unit_root_phase(s,sc,el,d,norm,p);else status=(unsigned)p66_unit_finish_phase(s,sc,el,d,norm,p);unit_words(&c,w);printf("%u %u %u",(unsigned)n,phase,status);for(i=0;i<UNIT_WORDS;++i)printf(" %u",w[i]);puts("");if(status)break;}}return 0;}

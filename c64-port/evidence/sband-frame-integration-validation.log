@@ -1,0 +1,21 @@
+for group in 0 1 2 3 4 5; do cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -DSBAND_FRAME_GROUP=$group tests/test_sband_frame.c tests/sband_frame_target.c tests/frozen_words.c tests/sband_frame_cases.c src/agc_word.c src/sband_frame.c src/rtb_unit.c src/rtb_vector.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/lm_powered_interface.c src/lm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/matrix_native.c src/sband_shift.c src/guidance_shift.c -o build/test-sband-frame-integrated-$group; ./build/test-sband-frame-integrated-$group; done
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+python3 tools/sband_frame_port_host.py --binary build/sband-frame-integrated-stream
+PASS all retained source-state bytes: 201818112 SHA256 3640c3ebc1087ead1cbd743cea1242b64de4b3f5ad86f73493bae08d2c66f3b7
+PASS all 49,152 original antenna coordinate-frame states
+for group in 0 1 2 3 4 5; do cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie -DSBAND_FRAME_GROUP=$group tests/test_sband_frame.c tests/sband_frame_target.c tests/frozen_words.c tests/sband_frame_cases.c src/agc_word.c src/sband_frame.c src/rtb_unit.c src/rtb_vector.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/lm_powered_interface.c src/lm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/matrix_native.c src/sband_shift.c src/guidance_shift.c -o build/test-sband-frame-integrated-san-$group; ASAN_OPTIONS=detect_leaks=0 ./build/test-sband-frame-integrated-san-$group; done
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+PASS exact original antenna frame fixtures and unchanged unsupported images
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tools/sband_frame_snapshot.c tests/sband_frame_cases.c src/agc_word.c src/sband_frame.c src/rtb_unit.c src/rtb_vector.c src/guidance_unit_phased.c src/guidance_length_phased.c src/guidance_norm.c src/lm_powered_interface.c src/lm_powered_trig.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c src/matrix_native.c src/sband_shift.c src/guidance_shift.c -o build/sband-frame-integrated-stream-san
+python3 tools/sband_frame_port_host.py --binary build/sband-frame-integrated-stream-san
+PASS all retained source-state bytes: 201818112 SHA256 3640c3ebc1087ead1cbd743cea1242b64de4b3f5ad86f73493bae08d2c66f3b7
+PASS all 49,152 original antenna coordinate-frame states

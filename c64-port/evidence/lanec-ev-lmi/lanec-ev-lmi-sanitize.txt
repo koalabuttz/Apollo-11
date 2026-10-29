@@ -1,0 +1,1 @@
+PASS: 1856 complete states (2048 erasable words, A/L/Q/EB/FB/Z/BB, channels 0-77, superbank, IRQ) identical to the original program in Virtual AGC

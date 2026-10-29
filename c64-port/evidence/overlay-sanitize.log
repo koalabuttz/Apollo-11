@@ -1,0 +1,3 @@
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/overlay_runtime.c tests/test_overlay.c -o build/test-overlay-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-overlay-sanitize
+PASS: bounded native overlay loader; exact header/CRC; short/long/I/O failures preserve all2048words; cache, BSS reload, nested-call rejection and slot guards

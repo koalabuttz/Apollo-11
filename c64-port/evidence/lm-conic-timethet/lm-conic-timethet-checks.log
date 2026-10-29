@@ -1,0 +1,12 @@
+PASS65536 original TIMETHET oracle entries equal native 2053-word rows ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf
+PASS 8 frozen original TIMETHET entries, 22 admission guards and 90 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf
+PASS65536 original TIMETHET entries strict native
+PASS 290 assembled TIMETHET words on 283 source lines map to native literals in 24 functions
+PASS 8 frozen original TIMETHET entries, 22 admission guards and 90 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 ad121738f6f0df47fb85af593f3adf6509738af51cad2ec9c218338b3fb25acf
+PASS65536 original TIMETHET entries full ASAN/UBSAN
+PASS: VICE PAL lm-conic-timethet-1.prg: 22 checks, 0 failures
+PASS: VICE PAL lm-conic-timethet-2.prg: 21 checks, 0 failures
+PASS: VICE PAL lm-conic-timethet-3.prg: 23 checks, 0 failures
+PASS: VICE PAL lm-conic-timethet-4.prg: 24 checks, 0 failures

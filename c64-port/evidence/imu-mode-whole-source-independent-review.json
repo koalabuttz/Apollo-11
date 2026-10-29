@@ -1,0 +1,57 @@
+{
+  "reviewer": "general_division independent read-only containing-source review",
+  "result": "The whole local emitted-word ledger is consistent with both original files and unchanged ropes, within the separately declared source/producer/caller domains.",
+  "identities": {
+    "build/imu-standby-gap-map.json": "671177e0b43f191ec21eea7363317b59cd0e5f40ea0dc6e2b043d3b0842afbd5",
+    "docs/NATIVE-IMU-STANDBY.md": "2f322dfa2f8ed9c916294584e363113748226bbcb4a265264ab98c262adef1fb",
+    "../Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "../Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb",
+    "src/imu_standby.c": "7be4480e528547dc21d95ec776388184eacc99de5515809ba353e2578ed9931c",
+    "include/imu_standby.h": "43c189cb50ae46807e311ea421af331e79c8a46d70aa6dce350054800307415e",
+    "include/imu_standby_literals.h": "9e51d71cf31543863e9dbca5e2a126511b436254a7fdf13a0adb73c9f73c399a",
+    "deps/lm-powered-fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "word_checks": {
+    "lm": {
+      "distinct_words_checked": 660,
+      "unowned_words": 0,
+      "owner_union": {
+        "evidence/imu-mode-control-proof.json": 142,
+        "evidence/imu-pulse-proof.json": 51,
+        "evidence/imu-coarse-proof.json": 120,
+        "evidence/imu-mode-transfer-proof.json": 37,
+        "evidence/imu-pulse-end-proof.json": 40,
+        "evidence/imu-pulse-wake-proof.json": 9,
+        "evidence/imu-pulse-task-proof.json": 153,
+        "evidence/imu-attitude-admission-proof.json": 36,
+        "evidence/imu-standby-proof.json": 79
+      },
+      "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+    },
+    "cm": {
+      "distinct_words_checked": 656,
+      "unowned_words": 0,
+      "owner_union": {
+        "evidence/imu-mode-control-proof.json": 141,
+        "evidence/imu-pulse-proof.json": 51,
+        "evidence/imu-coarse-proof.json": 120,
+        "evidence/imu-mode-transfer-proof.json": 36,
+        "evidence/imu-pulse-end-proof.json": 38,
+        "evidence/imu-pulse-wake-proof.json": 9,
+        "evidence/imu-pulse-task-proof.json": 153,
+        "evidence/imu-attitude-admission-proof.json": 36,
+        "evidence/imu-standby-proof.json": 79
+      },
+      "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+    }
+  },
+  "review_scope": [
+    "Read all noncomment original source statements in both containing files; compared phase/branch/helper/data families against their previously independently reviewed native packets and new standby implementation.",
+    "Verified all660 Luminary and656 Comanche unique physical source words against parity-stripped original ropes, including first-four-bank file exchange, and checked every word has an explicit native owner.",
+    "Containing-file completion is local compiled arithmetic/control/data coverage. Declared quiescent producer, compiled caller, readable channel and helper-return ABI domains remain binding; arbitrary Cartesian RAM states are not claimed.",
+    "External ALARM/POODOO, SETISSW, WAITLIST/scheduler, flags, BANKCALL, FINETIME, SHORTMP/TPAGREE, phase and display services remain real typed handoffs; no complete hardware standby/scaler sampling or mission application acceptance is inferred.",
+    "Mission differences remain explicit: RNDREFDR flag layout, LM GOODEND negative MODECADR branch, LM abort DXCH BUF2 versus CM POODOO, bank selection and literal caller pairs."
+  ],
+  "verification_limit": "No new exhaustive native/SAN/target replay performed by reviewer. Final standby C64 and root integration are implementation/parent responsibilities; this review alone is not a release certificate."
+}

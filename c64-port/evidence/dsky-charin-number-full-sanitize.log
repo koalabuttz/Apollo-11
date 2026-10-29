@@ -1,0 +1,2 @@
+PASS: full8192-case ASan/UBSan stream byteequal to original assembly
+Snapshot SHA256: b730d2bac2aabbf112e1a330d6cfb784813d051e043d6954e2807903cc371079

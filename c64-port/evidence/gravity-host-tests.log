@@ -1,0 +1,35 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c tests/waitlist_check.c tests/test_waitlist.c -o build/test-waitlist
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c src/native_tasks.c tests/waitlist_cases.c platform/host/waitlist_snapshot.c -o build/waitlist-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/snapshot.c -o build/snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c platform/host/dispatch_snapshot.c -o build/dispatch-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/native_dispatch.c src/irq_delivery.c tests/scenarios.c tests/state_digest.c tests/dispatch_cases.c tests/dispatch_check.c tests/lifecycle_cases.c platform/host/lifecycle_snapshot.c -o build/lifecycle-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/executive.c src/waitlist.c src/restart.c tests/restart_cases.c platform/host/restart_snapshot.c -o build/restart-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/agc_multiword.c src/guidance.c src/guidance_prepare.c src/guidance_scale.c src/guidance_push.c src/guidance_elapsed.c src/guidance_store.c src/guidance_divide.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/divide_check.c tests/test_divide.c -o build/test-divide
+./build/test-restart
+PASS: 226 assembly fingerprints, recovery/resumption, phase/resource failures and restoring exclusion
+./build/test-guidance
+PASS: 568 complete original-assembly checkpoints; all 65536 SP/memory-zero products; carry and overflow contracts
+./build/test-prepare
+PASS: 324 complete preparation states, all TS-skip masks, snapshot debris, MODE alias, retained scratch and composed histories
+./build/test-scale
+PASS: 292 complete scaling states, signed-zero/mixed-sign DP pairs, all integrated TS-skip inputs, three retained four-step histories
+./build/test-push
+PASS: 200 complete PDDL states, five VAC mappings, retained exchange debris, composed four-push histories; invalid scope leaves both objects unchanged
+./build/test-elapsed
+PASS: 172 complete elapsed-time states and skip paths, signed zeros, overflow realignment and retained OVFIND, preserved VAC/vector histories
+./build/test-store
+PASS: 176 complete STORE states/paths; signed-zero source/destination corners, overlapping slots, retained histories; unchanged-on-scope-rejection and unused PUSHLOC
+./build/test-divide
+PASS: 156 complete DDV states/paths; signed zero, raw sign agreement, quotient/overflow and retained histories; all unsupported modes reject unchanged
+./build/test-gravity
+PASS: 156 complete PDVL states; all unsupported modes, VAC bases and push pointers reject unchanged
+./build/test-host
+PASS: 53 dispatch cases, 109 assembly-derived checkpoints, 8 native two-job sequences; dispatch fault checks
+PASS: 32768 word encodings, 65536 register encodings, 524288 addition pairs, 26 Executive scenarios
+sizeof(executive)=648 bytes; sizeof(scenario)=664 bytes (host)
+./build/test-irq
+PASS: IRQ safe points, nested exclusion, idle startup, FIFO/wrap (600 cases), overflow, bailout and unmapped-request faults
+./build/test-lifecycle
+PASS: 81 lifecycle cases / 115 assembly-derived checkpoints, 5 native sequences, guarded/masked delivery and lifecycle fault boundaries
+./build/test-waitlist
+PASS: 196 WAITLIST cases / 306 original checkpoints, ten native task sequences, clock wrap, restoring guards and fail-stop tests

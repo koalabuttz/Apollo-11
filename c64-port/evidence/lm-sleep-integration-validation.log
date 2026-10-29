@@ -1,0 +1,3 @@
+gcc -O2 -Wconversion -pedantic -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_lm_sleep.c tests/lm_sleep_check.c src/agc_word.c src/lm_basic_sleep.c src/executive.c tests/throttle_bridge_cases.c tests/lm_priority_cases.c tests/lm_sleep_cases.c -o build/test-lm-sleep
+build/test-lm-sleep
+64 complete JOBSLEEP images and17 invalid boundaries: PASS

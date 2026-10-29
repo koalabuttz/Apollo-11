@@ -1,0 +1,1 @@
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Iinclude -Itests src/agc_word.c src/agc_multiword.c src/dsky_pinball.c src/dsky_blank.c tests/p66_bias_cases.c tests/dsky_blank_cases.c tests/dsky_blank_check.c tools/dsky_blank_diagnostic.c -Wl,-Map,build/dsky_blank.map -o build/dsky_blank.prg

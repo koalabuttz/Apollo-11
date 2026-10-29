@@ -1,0 +1,16 @@
+Error - failed to create user cache dir '/workspace/Apollo-11/c64-port/build/cm-interbank-extended-cache/vice': 2: No such file or directory.
+Error - failed to create user config dir '/workspace/Apollo-11/c64-port/build/cm-interbank-extended-config/vice': 2: No such file or directory.
+formatting in unit 8 ...
+writing file `CM-INTERBANK-EXTENDED.PRG' as `RESIDENT' to unit 8
+writing file `CM-FIXED-COMPAT-200.PRG' as `F200' to unit 8
+writing file `CM-FIXED-COMPAT-201.PRG' as `F201' to unit 8
+writing file `CM-FIXED-COMPAT-202.PRG' as `F202' to unit 8
+writing file `CM-FIXED-COMPAT-203.PRG' as `F203' to unit 8
+writing file `CM-FIXED-COMPAT-204.PRG' as `F204' to unit 8
+writing file `CM-FIXED-COMPAT-205.PRG' as `F205' to unit 8
+writing file `CM-INTERBANK-EXTENDED-207.PRG' as `G207' to unit 8
+writing file `CM-INTERBANK-EXTENDED-242.PRG' as `G242' to unit 8
+writing file `CM-INTERBANK-EXTENDED-243.PRG' as `G243' to unit 8
+207 3990 loaded bytes
+242 2158 loaded bytes
+243 10030 loaded bytes

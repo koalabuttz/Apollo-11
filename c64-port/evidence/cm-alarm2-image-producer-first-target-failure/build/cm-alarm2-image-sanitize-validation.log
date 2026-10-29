@@ -1,0 +1,8 @@
+cc -Iinclude -Itests -Itools -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_alarm2_image.c src/cm_alarm_image.c src/cm_alarm_record.c src/cm_fixed_compat.c src/cm_native_image.c src/agc_word.c tests/cm_alarm2_image_cases.c tests/cm_alarm_record_cases.c tests/cm_admission_complete_cases.c platform/host/cm_alarm2_image_snapshot.c -o build/cm-alarm2-image-sanitize
+python3 tools/cm_alarm2_image_sanitize.py
+Traceback (most recent call last):
+  File "/workspace/Apollo-11/c64-port/tools/cm_alarm2_image_sanitize.py", line 15, in <module>
+    assert p.wait() == 0 and size == proof['binary_bytes'] and h.hexdigest() == proof['snapshot_sha256']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+make: *** [tools/cm_alarm2_image.mk:13: sanitize-cm-alarm2-image] Error 1

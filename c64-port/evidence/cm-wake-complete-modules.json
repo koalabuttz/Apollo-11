@@ -1,0 +1,29 @@
+[
+  {
+    "id": 245,
+    "filename": "G245",
+    "byte_count": 3305,
+    "crc16": 30655,
+    "sha256": "f136a3dab3584ba103e71b156402f505eb53c8ebd4fbaaa4c830eeaad3622106",
+    "prg": "cm-wake-complete-245.prg",
+    "native_control": true
+  },
+  {
+    "id": 254,
+    "filename": "G254",
+    "byte_count": 2759,
+    "crc16": 1928,
+    "sha256": "66e0435e8bb6626fcc39ccf50a4ded0069e35bbe83aaeb90e15f0a6d48d84a2d",
+    "prg": "cm-wake-complete-254.prg",
+    "native_control": false
+  },
+  {
+    "id": 255,
+    "filename": "G255",
+    "byte_count": 10145,
+    "crc16": 37153,
+    "sha256": "fee575c9d49524394a077e5ad6f90d0ce130881fa8ac1bf0903c7d6e0f89c5f8",
+    "prg": "cm-wake-complete-255.prg",
+    "native_control": false
+  }
+]

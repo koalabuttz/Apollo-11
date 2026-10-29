@@ -1,0 +1,18 @@
+Loading /workspace/Apollo-11/c64-port/build/cm-difeq-selector7.prg from 0801 to 2D17 (2517 bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  105/$069,  11/$0b
+.C:16a8  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44665058
+>C:c080  a5 00 00 20  07                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm-difeq_selector7-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm-difeq_selector7-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-difeq_selector7-software-stack.bin' from $c100 to $cfff
+Loading /workspace/Apollo-11/c64-port/build/cm-difeq-selector7.prg from 0801 to 2DBE (25BE bytes)
+WATCH: 1  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c080)  102/$066,  50/$32
+.C:178a  8C 80 C0    STY $C080      - A:00 X:00 Y:A5 SP:ed N.-....C   44704220
+>C:c080  a5 00 00 20  07                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/cm-difeq_selector7-vice-mailbox.bin' from $c080 to $c084
+Saving file `/workspace/Apollo-11/c64-port/build/cm-difeq_selector7-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/cm-difeq_selector7-software-stack.bin' from $c100 to $cfff

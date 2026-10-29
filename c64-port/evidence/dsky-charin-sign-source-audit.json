@@ -1,0 +1,38 @@
+{
+  "lm": {
+    "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": {
+      "original_sha256": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+      "normalized_fixture": "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "indentation_repairs": 0
+    },
+    "T4RUPT_PROGRAM.agc": {
+      "original_sha256": "122257791bb0d692e1e7a3a8aeae826272cbb2f250444497e4077de7cb8fbd49",
+      "normalized_fixture": "T4RUPT_PROGRAM.agc",
+      "indentation_repairs": 0
+    },
+    "INTERPRETER.agc": {
+      "original_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "normalized_fixture": "INTERPRETER.agc",
+      "indentation_repairs": 0
+    },
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+  },
+  "cm": {
+    "PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": {
+      "original_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+      "normalized_fixture": "PINBALL_GAME__BUTTONS_AND_LIGHTS.agc",
+      "indentation_repairs": 0
+    },
+    "T4RUPT_PROGRAM.agc": {
+      "original_sha256": "20b52ef7120318816300f30101f8ddc45def0d87153991086a61dd8684e42401",
+      "normalized_fixture": "T4RUPT_PROGRAM.agc",
+      "indentation_repairs": 6
+    },
+    "INTERPRETER.agc": {
+      "original_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "normalized_fixture": "INTERPRETER.agc",
+      "indentation_repairs": 36
+    },
+    "rope_sha256": "2ba31de9291cd10fb351a64d261bae8514a1cb75b4651bfa6a135dfa821a2d79"
+  }
+}

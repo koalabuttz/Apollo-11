@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete dsky_decimal_time_consumer stage original-assembly states; retained memory unchanged
+Mailbox: a500002010
+PRG bytes: 14695
+dsky_decimal_time_consumer_16-hardware-stack.bin: measured stack extent 24 bytes
+dsky_decimal_time_consumer_16-software-stack.bin: measured stack extent 69 bytes

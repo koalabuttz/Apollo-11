@@ -1,0 +1,21 @@
+{
+  "virtualagc_pin": "1b5d6474841a7ab53237ead070f76f35f162f68d",
+  "original_rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "original_source_path": "Comanche055/EXECUTIVE.agc",
+  "original_source_sha256": "d76a32a7fe3168d949dfa13af819695d019bfe3a86e1a4782003237ed146b14b",
+  "entries": {
+    "NOVAC": "05134",
+    "FINDVAC": "05147",
+    "SPVAC": "05160",
+    "SPVACIN": "05154"
+  },
+  "source_groups": [
+    "NOVAC FAKEPRET packing",
+    "FINDVAC five VAC scan and reservation",
+    "NOVAC2/NOVAC3/NEXTCORE core scan including unavailable+0 EXTEND/BZF continuation",
+    "CORFOUND/SPECTEST/SETLOC",
+    "ENDFIND caller return",
+    "BAILOUT1 handoffs01201/01202"
+  ],
+  "producer_contract": "Bare source priority+0; ordinary compiled caller Q0100..07775, authentic VAC markers and typed seven-core NEWJOB; SPVAC IRQ excluded. Source normal metadata hardware words only; no instruction decoding."
+}

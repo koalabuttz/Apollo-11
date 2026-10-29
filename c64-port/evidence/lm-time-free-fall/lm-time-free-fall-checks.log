@@ -1,0 +1,14 @@
+PASS65536 original TIME_OF_FREE_FALL oracle call chains equal native 2053-word rows 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2
+PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 63 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2
+PASS65536 original TIME_OF_FREE_FALL call chains strict native
+PASS 266 assembled words on 253 source lines map to native literals in 28 functions
+PASS 23600 body images equal yaAGC: DIRADRES, DIRADRES PUSHUP, ADDRESS PUSHUP, STORE codes, STADR, DODLOAD, DOVLOAD, DLOAD, VLOAD, PDVL, PDDL, PUSH, DAD, DSU, BDSU, DMP, DMPR, short shifts, GSHIFT, TSLC, COMP, SIGN, ABS, DSQ, VSQ, DOT, DDV, BDDV, SQRT, ABVAL/ABS, UNIT, VXSC, VXV, BOV(B), RTB, SWRETURN, POLY, BPL/BMN, VAD, VSU, BVSU, TAD, ROUND, SSP, XAD, XSU, LXA, SXA, BHIZ, CALL, GOTO indirect, EXIT, INTPRET, TPMODE, 15BITADR, BZE/GOTO, ITA/STQ, TIX, TLOAD
+PASS C64 phase rows take every branch outcome the host stream takes: 74 of 109 outcomes (74 on the host)
+PASS 16 frozen original TIME_OF_FREE_FALL call chains, 22 admission guards and 63 frozen phase steps
+PASS all retained source-state bytes: 269090816 SHA256 4ac7d7e59a6f4d828482b14e078d68003e1b9abacaa54a07a4af20808f54bfe2
+PASS65536 original TIME_OF_FREE_FALL call chains full ASAN/UBSAN
+PASS: VICE PAL lm-time-free-fall-1-1.prg: 17 checks, 0 failures
+PASS: VICE PAL lm-time-free-fall-2-1.prg: 22 checks, 0 failures
+PASS: VICE PAL lm-time-free-fall-3-1.prg: 17 checks, 0 failures
+PASS: VICE PAL lm-time-free-fall-4-1.prg: 7 checks, 0 failures

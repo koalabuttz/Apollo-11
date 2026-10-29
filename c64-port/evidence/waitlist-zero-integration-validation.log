@@ -1,0 +1,6 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/waitlist.c tests/waitlist_zero_cases.c tests/waitlist_zero_check.c tests/test_waitlist_zero.c -o build/test-waitlist-zero
+./build/test-waitlist-zero
+WAITLIST ZERO: 256 FULL STATES, 0 FAILURES
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -Wconversion -pedantic -fsanitize=address,undefined src/agc_word.c src/waitlist.c tests/waitlist_zero_cases.c tests/waitlist_zero_check.c tests/test_waitlist_zero.c -o build/test-waitlist-zero-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-waitlist-zero-san
+WAITLIST ZERO: 256 FULL STATES, 0 FAILURES

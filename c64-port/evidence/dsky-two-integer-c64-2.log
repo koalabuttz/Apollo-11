@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete dsky_two_integer stage original-assembly states; retained memory unchanged
+Mailbox: a500002002
+PRG bytes: 11616
+dsky_two_integer_2-hardware-stack.bin: measured stack extent 23 bytes
+dsky_two_integer_2-software-stack.bin: measured stack extent 68 bytes

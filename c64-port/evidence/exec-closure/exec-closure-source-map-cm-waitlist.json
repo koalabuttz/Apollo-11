@@ -1,0 +1,3929 @@
+{
+ "source_path": "Comanche055/WAITLIST.agc",
+ "scope": "whole file",
+ "source_sha256": "a92a9cc370ce6a6bc22febbcc03e342392e899bad06f7e649839b597e1c8edd3",
+ "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+ "milestones": {
+  "exec-services": [
+   "src/cm_exec_routines.c"
+  ],
+  "exec-jobs": [
+   "src/cm_exec_jobs.c"
+  ],
+  "exec-idle": [
+   "src/cm_exec_idle.c"
+  ],
+  "rupt-lead-ins": [
+   "src/rupt_lead_ins.c"
+  ]
+ },
+ "source_words": 252,
+ "source_lines_with_words": 247,
+ "instruction_lines": 225,
+ "instruction_lines_executed_by_oracle": 224,
+ "unreached_instruction_lines": 1,
+ "pending_instruction_lines": 0,
+ "line_map": [
+  {
+   "line": 129,
+   "address": "FF,5235",
+   "label": "TWIDDLE",
+   "source": "TWIDDLE INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 130,
+   "address": "FF,5236",
+   "label": "TWIDDLE",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 131,
+   "address": "FF,5237",
+   "label": "TWIDDLE",
+   "source": "CA POSMAX",
+   "words": [
+    "34777"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 132,
+   "address": "FF,5240",
+   "label": "TWIDDLE",
+   "source": "ADS Q",
+   "words": [
+    "26002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 133,
+   "address": "FF,5241",
+   "label": "TWIDDLE",
+   "source": "CA BBANK",
+   "words": [
+    "30006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 134,
+   "address": "FF,5242",
+   "label": "TWIDDLE",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 135,
+   "address": "FF,5243",
+   "label": "TWIDDLE",
+   "source": "ROR SUPERBNK",
+   "words": [
+    "04007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 136,
+   "address": "FF,5244",
+   "label": "TWIDDLE",
+   "source": "XCH L",
+   "words": [
+    "56001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 138,
+   "address": "FF,5245",
+   "label": "WAITLIST",
+   "source": "WAITLIST INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 139,
+   "address": "FF,5246",
+   "label": "WAITLIST",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 140,
+   "address": "FF,5247",
+   "label": "WAITLIST",
+   "source": "BZMF WATLST0-",
+   "words": [
+    "65261"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 141,
+   "address": "FF,5250",
+   "label": "WAITLIST",
+   "source": "XCH Q",
+   "words": [
+    "56002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 142,
+   "address": "FF,5251",
+   "label": "WAITLIST",
+   "source": "TS WAITEXIT",
+   "words": [
+    "54061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 143,
+   "address": "FF,5252",
+   "label": "WAITLIST",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 144,
+   "address": "FF,5253",
+   "label": "WAITLIST",
+   "source": "INDEX WAITEXIT",
+   "words": [
+    "50061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 145,
+   "address": "FF,5254",
+   "label": "WAITLIST",
+   "source": "DCA 0",
+   "words": [
+    "30001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 146,
+   "address": "FF,5255",
+   "label": "WAITLIST",
+   "source": "-1 TS WAITADR",
+   "words": [
+    "54063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 147,
+   "address": "FF,5256",
+   "label": "DLY2",
+   "source": "DLY2 CAF WAITBB",
+   "words": [
+    "35266"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 148,
+   "address": "FF,5257",
+   "label": "DLY2",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 149,
+   "address": "FF,5260",
+   "label": "DLY2",
+   "source": "TCF WAIT2",
+   "words": [
+    "13246"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 151,
+   "address": "FF,5261",
+   "label": "WATLST0-",
+   "source": "WATLST0- TC POODOO",
+   "words": [
+    "05721"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 152,
+   "address": "FF,5262",
+   "label": "WATLST0-",
+   "source": "OCT 1204",
+   "words": [
+    "01204"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 156,
+   "address": "FF,5263",
+   "label": "LVWTLIST",
+   "source": "LVWTLIST DXCH WAITEXIT",
+   "words": [
+    "52062"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 157,
+   "address": "FF,5264",
+   "label": "LVWTLIST",
+   "source": "AD TWO",
+   "words": [
+    "65016"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 158,
+   "address": "FF,5265",
+   "label": "LVWTLIST",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 161,
+   "address": "FF,5266",
+   "label": "WAITBB",
+   "source": "WAITBB BBCON WAIT2",
+   "words": [
+    "02063"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 165,
+   "address": "FF,5267",
+   "label": "FIXDELAY",
+   "source": "FIXDELAY INDEX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 166,
+   "address": "FF,5270",
+   "label": "FIXDELAY",
+   "source": "CAF 0",
+   "words": [
+    "30000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 167,
+   "address": "FF,5271",
+   "label": "FIXDELAY",
+   "source": "INCR Q",
+   "words": [
+    "24002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 171,
+   "address": "FF,5272",
+   "label": "VARDELAY",
+   "source": "VARDELAY XCH Q",
+   "words": [
+    "56002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 172,
+   "address": "FF,5273",
+   "label": "VARDELAY",
+   "source": "TS WAITADR",
+   "words": [
+    "54063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 173,
+   "address": "FF,5274",
+   "label": "VARDELAY",
+   "source": "CA BBANK",
+   "words": [
+    "30006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 174,
+   "address": "FF,5275",
+   "label": "VARDELAY",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 176,
+   "address": "FF,5276",
+   "label": "VARDELAY",
+   "source": "ROR SUPERBNK",
+   "words": [
+    "04007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 177,
+   "address": "FF,5277",
+   "label": "VARDELAY",
+   "source": "TS L",
+   "words": [
+    "54001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 178,
+   "address": "FF,5300",
+   "label": "VARDELAY",
+   "source": "CAF DELAYEX",
+   "words": [
+    "35303"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 179,
+   "address": "FF,5301",
+   "label": "VARDELAY",
+   "source": "TS WAITEXIT",
+   "words": [
+    "54061"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 180,
+   "address": "FF,5302",
+   "label": "VARDELAY",
+   "source": "TCF DLY2",
+   "words": [
+    "15256"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 182,
+   "address": "FF,5303",
+   "label": "DELAYEX",
+   "source": "DELAYEX TCF TASKOVER -2",
+   "words": [
+    "15322"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": [],
+   "read_as_data": "DELAYEX: VARDELAY reads it with CAF DELAYEX into WAITEXIT (an address word for DTCB)"
+  },
+  {
+   "line": 188,
+   "address": "FF,5304",
+   "label": "ENDTASK",
+   "source": "ENDTASK -2CADR SVCT3",
+   "words": [
+    "72471",
+    "73714"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 191,
+   "address": "FF,5306",
+   "label": "SVCT3",
+   "source": "SVCT3 CCS FLAGWRD2",
+   "words": [
+    "10076"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 192,
+   "address": "FF,5307",
+   "label": "SVCT3",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15324"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 193,
+   "address": "FF,5310",
+   "label": "SVCT3",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15324"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 194,
+   "address": "FF,5311",
+   "label": "SVCT3",
+   "source": "TCF +1",
+   "words": [
+    "15312"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 196,
+   "address": "FF,5312",
+   "label": "SVCT3",
+   "source": "CCS IMUCADR",
+   "words": [
+    "11322"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 197,
+   "address": "FF,5313",
+   "label": "SVCT3",
+   "source": "TCF SVCT3X",
+   "words": [
+    "17717"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 198,
+   "address": "FF,5314",
+   "label": "SVCT3",
+   "source": "TCF +3",
+   "words": [
+    "15317"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 199,
+   "address": "FF,5315",
+   "label": "SVCT3",
+   "source": "TCF SVCT3X",
+   "words": [
+    "17717"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 200,
+   "address": "FF,5316",
+   "label": "SVCT3",
+   "source": "TCF SVCT3X",
+   "words": [
+    "17717"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 201,
+   "address": "FF,5317",
+   "label": "SVCT3",
+   "source": "+3 CAF PRIO35",
+   "words": [
+    "37672"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 202,
+   "address": "FF,5320",
+   "label": "SVCT3",
+   "source": "TC NOVAC",
+   "words": [
+    "05134"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 204,
+   "address": "FF,5321",
+   "label": "SVCT3",
+   "source": "2CADR NBDONLY",
+   "words": [
+    "03542",
+    "14063"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 206,
+   "address": "FF,5323",
+   "label": "SVCT3",
+   "source": "TCF TASKOVER",
+   "words": [
+    "15324"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle"
+   ],
+   "native": [
+    "src/cm_exec_idle.c"
+   ]
+  },
+  {
+   "line": 211,
+   "address": "FF,7717",
+   "label": "SVCT3X",
+   "source": "SVCT3X TC FIXDELAY",
+   "words": [
+    "05267"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_idle.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 212,
+   "address": "FF,7720",
+   "label": "SVCT3X",
+   "source": "DEC 500",
+   "words": [
+    "00764"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 213,
+   "address": "FF,7721",
+   "label": "SVCT3X",
+   "source": "TC SVCT3",
+   "words": [
+    "05306"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-idle",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_idle.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 221,
+   "address": "01,3246",
+   "label": "WAIT2",
+   "source": "WAIT2 TS WAITBANK",
+   "words": [
+    "54062"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 222,
+   "address": "01,3247",
+   "label": "WAIT2",
+   "source": "CS TIME3",
+   "words": [
+    "40026"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 223,
+   "address": "01,3250",
+   "label": "WAIT2",
+   "source": "AD BIT8",
+   "words": [
+    "65010"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 224,
+   "address": "01,3251",
+   "label": "WAIT2",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 229,
+   "address": "01,3252",
+   "label": "WAIT2",
+   "source": "AD OCT40001",
+   "words": [
+    "66056"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 230,
+   "address": "01,3253",
+   "label": "WAIT2",
+   "source": "CS A",
+   "words": [
+    "40000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 234,
+   "address": "01,3254",
+   "label": "WAIT2",
+   "source": "AD OCT40201",
+   "words": [
+    "63402"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 235,
+   "address": "01,3255",
+   "label": "WAIT2",
+   "source": "AD Q",
+   "words": [
+    "60002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 237,
+   "address": "01,3256",
+   "label": "WAIT2",
+   "source": "CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 239,
+   "address": "01,3257",
+   "label": "WAIT2",
+   "source": "AD LST1",
+   "words": [
+    "61400"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 240,
+   "address": "01,3260",
+   "label": "WAIT2",
+   "source": "TCF WTLST5",
+   "words": [
+    "13322"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 242,
+   "address": "01,3261",
+   "label": "WAIT2",
+   "source": "NOOP",
+   "words": [
+    "13262"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 243,
+   "address": "01,3262",
+   "label": "WAIT2",
+   "source": "CS Q",
+   "words": [
+    "40002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 250,
+   "address": "01,3263",
+   "label": "WAIT2",
+   "source": "AD POS1/2",
+   "words": [
+    "65002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 251,
+   "address": "01,3264",
+   "label": "WAIT2",
+   "source": "AD POS1/2",
+   "words": [
+    "65002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 252,
+   "address": "01,3265",
+   "label": "WAIT2",
+   "source": "XCH TIME3",
+   "words": [
+    "56026"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 253,
+   "address": "01,3266",
+   "label": "WAIT2",
+   "source": "AD NEGMAX",
+   "words": [
+    "65001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 254,
+   "address": "01,3267",
+   "label": "WAIT2",
+   "source": "AD Q",
+   "words": [
+    "60002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 255,
+   "address": "01,3270",
+   "label": "WAIT2",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 256,
+   "address": "01,3271",
+   "label": "WAIT2",
+   "source": "QXCH 7",
+   "words": [
+    "22007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 259,
+   "address": "01,3272",
+   "label": "WTLST4",
+   "source": "WTLST4 XCH LST1",
+   "words": [
+    "57400"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 260,
+   "address": "01,3273",
+   "label": "WTLST4",
+   "source": "XCH LST1 +1",
+   "words": [
+    "57401"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 261,
+   "address": "01,3274",
+   "label": "WTLST4",
+   "source": "XCH LST1 +2",
+   "words": [
+    "57402"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 262,
+   "address": "01,3275",
+   "label": "WTLST4",
+   "source": "XCH LST1 +3",
+   "words": [
+    "57403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 263,
+   "address": "01,3276",
+   "label": "WTLST4",
+   "source": "XCH LST1 +4",
+   "words": [
+    "57404"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 264,
+   "address": "01,3277",
+   "label": "WTLST4",
+   "source": "XCH LST1 +5",
+   "words": [
+    "57405"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 265,
+   "address": "01,3300",
+   "label": "WTLST4",
+   "source": "XCH LST1 +6",
+   "words": [
+    "57406"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 266,
+   "address": "01,3301",
+   "label": "WTLST4",
+   "source": "XCH LST1 +7",
+   "words": [
+    "57407"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 268,
+   "address": "01,3302",
+   "label": "WTLST4",
+   "source": "CA WAITADR",
+   "words": [
+    "30063"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 269,
+   "address": "01,3303",
+   "label": "WTLST4",
+   "source": "INDEX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 270,
+   "address": "01,3304",
+   "label": "WTLST4",
+   "source": "TCF +1",
+   "words": [
+    "13305"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 272,
+   "address": "01,3305",
+   "label": "WTLST4",
+   "source": "DXCH LST2",
+   "words": [
+    "53411"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 273,
+   "address": "01,3306",
+   "label": "WTLST4",
+   "source": "DXCH LST2 +2",
+   "words": [
+    "53413"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 274,
+   "address": "01,3307",
+   "label": "WTLST4",
+   "source": "DXCH LST2 +4",
+   "words": [
+    "53415"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 275,
+   "address": "01,3310",
+   "label": "WTLST4",
+   "source": "DXCH LST2 +6",
+   "words": [
+    "53417"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 276,
+   "address": "01,3311",
+   "label": "WTLST4",
+   "source": "DXCH LST2 +8D",
+   "words": [
+    "53421"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 277,
+   "address": "01,3312",
+   "label": "WTLST4",
+   "source": "DXCH LST2 +10D",
+   "words": [
+    "53423"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 278,
+   "address": "01,3313",
+   "label": "WTLST4",
+   "source": "DXCH LST2 +12D",
+   "words": [
+    "53425"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 279,
+   "address": "01,3314",
+   "label": "WTLST4",
+   "source": "DXCH LST2 +14D",
+   "words": [
+    "53427"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 280,
+   "address": "01,3315",
+   "label": "WTLST4",
+   "source": "DXCH LST2 +16D",
+   "words": [
+    "53431"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 281,
+   "address": "01,3316",
+   "label": "WTLST4",
+   "source": "AD ENDTASK",
+   "words": [
+    "65304"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 283,
+   "address": "01,3317",
+   "label": "WTLST4",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 284,
+   "address": "01,3320",
+   "label": "WTLST4",
+   "source": "BZF LVWTLIST",
+   "words": [
+    "15263"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 285,
+   "address": "01,3321",
+   "label": "WTLST4",
+   "source": "TCF WTABORT",
+   "words": [
+    "13375"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 288,
+   "address": "01,3322",
+   "label": "WTLST5",
+   "source": "WTLST5 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 289,
+   "address": "01,3323",
+   "label": "WTLST5",
+   "source": "AD LST1 +1",
+   "words": [
+    "61401"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 290,
+   "address": "01,3324",
+   "label": "WTLST5",
+   "source": "TCF +4",
+   "words": [
+    "13330"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 291,
+   "address": "01,3325",
+   "label": "WTLST5",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 292,
+   "address": "01,3326",
+   "label": "WTLST5",
+   "source": "TC WTLST2",
+   "words": [
+    "03403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 293,
+   "address": "01,3327",
+   "label": "WTLST5",
+   "source": "OCT 1",
+   "words": [
+    "00001"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 295,
+   "address": "01,3330",
+   "label": "WTLST5",
+   "source": "+4 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 296,
+   "address": "01,3331",
+   "label": "WTLST5",
+   "source": "AD LST1 +2",
+   "words": [
+    "61402"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 297,
+   "address": "01,3332",
+   "label": "WTLST5",
+   "source": "TCF +4",
+   "words": [
+    "13336"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 298,
+   "address": "01,3333",
+   "label": "WTLST5",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 299,
+   "address": "01,3334",
+   "label": "WTLST5",
+   "source": "TC WTLST2",
+   "words": [
+    "03403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 300,
+   "address": "01,3335",
+   "label": "WTLST5",
+   "source": "OCT 2",
+   "words": [
+    "00002"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 302,
+   "address": "01,3336",
+   "label": "WTLST5",
+   "source": "+4 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 303,
+   "address": "01,3337",
+   "label": "WTLST5",
+   "source": "AD LST1 +3",
+   "words": [
+    "61403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 304,
+   "address": "01,3340",
+   "label": "WTLST5",
+   "source": "TCF +4",
+   "words": [
+    "13344"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 305,
+   "address": "01,3341",
+   "label": "WTLST5",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 306,
+   "address": "01,3342",
+   "label": "WTLST5",
+   "source": "TC WTLST2",
+   "words": [
+    "03403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 307,
+   "address": "01,3343",
+   "label": "WTLST5",
+   "source": "OCT 3",
+   "words": [
+    "00003"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 309,
+   "address": "01,3344",
+   "label": "WTLST5",
+   "source": "+4 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 310,
+   "address": "01,3345",
+   "label": "WTLST5",
+   "source": "AD LST1 +4",
+   "words": [
+    "61404"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 311,
+   "address": "01,3346",
+   "label": "WTLST5",
+   "source": "TCF +4",
+   "words": [
+    "13352"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 312,
+   "address": "01,3347",
+   "label": "WTLST5",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 313,
+   "address": "01,3350",
+   "label": "WTLST5",
+   "source": "TC WTLST2",
+   "words": [
+    "03403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 314,
+   "address": "01,3351",
+   "label": "WTLST5",
+   "source": "OCT 4",
+   "words": [
+    "00004"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 316,
+   "address": "01,3352",
+   "label": "WTLST5",
+   "source": "+4 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 317,
+   "address": "01,3353",
+   "label": "WTLST5",
+   "source": "AD LST1 +5",
+   "words": [
+    "61405"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 318,
+   "address": "01,3354",
+   "label": "WTLST5",
+   "source": "TCF +4",
+   "words": [
+    "13360"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 319,
+   "address": "01,3355",
+   "label": "WTLST5",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 320,
+   "address": "01,3356",
+   "label": "WTLST5",
+   "source": "TC WTLST2",
+   "words": [
+    "03403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 321,
+   "address": "01,3357",
+   "label": "WTLST5",
+   "source": "OCT 5",
+   "words": [
+    "00005"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 323,
+   "address": "01,3360",
+   "label": "WTLST5",
+   "source": "+4 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 324,
+   "address": "01,3361",
+   "label": "WTLST5",
+   "source": "AD LST1 +6",
+   "words": [
+    "61406"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 325,
+   "address": "01,3362",
+   "label": "WTLST5",
+   "source": "TCF +4",
+   "words": [
+    "13366"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 326,
+   "address": "01,3363",
+   "label": "WTLST5",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 327,
+   "address": "01,3364",
+   "label": "WTLST5",
+   "source": "TC WTLST2",
+   "words": [
+    "03403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 328,
+   "address": "01,3365",
+   "label": "WTLST5",
+   "source": "OCT 6",
+   "words": [
+    "00006"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 331,
+   "address": "01,3366",
+   "label": "WTLST5",
+   "source": "+4 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 332,
+   "address": "01,3367",
+   "label": "WTLST5",
+   "source": "AD LST1 +7",
+   "words": [
+    "61407"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 333,
+   "address": "01,3370",
+   "label": "WTLST5",
+   "source": "TCF +4",
+   "words": [
+    "13374"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 334,
+   "address": "01,3371",
+   "label": "WTLST5",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 335,
+   "address": "01,3372",
+   "label": "WTLST5",
+   "source": "TC WTLST2",
+   "words": [
+    "03403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 336,
+   "address": "01,3373",
+   "label": "WTLST5",
+   "source": "OCT 7",
+   "words": [
+    "00007"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 338,
+   "address": "01,3374",
+   "label": "WTLST5",
+   "source": "+4 CCS A",
+   "words": [
+    "10000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 339,
+   "address": "01,3375",
+   "label": "WTABORT",
+   "source": "WTABORT TC BAILOUT",
+   "words": [
+    "07755"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 340,
+   "address": "01,3376",
+   "label": "WTABORT",
+   "source": "OCT 1203",
+   "words": [
+    "01203"
+   ],
+   "kind": "constant",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 342,
+   "address": "01,3377",
+   "label": "WTABORT",
+   "source": "AD ONE",
+   "words": [
+    "65017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 343,
+   "address": "01,3400",
+   "label": "WTABORT",
+   "source": "TC WTLST2",
+   "words": [
+    "03403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 344,
+   "address": "01,3401",
+   "label": "WTABORT",
+   "source": "OCT 10",
+   "words": [
+    "00010"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 346,
+   "address": "01,3402",
+   "label": "OCT40201",
+   "source": "OCT40201 OCT 40201",
+   "words": [
+    "40201"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 361,
+   "address": "01,3403",
+   "label": "WTLST2",
+   "source": "WTLST2 TS WAITTEMP",
+   "words": [
+    "54064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 362,
+   "address": "01,3404",
+   "label": "WTLST2",
+   "source": "INDEX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 363,
+   "address": "01,3405",
+   "label": "WTLST2",
+   "source": "CAF 0",
+   "words": [
+    "30000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 364,
+   "address": "01,3406",
+   "label": "WTLST2",
+   "source": "TS Q",
+   "words": [
+    "54002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 366,
+   "address": "01,3407",
+   "label": "WTLST2",
+   "source": "CAF ONE",
+   "words": [
+    "35017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 367,
+   "address": "01,3410",
+   "label": "WTLST2",
+   "source": "AD WAITTEMP",
+   "words": [
+    "60064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 368,
+   "address": "01,3411",
+   "label": "WTLST2",
+   "source": "INDEX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 369,
+   "address": "01,3412",
+   "label": "WTLST2",
+   "source": "ADS LST1 -1",
+   "words": [
+    "27377"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 371,
+   "address": "01,3413",
+   "label": "WTLST2",
+   "source": "CS WAITTEMP",
+   "words": [
+    "40064"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 372,
+   "address": "01,3414",
+   "label": "WTLST2",
+   "source": "INDEX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 373,
+   "address": "01,3415",
+   "label": "WTLST2",
+   "source": "TCF WTLST4",
+   "words": [
+    "13272"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 378,
+   "address": "01,3416",
+   "label": "T3RUPT",
+   "source": "T3RUPT EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 379,
+   "address": "01,3417",
+   "label": "T3RUPT",
+   "source": "ROR SUPERBNK",
+   "words": [
+    "04007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 380,
+   "address": "01,3420",
+   "label": "T3RUPT",
+   "source": "TS BANKRUPT",
+   "words": [
+    "54016"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 381,
+   "address": "01,3421",
+   "label": "T3RUPT",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 382,
+   "address": "01,3422",
+   "label": "T3RUPT",
+   "source": "QXCH QRUPT",
+   "words": [
+    "22012"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 384,
+   "address": "01,3423",
+   "label": "T3RUPT2",
+   "source": "T3RUPT2 CAF NEG1/2",
+   "words": [
+    "35000"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 385,
+   "address": "01,3424",
+   "label": "T3RUPT2",
+   "source": "XCH LST1 +7",
+   "words": [
+    "57407"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 386,
+   "address": "01,3425",
+   "label": "T3RUPT2",
+   "source": "XCH LST1 +6",
+   "words": [
+    "57406"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 387,
+   "address": "01,3426",
+   "label": "T3RUPT2",
+   "source": "XCH LST1 +5",
+   "words": [
+    "57405"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 388,
+   "address": "01,3427",
+   "label": "T3RUPT2",
+   "source": "XCH LST1 +4",
+   "words": [
+    "57404"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 389,
+   "address": "01,3430",
+   "label": "T3RUPT2",
+   "source": "XCH LST1 +3",
+   "words": [
+    "57403"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 390,
+   "address": "01,3431",
+   "label": "T3RUPT2",
+   "source": "XCH LST1 +2",
+   "words": [
+    "57402"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 391,
+   "address": "01,3432",
+   "label": "T3RUPT2",
+   "source": "XCH LST1 +1",
+   "words": [
+    "57401"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 392,
+   "address": "01,3433",
+   "label": "T3RUPT2",
+   "source": "XCH LST1",
+   "words": [
+    "57400"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 393,
+   "address": "01,3434",
+   "label": "T3RUPT2",
+   "source": "AD POSMAX",
+   "words": [
+    "64777"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 394,
+   "address": "01,3435",
+   "label": "T3RUPT2",
+   "source": "ADS TIME3",
+   "words": [
+    "26026"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 395,
+   "address": "01,3436",
+   "label": "T3RUPT2",
+   "source": "TS RUPTAGN",
+   "words": [
+    "54734"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 396,
+   "address": "01,3437",
+   "label": "T3RUPT2",
+   "source": "CS ZERO",
+   "words": [
+    "45021"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 397,
+   "address": "01,3440",
+   "label": "T3RUPT2",
+   "source": "TS RUPTAGN",
+   "words": [
+    "54734"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 399,
+   "address": "01,3441",
+   "label": "T3RUPT2",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 400,
+   "address": "01,3442",
+   "label": "T3RUPT2",
+   "source": "DCS ENDTASK",
+   "words": [
+    "45305"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 401,
+   "address": "01,3443",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2 +16D",
+   "words": [
+    "53431"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 402,
+   "address": "01,3444",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2 +14D",
+   "words": [
+    "53427"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 403,
+   "address": "01,3445",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2 +12D",
+   "words": [
+    "53425"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 404,
+   "address": "01,3446",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2 +10D",
+   "words": [
+    "53423"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 405,
+   "address": "01,3447",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2 +8D",
+   "words": [
+    "53421"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 406,
+   "address": "01,3450",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2 +6",
+   "words": [
+    "53417"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 407,
+   "address": "01,3451",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2 +4",
+   "words": [
+    "53415"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 408,
+   "address": "01,3452",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2 +2",
+   "words": [
+    "53413"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 409,
+   "address": "01,3453",
+   "label": "T3RUPT2",
+   "source": "DXCH LST2",
+   "words": [
+    "53411"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 411,
+   "address": "01,3454",
+   "label": "T3RUPT2",
+   "source": "XCH L",
+   "words": [
+    "56001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 412,
+   "address": "01,3455",
+   "label": "T3RUPT2",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 413,
+   "address": "01,3456",
+   "label": "T3RUPT2",
+   "source": "WRITE SUPERBNK",
+   "words": [
+    "01007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 414,
+   "address": "01,3457",
+   "label": "T3RUPT2",
+   "source": "XCH L",
+   "words": [
+    "56001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 415,
+   "address": "01,3460",
+   "label": "T3RUPT2",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 423,
+   "address": "FF,5324",
+   "label": "TASKOVER",
+   "source": "TASKOVER CCS RUPTAGN",
+   "words": [
+    "10734"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 424,
+   "address": "FF,5325",
+   "label": "TASKOVER",
+   "source": "CAF WAITBB",
+   "words": [
+    "35266"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 425,
+   "address": "FF,5326",
+   "label": "TASKOVER",
+   "source": "TS BBANK",
+   "words": [
+    "54006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 426,
+   "address": "FF,5327",
+   "label": "TASKOVER",
+   "source": "TCF T3RUPT2",
+   "words": [
+    "13423"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 428,
+   "address": "FF,5330",
+   "label": "TASKOVER",
+   "source": "CA BANKRUPT",
+   "words": [
+    "30016"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 429,
+   "address": "FF,5331",
+   "label": "TASKOVER",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 430,
+   "address": "FF,5332",
+   "label": "TASKOVER",
+   "source": "WRITE SUPERBNK",
+   "words": [
+    "01007"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 432,
+   "address": "FF,5333",
+   "label": "RESUME",
+   "source": "RESUME EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 433,
+   "address": "FF,5334",
+   "label": "RESUME",
+   "source": "QXCH QRUPT",
+   "words": [
+    "22012"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 434,
+   "address": "FF,5335",
+   "label": "NOQRSM",
+   "source": "NOQRSM CA BANKRUPT",
+   "words": [
+    "30016"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 435,
+   "address": "FF,5336",
+   "label": "NOQRSM",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 436,
+   "address": "FF,5337",
+   "label": "NOQBRSM",
+   "source": "NOQBRSM DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 437,
+   "address": "FF,5340",
+   "label": "NOQBRSM",
+   "source": "RELINT",
+   "words": [
+    "00003"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 438,
+   "address": "FF,5341",
+   "label": "NOQBRSM",
+   "source": "RESUME",
+   "words": [
+    "50017"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services",
+    "rupt-lead-ins"
+   ],
+   "native": [
+    "src/cm_exec_routines.c",
+    "src/rupt_lead_ins.c"
+   ]
+  },
+  {
+   "line": 488,
+   "address": "FF,5342",
+   "label": "LONGCALL",
+   "source": "LONGCALL DXCH LONGTIME",
+   "words": [
+    "53140"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 490,
+   "address": "FF,5343",
+   "label": "LONGCALL",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 492,
+   "address": "FF,5344",
+   "label": "LONGCALL",
+   "source": "NDX Q",
+   "words": [
+    "50002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 493,
+   "address": "FF,5345",
+   "label": "LONGCALL",
+   "source": "DCA 0",
+   "words": [
+    "30001"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 494,
+   "address": "FF,5346",
+   "label": "LONGCALL",
+   "source": "DXCH LONGCADR",
+   "words": [
+    "53134"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 496,
+   "address": "FF,5347",
+   "label": "LONGCALL",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 497,
+   "address": "FF,5350",
+   "label": "LONGCALL",
+   "source": "DCA LGCL2CDR",
+   "words": [
+    "35353"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 498,
+   "address": "FF,5351",
+   "label": "LONGCALL",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 501,
+   "address": "FF,5352",
+   "label": "LGCL2CDR",
+   "source": "LGCL2CDR 2CADR LNGCALL2",
+   "words": [
+    "03461",
+    "02063"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 508,
+   "address": "01,3461",
+   "label": "LNGCALL2",
+   "source": "LNGCALL2 LXCH LONGEXIT +1",
+   "words": [
+    "23435"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 509,
+   "address": "01,3462",
+   "label": "LNGCALL2",
+   "source": "CA TWO",
+   "words": [
+    "35016"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 510,
+   "address": "01,3463",
+   "label": "LNGCALL2",
+   "source": "ADS Q",
+   "words": [
+    "26002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 511,
+   "address": "01,3464",
+   "label": "LNGCALL2",
+   "source": "TS LONGEXIT",
+   "words": [
+    "55434"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 514,
+   "address": "01,3465",
+   "label": "LONGCYCL",
+   "source": "LONGCYCL EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 515,
+   "address": "01,3466",
+   "label": "LONGCYCL",
+   "source": "DCS DPBIT14",
+   "words": [
+    "43477"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 516,
+   "address": "01,3467",
+   "label": "LONGCYCL",
+   "source": "DAS LONGTIME",
+   "words": [
+    "21140"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 518,
+   "address": "01,3470",
+   "label": "LONGCYCL",
+   "source": "CCS LONGTIME +1",
+   "words": [
+    "11140"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 519,
+   "address": "01,3471",
+   "label": "LONGCYCL",
+   "source": "TCF MUCHTIME",
+   "words": [
+    "13510"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 525,
+   "address": "01,3472",
+   "label": "LONGCYCL",
+   "source": "NOOP",
+   "words": [
+    "13473"
+   ],
+   "kind": "instruction",
+   "executed_by": [],
+   "native": [],
+   "unreached": "Marked CAN'T GET HERE in the source: the CCS class before it cannot occur (LONGCYCL: LONGTIME +1 is never +0 after DAS of -DPBIT14)"
+  },
+  {
+   "line": 526,
+   "address": "01,3473",
+   "label": "LONGCYCL",
+   "source": "TCF +1",
+   "words": [
+    "13474"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 527,
+   "address": "01,3474",
+   "label": "LONGCYCL",
+   "source": "CCS LONGTIME",
+   "words": [
+    "11137"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 528,
+   "address": "01,3475",
+   "label": "LONGCYCL",
+   "source": "TCF MUCHTIME",
+   "words": [
+    "13510"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 529,
+   "address": "01,3476",
+   "label": "DPBIT14",
+   "source": "DPBIT14 OCT 00000",
+   "words": [
+    "00000"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 530,
+   "address": "01,3477",
+   "label": "DPBIT14",
+   "source": "OCT 20000",
+   "words": [
+    "20000"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 533,
+   "address": "01,3500",
+   "label": "LASTTIME",
+   "source": "LASTTIME CA BIT14",
+   "words": [
+    "35002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 534,
+   "address": "01,3501",
+   "label": "LASTTIME",
+   "source": "ADS LONGTIME +1",
+   "words": [
+    "27140"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 535,
+   "address": "01,3502",
+   "label": "LASTTIME",
+   "source": "TC WAITLIST",
+   "words": [
+    "05245"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 537,
+   "address": "01,3503",
+   "label": "LASTTIME",
+   "source": "2CADR GETCADR",
+   "words": [
+    "03515",
+    "02063"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 539,
+   "address": "01,3505",
+   "label": "LONGRTRN",
+   "source": "LONGRTRN CA TSKOVCDR",
+   "words": [
+    "33517"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 541,
+   "address": "01,3506",
+   "label": "LONGRTRN",
+   "source": "DXCH LONGEXIT",
+   "words": [
+    "53435"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 542,
+   "address": "01,3507",
+   "label": "LONGRTRN",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 544,
+   "address": "01,3510",
+   "label": "MUCHTIME",
+   "source": "MUCHTIME CA BIT14",
+   "words": [
+    "35002"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 545,
+   "address": "01,3511",
+   "label": "MUCHTIME",
+   "source": "TC WAITLIST",
+   "words": [
+    "05245"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 547,
+   "address": "01,3512",
+   "label": "MUCHTIME",
+   "source": "2CADR LONGCYCL",
+   "words": [
+    "03465",
+    "02063"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  },
+  {
+   "line": 550,
+   "address": "01,3514",
+   "label": "MUCHTIME",
+   "source": "TCF LONGRTRN",
+   "words": [
+    "13505"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 553,
+   "address": "01,3515",
+   "label": "GETCADR",
+   "source": "GETCADR DXCH LONGCADR",
+   "words": [
+    "53134"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 554,
+   "address": "01,3516",
+   "label": "GETCADR",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "kind": "instruction",
+   "executed_by": [
+    "exec-services"
+   ],
+   "native": [
+    "src/cm_exec_routines.c"
+   ]
+  },
+  {
+   "line": 556,
+   "address": "01,3517",
+   "label": "TSKOVCDR",
+   "source": "TSKOVCDR GENADR TASKOVER",
+   "words": [
+    "05324"
+   ],
+   "kind": "constant",
+   "executed_by": [],
+   "native": []
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete imu_gyro_device group original peripheral-reference states; retained memory unchanged
+Mailbox: a500002020
+PRG bytes: 9133
+imu-gyro-device-cm0-hardware-stack.bin: measured stack extent 20 bytes
+imu-gyro-device-cm0-software-stack.bin: measured stack extent 175 bytes

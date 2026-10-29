@@ -1,0 +1,100 @@
+{
+ "scenario": "lm-p52-realign-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 10000,
+ "keys": "@200V37E52E@1000V22E3E@1500V33E@2200E@2600V33E@3400E@3800V33E@4300y@4400x@4800V33E@5300V33E@5900E@6300V33E@6800y@6900x@7300V33E@7900V33E@8500V33E@9100E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036673",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_POKE": "3300:032=01062,3300:033=33476,3300:034=01144,5800:032=03521,5800:033=42475,5800:034=77717"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 10005,
+ "periods_taken": 10002,
+ "periods_dropped": 3,
+ "agc_centiseconds": 10002,
+ "native_routines": 528189,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 143820,
+  "yaagc": 141778,
+  "percent": 1.4,
+  "routines": 775,
+  "mean_abs_error": 17.4,
+  "abs_percent": 9.5,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "few",
+  "text": "interpretive charge +1.4% net, 9.5% routine by routine, from yaAGC's MCT over 775 routines; fewer than 1000 routines, not bounded"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 10,
+  "no_interrupt_to": 10,
+  "no_background_periods": 1,
+  "no_background_to": 512
+ },
+ "reached": {
+  "14,3055": 2203,
+  "04,2163": null,
+  "26,2123": 2764,
+  "14,3672": 2204,
+  "14,3231": 8086,
+  "43,2014": 2202,
+  "07,2613": 4302
+ },
+ "arrivals": {
+  "14,3055": [
+   2203
+  ],
+  "04,2163": [],
+  "26,2123": [
+   2764,
+   5464
+  ],
+  "14,3672": [
+   2204,
+   4983
+  ],
+  "14,3231": [
+   8086
+  ],
+  "43,2014": [
+   2202,
+   3402,
+   5902,
+   9102
+  ],
+  "07,2613": [
+   4302,
+   4402,
+   6802,
+   6902
+  ]
+ },
+ "log_sha256": "c8ea628b5754315bd157ecf2deaef2b2ebcd36bd6e530ce3e6970993ddc7aee2"
+}

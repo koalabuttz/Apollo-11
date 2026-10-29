@@ -1,0 +1,150 @@
+{
+ "scenario": "lm-doi-nassp-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 65000,
+ "keys": "@200V37E30E@1000V25E+00102E+00034E+00000E@2000V33E@2600V25E-00764E+00000E+00000E@3600V33E@4400V33E@6000V37E40E@7200E@48500V33E@57000V33E@58000V33E@59000V37E00E@60000V82E@61000V33E@63000V34E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036673",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_ENGINE": "15100",
+  "FLIGHT_ENGINE_LAG": "0.2",
+  "FLIGHT_LOAD": "100:tools/flight_scenarios/lm-doi.load",
+  "FLIGHT_POKE": "7000:032=77776,7000:033=60216,7000:034=74211,7000:3235=77776,7000:3236=60216,7000:3237=74211"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 65000,
+ "periods_taken": 65000,
+ "periods_dropped": 0,
+ "agc_centiseconds": 65000,
+ "native_routines": 3037705,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 3620548,
+  "yaagc": 3584328,
+  "percent": 1.0,
+  "routines": 17801,
+  "mean_abs_error": 24.3,
+  "abs_percent": 12.1,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +1.0% net, 12.1% routine by routine, from yaAGC's MCT over 17801 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 10,
+  "no_interrupt_to": 10,
+  "no_background_periods": 1,
+  "no_background_to": 511
+ },
+ "reached": {
+  "36,3666": 46113,
+  "35,2000": 507,
+  "04,2163": 61425,
+  "22,3242": 61479,
+  "26,2123": 6338,
+  "43,2014": 7202,
+  "36,2777": 48386
+ },
+ "arrivals": {
+  "36,3666": [
+   46113,
+   46310,
+   46510,
+   46713,
+   46910,
+   47110,
+   47313,
+   47510,
+   47710,
+   47913,
+   48110,
+   48310,
+   48514,
+   48714,
+   48913,
+   49113,
+   49314,
+   49514,
+   49713,
+   49913,
+   50113,
+   50313,
+   50513,
+   50713,
+   50913,
+   51114,
+   51314,
+   51514,
+   51714,
+   51914,
+   52113,
+   52314,
+   52514,
+   52714,
+   52914,
+   53114,
+   53314,
+   53514,
+   53714,
+   53914,
+   54114,
+   54314,
+   54514,
+   54714,
+   54914,
+   55114,
+   55314,
+   55514,
+   55714,
+   55914,
+   56114,
+   56317
+  ],
+  "35,2000": [
+   507
+  ],
+  "04,2163": [
+   61425
+  ],
+  "22,3242": [
+   61479
+  ],
+  "26,2123": [
+   6338
+  ],
+  "43,2014": [
+   7202
+  ],
+  "36,2777": [
+   48386,
+   48485,
+   48585
+  ]
+ },
+ "log_sha256": "d16ded5d8d21aa71dca1baa95bb01238334d04b31341d58115b986a3fdcd076c"
+}

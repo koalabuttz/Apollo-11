@@ -1,0 +1,31 @@
+/* SPDX-License-Identifier: MIT */
+#include <stdio.h>
+#include <string.h>
+#include "imu_mode_transfer_cases.h"
+#ifndef IMUT_MISSION
+#define IMUT_MISSION 0
+#endif
+#ifndef IMUT_ENTRY
+#define IMUT_ENTRY 0
+#endif
+#define IMU_MODE_TRANSFER_FROZEN_IMPLEMENTATION
+#include "imu_mode_transfer_vectors.h"
+static apollo_overlay_state image,expected;
+static uint8_t patch(frozen_words *r,apollo_overlay_state *m){uint16_t count,i,address,value;if(!frozen_words_next(r,&count)||count>2048u)return 0;for(i=0;i<count;++i){if(!frozen_words_next(r,&address)||!frozen_words_next(r,&value)||address>=2048u)return 0;m->words[address]=value;}return 1;}
+unsigned imu_mode_transfer_check(void){unsigned row,fail=0;for(row=0;row<32u;++row){frozen_words r;uint16_t low,high,irq,sup,ch11,ch12,ch14,status,pad;uint32_t n;imu_pulse_io io;enum imu_transfer_status result;
+ if(!imu_mode_transfer_reference_begin(&r,row)||!frozen_words_next(&r,&low)||!frozen_words_next(&r,&high)){++fail;continue;}n=(uint32_t)low+((uint32_t)high<<16);
+ imu_mode_transfer_input(&image,&io,(enum rtb_mission)IMUT_MISSION,(enum imu_transfer_stage)IMUT_ENTRY,n);expected=image;
+ if(!frozen_words_next(&r,&irq)||!frozen_words_next(&r,&sup)||!frozen_words_next(&r,&ch11)||!frozen_words_next(&r,&ch12)||!frozen_words_next(&r,&ch14)||!frozen_words_next(&r,&status)||!patch(&r,&expected)){++fail;continue;}
+ while(frozen_words_next(&r,&pad))if(pad)++fail;
+ result=imu_mode_transfer(&image,&io,(enum rtb_mission)IMUT_MISSION,(enum imu_transfer_stage)IMUT_ENTRY);
+ if(!frozen_words_finished(&r)||(unsigned)result!=status||io.latch.interrupt_enabled!=irq||io.latch.superbank!=sup||io.channel11!=ch11||io.channel12!=ch12||io.channel14!=ch14||memcmp(&image,&expected,sizeof image))++fail;
+ }
+ {unsigned i;for(i=0;i<12u;++i){imu_pulse_io io,old;imu_mode_transfer_input(&image,&io,(enum rtb_mission)IMUT_MISSION,(enum imu_transfer_stage)IMUT_ENTRY,2);
+ switch(i){case 0:image.words[5]=0;break;case 1:image.words[3]=0;break;case 2:image.words[4]=0;break;case 3:image.words[6]=0;break;case 4:image.words[7]=1;break;case 5:image.words[2]=1;break;case 6:io.channel11=0100000;break;case 7:io.channel12=0100000;break;case 8:io.channel14|=070000u;break;case 9:io.latch.interrupt_enabled=2;break;case 10:io.latch.superbank=1;break;default:image.words[01300]=0100000;break;}
+ expected=image;old=io;if(imu_mode_transfer(&image,&io,(enum rtb_mission)IMUT_MISSION,(enum imu_transfer_stage)IMUT_ENTRY)!=IMU_TRANSFER_UNSUPPORTED||memcmp(&image,&expected,sizeof image)||memcmp(&io,&old,sizeof io))++fail;}
+ }
+ {agc_word value=05555;uint16_t at=IMUT_MISSION?017626u:017747u;if(!imu_transfer_literal((enum rtb_mission)IMUT_MISSION,at,&value)||value!=074u)++fail;at=IMUT_MISSION?017623u:017743u;if(!imu_transfer_literal((enum rtb_mission)IMUT_MISSION,at,&value)||value!=01210u)++fail;}
+ return fail;}
+#ifndef IMU_MODE_TRANSFER_CHECK_ONLY
+int main(void){unsigned f=imu_mode_transfer_check();printf("32 complete coarse original states + 12 immutable guards mission%d entry%d: %s\n",IMUT_MISSION,IMUT_ENTRY,f?"FAIL":"PASS");return f?1:0;}
+#endif

@@ -1,0 +1,6 @@
+PASS: stock-ROM PAL C64 executes complete LM gimbal; 80 full canonical source states and all file constants
+Every physical word and source SUPER/IRQ result compared exactly; caller continuation remains external
+Native PRG 36157 bytes; load end $953c; BSS end $a5ea; mailbox a55000
+PASS: stock-ROM PAL C64 executes complete CM gimbal; 80 full canonical source states and all file constants
+Every physical word and source SUPER/IRQ result compared exactly; caller continuation remains external
+Native PRG 40478 bytes; load end $a61d; BSS end $b6cb; mailbox a55000

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "milestone": "exec-closure",
+  "release": "evidence-exec-closure",
+  "files": {
+    "exec-closure-c64-cover.json": {
+      "sha256": "59121211a1e36c2ed69c7f30201951e6f3c8d5d3c7e96cd0ac8cfc56fe153667",
+      "bytes": 9235,
+      "store": "tree"
+    },
+    "exec-closure-host.log": {
+      "sha256": "59eb6680b1291b93886efef1db0e71451d6c77f58403996b6027f9f88575b66c",
+      "bytes": 17980,
+      "store": "release"
+    },
+    "exec-closure-proof.json": {
+      "sha256": "ff67e71e928b871416dee320c7a7c8448687cb40abad6aa72d087bce238c9e54",
+      "bytes": 4957,
+      "store": "tree"
+    },
+    "exec-closure-source-map-cm-executive.json": {
+      "sha256": "aa522508740a8326c4e5e28359918afb87486d5a91f6390d0f5c35e7c3e9ff47",
+      "bytes": 89633,
+      "store": "tree"
+    },
+    "exec-closure-source-map-cm-waitlist.json": {
+      "sha256": "7a4372f26442eb4978409650d6e64e4b3af1ecd598630ab17c0c457fb3eae0d0",
+      "bytes": 62683,
+      "store": "tree"
+    },
+    "exec-closure-source-map-lm-executive.json": {
+      "sha256": "7bb857d2c4b7a331981f053a8939b896c4728739f8e9451e71fa6bb4cbad3a68",
+      "bytes": 99344,
+      "store": "tree"
+    },
+    "exec-closure-source-map-lm-waitlist.json": {
+      "sha256": "02ba9298c3bd1a8d3ddb6d0edebd41eb6a87db52d354f0a23f102b52ea3071fa",
+      "bytes": 74540,
+      "store": "tree"
+    },
+    "exec-closure-trace.log": {
+      "sha256": "b29082650428cd007b4b16764f9eea890eb86263a5fe006bdd0f12cab4e6e0ac",
+      "bytes": 4423,
+      "store": "release"
+    },
+    "exec-closure-vice.log": {
+      "sha256": "f44c434abf39090723c2d8916ee4f441fdd0fb7386dc388c3cd6a92f40414512",
+      "bytes": 9238,
+      "store": "release"
+    },
+    "kernel-edges.json": {
+      "sha256": "59c5341d59368e39a25a60f24d43024d2ed561031b679a0fef7cb650b524cbad",
+      "bytes": 2392,
+      "store": "tree"
+    }
+  }
+}

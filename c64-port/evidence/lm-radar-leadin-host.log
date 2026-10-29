@@ -1,0 +1,12 @@
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -ffunction-sections -fdata-sections -Wl,--gc-sections -DP66_NATIVE_DISPATCH_ONLY -O2 src/agc_word.c src/agc_multiword.c src/waitlist.c src/executive.c src/p66_native.c src/lm_waitlist_image.c src/lm_admission_image.c src/lm_radar_leadin.c tests/lm_admission_image_cases.c tests/lm_radar_leadin_cases.c tests/test_lm_radar_leadin.c -o build/test-lm-radar-leadin
+build/test-lm-radar-leadin
+PASS:17 invalid source/domain states and2 null interfaces preserve full image and I/O
+python3 tools/lm_radar_leadin_differential.py --retained
+PASS:8192 original radar local continuation complete2050-word states
+Snapshot SHA256: c7781b0135151d3059edca03670dd1fb423edf824aa5681c9914fddf2acf88cf
+cc -std=c99 -Wall -Wextra -Werror -Iinclude -Itests -ffunction-sections -fdata-sections -Wl,--gc-sections -DP66_NATIVE_DISPATCH_ONLY -O1 -g -no-pie -fsanitize=address,undefined src/agc_word.c src/agc_multiword.c src/waitlist.c src/executive.c src/p66_native.c src/lm_waitlist_image.c src/lm_admission_image.c src/lm_radar_leadin.c tests/lm_admission_image_cases.c tests/lm_radar_leadin_cases.c tests/test_lm_radar_leadin.c -o build/test-lm-radar-leadin-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-lm-radar-leadin-sanitize
+PASS:17 invalid source/domain states and2 null interfaces preserve full image and I/O
+python3 tools/lm_radar_leadin_differential.py --retained --sanitize
+PASS:8192 original radar local continuation complete2050-word states
+Snapshot SHA256: c7781b0135151d3059edca03670dd1fb423edf824aa5681c9914fddf2acf88cf

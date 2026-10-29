@@ -1,0 +1,66 @@
+Loading /workspace/Apollo-11/c64-port/build/shift.prg from 0801 to 9D41 (9541 bytes)
+WATCH: 1  C:$c088  (Stop on store)
+WATCH: 2  C:$c080  (Stop on store)
+Will ignore the next 1 hits of checkpoint #2
+#1 (Stop on store c088)    4/$004,  24/$18
+.C:2a02  8D 88 C0    STA $C088      - A:10 X:00 Y:07 SP:ed ..-..I.C   44010060
+Stopwatch reset to 0.
+#1 (Stop on store c088)   27/$01b,   6/$06
+.C:2a13  8E 88 C0    STX $C088      - A:01 X:20 Y:07 SP:ed ..-..I..       1431
+Stopwatch:       1431
+#1 (Stop on store c088)   26/$01a,   7/$07
+.C:2a02  8D 88 C0    STA $C088      - A:11 X:00 Y:07 SP:ed ..-..I.C     197929
+Stopwatch reset to 0.
+#1 (Stop on store c088)   33/$021,   8/$08
+.C:2a13  8E 88 C0    STX $C088      - A:01 X:21 Y:07 SP:ed ..-..I..        442
+Stopwatch:        442
+#1 (Stop on store c088)   36/$024,  11/$0b
+.C:2a02  8D 88 C0    STA $C088      - A:12 X:00 Y:07 SP:ed ..-..I.C     197194
+Stopwatch reset to 0.
+#1 (Stop on store c088)  174/$0ae,  14/$0e
+.C:2a13  8E 88 C0    STX $C088      - A:01 X:22 Y:07 SP:ed ..-..I..       8697
+Stopwatch:       8697
+#1 (Stop on store c088)  185/$0b9,  17/$11
+.C:2a02  8D 88 C0    STA $C088      - A:13 X:00 Y:07 SP:ed ..-..I.C     205953
+Stopwatch reset to 0.
+#1 (Stop on store c088)  241/$0f1,  17/$11
+.C:2a13  8E 88 C0    STX $C088      - A:01 X:23 Y:07 SP:ed ..-..I..       3528
+Stopwatch:       3528
+#1 (Stop on store c088)  241/$0f1,  11/$0b
+.C:2a02  8D 88 C0    STA $C088      - A:14 X:00 Y:07 SP:ed ..-..I.C     200082
+Stopwatch reset to 0.
+#1 (Stop on store c088)  100/$064,  20/$14
+.C:2a13  8E 88 C0    STX $C088      - A:01 X:24 Y:07 SP:ed ..-..I..      10782
+Stopwatch:      10782
+#2 (Stop on store c080)  199/$0c7,   5/$05
+.C:2a97  8E 80 C0    STX $C080      - A:00 X:A5 Y:08 SP:ed N.-.....     233220
+>C:c080  a5 00 00 a8  00 03 b5 59  24                         .......Y$
+Saving file `/workspace/Apollo-11/c64-port/build/shift-vice-mailbox.bin' from $c080 to $c088
+Saving file `/workspace/Apollo-11/c64-port/build/shift-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/shift-vice-software-stack.bin' from $c100 to $cfff
+Displaying 40x25 screen at $0400:
+0400                                          
+0428      **** commodore 64 basic v2 ****     
+0450                                          
+0478   64k ram system  38911 basic bytes free 
+04a0                                          
+04c8  ready.                                  
+04f0  APOLLO NATIVE P66 SCALAR / VECTOR SHIFTS
+0518                                          
+0540  168 COMPLETE ASSEMBLY STATES PASS       
+0568                                          
+0590                                          
+05b8                                          
+05e0                                          
+0608                                          
+0630                                          
+0658                                          
+0680                                          
+06a8                                          
+06d0                                          
+06f8                                          
+0720                                          
+0748                                          
+0770                                          
+0798                                          
+07c0                                          

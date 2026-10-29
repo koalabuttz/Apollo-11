@@ -1,0 +1,598 @@
+{
+ "source_path": "Luminary099/INTERRUPT_LEAD_INS.agc",
+ "source_sha256": "ed6f44b59b2e16743ff53c6c9ed72661040a83d846a61054a31e5c61957290c3",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "native": {
+  "src/rupt_lead_ins.c": "1b668304072b77b3b844d1340d4954a78e7aded472044b78eaeaa5521fe90a9f",
+  "include/rupt_lead_ins.h": "9f8e6c45a7eaa59f26051769af1d293213397c9bdeb068ad877a3c042290245b"
+ },
+ "source_words": 54,
+ "source_lines_with_words": 53,
+ "instructions_executed_by_oracle": 44,
+ "line_map": [
+  {
+   "line": 32,
+   "address": "FF,4000",
+   "source": "INHINT",
+   "words": [
+    "00004"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 33,
+   "address": "FF,4001",
+   "source": "CAF GOBB",
+   "words": [
+    "34054"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 34,
+   "address": "FF,4002",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 35,
+   "address": "FF,4003",
+   "source": "TCF GOPROG",
+   "words": [
+    "12667"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 37,
+   "address": "FF,4004",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t6rupt.c (T6RUPT vector; milestone lm-t6rupt)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 38,
+   "address": "FF,4005",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t6rupt.c (T6RUPT vector; milestone lm-t6rupt)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 39,
+   "address": "FF,4006",
+   "source": "DCA T6ADR",
+   "words": [
+    "34056"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t6rupt.c (T6RUPT vector; milestone lm-t6rupt)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 40,
+   "address": "FF,4007",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_t6rupt.c (T6RUPT vector; milestone lm-t6rupt)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 42,
+   "address": "FF,4010",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 43,
+   "address": "FF,4011",
+   "source": "EXTEND",
+   "words": [
+    "00006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 44,
+   "address": "FF,4012",
+   "source": "DCA T5ADR",
+   "words": [
+    "31275"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 45,
+   "address": "FF,4013",
+   "source": "DTCB",
+   "words": [
+    "52006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 47,
+   "address": "FF,4014",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_exec_tasks.c (T3RUPT vector; milestone lm-exec-jobs)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 48,
+   "address": "FF,4015",
+   "source": "CAF T3RPTBB",
+   "words": [
+    "34057"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_exec_tasks.c (T3RUPT vector; milestone lm-exec-jobs)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 49,
+   "address": "FF,4016",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_exec_tasks.c (T3RUPT vector; milestone lm-exec-jobs)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 50,
+   "address": "FF,4017",
+   "source": "TCF T3RUPT",
+   "words": [
+    "13407"
+   ],
+   "kind": "instruction",
+   "native": "src/lm_exec_tasks.c (T3RUPT vector; milestone lm-exec-jobs)",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 52,
+   "address": "FF,4020",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 53,
+   "address": "FF,4021",
+   "source": "CAF T4RPTBB",
+   "words": [
+    "34064"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 54,
+   "address": "FF,4022",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 55,
+   "address": "FF,4023",
+   "source": "TCF T4RUPT",
+   "words": [
+    "12000"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 57,
+   "address": "FF,4024",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 58,
+   "address": "FF,4025",
+   "source": "CAF KEYRPTBB",
+   "words": [
+    "34060"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 59,
+   "address": "FF,4026",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 60,
+   "address": "FF,4027",
+   "source": "TCF KEYRUPT1",
+   "words": [
+    "13274"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 62,
+   "address": "FF,4030",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 63,
+   "address": "FF,4031",
+   "source": "CAF MKRUPTBB",
+   "words": [
+    "34061"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 64,
+   "address": "FF,4032",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 65,
+   "address": "FF,4033",
+   "source": "TCF MARKRUPT",
+   "words": [
+    "12332"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 67,
+   "address": "FF,4034",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 68,
+   "address": "FF,4035",
+   "source": "CAF UPRPTBB",
+   "words": [
+    "34060"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 69,
+   "address": "FF,4036",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 70,
+   "address": "FF,4037",
+   "source": "TCF UPRUPT",
+   "words": [
+    "13317"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 72,
+   "address": "FF,4040",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 73,
+   "address": "FF,4041",
+   "source": "CAF DWNRPTBB",
+   "words": [
+    "34062"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 74,
+   "address": "FF,4042",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 75,
+   "address": "FF,4043",
+   "source": "TCF DODOWNTM",
+   "words": [
+    "13506"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 77,
+   "address": "FF,4044",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 78,
+   "address": "FF,4045",
+   "source": "CAF RDRPTBB",
+   "words": [
+    "34063"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 80,
+   "address": "FF,4046",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 81,
+   "address": "FF,4047",
+   "source": "TCF RADAREAD",
+   "words": [
+    "13150"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 83,
+   "address": "FF,4050",
+   "source": "DXCH ARUPT",
+   "words": [
+    "52011"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 84,
+   "address": "FF,4051",
+   "source": "CA RUPT10BB",
+   "words": [
+    "34065"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 85,
+   "address": "FF,4052",
+   "source": "XCH BBANK",
+   "words": [
+    "56006"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 86,
+   "address": "FF,4053",
+   "source": "TCF PITFALL",
+   "words": [
+    "12275"
+   ],
+   "kind": "instruction",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": true
+  },
+  {
+   "line": 90,
+   "address": "FF,4054",
+   "source": "GOBB BBCON GOPROG",
+   "words": [
+    "12103"
+   ],
+   "kind": "constant",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 93,
+   "address": "FF,4055",
+   "source": "T6ADR 2CADR DOT6RUPT",
+   "words": [
+    "02065",
+    "36106"
+   ],
+   "kind": "constant",
+   "native": "src/lm_t6rupt.c (T6ADR, read by DCA T6ADR; milestone lm-t6rupt)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 96,
+   "address": "FF,4057",
+   "source": "T3RPTBB BBCON T3RUPT",
+   "words": [
+    "02103"
+   ],
+   "kind": "constant",
+   "native": "src/lm_exec_tasks.c (T3RPTBB, read by CAF T3RPTBB; milestone lm-exec-jobs)",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 99,
+   "address": "FF,4060",
+   "source": "KEYRPTBB BBCON KEYRUPT1",
+   "words": [
+    "10100"
+   ],
+   "kind": "constant",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 102,
+   "address": "FF,4061",
+   "source": "MKRUPTBB BBCON MARKRUPT",
+   "words": [
+    "16107"
+   ],
+   "kind": "constant",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 107,
+   "address": "FF,4062",
+   "source": "DWNRPTBB BBCON DODOWNTM",
+   "words": [
+    "12100"
+   ],
+   "kind": "constant",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 110,
+   "address": "FF,4063",
+   "source": "RDRPTBB BBCON RADAREAD",
+   "words": [
+    "52100"
+   ],
+   "kind": "constant",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 113,
+   "address": "FF,4064",
+   "source": "T4RPTBB BBCON T4RUPT",
+   "words": [
+    "14106"
+   ],
+   "kind": "constant",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": false
+  },
+  {
+   "line": 116,
+   "address": "FF,4065",
+   "source": "RUPT10BB BBCON PITFALL",
+   "words": [
+    "22102"
+   ],
+   "kind": "constant",
+   "native": "src/rupt_lead_ins.c",
+   "executed_by_oracle": false
+  }
+ ]
+}

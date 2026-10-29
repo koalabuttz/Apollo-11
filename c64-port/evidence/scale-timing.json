@@ -1,0 +1,72 @@
+{
+  "platform": "VICE 3.7.1 PAL C64",
+  "clock_hz": 985248,
+  "prg_file_bytes": 32979,
+  "loaded_bytes": 32977,
+  "load_address": 2049,
+  "sections": {
+    "text": {
+      "address": 2061,
+      "bytes": 8818
+    },
+    "rodata": {
+      "address": 10879,
+      "bytes": 24147
+    },
+    "bss": {
+      "address": 35026,
+      "bytes": 82
+    },
+    "noinit": {
+      "address": 35108,
+      "bytes": 1
+    },
+    "data": {
+      "address": 35026,
+      "bytes": 0
+    }
+  },
+  "modeled_words": 41,
+  "state_bytes": 82,
+  "scale_scratch_bytes": 4,
+  "expectation_bytes": 23944,
+  "mailbox": "a50000240103522924",
+  "samples": [
+    {
+      "case": 144,
+      "name": "below half",
+      "cycles": 23415,
+      "milliseconds": 23.766
+    },
+    {
+      "case": 145,
+      "name": "exact half",
+      "cycles": 24297,
+      "milliseconds": 24.661
+    },
+    {
+      "case": 147,
+      "name": "positive low-word propagation",
+      "cycles": 24799,
+      "milliseconds": 25.17
+    },
+    {
+      "case": 151,
+      "name": "negative low-word propagation",
+      "cycles": 25737,
+      "milliseconds": 26.122
+    },
+    {
+      "case": 280,
+      "name": "full prefix plus scaling",
+      "cycles": 19838,
+      "milliseconds": 20.135
+    }
+  ],
+  "hardware_stack_below_entry": 26,
+  "hardware_stack_including_rom_frame": 40,
+  "software_stack_sentinel_extent": 187,
+  "compiler_zp_register_bytes": 32,
+  "extra_compiler_zp_bytes": 0,
+  "measurement_limit": "Finite fixture observations with marker/call and VIC bus costs; no WCET, source-rate or flight-deadline proof."
+}

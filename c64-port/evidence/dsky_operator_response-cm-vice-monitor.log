@@ -1,0 +1,10 @@
+Loading /workspace/Apollo-11/c64-port/build/dsky_operator_response-cm.prg from 0801 to 4D41 (4541 bytes)
+WATCH: 1  C:$6d4a  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store 6d4a)   76/$04c,  48/$30
+.C:3169  8E 4A 6D    STX $6D4A      - A:40 X:A5 Y:00 SP:f1 N.-....C  156250380
+>C:6d4a  a5 00 00 20  01                                      ... .
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_response-cm-vice-mailbox.bin' from $6d4a to $6d4e
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_response-cm-vice-difference.bin' from $4d42 to $4d49
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_response-cm-vice-hardware-stack.bin' from $0100 to $01f1
+Saving file `/workspace/Apollo-11/c64-port/build/dsky_operator_response-cm-vice-software-stack.bin' from $c100 to $cfff

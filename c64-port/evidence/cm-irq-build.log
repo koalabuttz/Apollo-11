@@ -1,0 +1,22 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_irq.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_irq_cases.c tests/cm_irq_sequence.c tests/cm_irq_check.c tests/test_cm_irq.c -o build/test-cm-irq
+./build/test-cm-irq
+PASS: CM IRQ: 512 source admissions, 32 actual callback sequences / 240 checkpoints, FIFO wrap, overflow, retained head, typed maps and restoring guards
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_irq.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_irq_cases.c tests/cm_irq_sequence.c tests/cm_irq_check.c tests/test_cm_irq.c -o build/test-cm-irq-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-irq-sanitize
+PASS: CM IRQ: 512 source admissions, 32 actual callback sequences / 240 checkpoints, FIFO wrap, overflow, retained head, typed maps and restoring guards
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_irq.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_irq_cases.c tests/cm_irq_sequence.c platform/host/cm_irq_snapshot.c -o build/cm-irq-snapshot
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/agc_word.c src/cm_executive.c src/cm_dispatch.c src/cm_native_dispatch.c src/cm_irq.c tests/cm_executive_cases.c tests/cm_dispatch_cases.c tests/cm_irq_cases.c tests/cm_irq_sequence.c platform/host/cm_irq_sequence_snapshot.c -o build/cm-irq-sequence-snapshot
+python3 tools/cm_irq_differential.py
+PASS: original/pinned CM Interpreter boundary instruction tokens agree
+PASS: CM dispatch: 109 complete-state checkpoints; physical transfers and 16 guard words checked
+Snapshot SHA256: 4e47a03548287871901e08b0feefaa3a4bfa4be65d741b923a20b9d30ca4f2ae
+PASS: CM lifecycle: 115 complete-state checkpoints; physical transfers and 16 guard words checked
+Snapshot SHA256: 155f0beb9fccee22a885d7ffceadc9f2b1449d44dbe39178ca7462e1f70e4e95
+PASS: CM interpreter: 512 complete-state checkpoints; physical transfers and 16 guard words checked
+Snapshot SHA256: c852a128cd217066aecd89188f5b06ed529dab7770c0e816332fc64499fe6227
+PASS: CM mixed: 140 complete-state checkpoints; physical transfers and 16 guard words checked
+Snapshot SHA256: 33f01e9117e0bee05d6b31687bbc4d40cf0ee0b69bb43fa4a6747e332fccdb30
+PASS: 876 CM context checkpoints; 8 basic, 5 lifecycle, and 7 mixed native callback sequences
+PASS: 512 valid CM IRQ payloads / all312owned words exact against original admission; native FIFO publication/ticket consumption checked; oracle16guards
+Snapshot SHA256: a63460f812f92be78d5cff5a12cd1aa5c4dff9507134a88f084832e0ff5dbaed
+PASS: eight actual CM IRQ callback sequences /64complete original dispatch states

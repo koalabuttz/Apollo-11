@@ -1,0 +1,15 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_single_return_snapshot.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c -o build/cm-single-return-native
+gcc -O2 -std=c99 -Iinclude -Itests -Ideps/virtualagc/yaAGC tools/cm_single_return_reference.c tests/cm_single_return_cases.c tests/cm_trig_cases.c tests/cm_executive_cases.c src/agc_word.c build/agc_engine_hardware_dv.o deps/virtualagc/yaAGC/agc_engine_init.o deps/virtualagc/yaAGC/rfopen.o -o build/cm-single-return-reference
+build/cm-single-return-reference deps/cm-trig-fixture/MAIN.agc.bin > build/cm-single-return-reference.snapshots
+build/cm-single-return-native < build/cm-single-return-reference.snapshots > build/cm-single-return-native.snapshots
+python tools/cm_single_return_compare.py
+6144 complete2048word+IRQ source TCQreturn states exact, covering every02000..07777fixed caller address each SPSIN/SPCOS;SHA256:c422cb8f6c20eefe2be81d47d3c9baf38edf85a373e808565ce951193e66846f
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_single_return_snapshot.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c -o build/cm-single-return-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-single-return-sanitize < build/cm-single-return-reference.snapshots > build/cm-single-return-sanitize.snapshots
+cmp build/cm-single-return-native.snapshots build/cm-single-return-sanitize.snapshots
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_single_complete_snapshot.c src/cm_quictrig.c src/agc_multiword.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c -o build/cm-single-complete-native
+build/cm-single-complete-native > build/cm-single-complete-native.snapshots
+cmp build/cm-single-return-native.snapshots build/cm-single-complete-native.snapshots
+gcc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_single_complete_snapshot.c src/cm_quictrig.c src/agc_multiword.c src/cm_single_return.c src/agc_word.c tests/cm_single_return_cases.c tests/cm_trig_cases.c -o build/cm-single-complete-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-single-complete-sanitize > build/cm-single-complete-sanitize.snapshots
+cmp build/cm-single-return-native.snapshots build/cm-single-complete-sanitize.snapshots

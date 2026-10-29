@@ -1,0 +1,2 @@
+LM: states65536, distinct X2=32768/rawA=65536/rawL=65536; Earth=259/Moon=65277; all8EB/all5VAC/all4selectedSUPER/bothIRQ; marginals only
+CM: states65536, distinct X2=32768/rawA=65536/rawL=65536; Earth=259/Moon=65277; all8EB/all5VAC/all4selectedSUPER/bothIRQ; marginals only

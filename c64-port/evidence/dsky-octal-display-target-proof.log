@@ -1,0 +1,5 @@
+PASS: VICE PAL, 64 complete original assembly dsky_octal_display states, zero failures
+Mailbox: a500004002
+PRG file/loaded bytes: 9687 9685
+hardware stack sentinel extent: 17
+software stack sentinel extent: 36

@@ -1,0 +1,4 @@
+lm-throttle: 16384 cases returned; routines 4096 4096 8192 8192 8192 4096 4096 16384 8190; branches 141 8051 4349 549 3800 56 3787 2 40 0 4096 12288 346 74 3853 12111 8055 7957 372 2005 14379 0 0 0 0 1369 128; 16422 checks, 0 failures
+PASS 136 assembled words on 136 source lines map to 10 native owners
+sanitize (ASAN/UBSAN): 16422 checks, 0 failures
+PASS: 16384 lm-throttle cases equal the original program: {'FLATOUT:returned': 4096, 'THROTTLE+3:returned': 4096, 'THROTTLE:returned': 4096, 'WHATOUT:returned': 4096}

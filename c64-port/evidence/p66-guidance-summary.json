@@ -1,0 +1,45 @@
+{
+  "coverage": "bounded RODCOMP through AFC at completed source LOC03433",
+  "image_words": 2048,
+  "live_compared_words": 493,
+  "canonical_checkpoints": 43436,
+  "normal_checkpoints": 2944,
+  "mixed_checkpoints": 400,
+  "pending_injections": 352,
+  "pending_checkpoints": 704,
+  "native_callbacks": 23,
+  "interpretive_handoff_points": 22,
+  "source_engine_sha256": "9c59728cdd968503caaaafe50a18ab3ed841f6176da3299c137f3a6a158fcbef",
+  "hardware_dv_variant_sha256": "3fcdb1fe93d24e5bd25eebfb85e9f3bec43fcd84575539ac3d397c342004f242",
+  "snapshots_sha256": {
+    "p66-guidance-live-reference.snapshots": "7b96007dec941c9dd2dbaa7948e8bc96e1e33bcf5897b5b7b0edaf1360d63eee",
+    "p66-guidance-live-mixed-reference.snapshots": "46d33f2753d474198bc25f5cf95c676292739acbc777ce63538fae4c73753776",
+    "p66-guidance-pending-reference.snapshots": "3bfaec3084a82dbd57a10cf7a53031aa3aa0986ed68a1102369c38194c9e1de1",
+    "p66-guidance-live-inputs.snapshots": "8add8f459d2feec65c4c1b51c85d71ecaf63094ee7ace334c8942865bf04b8f4",
+    "p66-guidance-canonical-native.snapshots": "051e84bff5207b57cdc454b6221e5934b108615009aef36df20772d36d1ee512"
+  },
+  "early_prefix_PC_Q": "normalized before first split velocity return; see docs/P66-LIVE-GUIDANCE.md",
+  "target": {
+    "stock_ROM": "PAL C64 kernal901227-03/basic901226-01/chargen901225-01",
+    "disk": "D81 virtual IEC device8",
+    "source_fingerprints": 192,
+    "word_count_each": 493,
+    "frozen_source_cases": 2,
+    "interrupt_modes": "native Ienabled/masked; I and$01 restored",
+    "math_overlays": 27,
+    "proof_data_overlays": 2,
+    "mailbox_hex": "a50000c00002",
+    "software_stack_extent": 736,
+    "software_stack_capacity": 2048,
+    "extra_ZP_bytes": 0,
+    "resident_sections": {
+      "text": 25733,
+      "rodata": 759,
+      "data": 25,
+      "bss": 23,
+      "end_address": "0x6fb9"
+    },
+    "PRG_sha256": "bba2b58bd7cb67d2dde6534a4cbb6354a567231033c5924c564f4363027ead47",
+    "D81_sha256": "05ec5c439ee25291d44e19a9466c130b1f3dc0d181cd4c4b09f28e380d9c213f"
+  }
+}

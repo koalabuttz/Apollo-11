@@ -1,0 +1,6 @@
+Loading /workspace/Apollo-11/c64-port/build/sband-scalar.prg from 0801 to 476B (3F6B bytes)
+WATCH: 1  C:$c000  (Stop on store)
+Will ignore the next 1 hits of checkpoint #1
+#1 (Stop on store c000)  285/$11d,  56/$38
+.C:164a  8E 00 C0    STX $C000      - A:00 X:A5 Y:01 SP:f1 ..-..IZC  492066659
+Saving file `/workspace/Apollo-11/c64-port/build/sband-scalar-mailbox.bin' from $c000 to $c003

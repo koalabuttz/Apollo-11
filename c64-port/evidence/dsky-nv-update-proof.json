@@ -1,0 +1,77 @@
+{
+  "source_files": {
+    "docs/DSKY-NV-UPDATE.md": "a2e4a416a9d20ffede3535362186620f5b41534d1c156a01a5e9e0d41a5d02c6",
+    "include/dsky_nv_update.h": "35c4c4d8f28d3e92832931b19e92cf236b9d7f4b4058af033227ffd66628b555",
+    "src/dsky_nv_update.c": "6d20ec12b62220219082ead247891408fe017ce0fbb32bde17f2ce3f900cde9d",
+    "tests/dsky_nv_update_cases.c": "bcbc06e8fad308d67b2ab9226d268a257c84d054a3b3537a98ac44a8104d45bc",
+    "tests/dsky_nv_update_cases.h": "43f0bb4f892a997e150fa531bd704c3b6e95fc0faca89369b2c80a7fa81b99c0",
+    "tests/dsky_nv_update_check.c": "d4d39465b54f80b6916890ee9c9415789bd1374219e5ee1f92b9bbef4428ecf8",
+    "tests/dsky_nv_update_check.h": "81684ff68c71a60dcbb75b29c243ab9c10957bf1f6d6ce590a849a55929e7ba2",
+    "tests/dsky_nv_update_vectors.h": "4dc7074f57a9bae453a43f186e27a2ecc11c1d207ae43a19c8fad60aa953e490",
+    "tests/test_dsky_nv_update.c": "abec89149e67cff0d1f46c3125ff3110644d2d5ded5492acc34f1e81eddc7a88",
+    "tools/dsky_nv_update.mk": "273329592f86d88e98a5eb56e156480d7a00b43a730f9e614576087a991a422f",
+    "tools/dsky_nv_update_diagnostic.c": "d14e7bc4c9882c724fe89e805686e605361df9df606db7578af72f63155854df",
+    "tools/dsky_nv_update_differential.py": "4dced3187bea34430d66aff96806a41a81afe58b8f9c5ebd5ace4fbc8c2c1e73",
+    "tools/dsky_nv_update_inputs.c": "fd9547edff8d49015a054ae4ef9c9a7217aa041fad72aa66bed3b9426e4342ca",
+    "tools/dsky_nv_update_reference.c": "f7296decab5d2363e97231c46575122515c1019faf30d64aebc43ed3cc43f450",
+    "tools/dsky_nv_update_sanitize.py": "8d9a122385ca6ca0235ab0ac6b762973602c2376849cbd17a26221a3c647a8b3",
+    "tools/dsky_nv_update_snapshot.c": "b877f07d2aac390c0d346ab9faeca3e8f63b183a383e71f284ba48c511c1a8d4",
+    "tools/dsky_nv_update_vice_test.py": "95cc89d412e88dcd396928722dc34da7354c0a43ed2bea0c38b99a2764b17941",
+    "tools/freeze_dsky_nv_update.py": "ab8027e4141a96301a3e0feee1b79a67f541fb5eadeb6f89dafb999c0a5e2928"
+  },
+  "native_dependencies": {
+    "include/cm_formatter.h": "85188949d2b4bc7331540556682546bc9a13debf9f5eec5e8afa8e79bc905c40",
+    "include/dsky_nv_admission.h": "cc6dbf21c7ed8ec1bae2a0ad30e4b1065f2821614ce23370e981ec5d47ab42e1",
+    "include/dsky_two_digit.h": "0503d1098c656f49ed80bb7b83bb6a9339914c3090f3d25046dfb94cef332fb0",
+    "include/noun_reader.h": "f751ba42f75e700d732a6334ae40c59bd13ebf83d692912a45555a248fcbed1f",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/cm_formatter.c": "9f398304621e924de2fd913e46028733377dacd30c6e190becb58d0c72e68a76",
+    "src/dsky_decimal.c": "954ff65587cdcb0842d6a243f262fd80259d55b3bb7bfb2537c8e8c5f2a4e276",
+    "src/dsky_pinball.c": "c6385c6bfec99ad1c2ea9eac06d174592278b81250384180c35cfc177ee8de0d",
+    "src/dsky_two_digit.c": "43c45940777c8ec7821d5400335691515a70ca1a99900ef3d0d5a430e4c7206e",
+    "src/fixed_data.c": "43927b9c8782e71389450861c27566e058c1ee0a26d2a6f3cde30a5111e4895d",
+    "src/noun_reader.c": "bf296408e286202a5ff0ded52ed041955ff97a9b1f56563c414a41c97f73c1a0"
+  },
+  "original_sources": {
+    "../Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+    "../Comanche055/PINBALL_NOUN_TABLES.agc": "d90a466da20a0811690c812b2af0a0c9338a589d2b18c2e0ef1054e9ce563e7f",
+    "../Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+    "../Luminary099/PINBALL_NOUN_TABLES.agc": "ec5e14a2647763b0136fc012d2648803183737e1e386daba1548158905c9b2b3",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "deps/lm-powered-fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e"
+  },
+  "host_reference_dependencies": {
+    "tools/cm_executive_reference.c": "f623e869cc420126c15d27a5749a1e4a38df27deb91b7f83a2fc1c7be6e6e448"
+  },
+  "artifacts": {
+    "evidence/dsky-nv-update-differential.log": "eb2ab42b2bd32e29817ed43bc3ee6540ea12983e55ddfa824ae17acdda2fe6dc",
+    "evidence/dsky-nv-update-freeze.log": "50923c8a11ff60d30c034182185ae4713593ede6595ffcf2077ab1efed607788",
+    "evidence/dsky-nv-update-reference.snapshots.xz": "736283810a01f34f87d0071d0a8bc2f631c848ba0169d3df7472cc5ca4c71f25",
+    "evidence/dsky-nv-update-stream-sha.json": "7f4be415a3fdcd1608a53abde4ddf569b4eac4f22f1a17a3ff000cc000ee983b",
+    "evidence/dsky-nv-update-validation.log": "44e5d73663638869b71c87fad0d15839618832ea9705c32a50520c468989ee9a",
+    "evidence/dsky-nv-update-vice-summary.log": "549eceb612d4bb015636c167ea7bfd21eb406167c903dc9584f958c27e81e62c",
+    "evidence/dsky_nv_update-hardware-stack.bin": "daff512d2f51aef8c35718a6dbb464f4705a81eca8262af9e4e4a8cb5eaff2f1",
+    "evidence/dsky_nv_update-software-stack.bin": "37a6b6b74821f493ea2ce61c4ea8a4938de1c43000aaa29f8f489dfa4ffb1979",
+    "evidence/dsky_nv_update-vice-mailbox.bin": "f035b5cc6c9d7a00433597332e9daea3cfb4d96f8239747d61ccf7108e58ccea",
+    "evidence/dsky_nv_update-vice-monitor.log": "83ca37dc44b189eeb20c8d270f1ae857d6316b44a9445bf65375efee39e9ce0e",
+    "evidence/dsky_nv_update.map": "dcc2f7a389a93d37700121a297420d94652f862274a0c9303c51ce7a5437a671",
+    "evidence/dsky_nv_update.prg": "dfd019714d21cc6027723f0d34a9291a83f52dab4585d87f785fb21062100970"
+  },
+  "complete_source_states": 8192,
+  "record_fields": 2051,
+  "raw_source_sha256": "f4885c0bf248f0d39b1b2c0a80dea97e9adc2f6104ac107f71b524c61f73eb3f",
+  "full_sanitizer_states": 8192,
+  "frozen_complete_states": 128,
+  "unchanged_invalid_guards": 96,
+  "target": {
+    "prg_bytes": 28505,
+    "mailbox": "a500008000",
+    "hardware_stack_including_rom": 32,
+    "rom_stack_bytes": 14,
+    "software_stack": 105,
+    "additional_zero_page_bytes": 0
+  },
+  "qualification_boundary": "Original LM/CM UPDATVB/-1 and UPDATNN/-1 through actual noun tables/SETNCADR/DSPDECVN/GOVNUPDT/POSTJUMP fixed caller return; no selected caller body or whole Pinball claim"
+}

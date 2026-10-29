@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-p12",
+  "release": "evidence-lm-p12",
+  "files": {
+    "lm-p12-c64-cover.json": {
+      "sha256": "1e7a597c84d2e9b793fbf57ed6454fd80d78c43b5f346417270081ec6420baca",
+      "bytes": 3497,
+      "store": "tree"
+    },
+    "lm-p12-differential.log": {
+      "sha256": "c73e356303780b931d707fbc9f1a1669594a654347b7e22d7bd51db5f6b21f94",
+      "bytes": 3659,
+      "store": "tree"
+    },
+    "lm-p12-host.log": {
+      "sha256": "9e5b42a7b8f1489970e2ea31603883c6a2d70bfa87c1196039be3b44fc125c15",
+      "bytes": 1012,
+      "store": "release"
+    },
+    "lm-p12-proof.json": {
+      "sha256": "143e77db9905666fb2f7fd18551bc840734b2446433e7369622c03a48ee0ccb5",
+      "bytes": 8629,
+      "store": "tree"
+    },
+    "lm-p12-source-map.json": {
+      "sha256": "6fcb22e91a857ac526b1538e4ca17c821cb7ac7146429e6d82c3fe0682a8ae18",
+      "bytes": 25042,
+      "store": "tree"
+    },
+    "lm-p12-vice.log": {
+      "sha256": "1664aee6fe1dda3ef8959fd9b0226480a87c2093e2713aaa1f1860153eec12ec",
+      "bytes": 5632,
+      "store": "release"
+    }
+  }
+}

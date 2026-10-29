@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: MIT
+"""Native sources of the lm-ephemeris milestone (shared by its tools)."""
+CORE=['src/lm_ephemeris.c','src/lm_interp_steps.c','src/ephemeris_time_scale.c','src/ephemeris_add.c','src/ephemeris_day.c','src/ephemeris_shift.c','src/sband_scalar.c','src/sband_trig.c','src/matrix_native.c','src/rtb_unit.c','src/fixed_data.c','src/agc_word.c','src/agc_multiword.c','src/guidance_dp_divide.c','src/guidance_trig.c','src/guidance_product.c','src/guidance_length_phased.c','src/guidance_unit_phased.c','src/rtb_vector.c','src/guidance_norm.c','src/guidance_shift.c','tests/lm_ephemeris_cases.c']

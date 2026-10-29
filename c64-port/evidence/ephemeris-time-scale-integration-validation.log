@@ -1,0 +1,13 @@
+./build/test-ephemeris-time-scale
+PASS64 complete original scalar SR14 states and13 immutable image guards plus null
+python3 tools/ephemeris_time_scale_host.py --cc "cc"
+PASS all retained source-state bytes: 269090816 SHA256 818faba14b5591d383581b4ba0f989877b5bb16745b05b318fda8a73cfcc752e
+PASS all retained source-state bytes: 269090816 SHA256 9e14a9e2afbe06bf43f914d6c3cb15a634166fa849eed9c60f38fd664d7b3c61
+PASS131072 complete original scalar SR14 states strict native
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_ephemeris_time_scale.c tests/ephemeris_time_scale_target.c tests/frozen_words.c src/ephemeris_time_scale.c src/agc_word.c src/agc_multiword.c tests/ephemeris_time_scale_cases.c -o build/test-ephemeris-time-scale-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-ephemeris-time-scale-integrated-san
+PASS64 complete original scalar SR14 states and13 immutable image guards plus null
+python3 tools/ephemeris_time_scale_host.py --cc "cc" --sanitize
+PASS all retained source-state bytes: 269090816 SHA256 818faba14b5591d383581b4ba0f989877b5bb16745b05b318fda8a73cfcc752e
+PASS all retained source-state bytes: 269090816 SHA256 9e14a9e2afbe06bf43f914d6c3cb15a634166fa849eed9c60f38fd664d7b3c61
+PASS131072 complete original scalar SR14 states full ASAN/UBSAN

@@ -1,0 +1,19 @@
+{
+  "exact_git_snapshot": "b1d829941e35fe838716987063d104ecc201cfc3",
+  "copied_committed_files": 10282,
+  "all_and_test_exit_code": 0,
+  "invocation": [
+    "make",
+    "-j4",
+    "all",
+    "test"
+  ],
+  "source_baseline": "911e5c0283c629c50cb97666f34065e8c07d71a5",
+  "uncommitted_source_excluded": true,
+  "complete_source_files": 34,
+  "remaining_source_files": 141,
+  "full_port_completion_gate_exit_code": 1,
+  "full_port_completion_certified": false,
+  "log_sha256": "858e3920f175de7da80aa1209c6b3831245de730c25e29d976bcc7a76b8b226b",
+  "scope": "Clean isolated portable host build and all registered host checks through source certificate and ENTER noun admission; newer commits retain separate milestone checks."
+}

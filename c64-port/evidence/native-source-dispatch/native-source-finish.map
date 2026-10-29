@@ -1,0 +1,173 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     5d5f     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/native-source-finish.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(call-indir.S.obj):(.text)
+     830      830        0     1                 __call_indir
+     833      833       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     833      833       13     1                 __zero_bss
+     846      846     18d9     1         build/native-source-finish.prg.lto.o:(.text.main)
+     846      846     18d9     1                 main
+    211f     211f       18     1         build/native-source-finish.prg.lto.o:(.text.enter)
+    211f     211f       18     1                 enter
+    2137     2137       14     1         build/native-source-finish.prg.lto.o:(.text.leave)
+    2137     2137       14     1                 leave
+    214b     214b     133d     1         build/native-source-finish.prg.lto.o:(.text.source)
+    214b     214b     133d     1                 source
+    3488     3488        3     1         build/native-source-finish.prg.lto.o:(.text.unused)
+    3488     3488        3     1                 unused
+    348b     348b      109     1         build/native-source-finish.prg.lto.o:(.text.invalid)
+    348b     348b      109     1                 invalid
+    3594     3594      4d5     1         build/native-source-finish.prg.lto.o:(.text.view)
+    3594     3594      4d5     1                 view
+    3a69     3a69      1e5     1         build/native-source-finish.prg.lto.o:(.text.lookup_kind)
+    3a69     3a69      1e5     1                 lookup_kind
+    3c4e     3c4e      2d1     1         build/native-source-finish.prg.lto.o:(.text.exec_native_context_init)
+    3c4e     3c4e      2d1     1                 exec_native_context_init
+    3f1f     3f1f        d     1         build/native-source-finish.prg.lto.o:(.text.lookup)
+    3f1f     3f1f        d     1                 lookup
+    3f2c     3f2c       df     1         build/native-source-finish.prg.lto.o:(.text.settle)
+    3f2c     3f2c       df     1                 settle
+    400b     400b      32a     1         build/native-source-finish.prg.lto.o:(.text.exec_native_finish)
+    400b     400b      32a     1                 exec_native_finish
+    4335     4335      e7d     1         build/native-source-finish.prg.lto.o:(.text.exec_native_step)
+    4335     4335      e7d     1                 exec_native_step
+    51b2     51b2      96b     1         build/native-source-finish.prg.lto.o:(.text.exec_irq_service_locked)
+    51b2     51b2      96b     1                 exec_irq_service_locked
+    5b1d     5b1d       ba     1         build/native-source-finish.prg.lto.o:(.text.basic_slot)
+    5b1d     5b1d       ba     1                 basic_slot
+    5bd7     5bd7      375     1         build/native-source-finish.prg.lto.o:(.text.exchange_basic)
+    5bd7     5bd7      375     1                 exchange_basic
+    5f4c     5f4c       9b     1         build/native-source-finish.prg.lto.o:(.text.p66_native_import_executive)
+    5f4c     5f4c       9b     1                 p66_native_import_executive
+    5fe7     5fe7       28     1         build/native-source-finish.prg.lto.o:(.text.source_copy)
+    5fe7     5fe7       28     1                 source_copy
+    600f     600f       5e     1         build/native-source-finish.prg.lto.o:(.text.scalar_exchange)
+    600f     600f       5e     1                 scalar_exchange
+    606d     606d        6     1         build/native-source-finish.prg.lto.o:(.text.exit)
+    606d     606d        6     1                 exit
+    6073     6073       5d     1         build/native-source-finish.prg.lto.o:(.text.__udivqi3)
+    6073     6073       5d     1                 __udivqi3
+    60d0     60d0       c4     1         build/native-source-finish.prg.lto.o:(.text.__udivhi3)
+    60d0     60d0       c4     1                 __udivhi3
+    6194     6194      17c     1         build/native-source-finish.prg.lto.o:(.text.__udivsi3)
+    6194     6194      17c     1                 __udivsi3
+    6310     6310       40     1         build/native-source-finish.prg.lto.o:(.text.__umodqi3)
+    6310     6310       40     1                 __umodqi3
+    6350     6350       ae     1         build/native-source-finish.prg.lto.o:(.text.__umodhi3)
+    6350     6350       ae     1                 __umodhi3
+    63fe     63fe       7d     1         build/native-source-finish.prg.lto.o:(.text.__udivmodqi4)
+    63fe     63fe       7d     1                 __udivmodqi4
+    647b     647b       34     1         build/native-source-finish.prg.lto.o:(.text.memcpy)
+    647b     647b       34     1                 memcpy
+    64af     64af       22     1         build/native-source-finish.prg.lto.o:(.text.__memset)
+    64af     64af       22     1                 __memset
+    64d1     64d1       34     1         build/native-source-finish.prg.lto.o:(.text.__mulhi3)
+    64d1     64d1       34     1                 __mulhi3
+    6505     6505       67     1         build/native-source-finish.prg.lto.o:(.text.__mulsi3)
+    6505     6505       67     1                 __mulsi3
+    656c     656c        0     1         __init_array_start = .
+    656c     656c        0     1         __init_array_end = .
+    656c     656c        0     1         __fini_array_start = .
+    656c     656c        0     1         __fini_array_end = .
+    656c     656c     1cc4     1 .rodata
+    656c     656c        e     1         build/native-source-finish.prg.lto.o:(.rodata.invalid)
+    657a     657a       80     1         build/native-source-finish.prg.lto.o:(.rodata.lm_finish_numbers)
+    657a     657a       80     1                 lm_finish_numbers
+    65fa     65fa       82     1         build/native-source-finish.prg.lto.o:(.rodata.lm_finish_offsets)
+    65fa     65fa       82     1                 lm_finish_offsets
+    667c     667c     1adc     1         build/native-source-finish.prg.lto.o:(.rodata.lm_finish_patch)
+    667c     667c     1adc     1                 lm_finish_patch
+    8158     8158       80     1         build/native-source-finish.prg.lto.o:(.rodata.lm_finish_results)
+    8158     8158       80     1                 lm_finish_results
+    81d8     81d8        e     1         build/native-source-finish.prg.lto.o:(.rodata..L__const.native_source_finish_guards.maps)
+    81e6     81e6        e     1         build/native-source-finish.prg.lto.o:(.rodata.lm_basic_finish.calls)
+    81e6     81e6        e     1                 lm_basic_finish.calls
+    81f4     81f4       20     1         <internal>:(.rodata.cst16)
+    8214     8214       1c     1         build/native-source-finish.prg.lto.o:(.rodata.executive_fields)
+    8214     8214       1c     1                 executive_fields
+    8230     8230        0     1 .data
+    8230     8230        0     1         __data_start = .
+    8230     8230        0     1         __data_end = .
+    8230     8230        0     1 __data_load_start = LOADADDR(.data)
+    8230     8230        0     1 __data_size = SIZEOF(.data)
+    8230     8230     2000     1 .bss
+    8230     8230        0     1         __bss_start = .
+    8230     8230     1000     1         build/native-source-finish.prg.lto.o:(.bss.image)
+    8230     8230     1000     1                 image
+    9230     9230     1000     1         build/native-source-finish.prg.lto.o:(.bss.expected)
+    9230     9230     1000     1                 expected
+    a230     a230        0     1         __bss_end = .
+    a230     a230        0     1 __bss_size = SIZEOF(.bss)
+    a230     a230        0     1 .noinit
+    a230     a230        0     1         __heap_start = ALIGN(., 2)
+    a230     a230        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/native-source-finish.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/native-source-finish.prg.lto.o:(.llvm_sympart)
+       0        0      ca0     4 .symtab
+       0        0      ca0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      779     1 .strtab
+       0        0      779     1         <internal>:(.strtab)

@@ -1,0 +1,190 @@
+{
+  "complete_states": 393216,
+  "model_words": 2048,
+  "external_words": [
+    "IRQ",
+    "SUPER"
+  ],
+  "containing_file_status": "partial",
+  "qualified_containing_words": {
+    "lm": 12,
+    "cm": 38
+  },
+  "original_source_audit": "evidence/rtb-angles-source-audit.json",
+  "source_map": "evidence/rtb-agreement-source-map.json",
+  "logical_complete_streams": {
+    "lm0": {
+      "original_assembly": {
+        "object": "evidence/rtb-agreement-lm0-complete.snapshots.xz",
+        "decoded_sha256": "42cd5b7b6469777bf87d316b0b18a03d0e6a3913f6d737fee4d4ae1ea79efedf",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-agreement-lm0-complete.snapshots.xz",
+        "decoded_sha256": "42cd5b7b6469777bf87d316b0b18a03d0e6a3913f6d737fee4d4ae1ea79efedf",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-agreement-lm0-complete.snapshots.xz",
+        "decoded_sha256": "42cd5b7b6469777bf87d316b0b18a03d0e6a3913f6d737fee4d4ae1ea79efedf",
+        "decoded_bytes": 268959744
+      }
+    },
+    "lm1": {
+      "original_assembly": {
+        "object": "evidence/rtb-agreement-lm1-complete.snapshots.xz",
+        "decoded_sha256": "76c0a503ea1ce1f585dc06877cee9859abbdd5b9c319dc145151a526247bddf2",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-agreement-lm1-complete.snapshots.xz",
+        "decoded_sha256": "76c0a503ea1ce1f585dc06877cee9859abbdd5b9c319dc145151a526247bddf2",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-agreement-lm1-complete.snapshots.xz",
+        "decoded_sha256": "76c0a503ea1ce1f585dc06877cee9859abbdd5b9c319dc145151a526247bddf2",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm0": {
+      "original_assembly": {
+        "object": "evidence/rtb-agreement-cm0-complete.snapshots.xz",
+        "decoded_sha256": "0a5f3798959d8674414d819db4c3db572198049003ebdc5cf1bbefa4200cd375",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-agreement-cm0-complete.snapshots.xz",
+        "decoded_sha256": "0a5f3798959d8674414d819db4c3db572198049003ebdc5cf1bbefa4200cd375",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-agreement-cm0-complete.snapshots.xz",
+        "decoded_sha256": "0a5f3798959d8674414d819db4c3db572198049003ebdc5cf1bbefa4200cd375",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm1": {
+      "original_assembly": {
+        "object": "evidence/rtb-agreement-cm1-complete.snapshots.xz",
+        "decoded_sha256": "ec47b91e2fbcbceeb29d99323f29df1a32faf6170d615b42a739b13738d2b2b8",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-agreement-cm1-complete.snapshots.xz",
+        "decoded_sha256": "ec47b91e2fbcbceeb29d99323f29df1a32faf6170d615b42a739b13738d2b2b8",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-agreement-cm1-complete.snapshots.xz",
+        "decoded_sha256": "ec47b91e2fbcbceeb29d99323f29df1a32faf6170d615b42a739b13738d2b2b8",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm2": {
+      "original_assembly": {
+        "object": "evidence/rtb-agreement-cm2-complete.snapshots.xz",
+        "decoded_sha256": "215b80d3536d0c40b549baa9336abd6c31b0d0ad5524130c3ef452b11a301551",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-agreement-cm2-complete.snapshots.xz",
+        "decoded_sha256": "215b80d3536d0c40b549baa9336abd6c31b0d0ad5524130c3ef452b11a301551",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-agreement-cm2-complete.snapshots.xz",
+        "decoded_sha256": "215b80d3536d0c40b549baa9336abd6c31b0d0ad5524130c3ef452b11a301551",
+        "decoded_bytes": 268959744
+      }
+    },
+    "cm3": {
+      "original_assembly": {
+        "object": "evidence/rtb-agreement-cm3-complete.snapshots.xz",
+        "decoded_sha256": "78cb29b823f22e35d04204662fd71e77b926f667fd795083ed25f7888c626674",
+        "decoded_bytes": 268959744
+      },
+      "strict_native": {
+        "object": "evidence/rtb-agreement-cm3-complete.snapshots.xz",
+        "decoded_sha256": "78cb29b823f22e35d04204662fd71e77b926f667fd795083ed25f7888c626674",
+        "decoded_bytes": 268959744
+      },
+      "whole_ASAN_UBSAN": {
+        "object": "evidence/rtb-agreement-cm3-complete.snapshots.xz",
+        "decoded_sha256": "78cb29b823f22e35d04204662fd71e77b926f667fd795083ed25f7888c626674",
+        "decoded_bytes": 268959744
+      }
+    }
+  },
+  "actual_C64": {
+    "lm0": {
+      "complete_states": 32,
+      "mailbox": "a500002000",
+      "PRG_bytes": 4507,
+      "loaded_end": "0x1999",
+      "hardware_stack": 14,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "lm1": {
+      "complete_states": 32,
+      "mailbox": "a500002001",
+      "PRG_bytes": 4098,
+      "loaded_end": "0x1800",
+      "hardware_stack": 14,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "cm0": {
+      "complete_states": 32,
+      "mailbox": "a500002010",
+      "PRG_bytes": 4520,
+      "loaded_end": "0x19a6",
+      "hardware_stack": 14,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "cm1": {
+      "complete_states": 32,
+      "mailbox": "a500002011",
+      "PRG_bytes": 4053,
+      "loaded_end": "0x17d3",
+      "hardware_stack": 14,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "cm2": {
+      "complete_states": 32,
+      "mailbox": "a500002012",
+      "PRG_bytes": 5492,
+      "loaded_end": "0x1d72",
+      "hardware_stack": 14,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    },
+    "cm3": {
+      "complete_states": 32,
+      "mailbox": "a500002013",
+      "PRG_bytes": 5492,
+      "loaded_end": "0x1d72",
+      "hardware_stack": 14,
+      "software_stack": 45,
+      "compiler_ZP": 0
+    }
+  },
+  "source_constants": {
+    "Comanche055/XNBEB": {
+      "physical_fixed_word": 19376,
+      "raw_octal": "02713"
+    },
+    "Comanche055/XNB1EB": {
+      "physical_fixed_word": 19377,
+      "raw_octal": "02554"
+    }
+  },
+  "independent_review": {
+    "path": "evidence/rtb-agreement-independent-review.txt",
+    "sha256": "0e1f1d47280625cfd854b784cb5fc584095d684f18abcc2ad79a21a29b0a757a"
+  },
+  "scope": "Both mission SGNAGREE/TPAGREE and SIGNMPAC; CM TRANSP1/2 and XNBEB/XNB1EB. Source-exact raw TP carry, signed-zero sign selection, six DP swaps and actual basic returns through mission DANZIG entry. Every ordinary major/minor input and transpose word swept in varied contexts, not Cartesian. Nonnull canonical image and ordinary memory/rawA/L caller contract. NORMUNIT/NORMUNX1/VECSGNAG/PULSEIMU/CMQUALITY remain unclaimed; no whole RTB file or resident application certified."
+}

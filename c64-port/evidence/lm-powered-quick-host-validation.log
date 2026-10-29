@@ -1,0 +1,3 @@
+gcc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_lm_powered_quick.c tests/frozen_words.c src/lm_powered_constants.c tests/test_lm_powered_constants.c src/lm_powered_quick.c src/lm_single_trig.c src/agc_word.c src/agc_multiword.c tests/lm_powered_quick_cases.c tests/lm_powered_trig_cases.c -o build/test-lm-powered-quick
+build/test-lm-powered-quick
+64 complete2048-word original LM QUICTRIG+TC A source states: PASS

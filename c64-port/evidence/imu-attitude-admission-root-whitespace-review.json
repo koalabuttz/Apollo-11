@@ -1,0 +1,5 @@
+{
+  "scope": "Preserve byte-identical frozen source containing one cosmetic trailing blank line. Disable only blank-at-eof for index whitespace verification; strict full-source sanitizer and actual C64 checks are unchanged and passed.",
+  "frozen_file": "tools/imu_attitude_admission_source.py",
+  "sha256": "ff49f45d344f5531b467f6f28c661519dd00df887c15be24e4751323c66ff6c8"
+}

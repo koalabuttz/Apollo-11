@@ -1,0 +1,8 @@
+./build/test-trig
+PASS128 complete original trig states and all unsupported MODE words reject unchanged
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tests/trig_check.c tests/frozen_words.c tests/test_trig.c -o build/test-trig-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-trig-sanitize
+PASS128 complete original trig states and all unsupported MODE words reject unchanged
+cc -Iinclude -Itests -std=c99 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -DUNIT_INPUT_ONLY -DDIVIDE_INPUT_ONLY -DSTORE_INPUT_ONLY -DELAPSED_INPUT_ONLY -DPUSH_INPUT_ONLY -DSCALE_INPUT_ONLY -DPREPARE_INPUT_ONLY src/agc_word.c src/agc_multiword.c src/guidance_product.c src/guidance_trig.c tests/prepare_cases.c tests/scale_cases.c tests/push_cases.c tests/elapsed_cases.c tests/store_cases.c tests/divide_cases.c tests/unit_cases.c tests/trig_cases.c tools/trig_snapshot.c -o build/trig-snapshot-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/trig-snapshot-sanitize > build/trig-sanitize.snapshots
+cmp build/trig-native.snapshots build/trig-sanitize.snapshots

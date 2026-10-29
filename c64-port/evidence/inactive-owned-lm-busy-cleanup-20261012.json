@@ -1,0 +1,27 @@
+{
+  "reason": "Inactive owned historical streams; exact committed compressed archive and decoded SHA/size verified before removal; no active display consumers affected",
+  "removed": [
+    {
+      "archive": "evidence/lm-busy-reference.snapshots.gz",
+      "archive_sha256": "b802af8747af9b794bd6c6c7f048d87eecd361d603538df51455591c8e31b986",
+      "decoded_bytes": 94962115,
+      "decoded_sha256": "3cb4e414f2622d2265a267605e2e5e8791a0851125a25865a29acc820b365bcc",
+      "inactive_removed_raw": "build/lm-busy-reference.snapshots"
+    },
+    {
+      "archive": "evidence/lm-busy-native.snapshots.gz",
+      "archive_sha256": "b802af8747af9b794bd6c6c7f048d87eecd361d603538df51455591c8e31b986",
+      "decoded_bytes": 94962115,
+      "decoded_sha256": "3cb4e414f2622d2265a267605e2e5e8791a0851125a25865a29acc820b365bcc",
+      "inactive_removed_raw": "build/lm-busy-native.snapshots"
+    },
+    {
+      "archive": "evidence/lm-busy-sanitize.snapshots.gz",
+      "archive_sha256": "b802af8747af9b794bd6c6c7f048d87eecd361d603538df51455591c8e31b986",
+      "decoded_bytes": 94962115,
+      "decoded_sha256": "3cb4e414f2622d2265a267605e2e5e8791a0851125a25865a29acc820b365bcc",
+      "inactive_removed_raw": "build/lm-busy-sanitize.snapshots"
+    }
+  ],
+  "total_reclaimed_bytes": 284886345
+}

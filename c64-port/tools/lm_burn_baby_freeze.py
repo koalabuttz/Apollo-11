@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+"""Run the original-program oracle for lm-burn-baby and freeze digests.
+
+Builds the host-only yaAGC driver tools/lm_burn_baby_reference.c (on yaAGC
+with the hardware divide, build/agc_engine_hardware_dv.o), runs it on the
+unmodified Luminary099 rope, and checks every case the native snapshot
+(build/lm-burn-baby-native) runs is byte-identical to it; a case the native
+routine refuses must leave its image unchanged. Writes
+tests/lm_burn_baby_vectors.h (one digest per case: two 16-bit running sums
+over the kind and, unless refused, all 2048 erasable words and the
+channels 11, 14 and 30 and the interrupt-enable state), tests/lm_burn_baby_c64_vectors.h (the C64 rows,
+chosen by outcome by tools/lane_f_c64_rows.py) and
+build/lm-burn-baby-proof.json.
+"""
+import collections
+import hashlib
+import json
+import pathlib
+import re
+import subprocess
+import sys
+
+R = pathlib.Path(__file__).resolve().parents[1]
+B = R / 'build'
+E = R / 'deps/virtualagc/yaAGC'
+ROPE = B / 'fixed-data/Luminary099/MAIN.agc.bin'
+NATIVE = ['src/lm_burn_baby.c', 'src/lm_interp_orders.c', 'src/lm_interp_steps.c', 'src/agc_image_ops.c',
+          'src/agc_hardware_divide.c', 'src/agc_transfer.c', 'src/agc_word.c', 'src/agc_multiword.c',
+          'tests/lm_burn_baby_cases.c']
+CORE = NATIVE + ['tests/cm_executive_cases.c', str(B / 'agc_engine_hardware_dv.o'),
+                 str(E / 'agc_engine_init.o'), str(E / 'rfopen.o')]
+FLAGS = ['-std=c99', '-O2', '-DP66_NATIVE_DISPATCH_ONLY', '-ffunction-sections', '-fdata-sections',
+         '-Wl,--gc-sections', '-Iinclude', '-Itests', '-Isrc', '-Itools', '-I' + str(E)]
+REFUSED = 2
+STOPS = {0o5353: 'PHASCHNG', 0o5327: '2PHSCHNG', 0o5321: 'CHECKMM', 0o4616: 'BANKCALL', 0o4674: 'IBNKCALL',
+         0o4635: 'POSTJUMP', 0o4640: 'BANKJUMP', 0o4645: 'MAKECADR', 0o5155: 'ENDOFJOB', 0o5261: 'TASKOVER',
+         0o5072: 'NOVAC', 0o5105: 'FINDVAC', 0o5173: 'TWIDDLE', 0o5203: 'WAITLIST', 0o5221: 'FIXDELAY',
+         0o5277: 'LONGCALL', 0o5504: 'UPFLAG', 0o5511: 'COMFLAG', 0o5516: 'DOWNFLAG', 0o5522: 'DEBIT',
+         0o5567: 'ALARM', 0o6001: 'GOTOPOOH', 0o5126: 'CHANG2', 0o7257: 'TPAGREE', 0o5726: 'POODOO1 (alarm 1302)',
+         0o6070: 'NEWOPS outside the file (a CALL or STCALL)', 0o3420: 'TCF P42STAGE (P40-P47)',
+         0o3522: 'TCF IMPLBURN (P40-P47)'}
+# Any other Z is the return of a subroutine entered from outside: TC Q
+# (NOULLAGE, ONULLAGE) or KILLTASK's DTCB to the caller.
+RETURN = "the caller's return (TC Q, or KILLTASK's DTCB)"
+
+
+def digest(values):
+    a = b = 0
+    for v in values:
+        a = (a + v) & 0xffff
+        b = (b + a) & 0xffff
+    return b << 16 | a
+
+
+def table(name, values):
+    out = [f'static const uint32_t {name}[{len(values)}]={{']
+    for i in range(0, len(values), 6):
+        out.append(''.join(f'0x{v:08x}ul,' for v in values[i:i + 6]))
+    out.append('};')
+    return out
+
+
+def keys():
+    src = (R / 'src/lm_burn_baby.c').read_text()
+    body = re.search(r'lmbb_routine_keys\[LMBB_ROUTINES\]=\{(.*?)\};', src, re.S).group(1)
+    return [b + ',' + a[1:] for b, a in re.findall(r'K(\d\d|FF)\((0[0-7]+)\)', body)]
+
+
+def main():
+    if not (B / 'agc_engine_hardware_dv.o').exists():
+        subprocess.run([sys.executable, 'tools/prepare_hardware_dv.py'], cwd=R, check=True)
+    subprocess.run(['cc', *FLAGS, '-w', 'tools/lm_burn_baby_reference.c', *CORE,
+                    '-o', 'build/lm-burn-baby-reference'], cwd=R, check=True)
+    ref = subprocess.run(['./build/lm-burn-baby-reference', str(ROPE)], cwd=R,
+                         check=True, capture_output=True).stdout.decode().splitlines()
+    nat = subprocess.run(['./build/lm-burn-baby-native'], cwd=R, check=True,
+                         capture_output=True).stdout.decode().splitlines()
+    names = keys()
+    assert len(ref) == len(nat) and len(ref) % len(names) == 0
+    bad = []
+    rows, refused, stops = [], collections.Counter(), collections.defaultdict(collections.Counter)
+    for i, (a, b) in enumerate(zip(nat, ref)):
+        r = list(map(int, a.split()))
+        assert r[0] == i
+        key = names[i % len(names)]
+        if r[1] == REFUSED:
+            refused[key] += 1
+        else:
+            if a != b:
+                bad.append((i, key, a, b))
+                continue
+            z = r[2 + 5]
+            stops[key][STOPS.get(z, RETURN)] += 1
+        rows.append(r)
+    if bad:
+        for i, key, a, b in bad[:25]:
+            x, y = list(map(int, a.split())), list(map(int, b.split()))
+            d = [(j - 2, f'{x[j]:o}', f'{y[j]:o}') for j in range(2, len(x)) if x[j] != y[j]]
+            print(f'case {i} ({key}) native kind {x[1]} ref kind {y[1]}: words (idx, native, ref) {d[:12]}')
+        bykey = collections.Counter(k for _, k, _, _ in bad)
+        sys.exit(f'{len(bad)} lm-burn-baby cases differ from the original program: {dict(bykey)}')
+    digests = [digest(r[1:2] if r[1] == REFUSED else r[1:]) for r in rows]
+    out = ['/* SPDX-License-Identifier: MIT; generated by tools/lm_burn_baby_freeze.py from the',
+           ' * original Luminary099 program (yaAGC oracle). Per-case digests of the kind and, unless',
+           ' * refused, all 2048 erasable words and channels 11, 14 and 30 and the interrupt-enable state. */',
+           f'#define LMBB_VECTORS {len(digests)}u', *table('lmbb_expected', digests)]
+    (R / 'tests/lm_burn_baby_vectors.h').write_text('\n'.join(out) + '\n')
+    subprocess.run([sys.executable, 'tools/lane_f_c64_rows.py', 'lm-burn-baby'], cwd=R, check=True)
+    proof = {'mission': 'Luminary099', 'rope_sha256': hashlib.sha256(ROPE.read_bytes()).hexdigest(),
+             'oracle_engine': 'yaAGC with the hardware divide (build/agc_engine_hardware_dv.o); scalers frozen',
+             'cases': len(rows), 'compared': len(rows) - sum(refused.values()),
+             'refused': dict(sorted(refused.items())),
+             'snapshot_sha256': hashlib.sha256('\n'.join(nat).encode()).hexdigest(),
+             'stops': {k: dict(sorted(v.items())) for k, v in sorted(stops.items())},
+             'boundary': 'from each routine key to the first instruction outside BURN_BABY_BURN, '
+                         'KILLTASK and the interpreter (lmbb_leaves)',
+             'compared_words': '2048 erasable words (A, L 16-bit) and channels 11, 14 and 30 and the interrupt-enable state'}
+    (B / 'lm-burn-baby-proof.json').write_text(json.dumps(proof, indent=1) + '\n')
+    print(f'PASS: {proof["compared"]} of {len(rows)} lm-burn-baby cases equal the original program '
+          f'({len(rows) - proof["compared"]} refused)')
+
+
+if __name__ == '__main__':
+    main()

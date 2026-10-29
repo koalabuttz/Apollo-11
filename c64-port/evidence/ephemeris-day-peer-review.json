@@ -1,0 +1,31 @@
+{
+  "reviewer": "general_division",
+  "kind": "independent read-only source/control/math review",
+  "files_read_sha256": {
+    "include/ephemeris_day.h": "57096f39bea3f5f0793c1043c7a62a61f83f64871a8db10177fdf11dd0e54c78",
+    "src/ephemeris_day.c": "c7973a41702dcedf8d57f82c150dd68488febab33d763e84cfcf708700d57ce9",
+    "tests/ephemeris_day_cases.c": "23a57b1e11164127ef99be2c5c1a0ada9e8e31df2175bc074bbf0090ca8924bc",
+    "tools/ephemeris_day_reference.c": "f23904459dee80a231d775376205b06e97a1414463294ec2b27637f5b273f9e7",
+    "tools/ephemeris_day_snapshot.c": "8fddea67ee222edeaba4e73e76ade6bb788baf4f606c01402e78fde0f9adb3aa",
+    "tools/ephemeris_day_host.py": "8777df8bf857997c2c06bfdac2089168ff9a3db3fef5b3d393a8de3e02c87d18",
+    "tests/ephemeris_day_target.c": "12d729722d0cff5bcdfd238dd043ff099758de10ae73626f860d715cd8c9db9d",
+    "src/guidance_dp_divide.c": "52d855b3787bc2908a17cf8d6e9ab198cbb84837237372978a939e8751647ae6",
+    "../Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "../Luminary099/CONTROLLED_CONSTANTS.agc": "3aa13edd517b8bd47a88678b9c999566b9badc65686096aeb58301023422e8dc"
+  },
+  "findings": [
+    "No arithmetic or canonical-state discrepancy found in the declared basic-body entry. Original scalar DDV/BDDV initialization entry2353 bank0 consumes already-staged BUF{020,017260}; this is not the source DDV operand-fetch prologue.",
+    "Wrapper initializes both scale fields MPTEMP/OVFIND and all division aliases, MODE0 guard maps MPAC7, and untouched transient preparation fields are not consumed by p66_dp_divide.",
+    "Restored normalized incoming rawL on zero and positive overflow matches body-level source where caller-front DXCH has not executed. Negative overflow FINALDV stores L037777. SourceQ remains callerQ on zero, becomes3 on quotient and02413 on overflow.",
+    "Mission selection only chooses actual DANZIG entry6061LM/6030CM. DIV body qualification against CM does not establish a CM ephemerides caller or a whole INTERPRETER/ephemerides file.",
+    "Ordinary Q/RAM validation precedes all writes; invalid canonical control/operand/MODE inputs reject unchanged. ADDRWD variations are retained caller debris and not read by this body-level wrapper.",
+    "Host reference is source-only hardware-DV engine binding, quiescent timer observation and complete2048-word CPU/IRQ/SUPER output. Native source includes no decoder/emulator or FP/heap."
+  ],
+  "recommendations": [
+    "Before freezing, expand public header preconditions to explicit PC2353/FB0/coherentBB+EB/MODE0/literalBUF, ordinaryQ/RAM with rawA/L and producer exclusion."
+  ],
+  "reported_evidence_scope": "Root reports131072 full original strict/SAN states and64C64 complete states; this review independently inspected sources and proof adapters, and did not rerun the complete corpus.",
+  "source_modifications": false,
+  "whole_file_credit": false
+}

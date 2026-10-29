@@ -1,0 +1,261 @@
+{
+ "milestone": "cm-entry-dap",
+ "missions": [
+  "Luminary099",
+  "Comanche055"
+ ],
+ "rope_sha256": [
+  "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+ ],
+ "cases": 7168,
+ "cases_sha256": "df0af548460df1eef341f429f229e4c3cd0ed7ea18b23679ffb0c39e9ce58222",
+ "oracle_sha256": "c62fbba05335aa38082d615f75173cb587f66081fbfdac33815fa7a0580ec1cd",
+ "frozen_vectors": 224,
+ "c64_vectors": [
+  {
+   "mission": "cm",
+   "keep": "0xff13f602",
+   "cases": 36,
+   "case_ids": [
+    135,
+    198,
+    149,
+    183,
+    192,
+    304,
+    671,
+    698,
+    743,
+    722,
+    559,
+    614,
+    864,
+    1252,
+    1144,
+    1192,
+    1120,
+    1171,
+    1438,
+    1397,
+    1526,
+    1424,
+    1445,
+    1653,
+    1576,
+    1767,
+    1665,
+    1722,
+    1560,
+    1795,
+    2276,
+    2538,
+    2394,
+    2493,
+    2593,
+    2828
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x30ee7c0c831223f2770289f00003000",
+   "cases": 40,
+   "case_ids": [
+    3325,
+    3164,
+    3094,
+    3183,
+    3080,
+    3200,
+    3093,
+    3156,
+    3175,
+    3321,
+    3117,
+    3266,
+    3309,
+    3162,
+    3178,
+    3222,
+    3306,
+    3318,
+    3113,
+    3242,
+    3092,
+    3270,
+    3240,
+    3291,
+    3526,
+    3738,
+    3671,
+    3690,
+    3824,
+    3613,
+    3996,
+    4324,
+    4487,
+    4352,
+    4529,
+    4686,
+    4945,
+    5312,
+    5363,
+    5577
+   ]
+  },
+  {
+   "mission": "cm",
+   "keep": "0x27514000000000000000000000000000001",
+   "cases": 9,
+   "case_ids": [
+    5839,
+    5677,
+    6056,
+    6288,
+    6245,
+    6252,
+    6538,
+    6662,
+    6924
+   ]
+  }
+ ],
+ "c64_coverage": {
+  "host_labels": 818,
+  "c64_labels": 818,
+  "host_edges": 1352,
+  "c64_edges": 1352,
+  "host_edges_not_c64": 0,
+  "note": "compiled basic labels; and edges with comparison outcomes (clang -O0 -fsanitize-coverage=trace-pc-guard,trace-cmp over every linked source but the host runner: both outcomes of each branch, and equal/less/greater at each comparison) that the differential's cases reach, and those the C64 cases reach"
+ },
+ "c64_gcov_branches": {
+  "host_taken": 929,
+  "c64_taken": 929,
+  "host_taken_not_c64": 0,
+  "missing": [],
+  "sources": [
+   "src/cm_entry_dap.c",
+   "src/agc_fast_ops.c",
+   "src/agc_fast_window.c",
+   "src/lm_interp_orders.c",
+   "src/lm_interp_steps.c",
+   "src/cm_interp_orders.c",
+   "src/cm_interp_steps.c",
+   "src/agc_image_ops.c",
+   "src/agc_hardware_divide.c",
+   "src/agc_transfer.c",
+   "src/agc_word.c",
+   "src/agc_multiword.c",
+   "tests/interp_case.c",
+   "tests/cm_entry_dap_target.c"
+  ],
+  "note": "gcov -b -c over gcc -O0 --coverage builds of tools/interp_routine_native.c with every source above: the branch outcomes all the differential cases take, and those the C64 cases take"
+ },
+ "stops": {
+  "CM 15,2434 READGYMB": {
+   "05245": 186,
+   "05412": 70
+  },
+  "CM 15,2500 ": {
+   "05324": 256
+  },
+  "CM 15,2507 ": {
+   "05074": 82,
+   "05324": 48,
+   "05245": 126
+  },
+  "CM 15,2540 ": {
+   "05075": 256
+  },
+  "CM 15,2543 ": {
+   "05074": 256
+  },
+  "CM 15,2551 ": {
+   "05075": 256
+  },
+  "CM 15,2607 ": {
+   "05075": 231,
+   "05324": 25
+  },
+  "CM 15,2631 ": {
+   "05074": 256
+  },
+  "CM 15,2641 ": {
+   "05324": 256
+  },
+  "CM 15,2665 ATTRATES": {
+   "05074": 256
+  },
+  "CM 15,2700 ": {
+   "05075": 256
+  },
+  "CM 15,2712 ": {
+   "05075": 256
+  },
+  "CM 15,2724 ": {
+   "04740": 48,
+   "05333": 166,
+   "05412": 6,
+   "05245": 36
+  },
+  "CM 15,3056 ": {
+   "05245": 256
+  },
+  "CM 15,3064 EXDAP4": {
+   "05333": 137,
+   "04740": 103,
+   "05245": 16
+  },
+  "CM 15,3207 SETJTAG": {
+   "05412": 256
+  },
+  "CM 15,3215 ": {
+   "05324": 256
+  },
+  "CM 15,3642 JETACTN": {
+   "05333": 36,
+   "05245": 34,
+   "04740": 31,
+   "05324": 155
+  },
+  "CM 15,3650 JETCALL": {
+   "05324": 171,
+   "05245": 85
+  },
+  "CM 15,3717 ": {
+   "05333": 256
+  },
+  "CM 20,3612 CM/DAPON": {
+   "05560": 256
+  },
+  "CM 20,3616 ": {
+   "05560": 256
+  },
+  "CM 20,3620 ": {
+   "04701": 118,
+   "04662": 138
+  },
+  "CM 20,3636 ": {
+   "04662": 127,
+   "04701": 129
+  },
+  "CM 20,3672 CM/DAPIC": {
+   "05245": 255,
+   "02434": 1
+  },
+  "CM 20,3715 ": {
+   "05372": 256
+  },
+  "CM 20,3716 ": {
+   "05372": 256
+  },
+  "CM 20,3732 ": {
+   "04701": 256
+  }
+ },
+ "boundary": "from each routine entry state to NEWOPS with LOC outside the file, an exit of the interpreter bodies (lm: POODOO1, ALARM1; cm: POODOO, ALARM), or a transfer to an outside basic routine (cm: 2434, 2PHSCHNG, BANKCALL, DOWNFLAG, IBNKCALL, PHASCHNG, POSTJUMP, RESUME, SPCOS, SPSIN, TASKOVER, WAITLIST); whole-file basic code stops at any transfer from the file to a fixed address outside it but INTPRET (stored words the file transfers to in erasable run on)",
+ "compared": "Z, 2048 erasable words (A, L 16-bit) and the interrupt-enable state, the I/O channels 05, 06 and the 31A/31B/32 trap flags",
+ "engine": "pinned yaAGC with hardware DV and without the IMU/optics device block (tools/prepare_flight_device_engine.py), its ScalerCounter held at 0 (TIME1-TIME6 and the timer interrupts do not advance during a case)",
+ "start_state": "every word of the image from the case seed, 010-061 included (TIME1-TIME6, the CDUs, PIPAs and other counters, the interrupt save words, the editing registers; IRC_COUNTERS in tests/interp_case.h), then the case edits; half the cases also tie words the file reads together (relate(): one equal to another, a few counts or a double word apart, TIME2/TIME1, TIME3-TIME6, the CDUs and CDU commands included) or put a counter at its wrap",
+ "host_branches_missing_on_c64": []
+}

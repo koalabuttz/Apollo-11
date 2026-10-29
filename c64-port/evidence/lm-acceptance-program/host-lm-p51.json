@@ -1,0 +1,77 @@
+{
+ "scenario": "lm-p51-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 8000,
+ "keys": "@200V37E51E@1000V33E@1300V21E00222E@2000V33E@3500x@3600y@4000V33E@4300V21E00224E@5000V33E@6000x@6100y@6500V33E@7100V33E",
+ "inputs": {
+  "FLIGHT_CORE": "tools/scenarios/luminary099-p63-ignition.core",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "036673",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_POKE": "3300:032=01062,3300:033=33476,3300:034=01144,5800:032=03521,5800:033=42475,5800:034=77717"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 8007,
+ "periods_taken": 8002,
+ "periods_dropped": 5,
+ "agc_centiseconds": 8002,
+ "native_routines": 428375,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 46388,
+  "yaagc": 46307,
+  "percent": 0.2,
+  "routines": 258,
+  "mean_abs_error": 19.3,
+  "abs_percent": 10.8,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "few",
+  "text": "interpretive charge +0.2% net, 10.8% routine by routine, from yaAGC's MCT over 258 routines; fewer than 1000 routines, not bounded"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 10,
+  "no_interrupt_to": 10,
+  "no_background_periods": 1,
+  "no_background_to": 6671
+ },
+ "reached": {
+  "14,3427": 507,
+  "07,2613": 3502
+ },
+ "arrivals": {
+  "14,3427": [
+   507
+  ],
+  "07,2613": [
+   3502,
+   3602,
+   6002,
+   6102
+  ]
+ },
+ "log_sha256": "ee0a1afbfe34dec469c58b04db4ffd0b2b789c671bbbdf9929df0d52ad68ee9d"
+}

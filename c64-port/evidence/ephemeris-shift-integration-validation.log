@@ -1,0 +1,13 @@
+./build/test-ephemeris-shift
+PASS64 complete original scalar SL5 SL8 SL16 states and13 immutable image guards plus null
+python3 tools/ephemeris_shift_host.py --cc "cc"
+PASS all retained source-state bytes: 269090816 SHA256 85f780c3a912c6686c3ba16f08ff0770a854a42041e3b45f0da22699bbdf04f6
+PASS all retained source-state bytes: 269090816 SHA256 b3cfa25778d2371fff1b02e108fd63574662b6795ceb88f82a3c3c1219bfbb7b
+PASS131072 complete original scalar SL5 SL8 SL16 states strict native
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_ephemeris_shift.c tests/ephemeris_shift_target.c tests/frozen_words.c src/ephemeris_shift.c src/agc_word.c src/agc_multiword.c tests/ephemeris_shift_cases.c -o build/test-ephemeris-shift-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-ephemeris-shift-integrated-san
+PASS64 complete original scalar SL5 SL8 SL16 states and13 immutable image guards plus null
+python3 tools/ephemeris_shift_host.py --cc "cc" --sanitize
+PASS all retained source-state bytes: 269090816 SHA256 85f780c3a912c6686c3ba16f08ff0770a854a42041e3b45f0da22699bbdf04f6
+PASS all retained source-state bytes: 269090816 SHA256 b3cfa25778d2371fff1b02e108fd63574662b6795ceb88f82a3c3c1219bfbb7b
+PASS131072 complete original scalar SL5 SL8 SL16 states full ASAN/UBSAN

@@ -1,0 +1,644 @@
+fill 0100 01f1 cd
+fill c100 cfff cd
+load "/workspace/Apollo-11/c64-port/build/lifecycle.prg" 0
+watch store c048
+watch store c040
+ignore 2 1
+stopwatch reset
+g 080d
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+g
+m c048 c048
+m c04d c04d
+stopwatch
+delete 1
+g
+m c040 c04c
+bsave "/workspace/Apollo-11/c64-port/build/lifecycle-mailbox.bin" 0 c040 c04c
+bsave "/workspace/Apollo-11/c64-port/build/lifecycle-hardware-stack.bin" 0 0100 01f1
+bsave "/workspace/Apollo-11/c64-port/build/lifecycle-software-stack.bin" 0 c100 cfff
+bsave "/workspace/Apollo-11/c64-port/build/lifecycle-isolated-stack.bin" 0 7cd1 7dd0
+screen
+quit

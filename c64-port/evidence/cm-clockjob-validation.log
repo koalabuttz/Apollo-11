@@ -1,0 +1,10 @@
+cc -O2 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_clockjob.c tests/cm_clockjob_check.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -o build/test-cm-clockjob
+build/test-cm-clockjob
+64 complete CM CLOCKJOB states and31 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tests/test_cm_clockjob.c tests/cm_clockjob_check.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -o build/test-cm-clockjob-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-clockjob-sanitize
+64 complete CM CLOCKJOB states and31 unchanged invalid boundaries: PASS
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_clockjob_snapshot.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -o build/cm-clockjob-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/cm-clockjob-sanitize > build/cm-clockjob-sanitize.snapshots
+cmp build/cm-clockjob-sanitize.snapshots build/cm-clockjob-reference.snapshots
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Os -fno-static-stack -mlto-zp=0 -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests tools/cm_clockjob_diagnostic.c tests/cm_clockjob_check.c src/agc_word.c src/cm_clockjob.c tests/cm_trig_cases.c tests/cm_clockjob_cases.c -Wl,-Map,build/cm_clockjob.map -o build/cm_clockjob.prg

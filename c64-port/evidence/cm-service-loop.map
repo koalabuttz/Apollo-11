@@ -1,0 +1,167 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     68a5     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm-service-loop.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      a94     1         build/cm-service-loop.prg.lto.o:(.text.cm_service_identify)
+     843      843      a94     1                 cm_service_identify
+    12d7     12d7     1680     1         build/cm-service-loop.prg.lto.o:(.text.cm_service_builtin_invoke)
+    12d7     12d7     1680     1                 cm_service_builtin_invoke
+    2957     2957      477     1         build/cm-service-loop.prg.lto.o:(.text.next_task)
+    2957     2957      477     1                 next_task
+    2dce     2dce      22e     1         build/cm-service-loop.prg.lto.o:(.text.cm_setjtag_image)
+    2dce     2dce      22e     1                 cm_setjtag_image
+    2ffc     2ffc      751     1         build/cm-service-loop.prg.lto.o:(.text.cm_waitlist_image)
+    2ffc     2ffc      751     1                 cm_waitlist_image
+    374d     374d       51     1         build/cm-service-loop.prg.lto.o:(.text.kind)
+    374d     374d       51     1                 kind
+    379e     379e      166     1         build/cm-service-loop.prg.lto.o:(.text.cm_delay_image)
+    379e     379e      166     1                 cm_delay_image
+    3904     3904      73e     1         build/cm-service-loop.prg.lto.o:(.text.cm_exec_admit)
+    3904     3904      73e     1                 cm_exec_admit
+    4042     4042      6c9     1         build/cm-service-loop.prg.lto.o:(.text.cm_wl_schedule)
+    4042     4042      6c9     1                 cm_wl_schedule
+    470b     470b       51     1         build/cm-service-loop.prg.lto.o:(.text.reg_class)
+    470b     470b       51     1                 reg_class
+    475c     475c      865     1         build/cm-service-loop.prg.lto.o:(.text.cm_phase_change)
+    475c     475c      865     1                 cm_phase_change
+    4fc1     4fc1      2d7     1         build/cm-service-loop.prg.lto.o:(.text.cm_native_commit_executive)
+    4fc1     4fc1      2d7     1                 cm_native_commit_executive
+    5298     5298      1ac     1         build/cm-service-loop.prg.lto.o:(.text.cm_native_gather_waitlist)
+    5298     5298      1ac     1                 cm_native_gather_waitlist
+    5444     5444      1b2     1         build/cm-service-loop.prg.lto.o:(.text.cm_native_commit_waitlist)
+    5444     5444      1b2     1                 cm_native_commit_waitlist
+    55f6     55f6      46b     1         build/cm-service-loop.prg.lto.o:(.text.cm_native_gather_phase)
+    55f6     55f6      46b     1                 cm_native_gather_phase
+    5a61     5a61      4a9     1         build/cm-service-loop.prg.lto.o:(.text.cm_native_commit_phase)
+    5a61     5a61      4a9     1                 cm_native_commit_phase
+    5f0a     5f0a      1bc     1         build/cm-service-loop.prg.lto.o:(.text.agc_double_add)
+    5f0a     5f0a      1bc     1                 agc_double_add
+    60c6     60c6      cc8     1         build/cm-service-loop.prg.lto.o:(.text.main)
+    60c6     60c6      cc8     1                 main
+    6d8e     6d8e        6     1         build/cm-service-loop.prg.lto.o:(.text.exit)
+    6d8e     6d8e        6     1                 exit
+    6d94     6d94       c4     1         build/cm-service-loop.prg.lto.o:(.text.__udivhi3)
+    6d94     6d94       c4     1                 __udivhi3
+    6e58     6e58       40     1         build/cm-service-loop.prg.lto.o:(.text.__umodqi3)
+    6e58     6e58       40     1                 __umodqi3
+    6e98     6e98       7d     1         build/cm-service-loop.prg.lto.o:(.text.__udivmodqi4)
+    6e98     6e98       7d     1                 __udivmodqi4
+    6f15     6f15       34     1         build/cm-service-loop.prg.lto.o:(.text.memcpy)
+    6f15     6f15       34     1                 memcpy
+    6f49     6f49       ac     1         build/cm-service-loop.prg.lto.o:(.text.memmove)
+    6f49     6f49       ac     1                 memmove
+    6ff5     6ff5       22     1         build/cm-service-loop.prg.lto.o:(.text.__memset)
+    6ff5     6ff5       22     1                 __memset
+    7017     7017       34     1         build/cm-service-loop.prg.lto.o:(.text.__mulhi3)
+    7017     7017       34     1                 __mulhi3
+    704b     704b       67     1         build/cm-service-loop.prg.lto.o:(.text.__mulsi3)
+    704b     704b       67     1                 __mulsi3
+    70b2     70b2        0     1         __init_array_start = .
+    70b2     70b2        0     1         __init_array_end = .
+    70b2     70b2        0     1         __fini_array_start = .
+    70b2     70b2        0     1         __fini_array_end = .
+    70b2     70b2     17c1     1 .rodata
+    70b2     70b2        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    70b2     70b2        0     1                 __set_v
+    70b3     70b3       20     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_service_builtin_invoke)
+    70d3     70d3        8     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_waitlist_image)
+    70db     70db        8     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_wl_schedule)
+    70e3     70e3        2     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_setjtag_image.word)
+    70e3     70e3        2     1                 cm_setjtag_image.word
+    70e5     70e5        2     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_clocktask_phase.word)
+    70e5     70e5        2     1                 cm_clocktask_phase.word
+    70e7     70e7        4     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_tig5_phase.words)
+    70e7     70e7        4     1                 cm_tig5_phase.words
+    70eb     70eb      180     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_service_loop_count)
+    70eb     70eb      180     1                 cm_service_loop_count
+    726b     726b      600     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_service_loop_hash)
+    726b     726b      600     1                 cm_service_loop_hash
+    786b     786b     1008     1         build/cm-service-loop.prg.lto.o:(.rodata.cm_service_loop_sample)
+    786b     786b     1008     1                 cm_service_loop_sample
+    8873     8873        0     1 .data
+    8873     8873        0     1         __data_start = .
+    8873     8873        0     1         __data_end = .
+    8873     8873        0     1 __data_load_start = LOADADDR(.data)
+    8873     8873        0     1 __data_size = SIZEOF(.data)
+    8873     8873     101a     1 .bss
+    8873     8873        0     1         __bss_start = .
+    8873     8873     1000     1         build/cm-service-loop.prg.lto.o:(.bss.state)
+    8873     8873     1000     1                 state
+    9873     9873       1a     1         build/cm-service-loop.prg.lto.o:(.bss.io)
+    9873     9873       1a     1                 io
+    988d     988d        0     1         __bss_end = .
+    988d     988d        0     1 __bss_size = SIZEOF(.bss)
+    988d     988d        0     1 .noinit
+    988d     988d        0     1         __heap_start = ALIGN(., 2)
+    988d     988d        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm-service-loop.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm-service-loop.prg.lto.o:(.llvm_sympart)
+       0        0      c50     4 .symtab
+       0        0      c50     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      78a     1 .strtab
+       0        0      78a     1         <internal>:(.strtab)

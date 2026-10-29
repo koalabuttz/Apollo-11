@@ -1,0 +1,12 @@
+Independent source review by peer /root/p66_source_map; retained by /root/frozen_storage.
+
+Reviewed identities:
+include/sband_shift.h SHA256 5c173b6f8b86e749e856b2347c3c310a901c22d33b26ea52dc3a860085c19549
+src/sband_shift.c SHA256 36207c8d688a66804e4c4a8f8914f153e7e07765dac7a09396a50d1c2e8a5506
+src/guidance_shift.c SHA256 f54c820df2cea82507d531951d887e9157dbc60d0fae60cdc8eee0bf35645675
+../Luminary099/INTERPRETER.agc SHA256 26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e
+../Comanche055/INTERPRETER.agc SHA256 724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b
+
+Peer conclusion: No discrepancy found in the declared count1..8 canonical domain. MASK CYR is unedited; CCS reads/edits and rotates once. MPTEMP count-1 matches source. The pure observer uses DAS doubling in X/Y/Z order and correctly detects whether any TC OVERFLOW ran, so Q3 is selected only then; otherwise incoming Q remains. Frozen vector-shift kernel, final CAF ZERO/DANZIG and scratch ownership align. No reviewer edits.
+
+This is independent source inspection, not a second execution of all numerical tests. Exact fresh-source host/SAN and C64 proof are retained separately. Right-shift/generic instruction handling and entire antenna files remain outside this dependency certificate.

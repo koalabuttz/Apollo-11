@@ -1,0 +1,268 @@
+{
+ "note": "Luminary099 outputs. Windows follow docs/acceptance/Luminary099-program-map.json where they share a start.",
+ "rows": [
+  {
+   "section": "DSKY",
+   "row": "Noun x verb sweep",
+   "kind": "dsky",
+   "note": "Every flight noun x display verb (V01-V06, V11-V16, V21-V25), plus V32/V33/V34/V37, PROCEED and KEY REL on the C64 build (bar item 6): tools/dsky_sweep_vice.py --cases all --replay-exact --missions lm,cm, run by Lane C at the flip commit; its summary goes to build/flight-store/dsky-sweep/dsky-sweep-summary.json"
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Descent and ascent list (P63), before and after a GOJAM",
+   "kind": "downlink",
+   "host": [
+    "lm-p63-descent-restart"
+   ],
+   "c64": [
+    "lm-p63-descent",
+    "lm-p63-descent-after-gojam"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Coast and align list (P00)",
+   "kind": "downlink",
+   "host": [
+    "lm-p00-restart",
+    "lm-dap-hold-restart"
+   ],
+   "c64": [
+    "lm-p00"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Rendezvous/prethrust list (P20)",
+   "kind": "downlink",
+   "host": [
+    "lm-rendezvous-restart"
+   ],
+   "c64": [
+    "lm-rendezvous"
+   ]
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Orbital maneuvers list (DOI)",
+   "kind": "downlink",
+   "host": [
+    "lm-p00-doi-restart",
+    "lm-doi-burn-restart"
+   ],
+   "c64": [
+    "lm-doi"
+   ],
+   "note": "From the NASSP core: DOWNRUPT starts on both sides at the first sample point after the core (flight_host_run.c dl_arm)."
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Lunar surface align list (P57, P22)",
+   "kind": "downlink",
+   "host": [],
+   "c64": [
+    "lm-p57",
+    "lm-p22-surface"
+   ],
+   "note": "No restart row starts these phases; the C64 windows compare each DOWNRUPT with yaAGC from the same state."
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "AGS initialization and update list (V47, P27)",
+   "kind": "downlink",
+   "host": [],
+   "c64": [
+    "lm-coast-v47",
+    "lm-p27"
+   ],
+   "note": "No restart row starts these phases; the C64 windows compare each DOWNRUPT with yaAGC from the same state."
+  },
+  {
+   "section": "Downlink (channels 34, 35)",
+   "row": "Erasable dump (V74)",
+   "kind": "dump",
+   "note": "lm-uplink-accept keys V74 at 12000 cs; DNTMGOTO enters the dump code about 60 cs after that.",
+   "windows": [
+    [
+     "lm-uplink-accept",
+     12010,
+     300,
+     1,
+     50
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "RCS jets (Q/R and P axes)",
+   "kind": "channels",
+   "channels": [
+    5,
+    6
+   ],
+   "windows": [
+    [
+     "lm-p63-descent-thrust",
+     17500,
+     120
+    ],
+    [
+     "lm-p47-nassp",
+     2950,
+     1000
+    ],
+    [
+     "lm-p41-nassp",
+     49000,
+     1000
+    ]
+   ],
+   "note": "lm-p47-nassp 2950 is #674-blocked (stop at 41,3321 MONDO is a native entry on the #674 head); rerun after #674 merges."
+  },
+  {
+   "section": "Output channels",
+   "row": "Engine on / off (bits 13, 14)",
+   "kind": "channels",
+   "channels": [
+    9
+   ],
+   "windows": [
+    [
+     "lm-p63-descent",
+     14500,
+     300
+    ],
+    [
+     "lm-doi-nassp",
+     48800,
+     1000
+    ],
+    [
+     "lm-p42-nassp",
+     48800,
+     1000
+    ],
+    [
+     "lm-landing-ascent-nassp",
+     156000,
+     1000
+    ],
+    [
+     "lm-abort-p70-nassp",
+     115000,
+     600
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "DSKY lamps and alarms (ISS warning, computer activity, KEY REL, V/N flash, OPER ERR)",
+   "kind": "channels",
+   "channels": [
+    9
+   ],
+   "windows": [
+    [
+     "lm-p63-descent",
+     2300,
+     1000
+    ],
+    [
+     "lm-uplink-accept",
+     1950,
+     1000
+    ],
+    [
+     "lm-coast-verbs",
+     2700,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "CDU and radar error-counter enables, coarse align, descent engine gimbal trim",
+   "kind": "channels",
+   "channels": [
+    10
+   ],
+   "windows": [
+    [
+     "lm-p52-imu-cage",
+     2950,
+     1000
+    ],
+    [
+     "lm-rendezvous",
+     5300,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "Radar select and read (RR, LR)",
+   "kind": "channels",
+   "channels": [
+    11
+   ],
+   "windows": [
+    [
+     "lm-coast-r04",
+     4100,
+     1000
+    ],
+    [
+     "lm-stable-orbit",
+     8800,
+     1000
+    ],
+    [
+     "lm-rendezvous",
+     8000,
+     1000
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "Thrust drive (throttle)",
+   "kind": "channels",
+   "channels": [
+    12
+   ],
+   "windows": [
+    [
+     "lm-p63-overload",
+     9550,
+     400
+    ]
+   ]
+  },
+  {
+   "section": "Output channels",
+   "row": "IMU CDU, RR CDU and gyro drives",
+   "kind": "channels",
+   "channels": [
+    12
+   ],
+   "windows": [
+    [
+     "lm-p57",
+     42300,
+     1000
+    ],
+    [
+     "lm-rendezvous",
+     5300,
+     1000
+    ],
+    [
+     "lm-p52-imu-cage",
+     2950,
+     1000
+    ]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1877 @@
+{
+  "source_file": "Luminary099/RTB_OP_CODES.agc",
+  "original_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+  "assembled_sha256": "0fab4ae2bc5c894160c9edc3ca5e61857db57a8e38b7ca005e3d55b38cc0446d",
+  "source_edits": 0,
+  "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+  "original_emitted_words": 130,
+  "compiled_local_words": 130,
+  "uncovered_local_words": [],
+  "source_word_map": [
+    {
+      "original_line": 39,
+      "bank": "10",
+      "address": "3573",
+      "physical_fixed_word": 9083,
+      "raw_octal": "00006",
+      "native_group": "LOADTIME",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "LOADTIME"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 40,
+      "bank": "10",
+      "address": "3574",
+      "physical_fixed_word": 9084,
+      "raw_octal": "30025",
+      "native_group": "LOADTIME",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "LOADTIME"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 41,
+      "bank": "10",
+      "address": "3575",
+      "physical_fixed_word": 9085,
+      "raw_octal": "16055",
+      "native_group": "LOADTIME",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "LOADTIME"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 46,
+      "bank": "10",
+      "address": "3576",
+      "physical_fixed_word": 9086,
+      "raw_octal": "10154",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 47,
+      "bank": "10",
+      "address": "3577",
+      "physical_fixed_word": 9087,
+      "raw_octal": "34755",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 48,
+      "bank": "10",
+      "address": "3600",
+      "physical_fixed_word": 9088,
+      "raw_octal": "13603",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 49,
+      "bank": "10",
+      "address": "3601",
+      "physical_fixed_word": 9089,
+      "raw_octal": "13602",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 50,
+      "bank": "10",
+      "address": "3602",
+      "physical_fixed_word": 9090,
+      "raw_octal": "44736",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 52,
+      "bank": "10",
+      "address": "3603",
+      "physical_fixed_word": 9091,
+      "raw_octal": "54155",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 53,
+      "bank": "10",
+      "address": "3604",
+      "physical_fixed_word": 9092,
+      "raw_octal": "34755",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 54,
+      "bank": "10",
+      "address": "3605",
+      "physical_fixed_word": 9093,
+      "raw_octal": "56154",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 55,
+      "bank": "10",
+      "address": "3606",
+      "physical_fixed_word": 9094,
+      "raw_octal": "00006",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 56,
+      "bank": "10",
+      "address": "3607",
+      "physical_fixed_word": 9095,
+      "raw_octal": "74736",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 57,
+      "bank": "10",
+      "address": "3610",
+      "physical_fixed_word": 9096,
+      "raw_octal": "20155",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 58,
+      "bank": "10",
+      "address": "3611",
+      "physical_fixed_word": 9097,
+      "raw_octal": "16061",
+      "native_group": "CDULOGIC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDULOGIC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 62,
+      "bank": "10",
+      "address": "3612",
+      "physical_fixed_word": 9098,
+      "raw_octal": "07257",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SGNAGREE"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 63,
+      "bank": "10",
+      "address": "3613",
+      "physical_fixed_word": 9099,
+      "raw_octal": "16061",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SGNAGREE"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 68,
+      "bank": "10",
+      "address": "3614",
+      "physical_fixed_word": 9100,
+      "raw_octal": "03644",
+      "native_group": "1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 69,
+      "bank": "10",
+      "address": "3615",
+      "physical_fixed_word": 9101,
+      "raw_octal": "34755",
+      "native_group": "1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 70,
+      "bank": "10",
+      "address": "3616",
+      "physical_fixed_word": 9102,
+      "raw_octal": "54155",
+      "native_group": "1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 71,
+      "bank": "10",
+      "address": "3617",
+      "physical_fixed_word": 9103,
+      "raw_octal": "16060",
+      "native_group": "1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 75,
+      "bank": "10",
+      "address": "3620",
+      "physical_fixed_word": 9104,
+      "raw_octal": "03644",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 77,
+      "bank": "10",
+      "address": "3621",
+      "physical_fixed_word": 9105,
+      "raw_octal": "52162",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 78,
+      "bank": "10",
+      "address": "3622",
+      "physical_fixed_word": 9106,
+      "raw_octal": "52155",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 79,
+      "bank": "10",
+      "address": "3623",
+      "physical_fixed_word": 9107,
+      "raw_octal": "03644",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 81,
+      "bank": "10",
+      "address": "3624",
+      "physical_fixed_word": 9108,
+      "raw_octal": "54156",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 83,
+      "bank": "10",
+      "address": "3625",
+      "physical_fixed_word": 9109,
+      "raw_octal": "52160",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 84,
+      "bank": "10",
+      "address": "3626",
+      "physical_fixed_word": 9110,
+      "raw_octal": "52155",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 85,
+      "bank": "10",
+      "address": "3627",
+      "physical_fixed_word": 9111,
+      "raw_octal": "03644",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 86,
+      "bank": "10",
+      "address": "3630",
+      "physical_fixed_word": 9112,
+      "raw_octal": "54155",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 88,
+      "bank": "10",
+      "address": "3631",
+      "physical_fixed_word": 9113,
+      "raw_octal": "30161",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 89,
+      "bank": "10",
+      "address": "3632",
+      "physical_fixed_word": 9114,
+      "raw_octal": "54154",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 91,
+      "bank": "10",
+      "address": "3633",
+      "physical_fixed_word": 9115,
+      "raw_octal": "34753",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 92,
+      "bank": "10",
+      "address": "3634",
+      "physical_fixed_word": 9116,
+      "raw_octal": "16060",
+      "native_group": "V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 96,
+      "bank": "10",
+      "address": "3635",
+      "physical_fixed_word": 9117,
+      "raw_octal": "03644",
+      "native_group": "2V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "2V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 97,
+      "bank": "10",
+      "address": "3636",
+      "physical_fixed_word": 9118,
+      "raw_octal": "52160",
+      "native_group": "2V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "2V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 98,
+      "bank": "10",
+      "address": "3637",
+      "physical_fixed_word": 9119,
+      "raw_octal": "52155",
+      "native_group": "2V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "2V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 99,
+      "bank": "10",
+      "address": "3640",
+      "physical_fixed_word": 9120,
+      "raw_octal": "03644",
+      "native_group": "2V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "2V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 100,
+      "bank": "10",
+      "address": "3641",
+      "physical_fixed_word": 9121,
+      "raw_octal": "54001",
+      "native_group": "2V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "2V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 101,
+      "bank": "10",
+      "address": "3642",
+      "physical_fixed_word": 9122,
+      "raw_octal": "30157",
+      "native_group": "2V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "2V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 102,
+      "bank": "10",
+      "address": "3643",
+      "physical_fixed_word": 9123,
+      "raw_octal": "16055",
+      "native_group": "2V1STO2S",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "2V1STO2S"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 106,
+      "bank": "10",
+      "address": "3644",
+      "physical_fixed_word": 9124,
+      "raw_octal": "52155",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 107,
+      "bank": "10",
+      "address": "3645",
+      "physical_fixed_word": 9125,
+      "raw_octal": "20001",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 108,
+      "bank": "10",
+      "address": "3646",
+      "physical_fixed_word": 9126,
+      "raw_octal": "10000",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 109,
+      "bank": "10",
+      "address": "3647",
+      "physical_fixed_word": 9127,
+      "raw_octal": "64753",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 110,
+      "bank": "10",
+      "address": "3650",
+      "physical_fixed_word": 9128,
+      "raw_octal": "13652",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 111,
+      "bank": "10",
+      "address": "3651",
+      "physical_fixed_word": 9129,
+      "raw_octal": "40000",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 113,
+      "bank": "10",
+      "address": "3652",
+      "physical_fixed_word": 9130,
+      "raw_octal": "54154",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 114,
+      "bank": "10",
+      "address": "3653",
+      "physical_fixed_word": 9131,
+      "raw_octal": "00002",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 116,
+      "bank": "10",
+      "address": "3654",
+      "physical_fixed_word": 9132,
+      "raw_octal": "50000",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 117,
+      "bank": "10",
+      "address": "3655",
+      "physical_fixed_word": 9133,
+      "raw_octal": "34734",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 118,
+      "bank": "10",
+      "address": "3656",
+      "physical_fixed_word": 9134,
+      "raw_octal": "26154",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 119,
+      "bank": "10",
+      "address": "3657",
+      "physical_fixed_word": 9135,
+      "raw_octal": "00002",
+      "native_group": "1TO2SUB",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "1TO2SUB"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 125,
+      "bank": "10",
+      "address": "3660",
+      "physical_fixed_word": 9136,
+      "raw_octal": "54142",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 126,
+      "bank": "10",
+      "address": "3661",
+      "physical_fixed_word": 9137,
+      "raw_octal": "50130",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 127,
+      "bank": "10",
+      "address": "3662",
+      "physical_fixed_word": 9138,
+      "raw_octal": "10000",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 128,
+      "bank": "10",
+      "address": "3663",
+      "physical_fixed_word": 9139,
+      "raw_octal": "64753",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 129,
+      "bank": "10",
+      "address": "3664",
+      "physical_fixed_word": 9140,
+      "raw_octal": "13670",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 130,
+      "bank": "10",
+      "address": "3665",
+      "physical_fixed_word": 9141,
+      "raw_octal": "64753",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 132,
+      "bank": "10",
+      "address": "3666",
+      "physical_fixed_word": 9142,
+      "raw_octal": "64753",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 133,
+      "bank": "10",
+      "address": "3667",
+      "physical_fixed_word": 9143,
+      "raw_octal": "40000",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 135,
+      "bank": "10",
+      "address": "3670",
+      "physical_fixed_word": 9144,
+      "raw_octal": "60142",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 136,
+      "bank": "10",
+      "address": "3671",
+      "physical_fixed_word": 9145,
+      "raw_octal": "10000",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 137,
+      "bank": "10",
+      "address": "3672",
+      "physical_fixed_word": 9146,
+      "raw_octal": "64753",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 138,
+      "bank": "10",
+      "address": "3673",
+      "physical_fixed_word": 9147,
+      "raw_octal": "13675",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 139,
+      "bank": "10",
+      "address": "3674",
+      "physical_fixed_word": 9148,
+      "raw_octal": "40000",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 140,
+      "bank": "10",
+      "address": "3675",
+      "physical_fixed_word": 9149,
+      "raw_octal": "54142",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 141,
+      "bank": "10",
+      "address": "3676",
+      "physical_fixed_word": 9150,
+      "raw_octal": "13702",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 142,
+      "bank": "10",
+      "address": "3677",
+      "physical_fixed_word": 9151,
+      "raw_octal": "50000",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 143,
+      "bank": "10",
+      "address": "3700",
+      "physical_fixed_word": 9152,
+      "raw_octal": "34734",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 144,
+      "bank": "10",
+      "address": "3701",
+      "physical_fixed_word": 9153,
+      "raw_octal": "60142",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 146,
+      "bank": "10",
+      "address": "3702",
+      "physical_fixed_word": 9154,
+      "raw_octal": "50130",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 147,
+      "bank": "10",
+      "address": "3703",
+      "physical_fixed_word": 9155,
+      "raw_octal": "54000",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 148,
+      "bank": "10",
+      "address": "3704",
+      "physical_fixed_word": 9156,
+      "raw_octal": "00002",
+      "native_group": "CDUINC",
+      "status": "qualified_angles",
+      "local_native_owner": {
+        "packet": "evidence/rtb-angles-proof.json",
+        "native_group": "CDUINC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 153,
+      "bank": "10",
+      "address": "3705",
+      "physical_fixed_word": 9157,
+      "raw_octal": "50120",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "PULSEIMU_to_IMUPULSE"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 154,
+      "bank": "10",
+      "address": "3706",
+      "physical_fixed_word": 9158,
+      "raw_octal": "30046",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "PULSEIMU_to_IMUPULSE"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 155,
+      "bank": "10",
+      "address": "3707",
+      "physical_fixed_word": 9159,
+      "raw_octal": "04616",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "PULSEIMU_to_IMUPULSE"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 156,
+      "bank": "10",
+      "address": "3710",
+      "physical_fixed_word": 9160,
+      "raw_octal": "17323",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "PULSEIMU_to_IMUPULSE"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 157,
+      "bank": "10",
+      "address": "3711",
+      "physical_fixed_word": 9161,
+      "raw_octal": "16061",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-pulse-return-proof.json",
+        "native_group": "outside_group"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 172,
+      "bank": "10",
+      "address": "3712",
+      "physical_fixed_word": 9162,
+      "raw_octal": "00006",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 173,
+      "bank": "10",
+      "address": "3713",
+      "physical_fixed_word": 9163,
+      "raw_octal": "34733",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 174,
+      "bank": "10",
+      "address": "3714",
+      "physical_fixed_word": 9164,
+      "raw_octal": "52155",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 175,
+      "bank": "10",
+      "address": "3715",
+      "physical_fixed_word": 9165,
+      "raw_octal": "10000",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 176,
+      "bank": "10",
+      "address": "3716",
+      "physical_fixed_word": 9166,
+      "raw_octal": "34755",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 177,
+      "bank": "10",
+      "address": "3717",
+      "physical_fixed_word": 9167,
+      "raw_octal": "16057",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 178,
+      "bank": "10",
+      "address": "3720",
+      "physical_fixed_word": 9168,
+      "raw_octal": "13721",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 179,
+      "bank": "10",
+      "address": "3721",
+      "physical_fixed_word": 9169,
+      "raw_octal": "00006",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 180,
+      "bank": "10",
+      "address": "3722",
+      "physical_fixed_word": 9170,
+      "raw_octal": "44733",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 181,
+      "bank": "10",
+      "address": "3723",
+      "physical_fixed_word": 9171,
+      "raw_octal": "16055",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-agreement-proof.json",
+        "native_group": "SIGNMPAC"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 188,
+      "bank": "10",
+      "address": "3724",
+      "physical_fixed_word": 9172,
+      "raw_octal": "34753",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 189,
+      "bank": "10",
+      "address": "3725",
+      "physical_fixed_word": 9173,
+      "raw_octal": "13727",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 190,
+      "bank": "10",
+      "address": "3726",
+      "physical_fixed_word": 9174,
+      "raw_octal": "34755",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 191,
+      "bank": "10",
+      "address": "3727",
+      "physical_fixed_word": 9175,
+      "raw_octal": "60120",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 192,
+      "bank": "10",
+      "address": "3730",
+      "physical_fixed_word": 9176,
+      "raw_octal": "54156",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 193,
+      "bank": "10",
+      "address": "3731",
+      "physical_fixed_word": 9177,
+      "raw_octal": "04616",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 194,
+      "bank": "10",
+      "address": "3732",
+      "physical_fixed_word": 9178,
+      "raw_octal": "01010",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 195,
+      "bank": "10",
+      "address": "3733",
+      "physical_fixed_word": 9179,
+      "raw_octal": "10154",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 196,
+      "bank": "10",
+      "address": "3734",
+      "physical_fixed_word": 9180,
+      "raw_octal": "13770",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 197,
+      "bank": "10",
+      "address": "3735",
+      "physical_fixed_word": 9181,
+      "raw_octal": "13737",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 198,
+      "bank": "10",
+      "address": "3736",
+      "physical_fixed_word": 9182,
+      "raw_octal": "13770",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 199,
+      "bank": "10",
+      "address": "3737",
+      "physical_fixed_word": 9183,
+      "raw_octal": "10157",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 200,
+      "bank": "10",
+      "address": "3740",
+      "physical_fixed_word": 9184,
+      "raw_octal": "13770",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 201,
+      "bank": "10",
+      "address": "3741",
+      "physical_fixed_word": 9185,
+      "raw_octal": "13743",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 202,
+      "bank": "10",
+      "address": "3742",
+      "physical_fixed_word": 9186,
+      "raw_octal": "13770",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 203,
+      "bank": "10",
+      "address": "3743",
+      "physical_fixed_word": 9187,
+      "raw_octal": "10161",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 204,
+      "bank": "10",
+      "address": "3744",
+      "physical_fixed_word": 9188,
+      "raw_octal": "13770",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 205,
+      "bank": "10",
+      "address": "3745",
+      "physical_fixed_word": 9189,
+      "raw_octal": "13747",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 206,
+      "bank": "10",
+      "address": "3746",
+      "physical_fixed_word": 9190,
+      "raw_octal": "13770",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 208,
+      "bank": "10",
+      "address": "3747",
+      "physical_fixed_word": 9191,
+      "raw_octal": "30155",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 209,
+      "bank": "10",
+      "address": "3750",
+      "physical_fixed_word": 9192,
+      "raw_octal": "00006",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 210,
+      "bank": "10",
+      "address": "3751",
+      "physical_fixed_word": 9193,
+      "raw_octal": "74736",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 211,
+      "bank": "10",
+      "address": "3752",
+      "physical_fixed_word": 9194,
+      "raw_octal": "20155",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 212,
+      "bank": "10",
+      "address": "3753",
+      "physical_fixed_word": 9195,
+      "raw_octal": "30160",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 213,
+      "bank": "10",
+      "address": "3754",
+      "physical_fixed_word": 9196,
+      "raw_octal": "00006",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 214,
+      "bank": "10",
+      "address": "3755",
+      "physical_fixed_word": 9197,
+      "raw_octal": "74736",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 215,
+      "bank": "10",
+      "address": "3756",
+      "physical_fixed_word": 9198,
+      "raw_octal": "20160",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 216,
+      "bank": "10",
+      "address": "3757",
+      "physical_fixed_word": 9199,
+      "raw_octal": "30162",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 217,
+      "bank": "10",
+      "address": "3760",
+      "physical_fixed_word": 9200,
+      "raw_octal": "00006",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 218,
+      "bank": "10",
+      "address": "3761",
+      "physical_fixed_word": 9201,
+      "raw_octal": "74736",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 219,
+      "bank": "10",
+      "address": "3762",
+      "physical_fixed_word": 9202,
+      "raw_octal": "20162",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 220,
+      "bank": "10",
+      "address": "3763",
+      "physical_fixed_word": 9203,
+      "raw_octal": "34761",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 221,
+      "bank": "10",
+      "address": "3764",
+      "physical_fixed_word": 9204,
+      "raw_octal": "50156",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 222,
+      "bank": "10",
+      "address": "3765",
+      "physical_fixed_word": 9205,
+      "raw_octal": "54045",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 223,
+      "bank": "10",
+      "address": "3766",
+      "physical_fixed_word": 9206,
+      "raw_octal": "04635",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 224,
+      "bank": "10",
+      "address": "3767",
+      "physical_fixed_word": 9207,
+      "raw_octal": "01024",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 226,
+      "bank": "10",
+      "address": "3770",
+      "physical_fixed_word": 9208,
+      "raw_octal": "34755",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 227,
+      "bank": "10",
+      "address": "3771",
+      "physical_fixed_word": 9209,
+      "raw_octal": "13764",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "NORMUNIT/NORMUNX1_to_UNIT+1"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 231,
+      "bank": "10",
+      "address": "3772",
+      "physical_fixed_word": 9210,
+      "raw_octal": "04616",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "VECSGNAG"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 232,
+      "bank": "10",
+      "address": "3773",
+      "physical_fixed_word": 9211,
+      "raw_octal": "01010",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "VECSGNAG"
+      },
+      "coverage": "native_compiled_local_word"
+    },
+    {
+      "original_line": 233,
+      "bank": "10",
+      "address": "3774",
+      "physical_fixed_word": 9212,
+      "raw_octal": "06061",
+      "native_group": "outside_group",
+      "status": "outside_this_packet",
+      "local_native_owner": {
+        "packet": "evidence/rtb-vector-proof.json",
+        "native_group": "VECSGNAG"
+      },
+      "coverage": "native_compiled_local_word"
+    }
+  ],
+  "entry_groups": {
+    "angles": [
+      "LOADTIME",
+      "CDULOGIC",
+      "1STO2S",
+      "V1STO2S",
+      "2V1STO2S",
+      "1TO2SUB",
+      "CDUINC"
+    ],
+    "agreement": [
+      "SGNAGREE",
+      "SIGNMPAC"
+    ],
+    "vector": [
+      "PULSEIMU",
+      "NORMUNIT",
+      "NORMUNX1",
+      "VECSGNAG"
+    ]
+  },
+  "data_words": "All local inline CADR words included; no standalone data declarations in original containing file.",
+  "proof_dependencies": {
+    "evidence/rtb-angles-proof.json": "a069c5afbc63640e99af621812eee84dde15b067b957fc8e501bbdbd86a0847b",
+    "evidence/rtb-agreement-proof.json": "3bee18a354d13d493e97079b637e203f033d183ca75eaaf3f5497a71c72ccad3",
+    "evidence/rtb-vector-proof.json": "870722d4c4e244b4b84668e72c09865ba023b7c41059168fa94370bf98856639",
+    "evidence/rtb-vector-bank-erratum.json": "84fb06ed62bad265f3b2684871df641e36fab0fafb6c55de1ec0fd7ffa0cb7e2",
+    "evidence/rtb-unit-proof.json": "fcc5a0f782d7fa6d2788ada03e7363c94e211db751f411f6471601f88c5b906a",
+    "evidence/rtb-pulse-return-proof.json": "5921a6495a0d234428f964791da4566b94dc3deff3b8b86d558cfa0325669c16",
+    "evidence/rtb-angles-source-audit.json": "e46883274e6fbf5e48835782583feed52b77b156859f0e13cf7f24acacf050bb"
+  },
+  "native_sources": {
+    "src/rtb_angles.c": "ac06eca9a343815df80e1fbedfc71860af5b06ff3d4b182c87119d5135cbef56",
+    "src/rtb_agreement.c": "1b5a434bdcb5ade9579495d1d24936b08681965b8d2ca195b8b288c71c556be8",
+    "src/rtb_vector.c": "d0cdd03869ffc05b7b1d5712b6bb28957c97c7944328bfca2eb3d6677daab70f",
+    "src/rtb_unit.c": "3b44705bd44ec2d28c6846b9e47c0294454ae62fd425016677389cb22a4a2109",
+    "src/rtb_pulse_return.c": "482bed6da8150322c1effdf55811960be3dec5713d7417baff3a643b34d3cca6"
+  },
+  "qualification": "All original containing-file local entry/instruction/data words are represented by source-qualified compiled native operations within documented ordinary canonical/fixed-return/VAC/producer domains. NORMUNIT+1 helper fully composed by immutable UNIT packet; PULSEIMU real BANKCALL and trailing return qualified, external IMUPULSE is an explicit actual service boundary. Direct source helper returns and genuine DANZIG boundaries retain pending state; no arbitrary interpreter decoder or invented scheduling seam.",
+  "external_handoffs": [
+    "Actual DANZIG Executive/interpreter continuation outside containing source",
+    "Actual IMUPULSE bank07 service; physical gyro/device backend not a containing-file instruction"
+  ],
+  "recommendation": "Whole local-source closure ready for root independent review/certification; no whole application/runtime or asynchronous physical pulse claim.",
+  "legacy_metadata_erratum": "Frozen rtb-vector text/source-map FB014000 is superseded additively by retained bank07/FB016000 erratum. Runtime/complete source states were always correct."
+}

@@ -1,0 +1,155 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+      22       22       1e     1 .zp
+      22       22       1e     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.zp.noinit)
+     80d      80d     4911     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843      a17     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.standard_lead_stage)
+     843      843      a17     1                 standard_lead_stage
+    125a     125a       a9     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.exchange)
+    125a     125a       a9     1                 exchange
+    1303     1303       9d     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.context)
+    1303     1303       9d     1                 context
+    13a0     13a0      40a     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.standard_lead_interp_control)
+    13a0     13a0      40a     1                 standard_lead_interp_control
+    17aa     17aa      113     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.control)
+    17aa     17aa      113     1                 control
+    18bd     18bd      3af     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.cm_interbank_extended)
+    18bd     18bd      3af     1                 cm_interbank_extended
+    1c6c     1c6c      2b7     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.cm_native_gather_executive)
+    1c6c     1c6c      2b7     1                 cm_native_gather_executive
+    1f23     1f23      2c5     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.cm_native_commit_executive)
+    1f23     1f23      2c5     1                 cm_native_commit_executive
+    21e8     21e8      5ce     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.cm_exec_wake_basic)
+    21e8     21e8      5ce     1                 cm_exec_wake_basic
+    27b6     27b6      4e0     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.cm_exec_admit)
+    27b6     27b6      4e0     1                 cm_exec_admit
+    2c96     2c96      2b9     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.standard_lead_input)
+    2c96     2c96      2b9     1                 standard_lead_input
+    2f4f     2f4f      224     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.frozen_words_next)
+    2f4f     2f4f      224     1                 frozen_words_next
+    3173     3173     1c71     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.main)
+    3173     3173     1c71     1                 main
+    4de4     4de4        6     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.exit)
+    4de4     4de4        6     1                 exit
+    4dea     4dea       c4     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.__udivhi3)
+    4dea     4dea       c4     1                 __udivhi3
+    4eae     4eae       40     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.__umodqi3)
+    4eae     4eae       40     1                 __umodqi3
+    4eee     4eee       ae     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.__umodhi3)
+    4eee     4eee       ae     1                 __umodhi3
+    4f9c     4f9c       f8     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.__udivmodhi4)
+    4f9c     4f9c       f8     1                 __udivmodhi4
+    5094     5094       34     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.memcpy)
+    5094     5094       34     1                 memcpy
+    50c8     50c8       22     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.__memset)
+    50c8     50c8       22     1                 __memset
+    50ea     50ea       34     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.text.__mulhi3)
+    50ea     50ea       34     1                 __mulhi3
+    511e     511e        0     1         __init_array_start = .
+    511e     511e        0     1         __init_array_end = .
+    511e     511e        0     1         __fini_array_start = .
+    511e     511e        0     1         __fini_array_end = .
+    511e     511e     1b0b     1 .rodata
+    511e     511e        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    511e     511e        0     1                 __set_v
+    511f     511f       16     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.rodata.main)
+    5135     5135       1c     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.rodata.pc)
+    5135     5135       1c     1                 pc
+    5151     5151       18     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.rodata.standard_lead_input.raw)
+    5151     5151       18     1                 standard_lead_input.raw
+    5169     5169      100     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.rodata.standard_lead_fixed_inputs.34)
+    5169     5169      100     1                 standard_lead_fixed_inputs.34
+    5269     5269       fa     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.rodata.standard_lead_reference_dictionary)
+    5269     5269       fa     1                 standard_lead_reference_dictionary
+    5363     5363      17a     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.rodata.standard_lead_reference_offsets)
+    5363     5363      17a     1                 standard_lead_reference_offsets
+    54dd     54dd     174c     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.rodata.standard_lead_reference_stream)
+    54dd     54dd     174c     1                 standard_lead_reference_stream
+    6c29     6c29        0     1 .data
+    6c29     6c29        0     1         __data_start = .
+    6c29     6c29        0     1         __data_end = .
+    6c29     6c29        0     1 __data_load_start = LOADADDR(.data)
+    6c29     6c29        0     1 __data_size = SIZEOF(.data)
+    6c29     6c29     2000     1 .bss
+    6c29     6c29        0     1         __bss_start = .
+    6c29     6c29     1000     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.bss.state)
+    6c29     6c29     1000     1                 state
+    7c29     7c29     1000     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.bss.expected)
+    7c29     7c29     1000     1                 expected
+    8c29     8c29        0     1         __bss_end = .
+    8c29     8c29        0     1 __bss_size = SIZEOF(.bss)
+    8c29     8c29        0     1 .noinit
+    8c29     8c29        0     1         __heap_start = ALIGN(., 2)
+    8c29     8c29        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         /workspace/Apollo-11/c64-port/build/standard-lead-cm.prg.lto.o:(.llvm_sympart)
+       0        0      bf0     4 .symtab
+       0        0      bf0     4         <internal>:(.symtab)
+       0        0       76     1 .shstrtab
+       0        0       76     1         <internal>:(.shstrtab)
+       0        0      74b     1 .strtab
+       0        0      74b     1         <internal>:(.strtab)

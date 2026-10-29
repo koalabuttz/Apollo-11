@@ -1,0 +1,22 @@
+{
+  "clock": "PAL",
+  "cycles_per_second": 985248,
+  "samples": {
+    "snapshot": 1059,
+    "vectors without skips": 4292,
+    "six skips negative clears": 3984,
+    "six skips positive clears": 3996,
+    "composed preparation": 6692
+  },
+  "includes": "marker overhead, sample dispatch and VIC bus effects; excludes setup, guards and state comparison",
+  "worst_case_bound": false,
+  "state_bytes": 78,
+  "modeled_words": 39,
+  "prg_file_bytes": 34921,
+  "loaded_bytes": 34919,
+  "image_plus_bss_noinit_bytes": 34998,
+  "expected_word_bytes": 25272,
+  "expected_mask_bytes": 324,
+  "hardware_stack_extent_below_01f2": 31,
+  "software_stack_extent_bytes": 191
+}

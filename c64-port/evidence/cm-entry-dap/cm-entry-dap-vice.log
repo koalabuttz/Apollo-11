@@ -1,0 +1,14 @@
+PRG sha256 (clang version 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+3c2b9fc6a912a7d5336b367e5ea6a6103cb31d04d97d845dcffb77aee27256f5  build/cm-entry-dap-1.prg
+0a339f39eb8491a65c9a36d6b597128219eaa206e39fd3d2d72c652e85674e1b  build/cm-entry-dap-2.prg
+b20a03f2cdfe189595357729d1838488186acb988389c758076580da472d2ac4  build/cm-entry-dap-3.prg
+
+$ make vice-cm-entry-dap
+for p in build/cm-entry-dap-1.prg build/cm-entry-dap-2.prg build/cm-entry-dap-3.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL cm-entry-dap-1.prg: 36 checks, 0 failures
+PRG sha256: 3c2b9fc6a912a7d5336b367e5ea6a6103cb31d04d97d845dcffb77aee27256f5 cm-entry-dap-1.prg
+PASS: VICE PAL cm-entry-dap-2.prg: 40 checks, 0 failures
+PRG sha256: 0a339f39eb8491a65c9a36d6b597128219eaa206e39fd3d2d72c652e85674e1b cm-entry-dap-2.prg
+PASS: VICE PAL cm-entry-dap-3.prg: 9 checks, 0 failures
+PRG sha256: b20a03f2cdfe189595357729d1838488186acb988389c758076580da472d2ac4 cm-entry-dap-3.prg
+exit 0

@@ -1,0 +1,17 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "oracle": "yaAGC (deps/virtualagc), host only",
+ "cases": 4096,
+ "snapshot_sha256": "1314192fd7d3c4f4ec25e9a9a0fc1f8bdd4acaee6804397b98e5e39d81b6524b",
+ "entries": "every order-pair word of STATEUP, DOINT, NO-INT, DOINT2, THISVINT (bank 13) and R00 (bank 04) (13), at NEWOPS",
+ "boundary": "NEWOPS with LOC on the pair to NEWOPS with LOC outside the file (CALL/STCALL/CLRGO/RVQ targets), R00 EXIT to basic code, or CHANG2",
+ "full_physical_words": 2048,
+ "c64_row_selection": "tools/c64_row_cover.py: the C64 rows take every branch arc (gcov -b, all linked sources) the host cases take",
+ "host_cases_traced": 4096,
+ "host_branch_arcs": 224,
+ "c64_rows": 256,
+ "c64_branch_arcs": 224,
+ "c64_row_seed_stride": 16,
+ "c64_missing_branch_arcs": []
+}

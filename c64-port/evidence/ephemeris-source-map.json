@@ -1,0 +1,2940 @@
+{
+  "LM": {
+    "source_path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+    "source_sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
+    "assembled_source_sha256": "2c1a3e5b406457704b18c503c2882b2a16f05fa29fe647682ac19a255f7638a6",
+    "source_edits": 0,
+    "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "source_words": 74,
+    "source_line_word_map": [
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 92,
+        "label": "",
+        "op": "BANK",
+        "arguments": "04",
+        "assembled_address": "04,3027",
+        "physical_fixed_word": 4631,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 93,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "EPHEM",
+        "assembled_address": "15,2000",
+        "physical_fixed_word": 13312,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 94,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "15,2000",
+        "physical_fixed_word": 13312,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 95,
+        "label": "",
+        "op": "EBANK=",
+        "arguments": "VSUN",
+        "assembled_address": "15,3664",
+        "physical_fixed_word": 14260,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 96,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/EPHEM",
+        "assembled_address": "15,3664",
+        "physical_fixed_word": 14260,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 97,
+        "label": "LUNPOS",
+        "op": "EQUALS",
+        "arguments": "LSPOS",
+        "assembled_address": "15,3664",
+        "physical_fixed_word": 14260,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 98,
+        "label": "LSPOS",
+        "op": "SETPD",
+        "arguments": "SR",
+        "assembled_address": "15,3664",
+        "physical_fixed_word": 14260,
+        "physical_erasable_word": null,
+        "words": [
+          22657
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 99,
+        "label": "",
+        "op": "0",
+        "arguments": "",
+        "assembled_address": "15,3665",
+        "physical_fixed_word": 14261,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 100,
+        "label": "",
+        "op": "14D",
+        "arguments": "",
+        "assembled_address": "15,3666",
+        "physical_fixed_word": 14262,
+        "physical_erasable_word": null,
+        "words": [
+          8591
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 101,
+        "label": "",
+        "op": "TAD",
+        "arguments": "DDV",
+        "assembled_address": "15,3667",
+        "physical_fixed_word": 14263,
+        "physical_erasable_word": null,
+        "words": [
+          23801
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 103,
+        "label": "",
+        "op": "TEPHEM",
+        "arguments": "",
+        "assembled_address": "15,3670",
+        "physical_fixed_word": 14264,
+        "physical_erasable_word": null,
+        "words": [
+          967
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 104,
+        "label": "",
+        "op": "CSTODAY",
+        "arguments": "",
+        "assembled_address": "15,3671",
+        "physical_fixed_word": 14265,
+        "physical_erasable_word": null,
+        "words": [
+          5140
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 105,
+        "label": "",
+        "op": "STORE",
+        "arguments": "TIMEP",
+        "assembled_address": "15,3672",
+        "physical_fixed_word": 14266,
+        "physical_erasable_word": null,
+        "words": [
+          25
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 106,
+        "label": "",
+        "op": "AXT,1",
+        "arguments": "AXT,2",
+        "assembled_address": "15,3673",
+        "physical_fixed_word": 14267,
+        "physical_erasable_word": null,
+        "words": [
+          32376
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 107,
+        "label": "",
+        "op": "0",
+        "arguments": "",
+        "assembled_address": "15,3674",
+        "physical_fixed_word": 14268,
+        "physical_erasable_word": null,
+        "words": [
+          0
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 108,
+        "label": "",
+        "op": "0",
+        "arguments": "",
+        "assembled_address": "15,3675",
+        "physical_fixed_word": 14269,
+        "physical_erasable_word": null,
+        "words": [
+          0
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 109,
+        "label": "",
+        "op": "CLEAR",
+        "arguments": "",
+        "assembled_address": "15,3676",
+        "physical_fixed_word": 14270,
+        "physical_erasable_word": null,
+        "words": [
+          32652
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 110,
+        "label": "",
+        "op": "FREEFLAG",
+        "arguments": "",
+        "assembled_address": "15,3677",
+        "physical_fixed_word": 14271,
+        "physical_erasable_word": null,
+        "words": [
+          188
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 111,
+        "label": "POSITA",
+        "op": "DLOAD",
+        "arguments": "",
+        "assembled_address": "15,3700",
+        "physical_fixed_word": 14272,
+        "physical_erasable_word": null,
+        "words": [
+          32741
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 112,
+        "label": "",
+        "op": "KONMAT",
+        "arguments": "+2",
+        "assembled_address": "15,3701",
+        "physical_fixed_word": 14273,
+        "physical_erasable_word": null,
+        "words": [
+          5124
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 113,
+        "label": "",
+        "op": "STORE",
+        "arguments": "GTMP",
+        "assembled_address": "15,3702",
+        "physical_fixed_word": 14274,
+        "physical_erasable_word": null,
+        "words": [
+          23
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 114,
+        "label": "POSITB",
+        "op": "DLOAD",
+        "arguments": "DMP*",
+        "assembled_address": "15,3703",
+        "physical_fixed_word": 14275,
+        "physical_erasable_word": null,
+        "words": [
+          16869
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 115,
+        "label": "",
+        "op": "TIMEP",
+        "arguments": "",
+        "assembled_address": "15,3704",
+        "physical_fixed_word": 14276,
+        "physical_erasable_word": null,
+        "words": [
+          25
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 116,
+        "label": "",
+        "op": "VAL67",
+        "arguments": "+4,1",
+        "assembled_address": "15,3705",
+        "physical_fixed_word": 14277,
+        "physical_erasable_word": null,
+        "words": [
+          5160
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 118,
+        "label": "",
+        "op": "SL",
+        "arguments": "DAD*",
+        "assembled_address": "15,3706",
+        "physical_fixed_word": 14278,
+        "physical_erasable_word": null,
+        "words": [
+          17841
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 119,
+        "label": "",
+        "op": "8D",
+        "arguments": "",
+        "assembled_address": "15,3707",
+        "physical_fixed_word": 14279,
+        "physical_erasable_word": null,
+        "words": [
+          8329
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 120,
+        "label": "",
+        "op": "VAL67",
+        "arguments": "+2,1",
+        "assembled_address": "15,3710",
+        "physical_fixed_word": 14280,
+        "physical_erasable_word": null,
+        "words": [
+          5158
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 121,
+        "label": "",
+        "op": "SIN",
+        "arguments": "DMP*",
+        "assembled_address": "15,3711",
+        "physical_fixed_word": 14281,
+        "physical_erasable_word": null,
+        "words": [
+          16878
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 122,
+        "label": "",
+        "op": "VAL67,1",
+        "arguments": "",
+        "assembled_address": "15,3712",
+        "physical_fixed_word": 14282,
+        "physical_erasable_word": null,
+        "words": [
+          5156
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 123,
+        "label": "",
+        "op": "DAD",
+        "arguments": "INCR,1",
+        "assembled_address": "15,3713",
+        "physical_fixed_word": 14283,
+        "physical_erasable_word": null,
+        "words": [
+          25613
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 124,
+        "label": "",
+        "op": "GTMP",
+        "arguments": "",
+        "assembled_address": "15,3714",
+        "physical_fixed_word": 14284,
+        "physical_erasable_word": null,
+        "words": [
+          23
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 125,
+        "label": "",
+        "op": "DEC",
+        "arguments": "-6",
+        "assembled_address": "15,3715",
+        "physical_fixed_word": 14285,
+        "physical_erasable_word": null,
+        "words": [
+          32761
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 126,
+        "label": "",
+        "op": "STORE",
+        "arguments": "GTMP",
+        "assembled_address": "15,3716",
+        "physical_fixed_word": 14286,
+        "physical_erasable_word": null,
+        "words": [
+          23
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 127,
+        "label": "",
+        "op": "BOFSET",
+        "arguments": "",
+        "assembled_address": "15,3717",
+        "physical_fixed_word": 14287,
+        "physical_erasable_word": null,
+        "words": [
+          32652
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 128,
+        "label": "",
+        "op": "FREEFLAG",
+        "arguments": "",
+        "assembled_address": "15,3720",
+        "physical_fixed_word": 14288,
+        "physical_erasable_word": null,
+        "words": [
+          44
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 129,
+        "label": "",
+        "op": "POSITB",
+        "arguments": "",
+        "assembled_address": "15,3721",
+        "physical_fixed_word": 14289,
+        "physical_erasable_word": null,
+        "words": [
+          14275
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 130,
+        "label": "POSITD",
+        "op": "DLOAD",
+        "arguments": "DMP*",
+        "assembled_address": "15,3722",
+        "physical_fixed_word": 14290,
+        "physical_erasable_word": null,
+        "words": [
+          16869
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 131,
+        "label": "",
+        "op": "TIMEP",
+        "arguments": "",
+        "assembled_address": "15,3723",
+        "physical_fixed_word": 14291,
+        "physical_erasable_word": null,
+        "words": [
+          25
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 132,
+        "label": "",
+        "op": "RATESP,2",
+        "arguments": "",
+        "assembled_address": "15,3724",
+        "physical_fixed_word": 14292,
+        "physical_erasable_word": null,
+        "words": [
+          27623
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 133,
+        "label": "",
+        "op": "SL",
+        "arguments": "DAD*",
+        "assembled_address": "15,3725",
+        "physical_fixed_word": 14293,
+        "physical_erasable_word": null,
+        "words": [
+          17841
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 134,
+        "label": "",
+        "op": "5D",
+        "arguments": "",
+        "assembled_address": "15,3726",
+        "physical_fixed_word": 14294,
+        "physical_erasable_word": null,
+        "words": [
+          8326
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 135,
+        "label": "",
+        "op": "RATESP",
+        "arguments": "+6,2",
+        "assembled_address": "15,3727",
+        "physical_fixed_word": 14295,
+        "physical_erasable_word": null,
+        "words": [
+          27617
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 136,
+        "label": "",
+        "op": "DSU",
+        "arguments": "",
+        "assembled_address": "15,3730",
+        "physical_fixed_word": 14296,
+        "physical_erasable_word": null,
+        "words": [
+          32661
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 137,
+        "label": "",
+        "op": "GTMP",
+        "arguments": "",
+        "assembled_address": "15,3731",
+        "physical_fixed_word": 14297,
+        "physical_erasable_word": null,
+        "words": [
+          23
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 138,
+        "label": "",
+        "op": "STORE",
+        "arguments": "STMP,2",
+        "assembled_address": "15,3732",
+        "physical_fixed_word": 14298,
+        "physical_erasable_word": null,
+        "words": [
+          4113
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 139,
+        "label": "",
+        "op": "SLOAD",
+        "arguments": "INCR,2",
+        "assembled_address": "15,3733",
+        "physical_fixed_word": 14299,
+        "physical_erasable_word": null,
+        "words": [
+          26205
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 140,
+        "label": "",
+        "op": "X2",
+        "arguments": "",
+        "assembled_address": "15,3734",
+        "physical_fixed_word": 14300,
+        "physical_erasable_word": null,
+        "words": [
+          40
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 141,
+        "label": "",
+        "op": "DEC",
+        "arguments": "-2",
+        "assembled_address": "15,3735",
+        "physical_fixed_word": 14301,
+        "physical_erasable_word": null,
+        "words": [
+          32765
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 142,
+        "label": "",
+        "op": "DAD",
+        "arguments": "BZE",
+        "assembled_address": "15,3736",
+        "physical_fixed_word": 14302,
+        "physical_erasable_word": null,
+        "words": [
+          22029
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 143,
+        "label": "",
+        "op": "RCB-13",
+        "arguments": "",
+        "assembled_address": "15,3737",
+        "physical_fixed_word": 14303,
+        "physical_erasable_word": null,
+        "words": [
+          5142
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 144,
+        "label": "",
+        "op": "POSITE",
+        "arguments": "",
+        "assembled_address": "15,3740",
+        "physical_fixed_word": 14304,
+        "physical_erasable_word": null,
+        "words": [
+          14328
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 145,
+        "label": "",
+        "op": "BPL",
+        "arguments": "",
+        "assembled_address": "15,3741",
+        "physical_fixed_word": 14305,
+        "physical_erasable_word": null,
+        "words": [
+          32676
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 146,
+        "label": "",
+        "op": "POSITA",
+        "arguments": "",
+        "assembled_address": "15,3742",
+        "physical_fixed_word": 14306,
+        "physical_erasable_word": null,
+        "words": [
+          14272
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 147,
+        "label": "POSITF",
+        "op": "DLOAD",
+        "arguments": "DSU",
+        "assembled_address": "15,3743",
+        "physical_fixed_word": 14307,
+        "physical_erasable_word": null,
+        "words": [
+          19173
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 148,
+        "label": "",
+        "op": "STMP",
+        "arguments": "",
+        "assembled_address": "15,3744",
+        "physical_fixed_word": 14308,
+        "physical_erasable_word": null,
+        "words": [
+          17
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 149,
+        "label": "",
+        "op": "STMP",
+        "arguments": "+4",
+        "assembled_address": "15,3745",
+        "physical_fixed_word": 14309,
+        "physical_erasable_word": null,
+        "words": [
+          21
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 150,
+        "label": "",
+        "op": "SIN",
+        "arguments": "PDDL",
+        "assembled_address": "15,3746",
+        "physical_fixed_word": 14310,
+        "physical_erasable_word": null,
+        "words": [
+          27374
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 151,
+        "label": "",
+        "op": "STMP",
+        "arguments": "",
+        "assembled_address": "15,3747",
+        "physical_fixed_word": 14311,
+        "physical_erasable_word": null,
+        "words": [
+          17
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 152,
+        "label": "",
+        "op": "SIN",
+        "arguments": "PDDL",
+        "assembled_address": "15,3750",
+        "physical_fixed_word": 14312,
+        "physical_erasable_word": null,
+        "words": [
+          27374
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 153,
+        "label": "",
+        "op": "STMP",
+        "arguments": "",
+        "assembled_address": "15,3751",
+        "physical_fixed_word": 14313,
+        "physical_erasable_word": null,
+        "words": [
+          17
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 154,
+        "label": "",
+        "op": "COS",
+        "arguments": "VDEF",
+        "assembled_address": "15,3752",
+        "physical_fixed_word": 14314,
+        "physical_erasable_word": null,
+        "words": [
+          23398
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 155,
+        "label": "",
+        "op": "MXV",
+        "arguments": "UNIT",
+        "assembled_address": "15,3753",
+        "physical_fixed_word": 14315,
+        "physical_erasable_word": null,
+        "words": [
+          22353
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 156,
+        "label": "",
+        "op": "KONMAT",
+        "arguments": "",
+        "assembled_address": "15,3754",
+        "physical_fixed_word": 14316,
+        "physical_erasable_word": null,
+        "words": [
+          5122
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 157,
+        "label": "",
+        "op": "STORE",
+        "arguments": "VMOON",
+        "assembled_address": "15,3755",
+        "physical_fixed_word": 14317,
+        "physical_erasable_word": null,
+        "words": [
+          1491
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 158,
+        "label": "",
+        "op": "DLOAD",
+        "arguments": "PDDL",
+        "assembled_address": "15,3756",
+        "physical_fixed_word": 14318,
+        "physical_erasable_word": null,
+        "words": [
+          27365
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 159,
+        "label": "",
+        "op": "KONMAT",
+        "arguments": "+2",
+        "assembled_address": "15,3757",
+        "physical_fixed_word": 14319,
+        "physical_erasable_word": null,
+        "words": [
+          5124
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 160,
+        "label": "",
+        "op": "STMP",
+        "arguments": "+2",
+        "assembled_address": "15,3760",
+        "physical_fixed_word": 14320,
+        "physical_erasable_word": null,
+        "words": [
+          19
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 161,
+        "label": "",
+        "op": "SIN",
+        "arguments": "PDDL",
+        "assembled_address": "15,3761",
+        "physical_fixed_word": 14321,
+        "physical_erasable_word": null,
+        "words": [
+          27374
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 162,
+        "label": "",
+        "op": "STMP",
+        "arguments": "+2",
+        "assembled_address": "15,3762",
+        "physical_fixed_word": 14322,
+        "physical_erasable_word": null,
+        "words": [
+          19
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 163,
+        "label": "",
+        "op": "COS",
+        "arguments": "VDEF",
+        "assembled_address": "15,3763",
+        "physical_fixed_word": 14323,
+        "physical_erasable_word": null,
+        "words": [
+          23398
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 164,
+        "label": "",
+        "op": "MXV",
+        "arguments": "UNIT",
+        "assembled_address": "15,3764",
+        "physical_fixed_word": 14324,
+        "physical_erasable_word": null,
+        "words": [
+          22353
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 165,
+        "label": "",
+        "op": "KONMAT",
+        "arguments": "",
+        "assembled_address": "15,3765",
+        "physical_fixed_word": 14325,
+        "physical_erasable_word": null,
+        "words": [
+          5122
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 166,
+        "label": "",
+        "op": "STORE",
+        "arguments": "VSUN",
+        "assembled_address": "15,3766",
+        "physical_fixed_word": 14326,
+        "physical_erasable_word": null,
+        "words": [
+          1485
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 167,
+        "label": "",
+        "op": "RVQ",
+        "arguments": "",
+        "assembled_address": "15,3767",
+        "physical_fixed_word": 14327,
+        "physical_erasable_word": null,
+        "words": [
+          32654
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 169,
+        "label": "POSITE",
+        "op": "DLOAD",
+        "arguments": "",
+        "assembled_address": "15,3770",
+        "physical_fixed_word": 14328,
+        "physical_erasable_word": null,
+        "words": [
+          32741
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 170,
+        "label": "",
+        "op": "KONMAT",
+        "arguments": "+2",
+        "assembled_address": "15,3771",
+        "physical_fixed_word": 14329,
+        "physical_erasable_word": null,
+        "words": [
+          5124
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 171,
+        "label": "",
+        "op": "STORE",
+        "arguments": "GTMP",
+        "assembled_address": "15,3772",
+        "physical_fixed_word": 14330,
+        "physical_erasable_word": null,
+        "words": [
+          23
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 172,
+        "label": "",
+        "op": "GOTO",
+        "arguments": "",
+        "assembled_address": "15,3773",
+        "physical_fixed_word": 14331,
+        "physical_erasable_word": null,
+        "words": [
+          32680
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 173,
+        "label": "",
+        "op": "POSITD",
+        "arguments": "",
+        "assembled_address": "15,3774",
+        "physical_fixed_word": 14332,
+        "physical_erasable_word": null,
+        "words": [
+          14290
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 174,
+        "label": "LUNVEL",
+        "op": "RVQ",
+        "arguments": "",
+        "assembled_address": "15,3775",
+        "physical_fixed_word": 14333,
+        "physical_erasable_word": null,
+        "words": [
+          32654
+        ]
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 175,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "EPHEM1",
+        "assembled_address": "05,2000",
+        "physical_fixed_word": 5120,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 176,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "05,2000",
+        "physical_fixed_word": 5120,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 178,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/EPHEM",
+        "assembled_address": "05,3506",
+        "physical_fixed_word": 5958,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 179,
+        "label": "STMP",
+        "op": "EQUALS",
+        "arguments": "16D",
+        "assembled_address": "05,3506",
+        "physical_fixed_word": 5958,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 180,
+        "label": "GTMP",
+        "op": "EQUALS",
+        "arguments": "22D",
+        "assembled_address": "05,3506",
+        "physical_fixed_word": 5958,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Luminary099/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 181,
+        "label": "TIMEP",
+        "op": "EQUALS",
+        "arguments": "24D",
+        "assembled_address": "05,3506",
+        "physical_fixed_word": 5958,
+        "physical_erasable_word": null,
+        "words": []
+      }
+    ],
+    "symbols": {
+      "LSPOS": "15,3664",
+      "LUNPOS": "15,3664",
+      "LUNVEL": "15,3775",
+      "POSITA": "15,3700",
+      "POSITB": "15,3703",
+      "POSITD": "15,3722",
+      "POSITE": "15,3770",
+      "POSITF": "15,3743",
+      "STMP": "0000020",
+      "GTMP": "0000026",
+      "TIMEP": "0000030",
+      "TEPHEM": "E3,1706",
+      "KONMAT": "05,2001",
+      "RATESP": "05,2027",
+      "VAL67": "05,2043",
+      "CSTODAY": "05,2023",
+      "VMOON": "E5,1722",
+      "VSUN": "E5,1714",
+      "TAD": "7071",
+      "SETOVF": "7003",
+      "OVERFLOW": "7017",
+      "SETOVF2": "7152",
+      "DANZIG": "6061"
+    },
+    "ephemerides_executable_port_status": "untranslated; source map only",
+    "native_arithmetic_dependency": {
+      "source_path": "Luminary099/INTERPRETER.agc",
+      "source_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "assembled_source_sha256": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+      "indentation_repairs": [],
+      "audit_dependency": "evidence/lm-powered-source-audit.json",
+      "basic_group": "TAD, SETOVF, OVERFLOW and SETOVF2",
+      "containing_file_status": "partial",
+      "source_line_word_map": [
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 808,
+          "label": "SETOVF",
+          "op": "TC",
+          "arguments": "OVERFLOW",
+          "assembled_address": "7003",
+          "physical_fixed_word": 3587,
+          "physical_erasable_word": null,
+          "words": [
+            3599
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 809,
+          "label": "",
+          "op": "TCF",
+          "arguments": "DANZIG",
+          "assembled_address": "7004",
+          "physical_fixed_word": 3588,
+          "physical_erasable_word": null,
+          "words": [
+            7217
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 825,
+          "label": "OVERFLOW",
+          "op": "INDEX",
+          "arguments": "A",
+          "assembled_address": "7017",
+          "physical_fixed_word": 3599,
+          "physical_erasable_word": null,
+          "words": [
+            20480
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 826,
+          "label": "",
+          "op": "CS",
+          "arguments": "LIMITS",
+          "assembled_address": "7020",
+          "physical_fixed_word": 3600,
+          "physical_erasable_word": null,
+          "words": [
+            18908
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 827,
+          "label": "",
+          "op": "TS",
+          "arguments": "BUF",
+          "assembled_address": "7021",
+          "physical_fixed_word": 3601,
+          "physical_erasable_word": null,
+          "words": [
+            22616
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 828,
+          "label": "",
+          "op": "EXTEND",
+          "arguments": "",
+          "assembled_address": "7022",
+          "physical_fixed_word": 3602,
+          "physical_erasable_word": null,
+          "words": [
+            6
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 829,
+          "label": "",
+          "op": "AUG",
+          "arguments": "A",
+          "assembled_address": "7023",
+          "physical_fixed_word": 3603,
+          "physical_erasable_word": null,
+          "words": [
+            10240
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 830,
+          "label": "",
+          "op": "INDEX",
+          "arguments": "L",
+          "assembled_address": "7024",
+          "physical_fixed_word": 3604,
+          "physical_erasable_word": null,
+          "words": [
+            20481
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 831,
+          "label": "",
+          "op": "ADS",
+          "arguments": "MPAC +1",
+          "assembled_address": "7025",
+          "physical_fixed_word": 3605,
+          "physical_erasable_word": null,
+          "words": [
+            11373
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 832,
+          "label": "",
+          "op": "TS",
+          "arguments": "7",
+          "assembled_address": "7026",
+          "physical_fixed_word": 3606,
+          "physical_erasable_word": null,
+          "words": [
+            22535
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 833,
+          "label": "",
+          "op": "CAF",
+          "arguments": "ZERO",
+          "assembled_address": "7027",
+          "physical_fixed_word": 3607,
+          "physical_erasable_word": null,
+          "words": [
+            14829
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 834,
+          "label": "",
+          "op": "AD",
+          "arguments": "BUF",
+          "assembled_address": "7030",
+          "physical_fixed_word": 3608,
+          "physical_erasable_word": null,
+          "words": [
+            24664
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 835,
+          "label": "",
+          "op": "INDEX",
+          "arguments": "L",
+          "assembled_address": "7031",
+          "physical_fixed_word": 3609,
+          "physical_erasable_word": null,
+          "words": [
+            20481
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 836,
+          "label": "",
+          "op": "ADS",
+          "arguments": "MPAC",
+          "assembled_address": "7032",
+          "physical_fixed_word": 3610,
+          "physical_erasable_word": null,
+          "words": [
+            11372
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 837,
+          "label": "",
+          "op": "TS",
+          "arguments": "7",
+          "assembled_address": "7033",
+          "physical_fixed_word": 3611,
+          "physical_erasable_word": null,
+          "words": [
+            22535
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 838,
+          "label": "",
+          "op": "TC",
+          "arguments": "Q",
+          "assembled_address": "7034",
+          "physical_fixed_word": 3612,
+          "physical_erasable_word": null,
+          "words": [
+            2
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 839,
+          "label": "",
+          "op": "TCF",
+          "arguments": "SETOVF2",
+          "assembled_address": "7035",
+          "physical_fixed_word": 3613,
+          "physical_erasable_word": null,
+          "words": [
+            7786
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 875,
+          "label": "TAD",
+          "op": "EXTEND",
+          "arguments": "",
+          "assembled_address": "7071",
+          "physical_fixed_word": 3641,
+          "physical_erasable_word": null,
+          "words": [
+            6
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 876,
+          "label": "",
+          "op": "INDEX",
+          "arguments": "ADDRWD",
+          "assembled_address": "7072",
+          "physical_fixed_word": 3642,
+          "physical_erasable_word": null,
+          "words": [
+            20558
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 877,
+          "label": "",
+          "op": "DCA",
+          "arguments": "1",
+          "assembled_address": "7073",
+          "physical_fixed_word": 3643,
+          "physical_erasable_word": null,
+          "words": [
+            12290
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 878,
+          "label": "",
+          "op": "DAS",
+          "arguments": "MPAC +1",
+          "assembled_address": "7074",
+          "physical_fixed_word": 3644,
+          "physical_erasable_word": null,
+          "words": [
+            8302
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 879,
+          "label": "",
+          "op": "INDEX",
+          "arguments": "ADDRWD",
+          "assembled_address": "7075",
+          "physical_fixed_word": 3645,
+          "physical_erasable_word": null,
+          "words": [
+            20558
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 880,
+          "label": "",
+          "op": "AD",
+          "arguments": "0",
+          "assembled_address": "7076",
+          "physical_fixed_word": 3646,
+          "physical_erasable_word": null,
+          "words": [
+            24576
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 881,
+          "label": "",
+          "op": "AD",
+          "arguments": "MPAC",
+          "assembled_address": "7077",
+          "physical_fixed_word": 3647,
+          "physical_erasable_word": null,
+          "words": [
+            24684
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 882,
+          "label": "",
+          "op": "TS",
+          "arguments": "MPAC",
+          "assembled_address": "7100",
+          "physical_fixed_word": 3648,
+          "physical_erasable_word": null,
+          "words": [
+            22636
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 883,
+          "label": "",
+          "op": "TCF",
+          "arguments": "DANZIG",
+          "assembled_address": "7101",
+          "physical_fixed_word": 3649,
+          "physical_erasable_word": null,
+          "words": [
+            7217
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 885,
+          "label": "",
+          "op": "TCF",
+          "arguments": "SETOVF",
+          "assembled_address": "7102",
+          "physical_fixed_word": 3650,
+          "physical_erasable_word": null,
+          "words": [
+            7683
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 948,
+          "label": "SETOVF2",
+          "op": "TS",
+          "arguments": "OVFIND",
+          "assembled_address": "7152",
+          "physical_fixed_word": 3690,
+          "physical_erasable_word": null,
+          "words": [
+            22609
+          ]
+        },
+        {
+          "path": "Luminary099/INTERPRETER.agc",
+          "line": 949,
+          "label": "",
+          "op": "TC",
+          "arguments": "Q",
+          "assembled_address": "7153",
+          "physical_fixed_word": 3691,
+          "physical_erasable_word": null,
+          "words": [
+            2
+          ]
+        }
+      ],
+      "source_words": 29
+    }
+  },
+  "CM": {
+    "source_path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+    "source_sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+    "assembled_source_sha256": "c82884ddf780b9c95baf68ba939a7cfedaaf081ecc12f004136ab3eb5ce91daa",
+    "source_edits": 0,
+    "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+    "source_words": 71,
+    "source_line_word_map": [
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 121,
+        "label": "",
+        "op": "BANK",
+        "arguments": "36",
+        "assembled_address": "36,2466",
+        "physical_fixed_word": 31030,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 122,
+        "label": "",
+        "op": "SETLOC",
+        "arguments": "EPHEM",
+        "assembled_address": "26,2000",
+        "physical_fixed_word": 22528,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 123,
+        "label": "",
+        "op": "BANK",
+        "arguments": "",
+        "assembled_address": "26,2000",
+        "physical_fixed_word": 22528,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 125,
+        "label": "",
+        "op": "COUNT*",
+        "arguments": "$$/EPHEM",
+        "assembled_address": "26,2110",
+        "physical_fixed_word": 22600,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 126,
+        "label": "",
+        "op": "EBANK=",
+        "arguments": "END-E7",
+        "assembled_address": "26,2110",
+        "physical_fixed_word": 22600,
+        "physical_erasable_word": null,
+        "words": []
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 127,
+        "label": "LSPOS",
+        "op": "AXT,2",
+        "arguments": "",
+        "assembled_address": "26,2110",
+        "physical_fixed_word": 22600,
+        "physical_erasable_word": null,
+        "words": [
+          32764
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 128,
+        "label": "",
+        "op": "RESA",
+        "arguments": "",
+        "assembled_address": "26,2111",
+        "physical_fixed_word": 22601,
+        "physical_erasable_word": null,
+        "words": [
+          22641
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 129,
+        "label": "",
+        "op": "AXT,1",
+        "arguments": "GOTO",
+        "assembled_address": "26,2112",
+        "physical_fixed_word": 22602,
+        "physical_erasable_word": null,
+        "words": [
+          21624
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 130,
+        "label": "",
+        "op": "RES",
+        "arguments": "",
+        "assembled_address": "26,2113",
+        "physical_fixed_word": 22603,
+        "physical_erasable_word": null,
+        "words": [
+          22627
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 131,
+        "label": "",
+        "op": "LSTIME",
+        "arguments": "",
+        "assembled_address": "26,2114",
+        "physical_fixed_word": 22604,
+        "physical_erasable_word": null,
+        "words": [
+          22614
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 132,
+        "label": "LUNPOS",
+        "op": "AXT,1",
+        "arguments": "GOTO",
+        "assembled_address": "26,2115",
+        "physical_fixed_word": 22605,
+        "physical_erasable_word": null,
+        "words": [
+          21624
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 133,
+        "label": "",
+        "op": "REM",
+        "arguments": "",
+        "assembled_address": "26,2116",
+        "physical_fixed_word": 22606,
+        "physical_erasable_word": null,
+        "words": [
+          22642
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 134,
+        "label": "",
+        "op": "LSTIME",
+        "arguments": "",
+        "assembled_address": "26,2117",
+        "physical_fixed_word": 22607,
+        "physical_erasable_word": null,
+        "words": [
+          22614
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 136,
+        "label": "LUNVEL",
+        "op": "AXT,1",
+        "arguments": "GOTO",
+        "assembled_address": "26,2120",
+        "physical_fixed_word": 22608,
+        "physical_erasable_word": null,
+        "words": [
+          21624
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 137,
+        "label": "",
+        "op": "VEM",
+        "arguments": "",
+        "assembled_address": "26,2121",
+        "physical_fixed_word": 22609,
+        "physical_erasable_word": null,
+        "words": [
+          22651
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 138,
+        "label": "",
+        "op": "LSTIME",
+        "arguments": "",
+        "assembled_address": "26,2122",
+        "physical_fixed_word": 22610,
+        "physical_erasable_word": null,
+        "words": [
+          22614
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 139,
+        "label": "SOLPOS",
+        "op": "STQ",
+        "arguments": "AXT,1",
+        "assembled_address": "26,2123",
+        "physical_fixed_word": 22611,
+        "physical_erasable_word": null,
+        "words": [
+          31760
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 140,
+        "label": "",
+        "op": "X2",
+        "arguments": "",
+        "assembled_address": "26,2124",
+        "physical_fixed_word": 22612,
+        "physical_erasable_word": null,
+        "words": [
+          39
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 141,
+        "label": "",
+        "op": "RES",
+        "arguments": "",
+        "assembled_address": "26,2125",
+        "physical_fixed_word": 22613,
+        "physical_erasable_word": null,
+        "words": [
+          22627
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 142,
+        "label": "LSTIME",
+        "op": "SETPD",
+        "arguments": "SR",
+        "assembled_address": "26,2126",
+        "physical_fixed_word": 22614,
+        "physical_erasable_word": null,
+        "words": [
+          22657
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 143,
+        "label": "",
+        "op": "0D",
+        "arguments": "",
+        "assembled_address": "26,2127",
+        "physical_fixed_word": 22615,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 144,
+        "label": "",
+        "op": "14D",
+        "arguments": "",
+        "assembled_address": "26,2130",
+        "physical_fixed_word": 22616,
+        "physical_erasable_word": null,
+        "words": [
+          8591
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 145,
+        "label": "",
+        "op": "TAD",
+        "arguments": "DCOMP",
+        "assembled_address": "26,2131",
+        "physical_fixed_word": 22617,
+        "physical_erasable_word": null,
+        "words": [
+          24441
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 146,
+        "label": "",
+        "op": "TEPHEM",
+        "arguments": "",
+        "assembled_address": "26,2132",
+        "physical_fixed_word": 22618,
+        "physical_erasable_word": null,
+        "words": [
+          967
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 147,
+        "label": "",
+        "op": "TAD",
+        "arguments": "DCOMP",
+        "assembled_address": "26,2133",
+        "physical_fixed_word": 22619,
+        "physical_erasable_word": null,
+        "words": [
+          24441
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 148,
+        "label": "",
+        "op": "TIMEMO",
+        "arguments": "",
+        "assembled_address": "26,2134",
+        "physical_fixed_word": 22620,
+        "physical_erasable_word": null,
+        "words": [
+          1052
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 149,
+        "label": "",
+        "op": "SL",
+        "arguments": "SSP",
+        "assembled_address": "26,2135",
+        "physical_fixed_word": 22621,
+        "physical_erasable_word": null,
+        "words": [
+          27825
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 150,
+        "label": "",
+        "op": "16D",
+        "arguments": "",
+        "assembled_address": "26,2136",
+        "physical_fixed_word": 22622,
+        "physical_erasable_word": null,
+        "words": [
+          8337
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 151,
+        "label": "",
+        "op": "S1",
+        "arguments": "",
+        "assembled_address": "26,2137",
+        "physical_fixed_word": 22623,
+        "physical_erasable_word": null,
+        "words": [
+          41
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 152,
+        "label": "",
+        "op": "6D",
+        "arguments": "",
+        "assembled_address": "26,2140",
+        "physical_fixed_word": 22624,
+        "physical_erasable_word": null,
+        "words": [
+          6
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 153,
+        "label": "",
+        "op": "GOTO",
+        "arguments": "",
+        "assembled_address": "26,2141",
+        "physical_fixed_word": 22625,
+        "physical_erasable_word": null,
+        "words": [
+          32680
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 154,
+        "label": "",
+        "op": "X1",
+        "arguments": "",
+        "assembled_address": "26,2142",
+        "physical_fixed_word": 22626,
+        "physical_erasable_word": null,
+        "words": [
+          38
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 155,
+        "label": "RES",
+        "op": "PUSH",
+        "arguments": "DMP",
+        "assembled_address": "26,2143",
+        "physical_fixed_word": 22627,
+        "physical_erasable_word": null,
+        "words": [
+          17030
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 156,
+        "label": "",
+        "op": "OMEGAES",
+        "arguments": "",
+        "assembled_address": "26,2144",
+        "physical_fixed_word": 22628,
+        "physical_erasable_word": null,
+        "words": [
+          1127
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 157,
+        "label": "",
+        "op": "PUSH",
+        "arguments": "COS",
+        "assembled_address": "26,2145",
+        "physical_fixed_word": 22629,
+        "physical_erasable_word": null,
+        "words": [
+          29446
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 158,
+        "label": "",
+        "op": "VXSC",
+        "arguments": "PDDL",
+        "assembled_address": "26,2146",
+        "physical_fixed_word": 22630,
+        "physical_erasable_word": null,
+        "words": [
+          27377
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 159,
+        "label": "",
+        "op": "RESO",
+        "arguments": "",
+        "assembled_address": "26,2147",
+        "physical_fixed_word": 22631,
+        "physical_erasable_word": null,
+        "words": [
+          1115
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 160,
+        "label": "",
+        "op": "SIN",
+        "arguments": "PDVL",
+        "assembled_address": "26,2150",
+        "physical_fixed_word": 22632,
+        "physical_erasable_word": null,
+        "words": [
+          26350
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 161,
+        "label": "",
+        "op": "RESO",
+        "arguments": "",
+        "assembled_address": "26,2151",
+        "physical_fixed_word": 22633,
+        "physical_erasable_word": null,
+        "words": [
+          1115
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 162,
+        "label": "",
+        "op": "PUSH",
+        "arguments": "UNIT",
+        "assembled_address": "26,2152",
+        "physical_fixed_word": 22634,
+        "physical_erasable_word": null,
+        "words": [
+          22278
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 163,
+        "label": "",
+        "op": "VXV",
+        "arguments": "UNIT",
+        "assembled_address": "26,2153",
+        "physical_fixed_word": 22635,
+        "physical_erasable_word": null,
+        "words": [
+          22301
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 164,
+        "label": "",
+        "op": "VESO",
+        "arguments": "",
+        "assembled_address": "26,2154",
+        "physical_fixed_word": 22636,
+        "physical_erasable_word": null,
+        "words": [
+          1121
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 165,
+        "label": "",
+        "op": "VXV",
+        "arguments": "VSL1",
+        "assembled_address": "26,2155",
+        "physical_fixed_word": 22637,
+        "physical_erasable_word": null,
+        "words": [
+          32029
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 166,
+        "label": "",
+        "op": "VXSC",
+        "arguments": "VAD",
+        "assembled_address": "26,2156",
+        "physical_fixed_word": 22638,
+        "physical_erasable_word": null,
+        "words": [
+          22257
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 167,
+        "label": "",
+        "op": "VSL1",
+        "arguments": "GOTO",
+        "assembled_address": "26,2157",
+        "physical_fixed_word": 22639,
+        "physical_erasable_word": null,
+        "words": [
+          21626
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 168,
+        "label": "",
+        "op": "X2",
+        "arguments": "",
+        "assembled_address": "26,2160",
+        "physical_fixed_word": 22640,
+        "physical_erasable_word": null,
+        "words": [
+          39
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 169,
+        "label": "RESA",
+        "op": "STODL",
+        "arguments": "2D",
+        "assembled_address": "26,2161",
+        "physical_fixed_word": 22641,
+        "physical_erasable_word": null,
+        "words": [
+          6147
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 170,
+        "label": "REM",
+        "op": "AXT,1",
+        "arguments": "PDVL",
+        "assembled_address": "26,2162",
+        "physical_fixed_word": 22642,
+        "physical_erasable_word": null,
+        "words": [
+          26360
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 171,
+        "label": "",
+        "op": "54D",
+        "arguments": "",
+        "assembled_address": "26,2163",
+        "physical_fixed_word": 22643,
+        "physical_erasable_word": null,
+        "words": [
+          54
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 172,
+        "label": "",
+        "op": "VECOEM",
+        "arguments": "",
+        "assembled_address": "26,2164",
+        "physical_fixed_word": 22644,
+        "physical_erasable_word": null,
+        "words": [
+          1055
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 173,
+        "label": "REMA",
+        "op": "VXSC",
+        "arguments": "VAD*",
+        "assembled_address": "26,2165",
+        "physical_fixed_word": 22645,
+        "physical_erasable_word": null,
+        "words": [
+          22001
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 174,
+        "label": "",
+        "op": "0D",
+        "arguments": "",
+        "assembled_address": "26,2166",
+        "physical_fixed_word": 22646,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 175,
+        "label": "",
+        "op": "VECOEM",
+        "arguments": "+60D,1",
+        "assembled_address": "26,2167",
+        "physical_fixed_word": 22647,
+        "physical_erasable_word": null,
+        "words": [
+          1115
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 176,
+        "label": "",
+        "op": "TIX,1",
+        "arguments": "VSL2",
+        "assembled_address": "26,2170",
+        "physical_fixed_word": 22648,
+        "physical_erasable_word": null,
+        "words": [
+          30016
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 177,
+        "label": "",
+        "op": "REMA",
+        "arguments": "",
+        "assembled_address": "26,2171",
+        "physical_fixed_word": 22649,
+        "physical_erasable_word": null,
+        "words": [
+          22645
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 178,
+        "label": "",
+        "op": "RVQ",
+        "arguments": "",
+        "assembled_address": "26,2172",
+        "physical_fixed_word": 22650,
+        "physical_erasable_word": null,
+        "words": [
+          32654
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 179,
+        "label": "VEM",
+        "op": "AXT,1",
+        "arguments": "PDDL",
+        "assembled_address": "26,2173",
+        "physical_fixed_word": 22651,
+        "physical_erasable_word": null,
+        "words": [
+          27384
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 180,
+        "label": "",
+        "op": "48D",
+        "arguments": "",
+        "assembled_address": "26,2174",
+        "physical_fixed_word": 22652,
+        "physical_erasable_word": null,
+        "words": [
+          48
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 181,
+        "label": "",
+        "op": "NINEB4",
+        "arguments": "",
+        "assembled_address": "26,2175",
+        "physical_fixed_word": 22653,
+        "physical_erasable_word": null,
+        "words": [
+          6284
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 182,
+        "label": "",
+        "op": "PUSH",
+        "arguments": "VXSC",
+        "assembled_address": "26,2176",
+        "physical_fixed_word": 22654,
+        "physical_erasable_word": null,
+        "words": [
+          30854
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 183,
+        "label": "",
+        "op": "VECOEM",
+        "arguments": "",
+        "assembled_address": "26,2177",
+        "physical_fixed_word": 22655,
+        "physical_erasable_word": null,
+        "words": [
+          1055
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 184,
+        "label": "VEMA",
+        "op": "VXSC",
+        "arguments": "",
+        "assembled_address": "26,2200",
+        "physical_fixed_word": 22656,
+        "physical_erasable_word": null,
+        "words": [
+          32753
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 185,
+        "label": "",
+        "op": "0D",
+        "arguments": "",
+        "assembled_address": "26,2201",
+        "physical_fixed_word": 22657,
+        "physical_erasable_word": null,
+        "words": [
+          1
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 187,
+        "label": "",
+        "op": "STODL",
+        "arguments": "4D",
+        "assembled_address": "26,2202",
+        "physical_fixed_word": 22658,
+        "physical_erasable_word": null,
+        "words": [
+          6149
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 188,
+        "label": "",
+        "op": "DSU",
+        "arguments": "PUSH",
+        "assembled_address": "26,2203",
+        "physical_fixed_word": 22659,
+        "physical_erasable_word": null,
+        "words": [
+          17173
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 189,
+        "label": "",
+        "op": "ONEB4",
+        "arguments": "",
+        "assembled_address": "26,2204",
+        "physical_fixed_word": 22660,
+        "physical_erasable_word": null,
+        "words": [
+          6286
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 190,
+        "label": "",
+        "op": "VXSC*",
+        "arguments": "VAD",
+        "assembled_address": "26,2205",
+        "physical_fixed_word": 22661,
+        "physical_erasable_word": null,
+        "words": [
+          22255
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 191,
+        "label": "",
+        "op": "VECOEM",
+        "arguments": "+54D,1",
+        "assembled_address": "26,2206",
+        "physical_fixed_word": 22662,
+        "physical_erasable_word": null,
+        "words": [
+          1109
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 192,
+        "label": "",
+        "op": "4D",
+        "arguments": "",
+        "assembled_address": "26,2207",
+        "physical_fixed_word": 22663,
+        "physical_erasable_word": null,
+        "words": [
+          5
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 193,
+        "label": "",
+        "op": "TIX,1",
+        "arguments": "VSL2",
+        "assembled_address": "26,2210",
+        "physical_fixed_word": 22664,
+        "physical_erasable_word": null,
+        "words": [
+          30016
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 194,
+        "label": "",
+        "op": "VEMA",
+        "arguments": "",
+        "assembled_address": "26,2211",
+        "physical_fixed_word": 22665,
+        "physical_erasable_word": null,
+        "words": [
+          22656
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 195,
+        "label": "",
+        "op": "RVQ",
+        "arguments": "",
+        "assembled_address": "26,2212",
+        "physical_fixed_word": 22666,
+        "physical_erasable_word": null,
+        "words": [
+          32654
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 196,
+        "label": "NINEB4",
+        "op": "2DEC",
+        "arguments": "9.0 B-4",
+        "assembled_address": "26,2213",
+        "physical_fixed_word": 22667,
+        "physical_erasable_word": null,
+        "words": [
+          9216,
+          0
+        ]
+      },
+      {
+        "path": "Comanche055/LUNAR_AND_SOLAR_EPHEMERIDES_SUBROUTINES.agc",
+        "line": 198,
+        "label": "ONEB4",
+        "op": "2DEC",
+        "arguments": "1.0 B-4",
+        "assembled_address": "26,2215",
+        "physical_fixed_word": 22669,
+        "physical_erasable_word": null,
+        "words": [
+          1024,
+          0
+        ]
+      }
+    ],
+    "symbols": {
+      "LSPOS": "26,2110",
+      "LUNPOS": "26,2115",
+      "LUNVEL": "26,2120",
+      "SOLPOS": "26,2123",
+      "LSTIME": "26,2126",
+      "RES": "26,2143",
+      "RESA": "26,2161",
+      "REM": "26,2162",
+      "REMA": "26,2165",
+      "VEM": "26,2173",
+      "VEMA": "26,2200",
+      "NINEB4": "26,2213",
+      "ONEB4": "26,2215",
+      "TEPHEM": "E3,1706",
+      "TIMEMO": "E4,1433",
+      "VECOEM": "E4,1436",
+      "RESO": "E4,1532",
+      "VESO": "E4,1540",
+      "OMEGAES": "E4,1546",
+      "VMOON": "E5,1751",
+      "VSUN": "E5,1743",
+      "TAD": "7040",
+      "SETOVF": "6752",
+      "OVERFLOW": "6766",
+      "SETOVF2": "7121",
+      "DANZIG": "6030"
+    },
+    "ephemerides_executable_port_status": "untranslated; source map only",
+    "native_arithmetic_dependency": {
+      "source_path": "Comanche055/INTERPRETER.agc",
+      "source_sha256": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+      "assembled_source_sha256": "cb7b36b583cac19d2e9c7da7f18662202971dd541543c6e6c1ba53dde41540ff",
+      "indentation_repairs": [
+        51,
+        207,
+        247,
+        542,
+        588,
+        678,
+        681,
+        908,
+        941,
+        1376,
+        1504,
+        1551,
+        1553,
+        1600,
+        1735,
+        1739,
+        1830,
+        1921,
+        1940,
+        1986,
+        2002,
+        2014,
+        2028,
+        2058,
+        2561,
+        2646,
+        2661,
+        2901,
+        3018,
+        3023,
+        3028,
+        3034,
+        3042,
+        3047,
+        3054,
+        3062
+      ],
+      "audit_dependency": "evidence/cm-powered-trig-source-audit.json",
+      "basic_group": "TAD, SETOVF, OVERFLOW and SETOVF2",
+      "containing_file_status": "partial",
+      "source_line_word_map": [
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 815,
+          "label": "SETOVF",
+          "op": "TC",
+          "arguments": "OVERFLOW",
+          "assembled_address": "6752",
+          "physical_fixed_word": 3562,
+          "physical_erasable_word": null,
+          "words": [
+            3574
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 816,
+          "label": "",
+          "op": "TCF",
+          "arguments": "DANZIG",
+          "assembled_address": "6753",
+          "physical_fixed_word": 3563,
+          "physical_erasable_word": null,
+          "words": [
+            7192
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 832,
+          "label": "OVERFLOW",
+          "op": "INDEX",
+          "arguments": "A",
+          "assembled_address": "6766",
+          "physical_fixed_word": 3574,
+          "physical_erasable_word": null,
+          "words": [
+            20480
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 833,
+          "label": "",
+          "op": "CS",
+          "arguments": "LIMITS",
+          "assembled_address": "6767",
+          "physical_fixed_word": 3575,
+          "physical_erasable_word": null,
+          "words": [
+            18944
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 834,
+          "label": "",
+          "op": "TS",
+          "arguments": "BUF",
+          "assembled_address": "6770",
+          "physical_fixed_word": 3576,
+          "physical_erasable_word": null,
+          "words": [
+            22616
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 835,
+          "label": "",
+          "op": "EXTEND",
+          "arguments": "",
+          "assembled_address": "6771",
+          "physical_fixed_word": 3577,
+          "physical_erasable_word": null,
+          "words": [
+            6
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 836,
+          "label": "",
+          "op": "AUG",
+          "arguments": "A",
+          "assembled_address": "6772",
+          "physical_fixed_word": 3578,
+          "physical_erasable_word": null,
+          "words": [
+            10240
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 837,
+          "label": "",
+          "op": "INDEX",
+          "arguments": "L",
+          "assembled_address": "6773",
+          "physical_fixed_word": 3579,
+          "physical_erasable_word": null,
+          "words": [
+            20481
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 838,
+          "label": "",
+          "op": "ADS",
+          "arguments": "MPAC +1",
+          "assembled_address": "6774",
+          "physical_fixed_word": 3580,
+          "physical_erasable_word": null,
+          "words": [
+            11373
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 839,
+          "label": "",
+          "op": "TS",
+          "arguments": "7",
+          "assembled_address": "6775",
+          "physical_fixed_word": 3581,
+          "physical_erasable_word": null,
+          "words": [
+            22535
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 840,
+          "label": "",
+          "op": "CAF",
+          "arguments": "ZERO",
+          "assembled_address": "6776",
+          "physical_fixed_word": 3582,
+          "physical_erasable_word": null,
+          "words": [
+            14865
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 841,
+          "label": "",
+          "op": "AD",
+          "arguments": "BUF",
+          "assembled_address": "6777",
+          "physical_fixed_word": 3583,
+          "physical_erasable_word": null,
+          "words": [
+            24664
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 842,
+          "label": "",
+          "op": "INDEX",
+          "arguments": "L",
+          "assembled_address": "7000",
+          "physical_fixed_word": 3584,
+          "physical_erasable_word": null,
+          "words": [
+            20481
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 843,
+          "label": "",
+          "op": "ADS",
+          "arguments": "MPAC",
+          "assembled_address": "7001",
+          "physical_fixed_word": 3585,
+          "physical_erasable_word": null,
+          "words": [
+            11372
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 844,
+          "label": "",
+          "op": "TS",
+          "arguments": "7",
+          "assembled_address": "7002",
+          "physical_fixed_word": 3586,
+          "physical_erasable_word": null,
+          "words": [
+            22535
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 845,
+          "label": "",
+          "op": "TC",
+          "arguments": "Q",
+          "assembled_address": "7003",
+          "physical_fixed_word": 3587,
+          "physical_erasable_word": null,
+          "words": [
+            2
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 846,
+          "label": "",
+          "op": "TCF",
+          "arguments": "SETOVF2",
+          "assembled_address": "7004",
+          "physical_fixed_word": 3588,
+          "physical_erasable_word": null,
+          "words": [
+            7761
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 882,
+          "label": "TAD",
+          "op": "EXTEND",
+          "arguments": "",
+          "assembled_address": "7040",
+          "physical_fixed_word": 3616,
+          "physical_erasable_word": null,
+          "words": [
+            6
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 883,
+          "label": "",
+          "op": "INDEX",
+          "arguments": "ADDRWD",
+          "assembled_address": "7041",
+          "physical_fixed_word": 3617,
+          "physical_erasable_word": null,
+          "words": [
+            20558
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 884,
+          "label": "",
+          "op": "DCA",
+          "arguments": "1",
+          "assembled_address": "7042",
+          "physical_fixed_word": 3618,
+          "physical_erasable_word": null,
+          "words": [
+            12290
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 885,
+          "label": "",
+          "op": "DAS",
+          "arguments": "MPAC +1",
+          "assembled_address": "7043",
+          "physical_fixed_word": 3619,
+          "physical_erasable_word": null,
+          "words": [
+            8302
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 886,
+          "label": "",
+          "op": "INDEX",
+          "arguments": "ADDRWD",
+          "assembled_address": "7044",
+          "physical_fixed_word": 3620,
+          "physical_erasable_word": null,
+          "words": [
+            20558
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 887,
+          "label": "",
+          "op": "AD",
+          "arguments": "0",
+          "assembled_address": "7045",
+          "physical_fixed_word": 3621,
+          "physical_erasable_word": null,
+          "words": [
+            24576
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 888,
+          "label": "",
+          "op": "AD",
+          "arguments": "MPAC",
+          "assembled_address": "7046",
+          "physical_fixed_word": 3622,
+          "physical_erasable_word": null,
+          "words": [
+            24684
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 889,
+          "label": "",
+          "op": "TS",
+          "arguments": "MPAC",
+          "assembled_address": "7047",
+          "physical_fixed_word": 3623,
+          "physical_erasable_word": null,
+          "words": [
+            22636
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 890,
+          "label": "",
+          "op": "TCF",
+          "arguments": "DANZIG",
+          "assembled_address": "7050",
+          "physical_fixed_word": 3624,
+          "physical_erasable_word": null,
+          "words": [
+            7192
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 892,
+          "label": "",
+          "op": "TCF",
+          "arguments": "SETOVF",
+          "assembled_address": "7051",
+          "physical_fixed_word": 3625,
+          "physical_erasable_word": null,
+          "words": [
+            7658
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 956,
+          "label": "SETOVF2",
+          "op": "TS",
+          "arguments": "OVFIND",
+          "assembled_address": "7121",
+          "physical_fixed_word": 3665,
+          "physical_erasable_word": null,
+          "words": [
+            22609
+          ]
+        },
+        {
+          "path": "Comanche055/INTERPRETER.agc",
+          "line": 957,
+          "label": "",
+          "op": "TC",
+          "arguments": "Q",
+          "assembled_address": "7122",
+          "physical_fixed_word": 3666,
+          "physical_erasable_word": null,
+          "words": [
+            2
+          ]
+        }
+      ],
+      "source_words": 29
+    }
+  }
+}

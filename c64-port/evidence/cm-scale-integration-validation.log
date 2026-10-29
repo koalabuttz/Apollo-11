@@ -1,0 +1,5 @@
+build/test-cm-scale
+CM fresh decimal output scaling: 64 complete2050-field original states, 0 failures
+cc -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c99 -Wall -Wextra -Werror -Iinclude -Itests tests/test_cm_scale.c tests/cm_scale_check.c src/agc_word.c src/agc_multiword.c src/guidance_product.c src/dsky_scale.c src/cm_scale.c tests/p66_bias_cases.c tests/dsky_scale_cases.c tests/cm_scale_cases.c -o build/test-cm-scale-sanitize
+ASAN_OPTIONS=detect_leaks=0 build/test-cm-scale-sanitize
+CM fresh decimal output scaling: 64 complete2050-field original states, 0 failures

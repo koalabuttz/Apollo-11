@@ -1,0 +1,151 @@
+     VMA      LMA     Size Align Out     In      Symbol
+       0        0        0     1 __basic_zp_start = 0x0002
+       0        0        0     1 __basic_zp_end = 0x0090
+       0        0        0     1 __rc0 = __basic_zp_start
+       0        0        0     1 __rc1 = __rc0 + 1
+       0        0        0     1 PROVIDE(__rc2 = __rc1 + 1)
+       0        0        0     1 __rc3 = __rc2 + 1
+       0        0        0     1 PROVIDE(__rc4 = __rc3 + 1)
+       0        0        0     1 __rc5 = __rc4 + 1
+       0        0        0     1 PROVIDE(__rc6 = __rc5 + 1)
+       0        0        0     1 __rc7 = __rc6 + 1
+       0        0        0     1 PROVIDE(__rc8 = __rc7 + 1)
+       0        0        0     1 __rc9 = __rc8 + 1
+       0        0        0     1 PROVIDE(__rc10 = __rc9 + 1)
+       0        0        0     1 __rc11 = __rc10 + 1
+       0        0        0     1 PROVIDE(__rc12 = __rc11 + 1)
+       0        0        0     1 __rc13 = __rc12 + 1
+       0        0        0     1 PROVIDE(__rc14 = __rc13 + 1)
+       0        0        0     1 __rc15 = __rc14 + 1
+       0        0        0     1 PROVIDE(__rc16 = __rc15 + 1)
+       0        0        0     1 __rc17 = __rc16 + 1
+       0        0        0     1 PROVIDE(__rc18 = __rc17 + 1)
+       0        0        0     1 __rc19 = __rc18 + 1
+       0        0        0     1 PROVIDE(__rc20 = __rc19 + 1)
+       0        0        0     1 __rc21 = __rc20 + 1
+       0        0        0     1 PROVIDE(__rc22 = __rc21 + 1)
+       0        0        0     1 __rc23 = __rc22 + 1
+       0        0        0     1 PROVIDE(__rc24 = __rc23 + 1)
+       0        0        0     1 __rc25 = __rc24 + 1
+       0        0        0     1 PROVIDE(__rc26 = __rc25 + 1)
+       0        0        0     1 __rc27 = __rc26 + 1
+       0        0        0     1 PROVIDE(__rc28 = __rc27 + 1)
+       0        0        0     1 __rc29 = __rc28 + 1
+       0        0        0     1 PROVIDE(__rc30 = __rc29 + 1)
+       0        0        0     1 __rc31 = __rc30 + 1
+       0        0        0     1 __basic_zp_size = __basic_zp_end - __basic_zp_start
+     801      801        c     1 .basic_header
+     801      801        c     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/basic-header.o:(.basic_header)
+     80b      80b        0     1                 next_line
+      22       22        0     1 .zp.data
+      22       22        0     1         __zp_data_start = .
+      22       22        0     1 __zp_data_load_start = LOADADDR(.zp.data)
+      22       22        0     1 __zp_data_size = SIZEOF(.zp.data)
+      22       22        0     1 .zp.bss
+      22       22        0     1         __zp_bss_start = .
+      22       22        0     1 __zp_bss_size = SIZEOF(.zp.bss)
+     80d      80d     2d2b     1 .text
+     80d      80d        0     1         _init = .
+     80d      80d        0     1         _start = .
+     80d      80d        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.init.010)
+     815      815        8     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(init-stack.S.obj):(.init.100)
+     815      815        0     1                 __do_init_stack
+     81d      81d        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.init.200)
+     81d      81d        0     1                 __do_zero_bss
+     820      820        5     1         build/cm_formatter.prg.lto.o:(.init.250)
+     820      820        0     1                 shift
+     825      825        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.call_main)
+     828      828        3     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(exit-custom.S.obj):(.after_main)
+     828      828        0     1                 __after_main
+     82b      82b        0     1         _fini = .
+     82b      82b        4     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/unmap-basic.o:(.fini.990)
+     82f      82f        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/crt0.o:(.fini_rts)
+     830      830       13     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/c64/lib/libcrt0.a(zero-bss.c.obj):(.text.__zero_bss)
+     830      830       13     1                 __zero_bss
+     843      843     13ae     1         build/cm_formatter.prg.lto.o:(.text.main)
+     843      843     13ae     1                 main
+    1bf1     1bf1       ca     1         build/cm_formatter.prg.lto.o:(.text.agc_multiply)
+    1bf1     1bf1       ca     1                 agc_multiply
+    1cbb     1cbb      1bc     1         build/cm_formatter.prg.lto.o:(.text.agc_double_add)
+    1cbb     1cbb      1bc     1                 agc_double_add
+    1e77     1e77      3dc     1         build/cm_formatter.prg.lto.o:(.text.dsky_pinball_write)
+    1e77     1e77      3dc     1                 dsky_pinball_write
+    2253     2253        6     1         build/cm_formatter.prg.lto.o:(.text.exit)
+    2253     2253        6     1                 exit
+    2259     2259       c9     1         build/cm_formatter.prg.lto.o:(.text.vfprintf)
+    2259     2259       c9     1                 vfprintf
+    2322     2322      cc3     1         build/cm_formatter.prg.lto.o:(.text._ZN12_GLOBAL__N_15printEPKcP6Status)
+    2322     2322      cc3     1                 (anonymous namespace)::print(char const*, Status*)
+    2fe5     2fe5       ed     1         build/cm_formatter.prg.lto.o:(.text._ZN12_GLOBAL__N_13putEcP6Status)
+    2fe5     2fe5       ed     1                 (anonymous namespace)::put(char, Status*)
+    30d2     30d2      162     1         build/cm_formatter.prg.lto.o:(.text._ZN12_GLOBAL__N_112print_stringEPKcP6Status)
+    30d2     30d2      162     1                 (anonymous namespace)::print_string(char const*, Status*)
+    3234     3234       18     1         build/cm_formatter.prg.lto.o:(.text.printf)
+    3234     3234       18     1                 printf
+    324c     324c       4d     1         build/cm_formatter.prg.lto.o:(.text.putchar)
+    324c     324c       4d     1                 putchar
+    3299     3299       13     1         build/cm_formatter.prg.lto.o:(.text.__ashlhi3)
+    3299     3299       13     1                 __ashlhi3
+    32ac     32ac       5d     1         build/cm_formatter.prg.lto.o:(.text.__udivqi3)
+    32ac     32ac       5d     1                 __udivqi3
+    3309     3309       c4     1         build/cm_formatter.prg.lto.o:(.text.__udivhi3)
+    3309     3309       c4     1                 __udivhi3
+    33cd     33cd       ae     1         build/cm_formatter.prg.lto.o:(.text.__umodhi3)
+    33cd     33cd       ae     1                 __umodhi3
+    347b     347b       34     1         build/cm_formatter.prg.lto.o:(.text.memcpy)
+    347b     347b       34     1                 memcpy
+    34af     34af       22     1         build/cm_formatter.prg.lto.o:(.text.__memset)
+    34af     34af       22     1                 __memset
+    34d1     34d1       67     1         build/cm_formatter.prg.lto.o:(.text.__mulsi3)
+    34d1     34d1       67     1                 __mulsi3
+    3538     3538        0     1         __init_array_start = .
+    3538     3538        0     1         __init_array_end = .
+    3538     3538        0     1         __fini_array_start = .
+    3538     3538        0     1         __fini_array_end = .
+    3538     3538     1870     1 .rodata
+    3538     3538        1     1         /workspace/toolchains/llvm-mos/bin/../mos-platform/common/lib/libcrt.a(const.S.obj):(.rodata)
+    3538     3538        0     1                 __set_v
+    3539     3539       3a     1         build/cm_formatter.prg.lto.o:(.rodata._ZN12_GLOBAL__N_15printEPKcP6Status)
+    3573     3573       2b     1         <internal>:(.rodata.str1.1)
+    359e     359e       80     1         build/cm_formatter.prg.lto.o:(.rodata.cm_formatter_numbers)
+    359e     359e       80     1                 cm_formatter_numbers
+    361e     361e       82     1         build/cm_formatter.prg.lto.o:(.rodata.cm_formatter_offsets)
+    361e     361e       82     1                 cm_formatter_offsets
+    36a0     36a0     16a8     1         build/cm_formatter.prg.lto.o:(.rodata.cm_formatter_patch)
+    36a0     36a0     16a8     1                 cm_formatter_patch
+    4d48     4d48        8     1         <internal>:(.rodata.cst8)
+    4d50     4d50       14     1         build/cm_formatter.prg.lto.o:(.rodata.dsky_decimal_display.codes)
+    4d50     4d50       14     1                 dsky_decimal_display.codes
+    4d64     4d64        4     1         <internal>:(.rodata.cst4)
+    4d68     4d68       20     1         <internal>:(.rodata.cst16)
+    4d88     4d88       20     1         <internal>:(.rodata.cst32)
+    4da8     4da8        0     1 .data
+    4da8     4da8        0     1         __data_start = .
+    4da8     4da8        0     1         __data_end = .
+    4da8     4da8        0     1 __data_load_start = LOADADDR(.data)
+    4da8     4da8        0     1 __data_size = SIZEOF(.data)
+    4da8     4da8     2005     1 .bss
+    4da8     4da8        0     1         __bss_start = .
+    4da8     4da8     1000     1         build/cm_formatter.prg.lto.o:(.bss.s)
+    4da8     4da8     1000     1                 s
+    5da8     5da8     1000     1         build/cm_formatter.prg.lto.o:(.bss.before)
+    5da8     5da8     1000     1                 before
+    6da8     6da8        5     1         build/cm_formatter.prg.lto.o:(.bss.cm_formatter_mailbox)
+    6da8     6da8        5     1                 cm_formatter_mailbox
+    6dad     6dad        0     1         __bss_end = .
+    6dad     6dad        0     1 __bss_size = SIZEOF(.bss)
+    6dad     6dad       4e     1 .noinit
+    6dad     6dad       4e     1         build/cm_formatter.prg.lto.o:(.noinit..Lstatic_stack)
+    6dfb     6dfb        0     1         __heap_start = ALIGN(., 2)
+    6dfb     6dfb        0     1 __stack = 0xD000
+       0        0       cc     1 .comment
+       0        0       cc     1         <internal>:(.comment)
+       0        0       1e     1 .llvm_sympart
+       0        0        f     1         build/cm_formatter.prg.lto.o:(.llvm_sympart)
+       f        f        f     1         build/cm_formatter.prg.lto.o:(.llvm_sympart)
+       0        0      bf0     4 .symtab
+       0        0      bf0     4         <internal>:(.symtab)
+       0        0       72     1 .shstrtab
+       0        0       72     1         <internal>:(.shstrtab)
+       0        0      74d     1 .strtab
+       0        0      74d     1         <internal>:(.strtab)

@@ -1,0 +1,20 @@
+{
+  "reviewer": "general_division independent read-only source review",
+  "result": "No issue found within declared21-stage standby producer domain.",
+  "file_hashes": {
+    "src/imu_standby.c": "7be4480e528547dc21d95ec776388184eacc99de5515809ba353e2578ed9931c",
+    "include/imu_standby.h": "43c189cb50ae46807e311ea421af331e79c8a46d70aa6dce350054800307415e",
+    "include/imu_standby_literals.h": "9e51d71cf31543863e9dbca5e2a126511b436254a7fdf13a0adb73c9f73c399a",
+    "build/imu-standby-source-map.json": "7907cc0a984c7b310aaebeabf62edb1e5396ad1569779df207fce64eada70099",
+    "../Luminary099/IMU_MODE_SWITCHING_ROUTINES.agc": "351bc32a2cd12f8b74b4b47f2e77791f02d39b94fe16c891a8249be2af4295eb",
+    "../Comanche055/IMU_MODE_SWITCHING_ROUTINES.agc": "bcc7f8e4819e191b159673ef27463c93ba3052fddcc14dba36d7a28e16b860eb"
+  },
+  "findings": [
+    "PRESTAND snapshots TIME2/TIME1 before scaler call; POSTAND clears counters in original DXCH order. Saved scaler pair exchange and eventual TIME2 double-add preserve raw scratch/register effects.",
+    "SCALPREP QXCH saves only the two actual compiled RAM caller descriptors. FINETIME ABI accepts positive14-bit A/L and excludes low037777 sentinel. Low5 clear/CCS yields same retry or ready PC/Q0157; no arbitrary instruction decoder is introduced.",
+    "POSTSTAND subtracts saved scaler, calls SHORTMP then TPAGREE, applies BIT10 correction only to negative major, adds original saved time, then actual TPAGREE/TIME2 DAS. Return-Q/L ABI guards preserve source helper order.",
+    "Prompt branches are TCF and preserve Q; channel13 standby-enable bit11 set/clear is literal. Readable channel13 trap-enable exclusion and LMbank37 SUPER100-clear guard correctly qualify source and hardware domains.",
+    "Passive ten-word table per mission agrees with original ADRES/CADR/phase tuple/NODOFLAG data. Actual external service/scaler/alarm bodies remain explicitly selected frontiers."
+  ],
+  "verification_limit": "Source/math/control read and final identity verification only. Exhaustive source/SAN/C64 cohorts are independently owned by implementation agent."
+}

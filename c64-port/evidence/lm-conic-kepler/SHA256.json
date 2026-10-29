@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-conic-kepler",
+  "release": "evidence-lm-conic-kepler",
+  "files": {
+    "lm-conic-kepler-1.map": {
+      "sha256": "9828c589dcc7add81f1558e9135b2b6bd9b430f2dc24e5d722c789cdd5904cd8",
+      "bytes": 32835,
+      "store": "release"
+    },
+    "lm-conic-kepler-1.prg": {
+      "sha256": "6d07d722d94be9f60cecf0feb6992af38c30755fd1b93fdcf295d0815889d4fd",
+      "bytes": 46317,
+      "store": "release"
+    },
+    "lm-conic-kepler-2.map": {
+      "sha256": "dc4e7c4ee8bf3e6640d7af1d0b71f6153b2a1783f5ea08dfc678aac79616de33",
+      "bytes": 24390,
+      "store": "release"
+    },
+    "lm-conic-kepler-2.prg": {
+      "sha256": "da08700b03bcd756711399cfd697af84e5e4cc2f7d9959011f16dcc7d4abca11",
+      "bytes": 40930,
+      "store": "release"
+    },
+    "lm-conic-kepler-3.map": {
+      "sha256": "239fd4171a258442b28d957871d0933e825571fbf99448fa98a6707baecfcdbc",
+      "bytes": 24184,
+      "store": "release"
+    },
+    "lm-conic-kepler-3.prg": {
+      "sha256": "4551d93a019aa8c245dfc7cbed2edd6799e8005dc916f161a80a78c0cd308e65",
+      "bytes": 31647,
+      "store": "release"
+    },
+    "lm-conic-kepler-4.map": {
+      "sha256": "9ab657d13672ea8144ca4b818a184fee13642854dd4d1d8eb7f949cfb06facb8",
+      "bytes": 24076,
+      "store": "release"
+    },
+    "lm-conic-kepler-4.prg": {
+      "sha256": "a42e3fe067077bc1fc473b6cba28558b4b042640f35928b38ae858f2ab4f4741",
+      "bytes": 36985,
+      "store": "release"
+    },
+    "lm-conic-kepler-checks.log": {
+      "sha256": "1fe2d6b60d08912050226d7094b20d8560e87e7815dee99ac0a7e441951fc1ec",
+      "bytes": 844,
+      "store": "tree"
+    },
+    "lm-conic-kepler-phase-steps.json": {
+      "sha256": "92711015f88e3f47790d034500b249918888dbb2a9aff6fc19eeb5533c81dd74",
+      "bytes": 1089,
+      "store": "tree"
+    },
+    "lm-conic-kepler-reference.snapshots.bin.xz": {
+      "sha256": "b1e654f7f813d216b62e401c72c6d83fcaa393d503f8dc16fba718fe50fc92ce",
+      "bytes": 33309836,
+      "store": "release"
+    },
+    "lm-conic-kepler-results.json": {
+      "sha256": "9948c0be719d18716710a3e8cb3f11b43cbd226576daeb0c62e75cb5c3b9dd48",
+      "bytes": 2892,
+      "store": "tree"
+    },
+    "lm-conic-kepler-source-map.json": {
+      "sha256": "7336114df6bf5bb78b7f214c1e55a61466a1c64ea2d4b161bccddb5887999d25",
+      "bytes": 44193,
+      "store": "tree"
+    },
+    "lm-conic-kepler-source-stream.json": {
+      "sha256": "daf718799cacc5d9b0317ce2ff55fae4f17230812d675ec72a6ffae6008fd959",
+      "bytes": 352,
+      "store": "tree"
+    },
+    "lm-conic-kepler-target-states.json": {
+      "sha256": "a181d1ebf9e27df3aec2ab98a483e1569ab36f00ae32a8d75878542adae682e2",
+      "bytes": 252,
+      "store": "tree"
+    }
+  }
+}

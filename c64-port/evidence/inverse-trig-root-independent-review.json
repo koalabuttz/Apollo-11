@@ -1,0 +1,12 @@
+{
+  "source_group_words_independently_checked_against_original_ropes": {
+    "Luminary099": 85,
+    "Comanche055": 83
+  },
+  "constants_accessor_cases": 131072,
+  "constants_per_mission": 18,
+  "invalid_outputs_unchanged": true,
+  "null_outputs_rejected": true,
+  "reviewed_native_source_sha256": "edf4d568d834fc50757575dd097adc8568039d4a31ee4c7ce771d6f68bcb8f30",
+  "review_scope": "Reviewed original sign branching, signed-zero/clamp exits, normalized SQRT composition, rounded unnormalization, seven POLY scalar products/additions and explicit source escape epilogues against native code. All source audit words match original rope; this audit span includes the deliberately excluded alarm handler/post-alarm continuation. No whole INTERPRETER or synthetic1302 abort qualification. Native callbacks retain source ownership until genuine DANZIG."
+}

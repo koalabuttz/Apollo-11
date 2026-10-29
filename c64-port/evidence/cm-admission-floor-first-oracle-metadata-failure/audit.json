@@ -1,0 +1,65 @@
+{
+  "scope": "New full13field source oracle initially left native executive_alarm metadata0 at actual BAILOUT boundary, whereas native admission explicitly publishes the pending literal01201/01202. First mismatch case28 is only executive_alarm: physical2048words and physical hardwarelatches all agree. Corrected oracle derives the pending notification strictly from original fixed literal at genuine sourceQ, validates against source outcome; no native/runtime/state substitution. Full failed streams retained and fresh comparison required.",
+  "files": [
+    {
+      "source": "tools/cm_admission_floor_reference.c",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm_admission_floor_reference.c",
+      "sha256": "d9e9d95670402c382026729e924d6509a268015c6f4cc7344368c0a1e6d36526",
+      "bytes": 1515
+    },
+    {
+      "source": "src/cm_admission_floor.c",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm_admission_floor.c",
+      "sha256": "5f84af9cc86c543a6518bb62319faffd08759522f66878809c804d05cf4187b2",
+      "bytes": 5728
+    },
+    {
+      "source": "tests/cm_admission_floor_cases.c",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm_admission_floor_cases.c",
+      "sha256": "8143fbafde567182f33b153d14a56620e907a742f1a7aca7c6c5474f1485e289",
+      "bytes": 649
+    },
+    {
+      "source": "build/cm-admission-floor-native.snapshots.bin.gz",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm-admission-floor-native.snapshots.bin.gz",
+      "sha256": "7ea468c0834e8f6d1bc3fcc6d3d07738552862957f8b11d4f6edfc5f70e02c18",
+      "bytes": 9545511
+    },
+    {
+      "source": "build/cm-admission-floor-validation.log",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm-admission-floor-validation.log",
+      "sha256": "8c765c17741f82971f17dff534cbacf337bdfc7a8422f862a100fac8819d6f3a",
+      "bytes": 127
+    },
+    {
+      "source": "build/cm-admission-floor-reference.snapshots.bin.gz",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm-admission-floor-reference.snapshots.bin.gz",
+      "sha256": "0b640b99d245d7364d29ad761737b785fde7e2427b31983cf4767fc2a6c970b6",
+      "bytes": 9524746
+    },
+    {
+      "source": "build/cm-admission-floor-reference.trace",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm-admission-floor-reference.trace",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "source": "build/cm-admission-floor-native.trace",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm-admission-floor-native.trace",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "source": "build/cm-admission-floor-reference.stream.json",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm-admission-floor-reference.stream.json",
+      "sha256": "b02f7795496a8543c65f9a633b4f3c4edffe96dd2601df98370fd6b193db89db",
+      "bytes": 99
+    },
+    {
+      "source": "build/cm-admission-floor-native.stream.json",
+      "retained": "evidence/cm-admission-floor-first-oracle-metadata-failure/cm-admission-floor-native.stream.json",
+      "sha256": "e2f589abb3d7e2ab3a3f8bdc2d3d534529d4ab1f760eb6167b52e32b598b0f9c",
+      "bytes": 99
+    }
+  ]
+}

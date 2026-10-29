@@ -1,0 +1,107 @@
+/* SPDX-License-Identifier: MIT */
+#ifndef LANEC_PW_RUNS_H
+#define LANEC_PW_RUNS_H
+/* Every pw-* suite's lanec_run (src/lanec_pw*_runs.c): one earlier Pinball
+ * module entered at the image's Z, LANEC_OUT_OF_SCOPE where it does not apply. */
+#include "lanec.h"
+enum lanec_status lanec_pw_address_request_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_alarm_cycle_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_alarm_recycle_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_blank_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_blanksub_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_charin_alarm_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_charin_clear_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_charin_number_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_charin_nv_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_charin_release_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_charin_reset_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_charin_sign_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_charin_number_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_charin_nv_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_decimal_pair_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_scale_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_dynamic_display_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_formatter_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_minutes_seconds_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_normal_display_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_nv85_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_cm_pinball_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_decimal_consumer_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_decimal_general_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_decimal_load_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_decimal_raw_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_decimal_row_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_decimal_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_decimal_select_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_decimal_time_consumer_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_display_release_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_enter_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_enter_zero_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_extended_dispatch_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_five_blank_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_fixed_display_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_fraction_pair_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_hours_output_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_input_angle_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_input_arithmetic_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_input_factor_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_input_mode_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_input_scale_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_input_select_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_input_store_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_input_time_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_jam_control_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_lamp_lifecycle_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_lamp_release_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_lamp_test_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_lm_pinball_busy_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_load_complete_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_load_control_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_load_request_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_load_store_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_machine_cadr_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_major_request_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_minutes_output_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_mixed_noun_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_mode_admit_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_mode_job_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_monitor_consumer_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_monitor_paste_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_monitor_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_noun_check_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_admission_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_blank_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_busy_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_consumer_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_continuation_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_key_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_return_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_update_general_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_nv_update_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_octal_consumer_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_octal_display_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_octal_verb_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_operator_release_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_operator_request_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_operator_response_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_operator_schedule_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_pinball_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_read_pair_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_request_control_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_response_recall_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_scalar_output_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_scale_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_sign_output_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_source_alarm_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_test_noun_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_two_digit_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_two_integer_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pw_verb_dispatch_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+/* The Pinball heads (src/lanec_pin_head_*.c, docs/LANEC-PIN-HEADS-DISPLAY.md): each
+ * runs the original program from one of its points to the next registered
+ * point, where the display consumers ran on in C. */
+enum lanec_status lanec_pin_head_decount_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pin_head_dpout_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pin_head_twoint_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+enum lanec_status lanec_pin_head_minsec_run(apollo_overlay_state *, lanec_io *, enum lanec_mission);
+#endif

@@ -1,0 +1,85 @@
+{
+  "entry": "DECDSP41,2523",
+  "compiled_stages": {
+    "0": "DECDSP cached load",
+    "1": "DSPDCPUT factor/routine selection",
+    "2..9": "original HMSOUT eight stages",
+    "10..15": "original M/SOUT six stages",
+    "16..20": "original2INTOUT five stages",
+    "21": "DSPDCEND+2 true CCS row continuation"
+  },
+  "new_row_continuation_words": {
+    "LM": [
+      {
+        "bank": "41",
+        "pc": "2570",
+        "word": "10117"
+      },
+      {
+        "bank": "41",
+        "pc": "2571",
+        "word": "02573"
+      },
+      {
+        "bank": "41",
+        "pc": "2572",
+        "word": "00136"
+      },
+      {
+        "bank": "41",
+        "pc": "2573",
+        "word": "54117"
+      },
+      {
+        "bank": "41",
+        "pc": "2574",
+        "word": "02537"
+      }
+    ],
+    "CM": [
+      {
+        "bank": "41",
+        "pc": "2570",
+        "word": "10117"
+      },
+      {
+        "bank": "41",
+        "pc": "2571",
+        "word": "02573"
+      },
+      {
+        "bank": "41",
+        "pc": "2572",
+        "word": "00136"
+      },
+      {
+        "bank": "41",
+        "pc": "2573",
+        "word": "54117"
+      },
+      {
+        "bank": "41",
+        "pc": "2574",
+        "word": "02537"
+      }
+    ]
+  },
+  "new_word_count_per_mission": 5,
+  "dependencies": [
+    "dsky_decimal_load",
+    "dsky_decimal_select",
+    "dsky_hours_output",
+    "dsky_minutes_output",
+    "dsky_two_integer"
+  ],
+  "boundaries": [
+    "actual ENTRET0136 before saved instruction",
+    "actual next row DSPDCPUT41,2537"
+  ],
+  "continuous_original_inputs": 4096,
+  "complete_checkpoints": 57316,
+  "record_fields_including_identity": 2052,
+  "target_kind": "22 independent complete-state stage fixtures",
+  "whole_file_claim": false,
+  "native_instruction_decoder": false
+}

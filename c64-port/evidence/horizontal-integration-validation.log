@@ -1,0 +1,2 @@
+./build/test-horizontal
+PASS256 complete original phased horizontal states; unsupported MODE/VAC/pointer shapes reject unchanged

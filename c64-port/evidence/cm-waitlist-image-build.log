@@ -1,0 +1,7 @@
+cc -Iinclude -Itests -O2 -g -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic src/cm_waitlist_image.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_waitlist_image_cases.c tests/cm_waitlist_image_check.c tests/test_cm_waitlist_image.c -o build/test-cm-waitlist-image
+./build/test-cm-waitlist-image
+1024 original CM WAITLIST full-image states: PASS
+cc -Iinclude -Itests -std=c99 -g -O1 -Wall -Wextra -Werror -fsanitize=address,undefined src/cm_waitlist_image.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_waitlist_image_cases.c tests/cm_waitlist_image_check.c tests/test_cm_waitlist_image.c -o build/test-cm-waitlist-image-sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/test-cm-waitlist-image-sanitize
+1024 original CM WAITLIST full-image states: PASS
+/workspace/toolchains/llvm-mos/bin/mos-c64-clang -Iinclude -Itests -std=c99 -Os -fno-static-stack -mlto-zp=0 -Wall -Wextra -Werror -Wl,-Map,build/cm-waitlist-image.map src/cm_waitlist_image.c src/cm_waitlist.c src/cm_phase.c src/cm_native_image.c src/agc_word.c src/agc_multiword.c tests/cm_waitlist_image_cases.c tests/cm_waitlist_image_check.c platform/c64/cm_waitlist_image_diagnostic.c -o build/cm-waitlist-image.prg

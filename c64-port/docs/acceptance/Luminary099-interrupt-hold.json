@@ -1,0 +1,448 @@
+{
+ "program": "Luminary099",
+ "about": "The longest an interrupt request waits for a native boundary (#838), per\nreplay window, on the host.",
+ "mct_ms": 0.01172,
+ "longest": {
+  "scenario": "lm-coast-verbs",
+  "snap_cs": 2500,
+  "cs": 1000,
+  "hold_mct": 1186,
+  "time1": "05624"
+ },
+ "windows": [
+  {
+   "scenario": "lm-abort-p70-nassp",
+   "snap_cs": 115000,
+   "cs": 600,
+   "hold_mct": 553,
+   "time1": "27340"
+  },
+  {
+   "scenario": "lm-abort-p71-nassp",
+   "snap_cs": 115000,
+   "cs": 600,
+   "hold_mct": 1145,
+   "time1": "27251"
+  },
+  {
+   "scenario": "lm-cdh",
+   "snap_cs": 2100,
+   "cs": 800,
+   "hold_mct": 5,
+   "time1": "04710"
+  },
+  {
+   "scenario": "lm-cdh-csm",
+   "snap_cs": 2100,
+   "cs": 800,
+   "hold_mct": 5,
+   "time1": "04710"
+  },
+  {
+   "scenario": "lm-coast-programs",
+   "snap_cs": 2400,
+   "cs": 1000,
+   "hold_mct": 11,
+   "time1": "05364"
+  },
+  {
+   "scenario": "lm-coast-programs",
+   "snap_cs": 8400,
+   "cs": 1000,
+   "hold_mct": 11,
+   "time1": "21144"
+  },
+  {
+   "scenario": "lm-coast-programs",
+   "snap_cs": 16900,
+   "cs": 1000,
+   "hold_mct": 828,
+   "time1": "02067"
+  },
+  {
+   "scenario": "lm-coast-programs",
+   "snap_cs": 19900,
+   "cs": 1000,
+   "hold_mct": 50,
+   "time1": "07432"
+  },
+  {
+   "scenario": "lm-coast-r04",
+   "snap_cs": 2400,
+   "cs": 1000,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-coast-v55",
+   "snap_cs": 2400,
+   "cs": 1000,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 2500,
+   "cs": 1000,
+   "hold_mct": 1186,
+   "time1": "05624"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 3900,
+   "cs": 1000,
+   "hold_mct": 159,
+   "time1": "10072"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 5400,
+   "cs": 1000,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 6400,
+   "cs": 1000,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 7400,
+   "cs": 1000,
+   "hold_mct": 29,
+   "time1": "20002"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 8400,
+   "cs": 1000,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 9400,
+   "cs": 1000,
+   "hold_mct": 205,
+   "time1": "22711"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 10900,
+   "cs": 1000,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 13900,
+   "cs": 1000,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 18900,
+   "cs": 1000,
+   "hold_mct": 49,
+   "time1": "06054"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 19900,
+   "cs": 1000,
+   "hold_mct": 50,
+   "time1": "07204"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 21900,
+   "cs": 1000,
+   "hold_mct": 50,
+   "time1": "13210"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 25400,
+   "cs": 1000,
+   "hold_mct": 50,
+   "time1": "21634"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 27900,
+   "cs": 1000,
+   "hold_mct": 26,
+   "time1": "26772"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 28900,
+   "cs": 1000,
+   "hold_mct": 50,
+   "time1": "30654"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 30900,
+   "cs": 1000,
+   "hold_mct": 49,
+   "time1": "34740"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 33900,
+   "cs": 1000,
+   "hold_mct": 49,
+   "time1": "02630"
+  },
+  {
+   "scenario": "lm-coast-verbs",
+   "snap_cs": 35400,
+   "cs": 1000,
+   "hold_mct": 35,
+   "time1": "05506"
+  },
+  {
+   "scenario": "lm-csi",
+   "snap_cs": 2100,
+   "cs": 800,
+   "hold_mct": 5,
+   "time1": "04710"
+  },
+  {
+   "scenario": "lm-doi-nassp",
+   "snap_cs": 48800,
+   "cs": 1000,
+   "hold_mct": 700,
+   "time1": "26306"
+  },
+  {
+   "scenario": "lm-landing-ascent-nassp",
+   "snap_cs": 122500,
+   "cs": 1000,
+   "hold_mct": 1158,
+   "time1": "06132"
+  },
+  {
+   "scenario": "lm-landing-ascent-nassp",
+   "snap_cs": 140000,
+   "cs": 1000,
+   "hold_mct": 800,
+   "time1": "11125"
+  },
+  {
+   "scenario": "lm-landing-ascent-nassp",
+   "snap_cs": 156000,
+   "cs": 1000,
+   "hold_mct": 26,
+   "time1": "06351"
+  },
+  {
+   "scenario": "lm-p22-surface",
+   "snap_cs": 2900,
+   "cs": 1000,
+   "hold_mct": 35,
+   "time1": "06347"
+  },
+  {
+   "scenario": "lm-p41-nassp",
+   "snap_cs": 49000,
+   "cs": 1000,
+   "hold_mct": 700,
+   "time1": "26307"
+  },
+  {
+   "scenario": "lm-p42-nassp",
+   "snap_cs": 48800,
+   "cs": 1000,
+   "hold_mct": 705,
+   "time1": "26005"
+  },
+  {
+   "scenario": "lm-p47-nassp",
+   "snap_cs": 2950,
+   "cs": 1000,
+   "hold_mct": 735,
+   "time1": "33635"
+  },
+  {
+   "scenario": "lm-p51",
+   "snap_cs": 100,
+   "cs": 1000,
+   "hold_mct": 35,
+   "time1": "26544"
+  },
+  {
+   "scenario": "lm-p51",
+   "snap_cs": 3400,
+   "cs": 1000,
+   "hold_mct": 349,
+   "time1": "35650"
+  },
+  {
+   "scenario": "lm-p52-realign",
+   "snap_cs": 2000,
+   "cs": 600,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-p52-realign",
+   "snap_cs": 4000,
+   "cs": 600,
+   "hold_mct": 26,
+   "time1": "35426"
+  },
+  {
+   "scenario": "lm-p57",
+   "snap_cs": 12000,
+   "cs": 600,
+   "hold_mct": 0,
+   "time1": "00000"
+  },
+  {
+   "scenario": "lm-p63-descent",
+   "snap_cs": 17500,
+   "cs": 200,
+   "hold_mct": 736,
+   "time1": "02374"
+  },
+  {
+   "scenario": "lm-p63-descent-restart",
+   "snap_cs": 20000,
+   "cs": 300,
+   "hold_mct": 670,
+   "time1": "07440"
+  },
+  {
+   "scenario": "lm-p63-descent-thrust",
+   "snap_cs": 17500,
+   "cs": 120,
+   "hold_mct": 580,
+   "time1": "02370"
+  },
+  {
+   "scenario": "lm-p63-lr-update",
+   "snap_cs": 90000,
+   "cs": 1000,
+   "hold_mct": 1015,
+   "time1": "06102"
+  },
+  {
+   "scenario": "lm-p63-lr-update",
+   "snap_cs": 100400,
+   "cs": 1000,
+   "hold_mct": 700,
+   "time1": "32034"
+  },
+  {
+   "scenario": "lm-p63-lr-v58",
+   "snap_cs": 87500,
+   "cs": 1000,
+   "hold_mct": 1015,
+   "time1": "01342"
+  },
+  {
+   "scenario": "lm-p63-nassp",
+   "snap_cs": 112000,
+   "cs": 600,
+   "hold_mct": 1131,
+   "time1": "21361"
+  },
+  {
+   "scenario": "lm-p63-v60-nassp",
+   "snap_cs": 99500,
+   "cs": 1000,
+   "hold_mct": 1128,
+   "time1": "31513"
+  },
+  {
+   "scenario": "lm-p65-autoland-nassp",
+   "snap_cs": 127000,
+   "cs": 1000,
+   "hold_mct": 743,
+   "time1": "16603"
+  },
+  {
+   "scenario": "lm-p67-nassp",
+   "snap_cs": 123800,
+   "cs": 1000,
+   "hold_mct": 1158,
+   "time1": "10412"
+  },
+  {
+   "scenario": "lm-rendezvous",
+   "snap_cs": 29000,
+   "cs": 600,
+   "hold_mct": 660,
+   "time1": "30741"
+  },
+  {
+   "scenario": "lm-rendezvous-tpm",
+   "snap_cs": 40000,
+   "cs": 600,
+   "hold_mct": 525,
+   "time1": "17277"
+  },
+  {
+   "scenario": "lm-stable-orbit",
+   "snap_cs": 8000,
+   "cs": 800,
+   "hold_mct": 699,
+   "time1": "20575"
+  },
+  {
+   "scenario": "lm-stable-orbit-lm",
+   "snap_cs": 8000,
+   "cs": 800,
+   "hold_mct": 699,
+   "time1": "20575"
+  },
+  {
+   "scenario": "lm-uplink-accept",
+   "snap_cs": 1900,
+   "cs": 1000,
+   "hold_mct": 20,
+   "time1": "03560"
+  },
+  {
+   "scenario": "lm-uplink-accept",
+   "snap_cs": 4900,
+   "cs": 1000,
+   "hold_mct": 20,
+   "time1": "11450"
+  },
+  {
+   "scenario": "lm-uplink-accept",
+   "snap_cs": 7100,
+   "cs": 1000,
+   "hold_mct": 20,
+   "time1": "15700"
+  },
+  {
+   "scenario": "lm-uplink-accept",
+   "snap_cs": 9100,
+   "cs": 1000,
+   "hold_mct": 39,
+   "time1": "22626"
+  },
+  {
+   "scenario": "lm-uplink-accept",
+   "snap_cs": 11900,
+   "cs": 1000,
+   "hold_mct": 20,
+   "time1": "27200"
+  },
+  {
+   "scenario": "lm-uplink-reject",
+   "snap_cs": 1900,
+   "cs": 1000,
+   "hold_mct": 0,
+   "time1": "00000"
+  }
+ ]
+}

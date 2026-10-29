@@ -1,0 +1,13 @@
+./build/test-ephemeris-add
+PASS72 complete original TAD states and13 immutable image guards plus null
+python3 tools/ephemeris_add_host.py --cc "cc"
+PASS all retained source-state bytes: 269090816 SHA256 891dfaaa391a8206a34dd0c280612f1cbf3ae6a68ff3a3306f72c58170c6f30c
+PASS all retained source-state bytes: 269090816 SHA256 a815fb9841b80285cd536c627073c4b6b2e63921017240700324c825c4f89e49
+PASS131072 complete original TAD states strict native
+cc -Iinclude -Itests -std=c99 -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Itests -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie tests/test_ephemeris_add.c tests/ephemeris_add_target.c tests/frozen_words.c src/ephemeris_add.c src/agc_word.c src/agc_multiword.c tests/ephemeris_add_cases.c -o build/test-ephemeris-add-integrated-san
+ASAN_OPTIONS=detect_leaks=0 ./build/test-ephemeris-add-integrated-san
+PASS72 complete original TAD states and13 immutable image guards plus null
+python3 tools/ephemeris_add_host.py --cc "cc" --sanitize
+PASS all retained source-state bytes: 269090816 SHA256 891dfaaa391a8206a34dd0c280612f1cbf3ae6a68ff3a3306f72c58170c6f30c
+PASS all retained source-state bytes: 269090816 SHA256 a815fb9841b80285cd536c627073c4b6b2e63921017240700324c825c4f89e49
+PASS131072 complete original TAD states full ASAN/UBSAN

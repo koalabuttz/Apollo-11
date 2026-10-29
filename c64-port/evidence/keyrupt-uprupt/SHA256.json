@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestone": "keyrupt-uprupt",
+  "release": "evidence-keyrupt-uprupt",
+  "files": {
+    "keyrupt-uprupt-c64-cover.json": {
+      "sha256": "85decb40c1bd9ef1f141055a79981863910dadd02fa1dad6a8c703da548099ea",
+      "bytes": 615,
+      "store": "tree"
+    },
+    "keyrupt-uprupt-differential.log": {
+      "sha256": "e2e7b924ab355fcf20479e57f2bedaba4e4be2cdae5534a49f5708105ffb7fd5",
+      "bytes": 679,
+      "store": "tree"
+    },
+    "keyrupt-uprupt-host.log": {
+      "sha256": "f082a4ca7d349d0520da54962920549b9433e2fc48be9a337d4a24914b3db102",
+      "bytes": 884,
+      "store": "tree"
+    },
+    "keyrupt-uprupt-proof.json": {
+      "sha256": "a96b33a818a376839fd7d7ff626392e7e73cf70ed14ed7409505a04a62f2b318",
+      "bytes": 1873,
+      "store": "tree"
+    },
+    "keyrupt-uprupt-source-map-cm.json": {
+      "sha256": "c17f355fb527bf29cd9cab730d66e5e80a2ca4d859d8d157523c7e8ca8f66721",
+      "bytes": 14061,
+      "store": "tree"
+    },
+    "keyrupt-uprupt-source-map-lm.json": {
+      "sha256": "b8815418407dece510e01284cbc77d808f99277e50e7ce2e40e898037f603ca9",
+      "bytes": 14425,
+      "store": "tree"
+    },
+    "keyrupt-uprupt-vice.log": {
+      "sha256": "7e797ddd38364bb945da7078ab73d8180fd7b9e7b5e9e39cd57ddfef0aa4aa92",
+      "bytes": 720,
+      "store": "tree"
+    }
+  }
+}

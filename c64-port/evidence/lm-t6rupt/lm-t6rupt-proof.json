@@ -1,0 +1,31 @@
+{
+ "mission": "Luminary099",
+ "rope_sha256": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+ "cases": 3840,
+ "snapshot_sha256": "d5e5a1971f929d48825010a21688a816a509bcb5cd63cca24ba871b90cb0eb29",
+ "outcomes": {
+  "dot6rupt:returned": 1536,
+  "resume:refused": 26,
+  "resume:returned": 742,
+  "t6jobchk:returned": 512,
+  "vector:returned": 256,
+  "write:returned": 768
+ },
+ "entries": [
+  "04004 T6RUPT vector",
+  "17,2065 DOT6RUPT",
+  "17,2027 T6JOBCHK",
+  "05753 WRITEP -1",
+  "05754 WRITEP",
+  "05757 WRITEU -1",
+  "05760 WRITEU",
+  "05770 WRITEV -1",
+  "05771 WRITEV",
+  "05270 RESUME",
+  "05272 NOQRSM",
+  "05274 NOQBRSM"
+ ],
+ "boundary": "one routine from its entry to the continuation it leaves in Z (DOT6RUPT from the vector; RESUME or CCSHOLE from DOT6RUPT; the caller, or CCSHOLE, from T6JOBCHK; the caller from the jet writers); the original runs to the first time it reaches that Z (and FB in banked memory), or for RESUME, NOQRSM and NOQBRSM until the interrupt ends",
+ "compared": "outcome kind; all 2048 erasable words, SUPERBNK, interrupt enable, InIsr, channels 5, 6, 13",
+ "full_physical_words": 2048
+}

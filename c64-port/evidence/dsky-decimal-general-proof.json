@@ -1,0 +1,74 @@
+{
+  "source_files": {
+    "docs/DSKY-DECIMAL-GENERAL.md": "518a9e1e418af548f115c8123e5d351da1995b175527dac3607b7f94298c6185",
+    "include/dsky_decimal_general.h": "a6f03a97e759a47071ddcb9a94a448d273941df384fe217450c5e0aa5ed9dca7",
+    "src/dsky_decimal_general.c": "2be45331cb1bfc68e219c8ca0d358e7876766756495ab53188d14f3380df3aec",
+    "tests/dsky_decimal_general_cases.c": "35b15b95f5704b1ee58336f910f222a2f23159bb46f360a1f76ed72d83b3467f",
+    "tests/dsky_decimal_general_cases.h": "1eb24da21dbf8d7508958325953737129116758cb75f621a79a233ea4ff37a78",
+    "tests/dsky_decimal_general_check.c": "5e56a5c1974da04f156af985c61e1ea7d121cf1f31a4c6eba0c9fd4edddbf94e",
+    "tests/dsky_decimal_general_check.h": "bae312e86fa3ef4ce146fd7e07ac3c6d4f3ed7f2f113b20943c99b81353d9e2a",
+    "tests/dsky_decimal_general_vectors.h": "fcf65fbaf98f6fddc277bbfd91bfc4a486f20afcec2dbfdd56bdadf6e479e231",
+    "tests/test_dsky_decimal_general.c": "93847023aa978b084d310e065627c5ba2927479ac666e35a39013b9692b6e7b9",
+    "tools/dsky_decimal_general.mk": "8f070dc3589682d53691f60671515efa760f5e1a0b5b984bbede149d3ee73036",
+    "tools/dsky_decimal_general_diagnostic.c": "4a62d7ff80bb36131768d379d02b8a68a1fd2a1dd35eaf954f84529dfbc2ae86",
+    "tools/dsky_decimal_general_differential.py": "1fedad01c60d4d746808acb5251cd63cfa4c30a8a17f065a21c74a7e33e50b3e",
+    "tools/dsky_decimal_general_inputs.c": "04c8aabb39701b25c10c0683cf2dcc60d5545c06b2f0924c8511a126b99f15fa",
+    "tools/dsky_decimal_general_reference.c": "3ea8fecdc76d89e8a76b0971f106c05343cf7d1136d20b3f05c9d84b7e3a46d6",
+    "tools/dsky_decimal_general_sanitize.py": "d274fb7973802cb41bdf7a77f7eb5354b2a5ce5b6bd936d978d5e12a5a98efca",
+    "tools/dsky_decimal_general_snapshot.c": "ed120615a8961d4c53eafcc9ae0a3aba4b13c0e8eac55ca86ee61c0b43afe236",
+    "tools/dsky_decimal_general_vice_test.py": "aedc01cd45c59dcee5887b4e87c5606319f40df1660ed6792135af7d1efca752",
+    "tools/freeze_dsky_decimal_general.py": "c2c118315b3ff2de67e15a48ef40a3cdf6a33db522322a75905cf5a8c0acbe71"
+  },
+  "native_dependencies": {
+    "include/dsky_nv_admission.h": "cc6dbf21c7ed8ec1bae2a0ad30e4b1065f2821614ce23370e981ec5d47ab42e1",
+    "include/agc_word.h": "926980cdf986b6deee907a2b64ee531e22384d7562944b98168d42d641600191",
+    "include/agc_multiword.h": "102bb860395c3bdc2293d7846fa08a4b9d191515ccdaa0af7ca7eb4980e91795",
+    "include/dsky_pinball.h": "3e8a2e43ef27712c3cdcf89cea56e560bed13f5f05784f09ffacbe48e76541c1",
+    "include/p66_bias.h": "ed594570c8fa6831498bd65b27a1da136feb9d18404dc1e8db084585c23f5c77",
+    "include/overlay_runtime.h": "c22b17186bda429900b1ea04627aa9d036b65abbc845dca74ec78f7bd9c35c39",
+    "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+    "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+    "src/dsky_pinball.c": "c6385c6bfec99ad1c2ea9eac06d174592278b81250384180c35cfc177ee8de0d"
+  },
+  "original_sources": {
+    "../Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "6fa52bb043446b2c4401ac68f41d780059b2cbe5d868cc08bb794eb0a9598729",
+    "../Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac",
+    "../Luminary099/INTERPRETER.agc": "26c5741b10fcab167d9fd795995b4c2969a0bb6bfa81d7d55f85e4a3cdfc0a5e",
+    "../Comanche055/INTERPRETER.agc": "724087beda6d5b61ad6719d551b3a22262b32f61a121bef94343af5e0bb2005b",
+    "deps/lm-powered-fixture/MAIN.agc.bin": "1f5326e038de5b741b2f27b01ec949dbd688cf1906994e997402587c8628f40e",
+    "deps/cm-powered-fixture/MAIN.agc.bin": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061"
+  },
+  "host_reference_dependencies": {
+    "tools/cm_executive_reference.c": "f623e869cc420126c15d27a5749a1e4a38df27deb91b7f83a2fc1c7be6e6e448"
+  },
+  "artifacts": {
+    "evidence/dsky-decimal-general-build.log": "d81530c792808d0547d509eb9988a959010ae6193a03c6c87c6b50f15a54aa59",
+    "evidence/dsky-decimal-general-c64.log": "03adfe8c9ee697f004d4df0695e81977ebf9552c8be93af7ed452213a6204f0a",
+    "evidence/dsky-decimal-general-differential.log": "e140f38d37f6b3b3b0bf40daf803fdb7045faa5df3f2dce34bce6947b41445b6",
+    "evidence/dsky-decimal-general-freeze.log": "cad62d1f6f65bd8472f3e8b0ab75e99bd781e4b8e82bcb22e2acee42af6ae0ab",
+    "evidence/dsky-decimal-general-reference.snapshots.xz": "ebaa89f589674dd47b339217f9386a05f43cf5134302a8565f03304e5872bc6f",
+    "evidence/dsky-decimal-general-source-map.json": "6024d23ef1e5676a2b8effbd757cd2f272dfc718656bda4d7731e613e1a4bae1",
+    "evidence/dsky-decimal-general-stream-sha.json": "c612d2e4df8e6563a943a1527f945b3f248e607089ac257176d4b9102a8afa49",
+    "evidence/dsky_decimal_general-hardware-stack.bin": "c4fea812cba7917d88ea095898700a4f4d0bd4e01ef9d46e92a51fff71bec475",
+    "evidence/dsky_decimal_general-software-stack.bin": "a570532e76c92046bc6fda009831f075c93f58ec7ce9a5695bec87a349a2c1a3",
+    "evidence/dsky_decimal_general-vice-mailbox.bin": "f035b5cc6c9d7a00433597332e9daea3cfb4d96f8239747d61ccf7108e58ccea",
+    "evidence/dsky_decimal_general-vice-monitor.log": "78a8d21a331017feab7924792e0aff0db74a46caf26d2d664086f01bd3f10c93",
+    "evidence/dsky_decimal_general.map": "a4399f3a71cb57e9914f399179554bbd8c80c792d0e61ec692fd8712204d1878",
+    "evidence/dsky_decimal_general.prg": "edfd36aa6b5ecbcfcd22c60aa11a514272f67b1ff9377d86470f9dc219d28011"
+  },
+  "complete_source_states": 16384,
+  "record_fields": 2052,
+  "raw_source_sha256": "9ba33183af2425b34d3dd1010c9f6a1729659e1c32c29c6c35f2fd13b85ede83",
+  "full_sanitizer_states": 16384,
+  "frozen_complete_states": 128,
+  "unchanged_invalid_guards": 32,
+  "target": {
+    "prg_bytes": 19839,
+    "mailbox": "a500008000",
+    "hardware_stack_including_rom": 23,
+    "rom_stack_bytes": 14,
+    "software_stack": 69,
+    "additional_zero_page_bytes": 0
+  },
+  "qualification_boundary": "Original mission DSPDECWD/NR formatter through actual caller or before CCSHOLE; following continuation and recovery external"
+}

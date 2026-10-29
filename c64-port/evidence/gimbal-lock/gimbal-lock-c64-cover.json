@@ -1,0 +1,138 @@
+{
+ "milestone": "gimbal-lock",
+ "method": "gcov -b branch arcs (file:line branch N) of the native runner built at -O0 --coverage over every linked source, one host case at a time; the rows are the C64 vector header's case list, each run on VICE against its frozen digest (tools/interp_routine_differential.py, tools/c64_row_cover.py)",
+ "linked_sources": {
+  "src/lm_gimbal_lock.c": "8397981c088c0dd06e83115150f9e1fe902b2a9bb9f27d50bb80a39d1d89eee6",
+  "src/cm_gimbal_lock.c": "d583715d2d039958f2e1f5717a47d51ddf97ffc3256d1e14a7acdb42c0389d1a",
+  "src/lm_interp_orders.c": "70912a67792481376eb8341316cb7132af4937e4b3ff9b141d44dd536c34edbb",
+  "src/lm_interp_steps.c": "2d02369e0c4de2e366f013000f1a3bae986ea5871e77d2995f29848c93ac84e9",
+  "src/cm_interp_orders.c": "a2ca5afab1dde9d2a30a0a490f6d6a9912b2a07b3f9c0f282b932e7bbab9e6ac",
+  "src/cm_interp_steps.c": "25b93a48643dabc0f9ea91ac39d9d9c6cbcf7b019d01eb334c7f9e959b1bc577",
+  "src/agc_image_ops.c": "f2f73f46f8db1c4580a36943ff9e6d6331d19a3a89357771a33eaabdd4c5f907",
+  "src/agc_hardware_divide.c": "a531be166e2452661c584fc91d76bc28ef81415103fde6b969a12dd0699b1074",
+  "src/agc_transfer.c": "1f5292eefdaebdc070119bb9986fb45845c86de64344216bedb249b2bb7d1227",
+  "src/agc_word.c": "1fbcba2b760831c5162168c69c5c81c6f3fbf86d1e6d94c3657559de04176679",
+  "src/agc_multiword.c": "79673ac19315b2fc306a71cb28ae43dced8a4b822dc4d4e6ec0fab102f662d1e",
+  "tests/interp_case.c": "74c48855582edf093015d152d2651a4fad7d07895c4b3972c8ba8b941438c308",
+  "tests/gimbal_lock_target.c": "4a0a0b16d6030d1db73087b779d98334e666ddb7d077c149e30aae311fbda89e"
+ },
+ "host_cases": 1360,
+ "host_case_stride": 8,
+ "c64_rows": [
+  0,
+  16,
+  544,
+  1072,
+  1648,
+  1880,
+  2048,
+  2051,
+  2517,
+  2640,
+  2712,
+  2744,
+  3232,
+  3400,
+  3752,
+  4096,
+  4624,
+  4832,
+  5120,
+  5264,
+  5688,
+  5760,
+  6159,
+  6231,
+  6272,
+  6816,
+  7064,
+  7120,
+  7256,
+  7416,
+  7760,
+  7928,
+  8192,
+  8736,
+  9256,
+  9752
+ ],
+ "host_branch_arcs": 621,
+ "c64_branch_arcs": 621,
+ "arcs_by_source_host_c64": {
+  "src/agc_hardware_divide.c": [
+   16,
+   16
+  ],
+  "src/agc_image_ops.c": [
+   102,
+   102
+  ],
+  "src/agc_multiword.c": [
+   10,
+   10
+  ],
+  "src/agc_transfer.c": [
+   46,
+   46
+  ],
+  "src/agc_word.c": [
+   3,
+   3
+  ],
+  "src/cm_gimbal_lock.c": [
+   60,
+   60
+  ],
+  "src/cm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/cm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_gimbal_lock.c": [
+   71,
+   71
+  ],
+  "src/lm_interp_orders.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_orders.c@runner-cm_interp_orders": [
+   89,
+   89
+  ],
+  "src/lm_interp_orders.c@runner-lm_interp_orders": [
+   82,
+   82
+  ],
+  "src/lm_interp_steps.c": [
+   0,
+   0
+  ],
+  "src/lm_interp_steps.c@runner-cm_interp_steps": [
+   33,
+   33
+  ],
+  "src/lm_interp_steps.c@runner-lm_interp_steps": [
+   34,
+   34
+  ],
+  "tests/gimbal_lock_target.c": [
+   2,
+   2
+  ],
+  "tests/interp_case.c": [
+   44,
+   44
+  ],
+  "tools/interp_routine_native.c": [
+   29,
+   29
+  ]
+ },
+ "host_branches_missing_on_c64": [],
+ "all_cases_branch_arcs": 621,
+ "all_cases_branches_missing_on_c64": []
+}

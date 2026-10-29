@@ -1,0 +1,1602 @@
+{
+  "source_path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+  "source_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+  "fixture_source_sha256": "42f815caec6cba78fa7a084186d25cbd5bd1a576e7b9e149e429cf3e886b0785",
+  "numerical_edits": 0,
+  "source_edits": 0,
+  "rope_sha256": "6e3150ae9b43535237e10f565205d1f65e6d60cafbe8935be598e03e9810b061",
+  "source_words": 76,
+  "source_line_word_map": [
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 38,
+      "label": "",
+      "op": "BLOCK",
+      "arguments": "02",
+      "assembled_address": "4662",
+      "physical_fixed_word": 2482,
+      "physical_erasable_word": null,
+      "words": []
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 39,
+      "label": "",
+      "op": "COUNT",
+      "arguments": "02/BANK",
+      "assembled_address": "4662",
+      "physical_fixed_word": 2482,
+      "physical_erasable_word": null,
+      "words": []
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 41,
+      "label": "BANKCALL",
+      "op": "DXCH",
+      "arguments": "BUF2",
+      "assembled_address": "4662",
+      "physical_fixed_word": 2482,
+      "physical_erasable_word": null,
+      "words": [
+        21596
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 42,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4663",
+      "physical_fixed_word": 2483,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 43,
+      "label": "",
+      "op": "CA",
+      "arguments": "0",
+      "assembled_address": "4664",
+      "physical_fixed_word": 2484,
+      "physical_erasable_word": null,
+      "words": [
+        12288
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 44,
+      "label": "",
+      "op": "INCR",
+      "arguments": "Q",
+      "assembled_address": "4665",
+      "physical_fixed_word": 2485,
+      "physical_erasable_word": null,
+      "words": [
+        10242
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 48,
+      "label": "SWCALL",
+      "op": "TS",
+      "arguments": "L",
+      "assembled_address": "4666",
+      "physical_fixed_word": 2486,
+      "physical_erasable_word": null,
+      "words": [
+        22529
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 49,
+      "label": "",
+      "op": "LXCH",
+      "arguments": "FBANK",
+      "assembled_address": "4667",
+      "physical_fixed_word": 2487,
+      "physical_erasable_word": null,
+      "words": [
+        9220
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 50,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4670",
+      "physical_fixed_word": 2488,
+      "physical_erasable_word": null,
+      "words": [
+        31276
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 51,
+      "label": "",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4671",
+      "physical_fixed_word": 2489,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 52,
+      "label": "",
+      "op": "DXCH",
+      "arguments": "BUF2",
+      "assembled_address": "4672",
+      "physical_fixed_word": 2490,
+      "physical_erasable_word": null,
+      "words": [
+        21596
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 53,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4673",
+      "physical_fixed_word": 2491,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 54,
+      "label": "",
+      "op": "TC",
+      "arguments": "10000",
+      "assembled_address": "4674",
+      "physical_fixed_word": 2492,
+      "physical_erasable_word": null,
+      "words": [
+        1024
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 56,
+      "label": "SWRETURN",
+      "op": "XCH",
+      "arguments": "BUF2 +1",
+      "assembled_address": "4675",
+      "physical_fixed_word": 2493,
+      "physical_erasable_word": null,
+      "words": [
+        23644
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 57,
+      "label": "",
+      "op": "XCH",
+      "arguments": "FBANK",
+      "assembled_address": "4676",
+      "physical_fixed_word": 2494,
+      "physical_erasable_word": null,
+      "words": [
+        23556
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 58,
+      "label": "",
+      "op": "XCH",
+      "arguments": "BUF2 +1",
+      "assembled_address": "4677",
+      "physical_fixed_word": 2495,
+      "physical_erasable_word": null,
+      "words": [
+        23644
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 59,
+      "label": "",
+      "op": "TC",
+      "arguments": "BUF2",
+      "assembled_address": "4700",
+      "physical_fixed_word": 2496,
+      "physical_erasable_word": null,
+      "words": [
+        91
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 64,
+      "label": "POSTJUMP",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4701",
+      "physical_fixed_word": 2497,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 65,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "A",
+      "assembled_address": "4702",
+      "physical_fixed_word": 2498,
+      "physical_erasable_word": null,
+      "words": [
+        20480
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 66,
+      "label": "",
+      "op": "CA",
+      "arguments": "0",
+      "assembled_address": "4703",
+      "physical_fixed_word": 2499,
+      "physical_erasable_word": null,
+      "words": [
+        12288
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 70,
+      "label": "BANKJUMP",
+      "op": "TS",
+      "arguments": "FBANK",
+      "assembled_address": "4704",
+      "physical_fixed_word": 2500,
+      "physical_erasable_word": null,
+      "words": [
+        22532
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 71,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4705",
+      "physical_fixed_word": 2501,
+      "physical_erasable_word": null,
+      "words": [
+        31276
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 72,
+      "label": "",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4706",
+      "physical_fixed_word": 2502,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 73,
+      "label": "Q+10000",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4707",
+      "physical_fixed_word": 2503,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 74,
+      "label": "PRIO12",
+      "op": "TCF",
+      "arguments": "10000",
+      "assembled_address": "4710",
+      "physical_fixed_word": 2504,
+      "physical_erasable_word": null,
+      "words": [
+        5120
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 79,
+      "label": "MAKECADR",
+      "op": "CAF",
+      "arguments": "LOW10",
+      "assembled_address": "4711",
+      "physical_fixed_word": 2505,
+      "physical_erasable_word": null,
+      "words": [
+        14892
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 80,
+      "label": "",
+      "op": "MASK",
+      "arguments": "BUF2",
+      "assembled_address": "4712",
+      "physical_fixed_word": 2506,
+      "physical_erasable_word": null,
+      "words": [
+        28763
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 81,
+      "label": "",
+      "op": "AD",
+      "arguments": "BUF2 +1",
+      "assembled_address": "4713",
+      "physical_fixed_word": 2507,
+      "physical_erasable_word": null,
+      "words": [
+        24668
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 82,
+      "label": "",
+      "op": "TC",
+      "arguments": "Q",
+      "assembled_address": "4714",
+      "physical_fixed_word": 2508,
+      "physical_erasable_word": null,
+      "words": [
+        2
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 84,
+      "label": "SUPDACAL",
+      "op": "TS",
+      "arguments": "MPTEMP",
+      "assembled_address": "4715",
+      "physical_fixed_word": 2509,
+      "physical_erasable_word": null,
+      "words": [
+        22621
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 85,
+      "label": "",
+      "op": "XCH",
+      "arguments": "FBANK",
+      "assembled_address": "4716",
+      "physical_fixed_word": 2510,
+      "physical_erasable_word": null,
+      "words": [
+        23556
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 86,
+      "label": "",
+      "op": "EXTEND",
+      "arguments": "",
+      "assembled_address": "4717",
+      "physical_fixed_word": 2511,
+      "physical_erasable_word": null,
+      "words": [
+        6
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 87,
+      "label": "",
+      "op": "ROR",
+      "arguments": "SUPERBNK",
+      "assembled_address": "4720",
+      "physical_fixed_word": 2512,
+      "physical_erasable_word": null,
+      "words": [
+        2055
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 88,
+      "label": "",
+      "op": "XCH",
+      "arguments": "MPTEMP",
+      "assembled_address": "4721",
+      "physical_fixed_word": 2513,
+      "physical_erasable_word": null,
+      "words": [
+        23645
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 89,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4722",
+      "physical_fixed_word": 2514,
+      "physical_erasable_word": null,
+      "words": [
+        31276
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 90,
+      "label": "",
+      "op": "XCH",
+      "arguments": "L",
+      "assembled_address": "4723",
+      "physical_fixed_word": 2515,
+      "physical_erasable_word": null,
+      "words": [
+        23553
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 91,
+      "label": "",
+      "op": "INHINT",
+      "arguments": "",
+      "assembled_address": "4724",
+      "physical_fixed_word": 2516,
+      "physical_erasable_word": null,
+      "words": [
+        4
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 92,
+      "label": "",
+      "op": "EXTEND",
+      "arguments": "",
+      "assembled_address": "4725",
+      "physical_fixed_word": 2517,
+      "physical_erasable_word": null,
+      "words": [
+        6
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 93,
+      "label": "",
+      "op": "WRITE",
+      "arguments": "SUPERBNK",
+      "assembled_address": "4726",
+      "physical_fixed_word": 2518,
+      "physical_erasable_word": null,
+      "words": [
+        519
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 94,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "L",
+      "assembled_address": "4727",
+      "physical_fixed_word": 2519,
+      "physical_erasable_word": null,
+      "words": [
+        20481
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 95,
+      "label": "",
+      "op": "CA",
+      "arguments": "10000",
+      "assembled_address": "4730",
+      "physical_fixed_word": 2520,
+      "physical_erasable_word": null,
+      "words": [
+        13312
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 96,
+      "label": "",
+      "op": "XCH",
+      "arguments": "MPTEMP",
+      "assembled_address": "4731",
+      "physical_fixed_word": 2521,
+      "physical_erasable_word": null,
+      "words": [
+        23645
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 97,
+      "label": "",
+      "op": "EXTEND",
+      "arguments": "",
+      "assembled_address": "4732",
+      "physical_fixed_word": 2522,
+      "physical_erasable_word": null,
+      "words": [
+        6
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 98,
+      "label": "",
+      "op": "WRITE",
+      "arguments": "SUPERBNK",
+      "assembled_address": "4733",
+      "physical_fixed_word": 2523,
+      "physical_erasable_word": null,
+      "words": [
+        519
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 99,
+      "label": "",
+      "op": "RELINT",
+      "arguments": "",
+      "assembled_address": "4734",
+      "physical_fixed_word": 2524,
+      "physical_erasable_word": null,
+      "words": [
+        3
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 100,
+      "label": "",
+      "op": "TS",
+      "arguments": "FBANK",
+      "assembled_address": "4735",
+      "physical_fixed_word": 2525,
+      "physical_erasable_word": null,
+      "words": [
+        22532
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 101,
+      "label": "",
+      "op": "CA",
+      "arguments": "MPTEMP",
+      "assembled_address": "4736",
+      "physical_fixed_word": 2526,
+      "physical_erasable_word": null,
+      "words": [
+        12381
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 102,
+      "label": "",
+      "op": "RETURN",
+      "arguments": "",
+      "assembled_address": "4737",
+      "physical_fixed_word": 2527,
+      "physical_erasable_word": null,
+      "words": [
+        2
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 107,
+      "label": "IBNKCALL",
+      "op": "DXCH",
+      "arguments": "RUPTREG3",
+      "assembled_address": "4740",
+      "physical_fixed_word": 2528,
+      "physical_erasable_word": null,
+      "words": [
+        21563
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 108,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4741",
+      "physical_fixed_word": 2529,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 110,
+      "label": "",
+      "op": "CA",
+      "arguments": "0",
+      "assembled_address": "4742",
+      "physical_fixed_word": 2530,
+      "physical_erasable_word": null,
+      "words": [
+        12288
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 111,
+      "label": "",
+      "op": "INCR",
+      "arguments": "Q",
+      "assembled_address": "4743",
+      "physical_fixed_word": 2531,
+      "physical_erasable_word": null,
+      "words": [
+        10242
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 113,
+      "label": "ISWCALL",
+      "op": "TS",
+      "arguments": "L",
+      "assembled_address": "4744",
+      "physical_fixed_word": 2532,
+      "physical_erasable_word": null,
+      "words": [
+        22529
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 114,
+      "label": "",
+      "op": "LXCH",
+      "arguments": "FBANK",
+      "assembled_address": "4745",
+      "physical_fixed_word": 2533,
+      "physical_erasable_word": null,
+      "words": [
+        9220
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 115,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4746",
+      "physical_fixed_word": 2534,
+      "physical_erasable_word": null,
+      "words": [
+        31276
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 116,
+      "label": "",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4747",
+      "physical_fixed_word": 2535,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 117,
+      "label": "",
+      "op": "DXCH",
+      "arguments": "RUPTREG3",
+      "assembled_address": "4750",
+      "physical_fixed_word": 2536,
+      "physical_erasable_word": null,
+      "words": [
+        21563
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 118,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4751",
+      "physical_fixed_word": 2537,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 119,
+      "label": "",
+      "op": "TC",
+      "arguments": "10000",
+      "assembled_address": "4752",
+      "physical_fixed_word": 2538,
+      "physical_erasable_word": null,
+      "words": [
+        1024
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 121,
+      "label": "ISWRETRN",
+      "op": "XCH",
+      "arguments": "RUPTREG4",
+      "assembled_address": "4753",
+      "physical_fixed_word": 2539,
+      "physical_erasable_word": null,
+      "words": [
+        23611
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 122,
+      "label": "",
+      "op": "XCH",
+      "arguments": "FBANK",
+      "assembled_address": "4754",
+      "physical_fixed_word": 2540,
+      "physical_erasable_word": null,
+      "words": [
+        23556
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 123,
+      "label": "",
+      "op": "XCH",
+      "arguments": "RUPTREG4",
+      "assembled_address": "4755",
+      "physical_fixed_word": 2541,
+      "physical_erasable_word": null,
+      "words": [
+        23611
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 124,
+      "label": "",
+      "op": "TC",
+      "arguments": "RUPTREG3",
+      "assembled_address": "4756",
+      "physical_fixed_word": 2542,
+      "physical_erasable_word": null,
+      "words": [
+        58
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 131,
+      "label": "USPRCADR",
+      "op": "TS",
+      "arguments": "LOC",
+      "assembled_address": "4757",
+      "physical_fixed_word": 2543,
+      "physical_erasable_word": null,
+      "words": [
+        22644
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 132,
+      "label": "",
+      "op": "CA",
+      "arguments": "BIT8",
+      "assembled_address": "4760",
+      "physical_fixed_word": 2544,
+      "physical_erasable_word": null,
+      "words": [
+        14856
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 133,
+      "label": "",
+      "op": "TS",
+      "arguments": "EDOP",
+      "assembled_address": "4761",
+      "physical_fixed_word": 2545,
+      "physical_erasable_word": null,
+      "words": [
+        22547
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 134,
+      "label": "",
+      "op": "CA",
+      "arguments": "BBANK",
+      "assembled_address": "4762",
+      "physical_fixed_word": 2546,
+      "physical_erasable_word": null,
+      "words": [
+        12294
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 135,
+      "label": "",
+      "op": "TS",
+      "arguments": "BANKSET",
+      "assembled_address": "4763",
+      "physical_fixed_word": 2547,
+      "physical_erasable_word": null,
+      "words": [
+        22645
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 136,
+      "label": "",
+      "op": "INDEX",
+      "arguments": "Q",
+      "assembled_address": "4764",
+      "physical_fixed_word": 2548,
+      "physical_erasable_word": null,
+      "words": [
+        20482
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 137,
+      "label": "",
+      "op": "CA",
+      "arguments": "0",
+      "assembled_address": "4765",
+      "physical_fixed_word": 2549,
+      "physical_erasable_word": null,
+      "words": [
+        12288
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 138,
+      "label": "",
+      "op": "TS",
+      "arguments": "FBANK",
+      "assembled_address": "4766",
+      "physical_fixed_word": 2550,
+      "physical_erasable_word": null,
+      "words": [
+        22532
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 139,
+      "label": "",
+      "op": "MASK",
+      "arguments": "LOW10",
+      "assembled_address": "4767",
+      "physical_fixed_word": 2551,
+      "physical_erasable_word": null,
+      "words": [
+        31276
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 140,
+      "label": "",
+      "op": "XCH",
+      "arguments": "Q",
+      "assembled_address": "4770",
+      "physical_fixed_word": 2552,
+      "physical_erasable_word": null,
+      "words": [
+        23554
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 141,
+      "label": "",
+      "op": "XCH",
+      "arguments": "LOC",
+      "assembled_address": "4771",
+      "physical_fixed_word": 2553,
+      "physical_erasable_word": null,
+      "words": [
+        23668
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 142,
+      "label": "",
+      "op": "TCF",
+      "arguments": "Q+10000",
+      "assembled_address": "4772",
+      "physical_fixed_word": 2554,
+      "physical_erasable_word": null,
+      "words": [
+        6599
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 176,
+      "label": "SUPERSW",
+      "op": "EXTEND",
+      "arguments": "",
+      "assembled_address": "4773",
+      "physical_fixed_word": 2555,
+      "physical_erasable_word": null,
+      "words": [
+        6
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 177,
+      "label": "",
+      "op": "WRITE",
+      "arguments": "SUPERBNK",
+      "assembled_address": "4774",
+      "physical_fixed_word": 2556,
+      "physical_erasable_word": null,
+      "words": [
+        519
+      ]
+    },
+    {
+      "path": "Comanche055/INTER-BANK_COMMUNICATION.agc",
+      "line": 179,
+      "label": "",
+      "op": "TC",
+      "arguments": "Q",
+      "assembled_address": "4775",
+      "physical_fixed_word": 2557,
+      "physical_erasable_word": null,
+      "words": [
+        2
+      ]
+    }
+  ],
+  "bankjump_original_callers": [
+    {
+      "path": "Comanche055/R60_62.agc",
+      "line": 98,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAE",
+        "arguments": "TEMPR60"
+      },
+      "source_context": [
+        {
+          "line": 90,
+          "text": ""
+        },
+        {
+          "line": 91,
+          "text": "STARTMNV\tTC\tBANKCALL"
+        },
+        {
+          "line": 92,
+          "text": "\t\tCADR\tGOMANUR"
+        },
+        {
+          "line": 93,
+          "text": "ENDMANUV\tTCF\tTOBALL\t\t# FINISHED MANEUVER"
+        },
+        {
+          "line": 94,
+          "text": ""
+        },
+        {
+          "line": 95,
+          "text": "ENDMANU1\tTC\tDOWNFLAG\t# RESET 3-AXIS FLAG"
+        },
+        {
+          "line": 96,
+          "text": "\t\tADRES\t3AXISFLG\t# BIT 6 FLAG 5"
+        },
+        {
+          "line": 97,
+          "text": "\t\tCAE\tTEMPR60"
+        },
+        {
+          "line": 98,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "d3357adf3da2436167e2db289813ad0411b206623c0117ba8679b998b7c81c6f"
+    },
+    {
+      "path": "Comanche055/P20-P25.agc",
+      "line": 700,
+      "immediate_producer": {
+        "label": "",
+        "op": "LXCH",
+        "arguments": "A"
+      },
+      "source_context": [
+        {
+          "line": 692,
+          "text": ""
+        },
+        {
+          "line": 693,
+          "text": "DECRM61\t\tTS\tR61CNTR"
+        },
+        {
+          "line": 694,
+          "text": ""
+        },
+        {
+          "line": 695,
+          "text": "\t\tCAE\tGENRET"
+        },
+        {
+          "line": 696,
+          "text": "\t\tLXCH\tA\t\t# RETURN IS IN L"
+        },
+        {
+          "line": 697,
+          "text": "\t\tCA\tSAVBNK\t\t# RESTORE EBANK"
+        },
+        {
+          "line": 698,
+          "text": "\t\tXCH\tEBANK"
+        },
+        {
+          "line": 699,
+          "text": "\t\tLXCH\tA\t\t# RETURN IS NOW BACK IN A"
+        },
+        {
+          "line": 700,
+          "text": "\t\tTC\tBANKJUMP\t# EXIT R61"
+        }
+      ],
+      "source_sha256": "5820c39ddbaaf3537fdc6f35ce18e8591d0e3c535c0a9f18bd536b69bc2f50f5"
+    },
+    {
+      "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+      "line": 902,
+      "immediate_producer": {
+        "label": "",
+        "op": "RELINT",
+        "arguments": ""
+      },
+      "source_context": [
+        {
+          "line": 894,
+          "text": "\t\tDCA\tMPAC +3"
+        },
+        {
+          "line": 895,
+          "text": "\t\tINDEX \tLOCCTR"
+        },
+        {
+          "line": 896,
+          "text": "\t\tDXCH\tMPAC +3"
+        },
+        {
+          "line": 897,
+          "text": ""
+        },
+        {
+          "line": 898,
+          "text": "\t\tCA\tLOCCTR"
+        },
+        {
+          "line": 899,
+          "text": "\t\tTS\tMPAC +5"
+        },
+        {
+          "line": 900,
+          "text": "\t\tTC\tSAVELOCR"
+        },
+        {
+          "line": 901,
+          "text": "\t\tRELINT"
+        },
+        {
+          "line": 902,
+          "text": "\t\tTCF\tBANKJUMP\t# CALL CADR +4"
+        }
+      ],
+      "source_sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a"
+    },
+    {
+      "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+      "line": 1046,
+      "immediate_producer": {
+        "label": "",
+        "op": "AD",
+        "arguments": "TEMPFLSH"
+      },
+      "source_context": [
+        {
+          "line": 1038,
+          "text": "\t\tCA\tRESTREG\t\t# SUPERBANK AND JOB PRIORITY"
+        },
+        {
+          "line": 1039,
+          "text": "\t\tTC\tSUPERSW\t\t# RESTORE SUPERBANK"
+        },
+        {
+          "line": 1040,
+          "text": ""
+        },
+        {
+          "line": 1041,
+          "text": "\t\tMASK\tPRIO37"
+        },
+        {
+          "line": 1042,
+          "text": "\t\tTC\tPRIOCHNG"
+        },
+        {
+          "line": 1043,
+          "text": ""
+        },
+        {
+          "line": 1044,
+          "text": "\t\tCS\tTHREE"
+        },
+        {
+          "line": 1045,
+          "text": "\t\tAD\tTEMPFLSH"
+        },
+        {
+          "line": 1046,
+          "text": "\t\tTCF\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a"
+    },
+    {
+      "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+      "line": 1298,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "MPAC +3"
+      },
+      "source_context": [
+        {
+          "line": 1290,
+          "text": "\t\tCS\tTHREE\t\t# BLANK EVERYTHING EXCEPT MM"
+        },
+        {
+          "line": 1291,
+          "text": "\t\tTC\tNVSUB"
+        },
+        {
+          "line": 1292,
+          "text": "\t\tTCF\t+1"
+        },
+        {
+          "line": 1293,
+          "text": ""
+        },
+        {
+          "line": 1294,
+          "text": "ENDIT\t\tCA\tUSERPRIO\t# RETURN TO USERS PRIORITY"
+        },
+        {
+          "line": 1295,
+          "text": "\t\tMASK\tPRIO37"
+        },
+        {
+          "line": 1296,
+          "text": "\t\tTC\tPRIOCHNG"
+        },
+        {
+          "line": 1297,
+          "text": "\t\tCA\tMPAC +3"
+        },
+        {
+          "line": 1298,
+          "text": "\t\tTCF\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a"
+    },
+    {
+      "path": "Comanche055/DISPLAY_INTERFACE_ROUTINES.agc",
+      "line": 1311,
+      "immediate_producer": {
+        "label": "",
+        "op": "AD",
+        "arguments": "CADRFLSH"
+      },
+      "source_context": [
+        {
+          "line": 1303,
+          "text": "\t\tTS\tR1SAVE"
+        },
+        {
+          "line": 1304,
+          "text": "\t\tCAF\tZERO\t\t# *** 205 ONLY MARKBRAN USERS IN"
+        },
+        {
+          "line": 1305,
+          "text": "\t\tTC\tSUPERSW\t\t# SUPERBANK 0"
+        },
+        {
+          "line": 1306,
+          "text": "# Page 1481"
+        },
+        {
+          "line": 1307,
+          "text": ""
+        },
+        {
+          "line": 1308,
+          "text": "-1\t\tCAF\tTHREE\t\t# RETURN TO USERS IMMEDIATE RETURN LOC"
+        },
+        {
+          "line": 1309,
+          "text": "IMMEDRET\tINDEX\tCOPINDEX"
+        },
+        {
+          "line": 1310,
+          "text": "\t\tAD\tCADRFLSH"
+        },
+        {
+          "line": 1311,
+          "text": "\t\tTCF\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "907f3b7502551a91de5b0aa772355038e3b39098670aab98fe31023e5f8fbd8a"
+    },
+    {
+      "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 937,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAF",
+        "arguments": "VERBTAB"
+      },
+      "source_context": [
+        {
+          "line": 929,
+          "text": "\t\tTS\tMPAC"
+        },
+        {
+          "line": 930,
+          "text": "\t\tTC\tRELDSP\t\t# RELEASE DISPLAY SYST"
+        },
+        {
+          "line": 931,
+          "text": "\t\tTC\tPOSTJUMP\t# GO TO GOEXTVB WITH VB-40 IN MPAC."
+        },
+        {
+          "line": 932,
+          "text": "\t\tCADR\tGOEXTVB"
+        },
+        {
+          "line": 933,
+          "text": "LST2CON\t\tDEC\t40\t\t# FIRST LIST2 VERB (EXTENDED VERB)"
+        },
+        {
+          "line": 934,
+          "text": ""
+        },
+        {
+          "line": 935,
+          "text": "VBFANDIR\tINDEX\tVERBREG"
+        },
+        {
+          "line": 936,
+          "text": "\t\tCAF\tVERBTAB"
+        },
+        {
+          "line": 937,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac"
+    },
+    {
+      "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 1333,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAF",
+        "arguments": "SFOUTABR"
+      },
+      "source_context": [
+        {
+          "line": 1325,
+          "text": "\t\tTC\t+2"
+        },
+        {
+          "line": 1326,
+          "text": "\t\tTC\tENTEXIT"
+        },
+        {
+          "line": 1327,
+          "text": "\t\tTS\tDECOUNT"
+        },
+        {
+          "line": 1328,
+          "text": "\t\tTC\tDSPDCPUT\t# MORE TO DISPLAY"
+        },
+        {
+          "line": 1329,
+          "text": ""
+        },
+        {
+          "line": 1330,
+          "text": ""
+        },
+        {
+          "line": 1331,
+          "text": "DECDSP3\t\tINDEX\tA"
+        },
+        {
+          "line": 1332,
+          "text": "\t\tCAF\tSFOUTABR"
+        },
+        {
+          "line": 1333,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac"
+    },
+    {
+      "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 2022,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAF",
+        "arguments": "SFINTABR"
+      },
+      "source_context": [
+        {
+          "line": 2014,
+          "text": "\t\tTC\tPUTSFNOR"
+        },
+        {
+          "line": 2015,
+          "text": "\t\tTC\tSFRUTMIX"
+        },
+        {
+          "line": 2016,
+          "text": "\t\tTC\tPUTDCSF2"
+        },
+        {
+          "line": 2017,
+          "text": "PUTSFNOR\tTC\tSFRUTNOR"
+        },
+        {
+          "line": 2018,
+          "text": ""
+        },
+        {
+          "line": 2019,
+          "text": "PUTDCSF2\tINDEX\tA"
+        },
+        {
+          "line": 2020,
+          "text": "# Page 349"
+        },
+        {
+          "line": 2021,
+          "text": "\t\tCAF\tSFINTABR"
+        },
+        {
+          "line": 2022,
+          "text": "\t\tTC\tBANKJUMP\t# SWITCH BANKS FOR EXPANSHION ROOM"
+        }
+      ],
+      "source_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac"
+    },
+    {
+      "path": "Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc",
+      "line": 2721,
+      "immediate_producer": {
+        "label": "",
+        "op": "CAF",
+        "arguments": "+2"
+      },
+      "source_context": [
+        {
+          "line": 2713,
+          "text": "\t\tCAF\tTWO"
+        },
+        {
+          "line": 2714,
+          "text": "\t\tTS\tCOUNT"
+        },
+        {
+          "line": 2715,
+          "text": "\t\tXCH\tQ\t\t# MUST USE SAME RETURN AS DSPIN"
+        },
+        {
+          "line": 2716,
+          "text": "\t\tTS\tDSEXIT"
+        },
+        {
+          "line": 2717,
+          "text": "\t\tTC\tDSPIN1"
+        },
+        {
+          "line": 2718,
+          "text": ""
+        },
+        {
+          "line": 2719,
+          "text": "DSPOCTIN\tTC\tDSPIN\t\t# SO DSPOCTWD DOESN'T USE SWCALL"
+        },
+        {
+          "line": 2720,
+          "text": "\t\tCAF\t+2"
+        },
+        {
+          "line": 2721,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "21a920f64b0c4efa416d230cecc2d6a448e53a455402a079c0085f486c0645ac"
+    },
+    {
+      "path": "Comanche055/PHASE_TABLE_MAINTENANCE.agc",
+      "line": 46,
+      "immediate_producer": {
+        "label": "PREBJUMP",
+        "op": "LXCH",
+        "arguments": "BBANK"
+      },
+      "source_context": [
+        {
+          "line": 38,
+          "text": ""
+        },
+        {
+          "line": 39,
+          "text": "NEWMODEX\tINDEX\tQ\t\t# UPDATE MODREG.  ENTRY FOR MODE IN FIXED."
+        },
+        {
+          "line": 40,
+          "text": "\t\tCAF\t0"
+        },
+        {
+          "line": 41,
+          "text": "\t\tINCR\tQ"
+        },
+        {
+          "line": 42,
+          "text": ""
+        },
+        {
+          "line": 43,
+          "text": "NEWMODEA\tTS\tMODREG\t\t# ENTRY FOR MODE IN A."
+        },
+        {
+          "line": 44,
+          "text": "MMDSPLAY\tCAF\t+3\t\t# DISPLAY MAJOR MODE."
+        },
+        {
+          "line": 45,
+          "text": "PREBJUMP\tLXCH\tBBANK\t\t# PUTS BBANK IN L"
+        },
+        {
+          "line": 46,
+          "text": "\t\tTCF\tBANKJUMP\t# PUTS Q INTO A"
+        }
+      ],
+      "source_sha256": "6f7fb5f01f38d0162c481cb4180173c360f467b2c2f75c080f3675ed8c9e1966"
+    },
+    {
+      "path": "Comanche055/INTEGRATION_INITIALIZATION.agc",
+      "line": 1042,
+      "immediate_producer": {
+        "label": "",
+        "op": "CA",
+        "arguments": "IRETURN1"
+      },
+      "source_context": [
+        {
+          "line": 1034,
+          "text": ""
+        },
+        {
+          "line": 1035,
+          "text": "\t\tINHINT"
+        },
+        {
+          "line": 1036,
+          "text": "\t\tEXTEND"
+        },
+        {
+          "line": 1037,
+          "text": "\t\tDCS\tTIME2"
+        },
+        {
+          "line": 1038,
+          "text": "\t\tDAS\tMPAC"
+        },
+        {
+          "line": 1039,
+          "text": "\t\tTC\tTPAGREE"
+        },
+        {
+          "line": 1040,
+          "text": ""
+        },
+        {
+          "line": 1041,
+          "text": "\t\tCA\tIRETURN1"
+        },
+        {
+          "line": 1042,
+          "text": "\t\tTC\tBANKJUMP"
+        }
+      ],
+      "source_sha256": "b20c7f84fdc4a0748ad0a957a2b8f6d0e0a9296bad9c4dbec80f9962ebf13579"
+    }
+  ],
+  "negative_overflow_excluded": false,
+  "negative_overflow_continuation": "fixed source CCS1777 and all4 MAKECADR successor stages; actual TC Q reachesPC2 with invalid -1 descriptor, before external register-word fetch; does not execute invalid arbitrary instruction data",
+  "instruction_decoder": false
+}

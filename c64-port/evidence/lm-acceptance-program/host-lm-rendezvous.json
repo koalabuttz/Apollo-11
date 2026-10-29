@@ -1,0 +1,116 @@
+{
+ "scenario": "lm-rendezvous-scaled-x1",
+ "mission": "lm",
+ "centiseconds": 40000,
+ "keys": "@2200V37E20E@3000V33E@4700E@6100V33E@29000V37E34E@29400V33E@29700V33E@34000V33E@36700V33E@37500V33E@37800V33E",
+ "inputs": {
+  "FLIGHT_CH30": "036377",
+  "FLIGHT_CH31": "057777",
+  "FLIGHT_CH33": "077775",
+  "FLIGHT_SWAP_MCT": "0",
+  "FLIGHT_LOAD": "2000:tools/flight_scenarios/lm-rendezvous.load",
+  "FLIGHT_RR": "2000:-260373.984,1763762.175,372327.510,1589.402,294.044,-281.432:-198527.341,1801605.032,366129.729,1584.888,233.850,-291.320",
+  "FLIGHT_BUSY_SAMPLE": "50"
+ },
+ "schedule": "1,1,2",
+ "chunked": true,
+ "exit": 0,
+ "commit": "d7abace4fc66",
+ "cia_interrupts": 40033,
+ "periods_taken": 40033,
+ "periods_dropped": 0,
+ "agc_centiseconds": 40033,
+ "native_routines": 1273391,
+ "bridged_instructions": 0,
+ "routine_mismatches": [],
+ "unregistered": [],
+ "interpretive_charge": {
+  "fitted": 12119664,
+  "yaagc": 12095720,
+  "percent": 0.2,
+  "routines": 65268,
+  "mean_abs_error": 26.0,
+  "abs_percent": 14.0,
+  "bound": {
+   "net": 20.0,
+   "routine": 45.0
+  },
+  "state": "ok",
+  "text": "interpretive charge +0.2% net, 14.0% routine by routine, from yaAGC's MCT over 65268 routines; within 20% net and 45% routine by routine"
+ },
+ "night_watchman": {
+  "alarms": 0,
+  "stuck_steps": 0,
+  "checks": 0,
+  "disagree": 0,
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
+ },
+ "rupt_lock": {
+  "alarms": 0,
+  "rupt_lock_alarms": 0,
+  "no_rupt_alarms": 0,
+  "checks": 0,
+  "disagree": 0,
+  "ya_channel77": 0,
+  "no_interrupt_periods": 9,
+  "no_interrupt_to": 64,
+  "no_background_periods": 1,
+  "no_background_to": 2685
+ },
+ "reached": {
+  "35,2545": 29307,
+  "24,2232": 6251,
+  "23,2116": 2617,
+  "23,2123": 6501,
+  "24,2674": 5508,
+  "24,2451": 8170,
+  "43,2014": 4700
+ },
+ "arrivals": {
+  "35,2545": [
+   29307
+  ],
+  "24,2232": [
+   6251,
+   29303
+  ],
+  "23,2116": [
+   2617
+  ],
+  "23,2123": [
+   6501,
+   9127,
+   9971,
+   15226,
+   16076,
+   21330,
+   22180,
+   27431,
+   28279,
+   29560,
+   32717,
+   33650,
+   38097,
+   39910
+  ],
+  "24,2674": [
+   5508
+  ],
+  "24,2451": [
+   8170,
+   13910,
+   20013,
+   26118,
+   31271,
+   37946,
+   39763
+  ],
+  "43,2014": [
+   4700
+  ]
+ },
+ "log_sha256": "ae5fd5c3c3b1e1787dc2c9d00cd785684ed1af2291e958bc93439689ed33ef09"
+}

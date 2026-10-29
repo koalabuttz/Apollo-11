@@ -1,0 +1,125 @@
+{
+  "records": [
+    {
+      "inactive_build_stream": "build/cm-display-native.snapshots.gz",
+      "committed_archive": "evidence/cm-display-native.snapshots.gz",
+      "git_blob": "79ccb347864b860927e9feda913982544d273a5f",
+      "decoded_sha256": "6f22da4fc6ac14cd25cba3047aea85b162d1d35a892a436166b46f42dbea57f1",
+      "bytes": 62002168
+    },
+    {
+      "inactive_build_stream": "build/cm-display-reference.snapshots.gz",
+      "committed_archive": "evidence/cm-display-reference.snapshots.gz",
+      "git_blob": "79ccb347864b860927e9feda913982544d273a5f",
+      "decoded_sha256": "6f22da4fc6ac14cd25cba3047aea85b162d1d35a892a436166b46f42dbea57f1",
+      "bytes": 62002168
+    },
+    {
+      "inactive_build_stream": "build/cm-display-sanitize.snapshots.gz",
+      "committed_archive": "evidence/cm-display-sanitize.snapshots.gz",
+      "git_blob": "79ccb347864b860927e9feda913982544d273a5f",
+      "decoded_sha256": "6f22da4fc6ac14cd25cba3047aea85b162d1d35a892a436166b46f42dbea57f1",
+      "bytes": 62002168
+    },
+    {
+      "inactive_build_stream": "build/cm-display-sleep-lifecycle-reference.snapshots.xz",
+      "committed_archive": "evidence/cm-display-sleep-lifecycle-reference.snapshots.xz",
+      "git_blob": "bb7dda12aa3fdb18a86be2bfcd894cf019c87c6b",
+      "decoded_sha256": "13205f47100ee40271ff6f8c116966ad73e02d275c6f4b282da4a0e5babbbada",
+      "bytes": 107848
+    },
+    {
+      "inactive_build_stream": "build/cm-dynamic-display-reference.snapshots.xz",
+      "committed_archive": "evidence/cm-dynamic-display-reference.snapshots.xz",
+      "git_blob": "f35067f9a973c0905887095e4fa94f8f855d2eab",
+      "decoded_sha256": "6b4ea94180b8d18bde051667536b49126e181c83e22d2131308359b4be15ae92",
+      "bytes": 72936
+    },
+    {
+      "inactive_build_stream": "build/cm-makeplay-native.snapshots.xz",
+      "committed_archive": "evidence/cm-makeplay-native.snapshots.xz",
+      "git_blob": "03aedcfcd60602a0f8ef91701dd59cbccb49312d",
+      "decoded_sha256": "d01d3913843c726f378dba8ff82a33dbce76a1967dd0cf0ed6c9ceb3bf2f4857",
+      "bytes": 1869268
+    },
+    {
+      "inactive_build_stream": "build/cm-makeplay-reference.snapshots.xz",
+      "committed_archive": "evidence/cm-makeplay-reference.snapshots.xz",
+      "git_blob": "03aedcfcd60602a0f8ef91701dd59cbccb49312d",
+      "decoded_sha256": "d01d3913843c726f378dba8ff82a33dbce76a1967dd0cf0ed6c9ceb3bf2f4857",
+      "bytes": 1869268
+    },
+    {
+      "inactive_build_stream": "build/cm-makeplay-sanitize.snapshots.xz",
+      "committed_archive": "evidence/cm-makeplay-sanitize.snapshots.xz",
+      "git_blob": "03aedcfcd60602a0f8ef91701dd59cbccb49312d",
+      "decoded_sha256": "d01d3913843c726f378dba8ff82a33dbce76a1967dd0cf0ed6c9ceb3bf2f4857",
+      "bytes": 1869268
+    },
+    {
+      "inactive_build_stream": "build/cm-makeplay-sleep-reference.snapshots.xz",
+      "committed_archive": "evidence/cm-makeplay-sleep-reference.snapshots.xz",
+      "git_blob": "6247bff04bf6f65d869e659d4ec1dac1f3b4eb28",
+      "decoded_sha256": "fa1b35a32a571822a1adc6372a494b009c57e575b28a60bd146a6dfa4ff27f0d",
+      "bytes": 396896
+    },
+    {
+      "inactive_build_stream": "build/cm-normal-display-reference.snapshots.xz",
+      "committed_archive": "evidence/cm-normal-display-reference.snapshots.xz",
+      "git_blob": "74bfe3628b9653b29000b7a451059d32c5f48ee0",
+      "decoded_sha256": "8131b2d0e3d156996220b7f3f380d76e71295b66650771f8d67a680ed8c58a20",
+      "bytes": 319672
+    },
+    {
+      "inactive_build_stream": "build/cm-nv85-reference.snapshots.xz",
+      "committed_archive": "evidence/cm-nv85-reference.snapshots.xz",
+      "git_blob": "0a47d43770d8305810fa0abb2593e64b6081f308",
+      "decoded_sha256": "0a203ba3c2affb31004cd0341777ff6cea5d513489afd31bb3585dd84ac21b6c",
+      "bytes": 232588
+    },
+    {
+      "inactive_build_stream": "build/cm-priority-complete-native.snapshots.bin.gz",
+      "committed_archive": "evidence/cm-priority-complete-native.snapshots.bin.gz",
+      "git_blob": "2eb8dae325916e1965149d869c604bfd9e5dd7f9",
+      "decoded_sha256": "46d674a39e37a28a73763529014a18edba7fd0f2d66f88b4da3270df050eafb3",
+      "bytes": 3113966
+    },
+    {
+      "inactive_build_stream": "build/cm-priority-complete-reference.snapshots.bin.gz",
+      "committed_archive": "evidence/cm-priority-complete-reference.snapshots.bin.gz",
+      "git_blob": "2eb8dae325916e1965149d869c604bfd9e5dd7f9",
+      "decoded_sha256": "46d674a39e37a28a73763529014a18edba7fd0f2d66f88b4da3270df050eafb3",
+      "bytes": 3113966
+    },
+    {
+      "inactive_build_stream": "build/cm-sleep-reference.snapshots.xz",
+      "committed_archive": "evidence/cm-sleep-reference.snapshots.xz",
+      "git_blob": "67a91ae64879e3ee054bce8b1085747a5ddb6b83",
+      "decoded_sha256": "c2e5493b3678d4a52f34fc36d0bba252a40fffe485455544b0ff6a7422913fde",
+      "bytes": 71800328
+    },
+    {
+      "inactive_build_stream": "build/cm-wake-native.snapshots.xz",
+      "committed_archive": "evidence/cm-wake-native.snapshots.xz",
+      "git_blob": "02bfaf2ff899ddd3ea1312d32a768d82baa9abb9",
+      "decoded_sha256": "6416525e5b41aafb661b3f4d70d716cebd350d54cb5de419c3abd5fbcc8cf73c",
+      "bytes": 914268
+    },
+    {
+      "inactive_build_stream": "build/cm-wake-reference.snapshots.xz",
+      "committed_archive": "evidence/cm-wake-reference.snapshots.xz",
+      "git_blob": "02bfaf2ff899ddd3ea1312d32a768d82baa9abb9",
+      "decoded_sha256": "6416525e5b41aafb661b3f4d70d716cebd350d54cb5de419c3abd5fbcc8cf73c",
+      "bytes": 914268
+    },
+    {
+      "inactive_build_stream": "build/cm-wake-sanitize.snapshots.xz",
+      "committed_archive": "evidence/cm-wake-sanitize.snapshots.xz",
+      "git_blob": "02bfaf2ff899ddd3ea1312d32a768d82baa9abb9",
+      "decoded_sha256": "6416525e5b41aafb661b3f4d70d716cebd350d54cb5de419c3abd5fbcc8cf73c",
+      "bytes": 914268
+    }
+  ],
+  "reclaimed_bytes": 273515312,
+  "scope": "Inactive owned build streams only; exact committed archive Git blob and decoded SHA verified, active clock streams excluded"
+}

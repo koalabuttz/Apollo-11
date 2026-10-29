@@ -1,0 +1,2 @@
+PASS:16 original START→P66→display→idle→100hardware ticks→T3/RODTASK/RESUME→idle admission→P66→display→idle paths; 2460 complete2053-word states; no normalization
+Snapshot SHA256: d1aa5f4de9e02bf126731818227c4bc7592e62bddbbd66a425cc56346683f186

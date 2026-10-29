@@ -1,0 +1,5 @@
+PASS: VICE PAL C64, 32 complete imu_mode_transfer group original-assembly states; retained memory unchanged
+Mailbox: a500002002
+PRG bytes: 7205
+imu-mode-transfer-lm2-hardware-stack.bin: measured stack extent 20 bytes
+imu-mode-transfer-lm2-software-stack.bin: measured stack extent 103 bytes

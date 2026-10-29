@@ -1,0 +1,38 @@
+PRG sha256 (clang version 24.0.0git (https://github.com/llvm-mos/llvm-mos cd9145597347753c7cabd1c34d24722d4d8a8f96))
+d7946b681dcff1d2e6a3b11ab8be6c2addbb526c19214d443d40564b831f00b8  build/lm-tff-abi-1.prg
+56153eb8fafa2d7411c9a3abac0d11e0bef6bb5dfb33ef25efc5d32ee1f3c07a  build/lm-tff-abi-2.prg
+8981b0c3498f9b1fc4b2b496f19513756460ec8d3db3ab5c820c03e626d7f588  build/lm-tff-abi-3.prg
+e5095bd4f162c07906044eca22ade8fdd51213c6630a6e60106981e641ed5e91  build/lm-tff-abi-4.prg
+833f7d761142c964e3ddd698132c31029bf0325409504c679e0818da9f2f3f61  build/lm-tff-abi-5.prg
+e4a0826fd37ac2f1476f4a4e28ea44d99e18e518efbf5223ade4225dfce8da10  build/lm-tff-abi-6.prg
+b8f726b14761320d21c070fb0d4ca2de9c2475f35b02770170d71aa3a5682dff  build/lm-tff-abi-7.prg
+be710201522d7d00c463c4026cf0105ef84da350965b1d2b446c953df77bad94  build/lm-tff-abi-8.prg
+411fb54f3e0563c83cc213c6b6f30a76bd449dabcfd6d7585f8fe6f69227caab  build/lm-tff-abi-9.prg
+cbb0384e379c1a0201b45a8cfbf90f946457bb6b80e88cc893c061f635564db3  build/lm-tff-abi-10.prg
+fa8bea73d2cfc60866f18b77a884e76b4125e124c1954513ac20df3db03042b4  build/lm-tff-abi-11.prg
+
+$ make vice-lm-tff-abi
+for p in build/lm-tff-abi-1.prg build/lm-tff-abi-2.prg build/lm-tff-abi-3.prg build/lm-tff-abi-4.prg build/lm-tff-abi-5.prg build/lm-tff-abi-6.prg build/lm-tff-abi-7.prg build/lm-tff-abi-8.prg build/lm-tff-abi-9.prg build/lm-tff-abi-10.prg build/lm-tff-abi-11.prg; do python3 tools/vice_run.py $p --cycles 3000000000 --timeout 1200 || exit 1; done
+PASS: VICE PAL lm-tff-abi-1.prg: 20 checks, 0 failures
+PRG sha256: d7946b681dcff1d2e6a3b11ab8be6c2addbb526c19214d443d40564b831f00b8 lm-tff-abi-1.prg
+PASS: VICE PAL lm-tff-abi-2.prg: 39 checks, 0 failures
+PRG sha256: 56153eb8fafa2d7411c9a3abac0d11e0bef6bb5dfb33ef25efc5d32ee1f3c07a lm-tff-abi-2.prg
+PASS: VICE PAL lm-tff-abi-3.prg: 22 checks, 0 failures
+PRG sha256: 8981b0c3498f9b1fc4b2b496f19513756460ec8d3db3ab5c820c03e626d7f588 lm-tff-abi-3.prg
+PASS: VICE PAL lm-tff-abi-4.prg: 1 checks, 0 failures
+PRG sha256: e5095bd4f162c07906044eca22ade8fdd51213c6630a6e60106981e641ed5e91 lm-tff-abi-4.prg
+PASS: VICE PAL lm-tff-abi-5.prg: 2 checks, 0 failures
+PRG sha256: 833f7d761142c964e3ddd698132c31029bf0325409504c679e0818da9f2f3f61 lm-tff-abi-5.prg
+PASS: VICE PAL lm-tff-abi-6.prg: 5 checks, 0 failures
+PRG sha256: e4a0826fd37ac2f1476f4a4e28ea44d99e18e518efbf5223ade4225dfce8da10 lm-tff-abi-6.prg
+PASS: VICE PAL lm-tff-abi-7.prg: 11 checks, 0 failures
+PRG sha256: b8f726b14761320d21c070fb0d4ca2de9c2475f35b02770170d71aa3a5682dff lm-tff-abi-7.prg
+PASS: VICE PAL lm-tff-abi-8.prg: 17 checks, 0 failures
+PRG sha256: be710201522d7d00c463c4026cf0105ef84da350965b1d2b446c953df77bad94 lm-tff-abi-8.prg
+PASS: VICE PAL lm-tff-abi-9.prg: 26 checks, 0 failures
+PRG sha256: 411fb54f3e0563c83cc213c6b6f30a76bd449dabcfd6d7585f8fe6f69227caab lm-tff-abi-9.prg
+PASS: VICE PAL lm-tff-abi-10.prg: 36 checks, 0 failures
+PRG sha256: cbb0384e379c1a0201b45a8cfbf90f946457bb6b80e88cc893c061f635564db3 lm-tff-abi-10.prg
+PASS: VICE PAL lm-tff-abi-11.prg: 17 checks, 0 failures
+PRG sha256: fa8bea73d2cfc60866f18b77a884e76b4125e124c1954513ac20df3db03042b4 lm-tff-abi-11.prg
+exit 0

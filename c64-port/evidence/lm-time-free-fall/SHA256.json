@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "milestone": "lm-time-free-fall",
+  "release": "evidence-lm-time-free-fall",
+  "files": {
+    "lm-time-free-fall-1-1.map": {
+      "sha256": "00aeab594155cda5c63e5464f805defec7f984590f52d5e8fdc04c39b22400f3",
+      "bytes": 33502,
+      "store": "release"
+    },
+    "lm-time-free-fall-1-1.prg": {
+      "sha256": "d695347005eea27d606b4b141e6b66ef176129261604db1d3acd060a6a74fdf5",
+      "bytes": 45663,
+      "store": "release"
+    },
+    "lm-time-free-fall-2-1.map": {
+      "sha256": "c4ec7cf0568113a0880924ecc7f7e6d8c80fa7d8993bc817b9b67006d97d0d0e",
+      "bytes": 31750,
+      "store": "release"
+    },
+    "lm-time-free-fall-2-1.prg": {
+      "sha256": "097a667c399b9eaca6dba0192ce38fc6deeebbc942cbbbb4a2cf4e1271a18f04",
+      "bytes": 41991,
+      "store": "release"
+    },
+    "lm-time-free-fall-3-1.map": {
+      "sha256": "a09881fe2428f9d495898e806bdc395ea8b0706a2c13e49b7a51266f8e75f4e6",
+      "bytes": 23264,
+      "store": "release"
+    },
+    "lm-time-free-fall-3-1.prg": {
+      "sha256": "3b224ff57ef0dc5c612ad6cb920e50e7294bf79210f2096a910712395deabbdc",
+      "bytes": 33690,
+      "store": "release"
+    },
+    "lm-time-free-fall-4-1.map": {
+      "sha256": "81d78bce8f1091ee3555906031c7cafc5c3f1c296319ea939152483169d74b14",
+      "bytes": 22401,
+      "store": "release"
+    },
+    "lm-time-free-fall-4-1.prg": {
+      "sha256": "7bd72c797388d8695e7a9c8fdc7d05005ceb02b6c68172e0f5de3d681c1022a0",
+      "bytes": 31348,
+      "store": "release"
+    },
+    "lm-time-free-fall-c64-cover.json": {
+      "sha256": "3562022900d38e7ed2ce7b4032fe69eeb68c454c6711a1cb3dc5f2772fb25bfd",
+      "bytes": 3582,
+      "store": "tree"
+    },
+    "lm-time-free-fall-checks.log": {
+      "sha256": "7e89bfc7beac5c3d96c53a29269ed26d1303e3c161fbd1c05939d9b86b93233b",
+      "bytes": 1625,
+      "store": "tree"
+    },
+    "lm-time-free-fall-phase-steps.json": {
+      "sha256": "4892d6f9261312b8b11e62569dcfbe1ef1145ae66a4a82e637c04062d582215f",
+      "bytes": 3888,
+      "store": "tree"
+    },
+    "lm-time-free-fall-reference.snapshots.bin.xz": {
+      "sha256": "d89b3acabe67516ac6475829ba063e8bcbc4c10e3d1257ed6ea13d2631356013",
+      "bytes": 34211472,
+      "store": "release"
+    },
+    "lm-time-free-fall-results.json": {
+      "sha256": "7da7ff49969282980bf46fe42eeb6e07bad5e926a26a246ed6a415276b43a1e1",
+      "bytes": 8118,
+      "store": "tree"
+    },
+    "lm-time-free-fall-source-map.json": {
+      "sha256": "4e3d610e380c130109579eda5b30cf79a9719fb2d5620770d4f73921a30339be",
+      "bytes": 34927,
+      "store": "tree"
+    },
+    "lm-time-free-fall-source-stream.json": {
+      "sha256": "0917ba188f248c89ac13ef293a71e99d57d9e2f18b1bf61dacfa6e58430702f7",
+      "bytes": 368,
+      "store": "tree"
+    },
+    "lm-time-free-fall-target-states.json": {
+      "sha256": "53cad52aa590e7fe5c3228a66fb19e0e3802f585d24d88c98238e81be4516e17",
+      "bytes": 308,
+      "store": "tree"
+    }
+  }
+}
