@@ -7,18 +7,18 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3214",
- "wall_cycles": 52112352,
+ "wall_cycles": 52145228,
  "agc_cs": 607,
  "dropped_ticks": 0,
  "steps": 2763,
- "wall_per_agc": 8.714,
+ "wall_per_agc": 8.719,
  "lost": false,
  "mission": "lm",
  "snap_cs": 2000,
  "replay": true,
  "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
- "harness_sha256": "a7fb544f14507f685b2614a23c5b226315f180a8b3a04c7f41bbe1aa51c07db6",
- "prg_sha256": "3e197218d8e8723bb457371f7532d73ecd968f5c553d54c2a6f81d7922c45c32",
+ "harness_sha256": "6e9fa7c9c79bde86c01e62dec39c99dfdea7aaaa3840906348624487143ee745",
+ "prg_sha256": "c64aaecf281f899dfb77c27b25fe5565234dc2c9fc4e7d961b4c0f3223fa1bda",
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -30,7 +30,7 @@
   "dma_outside": 0,
   "dma_trace_armed": true,
   "dma_hits": [],
-  "dma_unchecked": 23
+  "dma_unchecked": 9
  },
  "hold_host_mct": 0,
  "hold_host_time1": 0,
@@ -1254,5 +1254,5 @@
  "requested_cs": 600,
  "host_holes": [],
  "downrupt": false,
- "commit": "d0732f811067"
+ "commit": "d7abace4fc66"
 }

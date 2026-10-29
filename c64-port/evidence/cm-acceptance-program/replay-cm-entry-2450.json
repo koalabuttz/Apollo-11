@@ -7,18 +7,18 @@
  "superbank": "0100",
  "bank": "01",
  "at": "01,3231",
- "wall_cycles": 42178628,
+ "wall_cycles": 42170984,
  "agc_cs": 307,
  "dropped_ticks": 0,
  "steps": 945,
- "wall_per_agc": 13.945,
+ "wall_per_agc": 13.942,
  "lost": false,
  "mission": "cm",
  "snap_cs": 2450,
  "replay": true,
  "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
- "harness_sha256": "1fc1df9643455bfdf852bdb4b7c58e0044328d92946e6af0b91a0038ac356d67",
- "prg_sha256": "a7018504142ff1c222fcd685151030322fe7daf3c677f8e2bb9f7bd6f4639108",
+ "harness_sha256": "0ad3b2379b145981ba9b4e5ae42b2a4ffd1e284a08c6acebd58a3bf77f196a52",
+ "prg_sha256": "cb69e432dfa278d57e4cf03c66119a21011e126327193d3f1589f277fb7763b0",
  "reu_bounds": {
   "ok": true,
   "touched": [
@@ -250,5 +250,5 @@
  "requested_cs": 300,
  "host_holes": [],
  "downrupt": false,
- "commit": "d0732f811067"
+ "commit": "d7abace4fc66"
 }

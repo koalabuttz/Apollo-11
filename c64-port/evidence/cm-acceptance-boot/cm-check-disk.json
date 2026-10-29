@@ -4,7 +4,7 @@
   "test-1.d81",
   "test-2.d81"
  ],
- "loader_bytes": 6498,
+ "loader_bytes": 6634,
  "resident_bytes": 45485,
  "resident_start": 2061,
  "boot_return": null,
@@ -13,12 +13,12 @@
  "resident_staged": "0x1f4e00",
  "bytes_loaded": 1940477,
  "data_bytes": [
-  795621,
-  6524
+  795435,
+  6731
  ],
  "check_expect": "5939",
  "check_host": "5939",
- "done": 2974,
+ "done": 3016,
  "vice": {
   "mission": "test",
   "ok": true,
@@ -29,17 +29,17 @@
    2
   ],
   "fast_loader": true,
-  "load_cycles": 265501809,
-  "load_s": 269.5,
+  "load_cycles": 265742468,
+  "load_s": 269.7,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 96606,
+  "handoff_cycles": 96444,
   "run_s": 159.8,
   "check_crc": "5939",
   "check_expect": "5939",
   "check_pass": true,
   "window_cs": 200,
   "window_steps": 1242,
-  "window_x": 22.12,
+  "window_x": 22.13,
   "screen": [
    "APOLLO 11 ON THE C64: HARDWARE CHECK",
    "",
@@ -51,7 +51,7 @@
    "RUNNING LM P63 FROM 17532 CS...",
    "",
    "AGC TIME: 200 CS IN 1242 STEPS",
-   "C64 TIME: 44.24 S, 22.12 X REAL TIME",
+   "C64 TIME: 44.25 S, 22.12 X REAL TIME",
    "",
    "END STATE CRC 5939 (VICE 5939)",
    "HOST RUN'S CRC 5939 (THE SAME)",
@@ -68,11 +68,11 @@
    ""
   ]
  },
- "commit": "d0732f811067a343b1e27c8aec4639c76a89baca",
+ "commit": "d7abace4fc66b40c79c429bfc457701fb2b6042d",
  "dirty": false,
  "sha256": {
-  "flight-disk/test-1.d81": "ec2915c00fd248b6adfc2e7892a41066c9e85b004611d00a8eda383ebb5f84e2",
-  "flight-disk/test-2.d81": "8b1bd327cbe1f88af9b97af431cafa8f311b3dcfbb89f07df2742e59d8e062a2",
-  "flight-disk/test-loader.prg": "9b187bcf29162fcd24664be1fc2d50b23f2940c235ad7905e7776a511f86c608"
+  "flight-disk/test-1.d81": "1c83d7819c41cd3ac408951d216fd4b21ea063d843bc019d72211e98429d3ee0",
+  "flight-disk/test-2.d81": "bae6bae2f0dc138b432c86dc6abeb1ba547e9a35785b862a43d0941e1684e8a4",
+  "flight-disk/test-loader.prg": "dba0c32d757cd3e99498cb1461a14afd0aa1491a7efcc260170c299896cdb74a"
  }
 }

@@ -73,7 +73,7 @@
   "pre_snapshot": "build/flight-restart/cm-p40-burn-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -86,18 +86,18 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 66137110,
+  "wall_cycles": 66156826,
   "agc_cs": 307,
   "dropped_ticks": 0,
   "steps": 1558,
-  "wall_per_agc": 21.866,
+  "wall_per_agc": 21.872,
   "lost": false,
   "mission": "cm",
   "snap_cs": 50000,
   "replay": true,
   "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
-  "harness_sha256": "1fbb82790bc79347c4cd4998f2b5bcb319c4f60b2737d892fa652b55a6efed34",
-  "prg_sha256": "dccf7b05bd7713d9e136729d2e9b4c6ca72d811c2df64e6179e6f31a3912014d",
+  "harness_sha256": "57c10d17cf085bc7c502deb4da4eb188ad9228cc30323bf5f876af93cb6c8392",
+  "prg_sha256": "78df8c6d96a03364c3eda6d5f5562a812b0d85f54e915788779a5280eb3fdeac",
   "reu_bounds": {
    "ok": true,
    "touched": [
@@ -109,7 +109,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 12
+   "dma_unchecked": 10
   },
   "hold_host_mct": 569,
   "hold_host_time1": 871,
@@ -1195,10 +1195,10 @@
   "requested_cs": 300,
   "host_holes": [],
   "downrupt": false,
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "exit": 0,
   "log": "cm-p40-burn-restart-c64.log",
-  "log_sha256": "aae3bbf4e4061029b944157fe50f78e1cffbf1a47194ecd1626e26ae759102d1",
+  "log_sha256": "c3780547e3ca68aac73e9067c818dfd6ef646cca30c77d3327a1046435f03f07",
   "manifest_sha256": "0b70b0db263c0d83c8d7f2ffdc3d58e8c2a1e570b5b852c5f9cfc8608bac9b05"
  },
  "gojam_on_c64": null

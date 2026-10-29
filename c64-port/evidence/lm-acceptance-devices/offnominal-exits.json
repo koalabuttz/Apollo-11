@@ -2,31 +2,31 @@
  "lm-p52-imu-cage": {
   "exit": 0,
   "log": "lm-p52-imu-cage.log",
-  "log_sha256": "854e0b2c99233a34707d9a02c886b43fa9b36c6694228a0c7dd4c17bebca5633"
+  "log_sha256": "12ab0c4f9d8d8ad048b818e0781113cc00cfbf3dd47058a68434c00e17880d3a"
  },
  "lm-p52-imu-fail": {
   "exit": 0,
   "log": "lm-p52-imu-fail.log",
-  "log_sha256": "50971a71e70a31cab9ee7acf5554ddb9cd27626286d786d0276b399f6e15bcd7"
+  "log_sha256": "edeb0ca3b3b07c7dacb1dfff16ed7267e233a2484e7e64bf215fb4e1d4d26ee7"
  },
  "lm-p63-lr-dropout": {
   "exit": 0,
   "log": "lm-p63-lr-dropout.log",
-  "log_sha256": "4e937f85ca8fc1135c6f1d8118d6834c52dd3d144ad9c49ad2185005ec083081"
+  "log_sha256": "b50cc09d617e7d5613a018ac87a356e52cc1f11ebe56cf9ea256b69871f97bec"
  },
  "lm-p63-overload-nomon": {
   "exit": 0,
   "log": "lm-p63-overload-nomon.log",
-  "log_sha256": "740076f020d1a4ab104b952ad2ecae1ef78c23c6fc3b2015dca615bb47bf17ea"
+  "log_sha256": "780975ec6654e2d74da7e894bd744b3612d9a35d7d84811ff3081bc636191402"
  },
  "lm-rendezvous-rr-dropout": {
   "exit": 0,
   "log": "lm-rendezvous-rr-dropout.log",
-  "log_sha256": "fbb5c9d8e9460ccf2d903d5ffba87f2ecf7aa6ce83feb9a5c59a091b3f6b7ea8"
+  "log_sha256": "24a08160227ab9667f5838c6f14924e23b49de2f0441293464113964ee977942"
  },
  "lm-uplink-reject": {
   "exit": 0,
   "log": "lm-uplink-reject.log",
-  "log_sha256": "be414e838c2deeb6bd4d38c12f8417fa223176ce4784608940b4643ade585c6c"
+  "log_sha256": "46117e3ac9626241233c70daa7c6f7e0663f35e9439d1996214262883b97ee7e"
  }
 }
