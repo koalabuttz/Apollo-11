@@ -6,7 +6,7 @@ No PCI HardSID boards found.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
 Initializing chip model "MOS8565" (63 cycles per line, 312 raster lines).
-VSP Bug: safe channels are: 16. Emulation of memory corruption is disabled.
+VSP Bug: safe channels are: 123457. Emulation of memory corruption is disabled.
 c64cartridge_reset changed: 1
 set_cartridge_type: -1
 512KiB unit installed.
@@ -14,7 +14,7 @@ set_cartridge_type: -1
 2048KiB unit installed.
 Reading REU image /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu.
 
-(x64sc:10708): dconf-WARNING **: 17:14:48.579: failed to commit changes to dconf: Failed to execute child process “dbus-launch” (No such file or directory)
+(x64sc:9886): dconf-WARNING **: 05:35:54.895: failed to commit changes to dconf: Failed to execute child process “dbus-launch” (No such file or directory)
  
 *** VICE Version 3.7.1 ***
  
@@ -29,8 +29,8 @@ Empathic Qubit, Roberto Muscedere, June Tate-Gans, Pablo Roldan.
 This is free software with ABSOLUTELY NO WARRANTY.
 See the "About VICE" command for more info.
  
-random seed was: 0x6ae22d86
-command line was: /usr/bin/x64sc -default -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64 -drive8truedrive +virtualdev8 -drive8type 1581 -8 /tmp/x/dk/c64-port/build/flight-disk/cm-1.d81 -reu -reusize 2048 -reuimage /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6646 -monlogname /tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log -monlog -keybuf load"*",8,1\nrun\n
+random seed was: 0x6ae2db39
+command line was: /usr/bin/x64sc -default -pal -warp +sound -kernal /home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin -basic /home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin -chargen /home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin -directory /home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64 -drive8truedrive +virtualdev8 -drive8type 1581 -8 /tmp/x/dk/c64-port/build/flight-disk/cm-1.d81 -reu -reusize 2048 -reuimage /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu -reuimagerw -remotemonitor -remotemonitoraddress ip4://127.0.0.1:6834 -monlogname /tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log -monlog -keybuf load"*",8,1\nrun\n
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/kernal-901227-03.bin'.
 Loading system file `/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin'.
@@ -94,13 +94,13 @@ Loading vertex shader: /usr/share/vice/GLSL/viewport.vert
 Loading fragment shader: /usr/share/vice/GLSL/bicubic-interlaced.frag
 Created render thread 0
 Render thread initialised
-Error - glXSwapIntervalMESA(1) failed with error: 5 (suppressing futher errors)
 opening dynamic library libmp3lame.so failed!
 ERROR setting up dynamic lame lib!
 Sound: Available sound devices: pulse alsa dummy fs dump wav voc iff aiff mp3 soundmovie
 Joystick: Linux joystick interface initialization...
-Joystick: Warning - Cannot open joystick device `/dev/input/js0'.
+Error - Joystick: Warning - Cannot open joystick device `/dev/input/js0'.
 Joystick: Warning - Cannot open joystick device `/dev/input/js1'.
+glXSwapIntervalMESA(1) failed with error: 5 (suppressing futher errors)
 Joystick: Warning - Cannot open joystick device `/dev/input/js2'.
 Joystick: Warning - Cannot open joystick device `/dev/input/js3'.
 Joystick: Warning - Cannot open joystick device `/dev/input/js4'.
@@ -144,16 +144,6 @@ Sync reset
 Sync reset
 Sync reset
 Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
-Sync reset
 VICE thread initiating shutdown
 VICE thread is exiting
 Initiating render thread 0 shutdown
@@ -176,14 +166,14 @@ REU=1
 Drive8Type=1581
 MonitorLogFileName="/tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log"
 MonitorLogEnabled=1
-MonitorServerAddress="ip4://127.0.0.1:6646"
+MonitorServerAddress="ip4://127.0.0.1:6834"
 MonitorServer=1
 
 reconstructed commandline options (might be incomplete):
--default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64" -monlogname "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log" -monlog +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -drive8type "1581" -reu -reusize "2048" -reuimage "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6646"
+-default -directory "/home/claude/Apollo-11/c64-port/deps/vice-data:/home/claude/Apollo-11/c64-port/deps/vice-data:/usr/share/vice:/usr/share/vice/C64" -monlogname "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/monitor.log" -monlog +sound -basic "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/basic-901226-01.bin" -chargen "/home/claude/Apollo-11/c64-port/deps/vice-data/C64/chargen-901225-01.bin" -drive8type "1581" -reu -reusize "2048" -reuimage "/tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu" -reuimagerw -remotemonitor -remotemonitoraddress "ip4://127.0.0.1:6834"
 
 VICE thread has been joined.
 REU: Writing REU image /tmp/x/dk/c64-port/build/flight-disk/vice-cm/image.reu.
 CART: detach main -1: type: -1 id: -1
 CART: unset cart config
-VIC-II: VSP Bug: safe channels are: 35. Emulation of memory corruption is disabled.
+VIC-II: VSP Bug: safe channels are: 1346. Emulation of memory corruption is disabled.

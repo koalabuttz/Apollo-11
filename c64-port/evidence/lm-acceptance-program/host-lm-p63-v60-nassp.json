@@ -15,7 +15,7 @@
  "schedule": "1,1,2",
  "chunked": true,
  "exit": 0,
- "commit": "d0732f811067",
+ "commit": "d7abace4fc66",
  "cia_interrupts": 115029,
  "periods_taken": 115029,
  "periods_dropped": 0,
@@ -43,7 +43,10 @@
   "stuck_steps": 0,
   "checks": 0,
   "disagree": 0,
-  "native_armed": 0
+  "native_armed": 0,
+  "c64_checks": 0,
+  "c64_disagree": 0,
+  "c64_only": 0
  },
  "rupt_lock": {
   "alarms": 0,
@@ -66,5 +69,5 @@
    111727
   ]
  },
- "log_sha256": "ebfd06095db5093c7f430e8c17919524a449ba5ce2d0be180d79e751c5e4847a"
+ "log_sha256": "ce53948b52ff12448fb5f88c51b7e8b3e1bdaced67fe6e66a2147670355fbd2e"
 }

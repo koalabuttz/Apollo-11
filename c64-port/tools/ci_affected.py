@@ -14,7 +14,7 @@ more than --limit targets; CI then runs the whole suite instead. `c64_full`
 (absent means `full`) is true only when the C64 list itself is over the limit,
 so the c64 job keeps its own list when host targets alone pass the limit.
 
-  python3 tools/ci_affected.py --base origin/port/c64-native-c
+  python3 tools/ci_affected.py --base origin/main
   python3 tools/ci_affected.py --files src/waitlist.c tools/mk/foo.mk
 
 With --base, a C, header, assembly or Python file whose code is the same on

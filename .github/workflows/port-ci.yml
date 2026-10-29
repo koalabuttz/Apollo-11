@@ -2,10 +2,10 @@
 name: port-ci
 on:
   push:
-    branches: ['port/**']
+    branches: [main]
     paths: ['c64-port/**', 'Luminary099/**', 'Comanche055/**', '.github/workflows/port-*.yml']
   pull_request:
-    branches: ['port/**']
+    branches: [main]
   workflow_dispatch:
     inputs:
       full:
@@ -16,7 +16,7 @@ on:
     inputs:
       ref:
         type: string
-        default: port/c64-native-c
+        default: main
       full:
         type: boolean
         default: true
@@ -82,10 +82,16 @@ jobs:
           # A PR's base is the merge ref's first parent: the event's base.sha can
           # be older when the base moved before GitHub built the merge ref.
           if [ "$EVENT" = pull_request ]; then base=$(git rev-parse -q --verify HEAD^1 || echo "$PR_BASE")
-          elif [ "$EVENT" = push ] && [ "$HEAD_REF" = port/c64-native-c ] && [ -n "$BEFORE" ] \
+          elif [ "$EVENT" = push ] && [ "$HEAD_REF" = main ] && [ -n "$BEFORE" ] \
                && [ "$BEFORE" != 0000000000000000000000000000000000000000 ]; then base=$BEFORE
-          else base=$(git merge-base HEAD origin/port/c64-native-c)
+          else base=$(git merge-base HEAD origin/main)
           fi
+          # The 10-29 move to main (#1032): main did not hold the port yet, so the
+          # change is measured against the frozen port branch it came from.
+          # No-op once main contains that branch.
+          frozen=origin/port/c64-native-c
+          if git rev-parse -q --verify "$frozen" > /dev/null && git merge-base --is-ancestor "$frozen" HEAD \
+             && ! git merge-base --is-ancestor "$frozen" "$base"; then base=$(git rev-parse "$frozen"); fi
           case "$HEAD_REF" in port/pipeline/*) shared=1 ;; *) shared=0 ;; esac
           if [ "$FULL" = 1 ] || [ "$EVENT" = schedule ]; then
             affected='{"full": true}'
@@ -101,7 +107,7 @@ jobs:
           # already ran them, and the nightly runs every C64 check on the branch
           # (David, 10-23). c64-maps still links every PRG on each push.
           post_merge=0
-          if [ "$EVENT" = push ] && [ "$HEAD_REF" = port/c64-native-c ] && [ "$FULL" != 1 ]; then post_merge=1; fi
+          if [ "$EVENT" = push ] && [ "$HEAD_REF" = main ] && [ "$FULL" != 1 ]; then post_merge=1; fi
           c64=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a["full"] or bool(a["c64"])))')
           [ "$post_merge" = 1 ] && c64=0
           echo "c64=$c64" >> "$GITHUB_OUTPUT"
@@ -430,7 +436,7 @@ jobs:
     needs: plan
     env:
       REF: ${{ needs.plan.outputs.sha }}
-    if: github.event_name == 'push' && github.ref == 'refs/heads/port/c64-native-c'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:

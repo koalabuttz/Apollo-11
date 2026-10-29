@@ -42,27 +42,27 @@
       "evidence": {
         "bootable_c64_application": {
           "path": "docs/acceptance/Luminary099-bootable_c64_application.md",
-          "sha256": "121176592aaeca3046dcd463b98dedddac2672f6a2b3739bce5b2e08e71ed865"
+          "sha256": "64e1b82e2269ec7dc7870ce2bb7248f7bbbca60e19b54cc97e85153161c14c61"
         },
         "integrated_program_tests": {
           "path": "docs/acceptance/Luminary099-integrated_program_tests.md",
-          "sha256": "892cac6105072707a718d7196b55f0b3778b230d89c78ad7a7003b9b48964a56"
+          "sha256": "4756108ab619b75a19d441ba0f867993c629ff4a2b48752a63833e8ab9ffea13"
         },
         "device_adapter_tests": {
           "path": "docs/acceptance/Luminary099-device_adapter_tests.md",
-          "sha256": "35f03430034f72398a5dc545771fc8fb5f3d6015e746b2035a92ca6023cc4d2c"
+          "sha256": "fb9d1c6a06a3c325975fd3b495eb2673aa996f45265fd7137ea1123c58638a83"
         },
         "native_output_tests": {
           "path": "docs/acceptance/Luminary099-native_output_tests.md",
-          "sha256": "aba0fbd9bb9253cbd8980783bf9f5bdd321f8b377e713086531be55261e82068"
+          "sha256": "9a8c78219db4b12ca9850781edb4d0f3b89199be63d54f4783bddc4e28c22bb3"
         },
         "memory_and_overlay_validation": {
           "path": "docs/acceptance/Luminary099-memory_and_overlay_validation.md",
-          "sha256": "d82e9a74d58dfb832897ab1f7ae1523b8bfb227230dfdc475a6b9eb4ac2d4157"
+          "sha256": "2b6630ebe8636b16a55acbc0bcc4f0428f67ec2fbdc41d24ffe748a640e1503d"
         },
         "recovery_and_restart_tests": {
           "path": "docs/acceptance/Luminary099-recovery_and_restart_tests.md",
-          "sha256": "35a8c274089c438a0eda6653db6fb9be68707fd7b027e2a773abc201d13de332"
+          "sha256": "0269c62f6fb7099acefb59422d8242625b75f1b96edd246b080dd00086198ea3"
         }
       },
       "qualified_partial_milestones": [
@@ -77,7 +77,7 @@
           "reviewed_entire_program": false
         }
       ],
-      "acceptance_commit": "d0732f811067a343b1e27c8aec4639c76a89baca"
+      "acceptance_commit": "d7abace4fc66b40c79c429bfc457701fb2b6042d"
     },
     "Comanche055": {
       "status": "complete",
@@ -85,27 +85,27 @@
       "evidence": {
         "bootable_c64_application": {
           "path": "docs/acceptance/Comanche055-bootable_c64_application.md",
-          "sha256": "3bdfecba4978db7a79aca2d246b209e7f9b04b4e8e192f3f152d68ea658642e1"
+          "sha256": "0219f733eadff28d7cd7643ae2ea27a13c0f214576a4a9869fdb3c971ab0ee6d"
         },
         "integrated_program_tests": {
           "path": "docs/acceptance/Comanche055-integrated_program_tests.md",
-          "sha256": "a95e3e0466aed37e538261b7f006582b28960f515b10ef9e4710d3c8937c8b82"
+          "sha256": "341753b1d506bbcff5f04090b71efd884f8e99825d6ad1f0653ab8eccc1ebb05"
         },
         "device_adapter_tests": {
           "path": "docs/acceptance/Comanche055-device_adapter_tests.md",
-          "sha256": "0bbc2e838a19e868404b0dc649cf006e48f6d60511e8e1dcca98336ee0d675b9"
+          "sha256": "a0331665581da3afc6c1cf11afbbea6aa97e8db6253485e0a678a29665b91394"
         },
         "native_output_tests": {
           "path": "docs/acceptance/Comanche055-native_output_tests.md",
-          "sha256": "cd2992ee35377663d355e4ec1439141ee248676cb3b9f0a5f863e0eb0e8073c4"
+          "sha256": "e9eba6e8d25969b92055994ff44489cd1d46c5b1c973f9339fc1944b7bcf2f22"
         },
         "memory_and_overlay_validation": {
           "path": "docs/acceptance/Comanche055-memory_and_overlay_validation.md",
-          "sha256": "bc04fc5c458b074657a6b26967d7a00aea8d7384ec90ac07b09b9389e1256d72"
+          "sha256": "8f2d375a13d240b9857a60e74c7f5a545f6cb5a1c5aff8f1674fce338802e9c5"
         },
         "recovery_and_restart_tests": {
           "path": "docs/acceptance/Comanche055-recovery_and_restart_tests.md",
-          "sha256": "530b095d85e17302ca5b15f2e160c8fb0bcf244519f7c1efd1ae6fae70db07c3"
+          "sha256": "4802a21d814503b641c8cd2715c3402adc9bc69d388d70dac6acae97d9f12b4e"
         }
       },
       "qualified_partial_milestones": [
@@ -130,7 +130,7 @@
           "reviewed_entire_program": false
         }
       ],
-      "acceptance_commit": "d0732f811067a343b1e27c8aec4639c76a89baca"
+      "acceptance_commit": "d7abace4fc66b40c79c429bfc457701fb2b6042d"
     }
   },
   "files": [
