@@ -152,9 +152,14 @@ WAIT = ('lm-rendezvous-tpm', 'lm-stable-orbit', 'lm-stable-orbit-lm')
 # gimbal it ends 169 apart, inside its spread (452).
 # The rows the harness's table order made exact end 144 to 643 words apart
 # with the first holder in resolution order instead (inside their spread).
+# The rows the engine's step at the routine boundary made exact end 143 to
+# 209 words apart with it after the routine instead, lm-abort-p70-nassp 3,
+# so that row's cap is 0.
 WORD_CAP = {'lm-stable-orbit-wait': 100, 'lm-stable-orbit-lm-wait': 100, 'lm-p63-trim': 20, 'cm-v49-att': 20,
             'lm-rhc-att-turn': 20, 'lm-p63-att': 20, 'cm-entry': 20, 'cm-entry-restart': 20,
-            'lm-rendezvous-tpm': 20, 'lm-rendezvous-tpm-wait': 20}
+            'lm-rendezvous-tpm': 20, 'lm-rendezvous-tpm-wait': 20, 'lm-p65-autoland-nassp': 20,
+            'lm-landing-ascent-nassp': 20, 'lm-p67-nassp': 20, 'lm-abort-p70-nassp': 0, 'lm-abort-p71-nassp': 20,
+            'lm-p12-restart': 20}
 
 # The quick set (--quick; make x86-flight-scenarios-quick, in PR CI): the
 # cheapest rows that between them run every model the x86 program has,
