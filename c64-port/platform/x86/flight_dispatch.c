@@ -73,6 +73,20 @@ static uint16_t at[2][65536];
 #define X86_CERTIFIED_ONLY 0
 #endif
 static agc_routine call_at[2][65536];
+/* Keys several tables hold: 1 + the start of their holders in holders[], in
+ * resolution order, ended by an entry with table FD_NONE. fd_run searches
+ * them as the harness's holder does. */
+enum { FD_NONE = 0xFFFFu };
+typedef struct {
+    uint16_t table;
+    agc_routine call;
+} fd_holder;
+static uint32_t several_at[2][65536];
+static fd_holder *holders;
+static unsigned nholders;
+/* Each table's kernel_name (flight_host_run.c): the kernel's own tables,
+ * which rk_direct tries first at a basic point. */
+static uint8_t kernel[1024];
 
 static bool rope_data(const agc_native_program *p,uint16_t physical,agc_word *word){(void)p;return apollo_rope_read(MISSION,physical,word);}
 
@@ -83,6 +97,78 @@ static double step_at(unsigned long j)
 {
     static const unsigned end[9] = {214u, 427u, 854u, 1067u, 1280u, 1707u, 1920u, 2134u, 2560u};
     return 2560.0 * (double)(j / 9u) + end[j % 9u];
+}
+
+/* Whether fd_init takes table i at all (the core mode's interpretive
+ * tables and, in a certified-only build, uncertified ones are left out). */
+static int taken(unsigned i, uint8_t mode)
+{
+    const fd_table *e = &fd_tables[i];
+    if (e->interp && mode == FD_INTERP_CORE && e->t != &agc_lm_danzig_marker &&
+        e->t != &agc_cm_danzig_marker)
+        return 0;
+#if X86_CERTIFIED_ONLY
+    if (fd_table_status(i) == 'u') return 0;
+#endif
+    return 1;
+}
+
+static int kernel_name(const char *n)
+{
+    return strstr(n, "_kernel_routines") || strstr(n, "_kernel_job_routines") ||
+           strstr(n, "_kernel_task_routines") || strstr(n, "_kernel_idle_routines") ||
+           (strstr(n, "_sp_routines") && !strstr(n, "_hot_"));
+}
+
+/* several_at and holders: every key at[] gives that another table holds too. */
+static void index_holders(uint8_t mode)
+{
+    static uint16_t count[2][65536];
+    unsigned i, j, k, n = 0;
+    memset(count, 0, sizeof count);
+    memset(several_at, 0, sizeof several_at);
+    if (fd_table_count > sizeof kernel) {
+        fprintf(stderr, "x86 flight: %u tables, room for %u\n", fd_table_count,
+                (unsigned)sizeof kernel);
+        exit(2);
+    }
+    for (i = 0; i < fd_table_count; ++i) {
+        kernel[i] = (uint8_t)(kernel_name(fd_tables[i].name) != 0);
+        if (!taken(i, mode)) continue;
+        for (j = 0; j < fd_tables[i].t->count; ++j) {
+            uint16_t *c = &count[fd_tables[i].interp][fd_tables[i].t->entries[j].physical];
+            if (*c < 0xFFFFu) ++*c;
+        }
+    }
+    for (k = 0; k < 2u * 65536u; ++k)
+        if (count[k >> 16][k & 0xFFFFu] > 1u) n += count[k >> 16][k & 0xFFFFu] + 1u;
+    free(holders);
+    holders = n ? malloc(n * sizeof *holders) : 0;
+    if (n && !holders) {
+        fprintf(stderr, "x86 flight: no memory for the holder index\n");
+        exit(2);
+    }
+    nholders = 0;
+    for (k = 0; k < 2u * 65536u; ++k)
+        if (count[k >> 16][k & 0xFFFFu] > 1u) {
+            several_at[k >> 16][k & 0xFFFFu] = nholders + 1u;
+            nholders += count[k >> 16][k & 0xFFFFu];
+            holders[nholders++].table = FD_NONE;
+            count[k >> 16][k & 0xFFFFu] = 0; /* now the next free place */
+        }
+    for (i = 0; i < fd_table_count; ++i) {
+        if (!taken(i, mode)) continue;
+        for (j = 0; j < fd_tables[i].t->count; ++j) {
+            uint8_t in = fd_tables[i].interp;
+            uint16_t key = fd_tables[i].t->entries[j].physical;
+            uint32_t at0 = several_at[in][key];
+            if (at0) {
+                fd_holder *h = &holders[at0 - 1u + count[in][key]++];
+                h->table = (uint16_t)i;
+                h->call = fd_tables[i].t->entries[j].call;
+            }
+        }
+    }
 }
 
 void fd_init(fd_state *st,uint8_t mode,agc_word ch30,agc_word ch31){static agc_routine_table basic[256],interp[256];unsigned i,j;uint8_t nb=0,ni=1;
@@ -103,6 +189,7 @@ void fd_init(fd_state *st,uint8_t mode,agc_word ch30,agc_word ch31){static agc_r
   if(!e->interp)basic[nb++]=*e->t;
   else if(e->t==&agc_lm_danzig_marker||e->t==&agc_cm_danzig_marker)interp[0]=*e->t;
   else interp[ni++]=*e->t;}
+ index_holders(mode);
  st->p.basic=basic;st->p.basic_count=nb;st->p.interpretive=interp;st->p.interpretive_count=ni;
  st->p.hardware=&st->hw;st->p.fixed_data=rope_data;
  st->io.undo=&st->undo;st->io.interrupt_enabled=1;st->s.words[5]=04000u;
@@ -215,10 +302,36 @@ static int admits(const fd_state *st, const fd_table *e)
 
 /* The module the table runs from goes into its slot, unless a table packed
  * into the loaded module too runs there (flight_host_run.c's module_load). */
+/* The LM's interrupt body tables with no module of their own, which the
+ * C64 runs from wrapper modules loaded in the job slot (flight_host_run.c's
+ * wrapped_table): a wrapper run swaps out the job slot's module. The CM's
+ * wrappers keep the task slot. */
+static int ends(const char *n, const char *x)
+{
+    size_t l = strlen(n), k = strlen(x);
+    return l >= k && !strcmp(n + l - k, x);
+}
+static int wrapped(const fd_table *e)
+{
+#if RK_LM
+    return !*e->module &&
+           (ends(e->name, "_t6rupt_routines") || ends(e->name, "_lead_in_routines") ||
+            ends(e->name, "_t4rupt_core_routines") || ends(e->name, "_keyrupt_routines"));
+#else
+    (void)e;
+    (void)ends;
+    return 0;
+#endif
+}
+
 static void module_load(fd_state *st, const fd_table *e)
 {
     const char *in, *a;
     size_t n;
+    if (wrapped(e)) {
+        st->in_slot[0] = e->name;
+        return;
+    }
     if (!*e->module || e->slot > 1u) return;
     in = st->in_slot[e->slot];
     if (in && !strcmp(in, e->module)) return;
@@ -249,6 +362,36 @@ static unsigned next_holder(const fd_state *st, unsigned i, uint8_t interp, uint
                 return i + 1u;
             }
     }
+    return 0;
+}
+
+/* A step's first holder of key, as the harness's holder (rk_direct): the
+ * kernel's tables at a basic point, then the pinned sets (slots 3 and 4),
+ * then the tables of the modules loaded in the job and task slots (the
+ * loaded module runs a key two modules hold), then resolution order. The
+ * table index + 1, or 0. */
+static unsigned first_holder(const fd_state *st, uint8_t interp, uint16_t key, agc_routine *call)
+{
+    const fd_holder *list = &holders[several_at[interp][key] - 1u], *h;
+    unsigned r;
+    for (r = 0; r < 4u; ++r)
+        for (h = list; h->table != FD_NONE; ++h) {
+            const fd_table *e = &fd_tables[h->table];
+            const char *in = r >= 2u ? st->in_slot[r - 2u] : 0;
+            if (!admits(st, e)) continue;
+            if (r == 0u   ? kernel[h->table] && !interp
+                : r == 1u ? e->slot == 3u || e->slot == 4u
+                          : in && !kernel[h->table] && e->slot != 3u && e->slot != 4u &&
+                                !strcmp(e->module, in)) {
+                *call = h->call;
+                return h->table + 1u;
+            }
+        }
+    for (h = list; h->table != FD_NONE; ++h)
+        if (admits(st, &fd_tables[h->table])) {
+            *call = h->call;
+            return h->table + 1u;
+        }
     return 0;
 }
 
@@ -512,10 +655,12 @@ enum exec_status fd_run(fd_state *st, fd_ran *ran)
         return ran->status = EXEC_OK;
     }
     if (tc_trap(st, ran)) return ran->status = EXEC_OK;
-    /* The first holder in resolution order, as the harness's holder, and its
-  * module goes into its slot. */
+    /* The step's first holder, as the harness's holder, and its module goes
+  * into its slot. */
     call = call_at[in][key];
-    if (t && !admits(st, &fd_tables[t - 1u]))
+    if (several_at[in][key])
+        t = (uint16_t)first_holder(st, (uint8_t)in, key, &call);
+    else if (t && !admits(st, &fd_tables[t - 1u]))
         t = (uint16_t)next_holder(st, t - 1u, (uint8_t)in, key, &call);
     if (t) module_load(st, &fd_tables[t - 1u]);
     /* On the work clock a table left to the interpreter module runs through the
