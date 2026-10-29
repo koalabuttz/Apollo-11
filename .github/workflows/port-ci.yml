@@ -17,6 +17,10 @@ on:
         type: choice
         options: [x64sc, x64]
         default: x64sc
+      verify_links:
+        description: Relink every cached C64 module link and check it (full runs)
+        type: boolean
+        default: true
   workflow_call:
     inputs:
       ref:
@@ -299,7 +303,7 @@ jobs:
           SHARDS: ${{ needs.plan.outputs.c64_nshards }}
           C64_FULL: ${{ needs.plan.outputs.c64_full }}
           # Full runs link every module afresh and check the cache's entries.
-          FLIGHT_LINK_CACHE: ${{ needs.plan.outputs.full == '1' && 'verify' || '' }}
+          FLIGHT_LINK_CACHE: ${{ needs.plan.outputs.full == '1' && inputs.verify_links != false && 'verify' || '' }}
         run: |
           source deps/env.sh
           VICE=$(command -v "$VICE_EMU")
