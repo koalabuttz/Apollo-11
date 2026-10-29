@@ -83,14 +83,14 @@ static void test_engine(void)
     memset(&e, 0, sizeof e);
     vm_cfg.engine_kg = 15000.0;
     w[VM_LM_CDUXD] = 01234u;
-    vm_engine_step(100, &e, w);
+    vm_engine_step(100, &e, w, 0);
     check(!e.on && pipa(0) == 0, "engine off without ENGONFLG");
     w[VM_FLAGWRD5] = VM_ENGONBIT;
-    vm_engine_step(100, &e, w);
+    vm_engine_step(100, &e, w, 0);
     check(e.on && e.kg == 15000.0 && e.bits == 373.0, "engine lights at 10%");
     check_count(w[VM_CDUX], 01234, "CDUX takes CDUXD");
     w[VM_LM_CDUXD] = 0u;
-    vm_engine_step(200, &e, w);
+    vm_engine_step(200, &e, w, 0);
     /* 1 s at 373 bits of 12.53 N along body X, CDUs zero: +X only. */
     a = 373.0 * 12.53 / 15000.0;
     check_count(pipa(0), (long)(a * 100.0), "engine 1 s along X");
@@ -100,18 +100,18 @@ static void test_engine(void)
     /* A throttle command: PSEUDO55 taken when TTHROT changes, held to FMAXPOS. */
     w[VM_PSEUDO55] = word(5000);
     w[VM_TTHROT] = 1u;
-    vm_engine_step(201, &e, w);
+    vm_engine_step(201, &e, w, 0);
     check(e.cmd == 3467.0 && e.bits == 3467.0, "throttle up to FMAXPOS");
     w[VM_PSEUDO55] = word(-10000);
     w[VM_TTHROT] = 2u;
-    vm_engine_step(202, &e, w);
+    vm_engine_step(202, &e, w, 0);
     check(e.cmd == 373.0, "throttle down to 10%");
     /* Pitch 90 degrees (CDUY 1/4 turn): thrust along -Z. */
     memset(&e, 0, sizeof e);
     memset(w + VM_PIPAX, 0, 3 * sizeof w[0]);
     w[VM_LM_CDUXD + 1u] = 020000u;
-    vm_engine_step(0, &e, w);
-    vm_engine_step(100, &e, w);
+    vm_engine_step(0, &e, w, 0);
+    vm_engine_step(100, &e, w, 0);
     check_count(pipa(0), 0, "pitched engine nothing on X");
     check_count(pipa(2), -(long)(a * 100.0), "pitched engine along -Z");
 }
@@ -124,12 +124,12 @@ static void test_engine_lag_and_stage(void)
     vm_cfg.engine_kg = 15000.0;
     vm_cfg.engine_lag = 0.2;
     w[VM_FLAGWRD5] = VM_ENGONBIT;
-    vm_engine_step(0, &e, w);
+    vm_engine_step(0, &e, w, 0);
     w[VM_PSEUDO55] = word(3000);
     w[VM_TTHROT] = 1u;
-    vm_engine_step(1, &e, w);
+    vm_engine_step(1, &e, w, 0);
     check(e.cmd == 3373.0 && e.bits < 400.0, "lagged throttle starts slow");
-    vm_engine_step(200, &e, w);
+    vm_engine_step(200, &e, w, 0);
     check(e.bits > 3000.0 && e.bits < 3373.0, "lagged throttle follows");
     /* Abort stage: the ascent engine from FLIGHT_STAGE. */
     reset();
@@ -138,10 +138,10 @@ static void test_engine_lag_and_stage(void)
     vm_cfg.ascent_kg = 4888.0;
     vm_cfg.stage_cs = 50;
     w[VM_FLAGWRD5] = VM_ENGONBIT;
-    vm_engine_step(0, &e, w);
-    vm_engine_step(50, &e, w);
+    vm_engine_step(0, &e, w, 0);
+    vm_engine_step(50, &e, w, 0);
     check(e.lifted && e.kg < 4888.0, "abort stage on the ascent engine");
-    vm_engine_step(150, &e, w);
+    vm_engine_step(150, &e, w, 0);
     /* Half a second at stage, then a second, each at the mass it began with. */
     {
         double c = 15569.0 / 4888.0 * 0.5 * 100.0;
@@ -161,7 +161,7 @@ static void test_touchdown(void)
     /* Velocity over the surface: V (03526, m/cs at 2^7) 1 m/s along X. */
     put_dp(03526, 0.01, 7);
     w[VM_FLAGWRD5] = VM_ENGONBIT;
-    vm_engine_step(1000, &e, w);
+    vm_engine_step(1000, &e, w, 0);
     check(e.landed && !e.on, "touchdown: no thrust, contact");
     check(pipa(0) < 0, "contact stops the LM");
     /* On the surface: gravity up along RN through REFSMMAT (identity). */
@@ -170,7 +170,7 @@ static void test_touchdown(void)
      * (01733, at 2^1) the identity. */
     put_dp(01220, 1738000.0, 29);
     for (k = 0; k < 3u; ++k) put_dp(01733u + 6u * k + 2u * k, 1.0, 1);
-    vm_engine_step(1100, &e, w);
+    vm_engine_step(1100, &e, w, 0);
     check(pipa(0) > 150 && pipa(0) < 170, "lunar gravity 1.62 m/s^2 for 1 s");
     check_count(pipa(1), 0, "surface reaction only along RN");
 }
@@ -363,6 +363,55 @@ static void test_sivb(void)
     check(pipa(1) == (long)v, "TLI cutoff after 347 s");
 }
 
+/* The trim gimbal: 0.2 deg/s each way, nothing with both bits or after
+ * liftoff, the 6 deg limit, and the thrust along it with FLIGHT_TRIM. */
+static void test_trim(void)
+{
+    vm_gimbal g;
+    double dir[3], deg = 3.141592653589793 / 180.0;
+    memset(&g, 0, sizeof g);
+    vm_gimbal_step(100, &g, VM_TRIM_PITCH_PLUS);
+    check(g.angle[0] == 0.0, "gimbal starts at 0");
+    vm_gimbal_step(600, &g, VM_TRIM_PITCH_PLUS | VM_TRIM_ROLL_MINUS);
+    check(fabs(g.angle[0] - 1.0 * deg) < 1e-12 && fabs(g.angle[1] + 1.0 * deg) < 1e-12,
+          "5 s at 0.2 deg/s");
+    vm_gimbal_step(1100, &g, VM_TRIM_PITCH_PLUS | VM_TRIM_PITCH_MINUS);
+    check(fabs(g.angle[0] - 1.0 * deg) < 1e-12 && fabs(g.angle[1] + 1.0 * deg) < 1e-12,
+          "both bits drive nothing");
+    vm_gimbal_step(10100, &g, VM_TRIM_PITCH_MINUS);
+    check(fabs(g.angle[0] + 6.0 * deg) < 1e-12, "held at 6 deg");
+    /* At zero CDUs the thrust leaves along body X tilted by the gimbal. */
+    g.angle[0] = 2.0 * deg;
+    g.angle[1] = 0.0;
+    vm_gimbal_thrust(&g, 0.0, 0.0, 0.0, dir);
+    check(fabs(dir[0] - cos(2.0 * deg)) < 1e-12 && fabs(dir[2] + sin(2.0 * deg)) < 1e-12 &&
+              dir[1] == 0.0,
+          "pitch trim tilts the thrust toward -Z");
+    {
+        vm_engine e;
+        reset();
+        memset(&e, 0, sizeof e);
+        vm_cfg.engine_kg = 15000.0;
+        vm_cfg.trim = 1;
+        w[VM_FLAGWRD5] = VM_ENGONBIT;
+        e.gimbal.started = 1;
+        e.gimbal.angle[0] = 6.0 * deg;
+        vm_engine_step(0, &e, w, 0);
+        vm_engine_step(100, &e, w, 0);
+        check(pipa(0) > 0 && pipa(2) < 0, "FLIGHT_TRIM: the PIPAs see the tilt");
+        vm_cfg.trim = 0;
+        memset(&e, 0, sizeof e);
+        reset();
+        vm_cfg.engine_kg = 15000.0;
+        w[VM_FLAGWRD5] = VM_ENGONBIT;
+        e.gimbal.started = 1;
+        e.gimbal.angle[0] = 6.0 * deg;
+        vm_engine_step(0, &e, w, 0);
+        vm_engine_step(100, &e, w, 0);
+        check(pipa(0) > 0 && pipa(2) == 0, "without FLIGHT_TRIM the thrust stays on body X");
+    }
+}
+
 int main(void)
 {
     test_words();
@@ -376,6 +425,7 @@ int main(void)
     test_imu();
     test_saturn();
     test_sivb();
+    test_trim();
     if (failures) {
         printf("vehicle models: %d failed\n", failures);
         return 1;

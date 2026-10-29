@@ -21,7 +21,7 @@
  *   FLIGHT_CHAN     CS:CH=VALUE,... input channel 16 or 30-33 set (octal),
  *                   in time order
  *   FLIGHT_ENGINE, FLIGHT_ENGINE_LAG, FLIGHT_TOUCHDOWN, FLIGHT_PILOT,
- *   FLIGHT_ASCENT, FLIGHT_STAGE, FLIGHT_RCS (LM); FLIGHT_SPS, FLIGHT_AERO,
+ *   FLIGHT_ASCENT, FLIGHT_STAGE, FLIGHT_RCS, FLIGHT_TRIM (LM); FLIGHT_SPS, FLIGHT_AERO,
  *   FLIGHT_IMU, FLIGHT_SATURN, FLIGHT_SIVB (CM): the vehicle models
  *                   (platform/x86/vehicle_models.h)
  *   FLIGHT_RR, FLIGHT_RR_DROP: the LM's rendezvous radar or the CM's VHF
@@ -142,6 +142,7 @@ static int fs_parse_models(void)
     vm_cfg.ascent_kg = fs_number("FLIGHT_ASCENT");
     vm_cfg.stage_cs = fs_cs("FLIGHT_STAGE");
     vm_cfg.rcs_kg = fs_number("FLIGHT_RCS");
+    vm_cfg.trim = getenv("FLIGHT_TRIM") && atoi(getenv("FLIGHT_TRIM")) != 0;
     if (vm_cfg.stage_cs && !vm_cfg.ascent_kg) {
         fprintf(stderr, "FLIGHT_STAGE needs FLIGHT_ASCENT\n");
         return 0;
@@ -366,7 +367,7 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
         st->s.words[in->pokes[in->poked].addr] = (agc_word)in->pokes[in->poked].value;
         ++in->poked;
     }
-    vm_engine_step(t, &in->engine, w);
+    vm_engine_step(t, &in->engine, w, st->hw.channel12);
     vm_sps_step(t, &in->sps, w, st->hw.channel12, st->optics);
     rm_rr_step(&rm_rr_cfg, t, &in->rr, w, st->hw.channel12, st->hw.channel13, st->hw.channel14,
                &st->hw.channel33);
@@ -424,7 +425,7 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
 static void fs_after_routine(fs_inputs *in, fd_state *st)
 {
     unsigned long t = fd_centiseconds(st);
-    if (vm_cfg.engine_lag) vm_engine_step(t, &in->engine, st->s.words);
+    if (vm_cfg.engine_lag) vm_engine_step(t, &in->engine, st->s.words, st->hw.channel12);
     vm_rcs_step(t, &in->rcs, st->s.words, st->hw.channel5, st->hw.channel6);
     if (lr_cfg.on && !(st->hw.channel13 & 010u))
         in->lr.active = 0;

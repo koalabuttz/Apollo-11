@@ -31,6 +31,7 @@ typedef struct {
     double pilot_tau;           /* FLIGHT_PILOT: P66 crew time constant, s */
     double ascent_kg;           /* FLIGHT_ASCENT: ascent stage mass */
     unsigned long stage_cs;     /* FLIGHT_STAGE: abort stage */
+    int trim;                   /* FLIGHT_TRIM: the thrust follows the trim gimbal */
     double rcs_kg;              /* FLIGHT_RCS (LM): vehicle mass for the jets */
     double sps_kg;              /* FLIGHT_SPS (CM): CSM mass */
     double sps_cg[2];           /* FLIGHT_SPS: centre of mass off the trim, degrees */
@@ -176,12 +177,75 @@ VM_FN void vm_pipa_carry(double *carry, const double f[3], agc_word *w)
  *
  * In P70 (MODREG 70) the descent engine goes to full thrust: THROTUP
  * writes BIT13 to THRUST directly, more than FMAXPOS, with no PSEUDO55 or
- * TTHROT change. */
+ * TTHROT change.
+ *
+ * The descent engine's trim gimbal (vm_gimbal) turns from channel 12 at
+ * each engine step until liftoff or staging, on or off.
+ * FLIGHT_TRIM=1: the descent engine's thrust leaves along the gimbal's
+ * tilted axis (vm_gimbal_thrust), put into stable-member axes through all
+ * three CDUs. Off by default: the engine holds the attitude perfectly, so
+ * nothing would turn the LM back and the tilt would only bend the
+ * trajectory. */
+
+/* The trim gimbal. Channel 12 bits 10 and 9 drive the pitch trim (about
+ * body Y) plus and minus, bits 12 and 11 the roll trim (about body Z), as
+ * TRIM_GIMBAL_CONTROL_SYSTEM's ACDT+C12 sets them; both bits of an axis
+ * on drive nothing. It turns at 0.2 deg/s for the time since its last
+ * step, within +-6 deg, starting at 0. */
+enum {
+    VM_TRIM_PITCH_PLUS = 01000,
+    VM_TRIM_PITCH_MINUS = 0400,
+    VM_TRIM_ROLL_PLUS = 04000,
+    VM_TRIM_ROLL_MINUS = 02000
+};
+#define VM_TRIM_RATE  (0.2 * 3.141592653589793 / 180.0) /* rad/s */
+#define VM_TRIM_LIMIT (6.0 * 3.141592653589793 / 180.0) /* rad */
+typedef struct {
+    unsigned long t;
+    int started;
+    double angle[2]; /* pitch, roll; radians */
+} vm_gimbal;
+
+VM_FN int vm_trim_drive(agc_word c12, unsigned plus, unsigned minus)
+{
+    return ((c12 & plus) != 0) - ((c12 & minus) != 0);
+}
+
+VM_FN void vm_gimbal_step(unsigned long t, vm_gimbal *g, agc_word c12)
+{
+    double dt = g->started && t > g->t ? (double)(t - g->t) * 0.01 : 0.0;
+    int drive[2], k;
+    g->t = t;
+    g->started = 1;
+    drive[0] = vm_trim_drive(c12, VM_TRIM_PITCH_PLUS, VM_TRIM_PITCH_MINUS);
+    drive[1] = vm_trim_drive(c12, VM_TRIM_ROLL_PLUS, VM_TRIM_ROLL_MINUS);
+    for (k = 0; k < 2; ++k) {
+        double a = g->angle[k] + drive[k] * VM_TRIM_RATE * dt;
+        g->angle[k] = a > VM_TRIM_LIMIT ? VM_TRIM_LIMIT : a < -VM_TRIM_LIMIT ? -VM_TRIM_LIMIT : a;
+    }
+}
+
+/* The thrust direction through the gimbal, in stable-member axes, from
+ * the outer, inner and middle gimbal angles: in body axes
+ * (cos p cos r, sin r, -sin p cos r), the body axes in stable-member axes
+ * as Rx(outer) Rz(middle) Ry(inner). */
+VM_FN void vm_gimbal_thrust(const vm_gimbal *g, double og, double ig, double mg, double dir[3])
+{
+    double p = g->angle[0], r = g->angle[1], b[3] = {cos(p) * cos(r), sin(r), -sin(p) * cos(r)};
+    double co = cos(og), so = sin(og), cm = cos(mg), sm = sin(mg), ci = cos(ig), si = sin(ig);
+    double x[3] = {cm * ci, sm, -cm * si},
+           y[3] = {-co * sm * ci + so * si, co * cm, co * sm * si + so * ci},
+           z[3] = {so * sm * ci + co * si, -so * cm, -so * sm * si + co * ci};
+    int j;
+    for (j = 0; j < 3; ++j) dir[j] = b[0] * x[j] + b[1] * y[j] + b[2] * z[j];
+}
+
 typedef struct {
     int on, lifted, stopped, landed;
     unsigned long t;
     agc_word tthrot;
     double bits, cmd, ramp, kg, carry[3];
+    vm_gimbal gimbal;
     vm_dv_hook dv; /* 0: none */
 } vm_engine;
 
@@ -274,12 +338,13 @@ VM_FN void vm_pilot(agc_word *w)
     }
 }
 
-VM_FN void vm_engine_step(unsigned long t, vm_engine *e, agc_word *w)
+VM_FN void vm_engine_step(unsigned long t, vm_engine *e, agc_word *w, agc_word c12)
 {
     const vm_config *c = &vm_cfg;
     double f, a, dt, ig, mg, dir[3];
     unsigned k;
     if (c->engine_kg == 0.0) return;
+    if (!e->lifted) vm_gimbal_step(t, &e->gimbal, c12);
     if (c->touchdown_cs && t >= c->touchdown_cs && !e->lifted) {
         int on = (w[VM_FLAGWRD5] & VM_ENGONBIT) != 0;
         if (!on) e->stopped = 1;
@@ -335,9 +400,13 @@ VM_FN void vm_engine_step(unsigned long t, vm_engine *e, agc_word *w)
     }
     ig = (double)w[VM_CDUY] * (VM_TWO_PI / 32768.0);
     mg = (double)w[VM_CDUZ] * (VM_TWO_PI / 32768.0);
-    dir[0] = cos(ig) * cos(mg);
-    dir[1] = sin(mg);
-    dir[2] = -sin(ig) * cos(mg);
+    if (c->trim && !e->lifted)
+        vm_gimbal_thrust(&e->gimbal, (double)w[VM_CDUX] * (VM_TWO_PI / 32768.0), ig, mg, dir);
+    else {
+        dir[0] = cos(ig) * cos(mg);
+        dir[1] = sin(mg);
+        dir[2] = -sin(ig) * cos(mg);
+    }
     if (e->dv) {
         double dv[3];
         for (k = 0; k < 3u; ++k) dv[k] = a * dt * dir[k];
