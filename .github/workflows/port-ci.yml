@@ -120,13 +120,17 @@ jobs:
           [ "$post_merge" = 1 ] && c64_full=0
           echo "c64_full=$c64_full" >> "$GITHUB_OUTPUT"
           # A PR's own c64 list gets a runner per hour of measured target time
-          # (tools/ci_target_seconds.json), up to 4: shared kernel PRs pick
-          # 9+ VICE targets of 5-25 minutes each.
-          if [ "$c64_full" = 1 ]; then c64_n=4
+          # (tools/ci_target_seconds.json), up to 6: shared kernel PRs pick
+          # 9+ VICE targets of 5-25 minutes each. A full c64 run is about 34
+          # runner-hours of targets, 4 at a time: on 4 runners it took 2-3.5 h,
+          # on 6 it is about 85 min, which is the longest single target's time
+          # (vice-lanec-pin-keys-2), so more runners would not finish sooner.
+          # 6 c64 + 4 host + the small jobs stay well under the 20-job cap.
+          if [ "$c64_full" = 1 ]; then c64_n=6
           else
             c64_n=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("c64",[])+a.get("vice",[])))' \
-                    | xargs python3 tools/ci_run.py --count-shards 4 2>/dev/null | tail -1)
-            case "$c64_n" in [1-4]) ;; *) c64_n=1 ;; esac
+                    | xargs python3 tools/ci_run.py --count-shards 6 2>/dev/null | tail -1)
+            case "$c64_n" in [1-6]) ;; *) c64_n=1 ;; esac
           fi
           echo "c64_nshards=$c64_n" >> "$GITHUB_OUTPUT"
           echo "c64_shards=$(python3 -c "print(list(range($c64_n)))")" >> "$GITHUB_OUTPUT"
