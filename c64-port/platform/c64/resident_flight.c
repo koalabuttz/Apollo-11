@@ -459,38 +459,63 @@ void dp_rows_after_rupts(void);
 #define RK_STEAL_AT(name)
 #endif
 /* A period's RK_STEAL MCT over its steps, by where each ends (the host's
- * steal_share): 3n of every 2560 MCT. A byte each while they fit. */
+ * steal_share): 3n of every 2560 MCT. */
 #define RK_STEAL_CUM(e) (3ul * (RK_STEAL) * (e) / 2560ul)
-#if RK_STEAL_CUM(1707u) - RK_STEAL_CUM(1280u) < 256u
-typedef uint8_t rk_steal_mct;
-#else
-typedef uint16_t rk_steal_mct;
-#endif
 RK_STEAL_AT("rk_steal_share")
-static const rk_steal_mct rk_steal_share[9] = {RK_STEAL_CUM(214u),
-                                               RK_STEAL_CUM(427u) - RK_STEAL_CUM(214u),
-                                               RK_STEAL_CUM(854u) - RK_STEAL_CUM(427u),
-                                               RK_STEAL_CUM(1067u) - RK_STEAL_CUM(854u),
-                                               RK_STEAL_CUM(1280u) - RK_STEAL_CUM(1067u),
-                                               RK_STEAL_CUM(1707u) - RK_STEAL_CUM(1280u),
-                                               RK_STEAL_CUM(1920u) - RK_STEAL_CUM(1707u),
-                                               RK_STEAL_CUM(2134u) - RK_STEAL_CUM(1920u),
-                                               RK_STEAL_CUM(2560u) - RK_STEAL_CUM(2134u)};
+__attribute__((used))
+const uint16_t rk_steal_share[9] = {RK_STEAL_CUM(214u),
+                                    RK_STEAL_CUM(427u) - RK_STEAL_CUM(214u),
+                                    RK_STEAL_CUM(854u) - RK_STEAL_CUM(427u),
+                                    RK_STEAL_CUM(1067u) - RK_STEAL_CUM(854u),
+                                    RK_STEAL_CUM(1280u) - RK_STEAL_CUM(1067u),
+                                    RK_STEAL_CUM(1707u) - RK_STEAL_CUM(1280u),
+                                    RK_STEAL_CUM(1920u) - RK_STEAL_CUM(1707u),
+                                    RK_STEAL_CUM(2134u) - RK_STEAL_CUM(1920u),
+                                    RK_STEAL_CUM(2560u) - RK_STEAL_CUM(2134u)};
 #undef RK_STEAL_CUM
-/* rk_phase_mct less 200, a byte each. */
-RK_STEAL_AT("rk_steal_step")
-static const uint8_t rk_steal_step[9] = {14u, 13u, 227u, 13u, 13u, 227u, 13u, 14u, 226u};
-uint16_t rk_steal_end = 214u;
-uint8_t rk_steal_q;
-RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(uint8_t steal)
+__attribute__((used)) uint16_t rk_steal_end = 214u;
+__attribute__((used)) uint8_t rk_steal_q;
+_Static_assert((RK_STEAL_FROM) < (1ul << 28) && (RK_STEAL_TO) < (1ul << 28),
+               "RK_STEAL_FROM/TO: TIME2:TIME1, 28 bits");
+/* The bytes of a TIME2:TIME1 count as the 6502 compares it: TIME1's low
+ * 14 bits, then TIME2's. */
+#define RK_STEAL_B0(cs) ((uint8_t)((cs) & 0xffu))
+#define RK_STEAL_B1(cs) ((uint8_t)(((cs) >> 8) & 0x3fu))
+#define RK_STEAL_B2(cs) ((uint8_t)(((cs) >> 14) & 0xffu))
+#define RK_STEAL_B3(cs) ((uint8_t)((cs) >> 22))
+/* From the time as the boundary starts (TIME2 $7028, TIME1 $702A, 14 bits
+ * each, compared as one 28-bit count from TIME1's low byte up): the steal
+ * is on from RK_STEAL_FROM up to RK_STEAL_TO. Then each step's share, at
+ * the step's end, for every step that ended by rk_work. rk_steal_q is
+ * twice the step's phase (rk_phase_mct and rk_steal_share are words). In
+ * 6502: the C took 330 bytes. */
+RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(void)
 {
-    uint8_t q = rk_steal_q;
-    while (rk_steal_end <= rk_work) {
-        if (steal) rk_work += rk_steal_share[q];
-        if (++q == 9u) q = 0;
-        rk_steal_end += 200u + rk_steal_step[q];
-    }
-    rk_steal_q = q;
+    /* clang-format off */
+    __asm__ volatile(
+        "  ldy #0\n"
+        "  lda $702a\n  cmp #%0\n  lda $702b\n  and #$3f\n  sbc #%1\n"
+        "  lda $7028\n  sbc #%2\n  lda $7029\n  and #$3f\n  sbc #%3\n  bcc 1f\n"
+        "  lda $702a\n  cmp #%4\n  lda $702b\n  and #$3f\n  sbc #%5\n"
+        "  lda $7028\n  sbc #%6\n  lda $7029\n  and #$3f\n  sbc #%7\n  bcs 1f\n"
+        "  iny\n"
+        "1:\n  ldx rk_steal_q\n"
+        "2:\n  lda rk_work\n  cmp rk_steal_end\n  lda rk_work+1\n  sbc rk_steal_end+1\n  bcc 9f\n"
+        "  tya\n  beq 3f\n"
+        "  clc\n  lda rk_work\n  adc rk_steal_share,x\n  sta rk_work\n"
+        "  lda rk_work+1\n  adc rk_steal_share+1,x\n  sta rk_work+1\n"
+        "3:\n  inx\n  inx\n  cpx #18\n  bne 4f\n  ldx #0\n"
+        "4:\n  clc\n  lda rk_steal_end\n  adc rk_phase_mct,x\n  sta rk_steal_end\n"
+        "  lda rk_steal_end+1\n  adc rk_phase_mct+1,x\n  sta rk_steal_end+1\n"
+        "  bcc 2b\n" /* (rk_steal_end never carries out) */
+        "9:\n  stx rk_steal_q\n"
+        :
+        : "i"(RK_STEAL_B0(RK_STEAL_FROM)), "i"(RK_STEAL_B1(RK_STEAL_FROM)),
+          "i"(RK_STEAL_B2(RK_STEAL_FROM)), "i"(RK_STEAL_B3(RK_STEAL_FROM)),
+          "i"(RK_STEAL_B0(RK_STEAL_TO)), "i"(RK_STEAL_B1(RK_STEAL_TO)),
+          "i"(RK_STEAL_B2(RK_STEAL_TO)), "i"(RK_STEAL_B3(RK_STEAL_TO))
+        : "a", "x", "y", "p", "memory");
+    /* clang-format on */
 }
 #endif
 #ifdef RK_WORK_CLOCK
@@ -501,8 +526,19 @@ RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(u
  * a step from an interpretive point (DANZIG to NEWOPS: DANZIG, NOIBNKSW at
  * DANZIG +2, NEWOPS) goes round DANZIG, which reads NEWJOB, so it clears the
  * armed bit. That is coarser than the host's rule (docs/FLIGHT-RESTART.md).
- * rk_watch_goto: the step is from GOTO, where the interpreter hands back an
- * erasable CADR cycle after its hops (rk_step_run).
+ * From GOTO, where the interpreter hands back an erasable CADR cycle after
+ * its hops, it keeps POLISH in rk_watch_polish; from anywhere else it sets
+ * rk_watch_polish's high byte to $FF, which no POLISH (15 bits) has.
+ *
+ * rk_stuck, after the step, whichever way it ran (trampoline, direct table
+ * or resolver; it hands the step's status through, so the step keeps no
+ * frame): from GOTO back to GOTO with POLISH as it was, the step is
+ * stuck. The hops ended on the CADR they started from, so it would run
+ * again and again from the same state (the host's rule, night_watchman.h
+ * nw_stuck: every erasable word unchanged, which a cycle whose length does
+ * not divide the hops leaves false). It spins to the period's end
+ * (rk_rest_ahead) and reads no NEWJOB, so the night watchman restarts the
+ * AGC.
  *
  * rk_watch_period, at each period's end (the T5 step, rk_rupts_due): the
  * count goes on by FLIGHT_WATCHMAN_PERIOD. At 64 periods it arms; at 128
@@ -515,11 +551,18 @@ RK_STEAL_AT("rk_steal_run") static __attribute__((noinline)) void rk_steal_run(u
  * whose charge already passed it never moves the clock back. */
 void rk_rest_ahead(void);
 void rk_watch(void);
+enum exec_status rk_stuck(enum exec_status st);
+uint16_t rk_watch_polish;
 void rk_watch_period(void);
-uint8_t rk_watch_goto;
 _Static_assert((RK_GOTO >> 8) != (RK_DANZIG >> 8) && (RK_DANZIG >> 8) == (RK_NEWOPS >> 8) &&
                    RK_NEWOPS - RK_DANZIG < 8u,
                "rk_watch's Z ranges");
+#include "fixed_data_symbols.h"
+#if RK_LM
+_Static_assert(APOLLO_LM_ERASABLE_WORD_POLISH == 79, "rk_watch reads POLISH at $709E");
+#else
+_Static_assert(APOLLO_CM_ERASABLE_WORD_POLISH == 79, "rk_watch reads POLISH at $709E");
+#endif
 _Static_assert(FLIGHT_WATCHMAN_ARMED == 1u && FLIGHT_WATCHMAN_PERIOD == 2u &&
                    FLIGHT_WATCHMAN_ARM == 0x80u,
                "rk_watch_period's byte");
@@ -529,13 +572,24 @@ _Static_assert(FLIGHT_WATCHMAN_ARMED == 1u && FLIGHT_WATCHMAN_PERIOD == 2u &&
 __asm__(".section .text.rk_watch,\"ax\",@progbits\n"
         ".globl rk_watch\n"
         "rk_watch:\n"
-        "  ldx #0\n  lda $700b\n  ldy $700a\n"
+        "  ldx #$ff\n  lda $700b\n  ldy $700a\n"
         "  cmp #" RK_STR(RK_GOTO_HI) "\n  bne 1f\n"
-        "  cpy #" RK_STR(RK_GOTO_LO) "\n  bne 9f\n  inx\n  bne 9f\n"
+        "  cpy #" RK_STR(RK_GOTO_LO) "\n  bne 9f\n"
+        "  lda $709e\n  sta rk_watch_polish\n  ldx $709f\n  bpl 9f\n" /* POLISH < $8000 */
         "1:\n  cmp #" RK_STR(RK_DANZIG_HI) "\n  bne 9f\n"
         "  tya\n  sec\n  sbc #" RK_STR(RK_DANZIG_LO) "\n  cmp #8\n  bcs 9f\n"
         "  lsr rk_nw\n  asl rk_nw\n"
-        "9:\n  stx rk_watch_goto\n  rts\n"
+        "9:\n  stx rk_watch_polish+1\n  rts\n"
+        ".section .text.rk_stuck,\"ax\",@progbits\n"
+        ".globl rk_stuck\n"
+        "rk_stuck:\n"
+        "  pha\n" /* the status's low byte; X (its high byte) is kept throughout */
+        "  lda $700b\n  cmp #" RK_STR(RK_GOTO_HI) "\n  bne 9f\n"
+        "  lda $700a\n  cmp #" RK_STR(RK_GOTO_LO) "\n  bne 9f\n"
+        "  lda $709e\n  cmp rk_watch_polish\n  bne 9f\n"
+        "  lda $709f\n  cmp rk_watch_polish+1\n  bne 9f\n"
+        "  jsr rk_rest_ahead\n"
+        "9:\n  pla\n  rts\n"
         ".section .text.rk_watch_period,\"ax\",@progbits\n"
         ".globl rk_watch_period\n"
         "rk_watch_period:\n"
@@ -570,15 +624,7 @@ __attribute__((noinline, used)) void rk_rupts_due(void) {
      * the step's end, also when the end fell inside the routine that just
      * ran, which the steal stretches (issue #912 item 3). The time as the
      * boundary starts, where the host reads it. Replay builds only. */
-    /* (TIME2 and TIME1 compared as a pair, not as one 28-bit count: the
-     * same test in 16-bit compares, which the overload harness has room for.) */
-    const uint16_t t2 = IMAGE->words[024] & 037777u, t1 = IMAGE->words[025] & 037777u;
-#define RK_STEAL_AT_OR_PAST(cs)                                                                    \
-    (t2 > (uint16_t)((cs) >> 14) ||                                                                \
-     (t2 == (uint16_t)((cs) >> 14) && t1 >= (uint16_t)((cs) & 037777u)))
-    const uint8_t steal = RK_STEAL_AT_OR_PAST(RK_STEAL_FROM) && !RK_STEAL_AT_OR_PAST(RK_STEAL_TO);
-#undef RK_STEAL_AT_OR_PAST
-    rk_steal_run(steal);
+    rk_steal_run();
 #endif
     for (;;) {
         uint8_t p = rk_tick_phase, t = rk_phase_step[p];
@@ -921,11 +967,6 @@ __attribute__((noinline)) static enum exec_status rk_step_run(uint16_t stop_phys
     if(rk_run_module(at)!=APOLLO_OV2_OK) return EXEC_UNMAPPED;
 #ifdef RK_WORK_CLOCK
     rk_charge(rk_env.work,rk_env.scale);
-    /* From GOTO back to GOTO (the interpreter's module): stuck in an
-     * erasable CADR cycle, it would run again and again from the same
-     * state. It spins to the period's end, as the idle loop's charge, and
-     * reads no NEWJOB, so the night watchman restarts the AGC. */
-    if (rk_watch_goto && IMAGE->words[5] == RK_GOTO) rk_rest_ahead();
 #endif
     RK_PROF(9);
 #ifndef RK_NO_DIRECT
@@ -1095,7 +1136,11 @@ __attribute__((noinline)) enum exec_status rk_resident_step(uint16_t stop_physic
 #ifdef RK_WORK_CLOCK
     rk_watch();
 #endif
+#ifdef RK_WORK_CLOCK
+    st = rk_stuck(rk_step_run(stop_physical));
+#else
     st = rk_step_run(stop_physical);
+#endif
 out:
 #if !RK_LM
     rk_channels_merge();

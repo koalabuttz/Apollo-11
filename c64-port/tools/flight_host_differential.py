@@ -987,8 +987,17 @@ def scaled_watchman_bad(watchman, sched):
     NEWJOB accesses disagree at any check, on any schedule (#912 item 5).
     The alarm may sound only where yaAGC's accesses would sound it too: a
     job starved by interrupts on the wall-clock schedules. On the work clock
-    (W) it must not sound at all (#997 R4). No summary line fails too."""
-    return not watchman or bool(watchman['disagree']) or (sched == 'W' and bool(watchman['alarms']))
+    (W) it must not sound at all (#997 R4). The C64 flight resident's
+    coarser rule (the "C64 rule" line, review-1028b M1) must sound exactly
+    where the native rule does, on every schedule: the flight rows run the
+    x1 clock, and only the rule's accesses differ between clocks. No
+    summary line fails too."""
+    return (not watchman or bool(watchman['disagree']) or (sched == 'W' and bool(watchman['alarms']))
+            or watchman.get('c64_disagree') is None or bool(watchman['c64_disagree']))
+
+
+C64_WATCHMAN_LINE = re.compile(r'^night watchman, C64 rule: (\d+) checks while either rule is armed, (\d+) where the C64 '
+                               r'rule differs from the native rule \((\d+) with only the C64 rule armed\)', re.M)
 
 
 RUPT_LOCK_LINE = re.compile(
@@ -1306,6 +1315,8 @@ def main():
                       r'.*?\((\d+) with the native rule armed\)', text, re.M)
         watchman = dict(alarms=int(w[1]), stuck_steps=int(w[2]), checks=int(w[3]), disagree=int(w[4]),
                         native_armed=int(w[5])) if w else None
+        if watchman and (c := C64_WATCHMAN_LINE.search(text)):
+            watchman.update(c64_checks=int(c[1]), c64_disagree=int(c[2]), c64_only=int(c[3]))
         if scaled_watchman_bad(watchman, sched):
             watchman_bad.append(name)
         rupt_lock = rupt_lock_summary(text)
@@ -1335,7 +1346,8 @@ def main():
               f"routine by routine from yaAGC's MCT in: {', '.join(charge_over)}")
     if watchman_bad:
         print(f"FAIL: the night watchman's native rule disagreed with yaAGC's NEWJOB accesses at a check "
-              f"(or sounded on the work clock, or printed no summary), in: {', '.join(watchman_bad)}")
+              f"(or sounded on the work clock, or the C64 rule disagreed with it there, or printed no summary), "
+              f"in: {', '.join(watchman_bad)}")
     if rupt_lock_bad:
         print(f"FAIL: the rupt lock alarm's native flags disagreed with yaAGC's at a check (or channel 77 bit 4 "
               f"was set in a span, a forced row did not sound only its own flag, or no summary), in: {', '.join(rupt_lock_bad)}")

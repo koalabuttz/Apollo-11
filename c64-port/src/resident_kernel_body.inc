@@ -83,18 +83,28 @@ K_EXPORT __attribute__((noinline)) uint8_t k_bzmf(void){return ai_bzmf(ks);}
 #define K_OPS8(n) static __attribute__((noinline)) uint8_t k_##n##8(uint8_t a){return k_##n(a);}
 /* The night watchman (include/flight_watchman.h): the kernel's CCS NEWJOB
  * and TS NEWJOB access NEWJOB, as on the AGC, so they clear its armed bit
- * (in 6502: 27 bytes, the C's 38). */
+ * (in 6502: 25 bytes, the C's 38). */
 #if K_WATCHMAN
 _Static_assert(K_NEWJOB == 067u && FLIGHT_WATCHMAN_ARMED == 1u, "k_newjob8's NEWJOB and bit");
 uint8_t k_ccs8(uint8_t a);
 uint8_t k_ts8(uint8_t a);
 __asm__(".section .text.k_newjob8,\"ax\",@progbits\n"
         ".globl k_ccs8\n.globl k_ts8\n"
-        "k_ccs8:\n  jsr k_newjob8\n  ldx #0\n  jmp k_ccs\n"
-        "k_ts8:\n  jsr k_newjob8\n  ldx #0\n  jmp k_ts\n"
-        "k_newjob8:\n  cmp #$37\n  bne 1f\n  lsr rk_nw\n  asl rk_nw\n1:\n  rts\n"
+        "k_ccs8:\n  jsr k_newjob8\n  jmp k_ccs\n"
+        "k_ts8:\n  jsr k_newjob8\n  jmp k_ts\n"
+        "k_newjob8:\n  ldx #0\n  cmp #$37\n  bne 1f\n  lsr rk_nw\n  asl rk_nw\n1:\n  rts\n"
         ".text\n");
 #define K_OPS8_NEWJOB(n)
+#elif !defined(__mos__)
+/* Host builds report the same accesses to k_newjob_seen when one is linked
+ * (tools/flight_host_run.c models the C64 rule beside the host's). */
+void k_newjob_seen(void) __attribute__((weak));
+#define K_OPS8_NEWJOB(n)                                                                           \
+    static __attribute__((noinline)) uint8_t k_##n##8(uint8_t a)                                    \
+    {                                                                                              \
+        if (a == K_NEWJOB && k_newjob_seen) k_newjob_seen();                                        \
+        return k_##n(a);                                                                           \
+    }
 #else
 #define K_OPS8_NEWJOB(n) K_OPS8(n)
 #endif
