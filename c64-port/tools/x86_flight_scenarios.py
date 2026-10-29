@@ -160,7 +160,8 @@ WORD_CAP = {'lm-stable-orbit-wait': 100, 'lm-stable-orbit-lm-wait': 100, 'lm-p63
 # minute each and run with the full set.
 QUICK = ('lm-coast-v55', 'lm-rhc-att-hold', 'lm-p47-nassp', 'lm-v69', 'cm-v69', 'lm-p52-watchman', 'cm-v48-dap',
          'cm-p52-coarse', 'cm-p20-restart', 'lm-cdh', 'cm-p20-vhf-dropout', 'cm-entry', 'lm-p63-descent', 'cm-p52',
-         'lm-p42-nassp', 'cm-tli', 'lm-p63-landing-displays')
+         'lm-p42-nassp', 'cm-tli', 'lm-p63-landing-displays', 'lm-p63-trim',
+         'lm-rhc-att-turn', 'cm-v49-att')
 
 
 def supported():
