@@ -6,15 +6,14 @@ Workflow for parallel lanes: [CONTRIBUTING-port.md](../CONTRIBUTING-port.md). Th
 ## Repository
 
 Fork: https://github.com/koalabuttz/Apollo-11
-Development branch: **main** (the port branch `port/c64-native-c` was merged
-into main after window P and is kept frozen). Upstream history up to
-`911e5c0283c629c50cb97666f34065e8c07d71a5` is unchanged. Historical files are unchanged; all
+Development branch: **port/c64-native-c**. Upstream and master remain based on
+`911e5c0283c629c50cb97666f34065e8c07d71a5`. Historical files are unchanged; all
 port changes live under `c64-port/`. Full upstream history is preserved.
 The first archived milestone ended at `a9edd173fdd269262f886c19ae983276bf4e7e6d`.
-Use `git rev-parse main` to identify this milestone's current tip.
+Use `git rev-parse port/c64-native-c` to identify this milestone's current tip.
 
 ```sh
-git clone --branch main https://github.com/koalabuttz/Apollo-11.git
+git clone --branch port/c64-native-c https://github.com/koalabuttz/Apollo-11.git
 cd Apollo-11
 git remote add upstream https://github.com/chrislgarry/Apollo-11.git
 cd c64-port

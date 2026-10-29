@@ -41,7 +41,7 @@ centiseconds per event; foreground delivery and masking limits are documented.
 Upstream: https://github.com/chrislgarry/Apollo-11
 
 Pinned base: `911e5c0283c629c50cb97666f34065e8c07d71a5`.
-Development branch: `main`. All changes are under `c64-port/`.
+Development branch: `port/c64-native-c`. All changes are under `c64-port/`.
 The full upstream history and historical `.agc` files are retained unchanged.
 Fork: https://github.com/koalabuttz/Apollo-11
 The development branch is published on that fork; master retains the pinned base.
