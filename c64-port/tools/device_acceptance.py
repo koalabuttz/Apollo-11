@@ -163,7 +163,7 @@ def checkpoints(t, runs):
     per-checkpoint outputs. A role one checkpoint shows hangs on timing."""
     if t['dir'] != 'out' or t['window'] is any_window or any('states' not in outputs(r) for r in runs):
         return None
-    return sum(1 for r in runs for st in outputs(r)['states'] if t['window']({**r, 'replay_outputs': st}))
+    return sum(1 for r in runs for st in outputs(r)['states'] if t['shown']({**r, 'replay_outputs': st}))
 
 
 def erasable(*addrs):
@@ -259,16 +259,20 @@ def pressed(chars):
 
 
 def role(key, name, direction, agc, host, c64, env, window, units, gap=None, closes=None, blocking=False,
-         elsewhere=None, how=None, trace=()):
+         elsewhere=None, how=None, trace=(), shown=None):
     """host/c64: [(file, symbol, what)], each symbol defined in file; env:
     which host scenarios drive the role, f(env, keys) (None: every one);
     window: which replay windows exercise it, f(run); gap: an open item;
     blocking: the gap keeps the role from being covered at all; elsewhere:
     the acceptance doc that covers the role instead; how: what the window
     predicate looks for, for the doc; trace: output words the host's
-    per-boundary trace (replay_outputs trace) also shows the role by."""
+    per-boundary trace (replay_outputs trace) also shows the role by;
+    shown: the window test without the trace, what a C64 checkpoint can
+    show (the C64 matches the host only at checkpoints, so a window only the
+    trace shows is host evidence, not C64 evidence; #1020)."""
     return dict(key=key, name=name, dir=direction, agc=agc, host=host, c64=c64, env=env, window=window,
-                units=units, gap=gap, closes=closes, blocking=blocking, elsewhere=elsewhere, how=how, trace=trace)
+                units=units, gap=gap, closes=closes, blocking=blocking, elsewhere=elsewhere, how=how, trace=trace,
+                shown=shown or window)
 
 
 def roles(m):
@@ -436,6 +440,7 @@ def roles(m):
                  uses('FLIGHT_OPTICS'),
                  both(either(words(0o53, 0o54), traced(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
                  unit(m, 'sxtmark'), trace=(0o53, 0o54),
+                 shown=both(either(words(0o53, 0o54), moved(0o14, 0o6000)), never(held(0o12, 0o200))),
                  how='OPTXCMD or OPTYCMD, or channel 14 bit 11 or 12, changed with TVC off (channel 12 bit 8 clear); '
                      'OPTXCMD/OPTYCMD at every routine boundary in the host\'s trace, not only at checkpoints',
                  gap='the optics are a perfect servo at OPTDRIVE\'s scale (4 CDU counts a pulse, from its (DESOPT - CDU) / 4 '
@@ -475,7 +480,7 @@ def roles(m):
                  [end, ('platform/c64/resident_cdu.S', 'rk_cdu_drive6502', 'the 6502 output drives: 053/054 pulses')],
                  uses('FLIGHT_SPS'),
                  both(either(words(0o53, 0o54), traced(0o53, 0o54)), steady(0o12, 0o200)), unit(m, 'tvc-roll'),
-                 trace=(0o53, 0o54),
+                 trace=(0o53, 0o54), shown=both(words(0o53, 0o54), steady(0o12, 0o200)),
                  how='TVCPITCH or TVCYAW changed with channel 12 bit 8 set throughout the window (at every routine '
                      'boundary in the host\'s trace, not only at checkpoints)',
                  gap='roll does not move under TVC (no RCS jet model)'),
@@ -657,20 +662,34 @@ def assess(m, table, runs, host, commit):
         bad += [f"{t['key']}: no make target {u}" for u in t['units'] if u not in targets]
         wins = [r for r in runs if t['window'](r)]
         matched = [r for r in wins if not r['_why']]
+        seen = [r for r in matched if t['shown'](r)]
         if t['blocking']:
             status = 'GAP'
             bad.append(f"{t['key']}: {t['gap']}")
         elif not matched:
             status = 'GAP'
             bad.append(f"{t['key']}: no C64 window that exercises it matches the host")
+        elif not seen:
+            status = 'GAP'
+            bad.append(f"{t['key']}: only the host's trace shows it in the matching windows; no C64 checkpoint does")
         else:
             status = 'covered, with open items' if t['gap'] else 'covered'
         t['checkpoints'] = checkpoints(t, matched) if matched else None
         t['commands'] = commands(t, matched) if matched else None
-        if t['checkpoints'] == 1 and not (t['commands'] or 0) > 1:
+        if t['checkpoints'] == 1:
             print(f"warning: {t['key']}: one checkpoint shows it; a timing shift can lose the role", flush=True)
         out.append((t, status, ads, hrows, wins, matched))
     return out, bad
+
+
+def c64_count(t, wins, matched):
+    """The summary's C64 column: windows that match, split when the host's
+    trace alone shows the role in some (#1020)."""
+    shown = [r for r in wins if t['shown'](r)]
+    if len(shown) == len(wins):
+        return f"{len(matched)} of {len(wins)} windows match"
+    return (f"{sum(1 for r in matched if r in shown)} of {len(shown)} windows match on C64 checkpoints; "
+            f"{len(matched)} of {len(wins)} with the host's trace")
 
 
 def write_doc(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
@@ -722,7 +741,7 @@ def doc_text(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
         missing = sum(1 for a in ads if not a[4])
         lines.append(f"| {t['name']} | {t['dir']} | {'all defined' if not missing else f'MISSING {missing}'} | "
                      f"{sum(1 for _, s, _ in hrows if s == 'clean')} of {len(hrows)} scenarios clean | "
-                     f"{len(matched)} of {len(wins)} windows match | {status} |")
+                     f"{c64_count(t, wins, matched)} | {status} |")
         d = [f"### {t['name']} ({'input' if t['dir'] == 'in' else 'output'})", '', f"AGC interface: {t['agc']}.", '',
              '| Side | Adapter | Symbol | What it does | Defined |', '|---|---|---|---|---|']
         d += [f"| {side} | `{f}` | `{s}` | {w} | {'yes' if ok else 'NO'} |" for side, f, s, w, ok in ads] or \
@@ -731,15 +750,16 @@ def doc_text(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
         d += [f'- {n}: {state} ({x})' for n, state, x in hrows] or ['- none']
         n = t.get('checkpoints')
         d += ['', f"C64 windows that exercise it ({t['how']})"
-              + (f"; {n} checkpoint{'s' if n != 1 else ''} of the matching windows show it on their own"
-                 + (' (**warning:** only one, so a timing shift can lose the role)'
-                    if n == 1 and not (t.get('commands') or 0) > 1 else '')
+              + (f"; {n} checkpoint{'s' if n != 1 else ''} of the matching windows {'show' if n != 1 else 'shows'} it on their own"
+                 + (' (**warning:** only one, so a timing shift can lose the role)' if n == 1 else '')
                  if n is not None else '')
-              + (f"; the host's trace holds {t['commands']} command{'s' if t['commands'] != 1 else ''} in them"
+              + (f"; the host's trace holds {t['commands']} command{'s' if t['commands'] != 1 else ''} in them "
+                 '(host evidence: the C64 is compared only at checkpoints)'
                  if t.get('commands') is not None else '') + ':', '']
         d += [f"- {r['scenario']} {r['snap_cs']}+{r.get('requested_cs')}: "
               + ('matches the host at ' + ', '.join(map(str, r.get('replay_matched_cs') or [])) + ' cs'
-                 + busy_note(r) if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \
+                 + busy_note(r) + ('' if t['shown'](r) else "; only the host's trace shows the role, no checkpoint")
+                 if not r['_why'] else 'no match: ' + '; '.join(r['_why'])) + f" ({r['_evidence']})" for r in wins] \
             or ['- none']
         if t['units']:
             d += ['', 'Routine-level checks (host differential against yaAGC, then the same cases on the C64 in VICE): '

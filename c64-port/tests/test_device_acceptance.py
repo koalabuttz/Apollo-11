@@ -203,6 +203,27 @@ class Adapters(unittest.TestCase):
         tvc_on = dict(quiet, channel_set={'channel 12': 0o200})
         self.assertFalse(t['window'](dict(replay_outputs=dict(tvc_on, trace=trace))))
 
+    def test_a_window_only_the_host_trace_shows_is_not_a_c64_window(self):
+        # #1020: the C64 matches the host only at checkpoints, so a window whose
+        # drive only the host's trace shows counts as host evidence.
+        t = next(x for x in da.roles('cm') if x['key'] == 'optics-drive')
+        quiet = dict(channel_set={'channel 12': 2}, channel_changed={}, nonzero=[], changed=[])
+        trace = [[30, '0053', '00003'], [31, '0053', '00000']]
+        traced = dict(replay_outputs=dict(quiet, trace=trace, states=[dict(quiet, cs=50)]), _why=[])
+        shown = dict(replay_outputs=dict(quiet, changed=['0053'], trace=trace), _why=[])
+        self.assertTrue(t['window'](traced))
+        self.assertFalse(t['shown'](traced))
+        self.assertTrue(t['shown'](shown))
+        self.assertEqual(da.c64_count(t, [shown], [shown]), '1 of 1 windows match')
+        self.assertEqual(da.c64_count(t, [shown, traced], [shown, traced]),
+                         "1 of 1 windows match on C64 checkpoints; 2 of 2 with the host's trace")
+        self.assertEqual(da.c64_count(t, [traced], [traced]),
+                         "0 of 0 windows match on C64 checkpoints; 1 of 1 with the host's trace")
+        tvc = next(x for x in da.roles('cm') if x['key'] == 'tvc')
+        on = dict(channel_set={'channel 12': 0o200}, channel_changed={}, nonzero=[], changed=[])
+        self.assertTrue(tvc['window'](dict(replay_outputs=dict(on, trace=trace))))
+        self.assertFalse(tvc['shown'](dict(replay_outputs=dict(on, trace=trace))))
+
 
 class Roles(unittest.TestCase):
     def status(self, runs, host=None, tab=None):
