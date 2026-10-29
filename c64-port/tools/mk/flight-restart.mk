@@ -21,6 +21,14 @@
 .PHONY: flight-restart-check flight-restart-vice flight-gojam-vice
 flight-restart-check: build/agc_engine_hardware_dv.o | build
 	python3 tools/flight_restart_check.py
+# CI runs the check in two parts on separate runners (tools/mk/ci-extra.mk):
+# lm-p12-restart alone takes about 9 of its 10 minutes on one core.
+FLIGHT_RESTART_LONG = lm-p12-restart
+.PHONY: flight-restart-check-1 flight-restart-check-2
+flight-restart-check-1: build/agc_engine_hardware_dv.o | build
+	python3 tools/flight_restart_check.py --only $(FLIGHT_RESTART_LONG)
+flight-restart-check-2: build/agc_engine_hardware_dv.o | build
+	python3 tools/flight_restart_check.py --skip $(FLIGHT_RESTART_LONG)
 flight-restart-vice: flight-store build/agc_engine_hardware_dv.o
 	python3 tools/flight_restart_check.py --vice --only lm-p63-descent-restart,lm-dap-hold-restart,cm-entry-restart,cm-p52-restart,lm-v69-restart,cm-v69-restart
 flight-gojam-vice: flight-store build/agc_engine_hardware_dv.o

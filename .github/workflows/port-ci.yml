@@ -47,7 +47,6 @@ permissions:
 env:
   REF: ${{ inputs.ref || github.sha }}
   FULL: ${{ inputs.full && '1' || '0' }}
-  VICE_EMU: ${{ inputs.vice || 'x64sc' }}
   SKIP_EVIDENCE_RESTORE: '1'
 
 jobs:
@@ -65,6 +64,7 @@ jobs:
       host_shards: ${{ steps.plan.outputs.host_shards }}
       c64_full: ${{ steps.plan.outputs.c64_full }}
       c64_nshards: ${{ steps.plan.outputs.c64_nshards }}
+      vice: ${{ steps.plan.outputs.vice }}
       sha: ${{ steps.sha.outputs.sha }}
     steps:
       - &checkout
@@ -88,6 +88,7 @@ jobs:
           PR_BASE: ${{ github.event.pull_request.base.sha }}
           HEAD_REF: ${{ github.head_ref || github.ref_name }}
           BEFORE: ${{ github.event.before }}
+          VICE_INPUT: ${{ inputs.vice }}
         run: |
           # A PR's base is the merge ref's first parent: the event's base.sha can
           # be older when the base moved before GitHub built the merge ref.
@@ -124,6 +125,20 @@ jobs:
              && ! echo "$changed" | grep -qvE '^c64-port/evidence/|\.md$' \
              && ! echo "$changed" | grep -qE '^c64-port/(docs/acceptance/|evidence/(lm|cm)-acceptance-)'; then fresh=0; fi
           echo "fresh=$fresh" >> "$GITHUB_OUTPUT"
+          # PRs run the C64 checks on VICE's fast emulator, x64: about 5x the
+          # speed of the cycle-exact x64sc, and the same results on every
+          # target but those in tools/ci_run.py VICE_EXACT_TARGETS, which keep
+          # x64sc (full-run comparison, runs 40819596637 and 40832064465). A PR
+          # that changes cycle-sensitive code (C64 assembly, IRQ, timer, clock,
+          # rupt, REU or disk code) runs everything on x64sc. Base pushes,
+          # nightlies and acceptance-fresh always use x64sc.
+          vice=x64sc
+          if [ "$EVENT" = pull_request ] && [ -n "$changed" ] \
+             && ! echo "$changed" | grep -qE '^c64-port/platform/c64/(.*\.[sS]$|.*(irq|timer|rupt|clock|reu|disk|raster|cia))'; then
+            vice=x64
+          fi
+          [ -n "$VICE_INPUT" ] && vice=$VICE_INPUT
+          echo "vice=$vice" >> "$GITHUB_OUTPUT"
           echo "full=$(echo "$affected" | python3 -c 'import json,sys;print(int(json.load(sys.stdin)["full"]))')" >> "$GITHUB_OUTPUT"
           # A full c64 run is over two hours of builds and VICE: split it.
           c64_full=$(echo "$affected" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(int(a.get("c64_full", a["full"])))')
@@ -252,7 +267,6 @@ jobs:
           SHARD: ${{ matrix.shard }}
         run: |
           source deps/env.sh
-          VICE=$(command -v "$VICE_EMU")
           targets=$(echo "$AFFECTED" | python3 -c 'import json,sys;a=json.load(sys.stdin);print(" ".join(a.get("test",[])+a.get("sanitize",[])))')
           if echo "$AFFECTED" | grep -q '"full": true'; then
             python3 tools/ci_run.py --group test --group sanitize --group ci-extra-host --shard "$SHARD/4" --summary build/ci-summary.json
@@ -302,11 +316,15 @@ jobs:
           SHARD: ${{ matrix.shard }}
           SHARDS: ${{ needs.plan.outputs.c64_nshards }}
           C64_FULL: ${{ needs.plan.outputs.c64_full }}
-          # Full runs link every module afresh and check the cache's entries.
-          FLIGHT_LINK_CACHE: ${{ needs.plan.outputs.full == '1' && inputs.verify_links != false && 'verify' || '' }}
+          # Nightly and manual full runs link every module afresh and check the
+          # cache's entries. PRs use the cache: relinking took each runner of
+          # a full PR run 30-50 minutes, the same work on every runner.
+          FLIGHT_LINK_CACHE: ${{ needs.plan.outputs.full == '1' && github.event_name != 'pull_request' && inputs.verify_links != false && 'verify' || '' }}
+          VICE_EMU: ${{ needs.plan.outputs.vice }}
         run: |
           source deps/env.sh
-          VICE=$(command -v "$VICE_EMU")
+          # VICE_EXACT: the x64sc that tools/ci_run.py VICE_EXACT_TARGETS keep.
+          export VICE_EXACT="$VICE" VICE="$(command -v "${VICE_EMU:-x64sc}")"
           if [ "$C64_FULL" = 1 ]; then
             # tools/mk/ci-extra.mk's C64 checks join the c64-/vice- targets.
             targets=$( (make -pRrq __none__ 2>/dev/null | sed -n 's/^\(c64-[A-Za-z0-9_-]*\|vice-[A-Za-z0-9_-]*\):.*/\1/p' | grep -v '^vice-legacy-'
@@ -381,7 +399,6 @@ jobs:
         working-directory: c64-port
         run: |
           source deps/env.sh
-          VICE=$(command -v "$VICE_EMU")
           # The 1541 sets too (the docs list their d64s); each run rewrites the
           # loaders, so the 1581 run goes last.
           { make flight-disk MOS_CC="$MOS_CC" \
@@ -425,7 +442,6 @@ jobs:
           SHARD: ${{ matrix.shard }}
         run: |
           source deps/env.sh
-          VICE=$(command -v "$VICE_EMU")
           targets=$(make -pRrq __none__ 2>/dev/null | sed -n 's/^\(build\/[A-Za-z0-9_.-]*\.prg\):.*/\1/p' | sort -u \
             | awk -v k="$SHARD" 'NF && (NR - 1) % 2 == k')
           echo "$(echo "$targets" | wc -w) PRGs"
@@ -463,7 +479,6 @@ jobs:
         working-directory: c64-port
         run: |
           source deps/env.sh
-          VICE=$(command -v "$VICE_EMU")
           python3 tools/flight_store_build.py
       - name: Save the flight store link cache
         if: always() && hashFiles('c64-port/build/flight-link-cache/updated') != ''
@@ -498,7 +513,6 @@ jobs:
         working-directory: c64-port
         run: |
           source deps/env.sh
-          VICE=$(command -v "$VICE_EMU")
           python3 tools/legacy_vice.py
           targets=$(python3 tools/legacy_vice.py --shard ${{ matrix.shard }}/8)
           python3 tools/ci_run.py -j 4 --make-arg "MOS_CC=$MOS_CC" --make-arg "VICE=$VICE" \
@@ -540,7 +554,6 @@ jobs:
         working-directory: c64-port
         run: |
           source deps/env.sh
-          VICE=$(command -v "$VICE_EMU")
           python3 tools/cover_check.py --shard "${{ matrix.shard }}/2" --name "cover-check${{ matrix.shard }}" \
             --out "build/vice-manifest-cover-check${{ matrix.shard }}.json"
       - if: always()

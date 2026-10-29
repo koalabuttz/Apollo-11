@@ -388,11 +388,21 @@ TIMEOUTS = {}
 TIMED_OUT = -1000
 
 
-def make(cmd, timeout):
+# Checks whose result differs on VICE's fast emulator (x64), which PR runs use
+# (.github/workflows/port-ci.yml): with VICE_EXACT set (the cycle-exact
+# x64sc), these run on it instead. flight-disk-vice: the CM disk boot's REU
+# DMA check sees a write at REU 0 on x64 only (runs 40819596637, 40832064465).
+VICE_EXACT_TARGETS = {'flight-disk-vice'}
+
+
+def make(cmd, timeout, target=None):
     """subprocess.run for a make command, stopping its whole process group
     after timeout seconds (None: no limit); returncode TIMED_OUT then."""
+    env = dict(os.environ, ASAN_OPTIONS='detect_leaks=0')
+    if target in VICE_EXACT_TARGETS and env.get('VICE_EXACT'):
+        env['VICE'] = env['VICE_EXACT']
     with subprocess.Popen(cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                          env=dict(os.environ, ASAN_OPTIONS='detect_leaks=0'), start_new_session=True) as p:
+                          env=env, start_new_session=True) as p:
         try:
             out, _ = p.communicate(timeout=timeout)
             code = p.returncode
@@ -418,7 +428,7 @@ def run(target, log_dir, make_args, attempts, stack=()):
             for name in recipe_scripts(target):
                 held.enter_context(script_lock(name))
             proc = make(['make', '--no-print-directory', 'SKIP_EVIDENCE_RESTORE=1', *make_args, target],
-                        TIMEOUTS.get(target))
+                        TIMEOUTS.get(target), target)
         log.write_text(proc.stdout)
         if proc.returncode == TIMED_OUT:
             return target, False, time.monotonic() - start, proc.stdout[-3000:] + (
