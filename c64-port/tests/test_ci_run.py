@@ -26,9 +26,9 @@ class Make(unittest.TestCase):
 
 class Timeouts(unittest.TestCase):
     def test_only_measured_targets_get_a_limit(self):
-        weights = {'a': 100.0, 'b': 1000.0, 'c': 4000.0}
+        weights = {'a': 100.0, 'b': 4000.0, 'c': 4000.0}
         got = ci_run.target_timeouts(['a', 'b', 'c-1', 'new'], weights, 2)
-        self.assertEqual(got, {'a': ci_run.TIMEOUT_FLOOR, 'b': 2000.0, 'c-1': 8000.0})
+        self.assertEqual(got, {'a': ci_run.TIMEOUT_FLOOR, 'b': 8000.0, 'c-1': 8000.0})
 
 
 if __name__ == '__main__':
