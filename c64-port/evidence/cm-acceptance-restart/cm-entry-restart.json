@@ -73,7 +73,7 @@
   "pre_snapshot": "build/flight-restart/cm-entry-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "log": "host.log",
   "log_sha256": "9ff7f4c97dfae7da489dbd1603e6fcd51678dd948d472e8a7d3dce8000db695c"
  },
@@ -86,18 +86,18 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3231",
-  "wall_cycles": 45893185,
+  "wall_cycles": 45900403,
   "agc_cs": 309,
   "dropped_ticks": 0,
   "steps": 1364,
-  "wall_per_agc": 15.075,
+  "wall_per_agc": 15.077,
   "lost": false,
   "mission": "cm",
   "snap_cs": 25041,
   "replay": true,
   "store_sha256": "ec0ce27e730e506e170610f7b1f45df42dafecb3b3de8964fc5744700e689275",
-  "harness_sha256": "1fbb82790bc79347c4cd4998f2b5bcb319c4f60b2737d892fa652b55a6efed34",
-  "prg_sha256": "53ebf4441ee06a345ad1d356caa2216d8762e6b2aeb90382359881cdb4726385",
+  "harness_sha256": "57c10d17cf085bc7c502deb4da4eb188ad9228cc30323bf5f876af93cb6c8392",
+  "prg_sha256": "ecb17a517998b82ac33059f909def3e9f98100d844c6360759dfe1176a4c510d",
   "reu_bounds": {
    "ok": true,
    "touched": [
@@ -774,10 +774,10 @@
   "requested_cs": 301,
   "host_holes": [],
   "downrupt": false,
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "exit": 0,
   "log": "cm-entry-restart-c64.log",
-  "log_sha256": "4291132a2be58b008c5928541dd685e2200b7bd5993f181ac46215331a0871cd",
+  "log_sha256": "2708c28fc04f1d04cdd89cbd81baa636b26b6d8448f60f38e1b3d0c447eddbc5",
   "manifest_sha256": "0b70b0db263c0d83c8d7f2ffdc3d58e8c2a1e570b5b852c5f9cfc8608bac9b05"
  },
  "gojam_on_c64": {
@@ -927,7 +927,7 @@
    },
    "ok": true
   },
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "log": "gojam-on-c64.log",
   "log_sha256": "0c2bd0ed10e1c1124baee4e65204b8097cf6e52eba77305322802aacb7ff0ea3"
  }

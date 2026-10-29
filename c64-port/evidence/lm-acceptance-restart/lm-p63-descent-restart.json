@@ -73,7 +73,7 @@
   "pre_snapshot": "build/flight-restart/lm-p63-descent-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -86,18 +86,18 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3214",
-  "wall_cycles": 82588650,
+  "wall_cycles": 82623139,
   "agc_cs": 308,
   "dropped_ticks": 0,
   "steps": 2152,
-  "wall_per_agc": 27.216,
+  "wall_per_agc": 27.227,
   "lost": false,
   "mission": "lm",
   "snap_cs": 20000,
   "replay": true,
   "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
-  "harness_sha256": "7da9725add307917d6c31faab201054501eed0a91e8ffc1b13874dabe9b63113",
-  "prg_sha256": "e0788a6df0ee6deaeeb9332b567744cd81bca55fba9da7983e8e66c95439a2c7",
+  "harness_sha256": "bdf9da2b47c66225d8fae9395aac0e0756990f34897558a1c9e5871a0a3a7d63",
+  "prg_sha256": "74bf71d8ffb1729d1789ec291f415638848dbf72a9cd209245e9f060b67e8b81",
   "reu_bounds": {
    "ok": true,
    "touched": [
@@ -110,7 +110,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 10
+   "dma_unchecked": 11
   },
   "hold_host_mct": 962,
   "hold_host_time1": 3671,
@@ -785,10 +785,10 @@
   "requested_cs": 300,
   "host_holes": [],
   "downrupt": false,
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "exit": 0,
   "log": "lm-p63-descent-restart-c64.log",
-  "log_sha256": "0d7b8f7ac98a2f936fe110007927970b4ccea483b3a42b3e540d9f337ac7658d",
+  "log_sha256": "05d96a6e435fc57f1ad8dc374014e54e40a6fd430cf5a5b21b4d6f754f7f12b0",
   "manifest_sha256": "0eb9be88c871914934e4e5bdccebfe32f54f8dcc3df55070f00f03ea637de376"
  },
  "gojam_on_c64": {
@@ -938,7 +938,7 @@
    },
    "ok": true
   },
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "log": "gojam-on-c64.log",
   "log_sha256": "e7f23ba73a6b46dcdb3136ec2acca320ec261f962c7cc640676d4229c7b90bd0"
  }

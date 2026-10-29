@@ -7,20 +7,20 @@
   "lm-4.d64",
   "lm-5.d64"
  ],
- "loader_bytes": 6462,
+ "loader_bytes": 6615,
  "resident_bytes": 38054,
  "resident_start": 2061,
- "boot_return": 3019,
+ "boot_return": 3061,
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
  "bytes_loaded": 1931366,
  "data_bytes": [
-  161707,
-  168346,
-  168387,
-  168357,
-  135763
+  161368,
+  168245,
+  168382,
+  168293,
+  136236
  ],
  "vice": {
   "mission": "lm",
@@ -38,52 +38,52 @@
    5
   ],
   "fast_loader": false,
-  "load_cycles": 2178607181,
-  "load_s": 2211.2,
+  "load_cycles": 2177464737,
+  "load_s": 2210.1,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80855,
-  "boot_cycles": 111859958,
+  "handoff_cycles": 80854,
+  "boot_cycles": 111862860,
   "boot_s": 113.5,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 39475624,
-    "time1": "00674",
-    "z": "03446",
-    "fb": "34000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 73893280,
-    "time1": "01527",
-    "z": "03214",
-    "fb": "02000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 110512409,
-    "time1": "02422",
-    "z": "03523",
+    "cycles": 63908103,
+    "time1": "01336",
+    "z": "03506",
     "fb": "12000",
     "modreg": "77777"
    },
    {
-    "cycles": 148527112,
-    "time1": "03332",
+    "cycles": 127750791,
+    "time1": "02740",
+    "z": "04707",
+    "fb": "36000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 191514853,
+    "time1": "04335",
+    "z": "03304",
+    "fb": "66000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 255318230,
+    "time1": "05732",
     "z": "04707",
     "fb": "34000",
     "modreg": "77777"
    }
   ],
   "key_pcs": [
-   "0200",
-   "3686",
-   "4e26",
-   "0ed2",
-   "0a78",
-   "036b",
-   "3ad0",
-   "4ff2"
+   "4973",
+   "53cc",
+   "3bd5",
+   "520e",
+   "4e3b",
+   "3364",
+   "5ae8",
+   "125d"
   ],
   "key_ch32": [
    "7f",
@@ -105,7 +105,7 @@
    "36040",
    "36040"
   ],
-  "pc": "5049",
+  "pc": "0e90",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -131,8 +131,8 @@
    "00000"
   ],
   "modreg": "00000",
-  "fb": "02000",
-  "z": "04040",
+  "fb": "12000",
+  "z": "03523",
   "screenshot": "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -201,7 +201,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 37,
+   "dma_unchecked": 43,
    "trace_errors": [],
    "trace_ok": true
   }

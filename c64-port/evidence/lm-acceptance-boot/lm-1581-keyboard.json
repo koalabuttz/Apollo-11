@@ -3,59 +3,59 @@
  "disks": [
   "lm-1.d81"
  ],
- "loader_bytes": 6392,
+ "loader_bytes": 6535,
  "resident_bytes": 38054,
  "resident_start": 2061,
- "boot_return": 3019,
+ "boot_return": 3061,
  "dsky_queue": 1921,
  "hardware": 28606,
  "resident_staged": "0x1f6b00",
  "bytes_loaded": 1931366,
  "data_bytes": [
-  795621
+  795653
  ],
  "vice": {
   "mission": "lm",
   "ok": true,
   "fast_loader": true,
-  "load_cycles": 263205563,
-  "load_s": 267.1,
+  "load_cycles": 263511968,
+  "load_s": 267.5,
   "reu_clear_s": 2.26,
-  "handoff_cycles": 80854,
-  "boot_cycles": 111860100,
+  "handoff_cycles": 80897,
+  "boot_cycles": 111863098,
   "boot_s": 113.5,
   "boot_status": 0,
   "samples": [
    {
-    "cycles": 31482398,
-    "time1": "00534",
+    "cycles": 61064956,
+    "time1": "01300",
+    "z": "02626",
+    "fb": "36000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 122096835,
+    "time1": "02632",
+    "z": "04707",
+    "fb": "34000",
+    "modreg": "77777"
+   },
+   {
+    "cycles": 183226995,
+    "time1": "04172",
     "z": "03214",
     "fb": "02000",
     "modreg": "77777"
    },
    {
-    "cycles": 62696123,
-    "time1": "01324",
-    "z": "02024",
-    "fb": "34000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 94342283,
-    "time1": "02120",
-    "z": "03446",
-    "fb": "34000",
-    "modreg": "77777"
-   },
-   {
-    "cycles": 123780030,
-    "time1": "02656",
-    "z": "04040",
-    "fb": "02000",
+    "cycles": 244266035,
+    "time1": "05530",
+    "z": "04707",
+    "fb": "36000",
     "modreg": "77777"
    }
   ],
-  "pc": "4b66",
+  "pc": "8202",
   "screen": [
    " APOLLO 11 LM DSKY",
    "",
@@ -82,7 +82,7 @@
   ],
   "modreg": "00000",
   "fb": "02000",
-  "z": "03214",
+  "z": "04040",
   "screenshot": "/tmp/x/fresh/c64-port/build/flight-disk/vice-lm/lm-dsky.png",
   "p00": true,
   "reu_blocks_changed": [
@@ -151,7 +151,7 @@
    ],
    "dma_outside": 0,
    "dma_hits": [],
-   "dma_unchecked": 47,
+   "dma_unchecked": 63,
    "trace_errors": [],
    "trace_ok": true
   }
