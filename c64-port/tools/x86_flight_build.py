@@ -88,13 +88,18 @@ def build(cc, m, mode, certified_only=False):
     suffix += '-certified' if certified_only else ''
     flags_ = flags(m, define, certified_only)
     objs = []
+    # Each file is written under a per-process name and renamed into place,
+    # so a check running the binary never sees a half-written one (#1034).
+    tmp = f'.{os.getpid()}.tmp'
     for src in ('flight_dispatch', 'flight_main'):
         o = OUT / f'{src}_{m}{suffix}.o'
-        subprocess.run([cc, *flags_, '-c', f'platform/x86/{src}.c', '-o', str(o)], cwd=ROOT, check=True)
+        subprocess.run([cc, *flags_, '-c', f'platform/x86/{src}.c', '-o', str(o) + tmp], cwd=ROOT, check=True)
+        os.replace(str(o) + tmp, o)
         objs.append(str(o))
     exe = OUT / f'x86-flight-{m}{suffix}'
     host = sorted(str(p) for p in (STORE / 'host').glob('*.o'))
-    subprocess.run([cc, *objs, *host, *LINK, '-Wl,--gc-sections', '-lm', '-o', str(exe)], cwd=ROOT, check=True)
+    subprocess.run([cc, *objs, *host, *LINK, '-Wl,--gc-sections', '-lm', '-o', str(exe) + tmp], cwd=ROOT, check=True)
+    os.replace(str(exe) + tmp, exe)
     return exe
 
 
