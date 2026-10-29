@@ -30,6 +30,6 @@ rm -f "$missing"
 git checkout -q --detach "$commit"
 # Commit graph only, so merge-base and diffs against the port branch work.
 git fetch -q --filter=tree:0 --unshallow origin \
-  '+refs/heads/port/c64-native-c:refs/remotes/origin/port/c64-native-c' 2>/dev/null \
-  || git fetch -q --filter=tree:0 origin '+refs/heads/port/c64-native-c:refs/remotes/origin/port/c64-native-c'
+  '+refs/heads/main:refs/remotes/origin/main' 2>/dev/null \
+  || git fetch -q --filter=tree:0 origin '+refs/heads/main:refs/remotes/origin/main'
 echo "checked out $(git log -1 --format='%h %s' "$commit")"

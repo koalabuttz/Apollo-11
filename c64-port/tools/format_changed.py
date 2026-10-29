@@ -3,7 +3,7 @@
 
   python3 tools/format_changed.py              # fix: changes since HEAD (staged and not)
   python3 tools/format_changed.py --staged     # fix: staged changes only (pre-commit hook)
-  python3 tools/format_changed.py --check --base origin/port/c64-native-c
+  python3 tools/format_changed.py --check --base origin/main
                                                 # report: what a PR left unformatted
 
 Only lines the change touches are reformatted (git-clang-format), so an edit

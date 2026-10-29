@@ -3,7 +3,7 @@
 """Pre-check a coverage certificate for the gaps reviewers keep sending back.
 
   python3 tools/cert_precheck.py Luminary099/TJET_LAW.agc [...]
-  python3 tools/cert_precheck.py --changed --base origin/port/c64-native-c
+  python3 tools/cert_precheck.py --changed --base origin/main
   python3 tools/cert_precheck.py --write-facts        # after tools/setup_cloud.sh
   python3 tools/cert_precheck.py --check-facts
 

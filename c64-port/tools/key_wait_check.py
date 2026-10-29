@@ -4,7 +4,7 @@
 tools/flight_host_run.c keys_parse) change nothing for a scenario without one.
 
 Builds tools/flight_host_run.c as it is and as it was at --base (default: the
-merge base with origin/port/c64-native-c), runs every host-differential
+merge base with origin/main), runs every host-differential
 scenario on both (SCENARIOS unscaled; SCALED, FLIGHT, RESTART_FLIGHT and
 V69_FLIGHT on their clocks and on the work clock), and a C64 replay window
 from three of them (FLIGHT_SNAPSHOT + FLIGHT_REPLAY), and requires the same
@@ -80,10 +80,10 @@ def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
     p.add_argument('--base', help='git ref of the harness to compare with (default: merge base with '
-                                  'origin/port/c64-native-c)')
+                                  'origin/main)')
     p.add_argument('--jobs', type=int, default=os.cpu_count() or 4)
     a = p.parse_args()
-    base = a.base or subprocess.run(['git', 'merge-base', 'HEAD', 'origin/port/c64-native-c'], cwd=ROOT,
+    base = a.base or subprocess.run(['git', 'merge-base', 'HEAD', 'origin/main'], cwd=ROOT,
                                     capture_output=True, text=True, check=True).stdout.strip()
     OUT.mkdir(parents=True, exist_ok=True)
     src = OUT / 'flight_host_run_base.c'
