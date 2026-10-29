@@ -150,7 +150,7 @@ WAIT = ('lm-rendezvous-tpm', 'lm-stable-orbit', 'lm-stable-orbit-lm')
 # could not show that both programs wait the same way.
 # lm-p63-trim ends 0 words apart; with the x86 program's thrust off the
 # gimbal it ends 169 apart, inside its spread (452).
-WORD_CAP = {'lm-stable-orbit-wait': 100, 'lm-stable-orbit-lm-wait': 100, 'lm-p63-trim': 20}
+WORD_CAP = {'lm-stable-orbit-wait': 100, 'lm-stable-orbit-lm-wait': 100, 'lm-p63-trim': 20, 'cm-v49-att': 20, 'lm-rhc-att-turn': 20}
 
 # The quick set (--quick; make x86-flight-scenarios-quick, in PR CI): the
 # cheapest rows that between them run every model the x86 program has,
