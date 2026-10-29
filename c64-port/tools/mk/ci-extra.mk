@@ -27,9 +27,12 @@ ci-watch-flight-store: $(wildcard src/*.c src/*.inc) tools/flight_store_build.py
 # flight-chunked-lockstep runs the chunk-tracking host against yaAGC: it
 # watches the host run, the differential, the store build that writes the
 # chunk lists, and the two files that move chunk splits: the table kinds
-# and the fast ops the split tables are made of (#942 B6).
+# and the fast ops the split tables are made of (#942 B6); and the C64
+# night watchman's rule, which the host models and the differential checks
+# (resident_kernel_body.inc's NEWJOB access, resident_flight.c's rk_watch;
+# review-1029b M1).
 ci-watch-flight-chunked-lockstep: tools/flight_host_run.c tools/flight_host_differential.py tools/flight_store_build.py \
-  tools/flight_table_kinds.py src/agc_fast_ops.c
+  tools/flight_table_kinds.py src/agc_fast_ops.c src/resident_kernel_body.inc platform/c64/resident_flight.c
 # flight-disk-vice boots both stores from their disks alone (docs/RUN-ON-C64.md):
 # the loader, the drive code, the resident's boot and its store check; and
 # the hardware check disk's window, which must end in the state VICE's own run of

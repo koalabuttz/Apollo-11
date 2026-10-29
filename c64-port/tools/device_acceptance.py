@@ -558,15 +558,29 @@ def host_rows(m, summary, env, commit):
         charge, text = fhd.charge_state(r)
         detail = (f"{r.get('native_routines')} native routines, {len(r['routine_mismatches'])} did not match yaAGC, "
                   f'{un} unregistered or refused points (yaAGC ran them)' + (f'; {text}' if charge else ''))
+        # The night watchman (review-1029b M1): the native rule and the C64
+        # flight resident's rule must sound where yaAGC's accesses would.
+        # Every summary the differential writes has the field (None when the
+        # run printed no watchman line, which fails); host evidence stored
+        # before review-1029b kept no such field and is judged without it.
+        nw_bad = 'night_watchman' in r and fhd.scaled_watchman_bad(r['night_watchman'], 'x1')
+        if 'night_watchman' in r:
+            w = r['night_watchman'] or {}
+            detail += (f"; night watchman: no summary line" if not w or w.get('c64_disagree') is None else
+                       f"; night watchman: the native rule {'disagrees' if w['disagree'] else 'agrees'} with yaAGC "
+                       f"at {w['checks']} checks, the C64 rule differs from it at {w['c64_disagree']} of "
+                       f"{w['c64_checks']}, {w['alarms']} alarms")
         state = ('STALE' if r.get('commit') != commit else
-                 'clean' if r['exit'] == 0 and not r['routine_mismatches'] and charge != 'over' else 'NOT CLEAN')
+                 'clean' if r['exit'] == 0 and not r['routine_mismatches'] and charge != 'over' and not nw_bad
+                 else 'NOT CLEAN')
         rows.append((name, state, detail + (f", from {r.get('commit')}" if state == 'STALE' else '')))
     return rows
 
 
-# The summary fields host_rows reads (charge_state reads interpretive_charge).
+# The summary fields host_rows reads (charge_state reads interpretive_charge;
+# night_watchman since review-1029b M1).
 HOST_FIELDS = ('scenario', 'mission', 'commit', 'exit', 'native_routines', 'routine_mismatches', 'unregistered',
-               'interpretive_charge')
+               'interpretive_charge', 'night_watchman')
 
 
 def host_evidence(m, summary):
