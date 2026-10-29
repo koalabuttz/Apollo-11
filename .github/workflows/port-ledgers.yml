@@ -1,10 +1,10 @@
 # Rebuilds the generated ledger indices (README.md, HANDOFF, ROADMAP,
-# VERIFICATION, SOURCE_MAP) after each merge into the integration branch.
+# VERIFICATION, SOURCE_MAP) after each merge into main.
 # Lanes only add docs/milestones/<id>.md, so they never conflict on them.
 name: port-ledgers
 on:
   push:
-    branches: ['port/c64-native-c']
+    branches: [main]
     paths: ['c64-port/docs/milestones/**', 'c64-port/docs/ledgers/**', 'c64-port/tools/ledgers.py']
   workflow_dispatch:
 
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: port/c64-native-c
+          ref: main
           filter: blob:none
           sparse-checkout: |
             /*
@@ -34,4 +34,4 @@ jobs:
           if git diff --cached --quiet; then echo 'indices already current'; exit 0; fi
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
             commit -q -m 'Rebuild port ledger indices'
-          git push origin HEAD:port/c64-native-c
+          git push origin HEAD:main

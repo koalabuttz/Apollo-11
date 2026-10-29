@@ -29,7 +29,11 @@ echo "skipping legacy evidence blobs over 1 MB"
 rm -f "$missing"
 git checkout -q --detach "$commit"
 # Commit graph only, so merge-base and diffs against the port branch work.
+# The frozen port branch too: until main holds the port (#1032), CI diffs
+# against it (see port-ci.yml plan).
 git fetch -q --filter=tree:0 --unshallow origin \
+  '+refs/heads/main:refs/remotes/origin/main' \
   '+refs/heads/port/c64-native-c:refs/remotes/origin/port/c64-native-c' 2>/dev/null \
-  || git fetch -q --filter=tree:0 origin '+refs/heads/port/c64-native-c:refs/remotes/origin/port/c64-native-c'
+  || git fetch -q --filter=tree:0 origin '+refs/heads/main:refs/remotes/origin/main' \
+    '+refs/heads/port/c64-native-c:refs/remotes/origin/port/c64-native-c'
 echo "checked out $(git log -1 --format='%h %s' "$commit")"

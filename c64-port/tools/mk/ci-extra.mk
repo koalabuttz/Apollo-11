@@ -9,13 +9,13 @@
 .PHONY: ci-extra-host ci-extra-c64 ci-watch-interp-flight-vice ci-watch-interp-flight-flowed-vice \
   ci-watch-interp-flight-flowed-vice-1 ci-watch-interp-flight-flowed-vice-2 ci-watch-interp-flight-flowed-vice-3 \
   ci-watch-interp-flight-flowed-vice-4 \
-  ci-watch-interp-flight-p63-vice ci-watch-interp-core-differential ci-watch-x86-flight-check \
+  ci-watch-interp-flight-p63-vice ci-watch-interp-core-differential ci-watch-x86-flight-check ci-watch-x86-flight-scenarios-quick \
   ci-watch-flight-restart-check-1 ci-watch-flight-restart-check-2 ci-watch-flight-restart-vice ci-watch-flight-gojam-vice ci-watch-flight-downlink-check \
   ci-watch-flight-downlink-vice overlay-v2-check ci-watch-overlay-v2-check ci-watch-flight-store \
   ci-watch-flight-disk-vice ci-watch-dsky-sweep-vice ci-watch-flight-downlink-live-vice ci-watch-interp-loops-check \
   ci-watch-flight-chunked-lockstep
 ci-extra-host: interp-runtime-check interp-core-fuzz interp-core-differential x86-flight-check flight-restart-check-1 flight-restart-check-2 \
-  flight-downlink-check overlay-v2-check interp-loops-check
+  flight-downlink-check overlay-v2-check interp-loops-check x86-flight-scenarios-quick
 ci-extra-c64: vice-interp-core interp-flight-vice interp-flight-flowed-vice-1 interp-flight-flowed-vice-2 interp-flight-flowed-vice-3 \
   interp-flight-flowed-vice-4 interp-flight-p63-vice flight-restart-vice flight-gojam-vice flight-downlink-vice flight-store \
   flight-disk-vice dsky-sweep-vice flight-downlink-live-vice flight-chunked-lockstep
@@ -59,6 +59,12 @@ ci-watch-interp-core-differential: $(CI_EXTRA_INTERP) tools/interp_runtime_diffe
 ci-watch-x86-flight-check: $(wildcard src/*.c src/*.inc include/*.h platform/x86/*) tools/flight_store_build.py \
   tools/flight_table_kinds.py tools/x86_flight_build.py tools/x86_flight_check.py tools/x86_flight_lockstep.c \
   docs/flight-routine-mct.json
+# x86-flight-scenarios-quick flies the quick scenario set against the
+# harness: it watches what x86-flight-check does, the scenario tool, and the
+# harness with its models and scenario files.
+ci-watch-x86-flight-scenarios-quick: $(wildcard src/*.c src/*.inc include/*.h platform/x86/*) \
+  tools/flight_store_build.py tools/x86_flight_build.py tools/x86_flight_scenarios.py tools/flight_host_run.c \
+  tools/flight_host_differential.py $(wildcard tools/flight_*.h tools/flight_scenarios/*) docs/flight-routine-mct.json
 # flight-restart-check and -vice link every source too: they watch the
 # restart's own files and the harness.
 CI_EXTRA_RESTART := src/lm_fresh_start.c src/cm_fresh_start.c src/lm_restart_routines.c src/lm_restart_select.c \

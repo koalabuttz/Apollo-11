@@ -7,16 +7,19 @@
 # (platform/x86/test_radar_models.c), the landing radar's on the LM
 # (platform/x86/test_landing_radar.c), the TC trap's
 # (platform/x86/test_tc_trap.c), the hand controller's
-# (platform/x86/test_hand_controller.c), the table kinds, the RESTART lamp's
+# (platform/x86/test_hand_controller.c), the attitude model's on both
+# missions (platform/x86/test_attitude_model.c), the table kinds, the RESTART lamp's
 # (platform/x86/test_restart_lamp.c, built by x86_flight_check.py), then P00 on both
 # missions and the LM DAP hold in lockstep against yaAGC (clock frozen, the
 # x86 program's schedule), in both modes. x86-flight-mct re-measures the
 # routine costs (docs/flight-routine-mct.json) from the host differential.
 # x86-flight-scenarios flies the host differential's flight scenarios on the
 # x86 program with its vehicle models and compares each with the harness on
-# the work clock (tools/x86_flight_scenarios.py; not in CI).
+# the work clock (tools/x86_flight_scenarios.py, about an hour; not in CI).
+# x86-flight-scenarios-quick flies its quick set (--quick, about two and a
+# half minutes on four cores) and runs in PR CI (ci-extra-host).
 # All need the listings (build/fixed-data/<mission>/assembly.lst).
-.PHONY: x86-flight x86-flight-check x86-flight-mct x86-flight-scenarios
+.PHONY: x86-flight x86-flight-check x86-flight-mct x86-flight-scenarios x86-flight-scenarios-quick
 x86-flight: | build
 	python3 tools/x86_flight_build.py
 x86-flight-check: build/agc_engine_hardware_dv.o | build
@@ -40,6 +43,11 @@ x86-flight-check: build/agc_engine_hardware_dv.o | build
 	$(CC) -std=c99 -O2 -g -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Iplatform/x86 \
 	  platform/x86/test_hand_controller.c -o build/test-hand-controller
 	./build/test-hand-controller
+	for m in LM CM; do \
+	  $(CC) -std=c99 -O2 -g -Wall -Wextra -Werror -Wconversion -pedantic -Iinclude -Iplatform/x86 \
+	    -DRK_$$m=1 platform/x86/test_attitude_model.c -lm -o build/test-attitude-model-$$m && \
+	  ./build/test-attitude-model-$$m || exit 1; \
+	done
 	python3 tools/flight_store_build.py --host-only
 	python3 tools/flight_table_kinds.py
 	python3 tools/x86_flight_check.py --skip-index
@@ -47,3 +55,5 @@ x86-flight-mct: build/agc_engine_hardware_dv.o | build
 	python3 tools/x86_flight_mct.py
 x86-flight-scenarios: build/agc_engine_hardware_dv.o | build
 	python3 tools/x86_flight_scenarios.py
+x86-flight-scenarios-quick: build/agc_engine_hardware_dv.o | build
+	python3 tools/x86_flight_scenarios.py --quick --jobs $$(nproc)

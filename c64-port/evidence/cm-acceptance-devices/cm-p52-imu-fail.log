@@ -78,6 +78,7 @@ DSKY 18838 cs: P00 V   N   R1        R2        R3
 CM: 1209426 native routines (17067511 yaAGC instructions of time), 0 bridged yaAGC instructions; 0 samples: 0 equal, 0 differ
 scaled time: K 1.00, divisor 1, lag 2, seed 0: 20001 CIA interrupts, 20000 clock periods taken, 1 dropped (rk_dilation); AGC time 20000 cs
 night watchman: 0 alarms, 0 stuck steps; 0 checks while armed, 0 where yaAGC's NEWJOB accesses differ from the native rule (0 with the native rule armed); yaAGC's own alarm inside 0 spans
+night watchman, C64 rule: 0 checks while either rule is armed, 0 where the C64 rule differs from the native rule (0 with only the C64 rule armed)
 rupt lock: 0 alarms (0 RUPT LOCK, 0 NO RUPT); 0 checks where a flag was still set, 0 where yaAGC's flags differ from the native rule; channel 77 bit 4 inside 0 spans; longest without an interrupt step 12 periods (to period 7768), without a step outside one 1 (to period 7937)
 major mode (MODREG 01011) at 20000 cs: native 00, yaAGC 00; FAILREG 01107/00000
 interpreter module: 5194 routines, 5194 slots; words charged vs yaAGC's: n/a (work clock only)

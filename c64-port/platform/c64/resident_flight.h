@@ -89,7 +89,7 @@ extern uint8_t rk_nw;
 #ifdef RK_STEAL
 /* The steal's clock (resident_flight.c rk_rupts_due): where the first step
  * whose share is not yet charged ends, from the current step's start, and
- * its rk_tick_phase. */
+ * twice its rk_tick_phase. */
 extern uint16_t rk_steal_end;
 extern uint8_t rk_steal_q;
 #define RK_STEAL_START() (rk_steal_end = rk_phase_mct[0], rk_steal_q = 0u)

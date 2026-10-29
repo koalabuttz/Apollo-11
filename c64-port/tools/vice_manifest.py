@@ -37,7 +37,10 @@ import zipfile
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SCHEMA = 1
 NAME = 'vice-manifest'
-BRANCH = 'port/c64-native-c'
+BRANCH = 'main'
+# Nightly runs before the 10-29 move to main ran on the frozen port branch;
+# their manifests still describe the same PRGs (matched by sha256).
+OLD_BRANCH = 'port/c64-native-c'
 CACHE = ROOT / 'build' / NAME
 CERTIFICATES = ('pending_complete_certificate', 'complete_native_coverage')
 COUNT = re.compile(r"\b(\d[\d,]*) (?:[\w-]+ ){0,4}(?:checks|cases|states|scenarios|vectors|rows|words|sequences|bindings)\b|"
@@ -158,7 +161,7 @@ def api(url, auth):
 
 def usable(manifest):
     return isinstance(manifest, dict) and manifest.get('schema') == SCHEMA and manifest.get('complete') and \
-        manifest.get('ref') == BRANCH and manifest.get('event') in ('schedule', 'workflow_dispatch')
+        manifest.get('ref') in (BRANCH, OLD_BRANCH) and manifest.get('event') in ('schedule', 'workflow_dispatch')
 
 
 def cached():

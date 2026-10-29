@@ -75,7 +75,7 @@
   "pre_snapshot": "build/flight-restart/lm-doi-burn-restart-pre.h",
   "ok": true,
   "failures": [],
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "log": "host.log",
   "log_sha256": "270d040d31539f428beda7fc2122ae2a01434d209efed7dfcf9d68359c0aed76"
  },
@@ -88,18 +88,18 @@
   "superbank": "0100",
   "bank": "01",
   "at": "01,3214",
-  "wall_cycles": 67615673,
+  "wall_cycles": 67646932,
   "agc_cs": 331,
   "dropped_ticks": 0,
   "steps": 1993,
-  "wall_per_agc": 20.734,
+  "wall_per_agc": 20.743,
   "lost": false,
   "mission": "lm",
   "snap_cs": 52000,
   "replay": true,
   "store_sha256": "61c67f695d1b57ded51541f90e35928d94578211be0b1d5b2d95a4769a312712",
-  "harness_sha256": "7da9725add307917d6c31faab201054501eed0a91e8ffc1b13874dabe9b63113",
-  "prg_sha256": "e158c635c30800da80b80e0f31618dabc950a2bdbe1ddae93194fa87df8aab1f",
+  "harness_sha256": "bdf9da2b47c66225d8fae9395aac0e0756990f34897558a1c9e5871a0a3a7d63",
+  "prg_sha256": "20c428ac5e12e23a074e41700a2b903f2b2a84b69b6e4d577b7049b8c3b4c565",
   "reu_bounds": {
    "ok": true,
    "touched": [
@@ -112,7 +112,7 @@
    "dma_outside": 0,
    "dma_trace_armed": true,
    "dma_hits": [],
-   "dma_unchecked": 13
+   "dma_unchecked": 16
   },
   "hold_host_mct": 633,
   "hold_host_time1": 14060,
@@ -835,10 +835,10 @@
   "requested_cs": 323,
   "host_holes": [],
   "downrupt": false,
-  "commit": "d0732f811067",
+  "commit": "d7abace4fc66",
   "exit": 0,
   "log": "lm-doi-burn-restart-c64.log",
-  "log_sha256": "870386fcc6c1729455d1ddd1493f64531698133eaea456d83db8d1f882a54c13",
+  "log_sha256": "538bb7cfdb7716a026b149c4b7674d9eb76b9e4ebfd66a618a89164ad342daa3",
   "manifest_sha256": "0eb9be88c871914934e4e5bdccebfe32f54f8dcc3df55070f00f03ea637de376"
  },
  "gojam_on_c64": null

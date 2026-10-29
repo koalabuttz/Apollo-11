@@ -92,7 +92,9 @@ typedef struct {
     unsigned ngaps;
     unsigned long unmapped;   /* basic points with no routine: fatal */
     unsigned long uses[256];  /* routines run, by table */
-    const char *in_slot[2];   /* the module in each C64 slot (flight_host_run.c's module_load) */
+    /* The module in each C64 slot (flight_host_run.c's module_load); after an
+     * LM interrupt wrapper's run, slot 0 holds that table's name. */
+    const char *in_slot[2];
 } fd_state;
 
 /* What the last fd_run ran: the table (NULL for the core, the VERB69 spin

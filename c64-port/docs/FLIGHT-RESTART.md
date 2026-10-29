@@ -106,6 +106,7 @@ and `make x86-flight-check` runs V69 in lockstep against yaAGC
 On the AGC (yaAGC `agc_engine.c`) the night watchman arms every 1.28 s, at
 scaler phase 04000. Any access to NEWJOB (067) disarms it. If it is still
 armed 0.64 s later, at phase 00000, it sounds and the AGC restarts (GOJAM).
+So it sounds 0.64 to 1.92 s after the last access.
 The Executive reads NEWJOB all the time (DANZIG before each interpretive
 instruction, ADVAN in the idle loop, CCSNEWJOB, NOVAC), so only a job that
 loops without the Executive trips it. The one such loop found in the port
@@ -193,15 +194,27 @@ GOTO SAVQR52 loops in GOTOERS:
   at 64 and sounding at 128, then `rk_gojam` at the next step, in or out
   of an interrupt. Its access rule is coarser than the host's, to fit the
   resident: the kernel's CCS and TS of NEWJOB (`k_newjob8`), an idle memo
-  hit, and any step that starts at DANZIG up to NEWOPS. It does not read
-  PRIORITY changes and has no hung state. A step from GOTO that ends at
-  GOTO is stuck and charges the rest of the period (`rk_rest_ahead`, never
-  moving the clock back), and on the C64 `lmi_goto_any` hands back at GOTO
-  after 64 hops, as the core does.
-  Each host snapshot carries the watchman (`SNAP_NW`), so a replay window
-  goes on with the host's count. The replay of `lm-p52-watchman` from
-  3200 cs (700 cs) restarts at 35.84 s and matches the host at every
-  checkpoint to its end. The LM resident grew 73 bytes, the CM 68.
+  hit, and any step that starts at DANZIG up to NEWOPS. It misses the
+  Executive's other NEWJOB reads (NOVAC's INDEX NEWJOB on its SETLOC
+  path, a flight module's CCS NEWJOB), PRIORITY changes and the hung
+  state, and it counts a step from NEWOPS after a fixed GOTO. The host
+  runs this rule beside its own on every scaled row
+  (`tools/flight_host_run.c`, the "C64 rule" line, from the kernel's
+  `k_newjob_seen` in host builds), and `tools/flight_host_differential.py`
+  fails a row where the two would sound at different checks: on the 97
+  scaled rows they agree at all 41 checks where either is armed.
+- **The C64's stuck step.** After every step, whichever way it ran
+  (`rk_stuck`): from GOTO back to GOTO with POLISH as it was, the step is
+  stuck, the host's rule for this loop (the hops ended on the CADR they
+  started from). It charges the rest of the period (`rk_rest_ahead`, never
+  moving the clock back). On the C64 `lmi_goto_any` hands back at GOTO
+  after 64 hops, as the core does, so a cycle whose length does not divide
+  64 is not stuck on either side: each step charges its hops.
+- **Replay.** Each host snapshot carries the watchman (`SNAP_NW`), so a
+  replay window goes on with the host's count. The replay of
+  `lm-p52-watchman` from 3200 cs (700 cs) restarts at 35.84 s and matches
+  the host at every checkpoint to its end. The watchman costs the LM
+  resident 117 bytes and the CM 112.
 
 ## The rupt lock
 
@@ -487,7 +500,7 @@ restart.
   routine's entry, with Z not at the trap and the routine's earlier writes
   kept. If a reachable one appears, the compiler should leave Z at the trap
   and the resident should spin there as at VERB69. The night watchman (NEWJOB not
-  tested for 0.64 s) is modelled on the host, the x86 program and the C64
+  read for 0.64 to 1.92 s) is modelled on the host, the x86 program and the C64
   (The night watchman, above). The rupt lock (an interrupt held too
   long, or none for 140 ms) is counted and checked against yaAGC on the
   host and the x86 program, but restarts nothing yet (The rupt lock, above). The stack canary now stops the run with `EXEC_OUT_OF_SCOPE`,

@@ -5,9 +5,10 @@ One page for lane threads and people. The verification bar is
 
 ## Branches
 
-- `port/c64-native-c` is the integration branch. Nobody pushes to it directly.
+- `main` is the integration branch. Nobody pushes to it directly. (Until
+  window P the port lived on `port/c64-native-c`, now frozen.)
 - Each lane works on `port/<lane>/<topic>` (for example `port/a/waitlist-restart`)
-  and opens a PR into `port/c64-native-c`. A PR merges only with green `port-ci`.
+  and opens a PR into `main`. A PR merges only with green `port-ci`.
   If the base has moved since that green run, merge the base into your branch
   and wait for CI again before merging: two PRs that are each green alone can
   still break the base together (a shared struct gains a field, another lane's
@@ -22,7 +23,7 @@ A full clone downloads 16 GB of legacy evidence. Skip it:
 ```sh
 git init Apollo-11 && cd Apollo-11
 git remote add origin https://github.com/koalabuttz/Apollo-11
-git fetch --filter=blob:limit=1m --depth=1 origin port/c64-native-c
+git fetch --filter=blob:limit=1m --depth=1 origin main
 git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
 cd c64-port && tools/setup_cloud.sh && source deps/env.sh
 ```
@@ -124,7 +125,7 @@ hash and deletes the branch. Commit only `evidence/<id>/SHA256.json`,
 - LLVM-MOS builds and VICE `vice-<id>` runs for affected C64 targets, plus the
   base Executive VICE check.
 
-The full suite runs nightly against `port/c64-native-c`, and on demand from
+The full suite runs nightly against `main`, and on demand from
 the Actions tab (`port-ci`, Run workflow). Those requested full runs (not a PR
 that touches shared plumbing) also run every legacy
 `tools/*_vice_test.py` script, split over eight `c64-legacy` shards, as the
@@ -212,7 +213,7 @@ Lane H owns the overlay and module ABI; change them through a PR the owner
 reviews.
 
 Before you draft a certificate, run `python3 tools/cert_precheck.py
-<AGC file> --fetch` (or `--changed --base origin/port/c64-native-c`). It
+<AGC file> --fetch` (or `--changed --base origin/main`). It
 checks the rejection patterns from past audits: distinct, real evidence
 records (no map cited twice, sha256 matching); a comparison that is a
 yaAGC/oracle run with a case count above zero and no differing cases; results
