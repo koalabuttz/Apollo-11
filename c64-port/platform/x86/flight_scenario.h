@@ -562,6 +562,19 @@ static int fs_load_start(fd_state *st, const char *path)
         rk_cdu.elapsed = (uint16_t)elapsed;
         rk_cdu.active = (uint8_t)active;
     }
+    /* SNAP_NW: the night watchman's place, the clock period count mod
+     * NW_PERIODS (twice over) and the armed bit, so it sounds in the same
+     * period as the harness's (and the rupt lock checks, RL_PERIODS dividing
+     * NW_PERIODS, in the same ones). */
+    if ((p = strstr(text, "#define SNAP_NW ")) != 0) {
+        unsigned nw;
+        if (sscanf(p + 16, "%uu", &nw) != 1) {
+            fprintf(stderr, "X86_START: %s: bad SNAP_NW\n", path);
+            return 0;
+        }
+        st->periods = nw >> 1;
+        st->wm.armed = (uint8_t)(nw & 1u);
+    }
     abs_cs = ((unsigned long)(st->s.words[024] & 037777u) << 14) | (st->s.words[025] & 037777u);
     st->t0 = abs_cs - snap_cs;
     return 1;
