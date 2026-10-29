@@ -361,6 +361,26 @@ def assess(m, rows, commit, end_commit, store_sha):
     return groups, problems
 
 
+def watchman_note(m):
+    """The night watchman paragraph: what shows it on the C64 for this
+    program, and how the C64's rule differs from the host's (#1008)."""
+    lines = ['The night watchman (a job that loops without the Executive, such as GOTO on an erasable CADR '
+             'cycle) restarts the AGC on the host, the x86 program and the C64 (docs/FLIGHT-RESTART.md, The '
+             "night watchman: on the C64 the resident's `rk_nw` on its work clock). Nominal flight never trips "
+             'it, and no row here uses it.']
+    if m == 'lm':
+        lines.append('The C64 evidence is the replay of lm-p52-watchman.')
+    else:
+        lines.append('No Comanche055 scenario trips it: the C64 evidence is the Luminary099 replay of '
+                     'lm-p52-watchman. The CM resident counts the watchman with the same code '
+                     '(platform/c64/resident_flight.c, src/resident_kernel_body.inc, include/flight_watchman.h).')
+    lines.append("The C64's rule for what counts as an Executive access still differs from the host's in both "
+                 'directions (#1008: it misses the NOVAC `INDEX NEWJOB` read and flight modules\' `CCS NEWJOB`, and '
+                 'counts a step starting at NEWOPS after a fixed GOTO), so a job that runs long while only '
+                 'waitlist tasks call NOVAC could restart on the C64 and not on the host.')
+    return [' '.join(lines)]
+
+
 def write_doc(m, rows, groups, problems, commit, store_sha):
     p = PROGRAM[m]
     ok = not problems
@@ -387,10 +407,7 @@ def write_doc(m, rows, groups, problems, commit, store_sha):
              "The inputs (keys, loads, radar and vehicle models) are each scenario's, in "
              'tools/flight_host_differential.py (FLIGHT, RESTART_POINTS) and tools/flight_restart_check.py '
              '(RESTARTS).', '',
-             'The night watchman (a job that loops without the Executive, such as GOTO on an erasable CADR '
-             'cycle) restarts the AGC on the host, the x86 program and the C64 (lm-p52-watchman, '
-             "docs/FLIGHT-RESTART.md, The night watchman: on the C64 the resident's `rk_nw` on its work clock). "
-             'Nominal flight never trips it, and no row here uses it.', '',
+             *watchman_note(m), '',
              '## Phase groups', '',
              'A group passes when one of its rows passes on the host and on the C64.', '',
              '| Phase group | Rows | Result |', '|---|---|---|']
