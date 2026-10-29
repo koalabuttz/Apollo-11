@@ -455,6 +455,7 @@ def main():
     p.add_argument('--host-cc', default=os.environ.get('CC', 'cc'))
     p.add_argument('--skip-index', action='store_true', help='reuse build/flight-store/<m>-host.inc and host objects')
     p.add_argument('--only', help='comma-separated scenario names')
+    p.add_argument('--skip', help='comma-separated scenario names not to run (CI splits the check in two)')
     p.add_argument('--jobs', type=int, default=os.cpu_count() or 1,
                    help='host scenarios run at once (each is its own processes and files)')
     p.add_argument('--vice', dest='run_vice', action='store_true', help='also run the restart on the C64 store in VICE')
@@ -478,7 +479,8 @@ def main():
     lanes = flight_holes.lanes()
     only = set(a.only.split(',')) if a.only else None
     summary, failed = [], 0
-    chosen = [s for s in RESTARTS if not only or s[0] in only]
+    skip = set(a.skip.split(',')) if a.skip else set()
+    chosen = [s for s in RESTARTS if (not only or s[0] in only) and s[0] not in skip]
     # The host runs are independent (each scenario writes only its own logs
     # and snapshots), so they run side by side; results are reported, and the
     # C64 runs made, in RESTARTS order as before.
