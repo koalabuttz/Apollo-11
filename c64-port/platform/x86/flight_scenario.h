@@ -575,6 +575,20 @@ static int fs_load_start(fd_state *st, const char *path)
         st->periods = nw >> 1;
         st->wm.armed = (uint8_t)(nw & 1u);
     }
+    /* SNAP_CLOCK: the harness's work clock at the snapshot, its steps taken
+     * and its wall in machine cycles. step_at's nine-step table is not
+     * periodic in three, so a start at step 0 would end later steps a
+     * cycle away from the harness's. */
+    if ((p = strstr(text, "#define SNAP_CLOCK(c) ")) != 0) {
+        unsigned long steps;
+        double mct;
+        if (sscanf(p + 22, "(c).steps=%luu;(c).mct=%lf;", &steps, &mct) != 2) {
+            fprintf(stderr, "X86_START: %s: bad SNAP_CLOCK\n", path);
+            return 0;
+        }
+        st->clock_steps = steps;
+        st->mct = mct;
+    }
     abs_cs = ((unsigned long)(st->s.words[024] & 037777u) << 14) | (st->s.words[025] & 037777u);
     st->t0 = abs_cs - snap_cs;
     return 1;
