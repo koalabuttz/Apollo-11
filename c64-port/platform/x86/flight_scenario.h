@@ -29,6 +29,8 @@
  *   FLIGHT_LR, FLIGHT_LR_POS2, FLIGHT_LR_DROP: the LM's landing radar
  *                   (platform/x86/landing_radar.h)
  *   FLIGHT_RHC      the LM's hand controller (platform/x86/hand_controller.h)
+ *   FLIGHT_ATT      either vehicle turning under its jets
+ *                   (platform/x86/attitude_model.h)
  *   FLIGHT_BUSY_SAMPLE  CS: also a sample point at a routine boundary
  *                   outside interrupts when none has come for CS
  *                   centiseconds, so inputs reach a job that busy waits
@@ -52,6 +54,7 @@
 #include "radar_models.h"
 #include "landing_radar.h"
 #include "hand_controller.h"
+#include "attitude_model.h"
 #if RK_LM
 #define FS_ADVAN 03214u
 #else
@@ -86,6 +89,7 @@ typedef struct {
     vm_aero aero;
     vm_saturn saturn;
     vm_sivb sivb;
+    vm_attitude att;
     rm_rr rr;
     lr_state lr;
     unsigned long busy_last; /* the last sample point (FLIGHT_BUSY_SAMPLE) */
@@ -163,6 +167,7 @@ static int fs_parse_models(void)
         return 0;
     }
 #endif
+    vm_cfg.att = fs_number("FLIGHT_ATT");
     memset(&rm_rr_cfg, 0, sizeof rm_rr_cfg);
     if (!rm_rr_parse(&rm_rr_cfg, getenv("FLIGHT_RR"))) {
         fprintf(stderr, "FLIGHT_RR=CS:rx,ry,rz,vx,vy,vz:rx,ry,rz,vx,vy,vz\n");
@@ -373,6 +378,11 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
                &st->hw.channel33);
     vm_aero_step(t, &in->aero, w);
     vm_imu_step(w, st->hw.channel12);
+#if RK_LM
+    vm_attitude_step(&in->att, t, w, st->hw.channel5, st->hw.channel6, 0, &in->engine);
+#else
+    vm_attitude_step(&in->att, t, w, st->hw.channel5, st->hw.channel6, in->sps.on, 0);
+#endif
     vm_saturn_step(t, &in->saturn, w, &st->hw.channel30);
     vm_sivb_step(t, &in->sivb, w);
     lr_pos2_step(&lr_cfg, t, &in->lr, st->hw.channel12, &st->hw.channel33);

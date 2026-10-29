@@ -32,6 +32,7 @@ typedef struct {
     double ascent_kg;           /* FLIGHT_ASCENT: ascent stage mass */
     unsigned long stage_cs;     /* FLIGHT_STAGE: abort stage */
     int trim;                   /* FLIGHT_TRIM: the thrust follows the trim gimbal */
+    double att;                 /* FLIGHT_ATT: attitude dynamics (attitude_model.h) */
     double rcs_kg;              /* FLIGHT_RCS (LM): vehicle mass for the jets */
     double sps_kg;              /* FLIGHT_SPS (CM): CSM mass */
     double sps_cg[2];           /* FLIGHT_SPS: centre of mass off the trim, degrees */
@@ -364,7 +365,8 @@ VM_FN void vm_engine_step(unsigned long t, vm_engine *e, agc_word *w, agc_word c
         e->on = 0;
         return;
     }
-    for (k = 0; k < 3u; ++k) w[VM_CDUX + k] = w[VM_LM_CDUXD + k];
+    if (c->att == 0.0) /* without attitude dynamics, perfect attitude control */
+        for (k = 0; k < 3u; ++k) w[VM_CDUX + k] = w[VM_LM_CDUXD + k];
     if (c->pilot_tau != 0.0 && !e->lifted && w[VM_MODREG] == 0102u &&
         (!c->touchdown_cs || t < c->touchdown_cs))
         vm_pilot(w);
@@ -586,7 +588,7 @@ VM_FN void vm_sps_step(unsigned long t, vm_sps *e, agc_word *w, agc_word channel
     double a, dt, acc, pitch, yaw, body[3], dir[3];
     unsigned k, j;
     if (vm_cfg.sps_kg == 0.0) return;
-    if (!e->lit)
+    if (!e->lit && vm_cfg.att == 0.0)
         for (k = 0; k < 3u; ++k) w[VM_CDUX + k] = w[VM_CM_CDUXD + 2u * k];
     dt = e->t && t > e->t ? (double)(t - e->t) * 0.01 : 0.0;
     e->t = t;
@@ -656,7 +658,7 @@ VM_FN void vm_aero_step(unsigned long t, vm_aero *e, agc_word *w)
     double r[3], v[3], vr[3], lt[3], sd[3], acc[3], rt, h, vm, d, ph, un, dt, tn;
     unsigned k, j;
     if (vm_cfg.aero_b == 0.0) return;
-    if (w[VM_P63FLAG] == 1u)
+    if (w[VM_P63FLAG] == 1u && vm_cfg.att == 0.0)
         for (k = 0; k < 3u; ++k) w[VM_CDUX + k] = w[VM_THETAD + k];
     dt = (double)(t - e->t) * 0.01;
     e->t = t;

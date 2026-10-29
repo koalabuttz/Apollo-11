@@ -87,7 +87,7 @@ WORDS = range(0o61, 0o4000)
 KNOWN = {}
 # Harness inputs the x86 program has no model for yet (docs/X86-FLIGHT.md,
 # Gaps): their scenarios are left out.
-UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL', 'FLIGHT_GYRO', 'FLIGHT_OPTICS', 'FLIGHT_ATT', 'FLIGHT_ISS')
+UNSUPPORTED = ('FLIGHT_UPLINK', 'FLIGHT_STEAL', 'FLIGHT_GYRO', 'FLIGHT_OPTICS', 'FLIGHT_ISS')
 # The inputs it reads (platform/x86/flight_scenario.h). FLIGHT_SWAP_MCT
 # is the harness's 1,1,2 clock only; the work clock charges no swap. A
 # scenario with any other FLIGHT_ input stops the tool, so a new harness
@@ -97,7 +97,7 @@ HANDLED = ('FLIGHT_CH30', 'FLIGHT_CH31', 'FLIGHT_CH32', 'FLIGHT_CH33', 'FLIGHT_P
            'FLIGHT_DOWNRUPT', 'FLIGHT_CHAN', 'FLIGHT_ENGINE', 'FLIGHT_ENGINE_LAG', 'FLIGHT_TOUCHDOWN', 'FLIGHT_PILOT',
            'FLIGHT_ASCENT', 'FLIGHT_STAGE', 'FLIGHT_RCS', 'FLIGHT_SPS', 'FLIGHT_AERO', 'FLIGHT_IMU', 'FLIGHT_SATURN',
            'FLIGHT_SIVB', 'FLIGHT_RR', 'FLIGHT_RR_DROP', 'FLIGHT_LR', 'FLIGHT_LR_POS2', 'FLIGHT_LR_DROP', 'FLIGHT_RHC',
-           'FLIGHT_TRIM', 'FLIGHT_BUSY_SAMPLE', 'FLIGHT_CORE', 'FLIGHT_SWAP_MCT')
+           'FLIGHT_TRIM', 'FLIGHT_ATT', 'FLIGHT_BUSY_SAMPLE', 'FLIGHT_CORE', 'FLIGHT_SWAP_MCT')
 # A FLIGHT_CORE scenario starts from a yaAGC core dump, which the x86
 # program never reads: the harness loads it and writes its state at the
 # first sample point (FLIGHT_SNAPSHOT=0), and the x86 program starts from
