@@ -38,8 +38,8 @@
  *   range (high scale: channel 33 bit 3 stays high; counts of 2.859024 x 8
  *   m) and 2 the range rate (biased 17000, counts of 0.19135344 m/s); on
  *   the CM 1 the VHF range in 0.01 nautical miles. The read can start between sample
- *   points, so rm_rr_step also runs after each routine while no read is
- *   being answered (fs_after_routine). The radar cycle itself (channel 13
+ *   points, so rm_rr_step also runs at each routine boundary while no read
+ *   is being answered (fs_at_boundary). The radar cycle itself (channel 13
  *   bit 4 reset and RADARUPT nine TIME5 counts on) is the resident
  *   timer's (rk_timer_phase). */
 #include <math.h>

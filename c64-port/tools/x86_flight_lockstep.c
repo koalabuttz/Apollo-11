@@ -140,6 +140,7 @@ int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;sta
   if(fs_sample_point(&in,&st)){int k=fs_inputs_due(&in,&st);
    if(k==FS_GOJAM){printf("GOJAM at %lu cs\n",fd_centiseconds(&st));substitute=0;}
    if(k||td_inputs_due(&typed,&st))continue;}
+  fs_at_boundary(&in,&st);
   before=st;
   if(fd_run(&st,&ran)==EXEC_UNMAPPED){printf("no routine at basic %02o,%04o (Z %05o FB %05o) at %lu cs\n",ran.key/1024u,ran.key%1024u+02000u,
    (unsigned)st.s.words[5],(unsigned)st.s.words[4],fd_centiseconds(&st));break;}
@@ -148,8 +149,7 @@ int main(int argc,char **argv){static fd_state st,before;static fs_inputs in;sta
    * fire; the restart is checked from 04000 on, as FLIGHT_GOJAM's. */
   if(ran.trap==2u){printf("TC trap at %lu cs\n",fd_centiseconds(&st));substitute=0;continue;}
   ++checked;
-  if((n=lockstep(&before,&st,why,sizeof why))<0)miss(&ran,why);else instructions+=(unsigned long)n;
-  fs_after_routine(&in,&st);}
+  if((n=lockstep(&before,&st,why,sizeof why))<0)miss(&ran,why);else instructions+=(unsigned long)n;}
  printf("%s x86 lockstep (%s): %lu cs, %lu routines and core slots checked (%lu yaAGC instructions), %u points yaAGC did not match, "
   "%lu clock periods; major mode %02o, FAILREG %05o\n",MISSION?"CM":"LM",X86_INTERP_MODE==FD_INTERP_CORE?"interpreter core":"compiled",
   fd_centiseconds(&st),checked,instructions,nmisses,st.periods,(unsigned)st.s.words[01011],(unsigned)st.s.words[0375]);
