@@ -143,6 +143,9 @@ int main(int argc, char **argv)
             if (td_inputs_due(&dsky, &st)) continue;
         }
         fd_boundary(&st);
+        /* As the harness: after the boundary's clock steps and interrupt,
+         * before the routine. */
+        fs_at_boundary(&in, &st);
         /* Real time: AGC time runs no faster than wall time times X86_SPEED. */
         if (speed > 0.0 && st.periods != periods) {
             double ahead;
@@ -182,7 +185,6 @@ int main(int argc, char **argv)
         if (ran.trap == 2u && !live) printf("TC trap at %lu cs\n", fd_centiseconds(&st));
         if (ran.trap == 3u && !live) printf("night watchman at %lu cs\n", fd_centiseconds(&st));
         if (ran.trap) continue;
-        fs_after_routine(&in, &st);
         if (watch.n) watch_print(&st);
         if (live) {
             td_after_routine(&dsky, &st);

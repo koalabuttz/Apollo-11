@@ -43,8 +43,8 @@
  * At the first sample point (an idle pass through ADVAN) at or after their
  * time, in this order: pokes, the vehicle models (the radar after the
  * SPS), channel changes, the hand controller, then a restart or a key. With FLIGHT_ENGINE_LAG
- * the engine also runs after every routine, as do the RCS jets and a radar
- * read that starts between sample points (fs_after_routine). */
+ * the engine also runs at every routine boundary, as do the RCS jets and a radar
+ * read that starts between sample points (fs_at_boundary). */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -426,13 +426,14 @@ static int fs_inputs_due(fs_inputs *in, fd_state *st)
     return FS_NONE;
 }
 
-/* After each routine: the engine with a throttle lag (P66 reads the PIPAs
- * between sample points), the RCS jets, and a radar read (the landing
- * radar's, then the rendezvous radar's): one starts at
- * any routine boundary and the resident timer ends it nine TIME5 counts
- * on, often before the next sample point, so the radar answers it where
- * channel 13 bit 4 comes on and is ready again once it drops. */
-static void fs_after_routine(fs_inputs *in, fd_state *st)
+/* At each routine boundary, after its clock steps and interrupt and before
+ * the routine, as the harness: the engine with a throttle lag (P66 reads
+ * the PIPAs between sample points), the RCS jets, and a radar read (the
+ * landing radar's, then the rendezvous radar's): one starts at any routine
+ * boundary and the resident timer ends it nine TIME5 counts on, often
+ * before the next sample point, so the radar answers it where channel 13
+ * bit 4 comes on and is ready again once it drops. */
+static void fs_at_boundary(fs_inputs *in, fd_state *st)
 {
     unsigned long t = fd_centiseconds(st);
     if (vm_cfg.engine_lag) vm_engine_step(t, &in->engine, st->s.words, st->hw.channel12);
