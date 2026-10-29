@@ -51,7 +51,7 @@ readings unmatched; never the restart count or the TC trap); anything
 else fails. Results go to
 build/x86-flight/scenarios/summary.json.
 
-  x86_flight_scenarios.py [--host-cc CC] [--skip-build] [--drop-keys CHARS] [NAME ...]
+  x86_flight_scenarios.py [--host-cc CC] [--skip-build] [--drop-keys CHARS] [--quick] [NAME ...]
 
 Scenarios that need a model the x86 program does not have yet (uplink,
 stolen time, the gyro torquing and optics output models) are left out. A scenario that starts from the NASSP P63 core
@@ -61,7 +61,7 @@ at a routine not yet certified: they pass only when they stop exactly
 there. Needs yaAGC (deps/virtualagc) for the
 harness; the x86 program itself links none.
 """
-import argparse, json, math, os, re, subprocess, sys
+import argparse, concurrent.futures, json, math, os, re, subprocess, sys, threading
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -150,6 +150,16 @@ WAIT = ('lm-rendezvous-tpm', 'lm-stable-orbit', 'lm-stable-orbit-lm')
 # they end over 500 apart, still inside the spread, so without a cap they
 # could not show that both programs wait the same way.
 WORD_CAP = {'lm-stable-orbit-wait': 100, 'lm-stable-orbit-lm-wait': 100}
+
+# The quick set (--quick; make x86-flight-scenarios-quick, in PR CI): the
+# cheapest rows that between them run every model the x86 program has,
+# both missions, a restart, the TC trap, the night watchman and a core
+# start. About three minutes on one core; the rows left out (the landing
+# radar dropout, the pilot and touchdown rows, the Saturn) take over a
+# minute each and run with the full set.
+QUICK = ('lm-coast-v55', 'lm-rhc-att-hold', 'lm-p47-nassp', 'lm-v69', 'cm-v69', 'lm-p52-watchman', 'cm-v48-dap',
+         'cm-p52-coarse', 'cm-p20-restart', 'lm-cdh', 'cm-p20-vhf-dropout', 'cm-entry', 'lm-p63-descent', 'cm-p52',
+         'lm-p42-nassp', 'cm-tli', 'lm-p63-landing-displays')
 
 
 def supported():
@@ -253,6 +263,12 @@ def vector(w, a, scale, k):
     return [(ones(w[a + 2 * i]) * 16384 + ones(w[a + 2 * i + 1])) * 2.0 ** (scale - 28) * k for i in range(3)]
 
 
+def tag():
+    """This process and thread, for scratch file names (--jobs flies rows
+    on several threads)."""
+    return f'{os.getpid()}-{threading.get_ident()}'
+
+
 def harness_state(m, cs, keys, env, at, clock='W', out=None, log=None):
     """The harness's native erasable image at the first sample point at or
     after centisecond at, on the given clock (FLIGHT_SCALED; None: unscaled,
@@ -260,7 +276,7 @@ def harness_state(m, cs, keys, env, at, clock='W', out=None, log=None):
     snapshot. With a list out, the run also watches the landing radar's
     words (LR_ENV) and appends its output; with a list log, it appends its
     output only."""
-    snap = OUT / f'snap-{os.getpid()}.h'
+    snap = OUT / f'snap-{tag()}.h'
     run_env = {**os.environ, **env, **(LR_ENV if out is not None else {}), 'FLIGHT_SNAPSHOT': f'{at},{snap}'}
     run_env.pop('FLIGHT_SCALED', None)
     if clock is not None:
@@ -285,7 +301,7 @@ def with_start(m, cs, keys, env, at=0):
     scenario starts from a core dump or at is given (a GAPS resume)."""
     if 'FLIGHT_CORE' not in env and not at:
         return env
-    start = OUT / f'start-{m}-{os.getpid()}.h'
+    start = OUT / f'start-{m}-{tag()}.h'
     start.unlink(missing_ok=True)
     subprocess.run([str(fhd.OUT / f'flight-host-run-{m}'), fhd.ROPE[m], str(cs)] + ([keys] if keys else []),
                    cwd=ROOT, env={**os.environ, **env, 'FLIGHT_SCALED': 'W', 'FLIGHT_SNAPSHOT': f'{at},{start}'},
@@ -297,7 +313,7 @@ def x86_state(m, keys, env, at, lr=False):
     """The x86 program's erasable image at its first sample point at or after centisecond at:
     (run, centisecond, 2048 words), centisecond None when it wrote none. lr:
     the run also watches the landing radar's words (LR_ENV, X86_WATCH)."""
-    samples = OUT / f'samples-{os.getpid()}.txt'
+    samples = OUT / f'samples-{tag()}.txt'
     watch = {'X86_WATCH': LR_ENV['FLIGHT_WATCH'], 'FLIGHT_LR_TRACE': '1'} if lr else {}
     r = subprocess.run([str(xb.OUT / f'x86-flight-{m}'), fhd.ROPE[m], str(at + 1000)] + ([keys] if keys else []), cwd=ROOT,
                        env={**os.environ, **env, **watch, 'X86_SPEED': '0', 'X86_SAMPLES': str(samples),
@@ -595,9 +611,15 @@ def main():
     p.add_argument('--skip-build', action='store_true', help='reuse the built harness and x86 program')
     p.add_argument('--drop-keys', default='', metavar='CHARS',
                    help='leave these key letters out of the x86 run only, e.g. MJxyj (the mark buttons): should fail')
+    p.add_argument('--quick', action='store_true', help='only the quick set (QUICK), as PR CI runs it')
+    p.add_argument('--jobs', '-j', type=int, default=1, help='rows flown at once (each runs one process at a time)')
     p.add_argument('names', nargs='*', help='scenarios (default: every one the x86 program supports)')
     a = p.parse_args()
-    rows = [r for r in supported() if not a.names or r[0] in a.names]
+    names = set(a.names) | (set(QUICK) if a.quick else set())
+    rows = [r for r in supported() if not names or r[0] in names]
+    if a.quick and len(rows) != len(QUICK):
+        sys.exit(f'x86_flight_scenarios: QUICK names a row the tool no longer flies: '
+                 f'{", ".join(sorted(set(QUICK) - {r[0] for r in rows}))}')
     if not a.skip_build:
         subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--host-cc', a.host_cc],
                        cwd=ROOT, check=True)
@@ -608,22 +630,24 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     summary, failed = [], 0
     try:
-        for name, m, cs, keys, env in rows:
+        def fly(r):
+            name, m, cs, keys, env = r
             if name in GAPS:
                 row, ok = fly_gap(name, m, cs, keys, env)
-                failed += not ok
-                summary.append(row)
-                print(row['line'] + ('' if ok else ' FAILED'), flush=True)
-                continue
+                return row, not ok, row['line'] + ('' if ok else ' FAILED')
             row, ok = compare(name, m, cs, keys, env, a.drop_keys)
             known = None if ok else within_known(name, row)
-            failed += not ok and not known
             row.update(ok=ok, known=known)
-            summary.append(row)
-            print(row['line'] + ('' if ok else f' KNOWN: {known}' if known else ' FAILED'), flush=True)
+            return row, not ok and not known, row['line'] + ('' if ok else f' KNOWN: {known}' if known else ' FAILED')
+
+        with concurrent.futures.ThreadPoolExecutor(max(1, a.jobs)) as pool:
+            for row, bad, line in pool.map(fly, rows):   # in row order
+                failed += bad
+                summary.append(row)
+                print(line, flush=True)
         (OUT / 'summary.json').write_text(json.dumps(summary, indent=1) + '\n')
     finally:
-        for start in OUT.glob(f'start-*-{os.getpid()}.h'):   # the core dump's state is not kept
+        for start in OUT.glob(f'start-*-{os.getpid()}-*.h'):   # the core dump's state is not kept
             start.unlink()
     return 1 if failed else 0
 
