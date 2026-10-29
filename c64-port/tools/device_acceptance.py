@@ -729,7 +729,10 @@ def doc_text(m, assessed, bad, runs, host_cite, store, commit, off_lines=()):
              'x1). Every flight scenario that drives the role must be in the summary, from this commit, and clean: '
              'exit 0 and every native routine left yaAGC\'s erasable memory and output channels. Scenarios are '
              'picked by the FLIGHT_* inputs or keys they are given, not by what the run then drove. Unregistered or '
-             'refused points (routines yaAGC ran for the native side) are counted, not failed.'
+             'refused points (routines yaAGC ran for the native side) are counted, not failed. The night watchman '
+             'must agree too: its native rule with yaAGC\'s NEWJOB accesses and the C64 flight resident\'s rule with '
+             'the native rule, at every check (no summary line fails); host summaries stored before review-1029b M1 '
+             'have no watchman field and are judged without it, so every re-acceptance from then on must carry it.'
              + (f' Host summary (this program\'s rows): {host_cite}.' if host_cite else ''),
              '- **C64 check:** a `tools/flight_scenario_vice.py --replay` window on stock C64 + 2 MB REU in VICE. '
              'The C64 starts from the host\'s snapshot, takes the host\'s inputs as rows (the replay row injector is '
