@@ -378,9 +378,12 @@ def log_path(target, log_dir):
 # A target that runs far past its measured time is stuck (a VICE run waiting
 # on a disk, say). It is stopped and fails with the output it printed so far,
 # so the job log shows where it sat instead of the job hitting its own limit
-# with nothing printed. --timeout-factor 0 turns this off.
-TIMEOUT_FACTOR = 2
-TIMEOUT_FLOOR = 900
+# with nothing printed. --timeout-factor 0 turns this off. The limit is
+# loose (at least an hour): a target's time also covers building shared
+# prerequisites such as flight-store (about 30 minutes) and sharing the
+# runner's cores, and a stuck one only has to stop before the job's limit.
+TIMEOUT_FACTOR = 3
+TIMEOUT_FLOOR = 3600
 TIMEOUTS = {}
 TIMED_OUT = -1000
 
