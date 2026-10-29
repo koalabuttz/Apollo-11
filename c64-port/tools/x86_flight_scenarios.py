@@ -617,9 +617,9 @@ def main():
     a = p.parse_args()
     names = set(a.names) | (set(QUICK) if a.quick else set())
     rows = [r for r in supported() if not names or r[0] in names]
-    if a.quick and len(rows) != len(QUICK):
-        sys.exit(f'x86_flight_scenarios: QUICK names a row the tool no longer flies: '
-                 f'{", ".join(sorted(set(QUICK) - {r[0] for r in rows}))}')
+    missing = set(QUICK) - {r[0] for r in rows} if a.quick else set()
+    if missing:
+        sys.exit(f'x86_flight_scenarios: QUICK names a row the tool no longer flies: {", ".join(sorted(missing))}')
     if not a.skip_build:
         subprocess.run([sys.executable, 'tools/flight_store_build.py', '--host-only', '--host-cc', a.host_cc],
                        cwd=ROOT, check=True)
