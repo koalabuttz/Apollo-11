@@ -1,6 +1,8 @@
-# The readable C (readable/README.md): its two gates.
-#   1. make kernel-cases: the resident-kernel corpus on the readable
-#      Executive and WAITLIST (seconds).
+# The readable C (readable/README.md): its gates.
+#   1. The case tests (seconds): names-check (the listing names against the
+#      listings), kernel-cases (the resident-kernel corpus on the readable
+#      Executive and WAITLIST) and interbank-cases (the inter-bank routines
+#      against the faithful port's).
 #   2. The x86 exact scenario suite with the readable routines linked in:
 #      the quick set (26 rows) on PRs and pushes, every row nightly.
 name: readable-ci
@@ -57,9 +59,9 @@ jobs:
       - name: Install pinned toolchain
         working-directory: c64-port
         run: tools/setup_cloud.sh
-      - name: Gate 1, kernel cases
+      - name: Gate 1, case tests
         working-directory: readable
-        run: make kernel-cases
+        run: make names-check kernel-cases interbank-cases
       - name: Gate 2, x86 exact scenarios
         working-directory: readable
         env:

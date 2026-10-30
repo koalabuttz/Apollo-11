@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: MIT */
-/* The listing's names for the Executive and WAITLIST, for one mission.
+/* The listing's names the readable routines use, for one mission.
  *
  * Build with LUMINARY099=1 (the LM) or COMANCHE055=1 (the CM). The
  * addresses come from the mission's assembled listing through
- * c64-port/src/<m>_kernel_labels.inc, which tools/resident_kernel_labels.py
- * generates and checks against the listing.
+ * <m>_names.inc, which readable/tools/listing_names.py generates and
+ * checks against the listing.
  *
  * A name means what it means in the listing (STYLE.md, Naming):
  *   - an erasable name is the word itself: NEWJOB, LOCCTR, LST1(3);
@@ -17,9 +17,9 @@
 #include "agc.h"
 
 #if LUMINARY099
-#include "lm_kernel_labels.inc"
+#include "lm_names.inc"
 #elif COMANCHE055
-#include "cm_kernel_labels.inc"
+#include "cm_names.inc"
 #else
 #error "build with LUMINARY099=1 or COMANCHE055=1"
 #endif
@@ -73,6 +73,14 @@
 #define LONGTIME(n) ERASABLE(K_LONGTIME + (n))
 #define LONGEXIT(n) ERASABLE(K_LONGEXIT + (n))
 
+/* INTER-BANK_COMMUNICATION's. BUF2 and BUF2 +1 hold the return of a
+ * BANKCALL or SWCALL (its address, then the caller's FBANK); RUPTREG3 and
+ * RUPTREG4 the same for IBNKCALL and ISWCALL, which interrupt routines use. */
+#define BUF2(n)  ERASABLE(K_BUF2 + (n))
+#define RUPTREG3 ERASABLE(K_RUPTREG3)
+#define RUPTREG4 ERASABLE(K_RUPTREG4)
+#define MPTEMP   ERASABLE(K_MPTEMP)
+
 /* The interrupt save area (ARUPT +1 is LRUPT). */
 #define ARUPT    ERASABLE(K_ARUPT)
 #define QRUPT    ERASABLE(K_QRUPT)
@@ -99,6 +107,7 @@
 #define BIT14    ((word)KW_BIT14)
 #define LOW7     ((word)KW_LOW7)
 #define LOW9     ((word)KW_LOW9)
+#define LOW10    ((word)KW_LOW10)
 #define FBANKMSK ((word)076000)
 #define OCT40001 ((word)KW_OCT40001)
 #define OCT40201 ((word)KW_OCT40201)
@@ -121,36 +130,50 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 
 /* ---- Code addresses ---- */
 
-#define NOVAC    ((word)K_NOVAC)
-#define FINDVAC2 ((word)K_FINDVAC2)
-#define NOVAC3   ((word)K_NOVAC3)
-#define SPECTEST ((word)K_SPECTEST)
-#define NEXTCORE ((word)K_NEXTCORE)
-#define ENDPRCHG ((word)K_ENDPRCHG)
-#define JOBWAKE4 ((word)K_JOBWAKE4)
-#define EJSCAN   ((word)K_EJSCAN)
-#define EJ1      ((word)K_EJ1)
-#define EJ2      ((word)K_EJ2)
-#define ADVAN    ((word)K_ADVAN)
-#define SUPDXCHZ ((word)K_SUPDXCHZ)
-#define NEG      ((word)K_NEG)
-#define CCSHOLE  ((word)K_CCSHOLE)
-#define NEWOPS   ((word)K_NEWOPS)
-#define LVWTLIST ((word)K_LVWTLIST)
-#define WTLST5   ((word)K_WTLST5)
-#define WTABORT  ((word)K_WTABORT)
-#define FIXDELAY ((word)K_FIXDELAY)
-#define SVCT3    ((word)K_SVCT3)
-#define SVCT3X   ((word)K_SVCT3X)
-#define TASKOVER ((word)K_TASKOVER)
-#define T3RUPT2  ((word)K_T3RUPT2)
-#define WAITLIST ((word)K_WAITLIST)
-#define LONGCALL ((word)K_LONGCALL)
-#define LONGCYCL ((word)K_LONGCYCL)
-#define LONGRTRN ((word)K_LONGRTRN)
-#define LASTTIME ((word)K_LASTTIME)
-#define MUCHTIME ((word)K_MUCHTIME)
-#define GETCADR  ((word)K_GETCADR)
+#define NOVAC        ((word)K_NOVAC)
+#define FINDVAC2     ((word)K_FINDVAC2)
+#define NOVAC3       ((word)K_NOVAC3)
+#define SPECTEST     ((word)K_SPECTEST)
+#define NEXTCORE     ((word)K_NEXTCORE)
+#define ENDPRCHG     ((word)K_ENDPRCHG)
+#define JOBWAKE4     ((word)K_JOBWAKE4)
+#define EJSCAN       ((word)K_EJSCAN)
+#define EJ1          ((word)K_EJ1)
+#define EJ2          ((word)K_EJ2)
+#define ADVAN        ((word)K_ADVAN)
+#define SUPDXCHZ     ((word)K_SUPDXCHZ)
+#define NEG          ((word)K_NEG)
+#define CCSHOLE      ((word)K_CCSHOLE)
+#define NEWOPS       ((word)K_NEWOPS)
+#define LVWTLIST     ((word)K_LVWTLIST)
+#define WTLST5       ((word)K_WTLST5)
+#define WTABORT      ((word)K_WTABORT)
+#define FIXDELAY     ((word)K_FIXDELAY)
+#define SVCT3        ((word)K_SVCT3)
+#define SVCT3X       ((word)K_SVCT3X)
+#define TASKOVER     ((word)K_TASKOVER)
+#define T3RUPT2      ((word)K_T3RUPT2)
+#define WAITLIST     ((word)K_WAITLIST)
+#define LONGCALL     ((word)K_LONGCALL)
+#define LONGCYCL     ((word)K_LONGCYCL)
+#define LONGRTRN     ((word)K_LONGRTRN)
+#define LASTTIME     ((word)K_LASTTIME)
+#define MUCHTIME     ((word)K_MUCHTIME)
+#define GETCADR      ((word)K_GETCADR)
+#define BANKCALL     ((word)K_BANKCALL)
+#define SWCALL       ((word)K_SWCALL)
+#define SWRETURN     ((word)K_SWRETURN)
+#define POSTJUMP     ((word)K_POSTJUMP)
+#define BANKJUMP     ((word)K_BANKJUMP)
+#define Q_PLUS_10000 ((word)K_QP10000) /* Q+10000 */
+#define PRIO12       ((word)K_PRIO12)
+#define MAKECADR     ((word)K_MAKECADR)
+#define SUPDACAL     ((word)K_SUPDACAL)
+#define IBNKCALL     ((word)K_IBNKCALL)
+#define ISWCALL      ((word)K_ISWCALL)
+#define ISWRETRN     ((word)K_ISWRETRN)
+#define USPRCADR     ((word)K_USPRCADR)
+#define SUPERSW      ((word)K_SUPERSW)
 #if LUMINARY099
 #define BAILOUT1 ((word)K_BAILOUT1)
 #define POODOO1  ((word)K_POODOO1)

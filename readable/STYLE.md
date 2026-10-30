@@ -74,6 +74,12 @@ C cannot spell every AGC name, so:
 | a leading `-` | `MINUS_` | `-CCSPR` → `MINUS_CCSPR` |
 | a trailing `-` | `_MINUS` | `WATLST0-` → `WATLST0_MINUS` |
 | a leading digit | the digit spelled out | `2K` → `TWO_K` |
+| `+` inside a name | `_PLUS_` | `Q+10000` → `Q_PLUS_10000`, `q_plus_10000()` |
+
+Names come from the listing: a new AGC name goes in
+`tools/listing_names.py`, which writes its address or value from the
+assembled listings into `src/agc/<m>_names.inc`, and `src/agc/names.h`
+gives it its C spelling. No address or constant is typed in by hand.
 
 ### Routines
 
@@ -151,10 +157,21 @@ so a reader sees both versions together.
 
 Every change to `readable/` must keep both:
 
-1. **The kernel cases** (`make kernel-cases`, seconds): every case of the
-   resident-kernel corpus (about 42,000 runs per pair of missions) on the
-   readable routines, each matching the original program's yaAGC digest
-   and the faithful routines' final memory word for word.
+1. **The case tests** (`make names-check kernel-cases interbank-cases`,
+   seconds):
+   - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
+     assembled listings' (`tools/listing_names.py`);
+   - `kernel-cases`: every case of the resident-kernel corpus (about 42,000
+     runs per pair of missions) on the readable Executive and WAITLIST,
+     each matching the original program's yaAGC digest and the faithful
+     routines' final memory word for word;
+   - `interbank-cases`: every entry of the readable inter-bank routines
+     against the faithful port's, on 100,000 random machine states each
+     (over 4 million runs): the same result, memory and channels.
+
+   A subsystem without a corpus of its own gets a test of the second kind:
+   the readable routines and the faithful ones, run side by side on the
+   same states.
 2. **The x86 exact scenario suite** (`make x86-scenarios-quick` on PRs,
    `make x86-scenarios` for all 86 rows): the x86_64 flight program with the
    readable routines linked in place of the faithful ones flies each

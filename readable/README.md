@@ -65,23 +65,26 @@ Take one routine across the three views. NOVAC starts a basic job:
 |---|---|---|---|
 | Executive | `EXECUTIVE.agc` (LM pp. 1103-1116, CM pp. 1208-1220) | [`src/executive/`](src/executive/) | NOVAC, FINDVAC, SPVAC, CHANG1/2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB, the job switch (CHANJOB), the priority scan (EJSCAN) and the idle loop (DUMMYJOB, ADVAN) |
 | WAITLIST | `WAITLIST.agc` (LM pp. 1117-1132, CM pp. 1221-1235) | [`src/waitlist/`](src/waitlist/) | WAITLIST, TWIDDLE, FIXDELAY, VARDELAY, T3RUPT, TASKOVER, SVCT3 and LONGCALL |
+| Inter-bank communication | `INTER-BANK_COMMUNICATION.agc` (LM pp. 998-1001, CM pp. 1103-1106) | [`src/interbank/`](src/interbank/) | BANKCALL, SWCALL, SWRETURN, POSTJUMP, BANKJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR and SUPERSW: calls and jumps between banks of fixed memory |
 
 Beside them:
 
 - [`src/agc/`](src/agc/): the machine the routines run on: erasable memory,
-  the central registers, one's complement words, and the listing's names
-  (`names.h`, addresses from the assembled listing).
+  the central registers, one's complement words, fixed memory, and the
+  listing's names (`names.h`; the addresses and constants are generated
+  from the assembled listings by `tools/listing_names.py`).
 - [`src/binding/`](src/binding/): connects the routines to the flight
   program (the keys and table names the faithful kernel uses). Plumbing
   only.
-- [`tests/`](tests/): builds the x86_64 flight program with the readable
-  routines in it.
+- [`tests/`](tests/): the side-by-side test of the inter-bank routines,
+  and the build of the x86_64 flight program with the readable routines in
+  it.
 
 Both missions come from the same source, built with `LUMINARY099=1` or
 `COMANCHE055=1`; where the listings differ the code shows both in place.
 
-Next, one subsystem at a time: the interpreter, then the rest of the
-flight program. A Rust edition with the same layout and the same gates
+Next, one subsystem at a time: the restart and phase tables, the
+interpreter, then the rest of the flight program. A Rust edition with the same layout and the same gates
 comes after the C.
 
 ## Building and the gates
@@ -89,7 +92,7 @@ comes after the C.
 From `readable/`, with a C compiler, Make and Python 3:
 
 ```sh
-make kernel-cases          # gate 1, seconds
+make                       # gate 1: names-check, kernel-cases, interbank-cases (seconds)
 make x86-scenarios-quick   # gate 2 on the PR set (26 rows)
 make x86-scenarios         # gate 2 on every row (86)
 ```
@@ -97,11 +100,15 @@ make x86-scenarios         # gate 2 on every row (86)
 Gate 2 needs the port's toolchain once, for the harness's yaAGC:
 `c64-port/tools/setup_cloud.sh`.
 
-1. **Kernel cases.** The faithful port's resident-kernel corpus: every case
-   of its certified Executive and WAITLIST milestones, about 42,000 runs over
-   the two missions, each checked against the original program's yaAGC
-   digest and against the faithful routines' final memory word for word.
-   `make kernel-cases` runs it on the readable routines.
+1. **Case tests.** `make kernel-cases` runs the faithful port's
+   resident-kernel corpus on the readable Executive and WAITLIST: every
+   case of its certified milestones, about 42,000 runs over the two
+   missions, each checked against the original program's yaAGC digest and
+   against the faithful routines' final memory word for word.
+   `make interbank-cases` runs every inter-bank entry, readable and
+   faithful side by side, on 100,000 random machine states each, and
+   compares memory and channels word for word. `make names-check` checks
+   the generated names against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
    scenarios (P63 descent, rendezvous, entry, restarts, ...) against the
