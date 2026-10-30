@@ -234,6 +234,31 @@ void dca(unsigned address)
     A = sign_extend(fetch(address));
 }
 
+void dcs(unsigned address)
+{
+    L = sign_extend(negate(fetch(address + 1u)));
+    A = sign_extend(negate(fetch(address)));
+}
+
+void dca_at(word address)
+{
+    L = sign_extend(read_word((word)(address + 1u)));
+    A = sign_extend(read_word(address));
+}
+
+void ads(unsigned address)
+{
+    ad(fetch(address));
+    store(address, a_word());
+}
+
+word fetch_rewritten(unsigned address)
+{
+    word value = fetch(address);
+    store(address, value);
+    return value;
+}
+
 void dxch(unsigned address)
 {
     reg16 old;

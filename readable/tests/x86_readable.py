@@ -35,9 +35,12 @@ REPLACED = (
     'cm_interbank_routines.o', 'cm_interbank_idle.o', 'cm_interbank_postjump.o',
     # PHASE_TABLE_MAINTENANCE (src/phase_table).
     'lm_phase_table.o', 'cm_phase_table.o',
+    # RESTARTS_ROUTINE and RESTART_TABLES (src/restart). cm_restart_select.o
+    # stays: the faithful restart path (cm_restart.o) calls it.
+    'lm_restart_routines.o', 'lm_restart_select.o', 'cm_restart_routines.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
-READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2')
+READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

@@ -105,6 +105,20 @@
 #define OF_GROUP(name, twice_g) (ADDRESS_OF(name) - 2u + (twice_g))
 #define PHSPRDT1_OF(twice_g)    ERASABLE(OF_GROUP(PHSPRDT1, twice_g))
 
+/* RESTARTS_ROUTINE's. It runs as a job (GOPROG starts it) and borrows the
+ * job's MPAC: TEMPPHS (the group's phase), TEMP2G (the group, doubled),
+ * POINTER (into the restart tables) and TEMPSWCH (a return). GOLOC -1 to
+ * GOLOC +2 hold the call it makes, run by TC GOLOC -1: TC FINDVAC, NOVAC,
+ * WAITLIST or LONGCALL; the 2CADR to start; and where to go after. */
+#define TEMPPHS  ERASABLE(K_TEMPPHS)
+#define TEMP2G   ERASABLE(K_TEMP2G)
+#define POINTER  ERASABLE(K_POINTER)
+#define TEMPSWCH ERASABLE(K_TEMPSWCH)
+#define GOLOC(n) ERASABLE(K_GOLOC + (unsigned)(n))
+/* The editing registers CYR (cycle right) and SR (shift right). */
+#define CYR_ADDRESS ((unsigned)K_CYR)
+#define SR_ADDRESS  ((unsigned)K_SR)
+
 /* The interrupt save area (ARUPT +1 is LRUPT). */
 #define ARUPT    ERASABLE(K_ARUPT)
 #define QRUPT    ERASABLE(K_QRUPT)
@@ -118,29 +132,47 @@
 
 /* ---- Constants in fixed memory ---- */
 
-#define ZERO          ((word)KW_ZERO)
-#define ONE           ((word)KW_ONE)
-#define TWO           ((word)KW_TWO)
-#define TWO_K         ((word)KW_2K) /* 2K */
-#define NEG2          ((word)KW_NEG2)
-#define NEG1_2        ((word)KW_NEG1_2) /* NEG1/2 */
-#define POS1_2        ((word)KW_POS1_2) /* POS1/2 */
-#define POSMAX        ((word)KW_POSMAX)
-#define NEGMAX        ((word)KW_NEGMAX)
-#define BIT8          ((word)KW_BIT8)
-#define BIT14         ((word)KW_BIT14)
-#define LOW7          ((word)KW_LOW7)
-#define LOW9          ((word)KW_LOW9)
-#define LOW10         ((word)KW_LOW10)
-#define OCT7          ((word)KW_OCT7)
-#define OCT17770      ((word)KW_OCT17770)
-#define OCT14000      ((word)KW_OCT14000)
-#define OCT60000      ((word)KW_OCT60000)
-#define BIT7          ((word)KW_BIT7)
-#define BIT12         ((word)KW_BIT12)
-#define BIT15         ((word)KW_BIT15)
-#define PRIO30        ((word)KW_PRIO30)
-#define BIT14COM      ((word)KW_BIT14COM)
+#define ZERO     ((word)KW_ZERO)
+#define ONE      ((word)KW_ONE)
+#define TWO      ((word)KW_TWO)
+#define TWO_K    ((word)KW_2K) /* 2K */
+#define NEG2     ((word)KW_NEG2)
+#define NEG1_2   ((word)KW_NEG1_2) /* NEG1/2 */
+#define POS1_2   ((word)KW_POS1_2) /* POS1/2 */
+#define POSMAX   ((word)KW_POSMAX)
+#define NEGMAX   ((word)KW_NEGMAX)
+#define BIT8     ((word)KW_BIT8)
+#define BIT14    ((word)KW_BIT14)
+#define LOW7     ((word)KW_LOW7)
+#define LOW9     ((word)KW_LOW9)
+#define LOW10    ((word)KW_LOW10)
+#define OCT7     ((word)KW_OCT7)
+#define OCT17770 ((word)KW_OCT17770)
+#define OCT14000 ((word)KW_OCT14000)
+#define OCT60000 ((word)KW_OCT60000)
+#define BIT7     ((word)KW_BIT7)
+#define BIT12    ((word)KW_BIT12)
+#define BIT15    ((word)KW_BIT15)
+#define PRIO30   ((word)KW_PRIO30)
+#define BIT14COM ((word)KW_BIT14COM)
+static const word SECS600[2] = KW_600SECS; /* 600SECS: 2DEC 60000 */
+#define PRIO14   ((word)KW_PRIO14)
+#define OCT1400  ((word)KW_OCT1400)
+#define OCT177   ((word)KW_OCT177)
+#define OCT37776 ((word)KW_OCT37776)
+#define BIT10    ((word)KW_BIT10)
+#define THREE    ((word)KW_THREE)
+#define MINUS2   ((word)KW_MINUS2)
+/* GENADRs of the routines RESTARTS calls or returns through. */
+#define PHS2CADR ((word)KW_PHS2CADR) /* GENADR PHSPART2 */
+#define PRT2CADR ((word)KW_PRT2CADR) /* GENADR GETPART2 */
+#define LGCLCADR ((word)KW_LGCLCADR) /* GENADR LONGCALL */
+#define FVACCADR ((word)KW_FVACCADR) /* GENADR FINDVAC */
+#define WTLTCADR ((word)KW_WTLTCADR) /* GENADR WAITLIST */
+#define NOVACADR ((word)KW_NOVACADR) /* GENADR NOVAC */
+/* CA RTRNCADR reads the instruction there, TC SWRETURN, as a word: the
+ * address SWRETURN (TC's code is 0). */
+#define RTRNCADR_WORD ((word)KW_RTRNCADR)
 #define CON2ADR       ((word)KW_CON2ADR)     /* GENADR CON2 */
 #define SETUPDSP_CADR ((word)KW_MMDSPLAYP3)  /* MMDSPLAY +3: CADR SETUPDSP */
 static const word ADRPCHN2[2] = KW_ADRPCHN2; /* 2CADR PHSCHNG2 */
@@ -220,6 +252,26 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
  * constant in bank 10 that BELOW2 runs into if it ever got there. */
 #define ADRPCHN2_ADDRESS ((word)K_ADRPCHN2)
 #define BIT14COM_ADDRESS ((word)K_BIT14COM)
+/* RESTARTS_ROUTINE (bank 01, but ITSINDIR and ITSLGCL1 in fixed-fixed). */
+#define RESTARTS ((word)K_RESTARTS)
+#define GETPART2 ((word)K_GETPART2)
+#define PHSPART2 ((word)K_PHSPART2)
+#define RTRNCADR ((word)K_RTRNCADR)
+#define CHKNOVAC ((word)K_CHKNOVAC)
+#define ITSNOVAC ((word)K_ITSNOVAC)
+#define IMEDIATE ((word)K_IMEDIATE)
+#define LONGCLCL ((word)K_LONGCLCL)
+#define FINDVAC  ((word)K_FINDVAC)
+/* The restart tables (RESTART_TABLES.agc, bank 01): from PRDTTAB, three
+ * words per phase, a priority or delta time and then (at CADRTAB) a 2CADR.
+ * SIZETAB +2g -2 and -1 locate group g's even and odd tables. */
+#define PRDTTAB ((word)K_PRDTTAB)
+#define CADRTAB ((word)K_CADRTAB)
+#define SIZETAB ((word)K_SIZETAB)
+#if COMANCHE055
+#define NEWPHASE  ((word)K_NEWPHASE)
+#define NUFAZ_P10 ((word)K_NUFAZP10) /* NUFAZ+10 */
+#endif
 #if LUMINARY099
 #define BAILOUT1 ((word)K_BAILOUT1)
 #define POODOO1  ((word)K_POODOO1)

@@ -158,7 +158,7 @@ so a reader sees both versions together.
 Every change to `readable/` must keep both:
 
 1. **The case tests** (`make names-check kernel-cases interbank-cases
-   phase-cases`, seconds):
+   phase-cases restart-cases`, seconds):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
    - `kernel-cases`: every case of the resident-kernel corpus (about 42,000
@@ -174,6 +174,9 @@ Every change to `readable/` must keep both:
      routines side by side on 200,000 random states per entry. Where the
      faithful routine leaves a state to the original program (refuses it),
      the readable one may run it.
+   - `restart-cases`: the same for the restarts (RESTARTS, GETPART2,
+     PHSPART2, the CM's NEWPHASE): the faithful port's restart tests
+     against their yaAGC digests, then side by side.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

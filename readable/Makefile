@@ -9,6 +9,8 @@
 #   make phase-cases      the readable phase table maintenance against the
 #                         original program's digests and the faithful port's
 #                         routines, case by case (seconds)
+#   make restart-cases    the readable restarts against the original program's
+#                         digests and the faithful port's routines (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -34,16 +36,19 @@ INTERBANK_SOURCES := src/agc/agc.c src/interbank/interbank.c src/binding/machine
 	src/binding/interbank_tables.c
 PHASE_SOURCES := src/agc/agc.c src/phase_table/phase_table.c src/binding/machine.c \
 	src/binding/phase_table_tables.c
-SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES))
+RESTART_SOURCES := src/agc/agc.c src/restart/restarts.c src/restart/restart_tables.c \
+	src/binding/machine.c src/binding/restart_routines.c
+SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
-.PHONY: all check kernel-cases interbank-cases phase-cases names-check coverage x86-flight x86-scenarios-quick \
+.PHONY: all check kernel-cases interbank-cases phase-cases restart-cases names-check coverage x86-flight x86-scenarios-quick \
 	x86-scenarios format clean
-all: names-check coverage kernel-cases interbank-cases phase-cases
+all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 check: all x86-scenarios-quick
 
 names-check:
 	python3 tools/listing_names.py --check
+	python3 tools/restart_tables.py --check
 
 coverage:
 	python3 tools/readable_coverage.py --check
@@ -87,10 +92,12 @@ IB_CM_FAITHFUL := src/cm_interbank_routines.c src/cm_interbank_idle.c \
 IB_LM_NAMES := lm_interbank_routines lm_interbank_site_table lm_interbank_idle_chunk \
 	lm_ib_bankcall lm_ib_swcall lm_ib_swcall_m1 lm_ib_swreturn lm_ib_postjump \
 	lm_interbank_dap_hot_routines lm_interbank_postjump_hot_routines \
-	lm_interbank_postjump_t4_hot_routines lm_phase_table_routines lm_phase_table_operands
+	lm_interbank_postjump_t4_hot_routines lm_phase_table_routines lm_phase_table_operands \
+	lm_restart_routines lm_restart_operands lm_restart_select
 IB_CM_NAMES := cm_interbank_routines cm_interbank_site_table cm_interbank_idle_chunk \
 	cm_ib_bankcall cm_ib_swcall cm_ib_swcall_m1 cm_ib_swreturn cm_ib_postjump \
-	cm_interbank_postjump_hot_routines cm_phase_table_routines cm_phase_table_operands
+	cm_interbank_postjump_hot_routines cm_phase_table_routines cm_phase_table_operands \
+	cm_restart_routines cm_restart_operands cm_restart_routines_select
 IB_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c
 
 $(BUILD)/faithful-lm/%.o: $(PORT)/src/%.c
@@ -140,6 +147,37 @@ phase-cases: $(BUILD)/phase-oracle-lm $(BUILD)/phase-oracle-cm $(BUILD)/phase-ca
 	./$(BUILD)/phase-oracle-cm
 	./$(BUILD)/phase-cases-lm
 	./$(BUILD)/phase-cases-cm
+
+# ---- Restarts ----
+# The port's own tests (tests/test_lm_restart_routines.c, test_cm_restart_
+# routines.c) on the readable routines: every restart table entry and
+# variable phase against the original program's yaAGC digests. Then
+# tests/restart_cases.c: the readable routines and the faithful port's on
+# the same random states.
+RS_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c
+RS_FAITHFUL_LM := src/lm_restart_select.c src/lm_restart_routines.c
+RS_FAITHFUL_CM := src/cm_restart_routines.c
+
+$(BUILD)/restart-oracle-lm: $(RESTART_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(RS_COMMON) $(PORT)/tests/lm_restart_select_cases.c \
+		$(PORT)/tests/lm_restart_routines_cases.c $(PORT)/tests/test_lm_restart_routines.c \
+		$(filter %.o,$^) -o $@
+$(BUILD)/restart-oracle-cm: $(RESTART_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(RS_COMMON) $(PORT)/tests/cm_restart_routines_cases.c \
+		$(PORT)/tests/test_cm_restart_routines.c $(filter %.o,$^) -o $@
+$(BUILD)/restart-cases-lm: $(RESTART_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(RS_FAITHFUL_LM:src/%.c=$(BUILD)/faithful-lm/%.o) tests/restart_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(RS_COMMON) $(filter %.o,$^) tests/restart_cases.c -o $@
+$(BUILD)/restart-cases-cm: $(RESTART_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(RS_FAITHFUL_CM:src/%.c=$(BUILD)/faithful-cm/%.o) tests/restart_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(RS_COMMON) $(filter %.o,$^) tests/restart_cases.c -o $@
+
+restart-cases: $(BUILD)/restart-oracle-lm $(BUILD)/restart-oracle-cm $(BUILD)/restart-cases-lm \
+		$(BUILD)/restart-cases-cm
+	./$(BUILD)/restart-oracle-lm
+	./$(BUILD)/restart-oracle-cm
+	./$(BUILD)/restart-cases-lm
+	./$(BUILD)/restart-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
