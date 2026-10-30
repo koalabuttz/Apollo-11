@@ -18,11 +18,10 @@ the x86 program passes when
     the harness, plus RN_FLOOR / VN_FLOOR for the per-routine charges the
     spread cannot see (the largest such case measured: CM P40, VN 0.13 m/s
     against a spread of 0.004);
-  - its erasable image (061-3777) differs from the harness's in at most
-    WORDS_K times as many words as the harness's two clocks differ in,
-    plus WORDS_PLUS. This is what sees programs that do not move the
-    state vector: P52 and P57 with their marks left out differ in about
-    200 words against a spread of 6 and 18.
+  - its erasable image (061-3777) is the harness's, word for word
+    (WORDS_EXACT). This is what sees programs that do not move the state
+    vector: P52 and P57 with their marks left out differ in about 200
+    words.
 With the rendezvous radar (FLIGHT_RR), when the harness's two clocks
 leave the state vector at different times (PIPTIME), the state vector
 check is against the truth instead. Marks move the state vector and its time (PIPTIME) by
@@ -71,7 +70,6 @@ import x86_flight_build as xb  # noqa: E402
 
 OUT = xb.OUT / 'scenarios'
 SPREAD_K, RN_FLOOR, VN_FLOOR = 4.0, 50.0, 0.15
-WORDS_K, WORDS_PLUS = 1.5, 10
 # Marks move a state block's time (TET) on: the x86 program's may be ahead
 # of the harness's (it marks at other times) but at most this far behind
 # the earlier of the harness's two (the most measured: CM P20,
@@ -143,34 +141,26 @@ MOON_MU = 4.9028e12
 # a blank display; they check that both programs wait the same way.
 WAIT = ('lm-rendezvous-tpm', 'lm-stable-orbit', 'lm-stable-orbit-lm')
 
-# Word limits tighter than the harness's clock spread, for rows the x86
-# program flies nearly word for word. The two stable-orbit -wait rows end
-# 8 and 17 words apart; with the x86 program ignoring ! (--drop-keys !)
-# they end over 500 apart, still inside the spread, so without a cap they
-# could not show that both programs wait the same way.
-# lm-p63-trim ends 0 words apart; with the x86 program's thrust off the
-# gimbal it ends 169 apart, inside its spread (452).
-# The rows the harness's table order made exact end 144 to 643 words apart
-# with the first holder in resolution order instead (inside their spread).
-# The rows the engine's step at the routine boundary made exact end 143 to
-# 209 words apart with it after the routine instead, lm-abort-p70-nassp 3,
-# so that row's cap is 0.
-WORD_CAP = {'lm-stable-orbit-wait': 100, 'lm-stable-orbit-lm-wait': 100, 'lm-p63-trim': 20, 'cm-v49-att': 20,
-            'lm-rhc-att-turn': 20, 'lm-p63-att': 20, 'cm-entry': 20, 'cm-entry-restart': 20,
-            'lm-rendezvous-tpm': 20, 'lm-rendezvous-tpm-wait': 20, 'lm-p65-autoland-nassp': 20,
-            'lm-landing-ascent-nassp': 20, 'lm-p67-nassp': 20, 'lm-abort-p70-nassp': 0, 'lm-abort-p71-nassp': 20,
-            'lm-p12-restart': 20}
+# Every row must end in the harness's erasable image: since #1033 all of
+# them do, and the readable C and Rust versions are held to that (#1038).
+# So the words limit is 0 for every row; the harness's own clock spread is
+# still printed as a yardstick. Before the limit was 0 the stable-orbit
+# -wait rows, with the x86 program ignoring ! (--drop-keys !), ended over
+# 500 words apart and passed inside their spread.
+WORDS_EXACT = 0
 
 # The quick set (--quick; make x86-flight-scenarios-quick, in PR CI): the
 # cheapest rows that between them run every model the x86 program has,
 # both missions, a restart, the TC trap, the night watchman and a core
-# start. About three minutes on one core; the rows left out (the landing
-# radar dropout, the pilot and touchdown rows, the Saturn) take over a
-# minute each and run with the full set.
+# start, and the six rows that were last to end word for word (#1033, the
+# throttle lag and the abort stage). The rest (the landing radar dropout,
+# the pilot and touchdown rows, the Saturn) run with the full set, in full
+# CI runs (nightly).
 QUICK = ('lm-coast-v55', 'lm-rhc-att-hold', 'lm-p47-nassp', 'lm-v69', 'cm-v69', 'lm-p52-watchman', 'cm-v48-dap',
          'cm-p52-coarse', 'cm-p20-restart', 'lm-cdh', 'cm-p20-vhf-dropout', 'cm-entry', 'lm-p63-descent', 'cm-p52',
          'lm-p42-nassp', 'cm-tli', 'lm-p63-landing-displays', 'lm-p63-trim',
-         'lm-rhc-att-turn', 'cm-v49-att')
+         'lm-rhc-att-turn', 'cm-v49-att', 'lm-p65-autoland-nassp', 'lm-landing-ascent-nassp', 'lm-p67-nassp',
+         'lm-abort-p70-nassp', 'lm-abort-p71-nassp', 'lm-p12-restart')
 
 
 def supported():
@@ -476,7 +466,7 @@ def compare(name, m, cs, keys, env, drop='', resume=0):
     words = sum(hw[i] != xw[i] for i in WORDS)
     spread_words = sum(hw[i] != sw[i] for i in WORDS)
     rn_tol, vn_tol = SPREAD_K * s_rn + RN_FLOOR, SPREAD_K * s_vn + VN_FLOOR
-    words_tol = min(int(WORDS_K * spread_words) + WORDS_PLUS, WORD_CAP.get(name, 1 << 30))
+    words_tol = WORDS_EXACT
     truth = None
     h_err, o_err, x_err = (truth_errors(m, env, w) for w in (hw, sw, xw)) if 'FLIGHT_RR' in env else (None,) * 3
     if h_err and h_err[2] != o_err[2]:
