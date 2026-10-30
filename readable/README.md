@@ -68,6 +68,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Inter-bank communication | `INTER-BANK_COMMUNICATION.agc` (LM pp. 998-1001, CM pp. 1103-1106) | [`src/interbank/`](src/interbank/) | BANKCALL, SWCALL, SWRETURN, POSTJUMP, BANKJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR and SUPERSW: calls and jumps between banks of fixed memory |
 | Phase table maintenance | `PHASE_TABLE_MAINTENANCE.agc` (LM pp. 1294-1302, CM pp. 1404-1413) | [`src/phase_table/`](src/phase_table/) | NEWMODEX, NEWMODEA, MMDSPLAY, CHECKMM, SETUPDSP, PHASCHNG, 2PHSCHNG, PHSCHNGA (LM), PHSCHNG2, ONEORTWO and CON2: the major mode on the DSKY, and the phase changes that tell a restart what to start again |
 | Restarts | `RESTARTS_ROUTINE.agc` (LM pp. 1303-1308, CM pp. 1414-1419), `RESTART_TABLES.agc` (LM pp. 238-243, CM pp. 211-221) | [`src/restart/`](src/restart/) | RESTARTS, GETPART2, PHSPART2 and the tables they read; NEWPHASE (CM): what the program starts again, group by group, after a restart |
+| The interpreter | `INTERPRETER.agc` (LM pp. 1002-1094, CM pp. 1107-1199) | [`src/interpreter/`](src/interpreter/) | INTPRET, the dispatcher (NEWOPS, DANZIG, DIRADRES, INDEX, PUSHUP), loads and stores, vector and scalar arithmetic, DDV and the divides, SQRT, UNIT, SIN and COS, ARCSIN and ARCCOS, the shifts, the index orders, branching (GOTO, CALL, RVQ, BZE, BPL, BOV) and the switch orders: the interpretive language most of the flight program's guidance and navigation is written in |
 
 Beside them:
 
@@ -78,9 +79,10 @@ Beside them:
 - [`src/binding/`](src/binding/): connects the routines to the flight
   program (the keys and table names the faithful kernel uses). Plumbing
   only.
-- [`tests/`](tests/): the side-by-side tests of the inter-bank routines,
-  the phase table maintenance and the restarts, and the build of the x86_64 flight program with the readable routines in
-  it.
+- [`tests/`](tests/): the side-by-side tests of the machine's
+  instructions, the inter-bank routines, the phase table maintenance, the
+  restarts and the interpreter, and the build of the x86_64 flight
+  program with the readable routines in it.
 
 Both missions come from the same source, built with `LUMINARY099=1` or
 `COMANCHE055=1`; where the listings differ the code shows both in place.
@@ -89,8 +91,8 @@ How much of the program is readable C: `make coverage` counts the
 listing files in [`COVERAGE`](COVERAGE), whole files only, weighted by
 their source lines over all 175 files of both missions.
 
-Next, one subsystem at a time: the
-interpreter, then the rest of the flight program. A Rust edition with the same layout and the same gates
+Next, one subsystem at a time: the rest of the flight program, in study
+order. A Rust edition with the same layout and the same gates
 comes after the C.
 
 ## Building and the gates
@@ -121,8 +123,16 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    `make restart-cases` does the same for the restarts: the faithful
    port's restart tests (yaAGC digests) on the readable RESTARTS,
    GETPART2, PHSPART2 and NEWPHASE, then readable and faithful side by
-   side on 200,000 random states per entry. `make names-check` checks
-   the generated names and the restart tables against the listings.
+   side on 200,000 random states per entry. `make machine-cases` runs
+   every instruction of the readable machine and of the faithful port's
+   (checked against yaAGC) on 200,000 random states. `make
+   interpreter-cases` runs the readable interpreter and the faithful
+   port's interpreter core side by side on random interpretive programs
+   (the port's own fuzz generator, 20,000 programs per seed, two seeds per
+   mission), pass by pass, and compares memory and channels word for word;
+   it leaves out the operands no assembled program has (the test's header
+   lists them). `make names-check` checks the generated names and the
+   restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
    scenarios (P63 descent, rendezvous, entry, restarts, ...) against the

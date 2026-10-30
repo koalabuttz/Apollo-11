@@ -50,6 +50,7 @@ extern struct agc_machine agc;
 #define FBANK_ADDRESS 4u
 #define Z_ADDRESS     5u
 #define BBANK_ADDRESS 6u
+#define ZERO_ADDRESS  7u /* always +0: a TS here only tests overflow */
 
 #define A (agc.memory[A_ADDRESS])
 #define L (agc.memory[L_ADDRESS])
@@ -264,8 +265,6 @@ static inline bool A_is_zero_or_minus(void)
     return A_is_zero() || (A & 0100000u) != 0;
 }
 
-
-
 /* ---- Instructions on any operand ---- */
 
 /* The instructions below take the operand's address, as the listing names
@@ -374,6 +373,17 @@ static inline void ror_superbnk(void)
 static inline void write_superbnk(void)
 {
     *agc.superbank = (uint16_t)(overflow_corrected(A) & 0160u);
+}
+
+/* ROR QCHAN and RXOR QCHAN: channel 2 is Q itself, all 16 bits, or'ed or
+ * exclusive-or'ed into A. */
+static inline void ror_qchan(void)
+{
+    A = (reg16)(A | Q);
+}
+static inline void rxor_qchan(void)
+{
+    A = (reg16)(A ^ Q);
 }
 
 /* WOR / WAND DSALMOUT (channel 11), leaving the channel in A. */

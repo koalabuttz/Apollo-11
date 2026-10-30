@@ -371,7 +371,8 @@ void dv(reg16 divisor)
     for (bit = RADIX / 2u; bit; bit /= 2u) {
         bool negative = (residual & 0100000u) != 0;
         reg16 magnitude = negative ? (reg16)(0177777u - residual) : residual;
-        reg16 doubled = (reg16)(2u * (magnitude % RADIX) + (negative && (low_bits & bit) ? 1u : 0u));
+        reg16 doubled =
+            (reg16)(2u * (magnitude % RADIX) + (negative && (low_bits & bit) ? 1u : 0u));
         reg16 folded = negative ? (reg16)(0177777u - doubled) : doubled;
         reg16 trial = add16(folded, magnitude_of_divisor);
         bool accepted = (trial & 0100000u) != 0; /* the subtraction left it negative */

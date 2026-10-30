@@ -284,6 +284,186 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define WATLST0_MINUS ((word)K_WATLST0M) /* WATLST0- */
 #endif
 
+/* ---- The interpreter (INTERPRETER.agc) ---- */
+
+/* Its erasables. POLISH holds the order pair being decoded and ADDRWD the
+ * address of the current order; MODE (in the core set) says what MPAC holds:
+ * +1 a triple, +0 a double, -1 a vector. CYR and CYL are the editing
+ * registers cycle right and cycle left. */
+#define ADDRWD      ERASABLE(K_ADDRWD)
+#define POLISH      ERASABLE(K_POLISH)
+#define MODE        ERASABLE(K_MODE)
+#define INDEXLOC    ERASABLE(K_INDEXLOC)
+#define QPRET       ERASABLE(K_QPRET)
+#define MAXDVSW     ERASABLE(K_MAXDVSW)
+#define DVNORMCT    ERASABLE(K_DVNORMCT)
+#define DVSIGN      ERASABLE(K_DVSIGN)
+#define ESCAPE      ERASABLE(K_ESCAPE)
+#define ESCAPE2     ERASABLE(K_ESCAPE2)
+#define POLYRET     ERASABLE(K_POLYRET)
+#define POLYCNT     ERASABLE(K_POLYCNT)
+#define MATINC      ERASABLE(K_MATINC)
+#define DOTRET      ERASABLE(K_DOTRET)
+#define DOTINC      ERASABLE(K_DOTINC)
+#define SWBIT       ERASABLE(K_SWBIT)
+#define SWWORD      ERASABLE(K_SWWORD)
+#define TEM1        ERASABLE(K_TEM1)
+#define DMPNTEMP    ERASABLE(K_DMPNTEMP)
+#define CYL_ADDRESS ((unsigned)K_CYL)
+
+/* Its constants (the name is the value, as everywhere). Some of them sit in
+ * the slots after a CCS and so would also run as instructions: LOW7, LBUF2,
+ * OCT176, SRDDV, B5TOBB, BIASHI and BIASLO as TC to their own value, 5B10 as
+ * TCF 2000 and SLOPEHI as LXCH 650. */
+#define B12T14           ((word)KW_B12T14)
+#define B3TOB4           ((word)KW_B3TOB4)
+#define B5TOBB           ((word)KW_B5TOBB)
+#define BANKMASK         ((word)KW_BANKMASK)
+#define BIASHI           ((word)KW_BIASHI)
+#define BIASLO           ((word)KW_BIASLO)
+#define BIT1             ((word)KW_BIT1)
+#define BIT5             ((word)KW_BIT5)
+#define BIT6             ((word)KW_BIT6)
+#define BIT11            ((word)KW_BIT11)
+#define BIT13            ((word)KW_BIT13)
+#define CALLCODE         ((word)KW_CALLCODE)
+#define DEC45            ((word)KW_DEC45)
+#define DLOADCOD         ((word)KW_DLOADCOD)
+#define VLOADCOD         ((word)KW_VLOADCOD)
+#define DLOAD_STAR       ((word)KW_DLOAD_STAR) /* DLOAD*: the order code itself */
+#define VLOAD_STAR       ((word)KW_VLOAD_STAR) /* VLOAD* */
+#define FOUR             ((word)KW_FOUR)
+#define FIVE             ((word)KW_FIVE)
+#define SIX              ((word)KW_SIX)
+#define SEVEN            ((word)KW_SEVEN)
+#define TEN              ((word)KW_TEN)
+#define THIRTEEN         ((word)KW_THIRTEEN)
+#define FOURTEEN         ((word)KW_FOURTEEN)
+#define FIVE_B10         ((word)KW_5B10) /* 5B10 */
+#define HALF             ((word)KW_HALF)
+#define QUARTER          ((word)KW_QUARTER)
+#define HIGH4            ((word)KW_HIGH4)
+#define HIGH9            ((word)KW_HIGH9)
+#define LOW2             ((word)KW_LOW2)
+#define LOW3             ((word)KW_LOW3)
+#define LOW4             ((word)KW_LOW4)
+#define LOW8             ((word)KW_LOW8)
+#define LOW11            ((word)KW_LOW11)
+#define LOW7_PLUS_2K     ((word)KW_LOW7P2K)  /* LOW7+2K */
+#define MINUS_1_2_PLUS_2 ((word)KW_M1_2P2)   /* -1/2+2 */
+#define MINUS_ENDERAS    ((word)KW_MENDERAS) /* -ENDERAS */
+#define MINUS_ENDVAC     ((word)KW_MENDVAC)  /* -ENDVAC */
+#define MINUS_OCT10      ((word)KW_MOCT10)   /* -OCT10 */
+#define NEG4             ((word)KW_NEG4)
+#define NEG12            ((word)KW_NEG12)
+#define NEGONE           ((word)KW_NEGONE)
+#define OCT23            ((word)KW_OCT23)
+#define OCT176           ((word)KW_OCT176)
+#define SLOPEHI          ((word)KW_SLOPEHI)
+#define SLOPELO          ((word)KW_SLOPELO)
+#define SRDDV            ((word)KW_SRDDV)
+#define LBUF2            ((word)KW_LBUF2) /* ADRES BUF2 */
+#define LVBUF            ((word)KW_LVBUF) /* ADRES VBUF */
+/* The words that hold a TCF, read by INDEX and compared against ESCAPE. */
+#define LASINEX ((word)KW_LASINEX) /* TCF ASINEX */
+#define LDANZIG ((word)KW_LDANZIG) /* TCF DANZIG */
+#define TCSUBTR ((word)KW_TCSUBTR) /* TCF SUBTR */
+/* Words of code that run under an INDEX. ITR15 +1 and ITR11 +1 are the
+ * words 7 INDJUMP -1 and 3 INDJUMP -1 that INDEX CYR makes TCF INDJUMP + OP; VAD +4, +11 and +18 are
+ * the extracode READs that INDEX ADDRWD turns into DCA or DCS of a vector
+ * component (their C names say which READ: HISCALAR, CHAN5, LCHAN). */
+#define ITR_7_INDJUMP ((word)KW_ITR15P1) /* ITR15 +1 */
+#define ITR_3_INDJUMP ((word)KW_ITR11P1) /* ITR11 +1 */
+#define READ_HISCALAR ((word)KW_VADP4)   /* VAD +4 */
+#define READ_CHAN5    ((word)KW_VADP11)  /* VAD +11 */
+#define READ_LCHAN    ((word)KW_VADP18)  /* VAD +18 */
+
+/* Its code labels. */
+#define INTPRET        ((word)K_INTPRET)
+#define DANZIG         ((word)K_DANZIG)
+#define NOIBNKSW       ((word)K_NOIBNKSW)
+#define CHANG2         ((word)K_CHANG2)
+#define DIRADRES       ((word)K_DIRADRES)
+#define FIFTEEN_BITADR ((word)K_15BITADR) /* 15BITADR */
+#define INDJUMP        ((word)K_INDJUMP)
+#define STORJUMP       ((word)K_STORJUMP)
+#define DODLOAD        ((word)K_DODLOAD)
+#define DODLOAD_STAR   ((word)K_DODLOAD_STAR) /* DODLOAD* */
+#define DOVLOAD        ((word)K_DOVLOAD)
+#define DOVLOAD_STAR   ((word)K_DOVLOAD_STAR) /* DOVLOAD* */
+#define GOTO           ((word)K_GOTO)
+#define EXIT           ((word)K_EXIT)
+#define SETOVF         ((word)K_SETOVF)
+#define VAD            ((word)K_VAD)
+#define BVSU           ((word)K_BVSU)
+#define DOT            ((word)K_DOT)
+#define DOTSUB         ((word)K_DOTSUB)
+#define ENDDOT         ((word)K_ENDDOT)
+#define VXM_MXV        ((word)K_VXM_MXV) /* VXM/MXV */
+#define VVXSC          ((word)K_VVXSC)
+#define DVXSC          ((word)K_DVXSC)
+#define VPROJ          ((word)K_VPROJ)
+#define VXV            ((word)K_VXV)
+#define DMP1           ((word)K_DMP1)
+#define DMPR           ((word)K_DMPR)
+#define TPAGREE        ((word)K_TPAGREE)
+#define RIGHTR         ((word)K_RIGHTR)
+#define ROUND          ((word)K_ROUND)
+#define VSSR           ((word)K_VSSR)
+#define VSSL           ((word)K_VSSL)
+#define TSLC2          ((word)K_TSLC2)
+#define GENSHIFT       ((word)K_GENSHIFT)
+#define VRIGHT2        ((word)K_VRIGHT2)
+#define GENSCR         ((word)K_GENSCR)
+#define BUFZERO        ((word)K_BUFZERO)
+#define DVOVF          ((word)K_DVOVF)
+#define DVNORM         ((word)K_DVNORM)
+#define MAXTEST        ((word)K_MAXTEST)
+#define V_SC2          ((word)K_V_SC2) /* V/SC2 */
+#define SLASH_NORM     ((word)K__NORM) /* /NORM */
+#define VECAGREE       ((word)K_VECAGREE)
+#define UNIT           ((word)K_UNIT)
+#define LARGE2         ((word)K_LARGE2)
+#define DSQ            ((word)K_DSQ)
+#define ABS            ((word)K_ABS)
+#define ABVAL          ((word)K_ABVAL)
+#define SQRT           ((word)K_SQRT)
+#define SQRTABRT       ((word)K_SQRTABRT)
+#define VSQ            ((word)K_VSQ)
+#define VSQSUB         ((word)K_VSQSUB)
+#define COSINE         ((word)K_COSINE)
+#define SN1            ((word)K_SN1)
+#define POLY2          ((word)K_POLY2)
+#define ARCCOS         ((word)K_ARCCOS)
+#define ACOS_EQ_0      ((word)K_ACOS_EQ_0) /* ACOS=0 */
+#define ACOSST2        ((word)K_ACOSST2)
+#define ACOS3          ((word)K_ACOS3)
+#define ACOSSHR        ((word)K_ACOSSHR)
+#define ACOSABRT       ((word)K_ACOSABRT)
+#define SUBTR          ((word)K_SUBTR)
+#define AXT            ((word)K_AXT)
+#define AXC            ((word)K_AXC)
+#define LXA            ((word)K_LXA)
+#define LXC            ((word)K_LXC)
+#define SXA            ((word)K_SXA)
+#define XCHX           ((word)K_XCHX)
+#define XAD            ((word)K_XAD)
+#define XSU            ((word)K_XSU)
+#define INCR           ((word)K_INCR)
+#define TIX            ((word)K_TIX)
+#define RTB            ((word)K_RTB)
+#define BZE_GOTO       ((word)K_BZE_GOTO) /* BZE/GOTO */
+#define BPL            ((word)K_BPL)
+#define BPL_BMN        ((word)K_BPL_BMN)  /* BPL/BMN */
+#define CALL_ITA       ((word)K_CALL_ITA) /* CALL/ITA */
+#define TEST           ((word)K_TEST)
+/* Where an interpreter alarm goes (ALARM1 in the LM, ALARM in the CM). */
+#if LUMINARY099
+#define ALARM1 ((word)K_ALARM1)
+#else
+#define ALARM ((word)K_ALARM)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
