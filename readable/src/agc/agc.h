@@ -50,6 +50,7 @@ extern struct agc_machine agc;
 #define FBANK_ADDRESS 4u
 #define Z_ADDRESS     5u
 #define BBANK_ADDRESS 6u
+#define ZERO_ADDRESS  7u /* always +0: a TS here only tests overflow */
 
 #define A (agc.memory[A_ADDRESS])
 #define L (agc.memory[L_ADDRESS])
@@ -175,9 +176,6 @@ void store(unsigned address, word value);
 /* The erasable word itself, for named variables (erasable.h). */
 #define ERASABLE(address) (agc.memory[erasable_index(address)])
 
-/* DCA: A,L get the double word at address (the high word, then the low). */
-void dca(unsigned address);
-
 /* XCH, LXCH and DXCH: A, L, or A and L as a pair (the high word at the
  * address, the low word after it), exchanged with memory. */
 void xch(unsigned address);
@@ -186,11 +184,9 @@ void dxch(unsigned address);
 void qxch(unsigned address);
 
 /* TS: store A, overflow-corrected. On an overflow A becomes +1 or -1 and the
- * next instruction is skipped: the result says whether it was. */
+ * next instruction is skipped: the result says whether it was. TS A only
+ * tests: A keeps its overflow. */
 bool ts(unsigned address);
-
-/* DAS: add A,L into the double word at address (A gets the overflow, L +0). */
-void das(unsigned address);
 
 /* INDEX k: an address plus C(k), in one's complement (-0 indexes nothing). */
 static inline unsigned indexed(unsigned address, word index)
@@ -235,10 +231,11 @@ static inline bool A_is_zero(void)
     return A == 0u || A == 0177777u;
 }
 
-/* MASK: A and'ed with a word (sign-extended to A's 16 bits). */
+/* MASK (of a constant, MASK of a word): A, overflow-corrected, and'ed with
+ * the word, then sign-extended. */
 static inline void mask(word value)
 {
-    A = (reg16)(A & sign_extend(value));
+    A = sign_extend((word)(overflow_corrected(A) & value));
 }
 
 /* AD: A plus a word, in the 16-bit accumulator (where an overflow shows).
@@ -268,21 +265,94 @@ static inline bool A_is_zero_or_minus(void)
     return A_is_zero() || (A & 0100000u) != 0;
 }
 
+/* ---- Instructions on any operand ---- */
+
+/* The instructions below take the operand's address, as the listing names
+ * it, and do what the AGC does with it:
+ *   - 0, 1 and 2 are A, L and Q as registers, all 16 bits (CS A
+ *     complements all 16, AD Q adds Q's overflow too);
+ *   - below 02000 the address is erasable (the switched bank EBANK
+ *     selects for 01400 up), above it fixed: the word the operand is read
+ *     from, while a store there changes nothing, as on the AGC;
+ *   - the instructions that read a word for the adder (CA, CS, AD, SU and
+ *     CCS) write it back, so reading an editing register (CYR, SR, CYL,
+ *     EDOP) edits it once more; MASK, XCH, ADS, MP and the rest do not.
+ *     DCA and DCS write back only a register they name as 020-023.
+ * Every one ends with L sign-corrected, as every AGC instruction does. */
+
+/* The word at any address, erasable or fixed, with the write-back of an
+ * editing register (CCS CYR leaves CYR cycled once more). */
+word read_rewriting(unsigned address);
+
+/* CA, CS: A gets the word (CS: complemented). */
+void ca(unsigned address);
+void cs(unsigned address);
+
+/* AD, EXTEND; SU, MASK of the word at an address (ad(), su() and mask()
+ * take the word itself). SU A, by the AGC's rule, leaves -0 in A's 16
+ * bits. */
+void ad_at(unsigned address);
+void su_at(unsigned address);
+void mask_at(unsigned address);
+
+/* CCS of the word at an address (ccs() takes the word itself). */
+enum sign ccs_at(unsigned address);
+
+/* INCR, EXTEND; AUG, EXTEND; DIM: the word (or register) one more, one
+ * further from zero, one nearer zero (DIM leaves a zero as it is). */
+void incr(unsigned address);
+void aug(unsigned address);
+void dim(unsigned address);
+
 /* ADS: A plus the word at address, kept in both (the word overflow-
- * corrected). */
+ * corrected). ADS A doubles A. */
 void ads(unsigned address);
 
-/* DCS: A,L get the double word at address, complemented. */
+/* EXTEND; DCA, DCS: A,L get the double word at address (the high word,
+ * then the low; DCS complemented). DCA 0 does nothing, DCS 0 is DCOM. */
+void dca(unsigned address);
 void dcs(unsigned address);
 
-/* DCA of a double word anywhere: erasable below 02000, fixed above (as an
- * INDEXed DCA 0 reads it). */
-void dca_at(word address);
+/* DAS: add A,L into the double word at address (A gets the overflow, L +0).
+ * DAS A is DDOUBL: A,L doubled, A keeping the overflow. */
+void das(unsigned address);
 
-/* A read of an editing register (CYR, SR, CYL, EDOP) writes it back through
- * the editing, as every read of memory writes the word back: CCS CYR leaves
- * CYR cycled once more. The word read is the one before. */
-word fetch_rewritten(unsigned address);
+/* EXTEND; MP of the word at an address (mp() takes the word). MP A is
+ * SQUARE. */
+void mp_at(unsigned address);
+
+/* EXTEND; DV: A,L (a double-length dividend, its sign A's, or L's when A is
+ * zero) divided by divisor (sign-extended, 16 bits): the quotient in A,
+ * the remainder in L, both with the dividend's sign rules of the AGC's
+ * divide unit, including its results when the quotient does not fit.
+ * dv_at() divides by the word at an address; DV of A, L or Q divides by
+ * Q, as the AGC's register path does. */
+void dv(reg16 divisor);
+void dv_at(unsigned address);
+
+/* OVSK's test: A holds an overflow. */
+static inline bool A_has_overflow(void)
+{
+    return overflow_of(A) != 0;
+}
+
+/* The listing's names for instructions on the central registers. */
+static inline void ddoubl(void) /* EXTEND; DDOUBL (DAS A) */
+{
+    das(A_ADDRESS);
+}
+static inline void dcom(void) /* EXTEND; DCOM (DCS A) */
+{
+    dcs(A_ADDRESS);
+}
+static inline void square(void) /* EXTEND; SQUARE (MP A) */
+{
+    mp_at(A_ADDRESS);
+}
+static inline void zl(void) /* ZL (LXCH 7): L gets +0 */
+{
+    L = 0;
+}
 
 /* ---- I/O channels and interrupts ---- */
 
@@ -303,6 +373,17 @@ static inline void ror_superbnk(void)
 static inline void write_superbnk(void)
 {
     *agc.superbank = (uint16_t)(overflow_corrected(A) & 0160u);
+}
+
+/* ROR QCHAN and RXOR QCHAN: channel 2 is Q itself, all 16 bits, or'ed or
+ * exclusive-or'ed into A. */
+static inline void ror_qchan(void)
+{
+    A = (reg16)(A | Q);
+}
+static inline void rxor_qchan(void)
+{
+    A = (reg16)(A ^ Q);
 }
 
 /* WOR / WAND DSALMOUT (channel 11), leaving the channel in A. */

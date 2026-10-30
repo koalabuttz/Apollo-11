@@ -11,6 +11,13 @@
 #                         routines, case by case (seconds)
 #   make restart-cases    the readable restarts against the original program's
 #                         digests and the faithful port's routines (seconds)
+#   make machine-cases    the readable machine's instructions against the
+#                         faithful port's on random states (seconds)
+#   make interpreter-cases
+#                         the readable interpreter against the faithful port's
+#                         interpreter core on random interpretive programs
+#                         (a minute; needs the assembled ropes, which
+#                         c64-port/tools/setup_cloud.sh makes)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -38,12 +45,15 @@ PHASE_SOURCES := src/agc/agc.c src/phase_table/phase_table.c src/binding/machine
 	src/binding/phase_table_tables.c
 RESTART_SOURCES := src/agc/agc.c src/restart/restarts.c src/restart/restart_tables.c \
 	src/binding/machine.c src/binding/restart_routines.c
-SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES))
+INTERPRETER_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
+	src/binding/machine.c src/binding/interpreter_core.c src/binding/interpreter_basic.c
+SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
+	$(INTERPRETER_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
-.PHONY: all check kernel-cases interbank-cases phase-cases restart-cases names-check coverage x86-flight x86-scenarios-quick \
-	x86-scenarios format clean
-all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
+.PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases names-check \
+	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
+all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -178,6 +188,48 @@ restart-cases: $(BUILD)/restart-oracle-lm $(BUILD)/restart-oracle-cm $(BUILD)/re
 	./$(BUILD)/restart-oracle-cm
 	./$(BUILD)/restart-cases-lm
 	./$(BUILD)/restart-cases-cm
+
+# ---- The machine's instructions ----
+# tests/machine_cases.c: each instruction of the readable machine (src/agc/)
+# and the faithful port's (src/agc_image_ops.c) on the same random states.
+MC_FAITHFUL := $(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c $(PORT)/src/agc_word.c \
+	$(PORT)/src/agc_multiword.c
+
+$(BUILD)/machine-cases: $(BUILD)/cases-lm/agc/agc.o tests/machine_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(MC_FAITHFUL) $(filter %.o,$^) tests/machine_cases.c -o $@
+
+machine-cases: $(BUILD)/machine-cases
+	./$(BUILD)/machine-cases
+
+# ---- The interpreter ----
+# tests/interpreter_fuzz.c: the readable interpreter and the faithful port's
+# interpreter core (src/<m>_interp_core.c, built with faithful_ before its
+# names) on the same random interpretive programs, pass by pass, two seeds
+# per mission. Its generator is the port's own fuzz's
+# (tools/interp_core_fuzz.c).
+INTERPRETER_CASES ?= 20000
+ROPES := $(PORT)/build/fixed-data/Luminary099/MAIN.agc.bin $(PORT)/build/fixed-data/Comanche055/MAIN.agc.bin
+IC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c $(PORT)/src/agc_hardware_divide.c
+IC_CFLAGS := -std=gnu99 -O2 -g -Wall -Wextra -Werror -Dexit=interp_core_fuzz_exit
+
+$(BUILD)/faithful-%/interp_core.o: $(PORT)/src/%_interp_core.c
+	@mkdir -p $(dir $@)
+	$(CC) $(filter-out -Wconversion,$(PORT_CFLAGS)) $(INCLUDES) $(foreach n,interp_core interp_core_basic interp_core_mct,-D$*_$(n)=faithful_$*_$(n)) \
+		-c $< -o $@
+
+$(BUILD)/interpreter-cases-lm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(BUILD)/faithful-lm/interp_core.o tests/interpreter_fuzz.c $(PORT)/tools/interp_core_fuzz.c
+	$(CC) $(IC_CFLAGS) $(INCLUDES) $(LM) $(IC_COMMON) $(filter %.o,$^) tests/interpreter_fuzz.c -o $@
+$(BUILD)/interpreter-cases-cm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(BUILD)/faithful-cm/interp_core.o tests/interpreter_fuzz.c $(PORT)/tools/interp_core_fuzz.c
+	$(CC) $(IC_CFLAGS) $(INCLUDES) $(CM) $(IC_COMMON) $(filter %.o,$^) tests/interpreter_fuzz.c -o $@
+
+interpreter-cases: $(BUILD)/interpreter-cases-lm $(BUILD)/interpreter-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/interpreter-cases-lm $(ROPES) $(INTERPRETER_CASES) 11
+	./$(BUILD)/interpreter-cases-lm $(ROPES) $(INTERPRETER_CASES) 12
+	./$(BUILD)/interpreter-cases-cm $(ROPES) $(INTERPRETER_CASES) 11
+	./$(BUILD)/interpreter-cases-cm $(ROPES) $(INTERPRETER_CASES) 12
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

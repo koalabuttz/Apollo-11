@@ -38,9 +38,15 @@ REPLACED = (
     # RESTARTS_ROUTINE and RESTART_TABLES (src/restart). cm_restart_select.o
     # stays: the faithful restart path (cm_restart.o) calls it.
     'lm_restart_routines.o', 'lm_restart_select.o', 'cm_restart_routines.o',
+    # INTERPRETER.agc (src/interpreter): the interpreter core and the
+    # compiled basic routines. The faithful order bodies (lm_interp_orders.o,
+    # lm_interp_steps.o and the CM's) stay: the compiled interpretive code
+    # of other files calls them, as does the verification interpreter
+    # (lm_interp_runtime.o), the holder of last resort.
+    'lm_interp_core.o', 'cm_interp_core.o', 'lm_interpreter.o', 'cm_interpreter.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
-READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2')
+READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

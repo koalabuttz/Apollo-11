@@ -150,40 +150,260 @@ void dtcb(word at)
     set_BBANK(bbcon);
 }
 
-/* ---- Exchanges ---- */
+/* ---- Operands ---- */
 
-/* Each exchange works on registers too: an address below 3 is A, L or Q,
- * which keep all 16 bits. */
-static reg16 register_or_word(unsigned address)
+/* The editing registers CYR, SR, CYL and EDOP are erasable words 020-023. */
+static bool is_edited_word(unsigned at)
 {
-    return address < 3u ? agc.memory[address] : sign_extend(fetch(address));
+    return at >= 020u && at <= 023u;
 }
-static void put_register_or_word(unsigned address, reg16 value)
+
+/* An address naming an editing register, through the bank EBANK selects. */
+static bool is_editing(unsigned address)
+{
+    return is_edited_word(erasable_index(address));
+}
+
+word read_rewriting(unsigned address)
+{
+    word value = read_word((word)address);
+    if (address < 02000u && is_editing(address)) store(address, value);
+    return value;
+}
+
+/* An operand as a register holds it: A, L or Q themselves (all 16 bits),
+ * any other word sign-extended. */
+static reg16 operand(unsigned address)
+{
+    return address < 3u ? agc.memory[address] : sign_extend(read_word((word)address));
+}
+
+/* A store of a register's value: into A, L or Q as it is, into memory
+ * overflow-corrected. A store into fixed memory changes nothing. */
+static void put(unsigned address, reg16 value)
 {
     if (address < 3u)
         agc.memory[address] = value;
-    else
+    else if (address < 02000u)
         store(address, overflow_corrected(value));
 }
+
+/* ---- Instructions on any operand ---- */
+
+void ca(unsigned address)
+{
+    if (address >= 3u)
+        A = sign_extend(read_rewriting(address));
+    else
+        A = agc.memory[address];
+    correct_L();
+}
+
+void cs(unsigned address)
+{
+    if (address >= 3u)
+        A = sign_extend(negate(read_rewriting(address)));
+    else
+        A = (reg16)~agc.memory[address];
+    correct_L();
+}
+
+void ad_at(unsigned address)
+{
+    reg16 value = address >= 3u ? sign_extend(read_rewriting(address)) : agc.memory[address];
+    A = add16(A, value);
+    correct_L();
+}
+
+void su_at(unsigned address)
+{
+    if (address == A_ADDRESS)
+        A = 0177777u;
+    else
+        A = add16(A, address >= 3u ? sign_extend(negate(read_rewriting(address)))
+                                   : (reg16)~agc.memory[address]);
+    correct_L();
+}
+
+void mask_at(unsigned address)
+{
+    if (address < 3u)
+        A = (reg16)(A & agc.memory[address]);
+    else
+        mask(read_word((word)address));
+    correct_L();
+}
+
+enum sign ccs_at(unsigned address)
+{
+    enum sign outcome;
+    if (address < 3u) return ccs_register(address);
+    outcome = ccs(read_word((word)address));
+    if (address < 02000u && is_editing(address)) store(address, fetch(address));
+    return outcome;
+}
+
+void incr(unsigned address)
+{
+    put(address, add16(1u, operand(address)));
+    correct_L();
+}
+
+void aug(unsigned address)
+{
+    reg16 value = operand(address);
+    put(address, add16((value & 0100000u) ? 0177776u : 1u, value));
+    correct_L();
+}
+
+void dim(unsigned address)
+{
+    reg16 value = operand(address);
+    if (value != 0u && value != 0177777u)
+        put(address, add16((value & 0100000u) ? 1u : 0177776u, value));
+    correct_L();
+}
+
+void ads(unsigned address)
+{
+    if (address == A_ADDRESS)
+        A = add16(A, A);
+    else {
+        A = add16(A, operand(address));
+        put(address, A);
+    }
+    correct_L();
+}
+
+/* DCA and DCS write an editing register they name back, after both reads. */
+static void rewrite_named(unsigned address)
+{
+    if (is_edited_word(address)) store(address, fetch(address));
+}
+
+void dca(unsigned address)
+{
+    if (address == A_ADDRESS) return;
+    L = sign_extend(overflow_corrected(operand(address + 1u)));
+    A = operand(address);
+    rewrite_named(address + 1u);
+    rewrite_named(address);
+}
+
+void dcs(unsigned address)
+{
+    if (address == A_ADDRESS) { /* DCOM */
+        A = (reg16)~A;
+        L = sign_extend(overflow_corrected((reg16)~L));
+        return;
+    }
+    L = sign_extend(overflow_corrected((reg16)~operand(address + 1u)));
+    A = (reg16)~operand(address);
+    rewrite_named(address + 1u);
+    rewrite_named(address);
+}
+
+/* The carry of a low word's sum into the high word's: +1, -1 or none. */
+static reg16 with_carry(reg16 high, reg16 low)
+{
+    switch (overflow_of(low)) {
+    case 1: return add16(high, 1u);
+    case -1: return add16(high, 0177776u);
+    default: return high;
+    }
+}
+
+void das(unsigned address)
+{
+    reg16 low, high;
+    if (address == A_ADDRESS) { /* DDOUBL */
+        low = add16(L, L);
+        A = with_carry(add16(A, A), low);
+        L = sign_extend(overflow_corrected(low));
+        return;
+    }
+    low = add16(L, operand(address + 1u));
+    high = with_carry(add16(A, operand(address)), low);
+    A = overflow_of(high) ? overflow_unit(high) : 0u;
+    L = 0;
+    put(address + 1u, address + 1u < 3u ? sign_extend(overflow_corrected(low)) : low);
+    put(address, high);
+    correct_L();
+}
+
+void mp_at(unsigned address)
+{
+    mp(address < 3u ? overflow_corrected(agc.memory[address]) : read_word((word)address));
+}
+
+void dv_at(unsigned address)
+{
+    dv(address >= 3u ? sign_extend(read_word((word)address)) : Q);
+}
+
+/* ---- Division ---- */
+
+/* The AGC's divide unit, as the faithful port models it (c64-port/src/
+ * agc_hardware_divide.c, checked against yaAGC): fourteen quotient bits by
+ * trial subtraction on a residual held negative, then the signs. Its
+ * arithmetic also gives the AGC's results for a quotient that does not
+ * fit (a dividend not smaller than the divisor). */
+void dv(reg16 divisor)
+{
+    const reg16 RADIX = 040000u;
+    reg16 high = A, low = sign_extend(overflow_corrected(L));
+    bool dividend_negative = (high & 0100000u) != 0;
+    bool divisor_negative = (divisor & 0100000u) != 0;
+    /* The residual starts as the high word, held negative. */
+    reg16 residual = dividend_negative ? high : (reg16)~high;
+    reg16 magnitude_of_divisor = divisor_negative ? (reg16)~divisor : divisor;
+    reg16 low_bits, quotient = 0, bit;
+    bool low_negative;
+
+    /* A zero high word takes the dividend's sign from L. */
+    if (residual == 0177777u) dividend_negative = (low & 0100000u) != 0;
+    if (dividend_negative) low = (reg16)~low;
+    low = add16(low, RADIX);
+    if (overflow_of(low) != 1) residual = add16(residual, 1u);
+    low_negative = (low & 0100000u) != 0;
+    low_bits = (reg16)(low & (RADIX - 1u));
+
+    for (bit = RADIX / 2u; bit; bit /= 2u) {
+        bool negative = (residual & 0100000u) != 0;
+        reg16 magnitude = negative ? (reg16)(0177777u - residual) : residual;
+        reg16 doubled =
+            (reg16)(2u * (magnitude % RADIX) + (negative && (low_bits & bit) ? 1u : 0u));
+        reg16 folded = negative ? (reg16)(0177777u - doubled) : doubled;
+        reg16 trial = add16(folded, magnitude_of_divisor);
+        bool accepted = (trial & 0100000u) != 0; /* the subtraction left it negative */
+        quotient = (reg16)(2u * quotient + accepted);
+        residual = accepted ? trial : folded;
+    }
+    A = (reg16)(quotient + (low_negative ? 0140000u : 0u));
+    if (dividend_negative != divisor_negative) A = (reg16)~A;
+    L = sign_extend(overflow_corrected(dividend_negative ? residual : (reg16)~residual));
+}
+
+/* ---- Exchanges ---- */
 
 void xch(unsigned address)
 {
     reg16 old = A;
-    if (address == A_ADDRESS) return;
-    A = register_or_word(address);
-    put_register_or_word(address, old);
+    if (address != A_ADDRESS) {
+        A = operand(address);
+        put(address, old);
+    }
     correct_L();
 }
 
 void lxch(unsigned address)
 {
     reg16 old = L;
-    if (address == L_ADDRESS) return;
     if (address == 7u)
         L = 0;
-    else {
-        L = register_or_word(address);
-        put_register_or_word(address, old);
+    else if (address != L_ADDRESS) {
+        L = operand(address);
+        put(address, old);
     }
     correct_L();
 }
@@ -191,12 +411,11 @@ void lxch(unsigned address)
 void qxch(unsigned address)
 {
     reg16 old = Q;
-    if (address == Q_ADDRESS) return;
     if (address == 7u)
         Q = 0;
-    else {
-        Q = register_or_word(address);
-        put_register_or_word(address, old);
+    else if (address != Q_ADDRESS) {
+        Q = operand(address);
+        put(address, old);
     }
     correct_L();
 }
@@ -205,70 +424,24 @@ bool ts(unsigned address)
 {
     reg16 value = A;
     int overflow = overflow_of(value);
-    if (address != A_ADDRESS)
-        put_register_or_word(address,
-                             address < 3u ? value : sign_extend(overflow_corrected(value)));
-    if (overflow) A = overflow_unit(value);
+    if (address != A_ADDRESS) {
+        put(address, address < 3u ? value : sign_extend(overflow_corrected(value)));
+        if (overflow) A = overflow_unit(value);
+    }
     correct_L();
     return overflow != 0;
-}
-
-void das(unsigned address)
-{
-    reg16 low = add16(L, sign_extend(fetch(address + 1u)));
-    reg16 high = add16(A, sign_extend(fetch(address)));
-    if (overflow_of(low) > 0)
-        high = add16(high, 1u);
-    else if (overflow_of(low) < 0)
-        high = add16(high, 0177776u);
-    A = overflow_of(high) ? overflow_unit(high) : 0u;
-    L = 0;
-    store(address + 1u, overflow_corrected(low));
-    store(address, overflow_corrected(high));
-    correct_L();
-}
-
-void dca(unsigned address)
-{
-    L = sign_extend(fetch(address + 1u));
-    A = sign_extend(fetch(address));
-}
-
-void dcs(unsigned address)
-{
-    L = sign_extend(negate(fetch(address + 1u)));
-    A = sign_extend(negate(fetch(address)));
-}
-
-void dca_at(word address)
-{
-    L = sign_extend(read_word((word)(address + 1u)));
-    A = sign_extend(read_word(address));
-}
-
-void ads(unsigned address)
-{
-    ad(fetch(address));
-    store(address, a_word());
-}
-
-word fetch_rewritten(unsigned address)
-{
-    word value = fetch(address);
-    store(address, value);
-    return value;
 }
 
 void dxch(unsigned address)
 {
     reg16 old;
     if (address == A_ADDRESS) return; /* DXCH A is a no-op */
-    old = register_or_word(address + 1u);
-    put_register_or_word(address + 1u, L);
+    old = operand(address + 1u);
+    put(address + 1u, L);
     L = old;
     correct_L();
-    old = register_or_word(address);
-    put_register_or_word(address, A);
+    old = operand(address);
+    put(address, A);
     A = old;
     correct_L();
 }
