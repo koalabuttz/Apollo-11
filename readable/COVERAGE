@@ -1,0 +1,11 @@
+# The listing files readable/ holds in readable C, whole (tools/readable_coverage.py).
+# A file is listed when every routine in it is readable C that passes the gates
+# (STYLE.md, Gates). One line per file: path, then the readable directory.
+Luminary099/EXECUTIVE.agc                  src/executive
+Comanche055/EXECUTIVE.agc                  src/executive
+Luminary099/WAITLIST.agc                   src/waitlist
+Comanche055/WAITLIST.agc                   src/waitlist
+Luminary099/INTER-BANK_COMMUNICATION.agc   src/interbank
+Comanche055/INTER-BANK_COMMUNICATION.agc   src/interbank
+Luminary099/PHASE_TABLE_MAINTENANCE.agc    src/phase_table
+Comanche055/PHASE_TABLE_MAINTENANCE.agc    src/phase_table

@@ -175,6 +175,9 @@ void store(unsigned address, word value);
 /* The erasable word itself, for named variables (erasable.h). */
 #define ERASABLE(address) (agc.memory[erasable_index(address)])
 
+/* DCA: A,L get the double word at address (the high word, then the low). */
+void dca(unsigned address);
+
 /* XCH, LXCH and DXCH: A, L, or A and L as a pair (the high word at the
  * address, the low word after it), exchanged with memory. */
 void xch(unsigned address);
@@ -213,6 +216,23 @@ static inline word fetch_fixed(word address)
 static inline word read_word(word address)
 {
     return address < 02000u ? fetch(address) : fetch_fixed(address);
+}
+
+/* DOUBLE: A + A, in the 16-bit accumulator. */
+static inline void double_A(void)
+{
+    A = add16(A, A);
+    correct_L();
+}
+
+/* EXTEND; MP: A,L get the double-precision product of A (as a word) and
+ * value: the high 14 bits and sign in A, the low 14 and sign in L. */
+void mp(word value);
+
+/* BZF's test: A is +0 or -0. */
+static inline bool A_is_zero(void)
+{
+    return A == 0u || A == 0177777u;
 }
 
 /* MASK: A and'ed with a word (sign-extended to A's 16 bits). */

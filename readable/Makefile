@@ -6,7 +6,11 @@
 #                         readable Executive and WAITLIST (seconds)
 #   make interbank-cases  the readable inter-bank routines against the
 #                         faithful port's, case by case (seconds)
+#   make phase-cases      the readable phase table maintenance against the
+#                         original program's digests and the faithful port's
+#                         routines, case by case (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
+#   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
 #                         Executive and WAITLIST linked in
 #   make x86-scenarios-quick / x86-scenarios
@@ -28,16 +32,21 @@ KERNEL_SOURCES := src/agc/agc.c src/executive/executive.c src/waitlist/waitlist.
 	src/binding/binding.c src/binding/machine.c
 INTERBANK_SOURCES := src/agc/agc.c src/interbank/interbank.c src/binding/machine.c \
 	src/binding/interbank_tables.c
-SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES))
+PHASE_SOURCES := src/agc/agc.c src/phase_table/phase_table.c src/binding/machine.c \
+	src/binding/phase_table_tables.c
+SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
-.PHONY: all check kernel-cases interbank-cases names-check x86-flight x86-scenarios-quick \
+.PHONY: all check kernel-cases interbank-cases phase-cases names-check coverage x86-flight x86-scenarios-quick \
 	x86-scenarios format clean
-all: names-check kernel-cases interbank-cases
+all: names-check coverage kernel-cases interbank-cases phase-cases
 check: all x86-scenarios-quick
 
 names-check:
 	python3 tools/listing_names.py --check
+
+coverage:
+	python3 tools/readable_coverage.py --check
 
 # ---- The resident-kernel corpus ----
 # c64-port's test (tests/test_resident_kernel.c) over every case of the six
@@ -78,10 +87,10 @@ IB_CM_FAITHFUL := src/cm_interbank_routines.c src/cm_interbank_idle.c \
 IB_LM_NAMES := lm_interbank_routines lm_interbank_site_table lm_interbank_idle_chunk \
 	lm_ib_bankcall lm_ib_swcall lm_ib_swcall_m1 lm_ib_swreturn lm_ib_postjump \
 	lm_interbank_dap_hot_routines lm_interbank_postjump_hot_routines \
-	lm_interbank_postjump_t4_hot_routines
+	lm_interbank_postjump_t4_hot_routines lm_phase_table_routines lm_phase_table_operands
 IB_CM_NAMES := cm_interbank_routines cm_interbank_site_table cm_interbank_idle_chunk \
 	cm_ib_bankcall cm_ib_swcall cm_ib_swcall_m1 cm_ib_swreturn cm_ib_postjump \
-	cm_interbank_postjump_hot_routines
+	cm_interbank_postjump_hot_routines cm_phase_table_routines cm_phase_table_operands
 IB_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c
 
 $(BUILD)/faithful-lm/%.o: $(PORT)/src/%.c
@@ -101,6 +110,36 @@ $(BUILD)/interbank-cases-cm: $(INTERBANK_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) 
 interbank-cases: $(BUILD)/interbank-cases-lm $(BUILD)/interbank-cases-cm
 	./$(BUILD)/interbank-cases-lm
 	./$(BUILD)/interbank-cases-cm
+
+# ---- Phase table maintenance ----
+# The port's own test (tests/test_<m>_phase_table.c) on the readable
+# routines: every caller site of the original program against its yaAGC
+# digest. Then tests/phase_table_cases.c: the readable routines and the
+# faithful port's on the same random states.
+PT_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c
+PT_FAITHFUL_LM := src/lm_phase_table.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_multiword.c
+PT_FAITHFUL_CM := src/cm_phase_table.c src/agc_image_ops.c src/agc_hardware_divide.c src/agc_multiword.c
+PT_ORACLE_SOURCES := $(sort $(PHASE_SOURCES) $(INTERBANK_SOURCES))
+
+$(BUILD)/phase-oracle-lm: $(PT_ORACLE_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(PT_COMMON) $(PORT)/tests/lm_phase_table_cases.c \
+		$(PORT)/tests/test_lm_phase_table.c $(filter %.o,$^) -o $@
+$(BUILD)/phase-oracle-cm: $(PT_ORACLE_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(PT_COMMON) $(PORT)/tests/cm_phase_table_cases.c \
+		$(PORT)/tests/test_cm_phase_table.c $(filter %.o,$^) -o $@
+$(BUILD)/phase-cases-lm: $(PHASE_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(PT_FAITHFUL_LM:src/%.c=$(BUILD)/faithful-lm/%.o) tests/phase_table_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(PT_COMMON) $(filter %.o,$^) tests/phase_table_cases.c -o $@
+$(BUILD)/phase-cases-cm: $(PHASE_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(PT_FAITHFUL_CM:src/%.c=$(BUILD)/faithful-cm/%.o) tests/phase_table_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(PT_COMMON) $(filter %.o,$^) tests/phase_table_cases.c -o $@
+
+phase-cases: $(BUILD)/phase-oracle-lm $(BUILD)/phase-oracle-cm $(BUILD)/phase-cases-lm \
+		$(BUILD)/phase-cases-cm
+	./$(BUILD)/phase-oracle-lm
+	./$(BUILD)/phase-oracle-cm
+	./$(BUILD)/phase-cases-lm
+	./$(BUILD)/phase-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

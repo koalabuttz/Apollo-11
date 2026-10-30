@@ -81,6 +81,30 @@
 #define RUPTREG4 ERASABLE(K_RUPTREG4)
 #define MPTEMP   ERASABLE(K_MPTEMP)
 
+/* PHASE_TABLE_MAINTENANCE's. MODREG is the major mode on the DSKY. The
+ * restart groups 1-6 each keep a phase, its complement (-PHASE), a TBASE, a
+ * priority or delta time (PHSPRDT) and a 2CADR (PHSNAME), the words of
+ * group g at offset 2(g-1) from group 1's: the listing indexes them with
+ * TEMPG (2g) from PHASE1 -2 and the like. TEMPG through TEMPBBCN are the
+ * listing's names for ITEMP1-6 and RUPTREG1-4 while a phase changes. */
+#define MODREG   ERASABLE(K_MODREG)
+#define RUPTREG1 ERASABLE(K_RUPTREG1)
+#define TEMPG    ERASABLE(K_TEMPG)
+#define TEMPP    ERASABLE(K_TEMPP)
+#define TEMPNM   ERASABLE(K_TEMPNM)
+#define TEMPBB   ERASABLE(K_TEMPBB)
+#define TEMPSW   ERASABLE(K_TEMPSW)
+#define TEMPSW2  ERASABLE(K_TEMPSW2)
+#define TEMPPR   ERASABLE(K_TEMPPR)
+#define TEMPG2   ERASABLE(K_TEMPG2)
+#define TEMPP2   ERASABLE(K_TEMPP2)
+#define TEMPBBCN ERASABLE(K_TEMPBBCN)
+#define TIME1    ERASABLE(K_TIME1)
+#define TIME2    ERASABLE(K_TIME2)
+/* A group's word: INDEX TEMPG (2g) on the name -2. */
+#define OF_GROUP(name, twice_g) (ADDRESS_OF(name) - 2u + (twice_g))
+#define PHSPRDT1_OF(twice_g)    ERASABLE(OF_GROUP(PHSPRDT1, twice_g))
+
 /* The interrupt save area (ARUPT +1 is LRUPT). */
 #define ARUPT    ERASABLE(K_ARUPT)
 #define QRUPT    ERASABLE(K_QRUPT)
@@ -94,21 +118,33 @@
 
 /* ---- Constants in fixed memory ---- */
 
-#define ZERO     ((word)0)
-#define ONE      ((word)1)
-#define TWO      ((word)2)
-#define TWO_K    ((word)02000) /* 2K */
-#define NEG2     ((word)KW_NEG2)
-#define NEG1_2   ((word)KW_NEG1_2) /* NEG1/2 */
-#define POS1_2   ((word)020000)    /* POS1/2 */
-#define POSMAX   ((word)KW_POSMAX)
-#define NEGMAX   ((word)040000)
-#define BIT8     ((word)KW_BIT8)
-#define BIT14    ((word)KW_BIT14)
-#define LOW7     ((word)KW_LOW7)
-#define LOW9     ((word)KW_LOW9)
-#define LOW10    ((word)KW_LOW10)
-#define FBANKMSK ((word)076000)
+#define ZERO          ((word)KW_ZERO)
+#define ONE           ((word)KW_ONE)
+#define TWO           ((word)KW_TWO)
+#define TWO_K         ((word)KW_2K) /* 2K */
+#define NEG2          ((word)KW_NEG2)
+#define NEG1_2        ((word)KW_NEG1_2) /* NEG1/2 */
+#define POS1_2        ((word)KW_POS1_2) /* POS1/2 */
+#define POSMAX        ((word)KW_POSMAX)
+#define NEGMAX        ((word)KW_NEGMAX)
+#define BIT8          ((word)KW_BIT8)
+#define BIT14         ((word)KW_BIT14)
+#define LOW7          ((word)KW_LOW7)
+#define LOW9          ((word)KW_LOW9)
+#define LOW10         ((word)KW_LOW10)
+#define OCT7          ((word)KW_OCT7)
+#define OCT17770      ((word)KW_OCT17770)
+#define OCT14000      ((word)KW_OCT14000)
+#define OCT60000      ((word)KW_OCT60000)
+#define BIT7          ((word)KW_BIT7)
+#define BIT12         ((word)KW_BIT12)
+#define BIT15         ((word)KW_BIT15)
+#define PRIO30        ((word)KW_PRIO30)
+#define BIT14COM      ((word)KW_BIT14COM)
+#define CON2ADR       ((word)KW_CON2ADR)     /* GENADR CON2 */
+#define SETUPDSP_CADR ((word)KW_MMDSPLAYP3)  /* MMDSPLAY +3: CADR SETUPDSP */
+static const word ADRPCHN2[2] = KW_ADRPCHN2; /* 2CADR PHSCHNG2 */
+#define FBANKMSK ((word)KW_FBANKMSK)
 #define OCT40001 ((word)KW_OCT40001)
 #define OCT40201 ((word)KW_OCT40201)
 
@@ -174,6 +210,16 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define ISWRETRN     ((word)K_ISWRETRN)
 #define USPRCADR     ((word)K_USPRCADR)
 #define SUPERSW      ((word)K_SUPERSW)
+#define CHECKMM      ((word)K_CHECKMM)
+#define SETUPDSP     ((word)K_SETUPDSP) /* bank 10 */
+#define TOCON2       ((word)K_TOCON2)
+#define BELOW4       ((word)K_BELOW4) /* bank 10 */
+#define Q_PLUS_1     ((word)K_QP1)    /* Q+1 and Q+2, in INTERPRETER */
+#define Q_PLUS_2     ((word)K_QP2)
+/* ADRPCHN2, the 2CADR PHSCHNG2 that PHASJUMP's DCA reads; BIT14COM, the
+ * constant in bank 10 that BELOW2 runs into if it ever got there. */
+#define ADRPCHN2_ADDRESS ((word)K_ADRPCHN2)
+#define BIT14COM_ADDRESS ((word)K_BIT14COM)
 #if LUMINARY099
 #define BAILOUT1 ((word)K_BAILOUT1)
 #define POODOO1  ((word)K_POODOO1)
