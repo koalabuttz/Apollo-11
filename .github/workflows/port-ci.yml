@@ -135,12 +135,15 @@ jobs:
           # speed of the cycle-exact x64sc, and the same results on every
           # target but those in tools/ci_run.py VICE_EXACT_TARGETS, which keep
           # x64sc (full-run comparison, runs 40819596637 and 40832064465). A PR
-          # that changes cycle-sensitive code (C64 assembly, IRQ, timer, clock,
-          # rupt, REU or disk code) runs everything on x64sc. Base pushes,
-          # nightlies and acceptance-fresh always use x64sc.
+          # that changes cycle-sensitive code runs everything on x64sc: C64
+          # assembly, the resident kernel and resident platform files, and IRQ,
+          # timer, clock, rupt, REU, disk, raster or CIA code (#1037). Nightly
+          # and requested full runs and acceptance-fresh always use x64sc;
+          # pushes to main run no C64 checks.
           vice=x64sc
-          if [ "$EVENT" = pull_request ] && [ -n "$changed" ] \
-             && ! echo "$changed" | grep -qE '^c64-port/platform/c64/(.*\.[sS]$|.*(irq|timer|rupt|clock|reu|disk|raster|cia))'; then
+          exact='^c64-port/(platform/c64/(.*\.[sS]$|resident_|.*(irq|timer|rupt|clock|reu|disk|raster|cia))'
+          exact+='|src/(resident_|.*kernel)|include/(resident_|.*(irq|reu|rupt|timer)))'
+          if [ "$EVENT" = pull_request ] && [ -n "$changed" ] && ! echo "$changed" | grep -qE "$exact"; then
             vice=x64
           fi
           [ -n "$VICE_INPUT" ] && vice=$VICE_INPUT
