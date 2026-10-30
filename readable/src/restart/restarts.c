@@ -285,7 +285,7 @@ static void itsnovac(void)
 static void itsatbl(void)
 {
     ts(CYR_ADDRESS);
-    switch (ccs(fetch_rewritten(CYR_ADDRESS))) {
+    switch (ccs_at(CYR_ADDRESS)) {
     case POSITIVE: /* TCF +1: "IT'S EVEN" */
     case IS_PLUS_ZERO: itseven(); return;
     case NEGATIVE: set_A(RTRNCADR_WORD); break;
@@ -295,7 +295,7 @@ static void itsatbl(void)
     ts(GOLOC_ADDRESS(2));
     set_A(TEMPPHS); /* "SET UP POINTER FOR FINDING OUR PLACE IN THE RESTART TABLES" */
     ts(SR_ADDRESS);
-    ad(fetch_rewritten(SR_ADDRESS));
+    ad_at(SR_ADDRESS);
     ad(fetch_fixed((word)indexed(SIZETAB + 1u, TEMP2G)));
     ts(ADDRESS_OF(POINTER));
     contbl2();
@@ -340,7 +340,7 @@ static void itslgcl1(void)
     lxch(GOLOC_ADDRESS(1)); /* "OBTAIN THE CORRECT E BANK" */
     lxch(BBANK_ADDRESS);
     lxch(GOLOC_ADDRESS(1)); /* "AND PRESERVE OUR E AND F BANKS" */
-    dca_at(a_word());       /* EXTEND; NDX A; DCA 0: "GET THE DELTA TIME" */
+    dca(a_word());          /* EXTEND; NDX A; DCA 0: "GET THE DELTA TIME" */
     lxch(GOLOC_ADDRESS(1)); /* "RESTORE OUR E AND F BANK" */
     lxch(BBANK_ADDRESS);    /* "RESTORE THE TASKS E AND F BANKS" */
     lxch(GOLOC_ADDRESS(1)); /* "AND PRESERVE OUR L" */
