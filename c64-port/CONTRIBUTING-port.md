@@ -111,7 +111,7 @@ hash and deletes the branch. Commit only `evidence/<id>/SHA256.json`,
 
 ## What CI runs
 
-`port-ci` on every PR into `port/**` and push to `port/**`:
+`port-ci` on every PR into `main` and push to `main`:
 
 - shared-ledger guard, milestone files render, and published evidence for the
   milestones a PR touches;
@@ -123,7 +123,12 @@ hash and deletes the branch. Commit only `evidence/<id>/SHA256.json`,
   following `#include "..."` from each target's sources), or the whole suite
   when shared plumbing changes;
 - LLVM-MOS builds and VICE `vice-<id>` runs for affected C64 targets, plus the
-  base Executive VICE check.
+  base Executive VICE check. PRs run these on VICE's fast `x64` emulator
+  (about 5x faster, same results), except `tools/ci_run.py`
+  `VICE_EXACT_TARGETS` and any PR that changes cycle-sensitive code (C64
+  assembly, resident kernel and resident platform files, IRQ, timer, clock,
+  rupt, REU or disk code), which run on the cycle-exact `x64sc`. Pushes to
+  `main` run no C64 checks.
 
 The full suite runs nightly against `main`, and on demand from
 the Actions tab (`port-ci`, Run workflow). Those requested full runs (not a PR
