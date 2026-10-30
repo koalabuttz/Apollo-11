@@ -241,6 +241,49 @@ static inline void mask(word value)
     A = (reg16)(A & sign_extend(value));
 }
 
+/* AD: A plus a word, in the 16-bit accumulator (where an overflow shows).
+ * EXTEND; SU: A minus a word. */
+static inline void ad(word value)
+{
+    A = add16(A, sign_extend(value));
+}
+static inline void su(word value)
+{
+    A = add16(A, sign_extend(negate(value)));
+}
+
+/* COM (CS A): A complemented, all 16 bits. INCR A: A plus one. */
+static inline void com(void)
+{
+    A = (reg16)~A;
+}
+static inline void incr_A(void)
+{
+    A = add16(A, 1u);
+}
+
+/* BZMF's test: A is +0, -0 or negative. */
+static inline bool A_is_zero_or_minus(void)
+{
+    return A_is_zero() || (A & 0100000u) != 0;
+}
+
+/* ADS: A plus the word at address, kept in both (the word overflow-
+ * corrected). */
+void ads(unsigned address);
+
+/* DCS: A,L get the double word at address, complemented. */
+void dcs(unsigned address);
+
+/* DCA of a double word anywhere: erasable below 02000, fixed above (as an
+ * INDEXed DCA 0 reads it). */
+void dca_at(word address);
+
+/* A read of an editing register (CYR, SR, CYL, EDOP) writes it back through
+ * the editing, as every read of memory writes the word back: CCS CYR leaves
+ * CYR cycled once more. The word read is the one before. */
+word fetch_rewritten(unsigned address);
+
 /* ---- I/O channels and interrupts ---- */
 
 static inline void inhint(void)
