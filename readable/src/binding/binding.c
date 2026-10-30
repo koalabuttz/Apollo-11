@@ -12,21 +12,10 @@
  * program's state, read the inline operands a TC passes (the 2CADR after a
  * TC NOVAC) from the program's operand table, and call the routine. */
 #include <stddef.h>
-#include "resident_kernel.h"
-#if LUMINARY099
-#include "p66_bias.h"
-#else
-#include "cm_native_image.h"
-#endif
+#include "binding.h"
 #include "../executive/executive.h"
 #include "../waitlist/waitlist.h"
 #include "../agc/names.h"
-
-#if LUMINARY099
-typedef p66_bias_io mission_io;
-#else
-typedef cm_native_io mission_io;
-#endif
 
 #define T3RUPT_LEAD_IN 04014u /* the T3RUPT interrupt's address */
 #define BANK01         02000u
@@ -42,21 +31,11 @@ static enum exec_status run(const agc_native_program *program, apollo_overlay_st
                             void *device)
 {
     static uint16_t no_channel;
-    mission_io *io = device;
     agc_hardware *hardware;
     word entry, operand[2] = {0, 0};
 
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!bind_machine(program, state, device)) return EXEC_OUT_OF_SCOPE;
     hardware = program->hardware;
-    agc.memory = state->words;
-    agc.superbank = &io->superbank;
-    agc.interrupts = &io->interrupt_enabled;
-#if LUMINARY099
-    agc.dsalmout = hardware ? &hardware->channel11 : NULL;
-#else
-    agc.dsalmout = &io->channel11;
-#endif
-    agc.in_interrupt = hardware ? &hardware->in_interrupt : NULL;
     entry = Z;
 
     /* Read the inline operands first, so that a call from a place the
@@ -134,10 +113,6 @@ void executive_ending_job(void)
 
 /* ---- The routine tables: the faithful kernel's keys and names ---- */
 
-/* Keys: physical addresses of fixed-fixed (04000-07777) and bank 01. */
-#define FF(z) (uint16_t)(2048u + ((z) - 04000u))
-#define B1(z) (uint16_t)(1024u + ((z) - 02000u))
-
 #if LUMINARY099
 static const agc_routine_entry services[] = {
     {B1(K_LNGCALL2), run}, {B1(K_LONGCYCL), run}, {B1(K_LONGRTRN), run}, {B1(K_MUCHTIME + 4u), run},
@@ -164,7 +139,6 @@ static const agc_routine_entry idle[] = {
     {B1(K_ADVAN), run},    {FF(K_SUPDXCHZ), run},     {FF(K_SUPDXCHZ + 1u), run},
     {FF(K_SVCT3), run},    {FF(K_SVCT3 + 015u), run}, {FF(K_SVCT3X + 2u), run}};
 
-#define COUNT(table) (uint16_t)(sizeof(table) / sizeof(table)[0])
 #if LUMINARY099
 const agc_routine_table lm_kernel_routines = {services, COUNT(services)};
 const agc_routine_table lm_kernel_job_routines = {jobs, COUNT(jobs)};

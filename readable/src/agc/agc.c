@@ -88,6 +88,19 @@ enum sign ccs_register(unsigned address)
     return sign_of(corrected);
 }
 
+/* ---- Fixed memory ---- */
+
+unsigned fixed_physical(word address)
+{
+    unsigned bank;
+    address &= 07777u;
+    if (address >= 06000u) return 3u * 02000u + (address - 06000u);
+    if (address >= 04000u) return 2u * 02000u + (address - 04000u);
+    bank = FBANK >> 10;
+    if (bank >= 030u && (*agc.superbank & 0100u)) bank += 010u;
+    return bank * 02000u + (address - 02000u);
+}
+
 /* ---- Channel 11 ---- */
 
 void wor_dsalmout(void)

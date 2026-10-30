@@ -36,6 +36,8 @@ struct agc_machine {
     uint16_t *interrupts;   /* 1 while interrupts are allowed (RELINT), 0 after INHINT */
     uint16_t *dsalmout;     /* channel 11, DSALMOUT (bit 2 is the COMP ACTY light) */
     uint16_t *in_interrupt; /* 1 while an interrupt routine (T3RUPT and its task) runs */
+    /* Fixed memory (the rope), by physical address: bank * 02000 + offset. */
+    word (*fixed_memory)(unsigned physical);
 };
 extern struct agc_machine agc;
 
@@ -193,6 +195,32 @@ static inline unsigned indexed(unsigned address, word index)
     return add((word)address, index);
 }
 
+/* ---- Fixed memory ---- */
+
+/* The physical word a fixed address names: 04000-07777 are banks 2 and 3
+ * whatever the bank registers hold, 02000-03777 the bank FBANK selects. In
+ * banks 030-037 a set SUPERBNK bit 7 selects banks 040-043 instead. */
+unsigned fixed_physical(word address);
+
+/* The word at a fixed address, under the current FBANK and SUPERBNK. */
+static inline word fetch_fixed(word address)
+{
+    return agc.fixed_memory(fixed_physical(address));
+}
+
+/* The word at any address, erasable (below 02000) or fixed: what INDEX Q;
+ * CA 0 reads, the word after a TC, wherever the TC was. */
+static inline word read_word(word address)
+{
+    return address < 02000u ? fetch(address) : fetch_fixed(address);
+}
+
+/* MASK: A and'ed with a word (sign-extended to A's 16 bits). */
+static inline void mask(word value)
+{
+    A = (reg16)(A & sign_extend(value));
+}
+
 /* ---- I/O channels and interrupts ---- */
 
 static inline void inhint(void)
@@ -224,6 +252,18 @@ void wand_dsalmout(void);
 static inline void tc_at(word at)
 {
     Q = (word)((at + 1u) & MINUS_ZERO);
+}
+
+/* TC to an erasable word that holds an address: the AGC runs the word as
+ * the instruction TC <address>. So Z gets the address, and Q the address
+ * after the word. RETURN (TC Q) is the case of register Q itself: Z gets
+ * the return address and Q becomes 3. */
+static inline void tc_through(unsigned address)
+{
+    word to = (word)agc.memory[erasable_index(address)];
+    Q = (word)(address + 1u);
+    Z = to;
+    correct_L();
 }
 
 /* Continue at a fixed address. */

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""The x86_64 flight program with the readable Executive and WAITLIST.
+"""The x86_64 flight program with the readable routines.
 
 The faithful port's x86 program (c64-port/docs/X86-FLIGHT.md) links every
 routine table of c64-port/src; this builds it with the readable objects
-(readable/build/x86-<m>/) in place of the faithful kernel's
-(src/lm_kernel.c, src/cm_kernel.c), into readable/build/x86-flight/. The
+(readable/build/x86-<m>/) in place of the faithful ones that define the
+same tables (REPLACED below), into readable/build/x86-flight/. The
 scenario suite (c64-port/tools/x86_flight_scenarios.py) then flies that
-program against the harness, which still runs the faithful kernel: every
+program against the harness, which still runs the faithful port: every
 row must end with the harness's erasable memory, word for word.
 
   x86_readable.py build [--host-cc CC]
@@ -25,7 +25,17 @@ PORT = READABLE.parent / 'c64-port'
 sys.path.insert(0, str(PORT / 'tools'))
 import x86_flight_build as xb  # noqa: E402
 
-FAITHFUL_KERNEL = ('lm_kernel.o', 'cm_kernel.o')
+# The faithful objects whose routine tables the readable objects define.
+REPLACED = (
+    # The Executive and WAITLIST (src/executive, src/waitlist).
+    'lm_kernel.o', 'cm_kernel.o',
+    # INTER-BANK_COMMUNICATION (src/interbank). lm_interbank.o and
+    # cm_interbank_complete.o stay: other faithful routines call them.
+    'lm_interbank_routines.o', 'lm_interbank_idle.o', 'lm_interbank_dap.o',
+    'cm_interbank_routines.o', 'cm_interbank_idle.o', 'cm_interbank_postjump.o',
+)
+# A symbol each readable subsystem defines, which must be in the program.
+READABLE_SYMBOLS = ('novac', 'bankcall')
 xb.OUT = READABLE / 'build/x86-flight'
 
 
@@ -47,16 +57,16 @@ def build(cc, m, mode, certified_only=False):
         o = xb.OUT / f'{source}_{m}{suffix}.o'
         subprocess.run([cc, *flags, '-c', f'platform/x86/{source}.c', '-o', str(o)], cwd=PORT, check=True)
         objects.append(str(o))
-    host = [str(p) for p in sorted((xb.STORE / 'host').glob('*.o')) if p.name not in FAITHFUL_KERNEL]
+    host = [str(p) for p in sorted((xb.STORE / 'host').glob('*.o')) if p.name not in REPLACED]
     exe = xb.OUT / f'x86-flight-{m}{suffix}'
     subprocess.run([cc, *objects, *host, *readable_objects(m), *xb.LINK, '-Wl,--gc-sections', '-lm',
                     '-o', str(exe)], cwd=PORT, check=True)
-    # The readable kernel must be the one linked: it defines novac, and the
-    # faithful kernel's instruction helpers (k_go and the rest) are absent.
+    # The readable routines must be the ones linked: theirs are present, and
+    # the faithful kernel's instruction helpers (k_go and the rest) absent.
     symbols = subprocess.run(['nm', str(exe)], capture_output=True, text=True, check=True).stdout.split('\n')
     names = {line.split()[-1] for line in symbols if line.strip()}
-    if 'novac' not in names or 'k_go' in names:
-        sys.exit(f'x86_readable: {exe.name} does not link the readable kernel alone')
+    if not names.issuperset(READABLE_SYMBOLS) or 'k_go' in names:
+        sys.exit(f'x86_readable: {exe.name} does not link the readable routines alone')
     return exe
 
 
