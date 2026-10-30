@@ -66,6 +66,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Executive | `EXECUTIVE.agc` (LM pp. 1103-1116, CM pp. 1208-1220) | [`src/executive/`](src/executive/) | NOVAC, FINDVAC, SPVAC, CHANG1/2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB, the job switch (CHANJOB), the priority scan (EJSCAN) and the idle loop (DUMMYJOB, ADVAN) |
 | WAITLIST | `WAITLIST.agc` (LM pp. 1117-1132, CM pp. 1221-1235) | [`src/waitlist/`](src/waitlist/) | WAITLIST, TWIDDLE, FIXDELAY, VARDELAY, T3RUPT, TASKOVER, SVCT3 and LONGCALL |
 | Inter-bank communication | `INTER-BANK_COMMUNICATION.agc` (LM pp. 998-1001, CM pp. 1103-1106) | [`src/interbank/`](src/interbank/) | BANKCALL, SWCALL, SWRETURN, POSTJUMP, BANKJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR and SUPERSW: calls and jumps between banks of fixed memory |
+| Phase table maintenance | `PHASE_TABLE_MAINTENANCE.agc` (LM pp. 1294-1302, CM pp. 1404-1413) | [`src/phase_table/`](src/phase_table/) | NEWMODEX, NEWMODEA, MMDSPLAY, CHECKMM, SETUPDSP, PHASCHNG, 2PHSCHNG, PHSCHNGA (LM), PHSCHNG2, ONEORTWO and CON2: the major mode on the DSKY, and the phase changes that tell a restart what to start again |
 
 Beside them:
 
@@ -76,14 +77,18 @@ Beside them:
 - [`src/binding/`](src/binding/): connects the routines to the flight
   program (the keys and table names the faithful kernel uses). Plumbing
   only.
-- [`tests/`](tests/): the side-by-side test of the inter-bank routines,
-  and the build of the x86_64 flight program with the readable routines in
+- [`tests/`](tests/): the side-by-side tests of the inter-bank routines
+  and the phase table maintenance, and the build of the x86_64 flight program with the readable routines in
   it.
 
 Both missions come from the same source, built with `LUMINARY099=1` or
 `COMANCHE055=1`; where the listings differ the code shows both in place.
 
-Next, one subsystem at a time: the restart and phase tables, the
+How much of the program is readable C: `make coverage` counts the
+listing files in [`COVERAGE`](COVERAGE), whole files only, weighted by
+their source lines over all 175 files of both missions.
+
+Next, one subsystem at a time: the restart routines and tables, the
 interpreter, then the rest of the flight program. A Rust edition with the same layout and the same gates
 comes after the C.
 
@@ -92,7 +97,7 @@ comes after the C.
 From `readable/`, with a C compiler, Make and Python 3:
 
 ```sh
-make                       # gate 1: names-check, kernel-cases, interbank-cases (seconds)
+make                       # gate 1: names-check, coverage and the case tests (seconds)
 make x86-scenarios-quick   # gate 2 on the PR set (26 rows)
 make x86-scenarios         # gate 2 on every row (86)
 ```
@@ -107,7 +112,12 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    against the faithful routines' final memory word for word.
    `make interbank-cases` runs every inter-bank entry, readable and
    faithful side by side, on 100,000 random machine states each, and
-   compares memory and channels word for word. `make names-check` checks
+   compares memory and channels word for word. `make phase-cases` runs
+   the faithful port's phase-table test (every TC NEWMODEX, CHECKMM,
+   PHASCHNG and 2PHSCHNG site of the original program, against its yaAGC
+   digest) on the readable routines, then the readable and faithful
+   routines side by side on 200,000 random states per entry.
+   `make names-check` checks
    the generated names against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight

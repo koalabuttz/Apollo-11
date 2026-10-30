@@ -101,6 +101,30 @@ unsigned fixed_physical(word address)
     return bank * 02000u + (address - 02000u);
 }
 
+/* ---- Multiplication ---- */
+
+void mp(word value)
+{
+    word multiplicand = overflow_corrected(A), high, low;
+    bool negative = ((multiplicand ^ value) & SIGN_BIT) != 0;
+    uint32_t product;
+
+    if (value == PLUS_ZERO || value == MINUS_ZERO) { /* a zero multiplier gives +0 */
+        A = L = 0;
+        return;
+    }
+    product = (uint32_t)((multiplicand & SIGN_BIT) ? negate(multiplicand) : multiplicand) *
+              (uint32_t)((value & SIGN_BIT) ? negate(value) : value);
+    high = (word)(product >> 14);
+    low = (word)(product & 037777u);
+    if (negative) {
+        high = negate(high);
+        low = negate(low);
+    }
+    A = sign_extend(high);
+    L = sign_extend(low);
+}
+
 /* ---- Channel 11 ---- */
 
 void wor_dsalmout(void)
@@ -202,6 +226,12 @@ void das(unsigned address)
     store(address + 1u, overflow_corrected(low));
     store(address, overflow_corrected(high));
     correct_L();
+}
+
+void dca(unsigned address)
+{
+    L = sign_extend(fetch(address + 1u));
+    A = sign_extend(fetch(address));
 }
 
 void dxch(unsigned address)

@@ -61,7 +61,7 @@ jobs:
         run: tools/setup_cloud.sh
       - name: Gate 1, case tests
         working-directory: readable
-        run: make names-check kernel-cases interbank-cases
+        run: make coverage names-check kernel-cases interbank-cases phase-cases
       - name: Gate 2, x86 exact scenarios
         working-directory: readable
         env:

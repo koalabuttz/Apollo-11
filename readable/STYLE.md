@@ -157,8 +157,8 @@ so a reader sees both versions together.
 
 Every change to `readable/` must keep both:
 
-1. **The case tests** (`make names-check kernel-cases interbank-cases`,
-   seconds):
+1. **The case tests** (`make names-check kernel-cases interbank-cases
+   phase-cases`, seconds):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
    - `kernel-cases`: every case of the resident-kernel corpus (about 42,000
@@ -167,7 +167,13 @@ Every change to `readable/` must keep both:
      routines' final memory word for word;
    - `interbank-cases`: every entry of the readable inter-bank routines
      against the faithful port's, on 100,000 random machine states each
-     (over 4 million runs): the same result, memory and channels.
+     (over 4 million runs): the same result, memory and channels;
+   - `phase-cases`: the faithful port's phase-table test (every caller
+     site of the original program against its yaAGC digest) on the
+     readable phase table maintenance, then the readable and faithful
+     routines side by side on 200,000 random states per entry. Where the
+     faithful routine leaves a state to the original program (refuses it),
+     the readable one may run it.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

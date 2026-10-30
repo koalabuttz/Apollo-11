@@ -33,9 +33,11 @@ REPLACED = (
     # cm_interbank_complete.o stay: other faithful routines call them.
     'lm_interbank_routines.o', 'lm_interbank_idle.o', 'lm_interbank_dap.o',
     'cm_interbank_routines.o', 'cm_interbank_idle.o', 'cm_interbank_postjump.o',
+    # PHASE_TABLE_MAINTENANCE (src/phase_table).
+    'lm_phase_table.o', 'cm_phase_table.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
-READABLE_SYMBOLS = ('novac', 'bankcall')
+READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2')
 xb.OUT = READABLE / 'build/x86-flight'
 
 
