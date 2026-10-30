@@ -1,0 +1,75 @@
+# The readable C (readable/README.md): its two gates.
+#   1. make kernel-cases: the resident-kernel corpus on the readable
+#      Executive and WAITLIST (seconds).
+#   2. The x86 exact scenario suite with the readable routines linked in:
+#      the quick set (26 rows) on PRs and pushes, every row nightly.
+name: readable-ci
+on:
+  pull_request:
+    branches: [main]
+    paths: ['readable/**', '.github/workflows/readable-ci.yml']
+  push:
+    branches: [main]
+    paths: ['readable/**', '.github/workflows/readable-ci.yml']
+  schedule:
+    - cron: '47 5 * * *'
+  workflow_dispatch:
+    inputs:
+      full:
+        description: Fly every scenario row (not just the quick set)
+        type: boolean
+        default: true
+
+concurrency:
+  group: readable-ci-${{ github.event.pull_request.number || github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  SKIP_EVIDENCE_RESTORE: '1'
+
+jobs:
+  gates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Lean checkout
+        env:
+          REF: ${{ github.sha }}
+        run: |
+          git init -q .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}"
+          git config http.https://github.com/.extraheader \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' '${{ github.token }}' | base64 -w0)"
+          git fetch -q --filter=blob:limit=1m --depth=1 origin "$REF"
+          git show FETCH_HEAD:c64-port/tools/ci_checkout.sh | bash -s FETCH_HEAD
+      - name: Toolchain cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            c64-port/deps/llvm-mos
+            c64-port/deps/vice-data
+            c64-port/deps/virtualagc
+            c64-port/deps/fixture
+          key: port-deps-${{ hashFiles('c64-port/tools/versions.json', 'c64-port/tools/setup_cloud.sh', 'c64-port/tools/prepare_reference.py') }}
+      - name: Install pinned toolchain
+        working-directory: c64-port
+        run: tools/setup_cloud.sh
+      - name: Gate 1, kernel cases
+        working-directory: readable
+        run: make kernel-cases
+      - name: Gate 2, x86 exact scenarios
+        working-directory: readable
+        env:
+          FULL: ${{ github.event_name == 'schedule' || inputs.full == true }}
+        run: |
+          source ../c64-port/deps/env.sh
+          if [ "$FULL" = true ]; then make x86-scenarios; else make x86-scenarios-quick; fi
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: readable-scenarios
+          path: readable/build/x86-flight/scenarios/summary.json
+          if-no-files-found: ignore
