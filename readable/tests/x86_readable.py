@@ -55,9 +55,12 @@ REPLACED = (
     # SERVICE_ROUTINES.agc (src/service): the routine tables.
     # service_routines.o stays: other faithful routines call it.
     'service_transfer.o',
+    # DOWN-TELEMETRY_PROGRAM.agc (src/downtelemetry).
+    'lm_downtelemetry.o', 'cm_downtelemetry.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
-READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran')
+READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
+                    'dodowntm')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

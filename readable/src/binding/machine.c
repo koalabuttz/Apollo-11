@@ -21,5 +21,8 @@ bool bind_machine(const agc_native_program *program, apollo_overlay_state *state
 #endif
     agc.in_interrupt = hardware ? &hardware->in_interrupt : NULL;
     agc.fixed_memory = NULL;
+    agc.channel_in = NULL;
+    agc.channel_out = NULL;
+    agc.leave = NULL;
     return true;
 }

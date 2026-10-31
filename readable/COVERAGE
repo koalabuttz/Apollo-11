@@ -21,3 +21,5 @@ Luminary099/SINGLE_PRECISION_SUBROUTINES.agc src/single_precision
 Comanche055/SINGLE_PRECISION_SUBROUTINES.agc src/single_precision
 Luminary099/SERVICE_ROUTINES.agc             src/service
 Comanche055/SERVICE_ROUTINES.agc             src/service
+Luminary099/DOWN_TELEMETRY_PROGRAM.agc       src/downtelemetry
+Comanche055/DOWN-TELEMETRY_PROGRAM.agc       src/downtelemetry

@@ -586,6 +586,69 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define ENDOFJOB ((word)K_ENDOFJOB)
 #define DLY2     ((word)K_DLY2)
 
+/* ---- Down-telemetry (DOWN-TELEMETRY_PROGRAM.agc) ---- */
+
+/* Its erasable words. DNLSTCOD numbers the downlist being sent, DUMPCNT
+ * how many erasable dumps V74 asked for. DNTMGOTO holds where the next
+ * DOWNRUPT goes (run there as TC). The listing gives three words two names
+ * each: CTLIST (LDATALST) points into the control list, SUBLIST (DNQ) into
+ * a sublist, and DNECADR (TMINDEX, DUMPLOC) holds the DNADR being sent,
+ * the snapshot buffer's index, or the erasable dump's place. DNTMBUFF +n
+ * is the snapshot buffer. */
+#define DNLSTCOD    ERASABLE(K_DNLSTCOD)
+#define DUMPCNT     ERASABLE(K_DUMPCNT)
+#define DNTMGOTO    ERASABLE(K_DNTMGOTO)
+#define CTLIST      ERASABLE(K_CTLIST)
+#define SUBLIST     ERASABLE(K_SUBLIST)
+#define DNECADR     ERASABLE(K_DNECADR)
+#define TMINDEX     ERASABLE(K_TMINDEX)
+#define DUMPLOC     ERASABLE(K_DUMPLOC)
+#define DNTMBUFF(n) ERASABLE(K_DNTMBUFF + (n))
+
+/* Its constants. MINTIME2 is the -1DNADR of TIME2, DNADRDCR (OCT 74001)
+ * takes one from a DNADR's count and two from its address, MINB1314
+ * (-030000) and MINB12 (-04000, -1/8) tell a DNADR, a DNPTR and a DNCHAN
+ * apart. LDNPHAS2, LDNDUMP and LDNDUMP1 hold the addresses DNTMGOTO gets.
+ * ERASID and LOWIDCOD are the dump's ID word and the downlink's sync
+ * bits. MINTIME2, DNADRDCR, MINB1314 and LDNPHAS2 are also labels: CCS
+ * lands on them and runs them as instructions (ADDRESS_OF gives where). */
+#define NEG0     ((word)KW_NEG0)
+#define ERASID   ((word)KW_ERASID)
+#define PRIO34   ((word)KW_PRIO34)
+#define MINB12   ((word)KW_MINB12)
+#define LOWIDCOD ((word)KW_LOWIDCOD)
+#define MINTIME2 ((word)KW_MINTIME2)
+#define DNADRDCR ((word)KW_DNADRDCR)
+#define MINB1314 ((word)KW_MINB1314)
+#define LDNPHAS2 ((word)KW_LDNPHAS2)
+#define LDNDUMP  ((word)KW_LDNDUMP)
+#define LDNDUMP1 ((word)KW_LDNDUMP1)
+
+/* Its labels, all in bank 05 with the downlists (DNTABLE is the table of
+ * the downlists' control lists). */
+#define DODOWNTM ((word)K_DODOWNTM)
+#if LUMINARY099
+#define WO1    ((word)K_WO1)
+#define WOTEST ((word)K_WOTEST)
+#endif
+#define DNPHASE1 ((word)K_DNPHASE1)
+#define DNPHASE2 ((word)K_DNPHASE2)
+#define DODNADR  ((word)K_DODNADR)
+#define SETWO    ((word)K_SETWO)
+#define DNDUMPI  ((word)K_DNDUMPI)
+#define DNDUMP   ((word)K_DNDUMP)
+#define DNDUMP1  ((word)K_DNDUMP1)
+#define DNDUMP2  ((word)K_DNDUMP2)
+#define SENDID   ((word)K_SENDID)
+#define DNTABLE  ((word)K_DNTABLE)
+#define RESUME   ((word)K_RESUME)
+
+/* The channels: CHAN13 (bit 7 is the downlink's word order code), and
+ * DNTM1 and DNTM2, the two words each DOWNRUPT sends. */
+#define CHAN13 013u
+#define DNTM1  034u
+#define DNTM2  035u
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

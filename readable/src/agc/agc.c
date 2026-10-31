@@ -2,6 +2,7 @@
 /* The machine model of agc.h: memory addressing, register stores and the
  * channel instructions. Its effects are the AGC's, as the faithful port's
  * instruction helpers (c64-port/src/agc_image_ops.c) model them. */
+#include <stdlib.h>
 #include "agc.h"
 
 struct agc_machine agc;
@@ -137,6 +138,56 @@ void wand_dsalmout(void)
 {
     *agc.dsalmout = (uint16_t)(overflow_corrected(A) & *agc.dsalmout & MINUS_ZERO);
     A = sign_extend(*agc.dsalmout);
+}
+
+/* ---- Other channels ---- */
+
+/* The channel's word, as the binding connects it. */
+static word channel_word(unsigned channel)
+{
+    if (!agc.channel_in) not_modelled();
+    return (word)(agc.channel_in(channel) & MINUS_ZERO);
+}
+
+static void channel_write(unsigned channel, word value)
+{
+    if (!agc.channel_out) not_modelled();
+    agc.channel_out(channel, value);
+}
+
+void read_channel(unsigned channel)
+{
+    A = sign_extend(channel_word(channel));
+}
+
+void write_channel(unsigned channel)
+{
+    channel_write(channel, overflow_corrected(A));
+}
+
+void rand_channel(unsigned channel)
+{
+    A = sign_extend((word)(overflow_corrected(A) & channel_word(channel)));
+}
+
+void wand_channel(unsigned channel)
+{
+    word value = (word)(overflow_corrected(A) & channel_word(channel));
+    channel_write(channel, value);
+    A = sign_extend(value);
+}
+
+void wor_channel(unsigned channel)
+{
+    word value = (word)(overflow_corrected(A) | channel_word(channel));
+    channel_write(channel, value);
+    A = sign_extend(value);
+}
+
+void not_modelled(void)
+{
+    if (agc.leave) agc.leave();
+    abort(); /* a binding that runs such a routine always sets agc.leave */
 }
 
 /* ---- DTCB ---- */
