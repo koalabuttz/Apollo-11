@@ -244,8 +244,8 @@ Every change to `readable/` must keep both:
      or not, against yaAGC digests) on the readable lead-ins, RESUME and
      T6 interrupt, then the two side by side on random states.
    - `t4rupt-cases`: the faithful port's T4RUPT core test, its LM and CM
-     IMU monitor tests and its LM radar test (every continuation, display
-     path and exit, against yaAGC digests) on the readable T4RUPT
+     IMU monitor tests, its LM radar test and its CM optics test (every
+     continuation, display path and exit, against yaAGC digests) on the readable T4RUPT
      routines, then the two side by side on random states.
 
    A subsystem without a corpus of its own gets a test of the second kind:

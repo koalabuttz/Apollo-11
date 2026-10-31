@@ -392,6 +392,17 @@ void mp_at(unsigned address)
     mp(address < 3u ? overflow_corrected(agc.memory[address]) : read_word((word)address));
 }
 
+void msu_at(unsigned address)
+{
+    unsigned difference;
+
+    if (address < 3u) not_modelled(); /* MSU of a register: not in the listings */
+    difference = overflow_corrected(A) + (~fetch(address) & 077777u) + 1u;
+    if (difference & 040000u) difference = (difference | 0100000u) - 1u;
+    A = sign_extend((word)(difference & 077777u));
+    correct_L();
+}
+
 void dv_at(unsigned address)
 {
     dv(address >= 3u ? sign_extend(read_word((word)address)) : Q);

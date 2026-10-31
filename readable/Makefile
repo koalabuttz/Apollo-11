@@ -87,11 +87,13 @@ T4IMU_SOURCES := src/agc/agc.c src/t4rupt/imu_monitor.c src/binding/machine.c \
 	src/binding/t4rupt_imu_routines.c
 T4RR_SOURCES := src/agc/agc.c src/t4rupt/rr_monitor.c src/binding/machine.c \
 	src/binding/t4rupt_rr_routines.c
+T4OPT_SOURCES := src/agc/agc.c src/t4rupt/optics.c src/binding/machine.c \
+	src/binding/t4rupt_optics_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
-	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES))
+	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
@@ -693,9 +695,30 @@ $(BUILD)/t4rr-cases: $(T4RR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/t4rr
 		tests/t4rupt_rr_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(KU_COMMON) $(filter %.o,$^) tests/t4rupt_rr_cases.c -o $@
 
+# Part 4, the CM's optics: the port's test (tests/test_cm_t4rupt_optics.c,
+# its frozen cases run to their stops through the program of
+# tests/cm_t4rupt_optics_target.c) on the readable routines, then
+# tests/t4rupt_optics_cases.c side by side.
+T4OPT_NAMES := cm_t4rupt_optics_basic cm_t4rupt_optics_interpretive
+T4OPT_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c \
+	$(PORT)/src/cm_interp_orders.c $(PORT)/src/cm_interp_steps.c $(KU_COMMON) $(PORT)/tests/interp_case.c
+
+$(BUILD)/t4opt-faithful.o: $(PORT)/src/cm_t4rupt_optics.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(T4OPT_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/t4opt-readable.o: $(T4OPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(T4OPT_NAMES),--keep-global-symbol=$(n)) $@.all $@
+$(BUILD)/t4opt-oracle: $(BUILD)/t4opt-readable.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(T4OPT_COMMON) $(PORT)/tests/cm_t4rupt_optics_target.c \
+		$(PORT)/tests/test_cm_t4rupt_optics.c $^ -o $@
+$(BUILD)/t4opt-cases: $(T4OPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/t4opt-faithful.o \
+		tests/t4rupt_optics_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(KU_COMMON) $(filter %.o,$^) tests/t4rupt_optics_cases.c -o $@
+
 t4rupt-cases: $(BUILD)/t4rupt-oracle $(BUILD)/t4rupt-cases-lm $(BUILD)/t4rupt-cases-cm \
 		$(BUILD)/t4imu-oracle-lm $(BUILD)/t4imu-oracle-cm $(BUILD)/t4imu-cases-lm $(BUILD)/t4imu-cases-cm \
-		$(BUILD)/t4rr-oracle $(BUILD)/t4rr-cases
+		$(BUILD)/t4rr-oracle $(BUILD)/t4rr-cases $(BUILD)/t4opt-oracle $(BUILD)/t4opt-cases
 	./$(BUILD)/t4rupt-oracle
 	./$(BUILD)/t4rupt-cases-lm
 	./$(BUILD)/t4rupt-cases-cm
@@ -705,6 +728,8 @@ t4rupt-cases: $(BUILD)/t4rupt-oracle $(BUILD)/t4rupt-cases-lm $(BUILD)/t4rupt-ca
 	./$(BUILD)/t4imu-cases-cm
 	./$(BUILD)/t4rr-oracle
 	./$(BUILD)/t4rr-cases
+	./$(BUILD)/t4opt-oracle
+	./$(BUILD)/t4opt-cases
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

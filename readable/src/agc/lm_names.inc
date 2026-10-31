@@ -495,6 +495,7 @@
 #define K_GPMATRIX 03132u
 #define K_SETTRKF 04564u
 #define K_RRLIMCHK 04523u
+#define K_TCQ 06742u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -693,6 +694,8 @@
 #define K_CDUZCMD 00052u
 #define K_ITEMP6 00066u
 #define K_CDUX 00032u
+#define K_CDUS 00036u
+#define K_CDUT 00035u
 #define K_THRUST 00055u
 #define K_RCSFLAGS 01273u
 #define K_ABDELV 01246u
@@ -736,6 +739,7 @@
 #define K_M31 01416u
 #define K_M22 01417u
 #define K_M32 01420u
+#define K_CDUTCMD 00053u
 #define KW_EXECBANK 002601u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000007u
@@ -1035,6 +1039,9 @@
 #define KW_OCT32002 032002u
 #define KW_REPOSBIT 002000u
 #define KW_OCT20002 020002u
+#define KW_OCT13 000013u
+#define KW_200MS 006315u
+#define KW_13_14_15 070000u
 #define KW_ENDTASK {072537u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003452u,002063u}

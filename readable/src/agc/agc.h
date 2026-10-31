@@ -343,6 +343,11 @@ void das(unsigned address);
  * SQUARE. */
 void mp_at(unsigned address);
 
+/* EXTEND; MSU: the difference of two CDU angles, A less the erasable word
+ * at address, taken in two's complement (as the CDU counts) and given in
+ * ones' complement. */
+void msu_at(unsigned address);
+
 /* EXTEND; DV: A,L (a double-length dividend, its sign A's, or L's when A is
  * zero) divided by divisor (sign-extended, 16 bits): the quotient in A,
  * the remainder in L, both with the dividend's sign rules of the AGC's

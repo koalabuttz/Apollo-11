@@ -69,9 +69,9 @@ REPLACED = (
     # INTERRUPT_LEAD_INS.agc (src/lead_ins), WAITLIST.agc's RESUME exits
     # (src/waitlist) and the LM's T6-RUPT_PROGRAMS.agc (src/t6rupt).
     'rupt_lead_ins.o', 'lm_t6rupt.o',
-    # T4RUPT_PROGRAM.agc's display and dispatch core, IMU monitor and the
-    # LM's radar checks (src/t4rupt).
-    't4rupt_core.o', 'lm_t4rupt_imu.o', 'cm_t4rupt_imu.o', 'lm_t4rupt_rr.o',
+    # T4RUPT_PROGRAM.agc: the display and dispatch core, the IMU monitor,
+    # the LM's radar checks and the CM's optics (src/t4rupt).
+    't4rupt_core.o', 'lm_t4rupt_imu.o', 'cm_t4rupt_imu.o', 'lm_t4rupt_rr.o', 'cm_t4rupt_optics.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
