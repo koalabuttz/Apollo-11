@@ -64,10 +64,12 @@ REPLACED = (
     # FRESH_START_AND_RESTART.agc, STATEUP's interpretive code
     # (src/fresh_start/stateup.c, run by the readable interpreter).
     'lm_stateup.o', 'cm_stateup.o',
+    # KEYRUPT_UPRUPT.agc (src/keyrupt): both missions' tables.
+    'keyrupt_uprupt.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
-                    'dodowntm', 'slap1', 'v37xeq', 'interpret_listing')
+                    'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1')
 xb.OUT = READABLE / 'build/x86-flight'
 
 
