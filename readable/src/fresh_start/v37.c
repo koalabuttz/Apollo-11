@@ -7,7 +7,7 @@
  *
  * V37 is how the astronaut changes program: "VERB 37 ENTER, NN ENTER"
  * with NN the major mode. Pinball's MMCHANG comes here with NN in A. The
- * listing's own account (LM p. 226, CM p. 195):
+ * listing's own account (LM p. 226, CM p. 196):
  *   "1. CHECK IF NEW PROGRAM ALLOWED. ... 2. CHECK FOR VALIDITY OF
  *    PROGRAM SELECTED. ... 3. SERVICER IS TERMINATED IF IT HAS BEEN
  *    RUNNING. 4. INSTALL IS EXECUTED TO AVOID INTERRUPTING INTEGRATION.
@@ -98,7 +98,7 @@
  * EACH MAJOR MODE THAT CAN BE STARTED FROM THE KEYBOARD. THE ENTRIES ARE
  * PUT INTO THE TABLE WITH THE ENTRY FOR THE HIGHEST MAJOR MODE COMING
  * FIRST, TO THE LOWEST MAJOR MODE WHICH IS THE LAST ENTRY IN EACH TABLE."
- * (LM p. 233, CM p. 206.) A third, DNLADMM1, gives each one's downlist. */
+ * (LM p. 233, CM p. 205.) A third, DNLADMM1, gives each one's downlist. */
 
 /* The downlists (DNLSTCOD values), by the listing's = names. */
 #if LUMINARY099
@@ -107,7 +107,7 @@ enum { COSTALIN = 0, AGSUPDAT = 1, RENDEZVU = 2, ORBMANUV = 3, DESASCNT = 4, LUN
 enum { COSTALIN = 0, ENTRYUPD = 1, RENDEZVU = 2, POWERED = 3, P22DNLST = 4 };
 #endif
 
-/* FCADRMM1 -- LM pp. 233-234, CM pp. 207-208.
+/* FCADRMM1 -- LM pp. 233-234, CM p. 206.
  * "THE FCADRMM TABLE CONTAINS THE FCADR OF THE STARTING JOB OF THE MAJOR
  * MODE." */
 /* clang-format off */
@@ -232,7 +232,7 @@ const word DNLADMM1[] = {
 const unsigned V37_PROGRAMS = COUNT(PREMM1);
 
 #if COMANCHE055
-/* FLAGTABL -- CM p. 204. The bits RAKE clears in flag words 0-11. */
+/* FLAGTABL -- CM p. 203. The bits RAKE clears in flag words 0-11. */
 const word FLAGTABL[12] = {
     000000u, 000040u,          /* IDLEFAIL */
     006000u,                   /* P21FLAG, STEERSW */
@@ -386,7 +386,7 @@ void v37(void)
     isitp00(); /* "NO, CONTINUE WITH R00" */
 }
 
-/* ISITP00 (the LM's has no label) -- LM p. 227, CM p. 197.
+/* ISITP00 (the LM's has no label) -- LM p. 227, CM p. 198.
  * "IS NEW REQUEST P00": then straight to ISSERVON. Any other program only
  * if "NODO V37" (NODOFLAG) is clear, and only if it is listed (CHECKTAB). */
 static void isitp00(void)
@@ -405,14 +405,14 @@ static void isitp00(void)
     cantrod();
 }
 
-/* CANTROD (CM: CANTR00) -- LM p. 227, CM p. 197.
+/* CANTROD (CM: CANTR00) -- LM p. 227, CM p. 198.
  * Alarm 1520, "MAJOR MODE CHANGE NOT PERMITTED". ALARM returns to V37BAD. */
 static void cantrod(void)
 {
     tc_out(TC_ALARM_1520, ALARM); /* OCT 1520 */
 }
 
-/* V37BAD -- LM p. 227, CM p. 197.
+/* V37BAD -- LM p. 227, CM p. 198.
  * "RELEASES DISPLAY FROM ASTRONAUT", then "BRING BACK LAST NORMAL DISPLAY
  * IF THERE WAS ONE. OTHERWISE DO AN EOJ." (PINBRNCH). */
 void v37bad(void)
@@ -425,7 +425,7 @@ void v37bad_after_reldsp(void)
     tc_out(TC_PINBRNCH, POSTJUMP); /* CADR PINBRNCH */
 }
 
-/* CHECKTAB, AGAINMM -- LM pp. 227-228, CM p. 197.
+/* CHECKTAB, AGAINMM -- LM pp. 227-228, CM p. 198.
  * Look for the major mode in PREMM1, from its last word (the lowest
  * program) up: COM; AD MMNUMBER leaves MMNUMBER less the listed mode,
  * which is -0 when they are equal (x + -x is -0 in ones' complement).
@@ -460,7 +460,7 @@ static void checktab(void)
     }
 }
 
-/* ISSERVON -- LM p. 228, CM p. 197.
+/* ISSERVON -- LM p. 228, CM p. 199.
  * "V37 FLAG SET -- I.E., IS SERVICER GOING": then "TURN OFF THE AVERAGE
  * FLAG AND WAIT FOR SERVICER TO RETURN TO CANV37" (the LM through V37RET,
  * which OUTROUTE names, the CM straight). */
@@ -511,7 +511,7 @@ void v37ret(void)
 }
 #endif
 
-/* CANV37 -- LM p. 228, CM p. 197.
+/* CANV37 -- LM p. 228, CM p. 199.
  * The LM selects superbank 0 (WRITE SUPERBNK). The restart point R00AD
  * goes to TEMPFLSH, and group 1 to phase 4 (PHASCHNG, OCT 14). */
 void canv37(void)
@@ -525,7 +525,7 @@ void canv37(void)
     tc_out(TC_PHASCHNG, PHASCHNG); /* OCT 14 */
 }
 
-/* R00 (CM: ROC) -- LM p. 229, CM p. 197.
+/* R00 (CM: ROC) -- LM p. 229, CM p. 199.
  * "WAIT FOR INTEGRATION TO FINISH": CALL INTSTALL, interpretive, then EXIT
  * (DUMMYAD) back to the word after. */
 #if LUMINARY099
@@ -576,7 +576,7 @@ void r00_after_downflag_xovinflg(void)
 
 #else
 
-/* ROC, after the interpretive CALL INTSTALL; EXIT -- CM pp. 197-198.
+/* ROC, after the interpretive CALL INTSTALL; EXIT -- CM pp. 199-200.
  * "CLEAR CAUTION RESET AND TEST CONNECTOR OUTBIT" (channel 11); clear
  * the optics error counter's enable, star trackers, TVC enable, zero
  * optics, optics DAP and the S-IVB bits (channel 12) and the unused bits
@@ -633,7 +633,7 @@ void roc_after_downflag_r21mark(void)
 
 /* ---- P00 ---- */
 
-/* POOH, after RELDSP -- LM p. 229, CM p. 198.
+/* POOH, after RELDSP -- LM p. 229, CM p. 200.
  * "SET VARIABLE RESTART PRIORITY FOR P00 INTEGRATION", interrupts off
  * (the LM's CLRADMOD "DOES AN INHINT"), "TURN OFF NODOFLAG", restart
  * group 2 to phase 5 ("SET RESTART FOR STATEINT1"), and clear the
@@ -669,7 +669,7 @@ void pooh_after_clradmod(void)
     seudop00();
 }
 
-/* SEUDOP00 -- LM pp. 229-230, CM p. 198.
+/* SEUDOP00 -- LM pp. 229-230, CM p. 200.
  * "SET UP APPROPRIATE DOWNLIST CODE" (the current list finishes first).
  * The LM turns the engine off (ENGINOF1) and the DAP to coast (ALLCOAST);
  * both "TURN OFF TRACK, UPDATE FLAGS" (the CM also TARG1) and end
@@ -699,7 +699,7 @@ void seudop00_after_allcoast(void)
     tc_out(TC_V37KLEAN, IBNKCALL); /* GROUPKIL: CADR V37KLEAN */
 }
 
-/* After V37KLEAN -- LM p. 230, CM p. 198.
+/* After V37KLEAN -- LM p. 230, CM pp. 200-201.
  * "IS IT POOH": no, RENDV00; yes, P00KLEAN ("REDUNDANT EXCEPT FOR GROUP
  * 4") and GOMOD. */
 #if LUMINARY099
@@ -715,7 +715,7 @@ void groupkil_after_v37klean(void)
     tc_out(TC_P00KLEAN, IBNKCALL); /* CADR P00KLEAN */
 }
 
-/* GOMOD (LM: after P00KLEAN) -- LM p. 230, CM p. 198.
+/* GOMOD (LM: after P00KLEAN) -- LM p. 230, CM p. 201.
  * The new major mode into MODREG, and the software restart (GOPROG2)
  * starts the restart groups still set. */
 #if LUMINARY099
@@ -729,7 +729,7 @@ void gomod(void)
     gogoprog();
 }
 
-/* GOGOPROG -- LM p. 230, CM p. 198. */
+/* GOGOPROG -- LM p. 230, CM p. 201. */
 static void gogoprog(void)
 {
     tc_out(TC_POSTJUMP_PROG2, POSTJUMP); /* CADR GOPROG2 */
@@ -845,7 +845,7 @@ static void rendv00(void)
 
 #else
 
-/* KILL20 -- CM p. 199. "KILL GROUPS 1 + 2", then REV37 (P00FIZZ's
+/* KILL20 -- CM p. 201. "KILL GROUPS 1 + 2", then REV37 (P00FIZZ's
  * steps). */
 static void kill20(void)
 {
@@ -854,7 +854,7 @@ static void kill20(void)
     p00fizz();
 }
 
-/* P00FIZZ -- CM p. 199. With the rendezvous flag on, keep groups 1 and
+/* P00FIZZ -- CM p. 201. With the rendezvous flag on, keep groups 1 and
  * 2 (REV37); else KILL20. */
 static void p00fizz_cm(void)
 {
@@ -867,7 +867,7 @@ static void p00fizz_cm(void)
     kill20();
 }
 
-/* RENDV00, RENDN00 -- CM p. 199.
+/* RENDV00, RENDN00 -- CM p. 201.
  * "IS NEW PROG = 20": no, P00FIZZ. P20 again (MODREG 20): KILL20. P20
  * with the rendezvous flag set ("IS RENDEZVOO FLAG SET"): STATQUO, "SET
  * TRACKFLAG AND UPDATE FLAG", "KILL GROUP 4" and GOMOD. */
@@ -900,7 +900,7 @@ static void rendv00(void)
 
 #endif
 
-/* NOUVEAU -- LM p. 231, CM p. 199.
+/* NOUVEAU -- LM p. 231, CM p. 202.
  * A new program, not P00. With neither P20 nor P25 running (CM: no
  * rendezvous) "RESET IMUINUSE FLAG" first. */
 static void nouveau(void)
@@ -918,7 +918,7 @@ static void nouveau(void)
     tc_out(TC_DOWNFLAG_IMUSE, DOWNFLAG); /* ADRES IMUSE */
 }
 
-/* NOUVEAU +3 -- LM p. 231, CM p. 199.
+/* NOUVEAU +3 -- LM p. 231, CM p. 202.
  * The new program's downlist, then SEUDOP00. */
 void nouveau_after_downflag(void)
 {
@@ -927,7 +927,7 @@ void nouveau_after_downflag(void)
     seudop00();
 }
 
-/* V37NONO -- LM pp. 231-232, CM p. 199.
+/* V37NONO -- LM pp. 231-232, CM p. 202.
  * "COME HERE IF MM REQUESTED DOESN'T EXIST": the OPR ERR light (FALTON),
  * then V37BAD. */
 static void v37nono(void)
@@ -942,7 +942,7 @@ void v37nono_after_falton(void)
 
 /* ---- Starting the new program ---- */
 
-/* V37XEQ -- LM p. 232, CM p. 200.
+/* V37XEQ -- LM p. 232, CM p. 202.
  * Group 4's restart job: start the program at MINDEX. Its PREMM1 word,
  * cycled right four places (CYR), gives the priority; times BIT8 the E
  * bank; FCADRMM1 the bank and address of its first job. "TC SPVAC" (the
@@ -971,7 +971,7 @@ void v37xeq(void)
     tc_out(TC_SPVAC, SPVAC);
 }
 
-/* V37XEQC -- LM p. 232, CM p. 200.
+/* V37XEQC -- LM p. 232, CM pp. 202-203.
  * "UPON RETURN FROM FINDVAC PLACE THE NEW MM IN MODREG" (NEWMODEA),
  * "RELEASE DISPLAY" "AND EXIT". */
 void v37xeqc(void)
@@ -1065,7 +1065,7 @@ void r00top00_after_delayjob(void)
     isitp00();
 }
 
-/* INITSUB -- CM p. 200.
+/* INITSUB -- CM p. 203.
  * A subroutine: its return goes to MPAC +1 (QXCH). "SET E6 FOR DEADBAND
  * CODING" and stop the DAP's rates (STOPRATE). */
 static void initsub(void)
@@ -1077,7 +1077,7 @@ static void initsub(void)
     tc_out(TC_STOPRATE, STOPRATE);
 }
 
-/* INITSUB, after STOPRATE -- CM p. 200.
+/* INITSUB, after STOPRATE -- CM p. 203.
  * "RESTORE DEADBAND": the minimum (SETMINDB) or, with MAXDBFLG, the
  * maximum ("MAX DB SELECTED", SETMAXER). */
 void initsub_after_stoprate(void)
@@ -1096,7 +1096,7 @@ void initsub_after_setmindb(void)
     rake(); /* TCF RAKE */
 }
 
-/* RAKE -- CM p. 200. "THIS PART CLEARS FLAGWORD BITS": FLAGTABL's bits
+/* RAKE -- CM p. 203. "THIS PART CLEARS FLAGWORD BITS": FLAGTABL's bits
  * in flag words 11 down to 0. Then "NOW SET IMPULSW" (UPFLAG). */
 void rake(void)
 {

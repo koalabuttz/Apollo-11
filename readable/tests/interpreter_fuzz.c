@@ -28,8 +28,11 @@
  *
  * The run fails on a difference, and also when too little was compared to
  * mean anything: a crash in either core, more than a few cases abandoned
- * (a case that runs without end), fewer passes compared than cases, or
- * more than a quarter of the cases leaving the frame.
+ * (a case that runs without end), or, in a run of a thousand cases or
+ * more, fewer passes compared or more cases with none compared than the
+ * measured rates allow (MIN_PASSES, MAX_EMPTY), or more than a quarter of
+ * the cases leaving the frame. FUZZ_FIRST=n starts at case n (to rerun a
+ * failing case: the counts and floors are for the cases run).
  *
  *   interpreter-cases-<m> <lm.bin> <cm.bin> [cases] [seed]
  *
@@ -219,6 +222,14 @@ static void on_crash(int sig)
 /* Timeouts allowed per run: a case that loops without end is abandoned
  * (interp_core_fuzz.c), which a slow machine may also do to a long one. */
 #define MAX_ABANDONED 5u
+/* Measured at 20,000 cases (seeds 11 and 12, both missions): 1.21 to 1.24
+ * passes compared per case, 43 to 44 cases in a hundred with none. A run
+ * that compares fewer than MIN_PASSES per hundred cases, or has more than
+ * MAX_EMPTY in a hundred with none, stopped short somewhere. Runs under
+ * FLOOR_CASES (a FUZZ_FIRST rerun of a few cases) are too small to judge. */
+#define MIN_PASSES  115u
+#define MAX_EMPTY   47u
+#define FLOOR_CASES 1000u
 
 int main(int argc, char **argv)
 {
@@ -228,15 +239,18 @@ int main(int argc, char **argv)
     } fa, ra;
     unsigned cases = argc > 3 ? (unsigned)strtoul(argv[3], 0, 0) : 20000u;
     unsigned seed = argc > 4 ? (unsigned)strtoul(argv[4], 0, 0) : 1u;
-    static unsigned c, slots, refused, hung, unreal, unasm, bad, shown;
+    static bool judged;
+    static unsigned c, first, ran, slots, refused, hung, unreal, unasm, bad, shown, empty;
 
     (void)fuzz_main;
     if (argc < 3 || !apollo_rope_load(0, argv[1]) || !apollo_rope_load(1, argv[2])) {
         fprintf(stderr, "usage: interpreter-cases <lm.bin> <cm.bin> [cases] [seed]\n");
         return 2;
     }
-    for (c = getenv("FUZZ_FIRST") ? (unsigned)atoi(getenv("FUZZ_FIRST")) : 0u; c < cases; ++c) {
-        unsigned slot;
+    first = getenv("FUZZ_FIRST") ? (unsigned)atoi(getenv("FUZZ_FIRST")) : 0u;
+    if (first > cases) first = cases;
+    for (c = first; c < cases; ++c) {
+        unsigned slot, compared = slots;
         apollo_overlay_state *f = &fa.s, *r = &ra.s, pre;
 
         rs = 0x9e3779b97f4a7c15ull ^ ((uint64_t)(seed * 1000003u + c) << 1);
@@ -336,18 +350,25 @@ int main(int argc, char **argv)
             }
             if (sf != EXEC_OK) break;
         }
+        if (slots == compared) ++empty;
     }
     arm(0);
-    printf("%s: %u cases, %u passes compared, %u refused, %u abandoned (%u crashed), %u left the "
-           "frame, %u unassembled operands, %u differ\n",
-           MISSION ? "CM" : "LM", cases, slots, refused, hung, crashed, unreal, unasm, bad);
+    ran = cases - first;
+    printf("%s: %u cases, %u passes compared, %u cases with none, %u refused, %u abandoned (%u "
+           "crashed), %u left the frame, %u unassembled operands, %u differ\n",
+           MISSION ? "CM" : "LM", ran, slots, empty, refused, hung, crashed, unreal, unasm, bad);
     /* Cases the comparison never sees must not hide a failure: no crash, a
-     * few timeouts at most (a slow machine), and at least one pass compared
-     * per case, with most cases staying in the frame. */
-    if (crashed || hung > MAX_ABANDONED || slots < cases || unreal > cases / 4u) {
+     * few timeouts at most (a slow machine), and, in a run large enough to
+     * judge, enough passes compared, few cases with none, and most cases
+     * staying in the frame. */
+    judged = ran >= FLOOR_CASES;
+    if (crashed || hung > MAX_ABANDONED ||
+        (judged && (slots < ran / 100u * MIN_PASSES || empty > ran / 100u * MAX_EMPTY ||
+                    unreal > ran / 4u))) {
         printf("FAIL: %u crashed, %u abandoned (at most %u), %u passes compared (at least %u), "
-               "%u left the frame (at most %u)\n",
-               crashed, hung, MAX_ABANDONED, slots, cases, unreal, cases / 4u);
+               "%u cases with none (at most %u), %u left the frame (at most %u)\n",
+               crashed, hung, MAX_ABANDONED, slots, ran / 100u * MIN_PASSES, empty,
+               ran / 100u * MAX_EMPTY, unreal, ran / 4u);
         return 1;
     }
     return bad ? 1 : 0;

@@ -601,22 +601,22 @@ keyrupt-cases: $(BUILD)/keyrupt-oracle $(BUILD)/keyrupt-cases-lm $(BUILD)/keyrup
 # same random states.
 RUPT_COMMON := $(KU_COMMON)
 RUPT_LM_NAMES := lm_lead_in_routines lm_lead_in_hot_routines lm_t6rupt_routines \
-	lm_t6rupt_hot_routines lm_t6rupt_jets_hot_routines
-RUPT_NAMES := $(RUPT_LM_NAMES) cm_lead_in_routines
+	lm_t6rupt_hot_routines lm_t6rupt_jets_hot_routines lm_dntm_rupt_routines
+RUPT_CM_NAMES := cm_lead_in_routines cm_dntm_rupt_routines
+RUPT_NAMES := $(RUPT_LM_NAMES) $(RUPT_CM_NAMES)
 
-$(BUILD)/rupt-faithful.o: $(PORT)/src/rupt_lead_ins.c $(PORT)/src/lm_t6rupt.c
+RUPT_FAITHFUL := rupt_lead_ins lm_t6rupt lm_dntm_rupt cm_dntm_rupt
+$(BUILD)/rupt-faithful.o: $(RUPT_FAITHFUL:%=$(PORT)/src/%.c)
 	@mkdir -p $(dir $@)
-	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(RUPT_NAMES),-D$(n)=faithful_$(n)) \
-		-c $(PORT)/src/rupt_lead_ins.c -o $@.lead_ins
-	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(RUPT_NAMES),-D$(n)=faithful_$(n)) \
-		-c $(PORT)/src/lm_t6rupt.c -o $@.t6rupt
-	ld -r $@.lead_ins $@.t6rupt -o $@
+	$(foreach f,$(RUPT_FAITHFUL),$(CC) $(PORT_CFLAGS) $(INCLUDES) \
+		$(foreach n,$(RUPT_NAMES),-D$(n)=faithful_$(n)) -c $(PORT)/src/$(f).c -o $@.$(f) &&) true
+	ld -r $(RUPT_FAITHFUL:%=$@.%) -o $@
 $(BUILD)/rupt-readable-lm.o: $(RUPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
 	ld -r $^ -o $@.all
 	objcopy $(foreach n,$(RUPT_LM_NAMES),--keep-global-symbol=$(n)) $@.all $@
 $(BUILD)/rupt-readable-cm.o: $(RUPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
 	ld -r $^ -o $@.all
-	objcopy --keep-global-symbol=cm_lead_in_routines $@.all $@
+	objcopy $(foreach n,$(RUPT_CM_NAMES),--keep-global-symbol=$(n)) $@.all $@
 
 $(BUILD)/rupt-lead-ins-oracle: $(BUILD)/rupt-readable-lm.o $(BUILD)/rupt-readable-cm.o
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(RUPT_COMMON) $(PORT)/tests/rupt_lead_ins_cases.c \

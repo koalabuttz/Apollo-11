@@ -29,7 +29,7 @@ static void redsptem(void);
 static void agsvcalc(void);
 static void ckstall(void);
 
-/* AGSINIT -- LM p. 207.
+/* AGSINIT -- LM p. 206.
  * "CHECK REFSMFLG": with REFSMMAT good, display the AGS clock's zero
  * (REDSPTEM); else alarm 220 ("REFSMMAT IS BAD") and end. CCS of one bit
  * of FLAGWRD3 is positive or +0, never negative. */

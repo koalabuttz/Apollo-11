@@ -9,7 +9,8 @@ name: readable-ci
 # It runs on a change to readable/ and on a change to what readable/ is
 # built from and checked against: the faithful port's sources, its tests
 # (the oracles), the tools that build and fly the x86 program and run the
-# fuzz, and the listings.
+# fuzz, what those read (the REU rope image, compiled into the x86 host
+# objects, and the docs' JSON tables), and the listings.
 on:
   pull_request:
     branches: [main]
@@ -20,6 +21,8 @@ on:
       - 'c64-port/include/**'
       - 'c64-port/tests/**'
       - 'c64-port/platform/x86/**'
+      - 'c64-port/platform/c64/rope_image_reu.c'
+      - 'c64-port/docs/*.json'
       - 'c64-port/tools/**'
       - 'c64-port/Makefile'
       - 'Luminary099/**'
@@ -34,6 +37,8 @@ on:
       - 'c64-port/include/**'
       - 'c64-port/tests/**'
       - 'c64-port/platform/x86/**'
+      - 'c64-port/platform/c64/rope_image_reu.c'
+      - 'c64-port/docs/*.json'
       - 'c64-port/tools/**'
       - 'c64-port/Makefile'
       - 'Luminary099/**'

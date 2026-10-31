@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "rupt_lead_ins.h"
+#include "dntm_rupt_routines.h"
 #if LUMINARY099
 #include "lm_t6rupt_routines.h"
 #include "p66_bias.h"
@@ -27,7 +28,7 @@ typedef p66_bias_io mission_io;
 #define MISSION "LM"
 extern const agc_routine_table faithful_lm_lead_in_routines, faithful_lm_lead_in_hot_routines,
     faithful_lm_t6rupt_routines, faithful_lm_t6rupt_hot_routines,
-    faithful_lm_t6rupt_jets_hot_routines;
+    faithful_lm_t6rupt_jets_hot_routines, faithful_lm_dntm_rupt_routines;
 static const struct {
     const char *name;
     const agc_routine_table *readable, *faithful;
@@ -37,16 +38,18 @@ static const struct {
     {"lm_t6rupt_routines", &lm_t6rupt_routines, &faithful_lm_t6rupt_routines},
     {"lm_t6rupt_hot_routines", &lm_t6rupt_hot_routines, &faithful_lm_t6rupt_hot_routines},
     {"lm_t6rupt_jets_hot_routines", &lm_t6rupt_jets_hot_routines,
-     &faithful_lm_t6rupt_jets_hot_routines}};
+     &faithful_lm_t6rupt_jets_hot_routines},
+    {"lm_dntm_rupt_routines", &lm_dntm_rupt_routines, &faithful_lm_dntm_rupt_routines}};
 #else
 #include "cm_native_image.h"
 typedef cm_native_io mission_io;
 #define MISSION "CM"
-extern const agc_routine_table faithful_cm_lead_in_routines;
+extern const agc_routine_table faithful_cm_lead_in_routines, faithful_cm_dntm_rupt_routines;
 static const struct {
     const char *name;
     const agc_routine_table *readable, *faithful;
-} tables[] = {{"cm_lead_in_routines", &cm_lead_in_routines, &faithful_cm_lead_in_routines}};
+} tables[] = {{"cm_lead_in_routines", &cm_lead_in_routines, &faithful_cm_lead_in_routines},
+              {"cm_dntm_rupt_routines", &cm_dntm_rupt_routines, &faithful_cm_dntm_rupt_routines}};
 #endif
 
 #define CASES 65536u
