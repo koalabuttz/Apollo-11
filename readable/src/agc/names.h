@@ -649,6 +649,149 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define DNTM1  034u
 #define DNTM2  035u
 
+/* ---- Fresh start and restart (FRESH_START_AND_RESTART.agc) ---- */
+
+/* Its erasable words, by the listing's names (ADDRESS_OF gives each one's
+ * address for the instructions). The restart groups' phase pairs:
+ * -PHASEn and PHASEn, the phase complemented and the phase. */
+#define K_MINUS_PHASE1 K_MPHASE1
+#define K_MINUS_PHASE2 K_MPHASE2
+#define K_MINUS_PHASE3 K_MPHASE3
+#define K_MINUS_PHASE4 K_MPHASE4
+#define K_MINUS_PHASE5 K_MPHASE5
+#define K_MINUS_PHASE6 K_MPHASE6
+#if LUMINARY099
+#define K_MINUS_RATEDB K_MRATEDB /* -RATEDB */
+#endif
+#define STATE(n) ERASABLE(K_STATE + (n)) /* STATE +n: flag word n */
+
+/* Its channels: CHAN5 and CHAN6 (the RCS jets), DSALMOUT (11), CHAN12,
+ * CHAN14, CHAN33, MNKEYIN (15, the main DSKY's keys) and NAVKEYIN (16, the
+ * navigation DSKY's keys and the MARK buttons); SUPERBNK is channel 7 and
+ * LCHAN (1) register L. */
+#define CHAN5    ((unsigned)K_CHAN5)
+#define CHAN6    ((unsigned)K_CHAN6)
+#define DSALMOUT ((unsigned)K_DSALMOUT)
+#define CHAN12   ((unsigned)K_CHAN12)
+#define CHAN14   ((unsigned)K_CHAN14)
+#define CHAN33   ((unsigned)K_CHAN33)
+#define MNKEYIN  ((unsigned)K_MNKEYIN)
+#define NAVKEYIN ((unsigned)K_NAVKEYIN)
+
+/* Its constants. PRIO12 is the label of an instruction (TCF 10000) the
+ * fresh start loads as the number 12000. SWINIT +n is flag word n's fresh
+ * start value. */
+#define PRIO12_WORD ((word)KW_PRIO12)
+#define BITS4_6     ((word)KW_BITS4_6) /* BITS4&6 */
+#define BITS_9_6_4  ((word)KW_9_6_4)   /* 9,6,4: bits 9, 6 and 4 */
+#define BIT3        ((word)KW_BIT3)
+#define BIT4        ((word)KW_BIT4)
+#define HI5         ((word)KW_HI5)
+#define EBANK3      ((word)KW_EBANK3)
+#define EBANK6      ((word)KW_EBANK6)
+#define NUMGRPS     ((word)KW_NUMGRPS)
+#define MINUS_ELR   ((word)KW_MELR) /* -ELR: minus the ERROR LIGHT RESET key */
+#define IM30INIF    ((word)KW_IM30INIF)
+#define IM30INIR    ((word)KW_IM30INIR)
+#define IM33INIT    ((word)KW_IM33INIT)
+#define IFAILINH    ((word)KW_IFAILINH)
+#define INTFLBIT    ((word)KW_INTFLBIT)
+#define ENGONBIT    ((word)KW_ENGONBIT)
+#define RACTCADR    ((word)KW_RACTCADR)
+#define LDNPHAS1    ((word)KW_LDNPHAS1)
+#define STARTEB     ((word)KW_STARTEB)
+#define VAC1ADRC    ((word)KW_VAC1ADRC)
+#define LTHVACA     ((word)KW_LTHVACA)
+#define NOUTCON     ((word)KW_NOUTCON)
+#define LESCHK      ((word)KW_LESCHK)
+#define VD1         ((word)KW_VD1)
+static const word SWINIT[12] = {KW_SWINIT,   KW_SWINITP1, KW_SWINITP2,  KW_SWINITP3,
+                                KW_SWINITP4, KW_SWINITP5, KW_SWINITP6,  KW_SWINITP7,
+                                KW_SWINITP8, KW_SWINITP9, KW_SWINITP10, KW_SWINITP11};
+#if LUMINARY099
+#define MAXDB     ((word)KW_MAXDB)
+#define BOOLSTRT  ((word)KW_BOOLSTRT)
+#define STIKSTRT  ((word)KW_STIKSTRT)
+#define RATESTRT  ((word)KW_RATESTRT)
+#define FULLAPS   ((word)KW_FULLAPS)
+#define OCT_77001 ((word)KW_77001OCT) /* 77001OCT */
+#define DEC_60    ((word)KW_60DEC)    /* 60DEC */
+#define REFSMBIT  ((word)KW_REFSMBIT)
+#define SURFFBIT  ((word)KW_SURFFBIT)
+#define CMOONBIT  ((word)KW_CMOONBIT)
+#define LMOONBIT  ((word)KW_LMOONBIT)
+#define APSFLBIT  ((word)KW_APSFLBIT)
+#define RSFLGBTS  ((word)KW_RSFLGBTS)
+#define DIDFLBIT  ((word)KW_DIDFLBIT)
+#define RODFLBIT  ((word)KW_RODFLBIT)
+#define P21FLBIT  ((word)KW_P21FLBIT)
+#define RMODINIT  ((word)KW_RMODINIT)
+#define ACCSOKAY  ((word)KW_ACCSOKAY)
+#define OCT30001  ((word)KW_OCT30001)
+#define READRBIT  ((word)KW_READRBIT)
+#define NR29FBIT  ((word)KW_NR29FBIT)
+#define OCT32001  ((word)KW_OCT32001)
+#define OCT27470  ((word)KW_OCT27470)
+#define NORRMBIT  ((word)KW_NORRMBIT)
+#define R77FLBIT  ((word)KW_R77FLBIT)
+#define OCT74160  ((word)KW_OCT74160)
+#define OCT33     ((word)KW_OCT33)
+static const word IDLEADR[2] = KW_IDLEADR; /* 2CADR DAPIDLER */
+#else
+#define OPTINITF ((word)KW_OPTINITF)
+#define OPTINITR ((word)KW_OPTINITR)
+#define NOP01BIT ((word)KW_NOP01BIT)
+#define OCT6200  ((word)KW_OCT6200)
+#define INTMASK  ((word)KW_INTMASK)
+#define HALF_SEC ((word)KW__5SEC) /* .5SEC */
+#define OCT37    ((word)KW_OCT37)
+#define OCT77603 ((word)KW_OCT77603)
+#define OCT74777 ((word)KW_OCT74777)
+#define PRIO25   ((word)KW_PRIO25)
+#define SKIPVBIT ((word)KW_SKIPVBIT)
+/* T5IDLER: four 2CADRs, for the T5RUPT owner FLAGWRD6 names. */
+static const word T5IDLER[4][2] = {KW_T5IDLER, KW_T5IDLERP2, KW_T5IDLERP4, KW_T5IDLERP6};
+#endif
+
+/* Its labels, and the routines elsewhere it calls. */
+#define MMDSPLAY ((word)K_MMDSPLAY)
+#define PHASCHNG ((word)K_PHASCHNG)
+#define SLAP1    ((word)K_SLAP1)
+#define STARTSW  ((word)K_STARTSW)
+#define SKIPSIM  ((word)K_SKIPSIM)
+#define DOFSTART ((word)K_DOFSTART)
+#define ENDRSTRT ((word)K_ENDRSTRT)
+#define MR_KLEAN ((word)K_MR_KLEAN) /* MR.KLEAN */
+#define P00KLEAN ((word)K_P00KLEAN)
+#define V37KLEAN ((word)K_V37KLEAN)
+#define GOPROG   ((word)K_GOPROG)
+#define BUTTONS  ((word)K_BUTTONS)
+#define ENEMA    ((word)K_ENEMA)
+#define GOPROG2  ((word)K_GOPROG2)
+#define GOPROG3  ((word)K_GOPROG3)
+#define PCLOOP   ((word)K_PCLOOP)
+#define NXTRST   ((word)K_NXTRST)
+#define PINACT   ((word)K_PINACT)
+#define PTBAD    ((word)K_PTBAD)
+#define LIGHTSET ((word)K_LIGHTSET)
+#define NONAVKEY ((word)K_NONAVKEY)
+#define STARTSUB ((word)K_STARTSUB)
+#define STARTSB2 ((word)K_STARTSB2)
+#define GOTOPOOH ((word)K_GOTOPOOH)
+#define NOQRSM   ((word)K_NOQRSM)
+#if LUMINARY099
+#define DOFSTRT1 ((word)K_DOFSTRT1)
+#define DORSTART ((word)K_DORSTART)
+#define SETINFL  ((word)K_SETINFL)
+#define GOPROG2A ((word)K_GOPROG2A)
+#define STARTSB1 ((word)K_STARTSB1)
+#else
+#define ELRSKIP  ((word)K_ELRSKIP)
+#define NOCOARSE ((word)K_NOCOARSE)
+#define T5IDLOC  ((word)K_T5IDLOC)
+#define STOPRATE ((word)K_STOPRATE)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
