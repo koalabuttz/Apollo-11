@@ -105,22 +105,24 @@ NOUNS_SOURCES := src/agc/agc.c src/pinball_noun_tables/readers.c src/pinball_nou
 	src/binding/noun_reader_routines.c
 GEOMETRY_SOURCES := $(INTERPRETER_SOURCES) src/geometry/geometry.c src/rtb_op_codes/rtb_op_codes.c \
 	src/binding/geometry_routines.c
+IMU_COMP_SOURCES := src/agc/agc.c src/imu_compensation/imu_compensation.c src/binding/machine.c \
+	src/binding/imu_compensation_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
-	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES))
+	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
-	extended-verbs-cases pinball-noun-tables-cases geometry-cases
+	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1138,3 +1140,44 @@ format:
 clean:
 	rm -rf $(BUILD)
 
+# IMU_COMPENSATION_PACKAGE, both missions: the port's test
+# (tests/test_imu_compensation.c, its frozen cases run to their stops,
+# composed with the faithful INTER-BANK_COMMUNICATION and Executive,
+# against the original program's yaAGC digests) on the readable routines,
+# both missions' in one program: each mission's readable objects built
+# into one object that keeps only its table's name global. Then
+# tests/imu_compensation_cases.c side by side, mission by mission.
+ICP_MK := $(PORT)/tools/mk/imu-compensation.mk
+ICP_PORT := $(addprefix $(PORT)/,$(filter-out src/imu_compensation.c,$(shell sed -n 's/^ICP_SRC = //p' $(ICP_MK))))
+ICP_PORT_FLAGS := -DP66_NATIVE_DISPATCH_ONLY -ffunction-sections -fdata-sections -Wl,--gc-sections
+
+$(BUILD)/imu-compensation-readable-lm.o: $(IMU_COMP_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=lm_imu_compensation_routines $@.all $@
+$(BUILD)/imu-compensation-readable-cm.o: $(IMU_COMP_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=cm_imu_compensation_routines $@.all $@
+$(BUILD)/imu-compensation-oracle: $(BUILD)/imu-compensation-readable-lm.o \
+		$(BUILD)/imu-compensation-readable-cm.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(ICP_PORT_FLAGS) $(ICP_PORT) $(PORT)/tests/test_imu_compensation.c \
+		$^ -o $@
+$(BUILD)/imu-compensation-faithful.o: $(PORT)/src/imu_compensation.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlm_imu_compensation_routines=faithful_lm_imu_compensation_routines \
+		-Dcm_imu_compensation_routines=faithful_cm_imu_compensation_routines -c $< -o $@
+$(BUILD)/imu-compensation-cases-lm: $(IMU_COMP_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(BUILD)/imu-compensation-faithful.o tests/imu_compensation_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c \
+		$(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+		$(filter %.o,$^) tests/imu_compensation_cases.c -o $@
+$(BUILD)/imu-compensation-cases-cm: $(IMU_COMP_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(BUILD)/imu-compensation-faithful.o tests/imu_compensation_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c \
+		$(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+		$(filter %.o,$^) tests/imu_compensation_cases.c -o $@
+
+imu-compensation-cases: $(BUILD)/imu-compensation-oracle $(BUILD)/imu-compensation-cases-lm \
+		$(BUILD)/imu-compensation-cases-cm
+	./$(BUILD)/imu-compensation-oracle
+	./$(BUILD)/imu-compensation-cases-lm
+	./$(BUILD)/imu-compensation-cases-cm

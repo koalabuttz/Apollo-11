@@ -1775,6 +1775,43 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define TCDANZIG       ((word)K_TCDANZIG)
 #endif
 
+/* ---- IMU compensation (IMU_COMPENSATION_PACKAGE.agc, bank 06) ---- */
+
+/* Its labels. LGCOMP labels a word, ECADR GCOMP: the E-bank and address
+ * of GCOMP, which CAF LGCOMP reads as a constant (LGCOMP_WORD). */
+#define ONE_PIPA    ((word)K_1_PIPA)  /* 1/PIPA */
+#define ONE_PIPA1   ((word)K_1_PIPA1) /* 1/PIPA1 */
+#define IRIGCOMP    ((word)K_IRIGCOMP)
+#define IRIG1       ((word)K_IRIG1)
+#define IRIGX       ((word)K_IRIGX)
+#define IRIGY       ((word)K_IRIGY)
+#define IRIGZ       ((word)K_IRIGZ)
+#define ONE_GYRO    ((word)K_1_GYRO) /* 1/GYRO */
+#define LGCOMP      ((word)K_LGCOMP)
+#define LGCOMP_WORD ((word)KW_LGCOMP)
+#define GCOMP1      ((word)K_GCOMP1)
+#define NBDONLY     ((word)K_NBDONLY)
+#define NBD2        ((word)K_NBD2)
+#define NBD3        ((word)K_NBD3)
+#define LASTBIAS    ((word)K_LASTBIAS)
+#if LUMINARY099
+#define GCOMPZER ((word)K_GCOMPZER)
+#define COMPCHK  ((word)KW_COMPCHK) /* DEC -1 */
+#endif
+
+/* Its constants. */
+#define PRIO21 ((word)KW_PRIO21)
+#define PRIO31 ((word)KW_PRIO31)
+#define NEG1   ((word)KW_NEG1)
+
+/* Its erasable words are named by ADDRESS_OF: GCOMP (three double words,
+ * the gyro commands of X, Y and Z) and GCOMPSW, the compensation
+ * coefficients NBDX..NBDZ, ADIAX..ADIAZ and ADSRAX..ADSRAZ, PIPABIAS and
+ * PIPASCF (pairs, by axis), all in E-bank 3; DELVX..DELVZ, the PIPA counts;
+ * 1/PIPADT (ONE_PIPADT), the time of the last compensation; PIPTIME (LM)
+ * and PIPTIME1 (CM), SERVICER's time of the last PIPA reading. */
+#define K_ONE_PIPADT K_1_PIPADT
+
 /* 1STO2S, 2V1STO2S and their 1TO2SUB, RTB routines (RTB_OP_CODES.agc). */
 #define ONE_STO2S   ((word)K_1STO2S)
 #define TWO_V1STO2S ((word)K_2V1STO2S)

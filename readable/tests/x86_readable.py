@@ -108,11 +108,13 @@ REPLACED = (
     # LEM_GEOMETRY.agc and CSM_GEOMETRY.agc (src/geometry).
     'lm_geometry.o',
     'cm_geometry.o',
+    # IMU_COMPENSATION_PACKAGE.agc, both missions' tables (src/imu_compensation).
+    'imu_compensation.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
-                    't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab')
+                    't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa')
 xb.OUT = READABLE / 'build/x86-flight'
 
 
