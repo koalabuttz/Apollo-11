@@ -430,6 +430,7 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define VSQSUB         ((word)K_VSQSUB)
 #define COSINE         ((word)K_COSINE)
 #define SN1            ((word)K_SN1)
+#define POLY           ((word)K_POLY)
 #define POLY2          ((word)K_POLY2)
 #define ARCCOS         ((word)K_ARCCOS)
 #define ACOS_EQ_0      ((word)K_ACOS_EQ_0) /* ACOS=0 */
@@ -1754,9 +1755,28 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
  * words are named by ADDRESS_OF: RADMODES, MODEA and MODEB. */
 #define RRANGLES ((word)K_RRANGLES)
 #define ANTENBIT BIT12 /* ANTENBIT = BIT12: RADMODES's bit for the radar's mode 2 */
+#else
+/* The basic code among CSM_GEOMETRY's interpretive code: SXTLOGIC (an RTB
+ * routine) and LOG's, around its TC POLY. */
+#define SXTLOGIC       ((word)K_SXTLOGIC)
+#define LOG            ((word)K_LOG)
+#define TEN_DEGS_MINUS ((word)KW_10DEGSM) /* 10DEGS-: DEC 3600 */
+static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
+
+/* TRANSP1 and TRANSP2, RTB routines (RT8_OP_CODES.agc), and the E-banks
+ * of the matrices they transpose: XNB's and XNB1's (ECADRs). */
+#define TRANSP1        ((word)K_TRANSP1)
+#define TRANSP2        ((word)K_TRANSP2)
+#define XNBEB          ((word)KW_XNBEB)
+#define XNB1EB         ((word)KW_XNB1EB)
+
+/* TCDANZIG = ENDT(X) (TIME_OF_FREE_FALL.agc), the basic TC DANZIG a BOVB
+ * goes to only to reset OVFIND. */
+#define TCDANZIG       ((word)K_TCDANZIG)
 #endif
 
-/* 2V1STO2S and its 1TO2SUB, RTB routines (RTB_OP_CODES.agc). */
+/* 1STO2S, 2V1STO2S and their 1TO2SUB, RTB routines (RTB_OP_CODES.agc). */
+#define ONE_STO2S   ((word)K_1STO2S)
 #define TWO_V1STO2S ((word)K_2V1STO2S)
 #define ONE_TO2SUB  ((word)K_1TO2SUB)
 

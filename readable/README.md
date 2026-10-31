@@ -104,6 +104,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Extended verbs, part 9 | `EXTENDED_VERBS.agc` (CM pp. 236-238, 259-265), the CM's interpretive words of the tracking verbs, and the rest of its fan | [`src/extended_verbs/`](src/extended_verbs/) | The interpretive code V56, V66, V47, V87 and V88 hand to the interpreter, in the listing's notation, run by the readable interpreter: TRACKTRM's CALL INTSTALL, SETVHFLG's and RESETVHF's VHFRFLAG switches, TACHEXIT's PTOACSM, SVDWN1 and SVDWN2 (both vehicles' state vectors brought up to date), and LMTOCM's sphere of influence switches; and the four fan words after V70's (V71-V73's update programs and V74's erasable dump), which the parts' tables do not list. With it the CM's EXTENDED_VERBS.agc is all readable C, and the CM flight program flies it in place of the faithful port's compiled copy of the file |
 | Noun tables | `PINBALL_NOUN_TABLES.agc` (LM pp. 301-319, CM pp. 268-284) | [`src/pinball_noun_tables/`](src/pinball_noun_tables/) | The tables PINBALL looks a noun up in: NNADTAB (where its data is: one ECADR for a normal noun, 00-39, or for a mixed noun, 40-99, its components' codes and where their three ECADRs start in IDADDTAB), NNTYPTAB (how many components and how each is scaled), RUTMXTAB (a mixed noun's scale routines), and SFINTAB and SFOUTAB (the scale factors for loading and for display), each in the listing's notation word by word; and their readers in bank 42, which PINBALL calls with DXCH Z: LODNNTAB (a noun's entries, into NNADTEM, NNTYPTEM, MIXBR and for a mixed noun RUTMXTEM and IDAD1TEM-IDAD3TEM), GTSFOUT and GTSFIN (a scale factor's double word into SFTEMP1 and SFTEMP2) |
 | LM geometry | `LEM_GEOMETRY.agc` (LM pp. 320-325) | [`src/geometry/`](src/geometry/) | SVDWN2 and SVDWN1 (a state vector, conic plus deviations, rescaled into the downlink's words), RRANGLES (a line of sight to the rendezvous radar's gimbal angles in both modes, with RTB 2V1STO2S and the basic code that swaps MODEA and MODEB in mode 2) and RRNB, RRNB1 and RRNBMPAC (the radar's angles back to a line of sight, with RTB CDULOGIC): interpretive code in the listing's notation, run by the readable interpreter. RTB_OP_CODES.agc's 2V1STO2S and 1TO2SUB are readable too ([`src/rtb_op_codes/`](src/rtb_op_codes/)) |
+| CM geometry | `CSM_GEOMETRY.agc` (CM pp. 285-296) | [`src/geometry/`](src/geometry/) | SXTNB (the sextant's angles to a line of sight, with RTB CDULOGIC and the basic RTB routine SXTLOGIC, the sextant's offset), CALCSXA, SXTANG and SXTANG1 (a star's direction to the sextant's angles, with RTB TRANSP1, TRANSP2 and 1STO2S), LOG (a natural log: interpretive code around basic code that calls POLY and SHORTMP), EARROT1 and EARROT2 (a target on the earth turned with it) and SVDWN1 and SVDWN2 (the LM's SVDWN2 and SVDWN1, their names switched). RT8_OP_CODES.agc's 1STO2S, TRANSP1 and TRANSP2 are readable too |
 
 Beside them:
 
@@ -255,10 +256,10 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    readable and faithful readers side by side on those cases stirred 16
    ways (277,248 runs). `make geometry-cases` runs the faithful port's
    test of the geometry (its 665 frozen cases of both missions, each run
-   to its stop against yaAGC digests) with the readable LM routines in
-   place of the faithful ones, then checks the 105 interpretive words
-   against the rope, and runs readable and faithful side by side at each
-   of the 58 keys from 4,096 states. `make names-check` checks
+   to its stop against yaAGC digests) with each mission's readable
+   routines in place of the faithful ones, then checks the interpretive
+   words against the ropes (105 LM, 176 CM), and runs readable and
+   faithful side by side at each key (58 LM, 92 CM) from 4,096 states. `make names-check` checks
    the generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight

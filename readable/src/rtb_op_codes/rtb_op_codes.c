@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* RTB_OP_CODES.agc (Luminary099) and RT8_OP_CODES.agc (Comanche055), the
  * same code in both: the routines an interpretive RTB runs. So far
- * CDULOGIC, and 2V1STO2S with its 1TO2SUB. */
+ * CDULOGIC, 1STO2S and 2V1STO2S with their 1TO2SUB, and the CM's TRANSP1
+ * and TRANSP2. */
 #include "rtb_op_codes.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
@@ -30,6 +31,20 @@ void cdulogic(void)
     mp(HALF); /* EXTEND; MP HALF */
     das(ADDRESS_OF(MPAC));
     continue_at(DANZIG);
+}
+
+/* 1STO2S -- LM p. 1397, CM p. 1509.
+ * "CONVERT THE DP 1'S COMPLEMENT ANGLE SCALED IN REVOLUTIONS TO A SINGLE
+ * PRECISION 2'S COMPLEMENT ANGLE SCALED IN HALF-REVOLUTIONS": 1TO2SUB
+ * does it, leaving the angle in MPAC; MPAC +1 gets +0 and NEWMODE sets
+ * the mode to double precision (A +0). */
+void one_sto2s(void)
+{
+    tc_at(ONE_STO2S);
+    one_to2sub();
+    set_A(ZERO); /* CAF ZERO */
+    ts(ADDRESS_OF(MPAC) + 1u);
+    newmode(); /* TCF NEWMODE */
 }
 
 /* 2V1STO2S -- LM p. 1398, CM p. 1509.
@@ -74,3 +89,44 @@ static void one_to2sub(void)
     }
     tc_through(Q_ADDRESS); /* TC Q */
 }
+
+#if !LUMINARY099
+/* TRANSP1, TRANSP2 -- CM p. 1513.
+ * "EACH ROUTINE TAKES A 3X3 MATRIX STORED IN DOUBLE PRECISION IN A FIXED
+ * AREA OF ERASABLE MEMORY AND REPLACES IT WITH THE TRANSPOSE MATRIX.
+ * TRANSP1 USES LOCATIONS XNB+0,+1 THROUGH XNB+16D, 17D AND TRANSP2 USES
+ * LOCATIONS XNB1+0,+1 THROUGH XNB1+16D, 17D. EACH MATRIX IS STORED BY
+ * ROWS." The diagonal stays; each of the three pairs across it swaps
+ * through A,L, three DXCHes a pair: rows 1 and 2's (+2 and +6), 1 and 3's
+ * (+4 and +12D), 2 and 3's (+10D and +14D). Its EBANK set from the
+ * matrix's ECADR, the A,L left with that ECADR and the L it came with. */
+static void transpose(unsigned matrix)
+{
+    dxch(matrix + 2u);
+    dxch(matrix + 6u);
+    dxch(matrix + 2u);
+
+    dxch(matrix + 4u);
+    dxch(matrix + 12u);
+    dxch(matrix + 4u);
+
+    dxch(matrix + 10u);
+    dxch(matrix + 14u);
+    dxch(matrix + 10u);
+    continue_at(DANZIG); /* TCF DANZIG */
+}
+
+void transp1(void)
+{
+    set_A(XNBEB); /* CAF XNBEB */
+    ts(EBANK_ADDRESS);
+    transpose(ADDRESS_OF(XNB));
+}
+
+void transp2(void)
+{
+    set_A(XNB1EB); /* CAF XNB1EB */
+    ts(EBANK_ADDRESS);
+    transpose(ADDRESS_OF(XNB1));
+}
+#endif
