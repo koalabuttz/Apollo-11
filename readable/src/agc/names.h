@@ -517,9 +517,8 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define ALARM1   ((word)K_ALARM1)
 #define ALMNCADR ((word)K_ALMNCADR)
 #define FLAGS    ((word)K_FLAGS)
-#else
-#define DOWNFLAG ((word)K_DOWNFLAG)
 #endif
+#define DOWNFLAG ((word)K_DOWNFLAG)
 
 /* ---- Single precision sine and cosine (SINGLE_PRECISION_SUBROUTINES.agc) ---- */
 
@@ -529,13 +528,63 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define TEMK ERASABLE(K_TEMK)
 #define SQ   ERASABLE(K_SQ)
 /* The polynomial's coefficients, halved (C1/2 is pi/4). */
-#define C1_2 ((word)KW_C1_2) /* C1/2 */
-#define C3_2 ((word)KW_C3_2) /* C3/2 */
-#define C5_2 ((word)KW_C5_2) /* C5/2 */
+#define C1_2   ((word)KW_C1_2) /* C1/2 */
+#define C3_2   ((word)KW_C3_2) /* C3/2 */
+#define C5_2   ((word)KW_C5_2) /* C5/2 */
 #define SPCOS  ((word)K_SPCOS)
 #define SPSIN  ((word)K_SPSIN)
 #define POLLEY ((word)K_POLLEY)
 #define ARG90  ((word)K_ARG90)
+
+/* ---- Service routines (SERVICE_ROUTINES.agc) ---- */
+
+/* The flag words, FLAGWRD0 on: FLAGWRD0 +n is flag word n. ITEMP1-3 are
+ * the scratch words of routines that run with interrupts inhibited (ITEMP1
+ * is also WAITEXIT). DELAYLOC +n holds the job DELAYJOB put to sleep in
+ * slot n. EXTVBACT: the extended verb in progress (bit 5 set by TESTXACT). */
+#define FLAGWRD0(n) ERASABLE(K_FLAGWRD0 + (n))
+#define FLAGWRD4    ERASABLE(K_FLAGWRD4)
+#define ITEMP2      ERASABLE(K_ITEMP2)
+#define ITEMP3      ERASABLE(K_ITEMP3)
+#define DELAYLOC(n) ERASABLE(K_DELAYLOC + (n))
+#define EXTVBACT    ERASABLE(K_EXTVBACT)
+#if COMANCHE055
+#define OPTMODES ERASABLE(K_OPTMODES)
+#endif
+
+/* Its constants. DELAYNUM is the last DELAYLOC slot. TCSLEEP and WAKECAD
+ * are GENADRs: TCGETCAD -2 and WAKER. OCT40200 is the tracker light (bit
+ * 8) and bit 15 of a display word. */
+#define OCT77770 ((word)KW_OCT77770)
+#define DELAYNUM ((word)KW_DELAYNUM)
+#define TCSLEEP  ((word)KW_TCSLEEP)
+#define WAKECAD  ((word)KW_WAKECAD)
+#define OCT40200 ((word)KW_OCT40200)
+/* BIT15 and the bits after it, BIT14 ... BIT1, in the constant pool. */
+#define BIT15_ADDRESS ((unsigned)K_BIT15)
+
+/* Its labels. DELAYJOB, TCGETCAD and WAKER are in bank 0, the LM's UPENT2
+ * and DOWNENT2 in bank 10; the rest are in fixed-fixed memory. */
+#define UPENT2   ((word)K_UPENT2)
+#define DOWNENT2 ((word)K_DOWNENT2)
+#define UPFLAG   ((word)K_UPFLAG)
+#define COMFLAG  ((word)K_COMFLAG)
+#define DEBIT    ((word)K_DEBIT)
+#define DELAYJOB ((word)K_DELAYJOB)
+#define OK2DELAY ((word)K_OK2DELAY)
+#define TCGETCAD ((word)K_TCGETCAD)
+#define WAKER    ((word)K_WAKER)
+#define GENTRAN  ((word)K_GENTRAN)
+#define B5OFF    ((word)K_B5OFF)
+#if COMANCHE055
+#define TRFAILOF ((word)K_TRFAILOF)
+#define TRFAILON ((word)K_TRFAILON)
+#endif
+/* Where they go on to: the Executive, WAITLIST, and the aborts. */
+#define JOBSLEEP ((word)K_JOBSLEEP)
+#define JOBWAKE  ((word)K_JOBWAKE)
+#define ENDOFJOB ((word)K_ENDOFJOB)
+#define DLY2     ((word)K_DLY2)
 
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
