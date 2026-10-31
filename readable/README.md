@@ -13,8 +13,13 @@ This is the third of three views of the same program:
 | 3 | `readable/` (here) | the same routines written to be read, x86_64 only |
 
 The readable code is not a summary or a model of the original. It runs
-in the real x86_64 flight program in place of the faithful code and leaves
-memory exactly as the original does, word for word (see *Gates*).
+in the real x86_64 flight program in place of the faithful code, and the
+gates check it against the faithful port, word for word: the faithful
+port is the reference, and it is checked against the original program
+run in yaAGC on the host. So the readable code is as exact as the
+faithful port, apart from the few places where one of them departs from
+the AGC on purpose (see *Departures*), and as far as the gates look (see
+*Gates*).
 
 The rules it is written to are in [STYLE.md](STYLE.md). In short: every
 AGC name keeps its listing spelling, every routine is a C function named
@@ -121,8 +126,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
 1. **Case tests.** `make kernel-cases` runs the faithful port's
    resident-kernel corpus on the readable Executive and WAITLIST: every
    case of its certified milestones, about 42,000 runs over the two
-   missions, each checked against the original program's yaAGC digest and
-   against the faithful routines' final memory word for word.
+   missions, each checked against the original program's yaAGC digest
+   (frozen when the faithful port was certified) and against the faithful
+   routines' final memory word for word.
    `make interbank-cases` runs every inter-bank entry, readable and
    faithful side by side, on 100,000 random machine states each, and
    compares memory and channels word for word. `make phase-cases` runs
@@ -177,12 +183,76 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    routines linked in place of the faithful ones, flies the flight
    scenarios (P63 descent, rendezvous, entry, restarts, ...) against the
    harness, which runs the faithful port. Each must end with the same
-   erasable memory as the harness, word for word.
+   erasable memory as the harness, word for word: words 061-03777 (every
+   erasable bank, past the central and special registers and the
+   counters), once, at the row's end. The registers (A, L, Q, the banks)
+   and the I/O channels are not compared there; the case tests compare
+   them, routine by routine. PRs fly the quick set (26 rows), the nightly
+   run every row.
 
-CI runs both on every PR that touches `readable/`
-(`.github/workflows/readable-ci.yml`).
+CI runs both on every PR that touches `readable/`, or what it is built
+from and checked against: the faithful port's sources, tests and tools
+and the listings (`.github/workflows/readable-ci.yml`).
+
+## Departures
+
+Where the readable code, the faithful port and the AGC do not all agree,
+on purpose, in one list.
+
+Where the readable code departs from the AGC as the faithful port does.
+The gates cannot see these, since they compare the two ports:
+
+- **An endless GOTO chain.** The AGC follows a chain of erasable CADRs for
+  as long as it goes on; a cycle would run until the night watchman
+  restarts the computer. The interpreter stops the job at GOTO after 63
+  hops (`GOTO_HOPS`, `src/interpreter/sequence.c`), and the next pass goes
+  on.
+- **Q after a switch order.** SWITCHES leaves the switch word in Q with
+  TS Q, which on the AGC copies all 16 bits of A. The faithful core keeps
+  15, and the rest of the flight program takes Q so; after a pass that
+  ran a switch order, the binding leaves Q as the faithful core does
+  (`src/binding/interpreter_core.c`).
+- **HI10 run as MASK.** On UPTEST's +0 path the AGC runs the constant
+  HI10 (OCT 77740) as MASK 7740. It changes only A, which TMFAIL2
+  overwrites at once, so neither port runs it (`src/keyrupt/keyrupt.c`).
+- **Steps not modelled.** An INDEX that would make an instruction the
+  listing does not intend, or a channel a routine does not use, calls
+  `not_modelled()`: the binding puts the state back and refuses.
+
+Where the faithful port departs from the AGC and the readable code does
+what the AGC does, or refuses. All are states no flight program makes;
+the side by side tests do not count them, and print how many they met:
+
+- **DTCB's Z.** The readable DTCB keeps the 12-bit address, as the AGC
+  does; the faithful one keeps 15 bits. The side by side tests keep DTCB
+  returns below 010000.
+- **TC Q with an overflow in Q** (the LM's FLAGS, MR.KLEAN, P00KLEAN,
+  V37KLEAN): the faithful routine goes to the overflow-corrected address,
+  where the AGC runs the 16-bit Q as another instruction. The readable
+  binding refuses.
+- **A negative ALMCADR** after the CM's VAC5STOR, in BAILOUT and POODOO:
+  the faithful routine indexes with it as if positive. Refused.
+- **UPFLAG or DOWNFLAG naming ITEMP3 as the flag word**: COMFLAG's LXCH
+  then returns through the new flag word on the AGC, past the ADRES in
+  the faithful routine. Refused.
+- **A downlist word at the end of an E bank**: its second word is fixed
+  address 02000, which the AGC reads from the rope and the faithful
+  routine from erasable 0. The readable routine reads the rope (or
+  refuses, in the LM, where it has no word for it).
+- **A restart's delta time at a central register or GOLOC, or across
+  01377-01400**: the faithful routine reads them as they were before
+  RESTARTS changed them. Refused.
+- **The interpreter's unassembled operands** (an erasable order given a
+  fixed address, a store into fixed memory, an operand past the end of
+  its bank, ...): the readable interpreter does what the AGC does, the
+  faithful core something simpler; `make interpreter-cases` leaves them
+  out (`tests/interpreter_fuzz.c` lists them).
+
+And states the readable binding refuses where the faithful routine runs,
+also not counted: STATEUP with NEWJOB negative, and the fresh start's
+KLEANs returning to one of the file's own return points.
 
 ## License
 
-MIT, as the port (`c64-port/LICENSE`). The AGC source is in the public
-domain.
+MIT, as the port: [`LICENSE`](LICENSE), Copyright (c) 2026 David
+Godlewski. The AGC source is in the public domain.

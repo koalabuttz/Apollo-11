@@ -22,7 +22,14 @@
  * 15-bit address, a store into fixed memory, an operand that runs past
  * the end of its bank or names the interpreter's own registers, an
  * address word of +0 or 46D, a switch bit past BIT1. Nor is one that
- * writes NEWJOB.
+ * writes NEWJOB, or that takes both images out of the work area's frame
+ * ("left the frame"); a pass that takes only one of them out is a
+ * difference.
+ *
+ * The run fails on a difference, and also when too little was compared to
+ * mean anything: a crash in either core, more than a few cases abandoned
+ * (a case that runs without end), fewer passes compared than cases, or
+ * more than a quarter of the cases leaving the frame.
  *
  *   interpreter-cases-<m> <lm.bin> <cm.bin> [cases] [seed]
  *
@@ -200,6 +207,19 @@ static int unassembled(const apollo_overlay_state *s)
     return 0;
 }
 
+/* A crash in either interpreter: counted apart from a hang, and fatal to
+ * the run. */
+static unsigned crashed;
+static void on_crash(int sig)
+{
+    ++crashed;
+    on_alarm(sig);
+}
+
+/* Timeouts allowed per run: a case that loops without end is abandoned
+ * (interp_core_fuzz.c), which a slow machine may also do to a long one. */
+#define MAX_ABANDONED 5u
+
 int main(int argc, char **argv)
 {
     static struct {
@@ -227,7 +247,7 @@ int main(int argc, char **argv)
             continue;
         }
         signal(SIGALRM, on_alarm);
-        signal(SIGSEGV, on_alarm);
+        signal(SIGSEGV, on_crash);
         arm(300);
         image(f, MISSION);
         /* The banks as at NEWOPS: FB is the program's, BBANK agrees. */
@@ -240,6 +260,7 @@ int main(int argc, char **argv)
             enum exec_status sf, sr;
             mission_io fio, rio;
             unsigned i, diff = 0;
+            bool fw, rw;
 
             /* The fuzz's frame: a program's own words, pointers and MODE. */
             if (!interpreter_point(f, MISSION)) break;
@@ -265,9 +286,19 @@ int main(int argc, char **argv)
                 ++refused;
                 break;
             }
-            /* (A program never writes NEWJOB.) */
-            if (wild(f, &pre) || wild(r, &pre) || f->words[067] != pre.words[067]) {
+            /* (A program never writes NEWJOB.) A pass only one side takes
+             * out of the frame is a difference. */
+            fw = wild(f, &pre) || f->words[067] != pre.words[067];
+            rw = wild(r, &pre) || r->words[067] != pre.words[067];
+            if (fw && rw) {
                 ++unreal;
+                break;
+            }
+            if (fw || rw) {
+                ++bad;
+                if (shown++ < 12u)
+                    fprintf(stderr, "case %u slot %u: only the %s pass left the frame\n", c, slot,
+                            fw ? "faithful" : "readable");
                 break;
             }
             ++slots;
@@ -307,8 +338,17 @@ int main(int argc, char **argv)
         }
     }
     arm(0);
-    printf("%s: %u cases, %u passes compared, %u refused, %u abandoned, %u left the frame, "
-           "%u unassembled operands, %u differ\n",
-           MISSION ? "CM" : "LM", cases, slots, refused, hung, unreal, unasm, bad);
+    printf("%s: %u cases, %u passes compared, %u refused, %u abandoned (%u crashed), %u left the "
+           "frame, %u unassembled operands, %u differ\n",
+           MISSION ? "CM" : "LM", cases, slots, refused, hung, crashed, unreal, unasm, bad);
+    /* Cases the comparison never sees must not hide a failure: no crash, a
+     * few timeouts at most (a slow machine), and at least one pass compared
+     * per case, with most cases staying in the frame. */
+    if (crashed || hung > MAX_ABANDONED || slots < cases || unreal > cases / 4u) {
+        printf("FAIL: %u crashed, %u abandoned (at most %u), %u passes compared (at least %u), "
+               "%u left the frame (at most %u)\n",
+               crashed, hung, MAX_ABANDONED, slots, cases, unreal, cases / 4u);
+        return 1;
+    }
     return bad ? 1 : 0;
 }
