@@ -71,15 +71,16 @@ DNTM_SOURCES := src/agc/agc.c src/downtelemetry/downtelemetry.c src/downtelemetr
 FS_SOURCES := src/agc/agc.c src/fresh_start/fresh_start.c src/binding/machine.c \
 	src/binding/fresh_start_routines.c
 V37_SOURCES := $(FS_SOURCES) src/fresh_start/v37.c src/binding/v37_routines.c
+STATEUP_SOURCES := $(INTERPRETER_SOURCES) src/fresh_start/stateup.c src/binding/stateup_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
-	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES))
+	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
-	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases
+	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -471,6 +472,51 @@ v37-cases: $(BUILD)/v37-oracle-lm $(BUILD)/v37-oracle-cm $(BUILD)/v37-cases-lm $
 	./$(BUILD)/v37-oracle-cm
 	./$(BUILD)/v37-cases-lm
 	./$(BUILD)/v37-cases-cm
+
+# ---- STATEUP: interpretive code ----
+# The port's own tests (tests/test_lm_stateup.c, test_cm_stateup.c) on the
+# readable interpreter running the listing's words (src/fresh_start/
+# stateup.c): every order pair from random states, against the original
+# program's yaAGC digests. Then tests/stateup_cases.c: the words against
+# the rope's, and the readable pairs and the faithful port's on the same
+# random states.
+STATEUP_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+	$(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c $(PORT)/src/rope_image_host.c
+LM_STATEUP_FAITHFUL := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c
+CM_STATEUP_FAITHFUL := $(PORT)/src/cm_interp_orders.c $(PORT)/src/cm_interp_steps.c
+$(BUILD)/stateup-faithful-%.o: $(PORT)/src/%_stateup.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_stateup_interpretive=faithful_$*_stateup_interpretive \
+		-D$*_stateup_entries=faithful_$*_stateup_entries -c $< -o $@
+# The port's test with its main() renamed: tests/with_ropes.c loads the
+# ropes the readable interpreter reads, then runs it.
+$(BUILD)/stateup-test-%.o: $(PORT)/tests/test_%_stateup.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/stateup-oracle-lm: $(STATEUP_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(BUILD)/stateup-test-lm.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(STATEUP_COMMON) $(PORT)/tests/lm_stateup_cases.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/stateup-oracle-cm: $(STATEUP_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(BUILD)/stateup-test-cm.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(STATEUP_COMMON) $(PORT)/tests/cm_stateup_cases.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/stateup-cases-lm: $(STATEUP_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(BUILD)/stateup-faithful-lm.o tests/stateup_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(STATEUP_COMMON) $(LM_STATEUP_FAITHFUL) $(filter %.o,$^) \
+		$(PORT)/tests/lm_stateup_cases.c tests/stateup_cases.c -o $@
+$(BUILD)/stateup-cases-cm: $(STATEUP_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(BUILD)/stateup-faithful-cm.o tests/stateup_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(STATEUP_COMMON) $(CM_STATEUP_FAITHFUL) $(filter %.o,$^) \
+		$(PORT)/tests/cm_stateup_cases.c tests/stateup_cases.c -o $@
+
+stateup-cases: $(BUILD)/stateup-oracle-lm $(BUILD)/stateup-oracle-cm $(BUILD)/stateup-cases-lm \
+		$(BUILD)/stateup-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/stateup-oracle-lm $(ROPES)
+	./$(BUILD)/stateup-oracle-cm $(ROPES)
+	./$(BUILD)/stateup-cases-lm $(ROPES)
+	./$(BUILD)/stateup-cases-cm $(ROPES)
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

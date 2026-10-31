@@ -61,10 +61,13 @@ REPLACED = (
     'lm_fresh_start.o', 'cm_fresh_start.o',
     # FRESH_START_AND_RESTART.agc, verb 37 and P00 (src/fresh_start/v37.c).
     'lm_v37.o', 'cm_v37.o',
+    # FRESH_START_AND_RESTART.agc, STATEUP's interpretive code
+    # (src/fresh_start/stateup.c, run by the readable interpreter).
+    'lm_stateup.o', 'cm_stateup.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
-                    'dodowntm', 'slap1', 'v37xeq')
+                    'dodowntm', 'slap1', 'v37xeq', 'interpret_listing')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

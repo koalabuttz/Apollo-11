@@ -63,7 +63,7 @@ jobs:
         run: tools/setup_cloud.sh
       - name: Gate 1, case tests
         working-directory: readable
-        run: make coverage names-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases
+        run: make coverage names-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases
       - name: Gate 2, x86 exact scenarios
         working-directory: readable
         env:

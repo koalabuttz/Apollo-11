@@ -160,6 +160,13 @@ so a reader sees both versions together.
 - Register effects that carry state from one step to the next use the
   instruction helpers (`dxch()`, `xch()`, `ts()`), named as the instruction.
   Effects that do not are plain C on named words.
+- **Interpretive code** is written in the listing's notation, not
+  translated: a table of words built with the macros of
+  `src/interpreter/notation.h`, one line of the listing per entry, with
+  its labels and comments (`ORDERS(SET, BOF)`, `SWITCH(SET, VINTFLAG)`,
+  `ADDRESS(DOINT)`), run by the readable interpreter as the AGC's
+  interpreter ran the listing's words. A gate checks the words against the
+  rope.
 - One subsystem per directory under `src/`, named after the listing's log
   section: `EXECUTIVE.agc` → `src/executive/`. `src/agc/` is the machine
   model; `src/binding/` connects the routines to the flight program and
@@ -172,7 +179,7 @@ Every change to `readable/` must keep both:
 1. **The case tests** (`make names-check kernel-cases interbank-cases
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
    sp-cases service-cases downtelemetry-cases fresh-start-cases
-   v37-cases`,
+   v37-cases stateup-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -223,6 +230,9 @@ Every change to `readable/` must keep both:
    - `v37-cases`: the same for verb 37 and P00, after checking V37's
      tables (PREMM1, FCADRMM1, DNLADMM1, the CM's FLAGTABL) word by word
      against the original program's rope.
+   - `stateup-cases`: the same for STATEUP's interpretive code, run by the
+     readable interpreter, after checking the words the listing notation
+     assembles against the original program's rope.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the
