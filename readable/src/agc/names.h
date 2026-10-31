@@ -1686,6 +1686,23 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define MAXIN    ((word)K_MAXIN)
 #endif
 
+/* ---- EXTENDED_VERBS, part 6: the clock update (verb 55) and ATTCK2 ---- */
+
+/* Its erasable words are named by ADDRESS_OF: MPAC, TIME2, DSPTEM2, and
+ * the LM's THETAD and CDUXCMD. Its constants and labels: */
+#define DEC23    ((word)KW_DEC23)   /* DEC 23: verb 23 */
+#define VNLODDT  ((word)KW_VNLODDT) /* VN 2524: V25 N24 */
+#define UPDATIME ((word)K_UPDATIME)
+#define UPDTMEND ((word)K_UPDTMEND)
+#if LUMINARY099
+#define ATTSCALE     ((word)KW_ATTSCALE) /* DEC 0.1 */
+#define BITS13_14_15 ((word)KW_13_14_15) /* 13,14,15: channel 14's CDU drives */
+#define R33          ((word)K_R33)       /* bank 42, with UPDATIME and ATTCK2 */
+#define ATTCK2       ((word)K_ATTCK2)
+#else
+#define ALINTIME ((word)K_ALINTIME) /* bank 43, with UPDATIME */
+#endif
+
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
 #define CDULOGIC ((word)K_CDULOGIC)
 

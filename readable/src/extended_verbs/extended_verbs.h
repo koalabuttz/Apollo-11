@@ -20,7 +20,9 @@
  * the LM's RDRUSECK and the CM's CKLFTBTS. Part 4, the LM's radar test
  * verbs (pp. 276-279): R04 (V63), R77 (V78) and R77END (V79). Part 5, the
  * DAP data load, V48 (LM pp. 292-295, CM pp. 253-254): the LM's R03 from
- * DAPDATA1 on, the CM's DAPDISP and DAPDISP1. The entries are the
+ * DAPDATA1 on, the CM's DAPDISP and DAPDISP1. Part 6, the clock update,
+ * V55 (LM pp. 275 and 282, CM p. 246): the LM's R33 and the CM's
+ * ALINTIME, UPDATIME, and the LM's ATTCK2 task. The entries are the
  * routines' labels and the words a call out of the routine returns to. All
  * of it is basic code. */
 #ifndef READABLE_EXTENDED_VERBS_H
@@ -454,6 +456,28 @@ void donoun48_after_proceed(void);
 void donoun48_after_enter(void);
 void maxin(void);
 void maxin_after_upflag(void);
+#endif
+
+/* ---- Part 6: the clock update, V55, and the LM's ATTCK2 (time.c) ---- */
+#if LUMINARY099
+void r33(void); /* R33, UPDATIME and ATTCK2 are in bank 42 */
+void r33_after_priochng(void);
+void r33_after_terminate(void); /* GOXDSPF's three returns */
+void r33_after_proceed(void);
+void r33_after_enter(void);
+#else
+void alintime(void); /* the LM's is part 2's; the CM's is in bank 43 */
+void alintime_after_testxact(void);
+void alintime_after_terminate(void); /* GOMARKF's three returns */
+void alintime_after_proceed(void);
+void alintime_after_enter(void);
+#endif
+void updatime(void);
+void updatime_after_tpagree(void);
+void updtmend(void);
+#if LUMINARY099
+void attck2(void);
+void attck2_plus1(void); /* where its loop goes round */
 #endif
 
 #endif
