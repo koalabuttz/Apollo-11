@@ -1630,6 +1630,62 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define R77END ((word)K_R77END)
 #endif
 
+/* ---- EXTENDED_VERBS, part 5: the DAP data load (verb 48) ---- */
+
+/* Its erasable words are named by ADDRESS_OF: DAPDATR1, DAPBOOLS,
+ * FLGWRD10, FLAGWRD1, FLAGWRD6, CSMMASS, LEMMASS, MASS, RATEINDX, and in
+ * E-bank 6 STIKSENS and -RATEDB (MINUS_RATEDB). Its constants: */
+#if LUMINARY099
+#define BOOLSMSK          ((word)KW_BOOLSMSK) /* OCT 13113: the DAPBOOLS bits shown */
+#define DSPLYMSK          ((word)KW_DSPLYMSK) /* OCT 33113: and bit 14, the stage */
+#define V01N46            ((word)KW_V01N46)
+#define REVCNT            ((word)KW_REVCNT) /* bits 2 and 3: blank R2 and R3 */
+#define CSMDOCKD          ((word)KW_CSMDOCKD)
+#define ACC4OR2X          ((word)KW_ACC4OR2X)
+#define RHCSCALE          ((word)KW_RHCSCALE)
+#define NORMAL            ((word)KW_NORMAL)   /* DEC .660214 */
+#define FINE              ((word)KW_FINE)     /* DEC .165054 */
+#define ONE_TENTH         ((word)KW_1_10)     /* 1/10: DEC .1 */
+#define MINUS_0_6_DEG_SEC ((word)KW_M0_6D_S)  /* -0.6D/S: DEC -218 */
+#define MINUS_0_3_DEG_SEC ((word)KW_M0_3D_S)  /* -0.3D/S: DEC -109 */
+#define V0647             ((word)KW_V0647)    /* VN 0647: V06 N47 */
+#define MINLMD            ((word)KW_MINLMD)   /* minus the descent stage's least mass */
+#define MINMINLM          ((word)KW_MINMINLM) /* minus the ascent stage's */
+#define MINCSM            ((word)KW_MINCSM)
+#define V06N48            ((word)KW_V06N48)
+#define V50N48            ((word)KW_V50N48)
+
+/* Its labels: DAPDATA1 to DPDAT1 in bank 20, STIKLOAD to TRIMDONE in bank
+ * 01. */
+#define DAPDATA1 ((word)K_DAPDATA1)
+#define CHKDATA1 ((word)K_CHKDATA1)
+#define MSKDATR1 ((word)K_MSKDATR1)
+#define FORCEONE ((word)K_FORCEONE)
+#define DPDAT1   ((word)K_DPDAT1)
+#define STIKLOAD ((word)K_STIKLOAD)
+#define DAPDATA2 ((word)K_DAPDATA2)
+#define ENDR03   ((word)K_ENDR03)
+#define DAPDAT2  ((word)K_DAPDAT2)
+#define LEMALONE ((word)K_LEMALONE)
+#define DAPDATA3 ((word)K_DAPDATA3)
+#define DPDAT3   ((word)K_DPDAT3)
+#define TRIMDONE ((word)K_TRIMDONE)
+#else
+#define V04N46   ((word)KW_V04N46)
+#define V06N47   ((word)KW_V06N47)
+#define V0648    ((word)KW_V0648) /* VN 0648: V06 N48 */
+
+/* Its labels: DAPDISP (the LM's is part 2's) in bank 43, the rest in
+ * bank 42. */
+#define DAPDISP  ((word)K_DAPDISP)
+#define DAPDISP1 ((word)K_DAPDISP1)
+#define DONOUN46 ((word)K_DONOUN46)
+#define MAXOUT   ((word)K_MAXOUT)
+#define DONOUN47 ((word)K_DONOUN47)
+#define DONOUN48 ((word)K_DONOUN48)
+#define MAXIN    ((word)K_MAXIN)
+#endif
+
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
 #define CDULOGIC ((word)K_CDULOGIC)
 
