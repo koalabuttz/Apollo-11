@@ -37,9 +37,9 @@
 #   make rupt-cases       the readable interrupt lead-ins, RESUME and the LM's
 #                         T6 interrupt against the original program's digests
 #                         and the faithful port's routines (seconds)
-#   make t4rupt-cases     the readable T4RUPT core against the original
-#                         program's digests and the faithful port's routines
-#                         (seconds)
+#   make t4rupt-cases     the readable T4RUPT core and IMU monitor against the
+#                         original program's digests and the faithful port's
+#                         routines (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -83,11 +83,13 @@ V37_SOURCES := $(FS_SOURCES) src/fresh_start/v37.c src/binding/v37_routines.c
 STATEUP_SOURCES := $(INTERPRETER_SOURCES) src/fresh_start/stateup.c src/binding/stateup_routines.c
 KEYRUPT_SOURCES := src/agc/agc.c src/keyrupt/keyrupt.c src/binding/machine.c src/binding/keyrupt_routines.c
 T4RUPT_SOURCES := src/agc/agc.c src/t4rupt/t4rupt.c src/binding/machine.c src/binding/t4rupt_routines.c
+T4IMU_SOURCES := src/agc/agc.c src/t4rupt/imu_monitor.c src/binding/machine.c \
+	src/binding/t4rupt_imu_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
-	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES))
+	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
@@ -649,10 +651,39 @@ $(BUILD)/t4rupt-cases-cm: $(T4RUPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUIL
 		tests/t4rupt_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(KU_COMMON) $(filter %.o,$^) tests/t4rupt_cases.c -o $@
 
-t4rupt-cases: $(BUILD)/t4rupt-oracle $(BUILD)/t4rupt-cases-lm $(BUILD)/t4rupt-cases-cm
+# Part 2, the IMU monitor: the port's own tests (tests/test_lm_t4rupt_imu.c
+# and test_cm_t4rupt_imu.c) on the readable routines, against the original
+# program's yaAGC digests, with the refusals they check; then
+# tests/t4rupt_imu_cases.c, the readable routines and the faithful port's
+# on the same random states.
+$(BUILD)/t4imu-faithful-%.o: $(PORT)/src/%_t4rupt_imu.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_t4rupt_imu_routines=faithful_$*_t4rupt_imu_routines -c $< -o $@
+$(BUILD)/t4imu-readable-lm.o: $(T4IMU_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=lm_t4rupt_imu_routines $@.all $@
+$(BUILD)/t4imu-readable-cm.o: $(T4IMU_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=cm_t4rupt_imu_routines $@.all $@
+$(BUILD)/t4imu-oracle-%: $(BUILD)/t4imu-readable-%.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(KU_COMMON) $(PORT)/tests/$*_t4rupt_imu_cases.c \
+		$(PORT)/tests/test_$*_t4rupt_imu.c $^ -o $@
+$(BUILD)/t4imu-cases-lm: $(T4IMU_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/t4imu-faithful-lm.o \
+		tests/t4rupt_imu_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(KU_COMMON) $(filter %.o,$^) tests/t4rupt_imu_cases.c -o $@
+$(BUILD)/t4imu-cases-cm: $(T4IMU_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/t4imu-faithful-cm.o \
+		tests/t4rupt_imu_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(KU_COMMON) $(filter %.o,$^) tests/t4rupt_imu_cases.c -o $@
+
+t4rupt-cases: $(BUILD)/t4rupt-oracle $(BUILD)/t4rupt-cases-lm $(BUILD)/t4rupt-cases-cm \
+		$(BUILD)/t4imu-oracle-lm $(BUILD)/t4imu-oracle-cm $(BUILD)/t4imu-cases-lm $(BUILD)/t4imu-cases-cm
 	./$(BUILD)/t4rupt-oracle
 	./$(BUILD)/t4rupt-cases-lm
 	./$(BUILD)/t4rupt-cases-cm
+	./$(BUILD)/t4imu-oracle-lm
+	./$(BUILD)/t4imu-oracle-cm
+	./$(BUILD)/t4imu-cases-lm
+	./$(BUILD)/t4imu-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

@@ -243,9 +243,10 @@ Every change to `readable/` must keep both:
      entry, every T6JOBCHK path, and RESUME with BRUPT the word at ZRUPT -1
      or not, against yaAGC digests) on the readable lead-ins, RESUME and
      T6 interrupt, then the two side by side on random states.
-   - `t4rupt-cases`: the faithful port's T4RUPT core test (every
-     continuation and display path, against yaAGC digests) on the readable
-     T4RUPT core, then the two side by side on random states.
+   - `t4rupt-cases`: the faithful port's T4RUPT core test and its LM and
+     CM IMU monitor tests (every continuation, display path and exit,
+     against yaAGC digests) on the readable T4RUPT core and IMU monitor,
+     then the two side by side on random states.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the
