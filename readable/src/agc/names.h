@@ -1126,6 +1126,80 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define RRLIMCHK ((word)K_RRLIMCHK)
 #endif
 
+/* ---- T4RUPT, part 4: the CM's optics (OPTMON to MAXPLS1) ---- */
+
+#if COMANCHE055
+/* Its erasable words (ADDRESS_OF gives each one's address): OPTMODES, the
+ * optics' inbits as last sampled and its modes; SWSAMPLE and DESOPMOD, the
+ * optics mode switch now and as last acted on (positive CSC, +0 manual,
+ * -1 zero optics); ZOPTCNT and WTOPTION, zeroing's counters; OPTIND, the
+ * coarse optics state (-1 not working) and OPTDRIVE's index; CDUT and
+ * CDUS, the trunnion and shaft CDUs, DESOPTT and DESOPTS their desired
+ * angles, COMMANDO their commands and CDUTCMD their drive counters; ZONE,
+ * the shaft's stop zone.
+ *
+ * Its constants, the listing's names: OCT13 (ELEVEN), OCTHIRTY (BITS4&5,
+ * the switch's bits), OCT40 (BIT6), 200MS (OCT24); 20DEGS; 13,14,15 (-45
+ * degrees); MAXPLS and MAXPLS1, the most pulses one pass sends, as
+ * negative numbers; 11,12 (PRIO6), the drive bits of channel 14. */
+#define OCT13        ((word)KW_OCT13)
+#define OCTHIRTY     ((word)KW_OCTHIRTY)
+#define OCT40        ((word)KW_OCT40)
+#define K200MS       ((word)KW_200MS)    /* 200MS */
+#define K20DEGS      ((word)KW_20DEGS)   /* 20DEGS */
+#define MINUS_45DEGS ((word)KW_13_14_15) /* 13,14,15 */
+#define MAXPLS       ((word)KW_MAXPLS)
+#define MAXPLS1      ((word)KW_MAXPLS1)
+#define BITS11_12    ((word)KW_11_12) /* 11,12 */
+
+/* Its labels: in bank 06 (OPTMON to OPFAILOF) and bank 10 (OPTDRIVE to
+ * SETBIT); TCQ (a TC Q, in fixed-fixed). */
+#define K33OPTMON ((word)K_33OPTMON) /* 33OPTMON */
+#define SETSAMP   ((word)K_SETSAMP)
+#define PROCESSW  ((word)K_PROCESSW)
+#define ZOPTDES   ((word)K_ZOPTDES)
+#define ZTOMAN    ((word)K_ZTOMAN)
+#define ZOPALARM  ((word)K_ZOPALARM)
+#define ZTOCSC    ((word)K_ZTOCSC)
+#define COARSLOK  ((word)K_COARSLOK)
+#define ZOPFINI   ((word)K_ZOPFINI)
+#define ZOPFIN2   ((word)K_ZOPFIN2)
+#define CANZOPT   ((word)K_CANZOPT)
+#define MANUDES   ((word)K_MANUDES)
+#define MANTOMAN  ((word)K_MANTOMAN)
+#define MANTOCSC  ((word)K_MANTOCSC)
+#define CSCDES    ((word)K_CSCDES)
+#define CSCTOZOP  ((word)K_CSCTOZOP)
+#define CSCTOMAN  ((word)K_CSCTOMAN)
+#define CANCOARS  ((word)K_CANCOARS)
+#define OPTZERO   ((word)K_OPTZERO)
+#define SETCNT    ((word)K_SETCNT)
+#define SETDESMD  ((word)K_SETDESMD)
+#define SETZOEND  ((word)K_SETZOEND)
+#define ENDZOPT   ((word)K_ENDZOPT)
+#define ZEROPCDU  ((word)K_ZEROPCDU)
+#define INITZOPT  ((word)K_INITZOPT)
+#define OCDUFTST  ((word)K_OCDUFTST)
+#define OPFAILON  ((word)K_OPFAILON)
+#define SETOFF    ((word)K_SETOFF)
+#define OPFAILOF  ((word)K_OPFAILOF)
+#define OPTDRIVE  ((word)K_OPTDRIVE)
+#define OZONE     ((word)K_OZONE)
+#define CONTDRVE  ((word)K_CONTDRVE)
+#define OPT2      ((word)K_OPT2)
+#define GETOPCMD  ((word)K_GETOPCMD)
+#define STORCMD   ((word)K_STORCMD)
+#define CMDSETUP  ((word)K_CMDSETUP)
+#define TRUNCMD   ((word)K_TRUNCMD)
+#define POSOPCMD  ((word)K_POSOPCMD)
+#define NEXTOPT   ((word)K_NEXTOPT)
+#define NEGOPCMD  ((word)K_NEGOPCMD)
+#define DELOPCMD  ((word)K_DELOPCMD)
+#define SENDOCMD  ((word)K_SENDOCMD)
+#define SETBIT    ((word)K_SETBIT)
+#define TCQ       ((word)K_TCQ)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
