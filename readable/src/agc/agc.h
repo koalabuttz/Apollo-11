@@ -375,6 +375,12 @@ static inline void write_superbnk(void)
     *agc.superbank = (uint16_t)(overflow_corrected(A) & 0160u);
 }
 
+/* ROR LCHAN: channel 1 is L itself, all 16 bits, or'ed into A. */
+static inline void ror_lchan(void)
+{
+    A = (reg16)(A | L);
+}
+
 /* ROR QCHAN and RXOR QCHAN: channel 2 is Q itself, all 16 bits, or'ed or
  * exclusive-or'ed into A. */
 static inline void ror_qchan(void)

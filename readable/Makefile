@@ -24,6 +24,9 @@
 #   make sp-cases         the readable SPSIN and SPCOS against the original
 #                         program's return states and the faithful port's
 #                         routines (seconds)
+#   make service-cases    the readable service routines against the original
+#                         program's digests and the faithful port's routines
+#                         (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -57,15 +60,17 @@ ALARM_SOURCES := src/agc/agc.c src/alarm/alarm.c src/interbank/interbank.c src/b
 	src/binding/interbank_tables.c src/binding/alarm_routines.c
 SP_SOURCES := src/agc/agc.c src/single_precision/single_precision.c src/binding/machine.c \
 	src/binding/sp_routines.c
+SERVICE_SOURCES := src/agc/agc.c src/service/service.c $(sort $(wildcard src/interpreter/*.c)) \
+	src/interbank/interbank.c src/binding/machine.c src/binding/service_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
-	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES))
+	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases names-check \
+	sp-cases service-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
-	alarm-cases sp-cases
+	alarm-cases sp-cases service-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -317,6 +322,45 @@ sp-cases: $(BUILD)/sp-oracle-lm $(BUILD)/sp-oracle-cm $(BUILD)/sp-cases-lm $(BUI
 	./$(BUILD)/sp-oracle-cm
 	./$(BUILD)/sp-cases-lm
 	./$(BUILD)/sp-cases-cm
+
+# ---- Service routines ----
+# The port's own test (tests/test_service_transfer.c) on the readable
+# routines: every UPFLAG, DOWNFLAG and GENTRAN site of both missions and
+# every entry, against the original program's yaAGC digests, with the
+# refusals it checks. It runs both missions in one program, so each
+# mission's readable objects are linked into one object with only its
+# table left global. Then tests/service_cases.c: the readable routines and
+# the faithful port's on the same random states.
+SV_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+	$(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c $(PORT)/src/service_routines.c
+SV_ORACLE := $(PORT)/tests/service_transfer_cases.c $(PORT)/tests/service_transfer_check.c \
+	$(PORT)/tests/test_service_transfer.c
+SV_NAMES := lm_service_routines cm_service_routines
+
+$(BUILD)/service-faithful.o: $(PORT)/src/service_transfer.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(SV_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/service-readable-lm.o: $(SERVICE_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=lm_service_routines $@.all $@
+$(BUILD)/service-readable-cm.o: $(SERVICE_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=cm_service_routines $@.all $@
+
+$(BUILD)/service-oracle: $(BUILD)/service-faithful.o $(BUILD)/service-readable-lm.o \
+		$(BUILD)/service-readable-cm.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SV_COMMON) $(SV_ORACLE) $^ -o $@
+$(BUILD)/service-cases-lm: $(SERVICE_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/service-faithful.o \
+		tests/service_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(SV_COMMON) $(filter %.o,$^) tests/service_cases.c -o $@
+$(BUILD)/service-cases-cm: $(SERVICE_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/service-faithful.o \
+		tests/service_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(SV_COMMON) $(filter %.o,$^) tests/service_cases.c -o $@
+
+service-cases: $(BUILD)/service-oracle $(BUILD)/service-cases-lm $(BUILD)/service-cases-cm
+	./$(BUILD)/service-oracle
+	./$(BUILD)/service-cases-lm
+	./$(BUILD)/service-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

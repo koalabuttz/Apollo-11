@@ -52,9 +52,12 @@ REPLACED = (
     # tables. lm_single_trig.o, cm_single_return.o and cm_quictrig.o stay:
     # other faithful routines call them.
     'sp_routines.o',
+    # SERVICE_ROUTINES.agc (src/service): the routine tables.
+    # service_routines.o stays: other faithful routines call it.
+    'service_transfer.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
-READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin')
+READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran')
 xb.OUT = READABLE / 'build/x86-flight'
 
 
