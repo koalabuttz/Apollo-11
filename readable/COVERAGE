@@ -44,3 +44,5 @@ Luminary099/PINBALL_NOUN_TABLES.agc          src/pinball_noun_tables
 Comanche055/PINBALL_NOUN_TABLES.agc          src/pinball_noun_tables
 Luminary099/LEM_GEOMETRY.agc                 src/geometry
 Comanche055/CSM_GEOMETRY.agc                 src/geometry
+Luminary099/IMU_COMPENSATION_PACKAGE.agc     src/imu_compensation
+Comanche055/IMU_COMPENSATION_PACKAGE.agc     src/imu_compensation
