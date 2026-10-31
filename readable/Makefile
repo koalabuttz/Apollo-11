@@ -89,19 +89,22 @@ T4RR_SOURCES := src/agc/agc.c src/t4rupt/rr_monitor.c src/binding/machine.c \
 	src/binding/t4rupt_rr_routines.c
 T4OPT_SOURCES := src/agc/agc.c src/t4rupt/optics.c src/binding/machine.c \
 	src/binding/t4rupt_optics_routines.c
+RCSMON_SOURCES := src/agc/agc.c src/rcs_failure_monitor/rcs_failure_monitor.c src/binding/machine.c \
+	src/binding/rcs_failure_monitor_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
-	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES))
+	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
+	$(RCSMON_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
-	keyrupt-cases rupt-cases t4rupt-cases
+	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -730,6 +733,32 @@ t4rupt-cases: $(BUILD)/t4rupt-oracle $(BUILD)/t4rupt-cases-lm $(BUILD)/t4rupt-ca
 	./$(BUILD)/t4rr-cases
 	./$(BUILD)/t4opt-oracle
 	./$(BUILD)/t4opt-cases
+
+# RCS_FAILURE_MONITOR, the LM's: the port's test (tests/test_lm_rcsmon.c,
+# its frozen cases run to their stops through the program of
+# tests/lm_rcsmon_target.c) on the readable routines, then
+# tests/rcs_failure_monitor_cases.c side by side.
+RCSMON_NAMES := lm_rcsmon_basic lm_rcsmon_interpretive
+RCSMON_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c $(KU_COMMON) \
+	$(PORT)/tests/interp_case.c
+
+$(BUILD)/rcsmon-faithful.o: $(PORT)/src/lm_rcsmon.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(RCSMON_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/rcsmon-readable.o: $(RCSMON_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(RCSMON_NAMES),--keep-global-symbol=$(n)) $@.all $@
+$(BUILD)/rcsmon-oracle: $(BUILD)/rcsmon-readable.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(RCSMON_COMMON) $(PORT)/tests/lm_rcsmon_target.c \
+		$(PORT)/tests/test_lm_rcsmon.c $^ -o $@
+$(BUILD)/rcsmon-cases: $(RCSMON_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/rcsmon-faithful.o \
+		tests/rcs_failure_monitor_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(KU_COMMON) $(filter %.o,$^) \
+		tests/rcs_failure_monitor_cases.c -o $@
+
+rcs-monitor-cases: $(BUILD)/rcsmon-oracle $(BUILD)/rcsmon-cases
+	./$(BUILD)/rcsmon-oracle
+	./$(BUILD)/rcsmon-cases
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

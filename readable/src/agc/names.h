@@ -1200,6 +1200,32 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define TCQ       ((word)K_TCQ)
 #endif
 
+/* ---- RCS_FAILURE_MONITOR: the LM's jet isolation valves ---- */
+
+#if LUMINARY099
+/* Its erasable words (ADDRESS_OF gives each one's address): PVALVEST, the
+ * valve states it last acted on (channel 32's low 8 bits, set for a closed
+ * valve); CH5MASK and CH6MASK, the jets the DAP may not fire (channels 5
+ * and 6 bits). Its constants: PRIO27, 1/ACCJOB's priority; the tables
+ * 5FAILTAB and 6FAILTAB, each the word before its eight jet bits (the
+ * listing's EQUALS -1), so INDEX L with L 1 to 8 reads one. */
+#define PRIO27       ((word)KW_PRIO27)
+#define FIVE_FAILTAB ((word)K_5FAILTAB) /* 5FAILTAB */
+#define SIX_FAILTAB  ((word)K_6FAILTAB) /* 6FAILTAB */
+#define FIVE_FAILTAB_WORDS                                                                         \
+    {KW_5FAILTABP1, KW_5FAILTABP2, KW_5FAILTABP3, KW_5FAILTABP4,                                   \
+     KW_5FAILTABP5, KW_5FAILTABP6, KW_5FAILTABP7, KW_5FAILTABP8}
+#define SIX_FAILTAB_WORDS                                                                          \
+    {KW_6FAILTABP1, KW_6FAILTABP2, KW_6FAILTABP3, KW_6FAILTABP4,                                   \
+     KW_6FAILTABP5, KW_6FAILTABP6, KW_6FAILTABP7, KW_6FAILTABP8}
+
+/* Its labels, in bank 06; RCSMONEX EQUALS RESUME. */
+#define RCSMON     ((word)K_RCSMON)
+#define VOPENED    ((word)K_VOPENED)
+#define ONE_ACCFIX ((word)K_1_ACCFIX) /* 1/ACCFIX */
+#define RCSMONEX   ((word)K_RCSMONEX)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

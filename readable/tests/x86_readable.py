@@ -72,6 +72,8 @@ REPLACED = (
     # T4RUPT_PROGRAM.agc: the display and dispatch core, the IMU monitor,
     # the LM's radar checks and the CM's optics (src/t4rupt).
     't4rupt_core.o', 'lm_t4rupt_imu.o', 'cm_t4rupt_imu.o', 'lm_t4rupt_rr.o', 'cm_t4rupt_optics.o',
+    # RCS_FAILURE_MONITOR.agc, the LM's (src/rcs_failure_monitor).
+    'lm_rcsmon.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',

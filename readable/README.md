@@ -89,6 +89,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | T4RUPT, part 2 | `T4RUPT_PROGRAM.agc` (LM pp. 161-181, CM pp. 139-159), the IMU monitor | [`src/t4rupt/`](src/t4rupt/) | IMUMON, NXTIFBIT, NXTIFAIL, TNONTEST, PROCTNON, RETNON, ENDTNON, UNZ2, ISSUP, OPONLY, ISSZERO, C33TEST, NXTIBT, NXTFL33, GLOCKMON, GLOCKCHK, NOGIMRUN, SETGLOCK, GLINVERT, GLAMPTST, TLIM, TEMPOK, ITURNON, IMUCAGE, IMUOP, PIPFAIL, DNTMFAST, UPTMFAST, SETISSW, ISSWON, CAGESUB and LAMPTEST: the IMU's status bits (channel 30) and channel 33's flip-flops watched once a second, the IMU's turn-on and cage sequences, the TEMP, ISS WARNING, GIMBAL LOCK and NO ATT lamps, and the gimbal lock monitor |
 | T4RUPT, part 3 | `T4RUPT_PROGRAM.agc` (LM pp. 182-189), the LM's radar checks | [`src/t4rupt/`](src/t4rupt/) | RRAUTCHK, RRCDUCHK, TRKFLCDU, RRGIMON, MONREPOS and GPMATRIX (DAPT4S, NORRGMON): the rendezvous radar's auto mode and turn-on, its CDU fail bit and the TRACKER lamp, its gimbal limits and reposition, and the DAP's gimbal-to-pilot matrix elements from the gimbal angles. With it the LM's file is all readable |
 | T4RUPT, part 4 | `T4RUPT_PROGRAM.agc` (CM pp. 160-169), the CM's optics | [`src/t4rupt/`](src/t4rupt/) | OPTMON, 33OPTMON, PROCESSW, ZOPTDES, ZTOMAN, ZOPALARM, ZTOCSC, COARSLOK, ZOPFINI, CANZOPT, MANUDES, MANTOMAN, MANTOCSC, CSCDES, CSCTOMAN, CANCOARS, OPTZERO, SETDESMD, SETZOEND, ENDZOPT, ZEROPCDU, INITZOPT, OCDUFTST, OPFAILON, OPFAILOF, OPTDRIVE, CONTDRVE, GETOPCMD, STORCMD, CMDSETUP, TRUNCMD, POSOPCMD, NEXTOPT, NEGOPCMD, SENDOCMD and SETBIT: the optics CDU fail bit and the OCDU FAIL lamp, the optics mode switch, zeroing the optics CDUs, and the coarse optics drive with its shaft stop avoidance. With it the CM's file is all readable |
+| RCS failure monitor | `RCS_FAILURE_MONITOR.agc` (LM pp. 190-192) | [`src/rcs_failure_monitor/`](src/rcs_failure_monitor/) | RCSMON (RCSMONIT), VOPENED and 1/ACCFIX, with the tables 5FAILTAB and 6FAILTAB: every 0.48 s, a jet isolation valve the crew have just closed or opened (channel 32) takes its two jets out of or back into the DAP's jet masks CH5MASK and CH6MASK, one change a pass, and starts 1/ACCJOB. With it the LM's file is all readable |
 
 Beside them:
 
@@ -196,6 +197,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful port's tests of it (4,736 states per mission, every exit and
    SETISSW return), of the LM's radar checks (3,456 states, every exit)
    and of the CM's optics (274 frozen cases, each run to its stop). `make
+   rcs-monitor-cases` runs the faithful port's test of the LM's jet failure
+   monitor (72 frozen cases, each run to its stop) on the readable one,
+   then the two side by side on 65,536 states per entry. `make
    names-check` checks the generated names and the restart tables against
    the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
