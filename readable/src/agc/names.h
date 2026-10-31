@@ -1226,6 +1226,37 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define RCSMONEX   ((word)K_RCSMONEX)
 #endif
 
+/* ---- AGS_INITIALIZATION: the LM's R47 ---- */
+
+#if LUMINARY099
+/* Its erasable words (ADDRESS_OF gives each one's address): SAMPTIME, the
+ * time of the last ENTER; AGSK, the mission time of the AGS clock's zero
+ * (in EBANK 4, as R47 runs); DSPTEMX, where the display shows it and V25
+ * loads it; AGSWORD, the downlist to go back to. Its constants: the verb
+ * and noun words it displays (V06N16, V50N16), the 20 s it waits while
+ * the AGS downlist goes out, and LAGSLIST (= ONE), that downlist's code. */
+#define V06N16     ((word)KW_V06N16)
+#define V50N16     ((word)KW_V50N16)
+#define TWENTY_SEC ((word)KW_20SEC) /* 20SEC */
+#define LAGSLIST   ((word)KW_LAGSLIST)
+
+/* Its labels, in bank 32, and the routines it calls in other files. */
+#define AGSINIT  ((word)K_AGSINIT)
+#define NEWAGS   ((word)K_NEWAGS)
+#define REDSPTEM ((word)K_REDSPTEM)
+#define AGSDISPK ((word)K_AGSDISPK)
+#define AGSVCALC ((word)K_AGSVCALC)
+#define CKSTALL  ((word)K_CKSTALL)
+#define AGSEND   ((word)K_AGSEND)
+#define SCALEVEC ((word)K_SCALEVEC)
+#define GOMARKF  ((word)K_GOMARKF)
+#define EXDSPRET ((word)K_EXDSPRET)
+#define IMUZERO  ((word)K_IMUZERO)
+#define IMUSTALL ((word)K_IMUSTALL)
+#define GOMARK3  ((word)K_GOMARK3)
+#define ENDEXT   ((word)K_ENDEXT)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

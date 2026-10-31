@@ -183,7 +183,7 @@ Every change to `readable/` must keep both:
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
    sp-cases service-cases downtelemetry-cases fresh-start-cases
    v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases
-   rcs-monitor-cases`,
+   rcs-monitor-cases ags-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -252,6 +252,11 @@ Every change to `readable/` must keep both:
      monitor (its frozen cases run to their stops, against yaAGC digests)
      on the readable RCS_FAILURE_MONITOR, then the two side by side on
      random states.
+   - `ags-cases`: the faithful port's test of the LM's AGS initialization
+     (its frozen cases run until they leave the file, against yaAGC
+     digests) on the readable AGS_INITIALIZATION, then the two side by
+     side on random states, built as the host runs the file and as the
+     flight program does (stopping where it reaches the interpreter).
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

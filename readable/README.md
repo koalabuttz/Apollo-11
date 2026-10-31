@@ -90,6 +90,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | T4RUPT, part 3 | `T4RUPT_PROGRAM.agc` (LM pp. 182-189), the LM's radar checks | [`src/t4rupt/`](src/t4rupt/) | RRAUTCHK, RRCDUCHK, TRKFLCDU, RRGIMON, MONREPOS and GPMATRIX (DAPT4S, NORRGMON): the rendezvous radar's auto mode and turn-on, its CDU fail bit and the TRACKER lamp, its gimbal limits and reposition, and the DAP's gimbal-to-pilot matrix elements from the gimbal angles. With it the LM's file is all readable |
 | T4RUPT, part 4 | `T4RUPT_PROGRAM.agc` (CM pp. 160-169), the CM's optics | [`src/t4rupt/`](src/t4rupt/) | OPTMON, 33OPTMON, PROCESSW, ZOPTDES, ZTOMAN, ZOPALARM, ZTOCSC, COARSLOK, ZOPFINI, CANZOPT, MANUDES, MANTOMAN, MANTOCSC, CSCDES, CSCTOMAN, CANCOARS, OPTZERO, SETDESMD, SETZOEND, ENDZOPT, ZEROPCDU, INITZOPT, OCDUFTST, OPFAILON, OPFAILOF, OPTDRIVE, CONTDRVE, GETOPCMD, STORCMD, CMDSETUP, TRUNCMD, POSOPCMD, NEXTOPT, NEGOPCMD, SENDOCMD and SETBIT: the optics CDU fail bit and the OCDU FAIL lamp, the optics mode switch, zeroing the optics CDUs, and the coarse optics drive with its shaft stop avoidance. With it the CM's file is all readable |
 | RCS failure monitor | `RCS_FAILURE_MONITOR.agc` (LM pp. 190-192) | [`src/rcs_failure_monitor/`](src/rcs_failure_monitor/) | RCSMON (RCSMONIT), VOPENED and 1/ACCFIX, with the tables 5FAILTAB and 6FAILTAB: every 0.48 s, a jet isolation valve the crew have just closed or opened (channel 32) takes its two jets out of or back into the DAP's jet masks CH5MASK and CH6MASK, one change a pass, and starts 1/ACCJOB. With it the LM's file is all readable |
+| AGS initialization | `AGS_INITIALIZATION.agc` (LM pp. 206-210) | [`src/ags_initialization/`](src/ags_initialization/) | R47: AGSINIT, NEWAGS, REDSPTEM, AGSDISPK, AGSVCALC, CKSTALL and AGSEND in basic code, and AGSVCALC's and SCALEVEC's interpretive code in the listing's notation: verb 47 sets the AGS clock's zero (AGSK) on an ENTER, sends the LM's and CSM's state vectors, scaled for the AGS, and the time since that zero down the downlink (LAGSLIST), then zeroes the IMU's CDUs with the AGS's. With it the LM's file is all readable |
 
 Beside them:
 
@@ -199,7 +200,11 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    and of the CM's optics (274 frozen cases, each run to its stop). `make
    rcs-monitor-cases` runs the faithful port's test of the LM's jet failure
    monitor (72 frozen cases, each run to its stop) on the readable one,
-   then the two side by side on 65,536 states per entry. `make
+   then the two side by side on 65,536 states per entry. `make ags-cases`
+   runs the faithful port's test of the LM's AGS initialization (29,952
+   frozen cases, each run until it leaves the file) on the readable one,
+   then the two side by side on 65,536 states, as the host runs the file
+   and as the flight program does. `make
    names-check` checks the generated names and the restart tables against
    the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
