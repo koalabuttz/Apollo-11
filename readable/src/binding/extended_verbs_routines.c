@@ -9,14 +9,16 @@
  * short verbs, lanec_ev_short_dispatch; part 3, alignment and radar
  * designate, lanec_ev_align_dispatch; part 4, the LM's radar test verbs,
  * lanec_ev_radar_dispatch; part 5, the DAP data load, lanec_ev_dap_dispatch;
- * part 6, the clock update and ATTCK2, lanec_ev_time_dispatch.
+ * part 6, the clock update and ATTCK2, lanec_ev_time_dispatch; part 7, the
+ * tracking and state vector verbs, lanec_ev_track_dispatch.
  *
  * Plumbing only: point the machine at the state and the channel record,
  * and take the states the faithful module takes: the mission this object
  * is built for, a bank the part has entries in selected (bank 43, FBANK's
  * bank 33 with the superbank bit; for the LM's part 3 also bank 23; for
  * part 5 the LM's banks 20 and 01, the CM's 43 and 42; for part 6 the
- * LM's bank 42 only), the bank registers
+ * LM's bank 42 only; for part 7 the LM's banks 40, 42 and 43), the bank
+ * registers
  * agreeing, Z a 12-bit address and ZERO +0. A step the readable code does not model
  * leaves the state as it was.
  *
@@ -33,6 +35,7 @@
 #include "lanec_ev_radar.h"
 #include "lanec_ev_short.h"
 #include "lanec_ev_time.h"
+#include "lanec_ev_track.h"
 #include "../extended_verbs/extended_verbs.h"
 #include "../agc/names.h"
 
@@ -783,5 +786,92 @@ enum lanec_status lanec_ev_time_dispatch(apollo_overlay_state *state, lanec_io *
 #endif
 
     if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
+    return run(BANKS(banks), true, state, io);
+}
+
+/* ---- Part 7: the tracking and state vector verbs ---- */
+
+#if LUMINARY099
+/* DSPRRLOS and RRLOSDSP, in bank 40. */
+static const struct entry track_in_bank_40[] = {
+    {DSPRRLOS, dsprrlos},
+    {DSPRRLOS + 4u, dsprrlos_after_findvac},
+    {DSPRRLOS + 6u, dsprrlos_after_priochng},
+    {DSPRRLOS + 9u, dsprrlos_after_terminate},
+    {DSPRRLOS + 10u, dsprrlos_after_proceed},
+    {DSPRRLOS + 11u, dsprrlos_after_enter},
+    {DSPRRLOS + 12u, dsprrlos_immediate_return},
+    {DSPRRLOS + 14u, dsprrlos_after_blanket},
+    {RRLOSDSP, rrlosdsp},
+    {RRLOSDSP + 39u, rrlosdsp_after_exit},
+    {RRLOSDSP + 42u, rrlosdsp_after_delayjob},
+};
+
+/* TRMTRAK1, in bank 42. */
+static const struct entry track_in_bank_42[] = {
+    {TRMTRAK1, trmtrak1},
+    {TRMTRAK1 + 2u, trmtrak1_after_downflag},
+    {TRMTRAK1 + 4u, trmtrak1_after_second_downflag},
+    {TRMTRAK1 + 6u, trmtrak1_after_third_downflag},
+    {TRMTRAK1 + 10u, trmtrak1_after_exit},
+    {TRMTRAK1 + 12u, trmtrak1_after_phaschng},
+    {TRMTRAK1 + 15u, trmtrak1_after_ibnkcall},
+    {TRMTRAK1 + 17u, trmtrak1_after_second_ibnkcall},
+    {TRMTRAK1 + 18u, trmtrak1_after_clradmod},
+};
+#endif
+
+/* The rest, in bank 43 (VERB69 apart). */
+static const struct entry track_in_bank_43[] = {
+    {ATTACHIT, attachit},
+    {ATTACHIT + 10u, attachit_after_exit},
+#if LUMINARY099
+    {ATTACHIT + 14u, attachit_after_gentran},
+    {ATTACHIT + 22u, attachit_after_second_exit},
+#else
+    {TRACKTRM, tracktrm},
+    {TRACKTRM + 6u, tracktrm_after_downflag},
+    {TRACKTRM + 12u, tracktrm_after_second_downflag},
+    {TRACKTRM + 14u, tracktrm_after_third_downflag},
+    {TRACKTRM + 16u, tracktrm_after_fourth_downflag},
+    {TRACKTRM + 20u, tracktrm_after_stoprate},
+    {TRACKTRM + 26u, tracktrm_after_exit},
+    {CLEANOUT, cleanout},
+    {SETVHFLG, setvhflg},
+    {SETVHFLG + 3u, setvhflg_after_exit},
+    {RESETVHF, resetvhf},
+    {RESETVHF + 3u, resetvhf_after_exit},
+    {RESETVHF + 4u, resetvhf_after_trfailof},
+    {TACHEXIT, tachexit},
+    {TACHEXIT + 10u, tachexit_after_exit},
+    {LMTOCMSV, lmtocmsv},
+    {LMTOCMSV + 4u, lmtocmsv_after_findvac},
+    {LMTOCM, lmtocm},
+    {LMTOCM + 10u, lmtocm_after_exit},
+    {LMTOCM + 14u, lmtocm_after_gentran},
+#endif
+};
+
+static const struct entry verb69_entry[] = {
+    {VERB69, verb69},
+};
+
+/* VERB69's TC to itself goes round until the hardware's TC trap restarts
+ * the computer: it runs once, and stops there, as the faithful module's
+ * does. */
+enum lanec_status lanec_ev_track_dispatch(apollo_overlay_state *state, lanec_io *io,
+                                          enum lanec_mission mission)
+{
+    static const struct bank banks[] = {
+#if LUMINARY099
+        BANK(040u, track_in_bank_40),
+        BANK(042u, track_in_bank_42),
+#endif
+        BANK(043u, track_in_bank_43),
+    };
+    static const struct bank restart[] = {BANK(043u, verb69_entry)};
+
+    if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
+    if (state->words[Z_ADDRESS] == VERB69) return run(BANKS(restart), false, state, io);
     return run(BANKS(banks), true, state, io);
 }
