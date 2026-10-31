@@ -1587,6 +1587,8 @@
 #define I_PBODY 002030u
 #define I_SVDWN1 026114u
 #define I_PINBRNCH 021050u
+#define I_PTOACSM 026705u
+#define I_SVDWN2 026070u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

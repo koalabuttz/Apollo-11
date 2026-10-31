@@ -18,10 +18,10 @@
  *   - The CM's V87 and V88 (SETVHFLG, RESETVHF): the VHF range flag.
  *
  * Much of the work is interpretive. A TC INTPRET hands the words after it
- * to the interpreter: the LM's are tables at the end of this file (part
- * 8), in the listing's notation, which the readable interpreter runs; the
- * CM's are shown in comments as the listing writes them. Their EXIT comes
- * back to basic code at the next word, an entry here.
+ * to the interpreter: they are tables at the end of this file (the LM's
+ * part 8, the CM's part 9), in the listing's notation, which the readable
+ * interpreter runs. Their EXIT comes back to basic code at the next word,
+ * an entry here.
  * Each call out of the file ends a C function with Q and Z set (tc()
  * below, or continue_at()), and the word it returns to is an entry of its
  * own; the binding goes on from one entry of this part to the next while Z
@@ -183,9 +183,8 @@ void tracktrm_after_fourth_downflag(void)
     tc(TRACKTRM + 19u, STOPRATE);
 }
 
-/* TRACKTRM +20 -- CM p. 259: OPTIND -1, and "DONT INTERRUPT INTEGRATION":
- *     CALL    INTSTALL
- *     EXIT */
+/* TRACKTRM +20 -- CM p. 259: OPTIND -1, and "DONT INTERRUPT INTEGRATION"
+ * (TRACKTRM_CODE, below). */
 void tracktrm_after_stoprate(void)
 {
     set_A(NEGONE);
@@ -210,9 +209,8 @@ void cleanout(void)
 /* ---- V87 and V88 (bank 43) ---- */
 
 /* SETVHFLG -- CM p. 264.
- * Verb 87, "SET VHF RANGE FLAG - ALLOWS R22 TO ACCEPT RANGE DATA":
- *     SET     EXIT
- *             VHFRFLAG */
+ * Verb 87, "SET VHF RANGE FLAG - ALLOWS R22 TO ACCEPT RANGE DATA"
+ * (SETVHFLG_CODE, below). */
 void setvhflg(void)
 {
     tc(SETVHFLG, INTPRET);
@@ -225,9 +223,8 @@ void setvhflg_after_exit(void)
 }
 
 /* RESETVHF -- CM p. 264.
- * Verb 88, "RESET VHF RANGE FLAG - STOPS ACCEPTANCE OF RANGE DATA":
- *     CLEAR   EXIT
- *             VHFRFLAG */
+ * Verb 88, "RESET VHF RANGE FLAG - STOPS ACCEPTANCE OF RANGE DATA"
+ * (RESETVHF_CODE, below). */
 void resetvhf(void)
 {
     tc(RESETVHF, INTPRET);
@@ -250,17 +247,8 @@ void resetvhf_after_trfailof(void)
 
 /* ATTACHIT -- LM p. 296, CM p. 264.
  * Verb 66's job (ATTACHED starts it): integration let finish, and the
- * other vehicle's sphere of influence made this one's (the LM's words are
- * ATTACHIT_CODE, below):
- *     CALL
- *             INTSTALL
- *     SET     BON
- *             MOONOTH
- *             MOONTHIS
- *             +3
- *     CLEAR
- *             MOONOTH
- *     EXIT */
+ * other vehicle's sphere of influence made this one's (ATTACHIT_CODE,
+ * below). */
 void attachit(void)
 {
     tc(ATTACHIT, INTPRET);
@@ -289,15 +277,8 @@ void attachit_after_second_exit(void)
 }
 #else
 /* TACHEXIT -- CM pp. 264-265, where ATTACHIT's GENTRAN returns and
- * LMTOCM ends: "UPDATE RN, VN, R-OTHER, V-OTHER":
- *     CALL
- *             PTOACSM
- *     LXA,2   CALL
- *             PBODY
- *             SVDWN1
- *     CALL
- *             SVDWN2
- *     EXIT */
+ * LMTOCM ends: "UPDATE RN, VN, R-OTHER, V-OTHER" (TACHEXIT_CODE,
+ * below). */
 void tachexit(void)
 {
     relint();
@@ -327,16 +308,8 @@ void lmtocmsv_after_findvac(void)
     tc(LMTOCMSV + 4u, ENDOFJOB);
 }
 
-/* LMTOCM -- CM p. 265: as ATTACHIT, the other way round:
- *     CALL
- *             INTSTALL
- *     SET     BON
- *             MOONTHIS
- *             MOONOTH
- *             +3
- *     CLEAR
- *             MOONTHIS
- *     EXIT */
+/* LMTOCM -- CM p. 265: as ATTACHIT, the other way round (LMTOCM_CODE,
+ * below). */
 void lmtocm(void)
 {
     tc(LMTOCM, INTPRET);
@@ -446,29 +419,36 @@ void rrlosdsp_after_delayjob(void)
 }
 #endif
 
-#if LUMINARY099
-/* ---- The interpretive code (the LM's) ----
+/* ---- The interpretive code ----
  * The words the TC INTPRETs above hand to the interpreter, as the listing
- * writes them (src/interpreter/notation.h). Each EXIT comes back to the
- * basic word after it. */
+ * writes them (src/interpreter/notation.h): the LM's are part 8, the CM's
+ * part 9. Each EXIT comes back to the basic word after it. */
 
-/* TRMTRAK1 +7 -- LM pp. 287-288. "DON'T INTERRUPT INTEGRATION": INTSTALL
- * waits for an integration under way to finish and holds off the next. */
-static const word trmtrak1_words[] = {
-    ORDER(CALL), /* TRMTRAK1 +7 */
-    ADDRESS(INTSTALL),
-    ORDER(EXIT),
-};
-
-/* ATTACHIT +1 -- LM p. 296. Integration held off (INTSTALL); then the
- * other vehicle's sphere of influence becomes this one's: MOONOTH set,
- * and cleared again unless MOONTHIS is set (BON MOONTHIS +3 goes on to
- * the EXIT). */
+/* ATTACHIT +1 -- LM p. 296, CM p. 264. Integration held off (INTSTALL:
+ * it waits for an integration under way to finish and holds off the
+ * next); then the other vehicle's sphere of influence becomes this one's:
+ * MOONOTH set, and cleared again unless MOONTHIS is set (BON MOONTHIS +3
+ * goes on to the EXIT). */
 static const word attachit_words[] = {
     ORDER(CALL), /* ATTACHIT +1 */
     ADDRESS(INTSTALL),     ORDERS(SET, BON),         SWITCH(SET, MOONOTH),
     SWITCH(BON, MOONTHIS), ADDRESS_AT(ATTACHIT, 9u), /* +3 */
     ORDER(CLEAR),          SWITCH(CLEAR, MOONOTH),   ORDER(EXIT),
+};
+
+/* TCPIN -- LM p. 298, CM p. 265, where INTWAKE goes on, through QPRET:
+ * RTB PINBRNCH, back to PINBALL's job. */
+static const word tcpin_words[] = {
+    ORDER(RTB), /* TCPIN */
+    ADDRESS(PINBRNCH),
+};
+
+#if LUMINARY099
+/* TRMTRAK1 +7 -- LM pp. 287-288. "DON'T INTERRUPT INTEGRATION". */
+static const word trmtrak1_words[] = {
+    ORDER(CALL), /* TRMTRAK1 +7 */
+    ADDRESS(INTSTALL),
+    ORDER(EXIT),
 };
 
 /* ATTACHIT +16 -- LM p. 296. "UPDATE R-OTHER, V-OTHER": PTOALEM moves the
@@ -478,13 +458,6 @@ static const word attachit_words_2[] = {
     ORDER(CALL),                           /* ATTACHIT +16 */
     ADDRESS(PTOALEM), ORDERS(LXA_2, CALL), /* LXA,2  CALL */
     ADDRESS(PBODY),   ADDRESS(SVDWN1),     ORDER(EXIT),
-};
-
-/* TCPIN -- LM p. 298, where INTWAKE goes on, through QPRET: RTB
- * PINBRNCH, back to PINBALL's job. */
-static const word tcpin_words[] = {
-    ORDER(RTB), /* TCPIN */
-    ADDRESS(PINBRNCH),
 };
 
 /* RRLOSDSP +4 -- LM pp. 299-300.
@@ -534,15 +507,66 @@ static const word rrlosdsp_words[] = {
     ORDER(EXIT),
 };
 
+#else
+/* TRACKTRM +23 -- CM p. 259. "DONT INTERRUPT INTEGRATION". */
+static const word tracktrm_words[] = {
+    ORDER(CALL), /* TRACKTRM +23 */
+    ADDRESS(INTSTALL),
+    ORDER(EXIT),
+};
+
+/* SETVHFLG +1 -- CM p. 264. "SET VHF RANGE FLAG". */
+static const word setvhflg_words[] = {
+    ORDERS(SET, EXIT), /* SETVHFLG +1 */
+    SWITCH(SET, VHFRFLAG),
+};
+
+/* RESETVHF +1 -- CM p. 264. "RESET VHF RANGE FLAG". */
+static const word resetvhf_words[] = {
+    ORDERS(CLEAR, EXIT), /* RESETVHF +1 */
+    SWITCH(CLEAR, VHFRFLAG),
+};
+
+/* TACHEXIT +2 -- CM pp. 264-265. "UPDATE RN, VN, R-OTHER, V-OTHER":
+ * PTOACSM moves the permanent state vector to the CSM's, and SVDWN1, with
+ * X2 the body (PBODY), and SVDWN2 bring this vehicle's and the other's to
+ * the present. */
+static const word tachexit_words[] = {
+    ORDER(CALL),                           /* TACHEXIT +2 */
+    ADDRESS(PTOACSM), ORDERS(LXA_2, CALL), /* LXA,2  CALL */
+    ADDRESS(PBODY),   ADDRESS(SVDWN1),     ORDER(CALL), ADDRESS(SVDWN2), ORDER(EXIT),
+};
+
+/* LMTOCM +1 -- CM p. 265. As ATTACHIT's, the other way round: MOONTHIS
+ * set, and cleared again unless MOONOTH is set. */
+static const word lmtocm_words[] = {
+    ORDER(CALL), /* LMTOCM +1 */
+    ADDRESS(INTSTALL),    ORDERS(SET, BON),        SWITCH(SET, MOONTHIS),
+    SWITCH(BON, MOONOTH), ADDRESS_AT(LMTOCM, 9u), /* +3 */
+    ORDER(CLEAR),         SWITCH(CLEAR, MOONTHIS), ORDER(EXIT),
+};
+#endif
+
 #define WORDS(array) (sizeof(array) / sizeof((array)[0]))
 
-const struct interpretive_code TRMTRAK1_CODE = {042u, TRMTRAK1 + 7u, WORDS(trmtrak1_words),
-                                                trmtrak1_words};
 const struct interpretive_code ATTACHIT_CODE = {043u, ATTACHIT + 1u, WORDS(attachit_words),
                                                 attachit_words};
+const struct interpretive_code TCPIN_CODE = {043u, TCPIN, WORDS(tcpin_words), tcpin_words};
+#if LUMINARY099
+const struct interpretive_code TRMTRAK1_CODE = {042u, TRMTRAK1 + 7u, WORDS(trmtrak1_words),
+                                                trmtrak1_words};
 const struct interpretive_code ATTACHIT_CODE_2 = {043u, ATTACHIT + 16u, WORDS(attachit_words_2),
                                                   attachit_words_2};
-const struct interpretive_code TCPIN_CODE = {043u, TCPIN, WORDS(tcpin_words), tcpin_words};
 const struct interpretive_code RRLOSDSP_CODE = {040u, RRLOSDSP + 4u, WORDS(rrlosdsp_words),
                                                 rrlosdsp_words};
+#else
+const struct interpretive_code TRACKTRM_CODE = {043u, TRACKTRM + 23u, WORDS(tracktrm_words),
+                                                tracktrm_words};
+const struct interpretive_code SETVHFLG_CODE = {043u, SETVHFLG + 1u, WORDS(setvhflg_words),
+                                                setvhflg_words};
+const struct interpretive_code RESETVHF_CODE = {043u, RESETVHF + 1u, WORDS(resetvhf_words),
+                                                resetvhf_words};
+const struct interpretive_code TACHEXIT_CODE = {043u, TACHEXIT + 2u, WORDS(tachexit_words),
+                                                tachexit_words};
+const struct interpretive_code LMTOCM_CODE = {043u, LMTOCM + 1u, WORDS(lmtocm_words), lmtocm_words};
 #endif

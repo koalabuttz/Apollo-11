@@ -1713,12 +1713,12 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define TWO_PHSCHNG ((word)K_2PHSCHNG) /* 2PHSCHNG */
 #define VERB69      ((word)K_VERB69)
 #define ATTACHIT    ((word)K_ATTACHIT)
+#define TCPIN       ((word)K_TCPIN) /* the interpretive RTB INTWAKE goes on at, bank 43 */
 #if LUMINARY099
 #define V16N56   ((word)KW_V16N56)
 #define DSPRRLOS ((word)K_DSPRRLOS) /* bank 40, with RRLOSDSP */
 #define RRLOSDSP ((word)K_RRLOSDSP)
 #define TRMTRAK1 ((word)K_TRMTRAK1) /* bank 42 */
-#define TCPIN    ((word)K_TCPIN)    /* part 8's: ATTACHIT's interpretive RTB, bank 43 */
 #else
 #define TRACKTRM ((word)K_TRACKTRM)
 #define SETVHFLG ((word)K_SETVHFLG)

@@ -180,6 +180,20 @@ void goextvb(void)
     continue_at(fan->to);
 }
 
+/* LST2FAN +n -- one word of the fan run on its own, at Z: where a verb's
+ * routine that returns to its TC's Q goes on, the next verb's word (the
+ * port's compiled copy of the CM's file enters at the words after V70UPDAT
+ * to V73UPDAT's). */
+void lst2fan_word(void)
+{
+    const struct fan_word *fan;
+
+    if (Z < LST2FAN || Z >= LST2FAN + FAN_WORDS) not_modelled();
+    fan = &lst2fan[Z - LST2FAN];
+    if (!fan->tcf) tc_at(Z);
+    continue_at(fan->to);
+}
+
 /* ---- Claiming the display system ---- */
 
 static void setxtact_plus1(void);

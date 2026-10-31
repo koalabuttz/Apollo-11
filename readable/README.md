@@ -99,8 +99,9 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Extended verbs, part 4 | `EXTENDED_VERBS.agc` (LM pp. 276-279), the LM's radar test verbs | [`src/extended_verbs/`](src/extended_verbs/) | R04 (verb 63), the radar test: the rendezvous or landing radar sampled once a second and shown (the RR's angles, range and range rate; the LR's range, position and velocities), proceed going over to the other radar; R77 (verb 78), the LR's spurious-return test, sampling four times a second with no display; and R77END (verb 79), which stops it |
 | Extended verbs, part 5 | `EXTENDED_VERBS.agc` (LM pp. 292-295, CM pp. 253-254), the DAP data load | [`src/extended_verbs/`](src/extended_verbs/) | Verb 48: the autopilot's configuration (noun 46), the masses (noun 47) and the trims (noun 48), shown flashing and taken back from the crew. The LM's R03 from DAPDATA1 on (APSFLAG, DAPBOOLS, MASS, the X-axis jets, the maneuver rate, the hand controller's sensitivity and deadband, the masses checked against the empty vehicle's, RESTORDB, and the trim task's TRIMDONE); the CM's DAPDISP and DAPDISP1 (refused under TVC, the maximum deadband flag, S41.2, MASSPROP and S40.14) |
 | Extended verbs, part 6 | `EXTENDED_VERBS.agc` (LM pp. 275 and 282, CM p. 246), the clock update and ATTCK2 | [`src/extended_verbs/`](src/extended_verbs/) | Verb 55: flashing V25 N24 for a time to add to the computer's clock, taken only on verb 23's data in (the LM's R33 in bank 42, the CM's ALINTIME), and UPDATIME, which adds it with interrupts held; and the LM's ATTCK2, V43's task that puts the attitude errors out to the CDUs' needles and turns their drives on |
-| Extended verbs, part 7 | `EXTENDED_VERBS.agc` (LM pp. 262, 287-288, 296-300, CM pp. 236, 259-265), the tracking and state vector verbs | [`src/extended_verbs/`](src/extended_verbs/) | The basic code of V69 (the forced hardware restart), V56 (terminate tracking: the LM's TRMTRAK1, the CM's TRACKTRM and CLEANOUT), V66 (ATTACHIT, which copies this vehicle's state vector into the other's) and the CM's V47 (LMTOCMSV and LMTOCM, the other way round, sharing TACHEXIT), the LM's V85 (DSPRRLOS and RRLOSDSP, the rendezvous radar's line of sight shown once a second) and the CM's V87 and V88 (the VHF range flag). The CM's interpretive words they hand over are shown in comments; the LM's are part 8 |
+| Extended verbs, part 7 | `EXTENDED_VERBS.agc` (LM pp. 262, 287-288, 296-300, CM pp. 236, 259-265), the tracking and state vector verbs | [`src/extended_verbs/`](src/extended_verbs/) | The basic code of V69 (the forced hardware restart), V56 (terminate tracking: the LM's TRMTRAK1, the CM's TRACKTRM and CLEANOUT), V66 (ATTACHIT, which copies this vehicle's state vector into the other's) and the CM's V47 (LMTOCMSV and LMTOCM, the other way round, sharing TACHEXIT), the LM's V85 (DSPRRLOS and RRLOSDSP, the rendezvous radar's line of sight shown once a second) and the CM's V87 and V88 (the VHF range flag). The interpretive words they hand over are part 8 (the LM's) and part 9 (the CM's) |
 | Extended verbs, part 8 | `EXTENDED_VERBS.agc` (LM pp. 287-288, 296-300), the LM's interpretive words of the tracking verbs | [`src/extended_verbs/`](src/extended_verbs/) | The interpretive code V56, V66 and V85 hand to the interpreter, in the listing's notation, run by the readable interpreter: TRMTRAK1's and ATTACHIT's CALL INTSTALL (integration let finish), ATTACHIT's sphere of influence switches and its CALL PTOALEM and SVDWN1 (the other vehicle's state vector brought up to date), TCPIN's RTB back to PINBALL, and RRLOSDSP's vector arithmetic from the radar's line of sight to its elevation and azimuth (UNIT, DOT, ARCTRIG), shown 0-360 degrees. With it the LM's EXTENDED_VERBS.agc is all readable C |
+| Extended verbs, part 9 | `EXTENDED_VERBS.agc` (CM pp. 236-238, 259-265), the CM's interpretive words of the tracking verbs, and the rest of its fan | [`src/extended_verbs/`](src/extended_verbs/) | The interpretive code V56, V66, V47, V87 and V88 hand to the interpreter, in the listing's notation, run by the readable interpreter: TRACKTRM's CALL INTSTALL, SETVHFLG's and RESETVHF's VHFRFLAG switches, TACHEXIT's PTOACSM, SVDWN1 and SVDWN2 (both vehicles' state vectors brought up to date), and LMTOCM's sphere of influence switches; and the four fan words after V70's (V71-V73's update programs and V74's erasable dump), which the parts' tables do not list. With it the CM's EXTENDED_VERBS.agc is all readable C, and the CM flight program flies it in place of the faithful port's compiled copy of the file |
 
 Beside them:
 
@@ -238,8 +239,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the port's 2,304 cases, and 4,096 states at each of the 48 entries of
    both missions) and for the LM's interpretive words of those verbs (its
    55 words checked against the rope, 41 oracle rows, the port's 1,856
-   cases, and 4,096 states at each of the 29 entries). `make names-check` checks the
-   generated names and the restart tables against the listings.
+   cases, and 4,096 states at each of the 29 entries) and for the CM's
+   whole file, readable against the faithful port's compiled copy of it
+   (its 35 interpretive words checked against the rope, the port's 5,864
+   frozen cases of the file, each run to its stop, those cases stirred
+   16 ways side by side, 92,922 runs, and its four basic words called
+   with and without the program's hardware). `make names-check` checks
+   the generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
    scenarios (P63 descent, rendezvous, entry, restarts, ...) against the
@@ -251,11 +257,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    them, routine by routine. PRs fly the quick set (26 rows), the nightly
    run every row. The DOWNRUPT vector and its RESUME fly readable too
    (the flight program takes them from the down-telemetry tables). The
-   CM's EXTENDED_VERBS does not fly here yet: the CM program keeps the
-   faithful port's compiled copy of that whole file
-   (`cm_extended_verbs_file.o`), which takes every key before the
-   readable parts can, until the file is readable whole. Until then only
-   the case tests run the CM's readable parts.
+   CM's EXTENDED_VERBS flies readable whole: its tables take the place
+   of the faithful port's compiled copy of the file
+   (`cm_extended_verbs_file.o`).
 
 CI runs both on every PR that touches `readable/`, or what it is built
 from and checked against: the faithful port's sources, tests and tools
