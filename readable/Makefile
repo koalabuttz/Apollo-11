@@ -21,6 +21,9 @@
 #   make alarm-cases      the readable alarms and aborts against the original
 #                         program's digests and the faithful port's routines
 #                         (seconds)
+#   make sp-cases         the readable SPSIN and SPCOS against the original
+#                         program's return states and the faithful port's
+#                         routines (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -52,15 +55,17 @@ INTERPRETER_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src
 	src/binding/machine.c src/binding/interpreter_core.c src/binding/interpreter_basic.c
 ALARM_SOURCES := src/agc/agc.c src/alarm/alarm.c src/interbank/interbank.c src/binding/machine.c \
 	src/binding/interbank_tables.c src/binding/alarm_routines.c
+SP_SOURCES := src/agc/agc.c src/single_precision/single_precision.c src/binding/machine.c \
+	src/binding/sp_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
-	$(INTERPRETER_SOURCES) $(ALARM_SOURCES))
+	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	names-check \
+	sp-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
-	alarm-cases
+	alarm-cases sp-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -277,6 +282,41 @@ alarm-cases: $(BUILD)/alarm-oracle-lm $(BUILD)/alarm-oracle-cm $(BUILD)/alarm-ca
 	./$(BUILD)/alarm-oracle-cm
 	./$(BUILD)/alarm-cases-lm
 	./$(BUILD)/alarm-cases-cm
+
+# ---- Single precision sine and cosine ----
+# The port's own test (tests/test_sp_routines.c) on the readable SPSIN and
+# SPCOS: every frozen yaAGC return state, entered at the original address.
+# Then tests/sp_cases.c: readable and faithful on the same random states.
+SP_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+	$(PORT)/tests/frozen_words.c
+SP_ORACLE_LM := $(PORT)/src/lm_single_trig.c $(PORT)/tests/lm_single_trig_cases.c
+SP_ORACLE_CM := $(PORT)/src/cm_single_return.c $(PORT)/src/cm_quictrig.c \
+	$(PORT)/tests/cm_single_return_cases.c $(PORT)/tests/cm_trig_cases.c
+SP_NAMES := lm_sp_routines cm_sp_routines cm_sp_hot_routines
+
+$(BUILD)/sp-faithful-%.o: $(PORT)/src/sp_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -DRK_$(shell echo $* | tr a-z A-Z)=1 \
+		$(foreach n,$(SP_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+
+$(BUILD)/sp-oracle-lm: $(SP_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) -DRK_LM=1 $(SP_COMMON) $(SP_ORACLE_LM) \
+		$(PORT)/tests/test_sp_routines.c $(filter %.o,$^) -o $@
+$(BUILD)/sp-oracle-cm: $(SP_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) -DRK_CM=1 $(SP_COMMON) $(SP_ORACLE_CM) \
+		$(PORT)/tests/test_sp_routines.c $(filter %.o,$^) -o $@
+$(BUILD)/sp-cases-lm: $(SP_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/sp-faithful-lm.o tests/sp_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(SP_COMMON) $(PORT)/src/lm_single_trig.c \
+		$(filter %.o,$^) tests/sp_cases.c -o $@
+$(BUILD)/sp-cases-cm: $(SP_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/sp-faithful-cm.o tests/sp_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(SP_COMMON) $(PORT)/src/cm_single_return.c \
+		$(PORT)/src/cm_quictrig.c $(filter %.o,$^) tests/sp_cases.c -o $@
+
+sp-cases: $(BUILD)/sp-oracle-lm $(BUILD)/sp-oracle-cm $(BUILD)/sp-cases-lm $(BUILD)/sp-cases-cm
+	./$(BUILD)/sp-oracle-lm
+	./$(BUILD)/sp-oracle-cm
+	./$(BUILD)/sp-cases-lm
+	./$(BUILD)/sp-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

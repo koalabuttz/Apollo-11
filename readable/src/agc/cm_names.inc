@@ -276,6 +276,11 @@
 #define K_OCT14 05771u
 #define K_PRIODSPR 02726u
 #define K_DOWNFLAG 05560u
+#define K_SPCOS 05074u
+#define K_SPSIN 05075u
+#define K_SPT 05100u
+#define K_POLLEY 05113u
+#define K_ARG90 05131u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -380,6 +385,8 @@
 #define K_FLGWRD10 00106u
 #define K_MPHASE4 00760u
 #define K_BRUPT 00017u
+#define K_TEMK 01075u
+#define K_SQ 01076u
 #define K_LOCALARM 00057u
 #define K_BANKALRM 00060u
 #define KW_EXECBANK 002626u
@@ -502,6 +509,9 @@
 #define KW_REINTBIT 000100u
 #define KW_NODOBIT 000001u
 #define KW_OCT1103 001103u
+#define KW_C5_2 001124u
+#define KW_C3_2 065552u
+#define KW_C1_2 031103u
 #define KW_ENDTASK {072471u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003461u,002063u}
