@@ -1523,6 +1523,76 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define CLEANOUT ((word)K_CLEANOUT) /* FRESH_START's */
 #endif
 
+/* ---- EXTENDED_VERBS, part 3: alignment and radar designate ---- */
+
+/* Its erasable words are named by ADDRESS_OF: NOUNREG, MODREG, PRIORITY,
+ * FLAGWRD0-7, the LM's FLGWRD11, RADMODES, DESRET and OPTIONX, the CM's
+ * OPTCADR, SWSAMPLE, OPTIND, SAC, PAC, DESOPTS, DESOPTT, THETAD and AK.
+ * Its constants: the verb-noun codes it shows (VN), the nouns' difference
+ * it tests, the flag bits and channel bits it tests and the ones it sets. */
+#define VNLODCDU ((word)KW_VNLODCDU) /* VN 2522: flashing V25 N22 */
+#define IMUCOARV ((word)KW_IMUCOARV) /* VN 4100: V41 */
+#define OPTCOARV IMUCOARV            /* OPTCOARV EQUALS IMUCOARV */
+#define VNLODGYR ((word)KW_VNLODGYR) /* VN 2593: flashing V25 N93 */
+#define IMUFINEV ((word)KW_IMUFINEV) /* VN 4200: V42 */
+#define LGYROBIN ((word)KW_LGYROBIN) /* ECADR OGC */
+#if LUMINARY099
+#define RRIMUDIF ((word)KW_RRIMUDIF) /* DEC -52 */
+#define VNLDRCDU ((word)KW_VNLDRCDU) /* VN 2473: flashing V24 N73 */
+#define OCT41000 ((word)KW_OCT41000)
+#define ONE_SEC  ((word)KW_1SEC) /* 1SEC */
+#define DEC22    ((word)KW_DEC22)
+#define BIT13_14 ((word)KW_BIT13_14) /* BIT13-14 */
+#define V43K     ((word)KW_V43K)     /* VN 4300: V43 */
+#define V04N1272 ((word)KW_V04N1272) /* VN 412: V04 N12 */
+#else
+#define OPIMDIFF ((word)KW_OPIMDIFF) /* DEC -71 */
+#define VNLD0CDU ((word)KW_VNLD0CDU) /* VN 2492: flashing V24 N92 */
+#define OCTAL30  ((word)KW_OCTAL30)
+#define OCT50    ((word)KW_OCT50)
+#define EBANK5   ((word)KW_EBANK5)
+#define GRRBKBIT ((word)KW_GRRBKBIT)
+#endif
+
+/* Its labels, in bank 43 (the LM's AURLOKON, NOLOKON and AURLKON1 in bank
+ * 23), and PINBALL's TERMEXTV and ENDEXTVB (both EQUALS ENDEXT) and
+ * BLANKET, where it goes on to. */
+#define VBZERO   ((word)K_VBZERO)
+#define VBCOARK  ((word)K_VBCOARK)
+#define OP_INERT ((word)K_OP_INERT) /* OP/INERT */
+#define IMUZEROK ((word)K_IMUZEROK)
+#define IMUCOARK ((word)K_IMUCOARK)
+#define ICORK2   ((word)K_ICORK2)
+#define IMUFINEK ((word)K_IMUFINEK)
+#define FINEK2   ((word)K_FINEK2)
+#define IMUATTCK ((word)K_IMUATTCK)
+#define TERMEXTV ((word)K_TERMEXTV)
+#define ENDEXTVB ((word)K_ENDEXTVB)
+#if LUMINARY099
+#define RRZEROK  ((word)K_RRZEROK)
+#define RWAITK   ((word)K_RWAITK)
+#define LRPOS2K  ((word)K_LRPOS2K)
+#define LRP2ALM  ((word)K_LRP2ALM)
+#define RRDESNBK ((word)K_RRDESNBK)
+#define RRDESK2  ((word)K_RRDESK2)
+#define RRDESEND ((word)K_RRDESEND)
+#define RDRUSECK ((word)K_RDRUSECK)
+#define CHECKRR  ((word)K_CHECKRR)
+#define CKRNDBIT ((word)K_CKRNDBIT)
+#define CHECKP22 ((word)K_CHECKP22)
+#define AURLOKON ((word)K_AURLOKON) /* bank 23 */
+#define NOLOKON  ((word)K_NOLOKON)  /* bank 23 */
+#define AURLKON1 ((word)K_AURLKON1) /* bank 23 */
+#define BLANKET  ((word)K_BLANKET)
+#else
+#define OPTCOARK ((word)K_OPTCOARK)
+#define OPTC1    ((word)K_OPTC1)
+#define TRMATTCK ((word)K_TRMATTCK)
+#define ATTCK1   ((word)K_ATTCK1)
+#define CKLFTBTS ((word)K_CKLFTBTS)
+#define XACT0Q   ((word)K_XACT0Q)
+#endif
+
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
 #define CDULOGIC ((word)K_CDULOGIC)
 
