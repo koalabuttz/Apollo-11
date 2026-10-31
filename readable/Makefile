@@ -97,7 +97,8 @@ AOTMARK_SOURCES := $(INTERPRETER_SOURCES) src/aotmark/aotmark.c src/rtb_op_codes
 	src/binding/aotmark_routines.c
 SXTMARK_SOURCES := src/agc/agc.c src/sxtmark/sxtmark.c src/binding/machine.c \
 	src/binding/sxtmark_routines.c
-EV_SOURCES := src/agc/agc.c src/extended_verbs/front.c src/binding/extended_verbs_routines.c
+EV_SOURCES := src/agc/agc.c src/extended_verbs/front.c src/extended_verbs/short_verbs.c \
+	src/binding/extended_verbs_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
@@ -870,20 +871,22 @@ sxtmark-cases: $(BUILD)/sxtmark-oracle $(BUILD)/sxtmark-cases
 # module's name renamed readable_<m>_..., and tests/extended_verbs_missions.c
 # puts them back under the module's name. First the port's frozen oracle
 # rows (the original program's results in Virtual AGC) on the readable
-# routines, then tests/extended_verbs_front_cases.c side by side with the
-# faithful module.
+# routines, then tests/extended_verbs_<part>_cases.c side by side with the
+# faithful module (built with its dispatch renamed faithful_...; the short
+# verbs' also gives the port's suite its list of entries).
 LANEC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/lanec.c $(PORT)/tests/lanec_case.c
-EV_FRONT_NAMES := lanec_ev_front_dispatch
+EV_PARTS := front short
+EV_NAMES := $(EV_PARTS:%=lanec_ev_%_dispatch)
 
-$(BUILD)/ev-front-faithful.o: $(PORT)/src/lanec_ev_front.c
+$(BUILD)/ev-%-faithful.o: $(PORT)/src/lanec_ev_%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(EV_FRONT_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlanec_ev_$*_dispatch=faithful_lanec_ev_$*_dispatch -c $< -o $@
 $(BUILD)/ev-readable-lm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
 $(BUILD)/ev-readable-cm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
 $(BUILD)/ev-readable-%.o:
 	ld -r $^ -o $@.all
-	objcopy $(foreach n,$(EV_FRONT_NAMES),--keep-global-symbol=$(n)) $@.all $@.kept
-	objcopy $(foreach n,$(EV_FRONT_NAMES),--redefine-sym $(n)=readable_$*_$(n:lanec_%=%)) $@.kept $@
+	objcopy $(foreach n,$(EV_NAMES),--keep-global-symbol=$(n)) $@.all $@.kept
+	objcopy $(foreach n,$(EV_NAMES),--redefine-sym $(n)=readable_$*_$(n:lanec_%=%)) $@.kept $@
 EV_READABLE := $(BUILD)/ev-readable-lm.o $(BUILD)/ev-readable-cm.o tests/extended_verbs_missions.c
 $(BUILD)/ev-front-oracle: $(EV_READABLE) tests/extended_verbs_front_oracle.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_front_cases.c \
@@ -891,10 +894,19 @@ $(BUILD)/ev-front-oracle: $(EV_READABLE) tests/extended_verbs_front_oracle.c
 $(BUILD)/ev-front-cases: $(EV_READABLE) $(BUILD)/ev-front-faithful.o tests/extended_verbs_front_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_front_cases.c \
 		$(filter %.o %.c,$^) -o $@
+$(BUILD)/ev-short-oracle: $(EV_READABLE) $(BUILD)/ev-short-faithful.o tests/extended_verbs_short_oracle.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_short_cases.c \
+		$(filter %.o %.c,$^) -o $@
+$(BUILD)/ev-short-cases: $(EV_READABLE) $(BUILD)/ev-short-faithful.o tests/extended_verbs_short_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_short_cases.c \
+		$(filter %.o %.c,$^) -o $@
 
-extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases
+extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases $(BUILD)/ev-short-oracle \
+		$(BUILD)/ev-short-cases
 	./$(BUILD)/ev-front-oracle
 	./$(BUILD)/ev-front-cases
+	./$(BUILD)/ev-short-oracle
+	./$(BUILD)/ev-short-cases
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
