@@ -6,21 +6,24 @@
  * state and a record of the channels (lanec_io, c64-port/include/lanec.h)
  * and the mission. The readable parts take the module's place under its
  * name: part 1, the front end, is lanec_ev_front_dispatch; part 2, the
- * short verbs, lanec_ev_short_dispatch.
+ * short verbs, lanec_ev_short_dispatch; part 3, alignment and radar
+ * designate, lanec_ev_align_dispatch.
  *
  * Plumbing only: point the machine at the state and the channel record,
  * and take the states the faithful module takes: the mission this object
- * is built for, bank 43 selected (FBANK's bank 33 with the superbank bit),
- * the bank registers agreeing, Z a 12-bit address and ZERO +0. A step the
- * readable code does not model leaves the state as it was.
+ * is built for, bank 43 selected (FBANK's bank 33 with the superbank bit)
+ * or, for the LM's part 3, bank 23, the bank registers agreeing, Z a
+ * 12-bit address and ZERO +0. A step the readable code does not model
+ * leaves the state as it was.
  *
- * The front end's module runs the one routine at Z. The short verbs'
- * goes on from entry to entry while Z is one of its own, and so does its
- * readable part: a TC from one short verb to another (LEMVEC's TC
- * NOUPDOWN, the CM's TC CHKPOOH) or EXDAPOFF's TC Q back to its caller
- * runs on. */
+ * The front end's module runs the one routine at Z. The others go on from
+ * entry to entry while Z is one of their own in the bank they started in,
+ * and so do their readable parts: a TC from one short verb to another
+ * (LEMVEC's TC NOUPDOWN, the CM's TC CHKPOOH), EXDAPOFF's TC Q back to its
+ * caller or VBZERO's TC OP/INERT runs on. */
 #include <setjmp.h>
 #include <stddef.h>
+#include "lanec_ev_align.h"
 #include "lanec_ev_front.h"
 #include "lanec_ev_short.h"
 #include "../extended_verbs/extended_verbs.h"
@@ -32,9 +35,11 @@
 #define THIS_MISSION LANEC_CM
 #endif
 
-/* Bank 43: FBANK's bank 33 with the superbank bit. */
+/* Bank 43: FBANK's bank 33 with the superbank bit. Bank 23: FBANK's 23,
+ * where the superbank bit does not count. */
 #define BANK_33_FBANK 066000u
 #define SUPERBANK_BIT 0100u
+#define BANK_23_FBANK 046000u
 
 static jmp_buf back;
 
@@ -43,20 +48,21 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The extended verbs written so far read no channel and no fixed word
- * (GOLOADLV's WRITE SUPERBNK is channel 7, agc.superbank). */
+static lanec_io *channels;
+
+/* The extended verbs written so far read channels 12, 30 and 31 (V43's
+ * checks) and write channel 12 (V43's error counter enable), and read no
+ * fixed word (GOLOADLV's WRITE SUPERBNK is channel 7, agc.superbank). */
 static word channel_in(unsigned number)
 {
-    (void)number;
-    not_modelled();
-    return 0;
+    if (number != 012u && number != 030u && number != 031u) not_modelled();
+    return channels->channel[number];
 }
 
 static void channel_out(unsigned number, word value)
 {
-    (void)number;
-    (void)value;
-    not_modelled();
+    if (number != 012u) not_modelled();
+    channels->channel[number] = value;
 }
 
 static word fixed_memory(unsigned physical)
@@ -69,6 +75,7 @@ static word fixed_memory(unsigned physical)
 static void bind_lanec(apollo_overlay_state *state, lanec_io *io)
 {
     agc.memory = state->words;
+    channels = io;
     agc.superbank = &io->superbank;
     agc.interrupts = &io->interrupt_enabled;
     agc.dsalmout = &io->channel[011];
@@ -79,18 +86,30 @@ static void bind_lanec(apollo_overlay_state *state, lanec_io *io)
     agc.leave = leave;
 }
 
-/* The faithful module's states (lanec_registers_valid, bank 43). */
+/* The faithful module's states (lanec_registers_valid). */
 static bool as_expected(void)
 {
     return (EBANK & ~03400u) == 0u && (FBANK & ~076000u) == 0u &&
-           BBANK == (word)(FBANK | (EBANK >> 8)) && Z <= 07777u && agc.memory[ZERO_ADDRESS] == 0u &&
-           FBANK == BANK_33_FBANK && (*agc.superbank & SUPERBANK_BIT);
+           BBANK == (word)(FBANK | (EBANK >> 8)) && Z <= 07777u && agc.memory[ZERO_ADDRESS] == 0u;
+}
+
+static bool in_bank_43(void)
+{
+    return FBANK == BANK_33_FBANK && (*agc.superbank & SUPERBANK_BIT);
 }
 
 struct entry {
     word at;
     void (*routine)(void);
 };
+
+/* A part's entries in one bank. */
+struct entries {
+    const struct entry *list;
+    size_t count;
+};
+#define ENTRIES(table) ((struct entries){table, sizeof table / sizeof table[0]})
+#define NO_ENTRIES     ((struct entries){NULL, 0})
 
 /* The entry at Z, or NULL. */
 static const struct entry *entry_at_z(const struct entry *entries, size_t count)
@@ -102,18 +121,37 @@ static const struct entry *entry_at_z(const struct entry *entries, size_t count)
     return NULL;
 }
 
-/* Run the routine at Z, if it is one of the entries; with run_on, then
- * the entry at Z after it, while there is one. */
-static enum lanec_status run(const struct entry *entries, size_t count, bool run_on,
+/* The entries of the bank selected: bank 43, or bank 23. */
+static struct entries in_this_bank(struct entries in_43, struct entries in_23)
+{
+    if (in_bank_43()) return in_43;
+    if (FBANK == BANK_23_FBANK) return in_23;
+    return NO_ENTRIES;
+}
+
+/* Run entry's routine; with run_on, then the entry at Z after it, while
+ * there is one. */
+static void go_on(struct entries in, const struct entry *entry, bool run_on)
+{
+    do entry->routine();
+    while (run_on && (entry = entry_at_z(in.list, in.count)) != NULL);
+}
+
+/* Run the routine at Z, if it is one of the entries of the bank selected;
+ * with run_on, then the entry at Z after it in the same bank, while there
+ * is one. */
+static enum lanec_status run(struct entries in_43, struct entries in_23, bool run_on,
                              apollo_overlay_state *state, lanec_io *io)
 {
     apollo_overlay_state before;
     lanec_io io_before;
+    struct entries in;
     const struct entry *entry;
 
     bind_lanec(state, io);
     if (!as_expected()) return LANEC_OUT_OF_SCOPE;
-    entry = entry_at_z(entries, count);
+    in = in_this_bank(in_43, in_23);
+    entry = entry_at_z(in.list, in.count);
     if (!entry) return LANEC_OUT_OF_SCOPE;
     before = *state;
     io_before = *io;
@@ -122,8 +160,7 @@ static enum lanec_status run(const struct entry *entries, size_t count, bool run
         *io = io_before;
         return LANEC_OUT_OF_SCOPE;
     }
-    do entry->routine();
-    while (run_on && (entry = entry_at_z(entries, count)) != NULL);
+    go_on(in, entry, run_on);
     return LANEC_OK;
 }
 
@@ -149,7 +186,7 @@ enum lanec_status lanec_ev_front_dispatch(apollo_overlay_state *state, lanec_io 
                                           enum lanec_mission mission)
 {
     if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
-    return run(front, sizeof front / sizeof front[0], false, state, io);
+    return run(ENTRIES(front), NO_ENTRIES, false, state, io);
 }
 
 /* ---- Part 2: the short verbs ---- */
@@ -363,5 +400,152 @@ enum lanec_status lanec_ev_short_dispatch(apollo_overlay_state *state, lanec_io 
                                           enum lanec_mission mission)
 {
     if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
-    return run(short_verbs, sizeof short_verbs / sizeof short_verbs[0], true, state, io);
+    return run(ENTRIES(short_verbs), NO_ENTRIES, true, state, io);
+}
+
+/* ---- Part 3: alignment and radar designate ---- */
+
+static const struct entry align[] = {
+    {VBZERO, vbzero},
+    {VBZERO + 1u, vbzero_after_op_inert_imu},
+    {VBCOARK, vbcoark},
+    {VBCOARK + 1u, vbcoark_after_op_inert_imu},
+    {OP_INERT, op_inert},
+    {IMUZEROK, imuzerok},
+    {IMUZEROK + 1u, imuzerok_after_ckmodcad},
+    {IMUZEROK + 3u, imuzerok_after_imuzero},
+    {IMUZEROK + 5u, imuzerok_after_imustall_bad},
+    {IMUZEROK + 6u, imuzerok_after_imustall_good},
+    {IMUCOARK, imucoark},
+    {IMUCOARK + 1u, imucoark_after_ckmodcad},
+    {IMUCOARK + 2u, imucoark_after_testxact},
+    {IMUCOARK + 5u, imucoark_after_terminate},
+    {IMUCOARK + 6u, imucoark_after_proceed},
+    {ICORK2, icork2},
+    {ICORK2 + 3u, icork2_after_exdspret},
+    {ICORK2 + 5u, icork2_after_imucoars},
+    {ICORK2 + 7u, icork2_after_imustall_bad},
+    {ICORK2 + 8u, icork2_after_imustall_good},
+    {IMUFINEK, imufinek},
+    {IMUFINEK + 1u, imufinek_after_ckmodcad},
+    {IMUFINEK + 2u, imufinek_after_testxact},
+    {IMUFINEK + 5u, imufinek_after_terminate},
+    {IMUFINEK + 6u, imufinek_after_proceed},
+    {IMUFINEK + 7u, imufinek_after_enter},
+    {IMUFINEK + 10u, imufinek_after_exdspret},
+    {IMUFINEK + 12u, imufinek_after_imufine},
+    {IMUFINEK + 14u, imufinek_after_imustall_bad},
+    {FINEK2, finek2},
+    {FINEK2 + 3u, finek2_after_imupulse},
+    {FINEK2 + 5u, finek2_after_imustall_bad},
+    {FINEK2 + 6u, finek2_after_imustall_good},
+    {IMUATTCK, imuattck},
+    {IMUATTCK + 1u, imuattck_after_chkpooh},
+#if LUMINARY099
+    {VBZERO + 2u, vbzero_after_op_inert_rr},
+    {VBCOARK + 2u, vbcoark_after_op_inert_rr},
+    {RRZEROK, rrzerok},
+    {RRZEROK + 1u, rrzerok_after_rdruseck},
+    {RWAITK, rwaitk},
+    {RWAITK + 2u, rwaitk_after_radstall_bad},
+    {RWAITK + 3u, rwaitk_after_radstall_good},
+    {LRPOS2K, lrpos2k},
+    {LRPOS2K + 1u, lrpos2k_after_rdruseck},
+    {LRPOS2K + 3u, lrpos2k_after_lrpos2},
+    {LRPOS2K + 5u, lrpos2k_after_radstall_bad},
+    {LRPOS2K + 6u, lrpos2k_after_radstall_good},
+    {LRP2ALM, lrp2alm},
+    {LRP2ALM + 2u, lrp2alm_after_alarm},
+    {RRDESNBK, rrdesnbk},
+    {RRDESNBK + 1u, rrdesnbk_after_rdruseck},
+    {RRDESNBK + 2u, rrdesnbk_after_testxact},
+    {RRDESNBK + 10u, rrdesnbk_plus10},
+    {RRDESNBK + 13u, rrdesnbk_after_terminate},
+    {RRDESNBK + 14u, rrdesnbk_after_proceed},
+    {RRDESNBK + 15u, rrdesnbk_after_enter},
+    {RRDESNBK + 17u, rrdesnbk_after_aurlokon},
+    {RRDESNBK + 20u, rrdesnbk_after_exdspret},
+    {RRDESNBK + 24u, rrdesnbk_after_findvac},
+    {RRDESK2, rrdesk2},
+    {RRDESK2 + 2u, rrdesk2_after_rrdesnb},
+    {RRDESK2 + 3u, rrdesk2_plus3},
+    {RRDESK2 + 12u, rrdesk2_after_radstall_bad},
+    {RRDESK2 + 13u, rrdesk2_after_radstall_good},
+    {RRDESK2 + 14u, rrdesk2_plus14},
+    {RRDESK2 + 16u, rrdesk2_after_alarm},
+    {RRDESEND, rrdesend},
+    {RRDESEND + 9u, rrdesend_after_clradmod},
+    {RRDESEND + 12u, rrdesend_after_delayjob},
+    {RRDESEND + 14u, rrdesend_after_downflag},
+    {RDRUSECK, rdruseck},
+    {CHECKRR, checkrr},
+    {CKRNDBIT, ckrndbit},
+    {CHECKP22, checkp22},
+    {IMUATTCK + 13u, imuattck_plus13},
+    {IMUATTCK + 14u, imuattck_after_testxact},
+    {IMUATTCK + 17u, imuattck_after_terminate},
+    {IMUATTCK + 18u, imuattck_after_proceed},
+    {IMUATTCK + 19u, imuattck_after_enter},
+    {IMUATTCK + 22u, imuattck_after_exdspret},
+    {IMUATTCK + 29u, imuattck_after_waitlist},
+#else
+    {VBZERO + 2u, vbzero_after_op_inert_optics},
+    {VBCOARK + 2u, vbcoark_after_op_inert_optics},
+    {XACT0Q, xact0q},
+    {OPTCOARK, optcoark},
+    {OPTCOARK + 2u, optcoark_after_ckmodcad},
+    {OPTCOARK + 3u, optcoark_after_testxact},
+    {OPTCOARK + 9u, optcoark_after_falton},
+    {OPTCOARK + 11u, optcoark_plus11},
+    {OPTCOARK + 17u, optcoark_after_alarm},
+    {OPTC1, optc1},
+    {OPTC1 + 3u, optc1_after_terminate},
+    {OPTC1 + 4u, optc1_after_proceed},
+    {OPTC1 + 5u, optc1_after_enter},
+    {OPTC1 + 12u, optc1_after_exdspret},
+    {OPTC1 + 15u, optc1_plus15},
+    {IMUATTCK + 7u, imuattck_after_cklftbts_yes},
+    {IMUATTCK + 8u, imuattck_after_testxact},
+    {IMUATTCK + 14u, imuattck_after_terminate},
+    {IMUATTCK + 15u, imuattck_after_proceed},
+    {IMUATTCK + 16u, imuattck_after_enter},
+    {IMUATTCK + 20u, imuattck_after_needle11},
+    {IMUATTCK + 22u, imuattck_after_needler2},
+    {TRMATTCK, trmattck},
+    {TRMATTCK + 1u, trmattck_after_cklftbts_yes},
+    {TRMATTCK + 2u, trmattck_after_cklftbts_no},
+    {ATTCK1, attck1},
+    {ATTCK1 + 7u, attck1_after_needles},
+    {CKLFTBTS, cklftbts},
+#endif
+};
+
+#if LUMINARY099
+/* AURLOKON, NOLOKON and AURLKON1, in bank 23. */
+static const struct entry align_in_bank_23[] = {
+    {AURLOKON, aurlokon},
+    {AURLOKON + 1u, aurlokon_after_makecadr},
+    {AURLOKON + 6u, aurlokon_plus6},
+    {AURLOKON + 9u, aurlokon_after_terminate},
+    {AURLOKON + 10u, aurlokon_after_proceed},
+    {AURLOKON + 11u, aurlokon_after_recycle},
+    {AURLOKON + 12u, aurlokon_after_enter},
+    {AURLOKON + 14u, aurlokon_after_blanket},
+    {AURLOKON + 15u, aurlokon_plus15},
+    {AURLOKON + 21u, aurlokon_after_upflag},
+    {NOLOKON, nolokon},
+    {NOLOKON + 2u, nolokon_after_downflag},
+    {NOLOKON + 4u, nolokon_after_upflag},
+    {AURLKON1, aurlkon1},
+};
+#define ALIGN_IN_BANK_23 ENTRIES(align_in_bank_23)
+#else
+#define ALIGN_IN_BANK_23 NO_ENTRIES
+#endif
+
+enum lanec_status lanec_ev_align_dispatch(apollo_overlay_state *state, lanec_io *io,
+                                          enum lanec_mission mission)
+{
+    if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
+    return run(ENTRIES(align), ALIGN_IN_BANK_23, true, state, io);
 }

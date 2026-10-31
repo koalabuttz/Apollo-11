@@ -82,16 +82,18 @@ REPLACED = (
     'cm_sxtmark.o',
     # EXTENDED_VERBS.agc, part by part (src/extended_verbs/): each the
     # module the port's tables (lanec_ev_routines.o) call. Part 1, the
-    # front end; part 2, the short verbs. In the CM the port's compiled
-    # file of EXTENDED_VERBS (cm_extended_verbs_file.o) holds the same keys
-    # first and stays until the CM's file is all readable.
+    # front end; part 2, the short verbs; part 3, alignment and radar
+    # designate. In the CM the port's compiled file of EXTENDED_VERBS
+    # (cm_extended_verbs_file.o) holds the same keys first and stays until
+    # the CM's file is all readable.
     'lanec_ev_front.o',
     'lanec_ev_short.o',
+    'lanec_ev_align.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
-                    't4jump', 'imumon', 'goextvb', 'showsum')
+                    't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek')
 xb.OUT = READABLE / 'build/x86-flight'
 
 
