@@ -17,8 +17,9 @@
  * job starters, the hand-overs to other banks, CKMODCAD, the CM's CHKPOOH
  * and EXDAPOFF, and SHOWSUM. Part 3, alignment and radar designate (LM
  * pp. 265-281, CM pp. 239-250): V40-V43, the LM's V44 and V60, OP/INERT,
- * the LM's RDRUSECK and the CM's CKLFTBTS. The entries are the routines'
- * labels and the words a call out of the routine returns to. All of it is
+ * the LM's RDRUSECK and the CM's CKLFTBTS. Part 4, the LM's radar test
+ * verbs (pp. 276-279): R04 (V63), R77 (V78) and R77END (V79). The entries
+ * are the routines' labels and the words a call out of the routine returns to. All of it is
  * basic code. */
 #ifndef READABLE_EXTENDED_VERBS_H
 #define READABLE_EXTENDED_VERBS_H
@@ -288,10 +289,10 @@ void rrdesend_after_downflag(void);
 void aurlokon(void); /* AURLOKON, NOLOKON and AURLKON1 are in bank 23 */
 void aurlokon_after_makecadr(void);
 void aurlokon_plus6(void);           /* the listing's -5 */
-void aurlokon_after_terminate(void); /* GOMARKFR's four returns */
+void aurlokon_after_terminate(void); /* GOMARKFR's three crew returns */
 void aurlokon_after_proceed(void);
 void aurlokon_after_recycle(void);
-void aurlokon_after_enter(void);
+void aurlokon_immediate_return(void); /* and its immediate one */
 void aurlokon_after_blanket(void);
 void aurlokon_plus15(void); /* the listing's +5 */
 void aurlokon_after_upflag(void);
@@ -332,6 +333,61 @@ void trmattck_after_cklftbts_no(void);
 void attck1(void);
 void attck1_after_needles(void);
 void cklftbts(void);
+#endif
+
+/* ---- Part 4: the LM's radar test verbs (radar.c) ---- */
+#if LUMINARY099
+void r77(void);
+void r77_after_rdruseck(void);
+void r77_after_upflag(void);
+void r04(void);
+void r04_after_rdruseck(void);
+void r04_after_testxact(void);
+void r04z(void); /* where R04's UPFLAG returns */
+void r04a(void);
+void r04a_plus2(void);
+void r04a_after_terminate(void); /* GOMARKFR's three crew returns */
+void r04a_after_proceed(void);
+void r04a_after_recycle(void);
+void r04a_immediate_return(void); /* and its immediate one */
+void r04a_after_blanket(void);
+void r04a_plus11(void);
+void r04x_minus1(void);
+void r04x(void);
+void r04b(void);
+void r04b_plus5(void);
+void r04b_after_terminate(void); /* GOMARK4's three returns */
+void r04b_after_proceed(void);
+void r04b_after_enter(void);
+void r04c(void);
+void r04c_plus4(void);
+void r04c_after_waitlist(void);
+void r04rr(void);
+void r04rr_after_terminate(void); /* GOMARKF's three returns */
+void r04rr_after_proceed(void);
+void r04rr_after_recycle(void);
+void r04rr_plus6(void);
+void r04rr_plus6_after_terminate(void);
+void r04rr_plus6_after_proceed(void);
+void r04rr_plus6_after_recycle(void);
+void r04lr(void);
+void r04lr_after_terminate(void);
+void r04lr_after_proceed(void);
+void r04lr_after_recycle(void);
+void r04lr_plus6(void);
+void r04lr_plus6_after_terminate(void);
+void r04lr_plus6_after_proceed(void);
+void r04lr_plus6_after_recycle(void);
+void r04y(void);
+void r04y_after_delayjob(void);
+void r04k(void);
+void r04l(void);
+void r04end(void);
+void r04end_after_delayjob(void);
+void r04end_after_downflag(void);
+void r77end(void);
+void r77end_after_delayjob(void);
+void r77end_after_downflag(void);
 #endif
 
 #endif

@@ -1593,6 +1593,43 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define XACT0Q   ((word)K_XACT0Q)
 #endif
 
+/* ---- EXTENDED_VERBS, part 4: the LM's radar test verbs ---- */
+
+#if LUMINARY099
+/* Its erasable words are named by ADDRESS_OF: FLAGWRD3, RADMODES, OPTIONX,
+ * DSPTEM1, and in E-bank 4 RSAMPDT, RTSTLOC, RFAILCNT, RTSTDEX, RTSTBASE
+ * and RTSTMAX. Its constants: */
+#define EBANK4         ((word)KW_EBANK4)
+#define ONE_SEC_PLUS_1 ((word)KW_1SECP1)   /* 1SEC+1: DEC 101 */
+#define TWO_SECS       ((word)KW_2SECS)    /* 2SECS */
+#define MS250_PLUS_1   ((word)KW_250MSP1)  /* 250MS+1 (EQUALS CALLCODE) */
+#define LRPOSCAL       ((word)KW_LRPOSCAL) /* OCT 444: RADMODES bits 9, 6 and 3 */
+#define R04FLBIT       ((word)KW_R04FLBIT)
+#define V04N12X        ((word)KW_V04N12X) /* VN 412: V04 N12 */
+#define OCT201_R04     ((word)KW_201R04)  /* 201R04: OCT 00201 */
+#define V50N25X        ((word)KW_V50N25X) /* VN 5025: V50 N25 */
+#define V16N72         ((word)KW_V16N72)
+#define V16N78         ((word)KW_V16N78)
+#define V16N66         ((word)KW_V16N66)
+#define V16N67         ((word)KW_V16N67)
+
+/* Its labels, in bank 43. */
+#define R77    ((word)K_R77)
+#define R04    ((word)K_R04)
+#define R04Z   ((word)K_R04Z)
+#define R04A   ((word)K_R04A)
+#define R04X   ((word)K_R04X)
+#define R04B   ((word)K_R04B)
+#define R04C   ((word)K_R04C)
+#define R04RR  ((word)K_R04RR)
+#define R04LR  ((word)K_R04LR)
+#define R04Y   ((word)K_R04Y)
+#define R04K   ((word)K_R04K)
+#define R04L   ((word)K_R04L)
+#define R04END ((word)K_R04END)
+#define R77END ((word)K_R77END)
+#endif
+
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
 #define CDULOGIC ((word)K_CDULOGIC)
 

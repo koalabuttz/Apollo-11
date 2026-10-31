@@ -577,9 +577,10 @@ void aurlokon_after_recycle(void)
     continue_at(AURLOKON + 6u);
 }
 
-/* AURLOKON +12 -- LM p. 271: a load: blank R3 (BIT3) and wait for the
- * response. */
-void aurlokon_after_enter(void)
+/* AURLOKON +12 -- LM p. 271: GOMARKFR's immediate return, with the
+ * display up: blank R3 (BIT3) and end the job; the crew's response comes
+ * back at +9, +10 or +11. */
+void aurlokon_immediate_return(void)
 {
     set_A(BIT3);
     tc(AURLOKON + 13u, BLANKET);
