@@ -85,7 +85,8 @@ REPLACED = (
     # front end; part 2, the short verbs; part 3, alignment and radar
     # designate; part 4, the LM's radar test verbs; part 5, the DAP data
     # load; part 6, the clock update and ATTCK2; part 7, the tracking and
-    # state vector verbs. In the CM the port's compiled file of EXTENDED_VERBS
+    # state vector verbs; part 8, the LM's interpretive words of those
+    # verbs. In the CM the port's compiled file of EXTENDED_VERBS
     # (cm_extended_verbs_file.o) holds the same keys first and stays until
     # the CM's file is all readable.
     'lanec_ev_front.o',
@@ -95,6 +96,7 @@ REPLACED = (
     'lanec_ev_dap.o',
     'lanec_ev_time.o',
     'lanec_ev_track.o',
+    'lanec_ev_lmi.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',

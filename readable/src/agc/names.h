@@ -1718,6 +1718,7 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define DSPRRLOS ((word)K_DSPRRLOS) /* bank 40, with RRLOSDSP */
 #define RRLOSDSP ((word)K_RRLOSDSP)
 #define TRMTRAK1 ((word)K_TRMTRAK1) /* bank 42 */
+#define TCPIN    ((word)K_TCPIN)    /* part 8's: ATTACHIT's interpretive RTB, bank 43 */
 #else
 #define TRACKTRM ((word)K_TRACKTRM)
 #define SETVHFLG ((word)K_SETVHFLG)

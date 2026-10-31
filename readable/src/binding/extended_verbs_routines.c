@@ -10,7 +10,8 @@
  * designate, lanec_ev_align_dispatch; part 4, the LM's radar test verbs,
  * lanec_ev_radar_dispatch; part 5, the DAP data load, lanec_ev_dap_dispatch;
  * part 6, the clock update and ATTCK2, lanec_ev_time_dispatch; part 7, the
- * tracking and state vector verbs, lanec_ev_track_dispatch.
+ * tracking and state vector verbs, lanec_ev_track_dispatch; part 8, the
+ * LM's interpretive words of those verbs, lanec_ev_lmi_dispatch.
  *
  * Plumbing only: point the machine at the state and the channel record,
  * and take the states the faithful module takes: the mission this object
@@ -18,15 +19,18 @@
  * bank 33 with the superbank bit; for the LM's part 3 also bank 23; for
  * part 5 the LM's banks 20 and 01, the CM's 43 and 42; for part 6 the
  * LM's bank 42 only; for part 7 the LM's banks 40, 42 and 43), the bank
- * registers
- * agreeing, Z a 12-bit address and ZERO +0. A step the readable code does not model
- * leaves the state as it was.
+ * registers agreeing, Z a 12-bit address and ZERO +0. A step the readable
+ * code does not model leaves the state as it was.
  *
  * The front end's module runs the one routine at Z. The others go on from
  * entry to entry while Z is one of their own in the bank they started in,
  * and so do their readable parts: a TC from one short verb to another
  * (LEMVEC's TC NOUPDOWN, the CM's TC CHKPOOH), EXDAPOFF's TC Q back to its
- * caller or VBZERO's TC OP/INERT runs on. */
+ * caller or VBZERO's TC OP/INERT runs on.
+ *
+ * Part 8's words run on the readable interpreter, one pass after another
+ * (interpret_listing_lanec()) while the interpreter is at NEWOPS on one of
+ * the tables' words; see lanec_ev_lmi_dispatch below. */
 #include <setjmp.h>
 #include <stddef.h>
 #include "lanec_ev_align.h"
@@ -35,7 +39,10 @@
 #include "lanec_ev_radar.h"
 #include "lanec_ev_short.h"
 #include "lanec_ev_time.h"
+#include "lanec_ev_lmi.h"
 #include "lanec_ev_track.h"
+#include "p66_bias.h"
+#include "binding.h"
 #include "../extended_verbs/extended_verbs.h"
 #include "../agc/names.h"
 
@@ -875,3 +882,149 @@ enum lanec_status lanec_ev_track_dispatch(apollo_overlay_state *state, lanec_io 
     if (state->words[Z_ADDRESS] == VERB69) return run(BANKS(restart), false, state, io);
     return run(BANKS(banks), true, state, io);
 }
+
+/* ---- Part 8: the LM's interpretive words ---- */
+#if LUMINARY099
+
+/* The tables (track.c), and the words the interpreter takes each up at:
+ * every order word and store code, as the faithful module's entries (where
+ * a TC INTPRET, a CALL's return, a branch or a DANZIG leaves LOC). */
+static const struct interpretive_code *const lm_codes[] = {
+    &RRLOSDSP_CODE, &TRMTRAK1_CODE, &ATTACHIT_CODE, &ATTACHIT_CODE_2, &TCPIN_CODE,
+};
+static const struct {
+    const struct interpretive_code *code;
+    word at;
+} interpretive_entries[] = {
+    {&RRLOSDSP_CODE, RRLOSDSP + 4u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 6u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 7u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 9u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 11u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 12u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 13u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 15u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 17u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 19u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 21u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 24u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 26u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 28u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 30u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 32u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 34u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 37u},
+    {&RRLOSDSP_CODE, RRLOSDSP + 38u},
+    {&TRMTRAK1_CODE, TRMTRAK1 + 7u},
+    {&TRMTRAK1_CODE, TRMTRAK1 + 9u},
+    {&ATTACHIT_CODE, ATTACHIT + 1u},
+    {&ATTACHIT_CODE, ATTACHIT + 3u},
+    {&ATTACHIT_CODE, ATTACHIT + 7u},
+    {&ATTACHIT_CODE, ATTACHIT + 9u},
+    {&ATTACHIT_CODE_2, ATTACHIT + 16u},
+    {&ATTACHIT_CODE_2, ATTACHIT + 18u},
+    {&ATTACHIT_CODE_2, ATTACHIT + 21u},
+    {&TCPIN_CODE, TCPIN},
+};
+
+/* The bank the interpreter reads its code from: BANKSET's F-bank, 40-43
+ * for 30-33 with the superbank bit. */
+static word interpretive_bank(void)
+{
+    word bank = (word)((BANKSET >> 10) & 037u);
+    return bank >= 030u && (*agc.superbank & SUPERBANK_BIT) ? (word)(bank + 010u) : bank;
+}
+
+/* The table LOC is in, in the bank the interpreter reads, or NULL. */
+static const struct interpretive_code *table_at_loc(void)
+{
+    size_t i;
+
+    for (i = 0; i < sizeof lm_codes / sizeof lm_codes[0]; ++i)
+        if (lm_codes[i]->bank == interpretive_bank() && LOC >= lm_codes[i]->first &&
+            LOC < lm_codes[i]->first + lm_codes[i]->count)
+            return lm_codes[i];
+    return NULL;
+}
+
+/* Whether LOC is one of the words the tables are taken up at. */
+static bool at_interpretive_entry(void)
+{
+    size_t i;
+
+    for (i = 0; i < sizeof interpretive_entries / sizeof interpretive_entries[0]; ++i)
+        if (interpretive_entries[i].code == table_at_loc() && interpretive_entries[i].at == LOC)
+            return true;
+    return false;
+}
+
+/* The interpreter's contract, as the faithful module takes it: NEWJOB not
+ * negative (+0, or a job change pending, which the next DANZIG hands to
+ * CHANG2); the job's work area (FIXLOC) in unswitched erasable above the
+ * interpreter's own, or, in bank 42 (V56's TRMTRAK1, which runs in
+ * PINBALL's NOVAC job), NOVAC's (MPAC -36D); and at NEWOPS EDOP +0, BANKSET
+ * the bank registers and INTBIT15 BANKSET's bit 15, as INTPRET leaves
+ * them. */
+static bool interpreter_contract(void)
+{
+    bool novac = FIXLOC == ADDRESS_OF(MPAC) - 36u && bank_selected() == 042u;
+
+    if (NEWJOB & 040000u) return false;
+    if (!novac && (FIXLOC < 0200u || FIXLOC >= 01400u - 060u)) return false;
+    return EDOP == 0u && BANKSET == BBANK && INTBIT15 == (BANKSET & 040000u);
+}
+
+/* A run goes on while the interpreter is at NEWOPS on one of the tables'
+ * words: at most this many passes (RRLOSDSP's longest, from +6 to the
+ * STCALL, is 10). */
+#define PASSES 32u
+
+/* From an entry, pass after pass of the readable interpreter until it
+ * leaves the tables: at NEWOPS of a routine they CALL (RRNBMPAC, INTSTALL,
+ * ARCTRIG, PTOALEM, SVDWN1), the basic word after an EXIT, RTB's routine
+ * (TCPIN's PINBRNCH), UNIT's alarm, or CHANG2, where a DANZIG finds a job
+ * change pending. */
+enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *state, lanec_io *io,
+                                        enum lanec_mission mission)
+{
+    static const agc_native_program none;
+    apollo_overlay_state before;
+    lanec_io io_before;
+    p66_bias_io latches;
+    const struct interpretive_code *code;
+    unsigned passes;
+
+    if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
+    bind_lanec(state, io);
+    if (!as_expected() || Z != NEWOPS || !at_interpretive_entry() || !interpreter_contract())
+        return LANEC_OUT_OF_SCOPE;
+    before = *state;
+    io_before = *io;
+    latches.superbank = io->superbank;
+    latches.interrupt_enabled = io->interrupt_enabled;
+    for (passes = 0; Z == NEWOPS && (code = table_at_loc()) != NULL; ++passes) {
+        if (passes == PASSES || interpret_listing_lanec(&none, state, &latches, code) != EXEC_OK) {
+            *state = before;
+            *io = io_before;
+            return LANEC_OUT_OF_SCOPE;
+        }
+        io->superbank = latches.superbank;
+        io->interrupt_enabled = latches.interrupt_enabled;
+        bind_lanec(state, io); /* (the pass pointed the machine at its own hooks) */
+    }
+    return LANEC_OK;
+}
+#else
+/* The CM has no part 8: its EXTENDED_VERBS interpretive words are the
+ * port's compiled file's (cm_extended_verbs_file.o). The port's tables
+ * name the LM's module in both programs, so the CM's refuses every
+ * state, as the faithful module does for the CM. */
+enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *state, lanec_io *io,
+                                        enum lanec_mission mission)
+{
+    (void)state;
+    (void)io;
+    (void)mission;
+    return LANEC_OUT_OF_SCOPE;
+}
+#endif

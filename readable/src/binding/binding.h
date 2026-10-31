@@ -24,6 +24,14 @@ bool bind_machine(const agc_native_program *program, apollo_overlay_state *state
 struct interpretive_code;
 enum exec_status interpret_listing(const agc_native_program *program, apollo_overlay_state *state,
                                    void *device, const struct interpretive_code *code);
+/* The same pass from the states the faithful port's lanec modules take
+ * (c64-port/src/lanec_ev_lmi.c): any work area the caller has checked
+ * (FIXLOC anywhere in unswitched erasable, not only a VAC area), the
+ * superbank by its bit 0100 alone, and Q left as the AGC leaves it (a
+ * switch order's TS Q copies all 16 bits of A). */
+enum exec_status interpret_listing_lanec(const agc_native_program *program,
+                                         apollo_overlay_state *state, void *device,
+                                         const struct interpretive_code *code);
 
 /* Keys: physical addresses of fixed-fixed (04000-07777) and bank 01. */
 #define FF(z)        (uint16_t)(2048u + ((z) - 04000u))
