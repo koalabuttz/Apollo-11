@@ -18,6 +18,9 @@
 #                         interpreter core on random interpretive programs
 #                         (a minute; needs the assembled ropes, which
 #                         c64-port/tools/setup_cloud.sh makes)
+#   make alarm-cases      the readable alarms and aborts against the original
+#                         program's digests and the faithful port's routines
+#                         (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -47,13 +50,17 @@ RESTART_SOURCES := src/agc/agc.c src/restart/restarts.c src/restart/restart_tabl
 	src/binding/machine.c src/binding/restart_routines.c
 INTERPRETER_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
 	src/binding/machine.c src/binding/interpreter_core.c src/binding/interpreter_basic.c
+ALARM_SOURCES := src/agc/agc.c src/alarm/alarm.c src/interbank/interbank.c src/binding/machine.c \
+	src/binding/interbank_tables.c src/binding/alarm_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
-	$(INTERPRETER_SOURCES))
+	$(INTERPRETER_SOURCES) $(ALARM_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
-.PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases names-check \
+.PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
+	names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
-all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases
+all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
+	alarm-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -230,6 +237,46 @@ interpreter-cases: $(BUILD)/interpreter-cases-lm $(BUILD)/interpreter-cases-cm
 	./$(BUILD)/interpreter-cases-lm $(ROPES) $(INTERPRETER_CASES) 12
 	./$(BUILD)/interpreter-cases-cm $(ROPES) $(INTERPRETER_CASES) 11
 	./$(BUILD)/interpreter-cases-cm $(ROPES) $(INTERPRETER_CASES) 12
+
+# ---- Alarms and aborts ----
+# The port's own tests (tests/test_lm_alarm.c, test_cm_alarm.c) on the
+# readable routines: 4,096 cases per mission, every alarm site of the
+# original program and every entry, against the original program's yaAGC
+# digests, with the refusals they check. Then tests/alarm_cases.c: the
+# readable routines and the faithful port's on the same random states.
+AL_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c
+AL_FAITHFUL := src/agc_image_ops.c src/agc_hardware_divide.c
+AL_LM_NAMES := lm_alarm_routines lm_alarm_operand_table lm_interbank_routines lm_interbank_idle_chunk \
+	lm_interbank_dap_hot_routines lm_interbank_postjump_hot_routines lm_interbank_postjump_t4_hot_routines \
+	lm_interbank_site_table lm_ib_bankcall lm_ib_swcall lm_ib_swcall_m1 lm_ib_swreturn lm_ib_postjump
+AL_CM_NAMES := cm_alarm_routines cm_alarm_operand_table
+
+$(BUILD)/alarm-faithful-lm/%.o: $(PORT)/src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(AL_LM_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/alarm-faithful-cm/%.o: $(PORT)/src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(AL_CM_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+
+$(BUILD)/alarm-oracle-lm: $(ALARM_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(AL_COMMON) $(PORT)/tests/lm_alarm_cases.c \
+		$(PORT)/tests/test_lm_alarm.c $(filter %.o,$^) -o $@
+$(BUILD)/alarm-oracle-cm: $(ALARM_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(AL_COMMON) $(PORT)/tests/cm_alarm_cases.c \
+		$(PORT)/tests/test_cm_alarm.c $(filter %.o,$^) -o $@
+$(BUILD)/alarm-cases-lm: $(ALARM_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(patsubst src/%.c,$(BUILD)/alarm-faithful-lm/%.o,src/lm_alarm.c $(AL_FAITHFUL)) tests/alarm_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(AL_COMMON) $(filter %.o,$^) tests/alarm_cases.c -o $@
+$(BUILD)/alarm-cases-cm: $(ALARM_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(patsubst src/%.c,$(BUILD)/alarm-faithful-cm/%.o,src/cm_alarm.c $(AL_FAITHFUL)) tests/alarm_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(AL_COMMON) $(filter %.o,$^) tests/alarm_cases.c -o $@
+
+alarm-cases: $(BUILD)/alarm-oracle-lm $(BUILD)/alarm-oracle-cm $(BUILD)/alarm-cases-lm \
+		$(BUILD)/alarm-cases-cm
+	./$(BUILD)/alarm-oracle-lm
+	./$(BUILD)/alarm-oracle-cm
+	./$(BUILD)/alarm-cases-lm
+	./$(BUILD)/alarm-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

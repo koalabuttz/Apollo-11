@@ -44,9 +44,13 @@ REPLACED = (
     # of other files calls them, as does the verification interpreter
     # (lm_interp_runtime.o), the holder of last resort.
     'lm_interp_core.o', 'cm_interp_core.o', 'lm_interpreter.o', 'cm_interpreter.o',
+    # ALARM_AND_ABORT.agc (src/alarm). The CM's cm_alarm_record.o and the
+    # other split files stay: they are the C64's, and nothing on x86 calls
+    # them.
+    'lm_alarm.o', 'cm_alarm.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
-READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops')
+READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

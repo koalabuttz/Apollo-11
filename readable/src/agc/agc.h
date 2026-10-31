@@ -392,10 +392,12 @@ void wand_dsalmout(void);
 
 /* ---- Leaving a routine ---- */
 
-/* TC at fixed address at: Q gets the address after it (the return). */
+/* TC at fixed address at: Q gets the address after it (the return). Like
+ * every instruction, it leaves L sign-corrected. */
 static inline void tc_at(word at)
 {
     Q = (word)((at + 1u) & MINUS_ZERO);
+    correct_L();
 }
 
 /* TC to an erasable word that holds an address: the AGC runs the word as
