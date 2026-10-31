@@ -249,7 +249,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    counters), once, at the row's end. The registers (A, L, Q, the banks)
    and the I/O channels are not compared there; the case tests compare
    them, routine by routine. PRs fly the quick set (26 rows), the nightly
-   run every row.
+   run every row. The DOWNRUPT vector and its RESUME fly readable too
+   (the flight program takes them from the down-telemetry tables). The
+   CM's EXTENDED_VERBS does not fly here yet: the CM program keeps the
+   faithful port's compiled copy of that whole file
+   (`cm_extended_verbs_file.o`), which takes every key before the
+   readable parts can, until the file is readable whole. Until then only
+   the case tests run the CM's readable parts.
 
 CI runs both on every PR that touches `readable/`, or what it is built
 from and checked against: the faithful port's sources, tests and tools

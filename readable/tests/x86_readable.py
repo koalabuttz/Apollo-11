@@ -67,8 +67,11 @@ REPLACED = (
     # KEYRUPT_UPRUPT.agc (src/keyrupt): both missions' tables.
     'keyrupt_uprupt.o',
     # INTERRUPT_LEAD_INS.agc (src/lead_ins), WAITLIST.agc's RESUME exits
-    # (src/waitlist) and the LM's T6-RUPT_PROGRAMS.agc (src/t6rupt).
-    'rupt_lead_ins.o', 'lm_t6rupt.o',
+    # (src/waitlist) and the LM's T6-RUPT_PROGRAMS.agc (src/t6rupt). The
+    # flight program takes DOWNRUPT's vector and RESUME from the
+    # down-telemetry tables (lm_dntm_rupt.o, cm_dntm_rupt.o): the readable
+    # binding defines those too.
+    'rupt_lead_ins.o', 'lm_t6rupt.o', 'lm_dntm_rupt.o', 'cm_dntm_rupt.o',
     # T4RUPT_PROGRAM.agc: the display and dispatch core, the IMU monitor,
     # the LM's radar checks and the CM's optics (src/t4rupt).
     't4rupt_core.o', 'lm_t4rupt_imu.o', 'cm_t4rupt_imu.o', 'lm_t4rupt_rr.o', 'cm_t4rupt_optics.o',

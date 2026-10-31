@@ -7,7 +7,9 @@
  * (c64-port/src/rupt_lead_ins.c, which holds the CM's RESUME entries too),
  * and lm_t6rupt_routines with its two hot subsets
  * (c64-port/src/lm_t6rupt.c, which holds the LM's T6RUPT lead-in and
- * RESUME entries).
+ * RESUME entries), and lm_dntm_rupt_routines and cm_dntm_rupt_routines
+ * (c64-port/src/lm_dntm_rupt.c, cm_dntm_rupt.c: DOWNRUPT's lead-in and
+ * RESUME, which the flight program runs from the down-telemetry tables).
  *
  * Plumbing only: point the machine at the program's state, give the T6
  * routines channels 5, 6 and 13 from the program's hardware record, and
@@ -30,6 +32,7 @@
 #include "../t6rupt/t6rupt.h"
 #include "../agc/names.h"
 #include "agc_transfer.h"
+#include "dntm_rupt_routines.h"
 
 static agc_hardware *hardware_now;
 
@@ -283,4 +286,16 @@ static const agc_routine_entry lead_ins[] = {{LEAD_IN_KEY(RESTART_GO), run},
                                              {FF(K_RESUME + 3u), run},
                                              {FF(K_NOQBRSM), run}};
 const agc_routine_table cm_lead_in_routines = {lead_ins, COUNT(lead_ins)};
+#endif
+
+/* DOWNRUPT's lead-in and RESUME again, as the down-telemetry module's (the
+ * port's flight program keeps them with DODOWNTM's tables, so that one
+ * module takes a whole DOWNRUPT, from the vector to the resumed Z). The
+ * device there is the down-telemetry io record, whose first member is the
+ * mission's io record (lm_dntm_io's control, cm_dntm_io's io). */
+static const agc_routine_entry downrupt[] = {{LEAD_IN_KEY(RUPT_DOWN), run}, {FF(K_RESUME), run}};
+#if LUMINARY099
+const agc_routine_table lm_dntm_rupt_routines = {downrupt, COUNT(downrupt)};
+#else
+const agc_routine_table cm_dntm_rupt_routines = {downrupt, COUNT(downrupt)};
 #endif
