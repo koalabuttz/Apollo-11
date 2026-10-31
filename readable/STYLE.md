@@ -163,7 +163,7 @@ Every change to `readable/` must keep both:
 
 1. **The case tests** (`make names-check kernel-cases interbank-cases
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
-   sp-cases service-cases`,
+   sp-cases service-cases downtelemetry-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -202,6 +202,9 @@ Every change to `readable/` must keep both:
    - `service-cases`: the faithful port's service routine test (every
      flag and GENTRAN site, against yaAGC digests) on the readable service
      routines, then the two side by side on random states.
+   - `downtelemetry-cases`: the faithful port's down-telemetry tests
+     (whole downlists and dumps, against yaAGC digests) on the readable
+     down-telemetry, then the two side by side, DOWNRUPT by DOWNRUPT.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

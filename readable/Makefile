@@ -27,6 +27,10 @@
 #   make service-cases    the readable service routines against the original
 #                         program's digests and the faithful port's routines
 #                         (seconds)
+#   make downtelemetry-cases
+#                         the readable down-telemetry against the original
+#                         program's digests and the faithful port's routines
+#                         (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -62,15 +66,17 @@ SP_SOURCES := src/agc/agc.c src/single_precision/single_precision.c src/binding/
 	src/binding/sp_routines.c
 SERVICE_SOURCES := src/agc/agc.c src/service/service.c $(sort $(wildcard src/interpreter/*.c)) \
 	src/interbank/interbank.c src/binding/machine.c src/binding/service_routines.c
+DNTM_SOURCES := src/agc/agc.c src/downtelemetry/downtelemetry.c src/binding/machine.c \
+	src/binding/downtelemetry_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
-	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES))
+	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases names-check \
+	sp-cases service-cases downtelemetry-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
-	alarm-cases sp-cases service-cases
+	alarm-cases sp-cases service-cases downtelemetry-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -361,6 +367,40 @@ service-cases: $(BUILD)/service-oracle $(BUILD)/service-cases-lm $(BUILD)/servic
 	./$(BUILD)/service-oracle
 	./$(BUILD)/service-cases-lm
 	./$(BUILD)/service-cases-cm
+
+# ---- Down-telemetry ----
+# The port's own tests (tests/test_lm_downtelemetry.c, test_cm_downtelemetry.c)
+# on the readable routines: whole downlists and erasable dumps, DOWNRUPT by
+# DOWNRUPT, against the original program's yaAGC digests, with every entry
+# reached, every downlist word sent and the refusals they check. Then
+# tests/downtelemetry_cases.c: the readable routines and the faithful
+# port's, step by step on the same states.
+DNTM_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+	$(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c
+
+$(BUILD)/dntm-faithful-%.o: $(PORT)/src/%_downtelemetry.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_downtelemetry_routines=faithful_$*_downtelemetry_routines \
+		-c $< -o $@
+$(BUILD)/dntm-oracle-lm: $(DNTM_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(DNTM_COMMON) $(PORT)/tests/lm_downtelemetry_cases.c \
+		$(PORT)/tests/test_lm_downtelemetry.c $^ -o $@
+$(BUILD)/dntm-oracle-cm: $(DNTM_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(DNTM_COMMON) $(PORT)/tests/cm_downtelemetry_cases.c \
+		$(PORT)/tests/test_cm_downtelemetry.c $^ -o $@
+$(BUILD)/dntm-cases-lm: $(DNTM_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/dntm-faithful-lm.o \
+		tests/downtelemetry_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(DNTM_COMMON) $(filter %.o,$^) tests/downtelemetry_cases.c -o $@
+$(BUILD)/dntm-cases-cm: $(DNTM_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/dntm-faithful-cm.o \
+		tests/downtelemetry_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(DNTM_COMMON) $(filter %.o,$^) tests/downtelemetry_cases.c -o $@
+
+downtelemetry-cases: $(BUILD)/dntm-oracle-lm $(BUILD)/dntm-oracle-cm $(BUILD)/dntm-cases-lm \
+		$(BUILD)/dntm-cases-cm
+	./$(BUILD)/dntm-oracle-lm
+	./$(BUILD)/dntm-oracle-cm
+	./$(BUILD)/dntm-cases-lm
+	./$(BUILD)/dntm-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

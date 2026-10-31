@@ -38,6 +38,13 @@ struct agc_machine {
     uint16_t *in_interrupt; /* 1 while an interrupt routine (T3RUPT and its task) runs */
     /* Fixed memory (the rope), by physical address: bank * 02000 + offset. */
     word (*fixed_memory)(unsigned physical);
+    /* The other I/O channels, by number, for the routines that use them
+     * (READ, WRITE, RAND, WAND, WOR below): a channel's word as the
+     * program reads it, and a write to it. */
+    word (*channel_in)(unsigned channel);
+    void (*channel_out)(unsigned channel, word value);
+    /* Where not_modelled() goes: back to the binding. */
+    void (*leave)(void);
 };
 extern struct agc_machine agc;
 
@@ -193,6 +200,21 @@ static inline unsigned indexed(unsigned address, word index)
 {
     return add((word)address, index);
 }
+
+/* INDEX k before any instruction: the AGC adds C(k) to the whole
+ * instruction word, operation code and all, in its 16-bit adder (both
+ * sign-extended, the sum overflow-corrected), and runs the sum. So an
+ * index can turn one instruction into another: the down-telemetry lists
+ * rely on it. indexed() is the usual case, an index added to an address. */
+static inline word indexed_instruction(word instruction, word index)
+{
+    return overflow_corrected(add16(sign_extend(instruction), sign_extend(index)));
+}
+
+/* The fields of an instruction word: the operation code (bits 13-15; CA is
+ * 3, MASK 7) and the address (bits 1-12). */
+#define OPERATION_CODE(instruction) ((word)((instruction) >> 12))
+#define ADDRESS_FIELD(instruction)  ((word)((instruction) & 07777u))
 
 /* ---- Fixed memory ---- */
 
@@ -395,6 +417,27 @@ static inline void rxor_qchan(void)
 /* WOR / WAND DSALMOUT (channel 11), leaving the channel in A. */
 void wor_dsalmout(void);
 void wand_dsalmout(void);
+
+/* EXTEND; READ, WRITE, RAND, WAND and WOR of any other channel:
+ *   - READ: A gets the channel's word;
+ *   - WRITE: the channel gets A;
+ *   - RAND: A and'ed with the channel;
+ *   - WAND, WOR: A and'ed (or'ed) with the channel, and the result written
+ *     back to the channel too. */
+void read_channel(unsigned channel);
+void write_channel(unsigned channel);
+void rand_channel(unsigned channel);
+void wand_channel(unsigned channel);
+void wor_channel(unsigned channel);
+
+/* ---- What the readable port does not model ---- */
+
+/* A step the flight program never takes, which the readable routine does
+ * not model: an INDEX that would turn an instruction into one the listing
+ * does not intend, a channel the routine does not use. The routine stops
+ * there: the binding puts the state back as it was, and the faithful port
+ * runs the step. Does not return. */
+void not_modelled(void);
 
 /* ---- Leaving a routine ---- */
 
