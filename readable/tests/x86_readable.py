@@ -74,6 +74,8 @@ REPLACED = (
     't4rupt_core.o', 'lm_t4rupt_imu.o', 'cm_t4rupt_imu.o', 'lm_t4rupt_rr.o', 'cm_t4rupt_optics.o',
     # RCS_FAILURE_MONITOR.agc, the LM's (src/rcs_failure_monitor).
     'lm_rcsmon.o',
+    # AGS_INITIALIZATION.agc, the LM's R47 (src/ags_initialization).
+    'lm_ags_init.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',

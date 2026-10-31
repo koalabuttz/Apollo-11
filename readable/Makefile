@@ -91,20 +91,22 @@ T4OPT_SOURCES := src/agc/agc.c src/t4rupt/optics.c src/binding/machine.c \
 	src/binding/t4rupt_optics_routines.c
 RCSMON_SOURCES := src/agc/agc.c src/rcs_failure_monitor/rcs_failure_monitor.c src/binding/machine.c \
 	src/binding/rcs_failure_monitor_routines.c
+AGS_SOURCES := src/agc/agc.c src/ags_initialization/ags_initialization.c src/binding/machine.c \
+	$(INTERPRETER_SOURCES) src/binding/ags_initialization_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
-	$(RCSMON_SOURCES))
+	$(RCSMON_SOURCES) $(AGS_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
-	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases
+	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -760,12 +762,57 @@ rcs-monitor-cases: $(BUILD)/rcsmon-oracle $(BUILD)/rcsmon-cases
 	./$(BUILD)/rcsmon-oracle
 	./$(BUILD)/rcsmon-cases
 
+# AGS_INITIALIZATION, the LM's R47: tests/ags_initialization_oracle.c runs
+# the port's frozen cases (c64-port/tests/lm_ags_init_vectors.h, yaAGC
+# digests) and refusals on the readable routines; then
+# tests/ags_initialization_cases.c runs readable and faithful side by side,
+# as the host runs them and as the flight program does (stopping at the
+# interpreter, -DAGC_FLIGHT_INTERPRETER).
+AGS_NAMES := lm_ags_init_routines lm_ags_init_interpretive ags_routine_keys
+AGS_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c $(KU_COMMON) \
+	$(PORT)/src/rope_image_host.c $(PORT)/tests/lm_ags_init_cases.c
+AGS_FLIGHT_OBJECTS := $(AGS_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+AGS_FLIGHT_OBJECTS := $(filter-out %/ags_initialization_routines.o,$(AGS_FLIGHT_OBJECTS)) \
+	$(BUILD)/ags-flight/ags_initialization_routines.o
+
+$(BUILD)/ags-flight/ags_initialization_routines.o: src/binding/ags_initialization_routines.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) -DRK_SEAMS=1 -DAGC_FLIGHT_INTERPRETER -c $< -o $@
+$(BUILD)/ags-faithful.o: $(PORT)/src/lm_ags_init.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -DP66_NATIVE_DISPATCH_ONLY \
+		$(foreach n,$(AGS_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/ags-faithful-flight.o: $(PORT)/src/lm_ags_init.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -DP66_NATIVE_DISPATCH_ONLY -DAGC_FLIGHT_INTERPRETER \
+		$(foreach n,$(AGS_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/ags-oracle: $(AGS_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) tests/ags_initialization_oracle.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(AGS_COMMON) $(filter %.o,$^) \
+		tests/ags_initialization_oracle.c -o $@
+$(BUILD)/ags-cases: $(AGS_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/ags-faithful.o \
+		tests/ags_initialization_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(AGS_COMMON) $(filter %.o,$^) \
+		tests/ags_initialization_cases.c -o $@
+$(BUILD)/ags-cases-flight: $(AGS_FLIGHT_OBJECTS) $(BUILD)/ags-faithful-flight.o \
+		tests/ags_initialization_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) -DAGC_FLIGHT_INTERPRETER $(AGS_COMMON) $(filter %.o,$^) \
+		tests/ags_initialization_cases.c -o $@
+
+ags-cases: $(BUILD)/ags-oracle $(BUILD)/ags-cases $(BUILD)/ags-cases-flight
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/ags-oracle $(ROPES)
+	./$(BUILD)/ags-cases $(ROPES)
+	./$(BUILD)/ags-cases-flight $(ROPES)
+
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
 # place of the faithful kernel (build/x86-flight/).
+# R47's routines stop where they reach the interpreter in the flight
+# program, as the port's flight build of its file does.
+$(BUILD)/x86-lm/binding/ags_initialization_routines.o: FLIGHT_DEFINES := -DAGC_FLIGHT_INTERPRETER
 $(BUILD)/x86-lm/%.o: src/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
-	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) -c $< -o $@
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) $(FLIGHT_DEFINES) -c $< -o $@
 $(BUILD)/x86-cm/%.o: src/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(CM) -c $< -o $@

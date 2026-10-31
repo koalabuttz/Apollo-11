@@ -22,7 +22,17 @@
 #define READABLE_NOTATION_H
 
 #define ORDER_EXIT  0000u
+#define ORDER_VLOAD 0001u
+#define ORDER_VXSC  0015u
+#define ORDER_VSL2  0024u
+#define ORDER_LXA_1 0026u /* LXA,1 */
 #define ORDER_DLOAD 0031u
+#define ORDER_SXA_1 0046u /* SXA,1 */
+#define ORDER_MXV   0055u
+#define ORDER_DDV   0105u
+#define ORDER_VAD   0121u
+#define ORDER_RTB   0142u
+#define ORDER_DSU   0151u
 #define ORDER_CALL  0152u
 #define ORDER_RVQ   0160u
 #define ORDER_SET   0162u
@@ -30,6 +40,7 @@
 #define ORDER_BON   0162u
 #define ORDER_BOF   0162u
 #define ORDER_CLRGO 0162u
+#define ORDER_VSL8  0164u
 
 /* An order pair: each code plus one, the left order in bits 1-7 and the
  * right one in bits 8-14, complemented, so the word is negative (an
@@ -56,12 +67,21 @@
 /* The listing's "+3": an address n words past a label. */
 #define ADDRESS_AT(name, n) ((word)(I_##name + (n)))
 /* An address order's address (DLOAD's, ...) is written one more than the
- * address: DIRADRES reads it with CS and CCS, which leave it one less. */
-#define ADDRESS_PLUS_ONE(name) ((word)(I_##name + 1u))
+ * address: DIRADRES reads it with CS and CCS, which leave it one less. The
+ * assembler keeps 14 bits of it, so a fixed word's (its bank * 02000 plus
+ * its address in the bank) loses the bank's high bits: the interpreter
+ * reads it in the code's own bank. */
+#define ADDRESS_PLUS_ONE(name)       ((word)((I_##name + 1u) & 037777u))
+#define ADDRESS_PLUS_ONE_AT(name, n) ((word)((I_##name + (n) + 1u) & 037777u))
 
 /* A store code, on a line of its own, with the address it stores to (plus
  * one, as above): STORE, STODL, STOVL or STCALL in bits 12-14. */
-#define STCALL(name) ((word)(034000u | (I_##name + 1u)))
+#define STORE(name)       ((word)(000000u | (I_##name + 1u)))
+#define STORE_AT(name, n) ((word)(000000u | (I_##name + (n) + 1u)))
+#define STODL(name)       ((word)(014000u | (I_##name + 1u)))
+#define STODL_AT(name, n) ((word)(014000u | (I_##name + (n) + 1u)))
+#define STOVL(name)       ((word)(024000u | (I_##name + 1u)))
+#define STCALL(name)      ((word)(034000u | (I_##name + 1u)))
 
 /* A place in a table of interpretive code: its F-bank, the address of its
  * first word in the bank (02000-03777), and its words. */
