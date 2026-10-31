@@ -1018,6 +1018,84 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define OPTMON  ((word)K_OPTMON)
 #endif
 
+/* ---- T4RUPT, part 2: the IMU monitor (IMUMON to LAMPTEST) ---- */
+
+/* Its erasable words (ADDRESS_OF gives each one's address): IMODES30 and
+ * IMODES33, the IMU's and channel 33's bits as last sampled, with the
+ * monitor's own flags; RUPTREG1 and RUPTREG2, the bit scan's position and
+ * the changes left; CDUZ, the middle gimbal angle; CDUXCMD, CDUYCMD,
+ * CDUZCMD and GYROCMD, the drive counters; ITEMP6, SETISSW's return over
+ * VARALARM; the LM's RADMODES (the radar's), FLAGWRD5 (ENGONFLG) and
+ * 1/PIPADT. Channel 30 holds the IMU's status bits, channel 33 the PIPA
+ * fail and telemetry rate flip-flops. */
+#define CHAN30 ((unsigned)K_CHAN30)
+
+/* Its constants: the read masks of channels 30 and 33 (30RDMSK, a word
+ * inside the IFAILJMP table, and 33RDMSK, which EQUALS PRIO16), the masks
+ * and times of the listing's page "JUMP TABLES AND CONSTANTS", and the
+ * flag bits it tests: IMUSEBIT and IMUSEFLG (BIT8 of FLAGWRD0 in the LM,
+ * of STATE in the CM) and the LM's DRFTBIT (FLAGWRD2 bit 15). The CM
+ * names BITS6&15 BIT15+6. */
+#define K30RDMSK     ((word)KW_30RDMSK) /* 30RDMSK */
+#define K33RDMSK     ((word)KW_33RDMSK) /* 33RDMSK */
+#define OCT15        ((word)KW_OCT15)
+#define OCT15000     ((word)KW_OCT15000)
+#define OC40010      ((word)KW_OC40010)
+#define OCT54        ((word)KW_OCT54)
+#define OCT75        ((word)KW_OCT75)
+#define OCT272       ((word)KW_OCT272)
+#define BITS7_8      ((word)KW_BITS7_8) /* BITS7&8 */
+#define OCT1720      ((word)KW_OCT1720)
+#define OCT740       ((word)KW_OCT740)
+#define OCT77000     ((word)KW_OCT77000)
+#define MINUS_BIT10  ((word)KW_MBIT10)  /* -BIT10 */
+#define K90SECS      ((word)KW_90SECS)  /* 90SECS */
+#define K4SECS       ((word)KW_4SECS)   /* 4SECS */
+#define MINUS_70DEGS ((word)KW_M70DEGS) /* -70DEGS */
+#define MINUS_15DEGS ((word)KW_M15DEGS) /* -15DEGS */
+#define IMUSEFLG     ((word)KW_IMUSEFLG)
+#define BIT2         ((word)KW_BIT2)
+#define BITS4_5      ((word)KW_BITS4_5) /* BITS4&5 */
+#define OCT37737     ((word)KW_OCT37737)
+#if LUMINARY099
+#define BITS6_15 ((word)KW_BITS6_15) /* BITS6&15 */
+#define IMUSEBIT ((word)KW_IMUSEBIT)
+#define DRFTBIT  ((word)KW_DRFTBIT)
+#define RRINIT   ((word)KW_RRINIT)
+#else
+#define BITS6_15 ((word)KW_BIT15P6) /* BIT15+6 */
+#endif
+
+/* Its labels, in bank 06, and the routines it calls in other files. */
+#define TNONTEST ((word)K_TNONTEST)
+#define NXTIFAIL ((word)K_NXTIFAIL)
+#define PROCTNON ((word)K_PROCTNON)
+#define RETNON   ((word)K_RETNON)
+#define ENDTNON  ((word)K_ENDTNON)
+#define ENDTNON2 ((word)K_ENDTNON2)
+#define UNZ2     ((word)K_UNZ2)
+#define ISSUP    ((word)K_ISSUP)
+#define OPONLY   ((word)K_OPONLY)
+#define ISSZERO  ((word)K_ISSZERO)
+#define C33TEST  ((word)K_C33TEST)
+#define NXTFL33  ((word)K_NXTFL33)
+#define GLOCKCHK ((word)K_GLOCKCHK)
+#define NOGIMRUN ((word)K_NOGIMRUN)
+#define GLAMPTST ((word)K_GLAMPTST)
+#define TEMPOK   ((word)K_TEMPOK)
+#define ITURNON  ((word)K_ITURNON)
+#define IMUCAGE  ((word)K_IMUCAGE)
+#define IMUOP    ((word)K_IMUOP)
+#define PIPFAIL  ((word)K_PIPFAIL)
+#define DNTMFAST ((word)K_DNTMFAST)
+#define UPTMFAST ((word)K_UPTMFAST)
+#define SETISSW  ((word)K_SETISSW)
+#define ISSWON   ((word)K_ISSWON)
+#define IFAILJMP ((word)K_IFAILJMP)
+#define C33JMP   ((word)K_C33JMP)
+#define VARDELAY ((word)K_VARDELAY)
+#define ZEROICDU ((word)K_ZEROICDU)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
