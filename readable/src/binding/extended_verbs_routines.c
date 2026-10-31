@@ -7,7 +7,8 @@
  * and the mission. The readable parts take the module's place under its
  * name: part 1, the front end, is lanec_ev_front_dispatch; part 2, the
  * short verbs, lanec_ev_short_dispatch; part 3, alignment and radar
- * designate, lanec_ev_align_dispatch.
+ * designate, lanec_ev_align_dispatch; part 4, the LM's radar test verbs,
+ * lanec_ev_radar_dispatch.
  *
  * Plumbing only: point the machine at the state and the channel record,
  * and take the states the faithful module takes: the mission this object
@@ -25,6 +26,7 @@
 #include <stddef.h>
 #include "lanec_ev_align.h"
 #include "lanec_ev_front.h"
+#include "lanec_ev_radar.h"
 #include "lanec_ev_short.h"
 #include "../extended_verbs/extended_verbs.h"
 #include "../agc/names.h"
@@ -51,11 +53,12 @@ static void leave(void)
 static lanec_io *channels;
 
 /* The extended verbs written so far read channels 12, 30 and 31 (V43's
- * checks) and write channel 12 (V43's error counter enable), and read no
- * fixed word (GOLOADLV's WRITE SUPERBNK is channel 7, agc.superbank). */
+ * checks) and 33 (the radar test's) and write channel 12 (V43's error
+ * counter enable, the RR auto tracker enable), and read no fixed word
+ * (GOLOADLV's WRITE SUPERBNK is channel 7, agc.superbank). */
 static word channel_in(unsigned number)
 {
-    if (number != 012u && number != 030u && number != 031u) not_modelled();
+    if (number != 012u && number != 030u && number != 031u && number != 033u) not_modelled();
     return channels->channel[number];
 }
 
@@ -548,4 +551,75 @@ enum lanec_status lanec_ev_align_dispatch(apollo_overlay_state *state, lanec_io 
 {
     if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
     return run(ENTRIES(align), ALIGN_IN_BANK_23, true, state, io);
+}
+
+/* ---- Part 4: the LM's radar test verbs ---- */
+
+#if LUMINARY099
+static const struct entry radar[] = {
+    {R77, r77},
+    {R77 + 1u, r77_after_rdruseck},
+    {R77 + 7u, r77_after_upflag},
+    {R04, r04},
+    {R04 + 1u, r04_after_rdruseck},
+    {R04 + 2u, r04_after_testxact},
+    {R04Z, r04z},
+    {R04A, r04a},
+    {R04A + 2u, r04a_plus2},
+    {R04A + 5u, r04a_after_terminate},
+    {R04A + 6u, r04a_after_proceed},
+    {R04A + 7u, r04a_after_recycle},
+    {R04A + 8u, r04a_after_enter},
+    {R04A + 10u, r04a_after_blanket},
+    {R04A + 11u, r04a_plus11},
+    {R04X - 1u, r04x_minus1},
+    {R04X, r04x},
+    {R04B, r04b},
+    {R04B + 5u, r04b_plus5},
+    {R04B + 10u, r04b_after_terminate},
+    {R04B + 11u, r04b_after_proceed},
+    {R04B + 12u, r04b_after_enter},
+    {R04C, r04c},
+    {R04C + 4u, r04c_plus4},
+    {R04C + 8u, r04c_after_waitlist},
+    {R04RR, r04rr},
+    {R04RR + 3u, r04rr_after_terminate},
+    {R04RR + 4u, r04rr_after_proceed},
+    {R04RR + 5u, r04rr_after_recycle},
+    {R04RR + 6u, r04rr_plus6},
+    {R04RR + 9u, r04rr_plus6_after_terminate},
+    {R04RR + 10u, r04rr_plus6_after_proceed},
+    {R04RR + 11u, r04rr_plus6_after_recycle},
+    {R04LR, r04lr},
+    {R04LR + 3u, r04lr_after_terminate},
+    {R04LR + 4u, r04lr_after_proceed},
+    {R04LR + 5u, r04lr_after_recycle},
+    {R04LR + 6u, r04lr_plus6},
+    {R04LR + 9u, r04lr_plus6_after_terminate},
+    {R04LR + 10u, r04lr_plus6_after_proceed},
+    {R04LR + 11u, r04lr_plus6_after_recycle},
+    {R04Y, r04y},
+    {R04Y + 5u, r04y_after_delayjob},
+    {R04K, r04k},
+    {R04L, r04l},
+    {R04END, r04end},
+    {R04END + 5u, r04end_after_delayjob},
+    {R04END + 11u, r04end_after_downflag},
+    {R77END, r77end},
+    {R77END + 7u, r77end_after_delayjob},
+    {R77END + 9u, r77end_after_downflag},
+};
+#endif
+
+/* The CM has no radar test verbs: its object refuses them as it refuses
+ * the LM's mission. */
+enum lanec_status lanec_ev_radar_dispatch(apollo_overlay_state *state, lanec_io *io,
+                                          enum lanec_mission mission)
+{
+    if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
+#if LUMINARY099
+    return run(ENTRIES(radar), NO_ENTRIES, true, state, io);
+#else
+    return LANEC_OUT_OF_SCOPE;
+#endif
 }

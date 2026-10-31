@@ -98,7 +98,8 @@ AOTMARK_SOURCES := $(INTERPRETER_SOURCES) src/aotmark/aotmark.c src/rtb_op_codes
 SXTMARK_SOURCES := src/agc/agc.c src/sxtmark/sxtmark.c src/binding/machine.c \
 	src/binding/sxtmark_routines.c
 EV_SOURCES := src/agc/agc.c src/extended_verbs/front.c src/extended_verbs/short_verbs.c \
-	src/extended_verbs/align.c src/binding/extended_verbs_routines.c
+	src/extended_verbs/align.c src/extended_verbs/radar.c \
+	src/binding/extended_verbs_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
@@ -875,7 +876,7 @@ sxtmark-cases: $(BUILD)/sxtmark-oracle $(BUILD)/sxtmark-cases
 # faithful module (built with its dispatch renamed faithful_...; from the
 # short verbs on, it also gives the port's suite its list of entries).
 LANEC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/lanec.c $(PORT)/tests/lanec_case.c
-EV_PARTS := front short align
+EV_PARTS := front short align radar
 EV_NAMES := $(EV_PARTS:%=lanec_ev_%_dispatch)
 
 $(BUILD)/ev-%-faithful.o: $(PORT)/src/lanec_ev_%.c
@@ -908,14 +909,24 @@ $(BUILD)/ev-align-cases: $(EV_READABLE) $(BUILD)/ev-align-faithful.o tests/exten
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_align_cases.c \
 		$(filter %.o %.c,$^) -o $@
 
+$(BUILD)/ev-radar-oracle: $(EV_READABLE) $(BUILD)/ev-radar-faithful.o tests/extended_verbs_radar_oracle.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_radar_cases.c \
+		$(filter %.o %.c,$^) -o $@
+$(BUILD)/ev-radar-cases: $(EV_READABLE) $(BUILD)/ev-radar-faithful.o tests/extended_verbs_radar_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_radar_cases.c \
+		$(filter %.o %.c,$^) -o $@
+
 extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases $(BUILD)/ev-short-oracle \
-		$(BUILD)/ev-short-cases $(BUILD)/ev-align-oracle $(BUILD)/ev-align-cases
+		$(BUILD)/ev-short-cases $(BUILD)/ev-align-oracle $(BUILD)/ev-align-cases \
+		$(BUILD)/ev-radar-oracle $(BUILD)/ev-radar-cases
 	./$(BUILD)/ev-front-oracle
 	./$(BUILD)/ev-front-cases
 	./$(BUILD)/ev-short-oracle
 	./$(BUILD)/ev-short-cases
 	./$(BUILD)/ev-align-oracle
 	./$(BUILD)/ev-align-cases
+	./$(BUILD)/ev-radar-oracle
+	./$(BUILD)/ev-radar-cases
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
