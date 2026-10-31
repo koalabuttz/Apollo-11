@@ -14,11 +14,13 @@
  * Z names, the states the core takes, where a pass ends, and what each word
  * of interpretive code charges the work clock. Every instruction run is the
  * readable code's. */
+#include <stddef.h>
 #include "binding.h"
 #include "rope_image.h"
 #include "interp_runtime.h"
 #include "interp_word_mct.h"
 #include "../interpreter/interpreter.h"
+#include "../interpreter/notation.h"
 #include "../interbank/interbank.h"
 #include "../agc/names.h"
 
@@ -59,12 +61,31 @@ static bool work_due(void)
     return (CORE_MCT & 0x8000u) != 0u;
 }
 
+/* ---- Interpretive code in the listing's notation ----
+ * While the interpreter runs a table of it (src/interpreter/notation.h,
+ * interpret_listing() below), it reads the table's words where the table
+ * lies, in place of the rope's. */
+static const struct interpretive_code *listing;
+
+static bool listing_word(unsigned physical, word *out)
+{
+    unsigned first;
+
+    if (!listing) return false;
+    first = listing->bank * 1024u + listing->first - 02000u;
+    if (physical < first || physical - first >= listing->count) return false;
+    *out = listing->words[physical - first];
+    return true;
+}
+
 /* ---- Fixed memory: the program's rope ---- */
 
 static word rope_word(unsigned physical)
 {
     agc_word value = 0;
+    word from_listing;
 
+    if (listing_word(physical, &from_listing)) return from_listing;
     if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) return 0u;
     return (word)(value & MINUS_ZERO);
 }
@@ -87,6 +108,7 @@ static bool code_word(unsigned off, word *out)
         }
         address = bank * 1024u + (address & 01777u);
     }
+    if (listing_word(address, out)) return true;
     if (!apollo_rope_read(ROPE, (uint16_t)address, &value)) return false;
     *out = (word)(value & MINUS_ZERO);
     return true;
@@ -289,6 +311,23 @@ static enum exec_status entry(const agc_native_program *program, apollo_overlay_
 }
 
 const agc_routine CORE = entry;
+
+/* One pass over a table of interpretive code: the interpreter reads the
+ * table's words, and the work clock is left as it was (the routines of
+ * the program's tables, which this runs as, keep no clock). */
+enum exec_status interpret_listing(const agc_native_program *program, apollo_overlay_state *state,
+                                   void *device, const struct interpretive_code *code)
+{
+    uint16_t clock = CORE_MCT;
+    enum exec_status status;
+
+    listing = code;
+    CORE_MCT = 0u;
+    status = entry(program, state, device);
+    CORE_MCT = clock;
+    listing = NULL;
+    return status;
+}
 
 /* The points basic code reaches the interpreter at, by physical address:
  * RTB's return (bank 01), SWRETURN, INTPRET and DANZIG (fixed-fixed). */

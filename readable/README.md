@@ -74,8 +74,9 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Service routines | `SERVICE_ROUTINES.agc` (LM pp. 1374-1380, CM pp. 1485-1492) | [`src/service/`](src/service/) | UPFLAG, DOWNFLAG, COMFLAG, DEBIT, UPENT2, DOWNENT2, DELAYJOB, TCGETCAD, WAKER, GENTRAN and B5OFF; in the CM also TRFAILOF and TRFAILON: setting and clearing flags, putting a job to sleep for a while, copying a block of words |
 | Down-telemetry | `DOWN_TELEMETRY_PROGRAM.agc` (LM pp. 988-997), `DOWN-TELEMETRY_PROGRAM.agc` (CM pp. 1093-1102) | [`src/downtelemetry/`](src/downtelemetry/) | DODOWNTM, WOTEST (LM), DNPHASE1, DNPHASE2, NEWLIST, NEXTINCL, SETWO, DODNCHAN, WOZERO, DODNPTR, SNAPLOOP, FETCH2WD, NEXTINSL, DNTMEXIT, DNDUMPI, DNDUMP, DNDUMP1, DNDUMP2 and SENDID: the two words sent to the ground at each DOWNRUPT, from the current downlist or the erasable dump |
 | Downlists | `DOWNLINK_LISTS.agc` (LM pp. 193-205, CM pp. 170-180) | [`src/downtelemetry/downlink_lists.c`](src/downtelemetry/downlink_lists.c) | LOWIDCOD, every downlist (control lists and sublists, word by word: DNADR, DNCHAN, DNPTR) and DNTABLE: what DOWNRUPT sends, written as the listing has it and laid out where the listing assembles it |
-| Fresh start and restart | `FRESH_START_AND_RESTART.agc` (LM pp. 211-224, CM pp. 183-194), all but V37 and P00 | [`src/fresh_start/`](src/fresh_start/) | SLAP1 (the fresh start: SKIPSIM, DOFSTART, STARTSUB, STARTSB2), MR.KLEAN, P00KLEAN, V37KLEAN, GOPROG (the hardware restart, with BUTTONS, LIGHTSET and the E memory repair), ENEMA and GOPROG2 (the software restart), GOPROG3 and PCLOOP (the phase table check), NXTRST, PINACT, ENDRSTRT, the CM's T5IDLOC, and GOTOPOOH |
-| Verb 37 and P00 | `FRESH_START_AND_RESTART.agc` (LM pp. 224-235, CM pp. 194-209), V37 and P00 | [`src/fresh_start/v37.c`](src/fresh_start/v37.c) | GOP00FIX ("please choose a program"), V37 (the astronaut's change of major mode: CANV37, R00 or the CM's R00TOP00, POOH, GOMOD, NOUVEAU, V37XEQ, V37XEQC), the tables PREMM1, FCADRMM1 and DNLADMM1; in the LM also V37RET, RENDN00, KILL2 and SETUP70; in the CM INITSUB, RAKE and VAC5STOR. STATEUP's interpretive code is still to come |
+| Fresh start and restart | `FRESH_START_AND_RESTART.agc` (LM pp. 211-224, CM pp. 183-194) | [`src/fresh_start/`](src/fresh_start/) | SLAP1 (the fresh start: SKIPSIM, DOFSTART, STARTSUB, STARTSB2), MR.KLEAN, P00KLEAN, V37KLEAN, GOPROG (the hardware restart, with BUTTONS, LIGHTSET and the E memory repair), ENEMA and GOPROG2 (the software restart), GOPROG3 and PCLOOP (the phase table check), NXTRST, PINACT, ENDRSTRT, the CM's T5IDLOC, and GOTOPOOH |
+| Verb 37 and P00 | `FRESH_START_AND_RESTART.agc` (LM pp. 224-235, CM pp. 194-209), V37 and P00 | [`src/fresh_start/v37.c`](src/fresh_start/v37.c) | GOP00FIX ("please choose a program"), V37 (the astronaut's change of major mode: CANV37, R00 or the CM's R00TOP00, POOH, GOMOD, NOUVEAU, V37XEQ, V37XEQC), the tables PREMM1, FCADRMM1 and DNLADMM1; in the LM also V37RET, RENDN00, KILL2 and SETUP70; in the CM INITSUB, RAKE and VAC5STOR |
+| P00's integration | `FRESH_START_AND_RESTART.agc` (LM pp. 229, 236-237, CM pp. 199, 209-210), interpretive code | [`src/fresh_start/stateup.c`](src/fresh_start/stateup.c) | STATEUP (bring both state vectors up to the present), THISVINT, and R00's wait for the integration (CALL INTSTALL, EXIT): interpretive code written in the listing's notation ([`src/interpreter/notation.h`](src/interpreter/notation.h)) and run by the readable interpreter |
 
 Beside them:
 
@@ -163,7 +164,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    restart, then readable and faithful side by side on 65,536 states per
    mission. `make v37-cases` does the same for verb 37 and P00, after
    checking V37's tables word by word against the original program's
-   rope. `make names-check` checks the generated names and the
+   rope. `make stateup-cases` does the same for STATEUP's order
+   pairs, run by the readable interpreter, after checking the words the
+   notation assembles against the rope. `make names-check` checks the generated names and the
    restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight

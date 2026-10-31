@@ -129,6 +129,13 @@ def fcadr(physical):
     if bank >= 0o40:
         bank -= 0o10
     return (bank << 10) | offset
+# The operands of the interpretive code readable/ writes in listing
+# notation (STATEUP, R00's CALL INTSTALL), as the interpreter reads them
+# (I_<name>): a switch's bit number; an erasable word's address, under its
+# EBANK (EBANK * 0400 + its address in the bank) in banks 3-7; a fixed
+# word's bank * 02000 + its address in the bank (banks 040-043 as 030-033).
+INTERPRETIVE = '''VINTFLAG SURFFLAG ORBWFLAG RENDWFLG DIM0FLAG D6OR9FLG PRECIFLG NODOFLAG
+TETCSM TDEC1 STATEUP DOINT NO-INT DOINT2 STATEND INTEGRV INTSTALL SETIFLGS ENDINT'''.split()
 # The erasable words the downlink lists name (DOWNLINK_LISTS.agc: the
 # operands of its DNADRs), as ECADRs (E_<name>): the EBANK bits and the
 # address in the bank, as a DNADR holds them.
@@ -246,6 +253,11 @@ def generate(key, program):
         if where(n) is None:
             raise SystemExit('%s: program %s not in the symbol table' % (program, n))
         out.append('#define F_%s 0%05ou' % (macro(n), fcadr(where(n))))
+    for n in INTERPRETIVE:
+        if where(n) is not None:
+            out.append('#define I_%s 0%05ou' % (macro(n), fcadr(where(n))))
+        elif n in table:
+            out.append('#define I_%s 0%05ou' % (macro(n), table[n]))
     for n in PHYSICAL:
         if where(n) is not None:
             out.append('#define P_%s %uu' % (macro(n), where(n)))
