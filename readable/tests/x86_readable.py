@@ -66,10 +66,13 @@ REPLACED = (
     'lm_stateup.o', 'cm_stateup.o',
     # KEYRUPT_UPRUPT.agc (src/keyrupt): both missions' tables.
     'keyrupt_uprupt.o',
+    # INTERRUPT_LEAD_INS.agc (src/lead_ins), WAITLIST.agc's RESUME exits
+    # (src/waitlist) and the LM's T6-RUPT_PROGRAMS.agc (src/t6rupt).
+    'rupt_lead_ins.o', 'lm_t6rupt.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
-                    'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1')
+                    'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

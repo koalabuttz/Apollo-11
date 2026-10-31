@@ -34,6 +34,9 @@
 #   make keyrupt-cases    the readable keyboard and uplink interrupts against
 #                         the original program's digests and the faithful
 #                         port's routines (seconds)
+#   make rupt-cases       the readable interrupt lead-ins, RESUME and the LM's
+#                         T6 interrupt against the original program's digests
+#                         and the faithful port's routines (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -76,17 +79,19 @@ FS_SOURCES := src/agc/agc.c src/fresh_start/fresh_start.c src/binding/machine.c 
 V37_SOURCES := $(FS_SOURCES) src/fresh_start/v37.c src/binding/v37_routines.c
 STATEUP_SOURCES := $(INTERPRETER_SOURCES) src/fresh_start/stateup.c src/binding/stateup_routines.c
 KEYRUPT_SOURCES := src/agc/agc.c src/keyrupt/keyrupt.c src/binding/machine.c src/binding/keyrupt_routines.c
+RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
+	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
-	$(KEYRUPT_SOURCES))
+	$(KEYRUPT_SOURCES) $(RUPT_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
-	keyrupt-cases
+	keyrupt-cases rupt-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -560,6 +565,54 @@ keyrupt-cases: $(BUILD)/keyrupt-oracle $(BUILD)/keyrupt-cases-lm $(BUILD)/keyrup
 	./$(BUILD)/keyrupt-oracle
 	./$(BUILD)/keyrupt-cases-lm
 	./$(BUILD)/keyrupt-cases-cm
+
+# ---- The interrupt lead-ins, RESUME and the LM's T6 interrupt ----
+# The port's own tests on the readable routines: tests/test_rupt_lead_ins.c
+# (both missions' lead-ins and the CM's RESUME entries, 128 states per
+# entry) and tests/test_lm_t6rupt.c (the LM's T6RUPT lead-in, T6 routines
+# and RESUME entries, every path), against the original program's yaAGC
+# digests, with the refusals they check. Each mission's readable objects
+# are linked into one object with only its tables left global. Then
+# tests/rupt_cases.c: the readable routines and the faithful port's on the
+# same random states.
+RUPT_COMMON := $(KU_COMMON)
+RUPT_LM_NAMES := lm_lead_in_routines lm_lead_in_hot_routines lm_t6rupt_routines \
+	lm_t6rupt_hot_routines lm_t6rupt_jets_hot_routines
+RUPT_NAMES := $(RUPT_LM_NAMES) cm_lead_in_routines
+
+$(BUILD)/rupt-faithful.o: $(PORT)/src/rupt_lead_ins.c $(PORT)/src/lm_t6rupt.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(RUPT_NAMES),-D$(n)=faithful_$(n)) \
+		-c $(PORT)/src/rupt_lead_ins.c -o $@.lead_ins
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(RUPT_NAMES),-D$(n)=faithful_$(n)) \
+		-c $(PORT)/src/lm_t6rupt.c -o $@.t6rupt
+	ld -r $@.lead_ins $@.t6rupt -o $@
+$(BUILD)/rupt-readable-lm.o: $(RUPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(RUPT_LM_NAMES),--keep-global-symbol=$(n)) $@.all $@
+$(BUILD)/rupt-readable-cm.o: $(RUPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=cm_lead_in_routines $@.all $@
+
+$(BUILD)/rupt-lead-ins-oracle: $(BUILD)/rupt-readable-lm.o $(BUILD)/rupt-readable-cm.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(RUPT_COMMON) $(PORT)/tests/rupt_lead_ins_cases.c \
+		$(PORT)/tests/test_rupt_lead_ins.c $^ -o $@
+$(BUILD)/lm-t6rupt-oracle: $(BUILD)/rupt-readable-lm.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(RUPT_COMMON) $(PORT)/tests/lm_t6rupt_cases.c \
+		$(PORT)/tests/test_lm_t6rupt.c $^ -o $@
+$(BUILD)/rupt-cases-lm: $(RUPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/rupt-faithful.o \
+		tests/rupt_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(RUPT_COMMON) $(filter %.o,$^) tests/rupt_cases.c -o $@
+$(BUILD)/rupt-cases-cm: $(RUPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/rupt-faithful.o \
+		tests/rupt_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(RUPT_COMMON) $(filter %.o,$^) tests/rupt_cases.c -o $@
+
+rupt-cases: $(BUILD)/rupt-lead-ins-oracle $(BUILD)/lm-t6rupt-oracle $(BUILD)/rupt-cases-lm \
+		$(BUILD)/rupt-cases-cm
+	./$(BUILD)/rupt-lead-ins-oracle
+	./$(BUILD)/lm-t6rupt-oracle
+	./$(BUILD)/rupt-cases-lm
+	./$(BUILD)/rupt-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

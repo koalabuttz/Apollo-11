@@ -354,17 +354,58 @@ void taskover(void)
     case IS_MINUS_ZERO: break;
     }
     set_A(BANKRUPT);
-    write_superbnk();
-    /* RESUME, NOQRSM, NOQBRSM */
-    qxch(ADDRESS_OF(QRUPT));
+    write_superbnk(); /* "RESTORE SUPERBANK BEFORE RESUME IS DONE" */
+    resume();
+}
+
+/* ======================================================================
+ * The end of every interrupt
+ * ====================================================================== */
+
+/* RESUME -- LM p. 1129, CM p. 1232.
+ * End an interrupt: put back what its lead-in and handler saved, Q from
+ * QRUPT, then (NOQRSM) BBANK from BANKRUPT, then (NOQBRSM) A and L from
+ * ARUPT, and RESUME. A handler that left Q or the banks alone comes in at
+ * NOQRSM or NOQBRSM. */
+void resume(void)
+{
+    qxch(ADDRESS_OF(QRUPT)); /* EXTEND; QXCH QRUPT */
+    noqrsm();
+}
+
+/* NOQRSM -- LM p. 1129, CM p. 1232. */
+void noqrsm(void)
+{
     set_A(BANKRUPT);
+    resume_plus3();
+}
+
+/* RESUME +3 -- LM p. 1129, CM p. 1232: XCH BBANK, with the BBANK in A.
+ * The CM's HAND CONTROL RUPT lead-in ends here. */
+void resume_plus3(void)
+{
     xch(BBANK_ADDRESS);
+    noqbrsm();
+}
+
+/* NOQBRSM -- LM p. 1129, CM p. 1232. */
+void noqbrsm(void)
+{
     dxch(ADDRESS_OF(ARUPT));
+    noqbrsm_plus1();
+}
+
+/* NOQBRSM +1 -- LM p. 1129, CM p. 1232: RELINT; RESUME.
+ * The LM's autopilot comes here (TCF NOQBRSM +1) to resume at SUPERJOB.
+ * RESUME takes Z back from ZRUPT, and the instruction the interrupt
+ * displaced from BRUPT: here it runs next at ZRUPT -1, where the binding
+ * has checked it is the one in BRUPT. */
+void noqbrsm_plus1(void)
+{
     relint();
     *agc.in_interrupt = 0;
-    /* RESUME: the instruction the interrupt displaced runs next, at ZRUPT -1. */
     continue_at((word)(ZRUPT - 1u));
-    agc.memory[7] = 0;
+    agc.memory[ZERO_ADDRESS] = 0;
 }
 
 /* ======================================================================
