@@ -92,6 +92,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | RCS failure monitor | `RCS_FAILURE_MONITOR.agc` (LM pp. 190-192) | [`src/rcs_failure_monitor/`](src/rcs_failure_monitor/) | RCSMON (RCSMONIT), VOPENED and 1/ACCFIX, with the tables 5FAILTAB and 6FAILTAB: every 0.48 s, a jet isolation valve the crew have just closed or opened (channel 32) takes its two jets out of or back into the DAP's jet masks CH5MASK and CH6MASK, one change a pass, and starts 1/ACCJOB. With it the LM's file is all readable |
 | AGS initialization | `AGS_INITIALIZATION.agc` (LM pp. 206-210) | [`src/ags_initialization/`](src/ags_initialization/) | R47: AGSINIT, NEWAGS, REDSPTEM, AGSDISPK, AGSVCALC, CKSTALL and AGSEND in basic code, and AGSVCALC's and SCALEVEC's interpretive code in the listing's notation: verb 47 sets the AGS clock's zero (AGSK) on an ENTER, sends the LM's and CSM's state vectors, scaled for the AGS, and the time since that zero down the downlink (LAGSLIST), then zeroes the IMU's CDUs with the AGS's. With it the LM's file is all readable |
 | Sighting marks | `AOTMARK.agc` (LM pp. 244-261) | [`src/aotmark/`](src/aotmark/), with CDULOGIC of `RTB_OP_CODES.agc` (LM p. 1397, CM p. 1508) in [`src/rtb_op_codes/`](src/rtb_op_codes/) | AOTMARK, the LM's star sightings for P51-P53 and R59: the crew's detent and star code (V01N71, GETDAT, CODE7, CODE1TO6), the mark planes (OPTAXIS, OANB), the X and Y mark buttons (MARKRUPT, FINDKEY, VERIFYMK, VACSTOR, MKREJ, CHANGEVB's next mark verb) and the star direction averaged over up to five pairs (MARKCHEX, AVESTAR, AVEIT), or on the lunar surface the cursor and spiral readings (V06N79) and SURFSTAR; basic code, and its interpretive code in the listing's notation. With it the LM's file is all readable |
+| Sextant marks | `SXTMARK.agc` (CM pp. 222-235) | [`src/sxtmark/`](src/sxtmark/) | SXTMARK, the CM's sextant marks for P51-P53 and for R21-R22 (P22, P23): a VAC area for the marks (MARKOK, MKVACFND), the mark verbs (MKVB51's V51, MKVB50's V50N25, MKVB5X), the MARK and MARK REJECT buttons and the navigation DSKY's keys (MARKRUPT, KEYCALL, MKREJECT, REJECT2, REJECT3), the check that the ship was not turning too fast at the mark (MARKIT, MARKDIF, DIFCHK), keeping the mark (MARKCONT, MARK2, VACSTOR, or R21's MRKBUF1), the end (ENTANSWR, JAMIT, ENDMARKS, TERMSXT) and the release of the mark system (MKRELEAS, MKRLEES). With it the CM's file is all readable |
 
 Beside them:
 
@@ -208,7 +209,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    and as the flight program does. `make aotmark-cases` runs the faithful
    port's test of the LM's sighting marks (2,036 frozen cases, each run to
    its stop) on the readable one, then the two side by side, 4,096 states
-   at each of its 122 keys. `make
+   at each of its 122 keys. `make sxtmark-cases` does the same for the
+   CM's sextant marks (679 frozen cases; 4,096 states at each of its 42
+   keys). `make
    names-check` checks the generated names and the restart tables against
    the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
