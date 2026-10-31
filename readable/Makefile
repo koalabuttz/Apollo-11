@@ -1056,37 +1056,53 @@ pinball-noun-tables-cases: $(BUILD)/nouns-port-test $(BUILD)/nouns-oracle $(BUIL
 	./$(BUILD)/nouns-oracle
 	./$(BUILD)/nouns-cases $(ROPES)
 
-# ---- LEM_GEOMETRY ----
+# ---- LEM_GEOMETRY, CSM_GEOMETRY ----
 # The port's test (tests/test_geometry.c, its frozen cases run to their
 # stops through the program of tests/geometry_target.c, against the
-# original program's yaAGC digests) with the readable LM routines and the
-# faithful CM ones, tests/with_ropes.c loading the ropes the readable
-# interpreter reads; then tests/geometry_cases.c side by side.
-GEOMETRY_NAMES := lm_geometry_basic lm_geometry_interpretive
+# original program's yaAGC digests) with each mission's readable routines
+# and the other mission's faithful ones, tests/with_ropes.c loading the
+# ropes the readable interpreter reads; then tests/geometry_cases.c side by
+# side, for each mission.
+GEOMETRY_NAMES_LM := lm_geometry_basic lm_geometry_interpretive
+GEOMETRY_NAMES_CM := cm_geometry_basic cm_geometry_interpretive
 GEOMETRY_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c \
 	$(PORT)/src/cm_interp_orders.c $(PORT)/src/cm_interp_steps.c $(KU_COMMON) \
 	$(PORT)/src/rtb_angles.c $(PORT)/src/rtb_agreement.c $(PORT)/src/geometry_rtb.c \
 	$(PORT)/src/cm_integration_moves.c $(PORT)/src/rope_image_host.c $(PORT)/tests/interp_case.c
 
-$(BUILD)/geometry-faithful.o: $(PORT)/src/lm_geometry.c
+$(BUILD)/geometry-faithful-lm.o: $(PORT)/src/lm_geometry.c
 	@mkdir -p $(dir $@)
-	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(GEOMETRY_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(GEOMETRY_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/geometry-faithful-cm.o: $(PORT)/src/cm_geometry.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(GEOMETRY_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
 $(BUILD)/geometry-test.o: $(PORT)/tests/test_geometry.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/geometry-oracle: $(GEOMETRY_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/geometry-test.o \
-		tests/with_ropes.c
+$(BUILD)/geometry-oracle-lm: $(GEOMETRY_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(BUILD)/geometry-test.o tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(GEOMETRY_COMMON) $(PORT)/src/cm_geometry.c \
 		$(PORT)/tests/geometry_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
-$(BUILD)/geometry-cases: $(GEOMETRY_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/geometry-faithful.o \
-		tests/geometry_cases.c
+$(BUILD)/geometry-oracle-cm: $(GEOMETRY_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(BUILD)/geometry-test.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(GEOMETRY_COMMON) $(PORT)/src/lm_geometry.c \
+		$(PORT)/tests/geometry_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/geometry-cases-lm: $(GEOMETRY_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) \
+		$(BUILD)/geometry-faithful-lm.o tests/geometry_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(GEOMETRY_COMMON) $(filter %.o,$^) \
 		tests/geometry_cases.c -o $@
+$(BUILD)/geometry-cases-cm: $(GEOMETRY_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) \
+		$(BUILD)/geometry-faithful-cm.o tests/geometry_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(GEOMETRY_COMMON) $(filter %.o,$^) \
+		tests/geometry_cases.c -o $@
 
-geometry-cases: $(BUILD)/geometry-oracle $(BUILD)/geometry-cases
+geometry-cases: $(BUILD)/geometry-oracle-lm $(BUILD)/geometry-oracle-cm $(BUILD)/geometry-cases-lm \
+		$(BUILD)/geometry-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
-	./$(BUILD)/geometry-oracle $(ROPES)
-	./$(BUILD)/geometry-cases $(ROPES)
+	./$(BUILD)/geometry-oracle-lm $(ROPES)
+	./$(BUILD)/geometry-oracle-cm $(ROPES)
+	./$(BUILD)/geometry-cases-lm $(ROPES)
+	./$(BUILD)/geometry-cases-cm $(ROPES)
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

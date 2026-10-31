@@ -17,7 +17,7 @@
  *
  * The orders a table here uses, with their codes in yaYUL's table of
  * Block II interpretive orders. The switch orders (SET, CLEAR, BON, BOF,
- * CLRGO) share one code: which one it is, is in its operand. */
+ * CLRGO, SETGO) share one code: which one it is, is in its operand. */
 #ifndef READABLE_NOTATION_H
 #define READABLE_NOTATION_H
 
@@ -25,6 +25,7 @@
 #define ORDER_VLOAD      0001u
 #define ORDER_VLOAD_STAR 0003u /* VLOAD* */
 #define ORDER_VSL1       0004u
+#define ORDER_SIGN       0011u
 #define ORDER_VXSC       0015u
 #define ORDER_SIN        0020u
 #define ORDER_LXA_2      0022u /* LXA,2 */
@@ -39,10 +40,13 @@
 #define ORDER_SLOAD      0041u
 #define ORDER_SLOAD_STAR 0043u /* SLOAD* */
 #define ORDER_SXA_1      0046u /* SXA,1 */
+#define ORDER_ACOS       0050u
 #define ORDER_PDDL       0051u
 #define ORDER_VSR3       0054u
 #define ORDER_MXV        0055u
 #define ORDER_PDVL       0061u
+#define ORDER_SL2        0064u
+#define ORDER_NORM       0075u
 #define ORDER_DCOMP      0100u
 #define ORDER_DDV        0105u
 #define ORDER_VSL_STAR   0117u /* VSL* (a general shift, indexed) */
@@ -54,6 +58,7 @@
 #define ORDER_BVSU       0131u
 #define ORDER_BPL        0132u
 #define ORDER_DOT        0135u
+#define ORDER_BMN        0136u
 #define ORDER_VXV        0141u
 #define ORDER_RTB        0142u
 #define ORDER_STADR      0150u
@@ -61,6 +66,7 @@
 #define ORDER_BDSU       0155u
 #define ORDER_CALL       0152u
 #define ORDER_STQ        0156u
+#define ORDER_ITA        0156u /* (STQ's code: one order, under two names) */
 #define ORDER_RVQ        0160u
 #define ORDER_DAD        0161u
 #define ORDER_SET        0162u
@@ -68,11 +74,13 @@
 #define ORDER_BON        0162u
 #define ORDER_BOF        0162u
 #define ORDER_CLRGO      0162u
+#define ORDER_SETGO      0162u
 #define ORDER_BOVB       0172u
 #define ORDER_VSL8       0164u
 #define ORDER_PUSH       0170u
 #define ORDER_DMP        0171u
 #define ORDER_SETPD      0175u
+#define ORDER_BOV        0176u
 
 /* An order pair: each code plus one, the left order in bits 1-7 and the
  * right one in bits 8-14, complemented, so the word is negative (an
@@ -90,6 +98,7 @@
 #define SWITCH_BON   0300u
 #define SWITCH_BOF   0340u
 #define SWITCH_CLRGO 0220u
+#define SWITCH_SETGO 0020u
 #define SWITCH(order, flag)                                                                        \
     ((word)((((I_##flag) / 15u) << 8) | ((I_##flag) % 15u) | SWITCH_##order))
 
@@ -129,6 +138,9 @@
  * SLOAD*, takes its index register from it). It is written one more, as
  * any address. */
 #define ADDRESS_PLUS_ONE_X1(n) ((word)((n) + 1u))
+/* "28D" as an address used as it is (ITA's, which stores the return
+ * there, and the GOTO of SETGO or CLRGO through it). */
+#define ADDRESS_D(n) ((word)(n))
 /* "0 -7,2": an indexed general shift's (VSL*'s) address, the shift count
  * n indexed by X2. yaYUL assembles it as 20000 plus 200 (a left shift's
  * bit, "ADAD" in its rules) plus n, one more as any address, and

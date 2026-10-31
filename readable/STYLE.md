@@ -79,6 +79,7 @@ C cannot spell every AGC name, so:
 | a leading digit | the digit spelled out | `2K` → `TWO_K` |
 | `+` inside a name | `_PLUS_` | `Q+10000` → `Q_PLUS_10000`, `q_plus_10000()` |
 | a leading `/` | `SLASH_` | `/NORM` → `SLASH_NORM` |
+| a leading `*` | `STAR_` | `*SMNB*` → `STAR_SMNB_STAR` |
 | `*` (the indexed forms) | `_STAR` | `DLOAD*` → `DLOAD_STAR`, `dodload_star()` |
 | `=` | `_EQ_` | `ACOS=0` → `ACOS_EQ_0` |
 | `(` ... `)` | `_` and nothing | `LAT(SPL)` → `LAT_SPL` |
@@ -273,8 +274,8 @@ Every change to `readable/` must keep both:
      side.
    - `geometry-cases`: the faithful port's geometry test (its frozen cases
      run to their stops, against yaAGC digests) with the readable
-     LEM_GEOMETRY, its words against the rope, then the two side by side
-     at every key on random states.
+     LEM_GEOMETRY and CSM_GEOMETRY, their words against the ropes, then
+     the two side by side at every key on random states.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

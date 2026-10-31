@@ -83,6 +83,8 @@
 #define K_RRNB 02041u
 #define K_RRNB1 02054u
 #define K_RRNBMPAC 02065u
+#define K_1STO2S 03614u
+#define K_TCDANZIG 03753u
 #define K_BANKCALL 04616u
 #define K_SWCALL 04622u
 #define K_SWRETURN 04631u
@@ -925,6 +927,7 @@
 #define K_SFTEMP2 00124u
 #define K_MODEA 01107u
 #define K_MODEB 01111u
+#define K_XNB 01664u
 #define K_THRUST 00055u
 #define K_RCSFLAGS 01273u
 #define K_ABDELV 01246u
@@ -1422,6 +1425,7 @@
 #define KW_P70CADR {002072u,042067u}
 #define KW_T6ADR {002065u,036106u}
 #define KW_V82CON {003242u,044104u}
+#define KW_CLOG2_32 {000542u,034414u}
 #define E_TIME2 00024u
 #define E_TEPHEM 01706u
 #define E_VGBODY 03501u
@@ -1725,6 +1729,21 @@
 #define I_TANGNB 003752u
 #define I_RRNB 046041u
 #define I_RRNB1 046054u
+#define I_STARM 000040u
+#define I_NB1NB2 046513u
+#define I_STAR 002730u
+#define I_STAR_SMNB_STAR 047671u
+#define I_HIUNITX 046517u
+#define I_HIUNITY 046515u
+#define I_HIUNITZ 046513u
+#define I_XNB 002664u
+#define I_YNB 002672u
+#define I_ZNB 002700u
+#define I_PDA 000026u
+#define I_1STO2S 021614u
+#define I_CULTFLAG 000065u
+#define I_TCDANZIG 057753u
+#define I_HIDPHALF 046517u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
