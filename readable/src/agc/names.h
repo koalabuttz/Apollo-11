@@ -874,6 +874,39 @@ static const word P70CADR[2] = KW_P70CADR;
 #define V5OUT1   ((word)K_V5OUT1)
 #endif
 
+/* ---- The keyboard and uplink interrupts (KEYRUPT_UPRUPT.agc) ---- */
+
+/* Its erasable words (ADDRESS_OF gives each one's address): INLINK, the
+ * uplink's register, which holds the word the ground sent; KEYTEMP1 (the
+ * same word as RUPTREG4) and KEYTEMP2, the word as it is tested; FLAGWRD5
+ * (DSKYFLAG, bit 15) and FLAGWRD7 (UPLOCKFL, bit 4). */
+
+/* Its constants. CHRPRIO is CHARIN's job priority, ELRCODE the ERROR RESET
+ * key's code. HI10 (OCT 77740, -037) is also a label: CCS lands on it and
+ * runs it as an instruction. The LM's listing names the flag bits
+ * DSKYFBIT (BIT15) and UPLOCBIT (BIT4); the CM's writes BIT15 and BIT4. */
+#define LOW5    ((word)KW_LOW5)
+#define CHRPRIO ((word)KW_CHRPRIO)
+#define HI10    ((word)KW_HI10)
+#define ELRCODE ((word)KW_ELRCODE)
+#if LUMINARY099
+#define DSKYFBIT ((word)KW_DSKYFBIT)
+#define UPLOCBIT ((word)KW_UPLOCBIT)
+#endif
+
+/* Its labels, in bank 04 (LM) or 07 (CM), and LODSAMPT, PINBALL's routine
+ * that takes the time of a key, in fixed-fixed memory. */
+#define KEYRUPT1 ((word)K_KEYRUPT1)
+#define KEYCOM   ((word)K_KEYCOM)
+#define ACCEPTUP ((word)K_ACCEPTUP)
+#define UPRUPT   ((word)K_UPRUPT)
+#define UPRPT1   ((word)K_UPRPT1)
+#define UPOK     ((word)K_UPOK)
+#define CLUPLOCK ((word)K_CLUPLOCK)
+#define TMFAIL2  ((word)K_TMFAIL2)
+#define UPTEST   ((word)K_UPTEST)
+#define LODSAMPT ((word)K_LODSAMPT)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

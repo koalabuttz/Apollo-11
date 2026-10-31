@@ -31,6 +31,9 @@
 #                         the readable down-telemetry against the original
 #                         program's digests and the faithful port's routines
 #                         (seconds)
+#   make keyrupt-cases    the readable keyboard and uplink interrupts against
+#                         the original program's digests and the faithful
+#                         port's routines (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -72,15 +75,18 @@ FS_SOURCES := src/agc/agc.c src/fresh_start/fresh_start.c src/binding/machine.c 
 	src/binding/fresh_start_routines.c
 V37_SOURCES := $(FS_SOURCES) src/fresh_start/v37.c src/binding/v37_routines.c
 STATEUP_SOURCES := $(INTERPRETER_SOURCES) src/fresh_start/stateup.c src/binding/stateup_routines.c
+KEYRUPT_SOURCES := src/agc/agc.c src/keyrupt/keyrupt.c src/binding/machine.c src/binding/keyrupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
-	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES))
+	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
+	$(KEYRUPT_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
-	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases
+	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
+	keyrupt-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -518,6 +524,43 @@ stateup-cases: $(BUILD)/stateup-oracle-lm $(BUILD)/stateup-oracle-cm $(BUILD)/st
 	./$(BUILD)/stateup-cases-lm $(ROPES)
 	./$(BUILD)/stateup-cases-cm $(ROPES)
 
+# ---- The keyboard and uplink interrupts ----
+# The port's own test (tests/test_keyrupt_uprupt.c) on the readable
+# routines: 1,536 states per mission over the six entries, against the
+# original program's yaAGC digests, with every uplink path reached and the
+# refusals it checks. It runs both missions in one program, so each
+# mission's readable objects are linked into one object with only its
+# table left global. Then tests/keyrupt_cases.c: the readable routines and
+# the faithful port's on the same random states.
+KU_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+	$(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c
+KU_NAMES := lm_keyrupt_routines cm_keyrupt_routines
+
+$(BUILD)/keyrupt-faithful.o: $(PORT)/src/keyrupt_uprupt.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(KU_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/keyrupt-readable-lm.o: $(KEYRUPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=lm_keyrupt_routines $@.all $@
+$(BUILD)/keyrupt-readable-cm.o: $(KEYRUPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=cm_keyrupt_routines $@.all $@
+
+$(BUILD)/keyrupt-oracle: $(BUILD)/keyrupt-readable-lm.o $(BUILD)/keyrupt-readable-cm.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(KU_COMMON) $(PORT)/tests/keyrupt_uprupt_cases.c \
+		$(PORT)/tests/test_keyrupt_uprupt.c $^ -o $@
+$(BUILD)/keyrupt-cases-lm: $(KEYRUPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/keyrupt-faithful.o \
+		tests/keyrupt_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(KU_COMMON) $(filter %.o,$^) tests/keyrupt_cases.c -o $@
+$(BUILD)/keyrupt-cases-cm: $(KEYRUPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/keyrupt-faithful.o \
+		tests/keyrupt_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(KU_COMMON) $(filter %.o,$^) tests/keyrupt_cases.c -o $@
+
+keyrupt-cases: $(BUILD)/keyrupt-oracle $(BUILD)/keyrupt-cases-lm $(BUILD)/keyrupt-cases-cm
+	./$(BUILD)/keyrupt-oracle
+	./$(BUILD)/keyrupt-cases-lm
+	./$(BUILD)/keyrupt-cases-cm
+
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
 # place of the faithful kernel (build/x86-flight/).
@@ -548,3 +591,4 @@ format:
 
 clean:
 	rm -rf $(BUILD)
+
