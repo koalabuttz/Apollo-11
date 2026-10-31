@@ -109,22 +109,25 @@ IMU_COMP_SOURCES := src/agc/agc.c src/imu_compensation/imu_compensation.c src/bi
 	src/binding/imu_compensation_routines.c
 R63_SOURCES := $(INTERPRETER_SOURCES) src/r63/r63.c src/rtb_op_codes/rtb_op_codes.c \
 	src/binding/r63_routines.c
+AMR_SOURCES := $(INTERPRETER_SOURCES) src/attitude_maneuver/attitude_maneuver.c \
+	src/rtb_op_codes/rtb_op_codes.c src/binding/attitude_maneuver_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
-	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES))
+	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
-	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases
+	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
+	attitude-maneuver-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1212,3 +1215,33 @@ r63-cases: $(BUILD)/r63-oracle $(BUILD)/r63-cases
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	./$(BUILD)/r63-oracle $(ROPES)
 	./$(BUILD)/r63-cases $(ROPES)
+
+# ATTITUDE_MANEUVER_ROUTINE, the LM's KALCMANU start and matrix routines:
+# the port's test (tests/test_attitude_maneuver.c, its frozen cases run to
+# their stops through the programs of tests/attitude_maneuver_target.c,
+# against the original programs' yaAGC digests) on the readable routines
+# for the LM and the faithful CM ANGLFIND, with tests/with_ropes.c loading
+# the ropes the readable interpreter reads; then
+# tests/attitude_maneuver_cases.c side by side.
+AMR_NAMES := lm_attitude_maneuver_basic lm_attitude_maneuver_interpretive
+AMR_COMMON := $(R63_COMMON)
+
+$(BUILD)/amr-faithful.o: $(PORT)/src/lm_attitude_maneuver.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(AMR_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/amr-test.o: $(PORT)/tests/test_attitude_maneuver.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/amr-oracle: $(AMR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/amr-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(AMR_COMMON) $(PORT)/src/cm_attitude_maneuver.c \
+		$(PORT)/tests/attitude_maneuver_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/amr-cases: $(AMR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/amr-faithful.o \
+		tests/attitude_maneuver_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(AMR_COMMON) $(filter %.o,$^) \
+		tests/attitude_maneuver_cases.c -o $@
+
+attitude-maneuver-cases: $(BUILD)/amr-oracle $(BUILD)/amr-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/amr-oracle $(ROPES)
+	./$(BUILD)/amr-cases $(ROPES)

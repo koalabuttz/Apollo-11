@@ -186,7 +186,7 @@ Every change to `readable/` must keep both:
    v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases
    rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases
    extended-verbs-cases pinball-noun-tables-cases geometry-cases
-   imu-compensation-cases r63-cases`,
+   imu-compensation-cases r63-cases attitude-maneuver-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -285,6 +285,10 @@ Every change to `readable/` must keep both:
      their stops, against yaAGC digests) with the readable R63, its words
      against the rope, then the two side by side at every key on random
      states.
+   - `attitude-maneuver-cases`: the faithful port's attitude maneuver
+     test (its frozen cases run to their stops, against yaAGC digests)
+     with the readable LM ATTITUDE_MANEUVER_ROUTINE, its words against
+     the rope, then the two side by side at every key on random states.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

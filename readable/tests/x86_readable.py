@@ -112,13 +112,15 @@ REPLACED = (
     'imu_compensation.o',
     # R63.agc, the LM's V89 final attitude (src/r63).
     'lm_r63.o',
+    # ATTITUDE_MANEUVER_ROUTINE.agc, the LM's KALCMANU start (src/attitude_maneuver).
+    'lm_attitude_maneuver.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa')
-# And each mission's own: R63 is the LM's alone.
-MISSION_SYMBOLS = {'lm': ('v89recl',), 'cm': ()}
+# And each mission's own: R63 and ATTITUDE_MANEUVER_ROUTINE are the LM's alone.
+MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3'), 'cm': ()}
 xb.OUT = READABLE / 'build/x86-flight'
 
 

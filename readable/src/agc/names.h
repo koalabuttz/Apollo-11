@@ -378,6 +378,7 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 /* Its code labels. */
 #define INTPRET        ((word)K_INTPRET)
 #define DANZIG         ((word)K_DANZIG)
+#define TLOAD          ((word)K_TLOAD)
 #define NOIBNKSW       ((word)K_NOIBNKSW)
 #define CHANG2         ((word)K_CHANG2)
 #define DIRADRES       ((word)K_DIRADRES)
@@ -1824,6 +1825,16 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define ALINEZ   ((word)K_ALINEZ)
 #define VB04N12  ((word)KW_VB04N12) /* VN 412 */
 #define VB06N18  ((word)KW_VB06N18) /* VN 0618 */
+
+/* ---- ATTITUDE_MANEUVER_ROUTINE (LM only) ---- */
+
+/* Its labels in bank 22 the basic code enters or leaves from. */
+#define KALCMAN3 ((word)K_KALCMAN3)
+#define TRNSPSPD ((word)K_TRNSPSPD)
+#define READCDUK ((word)K_READCDUK)
+#define TOOBADF  ((word)K_TOOBADF)
+#define NOGO     ((word)K_NOGO)
+#define TOOBADI  ((word)K_TOOBADI)
 #endif
 
 /* 1STO2S, 2V1STO2S and their 1TO2SUB, and LOADTIME, RTB routines

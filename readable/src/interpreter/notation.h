@@ -25,36 +25,56 @@
 #define ORDER_VLOAD      0001u
 #define ORDER_VLOAD_STAR 0003u /* VLOAD* */
 #define ORDER_VSL1       0004u
+#define ORDER_AXT_1      0006u /* AXT,1 */
+#define ORDER_SQRT       0010u
 #define ORDER_SIGN       0011u
+#define ORDER_AXC_2      0012u /* AXC,2 */
+#define ORDER_VSR1       0014u
 #define ORDER_VXSC       0015u
+#define ORDER_AXC_1      0016u /* AXC,1 */
 #define ORDER_SIN        0020u
 #define ORDER_LXA_2      0022u /* LXA,2 */
-#define ORDER_VSL2       0024u
 #define ORDER_SL1        0024u /* (VSL2's code too, in yaYUL's table) */
+#define ORDER_VSL2       0024u
+#define ORDER_TLOAD      0025u
 #define ORDER_LXA_1      0026u /* LXA,1 */
 #define ORDER_COS        0030u
 #define ORDER_DLOAD      0031u
+#define ORDER_DLOAD_STAR 0033u /* DLOAD* */
 #define ORDER_SR1        0034u
 #define ORDER_V_SC       0035u /* V/SC */
+#define ORDER_ARCSIN     0040u /* (ASIN's code too) */
 #define ORDER_ASIN       0040u
 #define ORDER_SLOAD      0041u
 #define ORDER_SLOAD_STAR 0043u /* SLOAD* */
+#define ORDER_SSP        0045u
 #define ORDER_SXA_1      0046u /* SXA,1 */
 #define ORDER_ACOS       0050u
+#define ORDER_ARCCOS     0050u /* (ACOS's code: one order, under two names) */
 #define ORDER_PDDL       0051u
+#define ORDER_PDDL_STAR  0053u /* PDDL* */
 #define ORDER_VSR3       0054u
 #define ORDER_MXV        0055u
+#define ORDER_DSQ        0060u
 #define ORDER_PDVL       0061u
+#define ORDER_PDVL_STAR  0063u /* PDVL* */
 #define ORDER_SL2        0064u
+#define ORDER_VXM_STAR   0073u /* VXM* */
+#define ORDER_SR2        0074u
 #define ORDER_NORM       0075u
+#define ORDER_TIX_1      0076u /* TIX,1 */
 #define ORDER_DCOMP      0100u
+#define ORDER_VCOMP      0100u /* (DCOMP's code too) */
 #define ORDER_DDV        0105u
+#define ORDER_VDEF       0110u
 #define ORDER_VSL_STAR   0117u /* VSL* (a general shift, indexed) */
 #define ORDER_UNIT       0120u
 #define ORDER_VAD        0121u
 #define ORDER_BZE        0122u
+#define ORDER_SL3        0124u
 #define ORDER_VSU        0125u
 #define ORDER_GOTO       0126u
+#define ORDER_ABS        0130u
 #define ORDER_BVSU       0131u
 #define ORDER_BPL        0132u
 #define ORDER_DOT        0135u
@@ -63,22 +83,22 @@
 #define ORDER_RTB        0142u
 #define ORDER_STADR      0150u
 #define ORDER_DSU        0151u
-#define ORDER_BDSU       0155u
 #define ORDER_CALL       0152u
-#define ORDER_STQ        0156u
+#define ORDER_BDSU       0155u
 #define ORDER_ITA        0156u /* (STQ's code: one order, under two names) */
+#define ORDER_STQ        0156u
 #define ORDER_RVQ        0160u
 #define ORDER_DAD        0161u
-#define ORDER_SET        0162u
-#define ORDER_CLEAR      0162u
-#define ORDER_BON        0162u
 #define ORDER_BOF        0162u
+#define ORDER_BON        0162u
+#define ORDER_CLEAR      0162u
 #define ORDER_CLRGO      0162u
+#define ORDER_SET        0162u
 #define ORDER_SETGO      0162u
-#define ORDER_BOVB       0172u
 #define ORDER_VSL8       0164u
 #define ORDER_PUSH       0170u
 #define ORDER_DMP        0171u
+#define ORDER_BOVB       0172u
 #define ORDER_SETPD      0175u
 #define ORDER_BOV        0176u
 
@@ -138,9 +158,18 @@
  * SLOAD*, takes its index register from it). It is written one more, as
  * any address. */
 #define ADDRESS_PLUS_ONE_X1(n) ((word)((n) + 1u))
+/* "n,2": address n indexed by X2. It is written one more, as any address,
+ * and complemented: the interpreter tells an X2 address by its sign. */
+#define ADDRESS_PLUS_ONE_X2(n) ((word)(~((n) + 1u) & 077777u))
+/* A store indexed by X2 ("STORE 0,2"): STORE,2's code (bits 12-14 of
+ * 010000) with the address n, written one more. */
+#define STORE_X2_D(n) ((word)(010000u | ((n) + 1u)))
 /* "28D" as an address used as it is (ITA's, which stores the return
  * there, and the GOTO of SETGO or CLRGO through it). */
 #define ADDRESS_D(n) ((word)(n))
+/* A number used as it is: the value AXT puts in an index register ("AXT,1
+ * 3") and the one SSP stores ("SSP S1 1"). */
+#define NUMBER(n) ((word)(n))
 /* "0 -7,2": an indexed general shift's (VSL*'s) address, the shift count
  * n indexed by X2. yaYUL assembles it as 20000 plus 200 (a left shift's
  * bit, "ADAD" in its rules) plus n, one more as any address, and
