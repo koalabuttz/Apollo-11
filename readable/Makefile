@@ -97,20 +97,22 @@ AOTMARK_SOURCES := $(INTERPRETER_SOURCES) src/aotmark/aotmark.c src/rtb_op_codes
 	src/binding/aotmark_routines.c
 SXTMARK_SOURCES := src/agc/agc.c src/sxtmark/sxtmark.c src/binding/machine.c \
 	src/binding/sxtmark_routines.c
+EV_SOURCES := src/agc/agc.c src/extended_verbs/front.c src/binding/extended_verbs_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
-	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES))
+	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
-	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases
+	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
+	extended-verbs-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -860,6 +862,39 @@ $(BUILD)/sxtmark-cases: $(SXTMARK_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD
 sxtmark-cases: $(BUILD)/sxtmark-oracle $(BUILD)/sxtmark-cases
 	./$(BUILD)/sxtmark-oracle
 	./$(BUILD)/sxtmark-cases
+
+# EXTENDED_VERBS, both missions, part by part. Each readable part takes
+# the place of the faithful port's module for the part
+# (c64-port/src/lanec_ev_<part>.c) under its name. The tests link both
+# missions' readable objects, each built into one object with the
+# module's name renamed readable_<m>_..., and tests/extended_verbs_missions.c
+# puts them back under the module's name. First the port's frozen oracle
+# rows (the original program's results in Virtual AGC) on the readable
+# routines, then tests/extended_verbs_front_cases.c side by side with the
+# faithful module.
+LANEC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/lanec.c $(PORT)/tests/lanec_case.c
+EV_FRONT_NAMES := lanec_ev_front_dispatch
+
+$(BUILD)/ev-front-faithful.o: $(PORT)/src/lanec_ev_front.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(EV_FRONT_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/ev-readable-lm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+$(BUILD)/ev-readable-cm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+$(BUILD)/ev-readable-%.o:
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(EV_FRONT_NAMES),--keep-global-symbol=$(n)) $@.all $@.kept
+	objcopy $(foreach n,$(EV_FRONT_NAMES),--redefine-sym $(n)=readable_$*_$(n:lanec_%=%)) $@.kept $@
+EV_READABLE := $(BUILD)/ev-readable-lm.o $(BUILD)/ev-readable-cm.o tests/extended_verbs_missions.c
+$(BUILD)/ev-front-oracle: $(EV_READABLE) tests/extended_verbs_front_oracle.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_front_cases.c \
+		$(filter %.o %.c,$^) -o $@
+$(BUILD)/ev-front-cases: $(EV_READABLE) $(BUILD)/ev-front-faithful.o tests/extended_verbs_front_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_front_cases.c \
+		$(filter %.o %.c,$^) -o $@
+
+extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases
+	./$(BUILD)/ev-front-oracle
+	./$(BUILD)/ev-front-cases
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
