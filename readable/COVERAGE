@@ -46,3 +46,4 @@ Luminary099/LEM_GEOMETRY.agc                 src/geometry
 Comanche055/CSM_GEOMETRY.agc                 src/geometry
 Luminary099/IMU_COMPENSATION_PACKAGE.agc     src/imu_compensation
 Comanche055/IMU_COMPENSATION_PACKAGE.agc     src/imu_compensation
+Luminary099/R63.agc                          src/r63

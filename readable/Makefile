@@ -107,22 +107,24 @@ GEOMETRY_SOURCES := $(INTERPRETER_SOURCES) src/geometry/geometry.c src/rtb_op_co
 	src/binding/geometry_routines.c
 IMU_COMP_SOURCES := src/agc/agc.c src/imu_compensation/imu_compensation.c src/binding/machine.c \
 	src/binding/imu_compensation_routines.c
+R63_SOURCES := $(INTERPRETER_SOURCES) src/r63/r63.c src/rtb_op_codes/rtb_op_codes.c \
+	src/binding/r63_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
-	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES))
+	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
-	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases
+	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1181,3 +1183,32 @@ imu-compensation-cases: $(BUILD)/imu-compensation-oracle $(BUILD)/imu-compensati
 	./$(BUILD)/imu-compensation-oracle
 	./$(BUILD)/imu-compensation-cases-lm
 	./$(BUILD)/imu-compensation-cases-cm
+
+# R63, the LM's V89 final attitude: the port's test (tests/test_lm_r63.c,
+# its frozen cases run to their stops through the program of
+# tests/lm_r63_target.c, against the original program's yaAGC digests) on
+# the readable routines, with tests/with_ropes.c loading the ropes the
+# readable interpreter reads; then tests/r63_cases.c side by side.
+R63_NAMES := lm_r63_basic lm_r63_interpretive
+R63_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c \
+	$(PORT)/src/cm_interp_orders.c $(PORT)/src/cm_interp_steps.c $(KU_COMMON) \
+	$(PORT)/src/rtb_angles.c $(PORT)/src/rope_image_host.c $(PORT)/tests/interp_case.c
+
+$(BUILD)/r63-faithful.o: $(PORT)/src/lm_r63.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(R63_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/r63-test.o: $(PORT)/tests/test_lm_r63.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/r63-oracle: $(R63_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/r63-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(R63_COMMON) $(PORT)/tests/lm_r63_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/r63-cases: $(R63_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/r63-faithful.o \
+		tests/r63_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(R63_COMMON) $(filter %.o,$^) tests/r63_cases.c -o $@
+
+r63-cases: $(BUILD)/r63-oracle $(BUILD)/r63-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/r63-oracle $(ROPES)
+	./$(BUILD)/r63-cases $(ROPES)

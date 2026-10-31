@@ -1,13 +1,23 @@
 /* SPDX-License-Identifier: MIT */
 /* RTB_OP_CODES.agc (Luminary099) and RT8_OP_CODES.agc (Comanche055), the
  * same code in both: the routines an interpretive RTB runs. So far
- * CDULOGIC, 1STO2S and 2V1STO2S with their 1TO2SUB, and the CM's TRANSP1
- * and TRANSP2. */
+ * LOADTIME, CDULOGIC, 1STO2S and 2V1STO2S with their 1TO2SUB, and the
+ * CM's TRANSP1 and TRANSP2. */
 #include "rtb_op_codes.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
 static void one_to2sub(void);
+
+/* LOADTIME -- LM p. 1397, CM p. 1508.
+ * The time now (TIME2, TIME1: centiseconds, double precision) into MPAC,
+ * as a DLOAD would load it: SLOAD2 clears MPAC +2 and declares the mode
+ * double precision. */
+void loadtime(void)
+{
+    dca(ADDRESS_OF(TIME2)); /* EXTEND; DCA TIME2 */
+    sload2();               /* TCF SLOAD2 */
+}
 
 /* CDULOGIC -- LM p. 1397, CM p. 1508.
  * "CONVERT THE SINGLE PRECISION 2'S COMPLEMENT NUMBER ARRIVING IN MPAC

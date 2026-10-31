@@ -1812,7 +1812,23 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
  * and PIPTIME1 (CM), SERVICER's time of the last PIPA reading. */
 #define K_ONE_PIPADT K_1_PIPADT
 
-/* 1STO2S, 2V1STO2S and their 1TO2SUB, RTB routines (RTB_OP_CODES.agc). */
+#if LUMINARY099
+/* ---- R63 (LM only) ---- */
+
+/* Its labels in bank 26 and its two verb-noun words. Its erasable
+ * words are named by ADDRESS_OF: OPTIONX (+1 the axis chosen), TIME2. */
+#define V89CALL  ((word)K_V89CALL)
+#define V89RECL  ((word)K_V89RECL)
+#define ALINEX   ((word)K_ALINEX)
+#define V89CALL1 ((word)K_V89CALL1)
+#define ALINEZ   ((word)K_ALINEZ)
+#define VB04N12  ((word)KW_VB04N12) /* VN 412 */
+#define VB06N18  ((word)KW_VB06N18) /* VN 0618 */
+#endif
+
+/* 1STO2S, 2V1STO2S and their 1TO2SUB, and LOADTIME, RTB routines
+ * (RTB_OP_CODES.agc). */
+#define LOADTIME    ((word)K_LOADTIME)
 #define ONE_STO2S   ((word)K_1STO2S)
 #define TWO_V1STO2S ((word)K_2V1STO2S)
 #define ONE_TO2SUB  ((word)K_1TO2SUB)
