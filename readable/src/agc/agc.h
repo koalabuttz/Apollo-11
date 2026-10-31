@@ -429,12 +429,16 @@ void wand_dsalmout(void);
  *   - WRITE: the channel gets A;
  *   - RAND: A and'ed with the channel;
  *   - WAND, WOR: A and'ed (or'ed) with the channel, and the result written
- *     back to the channel too. */
+ *     back to the channel too.
+ * Channels 1 and 2 (LCHAN, QCHAN) are registers L and Q: rxor_lchan() and
+ * the like below. */
 void read_channel(unsigned channel);
 void write_channel(unsigned channel);
 void rand_channel(unsigned channel);
 void wand_channel(unsigned channel);
 void wor_channel(unsigned channel);
+/* EXTEND; RXOR of a channel: A exclusive-or'ed with the channel's word. */
+void rxor_channel(unsigned channel);
 
 /* ---- What the readable port does not model ---- */
 

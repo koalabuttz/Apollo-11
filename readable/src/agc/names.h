@@ -961,6 +961,63 @@ static const word T6ADR[2] = KW_T6ADR; /* 2CADR DOT6RUPT */
 #define OCT_00314 ((word)KW_00314OCT) /* 00314OCT */
 #endif
 
+/* ---- T4RUPT (T4RUPT_PROGRAM.agc): the DSKY's relays ---- */
+
+/* Its erasable words (ADDRESS_OF gives each one's address): DSRUPTSW, the
+ * phase count; DSPTAB, the display table (+11D the lights' relay word);
+ * NOUT, the count of display words to send; DSPCNT, where the scan is;
+ * DSRUPTEM, the scan's pass; TIME4, the clock; IMODES33, the PRO key's
+ * last state (bit 14). OUT0 (channel 10) takes a relay word, CHAN32
+ * bit 14 is the PRO key. */
+#define OUT0   ((unsigned)K_OUT0)
+#define CHAN32 ((unsigned)K_CHAN32)
+
+/* Its constants: TIME4 counts for 20 and 120 ms (20MRUPT, 120MRUPT, the
+ * latter a word in the code), TABLNTH (OCT 12, also in the code), BIT9,
+ * OCT37737 (in the code, where it runs as an instruction), and RELTAB,
+ * the relay word codes of DSPTAB's eleven words and the lights' word
+ * (RELTAB11). The CM names 14,11,9 11,14,9. */
+#define TWENTY_MS_RUPT    ((word)KW_20MRUPT)  /* 20MRUPT */
+#define HUNDRED20_MS_RUPT ((word)KW_120MRUPT) /* 120MRUPT */
+#define TABLNTH           ((word)KW_TABLNTH)
+#define BIT9              ((word)KW_BIT9)
+#if LUMINARY099
+#define BITS_14_11_9 ((word)KW_14_11_9) /* 14,11,9 */
+#else
+#define BITS_14_11_9 ((word)KW_11_14_9) /* 11,14,9 */
+#endif
+static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTABP3,
+                                KW_RELTABP4, KW_RELTABP5, KW_RELTABP6,  KW_RELTABP7,
+                                KW_RELTABP8, KW_RELTABP9, KW_RELTABP10, KW_RELTAB11};
+#define RELTAB11 ((word)KW_RELTAB11)
+
+/* Its labels, in bank 06, and where T4JUMP goes, in other files. */
+#define NORMT4   ((word)K_NORMT4)
+#define CDRVE    ((word)K_CDRVE)
+#define DSPOUTSB ((word)K_DSPOUTSB)
+#define DSPSCAN  ((word)K_DSPSCAN)
+#define DSPLAY   ((word)K_DSPLAY)
+#define DSPOUT   ((word)K_DSPOUT)
+#define HANG20   ((word)K_HANG20)
+#define SETTIME4 ((word)K_SETTIME4)
+#define PROCEEDE ((word)K_PROCEEDE)
+#define T4JUMP   ((word)K_T4JUMP)
+#define NODSPOUT ((word)K_NODSPOUT)
+#define QUIKDSP  ((word)K_QUIKDSP)
+#define QUIKRUPT ((word)K_QUIKRUPT)
+#define NODSPY   ((word)K_NODSPY)
+#define SYNCT4   ((word)K_SYNCT4)
+#define QUIKOFF  ((word)K_QUIKOFF)
+#define IMUMON   ((word)K_IMUMON)
+#if LUMINARY099
+#define RCSMONIT ((word)K_RCSMONIT)
+#define RRAUTCHK ((word)K_RRAUTCHK)
+#define DAPT4S   ((word)K_DAPT4S)
+#else
+#define OPTTEST ((word)K_OPTTEST)
+#define OPTMON  ((word)K_OPTMON)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

@@ -37,6 +37,9 @@
 #   make rupt-cases       the readable interrupt lead-ins, RESUME and the LM's
 #                         T6 interrupt against the original program's digests
 #                         and the faithful port's routines (seconds)
+#   make t4rupt-cases     the readable T4RUPT core against the original
+#                         program's digests and the faithful port's routines
+#                         (seconds)
 #   make names-check      src/agc/<m>_names.inc against the listings
 #   make coverage         how much of the program is readable C (COVERAGE)
 #   make x86-flight       the x86_64 flight program with the readable
@@ -79,19 +82,20 @@ FS_SOURCES := src/agc/agc.c src/fresh_start/fresh_start.c src/binding/machine.c 
 V37_SOURCES := $(FS_SOURCES) src/fresh_start/v37.c src/binding/v37_routines.c
 STATEUP_SOURCES := $(INTERPRETER_SOURCES) src/fresh_start/stateup.c src/binding/stateup_routines.c
 KEYRUPT_SOURCES := src/agc/agc.c src/keyrupt/keyrupt.c src/binding/machine.c src/binding/keyrupt_routines.c
+T4RUPT_SOURCES := src/agc/agc.c src/t4rupt/t4rupt.c src/binding/machine.c src/binding/t4rupt_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
-	$(KEYRUPT_SOURCES) $(RUPT_SOURCES))
+	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
-	keyrupt-cases rupt-cases
+	keyrupt-cases rupt-cases t4rupt-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -613,6 +617,42 @@ rupt-cases: $(BUILD)/rupt-lead-ins-oracle $(BUILD)/lm-t6rupt-oracle $(BUILD)/rup
 	./$(BUILD)/lm-t6rupt-oracle
 	./$(BUILD)/rupt-cases-lm
 	./$(BUILD)/rupt-cases-cm
+
+# ---- T4RUPT: the DSKY's relays and the once-a-second checks ----
+# The port's own test (tests/test_t4rupt_core.c) on the readable core:
+# 2,048 states at T4RUPT and 64 at each return entry per mission, every
+# continuation and display path, against the original program's yaAGC
+# digests, with the refusals it checks. Each mission's readable objects
+# are linked into one object with only its tables left global. Then
+# tests/t4rupt_cases.c: the readable routines and the faithful port's on
+# the same random states.
+T4RUPT_LM_NAMES := lm_t4rupt_core_routines lm_t4rupt_core_hot_routines
+T4RUPT_NAMES := $(T4RUPT_LM_NAMES) cm_t4rupt_core_routines
+
+$(BUILD)/t4rupt-faithful.o: $(PORT)/src/t4rupt_core.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(T4RUPT_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/t4rupt-readable-lm.o: $(T4RUPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(T4RUPT_LM_NAMES),--keep-global-symbol=$(n)) $@.all $@
+$(BUILD)/t4rupt-readable-cm.o: $(T4RUPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=cm_t4rupt_core_routines $@.all $@
+
+$(BUILD)/t4rupt-oracle: $(BUILD)/t4rupt-readable-lm.o $(BUILD)/t4rupt-readable-cm.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(KU_COMMON) $(PORT)/tests/t4rupt_core_cases.c \
+		$(PORT)/tests/test_t4rupt_core.c $^ -o $@
+$(BUILD)/t4rupt-cases-lm: $(T4RUPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/t4rupt-faithful.o \
+		tests/t4rupt_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(KU_COMMON) $(filter %.o,$^) tests/t4rupt_cases.c -o $@
+$(BUILD)/t4rupt-cases-cm: $(T4RUPT_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/t4rupt-faithful.o \
+		tests/t4rupt_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(KU_COMMON) $(filter %.o,$^) tests/t4rupt_cases.c -o $@
+
+t4rupt-cases: $(BUILD)/t4rupt-oracle $(BUILD)/t4rupt-cases-lm $(BUILD)/t4rupt-cases-cm
+	./$(BUILD)/t4rupt-oracle
+	./$(BUILD)/t4rupt-cases-lm
+	./$(BUILD)/t4rupt-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
