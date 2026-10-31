@@ -110,11 +110,15 @@ REPLACED = (
     'cm_geometry.o',
     # IMU_COMPENSATION_PACKAGE.agc, both missions' tables (src/imu_compensation).
     'imu_compensation.o',
+    # R63.agc, the LM's V89 final attitude (src/r63).
+    'lm_r63.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa')
+# And each mission's own: R63 is the LM's alone.
+MISSION_SYMBOLS = {'lm': ('v89recl',), 'cm': ()}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
@@ -144,7 +148,7 @@ def build(cc, m, mode, certified_only=False):
     # the faithful kernel's instruction helpers (k_go and the rest) absent.
     symbols = subprocess.run(['nm', str(exe)], capture_output=True, text=True, check=True).stdout.split('\n')
     names = {line.split()[-1] for line in symbols if line.strip()}
-    if not names.issuperset(READABLE_SYMBOLS) or 'k_go' in names:
+    if not names.issuperset(READABLE_SYMBOLS + MISSION_SYMBOLS[m]) or 'k_go' in names:
         sys.exit(f'x86_readable: {exe.name} does not link the readable routines alone')
     return exe
 

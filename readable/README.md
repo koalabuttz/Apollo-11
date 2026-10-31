@@ -106,6 +106,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | LM geometry | `LEM_GEOMETRY.agc` (LM pp. 320-325) | [`src/geometry/`](src/geometry/) | SVDWN2 and SVDWN1 (a state vector, conic plus deviations, rescaled into the downlink's words), RRANGLES (a line of sight to the rendezvous radar's gimbal angles in both modes, with RTB 2V1STO2S and the basic code that swaps MODEA and MODEB in mode 2) and RRNB, RRNB1 and RRNBMPAC (the radar's angles back to a line of sight, with RTB CDULOGIC): interpretive code in the listing's notation, run by the readable interpreter. RTB_OP_CODES.agc's 2V1STO2S and 1TO2SUB are readable too ([`src/rtb_op_codes/`](src/rtb_op_codes/)) |
 | CM geometry | `CSM_GEOMETRY.agc` (CM pp. 285-296) | [`src/geometry/`](src/geometry/) | SXTNB (the sextant's angles to a line of sight, with RTB CDULOGIC and the basic RTB routine SXTLOGIC, the sextant's offset), CALCSXA, SXTANG and SXTANG1 (a star's direction to the sextant's angles, with RTB TRANSP1, TRANSP2 and 1STO2S), LOG (a natural log: interpretive code around basic code that calls POLY and SHORTMP), EARROT1 and EARROT2 (a target on the earth turned with it) and SVDWN1 and SVDWN2 (the LM's SVDWN2 and SVDWN1, their names switched). RT8_OP_CODES.agc's 1STO2S, TRANSP1 and TRANSP2 are readable too |
 | IMU compensation | `IMU_COMPENSATION_PACKAGE.agc` (LM pp. 326-337, CM pp. 297-306) | [`src/imu_compensation/`](src/imu_compensation/) | 1/PIPA (the accelerometers' scale factor and bias errors taken out of each PIPA reading, then the gyros' drift added up in GCOMP: IRIGCOMP, IRIGX-IRIGZ, GCOMPSUB, DRIFTSUB, DRFTSUB2), 1/GYRO (the job that sends the whole pulses to the gyros), GCOMP1, NBDONLY and LASTBIAS (the bias drift in free fall, NBD2, NBD3, FBIASSUB; on the lunar surface the LM's adds the acceleration terms) and the LM's GCOMPZER |
+| Final attitude for rendezvous (V89) | `R63.agc` (LM pp. 338-341), with LOADTIME of `RTB_OP_CODES.agc` (LM p. 1397) in [`src/rtb_op_codes/`](src/rtb_op_codes/) | [`src/r63/`](src/r63/) | The LM's verb 89 in P00: the IMU checked (R02BOTH), V04 N12 flashed for the axis to point at the CSM (+Z or +X), both state vectors brought to a minute from now (CSMCONIC, LEMCONIC), the line of sight in stable member coordinates (V89RECL), VECPOINT's gimbal angles and BALLANGS's FDAI ball angles flashed in V06 N18; recycle computes again, proceed clears 3AXISFLG and maneuvers the LM there (R60LEM) |
 
 Beside them:
 
@@ -266,7 +267,12 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    trips through the faithful INTER-BANK_COMMUNICATION and Executive,
    against yaAGC digests) with both missions' readable routines in place
    of the faithful ones, then readable and faithful side by side at each
-   key (11 LM, 9 CM) from 4,096 states. `make names-check` checks
+   key (11 LM, 9 CM) from 4,096 states. `make r63-cases` runs the
+   faithful port's test of R63 (its 960 frozen cases, each run to its stop
+   against yaAGC digests) with the readable routines in place of the
+   faithful ones, then checks the interpretive words against the rope
+   (29), and runs readable and faithful side by side at each key (15 basic,
+   15 order pairs) from 4,096 states. `make names-check` checks
    the generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
