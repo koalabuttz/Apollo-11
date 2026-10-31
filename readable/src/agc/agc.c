@@ -184,6 +184,11 @@ void wor_channel(unsigned channel)
     A = sign_extend(value);
 }
 
+void rxor_channel(unsigned channel)
+{
+    A = sign_extend((word)(overflow_corrected(A) ^ channel_word(channel)));
+}
+
 void not_modelled(void)
 {
     if (agc.leave) agc.leave();

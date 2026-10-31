@@ -85,6 +85,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Keyboard and uplink interrupts | `KEYRUPT_UPRUPT.agc` (LM pp. 1338-1340, CM pp. 1449-1451) | [`src/keyrupt/`](src/keyrupt/) | KEYRUPT1, KEYCOM, ACCEPTUP, UPRUPT, UPRPT1, UPTEST, UPOK, CLUPLOCK and TMFAIL2: a key pressed on the DSKY, or an uplink word with its code three times over, handed to a new CHARIN job; a bad uplink word locks the uplink out until ERROR RESET |
 | Interrupt lead-ins | `INTERRUPT_LEAD_INS.agc` (LM pp. 153-154, CM pp. 131-132) | [`src/lead_ins/`](src/lead_ins/) | The four words at 04000 + 4n where the AGC goes on interrupt n: GO (the restart), T6RUPT, T5RUPT, T4RUPT, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADAR RUPT and the LM's RUPT10 or the CM's HAND CONTROL RUPT, each saving A and L, switching to its handler's banks and jumping there; the CM's T5RUPT, which ends the interrupt when TIME5 is within half a second of its next overflow |
 | The LM's T6 interrupt | `T6-RUPT_PROGRAMS.agc` (LM pp. 1403-1405) | [`src/t6rupt/`](src/t6rupt/) | DOT6RUPT, T6JOBCHK, T6JOB, ENABLET6, GOCH56, WRITEP, WRITEU and WRITEV: the RCS jets on or off at the moments the autopilot queued on TIME6, the queue moved up and the clock started again |
+| T4RUPT, part 1 | `T4RUPT_PROGRAM.agc` (LM pp. 155-160, CM pp. 133-138), its first part | [`src/t4rupt/`](src/t4rupt/) | T4RUPT, NORMT4, CDRVE, DSPOUT, DSPOUTSB, DSPSCAN, DSPLAY, HANG20, SETTIME4, PROCEEDE, T4JUMP, NODSPOUT, QUIKDSP, QUIKRUPT, NODSPY, SYNCT4, QUIKOFF and the CM's OPTTEST: every 120 ms one relay word from the display table to the DSKY, turned off again 20 ms later, the PRO key watched, and one of four checks in turn (the rest of the file, still the faithful port's) |
 
 Beside them:
 
@@ -185,7 +186,10 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    states, every T6JOBCHK path and jet writer, with the LM's RESUME
    entries), against the original program's yaAGC digests, on the
    readable lead-ins, RESUME and T6 interrupt, then readable and faithful
-   side by side on 65,536 states per entry. `make names-check` checks the
+   side by side on 65,536 states per entry. `make t4rupt-cases` does the
+   same for T4RUPT's display and dispatch core with the faithful port's
+   T4RUPT test (2,048 states at T4RUPT and 64 at each return per mission,
+   every continuation and display path). `make names-check` checks the
    generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
@@ -223,6 +227,9 @@ The gates cannot see these, since they compare the two ports:
 - **HI10 run as MASK.** On UPTEST's +0 path the AGC runs the constant
   HI10 (OCT 77740) as MASK 7740. It changes only A, which TMFAIL2
   overwrites at once, so neither port runs it (`src/keyrupt/keyrupt.c`).
+- **OCT37737 run as CA 7737.** On SYNCT4's +0 path the AGC runs the
+  constant OCT37737 as CA 7737. It changes only A, which SYNCT4's CAF
+  overwrites at once, so neither port runs it (`src/t4rupt/t4rupt.c`).
 - **RESUME reruns the word at ZRUPT -1.** The AGC's RESUME runs the
   instruction the interrupt saved in BRUPT; both ports go on at ZRUPT -1
   instead. The bindings take only states where BRUPT is that word under
