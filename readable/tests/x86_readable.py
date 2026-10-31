@@ -105,6 +105,8 @@ REPLACED = (
     # (apollo_noun_reader, src/pinball_noun_tables). fixed_data.o stays: the
     # faithful CM display code reads the faithful tables.
     'noun_reader.o',
+    # LEM_GEOMETRY.agc, the LM's (src/geometry). cm_geometry.o stays.
+    'lm_geometry.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',

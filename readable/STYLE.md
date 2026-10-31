@@ -184,7 +184,7 @@ Every change to `readable/` must keep both:
    sp-cases service-cases downtelemetry-cases fresh-start-cases
    v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases
    rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases
-   extended-verbs-cases`,
+   extended-verbs-cases pinball-noun-tables-cases geometry-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -267,6 +267,14 @@ Every change to `readable/` must keep both:
      EXTENDED_VERBS (against Virtual AGC results) on the readable parts,
      then readable and faithful side by side on the port's suite and at
      every key on random states.
+   - `pinball-noun-tables-cases`: the faithful port's test of the noun
+     table readers on the readable ones, the original program's frozen
+     results, the tables' words against the ropes, then the two side by
+     side.
+   - `geometry-cases`: the faithful port's geometry test (its frozen cases
+     run to their stops, against yaAGC digests) with the readable
+     LEM_GEOMETRY, its words against the rope, then the two side by side
+     at every key on random states.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

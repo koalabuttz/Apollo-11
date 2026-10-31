@@ -103,22 +103,24 @@ EV_SOURCES := $(INTERPRETER_SOURCES) src/extended_verbs/front.c src/extended_ver
 	src/binding/extended_verbs_routines.c
 NOUNS_SOURCES := src/agc/agc.c src/pinball_noun_tables/readers.c src/pinball_noun_tables/tables.c \
 	src/binding/noun_reader_routines.c
+GEOMETRY_SOURCES := $(INTERPRETER_SOURCES) src/geometry/geometry.c src/rtb_op_codes/rtb_op_codes.c \
+	src/binding/geometry_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
-	$(NOUNS_SOURCES))
+	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
-	extended-verbs-cases pinball-noun-tables-cases
+	extended-verbs-cases pinball-noun-tables-cases geometry-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1053,6 +1055,38 @@ pinball-noun-tables-cases: $(BUILD)/nouns-port-test $(BUILD)/nouns-oracle $(BUIL
 	./$(BUILD)/nouns-port-test
 	./$(BUILD)/nouns-oracle
 	./$(BUILD)/nouns-cases $(ROPES)
+
+# ---- LEM_GEOMETRY ----
+# The port's test (tests/test_geometry.c, its frozen cases run to their
+# stops through the program of tests/geometry_target.c, against the
+# original program's yaAGC digests) with the readable LM routines and the
+# faithful CM ones, tests/with_ropes.c loading the ropes the readable
+# interpreter reads; then tests/geometry_cases.c side by side.
+GEOMETRY_NAMES := lm_geometry_basic lm_geometry_interpretive
+GEOMETRY_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c \
+	$(PORT)/src/cm_interp_orders.c $(PORT)/src/cm_interp_steps.c $(KU_COMMON) \
+	$(PORT)/src/rtb_angles.c $(PORT)/src/rtb_agreement.c $(PORT)/src/geometry_rtb.c \
+	$(PORT)/src/cm_integration_moves.c $(PORT)/src/rope_image_host.c $(PORT)/tests/interp_case.c
+
+$(BUILD)/geometry-faithful.o: $(PORT)/src/lm_geometry.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(GEOMETRY_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/geometry-test.o: $(PORT)/tests/test_geometry.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/geometry-oracle: $(GEOMETRY_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/geometry-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(GEOMETRY_COMMON) $(PORT)/src/cm_geometry.c \
+		$(PORT)/tests/geometry_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/geometry-cases: $(GEOMETRY_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/geometry-faithful.o \
+		tests/geometry_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(GEOMETRY_COMMON) $(filter %.o,$^) \
+		tests/geometry_cases.c -o $@
+
+geometry-cases: $(BUILD)/geometry-oracle $(BUILD)/geometry-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/geometry-oracle $(ROPES)
+	./$(BUILD)/geometry-cases $(ROPES)
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
