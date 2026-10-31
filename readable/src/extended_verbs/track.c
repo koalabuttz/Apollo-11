@@ -18,8 +18,10 @@
  *   - The CM's V87 and V88 (SETVHFLG, RESETVHF): the VHF range flag.
  *
  * Much of the work is interpretive. A TC INTPRET hands the words after it
- * to the interpreter, which the comments show as the listing writes them;
- * their EXIT comes back to basic code at the next word, an entry here.
+ * to the interpreter: the LM's are tables at the end of this file (part
+ * 8), in the listing's notation, which the readable interpreter runs; the
+ * CM's are shown in comments as the listing writes them. Their EXIT comes
+ * back to basic code at the next word, an entry here.
  * Each call out of the file ends a C function with Q and Z set (tc()
  * below, or continue_at()), and the word it returns to is an entry of its
  * own; the binding goes on from one entry of this part to the next while Z
@@ -90,9 +92,8 @@ void trmtrak1_after_second_downflag(void)
     tc(TRMTRAK1 + 4u, DOWNFLAG); /* ADRES IMUSE */
 }
 
-/* TRMTRAK1 +6 -- LM pp. 287-288: "DON'T INTERRUPT INTEGRATION":
- *     CALL    INTSTALL
- *     EXIT */
+/* TRMTRAK1 +6 -- LM pp. 287-288: "DON'T INTERRUPT INTEGRATION", in
+ * TRMTRAK1_CODE (below). */
 void trmtrak1_after_third_downflag(void)
 {
     tc(TRMTRAK1 + 6u, INTPRET);
@@ -249,7 +250,8 @@ void resetvhf_after_trfailof(void)
 
 /* ATTACHIT -- LM p. 296, CM p. 264.
  * Verb 66's job (ATTACHED starts it): integration let finish, and the
- * other vehicle's sphere of influence made this one's:
+ * other vehicle's sphere of influence made this one's (the LM's words are
+ * ATTACHIT_CODE, below):
  *     CALL
  *             INTSTALL
  *     SET     BON
@@ -272,13 +274,8 @@ void attachit_after_exit(void)
 }
 
 #if LUMINARY099
-/* ATTACHIT +14 -- LM p. 296: "UPDATE R-OTHER, V-OTHER":
- *     CALL
- *             PTOALEM
- *     LXA,2   CALL
- *             PBODY
- *             SVDWN1
- *     EXIT */
+/* ATTACHIT +14 -- LM p. 296: "UPDATE R-OTHER, V-OTHER", in
+ * ATTACHIT_CODE_2 (below). */
 void attachit_after_gentran(void)
 {
     relint();
@@ -418,43 +415,9 @@ void dsprrlos_after_blanket(void)
 }
 
 /* RRLOSDSP -- LM pp. 299-300.
- * The radar's trunnion and shaft angles (CDUT, CDUS) into MPAC, then "GET
- * RR LOS IN BODY AXIS" and the angles shown, 0-360 degrees:
- *     CALL
- *             RRNBMPAC
- *     STORE   0D              # UNIT LOS
- *     STODL   6D
- *             HI6ZEROS
- *     STOVL   8D
- *             6D
- *     UNIT
- *     STORE   6D              # UNIT OF LOS PROJ IN X-Z PLANE
- *     DOT
- *             UNITZ
- *     STOVL   COSTH
- *             UNITX
- *     DOT
- *             6D
- *     STCALL  SINTH
- *             ARCTRIG
- *     BPL     DAD             # INSURE DISPLAY OF 0-360 DEG.
- *             +2
- *             DPPOSMAX
- *     STOVL   RR-ELEV
- *             0D
- *     DOT
- *             UNITY
- *     STOVL   SINTH
- *             0D
- *     DOT
- *             6D
- *     STCALL  COSTH
- *             ARCTRIG
- *     BPL     DAD
- *             +2
- *             DPPOSMAX
- *     STORE   RR-AZ
- *     EXIT */
+ * The radar's trunnion and shaft angles (CDUT, CDUS) into MPAC, then
+ * RRLOSDSP_CODE (below): "GET RR LOS IN BODY AXIS" and the angles shown,
+ * 0-360 degrees. */
 void rrlosdsp(void)
 {
     dca(ADDRESS_OF(CDUT)); /* EXTEND; DCA CDUT */
@@ -481,4 +444,105 @@ void rrlosdsp_after_delayjob(void)
     }
     tc(RRLOSDSP + 46u, ENDEXT);
 }
+#endif
+
+#if LUMINARY099
+/* ---- The interpretive code (the LM's) ----
+ * The words the TC INTPRETs above hand to the interpreter, as the listing
+ * writes them (src/interpreter/notation.h). Each EXIT comes back to the
+ * basic word after it. */
+
+/* TRMTRAK1 +7 -- LM pp. 287-288. "DON'T INTERRUPT INTEGRATION": INTSTALL
+ * waits for an integration under way to finish and holds off the next. */
+static const word trmtrak1_words[] = {
+    ORDER(CALL), /* TRMTRAK1 +7 */
+    ADDRESS(INTSTALL),
+    ORDER(EXIT),
+};
+
+/* ATTACHIT +1 -- LM p. 296. Integration held off (INTSTALL); then the
+ * other vehicle's sphere of influence becomes this one's: MOONOTH set,
+ * and cleared again unless MOONTHIS is set (BON MOONTHIS +3 goes on to
+ * the EXIT). */
+static const word attachit_words[] = {
+    ORDER(CALL), /* ATTACHIT +1 */
+    ADDRESS(INTSTALL),     ORDERS(SET, BON),         SWITCH(SET, MOONOTH),
+    SWITCH(BON, MOONTHIS), ADDRESS_AT(ATTACHIT, 9u), /* +3 */
+    ORDER(CLEAR),          SWITCH(CLEAR, MOONOTH),   ORDER(EXIT),
+};
+
+/* ATTACHIT +16 -- LM p. 296. "UPDATE R-OTHER, V-OTHER": PTOALEM moves the
+ * permanent state vector (now the copy GENTRAN made) to the LM's, and
+ * SVDWN1, with X2 the body (PBODY), brings it to the present. */
+static const word attachit_words_2[] = {
+    ORDER(CALL),                           /* ATTACHIT +16 */
+    ADDRESS(PTOALEM), ORDERS(LXA_2, CALL), /* LXA,2  CALL */
+    ADDRESS(PBODY),   ADDRESS(SVDWN1),     ORDER(EXIT),
+};
+
+/* TCPIN -- LM p. 298, where INTWAKE goes on, through QPRET: RTB
+ * PINBRNCH, back to PINBALL's job. */
+static const word tcpin_words[] = {
+    ORDER(RTB), /* TCPIN */
+    ADDRESS(PINBRNCH),
+};
+
+/* RRLOSDSP +4 -- LM pp. 299-300.
+ * "GET RR LOS IN BODY AXIS" (RRNBMPAC: the radar's angles in MPAC to a
+ * unit vector, the "UNIT LOS", at 0D). Its projection into the X-Z plane
+ * (the Y component zeroed from HI6ZEROS), made a unit vector at 6D, gives
+ * the elevation: its dot products with UNITZ and UNITX are the cosine and
+ * sine (COSTH, 16D, and SINTH, 18D) ARCTRIG takes; the azimuth, the angle
+ * between the line of sight and that projection: its Y component and its
+ * dot product with the projection. Each angle, if negative, has a whole
+ * revolution added (DPPOSMAX): "INSURE DISPLAY OF 0-360 DEG." */
+static const word rrlosdsp_words[] = {
+    ORDER(CALL), /* RRLOSDSP +4 */
+    ADDRESS(RRNBMPAC),
+    STORE_D(0), /* "UNIT LOS" */
+    STODL_D(6),
+    ADDRESS_PLUS_ONE(HI6ZEROS),
+    STOVL_D(8),
+    ADDRESS_PLUS_ONE_D(6),
+    ORDER(UNIT),
+    STORE_D(6), /* "UNIT OF LOS PROJ IN X-Z PLANE" */
+    ORDER(DOT),
+    ADDRESS_PLUS_ONE(UNITZ),
+    STOVL(COSTH),
+    ADDRESS_PLUS_ONE(UNITX),
+    ORDER(DOT),
+    ADDRESS_PLUS_ONE_D(6),
+    STCALL(SINTH),
+    ADDRESS(ARCTRIG),
+    ORDERS(BPL, DAD),           /* "INSURE DISPLAY OF 0-360 DEG." */
+    ADDRESS_AT(RRLOSDSP, 24u),  /* +2 */
+    ADDRESS_PLUS_ONE(DPPOSMAX), /* "INTRODUCES AND ERROR OF B-28 REVS." */
+    STOVL(RR_ELEV),
+    ADDRESS_PLUS_ONE_D(0),
+    ORDER(DOT),
+    ADDRESS_PLUS_ONE(UNITY),
+    STOVL(SINTH),
+    ADDRESS_PLUS_ONE_D(0),
+    ORDER(DOT),
+    ADDRESS_PLUS_ONE_D(6),
+    STCALL(COSTH),
+    ADDRESS(ARCTRIG),
+    ORDERS(BPL, DAD),
+    ADDRESS_AT(RRLOSDSP, 37u), /* +2 */
+    ADDRESS_PLUS_ONE(DPPOSMAX),
+    STORE(RR_AZ),
+    ORDER(EXIT),
+};
+
+#define WORDS(array) (sizeof(array) / sizeof((array)[0]))
+
+const struct interpretive_code TRMTRAK1_CODE = {042u, TRMTRAK1 + 7u, WORDS(trmtrak1_words),
+                                                trmtrak1_words};
+const struct interpretive_code ATTACHIT_CODE = {043u, ATTACHIT + 1u, WORDS(attachit_words),
+                                                attachit_words};
+const struct interpretive_code ATTACHIT_CODE_2 = {043u, ATTACHIT + 16u, WORDS(attachit_words_2),
+                                                  attachit_words_2};
+const struct interpretive_code TCPIN_CODE = {043u, TCPIN, WORDS(tcpin_words), tcpin_words};
+const struct interpretive_code RRLOSDSP_CODE = {040u, RRLOSDSP + 4u, WORDS(rrlosdsp_words),
+                                                rrlosdsp_words};
 #endif

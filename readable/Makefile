@@ -97,7 +97,7 @@ AOTMARK_SOURCES := $(INTERPRETER_SOURCES) src/aotmark/aotmark.c src/rtb_op_codes
 	src/binding/aotmark_routines.c
 SXTMARK_SOURCES := src/agc/agc.c src/sxtmark/sxtmark.c src/binding/machine.c \
 	src/binding/sxtmark_routines.c
-EV_SOURCES := src/agc/agc.c src/extended_verbs/front.c src/extended_verbs/short_verbs.c \
+EV_SOURCES := $(INTERPRETER_SOURCES) src/extended_verbs/front.c src/extended_verbs/short_verbs.c \
 	src/extended_verbs/align.c src/extended_verbs/radar.c src/extended_verbs/dap.c \
 	src/extended_verbs/time.c src/extended_verbs/track.c \
 	src/binding/extended_verbs_routines.c
@@ -876,9 +876,14 @@ sxtmark-cases: $(BUILD)/sxtmark-oracle $(BUILD)/sxtmark-cases
 # routines, then tests/extended_verbs_<part>_cases.c side by side with the
 # faithful module (built with its dispatch renamed faithful_...; from the
 # short verbs on, it also gives the port's suite its list of entries).
-LANEC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/lanec.c $(PORT)/tests/lanec_case.c
-EV_PARTS := front short align radar dap time track
+# (The readable parts link the readable interpreter, part 8's, which reads
+# the rope: rope_image_host.c. Only part 8's tests load the ropes.)
+LANEC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/lanec.c $(PORT)/tests/lanec_case.c \
+	$(PORT)/src/rope_image_host.c
+EV_PARTS := front short align radar dap time track lmi
 EV_NAMES := $(EV_PARTS:%=lanec_ev_%_dispatch)
+# Part 8's tables, which its test checks against the rope (the LM's only).
+EV_TABLES := RRLOSDSP_CODE TRMTRAK1_CODE ATTACHIT_CODE ATTACHIT_CODE_2 TCPIN_CODE
 
 $(BUILD)/ev-%-faithful.o: $(PORT)/src/lanec_ev_%.c
 	@mkdir -p $(dir $@)
@@ -887,7 +892,7 @@ $(BUILD)/ev-readable-lm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
 $(BUILD)/ev-readable-cm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
 $(BUILD)/ev-readable-%.o:
 	ld -r $^ -o $@.all
-	objcopy $(foreach n,$(EV_NAMES),--keep-global-symbol=$(n)) $@.all $@.kept
+	objcopy $(foreach n,$(EV_NAMES) $(EV_TABLES),--keep-global-symbol=$(n)) $@.all $@.kept
 	objcopy $(foreach n,$(EV_NAMES),--redefine-sym $(n)=readable_$*_$(n:lanec_%=%)) $@.kept $@
 EV_READABLE := $(BUILD)/ev-readable-lm.o $(BUILD)/ev-readable-cm.o tests/extended_verbs_missions.c
 $(BUILD)/ev-front-oracle: $(EV_READABLE) tests/extended_verbs_front_oracle.c
@@ -938,11 +943,24 @@ $(BUILD)/ev-track-cases: $(EV_READABLE) $(BUILD)/ev-track-faithful.o tests/exten
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(PORT)/tests/lanec_ev_track_cases.c \
 		$(filter %.o %.c,$^) -o $@
 
+# Part 8's words run on the readable interpreter, which reads the
+# program's constants from the rope: its tests load the ropes.
+EV_INTERP_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c \
+	$(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c $(PORT)/src/agc_multiword.c
+$(BUILD)/ev-lmi-oracle: $(EV_READABLE) $(BUILD)/ev-lmi-faithful.o tests/extended_verbs_lmi_oracle.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(EV_INTERP_COMMON) \
+		$(PORT)/tests/lanec_ev_lmi_cases.c $(filter %.o %.c,$^) -o $@
+$(BUILD)/ev-lmi-cases: $(EV_READABLE) $(BUILD)/ev-lmi-faithful.o tests/extended_verbs_lmi_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(EV_INTERP_COMMON) \
+		$(PORT)/tests/lanec_ev_lmi_cases.c $(filter %.o %.c,$^) -o $@
+
 extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases $(BUILD)/ev-short-oracle \
 		$(BUILD)/ev-short-cases $(BUILD)/ev-align-oracle $(BUILD)/ev-align-cases \
 		$(BUILD)/ev-radar-oracle $(BUILD)/ev-radar-cases $(BUILD)/ev-dap-oracle \
 		$(BUILD)/ev-dap-cases $(BUILD)/ev-time-oracle $(BUILD)/ev-time-cases \
-		$(BUILD)/ev-track-oracle $(BUILD)/ev-track-cases
+		$(BUILD)/ev-track-oracle $(BUILD)/ev-track-cases $(BUILD)/ev-lmi-oracle \
+		$(BUILD)/ev-lmi-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	./$(BUILD)/ev-front-oracle
 	./$(BUILD)/ev-front-cases
 	./$(BUILD)/ev-short-oracle
@@ -957,6 +975,8 @@ extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases $(BUILD)/
 	./$(BUILD)/ev-time-cases
 	./$(BUILD)/ev-track-oracle
 	./$(BUILD)/ev-track-cases
+	./$(BUILD)/ev-lmi-oracle $(ROPES)
+	./$(BUILD)/ev-lmi-cases $(ROPES)
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

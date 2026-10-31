@@ -25,13 +25,16 @@
  * ALINTIME, UPDATIME, and the LM's ATTCK2 task. Part 7, the tracking and
  * state vector verbs' basic code (LM pp. 262, 287-300, CM pp. 236,
  * 259-265): V69, V56, V66, the LM's V85 and the CM's V47, V87 and V88.
- * The entries are the
- * routines' labels and the words a call out of the routine returns to. All
- * of it is basic code. */
+ * Part 8, the LM's interpretive words of those verbs (track.c's tables):
+ * RRLOSDSP's, TRMTRAK1's, ATTACHIT's and TCPIN. The basic code's entries
+ * are the routines' labels and the words a call out of the routine
+ * returns to; the interpretive words' are the words the interpreter takes
+ * up at. */
 #ifndef READABLE_EXTENDED_VERBS_H
 #define READABLE_EXTENDED_VERBS_H
 
 #include "../agc/agc.h"
+#include "../interpreter/notation.h"
 
 /* ---- Part 1: the front end (front.c) ---- */
 void goextvb(void);
@@ -531,6 +534,12 @@ void lmtocmsv_after_findvac(void);
 void lmtocm(void);
 void lmtocm_after_exit(void);
 void lmtocm_after_gentran(void);
+#endif
+
+/* ---- Part 8: the LM's interpretive words (track.c) ---- */
+#if LUMINARY099
+extern const struct interpretive_code TRMTRAK1_CODE, ATTACHIT_CODE, ATTACHIT_CODE_2, TCPIN_CODE,
+    RRLOSDSP_CODE;
 #endif
 
 #endif

@@ -67,6 +67,10 @@ static bool work_due(void)
  * lies, in place of the rope's. */
 static const struct interpretive_code *listing;
 
+/* Whether the pass is interpret_listing_lanec()'s, from the lanec
+ * modules' states. */
+static bool lanec;
+
 static bool listing_word(unsigned physical, word *out)
 {
     unsigned first;
@@ -103,7 +107,7 @@ static bool code_word(unsigned off, word *out)
         if (address < 02000u) return false;
         bank = (BANKSET >> 10) & 037u;
         if (bank >= 030u && (superbank & 0100u)) {
-            if (superbank != 0100u) return false;
+            if (superbank != 0100u && !lanec) return false;
             bank += 010u;
         }
         address = bank * 1024u + (address & 01777u);
@@ -127,6 +131,7 @@ static bool as_expected(void)
         BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
         return false;
     if (*agc.interrupts > 1u || (*agc.superbank & ~0160u)) return false;
+    if (lanec) return true; /* (the caller checked the work area) */
     if (FIXLOC == ADDRESS_OF(MPAC) - 044u) return true;
     for (area = 0401u; area <= 0661u; area += 054u)
         if (FIXLOC == area) return true;
@@ -306,7 +311,7 @@ static enum exec_status entry(const agc_native_program *program, apollo_overlay_
     if (!as_expected()) return EXEC_OUT_OF_SCOPE;
     switched = false;
     status = run();
-    q_as_fifteen_bits();
+    if (!lanec) q_as_fifteen_bits();
     return status;
 }
 
@@ -326,6 +331,18 @@ enum exec_status interpret_listing(const agc_native_program *program, apollo_ove
     status = entry(program, state, device);
     CORE_MCT = clock;
     listing = NULL;
+    return status;
+}
+
+enum exec_status interpret_listing_lanec(const agc_native_program *program,
+                                         apollo_overlay_state *state, void *device,
+                                         const struct interpretive_code *code)
+{
+    enum exec_status status;
+
+    lanec = true;
+    status = interpret_listing(program, state, device, code);
+    lanec = false;
     return status;
 }
 

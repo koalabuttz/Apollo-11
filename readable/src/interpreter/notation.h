@@ -27,6 +27,7 @@
 #define ORDER_VSL1       0004u
 #define ORDER_VXSC       0015u
 #define ORDER_SIN        0020u
+#define ORDER_LXA_2      0022u /* LXA,2 */
 #define ORDER_VSL2       0024u
 #define ORDER_SL1        0024u /* (VSL2's code too, in yaYUL's table) */
 #define ORDER_LXA_1      0026u /* LXA,1 */
@@ -49,6 +50,8 @@
 #define ORDER_VSU        0125u
 #define ORDER_GOTO       0126u
 #define ORDER_BVSU       0131u
+#define ORDER_BPL        0132u
+#define ORDER_DOT        0135u
 #define ORDER_VXV        0141u
 #define ORDER_RTB        0142u
 #define ORDER_STADR      0150u
