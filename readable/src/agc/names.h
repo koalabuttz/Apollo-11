@@ -1096,6 +1096,36 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define VARDELAY ((word)K_VARDELAY)
 #define ZEROICDU ((word)K_ZEROICDU)
 
+/* ---- T4RUPT, part 3: the LM's radar checks and GPMATRIX ---- */
+
+#if LUMINARY099
+/* Its erasable words (ADDRESS_OF gives each one's address): RADMODES, the
+ * rendezvous radar's modes and its inbits as last sampled; CDUX and CDUZ,
+ * the outer and middle gimbal angles; COSMG and M11 ... M32, GPMATRIX's
+ * results (in EBANK 6, as T4RUPT runs). Its constants: the RADMODES bits
+ * (AUTOMBIT, RCDUFBIT, REPOSBIT) and masks, and the flag bits it tests:
+ * NORRMBIT (FLAGWRD5, no angle monitor), AVEGFBIT (FLAGWRD7, SERVICER
+ * running), MUNFLBIT (FLAGWRD6) and RNDVZBIT (FLAGWRD0, P20 or P22). */
+#define AUTOMBIT ((word)KW_AUTOMBIT)
+#define OCT05776 ((word)KW_OCT05776)
+#define OCT10001 ((word)KW_OCT10001)
+#define RCDUFBIT ((word)KW_RCDUFBIT)
+#define AVEGFBIT ((word)KW_AVEGFBIT)
+#define MUNFLBIT ((word)KW_MUNFLBIT)
+#define OCT32002 ((word)KW_OCT32002)
+#define REPOSBIT ((word)KW_REPOSBIT)
+#define OCT20002 ((word)KW_OCT20002)
+
+/* Its labels, in bank 06, and the routines it calls in other files. */
+#define RRCDUCHK ((word)K_RRCDUCHK)
+#define TRKFLCDU ((word)K_TRKFLCDU)
+#define RRGIMON  ((word)K_RRGIMON)
+#define MONREPOS ((word)K_MONREPOS)
+#define GPMATRIX ((word)K_GPMATRIX)
+#define SETTRKF  ((word)K_SETTRKF)
+#define RRLIMCHK ((word)K_RRLIMCHK)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
