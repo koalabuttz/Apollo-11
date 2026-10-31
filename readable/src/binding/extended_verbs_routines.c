@@ -8,13 +8,14 @@
  * name: part 1, the front end, is lanec_ev_front_dispatch; part 2, the
  * short verbs, lanec_ev_short_dispatch; part 3, alignment and radar
  * designate, lanec_ev_align_dispatch; part 4, the LM's radar test verbs,
- * lanec_ev_radar_dispatch.
+ * lanec_ev_radar_dispatch; part 5, the DAP data load, lanec_ev_dap_dispatch.
  *
  * Plumbing only: point the machine at the state and the channel record,
  * and take the states the faithful module takes: the mission this object
- * is built for, bank 43 selected (FBANK's bank 33 with the superbank bit)
- * or, for the LM's part 3, bank 23, the bank registers agreeing, Z a
- * 12-bit address and ZERO +0. A step the readable code does not model
+ * is built for, a bank the part has entries in selected (bank 43, FBANK's
+ * bank 33 with the superbank bit; for the LM's part 3 also bank 23; for
+ * part 5 the LM's banks 20 and 01, the CM's 43 and 42), the bank registers
+ * agreeing, Z a 12-bit address and ZERO +0. A step the readable code does not model
  * leaves the state as it was.
  *
  * The front end's module runs the one routine at Z. The others go on from
@@ -25,6 +26,7 @@
 #include <setjmp.h>
 #include <stddef.h>
 #include "lanec_ev_align.h"
+#include "lanec_ev_dap.h"
 #include "lanec_ev_front.h"
 #include "lanec_ev_radar.h"
 #include "lanec_ev_short.h"
@@ -37,11 +39,9 @@
 #define THIS_MISSION LANEC_CM
 #endif
 
-/* Bank 43: FBANK's bank 33 with the superbank bit. Bank 23: FBANK's 23,
- * where the superbank bit does not count. */
-#define BANK_33_FBANK 066000u
+/* The superbank bit (channel 7's bit 7): FBANK's banks 30-33 are then
+ * banks 40-43. */
 #define SUPERBANK_BIT 0100u
-#define BANK_23_FBANK 046000u
 
 static jmp_buf back;
 
@@ -96,9 +96,12 @@ static bool as_expected(void)
            BBANK == (word)(FBANK | (EBANK >> 8)) && Z <= 07777u && agc.memory[ZERO_ADDRESS] == 0u;
 }
 
-static bool in_bank_43(void)
+/* The fixed bank selected: FBANK's, or with the superbank bit 40-43 for
+ * 30-33. */
+static word bank_selected(void)
 {
-    return FBANK == BANK_33_FBANK && (*agc.superbank & SUPERBANK_BIT);
+    word bank = (word)((FBANK >> 10) & 037u);
+    return bank >= 030u && (*agc.superbank & SUPERBANK_BIT) ? (word)(bank + 010u) : bank;
 }
 
 struct entry {
@@ -106,13 +109,14 @@ struct entry {
     void (*routine)(void);
 };
 
-/* A part's entries in one bank. */
-struct entries {
+/* A part's entries in one fixed bank (043 for bank 43). */
+struct bank {
+    word number;
     const struct entry *list;
     size_t count;
 };
-#define ENTRIES(table) ((struct entries){table, sizeof table / sizeof table[0]})
-#define NO_ENTRIES     ((struct entries){NULL, 0})
+#define BANK(number, table) {number, table, sizeof table / sizeof table[0]}
+#define BANKS(banks)        banks, sizeof banks / sizeof banks[0]
 
 /* The entry at Z, or NULL. */
 static const struct entry *entry_at_z(const struct entry *entries, size_t count)
@@ -124,37 +128,42 @@ static const struct entry *entry_at_z(const struct entry *entries, size_t count)
     return NULL;
 }
 
-/* The entries of the bank selected: bank 43, or bank 23. */
-static struct entries in_this_bank(struct entries in_43, struct entries in_23)
+/* The part's entries in the bank selected, or NULL. */
+static const struct bank *in_this_bank(const struct bank *banks, size_t count)
 {
-    if (in_bank_43()) return in_43;
-    if (FBANK == BANK_23_FBANK) return in_23;
-    return NO_ENTRIES;
+    size_t i;
+
+    for (i = 0; i < count; ++i)
+        if (banks[i].number == bank_selected()) return &banks[i];
+    return NULL;
 }
 
-/* Run entry's routine; with run_on, then the entry at Z after it, while
- * there is one. */
-static void go_on(struct entries in, const struct entry *entry, bool run_on)
+/* The part's entries in the bank selected, for the run under way (a
+ * static, not a local, for the longjmp out of it). */
+static const struct bank *selected;
+
+/* Run entry's routine; with run_on, then the entry at Z after it in the
+ * bank selected, while there is one. */
+static void go_on(const struct entry *entry, bool run_on)
 {
     do entry->routine();
-    while (run_on && (entry = entry_at_z(in.list, in.count)) != NULL);
+    while (run_on && (entry = entry_at_z(selected->list, selected->count)) != NULL);
 }
 
-/* Run the routine at Z, if it is one of the entries of the bank selected;
- * with run_on, then the entry at Z after it in the same bank, while there
- * is one. */
-static enum lanec_status run(struct entries in_43, struct entries in_23, bool run_on,
+/* Run the routine at Z, if it is one of the part's entries in the bank
+ * selected; with run_on, then the entry at Z after it in the same bank,
+ * while there is one. */
+static enum lanec_status run(const struct bank *banks, size_t count, bool run_on,
                              apollo_overlay_state *state, lanec_io *io)
 {
     apollo_overlay_state before;
     lanec_io io_before;
-    struct entries in;
     const struct entry *entry;
 
     bind_lanec(state, io);
     if (!as_expected()) return LANEC_OUT_OF_SCOPE;
-    in = in_this_bank(in_43, in_23);
-    entry = entry_at_z(in.list, in.count);
+    selected = in_this_bank(banks, count);
+    entry = selected ? entry_at_z(selected->list, selected->count) : NULL;
     if (!entry) return LANEC_OUT_OF_SCOPE;
     before = *state;
     io_before = *io;
@@ -163,7 +172,7 @@ static enum lanec_status run(struct entries in_43, struct entries in_23, bool ru
         *io = io_before;
         return LANEC_OUT_OF_SCOPE;
     }
-    go_on(in, entry, run_on);
+    go_on(entry, run_on);
     return LANEC_OK;
 }
 
@@ -188,8 +197,10 @@ static const struct entry front[] = {
 enum lanec_status lanec_ev_front_dispatch(apollo_overlay_state *state, lanec_io *io,
                                           enum lanec_mission mission)
 {
+    static const struct bank banks[] = {BANK(043u, front)};
+
     if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
-    return run(ENTRIES(front), NO_ENTRIES, false, state, io);
+    return run(BANKS(banks), false, state, io);
 }
 
 /* ---- Part 2: the short verbs ---- */
@@ -402,8 +413,10 @@ static const struct entry short_verbs[] = {
 enum lanec_status lanec_ev_short_dispatch(apollo_overlay_state *state, lanec_io *io,
                                           enum lanec_mission mission)
 {
+    static const struct bank banks[] = {BANK(043u, short_verbs)};
+
     if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
-    return run(ENTRIES(short_verbs), NO_ENTRIES, true, state, io);
+    return run(BANKS(banks), true, state, io);
 }
 
 /* ---- Part 3: alignment and radar designate ---- */
@@ -541,16 +554,20 @@ static const struct entry align_in_bank_23[] = {
     {NOLOKON + 4u, nolokon_after_upflag},
     {AURLKON1, aurlkon1},
 };
-#define ALIGN_IN_BANK_23 ENTRIES(align_in_bank_23)
-#else
-#define ALIGN_IN_BANK_23 NO_ENTRIES
 #endif
 
 enum lanec_status lanec_ev_align_dispatch(apollo_overlay_state *state, lanec_io *io,
                                           enum lanec_mission mission)
 {
+    static const struct bank banks[] = {
+        BANK(043u, align),
+#if LUMINARY099
+        BANK(023u, align_in_bank_23),
+#endif
+    };
+
     if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
-    return run(ENTRIES(align), ALIGN_IN_BANK_23, true, state, io);
+    return run(BANKS(banks), true, state, io);
 }
 
 /* ---- Part 4: the LM's radar test verbs ---- */
@@ -616,10 +633,111 @@ static const struct entry radar[] = {
 enum lanec_status lanec_ev_radar_dispatch(apollo_overlay_state *state, lanec_io *io,
                                           enum lanec_mission mission)
 {
-    if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
 #if LUMINARY099
-    return run(ENTRIES(radar), NO_ENTRIES, true, state, io);
+    static const struct bank banks[] = {BANK(043u, radar)};
+
+    if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
+    return run(BANKS(banks), true, state, io);
 #else
+    (void)state;
+    (void)io;
+    (void)mission;
     return LANEC_OUT_OF_SCOPE;
 #endif
+}
+
+/* ---- Part 5: the DAP data load, V48 ---- */
+
+#if LUMINARY099
+/* DAPDATA1 to DPDAT1, in bank 20. */
+static const struct entry dap_in_bank_20[] = {
+    {DAPDATA1, dapdata1},
+    {CHKDATA1, chkdata1},
+    {MSKDATR1, mskdatr1},
+    {MSKDATR1 + 5u, mskdatr1_after_terminate},
+    {MSKDATR1 + 6u, mskdatr1_after_proceed},
+    {MSKDATR1 + 7u, mskdatr1_after_enter},
+    {MSKDATR1 + 8u, mskdatr1_immediate_return},
+    {MSKDATR1 + 10u, mskdatr1_after_blanket},
+    {FORCEONE, forceone},
+    {DPDAT1, dpdat1},
+};
+
+/* STIKLOAD to TRIMDONE, in bank 01. */
+static const struct entry dap_in_bank_01[] = {
+    {STIKLOAD, stikload},
+    {DAPDATA2, dapdata2},
+    {DAPDATA2 + 3u, dapdata2_after_terminate},
+    {DAPDATA2 + 4u, dapdata2_after_proceed},
+    {DAPDATA2 + 5u, dapdata2_after_enter},
+    {DAPDATA2 + 6u, dapdata2_immediate_return},
+    {DAPDATA2 + 8u, dapdata2_after_blanket},
+    {ENDR03, endr03},
+    {ENDR03 + 3u, endr03_after_ibnkcall},
+    {DAPDAT2, dapdat2},
+    {LEMALONE, lemalone},
+    {LEMALONE + 6u, lemalone_after_ibnkcall},
+    {DAPDATA3, dapdata3},
+    {DAPDATA3 + 4u, dapdata3_plus4},
+    {DAPDATA3 + 7u, dapdata3_after_terminate},
+    {DAPDATA3 + 8u, dapdata3_after_proceed},
+    {DAPDATA3 + 9u, dapdata3_after_enter},
+    {DAPDATA3 + 10u, dapdata3_immediate_return},
+    {DAPDATA3 + 12u, dapdata3_after_blanket},
+    {DPDAT3, dpdat3},
+    {DPDAT3 + 5u, dpdat3_after_waitlist},
+    {TRIMDONE, trimdone},
+    {TRIMDONE + 3u, trimdone_after_terminate},
+    {TRIMDONE + 4u, trimdone_after_proceed},
+    {TRIMDONE + 5u, trimdone_after_enter},
+    {TRIMDONE + 6u, trimdone_immediate_return},
+    {TRIMDONE + 8u, trimdone_after_blanket},
+};
+#else
+/* DAPDISP, in bank 43. */
+static const struct entry dap_in_bank_43[] = {
+    {DAPDISP, dapdisp},
+    {DAPDISP + 5u, dapdisp_plus5},
+    {DAPDISP + 6u, dapdisp_after_testxact},
+};
+
+/* DAPDISP1 to MAXIN, in bank 42. */
+static const struct entry dap_in_bank_42[] = {
+    {DAPDISP1, dapdisp1},
+    {DONOUN46, donoun46},
+    {DONOUN46 + 3u, donoun46_after_terminate},
+    {DONOUN46 + 4u, donoun46_after_proceed},
+    {DONOUN46 + 5u, donoun46_after_enter},
+    {DONOUN46 + 6u, donoun46_plus6},
+    {MAXOUT, maxout},
+    {DONOUN47, donoun47},
+    {DONOUN47 + 3u, donoun47_after_terminate},
+    {DONOUN47 + 4u, donoun47_after_proceed},
+    {DONOUN47 + 5u, donoun47_after_enter},
+    {DONOUN47 + 6u, donoun47_plus6},
+    {DONOUN47 + 17u, donoun47_after_ibnkcall},
+    {DONOUN48, donoun48},
+    {DONOUN48 + 3u, donoun48_after_terminate},
+    {DONOUN48 + 4u, donoun48_after_proceed},
+    {DONOUN48 + 5u, donoun48_after_enter},
+    {MAXIN, maxin},
+    {MAXIN + 2u, maxin_after_upflag},
+};
+#endif
+
+enum lanec_status lanec_ev_dap_dispatch(apollo_overlay_state *state, lanec_io *io,
+                                        enum lanec_mission mission)
+{
+    static const struct bank banks[] = {
+#if LUMINARY099
+        BANK(020u, dap_in_bank_20),
+        BANK(001u, dap_in_bank_01),
+#else
+        BANK(043u, dap_in_bank_43),
+        BANK(042u, dap_in_bank_42),
+#endif
+    };
+
+    if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
+    return run(BANKS(banks), true, state, io);
 }

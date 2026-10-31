@@ -18,9 +18,11 @@
  * and EXDAPOFF, and SHOWSUM. Part 3, alignment and radar designate (LM
  * pp. 265-281, CM pp. 239-250): V40-V43, the LM's V44 and V60, OP/INERT,
  * the LM's RDRUSECK and the CM's CKLFTBTS. Part 4, the LM's radar test
- * verbs (pp. 276-279): R04 (V63), R77 (V78) and R77END (V79). The entries
- * are the routines' labels and the words a call out of the routine returns to. All of it is
- * basic code. */
+ * verbs (pp. 276-279): R04 (V63), R77 (V78) and R77END (V79). Part 5, the
+ * DAP data load, V48 (LM pp. 292-295, CM pp. 253-254): the LM's R03 from
+ * DAPDATA1 on, the CM's DAPDISP and DAPDISP1. The entries are the
+ * routines' labels and the words a call out of the routine returns to. All
+ * of it is basic code. */
 #ifndef READABLE_EXTENDED_VERBS_H
 #define READABLE_EXTENDED_VERBS_H
 
@@ -388,6 +390,70 @@ void r04end_after_downflag(void);
 void r77end(void);
 void r77end_after_delayjob(void);
 void r77end_after_downflag(void);
+#endif
+
+/* ---- Part 5: the DAP data load, V48 (dap.c) ---- */
+#if LUMINARY099
+void dapdata1(void); /* DAPDATA1 to DPDAT1 are in bank 20 */
+void chkdata1(void);
+void mskdatr1(void);
+void mskdatr1_after_terminate(void); /* GOXDSPFR's three crew returns */
+void mskdatr1_after_proceed(void);
+void mskdatr1_after_enter(void);
+void mskdatr1_immediate_return(void); /* and its immediate one */
+void mskdatr1_after_blanket(void);
+void forceone(void);
+void dpdat1(void);
+void stikload(void); /* STIKLOAD to TRIMDONE are in bank 01 */
+void dapdata2(void);
+void dapdata2_after_terminate(void);
+void dapdata2_after_proceed(void);
+void dapdata2_after_enter(void);
+void dapdata2_immediate_return(void);
+void dapdata2_after_blanket(void);
+void endr03(void);
+void endr03_after_ibnkcall(void);
+void dapdat2(void);
+void lemalone(void);
+void lemalone_after_ibnkcall(void);
+void dapdata3(void);
+void dapdata3_plus4(void); /* where the listing's TCF -5 asks again */
+void dapdata3_after_terminate(void);
+void dapdata3_after_proceed(void);
+void dapdata3_after_enter(void);
+void dapdata3_immediate_return(void);
+void dapdata3_after_blanket(void);
+void dpdat3(void);
+void dpdat3_after_waitlist(void);
+void trimdone(void);
+void trimdone_after_terminate(void); /* GOMARK3R's three crew returns */
+void trimdone_after_proceed(void);
+void trimdone_after_enter(void);
+void trimdone_immediate_return(void); /* and its immediate one */
+void trimdone_after_blanket(void);
+#else
+void dapdisp(void); /* DAPDISP is in bank 43 */
+void dapdisp_plus5(void);
+void dapdisp_after_testxact(void);
+void dapdisp1(void); /* DAPDISP1 to MAXIN are in bank 42 */
+void donoun46(void);
+void donoun46_after_terminate(void); /* GOXDSPF's three returns */
+void donoun46_after_proceed(void);
+void donoun46_after_enter(void);
+void donoun46_plus6(void);
+void maxout(void);
+void donoun47(void);
+void donoun47_after_terminate(void);
+void donoun47_after_proceed(void);
+void donoun47_after_enter(void);
+void donoun47_plus6(void);
+void donoun47_after_ibnkcall(void);
+void donoun48(void);
+void donoun48_after_terminate(void);
+void donoun48_after_proceed(void);
+void donoun48_after_enter(void);
+void maxin(void);
+void maxin_after_upflag(void);
 #endif
 
 #endif
