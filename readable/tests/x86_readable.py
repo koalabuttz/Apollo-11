@@ -76,6 +76,8 @@ REPLACED = (
     'lm_rcsmon.o',
     # AGS_INITIALIZATION.agc, the LM's R47 (src/ags_initialization).
     'lm_ags_init.o',
+    # AOTMARK.agc, the LM's sighting marks (src/aotmark).
+    'lm_aotmark.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',

@@ -93,20 +93,22 @@ RCSMON_SOURCES := src/agc/agc.c src/rcs_failure_monitor/rcs_failure_monitor.c sr
 	src/binding/rcs_failure_monitor_routines.c
 AGS_SOURCES := src/agc/agc.c src/ags_initialization/ags_initialization.c src/binding/machine.c \
 	$(INTERPRETER_SOURCES) src/binding/ags_initialization_routines.c
+AOTMARK_SOURCES := $(INTERPRETER_SOURCES) src/aotmark/aotmark.c src/rtb_op_codes/rtb_op_codes.c \
+	src/binding/aotmark_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
-	$(RCSMON_SOURCES) $(AGS_SOURCES))
+	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
-	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases
+	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -803,6 +805,35 @@ ags-cases: $(BUILD)/ags-oracle $(BUILD)/ags-cases $(BUILD)/ags-cases-flight
 	./$(BUILD)/ags-oracle $(ROPES)
 	./$(BUILD)/ags-cases $(ROPES)
 	./$(BUILD)/ags-cases-flight $(ROPES)
+
+# AOTMARK, the LM's sighting marks: the port's test (tests/test_lm_aotmark.c,
+# its frozen cases run to their stops through the program of
+# tests/lm_aotmark_target.c, against the original program's yaAGC digests)
+# on the readable routines, with tests/with_ropes.c loading the ropes the
+# readable interpreter reads; then tests/aotmark_cases.c side by side.
+AOTMARK_NAMES := lm_aotmark_basic lm_aotmark_interpretive
+AOTMARK_COMMON := $(PORT)/src/lm_interp_orders.c $(PORT)/src/lm_interp_steps.c $(KU_COMMON) \
+	$(PORT)/src/rope_image_host.c $(PORT)/tests/interp_case.c
+
+$(BUILD)/aotmark-faithful.o: $(PORT)/src/lm_aotmark.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(AOTMARK_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/aotmark-test.o: $(PORT)/tests/test_lm_aotmark.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/aotmark-oracle: $(AOTMARK_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/aotmark-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(AOTMARK_COMMON) $(PORT)/tests/lm_aotmark_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/aotmark-cases: $(AOTMARK_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/aotmark-faithful.o \
+		tests/aotmark_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(AOTMARK_COMMON) $(PORT)/src/rtb_angles.c \
+		$(filter %.o,$^) tests/aotmark_cases.c -o $@
+
+aotmark-cases: $(BUILD)/aotmark-oracle $(BUILD)/aotmark-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/aotmark-oracle $(ROPES)
+	./$(BUILD)/aotmark-cases $(ROPES)
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
