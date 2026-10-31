@@ -73,6 +73,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Single precision sine and cosine | `SINGLE_PRECISION_SUBROUTINES.agc` (LM p. 1102, CM p. 1207) | [`src/single_precision/`](src/single_precision/) | SPCOS, SPSIN, SPT, POLLEY and ARG90: a quick sine or cosine of an angle in A, for the autopilots and displays, by a short polynomial after bringing the angle within 90 degrees |
 | Service routines | `SERVICE_ROUTINES.agc` (LM pp. 1374-1380, CM pp. 1485-1492) | [`src/service/`](src/service/) | UPFLAG, DOWNFLAG, COMFLAG, DEBIT, UPENT2, DOWNENT2, DELAYJOB, TCGETCAD, WAKER, GENTRAN and B5OFF; in the CM also TRFAILOF and TRFAILON: setting and clearing flags, putting a job to sleep for a while, copying a block of words |
 | Down-telemetry | `DOWN_TELEMETRY_PROGRAM.agc` (LM pp. 988-997), `DOWN-TELEMETRY_PROGRAM.agc` (CM pp. 1093-1102) | [`src/downtelemetry/`](src/downtelemetry/) | DODOWNTM, WOTEST (LM), DNPHASE1, DNPHASE2, NEWLIST, NEXTINCL, SETWO, DODNCHAN, WOZERO, DODNPTR, SNAPLOOP, FETCH2WD, NEXTINSL, DNTMEXIT, DNDUMPI, DNDUMP, DNDUMP1, DNDUMP2 and SENDID: the two words sent to the ground at each DOWNRUPT, from the current downlist or the erasable dump |
+| Downlists | `DOWNLINK_LISTS.agc` (LM pp. 193-205, CM pp. 170-180) | [`src/downtelemetry/downlink_lists.c`](src/downtelemetry/downlink_lists.c) | LOWIDCOD, every downlist (control lists and sublists, word by word: DNADR, DNCHAN, DNPTR) and DNTABLE: what DOWNRUPT sends, written as the listing has it and laid out where the listing assembles it |
 
 Beside them:
 
@@ -152,7 +153,8 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    original program's yaAGC digests) on the readable routines, then
    readable and faithful side by side on every step of 2,000 runs of
    1,200 DOWNRUPTs per mission, some steps with a control word put out of
-   place. `make names-check` checks the generated names and the
+   place; before that it checks the readable downlists word by word
+   against the assembled listing. `make names-check` checks the generated names and the
    restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight

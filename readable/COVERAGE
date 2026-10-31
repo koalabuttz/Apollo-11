@@ -23,3 +23,5 @@ Luminary099/SERVICE_ROUTINES.agc             src/service
 Comanche055/SERVICE_ROUTINES.agc             src/service
 Luminary099/DOWN_TELEMETRY_PROGRAM.agc       src/downtelemetry
 Comanche055/DOWN-TELEMETRY_PROGRAM.agc       src/downtelemetry
+Luminary099/DOWNLINK_LISTS.agc               src/downtelemetry
+Comanche055/DOWNLINK_LISTS.agc               src/downtelemetry

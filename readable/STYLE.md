@@ -78,7 +78,12 @@ C cannot spell every AGC name, so:
 | a leading `/` | `SLASH_` | `/NORM` → `SLASH_NORM` |
 | `*` (the indexed forms) | `_STAR` | `DLOAD*` → `DLOAD_STAR`, `dodload_star()` |
 | `=` | `_EQ_` | `ACOS=0` → `ACOS_EQ_0` |
+| `(` ... `)` | `_` and nothing | `LAT(SPL)` → `LAT_SPL` |
 | a C keyword or library name | a trailing `_` | `GOTO` → `goto_()`, `ABS` → `abs_()` |
+
+An erasable word named as a downlist operand, as its ECADR (E-bank bits
+and address in the bank, the way a DNADR holds it), is `E_<name>`:
+`E_R_OTHER` for `R-OTHER`.
 
 Names come from the listing: a new AGC name goes in
 `tools/listing_names.py`, which writes its address or value from the
@@ -204,7 +209,9 @@ Every change to `readable/` must keep both:
      routines, then the two side by side on random states.
    - `downtelemetry-cases`: the faithful port's down-telemetry tests
      (whole downlists and dumps, against yaAGC digests) on the readable
-     down-telemetry, then the two side by side, DOWNRUPT by DOWNRUPT.
+     down-telemetry, then the two side by side, DOWNRUPT by DOWNRUPT. It
+     first checks the readable downlists (`DOWNLINK_LISTS.agc`) word by
+     word against the assembled listing.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

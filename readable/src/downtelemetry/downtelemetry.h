@@ -30,4 +30,8 @@ void dndumpi_plus3(void);
 void dndump(void);
 void dndump1(void);
 
+/* DOWNLINK_LISTS.agc: the downlist word at a bank 05 address, if one is
+ * there (LOWIDCOD, the lists and DNTABLE). */
+bool downlink_list_word(word address, word *value);
+
 #endif

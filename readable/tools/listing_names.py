@@ -49,7 +49,7 @@ WHIMPER ABORT2 OCT40400 OCT77770 GOPOODOO STRTIDLE OCT1103 CURTAINS OCT217 BOTHA
 VARALARM OCT14 FLAGS PRIODSPR DOWNFLAG
 SPCOS SPSIN SPT POLLEY ARG90
 UPENT2 DOWNENT2 UPFLAG COMFLAG DEBIT DELAYJOB OK2DELAY TCGETCAD WAKER GENTRAN B5OFF TRFAILOF
-TRFAILON
+TRFAILON LOWIDCOD
 DODOWNTM WO1 WOTEST DNPHASE1 DNPHASE2 DODNADR MINTIME2 DNADRDCR CHKLIST NEWLIST NEXTINCL MINB1314
 SETWO DODNCHAN WOZERO DODNPTR SNAPLOOP SNAPAGN LDNPHAS2 SNAPEND FETCH2WD DOSUBLST NEXTINSL
 DNTMEXIT TMEXITL TMRESUME DNDUMPI LDNDUMP LDNDUMP1 DNDUMP DNDUMP1 DNDUMP2 SENDID DNTABLE'''.split()
@@ -80,6 +80,40 @@ C5/2 C3/2 C1/2
 OCT77770 DELAYNUM TCSLEEP WAKECAD OCT40200
 NEG0 ERASID PRIO34 MINB12 LOWIDCOD MINTIME2 DNADRDCR MINB1314 LDNPHAS2 LDNDUMP LDNDUMP1'''.split()
 WORDS2 = labels.WORDS2 + 'ADRPCHN2 600SECS'.split()
+# The erasable words the downlink lists name (DOWNLINK_LISTS.agc: the
+# operands of its DNADRs), as ECADRs (E_<name>): the EBANK bits and the
+# address in the bank, as a DNADR holds them.
+DNADR = re.compile(r'^\S*\s+-?[1-6]DNADR\s+([A-Za-z0-9./*+()-]+)', re.M)
+
+
+def downlist_names(program):
+    text = open(READABLE.parent / program / 'DOWNLINK_LISTS.agc', errors='replace').read()
+    return unique(DNADR.findall(text))
+
+
+ECADR = re.compile(r'\d+,([EC]):\s+(\S+)\s+(?:E([0-7]),)?([0-7]+)\s')
+
+
+def ecadrs(path):
+    """{name: ECADR} of the erasable names in the listing's symbol table."""
+    text = open(path, errors='replace').read()
+    out = {}
+    for kind, name, bank, value in ECADR.findall(text[text.index('Symbol Table'):] + '\n'):
+        value = int(value, 8)
+        if kind == 'C' and value >= 0o2000:
+            continue
+        if bank and value >= 0o1400:
+            value = int(bank) * 0o400 + value - 0o1400
+        out.setdefault(name, value)
+    return out
+
+
+def e_spelling(name):
+    """The C spelling of a name in E_<name>: '-', '.', '/' and '(' as '_', no ')'
+    (R-OTHER -> R_OTHER, LAT(SPL) -> LAT_SPL)."""
+    return re.sub(r'[-./(]', '_', name.replace(')', ''))
+
+
 # Fixed words a routine reads through the fixed-memory hook, by physical
 # address (P_<name>): bank * 02000 + offset.
 PHYSICAL = 'SIZETAB 600SECS PRIOLARM FLAGS'.split()
@@ -152,6 +186,11 @@ def generate(key, program):
             p = where(n)
             out.append('#define KW_%s {0%05ou,0%05ou}' % (macro(n), listing.word(p),
                                                         listing.word(p + 1)))
+    table = ecadrs(path)
+    for n in downlist_names(program):
+        if n not in table:
+            raise SystemExit('%s: downlist name %s not in the symbol table' % (program, n))
+        out.append('#define E_%s 0%04ou' % (e_spelling(n), table[n]))
     for n in PHYSICAL:
         if where(n) is not None:
             out.append('#define P_%s %uu' % (macro(n), where(n)))
