@@ -35,6 +35,7 @@
 #define ORDER_DLOAD      0031u
 #define ORDER_SR1        0034u
 #define ORDER_V_SC       0035u /* V/SC */
+#define ORDER_ASIN       0040u
 #define ORDER_SLOAD      0041u
 #define ORDER_SLOAD_STAR 0043u /* SLOAD* */
 #define ORDER_SXA_1      0046u /* SXA,1 */
@@ -44,6 +45,7 @@
 #define ORDER_PDVL       0061u
 #define ORDER_DCOMP      0100u
 #define ORDER_DDV        0105u
+#define ORDER_VSL_STAR   0117u /* VSL* (a general shift, indexed) */
 #define ORDER_UNIT       0120u
 #define ORDER_VAD        0121u
 #define ORDER_BZE        0122u
@@ -56,6 +58,7 @@
 #define ORDER_RTB        0142u
 #define ORDER_STADR      0150u
 #define ORDER_DSU        0151u
+#define ORDER_BDSU       0155u
 #define ORDER_CALL       0152u
 #define ORDER_STQ        0156u
 #define ORDER_RVQ        0160u
@@ -65,6 +68,7 @@
 #define ORDER_BON        0162u
 #define ORDER_BOF        0162u
 #define ORDER_CLRGO      0162u
+#define ORDER_BOVB       0172u
 #define ORDER_VSL8       0164u
 #define ORDER_PUSH       0170u
 #define ORDER_DMP        0171u
@@ -125,6 +129,13 @@
  * SLOAD*, takes its index register from it). It is written one more, as
  * any address. */
 #define ADDRESS_PLUS_ONE_X1(n) ((word)((n) + 1u))
+/* "0 -7,2": an indexed general shift's (VSL*'s) address, the shift count
+ * n indexed by X2. yaYUL assembles it as 20000 plus 200 (a left shift's
+ * bit, "ADAD" in its rules) plus n, one more as any address, and
+ * complemented for X2: "0 -7,2" is 57605, "0,2" 57576. Once INDEX has
+ * taken X2 from it, GENSHIFT reads its low ten bits: the count, its
+ * pseudo sign, the direction and the round bit. */
+#define VSL_X2(n) ((word)(~(020000u + 0200u + (unsigned)(n) + 1u) & 077777u))
 /* The store code after STADR, complemented: STADR stores what it finds on
  * the push-down list, and the code word after it reads negative, so the
  * interpreter takes it as STADR's (not as a new pair). */

@@ -1747,6 +1747,19 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
 #define CDULOGIC ((word)K_CDULOGIC)
 
+/* ---- The geometry (LEM_GEOMETRY.agc, CSM_GEOMETRY.agc) ---- */
+
+#if LUMINARY099
+/* RRANGLES's basic code follows its EXIT, at RRANGLES + 042. Its erasable
+ * words are named by ADDRESS_OF: RADMODES, MODEA and MODEB. */
+#define RRANGLES ((word)K_RRANGLES)
+#define ANTENBIT BIT12 /* ANTENBIT = BIT12: RADMODES's bit for the radar's mode 2 */
+#endif
+
+/* 2V1STO2S and its 1TO2SUB, RTB routines (RTB_OP_CODES.agc). */
+#define TWO_V1STO2S ((word)K_2V1STO2S)
+#define ONE_TO2SUB  ((word)K_1TO2SUB)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
