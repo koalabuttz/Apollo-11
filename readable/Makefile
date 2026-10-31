@@ -68,15 +68,17 @@ SERVICE_SOURCES := src/agc/agc.c src/service/service.c $(sort $(wildcard src/int
 	src/interbank/interbank.c src/binding/machine.c src/binding/service_routines.c
 DNTM_SOURCES := src/agc/agc.c src/downtelemetry/downtelemetry.c src/downtelemetry/downlink_lists.c \
 	src/binding/machine.c src/binding/downtelemetry_routines.c
+FS_SOURCES := src/agc/agc.c src/fresh_start/fresh_start.c src/binding/machine.c \
+	src/binding/fresh_start_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
-	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES))
+	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(FS_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
-	alarm-cases sp-cases service-cases downtelemetry-cases
+	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -401,6 +403,42 @@ downtelemetry-cases: $(BUILD)/dntm-oracle-lm $(BUILD)/dntm-oracle-cm $(BUILD)/dn
 	./$(BUILD)/dntm-oracle-cm
 	./$(BUILD)/dntm-cases-lm
 	./$(BUILD)/dntm-cases-cm
+
+# ---- Fresh start and restart ----
+# The port's own tests (tests/test_lm_fresh_start.c, test_cm_fresh_start.c)
+# on the readable routines: every entry from random states, against the
+# original program's yaAGC digests, with the refusals they check. Then
+# tests/fresh_start_cases.c: the readable routines and the faithful port's
+# on the same random states.
+FS_COMMON := $(PORT)/src/agc_transfer.c $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c \
+	$(PORT)/src/agc_image_ops.c $(PORT)/src/agc_hardware_divide.c
+FS_LM_INTERBANK := $(addprefix $(PORT)/src/,lm_interbank_routines.c lm_interbank_idle.c lm_interbank.c)
+FS_CM_INTERBANK := $(addprefix $(PORT)/src/,cm_interbank_routines.c cm_interbank_idle.c cm_interbank_complete.c)
+
+$(BUILD)/fs-faithful-%.o: $(PORT)/src/%_fresh_start.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_fresh_start_routines=faithful_$*_fresh_start_routines \
+		-D$*_fresh_entries=faithful_$*_fresh_entries -c $< -o $@
+$(BUILD)/fs-oracle-lm: $(FS_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(FS_COMMON) $(FS_LM_INTERBANK) $(PORT)/tests/lm_fresh_start_cases.c \
+		$(PORT)/tests/test_lm_fresh_start.c $^ -o $@
+$(BUILD)/fs-oracle-cm: $(FS_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(FS_COMMON) $(FS_CM_INTERBANK) $(PORT)/tests/cm_fresh_start_cases.c \
+		$(PORT)/tests/test_cm_fresh_start.c $^ -o $@
+$(BUILD)/fs-cases-lm: $(FS_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/fs-faithful-lm.o \
+		tests/fresh_start_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(FS_COMMON) $(FS_LM_INTERBANK) $(filter %.o,$^) \
+		$(PORT)/tests/lm_fresh_start_cases.c tests/fresh_start_cases.c -o $@
+$(BUILD)/fs-cases-cm: $(FS_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/fs-faithful-cm.o \
+		tests/fresh_start_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(FS_COMMON) $(FS_CM_INTERBANK) $(filter %.o,$^) \
+		$(PORT)/tests/cm_fresh_start_cases.c tests/fresh_start_cases.c -o $@
+
+fresh-start-cases: $(BUILD)/fs-oracle-lm $(BUILD)/fs-oracle-cm $(BUILD)/fs-cases-lm $(BUILD)/fs-cases-cm
+	./$(BUILD)/fs-oracle-lm
+	./$(BUILD)/fs-oracle-cm
+	./$(BUILD)/fs-cases-lm
+	./$(BUILD)/fs-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
