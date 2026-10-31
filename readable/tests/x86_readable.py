@@ -84,7 +84,7 @@ REPLACED = (
     # module the port's tables (lanec_ev_routines.o) call. Part 1, the
     # front end; part 2, the short verbs; part 3, alignment and radar
     # designate; part 4, the LM's radar test verbs; part 5, the DAP data
-    # load. In the CM the port's compiled file of EXTENDED_VERBS
+    # load; part 6, the clock update and ATTCK2. In the CM the port's compiled file of EXTENDED_VERBS
     # (cm_extended_verbs_file.o) holds the same keys first and stays until
     # the CM's file is all readable.
     'lanec_ev_front.o',
@@ -92,6 +92,7 @@ REPLACED = (
     'lanec_ev_align.o',
     'lanec_ev_radar.o',
     'lanec_ev_dap.o',
+    'lanec_ev_time.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',

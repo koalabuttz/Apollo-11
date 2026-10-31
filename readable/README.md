@@ -98,6 +98,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Extended verbs, part 3 | `EXTENDED_VERBS.agc` (LM pp. 265-281, CM pp. 239-250), alignment and radar designate | [`src/extended_verbs/`](src/extended_verbs/) | V40, zero the IMU's CDUs (or the LM's RR's), V41, coarse align the IMU (or designate the LM's RR, with AURLOKON's lock-on question and the job RRDESK2, or drive the CM's optics), V42, fine align by gyro torquing, V43, the attitude error needles, the LM's V44 (end the continuous designate) and V60 (the landing radar to position 2), and the checks OP/INERT (which noun), the LM's RDRUSECK (is a radar in use?) and the CM's CKLFTBTS (has it lifted off?) |
 | Extended verbs, part 4 | `EXTENDED_VERBS.agc` (LM pp. 276-279), the LM's radar test verbs | [`src/extended_verbs/`](src/extended_verbs/) | R04 (verb 63), the radar test: the rendezvous or landing radar sampled once a second and shown (the RR's angles, range and range rate; the LR's range, position and velocities), proceed going over to the other radar; R77 (verb 78), the LR's spurious-return test, sampling four times a second with no display; and R77END (verb 79), which stops it |
 | Extended verbs, part 5 | `EXTENDED_VERBS.agc` (LM pp. 292-295, CM pp. 253-254), the DAP data load | [`src/extended_verbs/`](src/extended_verbs/) | Verb 48: the autopilot's configuration (noun 46), the masses (noun 47) and the trims (noun 48), shown flashing and taken back from the crew. The LM's R03 from DAPDATA1 on (APSFLAG, DAPBOOLS, MASS, the X-axis jets, the maneuver rate, the hand controller's sensitivity and deadband, the masses checked against the empty vehicle's, RESTORDB, and the trim task's TRIMDONE); the CM's DAPDISP and DAPDISP1 (refused under TVC, the maximum deadband flag, S41.2, MASSPROP and S40.14) |
+| Extended verbs, part 6 | `EXTENDED_VERBS.agc` (LM pp. 275 and 282, CM p. 246), the clock update and ATTCK2 | [`src/extended_verbs/`](src/extended_verbs/) | Verb 55: flashing V25 N24 for a time to add to the computer's clock, taken only on verb 23's data in (the LM's R33 in bank 42, the CM's ALINTIME), and UPDATIME, which adds it with interrupts held; and the LM's ATTCK2, V43's task that puts the attitude errors out to the CDUs' needles and turns their drives on |
 
 Beside them:
 
@@ -229,6 +230,8 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    verbs (31 oracle rows, the port's 2,448 cases, and 4,096 states at each
    of the 51 entries) and for the DAP data load (46 oracle rows, the
    port's 2,832 cases, and 4,096 states at each of the 59 entries of both
+   missions) and for the clock update and ATTCK2 (13 oracle rows, the
+   port's 1,152 cases, and 4,096 states at each of the 18 entries of both
    missions). `make names-check` checks the
    generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable

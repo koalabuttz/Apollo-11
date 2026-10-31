@@ -8,13 +8,15 @@
  * name: part 1, the front end, is lanec_ev_front_dispatch; part 2, the
  * short verbs, lanec_ev_short_dispatch; part 3, alignment and radar
  * designate, lanec_ev_align_dispatch; part 4, the LM's radar test verbs,
- * lanec_ev_radar_dispatch; part 5, the DAP data load, lanec_ev_dap_dispatch.
+ * lanec_ev_radar_dispatch; part 5, the DAP data load, lanec_ev_dap_dispatch;
+ * part 6, the clock update and ATTCK2, lanec_ev_time_dispatch.
  *
  * Plumbing only: point the machine at the state and the channel record,
  * and take the states the faithful module takes: the mission this object
  * is built for, a bank the part has entries in selected (bank 43, FBANK's
  * bank 33 with the superbank bit; for the LM's part 3 also bank 23; for
- * part 5 the LM's banks 20 and 01, the CM's 43 and 42), the bank registers
+ * part 5 the LM's banks 20 and 01, the CM's 43 and 42; for part 6 the
+ * LM's bank 42 only), the bank registers
  * agreeing, Z a 12-bit address and ZERO +0. A step the readable code does not model
  * leaves the state as it was.
  *
@@ -30,6 +32,7 @@
 #include "lanec_ev_front.h"
 #include "lanec_ev_radar.h"
 #include "lanec_ev_short.h"
+#include "lanec_ev_time.h"
 #include "../extended_verbs/extended_verbs.h"
 #include "../agc/names.h"
 
@@ -54,17 +57,19 @@ static lanec_io *channels;
 
 /* The extended verbs written so far read channels 12, 30 and 31 (V43's
  * checks) and 33 (the radar test's) and write channel 12 (V43's error
- * counter enable, the RR auto tracker enable), and read no fixed word
+ * counter enable, the RR auto tracker enable) and channel 14 (ATTCK2's
+ * CDU drives, by WOR, which reads it too), and read no fixed word
  * (GOLOADLV's WRITE SUPERBNK is channel 7, agc.superbank). */
 static word channel_in(unsigned number)
 {
-    if (number != 012u && number != 030u && number != 031u && number != 033u) not_modelled();
+    if (number != 012u && number != 014u && number != 030u && number != 031u && number != 033u)
+        not_modelled();
     return channels->channel[number];
 }
 
 static void channel_out(unsigned number, word value)
 {
-    if (number != 012u) not_modelled();
+    if (number != 012u && number != 014u) not_modelled();
     channels->channel[number] = value;
 }
 
@@ -737,6 +742,45 @@ enum lanec_status lanec_ev_dap_dispatch(apollo_overlay_state *state, lanec_io *i
         BANK(042u, dap_in_bank_42),
 #endif
     };
+
+    if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
+    return run(BANKS(banks), true, state, io);
+}
+
+/* ---- Part 6: the clock update, V55, and the LM's ATTCK2 ---- */
+
+static const struct entry time_entries[] = {
+#if LUMINARY099
+    {R33, r33},
+    {R33 + 2u, r33_after_priochng},
+    {R33 + 5u, r33_after_terminate},
+    {R33 + 6u, r33_after_proceed},
+    {R33 + 7u, r33_after_enter},
+#else
+    {ALINTIME, alintime},
+    {ALINTIME + 1u, alintime_after_testxact},
+    {ALINTIME + 4u, alintime_after_terminate},
+    {ALINTIME + 5u, alintime_after_proceed},
+    {ALINTIME + 6u, alintime_after_enter},
+#endif
+    {UPDATIME, updatime},
+    {UPDATIME + 9u, updatime_after_tpagree},
+    {UPDTMEND, updtmend},
+#if LUMINARY099
+    {ATTCK2, attck2},
+    {ATTCK2 + 1u, attck2_plus1},
+#endif
+};
+
+/* The LM's are in bank 42, the CM's in bank 43. */
+enum lanec_status lanec_ev_time_dispatch(apollo_overlay_state *state, lanec_io *io,
+                                         enum lanec_mission mission)
+{
+#if LUMINARY099
+    static const struct bank banks[] = {BANK(042u, time_entries)};
+#else
+    static const struct bank banks[] = {BANK(043u, time_entries)};
+#endif
 
     if (mission != THIS_MISSION || !state || !io) return LANEC_OUT_OF_SCOPE;
     return run(BANKS(banks), true, state, io);
