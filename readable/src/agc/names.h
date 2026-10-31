@@ -1257,6 +1257,92 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define ENDEXT   ((word)K_ENDEXT)
 #endif
 
+/* ---- AOTMARK: the LM's star sightings ---- */
+
+#if LUMINARY099
+/* Its erasable words: MARKSTAT, the state of the marking (its VAC area in
+ * bits 1-9; bits 10 and 11 the X and Y marks wanted or made; bit 12 set
+ * to keep MARKRUPT out; bit 13 a mark rejected; bit 14 a pair complete);
+ * XYMARK, the mark's kind (BIT10 X, BIT11 Y) or the detent code; MARKCNTR,
+ * the pairs made; MKDEX, an index (the verb to display, a mark's place in
+ * the VAC area, the star vectors averaged). ADDRESS_OF gives the others:
+ * AOTCODE, the detent and star code the crew load; AZ, the COAS's azimuth
+ * and elevation; AOTAZ and AOTEL, each detent's; TSIGHT, the last mark's
+ * time; CURSOR and SPIRAL, the surface readings. */
+#define MARKSTAT ERASABLE(K_MARKSTAT)
+#define XYMARK   ERASABLE(K_XYMARK)
+#define MARKCNTR ERASABLE(K_MARKCNTR)
+#define MKDEX    ERASABLE(K_MKDEX)
+
+/* The listing's "nD" in basic code: word n (decimal) of the job's work
+ * area, an offset from FIXLOC (INDEX FIXLOC; TS 10D). */
+#define D(n) ((unsigned)(n))
+
+/* Its constants: priorities (PRIO15, and PRIO3 and PRIO23, which are
+ * also MARKSTAT's bits 10-11 and 10, 11, 14), the verb and noun words it
+ * displays, and the key bits of channel 16 it tests (OCT34: the marks and
+ * mark reject; OCT140: the rate of descent switch). */
+#define PRIO3       ((word)KW_PRIO3)
+#define PRIO15      ((word)KW_PRIO15)
+#define PRIO23      ((word)KW_PRIO23)
+#define NEG7        ((word)KW_NEG7)
+#define OCT34       ((word)KW_OCT34)
+#define OCT140      ((word)KW_OCT140)
+#define V01N71      ((word)KW_V01N71)
+#define V06N87_STAR ((word)KW_V06N87_STAR) /* V06N87* */
+#define V06N79_STAR ((word)KW_V06N79_STAR) /* V06N79* */
+#define MKVB54_STAR ((word)KW_MKVB54_STAR) /* MKVB54* */
+/* MKVB54, MKVB53, MKVB52 and MKVB54*: "THE FOUR MKVBS ARE INDEXED -- THEIR
+ * ORDER CANNOT BE CHANGED" (ADDRESS_OF(MKVB54) is the table's address). */
+#define MKVB54_WORDS {KW_MKVB54, KW_MKVB53, KW_MKVB52, KW_MKVB54_STAR}
+
+/* Its labels, in bank 07 (OANB in 04, SURFSTAR in 15), and the routines
+ * it goes to in other files. */
+#define AOTMARK      ((word)K_AOTMARK)
+#define EXTVBCHK     ((word)K_EXTVBCHK)
+#define MKVAC        ((word)K_MKVAC)
+#define MKVACFND     ((word)K_MKVACFND)
+#define MKABORT      ((word)K_MKABORT)
+#define MKRELEAS     ((word)K_MKRELEAS)
+#define KILLAOT      ((word)K_KILLAOT)
+#define GETDAT       ((word)K_GETDAT)
+#define ENTERDAT     ((word)K_ENTERDAT)
+#define CODE7        ((word)K_CODE7)
+#define COASCODE     ((word)K_COASCODE)
+#define OPTAXIS      ((word)K_OPTAXIS)
+#define YZCHK        ((word)K_YZCHK)
+#define OANB         ((word)K_OANB)
+#define SURFSTAR     ((word)K_SURFSTAR)
+#define GETMKS       ((word)K_GETMKS)
+#define PASTIT       ((word)K_PASTIT)
+#define AVESTAR      ((word)K_AVESTAR)
+#define AVEIT        ((word)K_AVEIT)
+#define ENDMARKS     ((word)K_ENDMARKS)
+#define MKALARM      ((word)K_MKALARM)
+#define FINDKEY      ((word)K_FINDKEY)
+#define SOMEKEY      ((word)K_SOMEKEY)
+#define XMKRUPT      ((word)K_XMKRUPT)
+#define YMKRUPT      ((word)K_YMKRUPT)
+#define VERIFYMK     ((word)K_VERIFYMK)
+#define FIVE_MKALARM ((word)K_5MKALARM) /* 5MKALARM */
+#define MKREJ        ((word)K_MKREJ)
+#define REJALM       ((word)K_REJALM)
+#define REJECT       ((word)K_REJECT)
+#define SURFREJ      ((word)K_SURFREJ)
+#define MARKTYPE     ((word)K_MARKTYPE)
+#define VACSTOR      ((word)K_VACSTOR)
+#define SURFJOB      ((word)K_SURFJOB)
+#define CHANGEVB     ((word)K_CHANGEVB)
+#define DSPV6N79     ((word)K_DSPV6N79)
+#define ENDMARK      ((word)K_ENDMARK)
+#define GOMARK4      ((word)K_GOMARK4)
+#define GOODEND      ((word)K_GOODEND)
+#define DESCBITS     ((word)K_DESCBITS)
+#endif
+
+/* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
+#define CDULOGIC ((word)K_CDULOGIC)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

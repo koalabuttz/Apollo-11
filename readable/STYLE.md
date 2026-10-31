@@ -183,7 +183,7 @@ Every change to `readable/` must keep both:
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
    sp-cases service-cases downtelemetry-cases fresh-start-cases
    v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases
-   rcs-monitor-cases ags-cases`,
+   rcs-monitor-cases ags-cases aotmark-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -257,6 +257,10 @@ Every change to `readable/` must keep both:
      digests) on the readable AGS_INITIALIZATION, then the two side by
      side on random states, built as the host runs the file and as the
      flight program does (stopping where it reaches the interpreter).
+   - `aotmark-cases`: the faithful port's test of the LM's sighting marks
+     (its frozen cases run to their stops, against yaAGC digests) on the
+     readable AOTMARK, then the two side by side at every key on random
+     states.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the
