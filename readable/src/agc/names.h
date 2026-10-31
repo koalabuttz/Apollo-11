@@ -243,6 +243,7 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define USPRCADR     ((word)K_USPRCADR)
 #define SUPERSW      ((word)K_SUPERSW)
 #define CHECKMM      ((word)K_CHECKMM)
+#define TCQ          ((word)K_TCQ) /* = Q+2 +1, a TC Q in fixed-fixed */
 #define SETUPDSP     ((word)K_SETUPDSP) /* bank 10 */
 #define TOCON2       ((word)K_TOCON2)
 #define BELOW4       ((word)K_BELOW4) /* bank 10 */
@@ -1153,7 +1154,7 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define BITS11_12    ((word)KW_11_12) /* 11,12 */
 
 /* Its labels: in bank 06 (OPTMON to OPFAILOF) and bank 10 (OPTDRIVE to
- * SETBIT); TCQ (a TC Q, in fixed-fixed). */
+ * SETBIT). */
 #define K33OPTMON ((word)K_33OPTMON) /* 33OPTMON */
 #define SETSAMP   ((word)K_SETSAMP)
 #define PROCESSW  ((word)K_PROCESSW)
@@ -1197,7 +1198,6 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define DELOPCMD  ((word)K_DELOPCMD)
 #define SENDOCMD  ((word)K_SENDOCMD)
 #define SETBIT    ((word)K_SETBIT)
-#define TCQ       ((word)K_TCQ)
 #endif
 
 /* ---- RCS_FAILURE_MONITOR: the LM's jet isolation valves ---- */
@@ -1254,7 +1254,6 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define IMUZERO  ((word)K_IMUZERO)
 #define IMUSTALL ((word)K_IMUSTALL)
 #define GOMARK3  ((word)K_GOMARK3)
-#define ENDEXT   ((word)K_ENDEXT)
 #endif
 
 /* ---- The sighting marks: AOTMARK (LM) and SXTMARK (CM) ---- */
@@ -1396,6 +1395,27 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define MKACPT        ((word)K_MKACPT)
 #define DIFCHK        ((word)K_DIFCHK)
 #endif
+
+/* ---- EXTENDED_VERBS, part 1: the front end ---- */
+
+/* Its constant: OC24100, the bits of FLAGWRD4 that say a priority
+ * display has the DSKY. Its labels, in bank 43 at the same addresses in
+ * both missions (CHKPOOH the LM's; the CM's is later in its file); and
+ * PINBALL's NVSUB and ENDEXT (= ENDMARK), which it calls with FALTON. The
+ * fan's targets, VBZERO to VERB96, are written in its table
+ * (src/extended_verbs/front.c) as K_<label>. */
+#define OC24100  ((word)KW_OC24100)
+#define GOEXTVB  ((word)K_GOEXTVB)
+#define LST2FAN  ((word)K_LST2FAN)
+#define TESTXACT ((word)K_TESTXACT)
+#define SETXTACT ((word)K_SETXTACT)
+#define XACTALM  ((word)K_XACTALM)
+#define XACT0    ((word)K_XACT0)
+#define ALM_END  ((word)K_ALM_END) /* ALM/END */
+#define GOPIN    ((word)K_GOPIN)
+#define CHKPOOH  ((word)K_CHKPOOH)
+#define NVSUB    ((word)K_NVSUB)
+#define ENDEXT   ((word)K_ENDEXT)
 
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
 #define CDULOGIC ((word)K_CDULOGIC)

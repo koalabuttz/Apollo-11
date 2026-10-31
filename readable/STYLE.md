@@ -183,7 +183,8 @@ Every change to `readable/` must keep both:
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
    sp-cases service-cases downtelemetry-cases fresh-start-cases
    v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases
-   rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases`,
+   rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases
+   extended-verbs-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -262,6 +263,10 @@ Every change to `readable/` must keep both:
      readable AOTMARK, then the two side by side at every key on random
      states.
    - `sxtmark-cases`: the same for the CM's sextant marks (SXTMARK).
+   - `extended-verbs-cases`: the faithful port's frozen oracle rows for
+     EXTENDED_VERBS (against Virtual AGC results) on the readable parts,
+     then readable and faithful side by side on the port's suite and at
+     every key on random states.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the
