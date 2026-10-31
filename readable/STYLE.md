@@ -30,9 +30,12 @@ names and C's habits disagree, the original's names win.
 ## Fidelity
 
 A readable routine leaves **every word of memory, every register and every
-I/O channel** exactly as the original routine does, including what the
-listing calls *debris* (`DEBRIS -- CENTRALS A,Q,L`). That is what lets the
-readable code run in the real flight program and be checked word for word.
+I/O channel** as the original routine does, including what the listing
+calls *debris* (`DEBRIS -- CENTRALS A,Q,L`). That is what lets the
+readable code run in the real flight program and be checked word for word
+against the faithful port, which is checked against the original program
+in yaAGC. The few deliberate departures, by either port, are listed in
+one place: README.md, *Departures*. A new one goes there too.
 
 - When a value only survives as debris, set it where the original does and
   say so (`/* A,L get NEWLOC's old words */`).
@@ -244,8 +247,9 @@ Every change to `readable/` must keep both:
    `make x86-scenarios` for all 86 rows): the x86_64 flight program with the
    readable routines linked in place of the faithful ones flies each
    scenario against the harness, which runs the faithful port, and must end
-   with the same erasable memory, word for word. A readable PR may not
-   lower the exact count.
+   with the same erasable memory, word for word (words 061-03777 at the
+   row's end; registers and channels are the case tests' to compare). A
+   readable PR may not lower the exact count.
 
 ## The faithful port
 

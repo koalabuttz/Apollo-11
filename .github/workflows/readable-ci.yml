@@ -8,13 +8,39 @@
 #   2. The x86 exact scenario suite with the readable routines linked in:
 #      the quick set (26 rows) on PRs and pushes, every row nightly.
 name: readable-ci
+# It runs on a change to readable/ and on a change to what readable/ is
+# built from and checked against: the faithful port's sources, its tests
+# (the oracles), the tools that build and fly the x86 program and run the
+# fuzz, and the listings.
 on:
   pull_request:
     branches: [main]
-    paths: ['readable/**', '.github/workflows/readable-ci.yml']
+    paths:
+      - 'readable/**'
+      - '.github/workflows/readable-ci.yml'
+      - 'c64-port/src/**'
+      - 'c64-port/include/**'
+      - 'c64-port/tests/**'
+      - 'c64-port/platform/x86/**'
+      - 'c64-port/tools/**'
+      - 'c64-port/Makefile'
+      - 'Luminary099/**'
+      - 'Comanche055/**'
+      - '!**/*.md'
   push:
     branches: [main]
-    paths: ['readable/**', '.github/workflows/readable-ci.yml']
+    paths:
+      - 'readable/**'
+      - '.github/workflows/readable-ci.yml'
+      - 'c64-port/src/**'
+      - 'c64-port/include/**'
+      - 'c64-port/tests/**'
+      - 'c64-port/platform/x86/**'
+      - 'c64-port/tools/**'
+      - 'c64-port/Makefile'
+      - 'Luminary099/**'
+      - 'Comanche055/**'
+      - '!**/*.md'
   schedule:
     - cron: '47 5 * * *'
   workflow_dispatch:
