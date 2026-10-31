@@ -182,7 +182,8 @@ Every change to `readable/` must keep both:
 1. **The case tests** (`make names-check kernel-cases interbank-cases
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
    sp-cases service-cases downtelemetry-cases fresh-start-cases
-   v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases`,
+   v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases
+   rcs-monitor-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -247,6 +248,10 @@ Every change to `readable/` must keep both:
      IMU monitor tests, its LM radar test and its CM optics test (every
      continuation, display path and exit, against yaAGC digests) on the readable T4RUPT
      routines, then the two side by side on random states.
+   - `rcs-monitor-cases`: the faithful port's test of the LM's jet failure
+     monitor (its frozen cases run to their stops, against yaAGC digests)
+     on the readable RCS_FAILURE_MONITOR, then the two side by side on
+     random states.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

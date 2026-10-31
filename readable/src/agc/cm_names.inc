@@ -516,6 +516,7 @@
 #define K_SENDOCMD 02171u
 #define K_SETBIT 02175u
 #define K_TCQ 06711u
+#define K_BIT8 05010u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -1019,6 +1020,7 @@
 #define KW_MAXPLS 077532u
 #define KW_MAXPLS1 077533u
 #define KW_11_12 006000u
+#define KW_PRIO27 027000u
 #define KW_ENDTASK {072471u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003461u,002063u}
