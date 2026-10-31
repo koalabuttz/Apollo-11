@@ -59,10 +59,12 @@ REPLACED = (
     'lm_downtelemetry.o', 'cm_downtelemetry.o',
     # FRESH_START_AND_RESTART.agc, bank 05 and GOTOPOOH (src/fresh_start).
     'lm_fresh_start.o', 'cm_fresh_start.o',
+    # FRESH_START_AND_RESTART.agc, verb 37 and P00 (src/fresh_start/v37.c).
+    'lm_v37.o', 'cm_v37.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
-                    'dodowntm', 'slap1')
+                    'dodowntm', 'slap1', 'v37xeq')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

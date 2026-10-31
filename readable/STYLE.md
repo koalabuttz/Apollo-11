@@ -171,7 +171,8 @@ Every change to `readable/` must keep both:
 
 1. **The case tests** (`make names-check kernel-cases interbank-cases
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
-   sp-cases service-cases downtelemetry-cases fresh-start-cases`,
+   sp-cases service-cases downtelemetry-cases fresh-start-cases
+   v37-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -219,6 +220,9 @@ Every change to `readable/` must keep both:
      entry, restart groups active, inactive and corrupt, against yaAGC
      digests) on the readable fresh start and restart, then the two side
      by side on 65,536 states per mission.
+   - `v37-cases`: the same for verb 37 and P00, after checking V37's
+     tables (PREMM1, FCADRMM1, DNLADMM1, the CM's FLAGTABL) word by word
+     against the original program's rope.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the
