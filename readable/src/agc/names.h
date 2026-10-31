@@ -479,12 +479,12 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define OCT1103  ((word)KW_OCT1103)
 #define V05N09   ((word)KW_V05N09)
 #define V37FLBIT ((word)KW_V37FLBIT)
+#define NODOBIT  ((word)KW_NODOBIT)
 #if LUMINARY099
 #define OCT35    ((word)KW_OCT35)
 #define BBSERVDL ((word)KW_BBSERVDL) /* BBCON SERVIDLE */
 #define STATEBIT ((word)KW_STATEBIT)
 #define REINTBIT ((word)KW_REINTBIT)
-#define NODOBIT  ((word)KW_NODOBIT)
 /* ADR40400 and ADR77770 are instructions, TCF OCT40400 and TCF OCT77770,
  * read as words. */
 #define ADR40400 ((word)KW_ADR40400)
@@ -790,6 +790,88 @@ static const word T5IDLER[4][2] = {KW_T5IDLER, KW_T5IDLERP2, KW_T5IDLERP4, KW_T5
 #define NOCOARSE ((word)K_NOCOARSE)
 #define T5IDLOC  ((word)K_T5IDLOC)
 #define STOPRATE ((word)K_STOPRATE)
+#endif
+
+/* ---- Verb 37 and P00 (FRESH_START_AND_RESTART.agc, bank 04) ---- */
+
+/* Its erasable words: ADDRESS_OF(MMNUMBER) and the like. MMTEMP is
+ * PHSPRDT3 and BASETEMP is TBASE4, by EQUALS. Its constants: */
+#define V37N99   ((word)KW_V37N99) /* VN 3799: flash V37 N99 */
+#define NOV37MM  ((word)KW_NOV37MM)
+#define R00AD    ((word)KW_R00AD)
+#define V37QCAD  ((word)KW_V37QCAD)
+#define DNLADP00 ((word)KW_DNLADP00)
+#define RNDVZBIT ((word)KW_RNDVZBIT)
+#define PRIO5    ((word)KW_PRIO5)
+#define PRIO37   ((word)KW_PRIO37)
+#define OCT24    ((word)KW_OCT24)
+#define OCT120   ((word)KW_OCT120)
+#define ELEVEN   ((word)KW_ELEVEN)
+#if LUMINARY099
+#define DEC70    ((word)KW_DEC70)
+#define V37RETAD ((word)KW_V37RETAD)
+#define P25FLBIT ((word)KW_P25FLBIT)
+#define OCT37667 ((word)KW_OCT37667)
+#define OCT40072 ((word)KW_OCT40072)
+#define LRBYBIT  ((word)KW_LRBYBIT)
+#define OCT700   ((word)KW_OCT700)
+#define OCT26    ((word)KW_OCT26)
+#define OCT500   ((word)KW_OCT500)
+#define P20REG   ((word)KW_P20REG)
+#define OCT305   ((word)KW_OCT305)
+#define NEG2     ((word)KW_NEG2)
+static const word P70CADR[2] = KW_P70CADR;
+#else
+#define THREE_1SEC ((word)KW_3_1SEC) /* 3.1SEC */
+#define AVEGBIT    ((word)KW_AVEGBIT)
+#define OCT44571   ((word)KW_OCT44571)
+#define OCT600     ((word)KW_OCT600)
+#define BIT7_8     ((word)KW_BIT7_8) /* BIT7-8 */
+#define OCT01120   ((word)KW_OCT01120)
+#define MAXDBBIT   ((word)KW_MAXDBBIT)
+#define TWELVE     ((word)KW_TWELVE)
+#define EIGHTEEN   ((word)KW_EIGHTEEN)
+#endif
+
+/* Its labels, and the routines elsewhere it calls. */
+#define GOP00FIX ((word)K_GOP00FIX)
+#define V37      ((word)K_V37)
+#define V37BAD   ((word)K_V37BAD)
+#define ISSERVON ((word)K_ISSERVON)
+#define CANV37   ((word)K_CANV37)
+#define DUMMYAD  ((word)K_DUMMYAD)
+#define POOH     ((word)K_POOH)
+#define SEUDOP00 ((word)K_SEUDOP00)
+#define GOMOD    ((word)K_GOMOD)
+#define GOGOPROG ((word)K_GOGOPROG)
+#define NOUVEAU  ((word)K_NOUVEAU)
+#define V37NONO  ((word)K_V37NONO)
+#define V37XEQ   ((word)K_V37XEQ)
+#define V37XEQC  ((word)K_V37XEQC)
+#define CLEARMRK ((word)K_CLEARMRK)
+#define RELDSP   ((word)K_RELDSP)
+#define FALTON   ((word)K_FALTON)
+#define SPVAC    ((word)K_SPVAC)
+#define NEWMODEA ((word)K_NEWMODEA)
+#if LUMINARY099
+#define CANTROD  ((word)K_CANTROD)
+#define V37RET   ((word)K_V37RET)
+#define R00      ((word)K_R00)
+#define RESET22  ((word)K_RESET22)
+#define KILL2    ((word)K_KILL2)
+#define SETUP70  ((word)K_SETUP70)
+#define PHSCHNGA ((word)K_PHSCHNGA)
+#define CLRADMOD ((word)K_CLRADMOD)
+#else
+#define CANTR00  ((word)K_CANTR00)
+#define R00TOP00 ((word)K_R00TOP00)
+#define ROC      ((word)K_ROC)
+#define GROUPKIL ((word)K_GROUPKIL)
+#define INITSUB  ((word)K_INITSUB)
+#define SETMAXER ((word)K_SETMAXER)
+#define RAKE     ((word)K_RAKE)
+#define VAC5STOR ((word)K_VAC5STOR)
+#define V5OUT1   ((word)K_V5OUT1)
 #endif
 
 /* NO.CORES + 1 core sets. */

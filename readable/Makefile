@@ -70,15 +70,16 @@ DNTM_SOURCES := src/agc/agc.c src/downtelemetry/downtelemetry.c src/downtelemetr
 	src/binding/machine.c src/binding/downtelemetry_routines.c
 FS_SOURCES := src/agc/agc.c src/fresh_start/fresh_start.c src/binding/machine.c \
 	src/binding/fresh_start_routines.c
+V37_SOURCES := $(FS_SOURCES) src/fresh_start/v37.c src/binding/v37_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
-	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(FS_SOURCES))
+	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
-	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases
+	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -439,6 +440,37 @@ fresh-start-cases: $(BUILD)/fs-oracle-lm $(BUILD)/fs-oracle-cm $(BUILD)/fs-cases
 	./$(BUILD)/fs-oracle-cm
 	./$(BUILD)/fs-cases-lm
 	./$(BUILD)/fs-cases-cm
+
+# ---- Verb 37 and P00 ----
+# The port's own tests (tests/test_lm_v37.c, test_cm_v37.c) on the readable
+# routines, with the readable fresh start beside them: every entry from
+# random states, against the original program's yaAGC digests. Then
+# tests/v37_cases.c: the readable routines and the faithful port's on the
+# same random states, and V37's tables against the listing's words.
+$(BUILD)/v37-faithful-%.o: $(PORT)/src/%_v37.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_v37_routines=faithful_$*_v37_routines \
+		-D$*_v37_entries=faithful_$*_v37_entries -c $< -o $@
+$(BUILD)/v37-oracle-lm: $(V37_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(FS_COMMON) $(FS_LM_INTERBANK) $(PORT)/tests/lm_v37_cases.c \
+		$(PORT)/tests/test_lm_v37.c $^ -o $@
+$(BUILD)/v37-oracle-cm: $(V37_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(FS_COMMON) $(FS_CM_INTERBANK) $(PORT)/tests/cm_v37_cases.c \
+		$(PORT)/tests/test_cm_v37.c $^ -o $@
+$(BUILD)/v37-cases-lm: $(V37_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/v37-faithful-lm.o \
+		tests/v37_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(FS_COMMON) $(FS_LM_INTERBANK) $(filter %.o,$^) \
+		$(PORT)/tests/lm_v37_cases.c tests/v37_cases.c -o $@
+$(BUILD)/v37-cases-cm: $(V37_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/v37-faithful-cm.o \
+		tests/v37_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(FS_COMMON) $(FS_CM_INTERBANK) $(filter %.o,$^) \
+		$(PORT)/tests/cm_v37_cases.c tests/v37_cases.c -o $@
+
+v37-cases: $(BUILD)/v37-oracle-lm $(BUILD)/v37-oracle-cm $(BUILD)/v37-cases-lm $(BUILD)/v37-cases-cm
+	./$(BUILD)/v37-oracle-lm
+	./$(BUILD)/v37-oracle-cm
+	./$(BUILD)/v37-cases-lm
+	./$(BUILD)/v37-cases-cm
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
