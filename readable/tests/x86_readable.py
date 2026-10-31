@@ -101,11 +101,15 @@ REPLACED = (
     'lanec_ev_track.o',
     'lanec_ev_lmi.o',
     'cm_extended_verbs_file.o',
+    # PINBALL_NOUN_TABLES.agc: the readers PINBALL's faithful routines call
+    # (apollo_noun_reader, src/pinball_noun_tables). fixed_data.o stays: the
+    # faithful CM display code reads the faithful tables.
+    'noun_reader.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
-                    't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek')
+                    't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

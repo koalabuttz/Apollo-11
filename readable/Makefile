@@ -101,21 +101,24 @@ EV_SOURCES := $(INTERPRETER_SOURCES) src/extended_verbs/front.c src/extended_ver
 	src/extended_verbs/align.c src/extended_verbs/radar.c src/extended_verbs/dap.c \
 	src/extended_verbs/time.c src/extended_verbs/track.c \
 	src/binding/extended_verbs_routines.c
+NOUNS_SOURCES := src/agc/agc.c src/pinball_noun_tables/readers.c src/pinball_noun_tables/tables.c \
+	src/binding/noun_reader_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
-	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES))
+	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
+	$(NOUNS_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
-	extended-verbs-cases
+	extended-verbs-cases pinball-noun-tables-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1013,6 +1016,43 @@ extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases $(BUILD)/
 	./$(BUILD)/ev-lmi-cases $(ROPES)
 	./$(BUILD)/ev-file-oracle
 	./$(BUILD)/ev-file-cases
+
+# PINBALL_NOUN_TABLES, both missions: the readers in the faithful port's
+# place, as apollo_noun_reader (c64-port/include/noun_reader.h). Each
+# mission's objects are built into one object with that name, and the
+# tables' word function, renamed readable_<m>_...; tests/
+# noun_reader_missions.c puts the first back, by mission. First the port's
+# own test (c64-port/tests/test_noun_reader.c: every supported case runs,
+# the unsupported ones are refused) on them, then the original program's
+# frozen results (tests/pinball_noun_tables_oracle.c), then
+# tests/pinball_noun_tables_cases.c: the tables against the ropes, and the
+# readers side by side with the faithful one.
+NOUNS_NAMES := apollo_noun_reader noun_table_word
+$(BUILD)/nouns-readable-lm.o: $(NOUNS_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+$(BUILD)/nouns-readable-cm.o: $(NOUNS_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+$(BUILD)/nouns-readable-%.o:
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(NOUNS_NAMES),--keep-global-symbol=$(n)) $@.all $@.kept
+	objcopy --redefine-sym apollo_noun_reader=readable_$*_noun_reader \
+		--redefine-sym noun_table_word=readable_$*_noun_table_word $@.kept $@
+NOUNS_READABLE := $(BUILD)/nouns-readable-lm.o $(BUILD)/nouns-readable-cm.o tests/noun_reader_missions.c
+$(BUILD)/nouns-faithful.o: $(PORT)/src/noun_reader.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dapollo_noun_reader=faithful_apollo_noun_reader -c $< -o $@
+$(BUILD)/nouns-port-test: $(NOUNS_READABLE)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(PORT)/tests/noun_reader_cases.c $(PORT)/tests/test_noun_reader.c \
+		$(filter %.o %.c,$^) -o $@
+$(BUILD)/nouns-oracle: $(NOUNS_READABLE) tests/pinball_noun_tables_oracle.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(PORT)/tests/noun_reader_cases.c $(filter %.o %.c,$^) -o $@
+$(BUILD)/nouns-cases: $(NOUNS_READABLE) $(BUILD)/nouns-faithful.o tests/pinball_noun_tables_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(PORT)/src/agc_word.c $(PORT)/src/fixed_data.c \
+		$(PORT)/src/rope_image_host.c $(PORT)/tests/noun_reader_cases.c $(filter %.o %.c,$^) -o $@
+
+pinball-noun-tables-cases: $(BUILD)/nouns-port-test $(BUILD)/nouns-oracle $(BUILD)/nouns-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/nouns-port-test
+	./$(BUILD)/nouns-oracle
+	./$(BUILD)/nouns-cases $(ROPES)
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

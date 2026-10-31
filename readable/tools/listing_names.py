@@ -103,6 +103,7 @@ DAPDATA1 CHKDATA1 MSKDATR1 FORCEONE DPDAT1 STIKLOAD DAPDATA2 ENDR03 DAPDAT2 LEMA
 TRIMDONE DAPDISP1 DONOUN46 DONOUN47 DONOUN48 MAXOUT MAXIN
 R33 UPDATIME UPDTMEND ATTCK2
 DSPRRLOS RRLOSDSP TRMTRAK1 ATTACHIT TRACKTRM TACHEXIT LMTOCM TCPIN
+LODNNTAB LODMIXNN LODNLV GTSFOUT SFCOM GTSFIN NNADTAB NNTYPTAB SFINTAB SFOUTAB IDADDTAB RUTMXTAB
 '''.split()
 ERASABLE = labels.ERASABLE + '''
 BUF2 RUPTREG3 RUPTREG4 MPTEMP
@@ -124,7 +125,8 @@ MMNUMBER MINDEX TEMPFLSH PHSPRDT2 PHSPRDT3 PHSPRDT4 TBASE4 FLAGWRD0 FLAGWRD2 FLA
 ITEMP1 ITEMP2 VAC5 NEWLOC NEWPRIO CYR
 KEYTEMP1 KEYTEMP2 TIME6 DSRUPTEM CHAN32 OUT0
 CHAN30 CDUZ GYROCMD CDUXCMD CDUYCMD CDUZCMD ITEMP6 CDUX CDUS CDUT
-MODECADR SKEEP1 SKEEP2 SKEEP3 SKEEP6'''.split()
+MODECADR SKEEP1 SKEEP2 SKEEP3 SKEEP6
+NNADTEM NNTYPTEM MIXBR RUTMXTEM IDAD1TEM IDAD2TEM IDAD3TEM SFTEMP1 SFTEMP2'''.split()
 # Erasable names one mission's listing has and the other's not.
 ERASABLE_ONE = '''LOCALARM BANKALRM OPTMODES
 THRUST RCSFLAGS ABDELV CH5MASK CH6MASK PVALVEST AGSWORD DB DAPBOOLS STIKSENS -RATEDB HIASCENT DKTRAP
@@ -231,6 +233,16 @@ def downlist_names(program):
     return unique(DNADR.findall(text))
 
 
+# The erasable words the noun tables name (PINBALL_NOUN_TABLES.agc: the
+# operands of its ECADRs), as ECADRs (E_<name>) too.
+NOUN_ECADR = re.compile(r'^\S*\s+ECADR\s+([A-Za-z0-9./*+()-]+)', re.M)
+
+
+def noun_names(program):
+    text = open(READABLE.parent / program / 'PINBALL_NOUN_TABLES.agc', errors='replace').read()
+    return unique(NOUN_ECADR.findall(text))
+
+
 ECADR = re.compile(r'\d+,([EC]):\s+(\S+)\s+(?:E([0-7]),)?([0-7]+)\s')
 
 
@@ -249,14 +261,17 @@ def ecadrs(path):
 
 
 def e_spelling(name):
-    """The C spelling of a name in E_<name>: '-', '.', '/' and '(' as '_', no ')'
-    (R-OTHER -> R_OTHER, LAT(SPL) -> LAT_SPL)."""
+    """The C spelling of a name in E_<name>: a leading '-' or '+' as MINUS_ or
+    PLUS_ (-TPER -> MINUS_TPER, +MGA -> PLUS_MGA), then '-', '.', '/' and '('
+    as '_', no ')' (R-OTHER -> R_OTHER, LAT(SPL) -> LAT_SPL)."""
+    if name[:1] in '-+':
+        name = ('MINUS_' if name[0] == '-' else 'PLUS_') + name[1:]
     return re.sub(r'[-./(]', '_', name.replace(')', ''))
 
 
 # Fixed words a routine reads through the fixed-memory hook, by physical
 # address (P_<name>): bank * 02000 + offset.
-PHYSICAL = 'SIZETAB 600SECS PRIOLARM FLAGS'.split()
+PHYSICAL = 'SIZETAB 600SECS PRIOLARM FLAGS NNADTAB NNTYPTAB SFINTAB SFOUTAB IDADDTAB RUTMXTAB'.split()
 
 
 def unique(names):
@@ -331,9 +346,16 @@ def generate(key, program):
             out.append('#define KW_%s {0%05ou,0%05ou}' % (macro(n), listing.word(p),
                                                         listing.word(p + 1)))
     table = ecadrs(path)
-    for n in downlist_names(program):
+    downlist = downlist_names(program)
+    for n in downlist:
         if n not in table:
             raise SystemExit('%s: downlist name %s not in the symbol table' % (program, n))
+        out.append('#define E_%s 0%04ou' % (e_spelling(n), table[n]))
+    for n in noun_names(program):
+        if n in downlist:
+            continue
+        if n not in table:
+            raise SystemExit('%s: noun table name %s not in the symbol table' % (program, n))
         out.append('#define E_%s 0%04ou' % (e_spelling(n), table[n]))
     for n in fcadr_names(program):
         if where(n) is None:

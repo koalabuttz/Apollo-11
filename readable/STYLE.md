@@ -87,9 +87,9 @@ C cannot spell every AGC name, so:
 | a name that is its value | what the value is | `9,6,4` → `BITS_9_6_4`, `.5SEC` → `HALF_SEC` |
 | a C keyword or library name | a trailing `_` | `GOTO` → `goto_()`, `ABS` → `abs_()` |
 
-An erasable word named as a downlist operand, as its ECADR (E-bank bits
-and address in the bank, the way a DNADR holds it), is `E_<name>`:
-`E_R_OTHER` for `R-OTHER`.
+An erasable word named as a downlist or noun table operand, as its ECADR
+(E-bank bits and address in the bank, the way a DNADR holds it), is
+`E_<name>`: `E_R_OTHER` for `R-OTHER`, `E_MINUS_TPER` for `-TPER`.
 
 Names come from the listing: a new AGC name goes in
 `tools/listing_names.py`, which writes its address or value from the
