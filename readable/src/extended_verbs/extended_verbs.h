@@ -26,7 +26,10 @@
  * state vector verbs' basic code (LM pp. 262, 287-300, CM pp. 236,
  * 259-265): V69, V56, V66, the LM's V85 and the CM's V47, V87 and V88.
  * Part 8, the LM's interpretive words of those verbs (track.c's tables):
- * RRLOSDSP's, TRMTRAK1's, ATTACHIT's and TCPIN. The basic code's entries
+ * RRLOSDSP's, TRMTRAK1's, ATTACHIT's and TCPIN. Part 9, the CM's:
+ * TRACKTRM's, SETVHFLG's, RESETVHF's, ATTACHIT's, TACHEXIT's, LMTOCM's and
+ * TCPIN; with it the CM program runs the readable file whole, under the
+ * names the port's compiled copy of the file has. The basic code's entries
  * are the routines' labels and the words a call out of the routine
  * returns to; the interpretive words' are the words the interpreter takes
  * up at. */
@@ -38,6 +41,7 @@
 
 /* ---- Part 1: the front end (front.c) ---- */
 void goextvb(void);
+void lst2fan_word(void);
 void testxact(void);
 void setxtact(void);
 void setxtact_after_nvsub_busy(void); /* SETXTACT +5: NVSUB found the DSKY busy */
@@ -536,10 +540,13 @@ void lmtocm_after_exit(void);
 void lmtocm_after_gentran(void);
 #endif
 
-/* ---- Part 8: the LM's interpretive words (track.c) ---- */
+/* ---- Parts 8 and 9: the interpretive words (track.c) ---- */
+extern const struct interpretive_code ATTACHIT_CODE, TCPIN_CODE;
 #if LUMINARY099
-extern const struct interpretive_code TRMTRAK1_CODE, ATTACHIT_CODE, ATTACHIT_CODE_2, TCPIN_CODE,
-    RRLOSDSP_CODE;
+extern const struct interpretive_code TRMTRAK1_CODE, ATTACHIT_CODE_2, RRLOSDSP_CODE;
+#else
+extern const struct interpretive_code TRACKTRM_CODE, SETVHFLG_CODE, RESETVHF_CODE, TACHEXIT_CODE,
+    LMTOCM_CODE;
 #endif
 
 #endif

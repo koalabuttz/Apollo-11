@@ -877,12 +877,14 @@ sxtmark-cases: $(BUILD)/sxtmark-oracle $(BUILD)/sxtmark-cases
 # faithful module (built with its dispatch renamed faithful_...; from the
 # short verbs on, it also gives the port's suite its list of entries).
 # (The readable parts link the readable interpreter, part 8's, which reads
-# the rope: rope_image_host.c. Only part 8's tests load the ropes.)
+# the rope: rope_image_host.c. Only parts 8 and 9 load the ropes.)
 LANEC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/lanec.c $(PORT)/tests/lanec_case.c \
 	$(PORT)/src/rope_image_host.c
 EV_PARTS := front short align radar dap time track lmi
 EV_NAMES := $(EV_PARTS:%=lanec_ev_%_dispatch)
-# Part 8's tables, which its test checks against the rope (the LM's only).
+# Part 8's tables, which its test checks against the rope: the LM's only
+# (ATTACHIT_CODE and TCPIN_CODE are both missions' names, so the CM's stay
+# local here; part 9's test links the CM's own).
 EV_TABLES := RRLOSDSP_CODE TRMTRAK1_CODE ATTACHIT_CODE ATTACHIT_CODE_2 TCPIN_CODE
 
 $(BUILD)/ev-%-faithful.o: $(PORT)/src/lanec_ev_%.c
@@ -892,7 +894,8 @@ $(BUILD)/ev-readable-lm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
 $(BUILD)/ev-readable-cm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
 $(BUILD)/ev-readable-%.o:
 	ld -r $^ -o $@.all
-	objcopy $(foreach n,$(EV_NAMES) $(EV_TABLES),--keep-global-symbol=$(n)) $@.all $@.kept
+	objcopy $(foreach n,$(EV_NAMES) $(if $(filter lm,$*),$(EV_TABLES)),--keep-global-symbol=$(n)) \
+		$@.all $@.kept
 	objcopy $(foreach n,$(EV_NAMES),--redefine-sym $(n)=readable_$*_$(n:lanec_%=%)) $@.kept $@
 EV_READABLE := $(BUILD)/ev-readable-lm.o $(BUILD)/ev-readable-cm.o tests/extended_verbs_missions.c
 $(BUILD)/ev-front-oracle: $(EV_READABLE) tests/extended_verbs_front_oracle.c
@@ -954,12 +957,43 @@ $(BUILD)/ev-lmi-cases: $(EV_READABLE) $(BUILD)/ev-lmi-faithful.o tests/extended_
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LANEC_COMMON) $(EV_INTERP_COMMON) \
 		$(PORT)/tests/lanec_ev_lmi_cases.c $(filter %.o %.c,$^) -o $@
 
+# Part 9, the CM's interpretive words, and with them the CM's file whole:
+# the readable file's two tables (cm_extended_verbs_file_basic and
+# _interpretive, the names of the port's compiled copy of the file) and
+# the parts, as one program (tests/extended_verbs_file_program.c). First
+# the port's frozen cases for the compiled file (the original program's
+# results in Virtual AGC) on it, then tests/extended_verbs_file_cases.c
+# side by side with the compiled file.
+EV_FILE_NAMES := cm_extended_verbs_file_basic cm_extended_verbs_file_interpretive cm_interpreter_basic \
+	$(filter-out lanec_ev_radar_dispatch lanec_ev_lmi_dispatch,$(EV_NAMES)) \
+	TRACKTRM_CODE SETVHFLG_CODE RESETVHF_CODE ATTACHIT_CODE TACHEXIT_CODE TCPIN_CODE LMTOCM_CODE
+EV_FILE_COMMON := $(LANEC_COMMON) $(EV_INTERP_COMMON) $(PORT)/src/cm_interp_orders.c \
+	$(PORT)/src/cm_interp_steps.c $(PORT)/src/agc_transfer.c $(PORT)/tests/interp_case.c \
+	-DCM_ROPE='"$(word 2,$(ROPES))"' tests/extended_verbs_file_program.c
+$(BUILD)/ev-file-cm.o: $(EV_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+	ld -r $^ -o $@.all
+	objcopy $(foreach n,$(EV_FILE_NAMES),--keep-global-symbol=$(n)) $@.all $@
+$(BUILD)/ev-file-faithful.o: $(PORT)/src/cm_extended_verbs_file.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) \
+		-Dcm_extended_verbs_file_basic=faithful_cm_extended_verbs_file_basic \
+		-Dcm_extended_verbs_file_interpretive=faithful_cm_extended_verbs_file_interpretive \
+		-c $< -o $@
+$(BUILD)/ev-file-oracle: $(BUILD)/ev-file-cm.o tests/extended_verbs_file_program.c \
+		tests/extended_verbs_file_target.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Itests $(EV_FILE_COMMON) $(BUILD)/ev-file-cm.o \
+		tests/extended_verbs_file_target.c $(PORT)/tests/test_cm_extended_verbs_file.c -o $@
+$(BUILD)/ev-file-cases: $(BUILD)/ev-file-cm.o $(BUILD)/ev-file-faithful.o \
+		tests/extended_verbs_file_program.c tests/extended_verbs_file_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Itests $(EV_FILE_COMMON) $(BUILD)/ev-file-cm.o \
+		$(BUILD)/ev-file-faithful.o tests/extended_verbs_file_cases.c -o $@
+
 extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases $(BUILD)/ev-short-oracle \
 		$(BUILD)/ev-short-cases $(BUILD)/ev-align-oracle $(BUILD)/ev-align-cases \
 		$(BUILD)/ev-radar-oracle $(BUILD)/ev-radar-cases $(BUILD)/ev-dap-oracle \
 		$(BUILD)/ev-dap-cases $(BUILD)/ev-time-oracle $(BUILD)/ev-time-cases \
 		$(BUILD)/ev-track-oracle $(BUILD)/ev-track-cases $(BUILD)/ev-lmi-oracle \
-		$(BUILD)/ev-lmi-cases
+		$(BUILD)/ev-lmi-cases $(BUILD)/ev-file-oracle $(BUILD)/ev-file-cases
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	./$(BUILD)/ev-front-oracle
 	./$(BUILD)/ev-front-cases
@@ -977,6 +1011,8 @@ extended-verbs-cases: $(BUILD)/ev-front-oracle $(BUILD)/ev-front-cases $(BUILD)/
 	./$(BUILD)/ev-track-cases
 	./$(BUILD)/ev-lmi-oracle $(ROPES)
 	./$(BUILD)/ev-lmi-cases $(ROPES)
+	./$(BUILD)/ev-file-oracle
+	./$(BUILD)/ev-file-cases
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

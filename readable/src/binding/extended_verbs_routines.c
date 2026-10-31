@@ -33,6 +33,7 @@
  * the tables' words; see lanec_ev_lmi_dispatch below. */
 #include <setjmp.h>
 #include <stddef.h>
+#include <string.h>
 #include "lanec_ev_align.h"
 #include "lanec_ev_dap.h"
 #include "lanec_ev_front.h"
@@ -42,6 +43,10 @@
 #include "lanec_ev_lmi.h"
 #include "lanec_ev_track.h"
 #include "p66_bias.h"
+#if COMANCHE055
+#include "cm_extended_verbs_file.h"
+#include "cm_native_image.h"
+#endif
 #include "binding.h"
 #include "../extended_verbs/extended_verbs.h"
 #include "../agc/names.h"
@@ -1015,10 +1020,9 @@ enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *state, lanec_io *i
     return LANEC_OK;
 }
 #else
-/* The CM has no part 8: its EXTENDED_VERBS interpretive words are the
- * port's compiled file's (cm_extended_verbs_file.o). The port's tables
- * name the LM's module in both programs, so the CM's refuses every
- * state, as the faithful module does for the CM. */
+/* The CM has no part 8: its interpretive words are part 9, below. The
+ * port's tables name the LM's module in both programs, so the CM's
+ * refuses every state, as the faithful module does for the CM. */
 enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *state, lanec_io *io,
                                         enum lanec_mission mission)
 {
@@ -1027,4 +1031,171 @@ enum lanec_status lanec_ev_lmi_dispatch(apollo_overlay_state *state, lanec_io *i
     (void)mission;
     return LANEC_OUT_OF_SCOPE;
 }
+
+/* ---- Part 9: the CM's interpretive words, and the file whole ----
+ *
+ * The CM program enters the file through the port's tables of each part
+ * (lanec_ev_routines.o, which call the parts above), and through two
+ * tables that the port's compiled copy of the whole file
+ * (cm_extended_verbs_file.o) defines and the readable file now does, in
+ * its place: cm_extended_verbs_file_interpretive, the interpretive words,
+ * and cm_extended_verbs_file_basic, the four basic words the parts' tables
+ * do not list. Both take the program's latches from its cm_native_io, and
+ * the compiled file's contract: the latches in range, and bank 43 (FB 33)
+ * with the superbank bit (0100), for the basic words with the superbank at
+ * 0100 exactly. */
+
+/* The tables (track.c), and the words the interpreter takes each up at:
+ * every order word and store code, as the compiled file's entries (where
+ * a TC INTPRET, a CALL's return, a branch or a DANZIG leaves LOC). */
+static const struct interpretive_code *const cm_codes[] = {
+    &TRACKTRM_CODE, &SETVHFLG_CODE, &RESETVHF_CODE, &ATTACHIT_CODE,
+    &TACHEXIT_CODE, &TCPIN_CODE,    &LMTOCM_CODE,
+};
+
+/* The bank the interpreter reads its code from: BANKSET's F-bank, 40-43
+ * for 30-33 with the superbank bit. */
+static word interpretive_bank(void)
+{
+    word bank = (word)((BANKSET >> 10) & 037u);
+    return bank >= 030u && (*agc.superbank & SUPERBANK_BIT) ? (word)(bank + 010u) : bank;
+}
+
+/* The table LOC is in, in the bank the interpreter reads, or NULL. */
+static const struct interpretive_code *table_at_loc(void)
+{
+    size_t i;
+
+    for (i = 0; i < sizeof cm_codes / sizeof cm_codes[0]; ++i)
+        if (cm_codes[i]->bank == interpretive_bank() && LOC >= cm_codes[i]->first &&
+            LOC < cm_codes[i]->first + cm_codes[i]->count)
+            return cm_codes[i];
+    return NULL;
+}
+
+/* The latches as the compiled file takes them: interrupts on or off, and
+ * the superbank one of its eight settings. */
+static bool latches_in_range(const cm_native_io *io)
+{
+    return io->interrupt_enabled <= 1u && (io->superbank & ~0160u) == 0u;
+}
+
+/* The interpreter's contract, as the compiled file takes it: the job's
+ * work area (FIXLOC) one of the five VAC areas, or NOVAC's (MPAC -36D: V87,
+ * V88 and V56 run in PINBALL's NOVAC job); and at NEWOPS, FB the code's
+ * bank (43), BANKSET the bank registers and INTBIT15 BANKSET's bit 15, as
+ * INTPRET leaves them. (NEWJOB not negative, +0 or a job change pending,
+ * the interpreter checks itself: interpret_listing_lanec.) */
+static bool cm_interpreter_contract(void)
+{
+    bool vac = FIXLOC >= VACNUSE_ADDRESS(1u) + 1u && FIXLOC <= VACNUSE_ADDRESS(5u) + 1u &&
+               (FIXLOC - VACNUSE_ADDRESS(1u) - 1u) % 054u == 0u;
+
+    if (!vac && FIXLOC != ADDRESS_OF(MPAC) - 36u) return false;
+    return bank_selected() == 043u && BANKSET == BBANK && INTBIT15 == (BANKSET & 040000u);
+}
+
+/* A run goes on while the interpreter is at NEWOPS on one of the tables'
+ * words: at most this many passes (TACHEXIT's, four, is the longest). */
+#define PASSES     16u
+
+/* From a word the interpreter takes the tables up at, pass after pass of
+ * the readable interpreter until it leaves them: at NEWOPS of a routine
+ * they CALL (INTSTALL, PTOACSM, SVDWN1, SVDWN2), the basic word after an
+ * EXIT, RTB's routine (TCPIN's PINBRNCH), or CHANG2, where a DANZIG finds a
+ * job change pending. */
+static enum exec_status interpretive(const agc_native_program *program, apollo_overlay_state *state,
+                                     void *device)
+{
+    static const agc_native_program none;
+    static lanec_io latches; /* (bind_lanec keeps its address) */
+    cm_native_io *io = device, io_before;
+    apollo_overlay_state before;
+    const struct interpretive_code *code;
+    unsigned passes;
+
+    (void)program;
+    if (!state || !io || !latches_in_range(io)) return EXEC_OUT_OF_SCOPE;
+    memset(&latches, 0, sizeof latches);
+    latches.superbank = io->superbank;
+    latches.interrupt_enabled = io->interrupt_enabled;
+    bind_lanec(state, &latches);
+    if (!as_expected() || Z != NEWOPS || table_at_loc() == NULL || !cm_interpreter_contract())
+        return EXEC_OUT_OF_SCOPE;
+    before = *state;
+    io_before = *io;
+    for (passes = 0; Z == NEWOPS && (code = table_at_loc()) != NULL; ++passes) {
+        if (passes == PASSES || interpret_listing_lanec(&none, state, io, code) != EXEC_OK) {
+            *state = before;
+            *io = io_before;
+            return EXEC_OUT_OF_SCOPE;
+        }
+        latches.superbank = io->superbank;
+        bind_lanec(state, &latches); /* (the pass pointed the machine at its own hooks) */
+    }
+    return EXEC_OK;
+}
+
+/* The physical address of a word of bank 43: its key in the tables. */
+#define BANK43(at) ((uint16_t)(043u * 02000u + ((at) - 02000u)))
+
+static const agc_routine_entry interpretive_entries[] = {
+    {BANK43(TRACKTRM + 23u), interpretive}, /* CALL INTSTALL */
+    {BANK43(TRACKTRM + 25u), interpretive}, /* EXIT */
+    {BANK43(SETVHFLG + 1u), interpretive},  /* SET EXIT */
+    {BANK43(RESETVHF + 1u), interpretive},  /* CLEAR EXIT */
+    {BANK43(ATTACHIT + 1u), interpretive},  /* CALL INTSTALL */
+    {BANK43(ATTACHIT + 3u), interpretive},  /* SET BON */
+    {BANK43(ATTACHIT + 7u), interpretive},  /* CLEAR (a DANZIG's CHANG2 resumes here) */
+    {BANK43(ATTACHIT + 9u), interpretive},  /* EXIT (BON's +3) */
+    {BANK43(TACHEXIT + 2u), interpretive},  /* CALL PTOACSM */
+    {BANK43(TACHEXIT + 4u), interpretive},  /* LXA,2 CALL */
+    {BANK43(TACHEXIT + 7u), interpretive},  /* CALL SVDWN2 */
+    {BANK43(TACHEXIT + 9u), interpretive},  /* EXIT */
+    {BANK43(TCPIN), interpretive},          /* RTB PINBRNCH */
+    {BANK43(LMTOCM + 1u), interpretive},    /* CALL INTSTALL */
+    {BANK43(LMTOCM + 3u), interpretive},    /* SET BON */
+    {BANK43(LMTOCM + 7u), interpretive},    /* CLEAR (a DANZIG's CHANG2 resumes here) */
+    {BANK43(LMTOCM + 9u), interpretive},    /* EXIT (BON's +3) */
+};
+const agc_routine_table cm_extended_verbs_file_interpretive = {
+    interpretive_entries, sizeof interpretive_entries / sizeof interpretive_entries[0]};
+
+/* The fan's words after V70UPDAT, V71UPDAT, V72UPDAT and V73UPDAT, where
+ * each returns if it returns to its TC's Q: the next verb's word. */
+static const struct entry fan_returns[] = {
+    {LST2FAN + 31u, lst2fan_word}, /* VB71: TC V71UPDAT */
+    {LST2FAN + 32u, lst2fan_word}, /* VB72: TC V72UPDAT */
+    {LST2FAN + 33u, lst2fan_word}, /* VB73: TC V73UPDAT */
+    {LST2FAN + 34u, lst2fan_word}, /* VB74: TC DNEDUMP */
+};
+
+/* A basic word of the file. Each is a TC, which reads and writes no
+ * channel and leaves the superbank and the interrupts as they are, so
+ * only those two go in. The compiled file runs with the program's
+ * agc_hardware alone (its channels 30-33), so this does too. */
+static enum exec_status basic(const agc_native_program *program, apollo_overlay_state *state,
+                              void *device)
+{
+    static const struct bank banks[] = {BANK(043u, fan_returns)};
+    cm_native_io *io = device;
+    static lanec_io latches; /* (bind_lanec keeps its address) */
+
+    if (!state || !io || !program || !program->hardware || !latches_in_range(io) ||
+        io->superbank != SUPERBANK_BIT)
+        return EXEC_OUT_OF_SCOPE;
+    memset(&latches, 0, sizeof latches);
+    latches.superbank = io->superbank;
+    latches.interrupt_enabled = io->interrupt_enabled;
+    return run(BANKS(banks), false, state, &latches) == LANEC_OK ? EXEC_OK : EXEC_OUT_OF_SCOPE;
+}
+
+static const agc_routine_entry basic_entries[] = {
+    {BANK43(LST2FAN + 31u), basic},
+    {BANK43(LST2FAN + 32u), basic},
+    {BANK43(LST2FAN + 33u), basic},
+    {BANK43(LST2FAN + 34u), basic},
+};
+const agc_routine_table cm_extended_verbs_file_basic = {basic_entries, sizeof basic_entries /
+                                                                           sizeof basic_entries[0]};
 #endif
