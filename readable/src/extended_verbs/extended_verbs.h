@@ -289,10 +289,10 @@ void rrdesend_after_downflag(void);
 void aurlokon(void); /* AURLOKON, NOLOKON and AURLKON1 are in bank 23 */
 void aurlokon_after_makecadr(void);
 void aurlokon_plus6(void);           /* the listing's -5 */
-void aurlokon_after_terminate(void); /* GOMARKFR's four returns */
+void aurlokon_after_terminate(void); /* GOMARKFR's three crew returns */
 void aurlokon_after_proceed(void);
 void aurlokon_after_recycle(void);
-void aurlokon_after_enter(void);
+void aurlokon_immediate_return(void); /* and its immediate one */
 void aurlokon_after_blanket(void);
 void aurlokon_plus15(void); /* the listing's +5 */
 void aurlokon_after_upflag(void);
@@ -346,10 +346,10 @@ void r04_after_testxact(void);
 void r04z(void); /* where R04's UPFLAG returns */
 void r04a(void);
 void r04a_plus2(void);
-void r04a_after_terminate(void); /* GOMARKFR's four returns */
+void r04a_after_terminate(void); /* GOMARKFR's three crew returns */
 void r04a_after_proceed(void);
 void r04a_after_recycle(void);
-void r04a_after_enter(void);
+void r04a_immediate_return(void); /* and its immediate one */
 void r04a_after_blanket(void);
 void r04a_plus11(void);
 void r04x_minus1(void);

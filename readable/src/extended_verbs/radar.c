@@ -12,8 +12,9 @@
  * 79) stops it.
  *
  * The comments name the R04 entries' crew responses as the listing does:
- * V34 terminate, V33 proceed, V32 recycle and, for GOMARKFR and GOMARK4,
- * enter (a load). Each call out of the file ends a C function with Q and Z
+ * V34 terminate, V33 proceed, V32 recycle and, for GOMARK4, enter (a load).
+ * GOMARKFR also returns at once, with the display up (its immediate
+ * return). Each call out of the file ends a C function with Q and Z
  * set (tc() below, or continue_at()), and the word it returns to is an
  * entry of its own; the binding goes on from one entry of this part to the
  * next while Z is one. A routine that falls into the next label calls it.
@@ -165,8 +166,9 @@ void r04a_after_recycle(void)
     continue_at(R04A + 2u); /* TCF R04A +2 */
 }
 
-/* R04A +8 -- LM p. 277: a load: blank R3 and wait. */
-void r04a_after_enter(void)
+/* R04A +8 -- LM p. 277: GOMARKFR's immediate return, with the display
+ * up: blank R3 and end the job until the crew responds. */
+void r04a_immediate_return(void)
 {
     set_A(BIT3);
     tc(R04A + 9u, BLANKET);
