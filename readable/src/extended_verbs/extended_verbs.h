@@ -22,7 +22,10 @@
  * DAP data load, V48 (LM pp. 292-295, CM pp. 253-254): the LM's R03 from
  * DAPDATA1 on, the CM's DAPDISP and DAPDISP1. Part 6, the clock update,
  * V55 (LM pp. 275 and 282, CM p. 246): the LM's R33 and the CM's
- * ALINTIME, UPDATIME, and the LM's ATTCK2 task. The entries are the
+ * ALINTIME, UPDATIME, and the LM's ATTCK2 task. Part 7, the tracking and
+ * state vector verbs' basic code (LM pp. 262, 287-300, CM pp. 236,
+ * 259-265): V69, V56, V66, the LM's V85 and the CM's V47, V87 and V88.
+ * The entries are the
  * routines' labels and the words a call out of the routine returns to. All
  * of it is basic code. */
 #ifndef READABLE_EXTENDED_VERBS_H
@@ -478,6 +481,56 @@ void updtmend(void);
 #if LUMINARY099
 void attck2(void);
 void attck2_plus1(void); /* where its loop goes round */
+#endif
+
+/* ---- Part 7: the tracking and state vector verbs (track.c) ---- */
+void verb69(void); /* bank 43 */
+void attachit(void);
+void attachit_after_exit(void);
+#if LUMINARY099
+void attachit_after_gentran(void);
+void attachit_after_second_exit(void);
+void trmtrak1(void); /* TRMTRAK1 is in bank 42 */
+void trmtrak1_after_downflag(void);
+void trmtrak1_after_second_downflag(void);
+void trmtrak1_after_third_downflag(void);
+void trmtrak1_after_exit(void);
+void trmtrak1_after_phaschng(void);
+void trmtrak1_after_ibnkcall(void);
+void trmtrak1_after_second_ibnkcall(void);
+void trmtrak1_after_clradmod(void);
+void dsprrlos(void); /* DSPRRLOS and RRLOSDSP are in bank 40 */
+void dsprrlos_after_findvac(void);
+void dsprrlos_after_priochng(void);
+void dsprrlos_after_terminate(void); /* GOMARKFR's three crew returns */
+void dsprrlos_after_proceed(void);
+void dsprrlos_after_enter(void);
+void dsprrlos_immediate_return(void); /* and its immediate one */
+void dsprrlos_after_blanket(void);
+void rrlosdsp(void);
+void rrlosdsp_after_exit(void);
+void rrlosdsp_after_delayjob(void);
+#else
+void tracktrm(void);
+void tracktrm_after_downflag(void);
+void tracktrm_after_second_downflag(void);
+void tracktrm_after_third_downflag(void);
+void tracktrm_after_fourth_downflag(void);
+void tracktrm_after_stoprate(void);
+void tracktrm_after_exit(void);
+void cleanout(void);
+void setvhflg(void);
+void setvhflg_after_exit(void);
+void resetvhf(void);
+void resetvhf_after_exit(void);
+void resetvhf_after_trfailof(void);
+void tachexit(void); /* where ATTACHIT's GENTRAN returns */
+void tachexit_after_exit(void);
+void lmtocmsv(void);
+void lmtocmsv_after_findvac(void);
+void lmtocm(void);
+void lmtocm_after_exit(void);
+void lmtocm_after_gentran(void);
 #endif
 
 #endif

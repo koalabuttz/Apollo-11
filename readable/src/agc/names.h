@@ -1520,7 +1520,7 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define V52      ((word)K_V52)
 #define SETSURF  ((word)K_SETSURF)
 #define RESTSRF  ((word)K_RESTSRF)
-#define CLEANOUT ((word)K_CLEANOUT) /* FRESH_START's */
+#define CLEANOUT ((word)K_CLEANOUT) /* part 7's */
 #endif
 
 /* ---- EXTENDED_VERBS, part 3: alignment and radar designate ---- */
@@ -1701,6 +1701,30 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define ATTCK2       ((word)K_ATTCK2)
 #else
 #define ALINTIME ((word)K_ALINTIME) /* bank 43, with UPDATIME */
+#endif
+
+/* ---- EXTENDED_VERBS, part 7: tracking and state vector verbs ---- */
+
+/* Its erasable words are named by ADDRESS_OF: FLAGWRD0, FLAGWRD1, MPAC,
+ * CDUT, EXTVBACT, FIXLOC, QPRET, and the CM's OPTIND (E-bank 6). Its
+ * constants and labels: */
+#define OCT51       ((word)KW_OCT51)   /* GENTRAN's count: 42 words */
+#define TCPINAD     ((word)KW_TCPINAD) /* CADR TCPIN */
+#define TWO_PHSCHNG ((word)K_2PHSCHNG) /* 2PHSCHNG */
+#define VERB69      ((word)K_VERB69)
+#define ATTACHIT    ((word)K_ATTACHIT)
+#if LUMINARY099
+#define V16N56   ((word)KW_V16N56)
+#define DSPRRLOS ((word)K_DSPRRLOS) /* bank 40, with RRLOSDSP */
+#define RRLOSDSP ((word)K_RRLOSDSP)
+#define TRMTRAK1 ((word)K_TRMTRAK1) /* bank 42 */
+#else
+#define TRACKTRM ((word)K_TRACKTRM)
+#define SETVHFLG ((word)K_SETVHFLG)
+#define RESETVHF ((word)K_RESETVHF)
+#define TACHEXIT ((word)K_TACHEXIT)
+#define LMTOCMSV ((word)K_LMTOCMSV)
+#define LMTOCM   ((word)K_LMTOCM)
 #endif
 
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */

@@ -99,6 +99,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Extended verbs, part 4 | `EXTENDED_VERBS.agc` (LM pp. 276-279), the LM's radar test verbs | [`src/extended_verbs/`](src/extended_verbs/) | R04 (verb 63), the radar test: the rendezvous or landing radar sampled once a second and shown (the RR's angles, range and range rate; the LR's range, position and velocities), proceed going over to the other radar; R77 (verb 78), the LR's spurious-return test, sampling four times a second with no display; and R77END (verb 79), which stops it |
 | Extended verbs, part 5 | `EXTENDED_VERBS.agc` (LM pp. 292-295, CM pp. 253-254), the DAP data load | [`src/extended_verbs/`](src/extended_verbs/) | Verb 48: the autopilot's configuration (noun 46), the masses (noun 47) and the trims (noun 48), shown flashing and taken back from the crew. The LM's R03 from DAPDATA1 on (APSFLAG, DAPBOOLS, MASS, the X-axis jets, the maneuver rate, the hand controller's sensitivity and deadband, the masses checked against the empty vehicle's, RESTORDB, and the trim task's TRIMDONE); the CM's DAPDISP and DAPDISP1 (refused under TVC, the maximum deadband flag, S41.2, MASSPROP and S40.14) |
 | Extended verbs, part 6 | `EXTENDED_VERBS.agc` (LM pp. 275 and 282, CM p. 246), the clock update and ATTCK2 | [`src/extended_verbs/`](src/extended_verbs/) | Verb 55: flashing V25 N24 for a time to add to the computer's clock, taken only on verb 23's data in (the LM's R33 in bank 42, the CM's ALINTIME), and UPDATIME, which adds it with interrupts held; and the LM's ATTCK2, V43's task that puts the attitude errors out to the CDUs' needles and turns their drives on |
+| Extended verbs, part 7 | `EXTENDED_VERBS.agc` (LM pp. 262, 287-288, 296-300, CM pp. 236, 259-265), the tracking and state vector verbs | [`src/extended_verbs/`](src/extended_verbs/) | The basic code of V69 (the forced hardware restart), V56 (terminate tracking: the LM's TRMTRAK1, the CM's TRACKTRM and CLEANOUT), V66 (ATTACHIT, which copies this vehicle's state vector into the other's) and the CM's V47 (LMTOCMSV and LMTOCM, the other way round, sharing TACHEXIT), the LM's V85 (DSPRRLOS and RRLOSDSP, the rendezvous radar's line of sight shown once a second) and the CM's V87 and V88 (the VHF range flag). The interpretive words they hand over are shown in comments |
 
 Beside them:
 
@@ -232,7 +233,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    port's 2,832 cases, and 4,096 states at each of the 59 entries of both
    missions) and for the clock update and ATTCK2 (13 oracle rows, the
    port's 1,152 cases, and 4,096 states at each of the 18 entries of both
-   missions). `make names-check` checks the
+   missions) and for the tracking and state vector verbs (38 oracle rows,
+   the port's 2,304 cases, and 4,096 states at each of the 48 entries of
+   both missions). `make names-check` checks the
    generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight

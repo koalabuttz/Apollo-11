@@ -9,6 +9,7 @@
 #include "lanec_ev_radar.h"
 #include "lanec_ev_short.h"
 #include "lanec_ev_time.h"
+#include "lanec_ev_track.h"
 
 enum lanec_status readable_lm_ev_front_dispatch(apollo_overlay_state *, lanec_io *,
                                                 enum lanec_mission);
@@ -79,4 +80,16 @@ enum lanec_status lanec_ev_time_dispatch(apollo_overlay_state *s, lanec_io *io,
 {
     return m == LANEC_LM ? readable_lm_ev_time_dispatch(s, io, m)
                          : readable_cm_ev_time_dispatch(s, io, m);
+}
+
+enum lanec_status readable_lm_ev_track_dispatch(apollo_overlay_state *, lanec_io *,
+                                                enum lanec_mission);
+enum lanec_status readable_cm_ev_track_dispatch(apollo_overlay_state *, lanec_io *,
+                                                enum lanec_mission);
+
+enum lanec_status lanec_ev_track_dispatch(apollo_overlay_state *s, lanec_io *io,
+                                          enum lanec_mission m)
+{
+    return m == LANEC_LM ? readable_lm_ev_track_dispatch(s, io, m)
+                         : readable_cm_ev_track_dispatch(s, io, m);
 }
