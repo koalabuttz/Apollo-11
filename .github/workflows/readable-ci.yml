@@ -2,9 +2,9 @@
 #   1. The case tests (about a minute): names-check (the listing names
 #      against the listings), coverage, kernel-cases (the resident-kernel
 #      corpus on the readable Executive and WAITLIST), interbank-cases,
-#      phase-cases, restart-cases, machine-cases, interpreter-cases and
-#      alarm-cases (the readable routines against the faithful port's, side
-#      by side).
+#      phase-cases, restart-cases, machine-cases, interpreter-cases,
+#      alarm-cases and sp-cases (the readable routines against the faithful
+#      port's, side by side).
 #   2. The x86 exact scenario suite with the readable routines linked in:
 #      the quick set (26 rows) on PRs and pushes, every row nightly.
 name: readable-ci
@@ -63,7 +63,7 @@ jobs:
         run: tools/setup_cloud.sh
       - name: Gate 1, case tests
         working-directory: readable
-        run: make coverage names-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases
+        run: make coverage names-check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases sp-cases
       - name: Gate 2, x86 exact scenarios
         working-directory: readable
         env:

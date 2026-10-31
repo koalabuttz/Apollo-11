@@ -70,6 +70,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Restarts | `RESTARTS_ROUTINE.agc` (LM pp. 1303-1308, CM pp. 1414-1419), `RESTART_TABLES.agc` (LM pp. 238-243, CM pp. 211-221) | [`src/restart/`](src/restart/) | RESTARTS, GETPART2, PHSPART2 and the tables they read; NEWPHASE (CM): what the program starts again, group by group, after a restart |
 | The interpreter | `INTERPRETER.agc` (LM pp. 1002-1094, CM pp. 1107-1199) | [`src/interpreter/`](src/interpreter/) | INTPRET, the dispatcher (NEWOPS, DANZIG, DIRADRES, INDEX, PUSHUP), loads and stores, vector and scalar arithmetic, DDV and the divides, SQRT, UNIT, SIN and COS, ARCSIN and ARCCOS, the shifts, the index orders, branching (GOTO, CALL, RVQ, BZE, BPL, BOV) and the switch orders: the interpretive language most of the flight program's guidance and navigation is written in |
 | Alarms and aborts | `ALARM_AND_ABORT.agc` (LM pp. 1381-1385, CM pp. 1493-1496) | [`src/alarm/`](src/alarm/) | ALARM, ALARM2, BORTENT, PRIOENT, LARMENT, CHKFAIL1/2, FAIL3, PROGLARM, MULTEXIT, MULTFAIL, PRIOLARM, CURTAINS, VARALARM, BAILOUT, WHIMPER, POODOO, ABORT2, CCSHOLE; in the LM also GOPOODOO, STRTIDLE, BAILOUT1, POODOO1, ALARM1, ALMNCADR and FLAGS: the program alarm codes (FAILREG, the PROG light, V05N09) and the software restarts and aborts |
+| Single precision sine and cosine | `SINGLE_PRECISION_SUBROUTINES.agc` (LM p. 1102, CM p. 1207) | [`src/single_precision/`](src/single_precision/) | SPCOS, SPSIN, SPT, POLLEY and ARG90: a quick sine or cosine of an angle in A, for the autopilots and displays, by a short polynomial after bringing the angle within 90 degrees |
 
 Beside them:
 
@@ -82,8 +83,9 @@ Beside them:
   only.
 - [`tests/`](tests/): the side-by-side tests of the machine's
   instructions, the inter-bank routines, the phase table maintenance, the
-  restarts, the interpreter and the alarms, and the build of the x86_64 flight
-  program with the readable routines in it.
+  restarts, the interpreter, the alarms and the single precision sine and
+  cosine, and the build of the x86_64 flight program with the readable
+  routines in it.
 
 Both missions come from the same source, built with `LUMINARY099=1` or
 `COMANCHE055=1`; where the listings differ the code shows both in place.
@@ -136,7 +138,10 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    (every alarm site and entry of each mission, 4,096 cases against the
    original program's yaAGC digests) on the readable alarms and aborts,
    then readable and faithful side by side on 40,000 random states per
-   entry. `make names-check` checks the generated names and the
+   entry. `make sp-cases` runs the faithful port's SPSIN and SPCOS test
+   (yaAGC return states) on the readable routines, then readable and
+   faithful side by side on every value of A, four states each. `make
+   names-check` checks the generated names and the
    restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight

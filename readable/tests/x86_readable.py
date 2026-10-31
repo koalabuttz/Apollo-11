@@ -48,9 +48,13 @@ REPLACED = (
     # other split files stay: they are the C64's, and nothing on x86 calls
     # them.
     'lm_alarm.o', 'cm_alarm.o',
+    # SINGLE_PRECISION_SUBROUTINES.agc (src/single_precision): the routine
+    # tables. lm_single_trig.o, cm_single_return.o and cm_quictrig.o stay:
+    # other faithful routines call them.
+    'sp_routines.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
-READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper')
+READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin')
 xb.OUT = READABLE / 'build/x86-flight'
 
 

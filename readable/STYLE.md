@@ -162,7 +162,8 @@ so a reader sees both versions together.
 Every change to `readable/` must keep both:
 
 1. **The case tests** (`make names-check kernel-cases interbank-cases
-   phase-cases restart-cases machine-cases interpreter-cases alarm-cases`,
+   phase-cases restart-cases machine-cases interpreter-cases alarm-cases
+   sp-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -195,6 +196,9 @@ Every change to `readable/` must keep both:
      entry, against their yaAGC digests) on the readable alarms and
      aborts, then the two side by side on random states. A readable
      routine that refuses a state must leave it as it found it.
+   - `sp-cases`: the faithful port's SPSIN and SPCOS test (its yaAGC
+     return states) on the readable routines, then the two side by side
+     on every value of A.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

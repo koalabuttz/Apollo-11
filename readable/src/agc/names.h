@@ -521,6 +521,22 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define DOWNFLAG ((word)K_DOWNFLAG)
 #endif
 
+/* ---- Single precision sine and cosine (SINGLE_PRECISION_SUBROUTINES.agc) ---- */
+
+/* TEMK holds the argument as it is reduced, then the result; SQ its
+ * square. The CM shares them with other routines (TEMK EQUALS HALFY, SQ
+ * EQUALS ROOTRET). */
+#define TEMK ERASABLE(K_TEMK)
+#define SQ   ERASABLE(K_SQ)
+/* The polynomial's coefficients, halved (C1/2 is pi/4). */
+#define C1_2 ((word)KW_C1_2) /* C1/2 */
+#define C3_2 ((word)KW_C3_2) /* C3/2 */
+#define C5_2 ((word)KW_C5_2) /* C5/2 */
+#define SPCOS  ((word)K_SPCOS)
+#define SPSIN  ((word)K_SPSIN)
+#define POLLEY ((word)K_POLLEY)
+#define ARG90  ((word)K_ARG90)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
