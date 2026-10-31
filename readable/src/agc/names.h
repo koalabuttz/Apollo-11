@@ -243,7 +243,7 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define USPRCADR     ((word)K_USPRCADR)
 #define SUPERSW      ((word)K_SUPERSW)
 #define CHECKMM      ((word)K_CHECKMM)
-#define TCQ          ((word)K_TCQ) /* = Q+2 +1, a TC Q in fixed-fixed */
+#define TCQ          ((word)K_TCQ)      /* = Q+2 +1, a TC Q in fixed-fixed */
 #define SETUPDSP     ((word)K_SETUPDSP) /* bank 10 */
 #define TOCON2       ((word)K_TOCON2)
 #define BELOW4       ((word)K_BELOW4) /* bank 10 */
@@ -1416,6 +1416,112 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define CHKPOOH  ((word)K_CHKPOOH)
 #define NVSUB    ((word)K_NVSUB)
 #define ENDEXT   ((word)K_ENDEXT)
+
+/* ---- EXTENDED_VERBS, part 2: the short verbs ---- */
+
+/* Its erasable words are named by ADDRESS_OF: MODECADR, FLAGWRD0-9,
+ * DAPBOOLS, SKEEP1-6, SMODE, CPHIX, T5LOC, DAPDATR1, MRKBUF1, LANDMARK.
+ * Its constants: the job priorities, the flag bits it tests, and the
+ * words it stores (LDNDUMPI, the REMADR of DNDUMPI; S+1 and S+ZERO, the
+ * self-check's EQUALS for BIT1 and ZERO; SELFADRS, the ADRES of SELFCHK;
+ * ADRS1, the ADRES of SKEEP1; VNCON, VN 0501). */
+#define PRIO4       ((word)KW_PRIO4)
+#define PRIO7       ((word)KW_PRIO7)
+#define PRIO10      ((word)KW_PRIO10)
+#define PRIO16      ((word)KW_PRIO16)
+#define PRIO20      ((word)KW_PRIO20)
+#define PRIO22      ((word)KW_PRIO22)
+#define EBANK7      ((word)KW_EBANK7)
+#define PINSUPBT    ((word)KW_PINSUPBT)
+#define TRACKBIT    ((word)KW_TRACKBIT)
+#define LDNDUMPI    ((word)KW_LDNDUMPI)
+#define SELFADRS    ((word)KW_SELFADRS)
+#define ADRS1       ((word)KW_ADRS1)
+#define VNCON       ((word)KW_VNCON)
+#define S_PLUS_1    ((word)KW_SP1)    /* S+1 */
+#define S_PLUS_ZERO ((word)KW_SPZERO) /* S+ZERO */
+#if LUMINARY099
+#define PULSES       ((word)KW_PULSES)
+#define RENDWBIT     ((word)KW_RENDWBIT)
+#define BITS9_PLUS_7 ((word)KW_BITS9P7)  /* BITS9+7 */
+static const word V82CON[2] = KW_V82CON; /* 2CADR V82CALL */
+#else
+#define R23BIT   ((word)KW_R23BIT)
+#define R31FLBIT ((word)KW_R31FLBIT)
+#define V94FLBIT ((word)KW_V94FLBIT)
+#define LANDBANK ((word)KW_LANDBANK) /* ECADR LANDMARK */
+static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
+#endif
+
+/* Its labels, in bank 43, and where it goes on to. */
+#define CKMODCAD ((word)K_CKMODCAD)
+#define GOLOADLV ((word)K_GOLOADLV)
+#define VB64     ((word)K_VB64)
+#define V82PERF  ((word)K_V82PERF)
+#define V83PERF  ((word)K_V83PERF)
+#define V89PERF  ((word)K_V89PERF)
+#define V90PERF  ((word)K_V90PERF)
+#define CREWMANU ((word)K_CREWMANU)
+#define DNEDUMP  ((word)K_DNEDUMP)
+#define LEMVEC   ((word)K_LEMVEC)
+#define CSMVEC   ((word)K_CSMVEC)
+#define SYSTEST  ((word)K_SYSTEST)
+#define WMATRXNG ((word)K_WMATRXNG)
+#define SHOWSUM  ((word)K_SHOWSUM)
+#define SDISPLAY ((word)K_SDISPLAY)
+#define NOKILL   ((word)K_NOKILL)
+#define ENDSUMS  ((word)K_ENDSUMS)
+#define ATTACHED ((word)K_ATTACHED)
+#define VERB96   ((word)K_VERB96)
+#define V67      ((word)K_V67)
+#define FLASHOFF ((word)K_FLASHOFF) /* PINBALL's */
+#define STSHOSUM ((word)K_STSHOSUM) /* the self-check's */
+#define NXTBNK   ((word)K_NXTBNK)
+#define SELFCHK  ((word)K_SELFCHK)
+#define PRIOCHNG ((word)K_PRIOCHNG) /* the Executive's */
+#if LUMINARY099
+#define DAPATTER ((word)K_DAPATTER)
+#define TOTATTER ((word)K_TOTATTER)
+#define LRON     ((word)K_LRON)
+#define LROFF    ((word)K_LROFF)
+#define V47TXACT ((word)K_V47TXACT)
+#define ALINTIME ((word)K_ALINTIME)
+#define MINIMP   ((word)K_MINIMP)
+#define NOMINIMP ((word)K_NOMINIMP)
+#define TRMTRACK ((word)K_TRMTRACK)
+#define NOUPDOWN ((word)K_NOUPDOWN)
+#define UPDATOFF ((word)K_UPDATOFF)
+#define DAPDISP  ((word)K_DAPDISP)
+#define SNUFFOUT ((word)K_SNUFFOUT)
+#define OUTSNUFF ((word)K_OUTSNUFF)
+#define VERB85   ((word)K_VERB85)
+#else
+#define V60      ((word)K_V60)
+#define V61      ((word)K_V61)
+#define V62      ((word)K_V62)
+#define V63      ((word)K_V63)
+#define V92CONT  ((word)K_V92CONT)
+#define EXDAPOFF ((word)K_EXDAPOFF)
+#define CKOPTVB  ((word)K_CKOPTVB)
+#define CHAZFOGC ((word)K_CHAZFOGC)
+#define ENATMA   ((word)K_ENATMA)
+#define STROKON  ((word)K_STROKON)
+#define STABLISH ((word)K_STABLISH)
+#define V85PERF  ((word)K_V85PERF)
+#define GOTOR21  ((word)K_GOTOR21)
+#define GOTOR23  ((word)K_GOTOR23)
+#define REGR21   ((word)K_REGR21)
+#define R22ALARM ((word)K_R22ALARM)
+#define V86PERF  ((word)K_V86PERF)
+#define LFTFLGON ((word)K_LFTFLGON)
+#define SETPRFLG ((word)K_SETPRFLG)
+#define RESETPRF ((word)K_RESETPRF)
+#define VERB94   ((word)K_VERB94)
+#define V52      ((word)K_V52)
+#define SETSURF  ((word)K_SETSURF)
+#define RESTSRF  ((word)K_RESTSRF)
+#define CLEANOUT ((word)K_CLEANOUT) /* FRESH_START's */
+#endif
 
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
 #define CDULOGIC ((word)K_CDULOGIC)

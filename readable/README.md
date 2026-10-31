@@ -94,6 +94,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Sighting marks | `AOTMARK.agc` (LM pp. 244-261) | [`src/aotmark/`](src/aotmark/), with CDULOGIC of `RTB_OP_CODES.agc` (LM p. 1397, CM p. 1508) in [`src/rtb_op_codes/`](src/rtb_op_codes/) | AOTMARK, the LM's star sightings for P51-P53 and R59: the crew's detent and star code (V01N71, GETDAT, CODE7, CODE1TO6), the mark planes (OPTAXIS, OANB), the X and Y mark buttons (MARKRUPT, FINDKEY, VERIFYMK, VACSTOR, MKREJ, CHANGEVB's next mark verb) and the star direction averaged over up to five pairs (MARKCHEX, AVESTAR, AVEIT), or on the lunar surface the cursor and spiral readings (V06N79) and SURFSTAR; basic code, and its interpretive code in the listing's notation. With it the LM's file is all readable |
 | Sextant marks | `SXTMARK.agc` (CM pp. 222-235) | [`src/sxtmark/`](src/sxtmark/) | SXTMARK, the CM's sextant marks for P51-P53 and for R21-R22 (P22, P23): a VAC area for the marks (MARKOK, MKVACFND), the mark verbs (MKVB51's V51, MKVB50's V50N25, MKVB5X), the MARK and MARK REJECT buttons and the navigation DSKY's keys (MARKRUPT, KEYCALL, MKREJECT, REJECT2, REJECT3), the check that the ship was not turning too fast at the mark (MARKIT, MARKDIF, DIFCHK), keeping the mark (MARKCONT, MARK2, VACSTOR, or R21's MRKBUF1), the end (ENTANSWR, JAMIT, ENDMARKS, TERMSXT) and the release of the mark system (MKRELEAS, MKRLEES). With it the CM's file is all readable |
 | Extended verbs, part 1 | `EXTENDED_VERBS.agc` (LM pp. 262-264, CM pp. 236-238), the front end | [`src/extended_verbs/`](src/extended_verbs/) | GOEXTVB and its fan LST2FAN (each mission's 60 verbs, V40 to V99, to their routines), TESTXACT, SETXTACT and XACT0 (claiming the extended verb display system, EXTVBACT, unless another extended verb or a priority display has it), XACTALM, ALM/END and GOPIN (the operator error light and back to PINBALL), and the LM's CHKPOOH (P00 or P00- only). The rest of the file comes part by part |
+| Extended verbs, part 2 | `EXTENDED_VERBS.agc` (LM pp. 266-299, CM pp. 243-267), the short verbs | [`src/extended_verbs/`](src/extended_verbs/) | The verbs that set or clear a flag and go back to PINBALL (the LM's 57, 58, 61, 62, 65, 75-77, 80, 81, 93, 95 and 96; the CM's 44, 45, 58, 61-63, 75-77, 80, 81, 93 and 96), those that claim the display system and start a job (the LM's 47, 49, 64, 66, 67, 83, 89, 90 and 92; the CM's 49, 64-68, 78, 83, 85, 89, 90 and 92), the hand-overs to other banks (verb 50 and the other please-perform verbs; the LM's 48, 55, 56, 82 and 85; the CM's 46, 54, 57, 82 and 94), verb 74 and the CM's 52, 60 and 86, CKMODCAD, the CM's CHKPOOH and EXDAPOFF, and SHOWSUM, verb 91's bank sums |
 
 Beside them:
 
@@ -217,9 +218,10 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    one for every branch, against the original program's Virtual AGC
    results) on the readable routines, then readable and faithful side by
    side on the port's whole suite (5,760 cases) and 4,096 states at each
-   of the 21 keys of both missions. `make
-   names-check` checks the generated names and the restart tables against
-   the listings.
+   of the 21 keys of both missions; then the same for the short verbs
+   (121 oracle rows, the port's 6,368 cases, and 4,096 states at each of
+   the 199 entries of both missions). `make names-check` checks the
+   generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
    scenarios (P63 descent, rendezvous, entry, restarts, ...) against the
