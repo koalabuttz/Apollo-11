@@ -1257,19 +1257,31 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define ENDEXT   ((word)K_ENDEXT)
 #endif
 
-/* ---- AOTMARK: the LM's star sightings ---- */
+/* ---- The sighting marks: AOTMARK (LM) and SXTMARK (CM) ---- */
+
+/* MARKSTAT, the state of the marking: the VAC area of the marks in its
+ * low 9 bits, and each mission's own bits above them. MKVACFND, MKRELEAS,
+ * VACSTOR and ENDMARKS are labels of both missions' files; ENDMARK,
+ * GOMARK4 and GOODEND are PINBALL's and the extended verbs'. */
+#define MARKSTAT ERASABLE(K_MARKSTAT)
+#define MKVACFND ((word)K_MKVACFND)
+#define MKRELEAS ((word)K_MKRELEAS)
+#define VACSTOR  ((word)K_VACSTOR)
+#define ENDMARKS ((word)K_ENDMARKS)
+#define ENDMARK  ((word)K_ENDMARK)
+#define GOMARK4  ((word)K_GOMARK4)
+#define GOODEND  ((word)K_GOODEND)
 
 #if LUMINARY099
-/* Its erasable words: MARKSTAT, the state of the marking (its VAC area in
- * bits 1-9; bits 10 and 11 the X and Y marks wanted or made; bit 12 set
- * to keep MARKRUPT out; bit 13 a mark rejected; bit 14 a pair complete);
+/* AOTMARK's erasable words: MARKSTAT (its VAC area in bits 1-9; bits 10
+ * and 11 the X and Y marks wanted or made; bit 12 set to keep MARKRUPT
+ * out; bit 13 a mark rejected; bit 14 a pair complete);
  * XYMARK, the mark's kind (BIT10 X, BIT11 Y) or the detent code; MARKCNTR,
  * the pairs made; MKDEX, an index (the verb to display, a mark's place in
  * the VAC area, the star vectors averaged). ADDRESS_OF gives the others:
  * AOTCODE, the detent and star code the crew load; AZ, the COAS's azimuth
  * and elevation; AOTAZ and AOTEL, each detent's; TSIGHT, the last mark's
  * time; CURSOR and SPIRAL, the surface readings. */
-#define MARKSTAT ERASABLE(K_MARKSTAT)
 #define XYMARK   ERASABLE(K_XYMARK)
 #define MARKCNTR ERASABLE(K_MARKCNTR)
 #define MKDEX    ERASABLE(K_MKDEX)
@@ -1301,9 +1313,7 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define AOTMARK      ((word)K_AOTMARK)
 #define EXTVBCHK     ((word)K_EXTVBCHK)
 #define MKVAC        ((word)K_MKVAC)
-#define MKVACFND     ((word)K_MKVACFND)
 #define MKABORT      ((word)K_MKABORT)
-#define MKRELEAS     ((word)K_MKRELEAS)
 #define KILLAOT      ((word)K_KILLAOT)
 #define GETDAT       ((word)K_GETDAT)
 #define ENTERDAT     ((word)K_ENTERDAT)
@@ -1317,7 +1327,6 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define PASTIT       ((word)K_PASTIT)
 #define AVESTAR      ((word)K_AVESTAR)
 #define AVEIT        ((word)K_AVEIT)
-#define ENDMARKS     ((word)K_ENDMARKS)
 #define MKALARM      ((word)K_MKALARM)
 #define FINDKEY      ((word)K_FINDKEY)
 #define SOMEKEY      ((word)K_SOMEKEY)
@@ -1330,14 +1339,62 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define REJECT       ((word)K_REJECT)
 #define SURFREJ      ((word)K_SURFREJ)
 #define MARKTYPE     ((word)K_MARKTYPE)
-#define VACSTOR      ((word)K_VACSTOR)
 #define SURFJOB      ((word)K_SURFJOB)
 #define CHANGEVB     ((word)K_CHANGEVB)
 #define DSPV6N79     ((word)K_DSPV6N79)
-#define ENDMARK      ((word)K_ENDMARK)
-#define GOMARK4      ((word)K_GOMARK4)
-#define GOODEND      ((word)K_GOODEND)
 #define DESCBITS     ((word)K_DESCBITS)
+#endif
+
+#if COMANCHE055
+/* SXTMARK's erasable words: MARKSTAT (its VAC area in bits 1-9; bit 10
+ * set by a mark and cleared by a mark reject; bits 12-14 the marks still
+ * wanted); MKNDX, the CDU DIFCHK checks; DSPTEM1, the register 1 word of
+ * a display; CDUCHKWD, the delay before a mark's CDUs are checked (+0 or
+ * less: no check). ADDRESS_OF gives the others: MKCDUX ... MKCDUT, the
+ * CDUs at the mark, and MKT2T1, its time; MRKBUF1 and MRKBUF2, R21's
+ * marks; MARKDOWN, the mark for the downlink. */
+#define MKNDX    ERASABLE(K_MKNDX)
+#define DSPTEM1  ERASABLE(K_DSPTEM1)
+#define CDUCHKWD ERASABLE(K_CDUCHKWD)
+
+/* Its constants: PRIO32, a job's priority (PRIO34 is also MARKSTAT's
+ * bits 12-14); 74K (-3777: with the one a CCS takes off, one mark less in
+ * bits 12-14); R1D1 (OCT 16); the verb and noun words V50N25 and VB51.
+ * OCT37 is LOW5. */
+#define PRIO32         ((word)KW_PRIO32)
+#define SEVENTY_FOUR_K ((word)KW_74K) /* 74K */
+#define R1D1           ((word)KW_R1D1)
+#define V50N25         ((word)KW_V50N25)
+#define VB51           ((word)KW_VB51)
+
+/* Its labels, in bank 07 (MARKDIF, MKACPT and DIFCHK in 10). */
+#define SXTMARK       ((word)K_SXTMARK)
+#define MKABORT       ((word)K_MKABORT)
+#define MARKOK        ((word)K_MARKOK)
+#define MKRLEES       ((word)K_MKRLEES)
+#define MARKRUPT      ((word)K_MARKRUPT)
+#define KEYCALL       ((word)K_KEYCALL)
+#define MARKCONT      ((word)K_MARKCONT)
+#define MARKIT1       ((word)K_MARKIT1)
+#define MARKET        ((word)K_MARKET)
+#define MARKET3       ((word)K_MARKET3)
+#define HUNDRED14_ALM ((word)K_114ALM) /* 114ALM */
+#define MARK2         ((word)K_MARK2)
+#define MKREJECT      ((word)K_MKREJECT)
+#define MRKREJCT      ((word)K_MRKREJCT)
+#define REJECT2       ((word)K_REJECT2)
+#define REJECT3       ((word)K_REJECT3)
+#define MKVB51        ((word)K_MKVB51)
+#define TERMSXT       ((word)K_TERMSXT)
+#define TERMP03       ((word)K_TERMP03)
+#define ENTANSWR      ((word)K_ENTANSWR)
+#define JAMIT         ((word)K_JAMIT)
+#define MKVB5X        ((word)K_MKVB5X)
+#define MKVB50        ((word)K_MKVB50)
+#define MARKIT        ((word)K_MARKIT)
+#define MARKDIF       ((word)K_MARKDIF)
+#define MKACPT        ((word)K_MKACPT)
+#define DIFCHK        ((word)K_DIFCHK)
 #endif
 
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */

@@ -183,7 +183,7 @@ Every change to `readable/` must keep both:
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
    sp-cases service-cases downtelemetry-cases fresh-start-cases
    v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases
-   rcs-monitor-cases ags-cases aotmark-cases`,
+   rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -261,6 +261,7 @@ Every change to `readable/` must keep both:
      (its frozen cases run to their stops, against yaAGC digests) on the
      readable AOTMARK, then the two side by side at every key on random
      states.
+   - `sxtmark-cases`: the same for the CM's sextant marks (SXTMARK).
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the
