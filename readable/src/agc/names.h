@@ -907,6 +907,60 @@ static const word P70CADR[2] = KW_P70CADR;
 #define UPTEST   ((word)K_UPTEST)
 #define LODSAMPT ((word)K_LODSAMPT)
 
+/* ---- The interrupt lead-ins (INTERRUPT_LEAD_INS.agc) ---- */
+
+/* The BBCONs the lead-ins load, each interrupt's bank and erasable bank.
+ * UPRPTBB is KEYRPTBB, by EQUALS. The LM's T6RUPT jumps by a 2CADR in
+ * fixed memory (T6ADR); its T5RUPT and the CM's T6RUPT and T5RUPT by a
+ * 2CADR in erasable (T5ADR, T6LOC, T5LOC), which the program changes. */
+#define GOBB     ((word)KW_GOBB)
+#define T4RPTBB  ((word)KW_T4RPTBB)
+#define KEYRPTBB ((word)KW_KEYRPTBB)
+#define MKRUPTBB ((word)KW_MKRUPTBB)
+#define UPRPTBB  ((word)KW_UPRPTBB)
+#define DWNRPTBB ((word)KW_DWNRPTBB)
+#define RDRPTBB  ((word)KW_RDRPTBB)
+#if LUMINARY099
+#define RUPT10BB ((word)KW_RUPT10BB)
+static const word T6ADR[2] = KW_T6ADR; /* 2CADR DOT6RUPT */
+#else
+#define HCRUPTBB ((word)KW_HCRUPTBB)
+#endif
+
+/* The handlers they go to, in other files, and the CM's T5RUPT, the end
+ * of its T5RUPT lead-in. NOQBRSM is the last of WAITLIST's interrupt
+ * exits (RESUME, NOQRSM, NOQBRSM). */
+#define T4RUPT   ((word)K_T4RUPT)
+#define MARKRUPT ((word)K_MARKRUPT)
+#if LUMINARY099
+#define RADAREAD ((word)K_RADAREAD)
+#define PITFALL  ((word)K_PITFALL)
+#else
+#define VHFREAD ((word)K_VHFREAD)
+#define T5RUPT  ((word)K_T5RUPT)
+#endif
+#define NOQBRSM ((word)K_NOQBRSM)
+
+/* ---- The LM's T6 interrupt (T6-RUPT_PROGRAMS.agc) ---- */
+
+/* Its erasable words: TIME6, the clock (ADDRESS_OF(TIME6)), and in EBANK 6
+ * the queue of the next two RCS jet firings: T6NEXT and T6FURTHA, each a
+ * time and a writer's offset (NXT6ADR after T6NEXT), and NEXTP, NEXTU and
+ * NEXTV, the jets to fire. Its labels, in bank 17 (T6JOBCHK, DOT6RUPT) or
+ * fixed-fixed memory (the writers), and its one constant, 00314OCT, the
+ * channel 5 bits of the V jets. */
+#if LUMINARY099
+#define T6JOBCHK  ((word)K_T6JOBCHK)
+#define T6JOB     ((word)K_T6JOB)
+#define ENABLET6  ((word)K_ENABLET6)
+#define GOCH56    ((word)K_GOCH56)
+#define DOT6RUPT  ((word)K_DOT6RUPT)
+#define WRITEP    ((word)K_WRITEP)
+#define WRITEU    ((word)K_WRITEU)
+#define WRITEV    ((word)K_WRITEV)
+#define OCT_00314 ((word)KW_00314OCT) /* 00314OCT */
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

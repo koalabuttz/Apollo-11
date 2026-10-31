@@ -30,6 +30,13 @@ void dly2_minus1(void);
 void t3rupt_lead_in(void);
 void taskover(void);
 
+/* The end of every interrupt: RESUME and the later ways in. */
+void resume(void);
+void noqrsm(void);
+void resume_plus3(void);
+void noqbrsm(void);
+void noqbrsm_plus1(void);
+
 /* SVCT3: ENDTASK's task, and its two continuations. */
 void svct3(void);
 void svct3_after_novac(void);

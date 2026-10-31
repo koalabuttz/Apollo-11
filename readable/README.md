@@ -69,7 +69,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Subsystem | Listing | Readable C | Routines |
 |---|---|---|---|
 | Executive | `EXECUTIVE.agc` (LM pp. 1103-1116, CM pp. 1208-1220) | [`src/executive/`](src/executive/) | NOVAC, FINDVAC, SPVAC, CHANG1/2, JOBSLEEP, JOBWAKE, PRIOCHNG, ENDOFJOB, the job switch (CHANJOB), the priority scan (EJSCAN) and the idle loop (DUMMYJOB, ADVAN) |
-| WAITLIST | `WAITLIST.agc` (LM pp. 1117-1132, CM pp. 1221-1235) | [`src/waitlist/`](src/waitlist/) | WAITLIST, TWIDDLE, FIXDELAY, VARDELAY, T3RUPT, TASKOVER, SVCT3 and LONGCALL |
+| WAITLIST | `WAITLIST.agc` (LM pp. 1117-1132, CM pp. 1221-1235) | [`src/waitlist/`](src/waitlist/) | WAITLIST, TWIDDLE, FIXDELAY, VARDELAY, T3RUPT, TASKOVER, SVCT3 and LONGCALL; RESUME, NOQRSM and NOQBRSM, the end of every interrupt |
 | Inter-bank communication | `INTER-BANK_COMMUNICATION.agc` (LM pp. 998-1001, CM pp. 1103-1106) | [`src/interbank/`](src/interbank/) | BANKCALL, SWCALL, SWRETURN, POSTJUMP, BANKJUMP, MAKECADR, SUPDACAL, IBNKCALL, ISWCALL, ISWRETRN, USPRCADR and SUPERSW: calls and jumps between banks of fixed memory |
 | Phase table maintenance | `PHASE_TABLE_MAINTENANCE.agc` (LM pp. 1294-1302, CM pp. 1404-1413) | [`src/phase_table/`](src/phase_table/) | NEWMODEX, NEWMODEA, MMDSPLAY, CHECKMM, SETUPDSP, PHASCHNG, 2PHSCHNG, PHSCHNGA (LM), PHSCHNG2, ONEORTWO and CON2: the major mode on the DSKY, and the phase changes that tell a restart what to start again |
 | Restarts | `RESTARTS_ROUTINE.agc` (LM pp. 1303-1308, CM pp. 1414-1419), `RESTART_TABLES.agc` (LM pp. 238-243, CM pp. 211-221) | [`src/restart/`](src/restart/) | RESTARTS, GETPART2, PHSPART2 and the tables they read; NEWPHASE (CM): what the program starts again, group by group, after a restart |
@@ -83,6 +83,8 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Verb 37 and P00 | `FRESH_START_AND_RESTART.agc` (LM pp. 224-235, CM pp. 194-209), V37 and P00 | [`src/fresh_start/v37.c`](src/fresh_start/v37.c) | GOP00FIX ("please choose a program"), V37 (the astronaut's change of major mode: CANV37, R00 or the CM's R00TOP00, POOH, GOMOD, NOUVEAU, V37XEQ, V37XEQC), the tables PREMM1, FCADRMM1 and DNLADMM1; in the LM also V37RET, RENDN00, KILL2 and SETUP70; in the CM INITSUB, RAKE and VAC5STOR |
 | P00's integration | `FRESH_START_AND_RESTART.agc` (LM pp. 229, 236-237, CM pp. 199, 209-210), interpretive code | [`src/fresh_start/stateup.c`](src/fresh_start/stateup.c) | STATEUP (bring both state vectors up to the present), THISVINT, and R00's wait for the integration (CALL INTSTALL, EXIT): interpretive code written in the listing's notation ([`src/interpreter/notation.h`](src/interpreter/notation.h)) and run by the readable interpreter |
 | Keyboard and uplink interrupts | `KEYRUPT_UPRUPT.agc` (LM pp. 1338-1340, CM pp. 1449-1451) | [`src/keyrupt/`](src/keyrupt/) | KEYRUPT1, KEYCOM, ACCEPTUP, UPRUPT, UPRPT1, UPTEST, UPOK, CLUPLOCK and TMFAIL2: a key pressed on the DSKY, or an uplink word with its code three times over, handed to a new CHARIN job; a bad uplink word locks the uplink out until ERROR RESET |
+| Interrupt lead-ins | `INTERRUPT_LEAD_INS.agc` (LM pp. 153-154, CM pp. 131-132) | [`src/lead_ins/`](src/lead_ins/) | The four words at 04000 + 4n where the AGC goes on interrupt n: GO (the restart), T6RUPT, T5RUPT, T4RUPT, KEYRUPT1, KEYRUPT2, UPRUPT, DOWNRUPT, RADAR RUPT and the LM's RUPT10 or the CM's HAND CONTROL RUPT, each saving A and L, switching to its handler's banks and jumping there; the CM's T5RUPT, which ends the interrupt when TIME5 is within half a second of its next overflow |
+| The LM's T6 interrupt | `T6-RUPT_PROGRAMS.agc` (LM pp. 1403-1405) | [`src/t6rupt/`](src/t6rupt/) | DOT6RUPT, T6JOBCHK, T6JOB, ENABLET6, GOCH56, WRITEP, WRITEU and WRITEV: the RCS jets on or off at the moments the autopilot queued on TIME6, the queue moved up and the clock started again |
 
 Beside them:
 
@@ -177,8 +179,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful port's keyboard and uplink test (1,536 states per mission over
    the six entries, every uplink path, against the original program's
    yaAGC digests) on the readable KEYRUPT and UPRUPT, then readable and
-   faithful side by side on 65,536 states per entry. `make names-check` checks the generated names and the
-   restart tables against the listings.
+   faithful side by side on 65,536 states per entry. `make rupt-cases`
+   runs the faithful port's lead-in test (128 states per entry, both
+   missions, with the CM's RESUME entries) and the LM's T6 test (3,840
+   states, every T6JOBCHK path and jet writer, with the LM's RESUME
+   entries), against the original program's yaAGC digests, on the
+   readable lead-ins, RESUME and T6 interrupt, then readable and faithful
+   side by side on 65,536 states per entry. `make names-check` checks the
+   generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
    scenarios (P63 descent, rendezvous, entry, restarts, ...) against the
@@ -215,6 +223,12 @@ The gates cannot see these, since they compare the two ports:
 - **HI10 run as MASK.** On UPTEST's +0 path the AGC runs the constant
   HI10 (OCT 77740) as MASK 7740. It changes only A, which TMFAIL2
   overwrites at once, so neither port runs it (`src/keyrupt/keyrupt.c`).
+- **RESUME reruns the word at ZRUPT -1.** The AGC's RESUME runs the
+  instruction the interrupt saved in BRUPT; both ports go on at ZRUPT -1
+  instead. The bindings take only states where BRUPT is that word under
+  the banks being restored, and the port's tests check both outcomes
+  against yaAGC (`src/waitlist/waitlist.c`, `src/binding/
+  rupt_routines.c`).
 - **Steps not modelled.** An INDEX that would make an instruction the
   listing does not intend, or a channel a routine does not use, calls
   `not_modelled()`: the binding puts the state back and refuses.

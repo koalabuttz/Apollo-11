@@ -182,7 +182,7 @@ Every change to `readable/` must keep both:
 1. **The case tests** (`make names-check kernel-cases interbank-cases
    phase-cases restart-cases machine-cases interpreter-cases alarm-cases
    sp-cases service-cases downtelemetry-cases fresh-start-cases
-   v37-cases stateup-cases keyrupt-cases`,
+   v37-cases stateup-cases keyrupt-cases rupt-cases`,
    about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
@@ -239,6 +239,10 @@ Every change to `readable/` must keep both:
    - `keyrupt-cases`: the faithful port's keyboard and uplink test (every
      entry and uplink path, against yaAGC digests) on the readable KEYRUPT
      and UPRUPT, then the two side by side on random states.
+   - `rupt-cases`: the faithful port's lead-in and LM T6 tests (every
+     entry, every T6JOBCHK path, and RESUME with BRUPT the word at ZRUPT -1
+     or not, against yaAGC digests) on the readable lead-ins, RESUME and
+     T6 interrupt, then the two side by side on random states.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the
