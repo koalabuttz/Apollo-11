@@ -66,8 +66,8 @@ SP_SOURCES := src/agc/agc.c src/single_precision/single_precision.c src/binding/
 	src/binding/sp_routines.c
 SERVICE_SOURCES := src/agc/agc.c src/service/service.c $(sort $(wildcard src/interpreter/*.c)) \
 	src/interbank/interbank.c src/binding/machine.c src/binding/service_routines.c
-DNTM_SOURCES := src/agc/agc.c src/downtelemetry/downtelemetry.c src/binding/machine.c \
-	src/binding/downtelemetry_routines.c
+DNTM_SOURCES := src/agc/agc.c src/downtelemetry/downtelemetry.c src/downtelemetry/downlink_lists.c \
+	src/binding/machine.c src/binding/downtelemetry_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES))
 HEADERS := $(wildcard src/*/*.h)

@@ -5,8 +5,8 @@
  * lm_downtelemetry_routines and cm_downtelemetry_routines.
  *
  * Plumbing only: point the machine at the program's state, give it the
- * fixed words the program reads (the downlists and constants, from the
- * faithful port's compiled listing data) and the channels of the DNTM io
+ * fixed words the program reads (the readable downlists, and the constants
+ * from the faithful port's compiled listing data) and the channels of the DNTM io
  * record, and take the states the faithful routines take. A routine that
  * meets a step it does not model (not_modelled(), or a fixed word or a
  * channel it has none for) is not taken: the state is put back. */
@@ -49,13 +49,18 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The fixed words the program reads: the downlists, DNTABLE and the
- * constants CCS runs as instructions. */
+/* The fixed words the program reads: the downlists and DNTABLE from the
+ * readable lists (src/downtelemetry/downlink_lists.c), the constants from
+ * the faithful port's listing data. */
 static word fixed_memory(unsigned physical)
 {
     agc_word value = 0;
 
+    word list_word;
+
     if (physical == B5(02000u)) downtelemetry_read_02000 = true;
+    if (physical / 1024u == 5u && downlink_list_word((word)(02000u + physical % 1024u), &list_word))
+        return list_word;
     if (!agc_site_lookup(DATA, DATA_COUNT, (uint16_t)physical, &value)) leave();
     return (word)(value & MINUS_ZERO);
 }

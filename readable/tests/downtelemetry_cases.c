@@ -21,7 +21,13 @@
  * the interrupt state wrong. The faithful routines are certified against
  * the original program (c64-port/tests/test_lm_downtelemetry.c and
  * test_cm_downtelemetry.c), as the readable ones are by make
- * downtelemetry-cases' first step. */
+ * downtelemetry-cases' first step.
+ *
+ * First, the readable downlists (src/downtelemetry/downlink_lists.c)
+ * against the assembled listing's words, which the faithful port's data
+ * holds: one unbroken run of words from LOWIDCOD, each the listing's, with
+ * no listing word in the run left out, ending with DNTABLE, whose words
+ * point at control lists in the run. */
 #include <stdio.h>
 #include <string.h>
 #include "agc_transfer.h"
@@ -170,6 +176,54 @@ static agc_routine find(const agc_routine_table *t, uint16_t key)
  * refuses. */
 extern bool downtelemetry_read_02000;
 
+bool downlink_list_word(uint16_t address, uint16_t *value);
+
+static bool listing_word(uint16_t address, uint16_t *value)
+{
+    agc_word w;
+    if (!agc_site_lookup(DATA, DATA_COUNT, (uint16_t)(5u * 1024u + address - 02000u), &w))
+        return false;
+    *value = (uint16_t)w;
+    return true;
+}
+
+/* The readable downlists word by word against the listing's. */
+static unsigned check_lists(void)
+{
+    uint16_t address, first = 0, last = 0, value, listed = 0;
+    unsigned failures = 0, words = 0, i;
+
+    for (address = 02000u; address < 04000u; ++address) {
+        if (!downlink_list_word(address, &value)) continue;
+        if (!first) first = address;
+        if (last && address != last + 1u) {
+            printf("FAIL: the lists break at 05,%04o\n", address);
+            ++failures;
+        }
+        last = address;
+        ++words;
+        if (!listing_word(address, &listed) || listed != value) {
+            printf("FAIL: list word 05,%04o is %05o, the listing's %05o\n", address, value, listed);
+            ++failures;
+        }
+    }
+    if (!first || !listing_word(first, &value) || value != 077340u) {
+        printf("FAIL: the lists do not start at LOWIDCOD\n");
+        ++failures;
+    }
+    for (i = 0; first && i < LISTS; ++i) {
+        uint16_t list = 0;
+        downlink_list_word((uint16_t)(last - i), &list);
+        if (list < first || list > last - LISTS) {
+            printf("FAIL: DNTABLE word %u points at %04o\n", LISTS - 1u - i, list);
+            ++failures;
+        }
+    }
+    printf("downtelemetry-cases %s: %u downlist words 05,%04o-%04o, %u failures\n", MISSION, words,
+           first, last, failures);
+    return failures;
+}
+
 static const char *where(uint16_t key)
 {
     static char text[24];
@@ -200,6 +254,7 @@ int main(void)
             return 1;
         }
 
+    failures += check_lists();
     for (n = 0; n < SEQUENCES; ++n) {
         begin(&s, &io);
         for (k = 0; k < DOWNRUPTS; ++k) {
