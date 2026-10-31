@@ -273,14 +273,10 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define NUFAZ_P10 ((word)K_NUFAZP10) /* NUFAZ+10 */
 #endif
 #if LUMINARY099
-#define BAILOUT1 ((word)K_BAILOUT1)
-#define POODOO1  ((word)K_POODOO1)
 #define FILLED   ((word)K_FILLED)
 #define LONGPOOH ((word)K_LONGPOOH)
 #define WAITPOOH ((word)K_WAITPOOH)
 #else
-#define BAILOUT       ((word)K_BAILOUT)
-#define POODOO        ((word)K_POODOO)
 #define WATLST0_MINUS ((word)K_WATLST0M) /* WATLST0- */
 #endif
 
@@ -457,11 +453,72 @@ static const word LGCL2CDR[2] = KW_LGCL2CDR;
 #define BPL_BMN        ((word)K_BPL_BMN)  /* BPL/BMN */
 #define CALL_ITA       ((word)K_CALL_ITA) /* CALL/ITA */
 #define TEST           ((word)K_TEST)
-/* Where an interpreter alarm goes (ALARM1 in the LM, ALARM in the CM). */
+
+/* ---- Alarms and aborts (ALARM_AND_ABORT.agc) ---- */
+
+/* ALMCADR and ALMCADR +1: the 2CADR of the last alarm's caller. ITEMP1
+ * keeps the return meanwhile. FAILREG +0, +1 and +2: the first, second and
+ * latest alarm codes. DSPTAB +11D: the display word that holds the PROG
+ * light. */
+#define ALMCADR(n)           ERASABLE(K_ALMCADR + (n))
+#define ITEMP1               ERASABLE(K_ITEMP1)
+#define FAILREG(n)           ERASABLE(K_FAILREG + (n))
+#define DSPTAB(n)            ERASABLE(K_DSPTAB + (n))
+#define FLAGWRD3             ERASABLE(K_FLAGWRD3)
+#define FLAGWRD7             ERASABLE(K_FLAGWRD7)
+#define FLGWRD10             ERASABLE(K_FLGWRD10)
+#define BRUPT                ERASABLE(K_BRUPT)
+#define MINUS_PHASE4_ADDRESS ((unsigned)K_MPHASE4) /* -PHASE4, then PHASE4 */
+#if COMANCHE055
+#define LOCALARM ERASABLE(K_LOCALARM)
+#define BANKALRM ERASABLE(K_BANKALRM)
+#endif
+
+/* Its constants. */
+#define OCT40400 ((word)KW_OCT40400)
+#define OCT1103  ((word)KW_OCT1103)
+#define V05N09   ((word)KW_V05N09)
+#define V37FLBIT ((word)KW_V37FLBIT)
 #if LUMINARY099
-#define ALARM1 ((word)K_ALARM1)
+#define OCT35    ((word)KW_OCT35)
+#define BBSERVDL ((word)KW_BBSERVDL) /* BBCON SERVIDLE */
+#define STATEBIT ((word)KW_STATEBIT)
+#define REINTBIT ((word)KW_REINTBIT)
+#define NODOBIT  ((word)KW_NODOBIT)
+/* ADR40400 and ADR77770 are instructions, TCF OCT40400 and TCF OCT77770,
+ * read as words. */
+#define ADR40400 ((word)KW_ADR40400)
+#define ADR77770 ((word)KW_ADR77770)
+#endif
+
+/* Its labels. PRIOLARM is in bank 10 (with PRIODSPR, which it goes on to)
+ * and the LM's FLAGS in bank 13; the rest are in fixed-fixed memory. */
+#define ALARM    ((word)K_ALARM)
+#define ALARM2   ((word)K_ALARM2)
+#define BORTENT  ((word)K_BORTENT)
+#define PRIOENT  ((word)K_PRIOENT)
+#define LARMENT  ((word)K_LARMENT)
+#define CHKFAIL1 ((word)K_CHKFAIL1)
+#define MULTEXIT ((word)K_MULTEXIT)
+#define PRIOLARM ((word)K_PRIOLARM)
+#define PRIODSPR ((word)K_PRIODSPR)
+#define BAILOUT  ((word)K_BAILOUT)
+#define WHIMPER  ((word)K_WHIMPER)
+#define POODOO   ((word)K_POODOO)
+#define ABORT2   ((word)K_ABORT2)
+#define CURTAINS ((word)K_CURTAINS)
+#define VARALARM ((word)K_VARALARM)
+#if LUMINARY099
+#define GOPOODOO ((word)K_GOPOODOO)
+#define STRTIDLE ((word)K_STRTIDLE)
+#define BAILOUT1 ((word)K_BAILOUT1)
+#define BOTHABRT ((word)K_BOTHABRT)
+#define POODOO1  ((word)K_POODOO1)
+#define ALARM1   ((word)K_ALARM1)
+#define ALMNCADR ((word)K_ALMNCADR)
+#define FLAGS    ((word)K_FLAGS)
 #else
-#define ALARM ((word)K_ALARM)
+#define DOWNFLAG ((word)K_DOWNFLAG)
 #endif
 
 /* NO.CORES + 1 core sets. */

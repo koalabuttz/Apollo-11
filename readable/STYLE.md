@@ -162,8 +162,8 @@ so a reader sees both versions together.
 Every change to `readable/` must keep both:
 
 1. **The case tests** (`make names-check kernel-cases interbank-cases
-   phase-cases restart-cases machine-cases interpreter-cases`, about a
-   minute):
+   phase-cases restart-cases machine-cases interpreter-cases alarm-cases`,
+   about a minute):
    - `names-check`: the listing names (`src/agc/<m>_names.inc`) are the
      assembled listings' (`tools/listing_names.py`);
    - `kernel-cases`: every case of the resident-kernel corpus (about 42,000
@@ -191,6 +191,10 @@ Every change to `readable/` must keep both:
      channels. Operands no assembled program has, where the readable code
      does what the AGC does and the faithful core something simpler, are
      left out (`tests/interpreter_fuzz.c` lists them).
+   - `alarm-cases`: the faithful port's alarm tests (every alarm site and
+     entry, against their yaAGC digests) on the readable alarms and
+     aborts, then the two side by side on random states. A readable
+     routine that refuses a state must leave it as it found it.
 
    A subsystem without a corpus of its own gets a test of the second kind:
    the readable routines and the faithful ones, run side by side on the

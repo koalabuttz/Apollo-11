@@ -69,6 +69,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Phase table maintenance | `PHASE_TABLE_MAINTENANCE.agc` (LM pp. 1294-1302, CM pp. 1404-1413) | [`src/phase_table/`](src/phase_table/) | NEWMODEX, NEWMODEA, MMDSPLAY, CHECKMM, SETUPDSP, PHASCHNG, 2PHSCHNG, PHSCHNGA (LM), PHSCHNG2, ONEORTWO and CON2: the major mode on the DSKY, and the phase changes that tell a restart what to start again |
 | Restarts | `RESTARTS_ROUTINE.agc` (LM pp. 1303-1308, CM pp. 1414-1419), `RESTART_TABLES.agc` (LM pp. 238-243, CM pp. 211-221) | [`src/restart/`](src/restart/) | RESTARTS, GETPART2, PHSPART2 and the tables they read; NEWPHASE (CM): what the program starts again, group by group, after a restart |
 | The interpreter | `INTERPRETER.agc` (LM pp. 1002-1094, CM pp. 1107-1199) | [`src/interpreter/`](src/interpreter/) | INTPRET, the dispatcher (NEWOPS, DANZIG, DIRADRES, INDEX, PUSHUP), loads and stores, vector and scalar arithmetic, DDV and the divides, SQRT, UNIT, SIN and COS, ARCSIN and ARCCOS, the shifts, the index orders, branching (GOTO, CALL, RVQ, BZE, BPL, BOV) and the switch orders: the interpretive language most of the flight program's guidance and navigation is written in |
+| Alarms and aborts | `ALARM_AND_ABORT.agc` (LM pp. 1381-1385, CM pp. 1493-1496) | [`src/alarm/`](src/alarm/) | ALARM, ALARM2, BORTENT, PRIOENT, LARMENT, CHKFAIL1/2, FAIL3, PROGLARM, MULTEXIT, MULTFAIL, PRIOLARM, CURTAINS, VARALARM, BAILOUT, WHIMPER, POODOO, ABORT2, CCSHOLE; in the LM also GOPOODOO, STRTIDLE, BAILOUT1, POODOO1, ALARM1, ALMNCADR and FLAGS: the program alarm codes (FAILREG, the PROG light, V05N09) and the software restarts and aborts |
 
 Beside them:
 
@@ -81,7 +82,7 @@ Beside them:
   only.
 - [`tests/`](tests/): the side-by-side tests of the machine's
   instructions, the inter-bank routines, the phase table maintenance, the
-  restarts and the interpreter, and the build of the x86_64 flight
+  restarts, the interpreter and the alarms, and the build of the x86_64 flight
   program with the readable routines in it.
 
 Both missions come from the same source, built with `LUMINARY099=1` or
@@ -131,7 +132,11 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    (the port's own fuzz generator, 20,000 programs per seed, two seeds per
    mission), pass by pass, and compares memory and channels word for word;
    it leaves out the operands no assembled program has (the test's header
-   lists them). `make names-check` checks the generated names and the
+   lists them). `make alarm-cases` runs the faithful port's alarm tests
+   (every alarm site and entry of each mission, 4,096 cases against the
+   original program's yaAGC digests) on the readable alarms and aborts,
+   then readable and faithful side by side on 40,000 random states per
+   entry. `make names-check` checks the generated names and the
    restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
