@@ -1728,6 +1728,22 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define LMTOCM   ((word)K_LMTOCM)
 #endif
 
+/* ---- The noun table readers (PINBALL_NOUN_TABLES.agc, bank 42) ---- */
+
+/* Their erasable words are named by ADDRESS_OF: NNADTEM, NNTYPTEM, MIXBR,
+ * RUTMXTEM, IDAD1TEM-IDAD3TEM, SFTEMP1, SFTEMP2; and the tables' first
+ * words (NNADTAB, NNTYPTAB, SFINTAB, SFOUTAB, IDADDTAB, RUTMXTAB) by their
+ * addresses in the bank, ADDRESS_OF(NNADTAB), and by their physical
+ * addresses, P_NNADTAB. NOUNREG: the noun on the DSKY, which INDEX reads. */
+#define NOUNREG  ERASABLE(K_NOUNREG)
+#define LODNNTAB ((word)K_LODNNTAB)
+#define LODMIXNN ((word)K_LODMIXNN)
+#define LODNLV   ((word)K_LODNLV)
+#define GTSFOUT  ((word)K_GTSFOUT)
+#define SFCOM    ((word)K_SFCOM)
+#define GTSFIN   ((word)K_GTSFIN)
+#define MIXCON   ((word)KW_OCT50) /* MIXCON = OCT50: "(DEC 40)", the first mixed noun */
+
 /* CDULOGIC, an RTB routine of both missions (RTB_OP_CODES.agc). */
 #define CDULOGIC ((word)K_CDULOGIC)
 

@@ -102,6 +102,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Extended verbs, part 7 | `EXTENDED_VERBS.agc` (LM pp. 262, 287-288, 296-300, CM pp. 236, 259-265), the tracking and state vector verbs | [`src/extended_verbs/`](src/extended_verbs/) | The basic code of V69 (the forced hardware restart), V56 (terminate tracking: the LM's TRMTRAK1, the CM's TRACKTRM and CLEANOUT), V66 (ATTACHIT, which copies this vehicle's state vector into the other's) and the CM's V47 (LMTOCMSV and LMTOCM, the other way round, sharing TACHEXIT), the LM's V85 (DSPRRLOS and RRLOSDSP, the rendezvous radar's line of sight shown once a second) and the CM's V87 and V88 (the VHF range flag). The interpretive words they hand over are part 8 (the LM's) and part 9 (the CM's) |
 | Extended verbs, part 8 | `EXTENDED_VERBS.agc` (LM pp. 287-288, 296-300), the LM's interpretive words of the tracking verbs | [`src/extended_verbs/`](src/extended_verbs/) | The interpretive code V56, V66 and V85 hand to the interpreter, in the listing's notation, run by the readable interpreter: TRMTRAK1's and ATTACHIT's CALL INTSTALL (integration let finish), ATTACHIT's sphere of influence switches and its CALL PTOALEM and SVDWN1 (the other vehicle's state vector brought up to date), TCPIN's RTB back to PINBALL, and RRLOSDSP's vector arithmetic from the radar's line of sight to its elevation and azimuth (UNIT, DOT, ARCTRIG), shown 0-360 degrees. With it the LM's EXTENDED_VERBS.agc is all readable C |
 | Extended verbs, part 9 | `EXTENDED_VERBS.agc` (CM pp. 236-238, 259-265), the CM's interpretive words of the tracking verbs, and the rest of its fan | [`src/extended_verbs/`](src/extended_verbs/) | The interpretive code V56, V66, V47, V87 and V88 hand to the interpreter, in the listing's notation, run by the readable interpreter: TRACKTRM's CALL INTSTALL, SETVHFLG's and RESETVHF's VHFRFLAG switches, TACHEXIT's PTOACSM, SVDWN1 and SVDWN2 (both vehicles' state vectors brought up to date), and LMTOCM's sphere of influence switches; and the four fan words after V70's (V71-V73's update programs and V74's erasable dump), which the parts' tables do not list. With it the CM's EXTENDED_VERBS.agc is all readable C, and the CM flight program flies it in place of the faithful port's compiled copy of the file |
+| Noun tables | `PINBALL_NOUN_TABLES.agc` (LM pp. 301-319, CM pp. 268-284) | [`src/pinball_noun_tables/`](src/pinball_noun_tables/) | The tables PINBALL looks a noun up in: NNADTAB (where its data is: one ECADR for a normal noun, 00-39, or for a mixed noun, 40-99, its components' codes and where their three ECADRs start in IDADDTAB), NNTYPTAB (how many components and how each is scaled), RUTMXTAB (a mixed noun's scale routines), and SFINTAB and SFOUTAB (the scale factors for loading and for display), each in the listing's notation word by word; and their readers in bank 42, which PINBALL calls with DXCH Z: LODNNTAB (a noun's entries, into NNADTEM, NNTYPTEM, MIXBR and for a mixed noun RUTMXTEM and IDAD1TEM-IDAD3TEM), GTSFOUT and GTSFIN (a scale factor's double word into SFTEMP1 and SFTEMP2) |
 
 Beside them:
 
@@ -244,7 +245,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    (its 35 interpretive words checked against the rope, the port's 5,864
    frozen cases of the file, each run to its stop, those cases stirred
    16 ways side by side, 92,922 runs, and its four basic words called
-   with and without the program's hardware). `make names-check` checks
+   with and without the program's hardware). `make
+   pinball-noun-tables-cases` runs the faithful port's test of the noun
+   table readers on the readable ones (every one of its 58,368 cases runs,
+   its 100 unsupported ones are refused), then the original program's
+   results, frozen from Virtual AGC, for 304 of them under the four
+   superbank settings, then the tables' 1,076 words against the ropes, and
+   readable and faithful readers side by side on those cases stirred 16
+   ways (277,248 runs). `make names-check` checks
    the generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight
