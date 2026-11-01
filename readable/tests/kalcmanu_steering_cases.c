@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /* The readable KALCMANU_STEERING against the faithful port's, key by key
- * (make kalcmanu-steering-cases ROPE_LM ROPE_CM). LM only.
+ * (make kalcmanu-steering-cases ROPE_LM ROPE_CM), one mission per build.
  *
  * Built with the readable tables (src/binding/kalcmanu_steering_routines.c)
  * and the faithful port's under the same names with faithful_ in front
@@ -10,15 +10,17 @@
  * (src/kalcmanu_steering/kalcmanu_steering.c), written in the listing's
  * notation, must be the original program's rope, word for word. Then the
  * keys, which must be the faithful tables'. Then the runs: each key from
- * 4,096 states, each one of the port's frozen LM test states
+ * 4,096 states, each one of the port's frozen test states of the mission
  * (c64-port/tests/kalcmanu_steering_vectors.h) entered at the key, most
  * stirred further: MPAC and its mode, the push-down list and its pointer,
  * the index registers (X1 and X2 always as the program sets them, S1 any),
- * A (ISITAUTO's answer, or any), the time (TIME2, TIME1) and the
+ * A (the LM's ISITAUTO's answer, or any), Q (a return address, or any),
+ * the CM's HOLDFLAG (-1 as MANUSTAT sets it, or any), RATEINDX (0, 2, 4
+ * or 6) and RCSFLAGS, the time (TIME2, TIME1) and the
  * maneuver's end (TM: often within a second or two of it) and next second
  * (NEXTIME: often just past TIME1, or TIME1 come round), the flag words
- * (CALCMAN2), the matrices, angles and rates (MIS, KEL, BCDU, NCDU, BRATE,
- * 1JACC, ...: any erasable bank's words), NEWJOB, the overflow indicator,
+ * (CALCMAN2), the matrices, angles and rates (MIS, KEL or DEL, BCDU, NCDU,
+ * BRATE, ...: any erasable bank's words), the CDUs, NEWJOB, the overflow indicator,
  * now and then any word but the interpreter's own, the latches, or a state
  * the routines refuse (another work area, BBANK not the two banks, a word
  * of 16 bits). Each runs once on each side, as the program's trampoline
@@ -40,9 +42,43 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code NEWANGL_CODE, MANUSTAT_CODE;
-extern const agc_routine_table lm_kalcmanu_steering_basic, lm_kalcmanu_steering_interpretive;
-extern const agc_routine_table faithful_lm_kalcmanu_steering_basic,
-    faithful_lm_kalcmanu_steering_interpretive;
+#if LUMINARY099
+#define readable_interpretive lm_kalcmanu_steering_interpretive
+#define readable_basic        lm_kalcmanu_steering_basic
+#define faithful_interpretive faithful_lm_kalcmanu_steering_interpretive
+#define faithful_basic        faithful_lm_kalcmanu_steering_basic
+#define MISSION_IS_CM         0
+#define MISSION               "LM"
+typedef p66_bias_io mission_io;
+#define NEWOPS_AT 06070u
+/* In E6 (EBANK=TTEMP), under the EBANK of the state. */
+#define NEXTIME_AT 01706u
+#define TM_AT      01733u
+/* MIS and KEL, as NEWANGL's AXCs set X1 and X2. */
+#define MATRIX1 03246u
+#define MATRIX2 02230u
+#else
+#define readable_interpretive cm_kalcmanu_steering_interpretive
+#define readable_basic        cm_kalcmanu_steering_basic
+#define faithful_interpretive faithful_cm_kalcmanu_steering_interpretive
+#define faithful_basic        faithful_cm_kalcmanu_steering_basic
+#define MISSION_IS_CM         1
+#define MISSION               "CM"
+typedef cm_native_io mission_io;
+#define NEWOPS_AT             06037u
+/* In E6 (EBANK=BCDU), under the EBANK of the state. */
+#define NEXTIME_AT            01671u
+#define TM_AT                 01716u
+#define RCSFLAGS_AT           01501u
+/* Unswitched. */
+#define RATEINDX_AT           01130u
+#define HOLDFLAG_AT           01332u
+/* MIS and DEL, as NEWANGL's AXCs set X1 and X2. */
+#define MATRIX1               03320u
+#define MATRIX2               03425u
+#endif
+extern const agc_routine_table readable_basic, readable_interpretive;
+extern const agc_routine_table faithful_basic, faithful_interpretive;
 
 /* The addresses of the words the routines use. */
 #define TIME2_AT    0024u
@@ -60,10 +96,7 @@ extern const agc_routine_table faithful_lm_kalcmanu_steering_basic,
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
 #define FLAGWRD0_AT 0074u
-#define NEWOPS_AT   06070u
-/* In E6 (EBANK=TTEMP), under the EBANK of the state. */
-#define NEXTIME_AT 01706u
-#define TM_AT      01733u
+#define CDUX_AT     0032u
 
 #define CASES 4096u
 
@@ -81,7 +114,7 @@ static unsigned words_differ(const struct interpretive_code *code)
     for (i = 0; i < code->count; ++i) {
         agc_word rope = 0;
         unsigned physical = code->bank * 1024u + code->first - 02000u + i;
-        if (!apollo_rope_read(0u, (uint16_t)physical, &rope) || rope != code->words[i]) {
+        if (!apollo_rope_read(MISSION_IS_CM, (uint16_t)physical, &rope) || rope != code->words[i]) {
             printf("FAIL: %02o,%04o is %05o, the rope's %05o\n", code->bank, code->first + i,
                    code->words[i], rope);
             ++failures;
@@ -121,8 +154,8 @@ static uint16_t value_word(void)
     return rnd() % 4u ? any_word() : edges[rnd() % (sizeof edges / sizeof edges[0])];
 }
 
-/* The frozen cases' LM ones. */
-static unsigned lm_cases[KALCMANU_STEERING_VECTORS], lm_count;
+/* The frozen cases of the mission. */
+static unsigned mission_cases[KALCMANU_STEERING_VECTORS], mission_count;
 
 /* The physical word of an erasable address under the state's EBANK. */
 static unsigned erasable(const uint16_t *w, unsigned address)
@@ -131,26 +164,33 @@ static unsigned erasable(const uint16_t *w, unsigned address)
 }
 
 /* X1 or X2 as the program sets it (AXC, and TIX's steps): the complement
- * of a place in erasable memory, one of the matrices (MIS or KEL, as
+ * of a place in erasable memory, one of the matrices (MIS, KEL or DEL, as
  * NEWANGL sets them) or a VAC area's word, which an indexed operand adds.
  * One that takes an indexed operand into fixed memory the AGC (and the
  * readable interpreter) reads from the rope, the faithful port from
  * erasable memory. */
 static uint16_t index_word(void)
 {
-    static const uint16_t matrices[] = {03246u, 02230u};
+    static const uint16_t matrices[] = {MATRIX1, MATRIX2};
     uint16_t place = rnd() % 2u ? matrices[rnd() % (sizeof matrices / sizeof matrices[0])]
                                 : (uint16_t)(0400u + rnd() % 0340u);
     return (uint16_t)(077777u - place);
 }
 
+/* The address of a key: 02000-03777 in its bank, or 04000-07777 in
+ * fixed-fixed memory (banks 2 and 3). */
+static uint16_t key_z(uint16_t key)
+{
+    return (uint16_t)(key >= 04000u && key < 010000u ? key : 02000u + key % 1024u);
+}
+
 /* One state at the key (its physical address; an order pair's for an
  * interpretive key): a frozen case's, and for most n more. */
-static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int interpretive,
+static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int interpretive,
                   unsigned n)
 {
-    const irc_case *c = &kalcmanu_steering_cases[lm_cases[(n * 7u + rnd()) % lm_count]];
-    uint16_t bank = (uint16_t)(key / 1024u), z = (uint16_t)(02000u + key % 1024u), eb;
+    const irc_case *c = &kalcmanu_steering_cases[mission_cases[(n * 7u + rnd()) % mission_count]];
+    uint16_t bank = (uint16_t)(key / 1024u), z = key_z(key), eb;
     uint16_t *w = s->words, fixloc;
     unsigned k;
 
@@ -195,9 +235,21 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
         if (rnd() % 2u)
             w[erasable(w, NEXTIME_AT)] =
                 (uint16_t)((w[TIME1_AT] + rnd() % 0400u + 077577u) % 077777u);
-        /* A: ISITAUTO's answer (+0, or bit 14), or any. */
+        /* A: the LM's ISITAUTO's answer (+0, or bit 14), or any. */
         k = rnd() % 4u;
         w[0] = k == 0u ? 0u : k == 1u ? 020000u : rnd() % 2u ? any_word() : rnd();
+        /* Q: a return address, or any. */
+        if (rnd() % 2u) w[2] = rnd() % 4u ? (uint16_t)(02000u + rnd() % 06000u) : rnd();
+        /* The CDUs. */
+        for (k = 0; k < 3u; ++k)
+            if (rnd() % 2u) w[CDUX_AT + k] = any_word();
+#if !LUMINARY099
+        /* HOLDFLAG, -1 as MANUSTAT sets it; RATEINDX; RCSFLAGS. */
+        k = rnd() % 4u;
+        w[HOLDFLAG_AT] = k < 2u ? 077776u : k == 2u ? (uint16_t)(rnd() % 2u) : any_word();
+        if (rnd() % 2u) w[RATEINDX_AT] = (uint16_t)(rnd() % 4u * 2u);
+        if (rnd() % 2u) w[erasable(w, RCSFLAGS_AT)] = any_word();
+#endif
         k = rnd() % 8u;
         w[NEWJOB_AT] = k < 5u ? (uint16_t)(rnd() % 8u * 12u) : (uint16_t)(rnd() & 077777u);
         w[OVFIND_AT] = rnd() % 4u ? 0u : rnd() % 2u ? 1u : 077776u;
@@ -245,12 +297,12 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
     unsigned i, n, failures = 0;
 
     for (i = 0; i < faithful->count; ++i) {
-        uint16_t key = faithful->entries[i].physical, z = (uint16_t)(02000u + key % 1024u);
+        uint16_t key = faithful->entries[i].physical, z = key_z(key);
         unsigned ran = 0, bad = 0;
 
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
-            p66_bias_io io, fio, rio;
+            mission_io io, fio, rio;
             agc_native_program p;
             enum exec_status sf, sr;
             const char *why = 0;
@@ -300,24 +352,20 @@ int main(int argc, char **argv)
         return 2;
     }
     for (i = 0; i < KALCMANU_STEERING_VECTORS; ++i)
-        if (!kalcmanu_steering_cases[i].cm) lm_cases[lm_count++] = i;
+        if (kalcmanu_steering_cases[i].cm == MISSION_IS_CM) mission_cases[mission_count++] = i;
     failures += words_differ(&NEWANGL_CODE) + words_differ(&MANUSTAT_CODE);
     words = NEWANGL_CODE.count + MANUSTAT_CODE.count;
-    failures +=
-        tables_differ(&lm_kalcmanu_steering_basic, &faithful_lm_kalcmanu_steering_basic, "basic");
-    failures += tables_differ(&lm_kalcmanu_steering_interpretive,
-                              &faithful_lm_kalcmanu_steering_interpretive, "interpretive");
+    failures += tables_differ(&readable_basic, &faithful_basic, "basic");
+    failures += tables_differ(&readable_interpretive, &faithful_interpretive, "interpretive");
     if (failures) {
-        printf("kalcmanu-steering-cases: %u failures\n", failures);
+        printf("kalcmanu-steering-cases (%s): %u failures\n", MISSION, failures);
         return 1;
     }
-    failures += keys(&lm_kalcmanu_steering_basic, &faithful_lm_kalcmanu_steering_basic, 0, &runs);
-    failures += keys(&lm_kalcmanu_steering_interpretive,
-                     &faithful_lm_kalcmanu_steering_interpretive, 1, &runs);
-    printf("kalcmanu-steering-cases: %u words as the rope's, %u keys (%u basic, %u order pairs) "
-           "from %u states each, %u run by the faithful routines, %u failures\n",
-           words, lm_kalcmanu_steering_basic.count + lm_kalcmanu_steering_interpretive.count,
-           lm_kalcmanu_steering_basic.count, lm_kalcmanu_steering_interpretive.count, CASES, runs,
-           failures);
+    failures += keys(&readable_basic, &faithful_basic, 0, &runs);
+    failures += keys(&readable_interpretive, &faithful_interpretive, 1, &runs);
+    printf("kalcmanu-steering-cases (%s): %u words as the rope's, %u keys (%u basic, %u order "
+           "pairs) from %u states each, %u run by the faithful routines, %u failures\n",
+           MISSION, words, readable_basic.count + readable_interpretive.count, readable_basic.count,
+           readable_interpretive.count, CASES, runs, failures);
     return failures != 0;
 }
