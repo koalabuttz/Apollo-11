@@ -129,7 +129,7 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) \
 	$(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
-HEADERS := $(wildcard src/*/*.h)
+HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
 	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases names-check \
@@ -1170,7 +1170,7 @@ x86-scenarios: $(X86_OBJECTS) $(HARNESS_ENGINE)
 	python3 tests/x86_readable.py scenarios
 
 format:
-	$(PORT)/deps/llvm-mos/bin/clang-format -i --style=file:$(PORT)/.clang-format $(SOURCES) $(HEADERS)
+	$(PORT)/deps/llvm-mos/bin/clang-format -i --style=file:$(PORT)/.clang-format $(SOURCES) $(filter %.h,$(HEADERS))
 
 clean:
 	rm -rf $(BUILD)

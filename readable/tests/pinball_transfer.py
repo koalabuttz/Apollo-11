@@ -150,8 +150,15 @@ def main():
     print(f"{'PASS' if taken >= STIRRED_FLOOR else 'FAIL'}: pin-stirred: {taken} chains taken with the readable "
           f'Pinball (at least {STIRRED_FLOOR})')
     bad |= taken < STIRRED_FLOOR
-    # Step for step as the faithful port (tests/pinball_steps.c).
+    # Step for step as the faithful port (tests/pinball_steps.c), and the
+    # binding's table of where the faithful steps end current.
     bad |= subprocess.run([str(STEPS)], cwd=PORT).returncode != 0
+    stops = READABLE / 'build/pinball_stops.inc'
+    subprocess.run([str(STEPS), '--stops', str(stops)], cwd=PORT, check=True)
+    current = stops.read_text() == (READABLE / 'src/binding/pinball_stops.inc').read_text()
+    print(f"{'PASS' if current else 'FAIL'}: src/binding/pinball_stops.inc "
+          f"{'matches' if current else 'differs from'} the faithful port's steps (build/pinball-steps --stops)")
+    bad |= not current
     return bad
 
 
