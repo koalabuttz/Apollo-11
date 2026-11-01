@@ -181,10 +181,10 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    (checked against yaAGC) on 200,000 random states. `make
    interpreter-cases` runs the readable interpreter and the faithful
    port's interpreter core side by side on random interpretive programs
-   (the port's own fuzz generator, 20,000 programs per seed, two seeds per
+   (the port's own fuzz generator, 20,000 programs per seed, 40 seeds per
    mission), pass by pass, and compares memory and channels word for word;
    it leaves out the operands no assembled program has (the test's header
-   lists them). `make alarm-cases` runs the faithful port's alarm tests
+   lists them), but still compares MPAC, which flight code names. `make alarm-cases` runs the faithful port's alarm tests
    (every alarm site and entry of each mission, 4,096 cases against the
    original program's yaAGC digests) on the readable alarms and aborts,
    then readable and faithful side by side on 40,000 random states per
@@ -332,6 +332,11 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    checks is current. A step the readable parts do not model runs in the
    faithful trampoline, from the state it started in (but for CLR5, whose
    faithful result differs from the original program's, issue #1093).
+   So the step check is relative to the faithful port, not independent of
+   it: Pinball's stop table and the steps it leaves unmodelled both come
+   from the faithful trampoline. What a chain computes is checked against
+   Virtual AGC; where a step ends is checked only against the faithful
+   port.
    `make names-check` checks
    the generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable

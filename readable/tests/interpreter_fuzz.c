@@ -99,11 +99,14 @@ static int erasable_misc(unsigned c)
            (index == 015u && (c & 4u));
 }
 
-/* Whether a is one of the interpreter's own registers (NEWJOB, INTBIT15
- * to OVFIND, MPAC to PUSHLOC), which no program names as an operand. */
+/* Whether a is one of the interpreter's own registers that no program
+ * names as an operand (NEWJOB, INTBIT15 to OVFIND, MODE to PRIORITY).
+ * MPAC is not one of them: flight code names it (ORBITAL_INTEGRATION's
+ * SXA,1 and LXA,1 MPAC +1 at NBRANCH, the LM's AGS_INITIALIZATION's SXA,1
+ * MPAC +1, +4 and +6), so operands there are compared. */
 static int interpreter_register(unsigned a)
 {
-    return (a >= 061u && a <= 067u) || (a >= 0107u && a <= 0121u) || (a >= 0146u && a <= 0170u);
+    return (a >= 061u && a <= 067u) || (a >= 0107u && a <= 0121u) || (a >= 0163u && a <= 0170u);
 }
 
 /* Whether an operand (up to a matrix, 18 words) at address a runs past the
@@ -111,7 +114,7 @@ static int interpreter_register(unsigned a)
  * leaves an erasable operand in 1400-1777 under EBANK), fixed in 1K ones.
  * The AGC goes on into the next bank, the faithful core wraps; no program
  * places an operand so. Nor does one name the interpreter's own registers
- * (NEWJOB, INTBIT15 to OVFIND, MPAC to PUSHLOC, or a vector's length
+ * (NEWJOB, INTBIT15 to OVFIND, MODE to PRIORITY, or a vector's length
  * before them). */
 static int past_bank_end(unsigned a)
 {
@@ -250,13 +253,13 @@ static void on_crash(int sig)
 /* Timeouts allowed per run: a case that loops without end is abandoned
  * (interp_core_fuzz.c), which a slow machine may also do to a long one. */
 #define MAX_ABANDONED 5u
-/* Measured at 20,000 cases (seeds 1 to 64, both missions): 1.12 to 1.21
- * passes compared per case, 44 to 46 cases in a hundred with none. A run
+/* Measured at 20,000 cases (seeds 1 to 64, both missions): 1.21 to 1.32
+ * passes compared per case, 42 to 45 cases in a hundred with none. A run
  * that compares fewer than MIN_PASSES per hundred cases, or has more than
  * MAX_EMPTY in a hundred with none, stopped short somewhere. Runs under
  * FLOOR_CASES (a FUZZ_FIRST rerun of a few cases) are too small to judge. */
-#define MIN_PASSES  108u
-#define MAX_EMPTY   49u
+#define MIN_PASSES  115u
+#define MAX_EMPTY   47u
 #define FLOOR_CASES 10000u
 
 int main(int argc, char **argv)
