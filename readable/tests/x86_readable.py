@@ -129,11 +129,18 @@ REPLACED = (
     # P07 (src/imu_performance).
     'lm_imu_performance.o',
 )
+# The faithful objects the readable objects take part of the place of:
+# each is linked with the names the readable objects define renamed
+# faithful_<name>, for the readable code to hand on to. PINBALL_GAME_BUTTONS_
+# AND_LIGHTS, part by part (src/pinball): its trampoline, the mission's
+# lanec_pin_run_<m>, which every routine of the port's Pinball tables calls,
+# runs the readable entries and hands the rest to the faithful one.
+RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}']}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa',
-                    'e_bkcall')
+                    'e_bkcall', 'charin')
 # And each mission's own: R63 is the LM's alone; GIMBAL_LOCK_AVOIDANCE's
 # table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
@@ -150,6 +157,18 @@ def readable_objects(m):
     return [str(o) for o in objects]
 
 
+def renamed(path, m):
+    """The faithful object at path, or its copy with RENAMED's names
+    renamed for mission m."""
+    if path.name not in RENAMED:
+        return str(path)
+    out = xb.OUT / f'renamed-{m}' / path.name
+    out.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(['objcopy', *[f'--redefine-sym={n}=faithful_{n}' for n in RENAMED[path.name](m)],
+                    str(path), str(out)], check=True)
+    return str(out)
+
+
 def build(cc, m, mode, certified_only=False):
     """x86_flight_build.build, linking the readable kernel for mission m."""
     define, suffix = xb.MODES[mode]
@@ -161,7 +180,7 @@ def build(cc, m, mode, certified_only=False):
         o = xb.OUT / f'{source}_{m}{suffix}.o'
         subprocess.run([cc, *flags, '-c', f'platform/x86/{source}.c', '-o', str(o)], cwd=PORT, check=True)
         objects.append(str(o))
-    host = [str(p) for p in sorted((xb.STORE / 'host').glob('*.o')) if p.name not in REPLACED]
+    host = [renamed(p, m) for p in sorted((xb.STORE / 'host').glob('*.o')) if p.name not in REPLACED]
     exe = xb.OUT / f'x86-flight-{m}{suffix}'
     subprocess.run([cc, *objects, *host, *readable_objects(m), *xb.LINK, '-Wl,--gc-sections', '-lm',
                     '-o', str(exe)], cwd=PORT, check=True)
