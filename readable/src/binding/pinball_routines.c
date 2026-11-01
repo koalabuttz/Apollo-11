@@ -24,15 +24,16 @@
  * leaves the state and the record as they were and the routine refused,
  * as the trampoline leaves them.
  *
- * One routine is one step. The flight program charges the AGC clock for
+ * A routine is one step. The flight program charges the AGC clock for
  * each step by the point it starts at (c64-port/platform/x86/
  * flight_dispatch.c), so a readable step must start and end where the
- * faithful one does (tests/pinball_steps.c checks it): it ends where the
- * routine leaves for another entry, and runs the instruction a return
- * cell holds as the trampoline does. A step that calls through BANKCALL or
- * POSTJUMP into a part not yet readable (CLEAR's UPDATVB) runs in the
- * faithful port instead, whose module runs on into that routine in the
- * same step; so does ENTERJMP, which is written with ENTER. */
+ * faithful one does (tests/pinball_steps.c checks it). The binding runs
+ * readable routines, and INTER-BANK_COMMUNICATION's between them, one
+ * after another (running the instruction a return cell holds, as the
+ * trampoline does) until it reaches a point where the faithful step from
+ * the same start ends (pinball_stops.inc), or leaves Pinball (returns to
+ * its caller). A step that reaches Pinball code not yet readable runs in
+ * the faithful port instead. */
 #include <setjmp.h>
 #include <stddef.h>
 #include "lanec_pin_routines.h"
@@ -61,54 +62,115 @@ enum exec_status FAITHFUL_PIN_RUN(const agc_native_program *program, apollo_over
 /* ---- The readable entries ---- */
 
 struct entry {
-    word at;
+    unsigned at; /* physical: fixed_physical's numbering */
     void (*routine)(void);
 };
 
+#define BANK_40(at)     (040u * 02000u + ((at) - 02000u))
+#define FIXED_FIXED(at) ((unsigned)(at)) /* banks 2 and 3, at 04000-07777 */
+
 /* Part 1, the keys: bank 40, and SLEFT5 and RELDSPON in fixed-fixed. */
 static const struct entry entries[] = {
-    {CHARIN, charin},
-    {EIGHTY_NINE_TEST, eighty_nine_test},
-    {NUM - 2u, num_minus2},
-    {NUM, num},
-    {VERB, verb},
-    {NOUN, noun},
-    {NEGSGN, negsgn},
-    {POSGN, posgn},
-    {PLUS_ON, plus_on},
-    {MINUS_ON, minus_on},
-    {CLEAR, clear},
-    {CLPASHI + 11u, clpashi_after_updatvb},
-    {CLR5, clr5},
-    {FIVE_BLANK - 1u, five_blank_minus1},
-    {FIVE_BLANK, five_blank},
-    {FIVE_BLANK + 2u, five_blank_plus2},
-    {TWO_BLANK, two_blank},
-    {DSPIN, dspin},
-    {ELEVEN_DSPIN, eleven_dspin},
-    {SLEFT5, sleft5},
-    {RELDSPON, reldspon},
+    {BANK_40(CHARIN), charin},
+    {BANK_40(EIGHTY_NINE_TEST), eighty_nine_test},
+    {BANK_40(NUM - 2u), num_minus2},
+    {BANK_40(NUM), num},
+    {BANK_40(VERB), verb},
+    {BANK_40(NOUN), noun},
+    {BANK_40(NEGSGN), negsgn},
+    {BANK_40(POSGN), posgn},
+    {BANK_40(PLUS_ON), plus_on},
+    {BANK_40(MINUS_ON), minus_on},
+    {BANK_40(CLEAR), clear},
+    {BANK_40(CLPASHI + 11u), clpashi_after_updatvb},
+    {BANK_40(CLR5), clr5},
+    {BANK_40(FIVE_BLANK - 1u), five_blank_minus1},
+    {BANK_40(FIVE_BLANK), five_blank},
+    {BANK_40(FIVE_BLANK + 2u), five_blank_plus2},
+    {BANK_40(TWO_BLANK), two_blank},
+    {BANK_40(DSPIN), dspin},
+    {BANK_40(ELEVEN_DSPIN), eleven_dspin},
+    {FIXED_FIXED(SLEFT5), sleft5},
+    {FIXED_FIXED(RELDSPON), reldspon},
 };
 #define ENTRIES (sizeof entries / sizeof entries[0])
 
-#define BANK_40 040u
+/* INTER-BANK_COMMUNICATION's routines (src/interbank/), which a step runs
+ * through on its way between banks. */
+static const struct entry interbank[] = {
+    {FIXED_FIXED(BANKCALL), bankcall},
+    {FIXED_FIXED(SWRETURN), swreturn},
+    {FIXED_FIXED(POSTJUMP), postjump},
+    {FIXED_FIXED(BANKJUMP), bankjump},
+};
+#define INTERBANK (sizeof interbank / sizeof interbank[0])
 
-/* An entry's physical address: in bank 40 or in fixed-fixed. */
-static unsigned physical(word at)
+/* An erasable address, in the numbering of the stops below. */
+#define ERASABLE_POINT(z) (0176000u + (z))
+
+/* Where Z is: its physical word, or for an erasable address
+ * ERASABLE_POINT. */
+static unsigned here(void)
 {
-    return at >= 04000u ? FF(at) : BANK_40 * 02000u + (at - 02000u);
+    return Z < 02000u ? ERASABLE_POINT(Z) : fixed_physical(Z);
 }
 
-/* The entry at Z, or NULL. */
-static const struct entry *entry_at_z(void)
+/* The routine at a point, in a table, or NULL. */
+static const struct entry *find(const struct entry *table, unsigned count, unsigned at)
 {
-    unsigned i, at;
+    unsigned i;
 
-    if (Z < 02000u || Z > 07777u) return NULL;
-    at = fixed_physical(Z);
-    for (i = 0; i < ENTRIES; ++i)
-        if (physical(entries[i].at) == at) return &entries[i];
+    for (i = 0; i < count; ++i)
+        if (table[i].at == at) return &table[i];
     return NULL;
+}
+
+/* ---- Where a step ends ----
+ * The flight program charges the AGC clock for each step by the point it
+ * starts at (c64-port/platform/x86/flight_dispatch.c). The faithful port's
+ * modules run a step past routine boundaries and stop at points of their
+ * own: CHARIN stops at the key's routine, 89TEST runs on into NUM, CLEAR
+ * runs through BANKCALL into UPDATVB. pinball_stops.inc lists, for each
+ * point a faithful step starts at in the port's Pinball chains, the points
+ * it ends at; a readable step ends at the same ones. pinball_points lists
+ * the points of the faithful routine tables, Pinball's code as far as the
+ * port enters it. */
+struct pinball_stop {
+    uint16_t from, to;
+};
+#include "pinball_stops.inc"
+
+static bool stops_at(unsigned from, unsigned to)
+{
+    unsigned low = 0, high = sizeof pinball_stops / sizeof pinball_stops[0];
+
+    while (low < high) {
+        unsigned middle = (low + high) / 2u;
+        const struct pinball_stop *s = &pinball_stops[middle];
+        if (s->from == from && s->to == to) return true;
+        if (s->from < from || (s->from == from && s->to < to))
+            low = middle + 1u;
+        else
+            high = middle;
+    }
+    return false;
+}
+
+/* Whether a point is Pinball code (the faithful port's routine tables
+ * enter it there). */
+static bool pinball_point(unsigned at)
+{
+    unsigned low = 0, high = sizeof pinball_points / sizeof pinball_points[0];
+
+    while (low < high) {
+        unsigned middle = (low + high) / 2u;
+        if (pinball_points[middle] == at) return true;
+        if (pinball_points[middle] < at)
+            low = middle + 1u;
+        else
+            high = middle;
+    }
+    return false;
 }
 
 /* ---- The machine on the device record ---- */
@@ -214,10 +276,8 @@ static bool swreturn_into_part(void)
 
     if (Z != SWRETURN || (bank_word & ~076000u) || at < 02000u || at > 07777u) return false;
     if (at < 04000u && bank >= 030u && (superbank & 0100u)) bank += 010u;
-    at = at >= 04000u ? FF(at) : bank * 02000u + (at - 02000u);
-    for (unsigned i = 0; i < ENTRIES; ++i)
-        if (physical(entries[i].at) == at) return true;
-    return false;
+    at = at >= 04000u ? FIXED_FIXED(at) : bank * 02000u + (at - 02000u);
+    return find(entries, ENTRIES, at) != NULL;
 }
 
 /* The step's last word, as the trampoline runs it (cell_return): a routine
@@ -249,14 +309,19 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     static apollo_overlay_state before;
     static device_record record_before;
     device_record *record = device;
-    const struct entry *entry;
+    const struct entry *routine;
+    unsigned start, routines;
 
     if (!p || !state || !record || !lanec_registers_valid(state) || !take_record(p, record))
         return FAITHFUL_PIN_RUN(p, state, device, modules);
     program = p;
     bind_record(state);
-    entry = entry_at_z();
-    if (!entry && !swreturn_into_part()) return FAITHFUL_PIN_RUN(p, state, device, modules);
+    start = here();
+    routine = find(entries, ENTRIES, start);
+    if (!routine) {
+        if (!swreturn_into_part()) return FAITHFUL_PIN_RUN(p, state, device, modules);
+        routine = find(interbank, INTERBANK, start);
+    }
 
     before = *state;
     record_before = *record;
@@ -265,19 +330,25 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
         *record = record_before;
         return EXEC_OUT_OF_SCOPE;
     }
-    if (!entry) {
-        swreturn();
-        entry = entry_at_z();
-        if (!entry) not_modelled();
+    /* The routines of the step, to the point the faithful step ends at. */
+    for (routines = 0;; ++routines) {
+        unsigned at;
+
+        if (routines == 64u) not_modelled();
+        routine->routine();
+        run_return_cell(state);
+        at = here();
+        if (stops_at(start, at)) break;
+        routine = find(entries, ENTRIES, at);
+        if (!routine) routine = find(interbank, INTERBANK, at);
+        if (!routine && !pinball_point(at)) break; /* back out of Pinball */
+        if (!routine) {
+            /* The faithful step runs on into Pinball code not yet
+             * readable: it runs this step. */
+            *state = before;
+            return FAITHFUL_PIN_RUN(p, state, device, modules);
+        }
     }
-    entry->routine();
-    if (Z == BANKCALL || Z == POSTJUMP) {
-        /* A call into a part not yet readable: the faithful step runs on
-         * into it. */
-        *state = before;
-        return FAITHFUL_PIN_RUN(p, state, device, modules);
-    }
-    run_return_cell(state);
     give_record(p, record);
     return EXEC_OK;
 }

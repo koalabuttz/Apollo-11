@@ -129,10 +129,9 @@ void eighty_nine_test(void)
     }
     set_A(THREE);
     mask_at(ADDRESS_OF(DECBRNCH)); /* CCS A: MASK leaves 0 to 3 */
-    if (ccs_at(A_ADDRESS) == POSITIVE) {
-        tc_at(EIGHTY_NINE_TEST + 8u); /* TC NUM: a digit, on into NUM */
-        num();
-    } else
+    if (ccs_at(A_ADDRESS) == POSITIVE)
+        tc(EIGHTY_NINE_TEST + 8u, NUM);
+    else
         tc(EIGHTY_NINE_TEST + 9u, CHARALRM);
 }
 
