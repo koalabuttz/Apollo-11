@@ -1860,7 +1860,6 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define ENDROLL  ((word)K_ENDROLL)
 #define PRIO26   ((word)KW_PRIO26)
 #if LUMINARY099
-/* (ISITAUTO, R60_62's, is only BANKCALL's CADR.) */
 #define GOODMANU   ((word)K_GOODMANU)
 #define DT_TAU     ((word)KW_DT_TAU)   /* DEC .1 */
 #define ONESEK     ((word)K_ONESEK)    /* 2DEC: 0, 100 (one second) */
@@ -2465,6 +2464,50 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define RFAILS  ((word)KW_RFAILS)  /* the same, for ERROR */
 #else
 #define PRIO15 ((word)KW_PRIO15) /* the LM's is named with AOTMARK's */
+#endif
+
+/* ---- R60_62 ---- */
+
+/* Its labels (the LM's R60 and BALLANGS in bank 26, VECPOINT in 27 and
+ * R62 in 23; the CM's all in bank 27), the routines it calls and its
+ * constants. Its erasable words (TEMPR60, BALLEXIT, CPHI, TBASE1 or
+ * TBASE2, ...) are named by ADDRESS_OF. */
+#define REDOMANN ((word)K_REDOMANN)
+#define TOBALL   ((word)K_TOBALL)
+#define REDOMANC ((word)K_REDOMANC)
+#define TOBALLC  ((word)K_TOBALLC)
+#define STARTMNV ((word)K_STARTMNV)
+#define ENDMANUV ((word)K_ENDMANUV)
+#define ENDMANU1 ((word)K_ENDMANU1)
+#define CHKLINUS ((word)K_CHKLINUS)
+#define RELINUS  ((word)K_RELINUS)
+#define R61TEST  ((word)K_R61TEST)
+#define GOMOVE   ((word)K_GOMOVE)
+#define GOPERF2R ((word)K_GOPERF2R)
+#define GODSPR   ((word)K_GODSPR)
+#define GOMANUR  ((word)K_GOMANUR)
+#define GOFLASH  ((word)K_GOFLASH)
+#define LINUS    ((word)K_LINUS)
+#define GOTOV56  ((word)K_GOTOV56)
+#define V06N18   ((word)KW_V06N18) /* VN 0618 */
+#define V06N22   ((word)KW_V06N22) /* VN 0622 */
+#define THREE_AXIS_BIT ((word)KW_3AXISBIT) /* 3AXISBIT: FLAGWRD5's 3AXISFLG */
+#define PDSPFBIT ((word)KW_PDSPFBIT)       /* FLAGWRD4's PDSPFLAG */
+#if LUMINARY099
+#define R60LEM   ((word)K_R60LEM)
+#define TOBALLA  ((word)K_TOBALLA)
+#define AUTOMANV ((word)K_AUTOMANV)
+#define RER60    ((word)K_RER60)
+#define G_N_AUTO ((word)K_GPN_AUTO) /* G+N,AUTO */
+#define ISITAUTO ((word)K_ISITAUTO)
+#define BALLANGS ((word)K_BALLANGS)
+#define ENDBALL  ((word)K_ENDBALL)
+#define R62DISP  ((word)K_R62FLASH) /* R62DISP EQUALS R62FLASH */
+#else
+#define R60CSM       ((word)K_R60CSM)
+#define GOREDO20     ((word)K_GOREDO20)
+#define R62DISP      ((word)K_R62DISP)
+#define BITS13_14_15 ((word)KW_13_14_15) /* 13,14,15 */
 #endif
 
 /* NO.CORES + 1 core sets. */
