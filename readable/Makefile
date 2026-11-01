@@ -288,10 +288,11 @@ machine-cases: $(BUILD)/machine-cases
 # ---- The interpreter ----
 # tests/interpreter_fuzz.c: the readable interpreter and the faithful port's
 # interpreter core (src/<m>_interp_core.c, built with faithful_ before its
-# names) on the same random interpretive programs, pass by pass, two seeds
-# per mission. Its generator is the port's own fuzz's
-# (tools/interp_core_fuzz.c).
+# names) on the same random interpretive programs, pass by pass, seeds 1
+# to 40 per mission (under a second each). Its generator is the port's own
+# fuzz's (tools/interp_core_fuzz.c).
 INTERPRETER_CASES ?= 20000
+INTERPRETER_SEEDS ?= $(shell seq 1 40)
 ROPES := $(PORT)/build/fixed-data/Luminary099/MAIN.agc.bin $(PORT)/build/fixed-data/Comanche055/MAIN.agc.bin
 IC_COMMON := $(PORT)/src/agc_word.c $(PORT)/src/agc_multiword.c $(PORT)/src/agc_hardware_divide.c
 IC_CFLAGS := -std=gnu99 -O2 -g -Wall -Wextra -Werror -Dexit=interp_core_fuzz_exit
@@ -310,10 +311,9 @@ $(BUILD)/interpreter-cases-cm: $(INTERPRETER_SOURCES:src/%.c=$(BUILD)/cases-cm/%
 
 interpreter-cases: $(BUILD)/interpreter-cases-lm $(BUILD)/interpreter-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
-	./$(BUILD)/interpreter-cases-lm $(ROPES) $(INTERPRETER_CASES) 11
-	./$(BUILD)/interpreter-cases-lm $(ROPES) $(INTERPRETER_CASES) 12
-	./$(BUILD)/interpreter-cases-cm $(ROPES) $(INTERPRETER_CASES) 11
-	./$(BUILD)/interpreter-cases-cm $(ROPES) $(INTERPRETER_CASES) 12
+	@for m in lm cm; do for s in $(INTERPRETER_SEEDS); do \
+		printf 'seed %s: ' $$s; ./$(BUILD)/interpreter-cases-$$m $(ROPES) $(INTERPRETER_CASES) $$s || exit 1; \
+	done; done
 
 # ---- Alarms and aborts ----
 # The port's own tests (tests/test_lm_alarm.c, test_cm_alarm.c) on the

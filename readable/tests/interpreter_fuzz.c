@@ -17,11 +17,13 @@
  *
  * The generator also writes operands no assembled program has, where the
  * readable code does what the AGC does and the faithful core something
- * simpler. A pass that would run one is not compared ("unassembled
+ * simpler, or where an order rewrites the interpreter's own registers
+ * under it. A pass that would run one is not compared ("unassembled
  * operands", see unassembled() below): an erasable order given a fixed or
  * 15-bit address, a store into fixed memory, an operand that runs past
  * the end of its bank or names the interpreter's own registers, an
- * address word of +0 or 46D, a switch bit past BIT1. Nor is one that
+ * address word of +0 or 46D, a switch bit past BIT1, a switch word past
+ * the last flag word, a CGOTO list outside the program's bank. Nor is one that
  * writes NEWJOB, or that takes both images out of the work area's frame
  * ("left the frame"); a pass that takes only one of them out is a
  * difference.
@@ -97,6 +99,13 @@ static int erasable_misc(unsigned c)
            (index == 015u && (c & 4u));
 }
 
+/* Whether a is one of the interpreter's own registers (NEWJOB, INTBIT15
+ * to OVFIND, MPAC to PUSHLOC), which no program names as an operand. */
+static int interpreter_register(unsigned a)
+{
+    return (a >= 061u && a <= 067u) || (a >= 0107u && a <= 0121u) || (a >= 0146u && a <= 0170u);
+}
+
 /* Whether an operand (up to a matrix, 18 words) at address a runs past the
  * end of its bank: erasable is switched in 256-word banks (the interpreter
  * leaves an erasable operand in 1400-1777 under EBANK), fixed in 1K ones.
@@ -106,9 +115,7 @@ static int erasable_misc(unsigned c)
  * before them). */
 static int past_bank_end(unsigned a)
 {
-    if ((a >= 061u && a <= 067u) || (a >= 0107u && a <= 0121u) || (a >= 0146u && a <= 0170u))
-        return 1;
-    if (a >= 040000u) return 1;
+    if (interpreter_register(a) || a >= 040000u) return 1;
     if (a <= 055u) return 0; /* in the work area (to 45D: the address less one) */
     return a < 04000u ? (a & 0377u) > 0400u - 18u : (a & 01777u) > 02000u - 18u;
 }
@@ -137,6 +144,12 @@ static int near_bank_end(const apollo_overlay_state *s, unsigned w, int indexed)
     }
     return 0;
 }
+
+/* The last flag word, STATE + n: Luminary099 has 16 (STATE ERASE +15D),
+ * Comanche055 12 (+11D). A switch word's bits 9 up number its flag word
+ * ("UP TO 64 SWITCH WORDS"); past the last one, STATE + n is another
+ * erasable word, from 070 the interpreter's LOC and BANKSET. */
+#define LAST_FLAGWORD (MISSION ? 11u : 15u)
 
 /* Whether order code c stores into its operand, which must be erasable:
  * SSP and TSLC. */
@@ -183,14 +196,29 @@ static int unassembled(const apollo_overlay_state *s)
     for (i = 0; i < n; ++i) {
         if (c[i] == 0150u) { /* STADR: the store code that follows, complemented */
             w = code_at(s, off++);
-            if (indexes_changed || store_unassembled(s, (~w & 077777u) - 1u, off)) return 1;
+            /* ITR1's CS and AD NEGONE, in ones' complement: a complemented
+             * word of 1 gives -0, the code no store word gives. */
+            w = (~w & 077777u) + 077776u;
+            w = w > 077777u ? (w & 077777u) + 1u : w;
+            if (indexes_changed || store_unassembled(s, w, off)) return 1;
             continue;
         }
         if (!(c[i] & 3u)) continue;
         w = code_at(s, off);
-        if (erasable_misc(c[i]) && w >= 04000u) return 1;
+        if (erasable_misc(c[i]) && (w >= 04000u || interpreter_register(w))) return 1;
         if ((c[i] & 3u) == 2u && (c[i] >> 3) == 016u && (w & 017u) == 017u)
             return 1; /* switch bit 15 of a word of 15: BIT15 +15 is past BIT1 */
+        if ((c[i] & 3u) == 2u && (c[i] >> 3) == 016u && (w >> 8) > LAST_FLAGWORD)
+            return 1; /* a switch word past the flag words */
+        /* CGOTO reads its list's CADR through FBANK ("INDEX LOC, CA 1") and
+         * puts it, plus the modifier, in FBANK ("SELECT GOTO ADDRESS"); the
+         * faithful core reads the list from the program's bank. Every
+         * program keeps the list there and its modifier in erasable
+         * (DIFEQTAB beside its CGOTO, MPAC): a fixed modifier leaves its
+         * own bank in FBANK, a list elsewhere names another bank. */
+        if ((c[i] & 1u) && (c[i] >> 2) == 004u &&
+            (w >= 04000u || ((code_at(s, off + 1u) >> 10) & 037u) != CODE_BANK))
+            return 1;
         if ((c[i] & 1u) && (c[i] & 2u ? indexes_changed || near_bank_end(s, w, 1)
                                       : w < 040000u && near_bank_end(s, w, 0)))
             return 1;
@@ -222,14 +250,14 @@ static void on_crash(int sig)
 /* Timeouts allowed per run: a case that loops without end is abandoned
  * (interp_core_fuzz.c), which a slow machine may also do to a long one. */
 #define MAX_ABANDONED 5u
-/* Measured at 20,000 cases (seeds 11 and 12, both missions): 1.21 to 1.24
- * passes compared per case, 43 to 44 cases in a hundred with none. A run
+/* Measured at 20,000 cases (seeds 1 to 64, both missions): 1.12 to 1.21
+ * passes compared per case, 44 to 46 cases in a hundred with none. A run
  * that compares fewer than MIN_PASSES per hundred cases, or has more than
  * MAX_EMPTY in a hundred with none, stopped short somewhere. Runs under
  * FLOOR_CASES (a FUZZ_FIRST rerun of a few cases) are too small to judge. */
-#define MIN_PASSES  115u
-#define MAX_EMPTY   47u
-#define FLOOR_CASES 1000u
+#define MIN_PASSES  108u
+#define MAX_EMPTY   49u
+#define FLOOR_CASES 10000u
 
 int main(int argc, char **argv)
 {
