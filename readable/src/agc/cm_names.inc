@@ -1159,6 +1159,7 @@
 #define K_SBANDANT 03652u
 #define K_GOMARKFR 02600u
 #define K_R02BOTH 03653u
+#define K_RADSTALL 03575u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u

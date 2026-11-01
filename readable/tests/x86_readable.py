@@ -136,6 +136,9 @@ REPLACED = (
     # 64; src/sband_antenna).
     'lm_sband_antenna.o',
     'cm_sband_antenna.o',
+    # RADAR_LEADIN_ROUTINES.agc, the LM's radar sampling loop
+    # (src/radar_leadin).
+    'lm_radar_leadin_routines.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -154,8 +157,9 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
 # its SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER). The IMU performance test
 # (GEOIMUTT) is the LM's alone. R60 has each mission's name (R60LEM,
-# R60CSM).
-MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem'),
+# R60CSM). The radar sampling loop (RADSAMP) is the LM's alone.
+MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
+                          'radsamp'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm')}
 xb.OUT = READABLE / 'build/x86-flight'
 
