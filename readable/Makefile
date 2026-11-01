@@ -119,6 +119,8 @@ IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)
+PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
+	src/binding/machine.c $(sort $(wildcard src/pinball/*.c)) src/binding/pinball_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
@@ -126,18 +128,18 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) \
-	$(SL_SOURCES) $(IPT_SOURCES))
+	$(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
-	imu-performance-cases
+	imu-performance-cases pinball-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1120,6 +1122,23 @@ geometry-cases: $(BUILD)/geometry-oracle-lm $(BUILD)/geometry-oracle-cm $(BUILD)
 	./$(BUILD)/geometry-oracle-cm $(ROPES)
 	./$(BUILD)/geometry-cases-lm $(ROPES)
 	./$(BUILD)/geometry-cases-cm $(ROPES)
+
+# ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part by part ----
+# The readable parts take the place of the port's Pinball trampoline
+# (c64-port/src/lanec_pin_trampoline.c) under its names, lanec_pin_run_lm
+# and lanec_pin_run_cm, and hand the entries not yet readable to it
+# (renamed faithful_lanec_pin_run_<m>). Each mission's readable objects are
+# built into one object that keeps only its trampoline name. The gate is
+# the port's own Pinball tests, run live against the original program in
+# Virtual AGC with the readable parts in place (tests/pinball_transfer.py).
+$(BUILD)/pin-readable-lm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
+$(BUILD)/pin-readable-cm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+$(BUILD)/pin-readable-%.o:
+	ld -r $^ -o $@.all
+	objcopy --keep-global-symbol=lanec_pin_run_$* $@.all $@
+
+pinball-cases: $(BUILD)/pin-readable-lm.o $(BUILD)/pin-readable-cm.o tests/pinball_transfer.py
+	python3 tests/pinball_transfer.py $(BUILD)/pin-readable-lm.o $(BUILD)/pin-readable-cm.o
 
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in

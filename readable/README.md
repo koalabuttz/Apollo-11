@@ -112,6 +112,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Maneuver steering | `KALCMANU_STEERING.agc` (LM pp. 365-369, CM pp. 414-419) | [`src/kalcmanu_steering/`](src/kalcmanu_steering/) | The automatic maneuver, a second at a time: NEWDELHI (a WAITLIST call each second starts it as a job, UPDTCALL) turns MIS through DEL, one second of the rotation (MXM3, interpretive), takes the new CDU angles (DCMTOCDU, RTB V1STO2S) and gives the DAP a tenth of the change for each tenth of a second (INCRDCDU: DELDCDU, CDUXD). MANUSTAT starts it (the end time TM, the rates OMEGAPD and the attitude error offsets DELPEROR), TIMECHK and CONTMANU call for the next second, and MANUSTOP ends it on the final angles and gives the computer back to the routine that asked (GOODMANU, SPVAC). The CM's differs: NEWDELHI goes on only while HOLDFLAG says the maneuver is still on, INCRDCDU turns the change into control axes (QUADROT) for the CM's DAP (DELCDUX, CDUXD), MANUSTAT also loads the rates WBODY and the bias BIAS, and MANUSTOP ends it through ENDROLL and ENDMANU, with the subroutines other files call: STOPRATE, ZEROEROR, LOADCDUD and LOADYZ. RTB_OP_CODES.agc's V1STO2S is readable too |
 | System-test lead-ins | `SYSTEM_TEST_STANDARD_LEAD_INS.agc` (LM pp. 370-372, CM pp. 420-422) | [`src/standard_lead/`](src/standard_lead/) | "SPECIAL PROGRAMS TO EASE THE PANGS OF ERASABLE MEMORY PROGRAMS": how a test program keyed into erasable memory calls the program in fixed memory and comes back. E/BKCALL is a BANKCALL that returns to erasable (its three returns, as BANKCALL's, by the way a display or stall ended), E/CALL calls an interpretive subroutine in fixed memory from erasable interpretive code (its CALL EBUF2 and EXIT, and back through INTPRET +2), and E/JOBWAK wakes a job asleep in erasable memory (JOBWAKE, then the fixed memory bit taken out of its LOC). EBUF2 and EBUF2 +1 keep the return. The CM's file also holds its system-test entry words in bank 33: COMPVER, GTSCPSS1 and REDO |
 | IMU performance test (P07) | `IMU_PERFORMANCE_TEST_2.agc` and `IMU_PERFORMANCE_TESTS_4.agc` (LM pp. 373-389) | [`src/imu_performance/`](src/imu_performance/) | The test the system test group ran on the pad, with the LM's IMU: GEOIMUTT zeroes the IMU, asks for the site's latitude and azimuth (V06 N41), works out where the platform's axes should point and coarse aligns it there. In gimbal lock only the PIPA test runs (PIPACHK: the time the vertical PIPA takes to overflow 17 times, each pulse caught by CHECKG to the scaler's 1/1600 second with FINETIME, and AINGOTN's rate from it). Otherwise it fine aligns and starts the drift test: ESTIMS, ALLOOP (a task each second reading and zeroing the PIPAs) and ALFLT, the filter (NORMLOP: the gains, integrals, velocities and angles), then SETUPER1 torques the platform by the angles found and SHOW flashes the result (V06 N98). EARTHR compensates for the earth's rotation throughout |
+| Pinball, part 1: the keys | `PINBALL_GAME_BUTTONS_AND_LIGHTS.agc` (LM pp. 398-405, 444-445, 461; CM pp. 315-322, 362-363, 379) | [`src/pinball/`](src/pinball/) | CHARIN (the display system made busy, KEY REL lit over a flashing display, and the jump through the key table), the digits (NUM -2, 89TEST and NUM: a verb, noun or data register built a character at a time, in octal or as a decimal fraction by DECTOBIN and DECEND), VERB and NOUN, the sign keys (POSGN, NEGSGN and +ON/-ON), CLEAR with CLPASHI and CLR5, the blanking routines 5BLANK and 2BLANK, DSPIN and 11DSPIN (a character into the display table), SLEFT5 and RELDSPON. ENTERJMP is written with ENTER |
 
 Beside them:
 
@@ -310,6 +311,16 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful ones, then checks the interpretive words against the rope
    (234), and runs readable and faithful side by side from 129,024 states,
    as the host runs the files and as the flight program does.
+   `make pinball-cases` runs the faithful port's Pinball tests with the
+   readable parts in place of the Pinball trampoline (every routine of
+   the tables from its entry and every caller's chain through the file,
+   live against Virtual AGC: pin-transfer, pin-decdsp3, pin-refuse and
+   pin-transfer-c64), then those chains from the readable parts' entries
+   stirred 12,000 ways against Virtual AGC (pin-stirred), then every step
+   of the port's chains through the readable routines and through the
+   faithful trampoline side by side: the same step, start, stop and every
+   word, since the flight program charges its clock by step
+   (tests/pinball_steps.c).
    `make names-check` checks
    the generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable

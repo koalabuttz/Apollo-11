@@ -1994,6 +1994,72 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define EBANK5   ((word)KW_EBANK5)
 #endif
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 1: the keys ---- */
+
+/* Its labels in bank 40 and fixed-fixed, both missions, and the routines
+ * of the file's later parts the keys go to. Its erasable words (DSPLOCK,
+ * CADRSTOR, MPAC, CHAR, DSPCOUNT, DECBRNCH, INREL, CODE, COUNT, VERBREG,
+ * XREGLP, CLPASS, REQRET, ENTRET, SGNON, SGNOFF, MIXTEMP, DSEXIT, DSREL,
+ * DSMAG, DSPTAB, NOUT) are named by ADDRESS_OF, and so are the tables an
+ * INDEX reads (INRELTAB, RELTAB, CRITCON, SGNTAB, SINBLANK, DOUBLK, DSMSK,
+ * and R1D1 and BIT7 as the first words of theirs). */
+#define CHARIN           ((word)K_CHARIN)
+#define CHARIN2          ((word)K_CHARIN2)
+#define ENTERJMP         ((word)K_ENTERJMP)
+#define EIGHTY_NINE_TEST ((word)K_89TEST) /* 89TEST */
+#define NUM              ((word)K_NUM)
+#define DECTOBIN         ((word)K_DECTOBIN)
+#define ENDNMTST         ((word)K_ENDNMTST)
+#define ENDNUM           ((word)K_ENDNUM)
+#define ENDALL           ((word)K_ENDALL)
+#define DECEND           ((word)K_DECEND)
+#define PLUS_DECSGN      ((word)K_PDECSGN) /* +DECSGN */
+#define MORNUM           ((word)K_MORNUM)
+#define GETINREL         ((word)K_GETINREL)
+#define VERB             ((word)K_VERB)
+#define NVCOM            ((word)K_NVCOM)
+#define NOUN             ((word)K_NOUN)
+#define NEGSGN           ((word)K_NEGSGN)
+#define BOTHSGN          ((word)K_BOTHSGN)
+#define FIXCLPAS         ((word)K_FIXCLPAS)
+#define POSGN            ((word)K_POSGN)
+#define SGNCOM           ((word)K_SGNCOM)
+#define PLUS_ON          ((word)(K_POSGN + 4u))  /* +ON: the word after POSGN's TC BOTHSGN */
+#define MINUS_ON         ((word)(K_SGNCOM + 9u)) /* -ON: the word after SGNCOM's TC L */
+#define SIGNTEST         ((word)K_SIGNTEST)
+#define SGNTST1          ((word)K_SGNTST1)
+#define CLEAR            ((word)K_CLEAR)
+#define CLPASHI          ((word)K_CLPASHI)
+#define CLEAR1           ((word)K_CLEAR1)
+#define CLR5             ((word)K_CLR5)
+#define LEGALTST         ((word)K_LEGALTST)
+#define FIVE_BLANK       ((word)K_5BLANK)  /* 5BLANK */
+#define FIVE_BLANK1      ((word)K_5BLANK1) /* 5BLANK1 */
+#define TWO_BLANK        ((word)K_2BLANK)  /* 2BLANK */
+#define DSPIN            ((word)K_DSPIN)
+#define DSPIN1           ((word)K_DSPIN1)
+#define DFRNT            ((word)K_DFRNT)
+#define DSLV             ((word)K_DSLV)
+#define ELEVEN_DSPIN     ((word)K_11DSPIN) /* 11DSPIN */
+#define SLEFT5           ((word)K_SLEFT5)
+#define RELDSPON         ((word)K_RELDSPON)
+#define CHARALRM         ((word)K_CHARALRM)
+#define ERROR            ((word)K_ERROR)
+#define VBRELDSP         ((word)K_VBRELDSP)
+#define UPDATVB          ((word)K_UPDATVB)
+#define ENTER            ((word)K_ENTER)
+/* 21/22REG: where CHARIN keeps DSPLOCK's old word for ERROR LIGHT RESET. */
+#define K_TWENTY_ONE_22REG K_21_22REG
+/* Its constants. */
+#define ELRCODE1 ((word)KW_ELRCODE1) /* OCT 22: the ERROR LIGHT RESET key */
+#define ND1      ((word)KW_ND1)      /* OCT 21: the noun's left digit */
+#define R1D1     ((word)KW_R1D1)     /* OCT 16 */
+#define R2D1     ((word)KW_R2D1)     /* OCT 11 */
+#define R3D1     ((word)KW_R3D1)     /* OCT 4 */
+#define ENDINST  ((word)KW_ENDINST)  /* TC ENDOFJOB */
+#define BLANKCON ((word)KW_BLANKCON) /* OCT 4000 */
+#define BRNCHCON ((word)KW_BRNCHCON) /* OCT 77774 */
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
