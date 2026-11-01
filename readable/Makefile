@@ -121,7 +121,7 @@ SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/
 	src/binding/standard_lead_routines.c)
 PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
 	src/binding/machine.c $(sort $(wildcard src/pinball/*.c)) src/pinball_noun_tables/readers.c src/pinball_noun_tables/tables.c \
-	src/binding/pinball_routines.c
+	src/binding/pinball_routines.c src/executive/executive.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
@@ -1132,8 +1132,15 @@ geometry-cases: $(BUILD)/geometry-oracle-lm $(BUILD)/geometry-oracle-cm $(BUILD)
 # built into one object that keeps only its trampoline name. The gate is
 # the port's own Pinball tests, run live against the original program in
 # Virtual AGC with the readable parts in place (tests/pinball_transfer.py).
-$(BUILD)/pin-readable-lm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)
-$(BUILD)/pin-readable-cm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o)
+# Pinball's NOVAC (DSPMM) and JOBWAKE (RECAL1) run the readable Executive,
+# which switches no job and ends none there: its seams do nothing
+# (tests/pinball_seams.c).
+$(BUILD)/pin-readable-lm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/pin-seams-lm.o
+$(BUILD)/pin-readable-cm.o: $(PIN_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/pin-seams-cm.o
+$(BUILD)/pin-seams-lm.o: tests/pinball_seams.c $(HEADERS)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) -c $< -o $@
+$(BUILD)/pin-seams-cm.o: tests/pinball_seams.c $(HEADERS)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(CM) -c $< -o $@
 $(BUILD)/pin-readable-%.o:
 	ld -r $^ -o $@.all
 	objcopy --keep-global-symbol=lanec_pin_run_$* $@.all $@

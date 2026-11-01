@@ -710,10 +710,15 @@ void clr5(void)
     clr5_returns();
 }
 
-void five_blank_minus1(void)
+bool five_blank_minus1_returns(void)
 {
     ts(ADDRESS_OF(DSPCOUNT));
-    five_blank_returns();
+    return five_blank_returns();
+}
+
+void five_blank_minus1(void)
+{
+    five_blank_minus1_returns();
 }
 
 void five_blank(void)

@@ -326,7 +326,7 @@ void charalrm(void)
     tc(CHARALRM + 1u, ENDOFJOB);
 }
 
-/* ---- Fixed-fixed services (LM pp. 452 and 462, CM pp. 370 and 380) ---- */
+/* ---- Fixed-fixed services (KILMONON LM p. 454, CM p. 372; LODSAMPT LM p. 462, CM p. 380) ---- */
 
 /* KILMONON -- "THIS IS THE KILL MONITOR BIT" (BIT15) into MONSAVE1, which
  * turns off bit 14, "THE EXTERNAL MONITOR BIT". */
