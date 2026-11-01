@@ -34,6 +34,7 @@
 #include "rope_image.h"
 #include "interp_case.h"
 #include "lm_p20_p25_vectors.h"
+#include "lm_interp_orders.h"
 
 /* The readable words. */
 struct interpretive_code {
@@ -43,7 +44,8 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code ORBCHG2_CODE, P20LEM1_CODE, P20LEMC3_CODE, UPPSV_CODE,
-    ORBCHG3_CODE;
+    ORBCHG3_CODE, R22LEM3_CODE, R22LEM96_CODE, R22LEM96_WAIT_CODE, R22LEM7_CODE, R21LEM1_CODE,
+    R21LEM3_CODE, R21LEM12_CODE, R21LEM12_FIRST_PASS_CODE, R21LEM7_CODE, R21LEM8_CODE;
 extern const agc_routine_table lm_p20_p25_basic, lm_p20_p25_interpretive;
 extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_interpretive;
 bool p20_p25_readable(uint16_t key, bool order_pair);
@@ -66,6 +68,8 @@ bool p20_p25_readable(uint16_t key, bool order_pair);
 #define PUSHLOC_AT  0166u
 #define MODREG_AT   01011u
 #define OPTION2_AT  01145u
+#define REPOSCNT_AT 01423u
+#define N49FLAG_AT  01746u
 /* The erasable words UPPSV's GOTO and the faithful port read a CADR from:
  * LS21X (its return, as STQ stores it) and 03675. */
 #define LS21X_AT 01757u
@@ -115,13 +119,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: part 1, bank 24 to R22LEM, and bank 32's
- * ORBCHG3 (to its EXIT's TC BANKCALL). */
+/* The parts written so far: parts 1 and 2, bank 24 to R23LEM, and bank
+ * 32's ORBCHG3 (to its EXIT's TC BANKCALL). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return (bank == 024u && z < 02451u) || (bank == 032u && z >= 02217u && z <= 02364u);
+    return (bank == 024u && z < 03135u) || (bank == 032u && z >= 02217u && z <= 02364u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -219,7 +223,7 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         for (k = 0; k < 7u; ++k) w[MPAC_AT + k] = value_word();
         k = rnd() % 4u;
         if (k == 0u)
-            w[MPAC_AT] = (uint16_t)(rnd() % 2u); /* LPS20.2's answer */
+            w[MPAC_AT] = (uint16_t)(rnd() % 3u); /* LPS20.2's, LRS22.1's answer */
         else if (k == 1u)
             w[MPAC_AT] = rnd() % 2u ? 077777u : 077776u;
         k = rnd() % 3u;
@@ -244,6 +248,15 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         k = rnd() % 4u;
         w[MODREG_AT] = k == 0u ? 024u : k == 1u ? 026u : k == 2u ? 0u : any_word();
         if (rnd() % 2u) w[OPTION2_AT] = rnd() % 2u ? 1u : any_word();
+        /* R21's count of tries: 0, a few, -0 or any; N49DSP's answer: -1
+         * (proceed), 0 (none yet) or any. */
+        k = rnd() % 4u;
+        w[REPOSCNT_AT] = k == 0u   ? 0u
+                         : k == 1u ? (uint16_t)(rnd() % 3u)
+                         : k == 2u ? 077777u
+                                   : any_word();
+        k = rnd() % 3u;
+        w[N49FLAG_AT] = k == 0u ? 077776u : k == 1u ? 0u : any_word();
         /* Channel 33: bit 2 (RR auto mode) clear as P20 wants it, or any. */
         k = rnd() % 4u;
         if (k == 0u)
@@ -297,6 +310,23 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
     w[CADR2_AT] = fixed_cadr(w[CADR2_AT]);
 }
 
+/* R21LEM12's CLRGO (24,3030) branches to R21LEM7 +1, a TC INTPRET the
+ * interpreter reads as a store code, STORE,1. Where that store would run
+ * past the end of the E-bank window, the AGC writes into fixed memory and
+ * reads it back into A and L: the readable binding refuses it, as the
+ * faithful port's other interpretive routines do (lmi_store_spills), but
+ * the faithful 24,3030 runs it, writing the next E bank's words. (CLRGO
+ * changes neither MODE nor X1.) */
+static unsigned spills;
+
+static bool faithful_spills(uint16_t key, const apollo_overlay_state *start)
+{
+    bool spill = key == 024u * 1024u + 01030u && lmi_store_spills(start, 006037u);
+
+    spills += spill;
+    return spill;
+}
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs, unsigned *readable_keys)
 {
@@ -320,6 +350,11 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             fa = ra = start;
             fio = rio = io;
             memset(&hardware, 0, sizeof hardware);
+            /* Channel 12: the RR auto track enable (bit 14) on or off, or
+             * any. */
+            hardware.channel12 = rnd() % 4u
+                                     ? (uint16_t)((rnd() & 077777u) | (rnd() % 2u ? 020000u : 0u))
+                                     : (uint16_t)(rnd() % 2u ? 020000u : 0u);
             fhw = rhw = hardware;
             memset(&p, 0, sizeof p);
             fp = rp = p;
@@ -335,7 +370,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                        (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
-                why = "readable refused, faithful ran";
+                why = faithful_spills(key, &start) ? 0 : "readable refused, faithful ran";
             else if (sf != EXEC_OK && sr == EXEC_OK)
                 why = "readable ran, faithful refused";
             else if (sf == EXEC_OK && memcmp(&fa, &ra, sizeof fa))
@@ -363,7 +398,21 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &ORBCHG2_CODE, &P20LEM1_CODE, &P20LEMC3_CODE, &UPPSV_CODE, &ORBCHG3_CODE,
+    &ORBCHG2_CODE,
+    &P20LEM1_CODE,
+    &P20LEMC3_CODE,
+    &UPPSV_CODE,
+    &ORBCHG3_CODE,
+    &R22LEM3_CODE,
+    &R22LEM96_CODE,
+    &R22LEM96_WAIT_CODE,
+    &R22LEM7_CODE,
+    &R21LEM1_CODE,
+    &R21LEM3_CODE,
+    &R21LEM12_CODE,
+    &R21LEM12_FIRST_PASS_CODE,
+    &R21LEM7_CODE,
+    &R21LEM8_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -394,10 +443,11 @@ int main(int argc, char **argv)
     failures += keys(&lm_p20_p25_interpretive, &faithful_lm_p20_p25_interpretive, 1, &runs,
                      &readable_pairs);
     printf("p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
+           "pairs) from %u states each (the others from %u), %u run by the faithful routines "
+           "(%u of them a store past the E-bank window the readable binding refuses), "
            "%u failures\n",
            words, readable_basic + readable_pairs,
            lm_p20_p25_basic.count + lm_p20_p25_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, failures);
+           CASES, OTHER_CASES, runs, spills, failures);
     return failures != 0;
 }

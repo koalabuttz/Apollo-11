@@ -50,7 +50,6 @@ static void tc_to(word at, word routine)
 static void orbchgo_display(void);
 static void orbchg1_display(void);
 static void prog20a_minus2(void);
-static void p20lema(void);
 static void p20lemb6(void);
 static void p20lemc2(void);
 static void p20lmwt1(void);
@@ -445,8 +444,9 @@ void five_twenty_six_alarm_immediate_return(void)
     tc_to(FIVE_TWENTY_SIX_ALARM + 6u, ENDOFJOB);
 }
 
-/* P20LEMA -- p. 496. Restart group 2 at P20LEM1 still. */
-static void p20lema(void)
+/* P20LEMA -- p. 496. Restart group 2 at P20LEM1 still. R22 and R21 come
+ * here too. */
+void p20lema(void)
 {
     tc_to(P20LEMA, PHASCHNG); /* OCT 04022 */
 }
