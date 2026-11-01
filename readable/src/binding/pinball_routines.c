@@ -8,11 +8,11 @@
  * with the list of the port's modules that claim its entry; the trampoline
  * runs them on the mission's device record (an lm_dntm_io or a cm_dntm_io:
  * the channels and the superbank). The readable file takes the
- * trampoline's place under its name, a part at a time: at an entry of a
- * readable part the readable routine runs, and at any other the faithful
- * trampoline does, built into the readable programs as
- * faithful_lanec_pin_run_<m> (tests/x86_readable.py, the Makefile's
- * pinball tests) until the file is readable whole.
+ * trampoline's place under its name. Since part 8 every entry of the
+ * tables is a readable routine; the faithful trampoline, built into the
+ * readable programs as faithful_lanec_pin_run_<m> (tests/x86_readable.py,
+ * the Makefile's pinball tests), still runs a step the readable code does
+ * not model.
  *
  * Plumbing only: point the machine at the state and at copies of the
  * channels the record carries, take the states the trampoline takes
@@ -391,6 +391,29 @@ static const struct entry entries[] = {
     {BANK_40(RECAL3), recal3},
     {BANK_40(DOTERM), doterm},
     {BANK_40(DOPROC), doproc},
+    /* Part 8: the rest, the file whole. */
+    {BANK_41(TESTNN), testnn},
+    {BANK_41(REQCOM), reqcom},
+    {FIXED_FIXED(FALTOF), faltof},
+    {FIXED_FIXED(LODSAMPT), lodsampt},
+    {FIXED_FIXED(PRENVBSY), prenvbsy},
+    {FIXED_FIXED(NVSUBUSY), nvsubusy},
+    {BANK_04(NVSUBSY1), nvsubsy1},
+    {FIXED_FIXED(NVSBWAIT), nvsbwait},
+    {BANK_41(VBTSTLTS), vbtstlts},
+    {BANK_41(TSTLTS1), tstlts1},
+    {BANK_41(TSTLTS2), tstlts2},
+    {BANK_41(TSTLTS2 + 4u), tstlts2_plus4},
+    {BANK_41(TSTLTS3), tstlts3},
+#if LUMINARY099
+    {BANK_41(TSTLTS1 + 18u), tstlts1_plus18},
+    {BANK_41(TSTLTS3 + 27u), tstlts3_plus27},
+#else
+    {BANK_41(VBTSTLTS + 2u), vbtstlts_plus2},
+    {BANK_41(TSTLTS1 + 16u), tstlts1_plus16},
+    {BANK_41(TSTLTS3 + 26u), tstlts3_plus26},
+#endif
+    {BANK_40(ERROR), error_},
 };
 #define ENTRIES (sizeof entries / sizeof entries[0])
 
@@ -498,26 +521,27 @@ static word rope_word(unsigned at)
     return (word)(value & MINUS_ZERO);
 }
 
-/* The readable parts written so far write only channel 11 (agc.dsalmout).
- * A channel read (CHANDSP's channel nouns, LRPOSOUT's channel 33) is not
+/* The record's channels 11 (agc.dsalmout), 12 and 13, superbank and
+ * interrupt switch, as the routines change them. */
+static uint16_t dsalmout, channel12, channel13, superbank, interrupts;
+
+/* Channel 11 is agc.dsalmout. The lights test reads channel 12 (RAND
+ * CHAN12) and it and ERROR LIGHT RESET change channel 13's test alarm bit.
+ * Any other channel (CHANDSP's channel nouns, LRPOSOUT's channel 33) is not
  * modelled here: that step runs in the faithful port. */
 static word channel_in(unsigned number)
 {
-    (void)number;
+    if (number == CHAN12) return channel12;
+    if (number == CHAN13) return channel13;
     not_modelled();
     return 0;
 }
 
 static void channel_out(unsigned number, word value)
 {
-    (void)number;
-    (void)value;
-    not_modelled();
+    if (number != CHAN13) not_modelled();
+    channel13 = (uint16_t)(value & 043777u); /* the trap resets do not stay set */
 }
-
-/* The record's channel 11, superbank and interrupt switch, as the
- * routines change them. */
-static uint16_t dsalmout, superbank, interrupts;
 
 static void bind_record(apollo_overlay_state *state)
 {
@@ -539,6 +563,8 @@ static bool take_record(const agc_native_program *p, device_record *x)
     superbank = x->control.superbank;
     interrupts = x->control.interrupt_enabled;
     dsalmout = p->hardware->channel11;
+    channel12 = x->channel12;
+    channel13 = x->channel13;
     return true;
 }
 
@@ -547,6 +573,8 @@ static void give_record(const agc_native_program *p, device_record *x)
     x->control.superbank = superbank;
     x->control.interrupt_enabled = interrupts;
     p->hardware->channel11 = x->channel11 = dsalmout;
+    x->channel12 = channel12;
+    x->channel13 = channel13;
 }
 #else
 static bool take_record(const agc_native_program *p, device_record *x)
@@ -555,6 +583,8 @@ static bool take_record(const agc_native_program *p, device_record *x)
     superbank = x->io.superbank;
     interrupts = x->io.interrupt_enabled;
     dsalmout = x->io.channel11;
+    channel12 = x->io.channel12;
+    channel13 = x->io.channel13;
     return true;
 }
 
@@ -564,6 +594,8 @@ static void give_record(const agc_native_program *p, device_record *x)
     x->io.superbank = superbank;
     x->io.interrupt_enabled = interrupts;
     x->io.channel11 = dsalmout;
+    x->io.channel12 = channel12;
+    x->io.channel13 = channel13;
 }
 #endif
 

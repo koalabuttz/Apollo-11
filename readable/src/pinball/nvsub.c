@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 /* PINBALL_GAME_BUTTONS_AND_LIGHTS.agc, part 7: NVSUB, the display for the
  * program's own use, and the routines around it -- LM pp. 451-459, CM pp.
- * 369-377. The faithful C is the port's Pinball modules
- * (c64-port/src/lanec_pw_*.c, lanec_pin_head_nvsub.c and the dsky_*.c they
- * run).
+ * 369-377; with part 8's NVSUBUSY and NVSBWAIT, LM p. 464, CM p. 382. The
+ * faithful C is the port's Pinball modules (c64-port/src/lanec_pw_*.c,
+ * lanec_pin_head_nvsub.c and the dsky_*.c, cm_*.c and lm_*.c they run).
  *
  * "NVSUB IS USED FOR SUBROUTINE CALLS FROM WITHIN COMPUTER. IT CAN BE USED
  * TO CALL THE COMBINATION OF ANY DISPLAY, LOAD, OR MONITOR VERB TOGETHER
@@ -625,4 +625,84 @@ void doproc(void)
 {
     set_A(ONE);
     tc(DOPROC + 1u, RECAL2);
+}
+
+/* ---- NVSUBUSY and NVSBWAIT (LM p. 464, CM p. 382) ---- */
+
+/* "THERE ARE TWO WAYS A JOB CAN BE PUT TO SLEEP BY THE KEYBOARD + DISPLAY
+ * PROGRAM. 1) BY ENDIDLE 2) BY NVSUBUSY". NVSUBUSY is for a program that
+ * found the display busy (NVSUB came back at the calling word +1): "PUTS
+ * YOUR JOB TO SLEEP UNTIL THE OPERATOR RELEASES THE KEYBOARD + DISPLAY
+ * SYSTEM. NVSUBUSY ALSO TURNS ON THE KEY RELEASE LIGHT." The calling
+ * sequence is "CAF WAKEFCADR; TC NVSUBUSY". Like ENDIDLE, it aborts with
+ * 01206 if a job is asleep in Pinball already. */
+
+static void nvsbwt1(void);
+
+/* PRENVBSY -- "SPECIAL ENTRANCE FOR ROUTINES IN FIXED BANKS ONLY DESIRING
+ * THE FCADR OF (LOC FROM WHICH THE TC PRENVBSY WAS DONE) -2 TO BE
+ * ENTERED." The return (Q) less 2K+3, plus FBANK, is that FCADR. On into
+ * NVSUBUSY. */
+void prenvbsy(void)
+{
+    set_A(negate(TWO_K_PLUS_3));
+    ad_at(Q_ADDRESS);
+    ad_at(FBANK_ADDRESS);
+    continue_at(NVSUBUSY);
+}
+
+/* NVSUBUSY -- to NVSUBSY1 in bank 04 by POSTJUMP: "NVSUBSY1 MUST BE IN
+ * BANK 27 OR LOWER, SO IT WILL PUT THE CALLER TO SLEEP WITH HIS PROPER
+ * SUPERBITS." */
+void nvsubusy(void)
+{
+    tc(NVSUBUSY, POSTJUMP); /* CADR NVSUBSY1 */
+}
+
+/* NVSUBSY1 -- the wake FCADR into L. "ABORT IF CADRSTOR NOT= +0." "ABORT
+ * IF DSPLIST NOT= +0." The key release light on (RELDSPON), the FCADR into
+ * DSPLIST, which RELDSP wakes when the display is released, and the job
+ * goes to sleep (ENDNVBSY: JOBSLEEP). */
+void nvsubsy1(void)
+{
+    if (ts(L_ADDRESS)) not_modelled(); /* an overflow would skip TC ISCADR+0 */
+    tc_at(NVSUBSY1 + 1u);
+    if (!iscadr_returns()) return;
+    tc_at(NVSUBSY1 + 2u);
+    if (!islist_returns()) return;
+    tc_at(NVSUBSY1 + 3u);
+    reldspon();
+    ca(L_ADDRESS);
+    ts(ADDRESS_OF(DSPLIST));
+    tc(ENDNVBSY, JOBSLEEP);
+}
+
+/* NVSBWAIT -- "NVSBWAIT IS A SPECIAL ENTRANCE FOR ROUTINES IN FIXED BANKS
+ * ONLY. IF SYSTEM IS NOT BUSY, IT EXECUTES V/N AND RETURNS TO L+2 (L IS
+ * LOC FROM WHICH THE TC NVSBWAIT WAS DONE). IF SYSTEM IS BUSY, IT PUTS JOB
+ * TO SLEEP WITH L-1 GOING INTO LIST FOR EVENTUAL WAKING UP WHEN SYSTEM IS
+ * NOT BUSY." "ZERO NVMONOPT OPTIONS" (LXCH 7), the verb and noun into
+ * NVTEMP, and the system busy if the external monitor bit (BIT14 of
+ * MONSAVE1) or DSPLOCK is set. "FREE. NVSUB WILL SAVE L+1 FOR RETURN
+ * AFTER EXECUTION." (NVSBCOM). */
+void nvsbwait(void)
+{
+    zl();
+    if (ts(ADDRESS_OF(NVTEMP))) not_modelled();
+    set_A(BIT14);
+    mask_at(ADDRESS_OF(MONSAVE1)); /* "EXTERNAL MONITOR BIT" */
+    ad_at(ADDRESS_OF(DSPLOCK));
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE: nvsbwt1(); return; /* TCF NVSBWT1: "BUSY" */
+    case IS_PLUS_ZERO: continue_at(NVSBCOM); return;
+    case NEGATIVE: nvsbwt1(); return;
+    case IS_MINUS_ZERO: continue_at(PRENVBSY); return;
+    }
+}
+
+/* NVSBWT1 -- "L+2. PRENVBSY WILL PUT L-1 INTO LIST AND GO TO SLEEP." */
+static void nvsbwt1(void)
+{
+    incr(Q_ADDRESS);
+    continue_at(PRENVBSY);
 }

@@ -2425,6 +2425,48 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define THIRTY_THREE_DEC ((word)KW_33DEC)    /* 33DEC: DEC 33 */
 #define MD1              ((word)KW_MD1)      /* OCT 25, after VD1 and ND1 */
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 8: the lights test, RSET and NVSUBUSY ---- */
+/* FALTOF (LM p. 461, CM p. 379), PRENVBSY, NVSUBUSY, NVSBWAIT and NVSBWT1
+ * (LM p. 464, CM p. 382) in fixed-fixed; NVSUBSY1 and ENDNVBSY (LM p.
+ * 464, CM p. 382) in bank 04; VBTSTLTS to TSTLTS3 (LM pp. 467-468, CM pp.
+ * 385-386) in bank 41; ERROR's TSTAB, ERMINUS, ERPLUS and ERCOM (LM pp.
+ * 470-471, CM pp. 388-389) in bank 40. ERCNT (which shares its word
+ * with POLISH) and SFAIL are named by ADDRESS_OF. */
+#define FALTOF   ((word)K_FALTOF)
+#define PRENVBSY ((word)K_PRENVBSY)
+#define NVSUBUSY ((word)K_NVSUBUSY)
+#define NVSUBSY1 ((word)K_NVSUBSY1)
+#define ENDNVBSY ((word)K_ENDNVBSY)
+#define NVSBWAIT ((word)K_NVSBWAIT)
+#define NVSBWT1  ((word)K_NVSBWT1)
+#define VBTSTLTS ((word)K_VBTSTLTS)
+#define TSTLTS1  ((word)K_TSTLTS1)
+#define TSTLTS2  ((word)K_TSTLTS2)
+#define TSTLTS3  ((word)K_TSTLTS3)
+#define TSTAB    ((word)K_TSTAB)
+#define ERMINUS  ((word)K_ERMINUS)
+#define ERPLUS   ((word)K_ERPLUS)
+#define ERCOM    ((word)K_ERCOM)
+/* Their constants. */
+#define TWO_K_PLUS_3  ((word)KW_2KP3)     /* 2K+3: OCT 2003 */
+#define FULLDSP       ((word)KW_FULLDSP)  /* "DISPLAY ALL 8:S" */
+#define FULLDSP1      ((word)KW_FULLDSP1) /* "DISPLAY ALL 8:S AND +" */
+#define TSTCON1       ((word)KW_TSTCON1)  /* channel 11 lights on */
+#define TSTCON2       ((word)KW_TSTCON2)  /* DSPTAB +11D lights on */
+#define TSTCON3       ((word)KW_TSTCON3)  /* "CHAN 11 BITS 1, 3, 4, 7." */
+#define SHOLTS        ((word)KW_SHOLTS)   /* "5 SEC" */
+#define BITS_13_11_1  ((word)KW_13_11_1)  /* 13-11,1: OCT 16001 */
+#define OCT55000      ((word)KW_OCT55000)
+#define ERCON         ((word)KW_ERCON)    /* "CHAN 11 BITS 3,7." */
+#define GL_PLUS_NOATT ((word)KW_GLPNOATT) /* GL+NOATT: "NO ATT AND GIMBAL LOCK LAMPS" */
+#define NOTBIT12      ((word)KW_NOTBIT12)
+#if LUMINARY099
+#define RFAILS2 ((word)KW_RFAILS2) /* "RADAR CDU AND DATA FAIL FLAGS." */
+#define RFAILS  ((word)KW_RFAILS)  /* the same, for ERROR */
+#else
+#define PRIO15 ((word)KW_PRIO15) /* the LM's is named with AOTMARK's */
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

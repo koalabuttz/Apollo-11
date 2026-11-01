@@ -529,7 +529,17 @@ int main(int argc, char **argv)
                   {"pw-response-recall", 1},
                   {"pw-operator-schedule", 1},
                   {"pw-five-blank", 1},
-                  {"pin-gaps", 1}};
+                  {"pin-gaps", 1},
+                  /* The lights test, RSET, NVSUBUSY and the last entries
+                   * (part 8). */
+                  {"pin-head-lamp", 1},
+                  {"pw-lamp-test", 1},
+                  {"pw-lamp-lifecycle", 1},
+                  {"pw-lamp-release", 1},
+                  {"pw-lm-pinball-busy", 1},
+                  {"pw-charin-reset", 1},
+                  {"pw-test-noun", 1},
+                  {"pw-address-request", 1}};
     static apollo_overlay_state s;
     static lanec_io io;
     static lanec_meta m;

@@ -55,10 +55,8 @@ void enterjmp(void)
 
 static void entpashi(void);
 static void acceptwd(void);
-static void testnn(void);
 static void useadd_on(void);
 static void intmctbs_plus2(void);
-static void reqcom(void);
 static void updat1(void);
 
 /* ENTER -- LM p. 406, CM p. 323. CLPASS +0, ENTRET TC ENDOFJOB (ENDINST:
@@ -164,7 +162,7 @@ void read_noun_tables(word at)
  * into NOUNCADR at VERBFAN -2), "NOT IN USE IF +0", "SPECIFY MACHINE CADR
  * IF -" (REQADD), "AUGMENT MACHINE CADR IF -0" (the address the operator
  * gave last time, one on). */
-static void testnn(void)
+void testnn(void)
 {
     word mixbr;
 
@@ -439,7 +437,7 @@ void reqdatz(void)
     reqcom();
 }
 
-static void reqcom(void)
+void reqcom(void)
 {
     ts(ADDRESS_OF(DSPCOUNT));
     cs(Q_ADDRESS);
