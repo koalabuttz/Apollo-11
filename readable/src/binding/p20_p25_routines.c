@@ -23,16 +23,19 @@
  *
  * The device is the LM's io record with the input channels after it
  * (lm_channel_io): P20LEMB7 and R22 read channel 33. Channel 12 (R22
- * reads it, R21 clears its bit 14) is the program's hardware record's.
+ * reads it, R21 and CLRADMOD clear bits of it, R23 sets its bit 14) is the
+ * program's hardware record's.
  *
  * The states the faithful routines take, at every key: FB the key's bank
- * (in banks 30-37, the superbank bit clear); at an order pair Z at NEWOPS,
+ * (in banks 30-37, the superbank bit clear), except in fixed-fixed code
+ * (CLRADMOD), which runs under any; at an order pair Z at NEWOPS,
  * BANKSET the BBANK and INTBIT15 the bank's bit 15. Always ZERO +0, the
  * bank registers agreeing, the interrupt and superbank latches in range,
  * and every erasable word an ordinary one. At an order pair and at the
  * basic keys the faithful port marks so (its at_basic), NEWJOB +0 or a core
  * set and FIXLOC one of the VAC areas; at the other basic keys (its
- * at_basic_nv) NEWJOB may be -0 too, and FIXLOC anything. A run the
+ * at_basic_nv, and CLRADMOD's sane_nv) NEWJOB may be -0 too, and FIXLOC
+ * anything. A run the
  * readable code refuses part way leaves the state and io record as they
  * were. */
 #include <setjmp.h>
@@ -82,7 +85,7 @@ static word channel_in(unsigned number)
     }
 }
 
-/* Channel 12 only (R21's WAND). */
+/* Channel 12 only (WAND and WOR). */
 static void channel_out(unsigned number, word value)
 {
     if (number != 012u || !hardware_now) not_modelled();
@@ -337,6 +340,42 @@ static const struct basic_entry {
     {KEY(024u, R21DISP + 7u), r21disp_enter, false},
     {KEY(024u, R21DISP + 010u), r21disp_immediate_return, false},
     {KEY(024u, R21DISP + 012u), r21disp_after_linus, false},
+    {KEY(024u, R23LEM + 2u), r23lem_after_upflag, false},
+    {KEY(024u, R23LEM + 5u), r23lem_after_setmindb, false},
+    {KEY(024u, R23LEM1 + 6u), r23lem1_terminate, false},
+    {KEY(024u, R23LEM1 + 7u), r23lem1_proceed, false},
+    {KEY(024u, R23LEM1 + 010u), r23lem1_enter, false},
+    {KEY(024u, R23LEM11), r23lem11, false},
+    {KEY(024u, R23LEM11 + 3u), r23lem11_out_of_limits, false},
+    {KEY(024u, R23LEM11 + 4u), r23lem11_within_limits, false},
+    {KEY(024u, R23LEM11 + 6u), r23lem11_after_restordb, false},
+    {KEY(024u, R23LEM11 + 011u), r23lem11_after_downflag, false},
+    {KEY(024u, OUTOFLIM), outoflim, false},
+    {KEY(024u, OUTOFLIM + 4u), outoflim_terminate, false},
+    {KEY(024u, OUTOFLIM + 5u), outoflim_proceed, false},
+    {KEY(024u, OUTOFLIM + 6u), outoflim_enter, false},
+    {KEY(024u, OUTOFLIM + 7u), outoflim_immediate_return, false},
+    {KEY(024u, R23LEM2 + 2u), r23lem2_after_downflag, false},
+    {KEY(024u, R23LEM3), r23lem3, false},
+    {KEY(024u, R23LEM3 + 2u), r23lem3_after_r61lem, false},
+    {KEY(024u, R24LEM + 2u), r24lem_after_upflag, false},
+    {KEY(024u, R24LEM1), r24lem1, false},
+    {KEY(024u, R24LEM2 + 2u), r24lem2_after_phaschng, false},
+    {KEY(024u, R24LEM2 + 5u), r24lem2_terminate, false},
+    {KEY(024u, R24LEM2 + 6u), r24lem2_proceed, false},
+    {KEY(024u, R24LEM2 + 7u), r24lem2_enter, false},
+    {KEY(024u, R24LEM2 + 010u), r24lem2_immediate_return, false},
+    {KEY(024u, R24END), r24end, false},
+    {KEY(024u, R24END + 2u), r24end_after_killtask, false},
+    {KEY(024u, R24END + 3u), r24end_after_clradmod, false},
+    {KEY(024u, R24LEM3 + 2u), r24lem3_after_phaschng, false},
+    {KEY(024u, R24LEM3 + 4u), r24lem3_after_killtask, false},
+    {KEY(024u, R24LEM3 + 5u), r24lem3_after_clradmod, false},
+    {KEY(024u, R24LEM3 + 011u), r24lem3_after_delayjob, false},
+    {KEY(024u, R24LEM3 + 012u), r24lem3_on_surface, false},
+    {KEY(024u, R24LEM3 + 013u), r24lem3_in_orbit, false},
+    {KEY(024u, R24LEM4), r24lem4, false},
+    {KEY(003u, CLRADMOD), clradmod, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -454,7 +493,9 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     if (!entry) return faithful_lm_p20_p25_basic.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
-    if (!in_bank(key / 1024u) || !sane(entry->with_work_area)) return EXEC_OUT_OF_SCOPE;
+    /* (fixed-fixed code, banks 02 and 03, runs under any FB) */
+    if ((key / 1024u >= 4u && !in_bank(key / 1024u)) || !sane(entry->with_work_area))
+        return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;

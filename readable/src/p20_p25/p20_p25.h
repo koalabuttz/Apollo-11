@@ -13,8 +13,8 @@
  *     state vector update UPPSV and ORBCHG3, P22's CSM orbit change;
  *   part 2, r22_r21.c: R22, the radar data read, and R21, the designate
  *     (pp. 504-512), with LUNSFCHK, which every part calls;
- *   r23_r24.c: so far only R23LEM's and R24LEM's first steps (pp. 513,
- *     515), which parts 1 and 2 run.
+ *   part 3, r23_r24.c: R23, manual acquisition, and R24, the search
+ *     (pp. 513-516), with CLRADMOD.
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -32,6 +32,26 @@
 #include "../interpreter/notation.h"
 
 #if LUMINARY099
+
+/* TC at, to a routine out of the file (or to a keyed label): Q gets the
+ * return, and the routine runs next. */
+static inline void tc_to(word at, word routine)
+{
+    tc_at(at);
+    continue_at(routine);
+}
+
+/* TC Q: the routine returns to the address in Q (bits 1-12), and Q
+ * becomes 3. Not modelled: a Q that is not such an address (bits 13-15
+ * set, or below 010). */
+static inline void tc_q(void)
+{
+    word at = (word)(Q & 07777u);
+
+    if ((Q & 070000u) || Q < 010u) not_modelled();
+    Q = 3u;
+    Z = at;
+}
 
 /* ---- Part 1: P20 and P25 (programs.c) ---- */
 
@@ -259,10 +279,51 @@ void r21disp_enter(void);
 void r21disp_immediate_return(void);
 void r21disp_after_linus(void);
 
-/* ---- R23 and R24 (r23_r24.c) ---- */
+/* ---- Part 3: R23 and R24 (r23_r24.c) ---- */
 
+/* R23 */
 void r23lem(void);
+void r23lem_after_upflag(void);
+void r23lem_after_setmindb(void);
+void r23lem1_terminate(void);
+void r23lem1_proceed(void);
+void r23lem1_enter(void);
+void r23lem11(void);
+void r23lem11_out_of_limits(void);
+void r23lem11_within_limits(void);
+void r23lem11_after_restordb(void);
+void r23lem11_after_downflag(void);
+void outoflim(void);
+void outoflim_terminate(void);
+void outoflim_proceed(void);
+void outoflim_enter(void);
+void outoflim_immediate_return(void);
+void r23lem2_after_downflag(void);
+void r23lem3(void);
+void r23lem3_after_r61lem(void);
+
+/* R24 */
 void r24lem(void);
+void r24lem_after_upflag(void);
+void r24lem1(void);
+void r24lem2_after_phaschng(void);
+void r24lem2_terminate(void);
+void r24lem2_proceed(void);
+void r24lem2_enter(void);
+void r24lem2_immediate_return(void);
+void r24end(void);
+void r24end_after_killtask(void);
+void r24end_after_clradmod(void);
+void r24lem3_after_phaschng(void);
+void r24lem3_after_killtask(void);
+void r24lem3_after_clradmod(void);
+void r24lem3_after_delayjob(void);
+void r24lem3_on_surface(void);
+void r24lem3_in_orbit(void);
+void r24lem4(void);
+
+/* CLRADMOD (fixed-fixed) */
+void clradmod(void);
 
 #endif
 

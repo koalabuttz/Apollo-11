@@ -36,24 +36,6 @@
 
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
-/* TC Q: the routine returns to the address in Q (bits 1-12), and Q
- * becomes 3. Not modelled: a Q that is not such an address (bits 13-15
- * set, or below 010). */
-static void tc_q(void)
-{
-    word at = (word)(Q & 07777u);
-
-    if ((Q & 070000u) || Q < 010u) not_modelled();
-    Q = 3u;
-    Z = at;
-}
-
 /* INDEX MPAC; TC +1 at the address at: MPAC 0, 1 (or 2) picks the TC
  * after it or the next. Not modelled: an MPAC that runs a word past the
  * table's last as an instruction. */
