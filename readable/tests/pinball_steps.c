@@ -486,7 +486,16 @@ int main(int argc, char **argv)
                   {"pw-input-angle", 1},
                   {"pw-input-arithmetic", 1},
                   {"pw-input-scale", 1},
-                  {"pw-input-time", 1}};
+                  {"pw-input-time", 1},
+                  /* Monitor, DSPFMEM and the alarms (part 5). */
+                  {"pw-monitor", 1},
+                  {"pw-monitor-consumer", 1},
+                  {"pw-monitor-paste", 1},
+                  {"pw-nv-consumer", 1},
+                  {"pw-fixed-display", 1},
+                  {"pw-source-alarm", 1},
+                  {"pw-alarm-cycle", 1},
+                  {"pw-alarm-recycle", 1}};
     static apollo_overlay_state s;
     static lanec_io io;
     static lanec_meta m;
