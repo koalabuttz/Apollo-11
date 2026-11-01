@@ -26,7 +26,8 @@
  * Part 5, monitor, DSPFMEM and the alarms (LM pp. 437-440 and 446, CM pp.
  * 355-358 and 364). Part 6, the major mode change, the request verbs,
  * proceed and terminate, and key release (LM pp. 447-450, CM pp.
- * 365-368). The entries
+ * 365-368). Part 7, NVSUB, ENDIDLE, JAMTERM and JAMPROC, BLANKSUB, DSPMM
+ * and RECALTST (LM pp. 451-459, CM pp. 369-377). The entries
  * are the routines' labels and the words a call out of the part returns
  * to. */
 #ifndef READABLE_PINBALL_H
@@ -306,6 +307,8 @@ void prshrtmp(void);
 bool dspin_returns(void);
 bool eleven_dspin_returns(void);
 bool two_blank_returns(void);
+/* 5BLANK -1, from BLNKSUB1 (part 7): DSPCOUNT from A, then 5BLANK. */
+bool five_blank_minus1_returns(void);
 
 /* ---- Part 5: monitor and the alarms (monitor.c) ---- */
 
@@ -360,6 +363,37 @@ void vbreseq(void);
 void vbreldsp(void);
 void tstlts4(void);
 void unsuspen(void);
+
+/* ---- Part 7: NVSUB and its company (nvsub.c) ---- */
+
+void nvsub(void);
+void nvmonopt(void);
+void nvsbcom(void);
+void nvsubcom(void);
+void nvsubend(void);
+void blankdsp(void);
+void nvsub1(void);
+void nvsub1_plus18(void);
+void entset(void);
+void nvsub2(void);
+void nvsub2_plus4(void);
+void nvsub2_plus9(void);
+void nvsub2_plus11(void);
+void endnvsb1(void);
+void endidle(void);
+void jamterm(void);
+void jamproc(void);
+void blanksub(void);
+void blnksub1(void);
+void dspmm(void);
+void dspmmjb(void);
+void dspmmjb_plus6(void);
+void recaltst(void);
+void recal1(void);
+void recal2(void);
+void recal3(void);
+void doterm(void);
+void doproc(void);
 
 /* ---- Leaving a routine ---- */
 

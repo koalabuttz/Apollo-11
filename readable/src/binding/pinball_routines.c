@@ -42,6 +42,7 @@
 #include "binding.h"
 #include "../pinball/pinball.h"
 #include "../interbank/interbank.h"
+#include "../executive/executive.h"
 #include "../agc/names.h"
 
 #if LUMINARY099
@@ -69,6 +70,7 @@ struct entry {
 #define BANK_40(at)     (040u * 02000u + ((at) - 02000u))
 #define BANK_41(at)     (041u * 02000u + ((at) - 02000u))
 #define BANK_42(at)     (042u * 02000u + ((at) - 02000u))
+#define BANK_04(at)     (004u * 02000u + ((at) - 02000u))
 #define FIXED_FIXED(at) ((unsigned)(at)) /* banks 2 and 3, at 04000-07777 */
 
 /* Part 1, the keys: bank 40, and SLEFT5 and RELDSPON in fixed-fixed. */
@@ -360,16 +362,47 @@ static const struct entry entries[] = {
     {BANK_40(VBRELDSP), vbreldsp},
     {BANK_40(TSTLTS4), tstlts4},
     {BANK_40(UNSUSPEN), unsuspen},
+    /* Part 7: NVSUB and its company. */
+    {FIXED_FIXED(NVSUB), nvsub},
+    {FIXED_FIXED(NVMONOPT), nvmonopt},
+    {FIXED_FIXED(NVSBCOM), nvsbcom},
+    {FIXED_FIXED(NVSUBCOM), nvsubcom},
+    {FIXED_FIXED(NVSUBEND), nvsubend},
+    {BANK_41(BLANKDSP), blankdsp},
+    {BANK_41(NVSUB1), nvsub1},
+    {BANK_41(ENTSET - 2u), nvsub1_plus18},
+    {BANK_41(ENTSET), entset},
+    {BANK_41(NVSUB2), nvsub2},
+    {BANK_41(NVSUB2 + 4u), nvsub2_plus4},
+    {BANK_41(NVSUB2 + 9u), nvsub2_plus9},
+    {BANK_41(NVSUB2 + 11u), nvsub2_plus11},
+    {BANK_41(ENDNVSB1), endnvsb1},
+    {FIXED_FIXED(ENDIDLE), endidle},
+    {FIXED_FIXED(JAMTERM), jamterm},
+    {FIXED_FIXED(JAMPROC), jamproc},
+    {FIXED_FIXED(BLANKSUB), blanksub},
+    {BANK_40(BLNKSUB1), blnksub1},
+    {BANK_04(DSPMM), dspmm},
+    {BANK_40(DSPMMJB), dspmmjb},
+    {BANK_40(DSPMMJB + 6u), dspmmjb_plus6},
+    {BANK_40(RECALTST), recaltst},
+    {BANK_40(RECAL1), recal1},
+    {BANK_40(RECAL2), recal2},
+    {BANK_40(RECAL3), recal3},
+    {BANK_40(DOTERM), doterm},
+    {BANK_40(DOPROC), doproc},
 };
 #define ENTRIES (sizeof entries / sizeof entries[0])
 
 /* INTER-BANK_COMMUNICATION's routines (src/interbank/), which a step runs
- * through on its way between banks. */
+ * through on its way between banks; and the Executive's SUPDXCHZ +1
+ * (src/executive/), BLNKSUB1's way back to BLANKSUB's caller. */
 static const struct entry interbank[] = {
     {FIXED_FIXED(BANKCALL), bankcall},
     {FIXED_FIXED(SWRETURN), swreturn},
     {FIXED_FIXED(POSTJUMP), postjump},
     {FIXED_FIXED(BANKJUMP), bankjump},
+    {FIXED_FIXED(SUPDXCHZ + 1u), supdxchz_plus1},
 };
 #define INTERBANK (sizeof interbank / sizeof interbank[0])
 
@@ -536,18 +569,29 @@ static void give_record(const agc_native_program *p, device_record *x)
 
 /* ---- The trampoline ---- */
 
+/* A step from UPDATNN or UPDATVB (or the word before either, which
+ * stores A first). */
+static bool from_update(unsigned start)
+{
+    return start == BANK_41(UPDATNN - 1u) || start == BANK_41(UPDATNN) ||
+           start == BANK_41(UPDATVB - 1u) || start == BANK_41(UPDATVB);
+}
+
 /* The way back from a BANKCALL into a readable entry: Z at SWRETURN, its
- * buffer BUF2 holding the return address and BUF2 +1 the caller's bank. */
-static bool swreturn_into_part(void)
+ * buffer BUF2 holding the return address and BUF2 +1 the caller's bank.
+ * The entry's point, or 0. */
+static unsigned swreturn_into_part(void)
 {
     word bank_word = fetch(ADDRESS_OF(BUF2) + 1u);
     word at = fetch(ADDRESS_OF(BUF2));
     unsigned bank = bank_word >> 10;
 
-    if (Z != SWRETURN || (bank_word & ~076000u) || at < 02000u || at > 07777u) return false;
+    unsigned point;
+
+    if (Z != SWRETURN || (bank_word & ~076000u) || at < 02000u || at > 07777u) return 0;
     if (at < 04000u && bank >= 030u && (superbank & 0100u)) bank += 010u;
-    at = at >= 04000u ? FIXED_FIXED(at) : bank * 02000u + (at - 02000u);
-    return find(entries, ENTRIES, at) != NULL;
+    point = at >= 04000u ? FIXED_FIXED(at) : bank * 02000u + (at - 02000u);
+    return find(entries, ENTRIES, point) ? point : 0;
 }
 
 /* The step's last word, as the trampoline runs it (cell_return): a routine
@@ -581,7 +625,7 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     device_record *record = device;
     const struct entry *routine;
     unsigned start, routines;
-    bool jumped, requested;
+    bool jumped, returned, swreturned = false;
 
     if (!p || !state || !record || !lanec_registers_valid(state) || !take_record(p, record))
         return FAITHFUL_PIN_RUN(p, state, device, modules);
@@ -590,8 +634,14 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     start = here();
     routine = find(entries, ENTRIES, start);
     if (!routine) {
-        if (!swreturn_into_part()) return FAITHFUL_PIN_RUN(p, state, device, modules);
+        /* A return by SWRETURN: the step is the entry's it returns to (the
+         * faithful tables enter there, and run SWRETURN first). */
+        unsigned entry = swreturn_into_part();
+
+        if (!entry) return FAITHFUL_PIN_RUN(p, state, device, modules);
         routine = find(interbank, INTERBANK, start);
+        start = entry;
+        swreturned = true;
     }
 
     before = *state;
@@ -617,12 +667,18 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
                  routine->routine == bankjump;
         routine->routine();
         /* ACCEPTWD's TC REQRET, back to the routine that asked for the
-         * word (REQDATX, REQDATY, REQDATZ) or to ENTPAS0: the faithful
-         * step ends there, as it does after every return through REQRET. */
-        requested = state->words[LANEC_Z] == ADDRESS_OF(REQRET);
+         * word (REQDATX, REQDATY, REQDATZ) or to ENTPAS0, and a verb's end
+         * by TC ENTRET (ENTEXIT), to ENDOFJOB or, for NVSUB's, NVSUBEND:
+         * the faithful step ends there, as it does after every return
+         * through REQRET or ENTRET. So does a step from UPDATNN or UPDATVB
+         * at UPDAT1's TC UPDATRET, back to their caller (not one from a
+         * routine that BANKCALLs them: that goes on from SWRETURN). */
+        returned = state->words[LANEC_Z] == ADDRESS_OF(REQRET) ||
+                   state->words[LANEC_Z] == ADDRESS_OF(ENTRET) ||
+                   (state->words[LANEC_Z] == ADDRESS_OF(UPDATRET) && from_update(start));
         run_return_cell(state);
         at = here();
-        if (requested || stops_at(start, at)) break;
+        if (returned || (stops_at(start, at) && !(swreturned && routines == 0u))) break;
         routine = find(entries, ENTRIES, at);
         if (!routine) routine = find(interbank, INTERBANK, at);
         if (!routine && !pinball_point(at) && !jumped) break; /* back out of Pinball */

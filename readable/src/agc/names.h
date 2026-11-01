@@ -2387,6 +2387,44 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define TCFINDVC ((word)KW_TCFINDVC) /* TC FINDVAC */
 #define TCWAIT   ((word)KW_TCWAIT)   /* TC WAITLIST */
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 7: NVSUB and its company ---- */
+/* NVSUB to NVSUBEND, ENDIDLE to DSPABORT, JAMTERM, JAMPROC and BLANKSUB
+ * (LM pp. 452-456, CM pp. 370-374) in fixed-fixed; BLANKDSP to ENDNVSB1
+ * (LM pp. 453-454, CM pp. 371-372) in bank 41; BLNKSUB1, TESTBIT, DSPMMJB
+ * and RECALTST to DOPROC (LM pp. 456-459, CM pp. 374-377) in bank 40; DSPMM
+ * (LM p. 457, CM p. 375) in bank 04. Spelled in words: ISCADR+0 as
+ * ISCADR_PLUS0, 34DEC as THIRTY_FOUR_DEC. NVTEMP, NVQTEM, NVBNKTEM and
+ * DSPMMTEM are named by ADDRESS_OF. */
+#define NVMONOPT     ((word)K_NVMONOPT)
+#define NVSBCOM      ((word)K_NVSBCOM)
+#define NVSUBCOM     ((word)K_NVSUBCOM)
+#define ENDIDLE      ((word)K_ENDIDLE)
+#define ISCADR_PLUS0 ((word)K_ISCADRP0) /* ISCADR+0 */
+#define ISLIST_PLUS0 ((word)K_ISLISTP0) /* ISLIST+0 */
+#define DSPABORT     ((word)K_DSPABORT)
+#define JAMTERM      ((word)K_JAMTERM)
+#define JAMPROC      ((word)K_JAMPROC)
+#define BLANKDSP     ((word)K_BLANKDSP)
+#define ENTSET       ((word)K_ENTSET)
+#define NVSUB2       ((word)K_NVSUB2)
+#define ENDNVSB1     ((word)K_ENDNVSB1)
+#define BLNKSUB1     ((word)K_BLNKSUB1)
+#define TESTBIT      ((word)K_TESTBIT)
+#define DSPMM        ((word)K_DSPMM)
+#define DSPMMJB      ((word)K_DSPMMJB)
+#define ENDSPMM      ((word)K_ENDSPMM)
+#define RECAL1       ((word)K_RECAL1)
+#define RECAL2       ((word)K_RECAL2)
+#define RECAL3       ((word)K_RECAL3)
+#define DOTERM       ((word)K_DOTERM)
+#define DOPROC       ((word)K_DOPROC)
+/* Their constants. */
+#define NVSBBBNK         ((word)KW_NVSBBBNK) /* BBCON NVSUB1 (PINSUPBT is the same word) */
+#define BLNKBBNK         ((word)KW_BLNKBBNK) /* BBCON BLNKSUB1 */
+#define THIRTY_FOUR_DEC  ((word)KW_34DEC)    /* 34DEC: DEC 34 */
+#define THIRTY_THREE_DEC ((word)KW_33DEC)    /* 33DEC: DEC 33 */
+#define MD1              ((word)KW_MD1)      /* OCT 25, after VD1 and ND1 */
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

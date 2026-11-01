@@ -96,7 +96,7 @@ static void report(const char *suite, uint32_t n, unsigned step, const char *wha
 }
 
 /* --stops: the faithful steps' starts and ends (src/binding/pinball_stops.inc). */
-#define MAX_STOPS 4096u
+#define MAX_STOPS 8192u
 static struct {
     uint16_t from, to;
 } stops[2][MAX_STOPS];
@@ -467,7 +467,11 @@ int main(int argc, char **argv)
 {
     static const struct {
         const char *name;
-        int held; /* the steps must be the faithful port's */
+        /* 1: the steps must be the faithful port's, and give the stops. 2:
+         * held, but no stops: the update suites return through UPDATRET to
+         * made-up callers, which would make made-up stops (the binding ends
+         * a step from UPDATNN or UPDATVB at that return). */
+        int held;
     } suites[] = {{"pin-transfer", 1},
                   {"pin-decdsp3", 1},
                   {"pin-stirred", 0},
@@ -508,7 +512,24 @@ int main(int argc, char **argv)
                   {"pw-operator-request", 1},
                   {"pw-operator-response", 1},
                   {"pw-display-release", 1},
-                  {"pw-charin-release", 1}};
+                  {"pw-charin-release", 1},
+                  /* Part 7: NVSUB and its company. */
+                  {"pin-head-nvsub", 1},
+                  {"pw-nv-admission", 1},
+                  {"pw-nv-blank", 1},
+                  {"pw-nv-busy", 1},
+                  {"pw-nv-continuation", 1},
+                  {"pw-nv-key", 1},
+                  {"pw-nv-return", 1},
+                  {"pw-nv-update", 2},
+                  {"pw-nv-update-general", 2},
+                  {"pw-blank", 1},
+                  {"pw-blanksub", 1},
+                  {"pw-jam-control", 1},
+                  {"pw-response-recall", 1},
+                  {"pw-operator-schedule", 1},
+                  {"pw-five-blank", 1},
+                  {"pin-gaps", 1}};
     static apollo_overlay_state s;
     static lanec_io io;
     static lanec_meta m;
@@ -526,7 +547,7 @@ int main(int argc, char **argv)
             printf("FAIL: no suite %s\n", suites[i].name);
             return 1;
         }
-        if (collect && !suites[i].held) continue;
+        if (collect && suites[i].held != 1) continue;
         steps_compared = readable_more = differences = 0;
         for (n = 0; n < suite->count; ++n) {
             char name[64];
