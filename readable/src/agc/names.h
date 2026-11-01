@@ -2153,6 +2153,109 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define MIXAD   ((word)KW_MIXAD)   /* TC MIXTEMP */
 #define MID5    ((word)KW_MID5)    /* OCT 1740 */
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 3: the display verbs ---- */
+/* The display verbs and the scale factor routines for display (LM pp.
+ * 414-424, CM pp. 331-342): bank 41 (DSPABC to SFOUTABR), bank 40 (the
+ * output scale routines, READLO and DSPDPDEC) and bank 42 (HMSOUT, M/SOUT
+ * and their subroutines); with the scale factor code subroutines of bank
+ * 41 (SFRUTNOR, SFCONUM: LM p. 428) and TPLEFTN (bank 40), TPSL1 and
+ * PRSHRTMP (fixed-fixed). A label that starts with a digit, or holds '/',
+ * '-' or '+', is spelled in words: 360-CDUO as THREE_SIXTY_CDUO, 2INTOUT as
+ * TWO_INTOUT, M/SOUT as M_SOUT, L14/OUT as L14_OUT, +LIMIT as PLUS_LIMIT.
+ * 360-CDUO, 360-CDU, 360-CDUE and LRPOSOUT are Luminary099's; OPDEGOUT,
+ * BIASCOM, NEGOPT and DPFRACOT Comanche055's. Their erasable words
+ * (DISTEM, DECTEM, XREG, TEM4, HITEMOUT, LOTEMOUT, SEPSCRET, SEPMNRET)
+ * are named by ADDRESS_OF, and so are the constants a DCA, DMP or INDEX
+ * reads (DEGTAB, SECON1, SECON2, MINCON1, HRCON1, RNDCON, COMPICK,
+ * SFOUTABR, GTSFOUTL). ENTEXIT is ENTRET. */
+#define DSPABC     ((word)K_DSPABC)
+#define DSPAB      ((word)K_DSPAB)
+#define DSPA       ((word)K_DSPA)
+#define DSPCOM1    ((word)K_DSPCOM1)
+#define DSPB       ((word)K_DSPB)
+#define DSPC       ((word)K_DSPC)
+#define DSPCOM2    ((word)K_DSPCOM2)
+#define DSPCOM3    ((word)K_DSPCOM3)
+#define COMPTEST   ((word)K_COMPTEST)
+#define COMPTST1   ((word)K_COMPTST1)
+#define NDCMPTST   ((word)K_NDCMPTST)
+#define DCOMPTST   ((word)K_DCOMPTST)
+#define DECTEST    ((word)K_DECTEST)
+#define DCTSTCYC   ((word)K_DCTSTCYC)
+#define NOUNTEST   ((word)K_NOUNTEST)
+#define TSTFORDP   ((word)K_TSTFORDP)
+#define CHANDSP    ((word)K_CHANDSP)
+#define COMPICK    ((word)K_COMPICK)
+#define GETCOMP    ((word)K_GETCOMP)
+#define DECDSP     ((word)K_DECDSP)
+#define DSPDCGET   ((word)K_DSPDCGET)
+#define DSPDCPUT   ((word)K_DSPDCPUT)
+#define DSPSFNOR   ((word)K_DSPSFNOR)
+#define DSPDCEND   ((word)K_DSPDCEND)
+#define DECDSP3    ((word)K_DECDSP3)
+#define DEGOUTSF   ((word)K_DEGOUTSF)
+#define SETAUG     ((word)K_SETAUG)
+#define FIXRANGE   ((word)K_FIXRANGE)
+#define DEGCOM     ((word)K_DEGCOM)
+#define ARTOUTSF   ((word)K_ARTOUTSF)
+#define SCOUTEND   ((word)K_SCOUTEND)
+#define AROUT1SF   ((word)K_AROUT1SF)
+#define DP1OUTSF   ((word)K_DP1OUTSF)
+#define L14_OUT    ((word)K_L14_OUT)
+#define DP2OUTSF   ((word)K_DP2OUTSF)
+#define DP3OUTSF   ((word)K_DP3OUTSF)
+#define DPOUT      ((word)K_DPOUT)
+#define TWO_INTOUT ((word)K_2INTOUT)
+#define READLO     ((word)K_READLO)
+#define READLO1    ((word)K_READLO1)
+#define RDLONOR    ((word)K_RDLONOR)
+#define ENDRDLO    ((word)K_ENDRDLO)
+#define HMSOUT     ((word)K_HMSOUT)
+#define M_SOUT     ((word)K_M_SOUT)
+#define M_SLIMIT   ((word)K_M_SLIMIT)
+#define LIMITCOM   ((word)K_LIMITCOM)
+#define PLUS_LIMIT ((word)K_PLIMIT)
+#define M_SNORM    ((word)K_M_SNORM)
+#define SEPSEC     ((word)K_SEPSEC)
+#define SEPSEC1    ((word)K_SEPSEC1)
+#define POSEC      ((word)K_POSEC)
+#define SEPSECNR   ((word)K_SEPSECNR)
+#define SEPMIN     ((word)K_SEPMIN)
+#define ENDSPMIN   ((word)K_ENDSPMIN)
+#define DSPDPDEC   ((word)K_DSPDPDEC)
+#define ENDDPDEC   ((word)K_ENDDPDEC)
+#define SFRUTNOR   ((word)K_SFRUTNOR)
+#define SFCONUM    ((word)K_SFCONUM)
+#define SFRET      ((word)K_SFRET)
+#define CONUMNOR   ((word)K_CONUMNOR)
+#define TPLEFTN    ((word)K_TPLEFTN)
+#define LEFTNCOM   ((word)K_LEFTNCOM)
+#define TPSL1      ((word)K_TPSL1)
+#define PRSHRTMP   ((word)K_PRSHRTMP)
+#define PREDSPAL   ((word)K_PREDSPAL)
+#if LUMINARY099
+#define THREE_SIXTY_CDUO ((word)K_360_CDUO)
+#define THREE_SIXTY_CDU  ((word)K_360_CDU)
+#define THREE_SIXTY_CDUE ((word)K_360_CDUE)
+#define LRPOSOUT         ((word)K_LRPOSOUT)
+#else
+#define OPDEGOUT    ((word)K_OPDEGOUT)
+#define BIASCOM     ((word)K_BIASCOM)
+#define NEGOPT      ((word)K_NEGOPT)
+#define DPFRACOT    ((word)K_DPFRACOT)
+#define TWENTY_BIAS ((word)KW_20BIAS) /* OCT 16040: "20 DEG BIAS FOR OPTICS" */
+#endif
+/* Their constants. */
+#define HISECON    ((word)KW_HISECON)   /* OCT 23147: ".6 + 2EXP-14" */
+#define HIMINCON   ((word)KW_HIMINCON)  /* OCT 23346: ".6 + 2EXP-7" */
+#define M_SCON1    ((word)KW_M_SCON1)   /* OCT 77753: "- HI PART OF (59M58.5S) +1" */
+#define M_SCON2    ((word)KW_M_SCON2)   /* OCT 41126: "- LO PART OF (59M58.5S) +1" */
+#define NORMADR    ((word)KW_NORMADR)   /* ADRES M/SNORM +1 */
+#define M_SCON3    ((word)KW_M_SCON3)   /* OCT 00025: "59M 59.5S", high part */
+#define M_SCON3_LO ((word)KW_M_SCON3P1) /* OCT 37016, its low part */
+#define MINCON2    ((word)KW_MINCON2)   /* OCT 00011: ".0006 FOR MINUTES DISPLAY" */
+#define MINCON2_LO ((word)KW_MINCON2P1) /* OCT 32445, its low part */
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

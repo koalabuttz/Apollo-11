@@ -68,6 +68,7 @@ struct entry {
 
 #define BANK_40(at)     (040u * 02000u + ((at) - 02000u))
 #define BANK_41(at)     (041u * 02000u + ((at) - 02000u))
+#define BANK_42(at)     (042u * 02000u + ((at) - 02000u))
 #define FIXED_FIXED(at) ((unsigned)(at)) /* banks 2 and 3, at 04000-07777 */
 
 /* Part 1, the keys: bank 40, and SLEFT5 and RELDSPON in fixed-fixed. */
@@ -163,7 +164,72 @@ static const struct entry entries[] = {
     {FIXED_FIXED(RELDSP1), reldsp1},
     {FIXED_FIXED(ALMCYCLE), almcycle},
     {FIXED_FIXED(ALMCYCLE + 5u), almcycle_after_updatvb},
-    {FIXED_FIXED(SFRUTMIX), sfrutmix},
+    {BANK_41(SFRUTMIX), sfrutmix},
+    /* Part 3: the display verbs and the scale factor routines for display */
+    {BANK_41(DSPABC), dspabc},
+    {BANK_41(DSPAB), dspab},
+    {BANK_41(DSPA), dspa},
+    {BANK_41(DSPB), dspb},
+    {BANK_41(DSPC), dspc},
+    {BANK_41(DSPCOM3 + 7u), dspcom3_after_dspoctwd},
+    {BANK_41(COMPTEST), comptest},
+    {BANK_41(COMPTST1), comptst1},
+    {BANK_41(DCOMPTST), dcomptst},
+    {BANK_41(DECTEST), dectest},
+    {BANK_41(DCTSTCYC), dctstcyc},
+    {BANK_41(NOUNTEST), nountest},
+    {BANK_41(CHANDSP), chandsp},
+    {BANK_41(GETCOMP), getcomp},
+    {BANK_41(DECDSP), decdsp},
+    {BANK_41(DSPDCPUT), dspdcput},
+    {BANK_41(DSPDCEND), dspdcend},
+    {BANK_41(DSPDCEND + 2u), dspdcend_plus2},
+    {BANK_41(SFRUTNOR), sfrutnor},
+    {BANK_41(SFCONUM), sfconum},
+    {BANK_40(DEGOUTSF), degoutsf},
+#if LUMINARY099
+    {BANK_40(THREE_SIXTY_CDUO), three_sixty_cduo},
+    {BANK_40(THREE_SIXTY_CDU), three_sixty_cdu},
+    {BANK_40(THREE_SIXTY_CDUE), three_sixty_cdue},
+    {BANK_40(LRPOSOUT), lrposout},
+#else
+    {BANK_40(OPDEGOUT), opdegout},
+    {BANK_40(DPFRACOT), dpfracot},
+#endif
+    {BANK_40(ARTOUTSF), artoutsf},
+    {BANK_40(AROUT1SF), arout1sf},
+    {BANK_40(DP1OUTSF), dp1outsf},
+    {BANK_40(DP2OUTSF), dp2outsf},
+    {BANK_40(DP3OUTSF), dp3outsf},
+    {BANK_40(TWO_INTOUT), two_intout},
+    {BANK_40(TWO_INTOUT + 1u), two_intout_plus1},
+    {BANK_40(TWO_INTOUT + 2u), two_intout_plus2},
+    {BANK_40(TWO_INTOUT + 4u), two_intout_plus4},
+    {BANK_40(TWO_INTOUT + 11u), two_intout_plus11},
+    {BANK_40(READLO), readlo},
+    {BANK_40(TPLEFTN), tpleftn},
+    {BANK_40(LEFTNCOM), leftncom},
+    {BANK_40(DSPDPDEC), dspdpdec},
+    {BANK_40(DSPDPDEC + 13u), dspdpdec_plus13},
+    {BANK_40(ENDDPDEC), enddpdec},
+    {BANK_42(HMSOUT), hmsout},
+    {BANK_42(HMSOUT + 2u), hmsout_plus2},
+    {BANK_42(HMSOUT + 4u), hmsout_plus4},
+    {BANK_42(HMSOUT + 8u), hmsout_plus8},
+    {BANK_42(HMSOUT + 10u), hmsout_plus10},
+    {BANK_42(HMSOUT + 19u), hmsout_plus19},
+    {BANK_42(HMSOUT + 21u), hmsout_plus21},
+    {BANK_42(HMSOUT + 28u), hmsout_plus28},
+    {BANK_42(HMSOUT + 30u), hmsout_plus30},
+    {BANK_42(M_SOUT), m_sout},
+    {BANK_42(M_SOUT + 2u), m_sout_plus2},
+    {BANK_42(M_SNORM + 1u), m_snorm_plus1},
+    {BANK_42(M_SNORM + 5u), m_snorm_plus5},
+    {BANK_42(M_SNORM + 7u), m_snorm_plus7},
+    {BANK_42(M_SNORM + 15u), m_snorm_plus15},
+    {BANK_42(M_SNORM + 23u), m_snorm_plus23},
+    {BANK_42(M_SNORM + 25u), m_snorm_plus25},
+    {FIXED_FIXED(TPSL1), tpsl1},
 };
 #define ENTRIES (sizeof entries / sizeof entries[0])
 
@@ -269,7 +335,9 @@ static word rope_word(unsigned at)
     return (word)(value & MINUS_ZERO);
 }
 
-/* The readable parts written so far use only channel 11 (agc.dsalmout). */
+/* The readable parts written so far write only channel 11 (agc.dsalmout).
+ * A channel read (CHANDSP's channel nouns, LRPOSOUT's channel 33) is not
+ * modelled here: that step runs in the faithful port. */
 static word channel_in(unsigned number)
 {
     (void)number;
@@ -412,7 +480,7 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     for (routines = 0;; ++routines) {
         unsigned at;
 
-        if (routines == 64u) not_modelled();
+        if (routines == 1000u) not_modelled(); /* a guard: a verb 05 display takes some 100 */
         /* A jump between banks (BANKCALL, POSTJUMP, BANKJUMP), not a
          * return (SWRETURN). */
         jumped = routine->routine == bankcall || routine->routine == postjump ||

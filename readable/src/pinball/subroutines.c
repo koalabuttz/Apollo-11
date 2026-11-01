@@ -1,17 +1,20 @@
 /* SPDX-License-Identifier: MIT */
 /* PINBALL_GAME_BUTTONS_AND_LIGHTS.agc: the small subroutines, most in
- * fixed-fixed memory -- LM pp. 428, 446, 460-465, CM pp. 346, 364,
- * 378-383. The faithful C is the port's Pinball modules
+ * fixed-fixed memory -- LM pp. 428-429, 433-434, 446, 460-465, CM pp.
+ * 346-347, 351-352, 364, 378-383. The faithful C is the port's Pinball modules
  * (c64-port/src/lanec_pw_*.c, lanec_pin_gaps.c, lanec_pin_head_*.c).
- * So far those parts 1 and 2 use: SLEFT5 and RELDSPON (the keys);
+ * So far those parts 1 to 3 use: SLEFT5 and RELDSPON (the keys);
  * SETNCADR, SETNADD, SETEBANK, RIGHT5, LEFT5, FALTON, FLASHON, FLASHOFF,
- * RELDSP, RELDSP1, ALMCYCLE and SFRUTMIX (ENTER and the verb fan).
+ * RELDSP, RELDSP1, ALMCYCLE and SFRUTMIX (ENTER and the verb fan);
+ * SFRUTNOR, SFCONUM, TPLEFTN, TPSL1 and PRSHRTMP (the display verbs).
+ * SFRUTMIX, SFRUTNOR and SFCONUM are in bank 41, TPLEFTN in bank 40.
  *
  * Each goes back with TC Q (or through its return word), so a routine of
  * the file calls it as a C function, Q set first (tc_at); the ones other
  * files call, or the faithful port's steps stop at, are entries as
  * well. */
 #include "pinball.h"
+#include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
 /* SLEFT5 -- LM p. 461, CM p. 379. A five bits up by doubling it five
@@ -254,4 +257,122 @@ void sfrutmix(void)
     else
         not_modelled();
     tc_return(ADDRESS_OF(EXITEM)); /* SFRET1: "SF ROUTINE NUMBER IN A" */
+}
+
+/* SFRUTNOR -- LM p. 428, CM p. 346. "GETS SF ROUTINE NUMBER FOR NORMAL
+ * CASE": the middle five bits of NNTYPTEM, moved down (RIGHT5). The return
+ * in EXITEM: "CAN'T USE L FOR RETURN. TSTFORDP USES L." */
+void sfrutnor(void)
+{
+    xch(Q_ADDRESS);
+    if (ts(ADDRESS_OF(EXITEM))) not_modelled(); /* an overflow in Q would skip CAF MID5 */
+    set_A(MID5);
+    mask_at(ADDRESS_OF(NNTYPTEM));
+    tc_at(SFRUTNOR + 4u);
+    right5();
+    tc_return(ADDRESS_OF(EXITEM)); /* "SF ROUTINE NUMBER IN A" */
+}
+
+/* SFCONUM, SFRET and CONUMNOR -- LM pp. 428-429, CM pp. 346-347. "GETS
+ * 2X(SF CONSTANT NUMBER)", the scale factor constant's place in SFOUTAB
+ * and SFINTAB (two words each). "NORMAL NOUN ALWAYS GETS LOW5 OF NNTYPTAB
+ * FOR SF CONUM." A mixed noun's component DECOUNT has its own, in
+ * NNTYPTEM five bits at a time, picked as SFRUTMIX picks its routine. */
+void sfconum(void)
+{
+    word decount, to;
+
+    xch(Q_ADDRESS);
+    if (ts(ADDRESS_OF(EXITEM))) not_modelled(); /* an overflow in Q would skip the INDEX */
+    if (!mixed_noun(SFCONUM + 3u)) {
+        tc_at(SFCONUM + 4u); /* TC CONUMNOR: "NORMAL NOUN" */
+        set_A(LOW5);
+        mask_at(ADDRESS_OF(NNTYPTEM));
+        double_A();
+        tc_return(ADDRESS_OF(EXITEM)); /* "2X(SF CONSTANT NUMBER) IN A" */
+        return;
+    }
+    decount = fetch(ADDRESS_OF(DECOUNT)); /* "MIXED NOUN" */
+    ca(indexed_by(ADDRESS_OF(DISPLACE), decount));
+    ts(L_ADDRESS); /* "PUT TC GOQ, TC RIGHT5, OR TC LEFT5 IN L" */
+    ca(indexed_by(ADDRESS_OF(LOW5), decount));
+    mask_at(ADDRESS_OF(NNTYPTEM));
+    to = indexed_instruction(0u, L); /* INDEX L; TC 0 */
+    tc_at(SFCONUM + 12u);
+    if (to == GOQ)
+        tc_return(Q_ADDRESS); /* GOQ: TC Q */
+    else if (to == RIGHT5)
+        right5();
+    else if (to == LEFT5)
+        left5();
+    else
+        not_modelled();
+    /* SFRET */
+    double_A(); /* "2X(SF CONSTANT NUMBER) IN A" */
+    tc_return(ADDRESS_OF(EXITEM));
+}
+
+/* ---- Triple word shifts (LM pp. 433-434 and 462, CM pp. 351-352 and
+ * 380) ---- */
+
+/* TPSL1 -- LM p. 462, CM p. 380. "SHIFTS MPAC, +1, +2 LEFT 1 LEAVES
+ * OVFIND SET TO +/- 1 FOR OF/UF": each word added to itself, the carries
+ * passed up (DAS, ADS); an overflow out of MPAC sets MPAC +6 ("TS A DOES
+ * NOT CHANGE A ON OF/UF.": TS into ZERO only tests it). */
+void tpsl1(void)
+{
+    dca(ADDRESS_OF(MPAC) + 1u);
+    das(ADDRESS_OF(MPAC) + 1u);
+    ad_at(ADDRESS_OF(MPAC));
+    ads(ADDRESS_OF(MPAC));
+    if (ts(ZERO_ADDRESS)) ts(ADDRESS_OF(MPAC) + 6u); /* "MPAC +6 SET TO +/- 1 FOR OF/UF" */
+    tc_return(Q_ADDRESS);
+}
+
+/* TPLEFTN and LEFTNCOM -- LM pp. 433-434, CM pp. 351-352. "SHIFTS MPAC,
+ * +1, +2 LEFT N. SETS OVFIND TO +1 FOR OF, -1 FOR UF. CALL WITH N-1 IN
+ * A.": TPSL1 N times ("LOOP TIME .37 MSEC."), the count in SFTEMP1 and
+ * the return in SFTEMP2. */
+void tpleftn(void)
+{
+    xch(Q_ADDRESS);
+    if (ts(ADDRESS_OF(SFTEMP2))) not_modelled(); /* an overflow in Q would skip XCH Q */
+    xch(Q_ADDRESS);
+    leftncom();
+}
+
+void leftncom(void)
+{
+    for (;;) {
+        ts(ADDRESS_OF(SFTEMP1));
+        tc_at(LEFTNCOM + 1u);
+        tpsl1();
+        switch (ccs_at(ADDRESS_OF(SFTEMP1))) {
+        case POSITIVE: tc_at(LEFTNCOM + 3u); continue; /* TC LEFTNCOM */
+        case IS_PLUS_ZERO: tc_return(ADDRESS_OF(SFTEMP2)); return;
+        case NEGATIVE:
+        case IS_MINUS_ZERO: not_modelled(); /* the CCS would run 2ROUND */
+        }
+    }
+}
+
+/* PRSHRTMP -- LM p. 462, CM p. 380. "IF MPAC, +1 ARE EACH +NZ OR +0 AND
+ * C(A)=-0, SHORTMP WRONGLY GIVES +0." "PRSHRTMP FIXES FORST CASE ONLY, BY
+ * MERELY TESTING C(A) AND IF IT = -0, SETTING RESULT TO -0." "(DO NOT USE
+ * PRSHRTMP UNLESS MPAC, +1 ARE EACH +NZ OR +0, AS THEY ARE WHEN THEY
+ * CONTAIN THE SF CONSTANTS.)" */
+void prshrtmp(void)
+{
+    if (ts(ADDRESS_OF(MPTEMP))) not_modelled(); /* an overflow would skip the CCS */
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE:
+    case NEGATIVE: ca(ADDRESS_OF(MPTEMP));      /* fall through */
+    case IS_PLUS_ZERO: shortmp_plus1(); return; /* "DO REGULAR SHORTMP" */
+    case IS_MINUS_ZERO: break;
+    }
+    set_A(negate(ZERO)); /* CS ZERO: "FORCE RESULT TO -0 AND RETURN." */
+    ts(ADDRESS_OF(MPAC));
+    ts(ADDRESS_OF(MPAC) + 1u);
+    ts(ADDRESS_OF(MPAC) + 2u);
+    tc_return(Q_ADDRESS);
 }

@@ -291,13 +291,13 @@ void intmctbs_after_dspoctwd(void)
 }
 
 /* VERBFAN -2: TESTNN's normal noun, its ECADR from NOUNCADR (NNADTEM, one
- * less) into NOUNCADR, on into VERBFAN. */
+ * less) into NOUNCADR. SETNCADR comes back to VERBFAN, where the faithful
+ * port's step ends. */
 void verbfan_minus2(void)
 {
     ad(ONE);
     tc_at(VERBFAN - 1u);
     setncadr(); /* "ECADR INTO NOUNCADR. SETS EB, NOUNADD." */
-    verbfan();
 }
 
 /* ---- The verb fan ---- */
@@ -344,7 +344,7 @@ void vbfandir(void)
  * A. RETURNS TO L+1 IF NO DP. RETURNS TO L+2 IF DP." INDEX A; TCF +1 runs
  * the routine's word of the table: TC Q, or TCF DPTEST1 (the table starts at DPTEST +2, where TCF +1 goes), whose INDEX Q;
  * TC 1 is "RETURN TO L+2". True for a double-precision routine. */
-static bool dptest(void)
+bool dptest(void)
 {
     word routine = a_word();
     word back;
