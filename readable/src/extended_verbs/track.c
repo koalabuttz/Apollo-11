@@ -245,7 +245,7 @@ void resetvhf_after_trfailof(void)
 
 /* ---- V66 (bank 43) ---- */
 
-/* ATTACHIT -- LM p. 296, CM p. 264.
+/* ATTACHIT -- LM p. 297, CM p. 264.
  * Verb 66's job (ATTACHED starts it): integration let finish, and the
  * other vehicle's sphere of influence made this one's (ATTACHIT_CODE,
  * below). */
@@ -254,7 +254,7 @@ void attachit(void)
     tc(ATTACHIT, INTPRET);
 }
 
-/* ATTACHIT +10 -- LM p. 296, CM p. 264: "OUR STATE VECTOR INTO OTHER VIA
+/* ATTACHIT +10 -- LM p. 297, CM p. 264: "OUR STATE VECTOR INTO OTHER VIA
  * GENTRAN". */
 void attachit_after_exit(void)
 {
@@ -262,7 +262,7 @@ void attachit_after_exit(void)
 }
 
 #if LUMINARY099
-/* ATTACHIT +14 -- LM p. 296: "UPDATE R-OTHER, V-OTHER", in
+/* ATTACHIT +14 -- LM p. 297: "UPDATE R-OTHER, V-OTHER", in
  * ATTACHIT_CODE_2 (below). */
 void attachit_after_gentran(void)
 {
@@ -270,7 +270,7 @@ void attachit_after_gentran(void)
     tc(ATTACHIT + 15u, INTPRET);
 }
 
-/* ATTACHIT +22 -- LM p. 296. */
+/* ATTACHIT +22 -- LM p. 297. */
 void attachit_after_second_exit(void)
 {
     back_to_pinball(ATTACHIT + 22u);
@@ -424,7 +424,7 @@ void rrlosdsp_after_delayjob(void)
  * writes them (src/interpreter/notation.h): the LM's are part 8, the CM's
  * part 9. Each EXIT comes back to the basic word after it. */
 
-/* ATTACHIT +1 -- LM p. 296, CM p. 264. Integration held off (INTSTALL:
+/* ATTACHIT +1 -- LM p. 297, CM p. 264. Integration held off (INTSTALL:
  * it waits for an integration under way to finish and holds off the
  * next); then the other vehicle's sphere of influence becomes this one's:
  * MOONOTH set, and cleared again unless MOONTHIS is set (BON MOONTHIS +3
@@ -451,7 +451,7 @@ static const word trmtrak1_words[] = {
     ORDER(EXIT),
 };
 
-/* ATTACHIT +16 -- LM p. 296. "UPDATE R-OTHER, V-OTHER": PTOALEM moves the
+/* ATTACHIT +16 -- LM p. 297. "UPDATE R-OTHER, V-OTHER": PTOALEM moves the
  * permanent state vector (now the copy GENTRAN made) to the LM's, and
  * SVDWN1, with X2 the body (PBODY), brings it to the present. */
 static const word attachit_words_2[] = {
