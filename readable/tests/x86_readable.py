@@ -112,8 +112,10 @@ REPLACED = (
     'imu_compensation.o',
     # R63.agc, the LM's V89 final attitude (src/r63).
     'lm_r63.o',
-    # ATTITUDE_MANEUVER_ROUTINE.agc, the LM's KALCMANU start (src/attitude_maneuver).
+    # ATTITUDE_MANEUVER_ROUTINE.agc and the CM's ANGLFIND.agc, KALCMANU's start
+    # (src/attitude_maneuver).
     'lm_attitude_maneuver.o',
+    'cm_attitude_maneuver.o',
     # GIMBAL_LOCK_AVOIDANCE.agc, both missions' LOCSKIRT (src/gimbal_lock).
     'lm_gimbal_lock.o',
     'cm_gimbal_lock.o',
@@ -125,10 +127,10 @@ REPLACED = (
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa')
-# And each mission's own: R63 and (so far) ATTITUDE_MANEUVER_ROUTINE are the
-# LM's alone; GIMBAL_LOCK_AVOIDANCE's table has each mission's name, and the
-# CM's KALCMANU_STEERING has subroutines the LM's has not (STOPRATE).
-MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi'), 'cm': ('WCALC_CODE', 'newdelhi', 'stoprate')}
+# And each mission's own: R63 is the LM's alone; GIMBAL_LOCK_AVOIDANCE's
+# table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
+# have routines the LM's have not (STOPRATE, SECAD's basic code).
+MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi'), 'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 

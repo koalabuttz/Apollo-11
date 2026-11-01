@@ -48,6 +48,7 @@ Luminary099/IMU_COMPENSATION_PACKAGE.agc     src/imu_compensation
 Comanche055/IMU_COMPENSATION_PACKAGE.agc     src/imu_compensation
 Luminary099/R63.agc                          src/r63
 Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc    src/attitude_maneuver
+Comanche055/ANGLFIND.agc                     src/attitude_maneuver
 Luminary099/GIMBAL_LOCK_AVOIDANCE.agc        src/gimbal_lock
 Comanche055/GIMBAL_LOCK_AVOIDANCE.agc        src/gimbal_lock
 Luminary099/KALCMANU_STEERING.agc            src/kalcmanu_steering

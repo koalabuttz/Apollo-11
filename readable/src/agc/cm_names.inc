@@ -140,6 +140,8 @@
 #define K_ENDMANU 02006u
 #define K_HIGHGAIN 02105u
 #define K_QUADROT 03002u
+#define K_SECAD 02016u
+#define K_NOGOM2 02725u
 #define K_BANKCALL 04662u
 #define K_SWCALL 04666u
 #define K_SWRETURN 04675u

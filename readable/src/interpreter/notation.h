@@ -56,6 +56,7 @@
 #define ORDER_PDDL_STAR  0053u /* PDDL* */
 #define ORDER_VSR3       0054u
 #define ORDER_MXV        0055u
+#define ORDER_MXV_STAR   0057u /* MXV* */
 #define ORDER_DSQ        0060u
 #define ORDER_PDVL       0061u
 #define ORDER_PDVL_STAR  0063u /* PDVL* */
