@@ -197,6 +197,96 @@ void m_snorm_plus7(void);
 void m_snorm_plus15(void);
 void m_snorm_plus23(void);
 void m_snorm_plus25(void);
+
+/* Part 4: the load verbs (load_verbs.c) and the scale factor routines for
+ * loading (input_scale.c). */
+void abcload(void);
+void abcload_plus2(void);
+void abcload_plus3(void);
+void abcload_plus5(void);
+void abcload_plus6(void);
+void abcload_plus8(void);
+void abcload_plus9(void);
+void abcload_plus11(void);
+void putxyz(void);
+void putxyz_plus7(void);
+void putxyz_plus11(void);
+void putxyz_plus15(void);
+void putxyz_plus22(void);
+void bitsoff(void);
+void bitsoff1(void);
+void abload(void);
+void abload_plus2(void);
+void abload_plus3(void);
+void abload_plus5(void);
+void abload_plus6(void);
+void abload_plus8(void);
+void putxy(void);
+void putxy_plus7(void);
+void putxy_plus11(void);
+void aload(void);
+void aload_plus1(void);
+void aload_plus6(void);
+void bload(void);
+void bload_plus2(void);
+void bload_plus5(void);
+void bload_plus10(void);
+void cload(void);
+void cload_plus2(void);
+void cload_plus5(void);
+void cload_plus10(void);
+void loadlv(void);
+void loadlv_plus5(void);
+void alldc_oc(void);
+void goq(void);
+void sfret1(void);
+void sfret(void);
+void conumnor(void);
+void putcom(void);
+void putdpcom(void);
+void putnorm(void);
+void putcom2(void);
+void chanload(void);
+void putdecsf(void);
+void putsfnor(void);
+void putdcsf2(void);
+void two_round(void);
+void two_round_plus2(void);
+void two_rndend(void);
+void testofuf(void);
+void deginsf(void);
+void deginsf2(void);
+void signfix(void);
+void endscale(void);
+void neg180(void);
+void sgnto1(void);
+#if LUMINARY099
+void sfmixcal_plus2(void);
+void sfnorcal_plus2(void);
+#else
+void optdegin(void);
+void opdegin2(void);
+#endif
+void arthinsf(void);
+void binround(void);
+void artin1sf(void);
+void dpinsf(void);
+void dpinsf_plus2(void);
+void dpinsf_plus9(void);
+void dpinsf2(void);
+void dpinsf4(void);
+void hmsin(void);
+void rnd_tst(void);
+void mpactst(void);
+void sizetst(void);
+void all3dec(void);
+void forcev25(void);
+
+/* Called from part 4: DCTSTCYC, true when it went back (not to ALMCYCLE);
+ * and the noun tables' reader, by EXTEND; DCA LODNNLOC; DXCH Z at at,
+ * back at at +1 (enter.c). */
+bool dctstcyc_returns(void);
+void read_noun_tables(word at);
 /* The scale factor codes and the triple word shifts they use. */
 void sfrutnor(void);
 void sfconum(void);

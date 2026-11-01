@@ -230,6 +230,88 @@ static const struct entry entries[] = {
     {BANK_42(M_SNORM + 23u), m_snorm_plus23},
     {BANK_42(M_SNORM + 25u), m_snorm_plus25},
     {FIXED_FIXED(TPSL1), tpsl1},
+    /* Part 4: the load verbs and the input scale routines. */
+    {BANK_41(ABCLOAD), abcload},
+    {BANK_41(ABCLOAD + 2u), abcload_plus2},
+    {BANK_41(ABCLOAD + 3u), abcload_plus3},
+    {BANK_41(ABCLOAD + 5u), abcload_plus5},
+    {BANK_41(ABCLOAD + 6u), abcload_plus6},
+    {BANK_41(ABCLOAD + 8u), abcload_plus8},
+    {BANK_41(ABCLOAD + 9u), abcload_plus9},
+    {BANK_41(ABCLOAD + 11u), abcload_plus11},
+    {BANK_41(PUTXYZ), putxyz},
+    {BANK_41(PUTXYZ + 7u), putxyz_plus7},
+    {BANK_41(PUTXYZ + 11u), putxyz_plus11},
+    {BANK_41(PUTXYZ + 15u), putxyz_plus15},
+    {BANK_41(PUTXYZ + 22u), putxyz_plus22},
+    {BANK_41(BITSOFF), bitsoff},
+    {BANK_41(BITSOFF1), bitsoff1},
+    {BANK_41(ABLOAD), abload},
+    {BANK_41(ABLOAD + 2u), abload_plus2},
+    {BANK_41(ABLOAD + 3u), abload_plus3},
+    {BANK_41(ABLOAD + 5u), abload_plus5},
+    {BANK_41(ABLOAD + 6u), abload_plus6},
+    {BANK_41(ABLOAD + 8u), abload_plus8},
+    {BANK_41(PUTXY), putxy},
+    {BANK_41(PUTXY + 7u), putxy_plus7},
+    {BANK_41(PUTXY + 11u), putxy_plus11},
+    {BANK_41(ALOAD), aload},
+    {BANK_41(ALOAD + 1u), aload_plus1},
+    {BANK_41(ALOAD + 6u), aload_plus6},
+    {BANK_41(BLOAD), bload},
+    {BANK_41(BLOAD + 2u), bload_plus2},
+    {BANK_41(BLOAD + 5u), bload_plus5},
+    {BANK_41(BLOAD + 10u), bload_plus10},
+    {BANK_41(CLOAD), cload},
+    {BANK_41(CLOAD + 2u), cload_plus2},
+    {BANK_41(CLOAD + 5u), cload_plus5},
+    {BANK_41(CLOAD + 10u), cload_plus10},
+    {BANK_41(LOADLV), loadlv},
+    {BANK_41(LOADLV + 5u), loadlv_plus5},
+    {BANK_41(ALLDC_OC), alldc_oc},
+    {BANK_41(GOQ), goq},
+    {BANK_41(SFRET1), sfret1},
+    {BANK_41(SFRET), sfret},
+    {BANK_41(CONUMNOR), conumnor},
+    {BANK_41(PUTCOM), putcom},
+    {BANK_41(PUTDPCOM), putdpcom},
+    {BANK_41(PUTNORM), putnorm},
+    {BANK_41(PUTCOM2), putcom2},
+    {BANK_41(CHANLOAD), chanload},
+    {BANK_41(PUTDECSF), putdecsf},
+    {BANK_41(PUTSFNOR), putsfnor},
+    {BANK_41(PUTDCSF2), putdcsf2},
+    {BANK_40(DEGINSF), deginsf},
+    {BANK_40(DEGINSF2), deginsf2},
+    {BANK_40(SIGNFIX), signfix},
+    {BANK_40(ENDSCALE), endscale},
+    {BANK_40(NEG180), neg180},
+    {BANK_40(SGNTO1), sgnto1},
+#if LUMINARY099
+    {BANK_40(SFMIXCAL + 2u), sfmixcal_plus2},
+    {BANK_40(SFNORCAL + 2u), sfnorcal_plus2},
+#else
+    {BANK_40(OPTDEGIN), optdegin},
+    {BANK_40(OPDEGIN2), opdegin2},
+#endif
+    {BANK_40(ARTHINSF), arthinsf},
+    {BANK_40(BINROUND), binround},
+    {BANK_40(ARTIN1SF), artin1sf},
+    {BANK_40(DPINSF), dpinsf},
+    {BANK_40(DPINSF + 2u), dpinsf_plus2},
+    {BANK_40(DPINSF + 9u), dpinsf_plus9}, /* Comanche055's DPFRACIN */
+    {BANK_40(DPINSF2), dpinsf2},
+    {BANK_40(DPINSF4), dpinsf4},
+    {BANK_40(TWO_ROUND), two_round},
+    {BANK_40(TWO_ROUND + 2u), two_round_plus2},
+    {BANK_40(TWO_RNDEND), two_rndend},
+    {BANK_40(TESTOFUF), testofuf},
+    {BANK_42(HMSIN), hmsin},
+    {BANK_42(RND_TST), rnd_tst},
+    {BANK_42(MPACTST), mpactst},
+    {BANK_42(SIZETST), sizetst},
+    {BANK_42(ALL3DEC), all3dec},
+    {BANK_42(FORCEV25), forcev25},
 };
 #define ENTRIES (sizeof entries / sizeof entries[0])
 
@@ -451,7 +533,7 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     device_record *record = device;
     const struct entry *routine;
     unsigned start, routines;
-    bool jumped;
+    bool jumped, requested;
 
     if (!p || !state || !record || !lanec_registers_valid(state) || !take_record(p, record))
         return FAITHFUL_PIN_RUN(p, state, device, modules);
@@ -486,9 +568,13 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
         jumped = routine->routine == bankcall || routine->routine == postjump ||
                  routine->routine == bankjump;
         routine->routine();
+        /* ACCEPTWD's TC REQRET, back to the routine that asked for the
+         * word (REQDATX, REQDATY, REQDATZ) or to ENTPAS0: the faithful
+         * step ends there, as it does after every return through REQRET. */
+        requested = state->words[LANEC_Z] == ADDRESS_OF(REQRET);
         run_return_cell(state);
         at = here();
-        if (stops_at(start, at)) break;
+        if (requested || stops_at(start, at)) break;
         routine = find(entries, ENTRIES, at);
         if (!routine) routine = find(interbank, INTERBANK, at);
         if (!routine && !pinball_point(at) && !jumped) break; /* back out of Pinball */

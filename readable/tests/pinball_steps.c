@@ -224,6 +224,144 @@ static void add_sfout_stops(enum lanec_mission mission)
     }
 }
 
+/* PUTDECSF's step, like DSPDCPUT's, runs through PUTDCSF2's BANKJUMP
+ * (INDEX A; CAF SFINTABR) to the scale factor routine's input routine and
+ * stops there; so do PUTSFNOR's and PUTDCSF2's. The 14 CADRs of SFINTABR,
+ * read from the rope (PUTDECSF is CHANLOAD +11, PUTSFNOR +21, PUTDCSF2 +22
+ * and CAF SFINTABR +23). */
+static void add_sfin_stops(enum lanec_mission mission)
+{
+    const uint16_t chanload = mission == LANEC_LM ? LANEC_LM_CHANLOAD : LANEC_CM_CHANLOAD;
+    const uint16_t at = (uint16_t)(041u * 02000u + (chanload - 02000u));
+    static const uint16_t starts[] = {11u, 21u, 22u};
+    agc_word word = 0;
+    uint16_t table, i, s;
+
+    if (!fixed(mission, (uint16_t)(at + 23u), &word) || (word & 070000u) != 030000u) {
+        printf("FAIL: PUTDCSF2's CAF SFINTABR not found\n");
+        exit(1);
+    }
+    table = (uint16_t)(word & 07777u);
+    for (i = 0; i < 14u; ++i) {
+        uint16_t bank;
+
+        if (!fixed(mission, (uint16_t)(041u * 02000u + (table + i - 02000u)), &word)) {
+            printf("FAIL: SFINTABR word %u unreadable\n", i);
+            exit(1);
+        }
+        bank = (uint16_t)((word >> 10) & 037u);
+        if (bank >= 030u) bank = (uint16_t)(bank + 010u); /* the superbank of banks 40-47 */
+        for (s = 0; s < sizeof starts / sizeof starts[0]; ++s)
+            add_stop(mission, (uint16_t)(at + starts[s]),
+                     (uint16_t)(bank * 02000u + (word & 01777u)));
+    }
+}
+
+/* The load verbs' steps run to the next call and stop at the callee
+ * (lanec_pin_head_load); COMPTEST's, NOUNTEST's and UPDATVB -1's steps
+ * stop where they come back. The chains reach ABLOAD, BLOAD and CLOAD but
+ * not verb 25's ABCLOAD, so its stops are read from the rope: from each
+ * word the port enters, to the target of the first TC after it; and from
+ * that target back to the word after the TC, for the TCs that come
+ * straight back (all but REQDATX and REQDATY, whose steps end at
+ * ENDOFJOB). */
+static void add_abcload_stops(enum lanec_mission mission)
+{
+    static const uint16_t entered[] = {0u, 2u, 3u, 5u, 6u, 8u, 9u, 11u};
+    static const bool back[] = {false, true, true, true, false, true, false, true};
+    const uint16_t abcload = mission == LANEC_LM ? LANEC_LM_ABCLOAD : LANEC_CM_ABCLOAD;
+    uint16_t previous = 0;
+    unsigned i;
+
+    for (i = 0; i < sizeof entered / sizeof entered[0]; ++i) {
+        const uint16_t from = (uint16_t)(041u * 02000u + (abcload + entered[i] - 02000u));
+        uint16_t at = from, target;
+        agc_word word = 0;
+
+        for (;; ++at) {
+            if (at > from + 2u || !fixed(mission, at, &word)) {
+                printf("FAIL: no TC after ABCLOAD +%u\n", entered[i]);
+                exit(1);
+            }
+            if (!(word & 070000u) && (word & 07777u) >= 020u) break; /* a TC, not EXTEND */
+        }
+        target = (uint16_t)(word & 07777u);
+        target = target >= 04000u ? target : (uint16_t)(041u * 02000u + (target - 02000u));
+        add_stop(mission, from, target);
+        if (i > 0u && back[i]) add_stop(mission, previous, from);
+        previous = target;
+    }
+}
+
+/* CHANLOAD's step stops at LOADLV (lanec_pin_chanload), which no chain
+ * reaches. */
+static void add_chanload_stop(enum lanec_mission mission)
+{
+    const uint16_t chanload = mission == LANEC_LM ? LANEC_LM_CHANLOAD : LANEC_CM_CHANLOAD;
+    const uint16_t loadlv = mission == LANEC_LM ? LANEC_LM_LOADLV : LANEC_CM_LOADLV;
+
+    add_stop(mission, (uint16_t)(041u * 02000u + (chanload - 02000u)),
+             (uint16_t)(041u * 02000u + (loadlv - 02000u)));
+}
+
+/* VERBFAN's step for verbs 00-39 runs through VBFANDIR's BANKJUMP (INDEX
+ * VERBREG; CAF VERBTAB) to the verb's routine and stops there. The chains
+ * reach only some verbs, so the 40 CADRs of VERBTAB are read from the rope:
+ * VBFANDIR is found in bank 41 by its three words, and VERBFAN is 11 words
+ * before it (its TC VBFANDIR at VERBFAN +5, LST2CON just before VBFANDIR). */
+static void add_verbtab_stops(enum lanec_mission mission)
+{
+    const uint16_t bankjump = mission == LANEC_LM ? LANEC_LM_BANKJUMP : LANEC_CM_BANKJUMP;
+    const uint16_t verbreg = 01001u;
+    uint16_t at, i;
+
+    for (at = 041u * 02000u + 11u; at < 041u * 02000u + 01775u; ++at) {
+        agc_word index = 0, caf = 0, tc = 0, back = 0;
+        const uint16_t here = (uint16_t)(02000u + (at & 01777u));
+
+        if (!fixed(mission, at, &index) || index != 050000u + verbreg) continue;
+        if (!fixed(mission, (uint16_t)(at + 1u), &caf) || caf != 030000u + here + 3u) continue;
+        if (!fixed(mission, (uint16_t)(at + 2u), &tc) || tc != bankjump) continue;
+        if (!fixed(mission, (uint16_t)(at - 6u), &back) || back != here) {
+            printf("FAIL: VERBFAN's TC VBFANDIR not found\n");
+            exit(1);
+        }
+        for (i = 0; i < 40u; ++i) {
+            agc_word word = 0;
+            uint16_t bank;
+
+            if (!fixed(mission, (uint16_t)(at + 3u + i), &word)) {
+                printf("FAIL: VERBTAB word %u unreadable\n", i);
+                exit(1);
+            }
+            bank = (uint16_t)((word >> 10) & 037u);
+            if (bank >= 030u) bank = (uint16_t)(bank + 010u); /* the superbank of banks 40-47 */
+            add_stop(mission, (uint16_t)(at - 11u), (uint16_t)(bank * 02000u + (word & 01777u)));
+        }
+        return;
+    }
+    printf("FAIL: VBFANDIR not found\n");
+    exit(1);
+}
+
+/* ENTERJMP's step for a pass 0 ENTER (POSTJUMP to ENTER, then CCS REQRET
+ * and TC ENTPAS0) stops at ENTPAS0, which the chains, starting ENTER keys
+ * at ENTER, do not show: ENTPAS0 is read from ENTER +5. */
+static void add_enter_stop(enum lanec_mission mission)
+{
+    const uint16_t enterjmp = mission == LANEC_LM ? LANEC_LM_ENTERJMP : LANEC_CM_ENTERJMP;
+    const uint16_t enter = mission == LANEC_LM ? LANEC_LM_ENTER : LANEC_CM_ENTER;
+    agc_word word = 0;
+
+    if (!fixed(mission, (uint16_t)(041u * 02000u + (enter + 5u - 02000u)), &word) ||
+        (word & 070000u)) {
+        printf("FAIL: ENTER's TC ENTPAS0 not found\n");
+        exit(1);
+    }
+    add_stop(mission, (uint16_t)(040u * 02000u + (enterjmp - 02000u)),
+             (uint16_t)(041u * 02000u + ((word & 07777u) - 02000u)));
+}
+
 static void write_stops(const char *path)
 {
     FILE *out = fopen(path, "w");
@@ -234,7 +372,8 @@ static void write_stops(const char *path)
     }
     fprintf(out,
             "/* Generated by readable/tests/pinball_steps.c --stops from the faithful port's\n"
-            " * Pinball chains (pin-transfer, pin-decdsp3), CHARIN's key table and SFOUTABR: where "
+            " * Pinball chains (pin-transfer, pin-decdsp3, the load and input scale suites), "
+            "CHARIN's key table, SFOUTABR, SFINTABR, ABCLOAD, CHANLOAD, VERBTAB and ENTER: where "
             "each\n"
             " * faithful step that starts at a Pinball point ends, as {start, end} physical\n"
             " * words (fixed_physical; an erasable end 0176000 + its address); and the points\n"
@@ -244,6 +383,16 @@ static void write_stops(const char *path)
     add_charin_stops(LANEC_CM);
     add_sfout_stops(LANEC_LM);
     add_sfout_stops(LANEC_CM);
+    add_abcload_stops(LANEC_LM);
+    add_abcload_stops(LANEC_CM);
+    add_chanload_stop(LANEC_LM);
+    add_chanload_stop(LANEC_CM);
+    add_sfin_stops(LANEC_LM);
+    add_sfin_stops(LANEC_CM);
+    add_verbtab_stops(LANEC_LM);
+    add_verbtab_stops(LANEC_CM);
+    add_enter_stop(LANEC_LM);
+    add_enter_stop(LANEC_CM);
     for (m = 0; m < 2u; ++m) {
         qsort(stops[m], stop_count[m], sizeof stops[m][0], by_stop);
         fprintf(out, "%s\nstatic const struct pinball_stop pinball_stops[%u] = {\n",
@@ -319,7 +468,25 @@ int main(int argc, char **argv)
     static const struct {
         const char *name;
         int held; /* the steps must be the faithful port's */
-    } suites[] = {{"pin-transfer", 1}, {"pin-decdsp3", 1}, {"pin-stirred", 0}};
+    } suites[] = {{"pin-transfer", 1},
+                  {"pin-decdsp3", 1},
+                  {"pin-stirred", 0},
+                  /* The load verbs and the input scale routines (part 4), which the
+                   * chains above hardly reach: the faithful modules' own suites. */
+                  {"pin-head-load", 1},
+                  {"pw-load-request", 1},
+                  {"pw-load-complete", 1},
+                  {"pw-load-control", 1},
+                  {"pw-load-store", 1},
+                  {"pw-decimal-load", 1},
+                  {"pw-input-mode", 1},
+                  {"pw-input-select", 1},
+                  {"pw-input-store", 1},
+                  {"pw-input-factor", 1},
+                  {"pw-input-angle", 1},
+                  {"pw-input-arithmetic", 1},
+                  {"pw-input-scale", 1},
+                  {"pw-input-time", 1}};
     static apollo_overlay_state s;
     static lanec_io io;
     static lanec_meta m;
