@@ -746,7 +746,6 @@ static const word IDLEADR[2] = KW_IDLEADR; /* 2CADR DAPIDLER */
 #define NOP01BIT ((word)KW_NOP01BIT)
 #define OCT6200  ((word)KW_OCT6200)
 #define INTMASK  ((word)KW_INTMASK)
-#define HALF_SEC ((word)KW__5SEC) /* .5SEC */
 #define OCT37    ((word)KW_OCT37)
 #define OCT77603 ((word)KW_OCT77603)
 #define OCT74777 ((word)KW_OCT74777)
@@ -754,6 +753,7 @@ static const word IDLEADR[2] = KW_IDLEADR; /* 2CADR DAPIDLER */
 /* T5IDLER: four 2CADRs, for the T5RUPT owner FLAGWRD6 names. */
 static const word T5IDLER[4][2] = {KW_T5IDLER, KW_T5IDLERP2, KW_T5IDLERP4, KW_T5IDLERP6};
 #endif
+#define HALF_SEC ((word)KW__5SEC) /* .5SEC */
 #define PRIO25 ((word)KW_PRIO25)
 
 /* Its labels, and the routines elsewhere it calls. */
@@ -2629,6 +2629,23 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define MAXTRIES ((word)KW_MAXTRIES)
 #define NOUPFBIT ((word)KW_NOUPFBIT)
 #define UPDATBIT ((word)KW_UPDATBIT)
+/* Part 3, R23 and R24 (bank 24), and CLRADMOD (fixed-fixed). Their
+ * erasable words (DATAGOOD, OMEGAD, RADCADR, RADMODES) are named by
+ * ADDRESS_OF. */
+#define R23LEM1  ((word)K_R23LEM1)
+#define R23LEM11 ((word)K_R23LEM11)
+#define OUTOFLIM ((word)K_OUTOFLIM)
+#define R23LEM2  ((word)K_R23LEM2)
+#define R23LEM3  ((word)K_R23LEM3)
+#define R24LEM1  ((word)K_R24LEM1)
+#define R24LEM2  ((word)K_R24LEM2)
+#define R24END   ((word)K_R24END)
+#define R24LEM3  ((word)K_R24LEM3)
+#define R24LEM4  ((word)K_R24LEM4)
+#define OCT501PV ((word)KW_OCT501PV)
+#define OCT205   ((word)KW_OCT205)
+#define BIT10_15 ((word)KW_BIT10P15) /* BIT10+15 */
+#define V16N80   ((word)KW_V16N80)
 #endif
 
 /* NO.CORES + 1 core sets. */

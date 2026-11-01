@@ -119,13 +119,14 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: parts 1 and 2, bank 24 to R23LEM, and bank
- * 32's ORBCHG3 (to its EXIT's TC BANKCALL). */
+/* The parts written so far: parts 1 to 3, bank 24 to R24LEM4, bank 32's
+ * ORBCHG3 (to its EXIT's TC BANKCALL) and CLRADMOD in fixed-fixed. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return (bank == 024u && z < 03135u) || (bank == 032u && z >= 02217u && z <= 02364u);
+    return (bank == 024u && z < 03255u) || (bank == 032u && z >= 02217u && z <= 02364u) ||
+           (bank == 03u && z == 02011u); /* CLRADMOD */
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)

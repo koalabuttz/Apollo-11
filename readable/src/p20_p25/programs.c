@@ -37,14 +37,6 @@
 
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
-/* TC at, to a routine out of the file (or to a keyed label): Q gets the
- * return, and the routine runs next. */
-static void tc_to(word at, word routine)
-{
-    tc_at(at);
-    continue_at(routine);
-}
-
 /* ---- P20 (P22) ---- */
 
 static void orbchgo_display(void);
