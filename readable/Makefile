@@ -117,6 +117,8 @@ KAL_SOURCES := $(INTERPRETER_SOURCES) src/kalcmanu_steering/kalcmanu_steering.c 
 	src/rtb_op_codes/rtb_op_codes.c src/binding/kalcmanu_steering_routines.c
 R60_SOURCES := $(INTERPRETER_SOURCES) src/r60_62/r60_62.c src/rtb_op_codes/rtb_op_codes.c \
 	src/binding/r60_62_routines.c
+SBA_SOURCES := $(INTERPRETER_SOURCES) src/sband_antenna/sband_antenna.c \
+	src/rtb_op_codes/rtb_op_codes.c src/binding/sband_antenna_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
@@ -131,18 +133,18 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
-	imu-performance-cases pinball-cases r60-r62-cases
+	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1436,6 +1438,51 @@ r60-r62-cases: $(BUILD)/r60-oracle-lm $(BUILD)/r60-oracle-cm $(BUILD)/r60-cases-
 	./$(BUILD)/r60-oracle-cm $(ROPES)
 	./$(BUILD)/r60-cases-lm $(ROPES)
 	./$(BUILD)/r60-cases-cm $(ROPES)
+
+# S-BAND_ANTENNA_FOR_LM and _FOR_CM, R05 (verb 64): the port's test
+# (tests/test_sband_antenna.c, its frozen cases run to their stops through
+# the programs of tests/sband_antenna_target.c, against the original
+# programs' yaAGC digests) with each mission's readable routines and the
+# other mission's faithful ones, tests/with_ropes.c loading the ropes the
+# readable interpreter reads; then tests/sband_antenna_cases.c side by
+# side, for each mission.
+SBA_NAMES_LM := lm_sband_antenna_basic lm_sband_antenna_interpretive
+SBA_NAMES_CM := cm_sband_antenna_basic cm_sband_antenna_interpretive
+SBA_COMMON := $(R63_COMMON)
+
+$(BUILD)/sba-faithful-lm.o: $(PORT)/src/lm_sband_antenna.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(SBA_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/sba-faithful-cm.o: $(PORT)/src/cm_sband_antenna.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(SBA_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/sba-test.o: $(PORT)/tests/test_sband_antenna.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/sba-oracle-lm: $(SBA_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/sba-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SBA_COMMON) $(PORT)/src/cm_sband_antenna.c \
+		$(PORT)/tests/sband_antenna_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/sba-oracle-cm: $(SBA_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/sba-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SBA_COMMON) $(PORT)/src/lm_sband_antenna.c \
+		$(PORT)/tests/sband_antenna_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/sba-cases-lm: $(SBA_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/sba-faithful-lm.o \
+		tests/sband_antenna_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(SBA_COMMON) $(filter %.o,$^) \
+		tests/sband_antenna_cases.c -o $@
+$(BUILD)/sba-cases-cm: $(SBA_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/sba-faithful-cm.o \
+		tests/sband_antenna_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(SBA_COMMON) $(filter %.o,$^) \
+		tests/sband_antenna_cases.c -o $@
+
+sband-antenna-cases: $(BUILD)/sba-oracle-lm $(BUILD)/sba-oracle-cm $(BUILD)/sba-cases-lm \
+		$(BUILD)/sba-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/sba-oracle-lm $(ROPES)
+	./$(BUILD)/sba-oracle-cm $(ROPES)
+	./$(BUILD)/sba-cases-lm $(ROPES)
+	./$(BUILD)/sba-cases-cm $(ROPES)
 
 # SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
 # oracles with each mission's readable tables and the other mission's
