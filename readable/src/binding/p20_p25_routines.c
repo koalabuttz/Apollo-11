@@ -22,7 +22,8 @@
  * there, as the faithful pair does.
  *
  * The device is the LM's io record with the input channels after it
- * (lm_channel_io): P20LEMB7 reads channel 33.
+ * (lm_channel_io): P20LEMB7 and R22 read channel 33. Channel 12 (R22
+ * reads it, R21 clears its bit 14) is the program's hardware record's.
  *
  * The states the faithful routines take, at every key: FB the key's bank
  * (in banks 30-37, the superbank bit clear); at an order pair Z at NEWOPS,
@@ -58,6 +59,7 @@ extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_in
 #define SUPERBANK_BIT 0100u
 
 static const agc_input_channels *inputs_now;
+static agc_hardware *hardware_now;
 static jmp_buf back;
 
 static void leave(void)
@@ -73,15 +75,18 @@ static word channel_in(unsigned number)
     case 031u: return inputs_now->channel31;
     case 032u: return inputs_now->channel32;
     case 033u: return inputs_now->channel33;
+    case 012u:
+        if (!hardware_now) not_modelled();
+        return hardware_now->channel12;
     default: not_modelled(); return 0;
     }
 }
 
+/* Channel 12 only (R21's WAND). */
 static void channel_out(unsigned number, word value)
 {
-    (void)number;
-    (void)value;
-    not_modelled(); /* the readable parts write no channel yet */
+    if (number != 012u || !hardware_now) not_modelled();
+    hardware_now->channel12 = value;
 }
 
 /* The interpreter's fixed operands are the rope's. */
@@ -97,6 +102,7 @@ static void bind(const agc_native_program *program, apollo_overlay_state *state,
 {
     bind_machine(program, state, &io->io);
     inputs_now = &io->in;
+    hardware_now = program->hardware;
     agc.channel_in = channel_in;
     agc.channel_out = channel_out;
     agc.fixed_memory = rope_word;
@@ -222,6 +228,115 @@ static const struct basic_entry {
     {KEY(024u, P25LEM2), p25lem2, false},
     {KEY(024u, P25LEM2 + 4u), p25lem2_after_findvac, false},
     {KEY(032u, ORBCHG3 + 0145u), orbchg3_after_exit, false},
+    /* Part 2: R22 and R21 */
+    {KEY(024u, R22LEM), r22lem, false},
+    {KEY(024u, R22LEM + 2u), r22lem_after_phaschng, false},
+    {KEY(024u, R22LEM + 025u), r22lem_after_p20lemb5, false},
+    {KEY(024u, R22LEM + 033u), r22lem_read, false},
+    {KEY(024u, R22LEM + 035u), r22lem_after_read, false},
+    {KEY(024u, R22LEM + 037u), r22lem_good_data, false},
+    {KEY(024u, R22LEM + 040u), r22lem_no_data, false},
+    {KEY(024u, R22LEM + 041u), r22lem_los_alarm, false},
+    {KEY(024u, R22LEM + 044u), r22lem_los_alarm_terminate, false},
+    {KEY(024u, R22LEM + 045u), r22lem_los_alarm_proceed, false},
+    {KEY(024u, R22LEM + 046u), r22lem_los_alarm_enter, false},
+    {KEY(024u, R22LEM + 047u), r22lem_los_alarm_immediate_return, false},
+    {KEY(024u, R22LEM1 + 2u), r22lem1_after_phaschng, false},
+    {KEY(024u, R22LEM1 + 5u), r22lem1_terminate, true},
+    {KEY(024u, R22LEM1 + 6u), r22lem1_proceed, true},
+    {KEY(024u, R22LEM1 + 7u), r22lem1_enter, true},
+    {KEY(024u, R22LEM2), r22lem2, false},
+    {KEY(024u, R22LEM2 + 2u), r22lem2_after_phaschng, true},
+    {KEY(024u, R22LEM2 + 3u), r22lem2_on_surface, true},
+    {KEY(024u, R22LEM2 + 4u), r22lem2_in_orbit, false},
+    {KEY(024u, R22LEM2 + 012u), r22lem2_after_boresight, true},
+    {KEY(024u, R22LEM2 + 014u), r22lem2_boresight_in, true},
+    {KEY(024u, R22LEM2 + 015u), r22lem2_boresight_out, false},
+    {KEY(024u, R22LEM2 + 017u), r22lem2_after_r61lem, true},
+    {KEY(024u, R22LEM3), r22lem3, true},
+    {KEY(024u, R22LEM93 + 1u), r22lem93_after_exit, false},
+    {KEY(024u, R22LEM93 + 3u), r22lem93_after_phaschng, false},
+    {KEY(024u, R22LEM96 + 1u), r22lem96_after_exit, false},
+    {KEY(024u, R22LEM96 + 5u), r22lem96_after_phaschng, false},
+    {KEY(024u, R22LEM96 + 011u), r22lem96_after_novac, true},
+    {KEY(024u, R22LEM96 + 020u), r22lem96_recycle, false},
+    {KEY(024u, R22LEM96 + 021u), r22lem96_on_surface, false},
+    {KEY(024u, R22LEM96 + 022u), r22lem96_in_orbit, false},
+    {KEY(024u, R22LEM44 + 2u), r22lem44_on_surface, false},
+    {KEY(024u, R22LEM44 + 3u), r22lem44_in_orbit, false},
+    {KEY(024u, R22LEM42), r22lem42, false},
+    {KEY(024u, R22LEM42 + 1u), r22lem42_on_surface, false},
+    {KEY(024u, R22LEM42 + 2u), r22lem42_in_orbit, false},
+    {KEY(024u, R22LEM45 + 3u), r22lem45_after_r65lem, false},
+    {KEY(024u, R22WAIT), r22wait, false},
+    {KEY(024u, R22LEM46), r22lem46, false},
+    {KEY(024u, R22LEM46 + 3u), r22lem46_after_delayjob, false},
+    {KEY(024u, N49DSP), n49dsp, false},
+    {KEY(024u, N49DSP + 3u), n49dsp_terminate, false},
+    {KEY(024u, N49DSP + 4u), n49dsp_proceed, false},
+    {KEY(024u, R22RSTRT), r22rstrt, false},
+    {KEY(024u, R22RSTRT + 2u), r22rstrt_after_phaschng, false},
+    {KEY(024u, R22RSTRT + 4u), r22rstrt_after_rrrdot, false},
+    {KEY(024u, R22RSTRT + 6u), r22rstrt_bad_read, false},
+    {KEY(024u, R22RSTRT + 7u), r22rstrt_good_read, false},
+    {KEY(024u, R21LEM), r21lem, false},
+    {KEY(024u, R21LEM + 4u), r21lem_on_surface, false},
+    {KEY(024u, R21LEM + 5u), r21lem_in_orbit, false},
+    {KEY(024u, R21LEM5), r21lem5, false},
+    {KEY(024u, R21LEM5 + 4u), r21lem5_mode2_center, false},
+    {KEY(024u, R21LEM6 + 2u), r21lem6_after_downflag, false},
+    {KEY(024u, R21LEM6 + 4u), r21lem6_after_rrdesnb, true},
+    {KEY(024u, R21LEM6 + 5u), r21lem6_stall, false},
+    {KEY(024u, R21LEM6 + 7u), r21lem6_bad_return, true},
+    {KEY(024u, R21LEM10), r21lem10, false},
+    {KEY(024u, R21LEM10 + 2u), r21lem10_after_upflag, true},
+    {KEY(024u, R21LEM2), r21lem2, true},
+    {KEY(024u, R21LEM3), r21lem3, false},
+    {KEY(024u, R21LEM3 + 2u), r21lem3_after_upflag, false},
+    {KEY(024u, R21LEM3 + 4u), r21lem3_after_downflag, true},
+    {KEY(024u, R21LEM3 + 010u), r21lem3_not_in_coverage, true},
+    {KEY(024u, R21LEM3 + 011u), r21lem3_maneuver, true},
+    {KEY(024u, R21LEM3 + 012u), r21lem3_designating, false},
+    {KEY(024u, R21LEM3 + 014u), r21lem3_bad_end, true},
+    {KEY(024u, R21LEM3 + 015u), r21lem3_lockon, true},
+    {KEY(024u, R21_503), r21_503, false},
+    {KEY(024u, R21_503 + 3u), r21_503_terminate, true},
+    {KEY(024u, R21_503 + 4u), r21_503_proceed, true},
+    {KEY(024u, R21_503 + 5u), r21_503_enter, true},
+    {KEY(024u, R21_503 + 6u), r21_503_immediate_return, false},
+    {KEY(024u, R21END + 2u), r21end_after_downflag, false},
+    {KEY(024u, R21SRCH), r21srch, false},
+    {KEY(024u, R21SRCH + 2u), r21srch_after_phaschng, false},
+    {KEY(024u, R21LEM4 + 4u), r21lem4_after_upflag, false},
+    {KEY(024u, R21LEM4 + 6u), r21lem4_after_downflag, true},
+    {KEY(024u, R21LEM12 + 012u), r21lem12_not_in_coverage, true},
+    {KEY(024u, R21LEM12 + 013u), r21lem12_maneuver, false},
+    {KEY(024u, R21LEM12 + 014u), r21lem12_in_coverage, false},
+    {KEY(024u, R21LEM12 + 016u), r21lem12_after_killtask, true},
+    {KEY(024u, R21LEM13 + 2u), r21lem13_tried_enough, true},
+    {KEY(024u, R21LEM7), r21lem7, true},
+    {KEY(024u, R21LEM8 + 5u), r21lem8_after_exit, false},
+    {KEY(024u, R21LEM8 + 7u), r21lem8_after_cdesflag, false},
+    {KEY(024u, R21LEM8 + 011u), r21lem8_after_lokonsw, false},
+    {KEY(024u, R21LEM8 + 013u), r21lem8_after_norrmon, false},
+    {KEY(024u, R21LEM8 + 015u), r21lem8_after_rrdesnb, true},
+    {KEY(024u, R21LEM8 + 016u), r21lem8_delta_time, true},
+    {KEY(024u, R21LEM8 + 024u), r21lem8_after_delta_time, false},
+    {KEY(024u, R21LEM8 + 031u), r21lem8_after_longcall, false},
+    {KEY(024u, R21LEM9), r21lem9, false},
+    {KEY(024u, R21LEM9 + 2u), r21lem9_after_killtask, false},
+    {KEY(024u, R21LEM9 + 3u), r21lem9_after_clradmod, false},
+    {KEY(024u, R21LEM9 + 7u), r21lem9_after_findvac, false},
+    {KEY(024u, R21LEM11 + 3u), r21lem11_terminate, false},
+    {KEY(024u, R21LEM11 + 4u), r21lem11_proceed, false},
+    {KEY(024u, R21LEM11 + 5u), r21lem11_enter, false},
+    {KEY(024u, R21LEM11 + 6u), r21lem11_immediate_return, false},
+    {KEY(024u, R21DISP + 2u), r21disp_after_phaschng, false},
+    {KEY(024u, R21DISP + 5u), r21disp_terminate, false},
+    {KEY(024u, R21DISP + 6u), r21disp_proceed, false},
+    {KEY(024u, R21DISP + 7u), r21disp_enter, false},
+    {KEY(024u, R21DISP + 010u), r21disp_immediate_return, false},
+    {KEY(024u, R21DISP + 012u), r21disp_after_linus, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -236,7 +351,21 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &ORBCHG2_CODE, &P20LEM1_CODE, &P20LEMC3_CODE, &UPPSV_CODE, &ORBCHG3_CODE,
+    &ORBCHG2_CODE,
+    &P20LEM1_CODE,
+    &P20LEMC3_CODE,
+    &UPPSV_CODE,
+    &ORBCHG3_CODE,
+    &R22LEM3_CODE,
+    &R22LEM96_CODE,
+    &R22LEM96_WAIT_CODE,
+    &R22LEM7_CODE,
+    &R21LEM1_CODE,
+    &R21LEM3_CODE,
+    &R21LEM12_CODE,
+    &R21LEM12_FIRST_PASS_CODE,
+    &R21LEM7_CODE,
+    &R21LEM8_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -251,12 +380,59 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
     return NULL;
 }
 
-/* One pass; after RTB LOADTIME, LOADTIME and its DANZIG. */
+/* Whether an order word ends with a switch order (BOF, CLRGO, ...: code
+ * 0162): its right order, or its left if it has one. */
+static bool ends_with_switch(word w)
+{
+    unsigned left = (~w & 0177u), right = ((~w >> 7) & 0177u);
+
+    return (right ? right : left) == ORDER_CLRGO + 1u;
+}
+
+/* Whether store code w would store past the end of the E-bank window
+ * (01777): the AGC then writes into fixed memory and reads it back into A
+ * and L, which the readable machine does not model. DOSTORE's index (X1
+ * or X2) and STORE's addressing, from w - 1 (NEWOPS's CCS); MODE says how
+ * many words (DP, TP or vector). The faithful port's other interpretive
+ * routines refuse such a store too (lmi_store_spills). */
+static bool store_spills(word w)
+{
+    unsigned v = (unsigned)w - 1u, kind = (v >> 11) & 7u, a = v & 03777u, n;
+
+    if (kind == 1u || kind == 2u)
+        a = (a + (~agc.memory[(FIXLOC + K_X1 + kind - 1u) & 03777u] & 077777u)) % 077777u;
+    if (a <= 45u) return false; /* the work area, or word 45 itself */
+    n = MODE == 0u || MODE == 077777u ? 1u : (MODE & 040000u) ? 5u : 2u;
+    return (a & 0377u) + n > 0377u;
+}
+
+/* Whether a switch order's branch went to a store code, which the
+ * faithful pair goes on through: R21LEM12's CLRGO to R21LEM7 +1, a TC
+ * INTPRET read as a store code. */
+static bool switched_to_store_code(unsigned bank, word start)
+{
+    const struct interpretive_code *code = code_at(bank, LOC);
+
+    if (Z != NEWOPS || !ends_with_switch(start) || !code) return false;
+    return !(code->words[LOC - code->first] & 040000u);
+}
+
+/* One pass; after RTB LOADTIME, LOADTIME and its DANZIG; after a switch
+ * order's branch to a store code, the store code. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  lm_channel_io *io, const struct interpretive_code *code)
 {
+    unsigned bank = (BANKSET >> 10) & 037u;
+    word start = code->words[LOC - code->first];
+
     if (interpret_listing(program, state, &io->io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
+    if (switched_to_store_code(bank, start)) {
+        const struct interpretive_code *target = code_at(bank, LOC);
+
+        if (store_spills(target->words[LOC - target->first])) return EXEC_OUT_OF_SCOPE;
+        return interpret_listing(program, state, &io->io, target);
+    }
     if (Z != LOADTIME || FBANK != LOADTIME_BANK) return EXEC_OK;
     if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
@@ -273,6 +449,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     const struct basic_entry *entry = basic_entry(key);
     lm_channel_io *io = device, kept;
     apollo_overlay_state before;
+    agc_word channel12;
 
     if (!entry) return faithful_lm_p20_p25_basic.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
@@ -281,9 +458,11 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
 
     before = *state;
     kept = *io;
+    channel12 = hardware_now ? hardware_now->channel12 : 0u;
     if (setjmp(back)) {
         *state = before;
         *io = kept;
+        if (hardware_now) hardware_now->channel12 = channel12;
         return EXEC_OUT_OF_SCOPE;
     }
     entry->routine();

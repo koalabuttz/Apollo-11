@@ -11,9 +11,10 @@
  * The file is written part by part, in the listing's order (README.md):
  *   part 1, programs.c: P20 and P25 themselves (pp. 492-503), with the
  *     state vector update UPPSV and ORBCHG3, P22's CSM orbit change;
- *   r22_r21.c: so far only LUNSFCHK (p. 507), which part 1 calls;
- *   r23_r24.c: so far only R23LEM's first step (p. 513), which part 1
- *     runs.
+ *   part 2, r22_r21.c: R22, the radar data read, and R21, the designate
+ *     (pp. 504-512), with LUNSFCHK, which every part calls;
+ *   r23_r24.c: so far only R23LEM's and R24LEM's first steps (pp. 513,
+ *     515), which parts 1 and 2 run.
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -75,6 +76,7 @@ void five_twenty_six_alarm_terminate(void);
 void five_twenty_six_alarm_proceed(void);
 void five_twenty_six_alarm_enter(void);
 void five_twenty_six_alarm_immediate_return(void);
+void p20lema(void); /* R22 and R21 go on here too */
 void p20lema_after_phaschng(void);
 void p20lema_on_surface(void);
 void p20lema_in_orbit(void);
@@ -131,13 +133,136 @@ void p25lmwt1_after_twiddle(void);
 void p25lem2(void);
 void p25lem2_after_findvac(void);
 
-/* ---- R22 and R21 (r22_r21.c) ---- */
+/* ---- Part 2: R22 and R21 (r22_r21.c) ---- */
 
+extern const struct interpretive_code R22LEM3_CODE;
+extern const struct interpretive_code R22LEM96_CODE;
+extern const struct interpretive_code R22LEM96_WAIT_CODE;
+extern const struct interpretive_code R22LEM7_CODE;
+extern const struct interpretive_code R21LEM1_CODE;
+extern const struct interpretive_code R21LEM3_CODE;
+extern const struct interpretive_code R21LEM12_CODE;
+extern const struct interpretive_code R21LEM12_FIRST_PASS_CODE;
+extern const struct interpretive_code R21LEM7_CODE;
+extern const struct interpretive_code R21LEM8_CODE;
+
+/* R22 */
+void r22lem(void);
+void r22lem_after_phaschng(void);
+void r22lem_after_p20lemb5(void);
+void r22lem_read(void);
+void r22lem_after_read(void);
+void r22lem_good_data(void);
+void r22lem_no_data(void);
+void r22lem_los_alarm(void);
+void r22lem_los_alarm_terminate(void);
+void r22lem_los_alarm_proceed(void);
+void r22lem_los_alarm_enter(void);
+void r22lem_los_alarm_immediate_return(void);
+void r22lem1_after_phaschng(void);
+void r22lem1_terminate(void);
+void r22lem1_proceed(void);
+void r22lem1_enter(void);
+void r22lem2(void);
+void r22lem2_after_phaschng(void);
+void r22lem2_on_surface(void);
+void r22lem2_in_orbit(void);
+void r22lem2_after_boresight(void);
+void r22lem2_boresight_in(void);
+void r22lem2_boresight_out(void);
+void r22lem2_after_r61lem(void);
+void r22lem3(void);
+void r22lem93_after_exit(void);
+void r22lem93_after_phaschng(void);
+void r22lem96_after_exit(void);
+void r22lem96_after_phaschng(void);
+void r22lem96_after_novac(void);
+void r22lem96_recycle(void);
+void r22lem96_on_surface(void);
+void r22lem96_in_orbit(void);
+void r22lem44_on_surface(void);
+void r22lem44_in_orbit(void);
+void r22lem42(void);
+void r22lem42_on_surface(void);
+void r22lem42_in_orbit(void);
+void r22lem45_after_r65lem(void);
+void r22wait(void);
+void r22lem46(void);
+void r22lem46_after_delayjob(void);
+void n49dsp(void);
+void n49dsp_terminate(void);
+void n49dsp_proceed(void);
+void r22rstrt(void);
+void r22rstrt_after_phaschng(void);
+void r22rstrt_after_rrrdot(void);
+void r22rstrt_bad_read(void);
+void r22rstrt_good_read(void);
 void lunsfchk(void);
+
+/* R21 */
+void r21lem(void);
+void r21lem_on_surface(void);
+void r21lem_in_orbit(void);
+void r21lem5(void);
+void r21lem5_mode2_center(void);
+void r21lem6_after_downflag(void);
+void r21lem6_after_rrdesnb(void);
+void r21lem6_stall(void);
+void r21lem6_bad_return(void);
+void r21lem10(void);
+void r21lem10_after_upflag(void);
+void r21lem2(void);
+void r21lem3(void);
+void r21lem3_after_upflag(void);
+void r21lem3_after_downflag(void);
+void r21lem3_not_in_coverage(void);
+void r21lem3_maneuver(void);
+void r21lem3_designating(void);
+void r21lem3_bad_end(void);
+void r21lem3_lockon(void);
+void r21_503(void);
+void r21_503_terminate(void);
+void r21_503_proceed(void);
+void r21_503_enter(void);
+void r21_503_immediate_return(void);
+void r21end_after_downflag(void);
+void r21srch(void);
+void r21srch_after_phaschng(void);
+void r21lem4_after_upflag(void);
+void r21lem4_after_downflag(void);
+void r21lem12_not_in_coverage(void);
+void r21lem12_maneuver(void);
+void r21lem12_in_coverage(void);
+void r21lem12_after_killtask(void);
+void r21lem13_tried_enough(void);
+void r21lem7(void);
+void r21lem8_after_exit(void);
+void r21lem8_after_cdesflag(void);
+void r21lem8_after_lokonsw(void);
+void r21lem8_after_norrmon(void);
+void r21lem8_after_rrdesnb(void);
+void r21lem8_delta_time(void);
+void r21lem8_after_delta_time(void);
+void r21lem8_after_longcall(void);
+void r21lem9(void);
+void r21lem9_after_killtask(void);
+void r21lem9_after_clradmod(void);
+void r21lem9_after_findvac(void);
+void r21lem11_terminate(void);
+void r21lem11_proceed(void);
+void r21lem11_enter(void);
+void r21lem11_immediate_return(void);
+void r21disp_after_phaschng(void);
+void r21disp_terminate(void);
+void r21disp_proceed(void);
+void r21disp_enter(void);
+void r21disp_immediate_return(void);
+void r21disp_after_linus(void);
 
 /* ---- R23 and R24 (r23_r24.c) ---- */
 
 void r23lem(void);
+void r24lem(void);
 
 #endif
 

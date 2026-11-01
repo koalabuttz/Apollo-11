@@ -125,6 +125,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | S-band antenna angles (R05, verb 64) | `S-BAND_ANTENNA_FOR_LM.agc` (LM pp. 486-489), `S-BAND_ANTENNA_FOR_CM.agc` (CM pp. 934-935) | [`src/sband_antenna/`](src/sband_antenna/) | The angles that point the steerable S-band antenna at the earth: after R02BOTH checks the IMU, the interpretive code brings the spacecraft's state to now (LOADTIME, LEMCONIC or CSMCONIC), takes the direction to the earth (through the moon's position, LUNPOS, in the moon's sphere), turns it into stable member axes (REFSMMAT) and navigation base axes (*SMNB*), and works out pitch and yaw (the LM's through the antenna's 45 degree mounting, NBSA; the CM's into RHOSB and GAMMASB). Verb 06 noun 51 shows them through GOMARKFR, and they are worked out again while EXTVBACT's bit 5 says the verb is on; terminate and proceed end it by B5OFF |
 | Radar sampling loop | `RADAR_LEADIN_ROUTINES.agc` (LM pp. 490-491) | [`src/radar_leadin/`](src/radar_leadin/) | The LM's radar tests (R04, R77) sample a radar every RSAMPDT: RADSAMP, a WAITLIST task, puts itself back on the list (+0 in RSAMPDT ends the test), starts DORSAMP as a job and picks the measurement, RTSTDEX = RTSTLOC/2 + RTSTBASE; DORSAMP reads it once (VARADAR, through SWCALL, to RRRANGE, RRRDOT, LRVELX, LRVELY, LRVELZ or LRALT, then RADSTALL), counts a bad reading in RFAILCNT, keeps the sample in RSTACK unless in R77, and steps RTSTLOC on to the next double word, back to 0 at RTSTMAX |
 | P20-P25, part 1: the programs | `P20-P25.agc` (LM pp. 492-503) | [`src/p20_p25/`](src/p20_p25/) | P20, the LM's rendezvous navigation program (P22 on the lunar surface). PROG20 asks LUNSFCHK whether the LM is on the surface: there ORBCHGO shows the assumed CSM orbit option and, if the CSM's orbit is to change, ORBCHG1 flashes V06N33 for the estimated launch time and ORBCHG3 (interpretive) moves the CSM's state vector to the new orbit (TIMETHET, ATOPCSM). PROG20A runs R02BOTH and sets the program's flags; P20LEM1 computes the LOS (LPS20.1) and tests the range (LPS20.2: alarm 526 past 400 nautical miles); P20LEMA turns the LM to the preferred tracking attitude off the surface (R61LEM); P20LEMB checks the track flag and the radar's auto mode (alarm 514, or a request for auto mode whose ENTER means manual acquisition, R23), then designates (P20LEMC3, R21) or waits, and P20LEMC and P20LEMD schedule the radar data read (R22) every 2.5 seconds, or check the track flag every 15. UPPSV brings the permanent state vectors to the present time. P25, the preferred tracking attitude program: PROG25 sets its flags and P25LEM1 calls R65LEM while the track flag is set, checking again each minute. The binding runs the keys part 1 writes, and the faithful port's routines at the rest of the file's |
+| P20-P25, part 2: R22 and R21 | `P20-P25.agc` (LM pp. 504-512) | [`src/p20_p25/`](src/p20_p25/) | R22, the radar data read: while the rendezvous and track flags stay set and the radar is in auto track (channel 12 bit 14), LRS22.1 reads the radar (alarm 525 if the line of sight is off by more than 3 degrees, with verb 06 noun 05 to show it), LRS22.2 checks the boresight is within 30 degrees of +Z (else R61LEM), and LSR22.3 gives the mark to the state vector (verb 06 noun 49 by N49DSP when the update is too big); then R65LEM and round again, or on the surface every 2 seconds. R22RSTRT takes a range-rate reading it does not use after a restart. R21, the designate: the antenna to its mode center, then the line of sight half a second ahead to RRDESSM, up to 60 passes (alarm 503, whose proceed starts R24's search); on the surface out of mode 2's coverage (R21LEM4), 10 seconds ahead at a time up to 60 times (alarm 530), then a LONGCALL to designate continuously (R21LEM9). After lock-on R21DISP asks the crew to check it is the main lobe (verb 50 noun 72) |
 
 Beside them:
 
@@ -342,11 +343,18 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful side by side at each of its 8 keys from 16,384 states.
    `make p20-p25-cases` runs the faithful port's test of P20-P25 (its
    1,028 checks against yaAGC digests) through the readable tables, then
-   checks part 1's interpretive words against the rope (169), and runs
-   readable and faithful side by side at part 1's keys (85 basic and 84
-   order pairs) from 4,096 states each, and at the keys the faithful
-   routines still run from 16 states each (they must give the same
-   results through the readable tables).
+   checks the written parts' interpretive words against the rope (222),
+   and runs readable and faithful side by side at the written parts' keys
+   (193 basic and 112 order pairs) from 4,096 states each, and at the keys
+   the faithful routines still run from 16 states each (they must give
+   the same results through the readable tables). One faithful pair runs
+   states the readable binding refuses: R21LEM12's CLRGO (24,3030)
+   branches to R21LEM7 +1, a TC INTPRET the interpreter reads as a store
+   code, and where that store would run past the end of the E-bank window
+   the faithful pair writes the next E bank's words, where the AGC writes
+   fixed memory and reads it back. The faithful port's other routines
+   refuse such a store (lmi_store_spills), and the readable binding does
+   too; the test counts those states apart.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
