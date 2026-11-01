@@ -312,6 +312,28 @@ static const struct entry entries[] = {
     {BANK_42(SIZETST), sizetst},
     {BANK_42(ALL3DEC), all3dec},
     {BANK_42(FORCEV25), forcev25},
+    /* Part 5: monitor and the alarms. */
+    {BANK_41(MONITOR), monitor},
+    {BANK_41(MONIT2 + 13u), monit2_plus13},
+    {BANK_41(MONIT2 + 14u), monit2_plus14},
+    {BANK_41(MONIT2 + 20u), monit2_plus20},
+    {BANK_41(MONREQ), monreq},
+    {BANK_41(MONREQ + 10u), monreq_plus10},
+    {BANK_41(MONREQ + 14u), monreq_plus14},
+    {BANK_41(KILLMON), killmon},
+    {BANK_41(MONDO), mondo},
+    {BANK_41(MONDO + 10u), mondo_plus10},
+    {BANK_41(MONBUSY), monbusy},
+    {BANK_41(DSPFMEM), dspfmem},
+    {BANK_41(DSPFMEM + 6u), dspfmem_plus6},
+    {BANK_41(ENDSPF), endspf},
+    {FIXED_FIXED(PASTEVB), pastevb},
+    {FIXED_FIXED(PASTEOPT + 4u), pasteopt_plus4},
+    {FIXED_FIXED(PASTEOPT + 8u), pasteopt_plus8},
+    {FIXED_FIXED(ENDPASTE), endpaste},
+    {BANK_40(PREDSPAL), predspal},
+    {BANK_40(DSPALARM), dspalarm},
+    {BANK_40(CHARALRM), charalrm},
 };
 #define ENTRIES (sizeof entries / sizeof entries[0])
 

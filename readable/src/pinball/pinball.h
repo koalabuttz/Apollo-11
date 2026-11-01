@@ -21,7 +21,10 @@
  * fixed-fixed subroutines they call. Part 3, the display verbs and the
  * scale factor routines for display (LM pp. 414-424, CM pp. 331-342), with
  * the scale factor code subroutines (LM p. 428, CM p. 346) and the triple
- * word shifts (TPLEFTN, TPSL1, PRSHRTMP). The entries
+ * word shifts (TPLEFTN, TPSL1, PRSHRTMP). Part 4, the load verbs and the
+ * scale factor routines for loading (LM pp. 425-436, CM pp. 343-354).
+ * Part 5, monitor, DSPFMEM and the alarms (LM pp. 437-440 and 446, CM pp.
+ * 355-358 and 364). The entries
  * are the routines' labels and the words a call out of the part returns
  * to. */
 #ifndef READABLE_PINBALL_H
@@ -301,6 +304,33 @@ void prshrtmp(void);
 bool dspin_returns(void);
 bool eleven_dspin_returns(void);
 bool two_blank_returns(void);
+
+/* ---- Part 5: monitor and the alarms (monitor.c) ---- */
+
+void monitor(void);
+void monit2_plus13(void);
+void monit2_plus14(void);
+void monit2_plus20(void);
+void monreq(void);
+void monreq_plus10(void);
+void monreq_plus14(void);
+void killmon(void);
+void mondo(void);
+void mondo_plus10(void);
+void monbusy(void);
+void pastevb(void);
+void pasteopt_plus4(void);
+void pasteopt_plus8(void);
+void endpaste(void);
+void dspfmem(void);
+void dspfmem_plus6(void);
+void endspf(void);
+void predspal(void);
+void dspalarm(void);
+void charalrm(void);
+/* Fixed-fixed services the steps run within them. */
+void kilmonon(void);
+void lodsampt(void);
 
 /* ---- Leaving a routine ---- */
 

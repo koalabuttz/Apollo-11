@@ -2332,6 +2332,36 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define OCT34BAR ((word)KW_OCT34BAR) /* OCT 77743 */
 #define OCT31    ((word)KW_OCT31)
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 5: monitor and the alarms ---- */
+/* MONITOR to MONBUSY and DSPFMEM (LM pp. 437-440, CM pp. 355-358) in bank
+ * 41, PASTEVB to ENDPASTE in fixed-fixed, and PREDSPAL, DSPALARM and
+ * CHARALRM (LM p. 446, CM p. 364) in bank 40. Spelled in words: BIT15/14
+ * as BIT15_14. MONSAVE2 (the NVMONOPT options) is named by ADDRESS_OF. */
+#define MONITOR  ((word)K_MONITOR)
+#define MONIT1   ((word)K_MONIT1)
+#define MONIT2   ((word)K_MONIT2)
+#define MONREQ   ((word)K_MONREQ)
+#define KILLMON  ((word)K_KILLMON)
+#define MONDO    ((word)K_MONDO)
+#define ENDMONDO ((word)K_ENDMONDO)
+#define PASTEVB  ((word)K_PASTEVB)
+#define PASTEOPT ((word)K_PASTEOPT)
+#define ENDPASTE ((word)K_ENDPASTE)
+#define MONBUSY  ((word)K_MONBUSY)
+#define DSPFMEM  ((word)K_DSPFMEM)
+#define ENDSPF   ((word)K_ENDSPF)
+#define BLANKSUB ((word)K_BLANKSUB)
+#define KILMONON ((word)K_KILMONON)
+#define NVSUBEND ((word)K_NVSUBEND)
+/* Their constants. */
+#define BIT15_14 ((word)KW_BIT15_14) /* OCT 60000, a label too: MONITOR's CCS runs it */
+#define MONDEL   ((word)KW_MONDEL)   /* OCT 144: "FOR 1 SEC MONITOR INTERVALS" */
+#define MONREF   ((word)KW_MONREF)   /* OCT 75377: "-DEC10, STARTING IN BIT8" */
+#define MONBACK  ((word)KW_MONBACK)  /* ADRES PASTEVB */
+#define MID7     ((word)KW_MID7)     /* OCT 37600 */
+#define MONADR   ((word)KW_MONADR)   /* GENADR PASTEVB */
+#define NVSBENDL ((word)KW_NVSBENDL) /* TC NVSUBEND */
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
