@@ -55,3 +55,5 @@ Luminary099/KALCMANU_STEERING.agc            src/kalcmanu_steering
 Comanche055/KALCMANU_STEERING.agc            src/kalcmanu_steering
 Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc src/standard_lead
 Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc src/standard_lead
+Luminary099/IMU_PERFORMANCE_TEST_2.agc       src/imu_performance
+Luminary099/IMU_PERFORMANCE_TESTS_4.agc      src/imu_performance

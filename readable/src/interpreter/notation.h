@@ -24,7 +24,9 @@
 #define ORDER_EXIT       0000u
 #define ORDER_VLOAD      0001u
 #define ORDER_VLOAD_STAR 0003u /* VLOAD* */
+#define ORDER_AXT_2      0002u /* AXT,2 */
 #define ORDER_VSL1       0004u
+#define ORDER_SL1R       0004u /* (VSL1's code too: a short shift, by MODE) */
 #define ORDER_AXT_1      0006u /* AXT,1 */
 #define ORDER_SQRT       0010u
 #define ORDER_SIGN       0011u
@@ -48,6 +50,7 @@
 #define ORDER_ASIN       0040u
 #define ORDER_SLOAD      0041u
 #define ORDER_SLOAD_STAR 0043u /* SLOAD* */
+#define ORDER_SL2R       0044u
 #define ORDER_SSP        0045u
 #define ORDER_SXA_1      0046u /* SXA,1 */
 #define ORDER_ACOS       0050u
@@ -55,22 +58,32 @@
 #define ORDER_PDDL       0051u
 #define ORDER_PDDL_STAR  0053u /* PDDL* */
 #define ORDER_VSR3       0054u
+#define ORDER_SR2R       0054u /* (VSR3's code too) */
 #define ORDER_MXV        0055u
 #define ORDER_MXV_STAR   0057u /* MXV* */
 #define ORDER_DSQ        0060u
 #define ORDER_PDVL       0061u
 #define ORDER_PDVL_STAR  0063u /* PDVL* */
 #define ORDER_SL2        0064u
+#define ORDER_INCR_1     0066u /* INCR,1 */
+#define ORDER_VXM        0071u
+#define ORDER_TIX_2      0072u /* TIX,2 */
 #define ORDER_VXM_STAR   0073u /* VXM* */
 #define ORDER_SR2        0074u
 #define ORDER_NORM       0075u
 #define ORDER_TIX_1      0076u /* TIX,1 */
 #define ORDER_DCOMP      0100u
+#define ORDER_DMPR       0101u
+#define ORDER_DMPR_STAR  0103u /* DMPR* */
+#define ORDER_SL3R       0104u
 #define ORDER_VCOMP      0100u /* (DCOMP's code too) */
 #define ORDER_DDV        0105u
+#define ORDER_XAD_1      0106u /* XAD,1 */
 #define ORDER_DDV_STAR   0107u /* DDV* */
 #define ORDER_VDEF       0110u
-#define ORDER_SR         0115u
+#define ORDER_SR         0115u /* (SL, SLR and SRR too: the general shifts, by their address) */
+#define ORDER_SL         0115u
+#define ORDER_SLR        0115u
 #define ORDER_VSL_STAR   0117u /* VSL* (a general shift, indexed) */
 #define ORDER_UNIT       0120u
 #define ORDER_VAD        0121u
@@ -89,10 +102,12 @@
 #define ORDER_DSU        0151u
 #define ORDER_CALL       0152u
 #define ORDER_BDSU       0155u
+#define ORDER_BDSU_STAR  0157u /* BDSU* */
 #define ORDER_ITA        0156u /* (STQ's code: one order, under two names) */
 #define ORDER_STQ        0156u
 #define ORDER_RVQ        0160u
 #define ORDER_DAD        0161u
+#define ORDER_DAD_STAR   0163u /* DAD* */
 #define ORDER_BOF        0162u
 #define ORDER_BON        0162u
 #define ORDER_BONCLR     0162u
@@ -103,6 +118,7 @@
 #define ORDER_VSL8       0164u
 #define ORDER_PUSH       0170u
 #define ORDER_DMP        0171u
+#define ORDER_DMP_STAR   0173u /* DMP* */
 #define ORDER_BOVB       0172u
 #define ORDER_SR4        0174u
 #define ORDER_SETPD      0175u
@@ -144,13 +160,14 @@
 
 /* A store code, on a line of its own, with the address it stores to (plus
  * one, as above): STORE, STODL, STOVL or STCALL in bits 12-14. */
-#define STORE(name)       ((word)(000000u | (I_##name + 1u)))
-#define STORE_AT(name, n) ((word)(000000u | (I_##name + (n) + 1u)))
-#define STODL(name)       ((word)(014000u | (I_##name + 1u)))
-#define STODL_AT(name, n) ((word)(014000u | (I_##name + (n) + 1u)))
-#define STOVL(name)       ((word)(024000u | (I_##name + 1u)))
-#define STOVL_AT(name, n) ((word)(024000u | (I_##name + (n) + 1u)))
-#define STCALL(name)      ((word)(034000u | (I_##name + 1u)))
+#define STORE(name)        ((word)(000000u | (I_##name + 1u)))
+#define STORE_AT(name, n)  ((word)(000000u | (I_##name + (n) + 1u)))
+#define STODL(name)        ((word)(014000u | (I_##name + 1u)))
+#define STODL_AT(name, n)  ((word)(014000u | (I_##name + (n) + 1u)))
+#define STOVL(name)        ((word)(024000u | (I_##name + 1u)))
+#define STOVL_AT(name, n)  ((word)(024000u | (I_##name + (n) + 1u)))
+#define STCALL(name)       ((word)(034000u | (I_##name + 1u)))
+#define STCALL_AT(name, n) ((word)(034000u | (I_##name + (n) + 1u)))
 
 /* The job's work area (its VAC area, or a NOVAC job's) word by word, as
  * the listing numbers it: "10D" is word 10 (decimal) from FIXLOC, written
@@ -168,6 +185,15 @@
 /* "n,2": address n indexed by X2. It is written one more, as any address,
  * and complemented: the interpreter tells an X2 address by its sign. */
 #define ADDRESS_PLUS_ONE_X2(n) ((word)(~((n) + 1u) & 077777u))
+/* "NAME +n,1" and "NAME +n,2": a named address n words on, indexed (an
+ * order with a star takes its index register from it), written one more
+ * as any address (and complemented for X2). */
+#define ADDRESS_PLUS_ONE_AT_X1(name, n) ((word)((I_##name + (n) + 1u) & 037777u))
+#define ADDRESS_PLUS_ONE_AT_X2(name, n) ((word)(~((I_##name + (n) + 1u) & 037777u) & 077777u))
+/* A store indexed by X1 or X2 ("STORE INTY +8D,1"): STORE,1's code (bits
+ * 12-14 of 004000) or STORE,2's (010000), with the address, one more. */
+#define STORE_AT_X1(name, n) ((word)(004000u | (I_##name + (n) + 1u)))
+#define STORE_AT_X2(name, n) ((word)(010000u | (I_##name + (n) + 1u)))
 /* A store indexed by X2 ("STORE 0,2"): STORE,2's code (bits 12-14 of
  * 010000) with the address n, written one more. */
 #define STORE_X2_D(n) ((word)(010000u | ((n) + 1u)))
@@ -177,11 +203,17 @@
 /* A number used as it is: the value AXT puts in an index register ("AXT,1
  * 3") and the one SSP stores ("SSP S1 1"). */
 #define NUMBER(n) ((word)(n))
+/* A negative one ("DEC -2", the step INCR,1 adds): its ones' complement. */
+#define MINUS_NUMBER(n) ((word)(~(unsigned)(n) & 077777u))
 /* "SR 5": a general shift's address, the count n. yaYUL assembles it as
  * 20000 plus 600 (a right shift's bits; a left shift's would be 200) plus
  * n, one more as any address. GENSHIFT reads its low ten bits: the count,
  * its pseudo sign, the direction and the round bit. */
 #define SR_COUNT(n) ((word)(020000u + 0600u + (unsigned)(n) + 1u))
+/* "SL 9D" and "SLR 9D": a left shift's (200, as above), and with the
+ * round bit (1000) for SLR. */
+#define SL_COUNT(n)  ((word)(020000u + 0200u + (unsigned)(n) + 1u))
+#define SLR_COUNT(n) ((word)(020000u + 01000u + 0200u + (unsigned)(n) + 1u))
 /* "0 -7,2": an indexed general shift's (VSL*'s) address, the shift count
  * n indexed by X2. yaYUL assembles it as 20000 plus 200 (a left shift's
  * bit, "ADAD" in its rules) plus n, one more as any address, and

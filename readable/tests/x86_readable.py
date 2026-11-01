@@ -125,6 +125,9 @@ REPLACED = (
     # SYSTEM_TEST_STANDARD_LEAD_INS.agc, both missions' lead-ins for erasable
     # programs, with the INTERPRETER entries they reach (src/standard_lead).
     'standard_lead_routines.o',
+    # IMU_PERFORMANCE_TEST_2.agc and IMU_PERFORMANCE_TESTS_4.agc, the LM's
+    # P07 (src/imu_performance).
+    'lm_imu_performance.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
@@ -134,8 +137,9 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # And each mission's own: R63 is the LM's alone; GIMBAL_LOCK_AVOIDANCE's
 # table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
-# its SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER).
-MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi'), 'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver')}
+# its SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER). The IMU performance test
+# (GEOIMUTT) is the LM's alone.
+MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt'), 'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
