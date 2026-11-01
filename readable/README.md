@@ -109,6 +109,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | Final attitude for rendezvous (V89) | `R63.agc` (LM pp. 338-341), with LOADTIME of `RTB_OP_CODES.agc` (LM p. 1397) in [`src/rtb_op_codes/`](src/rtb_op_codes/) | [`src/r63/`](src/r63/) | The LM's verb 89 in P00: the IMU checked (R02BOTH), V04 N12 flashed for the axis to point at the CSM (+Z or +X), both state vectors brought to a minute from now (CSMCONIC, LEMCONIC), the line of sight in stable member coordinates (V89RECL), VECPOINT's gimbal angles and BALLANGS's FDAI ball angles flashed in V06 N18; recycle computes again, proceed clears 3AXISFLG and maneuvers the LM there (R60LEM) |
 | Attitude maneuver (KALCMANU) | `ATTITUDE_MANEUVER_ROUTINE.agc` (LM pp. 342-363) | [`src/attitude_maneuver/`](src/attitude_maneuver/) | KALCMANU's start (KALCMAN3): the CDUs read (READCDUK), the commanded middle gimbal angle checked against gimbal lock (TOOBADF, alarm 00401), each attitude turned into a direction cosine matrix (CDUTODCM), and the single rotation between them found, its axis COF and angle AM (SECAD, ALTCALC, by three methods as AM nears 180 degrees); a maneuver under .25 degrees goes straight to attitude hold. The matrix routines KALCMANU and its steering use: MXM3, TRANSPOS (with the basic TRNSPSPD swap), DELCOMP (a small rotation's matrix), DCMTOCDU (a matrix back to gimbal angles), and NOGO's endings (STOPRATE, GOODMANU) |
 | Maneuver rate and time (LOCSKIRT) | `GIMBAL_LOCK_AVOIDANCE.agc` (LM p. 364, CM pp. 412-413) | [`src/gimbal_lock/`](src/gimbal_lock/) | Where KALCMANU goes with its axis and angle. Neither mission avoids gimbal lock here (the LM's LOCSKIRT, NOGIMLOC, just sets CALCMAN3): WCALC picks the rate RATEINDX names from ARATE's four, has DELCOMP make the matrix of one second's rotation, works out the component rates BRATE and the maneuver's time TM, and starts the steering (CALCMAN2, NEWANGL +1); the CM also turns the rates into control axes (QUADROT) and keeps an attitude error bias (BIASTEMP) |
+| LM maneuver steering | `KALCMANU_STEERING.agc` (LM pp. 365-369) | [`src/kalcmanu_steering/`](src/kalcmanu_steering/) | The automatic maneuver, a second at a time: NEWDELHI (a WAITLIST call each second starts it as a job, UPDTCALL) turns MIS through DEL, one second of the rotation (MXM3, interpretive), takes the new CDU angles (DCMTOCDU, RTB V1STO2S) and gives the DAP a tenth of the change for each tenth of a second (INCRDCDU: DELDCDU, CDUXD). MANUSTAT starts it (the end time TM, the rates OMEGAPD and the attitude error offsets DELPEROR), TIMECHK and CONTMANU call for the next second, and MANUSTOP ends it on the final angles and gives the computer back to the routine that asked (GOODMANU, SPVAC). RTB_OP_CODES.agc's V1STO2S is readable too |
 
 Beside them:
 
@@ -286,7 +287,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    yaAGC digests) with each mission's readable routines in place of the
    faithful ones, then checks the interpretive words against the ropes (21
    LM, 25 CM), and runs readable and faithful side by side at each key (9
-   LM, 11 CM) from 4,096 states. `make names-check` checks
+   LM, 11 CM) from 4,096 states. `make kalcmanu-steering-cases` runs the
+   faithful port's test of KALCMANU_STEERING (its 840 frozen cases, 375 LM
+   and 465 CM, against yaAGC digests) with the readable LM routines in
+   place of the faithful ones (the CM's, a later part, still the faithful
+   port's), then checks the interpretive words against the rope (21), and
+   runs readable and faithful side by side at each key (13 basic, 10 order
+   pairs) from 4,096 states. `make names-check` checks
    the generated names and the restart tables against the listings.
 2. **x86 exact scenarios.** The x86_64 flight program, with the readable
    routines linked in place of the faithful ones, flies the flight

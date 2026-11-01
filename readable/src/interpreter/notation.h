@@ -94,6 +94,7 @@
 #define ORDER_DAD        0161u
 #define ORDER_BOF        0162u
 #define ORDER_BON        0162u
+#define ORDER_BONCLR     0162u
 #define ORDER_CLEAR      0162u
 #define ORDER_CLRGO      0162u
 #define ORDER_SET        0162u
@@ -117,12 +118,13 @@
 /* A switch order's switch: the bit's number in the flag words, as the
  * flag word (number / 15, bits 9-14) and the bit in it (number % 15, bits
  * 1-4), with the switch order's own code in bits 5-8. */
-#define SWITCH_SET   0060u
-#define SWITCH_CLEAR 0260u
-#define SWITCH_BON   0300u
-#define SWITCH_BOF   0340u
-#define SWITCH_CLRGO 0220u
-#define SWITCH_SETGO 0020u
+#define SWITCH_SET    0060u
+#define SWITCH_CLEAR  0260u
+#define SWITCH_BON    0300u
+#define SWITCH_BOF    0340u
+#define SWITCH_BONCLR 0200u
+#define SWITCH_CLRGO  0220u
+#define SWITCH_SETGO  0020u
 #define SWITCH(order, flag)                                                                        \
     ((word)((((I_##flag) / 15u) << 8) | ((I_##flag) % 15u) | SWITCH_##order))
 

@@ -113,23 +113,25 @@ AMR_SOURCES := $(INTERPRETER_SOURCES) src/attitude_maneuver/attitude_maneuver.c 
 	src/rtb_op_codes/rtb_op_codes.c src/binding/attitude_maneuver_routines.c
 GLA_SOURCES := $(INTERPRETER_SOURCES) src/gimbal_lock/gimbal_lock.c \
 	src/binding/gimbal_lock_routines.c
+KAL_SOURCES := $(INTERPRETER_SOURCES) src/kalcmanu_steering/kalcmanu_steering.c \
+	src/rtb_op_codes/rtb_op_codes.c src/binding/kalcmanu_steering_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
-	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES))
+	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
-	attitude-maneuver-cases gimbal-lock-cases
+	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1292,3 +1294,32 @@ gimbal-lock-cases: $(BUILD)/gla-oracle-lm $(BUILD)/gla-oracle-cm $(BUILD)/gla-ca
 	./$(BUILD)/gla-oracle-cm $(ROPES)
 	./$(BUILD)/gla-cases-lm $(ROPES)
 	./$(BUILD)/gla-cases-cm $(ROPES)
+
+# KALCMANU_STEERING, the LM's maneuver steering: the port's test
+# (tests/test_kalcmanu_steering.c, its frozen cases run to their stops
+# through the programs of tests/kalcmanu_steering_target.c, against the
+# original programs' yaAGC digests) on the readable routines for the LM and
+# the faithful CM's, with tests/with_ropes.c loading the ropes the readable
+# interpreter reads; then tests/kalcmanu_steering_cases.c side by side.
+KAL_NAMES := lm_kalcmanu_steering_basic lm_kalcmanu_steering_interpretive
+KAL_COMMON := $(R63_COMMON)
+
+$(BUILD)/kal-faithful.o: $(PORT)/src/lm_kalcmanu_steering.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(KAL_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/kal-test.o: $(PORT)/tests/test_kalcmanu_steering.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/kal-oracle: $(KAL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/kal-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(KAL_COMMON) $(PORT)/src/cm_kalcmanu_steering.c \
+		$(PORT)/tests/kalcmanu_steering_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/kal-cases: $(KAL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/kal-faithful.o \
+		tests/kalcmanu_steering_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(KAL_COMMON) $(filter %.o,$^) \
+		tests/kalcmanu_steering_cases.c -o $@
+
+kalcmanu-steering-cases: $(BUILD)/kal-oracle $(BUILD)/kal-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/kal-oracle $(ROPES)
+	./$(BUILD)/kal-cases $(ROPES)
