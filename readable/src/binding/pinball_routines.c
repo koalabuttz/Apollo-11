@@ -21,8 +21,8 @@
  * one of the file's BANKCALLs (c64-port/src/lanec_pin_routines.c,
  * swreturn), runs the readable SWRETURN (src/interbank/) first when it
  * returns into a readable entry. A step the readable code does not model
- * leaves the state and the record as they were and the routine refused,
- * as the trampoline leaves them.
+ * runs in the faithful trampoline instead, from the state and the record
+ * as they were (but for CLR5's, below).
  *
  * A routine is one step. The flight program charges the AGC clock for
  * each step by the point it starts at (c64-port/platform/x86/
@@ -122,6 +122,48 @@ static const struct entry entries[] = {
     {BANK_41(WDAGAIN + 5u), wdagain_plus5},
     {BANK_41(OCTBACK), octback},
     {BANK_41(DSP2BIT), dsp2bit},
+    /* Part 2b: ENTER and the verb fan */
+    {BANK_40(ENTERJMP), enterjmp},
+    {BANK_41(NVSUBB), nvsubb},
+    {BANK_41(LOADLV1), loadlv1},
+    {BANK_41(ENTER), enter},
+    {BANK_41(ENTPAS0), entpas0},
+    {BANK_41(REQADD), reqadd},
+    {BANK_41(REQADD + 8u), reqadd_after_reqdatz},
+    {BANK_41(USEADD), useadd},
+    {BANK_41(INTMCTBS), intmctbs},
+    {BANK_41(INTMCTBS + 2u), intmctbs_plus2_entry},
+    {BANK_41(INTMCTBS + 10u), intmctbs_after_dspoctwd},
+    {BANK_41(VERBFAN - 2u), verbfan_minus2},
+    {BANK_41(VERBFAN), verbfan},
+    {BANK_41(VERBFAN + 8u), verbfan_after_reldsp},
+    {BANK_41(VBFANDIR), vbfandir},
+    {BANK_41(MIXNOUN), mixnoun},
+    {BANK_41(REQDATX), reqdatx},
+    {BANK_41(REQDATY), reqdaty},
+    {BANK_41(REQDATZ), reqdatz},
+    {BANK_41(ENDRQDAT - 1u), reqcom_after_5blank},
+    {BANK_41(UPDATNN - 1u), updatnn_minus1},
+    {BANK_41(UPDATNN), updatnn},
+    {BANK_41(UPDATVB - 1u), updatvb_minus1},
+    {BANK_41(UPDATVB), updatvb},
+    {BANK_41(UPDAT1 + 2u), updat1_plus2},
+    {BANK_41(GOALMCYC), goalmcyc},
+    {BANK_41(GODSPALM), godspalm},
+    {FIXED_FIXED(SETNCADR), setncadr},
+    {FIXED_FIXED(SETNCADR + 1u), setncadr_plus1},
+    {FIXED_FIXED(SETNADD), setnadd},
+    {FIXED_FIXED(SETEBANK), setebank},
+    {FIXED_FIXED(RIGHT5), right5},
+    {FIXED_FIXED(LEFT5), left5},
+    {FIXED_FIXED(FALTON), falton},
+    {FIXED_FIXED(FLASHON), flashon},
+    {FIXED_FIXED(FLASHOFF), flashoff},
+    {FIXED_FIXED(RELDSP), reldsp},
+    {FIXED_FIXED(RELDSP1), reldsp1},
+    {FIXED_FIXED(ALMCYCLE), almcycle},
+    {FIXED_FIXED(ALMCYCLE + 5u), almcycle_after_updatvb},
+    {FIXED_FIXED(SFRUTMIX), sfrutmix},
 };
 #define ENTRIES (sizeof entries / sizeof entries[0])
 
@@ -341,6 +383,7 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     device_record *record = device;
     const struct entry *routine;
     unsigned start, routines;
+    bool jumped;
 
     if (!p || !state || !record || !lanec_registers_valid(state) || !take_record(p, record))
         return FAITHFUL_PIN_RUN(p, state, device, modules);
@@ -356,25 +399,35 @@ enum exec_status PIN_RUN(const agc_native_program *p, apollo_overlay_state *stat
     before = *state;
     record_before = *record;
     if (setjmp(back)) {
+        /* A step the readable routines do not model runs in the faithful
+         * port, from the state it started in; but not one from CLR5, where
+         * the faithful port's result differs from the original program's
+         * (issue #1093): that step is refused. */
         *state = before;
         *record = record_before;
-        return EXEC_OUT_OF_SCOPE;
+        if (start == BANK_40(CLR5)) return EXEC_OUT_OF_SCOPE;
+        return FAITHFUL_PIN_RUN(p, state, device, modules);
     }
     /* The routines of the step, to the point the faithful step ends at. */
     for (routines = 0;; ++routines) {
         unsigned at;
 
         if (routines == 64u) not_modelled();
+        /* A jump between banks (BANKCALL, POSTJUMP, BANKJUMP), not a
+         * return (SWRETURN). */
+        jumped = routine->routine == bankcall || routine->routine == postjump ||
+                 routine->routine == bankjump;
         routine->routine();
         run_return_cell(state);
         at = here();
         if (stops_at(start, at)) break;
         routine = find(entries, ENTRIES, at);
         if (!routine) routine = find(interbank, INTERBANK, at);
-        if (!routine && !pinball_point(at)) break; /* back out of Pinball */
+        if (!routine && !pinball_point(at) && !jumped) break; /* back out of Pinball */
         if (!routine) {
             /* The faithful step runs on into Pinball code not yet
-             * readable: it runs this step. */
+             * readable, or by a jump between banks into another file's
+             * code (VERBFAN's POSTJUMP to GOEXTVB): it runs this step. */
             *state = before;
             return FAITHFUL_PIN_RUN(p, state, device, modules);
         }

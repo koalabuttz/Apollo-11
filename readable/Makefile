@@ -120,7 +120,8 @@ IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)
 PIN_SOURCES := src/agc/agc.c $(sort $(wildcard src/interpreter/*.c)) src/interbank/interbank.c \
-	src/binding/machine.c $(sort $(wildcard src/pinball/*.c)) src/binding/pinball_routines.c
+	src/binding/machine.c $(sort $(wildcard src/pinball/*.c)) src/pinball_noun_tables/readers.c src/pinball_noun_tables/tables.c \
+	src/binding/pinball_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
