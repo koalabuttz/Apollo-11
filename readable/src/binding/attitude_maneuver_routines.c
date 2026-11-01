@@ -1,13 +1,14 @@
 /* SPDX-License-Identifier: MIT */
-/* The readable ATTITUDE_MANEUVER_ROUTINE (src/attitude_maneuver/) as
- * routines of the LM's flight program, under the table names and keys of
- * the faithful port's (c64-port/src/lm_attitude_maneuver.c):
- * lm_attitude_maneuver_basic (the basic code) and
- * lm_attitude_maneuver_interpretive (the order pairs), all in bank 22.
+/* The readable ATTITUDE_MANEUVER_ROUTINE (the LM's) and ANGLFIND (the
+ * CM's), src/attitude_maneuver/, as routines of each mission's flight
+ * program, under the table names and keys of the faithful port's
+ * (c64-port/src/lm_attitude_maneuver.c and cm_attitude_maneuver.c):
+ * <m>_attitude_maneuver_basic (the basic code) and
+ * <m>_attitude_maneuver_interpretive (the order pairs), all in bank 22.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
- * the file (ALARM, BANKCALL, WAITLIST, ENDOFJOB, TLOAD +6) or reaches
- * NEWOPS through a TC INTPRET. An order pair is one pass of the readable
+ * the file (ALARM, BANKCALL, LOADCDUD, STOPRATE, WAITLIST, ENDOFJOB, TLOAD
+ * +6) or reaches NEWOPS through a TC INTPRET. An order pair is one pass of the readable
  * interpreter over the listing's words (interpret_listing()); a pass that
  * ends at RTB CDULOGIC (LOOPSIN's) runs CDULOGIC (src/rtb_op_codes/) and
  * the DANZIG it ends at, as the faithful pair does. A pass that ends at
@@ -30,6 +31,10 @@
 #include "../agc/names.h"
 
 #if LUMINARY099
+#define ROPE 0u /* the LM's rope */
+#else
+#define ROPE 1u /* the CM's */
+#endif
 
 /* Keys and physical addresses in bank 22. */
 #define BANK22 044000u
@@ -45,13 +50,13 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* The interpreter's fixed operands (MINANG, MAXANG, LOCKANGL, DPHALF and
- * the rest) are the rope's. */
+/* The interpreter's fixed operands (MINANG, MAXANG, the LM's LOCKANGL,
+ * DPHALF and the rest) are the rope's. */
 static word rope_word(unsigned physical)
 {
     agc_word value = 0;
 
-    if (physical > 0xFFFFu || !apollo_rope_read(0u, (uint16_t)physical, &value)) not_modelled();
+    if (physical > 0xFFFFu || !apollo_rope_read(ROPE, (uint16_t)physical, &value)) not_modelled();
     return (word)(value & MINUS_ZERO);
 }
 
@@ -83,6 +88,7 @@ static const struct {
     word at;
     void (*routine)(void);
 } basic_entries[] = {
+#if LUMINARY099
     {KALCMAN3, kalcman3},
     {TRNSPSPD + 1u, trnspspd_after_exit},
     {READCDUK, readcduk},
@@ -93,6 +99,17 @@ static const struct {
     {NOGO + 2u, nogo_after_stoprate},
     {NOGO + 7u, nogo_after_waitlist},
     {TOOBADI + 1u, toobadi_after_exit},
+#else
+    {KALCMAN3, kalcman3},
+    {SECAD + 066u, secad_after_exit},
+    {SECAD + 072u, secad_after_loadcdud},
+    {READCDUK, readcduk},
+    {NOGOM2, nogom2},
+    {NOGO - 2u, nogo_minus2},
+    {NOGO, nogo},
+    {NOGO + 2u, nogo_after_stoprate},
+    {NOGO + 6u, nogo_after_waitlist},
+#endif
 };
 
 static enum exec_status basic(const agc_native_program *program, apollo_overlay_state *state,
@@ -178,6 +195,7 @@ static enum exec_status interpretive(const agc_native_program *program, apollo_o
  * table it is in. */
 #define K22(z) {B22(z), interpretive}
 static const agc_routine_entry pairs[] = {
+#if LUMINARY099
     /* KALCMAN3 */
     K22(02005),
     K22(02007),
@@ -289,6 +307,7 @@ static const agc_routine_entry pairs[] = {
     K22(02326),
     K22(02331),
     K22(02334),
+    /* TRNSPSPD */
     K22(02335),
     /* TRNSPSPD +024 */
     K22(02361),
@@ -408,15 +427,266 @@ static const agc_routine_entry pairs[] = {
     K22(02724),
     /* TOOBADI */
     K22(02742),
+#else
+    /* KALCMAN3 */
+    K22(02001),
+    K22(02003),
+    K22(02004),
+    K22(02007),
+    K22(02011),
+    K22(02014),
+    /* SECAD */
+    K22(02016),
+    K22(02021),
+    K22(02022),
+    K22(02024),
+    K22(02026),
+    K22(02030),
+    K22(02033),
+    K22(02035),
+    K22(02037),
+    K22(02041),
+    K22(02043),
+    K22(02046),
+    K22(02050),
+    K22(02052),
+    K22(02054),
+    K22(02057),
+    K22(02062),
+    K22(02065),
+    K22(02066),
+    K22(02067),
+    K22(02072),
+    K22(02075),
+    K22(02076),
+    K22(02077),
+    K22(02100),
+    K22(02103),
+    /* CHECKMAX */
+    K22(02111),
+    K22(02114),
+    K22(02117),
+    K22(02120),
+    K22(02121),
+    /* ALTCALC */
+    K22(02123),
+    K22(02126),
+    K22(02127),
+    K22(02131),
+    K22(02133),
+    K22(02135),
+    K22(02137),
+    K22(02140),
+    K22(02142),
+    K22(02145),
+    K22(02150),
+    K22(02153),
+    K22(02155),
+    K22(02160),
+    K22(02162),
+    K22(02165),
+    K22(02166),
+    K22(02167),
+    /* COFMAXGO */
+    K22(02170),
+    K22(02173),
+    K22(02176),
+    K22(02201),
+    K22(02203),
+    K22(02206),
+    /* METHOD2 */
+    K22(02210),
+    K22(02213),
+    K22(02215),
+    K22(02216),
+    K22(02221),
+    K22(02223),
+    K22(02224),
+    K22(02227),
+    K22(02231),
+    K22(02232),
+    /* METHOD1 */
+    K22(02234),
+    K22(02237),
+    K22(02241),
+    K22(02242),
+    K22(02245),
+    K22(02247),
+    K22(02250),
+    K22(02253),
+    K22(02255),
+    K22(02256),
+    /* METHOD3 */
+    K22(02260),
+    K22(02263),
+    K22(02265),
+    K22(02266),
+    K22(02271),
+    K22(02273),
+    K22(02274),
+    K22(02277),
+    K22(02301),
+    K22(02302),
+    /* MXM3 */
+    K22(02304),
+    K22(02306),
+    K22(02311),
+    K22(02313),
+    K22(02316),
+    K22(02321),
+    K22(02323),
+    K22(02326),
+    K22(02330),
+    K22(02332),
+    /* TRANSPOS */
+    K22(02334),
+    K22(02337),
+    K22(02342),
+    /* TRNSPSPD */
+    K22(02343),
+    K22(02346),
+    K22(02347),
+    K22(02352),
+    K22(02354),
+    K22(02355),
+    K22(02360),
+    K22(02362),
+    K22(02363),
+    K22(02365),
+    /* CDUTODCM */
+    K22(02405),
+    K22(02411),
+    K22(02412),
+    K22(02414),
+    K22(02417),
+    K22(02420),
+    K22(02422),
+    K22(02423),
+    K22(02426),
+    K22(02430),
+    K22(02431),
+    K22(02433),
+    K22(02436),
+    K22(02441),
+    K22(02443),
+    K22(02444),
+    K22(02445),
+    K22(02447),
+    K22(02452),
+    K22(02455),
+    K22(02456),
+    K22(02460),
+    K22(02461),
+    K22(02463),
+    K22(02464),
+    K22(02466),
+    K22(02470),
+    K22(02471),
+    K22(02473),
+    K22(02475),
+    K22(02476),
+    K22(02477),
+    K22(02501),
+    K22(02503),
+    K22(02504),
+    K22(02505),
+    K22(02506),
+    K22(02510),
+    K22(02513),
+    K22(02514),
+    K22(02516),
+    K22(02517),
+    K22(02521),
+    K22(02524),
+    K22(02525),
+    K22(02527),
+    /* DELCOMP */
+    K22(02530),
+    K22(02532),
+    K22(02533),
+    K22(02534),
+    K22(02535),
+    K22(02540),
+    K22(02542),
+    K22(02544),
+    K22(02546),
+    K22(02550),
+    K22(02552),
+    K22(02554),
+    K22(02556),
+    K22(02560),
+    K22(02562),
+    K22(02564),
+    K22(02566),
+    K22(02570),
+    K22(02571),
+    K22(02574),
+    K22(02576),
+    K22(02601),
+    K22(02603),
+    K22(02605),
+    K22(02606),
+    K22(02607),
+    K22(02611),
+    K22(02613),
+    K22(02616),
+    K22(02620),
+    K22(02622),
+    K22(02624),
+    K22(02626),
+    K22(02627),
+    K22(02630),
+    K22(02632),
+    K22(02634),
+    K22(02637),
+    K22(02641),
+    K22(02643),
+    K22(02645),
+    K22(02647),
+    K22(02650),
+    K22(02651),
+    K22(02653),
+    K22(02654),
+    /* DCMTOCDU */
+    K22(02655),
+    K22(02657),
+    K22(02660),
+    K22(02662),
+    K22(02663),
+    K22(02665),
+    K22(02667),
+    K22(02672),
+    K22(02673),
+    K22(02676),
+    K22(02700),
+    K22(02702),
+    K22(02703),
+    K22(02705),
+    K22(02707),
+    K22(02712),
+    K22(02713),
+    K22(02716),
+    K22(02720),
+    K22(02723),
+    K22(02724),
+#endif
 };
 
 #define B(z) {B22(z), basic}
 static const agc_routine_entry basic_keys[] = {
+#if LUMINARY099
     B(K_KALCMAN3),  B(K_TRNSPSPD + 1u), B(K_READCDUK),  B(K_TOOBADF + 1u), B(K_TOOBADF + 3u),
     B(K_NOGO - 2u), B(K_NOGO),          B(K_NOGO + 2u), B(K_NOGO + 7u),    B(K_TOOBADI + 1u),
+#else
+    B(K_KALCMAN3),  B(K_SECAD + 066u), B(K_SECAD + 072u), B(K_READCDUK),  B(K_NOGOM2),
+    B(K_NOGO - 2u), B(K_NOGO),         B(K_NOGO + 2u),    B(K_NOGO + 6u),
+#endif
 };
 
+#if LUMINARY099
 const agc_routine_table lm_attitude_maneuver_interpretive = {pairs, COUNT(pairs)};
 const agc_routine_table lm_attitude_maneuver_basic = {basic_keys, COUNT(basic_keys)};
-
+#else
+const agc_routine_table cm_attitude_maneuver_interpretive = {pairs, COUNT(pairs)};
+const agc_routine_table cm_attitude_maneuver_basic = {basic_keys, COUNT(basic_keys)};
 #endif

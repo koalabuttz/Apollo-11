@@ -138,6 +138,7 @@
 #define K_TPMODE 03633u
 #define K_ISITAUTO 02262u
 #define K_ONESEK 03165u
+#define K_SECAD 02027u
 #define K_BANKCALL 04616u
 #define K_SWCALL 04622u
 #define K_SWRETURN 04631u

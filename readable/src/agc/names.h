@@ -1826,16 +1826,21 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define VB04N12  ((word)KW_VB04N12) /* VN 412 */
 #define VB06N18  ((word)KW_VB06N18) /* VN 0618 */
 
-/* ---- ATTITUDE_MANEUVER_ROUTINE (LM only) ---- */
+#endif
 
-/* Its labels in bank 22 the basic code enters or leaves from. */
+/* ---- ATTITUDE_MANEUVER_ROUTINE (LM), ANGLFIND (CM) ---- */
+
+/* Their labels in bank 22 the basic code enters or leaves from. */
 #define KALCMAN3 ((word)K_KALCMAN3)
 #define TRNSPSPD ((word)K_TRNSPSPD)
 #define READCDUK ((word)K_READCDUK)
-#define TOOBADF  ((word)K_TOOBADF)
 #define NOGO     ((word)K_NOGO)
-#define TOOBADI  ((word)K_TOOBADI)
-
+#if LUMINARY099
+#define TOOBADF ((word)K_TOOBADF)
+#define TOOBADI ((word)K_TOOBADI)
+#else
+#define SECAD  ((word)K_SECAD)
+#define NOGOM2 ((word)K_NOGOM2)
 #endif
 
 /* ---- KALCMANU_STEERING ---- */
@@ -1862,7 +1867,6 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define ONESEK_LOW ((word)KW_ONESEKP1) /* ONESEK +1: DEC 100 */
 #define BIASCALE   ((word)KW_BIASCALE) /* OCT 75777: -1/16 */
 #else
-#define NOGO     ((word)K_NOGO) /* (ANGLFIND's) */
 #define ENDMANU  ((word)K_ENDMANU)
 #define STOPYZ   ((word)K_STOPYZ)
 #define ZEROEROR ((word)K_ZEROEROR)

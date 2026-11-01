@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
-/* The readable ATTITUDE_MANEUVER_ROUTINE against the faithful port's, key
- * by key (make attitude-maneuver-cases ROPE_LM ROPE_CM). LM only.
+/* The readable ATTITUDE_MANEUVER_ROUTINE (the LM's) or ANGLFIND (the
+ * CM's) against the faithful port's, key by key (make
+ * attitude-maneuver-cases ROPE_LM ROPE_CM). Built once for each mission.
  *
  * Built with the readable tables (src/binding/attitude_maneuver_routines.c)
  * and the faithful port's under the same names with faithful_ in front
@@ -10,12 +11,12 @@
  * (src/attitude_maneuver/attitude_maneuver.c), written in the listing's
  * notation, must be the original program's rope, word for word. Then the
  * keys, which must be the faithful tables'. Then the runs: each key from
- * 4,096 states, each one of the port's frozen LM test states
+ * 4,096 states, each one of the port's frozen test states of the mission
  * (c64-port/tests/attitude_maneuver_vectors.h) entered at the key, most
  * stirred further: MPAC and its mode, the push-down list and its pointer,
  * the index registers (X1 and X2 always as the program sets them, S1 any),
  * the CDUs and the commanded angles (CPHI, CTHETA, CPSI: often near the
- * gimbal lock limit or an edge), the matrices and vectors (any erasable
+ * LM's gimbal lock limit or an edge), the CM's HOLDFLAG, the matrices and vectors (any erasable
  * bank's words), NEWJOB, the overflow indicator, now and then any word but
  * the interpreter's own, the latches, or a state the routines refuse
  * (another work area, BBANK not the two banks, a word of 16 bits). Each
@@ -39,9 +40,34 @@ struct interpretive_code {
 };
 extern const struct interpretive_code *const ATTITUDE_MANEUVER_CODES[];
 extern const unsigned ATTITUDE_MANEUVER_CODE_COUNT;
-extern const agc_routine_table lm_attitude_maneuver_basic, lm_attitude_maneuver_interpretive;
-extern const agc_routine_table faithful_lm_attitude_maneuver_basic,
-    faithful_lm_attitude_maneuver_interpretive;
+#if LUMINARY099
+#define readable_interpretive lm_attitude_maneuver_interpretive
+#define readable_basic        lm_attitude_maneuver_basic
+#define faithful_interpretive faithful_lm_attitude_maneuver_interpretive
+#define faithful_basic        faithful_lm_attitude_maneuver_basic
+#define MISSION_IS_CM         0
+#define MISSION               "LM"
+typedef p66_bias_io mission_io;
+#define NEWOPS_AT 06070u
+#define CPHI_AT   0321u
+/* MIS, MFS (and MFI, KEL), TMIS (and TMFI), COF. */
+#define MATRICES 03246u, 02230u, 03303u, 03270u
+#else
+#define readable_interpretive cm_attitude_maneuver_interpretive
+#define readable_basic        cm_attitude_maneuver_basic
+#define faithful_interpretive faithful_cm_attitude_maneuver_interpretive
+#define faithful_basic        faithful_cm_attitude_maneuver_basic
+#define MISSION_IS_CM         1
+#define MISSION               "CM"
+typedef cm_native_io mission_io;
+#define NEWOPS_AT             06037u
+#define CPHI_AT               01155u
+#define HOLDFLAG_AT           01332u
+/* MIS, MFS (and MFI, DEL), TMIS (and TMFI), COF. */
+#define MATRICES              03320u, 03425u, 03266u, 03342u
+#endif
+extern const agc_routine_table readable_basic, readable_interpretive;
+extern const agc_routine_table faithful_basic, faithful_interpretive;
 
 /* The addresses of the words the routines use. */
 #define CDUX_AT     0032u
@@ -57,8 +83,6 @@ extern const agc_routine_table faithful_lm_attitude_maneuver_basic,
 #define LOC_AT      0164u
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
-#define CPHI_AT     0321u
-#define NEWOPS_AT   06070u
 
 #define CASES 4096u
 
@@ -76,7 +100,7 @@ static unsigned words_differ(const struct interpretive_code *code)
     for (i = 0; i < code->count; ++i) {
         agc_word rope = 0;
         unsigned physical = code->bank * 1024u + code->first - 02000u + i;
-        if (!apollo_rope_read(0u, (uint16_t)physical, &rope) || rope != code->words[i]) {
+        if (!apollo_rope_read(MISSION_IS_CM, (uint16_t)physical, &rope) || rope != code->words[i]) {
             printf("FAIL: %02o,%04o is %05o, the rope's %05o\n", code->bank, code->first + i,
                    code->words[i], rope);
             ++failures;
@@ -116,8 +140,8 @@ static uint16_t value_word(void)
     return rnd() % 4u ? any_word() : edges[rnd() % (sizeof edges / sizeof edges[0])];
 }
 
-/* The frozen cases' LM ones. */
-static unsigned lm_cases[ATTITUDE_MANEUVER_VECTORS], lm_count;
+/* The frozen cases of the mission. */
+static unsigned mission_cases[ATTITUDE_MANEUVER_VECTORS], mission_count;
 
 /* An angle (a CDU's or a commanded one, two's complement): often an edge,
  * or near the 70 degrees of LOCKANGL. */
@@ -136,7 +160,7 @@ static uint16_t angle_word(void)
  * erasable memory. */
 static uint16_t index_word(void)
 {
-    static const uint16_t matrices[] = {03246u, 02230u, 03303u, 03270u};
+    static const uint16_t matrices[] = {MATRICES};
     uint16_t place = rnd() % 2u ? matrices[rnd() % (sizeof matrices / sizeof matrices[0])]
                                 : (uint16_t)(0400u + rnd() % 0340u);
     return (uint16_t)(077777u - place);
@@ -144,10 +168,10 @@ static uint16_t index_word(void)
 
 /* One state at the key (its physical address; an order pair's for an
  * interpretive key): a frozen case's, and for most n more. */
-static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int interpretive,
+static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int interpretive,
                   unsigned n)
 {
-    const irc_case *c = &attitude_maneuver_cases[lm_cases[(n * 7u + rnd()) % lm_count]];
+    const irc_case *c = &attitude_maneuver_cases[mission_cases[(n * 7u + rnd()) % mission_count]];
     uint16_t bank = (uint16_t)(key / 1024u), z = (uint16_t)(02000u + key % 1024u), eb;
     uint16_t *w = s->words, fixloc;
     unsigned k;
@@ -180,6 +204,9 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
             if (rnd() % 2u) w[CDUX_AT + k] = angle_word();
             if (rnd() % 2u) w[CPHI_AT + k] = angle_word();
         }
+#if !LUMINARY099
+        if (rnd() % 2u) w[HOLDFLAG_AT] = value_word();
+#endif
         /* The matrices and vectors (MIS, MFS, MFI, COF, AM, BCDU ...): any
          * of the erasable banks' words. */
         for (k = 01000u; k < 04000u; ++k)
@@ -236,7 +263,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
-            p66_bias_io io, fio, rio;
+            mission_io io, fio, rio;
             agc_native_program p;
             enum exec_status sf, sr;
             const char *why = 0;
@@ -286,26 +313,22 @@ int main(int argc, char **argv)
         return 2;
     }
     for (i = 0; i < ATTITUDE_MANEUVER_VECTORS; ++i)
-        if (!attitude_maneuver_cases[i].cm) lm_cases[lm_count++] = i;
+        if (attitude_maneuver_cases[i].cm == MISSION_IS_CM) mission_cases[mission_count++] = i;
     for (i = 0; i < ATTITUDE_MANEUVER_CODE_COUNT; ++i) {
         failures += words_differ(ATTITUDE_MANEUVER_CODES[i]);
         words += ATTITUDE_MANEUVER_CODES[i]->count;
     }
-    failures +=
-        tables_differ(&lm_attitude_maneuver_basic, &faithful_lm_attitude_maneuver_basic, "basic");
-    failures += tables_differ(&lm_attitude_maneuver_interpretive,
-                              &faithful_lm_attitude_maneuver_interpretive, "interpretive");
+    failures += tables_differ(&readable_basic, &faithful_basic, "basic");
+    failures += tables_differ(&readable_interpretive, &faithful_interpretive, "interpretive");
     if (failures) {
-        printf("attitude-maneuver-cases: %u failures\n", failures);
+        printf("attitude-maneuver-cases (%s): %u failures\n", MISSION, failures);
         return 1;
     }
-    failures += keys(&lm_attitude_maneuver_basic, &faithful_lm_attitude_maneuver_basic, 0, &runs);
-    failures += keys(&lm_attitude_maneuver_interpretive,
-                     &faithful_lm_attitude_maneuver_interpretive, 1, &runs);
-    printf("attitude-maneuver-cases: %u words as the rope's, %u keys (%u basic, %u order pairs) "
-           "from %u states each, %u run by the faithful routines, %u failures\n",
-           words, lm_attitude_maneuver_basic.count + lm_attitude_maneuver_interpretive.count,
-           lm_attitude_maneuver_basic.count, lm_attitude_maneuver_interpretive.count, CASES, runs,
-           failures);
+    failures += keys(&readable_basic, &faithful_basic, 0, &runs);
+    failures += keys(&readable_interpretive, &faithful_interpretive, 1, &runs);
+    printf("attitude-maneuver-cases (%s): %u words as the rope's, %u keys (%u basic, %u order "
+           "pairs) from %u states each, %u run by the faithful routines, %u failures\n",
+           MISSION, words, readable_basic.count + readable_interpretive.count, readable_basic.count,
+           readable_interpretive.count, CASES, runs, failures);
     return failures != 0;
 }

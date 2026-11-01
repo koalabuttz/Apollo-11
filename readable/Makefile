@@ -1220,35 +1220,51 @@ r63-cases: $(BUILD)/r63-oracle $(BUILD)/r63-cases
 	./$(BUILD)/r63-oracle $(ROPES)
 	./$(BUILD)/r63-cases $(ROPES)
 
-# ATTITUDE_MANEUVER_ROUTINE, the LM's KALCMANU start and matrix routines:
-# the port's test (tests/test_attitude_maneuver.c, its frozen cases run to
-# their stops through the programs of tests/attitude_maneuver_target.c,
-# against the original programs' yaAGC digests) on the readable routines
-# for the LM and the faithful CM ANGLFIND, with tests/with_ropes.c loading
-# the ropes the readable interpreter reads; then
-# tests/attitude_maneuver_cases.c side by side.
-AMR_NAMES := lm_attitude_maneuver_basic lm_attitude_maneuver_interpretive
+# ATTITUDE_MANEUVER_ROUTINE (the LM's) and ANGLFIND (the CM's), KALCMANU's
+# start and matrix routines: the port's test (tests/test_attitude_maneuver.c,
+# its frozen cases run to their stops through the programs of
+# tests/attitude_maneuver_target.c, against the original programs' yaAGC
+# digests) with each mission's readable routines and the other mission's
+# faithful ones, tests/with_ropes.c loading the ropes the readable
+# interpreter reads; then tests/attitude_maneuver_cases.c side by side, for
+# each mission.
+AMR_NAMES_LM := lm_attitude_maneuver_basic lm_attitude_maneuver_interpretive
+AMR_NAMES_CM := cm_attitude_maneuver_basic cm_attitude_maneuver_interpretive
 AMR_COMMON := $(R63_COMMON)
 
-$(BUILD)/amr-faithful.o: $(PORT)/src/lm_attitude_maneuver.c
+$(BUILD)/amr-faithful-lm.o: $(PORT)/src/lm_attitude_maneuver.c
 	@mkdir -p $(dir $@)
-	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(AMR_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(AMR_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/amr-faithful-cm.o: $(PORT)/src/cm_attitude_maneuver.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(AMR_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
 $(BUILD)/amr-test.o: $(PORT)/tests/test_attitude_maneuver.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/amr-oracle: $(AMR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/amr-test.o \
+$(BUILD)/amr-oracle-lm: $(AMR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/amr-test.o \
 		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(AMR_COMMON) $(PORT)/src/cm_attitude_maneuver.c \
 		$(PORT)/tests/attitude_maneuver_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
-$(BUILD)/amr-cases: $(AMR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/amr-faithful.o \
+$(BUILD)/amr-oracle-cm: $(AMR_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/amr-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(AMR_COMMON) $(PORT)/src/lm_attitude_maneuver.c \
+		$(PORT)/tests/attitude_maneuver_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/amr-cases-lm: $(AMR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/amr-faithful-lm.o \
 		tests/attitude_maneuver_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(AMR_COMMON) $(filter %.o,$^) \
 		tests/attitude_maneuver_cases.c -o $@
+$(BUILD)/amr-cases-cm: $(AMR_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/amr-faithful-cm.o \
+		tests/attitude_maneuver_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(AMR_COMMON) $(filter %.o,$^) \
+		tests/attitude_maneuver_cases.c -o $@
 
-attitude-maneuver-cases: $(BUILD)/amr-oracle $(BUILD)/amr-cases
+attitude-maneuver-cases: $(BUILD)/amr-oracle-lm $(BUILD)/amr-oracle-cm $(BUILD)/amr-cases-lm \
+		$(BUILD)/amr-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
-	./$(BUILD)/amr-oracle $(ROPES)
-	./$(BUILD)/amr-cases $(ROPES)
+	./$(BUILD)/amr-oracle-lm $(ROPES)
+	./$(BUILD)/amr-oracle-cm $(ROPES)
+	./$(BUILD)/amr-cases-lm $(ROPES)
+	./$(BUILD)/amr-cases-cm $(ROPES)
 
 # GIMBAL_LOCK_AVOIDANCE, both missions' LOCSKIRT: the port's test
 # (tests/test_gimbal_lock.c, its frozen cases run to their stops through
