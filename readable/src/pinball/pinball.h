@@ -15,7 +15,8 @@
  * 398-405, CM pp. 315-322): CHARIN, the number, verb, noun, sign and clear
  * keys and the blanking routines they use; with them DSPIN and 11DSPIN,
  * which put a character into the display table (LM pp. 444-445, CM pp.
- * 362-363), and SLEFT5 and RELDSPON (LM p. 461, CM p. 379). The entries
+ * 362-363), and SLEFT5 and RELDSPON (LM p. 461, CM p. 379). Part 2a,
+ * the word display routines (LM pp. 441-445, CM pp. 359-363). The entries
  * are the routines' labels and the words a call out of the part returns
  * to. */
 #ifndef READABLE_PINBALL_H
@@ -48,7 +49,38 @@ void eleven_dspin(void);
 void sleft5(void);
 void reldspon(void);
 
-/* The same routines called from within the part: each returns true when
+/* ---- Part 2a: the word display routines (display_words.c) ---- */
+
+void dspsign(void);
+void dspsign_after_minus_on(void);
+void dspsign_after_plus_on(void);
+void dsprnd(void);
+void dspdecwd(void);
+void dspdecwd_after_dspsign(void);
+void dspdcwd1_minus1(void);
+void dspdcwd1(void);
+void dspdcwd1_after_dspin(void);
+void dspdecnr(void);
+void dspdecnr_after_dspsign(void);
+void dspdc2nr(void);
+void dspdc2nr_plus3(void);
+void dsp2dec(void);
+void dsp2dec_after_minus_r2(void);
+void dsp2dec_after_plus_r2(void);
+void dsp2dec_after_dspsign(void);
+void end2dec(void);
+void dspdecvn(void);
+void govnupdt(void);
+void govnupdt_after_dspdecvn(void);
+void dspoctwd(void);
+void wdagain(void);
+void wdagain_plus5(void);
+void octback(void);
+void dspoctin(void);
+void dspoctin_after_dspin(void);
+void dsp2bit(void);
+
+/* Part 1's routines called from within the part: each returns true when
  * it went back to its caller (TC Q, TC L or TC DSEXIT), false when it left
  * for another routine (ENDOFJOB, CCSHOLE). */
 bool dspin_returns(void);

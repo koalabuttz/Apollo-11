@@ -2060,6 +2060,38 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define BLANKCON ((word)KW_BLANKCON) /* OCT 4000 */
 #define BRNCHCON ((word)KW_BRNCHCON) /* OCT 77774 */
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 2a: the display words ---- */
+/* The routines that put a word on the DSKY in decimal or octal (LM pp.
+ * 441-445, CM pp. 359-363): bank 40, but DSPOCTWD, OCTBACK and DSP2BIT in
+ * bank 41. The label this transcription spells DSPOCTWO at its line is
+ * DSPOCTWD in the assembled listing and in the comment above it. Their
+ * erasable words (WDRET, DSPWDRET, WDCNT) are named by ADDRESS_OF. */
+#define DSPSIGN  ((word)K_DSPSIGN)
+#define DSPRND   ((word)K_DSPRND)
+#define DSPDECWD ((word)K_DSPDECWD)
+#define DSPDCWD1 ((word)K_DSPDCWD1)
+#define TRACE1   ((word)K_TRACE1)
+#define TRACE1S  ((word)K_TRACE1S)
+#define DECROUND ((word)K_DECROUND)
+#define DSPDECNR ((word)K_DSPDECNR)
+#define DSPDC2NR ((word)K_DSPDC2NR)
+#define DSP2DEC  ((word)K_DSP2DEC)
+#define END2DEC  ((word)K_END2DEC)
+#define DSPDECVN ((word)K_DSPDECVN)
+#define GOVNUPDT ((word)K_GOVNUPDT)
+#define DSPOCTWD ((word)K_DSPOCTWD)
+#define WDAGAIN  ((word)K_WDAGAIN)
+#define OCTBACK  ((word)K_OCTBACK)
+#define DSPLV    ((word)K_DSPLV)
+#define DSP2BIT  ((word)K_DSP2BIT)
+#define DSPOCTIN ((word)K_DSPOCTIN)
+#define ENDSPOCT ((word)K_ENDSPOCT)
+#define DPOSMAX  ((word)K_DPOSMAX) /* FIXED_FIXED_CONSTANT_POOL: OCT 37777, then POSMAX */
+/* Their constants. */
+#define BINCON   ((word)KW_BINCON)   /* DEC 10 */
+#define VNDSPCON ((word)KW_VNDSPCON) /* OCT 00244: ".01 ROUNDED UP" */
+#define DSPMSK   SEVEN               /* DSPMSK = SEVEN */
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

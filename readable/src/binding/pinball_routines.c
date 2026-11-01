@@ -67,6 +67,7 @@ struct entry {
 };
 
 #define BANK_40(at)     (040u * 02000u + ((at) - 02000u))
+#define BANK_41(at)     (041u * 02000u + ((at) - 02000u))
 #define FIXED_FIXED(at) ((unsigned)(at)) /* banks 2 and 3, at 04000-07777 */
 
 /* Part 1, the keys: bank 40, and SLEFT5 and RELDSPON in fixed-fixed. */
@@ -92,6 +93,35 @@ static const struct entry entries[] = {
     {BANK_40(ELEVEN_DSPIN), eleven_dspin},
     {FIXED_FIXED(SLEFT5), sleft5},
     {FIXED_FIXED(RELDSPON), reldspon},
+    /* Part 2a, the word display routines: bank 40, and bank 41's octal. */
+    {BANK_40(DSPSIGN), dspsign},
+    {BANK_40(DSPSIGN + 8u), dspsign_after_minus_on},
+    {BANK_40(DSPSIGN + 12u), dspsign_after_plus_on},
+    {BANK_40(DSPRND), dsprnd},
+    {BANK_40(DSPDECWD), dspdecwd},
+    {BANK_40(DSPDECWD + 3u), dspdecwd_after_dspsign},
+    {BANK_40(DSPDCWD1 - 1u), dspdcwd1_minus1},
+    {BANK_40(DSPDCWD1), dspdcwd1},
+    {BANK_40(DSPDCWD1 + 16u), dspdcwd1_after_dspin},
+    {BANK_40(DSPDECNR), dspdecnr},
+    {BANK_40(DSPDECNR + 3u), dspdecnr_after_dspsign},
+    {BANK_40(DSPDC2NR), dspdc2nr},
+    {BANK_40(DSPDC2NR + 3u), dspdc2nr_plus3},
+    {BANK_40(DSP2DEC), dsp2dec},
+    {BANK_40(DSP2DEC + 6u), dsp2dec_after_minus_r2},
+    {BANK_40(DSP2DEC + 8u), dsp2dec_after_plus_r2},
+    {BANK_40(DSP2DEC + 9u), dsp2dec_after_dspsign},
+    {BANK_40(END2DEC), end2dec},
+    {BANK_40(DSPDECVN), dspdecvn},
+    {BANK_40(GOVNUPDT), govnupdt},
+    {BANK_40(GOVNUPDT + 1u), govnupdt_after_dspdecvn},
+    {BANK_40(DSPOCTIN), dspoctin},
+    {BANK_40(DSPOCTIN + 1u), dspoctin_after_dspin},
+    {BANK_41(DSPOCTWD), dspoctwd},
+    {BANK_41(WDAGAIN), wdagain},
+    {BANK_41(WDAGAIN + 5u), wdagain_plus5},
+    {BANK_41(OCTBACK), octback},
+    {BANK_41(DSP2BIT), dsp2bit},
 };
 #define ENTRIES (sizeof entries / sizeof entries[0])
 
