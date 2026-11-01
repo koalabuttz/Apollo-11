@@ -16,7 +16,9 @@
  * keys and the blanking routines they use; with them DSPIN and 11DSPIN,
  * which put a character into the display table (LM pp. 444-445, CM pp.
  * 362-363), and SLEFT5 and RELDSPON (LM p. 461, CM p. 379). Part 2a,
- * the word display routines (LM pp. 441-445, CM pp. 359-363). The entries
+ * the word display routines (LM pp. 441-445, CM pp. 359-363). Part 2b,
+ * ENTER and the verb fan (LM pp. 406-412, CM pp. 323-329), with the
+ * fixed-fixed subroutines they call. The entries
  * are the routines' labels and the words a call out of the part returns
  * to. */
 #ifndef READABLE_PINBALL_H
@@ -79,6 +81,53 @@ void octback(void);
 void dspoctin(void);
 void dspoctin_after_dspin(void);
 void dsp2bit(void);
+
+/* ---- Part 2b: ENTER and the verb fan (enter.c, subroutines.c) ---- */
+
+void nvsubb(void);
+void loadlv1(void);
+void enterjmp(void);
+void enter(void);
+void entpas0(void);
+void reqadd(void);
+void reqadd_after_reqdatz(void);
+void useadd(void);
+void intmctbs(void);
+void intmctbs_plus2_entry(void);
+void intmctbs_after_dspoctwd(void);
+void verbfan_minus2(void);
+void verbfan(void);
+void verbfan_after_reldsp(void);
+void vbfandir(void);
+void mixnoun(void);
+void reqdatx(void);
+void reqdaty(void);
+void reqdatz(void);
+void reqcom_after_5blank(void);
+void updatnn_minus1(void);
+void updatnn(void);
+void updatvb_minus1(void);
+void updatvb(void);
+void updat1_plus2(void);
+void goalmcyc(void);
+void godspalm(void);
+
+/* The fixed-fixed subroutines ENTER and the verb fan call: each goes back
+ * with TC Q (or through its return word, RELRET or EXITEM). */
+void setncadr(void);
+void setncadr_plus1(void);
+void setnadd(void);
+void setebank(void);
+void right5(void);
+void left5(void);
+void falton(void);
+void flashon(void);
+void flashoff(void);
+void reldsp(void);
+void reldsp1(void);
+void almcycle(void);
+void almcycle_after_updatvb(void);
+void sfrutmix(void);
 
 /* Part 1's routines called from within the part: each returns true when
  * it went back to its caller (TC Q, TC L or TC DSEXIT), false when it left

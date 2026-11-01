@@ -46,7 +46,7 @@ SUITE_LIST = 'tests/lanec_suites.c'
 # there: its chains are compared, not counted.
 # pin-stirred's chains taken must not fall below this (a readable routine
 # refusing what it should take).
-STIRRED_FLOOR = 7700
+STIRRED_FLOOR = 8000
 SUITES = (('pin-transfer', '--refusals', True), ('pin-transfer-c64', '--refusals', False),
           ('pin-decdsp3', '--refusals', True), ('pin-refuse', '--refusals-only', False))
 

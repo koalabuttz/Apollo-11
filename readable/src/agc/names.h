@@ -2092,6 +2092,67 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define VNDSPCON ((word)KW_VNDSPCON) /* OCT 00244: ".01 ROUNDED UP" */
 #define DSPMSK   SEVEN               /* DSPMSK = SEVEN */
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 2b: ENTER and the verb fan ---- */
+/* ENTER, the requests for data and the noun and verb display updates (LM
+ * pp. 406-412, CM pp. 323-329), bank 41; and the fixed-fixed services they
+ * use (ALMCYCLE, SFRUTMIX, SETNCADR, SETNADD, SETEBANK, RIGHT5, LEFT5,
+ * FALTON, FLASHON, FLASHOFF, RELDSP, RELDSP1). Their erasable words
+ * (VERBSAVE, NOUNCADR, NOUNADD, ZREG, DECOUNT, NOUNTEM, UPDATRET, RELRET,
+ * EXITEM) are named by ADDRESS_OF, and so are the tables an INDEX reads
+ * (VERBTAB, DISPLACE, LOW5 as the first word of LOW5, MID5, HI5) and
+ * LODNNLOC, the 2CADR of LODNNTAB. ENTEXIT is ENTRET ("ENTEXIT = ENTRET"). */
+#define NVSUBB   ((word)K_NVSUBB)
+#define LOADLV1  ((word)K_LOADLV1)
+#define ENTPASHI ((word)K_ENTPASHI)
+#define ACCEPTWD ((word)K_ACCEPTWD)
+#define ENTPAS0  ((word)K_ENTPAS0)
+#define TESTVB   ((word)K_TESTVB)
+#define TESTNN   ((word)K_TESTNN)
+#define REQADD   ((word)K_REQADD)
+#define USEADD   ((word)K_USEADD)
+#define LODNNLOC ((word)K_LODNNLOC)
+#define INTMCTBS ((word)K_INTMCTBS)
+#define VERBFAN  ((word)K_VERBFAN)
+#define VBFANDIR ((word)K_VBFANDIR)
+#define MIXNOUN  ((word)K_MIXNOUN)
+#define MIXNN1   ((word)K_MIXNN1)
+#define MIXNN2   ((word)K_MIXNN2)
+#define DPTEST   ((word)K_DPTEST)
+#define DPTEST1  ((word)K_DPTEST1)
+#define REQDATX  ((word)K_REQDATX)
+#define REQDATY  ((word)K_REQDATY)
+#define REQDATZ  ((word)K_REQDATZ)
+#define REQCOM   ((word)K_REQCOM)
+#define ENDRQDAT ((word)K_ENDRQDAT)
+#define UPDATNN  ((word)K_UPDATNN)
+#define PUTADD   ((word)K_PUTADD)
+#define UPDAT1   ((word)K_UPDAT1)
+#define GOALMCYC ((word)K_GOALMCYC)
+#define GODSPALM ((word)K_GODSPALM)
+#define NVSUB1   ((word)K_NVSUB1)
+#define LOADLV   ((word)K_LOADLV)
+#define DSPALARM ((word)K_DSPALARM)
+#define SETNCADR ((word)K_SETNCADR)
+#define SETNADD  ((word)K_SETNADD)
+#define SETEBANK ((word)K_SETEBANK)
+#define RIGHT5   ((word)K_RIGHT5)
+#define LEFT5    ((word)K_LEFT5)
+#define FALTON   ((word)K_FALTON)
+#define FLASHON  ((word)K_FLASHON)
+#define RELDSP   ((word)K_RELDSP)
+#define RELDSP2  ((word)K_RELDSP2)
+#define RELDSP1  ((word)K_RELDSP1)
+#define ALMCYCLE ((word)K_ALMCYCLE)
+#define SFRUTMIX ((word)K_SFRUTMIX)
+#define SFRET1   ((word)K_SFRET1)
+#define GOQ      ((word)K_GOQ)
+/* Their constants. */
+#define MMADREF ((word)KW_MMADREF) /* ADRES MMCHANG +1 */
+#define LOWVERB ((word)KW_LOWVERB) /* DEC 28: "LOWER VERB THAT AVOIDS NOUN TEST." */
+#define LST2CON ((word)KW_LST2CON) /* DEC 40: "FIRST LIST2 VERB (EXTENDED VERB)" */
+#define MIXAD   ((word)KW_MIXAD)   /* TC MIXTEMP */
+#define MID5    ((word)KW_MID5)    /* OCT 1740 */
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
