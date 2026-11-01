@@ -53,3 +53,5 @@ Luminary099/GIMBAL_LOCK_AVOIDANCE.agc        src/gimbal_lock
 Comanche055/GIMBAL_LOCK_AVOIDANCE.agc        src/gimbal_lock
 Luminary099/KALCMANU_STEERING.agc            src/kalcmanu_steering
 Comanche055/KALCMANU_STEERING.agc            src/kalcmanu_steering
+Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc src/standard_lead
+Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc src/standard_lead

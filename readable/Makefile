@@ -115,23 +115,26 @@ GLA_SOURCES := $(INTERPRETER_SOURCES) src/gimbal_lock/gimbal_lock.c \
 	src/binding/gimbal_lock_routines.c
 KAL_SOURCES := $(INTERPRETER_SOURCES) src/kalcmanu_steering/kalcmanu_steering.c \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/kalcmanu_steering_routines.c
+SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
+	src/binding/standard_lead_routines.c)
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
-	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES))
+	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) \
+	$(SL_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
-	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases
+	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1355,3 +1358,69 @@ kalcmanu-steering-cases: $(BUILD)/kal-oracle-lm $(BUILD)/kal-oracle-cm $(BUILD)/
 	./$(BUILD)/kal-oracle-cm $(ROPES)
 	./$(BUILD)/kal-cases-lm $(ROPES)
 	./$(BUILD)/kal-cases-cm $(ROPES)
+
+# SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
+# oracles with each mission's readable tables and the other mission's
+# faithful ones (tests/standard_lead_oracle_cases.c: every entry run to the
+# first point outside the file; tests/cm_lead_tests_cases.c: the CM's
+# COMPVER, GTSCPSS1 and REDO; tests/interp_entry_cases.c: INTPRET, INTPRET
+# +2 and INTRSM), tests/with_ropes.c loading the ropes the readable
+# interpreter reads; then tests/standard_lead_cases.c side by side, for each
+# mission.
+SL_NAMES_LM := standard_lead_routines lm_interpreter_routines standard_lead_interpretive_routines \
+	lm_interpreter_rvq
+SL_NAMES_CM := cm_standard_lead_routines cm_interpreter_routines \
+	cm_standard_lead_interpretive_routines cm_interpreter_rvq
+SL_PORT := $(addprefix $(PORT)/src/,agc_transfer.c interp_entry.c standard_lead.c \
+	standard_lead_interp.c standard_lead_wake.c lm_basic_wake.c executive.c cm_basic_wake.c \
+	cm_native_image.c cm_dispatch.c cm_executive.c lm_interbank_routines.c lm_interbank_idle.c \
+	lm_interbank.c cm_interbank_routines.c cm_interbank_idle.c cm_interbank_complete.c agc_word.c \
+	agc_multiword.c agc_hardware_divide.c rope_image_host.c) tests/no_seams.c
+SLO_TESTS := $(addprefix $(PORT)/tests/,standard_lead_oracle_cases.c standard_lead_oracle_check.c \
+	standard_lead_cases.c)
+CLT_TESTS := $(addprefix $(PORT)/tests/,cm_lead_tests_cases.c cm_lead_tests_check.c)
+IE_TESTS := $(PORT)/tests/interp_entry_cases.c
+
+$(BUILD)/sl-faithful-lm.o: $(PORT)/src/standard_lead_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(SL_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/sl-faithful-cm.o: $(PORT)/src/standard_lead_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(SL_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/sl-test-%.o: $(PORT)/tests/test_%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/slo-oracle-lm: $(SL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/sl-faithful-lm.o \
+		$(BUILD)/sl-test-standard_lead_oracle.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SL_PORT) $(SLO_TESTS) tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/slo-oracle-cm: $(SL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/sl-faithful-cm.o \
+		$(BUILD)/sl-test-standard_lead_oracle.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SL_PORT) $(SLO_TESTS) tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/clt-oracle: $(SL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/sl-faithful-cm.o \
+		$(BUILD)/sl-test-cm_lead_tests.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SL_PORT) $(CLT_TESTS) tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/ie-oracle-lm: $(SL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/sl-faithful-lm.o \
+		$(BUILD)/sl-test-interp_entry.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SL_PORT) $(IE_TESTS) tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/ie-oracle-cm: $(SL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/sl-faithful-cm.o \
+		$(BUILD)/sl-test-interp_entry.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(SL_PORT) $(IE_TESTS) tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/sl-cases-lm: $(SL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/sl-faithful-lm.o \
+		tests/standard_lead_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(SL_PORT) $(filter %.o,$^) tests/standard_lead_cases.c \
+		-o $@
+$(BUILD)/sl-cases-cm: $(SL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/sl-faithful-cm.o \
+		tests/standard_lead_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(SL_PORT) $(filter %.o,$^) tests/standard_lead_cases.c \
+		-o $@
+
+standard-lead-cases: $(BUILD)/slo-oracle-lm $(BUILD)/slo-oracle-cm $(BUILD)/clt-oracle \
+		$(BUILD)/ie-oracle-lm $(BUILD)/ie-oracle-cm $(BUILD)/sl-cases-lm $(BUILD)/sl-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/slo-oracle-lm $(ROPES)
+	./$(BUILD)/slo-oracle-cm $(ROPES)
+	./$(BUILD)/clt-oracle $(ROPES)
+	./$(BUILD)/ie-oracle-lm $(ROPES)
+	./$(BUILD)/ie-oracle-cm $(ROPES)
+	./$(BUILD)/sl-cases-lm $(ROPES)
+	./$(BUILD)/sl-cases-cm $(ROPES)

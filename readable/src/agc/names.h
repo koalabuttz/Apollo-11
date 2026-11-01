@@ -1885,6 +1885,26 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define V1STO2S     ((word)K_V1STO2S)
 #define TPMODE      ((word)K_TPMODE)
 
+/* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
+
+/* Its entries: in bank 4 (the LM's, and the CM's E/JOBWAK) and bank 13
+ * (the CM's others). EBUF2 and EBUF2 +1, in unswitched erasable, keep an
+ * E/BKCALL's or E/CALL's CADR and return. */
+#define E_BKCALL ((word)K_E_BKCALL)
+#define E_SWITCH ((word)K_E_SWITCH)
+#define E_CALL   ((word)K_E_CALL)
+#define E_JOBWAK ((word)K_E_JOBWAK)
+#define EBUF2(n) ERASABLE(K_EBUF2 + (n))
+#if COMANCHE055
+/* The CM's system-test entry words, at 33,2000-2002, and where they go. */
+#define COMPVER  ((word)K_COMPVER)
+#define GTSCPSS1 ((word)K_GTSCPSS1)
+#define REDO     ((word)K_REDO)
+#define GCOMPVER ((word)K_GCOMPVER)
+#define GTSCPSS  ((word)K_GTSCPSS)
+#define NEWMODEX ((word)K_NEWMODEX)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
