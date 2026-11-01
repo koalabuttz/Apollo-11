@@ -2534,6 +2534,60 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define RADSTALL ((word)K_RADSTALL)
 #endif
 
+/* ---- P20-P25 ---- */
+
+#if LUMINARY099
+/* Part 1, P20 and P25 (bank 24; ORBCHG3 in bank 32), and LUNSFCHK,
+ * R21LEM and R23LEM, which they call. Their erasable words (OPTION2,
+ * MARKCTR, R65CNTR, FLAGWRD0-2, FLAGWRD8, MODREG, RADMODES, STATE, MPAC)
+ * are named by ADDRESS_OF. */
+#define PROG20                ((word)K_PROG20)
+#define ORBCHGO               ((word)K_ORBCHGO)
+#define ORBCHG1               ((word)K_ORBCHG1)
+#define ORBCHG2               ((word)K_ORBCHG2)
+#define ORBCHG3               ((word)K_ORBCHG3)
+#define PROG20A               ((word)K_PROG20A)
+#define P20LEM1               ((word)K_P20LEM1)
+#define FIVE_TWENTY_SIX_ALARM ((word)K_526ALARM) /* 526ALARM */
+#define P20LEMA               ((word)K_P20LEMA)
+#define P20LEMB               ((word)K_P20LEMB)
+#define P20LEMB1              ((word)K_P20LEMB1)
+#define P20LEMB2              ((word)K_P20LEMB2)
+#define P20LEMB3              ((word)K_P20LEMB3)
+#define P20LEMB4              ((word)K_P20LEMB4)
+#define P20LEMB5              ((word)K_P20LEMB5)
+#define P20LEMB6              ((word)K_P20LEMB6)
+#define P20LEMC               ((word)K_P20LEMC)
+#define P20LEMC1              ((word)K_P20LEMC1)
+#define P20LEMC2              ((word)K_P20LEMC2)
+#define P20LEMC3              ((word)K_P20LEMC3)
+#define P20LEMD               ((word)K_P20LEMD)
+#define P20LEMD1              ((word)K_P20LEMD1)
+#define P20LEMD2              ((word)K_P20LEMD2)
+#define P20LEMF               ((word)K_P20LEMF)
+#define P20LEMWT              ((word)K_P20LEMWT)
+#define P20LMWT1              ((word)K_P20LMWT1)
+#define UPPSV                 ((word)K_UPPSV)
+#define PROG25                ((word)K_PROG25)
+#define P25LEM1               ((word)K_P25LEM1)
+#define P25LEM2               ((word)K_P25LEM2)
+#define P25LEMWT              ((word)K_P25LEMWT)
+#define P25LMWT1              ((word)K_P25LMWT1)
+#define LUNSFCHK              ((word)K_LUNSFCHK)
+#define R21LEM                ((word)K_R21LEM)
+#define R23LEM                ((word)K_R23LEM)
+#define ALRM514               ((word)KW_ALRM514)
+#define ALRM526               ((word)KW_ALRM526)
+#define OCT201                ((word)KW_OCT201)
+#define OCT00012              ((word)KW_OCT00012)
+#define P22ONE                ((word)KW_P22ONE)
+#define V06N33_STAR           ((word)KW_V06N33_STAR) /* V06N33*: VN 0633 */
+#define DEC_250               ((word)KW_250DEC)      /* 250DEC */
+#define DEC_1500              ((word)KW_1500DEC)     /* 1500DEC */
+#define SIXTY_SCNDS           ((word)KW_60SCNDS)     /* 60SCNDS */
+#define RCDU0BIT              ((word)KW_RCDU0BIT)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
