@@ -27,7 +27,11 @@
  * 355-358 and 364). Part 6, the major mode change, the request verbs,
  * proceed and terminate, and key release (LM pp. 447-450, CM pp.
  * 365-368). Part 7, NVSUB, ENDIDLE, JAMTERM and JAMPROC, BLANKSUB, DSPMM
- * and RECALTST (LM pp. 451-459, CM pp. 369-377). The entries
+ * and RECALTST (LM pp. 451-459, CM pp. 369-377). Part 8, the last: FALTOF
+ * (LM p. 461, CM p. 379), NVSUBUSY and NVSBWAIT (LM p. 464, CM p. 382), the
+ * lights test (LM pp. 467-468, CM pp. 385-386) and ERROR LIGHT RESET (LM
+ * pp. 470-471, CM pp. 388-389): with it the file is readable whole. The
+ * entries
  * are the routines' labels and the words a call out of the part returns
  * to. */
 #ifndef READABLE_PINBALL_H
@@ -97,6 +101,7 @@ void nvsubb(void);
 void loadlv1(void);
 void enterjmp(void);
 void enter(void);
+void testnn(void);
 void entpas0(void);
 void reqadd(void);
 void reqadd_after_reqdatz(void);
@@ -112,6 +117,7 @@ void mixnoun(void);
 void reqdatx(void);
 void reqdaty(void);
 void reqdatz(void);
+void reqcom(void);
 void reqcom_after_5blank(void);
 void updatnn_minus1(void);
 void updatnn(void);
@@ -131,6 +137,7 @@ void setebank(void);
 void right5(void);
 void left5(void);
 void falton(void);
+void faltof(void);
 void flashon(void);
 void flashoff(void);
 void reldsp(void);
@@ -394,6 +401,32 @@ void recal2(void);
 void recal3(void);
 void doterm(void);
 void doproc(void);
+void prenvbsy(void);
+void nvsubusy(void);
+void nvsubsy1(void);
+void nvsbwait(void);
+
+/* ---- Part 8: the lights test and ERROR LIGHT RESET (lights.c) ---- */
+
+void vbtstlts(void);
+#if !LUMINARY099
+void vbtstlts_plus2(void);
+#endif
+void tstlts1(void);
+#if LUMINARY099
+void tstlts1_plus18(void);
+#else
+void tstlts1_plus16(void);
+#endif
+void tstlts2(void);
+void tstlts2_plus4(void);
+void tstlts3(void);
+#if LUMINARY099
+void tstlts3_plus27(void);
+#else
+void tstlts3_plus26(void);
+#endif
+void error_(void);
 
 /* ---- Leaving a routine ---- */
 

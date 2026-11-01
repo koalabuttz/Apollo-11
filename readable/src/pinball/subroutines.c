@@ -7,6 +7,7 @@
  * SETNCADR, SETNADD, SETEBANK, RIGHT5, LEFT5, FALTON, FLASHON, FLASHOFF,
  * RELDSP, RELDSP1, ALMCYCLE and SFRUTMIX (ENTER and the verb fan);
  * SFRUTNOR, SFCONUM, TPLEFTN, TPSL1 and PRSHRTMP (the display verbs).
+ * FALTOF, which no routine of the file calls, came with part 8.
  * SFRUTMIX, SFRUTNOR and SFCONUM are in bank 41, TPLEFTN in bank 40.
  *
  * Each goes back with TC Q (or through its return word), so a routine of
@@ -125,6 +126,14 @@ void falton(void)
 {
     set_A(BIT7);
     wor_dsalmout();
+    tc_return(Q_ADDRESS);
+}
+
+/* FALTOF -- "TURN OFF OPERATOR ERROR LIGHT". */
+void faltof(void)
+{
+    set_A(negate(BIT7));
+    wand_dsalmout();
     tc_return(Q_ADDRESS);
 }
 

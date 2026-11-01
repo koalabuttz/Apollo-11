@@ -57,3 +57,5 @@ Luminary099/SYSTEM_TEST_STANDARD_LEAD_INS.agc src/standard_lead
 Comanche055/SYSTEM_TEST_STANDARD_LEAD_INS.agc src/standard_lead
 Luminary099/IMU_PERFORMANCE_TEST_2.agc       src/imu_performance
 Luminary099/IMU_PERFORMANCE_TESTS_4.agc      src/imu_performance
+Luminary099/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc src/pinball
+Comanche055/PINBALL_GAME_BUTTONS_AND_LIGHTS.agc src/pinball
