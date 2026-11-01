@@ -146,7 +146,7 @@ void entpas0(void)
  * Z at at ("SWITCH BANKS TO NOUN TABLE READING ROUTINE."), back at at +1
  * with NNADTEM, NNTYPTEM, MIXBR and for a mixed noun RUTMXTEM and
  * IDAD1TEM-IDAD3TEM loaded. */
-static void read_noun_tables(word at)
+void read_noun_tables(word at)
 {
     word noun = fetch(ADDRESS_OF(NOUNREG));
 

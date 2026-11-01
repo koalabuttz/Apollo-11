@@ -2256,6 +2256,82 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define MINCON2    ((word)KW_MINCON2)   /* OCT 00011: ".0006 FOR MINUTES DISPLAY" */
 #define MINCON2_LO ((word)KW_MINCON2P1) /* OCT 32445, its low part */
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 4: the load verbs ---- */
+/* The load verbs and the scale factor routines for loading (LM pp.
+ * 425-436, CM pp. 343-354): bank 41 (ABCLOAD to SFINTABR), bank 40 (the
+ * input scale routines, DEGINSF to TESTOFUF) and bank 42 (HMSIN to
+ * FORCEV25). Spelled in words: ALLDC/OC as ALLDC_OC, 2ROUND as TWO_ROUND,
+ * 2RNDEND as TWO_RNDEND, RND/TST as RND_TST. SFMIXCAL, SFNORCAL, MIXBACK,
+ * NORBACK and ENDSCAL1 are Luminary099's (Comanche055's ENDSCALE goes
+ * straight to PUTCOM2); OPTDEGIN, OPDEGIN2 and DPFRACIN Comanche055's.
+ * Their erasable words (LOADSTAT, YREG, YREGLP, ZREGLP, DECRET, HITEMIN)
+ * are named by ADDRESS_OF, and so are the constants a DMP or INDEX reads
+ * (DEGCON1, DEGCON2, WHOLECON, SFINTABR, GTSFINLC). */
+#define ABCLOAD    ((word)K_ABCLOAD)
+#define PUTXYZ     ((word)K_PUTXYZ)
+#define BITSOFF    ((word)K_BITSOFF)
+#define BITSOFF1   ((word)K_BITSOFF1)
+#define ABLOAD     ((word)K_ABLOAD)
+#define PUTXY      ((word)K_PUTXY)
+#define ALOAD      ((word)K_ALOAD)
+#define BLOAD      ((word)K_BLOAD)
+#define CLOAD      ((word)K_CLOAD)
+#define ALLDC_OC   ((word)K_ALLDC_OC)
+#define PUTCOM     ((word)K_PUTCOM)
+#define PUTDPCOM   ((word)K_PUTDPCOM)
+#define PUTNORM    ((word)K_PUTNORM)
+#define PUTCOM2    ((word)K_PUTCOM2)
+#define CHANLOAD   ((word)K_CHANLOAD)
+#define PUTDECSF   ((word)K_PUTDECSF)
+#define PUTSFNOR   ((word)K_PUTSFNOR)
+#define PUTDCSF2   ((word)K_PUTDCSF2)
+#define DEGINSF    ((word)K_DEGINSF)
+#define DEGINSF2   ((word)K_DEGINSF2)
+#define SIGNFIX    ((word)K_SIGNFIX)
+#define ENDSCALE   ((word)K_ENDSCALE)
+#define NEG180     ((word)K_NEG180)
+#define SGNTO1     ((word)K_SGNTO1)
+#define ARTHINSF   ((word)K_ARTHINSF)
+#define BINROUND   ((word)K_BINROUND)
+#define ARTIN1SF   ((word)K_ARTIN1SF)
+#define DPINSF     ((word)K_DPINSF)
+#define DPINCOM    ((word)K_DPINCOM)
+#define DPINORM    ((word)K_DPINORM)
+#define DPINSF2    ((word)K_DPINSF2)
+#define DPINSF4    ((word)K_DPINSF4)
+#define TWO_ROUND  ((word)K_2ROUND)
+#define TWO_RNDEND ((word)K_2RNDEND)
+#define TESTOFUF   ((word)K_TESTOFUF)
+#define HMSIN      ((word)K_HMSIN)
+#define RND_TST    ((word)K_RND_TST)
+#define MPACTST    ((word)K_MPACTST)
+#define SIZETST    ((word)K_SIZETST)
+#define ALL3DEC    ((word)K_ALL3DEC)
+#define FORCEV25   ((word)K_FORCEV25)
+#if LUMINARY099
+#define MIXBACK  ((word)K_MIXBACK)
+#define NORBACK  ((word)K_NORBACK)
+#define ENDSCAL1 ((word)K_ENDSCAL1)
+#define SFMIXCAL ((word)K_SFMIXCAL)
+#define SFNORCAL ((word)K_SFNORCAL)
+#else
+#define OPTDEGIN    ((word)K_OPTDEGIN)
+#define OPDEGIN2    ((word)K_OPDEGIN2)
+#define DPFRACIN    ((word)K_DPFRACIN)
+#define NEG_POINT_2 ((word)KW_NEG_2) /* OCT -06250 */
+#endif
+/* Their constants. */
+#define VBSP1LD  ((word)KW_VBSP1LD)  /* DEC 21: "VB21 = ALOAD" */
+#define VBSP2LD  ((word)KW_VBSP2LD)  /* DEC 22: "VB22 = BLOAD" */
+#define VBSP3LD  ((word)KW_VBSP3LD)  /* DEC 23: "VB23 = CLOAD" */
+#define HRCON    ((word)KW_HRCON)    /* OCT 00025: "1 HOUR IN CENTI-SEC", high part */
+#define HRCON_LO ((word)KW_HRCONP1)  /* OCT 37100, its low part */
+#define MINCON   ((word)KW_MINCON)   /* OCT 13560: "1 MINUTE IN CENTI-SEC" */
+#define MIN59    ((word)KW_59MIN)    /* OCT 00073: 59MIN, "59 AS WHOLE" */
+#define SEC59_99 ((word)KW_59_99SEC) /* OCT 13557: 59.99SEC, "5999 CENTI-SEC" */
+#define OCT34BAR ((word)KW_OCT34BAR) /* OCT 77743 */
+#define OCT31    ((word)KW_OCT31)
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

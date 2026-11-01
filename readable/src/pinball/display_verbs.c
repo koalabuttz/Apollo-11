@@ -131,16 +131,23 @@ void dcomptst(void)
 
 /* DCTSTCYC -- LM p. 415, CM p. 332. "ALARMS AND RECYCLES IF DEC ONLY BIT =
  * 1 (BIT4 OF COMP CODE NUMBER). RETURNS IF NOT. USED BY LOAD VERBS." */
-void dctstcyc(void)
+bool dctstcyc_returns(void)
 {
     lxch(Q_ADDRESS);
     tc_at(DCTSTCYC + 1u);
     getcomp();
     mask(BIT14);
-    if (ccs_at(A_ADDRESS) == POSITIVE)
+    if (ccs_at(A_ADDRESS) == POSITIVE) {
         tc(DCTSTCYC + 4u, ALMCYCLE);
-    else
-        tc_return(L_ADDRESS);
+        return false;
+    }
+    tc_return(L_ADDRESS);
+    return true;
+}
+
+void dctstcyc(void)
+{
+    (void)dctstcyc_returns();
 }
 
 /* NOUNTEST -- LM p. 415, CM p. 332. "NOUNTEST ALARMS IF NO-LOAD BIT (BIT5
