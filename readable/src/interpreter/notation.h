@@ -43,6 +43,7 @@
 #define ORDER_DLOAD_STAR 0033u /* DLOAD* */
 #define ORDER_SR1        0034u
 #define ORDER_V_SC       0035u /* V/SC */
+#define ORDER_LXC_1      0036u /* LXC,1 */
 #define ORDER_ARCSIN     0040u /* (ASIN's code too) */
 #define ORDER_ASIN       0040u
 #define ORDER_SLOAD      0041u
@@ -66,7 +67,9 @@
 #define ORDER_DCOMP      0100u
 #define ORDER_VCOMP      0100u /* (DCOMP's code too) */
 #define ORDER_DDV        0105u
+#define ORDER_DDV_STAR   0107u /* DDV* */
 #define ORDER_VDEF       0110u
+#define ORDER_SR         0115u
 #define ORDER_VSL_STAR   0117u /* VSL* (a general shift, indexed) */
 #define ORDER_UNIT       0120u
 #define ORDER_VAD        0121u
@@ -99,6 +102,7 @@
 #define ORDER_PUSH       0170u
 #define ORDER_DMP        0171u
 #define ORDER_BOVB       0172u
+#define ORDER_SR4        0174u
 #define ORDER_SETPD      0175u
 #define ORDER_BOV        0176u
 
@@ -170,6 +174,11 @@
 /* A number used as it is: the value AXT puts in an index register ("AXT,1
  * 3") and the one SSP stores ("SSP S1 1"). */
 #define NUMBER(n) ((word)(n))
+/* "SR 5": a general shift's address, the count n. yaYUL assembles it as
+ * 20000 plus 600 (a right shift's bits; a left shift's would be 200) plus
+ * n, one more as any address. GENSHIFT reads its low ten bits: the count,
+ * its pseudo sign, the direction and the round bit. */
+#define SR_COUNT(n) ((word)(020000u + 0600u + (unsigned)(n) + 1u))
 /* "0 -7,2": an indexed general shift's (VSL*'s) address, the shift count
  * n indexed by X2. yaYUL assembles it as 20000 plus 200 (a left shift's
  * bit, "ADAD" in its rules) plus n, one more as any address, and

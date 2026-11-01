@@ -111,23 +111,25 @@ R63_SOURCES := $(INTERPRETER_SOURCES) src/r63/r63.c src/rtb_op_codes/rtb_op_code
 	src/binding/r63_routines.c
 AMR_SOURCES := $(INTERPRETER_SOURCES) src/attitude_maneuver/attitude_maneuver.c \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/attitude_maneuver_routines.c
+GLA_SOURCES := $(INTERPRETER_SOURCES) src/gimbal_lock/gimbal_lock.c \
+	src/binding/gimbal_lock_routines.c
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
 	src/binding/machine.c src/binding/rupt_routines.c
 SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(RESTART_SOURCES) \
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
-	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES))
+	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
-	attitude-maneuver-cases
+	attitude-maneuver-cases gimbal-lock-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1245,3 +1247,48 @@ attitude-maneuver-cases: $(BUILD)/amr-oracle $(BUILD)/amr-cases
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	./$(BUILD)/amr-oracle $(ROPES)
 	./$(BUILD)/amr-cases $(ROPES)
+
+# GIMBAL_LOCK_AVOIDANCE, both missions' LOCSKIRT: the port's test
+# (tests/test_gimbal_lock.c, its frozen cases run to their stops through
+# the programs of tests/gimbal_lock_target.c, against the original
+# programs' yaAGC digests) with each mission's readable routines and the
+# other mission's faithful ones, tests/with_ropes.c loading the ropes the
+# readable interpreter reads; then tests/gimbal_lock_cases.c side by side,
+# for each mission.
+GLA_NAMES_LM := lm_gimbal_lock_basic lm_gimbal_lock_interpretive
+GLA_NAMES_CM := cm_gimbal_lock_basic cm_gimbal_lock_interpretive
+GLA_COMMON := $(R63_COMMON)
+
+$(BUILD)/gla-faithful-lm.o: $(PORT)/src/lm_gimbal_lock.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(GLA_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/gla-faithful-cm.o: $(PORT)/src/cm_gimbal_lock.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(GLA_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/gla-test.o: $(PORT)/tests/test_gimbal_lock.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/gla-oracle-lm: $(GLA_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/gla-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(GLA_COMMON) $(PORT)/src/cm_gimbal_lock.c \
+		$(PORT)/tests/gimbal_lock_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/gla-oracle-cm: $(GLA_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/gla-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(GLA_COMMON) $(PORT)/src/lm_gimbal_lock.c \
+		$(PORT)/tests/gimbal_lock_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/gla-cases-lm: $(GLA_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/gla-faithful-lm.o \
+		tests/gimbal_lock_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(GLA_COMMON) $(filter %.o,$^) \
+		tests/gimbal_lock_cases.c -o $@
+$(BUILD)/gla-cases-cm: $(GLA_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/gla-faithful-cm.o \
+		tests/gimbal_lock_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(GLA_COMMON) $(filter %.o,$^) \
+		tests/gimbal_lock_cases.c -o $@
+
+gimbal-lock-cases: $(BUILD)/gla-oracle-lm $(BUILD)/gla-oracle-cm $(BUILD)/gla-cases-lm \
+		$(BUILD)/gla-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/gla-oracle-lm $(ROPES)
+	./$(BUILD)/gla-oracle-cm $(ROPES)
+	./$(BUILD)/gla-cases-lm $(ROPES)
+	./$(BUILD)/gla-cases-cm $(ROPES)
