@@ -99,7 +99,11 @@ static word rope_word(unsigned physical)
 }
 
 /* The word off words after LOC, in the interpretive program's bank (the
- * FB half of BANKSET). False where the rope has none. */
+ * FB half of BANKSET). False where the rope has none. With the superbank
+ * bit, FB 30-33 are banks 40-43: for the faithful core, only with the
+ * superbank latch at 0100 itself; for the faithful port's compiled tables
+ * (a pass over a table in the listing's notation, or the lanec modules'),
+ * by the bit alone. */
 static bool code_word(unsigned off, word *out)
 {
     unsigned address = (LOC + off) & 077777u, bank, superbank = *agc.superbank & 0160u;
@@ -111,7 +115,7 @@ static bool code_word(unsigned off, word *out)
         if (address < 02000u) return false;
         bank = (BANKSET >> 10) & 037u;
         if (bank >= 030u && (superbank & 0100u)) {
-            if (superbank != 0100u && !lanec) return false;
+            if (superbank != 0100u && !lanec && !listing) return false;
             bank += 010u;
         }
         address = bank * 1024u + (address & 01777u);

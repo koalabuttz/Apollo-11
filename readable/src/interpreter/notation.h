@@ -92,12 +92,15 @@
 #define ORDER_VSU        0125u
 #define ORDER_GOTO       0126u
 #define ORDER_ABS        0130u
+#define ORDER_ABVAL      0130u /* (ABS's code: a vector's length, by MODE) */
 #define ORDER_BVSU       0131u
 #define ORDER_BPL        0132u
 #define ORDER_DOT        0135u
 #define ORDER_BMN        0136u
 #define ORDER_VXV        0141u
 #define ORDER_RTB        0142u
+#define ORDER_VPROJ      0145u
+#define ORDER_BHIZ       0146u
 #define ORDER_STADR      0150u
 #define ORDER_DSU        0151u
 #define ORDER_CALL       0152u

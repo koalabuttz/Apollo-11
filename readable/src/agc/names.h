@@ -1585,8 +1585,9 @@ static const word IDLECADR[2] = KW_IDLECADR; /* 2CADR T5IDLOC */
 #define AURLOKON ((word)K_AURLOKON) /* bank 23 */
 #define NOLOKON  ((word)K_NOLOKON)  /* bank 23 */
 #define AURLKON1 ((word)K_AURLKON1) /* bank 23 */
-#define BLANKET  ((word)K_BLANKET)
-#else
+#endif
+#define BLANKET ((word)K_BLANKET)
+#if !LUMINARY099
 #define OPTCOARK ((word)K_OPTCOARK)
 #define OPTC1    ((word)K_OPTC1)
 #define TRMATTCK ((word)K_TRMATTCK)
@@ -2508,6 +2509,15 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define GOREDO20     ((word)K_GOREDO20)
 #define R62DISP      ((word)K_R62DISP)
 #define BITS13_14_15 ((word)KW_13_14_15) /* 13,14,15 */
+#endif
+
+/* ---- S-BAND_ANTENNA_FOR_LM, S-BAND_ANTENNA_FOR_CM ---- */
+
+/* R05, verb 64 (bank 42 in both missions: FB 32 with the superbank bit). */
+#define SBANDANT ((word)K_SBANDANT)
+#define V06N51   ((word)KW_V06N51) /* VN 0651 */
+#if LUMINARY099
+#define SBANDEX ((word)K_SBANDEX)
 #endif
 
 /* NO.CORES + 1 core sets. */

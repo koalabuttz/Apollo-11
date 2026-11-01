@@ -132,6 +132,10 @@ REPLACED = (
     # BALLANGS and VECPOINT (src/r60_62).
     'lm_r60_r62.o',
     'cm_r60_r62.o',
+    # S-BAND_ANTENNA_FOR_LM.agc and S-BAND_ANTENNA_FOR_CM.agc, R05 (verb
+    # 64; src/sband_antenna).
+    'lm_sband_antenna.o',
+    'cm_sband_antenna.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -144,7 +148,7 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}']}
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa',
-                    'e_bkcall', 'charin')
+                    'e_bkcall', 'charin', 'sbandant')
 # And each mission's own: R63 is the LM's alone; GIMBAL_LOCK_AVOIDANCE's
 # table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
