@@ -24,7 +24,9 @@
  * word shifts (TPLEFTN, TPSL1, PRSHRTMP). Part 4, the load verbs and the
  * scale factor routines for loading (LM pp. 425-436, CM pp. 343-354).
  * Part 5, monitor, DSPFMEM and the alarms (LM pp. 437-440 and 446, CM pp.
- * 355-358 and 364). The entries
+ * 355-358 and 364). Part 6, the major mode change, the request verbs,
+ * proceed and terminate, and key release (LM pp. 447-450, CM pp.
+ * 365-368). The entries
  * are the routines' labels and the words a call out of the part returns
  * to. */
 #ifndef READABLE_PINBALL_H
@@ -331,6 +333,33 @@ void charalrm(void);
 /* Fixed-fixed services the steps run within them. */
 void kilmonon(void);
 void lodsampt(void);
+
+/* ---- Part 6: the special verbs (special_verbs.c) ---- */
+
+void mmchang(void);
+void mmchang_plus1(void);
+void mmchang_plus13(void);
+void reqmm(void);
+void reqmm_plus8(void);
+void vbrqexec(void);
+void reqex1(void);
+void reqex1_plus3(void);
+void requestc(void);
+void requestc_plus1(void);
+void setvac(void);
+void vbrqwait(void);
+void endrqwt(void);
+void vbproc(void);
+void vbproc_plus1(void);
+void vbproc_plus3(void);
+void vbproc_plus4(void);
+void vbproc_plus5(void);
+void vbterm(void);
+void prockey(void);
+void vbreseq(void);
+void vbreldsp(void);
+void tstlts4(void);
+void unsuspen(void);
 
 /* ---- Leaving a routine ---- */
 

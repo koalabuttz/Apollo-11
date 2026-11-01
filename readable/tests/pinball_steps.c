@@ -495,7 +495,20 @@ int main(int argc, char **argv)
                   {"pw-fixed-display", 1},
                   {"pw-source-alarm", 1},
                   {"pw-alarm-cycle", 1},
-                  {"pw-alarm-recycle", 1}};
+                  {"pw-alarm-recycle", 1},
+                  /* The special verbs and key release (part 6). */
+                  {"pin-head-proceed", 1},
+                  {"pin-head-release", 1},
+                  {"pin-head-request", 1},
+                  {"pw-major-request", 1},
+                  {"pw-mode-admit", 1},
+                  {"pw-mode-job", 1},
+                  {"pw-request-control", 1},
+                  {"pw-operator-release", 1},
+                  {"pw-operator-request", 1},
+                  {"pw-operator-response", 1},
+                  {"pw-display-release", 1},
+                  {"pw-charin-release", 1}};
     static apollo_overlay_state s;
     static lanec_io io;
     static lanec_meta m;

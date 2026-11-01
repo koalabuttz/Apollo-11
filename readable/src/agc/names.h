@@ -2362,6 +2362,31 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define MONADR   ((word)KW_MONADR)   /* GENADR PASTEVB */
 #define NVSBENDL ((word)KW_NVSBENDL) /* TC NVSUBEND */
 
+/* ---- PINBALL_GAME_BUTTONS_AND_LIGHTS, part 6: the special verbs ---- */
+/* MMCHANG to ENDRQWT (LM pp. 447-448, CM pp. 365-366) in bank 41, VBPROC
+ * to UNSUSPEN (LM pp. 448-450, CM pp. 366-368) in bank 40; RECALTST
+ * (part 7) and PINBRNCH (DISPLAY_INTERFACE_ROUTINES), which they go to. */
+#define MMCHANG  ((word)K_MMCHANG)
+#define REQMM    ((word)K_REQMM)
+#define VBRQEXEC ((word)K_VBRQEXEC)
+#define REQEX1   ((word)K_REQEX1)
+#define REQUESTC ((word)K_REQUESTC)
+#define SETVAC   ((word)K_SETVAC)
+#define VBRQWAIT ((word)K_VBRQWAIT)
+#define ENDRQWT  ((word)K_ENDRQWT)
+#define VBPROC   ((word)K_VBPROC)
+#define VBTERM   ((word)K_VBTERM)
+#define PROCKEY  ((word)K_PROCKEY)
+#define VBRESEQ  ((word)K_VBRESEQ)
+#define TSTLTS4  ((word)K_TSTLTS4)
+#define UNSUSPEN ((word)K_UNSUSPEN)
+#define RECALTST ((word)K_RECALTST)
+#define PINBRNCH ((word)K_PINBRNCH)
+/* Their constants: the instructions REQUESTC runs from MPAC. */
+#define TCNOVAC  ((word)KW_TCNOVAC)  /* TC NOVAC */
+#define TCFINDVC ((word)KW_TCFINDVC) /* TC FINDVAC */
+#define TCWAIT   ((word)KW_TCWAIT)   /* TC WAITLIST */
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
