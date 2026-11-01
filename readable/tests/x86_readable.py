@@ -146,7 +146,10 @@ REPLACED = (
 # AND_LIGHTS, part by part (src/pinball): its trampoline, the mission's
 # lanec_pin_run_<m>, which every routine of the port's Pinball tables calls,
 # runs the readable entries and hands the rest to the faithful one.
-RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}']}
+# P20-P25, part by part (src/p20_p25): the LM's routine tables, which
+# run the readable keys and hand the rest to the faithful tables.
+RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
+           'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -157,9 +160,10 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
 # its SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER). The IMU performance test
 # (GEOIMUTT) is the LM's alone. R60 has each mission's name (R60LEM,
-# R60CSM). The radar sampling loop (RADSAMP) is the LM's alone.
+# R60CSM). The radar sampling loop (RADSAMP) and P20 (PROG20) are the LM's
+# alone.
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
-                          'radsamp'),
+                          'radsamp', 'prog20'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm')}
 xb.OUT = READABLE / 'build/x86-flight'
 

@@ -44,6 +44,7 @@
 #define ORDER_DLOAD      0031u
 #define ORDER_DLOAD_STAR 0033u /* DLOAD* */
 #define ORDER_SR1        0034u
+#define ORDER_VSR2       0034u /* (SR1's code too, as VSL2 is SL1's) */
 #define ORDER_V_SC       0035u /* V/SC */
 #define ORDER_LXC_1      0036u /* LXC,1 */
 #define ORDER_ARCSIN     0040u /* (ASIN's code too) */
@@ -112,6 +113,7 @@
 #define ORDER_DAD        0161u
 #define ORDER_DAD_STAR   0163u /* DAD* */
 #define ORDER_BOF        0162u
+#define ORDER_BOFF       0162u /* (BOF under its other name) */
 #define ORDER_BON        0162u
 #define ORDER_BONCLR     0162u
 #define ORDER_CLEAR      0162u
