@@ -142,6 +142,15 @@
 #define K_QUADROT 03002u
 #define K_SECAD 02016u
 #define K_NOGOM2 02725u
+#define K_E_BKCALL 02036u
+#define K_E_SWITCH 02053u
+#define K_E_CALL 02055u
+#define K_E_JOBWAK 02606u
+#define K_COMPVER 02000u
+#define K_GTSCPSS1 02001u
+#define K_REDO 02002u
+#define K_GCOMPVER 03436u
+#define K_GTSCPSS 03131u
 #define K_BANKCALL 04662u
 #define K_SWCALL 04666u
 #define K_SWRETURN 04675u
@@ -779,6 +788,7 @@
 #define K_LONGEXIT 01434u
 #define K_SELFRET 01361u
 #define K_BUF2 00133u
+#define K_EBUF2 00364u
 #define K_RUPTREG3 00072u
 #define K_RUPTREG4 00073u
 #define K_MPTEMP 00135u
@@ -1793,6 +1803,7 @@
 #define I_V1STO2S 045552u
 #define I_MANUSTAT 040065u
 #define I_DEL 003425u
+#define I_EBUF2 000364u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

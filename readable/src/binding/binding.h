@@ -32,6 +32,14 @@ enum exec_status interpret_listing(const agc_native_program *program, apollo_ove
 enum exec_status interpret_listing_lanec(const agc_native_program *program,
                                          apollo_overlay_state *state, void *device,
                                          const struct interpretive_code *code);
+/* The same pass over code that ends before DANZIG reads NEWJOB (a CALL or
+ * an EXIT that ends the pass at its first order, as E/CALL's do in
+ * SYSTEM_TEST_STANDARD_LEAD_INS): the faithful port's routines for such
+ * words (c64-port/src/standard_lead_interp.c) take any NEWJOB, and so does
+ * this pass. */
+enum exec_status interpret_listing_any_newjob(const agc_native_program *program,
+                                              apollo_overlay_state *state, void *device,
+                                              const struct interpretive_code *code);
 
 /* Keys: physical addresses of fixed-fixed (04000-07777) and bank 01. */
 #define FF(z)        (uint16_t)(2048u + ((z) - 04000u))

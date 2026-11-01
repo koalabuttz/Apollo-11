@@ -71,6 +71,10 @@ static const struct interpretive_code *listing;
  * modules' states. */
 static bool lanec;
 
+/* Whether the pass is interpret_listing_any_newjob()'s, which takes any
+ * NEWJOB. */
+static bool any_newjob;
+
 static bool listing_word(unsigned physical, word *out)
 {
     unsigned first;
@@ -127,8 +131,8 @@ static bool as_expected(void)
 {
     unsigned area;
 
-    if (agc.memory[ZERO_ADDRESS] != 0u || NEWJOB > 037777u || EBANK > 03400u || (EBANK & 0377u) ||
-        BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
+    if (agc.memory[ZERO_ADDRESS] != 0u || (NEWJOB > 037777u && !any_newjob) || EBANK > 03400u ||
+        (EBANK & 0377u) || BBANK != (word)((FBANK & 076000u) | (EBANK >> 8)))
         return false;
     if (*agc.interrupts > 1u || (*agc.superbank & ~0160u)) return false;
     if (lanec) return true; /* (the caller checked the work area) */
@@ -343,6 +347,18 @@ enum exec_status interpret_listing_lanec(const agc_native_program *program,
     lanec = true;
     status = interpret_listing(program, state, device, code);
     lanec = false;
+    return status;
+}
+
+enum exec_status interpret_listing_any_newjob(const agc_native_program *program,
+                                              apollo_overlay_state *state, void *device,
+                                              const struct interpretive_code *code)
+{
+    enum exec_status status;
+
+    any_newjob = true;
+    status = interpret_listing(program, state, device, code);
+    any_newjob = false;
     return status;
 }
 

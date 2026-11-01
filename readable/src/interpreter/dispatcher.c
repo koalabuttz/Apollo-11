@@ -42,13 +42,16 @@ static void itr(word instruction);
 void intpret(void)
 {
     relint();
-    intpret_plus2(); /* (EXTEND) */
+    qxch(ADDRESS_OF(LOC)); /* EXTEND; QXCH LOC: "SET LOC TO THE WORD FOLLOWING THE TC." */
+    intpret_plus3();
 }
 
-/* INTPRET +2: "SET LOC TO THE WORD FOLLOWING THE TC" (EXTEND; QXCH LOC). */
+/* INTPRET +2: the QXCH's word, reached by TCF INTPRET +2 (E/CALL's return,
+ * in SYSTEM_TEST_STANDARD_LEAD_INS) with no EXTEND before it. Unextended,
+ * the same instruction word is LXCH LOC: the new LOC comes from L. */
 void intpret_plus2(void)
 {
-    qxch(ADDRESS_OF(LOC));
+    lxch(ADDRESS_OF(LOC));
     intpret_plus3();
 }
 
