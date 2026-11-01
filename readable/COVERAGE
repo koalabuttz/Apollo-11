@@ -51,3 +51,4 @@ Luminary099/ATTITUDE_MANEUVER_ROUTINE.agc    src/attitude_maneuver
 Luminary099/GIMBAL_LOCK_AVOIDANCE.agc        src/gimbal_lock
 Comanche055/GIMBAL_LOCK_AVOIDANCE.agc        src/gimbal_lock
 Luminary099/KALCMANU_STEERING.agc            src/kalcmanu_steering
+Comanche055/KALCMANU_STEERING.agc            src/kalcmanu_steering

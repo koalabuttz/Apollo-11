@@ -117,17 +117,18 @@ REPLACED = (
     # GIMBAL_LOCK_AVOIDANCE.agc, both missions' LOCSKIRT (src/gimbal_lock).
     'lm_gimbal_lock.o',
     'cm_gimbal_lock.o',
-    # KALCMANU_STEERING.agc, the LM's maneuver steering (src/kalcmanu_steering).
+    # KALCMANU_STEERING.agc, both missions' maneuver steering (src/kalcmanu_steering).
     'lm_kalcmanu_steering.o',
+    'cm_kalcmanu_steering.o',
 )
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa')
-# And each mission's own: R63, ATTITUDE_MANEUVER_ROUTINE and (so far)
-# KALCMANU_STEERING are the LM's alone;
-# GIMBAL_LOCK_AVOIDANCE's table has each mission's name.
-MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi'), 'cm': ('WCALC_CODE',)}
+# And each mission's own: R63 and (so far) ATTITUDE_MANEUVER_ROUTINE are the
+# LM's alone; GIMBAL_LOCK_AVOIDANCE's table has each mission's name, and the
+# CM's KALCMANU_STEERING has subroutines the LM's has not (STOPRATE).
+MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi'), 'cm': ('WCALC_CODE', 'newdelhi', 'stoprate')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 

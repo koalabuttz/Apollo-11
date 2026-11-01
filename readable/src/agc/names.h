@@ -1836,29 +1836,40 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define NOGO     ((word)K_NOGO)
 #define TOOBADI  ((word)K_TOOBADI)
 
-/* ---- KALCMANU_STEERING (LM so far) ---- */
+#endif
 
-/* Its labels in bank 22 and its constants (ISITAUTO, R60_62's, is only
- * BANKCALL's CADR). Its erasable words are named by ADDRESS_OF. */
-#define NEWDELHI   ((word)K_NEWDELHI)
-#define NEWANGL    ((word)K_NEWANGL)
-#define INCRDCDU   ((word)K_INCRDCDU)
-#define TMANUCHK   ((word)K_TMANUCHK)
-#define MANUSTAL   ((word)K_MANUSTAL)
-#define TIMECHK    ((word)K_TIMECHK)
-#define MANUSTAT   ((word)K_MANUSTAT)
-#define RATEBIAS   ((word)K_RATEBIAS)
-#define CONTMANU   ((word)K_CONTMANU)
-#define MANUCALL   ((word)K_MANUCALL)
-#define UPDTCALL   ((word)K_UPDTCALL)
-#define MANUSTOP   ((word)K_MANUSTOP)
-#define ENDROLL    ((word)K_ENDROLL)
+/* ---- KALCMANU_STEERING ---- */
+
+/* Its labels (LM: all in bank 22; CM: banks 20, 21 and 22, and STOPRATE
+ * in fixed-fixed memory) and its constants. Its erasable words are named
+ * by ADDRESS_OF. */
+#define NEWDELHI ((word)K_NEWDELHI)
+#define NEWANGL  ((word)K_NEWANGL)
+#define TMANUCHK ((word)K_TMANUCHK)
+#define MANUSTAL ((word)K_MANUSTAL)
+#define MANUSTAT ((word)K_MANUSTAT)
+#define CONTMANU ((word)K_CONTMANU)
+#define MANUCALL ((word)K_MANUCALL)
+#define UPDTCALL ((word)K_UPDTCALL)
+#define MANUSTOP ((word)K_MANUSTOP)
+#define ENDROLL  ((word)K_ENDROLL)
+#define PRIO26   ((word)KW_PRIO26)
+#if LUMINARY099
+/* (ISITAUTO, R60_62's, is only BANKCALL's CADR.) */
 #define GOODMANU   ((word)K_GOODMANU)
 #define DT_TAU     ((word)KW_DT_TAU)   /* DEC .1 */
 #define ONESEK     ((word)K_ONESEK)    /* 2DEC: 0, 100 (one second) */
 #define ONESEK_LOW ((word)KW_ONESEKP1) /* ONESEK +1: DEC 100 */
 #define BIASCALE   ((word)KW_BIASCALE) /* OCT 75777: -1/16 */
-#define PRIO26     ((word)KW_PRIO26)
+#else
+#define NOGO     ((word)K_NOGO) /* (ANGLFIND's) */
+#define ENDMANU  ((word)K_ENDMANU)
+#define STOPYZ   ((word)K_STOPYZ)
+#define ZEROEROR ((word)K_ZEROEROR)
+#define LOADCDUD ((word)K_LOADCDUD)
+#define LOADYZ   ((word)K_LOADYZ)
+#define QUADROT  ((word)K_QUADROT) /* 2DEC .1 first (MP QUADROT: a tenth) */
+#define ONE_SEC  ((word)KW_1SEC)   /* 1SEC: DEC 100 */
 #endif
 
 /* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, and LOADTIME, RTB routines

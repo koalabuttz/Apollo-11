@@ -1104,6 +1104,10 @@
 #define K_TM 01733u
 #define K_CPSI 00323u
 #define K_CPHI 00321u
+#define K_DELCDUX 01640u
+#define K_DELCDUY 01641u
+#define K_DELCDUZ 01642u
+#define K_BIASTEMP 01711u
 #define KW_EXECBANK 002601u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000007u
@@ -1928,6 +1932,7 @@
 #define I_DCMTOCDU 044654u
 #define I_V1STO2S 021620u
 #define I_MANUSTAT 045122u
+#define I_DEL 003345u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

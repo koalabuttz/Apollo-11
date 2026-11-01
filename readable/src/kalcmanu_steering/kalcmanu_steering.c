@@ -1,34 +1,55 @@
 /* SPDX-License-Identifier: MIT */
-/* KALCMANU_STEERING.agc (Luminary099 pp. 365-369): "GENERATION OF STEERING
- * COMMANDS FOR DIGITAL AUTOPILOT FREE FALL MANEUVERS. NEW COMMANDS WILL BE
- * GENERATED EVERY ONE SECOND DURING THE MANEUVER." Its interpretive code
- * in the listing's notation (src/interpreter/notation.h), which the
- * readable interpreter runs (src/binding/kalcmanu_steering_routines.c), and
- * its basic code. The faithful C is c64-port/src/lm_kalcmanu_steering.c.
+/* KALCMANU_STEERING.agc (Luminary099 pp. 365-369, Comanche055 pp.
+ * 414-419): "GENERATION OF STEERING COMMANDS FOR DIGITAL AUTOPILOT FREE
+ * FALL MANEUVERS. NEW COMMANDS WILL BE GENERATED EVERY ONE SECOND DURING
+ * THE MANEUVER." Its interpretive code in the listing's notation
+ * (src/interpreter/notation.h), which the readable interpreter runs
+ * (src/binding/kalcmanu_steering_routines.c), and its basic code. The
+ * faithful C is c64-port/src/lm_kalcmanu_steering.c and
+ * cm_kalcmanu_steering.c.
  *
- * KALCMANU (ATTITUDE_MANEUVER_ROUTINE) has worked out the maneuver: the
- * axis and the angle, and from them (WCALC, GIMBAL_LOCK_AVOIDANCE) DEL, the
- * matrix that turns the spacecraft through one second's worth of it, the
- * rates BRATE and the time TM. Then once a second, NEWDELHI: MIS (the
- * spacecraft's axes in stable member axes) turned through DEL, the CDU
- * angles of the new attitude, NCDU, and the difference from the last
- * ones, a tenth of it a tenth of a second for the DAP to add to CDUXD,
- * CDUYD, CDUZD. MANUSTAT starts it (the rates and the time), CONTMANU
- * calls for the next second under WAITLIST (UPDTCALL starts NEWDELHI as a
- * job), and within a second of the end MANUSTOP stops it on the final
- * angles and gives the computer back to the routine that asked for the
- * maneuver (SPVAC, at ATTCADR's 2CADR).
+ * KALCMANU (ATTITUDE_MANEUVER_ROUTINE, the CM's ANGLFIND) has worked out
+ * the maneuver: the axis and the angle, and from them (WCALC,
+ * GIMBAL_LOCK_AVOIDANCE) the matrix that turns the spacecraft through one
+ * second's worth of it (the LM's KEL, the CM's DEL), the rates BRATE and
+ * the time TM. Then once a second, NEWDELHI: MIS (the spacecraft's axes
+ * in stable member axes) turned through that matrix, the CDU angles of
+ * the new attitude, NCDU, and the difference from the last ones, a tenth
+ * of it for each tenth of a second, for the DAP to add to CDUXD, CDUYD,
+ * CDUZD. MANUSTAT starts it (the rates and the time), CONTMANU calls for
+ * the next second under WAITLIST (UPDTCALL starts NEWDELHI as a job), and
+ * within a second of the end MANUSTOP stops it on the final angles and
+ * gives the computer back to the routine that asked for the maneuver
+ * (SPVAC, at ATTCADR's 2CADR). The two missions differ in the details:
+ * the LM's DAP takes the increments in two's complement (DELDCDU) and
+ * attitude error offsets (DELPEROR); the CM's takes them double precision
+ * (DELCDUX) with the rates (WBODY) and biases (BIAS), and the crew can
+ * stop it (HOLDFLAG).
  *
- * Each call out of the file (BANKCALL, WAITLIST, FINDVAC, SPVAC) leaves Z
- * at the routine and Q at the word after the TC, where the routine comes
- * back to; ENDOFJOB, TASKOVER and NOGO -2 don't come back. */
+ * Each call out of the file (BANKCALL, IBNKCALL, POSTJUMP, WAITLIST,
+ * FINDVAC, SPVAC) leaves Z at the routine and Q at the word after the TC,
+ * where the routine comes back to; ENDOFJOB, TASKOVER and NOGO -2 don't
+ * come back. */
 #include "kalcmanu_steering.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
 
-#if LUMINARY099
-
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
+
+/* TC Q: the routine returns to the address in Q (bits 1-12), and Q
+ * becomes 3. Not modelled: a Q that is not such an address (bits 13-15
+ * set, or below 010). Returns the address. */
+static word tc_q(void)
+{
+    word at = (word)(Q & 07777u);
+
+    if ((Q & 070000u) || Q < 010u) not_modelled();
+    Q = 3u;
+    Z = at;
+    return at;
+}
+
+#if LUMINARY099
 
 static void incrdcdu(void);
 static void tmanuchk(void);
@@ -134,17 +155,6 @@ static void incrdcdu(void)
 }
 
 /* ---- The time ---- */
-
-/* TC Q: the routine returns to the address in Q, and Q becomes 3.
- * Returns the address. */
-static word tc_q(void)
-{
-    word at = (word)(Q & 07777u);
-
-    Q = 3u;
-    Z = at;
-    return at;
-}
 
 /* TIMECHK -- LM p. 366.
  * TM (MANUSTAT made it the time the maneuver ends, less a second) less the
@@ -367,6 +377,412 @@ void goodmanu_after_spvac(void)
 const struct interpretive_code NEWANGL_CODE = {022u, NEWANGL + 1u, COUNT(newangl_words),
                                                newangl_words};
 const struct interpretive_code MANUSTAT_CODE = {022u, MANUSTAT, COUNT(manustat_words),
+                                                manustat_words};
+
+#else
+
+static void incrdcdu(void);
+static void tmanuchk(void);
+static void manustal(void);
+static void stoprate_body(void);
+static void stopyz(void);
+
+/* ---- The new angles, each second ---- */
+
+/* NEWDELHI -- CM p. 414. "SEE IF MANEUVER HAS BEEN INTERRUPTED BY
+ * ASTRONAUT": MANUSTAT left HOLDFLAG -1; anything else (the DAP's hold)
+ * gives the maneuver up, "TERMINATE KALCMANU" (NOGO -2). */
+void newdelhi(void)
+{
+    cs(ADDRESS_OF(HOLDFLAG));
+    if (A_is_zero_or_minus()) { /* EXTEND; BZMF NOGO -2 */
+        continue_at(NOGO - 2u);
+        return;
+    }
+    newangl();
+}
+
+/* NEWANGL -- CM p. 414. Into the interpreter, for NEWANGL_CODE. */
+void newangl(void)
+{
+    tc_at(NEWANGL);
+    intpret();
+}
+
+/* NEWANGL +1 -- CM p. 414.
+ * As the LM's: "COMPUTE THE NEW MATRIX FROM S/C TO STABLE MEMBER AXES",
+ * MIS (X1) times DEL (X2), stored back a row at a time; DCMTOCDU and RTB
+ * V1STO2S "PICK UP THE NEW CDU ANGLES FROM MATRIX", NCDU; and BONCLR
+ * CALCMAN2 starts the maneuver (MANUSTAT) on the first second. */
+static const word newangl_words[] = {
+    ORDERS(AXC_1, AXC_2), ADDRESS(MIS), /* "COMPUTE THE NEW MATRIX FROM S/C TO" */
+    ADDRESS(DEL),                       /* "STABLE MEMBER AXES" */
+    ORDER(CALL),          ADDRESS(MXM3),
+    ORDERS(VLOAD, STADR), AFTER_STADR(STOVL_AT(MIS, 12)), /* "CALCULATE NEW DESIRED CDU ANGLES" */
+    ORDER(STADR),         AFTER_STADR(STOVL_AT(MIS, 6)),
+    ORDER(STADR),         AFTER_STADR(STORE(MIS)),
+    ORDERS(AXC_1, CALL),  ADDRESS(MIS),
+    ADDRESS(DCMTOCDU), /* "PICK UP THE NEW CDU ANGLES FROM MATRIX" */
+    ORDER(RTB),           ADDRESS(V1STO2S),
+    STORE(NCDU), /* "NEW CDU ANGLES" */
+    ORDERS(BONCLR, EXIT), SWITCH(BONCLR, CALCMAN2),
+    ADDRESS(MANUSTAT), /* "TO START MANEUVER" */
+};
+
+/* NEWANGL +025 (INCRDCDU -1) -- CM p. 414. After the EXIT ("+0
+ * OTHERWISE"), and where MANUSTAT goes on: the increments for the three
+ * axes, from the last one (2) down. */
+void newangl_after_exit(void)
+{
+    set_A(TWO); /* CAF TWO */
+    incrdcdu();
+}
+
+/* INCRDCDU -- CM pp. 414-415.
+ * For each axis (KSPNDX 2, 1, 0; KDPNDX twice that, for the double
+ * words): the "NEW DESIRED CDU ANGLE" less the last one ("INITIAL S/C
+ * ANGLE OR PREVIOUS DESIRED CDU ANGLES", BCDU), as MSU gives it, times a
+ * tenth (QUADROT's first word, .1), double precision, is DELCDUX
+ * (DELCDUY, DELCDUZ): the "ANGLE INCREMENTS TO BE ADDED TO DCDU EVERY
+ * TENTH SEC". The new angle becomes the last one, and the last one goes
+ * to CDUXD (XCH BCDU; TS CDUXD): the DAP starts the second from it. Then
+ * the time ("RELINT" after MANUSTAT's INHINT). (KSPNDX counts 2, 1, 0, so
+ * each INDEX is an axis and every TS stores a word: none skips.) */
+static void incrdcdu(void)
+{
+    word axis, pair;
+
+    do {
+        ts(ADDRESS_OF(KSPNDX));
+        double_A();
+        ts(ADDRESS_OF(KDPNDX));
+        axis = fetch(ADDRESS_OF(KSPNDX));
+        pair = fetch(ADDRESS_OF(KDPNDX));
+        ca(indexed(ADDRESS_OF(NCDU), axis));      /* "NEW DESIRED CDU ANGLES" */
+        msu_at(indexed(ADDRESS_OF(BCDU), axis));  /* "INITIAL S/C ANGLE OR PREVIOUS DESIRED */
+        mp_at(QUADROT);                           /* CDU ANGLES" */
+        dxch(indexed(ADDRESS_OF(DELCDUX), pair)); /* "ANGEL INCREMENTS TO BE ADDED TO */
+        ca(indexed(ADDRESS_OF(NCDU), axis));      /* DCDU EVERY TENTH SEC BY LEM DAP" */
+        xch(indexed(ADDRESS_OF(BCDU), axis));
+        ts(indexed(ADDRESS_OF(CDUXD), pair));
+    } while (ccs_at(ADDRESS_OF(KSPNDX)) == POSITIVE); /* "LOOP FOR THREE AXES" */
+    relint();
+    tmanuchk();
+}
+
+/* ---- The time ---- */
+
+/* TIMECHK -- CM p. 415.
+ * As the LM's: TM (the time the maneuver ends, less a second) less the
+ * time now, in TTEMP. TIMECHK returns to the word after its TC with more
+ * than a second left; otherwise two words further on (2NDRETRN), or three
+ * with a part of a second left (MANUOFF: less than 1SEC below TM): A, the
+ * centiseconds till the end, plus one. */
+static word timechk(void)
+{
+    dcs(ADDRESS_OF(TIME2)); /* EXTEND; DCS TIME2 */
+    dxch(ADDRESS_OF(TTEMP));
+    dca(ADDRESS_OF(TM)); /* EXTEND; DCA TM */
+    das(ADDRESS_OF(TTEMP));
+    switch (ccs_at(ADDRESS_OF(TTEMP))) {
+    case POSITIVE: return tc_q(); /* TC Q */
+    case NEGATIVE:                /* TCF 2NDRETRN */
+        incr(Q_ADDRESS);
+        incr(Q_ADDRESS);
+        return tc_q();
+    case IS_PLUS_ZERO: /* TCF +2 */
+    case IS_MINUS_ZERO: break;
+    }
+    switch (ccs_at(ADDRESS_OF(TTEMP) + 1u)) {
+    case POSITIVE: return tc_q(); /* TC Q */
+    case NEGATIVE: com(); break;
+    case IS_PLUS_ZERO: /* TCF MANUOFF */
+    case IS_MINUS_ZERO: break;
+    }
+    /* MANUOFF */
+    ad(ONE_SEC);
+    if (!A_is_zero_or_minus()) incr(Q_ADDRESS); /* EXTEND; BZMF 2NDRETRN */
+    incr(Q_ADDRESS);                            /* 2NDRETRN */
+    incr(Q_ADDRESS);
+    return tc_q();
+}
+
+/* TMANUCHK -- CM p. 415. "COMPARE PRESENT TIME WITH TIME TO TERMINATE
+ * MANEUVER": with more than a second left, on (CONTMANU, in bank 20, by
+ * POSTJUMP); with none, MANUSTOP a centisecond from now (CAF ONE); with a
+ * part of one, then (MANUSTAL). (TIMECHK returns to one of the three:
+ * TMANUCHK's TC leaves Q at the first.) */
+static void tmanuchk(void)
+{
+    tc_at(TMANUCHK);
+    switch (timechk()) {
+    case TMANUCHK + 1u: tmanuchk_after_timechk(); return;
+    case TMANUCHK + 3u: set_A(ONE); break; /* CAF ONE */
+    default: break;                        /* MANUSTAL */
+    }
+    manustal();
+}
+
+/* TMANUCHK +1 -- CM p. 415. TIMECHK's first return: TC POSTJUMP, CADR
+ * CONTMANU. */
+void tmanuchk_after_timechk(void)
+{
+    tc_at(TMANUCHK + 1u);
+    continue_at(POSTJUMP); /* CADR CONTMANU */
+}
+
+/* MANUSTAL -- CM p. 415. MANUSTOP under WAITLIST, A centiseconds from
+ * now. */
+static void manustal(void)
+{
+    tc_at(MANUSTAL);
+    continue_at(WAITLIST); /* 2CADR MANUSTOP */
+}
+
+/* MANUSTAL +3 -- CM p. 415. After WAITLIST: the job ends. */
+void manustal_after_waitlist(void)
+{
+    relint();
+    continue_at(ENDOFJOB);
+}
+
+/* ---- Starting the maneuver ---- */
+
+/* MANUSTAT -- CM p. 416. The "INITIALIZATION ROUTINE FOR AUTOMATIC
+ * MANEUVERS", in bank 20, where BONCLR goes on the first second: EXIT. */
+static const word manustat_words[] = {
+    ORDER(EXIT),
+};
+
+/* MANUSTAT +1 -- CM p. 416.
+ * TM plus the time now, "TM+T0 MANEUVER COMPLETION TIME", less 1SEC (in
+ * A,L: -0, -1SEC): "(TM+T0)-1". HOLDFLAG -1, to "ENABLE AUTOPILOT TO
+ * PERFORM AUTOMATIC MANEUVERS". "SEE IF MANEUVERING AT HIGH RATE"
+ * (RATEINDX 6 or more): "IF SO, SET HIGH RATE FLAG (BIT 15 OF RCSFLAGS)".
+ * The three rates BRATE go to the DAP's WBODY, WBODY1, WBODY2 (each
+ * DXCH passes the word it finds on to the next), and the "ATTITUDE ERROR
+ * BIASES" (BIASTEMP's low words) "INTO AUTOPILOT", BIAS, BIAS1, BIAS2. The
+ * next second starts a second from now (NEXTIME), and the increments for
+ * this one go on, in bank 22 (POSTJUMP, CADR INCRDCDU -1). */
+void manustat_after_exit(void)
+{
+    dca(ADDRESS_OF(TIME2)); /* EXTEND; DCA TIME2 */
+    das(ADDRESS_OF(TM));    /* "TM+T0 MANEUVER COMPLETION TIME" */
+    set_A(negate(ONE_SEC)); /* CS 1SEC */
+    ts(L_ADDRESS);
+    set_A(negate(ZERO)); /* CS ZERO */
+    das(ADDRESS_OF(TM)); /* "(TM+T0)-1" */
+    inhint();
+    set_A(negate(ONE));       /* CS ONE: "ENABLE AUTOPILOT TO PERFORM */
+    ts(ADDRESS_OF(HOLDFLAG)); /* AUTOMATIC MANEUVERS" */
+    cs(ADDRESS_OF(RATEINDX)); /* "SEE IF MANEUVERING AT HIGH RATE" */
+    ad(SIX);
+    if (A_is_zero_or_minus()) {   /* EXTEND; BZMF HIGHGAIN */
+        cs(ADDRESS_OF(RCSFLAGS)); /* "IF SO, SET HIGH RATE FLAG (BIT 15 OF */
+        mask(BIT15);              /* RCSFLAGS)" */
+        ads(ADDRESS_OF(RCSFLAGS));
+    }
+    dxch(ADDRESS_OF(BRATE)); /* "X-AXIS MANEUVER RATE" */
+    dxch(ADDRESS_OF(WBODY));
+    dxch(ADDRESS_OF(BRATE) + 2u); /* "Y-AXIS MANEUVER RATE" */
+    dxch(ADDRESS_OF(WBODY1));
+    dxch(ADDRESS_OF(BRATE) + 4u); /* "Z-AXIS MANEUVER RATE" */
+    dxch(ADDRESS_OF(WBODY2));
+    ca(ADDRESS_OF(BIASTEMP) + 1u); /* "INSERT ATTITUDE ERROR BIASES */
+    ts(ADDRESS_OF(BIAS));          /* INTO AUTOPILOT" */
+    ca(ADDRESS_OF(BIASTEMP) + 3u);
+    ts(ADDRESS_OF(BIAS1));
+    ca(ADDRESS_OF(BIASTEMP) + 5u);
+    ts(ADDRESS_OF(BIAS2));
+    ca(ADDRESS_OF(TIME1));
+    ad(ONE_SEC);
+    xch(ADDRESS_OF(NEXTIME));
+    tc_at(MANUSTAT + 042u);
+    continue_at(POSTJUMP); /* CADR INCRDCDU -1 */
+}
+
+/* ---- The next second ---- */
+
+/* CONTMANU -- CM p. 416. "CONTINUE WITH UPDATE PROCESS": NEXTIME less
+ * TIME1, the centiseconds till the next second, as WAITLIST takes them
+ * (CCS less one, and AD ONE puts it back); a negative one is TIME1 come
+ * round past 037777 (AD NEGMAX; COM makes it 040000 less). */
+void contmanu(void)
+{
+    inhint();
+    cs(ADDRESS_OF(TIME1));
+    ad_at(ADDRESS_OF(NEXTIME));
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE: ad(ONE); break; /* AD ONE; TCF MANUCALL */
+    case IS_PLUS_ZERO: break;      /* TCF MANUCALL */
+    case NEGATIVE:
+        ad(NEGMAX);
+        com();
+        break;
+    case IS_MINUS_ZERO: com(); break;
+    }
+    /* MANUCALL */
+    tc_at(MANUCALL);
+    continue_at(WAITLIST); /* 2CADR UPDTCALL */
+}
+
+/* MANUCALL +3 -- CM pp. 416-417. After WAITLIST: "INCREMENT TIME FOR NEXT
+ * UPDATE", and the job ends. */
+void manucall_after_waitlist(void)
+{
+    relint();
+    set_A(ONE_SEC); /* CAF 1SEC */
+    ads(ADDRESS_OF(NEXTIME));
+    continue_at(ENDOFJOB);
+}
+
+/* UPDTCALL -- CM p. 417. The WAITLIST task: "CALL FOR UPDATE OF STEERING
+ * COMMANDS", NEWDELHI as a job with a VAC area, at priority 26. */
+void updtcall(void)
+{
+    set_A(PRIO26);
+    tc_at(UPDTCALL + 1u);
+    continue_at(FINDVAC); /* 2CADR NEWDELHI */
+}
+
+/* UPDTCALL +4 -- CM p. 417. After FINDVAC: the task ends. */
+void updtcall_after_findvac(void)
+{
+    tc_at(UPDTCALL + 4u);
+    continue_at(TASKOVER);
+}
+
+/* ---- Ending the maneuver ---- */
+
+/* MANUSTOP -- CM p. 418. "ROUTINE FOR TERMINATING AUTOMATIC MANEUVERS"
+ * (a WAITLIST task, in bank 21): STOPYZ stops the pitch and yaw. */
+void manustop(void)
+{
+    tc_at(MANUSTOP);
+    stopyz();
+    tc_q(); /* back to MANUSTOP +1 */
+    manustop_after_stopyz();
+}
+
+/* MANUSTOP +1 -- CM p. 418. LOADYZ sets the desired pitch and yaw to the
+ * final ones (IBNKCALL: it is in bank 22). */
+void manustop_after_stopyz(void)
+{
+    tc_at(MANUSTOP + 1u);
+    continue_at(IBNKCALL); /* CADR LOADYZ */
+}
+
+/* ENDROLL -- CM p. 418. After LOADYZ: "SET CDUXD TO THE COMMANDED OUTER
+ * GIMBAL" angle, CPHI, and STOPRATE stops the roll too. */
+void endroll(void)
+{
+    ca(ADDRESS_OF(CPHI));
+    ts(ADDRESS_OF(CDUXD)); /* "SET CDUXD TO THE COMMANDED OUTER GIMBAL" */
+    tc_at(ENDROLL + 2u);
+    stoprate_body();
+    tc_q(); /* back to ENDMANU */
+    endmanu();
+}
+
+/* ENDMANU -- CM p. 418 (other files come here too). "RESTORE USERS
+ * PRIORITY" (ATTPRIO, for SPVAC) and "ZERO ATTCADR", taking its 2CADR,
+ * the user's return, into A,L; SPVAC starts it again: "RETURN TO USER OF
+ * GOMANUR". */
+void endmanu(void)
+{
+    ca(ADDRESS_OF(ATTPRIO)); /* "RESTORE USERS PRIORITY" */
+    ts(ADDRESS_OF(NEWPRIO));
+    set_A(ZERO); /* CA ZERO: "ZERO ATTCADR" */
+    dxch(ADDRESS_OF(ATTCADR));
+    tc_at(ENDMANU + 4u);
+    continue_at(SPVAC); /* "RETURN TO USER OF GOMANUR" */
+}
+
+/* ENDMANU +5 -- CM p. 418. After SPVAC: the task ends. */
+void endmanu_after_spvac(void)
+{
+    tc_at(ENDMANU + 5u);
+    continue_at(TASKOVER);
+}
+
+/* STOPRATE -- CM p. 418, in fixed-fixed memory. "ZERO ROLL INCREMENTAL
+ * ANGLES" (DELCDUX), its "RATE" (WBODY) and "BIAS", and "MAKE SURE HIGH
+ * RATE FLAG (BIT 15 OF RCSFLAGS) IS RESET"; then STOPYZ. (Each TS stores
+ * +0 or a masked word: none skips.) */
+static void stoprate_body(void)
+{
+    set_A(ZERO); /* CAF ZERO */
+    ts(ADDRESS_OF(DELCDUX));
+    ts(ADDRESS_OF(DELCDUX) + 1u); /* "ZERO ROLL INCREMENTAL ANGLES" */
+    ts(ADDRESS_OF(WBODY));        /* "RATE" */
+    ts(ADDRESS_OF(WBODY) + 1u);
+    ts(ADDRESS_OF(BIAS));          /* "BIAS" */
+    set_A(negate(BIT15));          /* CS BIT15: "MAKE SURE HIGH RATE FLAG (BIT 15 OF */
+    mask_at(ADDRESS_OF(RCSFLAGS)); /* RCSFLAGS) IS RESET." */
+    ts(ADDRESS_OF(RCSFLAGS));
+    stopyz();
+}
+
+/* STOPYZ -- CM p. 418. "ZERO PITCH, YAW INCREMENTAL ANGLES", "RATES" and
+ * "BIASES"; then TC Q (the caller does it, with tc_q()). */
+static void stopyz(void)
+{
+    set_A(ZERO);                  /* CAF ZERO */
+    ts(ADDRESS_OF(DELCDUY));      /* "ZERO PITCH, YAW */
+    ts(ADDRESS_OF(DELCDUY) + 1u); /* INCREMENTAL ANGLES" */
+    ts(ADDRESS_OF(DELCDUZ));
+    ts(ADDRESS_OF(DELCDUZ) + 1u);
+    ts(ADDRESS_OF(WBODY1)); /* "RATES" */
+    ts(ADDRESS_OF(WBODY1) + 1u);
+    ts(ADDRESS_OF(WBODY2));
+    ts(ADDRESS_OF(WBODY2) + 1u);
+    ts(ADDRESS_OF(BIAS1)); /* "BIASES" */
+    ts(ADDRESS_OF(BIAS2));
+}
+
+/* STOPRATE entered on its own (from any bank): back to the caller. */
+void stoprate(void)
+{
+    stoprate_body();
+    tc_q();
+}
+
+/* ZEROEROR -- CM p. 419. "PICK UP CDU ANGLES AND STORE IN CDU DESIRED":
+ * no attitude error. Back to the caller. */
+void zeroeror(void)
+{
+    ca(ADDRESS_OF(CDUX));  /* "PICK UP CDU ANGLES AND STORE IN */
+    ts(ADDRESS_OF(CDUXD)); /* CDU DESIRED" */
+    ca(ADDRESS_OF(CDUY));
+    ts(ADDRESS_OF(CDUYD));
+    ca(ADDRESS_OF(CDUZ));
+    ts(ADDRESS_OF(CDUZD));
+    tc_q();
+}
+
+/* LOADCDUD -- CM p. 419. "STORE TERMINAL ANGLES INTO COMMAND ANGLES":
+ * CPHI to CDUXD, and on to LOADYZ. */
+void loadcdud(void)
+{
+    ca(ADDRESS_OF(CPHI));  /* "STORE TERMINAL ANGLES INTO */
+    ts(ADDRESS_OF(CDUXD)); /* COMMAND ANGLES" */
+    loadyz();
+}
+
+/* LOADYZ -- CM p. 419. CTHETA and CPSI to CDUYD and CDUZD. Back to the
+ * caller. */
+void loadyz(void)
+{
+    ca(ADDRESS_OF(CTHETA));
+    ts(ADDRESS_OF(CDUYD));
+    ca(ADDRESS_OF(CPSI));
+    ts(ADDRESS_OF(CDUZD));
+    tc_q();
+}
+
+const struct interpretive_code NEWANGL_CODE = {022u, NEWANGL + 1u, COUNT(newangl_words),
+                                               newangl_words};
+const struct interpretive_code MANUSTAT_CODE = {020u, MANUSTAT, COUNT(manustat_words),
                                                 manustat_words};
 
 #endif

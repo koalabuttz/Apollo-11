@@ -1295,31 +1295,47 @@ gimbal-lock-cases: $(BUILD)/gla-oracle-lm $(BUILD)/gla-oracle-cm $(BUILD)/gla-ca
 	./$(BUILD)/gla-cases-lm $(ROPES)
 	./$(BUILD)/gla-cases-cm $(ROPES)
 
-# KALCMANU_STEERING, the LM's maneuver steering: the port's test
+# KALCMANU_STEERING, both missions' maneuver steering: the port's test
 # (tests/test_kalcmanu_steering.c, its frozen cases run to their stops
 # through the programs of tests/kalcmanu_steering_target.c, against the
-# original programs' yaAGC digests) on the readable routines for the LM and
-# the faithful CM's, with tests/with_ropes.c loading the ropes the readable
-# interpreter reads; then tests/kalcmanu_steering_cases.c side by side.
-KAL_NAMES := lm_kalcmanu_steering_basic lm_kalcmanu_steering_interpretive
+# original programs' yaAGC digests) with each mission's readable routines
+# and the other mission's faithful ones, tests/with_ropes.c loading the
+# ropes the readable interpreter reads; then tests/kalcmanu_steering_cases.c
+# side by side, for each mission.
+KAL_NAMES_LM := lm_kalcmanu_steering_basic lm_kalcmanu_steering_interpretive
+KAL_NAMES_CM := cm_kalcmanu_steering_basic cm_kalcmanu_steering_interpretive
 KAL_COMMON := $(R63_COMMON)
 
-$(BUILD)/kal-faithful.o: $(PORT)/src/lm_kalcmanu_steering.c
+$(BUILD)/kal-faithful-lm.o: $(PORT)/src/lm_kalcmanu_steering.c
 	@mkdir -p $(dir $@)
-	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(KAL_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(KAL_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/kal-faithful-cm.o: $(PORT)/src/cm_kalcmanu_steering.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(KAL_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
 $(BUILD)/kal-test.o: $(PORT)/tests/test_kalcmanu_steering.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/kal-oracle: $(KAL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/kal-test.o \
+$(BUILD)/kal-oracle-lm: $(KAL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/kal-test.o \
 		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(KAL_COMMON) $(PORT)/src/cm_kalcmanu_steering.c \
 		$(PORT)/tests/kalcmanu_steering_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
-$(BUILD)/kal-cases: $(KAL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/kal-faithful.o \
+$(BUILD)/kal-oracle-cm: $(KAL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/kal-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(KAL_COMMON) $(PORT)/src/lm_kalcmanu_steering.c \
+		$(PORT)/tests/kalcmanu_steering_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/kal-cases-lm: $(KAL_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/kal-faithful-lm.o \
 		tests/kalcmanu_steering_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(KAL_COMMON) $(filter %.o,$^) \
 		tests/kalcmanu_steering_cases.c -o $@
+$(BUILD)/kal-cases-cm: $(KAL_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/kal-faithful-cm.o \
+		tests/kalcmanu_steering_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(KAL_COMMON) $(filter %.o,$^) \
+		tests/kalcmanu_steering_cases.c -o $@
 
-kalcmanu-steering-cases: $(BUILD)/kal-oracle $(BUILD)/kal-cases
+kalcmanu-steering-cases: $(BUILD)/kal-oracle-lm $(BUILD)/kal-oracle-cm $(BUILD)/kal-cases-lm \
+		$(BUILD)/kal-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
-	./$(BUILD)/kal-oracle $(ROPES)
-	./$(BUILD)/kal-cases $(ROPES)
+	./$(BUILD)/kal-oracle-lm $(ROPES)
+	./$(BUILD)/kal-oracle-cm $(ROPES)
+	./$(BUILD)/kal-cases-lm $(ROPES)
+	./$(BUILD)/kal-cases-cm $(ROPES)
