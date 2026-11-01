@@ -750,11 +750,11 @@ static const word IDLEADR[2] = KW_IDLEADR; /* 2CADR DAPIDLER */
 #define OCT37    ((word)KW_OCT37)
 #define OCT77603 ((word)KW_OCT77603)
 #define OCT74777 ((word)KW_OCT74777)
-#define PRIO25   ((word)KW_PRIO25)
 #define SKIPVBIT ((word)KW_SKIPVBIT)
 /* T5IDLER: four 2CADRs, for the T5RUPT owner FLAGWRD6 names. */
 static const word T5IDLER[4][2] = {KW_T5IDLER, KW_T5IDLERP2, KW_T5IDLERP4, KW_T5IDLERP6};
 #endif
+#define PRIO25 ((word)KW_PRIO25)
 
 /* Its labels, and the routines elsewhere it calls. */
 #define MMDSPLAY ((word)K_MMDSPLAY)
@@ -2518,6 +2518,20 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define V06N51   ((word)KW_V06N51) /* VN 0651 */
 #if LUMINARY099
 #define SBANDEX ((word)K_SBANDEX)
+#endif
+
+/* ---- RADAR_LEADIN_ROUTINES ---- */
+
+#if LUMINARY099
+/* The radar sampling loop, in bank 25, and the radar routines RDRLOCS
+ * names (bank 25). Its erasable words (RSAMPDT, RTSTLOC, RTSTDEX,
+ * RTSTBASE, RTSTMAX, RFAILCNT, RSTACK, SAMPLSUM) are named by ADDRESS_OF. */
+#define RADSAMP  ((word)K_RADSAMP)
+#define DORSAMP  ((word)K_DORSAMP)
+#define DORSAMP2 ((word)K_DORSAMP2)
+#define VARADAR  ((word)K_VARADAR)
+#define RDRLOCS  ((word)K_RDRLOCS)
+#define RADSTALL ((word)K_RADSTALL)
 #endif
 
 /* NO.CORES + 1 core sets. */

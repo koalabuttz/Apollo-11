@@ -1193,6 +1193,18 @@
 #define K_SBANDEX 03745u
 #define K_GOMARKFR 02353u
 #define K_R02BOTH 03254u
+#define K_RADSAMP 02003u
+#define K_DORSAMP 02023u
+#define K_DORSAMP2 02027u
+#define K_VARADAR 02047u
+#define K_RDRLOCS 02054u
+#define K_RADSTALL 03714u
+#define K_RRRANGE 03105u
+#define K_RRRDOT 03103u
+#define K_LRVELX 03101u
+#define K_LRVELY 03077u
+#define K_LRVELZ 03075u
+#define K_LRALT 03073u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -1553,6 +1565,8 @@
 #define K_RTSTDEX 01751u
 #define K_RTSTBASE 01753u
 #define K_RTSTMAX 01752u
+#define K_RSTACK 01600u
+#define K_SAMPLSUM 01101u
 #define K_LEMMASS 01331u
 #define K_MASS 01244u
 #define K_DSPTEM2 01050u

@@ -117,6 +117,8 @@ KAL_SOURCES := $(INTERPRETER_SOURCES) src/kalcmanu_steering/kalcmanu_steering.c 
 	src/rtb_op_codes/rtb_op_codes.c src/binding/kalcmanu_steering_routines.c
 R60_SOURCES := $(INTERPRETER_SOURCES) src/r60_62/r60_62.c src/rtb_op_codes/rtb_op_codes.c \
 	src/binding/r60_62_routines.c
+RLR_SOURCES := src/agc/agc.c src/binding/machine.c src/radar_leadin/radar_leadin.c \
+	src/binding/radar_leadin_routines.c
 SBA_SOURCES := $(INTERPRETER_SOURCES) src/sband_antenna/sband_antenna.c \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/sband_antenna_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
@@ -133,18 +135,18 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
-	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases
+	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1483,6 +1485,34 @@ sband-antenna-cases: $(BUILD)/sba-oracle-lm $(BUILD)/sba-oracle-cm $(BUILD)/sba-
 	./$(BUILD)/sba-oracle-cm $(ROPES)
 	./$(BUILD)/sba-cases-lm $(ROPES)
 	./$(BUILD)/sba-cases-cm $(ROPES)
+
+# RADAR_LEADIN_ROUTINES, the LM's radar sampling loop: the port's test
+# (tests/test_lm_radar_leadin_routines.c, its frozen cases run to their
+# stops through the program of tests/lm_radar_leadin_routines_target.c,
+# against the original program's yaAGC digests) on the readable routines,
+# with tests/with_ropes.c loading the rope VARADAR reads; then
+# tests/radar_leadin_cases.c side by side.
+RLR_NAMES := lm_radar_leadin_routines_basic lm_radar_leadin_routines_interpretive
+
+$(BUILD)/rlr-faithful.o: $(PORT)/src/lm_radar_leadin_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(RLR_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/rlr-test.o: $(PORT)/tests/test_lm_radar_leadin_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/rlr-oracle: $(RLR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/rlr-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(R63_COMMON) \
+		$(PORT)/tests/lm_radar_leadin_routines_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/rlr-cases: $(RLR_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/rlr-faithful.o \
+		tests/radar_leadin_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(R63_COMMON) $(filter %.o,$^) \
+		tests/radar_leadin_cases.c -o $@
+
+radar-leadin-cases: $(BUILD)/rlr-oracle $(BUILD)/rlr-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/rlr-oracle $(ROPES)
+	./$(BUILD)/rlr-cases $(ROPES)
 
 # SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
 # oracles with each mission's readable tables and the other mission's
