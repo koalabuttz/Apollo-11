@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* RTB_OP_CODES.agc (Luminary099) and RT8_OP_CODES.agc (Comanche055), the
  * same code in both: the routines an interpretive RTB runs. So far
- * LOADTIME, CDULOGIC, 1STO2S and 2V1STO2S with their 1TO2SUB, and the
+ * LOADTIME, CDULOGIC, 1STO2S, V1STO2S and 2V1STO2S with their 1TO2SUB, and the
  * CM's TRANSP1 and TRANSP2. */
 #include "rtb_op_codes.h"
 #include "../agc/names.h"
@@ -55,6 +55,32 @@ void one_sto2s(void)
     set_A(ZERO); /* CAF ZERO */
     ts(ADDRESS_OF(MPAC) + 1u);
     newmode(); /* TCF NEWMODE */
+}
+
+/* V1STO2S -- LM p. 1397, CM p. 1509.
+ * "DO 1STO2S ON A VECTOR OF ANGLES": the three DP angles in MPAC, MPAC +3
+ * and MPAC +5 (in revolutions) to three single precision CDU angles in
+ * two's complement, MPAC, MPAC +1 and MPAC +2. Each goes through 1TO2SUB
+ * ("ANSWER ARRIVES IN A AND MPAC"), the first one's kept in MPAC +5
+ * meanwhile; TPMODE declares the mode triple precision ("MODE IS TP"). */
+void v1sto2s(void)
+{
+    tc_at(V1STO2S);
+    one_to2sub();
+    dxch(ADDRESS_OF(MPAC) + 5u);
+    dxch(ADDRESS_OF(MPAC));
+    tc_at(V1STO2S + 3u);
+    one_to2sub();
+    ts(ADDRESS_OF(MPAC) + 2u);
+    dxch(ADDRESS_OF(MPAC) + 3u);
+    dxch(ADDRESS_OF(MPAC));
+    tc_at(V1STO2S + 7u);
+    one_to2sub();
+    ts(ADDRESS_OF(MPAC) + 1u);
+    ca(ADDRESS_OF(MPAC) + 5u);
+    ts(ADDRESS_OF(MPAC));
+    set_A(ONE); /* TPMODE: CAF ONE, "MODE IS TP." */
+    newmode();  /* TCF NEWMODE */
 }
 
 /* 2V1STO2S -- LM p. 1398, CM p. 1509.

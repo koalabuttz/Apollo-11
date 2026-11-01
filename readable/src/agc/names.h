@@ -1835,14 +1835,40 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define TOOBADF  ((word)K_TOOBADF)
 #define NOGO     ((word)K_NOGO)
 #define TOOBADI  ((word)K_TOOBADI)
+
+/* ---- KALCMANU_STEERING (LM so far) ---- */
+
+/* Its labels in bank 22 and its constants (ISITAUTO, R60_62's, is only
+ * BANKCALL's CADR). Its erasable words are named by ADDRESS_OF. */
+#define NEWDELHI   ((word)K_NEWDELHI)
+#define NEWANGL    ((word)K_NEWANGL)
+#define INCRDCDU   ((word)K_INCRDCDU)
+#define TMANUCHK   ((word)K_TMANUCHK)
+#define MANUSTAL   ((word)K_MANUSTAL)
+#define TIMECHK    ((word)K_TIMECHK)
+#define MANUSTAT   ((word)K_MANUSTAT)
+#define RATEBIAS   ((word)K_RATEBIAS)
+#define CONTMANU   ((word)K_CONTMANU)
+#define MANUCALL   ((word)K_MANUCALL)
+#define UPDTCALL   ((word)K_UPDTCALL)
+#define MANUSTOP   ((word)K_MANUSTOP)
+#define ENDROLL    ((word)K_ENDROLL)
+#define GOODMANU   ((word)K_GOODMANU)
+#define DT_TAU     ((word)KW_DT_TAU)   /* DEC .1 */
+#define ONESEK     ((word)K_ONESEK)    /* 2DEC: 0, 100 (one second) */
+#define ONESEK_LOW ((word)KW_ONESEKP1) /* ONESEK +1: DEC 100 */
+#define BIASCALE   ((word)KW_BIASCALE) /* OCT 75777: -1/16 */
+#define PRIO26     ((word)KW_PRIO26)
 #endif
 
-/* 1STO2S, 2V1STO2S and their 1TO2SUB, and LOADTIME, RTB routines
+/* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, and LOADTIME, RTB routines
  * (RTB_OP_CODES.agc). */
 #define LOADTIME    ((word)K_LOADTIME)
 #define ONE_STO2S   ((word)K_1STO2S)
 #define TWO_V1STO2S ((word)K_2V1STO2S)
 #define ONE_TO2SUB  ((word)K_1TO2SUB)
+#define V1STO2S     ((word)K_V1STO2S)
+#define TPMODE      ((word)K_TPMODE)
 
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
