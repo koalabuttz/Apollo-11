@@ -115,6 +115,8 @@ GLA_SOURCES := $(INTERPRETER_SOURCES) src/gimbal_lock/gimbal_lock.c \
 	src/binding/gimbal_lock_routines.c
 KAL_SOURCES := $(INTERPRETER_SOURCES) src/kalcmanu_steering/kalcmanu_steering.c \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/kalcmanu_steering_routines.c
+R60_SOURCES := $(INTERPRETER_SOURCES) src/r60_62/r60_62.c src/rtb_op_codes/rtb_op_codes.c \
+	src/binding/r60_62_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
@@ -128,19 +130,19 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(INTERPRETER_SOURCES) $(ALARM_SOURCES) $(SP_SOURCES) $(SERVICE_SOURCES) $(DNTM_SOURCES) $(V37_SOURCES) $(STATEUP_SOURCES) \
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
-	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) \
+	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
 	$(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
-	imu-performance-cases pinball-cases
+	imu-performance-cases pinball-cases r60-r62-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1389,6 +1391,51 @@ kalcmanu-steering-cases: $(BUILD)/kal-oracle-lm $(BUILD)/kal-oracle-cm $(BUILD)/
 	./$(BUILD)/kal-oracle-cm $(ROPES)
 	./$(BUILD)/kal-cases-lm $(ROPES)
 	./$(BUILD)/kal-cases-cm $(ROPES)
+
+# R60_62, both missions' maneuver requests (R60), V49 (R62), BALLANGS and
+# VECPOINT: the port's test (tests/test_r60_r62.c, its frozen cases run to
+# their stops through the programs of tests/r60_r62_target.c, against the
+# original programs' yaAGC digests) with each mission's readable routines
+# and the other mission's faithful ones, tests/with_ropes.c loading the
+# ropes the readable interpreter reads; then tests/r60_62_cases.c side by
+# side, for each mission.
+R60_NAMES_LM := lm_r60_r62_basic lm_r60_r62_interpretive
+R60_NAMES_CM := cm_r60_r62_basic cm_r60_r62_interpretive
+R60_COMMON := $(R63_COMMON)
+
+$(BUILD)/r60-faithful-lm.o: $(PORT)/src/lm_r60_r62.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(R60_NAMES_LM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/r60-faithful-cm.o: $(PORT)/src/cm_r60_r62.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(R60_NAMES_CM),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/r60-test.o: $(PORT)/tests/test_r60_r62.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/r60-oracle-lm: $(R60_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/r60-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(R60_COMMON) $(PORT)/src/cm_r60_r62.c \
+		$(PORT)/tests/r60_r62_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/r60-oracle-cm: $(R60_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/r60-test.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(R60_COMMON) $(PORT)/src/lm_r60_r62.c \
+		$(PORT)/tests/r60_r62_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/r60-cases-lm: $(R60_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/r60-faithful-lm.o \
+		tests/r60_62_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(R60_COMMON) $(filter %.o,$^) \
+		tests/r60_62_cases.c -o $@
+$(BUILD)/r60-cases-cm: $(R60_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/r60-faithful-cm.o \
+		tests/r60_62_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(R60_COMMON) $(filter %.o,$^) \
+		tests/r60_62_cases.c -o $@
+
+r60-r62-cases: $(BUILD)/r60-oracle-lm $(BUILD)/r60-oracle-cm $(BUILD)/r60-cases-lm \
+		$(BUILD)/r60-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/r60-oracle-lm $(ROPES)
+	./$(BUILD)/r60-oracle-cm $(ROPES)
+	./$(BUILD)/r60-cases-lm $(ROPES)
+	./$(BUILD)/r60-cases-cm $(ROPES)
 
 # SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
 # oracles with each mission's readable tables and the other mission's

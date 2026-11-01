@@ -128,6 +128,10 @@ REPLACED = (
     # IMU_PERFORMANCE_TEST_2.agc and IMU_PERFORMANCE_TESTS_4.agc, the LM's
     # P07 (src/imu_performance).
     'lm_imu_performance.o',
+    # R60_62.agc, both missions' maneuver request (R60), V49 (R62), the LM's
+    # BALLANGS and VECPOINT (src/r60_62).
+    'lm_r60_r62.o',
+    'cm_r60_r62.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -145,8 +149,10 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
 # its SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER). The IMU performance test
-# (GEOIMUTT) is the LM's alone.
-MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt'), 'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver')}
+# (GEOIMUTT) is the LM's alone. R60 has each mission's name (R60LEM,
+# R60CSM).
+MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem'),
+                   'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
