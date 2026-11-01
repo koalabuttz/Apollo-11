@@ -18,7 +18,10 @@
  * 362-363), and SLEFT5 and RELDSPON (LM p. 461, CM p. 379). Part 2a,
  * the word display routines (LM pp. 441-445, CM pp. 359-363). Part 2b,
  * ENTER and the verb fan (LM pp. 406-412, CM pp. 323-329), with the
- * fixed-fixed subroutines they call. The entries
+ * fixed-fixed subroutines they call. Part 3, the display verbs and the
+ * scale factor routines for display (LM pp. 414-424, CM pp. 331-342), with
+ * the scale factor code subroutines (LM p. 428, CM p. 346) and the triple
+ * word shifts (TPLEFTN, TPSL1, PRSHRTMP). The entries
  * are the routines' labels and the words a call out of the part returns
  * to. */
 #ifndef READABLE_PINBALL_H
@@ -112,8 +115,9 @@ void updat1_plus2(void);
 void goalmcyc(void);
 void godspalm(void);
 
-/* The fixed-fixed subroutines ENTER and the verb fan call: each goes back
- * with TC Q (or through its return word, RELRET or EXITEM). */
+/* The subroutines ENTER and the verb fan call, in fixed-fixed but SFRUTMIX
+ * (bank 41): each goes back with TC Q (or through its return word, RELRET
+ * or EXITEM). DPTEST is true for a double precision routine. */
 void setncadr(void);
 void setncadr_plus1(void);
 void setnadd(void);
@@ -128,6 +132,78 @@ void reldsp1(void);
 void almcycle(void);
 void almcycle_after_updatvb(void);
 void sfrutmix(void);
+
+bool dptest(void);
+
+/* ---- Part 3: the display verbs (display_verbs.c, output_scale.c,
+ * subroutines.c) ---- */
+
+void getcomp(void);
+void comptest(void);
+void comptst1(void);
+void dectest(void);
+void dcomptst(void);
+void dctstcyc(void);
+void nountest(void);
+void dspabc(void);
+void dspab(void);
+void dspa(void);
+void dspb(void);
+void dspc(void);
+void dspcom3_after_dspoctwd(void);
+void chandsp(void);
+void decdsp(void);
+void dspdcput(void);
+void dspdcend(void);
+void dspdcend_plus2(void);
+void dspdpdec(void);
+void dspdpdec_plus13(void);
+void enddpdec(void);
+void degoutsf(void);
+#if LUMINARY099
+void three_sixty_cduo(void);
+void three_sixty_cdu(void);
+void three_sixty_cdue(void);
+void lrposout(void);
+#else
+void opdegout(void);
+void dpfracot(void);
+#endif
+void artoutsf(void);
+void arout1sf(void);
+void dp1outsf(void);
+void dp2outsf(void);
+void dp3outsf(void);
+void two_intout(void);
+void two_intout_plus1(void);
+void two_intout_plus2(void);
+void two_intout_plus4(void);
+void two_intout_plus11(void);
+void readlo(void);
+void hmsout(void);
+void hmsout_plus2(void);
+void hmsout_plus4(void);
+void hmsout_plus8(void);
+void hmsout_plus10(void);
+void hmsout_plus19(void);
+void hmsout_plus21(void);
+void hmsout_plus28(void);
+void hmsout_plus30(void);
+void m_sout(void);
+void m_sout_plus2(void);
+void m_snorm_plus1(void);
+void m_snorm_plus5(void);
+void m_snorm_plus7(void);
+void m_snorm_plus15(void);
+void m_snorm_plus23(void);
+void m_snorm_plus25(void);
+/* The scale factor codes and the triple word shifts they use. */
+void sfrutnor(void);
+void sfconum(void);
+void tpleftn(void);
+void leftncom(void);
+void tpsl1(void);
+void prshrtmp(void);
 
 /* Part 1's routines called from within the part: each returns true when
  * it went back to its caller (TC Q, TC L or TC DSEXIT), false when it left
@@ -180,5 +256,12 @@ static inline word indexed_erasable(word address, word x)
     if (at < 010u || at >= 02000u) not_modelled();
     return at;
 }
+
+/* ---- INDEX MIXBR ---- */
+
+/* INDEX MIXBR; TC +0 at at: the TC goes to the word after it for a normal
+ * noun (MIXBR 1) and to the one after that for a mixed noun (MIXBR 2).
+ * True for a mixed noun (display_verbs.c). */
+bool mixed_noun(word at);
 
 #endif
