@@ -1905,6 +1905,95 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define NEWMODEX ((word)K_NEWMODEX)
 #endif
 
+/* ---- IMU_PERFORMANCE_TEST_2 and IMU_PERFORMANCE_TESTS_4 (LM P07) ---- */
+
+#if LUMINARY099
+/* Their labels in bank 37, FINETIME in fixed-fixed, and the routines of
+ * other files they call. Their erasable words (EBANK 5: POSITON, NDXCTR,
+ * QPLACE, ZERONDX and the rest) are named by ADDRESS_OF. */
+#define GEOIMUTT    ((word)K_GEOIMUTT)
+#define IMUBACK     ((word)K_IMUBACK)
+#define NBPOSPL     ((word)K_NBPOSPL)
+#define GUESS       ((word)K_GUESS)
+#define LATAZCHK    ((word)K_LATAZCHK)
+#define POSGMBL     ((word)K_POSGMBL)
+#define GOESTIMS    ((word)K_GOESTIMS)
+#define TORQUE      ((word)K_TORQUE)
+#define PIPACHK     ((word)K_PIPACHK)
+#define PIPATASK    ((word)K_PIPATASK)
+#define STARTPIP    ((word)K_STARTPIP)
+#define PIPJOBB     ((word)K_PIPJOBB)
+#define AINGOTN     ((word)K_AINGOTN)
+#define VERTDRFT    ((word)K_VERTDRFT)
+#define PON2        ((word)K_PON2)
+#define PON4        ((word)K_PON4)
+#define PON         ((word)K_PON)
+#define GUESS1      ((word)K_GUESS1)
+#define VALMIS      ((word)K_VALMIS)
+#define ENDTEST1    ((word)K_ENDTEST1)
+#define OVERFFIX    ((word)K_OVERFFIX)
+#define COAALIGN    ((word)K_COAALIGN)
+#define ALIGNCOA    ((word)K_ALIGNCOA)
+#define IMUSLLLG    ((word)K_IMUSLLLG)
+#define FINIMUDD    ((word)K_FINIMUDD)
+#define IMUZERR     ((word)K_IMUZERR)
+#define CHECKG      ((word)K_CHECKG)
+#define CHECKG1     ((word)K_CHECKG1)
+#define ENDCHKG     ((word)K_ENDCHKG)
+#define ZEROING     ((word)K_ZEROING)
+#define ZEROING1    ((word)K_ZEROING1)
+#define ERTHRVSE    ((word)K_ERTHRVSE)
+#define EARTHR      ((word)K_EARTHR)
+#define ERTHR       ((word)K_ERTHR)
+#define EARTHR_STAR ((word)K_EARTHR_STAR) /* EARTHR* */
+#define SHOW        ((word)K_SHOW)
+#define SHOW1       ((word)K_SHOW1)
+#define FINETIME    ((word)K_FINETIME)
+#define ESTIMS      ((word)K_ESTIMS)
+#define VERTSKIP    ((word)K_VERTSKIP)
+#define ALLOOP      ((word)K_ALLOOP)
+#define SPECSTS     ((word)K_SPECSTS)
+#define ALFLT       ((word)K_ALFLT)
+#define NORMLOP     ((word)K_NORMLOP)
+#define ALCGKK      ((word)K_ALCGKK)
+#define ALKCG       ((word)K_ALKCG)
+#define ALKCG2      ((word)K_ALKCG2)
+#define ALFLT3      ((word)K_ALFLT3)
+#define DELMLP      ((word)K_DELMLP)
+#define ALILP       ((word)K_ALILP)
+#define ALKLP       ((word)K_ALKLP)
+#define LOOSE       ((word)K_LOOSE)
+#define BOOP        ((word)K_BOOP)
+#define PERFERAS    ((word)K_PERFERAS)
+#define SETUPER1    ((word)K_SETUPER1)
+#define GEOSTRT4    ((word)K_GEOSTRT4)
+#define SLEEPIE     ((word)K_SLEEPIE)
+#define SOMEERRR    ((word)K_SOMEERRR)
+#define SOMERR2     ((word)K_SOMERR2)
+#define REDO        ((word)K_REDO)
+#define NEWMODEX    ((word)K_NEWMODEX)
+#define TWIDDLE     ((word)K_TWIDDLE)
+#define CHANG1      ((word)K_CHANG1)
+/* ATIGINC: the erasable program (EBANK 7) PERFERAS calls. */
+#define ATIGINC ((word)K_ATIGINC)
+/* The scaler channels FINETIME reads. */
+#define LOSCALAR ((unsigned)K_LOSCALAR)
+#define HISCALAR ((unsigned)K_HISCALAR)
+/* Their constants. */
+#define DEC17    ((word)KW_DEC17) /* = ND1 */
+#define DEC58    ((word)KW_DEC58)
+#define VN0641   ((word)KW_VN0641)   /* VN 0641 */
+#define VB06N98  ((word)KW_VB06N98)  /* VN 0698 */
+#define DEC3990  ((word)KW_3990DEC)  /* 3990DEC */
+#define XNBADR   ((word)KW_XNBADR)   /* GENADR XNB */
+#define ESTICADR ((word)KW_ESTICADR) /* CADR ESTIMS */
+#define DEC77    ((word)KW_77DECML)  /* 77DECML */
+#define ALXXXZ   ((word)KW_ALXXXZ)   /* GENADR ALX1S -1 */
+#define OCT1601  ((word)KW_OCT1601)
+#define OGCPL    ((word)KW_OGCPL) /* ECADR OGC */
+#define EBANK5   ((word)KW_EBANK5)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

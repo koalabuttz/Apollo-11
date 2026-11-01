@@ -115,6 +115,8 @@ GLA_SOURCES := $(INTERPRETER_SOURCES) src/gimbal_lock/gimbal_lock.c \
 	src/binding/gimbal_lock_routines.c
 KAL_SOURCES := $(INTERPRETER_SOURCES) src/kalcmanu_steering/kalcmanu_steering.c \
 	src/rtb_op_codes/rtb_op_codes.c src/binding/kalcmanu_steering_routines.c
+IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
+	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
 	src/binding/standard_lead_routines.c)
 RUPT_SOURCES := src/agc/agc.c src/lead_ins/lead_ins.c src/waitlist/waitlist.c src/t6rupt/t6rupt.c \
@@ -124,17 +126,18 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) \
-	$(SL_SOURCES))
+	$(SL_SOURCES) $(IPT_SOURCES))
 HEADERS := $(wildcard src/*/*.h)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
 	keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases \
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
-	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases
+	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
+	imu-performance-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1121,9 +1124,10 @@ geometry-cases: $(BUILD)/geometry-oracle-lm $(BUILD)/geometry-oracle-cm $(BUILD)
 # ---- The x86_64 flight program ----
 # tools/build_x86.py builds the port's x86 program with these objects in
 # place of the faithful kernel (build/x86-flight/).
-# R47's routines stop where they reach the interpreter in the flight
-# program, as the port's flight build of its file does.
+# R47's and P07's routines stop where they reach the interpreter in the
+# flight program, as the port's flight builds of their files do.
 $(BUILD)/x86-lm/binding/ags_initialization_routines.o: FLIGHT_DEFINES := -DAGC_FLIGHT_INTERPRETER
+$(BUILD)/x86-lm/binding/imu_performance_routines.o: FLIGHT_DEFINES := -DAGC_FLIGHT_INTERPRETER
 $(BUILD)/x86-lm/%.o: src/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) $(FLIGHT_DEFINES) -c $< -o $@
@@ -1424,3 +1428,49 @@ standard-lead-cases: $(BUILD)/slo-oracle-lm $(BUILD)/slo-oracle-cm $(BUILD)/clt-
 	./$(BUILD)/ie-oracle-cm $(ROPES)
 	./$(BUILD)/sl-cases-lm $(ROPES)
 	./$(BUILD)/sl-cases-cm $(ROPES)
+
+# IMU_PERFORMANCE_TEST_2 and IMU_PERFORMANCE_TESTS_4, the LM's P07: the
+# port's test (tests/test_lm_imu_performance.c: 64,512 cases, every key in
+# 384 states, against the original program's yaAGC digests, and its
+# refusals) on the readable routines, with tests/with_ropes.c loading the
+# ropes the readable interpreter reads; then tests/imu_performance_cases.c,
+# readable and faithful side by side, as the host runs them and as the
+# flight program does (stopping at the interpreter, -DAGC_FLIGHT_INTERPRETER).
+IPT_MK := $(PORT)/tools/mk/lm-imu-performance.mk
+IPT_PORT := $(addprefix $(PORT)/,$(filter-out src/lm_imu_performance.c,$(shell sed -n 's/^IPT_SRC = //p' $(IPT_MK)))) \
+	$(PORT)/src/rope_image_host.c
+IPT_NAMES := lm_imu_performance_routines lm_imu_performance_interpretive ipt_routine_keys
+IPT_FLAGS := -DP66_NATIVE_DISPATCH_ONLY
+IPT_FLIGHT_OBJECTS := $(filter-out %/imu_performance_routines.o,$(IPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o)) \
+	$(BUILD)/ipt-flight/imu_performance_routines.o
+
+$(BUILD)/ipt-flight/imu_performance_routines.o: src/binding/imu_performance_routines.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(READABLE_CFLAGS) $(INCLUDES) $(LM) -DRK_SEAMS=1 -DAGC_FLIGHT_INTERPRETER -c $< -o $@
+$(BUILD)/ipt-faithful.o: $(PORT)/src/lm_imu_performance.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(IPT_FLAGS) $(foreach n,$(IPT_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/ipt-faithful-flight.o: $(PORT)/src/lm_imu_performance.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(IPT_FLAGS) -DAGC_FLIGHT_INTERPRETER \
+		$(foreach n,$(IPT_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/ipt-test.o: $(PORT)/tests/test_lm_imu_performance.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(IPT_FLAGS) -Dmain=port_main -c $< -o $@
+$(BUILD)/ipt-oracle: $(IPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/ipt-test.o
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(IPT_FLAGS) $(IPT_PORT) tests/with_ropes.c \
+		$(filter %.o,$^) -o $@
+$(BUILD)/ipt-cases: $(IPT_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/ipt-faithful.o \
+		tests/imu_performance_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(IPT_FLAGS) $(IPT_PORT) $(filter %.o,$^) \
+		tests/imu_performance_cases.c -o $@
+$(BUILD)/ipt-cases-flight: $(IPT_FLIGHT_OBJECTS) $(BUILD)/ipt-faithful-flight.o \
+		tests/imu_performance_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(IPT_FLAGS) -DAGC_FLIGHT_INTERPRETER $(IPT_PORT) \
+		$(filter %.o,$^) tests/imu_performance_cases.c -o $@
+
+imu-performance-cases: $(BUILD)/ipt-oracle $(BUILD)/ipt-cases $(BUILD)/ipt-cases-flight
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/ipt-oracle $(ROPES)
+	./$(BUILD)/ipt-cases $(ROPES)
+	./$(BUILD)/ipt-cases-flight $(ROPES)
