@@ -49,7 +49,7 @@ extern const struct interpretive_code ORBCHG2_CODE, P20LEM1_CODE, P20LEMC3_CODE,
     R61C_L03_CODE, R61LEM1_AUTO_CODE, R61C_L05_CODE, RRDESSM_CODE, OKDESNB_CODE, DODES_CODE,
     DODES_URR_CODE, DORROUT_CODE, LPS20_1_CODE, LPS20_1_LOS_CODE, LPS20_2_CODE,
     LRS22_1_CONVERT_CODE, LRS22_1_CHECK_CODE, NORMEXIT_CODE, THIRTY_DEGCHK_CODE, OKEXIT_CODE,
-    LSR22_3_CODE, RANGEBQ1_CODE, RANGE_RATE_CODE, ANGLES_CODE;
+    LSR22_3_CODE, RANGEBQ1_CODE, RANGE_RATE_CODE, ANGLES_CODE, LSR22_4_CODE, WLINIT_CODE;
 extern const agc_routine_table lm_p20_p25_basic, lm_p20_p25_interpretive;
 extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_interpretive;
 bool p20_p25_readable(uint16_t key, bool order_pair);
@@ -136,8 +136,8 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: parts 1 to 12, bank 24 to LRS22.2, bank 32
- * from ORBCHG3 to LRS22.1, bank 26's LSR22.3 to RENDEND, CLRADMOD in fixed-fixed, bank 23's R61 (to READCDUD), MAGSUB
+/* The parts written so far: parts 1 to 13, bank 24 to LRS22.2, bank 32
+ * from ORBCHG3 to LRS22.1, bank 26's LSR22.3 to WLINIT, CLRADMOD in fixed-fixed, bank 23's R61 (to READCDUD), MAGSUB
  * to FLIP in fixed-fixed, bank 25 from RRTURNON to LPS20.2, and R12LITES
  * to VLIGHT. */
 static bool in_written_part(uint16_t key)
@@ -147,7 +147,7 @@ static bool in_written_part(uint16_t key)
     return (bank == 024u && z <= 03355u) || (bank == 032u && z >= 02217u && z <= 02546u) ||
            (bank == 03u && z == 02011u) /* CLRADMOD */ ||
            (bank == 023u && z >= 02116u && z <= 02313u) ||
-           (bank == 026u && z >= 02412u && z <= 03177u) ||
+           (bank == 026u && z >= 02412u && z <= 03330u) ||
            (bank == 02u && z >= 02523u && z <= 02606u) ||
            (bank == 025u && ((z >= 02062u && z <= 03577u) || (z >= 03607u && z <= 03670u)));
 }
@@ -513,6 +513,8 @@ static const struct interpretive_code *const codes[] = {
     &RANGEBQ1_CODE,
     &RANGE_RATE_CODE,
     &ANGLES_CODE,
+    &LSR22_4_CODE,
+    &WLINIT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

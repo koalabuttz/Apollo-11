@@ -1571,6 +1571,7 @@
 #define K_AIG 01662u
 #define K_AMG 01663u
 #define K_AOG 01661u
+#define K_W 01400u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u
@@ -2527,6 +2528,11 @@
 #define I_X789 001700u
 #define I_IMUVAR 071337u
 #define I_TRUNVAR 063453u
+#define I_MARKCTR 001126u
+#define I_INTEGRV 027162u
+#define I_WRENDPOS 002000u
+#define I_WRENDVEL 002001u
+#define I_W 002400u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
