@@ -86,6 +86,7 @@
 #define ORDER_XAD_1      0106u /* XAD,1 */
 #define ORDER_DDV_STAR   0107u /* DDV* */
 #define ORDER_VDEF       0110u
+#define ORDER_XSU_2      0112u /* XSU,2 */
 #define ORDER_SR         0115u /* (SL, SLR and SRR too: the general shifts, by their address) */
 #define ORDER_SL         0115u
 #define ORDER_VSL        0115u /* (a vector's general shift: SL's code, by MODE) */
@@ -187,6 +188,9 @@
 #define STOVL_AT(name, n)  ((word)(024000u | (I_##name + (n) + 1u)))
 #define STCALL(name)       ((word)(034000u | (I_##name + 1u)))
 #define STCALL_AT(name, n) ((word)(034000u | (I_##name + (n) + 1u)))
+/* STODL*: a store, and a load indexed by the address word after it
+ * ("STODL* MARKDOWN +1" then "0,1"): its code is 020000. */
+#define STODL_STAR_AT(name, n) ((word)(020000u | (I_##name + (n) + 1u)))
 
 /* The job's work area (its VAC area, or a NOVAC job's) word by word, as
  * the listing numbers it: "10D" is word 10 (decimal) from FIXLOC, written

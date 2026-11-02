@@ -43,7 +43,7 @@ struct interpretive_code {
 };
 extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, PROG22A_CODE,
     CALLR52_CODE, S22LSITE_CODE, P22SUBRB_CHECK_CODE, N89ERRX_3_CODE, S22ABDE_CODE, DE_GR_50_CODE,
-    R57_CODE, ENDR57_CODE;
+    R57_CODE, ENDR57_CODE, R61CSM_CODE, BVECTORS_CODE, GETUM_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -117,8 +117,9 @@ static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return (bank == 037u && z >= 02261u && z <= 02556u) ||
-           (bank == 030u && z >= 02000u && z <= 02311u);
+    return (bank == 037u && z >= 02261u && z <= 02624u) ||
+           (bank == 030u && z >= 02000u && z <= 02311u) ||
+           (bank == 023u && z >= 03043u && z <= 03131u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -374,9 +375,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE, &CALLR52_CODE,
-    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE, &DE_GR_50_CODE,
-    &R57_CODE,      &ENDR57_CODE,
+    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,  &CALLR52_CODE,
+    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,  &DE_GR_50_CODE,
+    &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE, &GETUM_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
