@@ -50,7 +50,8 @@ extern const struct interpretive_code ORBCHG2_CODE, P20LEM1_CODE, P20LEMC3_CODE,
     DODES_URR_CODE, DORROUT_CODE, LPS20_1_CODE, LPS20_1_LOS_CODE, LPS20_2_CODE,
     LRS22_1_CONVERT_CODE, LRS22_1_CHECK_CODE, NORMEXIT_CODE, THIRTY_DEGCHK_CODE, OKEXIT_CODE,
     LSR22_3_CODE, RANGEBQ1_CODE, RANGE_RATE_CODE, ANGLES_CODE, LSR22_4_CODE, WLINIT_CODE,
-    GETULC_CODE, LRS24_1_CODE, CONTDES2_CODE, OMEGCALC_CODE, CALCXY_CODE;
+    GETULC_CODE, LRS24_1_CODE, CONTDES2_CODE, OMEGCALC_CODE, CALCXY_CODE, R29_LOS_CODE,
+    SETUP29D_CODE;
 extern const agc_routine_table lm_p20_p25_basic, lm_p20_p25_interpretive;
 extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_interpretive;
 bool p20_p25_readable(uint16_t key, bool order_pair);
@@ -86,6 +87,7 @@ bool p20_p25_readable(uint16_t key, bool order_pair);
 #define REPOSCNT_AT      01423u
 #define N49FLAG_AT       01746u
 #define NSRCHPNT_AT      01736u
+#define PIPCTR_AT        01056u
 #define ITEMP1_AT        0061u
 #define ITEMP2_AT        0062u
 #define RRINDEX_AT       01317u
@@ -148,11 +150,12 @@ static bool in_written_part(uint16_t key)
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 024u && z <= 03355u) || (bank == 032u && z >= 02217u && z <= 02546u) ||
-           (bank == 03u && z == 02011u) /* CLRADMOD */ ||
+           (bank == 03u && (z == 02011u || z == 02022u)) /* CLRADMOD, GOTOV56 */ ||
+           (bank == 033u && z >= 02045u && z <= 02175u) ||
            (bank == 023u && z >= 02116u && z <= 02313u) ||
            (bank == 026u && z >= 02412u && z <= 03702u) ||
            (bank == 02u && z >= 02523u && z <= 02606u) ||
-           (bank == 025u && ((z >= 02062u && z <= 03577u) || (z >= 03607u && z <= 03670u)));
+           (bank == 025u && z >= 02062u && z <= 03670u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -297,6 +300,8 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         w[N49FLAG_AT] = k == 0u ? 077776u : k == 1u ? 0u : any_word();
         /* R24's search point: 0 to 6 (7 just past), or any. */
         if (rnd() % 2u) w[NSRCHPNT_AT] = rnd() % 4u ? (uint16_t)(rnd() % 8u) : any_word();
+        /* SERVICER's pass count, which offsets R29's task: 0, 1, 2 or any. */
+        if (rnd() % 2u) w[PIPCTR_AT] = rnd() % 4u ? (uint16_t)(rnd() % 3u) : any_word();
         /* Channel 33: bit 2 (RR auto mode) clear as P20 wants it, or any. */
         k = rnd() % 4u;
         if (k == 0u)
@@ -530,6 +535,8 @@ static const struct interpretive_code *const codes[] = {
     &CONTDES2_CODE,
     &OMEGCALC_CODE,
     &CALCXY_CODE,
+    &R29_LOS_CODE,
+    &SETUP29D_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

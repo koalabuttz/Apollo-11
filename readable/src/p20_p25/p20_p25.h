@@ -661,6 +661,25 @@ extern const struct interpretive_code CONTDES2_CODE;
 extern const struct interpretive_code OMEGCALC_CODE;
 extern const struct interpretive_code CALCXY_CODE;
 
+/* ---- Part 16: GOTOV56 and R29's start (r29.c) ---- */
+
+void gotov56(void);
+void r29(void);
+void r29_after_setrrecr(void);
+void r29_after_novac(void);
+void setprpos_after_waitlist(void);
+void r29remoj(void);
+void r29remoj_after_waitlist(void);
+void r29remoj_bad_exit(void);
+void r29remoj_good_exit(void);
+void prepos29(void);
+void prepos29_after_rrtonly(void);
+void r29_los_after_exit(void);
+void setup29d_after_exit(void);
+void setup29d_after_waitlist(void);
+extern const struct interpretive_code R29_LOS_CODE;
+extern const struct interpretive_code SETUP29D_CODE;
+
 #endif
 
 #endif
