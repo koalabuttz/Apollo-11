@@ -16,6 +16,10 @@
 
 #include "agc.h"
 
+/* The listing's "nD" in basic code: word n (decimal) of the job's work
+ * area, an offset from FIXLOC (INDEX FIXLOC; TS 10D). */
+#define D(n) ((unsigned)(n))
+
 #if LUMINARY099
 #include "lm_names.inc"
 #elif COMANCHE055
@@ -1286,10 +1290,6 @@ static const word RELTAB[12] = {KW_RELTAB,   KW_RELTABP1, KW_RELTABP2,  KW_RELTA
 #define XYMARK   ERASABLE(K_XYMARK)
 #define MARKCNTR ERASABLE(K_MARKCNTR)
 #define MKDEX    ERASABLE(K_MKDEX)
-
-/* The listing's "nD" in basic code: word n (decimal) of the job's work
- * area, an offset from FIXLOC (INDEX FIXLOC; TS 10D). */
-#define D(n) ((unsigned)(n))
 
 /* Its constants: priorities (PRIO15, and PRIO3 and PRIO23, which are
  * also MARKSTAT's bits 10-11 and 10, 11, 14), the verb and noun words it
@@ -3002,6 +3002,23 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define OCT17    ((word)KW_OCT17)
 #define OCT11    ((word)KW_OCT11)
 #define UPDATBIT ((word)KW_UPDATBIT)
+
+/* Part 8, CRS61.1 and R63 (bank 34). DTHETASM and SAVEDCDU are named by
+ * ADDRESS_OF. */
+#define CRS61_1  ((word)K_CRS61_1)
+#define AUTOCK   ((word)K_AUTOCK)
+#define DAPCK    ((word)K_DAPCK)
+#define ASET     ((word)K_ASET)
+#define STEP2CK  ((word)K_STEP2CK)
+#define CDULOOP  ((word)K_CDULOOP)
+#define STKTEST  ((word)K_STKTEST)
+#define STEP3CK  ((word)K_STEP3CK)
+#define CRS61_2A ((word)K_CRS61_2A)
+#define MANUEXIS ((word)K_MANUEXIS)
+#define MANUEXIT ((word)K_MANUEXIT)
+#define R63      ((word)K_R63)
+#define STIKBIT  ((word)KW_STIKBIT)
+#define FURST3   ((word)KW_FURST3)
 #endif
 
 /* NO.CORES + 1 core sets. */

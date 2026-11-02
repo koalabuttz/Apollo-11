@@ -244,6 +244,29 @@ void lighton_after_trfailon(void);
 void vhfread(void);
 void vhfgood(void);
 
+/* ---- Part 8: CRS61.1 and R63 (crs61.c) ---- */
+
+extern const struct interpretive_code CRS61_1_CODE;
+extern const struct interpretive_code ASET_CODE;
+extern const struct interpretive_code CDULOOP_CODE;
+extern const struct interpretive_code STKTEST_CODE;
+extern const struct interpretive_code STEP3CK_CODE;
+extern const struct interpretive_code MANUEXIT_CODE;
+extern const struct interpretive_code R63_CODE;
+
+void crs61_1_after_exit(void);
+void autock(void);
+void dapck(void);
+void aset(void);
+void step2ck_after_upactoff(void);
+void cduloop_after_exit(void);
+void cduloop_done(void);
+void stktest_after_exit(void);
+void stktest_upacty(void);
+void step3ck(void);
+void crs61_2a_after_exit(void);
+void manuexis(void);
+
 #endif
 
 #endif
