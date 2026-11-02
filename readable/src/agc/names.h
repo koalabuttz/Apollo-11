@@ -2834,6 +2834,8 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define WLINIT  ((word)K_WLINIT)
 #define WBANK   ((word)KW_WBANK) /* BBCON WLINIT: bank 26, E bank 5 (W) */
 #define WSIZE   ((word)KW_WSIZE) /* DEC 161: W's last word */
+/* Part 14, GETULC. */
+#define GETULC ((word)K_GETULC)
 #endif
 
 /* NO.CORES + 1 core sets. */

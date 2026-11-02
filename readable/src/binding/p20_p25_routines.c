@@ -665,6 +665,7 @@ static const struct interpretive_code *const codes[] = {
     &ANGLES_CODE,
     &LSR22_4_CODE,
     &WLINIT_CODE,
+    &GETULC_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -719,15 +720,16 @@ static bool switched_to_store_code(uint16_t key, unsigned bank, word start)
 }
 
 /* The keys a pair's right-hand order waits at in EDOP while its left, an
- * RTB, runs a routine of this file: R61LEM1's RTB CALL (READCDUD, then
- * CALL VECPNT1). The routine ends at DANZIG, which finds the order in EDOP
- * and resumes the pass at LOC, the RTB's address: CALL is code 0152, and
- * EDOP holds it plus one. */
+ * RTB runs a routine: R61LEM1's RTB CALL (READCDUD, then CALL VECPNT1)
+ * and GETULC's RTB PUSH (NORMUNX1, then PUSH). The routine ends at DANZIG,
+ * which finds the order in EDOP and resumes the pass at LOC, the RTB's
+ * address: EDOP holds the order's code plus one. */
 static const struct pending_order {
     uint16_t key;
     word edop;
 } pending_orders[] = {
     {KEY(023u, R61LEM1 + 011u), ORDER_CALL + 1u},
+    {KEY(026u, GETULC + 016u), ORDER_PUSH + 1u},
 };
 
 static const struct pending_order *pending_order(uint16_t key)
