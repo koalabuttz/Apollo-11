@@ -9,7 +9,8 @@
  * tables have 1,128 keys.
  *
  * The file is written part by part, in the listing's order (README.md):
- *   part 1, p20.c: P20 itself (pp. 562-564).
+ *   part 1, p20.c: P20 itself (pp. 562-564);
+ *   part 2, p22.c: P22 up to S22.1 (pp. 565-569).
  * The binding (src/binding/cm_p20_p25_routines.c) runs the keys these
  * parts write, and the faithful port's routines at the others.
  *
@@ -55,6 +56,57 @@ void pikup20_after_r61csm(void);
 void p20r52jb(void);
 void p20r52jb_after_exit(void);
 void p20r52jb_after_mkrlees(void);
+
+/* ---- Part 2: P22 (p22.c) ---- */
+
+extern const struct interpretive_code PROG22_CODE;
+extern const struct interpretive_code PROG22A_CODE;
+extern const struct interpretive_code CALLR52_CODE;
+extern const struct interpretive_code S22LSITE_CODE;
+extern const struct interpretive_code P22SUBRB_CHECK_CODE;
+extern const struct interpretive_code N89ERRX_3_CODE;
+extern const struct interpretive_code S22ABDE_CODE;
+extern const struct interpretive_code DE_GR_50_CODE;
+
+void prog22(void);
+void prog22_after_rndvzflg(void);
+void prog22_after_r02both(void);
+void prog22_after_exit(void);
+void prog22_terminate(void);
+void prog22_proceed(void);
+void prog22_enter(void);
+void prog22_immediate_return(void);
+void prog22_after_blanket(void);
+void callr52_after_exit(void);
+void callr52_after_2phschng(void);
+void callr52_after_targ2flg(void);
+void callr52_after_targ1flg(void);
+void p22over_after_exit(void);
+void p22over_after_phaschng(void);
+void p22subrb_after_exit(void);
+void p22subrb_terminate(void);
+void p22subrb_proceed(void);
+void p22subrb_enter(void);
+void p22subrb_check(void);
+void n89errx_after_exit(void);
+void n89errx_after_falton(void);
+void s22dsppa(void);
+void s22dsppa_terminate(void);
+void s22dsppa_proceed(void);
+void s22dsppa_recycle(void);
+void s22dsppa_immediate_return(void);
+void s22dsppa_after_blanket(void);
+void s22dsppa_known(void);
+void s22dsppa_after_knownflg(void);
+void s22dspp_after_falton(void);
+void s22dspp_plus2(void);
+void s22dspp_plus3(void);
+void s22dspp_known_landmark(void);
+void s22dspp_after_knownflg(void);
+void s22abde(void);
+void de_gr_50_after_2phschng(void);
+void de_gr_50_after_targ2flg(void);
+void de_gr_50_after_targ1flg(void);
 
 #endif
 

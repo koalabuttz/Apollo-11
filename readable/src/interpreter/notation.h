@@ -43,6 +43,7 @@
 #define ORDER_LXA_1      0026u /* LXA,1 */
 #define ORDER_COS        0030u
 #define ORDER_DLOAD      0031u
+#define ORDER_LXC_2      0032u /* LXC,2 */
 #define ORDER_DLOAD_STAR 0033u /* DLOAD* */
 #define ORDER_SR1        0034u
 #define ORDER_VSR2       0034u /* (SR1's code too, as VSL2 is SL1's) */

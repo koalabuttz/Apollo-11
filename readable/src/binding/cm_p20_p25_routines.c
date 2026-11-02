@@ -148,6 +148,46 @@ static const struct basic_entry {
     {KEY(037u, P20R52JB), p20r52jb, true},
     {KEY(037u, P20R52JB + 4u), p20r52jb_after_exit, false},
     {KEY(037u, P20R52JB + 6u), p20r52jb_after_mkrlees, false},
+    /* Part 2: P22 */
+    {KEY(030u, PROG22), prog22, false},
+    {KEY(030u, PROG22 + 2u), prog22_after_rndvzflg, false},
+    {KEY(030u, PROG22 + 4u), prog22_after_r02both, true},
+    {KEY(030u, PROG22 + 023u), prog22_after_exit, false},
+    {KEY(030u, PROG22 + 026u), prog22_terminate, false},
+    {KEY(030u, PROG22 + 027u), prog22_proceed, true},
+    {KEY(030u, PROG22 + 030u), prog22_enter, false},
+    {KEY(030u, PROG22 + 031u), prog22_immediate_return, false},
+    {KEY(030u, PROG22 + 033u), prog22_after_blanket, false},
+    {KEY(030u, CALLR52 + 1u), callr52_after_exit, false},
+    {KEY(030u, CALLR52 + 5u), callr52_after_2phschng, false},
+    {KEY(030u, CALLR52 + 011u), callr52_after_targ2flg, false},
+    {KEY(030u, CALLR52 + 013u), callr52_after_targ1flg, true},
+    {KEY(030u, P22OVER + 1u), p22over_after_exit, false},
+    {KEY(030u, P22OVER + 3u), p22over_after_phaschng, true},
+    {KEY(030u, P22SUBRB + 2u), p22subrb_after_exit, false},
+    {KEY(030u, P22SUBRB + 5u), p22subrb_terminate, false},
+    {KEY(030u, P22SUBRB + 6u), p22subrb_proceed, true},
+    {KEY(030u, P22SUBRB + 7u), p22subrb_enter, true},
+    {KEY(030u, P22SUBRB + 010u), p22subrb_check, true},
+    {KEY(030u, N89ERRX + 1u), n89errx_after_exit, false},
+    {KEY(030u, N89ERRX + 2u), n89errx_after_falton, false},
+    {KEY(030u, S22DSPPA), s22dsppa, false},
+    {KEY(030u, S22DSPPA + 3u), s22dsppa_terminate, false},
+    {KEY(030u, S22DSPPA + 4u), s22dsppa_proceed, false},
+    {KEY(030u, S22DSPPA + 5u), s22dsppa_recycle, false},
+    {KEY(030u, S22DSPPA + 6u), s22dsppa_immediate_return, false},
+    {KEY(030u, S22DSPPA + 010u), s22dsppa_after_blanket, false},
+    {KEY(030u, S22DSPPA + 021u), s22dsppa_known, false},
+    {KEY(030u, S22DSPPA + 023u), s22dsppa_after_knownflg, true},
+    {KEY(030u, S22DSPP + 1u), s22dspp_after_falton, true},
+    {KEY(030u, S22DSPP + 2u), s22dspp_plus2, true},
+    {KEY(030u, S22DSPP + 3u), s22dspp_plus3, true},
+    {KEY(030u, S22DSPP + 4u), s22dspp_known_landmark, false},
+    {KEY(030u, S22DSPP + 6u), s22dspp_after_knownflg, true},
+    {KEY(030u, S22ABDE), s22abde, true},
+    {KEY(030u, DE_GR_50 + 4u), de_gr_50_after_2phschng, false},
+    {KEY(030u, DE_GR_50 + 010u), de_gr_50_after_targ2flg, false},
+    {KEY(030u, DE_GR_50 + 012u), de_gr_50_after_targ1flg, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -162,8 +202,8 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &PROG20_CODE,
-    &P20R52JB_CODE,
+    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE, &CALLR52_CODE,
+    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE, &DE_GR_50_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -240,6 +280,11 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     before = *state;
     kept = *io;
     status = one_pass(program, state, io, code);
+    /* PROG22C's SLOAD* QPRET,2 loads a word of the mark data (X2 its
+     * address's complement): the faithful port takes that word from
+     * erasable memory only, ADDRWD below 02000. */
+    if (status == EXEC_OK && key == KEY(030u, PROG22C) && ADDRWD >= 02000u)
+        status = EXEC_OUT_OF_SCOPE;
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;
