@@ -137,6 +137,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P20-P25, part 11: the range rate | `P20-P25.agc` (LM pp. 577-579) | [`src/p20_p25/`](src/p20_p25/) | LSR22.3's range rate, after the range's LGCUPDTE: B1 the line of sight times the range, B0 the relative velocity across the line of sight ((ULC X VLC) X ULC), negative when the LM is corrected; the deviation, the radar's RDOTM less the range rate from the state vectors, times the range (DELTAQ); the variance, RATEVAR times the range rate squared, no less than VVARMIN, times the range squared (VARIANCE). All shifted up together by the smaller of B0's and B1's normalizing counts, then LGCUPDTE. On the surface R22 ends (RENDEND); else the angles, next |
 | P20-P25, part 12: the angles | `P20-P25.agc` (LM pp. 579-582) | [`src/p20_p25/`](src/p20_p25/) | LSR22.3's angle measurements, off the surface. MXMYMZ: the gimbal angles at the mark to CDUSPOT, and the navigation base axes in reference coordinates (MX, MY, MZ). SHAFTBQ and TRUNBQ, each after RADARANG (ULC, SINTHETA, RXZ): the angle from the state vectors (ARCTAN of ULC along MX and MZ, or ASIN of SINTHETA), its deviation from the radar's RRSHAFT or RRTRUN less the X789 term, times RXZ (DELTAQ); B0 across the line of sight, negative when the CSM is corrected, B2 RXZ in one component; the variance, the angle's (SHAFTVAR, TRUNVAR) plus the IMU's (IMUVAR) times RXZ squared; each to LGCUPDTE. RENDEND goes back to R22 (R22LEM93) |
 | P20-P25, part 13: LSR22.4 and WLINIT | `P20-P25.agc` (LM pp. 582-585) | [`src/p20_p25/`](src/p20_p25/) | LSR22.4, the measurement incorporation on the lunar surface: only the CSM's state vector is corrected, with a 6 by 6 W-matrix. The LM's state vector to the mark time, then the CSM's, with the W-matrix or, on the first mark, after INITWMX6 sets it up; then LSR22.3's range and range rate (RANGEBQ). INTGRCAL (a state vector to the mark time by INTEGRV). WLINIT: every word of W zeroed (a counted loop, W.IND), then the position's, velocity's and radar angles' starting values (the surface's or the rendezvous's) on its diagonal; RENDWFLG set and MARKCTR zero |
+| P20-P25, part 14: GETULC, RADARANG and LGCUPDTE | `P20-P25.agc` (LM pp. 585-586) | [`src/p20_p25/`](src/p20_p25/) | The subroutines of each mark's incorporation. GETULC: the line of sight from the LM to the CSM, each position its conic one plus its deviation (shifted for the sphere of influence), made a unit vector by NORMUNX1 (ULC, its length RLC in 36D). RADARANG: SINTHETA (-ULC DOT MY) and RXZ (the range times the angle's cosine, normalized). LGCUPDTE: INCORP1's state vector deviation, its position and velocity lengths to R22DISP for noun 49; over RMAX or VMAX, R22 shows them to the crew (R22LEM96); else, or once the crew accepts them (ASTOK), INCORP2. GETULC's RTB NORMUNX1 resumes at DANZIG with the PUSH waiting in EDOP, which the binding keys as R61's RTB CALL |
 
 Beside them:
 
@@ -354,9 +355,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful side by side at each of its 8 keys from 16,384 states.
    `make p20-p25-cases` runs the faithful port's test of P20-P25 (its
    1,028 checks against yaAGC digests) through the readable tables, then
-   checks the written parts' interpretive words against the rope (866),
+   checks the written parts' interpretive words against the rope (932),
    and runs readable and faithful side by side at the written parts' keys
-   (414 basic and 409 order pairs) from 4,096 states each, and at the keys
+   (414 basic and 441 order pairs) from 4,096 states each, and at the keys
    the faithful routines still run from 16 states each (they must give
    the same results through the readable tables). One faithful pair runs
    states the readable binding refuses: R21LEM12's CLRGO (24,3030)

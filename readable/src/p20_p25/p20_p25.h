@@ -33,6 +33,7 @@
  *   part 12, lsr22.c: the angles' (pp. 579-582).
  *   part 13, w_matrix.c: LSR22.4, INITWMX6, INTGRCAL and WLINIT
  *     (pp. 582-585).
+ *   part 14, getulc.c: GETULC, RADARANG and LGCUPDTE (pp. 585-586).
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -634,6 +635,10 @@ void wlinit_zero_w(void);
 void wlinit_restore_ebank(void);
 extern const struct interpretive_code LSR22_4_CODE;
 extern const struct interpretive_code WLINIT_CODE;
+
+/* ---- Part 14: GETULC, RADARANG and LGCUPDTE (getulc.c) ---- */
+
+extern const struct interpretive_code GETULC_CODE;
 
 #endif
 

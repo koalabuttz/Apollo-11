@@ -1407,6 +1407,7 @@
 #define K_MXMYMZ 02757u
 #define K_LSR22_4 03200u
 #define K_WLINIT 03251u
+#define K_GETULC 03333u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -3098,6 +3099,19 @@
 #define I_WSHAFT 002002u
 #define I_WTRUN 002003u
 #define I_W 002400u
+#define I_DELTALEM 001644u
+#define I_DELTACSM 001572u
+#define I_RCVCSM 001606u
+#define I_NORMUNX1 021724u
+#define I_RDRET 003675u
+#define I_LGRET 003675u
+#define I_INCORP1 046531u
+#define I_INCORP2 046743u
+#define I_DELTAX 002664u
+#define I_R22DISP 000314u
+#define I_RMAX 002004u
+#define I_VMAX 002005u
+#define I_R22LEM96 050572u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
