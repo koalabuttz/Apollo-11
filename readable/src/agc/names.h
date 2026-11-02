@@ -2646,6 +2646,25 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define OCT205   ((word)KW_OCT205)
 #define BIT10_15 ((word)KW_BIT10P15) /* BIT10+15 */
 #define V16N80   ((word)KW_V16N80)
+/* Part 4, R61 and R65 (bank 23), and TMODE (the interpreter's, which
+ * READCDUD ends at). GENRET, CPHI, CPSI, CDUXD-CDUZD and R65CNTR are
+ * named by ADDRESS_OF. */
+#define R61LEM   ((word)K_R61LEM)
+#define R65LEM   ((word)K_R65LEM)
+#define R61C_L01 ((word)K_R61CPL01) /* R61C+L01 */
+#define R61C_L03 ((word)K_R61CPL03) /* R61C+L03 */
+#define R61LEM1  ((word)K_R61LEM1)
+#define R61LEM2  ((word)K_R61LEM2)
+#define R61C_L05 ((word)K_R61CPL05) /* R61C+L05 */
+#define R61C_L06 ((word)K_R61CPL06) /* R61C+L06 */
+#define R61C_L2  ((word)K_R61CPL2)  /* R61C+L2 */
+#define R61C_L04 ((word)K_R61CPL04) /* R61C+L04 */
+#define R61C_L4  ((word)K_R61CPL4)  /* R61C+L4 */
+#define R65WAIT  ((word)K_R65WAIT)
+#define READCDUD ((word)K_READCDUD)
+#define TMODE    ((word)K_TMODE)
+#define R61FLBIT ((word)KW_R61FLBIT)
+#define SIX_SEC  ((word)KW_06SEC) /* 06SEC: DEC 600 */
 #endif
 
 /* NO.CORES + 1 core sets. */
