@@ -14,7 +14,8 @@
  *   part 3, r57.c and r21_r23.c: R57, and R21 and R23 for the CSM
  *   (pp. 570-573);
  *   part 4, r61csm.c and bvectors.c: R61CSM, BVECTORS and GETUM
- *   (pp. 574-578).
+ *   (pp. 574-578);
+ *   part 5, r22.c: R22 up to REND12 (pp. 579-582).
  * The binding (src/binding/cm_p20_p25_routines.c) runs the keys these
  * parts write, and the faithful port's routines at the others.
  *
@@ -171,6 +172,22 @@ void r61c1_after_r60csm(void);
 void r61c1_after_pdspflag_reset(void);
 void r61c1_after_phaschng(void);
 void r61end(void);
+
+/* ---- Part 5: R22 up to REND12 (r22.c) ---- */
+
+extern const struct interpretive_code R22_CODE;
+extern const struct interpretive_code REND2_CODE;
+extern const struct interpretive_code REND3_CODE;
+extern const struct interpretive_code REND4_CODE;
+extern const struct interpretive_code REND6_CODE;
+extern const struct interpretive_code REND9_CODE;
+extern const struct interpretive_code REND10_CODE;
+extern const struct interpretive_code REND10A_CODE;
+
+void r22(void);
+void r22_after_priochng(void);
+void rend1a_after_exit(void);
+void rend2_after_gentran(void);
 
 #endif
 

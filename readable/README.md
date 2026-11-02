@@ -147,6 +147,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | CM P20-P25, part 2: P22 | `P20-P25.agc` (CM pp. 565-569) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | P22, the CSM's orbital navigation program (bank 30), up to S22.1: R02BOTH, then +MGA (the angle between the stable member's Y axis and the orbit's normal) shown with verb 06 noun 45. On proceed, PROG22A asks for the landmark's code ABCDE (verb 05 noun 70) and S22DSPPA checks it: the offset, A known or unknown, DE the landing site or an advanced orbit (ADVORB). A known landmark's latitude, longitude and altitude come from the crew (verb 06 noun 89, P22SUBRB, each within 90 degrees) or from the landing site (S22LSITE). Then R52 points the optics, the marks are asked for (verb 05 noun 71), and S22.1 runs; P22OVER starts again at PROG22A. The binding refuses PROG22C's SLOAD* of a mark word in fixed memory, as the faithful port does |
 | CM P20-P25, part 3: R57, R21 and R23 | `P20-P25.agc` (CM pp. 570-573) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R57, the optics calibration routine P23 calls (bank 37): it aborts P23 if the marking system or an extended verb is busy, asks for a calibration mark (verb 59), shows the trunnion angle (verb 06 noun 87, MARKDISP) and on proceed stores it, less 19.77DEG by MSU, in TRUNBIAS; ENDR57 ends the marking and goes back through EGRESS. R21 and R23 for the CSM, the rendezvous sighting marks (verbs 57 and 54): verb 51 asks for the marks, or with R23FLG set verb 06 noun 94 and verb 53 for the backup marks, whose time and CDU angles R23 reads itself; on proceed the last mark goes to MRKBUF2 for R22, and R21END ends the marking. MSU of a register (R57B's MSU L) is now modelled in `src/agc/` |
 | CM P20-P25, part 4: R61CSM, BVECTORS and GETUM | `P20-P25.agc` (CM pp. 574-578) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R61CSM, the preferred tracking attitude routine P20 calls again and again (bank 37): R61CNTR paces it (counted down while positive, a maneuver under way while negative), CRS61.1 works out the attitude for tracking the LM, and R61C1 maneuvers to it by R60CSM, with the priority displays flag set round it; DECRM61 sets R61CNTR (3 after a pass with no maneuver, +0 after one) and goes back through BANKJUMP with the caller's EBANK. BVECTORS and GETUM, interpretive subroutines of R22 (bank 23): GETUM gives the line of sight UM from a mark's optics and IMU angles (SXTNB, NBSM, REFSMMAT) and copies the mark to MARKDOWN for the downlink; BVECTORS gives the measurement's B vector, at right angles to the relative position RCLP, and DELTAQ, the measured deviation |
+| CM P20-P25, part 5: R22 up to REND12 | `P20-P25.agc` (CM pp. 579-582) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R22, the rendezvous tracking data processing routine, a job of its own while P20 tracks (bank 34): it waits for an optics mark R21 leaves in MRKBUF2, or once a minute reads the VHF range, integrates both state vectors to the measurement's time (the vehicle it updates last, with the W matrix when that is valid), takes the line of sight from the CSM to the LM and works out the B vector and the deviation (BVECTORS for a mark, two passes at right angles) and the variance of the measurement's error (the sextant's and the IMU's, scaled by the distance, plus the integration's; a range's at least RVARMIN), and the update (INCORP1), which on the first pass goes to the crew (RENDISP) when it is larger than RMAX or VMAX. A pass that ends at RTB TPMODE now runs it, as the faithful pair does |
 
 Beside them:
 
@@ -391,15 +392,17 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    so that the case where nothing changed is tested.
    `make cm-p20-p25-cases` runs the faithful port's test of the CM's
    P20-P25 (its 1,993 checks against yaAGC digests) through the readable
-   tables, then checks the interpretive words against the rope (183 so
+   tables, then checks the interpretive words against the rope (351 so
    far), and runs readable and faithful side by side at every key the parts
-   have written (102 basic and 88 order pairs) from 4,096 states each, and
+   have written (106 basic and 161 order pairs) from 4,096 states each, and
    at the others (which run the faithful routines through the readable
    tables) from 16. The states carry each frozen case's channels, and now
    and then the program has no hardware record, which every routine of
    the file refuses. S22TOFF and S22TOFF +1, the returns P22's GOTOs take,
-   are mostly CADRs in fixed memory, as the STQs leave them, and MRKBUF1
-   is now and then -1, no mark.
+   are mostly CADRs in fixed memory, as the STQs leave them, and EGRESS
+   always is (a CADR in erasable memory could send the faithful GOTO round
+   a cycle, which it ends by exiting); MRKBUF1 is now and then -1, no
+   mark, and MPAC +0 or 1, CRS61.1's answers.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
