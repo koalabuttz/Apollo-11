@@ -1404,6 +1404,7 @@
 #define K_LSR22_3 02412u
 #define K_RANGEBQ 02510u
 #define K_QOK 02605u
+#define K_MXMYMZ 02757u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2412,6 +2413,7 @@
 #define KW_6SECS 001130u
 #define KW_RNGSCBIT 001000u
 #define KW_RRRSBIT 000004u
+#define KW_AIGBANK 054067u
 #define KW_ENDTASK {072537u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003452u,002063u}
@@ -3059,6 +3061,21 @@
 #define I_VOK1 054723u
 #define I_VOK2 054725u
 #define I_RENDEND 055176u
+#define I_SHAFTBQ 055011u
+#define I_TRUNBQ 055107u
+#define I_MX 003676u
+#define I_MY 003704u
+#define I_MZ 003712u
+#define I_ULC 003723u
+#define I_RADARANG 055361u
+#define I_2PI_8 055440u
+#define I_X789 001700u
+#define I_IMUVAR 055435u
+#define I_SHAFTVAR 002010u
+#define I_TRUNVAR 002011u
+#define I_SINTHETA 003731u
+#define I_RXZ 003721u
+#define I_R22LEM93 050566u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
