@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* P20-P25.agc, parts 10 and 11 (Luminary099 pp. 574-579): LSR22.3, R22's
- * measurement incorporation, from its start through the range rate's.
+/* P20-P25.agc, parts 10 to 12 (Luminary099 pp. 574-582): LSR22.3, R22's
+ * measurement incorporation.
  *
  * LSR22.3 (bank 26) "COMPUTES THE B-VECTORS ADN" [sic] "DELTA Q FOR EACH
  * OF THE QUANTITIES MEASURED BY THE RENDEZVOUS RADAR. (RANGE, RANGE RATE,
@@ -26,7 +26,17 @@
  * variance, RATEVAR times the range rate squared, no less than VVARMIN,
  * times the range squared. All are shifted up together as far as the
  * larger of B0 and B1 allows, and LGCUPDTE takes them. On the surface
- * R22 is done (RENDEND); else the angles, in the next part.
+ * R22 is done (RENDEND).
+ *
+ * Off it, the angles (part 12). The navigation base axes in reference
+ * coordinates, MX, MY and MZ, from the gimbal angles at the mark; then for
+ * the shaft and the trunnion angle each, as for the range: the angle from
+ * the state vectors (RADARANG and ARCTAN, or ASIN), its deviation from the
+ * radar's (RRSHAFT, RRTRUN) less the X789 term, times RXZ (the range
+ * across MY); B0 across the line of sight, negative when the CSM is
+ * corrected, and one component of B2 RXZ; the variance, the angle's
+ * (SHAFTVAR, TRUNVAR) and the IMU's (IMUVAR) times RXZ squared. Then
+ * RENDEND, back to R22 (R22LEM93).
  *
  * As in the other parts, a branch or CALL to a place the faithful port
  * keys a routine at ends the pass there. */
@@ -339,6 +349,185 @@ static const word range_rate_words[] = {
     ADDRESS(RENDEND), /* "NO" */
 };
 
+/* ---- The angles ---- */
+
+/* MXMYMZ -- p. 579: "YES, COMPUTE MX, MY, MZ": E bank 7 (AIGBANK), and the
+ * gimbal angles at the mark (AIG, AMG, AOG) to CDUSPOT, "GIMBAL ANGLES NOW
+ * IN CDUSPOT FOR TRG*NBSM". (A, a bank constant or a CDU angle, does not
+ * overflow: no TS skips.) */
+void mxmymz(void)
+{
+    set_A(AIGBANK);
+    ts(BBANK_ADDRESS);
+    ca(ADDRESS_OF(AIG));
+    ts(ADDRESS_OF(CDUSPOT));
+    ca(ADDRESS_OF(AMG));
+    ts(ADDRESS_OF(CDUSPOT) + 2u);
+    ca(ADDRESS_OF(AOG));
+    ts(ADDRESS_OF(CDUSPOT) + 4u);
+    tc_at(MXMYMZ + 010u);
+    intpret();
+}
+
+/* MXMYMZ +011 -- pp. 580-582. Each navigation base axis (UNITX, UNITY,
+ * UNITZ) to stable member axes (TRG*NBSM, then *NBSM* with the same
+ * angles) and to reference axes (VXM REFSMMAT): MX, MY and MZ.
+ *
+ * SHAFTBQ: RADARANG (ULC, RLC in 36D, SINTHETA and RXZ). "STORE SHAFT
+ * CODE (3) FOR R3 IN NOUN 49"; "COMPUTE DELTAQ,B VECTORS FOR SHAFT ANG.":
+ * the shaft angle from ULC's components along MX (SINTH, "18D") and MZ
+ * (COSTH, "16D") by ARCTAN, taken from RRSHAFT; less X789 ("SHIFT FROM
+ * -5/-3 TO B0"), times RXZ ("SHIFT TO EARTH/MOON SPHERE") in DELTAQ,
+ * "EARTH B-29. MOON B-27". B0 the unit vector of ULC X MY, "B0, COMP. IF
+ * CSM BEING CORRECTED"; B1 zero, and B2 RXZ ("SHIFT FROM EARTH/MOON SPHERE
+ * TO B-25") and zeros. The variance, SHAFTVAR and IMUVAR ("RAD**2 B12")
+ * times RXZ squared, "STORE VARIANCE TRIPLE PRECISION", "B-40"; LGCUPDTE.
+ *
+ * TRUNBQ: RADARANG again; "STORE TRUNNION CODE (4) FOR R3 IN N49". B0
+ * "(ULC X MY) X ULC", "B0, COMP. IF CSM BEING CORRECTED"; B1 zero, B2
+ * zero but for its second word, RXZ. The variance from TRUNVAR as the
+ * shaft's; the deviation, RRTRUN less the trunnion angle from the state
+ * vectors (ASIN of SINTHETA, "SIN THETA IN PD6"), less X789 +2, times RXZ;
+ * LGCUPDTE. RENDEND: back to R22 (R22LEM93). */
+static const word angles_words[] = {
+    ORDERS(VLOAD, CALL),
+    ADDRESS_PLUS_ONE(UNITX),
+    ADDRESS(TRG_STARNBSM),
+    ORDERS(VXM, VSL1),
+    ADDRESS_PLUS_ONE(REFSMMAT),
+    STOVL(MX),
+    ADDRESS_PLUS_ONE(UNITY),
+    ORDER(CALL),
+    ADDRESS(STAR_NBSM_STAR),
+    ORDERS(VXM, VSL1),
+    ADDRESS_PLUS_ONE(REFSMMAT),
+    STOVL(MY),
+    ADDRESS_PLUS_ONE(UNITZ),
+    ORDER(CALL),
+    ADDRESS(STAR_NBSM_STAR),
+    ORDERS(VXM, VSL1),
+    ADDRESS_PLUS_ONE(REFSMMAT),
+    /* SHAFTBQ */ STCALL(MZ),
+    ADDRESS(RADARANG),
+    ORDERS(SSP, CALL), /* "STORE SHAFT CODE (3) FOR R3 IN NOUN 49" */
+    ADDRESS_PLUS_ONE(WHCHREAD),
+    NUMBER(3),
+    ADDRESS(GRP2PC),
+    ORDERS(VLOAD, DOT), /* "COMPUTE DELTAQ,B VECTORS FOR SHAFT ANG." */
+    ADDRESS_PLUS_ONE(ULC),
+    ADDRESS_PLUS_ONE(MX),
+    ORDER(SL1),
+    STOVL(SINTH), /* "18D" */
+    ADDRESS_PLUS_ONE(ULC),
+    ORDERS(DOT, SL1),
+    ADDRESS_PLUS_ONE(MZ),
+    STCALL(COSTH), /* "16D" */
+    ADDRESS(ARCTAN),
+    ORDERS(BDSU, DMP),
+    ADDRESS_PLUS_ONE(RRSHAFT),
+    ADDRESS_PLUS_ONE(2PI_8),
+    ORDERS(SL3R, PUSH),
+    ORDERS(DLOAD, SL3),
+    ADDRESS_PLUS_ONE(X789),
+    ORDERS(SRR_STAR, BDSU), /* "SHIFT FROM -5/-3 TO B0" */
+    SRR_X2(0),
+    ORDERS(DMP, SRR_STAR),
+    ADDRESS_PLUS_ONE(RXZ),
+    SRR_X1(0),     /* "SHIFT TO EARTH/MOON SPHERE" */
+    STOVL(DELTAQ), /* "EARTH B-29. MOON B-27" */
+    ADDRESS_PLUS_ONE(ULC),
+    ORDERS(VXV, VSL1),
+    ADDRESS_PLUS_ONE(MY),
+    ORDER(UNIT),
+    ORDERS(BOFF, VCOMP), /* "B0, COMP. IF CSM BEING CORRECTED" */
+    SWITCH(BOF, VEHUPFLG),
+    ADDRESS_AT(SHAFTBQ, 043), /* "+1": past the VCOMP */
+    STOVL(BVECTOR),
+    ADDRESS_PLUS_ONE(ZEROVECS),
+    STORE_AT(BVECTOR, 6),
+    STODL_AT(BVECTOR, 12),
+    ADDRESS_PLUS_ONE(RXZ),
+    ORDERS(SR_STAR, SRR_STAR), /* "SHIFT FROM EARTH/MOON SPHERE TO B-25" */
+    SR_X1(-2),
+    SRR_X2(0),
+    STORE_AT(BVECTOR, 12),
+    ORDER(SLOAD),
+    ADDRESS_PLUS_ONE(SHAFTVAR),
+    ORDERS(DAD, DMP),
+    ADDRESS_PLUS_ONE(IMUVAR), /* "RAD**2 B12" */
+    ADDRESS_PLUS_ONE(RXZ),
+    ORDERS(SRR_STAR, DMP),
+    SRR_X1(0), /* "SHIFT TO EARTH/MOON SPHERE" */
+    ADDRESS_PLUS_ONE(RXZ),
+    ORDERS(SR_STAR, SR_STAR),
+    SR_X1(-2),
+    SR_X2(0),
+    ORDERS(SR_STAR, RTB),
+    SR_X2(0),
+    ADDRESS(TPMODE),  /* "STORE VARIANCE TRIPLE PRECISION" */
+    STCALL(VARIANCE), /* "B-40" */
+    ADDRESS(LGCUPDTE),
+    ORDER(CALL),
+    ADDRESS(GRP2PC),
+    /* TRUNBQ */ ORDER(CALL),
+    ADDRESS(RADARANG),
+    ORDERS(SSP, CALL), /* "STORE TRUNNION CODE (4) FOR R3 IN N49" */
+    ADDRESS_PLUS_ONE(WHCHREAD),
+    NUMBER(4),
+    ADDRESS(GRP2PC),
+    ORDERS(VLOAD, VXV),
+    ADDRESS_PLUS_ONE(ULC),
+    ADDRESS_PLUS_ONE(MY),
+    ORDERS(VSL1, VXV),
+    ADDRESS_PLUS_ONE(ULC),
+    ORDER(VSL1),         /* "(ULC X MY) X ULC" */
+    ORDERS(BOFF, VCOMP), /* "B0, COMP. IF CSM BEING CORRECTED" */
+    SWITCH(BOF, VEHUPFLG),
+    ADDRESS_AT(TRUNBQ, 017), /* "+1": past the VCOMP */
+    STOVL(BVECTOR),
+    ADDRESS_PLUS_ONE(ZEROVECS),
+    STORE_AT(BVECTOR, 6),
+    STODL_AT(BVECTOR, 12),
+    ADDRESS_PLUS_ONE(RXZ),
+    ORDERS(SR_STAR, SRR_STAR), /* "SHIFT FROM EARTH/MOON SPHERE TO B-25" */
+    SR_X1(-2),
+    SRR_X2(0),
+    STORE_AT(BVECTOR, 14),
+    ORDER(SLOAD),
+    ADDRESS_PLUS_ONE(TRUNVAR),
+    ORDERS(DAD, DMP),
+    ADDRESS_PLUS_ONE(IMUVAR),
+    ADDRESS_PLUS_ONE(RXZ),
+    ORDERS(SRR_STAR, DMP),
+    SRR_X1(0), /* "SHIFT TO EARTH/MOON SPHERE" */
+    ADDRESS_PLUS_ONE(RXZ),
+    ORDERS(SR_STAR, SR_STAR),
+    SR_X1(-2),
+    SR_X2(0),
+    ORDERS(SR_STAR, RTB),
+    SR_X2(0),
+    ADDRESS(TPMODE), /* "STORE VARIANCE TRIPLE PRECISION" */
+    STODL(VARIANCE),
+    ADDRESS_PLUS_ONE(SINTHETA),
+    ORDERS(ASIN, BDSU), /* "SIN THETA IN PD6" */
+    ADDRESS_PLUS_ONE(RRTRUN),
+    ORDERS(DMP, SL3R),
+    ADDRESS_PLUS_ONE(2PI_8),
+    ORDERS(PDDL, SL3),
+    ADDRESS_PLUS_ONE_AT(X789, 2),
+    ORDERS(SRR_STAR, BDSU), /* "SHIFT FROM -5/-3 TO B0" */
+    SRR_X2(0),
+    ORDERS(DMP, SRR_STAR),
+    ADDRESS_PLUS_ONE(RXZ),
+    SRR_X1(0),
+    STCALL(DELTAQ), /* "EARTH B-29. MOON B-27" */
+    ADDRESS(LGCUPDTE),
+    ORDER(CALL),
+    ADDRESS(GRP2PC),
+    /* RENDEND */ ORDER(GOTO),
+    ADDRESS(R22LEM93),
+};
+
 /* ---- The interpretive code ---- */
 
 const struct interpretive_code LSR22_3_CODE = {026u, LSR22_3, COUNT(lsr22_3_words), lsr22_3_words};
@@ -346,5 +535,7 @@ const struct interpretive_code RANGEBQ1_CODE = {026u, RANGEBQ + 010u, COUNT(rang
                                                 rangebq1_words};
 const struct interpretive_code RANGE_RATE_CODE = {026u, QOK + 2u, COUNT(range_rate_words),
                                                   range_rate_words};
+const struct interpretive_code ANGLES_CODE = {026u, MXMYMZ + 011u, COUNT(angles_words),
+                                              angles_words};
 
 #endif

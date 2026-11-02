@@ -588,6 +588,8 @@ static const struct basic_entry {
     /* Part 10 */
     {KEY(026u, RANGEBQ + 3u), rangebq_r65, false},
     {KEY(026u, RANGEBQ + 7u), rangebq_after_r65, true},
+    /* Part 12 */
+    {KEY(026u, MXMYMZ), mxmymz, true},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -657,6 +659,7 @@ static const struct interpretive_code *const codes[] = {
     &LSR22_3_CODE,
     &RANGEBQ1_CODE,
     &RANGE_RATE_CODE,
+    &ANGLES_CODE,
 };
 
 /* The table of bank that address is in, or none. */

@@ -2524,6 +2524,9 @@
 #define I_NUVLEM 001652u
 #define I_NUVCSM 001600u
 #define I_VCVCSM 001614u
+#define I_X789 001700u
+#define I_IMUVAR 071337u
+#define I_TRUNVAR 063453u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u
