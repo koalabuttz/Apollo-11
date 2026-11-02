@@ -31,18 +31,6 @@
 
 #if LUMINARY099
 
-/* CCS A after a MASK of positive bits: true when a bit was set (A then
- * holds the masked word less one), false for +0. A MASK leaves neither a
- * negative word nor -0, so the CCS's other two ways are not modelled. */
-static bool bit_set_in_A(void)
-{
-    switch (ccs_at(A_ADDRESS)) {
-    case POSITIVE: return true;
-    case IS_PLUS_ZERO: return false;
-    default: not_modelled(); return false;
-    }
-}
-
 /* ---- MAGSUB to FLIP, in fixed-fixed memory ---- */
 
 /* MAGSUB -- p. 521: "RETURNS TO CALLER +2 IF THE ABSOLUTE VALUE OF VALUE
@@ -605,14 +593,14 @@ static void radnoop(void)
 }
 
 /* RDBADEND -- p. 563: the radar job's bad end (POSTJUMP, CADR BADEND). */
-static void rdbadend(void)
+void rdbadend(void)
 {
     set_A(TWO);
     tc_to(RDBADEND + 1u, POSTJUMP);
 }
 
 /* ENDRADAR: "PROLOG TO CHECK RR CDU FAIL BEFORE END." */
-static void endradar(void)
+void endradar(void)
 {
     set_A(RCDUFBIT);
     mask_at(ADDRESS_OF(RADMODES));

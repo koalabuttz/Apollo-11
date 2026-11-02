@@ -18,7 +18,8 @@
  *   part 4, r61.c: R61 and R65, the preferred tracking attitude
  *     (pp. 517-520), with READCDUD;
  *   part 5, rr_routines.c: the rendezvous radar's subroutines, MAGSUB to
- *     RRZ2 (pp. 521-537), with ENDRADAR, RDBADEND and RADNOOP.
+ *     RRZ2 (pp. 521-537), with ENDRADAR, RDBADEND and RADNOOP;
+ *   part 6, designate.c: the designate, RRDESSM to DODESEND (pp. 538-552).
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -70,6 +71,18 @@ static inline void tc_return_in(word at, unsigned address)
     if ((to & 070000u) || to < 010u) not_modelled();
     Q = (word)(address + 1u);
     Z = to;
+}
+
+/* CCS A after a MASK of positive bits: true when a bit was set (A then
+ * holds the masked word less one), false for +0. A MASK leaves neither a
+ * negative word nor -0, so the CCS's other two ways are not modelled. */
+static inline bool bit_set_in_A(void)
+{
+    switch (ccs_at(A_ADDRESS)) {
+    case POSITIVE: return true;
+    case IS_PLUS_ZERO: return false;
+    default: not_modelled(); return false;
+    }
 }
 
 /* ---- Part 1: P20 and P25 (programs.c) ---- */
@@ -437,6 +450,68 @@ void rrzero_after_waitlist(void);
 void roadback(void);
 void rrz2(void);
 void rrz2_after_rrzerosb(void);
+void rdbadend(void); /* (no keys: they run inside the routines that end at them) */
+void endradar(void);
+
+/* ---- Part 6: the designate (designate.c) ---- */
+
+extern const struct interpretive_code RRDESSM_CODE;
+extern const struct interpretive_code OKDESNB_CODE;
+extern const struct interpretive_code DODES_CODE;
+extern const struct interpretive_code DODES_URR_CODE;
+extern const struct interpretive_code DORROUT_CODE;
+
+/* RRDESSM, STARTDES and TRYSWS */
+void rrdessm_after_exit(void);
+void rrdessm_not_in_mode(void);
+void okdessm(void);
+void okdessm_after_startdes(void);
+void lundesch(void);
+void lundesch_not_rendezvous(void);
+void startdes_after_setrrecr(void);
+void desretrn(void);
+void trysws_after_rmodinv(void);
+void trysws_out_of_limits(void);
+void trysws_within_limits(void);
+void trysws_after_rmodinv2(void);
+void nodessm_after_rmodinv(void);
+
+/* RRDESNB and RRLIMNB */
+void rrdesnb(void);
+void rrdesnb_after_makecadr(void);
+void rrdesnb_after_downflag(void);
+void rrdesnb_not_in_mode(void);
+void okdesnb(void);
+void okdesnb_after_exit(void);
+void tryswn_after_rmodinv(void);
+void tryswn_out_of_limits(void);
+void tryswn_within_limits(void);
+void tryswn_after_rmodinv2(void);
+void nodesnb_after_rmodinv(void);
+void nodesnb_after_alarm(void);
+void nodesnb_after_clradmod(void);
+void rrlimnb_trunnion_out(void);
+void rrlimnb_trunnion_in(void);
+void rrlimnb_shaft_out(void);
+void rrlimnb_shaft_in(void);
+void negshaft(void);
+
+/* BEGDES, STDESIG and DODES */
+void begdes(void);
+void begdes_remode(void);
+void desloop(void);
+void stdesig(void);
+void moredes_after_findvac(void);
+void dodes(void);
+void dodes_after_exit(void);
+void dodes_after_dot(void);
+void rrdesdun_after_downflag(void);
+void notp20(void);
+void notp20_after_rrout(void);
+void notp20_new_los(void);
+void notp20_after_killtask(void);
+void notp20_after_chang1(void);
+void dodesend(void);
 
 #endif
 

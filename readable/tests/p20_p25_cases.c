@@ -46,7 +46,8 @@ struct interpretive_code {
 extern const struct interpretive_code ORBCHG2_CODE, P20LEM1_CODE, P20LEMC3_CODE, UPPSV_CODE,
     ORBCHG3_CODE, R22LEM3_CODE, R22LEM96_CODE, R22LEM96_WAIT_CODE, R22LEM7_CODE, R21LEM1_CODE,
     R21LEM3_CODE, R21LEM12_CODE, R21LEM12_FIRST_PASS_CODE, R21LEM7_CODE, R21LEM8_CODE,
-    R61C_L03_CODE, R61LEM1_AUTO_CODE, R61C_L05_CODE;
+    R61C_L03_CODE, R61LEM1_AUTO_CODE, R61C_L05_CODE, RRDESSM_CODE, OKDESNB_CODE, DODES_CODE,
+    DODES_URR_CODE, DORROUT_CODE;
 extern const agc_routine_table lm_p20_p25_basic, lm_p20_p25_interpretive;
 extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_interpretive;
 bool p20_p25_readable(uint16_t key, bool order_pair);
@@ -129,9 +130,10 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: parts 1 to 4, bank 24 to R24LEM4, bank 32's
- * ORBCHG3 (to its EXIT's TC BANKCALL), CLRADMOD in fixed-fixed and bank
- * 23's R61 (to READCDUD). */
+/* The parts written so far: parts 1 to 6, bank 24 to R24LEM4, bank 32's
+ * ORBCHG3 (to its EXIT's TC BANKCALL), CLRADMOD in fixed-fixed, bank 23's
+ * R61 (to READCDUD), MAGSUB to FLIP in fixed-fixed and bank 25 from
+ * RRTURNON to DODESEND. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
@@ -140,7 +142,7 @@ static bool in_written_part(uint16_t key)
            (bank == 03u && z == 02011u) /* CLRADMOD */ ||
            (bank == 023u && z >= 02116u && z <= 02313u) ||
            (bank == 02u && z >= 02523u && z <= 02606u) ||
-           (bank == 025u && z >= 02062u && z <= 02371u);
+           (bank == 025u && z >= 02062u && z <= 03064u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -344,6 +346,9 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
      * ITEMP1 is AUTOMBIT (2) or +0. (Last: a work area may overlap them.) */
     if (key == RR1AX2_KEY || key == RR1AX2_KEY + 021u) w[RRINDEX_AT] = (uint16_t)(rnd() % 2u);
     if (key == RR1AX2_KEY + 021u) w[ITEMP1_AT] = rnd() % 2u ? 2u : 0u;
+    /* The interrupt latch either way now and then: the designate's routines
+     * hold interrupts and release them. */
+    if (n % 4u != 0u && rnd() % 8u == 0u) io->io.interrupt_enabled = (uint16_t)(rnd() % 2u);
     if (key == RROUTLIM_KEY || key == RROUTLIM_KEY + 1u) {
         w[ITEMP2_AT] = (uint16_t)(rnd() % 2u);
         /* Now and then a zero command after a zero one, where AD NEG0
@@ -461,6 +466,11 @@ static const struct interpretive_code *const codes[] = {
     &R61C_L03_CODE,
     &R61LEM1_AUTO_CODE,
     &R61C_L05_CODE,
+    &RRDESSM_CODE,
+    &OKDESNB_CODE,
+    &DODES_CODE,
+    &DODES_URR_CODE,
+    &DORROUT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
