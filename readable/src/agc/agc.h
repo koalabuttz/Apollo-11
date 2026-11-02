@@ -392,10 +392,12 @@ static inline void relint(void)
     *agc.interrupts = 1;
 }
 
-/* ROR SUPERBNK: A or'ed with channel 7. WRITE SUPERBNK: channel 7 from A. */
+/* ROR SUPERBNK: A or'ed with channel 7 (like every channel instruction,
+ * it takes A overflow-corrected, and leaves the result sign-extended).
+ * WRITE SUPERBNK: channel 7 from A. */
 static inline void ror_superbnk(void)
 {
-    A = (reg16)(A | *agc.superbank);
+    A = sign_extend((word)(overflow_corrected(A) | *agc.superbank));
 }
 static inline void write_superbnk(void)
 {

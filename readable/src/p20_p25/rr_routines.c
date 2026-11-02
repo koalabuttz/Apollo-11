@@ -148,7 +148,14 @@ void settrkf(void)
         tc_q();
         return;
     }
-    set_A(BIT8); /* RRTRKF */
+    rrtrkf();
+}
+
+/* RRTRKF: the lamp test aside (the radar lamps' RADLITES and LITIT go on
+ * here when they have set their own lamps). */
+void rrtrkf(void)
+{
+    set_A(BIT8);
     ts(L_ADDRESS);
     set_A(BITS13_7_2); /* "SEE IF CDU FAILED." */
     mask_at(ADDRESS_OF(RADMODES));
@@ -159,6 +166,12 @@ void settrkf(void)
         mask_at(ADDRESS_OF(RADMODES));
         if (bit_set_in_A()) ca(L_ADDRESS); /* the lamp on; else A +0, off */
     }
+    trkflon_plus1();
+}
+
+/* TRKFLON +1: A the lamp's desired state (L, or +0), L the lamp's bit. */
+void trkflon_plus1(void)
+{
     ad_at(ADDRESS_OF(DSPTAB) + 11u); /* "HALF ADD DESIRED AND PRESENT STATES." */
     mask_at(L_ADDRESS);
     if (A_is_zero())
@@ -586,7 +599,7 @@ void rroutlim(void)
 
 /* RADNOOP -- p. 561: "NO FURTHER ACTION REQUESTED." RGOODEND as an
  * immediate task (2CADR RGOODEND). */
-static void radnoop(void)
+void radnoop(void)
 {
     set_A(ONE);
     tc_to(RADNOOP + 1u, WAITLIST);

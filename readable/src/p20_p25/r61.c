@@ -28,7 +28,7 @@
 
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
-/* R61LEM -- p. 518. The caller's return, as a CADR, to GENRET. */
+/* R61LEM -- p. 517. The caller's return, as a CADR, to GENRET. */
 void r61lem(void)
 {
     tc_to(R61LEM, MAKECADR);

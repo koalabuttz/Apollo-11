@@ -77,7 +77,10 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* Channels 30-33, as the run latched them. */
+/* Channels 30-33, as the run latched them, and 12, 13 and 14, the
+ * hardware's latches. Channel 13's bits 12-14 (the hand controller traps'
+ * resets) read back +0, and a write leaves them as they were or sets
+ * them. */
 static word channel_in(unsigned number)
 {
     switch (number) {
@@ -88,6 +91,9 @@ static word channel_in(unsigned number)
     case 012u:
         if (!hardware_now) not_modelled();
         return hardware_now->channel12;
+    case 013u:
+        if (!hardware_now) not_modelled();
+        return (word)(hardware_now->channel13 & 043777u);
     case 014u:
         if (!hardware_now) not_modelled();
         return hardware_now->channel14;
@@ -95,12 +101,14 @@ static word channel_in(unsigned number)
     }
 }
 
-/* Channels 12 and 14 only (WAND and WOR). */
+/* Channels 12, 13 and 14 only (WAND and WOR). */
 static void channel_out(unsigned number, word value)
 {
-    if ((number != 012u && number != 014u) || !hardware_now) not_modelled();
+    if ((number != 012u && number != 013u && number != 014u) || !hardware_now) not_modelled();
     if (number == 012u)
         hardware_now->channel12 = value;
+    else if (number == 013u)
+        hardware_now->channel13 = (uint16_t)((hardware_now->channel13 & 034000u) | value);
     else
         hardware_now->channel14 = value;
 }
@@ -512,6 +520,47 @@ static const struct basic_entry {
     {KEY(025u, NOTP20 + 016u), notp20_after_killtask, false},
     {KEY(025u, NOTP20 + 021u), notp20_after_chang1, false},
     {KEY(025u, DODESEND), dodesend, false},
+    /* Part 7: the radar data read, and the landing radar's lamps */
+    {KEY(025u, LRALT), lralt, false},
+    {KEY(025u, LRVELZ), lrvelz, false},
+    {KEY(025u, LRVELY), lrvely, false},
+    {KEY(025u, LRVELX), lrvelx, false},
+    {KEY(025u, RRRDOT), rrrdot, false},
+    {KEY(025u, RRRANGE), rrrange, false},
+    {KEY(025u, LRVEL), lrvel, false},
+    {KEY(025u, RADAREAD), radaread, false},
+    {KEY(025u, TRYCOUNT + 5u), radaread_after_alarm, false},
+    {KEY(025u, NOMORE), nomore, false},
+    {KEY(025u, BADRAD), badrad, false},
+    {KEY(025u, PLENTY), plenty, false},
+    {KEY(025u, LRPOSCHK), lrposchk, false},
+    {KEY(025u, LRPOSCHK + 010u), lrposchk_after_alarm, false},
+    {KEY(025u, VELCHK), velchk, false},
+    {KEY(025u, VELCHK + 020u), velchk_after_dgcheck, false},
+    {KEY(025u, GOODRAD), goodrad, false},
+    {KEY(025u, GOODRAD + 6u), goodrad_after_radlites, false},
+    {KEY(025u, NOEND), noend, false},
+    {KEY(025u, LRHEIGHT), lrheight, false},
+    {KEY(025u, RENDRAD), rendrad, false},
+    {KEY(025u, RADIN), radin, false},
+    {KEY(025u, DGCHECK2 + 2u), dgcheck2_after_dgcheck, false},
+    {KEY(025u, SCALCHNG), scalchng, false},
+    {KEY(025u, SCALCHNG + 013u), scalchng_after_upflag, false},
+    {KEY(025u, DGCHECK + 014u), dgcheck_good, false},
+    {KEY(025u, DATAFAIL + 7u), datafail_after_radlites, false},
+    {KEY(025u, LRPOS2), lrpos2, false},
+    {KEY(025u, LRPOS2 + 020u), lrpos2_after_waitlist, false},
+    {KEY(025u, LRPOSNXT), lrposnxt, false},
+    {KEY(025u, LRPOSNXT + 3u), lrposnxt_after_fixdelay, false},
+    {KEY(025u, RADNOOP + 4u), radnoop_after_waitlist, false},
+    {KEY(025u, LASTLRDT), lastlrdt, false},
+    {KEY(025u, LASTLRDT + 2u), lastlrdt_after_vardelay, false},
+    {KEY(025u, LRPOSCAN), lrposcan, false},
+    {KEY(025u, RGOODEND), rgoodend, false},
+    {KEY(025u, R12LITES), r12lites, false},
+    {KEY(025u, R12LITES + 5u), r12lites_after_hlight, false},
+    {KEY(025u, R12LITES + 6u), r12lites_after_vlight, false},
+    {KEY(025u, LITIT + 3u), litit_after_trkflon, false},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC

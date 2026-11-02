@@ -55,10 +55,14 @@ bool p20_p25_readable(uint16_t key, bool order_pair);
 /* The addresses of the words the routines use. */
 #define NEWOPS_AT        06070u
 #define DANZIG_AT        06061u
-#define PENDING_CALL_KEY (023u * 1024u + 0150u) /* 23,2150 */
-#define RRLIMCHK_KEY     (02u * 1024u + 0523u)  /* 02,2523 */
-#define RR1AX2_KEY       (025u * 1024u + 0254u) /* 25,2254 */
-#define RROUTLIM_KEY     (025u * 1024u + 0316u) /* 25,2316: TCF RROUTLIM */
+#define PENDING_CALL_KEY (023u * 1024u + 0150u)  /* 23,2150 */
+#define RRLIMCHK_KEY     (02u * 1024u + 0523u)   /* 02,2523 */
+#define RR1AX2_KEY       (025u * 1024u + 0254u)  /* 25,2254 */
+#define RROUTLIM_KEY     (025u * 1024u + 0316u)  /* 25,2316: TCF RROUTLIM */
+#define LRVELZ_KEY       (025u * 1024u + 01075u) /* 25,3075 */
+#define LRVEL_KEY        (025u * 1024u + 01107u) /* 25,3107 */
+#define RNRAD_AT         046u
+#define RADIN_KEY        (025u * 1024u + 01331u) /* 25,3331 */
 #define X1_AT            0046u
 #define S1_AT            0050u
 #define EDOP_AT          0023u
@@ -130,10 +134,10 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: parts 1 to 6, bank 24 to R24LEM4, bank 32's
+/* The parts written so far: parts 1 to 7, bank 24 to R24LEM4, bank 32's
  * ORBCHG3 (to its EXIT's TC BANKCALL), CLRADMOD in fixed-fixed, bank 23's
- * R61 (to READCDUD), MAGSUB to FLIP in fixed-fixed and bank 25 from
- * RRTURNON to DODESEND. */
+ * R61 (to READCDUD), MAGSUB to FLIP in fixed-fixed, bank 25 from
+ * RRTURNON to RDBADEND, and R12LITES to VLIGHT. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
@@ -142,7 +146,7 @@ static bool in_written_part(uint16_t key)
            (bank == 03u && z == 02011u) /* CLRADMOD */ ||
            (bank == 023u && z >= 02116u && z <= 02313u) ||
            (bank == 02u && z >= 02523u && z <= 02606u) ||
-           (bank == 025u && z >= 02062u && z <= 03064u);
+           (bank == 025u && ((z >= 02062u && z <= 03564u) || (z >= 03607u && z <= 03670u)));
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -349,6 +353,25 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
     /* The interrupt latch either way now and then: the designate's routines
      * hold interrupts and release them. */
     if (n % 4u != 0u && rnd() % 8u == 0u) io->io.interrupt_enabled = (uint16_t)(rnd() % 2u);
+    /* The radar read's lead-ins: A the number of samples (LRVELZ, LRVELY
+     * and LRVELX: 1, 5, +0, -0 or -1) or the beam's index (LRVEL: 0, 2 or
+     * 4), or any; at RADIN, Q as RENDRAD and LRHEIGHT leave it (+0, 1 or
+     * the TC's return), -0, or any. */
+    if (key >= LRVELZ_KEY && key <= LRVELZ_KEY + 4u && key % 2u && rnd() % 2u) {
+        static const uint16_t samples[] = {1u, 5u, 0u, 0177777u, 0177776u};
+        w[0] = samples[rnd() % 5u];
+    }
+    if (key == LRVEL_KEY && rnd() % 2u) w[0] = (uint16_t)(2u * (rnd() % 3u));
+    if (key == RADIN_KEY && rnd() % 2u) {
+        static const uint16_t q[] = {0u, 1u, 03276u, 0177777u};
+        w[2] = q[rnd() % 4u];
+    }
+    /* At RADIN, a count of 2^14 or more now and then (bit 15, the
+     * altitude's high scale), and ITEMP1 the data good bit or any. */
+    if (key == RADIN_KEY && rnd() % 2u) {
+        w[RNRAD_AT] = any_word();
+        w[ITEMP1_AT] = rnd() % 2u ? (uint16_t)(rnd() % 2u ? 010u : 020u) : any_word();
+    }
     if (key == RROUTLIM_KEY || key == RROUTLIM_KEY + 1u) {
         w[ITEMP2_AT] = (uint16_t)(rnd() % 2u);
         /* Now and then a zero command after a zero one, where AD NEG0
@@ -405,6 +428,10 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             hardware.channel12 = rnd() % 4u
                                      ? (uint16_t)((rnd() & 077777u) | (rnd() % 2u ? 020000u : 0u))
                                      : (uint16_t)(rnd() % 2u ? 020000u : 0u);
+            /* Channel 13: the radar select bits (1-3) and the activity bit
+             * (4) as the read routines set them, or any. */
+            hardware.channel13 =
+                rnd() % 2u ? (uint16_t)(rnd() % 020u) : (uint16_t)(rnd() & 077777u);
             fhw = rhw = hardware;
             memset(&p, 0, sizeof p);
             fp = rp = p;
