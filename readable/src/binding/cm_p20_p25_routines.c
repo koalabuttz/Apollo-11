@@ -17,8 +17,8 @@
  * ENDOFJOB, ...), reaches a label the faithful port keys a routine at, or
  * reaches NEWOPS through a TC INTPRET. An order pair is one pass of the
  * readable interpreter over the listing's words (interpret_listing()); a
- * pass that ends at RTB LOADTIME runs LOADTIME (src/rtb_op_codes/) and the
- * DANZIG it ends at, as the faithful pair does. A pass that ends at an
+ * pass that ends at RTB LOADTIME or TPMODE runs the routine
+ * (src/rtb_op_codes/) and the DANZIG it ends at, as the faithful pair does. A pass that ends at an
  * EXIT or a CALL out of its table stops there, as the faithful pair does.
  *
  * The device is the CM's io record (cm_native_io), and the program must
@@ -53,8 +53,9 @@ extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_in
 /* A key: the bank, and the address in it (or in fixed-fixed memory). */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 
-/* LOADTIME's bank (FB), from its FCADR. */
+/* LOADTIME's and TPMODE's banks (FB), from their FCADRs. */
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
+#define TPMODE_BANK   ((word)(I_TPMODE & 076000u))
 #define SUPERBANK_BIT 0100u
 
 static jmp_buf back;
@@ -237,6 +238,11 @@ static const struct basic_entry {
     {KEY(037u, R61C1 + 012u), r61c1_after_pdspflag_reset, false},
     {KEY(037u, R61C1 + 014u), r61c1_after_phaschng, false},
     {KEY(037u, R61END), r61end, false},
+    /* Part 5: R22 up to REND12 */
+    {KEY(034u, R22), r22, true},
+    {KEY(034u, R22 + 3u), r22_after_priochng, true},
+    {KEY(034u, REND1A + 1u), rend1a_after_exit, true},
+    {KEY(034u, REND2 + 4u), rend2_after_gentran, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -254,6 +260,8 @@ static const struct interpretive_code *const codes[] = {
     &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,  &CALLR52_CODE,
     &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,  &DE_GR_50_CODE,
     &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE, &GETUM_CODE,
+    &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,    &REND6_CODE,
+    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -268,12 +276,16 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
     return NULL;
 }
 
-/* One pass; after RTB LOADTIME, LOADTIME and its DANZIG. */
+/* One pass; after RTB LOADTIME or TPMODE, the routine and its DANZIG. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  cm_native_io *io, const struct interpretive_code *code)
 {
     if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
+    if (Z == TPMODE && FBANK == TPMODE_BANK) { /* (the faithful pair takes any state) */
+        tpmode();
+        return interpret_listing(program, state, io, code);
+    }
     if (Z != LOADTIME || FBANK != LOADTIME_BANK) return EXEC_OK;
     if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;

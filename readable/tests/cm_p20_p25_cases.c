@@ -43,7 +43,8 @@ struct interpretive_code {
 };
 extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, PROG22A_CODE,
     CALLR52_CODE, S22LSITE_CODE, P22SUBRB_CHECK_CODE, N89ERRX_3_CODE, S22ABDE_CODE, DE_GR_50_CODE,
-    R57_CODE, ENDR57_CODE, R61CSM_CODE, BVECTORS_CODE, GETUM_CODE;
+    R57_CODE, ENDR57_CODE, R61CSM_CODE, BVECTORS_CODE, GETUM_CODE, R22_CODE, REND2_CODE, REND3_CODE,
+    REND4_CODE, REND6_CODE, REND9_CODE, REND10_CODE, REND10A_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -65,6 +66,7 @@ bool cm_p20_p25_readable(uint16_t key, bool order_pair);
 #define PUSHLOC_AT  0166u
 #define S22TOFF_AT  03667u /* E7,1667: S22's return, a CADR */
 #define MRKBUF1_AT  03725u /* E7,1725 */
+#define EGRESS_AT   02317u /* E4,1717: the return of R57, BVECTORS and GETUM, a CADR */
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -119,7 +121,8 @@ static bool in_written_part(uint16_t key)
 
     return (bank == 037u && z >= 02261u && z <= 02624u) ||
            (bank == 030u && z >= 02000u && z <= 02311u) ||
-           (bank == 023u && z >= 03043u && z <= 03131u);
+           (bank == 023u && z >= 03043u && z <= 03131u) ||
+           (bank == 034u && z >= 02630u && z <= 03123u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -288,8 +291,14 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
         w[S22TOFF_AT] = fixed_cadr(w[S22TOFF_AT]);
         w[S22TOFF_AT + 1u] = fixed_cadr(w[S22TOFF_AT + 1u]);
     }
+    /* EGRESS, the return GOTO EGRESS takes, a CADR in fixed memory as the
+     * STQs leave it. (One in erasable memory could send the faithful GOTO
+     * round a cycle of CADRs, which it ends by exiting.) */
+    w[EGRESS_AT] = fixed_cadr(w[EGRESS_AT]);
     /* Now and then MRKBUF1 -1, no mark (R21CSMA). */
     if (rnd() % 4u == 0u) w[MRKBUF1_AT] = 077776u;
+    /* Now and then MPAC +0 or 1, CRS61.1's answers (R61CSM +015). */
+    if (rnd() % 4u == 0u) w[MPAC_AT] = (uint16_t)(rnd() % 2u);
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
     if (n % 4u != 0u && rnd() % 64u == 0u) w[6] = any_word();
@@ -378,6 +387,8 @@ static const struct interpretive_code *const codes[] = {
     &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,  &CALLR52_CODE,
     &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,  &DE_GR_50_CODE,
     &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE, &GETUM_CODE,
+    &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,    &REND6_CODE,
+    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

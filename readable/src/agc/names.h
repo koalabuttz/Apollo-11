@@ -2943,6 +2943,18 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define DECRM61  ((word)K_DECRM61)
 #define BVECTORS ((word)K_BVECTORS)
 #define GETUM    ((word)K_GETUM)
+/* Part 5, R22 up to REND12 (bank 34). */
+#define R22     ((word)K_R22)
+#define REND1A  ((word)K_REND1A)
+#define REND2   ((word)K_REND2)
+#define REND3A  ((word)K_REND3A)
+#define REND3   ((word)K_REND3)
+#define REND4   ((word)K_REND4)
+#define REND6   ((word)K_REND6)
+#define REND9   ((word)K_REND9)
+#define REND10  ((word)K_REND10)
+#define REND10A ((word)K_REND10A)
+#define NEG3    ((word)KW_NEG3)
 #endif
 
 /* NO.CORES + 1 core sets. */
