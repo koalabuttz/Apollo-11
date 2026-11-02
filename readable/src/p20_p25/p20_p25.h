@@ -19,7 +19,10 @@
  *     (pp. 517-520), with READCDUD;
  *   part 5, rr_routines.c: the rendezvous radar's subroutines, MAGSUB to
  *     RRZ2 (pp. 521-537), with ENDRADAR, RDBADEND and RADNOOP;
- *   part 6, designate.c: the designate, RRDESSM to DODESEND (pp. 538-552).
+ *   part 6, designate.c: the designate, RRDESSM to DODESEND (pp. 538-552);
+ *   part 7, radar_read.c: the radar data read, LRALT to RDBADEND
+ *     (pp. 553-563), with the landing radar's lamps, R12LITES to VLIGHT
+ *     (pp. 612-613), which it calls.
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -409,6 +412,8 @@ void mode2chk_shaft_in(void);
 void rrlimok(void);
 void mode2chk_trunnion_out(void);
 void settrkf(void);
+void rrtrkf(void); /* (no keys: RRTRKF and TRKFLON +1 run inside the lamp routines) */
+void trkflon_plus1(void);
 void flip(void);
 
 /* RRTURNON to RRZ2 (bank 25) */
@@ -450,7 +455,8 @@ void rrzero_after_waitlist(void);
 void roadback(void);
 void rrz2(void);
 void rrz2_after_rrzerosb(void);
-void rdbadend(void); /* (no keys: they run inside the routines that end at them) */
+void radnoop(void); /* (no keys: they run inside the routines that end at them) */
+void rdbadend(void);
 void endradar(void);
 
 /* ---- Part 6: the designate (designate.c) ---- */
@@ -512,6 +518,56 @@ void notp20_new_los(void);
 void notp20_after_killtask(void);
 void notp20_after_chang1(void);
 void dodesend(void);
+
+/* ---- Part 7: the radar data read (radar_read.c) ---- */
+
+/* The lead-ins */
+void lralt(void);
+void lrvelz(void);
+void lrvely(void);
+void lrvelx(void);
+void rrrdot(void);
+void rrrange(void);
+void lrvel(void);
+
+/* RADAREAD */
+void radaread(void);
+void radaread_after_alarm(void);
+void nomore(void);
+void badrad(void);
+void plenty(void);
+void lrposchk(void);
+void lrposchk_after_alarm(void);
+void velchk(void);
+void velchk_after_dgcheck(void);
+void goodrad(void);
+void goodrad_after_radlites(void);
+void noend(void);
+void lrheight(void);
+void rendrad(void);
+void radin(void);
+void dgcheck2_after_dgcheck(void);
+void scalchng(void);
+void scalchng_after_upflag(void);
+void dgcheck_good(void);
+void datafail_after_radlites(void);
+
+/* LRPOS2 and RGOODEND */
+void lrpos2(void);
+void lrpos2_after_waitlist(void);
+void radnoop_after_waitlist(void);
+void lrposnxt(void);
+void lrposnxt_after_fixdelay(void);
+void lastlrdt(void);
+void lastlrdt_after_vardelay(void);
+void lrposcan(void);
+void rgoodend(void);
+
+/* The lamps */
+void r12lites(void);
+void r12lites_after_hlight(void);
+void r12lites_after_vlight(void);
+void litit_after_trkflon(void);
 
 #endif
 

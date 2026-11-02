@@ -2751,6 +2751,61 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define BIT12_14     ((word)KW_BIT12_14) /* BIT12,14 EQUALS PRIO24 */
 #define LOKONBIT     ((word)KW_LOKONBIT)
 #define LOSCMBIT     ((word)KW_LOSCMBIT)
+/* Part 7, the radar data read: LRALT to RGOODEND (bank 25), and the
+ * landing radar's lamps, R12LITES to VLIGHT (bank 25). TIMEHOLD, NSAMP,
+ * OLDATAGD, DNINDEX, DNRRANGE, RNRAD and HFLSHBIT (an address: INDEX
+ * ITEMP5 reads the bit next to it) are named by ADDRESS_OF. */
+#define LRALT    ((word)K_LRALT)
+#define LRVELZ   ((word)K_LRVELZ)
+#define LRVELY   ((word)K_LRVELY)
+#define LRVELX   ((word)K_LRVELX)
+#define RRRDOT   ((word)K_RRRDOT)
+#define RRRANGE  ((word)K_RRRANGE)
+#define LRVEL    ((word)K_LRVEL)
+#define INITREAD ((word)K_INITREAD)
+#define RADAREAD ((word)K_RADAREAD)
+#define TRYCOUNT ((word)K_TRYCOUNT)
+#define NOMORE   ((word)K_NOMORE)
+#define BADRAD   ((word)K_BADRAD)
+#define PLENTY   ((word)K_PLENTY)
+#define LRPOSCHK ((word)K_LRPOSCHK)
+#define VELCHK   ((word)K_VELCHK)
+#define GOODRAD  ((word)K_GOODRAD)
+#define NOEND    ((word)K_NOEND)
+#define RESAMPLE ((word)K_RESAMPLE)
+#define LRHEIGHT ((word)K_LRHEIGHT)
+#define RENDRAD  ((word)K_RENDRAD)
+#define SCALECHK ((word)K_SCALECHK)
+#define RADIN    ((word)K_RADIN)
+#define DASAMPL  ((word)K_DASAMPL)
+#define DGCHECK2 ((word)K_DGCHECK2)
+#define SCALCHNG ((word)K_SCALCHNG)
+#define R77CHECK ((word)K_R77CHECK)
+#define SCALADJ  ((word)K_SCALADJ)
+#define LRSCK    ((word)K_LRSCK)
+#define DGCHECK  ((word)K_DGCHECK)
+#define DATAFAIL ((word)K_DATAFAIL)
+#define LRPOS2   ((word)K_LRPOS2)
+#define LRPOSNXT ((word)K_LRPOSNXT)
+#define LASTLRDT ((word)K_LASTLRDT)
+#define LRPOSCAN ((word)K_LRPOSCAN)
+#define R12LITES ((word)K_R12LITES)
+#define RADLITES ((word)K_RADLITES)
+#define HLIGHT   ((word)K_HLIGHT)
+#define BOTHLITS ((word)K_BOTHLITS)
+#define LITIT    ((word)K_LITIT)
+#define ONLITES  ((word)K_ONLITES)
+#define VLIGHT   ((word)K_VLIGHT)
+#define RDOTBIAS ((word)K_RDOTBIAS)
+#define ALLREAD  ((word)KW_ALLREAD) /* OCT 17: the radar select bits, channel 13 bits 1-4 */
+#define DGBITS   ((word)KW_DGBITS) /* OCT 230: the data good bits, channel 33 bits 4, 5 and 8 */
+#define BITS5_8  ((word)KW_BITS5_8) /* BITS5,8: OCT 220 */
+#define HISCALIM ((word)KW_HISCALIM) /* DEC 460 */
+#define LVELBIAS ((word)KW_LVELBIAS) /* DEC -12288 */
+#define SCABBIT  ((word)KW_SCABBIT) /* FLGWRD11 bit 3: the LR scale discrete bad */
+#define LRALTBIT ((word)KW_LRALTBIT) /* RADMODES bit 5: LR altitude data failed */
+#define LRPOSBIT ((word)KW_LRPOSBIT) /* RADMODES bit 6: LR position 2 wanted */
+#define SIX_SECS ((word)KW_6SECS) /* 6SECS: DEC 600 */
 #endif
 
 /* NO.CORES + 1 core sets. */
