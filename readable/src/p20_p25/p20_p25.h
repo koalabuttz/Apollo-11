@@ -25,6 +25,8 @@
  *     (pp. 612-613), which it calls.
  *   part 8, lps20.c: LPS20.1, the line of sight to the CSM, and LPS20.2,
  *     the 400 nautical mile range check (pp. 564-567).
+ *   part 9, lrs22.c: LRS22.1 and LRS22.2, R22's data read subroutines
+ *     (pp. 568-573).
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -578,6 +580,31 @@ void lps20_1_after_killtask(void);
 extern const struct interpretive_code LPS20_1_CODE;
 extern const struct interpretive_code LPS20_1_LOS_CODE;
 extern const struct interpretive_code LPS20_2_CODE;
+
+/* ---- Part 9: LRS22.1 and LRS22.2 (lrs22.c) ---- */
+
+void lrs22_1(void);
+void lrs22_1_after_makecadr(void);
+void lrs22_1_after_downflag(void);
+void readrdot_after_rrrdot(void);
+void readrdot_failed(void);
+void readrdot_read(void);
+void readrdot_after_rrrange(void);
+void readrdot_range_failed(void);
+void readrdot_range_read(void);
+void lrs22_1_mark_angles(void);
+void lrs22_1_error_2(void);
+void normexit_after_exit(void);
+void chexerr(void);
+void lrs22_2(void);
+void lrs22_2_after_makecadr(void);
+void lrs22_2_error(void);
+void okexit_after_exit(void);
+extern const struct interpretive_code LRS22_1_CONVERT_CODE;
+extern const struct interpretive_code LRS22_1_CHECK_CODE;
+extern const struct interpretive_code NORMEXIT_CODE;
+extern const struct interpretive_code THIRTY_DEGCHK_CODE;
+extern const struct interpretive_code OKEXIT_CODE;
 
 #endif
 
