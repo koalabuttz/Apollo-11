@@ -2829,6 +2829,11 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 /* Part 12, the angles. */
 #define MXMYMZ  ((word)K_MXMYMZ)
 #define AIGBANK ((word)KW_AIGBANK) /* BBCON LSR22.3: bank 26, E bank 7 */
+/* Part 13, LSR22.4 and WLINIT. */
+#define LSR22_4 ((word)K_LSR22_4) /* LSR22.4 */
+#define WLINIT  ((word)K_WLINIT)
+#define WBANK   ((word)KW_WBANK) /* BBCON WLINIT: bank 26, E bank 5 (W) */
+#define WSIZE   ((word)KW_WSIZE) /* DEC 161: W's last word */
 #endif
 
 /* NO.CORES + 1 core sets. */

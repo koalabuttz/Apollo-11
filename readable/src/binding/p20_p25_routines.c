@@ -590,6 +590,9 @@ static const struct basic_entry {
     {KEY(026u, RANGEBQ + 7u), rangebq_after_r65, true},
     /* Part 12 */
     {KEY(026u, MXMYMZ), mxmymz, true},
+    /* Part 13 */
+    {KEY(026u, WLINIT + 1u), wlinit_zero_w, true},
+    {KEY(026u, WLINIT + 012u), wlinit_restore_ebank, true},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -660,6 +663,8 @@ static const struct interpretive_code *const codes[] = {
     &RANGEBQ1_CODE,
     &RANGE_RATE_CODE,
     &ANGLES_CODE,
+    &LSR22_4_CODE,
+    &WLINIT_CODE,
 };
 
 /* The table of bank that address is in, or none. */

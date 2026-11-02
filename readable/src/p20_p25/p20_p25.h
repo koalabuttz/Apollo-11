@@ -31,6 +31,8 @@
  *     start to the range's (pp. 574-577).
  *   part 11, lsr22.c: the range rate's (pp. 577-579).
  *   part 12, lsr22.c: the angles' (pp. 579-582).
+ *   part 13, w_matrix.c: LSR22.4, INITWMX6, INTGRCAL and WLINIT
+ *     (pp. 582-585).
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -625,6 +627,13 @@ extern const struct interpretive_code RANGE_RATE_CODE;
 
 void mxmymz(void);
 extern const struct interpretive_code ANGLES_CODE;
+
+/* ---- Part 13: LSR22.4 and WLINIT (w_matrix.c) ---- */
+
+void wlinit_zero_w(void);
+void wlinit_restore_ebank(void);
+extern const struct interpretive_code LSR22_4_CODE;
+extern const struct interpretive_code WLINIT_CODE;
 
 #endif
 
