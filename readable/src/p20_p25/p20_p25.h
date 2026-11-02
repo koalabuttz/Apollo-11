@@ -698,6 +698,21 @@ void r29dpas2_after_rrout(void);
 void r29lokon(void);
 void end29dod(void);
 
+/* ---- Part 18: R29's radar reading (r29read.c) ---- */
+
+void r29read(void);
+void r29read_after_novac(void);
+void r29read_after_vardelay(void);
+void r29rdjob(void);
+void r29rdjob_after_rrrdot(void);
+void r29rdjob_bad_read(void);
+void r29rdjob_rate_read(void);
+void r29range_after_rrrange(void);
+void r29range_bad_read(void);
+void r29range_read(void);
+void r29rrr_q_after_downflag(void);
+void endrrd29_after_downflag(void);
+
 #endif
 
 #endif

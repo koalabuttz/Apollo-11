@@ -1573,6 +1573,7 @@
 #define K_AOG 01661u
 #define K_W 01400u
 #define K_PIPCTR 01227u
+#define K_RM 01703u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u

@@ -149,7 +149,7 @@ static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return (bank == 024u && z <= 03377u) || (bank == 032u && z >= 02217u && z <= 02770u) ||
+    return (bank == 024u && z <= 03501u) || (bank == 032u && z >= 02217u && z <= 02770u) ||
            (bank == 03u && (z == 02011u || z == 02022u)) /* CLRADMOD, GOTOV56 */ ||
            (bank == 033u && z >= 02045u && z <= 02175u) ||
            (bank == 023u && z >= 02116u && z <= 02313u) ||

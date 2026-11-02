@@ -1429,6 +1429,11 @@
 #define K_GOTANGLS 02627u
 #define K_R29LOKON 02752u
 #define K_END29DOD 02770u
+#define K_R29READ 03400u
+#define K_R29RDJOB 03413u
+#define K_R29RANGE 03443u
+#define K_R29RRR_Q 03466u
+#define K_ENDRRD29 03475u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -1894,6 +1899,7 @@
 #define K_LOSVDT_4 01760u
 #define K_LOSSM 01101u
 #define K_SAVECDUT 01766u
+#define K_RM 01756u
 #define KW_EXECBANK 002601u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000007u

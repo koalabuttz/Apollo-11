@@ -636,6 +636,18 @@ static const struct basic_entry {
     {KEY(032u, R29DPAS2 + 047u), r29dpas2_after_rrout, false},
     {KEY(032u, R29LOKON), r29lokon, false},
     {KEY(032u, END29DOD), end29dod, false},
+    {KEY(024u, R29READ), r29read, false},
+    {KEY(024u, R29READ + 4u), r29read_after_novac, false},
+    {KEY(024u, R29READ + 6u), r29read_after_vardelay, false},
+    {KEY(024u, R29RDJOB), r29rdjob, false},
+    {KEY(024u, R29RDJOB + 012u), r29rdjob_after_rrrdot, false},
+    {KEY(024u, R29RDJOB + 014u), r29rdjob_bad_read, false},
+    {KEY(024u, R29RDJOB + 015u), r29rdjob_rate_read, false},
+    {KEY(024u, R29RANGE + 2u), r29range_after_rrrange, false},
+    {KEY(024u, R29RANGE + 4u), r29range_bad_read, false},
+    {KEY(024u, R29RANGE + 5u), r29range_read, false},
+    {KEY(024u, R29RRR_Q + 6u), r29rrr_q_after_downflag, false},
+    {KEY(024u, ENDRRD29 + 4u), endrrd29_after_downflag, false},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
