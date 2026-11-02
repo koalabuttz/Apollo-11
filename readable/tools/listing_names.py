@@ -182,7 +182,8 @@ LPS20.1 LPS20.2 LRS22.1 READRDOT NORMEXIT OUT22.1 CHEXERR EREXIT1 LRS22.2 OKEXIT
 LSR22.3 RANGEBQ QOK MXMYMZ LSR22.4 WLINIT GETULC
 LRS24.1 CONTDES2 OMEGCALC CALCXY CALLDGCH DATGDCHK LIMALARM
 R29 R29.LOS R29REMOJ SETPRPOS PREPOS29 SETUP29D NOR29NOW
-BEGDES29 R29DLOOP R29DODES R29DPAS2 GOTANGLS R29LOKON END29DOD'''.split()
+BEGDES29 R29DLOOP R29DODES R29DPAS2 GOTANGLS R29LOKON END29DOD
+R29READ R29RDJOB R29RANGE R29RRR? ENDRRD29'''.split()
 ERASABLE = labels.ERASABLE + '''
 21/22REG CHAR DECBRNCH CODE COUNT INREL XREGLP ENTRET SGNON SGNOFF MIXTEMP DSEXIT DSREL DSMAG
 WDRET DSPWDRET WDCNT
@@ -240,7 +241,8 @@ TIMEHOLD NSAMP OLDATAGD DNINDEX DNRRANGE RNRAD
 LRS22.1X RDOTMSAV RANGRDOT MKTIME AIG AMG AOG W.IND W
 NSRCHPNT
 PIPCTR
-LOSVDT/4 LOSSM SAVECDUT'''.split()
+LOSVDT/4 LOSSM SAVECDUT
+RM'''.split()
 WORDS = labels.WORDS + '''
 LOW10 BIT14COM
 HISECON HIMINCON M/SCON1 M/SCON2 NORMADR M/SCON3 M/SCON3+1 MINCON2 MINCON2+1 20BIAS
@@ -449,13 +451,13 @@ CODE, ERASABLE, WORDS = unique(CODE), unique(ERASABLE), unique(WORDS)
 
 def macro(name):
     """The C spelling of a listing name: as resident_kernel_labels spells it,
-    with '*' as _STAR, '=' as _EQ_ (DLOAD*, ACOS=0), and '(' as '_' with no ')'
-    (V(CSM) -> V_CSM)."""
+    with '*' as _STAR, '=' as _EQ_ (DLOAD*, ACOS=0), '?' as _Q (R29RRR?), and
+    '(' as '_' with no ')' (V(CSM) -> V_CSM)."""
     name = re.sub(r'(?<=\w)-(?=\w)', '_', name)  # NO-INT -> NO_INT; -ELR stays MELR
     if name.startswith('*'):  # *SMNB* -> STAR_SMNB_STAR
         name = 'STAR_' + name[1:]
     return labels.macro(name.replace('*', '_STAR').replace('=', '_EQ_').replace(',', '_')
-                        .replace('&', '_').replace('(', '_').replace(')', ''))
+                        .replace('&', '_').replace('(', '_').replace(')', '').replace('?', '_Q'))
 
 
 FIXED = re.compile(r'^\d+,F:\s+(\S+)\s+(?:([0-7]{2}),)?([0-7]{4})$')

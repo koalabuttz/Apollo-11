@@ -2874,6 +2874,14 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define MPACVBUF ((word)K_MPACVBUF)
 #define RR29GAIN ((word)KW_RR29GAIN) /* DEC -.53624 */
 #define R29FXLOC ((word)KW_R29FXLOC) /* ADRES INTB15+ -34D */
+/* Part 18, R29's radar reading: R29READ and R29RDJOB (bank 24). TIMEHOLD,
+ * CDUT, CDUY, CDUX, DNRRANGE, RM, MKTIME, TANGNB, AIG, AOG and TRKMKCNT
+ * are named by ADDRESS_OF. */
+#define R29READ  ((word)K_R29READ)
+#define R29RDJOB ((word)K_R29RDJOB)
+#define R29RANGE ((word)K_R29RANGE)
+#define R29RRR_Q ((word)K_R29RRR_Q) /* R29RRR? */
+#define ENDRRD29 ((word)K_ENDRRD29)
 #endif
 
 /* NO.CORES + 1 core sets. */
