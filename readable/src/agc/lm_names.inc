@@ -1403,6 +1403,7 @@
 #define K_OUT22_2 03352u
 #define K_LSR22_3 02412u
 #define K_RANGEBQ 02510u
+#define K_QOK 02605u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -3049,6 +3050,15 @@
 #define I_DMENFLG 000121u
 #define I_STATEFLG 000067u
 #define I_LMOONFLG 000174u
+#define I_NUVLEM 001652u
+#define I_NUVCSM 001600u
+#define I_VCVCSM 001614u
+#define I_RATEVAR 001772u
+#define I_VVARMIN 001775u
+#define I_VOK 054662u
+#define I_VOK1 054723u
+#define I_VOK2 054725u
+#define I_RENDEND 055176u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
