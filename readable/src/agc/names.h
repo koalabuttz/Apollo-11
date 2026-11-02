@@ -2978,6 +2978,30 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define V06N49   ((word)KW_V06N49)
 #define PRIO27   ((word)KW_PRIO27)
 static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
+/* Part 7, R22's subroutines (bank 27). MARKTIME and VHFRANGE are named by
+ * ADDRESS_OF. */
+#define SETINTG  ((word)K_SETINTG)
+#define CNTCHK   ((word)K_CNTCHK)
+#define CONTCHK  ((word)K_CONTCHK)
+#define REDOR22  ((word)K_REDOR22)
+#define WAITONE  ((word)K_WAITONE)
+#define RANGERD  ((word)K_RANGERD)
+#define RANGERD1 ((word)K_RANGERD1)
+#define RANGERD2 ((word)K_RANGERD2)
+#define RANGERD3 ((word)K_RANGERD3)
+#define RANGERD4 ((word)K_RANGERD4)
+#define LIGHTON  ((word)K_LIGHTON)
+#define BYPASS   ((word)K_BYPASS)
+#define BYPASS1  ((word)K_BYPASS1)
+#define VHFGOOD  ((word)K_VHFGOOD)
+#define SHIFTNDX ((word)K_SHIFTNDX)
+#define SHIFTA   ((word)K_SHIFTA)
+#define INITIALW ((word)K_INITIALW)
+#define INITA    ((word)K_INITA)
+#define INITB    ((word)K_INITB)
+#define OCT17    ((word)KW_OCT17)
+#define OCT11    ((word)KW_OCT11)
+#define UPDATBIT ((word)KW_UPDATBIT)
 #endif
 
 /* NO.CORES + 1 core sets. */
