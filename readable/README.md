@@ -145,6 +145,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P20-P25, part 19: V67, the W-matrix monitor (P20-P25 whole) | `P20-P25.agc` (LM pp. 608-611) | [`src/p20_p25/`](src/p20_p25/) | V67CALL (bank 31) calls V67WW, which waits its turn for the integration (INTSTALL) and sums the squares of the W-matrix's position, velocity and bias diagonal blocks, 6 words at a time down the diagonal (NXPOSVEL and ADDPOS, bank 30), takes their square roots (DPPOSMAX on an overflow, the position at most FT99999), and wakes the integration's waiters (INTWAKE). V06N99 shows them; V6N99PRO compares them with the values saved before the display, and when the astronaut changed any (V67FLAG) the new values become the W-matrix's initial ones (WRENDPOS and WRENDVEL, or WSURFPOS and WSURFVEL on the surface, WTRUN and WSHAFT), with RENDWFLG cleared so the W-matrix starts again |
 | CM P20-P25, part 1: P20 | `P20-P25.agc` (CM pp. 562-564) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | P20, the CSM's rendezvous navigation program (bank 37): R02BOTH checks the IMU, the mark counters are zeroed and the flags set (the LM's state vector the one to update), and both state vectors are brought to the present time (MARKTIME), the LM's with the W-matrix while it is valid. Then R22's job is started (FINDVAC), and PIKUP20, where a restart comes back to, ends the job unless the track flag and REFSMFLG are set; else R61CSM, the preferred tracking attitude, and R52's automatic optics positioning (P20R52JB), holding the attitude. The binding runs the keys part 1 writes, and the faithful port's routines at the rest of the file's |
 | CM P20-P25, part 2: P22 | `P20-P25.agc` (CM pp. 565-569) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | P22, the CSM's orbital navigation program (bank 30), up to S22.1: R02BOTH, then +MGA (the angle between the stable member's Y axis and the orbit's normal) shown with verb 06 noun 45. On proceed, PROG22A asks for the landmark's code ABCDE (verb 05 noun 70) and S22DSPPA checks it: the offset, A known or unknown, DE the landing site or an advanced orbit (ADVORB). A known landmark's latitude, longitude and altitude come from the crew (verb 06 noun 89, P22SUBRB, each within 90 degrees) or from the landing site (S22LSITE). Then R52 points the optics, the marks are asked for (verb 05 noun 71), and S22.1 runs; P22OVER starts again at PROG22A. The binding refuses PROG22C's SLOAD* of a mark word in fixed memory, as the faithful port does |
+| CM P20-P25, part 3: R57, R21 and R23 | `P20-P25.agc` (CM pp. 570-573) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R57, the optics calibration routine P23 calls (bank 37): it aborts P23 if the marking system or an extended verb is busy, asks for a calibration mark (verb 59), shows the trunnion angle (verb 06 noun 87, MARKDISP) and on proceed stores it, less 19.77DEG by MSU, in TRUNBIAS; ENDR57 ends the marking and goes back through EGRESS. R21 and R23 for the CSM, the rendezvous sighting marks (verbs 57 and 54): verb 51 asks for the marks, or with R23FLG set verb 06 noun 94 and verb 53 for the backup marks, whose time and CDU angles R23 reads itself; on proceed the last mark goes to MRKBUF2 for R22, and R21END ends the marking. MSU of a register (R57B's MSU L) is now modelled in `src/agc/` |
 
 Beside them:
 
@@ -389,14 +390,15 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    so that the case where nothing changed is tested.
    `make cm-p20-p25-cases` runs the faithful port's test of the CM's
    P20-P25 (its 1,993 checks against yaAGC digests) through the readable
-   tables, then checks the interpretive words against the rope (123 so
+   tables, then checks the interpretive words against the rope (127 so
    far), and runs readable and faithful side by side at every key the parts
-   have written (55 basic and 58 order pairs) from 4,096 states each, and
+   have written (88 basic and 60 order pairs) from 4,096 states each, and
    at the others (which run the faithful routines through the readable
    tables) from 16. The states carry each frozen case's channels, and now
    and then the program has no hardware record, which every routine of
    the file refuses. S22TOFF and S22TOFF +1, the returns P22's GOTOs take,
-   are mostly CADRs in fixed memory, as the STQs leave them.
+   are mostly CADRs in fixed memory, as the STQs leave them, and MRKBUF1
+   is now and then -1, no mark.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

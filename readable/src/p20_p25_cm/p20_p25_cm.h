@@ -10,7 +10,9 @@
  *
  * The file is written part by part, in the listing's order (README.md):
  *   part 1, p20.c: P20 itself (pp. 562-564);
- *   part 2, p22.c: P22 up to S22.1 (pp. 565-569).
+ *   part 2, p22.c: P22 up to S22.1 (pp. 565-569);
+ *   part 3, r57.c and r21_r23.c: R57, and R21 and R23 for the CSM
+ *   (pp. 570-573).
  * The binding (src/binding/cm_p20_p25_routines.c) runs the keys these
  * parts write, and the faithful port's routines at the others.
  *
@@ -107,6 +109,45 @@ void s22abde(void);
 void de_gr_50_after_2phschng(void);
 void de_gr_50_after_targ2flg(void);
 void de_gr_50_after_targ1flg(void);
+
+/* ---- Part 3: R57 (r57.c), R21 and R23 (r21_r23.c) ---- */
+
+extern const struct interpretive_code R57_CODE;
+extern const struct interpretive_code ENDR57_CODE;
+
+void r57_after_exit(void);
+void r57_not_set(void);
+void r57a_after_v59flag(void);
+void r57a_terminate(void);
+void r57a_proceed(void);
+void r57a_enter(void);
+void r57a_immediate_return(void);
+void r57a_after_blanket(void);
+void markdisp(void);
+void markdisp_terminate(void);
+void markdisp_proceed(void);
+void markdisp_enter(void);
+void markdisp_immediate_return(void);
+void markdisp_after_blanket(void);
+void endr57_after_v59flag(void);
+void endr57_after_novac(void);
+void r21csm(void);
+void r23csm(void);
+void r23csm_terminate(void);
+void r23csm_proceed(void);
+void r23csm_enter(void);
+void r23csm1(void);
+void r23csm1_terminate(void);
+void r23csm1_proceed(void);
+void r23csm1_mark(void);
+void r23csm1_after_gentran(void);
+void r21c1(void);
+void r21c1_terminate(void);
+void r21c1_proceed(void);
+void r21c1_recycle(void);
+void r21csm1_after_gentran(void);
+void r21end_after_kleenex(void);
+void r21end_after_r21mark(void);
 
 #endif
 

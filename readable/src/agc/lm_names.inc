@@ -3218,6 +3218,7 @@
 #define I_LAT_LONG 026351u
 #define I_LANDLAT 002706u
 #define I_LANDLONG 002710u
+#define I_EGRESS 002772u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
