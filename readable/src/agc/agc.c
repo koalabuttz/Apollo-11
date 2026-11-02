@@ -396,10 +396,15 @@ void msu_at(unsigned address)
 {
     unsigned difference;
 
-    if (address < 3u) not_modelled(); /* MSU of a register: not in the listings */
-    difference = overflow_corrected(A) + (~fetch(address) & 077777u) + 1u;
+    /* Of a register (R57B's MSU L), all 16 bits of A and of the register;
+     * of a word, A overflow-corrected and the word's 15. */
+    if (address < 3u)
+        difference = (unsigned)A + (~(unsigned)agc.memory[address] & 0177777u) + 1u;
+    else
+        difference = overflow_corrected(A) + (~fetch(address) & 077777u) + 1u;
     if (difference & 040000u) difference = (difference | 0100000u) - 1u;
-    A = sign_extend((word)(difference & 077777u));
+    A = address == Q_ADDRESS ? (reg16)(difference & 0177777u)
+                             : sign_extend((word)(difference & 077777u));
     correct_L();
 }
 

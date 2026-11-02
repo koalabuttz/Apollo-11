@@ -2915,6 +2915,26 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define DE_GR_50 ((word)K_DE_GR_50) /* DE-GR-50 */
 #define V06N45B  ((word)KW_V06N45B) /* VN 0645 */
 #define V06N89B  ((word)KW_V06N89B) /* VN 0689 */
+/* Part 3, R57 and R21/R23 for the CSM (bank 37). Their erasable words
+ * (EXTVBACT, MRKBUF1, MRKBUF2, TRUNBIAS) are named by ADDRESS_OF. */
+#define R57            ((word)K_R57)
+#define R57A           ((word)K_R57A)
+#define MARKDISP       ((word)K_MARKDISP)
+#define R57B           ((word)K_R57B)
+#define ENDR57         ((word)K_ENDR57)
+#define P23ABRT        ((word)K_P23ABRT)
+#define R21CSM         ((word)K_R21CSM)
+#define R23CSM         ((word)K_R23CSM)
+#define R23CSM1        ((word)K_R23CSM1)
+#define R21C1          ((word)K_R21C1)
+#define R21CSM1        ((word)K_R21CSM1)
+#define R21END         ((word)K_R21END)
+#define V59NB          ((word)KW_V59NB)    /* VN 5900 */
+#define V06N87NB       ((word)KW_V06N87NB) /* VN 0687 */
+#define V51NB          ((word)KW_V51NB)    /* VN 5100 */
+#define V53            ((word)KW_V53)      /* VN 5300 */
+#define V0694          ((word)KW_V0694)    /* VN 0694 */
+#define NINETEEN_77DEG ((word)KW_19_77DEG) /* 19.77DEG: OCT 61740 */
 #endif
 
 /* NO.CORES + 1 core sets. */

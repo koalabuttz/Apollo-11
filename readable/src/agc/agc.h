@@ -344,8 +344,8 @@ void das(unsigned address);
 void mp_at(unsigned address);
 
 /* EXTEND; MSU: the difference of two CDU angles, A less the erasable word
- * at address, taken in two's complement (as the CDU counts) and given in
- * ones' complement. */
+ * (or register) at address, taken in two's complement (as the CDU counts)
+ * and given in ones' complement. */
 void msu_at(unsigned address);
 
 /* EXTEND; DV: A,L (a double-length dividend, its sign A's, or L's when A is

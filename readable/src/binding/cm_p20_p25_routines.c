@@ -188,6 +188,40 @@ static const struct basic_entry {
     {KEY(030u, DE_GR_50 + 4u), de_gr_50_after_2phschng, false},
     {KEY(030u, DE_GR_50 + 010u), de_gr_50_after_targ2flg, false},
     {KEY(030u, DE_GR_50 + 012u), de_gr_50_after_targ1flg, true},
+    /* Part 3: R57, R21 and R23 */
+    {KEY(037u, R57 + 2u), r57_after_exit, false},
+    {KEY(037u, R57 + 010u), r57_not_set, false},
+    {KEY(037u, R57A + 2u), r57a_after_v59flag, false},
+    {KEY(037u, R57A + 5u), r57a_terminate, false},
+    {KEY(037u, R57A + 6u), r57a_proceed, false},
+    {KEY(037u, R57A + 7u), r57a_enter, false},
+    {KEY(037u, R57A + 010u), r57a_immediate_return, false},
+    {KEY(037u, R57A + 012u), r57a_after_blanket, false},
+    {KEY(037u, MARKDISP), markdisp, false},
+    {KEY(037u, MARKDISP + 3u), markdisp_terminate, false},
+    {KEY(037u, MARKDISP + 4u), markdisp_proceed, false},
+    {KEY(037u, MARKDISP + 5u), markdisp_enter, false},
+    {KEY(037u, MARKDISP + 6u), markdisp_immediate_return, false},
+    {KEY(037u, MARKDISP + 010u), markdisp_after_blanket, false},
+    {KEY(037u, ENDR57 + 2u), endr57_after_v59flag, false},
+    {KEY(037u, ENDR57 + 010u), endr57_after_novac, true},
+    {KEY(037u, R21CSM), r21csm, false},
+    {KEY(037u, R23CSM), r23csm, false},
+    {KEY(037u, R23CSM + 012u), r23csm_terminate, false},
+    {KEY(037u, R23CSM + 013u), r23csm_proceed, false},
+    {KEY(037u, R23CSM + 014u), r23csm_enter, false},
+    {KEY(037u, R23CSM1), r23csm1, false},
+    {KEY(037u, R23CSM1 + 3u), r23csm1_terminate, false},
+    {KEY(037u, R23CSM1 + 4u), r23csm1_proceed, false},
+    {KEY(037u, R23CSM1 + 5u), r23csm1_mark, false},
+    {KEY(037u, R23CSM1 + 011u), r23csm1_after_gentran, false},
+    {KEY(037u, R21C1), r21c1, false},
+    {KEY(037u, R21C1 + 3u), r21c1_terminate, false},
+    {KEY(037u, R21C1 + 4u), r21c1_proceed, false},
+    {KEY(037u, R21C1 + 5u), r21c1_recycle, false},
+    {KEY(037u, R21CSM1 + 3u), r21csm1_after_gentran, false},
+    {KEY(037u, R21END + 2u), r21end_after_kleenex, false},
+    {KEY(037u, R21END + 4u), r21end_after_r21mark, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -204,6 +238,7 @@ static const struct basic_entry *basic_entry(uint16_t key)
 static const struct interpretive_code *const codes[] = {
     &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE, &CALLR52_CODE,
     &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE, &DE_GR_50_CODE,
+    &R57_CODE,      &ENDR57_CODE,
 };
 
 /* The table of bank that address is in, or none. */

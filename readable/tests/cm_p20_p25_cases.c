@@ -42,7 +42,8 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, PROG22A_CODE,
-    CALLR52_CODE, S22LSITE_CODE, P22SUBRB_CHECK_CODE, N89ERRX_3_CODE, S22ABDE_CODE, DE_GR_50_CODE;
+    CALLR52_CODE, S22LSITE_CODE, P22SUBRB_CHECK_CODE, N89ERRX_3_CODE, S22ABDE_CODE, DE_GR_50_CODE,
+    R57_CODE, ENDR57_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -63,6 +64,7 @@ bool cm_p20_p25_readable(uint16_t key, bool order_pair);
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
 #define S22TOFF_AT  03667u /* E7,1667: S22's return, a CADR */
+#define MRKBUF1_AT  03725u /* E7,1725 */
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -109,12 +111,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* The parts written so far: part 1, P20 (bank 37, PROG20 to the word
- * before R57); part 2, P22 (bank 30, PROG22 to the word before S22.1). */
+ * before R57); part 2, P22 (bank 30, PROG22 to the word before S22.1);
+ * part 3, R57, R21 and R23 (bank 37, R57 to the word before R61CSM). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return (bank == 037u && z >= 02261u && z <= 02400u) ||
+    return (bank == 037u && z >= 02261u && z <= 02556u) ||
            (bank == 030u && z >= 02000u && z <= 02311u);
 }
 
@@ -284,6 +287,8 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
         w[S22TOFF_AT] = fixed_cadr(w[S22TOFF_AT]);
         w[S22TOFF_AT + 1u] = fixed_cadr(w[S22TOFF_AT + 1u]);
     }
+    /* Now and then MRKBUF1 -1, no mark (R21CSMA). */
+    if (rnd() % 4u == 0u) w[MRKBUF1_AT] = 077776u;
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
     if (n % 4u != 0u && rnd() % 64u == 0u) w[6] = any_word();
@@ -371,6 +376,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 static const struct interpretive_code *const codes[] = {
     &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE, &CALLR52_CODE,
     &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE, &DE_GR_50_CODE,
+    &R57_CODE,      &ENDR57_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
