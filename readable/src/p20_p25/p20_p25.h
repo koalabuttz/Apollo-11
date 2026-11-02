@@ -640,6 +640,27 @@ extern const struct interpretive_code WLINIT_CODE;
 
 extern const struct interpretive_code GETULC_CODE;
 
+/* ---- Part 15: LRS24.1, the RR search (r24.c) ---- */
+
+void lrs24_1(void);
+void lrs24_1_after_waitlist(void);
+void lrs24_1_after_exit(void);
+void contdes2(void);
+void contdes2_not_in_mode_2(void);
+void contdes2_maneuver_required(void);
+void omegcalc(void);
+void omegcalc_after_exit(void);
+void calldgch(void);
+void calldgch_after_findvac(void);
+void datgdchk(void);
+void datgdchk_after_killtask(void);
+void limalarm_after_alarm(void);
+void limalarm_after_killtask(void);
+extern const struct interpretive_code LRS24_1_CODE;
+extern const struct interpretive_code CONTDES2_CODE;
+extern const struct interpretive_code OMEGCALC_CODE;
+extern const struct interpretive_code CALCXY_CODE;
+
 #endif
 
 #endif
