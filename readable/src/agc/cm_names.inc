@@ -1162,6 +1162,8 @@
 #define K_RADSTALL 03575u
 #define K_PROG20 02261u
 #define K_R21END 02550u
+#define K_PIKUP20 02345u
+#define K_P20R52JB 02367u
 #define K_V67CALL 03624u
 #define K_V06N99DS 03630u
 #define K_V06N9933 03636u
@@ -1582,6 +1584,7 @@
 #define K_RM 01703u
 #define K_WWPOS 01720u
 #define K_WWVEL 01722u
+#define K_R61CNTR 01775u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u
@@ -2563,6 +2566,12 @@
 #define I_FT99999 061764u
 #define I_QPRET 000052u
 #define I_V06N9933 061636u
+#define I_MARKTIME 001224u
+#define I_SETINTG 056343u
+#define I_P20_1 076315u
+#define I_P20_2 076321u
+#define I_P20_3 076333u
+#define I_R52 030011u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

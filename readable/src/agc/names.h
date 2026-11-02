@@ -2893,6 +2893,12 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define V67XXX   ((word)K_V67XXX)
 #define V67CLRF  ((word)K_V67CLRF)
 #define V06N99   ((word)KW_V06N99) /* VN 0699 */
+#else
+/* The CM's P20-P25 (Comanche055). Part 1, P20 (bank 37). Its erasable words
+ * (TRKMKCNT, VHFCNT, R61CNTR, HOLDFLAG, STATE) are named by ADDRESS_OF. */
+#define PROG20   ((word)K_PROG20)
+#define PIKUP20  ((word)K_PIKUP20)
+#define P20R52JB ((word)K_P20R52JB)
 #endif
 
 /* NO.CORES + 1 core sets. */

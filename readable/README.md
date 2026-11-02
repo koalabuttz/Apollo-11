@@ -143,6 +143,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P20-P25, part 17: R29's designate loop | `P20-P25.agc` (LM pp. 599-604) | [`src/p20_p25/`](src/p20_p25/) | BEGDES29 and R29DLOOP (bank 24), the task that starts the job R29DODES every half second while the designate is on, waiting a centisecond while SETUP29D supplies new data. R29DODES (bank 32), DODES done fast in single precision with no interpretive code: a vector loop run twice (TANG 1, then +0). The first pass takes the present line of sight, unit (UNIT through USPRCADR), to navigation base axes (QUICTRIG, AX*SR*T), and from the cosine of its angle to the radar's axis enables tracking within about half a degree (TESTCOS). The second advances LOSSM half a second and takes the line of sight a second ahead; R29DPAS2 makes the shaft and trunnion commands (times RR29GAIN) for RROUT, unless the data good discrete has come: then R29LOKON ends the designate and starts the reading task R29READ. END29DOD always clears LOSCMFLG. CCS TANG's -0 way runs a DCA's word as CA, as the listing runs it |
 | P20-P25, part 18: R29's radar reading | `P20-P25.agc` (LM pp. 605-607) | [`src/p20_p25/`](src/p20_p25/) | R29READ, the task R29LOKON starts: every 2 seconds, while READRFLG still allows reading, it starts the job R29RDJOB. The job stops at ENDRRD29 if R29 is over (NOR29FLG) or the radar is out of auto mode; else it reads the range rate, saves the time and the radar's and IMU's CDU angles (inhibited) in MPAC, and reads the range (R29RANGE), reading again after a scale change (R29RRR?). With both read it lays the downlink out in one go (DNRRANGE to RM, MKTIME, TANGNB, AIG to AOG) and sets TRKMKCNT 1. ENDRRD29 zeroes TRKMKCNT, clears READRFLG and removes the track enable, so that R29 designates again |
 | P20-P25, part 19: V67, the W-matrix monitor (P20-P25 whole) | `P20-P25.agc` (LM pp. 608-611) | [`src/p20_p25/`](src/p20_p25/) | V67CALL (bank 31) calls V67WW, which waits its turn for the integration (INTSTALL) and sums the squares of the W-matrix's position, velocity and bias diagonal blocks, 6 words at a time down the diagonal (NXPOSVEL and ADDPOS, bank 30), takes their square roots (DPPOSMAX on an overflow, the position at most FT99999), and wakes the integration's waiters (INTWAKE). V06N99 shows them; V6N99PRO compares them with the values saved before the display, and when the astronaut changed any (V67FLAG) the new values become the W-matrix's initial ones (WRENDPOS and WRENDVEL, or WSURFPOS and WSURFVEL on the surface, WTRUN and WSHAFT), with RENDWFLG cleared so the W-matrix starts again |
+| CM P20-P25, part 1: P20 | `P20-P25.agc` (CM pp. 562-564) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | P20, the CSM's rendezvous navigation program (bank 37): R02BOTH checks the IMU, the mark counters are zeroed and the flags set (the LM's state vector the one to update), and both state vectors are brought to the present time (MARKTIME), the LM's with the W-matrix while it is valid. Then R22's job is started (FINDVAC), and PIKUP20, where a restart comes back to, ends the job unless the track flag and REFSMFLG are set; else R61CSM, the preferred tracking attitude, and R52's automatic optics positioning (P20R52JB), holding the attitude. The binding runs the keys part 1 writes, and the faithful port's routines at the rest of the file's |
 
 Beside them:
 
@@ -385,6 +386,15 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    so that a change to the states cannot quietly leave a key untested. At
    V6N99PRO, half the states have noun 99's values as V67CALL saved them,
    so that the case where nothing changed is tested.
+   `make cm-p20-p25-cases` runs the faithful port's test of the CM's
+   P20-P25 (its 1,993 checks against yaAGC digests) through the readable
+   tables, then checks the interpretive words against the rope (28 so
+   far), and runs readable and faithful side by side at every key the parts
+   have written (16 basic and 12 order pairs) from 4,096 states each, and
+   at the others (which run the faithful routines through the readable
+   tables) from 16. The states carry each frozen case's channels, and now
+   and then the program has no hardware record, which every routine of
+   the file refuses.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
