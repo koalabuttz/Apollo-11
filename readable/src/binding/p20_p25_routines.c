@@ -66,6 +66,7 @@ extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_in
 /* LOADTIME's and CDULOGIC's banks (FB), from their FCADRs. */
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
 #define CDULOGIC_BANK ((word)(I_CDULOGIC & 076000u))
+#define TPMODE_BANK   ((word)(I_TPMODE & 076000u))
 /* TCDANZIG's (ENDT(X), TIME_OF_FREE_FALL.agc), where LPS20.1's BOVB goes. */
 #define TCDANZIG_BANK ((word)(I_TCDANZIG & 076000u))
 #define SUPERBANK_BIT 0100u
@@ -584,6 +585,9 @@ static const struct basic_entry {
     {KEY(024u, LRS22_2 + 1u), lrs22_2_after_makecadr, true},
     {KEY(024u, OKEXIT - 3u), lrs22_2_error, false},
     {KEY(024u, OKEXIT + 1u), okexit_after_exit, false},
+    /* Part 10 */
+    {KEY(026u, RANGEBQ + 3u), rangebq_r65, false},
+    {KEY(026u, RANGEBQ + 7u), rangebq_after_r65, true},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -650,6 +654,8 @@ static const struct interpretive_code *const codes[] = {
     &NORMEXIT_CODE,
     &THIRTY_DEGCHK_CODE,
     &OKEXIT_CODE,
+    &LSR22_3_CODE,
+    &RANGEBQ1_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -733,7 +739,7 @@ static bool at_danzig(unsigned bank, const struct pending_order *pending)
            !(BANKSET & 01770u) && INTBIT15 == ((bank << 10) & 040000u) && sane(true);
 }
 
-/* One pass; after RTB LOADTIME or CDULOGIC, the routine and its DANZIG;
+/* One pass; after RTB LOADTIME, CDULOGIC or TPMODE, the routine and its DANZIG;
  * after LPS20.1's BOVB to TCDANZIG, its TC DANZIG (which only resets
  * OVFIND: the pass goes on with the next order); after R21LEM12's CLRGO
  * to a store code, the store code. */
@@ -761,6 +767,10 @@ static enum exec_status one_pass(uint16_t key, const agc_native_program *program
     if (Z == TCDANZIG && FBANK == TCDANZIG_BANK) {
         tc_at(TCDANZIG);
         continue_at(DANZIG);
+        return interpret_listing(program, state, &io->io, code);
+    }
+    if (Z == TPMODE && FBANK == TPMODE_BANK) { /* (the faithful pair takes any state) */
+        tpmode();
         return interpret_listing(program, state, &io->io, code);
     }
     if (Z == CDULOGIC && FBANK == CDULOGIC_BANK) {

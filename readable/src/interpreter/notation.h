@@ -25,6 +25,7 @@
 #define ORDER_VLOAD      0001u
 #define ORDER_VLOAD_STAR 0003u /* VLOAD* */
 #define ORDER_AXT_2      0002u /* AXT,2 */
+#define ORDER_TAD        0005u
 #define ORDER_VSL1       0004u
 #define ORDER_SL1R       0004u /* (VSL1's code too: a short shift, by MODE) */
 #define ORDER_AXT_1      0006u /* AXT,1 */
@@ -50,6 +51,7 @@
 #define ORDER_ARCSIN     0040u /* (ASIN's code too) */
 #define ORDER_ASIN       0040u
 #define ORDER_SLOAD      0041u
+#define ORDER_SXA_2      0042u /* SXA,2 */
 #define ORDER_SLOAD_STAR 0043u /* SLOAD* */
 #define ORDER_SL2R       0044u
 #define ORDER_SSP        0045u
@@ -64,6 +66,7 @@
 #define ORDER_MXV_STAR   0057u /* MXV* */
 #define ORDER_DSQ        0060u
 #define ORDER_PDVL       0061u
+#define ORDER_INCR_2     0062u /* INCR,2 */
 #define ORDER_PDVL_STAR  0063u /* PDVL* */
 #define ORDER_SL2        0064u
 #define ORDER_INCR_1     0066u /* INCR,1 */
@@ -87,6 +90,9 @@
 #define ORDER_VSL        0115u /* (a vector's general shift: SL's code, by MODE) */
 #define ORDER_SLR        0115u
 #define ORDER_VSL_STAR   0117u /* VSL* (a general shift, indexed) */
+#define ORDER_SR_STAR    0117u /* (SR*, SRR* and SLR* too: VSL*'s code, by their address) */
+#define ORDER_SRR_STAR   0117u
+#define ORDER_SLR_STAR   0117u
 #define ORDER_UNIT       0120u
 #define ORDER_VAD        0121u
 #define ORDER_BZE        0122u
@@ -227,6 +233,13 @@
  * taken X2 from it, GENSHIFT reads its low ten bits: the count, its
  * pseudo sign, the direction and the round bit. */
 #define VSL_X2(n) ((word)(~(020000u + 0200u + (unsigned)(n) + 1u) & 077777u))
+/* SR*'s, SRR*'s and SLR*'s, as yaYUL assembles them: "0 -2,1" is SR_X1(-2)
+ * (20577: X1 leaves it as it is), "0,2" SR_X2(0) (57176), "2,2" SRR_X2(2)
+ * (56174, with the round bit) and SLR_X2(2) (56574). */
+#define SR_X1(n)  SR_COUNT(n)
+#define SR_X2(n)  ((word)(~SR_COUNT(n) & 077777u))
+#define SRR_X2(n) ((word)(~(020000u + 01000u + 0600u + (unsigned)(n) + 1u) & 077777u))
+#define SLR_X2(n) ((word)(~SLR_COUNT(n) & 077777u))
 /* The store code after STADR, complemented: STADR stores what it finds on
  * the push-down list, and the code word after it reads negative, so the
  * interpreter takes it as STADR's (not as a new pair). */
