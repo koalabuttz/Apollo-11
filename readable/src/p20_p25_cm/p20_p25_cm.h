@@ -12,7 +12,9 @@
  *   part 1, p20.c: P20 itself (pp. 562-564);
  *   part 2, p22.c: P22 up to S22.1 (pp. 565-569);
  *   part 3, r57.c and r21_r23.c: R57, and R21 and R23 for the CSM
- *   (pp. 570-573).
+ *   (pp. 570-573);
+ *   part 4, r61csm.c and bvectors.c: R61CSM, BVECTORS and GETUM
+ *   (pp. 574-578).
  * The binding (src/binding/cm_p20_p25_routines.c) runs the keys these
  * parts write, and the faithful port's routines at the others.
  *
@@ -148,6 +150,27 @@ void r21c1_recycle(void);
 void r21csm1_after_gentran(void);
 void r21end_after_kleenex(void);
 void r21end_after_r21mark(void);
+
+/* ---- Part 4: R61CSM (r61csm.c), BVECTORS and GETUM (bvectors.c) ---- */
+
+extern const struct interpretive_code R61CSM_CODE;
+extern const struct interpretive_code BVECTORS_CODE;
+extern const struct interpretive_code GETUM_CODE;
+
+void r61csm(void);
+void r61csm_after_makecadr(void);
+void r61csm_do_r61(void);
+void r61csm_leave(void);
+void r61csm_interpret(void);
+void r61csm_after_exit(void);
+void r61csm_no_maneuver(void);
+void r61c1(void);
+void r61c1_after_3axisflg(void);
+void r61c1_after_pdspflag(void);
+void r61c1_after_r60csm(void);
+void r61c1_after_pdspflag_reset(void);
+void r61c1_after_phaschng(void);
+void r61end(void);
 
 #endif
 

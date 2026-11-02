@@ -2935,6 +2935,14 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define V53            ((word)KW_V53)      /* VN 5300 */
 #define V0694          ((word)KW_V0694)    /* VN 0694 */
 #define NINETEEN_77DEG ((word)KW_19_77DEG) /* 19.77DEG: OCT 61740 */
+/* Part 4, R61CSM (bank 37), BVECTORS and GETUM (bank 23). GENRET, SAVBNK
+ * and R61CNTR are named by ADDRESS_OF. */
+#define R61CSM   ((word)K_R61CSM)
+#define R61C1    ((word)K_R61C1)
+#define R61END   ((word)K_R61END)
+#define DECRM61  ((word)K_DECRM61)
+#define BVECTORS ((word)K_BVECTORS)
+#define GETUM    ((word)K_GETUM)
 #endif
 
 /* NO.CORES + 1 core sets. */

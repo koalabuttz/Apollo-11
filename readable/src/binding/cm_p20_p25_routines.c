@@ -222,6 +222,21 @@ static const struct basic_entry {
     {KEY(037u, R21CSM1 + 3u), r21csm1_after_gentran, false},
     {KEY(037u, R21END + 2u), r21end_after_kleenex, false},
     {KEY(037u, R21END + 4u), r21end_after_r21mark, false},
+    /* Part 4: R61CSM */
+    {KEY(037u, R61CSM), r61csm, true},
+    {KEY(037u, R61CSM + 4u), r61csm_after_makecadr, true},
+    {KEY(037u, R61CSM + 7u), r61csm_do_r61, true},
+    {KEY(037u, R61CSM + 010u), r61csm_leave, true},
+    {KEY(037u, R61CSM + 011u), r61csm_interpret, true},
+    {KEY(037u, R61CSM + 015u), r61csm_after_exit, false},
+    {KEY(037u, R61CSM + 017u), r61csm_no_maneuver, false},
+    {KEY(037u, R61C1), r61c1, false},
+    {KEY(037u, R61C1 + 2u), r61c1_after_3axisflg, false},
+    {KEY(037u, R61C1 + 6u), r61c1_after_pdspflag, false},
+    {KEY(037u, R61C1 + 010u), r61c1_after_r60csm, false},
+    {KEY(037u, R61C1 + 012u), r61c1_after_pdspflag_reset, false},
+    {KEY(037u, R61C1 + 014u), r61c1_after_phaschng, false},
+    {KEY(037u, R61END), r61end, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -236,9 +251,9 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE, &CALLR52_CODE,
-    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE, &DE_GR_50_CODE,
-    &R57_CODE,      &ENDR57_CODE,
+    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,  &CALLR52_CODE,
+    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,  &DE_GR_50_CODE,
+    &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE, &GETUM_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -294,6 +309,14 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
+/* PROG22C's SLOAD* QPRET,2 and GETUM's VLOAD* 1,1 load from the mark data
+ * (an index register its address's complement): the faithful port takes
+ * those words from erasable memory only, ADDRWD below 02000. */
+static bool erasable_only(uint16_t key)
+{
+    return key == KEY(030u, PROG22C) || key == KEY(023u, GETUM + 3u);
+}
+
 static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
@@ -315,11 +338,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     before = *state;
     kept = *io;
     status = one_pass(program, state, io, code);
-    /* PROG22C's SLOAD* QPRET,2 loads a word of the mark data (X2 its
-     * address's complement): the faithful port takes that word from
-     * erasable memory only, ADDRWD below 02000. */
-    if (status == EXEC_OK && key == KEY(030u, PROG22C) && ADDRWD >= 02000u)
-        status = EXEC_OUT_OF_SCOPE;
+    if (status == EXEC_OK && erasable_only(key) && ADDRWD >= 02000u) status = EXEC_OUT_OF_SCOPE;
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;
