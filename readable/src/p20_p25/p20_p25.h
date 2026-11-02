@@ -14,7 +14,9 @@
  *   part 2, r22_r21.c: R22, the radar data read, and R21, the designate
  *     (pp. 504-512), with LUNSFCHK, which every part calls;
  *   part 3, r23_r24.c: R23, manual acquisition, and R24, the search
- *     (pp. 513-516), with CLRADMOD.
+ *     (pp. 513-516), with CLRADMOD;
+ *   part 4, r61.c: R61 and R65, the preferred tracking attitude
+ *     (pp. 517-520), with READCDUD.
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -324,6 +326,43 @@ void r24lem4(void);
 
 /* CLRADMOD (fixed-fixed) */
 void clradmod(void);
+
+/* ---- Part 4: R61 and R65 (r61.c) ---- */
+
+extern const struct interpretive_code R61C_L03_CODE;
+extern const struct interpretive_code R61LEM1_AUTO_CODE;
+extern const struct interpretive_code R61C_L05_CODE;
+
+void r61lem(void);
+void r61lem_after_makecadr(void);
+void r61lem_after_upflag(void);
+void r65lem(void);
+void r65lem_after_makecadr(void);
+void r61c_l01(void);
+void r61lem1_after_exit(void);
+void r61lem1_after_phaschng(void);
+void r61lem1_after_auto_check(void);
+void r61lem1_in_auto(void);
+void r61lem2_after_exit(void);
+void r61c_l05_after_exit(void);
+void r61c_l05_after_zatteror(void);
+void r61c_l05_after_setmindb(void);
+void r61c_l05_after_downflag(void);
+void r61c_l05_after_upflag(void);
+void r61c_l05_after_r60lem(void);
+void r61c_l05_after_restordb(void);
+void r61c_l05_after_phaschng(void);
+void r61c_l06(void);
+void r61c_l06_r65(void);
+void r61c_l06_count_out(void);
+void r61c_l06_again(void);
+void r61c_l06_after_twiddle(void);
+void r61c_l2(void);
+void r61c_l2_after_findvac(void);
+void r61c_l04_after_ballangs(void);
+void r61c_l4(void);
+void r65wait(void);
+void readcdud(void);
 
 #endif
 

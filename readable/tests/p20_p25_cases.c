@@ -45,31 +45,34 @@ struct interpretive_code {
 };
 extern const struct interpretive_code ORBCHG2_CODE, P20LEM1_CODE, P20LEMC3_CODE, UPPSV_CODE,
     ORBCHG3_CODE, R22LEM3_CODE, R22LEM96_CODE, R22LEM96_WAIT_CODE, R22LEM7_CODE, R21LEM1_CODE,
-    R21LEM3_CODE, R21LEM12_CODE, R21LEM12_FIRST_PASS_CODE, R21LEM7_CODE, R21LEM8_CODE;
+    R21LEM3_CODE, R21LEM12_CODE, R21LEM12_FIRST_PASS_CODE, R21LEM7_CODE, R21LEM8_CODE,
+    R61C_L03_CODE, R61LEM1_AUTO_CODE, R61C_L05_CODE;
 extern const agc_routine_table lm_p20_p25_basic, lm_p20_p25_interpretive;
 extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_interpretive;
 bool p20_p25_readable(uint16_t key, bool order_pair);
 
 /* The addresses of the words the routines use. */
-#define NEWOPS_AT   06070u
-#define X1_AT       0046u
-#define S1_AT       0050u
-#define EDOP_AT     0023u
-#define NEWJOB_AT   0067u
-#define FLAGWRD0_AT 0074u
-#define RADMODES_AT 0110u
-#define INTBIT15_AT 0115u
-#define FIXLOC_AT   0120u
-#define OVFIND_AT   0121u
-#define MPAC_AT     0154u
-#define MODE_AT     0163u
-#define LOC_AT      0164u
-#define BANKSET_AT  0165u
-#define PUSHLOC_AT  0166u
-#define MODREG_AT   01011u
-#define OPTION2_AT  01145u
-#define REPOSCNT_AT 01423u
-#define N49FLAG_AT  01746u
+#define NEWOPS_AT        06070u
+#define DANZIG_AT        06061u
+#define PENDING_CALL_KEY (023u * 1024u + 0150u) /* 23,2150 */
+#define X1_AT            0046u
+#define S1_AT            0050u
+#define EDOP_AT          0023u
+#define NEWJOB_AT        0067u
+#define FLAGWRD0_AT      0074u
+#define RADMODES_AT      0110u
+#define INTBIT15_AT      0115u
+#define FIXLOC_AT        0120u
+#define OVFIND_AT        0121u
+#define MPAC_AT          0154u
+#define MODE_AT          0163u
+#define LOC_AT           0164u
+#define BANKSET_AT       0165u
+#define PUSHLOC_AT       0166u
+#define MODREG_AT        01011u
+#define OPTION2_AT       01145u
+#define REPOSCNT_AT      01423u
+#define N49FLAG_AT       01746u
 /* The erasable words UPPSV's GOTO and the faithful port read a CADR from:
  * LS21X (its return, as STQ stores it) and 03675. */
 #define LS21X_AT 01757u
@@ -119,14 +122,16 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: parts 1 to 3, bank 24 to R24LEM4, bank 32's
- * ORBCHG3 (to its EXIT's TC BANKCALL) and CLRADMOD in fixed-fixed. */
+/* The parts written so far: parts 1 to 4, bank 24 to R24LEM4, bank 32's
+ * ORBCHG3 (to its EXIT's TC BANKCALL), CLRADMOD in fixed-fixed and bank
+ * 23's R61 (to READCDUD). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 024u && z < 03255u) || (bank == 032u && z >= 02217u && z <= 02364u) ||
-           (bank == 03u && z == 02011u); /* CLRADMOD */
+           (bank == 03u && z == 02011u) /* CLRADMOD */ ||
+           (bank == 023u && z >= 02116u && z <= 02313u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -215,6 +220,12 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         w[LOC_AT] = z;
         w[INTBIT15_AT] = (uint16_t)(w[4] & 040000u);
         w[EDOP_AT] = 0u; /* as DANZIG leaves it before every NEWOPS */
+        /* R61LEM1's RTB CALL: the CALL waits in EDOP while READCDUD runs,
+         * and DANZIG resumes the pair at LOC. */
+        if (key == PENDING_CALL_KEY && rnd() % 8u) {
+            w[5] = DANZIG_AT;
+            w[EDOP_AT] = rnd() % 8u ? 0153u : (uint16_t)(rnd() % 0200u);
+        }
     } else {
         w[5] = z;
     }
@@ -414,6 +425,9 @@ static const struct interpretive_code *const codes[] = {
     &R21LEM12_FIRST_PASS_CODE,
     &R21LEM7_CODE,
     &R21LEM8_CODE,
+    &R61C_L03_CODE,
+    &R61LEM1_AUTO_CODE,
+    &R61C_L05_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

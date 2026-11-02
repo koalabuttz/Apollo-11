@@ -376,6 +376,36 @@ static const struct basic_entry {
     {KEY(024u, R24LEM3 + 013u), r24lem3_in_orbit, false},
     {KEY(024u, R24LEM4), r24lem4, false},
     {KEY(003u, CLRADMOD), clradmod, false},
+    {KEY(023u, R61LEM), r61lem, false},
+    {KEY(023u, R61LEM + 1u), r61lem_after_makecadr, false},
+    {KEY(023u, R61LEM + 4u), r61lem_after_upflag, true},
+    {KEY(023u, R65LEM), r65lem, false},
+    {KEY(023u, R65LEM + 1u), r65lem_after_makecadr, false},
+    {KEY(023u, R61C_L01), r61c_l01, true},
+    {KEY(023u, R61LEM1 + 015u), r61lem1_after_exit, false},
+    {KEY(023u, R61LEM1 + 017u), r61lem1_after_phaschng, false},
+    {KEY(023u, R61LEM1 + 025u), r61lem1_after_auto_check, true},
+    {KEY(023u, R61LEM1 + 027u), r61lem1_in_auto, true},
+    {KEY(023u, R61LEM2 + 2u), r61lem2_after_exit, false},
+    {KEY(023u, R61C_L05 + 1u), r61c_l05_after_exit, false},
+    {KEY(023u, R61C_L05 + 4u), r61c_l05_after_zatteror, false},
+    {KEY(023u, R61C_L05 + 6u), r61c_l05_after_setmindb, false},
+    {KEY(023u, R61C_L05 + 010u), r61c_l05_after_downflag, false},
+    {KEY(023u, R61C_L05 + 012u), r61c_l05_after_upflag, false},
+    {KEY(023u, R61C_L05 + 014u), r61c_l05_after_r60lem, false},
+    {KEY(023u, R61C_L05 + 017u), r61c_l05_after_restordb, false},
+    {KEY(023u, R61C_L05 + 021u), r61c_l05_after_phaschng, false},
+    {KEY(023u, R61C_L06), r61c_l06, false},
+    {KEY(023u, R61C_L06 + 4u), r61c_l06_r65, false},
+    {KEY(023u, R61C_L06 + 6u), r61c_l06_count_out, false},
+    {KEY(023u, R61C_L06 + 7u), r61c_l06_again, false},
+    {KEY(023u, R61C_L06 + 013u), r61c_l06_after_twiddle, false},
+    {KEY(023u, R61C_L2), r61c_l2, false},
+    {KEY(023u, R61C_L2 + 4u), r61c_l2_after_findvac, false},
+    {KEY(023u, R61C_L04 + 2u), r61c_l04_after_ballangs, false},
+    {KEY(023u, R61C_L4), r61c_l4, false},
+    {KEY(023u, R65WAIT), r65wait, false},
+    {KEY(023u, READCDUD), readcdud, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -405,6 +435,9 @@ static const struct interpretive_code *const codes[] = {
     &R21LEM12_FIRST_PASS_CODE,
     &R21LEM7_CODE,
     &R21LEM8_CODE,
+    &R61C_L03_CODE,
+    &R61LEM1_AUTO_CODE,
+    &R61C_L05_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -456,13 +489,43 @@ static bool switched_to_store_code(unsigned bank, word start)
     return !(code->words[LOC - code->first] & 040000u);
 }
 
+/* The keys a pair's right-hand order waits at in EDOP while its left, an
+ * RTB, runs a routine of this file: R61LEM1's RTB CALL (READCDUD, then
+ * CALL VECPNT1). The routine ends at DANZIG, which finds the order in EDOP
+ * and resumes the pass at LOC, the RTB's address: CALL is code 0152, and
+ * EDOP holds it plus one. */
+static const struct pending_order {
+    uint16_t key;
+    word edop;
+} pending_orders[] = {
+    {KEY(023u, R61LEM1 + 011u), ORDER_CALL + 1u},
+};
+
+static const struct pending_order *pending_order(uint16_t key)
+{
+    unsigned i;
+
+    for (i = 0; i < COUNT(pending_orders); ++i)
+        if (pending_orders[i].key == key) return &pending_orders[i];
+    return NULL;
+}
+
+/* The states the faithful port resumes such a pair from: Z at DANZIG, the
+ * order in EDOP, BANKSET the pair's bank (FB may be any) with no E-bank
+ * bits, and INTBIT15 the bank's bit 15. */
+static bool at_danzig(unsigned bank, const struct pending_order *pending)
+{
+    return Z == DANZIG && EDOP == pending->edop && ((BANKSET >> 10) & 037u) == bank &&
+           !(BANKSET & 01770u) && INTBIT15 == ((bank << 10) & 040000u) && sane(true);
+}
+
 /* One pass; after RTB LOADTIME, LOADTIME and its DANZIG; after a switch
  * order's branch to a store code, the store code. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  lm_channel_io *io, const struct interpretive_code *code)
 {
     unsigned bank = (BANKSET >> 10) & 037u;
-    word start = code->words[LOC - code->first];
+    word start = Z == NEWOPS ? code->words[LOC - code->first] : 0u; /* (0: no switch) */
 
     if (interpret_listing(program, state, &io->io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
@@ -517,6 +580,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     lm_channel_io *io = device, kept;
     apollo_overlay_state before;
     const struct interpretive_code *code;
+    const struct pending_order *pending;
     enum exec_status status;
 
     if (!code_at(bank, (word)(02000u + key % 1024u)))
@@ -524,8 +588,10 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
-    if (Z != NEWOPS || !in_bank(bank) || !code || BANKSET != BBANK ||
-        INTBIT15 != (FBANK & 040000u) || !sane(true))
+    pending = pending_order(key);
+    if (!code || (pending ? !at_danzig(bank, pending)
+                          : Z != NEWOPS || !in_bank(bank) || BANKSET != BBANK ||
+                                INTBIT15 != (FBANK & 040000u) || !sane(true)))
         return EXEC_OUT_OF_SCOPE;
 
     before = *state;
