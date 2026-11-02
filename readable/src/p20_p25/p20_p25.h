@@ -680,6 +680,24 @@ void setup29d_after_waitlist(void);
 extern const struct interpretive_code R29_LOS_CODE;
 extern const struct interpretive_code SETUP29D_CODE;
 
+/* ---- Part 17: R29's designate loop (r29dodes.c) ---- */
+
+void begdes29(void);
+void r29dloop(void);
+void r29dloop_after_vardelay(void);
+void r29dodes(void);
+void r29dodes_after_unit(void);
+void r29dodes_after_mpacvbuf(void);
+void gotangls(void);
+void gotangls_after_axsrt(void);
+void gotangls_after_cos_t(void);
+void gotangls_after_sin_t(void);
+void gotangls_after_sin_s(void);
+void gotangls_after_cos_s(void);
+void r29dpas2_after_rrout(void);
+void r29lokon(void);
+void end29dod(void);
+
 #endif
 
 #endif
