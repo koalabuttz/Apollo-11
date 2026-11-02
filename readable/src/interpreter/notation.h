@@ -93,6 +93,8 @@
 #define ORDER_SR_STAR    0117u /* (SR*, SRR* and SLR* too: VSL*'s code, by their address) */
 #define ORDER_SRR_STAR   0117u
 #define ORDER_SLR_STAR   0117u
+#define ORDER_SL_STAR    0117u /* (and VSR*) */
+#define ORDER_VSR_STAR   0117u
 #define ORDER_UNIT       0120u
 #define ORDER_VAD        0121u
 #define ORDER_BZE        0122u
@@ -128,6 +130,7 @@
 #define ORDER_SET        0162u
 #define ORDER_SETGO      0162u
 #define ORDER_VSL8       0164u
+#define ORDER_SL4        0164u /* (VSL8's code too) */
 #define ORDER_PUSH       0170u
 #define ORDER_DMP        0171u
 #define ORDER_DMP_STAR   0173u /* DMP* */
@@ -235,8 +238,10 @@
 #define VSL_X2(n) ((word)(~(020000u + 0200u + (unsigned)(n) + 1u) & 077777u))
 /* SR*'s, SRR*'s and SLR*'s, as yaYUL assembles them: "0 -2,1" is SR_X1(-2)
  * (20577: X1 leaves it as it is), "0,2" SR_X2(0) (57176), "2,2" SRR_X2(2)
- * (56174, with the round bit) and SLR_X2(2) (56574). */
+ * (56174, with the round bit) and SLR_X2(2) (56574). VSR* takes SR*'s,
+ * and SL* and VSL* by X1 a left shift's: "0 -1,1" is SL_X1(-1) (20200). */
 #define SR_X1(n)  SR_COUNT(n)
+#define SL_X1(n)  SL_COUNT(n)
 #define SR_X2(n)  ((word)(~SR_COUNT(n) & 077777u))
 #define SRR_X2(n) ((word)(~(020000u + 01000u + 0600u + (unsigned)(n) + 1u) & 077777u))
 #define SLR_X2(n) ((word)(~SLR_COUNT(n) & 077777u))

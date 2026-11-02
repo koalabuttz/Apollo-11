@@ -134,6 +134,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P20-P25, part 8: LPS20.1 and LPS20.2 | `P20-P25.agc` (LM pp. 564-567) | [`src/p20_p25/`](src/p20_p25/) | LPS20.1, the line of sight: both state vectors to the time in TDEC1 (the LM's by LEMCONIC, unless R21 called it on the lunar surface; the CSM's by CSMCONIC), their relative velocity in stable member axes to LOSVEL, the line of sight from the LM to the CSM as a unit vector in stable member axes to RRTARGET and its length to MLOSV (alarm 526 when it overflows, past 400 nautical miles), the task that starts DODES killed on the way, RRNBSW cleared; and LPS20.2, the 400 nautical mile range check (MPAC 0 or 1) |
 | P20-P25, part 9: LRS22.1 and LRS22.2 | `P20-P25.agc` (LM pp. 568-573) | [`src/p20_p25/`](src/p20_p25/) | R22's data read subroutines. LRS22.1 (bank 32): one range rate sample, then at its midpoint (the mark time) the IMU's CDU angles, the time and the radar's angles, then one range sample (read again after a range scale change, CHEXERR); the readings converted to RDOTM, RRTRUN, RRSHAFT and RM, the radar's line of sight in navigation base axes (RRNB) to RRBORSIT, and checked within three degrees of the line of sight from the state vectors (LPS20.1, turned by the mark's CDU angles, TRG*SMNB); back to the caller with MPAC 0, 1 (no data) or 2 (not within three degrees). LRS22.2 (bank 24): the radar's line of sight within 30 degrees of the LM's +Z axis (MPAC 0 or 1) |
 | P20-P25, part 10: LSR22.3 to the range | `P20-P25.agc` (LM pp. 574-577) | [`src/p20_p25/`](src/p20_p25/) | R22's measurement incorporation, from its start (bank 26). Both vehicles' state vectors to the mark time (INTGRCAL): the one not corrected (VEHUPFLG) without the W-matrix, the corrected one with it while RENDWFLG says it is valid (else WLINIT sets it up again); on the surface LSR22.4 instead, and off it R65 (R65LEM) first. Then the range: X2 the sphere of influence's scaling (SCALSHFT), its B-vector the unit line of sight (GETULC), negative when the LM is corrected, its deviation RM less the range between the state vectors (DELTAQ), and its variance RANGEVAR times the range squared, no less than RVARMIN (VARIANCE, with the RTB routine TPMODE); then LGCUPDTE (QOK). The range rate and the angles come next |
+| P20-P25, part 11: the range rate | `P20-P25.agc` (LM pp. 577-579) | [`src/p20_p25/`](src/p20_p25/) | LSR22.3's range rate, after the range's LGCUPDTE: B1 the line of sight times the range, B0 the relative velocity across the line of sight ((ULC X VLC) X ULC), negative when the LM is corrected; the deviation, the radar's RDOTM less the range rate from the state vectors, times the range (DELTAQ); the variance, RATEVAR times the range rate squared, no less than VVARMIN, times the range squared (VARIANCE). All shifted up together by the smaller of B0's and B1's normalizing counts, then LGCUPDTE. On the surface R22 ends (RENDEND); else the angles, next |
 
 Beside them:
 
@@ -351,9 +352,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful side by side at each of its 8 keys from 16,384 states.
    `make p20-p25-cases` runs the faithful port's test of P20-P25 (its
    1,028 checks against yaAGC digests) through the readable tables, then
-   checks the written parts' interpretive words against the rope (549),
+   checks the written parts' interpretive words against the rope (653),
    and runs readable and faithful side by side at the written parts' keys
-   (411 basic and 263 order pairs) from 4,096 states each, and at the keys
+   (411 basic and 311 order pairs) from 4,096 states each, and at the keys
    the faithful routines still run from 16 states each (they must give
    the same results through the readable tables). One faithful pair runs
    states the readable binding refuses: R21LEM12's CLRGO (24,3030)

@@ -656,6 +656,7 @@ static const struct interpretive_code *const codes[] = {
     &OKEXIT_CODE,
     &LSR22_3_CODE,
     &RANGEBQ1_CODE,
+    &RANGE_RATE_CODE,
 };
 
 /* The table of bank that address is in, or none. */

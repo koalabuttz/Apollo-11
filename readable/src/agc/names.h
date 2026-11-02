@@ -2825,6 +2825,7 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 /* Part 10, LSR22.3 (bank 26). */
 #define LSR22_3 ((word)K_LSR22_3)
 #define RANGEBQ ((word)K_RANGEBQ)
+#define QOK     ((word)K_QOK)
 #endif
 
 /* NO.CORES + 1 core sets. */

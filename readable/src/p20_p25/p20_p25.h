@@ -29,6 +29,7 @@
  *     (pp. 568-573).
  *   part 10, lsr22.c: LSR22.3, the measurement incorporation, from its
  *     start to the range's (pp. 574-577).
+ *   part 11, lsr22.c: the range rate's (pp. 577-579).
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -614,6 +615,10 @@ void rangebq_r65(void);
 void rangebq_after_r65(void);
 extern const struct interpretive_code LSR22_3_CODE;
 extern const struct interpretive_code RANGEBQ1_CODE;
+
+/* ---- Part 11: the range rate (lsr22.c) ---- */
+
+extern const struct interpretive_code RANGE_RATE_CODE;
 
 #endif
 
