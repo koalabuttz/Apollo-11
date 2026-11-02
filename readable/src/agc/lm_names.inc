@@ -1390,6 +1390,8 @@
 #define K_VLIGHT 03664u
 #define K_RDOTBIAS 02001u
 #define K_HFLSHBIT 04753u
+#define K_LPS20_1 03255u
+#define K_LPS20_2 03565u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -2976,6 +2978,17 @@
 #define I_TANG 001107u
 #define I_DONBRD 052661u
 #define I_STAR_NBSM_STAR 047673u
+#define I_LOSCMFLG 000041u
+#define I_LMINT 051264u
+#define I_CSMINT 051274u
+#define I_VATT 000006u
+#define I_RNDVZFLG 000010u
+#define I_NOTSHIFT 051321u
+#define I_526ALARM 050102u
+#define I_FHNM 053577u
+#define I_TOFAR 053574u
+#define I_ZERO_SP 046521u
+#define I_ONE_SP 053576u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
