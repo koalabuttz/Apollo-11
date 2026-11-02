@@ -2713,6 +2713,44 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define MINUS_RRLIMIT ((word)KW_MRRLIMIT) /* -RRLIMIT: DEC -384 */
 #define BIT11_1       ((word)KW_BIT11P1)  /* BIT11+1: OCT 02001 */
 #define PRIO6         ((word)KW_PRIO6)
+/* Part 6, the designate: RRDESSM to DODESEND (bank 25). DESRET, DESCOUNT,
+ * LOSCOUNT, TANG and TANGNB are named by ADDRESS_OF. */
+#define RRDESSM      ((word)K_RRDESSM)
+#define OKDESSM      ((word)K_OKDESSM)
+#define LUNDESCH     ((word)K_LUNDESCH)
+#define STARTDES     ((word)K_STARTDES)
+#define DESRETRN     ((word)K_DESRETRN)
+#define DESRTRN      ((word)K_DESRTRN)
+#define NORDSTAL     ((word)K_NORDSTAL)
+#define TRYSWS       ((word)K_TRYSWS)
+#define NODESSM      ((word)K_NODESSM)
+#define RRDESNB      ((word)K_RRDESNB)
+#define OKDESNB      ((word)K_OKDESNB)
+#define TRYSWN       ((word)K_TRYSWN)
+#define NODESNB      ((word)K_NODESNB)
+#define RRLIMNB      ((word)K_RRLIMNB)
+#define SHAFTLIM     ((word)K_SHAFTLIM)
+#define NEGSHAFT     ((word)K_NEGSHAFT)
+#define DESLOOP      ((word)K_DESLOOP)
+#define STDESIG1     ((word)K_STDESIG1)
+#define BADDES       ((word)K_BADDES)
+#define MOREDES      ((word)K_MOREDES)
+#define DODES        ((word)K_DODES)
+#define DONBRD       ((word)K_DONBRD)
+#define SIGNLCHK     ((word)K_SIGNLCHK)
+#define DGOODCHK     ((word)K_DGOODCHK)
+#define RRDESDUN     ((word)K_RRDESDUN)
+#define DORROUT      ((word)K_DORROUT)
+#define NOTP20       ((word)K_NOTP20)
+#define DODESEND     ((word)K_DODESEND)
+#define COS1_2DG     ((word)K_COS1_2DG)  /* COS1/2DG: 2DEC .999961923 B-2, the cosine of half a degree */
+#define MAXTRYS      ((word)KW_MAXTRYS)  /* DEC 60 */
+#define TWENTY_5DEGS ((word)KW_20_5DEGS) /* 20.5DEGS */
+#define B14_B2       ((word)KW_B14PB2)   /* B14+B2: OCT 20002 */
+#define RDESGAIN     ((word)KW_RDESGAIN)
+#define BIT12_14     ((word)KW_BIT12_14) /* BIT12,14 EQUALS PRIO24 */
+#define LOKONBIT     ((word)KW_LOKONBIT)
+#define LOSCMBIT     ((word)KW_LOSCMBIT)
 #endif
 
 /* NO.CORES + 1 core sets. */

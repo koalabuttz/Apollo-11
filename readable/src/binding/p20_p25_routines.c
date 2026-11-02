@@ -16,9 +16,9 @@
  * the file (BANKCALL, PHASCHNG, UPFLAG, ENDOFJOB, ...), reaches a label the
  * faithful port keys a routine at, or reaches NEWOPS through a TC INTPRET.
  * An order pair is one pass of the readable interpreter over the listing's
- * words (interpret_listing()); a pass that ends at RTB LOADTIME runs
- * LOADTIME (src/rtb_op_codes/) and the DANZIG it ends at, as the faithful
- * pair does. A pass that ends at an EXIT or a CALL out of its table stops
+ * words (interpret_listing()); a pass that ends at RTB LOADTIME or RTB
+ * CDULOGIC (DODES's) runs the routine (src/rtb_op_codes/) and the DANZIG
+ * it ends at, as the faithful pair does. A pass that ends at an EXIT or a CALL out of its table stops
  * there, as the faithful pair does.
  *
  * The device is the LM's io record with the input channels after it
@@ -63,8 +63,9 @@ extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_in
 /* A key: the bank, and the address in it (or in fixed-fixed memory). */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 
-/* LOADTIME's bank (FB), from its FCADR. */
+/* LOADTIME's and CDULOGIC's banks (FB), from their FCADRs. */
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
+#define CDULOGIC_BANK ((word)(I_CDULOGIC & 076000u))
 #define SUPERBANK_BIT 0100u
 
 static const agc_input_channels *inputs_now;
@@ -464,6 +465,53 @@ static const struct basic_entry {
     {KEY(025u, ROADBACK), roadback, false},
     {KEY(025u, RRZ2), rrz2, false},
     {KEY(025u, RRZ2 + 1u), rrz2_after_rrzerosb, false},
+    /* Part 6: the designate */
+    {KEY(025u, RRDESSM + 013u), rrdessm_after_exit, false},
+    {KEY(025u, OKDESSM - 1u), rrdessm_not_in_mode, false},
+    {KEY(025u, OKDESSM), okdessm, false},
+    {KEY(025u, OKDESSM + 2u), okdessm_after_startdes, false},
+    {KEY(025u, LUNDESCH), lundesch, false},
+    {KEY(025u, LUNDESCH + 010u), lundesch_not_rendezvous, false},
+    {KEY(025u, STARTDES + 010u), startdes_after_setrrecr, false},
+    {KEY(025u, DESRETRN), desretrn, false},
+    {KEY(025u, TRYSWS + 1u), trysws_after_rmodinv, false},
+    {KEY(025u, TRYSWS + 3u), trysws_out_of_limits, false},
+    {KEY(025u, TRYSWS + 4u), trysws_within_limits, false},
+    {KEY(025u, TRYSWS + 5u), trysws_after_rmodinv2, false},
+    {KEY(025u, NODESSM + 1u), nodessm_after_rmodinv, false},
+    {KEY(025u, RRDESNB), rrdesnb, false},
+    {KEY(025u, RRDESNB + 1u), rrdesnb_after_makecadr, false},
+    {KEY(025u, RRDESNB + 4u), rrdesnb_after_downflag, true},
+    {KEY(025u, RRDESNB + 011u), rrdesnb_not_in_mode, true},
+    {KEY(025u, OKDESNB), okdesnb, true},
+    {KEY(025u, OKDESNB + 012u), okdesnb_after_exit, false},
+    {KEY(025u, TRYSWN + 1u), tryswn_after_rmodinv, true},
+    {KEY(025u, TRYSWN + 3u), tryswn_out_of_limits, false},
+    {KEY(025u, TRYSWN + 4u), tryswn_within_limits, true},
+    {KEY(025u, TRYSWN + 5u), tryswn_after_rmodinv2, true},
+    {KEY(025u, NODESNB + 1u), nodesnb_after_rmodinv, false},
+    {KEY(025u, NODESNB + 3u), nodesnb_after_alarm, false},
+    {KEY(025u, NODESNB + 4u), nodesnb_after_clradmod, false},
+    {KEY(025u, RRLIMNB + 017u), rrlimnb_trunnion_out, false},
+    {KEY(025u, RRLIMNB + 020u), rrlimnb_trunnion_in, false},
+    {KEY(025u, SHAFTLIM + 2u), rrlimnb_shaft_out, false},
+    {KEY(025u, SHAFTLIM + 3u), rrlimnb_shaft_in, false},
+    {KEY(025u, NEGSHAFT), negshaft, false},
+    {KEY(025u, BEGDES), begdes, false},
+    {KEY(025u, BEGDES + 4u), begdes_remode, false},
+    {KEY(025u, DESLOOP), desloop, false},
+    {KEY(025u, STDESIG), stdesig, false},
+    {KEY(025u, MOREDES + 5u), moredes_after_findvac, false},
+    {KEY(025u, DODES), dodes, true},
+    {KEY(025u, DODES + 057u), dodes_after_exit, true},
+    {KEY(025u, DODES + 0115u), dodes_after_dot, true},
+    {KEY(025u, RRDESDUN + 6u), rrdesdun_after_downflag, false},
+    {KEY(025u, NOTP20), notp20, false},
+    {KEY(025u, NOTP20 + 5u), notp20_after_rrout, false},
+    {KEY(025u, NOTP20 + 013u), notp20_new_los, false},
+    {KEY(025u, NOTP20 + 016u), notp20_after_killtask, false},
+    {KEY(025u, NOTP20 + 021u), notp20_after_chang1, false},
+    {KEY(025u, DODESEND), dodesend, false},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -517,6 +565,11 @@ static const struct interpretive_code *const codes[] = {
     &R61C_L03_CODE,
     &R61LEM1_AUTO_CODE,
     &R61C_L05_CODE,
+    &RRDESSM_CODE,
+    &OKDESNB_CODE,
+    &DODES_CODE,
+    &DODES_URR_CODE,
+    &DORROUT_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -598,8 +651,8 @@ static bool at_danzig(unsigned bank, const struct pending_order *pending)
            !(BANKSET & 01770u) && INTBIT15 == ((bank << 10) & 040000u) && sane(true);
 }
 
-/* One pass; after RTB LOADTIME, LOADTIME and its DANZIG; after a switch
- * order's branch to a store code, the store code. */
+/* One pass; after RTB LOADTIME or CDULOGIC, the routine and its DANZIG;
+ * after a switch order's branch to a store code, the store code. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  lm_channel_io *io, const struct interpretive_code *code)
 {
@@ -614,11 +667,19 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
         if (store_spills(target->words[LOC - target->first])) return EXEC_OUT_OF_SCOPE;
         return interpret_listing(program, state, &io->io, target);
     }
-    if (Z != LOADTIME || FBANK != LOADTIME_BANK) return EXEC_OK;
-    if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
-    if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
-    loadtime();
-    return interpret_listing(program, state, &io->io, code);
+    if (Z == LOADTIME && FBANK == LOADTIME_BANK) {
+        if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
+        if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+        loadtime();
+        return interpret_listing(program, state, &io->io, code);
+    }
+    if (Z == CDULOGIC && FBANK == CDULOGIC_BANK) {
+        if (!sane(true)) return EXEC_OUT_OF_SCOPE;
+        if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+        cdulogic();
+        return interpret_listing(program, state, &io->io, code);
+    }
+    return EXEC_OK;
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
