@@ -17,7 +17,9 @@
  *   (pp. 574-578);
  *   part 5, r22.c: R22 up to REND12 (pp. 579-582);
  *   part 6, r22_update.c and gotov56.c: R22 from REND12 (pp. 582-585),
- *   and GOTOV56 (pp. 631-632).
+ *   and GOTOV56 (pp. 631-632);
+ *   part 7, r22_subroutines.c: R22's subroutines in bank 27, SETINTG to
+ *   INITIALW (pp. 586-589).
  * The binding (src/binding/cm_p20_p25_routines.c) runs the keys these
  * parts write, and the faithful port's routines at the others.
  *
@@ -210,6 +212,37 @@ void rendisp2_terminate(void);
 void rendisp2_proceed(void);
 void rendisp3_after_exit(void);
 void gotov56(void);
+
+/* ---- Part 7: R22's subroutines in bank 27 (r22_subroutines.c) ---- */
+
+extern const struct interpretive_code SETINTG_CODE;
+extern const struct interpretive_code CNTCHK_CODE;
+extern const struct interpretive_code WAITONE_CODE;
+extern const struct interpretive_code WAITONE_AGAIN_CODE;
+extern const struct interpretive_code RANGERD_CODE;
+extern const struct interpretive_code RANGERD4_CODE;
+extern const struct interpretive_code RANGERD3_CODE;
+extern const struct interpretive_code LIGHTON_CODE;
+extern const struct interpretive_code SHIFTNDX_CODE;
+extern const struct interpretive_code INITIALW_CODE;
+
+void redor22(void);
+void redor22_after_phaschng(void);
+void redor22_after_priochng(void);
+void waitone_after_exit(void);
+void waitone_after_delayjob(void);
+void rangerd_after_exit(void);
+void rangerd_after_skipvhf(void);
+void rangerd_bad(void);
+void rangerd_good(void);
+void rangerd1(void);
+void rangerd1_plus_zero(void);
+void rangerd1_negative(void);
+void rangerd1_minus_zero(void);
+void rangerd4(void);
+void lighton_after_trfailon(void);
+void vhfread(void);
+void vhfgood(void);
 
 #endif
 

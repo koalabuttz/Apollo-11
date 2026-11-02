@@ -23,7 +23,8 @@
  *
  * The device is the CM's io record (cm_native_io), and the program must
  * have its hardware record (channels 30-33), as the faithful routines
- * want. The parts written so far read and write no channel.
+ * want. RANGERD reads and writes channel 13 (in the io record) and
+ * VHFREAD reads channel 33 (in the hardware record).
  *
  * The states the faithful routines take, at every key: FB the key's bank
  * (in banks 30-37 the superbank bit clear; banks 40-43 are FB 30-33 with
@@ -65,18 +66,30 @@ static void leave(void)
     longjmp(back, 1);
 }
 
+/* The run's io record (channels 11-14) and hardware record (channels
+ * 30-33). */
+static cm_native_io *io_now;
+static agc_hardware *hardware_now;
+
+/* RANGERD's channel 13 and VHFREAD's channel 33, as the faithful port
+ * reads them. */
 static word channel_in(unsigned number)
 {
-    (void)number;
-    not_modelled(); /* the readable parts read no channel yet */
+    if (number == 013u) return (word)io_now->channel13;
+    if (number == 033u && hardware_now) return (word)hardware_now->channel33;
+    not_modelled(); /* the readable parts read no other channel */
     return 0;
 }
 
+/* RANGERD's WAND and WOR of channel 13. As yaAGC writes it, bits 12-14
+ * set the HANDRUPT traps and are not kept. */
 static void channel_out(unsigned number, word value)
 {
-    (void)number;
-    (void)value;
-    not_modelled(); /* the readable parts write no channel yet */
+    if (number != 013u) not_modelled(); /* the readable parts write no other channel */
+    if (value & 004000u) io_now->trap31a = 1u;
+    if (value & 010000u) io_now->trap31b = 1u;
+    if (value & 020000u) io_now->trap32 = 1u;
+    io_now->channel13 = (agc_word)(value & 043777u);
 }
 
 /* The interpreter's fixed operands are the rope's. */
@@ -91,6 +104,8 @@ static word rope_word(unsigned physical)
 static void bind(const agc_native_program *program, apollo_overlay_state *state, cm_native_io *io)
 {
     bind_machine(program, state, io);
+    io_now = io;
+    hardware_now = program->hardware;
     agc.channel_in = channel_in;
     agc.channel_out = channel_out;
     agc.fixed_memory = rope_word;
@@ -253,6 +268,24 @@ static const struct basic_entry {
     {KEY(034u, RENDISP2 + 4u), rendisp2_proceed, false},
     {KEY(034u, RENDISP3 + 4u), rendisp3_after_exit, true},
     {KEY(02u, GOTOV56), gotov56, false},
+    /* Part 7: R22's subroutines in bank 27 */
+    {KEY(027u, REDOR22), redor22, false},
+    {KEY(027u, REDOR22 + 2u), redor22_after_phaschng, false},
+    {KEY(027u, REDOR22 + 4u), redor22_after_priochng, false},
+    {KEY(027u, WAITONE + 3u), waitone_after_exit, false},
+    {KEY(027u, WAITONE + 6u), waitone_after_delayjob, true},
+    {KEY(027u, RANGERD + 1u), rangerd_after_exit, false},
+    {KEY(027u, RANGERD + 016u), rangerd_after_skipvhf, false},
+    {KEY(027u, RANGERD + 020u), rangerd_bad, true},
+    {KEY(027u, RANGERD + 021u), rangerd_good, false},
+    {KEY(027u, RANGERD1), rangerd1, true},
+    {KEY(027u, RANGERD1 + 2u), rangerd1_plus_zero, true},
+    {KEY(027u, RANGERD1 + 3u), rangerd1_negative, true},
+    {KEY(027u, RANGERD1 + 4u), rangerd1_minus_zero, true},
+    {KEY(027u, RANGERD4), rangerd4, true},
+    {KEY(027u, LIGHTON + 4u), lighton_after_trfailon, true},
+    {KEY(027u, VHFREAD), vhfread, false},
+    {KEY(027u, VHFGOOD), vhfgood, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -267,12 +300,14 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,  &CALLR52_CODE,
-    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,  &DE_GR_50_CODE,
-    &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE, &GETUM_CODE,
-    &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,    &REND6_CODE,
-    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,   &REND12_CODE,   &REND14_CODE,
-    &CMPOS_CODE,    &RENDISP_CODE,        &RENDISP7_CODE,  &RENDISP3_CODE, &RENDISP4_CODE,
+    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,       &CALLR52_CODE,
+    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,       &DE_GR_50_CODE,
+    &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE,      &GETUM_CODE,
+    &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,         &REND6_CODE,
+    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,   &REND12_CODE,        &REND14_CODE,
+    &CMPOS_CODE,    &RENDISP_CODE,        &RENDISP7_CODE,  &RENDISP3_CODE,      &RENDISP4_CODE,
+    &SETINTG_CODE,  &CNTCHK_CODE,         &WAITONE_CODE,   &WAITONE_AGAIN_CODE, &RANGERD_CODE,
+    &RANGERD4_CODE, &RANGERD3_CODE,       &LIGHTON_CODE,   &SHIFTNDX_CODE,      &INITIALW_CODE,
 };
 
 /* The table of bank that address is in, or none. */

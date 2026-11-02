@@ -45,7 +45,9 @@ extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, P
     CALLR52_CODE, S22LSITE_CODE, P22SUBRB_CHECK_CODE, N89ERRX_3_CODE, S22ABDE_CODE, DE_GR_50_CODE,
     R57_CODE, ENDR57_CODE, R61CSM_CODE, BVECTORS_CODE, GETUM_CODE, R22_CODE, REND2_CODE, REND3_CODE,
     REND4_CODE, REND6_CODE, REND9_CODE, REND10_CODE, REND10A_CODE, REND12_CODE, REND14_CODE,
-    CMPOS_CODE, RENDISP_CODE, RENDISP7_CODE, RENDISP3_CODE, RENDISP4_CODE;
+    CMPOS_CODE, RENDISP_CODE, RENDISP7_CODE, RENDISP3_CODE, RENDISP4_CODE, SETINTG_CODE,
+    CNTCHK_CODE, WAITONE_CODE, WAITONE_AGAIN_CODE, RANGERD_CODE, RANGERD4_CODE, RANGERD3_CODE,
+    LIGHTON_CODE, SHIFTNDX_CODE, INITIALW_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -115,9 +117,10 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: part 1, P20 (bank 37, PROG20 to the word
- * before R57); part 2, P22 (bank 30, PROG22 to the word before S22.1);
- * part 3, R57, R21 and R23 (bank 37, R57 to the word before R61CSM). */
+/* The parts written so far: P20, R57, R21, R23 and R61CSM (bank 37,
+ * parts 1, 3 and 4); P22 up to S22.1 (bank 30, part 2); BVECTORS and
+ * GETUM (bank 23, part 4); R22 (bank 34, parts 5 and 6); GOTOV56
+ * (fixed-fixed, part 6); R22's subroutines (bank 27, part 7). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
@@ -125,7 +128,8 @@ static bool in_written_part(uint16_t key)
     return (bank == 037u && z >= 02261u && z <= 02624u) ||
            (bank == 030u && z >= 02000u && z <= 02311u) ||
            (bank == 023u && z >= 03043u && z <= 03131u) ||
-           (bank == 034u && z >= 02630u && z <= 03334u) || (bank == 02u && z == 02622u);
+           (bank == 034u && z >= 02630u && z <= 03334u) || (bank == 02u && z == 02622u) ||
+           (bank == 027u && z >= 02343u && z <= 02613u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -338,6 +342,59 @@ static bool load_wraps(uint16_t key, const apollo_overlay_state *start,
     return true;
 }
 
+/* INITIALW's stores, STORE W +36D,1 and W +90D,1, in TIX loops by S1:
+ * from INITA or INITB, with an X1 and S1 the program never has there, a
+ * store's six words can cross the end of the E-bank window (01777) the
+ * same way. ADDRWD is the address less one, less X1 (ones' complement),
+ * in the E bank it names, words 01400 + its low 8 bits on (not the work
+ * area, nor fixed). The test follows the loops (TIX: X1 less S1 while
+ * that is positive) and counts those states apart. */
+static bool crosses(unsigned operand, unsigned x1)
+{
+    unsigned addrwd = operand - 1u + (~x1 & 077777u);
+
+    if (addrwd > 077777u) addrwd = (addrwd + 1u) & 077777u;
+    if (!(addrwd & 077700u) || (addrwd & 074000u)) return false;
+    return (addrwd & 0377u) + 5u > 0377u;
+}
+
+static unsigned sign_extended(unsigned v)
+{
+    v &= 077777u;
+    return v & 040000u ? v | 0100000u : v;
+}
+
+static bool loop_crosses(unsigned operand, unsigned x1, unsigned s1)
+{
+    unsigned n, a;
+
+    for (n = 0; n < 512u; ++n) {
+        if (crosses(operand, x1)) return true;
+        a = sign_extended(~s1) + sign_extended(x1); /* CS S1; AD X1 */
+        if (a > 0177777u) a = (a + 1u) & 0177777u;
+        if (a == 0u || a == 0177777u || (a & 0100000u)) return false;
+        x1 = a & 077777u;
+    }
+    return false;
+}
+
+static bool store_wraps(uint16_t key, const apollo_overlay_state *start)
+{
+    const uint16_t *w = start->words;
+    unsigned fixloc = w[FIXLOC_AT];
+    unsigned x1 = w[(fixloc + X1_AT) & 03777u], s1 = w[(fixloc + S1_AT) & 03777u];
+    bool wraps_here;
+
+    if (key == 027u * 1024u + 0573u) /* INITA, then INITB from X1 36 */
+        wraps_here = loop_crosses(02445u, x1, s1) || loop_crosses(02533u, 36u, s1);
+    else if (key == 027u * 1024u + 0577u) /* INITB */
+        wraps_here = loop_crosses(02533u, x1, s1);
+    else
+        return false;
+    wraps += wraps_here;
+    return wraps_here;
+}
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs, unsigned *readable_keys)
 {
@@ -371,7 +428,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (written && load_wraps(key, &start, &fa, &ra)) {
+            if (written && (load_wraps(key, &start, &fa, &ra) || store_wraps(key, &start))) {
                 /* (counted apart) */
             } else if (!written) { /* the faithful routine on both sides, refusals and all */
                 if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio) ||
@@ -415,12 +472,14 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,  &CALLR52_CODE,
-    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,  &DE_GR_50_CODE,
-    &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE, &GETUM_CODE,
-    &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,    &REND6_CODE,
-    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,   &REND12_CODE,   &REND14_CODE,
-    &CMPOS_CODE,    &RENDISP_CODE,        &RENDISP7_CODE,  &RENDISP3_CODE, &RENDISP4_CODE,
+    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,       &CALLR52_CODE,
+    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,       &DE_GR_50_CODE,
+    &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE,      &GETUM_CODE,
+    &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,         &REND6_CODE,
+    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,   &REND12_CODE,        &REND14_CODE,
+    &CMPOS_CODE,    &RENDISP_CODE,        &RENDISP7_CODE,  &RENDISP3_CODE,      &RENDISP4_CODE,
+    &SETINTG_CODE,  &CNTCHK_CODE,         &WAITONE_CODE,   &WAITONE_AGAIN_CODE, &RANGERD_CODE,
+    &RANGERD4_CODE, &RANGERD3_CODE,       &LIGHTON_CODE,   &SHIFTNDX_CODE,      &INITIALW_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -452,7 +511,7 @@ int main(int argc, char **argv)
                      &readable_pairs);
     printf("cm-p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u loads across 01777 counted apart, %u failures\n",
+           "%u loads and stores across 01777 counted apart, %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p20_p25_basic.count + cm_p20_p25_interpretive.count, readable_basic, readable_pairs,
            CASES, OTHER_CASES, runs, wraps, failures);
