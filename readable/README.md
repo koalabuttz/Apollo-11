@@ -142,6 +142,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P20-P25, part 16: GOTOV56 and R29's start | `P20-P25.agc` (LM pp. 593-598) | [`src/p20_p25/`](src/p20_p25/) | GOTOV56, P20's end through TRMTRACK (fixed-fixed). R29, the radar designate during powered flight, which SERVICER runs every 2 seconds and which goes back to it at NOR29NOW (bank 33). The first time, the designate turned on (RADMODES bit 10), the track enable removed, LOSCMFLG and STATE's OLDESBIT cleared, the error counters enabled (SETRRECR); in mode 1 the job R29REM0J (assembled as R29REMOJ) remodes the radar, in mode 2 the task PREPOS29 (bank 25) drives the trunnion to -180 degrees. After that R29.LOS: the line of sight from the state vectors brought to the present time (T-PIPTIME), and when the designate loop is free (BOFSET LOSCMFLG) SETUP29D hands it LOSSM and half a second's line of sight velocity, starting the loop's task BEGDES29 if it is not requested yet, 4 or 100 centiseconds on by SERVICER's PIPCTR |
 | P20-P25, part 17: R29's designate loop | `P20-P25.agc` (LM pp. 599-604) | [`src/p20_p25/`](src/p20_p25/) | BEGDES29 and R29DLOOP (bank 24), the task that starts the job R29DODES every half second while the designate is on, waiting a centisecond while SETUP29D supplies new data. R29DODES (bank 32), DODES done fast in single precision with no interpretive code: a vector loop run twice (TANG 1, then +0). The first pass takes the present line of sight, unit (UNIT through USPRCADR), to navigation base axes (QUICTRIG, AX*SR*T), and from the cosine of its angle to the radar's axis enables tracking within about half a degree (TESTCOS). The second advances LOSSM half a second and takes the line of sight a second ahead; R29DPAS2 makes the shaft and trunnion commands (times RR29GAIN) for RROUT, unless the data good discrete has come: then R29LOKON ends the designate and starts the reading task R29READ. END29DOD always clears LOSCMFLG. CCS TANG's -0 way runs a DCA's word as CA, as the listing runs it |
 | P20-P25, part 18: R29's radar reading | `P20-P25.agc` (LM pp. 605-607) | [`src/p20_p25/`](src/p20_p25/) | R29READ, the task R29LOKON starts: every 2 seconds, while READRFLG still allows reading, it starts the job R29RDJOB. The job stops at ENDRRD29 if R29 is over (NOR29FLG) or the radar is out of auto mode; else it reads the range rate, saves the time and the radar's and IMU's CDU angles (inhibited) in MPAC, and reads the range (R29RANGE), reading again after a scale change (R29RRR?). With both read it lays the downlink out in one go (DNRRANGE to RM, MKTIME, TANGNB, AIG to AOG) and sets TRKMKCNT 1. ENDRRD29 zeroes TRKMKCNT, clears READRFLG and removes the track enable, so that R29 designates again |
+| P20-P25, part 19: V67, the W-matrix monitor (P20-P25 whole) | `P20-P25.agc` (LM pp. 608-611) | [`src/p20_p25/`](src/p20_p25/) | V67CALL (bank 31) calls V67WW, which waits its turn for the integration (INTSTALL) and sums the squares of the W-matrix's position, velocity and bias diagonal blocks, 6 words at a time down the diagonal (NXPOSVEL and ADDPOS, bank 30), takes their square roots (DPPOSMAX on an overflow, the position at most FT99999), and wakes the integration's waiters (INTWAKE). V06N99 shows them; V6N99PRO compares them with the values saved before the display, and when the astronaut changed any (V67FLAG) the new values become the W-matrix's initial ones (WRENDPOS and WRENDVEL, or WSURFPOS and WSURFVEL on the surface, WTRUN and WSHAFT), with RENDWFLG cleared so the W-matrix starts again |
 
 Beside them:
 
@@ -359,9 +360,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful side by side at each of its 8 keys from 16,384 states.
    `make p20-p25-cases` runs the faithful port's test of P20-P25 (its
    1,028 checks against yaAGC digests) through the readable tables, then
-   checks the written parts' interpretive words against the rope (1,043),
+   checks the written parts' interpretive words against the rope (1,144),
    and runs readable and faithful side by side at the written parts' keys
-   (469 basic and 499 order pairs) from 4,096 states each, and at the keys
+   (478 basic and 550 order pairs, the whole file) from 4,096 states each, and at the keys
    the faithful routines still run from 16 states each (they must give
    the same results through the readable tables). One faithful pair runs
    states the readable binding refuses: R21LEM12's CLRGO (24,3030)
@@ -370,12 +371,22 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the faithful pair writes the next E bank's words, where the AGC writes
    fixed memory and reads it back. The faithful port's other routines
    refuse such a store (lmi_store_spills), and the readable binding does
-   too; the test counts those states apart. At the radar's single-axis
+   too; the test counts those states apart. It counts apart, too, the
+   states where an X1 the program never sets puts one of V67's loads of
+   the W-matrix (VLOAD* W +54D,1 and the two like it) across the end of
+   the E-bank window: the AGC, like the readable machine, reads the words
+   past 01777 from fixed memory, and the faithful port's machine reads
+   the unswitched words 0-4 instead. At the radar's single-axis
    drive and RROUT the states have RRINDEX and ITEMP2, the axis, 0 or 1,
    as those routines set them (the readable code refuses any other axis,
    which would index past the angles and counters), and RRLIMCHK's
    states its known callers most of the time. Channel 13 (the radar
    select and activity bits) is the hardware's latch, a few bits or any.
+   Channel 14 (RROUT's CDU drives) is none, the drive bits, all or any.
+   Each key's faithful routine must run in at least 1 of 16 of its states,
+   so that a change to the states cannot quietly leave a key untested. At
+   V6N99PRO, half the states have noun 99's values as V67CALL saved them,
+   so that the case where nothing changed is tested.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

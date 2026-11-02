@@ -648,6 +648,15 @@ static const struct basic_entry {
     {KEY(024u, R29RANGE + 5u), r29range_read, false},
     {KEY(024u, R29RRR_Q + 6u), r29rrr_q_after_downflag, false},
     {KEY(024u, ENDRRD29 + 4u), endrrd29_after_downflag, false},
+    {KEY(031u, V67CALL), v67call, true},
+    {KEY(031u, V67CALL + 4u), v67call_after_exit, false},
+    {KEY(031u, V06N99DS + 3u), v06n99ds_terminate, false},
+    {KEY(031u, V06N99DS + 4u), v06n99ds_proceed, true},
+    {KEY(031u, V06N99DS + 5u), v06n99ds_loaded, false},
+    {KEY(031u, V06N9933), v06n9933, true},
+    {KEY(031u, V06N9933 + 4u), v06n9933_after_exit, false},
+    {KEY(031u, V67CLRF + 7u), v67clrf_after_exit, false},
+    {KEY(030u, V67XXX + 013u), v67xxx_after_exit, false},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -727,6 +736,11 @@ static const struct interpretive_code *const codes[] = {
     &CALCXY_CODE,
     &R29_LOS_CODE,
     &SETUP29D_CODE,
+    &V67CALL_CODE,
+    &V06N9933_CODE,
+    &V67_NEW_W_CODE,
+    &V67WW_CODE,
+    &ADDPOS_CODE,
 };
 
 /* The table of bank that address is in, or none. */

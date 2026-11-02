@@ -2882,6 +2882,17 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define R29RANGE ((word)K_R29RANGE)
 #define R29RRR_Q ((word)K_R29RRR_Q) /* R29RRR? */
 #define ENDRRD29 ((word)K_ENDRRD29)
+/* Part 19, V67, the W-matrix monitor: V67CALL (bank 31) and ADDPOS (bank
+ * 30). WWPOS, WWVEL and WWBIAS are named by ADDRESS_OF. */
+#define V67CALL  ((word)K_V67CALL)
+#define V06N99DS ((word)K_V06N99DS)
+#define V6N99PRO ((word)K_V6N99PRO)
+#define V06N9933 ((word)K_V06N9933)
+#define V67WW    ((word)K_V67WW)
+#define ADDPOS   ((word)K_ADDPOS)
+#define V67XXX   ((word)K_V67XXX)
+#define V67CLRF  ((word)K_V67CLRF)
+#define V06N99   ((word)KW_V06N99) /* VN 0699 */
 #endif
 
 /* NO.CORES + 1 core sets. */

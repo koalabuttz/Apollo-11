@@ -713,6 +713,23 @@ void r29range_read(void);
 void r29rrr_q_after_downflag(void);
 void endrrd29_after_downflag(void);
 
+/* ---- Part 19: V67, the W-matrix monitor (v67.c) ---- */
+
+void v67call(void);
+void v67call_after_exit(void);
+void v06n99ds_terminate(void);
+void v06n99ds_proceed(void);
+void v06n99ds_loaded(void);
+void v06n9933(void);
+void v06n9933_after_exit(void);
+void v67clrf_after_exit(void);
+void v67xxx_after_exit(void);
+extern const struct interpretive_code V67CALL_CODE;
+extern const struct interpretive_code V06N9933_CODE;
+extern const struct interpretive_code V67_NEW_W_CODE;
+extern const struct interpretive_code V67WW_CODE;
+extern const struct interpretive_code ADDPOS_CODE;
+
 #endif
 
 #endif
