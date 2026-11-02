@@ -1771,11 +1771,11 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define TRANSP2        ((word)K_TRANSP2)
 #define XNBEB          ((word)KW_XNBEB)
 #define XNB1EB         ((word)KW_XNB1EB)
+#endif
 
 /* TCDANZIG = ENDT(X) (TIME_OF_FREE_FALL.agc), the basic TC DANZIG a BOVB
  * goes to only to reset OVFIND. */
-#define TCDANZIG       ((word)K_TCDANZIG)
-#endif
+#define TCDANZIG ((word)K_TCDANZIG)
 
 /* ---- IMU compensation (IMU_COMPENSATION_PACKAGE.agc, bank 06) ---- */
 
@@ -2806,6 +2806,9 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define LRALTBIT ((word)KW_LRALTBIT) /* RADMODES bit 5: LR altitude data failed */
 #define LRPOSBIT ((word)KW_LRPOSBIT) /* RADMODES bit 6: LR position 2 wanted */
 #define SIX_SECS ((word)KW_6SECS) /* 6SECS: DEC 600 */
+/* Part 8, LPS20.1 (bank 24) and LPS20.2 (bank 25). */
+#define LPS20_1 ((word)K_LPS20_1)
+#define LPS20_2 ((word)K_LPS20_2)
 #endif
 
 /* NO.CORES + 1 core sets. */

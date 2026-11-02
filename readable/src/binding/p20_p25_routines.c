@@ -66,6 +66,8 @@ extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_in
 /* LOADTIME's and CDULOGIC's banks (FB), from their FCADRs. */
 #define LOADTIME_BANK ((word)(I_LOADTIME & 076000u))
 #define CDULOGIC_BANK ((word)(I_CDULOGIC & 076000u))
+/* TCDANZIG's (ENDT(X), TIME_OF_FREE_FALL.agc), where LPS20.1's BOVB goes. */
+#define TCDANZIG_BANK ((word)(I_TCDANZIG & 076000u))
 #define SUPERBANK_BIT 0100u
 
 static const agc_input_channels *inputs_now;
@@ -561,6 +563,9 @@ static const struct basic_entry {
     {KEY(025u, R12LITES + 5u), r12lites_after_hlight, false},
     {KEY(025u, R12LITES + 6u), r12lites_after_vlight, false},
     {KEY(025u, LITIT + 3u), litit_after_trkflon, false},
+    /* Part 8 */
+    {KEY(024u, LPS20_1 + 027u), lps20_1_after_exit, false},
+    {KEY(024u, LPS20_1 + 031u), lps20_1_after_killtask, true},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -619,6 +624,9 @@ static const struct interpretive_code *const codes[] = {
     &DODES_CODE,
     &DODES_URR_CODE,
     &DORROUT_CODE,
+    &LPS20_1_CODE,
+    &LPS20_1_LOS_CODE,
+    &LPS20_2_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -660,13 +668,15 @@ static bool store_spills(word w)
 }
 
 /* Whether a switch order's branch went to a store code, which the
- * faithful pair goes on through: R21LEM12's CLRGO to R21LEM7 +1, a TC
- * INTPRET read as a store code. */
-static bool switched_to_store_code(unsigned bank, word start)
+ * faithful pair goes on through: only R21LEM12's CLRGO (R21LEM12 +022), to
+ * R21LEM7 +1, a TC INTPRET read as a store code. (LPS20.1's BON to CSMINT
+ * stops there, and its CLRGO through LS21X goes anywhere.) */
+static bool switched_to_store_code(uint16_t key, unsigned bank, word start)
 {
     const struct interpretive_code *code = code_at(bank, LOC);
 
-    if (Z != NEWOPS || !ends_with_switch(start) || !code) return false;
+    if (key != KEY(024u, R21LEM12 + 022u) || Z != NEWOPS || !ends_with_switch(start) || !code)
+        return false;
     return !(code->words[LOC - code->first] & 040000u);
 }
 
@@ -701,16 +711,19 @@ static bool at_danzig(unsigned bank, const struct pending_order *pending)
 }
 
 /* One pass; after RTB LOADTIME or CDULOGIC, the routine and its DANZIG;
- * after a switch order's branch to a store code, the store code. */
-static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
-                                 lm_channel_io *io, const struct interpretive_code *code)
+ * after LPS20.1's BOVB to TCDANZIG, its TC DANZIG (which only resets
+ * OVFIND: the pass goes on with the next order); after R21LEM12's CLRGO
+ * to a store code, the store code. */
+static enum exec_status one_pass(uint16_t key, const agc_native_program *program,
+                                 apollo_overlay_state *state, lm_channel_io *io,
+                                 const struct interpretive_code *code)
 {
     unsigned bank = (BANKSET >> 10) & 037u;
     word start = Z == NEWOPS ? code->words[LOC - code->first] : 0u; /* (0: no switch) */
 
     if (interpret_listing(program, state, &io->io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
-    if (switched_to_store_code(bank, start)) {
+    if (switched_to_store_code(key, bank, start)) {
         const struct interpretive_code *target = code_at(bank, LOC);
 
         if (store_spills(target->words[LOC - target->first])) return EXEC_OUT_OF_SCOPE;
@@ -720,6 +733,11 @@ static enum exec_status one_pass(const agc_native_program *program, apollo_overl
         if (!sane(true)) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
         if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
         loadtime();
+        return interpret_listing(program, state, &io->io, code);
+    }
+    if (Z == TCDANZIG && FBANK == TCDANZIG_BANK) {
+        tc_at(TCDANZIG);
+        continue_at(DANZIG);
         return interpret_listing(program, state, &io->io, code);
     }
     if (Z == CDULOGIC && FBANK == CDULOGIC_BANK) {
@@ -790,7 +808,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
 
     before = *state;
     kept = *io;
-    status = one_pass(program, state, io, code);
+    status = one_pass(key, program, state, io, code);
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;

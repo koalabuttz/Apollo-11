@@ -23,6 +23,8 @@
  *   part 7, radar_read.c: the radar data read, LRALT to RDBADEND
  *     (pp. 553-563), with the landing radar's lamps, R12LITES to VLIGHT
  *     (pp. 612-613), which it calls.
+ *   part 8, lps20.c: LPS20.1, the line of sight to the CSM, and LPS20.2,
+ *     the 400 nautical mile range check (pp. 564-567).
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -568,6 +570,14 @@ void r12lites(void);
 void r12lites_after_hlight(void);
 void r12lites_after_vlight(void);
 void litit_after_trkflon(void);
+
+/* ---- Part 8: LPS20.1 and LPS20.2 (lps20.c) ---- */
+
+void lps20_1_after_exit(void);
+void lps20_1_after_killtask(void);
+extern const struct interpretive_code LPS20_1_CODE;
+extern const struct interpretive_code LPS20_1_LOS_CODE;
+extern const struct interpretive_code LPS20_2_CODE;
 
 #endif
 
