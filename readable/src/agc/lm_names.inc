@@ -3205,6 +3205,7 @@
 #define I_FT99999 060057u
 #define I_QPRET 000052u
 #define I_V06N9933 062051u
+#define I_R52 031670u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

@@ -1,0 +1,61 @@
+/* SPDX-License-Identifier: MIT */
+/* P20-P25.agc (Comanche055 pp. 562-634): the CM's rendezvous navigation
+ * program P20, its orbital navigation program P22 and its target
+ * pointing, with the routines they run (R57, R21 and R23 for the CSM,
+ * R61CSM's preferred tracking attitude, R22's VHF ranging and sighting
+ * marks, the orbital navigation routine S22, V89, P23's cislunar
+ * navigation and the W-matrix monitor V67). The faithful C is
+ * c64-port/src/cm_p20_p25.c, which the listing compiles to: its routine
+ * tables have 1,128 keys.
+ *
+ * The file is written part by part, in the listing's order (README.md):
+ *   part 1, p20.c: P20 itself (pp. 562-564).
+ * The binding (src/binding/cm_p20_p25_routines.c) runs the keys these
+ * parts write, and the faithful port's routines at the others.
+ *
+ * Basic code round stretches of interpretive code, which are in the
+ * listing's notation (src/interpreter/notation.h). The entries below are
+ * the basic code's: each program's start, the words BANKCALL, 2PHSCHNG,
+ * PRIOCHNG, UPFLAG, DOWNFLAG and FINDVAC return to, and the words after
+ * each EXIT. */
+#ifndef READABLE_P20_P25_CM_H
+#define READABLE_P20_P25_CM_H
+
+#include "../agc/agc.h"
+#include "../interpreter/notation.h"
+
+#if COMANCHE055
+
+/* TC at, to a routine out of the file (or to a keyed label): Q gets the
+ * return, and the routine runs next. */
+static inline void tc_to(word at, word routine)
+{
+    tc_at(at);
+    continue_at(routine);
+}
+
+/* ---- Part 1: P20 (p20.c) ---- */
+
+extern const struct interpretive_code PROG20_CODE;
+extern const struct interpretive_code P20R52JB_CODE;
+
+void prog20(void);
+void prog20_after_r02both(void);
+void prog20_after_prftrkat(void);
+void prog20_after_vehupflg(void);
+void prog20_after_trackflg(void);
+void prog20_after_updatflg(void);
+void prog20_after_rndvzflg(void);
+void prog20_after_2phschng(void);
+void prog20_after_exit(void);
+void prog20_after_findvac(void);
+void pikup20(void);
+void pikup20_after_priochng(void);
+void pikup20_after_r61csm(void);
+void p20r52jb(void);
+void p20r52jb_after_exit(void);
+void p20r52jb_after_mkrlees(void);
+
+#endif
+
+#endif

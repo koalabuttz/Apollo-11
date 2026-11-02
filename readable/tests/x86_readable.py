@@ -148,8 +148,11 @@ REPLACED = (
 # runs the readable entries and hands the rest to the faithful one.
 # P20-P25 (src/p20_p25): the LM's routine tables, all readable; the
 # faithful ones, renamed, are no longer called (--gc-sections drops them).
+# The CM's (src/p20_p25_cm), part by part: the readable tables run the keys
+# the parts have written, and hand the rest to the faithful ones.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
-           'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else []}
+           'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
+           'cm_p20_p25.o': lambda m: ['cm_p20_p25_basic', 'cm_p20_p25_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -160,11 +163,13 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
 # its SYSTEM_TEST_STANDARD_LEAD_INS (COMPVER). The IMU performance test
 # (GEOIMUTT) is the LM's alone. R60 has each mission's name (R60LEM,
-# R60CSM). The radar sampling loop (RADSAMP) and P20 (PROG20) are the LM's
-# alone.
+# R60CSM). The radar sampling loop (RADSAMP) is the LM's alone, and each
+# mission's P20 has labels the other's has not (the LM's PROG20A, the CM's
+# PIKUP20).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
-                          'radsamp', 'prog20'),
-                   'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm')}
+                          'radsamp', 'prog20a'),
+                   'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
+                          'pikup20')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
