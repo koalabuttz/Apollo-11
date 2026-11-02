@@ -55,6 +55,9 @@ bool p20_p25_readable(uint16_t key, bool order_pair);
 #define NEWOPS_AT        06070u
 #define DANZIG_AT        06061u
 #define PENDING_CALL_KEY (023u * 1024u + 0150u) /* 23,2150 */
+#define RRLIMCHK_KEY     (02u * 1024u + 0523u)  /* 02,2523 */
+#define RR1AX2_KEY       (025u * 1024u + 0254u) /* 25,2254 */
+#define RROUTLIM_KEY     (025u * 1024u + 0316u) /* 25,2316: TCF RROUTLIM */
 #define X1_AT            0046u
 #define S1_AT            0050u
 #define EDOP_AT          0023u
@@ -73,6 +76,10 @@ bool p20_p25_readable(uint16_t key, bool order_pair);
 #define OPTION2_AT       01145u
 #define REPOSCNT_AT      01423u
 #define N49FLAG_AT       01746u
+#define ITEMP1_AT        0061u
+#define ITEMP2_AT        0062u
+#define RRINDEX_AT       01317u
+#define LASTYCMD_AT      0112u
 /* The erasable words UPPSV's GOTO and the faithful port read a CADR from:
  * LS21X (its return, as STQ stores it) and 03675. */
 #define LS21X_AT 01757u
@@ -131,7 +138,9 @@ static bool in_written_part(uint16_t key)
 
     return (bank == 024u && z < 03255u) || (bank == 032u && z >= 02217u && z <= 02364u) ||
            (bank == 03u && z == 02011u) /* CLRADMOD */ ||
-           (bank == 023u && z >= 02116u && z <= 02313u);
+           (bank == 023u && z >= 02116u && z <= 02313u) ||
+           (bank == 02u && z >= 02523u && z <= 02606u) ||
+           (bank == 025u && z >= 02062u && z <= 02371u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -295,6 +304,15 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         if (rnd() % 32u == 0u) w[INTBIT15_AT] = any_word();
         if (rnd() % 64u == 0u) w[3] = any_word();
     }
+    /* RRLIMCHK: one of the callers the faithful port knows (the word after
+     * the TC in Q, its bank in FB), or any. */
+    if (key == RRLIMCHK_KEY && rnd() % 4u) {
+        static const uint16_t callers[][2] = {
+            {02410u, 052000u}, {02463u, 052000u}, {03112u, 014000u}, {03156u, 050000u}};
+        k = rnd() % 4u;
+        w[2] = callers[k][0];
+        w[4] = callers[k][1];
+    }
     /* Now and then a work area the routines do not take: a NOVAC job's
      * (FAKEPRET, MPAC -36D), one a word off a VAC area, or none. */
     if (n % 4u != 0u && rnd() % 64u == 0u) {
@@ -320,6 +338,21 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
     w[LS21X_AT] = fixed_cadr(w[LS21X_AT]);
     w[CADR2_AT] = fixed_cadr(w[CADR2_AT]);
+    /* The radar's single-axis drive and RROUT, which run with interrupts
+     * held or as tasks: RRINDEX (RR1AX2's axis) and ITEMP2 (RROUT's) are 0
+     * or 1, as they set them, and at MAGSUB's +1 return from RR1AX2,
+     * ITEMP1 is AUTOMBIT (2) or +0. (Last: a work area may overlap them.) */
+    if (key == RR1AX2_KEY || key == RR1AX2_KEY + 021u) w[RRINDEX_AT] = (uint16_t)(rnd() % 2u);
+    if (key == RR1AX2_KEY + 021u) w[ITEMP1_AT] = rnd() % 2u ? 2u : 0u;
+    if (key == RROUTLIM_KEY || key == RROUTLIM_KEY + 1u) {
+        w[ITEMP2_AT] = (uint16_t)(rnd() % 2u);
+        /* Now and then a zero command after a zero one, where AD NEG0
+         * keeps the difference from +0. */
+        if (rnd() % 4u == 0u) {
+            w[ITEMP1_AT] = 0u;
+            w[LASTYCMD_AT + w[ITEMP2_AT]] = rnd() % 2u ? 077777u : 0u;
+        }
+    }
 }
 
 /* R21LEM12's CLRGO (24,3030) branches to R21LEM7 +1, a TC INTPRET the

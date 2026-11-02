@@ -2665,6 +2665,54 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define TMODE    ((word)K_TMODE)
 #define R61FLBIT ((word)KW_R61FLBIT)
 #define SIX_SEC  ((word)KW_06SEC) /* 06SEC: DEC 600 */
+/* Part 5, the rendezvous radar's subroutines: MAGSUB to FLIP (fixed-
+ * fixed) and RRTURNON to RRZ2 (bank 25), with ENDRADAR, RDBADEND and
+ * RADNOOP, which they end at. RRRET, RDES, RRINDEX, LASTYCMD and LASTXCMD
+ * are named by ADDRESS_OF. */
+#define MAGSUB        ((word)K_MAGSUB)
+#define MODE2CHK      ((word)K_MODE2CHK)
+#define RRLIMOK       ((word)K_RRLIMOK)
+#define FLIP          ((word)K_FLIP)
+#define RRTURNON      ((word)K_RRTURNON)
+#define RRZEROSB      ((word)K_RRZEROSB)
+#define DORREPOS      ((word)K_DORREPOS)
+#define REPOSRPT      ((word)K_REPOSRPT)
+#define SETRRECR      ((word)K_SETRRECR)
+#define REMODE        ((word)K_REMODE)
+#define RMODINV       ((word)K_RMODINV)
+#define RRTONLY       ((word)K_RRTONLY)
+#define RRSONLY       ((word)K_RRSONLY)
+#define RR1AXIS       ((word)K_RR1AXIS)
+#define NXTRR1AX      ((word)K_NXTRR1AX)
+#define RR1AX2        ((word)K_RR1AX2)
+#define RROUT         ((word)K_RROUT)
+#define RROUT2        ((word)K_RROUT2)
+#define SETRRCTR      ((word)K_SETRRCTR)
+#define RROUTLIM      ((word)K_RROUTLIM)
+#define RRZERO        ((word)K_RRZERO)
+#define ROADBACK      ((word)K_ROADBACK)
+#define RRZ2          ((word)K_RRZ2)
+#define RADNOOP       ((word)K_RADNOOP)
+#define ENDRADAR      ((word)K_ENDRADAR)
+#define RGOODEND      ((word)K_RGOODEND)
+#define RDBADEND      ((word)K_RDBADEND)
+#define BEGDES        ((word)K_BEGDES)
+#define STDESIG       ((word)K_STDESIG)
+#define TURNONBT      BIT1                /* RADMODES bit 1: the turn-on sequence running */
+#define RRDATABT      BIT4                /* RADMODES bit 4: no rendezvous radar data */
+#define DESIGBIT      BIT10               /* RADMODES bit 10: a designate waiting or running */
+#define REMODBIT      BIT14               /* RADMODES bit 14: a remode asked for or running */
+#define MINUS_BIT12   MINB12              /* -BIT12 EQUALS -1/8 (OCT 73777) */
+#define MINUS_45DEGSR ((word)KW_13_14_15) /* -45DEGSR = 13,14,15 */
+#define FIVE_5DEGS    ((word)KW_5_5DEGS)  /* 5.5DEGS */
+#define EIGHTY2DEGS   ((word)KW_82DEGS)   /* 82DEGS */
+#define BITS13_7_2    ((word)KW_13_7_2)   /* 13,7,2: OCT 10102 */
+#define MINUS_50DEGSR ((word)KW_M50DEGSR) /* -50DEGSR */
+#define MINUS_80DEGSR ((word)KW_M80DEGSR) /* -80DEGSR */
+#define RRSPGAIN      ((word)KW_RRSPGAIN)
+#define MINUS_RRLIMIT ((word)KW_MRRLIMIT) /* -RRLIMIT: DEC -384 */
+#define BIT11_1       ((word)KW_BIT11P1)  /* BIT11+1: OCT 02001 */
+#define PRIO6         ((word)KW_PRIO6)
 #endif
 
 /* NO.CORES + 1 core sets. */

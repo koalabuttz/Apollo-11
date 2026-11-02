@@ -128,6 +128,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P20-P25, part 2: R22 and R21 | `P20-P25.agc` (LM pp. 504-512) | [`src/p20_p25/`](src/p20_p25/) | R22, the radar data read: while the rendezvous and track flags stay set and the radar is in auto track (channel 12 bit 14), LRS22.1 reads the radar (alarm 525 if the line of sight is off by more than 3 degrees, with verb 06 noun 05 to show it), LRS22.2 checks the boresight is within 30 degrees of +Z (else R61LEM), and LSR22.3 gives the mark to the state vector (verb 06 noun 49 by N49DSP when the update is too big); then R65LEM and round again, or on the surface every 2 seconds. R22RSTRT takes a range-rate reading it does not use after a restart. R21, the designate: the antenna to its mode center, then the line of sight half a second ahead to RRDESSM, up to 60 passes (alarm 503, whose proceed starts R24's search); on the surface out of mode 2's coverage (R21LEM4), 10 seconds ahead at a time up to 60 times (alarm 530), then a LONGCALL to designate continuously (R21LEM9). After lock-on R21DISP asks the crew to check it is the main lobe (verb 50 noun 72) |
 | P20-P25, part 3: R23 and R24 | `P20-P25.agc` (LM pp. 513-516) | [`src/p20_p25/`](src/p20_p25/) | R23, manual acquisition: the minimum deadband, the radar's tracker enabled (channel 12 bit 14) and verb 50 noun 25 flashing (please perform, checklist code 205) while the crew slews the antenna; enter maneuvers to the preferred tracking attitude (R61LEM) and asks again, proceed checks the antenna is within its limits (RRLIMCHK) and goes on in P20 (else alarm 501), terminate ends P20 (verb 56). R24, the search: DATAGOOD and OMEGAD cleared and shown by verb 16 noun 80 while LRS24.1 designates the antenna round the search pattern; proceed kills the designate (CLRADMOD) and goes back to P20's range check, enter stops the designate, waits half a second, maneuvers (R61LEM, not on the surface) and searches again, terminate ends P20. CLRADMOD, in fixed-fixed memory, clears RADMODES's designate bits and the radar error counters' enable (channel 12 bit 2) |
 | P20-P25, part 4: R61 and R65 | `P20-P25.agc` (LM pp. 517-520) | [`src/p20_p25/`](src/p20_p25/) | R61, the preferred tracking attitude: while the track flag is set, the line of sight to the CSM 3 seconds ahead (LPS20.1) and, from the desired CDU angles (READCDUD, an RTB routine), the gimbal angles that point +Z along it (VECPNT1). In auto (G+N,AUTO) and within 15 degrees, the angles go straight to the DAP's desired CDUs; further off, R60 maneuvers there as a priority display with the minimum deadband; out of auto, BALLANGS shows them on the FDAI. R61 returns to its caller through GENRET; R65, the same with the R61 flag clear, runs again every 6 seconds, R65CNTR times. R61LEM1's RTB CALL leaves the CALL waiting in EDOP while READCDUD runs: the binding resumes that pair at DANZIG, as the faithful port does |
+| P20-P25, part 5: the radar's subroutines | `P20-P25.agc` (LM pp. 521-537, 561-563) | [`src/p20_p25/`](src/p20_p25/) | In fixed-fixed memory: MAGSUB (a magnitude against the limit after the caller's TC), RRLIMCHK and MODE2CHK (desired gimbal angles within the present mode's limits, returning through RRLIMOK), SETTRKF and FLIP (the TRACKER FAIL lamp). In bank 25: RRTURNON and RRZEROSB (the radar's CDUs zeroed, then mode 1 or 2 from the trunnion angle), DORREPOS and REPOSRPT (the antenna driven to a safe position), SETRRECR (the error counters enabled), REMODE and RMODINV (from one mode to the other, one axis at a time), RRTONLY, RRSONLY and RR1AX2 (a single axis driven every half second to within a degree), RROUT, SETRRCTR and RROUTLIM (the commands, limited to 384 pulses, sent to the error counters), and RRZERO, ROADBACK and RRZ2, with ENDRADAR, RDBADEND and RADNOOP. The binding refuses RRLIMCHK's callers the faithful port does not know, as the faithful port does |
 
 Beside them:
 
@@ -347,7 +348,7 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    1,028 checks against yaAGC digests) through the readable tables, then
    checks the written parts' interpretive words against the rope (247),
    and runs readable and faithful side by side at the written parts' keys
-   (259 basic and 126 order pairs) from 4,096 states each, and at the keys
+   (304 basic and 126 order pairs) from 4,096 states each, and at the keys
    the faithful routines still run from 16 states each (they must give
    the same results through the readable tables). One faithful pair runs
    states the readable binding refuses: R21LEM12's CLRGO (24,3030)
@@ -356,7 +357,11 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the faithful pair writes the next E bank's words, where the AGC writes
    fixed memory and reads it back. The faithful port's other routines
    refuse such a store (lmi_store_spills), and the readable binding does
-   too; the test counts those states apart.
+   too; the test counts those states apart. At the radar's single-axis
+   drive and RROUT the states have RRINDEX and ITEMP2, the axis, 0 or 1,
+   as those routines set them (the readable code refuses any other axis,
+   which would index past the angles and counters), and RRLIMCHK's
+   states its known callers most of the time.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

@@ -16,7 +16,9 @@
  *   part 3, r23_r24.c: R23, manual acquisition, and R24, the search
  *     (pp. 513-516), with CLRADMOD;
  *   part 4, r61.c: R61 and R65, the preferred tracking attitude
- *     (pp. 517-520), with READCDUD.
+ *     (pp. 517-520), with READCDUD;
+ *   part 5, rr_routines.c: the rendezvous radar's subroutines, MAGSUB to
+ *     RRZ2 (pp. 521-537), with ENDRADAR, RDBADEND and RADNOOP.
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -53,6 +55,21 @@ static inline void tc_q(void)
     if ((Q & 070000u) || Q < 010u) not_modelled();
     Q = 3u;
     Z = at;
+}
+
+/* TC at, to an erasable word holding a return address (TC L, TC RRRET):
+ * the word runs as the instruction TC <address>, so Z gets the address and
+ * Q the word's address + 1. Not modelled: a word that is not such an
+ * address (bits 13-15 set, or below 010). */
+static inline void tc_return_in(word at, unsigned address)
+{
+    word to;
+
+    tc_at(at); /* (which leaves L sign-corrected: a 15-bit word) */
+    to = fetch(address);
+    if ((to & 070000u) || to < 010u) not_modelled();
+    Q = (word)(address + 1u);
+    Z = to;
 }
 
 /* ---- Part 1: P20 and P25 (programs.c) ---- */
@@ -363,6 +380,63 @@ void r61c_l04_after_ballangs(void);
 void r61c_l4(void);
 void r65wait(void);
 void readcdud(void);
+
+/* ---- Part 5: the rendezvous radar's subroutines (rr_routines.c) ---- */
+
+/* MAGSUB to FLIP (fixed-fixed) */
+void magsub(void);
+void rrlimchk(void);
+void rrlimchk_trunnion_out(void);
+void rrlimchk_trunnion_in(void);
+void rrlimchk_shaft_out(void);
+void rrlimchk_shaft_in(void);
+void mode2chk(void);
+void mode2chk_shaft_out(void);
+void mode2chk_shaft_in(void);
+void rrlimok(void);
+void mode2chk_trunnion_out(void);
+void settrkf(void);
+void flip(void);
+
+/* RRTURNON to RRZ2 (bank 25) */
+void rrturnon(void);
+void rrturnon_after_rrzerosb(void);
+void rrturnon_after_fixdelay(void);
+void rrzerosb(void);
+void rrzerosb_after_zeroing(void);
+void rrzerosb_after_settling(void);
+void rrzerosb_mode2(void);
+void rrzerosb_mode1(void);
+void rrzerosb_after_settrkf(void);
+void dorrepos(void);
+void dorrepos_after_setrrecr(void);
+void dorrepos_trunnion(void);
+void dorrepos_shaft(void);
+void reposrpt(void);
+void setrrecr(void);
+void remode(void);
+void remode_shaft(void);
+void remode_trunnion_out(void);
+void remode_trunnion_back(void);
+void remode_shaft_back(void);
+void remode_invert(void);
+void remode_end(void);
+void rmodinv(void);
+void rrtonly(void);
+void rrsonly(void);
+void rr1ax2(void);
+void rr1ax2_done(void);
+void rr1ax2_command(void);
+void rr1ax2_after_rrout(void);
+void rrout(void);
+void rrout2(void);
+void setrrctr(void);
+void rroutlim(void);
+void rrzero(void);
+void rrzero_after_waitlist(void);
+void roadback(void);
+void rrz2(void);
+void rrz2_after_rrzerosb(void);
 
 #endif
 

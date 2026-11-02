@@ -23,12 +23,18 @@
  *
  * The device is the LM's io record with the input channels after it
  * (lm_channel_io): P20LEMB7 and R22 read channel 33. Channel 12 (R22
- * reads it, R21 and CLRADMOD clear bits of it, R23 sets its bit 14) is the
- * program's hardware record's.
+ * reads it, R21 and CLRADMOD clear bits of it, R23 sets its bit 14, the
+ * radar's subroutines zero its CDUs and enable its error counters with it)
+ * and channel 14 (RROUT's CDU drives) are the program's hardware record's.
+ *
+ * RRLIMCHK reads its angles' address from the word after the TC that
+ * called it. The faithful port knows that word for its four callers only
+ * (rrlimchk_callers below) and refuses any other caller: so does the
+ * binding.
  *
  * The states the faithful routines take, at every key: FB the key's bank
  * (in banks 30-37, the superbank bit clear), except in fixed-fixed code
- * (CLRADMOD), which runs under any; at an order pair Z at NEWOPS,
+ * (CLRADMOD, MAGSUB to FLIP), which runs under any; at an order pair Z at NEWOPS,
  * BANKSET the BBANK and INTBIT15 the bank's bit 15. Always ZERO +0, the
  * bank registers agreeing, the interrupt and superbank latches in range,
  * and every erasable word an ordinary one. At an order pair and at the
@@ -81,15 +87,21 @@ static word channel_in(unsigned number)
     case 012u:
         if (!hardware_now) not_modelled();
         return hardware_now->channel12;
+    case 014u:
+        if (!hardware_now) not_modelled();
+        return hardware_now->channel14;
     default: not_modelled(); return 0;
     }
 }
 
-/* Channel 12 only (WAND and WOR). */
+/* Channels 12 and 14 only (WAND and WOR). */
 static void channel_out(unsigned number, word value)
 {
-    if (number != 012u || !hardware_now) not_modelled();
-    hardware_now->channel12 = value;
+    if ((number != 012u && number != 014u) || !hardware_now) not_modelled();
+    if (number == 012u)
+        hardware_now->channel12 = value;
+    else
+        hardware_now->channel14 = value;
 }
 
 /* The interpreter's fixed operands are the rope's. */
@@ -406,7 +418,74 @@ static const struct basic_entry {
     {KEY(023u, R61C_L4), r61c_l4, false},
     {KEY(023u, R65WAIT), r65wait, false},
     {KEY(023u, READCDUD), readcdud, false},
+    /* Part 5: the rendezvous radar's subroutines */
+    {KEY(02u, RRLIMCHK), rrlimchk, false},
+    {KEY(02u, RRLIMCHK + 016u), rrlimchk_trunnion_out, false},
+    {KEY(02u, RRLIMCHK + 017u), rrlimchk_trunnion_in, false},
+    {KEY(02u, RRLIMCHK + 023u), rrlimchk_shaft_out, false},
+    {KEY(02u, RRLIMCHK + 024u), rrlimchk_shaft_in, false},
+    {KEY(02u, MODE2CHK), mode2chk, false},
+    {KEY(02u, MODE2CHK + 4u), mode2chk_shaft_out, false},
+    {KEY(02u, MODE2CHK + 5u), mode2chk_shaft_in, false},
+    {KEY(02u, RRLIMOK), rrlimok, false},
+    {KEY(02u, RRLIMOK + 1u), mode2chk_trunnion_out, false},
+    {KEY(02u, SETTRKF), settrkf, false},
+    {KEY(02u, FLIP), flip, false},
+    {KEY(025u, RRTURNON), rrturnon, false},
+    {KEY(025u, RRTURNON + 1u), rrturnon_after_rrzerosb, false},
+    {KEY(025u, RRTURNON + 3u), rrturnon_after_fixdelay, false},
+    {KEY(025u, RRZEROSB + 7u), rrzerosb_after_zeroing, false},
+    {KEY(025u, RRZEROSB + 017u), rrzerosb_after_settling, false},
+    {KEY(025u, RRZEROSB + 025u), rrzerosb_mode2, false},
+    {KEY(025u, RRZEROSB + 026u), rrzerosb_mode1, false},
+    {KEY(025u, RRZEROSB + 035u), rrzerosb_after_settrkf, false},
+    {KEY(025u, DORREPOS), dorrepos, false},
+    {KEY(025u, DORREPOS + 1u), dorrepos_after_setrrecr, false},
+    {KEY(025u, DORREPOS + 3u), dorrepos_trunnion, false},
+    {KEY(025u, DORREPOS + 010u), dorrepos_shaft, false},
+    {KEY(025u, REPOSRPT), reposrpt, false},
+    {KEY(025u, SETRRECR), setrrecr, false},
+    {KEY(025u, REMODE), remode, false},
+    {KEY(025u, REMODE + 5u), remode_shaft, false},
+    {KEY(025u, REMODE + 7u), remode_trunnion_out, false},
+    {KEY(025u, REMODE + 015u), remode_trunnion_back, false},
+    {KEY(025u, REMODE + 022u), remode_shaft_back, false},
+    {KEY(025u, REMODE + 027u), remode_invert, false},
+    {KEY(025u, REMODE + 030u), remode_end, false},
+    {KEY(025u, RR1AX2), rr1ax2, false},
+    {KEY(025u, RR1AX2 + 021u), rr1ax2_command, false},
+    {KEY(025u, RR1AX2 + 022u), rr1ax2_done, false},
+    {KEY(025u, RR1AX2 + 030u), rr1ax2_after_rrout, false},
+    {KEY(025u, RROUT), rrout, false},
+    {KEY(025u, SETRRCTR - 1u), rroutlim, false}, /* TCF RROUTLIM */
+    {KEY(025u, SETRRCTR), setrrctr, false},
+    {KEY(025u, RRZERO), rrzero, false},
+    {KEY(025u, RRZERO + 015u), rrzero_after_waitlist, false},
+    {KEY(025u, ROADBACK), roadback, false},
+    {KEY(025u, RRZ2), rrz2, false},
+    {KEY(025u, RRZ2 + 1u), rrz2_after_rrzerosb, false},
 };
+
+/* RRLIMCHK's callers the faithful port knows: the word after each TC
+ * (Q), in its bank (FB). RRDESSM's two (bank 25), T4RUPT's RRGIMON (bank
+ * 06) and R23LEM11 (bank 24). */
+static const struct rrlimchk_caller {
+    word q, fb;
+} rrlimchk_callers[] = {
+    {02410u, 025u << 10},
+    {02463u, 025u << 10},
+    {03112u, 006u << 10},
+    {03156u, 024u << 10},
+};
+
+static bool known_rrlimchk_caller(void)
+{
+    unsigned i;
+
+    for (i = 0; i < COUNT(rrlimchk_callers); ++i)
+        if (Q == rrlimchk_callers[i].q && FBANK == rrlimchk_callers[i].fb) return true;
+    return false;
+}
 
 static const struct basic_entry *basic_entry(uint16_t key)
 {
@@ -551,7 +630,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     const struct basic_entry *entry = basic_entry(key);
     lm_channel_io *io = device, kept;
     apollo_overlay_state before;
-    agc_word channel12;
+    agc_word channel12, channel14;
 
     if (!entry) return faithful_lm_p20_p25_basic.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
@@ -559,14 +638,19 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     /* (fixed-fixed code, banks 02 and 03, runs under any FB) */
     if ((key / 1024u >= 4u && !in_bank(key / 1024u)) || !sane(entry->with_work_area))
         return EXEC_OUT_OF_SCOPE;
+    if (key == KEY(02u, RRLIMCHK) && !known_rrlimchk_caller()) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;
     channel12 = hardware_now ? hardware_now->channel12 : 0u;
+    channel14 = hardware_now ? hardware_now->channel14 : 0u;
     if (setjmp(back)) {
         *state = before;
         *io = kept;
-        if (hardware_now) hardware_now->channel12 = channel12;
+        if (hardware_now) {
+            hardware_now->channel12 = channel12;
+            hardware_now->channel14 = channel14;
+        }
         return EXEC_OUT_OF_SCOPE;
     }
     entry->routine();
