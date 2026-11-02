@@ -2836,6 +2836,19 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define WSIZE   ((word)KW_WSIZE) /* DEC 161: W's last word */
 /* Part 14, GETULC. */
 #define GETULC ((word)K_GETULC)
+/* Part 15, LRS24.1, the RR search. NSRCHPNT, DATAGOOD, RADMODES, CDUT and
+ * TANGNB are named by ADDRESS_OF. */
+#define LRS24_1     ((word)K_LRS24_1) /* LRS24.1 */
+#define CONTDES2    ((word)K_CONTDES2)
+#define OMEGCALC    ((word)K_OMEGCALC)
+#define CALCXY      ((word)K_CALCXY)
+#define CALLDGCH    ((word)K_CALLDGCH)
+#define DATGDCHK    ((word)K_DATGDCHK)
+#define LIMALARM    ((word)K_LIMALARM)
+#define SRCHOBIT    BIT14                /* FLAGWRD2 bit 14: SRCHOPT, the R24 search wanted */
+#define CDESBIT     BIT15                /* RADMODES bit 15: a continuous designate wanted */
+#define SIX_SECONDS ((word)KW_6SECONDS)  /* 6SECONDS: DEC 600 */
+#define ALL1S       ((word)KW_ALL1S)     /* DEC 11111 */
 #endif
 
 /* NO.CORES + 1 core sets. */

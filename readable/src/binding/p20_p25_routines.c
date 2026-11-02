@@ -593,6 +593,20 @@ static const struct basic_entry {
     /* Part 13 */
     {KEY(026u, WLINIT + 1u), wlinit_zero_w, true},
     {KEY(026u, WLINIT + 012u), wlinit_restore_ebank, true},
+    {KEY(026u, LRS24_1), lrs24_1, false},
+    {KEY(026u, LRS24_1 + 016u), lrs24_1_after_waitlist, true},
+    {KEY(026u, LRS24_1 + 0131u), lrs24_1_after_exit, false},
+    {KEY(026u, CONTDES2), contdes2, true},
+    {KEY(026u, OMEGCALC - 2u), contdes2_not_in_mode_2, true},
+    {KEY(026u, OMEGCALC - 1u), contdes2_maneuver_required, true},
+    {KEY(026u, OMEGCALC), omegcalc, true},
+    {KEY(026u, OMEGCALC + 012u), omegcalc_after_exit, false},
+    {KEY(026u, CALLDGCH), calldgch, false},
+    {KEY(026u, CALLDGCH + 010u), calldgch_after_findvac, false},
+    {KEY(026u, DATGDCHK), datgdchk, false},
+    {KEY(026u, DATGDCHK + 020u), datgdchk_after_killtask, false},
+    {KEY(026u, LIMALARM + 2u), limalarm_after_alarm, false},
+    {KEY(026u, LIMALARM + 5u), limalarm_after_killtask, false},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -666,6 +680,10 @@ static const struct interpretive_code *const codes[] = {
     &LSR22_4_CODE,
     &WLINIT_CODE,
     &GETULC_CODE,
+    &LRS24_1_CODE,
+    &CONTDES2_CODE,
+    &OMEGCALC_CODE,
+    &CALCXY_CODE,
 };
 
 /* The table of bank that address is in, or none. */
