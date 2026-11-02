@@ -2861,6 +2861,19 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define OLDESBIT   BIT1                /* STATE bit 1: R29's designate loop requested */
 #define SUPER110   ((word)KW_SUPER110) /* OCT 140 */
 static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
+/* Part 17, R29's designate loop: BEGDES29 (bank 24) and R29DODES (bank
+ * 32). LOSSM, LOSVDT/4, SAVECDUT, TANG, VBUF, PUSHLOC and FIXLOC are named by
+ * ADDRESS_OF. */
+#define BEGDES29 ((word)K_BEGDES29)
+#define R29DLOOP ((word)K_R29DLOOP)
+#define R29DODES ((word)K_R29DODES)
+#define R29DPAS2 ((word)K_R29DPAS2)
+#define GOTANGLS ((word)K_GOTANGLS)
+#define R29LOKON ((word)K_R29LOKON)
+#define END29DOD ((word)K_END29DOD)
+#define MPACVBUF ((word)K_MPACVBUF)
+#define RR29GAIN ((word)KW_RR29GAIN) /* DEC -.53624 */
+#define R29FXLOC ((word)KW_R29FXLOC) /* ADRES INTB15+ -34D */
 #endif
 
 /* NO.CORES + 1 core sets. */

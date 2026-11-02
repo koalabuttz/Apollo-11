@@ -621,6 +621,21 @@ static const struct basic_entry {
     {KEY(033u, R29_LOS + 026u), r29_los_after_exit, false},
     {KEY(033u, SETUP29D + 7u), setup29d_after_exit, false},
     {KEY(033u, SETUP29D + 023u), setup29d_after_waitlist, false},
+    {KEY(024u, BEGDES29), begdes29, false},
+    {KEY(024u, R29DLOOP), r29dloop, false},
+    {KEY(024u, R29DLOOP + 2u), r29dloop_after_vardelay, false},
+    {KEY(032u, R29DODES), r29dodes, false},
+    {KEY(032u, R29DODES + 040u), r29dodes_after_unit, false},
+    {KEY(032u, R29DODES + 041u), r29dodes_after_mpacvbuf, false},
+    {KEY(032u, GOTANGLS), gotangls, false},
+    {KEY(032u, GOTANGLS + 3u), gotangls_after_axsrt, false},
+    {KEY(032u, GOTANGLS + 012u), gotangls_after_cos_t, false},
+    {KEY(032u, GOTANGLS + 015u), gotangls_after_sin_t, false},
+    {KEY(032u, GOTANGLS + 023u), gotangls_after_sin_s, false},
+    {KEY(032u, GOTANGLS + 033u), gotangls_after_cos_s, false},
+    {KEY(032u, R29DPAS2 + 047u), r29dpas2_after_rrout, false},
+    {KEY(032u, R29LOKON), r29lokon, false},
+    {KEY(032u, END29DOD), end29dod, false},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
