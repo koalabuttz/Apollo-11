@@ -633,12 +633,20 @@ int main(int argc, char **argv)
     failures += keys(&lm_p20_p25_basic, &faithful_lm_p20_p25_basic, 0, &runs, &readable_basic);
     failures += keys(&lm_p20_p25_interpretive, &faithful_lm_p20_p25_interpretive, 1, &runs,
                      &readable_pairs);
+    /* The file is whole: every key runs a readable routine (the binding
+     * no longer hands any to the faithful tables). */
+    if (readable_basic + readable_pairs != lm_p20_p25_basic.count + lm_p20_p25_interpretive.count) {
+        printf("FAIL: %u keys without a readable routine\n", lm_p20_p25_basic.count +
+                                                                 lm_p20_p25_interpretive.count -
+                                                                 readable_basic - readable_pairs);
+        ++failures;
+    }
     printf("p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each (the others from %u), %u run by the faithful routines "
+           "pairs) from %u states each, %u run by the faithful routines "
            "(%u of them a store past the E-bank window the readable binding refuses), "
            "%u loads across the window's end counted apart, %u failures\n",
            words, readable_basic + readable_pairs,
            lm_p20_p25_basic.count + lm_p20_p25_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, spills, wraps, failures);
+           CASES, runs, spills, wraps, failures);
     return failures != 0;
 }

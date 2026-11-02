@@ -4,13 +4,11 @@
  * (c64-port/src/lm_p20_p25.c): lm_p20_p25_basic (the basic code) and
  * lm_p20_p25_interpretive (the order pairs).
  *
- * The file is readable part by part, so the tables carry every key of the
- * faithful ones, in their order (p20_p25_keys.inc, which
- * tools/p20_p25_keys.py writes from them): a key a readable part has
- * written runs the readable routine; any other runs the faithful port's,
- * built into the program as faithful_lm_p20_p25_basic and
- * faithful_lm_p20_p25_interpretive (tests/x86_readable.py, the
- * Makefile's p20-p25 tests).
+ * The tables carry every key of the faithful ones, in their order
+ * (p20_p25_keys.inc, which tools/p20_p25_keys.py writes from them), and
+ * every key runs a readable routine: the file was written part by part,
+ * and is whole. The side-by-side test (tests/p20_p25_cases.c) checks that
+ * no key is left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (BANKCALL, PHASCHNG, UPFLAG, ENDOFJOB, ...), reaches a label the
@@ -56,9 +54,6 @@
 #include "../agc/names.h"
 
 #if LUMINARY099
-
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_interpretive;
 
 /* A key: the bank, and the address in it (or in fixed-fixed memory). */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
@@ -870,8 +865,8 @@ static enum exec_status one_pass(uint16_t key, const agc_native_program *program
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each key's routine: the readable one, or the faithful port's. */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
@@ -879,8 +874,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     apollo_overlay_state before;
     agc_word channel12, channel14;
 
-    if (!entry) return faithful_lm_p20_p25_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     /* (fixed-fixed code, banks 02 and 03, runs under any FB) */
     if ((key / 1024u >= 4u && !in_bank(key / 1024u)) || !sane(entry->with_work_area))
@@ -904,7 +898,7 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -914,8 +908,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct pending_order *pending;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_lm_p20_p25_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -946,13 +938,13 @@ bool p20_p25_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "p20_p25_keys.inc"
 #undef BASIC

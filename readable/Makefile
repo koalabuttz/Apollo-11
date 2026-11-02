@@ -1521,10 +1521,10 @@ radar-leadin-cases: $(BUILD)/rlr-oracle $(BUILD)/rlr-cases
 # P20-P25, the LM's rendezvous programs and radar routines, readable part
 # by part: the port's test (tests/test_lm_p20_p25.c, its frozen cases run
 # to their stops through the program of tests/lm_p20_p25_target.c, against
-# the original program's yaAGC digests) through the readable tables, which
-# run the faithful routines (renamed faithful_) at the keys no part has
-# written yet, with tests/with_ropes.c loading the rope the readable
-# interpreter reads; then tests/p20_p25_cases.c side by side.
+# the original program's yaAGC digests) through the readable tables, with
+# tests/with_ropes.c loading the rope the readable interpreter reads; then
+# tests/p20_p25_cases.c side by side with the faithful routines (renamed
+# faithful_).
 P20_NAMES := lm_p20_p25_basic lm_p20_p25_interpretive
 P20_COMMON := $(R63_COMMON) $(PORT)/src/lm_integration_moves.c
 
