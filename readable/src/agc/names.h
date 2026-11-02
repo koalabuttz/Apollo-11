@@ -2822,6 +2822,9 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define OUT22_2  ((word)K_OUT22_2) /* OUT22.2 */
 #define RNGSCBIT ((word)KW_RNGSCBIT) /* FLAGWRD5 bit 10: the RR range scale changed */
 #define RRRSBIT  ((word)KW_RRRSBIT) /* RADMODES bit 3: the RR range scale (channel 33 bit 3) */
+/* Part 10, LSR22.3 (bank 26). */
+#define LSR22_3 ((word)K_LSR22_3)
+#define RANGEBQ ((word)K_RANGEBQ)
 #endif
 
 /* NO.CORES + 1 core sets. */

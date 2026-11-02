@@ -27,6 +27,8 @@
  *     the 400 nautical mile range check (pp. 564-567).
  *   part 9, lrs22.c: LRS22.1 and LRS22.2, R22's data read subroutines
  *     (pp. 568-573).
+ *   part 10, lsr22.c: LSR22.3, the measurement incorporation, from its
+ *     start to the range's (pp. 574-577).
  * The binding (src/binding/p20_p25_routines.c) runs the keys these parts
  * write, and the faithful port's routines at the others.
  *
@@ -605,6 +607,13 @@ extern const struct interpretive_code LRS22_1_CHECK_CODE;
 extern const struct interpretive_code NORMEXIT_CODE;
 extern const struct interpretive_code THIRTY_DEGCHK_CODE;
 extern const struct interpretive_code OKEXIT_CODE;
+
+/* ---- Part 10: LSR22.3 (lsr22.c) ---- */
+
+void rangebq_r65(void);
+void rangebq_after_r65(void);
+extern const struct interpretive_code LSR22_3_CODE;
+extern const struct interpretive_code RANGEBQ1_CODE;
 
 #endif
 

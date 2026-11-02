@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: MIT */
 /* RTB_OP_CODES.agc (Luminary099) and RT8_OP_CODES.agc (Comanche055), the
  * same code in both: the routines an interpretive RTB runs. So far
- * LOADTIME, CDULOGIC, 1STO2S, V1STO2S and 2V1STO2S with their 1TO2SUB, and the
- * CM's TRANSP1 and TRANSP2. */
+ * LOADTIME, CDULOGIC, 1STO2S, V1STO2S, TPMODE and 2V1STO2S with their
+ * 1TO2SUB, and the CM's TRANSP1 and TRANSP2. */
 #include "rtb_op_codes.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
@@ -80,6 +80,14 @@ void v1sto2s(void)
     ca(ADDRESS_OF(MPAC) + 5u);
     ts(ADDRESS_OF(MPAC));
     set_A(ONE); /* TPMODE: CAF ONE, "MODE IS TP." */
+    newmode();  /* TCF NEWMODE */
+}
+
+/* TPMODE -- LM p. 1398, CM p. 1509.
+ * "MODE IS TP.": MODE 1 (NEWMODE), back to DANZIG. */
+void tpmode(void)
+{
+    set_A(ONE); /* CAF ONE */
     newmode();  /* TCF NEWMODE */
 }
 
