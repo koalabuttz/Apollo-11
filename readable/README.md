@@ -360,11 +360,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    faithful side by side at each of its 8 keys from 16,384 states.
    `make p20-p25-cases` runs the faithful port's test of P20-P25 (its
    1,028 checks against yaAGC digests) through the readable tables, then
-   checks the written parts' interpretive words against the rope (1,144),
-   and runs readable and faithful side by side at the written parts' keys
-   (478 basic and 550 order pairs, the whole file) from 4,096 states each, and at the keys
-   the faithful routines still run from 16 states each (they must give
-   the same results through the readable tables). One faithful pair runs
+   checks the interpretive words against the rope (1,144), and runs
+   readable and faithful side by side at every key (478 basic and 550
+   order pairs) from 4,096 states each. One faithful pair runs
    states the readable binding refuses: R21LEM12's CLRGO (24,3030)
    branches to R21LEM7 +1, a TC INTPRET the interpreter reads as a store
    code, and where that store would run past the end of the E-bank window

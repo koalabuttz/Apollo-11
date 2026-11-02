@@ -146,8 +146,8 @@ REPLACED = (
 # AND_LIGHTS, part by part (src/pinball): its trampoline, the mission's
 # lanec_pin_run_<m>, which every routine of the port's Pinball tables calls,
 # runs the readable entries and hands the rest to the faithful one.
-# P20-P25, part by part (src/p20_p25): the LM's routine tables, which
-# run the readable keys and hand the rest to the faithful tables.
+# P20-P25 (src/p20_p25): the LM's routine tables, all readable; the
+# faithful ones, renamed, are no longer called (--gc-sections drops them).
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
