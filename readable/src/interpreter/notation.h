@@ -107,6 +107,7 @@
 #define ORDER_BPL        0132u
 #define ORDER_DOT        0135u
 #define ORDER_BMN        0136u
+#define ORDER_VSQ        0140u
 #define ORDER_VXV        0141u
 #define ORDER_RTB        0142u
 #define ORDER_VPROJ      0145u

@@ -51,7 +51,7 @@ extern const struct interpretive_code ORBCHG2_CODE, P20LEM1_CODE, P20LEMC3_CODE,
     LRS22_1_CONVERT_CODE, LRS22_1_CHECK_CODE, NORMEXIT_CODE, THIRTY_DEGCHK_CODE, OKEXIT_CODE,
     LSR22_3_CODE, RANGEBQ1_CODE, RANGE_RATE_CODE, ANGLES_CODE, LSR22_4_CODE, WLINIT_CODE,
     GETULC_CODE, LRS24_1_CODE, CONTDES2_CODE, OMEGCALC_CODE, CALCXY_CODE, R29_LOS_CODE,
-    SETUP29D_CODE;
+    SETUP29D_CODE, V67CALL_CODE, V06N9933_CODE, V67_NEW_W_CODE, V67WW_CODE, ADDPOS_CODE;
 extern const agc_routine_table lm_p20_p25_basic, lm_p20_p25_interpretive;
 extern const agc_routine_table faithful_lm_p20_p25_basic, faithful_lm_p20_p25_interpretive;
 bool p20_p25_readable(uint16_t key, bool order_pair);
@@ -67,6 +67,7 @@ bool p20_p25_readable(uint16_t key, bool order_pair);
 #define LRVELZ_KEY       (025u * 1024u + 01075u) /* 25,3075 */
 #define LRVEL_KEY        (025u * 1024u + 01107u) /* 25,3107 */
 #define RNRAD_AT         046u
+#define V6N99PRO_KEY     (031u * 1024u + 030u)   /* 31,2030: TCF V6N99PRO */
 #define RADIN_KEY        (025u * 1024u + 01331u) /* 25,3331 */
 #define X1_AT            0046u
 #define S1_AT            0050u
@@ -152,6 +153,8 @@ static bool in_written_part(uint16_t key)
     return (bank == 024u && z <= 03501u) || (bank == 032u && z >= 02217u && z <= 02770u) ||
            (bank == 03u && (z == 02011u || z == 02022u)) /* CLRADMOD, GOTOV56 */ ||
            (bank == 033u && z >= 02045u && z <= 02175u) ||
+           (bank == 031u && z >= 02007u && z <= 02141u) ||
+           (bank == 030u && z >= 02002u && z <= 02055u) ||
            (bank == 023u && z >= 02116u && z <= 02313u) ||
            (bank == 026u && z >= 02412u && z <= 03702u) ||
            (bank == 02u && z >= 02523u && z <= 02606u) ||
@@ -208,6 +211,13 @@ static uint16_t index_word(void)
 static uint16_t fixed_cadr(uint16_t now)
 {
     return (now & 074000u) ? now : (uint16_t)(04000u + rnd() % 074000u);
+}
+
+/* The erasable word an address names, under the state's EBANK. */
+static unsigned erasable_at(const uint16_t *w, unsigned address)
+{
+    address &= 01777u;
+    return address < 01400u ? address : ((w[3] >> 8) & 7u) * 0400u + (address - 01400u);
 }
 
 /* The address of a key: 02000-03777 in its bank, or 04000-07777 in
@@ -390,6 +400,11 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
         w[RNRAD_AT] = any_word();
         w[ITEMP1_AT] = rnd() % 2u ? (uint16_t)(rnd() % 2u ? 010u : 020u) : any_word();
     }
+    /* At V6N99PRO, half the time noun 99's values as V67CALL saved them
+     * before the display (WWPOS to WWBIAS +1 at WWBIAS +2 on): nothing
+     * changed. */
+    if (key == V6N99PRO_KEY && rnd() % 2u)
+        for (k = 0; k < 6u; ++k) w[erasable_at(w, 01606u + k)] = w[erasable_at(w, 01600u + k)];
     if (key == RROUTLIM_KEY || key == RROUTLIM_KEY + 1u) {
         w[ITEMP2_AT] = (uint16_t)(rnd() % 2u);
         /* Now and then a zero command after a zero one, where AD NEG0
@@ -418,10 +433,43 @@ static bool faithful_spills(uint16_t key, const apollo_overlay_state *start)
     return spill;
 }
 
+/* V67's loads of the W-matrix's diagonal (VLOAD* W +54D,1, W +108D,1 and
+ * W +162D,1, as their operands are written): an X1 the program never sets
+ * can put the vector's six words across the end of the E-bank window
+ * (01777). The AGC reads the words past it from fixed memory, and so does
+ * the readable machine; the faithful port's machine reads the unswitched
+ * words 0-4 instead (ai_ea keeps the address in the erasable image). The
+ * test counts those states apart. */
+static unsigned wraps;
+
+static bool load_wraps(uint16_t key, const apollo_overlay_state *start)
+{
+    static const struct {
+        uint16_t key, operand;
+    } loads[] = {{031u * 1024u + 0137u, 02467u},
+                 {030u * 1024u + 005u, 02555u},
+                 {030u * 1024u + 012u, 02643u}};
+    const uint16_t *w = start->words;
+    unsigned i, x1, addrwd;
+
+    for (i = 0; i < sizeof loads / sizeof loads[0] && loads[i].key != key; ++i) continue;
+    if (i == sizeof loads / sizeof loads[0]) return false;
+    /* INDEX: ADDRWD is the operand less one, less X1 (ones' complement). */
+    x1 = w[erasable_at(w, w[FIXLOC_AT] + X1_AT)] & 077777u;
+    addrwd = loads[i].operand - 1u + (~x1 & 077777u);
+    if (addrwd > 077777u) addrwd = (addrwd + 1u) & 077777u;
+    /* In the E bank it names (not the work area, nor fixed): words
+     * 01400 + its low 8 bits on. */
+    if (!(addrwd & 077700u) || (addrwd & 074000u)) return false;
+    if ((addrwd & 0377u) + 5u <= 0377u) return false;
+    ++wraps;
+    return true;
+}
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs, unsigned *readable_keys)
 {
-    unsigned i, n, failures = 0;
+    unsigned i, n, pick, failures = 0;
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
@@ -450,6 +498,13 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
              * (4) as the read routines set them, or any. */
             hardware.channel13 =
                 rnd() % 2u ? (uint16_t)(rnd() % 020u) : (uint16_t)(rnd() & 077777u);
+            /* Channel 14: RROUT's CDU drive bits (11 and 12) on, all on,
+             * any, or none. */
+            pick = rnd() % 4u;
+            hardware.channel14 = pick == 0u   ? 0u
+                                 : pick == 1u ? 06000u
+                                 : pick == 2u ? 077777u
+                                              : (uint16_t)(rnd() & 077777u);
             fhw = rhw = hardware;
             memset(&p, 0, sizeof p);
             fp = rp = p;
@@ -458,7 +513,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!written) { /* the faithful routine on both sides, refusals and all */
+            if (written && interpretive && load_wraps(key, &start)) {
+                /* (counted apart) */
+            } else if (!written) { /* the faithful routine on both sides, refusals and all */
                 if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))
                     why = "the table does not run the faithful routine";
             } else if (sr != EXEC_OK &&
@@ -482,8 +539,13 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        if (written && ran == 0u && bad == 0u) {
-            printf("FAIL %02o,%04o: the faithful routine never ran\n", key / 1024u, z);
+        /* Each written key's faithful routine must run in at least 1 of
+         * 16 states, so that a change to the states cannot quietly leave
+         * a key with a handful of live ones. */
+        if (written && ran < cases / 16u && bad == 0u) {
+            printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states (fewer than 1 in "
+                   "16)\n",
+                   key / 1024u, z, ran, cases);
             ++bad;
         }
         *runs += ran;
@@ -537,6 +599,11 @@ static const struct interpretive_code *const codes[] = {
     &CALCXY_CODE,
     &R29_LOS_CODE,
     &SETUP29D_CODE,
+    &V67CALL_CODE,
+    &V06N9933_CODE,
+    &V67_NEW_W_CODE,
+    &V67WW_CODE,
+    &ADDPOS_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -569,9 +636,9 @@ int main(int argc, char **argv)
     printf("p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each (the others from %u), %u run by the faithful routines "
            "(%u of them a store past the E-bank window the readable binding refuses), "
-           "%u failures\n",
+           "%u loads across the window's end counted apart, %u failures\n",
            words, readable_basic + readable_pairs,
            lm_p20_p25_basic.count + lm_p20_p25_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, spills, failures);
+           CASES, OTHER_CASES, runs, spills, wraps, failures);
     return failures != 0;
 }
