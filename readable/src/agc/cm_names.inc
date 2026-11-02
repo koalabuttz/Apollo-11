@@ -1568,6 +1568,9 @@
 #define K_LASTYCMD 00035u
 #define K_LASTXCMD 00035u
 #define K_RNRAD 00046u
+#define K_AIG 01662u
+#define K_AMG 01663u
+#define K_AOG 01661u
 #define KW_EXECBANK 002626u
 #define KW_FAKEPRET 000110u
 #define KW_NO_CORES 000006u
@@ -2507,6 +2510,8 @@
 #define I_STAR_NBSM_STAR 047646u
 #define I_VATT 000006u
 #define I_RNDVZFLG 000010u
+#define I_RM 003703u
+#define I_TRG_STARSMNB 047624u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

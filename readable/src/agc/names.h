@@ -2809,6 +2809,19 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 /* Part 8, LPS20.1 (bank 24) and LPS20.2 (bank 25). */
 #define LPS20_1 ((word)K_LPS20_1)
 #define LPS20_2 ((word)K_LPS20_2)
+/* Part 9, LRS22.1 (bank 32) and LRS22.2 (bank 24). LRS22.1X, RDOTMSAV,
+ * RANGRDOT, MKTIME, AIG, AMG and AOG are named by ADDRESS_OF. */
+#define LRS22_1  ((word)K_LRS22_1)
+#define READRDOT ((word)K_READRDOT)
+#define NORMEXIT ((word)K_NORMEXIT)
+#define OUT22_1  ((word)K_OUT22_1) /* OUT22.1 */
+#define CHEXERR  ((word)K_CHEXERR)
+#define EREXIT1  ((word)K_EREXIT1)
+#define LRS22_2  ((word)K_LRS22_2)
+#define OKEXIT   ((word)K_OKEXIT)
+#define OUT22_2  ((word)K_OUT22_2) /* OUT22.2 */
+#define RNGSCBIT ((word)KW_RNGSCBIT) /* FLAGWRD5 bit 10: the RR range scale changed */
+#define RRRSBIT  ((word)KW_RRRSBIT) /* RADMODES bit 3: the RR range scale (channel 33 bit 3) */
 #endif
 
 /* NO.CORES + 1 core sets. */

@@ -566,6 +566,24 @@ static const struct basic_entry {
     /* Part 8 */
     {KEY(024u, LPS20_1 + 027u), lps20_1_after_exit, false},
     {KEY(024u, LPS20_1 + 031u), lps20_1_after_killtask, true},
+    /* Part 9 */
+    {KEY(032u, LRS22_1), lrs22_1, false},
+    {KEY(032u, LRS22_1 + 1u), lrs22_1_after_makecadr, false},
+    {KEY(032u, LRS22_1 + 4u), lrs22_1_after_downflag, false},
+    {KEY(032u, READRDOT + 2u), readrdot_after_rrrdot, false},
+    {KEY(032u, READRDOT + 4u), readrdot_failed, false},
+    {KEY(032u, READRDOT + 5u), readrdot_read, false},
+    {KEY(032u, READRDOT + 030u), readrdot_after_rrrange, false},
+    {KEY(032u, READRDOT + 032u), readrdot_range_failed, true},
+    {KEY(032u, READRDOT + 033u), readrdot_range_read, true},
+    {KEY(032u, READRDOT + 0100u), lrs22_1_mark_angles, true},
+    {KEY(032u, NORMEXIT - 3u), lrs22_1_error_2, false},
+    {KEY(032u, NORMEXIT + 1u), normexit_after_exit, false},
+    {KEY(032u, CHEXERR), chexerr, false},
+    {KEY(024u, LRS22_2), lrs22_2, false},
+    {KEY(024u, LRS22_2 + 1u), lrs22_2_after_makecadr, true},
+    {KEY(024u, OKEXIT - 3u), lrs22_2_error, false},
+    {KEY(024u, OKEXIT + 1u), okexit_after_exit, false},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -627,6 +645,11 @@ static const struct interpretive_code *const codes[] = {
     &LPS20_1_CODE,
     &LPS20_1_LOS_CODE,
     &LPS20_2_CODE,
+    &LRS22_1_CONVERT_CODE,
+    &LRS22_1_CHECK_CODE,
+    &NORMEXIT_CODE,
+    &THIRTY_DEGCHK_CODE,
+    &OKEXIT_CODE,
 };
 
 /* The table of bank that address is in, or none. */
