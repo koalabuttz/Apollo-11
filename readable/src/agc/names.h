@@ -2899,6 +2899,22 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define PROG20   ((word)K_PROG20)
 #define PIKUP20  ((word)K_PIKUP20)
 #define P20R52JB ((word)K_P20R52JB)
+/* Part 2, P22 (bank 30). Its erasable words (LANDMARK, MARKINDX, CXOFF,
+ * 22SUBSCL, 8KK) are named by ADDRESS_OF. */
+#define PROG22   ((word)K_PROG22)
+#define PROG22A  ((word)K_PROG22A)
+#define CALLR52  ((word)K_CALLR52)
+#define PROG22C  ((word)K_PROG22C)
+#define P22OVER  ((word)K_P22OVER)
+#define S22LSITE ((word)K_S22LSITE)
+#define P22SUBRB ((word)K_P22SUBRB)
+#define N89ERRX  ((word)K_N89ERRX)
+#define S22DSPPA ((word)K_S22DSPPA)
+#define S22DSPP  ((word)K_S22DSPP)
+#define S22ABDE  ((word)K_S22ABDE)
+#define DE_GR_50 ((word)K_DE_GR_50) /* DE-GR-50 */
+#define V06N45B  ((word)KW_V06N45B) /* VN 0645 */
+#define V06N89B  ((word)KW_V06N89B) /* VN 0689 */
 #endif
 
 /* NO.CORES + 1 core sets. */

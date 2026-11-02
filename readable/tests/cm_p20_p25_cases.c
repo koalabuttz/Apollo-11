@@ -41,7 +41,8 @@ struct interpretive_code {
     unsigned count;
     const uint16_t *words;
 };
-extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE;
+extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, PROG22A_CODE,
+    CALLR52_CODE, S22LSITE_CODE, P22SUBRB_CHECK_CODE, N89ERRX_3_CODE, S22ABDE_CODE, DE_GR_50_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -61,6 +62,7 @@ bool cm_p20_p25_readable(uint16_t key, bool order_pair);
 #define LOC_AT      0164u
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
+#define S22TOFF_AT  03667u /* E7,1667: S22's return, a CADR */
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -107,12 +109,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* The parts written so far: part 1, P20 (bank 37, PROG20 to the word
- * before R57). */
+ * before R57); part 2, P22 (bank 30, PROG22 to the word before S22.1). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return bank == 037u && z >= 02261u && z <= 02400u;
+    return (bank == 037u && z >= 02261u && z <= 02400u) ||
+           (bank == 030u && z >= 02000u && z <= 02311u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -167,6 +170,13 @@ static uint16_t key_z(uint16_t key)
 
     return (uint16_t)(bank == 2u || bank == 3u ? 04000u + 02000u * (bank - 2u) + key % 1024u
                                                : 02000u + key % 1024u);
+}
+
+/* A CADR in fixed memory, as STQ leaves one: mostly the word now if it
+ * is one, else any. A GOTO through an erasable word takes the CADR there. */
+static uint16_t fixed_cadr(uint16_t now)
+{
+    return (now & 074000u) ? now : (uint16_t)(04000u + rnd() % 074000u);
 }
 
 /* The FB of a key's bank (banks 40-43 are FB 30-33, with the superbank
@@ -268,6 +278,12 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
     w[(fixloc + X1_AT + 1u) & 03777u] = index_word();
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
+    /* S22TOFF and S22TOFF +1, the returns P22's GOTOs take, CADRs in fixed
+     * memory as the STQs leave them. */
+    if (rnd() % 16u) {
+        w[S22TOFF_AT] = fixed_cadr(w[S22TOFF_AT]);
+        w[S22TOFF_AT + 1u] = fixed_cadr(w[S22TOFF_AT + 1u]);
+    }
     /* Now and then a state no program has: BBANK not the two banks, or a
      * word of 16 bits. */
     if (n % 4u != 0u && rnd() % 64u == 0u) w[6] = any_word();
@@ -353,8 +369,8 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &PROG20_CODE,
-    &P20R52JB_CODE,
+    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE, &CALLR52_CODE,
+    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE, &DE_GR_50_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

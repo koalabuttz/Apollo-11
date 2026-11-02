@@ -1434,6 +1434,7 @@
 #define K_R29RANGE 03443u
 #define K_R29RRR_Q 03466u
 #define K_ENDRRD29 03475u
+#define K_PROG22 02000u
 #define K_V67CALL 02007u
 #define K_V06N99DS 02024u
 #define K_V6N99PRO 02032u
@@ -3206,6 +3207,17 @@
 #define I_QPRET 000052u
 #define I_V06N9933 062051u
 #define I_R52 031670u
+#define I_PMGA 002252u
+#define I_ERADFLAG 000021u
+#define I_CMOONFLG 000173u
+#define I_LUNAFLAG 000060u
+#define I_MARKSTAT 001312u
+#define I_RLS 002022u
+#define I_RP_TO_R 055716u
+#define I_ALPHAV 002031u
+#define I_LAT_LONG 026351u
+#define I_LANDLAT 002706u
+#define I_LANDLONG 002710u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u
