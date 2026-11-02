@@ -122,6 +122,7 @@
 #define ORDER_DAD        0161u
 #define ORDER_DAD_STAR   0163u /* DAD* */
 #define ORDER_BOF        0162u
+#define ORDER_BOFSET     0162u
 #define ORDER_BOFF       0162u /* (BOF under its other name) */
 #define ORDER_BON        0162u
 #define ORDER_BONCLR     0162u
@@ -155,6 +156,7 @@
 #define SWITCH_BON    0300u
 #define SWITCH_BOF    0340u
 #define SWITCH_BONCLR 0200u
+#define SWITCH_BOFSET 0040u
 #define SWITCH_CLRGO  0220u
 #define SWITCH_SETGO  0020u
 #define SWITCH(order, flag)                                                                        \

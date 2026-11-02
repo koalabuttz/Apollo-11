@@ -607,6 +607,20 @@ static const struct basic_entry {
     {KEY(026u, DATGDCHK + 020u), datgdchk_after_killtask, false},
     {KEY(026u, LIMALARM + 2u), limalarm_after_alarm, false},
     {KEY(026u, LIMALARM + 5u), limalarm_after_killtask, false},
+    {KEY(003u, GOTOV56), gotov56, false},
+    {KEY(033u, R29), r29, true},
+    {KEY(033u, R29 + 021u), r29_after_setrrecr, false},
+    {KEY(033u, R29 + 031u), r29_after_novac, false},
+    {KEY(033u, SETPRPOS + 4u), setprpos_after_waitlist, false},
+    {KEY(033u, R29REMOJ), r29remoj, false},
+    {KEY(033u, R29REMOJ + 4u), r29remoj_after_waitlist, false},
+    {KEY(033u, R29REMOJ + 6u), r29remoj_bad_exit, false},
+    {KEY(033u, R29REMOJ + 7u), r29remoj_good_exit, false},
+    {KEY(025u, PREPOS29), prepos29, false},
+    {KEY(025u, PREPOS29 + 2u), prepos29_after_rrtonly, false},
+    {KEY(033u, R29_LOS + 026u), r29_los_after_exit, false},
+    {KEY(033u, SETUP29D + 7u), setup29d_after_exit, false},
+    {KEY(033u, SETUP29D + 023u), setup29d_after_waitlist, false},
 };
 
 /* RRLIMCHK's callers the faithful port knows: the word after each TC
@@ -684,6 +698,8 @@ static const struct interpretive_code *const codes[] = {
     &CONTDES2_CODE,
     &OMEGCALC_CODE,
     &CALCXY_CODE,
+    &R29_LOS_CODE,
+    &SETUP29D_CODE,
 };
 
 /* The table of bank that address is in, or none. */

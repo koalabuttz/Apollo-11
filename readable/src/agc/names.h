@@ -2849,6 +2849,18 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define CDESBIT     BIT15                /* RADMODES bit 15: a continuous designate wanted */
 #define SIX_SECONDS ((word)KW_6SECONDS)  /* 6SECONDS: DEC 600 */
 #define ALL1S       ((word)KW_ALL1S)     /* DEC 11111 */
+/* Part 16, GOTOV56 (fixed-fixed) and R29's start (bank 33, PREPOS29 bank
+ * 25). PIPTIME, PIPCTR, STATE, MPAC, MODE and TIME2 are named by ADDRESS_OF. */
+#define R29        ((word)K_R29)
+#define R29_LOS    ((word)K_R29_LOS)  /* R29.LOS */
+#define R29REMOJ   ((word)K_R29REMOJ) /* R29REM0J in the listing */
+#define SETPRPOS   ((word)K_SETPRPOS)
+#define PREPOS29   ((word)K_PREPOS29)
+#define SETUP29D   ((word)K_SETUP29D)
+#define NOR29NOW   ((word)K_NOR29NOW)
+#define OLDESBIT   BIT1                /* STATE bit 1: R29's designate loop requested */
+#define SUPER110   ((word)KW_SUPER110) /* OCT 140 */
+static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #endif
 
 /* NO.CORES + 1 core sets. */
