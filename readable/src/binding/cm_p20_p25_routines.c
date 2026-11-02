@@ -243,6 +243,16 @@ static const struct basic_entry {
     {KEY(034u, R22 + 3u), r22_after_priochng, true},
     {KEY(034u, REND1A + 1u), rend1a_after_exit, true},
     {KEY(034u, REND2 + 4u), rend2_after_gentran, true},
+    /* Part 6: R22 from REND12, and GOTOV56 */
+    {KEY(034u, RENDISP + 1u), rendisp_after_exit, false},
+    {KEY(034u, RENDISP + 7u), rendisp_optics, false},
+    {KEY(034u, RENDISP + 015u), rendisp_after_phaschng, false},
+    {KEY(034u, RENDISP7), rendisp7, true},
+    {KEY(034u, RENDISP2), rendisp2, false},
+    {KEY(034u, RENDISP2 + 3u), rendisp2_terminate, false},
+    {KEY(034u, RENDISP2 + 4u), rendisp2_proceed, false},
+    {KEY(034u, RENDISP3 + 4u), rendisp3_after_exit, true},
+    {KEY(02u, GOTOV56), gotov56, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -261,7 +271,8 @@ static const struct interpretive_code *const codes[] = {
     &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,  &DE_GR_50_CODE,
     &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE, &GETUM_CODE,
     &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,    &REND6_CODE,
-    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,
+    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,   &REND12_CODE,   &REND14_CODE,
+    &CMPOS_CODE,    &RENDISP_CODE,        &RENDISP7_CODE,  &RENDISP3_CODE, &RENDISP4_CODE,
 };
 
 /* The table of bank that address is in, or none. */

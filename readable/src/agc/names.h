@@ -2955,6 +2955,29 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRMTRACK */
 #define REND10  ((word)K_REND10)
 #define REND10A ((word)K_REND10A)
 #define NEG3    ((word)KW_NEG3)
+/* Part 6, R22 from REND12 (bank 34) and GOTOV56 (fixed-fixed). N49DISP and
+ * TEMPOR1 are named by ADDRESS_OF. */
+#define REND12   ((word)K_REND12)
+#define REND13   ((word)K_REND13)
+#define CSMUPP   ((word)K_CSMUPP)
+#define REND14   ((word)K_REND14)
+#define REND14A  ((word)K_REND14A)
+#define REND15   ((word)K_REND15)
+#define REND16   ((word)K_REND16)
+#define REND17   ((word)K_REND17)
+#define REND18   ((word)K_REND18)
+#define CMPOS    ((word)K_CMPOS)
+#define LMPOS    ((word)K_LMPOS)
+#define RENDISP  ((word)K_RENDISP)
+#define RENDISP7 ((word)K_RENDISP7)
+#define RENDISP2 ((word)K_RENDISP2)
+#define RENDISP3 ((word)K_RENDISP3)
+#define RENDISP4 ((word)K_RENDISP4)
+#define SOURCBIT ((word)KW_SOURCBIT)
+#define BUFBANK  ((word)KW_BUFBANK) /* BBCON RENDISP3 */
+#define V06N49   ((word)KW_V06N49)
+#define PRIO27   ((word)KW_PRIO27)
+static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #endif
 
 /* NO.CORES + 1 core sets. */

@@ -17,7 +17,7 @@
  * of its error. An optics mark is taken in two passes (INCORFLG set on
  * the first), two measurements at right angles to each other. If the
  * first pass's update is larger than RMAX or VMAX, the crew is asked
- * (RENDISP, verb 06 noun 49); else INCORP2 (REND12, the next part) puts
+ * (RENDISP, verb 06 noun 49); else INCORP2 (REND12, r22_update.c) puts
  * it into the state vector.
  *
  * Each call out of the file (PRIOCHNG, GENTRAN) leaves Z at the routine

@@ -44,7 +44,8 @@ struct interpretive_code {
 extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, PROG22A_CODE,
     CALLR52_CODE, S22LSITE_CODE, P22SUBRB_CHECK_CODE, N89ERRX_3_CODE, S22ABDE_CODE, DE_GR_50_CODE,
     R57_CODE, ENDR57_CODE, R61CSM_CODE, BVECTORS_CODE, GETUM_CODE, R22_CODE, REND2_CODE, REND3_CODE,
-    REND4_CODE, REND6_CODE, REND9_CODE, REND10_CODE, REND10A_CODE;
+    REND4_CODE, REND6_CODE, REND9_CODE, REND10_CODE, REND10A_CODE, REND12_CODE, REND14_CODE,
+    CMPOS_CODE, RENDISP_CODE, RENDISP7_CODE, RENDISP3_CODE, RENDISP4_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -67,6 +68,8 @@ bool cm_p20_p25_readable(uint16_t key, bool order_pair);
 #define S22TOFF_AT  03667u /* E7,1667: S22's return, a CADR */
 #define MRKBUF1_AT  03725u /* E7,1725 */
 #define EGRESS_AT   02317u /* E4,1717: the return of R57, BVECTORS and GETUM, a CADR */
+#define MARKDATA_AT 01242u /* the address of the mark data GETUM takes */
+#define MARKDOWN_AT 03674u /* E7,1674: GETUM's copy of the mark data, 7 words */
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -122,7 +125,7 @@ static bool in_written_part(uint16_t key)
     return (bank == 037u && z >= 02261u && z <= 02624u) ||
            (bank == 030u && z >= 02000u && z <= 02311u) ||
            (bank == 023u && z >= 03043u && z <= 03131u) ||
-           (bank == 034u && z >= 02630u && z <= 03123u);
+           (bank == 034u && z >= 02630u && z <= 03334u) || (bank == 02u && z == 02622u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -309,6 +312,32 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
     if (n % 4u != 0u && rnd() % 8u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 2u);
 }
 
+/* GETUM's load of the mark data (VLOAD* 1,1, X1 the complement of
+ * MARKDATA): the operand 1 is in the work area, so ADDRWD is FIXLOC +
+ * MARKDATA, and one of 01772-01777 puts the vector's six words across the
+ * end of the E-bank window (01777). The AGC reads the words past it from
+ * fixed memory, and so does the readable machine; the faithful port's
+ * machine reads the unswitched words 0-4 instead (ai_ea keeps the address in
+ * the erasable image). The test counts apart the states where a pass makes
+ * that load: from GETUM +3, or on into MARKDOWN (written, on either side). */
+static unsigned wraps;
+
+static bool load_wraps(uint16_t key, const apollo_overlay_state *start,
+                       const apollo_overlay_state *fa, const apollo_overlay_state *ra)
+{
+    const uint16_t *w = start->words;
+    unsigned addrwd = (w[FIXLOC_AT] & 077777u) + (w[MARKDATA_AT] & 077777u);
+    size_t n = 7u * sizeof(uint16_t);
+
+    if (addrwd < 01772u || addrwd > 01777u) return false;
+    if (key != 023u * 1024u + 01107u /* GETUM +3 */ &&
+        !memcmp(&fa->words[MARKDOWN_AT], &w[MARKDOWN_AT], n) &&
+        !memcmp(&ra->words[MARKDOWN_AT], &w[MARKDOWN_AT], n))
+        return false;
+    ++wraps;
+    return true;
+}
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs, unsigned *readable_keys)
 {
@@ -342,7 +371,9 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (!written) { /* the faithful routine on both sides, refusals and all */
+            if (written && load_wraps(key, &start, &fa, &ra)) {
+                /* (counted apart) */
+            } else if (!written) { /* the faithful routine on both sides, refusals and all */
                 if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio) ||
                     memcmp(&fhw, &rhw, sizeof fhw))
                     why = "the table does not run the faithful routine";
@@ -388,7 +419,8 @@ static const struct interpretive_code *const codes[] = {
     &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,  &DE_GR_50_CODE,
     &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE, &GETUM_CODE,
     &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,    &REND6_CODE,
-    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,
+    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,   &REND12_CODE,   &REND14_CODE,
+    &CMPOS_CODE,    &RENDISP_CODE,        &RENDISP7_CODE,  &RENDISP3_CODE, &RENDISP4_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -420,9 +452,9 @@ int main(int argc, char **argv)
                      &readable_pairs);
     printf("cm-p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u failures\n",
+           "%u loads across 01777 counted apart, %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p20_p25_basic.count + cm_p20_p25_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, failures);
+           CASES, OTHER_CASES, runs, wraps, failures);
     return failures != 0;
 }
