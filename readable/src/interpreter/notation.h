@@ -63,10 +63,12 @@
 #define ORDER_ACOS       0050u
 #define ORDER_ARCCOS     0050u /* (ACOS's code: one order, under two names) */
 #define ORDER_PDDL       0051u
+#define ORDER_XCHX_2     0052u /* XCHX,2 */
 #define ORDER_PDDL_STAR  0053u /* PDDL* */
 #define ORDER_VSR3       0054u
 #define ORDER_SR2R       0054u /* (VSR3's code too) */
 #define ORDER_MXV        0055u
+#define ORDER_XCHX_1     0056u /* XCHX,1 */
 #define ORDER_MXV_STAR   0057u /* MXV* */
 #define ORDER_DSQ        0060u
 #define ORDER_PDVL       0061u
@@ -126,6 +128,7 @@
 #define ORDER_BHIZ       0146u
 #define ORDER_STADR      0150u
 #define ORDER_DSU        0151u
+#define ORDER_DSU_STAR   0153u /* DSU* */
 #define ORDER_CALL       0152u
 #define ORDER_VSR7       0154u
 #define ORDER_BDSU       0155u
