@@ -46,10 +46,11 @@ struct interpretive_code {
 };
 extern const struct interpretive_code ALMXITA_CODE, VN0611_CODE, VN0655_CODE, VN0637_CODE,
     P32_P72_N75_CODE, P33_P73A_CODE, P33_P73_ALARM_CODE, P33_P73_N75_CODE, DISDVLVC_CODE,
-    DISDVLVC_EXIT_CODE;
+    DISDVLVC_EXIT_CODE, CSI_A_CODE;
 static const struct interpretive_code *const codes[] = {
-    &ALMXITA_CODE,  &VN0611_CODE,        &VN0655_CODE,      &VN0637_CODE,   &P32_P72_N75_CODE,
-    &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE,
+    &ALMXITA_CODE,     &VN0611_CODE,        &VN0655_CODE,        &VN0637_CODE,
+    &P32_P72_N75_CODE, &P33_P73A_CODE,      &P33_P73_ALARM_CODE, &P33_P73_N75_CODE,
+    &DISDVLVC_CODE,    &DISDVLVC_EXIT_CODE, &CSI_A_CODE,
 };
 extern const agc_routine_table lm_p32_p35_basic, lm_p32_p35_interpretive;
 extern const agc_routine_table faithful_lm_p32_p35_basic, faithful_lm_p32_p35_interpretive;
@@ -119,10 +120,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: part 1, bank 35. */
+/* The parts written so far: part 1, bank 35; part 2, bank 34 from CSI/A
+ * to CIRCL. */
 static bool in_written_part(uint16_t key)
 {
-    return key / 1024u == 035u;
+    unsigned bank = key / 1024u, z = 02000u + key % 1024u;
+
+    return bank == 035u || (bank == 034u && z >= 02113u && z < 02376u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)

@@ -160,8 +160,9 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &ALMXITA_CODE,  &VN0611_CODE,        &VN0655_CODE,      &VN0637_CODE,   &P32_P72_N75_CODE,
-    &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE,
+    &ALMXITA_CODE,     &VN0611_CODE,        &VN0655_CODE,        &VN0637_CODE,
+    &P32_P72_N75_CODE, &P33_P73A_CODE,      &P33_P73_ALARM_CODE, &P33_P73_N75_CODE,
+    &DISDVLVC_CODE,    &DISDVLVC_EXIT_CODE, &CSI_A_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */

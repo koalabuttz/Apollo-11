@@ -9,8 +9,9 @@
  * The code, by its banks:
  *   programs.c: P32/P72, P33/P73, AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC
  *   and COMPTGO (bank 35, pp. 621-631 and 650);
- *   the CSI and CDH computations, CSI/A to CDHMVR (bank 34, pp.
- *   632-650), are still the faithful port's.
+ *   csi.c: CSI/A from its start to CIRCL (bank 34, pp. 632-635);
+ *   the rest of the CSI and CDH computations, NTP/2 to CDHMVR (bank 34,
+ *   pp. 635-650), are still the faithful port's.
  * The binding is src/binding/p32_routines.c.
  *
  * Basic code round stretches of interpretive code, which are in the
@@ -79,6 +80,10 @@ void p33_p73_recycle(void);
 void p33_p73_after_proceed(void);
 void p33_p73_n75(void);
 void p33_p73_n75_after_vnpooh(void);
+
+/* ---- csi.c: CSI/A to CIRCL (bank 34) ---- */
+
+extern const struct interpretive_code CSI_A_CODE;
 
 /* ---- programs.c: AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC and COMPTGO
  * (bank 35) ---- */
