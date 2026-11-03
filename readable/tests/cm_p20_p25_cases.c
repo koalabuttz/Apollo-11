@@ -49,7 +49,7 @@ extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, P
     CNTCHK_CODE, WAITONE_CODE, WAITONE_AGAIN_CODE, RANGERD_CODE, RANGERD4_CODE, RANGERD3_CODE,
     LIGHTON_CODE, SHIFTNDX_CODE, INITIALW_CODE, CRS61_1_CODE, ASET_CODE, CDULOOP_CODE, STKTEST_CODE,
     STEP3CK_CODE, MANUEXIT_CODE, R63_CODE, S22_1_CODE, S22SHIFT_CODE, S2231X13_CODE,
-    S22_UNKNOWN_CODE;
+    S22_UNKNOWN_CODE, S22SAVET_CODE, S22NEXT_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -130,13 +130,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
  * (fixed-fixed, part 6); R22's subroutines (bank 27, part 7); CRS61.1
  * and R63 (bank 34, part 8); the start of S22.1 (bank 30, part 9) and
  * its subroutines (bank 31); its first pass for an unknown landmark (bank
- * 30, part 10). */
+ * 30, part 10); its next mark and the incorporation (bank 30, part 11). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 037u && z >= 02261u && z <= 02624u) ||
-           (bank == 030u && z >= 02000u && z <= 02706u) ||
+           (bank == 030u && z >= 02000u && z <= 03103u) ||
            (bank == 031u && z >= 02332u && z <= 02402u) ||
            (bank == 023u && z >= 03043u && z <= 03131u) ||
            (bank == 034u && z >= 02630u && z <= 03711u) || (bank == 02u && z == 02622u) ||
@@ -354,18 +354,24 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
  * end of the E-bank window (01777). The AGC reads the words past it from
  * fixed memory, and so does the readable machine; the faithful port's
  * machine reads the unswitched words 0-4 instead (ai_ea keeps the address in
- * the erasable image). The test counts apart the states where a pass makes
+ * the erasable image). Where MARKDATA is 077 or more, the address is in the
+ * E bank instead (01400 + its low 8 bits), and crosses 01777 the same way. The test counts apart the states where a pass makes
  * that load: from GETUM +3, or on into MARKDOWN (written, on either side). */
 static unsigned wraps;
+
+static unsigned indexed_sum(unsigned written, unsigned x);
 
 static bool load_wraps(uint16_t key, const apollo_overlay_state *start,
                        const apollo_overlay_state *fa, const apollo_overlay_state *ra)
 {
     const uint16_t *w = start->words;
     unsigned addrwd = (w[FIXLOC_AT] & 077777u) + (w[MARKDATA_AT] & 077777u);
+    unsigned sum = indexed_sum(2u, ~w[MARKDATA_AT] & 077777u); /* (LXC,1) */
     size_t n = 7u * sizeof(uint16_t);
+    bool in_work_area = addrwd >= 01772u && addrwd <= 01777u;
+    bool in_e_bank = sum >= 0100u && sum < 04000u && (sum & 0377u) + 5u > 0377u;
 
-    if (addrwd < 01772u || addrwd > 01777u) return false;
+    if (!in_work_area && !in_e_bank) return false;
     if (key != 023u * 1024u + 01107u /* GETUM +3 */ &&
         !memcmp(&fa->words[MARKDOWN_AT], &w[MARKDOWN_AT], n) &&
         !memcmp(&ra->words[MARKDOWN_AT], &w[MARKDOWN_AT], n))
@@ -648,6 +654,8 @@ static const struct interpretive_code *const codes[] = {
     &S22SHIFT_CODE,
     &S2231X13_CODE,
     &S22_UNKNOWN_CODE,
+    &S22SAVET_CODE,
+    &S22NEXT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

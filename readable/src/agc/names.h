@@ -3023,6 +3023,12 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 /* Part 9, the start of S22.1 (bank 30) and its subroutines (bank 31). */
 #define S22_1    ((word)K_S22_1)
 #define S2231X13 ((word)K_S2231X13)
+
+/* Part 11, S22.1's next mark and the incorporation (bank 30). */
+#define S22I_EQ_N ((word)K_S22I_EQ_N)
+#define S22F244X  ((word)K_S22F244X)
+#define S22EXEX   ((word)K_S22EXEX)
+#define V06N49EE  ((word)KW_V06N49EE) /* VN 0649 */
 #endif
 
 /* NO.CORES + 1 core sets. */
