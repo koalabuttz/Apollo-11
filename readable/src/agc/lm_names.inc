@@ -3457,6 +3457,8 @@
 #define I_DIFFALT 003577u
 #define I_R1A 002741u
 #define I_SUBEXIT 003470u
+#define I_ZEROVEC 024006u
+#define I_2PISC 011054u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

@@ -130,6 +130,8 @@ CP30_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p30_cm/*.c)) \
 	src/binding/cm_p30_routines.c
 P32_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p32_p35/*.c)) \
 	src/binding/p32_routines.c
+CP32_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p32_p33_cm/*.c)) \
+	src/binding/cm_p32_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
@@ -144,11 +146,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -156,7 +158,7 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
 	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases \
-	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases
+	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1670,6 +1672,35 @@ p32-cases: $(BUILD)/p32-oracle $(BUILD)/p32-cases
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
 	./$(BUILD)/p32-oracle $(ROPES)
 	./$(BUILD)/p32-cases $(ROPES)
+
+# P32-P33_P72-P73.agc, the CM's CSI and CDH targeting: the port's test
+# (tests/test_cm_p32_p33.c, its frozen cases run to their stops through
+# the program of tests/cm_p32_p33_target.c, against the original program's
+# yaAGC digests) through the readable tables, with tests/with_ropes.c
+# loading the rope the readable interpreter reads; then
+# tests/cm_p32_cases.c side by side with the faithful routines (renamed
+# faithful_), which also run the keys the parts not yet written hold.
+CP32_NAMES := cm_p32_p33_basic cm_p32_p33_interpretive
+CP32_COMMON := $(R63_COMMON)
+
+$(BUILD)/cp32-faithful.o: $(PORT)/src/cm_p32_p33.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(CP32_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
+$(BUILD)/cp32-test.o: $(PORT)/tests/test_cm_p32_p33.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/cp32-oracle: $(CP32_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp32-faithful.o \
+		$(BUILD)/cp32-test.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CP32_COMMON) $(PORT)/tests/cm_p32_p33_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/cp32-cases: $(CP32_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp32-faithful.o \
+		tests/cm_p32_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(CP32_COMMON) $(filter %.o,$^) tests/cm_p32_cases.c -o $@
+
+cm-p32-cases: $(BUILD)/cp32-oracle $(BUILD)/cp32-cases
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/cp32-oracle $(ROPES)
+	./$(BUILD)/cp32-cases $(ROPES)
 
 # SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
 # oracles with each mission's readable tables and the other mission's

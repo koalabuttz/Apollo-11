@@ -3173,6 +3173,28 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V06N37   ((word)KW_V06N37)    /* VN 0637 */
 #endif
 
+#if COMANCHE055
+/* P32-P33_P72-P73.agc (CM): CSI (P32 and P72) and CDH (P33 and P73). Their
+ * erasable words (CENTANG, NN, VERBNOUN) are named by ADDRESS_OF. */
+#define P32      ((word)K_P32)
+#define P72      ((word)K_P72)
+#define P32STRT  ((word)K_P32STRT)
+#define ALMXIT   ((word)K_ALMXIT)
+#define P32_P72A ((word)K_P32_P72A) /* P32/P72A */
+#define P32_P72F ((word)K_P32_P72F) /* P32/P72F */
+#define P33      ((word)K_P33)
+#define P73      ((word)K_P73)
+#define P33_P73A ((word)K_P33_P73A) /* P33/P73A */
+#define P33_P73B ((word)K_P33_P73B) /* P33/P73B */
+#define P33_P73F ((word)K_P33_P73F) /* P33/P73F */
+#define DISDVLVC ((word)K_DISDVLVC)
+#define V06N11   ((word)KW_V06N11) /* VN 0611 */
+#define V06N13   ((word)KW_V06N13) /* VN 0613 */
+#define V06N75   ((word)KW_V06N75) /* VN 0675 */
+#define V06N55   ((word)KW_V06N55) /* VN 0655 */
+#define V06N37   ((word)KW_V06N37) /* VN 0637 */
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 

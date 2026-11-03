@@ -158,11 +158,14 @@ REPLACED = (
 # (--gc-sections drops them).
 # P32-P35_P72-P75 (src/p32_p35): the LM's routine tables, all readable;
 # the faithful ones, renamed, are no longer called (--gc-sections drops
-# them).
+# them). P32-P33_P72-P73 (src/p32_p33_cm): the CM's routine tables, part
+# by part; the binding hands the keys of the parts not yet written to the
+# faithful ones, renamed.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
-           'cm_p20_p25.o': lambda m: ['cm_p20_p25_basic', 'cm_p20_p25_interpretive'] if m == 'cm' else []}
+           'cm_p20_p25.o': lambda m: ['cm_p20_p25_basic', 'cm_p20_p25_interpretive'] if m == 'cm' else [],
+           'cm_p32_p33.o': lambda m: ['cm_p32_p33_basic', 'cm_p32_p33_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
@@ -176,12 +179,13 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # R60CSM). The radar sampling loop (RADSAMP) is the LM's alone, and each
 # mission's P20 has labels the other's has not (the LM's PROG20A, the CM's
 # PIKUP20). Each mission's P30 has labels the other's has not (the LM's
-# P30N33, the CM's P30PHSI). The readable P32 is the LM's
-# (P32STRT).
+# P30N33, the CM's P30PHSI). Each mission's P32 has a P32STRT, the LM's in
+# basic code (p32strt alone), the CM's in interpretive code too
+# (P32STRT_CODE).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
-                          'pikup20', 'p30phsi')}
+                          'pikup20', 'p30phsi', 'P32STRT_CODE')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
