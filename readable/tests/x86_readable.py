@@ -139,6 +139,11 @@ REPLACED = (
     # RADAR_LEADIN_ROUTINES.agc, the LM's radar sampling loop
     # (src/radar_leadin).
     'lm_radar_leadin_routines.o',
+    # P30_P37.agc, the LM's P30 and S30.1 (src/p30): the port's compiled
+    # file and its older module of the same keys, whose tables the readable
+    # binding defines empty.
+    'lm_p30_file.o',
+    'lm_p30_routines.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -164,9 +169,9 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # (GEOIMUTT) is the LM's alone. R60 has each mission's name (R60LEM,
 # R60CSM). The radar sampling loop (RADSAMP) is the LM's alone, and each
 # mission's P20 has labels the other's has not (the LM's PROG20A, the CM's
-# PIKUP20).
+# PIKUP20). P30 is the LM's alone so far (P30N33).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
-                          'radsamp', 'prog20a'),
+                          'radsamp', 'prog20a', 'p30n33'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20')}
 xb.OUT = READABLE / 'build/x86-flight'

@@ -3107,6 +3107,20 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V06N99A  ((word)KW_V06N99A) /* VN 0699 */
 #endif
 
+/* P30_P37.agc (LM) and P30-P37.agc (CM): P30, the external delta-V
+ * targeting program, and S30.1, its computation. VNPOOH, the display
+ * routine P30 calls, is P34-35_P74-75.agc's. */
+#define P30     ((word)K_P30)
+#define PARAM30 ((word)K_PARAM30)
+#define S30_1   ((word)K_S30_1) /* S30.1 */
+#define VNPOOH  ((word)K_VNPOOH)
+#define V06N33  ((word)KW_V06N33) /* VN 0633 */
+#define V06N42  ((word)KW_V06N42) /* VN 0642 */
+#define V06N81  ((word)KW_V06N81) /* VN 0681 */
+#if LUMINARY099
+#define P30N33 ((word)K_P30N33)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
