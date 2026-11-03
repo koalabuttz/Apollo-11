@@ -299,6 +299,9 @@ static const struct basic_entry {
     {KEY(034u, STEP3CK), step3ck, true},
     {KEY(034u, CRS61_2A + 1u), crs61_2a_after_exit, true},
     {KEY(034u, MANUEXIS), manuexis, true},
+    {KEY(030u, S22_1 + 024u), s22_1_after_exit, false},
+    {KEY(030u, S22_1 + 026u), s22_1_after_mkreleas, false},
+    {KEY(030u, S22_1 + 032u), s22_1_after_2phschng, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -360,6 +363,9 @@ static const struct interpretive_code *const codes[] = {
     &STEP3CK_CODE,
     &MANUEXIT_CODE,
     &R63_CODE,
+    &S22_1_CODE,
+    &S22SHIFT_CODE,
+    &S2231X13_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -419,12 +425,14 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
-/* PROG22C's SLOAD* QPRET,2 and GETUM's VLOAD* 1,1 load from the mark data
- * (an index register its address's complement): the faithful port takes
- * those words from erasable memory only, ADDRWD below 02000. */
+/* PROG22C's SLOAD* QPRET,2, GETUM's VLOAD* 1,1 and GETTF's DLOAD* 0,1 load
+ * from the mark data (an index register its address's complement): the
+ * faithful port takes those words from erasable memory only, ADDRWD below
+ * 02000. */
 static bool erasable_only(uint16_t key)
 {
-    return key == KEY(030u, PROG22C) || key == KEY(023u, GETUM + 3u);
+    return key == KEY(030u, PROG22C) || key == KEY(023u, GETUM + 3u) ||
+           key == KEY(031u, S2231X13 + 017u);
 }
 
 static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
