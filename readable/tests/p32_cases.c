@@ -47,11 +47,11 @@ struct interpretive_code {
 };
 extern const struct interpretive_code ALMXITA_CODE, VN0611_CODE, VN0655_CODE, VN0637_CODE,
     P32_P72_N75_CODE, P33_P73A_CODE, P33_P73_ALARM_CODE, P33_P73_N75_CODE, DISDVLVC_CODE,
-    DISDVLVC_EXIT_CODE, CSI_A_CODE, NTP_2_CODE;
+    DISDVLVC_EXIT_CODE, CSI_A_CODE, NTP_2_CODE, ADVANCE_CODE;
 static const struct interpretive_code *const codes[] = {
-    &ALMXITA_CODE,     &VN0611_CODE,        &VN0655_CODE,        &VN0637_CODE,
-    &P32_P72_N75_CODE, &P33_P73A_CODE,      &P33_P73_ALARM_CODE, &P33_P73_N75_CODE,
-    &DISDVLVC_CODE,    &DISDVLVC_EXIT_CODE, &CSI_A_CODE,         &NTP_2_CODE,
+    &ALMXITA_CODE,  &VN0611_CODE,        &VN0655_CODE,      &VN0637_CODE,   &P32_P72_N75_CODE,
+    &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE,
+    &CSI_A_CODE,    &NTP_2_CODE,         &ADVANCE_CODE,
 };
 extern const agc_routine_table lm_p32_p35_basic, lm_p32_p35_interpretive;
 extern const agc_routine_table faithful_lm_p32_p35_basic, faithful_lm_p32_p35_interpretive;
@@ -123,13 +123,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: part 1, bank 35; parts 2 and 3, bank 34
- * from CSI/A to SCNDSOL. */
+/* The file's keys, all written: bank 35, and bank 34 from CSI/A to
+ * CDHMVR. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return bank == 035u || (bank == 034u && z >= 02113u && z < 03016u);
+    return bank == 035u || (bank == 034u && z >= 02113u && z < 03271u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -416,11 +416,19 @@ int main(int argc, char **argv)
     failures += keys(&lm_p32_p35_basic, &faithful_lm_p32_p35_basic, 0, &runs, &readable_basic);
     failures += keys(&lm_p32_p35_interpretive, &faithful_lm_p32_p35_interpretive, 1, &runs,
                      &readable_pairs);
+    /* The file is whole: every key runs a readable routine (the binding
+     * no longer hands any to the faithful tables). */
+    if (readable_basic + readable_pairs != lm_p32_p35_basic.count + lm_p32_p35_interpretive.count) {
+        printf("FAIL: %u keys without a readable routine\n", lm_p32_p35_basic.count +
+                                                                 lm_p32_p35_interpretive.count -
+                                                                 readable_basic - readable_pairs);
+        ++failures;
+    }
     printf("p32-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
+           "pairs) from %u states each, %u run by the faithful routines, "
            "%u store spills refused, %u failures\n",
            words, readable_basic + readable_pairs,
            lm_p32_p35_basic.count + lm_p32_p35_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, spills, failures);
+           CASES, runs, spills, failures);
     return failures != 0;
 }
