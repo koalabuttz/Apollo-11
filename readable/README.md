@@ -394,9 +394,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the W-matrix (VLOAD* W +54D,1 and the two like it) across the end of
    the E-bank window: the AGC, like the readable machine, reads the words
    past 01777 from fixed memory, and the faithful port's machine reads
-   the unswitched words 0-4 instead. (In those states only this is
-   checked: both sides run or both refuse, and a readable refusal leaves
-   everything as it found it.) At the radar's single-axis
+   the unswitched words 0-4 instead. (In those states both sides must run
+   or both refuse, and a readable refusal must leave everything as it
+   found it; where both run, the io and hardware records must be the
+   same, and so must every word but the central and editing registers
+   (0-023), E bank 0's interpreter words (ADDRWD to PUSHLOC, which take
+   the vector) and the work area: 283 states, 186 where both ran.)
+   At the radar's single-axis
    drive and RROUT the states have RRINDEX and ITEMP2, the axis, 0 or 1,
    as those routines set them (the readable code refuses any other axis,
    which would index past the angles and counters), and RRLIMCHK's
@@ -417,12 +421,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the file refuses. S22TOFF and S22TOFF +1, the returns P22's GOTOs take,
    are mostly CADRs in fixed memory, as the STQs leave them (else words
    of the work area that hold one), and EGRESS,
-   Q611, Q6111, POINTEX and the work area's QPRET always are (a CADR in erasable
+   Q611, Q6111, POINTEX, SRRETURN and the work area's QPRET always are (a CADR in erasable
    memory could send the faithful GOTO round a cycle, which it ends by
    exiting); MRKBUF1 is now and then -1, no mark, MPAC +0 or 1, CRS61.1's
    answers, and DTHETASM often a count CDULOOP runs on (+0 to 2, or -0). GETUM's VLOAD* of the mark
    data reads six words from FIXLOC + MARKDATA (or, with MARKDATA 077 or
-   more, from the E bank); where they cross 01777
+   more, from the E bank, and the test now and then puts it at the end
+   of one, E1 to E7); where they cross 01777
    the faithful port's machine reads words 0-4 and the readable one (as
    the AGC) fixed memory, so the test counts those states apart, and
    likewise INITIALW's stores from INITA and INITB, whose X1 and S1 the
@@ -435,11 +440,19 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    any word); in bank 14, LOWMEMRY's (6 times 0 to 38, or -5 to 243). The
    faithful port carries the star catalog only up to CATLOG and zeros
    after it, so a LOWMEMRY load reaching past CATLOG (X1 0 to 4, no
-   star's) is counted apart too. In a state counted apart the words
-   differ, so only this is checked: both sides run or both refuse, and a
-   readable refusal leaves everything as it found it. What the readable
-   machine reads past 01777 (fixed memory, as the AGC) is not checked
-   against anything there.
+   star's) is counted apart too. In a state counted apart both sides
+   must run or both refuse, and a readable refusal must leave everything
+   as it found it; where both run, the io and hardware records must be
+   the same, and so must every word but the central and editing
+   registers (0-023), E bank 0's interpreter words (ADDRWD to PUSHLOC),
+   the work area and at most two runs of six words (the load's or the
+   store's words, where each side put them). What the readable machine
+   reads past 01777 (fixed memory, as the AGC does) is not checked
+   against anything. 11,354 states are counted apart (7,611 of
+   them where both ran), at most 778 of one key's 4,096 (19.0%, at
+   31,2344): in bank 30 the test's any-word X1 puts many of S22's indexed
+   loads and stores across 01777. GETUM +3 and P23.60 +016 must each have at
+   least one state whose load crosses 01777.
    `make p30-cases` runs the faithful port's test of the LM's P30 (its
    1,127 checks against yaAGC digests) through the readable tables, then
    checks the interpretive words against the rope (54), and runs readable
@@ -555,6 +568,20 @@ the side by side tests do not count them, and print how many they met:
 And states the readable binding refuses where the faithful routine runs,
 also not counted: STATEUP with NEWJOB negative, and the fresh start's
 KLEANs returning to one of the file's own return points.
+
+And states both ports refuse where the AGC would run, which the side by
+side tests count as agreeing: in the CM's P20-P25, an indexed load from
+fixed memory (PROG22C's SLOAD* QPRET,2, GETUM's and P23.60's VLOAD* 1,1,
+GETTF's DLOAD* 0,1, 9DWTO6DW's BDSU* EMATRIX +40D,1, ROWDOT1's DLOAD* W,1
+and DMPR* W,2, V67WW's loads and those of S22's loops by X1), where the
+AGC reads the rope and the faithful routine only erasable memory; a
+LOWMEMRY load outside the part of the star catalog the faithful port
+carries; and P23.60's INDEX MARKDATA where the mark data runs past 01777.
+The binding names them (erasable_only(), loads_from_fixed() and
+outside_star_catalog() in `src/binding/cm_p20_p25_routines.c`, and
+`p23_60_after_exit()` in `src/p20_p25_cm/p23_marks.c`). No flight
+program makes such a state: the program's index registers and mark data
+address erasable memory.
 
 ## License
 

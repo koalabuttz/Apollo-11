@@ -34,6 +34,11 @@
  * The binding (src/binding/cm_p20_p25_routines.c) runs every key of the
  * file.
  *
+ * Seven of the listing's constants are in no readable file, because
+ * nothing in Comanche055 refers to them: OCT203 (p. 564), FIRST3 (p. 564,
+ * EQUALS FURST3), OC40200 (p. 587), MAT1B1 (p. 597), and TRUN19A,
+ * VARSUBL3 and OCT00077 (p. 631). No key reaches them.
+ *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
  * the basic code's: each program's start, the words BANKCALL, 2PHSCHNG,

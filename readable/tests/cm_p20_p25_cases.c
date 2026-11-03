@@ -84,6 +84,7 @@ bool cm_p20_p25_readable(uint16_t key, bool order_pair);
 #define Q611_AT     03704u /* E7,1704: CRS61.1's return, a CADR */
 #define Q6111_AT    03705u /* E7,1705: R63's return, a CADR */
 #define POINTEX_AT  01150u /* POINTAXS's return, a CADR */
+#define SRRETURN_AT 03656u /* E7,1656: HORIZ's return, a CADR */
 
 #define CASES 4096u
 
@@ -128,7 +129,7 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: P20, R57, R21, R23 and R61CSM (bank 37,
+/* The parts, which together make the file: P20, R57, R21, R23 and R61CSM (bank 37,
  * parts 1, 3 and 4); P22 up to S22.1 (bank 30, part 2); BVECTORS and
  * GETUM (bank 23, part 4); R22 (bank 34, parts 5 and 6); GOTOV56
  * (fixed-fixed, part 6); R22's subroutines (bank 27, part 7); CRS61.1
@@ -350,6 +351,11 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
      * where the words run into fixed memory. */
     if (key == 031u * 1024u + 00642u && rnd() % 4u == 0u)
         w[MARKSTAT_AT] = (uint16_t)((w[MARKSTAT_AT] & 076000u) | (01770u + rnd() % 8u));
+    /* GETUM +3's and P23.60 +016's VLOAD* 1,1 (LXC,1 MARKDATA): now and
+     * then mark data at the end of an E bank (E1 to E7, its words 0366 to
+     * 0376), where the six words can cross 01777. */
+    if ((key == 023u * 1024u + 01107u || key == 031u * 1024u + 0657u) && rnd() % 4u == 0u)
+        w[MARKDATA_AT] = (uint16_t)(((1u + rnd() % 7u) << 8) | (0366u + rnd() % 011u));
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* S22TOFF and S22TOFF +1, the returns P22's GOTOs take, CADRs in fixed
@@ -371,12 +377,13 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
      * STQs leave it. (One in erasable memory could send the faithful GOTO
      * round a cycle of CADRs, which it ends by exiting.) */
     w[EGRESS_AT] = fixed_cadr(w[EGRESS_AT]);
-    /* Q611, Q6111 and POINTEX too, the returns of CRS61.1, R63 and
-     * POINTAXS, and the work area's QPRET (052), which their STQs copy
-     * there. */
+    /* Q611, Q6111, POINTEX and SRRETURN too, the returns of CRS61.1, R63,
+     * POINTAXS and HORIZ, and the work area's QPRET (052), which their
+     * STQs copy there. */
     w[Q611_AT] = fixed_cadr(w[Q611_AT]);
     w[Q6111_AT] = fixed_cadr(w[Q6111_AT]);
     w[POINTEX_AT] = fixed_cadr(w[POINTEX_AT]);
+    w[SRRETURN_AT] = fixed_cadr(w[SRRETURN_AT]);
     w[(fixloc + QPRET_AT) & 03777u] = fixed_cadr(w[(fixloc + QPRET_AT) & 03777u]);
     /* Often DTHETASM (01611 in the E-bank) a count CDULOOP runs on: +0 to
      * 2, or -0. */
@@ -405,9 +412,10 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
  * fixed memory, and so does the readable machine; the faithful port's
  * machine reads the unswitched words 0-4 instead (ai_ea keeps the address in
  * the erasable image). Where MARKDATA is 077 or more, the address is in the
- * E bank instead (01400 + its low 8 bits), and crosses 01777 the same way. The test counts apart the states where a pass makes
- * that load: from GETUM +3 or P23.60 +016 (LXC,1 MARKDATA, VLOAD* 1,1 too),
- * or on into MARKDOWN (written, on either side). */
+ * E bank instead (01400 + its low 8 bits), and crosses 01777 the same
+ * way. The test counts apart the states where a pass makes that load:
+ * from GETUM +3 or P23.60 +016 (LXC,1 MARKDATA, VLOAD* 1,1 too), or on
+ * into MARKDOWN (written, on either side). */
 static unsigned wraps;
 
 static unsigned indexed_sum(unsigned written, unsigned x);
@@ -505,10 +513,10 @@ static bool catalog_end(unsigned sum)
  * S22UMRL +18D,1, W +36D,1 to W +162D,1 and S22UUT +18D,1; part 12's
  * CLRW678, which clears W6-W8 from W +162D,1 down; and part 13's
  * 9DWTO6DW (STORE EMATRIX +40D,1 and W,1, CLEARW54's and 9DWEXXXA's
- * clears, BDSU* EMATRIX +40D,1) and ROWDOT1's DLOAD* W,1 and DMPR* W,2. An indexed load's
- * address (the operand plus the register's complement, end around) below
- * 0100 is in the work area (FIXLOC on), one below 04000 in
- * the E bank it names (01400 + its low 8 bits on). An indexed store's
+ * clears, BDSU* EMATRIX +40D,1) and ROWDOT1's DLOAD* W,1 and DMPR* W,2.
+ * An indexed load's address (the operand plus the register's complement,
+ * end around) below 0100 is in the work area (FIXLOC on), one below 04000
+ * in the E bank it names (01400 + its low 8 bits on). An indexed store's
  * below 45 is in the work area, a negative one below FIXLOC (as far as
  * the registers), and any other in the E bank its bits 8-10 name
  * (PRESTORE, STORE). Where a load's or a store's words cross 01777 the
@@ -615,6 +623,38 @@ static bool s22_wraps(uint16_t key, const apollo_overlay_state *start)
     return here;
 }
 
+/* In a state counted apart where both sides ran, the words that may
+ * differ: the central and editing registers (0-023), where the faithful
+ * port's machine wraps the words past 01777; E bank 0's interpreter
+ * words, ADDRWD to PUSHLOC (0116-0166), which the faithful port keeps
+ * apart during a pass and a store over the registers can land on; the
+ * work area; and anywhere else at most two runs of at most six words
+ * each: the words of the one load or store that crossed (or GETUM's copy
+ * of them in MARKDOWN), where each side put them (a store at the end of
+ * an E bank goes on into the next bank's words on the faithful side).
+ * Every other word must be the same on both sides. */
+#define APART_RUN 6u
+
+static bool apart_words_differ(const apollo_overlay_state *start, const apollo_overlay_state *fa,
+                               const apollo_overlay_state *ra)
+{
+    unsigned w, fixloc = start->words[FIXLOC_AT], runs = 0, first = 0;
+
+    for (w = 0; w < APOLLO_SHARED_WORDS; ++w) {
+        if (fa->words[w] == ra->words[w] || w <= 023u || (w >= 0116u && w <= PUSHLOC_AT) ||
+            (w >= fixloc && w < fixloc + 054u))
+            continue;
+        if (runs == 0u || w - first >= APART_RUN) {
+            first = w; /* a run starts */
+            if (++runs > 2u) return true;
+        }
+    }
+    return false;
+}
+
+/* The most states counted apart at one key, and the key. */
+static unsigned apart_most, apart_most_key, both_ran_apart, getum_apart;
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs, unsigned *readable_keys)
 {
@@ -623,7 +663,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
         bool written = cm_p20_p25_readable(key, interpretive != 0);
-        unsigned ran = 0, bad = 0;
+        unsigned ran = 0, bad = 0, apart = wraps;
 
         *readable_keys += written;
         for (n = 0; n < CASES; ++n) {
@@ -651,14 +691,23 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             if (written && (load_wraps(key, &start, &fa, &ra) || store_wraps(key, &start) ||
                             s22_wraps(key, &start))) {
                 /* Counted apart: the words read or written differ, but
-                 * both sides must run or both refuse, and a readable
-                 * refusal must leave everything as it found it. */
+                 * both sides must run or both refuse; a readable refusal
+                 * must leave everything as it found it; and where both
+                 * run, the io and hardware records must be the same, and
+                 * every word but those apart_words_differ() allows. */
                 if (sf != sr)
                     why = "counted apart, but only one side ran";
                 else if (sr != EXEC_OK &&
                          (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
                           memcmp(&rhw, &hardware, sizeof rhw)))
                     why = "readable refusal changed the state";
+                else if (sr == EXEC_OK) {
+                    ++both_ran_apart;
+                    if (memcmp(&fio, &rio, sizeof fio) || memcmp(&fhw, &rhw, sizeof fhw))
+                        why = "counted apart, different io record";
+                    else if (apart_words_differ(&start, &fa, &ra))
+                        why = "counted apart, words beyond the load or store differ";
+                }
             } else if (!written) { /* the faithful routine on both sides, refusals and all */
                 if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio) ||
                     memcmp(&fhw, &rhw, sizeof fhw))
@@ -693,6 +742,17 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                    "16)\n",
                    key / 1024u, z, ran, CASES);
             ++bad;
+        }
+        /* The mark data the test puts at the end of an E bank must make
+         * GETUM's and P23.60's load cross 01777 in some states. */
+        if (key == 023u * 1024u + 01107u) getum_apart = wraps - apart;
+        if ((key == 023u * 1024u + 01107u || key == 031u * 1024u + 0657u) && wraps == apart) {
+            printf("FAIL %02o,%04o: no state crosses 01777\n", key / 1024u, z);
+            ++bad;
+        }
+        if (wraps - apart > apart_most) {
+            apart_most = wraps - apart;
+            apart_most_key = key;
         }
         *runs += ran;
         failures += bad;
@@ -829,9 +889,11 @@ int main(int argc, char **argv)
     printf("cm-p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each, %u run by the faithful routines, "
            "%u loads and stores across 01777 (or over the registers) counted "
-           "apart, %u failures\n",
+           "apart (%u where both ran, compared outside the words they move; at most %u at one "
+           "key, %02o,%04o; %u at GETUM +3), %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p20_p25_basic.count + cm_p20_p25_interpretive.count, readable_basic, readable_pairs,
-           CASES, runs, wraps, failures);
+           CASES, runs, wraps, both_ran_apart, apart_most, apart_most_key / 1024u,
+           key_z((uint16_t)apart_most_key), getum_apart, failures);
     return failures != 0;
 }
