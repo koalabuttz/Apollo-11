@@ -3246,6 +3246,9 @@
 #define I_STARIND 002757u
 #define I_STARCODE 000735u
 #define I_BESTI 002755u
+#define I_MAYO 001713u
+#define I_AXO 001715u
+#define I_GETERAD 026466u
 #define I_LOADTIME 021573u
 #define I_ORBWFLAG 000066u
 #define I_X2 000047u

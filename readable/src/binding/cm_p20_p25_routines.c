@@ -477,6 +477,9 @@ static const struct interpretive_code *const codes[] = {
     &R23_55_CODE,
     &R23_55_TRUNNION_CODE,
     &R23_8_CODE,
+    &HORIZ_CODE,
+    &DIVIDE_CODE,
+    &RECT_1_CODE,
 };
 
 /* The table of bank that address is in, or none. */
