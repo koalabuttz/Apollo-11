@@ -4,10 +4,11 @@
 whose bindings take them from here: P20-P25, each mission's
 (c64-port/src/<m>_p20_p25.c: <m>_p20_p25_basic and
 <m>_p20_p25_interpretive), as src/binding/p20_p25_keys.inc (the LM's) and
-src/binding/cm_p20_p25_keys.inc (the CM's); and the CM's P30-P37
-(c64-port/src/cm_p30_p37.c) as src/binding/cm_p30_keys.inc. For the
-readable bindings (src/binding/p20_p25_routines.c, cm_p20_p25_routines.c
-and cm_p30_routines.c).
+src/binding/cm_p20_p25_keys.inc (the CM's); the CM's P30-P37
+(c64-port/src/cm_p30_p37.c) as src/binding/cm_p30_keys.inc; and the LM's
+P32-P35_P72-P75 (c64-port/src/lm_p32_p35.c) as src/binding/p32_keys.inc.
+For the readable bindings (src/binding/p20_p25_routines.c,
+cm_p20_p25_routines.c, cm_p30_routines.c and p32_routines.c).
 
 A binding must define the faithful tables' names with the same keys in the
 same order, so it takes them from here: one line per key, BASIC(index,
@@ -25,7 +26,8 @@ READABLE = Path(__file__).resolve().parents[1]
 # Each faithful file (and its tables' prefix), and the file of its keys.
 FILES = (('lm_p20_p25', READABLE / 'src/binding/p20_p25_keys.inc'),
          ('cm_p20_p25', READABLE / 'src/binding/cm_p20_p25_keys.inc'),
-         ('cm_p30_p37', READABLE / 'src/binding/cm_p30_keys.inc'))
+         ('cm_p30_p37', READABLE / 'src/binding/cm_p30_keys.inc'),
+         ('lm_p32_p35', READABLE / 'src/binding/p32_keys.inc'))
 
 
 def generate(m):

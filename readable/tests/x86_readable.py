@@ -156,8 +156,11 @@ REPLACED = (
 # P20-P25 (src/p20_p25, src/p20_p25_cm): each mission's routine tables,
 # all readable; the faithful ones, renamed, are no longer called
 # (--gc-sections drops them).
+# P32-P35_P72-P75 (src/p32_p35): the LM's, readable part by part; its
+# binding hands the keys not yet written to the faithful tables, renamed.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
+           'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
            'cm_p20_p25.o': lambda m: ['cm_p20_p25_basic', 'cm_p20_p25_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
@@ -172,9 +175,10 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # R60CSM). The radar sampling loop (RADSAMP) is the LM's alone, and each
 # mission's P20 has labels the other's has not (the LM's PROG20A, the CM's
 # PIKUP20). Each mission's P30 has labels the other's has not (the LM's
-# P30N33, the CM's P30PHSI).
+# P30N33, the CM's P30PHSI). The readable P32 so far is the LM's
+# (P32STRT).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
-                          'radsamp', 'prog20a', 'p30n33'),
+                          'radsamp', 'prog20a', 'p30n33', 'p32strt'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi')}
 xb.OUT = READABLE / 'build/x86-flight'
