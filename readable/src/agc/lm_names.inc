@@ -3235,6 +3235,8 @@
 #define I_ALT 001124u
 #define I_LANDALT 002712u
 #define I_LONG 001122u
+#define I_SETRE 026560u
+#define I_ERADM 003672u
 #define I_LOADTIME 021573u
 #define I_ORBWFLAG 000066u
 #define I_X2 000047u

@@ -366,6 +366,7 @@ static const struct interpretive_code *const codes[] = {
     &S22_1_CODE,
     &S22SHIFT_CODE,
     &S2231X13_CODE,
+    &S22_UNKNOWN_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -435,6 +436,43 @@ static bool erasable_only(uint16_t key)
            key == KEY(031u, S2231X13 + 017u);
 }
 
+/* S22's loops by X1 load the same way (S22NXTU's, S22NXXA's and S22NXXB's
+ * VLOAD* S22UMRL +18D,1, S22NXTWI's VLOAD* W +36D,1, S22NXXB's VAD* S22UUT
+ * +18D,1), but other operands follow in their passes, so the binding works
+ * the address out before the pass: the address word, less one, less X1
+ * (ones' complement: end around, or where X1 is negative, overflow
+ * corrected as ADS leaves ADDRWD), is in fixed memory where any of its top
+ * four bits is set (INDEX2's MASK HIGH4). */
+struct indexed_load {
+    uint16_t key;
+    word address_word;
+};
+
+static const struct indexed_load loads_by_x1[] = {
+    {KEY(030u, S22_1 + 0213u), 03524u}, /* S22UMRL +18D,1 */
+    {KEY(030u, S22_1 + 0224u), 02445u}, /* W +36D,1 */
+    {KEY(030u, S22_1 + 0250u), 03524u}, {KEY(030u, S22_1 + 0275u), 03524u},
+    {KEY(030u, S22_1 + 0300u), 01301u}, /* S22UUT +18D,1 */
+};
+
+static bool loads_from_fixed(uint16_t key)
+{
+    unsigned i, sum;
+    word x1;
+
+    for (i = 0; i < COUNT(loads_by_x1); ++i) {
+        if (loads_by_x1[i].key != key) continue;
+        x1 = agc.memory[(FIXLOC + ADDRESS_OF(X1)) & 03777u];
+        sum = loads_by_x1[i].address_word - 1u + (~x1 & 077777u);
+        if (sum > 077777u)
+            sum = (sum + 1u) & 077777u; /* end around */
+        else if ((x1 & 040000u) && (sum & 040000u))
+            sum &= 037777u; /* overflow corrected */
+        return (sum & 074000u) != 0u;
+    }
+    return false;
+}
+
 static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
@@ -452,6 +490,8 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     if (Z != NEWOPS || !in_bank(bank) || !code || BANKSET != BBANK ||
         INTBIT15 != (FBANK & 040000u) || !sane(true))
         return EXEC_OUT_OF_SCOPE;
+
+    if (loads_from_fixed(key)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;

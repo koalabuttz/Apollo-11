@@ -277,6 +277,10 @@ void s22_1_after_exit(void);
 void s22_1_after_mkreleas(void);
 void s22_1_after_2phschng(void);
 
+/* ---- Part 10: S22.1's first pass for an unknown landmark (s22_landmark.c) ---- */
+
+extern const struct interpretive_code S22_UNKNOWN_CODE;
+
 #endif
 
 #endif
