@@ -442,7 +442,7 @@ static bool faithful_spills(uint16_t key, const apollo_overlay_state *start)
  * the readable machine; the faithful port's machine reads the unswitched
  * words 0-4 instead (ai_ea keeps the address in the erasable image). The
  * test counts those states apart. */
-static unsigned wraps;
+static unsigned wraps, both_ran_apart;
 
 static bool load_wraps(uint16_t key, const apollo_overlay_state *start)
 {
@@ -466,6 +466,24 @@ static bool load_wraps(uint16_t key, const apollo_overlay_state *start)
     if ((addrwd & 0377u) + 5u <= 0377u) return false;
     ++wraps;
     return true;
+}
+
+/* In a state counted apart where both sides ran, the words that may
+ * differ: the central and editing registers (0-023), where the faithful
+ * port's machine wraps the words past 01777; E bank 0's interpreter
+ * words, ADDRWD to PUSHLOC (0116-0166), which take the loaded vector; and
+ * the work area. A load moves no other word, so every other word must be
+ * the same on both sides. */
+static bool apart_words_differ(const apollo_overlay_state *start, const apollo_overlay_state *fa,
+                               const apollo_overlay_state *ra)
+{
+    unsigned w, fixloc = start->words[FIXLOC_AT];
+
+    for (w = 0; w < APOLLO_SHARED_WORDS; ++w)
+        if (fa->words[w] != ra->words[w] && w > 023u && (w < 0116u || w > PUSHLOC_AT) &&
+            (w < fixloc || w >= fixloc + 054u))
+            return true;
+    return false;
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
@@ -517,13 +535,22 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             ran += sf == EXEC_OK;
             if (written && interpretive && load_wraps(key, &start)) {
                 /* Counted apart: the words read differ, but both sides
-                 * must run or both refuse, and a readable refusal must
-                 * leave everything as it found it. */
+                 * must run or both refuse; a readable refusal must leave
+                 * everything as it found it; and where both run, the io
+                 * and hardware records must be the same, and every word
+                 * but those apart_words_differ() allows. */
                 if (sf != sr)
                     why = "counted apart, but only one side ran";
                 else if (sr != EXEC_OK &&
                          (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                     why = "readable refusal changed the state";
+                else if (sr == EXEC_OK) {
+                    ++both_ran_apart;
+                    if (memcmp(&fio, &rio, sizeof fio) || memcmp(&fhw, &rhw, sizeof fhw))
+                        why = "counted apart, different io record";
+                    else if (apart_words_differ(&start, &fa, &ra))
+                        why = "counted apart, a word beyond the registers differs";
+                }
             } else if (!written) { /* the faithful routine on both sides, refusals and all */
                 if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))
                     why = "the table does not run the faithful routine";
@@ -653,9 +680,10 @@ int main(int argc, char **argv)
     printf("p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each, %u run by the faithful routines "
            "(%u of them a store past the E-bank window the readable binding refuses), "
-           "%u loads across the window's end counted apart, %u failures\n",
+           "%u loads across the window's end counted apart (%u where both ran, compared "
+           "outside the registers), %u failures\n",
            words, readable_basic + readable_pairs,
            lm_p20_p25_basic.count + lm_p20_p25_interpretive.count, readable_basic, readable_pairs,
-           CASES, runs, spills, wraps, failures);
+           CASES, runs, spills, wraps, both_ran_apart, failures);
     return failures != 0;
 }
