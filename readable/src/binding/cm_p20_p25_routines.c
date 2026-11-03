@@ -319,6 +319,21 @@ static const struct basic_entry {
     {KEY(030u, S22_981X), s22_981x, true},
     {KEY(030u, S22EXEX), s22exex, true},
     {KEY(030u, S22GTP + 4u), s22gtp_after_exit, false},
+    {KEY(034u, V89CALL), v89call, false},
+    {KEY(034u, V89CALL + 2u), v89call_after_r02both, false},
+    {KEY(034u, V89CALL + 011u), v89_choose_terminate, false},
+    {KEY(034u, V89CALL + 012u), v89_choose_proceed, false},
+    {KEY(034u, V89CALL + 013u), v89_choose_data_in, false},
+    {KEY(034u, V89CALL + 014u), v89_choice, false},
+    {KEY(034u, V89RECL), v89recl, true},
+    {KEY(034u, V89RECL + 7u), v89recl_after_exit, false},
+    {KEY(034u, V89RECL + 012u), v89recl_terminate, false},
+    {KEY(034u, V89RECL + 013u), v89recl_proceed, true},
+    {KEY(034u, V89RECL + 014u), v89recl_recycle, true},
+    {KEY(034u, V89RECL + 015u), v89_maneuver, false},
+    {KEY(034u, V89RECL + 017u), v89_after_downflag, false},
+    {KEY(034u, V89RECL + 021u), v89_after_r60csm, false},
+    {KEY(034u, SETPAF + 2u), setpaf_after_upflag, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -395,6 +410,7 @@ static const struct interpretive_code *const codes[] = {
     &S22F2410_CODE,
     &NINE_DWTO6DW_CODE,
     &ROWDOT_CODE,
+    &V89RECL_CODE,
 };
 
 /* The table of bank that address is in, or none. */

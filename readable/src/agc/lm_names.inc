@@ -1497,6 +1497,7 @@
 #define K_DSEXIT 00114u
 #define K_DSREL 00141u
 #define K_DSMAG 00142u
+#define K_OPTION1 01144u
 #define K_WDRET 00115u
 #define K_DSPWDRET 00144u
 #define K_WDCNT 00137u

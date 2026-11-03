@@ -320,6 +320,26 @@ void s22gtp_after_exit(void);
 extern const struct interpretive_code NINE_DWTO6DW_CODE;
 extern const struct interpretive_code ROWDOT_CODE;
 
+/* ---- Part 14: V89, the CSM pointed at the LM (v89.c) ---- */
+
+extern const struct interpretive_code V89RECL_CODE;
+
+void v89call(void);
+void v89call_after_r02both(void);
+void v89_choose_terminate(void);
+void v89_choose_proceed(void);
+void v89_choose_data_in(void);
+void v89_choice(void);
+void v89recl(void);
+void v89recl_after_exit(void);
+void v89recl_terminate(void);
+void v89recl_proceed(void);
+void v89recl_recycle(void);
+void v89_maneuver(void);
+void v89_after_downflag(void);
+void v89_after_r60csm(void);
+void setpaf_after_upflag(void);
+
 #endif
 
 #endif

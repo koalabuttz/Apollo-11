@@ -3037,6 +3037,14 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 /* Part 13, the W matrix from nine dimensions to six (bank 30). */
 #define NINE_DWTO6DW ((word)K_9DWTO6DW) /* 9DWTO6DW */
 #define ROWDOT       ((word)K_ROWDOT)
+
+/* Part 14, V89 (bank 34). Its erasable words are named by ADDRESS_OF:
+ * OPTION1 (+1 the axis chosen). */
+#define V89CALL ((word)K_V89CALL)
+#define V89RECL ((word)K_V89RECL)
+#define SETPAF  ((word)K_SETPAF)
+#define VB04N06 ((word)KW_VB04N06) /* VN 0406 */
+#define VB06N18 ((word)KW_VB06N18) /* VN 0618 */
 #endif
 
 /* NO.CORES + 1 core sets. */
