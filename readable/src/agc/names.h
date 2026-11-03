@@ -3045,6 +3045,34 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define SETPAF  ((word)K_SETPAF)
 #define VB04N06 ((word)KW_VB04N06) /* VN 0406 */
 #define VB06N18 ((word)KW_VB06N18) /* VN 0618 */
+
+/* Part 15, P23's start (bank 31). Its erasable words are named by
+ * ADDRESS_OF: LANDMARK, HORIZON and STARCODE (the noun 70 entries),
+ * PHSPRDT2, TEMPFLSH. */
+#define P23        ((word)K_P23)
+#define P23_00     ((word)K_P23_00)
+#define P23_06     ((word)K_P23_06)
+#define P23_15     ((word)K_P23_15)
+#define P23_151    ((word)K_P23_151)
+#define P23_152    ((word)K_P23_152)
+#define P23_16     ((word)K_P23_16)
+#define P23_17     ((word)K_P23_17)
+#define P23_176    ((word)K_P23_176)
+#define P23_18     ((word)K_P23_18)
+#define P23_20     ((word)K_P23_20)
+#define P23_30     ((word)K_P23_30)
+#define P23_55     ((word)K_P23_55)
+#define V94ENTER   ((word)K_V94ENTER)
+#define R60CALL    ((word)K_R60CALL)
+#define R23_10     ((word)K_R23_10)
+#define V05N70     ((word)KW_V05N70)  /* VN 0570 */
+#define V50N25P    ((word)KW_V50N25P) /* OCT 00202 */
+#define R60ADRS    ((word)KW_R60ADRS) /* CADR R60CALL +3 */
+#define PRIO13     ((word)KW_PRIO13)
+#define NEG100     ((word)KW_NEG100)  /* OCT 77677 */
+#define NEG37      ((word)KW_NEG37)   /* DEC -37 B-14 */
+#define BITS7_9    ((word)KW_BITS7_9) /* BITS7-9: OCT 700 */
+#define BITS4_TO_6 ((word)KW_BITS4TO6) /* BITS4-6: OCT 70 */
 #endif
 
 /* NO.CORES + 1 core sets. */
