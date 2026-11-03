@@ -340,6 +340,51 @@ void v89_after_downflag(void);
 void v89_after_r60csm(void);
 void setpaf_after_upflag(void);
 
+/* ---- Part 15: P23's start (p23.c) ---- */
+
+extern const struct interpretive_code P23_CODE;
+extern const struct interpretive_code P23_00_CODE;
+extern const struct interpretive_code P23_17_CODE;
+extern const struct interpretive_code P23_20_CODE;
+extern const struct interpretive_code P23_30_CODE;
+extern const struct interpretive_code P23_55_CODE;
+extern const struct interpretive_code V94ENTER_CODE;
+extern const struct interpretive_code R60CALL_CODE;
+
+void p23(void);
+void p23_after_downflag(void);
+void p23_after_2phschng(void);
+void p23_00(void);
+void p23_06(void);
+void p23_06_terminate(void);
+void p23_06_proceed(void);
+void p23_06_redisplay(void);
+void p23_15(void);
+void p23_15_landmark(void);
+void p23_151(void);
+void p23_152_moon(void);
+void p23_152_after_upflag(void);
+void p23_starcode(void);
+void p23_17(void);
+void p23_176(void);
+void p23_176_far(void);
+void p23_176_after_upflag(void);
+void p23_18(void);
+void p23_18_after_downflag(void);
+void p23_20(void);
+void p23_30(void);
+void p23_31_after_exit(void);
+void p23_30_terminate(void);
+void p23_30_proceed(void);
+void p23_55(void);
+void v94enter(void);
+void v94enter_after_exit(void);
+void v94enter_after_downflag(void);
+void r60call(void);
+void r60call_after_r60csm(void);
+void r60call_after_phaschng(void);
+void r23_10_after_falton(void);
+
 #endif
 
 #endif
