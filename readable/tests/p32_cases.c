@@ -34,6 +34,7 @@
 #include "rope_image.h"
 #include "interp_case.h"
 #include "lm_p32_p35_vectors.h"
+#include "lm_interp_orders.h"
 
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -46,11 +47,11 @@ struct interpretive_code {
 };
 extern const struct interpretive_code ALMXITA_CODE, VN0611_CODE, VN0655_CODE, VN0637_CODE,
     P32_P72_N75_CODE, P33_P73A_CODE, P33_P73_ALARM_CODE, P33_P73_N75_CODE, DISDVLVC_CODE,
-    DISDVLVC_EXIT_CODE, CSI_A_CODE;
+    DISDVLVC_EXIT_CODE, CSI_A_CODE, NTP_2_CODE;
 static const struct interpretive_code *const codes[] = {
     &ALMXITA_CODE,     &VN0611_CODE,        &VN0655_CODE,        &VN0637_CODE,
     &P32_P72_N75_CODE, &P33_P73A_CODE,      &P33_P73_ALARM_CODE, &P33_P73_N75_CODE,
-    &DISDVLVC_CODE,    &DISDVLVC_EXIT_CODE, &CSI_A_CODE,
+    &DISDVLVC_CODE,    &DISDVLVC_EXIT_CODE, &CSI_A_CODE,         &NTP_2_CODE,
 };
 extern const agc_routine_table lm_p32_p35_basic, lm_p32_p35_interpretive;
 extern const agc_routine_table faithful_lm_p32_p35_basic, faithful_lm_p32_p35_interpretive;
@@ -74,7 +75,9 @@ bool lm_p32_p35_readable(uint16_t key, bool order_pair);
 #define NORMEX_AT   03463u /* E7,1463: DISDVLVC's return, a CADR */
 #define RTRN_AT     01465u /* COMPTGO's return, in the E bank */
 #define SUBEXIT_AT  01470u /* AVFLAGA's, AVFLAGP's and P20FLGON's return, in the E bank */
-#define ALMXIT_X1   (035u * 1024u + 042u) /* 35,2042: ALMXIT's SLOAD* ALARM/TB -1,1 */
+#define ALMXIT_X1   (035u * 1024u + 042u)  /* 35,2042: ALMXIT's SLOAD* ALARM/TB -1,1 */
+#define PMINE_X1_A  (034u * 1024u + 0744u) /* 34,2744 and 34,2752: CSI/SOL's DSU* PMINE -2,1 */
+#define PMINE_X1_B  (034u * 1024u + 0752u)
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -120,13 +123,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: part 1, bank 35; part 2, bank 34 from CSI/A
- * to CIRCL. */
+/* The parts written so far: part 1, bank 35; parts 2 and 3, bank 34
+ * from CSI/A to SCNDSOL. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return bank == 035u || (bank == 034u && z >= 02113u && z < 02376u);
+    return bank == 035u || (bank == 034u && z >= 02113u && z < 03016u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -272,6 +275,18 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
             w[(fixloc + X1_AT) & 03777u] = (uint16_t)(k < 11u ? 077777u - (k + 1u) : k - 11u);
         }
     }
+    /* At CSI/SOL's indexed loads, often X1 -2 or -10 (RTX1 at the Earth
+     * or the Moon), the loads from PMINE and PMINM, and now and then -12
+     * to +2, round them. */
+    if (key == PMINE_X1_A || key == PMINE_X1_B) {
+        k = rnd() % 4u;
+        if (k < 2u)
+            w[(fixloc + X1_AT) & 03777u] = rnd() % 2u ? 077775u : 077765u;
+        else if (k == 2u) {
+            k = rnd() % 15u;
+            w[(fixloc + X1_AT) & 03777u] = (uint16_t)(k < 12u ? 077777u - (k + 1u) : k - 12u);
+        }
+    }
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* NORMEX, DISDVLVC's return, which its GOTO takes, and the work
      * area's QPRET, which RVQ takes: CADRs in fixed memory as the STQs
@@ -292,6 +307,23 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
     /* The interrupt latch either way now and then. */
     if (n % 4u != 0u && rnd() % 8u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 2u);
+}
+
+/* A pass that starts at a store code (34,2405, STORE TCDH) and would
+ * store past the end of the E-bank window: the AGC writes into fixed
+ * memory and reads it back into A and L, which the readable machine does
+ * not model, so the binding refuses it, as the faithful port's other
+ * interpretive routines do (lmi_store_spills); the faithful 34,2405 runs
+ * it. */
+static unsigned spills;
+
+static bool faithful_spills(uint16_t key, const apollo_overlay_state *start)
+{
+    agc_word w = 0;
+    bool spill = apollo_rope_read(0, key, &w) && !(w & 040000u) && lmi_store_spills(start, w);
+
+    spills += spill;
+    return spill;
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
@@ -326,7 +358,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                        (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
-                why = "readable refused, faithful ran";
+                why = faithful_spills(key, &start) ? 0 : "readable refused, faithful ran";
             else if (sf != EXEC_OK && sr == EXEC_OK)
                 why = "readable ran, faithful refused";
             else if (sf == EXEC_OK && memcmp(&fa, &ra, sizeof fa))
@@ -386,9 +418,9 @@ int main(int argc, char **argv)
                      &readable_pairs);
     printf("p32-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u failures\n",
+           "%u store spills refused, %u failures\n",
            words, readable_basic + readable_pairs,
            lm_p32_p35_basic.count + lm_p32_p35_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, failures);
+           CASES, OTHER_CASES, runs, spills, failures);
     return failures != 0;
 }
