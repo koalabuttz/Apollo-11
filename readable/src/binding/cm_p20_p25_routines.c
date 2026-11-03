@@ -302,6 +302,15 @@ static const struct basic_entry {
     {KEY(030u, S22_1 + 024u), s22_1_after_exit, false},
     {KEY(030u, S22_1 + 026u), s22_1_after_mkreleas, false},
     {KEY(030u, S22_1 + 032u), s22_1_after_2phschng, true},
+    {KEY(030u, S22I_EQ_N + 1u), s22i_eq_n_after_exit, false},
+    {KEY(030u, S22I_EQ_N + 3u), s22i_eq_n_after_phaschng, true},
+    {KEY(030u, S22I_EQ_N + 017u), s22i_eq_n_next_mark, true},
+    {KEY(030u, S22_1 + 0560u), s22_display_after_exit, false},
+    {KEY(030u, S22_1 + 0563u), s22_display_terminate, false},
+    {KEY(030u, S22_1 + 0564u), s22_display_proceed, true},
+    {KEY(030u, S22_1 + 0565u), s22_display_enter, true},
+    {KEY(030u, S22_1 + 0566u), s22_display_immediate_return, false},
+    {KEY(030u, S22_1 + 0570u), s22_display_after_blanket, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -367,6 +376,8 @@ static const struct interpretive_code *const codes[] = {
     &S22SHIFT_CODE,
     &S2231X13_CODE,
     &S22_UNKNOWN_CODE,
+    &S22SAVET_CODE,
+    &S22NEXT_CODE,
 };
 
 /* The table of bank that address is in, or none. */

@@ -281,6 +281,21 @@ void s22_1_after_2phschng(void);
 
 extern const struct interpretive_code S22_UNKNOWN_CODE;
 
+/* ---- Part 11: S22.1's next mark, and the incorporation (s22_incorporate.c) ---- */
+
+extern const struct interpretive_code S22SAVET_CODE;
+extern const struct interpretive_code S22NEXT_CODE;
+
+void s22i_eq_n_after_exit(void);
+void s22i_eq_n_after_phaschng(void);
+void s22i_eq_n_next_mark(void);
+void s22_display_after_exit(void);
+void s22_display_terminate(void);
+void s22_display_proceed(void);
+void s22_display_enter(void);
+void s22_display_immediate_return(void);
+void s22_display_after_blanket(void);
+
 #endif
 
 #endif
