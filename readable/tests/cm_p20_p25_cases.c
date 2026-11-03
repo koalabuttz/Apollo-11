@@ -50,7 +50,7 @@ extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, P
     LIGHTON_CODE, SHIFTNDX_CODE, INITIALW_CODE, CRS61_1_CODE, ASET_CODE, CDULOOP_CODE, STKTEST_CODE,
     STEP3CK_CODE, MANUEXIT_CODE, R63_CODE, S22_1_CODE, S22SHIFT_CODE, S2231X13_CODE,
     S22_UNKNOWN_CODE, S22SAVET_CODE, S22NEXT_CODE, S22BOX42_CODE, S22F244_CODE, S22RLS_CODE,
-    S22_981X_CODE, S22EXEX_CODE, S22GTP_CODE, S22F2410_CODE;
+    S22_981X_CODE, S22EXEX_CODE, S22GTP_CODE, S22F2410_CODE, NINE_DWTO6DW_CODE, ROWDOT_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -132,13 +132,14 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
  * and R63 (bank 34, part 8); the start of S22.1 (bank 30, part 9) and
  * its subroutines (bank 31); its first pass for an unknown landmark (bank
  * 30, part 10); its next mark and the incorporation (bank 30, part 11);
- * its end and two subroutines (bank 30, part 12). */
+ * its end and two subroutines (bank 30, part 12); 9DWTO6DW and ROWDOT
+ * (bank 30, part 13). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 037u && z >= 02261u && z <= 02624u) ||
-           (bank == 030u && z >= 02000u && z <= 03341u) ||
+           (bank == 030u && z >= 02000u && z <= 03630u) ||
            (bank == 031u && z >= 02332u && z <= 02402u) ||
            (bank == 023u && z >= 03043u && z <= 03131u) ||
            (bank == 034u && z >= 02630u && z <= 03711u) || (bank == 02u && z == 02622u) ||
@@ -313,6 +314,9 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
         else if (k == 2u)
             w[(fixloc + X1_AT) & 03777u] = any_word();
     }
+    /* ROWDOT's DMPR* W,2: X2 now and then any word too. */
+    if (key >= 030u * 1024u + 01574u && key <= 030u * 1024u + 01630u && rnd() % 4u == 0u)
+        w[(fixloc + X1_AT + 1u) & 03777u] = any_word();
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* S22TOFF and S22TOFF +1, the returns P22's GOTOs take, CADRs in fixed
@@ -441,10 +445,12 @@ static bool store_wraps(uint16_t key, const apollo_overlay_state *start)
  * +36D,1; CLEARWW5's STORE W +108D,1; S2231X13's VXSC* S223X1 +6,2 and
  * STORE S22UMRL +18D,1; GETTF's DLOAD* 0,1 from S22LOC's address; and
  * part 10's loops by X1 (S22NXTU to S22NXXB), which load and store
- * S22UMRL +18D,1, W +36D,1 to W +162D,1 and S22UUT +18D,1; and part
- * 12's CLRW678, which clears W6-W8 from W +162D,1 down. An
- * indexed load's address (the operand plus the register's complement, end
- * around) below 0100 is in the work area (FIXLOC on), one below 04000 in
+ * S22UMRL +18D,1, W +36D,1 to W +162D,1 and S22UUT +18D,1; part 12's
+ * CLRW678, which clears W6-W8 from W +162D,1 down; and part 13's
+ * 9DWTO6DW (STORE EMATRIX +40D,1 and W,1, CLEARW54's and 9DWEXXXA's
+ * clears) and ROWDOT1's DLOAD* W,1 and DMPR* W,2. An indexed load's
+ * address (the operand plus the register's complement, end around) below
+ * 0100 is in the work area (FIXLOC on), one below 04000 in
  * the E bank it names (01400 + its low 8 bits on). An indexed store's
  * below 45 is in the work area, a negative one below FIXLOC (as far as
  * the registers), and any other in the E bank its bits 8-10 name
@@ -503,8 +509,9 @@ static bool s22_wraps(uint16_t key, const apollo_overlay_state *start)
         here = indexed_crosses(1u, x2, fixloc, 6u) || store_crosses(03604u, x1, fixloc);
         break;
     case 030u * 1024u + 0330u: here = store_crosses(03604u, x1, fixloc); break;
-    case 030u * 1024u + 0375u: /* CLEARWW5's store */
-    case 030u * 1024u + 0400u: here = store_crosses(02555u, x1, fixloc); break;
+    case 030u * 1024u + 0375u: /* W +108D,1: CLEARWW5's store, and CLEARW54's (part 13) */
+    case 030u * 1024u + 0400u:
+    case 030u * 1024u + 01437u: here = store_crosses(02555u, x1, fixloc); break;
     case 030u * 1024u + 0525u: /* part 10's loops by X1: S22NXTU, S22NXXA, S22NXXB */
     case 030u * 1024u + 0562u:
     case 030u * 1024u + 0607u: here = indexed_crosses(03524u, x1, fixloc, 6u); break;
@@ -515,7 +522,18 @@ static bool s22_wraps(uint16_t key, const apollo_overlay_state *start)
     case 030u * 1024u + 0614u: here = store_crosses(01301u, x1, fixloc); break;
     case 030u * 1024u + 0612u: here = indexed_crosses(01301u, x1, fixloc, 6u); break;
     case 030u * 1024u + 0617u: /* W +162D,1: S22NXXB's, and CLRW678's (part 12) */
-    case 030u * 1024u + 01131u: here = store_crosses(02643u, x1, fixloc); break;
+    case 030u * 1024u + 01131u:
+    case 030u * 1024u + 01570u: /* 9DWEXXXA's (part 13) */
+        here = store_crosses(02643u, x1, fixloc);
+        break;
+    case 030u * 1024u + 01362u: /* 9DWTO6DW's STORE EMATRIX +40D,1 */
+        here = store_crosses(02641u, x1, fixloc);
+        break;
+    case 030u * 1024u + 01605u: /* ROWDOT1's DLOAD* W,1 and DMPR* W,2 */
+        here = indexed_crosses(02401u, x1, fixloc, 2u) || indexed_crosses(02401u, x2, fixloc, 2u);
+        break;
+    case 030u * 1024u + 01466u: /* 9DWAAB's and 9DWSETWX's STORE W,1 */
+    case 030u * 1024u + 01533u: here = store_crosses(02401u, x1, fixloc); break;
     case 031u * 1024u + 0341u: /* S2231NXT */
         here = indexed_crosses(031u, x2, fixloc, 2u) || store_crosses(03524u, x1, fixloc);
         break;
@@ -667,6 +685,8 @@ static const struct interpretive_code *const codes[] = {
     &S22EXEX_CODE,
     &S22GTP_CODE,
     &S22F2410_CODE,
+    &NINE_DWTO6DW_CODE,
+    &ROWDOT_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

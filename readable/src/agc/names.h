@@ -3033,6 +3033,10 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 /* Part 12, S22.1's end: the landmark's position shown (bank 30). */
 #define S22_981X ((word)K_S22_981X)
 #define S22GTP   ((word)K_S22GTP)
+
+/* Part 13, the W matrix from nine dimensions to six (bank 30). */
+#define NINE_DWTO6DW ((word)K_9DWTO6DW) /* 9DWTO6DW */
+#define ROWDOT       ((word)K_ROWDOT)
 #endif
 
 /* NO.CORES + 1 core sets. */
