@@ -10,8 +10,8 @@
  *   programs.c: P32/P72, P33/P73, AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC
  *   and COMPTGO (bank 35, pp. 621-631 and 650);
  *   csi.c: CSI/A from its start to SCNDSOL (bank 34, pp. 632-641);
- *   the rest of the CDH computations, ADVANCE to CDHMVR (bank 34,
- *   pp. 642-650), are still the faithful port's.
+ *   cdh.c: ADVANCE, ROTATE, INTINT2C, INTINT3P, S32/33.1, S32/33.X and
+ *   CDHMVR (bank 34, pp. 642-649).
  * The binding is src/binding/p32_routines.c.
  *
  * Basic code round stretches of interpretive code, which are in the
@@ -84,6 +84,10 @@ void p33_p73_n75_after_vnpooh(void);
 /* ---- csi.c: CSI/A to SCNDSOL (bank 34) ---- */
 
 extern const struct interpretive_code CSI_A_CODE, NTP_2_CODE;
+
+/* ---- cdh.c: ADVANCE to CDHMVR (bank 34) ---- */
+
+extern const struct interpretive_code ADVANCE_CODE;
 
 /* ---- programs.c: AVFLAGA, AVFLAGP, P20FLGON, DISDVLVC and COMPTGO
  * (bank 35) ---- */

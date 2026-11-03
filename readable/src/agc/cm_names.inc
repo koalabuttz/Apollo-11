@@ -3311,6 +3311,11 @@
 #define I_NEWTN 020333u
 #define I_CSISTEP 020363u
 #define I_CSI_SOL 020370u
+#define I_ROTATE 013220u
+#define I_UNVEC 003545u
+#define I_DIFFALT 002632u
+#define I_R1A 002743u
+#define I_SUBEXIT 002370u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

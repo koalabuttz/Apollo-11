@@ -1643,8 +1643,7 @@ cm-p30-cases: $(BUILD)/cp30-oracle $(BUILD)/cp30-cases
 	./$(BUILD)/cp30-oracle $(ROPES)
 	./$(BUILD)/cp30-cases $(ROPES)
 
-# P32-P35_P72-P75.agc, the LM's CSI and CDH targeting, readable part by
-# part: the port's test (tests/test_lm_p32_p35.c, its frozen cases run to
+# P32-P35_P72-P75.agc, the LM's CSI and CDH targeting: the port's test (tests/test_lm_p32_p35.c, its frozen cases run to
 # their stops through the program of tests/lm_p32_p35_target.c, against
 # the original program's yaAGC digests) through the readable tables, with
 # tests/with_ropes.c loading the rope the readable interpreter reads; then
