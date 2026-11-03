@@ -78,6 +78,7 @@
 #define ORDER_TIX_2      0072u /* TIX,2 */
 #define ORDER_VXM_STAR   0073u /* VXM* */
 #define ORDER_SR2        0074u
+#define ORDER_VSR4       0074u /* (SR2's code too) */
 #define ORDER_NORM       0075u
 #define ORDER_TIX_1      0076u /* TIX,1 */
 #define ORDER_DCOMP      0100u
@@ -90,6 +91,7 @@
 #define ORDER_XAD_1      0106u /* XAD,1 */
 #define ORDER_DDV_STAR   0107u /* DDV* */
 #define ORDER_VDEF       0110u
+#define ORDER_BDDV       0111u
 #define ORDER_XSU_2      0112u /* XSU,2 */
 #define ORDER_SR         0115u /* (SL, SLR and SRR too: the general shifts, by their address) */
 #define ORDER_SL         0115u
@@ -125,6 +127,7 @@
 #define ORDER_STADR      0150u
 #define ORDER_DSU        0151u
 #define ORDER_CALL       0152u
+#define ORDER_VSR7       0154u
 #define ORDER_BDSU       0155u
 #define ORDER_BDSU_STAR  0157u /* BDSU* */
 #define ORDER_ITA        0156u /* (STQ's code: one order, under two names) */

@@ -418,6 +418,12 @@ void r23_6_after_blanket(void);
 void r23_6_after_phaschng(void);
 void r23_end(void);
 
+/* ---- Part 18: HORIZ, DIVIDE and RECT.1 (horiz.c) ---- */
+
+extern const struct interpretive_code HORIZ_CODE;
+extern const struct interpretive_code DIVIDE_CODE;
+extern const struct interpretive_code RECT_1_CODE;
+
 #endif
 
 #endif

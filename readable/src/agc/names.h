@@ -3088,6 +3088,11 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define R23_END ((word)K_R23_END)
 #define V6N49   ((word)KW_V6N49)   /* VN 0649 */
 #define VARSUBL ((word)KW_VARSUBL) /* DEC 0 */
+
+/* Part 18, HORIZ, DIVIDE and RECT.1 (bank 31). */
+#define HORIZ  ((word)K_HORIZ)
+#define DIVIDE ((word)K_DIVIDE)
+#define RECT_1 ((word)K_RECT_1)
 #endif
 
 /* NO.CORES + 1 core sets. */
