@@ -367,6 +367,15 @@ static const struct basic_entry {
     {KEY(031u, R60CALL + 2u), r60call_after_r60csm, false},
     {KEY(031u, R60CALL + 4u), r60call_after_phaschng, true},
     {KEY(031u, R23_10 + 1u), r23_10_after_falton, false},
+    {KEY(031u, P23_60 + 1u), p23_60_after_exit, true},
+    {KEY(031u, P23_60 + 025u), p23_60_display, false},
+    {KEY(031u, P23_60 + 030u), p23_60_terminate, false},
+    {KEY(031u, P23_60 + 031u), p23_60_proceed, true},
+    {KEY(031u, P23_60 + 032u), p23_60_redisplay, true},
+    {KEY(031u, P23_65), p23_65, true},
+    {KEY(031u, P23_65 + 3u), p23_65_after_exit, false},
+    {KEY(031u, R23_2 + 4u), r23_2_after_exit, false},
+    {KEY(031u, R23_2 + 6u), r23_2_after_phaschng, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -452,6 +461,10 @@ static const struct interpretive_code *const codes[] = {
     &P23_55_CODE,
     &V94ENTER_CODE,
     &R60CALL_CODE,
+    &P23_60_CODE,
+    &P23_65_CODE,
+    &P23_85_CODE,
+    &R23_2_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -511,8 +524,8 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
-/* PROG22C's SLOAD* QPRET,2, GETUM's VLOAD* 1,1 and GETTF's DLOAD* 0,1 load
- * from the mark data (an index register its address's complement): the
+/* PROG22C's SLOAD* QPRET,2, GETUM's and P23.60's VLOAD* 1,1 and GETTF's
+ * DLOAD* 0,1 load from the mark data (an index register its address's complement): the
  * faithful port takes those words from erasable memory only, ADDRWD below
  * 02000. So too 9DWTO6DW's two BDSU* EMATRIX +40D,1 (X1 from LXA,1 9DWP in
  * the same pass) and ROWDOT1's DMPR* W,2, each its pass's last operand. */
@@ -520,7 +533,8 @@ static bool erasable_only(uint16_t key)
 {
     return key == KEY(030u, PROG22C) || key == KEY(023u, GETUM + 3u) ||
            key == KEY(031u, S2231X13 + 017u) || key == KEY(030u, NINE_DWTO6DW + 0105u) ||
-           key == KEY(030u, NINE_DWTO6DW + 0151u) || key == KEY(030u, ROWDOT + 011u);
+           key == KEY(030u, NINE_DWTO6DW + 0151u) || key == KEY(030u, ROWDOT + 011u) ||
+           key == KEY(031u, P23_60 + 016u);
 }
 
 /* S22's loops by X1 load the same way (S22NXTU's, S22NXXA's and S22NXXB's
