@@ -296,6 +296,25 @@ void s22_display_enter(void);
 void s22_display_immediate_return(void);
 void s22_display_after_blanket(void);
 
+/* ---- Part 12: S22.1's end, the landmark's position shown (s22_display.c) ---- */
+
+extern const struct interpretive_code S22BOX42_CODE;
+extern const struct interpretive_code S22F244_CODE;
+extern const struct interpretive_code S22RLS_CODE;
+extern const struct interpretive_code S22_981X_CODE;
+extern const struct interpretive_code S22EXEX_CODE;
+extern const struct interpretive_code S22GTP_CODE;
+extern const struct interpretive_code S22F2410_CODE;
+
+void s22exex(void);
+void s22f244_after_exit(void);
+void s22f244_terminate(void);
+void s22f244_proceed(void);
+void s22f244_recycle(void);
+void s22_landing_site(void);
+void s22_981x(void);
+void s22gtp_after_exit(void);
+
 #endif
 
 #endif
