@@ -47,7 +47,8 @@ extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, P
     REND4_CODE, REND6_CODE, REND9_CODE, REND10_CODE, REND10A_CODE, REND12_CODE, REND14_CODE,
     CMPOS_CODE, RENDISP_CODE, RENDISP7_CODE, RENDISP3_CODE, RENDISP4_CODE, SETINTG_CODE,
     CNTCHK_CODE, WAITONE_CODE, WAITONE_AGAIN_CODE, RANGERD_CODE, RANGERD4_CODE, RANGERD3_CODE,
-    LIGHTON_CODE, SHIFTNDX_CODE, INITIALW_CODE;
+    LIGHTON_CODE, SHIFTNDX_CODE, INITIALW_CODE, CRS61_1_CODE, ASET_CODE, CDULOOP_CODE, STKTEST_CODE,
+    STEP3CK_CODE, MANUEXIT_CODE, R63_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -72,6 +73,9 @@ bool cm_p20_p25_readable(uint16_t key, bool order_pair);
 #define EGRESS_AT   02317u /* E4,1717: the return of R57, BVECTORS and GETUM, a CADR */
 #define MARKDATA_AT 01242u /* the address of the mark data GETUM takes */
 #define MARKDOWN_AT 03674u /* E7,1674: GETUM's copy of the mark data, 7 words */
+#define QPRET_AT    052u   /* the work area's QPRET */
+#define Q611_AT     03704u /* E7,1704: CRS61.1's return, a CADR */
+#define Q6111_AT    03705u /* E7,1705: R63's return, a CADR */
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -120,7 +124,8 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 /* The parts written so far: P20, R57, R21, R23 and R61CSM (bank 37,
  * parts 1, 3 and 4); P22 up to S22.1 (bank 30, part 2); BVECTORS and
  * GETUM (bank 23, part 4); R22 (bank 34, parts 5 and 6); GOTOV56
- * (fixed-fixed, part 6); R22's subroutines (bank 27, part 7). */
+ * (fixed-fixed, part 6); R22's subroutines (bank 27, part 7); CRS61.1
+ * and R63 (bank 34, part 8). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
@@ -128,7 +133,7 @@ static bool in_written_part(uint16_t key)
     return (bank == 037u && z >= 02261u && z <= 02624u) ||
            (bank == 030u && z >= 02000u && z <= 02311u) ||
            (bank == 023u && z >= 03043u && z <= 03131u) ||
-           (bank == 034u && z >= 02630u && z <= 03334u) || (bank == 02u && z == 02622u) ||
+           (bank == 034u && z >= 02630u && z <= 03711u) || (bank == 02u && z == 02622u) ||
            (bank == 027u && z >= 02343u && z <= 02613u);
 }
 
@@ -302,6 +307,17 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
      * STQs leave it. (One in erasable memory could send the faithful GOTO
      * round a cycle of CADRs, which it ends by exiting.) */
     w[EGRESS_AT] = fixed_cadr(w[EGRESS_AT]);
+    /* Q611 and Q6111 too, the returns of CRS61.1 and R63, and the work
+     * area's QPRET (052), which their STQs copy there. */
+    w[Q611_AT] = fixed_cadr(w[Q611_AT]);
+    w[Q6111_AT] = fixed_cadr(w[Q6111_AT]);
+    w[(fixloc + QPRET_AT) & 03777u] = fixed_cadr(w[(fixloc + QPRET_AT) & 03777u]);
+    /* Often DTHETASM (01611 in the E-bank) a count CDULOOP runs on: +0 to
+     * 2, or -0. */
+    if (rnd() % 4u) {
+        static const uint16_t counts[] = {0u, 1u, 2u, 077777u};
+        w[(eb & 7u) * 0400u + 0211u] = counts[rnd() % 4u];
+    }
     /* Now and then MRKBUF1 -1, no mark (R21CSMA). */
     if (rnd() % 4u == 0u) w[MRKBUF1_AT] = 077776u;
     /* Now and then MPAC +0 or 1, CRS61.1's answers (R61CSM +015). */
@@ -472,14 +488,53 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 }
 
 static const struct interpretive_code *const codes[] = {
-    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,       &CALLR52_CODE,
-    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,       &DE_GR_50_CODE,
-    &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE,      &GETUM_CODE,
-    &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,         &REND6_CODE,
-    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,   &REND12_CODE,        &REND14_CODE,
-    &CMPOS_CODE,    &RENDISP_CODE,        &RENDISP7_CODE,  &RENDISP3_CODE,      &RENDISP4_CODE,
-    &SETINTG_CODE,  &CNTCHK_CODE,         &WAITONE_CODE,   &WAITONE_AGAIN_CODE, &RANGERD_CODE,
-    &RANGERD4_CODE, &RANGERD3_CODE,       &LIGHTON_CODE,   &SHIFTNDX_CODE,      &INITIALW_CODE,
+    &PROG20_CODE,
+    &P20R52JB_CODE,
+    &PROG22_CODE,
+    &PROG22A_CODE,
+    &CALLR52_CODE,
+    &S22LSITE_CODE,
+    &P22SUBRB_CHECK_CODE,
+    &N89ERRX_3_CODE,
+    &S22ABDE_CODE,
+    &DE_GR_50_CODE,
+    &R57_CODE,
+    &ENDR57_CODE,
+    &R61CSM_CODE,
+    &BVECTORS_CODE,
+    &GETUM_CODE,
+    &R22_CODE,
+    &REND2_CODE,
+    &REND3_CODE,
+    &REND4_CODE,
+    &REND6_CODE,
+    &REND9_CODE,
+    &REND10_CODE,
+    &REND10A_CODE,
+    &REND12_CODE,
+    &REND14_CODE,
+    &CMPOS_CODE,
+    &RENDISP_CODE,
+    &RENDISP7_CODE,
+    &RENDISP3_CODE,
+    &RENDISP4_CODE,
+    &SETINTG_CODE,
+    &CNTCHK_CODE,
+    &WAITONE_CODE,
+    &WAITONE_AGAIN_CODE,
+    &RANGERD_CODE,
+    &RANGERD4_CODE,
+    &RANGERD3_CODE,
+    &LIGHTON_CODE,
+    &SHIFTNDX_CODE,
+    &INITIALW_CODE,
+    &CRS61_1_CODE,
+    &ASET_CODE,
+    &CDULOOP_CODE,
+    &STKTEST_CODE,
+    &STEP3CK_CODE,
+    &MANUEXIT_CODE,
+    &R63_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

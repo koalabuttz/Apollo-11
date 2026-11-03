@@ -71,11 +71,12 @@ static void leave(void)
 static cm_native_io *io_now;
 static agc_hardware *hardware_now;
 
-/* RANGERD's channel 13 and VHFREAD's channel 33, as the faithful port
- * reads them. */
+/* RANGERD's channel 13, AUTOCK's channel 31 and VHFREAD's channel 33,
+ * as the faithful port reads them. */
 static word channel_in(unsigned number)
 {
     if (number == 013u) return (word)io_now->channel13;
+    if (number == 031u && hardware_now) return (word)hardware_now->channel31;
     if (number == 033u && hardware_now) return (word)hardware_now->channel33;
     not_modelled(); /* the readable parts read no other channel */
     return 0;
@@ -286,6 +287,18 @@ static const struct basic_entry {
     {KEY(027u, LIGHTON + 4u), lighton_after_trfailon, true},
     {KEY(027u, VHFREAD), vhfread, false},
     {KEY(027u, VHFGOOD), vhfgood, false},
+    {KEY(034u, CRS61_1 + 013u), crs61_1_after_exit, true},
+    {KEY(034u, AUTOCK), autock, true},
+    {KEY(034u, DAPCK), dapck, true},
+    {KEY(034u, ASET), aset, true},
+    {KEY(034u, STEP2CK + 2u), step2ck_after_upactoff, true},
+    {KEY(034u, CDULOOP + 014u), cduloop_after_exit, true},
+    {KEY(034u, CDULOOP + 016u), cduloop_done, true},
+    {KEY(034u, STKTEST + 1u), stktest_after_exit, true},
+    {KEY(034u, STKTEST + 5u), stktest_upacty, true},
+    {KEY(034u, STEP3CK), step3ck, true},
+    {KEY(034u, CRS61_2A + 1u), crs61_2a_after_exit, true},
+    {KEY(034u, MANUEXIS), manuexis, true},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -300,14 +313,53 @@ static const struct basic_entry *basic_entry(uint16_t key)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &PROG20_CODE,   &P20R52JB_CODE,       &PROG22_CODE,    &PROG22A_CODE,       &CALLR52_CODE,
-    &S22LSITE_CODE, &P22SUBRB_CHECK_CODE, &N89ERRX_3_CODE, &S22ABDE_CODE,       &DE_GR_50_CODE,
-    &R57_CODE,      &ENDR57_CODE,         &R61CSM_CODE,    &BVECTORS_CODE,      &GETUM_CODE,
-    &R22_CODE,      &REND2_CODE,          &REND3_CODE,     &REND4_CODE,         &REND6_CODE,
-    &REND9_CODE,    &REND10_CODE,         &REND10A_CODE,   &REND12_CODE,        &REND14_CODE,
-    &CMPOS_CODE,    &RENDISP_CODE,        &RENDISP7_CODE,  &RENDISP3_CODE,      &RENDISP4_CODE,
-    &SETINTG_CODE,  &CNTCHK_CODE,         &WAITONE_CODE,   &WAITONE_AGAIN_CODE, &RANGERD_CODE,
-    &RANGERD4_CODE, &RANGERD3_CODE,       &LIGHTON_CODE,   &SHIFTNDX_CODE,      &INITIALW_CODE,
+    &PROG20_CODE,
+    &P20R52JB_CODE,
+    &PROG22_CODE,
+    &PROG22A_CODE,
+    &CALLR52_CODE,
+    &S22LSITE_CODE,
+    &P22SUBRB_CHECK_CODE,
+    &N89ERRX_3_CODE,
+    &S22ABDE_CODE,
+    &DE_GR_50_CODE,
+    &R57_CODE,
+    &ENDR57_CODE,
+    &R61CSM_CODE,
+    &BVECTORS_CODE,
+    &GETUM_CODE,
+    &R22_CODE,
+    &REND2_CODE,
+    &REND3_CODE,
+    &REND4_CODE,
+    &REND6_CODE,
+    &REND9_CODE,
+    &REND10_CODE,
+    &REND10A_CODE,
+    &REND12_CODE,
+    &REND14_CODE,
+    &CMPOS_CODE,
+    &RENDISP_CODE,
+    &RENDISP7_CODE,
+    &RENDISP3_CODE,
+    &RENDISP4_CODE,
+    &SETINTG_CODE,
+    &CNTCHK_CODE,
+    &WAITONE_CODE,
+    &WAITONE_AGAIN_CODE,
+    &RANGERD_CODE,
+    &RANGERD4_CODE,
+    &RANGERD3_CODE,
+    &LIGHTON_CODE,
+    &SHIFTNDX_CODE,
+    &INITIALW_CODE,
+    &CRS61_1_CODE,
+    &ASET_CODE,
+    &CDULOOP_CODE,
+    &STKTEST_CODE,
+    &STEP3CK_CODE,
+    &MANUEXIT_CODE,
+    &R63_CODE,
 };
 
 /* The table of bank that address is in, or none. */
