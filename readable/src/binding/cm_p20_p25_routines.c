@@ -393,6 +393,8 @@ static const struct interpretive_code *const codes[] = {
     &S22EXEX_CODE,
     &S22GTP_CODE,
     &S22F2410_CODE,
+    &NINE_DWTO6DW_CODE,
+    &ROWDOT_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -455,17 +457,20 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
 /* PROG22C's SLOAD* QPRET,2, GETUM's VLOAD* 1,1 and GETTF's DLOAD* 0,1 load
  * from the mark data (an index register its address's complement): the
  * faithful port takes those words from erasable memory only, ADDRWD below
- * 02000. */
+ * 02000. So too 9DWTO6DW's two BDSU* EMATRIX +40D,1 (X1 from LXA,1 9DWP in
+ * the same pass) and ROWDOT1's DMPR* W,2, each its pass's last operand. */
 static bool erasable_only(uint16_t key)
 {
     return key == KEY(030u, PROG22C) || key == KEY(023u, GETUM + 3u) ||
-           key == KEY(031u, S2231X13 + 017u);
+           key == KEY(031u, S2231X13 + 017u) || key == KEY(030u, NINE_DWTO6DW + 0105u) ||
+           key == KEY(030u, NINE_DWTO6DW + 0151u) || key == KEY(030u, ROWDOT + 011u);
 }
 
 /* S22's loops by X1 load the same way (S22NXTU's, S22NXXA's and S22NXXB's
  * VLOAD* S22UMRL +18D,1, S22NXTWI's VLOAD* W +36D,1, S22NXXB's VAD* S22UUT
- * +18D,1), but other operands follow in their passes, so the binding works
- * the address out before the pass: the address word, less one, less X1
+ * +18D,1; ROWDOT1's DLOAD* W,1, with DMPR* W,2 after it), but other
+ * operands follow in their passes, so the binding works the address out
+ * before the pass: the address word, less one, less X1
  * (ones' complement: end around, or where X1 is negative, overflow
  * corrected as ADS leaves ADDRWD), is in fixed memory where any of its top
  * four bits is set (INDEX2's MASK HIGH4). */
@@ -479,6 +484,7 @@ static const struct indexed_load loads_by_x1[] = {
     {KEY(030u, S22_1 + 0224u), 02445u}, /* W +36D,1 */
     {KEY(030u, S22_1 + 0250u), 03524u}, {KEY(030u, S22_1 + 0275u), 03524u},
     {KEY(030u, S22_1 + 0300u), 01301u}, /* S22UUT +18D,1 */
+    {KEY(030u, ROWDOT + 011u), 02401u}, /* ROWDOT1's DLOAD* W,1 */
 };
 
 static bool loads_from_fixed(uint16_t key)

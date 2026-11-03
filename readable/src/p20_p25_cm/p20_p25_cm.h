@@ -315,6 +315,11 @@ void s22_landing_site(void);
 void s22_981x(void);
 void s22gtp_after_exit(void);
 
+/* ---- Part 13: the W matrix from nine dimensions to six (w_nine_to_six.c) ---- */
+
+extern const struct interpretive_code NINE_DWTO6DW_CODE;
+extern const struct interpretive_code ROWDOT_CODE;
+
 #endif
 
 #endif
