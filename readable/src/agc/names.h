@@ -3117,17 +3117,23 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V06N33  ((word)KW_V06N33) /* VN 0633 */
 #define V06N42  ((word)KW_V06N42) /* VN 0642 */
 #define V06N81  ((word)KW_V06N81) /* VN 0681 */
+/* AVFLAGA, AVFLAGP and P20FLGON, which set the active vehicle and P20's
+ * flags, and COMPTGO, which starts the clock display: the CM's in
+ * P30-P37.agc, the LM's in P32-P35_P72-P75.agc. */
+#define AVFLAGA  ((word)K_AVFLAGA)
+#define AVFLAGP  ((word)K_AVFLAGP)
+#define P20FLGON ((word)K_P20FLGON)
+#define COMPTGO  ((word)K_COMPTGO)
 #if LUMINARY099
 #define P30N33 ((word)K_P30N33)
 #endif
 #if COMANCHE055
 /* The CM's: P31, the routines P30 and P31 share, their displays (DISP45,
- * verb 16 noun 45), S31.1, DELRSPL and AVFLAGA, AVFLAGP and P20FLGON. */
+ * verb 16 noun 45), S31.1 and DELRSPL. */
 #define DISPMGA  ((word)K_DISPMGA)
 #define DISP45   ((word)K_DISP45)
 #define P30PHSI  ((word)K_P30PHSI)
 #define END45    ((word)K_END45)
-#define COMPTGO  ((word)K_COMPTGO)
 #define P31      ((word)K_P31)
 #define P30_P31  ((word)K_P30_P31) /* P30/P31 */
 #define CNTNUP30 ((word)K_CNTNUP30)
@@ -3137,11 +3143,34 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define MARSDP   ((word)K_MARSDP) /* OCT 00000, OCT 35100 */
 #define S31_1    ((word)K_S31_1)  /* S31.1 */
 #define DELRSPL  ((word)K_DELRSPL)
-#define AVFLAGA  ((word)K_AVFLAGA)
-#define AVFLAGP  ((word)K_AVFLAGP)
-#define P20FLGON ((word)K_P20FLGON)
 #define V16N45   ((word)KW_V16N45) /* VN 1645 */
 #define EBANK4   ((word)KW_EBANK4)
+#endif
+
+#if LUMINARY099
+/* P32-P35_P72-P75.agc (LM): CSI (P32 and P72) and CDH (P33 and P73). Their
+ * erasable words (RTRN, DISPDEX, CENTANG, NN, TCSI, VERBNOUN, SUBEXIT) are
+ * named by ADDRESS_OF. */
+#define P32      ((word)K_P32)
+#define P72      ((word)K_P72)
+#define P32STRT  ((word)K_P32STRT)
+#define ALMXIT   ((word)K_ALMXIT)
+#define P32_P72A ((word)K_P32_P72A) /* P32/P72A */
+#define VN0611   ((word)K_VN0611)
+#define VN0655   ((word)K_VN0655)
+#define P32_P72F ((word)K_P32_P72F) /* P32/P72F */
+#define P33      ((word)K_P33)
+#define P73      ((word)K_P73)
+#define P33_P73A ((word)K_P33_P73A) /* P33/P73A */
+#define P33_P73B ((word)K_P33_P73B) /* P33/P73B */
+#define P33_P73F ((word)K_P33_P73F) /* P33/P73F */
+#define DISDVLVC ((word)K_DISDVLVC)
+#define P30ZERO  ((word)K_P30ZERO)    /* 2DEC 0 */
+#define V06N11   ((word)KW_V06N11)    /* VN 0611 */
+#define V06N13   ((word)KW_V06N13)    /* VN 0613 */
+#define V06N75   ((word)KW_V06N75)    /* VN 0675 */
+#define V06N55   ((word)KW_V06N55)    /* VN 0655 */
+#define V06N37   ((word)KW_V06N37)    /* VN 0637 */
 #endif
 
 /* NO.CORES + 1 core sets. */
