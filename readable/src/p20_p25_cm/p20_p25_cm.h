@@ -267,6 +267,16 @@ void step3ck(void);
 void crs61_2a_after_exit(void);
 void manuexis(void);
 
+/* ---- Part 9: the start of S22.1, and its subroutines in bank 31 (s22.c) ---- */
+
+extern const struct interpretive_code S22_1_CODE;
+extern const struct interpretive_code S22SHIFT_CODE;
+extern const struct interpretive_code S2231X13_CODE;
+
+void s22_1_after_exit(void);
+void s22_1_after_mkreleas(void);
+void s22_1_after_2phschng(void);
+
 #endif
 
 #endif

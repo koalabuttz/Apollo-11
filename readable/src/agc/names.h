@@ -3019,6 +3019,10 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define R63      ((word)K_R63)
 #define STIKBIT  ((word)KW_STIKBIT)
 #define FURST3   ((word)KW_FURST3)
+
+/* Part 9, the start of S22.1 (bank 30) and its subroutines (bank 31). */
+#define S22_1    ((word)K_S22_1)
+#define S2231X13 ((word)K_S2231X13)
 #endif
 
 /* NO.CORES + 1 core sets. */

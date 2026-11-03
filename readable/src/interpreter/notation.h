@@ -35,6 +35,7 @@
 #define ORDER_VSR1       0014u
 #define ORDER_VXSC       0015u
 #define ORDER_AXC_1      0016u /* AXC,1 */
+#define ORDER_VXSC_STAR  0017u /* VXSC* */
 #define ORDER_SIN        0020u
 #define ORDER_LXA_2      0022u /* LXA,2 */
 #define ORDER_SL1        0024u /* (VSL2's code too, in yaYUL's table) */
@@ -108,6 +109,7 @@
 #define ORDER_ABVAL      0130u /* (ABS's code: a vector's length, by MODE) */
 #define ORDER_BVSU       0131u
 #define ORDER_BPL        0132u
+#define ORDER_SR3        0134u
 #define ORDER_DOT        0135u
 #define ORDER_BMN        0136u
 #define ORDER_VSQ        0140u

@@ -151,6 +151,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | CM P20-P25, part 6: R22 from REND12, and GOTOV56 | `P20-P25.agc` (CM pp. 582-585) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R22 from REND12 (bank 34): the update goes into the state vector (INCORP2); an optics mark then takes its second pass with the new relative position (REND13) and is counted (TRKMKCNT), a range at once (VHFCNT). REND14 is a range's measurement: its B vector is the line of sight itself and the deviation the range less the computed distance. CMPOS and LMPOS give each vehicle's position from its state vector. RENDISP shows a large update to the crew (verb 06 noun 49) in a job of its own (RENDISP2), while R22's job waits in RENDISP7: proceed puts it in all the same, recycle throws the measurement away (RENDISP3, the mark buffers cleared), terminate ends P20 by verb 56 (GOTOV56, in fixed-fixed memory) |
 | CM P20-P25, part 7: R22's subroutines | `P20-P25.agc` (CM pp. 586-589) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R22's subroutines in bank 27: SETINTG sets up the integration of the state vector to the mark's time; CNTCHK and CONTCHK let R22 go on only with a good REFSMMAT and the track flag set, and wait four seconds at a time (WAITONE, REDOR22) while R61's maneuver runs or updating is not allowed. RANGERD starts a VHF range read in channel 13, waits in RADSTALL and converts the range from .01 nautical miles to meters, or lights the tracker lamp (LIGHTON); VHFREAD, from the read's interrupt, keeps the count in RM and checks the data good bit (channel 33). SHIFTNDX gives the index for the positions' scaling (earth or moon), and INITIALW the W matrix's starting values. The binding now models channel 13 (in the io record) and channel 33 (in the hardware record) |
 | CM P20-P25, part 8: CRS61.1 and R63 | `P20-P25.agc` (CM pp. 590-597) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | CRS61.1, the CSM's preferred tracking attitude (bank 34): R63 gives the desired CDU angles at the present time; if any actual angle is more than 10 degrees from its desired one (CDULOOP), MANUEXIT hands the angles to KALCMANU (MPAC 1), unless someone is on the hand controller (STKTEST, the UPACTY light on). Otherwise, with the autopilot in auto (AUTOCK, channel 31) and the hand controller free (DAPCK), CRS61.2 works out the line of sight's rate, the CDU increments for a tenth of a second (SMCDURES) and the rate in control axes, and CRS61.2A feeds the three to the autopilot with interrupts held. R63 brings both state vectors to the time by conics and gives the +X axis attitude (noun 96), the preferred one 55 degrees off (noun 95), and the one PRFTRKAT picks. The binding now models channel 31 (in the hardware record) |
+| CM P20-P25, part 9: the start of S22.1 | `P20-P25.agc` (CM pp. 598-600 and 609-610) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | S22.1, the orbital navigation routine P22 runs on its marks (bank 30), up to S22BOX22: the marks copied from MARKSTAT's address to SVMRKDAT (so a restart does not lose them), the VAC area released and a restart point set; the W matrix kept when valid, else cleared with its diagonals from WORBPOS and WORBVEL; then for each mark the CSM's state vector integrated to its time, the line of sight UM (GETUM), and the test for the landmark's offset mark. Its subroutines in bank 31: S2231X13 (a 3X1 by 1X3 product into S22UMRL), GETTF (the mark's time), S22FLGS (the integration flags), and LLASRD and LLASRDA (the landmark's altitude and longitude to and from LANDALT and LANDLONG). The binding refuses GETTF's DLOAD* from fixed memory, as the faithful port does |
 
 Beside them:
 
@@ -395,9 +396,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    so that the case where nothing changed is tested.
    `make cm-p20-p25-cases` runs the faithful port's test of the CM's
    P20-P25 (its 1,993 checks against yaAGC digests) through the readable
-   tables, then checks the interpretive words against the rope (667 so
+   tables, then checks the interpretive words against the rope (802 so
    far), and runs readable and faithful side by side at every key the parts
-   have written (144 basic and 314 order pairs) from 4,096 states each, and
+   have written (147 basic and 377 order pairs) from 4,096 states each, and
    at the others (which run the faithful routines through the readable
    tables) from 16. The states carry each frozen case's channels, and now
    and then the program has no hardware record, which every routine of
@@ -411,7 +412,10 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the faithful port's machine reads words 0-4 and the readable one (as
    the AGC) fixed memory, so the test counts those states apart, and
    likewise INITIALW's stores from INITA and INITB, whose X1 and S1 the
-   program never leaves there.
+   program never leaves there, and S22.1's indexed loads and stores, which
+   the test enters with any index registers (a store in E bank 0 can also
+   land on the interpreter's registers, which the faithful port keeps
+   apart during a pass).
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
