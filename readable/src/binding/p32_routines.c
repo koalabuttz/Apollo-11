@@ -162,7 +162,7 @@ static const struct basic_entry *basic_entry(uint16_t key)
 static const struct interpretive_code *const codes[] = {
     &ALMXITA_CODE,     &VN0611_CODE,        &VN0655_CODE,        &VN0637_CODE,
     &P32_P72_N75_CODE, &P33_P73A_CODE,      &P33_P73_ALARM_CODE, &P33_P73_N75_CODE,
-    &DISDVLVC_CODE,    &DISDVLVC_EXIT_CODE, &CSI_A_CODE,
+    &DISDVLVC_CODE,    &DISDVLVC_EXIT_CODE, &CSI_A_CODE,         &NTP_2_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -177,24 +177,55 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
     return NULL;
 }
 
-/* ALMXIT's SLOAD* ALARM/TB -1,1 (35,2042) loads by X1 (LXC,1 CSIALRM):
- * the faithful port carries only the seven words ALARM/TB to ALARM/TB +6
- * and refuses a load from anywhere else. The binding works the address
- * out before the pass, as INDEX2 does (the operand's address with
- * INTBIT15, ADS -X1, overflow corrected). */
-static bool outside_alarm_table(uint16_t key)
+/* An indexed load's address, as INDEX2 works it out: the operand's
+ * address with INTBIT15, ADS -X1, overflow corrected. */
+static unsigned indexed_address(unsigned operand)
 {
-    const unsigned operand = I_ALARM_TB - 1u;
-    word x1;
-    unsigned minus_x1, sum;
+    word x1 = agc.memory[(FIXLOC + ADDRESS_OF(X1)) & 03777u];
+    unsigned minus_x1 = ~(x1 | (x1 & 040000u) << 1) & 0177777u; /* CS X1, 16 bits */
+    unsigned sum = minus_x1 + (operand | (operand & 040000u) << 1);
 
-    if (key != KEY(035u, ALMXIT + 2u)) return false;
-    x1 = agc.memory[(FIXLOC + ADDRESS_OF(X1)) & 03777u];
-    minus_x1 = ~(x1 | (x1 & 040000u) << 1) & 0177777u; /* CS X1, 16 bits */
-    sum = minus_x1 + (operand | (operand & 040000u) << 1);
     if (sum > 0177777u) sum = (sum + 1u) & 0177777u; /* end around */
-    sum = (sum & 037777u) | (sum >> 1 & 040000u);    /* overflow corrected */
-    return sum < I_ALARM_TB || sum > I_ALARM_TB + 6u;
+    return (sum & 037777u) | (sum >> 1 & 040000u);   /* overflow corrected */
+}
+
+/* The indexed loads the faithful port carries only a few words for, and
+ * refuses from anywhere else, so the binding works their addresses out
+ * before the pass:
+ *   ALMXIT's SLOAD* ALARM/TB -1,1 (35,2042), by X1 from LXC,1 CSIALRM:
+ *   the seven words ALARM/TB to ALARM/TB +6;
+ *   CSI/SOL's two DSU* PMINE -2,1 (34,2744 and 34,2752), by X1 from
+ *   RTX1 (-2 at the Earth, -10 at the Moon): PMINE or PMINM. */
+static bool outside_table(uint16_t key)
+{
+    unsigned address;
+
+    if (key == KEY(035u, ALMXIT + 2u)) {
+        address = indexed_address(I_ALARM_TB - 1u);
+        return address < I_ALARM_TB || address > I_ALARM_TB + 6u;
+    }
+    if (key == KEY(034u, I_CSI_SOL + 5u) || key == KEY(034u, I_CSI_SOL + 013u)) {
+        address = indexed_address(I_PMINE - 2u);
+        return address != I_PMINE && address != I_PMINM;
+    }
+    return false;
+}
+
+/* Whether a pass that starts at store code w (34,2405, STORE TCDH, a
+ * CHANG2 resume) would store past the end of the E-bank window (01777):
+ * the AGC then writes into fixed memory and reads it back into A and L,
+ * which the readable machine does not model, so the binding refuses it.
+ * DOSTORE's index (X1 or X2) and STORE's addressing, from w - 1 (NEWOPS's
+ * CCS); MODE says how many words (DP, TP or vector). */
+static bool store_spills(word w)
+{
+    unsigned v = (unsigned)w - 1u, kind = (v >> 11) & 7u, a = v & 03777u, n;
+
+    if (kind == 1u || kind == 2u)
+        a = (a + (~agc.memory[(FIXLOC + ADDRESS_OF(X1) + kind - 1u) & 03777u] & 077777u)) % 077777u;
+    if (a <= 45u) return false; /* the work area, or word 45 itself */
+    n = MODE == 0u || MODE == 077777u ? 1u : (MODE & 040000u) ? 5u : 2u;
+    return (a & 0377u) + n > 0377u;
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
@@ -260,7 +291,9 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     bind(program, state, io);
     code = code_at(bank, LOC);
     if (Z != NEWOPS || !in_bank(bank) || !code || BANKSET != BBANK ||
-        INTBIT15 != (FBANK & 040000u) || !sane() || outside_alarm_table(key))
+        INTBIT15 != (FBANK & 040000u) || !sane() || outside_table(key))
+        return EXEC_OUT_OF_SCOPE;
+    if (!(code->words[LOC - code->first] & 040000u) && store_spills(code->words[LOC - code->first]))
         return EXEC_OUT_OF_SCOPE;
 
     before = *state;

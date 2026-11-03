@@ -166,6 +166,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | CM P30-P37: P30, P31 and the splash error | `P30-P37.agc` (CM pp. 635-648) | [`src/p30_cm/`](src/p30_cm/) | The CM's P30, external delta-V targeting, and P31, general Lambert aimpoint guidance (bank 35), which share P30/P31 (the time of ignition, verb 06 noun 33), CNTNUP30 (the delta V in local vertical coordinates, verb 06 noun 81) and PARAM30 (apogee, perigee and delta V, verb 06 noun 42), then REFTEST and DISPMGA: the middle gimbal angle at ignition (GETPMGA), or -00001 (the negative of MARSDP) with REFSMFLAG clear, shown by verb 16 noun 45 while COMPTGO's CLOKTASK keeps the time from ignition. Each saves its return in an erasable word (XCH Q; TS) and goes back through it, a TC the AGC runs as an instruction. S30.1 (bank 31) takes the CSM's state vector to the time of ignition (THISPREC), turns the delta V into inertial coordinates (LOMAT) and finds the orbit's perigee and apogee after it; S31.1 does the same from the Lambert solution (AGAIN), with the delta V in local vertical coordinates for the display (MIDGIM). DELRSPL and AUGEKUGL (bank 32), the splash-down error V82 shows in P11: the free-fall angle to 300,000 feet plus the entry range angle (from the speed's band in AUGEKUGL's tables, by X1), less the range to the target. AVFLAGA, AVFLAGP and P20FLGON (fixed-fixed) set the active vehicle and P20's flags |
 | P32-P35_P72-P75, part 1: the programs | `P32-P35_P72-P75.agc` (LM pp. 621-631 and 650) | [`src/p32_p35/`](src/p32_p35/) | The LM's concentric flight plan targeting: the programs' own code and displays (bank 35). P32 (the LM active) and P72 (the CSM active), CSI: AVFLAGA or AVFLAGP sets the active vehicle and P20FLGON the update and track flags; verb 06 noun 11 asks for the time of the CSI burn (TCSI; when none is keyed, the time of apocenter, by TIMERAD), verb 06 noun 55 flashes the apsidal crossings and elevation angle, verb 06 noun 37 asks for the TPI time; then CSI/A (bank 34) and verb 06 noun 75, the delta altitude and the times from CSI to CDH and from CDH to TPI (each less 60 minutes while it stays positive); then the delta V in local vertical coordinates (DISDVLVC, verb 06 noun 82) and VN1645. ALMXIT shows CSI's alarms, their codes from ALARM/TB by the alarm number in X1. P33 and P73, CDH: the time of the CDH burn (verb 06 noun 13), CDHMVR (bank 34), S33/34.1 for the TPI time (alarm 611 when it fails), TTPI moved by NOMTPI, verb 06 noun 75 (the time from CDH to TPI, and the change in the TPI time), the delta V and VN1645. COMPTGO starts the clock display. The rest of the CSI and CDH computations (bank 34) is still the faithful port's: the binding runs its routines at the keys no part has written yet |
 | P32-P35_P72-P75, part 2: CSI/A to CIRCL | `P32-P35_P72-P75.agc` (LM pp. 632-635) | [`src/p32_p35/`](src/p32_p35/) | The start of CSI/A, the CSI computation (bank 34, all interpretive): the flags set for the first cycle; the first guess at the CSI delta V, the horizontal speed at RA1 of an orbit from RA1 to RP3 less the active vehicle's own; then each pass of the iteration (16 at most, LOOPMX) limits it to 1000 FPS (DVMAX1, else 989, DVMAX2), adds it along the horizontal (DELVEET1, VACT4), finds the orbit after it (the half period by TIMETHET, the perigee altitude POSTCSI by PERIAPO) and, unless the orbit is circular, the time to the apsis ahead (CSI/B3, by TIMETHET again), for NTP/2 |
+| P32-P35_P72-P75, part 3: NTP/2 to SCNDSOL | `P32-P35_P72-P75.agc` (LM pp. 635-641) | [`src/p32_p35/`](src/p32_p35/) | The rest of CSI/A (bank 34, all interpretive). NTP/2: TCDH, TCSI plus NN half periods less the time to the apsis, and SCNDSOL when TPI is not after it; both vehicles to TCDH (INTINT2C), CDHMVR for the CDH burn, the pericenter after it (PERIAPO1, POSTCDH), and both to TTPI (INTINT). Then the elevation angle: U, (COSLOS)(UH3) plus (SINLOS)(URA3), the two roots K1 and K2 of the line of sight from RA3 along U (the smaller kept, K1ORK2), and GAMMA, the angle between that line and the passive vehicle's path. A negative TEMP2 (no line of sight) halves DELDV and steps back, alarm when LOOPCT runs out. The iteration on GAMMA: a cycle's first pass steps DELVCSI by DELDV (FRSTPAS); the second cycle's first passes step it 50 FPS (FIFTYFPS) for as long as GAMMA moves on GAMPREV's side, then go back to 10 FPS (INITST); else NEWTN, the Newton step, GAMMA over the slope, at most DELMAX1 (CSISTEP), done when it is under EPSILN1. CSI/SOL checks the solution: the perigee altitudes after CSI and CDH against PMINE (the Earth) or PMINM (the Moon), and T1TOT2 and T2TOT3 against TMIN. SCNDSOL, a failed check, starts the second cycle or (after it) goes to ALMXIT with the alarm number in CSIALRM |
 
 Beside them:
 
@@ -473,16 +474,22 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    `make p32-cases` runs the faithful port's test of the LM's
    P32-P35_P72-P75 (its 842 checks against yaAGC digests) through the
    readable tables, then checks the interpretive words against the rope
-   (346), and runs readable and faithful side by side at every key: the
-   keys the parts written so far hold (46 basic and 161 order pairs: bank
-   35, and bank 34 from CSI/A to CIRCL) from 4,096 states each, the
+   (618), and runs readable and faithful side by side at every key: the
+   keys the parts written so far hold (46 basic and 282 order pairs: bank
+   35, and bank 34 from CSI/A to SCNDSOL) from 4,096 states each, the
    others (the rest of bank 34, which the binding hands to the faithful
    port) from 16, where both sides must be the faithful routine's. At ALMXIT's SLOAD* ALARM/TB -1,1 X1 is often -1 to
    -7 (the alarm numbers) and now and then -11 to 3: the faithful port
    carries only ALARM/TB's seven words, so both ports refuse a load from
    outside them. P33/P73E's DSU BPL branches back to itself: the faithful
    pair runs round that loop in one call (to 4,096 passes), and so does
-   the binding.
+   the binding. At CSI/SOL's two DSU* PMINE -2,1 X1 is often -2 or -10
+   (RTX1 at the Earth and the Moon) and now and then -12 to 2: the
+   faithful port carries only PMINE and PMINM, so both ports refuse a
+   load from anywhere else. The faithful pair at 34,2405 (STORE TCDH,
+   where a CHANG2 restart resumes) runs a store past the end of the
+   E-bank window, which the binding refuses, as the faithful port's other
+   routines do; the gate counts those cases.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
