@@ -48,7 +48,8 @@ extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, P
     CMPOS_CODE, RENDISP_CODE, RENDISP7_CODE, RENDISP3_CODE, RENDISP4_CODE, SETINTG_CODE,
     CNTCHK_CODE, WAITONE_CODE, WAITONE_AGAIN_CODE, RANGERD_CODE, RANGERD4_CODE, RANGERD3_CODE,
     LIGHTON_CODE, SHIFTNDX_CODE, INITIALW_CODE, CRS61_1_CODE, ASET_CODE, CDULOOP_CODE, STKTEST_CODE,
-    STEP3CK_CODE, MANUEXIT_CODE, R63_CODE, S22_1_CODE, S22SHIFT_CODE, S2231X13_CODE;
+    STEP3CK_CODE, MANUEXIT_CODE, R63_CODE, S22_1_CODE, S22SHIFT_CODE, S2231X13_CODE,
+    S22_UNKNOWN_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -128,13 +129,14 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
  * GETUM (bank 23, part 4); R22 (bank 34, parts 5 and 6); GOTOV56
  * (fixed-fixed, part 6); R22's subroutines (bank 27, part 7); CRS61.1
  * and R63 (bank 34, part 8); the start of S22.1 (bank 30, part 9) and
- * its subroutines (bank 31). */
+ * its subroutines (bank 31); its first pass for an unknown landmark (bank
+ * 30, part 10). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 037u && z >= 02261u && z <= 02624u) ||
-           (bank == 030u && z >= 02000u && z <= 02456u) ||
+           (bank == 030u && z >= 02000u && z <= 02706u) ||
            (bank == 031u && z >= 02332u && z <= 02402u) ||
            (bank == 023u && z >= 03043u && z <= 03131u) ||
            (bank == 034u && z >= 02630u && z <= 03711u) || (bank == 02u && z == 02622u) ||
@@ -299,6 +301,16 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
     /* X1 and X2 (the work area's 046 and 047); S1 (050) any. */
     w[(fixloc + X1_AT) & 03777u] = index_word();
     w[(fixloc + X1_AT + 1u) & 03777u] = index_word();
+    /* In bank 30, often X1 a count S22's loops run on (TIX by 6: 0 to 36),
+     * and now and then any word, which can put their indexed loads in fixed
+     * memory or across 01777. */
+    if (bank == 030u) {
+        k = rnd() % 4u;
+        if (k < 2u)
+            w[(fixloc + X1_AT) & 03777u] = (uint16_t)(rnd() % 7u * 6u);
+        else if (k == 2u)
+            w[(fixloc + X1_AT) & 03777u] = any_word();
+    }
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* S22TOFF and S22TOFF +1, the returns P22's GOTOs take, CADRs in fixed
@@ -419,7 +431,9 @@ static bool store_wraps(uint16_t key, const apollo_overlay_state *start)
  * index registers it set itself, but which the test enters with any: the
  * marks' VLOAD* 0,2 from MARKSTAT's address and their STORE SVMRKDAT
  * +36D,1; CLEARWW5's STORE W +108D,1; S2231X13's VXSC* S223X1 +6,2 and
- * STORE S22UMRL +18D,1; and GETTF's DLOAD* 0,1 from S22LOC's address. An
+ * STORE S22UMRL +18D,1; GETTF's DLOAD* 0,1 from S22LOC's address; and
+ * part 10's loops by X1 (S22NXTU to S22NXXB), which load and store
+ * S22UMRL +18D,1, W +36D,1 to W +162D,1 and S22UUT +18D,1. An
  * indexed load's address (the operand plus the register's complement, end
  * around) below 0100 is in the work area (FIXLOC on), one below 04000 in
  * the E bank it names (01400 + its low 8 bits on). An indexed store's
@@ -427,8 +441,9 @@ static bool store_wraps(uint16_t key, const apollo_overlay_state *start)
  * the registers), and any other in the E bank its bits 8-10 name
  * (PRESTORE, STORE). Where a load's or a store's words cross 01777 the
  * two machines differ as above, and where a store in E bank 0 lands on
- * the interpreter's registers (MPAC to PUSHLOC), which the faithful port
- * keeps apart during a pass; the test counts those states apart too. */
+ * the machine's or the interpreter's registers (words 0 to PUSHLOC), which
+ * the faithful port keeps apart during a pass; the test counts those
+ * states apart too. */
 static bool words_cross(unsigned sum, unsigned fixloc, unsigned size)
 {
     if (sum < 0100u) return fixloc + sum <= 01777u && fixloc + sum + size - 1u > 01777u;
@@ -436,23 +451,29 @@ static bool words_cross(unsigned sum, unsigned fixloc, unsigned size)
     return (sum & 0377u) + size - 1u > 0377u;
 }
 
-static bool indexed_crosses(unsigned written, unsigned x, unsigned fixloc, unsigned size)
+/* The address less one, less the index register: end around where X is
+ * positive, and where it is negative, overflow corrected (ADS ADDRWD). */
+static unsigned indexed_sum(unsigned written, unsigned x)
 {
     unsigned sum = written - 1u + (~x & 077777u);
 
-    if (sum > 077777u) sum = (sum + 1u) & 077777u;
-    return words_cross(sum, fixloc, size);
+    if (sum > 077777u) return (sum + 1u) & 077777u;
+    if ((x & 040000u) && (sum & 040000u)) return sum & 037777u;
+    return sum;
+}
+
+static bool indexed_crosses(unsigned written, unsigned x, unsigned fixloc, unsigned size)
+{
+    return words_cross(indexed_sum(written, x), fixloc, size);
 }
 
 static bool store_crosses(unsigned written, unsigned x, unsigned fixloc)
 {
-    unsigned sum = written - 1u + (~x & 077777u);
+    unsigned sum = indexed_sum(written, x);
 
-    if (sum > 077777u) sum = (sum + 1u) & 077777u;
     if (sum & 040000u) return true; /* below FIXLOC, as far as the registers */
     if (sum < 045u) return fixloc + sum <= 01777u && fixloc + sum + 5u > 01777u;
-    if (!(sum & 03400u) && (sum & 0377u) + 5u >= MPAC_AT && (sum & 0377u) <= PUSHLOC_AT)
-        return true;
+    if (!(sum & 03400u) && (sum & 0377u) <= PUSHLOC_AT) return true; /* the registers */
     return (sum & 0377u) + 5u > 0377u;
 }
 
@@ -475,6 +496,16 @@ static bool s22_wraps(uint16_t key, const apollo_overlay_state *start)
     case 030u * 1024u + 0330u: here = store_crosses(03604u, x1, fixloc); break;
     case 030u * 1024u + 0375u: /* CLEARWW5's store */
     case 030u * 1024u + 0400u: here = store_crosses(02555u, x1, fixloc); break;
+    case 030u * 1024u + 0525u: /* part 10's loops by X1: S22NXTU, S22NXXA, S22NXXB */
+    case 030u * 1024u + 0562u:
+    case 030u * 1024u + 0607u: here = indexed_crosses(03524u, x1, fixloc, 6u); break;
+    case 030u * 1024u + 0531u: here = store_crosses(03524u, x1, fixloc); break;
+    case 030u * 1024u + 0536u: here = indexed_crosses(02445u, x1, fixloc, 6u); break;
+    case 030u * 1024u + 0542u: here = store_crosses(02621u, x1, fixloc); break;
+    case 030u * 1024u + 0570u: /* S22UUT +18D,1 */
+    case 030u * 1024u + 0614u: here = store_crosses(01301u, x1, fixloc); break;
+    case 030u * 1024u + 0612u: here = indexed_crosses(01301u, x1, fixloc, 6u); break;
+    case 030u * 1024u + 0617u: here = store_crosses(02643u, x1, fixloc); break;
     case 031u * 1024u + 0341u: /* S2231NXT */
         here = indexed_crosses(031u, x2, fixloc, 2u) || store_crosses(03524u, x1, fixloc);
         break;
@@ -616,6 +647,7 @@ static const struct interpretive_code *const codes[] = {
     &S22_1_CODE,
     &S22SHIFT_CODE,
     &S2231X13_CODE,
+    &S22_UNKNOWN_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -647,7 +679,7 @@ int main(int argc, char **argv)
                      &readable_pairs);
     printf("cm-p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
            "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
-           "%u loads and stores across 01777 (or over the interpreter's registers) counted "
+           "%u loads and stores across 01777 (or over the registers) counted "
            "apart, %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p20_p25_basic.count + cm_p20_p25_interpretive.count, readable_basic, readable_pairs,

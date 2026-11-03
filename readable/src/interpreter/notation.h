@@ -56,6 +56,7 @@
 #define ORDER_SXA_2      0042u /* SXA,2 */
 #define ORDER_SLOAD_STAR 0043u /* SLOAD* */
 #define ORDER_SL2R       0044u
+#define ORDER_VSL3       0044u /* (SL2R's code too) */
 #define ORDER_SSP        0045u
 #define ORDER_SXA_1      0046u /* SXA,1 */
 #define ORDER_ACOS       0050u
@@ -80,6 +81,7 @@
 #define ORDER_TIX_1      0076u /* TIX,1 */
 #define ORDER_DCOMP      0100u
 #define ORDER_DMPR       0101u
+#define ORDER_XAD_2      0102u /* XAD,2 */
 #define ORDER_DMPR_STAR  0103u /* DMPR* */
 #define ORDER_SL3R       0104u
 #define ORDER_VCOMP      0100u /* (DCOMP's code too) */
@@ -101,6 +103,7 @@
 #define ORDER_VSR_STAR   0117u
 #define ORDER_UNIT       0120u
 #define ORDER_VAD        0121u
+#define ORDER_VAD_STAR   0123u /* VAD* */
 #define ORDER_BZE        0122u
 #define ORDER_SL3        0124u
 #define ORDER_VSU        0125u
