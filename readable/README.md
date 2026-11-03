@@ -162,6 +162,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | CM P20-P25, part 17: the measurement's incorporation | `P20-P25.agc` (CM pp. 625-626) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R23.55 (bank 31): the line of sight and the star's direction corrected by the CSM's velocity (UCLSTAR, USSTAR), BVECTOR, and the angle between them. The trunnion angle changed to ones' complement (MSU), less the optics calibration, gives the measured angle's difference (DELTAQ), and the range its variance; INCORP1 works out the state vector deviation, and verb 06 noun 49 shows its position and velocity lengths: proceed incorporates it (INCORP2), terminate or enter ends P23 |
 | CM P20-P25, part 18: the horizon | `P20-P25.agc` (CM pp. 627-630) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | HORIZ (bank 31), when no landmark is marked: a frame from the star's direction and the CSM's position (UBAR0-UBAR2), the earth (its radius under the CSM, GETERAD, and AEARTH, plus HORIZALT) or the moon (RADMOON) as an ellipse in it, and of the two points where lines from the CSM touch it, the near or far horizon (NORFHOR); DIVIDE, a quotient of normalized numbers and the shift it needs; RECT.1, the CSM's state vector from the permanent one (conic plus deviation), and ZMEASURE set when the planet measured is not the state vector's |
 | CM P20-P25, part 19: the star or planet P23 marks on, and V67, the W-matrix monitor (P20-P25 whole) | `P20-P25.agc` (CM pp. 631-634) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | LOWMEMRY (bank 14) loads a star from the catalog (CATLOG less X1). LDPLANET (bank 16) flashes verb 06 noun 88 for a planet's direction to be loaded, and stores it as a unit vector in STARSAV2 for P23. V67CALL (bank 40) calls V67WW, which waits its turn for the integration (INTSTALL), sums the squares of the W-matrix's position and velocity parts a vector at a time (NXPOSVEL), takes their square roots (DPPOSMAX on an overflow, the position at most FT99999) and wakes the integration (INTWAKE); noun 99 shows them, and by R3 the loaded values become the rendezvous, orbital or midcourse W-matrix's initial ones, ORBWFLAG and RENDWFLG cleared |
+| P30 | `P30_P37.agc` (LM pp. 614-617) | [`src/p30/`](src/p30/) | P30, the external delta-V targeting program (bank 35): the update and track flags set, then through VNPOOH the time of ignition (verb 06 noun 33) and the delta V in local vertical coordinates (verb 06 noun 81) asked for, the update flag reset, and S30.1 called; PARAM30 shows apogee, perigee and delta V (verb 06 noun 42) and goes on to P40's REVN1645 with XDELVFLG set. S30.1 (bank 34) takes the LM's state vector to the time of ignition (LEMPREC), turns the delta V into inertial coordinates (DELVSIN) by the local vertical frame there, and finds its length and the orbit's perigee and apogee after it (PERIAPO1, SHIFTR1, MAXCHK). The faithful port has the file twice, a compiled copy and an older module with the same keys: the readable file takes the place of both |
 
 Beside them:
 
@@ -439,6 +440,11 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    readable refusal leaves everything as it found it. What the readable
    machine reads past 01777 (fixed memory, as the AGC) is not checked
    against anything there.
+   `make p30-cases` runs the faithful port's test of the LM's P30 (its
+   1,127 checks against yaAGC digests) through the readable tables, then
+   checks the interpretive words against the rope (54), and runs readable
+   and faithful side by side at every key (8 basic and 27 order pairs)
+   from 4,096 states each. The older module's tables must be empty.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
