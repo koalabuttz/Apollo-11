@@ -82,8 +82,8 @@ static word channel_in(unsigned number)
     return 0;
 }
 
-/* RANGERD's WAND and WOR of channel 13. As yaAGC writes it, bits 12-14
- * set the HANDRUPT traps and are not kept. */
+/* RANGERD's WAND and WOR of channel 13. As the faithful port's io record
+ * keeps it, bits 12-14 set the HANDRUPT traps and are not kept. */
 static void channel_out(unsigned number, word value)
 {
     if (number != 013u) not_modelled(); /* the readable parts write no other channel */

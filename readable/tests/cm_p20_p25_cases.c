@@ -652,7 +652,15 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             ran += sf == EXEC_OK;
             if (written && (load_wraps(key, &start, &fa, &ra) || store_wraps(key, &start) ||
                             s22_wraps(key, &start))) {
-                /* (counted apart) */
+                /* Counted apart: the words read or written differ, but
+                 * both sides must run or both refuse, and a readable
+                 * refusal must leave everything as it found it. */
+                if (sf != sr)
+                    why = "counted apart, but only one side ran";
+                else if (sr != EXEC_OK &&
+                         (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
+                          memcmp(&rhw, &hardware, sizeof rhw)))
+                    why = "readable refusal changed the state";
             } else if (!written) { /* the faithful routine on both sides, refusals and all */
                 if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio) ||
                     memcmp(&fhw, &rhw, sizeof fhw))

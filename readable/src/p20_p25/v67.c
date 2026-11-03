@@ -3,25 +3,24 @@
  * MONITOR", verb 67 (V67CALL, bank 31, and ADDPOS, bank 30).
  *
  * V67 shows the astronaut, in noun 99, how big the W-matrix's errors are:
- * the root sum square of its position, velocity and bias (radar angle)
- * diagonal blocks (V67WW). The astronaut can load new values. When any of
- * them changed ("THE SUM OF ALL DIFFERENCES MUST BE ZERO." otherwise),
- * V67FLAG is set, and the new values go in as the W-matrix's initial
- * values (WRENDPOS and WRENDVEL, or WSURFPOS and WSURFVEL on the surface,
- * and WTRUN and WSHAFT). RENDWFLG is cleared, so that the next mark starts
- * the W-matrix again from them.
+ * the root sum square of its words in three groups, position, velocity
+ * and bias (radar angle) (V67WW). The astronaut can load new values.
+ * When any of them changed ("THE SUM OF ALL DIFFERENCES MUST BE ZERO."
+ * otherwise), V67FLAG is set, and the new values go in as the W-matrix's
+ * initial values (WRENDPOS and WRENDVEL, or WSURFPOS and WSURFVEL on the
+ * surface, and WTRUN and WSHAFT). RENDWFLG is cleared, so that the next
+ * mark starts the W-matrix again from them.
  *
  * V67WW runs as a CALL from V67CALL. It first waits its turn for the
  * integration (INTSTALL), since marks change the W-matrix; at the end
  * INTWAKE wakes any job waiting for the integration and returns to
- * V67CALL. Its loop goes down W's diagonal, 6
- * words (a vector) at a time, 9 times: X1 runs 54, 48, ... 6 (TIX,1, step
- * S1 6), and W +54D,1 is W +54D - X1. The squares of the position block
- * (W to W +53D) are summed into WWPOS, those of the velocity block (W
- * +54D to W +107D) into WWVEL, and those of the bias block (W +108D to W
- * +161D) into WWBIAS. Then come the square roots. On an overflow, all
- * three show DPPOSMAX. The position shows at most FT99999 (30479 meters,
- * 99,996 feet).
+ * V67CALL. Its loop goes down W, 6 words (a vector) at a time, 9 times:
+ * X1 runs 54, 48, ... 6 (TIX,1, step S1 6), and W +54D,1 is W +54D - X1.
+ * The squares of the position group (W to W +53D) are summed into WWPOS,
+ * those of the velocity group (W +54D to W +107D) into WWVEL, and those
+ * of the bias group (W +108D to W +161D) into WWBIAS. Then come the
+ * square roots. On an overflow, all three show DPPOSMAX. The position
+ * shows at most FT99999 (30479 meters, 99,996 feet).
  *
  * As in the other parts, a branch or CALL to a place the faithful port
  * keys a routine at ends the pass there. */
@@ -180,7 +179,7 @@ void v67clrf_after_exit(void)
 /* V67WW -- pp. 609-610: the return to S2 (STQ), the overflow indicator
  * cleared (BOV +1), V67FLAG cleared, and its turn for the integration
  * (INTSTALL). The step S1 6, WWPOS, WWVEL and WWBIAS zeroed, X1 54, and
- * the loop (NXPOSVEL): a vector of W's position block squared (VSQ), on
+ * the loop (NXPOSVEL): a vector of W's position group squared (VSQ), on
  * to ADDPOS. */
 static const word v67ww_words[] = {
     ORDERS(STQ, BOV),
@@ -204,8 +203,8 @@ static const word v67ww_words[] = {
     ADDRESS(ADDPOS),
 };
 
-/* ADDPOS -- p. 610: the square added to WWPOS; the velocity block's
- * (W +108D,1) to WWVEL and the bias block's (W +162D,1) to WWBIAS; round
+/* ADDPOS -- p. 610: the square added to WWPOS; the velocity group's
+ * (W +108D,1) to WWVEL and the bias group's (W +162D,1) to WWBIAS; round
  * again (TIX,1 NXPOSVEL). Then the square roots: WWBIAS's "SHIFT FROM
  * INTERNAL SCALING (B+5) TO" "NOUN SCALING (B-5)", WWVEL's and WWPOS's.
  * On an overflow, DPPOSMAX in all three. V67XXX: WWPOS at most FT99999.
