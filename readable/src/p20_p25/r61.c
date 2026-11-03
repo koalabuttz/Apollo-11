@@ -294,6 +294,10 @@ void r61c_l4(void)
     continue_at(BANKJUMP);  /* TCF BANKJUMP */
 }
 
+/* (R61C+L1, after R61C+L4 in the listing, and its constant BIT7+9PV are
+ * not written here: nothing in the program refers to R61C+L1, and the
+ * TCF BANKJUMP before it never falls through, so no key reaches it.) */
+
 /* R65WAIT -- P20LEMWT. */
 void r65wait(void)
 {

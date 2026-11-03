@@ -8,26 +8,25 @@
  *
  * First the words: the readable interpretive code (src/p20_p25/), written
  * in the listing's notation, must be the original program's rope, word for
- * word. Then the keys, which must be the faithful tables', and every key of
- * the parts written so far must run readable code. Then the runs: each
- * readable key from 4,096 states (each other key, which runs the faithful
- * routine through the readable table, from 16), each one of the port's
- * frozen test states (c64-port/tests/lm_p20_p25_vectors.h) entered at the
- * key, most stirred further: MPAC and its mode (MPAC often 0, 1 or -0, as
- * LPS20.2 leaves it), the push-down list and its pointer, the index
- * registers (X1 and X2 as the program sets them, S1 any), A, Q (a return
- * address, or any), MODREG (often 20 or 22), OPTION2 (often 1), RADMODES,
- * the flag words (the rendezvous, track, surface, vehicle update, W matrix
- * and search flags: often one bit changed), channel 33 (its bit 2, the RR
- * auto mode discrete, often as P20 wants it), the vectors and times (any
- * erasable bank's words), NEWJOB, the overflow indicator, now and then any
- * word but the interpreter's own, the latches, or a state the routines
- * refuse (another work area, BBANK not the two banks, a word of 16 bits).
- * Each runs once on each side, as the program's trampoline would call the
- * key's routine. Where either port runs, the other must too, with the same
- * memory and io record, word for word; where the readable one refuses, it
- * must leave everything as it found it; and the faithful routine must run
- * from some state of every readable key. */
+ * word. Then the keys, which must be the faithful tables', and every key
+ * must run readable code. Then the runs: each key from 4,096 states, each
+ * one of the port's frozen test states
+ * (c64-port/tests/lm_p20_p25_vectors.h) entered at the key, most stirred
+ * further: MPAC and its mode (MPAC often 0, 1 or -0, as LPS20.2 leaves it),
+ * the push-down list and its pointer, the index registers (X1 and X2 as the
+ * program sets them, S1 any), A, Q (a return address, or any), MODREG
+ * (often 20 or 22), OPTION2 (often 1), RADMODES, the flag words (the
+ * rendezvous, track, surface, vehicle update, W matrix and search flags:
+ * often one bit changed), channel 33 (its bit 2, the RR auto mode discrete,
+ * often as P20 wants it), the vectors and times (any erasable bank's
+ * words), NEWJOB, the overflow indicator, now and then any word but the
+ * interpreter's own, the latches, or a state the routines refuse (another
+ * work area, BBANK not the two banks, a word of 16 bits). Each runs once on
+ * each side, as the program's trampoline would call the key's routine.
+ * Where either port runs, the other must too, with the same memory and io
+ * record, word for word; where the readable one refuses, it must leave
+ * everything as it found it; and the faithful routine must run in at least
+ * 1 of 16 of each key's states. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -142,10 +141,13 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The parts written so far: parts 1 to 14, bank 24 to LRS22.2, bank 32
- * from ORBCHG3 to LRS22.1, bank 26's LSR22.3 to LGCUPDTE, CLRADMOD in fixed-fixed, bank 23's R61 (to READCDUD), MAGSUB
- * to FLIP in fixed-fixed, bank 25 from RRTURNON to LPS20.2, and R12LITES
- * to VLIGHT. */
+/* Where the file's keys are (all of them readable, parts 1 to 19): bank
+ * 24 to LRS22.2; bank 32 from ORBCHG3 to LRS22.1; CLRADMOD and GOTOV56 in
+ * fixed-fixed; R29 in bank 33; V67CALL in bank 31 and ADDPOS in bank 30;
+ * bank 23's R61; bank 26 from LSR22.3 on (LRS24.1 among them); MAGSUB
+ * to FLIP in fixed-fixed; and bank 25 from RRTURNON to LPS20.2, with
+ * R12LITES to VLIGHT. parts_unwritten() checks the ranges against the
+ * tables. */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
@@ -514,7 +516,14 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
             if (written && interpretive && load_wraps(key, &start)) {
-                /* (counted apart) */
+                /* Counted apart: the words read differ, but both sides
+                 * must run or both refuse, and a readable refusal must
+                 * leave everything as it found it. */
+                if (sf != sr)
+                    why = "counted apart, but only one side ran";
+                else if (sr != EXEC_OK &&
+                         (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
+                    why = "readable refusal changed the state";
             } else if (!written) { /* the faithful routine on both sides, refusals and all */
                 if (sf != sr || memcmp(&fa, &ra, sizeof fa) || memcmp(&fio, &rio, sizeof fio))
                     why = "the table does not run the faithful routine";
