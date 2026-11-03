@@ -19,9 +19,20 @@
  *   part 6, r22_update.c and gotov56.c: R22 from REND12 (pp. 582-585),
  *   and GOTOV56 (pp. 631-632);
  *   part 7, r22_subroutines.c: R22's subroutines in bank 27, SETINTG to
- *   INITIALW (pp. 586-589).
- * The binding (src/binding/cm_p20_p25_routines.c) runs the keys these
- * parts write, and the faithful port's routines at the others.
+ *   INITIALW (pp. 586-589);
+ *   part 8, crs61.c: CRS61.1 and R63 (pp. 590-597);
+ *   parts 9 to 12, s22.c, s22_landmark.c, s22_incorporate.c and
+ *   s22_display.c: S22.1, the orbital navigation routine (pp. 598-610);
+ *   part 13, w_nine_to_six.c: the W matrix from nine dimensions to six
+ *   (pp. 610-614);
+ *   part 14, v89.c: V89 (pp. 616-618);
+ *   parts 15 to 17, p23.c, p23_marks.c and p23_incorporate.c: P23 (pp.
+ *   619-626);
+ *   part 18, horiz.c: HORIZ, DIVIDE and RECT.1 (pp. 627-630);
+ *   part 19, p23_targets.c and v67.c: LOWMEMRY, LDPLANET and V67 (pp.
+ *   631-634).
+ * The binding (src/binding/cm_p20_p25_routines.c) runs every key of the
+ * file.
  *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
@@ -423,6 +434,31 @@ void r23_end(void);
 extern const struct interpretive_code HORIZ_CODE;
 extern const struct interpretive_code DIVIDE_CODE;
 extern const struct interpretive_code RECT_1_CODE;
+
+/* ---- Part 19: LOWMEMRY and LDPLANET (p23_targets.c), and V67 (v67.c) ---- */
+
+extern const struct interpretive_code LOWMEMRY_CODE;
+extern const struct interpretive_code LDPLANET_CODE;
+extern const struct interpretive_code LDPLANET_LOAD_CODE;
+extern const struct interpretive_code V67CALL_CODE;
+extern const struct interpretive_code V06N9933_CODE;
+extern const struct interpretive_code V6N99INP_CODE;
+extern const struct interpretive_code V67WW_CODE;
+
+void ldplanet_after_exit(void);
+void ldplanet_terminate(void);
+void ldplanet_intpret(void);
+void ldplanet_proceed(void);
+void ldplanet_enter(void);
+void v67call(void);
+void v06n99ds(void);
+void v06n99ds_terminate(void);
+void v06n9933(void);
+void v06n99ds_proceed(void);
+void v06n99ds_loaded(void);
+void v06n9933_after_exit(void);
+void v67exitx_after_exit(void);
+void v67xxx_after_exit(void);
 
 #endif
 

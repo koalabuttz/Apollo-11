@@ -53,7 +53,8 @@ extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, P
     S22_981X_CODE, S22EXEX_CODE, S22GTP_CODE, S22F2410_CODE, NINE_DWTO6DW_CODE, ROWDOT_CODE,
     V89RECL_CODE, P23_CODE, P23_00_CODE, P23_17_CODE, P23_20_CODE, P23_30_CODE, P23_55_CODE,
     V94ENTER_CODE, R60CALL_CODE, P23_60_CODE, P23_65_CODE, P23_85_CODE, R23_2_CODE, R23_55_CODE,
-    R23_55_TRUNNION_CODE, R23_8_CODE, HORIZ_CODE, DIVIDE_CODE, RECT_1_CODE;
+    R23_55_TRUNNION_CODE, R23_8_CODE, HORIZ_CODE, DIVIDE_CODE, RECT_1_CODE, LOWMEMRY_CODE,
+    LDPLANET_CODE, LDPLANET_LOAD_CODE, V67CALL_CODE, V06N9933_CODE, V6N99INP_CODE, V67WW_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -139,8 +140,8 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
  * its end and two subroutines (bank 30, part 12); 9DWTO6DW and ROWDOT
  * (bank 30, part 13); V89 (bank 34, part 14); P23's start and R23.10 (bank
  * 31, part 15); P23's marks and POINTAXS (bank 31, part 16); and the rest
- * of P23 (bank 31, part 17); and HORIZ, DIVIDE and RECT.1 (bank 31, part
- * 18). */
+ * of P23 (bank 31, part 17); HORIZ, DIVIDE and RECT.1 (bank 31, part
+ * 18); and LOWMEMRY, LDPLANET and V67 (banks 14, 16 and 40, part 19). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
@@ -150,7 +151,9 @@ static bool in_written_part(uint16_t key)
            (bank == 031u && z >= 02332u && z <= 03435u) ||
            (bank == 023u && z >= 03043u && z <= 03131u) ||
            (bank == 034u && z >= 02630u && z <= 03760u) || (bank == 02u && z == 02622u) ||
-           (bank == 027u && z >= 02343u && z <= 02613u);
+           (bank == 027u && z >= 02343u && z <= 02613u) || (bank == 014u && z == 02000u) ||
+           (bank == 016u && z >= 02000u && z <= 02015u) ||
+           (bank == 040u && z >= 03624u && z <= 03761u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -321,6 +324,26 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
         else if (k == 2u)
             w[(fixloc + X1_AT) & 03777u] = any_word();
     }
+    /* LOWMEMRY's X1 often 6 times 0 to 38, the faithful port's copy of
+     * the star catalog, and now and then -5 to 243, round its ends. */
+    if (bank == 014u) {
+        k = rnd() % 4u;
+        if (k < 2u)
+            w[(fixloc + X1_AT) & 03777u] = (uint16_t)(rnd() % 39u * 6u);
+        else if (k == 2u) {
+            k = rnd() % 249u;
+            w[(fixloc + X1_AT) & 03777u] = (uint16_t)(k < 5u ? 077777u - (k + 1u) : k - 5u);
+        }
+    }
+    /* V67WW's loop's often 6 to 36 by 6, and now and then any word, which
+     * can put its loads in fixed memory or across 01777. */
+    if (bank == 040u) {
+        k = rnd() % 4u;
+        if (k < 2u)
+            w[(fixloc + X1_AT) & 03777u] = (uint16_t)((1u + rnd() % 6u) * 6u);
+        else if (k == 2u)
+            w[(fixloc + X1_AT) & 03777u] = any_word();
+    }
     /* ROWDOT's DMPR* W,2: X2 now and then any word too. */
     if (key >= 030u * 1024u + 01574u && key <= 030u * 1024u + 01630u && rnd() % 4u == 0u)
         w[(fixloc + X1_AT + 1u) & 03777u] = any_word();
@@ -332,10 +355,19 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* S22TOFF and S22TOFF +1, the returns P22's GOTOs take, CADRs in fixed
-     * memory as the STQs leave them. */
+     * memory as the STQs leave them; now and then a word of the work area
+     * (1 to 044) that holds one, which GOTO takes the CADR from. (Any
+     * erasable word could send the faithful GOTO round a cycle of CADRs,
+     * which it ends by exiting.) */
     if (rnd() % 16u) {
         w[S22TOFF_AT] = fixed_cadr(w[S22TOFF_AT]);
         w[S22TOFF_AT + 1u] = fixed_cadr(w[S22TOFF_AT + 1u]);
+    } else {
+        for (k = 0; k < 2u; ++k) {
+            w[S22TOFF_AT + k] = (uint16_t)(1u + rnd() % 044u);
+            w[(fixloc + w[S22TOFF_AT + k]) & 03777u] =
+                fixed_cadr(w[(fixloc + w[S22TOFF_AT + k]) & 03777u]);
+        }
     }
     /* EGRESS, the return GOTO EGRESS takes, a CADR in fixed memory as the
      * STQs leave it. (One in erasable memory could send the faithful GOTO
@@ -376,7 +408,8 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
  * machine reads the unswitched words 0-4 instead (ai_ea keeps the address in
  * the erasable image). Where MARKDATA is 077 or more, the address is in the
  * E bank instead (01400 + its low 8 bits), and crosses 01777 the same way. The test counts apart the states where a pass makes
- * that load: from GETUM +3, or on into MARKDOWN (written, on either side). */
+ * that load: from GETUM +3 or P23.60 +016 (LXC,1 MARKDATA, VLOAD* 1,1 too),
+ * or on into MARKDOWN (written, on either side). */
 static unsigned wraps;
 
 static unsigned indexed_sum(unsigned written, unsigned x);
@@ -393,6 +426,7 @@ static bool load_wraps(uint16_t key, const apollo_overlay_state *start,
 
     if (!in_work_area && !in_e_bank) return false;
     if (key != 023u * 1024u + 01107u /* GETUM +3 */ &&
+        key != 031u * 1024u + 0657u /* P23.60 +016, the same load */ &&
         !memcmp(&fa->words[MARKDOWN_AT], &w[MARKDOWN_AT], n) &&
         !memcmp(&ra->words[MARKDOWN_AT], &w[MARKDOWN_AT], n))
         return false;
@@ -451,6 +485,17 @@ static bool store_wraps(uint16_t key, const apollo_overlay_state *start)
         return false;
     wraps += wraps_here;
     return wraps_here;
+}
+
+/* LOWMEMRY's load from the star catalog (part 19), CATLOG less X1 in
+ * bank 14: the faithful port carries the catalog's words up to CATLOG
+ * (14,3760) and zeros after it, where the rope has other words (14,3761 to
+ * 14,3763). A load from 14,3754 to 14,3760 reads some of them: the test
+ * counts those states apart. (X1 is then 0 to 4, which no star code gives:
+ * the program's are 6 times 1 to 37.) */
+static bool catalog_end(unsigned sum)
+{
+    return (sum & 074000u) && (sum & 01777u) >= 01754u && (sum & 01777u) <= 01760u;
 }
 
 /* S22.1's indexed loads and stores (part 9), which the program makes with
@@ -556,6 +601,13 @@ static bool s22_wraps(uint16_t key, const apollo_overlay_state *start)
         here = indexed_crosses(031u, x2, fixloc, 2u) || store_crosses(03524u, x1, fixloc);
         break;
     case 031u * 1024u + 0344u: here = store_crosses(03524u, x1, fixloc); break;
+    case 040u * 1024u + 01717u: /* V67WW's loop (part 19): W +36D,1 and W +90D,1 */
+        here = indexed_crosses(02445u, x1, fixloc, 6u);
+        break;
+    case 040u * 1024u + 01724u: here = indexed_crosses(02533u, x1, fixloc, 6u); break;
+    case 014u * 1024u: /* LOWMEMRY's VLOAD* CATLOG,1 */
+        here = catalog_end(indexed_sum(031761u, x1));
+        break;
     case 031u * 1024u + 0351u: /* GETTF */
         here = words_cross(w[S22LOC_AT] & 077777u, fixloc, 2u);
         break;
@@ -724,6 +776,13 @@ static const struct interpretive_code *const codes[] = {
     &HORIZ_CODE,
     &DIVIDE_CODE,
     &RECT_1_CODE,
+    &LOWMEMRY_CODE,
+    &LDPLANET_CODE,
+    &LDPLANET_LOAD_CODE,
+    &V67CALL_CODE,
+    &V06N9933_CODE,
+    &V6N99INP_CODE,
+    &V67WW_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

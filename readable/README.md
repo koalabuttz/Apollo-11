@@ -161,6 +161,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | CM P20-P25, part 16: P23's marks and the line of sight | `P20-P25.agc` (CM pp. 622-624) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | P23.60 (bank 31), after the marks: the mark's time to MARKTIME, its trunnion angle to TRUNION, the mark data to MARKDOWN for the downlink, and verb 05 noun 71 for the crew, whose proceed (P23.65) checks the codes again and goes on to P23.85. POINTAXS, the vector from the CSM to the horizon or landmark: the W matrix set up on the first pass (INITIALW), the CSM's state vector integrated to the mark's time (INTEGRV), its position shifted by the moon's when the planet measured is not the primary body, and the landmark's position (LALOTORV) or the horizon's (HORIZ) less it |
 | CM P20-P25, part 17: the measurement's incorporation | `P20-P25.agc` (CM pp. 625-626) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R23.55 (bank 31): the line of sight and the star's direction corrected by the CSM's velocity (UCLSTAR, USSTAR), BVECTOR, and the angle between them. The trunnion angle changed to ones' complement (MSU), less the optics calibration, gives the measured angle's difference (DELTAQ), and the range its variance; INCORP1 works out the state vector deviation, and verb 06 noun 49 shows its position and velocity lengths: proceed incorporates it (INCORP2), terminate or enter ends P23 |
 | CM P20-P25, part 18: the horizon | `P20-P25.agc` (CM pp. 627-630) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | HORIZ (bank 31), when no landmark is marked: a frame from the star's direction and the CSM's position (UBAR0-UBAR2), the earth (its radius under the CSM, GETERAD, and AEARTH, plus HORIZALT) or the moon (RADMOON) as an ellipse in it, and of the two points where lines from the CSM touch it, the near or far horizon (NORFHOR); DIVIDE, a quotient of normalized numbers and the shift it needs; RECT.1, the CSM's state vector from the permanent one (conic plus deviation), and ZMEASURE set when the planet measured is not the state vector's |
+| CM P20-P25, part 19: the star or planet P23 marks on, and V67, the W-matrix monitor (P20-P25 whole) | `P20-P25.agc` (CM pp. 631-634) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | LOWMEMRY (bank 14) loads a star from the catalog (CATLOG less X1). LDPLANET (bank 16) flashes verb 06 noun 88 for a planet's direction to be loaded, and stores it as a unit vector in STARSAV2 for P23. V67CALL (bank 40) calls V67WW, which waits its turn for the integration (INTSTALL), sums the squares of the W-matrix's position and velocity parts a vector at a time (NXPOSVEL), takes their square roots (DPPOSMAX on an overflow, the position at most FT99999) and wakes the integration (INTWAKE); noun 99 shows them, and by R3 the loaded values become the rendezvous, orbital or midcourse W-matrix's initial ones, ORBWFLAG and RENDWFLG cleared |
 
 Beside them:
 
@@ -405,14 +406,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    so that the case where nothing changed is tested.
    `make cm-p20-p25-cases` runs the faithful port's test of the CM's
    P20-P25 (its 1,993 checks against yaAGC digests) through the readable
-   tables, then checks the interpretive words against the rope (1,791 so
-   far), and runs readable and faithful side by side at every key the parts
-   have written (230 basic and 837 order pairs) from 4,096 states each, and
-   at the others (which run the faithful routines through the readable
-   tables) from 16. The states carry each frozen case's channels, and now
-   and then the program has no hardware record, which every routine of
+   tables, then checks the interpretive words against the rope (1,884),
+   and runs readable and faithful side by side at every key (244 basic and
+   884 order pairs) from 4,096 states each. The states carry each frozen
+   case's channels, and now and then the program has no hardware record,
+   which every routine of
    the file refuses. S22TOFF and S22TOFF +1, the returns P22's GOTOs take,
-   are mostly CADRs in fixed memory, as the STQs leave them, and EGRESS,
+   are mostly CADRs in fixed memory, as the STQs leave them (else words
+   of the work area that hold one), and EGRESS,
    Q611, Q6111, POINTEX and the work area's QPRET always are (a CADR in erasable
    memory could send the faithful GOTO round a cycle, which it ends by
    exiting); MRKBUF1 is now and then -1, no mark, MPAC +0 or 1, CRS61.1's
@@ -425,8 +426,13 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    program never leaves there, and S22.1's indexed loads and stores, which
    the test enters with any index registers (a store in E bank 0 can also
    land on the machine's or the interpreter's registers, which the
-   faithful port keeps apart during a pass). In bank 30, X1 is often a
-   count S22's loops run on (0 to 36 by 6), and now and then any word.
+   faithful port keeps apart during a pass), and V67WW's loads in its
+   loop. In bank 30, X1 is often a count S22's loops run on (0 to 36 by
+   6), and now and then any word; in bank 40, V67WW's (6 to 36 by 6, or
+   any word); in bank 14, LOWMEMRY's (6 times 0 to 38, or -5 to 243). The
+   faithful port carries the
+   star catalog only up to CATLOG and zeros after it, so a LOWMEMRY load
+   reaching past CATLOG (X1 0 to 4, no star's) is counted apart too.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

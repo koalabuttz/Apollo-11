@@ -385,6 +385,20 @@ static const struct basic_entry {
     {KEY(031u, R23_6 + 010u), r23_6_after_blanket, false},
     {KEY(031u, R23_6 + 012u), r23_6_after_phaschng, false},
     {KEY(031u, R23_END), r23_end, false},
+    {KEY(016u, LDPLANET + 1u), ldplanet_after_exit, false},
+    {KEY(016u, LDPLANET + 4u), ldplanet_terminate, false},
+    {KEY(016u, LDPLANET + 5u), ldplanet_proceed, true},
+    {KEY(016u, LDPLANET + 6u), ldplanet_enter, true},
+    {KEY(016u, LDPLANET + 7u), ldplanet_intpret, true},
+    {KEY(040u, V67CALL), v67call, true},
+    {KEY(040u, V06N99DS), v06n99ds, false},
+    {KEY(040u, V06N99DS + 3u), v06n99ds_terminate, false},
+    {KEY(040u, V06N99DS + 4u), v06n99ds_proceed, true},
+    {KEY(040u, V06N99DS + 5u), v06n99ds_loaded, true},
+    {KEY(040u, V06N9933), v06n9933, true},
+    {KEY(040u, V06N9933 + 7u), v06n9933_after_exit, false},
+    {KEY(040u, V06N9933 + 042u), v67exitx_after_exit, false},
+    {KEY(040u, V67XXX + 013u), v67xxx_after_exit, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -480,6 +494,13 @@ static const struct interpretive_code *const codes[] = {
     &HORIZ_CODE,
     &DIVIDE_CODE,
     &RECT_1_CODE,
+    &LOWMEMRY_CODE,
+    &LDPLANET_CODE,
+    &LDPLANET_LOAD_CODE,
+    &V67CALL_CODE,
+    &V06N9933_CODE,
+    &V6N99INP_CODE,
+    &V67WW_CODE,
 };
 
 /* The table of bank that address is in, or none. */
@@ -543,13 +564,28 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
  * DLOAD* 0,1 load from the mark data (an index register its address's complement): the
  * faithful port takes those words from erasable memory only, ADDRWD below
  * 02000. So too 9DWTO6DW's two BDSU* EMATRIX +40D,1 (X1 from LXA,1 9DWP in
- * the same pass) and ROWDOT1's DMPR* W,2, each its pass's last operand. */
+ * the same pass) and ROWDOT1's DMPR* W,2, each its pass's last operand,
+ * and V67WW's two VLOAD* W +36D,1 and W +90D,1 (NXPOSVEL's loop), each
+ * before a VSQ, which has none. */
 static bool erasable_only(uint16_t key)
 {
     return key == KEY(030u, PROG22C) || key == KEY(023u, GETUM + 3u) ||
            key == KEY(031u, S2231X13 + 017u) || key == KEY(030u, NINE_DWTO6DW + 0105u) ||
            key == KEY(030u, NINE_DWTO6DW + 0151u) || key == KEY(030u, ROWDOT + 011u) ||
-           key == KEY(031u, P23_60 + 016u);
+           key == KEY(031u, P23_60 + 016u) || key == KEY(040u, V67WW + 016u) ||
+           key == KEY(040u, V67WW + 023u);
+}
+
+/* LOWMEMRY's VLOAD* CATLOG,1 loads a star from the catalog in fixed
+ * memory, bank 14. The faithful port carries only the words a load of
+ * CATLOG less 0 to 228 reads (14,3414 to 14,3765) and refuses a load from
+ * fixed memory outside them. */
+static bool outside_star_catalog(uint16_t key)
+{
+    unsigned first = (I_CATLOG & 01777u) - 38u * 6u;
+
+    if (key != KEY(014u, LOWMEMRY) || ADDRWD < 02000u) return false;
+    return (ADDRWD & 01777u) < first || (ADDRWD & 01777u) + 6u > first + 234u;
 }
 
 /* S22's loops by X1 load the same way (S22NXTU's, S22NXXA's and S22NXXB's
@@ -615,6 +651,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     kept = *io;
     status = one_pass(program, state, io, code);
     if (status == EXEC_OK && erasable_only(key) && ADDRWD >= 02000u) status = EXEC_OUT_OF_SCOPE;
+    if (status == EXEC_OK && outside_star_catalog(key)) status = EXEC_OUT_OF_SCOPE;
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;

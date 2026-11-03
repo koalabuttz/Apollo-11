@@ -3093,6 +3093,18 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define HORIZ  ((word)K_HORIZ)
 #define DIVIDE ((word)K_DIVIDE)
 #define RECT_1 ((word)K_RECT_1)
+
+/* Part 19, LOWMEMRY and LDPLANET (banks 14 and 16), and V67 (bank 40). The
+ * V67 words (WWPOS, WWVEL and WWOPT) are named by ADDRESS_OF. */
+#define LOWMEMRY ((word)K_LOWMEMRY)
+#define LDPLANET ((word)K_LDPLANET)
+#define VNPLAN23 ((word)KW_VNPLAN23) /* VN 0688 */
+#define V67CALL  ((word)K_V67CALL)
+#define V06N99DS ((word)K_V06N99DS)
+#define V06N9933 ((word)K_V06N9933)
+#define V67WW    ((word)K_V67WW)
+#define V67XXX   ((word)K_V67XXX)
+#define V06N99A  ((word)KW_V06N99A) /* VN 0699 */
 #endif
 
 /* NO.CORES + 1 core sets. */
