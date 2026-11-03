@@ -402,6 +402,22 @@ void p23_65_after_exit(void);
 void r23_2_after_exit(void);
 void r23_2_after_phaschng(void);
 
+/* ---- Part 17: R23.55 to R23.END, the incorporation (p23_incorporate.c) ---- */
+
+extern const struct interpretive_code R23_55_CODE;
+extern const struct interpretive_code R23_55_TRUNNION_CODE;
+extern const struct interpretive_code R23_8_CODE;
+
+void r23_55_after_exit(void);
+void r23_6(void);
+void r23_6_terminate(void);
+void r23_6_proceed(void);
+void r23_6_enter(void);
+void r23_6_blank(void);
+void r23_6_after_blanket(void);
+void r23_6_after_phaschng(void);
+void r23_end(void);
+
 #endif
 
 #endif

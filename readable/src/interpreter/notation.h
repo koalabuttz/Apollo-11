@@ -94,6 +94,7 @@
 #define ORDER_SR         0115u /* (SL, SLR and SRR too: the general shifts, by their address) */
 #define ORDER_SL         0115u
 #define ORDER_VSL        0115u /* (a vector's general shift: SL's code, by MODE) */
+#define ORDER_VSR        0115u
 #define ORDER_SLR        0115u
 #define ORDER_XSU_1      0116u /* XSU,1 */
 #define ORDER_VSL_STAR   0117u /* VSL* (a general shift, indexed) */
