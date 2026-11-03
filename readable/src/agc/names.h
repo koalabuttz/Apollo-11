@@ -3080,6 +3080,14 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define P23_85 ((word)K_P23_85)
 #define R23_2  ((word)K_R23_2)
 #define V05N71 ((word)KW_V05N71) /* VN 0571 */
+/* Part 17, R23.55 to R23.END, the measurement's incorporation (bank 31).
+ * TRUNION and MPAC are named by ADDRESS_OF. */
+#define R23_55  ((word)K_R23_55)
+#define R23_6   ((word)K_R23_6)
+#define R23_7   ((word)K_R23_7)
+#define R23_END ((word)K_R23_END)
+#define V6N49   ((word)KW_V6N49)   /* VN 0649 */
+#define VARSUBL ((word)KW_VARSUBL) /* DEC 0 */
 #endif
 
 /* NO.CORES + 1 core sets. */

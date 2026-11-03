@@ -159,6 +159,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | CM P20-P25, part 14: verb 89, the CSM pointed at the LM | `P20-P25.agc` (CM pp. 616-618) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | V89CALL (bank 34), keyed in during P00: the IMU checked (R02BOTH), and verb 04 noun 06 flashed for the crew to choose the axis to point, the preferred one (55 degrees from +X) or +X, which sets or resets PRFTRKAT for R63. V89RECL: R63 works out the gimbal angles for a minute from now, verb 06 noun 18 shows them, and the crew recycles, terminates, or proceeds to the maneuver (R60CSM) |
 | CM P20-P25, part 15: the start of P23, midcourse navigation | `P20-P25.agc` (CM pp. 619-622 and 627) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | P23 (bank 31) leaves rendezvous navigation, sets up restart group 2 and clears its flags; with the IMU unaligned it calibrates the optics (R57) and aligns the IMU (R53). Verb 05 noun 70 asks for the star, landmark and horizon codes, which P23.15 checks: the earth or the moon (LUNAFLAG), the near or far horizon (NORFHOR), the star's vector from the catalog, the landmark's coordinates (P22SUBRB); a code out of range lights the operator error lamp (R23.10) and asks again. P23.30: with no star, the planet's vector instead; verb 50 noun 25 asks the crew to maneuver, and V94ENTER points the vehicle's axis along the line of sight (POINTAXS, R60CSM) |
 | CM P20-P25, part 16: P23's marks and the line of sight | `P20-P25.agc` (CM pp. 622-624) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | P23.60 (bank 31), after the marks: the mark's time to MARKTIME, its trunnion angle to TRUNION, the mark data to MARKDOWN for the downlink, and verb 05 noun 71 for the crew, whose proceed (P23.65) checks the codes again and goes on to P23.85. POINTAXS, the vector from the CSM to the horizon or landmark: the W matrix set up on the first pass (INITIALW), the CSM's state vector integrated to the mark's time (INTEGRV), its position shifted by the moon's when the planet measured is not the primary body, and the landmark's position (LALOTORV) or the horizon's (HORIZ) less it |
+| CM P20-P25, part 17: the measurement's incorporation | `P20-P25.agc` (CM pp. 625-626) | [`src/p20_p25_cm/`](src/p20_p25_cm/) | R23.55 (bank 31): the line of sight and the star's direction corrected by the CSM's velocity (UCLSTAR, USSTAR), BVECTOR, and the angle between them. The trunnion angle changed to ones' complement (MSU), less the optics calibration, gives the measured angle's difference (DELTAQ), and the range its variance; INCORP1 works out the state vector deviation, and verb 06 noun 49 shows its position and velocity lengths: proceed incorporates it (INCORP2), terminate or enter ends P23 |
 
 Beside them:
 
@@ -403,9 +404,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    so that the case where nothing changed is tested.
    `make cm-p20-p25-cases` runs the faithful port's test of the CM's
    P20-P25 (its 1,993 checks against yaAGC digests) through the readable
-   tables, then checks the interpretive words against the rope (1,520 so
+   tables, then checks the interpretive words against the rope (1,599 so
    far), and runs readable and faithful side by side at every key the parts
-   have written (221 basic and 712 order pairs) from 4,096 states each, and
+   have written (230 basic and 755 order pairs) from 4,096 states each, and
    at the others (which run the faithful routines through the readable
    tables) from 16. The states carry each frozen case's channels, and now
    and then the program has no hardware record, which every routine of
