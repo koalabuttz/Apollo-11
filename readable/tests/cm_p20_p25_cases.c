@@ -9,11 +9,10 @@
  * First the words: the readable interpretive code (src/p20_p25_cm/),
  * written in the listing's notation, must be the original program's rope,
  * word for word. Then the keys, which must be the faithful tables', and
- * every key of the parts written so far must run readable code. Then the
- * runs: each readable key from 4,096 states (each other key, which runs
- * the faithful routine through the readable table, from 16), each one of
- * the port's frozen test states (c64-port/tests/cm_p20_p25_vectors.h, with
- * its channels) entered at the key, most stirred further: MPAC and its
+ * every key must run readable code (the file is whole). Then the runs:
+ * each key from 4,096 states, each one of the port's frozen test states
+ * (c64-port/tests/cm_p20_p25_vectors.h, with its channels) entered at the
+ * key, most stirred further: MPAC and its
  * mode, the push-down list and its pointer, the index registers (X1 and X2
  * as the program sets them, S1 any), A, Q (a return address, or any), the
  * flag words (often one bit changed: P20's track flag and REFSMMAT flag
@@ -86,8 +85,7 @@ bool cm_p20_p25_readable(uint16_t key, bool order_pair);
 #define Q6111_AT    03705u /* E7,1705: R63's return, a CADR */
 #define POINTEX_AT  01150u /* POINTAXS's return, a CADR */
 
-#define CASES       4096u
-#define OTHER_CASES 16u
+#define CASES 4096u
 
 static uint32_t seed = 2020u;
 static uint16_t rnd(void)
@@ -625,10 +623,10 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
         bool written = cm_p20_p25_readable(key, interpretive != 0);
-        unsigned ran = 0, bad = 0, cases = written ? CASES : OTHER_CASES;
+        unsigned ran = 0, bad = 0;
 
         *readable_keys += written;
-        for (n = 0; n < cases; ++n) {
+        for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
             cm_native_io io, fio, rio;
             agc_hardware hardware, fhw, rhw;
@@ -687,13 +685,13 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
-        /* Each written key's faithful routine must run in at least 1 of
-         * 16 states, so that a change to the states cannot quietly leave
-         * a key with a handful of live ones. */
-        if (written && ran < cases / 16u && bad == 0u) {
+        /* Each key's faithful routine must run in at least 1 of 16
+         * states, so that a change to the states cannot quietly leave a
+         * key with a handful of live ones. */
+        if (ran < CASES / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states (fewer than 1 in "
                    "16)\n",
-                   key / 1024u, z, ran, cases);
+                   key / 1024u, z, ran, CASES);
             ++bad;
         }
         *runs += ran;
@@ -820,12 +818,20 @@ int main(int argc, char **argv)
     failures += keys(&cm_p20_p25_basic, &faithful_cm_p20_p25_basic, 0, &runs, &readable_basic);
     failures += keys(&cm_p20_p25_interpretive, &faithful_cm_p20_p25_interpretive, 1, &runs,
                      &readable_pairs);
+    /* The file is whole: every key runs a readable routine (the binding
+     * no longer hands any to the faithful tables). */
+    if (readable_basic + readable_pairs != cm_p20_p25_basic.count + cm_p20_p25_interpretive.count) {
+        printf("FAIL: %u keys without a readable routine\n", cm_p20_p25_basic.count +
+                                                                 cm_p20_p25_interpretive.count -
+                                                                 readable_basic - readable_pairs);
+        ++failures;
+    }
     printf("cm-p20-p25-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each (the others from %u), %u run by the faithful routines, "
+           "pairs) from %u states each, %u run by the faithful routines, "
            "%u loads and stores across 01777 (or over the registers) counted "
            "apart, %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p20_p25_basic.count + cm_p20_p25_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, wraps, failures);
+           CASES, runs, wraps, failures);
     return failures != 0;
 }
