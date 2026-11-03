@@ -33,7 +33,6 @@
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 static void incorporate_changes(void);
-static void s22exex(void);
 
 /* S22SAVET -- p. 603: the mark's time (GETTF): "SAVE PRESENT TIME FOR
  * PIOS". S22I=N: "TEST I=N", in basic code. */
@@ -275,7 +274,7 @@ void s22_display_proceed(void)
     incorporate_changes();
 }
 
-/* S22.1 +0565: enter, "V32E RECYCLE" (S22EXEX). */
+/* S22.1 +0565: enter, "V32E RECYCLE" (S22EXEX, part 12). */
 void s22_display_enter(void)
 {
     tc_at(S22_1 + 0565u);
@@ -301,13 +300,6 @@ void s22_display_after_blanket(void)
 static void incorporate_changes(void)
 {
     tc_at(S22_1 + 0571u);
-    intpret();
-}
-
-/* S22EXEX (a later part): TC INTPRET, on in interpretive code. */
-static void s22exex(void)
-{
-    tc_at(S22EXEX);
     intpret();
 }
 

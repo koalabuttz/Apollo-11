@@ -33,6 +33,7 @@
 #define ORDER_SIGN       0011u
 #define ORDER_AXC_2      0012u /* AXC,2 */
 #define ORDER_VSR1       0014u
+#define ORDER_SR1R       0014u /* (VSR1's code too) */
 #define ORDER_VXSC       0015u
 #define ORDER_AXC_1      0016u /* AXC,1 */
 #define ORDER_VXSC_STAR  0017u /* VXSC* */

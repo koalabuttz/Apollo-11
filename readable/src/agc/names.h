@@ -3029,6 +3029,10 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define S22F244X  ((word)K_S22F244X)
 #define S22EXEX   ((word)K_S22EXEX)
 #define V06N49EE  ((word)KW_V06N49EE) /* VN 0649 */
+
+/* Part 12, S22.1's end: the landmark's position shown (bank 30). */
+#define S22_981X ((word)K_S22_981X)
+#define S22GTP   ((word)K_S22GTP)
 #endif
 
 /* NO.CORES + 1 core sets. */
