@@ -3120,6 +3120,29 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #if LUMINARY099
 #define P30N33 ((word)K_P30N33)
 #endif
+#if COMANCHE055
+/* The CM's: P31, the routines P30 and P31 share, their displays (DISP45,
+ * verb 16 noun 45), S31.1, DELRSPL and AVFLAGA, AVFLAGP and P20FLGON. */
+#define DISPMGA  ((word)K_DISPMGA)
+#define DISP45   ((word)K_DISP45)
+#define P30PHSI  ((word)K_P30PHSI)
+#define END45    ((word)K_END45)
+#define COMPTGO  ((word)K_COMPTGO)
+#define P31      ((word)K_P31)
+#define P30_P31  ((word)K_P30_P31) /* P30/P31 */
+#define CNTNUP30 ((word)K_CNTNUP30)
+#define REFTEST  ((word)K_REFTEST)
+#define NOTSET   ((word)K_NOTSET)
+#define FLASHMGA ((word)K_FLASHMGA)
+#define MARSDP   ((word)K_MARSDP) /* OCT 00000, OCT 35100 */
+#define S31_1    ((word)K_S31_1)  /* S31.1 */
+#define DELRSPL  ((word)K_DELRSPL)
+#define AVFLAGA  ((word)K_AVFLAGA)
+#define AVFLAGP  ((word)K_AVFLAGP)
+#define P20FLGON ((word)K_P20FLGON)
+#define V16N45   ((word)KW_V16N45) /* VN 1645 */
+#define EBANK4   ((word)KW_EBANK4)
+#endif
 
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)

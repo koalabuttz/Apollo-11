@@ -144,6 +144,8 @@ REPLACED = (
     # binding defines empty.
     'lm_p30_file.o',
     'lm_p30_routines.o',
+    # P30-P37.agc, the CM's P30, P31, S30.1, S31.1 and DELRSPL (src/p30_cm).
+    'cm_p30_p37.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -169,11 +171,12 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # (GEOIMUTT) is the LM's alone. R60 has each mission's name (R60LEM,
 # R60CSM). The radar sampling loop (RADSAMP) is the LM's alone, and each
 # mission's P20 has labels the other's has not (the LM's PROG20A, the CM's
-# PIKUP20). P30 is the LM's alone so far (P30N33).
+# PIKUP20). Each mission's P30 has labels the other's has not (the LM's
+# P30N33, the CM's P30PHSI).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
-                          'pikup20')}
+                          'pikup20', 'p30phsi')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
