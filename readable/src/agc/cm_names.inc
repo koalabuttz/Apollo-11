@@ -1287,6 +1287,10 @@
 #define K_V94ENTER 02576u
 #define K_R60CALL 02617u
 #define K_R23_10 03134u
+#define K_P23_60 02641u
+#define K_P23_65 02674u
+#define K_P23_85 02700u
+#define K_R23_2 02723u
 #define K_V67CALL 03624u
 #define K_V06N99DS 03630u
 #define K_V06N9933 03636u
@@ -1577,6 +1581,8 @@
 #define K_CDUSPOT 00766u
 #define K_HORIZON 01752u
 #define K_STARCODE 00735u
+#define K_MARKDATA 01242u
+#define K_TRUNION 01754u
 #define K_LOCALARM 00057u
 #define K_BANKALRM 00060u
 #define K_OPTMODES 01331u
@@ -2177,6 +2183,7 @@
 #define KW_NEG37 077732u
 #define KW_BITS7_9 000700u
 #define KW_BITS4TO6 000070u
+#define KW_V05N71 001307u
 #define KW_ENDTASK {072471u,073714u}
 #define KW_DPBIT14 {000000u,020000u}
 #define KW_LGCL2CDR {003461u,002063u}
@@ -2954,6 +2961,19 @@
 #define I_JCAXIS 063463u
 #define I_STARCODE 000735u
 #define I_BESTI 000302u
+#define I_WMIDPOS 003000u
+#define I_RECT_1 063376u
+#define I_ZMEASURE 000005u
+#define I_RZC 003626u
+#define I_HORIZ 063136u
+#define I_R23_55 062771u
+#define I_R23_05 062707u
+#define I_R23_1 062715u
+#define I_R23_2 062723u
+#define I_R23_3 062750u
+#define I_R23_4 062762u
+#define I_R23_5 062764u
+#define I_LANDMARK 002751u
 #define I_LOADTIME 045510u
 #define I_VHFTIME 001151u
 #define I_REND1 070641u

@@ -3073,6 +3073,13 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define NEG37      ((word)KW_NEG37)   /* DEC -37 B-14 */
 #define BITS7_9    ((word)KW_BITS7_9) /* BITS7-9: OCT 700 */
 #define BITS4_TO_6 ((word)KW_BITS4TO6) /* BITS4-6: OCT 70 */
+/* Part 16, P23's marks and POINTAXS (bank 31). MARKSTAT, MARKDATA,
+ * MARKTIME and TRUNION are named by ADDRESS_OF. */
+#define P23_60 ((word)K_P23_60)
+#define P23_65 ((word)K_P23_65)
+#define P23_85 ((word)K_P23_85)
+#define R23_2  ((word)K_R23_2)
+#define V05N71 ((word)KW_V05N71) /* VN 0571 */
 #endif
 
 /* NO.CORES + 1 core sets. */

@@ -52,7 +52,7 @@ extern const struct interpretive_code PROG20_CODE, P20R52JB_CODE, PROG22_CODE, P
     S22_UNKNOWN_CODE, S22SAVET_CODE, S22NEXT_CODE, S22BOX42_CODE, S22F244_CODE, S22RLS_CODE,
     S22_981X_CODE, S22EXEX_CODE, S22GTP_CODE, S22F2410_CODE, NINE_DWTO6DW_CODE, ROWDOT_CODE,
     V89RECL_CODE, P23_CODE, P23_00_CODE, P23_17_CODE, P23_20_CODE, P23_30_CODE, P23_55_CODE,
-    V94ENTER_CODE, R60CALL_CODE;
+    V94ENTER_CODE, R60CALL_CODE, P23_60_CODE, P23_65_CODE, P23_85_CODE, R23_2_CODE;
 extern const agc_routine_table cm_p20_p25_basic, cm_p20_p25_interpretive;
 extern const agc_routine_table faithful_cm_p20_p25_basic, faithful_cm_p20_p25_interpretive;
 bool cm_p20_p25_readable(uint16_t key, bool order_pair);
@@ -82,6 +82,7 @@ bool cm_p20_p25_readable(uint16_t key, bool order_pair);
 #define QPRET_AT    052u   /* the work area's QPRET */
 #define Q611_AT     03704u /* E7,1704: CRS61.1's return, a CADR */
 #define Q6111_AT    03705u /* E7,1705: R63's return, a CADR */
+#define POINTEX_AT  01150u /* POINTAXS's return, a CADR */
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -136,14 +137,14 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
  * 30, part 10); its next mark and the incorporation (bank 30, part 11);
  * its end and two subroutines (bank 30, part 12); 9DWTO6DW and ROWDOT
  * (bank 30, part 13); V89 (bank 34, part 14); P23's start and R23.10 (bank
- * 31, part 15). */
+ * 31, part 15); P23's marks and POINTAXS (bank 31, part 16). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
     return (bank == 037u && z >= 02261u && z <= 02624u) ||
            (bank == 030u && z >= 02000u && z <= 03630u) ||
-           (bank == 031u && z >= 02332u && z <= 02641u) ||
+           (bank == 031u && z >= 02332u && z <= 02770u) ||
            (bank == 031u && z >= 03134u && z <= 03135u) ||
            (bank == 023u && z >= 03043u && z <= 03131u) ||
            (bank == 034u && z >= 02630u && z <= 03760u) || (bank == 02u && z == 02622u) ||
@@ -321,6 +322,11 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
     /* ROWDOT's DMPR* W,2: X2 now and then any word too. */
     if (key >= 030u * 1024u + 01574u && key <= 030u * 1024u + 01630u && rnd() % 4u == 0u)
         w[(fixloc + X1_AT + 1u) & 03777u] = any_word();
+    /* P23.60's INDEX MARKDATA, DCA 0 and CA 5: now and then mark data at
+     * the top of erasable memory (MARKSTAT's low ten bits 01770-01777),
+     * where the words run into fixed memory. */
+    if (key == 031u * 1024u + 00642u && rnd() % 4u == 0u)
+        w[MARKSTAT_AT] = (uint16_t)((w[MARKSTAT_AT] & 076000u) | (01770u + rnd() % 8u));
     if (n % 4u != 0u && rnd() % 2u) w[(fixloc + S1_AT) & 03777u] = any_word();
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
     /* S22TOFF and S22TOFF +1, the returns P22's GOTOs take, CADRs in fixed
@@ -333,10 +339,12 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
      * STQs leave it. (One in erasable memory could send the faithful GOTO
      * round a cycle of CADRs, which it ends by exiting.) */
     w[EGRESS_AT] = fixed_cadr(w[EGRESS_AT]);
-    /* Q611 and Q6111 too, the returns of CRS61.1 and R63, and the work
-     * area's QPRET (052), which their STQs copy there. */
+    /* Q611, Q6111 and POINTEX too, the returns of CRS61.1, R63 and
+     * POINTAXS, and the work area's QPRET (052), which their STQs copy
+     * there. */
     w[Q611_AT] = fixed_cadr(w[Q611_AT]);
     w[Q6111_AT] = fixed_cadr(w[Q6111_AT]);
+    w[POINTEX_AT] = fixed_cadr(w[POINTEX_AT]);
     w[(fixloc + QPRET_AT) & 03777u] = fixed_cadr(w[(fixloc + QPRET_AT) & 03777u]);
     /* Often DTHETASM (01611 in the E-bank) a count CDULOOP runs on: +0 to
      * 2, or -0. */
@@ -704,6 +712,10 @@ static const struct interpretive_code *const codes[] = {
     &P23_55_CODE,
     &V94ENTER_CODE,
     &R60CALL_CODE,
+    &P23_60_CODE,
+    &P23_65_CODE,
+    &P23_85_CODE,
+    &R23_2_CODE,
 };
 #define COUNT(a) (sizeof(a) / sizeof((a)[0]))
 

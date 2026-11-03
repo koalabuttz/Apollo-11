@@ -385,6 +385,23 @@ void r60call_after_r60csm(void);
 void r60call_after_phaschng(void);
 void r23_10_after_falton(void);
 
+/* ---- Part 16: P23's marks and POINTAXS (p23_marks.c) ---- */
+
+extern const struct interpretive_code P23_60_CODE;
+extern const struct interpretive_code P23_65_CODE;
+extern const struct interpretive_code P23_85_CODE;
+extern const struct interpretive_code R23_2_CODE;
+
+void p23_60_after_exit(void);
+void p23_60_display(void);
+void p23_60_terminate(void);
+void p23_60_proceed(void);
+void p23_60_redisplay(void);
+void p23_65(void);
+void p23_65_after_exit(void);
+void r23_2_after_exit(void);
+void r23_2_after_phaschng(void);
+
 #endif
 
 #endif
