@@ -174,6 +174,7 @@
 #define SWITCH_CLEAR  0260u
 #define SWITCH_BON    0300u
 #define SWITCH_BOF    0340u
+#define SWITCH_BOFF   0340u /* (BOF under its other name) */
 #define SWITCH_BONCLR 0200u
 #define SWITCH_BOFSET 0040u
 #define SWITCH_CLRGO  0220u

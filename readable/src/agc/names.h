@@ -3511,6 +3511,59 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V16N40           ((word)KW_V16N40)   /* VN 1640 */
 #endif
 
+#if COMANCHE055
+/* P40-P47 (CM): P40 and P41, the SPS and RCS burns; P47, the thrust
+ * monitor; the burn's countdown and the steering. Its erasable words
+ * (NBRCYCLS, MRKRTMP, CNTR, P40TMP, THETADX, ADB, DAPDATR1, AVEGEXIT,
+ * NVWORD1, TIG ...) are named by ADDRESS_OF. */
+#define ACADN85    ((word)K_ACADN85) /* 2CADR CALCN85 */
+#define CALCN85    ((word)K_CALCN85)
+#define E7SETTER   ((word)K_E7SETTER)
+#define P40BLNKR   ((word)K_P40BLNKR)
+#define P40CLK     ((word)K_P40CLK)
+#define P40CSM     ((word)K_P40CSM)
+#define P40GMB     ((word)K_P40GMB)
+#define P40MINDB   ((word)K_P40MINDB)
+#define P40PVA     ((word)K_P40PVA)
+#define P40RCS     ((word)K_P40RCS)
+#define P40SET     ((word)K_P40SET)
+#define P40SNEWM   ((word)K_P40SNEWM)
+#define P40SXTY    ((word)K_P40SXTY)
+#define P40S_RS    ((word)K_P40S_RS) /* P40S/RS */
+#define P40S_SV    ((word)K_P40S_SV) /* P40S/SV */
+#define P40TSK     ((word)K_P40TSK)
+#define P40TTOG    ((word)K_P40TTOG)
+#define P41CSM     ((word)K_P41CSM)
+#define P41REDSP   ((word)K_P41REDSP)
+#define P41_DSP    ((word)K_P41_DSP) /* P41/DSP */
+#define P41_P40    ((word)K_P41_P40) /* P41/P40 */
+#define POST41     ((word)K_POST41)
+#define POSTBURN   ((word)K_POSTBURN)
+#define SEC29_96   ((word)K_SEC29_96) /* SEC29.96: 2DEC 2996 */
+#define SERVCADR   ((word)K_SERVCADR) /* 2CADR SERVEXIT */
+#define SERVXT     ((word)K_SERVXT)
+#define SETMAXDB   ((word)K_SETMAXDB)
+#define SETMINDB   ((word)K_SETMINDB)
+#define STEERADS   ((word)K_STEERADS) /* 2CADR STEERING */
+#define TIGBLNK    ((word)K_TIGBLNK)
+#define TIGNOW     ((word)K_TIGNOW)
+#define TRIMONLY   ((word)K_TRIMONLY)
+#define TST_TRIM   ((word)K_TST_TRIM) /* TST,TRIM */
+#define TTGPHS     ((word)K_TTGPHS)
+#define TTG_0      ((word)K_TTG_0) /* TTG/0 */
+#define FIVE_SECDP ((word)K_5SECDP) /* 5SECDP: 2DEC 500 */
+#define EIGHTEEN_SEC ((word)KW_18SEC) /* 18SEC: DEC 1800 */
+#define FIVE_SEC   ((word)KW_5SEC)    /* 5SEC: DEC 500 */
+#define MAXDB      ((word)KW_MAXDB)   /* DEC 455 */
+#define MINDB      ((word)KW_MINDB)   /* DEC 46 */
+#define P40CKLS2   ((word)KW_P40CKLS2) /* OCT 204 */
+#define TWO_SECS   ((word)KW_2SECS)    /* 2SECS: DEC 200 */
+#define V06N40     ((word)KW_V06N40)  /* VN 0640 */
+#define V06N85B    ((word)KW_V06N85B) /* VN 0685 */
+#define V16N40     ((word)KW_V16N40)  /* VN 1640 */
+#define V16N85B    ((word)KW_V16N85B) /* VN 1685 */
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
