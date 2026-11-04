@@ -11,7 +11,9 @@
  * (src/ground_track/ground_track.c), written in the listing's notation,
  * must be the mission's rope, word for word. Then the keys, which must be
  * the faithful tables', and the older module's tables (lm_p21_ or
- * cm_p21_basic_routines and _interpretive_routines) must be empty. Then
+ * cm_p21_basic_routines and _interpretive_routines) must be empty; each
+ * of the older module's faithful keys must be the file's, but for the two
+ * the file's routines run through (older_only). Then
  * the runs: each key from 4,096 states, each one of the port's frozen
  * test states (c64-port/tests/lm_ground_track_vectors.h or
  * cm_ground_track_vectors.h) entered at the key, most stirred further:
@@ -45,35 +47,50 @@ struct interpretive_code {
 extern const struct interpretive_code P21_CODE, P21_RECYCLE_CODE;
 static const struct interpretive_code *const codes[] = {&P21_CODE, &P21_RECYCLE_CODE};
 #if LUMINARY099
-#define readable_basic        lm_ground_track_basic
-#define readable_interpretive lm_ground_track_interpretive
-#define faithful_basic        faithful_lm_ground_track_basic
-#define faithful_interpretive faithful_lm_ground_track_interpretive
-#define older_basic           lm_p21_basic_routines
-#define older_interpretive    lm_p21_interpretive_routines
-#define mission_cases         lm_ground_track_cases
-#define MISSION_CASES         LM_GROUND_TRACK_VECTORS
-#define ROPE                  0u
-#define MISSION               "LM"
-#define NEWOPS_AT             06070u
+#define readable_basic              lm_ground_track_basic
+#define readable_interpretive       lm_ground_track_interpretive
+#define faithful_basic              faithful_lm_ground_track_basic
+#define faithful_interpretive       faithful_lm_ground_track_interpretive
+#define older_basic                 lm_p21_basic_routines
+#define older_interpretive          lm_p21_interpretive_routines
+#define faithful_older_basic        faithful_lm_p21_basic_routines
+#define faithful_older_interpretive faithful_lm_p21_interpretive_routines
+#define mission_cases               lm_ground_track_cases
+#define MISSION_CASES               LM_GROUND_TRACK_VECTORS
+#define ROPE                        0u
+#define MISSION                     "LM"
+#define NEWOPS_AT                   06070u
 typedef p66_bias_io mission_io;
 #else
-#define readable_basic        cm_ground_track_basic
-#define readable_interpretive cm_ground_track_interpretive
-#define faithful_basic        faithful_cm_ground_track_basic
-#define faithful_interpretive faithful_cm_ground_track_interpretive
-#define older_basic           cm_p21_basic_routines
-#define older_interpretive    cm_p21_interpretive_routines
-#define mission_cases         cm_ground_track_cases
-#define MISSION_CASES         CM_GROUND_TRACK_VECTORS
-#define ROPE                  1u
-#define MISSION               "CM"
-#define NEWOPS_AT             06037u
+#define readable_basic              cm_ground_track_basic
+#define readable_interpretive       cm_ground_track_interpretive
+#define faithful_basic              faithful_cm_ground_track_basic
+#define faithful_interpretive       faithful_cm_ground_track_interpretive
+#define older_basic                 cm_p21_basic_routines
+#define older_interpretive          cm_p21_interpretive_routines
+#define faithful_older_basic        faithful_cm_p21_basic_routines
+#define faithful_older_interpretive faithful_cm_p21_interpretive_routines
+#define mission_cases               cm_ground_track_cases
+#define MISSION_CASES               CM_GROUND_TRACK_VECTORS
+#define ROPE                        1u
+#define MISSION                     "CM"
+#define NEWOPS_AT                   06037u
 typedef cm_native_io mission_io;
 #endif
 extern const agc_routine_table readable_basic, readable_interpretive;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 extern const agc_routine_table older_basic, older_interpretive;
+extern const agc_routine_table faithful_older_basic, faithful_older_interpretive;
+
+/* The older module's keys that are not the file's: PROG21 +2 (CAF BIT2,
+ * where PROG21's TC -5 comes back) and P21PROG1 +6 (TC INTPRET). The
+ * file's routines run through both words, so the flight program never
+ * dispatches at them, and the readable tables leave them out. */
+#if LUMINARY099
+static const uint16_t older_only[] = {024u << 10 | 01507u, 024u << 10 | 01523u};
+#else
+static const uint16_t older_only[] = {037u << 10 | 00003u, 037u << 10 | 00017u};
+#endif
 
 /* The addresses of the words P21 uses. */
 #define TIME2_AT    0024u
@@ -112,6 +129,46 @@ static unsigned words_differ(const struct interpretive_code *code)
             ++failures;
         }
     }
+    return failures;
+}
+
+static int in_table(const agc_routine_table *table, uint16_t key)
+{
+    unsigned i;
+
+    for (i = 0; i < table->count; ++i)
+        if (table->entries[i].physical == key) return 1;
+    return 0;
+}
+
+/* Each key of the older module's tables must be a key of the file's, or
+ * one of older_only, and each of older_only must be in the older tables
+ * and not the file's. */
+static unsigned older_keys_differ(void)
+{
+    const agc_routine_table *older[] = {&faithful_older_basic, &faithful_older_interpretive};
+    unsigned i, j, t, failures = 0;
+
+    for (t = 0; t < 2u; ++t)
+        for (i = 0; i < older[t]->count; ++i) {
+            uint16_t key = older[t]->entries[i].physical;
+            int listed = 0;
+
+            for (j = 0; j < sizeof older_only / sizeof older_only[0]; ++j)
+                listed |= key == older_only[j];
+            if (listed ==
+                (in_table(&faithful_basic, key) || in_table(&faithful_interpretive, key))) {
+                printf("FAIL: the older module's key %02o,%04o %s\n", key / 1024u,
+                       02000u + key % 1024u, listed ? "is the file's" : "is not the file's");
+                ++failures;
+            }
+        }
+    for (j = 0; j < sizeof older_only / sizeof older_only[0]; ++j)
+        if (!in_table(older[0], older_only[j]) && !in_table(older[1], older_only[j])) {
+            printf("FAIL: %02o,%04o is not the older module's\n", older_only[j] / 1024u,
+                   02000u + older_only[j] % 1024u);
+            ++failures;
+        }
     return failures;
 }
 
@@ -317,6 +374,7 @@ int main(int argc, char **argv)
         printf("FAIL: the older module's tables are not empty\n");
         ++failures;
     }
+    failures += older_keys_differ();
     if (failures) {
         printf("ground-track-cases (" MISSION "): %u failures\n", failures);
         return 1;

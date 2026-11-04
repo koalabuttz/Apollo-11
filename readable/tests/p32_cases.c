@@ -309,12 +309,17 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
     if (n % 4u != 0u && rnd() % 8u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 2u);
 }
 
-/* A pass that starts at a store code (34,2405, STORE TCDH) and would
- * store past the end of the E-bank window: the AGC writes into fixed
- * memory and reads it back into A and L, which the readable machine does
- * not model, so the binding refuses it, as the faithful port's other
- * interpretive routines do (lmi_store_spills); the faithful 34,2405 runs
- * it. */
+/* A pass that starts at a store code (34,2405, STORE TCDH, where a
+ * CHANG2 restart resumes) and would store past the end of the E-bank
+ * window: the AGC writes into fixed memory and reads it back into A and
+ * L, which the readable machine does not model, so the binding refuses
+ * it, as the faithful port's other interpretive routines do
+ * (lmi_store_spills); the faithful 34,2405 runs it. These states are the
+ * only ones excused, and only where the faithful pair ran and the readable
+ * one refused: their after-states are not compared (the faithful one has
+ * the fixed-memory store the readable machine has no word for), but the
+ * readable refusal must still leave the state as it found it, and the
+ * gate prints how many there were. */
 static unsigned spills;
 
 static bool faithful_spills(uint16_t key, const apollo_overlay_state *start)

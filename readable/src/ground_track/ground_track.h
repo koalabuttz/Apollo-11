@@ -2,8 +2,9 @@
 /* GROUND_TRACKING_DETERMINATION_PROGRAM.agc, both missions' (Luminary099
  * pp. 654-657, Comanche055 pp. 456-459): P21, the ground track program.
  * The faithful C is c64-port/src/lm_ground_track.c and cm_ground_track.c
- * (and the older lm_p21_routines.c and cm_p21_routines.c, with the same
- * keys).
+ * (and the older lm_p21_routines.c and cm_p21_routines.c, whose keys are
+ * the file's but for two words the file's routines run through: PROG21
+ * +2 and P21PROG1 +6).
  *
  * P21's basic code (the LM's bank 24, the CM's bank 37) asks the
  * astronaut, by DSKY, which vehicle (option 2: verb 04 noun 06 and a
@@ -17,7 +18,11 @@
  * P21_RECYCLE_CODE), run by the readable interpreter. The entries below
  * are the basic code's: PROG21, P21PROG1, the words each BANKCALL comes
  * back to (terminate, proceed, a value loaded) and the word after the
- * EXIT. The binding is src/binding/ground_track_routines.c. */
+ * EXIT. The binding is src/binding/ground_track_routines.c.
+ *
+ * The CM's file also holds P21ONENN (p. 459), two words (OCT 00001, OCT 00000:
+ * "NEEDED TO DETERMINE VEHICLE", "TO BE INTEGRATED"), which only
+ * TPI_SEARCH.agc reads; P21 itself does not use them. */
 #ifndef READABLE_GROUND_TRACK_H
 #define READABLE_GROUND_TRACK_H
 

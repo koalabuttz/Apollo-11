@@ -8,7 +8,11 @@
  * code leaves it: at a TC out of the file (Z the routine, Q the return), at
  * a TC INTPRET (Z INTPRET) or at the jump out of the file (BZF ENDEXT).
  * The binding, src/binding/r30_routines.c, runs on from a TC INTPRET into
- * the interpreter, as the faithful port does. */
+ * the interpreter, as the faithful port does.
+ *
+ * The Luminary099 listing spells TICKTFF "TICKTIFF" (R30.agc, p. 715);
+ * its assembly, and the Comanche055 listing, spell it TICKTFF, the name
+ * used here for both missions. */
 #ifndef READABLE_R30_H
 #define READABLE_R30_H
 

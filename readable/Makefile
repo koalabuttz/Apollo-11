@@ -1548,6 +1548,13 @@ radar-leadin-cases: $(BUILD)/rlr-oracle $(BUILD)/rlr-cases
 	./$(BUILD)/rlr-oracle $(ROPES)
 	./$(BUILD)/rlr-cases $(ROPES)
 
+# The oracles of the files from P20-P25 on (P20-P25 to P40-P47) link the
+# readable tables and no faithful object: the port's test calls only the
+# tables it is given, so a key with no readable routine fails its digests
+# there. The renamed faithful objects are for the side-by-side cases
+# alone. (The BURN, BABY, BURN oracle below links one for its case keys
+# and KILLTASK's sites.)
+
 # P20-P25, the LM's rendezvous programs and radar routines, readable part
 # by part: the port's test (tests/test_lm_p20_p25.c, its frozen cases run
 # to their stops through the program of tests/lm_p20_p25_target.c, against
@@ -1564,8 +1571,8 @@ $(BUILD)/p20-faithful.o: $(PORT)/src/lm_p20_p25.c
 $(BUILD)/p20-test.o: $(PORT)/tests/test_lm_p20_p25.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/p20-oracle: $(P20_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p20-faithful.o \
-		$(BUILD)/p20-test.o tests/with_ropes.c
+$(BUILD)/p20-oracle: $(P20_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p20-test.o \
+		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P20_COMMON) \
 		$(PORT)/tests/lm_p20_p25_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/p20-cases: $(P20_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p20-faithful.o \
@@ -1594,8 +1601,8 @@ $(BUILD)/cp20-faithful.o: $(PORT)/src/cm_p20_p25.c
 $(BUILD)/cp20-test.o: $(PORT)/tests/test_cm_p20_p25.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/cp20-oracle: $(CP20_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp20-faithful.o \
-		$(BUILD)/cp20-test.o tests/with_ropes.c
+$(BUILD)/cp20-oracle: $(CP20_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp20-test.o \
+		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CP20_COMMON) \
 		$(PORT)/tests/cm_p20_p25_target.c tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/cp20-cases: $(CP20_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp20-faithful.o \
@@ -1681,8 +1688,8 @@ $(BUILD)/p32-faithful.o: $(PORT)/src/lm_p32_p35.c
 $(BUILD)/p32-test.o: $(PORT)/tests/test_lm_p32_p35.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/p32-oracle: $(P32_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p32-faithful.o \
-		$(BUILD)/p32-test.o tests/with_ropes.c
+$(BUILD)/p32-oracle: $(P32_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p32-test.o \
+		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P32_COMMON) $(PORT)/tests/lm_p32_p35_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/p32-cases: $(P32_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p32-faithful.o \
@@ -1710,8 +1717,8 @@ $(BUILD)/cp32-faithful.o: $(PORT)/src/cm_p32_p33.c
 $(BUILD)/cp32-test.o: $(PORT)/tests/test_cm_p32_p33.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/cp32-oracle: $(CP32_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp32-faithful.o \
-		$(BUILD)/cp32-test.o tests/with_ropes.c
+$(BUILD)/cp32-oracle: $(CP32_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp32-test.o \
+		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CP32_COMMON) $(PORT)/tests/cm_p32_p33_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/cp32-cases: $(CP32_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/cp32-faithful.o \
@@ -1759,13 +1766,18 @@ lambert-aim-cases: $(BUILD)/p31-oracle $(BUILD)/p31-cases
 # programs' yaAGC digests) through the readable tables, with
 # tests/with_ropes.c loading the ropes the readable interpreter reads; then
 # tests/ground_track_cases.c side by side with the faithful routines
-# (renamed faithful_), for each mission.
+# (renamed faithful_), for each mission, with the older module's tables
+# (renamed too) for their keys.
 P21_COMMON := $(R63_COMMON)
 
 $(BUILD)/p21-faithful-%.o: $(PORT)/src/%_ground_track.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_ground_track_basic=faithful_$*_ground_track_basic \
 		-D$*_ground_track_interpretive=faithful_$*_ground_track_interpretive -c $< -o $@
+$(BUILD)/p21-older-%.o: $(PORT)/src/%_p21_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_p21_basic_routines=faithful_$*_p21_basic_routines \
+		-D$*_p21_interpretive_routines=faithful_$*_p21_interpretive_routines -c $< -o $@
 $(BUILD)/p21-test-%.o: $(PORT)/tests/test_%_ground_track.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
@@ -1778,10 +1790,10 @@ $(BUILD)/p21-oracle-cm: $(P21_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p2
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P21_COMMON) $(PORT)/tests/cm_ground_track_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/p21-cases-lm: $(P21_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p21-faithful-lm.o \
-		tests/ground_track_cases.c
+		$(BUILD)/p21-older-lm.o tests/ground_track_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(P21_COMMON) $(filter %.o,$^) tests/ground_track_cases.c -o $@
 $(BUILD)/p21-cases-cm: $(P21_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p21-faithful-cm.o \
-		tests/ground_track_cases.c
+		$(BUILD)/p21-older-cm.o tests/ground_track_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(P21_COMMON) $(filter %.o,$^) tests/ground_track_cases.c -o $@
 
 ground-track-cases: $(BUILD)/p21-oracle-lm $(BUILD)/p21-oracle-cm $(BUILD)/p21-cases-lm \
@@ -1808,12 +1820,12 @@ $(BUILD)/p34-faithful-%.o: $(PORT)/src/%_p34_p35.c
 $(BUILD)/p34-test-%.o: $(PORT)/tests/test_%_p34_p35.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/p34-oracle-lm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p34-faithful-lm.o \
-		$(BUILD)/p34-test-lm.o tests/with_ropes.c
+$(BUILD)/p34-oracle-lm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p34-test-lm.o \
+		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P34_COMMON) $(PORT)/tests/lm_p34_p35_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
-$(BUILD)/p34-oracle-cm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p34-faithful-cm.o \
-		$(BUILD)/p34-test-cm.o tests/with_ropes.c
+$(BUILD)/p34-oracle-cm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p34-test-cm.o \
+		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P34_COMMON) $(PORT)/tests/cm_p34_p35_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/p34-cases-lm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p34-faithful-lm.o \
@@ -2090,8 +2102,8 @@ $(BUILD)/p40-faithful.o: $(PORT)/src/lm_p40_p47.c
 $(BUILD)/p40-test.o: $(PORT)/tests/test_lm_p40_p47.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/p40-oracle: $(P40_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p40-faithful.o \
-		$(BUILD)/p40-test.o tests/with_ropes.c
+$(BUILD)/p40-oracle: $(P40_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p40-test.o \
+		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(R63_COMMON) $(PORT)/tests/lm_p40_p47_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
 $(BUILD)/p40-cases: $(P40_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p40-faithful.o \
