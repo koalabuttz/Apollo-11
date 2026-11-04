@@ -20,7 +20,10 @@
  * 709-718): S40.1 with AGAIN and CALCUT, S40.2,3 and S41.1. Part 5
  * adds S40.8, the cross-product steering (s40.c, pp. 719-722). Part 6 adds
  * S40.9, the velocity to be gained of a Lambert burn, and S40.13, the
- * burn's time (timeburn.c, pp. 723-728).
+ * burn's time (timeburn.c, pp. 723-728). Part 7, the last, adds S40.6,
+ * the gimbal drive test and trim, the autopilot's data (S41.2, S40.14,
+ * DAPFIG) and the RCS autopilot's start (RCSUP, RCSDAPON) (dap_data.c,
+ * pp. 729-736).
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -266,6 +269,29 @@ void s40_132_after_exit(void);      /* S40.132 +1: TC TPAGREE */
 void s40_132_after_tpagree(void);   /* S40.132 +2: CA MPAC */
 void s40_133_after_exit(void);      /* S40.134: PHASCHNG */
 void s40_134_after_phaschng(void);  /* S40.134 +2: TCF ENDOFJOB */
+
+/* ---- Part 7: S40.6, S41.2, DAPFIG, S40.14, RCSUP (dap_data.c) ---- */
+
+void pre40_6(void);                 /* PRE40.6 */
+void s40_6(void);                   /* S40.6 */
+void s40_6_after_fixdelay(void);    /* S40.6 +012: CAF BIT2 */
+void rstrtst(void);                 /* RSTRTST */
+void gimdtest_second(void);         /* GIMDTEST +2: CAF -4ACTDEG */
+void gimdtest_third(void);          /* GIMDTEST +4: CAF +2ACTDEG */
+void gimdtest_check(void);          /* GIMDTEST +6: CS CNTR */
+void output_after_fixdelay(void);   /* OUTPUT +012: TC TEMPR60 */
+void gimtrim_after_fixdelay(void);  /* GIMTRIM +2: CS ZERO */
+void s41_2(void);                   /* S41.2 */
+void dapfig(void);                  /* DAPFIG */
+void rcsdapup_after_ibnkcall(void); /* RCSDAPUP +3: RELINT */
+void nodapup_after_dapbit1(void);   /* NODAPUP +5: TC DOWNFLAG */
+void nodapup_after_dapbit2(void);   /* NODAPUP +7: INHINT */
+void nodapup_after_zerojet(void);   /* NODAPUP +012: RELINT */
+void s40_14(void);                  /* S40.14 */
+void rcsup(void);                   /* RCSUP */
+void rcsup_after_rcsdapon(void);    /* RCSUP +4: TCF RESUME */
+void rcsdapon(void);                /* RCSDAPON */
+void rcsdapon_plus_1(void);         /* RCSDAPON +1 */
 
 /* Words of programs.c the parts run on into. */
 void ttgphs(void); /* TTGPHS, the countdown's restart group 4 */

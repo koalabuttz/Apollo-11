@@ -4,12 +4,11 @@
  * port's (c64-port/src/cm_p40_p47.c): cm_p40_p47_basic (the basic code)
  * and cm_p40_p47_interpretive (the order pairs).
  *
- * The file is written part by part, so the tables carry every key of the
- * faithful ones, in their order (cm_p40_keys.inc, which
- * tools/p20_p25_keys.py writes from them): a key the parts written so far
- * cover runs a readable routine; any other runs the faithful port's,
- * built into the program as faithful_cm_p40_p47_basic and
- * faithful_cm_p40_p47_interpretive (tests/x86_readable.py renames them).
+ * The tables carry every key of the faithful ones, in their order
+ * (cm_p40_keys.inc, which tools/p20_p25_keys.py writes from them), and
+ * each runs a readable routine. The faithful tables, renamed
+ * faithful_cm_p40_p47_basic and faithful_cm_p40_p47_interpretive, are
+ * the side-by-side test's alone.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file's code (BANKCALL, DOWNFLAG, WAITLIST, PHASCHNG, ...) or
@@ -18,17 +17,19 @@
  * which ends at the pair's DANZIG, at an EXIT, or where a CALL or GOTO
  * leaves it.
  *
- * SETMINDB, SETMAXDB, SPSOFF, TVCZAP and E7SETTER end in TC Q. Entered
- * at their keys, Q can hold any return; the faithful port runs on where it
- * is a word of bank 24 it has code for, and so does the binding; past
- * ENDV97E, the last of the file's basic code in the bank, both stop.
+ * SETMINDB, SETMAXDB, SPSOFF, TVCZAP, E7SETTER, S41.2, S40.14, RCSUP and
+ * RCSDAPON end in TC Q, and S40.6's OUTPUT in TC TEMPR60. Entered at
+ * their keys, Q (or TEMPR60) can hold any return; the faithful port runs
+ * on where it is a word of the bank it has code for, and so does the
+ * binding; at any other word both stop.
  *
  * The device is the CM's io record (cm_native_io); the faithful basic
  * routines take the program's hardware record for their channel orders,
- * and without one refuse, so the binding does too: channel 5 is the
- * hardware record's, channels 11 (DSALMOUT) and 12 the io record's. The
- * states the faithful routines take, at every key: FB the key's bank (in
- * bank 30 with the superbank bit clear), ZERO +0, the bank registers
+ * and without one refuse, so the binding does too: channels 5 and 31 are
+ * the hardware record's, channels 11 (DSALMOUT), 12 and 14 the io
+ * record's. The states the faithful routines take, at every key: FB the
+ * key's bank (in bank 30 with the superbank bit clear, for bank 42 FB 32
+ * with it set), ZERO +0, the bank registers
  * agreeing, the interrupt and superbank latches in range, and every
  * erasable word an ordinary one; at an order pair Z at NEWOPS, BANKSET
  * the BBANK, INTBIT15 the bank's bit 15, NEWJOB +0 or a core set and
@@ -51,9 +52,6 @@
 /* Channel 7's superbank bit. */
 #define SUPERBANK_BIT 0100u
 
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_p40_p47_basic, faithful_cm_p40_p47_interpretive;
-
 static jmp_buf back;
 
 /* The run's io record and hardware record. */
@@ -65,13 +63,15 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* SPSOFF's and TVCZAP's channel 12 (WOR, WAND), STEERING's channel 11
- * (RAND DSALMOUT), S40.13's channel 31 (RXOR) and ULAGEOFF's channel 5
- * (WRITE), as the faithful port keeps them. */
+/* SPSOFF's, TVCZAP's, S40.6's and DAPFIG's channel 12 (WOR, WAND),
+ * STEERING's channel 11 (RAND DSALMOUT), S40.6's channel 14 (WOR),
+ * S40.13's channel 31 (RXOR) and ULAGEOFF's channel 5 (WRITE), as the
+ * faithful port keeps them. */
 static word channel_in(unsigned number)
 {
     if (number == 011u) return (word)io_now->channel11;
     if (number == 012u) return (word)io_now->channel12;
+    if (number == 014u) return (word)io_now->channel14;
     if (number == 031u && hardware_now) return (word)hardware_now->channel31;
     not_modelled(); /* the readable parts read no other channel */
     return 0;
@@ -81,6 +81,8 @@ static void channel_out(unsigned number, word value)
 {
     if (number == 012u)
         io_now->channel12 = (agc_word)value;
+    else if (number == 014u)
+        io_now->channel14 = (agc_word)value;
     else if (number == 05u && hardware_now)
         hardware_now->channel5 = (agc_word)value;
     else
@@ -127,9 +129,12 @@ static bool sane(bool order_pair)
 }
 
 /* The key's bank selected: FB, and in banks 30 to 37 the superbank bit
- * clear (with it set, FB 30 to 37 would be banks 40 to 47). */
+ * clear (with it set, FB 30 to 37 would be banks 40 to 47); banks 40 to
+ * 43 are FB 30 to 33 with SUPERBNK 0100. */
 static bool in_bank(unsigned bank)
 {
+    if (bank >= 040u)
+        return FBANK == (word)((bank - 010u) << 10) && (*agc.superbank & 0160u) == SUPERBANK_BIT;
     return FBANK == (word)(bank << 10) && (bank < 030u || !(*agc.superbank & SUPERBANK_BIT));
 }
 
@@ -316,13 +321,30 @@ static const struct basic_entry {
     {KEY(016u, S40_132 + 2u), s40_132_after_tpagree},
     {KEY(016u, S40_134), s40_133_after_exit},
     {KEY(016u, S40_134 + 2u), s40_134_after_phaschng},
+    /* Part 7: S40.6, S41.2, S40.14, RCSUP, DAPFIG */
+    {KEY(020u, PRE40_6), pre40_6},
+    {KEY(020u, S40_6), s40_6},
+    {KEY(020u, S40_6 + 012u), s40_6_after_fixdelay},
+    {KEY(020u, RSTRTST), rstrtst},
+    {KEY(020u, OUTPUT + 012u), output_after_fixdelay},
+    {KEY(020u, GIMTRIM + 2u), gimtrim_after_fixdelay},
+    {KEY(020u, S41_2), s41_2},
+    {KEY(020u, S40_14), s40_14},
+    {KEY(021u, RCSUP), rcsup},
+    {KEY(021u, RCSDAPON), rcsdapon},
+    {KEY(021u, RCSDAPON + 1u), rcsdapon_plus_1},
+    {KEY(042u, DAPFIG), dapfig},
+    {KEY(042u, RCSDAPUP + 3u), rcsdapup_after_ibnkcall},
+    {KEY(042u, NODAPUP + 5u), nodapup_after_dapbit1},
+    {KEY(042u, NODAPUP + 7u), nodapup_after_dapbit2},
+    {KEY(042u, NODAPUP + 012u), nodapup_after_zerojet},
     /* Part 1: P41CSM */
     {KEY(027u, P41CSM), p41csm},
     {KEY(027u, P41CSM + 2u), p41csm_after_upflag},
 };
 
-/* The other words of bank 24 the faithful port runs on at after a TC Q:
- * the returns of the file's own subroutines. */
+/* The other words the faithful port runs on at after a TC Q (or OUTPUT's
+ * TC TEMPR60): the returns of the file's own subroutines. */
 static const struct basic_entry returns[] = {
     {KEY(024u, P40SXTY + 1u), p40sxty_after_setmindb},
     {KEY(024u, P40SXTY + 011u), p40sxty_p41},
@@ -346,6 +368,10 @@ static const struct basic_entry returns[] = {
     {KEY(024u, V97TTASK + 011u), v97ttask_after_spsoff},
     {KEY(024u, V97ETASK + 5u), v97etask_after_e6setter},
     {KEY(024u, SPSOFF97 + 1u), spsoff97_after_spsoff},
+    {KEY(020u, GIMDTEST + 2u), gimdtest_second},
+    {KEY(020u, GIMDTEST + 4u), gimdtest_third},
+    {KEY(020u, GIMDTEST + 6u), gimdtest_check},
+    {KEY(021u, RCSUP + 4u), rcsup_after_rcsdapon},
 };
 
 static const struct basic_entry *entry_in(const struct basic_entry *entries, unsigned count,
@@ -363,34 +389,48 @@ static const struct basic_entry *basic_entry(uint16_t key)
     return entry_in(basic_entries, COUNT(basic_entries), key);
 }
 
-/* Whether the binding follows a TC Q to a word of bank 24: any but FENG,
- * the constant after CALCN85's TC SERVXT, where the faithful port fails. */
-static bool follows(word z)
+/* Whether the binding follows a TC Q to a word of the bank: any but
+ * FENG, the constant after CALCN85's TC SERVXT in bank 24, where the
+ * faithful port fails. */
+static bool follows(unsigned bank, word z)
 {
-    return z != (word)(CALCN85 + 7u);
+    return bank != 024u || z != (word)(CALCN85 + 7u);
 }
 
-/* After the TC Q of SETMINDB, SETMAXDB, SPSOFF, TVCZAP or E7SETTER, to a
- * word of bank 24: on at a key or one of the returns above, as the
- * faithful port does; at any other word it stops there too. Refused at
- * FENG (the side-by-side test counts these). Erasable and fixed-fixed
- * returns end the run. */
-static void run_on(void)
+/* The routines that end in a TC Q (or TC TEMPR60), after which the
+ * faithful port runs on. */
+static bool ends_in_tc_q(void (*routine)(void))
+{
+    return routine == setmindb || routine == setmaxdb_inhint || routine == setmaxdb ||
+           routine == spsoff || routine == tvczap || routine == e7setter ||
+           routine == output_after_fixdelay || routine == s41_2 || routine == s40_14 ||
+           routine == rcsup || routine == rcsdapon || routine == rcsdapon_plus_1;
+}
+
+/* After such a routine, to a word of its bank (the key's: none of them
+ * changes FB): on at a key or one of the returns above, as the faithful
+ * port does, and on again after another TC Q; at any other word it stops
+ * there too. Refused at FENG (the side-by-side test counts these).
+ * Erasable and fixed-fixed returns end the run. */
+static void run_on(unsigned bank)
 {
     const struct basic_entry *entry;
 
-    if (Z < 02000u || Z > 03777u) return;
-    if (!follows(Z)) not_modelled();
-    entry = basic_entry(KEY(024u, Z));
-    if (!entry) entry = entry_in(returns, COUNT(returns), KEY(024u, Z));
-    if (entry) entry->routine();
+    do {
+        if (Z < 02000u || Z > 03777u) return;
+        if (!follows(bank, Z)) not_modelled();
+        entry = basic_entry(KEY(bank, Z));
+        if (!entry) entry = entry_in(returns, COUNT(returns), KEY(bank, Z));
+        if (!entry) return;
+        entry->routine();
+    } while (ends_in_tc_q(entry->routine));
 }
 
 /* For the side-by-side test: whether the binding follows a TC Q to a word
  * of bank 24. */
 bool cm_p40_p47_runs_on(uint16_t z)
 {
-    return follows(z);
+    return follows(024u, z);
 }
 
 /* ---- The order pairs ---- */
@@ -420,20 +460,19 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each key's routine: the readable one, or the faithful port's. A basic
+/* Each key's routine, the readable one. A basic
  * routine runs from its key, whatever Z holds (the trampoline calls it
  * there). */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     cm_native_io *io = device, kept;
     apollo_overlay_state before;
 
-    if (!entry) return faithful_cm_p40_p47_basic.entries[index].call(program, state, device);
-    if (!program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !program->hardware || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
-    if (FBANK != (word)(key / 1024u << 10) || !sane(false)) return EXEC_OUT_OF_SCOPE;
+    if (!in_bank(key / 1024u) || !sane(false)) return EXEC_OUT_OF_SCOPE;
 
     before = *state;
     kept = *io;
@@ -443,14 +482,11 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
         return EXEC_OUT_OF_SCOPE;
     }
     entry->routine();
-    if (entry->routine == setmindb || entry->routine == setmaxdb_inhint ||
-        entry->routine == setmaxdb || entry->routine == spsoff || entry->routine == tvczap ||
-        entry->routine == e7setter)
-        run_on();
+    if (ends_in_tc_q(entry->routine)) run_on(key / 1024u);
     return EXEC_OK;
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -459,8 +495,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_cm_p40_p47_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -489,13 +523,13 @@ bool cm_p40_p47_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "cm_p40_keys.inc"
 #undef BASIC
