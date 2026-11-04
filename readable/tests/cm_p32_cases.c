@@ -331,15 +331,39 @@ static bool faithful_spills(uint16_t key, const apollo_overlay_state *start)
 /* An order pair in a bank below 30 with the superbank bit set: the
  * faithful pairs there take the bit either way, and read their constants
  * where the listing has them, where the AGC would read those in bank 35
- * from bank 45, which the rope lacks; the binding refuses it. */
+ * from bank 45, which the rope lacks; the binding refuses it. The state
+ * is excused only where both sides, run again from it with the bit clear,
+ * run and agree: then the bit is all that kept the readable pair from
+ * running. */
 static unsigned superbank_states;
 
-static bool superbank_set_below_30(uint16_t key, int interpretive, const cm_native_io *io)
+static bool superbank_set_below_30(const agc_routine_entry *readable,
+                                   const agc_routine_entry *faithful, uint16_t key,
+                                   int interpretive, const apollo_overlay_state *start,
+                                   const cm_native_io *io, const agc_hardware *hardware,
+                                   bool with_hardware)
 {
-    bool set = interpretive && key / 1024u < 030u && (io->superbank & 0100u);
+    apollo_overlay_state fa = *start, ra = *start;
+    cm_native_io fio = *io, rio = *io;
+    agc_hardware fhw = *hardware, rhw = *hardware;
+    agc_native_program fp, rp;
+    enum exec_status sf, sr;
 
-    superbank_states += set;
-    return set;
+    if (!interpretive || key / 1024u >= 030u || !(io->superbank & 0100u)) return false;
+    memset(&fp, 0, sizeof fp);
+    rp = fp;
+    if (with_hardware) {
+        fp.hardware = &fhw;
+        rp.hardware = &rhw;
+    }
+    fio.superbank = rio.superbank = (uint16_t)(io->superbank & ~0100u);
+    sf = faithful->call(&fp, &fa, &fio);
+    sr = readable->call(&rp, &ra, &rio);
+    if (sf != EXEC_OK || sr != EXEC_OK || memcmp(&fa, &ra, sizeof fa) ||
+        memcmp(&fio, &rio, sizeof fio) || memcmp(&fhw, &rhw, sizeof fhw))
+        return false;
+    ++superbank_states;
+    return true;
 }
 
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
@@ -384,7 +408,10 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                         memcmp(&rhw, &hardware, sizeof rhw)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
-                why = faithful_spills(key, &start) || superbank_set_below_30(key, interpretive, &io)
+                why = faithful_spills(key, &start) ||
+                              superbank_set_below_30(&readable->entries[i], &faithful->entries[i],
+                                                     key, interpretive, &start, &io, &hardware,
+                                                     fp.hardware != 0)
                           ? 0
                           : "readable refused, faithful ran";
             else if (sf != EXEC_OK && sr == EXEC_OK)

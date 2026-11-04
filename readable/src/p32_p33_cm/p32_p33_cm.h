@@ -19,6 +19,9 @@
  * AVFLAGA, AVFLAGP and P20FLGON are the CM's P30-P37.agc's
  * (src/p30_cm/). The binding is src/binding/cm_p32_routines.c.
  *
+ * One of the listing's words is in no readable file, because nothing in
+ * Comanche055 refers to it: V06N50 (p. 662, VN 0650). No key reaches it.
+ *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
  * the basic code's: each routine's start, the words AVFLAGA, AVFLAGP,

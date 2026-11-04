@@ -293,6 +293,9 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
     if (n % 4u != 0u && rnd() % 8u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 2u);
 }
 
+/* The keys whose readable routine ran in at least one state. */
+static unsigned readable_keys;
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs)
 {
@@ -300,7 +303,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = key_z(key);
-        unsigned ran = 0, bad = 0;
+        unsigned ran = 0, bad = 0, readable_ran = 0;
 
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
@@ -323,6 +326,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             }
             sf = faithful->entries[i].call(&fp, &fa, &fio);
             sr = readable->entries[i].call(&rp, &ra, &rio);
+            readable_ran += sr == EXEC_OK;
             ran += sf == EXEC_OK;
             if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
                                   memcmp(&rhw, &hardware, sizeof rhw)))
@@ -348,6 +352,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
         /* Each key's faithful routine must run in at least 1 of 16
          * states, so that a change to the states cannot quietly leave a
          * key with a handful of live ones. */
+        readable_keys += readable_ran != 0u;
         if (ran < CASES / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states (fewer than 1 in "
                    "16)\n",
@@ -385,9 +390,15 @@ int main(int argc, char **argv)
     }
     failures += keys(&cm_p30_p37_basic, &faithful_cm_p30_p37_basic, 0, &runs);
     failures += keys(&cm_p30_p37_interpretive, &faithful_cm_p30_p37_interpretive, 1, &runs);
-    printf("cm-p30-cases: %u words as the rope's, %u keys (%u basic, %u order pairs) from %u "
-           "states each, %u run by the faithful routines, %u failures\n",
-           words, cm_p30_p37_basic.count + cm_p30_p37_interpretive.count, cm_p30_p37_basic.count,
-           cm_p30_p37_interpretive.count, CASES, runs, failures);
+    if (readable_keys != cm_p30_p37_basic.count + cm_p30_p37_interpretive.count) {
+        printf("FAIL: %u keys whose readable routine never ran\n",
+               cm_p30_p37_basic.count + cm_p30_p37_interpretive.count - readable_keys);
+        ++failures;
+    }
+    printf("cm-p30-cases: %u words as the rope's, %u of %u keys run by the readable routines "
+           "(%u basic, %u order pairs) from %u states each, %u run by the faithful routines, %u "
+           "failures\n",
+           words, readable_keys, cm_p30_p37_basic.count + cm_p30_p37_interpretive.count,
+           cm_p30_p37_basic.count, cm_p30_p37_interpretive.count, CASES, runs, failures);
     return failures != 0;
 }

@@ -460,7 +460,9 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    the same, and so must every word but the central and editing
    registers (0-023), E bank 0's interpreter words (ADDRWD to PUSHLOC),
    the work area and at most two runs of six words (the load's or the
-   store's words, where each side put them). What the readable machine
+   store's words, where each side put them; a store over the registers
+   or the interpreter's words also moves where the pass's later stores
+   land, so the runs are not always at the crossing). What the readable machine
    reads past 01777 (fixed memory, as the AGC does) is not checked
    against anything. 11,354 states are counted apart (7,611 of
    them where both ran), at most 778 of one key's 4,096 (19.0%, at
@@ -471,12 +473,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    1,127 checks against yaAGC digests) through the readable tables, then
    checks the interpretive words against the rope (54), and runs readable
    and faithful side by side at every key (8 basic and 27 order pairs)
-   from 4,096 states each. The older module's tables must be empty.
+   from 4,096 states each; every key's readable routine must run in some
+   of them. The older module's tables must be empty.
    `make cm-p30-cases` runs the faithful port's test of the CM's P30-P37
    (its 572 checks against yaAGC digests) through the readable tables,
    then checks the interpretive words against the rope (207), and runs
    readable and faithful side by side at every key (47 basic and 96 order
-   pairs; every key readable) from 4,096 states each. In bank 32 X1 is
+   pairs; every key readable, and each must run in some state) from 4,096
+   states each. In bank 32 X1 is
    often 0 to 12, the counts K1K2LOOP's loads from AUGEKUGL's tables run
    on, and now and then -5 to 17: the faithful port carries only the 13
    words of each table those counts read, so both ports refuse a load
@@ -512,14 +516,15 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    The faithful pairs in banks below 30 take the superbank bit either way
    and read their constants where the listing has them; with the bit set
    the AGC would read those in bank 35 (ONETHTH, NICKELDP, 1RTEB2) from
-   bank 45, which the rope lacks. The binding refuses those states, and
-   the gate counts them.
+   bank 45, which the rope lacks. The binding refuses those states; the
+   gate runs both sides again from each with the bit clear, counts it
+   when both run and agree, and fails it otherwise.
    `make lambert-aim-cases` runs the faithful port's test of the LM's
    P31 (its 1,028 checks against yaAGC digests) through the readable
    tables, then checks the interpretive words against the rope (52), and
    runs readable and faithful side by side at every key (6 basic and 26
-   order pairs) from 4,096 states each. The older module's tables must be
-   empty.
+   order pairs) from 4,096 states each; every key's readable routine must
+   run in some of them. The older module's tables must be empty.
    `make ground-track-cases` does the same for both missions' P21: the
    faithful port's tests (1,708 checks for the LM, 1,582 for the CM,
    against yaAGC digests) through the readable tables, the interpretive
