@@ -1876,14 +1876,15 @@ static const word CLOG2_32[2] = KW_CLOG2_32; /* CLOG2/32: 2DEC .0216608494 */
 #define ONE_SEC  ((word)KW_1SEC)   /* 1SEC: DEC 100 */
 #endif
 
-/* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, and LOADTIME, RTB routines
- * (RTB_OP_CODES.agc). */
+/* 1STO2S, V1STO2S, 2V1STO2S and their 1TO2SUB, LOADTIME, TPMODE and
+ * DPMODE, RTB routines (RTB_OP_CODES.agc). */
 #define LOADTIME    ((word)K_LOADTIME)
 #define ONE_STO2S   ((word)K_1STO2S)
 #define TWO_V1STO2S ((word)K_2V1STO2S)
 #define ONE_TO2SUB  ((word)K_1TO2SUB)
 #define V1STO2S     ((word)K_V1STO2S)
 #define TPMODE      ((word)K_TPMODE)
+#define DPMODE      ((word)K_DPMODE)
 
 /* ---- SYSTEM_TEST_STANDARD_LEAD_INS ---- */
 
@@ -3159,6 +3160,19 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define CLUPDATE ((word)K_CLUPDATE)
 #define V06N59   ((word)KW_V06N59) /* VN 0659 */
 #define V16N45   ((word)KW_V16N45) /* VN 1645 */
+/* R36, the out-of-plane rendezvous display (the CM's R36A and R36P3 in
+ * bank 41, after its own R36 in bank 20 asks which vehicle). */
+#define R36      ((word)K_R36)
+#define ASTROTIM ((word)K_ASTROTIM)
+#define LREGCHK  ((word)K_LREGCHK)
+#define ENTTIM2  ((word)K_ENTTIM2)
+#define V06N16N  ((word)KW_V06N16N) /* VN 00616 */
+#define V06N90N  ((word)KW_V06N90N) /* VN 00690 */
+#if COMANCHE055
+#define R36A     ((word)K_R36A)
+#define R36P3    ((word)K_R36P3)
+#define OPTION36 ((word)KW_OPTION36) /* VN 0412 */
+#endif
 #if LUMINARY099
 #define DEG130 ((word)K_130DEG) /* 130DEG, 2DEC .3611111111 */
 #else

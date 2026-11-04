@@ -4,12 +4,11 @@
  * (c64-port/src/lm_p34_p35.c and cm_p34_p35.c): <m>_p34_p35_basic (the
  * basic code) and <m>_p34_p35_interpretive (the order pairs).
  *
- * The file is written part by part, so the tables carry every key of the
- * faithful ones, in their order (p34_keys.inc and cm_p34_keys.inc, which
- * tools/p20_p25_keys.py writes from them): a key the parts written so far
- * cover runs a readable routine; any other runs the faithful port's,
- * built into the program as faithful_<m>_p34_p35_basic and
- * faithful_<m>_p34_p35_interpretive (tests/x86_readable.py renames them).
+ * The tables carry every key of the faithful ones, in their order
+ * (p34_keys.inc and cm_p34_keys.inc, which tools/p20_p25_keys.py writes
+ * from them), and every key runs a readable routine: the file was written
+ * part by part, and is whole. The side-by-side test (tests/p34_cases.c)
+ * checks that no key is left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file's code (AVFLAGA, AVFLAGP, P20FLGON, ALARM, BANKCALL, GOTOPOOH,
@@ -42,25 +41,24 @@
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 #define SUPERBANK_BIT      0100u
 #define LOADTIME_BANK      ((word)(I_LOADTIME & 076000u))
+#define DPMODE_BANK        ((word)(I_DPMODE & 076000u))
+#if LUMINARY099
+#define R36_BANK 04u /* R36's display code */
+#else
+#define R36_BANK 041u
+#endif
 
 #if LUMINARY099
 #define ROPE                  0u /* the LM's rope */
-#define faithful_basic        faithful_lm_p34_p35_basic
-#define faithful_interpretive faithful_lm_p34_p35_interpretive
 #define readable_basic        lm_p34_p35_basic
 #define readable_interpretive lm_p34_p35_interpretive
 #define KEYS                  "p34_keys.inc"
 #else
 #define ROPE                  1u /* the CM's */
-#define faithful_basic        faithful_cm_p34_p35_basic
-#define faithful_interpretive faithful_cm_p34_p35_interpretive
 #define readable_basic        cm_p34_p35_basic
 #define readable_interpretive cm_p34_p35_interpretive
 #define KEYS                  "cm_p34_keys.inc"
 #endif
-
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_basic, faithful_interpretive;
 
 static jmp_buf back;
 
@@ -101,11 +99,13 @@ static bool sane(void)
 }
 
 /* The key's bank selected: FB, and in banks 30 to 37 the superbank bit
- * clear (with it set, FB 30 to 37 would be banks 40 to 47). Banks 2 and
- * 3 are fixed-fixed, there whatever FB holds. */
+ * clear; banks 40 to 47 are FB 30 to 37 with it set (the CM's R36). Banks
+ * 2 and 3 are fixed-fixed, there whatever FB holds. */
 static bool in_bank(unsigned bank)
 {
     if (bank == 2u || bank == 3u) return true;
+    if (bank >= 040u)
+        return FBANK == (word)((bank - 010u) << 10) && (*agc.superbank & SUPERBANK_BIT);
     return FBANK == (word)(bank << 10) && (bank < 030u || !(*agc.superbank & SUPERBANK_BIT));
 }
 
@@ -174,6 +174,28 @@ static const struct basic_entry {
     {KEY(035u, N45PROC + 6u), n45proc_after_phaschng},
     {KEY(035u, CLUPDATE), clupdate},
     {KEY(035u, CLUPDATE + 4u), clupdate_after_phaschng},
+/* Part 6: R36 */
+#if LUMINARY099
+    {KEY(04u, R36), r36_start},
+    {KEY(04u, R36 + 6u), r36_time_terminate},
+    {KEY(04u, R36 + 7u), r36_time_proceed},
+    {KEY(04u, R36 + 010u), r36_time_recycle},
+#else
+    {KEY(020u, R36), r36},
+    {KEY(020u, R36 + 7u), r36_terminate},
+    {KEY(020u, R36 + 010u), r36_proceed},
+    {KEY(020u, R36 + 011u), r36_loaded},
+    {KEY(020u, R36 + 012u), r36_to_r36a},
+    {KEY(041u, R36A), r36_start},
+    {KEY(041u, R36P3 + 3u), r36_time_terminate},
+    {KEY(041u, R36P3 + 4u), r36_time_proceed},
+    {KEY(041u, R36P3 + 5u), r36_time_recycle},
+#endif
+    {KEY(R36_BANK, I_R36TAG2 + 5u), r36_after_exit},
+    {KEY(R36_BANK, I_R36TAG2 + 010u), r36_end_terminate},
+    {KEY(R36_BANK, I_R36TAG2 + 011u), r36_end_proceed},
+    {KEY(R36_BANK, I_R36TAG2 + 012u), r36_redisplay},
+    {KEY(R36_BANK, LREGCHK), lregchk},
     /* Part 1: the display subroutines */
     {KEY(035u, DISPLAYE), displaye},
     {KEY(035u, DISPLAYE + 5u), displaye_terminate},
@@ -214,6 +236,7 @@ static const struct interpretive_code *const codes[] = {
     &S34_35_2_CODE, &S34_35_3_CODE,    &LOMAT_CODE,    &S34_35_5_CODE, &S34_35_5_LOADED_CODE,
     &FLAGOFF_CODE,  &VN1645_CODE,      &GETMGA_CODE,   &CLUPDATE_CODE, &INITVEL_CODE,
     &MIDGIM_CODE,   &SELECTMU_CODE,    &PERIAPO_CODE,  &PRECSET_CODE,  &VECSHIFT_CODE,
+    &ASTROTIM_CODE, &ENTTIM2_CODE,     &R36INT_CODE,   &R36B_CODE,     &R36TAG2_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -228,33 +251,39 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
     return NULL;
 }
 
-/* One pass; after RTB LOADTIME, LOADTIME and its DANZIG. */
+/* One pass; after RTB LOADTIME or RTB DPMODE (R36's), the routine and
+ * its DANZIG, which goes on with the pair's other order. */
 static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
                                  mission_io *io, const struct interpretive_code *code)
 {
+    void (*routine)(void);
+
     if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
-    if (Z != LOADTIME || FBANK != LOADTIME_BANK) return EXEC_OK;
+    if (Z == LOADTIME && FBANK == LOADTIME_BANK)
+        routine = loadtime;
+    else if (Z == DPMODE && FBANK == DPMODE_BANK)
+        routine = dpmode;
+    else
+        return EXEC_OK;
     if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
     if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
-    loadtime();
+    routine();
     return interpret_listing(program, state, io, code);
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each key's routine: the readable one, or the faithful port's. A basic
- * routine runs from its key, whatever Z holds (the trampoline calls it
- * there). */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. A basic routine runs from its key, whatever Z
+ * holds (the trampoline calls it there). */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     mission_io *io = device, kept;
     apollo_overlay_state before;
 
-    if (!entry) return faithful_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (!in_bank(key / 1024u) || !sane()) return EXEC_OUT_OF_SCOPE;
 
@@ -289,7 +318,7 @@ static bool outside_mutable(uint16_t key)
     return x1 != 077775u && x1 != 077765u;
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -298,8 +327,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -328,13 +355,13 @@ bool p34_p35_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include KEYS
 #undef BASIC

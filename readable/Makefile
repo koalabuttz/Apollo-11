@@ -1778,14 +1778,13 @@ ground-track-cases: $(BUILD)/p21-oracle-lm $(BUILD)/p21-oracle-cm $(BUILD)/p21-c
 	./$(BUILD)/p21-cases-lm $(ROPES)
 	./$(BUILD)/p21-cases-cm $(ROPES)
 
-# P34-35_P74-75.agc, both missions' TPI and mid-course programs, readable
-# part by part: each mission's port test (tests/test_lm_p34_p35.c and
-# test_cm_p34_p35.c, their frozen cases run to their stops through the
-# programs of tests/lm_ and cm_p34_p35_target.c, against the original
-# programs' yaAGC digests) through the readable tables, which hand the
-# keys not yet written to the faithful routines (renamed faithful_), with
-# tests/with_ropes.c loading the ropes the readable interpreter reads;
-# then tests/p34_cases.c side by side, for each mission.
+# P34-35_P74-75.agc, both missions' TPI and mid-course programs: each
+# mission's port test (tests/test_lm_p34_p35.c and test_cm_p34_p35.c,
+# their frozen cases run to their stops through the programs of
+# tests/lm_ and cm_p34_p35_target.c, against the original programs' yaAGC
+# digests) through the readable tables, with tests/with_ropes.c loading
+# the ropes the readable interpreter reads; then tests/p34_cases.c side by
+# side with the faithful routines (renamed faithful_), for each mission.
 P34_COMMON := $(R63_COMMON) $(PORT)/src/rtb_modes.c
 
 $(BUILD)/p34-faithful-%.o: $(PORT)/src/%_p34_p35.c
