@@ -3128,7 +3128,8 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define P30N33 ((word)K_P30N33)
 /* GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc (LM): P31. */
 #define P31 ((word)K_P31)
-/* GROUND_TRACKING_DETERMINATION_PROGRAM.agc (LM): P21, and GOPERF4, the
+#endif
+/* GROUND_TRACKING_DETERMINATION_PROGRAM.agc (both): P21, and GOPERF4, the
  * please perform display it asks for the vehicle with. */
 #define PROG21   ((word)K_PROG21)
 #define P21PROG1 ((word)K_P21PROG1)
@@ -3136,7 +3137,6 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define GOPERF4  ((word)K_GOPERF4)
 #define V6N34    ((word)KW_V6N34)  /* VN 00634 */
 #define V06N43   ((word)KW_V06N43) /* VN 00643 */
-#endif
 #if COMANCHE055
 /* The CM's: P31, the routines P30 and P31 share, their displays (DISP45,
  * verb 16 noun 45), S31.1 and DELRSPL. */

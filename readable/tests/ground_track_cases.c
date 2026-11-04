@@ -1,34 +1,39 @@
 /* SPDX-License-Identifier: MIT */
 /* The readable P21 against the faithful port's, key by key (make
- * ground-track-cases ROPE_LM ROPE_CM). LM only.
+ * ground-track-cases ROPE_LM ROPE_CM), one mission per build.
  *
  * Built with the readable tables (src/binding/ground_track_routines.c)
- * and the faithful port's (c64-port/src/lm_ground_track.c) under the same
- * names with faithful_ in front (the Makefile renames them).
+ * and the faithful port's (c64-port/src/lm_ground_track.c or
+ * cm_ground_track.c) under the same names with faithful_ in front (the
+ * Makefile renames them).
  *
  * First the words: the readable interpretive code
- * (src/ground_track/ground_track.c), written in the listing's
- * notation, must be the original program's rope, word for word. Then the
- * keys, which must be the faithful tables', and the older module's tables
- * (lm_p21_basic_routines, lm_p21_interpretive_routines) must be empty.
- * Then the runs: each key from 4,096 states, each one of the port's
- * frozen test states (c64-port/tests/lm_ground_track_vectors.h) entered at
- * the key, most stirred further: MPAC and its mode, the push-down list
- * and its pointer, the index registers, the flag words, the words
- * the vectors are read from (any erasable bank's), NEWJOB, the overflow
- * indicator, now and then any word but the interpreter's own, the
- * latches, or a state the routines refuse (another work area, BBANK not
- * the two banks, a word of 16 bits). Each runs once on each side, as the
- * program's trampoline would call the key's routine. Where either port
- * runs, the other must too, with the same memory and io record, word for
- * word; where the readable one refuses, it must leave everything as it
- * found it; and the faithful routine must run in at least 1 of 16 of
- * every key's states. */
+ * (src/ground_track/ground_track.c), written in the listing's notation,
+ * must be the mission's rope, word for word. Then the keys, which must be
+ * the faithful tables', and the older module's tables (lm_p21_ or
+ * cm_p21_basic_routines and _interpretive_routines) must be empty. Then
+ * the runs: each key from 4,096 states, each one of the port's frozen
+ * test states (c64-port/tests/lm_ground_track_vectors.h or
+ * cm_ground_track_vectors.h) entered at the key, most stirred further:
+ * MPAC and its mode, the push-down list and its pointer, the index
+ * registers, the flag words, the words the vectors are read from (any
+ * erasable bank's), NEWJOB, the overflow indicator, now and then any word
+ * but the interpreter's own, the latches, or a state the routines refuse
+ * (another work area, BBANK not the two banks, a word of 16 bits). Each
+ * runs once on each side, as the program's trampoline would call the
+ * key's routine. Where either port runs, the other must too, with the
+ * same memory and io record, word for word; where the readable one
+ * refuses, it must leave everything as it found it; and the faithful
+ * routine must run in at least 1 of 16 of every key's states. */
 #include <stdio.h>
 #include <string.h>
 #include "rope_image.h"
 #include "interp_case.h"
+#if LUMINARY099
 #include "lm_ground_track_vectors.h"
+#else
+#include "cm_ground_track_vectors.h"
+#endif
 
 /* The readable words. */
 struct interpretive_code {
@@ -39,10 +44,36 @@ struct interpretive_code {
 };
 extern const struct interpretive_code P21_CODE, P21_RECYCLE_CODE;
 static const struct interpretive_code *const codes[] = {&P21_CODE, &P21_RECYCLE_CODE};
-extern const agc_routine_table lm_ground_track_basic, lm_ground_track_interpretive;
-extern const agc_routine_table faithful_lm_ground_track_basic,
-    faithful_lm_ground_track_interpretive;
-extern const agc_routine_table lm_p21_basic_routines, lm_p21_interpretive_routines;
+#if LUMINARY099
+#define readable_basic        lm_ground_track_basic
+#define readable_interpretive lm_ground_track_interpretive
+#define faithful_basic        faithful_lm_ground_track_basic
+#define faithful_interpretive faithful_lm_ground_track_interpretive
+#define older_basic           lm_p21_basic_routines
+#define older_interpretive    lm_p21_interpretive_routines
+#define mission_cases         lm_ground_track_cases
+#define MISSION_CASES         LM_GROUND_TRACK_VECTORS
+#define ROPE                  0u
+#define MISSION               "LM"
+#define NEWOPS_AT             06070u
+typedef p66_bias_io mission_io;
+#else
+#define readable_basic        cm_ground_track_basic
+#define readable_interpretive cm_ground_track_interpretive
+#define faithful_basic        faithful_cm_ground_track_basic
+#define faithful_interpretive faithful_cm_ground_track_interpretive
+#define older_basic           cm_p21_basic_routines
+#define older_interpretive    cm_p21_interpretive_routines
+#define mission_cases         cm_ground_track_cases
+#define MISSION_CASES         CM_GROUND_TRACK_VECTORS
+#define ROPE                  1u
+#define MISSION               "CM"
+#define NEWOPS_AT             06037u
+typedef cm_native_io mission_io;
+#endif
+extern const agc_routine_table readable_basic, readable_interpretive;
+extern const agc_routine_table faithful_basic, faithful_interpretive;
+extern const agc_routine_table older_basic, older_interpretive;
 
 /* The addresses of the words P21 uses. */
 #define TIME2_AT    0024u
@@ -58,7 +89,6 @@ extern const agc_routine_table lm_p21_basic_routines, lm_p21_interpretive_routin
 #define PUSHLOC_AT  0166u
 #define X1_AT       0046u /* X1, X2, S1 and S2 */
 #define FLAGWRD0_AT 0074u
-#define NEWOPS_AT   06070u
 
 #define CASES 4096u
 
@@ -76,7 +106,7 @@ static unsigned words_differ(const struct interpretive_code *code)
     for (i = 0; i < code->count; ++i) {
         agc_word rope = 0;
         unsigned physical = code->bank * 1024u + code->first - 02000u + i;
-        if (!apollo_rope_read(0u, (uint16_t)physical, &rope) || rope != code->words[i]) {
+        if (!apollo_rope_read(ROPE, (uint16_t)physical, &rope) || rope != code->words[i]) {
             printf("FAIL: %02o,%04o is %05o, the rope's %05o\n", code->bank, code->first + i,
                    code->words[i], rope);
             ++failures;
@@ -118,19 +148,27 @@ static uint16_t value_word(void)
 
 /* One state at the key (its physical address; an order pair's for an
  * interpretive key): a frozen case's, and for most n more. */
-static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int interpretive,
-                  unsigned n)
+static void state(apollo_overlay_state *s, mission_io *io, agc_hardware *hardware, uint16_t key,
+                  int interpretive, unsigned n)
 {
-    const irc_case *c = &lm_ground_track_cases[(n * 7u + rnd()) % LM_GROUND_TRACK_VECTORS];
+    const irc_case *c = &mission_cases[(n * 7u + rnd()) % MISSION_CASES];
     uint16_t bank = (uint16_t)(key / 1024u), z = (uint16_t)(02000u + key % 1024u), eb;
     uint16_t *w = s->words, fixloc;
     unsigned k;
 
     memset(s, 0, sizeof *s);
     memset(io, 0, sizeof *io);
+    memset(hardware, 0, sizeof *hardware);
     irc_build(s, c);
+#if !LUMINARY099
+    if (irc_ch_on) irc_cm_io(io, hardware, 0);
+#endif
     io->superbank = c->superbank;
     io->interrupt_enabled = c->interrupt_enabled;
+#if !LUMINARY099
+    /* The CM's bank 37 wants the superbank bit clear. */
+    if (rnd() % 4u) io->superbank &= (uint16_t)~0100u;
+#endif
     eb = (uint16_t)(w[3] >> 8);
     w[4] = (uint16_t)(bank << 10);
     if (interpretive) {
@@ -206,19 +244,29 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
-            p66_bias_io io, fio, rio;
-            agc_native_program p;
+            mission_io io, fio, rio;
+            agc_hardware hardware, fhw, rhw;
+            agc_native_program p, fp, rp;
             enum exec_status sf, sr;
             const char *why = 0;
 
-            state(&start, &io, key, interpretive, n);
+            state(&start, &io, &hardware, key, interpretive, n);
             fa = ra = start;
             fio = rio = io;
+            fhw = rhw = hardware;
             memset(&p, 0, sizeof p);
-            sf = faithful->entries[i].call(&p, &fa, &fio);
-            sr = readable->entries[i].call(&p, &ra, &rio);
+            fp = rp = p;
+            /* A hardware record mostly, which the routines do not use (the
+             * CM's basic routines want one there). */
+            if (rnd() % 4u) {
+                fp.hardware = &fhw;
+                rp.hardware = &rhw;
+            }
+            sf = faithful->entries[i].call(&fp, &fa, &fio);
+            sr = readable->entries[i].call(&rp, &ra, &rio);
             ran += sf == EXEC_OK;
-            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
+            if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio) ||
+                                  memcmp(&rhw, &hardware, sizeof rhw)))
                 why = "readable refusal changed the state";
             else if (sf == EXEC_OK && sr != EXEC_OK)
                 why = "readable refused, faithful ran";
@@ -228,6 +276,8 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                 why = "different memory";
             else if (sf == EXEC_OK && memcmp(&fio, &rio, sizeof fio))
                 why = "different io record";
+            else if (sf == EXEC_OK && memcmp(&fhw, &rhw, sizeof fhw))
+                why = "different hardware record";
             if (why && ++bad <= 3) {
                 unsigned w;
                 printf("FAIL %02o,%04o case %u: %s\n", key / 1024u, z, n, why);
@@ -261,23 +311,22 @@ int main(int argc, char **argv)
         failures += words_differ(codes[i]);
         words += codes[i]->count;
     }
-    failures += tables_differ(&lm_ground_track_basic, &faithful_lm_ground_track_basic, "basic");
-    failures += tables_differ(&lm_ground_track_interpretive, &faithful_lm_ground_track_interpretive,
-                              "interpretive");
-    if (lm_p21_basic_routines.count || lm_p21_interpretive_routines.count) {
+    failures += tables_differ(&readable_basic, &faithful_basic, "basic");
+    failures += tables_differ(&readable_interpretive, &faithful_interpretive, "interpretive");
+    if (older_basic.count || older_interpretive.count) {
         printf("FAIL: the older module's tables are not empty\n");
         ++failures;
     }
     if (failures) {
-        printf("ground-track-cases: %u failures\n", failures);
+        printf("ground-track-cases (" MISSION "): %u failures\n", failures);
         return 1;
     }
-    failures += keys(&lm_ground_track_basic, &faithful_lm_ground_track_basic, 0, &runs);
-    failures +=
-        keys(&lm_ground_track_interpretive, &faithful_lm_ground_track_interpretive, 1, &runs);
-    printf("ground-track-cases: %u words as the rope's, %u keys (%u basic, %u order pairs) from %u "
+    failures += keys(&readable_basic, &faithful_basic, 0, &runs);
+    failures += keys(&readable_interpretive, &faithful_interpretive, 1, &runs);
+    printf("ground-track-cases (" MISSION
+           "): %u words as the rope's, %u keys (%u basic, %u order pairs) from %u "
            "states each, %u run by the faithful routines, %u failures\n",
-           words, lm_ground_track_basic.count + lm_ground_track_interpretive.count,
-           lm_ground_track_basic.count, lm_ground_track_interpretive.count, CASES, runs, failures);
+           words, readable_basic.count + readable_interpretive.count, readable_basic.count,
+           readable_interpretive.count, CASES, runs, failures);
     return failures != 0;
 }
