@@ -60,6 +60,7 @@ static void tc_q(void)
 #define P40CSM_EXIT  (P40CSM + 016u)
 #define P41_DSP_EXIT (P41_DSP + 5u)
 #define CALCN85_EXIT (CALCN85 + 5u)
+#define CALCN83_EXIT (CALCN83 + 013u)
 
 /* ---- P40CSM -- pp. 684-685 ---- */
 
@@ -669,6 +670,232 @@ static const word p41csm_words[] = {
     ADDRESS(P40S_F),
 };
 
+/* ---- P47CSM -- pp. 691-692 ---- */
+
+/* P47CSM, the thrust monitor: "IMU STATUS CHECK" (BANKCALL, CADR
+ * R02BOTH), */
+void p47csm(void)
+{
+    tc_to(P47CSM, BANKCALL); /* CADR R02BOTH */
+}
+
+/* then to the interpreter, for P47CSM_CODE. */
+void p47csm_after_r02both(void)
+{
+    tc_at(P47CSM + 2u);
+    intpret();
+}
+
+/* P47CSM_CODE: the average-G routine started (CALRB MIDTOAV2), which comes
+ * back to basic code with the delay in MPAC +1. */
+static const word p47csm_words[] = {
+    ORDER(CALRB),
+    ADDRESS(MIDTOAV2),
+};
+
+/* MIDTOAV2's return: the "DELTA TIME TO RPEREAD" to P40TMP, and TIGON
+ * after it (WAITLIST), "REQUIRED TO MATHCHTAT AND AVEG". */
+void p47csm_after_midtoav2(void)
+{
+    ca(ADDRESS_OF(MPAC) + 1u);
+    ts(ADDRESS_OF(P40TMP));
+    tc_to(P47CSM + 7u, WAITLIST); /* 2CADR TIGON */
+}
+
+/* P47CSM +012: restart group 4 (PHASCHNG, OCT 40574, "4.57 = TIGON (P40TMP
+ * CS)"), */
+void p47csm_after_waitlist(void)
+{
+    tc_to(P47CSM + 012u, PHASCHNG);
+}
+
+/* and the job ends (TCF ENDOFJOB). */
+void p47csm_after_phaschng(void)
+{
+    continue_at(ENDOFJOB);
+}
+
+/* TIGON, a task: SERVICER's exit to CALCN83 (AVEGEXIT gets ACADN83's
+ * 2CADR); "FORCE ZEROING OF N83 BEFORE SERVICER": P47BODY as a job
+ * (NOVAC, PRIO30). */
+void tigon(void)
+{
+    dca(ACADN83); /* EXTEND */
+    dxch(ADDRESS_OF(AVEGEXIT));
+    set_A(PRIO30);
+    tc_to(TIGON + 4u, NOVAC); /* 2CADR P47BODY */
+}
+
+/* TIGON +7: "4.2 = PRECHECK (-0CS), P47BODY (PRIO30)" (CS BIT2), TCF
+ * TTGPHS. */
+void tigon_after_novac(void)
+{
+    set_A(negate(BIT2));
+    ttgphs();
+}
+
+/* CALCN83: SERVICER's exit, each pass; to the interpreter, for
+ * CALCN83_CODE. */
+void calcn83(void)
+{
+    tc_at(CALCN83);
+    intpret();
+}
+
+/* CALCN83_CODE: "SET UP PUSHLIST FOR S41.1"; the velocity counted
+ * (DELVCTL plus DELVREF) to DV47TEMP, "FOR COPYCYCLE BELOW", and in body
+ * axes (S41.1) to DELVIMU; S11.1, "CALC. VI, H, HDOT FOR NOUN 62". */
+static const word calcn83_words[] = {
+    ORDER(SETPD), /* "SET UP PUSHLIST FOR S41.1" */
+    ADDRESS_PLUS_ONE_D(0),
+    ORDERS(VLOAD, VAD),
+    ADDRESS_PLUS_ONE(DELVCTL),
+    ADDRESS_PLUS_ONE(DELVREF),
+    STORE(DV47TEMP), /* "FOR COPYCYCLE BELOW" */
+    ORDERS(PUSH, CALL),
+    ADDRESS(S41_1),
+    STCALL(DELVIMU),
+    ADDRESS(S11_1), /* "CALC. VI, H, HDOT FOR NOUN 62" */
+    ORDER(EXIT),
+};
+
+/* After the EXIT: restart group 1 (PHASCHNG, OCT 10035), */
+void calcn83_after_exit(void)
+{
+    tc_to(CALCN83_EXIT + 1u, PHASCHNG);
+}
+
+/* the copy cycle: DV47TEMP to DELVCTL, six words (GENTRAN, A five), */
+void calcn83_after_phaschng(void)
+{
+    set_A(FIVE);
+    tc_to(CALCN83_EXIT + 4u, GENTRAN); /* ADRES DV47TEMP, ADRES DELVCTL */
+}
+
+/* and back to SERVICER (TC SERVXT). */
+void calcn83_after_gentran(void)
+{
+    tc_at(CALCN83_EXIT + 7u);
+    servxt();
+}
+
+/* P47BODY: to the interpreter, for P47BODY_CODE. */
+void p47body(void)
+{
+    tc_at(P47BODY);
+    intpret();
+}
+
+/* P47BODY_CODE: "CLEAR DISPLAY AND ACCUMULATOR STORAGE UPON INITIATION OR
+ * ENTER RESPONSE" (DELVIMU and DELVCTL zero). */
+static const word p47body_words[] = {
+    ORDER(VLOAD), ADDRESS_PLUS_ONE(HI6ZEROS), STORE(DELVIMU), STORE(DELVCTL), ORDER(EXIT),
+};
+
+/* P47BOD, after the EXIT: priority 15 (PRIOCHNG), "LOWER PRIO THAN CALCN83
+ * (20)", */
+void p47bod(void)
+{
+    set_A(PRIO15);
+    tc_to(P47BOD + 1u, PRIOCHNG);
+}
+
+/* restart group 4 (PHASCHNG, OCT 05024, "TYPE C GROUP 4 BELOW FOR NOUN
+ * 83"), */
+void p47bod_after_priochng(void)
+{
+    tc_to(P47BOD + 2u, PHASCHNG);
+}
+
+/* P47/DSP: verb 16 noun 83, flashed (GOFLASH). */
+void p47_dsp(void)
+{
+    set_A(V1683);
+    tc_to(P47_DSP + 1u, BANKCALL); /* CADR GOFLASH */
+}
+
+/* GOFLASH's returns: terminate and proceed end the program (GOTOPOOH), */
+void p47_dsp_terminate(void)
+{
+    tc_to(P47_DSP + 3u, GOTOPOOH);
+}
+
+void p47_dsp_proceed(void)
+{
+    tc_to(P47_DSP + 4u, GOTOPOOH);
+}
+
+/* and enter, "RECYCLE -- CLEAR ACCUMULATED VELOCITY" (TCF P47BODY). */
+void p47_dsp_recycle(void)
+{
+    p47body();
+}
+
+/* ---- TIG-30 -- p. 693 ---- */
+
+/* P41REDSP: "ENTER FROM P41 SIDE OF TIGAVEG", "REDISPLAY NONFLASHING"
+ * (NVWORD1, verb 16 noun 85); TTG/0 at ignition, 29.96 seconds on
+ * (WAITLIST). */
+static void p41redsp(void)
+{
+    set_A(V16N85B);
+    ts(ADDRESS_OF(NVWORD1));
+    set_A(SEC29_96_PLUS_1);
+    tc_to(P41REDSP + 3u, WAITLIST); /* 2CADR TTG/0 */
+}
+
+/* TIGAVEG +1, where P41/P40 comes back in P41: TCF P41REDSP. */
+void tigaveg_p41(void)
+{
+    p41redsp();
+}
+
+/* TIGAVEG +2, where it comes back in P40: "UNBLANK DISPLAY" (NVWORD1,
+ * verb 06 noun 40); TIG-5 in 24.96 seconds (WAITLIST). */
+void tigaveg_p40(void)
+{
+    set_A(V06N40);
+    ts(ADDRESS_OF(NVWORD1));
+    set_A(SEC24_96);
+    tc_to(TIGAVEG + 5u, WAITLIST); /* 2CADR TIG-5 */
+}
+
+/* TIGAVEG, a "TASK (4.37 PROTECTS)", 30 seconds before ignition: P41 or
+ * P40 (TC P41/P40). */
+void tigaveg(void)
+{
+    if (p41_p40(TIGAVEG))
+        tigaveg_p40();
+    else
+        tigaveg_p41();
+}
+
+/* TIGAVEG +010: "4.6 = TIG-5 (2496CS), PRECHECK (-0CS)" (CS SIX), TTGPHS:
+ * restart group 4. */
+void tigaveg_after_waitlist(void)
+{
+    set_A(negate(SIX));
+    ttgphs();
+}
+
+/* PRECHECK, after TTGPHS: "HAS SERVICER BEEN RESTARTED" (PHASE5, CCS):
+ * "YES, DON'T START ANOTHER ONE" (TCF TASKOVER); no (+0), SERVICER's
+ * PREREAD (POSTJUMP). PHASE5 negative runs the CADR as an instruction,
+ * which the faithful port takes as a MASK of A, and so does this; -0, the
+ * listing runs on into TIG-5 (whose CAF leaves the MASK's A unseen). */
+void precheck(void)
+{
+    switch (ccs_at(ADDRESS_OF(PHASE5))) {
+    case POSITIVE: continue_at(TASKOVER); return;
+    case IS_PLUS_ZERO: tc_to(PRECHECK + 2u, POSTJUMP); return; /* CADR PREREAD */
+    case NEGATIVE:
+        mask(016710u); /* CADR PREREAD */
+        break;
+    case IS_MINUS_ZERO: break;
+    }
+    tig_5();
+}
+
 /* ---- The interpretive code ---- */
 
 const struct interpretive_code P40CSM_CODE = {024u, P40CSM + 3u, COUNT(p40csm_words), p40csm_words};
@@ -684,5 +911,10 @@ const struct interpretive_code P40CNV85_CODE = {024u, I_P40CNV85 % 02000u + 0200
 const struct interpretive_code CALCN85_CODE = {024u, CALCN85 + 1u, COUNT(calcn85_words),
                                                calcn85_words};
 const struct interpretive_code P41CSM_CODE = {027u, P41CSM + 3u, COUNT(p41csm_words), p41csm_words};
+const struct interpretive_code P47CSM_CODE = {024u, P47CSM + 3u, COUNT(p47csm_words), p47csm_words};
+const struct interpretive_code CALCN83_CODE = {024u, CALCN83 + 1u, COUNT(calcn83_words),
+                                               calcn83_words};
+const struct interpretive_code P47BODY_CODE = {024u, P47BODY + 1u, COUNT(p47body_words),
+                                               p47body_words};
 
 #endif

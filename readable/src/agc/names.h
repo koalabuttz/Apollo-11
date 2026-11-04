@@ -3516,9 +3516,26 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
  * monitor; the burn's countdown and the steering. Its erasable words
  * (NBRCYCLS, MRKRTMP, CNTR, P40TMP, THETADX, ADB, DAPDATR1, AVEGEXIT,
  * NVWORD1, TIG ...) are named by ADDRESS_OF. */
+#define ACADN83    ((word)K_ACADN83) /* 2CADR CALCN83 */
 #define ACADN85    ((word)K_ACADN85) /* 2CADR CALCN85 */
+#define BESTTRIM   ((word)K_BESTTRIM)
+#define BTRIMR     ((word)K_BTRIMR)
+#define CALCN83    ((word)K_CALCN83)
 #define CALCN85    ((word)K_CALCN85)
+#define DOSPSOFF   ((word)K_DOSPSOFF)
+#define DOSTRULL   ((word)K_DOSTRULL)
+#define DOTVCON    ((word)K_DOTVCON)
+#define DOTVCRCS   ((word)K_DOTVCRCS)
+#define E6SETTER   ((word)K_E6SETTER)
 #define E7SETTER   ((word)K_E7SETTER)
+#define ENDIGN     ((word)K_ENDIGN)
+#define ENDV97E    ((word)K_ENDV97E)
+#define ENGINOFF   ((word)K_ENGINOFF)
+#define IGNITION   ((word)K_IGNITION)
+#define IMPLBURN   ((word)K_IMPLBURN)
+#define IMPLCONT   ((word)K_IMPLCONT)
+#define IMPULCHK   ((word)K_IMPULCHK)
+#define MASSBACK   ((word)K_MASSBACK)
 #define P40BLNKR   ((word)K_P40BLNKR)
 #define P40CLK     ((word)K_P40CLK)
 #define P40CSM     ((word)K_P40CSM)
@@ -3537,30 +3554,53 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define P41REDSP   ((word)K_P41REDSP)
 #define P41_DSP    ((word)K_P41_DSP) /* P41/DSP */
 #define P41_P40    ((word)K_P41_P40) /* P41/P40 */
+#define P47BOD     ((word)K_P47BOD)
+#define P47BODY    ((word)K_P47BODY)
+#define P47CSM     ((word)K_P47CSM)
+#define P47_DSP    ((word)K_P47_DSP) /* P47/DSP */
 #define POST41     ((word)K_POST41)
 #define POSTBURN   ((word)K_POSTBURN)
+#define PRECHECK   ((word)K_PRECHECK)
+#define PREPTVC    ((word)K_PREPTVC)
 #define SEC29_96   ((word)K_SEC29_96) /* SEC29.96: 2DEC 2996 */
 #define SERVCADR   ((word)K_SERVCADR) /* 2CADR SERVEXIT */
 #define SERVXT     ((word)K_SERVXT)
 #define SETMAXDB   ((word)K_SETMAXDB)
 #define SETMINDB   ((word)K_SETMINDB)
+#define SPSOFF     ((word)K_SPSOFF)
+#define SPSON      ((word)K_SPSON)
 #define STEERADS   ((word)K_STEERADS) /* 2CADR STEERING */
+#define STEERULL   ((word)K_STEERULL)
+#define T5IDL24    ((word)K_T5IDL24) /* 2CADR T5IDLOC */
+#define TIGAVEG    ((word)K_TIGAVEG)
 #define TIGBLNK    ((word)K_TIGBLNK)
 #define TIGNOW     ((word)K_TIGNOW)
+#define TIGON      ((word)K_TIGON)
+#define TIG_0      ((word)K_TIG_0) /* TIG-0 */
+#define TIG_5      ((word)K_TIG_5) /* TIG-5 */
 #define TRIMONLY   ((word)K_TRIMONLY)
 #define TST_TRIM   ((word)K_TST_TRIM) /* TST,TRIM */
 #define TTGPHS     ((word)K_TTGPHS)
 #define TTG_0      ((word)K_TTG_0) /* TTG/0 */
+#define TVCON2C    ((word)K_TVCON2C) /* 2CADR TVCDAPON */
+#define TVCZAP     ((word)K_TVCZAP)
+#define ULAGEOFF   ((word)K_ULAGEOFF)
 #define FIVE_SECDP ((word)K_5SECDP) /* 5SECDP: 2DEC 500 */
 #define EIGHTEEN_SEC ((word)KW_18SEC) /* 18SEC: DEC 1800 */
 #define FIVE_SEC   ((word)KW_5SEC)    /* 5SEC: DEC 500 */
 #define MAXDB      ((word)KW_MAXDB)   /* DEC 455 */
+#define OCT02202   ((word)KW_OCT02202) /* BITS 2, 8, 11 FOR CHANNEL 12 */
+#define OCT27_24   ((word)KW_OCT27_24) /* OCT27/24: OCT 27 */
+#define ONE_SEC    ((word)KW_1SEC)     /* 1SEC: DEC 100 */
+#define SEC24_96   ((word)KW_SEC24_96) /* SEC24.96: DEC 2496 */
+#define SEC29_96_PLUS_1 ((word)KW_SEC29_96P1) /* SEC29.96 +1: its low word, 2996 */
 #define MINDB      ((word)KW_MINDB)   /* DEC 46 */
 #define P40CKLS2   ((word)KW_P40CKLS2) /* OCT 204 */
 #define TWO_SECS   ((word)KW_2SECS)    /* 2SECS: DEC 200 */
 #define V06N40     ((word)KW_V06N40)  /* VN 0640 */
 #define V06N85B    ((word)KW_V06N85B) /* VN 0685 */
 #define V16N40     ((word)KW_V16N40)  /* VN 1640 */
+#define V1683      ((word)KW_V1683)   /* VN 1683 */
 #define V16N85B    ((word)KW_V16N85B) /* VN 1685 */
 #endif
 
