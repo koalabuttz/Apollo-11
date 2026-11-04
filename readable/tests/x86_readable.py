@@ -180,6 +180,9 @@ REPLACED = (
     # (src/stable_orbit): the port's compiled files.
     'lm_stable_orbit.o',
     'cm_stable_orbit.o',
+    # BURN,_BABY,_BURN_--_MASTER_IGNITION_ROUTINE.agc, the LM's master
+    # ignition routine (src/burn_baby): the port's compiled file.
+    'lm_burn_baby.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -225,10 +228,11 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # P21 (prog21). Each mission's R31 has labels the other's has not (the
 # LM's REV83, the CM's R34LOS). The LM's P76 starts with interpretive
 # code (P76_CODE), the CM's does not. The CM's R30 updates the splash
-# error in P00 and P11 (candel), the LM's does not.
+# error in P00 and P11 (candel), the LM's does not. BURN, BABY, BURN is the
+# LM's alone (killtsk2).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
-                          'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE'),
+                          'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE', 'killtsk2'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
                           'rtrn')}

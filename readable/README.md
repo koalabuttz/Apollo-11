@@ -184,6 +184,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P76 | `P76.agc` (LM pp. 709-711, CM pp. 511-513) | [`src/p76/`](src/p76/) | P76, the target delta V program (verb 37 noun 76, in bank 13 of both missions). The astronaut loads the delta V the other vehicle burned, in local vertical coordinates (verb 06 noun 84), and when it burned (noun 33, TIG). P76 integrates the other vehicle's state vector to TIG (UPDATE; P76SUB1 sets MOONFLAG for the sphere of influence the state is in, the LM's by CMOONFLG, the CM's by X2 as the integration leaves it), adds the delta V turned into the reference frame, then integrates on to the time of this vehicle's state vector (ATOPOTH), so both vectors, and the W-matrix (MINIRECT), are for the same time. ENDP76 clears the mark counters and goes to P00 (GOTOPOOH). The LM's P76 first copies DELVLVC to DELVOV. The faithful port has each mission's file twice, a compiled copy and an older module whose basic routines stop at each jump, which the flight program tries first: the readable file takes the place of both, its routines ending at each jump and its binding running on where the compiled copy does |
 | R30 | `R30.agc` (LM pp. 712-722, CM pp. 514-524) | [`src/r30/`](src/r30/) | R30, the orbital parameters display (verb 82; the LM's in bank 22, the CM's in bank 23), and SR30.1, which works the parameters out. With average G off, verb 04 noun 06 asks which vehicle's state vector to use; a job (V82GOFF1) integrates it to now (THISPREC or OTHPREC) and calls SR30.1, and verb 16 noun 44 shows HAPOX, HPERX and TFF once the first values are there (V82STALL), while a waitlist task (TICKTEST) counts TFF or -TPER on a second at a time until the display is answered. With average G on, a job (V82GON1) works them out from RN and VN about once a second. SR30.1 takes the state about the earth or the moon (V82EMFLG), calls TFFCONMU and TFFRP/RA, limits HAPOX and HPERX to 9999.9 NM (MAXCHK) and finds -TPER (CALCTPER, +0 below the minimum perigee) and TFF (CALCTFF). The CM's, in P00 or P11, also works out the splash-down error (CANDEL, DELRSPL) |
 | P38-P39 | `STABLE_ORBIT.agc` (LM pp. 723-730, CM pp. 525-532) | [`src/stable_orbit/`](src/stable_orbit/) | The stable orbit programs (the LM's in bank 34, the CM's in bank 4). P38 and P78 work out the burns that put the active vehicle on the passive vehicle's orbit DELTA R ahead of it or behind it (the SOI) and then into that orbit (the SOR): the crew loads TIG, CENTANG, the option and DELTA R; PREC/TT finds the passive vehicle's time over CENTANG (TIMETHET), which gives the time of intercept, and DELTTIME, the time to cover DELTA R; MAINRTNE has the passive vehicle at the target time (INTRPVP) and S3435.25 work out the burn, then shows DELTA V, the perigee after it and the burn in local vertical coordinates. P39 and P79 work out a midcourse correction between the two, from now plus the time to prepare. VNDSPLY flashes each display and keeps its caller's return in RTRN |
+| BURN, BABY, BURN | `BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc` (LM pp. 731-751) | [`src/burn_baby/`](src/burn_baby/) | The LM's master ignition routine (bank 36, with P40AUTO in bank 35, the ignition and zoom tasks in bank 17 and KILLTASK in fixed-fixed and bank 27), which counts down to the burn for P12, P40, P41, P42, P63 and the aborts. Each program has its table of steps, which WHICH names and INDEX WHICH; TCF n runs: BURNBABY starts the averaging at TIG -35 seconds (CALLT-35), blanks the DSKY at TIG -35 (TIG-35), brings the countdown display back at TIG -30, starts ullage at TIG -7.5 (ULLGTASK) and ignites at TIG -0 (TIG-0, IGNITION), unless the crew withholds the go (COMFAIL). The countdown clock (STCLOK, CLOKTASK, CLOKJOB) shows the display DISPDEX picks each second; NULLCLOK stops it, ASTNRETN, *PROCEED and *ENTER take the crew's responses, GOPOST and GOCUTOFF end the burn, and KILLTASK takes a task off the waitlist |
 
 Beside them:
 
@@ -601,6 +602,18 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    (E4,1767), where TC RTRN leaves Z. OPTION2 and the flags are stirred to
    the values the code tests, and RTRN to the words the file's TC VNDSPLYs
    leave there (at an order pair, a fixed address).
+   `make burn-baby-cases` does the same for the LM's BURN, BABY, BURN:
+   the faithful test's frozen cases (yaAGC digests) and refusals through
+   the readable tables, the interpretive words against the rope (28), and
+   readable and faithful side by side at every key (160 basic and 14 order
+   pairs) from 65,536 states, as the host runs them and as the flight
+   program does (stopping at the interpreter). A run goes on through the
+   file while a computed transfer (a TC Q, NULLCLOK's TC P40/RET, DEAD's
+   DTCB, CLOKJOB's INDEX A) lands in it; WHICH, DISPDEX, P40/RET, the
+   PHASE words, Q, ITEMP1 and the waitlist are stirred to the values the
+   code tests. Not counted: a run the faithful port takes on from the
+   middle of a routine (a random Q or ITEMP1), where no readable function
+   starts.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,
