@@ -1699,6 +1699,8 @@
 #define K_RASTEER1 02731u
 #define K_S41_1 03267u
 #define K_S40_1B 02336u
+#define K_TGOCALC 02464u
+#define K_LOTHRUST 02352u
 #define K_SETMAXDB 02127u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
@@ -4200,6 +4202,8 @@
 #define I_FIRSTTME 057171u
 #define I_DVTOTAL 003507u
 #define I_CALCGRAV 066730u
+#define I_LOTHRUST 066352u
+#define I_2VEXHUST 003742u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

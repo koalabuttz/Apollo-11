@@ -3550,7 +3550,9 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define IMPLBURN   ((word)K_IMPLBURN)
 #define IMPLCONT   ((word)K_IMPLCONT)
 #define IMPULCHK   ((word)K_IMPULCHK)
+#define INCRSVG    ((word)K_INCRSVG)
 #define MASSBACK   ((word)K_MASSBACK)
+#define LOTHRUST   ((word)K_LOTHRUST)
 #define NOFLASH    ((word)K_NOFLASH)
 #define P40BLNKR   ((word)K_P40BLNKR)
 #define P40CLK     ((word)K_P40CLK)
@@ -3582,6 +3584,8 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define R40ENABL   ((word)K_R40ENABL)
 #define S40_1      ((word)K_S40_1)   /* S40.1 */
 #define S40_2_3    ((word)K_S40_2_3) /* S40.2,3 */
+#define S40_8      ((word)K_S40_8)   /* S40.8 */
+#define S40_81     ((word)K_S40_81)  /* S40.81 */
 #define S41_1      ((word)K_S41_1)   /* S41.1 */
 #define SEC29_96   ((word)K_SEC29_96) /* SEC29.96: 2DEC 2996 */
 #define SERVCADR   ((word)K_SERVCADR) /* 2CADR SERVEXIT */
@@ -3600,6 +3604,7 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define STEERULL   ((word)K_STEERULL)
 #define SURELY_9   ((word)K_SURELY_9) /* SURELY.9 */
 #define T5IDL24    ((word)K_T5IDL24) /* 2CADR T5IDLOC */
+#define TGOCALC    ((word)K_TGOCALC)
 #define TIGAVEG    ((word)K_TIGAVEG)
 #define TIGBLNK    ((word)K_TIGBLNK)
 #define TIGNOW     ((word)K_TIGNOW)
