@@ -18,12 +18,10 @@
  * which ends at the pair's DANZIG, at an EXIT, or where a CALL or GOTO
  * leaves it.
  *
- * SETMINDB, SETMAXDB, SPSOFF and TVCZAP end in TC Q. Entered at their
- * keys, Q can hold any return; the faithful port runs on where it is a
- * word of bank 24 it has code for, and so does the binding, up to the last
- * word the parts written so far reach. Past it, up to the file's last word
- * in the bank, the binding refuses (the side-by-side test counts these);
- * beyond that both stop.
+ * SETMINDB, SETMAXDB, SPSOFF, TVCZAP and E7SETTER end in TC Q. Entered
+ * at their keys, Q can hold any return; the faithful port runs on where it
+ * is a word of bank 24 it has code for, and so does the binding; past
+ * ENDV97E, the last of the file's basic code in the bank, both stop.
  *
  * The device is the CM's io record (cm_native_io); the faithful basic
  * routines take the program's hardware record for their channel orders,
@@ -63,10 +61,12 @@ static void leave(void)
     longjmp(back, 1);
 }
 
-/* SPSOFF's and TVCZAP's channel 12 (WOR, WAND), and ULAGEOFF's channel 5
- * (WRITE), as the faithful port keeps them. */
+/* SPSOFF's and TVCZAP's channel 12 (WOR, WAND), STEERING's channel 11
+ * (RAND DSALMOUT) and ULAGEOFF's channel 5 (WRITE), as the faithful port
+ * keeps them. */
 static word channel_in(unsigned number)
 {
+    if (number == 011u) return (word)io_now->channel11;
     if (number == 012u) return (word)io_now->channel12;
     not_modelled(); /* the readable parts read no other channel */
     return 0;
@@ -219,6 +219,67 @@ static const struct basic_entry {
     {KEY(024u, DOTVCRCS + 014u), dotvcrcs_after_novac},
     {KEY(024u, SPSOFF), spsoff},
     {KEY(024u, TVCZAP), tvczap},
+    /* Part 3: UPDATEVG to ENDV97E */
+    {KEY(024u, UPDATEVG + 014u), updatevg_after_exit},
+    {KEY(024u, UPDATEVG + 021u), updatevg_after_phaschng},
+    {KEY(024u, SURELY_9 + 1u), surely_9_after_exit},
+    {KEY(024u, SURELY_9 + 5u), surely_9_after_findvac},
+    {KEY(024u, SURELY_9 + 010u), surely_9_after_2phschng},
+    {KEY(024u, STEERING), steering},
+    {KEY(024u, STEERING + 4u), steering_after_exit},
+    {KEY(024u, STEERING + 030u), steering_after_dpagree},
+    {KEY(024u, STEERING + 045u), steering_after_waitlist},
+    {KEY(024u, STEERING + 050u), steering_after_2phschng},
+    {KEY(024u, STEERING + 052u), steering_after_downflag},
+    {KEY(024u, CLOKTASK), cloktask},
+    {KEY(024u, CLOKTASK + 6u), cloktask_after_phaschng},
+    {KEY(024u, SETCLOCK + 4u), setclock_after_waitlist},
+    {KEY(024u, SETTB6), settb6},
+    {KEY(024u, SETUPDYN + 4u), setupdyn_after_findvac},
+    {KEY(024u, DYNDISP), dyndisp},
+    {KEY(024u, DYNDISP + 4u), dyndisp_after_exit},
+    {KEY(024u, CLOCKJOB), clockjob},
+    {KEY(024u, CKNVWRD1), cknvwrd1},
+    {KEY(024u, FAILDSP + 3u), faildsp_terminate},
+    {KEY(024u, FAILDSP + 4u), faildsp_proceed},
+    {KEY(024u, FAILDSP + 5u), faildsp_enter},
+    {KEY(024u, ENGREQST + 3u), engreqst_terminate},
+    {KEY(024u, ENGREQST + 4u), engreqst_proceed},
+    {KEY(024u, ENGREQST + 5u), engreqst_enter},
+    {KEY(024u, E7SETTER), e7setter},
+    {KEY(024u, V99EJOB), v99ejob},
+    {KEY(024u, V99T), v99t},
+    {KEY(024u, V99TJOB), v99tjob},
+    {KEY(024u, V99P_TIG), v99p_tig},
+    {KEY(024u, V97T + 3u), v97t_after_2phschng},
+    {KEY(024u, V97T + 6u), v97t_after_twiddle},
+    {KEY(024u, V97TTASK), v97ttask},
+    {KEY(024u, V97TTASK + 010u), v97ttask_after_phaschng},
+    {KEY(024u, V97TTASK + 013u), v97ttask_tailoff},
+    {KEY(024u, V97TRCS), v97trcs},
+    {KEY(024u, V97TRCS + 2u), v97trcs_after_rcsdapon},
+    {KEY(024u, ENDV97T), endv97t},
+    {KEY(024u, V97P + 2u), v97p_after_phaschng},
+    {KEY(024u, V97P + 5u), v97p_after_twiddle},
+    {KEY(024u, V97PTASK), v97ptask},
+    {KEY(024u, V97PTASK + 6u), v97ptask_after_idlefail},
+    {KEY(024u, V97PTASK + 010u), v97ptask_after_steersw},
+    {KEY(024u, V97PTASK + 012u), v97ptask_after_phaschng},
+    {KEY(024u, R40ENABL), r40enabl},
+    {KEY(024u, R40ENABL + 2u), r40enabl_after_downflag},
+    {KEY(024u, ENDV97P), endv97p},
+    {KEY(024u, V97E + 2u), v97e_after_phaschng},
+    {KEY(024u, V97E + 6u), v97e_after_waitlist},
+    {KEY(024u, V97ETASK), v97etask},
+    {KEY(024u, SPSOFF97), spsoff97},
+    {KEY(024u, SPSOFF97 + 3u), spsoff97_after_phaschng},
+    {KEY(024u, V97E40_6), v97e40_6},
+    {KEY(024u, V97E40_6 + 4u), v97e40_6_after_waitlist},
+    {KEY(024u, V97E40_6 + 6u), v97e40_6_after_rcsdapon},
+    {KEY(024u, QUICKIGN), quickign},
+    {KEY(024u, V99FLASH), v99flash},
+    {KEY(024u, V99FLASH + 5u), v99flash_after_2phschng},
+    {KEY(024u, ENDV97E), endv97e},
     /* Part 1: P41CSM */
     {KEY(027u, P41CSM), p41csm},
     {KEY(027u, P41CSM + 2u), p41csm_after_upflag},
@@ -243,6 +304,12 @@ static const struct basic_entry returns[] = {
     {KEY(024u, DOSPSOFF + 1u), dospsoff_after_spsoff},
     {KEY(024u, DOTVCRCS + 1u), dotvcrcs_after_setmaxdb},
     {KEY(024u, DOTVCRCS + 6u), dotvcrcs_after_tvczap},
+    {KEY(024u, STEERING + 020u), steering_after_e7setter},
+    {KEY(024u, V99EJOB + 1u), v99ejob_after_tvczap},
+    {KEY(024u, V99TJOB + 1u), v99tjob_after_tvczap},
+    {KEY(024u, V97TTASK + 011u), v97ttask_after_spsoff},
+    {KEY(024u, V97ETASK + 5u), v97etask_after_e6setter},
+    {KEY(024u, SPSOFF97 + 1u), spsoff97_after_spsoff},
 };
 
 static const struct basic_entry *entry_in(const struct basic_entry *entries, unsigned count,
@@ -260,25 +327,18 @@ static const struct basic_entry *basic_entry(uint16_t key)
     return entry_in(basic_entries, COUNT(basic_entries), key);
 }
 
-/* The last word of bank 24 the parts written so far reach. */
-#define LAST_WRITTEN (TVCZAP + 012u)
-
-/* Whether the binding follows a TC Q to a word of bank 24: one in the
- * parts written so far (or below them, another file's), but not FENG,
- * the constant after CALCN85's TC SERVXT, where the faithful port fails;
- * or one past ENDV97E, the file's last word in the bank, where it stops. */
+/* Whether the binding follows a TC Q to a word of bank 24: any but FENG,
+ * the constant after CALCN85's TC SERVXT, where the faithful port fails. */
 static bool follows(word z)
 {
-    if (z > ENDV97E) return true;
-    return z <= LAST_WRITTEN && z != (word)(CALCN85 + 7u);
+    return z != (word)(CALCN85 + 7u);
 }
 
-/* After the TC Q of SETMINDB, SETMAXDB, SPSOFF or TVCZAP, to a word of
- * bank 24: on at a key
- * or one of the returns above, as the faithful port does; at any other
- * word it stops there too. Refused where the binding does not follow (the
- * side-by-side test counts these). Erasable and fixed-fixed returns end
- * the run. */
+/* After the TC Q of SETMINDB, SETMAXDB, SPSOFF, TVCZAP or E7SETTER, to a
+ * word of bank 24: on at a key or one of the returns above, as the
+ * faithful port does; at any other word it stops there too. Refused at
+ * FENG (the side-by-side test counts these). Erasable and fixed-fixed
+ * returns end the run. */
 static void run_on(void)
 {
     const struct basic_entry *entry;
@@ -300,8 +360,9 @@ bool cm_p40_p47_runs_on(uint16_t z)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &P40CSM_CODE,  &P40PVA_CODE, &P40TTOG_CODE, &P40S_SV_CODE, &P41_DSP_CODE, &P40CNV85_CODE,
-    &CALCN85_CODE, &P41CSM_CODE, &P47CSM_CODE,  &CALCN83_CODE, &P47BODY_CODE,
+    &P40CSM_CODE,   &P40PVA_CODE,   &P40TTOG_CODE,  &P40S_SV_CODE, &P41_DSP_CODE, &P40CNV85_CODE,
+    &CALCN85_CODE,  &P41CSM_CODE,   &P47CSM_CODE,   &CALCN83_CODE, &P47BODY_CODE, &UPDATEVG_CODE,
+    &CALL40_8_CODE, &SURELY_9_CODE, &STEERING_CODE, &DYNDISP_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -342,7 +403,8 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     }
     entry->routine();
     if (entry->routine == setmindb || entry->routine == setmaxdb_inhint ||
-        entry->routine == setmaxdb || entry->routine == spsoff || entry->routine == tvczap)
+        entry->routine == setmaxdb || entry->routine == spsoff || entry->routine == tvczap ||
+        entry->routine == e7setter)
         run_on();
     return EXEC_OK;
 }

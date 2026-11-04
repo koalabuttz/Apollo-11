@@ -245,7 +245,7 @@ void p40ttog_after_exit(void)
 
 /* POST41: SERVICER's exit back to its own (AVEGEXIT gets SERVCADR's
  * 2CADR); the program ends (TCF GOTOPOOH). */
-static void post41(void)
+void post41(void)
 {
     dca(SERVCADR); /* EXTEND */
     dxch(ADDRESS_OF(AVEGEXIT));
@@ -314,14 +314,12 @@ void p40s_rs(void)
     tc_to(P40S_RS + 1u, WAITLIST); /* 2CADR CLOKTASK */
 }
 
-/* P40S/SV: a job, which "4.23 PRETECTS" (E7SETTER: EBANK 7, "TC Q"); to
- * the interpreter, for P40S_SV_CODE. */
+/* P40S/SV: a job, which "4.23 PRETECTS": EBANK 7 (TCR E7SETTER); to the
+ * interpreter, for P40S_SV_CODE. */
 void p40s_sv(void)
 {
-    tc_at(P40S_SV);
-    set_A(EBANK7); /* E7SETTER */
-    ts(EBANK_ADDRESS);
-    tc_q();
+    tc_at(P40S_SV); /* TCR E7SETTER */
+    e7setter();
     p40s_sv_after_e7setter();
 }
 
@@ -419,15 +417,21 @@ void postburn_terminate(void)
     post41();
 }
 
-/* POSTBURN +4, "PROCEED": P40RCS, where "V99N40 ENTERS HERE ON A P40
- * BYPASS SPS": SERVICER's exit to CALCN85 (ACADN85), "WAIT FOR CALCN85 VIA
- * AVEGEXIT" (DELAYJOB, 2SECS). */
-void postburn_proceed(void)
+/* P40RCS, where "V99N40 ENTERS HERE ON A P40 BYPASS SPS": SERVICER's exit
+ * to CALCN85 (ACADN85), "WAIT FOR CALCN85 VIA AVEGEXIT" (DELAYJOB,
+ * 2SECS). */
+void p40rcs(void)
 {
-    dca(ACADN85); /* P40RCS: EXTEND */
+    dca(ACADN85); /* EXTEND */
     dxch(ADDRESS_OF(AVEGEXIT));
     set_A(TWO_SECS);
     tc_to(P40RCS + 4u, BANKCALL); /* CADR DELAYJOB */
+}
+
+/* POSTBURN +4, "PROCEED": P40RCS. */
+void postburn_proceed(void)
+{
+    p40rcs();
 }
 
 /* POSTBURN +5, "RECYCLE": POSTBURN. */
