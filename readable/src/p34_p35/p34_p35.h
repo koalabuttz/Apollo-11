@@ -7,7 +7,8 @@
  *
  * Written part by part, both missions in each part. Part 1 is P34 and
  * P74 (p34.c), in bank 35 of both missions, and the display subroutines
- * they call (displays.c): DISPLAYE, P3XORP7X and VNPOOH.
+ * they call (displays.c): DISPLAYE, P3XORP7X and VNPOOH. Part 2 (p35.c)
+ * is P35 and P75, and S33/34.1.
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -63,5 +64,16 @@ void vnpooh_recycle(void);
 #if !LUMINARY099
 void vnpooh_restore(void); /* VNPOOH +014, after the CM's bank is kept */
 #endif
+
+/* ---- Part 2: P35 and P75, and S33/34.1 (p35.c) ---- */
+
+extern const struct interpretive_code P35_CODE, S33_34_1_CODE, FIGTIME_CODE, OKMAX_CODE;
+
+void p35(void);                     /* P35 */
+void p35_after_avflaga(void);       /* P35 +1 */
+void p75(void);                     /* P75 */
+void p75_after_avflagp(void);       /* P75 +1 */
+void p35_p75a(void);                /* P35/P75A */
+void p35_p75a_after_p20flgon(void); /* P35/P75A +2, the TC INTPRET */
 
 #endif

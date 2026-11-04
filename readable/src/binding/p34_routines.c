@@ -16,7 +16,9 @@
  * or a return) or reaches NEWOPS through a TC INTPRET. An order
  * pair is one pass of the readable interpreter over the listing's words
  * (interpret_listing()), which ends at the pair's DANZIG, at an EXIT, or
- * where a CALL or GOTO leaves its table.
+ * where a CALL or GOTO leaves its table; a pass that ends at RTB LOADTIME
+ * (P35/P75B's) runs LOADTIME (src/rtb_op_codes/) and the DANZIG it ends
+ * at, as the faithful pair does.
  *
  * The device is the mission's io record (mission_io); the routines want
  * no hardware record. The states the faithful routines take: FB the key's
@@ -32,12 +34,14 @@
 #include "binding.h"
 #include "rope_image.h"
 #include "../p34_p35/p34_p35.h"
+#include "../rtb_op_codes/rtb_op_codes.h"
 #include "../interpreter/interpreter.h"
 #include "../agc/names.h"
 
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
 #define SUPERBANK_BIT      0100u
+#define LOADTIME_BANK      ((word)(I_LOADTIME & 076000u))
 
 #if LUMINARY099
 #define ROPE                  0u /* the LM's rope */
@@ -135,6 +139,12 @@ static const struct basic_entry {
     {KEY(035u, P34_P74E), p34_p74e},
     {KEY(035u, P34_P74E + 054u), p34_p74e_after_exit},
     {KEY(035u, P34_P74E + 056u), p34_p74e_after_v06n58},
+    /* Part 2: P35 and P75 */
+    {KEY(035u, P35), p35},
+    {KEY(035u, P35 + 1u), p35_after_avflaga},
+    {KEY(035u, P75), p75},
+    {KEY(035u, P75 + 1u), p75_after_avflagp},
+    {KEY(035u, P35_P75A + 2u), p35_p75a_after_p20flgon},
     /* Part 1: the display subroutines */
     {KEY(035u, DISPLAYE), displaye},
     {KEY(035u, DISPLAYE + 5u), displaye_terminate},
@@ -171,6 +181,7 @@ static const struct interpretive_code *const codes[] = {
     &P34_NN_CODE,
 #endif
     &P34_TTPI_CODE, &P34_SWCHCLR_CODE, &P34_P74D_CODE, &P34_P74E_CODE, &P34_N58_CODE,
+    &P35_CODE,      &S33_34_1_CODE,    &FIGTIME_CODE,  &OKMAX_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -183,6 +194,19 @@ static const struct interpretive_code *code_at(unsigned bank, word address)
             address < codes[i]->first + codes[i]->count)
             return codes[i];
     return NULL;
+}
+
+/* One pass; after RTB LOADTIME, LOADTIME and its DANZIG. */
+static enum exec_status one_pass(const agc_native_program *program, apollo_overlay_state *state,
+                                 mission_io *io, const struct interpretive_code *code)
+{
+    if (interpret_listing(program, state, io, code) != EXEC_OK) return EXEC_OUT_OF_SCOPE;
+    bind(program, state, io);
+    if (Z != LOADTIME || FBANK != LOADTIME_BANK) return EXEC_OK;
+    if (!sane()) return EXEC_OUT_OF_SCOPE; /* (as the faithful RTB takes it) */
+    if (setjmp(back)) return EXEC_OUT_OF_SCOPE;
+    loadtime();
+    return interpret_listing(program, state, io, code);
 }
 
 /* ---- The keys, in the faithful tables' order ---- */
@@ -233,7 +257,7 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
 
     before = *state;
     kept = *io;
-    status = interpret_listing(program, state, io, code);
+    status = one_pass(program, state, io, code);
     if (status != EXEC_OK) {
         *state = before;
         *io = kept;
