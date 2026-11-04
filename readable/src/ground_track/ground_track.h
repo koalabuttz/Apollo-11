@@ -1,16 +1,17 @@
 /* SPDX-License-Identifier: MIT */
-/* GROUND_TRACKING_DETERMINATION_PROGRAM.agc, the LM's (Luminary099 pp.
- * 654-657): P21, the ground track program. The faithful C is
- * c64-port/src/lm_ground_track.c (and the older c64-port/src/
- * lm_p21_routines.c, with the same keys).
+/* GROUND_TRACKING_DETERMINATION_PROGRAM.agc, both missions' (Luminary099
+ * pp. 654-657, Comanche055 pp. 456-459): P21, the ground track program.
+ * The faithful C is c64-port/src/lm_ground_track.c and cm_ground_track.c
+ * (and the older lm_p21_routines.c and cm_p21_routines.c, with the same
+ * keys).
  *
- * P21's basic code (bank 24) asks the astronaut, by DSKY, which vehicle
- * (option 2: verb 04 noun 06 and a flashing verb 50 noun 06, through
- * GOPERF4) and for what time (verb 06 noun 34, through GOFLASH); its
- * interpretive code integrates that vehicle's state vector to the time
- * and works out the latitude, longitude and altitude there; the basic
- * code after its EXIT flashes them (verb 06 noun 43), and a recycle asks
- * again ten minutes later.
+ * P21's basic code (the LM's bank 24, the CM's bank 37) asks the
+ * astronaut, by DSKY, which vehicle (option 2: verb 04 noun 06 and a
+ * flashing verb 50 noun 06, through GOPERF4) and for what time (verb 06
+ * noun 34, through GOFLASH); its interpretive code integrates that
+ * vehicle's state vector to the time and works out the latitude,
+ * longitude and altitude there; the basic code after its EXIT flashes
+ * them (verb 06 noun 43), and a recycle asks again ten minutes later.
  *
  * The interpretive code is in the listing's notation (P21_CODE,
  * P21_RECYCLE_CODE), run by the readable interpreter. The entries below
@@ -23,7 +24,6 @@
 #include "../agc/agc.h"
 #include "../interpreter/notation.h"
 
-#if LUMINARY099
 extern const struct interpretive_code P21_CODE, P21_RECYCLE_CODE;
 
 void prog21(void);           /* PROG21 */
@@ -38,6 +38,5 @@ void p21dsp_after_exit(void); /* P21DSP +21: after the EXIT */
 void p21dsp_terminate(void);  /* P21DSP +24 */
 void p21dsp_proceed(void);    /* P21DSP +25 */
 void p21dsp_recycle(void);    /* P21DSP +26 */
-#endif
 
 #endif

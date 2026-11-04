@@ -1735,34 +1735,45 @@ lambert-aim-cases: $(BUILD)/p31-oracle $(BUILD)/p31-cases
 	./$(BUILD)/p31-oracle $(ROPES)
 	./$(BUILD)/p31-cases $(ROPES)
 
-# GROUND_TRACKING_DETERMINATION_PROGRAM.agc, the LM's P21: the port's test
-# (tests/test_lm_ground_track.c, its frozen cases run to their stops
-# through the program of tests/lm_ground_track_target.c, against the
-# original program's yaAGC digests) through the readable tables, with
-# tests/with_ropes.c loading the rope the readable interpreter reads; then
+# GROUND_TRACKING_DETERMINATION_PROGRAM.agc, both missions' P21: each
+# mission's port test (tests/test_lm_ground_track.c and
+# test_cm_ground_track.c, their frozen cases run to their stops through the
+# programs of tests/lm_ and cm_ground_track_target.c, against the original
+# programs' yaAGC digests) through the readable tables, with
+# tests/with_ropes.c loading the ropes the readable interpreter reads; then
 # tests/ground_track_cases.c side by side with the faithful routines
-# (renamed faithful_).
-P21_NAMES := lm_ground_track_basic lm_ground_track_interpretive
+# (renamed faithful_), for each mission.
 P21_COMMON := $(R63_COMMON)
 
-$(BUILD)/p21-faithful.o: $(PORT)/src/lm_ground_track.c
+$(BUILD)/p21-faithful-%.o: $(PORT)/src/%_ground_track.c
 	@mkdir -p $(dir $@)
-	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(foreach n,$(P21_NAMES),-D$(n)=faithful_$(n)) -c $< -o $@
-$(BUILD)/p21-test.o: $(PORT)/tests/test_lm_ground_track.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_ground_track_basic=faithful_$*_ground_track_basic \
+		-D$*_ground_track_interpretive=faithful_$*_ground_track_interpretive -c $< -o $@
+$(BUILD)/p21-test-%.o: $(PORT)/tests/test_%_ground_track.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
-$(BUILD)/p21-oracle: $(P21_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p21-test.o \
+$(BUILD)/p21-oracle-lm: $(P21_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p21-test-lm.o \
 		tests/with_ropes.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P21_COMMON) $(PORT)/tests/lm_ground_track_target.c \
 		tests/with_ropes.c $(filter %.o,$^) -o $@
-$(BUILD)/p21-cases: $(P21_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p21-faithful.o \
+$(BUILD)/p21-oracle-cm: $(P21_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p21-test-cm.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P21_COMMON) $(PORT)/tests/cm_ground_track_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/p21-cases-lm: $(P21_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p21-faithful-lm.o \
 		tests/ground_track_cases.c
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(P21_COMMON) $(filter %.o,$^) tests/ground_track_cases.c -o $@
+$(BUILD)/p21-cases-cm: $(P21_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p21-faithful-cm.o \
+		tests/ground_track_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(P21_COMMON) $(filter %.o,$^) tests/ground_track_cases.c -o $@
 
-ground-track-cases: $(BUILD)/p21-oracle $(BUILD)/p21-cases
+ground-track-cases: $(BUILD)/p21-oracle-lm $(BUILD)/p21-oracle-cm $(BUILD)/p21-cases-lm \
+		$(BUILD)/p21-cases-cm
 	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
-	./$(BUILD)/p21-oracle $(ROPES)
-	./$(BUILD)/p21-cases $(ROPES)
+	./$(BUILD)/p21-oracle-lm $(ROPES)
+	./$(BUILD)/p21-oracle-cm $(ROPES)
+	./$(BUILD)/p21-cases-lm $(ROPES)
+	./$(BUILD)/p21-cases-cm $(ROPES)
 
 # SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
 # oracles with each mission's readable tables and the other mission's

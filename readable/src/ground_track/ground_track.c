@@ -1,15 +1,18 @@
 /* SPDX-License-Identifier: MIT */
-/* GROUND_TRACKING_DETERMINATION_PROGRAM.agc (Luminary099 pp. 654-657):
- * P21, "GROUND TRACKING DETERMINATION PROGRAM". Its basic code and its
- * interpretive code in the listing's notation
- * (src/interpreter/notation.h), which the readable interpreter runs
- * (src/binding/ground_track_routines.c). The faithful C is
- * c64-port/src/lm_ground_track.c.
+/* GROUND_TRACKING_DETERMINATION_PROGRAM.agc (Luminary099 pp. 654-657,
+ * Comanche055 pp. 456-459): P21, "GROUND TRACKING DETERMINATION PROGRAM",
+ * the same program in both missions. Its basic code and its interpretive
+ * code in the listing's notation (src/interpreter/notation.h), which the
+ * readable interpreter runs (src/binding/ground_track_routines.c). The
+ * faithful C is c64-port/src/lm_ground_track.c and cm_ground_track.c.
  *
  * P21, as its program description has it: "TO PROVIDE THE ASTRONAUT
  * DETAILS OF THE LM OR CSM GROUND TRACK WITHOUT THE NEED FOR GROUND
  * COMMUNICATION (REQUESTED BY DSKY)", by "V37E21E". It ends when the
- * astronaut terminates it ("V34E").
+ * astronaut terminates it ("V34E"). The LM's is in bank 24, the CM's in
+ * bank 37. The basic code is the same word for word; the interpretive
+ * code differs where the vehicles do: which one VINTFLAG names, and the
+ * LM's check of SURFFLAG before it keeps a base vector.
  *
  * Each BANKCALL (to GOPERF4 or GOFLASH) leaves Z at BANKCALL and Q at its
  * CADR; the display comes back to the word after the CADR on terminate,
@@ -18,8 +21,6 @@
 #include "ground_track.h"
 #include "../agc/names.h"
 #include "../interpreter/interpreter.h"
-
-#if LUMINARY099
 
 #define COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
@@ -31,7 +32,7 @@ static void tc_to(word at, word routine)
     continue_at(routine);
 }
 
-/* ---- PROG21 and P21PROG1 -- LM p. 655 ---- */
+/* ---- PROG21 and P21PROG1 -- LM p. 655, CM p. 457 ---- */
 
 /* PROG21 +2: "OPTION 2", the vehicle, in R2 of a please perform
  * (GOPERF4: verb 04 noun 06, then verb 50 noun 06 flashing). */
@@ -101,7 +102,10 @@ void p21prog1_loaded(void)
     p21prog1();
 }
 
-/* ---- The integration and the display data -- LM pp. 655-657 ---- */
+/* ---- The integration and the display data -- LM pp. 655-657, CM pp.
+ * 457-459 ---- */
+
+#if LUMINARY099
 
 /* P21PROG1 +7: "INTEGRATE TO TIME SPECIFIED IN TDEC" (TDEC1, from
  * DSPTEM1), after INTSTALL. P21FLAG is set after a first pass:
@@ -208,9 +212,102 @@ static const word p21_words[] = {
     STORE(P21ALT), /* "ALT/100 FOR N91 DISP" */
     ORDER(EXIT),
 };
+#else
+/* The CM's, after INTSTALL: "INTEG TO TIME SPECIFIED IN TDEC". With
+ * P21FLAG set, "ON...RECYCLE USING BASE VECTOR" (P21CONT). Otherwise
+ * VINTFLAG is set, the CSM ("OFF..1ST PASS CALC BASE VECTOR"), and
+ * cleared again when OPTION2, SR1, is one: "ZERO..THIS VEHICLE (CM)",
+ * "ONE...OTHER VEHICLE(LM)". DIM0FLAG and INTYPFLG clear ("PRECISION"),
+ * and INTEGRV integrates the vehicle's state vector ("CALCULATE",
+ * "..SAVE BASE VECTOR", P21VSAVE). */
+static const word p21_words[] = {
+    ORDER(DLOAD),
+    ADDRESS_PLUS_ONE(DSPTEM1),
+    STCALL(TDEC1), /* "INTEG TO TIME SPECIFIED IN TDEC" */
+    ADDRESS(INTSTALL),
+    ORDERS(BON, SET),
+    SWITCH(BON, P21FLAG),
+    ADDRESS(P21CONT),      /* "ON...RECYCLE USING BASE VECTOR" */
+    SWITCH(SET, VINTFLAG), /* "OFF..1ST PASS CALC BASE VECTOR" */
+    ORDERS(SLOAD, SR1),
+    ADDRESS_PLUS_ONE(OPTION2),
+    ORDERS(BHIZ, CLEAR),
+    ADDRESS_AT(PROG21, 034u), /* "+2": "ZERO..THIS VEHICLE (CM)" */
+    SWITCH(CLEAR, VINTFLAG),  /* "ONE...OTHER VEHICLE(LM)" */
+    ORDERS(CLEAR, CLEAR),
+    SWITCH(CLEAR, DIM0FLAG),
+    SWITCH(CLEAR, INTYPFLG), /* "PRECISION" */
+    ORDER(CALL),
+    ADDRESS(INTEGRV), /* "CALCULATE" */
+    ORDER(GOTO),
+    ADDRESS(P21VSAVE),
+    /* P21CONT: "RECYCLE..INTEG FROM BASE VECTOR", as the LM's: the base
+     * vector to RCV, VCV and TET, DIM0FLAG clear, MOONFLAG set when
+     * P21ORIG is the Moon's ("ZERO = EARTH", "...2 = MOON"), and
+     * INTEGRVS. */
+    ORDER(VLOAD),
+    ADDRESS_PLUS_ONE(P21BASER),
+    STOVL(RCV), /* "..POS" */
+    ADDRESS_PLUS_ONE(P21BASEV),
+    STODL(VCV), /* "..VEL" */
+    ADDRESS_PLUS_ONE(P21TIME),
+    STORE(TET), /* "..TIME" */
+    ORDERS(CLEAR, CLEAR),
+    SWITCH(CLEAR, DIM0FLAG),
+    SWITCH(CLEAR, MOONFLAG),
+    ORDERS(SLOAD, BZE),
+    ADDRESS_PLUS_ONE(P21ORIG),
+    ADDRESS_AT(P21CONT, 017u), /* "+3": "ZERO = EARTH" */
+    ORDER(SET),
+    SWITCH(SET, MOONFLAG),
+    ORDER(CALL),
+    ADDRESS(INTEGRVS),
+    /* P21VSAVE: "SAVE CURRENT BASE VECTOR", as the LM's, with the speed
+     * "FOR N73 DSP"; then P21ORIG (X2: "0 = EARTH 2 = MOON") and P21FLAG
+     * set, whichever the vehicle. */
+    ORDER(DLOAD), /* "SAVE CURRENT BASE VECTOR" */
+    ADDRESS_PLUS_ONE(TAT),
+    STOVL(P21TIME), /* "..TIME" */
+    ADDRESS_PLUS_ONE(RATT1),
+    STOVL(P21BASER), /* "..POS B-29 OR B-27" */
+    ADDRESS_PLUS_ONE(VATT1),
+    STORE(P21BASEV), /* "..VEL B-7 OR B-5" */
+    ORDERS(ABVAL, SL_STAR),
+    VSL_X2(0),
+    STOVL(P21VEL), /* "/VEL/ FOR N73 DSP" */
+    ADDRESS_PLUS_ONE(RATT),
+    ORDERS(UNIT, DOT),
+    ADDRESS_PLUS_ONE(VATT), /* "U(R).(V)" */
+    ORDERS(DDV, ASIN),      /* "U(R).U(V)" */
+    ADDRESS_PLUS_ONE(P21VEL),
+    STORE(P21GAM), /* "SIN-1 U(R).U(V), -90 TO +90" */
+    ORDERS(SXA_2, SET),
+    ADDRESS(P21ORIG), /* "0 = EARTH 2 = MOON" */
+    SWITCH(SET, P21FLAG),
+    /* P21DSP: "GENERATE DISPLAY DATA", as the LM's: LUNAFLAG from X2,
+     * LAT-LONG, and "ALT/100 FOR N73 DSP". */
+    ORDERS(CLEAR, SLOAD), /* "GENERATE DISPLAY DATA" */
+    SWITCH(CLEAR, LUNAFLAG),
+    ADDRESS_PLUS_ONE(X2),
+    ORDERS(BZE, SET),
+    ADDRESS_AT(P21DSP, 6u), /* "+2": "0 = EARTH" */
+    SWITCH(SET, LUNAFLAG),
+    ORDER(VLOAD),
+    ADDRESS_PLUS_ONE(RATT),
+    STODL(ALPHAV),
+    ADDRESS_PLUS_ONE(TAT),
+    ORDERS(CLEAR, CALL),
+    SWITCH(CLEAR, ERADFLAG),
+    ADDRESS(LAT_LONG),
+    ORDER(DMP), /* "MPAC = ALT, METERS B-29" */
+    ADDRESS_PLUS_ONE(K_01),
+    STORE(P21ALT), /* "ALT/100 FOR N73 DSP" */
+    ORDER(EXIT),
+};
+#endif
 
-/* P21DSP +21, after the EXIT: "DISPLAY LAT, LONG, ALT", verb 06 noun 43,
- * flashed by GOFLASH ("LAT, LONG = 1/2 REVS B0", "ALT = KM B14"). */
+/* P21DSP +21, after the EXIT: the latitude, longitude and altitude,
+ * verb 06 noun 43, flashed by GOFLASH. */
 void p21dsp_after_exit(void)
 {
     set_A(V06N43);
@@ -248,8 +345,12 @@ static const word p21_recycle_words[] = {
 
 /* ---- The interpretive code ---- */
 
-const struct interpretive_code P21_CODE = {024u, P21PROG1 + 7u, COUNT(p21_words), p21_words};
-const struct interpretive_code P21_RECYCLE_CODE = {024u, P21DSP + 027u, COUNT(p21_recycle_words),
-                                                   p21_recycle_words};
-
+#if LUMINARY099
+#define P21_BANK 024u
+#else
+#define P21_BANK 037u
 #endif
+
+const struct interpretive_code P21_CODE = {P21_BANK, P21PROG1 + 7u, COUNT(p21_words), p21_words};
+const struct interpretive_code P21_RECYCLE_CODE = {P21_BANK, P21DSP + 027u,
+                                                   COUNT(p21_recycle_words), p21_recycle_words};
