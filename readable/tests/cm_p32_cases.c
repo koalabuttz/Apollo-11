@@ -9,25 +9,22 @@
  * First the words: the readable interpretive code (src/p32_p33_cm/),
  * written in the listing's notation, must be the original program's rope,
  * word for word. Then the keys, which must be the faithful tables', and
- * the keys the parts written so far hold must run readable code, the
- * others the faithful port's. Then the runs: each readable key from 4,096
- * states (each other key from 16), each one of the port's frozen test
- * states (c64-port/tests/cm_p32_p33_vectors.h) entered at the key, most
- * stirred further: MPAC and its mode, the push-down list and its pointer,
- * the index registers (X1 at ALMXIT's indexed load often round the seven
- * words of ALARM/TB), A (now and then with overflow), Q, the flag words
- * (often one bit changed), the vectors and times (any erasable bank's
- * words), NEWJOB, the overflow indicator, now and then any word but the
- * interpreter's own, the latches, or a state the routines refuse (another
- * work area, BBANK not the two banks, a word of 16 bits); a hardware
- * record mostly, which the routines do not use. Each runs once on each
- * side, as the program's trampoline would call the key's routine. Where
- * either port runs, the other must too, with the same memory, io record
- * and hardware record, word for word; where the readable one refuses, it
- * must leave everything as it found it; and the faithful routine must run
- * from at least 1 in 16 of the states of every readable key. A key the
- * binding hands to the faithful port must give the faithful routine's
- * result, refusals and all. */
+ * every one must run readable code (the file is whole). Then the runs:
+ * each key from 4,096 states, each one of the port's frozen test states
+ * (c64-port/tests/cm_p32_p33_vectors.h) entered at the key, most stirred
+ * further: MPAC and its mode, the push-down list and its pointer, the
+ * index registers (X1 at ALMXIT's indexed load often round the seven words
+ * of ALARM/TB, at CSINEXT4's often -2 or -10), A (now and then with
+ * overflow), Q, the flag words (often one bit changed), the vectors and
+ * times (any erasable bank's words), NEWJOB, the overflow indicator, now
+ * and then any word but the interpreter's own, the latches, or a state the
+ * routines refuse (another work area, BBANK not the two banks, a word of
+ * 16 bits); a hardware record mostly, which the routines do not use. Each
+ * runs once on each side, as the program's trampoline would call the key's
+ * routine. Where either port runs, the other must too, with the same
+ * memory, io record and hardware record, word for word; where the readable
+ * one refuses, it must leave everything as it found it; and the faithful
+ * routine must run from at least 1 in 16 of the states of every key. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -49,13 +46,14 @@ extern const struct interpretive_code P32STRT_CODE, ALMXITA_CODE, P32_P72A_CODE,
     P32_P72E_CODE, P32_P72_N75_CODE, P33_P73A_CODE, P33_P73_ALARM_CODE, P33_P73C_CODE,
     P33_P73E_CODE, P33_P73_N75_CODE, DISDVLVC_CODE, DISDVLVC_EXIT_CODE, CSI_A_CODE, CSI_B2_CODE,
     CSI_B23_CODE, CSINEXT_CODE, NTP_2_CODE, CSINEXT1_CODE, CSINEXT2_CODE, K2_CODE, CSINEXT3_CODE,
-    CSINEXT4_CODE;
+    CSINEXT4_CODE, ADVANCE_CODE, ROTATE_CODE, INTINT2C_CODE, S32_33_1_CODE, S32_33_X_CODE;
 static const struct interpretive_code *const codes[] = {
     &P32STRT_CODE,     &ALMXITA_CODE,  &P32_P72A_CODE,      &VN0637_CODE,   &P32_P72E_CODE,
     &P32_P72_N75_CODE, &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73C_CODE, &P33_P73E_CODE,
     &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE, &CSI_A_CODE,    &CSI_B2_CODE,
     &CSI_B23_CODE,     &CSINEXT_CODE,  &NTP_2_CODE,         &CSINEXT1_CODE, &CSINEXT2_CODE,
-    &K2_CODE,          &CSINEXT3_CODE, &CSINEXT4_CODE,
+    &K2_CODE,          &CSINEXT3_CODE, &CSINEXT4_CODE,      &ADVANCE_CODE,  &ROTATE_CODE,
+    &INTINT2C_CODE,    &S32_33_1_CODE, &S32_33_X_CODE,
 };
 extern const agc_routine_table cm_p32_p33_basic, cm_p32_p33_interpretive;
 extern const agc_routine_table faithful_cm_p32_p33_basic, faithful_cm_p32_p33_interpretive;
@@ -126,17 +124,17 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
     return failures;
 }
 
-/* The keys the parts written so far hold: part 1, the programs (banks 4
- * and 14, bank 12 to P33/P73D's end, and bank 37 to DISDVLVC's end); parts
- * 2 and 3, CSI/A to SCNDSOL (banks 6, 7, 10, 11, 12, 22, 23 and 24, and
- * bank 31 to SCNDSOL's end). */
+/* The file's keys, all written: part 1, the programs (banks 4, 14, 12
+ * and 37); parts 2 and 3, CSI/A to SCNDSOL (banks 6, 7, 10, 11, 12, 22,
+ * 23, 24 and 31); part 4, ADVANCE to CDHMVR (banks 37, 5, 31, 35 and
+ * 13). */
 static bool in_written_part(uint16_t key)
 {
-    unsigned bank = key / 1024u, z = 02000u + key % 1024u;
+    unsigned bank = key / 1024u;
 
-    return bank == 04u || bank == 06u || bank == 07u || bank == 010u || bank == 011u ||
-           bank == 012u || bank == 014u || bank == 022u || bank == 023u || bank == 024u ||
-           (bank == 031u && z < 03662u) || (bank == 037u && z < 02645u);
+    return bank == 04u || bank == 05u || bank == 06u || bank == 07u || bank == 010u ||
+           bank == 011u || bank == 012u || bank == 013u || bank == 014u || bank == 022u ||
+           bank == 023u || bank == 024u || bank == 031u || bank == 035u || bank == 037u;
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -447,11 +445,19 @@ int main(int argc, char **argv)
     failures += keys(&cm_p32_p33_basic, &faithful_cm_p32_p33_basic, 0, &runs, &readable_basic);
     failures += keys(&cm_p32_p33_interpretive, &faithful_cm_p32_p33_interpretive, 1, &runs,
                      &readable_pairs);
+    /* The file is whole: every key runs a readable routine (the binding
+     * no longer hands any to the faithful tables). */
+    if (readable_basic + readable_pairs != cm_p32_p33_basic.count + cm_p32_p33_interpretive.count) {
+        printf("FAIL: %u keys without a readable routine\n", cm_p32_p33_basic.count +
+                                                                 cm_p32_p33_interpretive.count -
+                                                                 readable_basic - readable_pairs);
+        ++failures;
+    }
     printf("cm-p32-cases: %u words as the rope's, %u of %u keys readable (%u basic, %u order "
-           "pairs) from %u states each, the others from %u, %u run by the faithful routines, "
+           "pairs) from %u states each, %u run by the faithful routines, "
            "%u store spills and %u superbank states refused, %u failures\n",
            words, readable_basic + readable_pairs,
            cm_p32_p33_basic.count + cm_p32_p33_interpretive.count, readable_basic, readable_pairs,
-           CASES, OTHER_CASES, runs, spills, superbank_states, failures);
+           CASES, runs, spills, superbank_states, failures);
     return failures != 0;
 }

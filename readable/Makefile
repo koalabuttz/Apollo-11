@@ -1679,7 +1679,7 @@ p32-cases: $(BUILD)/p32-oracle $(BUILD)/p32-cases
 # yaAGC digests) through the readable tables, with tests/with_ropes.c
 # loading the rope the readable interpreter reads; then
 # tests/cm_p32_cases.c side by side with the faithful routines (renamed
-# faithful_), which also run the keys the parts not yet written hold.
+# faithful_).
 CP32_NAMES := cm_p32_p33_basic cm_p32_p33_interpretive
 CP32_COMMON := $(R63_COMMON)
 

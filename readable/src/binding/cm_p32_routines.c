@@ -5,13 +5,11 @@
  * and 37) and cm_p32_p33_interpretive (the order pairs, in fifteen
  * banks).
  *
- * The file is readable part by part, so the tables carry every key of the
- * faithful ones, in their order (cm_p32_keys.inc, which
- * tools/p20_p25_keys.py writes from them): a key a readable part has
- * written runs the readable routine; any other runs the faithful port's,
- * built into the program as faithful_cm_p32_p33_basic and
- * faithful_cm_p32_p33_interpretive (tests/x86_readable.py, the Makefile's
- * cm-p32 tests).
+ * The tables carry every key of the faithful ones, in their order
+ * (cm_p32_keys.inc, which tools/p20_p25_keys.py writes from them), and
+ * every key runs a readable routine: the file was written part by part,
+ * and is whole. The side-by-side test (tests/cm_p32_cases.c) checks that
+ * no key is left without one.
  *
  * Plumbing only. A basic routine runs from its key until control leaves
  * the file (AVFLAGA, AVFLAGP, P20FLGON, VNPOOH, BANKCALL, ALARM, VARALARM,
@@ -39,9 +37,6 @@
 #include "../agc/names.h"
 
 #if COMANCHE055
-
-/* The faithful tables, renamed. */
-extern const agc_routine_table faithful_cm_p32_p33_basic, faithful_cm_p32_p33_interpretive;
 
 /* A key: the bank, and the address in it. */
 #define KEY(bank, address) (uint16_t)((bank) * 1024u + ((address) & 01777u))
@@ -155,7 +150,8 @@ static const struct interpretive_code *const codes[] = {
     &P32_P72_N75_CODE, &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73C_CODE, &P33_P73E_CODE,
     &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE, &CSI_A_CODE,    &CSI_B2_CODE,
     &CSI_B23_CODE,     &CSINEXT_CODE,  &NTP_2_CODE,         &CSINEXT1_CODE, &CSINEXT2_CODE,
-    &K2_CODE,          &CSINEXT3_CODE, &CSINEXT4_CODE,
+    &K2_CODE,          &CSINEXT3_CODE, &CSINEXT4_CODE,      &ADVANCE_CODE,  &ROTATE_CODE,
+    &INTINT2C_CODE,    &S32_33_1_CODE, &S32_33_X_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -234,18 +230,16 @@ static bool superbank_set_below_30(unsigned bank)
 
 /* ---- The keys, in the faithful tables' order ---- */
 
-/* Each key's routine: the readable one, or the faithful port's. A basic
- * routine runs from its key, whatever Z holds (the trampoline calls it
- * there). */
-static enum exec_status basic(unsigned index, uint16_t key, const agc_native_program *program,
+/* Each key's routine. A basic routine runs from its key, whatever Z
+ * holds (the trampoline calls it there). */
+static enum exec_status basic(uint16_t key, const agc_native_program *program,
                               apollo_overlay_state *state, void *device)
 {
     const struct basic_entry *entry = basic_entry(key);
     cm_native_io *io = device, kept;
     apollo_overlay_state before;
 
-    if (!entry) return faithful_cm_p32_p33_basic.entries[index].call(program, state, device);
-    if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
+    if (!entry || !program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     if (!in_bank(key / 1024u) || !sane()) return EXEC_OUT_OF_SCOPE;
 
@@ -280,7 +274,7 @@ static enum exec_status loop_back(const agc_native_program *program, apollo_over
     return EXEC_OK;
 }
 
-static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
+static enum exec_status pair(uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)
 {
     unsigned bank = key / 1024u;
@@ -289,8 +283,6 @@ static enum exec_status pair(unsigned index, uint16_t key, const agc_native_prog
     const struct interpretive_code *code;
     enum exec_status status;
 
-    if (!code_at(bank, (word)(02000u + key % 1024u)))
-        return faithful_cm_p32_p33_interpretive.entries[index].call(program, state, device);
     if (!program || !state || !io) return EXEC_OUT_OF_SCOPE;
     bind(program, state, io);
     code = code_at(bank, LOC);
@@ -323,13 +315,13 @@ bool cm_p32_p33_readable(uint16_t key, bool order_pair)
     static enum exec_status basic_##i(const agc_native_program *program,                           \
                                       apollo_overlay_state *state, void *device)                   \
     {                                                                                              \
-        return basic(i, KEY(bank, address), program, state, device);                               \
+        return basic(KEY(bank, address), program, state, device);                                  \
     }
 #define PAIR(i, bank, address)                                                                     \
     static enum exec_status pair_##i(const agc_native_program *program,                            \
                                      apollo_overlay_state *state, void *device)                    \
     {                                                                                              \
-        return pair(i, KEY(bank, address), program, state, device);                                \
+        return pair(KEY(bank, address), program, state, device);                                   \
     }
 #include "cm_p32_keys.inc"
 #undef BASIC
