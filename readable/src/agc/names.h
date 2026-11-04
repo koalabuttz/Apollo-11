@@ -3341,6 +3341,96 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V06N37   ((word)KW_V06N37) /* VN 0637 */
 #endif
 
+#if LUMINARY099
+/* BURN,_BABY,_BURN_--_MASTER_IGNITION_ROUTINE (LM): the ignition tables,
+ * the countdown, the clock and KILLTASK. Its erasable words (WHICH, DISPDEX,
+ * TIG, P40/RET, ITEMP1-4, LST2 ...) are named by ADDRESS_OF. */
+#define ABRTABLE               ((word)K_ABRTABLE)
+#define ABRTIGN                ((word)K_ABRTIGN)
+#define ASTNRETN               ((word)K_ASTNRETN)
+#define ATMAGADR               ((word)K_ATMAGADR) /* 2CADR ATMAG */
+#define BURNBABY               ((word)K_BURNBABY)
+#define B_STAR_RNB_STAR_B_STAR ((word)K_B_STAR_RNB_STAR_B_STAR) /* B*RNB*B* */
+#define CALLT_35               ((word)K_CALLT_35) /* CALLT-35 */
+#define CLOKTASK               ((word)K_CLOKTASK)
+#define COMFAIL                ((word)K_COMFAIL)
+#define COMFAIL2               ((word)K_COMFAIL2)
+#define COMFAIL3               ((word)K_COMFAIL3)
+#define COMFAIL4               ((word)K_COMFAIL4)
+#define COMMON                 ((word)K_COMMON)
+#define D29_9SEC               ((word)K_D29_9SEC) /* D29.9SEC: 2DEC 2990 B-28 */
+#define DEAD                   ((word)K_DEAD)
+#define DISPNOT                ((word)K_DISPNOT)
+#define DSP2CADR               ((word)K_DSP2CADR) /* 2CADR P63DISPS -2 */
+#define DVMONCON               ((word)K_DVMONCON)
+#define FIVE_SECDP             ((word)K_5SECDP) /* 5SECDP */
+#define GOBACK                 ((word)K_GOBACK)
+#define GOCUTOFF               ((word)K_GOCUTOFF)
+#define GOPOST                 ((word)K_GOPOST)
+#define IGNITE                 ((word)K_IGNITE)
+#define IMPLBURN               ((word)K_IMPLBURN)
+#define INVFLAG                ((word)K_INVFLAG)
+#define LUNLANAD               ((word)K_LUNLANAD)
+#define NULLCLOK               ((word)K_NULLCLOK)
+#define P12TABLE               ((word)K_P12TABLE)
+#define P40ALM                 ((word)K_P40ALM)
+#define P40AUTO                ((word)K_P40AUTO)
+#define P40A_P                 ((word)K_P40A_P) /* P40A/P */
+#define P40IGN                 ((word)K_P40IGN)
+#define P40SJUNK               ((word)K_P40SJUNK)
+#define P40SPOT                ((word)K_P40SPOT)
+#define P40TABLE               ((word)K_P40TABLE)
+#define P40ZOOMA               ((word)K_P40ZOOMA)
+#define P41BLANK               ((word)K_P41BLANK)
+#define P41SPOT                ((word)K_P41SPOT)
+#define P41TABLE               ((word)K_P41TABLE)
+#define P42TABLE               ((word)K_P42TABLE)
+#define P63IGN                 ((word)K_P63IGN)
+#define P63IGN1                ((word)K_P63IGN1)
+#define P63TABLE               ((word)K_P63TABLE)
+#define P63ZOOM                ((word)K_P63ZOOM)
+#define REDO4_2                ((word)K_REDO4_2) /* REDO4.2 */
+#define REP40ALM               ((word)K_REP40ALM)
+#define STAR_PROCEED           ((word)K_STAR_PROCEED) /* *PROCEED */
+#define STCLOK3                ((word)K_STCLOK3)
+#define STOPCLOK               ((word)K_STOPCLOK)
+#define TIGTASK                ((word)K_TIGTASK)
+#define TIGTASK1               ((word)K_TIGTASK1)
+#define TIG_0                  ((word)K_TIG_0) /* TIG-0 */
+#define TIG_30                 ((word)K_TIG_30) /* TIG-30 */
+#define TIG_30A                ((word)K_TIG_30A) /* TIG-30A */
+#define TIG_30_1               ((word)K_TIG_30_1) /* TIG-30.1 */
+#define TIG_35                 ((word)K_TIG_35) /* TIG-35 */
+#define TIG_5                  ((word)K_TIG_5) /* TIG-5 */
+#define TURNITON               ((word)K_TURNITON)
+#define ULLAGOFF               ((word)K_ULLAGOFF)
+#define ULLGTASK               ((word)K_ULLGTASK)
+#define ASTNBIT                ((word)KW_ASTNBIT)
+#define BLANKDEX               ((word)KW_BLANKDEX)
+#define CNTDNDEX               ((word)KW_CNTDNDEX)
+#define DRIFTBIT               ((word)KW_DRIFTBIT)
+#define FIVE_SEC               ((word)KW_5SEC) /* 5SEC: DEC 500 */
+#define FLUNDBIT               ((word)KW_FLUNDBIT)
+#define FOUR_9SEC              ((word)KW_4_9SEC) /* 4.9SEC: DEC 490 B-14 */
+#define IGNFLBIT               ((word)KW_IGNFLBIT)
+#define IMPULBIT               ((word)KW_IMPULBIT)
+#define KILLBB                 ((word)KW_KILLBB) /* BBCON KILLTSK2 */
+#define LETABBIT               ((word)KW_LETABBIT)
+#define LSTLIM                 ((word)KW_LSTLIM) /* EQUALS BIT5 */
+#define NOTHRBIT               ((word)KW_NOTHRBIT)
+#define P40A_PMD               ((word)KW_P40A_PMD) /* P40A/PMD: OCT 00203 */
+#define PRIO13                 ((word)KW_PRIO13)
+#define PRIO17                 ((word)KW_PRIO17)
+#define S24_9SEC               ((word)KW_S24_9SEC) /* DEC 2490 B-14 */
+#define SWANDBIT               ((word)KW_SWANDBIT)
+#define TCTSKOVR               ((word)KW_TCTSKOVR)
+#define ULLAGER                ((word)KW_ULLAGER)
+#define V06N61                 ((word)KW_V06N61) /* VN 0661 */
+#define V16N85B                ((word)KW_V16N85B)
+#define VB97DEX                ((word)KW_VB97DEX)
+#define VB99DEX                ((word)KW_VB99DEX)
+#endif
+
 /* NO.CORES + 1 core sets. */
 #define CORE_SETS (NO_CORES + 1u)
 
