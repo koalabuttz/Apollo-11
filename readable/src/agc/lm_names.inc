@@ -3461,6 +3461,10 @@
 #define I_2PISC 011054u
 #define I_600SEC 051662u
 #define I_DP1_4 025755u
+#define I_RINIT 002322u
+#define I_VINIT 002330u
+#define I_INITVEL 022000u
+#define I_GET_LVC 015733u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

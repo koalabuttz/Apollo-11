@@ -3328,6 +3328,10 @@
 #define I_600SEC 076145u
 #define I_INITST1 073451u
 #define I_DP1_4 023755u
+#define I_RINIT 003567u
+#define I_VINIT 003575u
+#define I_INITVEL 022000u
+#define I_GET_LVC 010672u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

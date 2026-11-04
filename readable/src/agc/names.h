@@ -3126,6 +3126,8 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define COMPTGO  ((word)K_COMPTGO)
 #if LUMINARY099
 #define P30N33 ((word)K_P30N33)
+/* GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc (LM): P31. */
+#define P31 ((word)K_P31)
 #endif
 #if COMANCHE055
 /* The CM's: P31, the routines P30 and P31 share, their displays (DISP45,

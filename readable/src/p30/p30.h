@@ -8,8 +8,9 @@
  * astronaut, through VNPOOH, for the time of ignition (verb 06 noun 33)
  * and the delta V in local vertical coordinates (verb 06 noun 81). Then
  * its interpretive code CALLs S30.1 (bank 34), shows apogee, perigee and
- * delta V (verb 06 noun 42, PARAM30) and goes on to P40's display
- * REVN1645 with XDELVFLG set.
+ * delta V (verb 06 noun 42, PARAM30) and goes on to the display
+ * REVN1645 (GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc's, src/lambert_aimpoint/)
+ * with XDELVFLG set, for P40's external delta-V guidance.
  *
  * The interpretive code is in the listing's notation (P30_CODE,
  * PARAM30_CODE, S30_1_CODE), run by the readable interpreter. The entries
