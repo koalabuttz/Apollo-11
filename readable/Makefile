@@ -141,6 +141,7 @@ P34_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p34_p35/*.c)) \
 	src/binding/p34_routines.c
 R31_SOURCES := $(INTERPRETER_SOURCES) src/r31/r31.c src/rtb_op_codes/rtb_op_codes.c \
 	src/binding/r31_routines.c
+P76_SOURCES := $(INTERPRETER_SOURCES) src/p76/p76.c src/binding/p76_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
@@ -155,11 +156,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(R31_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(R31_SOURCES) $(P76_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases r31-cases p76-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -168,7 +169,7 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
 	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases \
 	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases \
-	r31-cases
+	r31-cases p76-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1872,6 +1873,63 @@ r31-cases: $(BUILD)/r31-oracle-lm $(BUILD)/r31-oracle-cm $(BUILD)/r31-cases-lm \
 	./$(BUILD)/r31-oracle-cm $(ROPES)
 	./$(BUILD)/r31-cases-lm $(ROPES)
 	./$(BUILD)/r31-cases-cm $(ROPES)
+
+# P76.agc, both missions' target delta V program (verb 37 noun 76): each
+# mission's port test (tests/test_lm_p76_file.c and test_cm_p76_file.c,
+# their frozen cases run to their stops through the programs of
+# tests/lm_p76_file_target.c and cm_p76_file_target.c, against the original
+# programs' yaAGC digests) through the readable tables, with
+# tests/with_ropes.c loading the ropes the readable interpreter reads; then
+# tests/p76_cases.c side by side with the faithful routines, the compiled
+# file's and the older module's (renamed faithful_), for each mission.
+P76_COMMON := $(R63_COMMON) $(PORT)/src/lm_work_matrix.c $(PORT)/src/matrix_native.c \
+	$(PORT)/src/guidance_product.c $(PORT)/src/guidance_norm.c $(PORT)/src/inverse_trig.c \
+	$(PORT)/src/rtb_agreement.c $(PORT)/src/fixed_data.c
+
+$(BUILD)/p76-faithful-lm.o: $(PORT)/src/lm_p76_file.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlm_p76_file_basic=faithful_lm_p76_file_basic \
+		-Dlm_p76_file_interpretive=faithful_lm_p76_file_interpretive -c $< -o $@
+$(BUILD)/p76-faithful-lm-older.o: $(PORT)/src/lm_p76_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlm_p76_basic_routines=faithful_lm_p76_basic_routines \
+		-Dlm_p76_interpretive_routines=faithful_lm_p76_interpretive_routines -c $< -o $@
+$(BUILD)/p76-faithful-cm.o: $(PORT)/src/cm_p76_file.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dcm_p76_file_basic=faithful_cm_p76_file_basic \
+		-Dcm_p76_file_interpretive=faithful_cm_p76_file_interpretive -c $< -o $@
+$(BUILD)/p76-faithful-cm-older.o: $(PORT)/src/cm_p76_routines.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dcm_p76_basic_routines=faithful_cm_p76_basic_routines \
+		-Dcm_p76_interpretive_routines=faithful_cm_p76_interpretive_routines -c $< -o $@
+$(BUILD)/p76-test-lm.o: $(PORT)/tests/test_lm_p76_file.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/p76-test-cm.o: $(PORT)/tests/test_cm_p76_file.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/p76-oracle-lm: $(P76_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p76-test-lm.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P76_COMMON) $(PORT)/tests/lm_p76_file_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/p76-oracle-cm: $(P76_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p76-test-cm.o \
+		tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P76_COMMON) $(PORT)/tests/cm_p76_file_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/p76-cases-lm: $(P76_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p76-faithful-lm.o \
+		$(BUILD)/p76-faithful-lm-older.o tests/p76_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(P76_COMMON) $(filter %.o,$^) tests/p76_cases.c -o $@
+$(BUILD)/p76-cases-cm: $(P76_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p76-faithful-cm.o \
+		$(BUILD)/p76-faithful-cm-older.o tests/p76_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(P76_COMMON) $(filter %.o,$^) tests/p76_cases.c -o $@
+
+p76-cases: $(BUILD)/p76-oracle-lm $(BUILD)/p76-oracle-cm $(BUILD)/p76-cases-lm \
+		$(BUILD)/p76-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/p76-oracle-lm $(ROPES)
+	./$(BUILD)/p76-oracle-cm $(ROPES)
+	./$(BUILD)/p76-cases-lm $(ROPES)
+	./$(BUILD)/p76-cases-cm $(ROPES)
 
 # SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
 # oracles with each mission's readable tables and the other mission's
