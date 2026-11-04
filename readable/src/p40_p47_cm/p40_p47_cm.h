@@ -17,7 +17,8 @@
  * countdown's display with the crew's answers to it (clocktask.c, pp.
  * 703-709: CLOKTASK, CLOCKJOB, verbs 99 and 97, E7SETTER, E6SETTER).
  * Part 4 adds the burn's targeting, all interpretive (s40.c, pp.
- * 709-718): S40.1 with AGAIN and CALCUT, S40.2,3 and S41.1.
+ * 709-718): S40.1 with AGAIN and CALCUT, S40.2,3 and S41.1. Part 5
+ * adds S40.8, the cross-product steering (s40.c, pp. 719-722).
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -36,7 +37,8 @@
 extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P40S_SV_CODE,
     P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE,
     UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE, S40_1_CODE,
-    AGAIN_CODE, S40_2_3_CODE, S41_1_CODE;
+    AGAIN_CODE, S40_2_3_CODE, S41_1_CODE, S40_8_CODE, LOTHRUST_TEST_CODE, TGOCALC_CODE, S40_81_CODE,
+    S40_81_END_CODE, INCRSVG_CODE, INCRSVG_END_CODE, LOTHRUST_CODE, LOTHRUST_END_CODE;
 
 void p40csm(void);                      /* P40CSM */
 void p40csm_after_downflag(void);       /* P40CSM +2: TC INTPRET */
@@ -232,6 +234,16 @@ void quickign(void);                /* QUICKIGN */
 void v99flash(void);                /* V99FLASH */
 void v99flash_after_2phschng(void); /* V99FLASH +5: CAF PRIO20 */
 void endv97e(void);                 /* ENDV97E */
+
+/* ---- Part 5: S40.8 (s40.c) ---- */
+
+void s40_8_after_exit(void);         /* S40.8 +014: PHASCHNG */
+void s40_8_after_phaschng(void);     /* S40.8 +016: TC INTPRET */
+void lothrust_test_after_exit(void); /* TGOCALC -010: CAE DAPDATR1 */
+void s40_81_after_exit(void);        /* S40.81 +5: CAF POSMAX */
+void incrsvg_after_exit(void);       /* INCRSVG +1: TC ALARM */
+void incrsvg_after_alarm(void);      /* INCRSVG +3: TC INTPRET */
+void lothrust_after_exit(void);      /* LOTHRUST +6: CS ZERO */
 
 /* Words of programs.c the parts run on into. */
 void ttgphs(void); /* TTGPHS, the countdown's restart group 4 */

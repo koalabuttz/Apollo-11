@@ -291,6 +291,14 @@ static const struct basic_entry {
     {KEY(024u, V99FLASH), v99flash},
     {KEY(024u, V99FLASH + 5u), v99flash_after_2phschng},
     {KEY(024u, ENDV97E), endv97e},
+    /* Part 5: S40.8 */
+    {KEY(016u, S40_8 + 014u), s40_8_after_exit},
+    {KEY(016u, S40_8 + 016u), s40_8_after_phaschng},
+    {KEY(016u, TGOCALC - 010u), lothrust_test_after_exit},
+    {KEY(020u, S40_81 + 5u), s40_81_after_exit},
+    {KEY(020u, INCRSVG + 1u), incrsvg_after_exit},
+    {KEY(020u, INCRSVG + 3u), incrsvg_after_alarm},
+    {KEY(020u, LOTHRUST + 6u), lothrust_after_exit},
     /* Part 1: P41CSM */
     {KEY(027u, P41CSM), p41csm},
     {KEY(027u, P41CSM + 2u), p41csm_after_upflag},
@@ -371,10 +379,12 @@ bool cm_p40_p47_runs_on(uint16_t z)
 /* ---- The order pairs ---- */
 
 static const struct interpretive_code *const codes[] = {
-    &P40CSM_CODE,   &P40PVA_CODE,   &P40TTOG_CODE,  &P40S_SV_CODE,  &P41_DSP_CODE,
-    &P40CNV85_CODE, &CALCN85_CODE,  &P41CSM_CODE,   &P47CSM_CODE,   &CALCN83_CODE,
-    &P47BODY_CODE,  &UPDATEVG_CODE, &CALL40_8_CODE, &SURELY_9_CODE, &STEERING_CODE,
-    &DYNDISP_CODE,  &S40_1_CODE,    &AGAIN_CODE,    &S40_2_3_CODE,  &S41_1_CODE,
+    &P40CSM_CODE,   &P40PVA_CODE,        &P40TTOG_CODE,  &P40S_SV_CODE,      &P41_DSP_CODE,
+    &P40CNV85_CODE, &CALCN85_CODE,       &P41CSM_CODE,   &P47CSM_CODE,       &CALCN83_CODE,
+    &P47BODY_CODE,  &UPDATEVG_CODE,      &CALL40_8_CODE, &SURELY_9_CODE,     &STEERING_CODE,
+    &DYNDISP_CODE,  &S40_1_CODE,         &AGAIN_CODE,    &S40_2_3_CODE,      &S41_1_CODE,
+    &S40_8_CODE,    &LOTHRUST_TEST_CODE, &TGOCALC_CODE,  &S40_81_CODE,       &S40_81_END_CODE,
+    &INCRSVG_CODE,  &INCRSVG_END_CODE,   &LOTHRUST_CODE, &LOTHRUST_END_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */

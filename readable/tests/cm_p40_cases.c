@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-/* The readable P40-P47 (CM) against the faithful port's, key by key (make
- * cm-p40-cases ROPE_LM ROPE_CM).
+/* The readable P40-P47 (CM) against the faithful port's, key by key
+ * (make cm-p40-cases ROPE_LM ROPE_CM).
  *
  * Built with the readable tables (src/binding/cm_p40_routines.c) and the
  * faithful port's (c64-port/src/cm_p40_p47.c) under the same names with
@@ -15,22 +15,23 @@
  * (c64-port/tests/cm_p40_p47_vectors.h) entered at the key, most stirred
  * further: MPAC and its mode, the push-down list and its pointer, the
  * index registers, A (now and then with overflow), Q (often a return of
- * bank 24), the flag words (often one bit changed), the vectors and times
- * (any erasable bank's words), NEWJOB, the overflow indicator, MODREG (40
- * or 41), MRKRTMP, PHASE5 and NVWORD1 (each sign), TVCPHASE (often -1),
- * the channels (11 and 12 in the io record, 5 in the hardware record),
- * now and then any word but the interpreter's own, the latches, no
- * hardware record, or a state the routines refuse (another work area,
- * BBANK not the two banks, a word of 16 bits). Each runs once on each
- * side, as the program's trampoline would call the key's routine. Where either port runs, the other must
- * too, with the same memory, io record and hardware record, word for
- * word; where the readable one refuses, it must leave everything as it
- * found it; and the faithful routine must run from at least 1 in 16 of
- * the states of every readable key. One refusal is counted, not failed:
- * the TC Q of SETMINDB, SETMAXDB, SPSOFF, TVCZAP and E7SETTER to FENG,
- * the constant after CALCN85's TC SERVXT, where the faithful port fails.
- * A key the binding hands to the faithful port must give the faithful
- * routine's result, refusals and all. */
+ * bank 24), the flag words (often one bit changed), the vectors and
+ * times (any erasable bank's words), NEWJOB, the overflow indicator,
+ * MODREG (40 or 41), MRKRTMP, PHASE5 and NVWORD1 (each sign), TVCPHASE
+ * (often -1), the channels (11 and 12 in the io record, 5 in the
+ * hardware record), now and then any word but the interpreter's own, the
+ * latches, no hardware record, or a state the routines refuse (another
+ * work area, BBANK not the two banks, a word of 16 bits). Each runs once
+ * on each side, as the program's trampoline would call the key's
+ * routine. Where either port runs, the other must too, with the same
+ * memory, io record and hardware record, word for word; where the
+ * readable one refuses, it must leave everything as it found it; and the
+ * faithful routine must run from at least 1 in 16 of the states of every
+ * readable key. One refusal is counted, not failed: the TC Q of
+ * SETMINDB, SETMAXDB, SPSOFF, TVCZAP and E7SETTER to FENG, the constant
+ * after CALCN85's TC SERVXT, where the faithful port fails. A key the
+ * binding hands to the faithful port must give the faithful routine's
+ * result, refusals and all. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -50,12 +51,15 @@ struct interpretive_code {
 extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P40S_SV_CODE,
     P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE,
     UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE, S40_1_CODE,
-    AGAIN_CODE, S40_2_3_CODE, S41_1_CODE;
+    AGAIN_CODE, S40_2_3_CODE, S41_1_CODE, S40_8_CODE, LOTHRUST_TEST_CODE, TGOCALC_CODE, S40_81_CODE,
+    S40_81_END_CODE, INCRSVG_CODE, INCRSVG_END_CODE, LOTHRUST_CODE, LOTHRUST_END_CODE;
 static const struct interpretive_code *const codes[] = {
-    &P40CSM_CODE,   &P40PVA_CODE,   &P40TTOG_CODE,  &P40S_SV_CODE,  &P41_DSP_CODE,
-    &P40CNV85_CODE, &CALCN85_CODE,  &P41CSM_CODE,   &P47CSM_CODE,   &CALCN83_CODE,
-    &P47BODY_CODE,  &UPDATEVG_CODE, &CALL40_8_CODE, &SURELY_9_CODE, &STEERING_CODE,
-    &DYNDISP_CODE,  &S40_1_CODE,    &AGAIN_CODE,    &S40_2_3_CODE,  &S41_1_CODE,
+    &P40CSM_CODE,   &P40PVA_CODE,        &P40TTOG_CODE,  &P40S_SV_CODE,      &P41_DSP_CODE,
+    &P40CNV85_CODE, &CALCN85_CODE,       &P41CSM_CODE,   &P47CSM_CODE,       &CALCN83_CODE,
+    &P47BODY_CODE,  &UPDATEVG_CODE,      &CALL40_8_CODE, &SURELY_9_CODE,     &STEERING_CODE,
+    &DYNDISP_CODE,  &S40_1_CODE,         &AGAIN_CODE,    &S40_2_3_CODE,      &S41_1_CODE,
+    &S40_8_CODE,    &LOTHRUST_TEST_CODE, &TGOCALC_CODE,  &S40_81_CODE,       &S40_81_END_CODE,
+    &INCRSVG_CODE,  &INCRSVG_END_CODE,   &LOTHRUST_CODE, &LOTHRUST_END_CODE,
 };
 #define readable_basic_table        cm_p40_p47_basic
 #define readable_interpretive_table cm_p40_p47_interpretive
@@ -70,10 +74,12 @@ static const struct interpretive_code *const codes[] = {
  * and P41CSM, 27,2614-2630); part 2, P47CSM to TVCZAP (24,2463-3103);
  * part 3, UPDATEVG to ENDV97E (24,3104-3573); part 4, S40.1 (16,2020-2150),
  * AGAIN and CALCUT (30,3651-3745), S40.2,3 (24,3574-3752) and S41.1
- * (22,3431-3444). */
+ * (22,3431-3444); part 5, S40.8 (16,2153-2301) and S40.81 to LOTHRUST
+ * (20,2201-2240). */
 #define WRITTEN                                                                                    \
     {024u, 02073u, 03752u}, {027u, 02614u, 02630u}, {016u, 02020u, 02150u},                        \
-        {030u, 03651u, 03745u}, {022u, 03431u, 03444u}
+        {030u, 03651u, 03745u}, {022u, 03431u, 03444u}, {016u, 02153u, 02301u},                    \
+        {020u, 02201u, 02240u}
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 bool cm_p40_p47_readable(uint16_t key, bool order_pair);
