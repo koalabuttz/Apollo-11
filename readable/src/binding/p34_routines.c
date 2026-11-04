@@ -213,6 +213,7 @@ static const struct interpretive_code *const codes[] = {
     &P35_CODE,      &S33_34_1_CODE,    &FIGTIME_CODE,  &OKMAX_CODE,    &S34_35_1_CODE,
     &S34_35_2_CODE, &S34_35_3_CODE,    &LOMAT_CODE,    &S34_35_5_CODE, &S34_35_5_LOADED_CODE,
     &FLAGOFF_CODE,  &VN1645_CODE,      &GETMGA_CODE,   &CLUPDATE_CODE, &INITVEL_CODE,
+    &MIDGIM_CODE,   &SELECTMU_CODE,    &PERIAPO_CODE,  &PRECSET_CODE,  &VECSHIFT_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -268,20 +269,25 @@ static enum exec_status basic(unsigned index, uint16_t key, const agc_native_pro
     return EXEC_OK;
 }
 
-#if LUMINARY099
-/* INITVELX's DLOAD* MUTABLE -2,1, X1 from RTX1 (LXA,1 in the same pass):
- * the faithful port carries only the two words a load with RTX1 -2 (the
- * Earth's) or -10D (the Moon's) reads, and refuses a load from anywhere
- * else; so does the binding. */
+/* MUTABLE, read by index: the faithful port carries only the words an
+ * index of -2 (the Earth's) or -10D (the Moon's) reads, and refuses a load
+ * from anywhere else; so does the binding. SETMUER's DLOAD* and STODL*
+ * (SETMUER +3) take X1 as the pass finds it; the LM's INITVELX loads X1
+ * from RTX1 in the same pass. */
 static bool outside_mutable(uint16_t key)
 {
-    word rtx1 = agc.memory[I_RTX1];
+    word x1;
 
-    return key == KEY(011u, I_INITVELX) && rtx1 != 077775u && rtx1 != 077765u;
-}
-#else
-#define outside_mutable(key) false
+    if (key == KEY(I_SETMUER / 02000u, I_SETMUER) || key == KEY(I_SETMUER / 02000u, I_SETMUER + 3u))
+        x1 = agc.memory[(FIXLOC + I_X1) & 03777u];
+#if LUMINARY099
+    else if (key == KEY(011u, I_INITVELX))
+        x1 = agc.memory[I_RTX1];
 #endif
+    else
+        return false;
+    return x1 != 077775u && x1 != 077765u;
+}
 
 static enum exec_status pair(unsigned index, uint16_t key, const agc_native_program *program,
                              apollo_overlay_state *state, void *device)

@@ -116,4 +116,10 @@ void clupdate_after_phaschng(void); /* CLUPDATE +4, the TC INTPRET */
 
 extern const struct interpretive_code INITVEL_CODE;
 
+/* ---- Part 5: MIDGIM and SELECTMU (midgim.c), PERIAPO to SHIFTR1
+ * (periapo.c); the LM's in banks 6, 10 and 23, the CM's in 4 and 22 ---- */
+
+extern const struct interpretive_code MIDGIM_CODE, SELECTMU_CODE, PERIAPO_CODE, PRECSET_CODE,
+    VECSHIFT_CODE;
+
 #endif

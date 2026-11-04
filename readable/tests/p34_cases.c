@@ -49,7 +49,8 @@ struct interpretive_code {
 extern const struct interpretive_code P34_TTPI_CODE, P34_SWCHCLR_CODE, P34_P74D_CODE, P34_P74E_CODE,
     P34_N58_CODE, P35_CODE, S33_34_1_CODE, FIGTIME_CODE, OKMAX_CODE, S34_35_1_CODE, S34_35_2_CODE,
     S34_35_3_CODE, LOMAT_CODE, S34_35_5_CODE, S34_35_5_LOADED_CODE, FLAGOFF_CODE, VN1645_CODE,
-    GETMGA_CODE, CLUPDATE_CODE, INITVEL_CODE;
+    GETMGA_CODE, CLUPDATE_CODE, INITVEL_CODE, MIDGIM_CODE, SELECTMU_CODE, PERIAPO_CODE,
+    PRECSET_CODE, VECSHIFT_CODE;
 #if !LUMINARY099
 extern const struct interpretive_code P34_NN_CODE;
 #endif
@@ -61,6 +62,7 @@ static const struct interpretive_code *const codes[] = {
     &P35_CODE,      &S33_34_1_CODE,    &FIGTIME_CODE,  &OKMAX_CODE,    &S34_35_1_CODE,
     &S34_35_2_CODE, &S34_35_3_CODE,    &LOMAT_CODE,    &S34_35_5_CODE, &S34_35_5_LOADED_CODE,
     &FLAGOFF_CODE,  &VN1645_CODE,      &GETMGA_CODE,   &CLUPDATE_CODE, &INITVEL_CODE,
+    &MIDGIM_CODE,   &SELECTMU_CODE,    &PERIAPO_CODE,  &PRECSET_CODE,  &VECSHIFT_CODE,
 };
 #if LUMINARY099
 #define readable_basic_table        lm_p34_p35_basic
@@ -80,10 +82,13 @@ typedef p66_bias_io mission_io;
 /* The parts written so far: part 1, P34 and P74 (35,2545-2724), and
  * DISPLAYE, P3XORP7X and VNPOOH (35,3674-3722); part 2, P35, P75 and
  * S33/34.1 (35,2725-3273); part 3, S34/35.1 to VN1645 and CLUPDATE
- * (35,3274-3673); part 4, INITVEL (11,2000-2273). */
+ * (35,3274-3673); part 4, INITVEL (11,2000-2273); part 5, GET+MGA and
+ * GET.LVC (06,3717-3752), SELECTMU (10,2000-2027) and PERIAPO1 to SHIFTR1
+ * (23,2316-2431). */
 #define WRITTEN                                                                                    \
     {035u, 02545u, 02724u}, {035u, 03674u, 03722u}, {035u, 02725u, 03273u},                        \
-        {035u, 03274u, 03673u}, {011u, 02000u, 02273u}
+        {035u, 03274u, 03673u}, {011u, 02000u, 02273u}, {06u, 03717u, 03752u},                     \
+        {010u, 02000u, 02027u}, {023u, 02316u, 02431u}
 #else
 #define readable_basic_table        cm_p34_p35_basic
 #define readable_interpretive_table cm_p34_p35_interpretive
@@ -103,10 +108,12 @@ typedef cm_native_io mission_io;
  * DISPLAYE and P3XORP7X (35,3070-3105) and VNPOOH (02,2575-2613); part 2,
  * P35, P75 and S33/34.1 (35,2157-2525); part 3, S34/35.2 to VN1645 and
  * CLUPDATE (35,2526-3067), and S34/35.1 (36,2000-2012); part 4, INITVEL
- * (11,2000-2254). */
+ * (11,2000-2254); part 5, MIDGIM to SELECTMU (04,2647-2741) and PERIAPO1 to
+ * SHIFTR1 (22,3153-3266). */
 #define WRITTEN                                                                                    \
     {035u, 02000u, 02156u}, {035u, 03070u, 03105u}, {02u, 02575u, 02613u}, {035u, 02157u, 02525u}, \
-        {035u, 02526u, 03067u}, {036u, 02000u, 02012u}, {011u, 02000u, 02254u}
+        {035u, 02526u, 03067u}, {036u, 02000u, 02012u}, {011u, 02000u, 02254u},                    \
+        {04u, 02647u, 02741u}, {022u, 03153u, 03266u}
 #endif
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
@@ -322,6 +329,9 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
         w[RTX1_AT] = (uint16_t)(k ? 077765u : 077775u);
         w[RTX1_AT + 1u] = (uint16_t)(k ? 2u : 0u);
     }
+    /* X1 often the same, which SETMUER's indexing wants (MUTABLE: the
+     * faithful ports carry only the words -2 and -10D read). */
+    if (rnd() % 2u) w[(fixloc + X1_AT) & 03777u] = (uint16_t)(rnd() % 2u ? 077765u : 077775u);
     for (i = 0; i < COUNT(return_words); ++i)
         if (!(w[return_words[i]] & 074000u))
             w[return_words[i]] = (uint16_t)(04000u + rnd() % 074000u);
