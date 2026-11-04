@@ -81,7 +81,8 @@ extern const agc_routine_table readable_basic, readable_interpretive;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 #if LUMINARY099
 extern const agc_routine_table lm_r31_basic_routines, lm_r31_interpretive_routines;
-extern const agc_routine_table faithful_lm_r31_basic_routines;
+extern const agc_routine_table faithful_lm_r31_basic_routines,
+    faithful_lm_r31_interpretive_routines;
 #endif
 
 /* The addresses of the words R31 uses. */
@@ -123,6 +124,28 @@ static unsigned words_differ(const struct interpretive_code *code)
     }
     return failures;
 }
+
+#if LUMINARY099
+/* The older module's order pairs are left out: each must be a key of the
+ * file's order pairs, which the flight program tries first. */
+static unsigned older_pairs_not_the_files(const agc_routine_table *older,
+                                          const agc_routine_table *file)
+{
+    unsigned i, j, failures = 0;
+
+    for (i = 0; i < older->count; ++i) {
+        uint16_t key = older->entries[i].physical;
+
+        for (j = 0; j < file->count && file->entries[j].physical != key; ++j) continue;
+        if (j == file->count) {
+            printf("FAIL: the older module's order pair %02o,%04o is not the file's\n", key / 1024u,
+                   02000u + key % 1024u);
+            ++failures;
+        }
+    }
+    return failures;
+}
+#endif
 
 static unsigned tables_differ(const agc_routine_table *readable, const agc_routine_table *faithful,
                               const char *what)
@@ -352,6 +375,8 @@ int main(int argc, char **argv)
         printf("FAIL: the older module's order pairs are not empty\n");
         ++failures;
     }
+    failures +=
+        older_pairs_not_the_files(&faithful_lm_r31_interpretive_routines, &readable_interpretive);
 #endif
     if (failures) {
         printf("r31-cases (" MISSION "): %u failures\n", failures);

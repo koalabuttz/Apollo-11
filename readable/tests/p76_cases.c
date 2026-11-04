@@ -66,6 +66,7 @@ static const struct interpretive_code *const codes[] = {
 #define older_basic           lm_p76_basic_routines
 #define older_interpretive    lm_p76_interpretive_routines
 #define faithful_older        faithful_lm_p76_basic_routines
+#define faithful_older_pairs  faithful_lm_p76_interpretive_routines
 typedef p66_bias_io mission_io;
 #else
 #define readable_basic        cm_p76_file_basic
@@ -80,6 +81,7 @@ typedef p66_bias_io mission_io;
 #define older_basic           cm_p76_basic_routines
 #define older_interpretive    cm_p76_interpretive_routines
 #define faithful_older        faithful_cm_p76_basic_routines
+#define faithful_older_pairs  faithful_cm_p76_interpretive_routines
 typedef cm_native_io mission_io;
 #endif
 /* The older modules' io record. */
@@ -87,6 +89,7 @@ typedef p66_bias_io older_io;
 extern const agc_routine_table readable_basic, readable_interpretive;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 extern const agc_routine_table older_basic, older_interpretive, faithful_older;
+extern const agc_routine_table faithful_older_pairs;
 
 /* The addresses of the words P76 uses. */
 #define TIME2_AT    0024u
@@ -122,6 +125,26 @@ static unsigned words_differ(const struct interpretive_code *code)
         if (!apollo_rope_read(ROPE, (uint16_t)physical, &rope) || rope != code->words[i]) {
             printf("FAIL: %02o,%04o is %05o, the rope's %05o\n", code->bank, code->first + i,
                    code->words[i], rope);
+            ++failures;
+        }
+    }
+    return failures;
+}
+
+/* The older module's order pairs are left out: each must be a key of the
+ * file's order pairs, which the flight program tries first. */
+static unsigned older_pairs_not_the_files(const agc_routine_table *older,
+                                          const agc_routine_table *file)
+{
+    unsigned i, j, failures = 0;
+
+    for (i = 0; i < older->count; ++i) {
+        uint16_t key = older->entries[i].physical;
+
+        for (j = 0; j < file->count && file->entries[j].physical != key; ++j) continue;
+        if (j == file->count) {
+            printf("FAIL: the older module's order pair %02o,%04o is not the file's\n", key / 1024u,
+                   02000u + key % 1024u);
             ++failures;
         }
     }
@@ -356,6 +379,7 @@ int main(int argc, char **argv)
         printf("FAIL: the older module's order pairs are not empty\n");
         ++failures;
     }
+    failures += older_pairs_not_the_files(&faithful_older_pairs, &readable_interpretive);
     if (failures) {
         printf("p76-cases (" MISSION "): %u failures\n", failures);
         return 1;
