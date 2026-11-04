@@ -47,7 +47,7 @@ struct interpretive_code {
     const uint16_t *words;
 };
 extern const struct interpretive_code P34_TTPI_CODE, P34_SWCHCLR_CODE, P34_P74D_CODE, P34_P74E_CODE,
-    P34_N58_CODE;
+    P34_N58_CODE, P35_CODE, S33_34_1_CODE, FIGTIME_CODE, OKMAX_CODE;
 #if !LUMINARY099
 extern const struct interpretive_code P34_NN_CODE;
 #endif
@@ -56,6 +56,7 @@ static const struct interpretive_code *const codes[] = {
     &P34_NN_CODE,
 #endif
     &P34_TTPI_CODE, &P34_SWCHCLR_CODE, &P34_P74D_CODE, &P34_P74E_CODE, &P34_N58_CODE,
+    &P35_CODE,      &S33_34_1_CODE,    &FIGTIME_CODE,  &OKMAX_CODE,
 };
 #if LUMINARY099
 #define readable_basic_table        lm_p34_p35_basic
@@ -68,10 +69,12 @@ static const struct interpretive_code *const codes[] = {
 #define ROPE                        0u
 #define MISSION                     "LM"
 #define NEWOPS_AT                   06070u
+#define NORMEX_AT                   03463u
 typedef p66_bias_io mission_io;
 /* The parts written so far: part 1, P34 and P74 (35,2545-2724), and
- * DISPLAYE, P3XORP7X and VNPOOH (35,3674-3722). */
-#define WRITTEN {035u, 02545u, 02724u}, {035u, 03674u, 03722u}
+ * DISPLAYE, P3XORP7X and VNPOOH (35,3674-3722); part 2, P35, P75 and
+ * S33/34.1 (35,2725-3273). */
+#define WRITTEN {035u, 02545u, 02724u}, {035u, 03674u, 03722u}, {035u, 02725u, 03273u}
 #else
 #define readable_basic_table        cm_p34_p35_basic
 #define readable_interpretive_table cm_p34_p35_interpretive
@@ -83,10 +86,13 @@ typedef p66_bias_io mission_io;
 #define ROPE                        1u
 #define MISSION                     "CM"
 #define NEWOPS_AT                   06037u
+#define NORMEX_AT                   01340u
 typedef cm_native_io mission_io;
 /* The parts written so far: part 1, P34 and P74 (35,2000-2156), and
- * DISPLAYE and P3XORP7X (35,3070-3105) and VNPOOH (02,2575-2613). */
-#define WRITTEN {035u, 02000u, 02156u}, {035u, 03070u, 03105u}, {02u, 02575u, 02613u}
+ * DISPLAYE and P3XORP7X (35,3070-3105) and VNPOOH (02,2575-2613); part 2,
+ * P35, P75 and S33/34.1 (35,2157-2525). */
+#define WRITTEN                                                                                    \
+    {035u, 02000u, 02156u}, {035u, 03070u, 03105u}, {02u, 02575u, 02613u}, {035u, 02157u, 02525u}
 #endif
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
@@ -285,6 +291,14 @@ static void state(apollo_overlay_state *s, mission_io *io, uint16_t key, int int
     if (n % 4u != 0u && rnd() % 64u == 0u) w[3u + rnd() % 03775u] |= 0100000u;
     if (n % 4u != 0u && rnd() % 64u == 0u) w[2] |= 0100000u; /* Q, which may hold 16 bits */
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
+    /* NORMEX (the LM's in E7, at 3463), where S33/34.1's GOTO and BHIZ
+     * return through, a fixed CADR (as STQ leaves it): a chain of erasable
+     * CADRs that never reaches a fixed one loops in the AGC until the night
+     * watchman restarts it, and the faithful port's host build stops the
+     * test there. Half of them in 4000-7777, where DISPLAYE's TC NORMEX
+     * (the CM's, at the same address) takes them. */
+    if (!(w[NORMEX_AT] & 074000u))
+        w[NORMEX_AT] = (uint16_t)(04000u + rnd() % (rnd() % 2u ? 04000u : 074000u));
     /* The interrupt latch either way now and then. */
     if (n % 4u != 0u && rnd() % 8u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 2u);
 }

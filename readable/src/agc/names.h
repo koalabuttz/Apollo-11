@@ -3139,14 +3139,18 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V06N43   ((word)KW_V06N43) /* VN 00643 */
 /* P34-35_P74-75.agc (both): P34 and P74, the transfer phase initiation
  * programs; DISPLAYE, the elevation angle and central angle display; and
- * P3XORP7X, which tells P3x from P7x. Their erasable words (NORMEX, TBASE5,
- * RTRN, VERBNOUN) are named by ADDRESS_OF. */
+ * P3XORP7X, which tells P3x from P7x; P35 and P75, the mid-course
+ * correction programs. Their erasable words (NORMEX, TBASE5, RTRN,
+ * VERBNOUN, KT, ATIGINC, PTIGINC) are named by ADDRESS_OF. */
 #define P34      ((word)K_P34)
 #define P74      ((word)K_P74)
 #define P34_P74A ((word)K_P34_P74A)
 #define P34_P74E ((word)K_P34_P74E)
 #define DISPLAYE ((word)K_DISPLAYE)
 #define P3XORP7X ((word)K_P3XORP7X)
+#define P35      ((word)K_P35)
+#define P75      ((word)K_P75)
+#define P35_P75A ((word)K_P35_P75A) /* P35/P75A */
 #define V06N58   ((word)KW_V06N58) /* VN 0658 */
 #if LUMINARY099
 #define DEG130 ((word)K_130DEG) /* 130DEG, 2DEC .3611111111 */

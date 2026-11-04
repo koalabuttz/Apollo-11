@@ -137,6 +137,7 @@ P31_SOURCES := $(INTERPRETER_SOURCES) src/lambert_aimpoint/lambert_aimpoint.c \
 P21_SOURCES := $(INTERPRETER_SOURCES) src/ground_track/ground_track.c \
 	src/binding/ground_track_routines.c
 P34_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p34_p35/*.c)) \
+	src/rtb_op_codes/rtb_op_codes.c \
 	src/binding/p34_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
