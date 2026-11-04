@@ -45,11 +45,14 @@ struct interpretive_code {
 };
 extern const struct interpretive_code P40_CODE, P41_CODE, P41_VGBODY_CODE, DYNMDISP_CODE,
     CALCN85_CODE, P42_CODE, P47_CODE, CALCN83_CODE, CALCN83_DELVCTL_CODE, P47BODY_CODE,
-    UPDATEVG_CODE, ENDSTEER_CODE, NO_9_CODE, STEERING_CODE;
+    UPDATEVG_CODE, ENDSTEER_CODE, NO_9_CODE, STEERING_CODE, S40_1_CODE, S40_2_3_CODE, S40_8_CODE,
+    ALARMIT_CODE, S40_13_CODE, S40_13D_CODE, S40_130V_CODE, S40_138_CODE, APSTGO_CODE, S40_9_CODE;
 static const struct interpretive_code *const codes[] = {
     &P40_CODE,      &P41_CODE,      &P41_VGBODY_CODE, &DYNMDISP_CODE,        &CALCN85_CODE,
     &P42_CODE,      &P47_CODE,      &CALCN83_CODE,    &CALCN83_DELVCTL_CODE, &P47BODY_CODE,
-    &UPDATEVG_CODE, &ENDSTEER_CODE, &NO_9_CODE,       &STEERING_CODE,
+    &UPDATEVG_CODE, &ENDSTEER_CODE, &NO_9_CODE,       &STEERING_CODE,        &S40_1_CODE,
+    &S40_2_3_CODE,  &S40_8_CODE,    &ALARMIT_CODE,    &S40_13_CODE,          &S40_13D_CODE,
+    &S40_130V_CODE, &S40_138_CODE,  &APSTGO_CODE,     &S40_9_CODE,
 };
 #define readable_basic_table        lm_p40_p47_basic
 #define readable_interpretive_table lm_p40_p47_interpretive
@@ -62,27 +65,29 @@ static const struct interpretive_code *const codes[] = {
 #define MISSION                     "LM"
 #define NEWOPS_AT                   06070u
 /* The parts written so far: part 1, the programs, the engine off routines
- * and steering (36,3147-3746). */
-#define WRITTEN {036u, 03147u, 03746u}
+ * and steering (36,3147-3746); part 2, S40.1 to S40.13 and S40.9
+ * (27,2246-2730). */
+#define WRITTEN {036u, 03147u, 03746u}, {027u, 02246u, 02730u}
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 bool p40_p47_readable(uint16_t key, bool order_pair);
 
 /* The addresses of the words the routines use. */
-#define X1_AT       0046u /* X1, X2, S1 and S2, in the work area */
-#define EDOP_AT     0023u
-#define NEWJOB_AT   0067u
-#define FLAGWRD0_AT 0074u
-#define INTBIT15_AT 0115u
-#define FIXLOC_AT   0120u
-#define OVFIND_AT   0121u
-#define MPAC_AT     0154u
-#define MODE_AT     0163u
-#define LOC_AT      0164u
-#define BANKSET_AT  0165u
-#define PUSHLOC_AT  0166u
-#define PHASE2_AT   0755u
-#define DISPDEX_AT  01163u /* (in E7) */
+#define X1_AT        0046u /* X1, X2, S1 and S2, in the work area */
+#define EDOP_AT      0023u
+#define NEWJOB_AT    0067u
+#define FLAGWRD0_AT  0074u
+#define INTBIT15_AT  0115u
+#define FIXLOC_AT    0120u
+#define OVFIND_AT    0121u
+#define MPAC_AT      0154u
+#define MODE_AT      0163u
+#define LOC_AT       0164u
+#define BANKSET_AT   0165u
+#define PUSHLOC_AT   0166u
+#define PHASE2_AT    0755u
+#define DISPDEX_AT   01163u                /* (in E7) */
+#define RETURN_WORDS 03632u, 03665u, 0052u /* QTEMP, QTEMP1 (E7), QPRET */
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -194,6 +199,7 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
 {
     const irc_case *c = &frozen_cases[mission_cases[(n * 7u + rnd()) % mission_count]];
     uint16_t bank = (uint16_t)(key / 1024u), z = (uint16_t)(02000u + key % 1024u), eb;
+    static const uint16_t return_words[] = {RETURN_WORDS};
     uint16_t *w = s->words, fixloc;
     unsigned k;
 
@@ -258,6 +264,12 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
             w[erasable_at(w, DISPDEX_AT)] = k == 0u ? 077775u : k == 1u ? edge_or_any() : 1u;
         }
         if (rnd() % 16u == 0u) io->io.superbank = (uint16_t)(rnd() & (rnd() % 2u ? 0160u : 0177u));
+        /* Bank 27's code reads constants in banks 30 and 36 (4SEC(17),
+         * FRCS2, FAPS), which the bit set would make banks 40 and 46: the
+         * flight program never runs it so, and there the faithful port
+         * (which reads the constants by bank) and the readable interpreter
+         * (which reads as the AGC does) part ways. */
+        if (bank == 027u) io->io.superbank &= (uint16_t)~0100u;
         if (rnd() % 32u == 0u) io->io.interrupt_enabled = (uint16_t)(rnd() % 3u);
         if (rnd() % 32u == 0u) w[4] = (uint16_t)(rnd() & 076000u);
         if (rnd() % 32u == 0u) w[INTBIT15_AT] = any_word();
@@ -283,6 +295,14 @@ static void state(apollo_overlay_state *s, lm_channel_io *io, uint16_t key, int 
     if (n % 4u != 0u && rnd() % 64u == 0u) w[3u + rnd() % 03775u] |= 0100000u;
     if (n % 4u != 0u && rnd() % 64u == 0u) w[2] |= 0100000u; /* Q, which may hold 16 bits */
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
+    /* The words the interpretive code returns through by GOTO (QTEMP,
+     * QTEMP1, QPRET), each a fixed CADR (as STQ leaves it): a chain of
+     * erasable CADRs that never reaches a fixed one loops in the AGC until
+     * the night watchman restarts it, and the faithful port's host build
+     * stops the test there. */
+    for (k = 0; k < COUNT(return_words); ++k)
+        if (!(w[return_words[k]] & 074000u))
+            w[return_words[k]] = (uint16_t)(04000u + rnd() % 074000u);
     /* The interrupt latch either way now and then. */
     if (n % 4u != 0u && rnd() % 8u == 0u) io->io.interrupt_enabled = (uint16_t)(rnd() % 2u);
 }

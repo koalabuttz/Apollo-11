@@ -23,7 +23,7 @@
  * sets a bit of channel 14: the program's hardware record's.
  *
  * The states the faithful routines take, at every key: FB the key's bank,
- * 36, with the superbank bit clear; at an order pair Z at NEWOPS, BANKSET
+ * 27 or 36, with the superbank bit clear in bank 36; at an order pair Z at NEWOPS, BANKSET
  * the BBANK and INTBIT15 the bank's bit 15. Always ZERO +0, the bank
  * registers agreeing, the interrupt and superbank latches in range, and
  * every erasable word an ordinary one. At an order pair and at the basic
@@ -222,6 +222,19 @@ static const struct basic_entry {
     {KEY(036u, NSTEER + 035u), nsteer_after_getdt, false},
     {KEY(036u, NSTEER + 037u), nsteer_after_twiddle, false},
     {KEY(036u, NSTEER + 042u), nsteer_after_2phschng, false},
+    /* Part 2: S40.8's alarm, S40.13 and S40.9 */
+    {KEY(027u, ALARMIT + 1u), alarmit_after_exit, false},
+    {KEY(027u, ALARMIT + 3u), alarmit_after_alarm, true},
+    {KEY(027u, S40_13), s40_13, true},
+    {KEY(027u, S40_132_STAR), s40_132_star, false},
+    {KEY(027u, S40_132_STAR + 1u), s40_132_star_after_tpagree, false},
+    {KEY(027u, S40_134), s40_134, false},
+    {KEY(027u, S40_134 + 2u), s40_134_after_phaschng, false},
+    {KEY(027u, S40_130V + 5u), s40_130v_after_exit, false},
+    {KEY(027u, STORETGO + 2u), storetgo_after_exit, false},
+    {KEY(027u, S40_9), s40_9, true},
+    {KEY(027u, ENDS40_9 + 1u), ends40_9_after_exit, false},
+    {KEY(027u, ENDS40_9 + 3u), ends40_9_after_phaschng, false},
 };
 
 static const struct basic_entry *basic_entry(uint16_t key)
@@ -238,7 +251,9 @@ static const struct basic_entry *basic_entry(uint16_t key)
 static const struct interpretive_code *const codes[] = {
     &P40_CODE,      &P41_CODE,      &P41_VGBODY_CODE, &DYNMDISP_CODE,        &CALCN85_CODE,
     &P42_CODE,      &P47_CODE,      &CALCN83_CODE,    &CALCN83_DELVCTL_CODE, &P47BODY_CODE,
-    &UPDATEVG_CODE, &ENDSTEER_CODE, &NO_9_CODE,       &STEERING_CODE,
+    &UPDATEVG_CODE, &ENDSTEER_CODE, &NO_9_CODE,       &STEERING_CODE,        &S40_1_CODE,
+    &S40_2_3_CODE,  &S40_8_CODE,    &ALARMIT_CODE,    &S40_13_CODE,          &S40_13D_CODE,
+    &S40_130V_CODE, &S40_138_CODE,  &APSTGO_CODE,     &S40_9_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */

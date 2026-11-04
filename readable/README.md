@@ -186,6 +186,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P38-P39 | `STABLE_ORBIT.agc` (LM pp. 723-730, CM pp. 525-532) | [`src/stable_orbit/`](src/stable_orbit/) | The stable orbit programs (the LM's in bank 34, the CM's in bank 4). P38 and P78 work out the burns that put the active vehicle on the passive vehicle's orbit DELTA R ahead of it or behind it (the SOI) and then into that orbit (the SOR): the crew loads TIG, CENTANG, the option and DELTA R; PREC/TT finds the passive vehicle's time over CENTANG (TIMETHET), which gives the time of intercept, and DELTTIME, the time to cover DELTA R; MAINRTNE has the passive vehicle at the target time (INTRPVP) and S3435.25 work out the burn, then shows DELTA V, the perigee after it and the burn in local vertical coordinates. P39 and P79 work out a midcourse correction between the two, from now plus the time to prepare. VNDSPLY flashes each display and keeps its caller's return in RTRN |
 | BURN, BABY, BURN | `BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc` (LM pp. 731-751) | [`src/burn_baby/`](src/burn_baby/) | The LM's master ignition routine (bank 36, with P40AUTO in bank 35, the ignition and zoom tasks in bank 17 and KILLTASK in fixed-fixed and bank 27), which counts down to the burn for P12, P40, P41, P42, P63 and the aborts. Each program has its table of steps, which WHICH names and INDEX WHICH; TCF n runs: BURNBABY starts the averaging at TIG -35 seconds (CALLT-35), blanks the DSKY at TIG -35 (TIG-35), brings the countdown display back at TIG -30, starts ullage at TIG -7.5 (ULLGTASK) and ignites at TIG -0 (TIG-0, IGNITION), unless the crew withholds the go (COMFAIL). The countdown clock (STCLOK, CLOKTASK, CLOKJOB) shows the display DISPDEX picks each second; NULLCLOK stops it, ASTNRETN, *PROCEED and *ENTER take the crew's responses, GOPOST and GOCUTOFF end the burn, and KILLTASK takes a task off the waitlist |
 | P40-P47, part 1: P40, P41, P42, P47 and steering | `P40-P47.agc` (LM pp. 752-763) | [`src/p40_p47/`](src/p40_p47/) | The LM's burn programs (bank 36). P40 for a burn of the descent engine (DPS), P42 for one of the ascent engine (APS), P41 for one of the RCS jets, which the crew flies by hand from the displays (verb 16 noun 85, DYNMDISP each second); P47, the thrust monitor (verb 16 noun 83, CALCN83). Each sets the thrust (F) and exhaust velocity (VEX) and calls S40.1 and S40.2,3, then hands the countdown to BURNBABY; POSTBURN, TIGNOW and TERM40 end it. IMPLBURN and the engine off routines (ENGOFTSK, ENGINOFF to ENGINOF3, COASTSET); UPDATEVG, STEERING and NSTEER, which steer each SERVICER pass and set the engine off task when the burn is about to end; GETDT. The subroutines S40.1 to S41.1 (bank 27) are the parts to come: until then the binding hands their keys to the faithful tables |
+| P40-P47, part 2: S40.1 to S40.13 | `P40-P47.agc` (LM pp. 764-776) | [`src/p40_p47/`](src/p40_p47/) | The subroutines of the burn (bank 27). S40.1, which P40, P41 and P42 call: the thrust direction (UT) and velocity to be gained at ignition (VGTIG), for an external delta V from the delta V asked for, turned by half the angle the burn sweeps, or for an aim point (S40.1B) from the state at TIG (LEMPREC) and INITVEL; then the delta V in local vertical coordinates (GET.LVC). S40.2,3: the thrust direction in stable member coordinates (POINTVSM) and the preferred orientation (XSCREF, YSCREF, ZSCREF, PFRATFLG). S40.8, each SERVICER pass of the burn: the velocity to be gained (VG, from RASTEER1 for an aim point), the time to go (TGO) and the new TIG, then FINDCDUW to steer, or with less than four seconds to go IMPULSW set and the steering off; alarm 1407 (ALARMIT) when VG and DELVREF are more than 90 degrees apart. S40.13, TIMEBURN, a job: whether the burn is long enough to steer (IMPULSW clear) or short, with its time (TGO), for the ascent engine, the descent engine or the jets, and whether to throttle (NOTHROTL). S40.9, a job: Lambert's first guess (HAVEGUES) for an aim point |
 
 Beside them:
 
@@ -617,13 +618,19 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    starts.
    `make p40-cases` does the same for the LM's P40-P47, part by part:
    the faithful test (308 checks against yaAGC digests) through the
-   readable tables, the interpretive words against the rope (105), and
+   readable tables, the interpretive words against the rope (373), and
    readable and faithful side by side at every key, from 4,096 states
-   each where the readable code is written (90 basic and 56 order pairs
-   in part 1) and from 16 where the faithful tables still run. PHASE2,
-   DISPDEX and the flags are stirred to the values the code tests, and
-   channels 11 and 14 (the engine and the throttle) to random words,
-   with no hardware at all now and then, which both must refuse alike.
+   each where the readable code is written (102 basic and 186 order pairs
+   in parts 1 and 2) and from 16 where the faithful tables still run.
+   PHASE2, DISPDEX and the flags are stirred to the values the code
+   tests, QTEMP, QTEMP1 and QPRET (which GOTO returns through) kept fixed
+   CADRs, and channels 11 and 14 (the engine and the throttle) set to
+   random words, with no hardware at all now and then, which both must
+   refuse alike. Bank 27's keys run with the superbank bit clear: their
+   code reads constants in banks 30 and 36, which the bit would make
+   banks 40 and 46, and there the faithful port (which reads them by
+   bank) and the readable interpreter (which reads as the AGC does) part
+   ways; the flight program never runs them so.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

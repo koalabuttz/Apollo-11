@@ -8,8 +8,9 @@
  * Written part by part. Part 1 is the programs (programs.c, bank 36): P40,
  * P41, P42 and P47, their displays and their ends (POSTBURN, TIGNOW,
  * TERM40); then IMPLBURN and the engine off routines (engine_off.c), and
- * UPDATEVG, STEERING, NSTEER and GETDT (steering.c). The subroutines
- * S40.1 to S41.1 (bank 27) are the parts to come.
+ * UPDATEVG, STEERING, NSTEER and GETDT (steering.c). Part 2 is bank 27's
+ * subroutines S40.1, S40.2,3 and S40.8 (s40.c), S40.13 and S40.9
+ * (timeburn.c); RASTEER1, TRIMGIMB and S41.1 are the part to come.
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -127,6 +128,29 @@ void nsteer_after_getdt(void);     /* NSTEER +035 */
 void nsteer_after_twiddle(void);   /* NSTEER +037 */
 void nsteer_after_2phschng(void);  /* NSTEER +042 */
 void getdt(void);                  /* GETDT */
+
+/* ---- Part 2: S40.1, S40.2,3 and S40.8 (s40.c) ---- */
+
+extern const struct interpretive_code S40_1_CODE, S40_2_3_CODE, S40_8_CODE, ALARMIT_CODE;
+
+void alarmit_after_exit(void);  /* ALARMIT +1, after the EXIT */
+void alarmit_after_alarm(void); /* ALARMIT +3 */
+
+/* ---- Part 2: S40.13 and S40.9 (timeburn.c) ---- */
+
+extern const struct interpretive_code S40_13_CODE, S40_13D_CODE, S40_130V_CODE, S40_138_CODE,
+    APSTGO_CODE, S40_9_CODE;
+
+void s40_13(void);                     /* S40.13 */
+void s40_132_star(void);               /* S40.132*, after the EXIT */
+void s40_132_star_after_tpagree(void); /* S40.132* +1 */
+void s40_134(void);                    /* S40.134, after S40.133's EXIT */
+void s40_134_after_phaschng(void);     /* S40.134 +2 */
+void s40_130v_after_exit(void);        /* S40.130V +5 */
+void storetgo_after_exit(void);        /* STORETGO +2 */
+void s40_9(void);                      /* S40.9 */
+void ends40_9_after_exit(void);        /* ENDS40.9 +1 */
+void ends40_9_after_phaschng(void);    /* ENDS40.9 +3 */
 
 #endif
 
