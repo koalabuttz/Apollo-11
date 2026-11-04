@@ -172,17 +172,21 @@ REPLACED = (
 # the faithful ones, renamed, are no longer called (--gc-sections drops
 # them). P32-P33_P72-P73 (src/p32_p33_cm): the CM's routine tables, all
 # readable; the faithful ones, renamed, are no longer called
-# (--gc-sections drops them).
+# (--gc-sections drops them). P34-35_P74-75 (src/p34_p35): both missions',
+# readable part by part; its binding hands the keys not yet written to the
+# faithful tables, renamed.
 RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
            'lm_p20_p25.o': lambda m: ['lm_p20_p25_basic', 'lm_p20_p25_interpretive'] if m == 'lm' else [],
            'lm_p32_p35.o': lambda m: ['lm_p32_p35_basic', 'lm_p32_p35_interpretive'] if m == 'lm' else [],
            'cm_p20_p25.o': lambda m: ['cm_p20_p25_basic', 'cm_p20_p25_interpretive'] if m == 'cm' else [],
-           'cm_p32_p33.o': lambda m: ['cm_p32_p33_basic', 'cm_p32_p33_interpretive'] if m == 'cm' else []}
+           'cm_p32_p33.o': lambda m: ['cm_p32_p33_basic', 'cm_p32_p33_interpretive'] if m == 'cm' else [],
+           'lm_p34_p35.o': lambda m: ['lm_p34_p35_basic', 'lm_p34_p35_interpretive'] if m == 'lm' else [],
+           'cm_p34_p35.o': lambda m: ['cm_p34_p35_basic', 'cm_p34_p35_interpretive'] if m == 'cm' else []}
 # A symbol each readable subsystem defines, which must be in the program.
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa',
-                    'e_bkcall', 'charin', 'sbandant')
+                    'e_bkcall', 'charin', 'sbandant', 'p3xorp7x')
 # And each mission's own: R63 is the LM's alone; GIMBAL_LOCK_AVOIDANCE's
 # table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has

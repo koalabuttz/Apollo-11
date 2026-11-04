@@ -136,6 +136,8 @@ P31_SOURCES := $(INTERPRETER_SOURCES) src/lambert_aimpoint/lambert_aimpoint.c \
 	src/binding/lambert_aimpoint_routines.c
 P21_SOURCES := $(INTERPRETER_SOURCES) src/ground_track/ground_track.c \
 	src/binding/ground_track_routines.c
+P34_SOURCES := $(INTERPRETER_SOURCES) $(sort $(wildcard src/p34_p35/*.c)) \
+	src/binding/p34_routines.c
 IPT_SOURCES := $(INTERPRETER_SOURCES) src/imu_performance/imu_performance.c \
 	src/binding/imu_performance_routines.c
 SL_SOURCES := $(sort $(INTERPRETER_SOURCES) $(KERNEL_SOURCES) src/standard_lead/standard_lead.c \
@@ -150,11 +152,11 @@ SOURCES := $(sort $(KERNEL_SOURCES) $(INTERBANK_SOURCES) $(PHASE_SOURCES) $(REST
 	$(KEYRUPT_SOURCES) $(RUPT_SOURCES) $(T4RUPT_SOURCES) $(T4IMU_SOURCES) $(T4RR_SOURCES) $(T4OPT_SOURCES) \
 	$(RCSMON_SOURCES) $(AGS_SOURCES) $(AOTMARK_SOURCES) $(SXTMARK_SOURCES) $(EV_SOURCES) \
 	$(NOUNS_SOURCES) $(GEOMETRY_SOURCES) $(IMU_COMP_SOURCES) $(R63_SOURCES) $(AMR_SOURCES) $(GLA_SOURCES) $(KAL_SOURCES) $(R60_SOURCES) \
-	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
+	$(SBA_SOURCES) $(RLR_SOURCES) $(P20_SOURCES) $(CP20_SOURCES) $(P30_SOURCES) $(CP30_SOURCES) $(P32_SOURCES) $(CP32_SOURCES) $(P31_SOURCES) $(P21_SOURCES) $(P34_SOURCES) $(SL_SOURCES) $(IPT_SOURCES) $(PIN_SOURCES))
 HEADERS := $(wildcard src/*/*.h src/*/*.inc)
 
 .PHONY: all check kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases alarm-cases \
-	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases names-check \
+	sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases keyrupt-cases rupt-cases t4rupt-cases rcs-monitor-cases ags-cases aotmark-cases sxtmark-cases extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases names-check \
 	coverage x86-flight x86-scenarios-quick x86-scenarios format clean
 all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases machine-cases interpreter-cases \
 	alarm-cases sp-cases service-cases downtelemetry-cases fresh-start-cases v37-cases stateup-cases \
@@ -162,7 +164,7 @@ all: names-check coverage kernel-cases interbank-cases phase-cases restart-cases
 	extended-verbs-cases pinball-noun-tables-cases geometry-cases imu-compensation-cases r63-cases \
 	attitude-maneuver-cases gimbal-lock-cases kalcmanu-steering-cases standard-lead-cases \
 	imu-performance-cases pinball-cases r60-r62-cases sband-antenna-cases radar-leadin-cases \
-	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases
+	p20-p25-cases cm-p20-p25-cases p30-cases cm-p30-cases p32-cases cm-p32-cases lambert-aim-cases ground-track-cases p34-cases
 check: all x86-scenarios-quick
 
 names-check:
@@ -1774,6 +1776,46 @@ ground-track-cases: $(BUILD)/p21-oracle-lm $(BUILD)/p21-oracle-cm $(BUILD)/p21-c
 	./$(BUILD)/p21-oracle-cm $(ROPES)
 	./$(BUILD)/p21-cases-lm $(ROPES)
 	./$(BUILD)/p21-cases-cm $(ROPES)
+
+# P34-35_P74-75.agc, both missions' TPI and mid-course programs, readable
+# part by part: each mission's port test (tests/test_lm_p34_p35.c and
+# test_cm_p34_p35.c, their frozen cases run to their stops through the
+# programs of tests/lm_ and cm_p34_p35_target.c, against the original
+# programs' yaAGC digests) through the readable tables, which hand the
+# keys not yet written to the faithful routines (renamed faithful_), with
+# tests/with_ropes.c loading the ropes the readable interpreter reads;
+# then tests/p34_cases.c side by side, for each mission.
+P34_COMMON := $(R63_COMMON) $(PORT)/src/rtb_modes.c
+
+$(BUILD)/p34-faithful-%.o: $(PORT)/src/%_p34_p35.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -D$*_p34_p35_basic=faithful_$*_p34_p35_basic \
+		-D$*_p34_p35_interpretive=faithful_$*_p34_p35_interpretive -c $< -o $@
+$(BUILD)/p34-test-%.o: $(PORT)/tests/test_%_p34_p35.c
+	@mkdir -p $(dir $@)
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dmain=port_main -c $< -o $@
+$(BUILD)/p34-oracle-lm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p34-faithful-lm.o \
+		$(BUILD)/p34-test-lm.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P34_COMMON) $(PORT)/tests/lm_p34_p35_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/p34-oracle-cm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p34-faithful-cm.o \
+		$(BUILD)/p34-test-cm.o tests/with_ropes.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(P34_COMMON) $(PORT)/tests/cm_p34_p35_target.c \
+		tests/with_ropes.c $(filter %.o,$^) -o $@
+$(BUILD)/p34-cases-lm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-lm/%.o) $(BUILD)/p34-faithful-lm.o \
+		tests/p34_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(LM) $(P34_COMMON) $(filter %.o,$^) tests/p34_cases.c -o $@
+$(BUILD)/p34-cases-cm: $(P34_SOURCES:src/%.c=$(BUILD)/cases-cm/%.o) $(BUILD)/p34-faithful-cm.o \
+		tests/p34_cases.c
+	$(CC) $(PORT_CFLAGS) $(INCLUDES) $(CM) $(P34_COMMON) $(filter %.o,$^) tests/p34_cases.c -o $@
+
+p34-cases: $(BUILD)/p34-oracle-lm $(BUILD)/p34-oracle-cm $(BUILD)/p34-cases-lm \
+		$(BUILD)/p34-cases-cm
+	@for r in $(ROPES); do test -f $$r || { echo "no $$r: run c64-port/tools/setup_cloud.sh"; exit 1; }; done
+	./$(BUILD)/p34-oracle-lm $(ROPES)
+	./$(BUILD)/p34-oracle-cm $(ROPES)
+	./$(BUILD)/p34-cases-lm $(ROPES)
+	./$(BUILD)/p34-cases-cm $(ROPES)
 
 # SYSTEM_TEST_STANDARD_LEAD_INS, both missions: the port's three yaAGC
 # oracles with each mission's readable tables and the other mission's
