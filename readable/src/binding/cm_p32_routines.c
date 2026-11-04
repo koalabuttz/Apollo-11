@@ -154,7 +154,8 @@ static const struct interpretive_code *const codes[] = {
     &P32STRT_CODE,     &ALMXITA_CODE,  &P32_P72A_CODE,      &VN0637_CODE,   &P32_P72E_CODE,
     &P32_P72_N75_CODE, &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73C_CODE, &P33_P73E_CODE,
     &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE, &CSI_A_CODE,    &CSI_B2_CODE,
-    &CSI_B23_CODE,     &CSINEXT_CODE,
+    &CSI_B23_CODE,     &CSINEXT_CODE,  &NTP_2_CODE,         &CSINEXT1_CODE, &CSINEXT2_CODE,
+    &K2_CODE,          &CSINEXT3_CODE, &CSINEXT4_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
@@ -181,10 +182,13 @@ static unsigned indexed_address(unsigned operand)
     return (sum & 037777u) | (sum >> 1 & 040000u);   /* overflow corrected */
 }
 
-/* The indexed load the faithful port carries only a few words for, and
- * refuses from anywhere else, so the binding works its address out before
- * the pass: ALMXIT's SLOAD* ALARM/TB -1,1 (4,3320), by X1 from LXC,1
- * CSIALRM: the seven words ALARM/TB to ALARM/TB +6 (bank 6). */
+/* The indexed loads the faithful port carries only a few words for, and
+ * refuses from anywhere else, so the binding works their addresses out
+ * before the pass:
+ *   ALMXIT's SLOAD* ALARM/TB -1,1 (4,3320), by X1 from LXC,1 CSIALRM:
+ *   the seven words ALARM/TB to ALARM/TB +6 (bank 6);
+ *   CSINEXT4's two DSU* PMINE -2,1 (31,3610 and 31,3616), by X1 from
+ *   RTX1 (-2 at the Earth, -10 at the Moon): PMINE or PMINM (bank 35). */
 static bool outside_table(uint16_t key)
 {
     unsigned address;
@@ -192,6 +196,10 @@ static bool outside_table(uint16_t key)
     if (key == KEY(04u, ALMXIT + 2u)) {
         address = indexed_address(I_ALARM_TB - 1u);
         return address < I_ALARM_TB || address > I_ALARM_TB + 6u;
+    }
+    if (key == KEY(031u, I_CSINEXT4) || key == KEY(031u, I_CSINEXT4 + 6u)) {
+        address = indexed_address(I_PMINE - 2u);
+        return address != I_PMINE && address != I_PMINM;
     }
     return false;
 }

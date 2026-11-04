@@ -48,12 +48,14 @@ struct interpretive_code {
 extern const struct interpretive_code P32STRT_CODE, ALMXITA_CODE, P32_P72A_CODE, VN0637_CODE,
     P32_P72E_CODE, P32_P72_N75_CODE, P33_P73A_CODE, P33_P73_ALARM_CODE, P33_P73C_CODE,
     P33_P73E_CODE, P33_P73_N75_CODE, DISDVLVC_CODE, DISDVLVC_EXIT_CODE, CSI_A_CODE, CSI_B2_CODE,
-    CSI_B23_CODE, CSINEXT_CODE;
+    CSI_B23_CODE, CSINEXT_CODE, NTP_2_CODE, CSINEXT1_CODE, CSINEXT2_CODE, K2_CODE, CSINEXT3_CODE,
+    CSINEXT4_CODE;
 static const struct interpretive_code *const codes[] = {
     &P32STRT_CODE,     &ALMXITA_CODE,  &P32_P72A_CODE,      &VN0637_CODE,   &P32_P72E_CODE,
     &P32_P72_N75_CODE, &P33_P73A_CODE, &P33_P73_ALARM_CODE, &P33_P73C_CODE, &P33_P73E_CODE,
     &P33_P73_N75_CODE, &DISDVLVC_CODE, &DISDVLVC_EXIT_CODE, &CSI_A_CODE,    &CSI_B2_CODE,
-    &CSI_B23_CODE,     &CSINEXT_CODE,
+    &CSI_B23_CODE,     &CSINEXT_CODE,  &NTP_2_CODE,         &CSINEXT1_CODE, &CSINEXT2_CODE,
+    &K2_CODE,          &CSINEXT3_CODE, &CSINEXT4_CODE,
 };
 extern const agc_routine_table cm_p32_p33_basic, cm_p32_p33_interpretive;
 extern const agc_routine_table faithful_cm_p32_p33_basic, faithful_cm_p32_p33_interpretive;
@@ -73,10 +75,12 @@ bool cm_p32_p33_readable(uint16_t key, bool order_pair);
 #define LOC_AT      0164u
 #define BANKSET_AT  0165u
 #define PUSHLOC_AT  0166u
-#define QPRET_AT    052u                   /* the work area's QPRET */
-#define NORMEX_AT   01340u                 /* DISDVLVC's return, a CADR */
-#define SUBEXIT_AT  02370u                 /* E4,1770: SUBEXIT, a return */
-#define ALMXIT_X1   (04u * 1024u + 01320u) /* 4,3320: ALMXIT's SLOAD* ALARM/TB -1,1 */
+#define QPRET_AT    052u                    /* the work area's QPRET */
+#define NORMEX_AT   01340u                  /* DISDVLVC's return, a CADR */
+#define SUBEXIT_AT  02370u                  /* E4,1770: SUBEXIT, a return */
+#define ALMXIT_X1   (04u * 1024u + 01320u)  /* 4,3320: ALMXIT's SLOAD* ALARM/TB -1,1 */
+#define PMINE_X1_A  (031u * 1024u + 01610u) /* 31,3610 and 31,3616: CSINEXT4's DSU* PMINE -2,1 */
+#define PMINE_X1_B  (031u * 1024u + 01616u)
 
 #define CASES       4096u
 #define OTHER_CASES 16u
@@ -123,15 +127,16 @@ static unsigned tables_differ(const agc_routine_table *readable, const agc_routi
 }
 
 /* The keys the parts written so far hold: part 1, the programs (banks 4
- * and 14, bank 12 to P33/P73D's end, and bank 37 to DISDVLVC's end); part
- * 2, CSI/A to CIRCL (bank 6, the rest of bank 12, bank 22, and bank 23 to
- * NTP/2). */
+ * and 14, bank 12 to P33/P73D's end, and bank 37 to DISDVLVC's end); parts
+ * 2 and 3, CSI/A to SCNDSOL (banks 6, 7, 10, 11, 12, 22, 23 and 24, and
+ * bank 31 to SCNDSOL's end). */
 static bool in_written_part(uint16_t key)
 {
     unsigned bank = key / 1024u, z = 02000u + key % 1024u;
 
-    return bank == 04u || bank == 06u || bank == 012u || bank == 014u || bank == 022u ||
-           (bank == 023u && z < 03151u) || (bank == 037u && z < 02645u);
+    return bank == 04u || bank == 06u || bank == 07u || bank == 010u || bank == 011u ||
+           bank == 012u || bank == 014u || bank == 022u || bank == 023u || bank == 024u ||
+           (bank == 031u && z < 03662u) || (bank == 037u && z < 02645u);
 }
 
 static unsigned parts_unwritten(const agc_routine_table *table, bool order_pair)
@@ -275,6 +280,18 @@ static void state(apollo_overlay_state *s, cm_native_io *io, agc_hardware *hardw
         else if (k == 2u) {
             k = rnd() % 15u;
             w[(fixloc + X1_AT) & 03777u] = (uint16_t)(k < 11u ? 077777u - (k + 1u) : k - 11u);
+        }
+    }
+    /* At CSINEXT4's indexed loads, often X1 -2 or -10 (RTX1 at the Earth
+     * or the Moon), the loads from PMINE and PMINM, and now and then -12
+     * to +2, round them. */
+    if (key == PMINE_X1_A || key == PMINE_X1_B) {
+        k = rnd() % 4u;
+        if (k < 2u)
+            w[(fixloc + X1_AT) & 03777u] = rnd() % 2u ? 077775u : 077765u;
+        else if (k == 2u) {
+            k = rnd() % 15u;
+            w[(fixloc + X1_AT) & 03777u] = (uint16_t)(k < 12u ? 077777u - (k + 1u) : k - 12u);
         }
     }
     w[6] = (uint16_t)((w[4] & 076000u) | eb);
