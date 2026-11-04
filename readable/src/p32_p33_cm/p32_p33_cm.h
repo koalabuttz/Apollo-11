@@ -11,10 +11,10 @@
  * that GOTOs and STCALLs join. The code, by its banks:
  *   programs.c: P32/P72 and P33/P73 (bank 4, and their stretches in banks
  *   14 and 12, pp. 652-659) and DISDVLVC (bank 37, p. 662);
- *   csi.c: CSI/A to CIRCL, the start of the CSI computation (banks 6, 12,
- *   22 and 23, pp. 664-668);
- *   the rest of the CSI and CDH computations, NTP/2 to CDHMVR (pp.
- *   668-683), are still the faithful port's.
+ *   csi.c: CSI/A to SCNDSOL, the CSI computation (banks 6, 7, 10, 11, 12,
+ *   22, 23, 24 and 31, pp. 664-674);
+ *   the subroutines, ADVANCE to CDHMVR (pp. 675-683), are still the
+ *   faithful port's.
  * AVFLAGA, AVFLAGP and P20FLGON are the CM's P30-P37.agc's
  * (src/p30_cm/). The binding is src/binding/cm_p32_routines.c.
  *
@@ -95,6 +95,11 @@ void disdvlvc_after_vnpooh(void);
 /* ---- csi.c: CSI/A to CIRCL (banks 6, 12, 22 and 23) ---- */
 
 extern const struct interpretive_code CSI_A_CODE, CSI_B2_CODE, CSI_B23_CODE, CSINEXT_CODE;
+
+/* ---- csi.c: NTP/2 to SCNDSOL (banks 23, 11, 7, 24, 10 and 31) ---- */
+
+extern const struct interpretive_code NTP_2_CODE, CSINEXT1_CODE, CSINEXT2_CODE, K2_CODE,
+    CSINEXT3_CODE, CSINEXT4_CODE;
 
 #endif
 
