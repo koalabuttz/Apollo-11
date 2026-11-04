@@ -3460,6 +3460,7 @@
 #define I_ZEROVEC 024006u
 #define I_2PISC 011054u
 #define I_600SEC 051662u
+#define I_DP1_4 025755u
 #define P_SIZETAB 1026u
 #define P_600SECS 11672u
 #define P_PRIOLARM 9074u

@@ -13,8 +13,9 @@
  *   14 and 12, pp. 652-659) and DISDVLVC (bank 37, p. 662);
  *   csi.c: CSI/A to SCNDSOL, the CSI computation (banks 6, 7, 10, 11, 12,
  *   22, 23, 24 and 31, pp. 664-674);
- *   the subroutines, ADVANCE to CDHMVR (pp. 675-683), are still the
- *   faithful port's.
+ *   cdh.c: the subroutines, ADVANCE (bank 37), ROTATE and CDHMVR (bank
+ *   5), INTINT2C and INTINT3P (bank 31), S32/33.1 (bank 35) and S32/33.X
+ *   (bank 13), pp. 675-682.
  * AVFLAGA, AVFLAGP and P20FLGON are the CM's P30-P37.agc's
  * (src/p30_cm/). The binding is src/binding/cm_p32_routines.c.
  *
@@ -100,6 +101,11 @@ extern const struct interpretive_code CSI_A_CODE, CSI_B2_CODE, CSI_B23_CODE, CSI
 
 extern const struct interpretive_code NTP_2_CODE, CSINEXT1_CODE, CSINEXT2_CODE, K2_CODE,
     CSINEXT3_CODE, CSINEXT4_CODE;
+
+/* ---- cdh.c: ADVANCE to CDHMVR (banks 37, 5, 31, 35 and 13) ---- */
+
+extern const struct interpretive_code ADVANCE_CODE, ROTATE_CODE, INTINT2C_CODE, S32_33_1_CODE,
+    S32_33_X_CODE;
 
 #endif
 
