@@ -201,6 +201,9 @@ static void state(apollo_overlay_state *s, p66_bias_io *io, uint16_t key, int in
     w[BANKSET_AT] = rnd() % 32u ? w[6] : any_word();
 }
 
+/* The keys whose readable routine ran in at least one state. */
+static unsigned readable_keys;
+
 static unsigned keys(const agc_routine_table *readable, const agc_routine_table *faithful,
                      int interpretive, unsigned *runs)
 {
@@ -208,7 +211,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
 
     for (i = 0; i < faithful->count; ++i) {
         uint16_t key = faithful->entries[i].physical, z = (uint16_t)(02000u + key % 1024u);
-        unsigned ran = 0, bad = 0;
+        unsigned ran = 0, bad = 0, readable_ran = 0;
 
         for (n = 0; n < CASES; ++n) {
             apollo_overlay_state start, fa, ra;
@@ -223,6 +226,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             memset(&p, 0, sizeof p);
             sf = faithful->entries[i].call(&p, &fa, &fio);
             sr = readable->entries[i].call(&p, &ra, &rio);
+            readable_ran += sr == EXEC_OK;
             ran += sf == EXEC_OK;
             if (sr != EXEC_OK && (memcmp(&ra, &start, sizeof ra) || memcmp(&rio, &io, sizeof rio)))
                 why = "readable refusal changed the state";
@@ -243,6 +247,7 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
                                fa.words[w], start.words[w]);
             }
         }
+        readable_keys += readable_ran != 0u;
         if (ran < CASES / 16u && bad == 0u) {
             printf("FAIL %02o,%04o: the faithful routine ran in %u of %u states (fewer than 1 in "
                    "16)\n",
@@ -280,9 +285,15 @@ int main(int argc, char **argv)
     }
     failures += keys(&lm_p30_file_basic, &faithful_lm_p30_file_basic, 0, &runs);
     failures += keys(&lm_p30_file_interpretive, &faithful_lm_p30_file_interpretive, 1, &runs);
-    printf("p30-cases: %u words as the rope's, %u keys (%u basic, %u order pairs) from %u "
-           "states each, %u run by the faithful routines, %u failures\n",
-           words, lm_p30_file_basic.count + lm_p30_file_interpretive.count, lm_p30_file_basic.count,
-           lm_p30_file_interpretive.count, CASES, runs, failures);
+    if (readable_keys != lm_p30_file_basic.count + lm_p30_file_interpretive.count) {
+        printf("FAIL: %u keys whose readable routine never ran\n",
+               lm_p30_file_basic.count + lm_p30_file_interpretive.count - readable_keys);
+        ++failures;
+    }
+    printf("p30-cases: %u words as the rope's, %u of %u keys run by the readable routines "
+           "(%u basic, %u order pairs) from %u states each, %u run by the faithful routines, %u "
+           "failures\n",
+           words, readable_keys, lm_p30_file_basic.count + lm_p30_file_interpretive.count,
+           lm_p30_file_basic.count, lm_p30_file_interpretive.count, CASES, runs, failures);
     return failures != 0;
 }

@@ -14,6 +14,11 @@
  *   delrspl.c: DELRSPL and AUGEKUGL (bank 32, pp. 643-647).
  * The binding is src/binding/cm_p30_routines.c.
  *
+ * Three of the listing's labels are named in no readable file, because
+ * nothing in Comanche055 refers to them: V16N35 (p. 638, VN 1635), and
+ * V(28K) and V(24K) (p. 646, 2DEC 85.344 B-7 and 73.152 B-7), words of
+ * AUGEKUGL's table, which DELRSPL reads from the rope by index.
+ *
  * Basic code round stretches of interpretive code, which are in the
  * listing's notation (src/interpreter/notation.h). The entries below are
  * the basic code's: each routine's start, the words BANKCALL, PHASCHNG,
