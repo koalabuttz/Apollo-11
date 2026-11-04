@@ -3511,6 +3511,31 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V16N40           ((word)KW_V16N40)   /* VN 1640 */
 #endif
 
+#if LUMINARY099
+/* THE_LUNAR_LANDING (LM): P63's set-up and ignition algorithm, and P68's
+ * LANDJUNK. Its erasable words (WHICH, DVTHRUSH, DVCNTR, WCHPHASE, FLPASS0,
+ * NIGNLOOP) are named by ADDRESS_OF. */
+#define ASTNCLOK    ((word)K_ASTNCLOK)
+#define ASTNDEX     ((word)KW_MD1) /* = MD1: OCT 25, CLOKTASK's index */
+#define ASTNRET     ((word)K_ASTNRET)
+#define CODE500     ((word)KW_CODE500) /* OCT 00500 */
+#define DDUMCALC    ((word)K_DDUMCALC)
+#define DDUMGOOD    ((word)K_DDUMGOOD)
+#define DPSTHRSH    ((word)KW_DPSTHRSH) /* DEC 36 */
+#define FLAGORGY    ((word)K_FLAGORGY)
+#define IGNALG      ((word)K_IGNALG)
+#define IGNALGRT    ((word)K_IGNALGRT)
+#define IGNALOOP    ((word)K_IGNALOOP)
+#define LANDJUNK    ((word)K_LANDJUNK)
+#define P63ADRES    ((word)KW_P63ADRES) /* GENADR P63TABLE */
+#define P63LM       ((word)K_P63LM)
+#define P63SPOT2    ((word)K_P63SPOT2)
+#define P63SPOT3    ((word)K_P63SPOT3)
+#define P63SPOT4    ((word)K_P63SPOT4)
+#define R60INIT     ((word)K_R60INIT)
+#define V06N43_STAR ((word)KW_V06N43_STAR) /* V06N43*: VN 0643 */
+#endif
+
 #if COMANCHE055
 /* P40-P47 (CM): P40 and P41, the SPS and RCS burns; P47, the thrust
  * monitor; the burn's countdown and the steering. Its erasable words

@@ -195,6 +195,7 @@ Take one routine across the three views. NOVAC starts a basic job:
 | P40-P47 (CM), part 5: S40.8, the steering | `P40-P47.agc` (CM pp. 719-722) | [`src/p40_p47_cm/`](src/p40_p47_cm/) | In `s40.c`, S40.8, run by UPDATEVG each pass of SERVICER during the burn: the velocity to be gained (VG) brought up to date by the change of the required velocity (BDT) and the velocity counted (DELVREF); LOTHRUST, the thrust failing, which starts the engine-fail display (verb 97) unless the crew allowed one bypass (IDLEFAIL); TGOCALC, the time to go from the exhaust velocity and the tail-off, with alarm 1407 if VG points the wrong way (INCRSVG); XPRODUCT, the rate command for the TVC autopilot (OMEGAC) from the cross product of VG and its change; and S40.81, which with less than four seconds to go holds the attitude and leaves the shutdown to STEERING (IMPULSW) |
 | P40-P47 (CM), part 6: S40.9 and S40.13 | `P40-P47.agc` (CM pp. 723-728) | [`src/p40_p47_cm/`](src/p40_p47_cm/) | In `timeburn.c`. S40.9 (VTOGAIN), started by UPDATEVG every so many passes during an aimpoint (Lambert) burn: Lambert's required velocity for this pass's state vector, BDT (the change of the required velocity, scaled to two seconds, less the gravity's), and the velocity to be gained (VGTEMP) with the earth's oblateness term; COPY40.9 keeps this pass's values for the next, and REDO40.9, its restart, ends the job cleanly. S40.13 (TIMEBURN), started at TIG-5: whether the burn is long enough to steer (more than 6 seconds), and if not its time to go (TGO), from the velocity to be gained, the mass, the thrust and the ullage, with two or four jets and with or without +X translation (channel 31) |
 | P40-P47 (CM), part 7: the gimbal test and the autopilot's data | `P40-P47.agc` (CM pp. 729-736) | [`src/p40_p47_cm/`](src/p40_p47_cm/) | In `dap_data.c`, the rest of the file, which with it is whole. S40.6, a task before an SPS burn: the gimbal drive test, the engine bell to +2, -2 and 0 degrees two seconds apart in pitch and then in yaw (OUTPUT, channel 14) for the crew to watch, then the trim to PACTOFF and YACTOFF (GIMTRIM), or the trim only; PRE40.6, its restart entry, trims at once under the RCS autopilot. S41.2 and S40.14 turn verb 48's autopilot data into the RCS autopilot's terms: the rate and deadband, whether the LM is attached, the quads for +X translation (and with it NJETSFLG, two jets or four), the failed quads, and the inertia terms. DAPFIG, after verb 46, starts the autopilot the configuration names (none for the CM alone, RCS for the CSM, SATSTKON otherwise); RCSUP and RCSDAPON give T5 to the RCS autopilot. Every key of the file now runs readable code |
+| THE LUNAR LANDING | `THE_LUNAR_LANDING.agc` (LM pp. 785-792) | [`src/lunar_landing/`](src/lunar_landing/) | P63's start (bank 32) and P68 (LANDJUNK, bank 31). P63LM readies BURNBABY for P63 (WHICH), the delta V monitor and the guidance, waves the flags (FLAGORGY), and runs the ignition algorithm, IGNALG: from the landing site (RLS) and time (TLAND) it guesses the time of ignition, integrates the LM's state to it (LEMPREC), runs the guidance there (?GUIDSUB), and DDUMCALC moves the guess by DDUM until it moves by less than DDUMCRIT, integrating again (INTEGRVS) each time round. DDUMGOOD sets TIG and the landing site's distance out of the orbit's plane (OUTOFPLN); then the countdown clock (ASTNCLOK), R51's fine alignment (ASTNRET), the burn attitude (P63SPOT2, R60LEM), the landing radar's antenna to position 1 (P63SPOT3, P63SPOT4, SETPOS1) and BURNBABY. LANDJUNK, after touchdown: the attitude held (ZATTEROR, SETMAXDB), SURFFLAG set, the position as latitude and longitude (LAT-LONG) and as the new landing site (R-TO-RP, RLS), shown with verb 06 noun 43, then P57's start (GSAV, REFMF) |
 
 Beside them:
 
@@ -641,9 +642,7 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    `make cm-p40-cases` does the same for the CM's P40-P47, part by part:
    the faithful test (992 checks against yaAGC digests) through the
    readable tables, the interpretive words against the rope, and readable
-   and faithful side by side at every key, the keys of the parts not yet
-   written handed to the faithful routines (which must give the same
-   result). MODREG, MRKRTMP, PHASE5, TVCPHASE, NVWORD1, channels 5, 11 and 12 and Q
+   and faithful side by side at every key (every key readable). MODREG, MRKRTMP, PHASE5, TVCPHASE, NVWORD1, channels 5, 11 and 12 and Q
    (often a return of bank 24) are stirred to the values the code tests.
    Counted, not failed: the TC Q of SETMINDB, SETMAXDB, SPSOFF, TVCZAP and
    E7SETTER to FENG, the constant after CALCN85's TC SERVXT, where the
@@ -651,6 +650,14 @@ Gate 2 needs the port's toolchain once, for the harness's yaAGC:
    QTEMP and QTEMP1 hold fixed CADRs (a chain of erasable ones never ends),
    and the two keys that store a vector at 6D run in a VAC area: in the
    NOVAC one that is FIXLOC itself, which neither port models.
+   `make lunar-landing-cases` does the same for the LM's THE_LUNAR_LANDING:
+   the faithful test's frozen cases (yaAGC digests) and refusals through
+   the readable tables, the interpretive words against the rope (147), and
+   readable and faithful side by side at every key (21 basic and 69 order
+   pairs) from 65,536 states, as the host runs them and as the flight
+   program does (stopping at the interpreter, with the words after the
+   EXITs as keys of their own). The ignition algorithm's guesses converge
+   or not, and the landing radar's antenna bit (channel 33) is stirred.
    `make pinball-cases` runs the faithful port's Pinball tests with the
    readable parts in place of the Pinball trampoline (every routine of
    the tables from its entry and every caller's chain through the file,

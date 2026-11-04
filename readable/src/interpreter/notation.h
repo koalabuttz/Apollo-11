@@ -135,6 +135,8 @@
 #define ORDER_CALL       0152u
 #define ORDER_CALRB      0152u /* (CALL's code: one order, under two names) */
 #define ORDER_VSR7       0154u
+#define ORDER_SR4R       0154u /* (VSR7's code too) */
+#define ORDER_SL4R       0144u /* (VSL7's, which this table has not) */
 #define ORDER_BDSU       0155u
 #define ORDER_BDSU_STAR  0157u /* BDSU* */
 #define ORDER_ITA        0156u /* (STQ's code: one order, under two names) */
