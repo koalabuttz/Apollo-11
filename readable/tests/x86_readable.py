@@ -176,6 +176,10 @@ REPLACED = (
     # port's compiled files.
     'lm_r30.o',
     'cm_r30.o',
+    # STABLE_ORBIT_-_P38-P39.agc, both missions' stable orbit programs
+    # (src/stable_orbit): the port's compiled files.
+    'lm_stable_orbit.o',
+    'cm_stable_orbit.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -204,7 +208,8 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa',
-                    'e_bkcall', 'charin', 'sbandant', 'p3xorp7x', 'r31call', 'endp76', 'v82call')
+                    'e_bkcall', 'charin', 'sbandant', 'p3xorp7x', 'r31call', 'endp76', 'v82call',
+                    'vndsply_proceed')
 # And each mission's own: R63 is the LM's alone; GIMBAL_LOCK_AVOIDANCE's
 # table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
@@ -225,7 +230,8 @@ MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'g
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
                           'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
-                          'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel')}
+                          'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit', 'candel',
+                          'rtrn')}
 xb.OUT = READABLE / 'build/x86-flight'
 
 
