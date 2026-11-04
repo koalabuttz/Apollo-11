@@ -3665,6 +3665,34 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V16N40     ((word)KW_V16N40)  /* VN 1640 */
 #define V1683      ((word)KW_V1683)   /* VN 1683 */
 #define V16N85B    ((word)KW_V16N85B) /* VN 1685 */
+/* Part 7 of P40-P47 (CM). */
+#define CONTONE      ((word)KW_CONTONE)  /* DEC .662034, "2PI/M" */
+#define CONTTWO      ((word)K_CONTTWO)   /* 2DEC .00118 */
+#define DAPFIG       ((word)K_DAPFIG)
+#define DEC409       ((word)KW_DEC409)
+#define DEC46        ((word)KW_DEC46)
+#define ENDFIG       ((word)K_ENDFIG)
+#define GDTSETUP     ((word)K_GDTSETUP)
+#define GIMDTEST     ((word)K_GIMDTEST)
+#define GIMTRIM      ((word)K_GIMTRIM)
+#define M4ACTDEG     ((word)KW_M4ACTDEG) /* -4ACTDEG: DEC -168 */
+#define MBIT14       ((word)KW_MBIT14)   /* -BIT14: OCT 57777 */
+#define NODAPUP      ((word)K_NODAPUP)
+#define OCT02200     ((word)KW_OCT02200) /* "BITS 8,11 FOR CHANNEL 12 TVC/OPTICS" */
+#define OUTPUT       ((word)K_OUTPUT)
+#define P2ACTDEG     ((word)KW_P2ACTDEG) /* +2ACTDEG: DEC +84, "+2 DEG" */
+#define POINT6_SECT5 ((word)KW_0_6SECT5) /* 0.6SECT5: OCT 37704 */
+#define PRIO6        ((word)KW_PRIO6)
+#define PRE40_6      ((word)K_PRE40_6)   /* PRE40.6 */
+#define RCSADDR      ((word)K_RCSADDR)   /* 2CADR RCSATT */
+#define RCSDAPON     ((word)K_RCSDAPON)
+#define RCSDAPUP     ((word)K_RCSDAPUP)
+#define RCSUP        ((word)K_RCSUP)
+#define RSTRTST      ((word)K_RSTRTST)
+#define S40_6        ((word)K_S40_6)     /* S40.6 */
+#define S40_14       ((word)K_S40_14)    /* S40.14 */
+#define S41_2        ((word)K_S41_2)     /* S41.2 */
+#define T5IDLDAP     ((word)K_T5IDLDAP)  /* 2CADR T5IDLOC */
 #endif
 
 /* NO.CORES + 1 core sets. */

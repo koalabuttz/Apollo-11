@@ -8,30 +8,31 @@
  *
  * First the words: the readable interpretive code (src/p40_p47_cm/),
  * written in the listing's notation, must be the CM's rope, word for
- * word. Then the keys, which must be the faithful tables', and the keys
- * the parts written so far hold must run readable code, the others the
- * faithful port's. Then the runs: each readable key from 4,096 states
- * (each other key from 16), each one of the port's frozen test states
+ * word. Then the keys, which must be the faithful tables', each running
+ * readable code (the file was written part by part: WRITTEN is the
+ * parts' code). Then the runs: each readable key from 4,096 states (any
+ * other from 16), each one of the port's frozen test states
  * (c64-port/tests/cm_p40_p47_vectors.h) entered at the key, most stirred
  * further: MPAC and its mode, the push-down list and its pointer, the
- * index registers, A (now and then with overflow), Q (often a return of
- * bank 24), the flag words (often one bit changed), the vectors and
- * times (any erasable bank's words), NEWJOB, the overflow indicator,
- * MODREG (40 or 41), MRKRTMP, PHASE5 and NVWORD1 (each sign), TVCPHASE
- * (often -1), the channels (11 and 12 in the io record, 5 and 31 in
- * the hardware record), now and then any word but the interpreter's own, the
- * latches, no hardware record, or a state the routines refuse (another
- * work area, BBANK not the two banks, a word of 16 bits). Each runs once
- * on each side, as the program's trampoline would call the key's
- * routine. Where either port runs, the other must too, with the same
- * memory, io record and hardware record, word for word; where the
- * readable one refuses, it must leave everything as it found it; and the
- * faithful routine must run from at least 1 in 16 of the states of every
- * readable key. One refusal is counted, not failed: the TC Q of
- * SETMINDB, SETMAXDB, SPSOFF, TVCZAP and E7SETTER to FENG, the constant
- * after CALCN85's TC SERVXT, where the faithful port fails. A key the
- * binding hands to the faithful port must give the faithful routine's
- * result, refusals and all. */
+ * index registers, A (now and then with overflow), Q (often a return the
+ * file's code runs on at), the flag words (often one bit changed), the
+ * vectors and times (any erasable bank's words), NEWJOB, the overflow
+ * indicator, MODREG (40 or 41), MRKRTMP, PHASE5, NVWORD1 and CNTR (each
+ * sign), TVCPHASE (often -1), TEMPR60 (one of GIMDTEST's words),
+ * DAPDATR1 and DAPDATR2, the channels (11, 12 and 14 in the io record, 5
+ * and 31 in the hardware record), now and then any word but the
+ * interpreter's own, the latches, no hardware record, or a state the
+ * routines refuse (another work area, BBANK not the two banks, a word of
+ * 16 bits). Each runs once on each side, as the program's trampoline
+ * would call the key's routine. Where either port runs, the other must
+ * too, with the same memory, io record and hardware record, word for
+ * word; where the readable one refuses, it must leave everything as it
+ * found it; and the faithful routine must run from at least 1 in 16 of
+ * the states of every readable key. One refusal is counted, not failed:
+ * the TC Q of SETMINDB, SETMAXDB, SPSOFF, TVCZAP and E7SETTER to FENG,
+ * the constant after CALCN85's TC SERVXT, where the faithful port fails.
+ * A key the binding hands to the faithful port (none, now the file is
+ * whole) must give the faithful routine's result, refusals and all. */
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -83,7 +84,8 @@ static const struct interpretive_code *const codes[] = {
 #define WRITTEN                                                                                    \
     {024u, 02073u, 03752u}, {027u, 02614u, 02630u}, {016u, 02020u, 02150u},                        \
         {030u, 03651u, 03745u}, {022u, 03431u, 03444u}, {016u, 02153u, 02301u},                    \
-        {020u, 02201u, 02240u}, {016u, 02302u, 02527u}
+        {020u, 02201u, 02240u}, {016u, 02302u, 02527u}, {020u, 02241u, 02526u},                    \
+        {021u, 02014u, 02041u}, {042u, 03606u, 03650u}
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 bool cm_p40_p47_readable(uint16_t key, bool order_pair);
@@ -106,6 +108,9 @@ bool cm_p40_p47_runs_on(uint16_t z);
 #define MRKRTMP_AT  01445u /* (in E6) */
 #define PHASE5_AT   0763u
 #define TVCPHASE_AT 01644u /* (in E6) */
+#define TEMPR60_AT  01146u
+#define CNTR_AT     01447u /* (in E6) */
+#define DAPDATR1_AT 01466u /* and DAPDATR2 (in E6) */
 #define NVWORD1_AT  01145u
 #define QTEMP_AT    03657u /* (in E7) */
 #define QTEMP1_AT   03730u /* (in E7) */
@@ -225,19 +230,23 @@ static unsigned erasable_at(const uint16_t *w, unsigned address)
 static uint16_t a_return(void)
 {
     static const uint16_t returns[] = {
-        02124u, 02134u, 02135u, 02205u, 02216u, 02263u, 02073u, 02304u, 02317u, 02320u,
-        02437u, 02463u, 02410u, 02555u, 02556u, 02557u, 02717u, 02720u, 02737u, 02763u,
-        02767u, 02775u, 03003u, 03010u, 02570u, 02713u, 03017u, 03071u, 02724u, 03060u,
-        03120u, 03366u, 03573u, 03574u, 03765u, 03225u, 03401u, 03407u, 03452u, 03530u,
-        03536u, 00045u, 04662u, 01776u, 02000u, 03777u};
+        02124u, 02134u, 02135u, 02205u, 02216u, 02263u, 02073u, 02304u, 02317u, 02320u, 02437u,
+        02463u, 02410u, 02555u, 02556u, 02557u, 02717u, 02720u, 02737u, 02763u, 02767u, 02775u,
+        03003u, 03010u, 02570u, 02713u, 03017u, 03071u, 02724u, 03060u, 03120u, 03366u, 03573u,
+        03574u, 03765u, 03225u, 03401u, 03407u, 03452u, 03530u, 03536u, 00045u, 04662u, 01776u,
+        02000u, 03777u, 02020u, 02206u, 02303u, 02305u, 02307u};
     return returns[rnd() % COUNT(returns)];
 }
 
 /* Whether a key's code may run in the NOVAC work area: not the two that
- * store a vector at 6D (S40.2,3B's STCALL, BADVCTOR's STORE). */
+ * store a vector at 6D (S40.2,3B's STCALL, BADVCTOR's STORE), nor
+ * S40.13's PDDL EMDOT, whose operand (0110) is the area's first word: the
+ * push can land on it, which the ports order differently (the readable
+ * one loads first, as INTERPRETER.agc does). */
 static bool novac_area_ok(uint16_t key)
 {
-    return key != 024u * 1024u + 01724u && key != 024u * 1024u + 01751u;
+    return key != 024u * 1024u + 01724u && key != 024u * 1024u + 01751u &&
+           key != 016u * 1024u + 00462u;
 }
 
 /* The frozen cases. */
@@ -259,7 +268,12 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
     io->superbank = c->superbank;
     io->interrupt_enabled = c->interrupt_enabled;
     eb = (uint16_t)(w[3] >> 8);
-    w[4] = (uint16_t)(bank << 10);
+    if (bank >= 040u) { /* banks 40-43: FB 30-33, SUPERBNK 0100 */
+        w[4] = (uint16_t)((bank - 010u) << 10);
+        io->superbank = 0100u;
+    } else {
+        w[4] = (uint16_t)(bank << 10);
+    }
     if (interpretive) {
         w[5] = NEWOPS_AT;
         w[LOC_AT] = z;
@@ -320,6 +334,17 @@ static void state(apollo_overlay_state *s, cm_native_io *io, uint16_t key, int i
             w[NVWORD1_AT] = k == 0u ? 01525u : k == 1u ? 01450u : edge_or_any();
         }
         if (rnd() % 2u) io->channel11 = any_word();
+        /* S40.6: CNTR (RSTRTST's CCS, OUTPUT's INDEX), -0 or -1 or each
+         * sign; TEMPR60 (OUTPUT's TC TEMPR60), one of GIMDTEST's words;
+         * channel 14. S41.2 and DAPFIG: DAPDATR1 and DAPDATR2. */
+        if (rnd() % 2u) {
+            k = rnd() % 4u;
+            w[erasable_at(w, CNTR_AT)] = k == 0u ? 077777u : k == 1u ? 077776u : edge_or_any();
+        }
+        if (rnd() % 2u) w[TEMPR60_AT] = (uint16_t)(02303u + 2u * (rnd() % 3u));
+        if (rnd() % 2u) io->channel14 = any_word();
+        if (rnd() % 2u) w[erasable_at(w, DAPDATR1_AT)] = any_word();
+        if (rnd() % 2u) w[erasable_at(w, DAPDATR1_AT + 1u)] = any_word();
         if (rnd() % 16u == 0u) io->superbank = (uint16_t)(rnd() & (rnd() % 2u ? 0160u : 0177u));
         if (rnd() % 32u == 0u) io->interrupt_enabled = (uint16_t)(rnd() % 3u);
         if (rnd() % 32u == 0u) w[4] = (uint16_t)(rnd() & 076000u);
