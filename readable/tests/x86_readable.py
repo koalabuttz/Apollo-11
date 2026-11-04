@@ -164,6 +164,14 @@ REPLACED = (
     'lm_r31_file.o',
     'lm_r31_routines.o',
     'cm_r31.o',
+    # P76.agc, both missions' target delta V program (src/p76): the port's
+    # compiled files and their older modules of the same keys, whose basic
+    # tables the readable binding serves too (the flight program tries them
+    # first) and whose order pair tables it defines empty.
+    'lm_p76_file.o',
+    'lm_p76_routines.o',
+    'cm_p76_file.o',
+    'cm_p76_routines.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -192,7 +200,7 @@ RENAMED = {'lanec_pin_trampoline.o': lambda m: [f'lanec_pin_run_{m}'],
 READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whimper', 'spsin', 'gentran',
                     'dodowntm', 'slap1', 'v37xeq', 'interpret_listing', 'keyrupt1', 'go_lead_in',
                     't4jump', 'imumon', 'goextvb', 'showsum', 'imufinek', 'lodnntab', 'one_pipa',
-                    'e_bkcall', 'charin', 'sbandant', 'p3xorp7x', 'r31call')
+                    'e_bkcall', 'charin', 'sbandant', 'p3xorp7x', 'r31call', 'endp76')
 # And each mission's own: R63 is the LM's alone; GIMBAL_LOCK_AVOIDANCE's
 # table has each mission's name, and the CM's KALCMANU_STEERING and ANGLFIND
 # have routines the LM's have not (STOPRATE, SECAD's basic code), as has
@@ -206,10 +214,11 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # (P32STRT_CODE). The LM's P31 is GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc's
 # (p31_after_p20flgon), the CM's its P30-P37.agc's. Both missions have
 # P21 (prog21). Each mission's R31 has labels the other's has not (the
-# LM's REV83, the CM's R34LOS).
+# LM's REV83, the CM's R34LOS). The LM's P76 starts with interpretive
+# code (P76_CODE), the CM's does not.
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
-                          'p31_after_p20flgon', 'prog21', 'rev83'),
+                          'p31_after_p20flgon', 'prog21', 'rev83', 'P76_CODE'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE', 'prog21', 'r34los_after_exit')}
 xb.OUT = READABLE / 'build/x86-flight'

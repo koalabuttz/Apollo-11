@@ -3195,6 +3195,13 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define V16N53 ((word)KW_V16N53) /* VN 1653 */
 #define PRIO3  ((word)KW_PRIO3)
 #endif
+
+/* P76, the target delta V program, in bank 13 of both missions, and its
+ * two displays (V06N84, NV 0684, and the word after it, NV 0633). */
+#define P76           ((word)K_P76)
+#define ENDP76        ((word)K_ENDP76)
+#define V06N84        ((word)KW_V06N84)   /* NV 0684 */
+#define V06N84_PLUS_1 ((word)KW_V06N84P1) /* V06N84 +1: NV 0633 */
 #if LUMINARY099
 #define DEG130 ((word)K_130DEG) /* 130DEG, 2DEC .3611111111 */
 #else
