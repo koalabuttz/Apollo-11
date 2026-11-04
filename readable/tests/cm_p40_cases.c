@@ -18,8 +18,8 @@
  * bank 24), the flag words (often one bit changed), the vectors and
  * times (any erasable bank's words), NEWJOB, the overflow indicator,
  * MODREG (40 or 41), MRKRTMP, PHASE5 and NVWORD1 (each sign), TVCPHASE
- * (often -1), the channels (11 and 12 in the io record, 5 in the
- * hardware record), now and then any word but the interpreter's own, the
+ * (often -1), the channels (11 and 12 in the io record, 5 and 31 in
+ * the hardware record), now and then any word but the interpreter's own, the
  * latches, no hardware record, or a state the routines refuse (another
  * work area, BBANK not the two banks, a word of 16 bits). Each runs once
  * on each side, as the program's trampoline would call the key's
@@ -52,14 +52,18 @@ extern const struct interpretive_code P40CSM_CODE, P40PVA_CODE, P40TTOG_CODE, P4
     P41_DSP_CODE, P40CNV85_CODE, CALCN85_CODE, P41CSM_CODE, P47CSM_CODE, CALCN83_CODE, P47BODY_CODE,
     UPDATEVG_CODE, CALL40_8_CODE, SURELY_9_CODE, STEERING_CODE, DYNDISP_CODE, S40_1_CODE,
     AGAIN_CODE, S40_2_3_CODE, S41_1_CODE, S40_8_CODE, LOTHRUST_TEST_CODE, TGOCALC_CODE, S40_81_CODE,
-    S40_81_END_CODE, INCRSVG_CODE, INCRSVG_END_CODE, LOTHRUST_CODE, LOTHRUST_END_CODE;
+    S40_81_END_CODE, INCRSVG_CODE, INCRSVG_END_CODE, LOTHRUST_CODE, LOTHRUST_END_CODE, S40_9_CODE,
+    ENDLAMB_CODE, COPY40_9_CODE, REDO40_9_CODE, S40_13_CODE, ULLAGE_CODE, S40_133_CODE,
+    NOTADDUL_CODE;
 static const struct interpretive_code *const codes[] = {
     &P40CSM_CODE,   &P40PVA_CODE,        &P40TTOG_CODE,  &P40S_SV_CODE,      &P41_DSP_CODE,
     &P40CNV85_CODE, &CALCN85_CODE,       &P41CSM_CODE,   &P47CSM_CODE,       &CALCN83_CODE,
     &P47BODY_CODE,  &UPDATEVG_CODE,      &CALL40_8_CODE, &SURELY_9_CODE,     &STEERING_CODE,
     &DYNDISP_CODE,  &S40_1_CODE,         &AGAIN_CODE,    &S40_2_3_CODE,      &S41_1_CODE,
     &S40_8_CODE,    &LOTHRUST_TEST_CODE, &TGOCALC_CODE,  &S40_81_CODE,       &S40_81_END_CODE,
-    &INCRSVG_CODE,  &INCRSVG_END_CODE,   &LOTHRUST_CODE, &LOTHRUST_END_CODE,
+    &INCRSVG_CODE,  &INCRSVG_END_CODE,   &LOTHRUST_CODE, &LOTHRUST_END_CODE, &S40_9_CODE,
+    &ENDLAMB_CODE,  &COPY40_9_CODE,      &REDO40_9_CODE, &S40_13_CODE,       &ULLAGE_CODE,
+    &S40_133_CODE,  &NOTADDUL_CODE,
 };
 #define readable_basic_table        cm_p40_p47_basic
 #define readable_interpretive_table cm_p40_p47_interpretive
@@ -79,7 +83,7 @@ static const struct interpretive_code *const codes[] = {
 #define WRITTEN                                                                                    \
     {024u, 02073u, 03752u}, {027u, 02614u, 02630u}, {016u, 02020u, 02150u},                        \
         {030u, 03651u, 03745u}, {022u, 03431u, 03444u}, {016u, 02153u, 02301u},                    \
-        {020u, 02201u, 02240u}
+        {020u, 02201u, 02240u}, {016u, 02302u, 02527u}
 extern const agc_routine_table readable_basic_table, readable_interpretive_table;
 extern const agc_routine_table faithful_basic, faithful_interpretive;
 bool cm_p40_p47_readable(uint16_t key, bool order_pair);
@@ -395,11 +399,12 @@ static unsigned keys(const agc_routine_table *readable, const agc_routine_table 
             state(&start, &io, key, interpretive, n);
             fa = ra = start;
             fio = rio = io;
-            /* A hardware record (ULAGEOFF writes its channel 5), now and
-             * then none. */
+            /* A hardware record (ULAGEOFF writes its channel 5, S40.13
+             * reads its channel 31), now and then none. */
             memset(&hardware, 0, sizeof hardware);
             hardware.channel30 = any_word();
             hardware.channel5 = any_word();
+            hardware.channel31 = any_word(); /* S40.13's RXOR */
             fhw = rhw = hardware;
             memset(&p, 0, sizeof p);
             fp = rp = p;
