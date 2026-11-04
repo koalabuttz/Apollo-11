@@ -2076,13 +2076,13 @@ burn-baby-cases: $(BUILD)/bb-oracle $(BUILD)/bb-cases $(BUILD)/bb-cases-flight
 	./$(BUILD)/bb-cases $(ROPES)
 	./$(BUILD)/bb-cases-flight $(ROPES)
 
-# P40-P47.agc, the LM's burn programs, readable part by part: the port's
-# test (tests/test_lm_p40_p47.c, its frozen cases run to their stops
-# through the program of tests/lm_p40_p47_target.c, against the original
-# program's yaAGC digests) through the readable tables, which hand the
-# keys not yet written to the faithful routines (renamed faithful_), with
+# P40-P47.agc, the LM's burn programs: the port's test
+# (tests/test_lm_p40_p47.c, its frozen cases run to their stops through
+# the program of tests/lm_p40_p47_target.c, against the original
+# program's yaAGC digests) through the readable tables, with
 # tests/with_ropes.c loading the ropes the readable interpreter reads;
-# then tests/p40_cases.c side by side.
+# then tests/p40_cases.c side by side with the faithful routines (renamed
+# faithful_).
 $(BUILD)/p40-faithful.o: $(PORT)/src/lm_p40_p47.c
 	@mkdir -p $(dir $@)
 	$(CC) $(PORT_CFLAGS) $(INCLUDES) -Dlm_p40_p47_basic=faithful_lm_p40_p47_basic \

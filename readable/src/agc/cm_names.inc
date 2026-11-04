@@ -1449,6 +1449,7 @@
 #define K_S40_134 02522u
 #define K_S40_9 02302u
 #define K_ENDS40_9 02402u
+#define K_S41_1 03431u
 #define K_NEWPRIO 00063u
 #define K_LOCCTR 00064u
 #define K_NEWLOC 00065u
@@ -3844,6 +3845,9 @@
 #define I_HAVEGUES 022002u
 #define I_ENDS40_9 034402u
 #define I_S40_9 034302u
+#define I_RMAG 001765u
+#define I_EARTHMU 034421u
+#define I_FIRSTTME 034345u
 #define P_SIZETAB 1024u
 #define P_600SECS 11692u
 #define P_PRIOLARM 9206u

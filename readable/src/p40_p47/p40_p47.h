@@ -10,7 +10,8 @@
  * TERM40); then IMPLBURN and the engine off routines (engine_off.c), and
  * UPDATEVG, STEERING, NSTEER and GETDT (steering.c). Part 2 is bank 27's
  * subroutines S40.1, S40.2,3 and S40.8 (s40.c), S40.13 and S40.9
- * (timeburn.c); RASTEER1, TRIMGIMB and S41.1 are the part to come.
+ * (timeburn.c); part 3 RASTEER1 (rasteer1.c), TRIMGIMB and S41.1
+ * (trimgimb.c). With it the file is whole.
  *
  * The interpretive code is in the listing's notation, run by the readable
  * interpreter. The entries below are the basic code's: each program's
@@ -151,6 +152,19 @@ void storetgo_after_exit(void);        /* STORETGO +2 */
 void s40_9(void);                      /* S40.9 */
 void ends40_9_after_exit(void);        /* ENDS40.9 +1 */
 void ends40_9_after_phaschng(void);    /* ENDS40.9 +3 */
+
+/* ---- Part 3: RASTEER1 (rasteer1.c), TRIMGIMB and S41.1 (trimgimb.c) ---- */
+
+extern const struct interpretive_code RASTEER1_CODE, S41_1_CODE;
+
+void trimgimb(void);                /* TRIMGIMB */
+void trimgimb_after_downflag(void); /* TRIMGIMB +2 */
+void trimgimb_after_fixdelay(void); /* TRIMGIMB +012 */
+void trimgimb_after_twiddle(void);  /* TRIMGIMB +023 */
+void trimgimb_after_vardelay(void); /* TRIMGIMB +025 */
+void rollover_after_novac(void);    /* ROLLOVER +010 */
+void pitchoff(void);                /* PITCHOFF */
+void pitchoff_after_upflag(void);   /* PITCHOFF +6 */
 
 #endif
 

@@ -3483,6 +3483,11 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define S40_134          ((word)K_S40_134) /* S40.134 */
 #define ENDS40_9         ((word)K_ENDS40_9) /* ENDS40.9 */
 #define STORETGO         ((word)K_STORETGO)
+#define TRIMGIMB         ((word)K_TRIMGIMB)
+#define RASTEER1         ((word)K_RASTEER1)
+#define S41_1            ((word)K_S41_1) /* S41.1 */
+#define ROLLOVER         ((word)K_ROLLOVER)
+#define PITCHOFF         ((word)K_PITCHOFF)
 #define SERVCADR         ((word)K_SERVCADR) /* = P63TABLE +7 */
 #define SERVEXIT         ((word)K_SERVEXIT)
 #define SETMINDB         ((word)K_SETMINDB)
@@ -3492,6 +3497,7 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define TIGNOW           ((word)K_TIGNOW)
 #define UPDATEVG         ((word)K_UPDATEVG)
 #define ZATTEROR         ((word)K_ZATTEROR)
+#define GMBDRBIT         ((word)KW_GMBDRBIT) /* = BIT10 */
 #define HIRTHROT         ((word)KW_HIRTHROT) /* = BIT13 */
 #define IDLEFBIT         ((word)KW_IDLEFBIT) /* = BIT7 */
 #define P40ADRES         ((word)KW_P40ADRES) /* ADRES P40TABLE */
