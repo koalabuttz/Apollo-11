@@ -3140,8 +3140,10 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 /* P34-35_P74-75.agc (both): P34 and P74, the transfer phase initiation
  * programs; DISPLAYE, the elevation angle and central angle display; and
  * P3XORP7X, which tells P3x from P7x; P35 and P75, the mid-course
- * correction programs. Their erasable words (NORMEX, TBASE5, RTRN,
- * VERBNOUN, KT, ATIGINC, PTIGINC) are named by ADDRESS_OF. */
+ * correction programs; KILCLOCK, N45PROC and CLUPDATE, the returns from
+ * their verb 16 noun 45. Their erasable words (NORMEX, TBASE5, RTRN,
+ * VERBNOUN, KT, ATIGINC, PTIGINC, QSAVED, GDT/2, DELVLVC, DISPDEX) are
+ * named by ADDRESS_OF. */
 #define P34      ((word)K_P34)
 #define P74      ((word)K_P74)
 #define P34_P74A ((word)K_P34_P74A)
@@ -3152,6 +3154,11 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define P75      ((word)K_P75)
 #define P35_P75A ((word)K_P35_P75A) /* P35/P75A */
 #define V06N58   ((word)KW_V06N58) /* VN 0658 */
+#define KILCLOCK ((word)K_KILCLOCK)
+#define N45PROC  ((word)K_N45PROC)
+#define CLUPDATE ((word)K_CLUPDATE)
+#define V06N59   ((word)KW_V06N59) /* VN 0659 */
+#define V16N45   ((word)KW_V16N45) /* VN 1645 */
 #if LUMINARY099
 #define DEG130 ((word)K_130DEG) /* 130DEG, 2DEC .3611111111 */
 #else
@@ -3173,7 +3180,6 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define MARSDP   ((word)K_MARSDP) /* OCT 00000, OCT 35100 */
 #define S31_1    ((word)K_S31_1)  /* S31.1 */
 #define DELRSPL  ((word)K_DELRSPL)
-#define V16N45   ((word)KW_V16N45) /* VN 1645 */
 #define EBANK4   ((word)KW_EBANK4)
 #endif
 

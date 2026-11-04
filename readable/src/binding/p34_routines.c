@@ -145,6 +145,35 @@ static const struct basic_entry {
     {KEY(035u, P75), p75},
     {KEY(035u, P75 + 1u), p75_after_avflagp},
     {KEY(035u, P35_P75A + 2u), p35_p75a_after_p20flgon},
+/* Part 3: S34/35.5, VN1645 and its clock */
+#if LUMINARY099
+    {KEY(035u, I_FLAGON + 5u), s34_35_5_after_exit},
+    {KEY(035u, I_FLAGON + 010u), s34_35_5_terminate},
+    {KEY(035u, I_FLAGON + 011u), s34_35_5_proceed},
+    {KEY(035u, I_FLAGON + 012u), s34_35_5_recycle},
+    {KEY(035u, I_FLAGON + 013u), s34_35_5_compare},
+    {KEY(035u, I_FLAGON + 034u), s34_35_5_after_upflag},
+#else
+    {KEY(035u, I_FLAGON + 4u), s34_35_5_after_exit},
+    {KEY(035u, I_FLAGON + 6u), s34_35_5_after_vnpooh},
+#endif
+    {KEY(035u, I_FLAGOFF + 3u), flagoff_after_exit},
+    {KEY(035u, I_FLAGOFF + 5u), flagoff_after_vnpooh},
+    {KEY(035u, I_GET45 - 010u), vn1645_after_exit},
+    {KEY(035u, I_GET45 - 7u), vn1645_p3x},
+    {KEY(035u, I_GET45 - 6u), vn1645_p7x},
+    {KEY(035u, I_GET45 - 5u), vn1645_mga},
+    {KEY(035u, I_GET45 + 1u), vn1645_clock},
+    {KEY(035u, I_GET45 + 2u), vn1645_after_comptgo},
+    {KEY(035u, I_GET45 + 7u), vn1645_after_delayjob},
+    {KEY(035u, I_GET45 + 012u), vn1645_terminate},
+    {KEY(035u, I_GET45 + 013u), vn1645_proceed},
+    {KEY(035u, I_GET45 + 014u), vn1645_recycle},
+    {KEY(035u, KILCLOCK), kilclock},
+    {KEY(035u, N45PROC), n45proc},
+    {KEY(035u, N45PROC + 6u), n45proc_after_phaschng},
+    {KEY(035u, CLUPDATE), clupdate},
+    {KEY(035u, CLUPDATE + 4u), clupdate_after_phaschng},
     /* Part 1: the display subroutines */
     {KEY(035u, DISPLAYE), displaye},
     {KEY(035u, DISPLAYE + 5u), displaye_terminate},
@@ -181,7 +210,9 @@ static const struct interpretive_code *const codes[] = {
     &P34_NN_CODE,
 #endif
     &P34_TTPI_CODE, &P34_SWCHCLR_CODE, &P34_P74D_CODE, &P34_P74E_CODE, &P34_N58_CODE,
-    &P35_CODE,      &S33_34_1_CODE,    &FIGTIME_CODE,  &OKMAX_CODE,
+    &P35_CODE,      &S33_34_1_CODE,    &FIGTIME_CODE,  &OKMAX_CODE,    &S34_35_1_CODE,
+    &S34_35_2_CODE, &S34_35_3_CODE,    &LOMAT_CODE,    &S34_35_5_CODE, &S34_35_5_LOADED_CODE,
+    &FLAGOFF_CODE,  &VN1645_CODE,      &GETMGA_CODE,   &CLUPDATE_CODE,
 };
 
 /* The table an address is in, in a bank, or none. */
