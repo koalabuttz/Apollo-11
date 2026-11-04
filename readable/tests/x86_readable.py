@@ -151,6 +151,11 @@ REPLACED = (
     # of the same keys, whose tables the readable binding defines empty.
     'lm_lambert_aim.o',
     'lm_p31_routines.o',
+    # GROUND_TRACKING_DETERMINATION_PROGRAM.agc, the LM's P21
+    # (src/ground_track): the port's compiled file and its older module of
+    # the same keys, whose tables the readable binding defines empty.
+    'lm_ground_track.o',
+    'lm_p21_routines.o',
 )
 # The faithful objects the readable objects take part of the place of:
 # each is linked with the names the readable objects define renamed
@@ -187,10 +192,11 @@ READABLE_SYMBOLS = ('novac', 'bankcall', 'phschng2', 'getpart2', 'newops', 'whim
 # P30N33, the CM's P30PHSI). Each mission's P32 has a P32STRT, the LM's in
 # basic code (p32strt alone), the CM's in interpretive code too
 # (P32STRT_CODE). The LM's P31 is GENERAL_LAMBERT_AIMPOINT_GUIDANCE.agc's
-# (p31_after_p20flgon), the CM's its P30-P37.agc's.
+# (p31_after_p20flgon), the CM's its P30-P37.agc's. Only the LM's P21 is
+# readable yet (prog21).
 MISSION_SYMBOLS = {'lm': ('v89recl', 'kalcman3', 'NOGIMLOC_CODE', 'newdelhi', 'geoimutt', 'r60lem',
                           'radsamp', 'prog20a', 'p30n33', 'p32strt',
-                          'p31_after_p20flgon'),
+                          'p31_after_p20flgon', 'prog21'),
                    'cm': ('WCALC_CODE', 'newdelhi', 'stoprate', 'secad_after_exit', 'compver', 'r60csm',
                           'pikup20', 'p30phsi', 'P32STRT_CODE')}
 xb.OUT = READABLE / 'build/x86-flight'
