@@ -3202,6 +3202,38 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define ENDP76        ((word)K_ENDP76)
 #define V06N84        ((word)KW_V06N84)   /* NV 0684 */
 #define V06N84_PLUS_1 ((word)KW_V06N84P1) /* V06N84 +1: NV 0633 */
+
+/* R30, the orbital parameters display (verb 82), the LM's in bank 22, the
+ * CM's in bank 23: its labels, and its two displays (OPTIONVN, VN 0412,
+ * and V16N44, VN 1644) and TFFBANK (ECADR TFF). */
+#define V82CALL  ((word)K_V82CALL)
+#define V82GOFF  ((word)K_V82GOFF)
+#define V82GOFLP ((word)K_V82GOFLP)
+#define V82STALL ((word)K_V82STALL)
+#define FLAGGON  ((word)K_FLAGGON)
+#define V82GOFF1 ((word)K_V82GOFF1)
+#define OTHSHIP  ((word)K_OTHSHIP)
+#define THISSHIP ((word)K_THISSHIP)
+#define TICKTPER ((word)K_TICKTPER)
+#define TICKTFF  ((word)K_TICKTFF)
+#define TICKTEST ((word)K_TICKTEST)
+#define DOTICK   ((word)K_DOTICK)
+#define TFFTICK  ((word)K_TFFTICK)
+#define TPERTICK ((word)K_TPERTICK)
+#define V82GON   ((word)K_V82GON)
+#define V82REDSP ((word)K_V82REDSP)
+#define V82GON1  ((word)K_V82GON1)
+#define V82GON3  ((word)K_V82GON3)
+#define OPTIONVN ((word)KW_OPTIONVN) /* VN 0412 */
+#define V16N44   ((word)KW_V16N44)   /* VN 1644 */
+#define TFFBANK  ((word)KW_TFFBANK)  /* ECADR TFF */
+#if !LUMINARY099
+#define CHANG1  ((word)K_CHANG1) /* (the LM's is with the IMU performance tests') */
+#define BOTHPAD ((word)K_BOTHPAD)
+#define V82GON2 ((word)K_V82GON2)
+#define SPLRET1 ((word)K_SPLRET1)
+#define CANDEL  ((word)K_CANDEL)
+#endif
 #if LUMINARY099
 #define DEG130 ((word)K_130DEG) /* 130DEG, 2DEC .3611111111 */
 #else
