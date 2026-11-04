@@ -3437,6 +3437,7 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
  * DISPDEX, AVEGEXIT, TRKMKCNT, TGO, PHASE2 ...) are named by ADDRESS_OF. */
 #define ACADN83          ((word)K_ACADN83) /* 2CADR CALCN83 */
 #define ACADN85          ((word)K_ACADN85) /* = P41TABLE +2 */
+#define ALARMIT          ((word)K_ALARMIT)
 #define ALLCOAST         ((word)K_ALLCOAST)
 #define BLNKWAIT         ((word)K_BLNKWAIT)
 #define CALCN83          ((word)K_CALCN83)
@@ -3472,6 +3473,16 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define REDO6_7          ((word)K_REDO6_7) /* REDO6.7 */
 #define REFLASHR         ((word)K_REFLASHR)
 #define RESTORDB         ((word)K_RESTORDB)
+#define S40_1            ((word)K_S40_1)   /* S40.1 */
+#define S40_2_3          ((word)K_S40_2_3) /* S40.2,3 */
+#define S40_8            ((word)K_S40_8)   /* S40.8 */
+#define S40_9            ((word)K_S40_9)   /* S40.9 */
+#define S40_13           ((word)K_S40_13)  /* S40.13 */
+#define S40_130V         ((word)K_S40_130V)   /* S40.130V */
+#define S40_132_STAR     ((word)K_S40_132_STAR) /* S40.132* */
+#define S40_134          ((word)K_S40_134) /* S40.134 */
+#define ENDS40_9         ((word)K_ENDS40_9) /* ENDS40.9 */
+#define STORETGO         ((word)K_STORETGO)
 #define SERVCADR         ((word)K_SERVCADR) /* = P63TABLE +7 */
 #define SERVEXIT         ((word)K_SERVEXIT)
 #define SETMINDB         ((word)K_SETMINDB)
