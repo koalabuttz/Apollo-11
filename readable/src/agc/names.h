@@ -3518,6 +3518,7 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
  * NVWORD1, TIG ...) are named by ADDRESS_OF. */
 #define ACADN83    ((word)K_ACADN83) /* 2CADR CALCN83 */
 #define ACADN85    ((word)K_ACADN85) /* 2CADR CALCN85 */
+#define AGAIN      ((word)K_AGAIN)
 #define ASTNV99P   ((word)K_ASTNV99P)
 #define BESTTRIM   ((word)K_BESTTRIM)
 #define BTRIMR     ((word)K_BTRIMR)
@@ -3579,6 +3580,9 @@ static const word VB56CADR[2] = KW_VB56CADR; /* 2CADR TRACKTRM */
 #define PREPTVC    ((word)K_PREPTVC)
 #define QUICKIGN   ((word)K_QUICKIGN)
 #define R40ENABL   ((word)K_R40ENABL)
+#define S40_1      ((word)K_S40_1)   /* S40.1 */
+#define S40_2_3    ((word)K_S40_2_3) /* S40.2,3 */
+#define S41_1      ((word)K_S41_1)   /* S41.1 */
 #define SEC29_96   ((word)K_SEC29_96) /* SEC29.96: 2DEC 2996 */
 #define SERVCADR   ((word)K_SERVCADR) /* 2CADR SERVEXIT */
 #define SERVXT     ((word)K_SERVXT)
